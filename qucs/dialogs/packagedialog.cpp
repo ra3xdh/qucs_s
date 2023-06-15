@@ -276,7 +276,7 @@ void PackageDialog::slotCreate()
   if(PkgFile.exists())
     if(QMessageBox::information(this, tr("Info"),
           tr("Output file already exists!")+"\n"+tr("Overwrite it?"),
-          tr("&Yes"), tr("&No"), 0,1,1))
+          QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
       return;
 
   if(!PkgFile.open(QIODevice::ReadWrite)) {
@@ -320,7 +320,11 @@ void PackageDialog::slotCreate()
   // Calculate checksum and write it to package file.
   PkgFile.seek(0);
   QByteArray Content = PkgFile.readAll();
+#if QT_VERSION >= 0x060000
+  quint16 Checksum = qChecksum(QByteArrayView(Content));
+#else
   quint16 Checksum = qChecksum(Content.data(), Content.size());
+#endif
   PkgFile.seek(HEADER_LENGTH-sizeof(quint16));
   Stream << Checksum;
   PkgFile.close();
@@ -368,7 +372,7 @@ void PackageDialog::extractPackage()
   QDir currDir = QucsSettings.QucsHomeDir;
   QString Version;
   VersionTriplet PackageVersion;
-  quint16 Checksum;
+  quint16 Checksum, Checksum1;
   quint32 Code, Length;
 
   // First read and check header.
@@ -389,7 +393,12 @@ void PackageDialog::extractPackage()
   PkgFile.seek(HEADER_LENGTH-2);
   Stream >> Checksum;
   *((quint16*)(Content.data()+HEADER_LENGTH-2)) = 0;
-  if(Checksum != qChecksum(Content.data(), Content.size())) {
+#if QT_VERSION >= 0x060000
+  Checksum1 = qChecksum(QByteArrayView(Content));
+#else
+  Checksum1 = qChecksum(Content.data(), Content.size());
+#endif
+  if(Checksum != Checksum1) {
     MsgText->append(tr("ERROR: Checksum mismatch!"));
     goto ErrorEnd;
   }

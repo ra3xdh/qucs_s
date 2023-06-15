@@ -1501,7 +1501,11 @@ bool Q3ScrollView::eventFilter(QObject *obj, QEvent *e)
             if (disabled)
                 return false;
             if (d->drag_autoscroll) {
+#if QT_VERSION >= 0x060000
+                QPoint vp = ((QDragMoveEvent*) e)->position().toPoint();
+#else
                 QPoint vp = ((QDragMoveEvent*) e)->pos();
+#endif
                 QRect inside_margin(autoscroll_margin, autoscroll_margin,
                                      visibleWidth() - autoscroll_margin * 2,
                                      visibleHeight() - autoscroll_margin * 2);
@@ -1736,8 +1740,13 @@ void Q3ScrollView::viewportResizeEvent(QResizeEvent * /* event */)
 */
 void Q3ScrollView::viewportMousePressEvent(QMouseEvent* e)
 {
+#if QT_VERSION >= 0x060000
+    QMouseEvent ce(e->type(), viewportToContents(e->pos()),
+        e->globalPosition(), e->button(), e->buttons(), e->modifiers());
+#else
     QMouseEvent ce(e->type(), viewportToContents(e->pos()),
         e->globalPos(), e->button(), e->buttons(), e->modifiers());
+#endif
     contentsMousePressEvent(&ce);
     if (!ce.isAccepted())
         e->ignore();
@@ -1753,8 +1762,13 @@ void Q3ScrollView::viewportMousePressEvent(QMouseEvent* e)
 */
 void Q3ScrollView::viewportMouseReleaseEvent(QMouseEvent* e)
 {
+#if QT_VERSION >= 0x060000
+    QMouseEvent ce(e->type(), viewportToContents(e->pos()),
+        e->globalPosition(), e->button(), e->buttons(), e->modifiers());
+#else
     QMouseEvent ce(e->type(), viewportToContents(e->pos()),
         e->globalPos(), e->button(), e->buttons(), e->modifiers());
+#endif
     contentsMouseReleaseEvent(&ce);
     if (!ce.isAccepted())
         e->ignore();
@@ -1770,8 +1784,13 @@ void Q3ScrollView::viewportMouseReleaseEvent(QMouseEvent* e)
 */
 void Q3ScrollView::viewportMouseDoubleClickEvent(QMouseEvent* e)
 {
+#if QT_VERSION >= 0x060000
+    QMouseEvent ce(e->type(), viewportToContents(e->pos()),
+        e->globalPosition(), e->button(), e->buttons(), e->modifiers());
+#else
     QMouseEvent ce(e->type(), viewportToContents(e->pos()),
         e->globalPos(), e->button(), e->buttons(), e->modifiers());
+#endif
     contentsMouseDoubleClickEvent(&ce);
     if (!ce.isAccepted())
         e->ignore();
@@ -1787,8 +1806,13 @@ void Q3ScrollView::viewportMouseDoubleClickEvent(QMouseEvent* e)
 */
 void Q3ScrollView::viewportMouseMoveEvent(QMouseEvent* e)
 {
+#if QT_VERSION >= 0x060000
+    QMouseEvent ce(e->type(), viewportToContents(e->pos()),
+        e->globalPosition(), e->button(), e->buttons(), e->modifiers());
+#else
     QMouseEvent ce(e->type(), viewportToContents(e->pos()),
         e->globalPos(), e->button(), e->buttons(), e->modifiers());
+#endif
     contentsMouseMoveEvent(&ce);
     if (!ce.isAccepted())
         e->ignore();
@@ -1806,9 +1830,15 @@ void Q3ScrollView::viewportMouseMoveEvent(QMouseEvent* e)
 */
 void Q3ScrollView::viewportDragEnterEvent(QDragEnterEvent* e)
 {
+#if QT_VERSION >= 0x060000
+    QDragEnterEvent de(viewportToContents(e->position().toPoint()),
+                      e->possibleActions(),e->mimeData(),
+                      e->buttons(),e->modifiers());
+#else
     QDragEnterEvent de(viewportToContents(e->pos()),
                       e->possibleActions(),e->mimeData(),
                       e->mouseButtons(),e->keyboardModifiers());
+#endif
     //e->setPoint(viewportToContents(e->pos()));
     contentsDragEnterEvent(&de);
     if (de.isAccepted()) e->accept();
@@ -1826,9 +1856,15 @@ void Q3ScrollView::viewportDragEnterEvent(QDragEnterEvent* e)
 */
 void Q3ScrollView::viewportDragMoveEvent(QDragMoveEvent* e)
 {
+#if QT_VERSION >= 0x060000
+    QDragMoveEvent de(viewportToContents(e->position().toPoint()),
+                      e->possibleActions(),e->mimeData(),
+                      e->buttons(),e->modifiers());
+#else
     QDragMoveEvent de(viewportToContents(e->pos()),
                       e->possibleActions(),e->mimeData(),
                       e->mouseButtons(),e->keyboardModifiers());
+#endif
     //e->setPoint(viewportToContents(e->pos()));
     contentsDragMoveEvent(&de);
     if (de.isAccepted()) e->accept();
@@ -1859,9 +1895,15 @@ void Q3ScrollView::viewportDragLeaveEvent(QDragLeaveEvent* e)
 */
 void Q3ScrollView::viewportDropEvent(QDropEvent* e)
 {
+#if QT_VERSION >= 0x060000
+    QDropEvent de(viewportToContents(e->position().toPoint()),
+                      e->possibleActions(),e->mimeData(),
+                      e->buttons(),e->modifiers());
+#else
     QDropEvent de(viewportToContents(e->pos()),
                       e->possibleActions(),e->mimeData(),
                       e->mouseButtons(),e->keyboardModifiers());
+#endif
     //e->setPoint(viewportToContents(e->pos()));
     contentsDropEvent(&de);
     if (de.isAccepted()) e->accept();

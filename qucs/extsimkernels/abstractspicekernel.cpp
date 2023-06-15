@@ -1241,6 +1241,11 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         QTextStream ts(&dataset);
         ts<<ds_str;
         dataset.close();
+    } else {
+        QFileInfo inf(qucs_dataset);
+        QMessageBox::warning(nullptr, tr("Simulate"),
+                             tr("Failed to create dataset file ") + qucs_dataset + "\n"
+                             + tr("Check write permission of the directory ") + inf.path());
     }
 #ifdef NDEBUG
     removeAllSimulatorOutputs();

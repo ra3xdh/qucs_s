@@ -1,6 +1,6 @@
 PROJECT(vcd2qucsdat CXX C)
-CMAKE_MINIMUM_REQUIRED(VERSION 3.18)
-cmake_policy(VERSION 3.18)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
+cmake_policy(VERSION 3.10)
 
 CONFIGURE_FILE (
     "${PROJECT_SOURCE_DIR}/../config.h.cmake"
@@ -8,6 +8,16 @@ CONFIGURE_FILE (
 )
 
 add_compile_definitions(HAVE_CONFIG_H)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if (MSVC)
+    add_compile_options(/Zc:__cplusplus /permissive- /MP /Zc:preprocessor)
+else()
+    # additional warnings
+    add_compile_options(-Wall -Wextra)
+endif()
+
 #
 # Need Flex
 #

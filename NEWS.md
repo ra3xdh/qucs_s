@@ -1,4 +1,4 @@
-# Qucs-S 1.0.3
+# Qucs-S 1.1.0
 
 ## New features
 

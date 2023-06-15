@@ -168,7 +168,7 @@ void ImportDialog::slotImport()
   if(File.exists())
     if(QMessageBox::information(this, tr("Info"),
           tr("Output file already exists!")+"\n"+tr("Overwrite it?"),
-          tr("&Yes"), tr("&No"), 0,1,1))
+          QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
       {
 	ImportButt->setDisabled(false);
 	AbortButt->setDisabled(true);

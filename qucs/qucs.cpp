@@ -209,6 +209,36 @@ QucsApp::QucsApp()
     }
   }
 
+  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) { // try to find Ngspice
+#ifdef Q_OS_WIN
+      QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice_con.exe";
+      QString ngspice_exe2 = "C:\\Spice64\\bin\\ngspice_con.exe";
+#else
+      QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice";
+#endif
+      QString ngspice_exe;
+      bool found = false;
+      if (QFile::exists(ngspice_exe1)) {
+          found = true;
+          ngspice_exe = ngspice_exe1;
+      }
+#ifdef Q_OS_WIN
+      if (!found && QFile::exists(ngspice_exe2)) {
+          found = true;
+          ngspice_exe = ngspice_exe2;
+      }
+#endif
+      ngspice_exe = QDir::toNativeSeparators(ngspice_exe);
+      if (found) {
+          QMessageBox::information(nullptr,tr("Set simulator"),
+                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
+                                   tr("You can specify another location later"
+                                      " using Simulation->Select default simulator"));
+          QucsSettings.DefaultSimulator = spicecompat::simNgspice;
+          QucsSettings.NgspiceExecutable = ngspice_exe;
+      }
+  }
+
   if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
       QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
                                          "Please setup it in the next dialog window.\n"
@@ -1173,11 +1203,11 @@ void QucsApp::slotCMenuCopy()
   QucsDoc *d = findDoc(file, &z);
   if (d != NULL && d->DocChanged) {
     DocumentTab->setCurrentIndex(z);
-    int ret = QMessageBox::question(this, tr("Copying Qucs document"), 
+    int ret = QMessageBox::question(this, tr("Copying Qucs document"),
         tr("The document contains unsaved changes!\n") + 
         tr("Do you want to save the changes before copying?"),
-        tr("&Ignore"), tr("&Save"), 0, 1);
-    if (ret == 1) {
+        QMessageBox::Ignore|QMessageBox::Save);
+    if (ret == QMessageBox::Save) {
       d->save();
     }
   }
@@ -1282,8 +1312,8 @@ void QucsApp::slotCMenuDelete()
   int No;
   No = QMessageBox::warning(this, tr("Warning"),
       tr("This will delete the file permanently! Continue ?"),
-      tr("No"), tr("Yes"));
-  if(No == 1) {
+      QMessageBox::No | QMessageBox::Yes);
+  if(No == QMessageBox::Yes) {
     if(!QFile::remove(file)) {
       QMessageBox::critical(this, tr("Error"),
       tr("Cannot delete file: %1").arg(filename));
@@ -1469,7 +1499,6 @@ void QucsApp::slotMenuProjClose()
 // remove a directory recursively
 bool QucsApp::recurRemove(const QString &Path)
 {
-  bool result = true;
   QDir projDir = QDir(Path);
   return projDir.removeRecursively();
 }
@@ -1500,7 +1529,7 @@ bool QucsApp::deleteProject(const QString& Path)
   // first ask, if really delete project ?
   if(QMessageBox::warning(this, tr("Warning"),
       tr("This will destroy all the project files permanently ! Continue ?"),
-      tr("&Yes"), tr("&No"), 0,1,1))  return false;
+      QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)  return false;
 
   if (!recurRemove(Path)) {
     QMessageBox::information(this, tr("Info"),
@@ -1744,9 +1773,9 @@ bool QucsApp::saveAs()
       n = QMessageBox::warning(this, tr("Warning"),
 		tr("The file '")+Info.fileName()+tr("' already exists!\n")+
 		tr("Saving will overwrite the old one! Continue?"),
-		tr("No"), tr("Yes"), tr("Cancel"));
-      if(n == 2) return false;    // cancel
-      if(n == 0) continue;
+        QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel,QMessageBox::Cancel);
+      if(n == QMessageBox::Cancel) return false;    // cancel
+      if(n == QMessageBox::No) continue;
     }
 
     // search, if document is open
@@ -1861,10 +1890,11 @@ void QucsApp::closeFile(int index)
       switch(QMessageBox::warning(this,tr("Closing Qucs document"),
         tr("The document contains unsaved changes!\n")+
         tr("Do you want to save the changes before closing?"),
-        tr("&Save"), tr("&Discard"), tr("Cancel"), 0, 2)) {
-        case 0 : slotFileSave();
+        QMessageBox::Save|QMessageBox::Discard|QMessageBox::Cancel)) {
+        case QMessageBox::Save : slotFileSave();
                  break;
-        case 2 : return;
+        case QMessageBox::Cancel : return;
+        default: break;
       }
     }
 
@@ -2290,8 +2320,8 @@ void QucsApp::slotSimulate()
       int No = QMessageBox::warning(this, tr("Warning"),
                tr("The document was modified by another program !") + '\n' +
                tr("Do you want to reload or keep this version ?"),
-               tr("Reload"), tr("Keep it"));
-      if(No == 0)
+               QMessageBox::Yes|QMessageBox::No);
+      if(No == QMessageBox::Yes)
         Doc->load();
     }
   }
