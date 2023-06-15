@@ -21,8 +21,6 @@
 *
 */
 #include "node.h"
-#include "extsimkernels/spicecompat.h"
-
 #include "capq.h"
 
 

@@ -573,7 +573,7 @@ void QucsApp::initActions()
   showNet->setWhatsThis(tr("Show Last Netlist\n\nShows the netlist of the last simulation"));
   connect(showNet, SIGNAL(triggered()), SLOT(slotShowLastNetlist()));
 
-  simSettings = new QAction(tr("Select default simulator"),this);
+  simSettings = new QAction(tr("Simulators Settings..."),this);
   connect(simSettings,SIGNAL(triggered()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
   connect(buildVAModule,SIGNAL(triggered()),SLOT(slotBuildVAModule()));

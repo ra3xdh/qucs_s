@@ -23,7 +23,7 @@ SpiceSENS_AC::SpiceSENS_AC()
 {
   isSimulation = true;
   Description = QObject::tr("AC sensitivity simulation");
-  Simulator = spicecompat::simNgspice + spicecompat::simSpiceOpus;
+  Simulator = spicecompat::simNgspice | spicecompat::simSpiceOpus;
 
   QString  s = Description;
   int a = s.indexOf(" ");

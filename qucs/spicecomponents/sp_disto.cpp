@@ -24,7 +24,7 @@ SpiceDisto::SpiceDisto()
 {
   isSimulation = true;
   Description = QObject::tr("Distortion simulation");
-  Simulator = spicecompat::simNgspice + spicecompat::simSpiceOpus;
+  Simulator = spicecompat::simNgspice | spicecompat::simSpiceOpus;
 
   QString  s = Description;
   int a = s.indexOf(" ");

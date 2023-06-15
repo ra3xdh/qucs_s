@@ -827,7 +827,7 @@ void DiagramDialog::slotReadVarsAndSetSimulator(int)
     QFileInfo Info(defaultDataSet);
     QString DocName = ChooseData->currentText()+".dat";
 
-    QString curr_sim; // spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator); TODO ZERGUD
+    QString curr_sim;
     switch (QucsSettings.DefaultSimulator) {
         case spicecompat::simQucsator:
             curr_sim = "Qucsator";

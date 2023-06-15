@@ -2103,8 +2103,11 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
   delete App->view->selElem;
   App->view->selElem = nullptr;  // no component selected
 
-  if(formerAction)
-    formerAction->setChecked(true);  // restore old action
+    if (formerAction) {
+        formerAction->setChecked(true);
+    } else {
+        QucsMain->select->setChecked(true);  // restore old action
+    }
 }
 
 // ---------------------------------------------------

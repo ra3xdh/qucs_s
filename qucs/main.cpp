@@ -349,7 +349,7 @@ Schematic *openSchematic(QString schematic)
   }
 
   // populate Modules list
-  Module::registerModules ();
+  //Module::registerModules ();
 
   // new schematic from file
   Schematic *sch = new Schematic(0, schematic);

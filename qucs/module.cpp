@@ -57,28 +57,25 @@ void Module::registerModule (QString category, pInfoFunc info) {
 
 // Component registration using a category name and the appropriate
 // function returning a components instance object.
-void Module::registerComponent (QString category, pInfoFunc info) {
-  Module * m = new Module ();
-  m->info = info;
-  m->category = category;
+void Module::registerComponent(QString category, pInfoFunc info) {
+    Module *m = new Module();
+    m->info = info;
+    m->category = category;
 
-  // instantiation of the component once in order to obtain "Model"
-  // property of the component
-  QString Name, Model;
-  char * File;
-  Component * c = (Component *) info (Name, File, true);
+    // instantiation of the component once in order to obtain "Model"
+    // property of the component
+    QString Name, Model;
+    char *File;
+    Component *c = (Component *) info(Name, File, true);
+    Model = c->Model;
 
-  if ((c->Simulator & QucsSettings.DefaultSimulator) == 0) {
-      return;
-  }
-
-  Model = c->Model;
-  delete c;
-
-  // put into category and the component hash
-  intoCategory (m);
-  if (!Modules.contains (Model))
-    Modules.insert (Model, m);
+    // put into category and the component hash
+    if ((c->Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
+        intoCategory(m);
+    }
+    delete c;
+    if (!Modules.contains(Model))
+        Modules.insert(Model, m);
 }
 
 // Returns instantiated component based on the given "Model" name.  If

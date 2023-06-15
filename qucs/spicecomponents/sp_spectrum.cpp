@@ -24,7 +24,7 @@ SpiceFFT::SpiceFFT()
 {
   isSimulation = true;
   Description = QObject::tr("Spectrum analysis");
-  Simulator = spicecompat::simNgspice + spicecompat::simSpiceOpus;
+  Simulator = spicecompat::simNgspice | spicecompat::simSpiceOpus;
 
   QString  s = Description;
   int a = s.indexOf(" ");

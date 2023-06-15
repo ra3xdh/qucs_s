@@ -255,7 +255,7 @@ private:
   void openProject(const QString &);
   bool deleteProject(const QString &);
   void updatePortNumber(QucsDoc*, int);
-  void fillComboBox(bool);
+  int fillComboBox(bool);
   void fillSimulatorsComboBox();
   void switchSchematicDoc(bool);
   void switchEditMode(bool);

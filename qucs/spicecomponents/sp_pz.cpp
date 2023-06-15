@@ -23,7 +23,7 @@ SpicePZ::SpicePZ()
 {
   isSimulation = true;
   Description = QObject::tr("Pole-Zero simulation");
-  Simulator = spicecompat::simNgspice + spicecompat::simSpiceOpus;
+  Simulator = spicecompat::simNgspice | spicecompat::simSpiceOpus;
 
   QString  s = Description;
   int a = s.indexOf(" ");

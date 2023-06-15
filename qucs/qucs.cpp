@@ -175,7 +175,7 @@ QucsApp::QucsApp()
   slotViewOctaveDock(false);
   slotUpdateRecentFiles();
   initCursorMenu();
-  Module::registerModules ();
+  //Module::registerModules ();
 
   fileToolbar->setVisible(QucsSettings.FileToolbar);
   editToolbar->setVisible(QucsSettings.EditToolbar);
@@ -230,24 +230,24 @@ QucsApp::QucsApp()
 #endif
       ngspice_exe = QDir::toNativeSeparators(ngspice_exe);
       if (found) {
-          QMessageBox::information(nullptr,tr("Set simulator"),
-                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
-                                   tr("You can specify another location later"
-                                      " using Simulation->Select default simulator"));
+//          QMessageBox::information(nullptr,tr("Set simulator"),
+//                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
+//                                   tr("You can specify another location later"
+//                                      " using Simulation->Select default simulator"));
           QucsSettings.DefaultSimulator = spicecompat::simNgspice;
           QucsSettings.NgspiceExecutable = ngspice_exe;
       }
   }
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
-      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
-                                         "Please setup it in the next dialog window.\n"
-                                         "If you have no simulators except Qucs installed\n"
-                                         "in your system leave default Qucsator setting\n"
-                                         "and simple press Apply button"));
-      slotSimSettings();
-  }
-  fillLibrariesTreeView();
+//  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
+//      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
+//                                         "Please setup it in the next dialog window.\n"
+//                                         "If you have no simulators except Qucs installed\n"
+//                                         "in your system leave default Qucsator setting\n"
+//                                         "and simple press Apply button"));
+//      slotSimSettings();
+//  }
+//  fillLibrariesTreeView();
 }
 
 QucsApp::~QucsApp()
@@ -410,9 +410,7 @@ void QucsApp::initView()
 
   TabView->addTab(CompGroup,tr("Components"));
   TabView->setTabToolTip(TabView->indexOf(CompGroup), tr("components and diagrams"));
-  fillComboBox(true);
 
-  slotSetCompView(0);
   connect(CompChoose, SIGNAL(activated(int)), SLOT(slotSetCompView(int)));
   connect(CompComps, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
   connect(CompComps, SIGNAL(itemPressed(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
@@ -466,6 +464,8 @@ void QucsApp::initView()
   LibGroup->setLayout (LibGroupLayout);
 
   //fillLibrariesTreeView ();
+  fillComboBox(true);
+  slotSetCompView(0);
 
   TabView->addTab (LibGroup, tr("Libraries"));
   TabView->setTabToolTip (TabView->indexOf (CompGroup), tr ("system and user component libraries"));
@@ -741,26 +741,28 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
 
 // if setAll, add all categories to combobox
 // if not, set just paintings (symbol painting mode)
-void QucsApp::fillComboBox (bool setAll)
-{
-  //CompChoose->setMaxVisibleItems (13); // Increase this if you add items below.
-  auto currentText = CompChoose->currentText();
+// return stored index
+int QucsApp::fillComboBox(bool setAll) {
+    fillLibrariesTreeView(); // заполняем библиотеки
+    //CompChoose->setMaxVisibleItems (13); // Increase this if you add items below.
+    auto currentText = CompChoose->currentText();
 
-  CompChoose->clear();
-  CompSearch->clear(); // clear the search box, in case search was active...
+    CompChoose->clear();
+    CompSearch->clear(); // clear the search box, in case search was active...
 
-  Module::registerModules ();
-
-  if (!setAll) {
-    CompChoose->insertItem(CompChoose->count(), QObject::tr("paintings"));
-  } else {
-    QStringList cats = Category::getCategories ();
-    for (const QString& it : cats) {
-      CompChoose->insertItem(CompChoose->count(), it);
+    Module::registerModules();
+    int idx = 0;
+    if (!setAll) {
+        CompChoose->insertItem(CompChoose->count(), QObject::tr("paintings"));
+    } else {
+        QStringList cats = Category::getCategories();
+        for (const QString &it: cats) {
+            CompChoose->insertItem(CompChoose->count(), it);
+        }
+        idx = CompChoose->findText(currentText);
+        //CompChoose->setCurrentIndex(idx == -1 ? 0 : idx);
     }
-    int idx = CompChoose->findText(currentText);
-    CompChoose->setCurrentIndex(idx = -1 ? 0 : idx);
-  }
+    return idx == -1 ? 0 : idx;
 }
 
 void QucsApp::fillSimulatorsComboBox() {
@@ -813,8 +815,16 @@ void QucsApp::slotChangeSimulator(int index) {
     QucsSettings.DefaultSimulator = simu;
     saveApplSettings();
 
-    fillComboBox(true);
-    slotSetCompView(0);
+    int idx1 = fillComboBox(true);
+    slotSetCompView(idx1);
+
+    // Call update() to update subcircuit symbols in current Schematic document.
+    // TextDoc has no viewport, it needs no update.
+    QString tabType = DocumentTab->currentWidget()->metaObject()->className();
+
+    if (tabType == "Schematic") {
+        ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
+    }
 
     simulate->setEnabled(simulatorsCombobox->currentIndex() != 0);
     SimulatorLabel->setText(spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator));
@@ -867,7 +877,7 @@ void QucsApp::slotSetCompView (int index)
       //Name = i.key();
 
       // Just need path to bitmap, do not create an object
-      QString Name, vaBitmap;
+      QString vaBitmap;
       Component * c = (Component *)
               vacomponent::info (Name, vaBitmap, false, i.value());
       if (c) delete c;
@@ -1932,7 +1942,7 @@ bool QucsApp::closeAllFiles()
 	delete doc;
 
 
-  switchEditMode(true);   // set schematic edit mode
+  //switchEditMode(true);   // set schematic edit mode
   return true;
 }
 

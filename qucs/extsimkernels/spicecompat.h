@@ -4,7 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <QRegularExpression>
-#include "component.h"
+//#include "component.h"
 
 /*!
   \brief spicecompat namespace contains definitions responsible
