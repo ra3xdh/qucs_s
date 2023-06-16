@@ -768,7 +768,7 @@ int QucsApp::fillComboBox(bool setAll) {
 void QucsApp::fillSimulatorsComboBox() {
 
     simulatorsCombobox->clear();
-    simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNotSpecified), 0);
+    //simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNotSpecified), 0);
 
     if (QFile::exists(QucsSettings.NgspiceExecutable)) {
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNgspice), 1);
@@ -783,11 +783,20 @@ void QucsApp::fillSimulatorsComboBox() {
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simQucsator), 8);
     }
 
-    QString current = spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator);
-    int idx = simulatorsCombobox->findText(current);
-    simulatorsCombobox->setCurrentIndex(idx < 0 ? 0 : idx);
+    bool anySimulatorsFound = simulatorsCombobox->count() > 0;
 
-    simulate->setEnabled(simulatorsCombobox->currentIndex() != 0);
+    if (anySimulatorsFound) {
+        QString current = spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator);
+        int idx = simulatorsCombobox->findText(current);
+        idx = idx < 0 ? 0 : idx;
+        simulatorsCombobox->setCurrentIndex(idx);
+        QucsSettings.DefaultSimulator = simulatorsCombobox->itemData(idx).toInt();
+    } else {
+        QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
+    }
+
+    simulate->setEnabled(anySimulatorsFound);
+    simulatorsCombobox->setEnabled(anySimulatorsFound);
 }
 
 
@@ -808,7 +817,6 @@ void QucsApp::slotChangeSimulator(int index) {
             simu = spicecompat::simQucsator;
             break;
         default:
-            simu = spicecompat::simNotSpecified;
             break;
     }
 
@@ -996,10 +1004,10 @@ void QucsApp::slotSearchComponent(const QString &searchText)
     while (i.hasNext()) {
       i.next();
       // Just need path to bitmap, do not create an object
-      QString Name, vaBitmap;
-      vacomponent::info (Name, vaBitmap, false, i.value());
+      QString vaName, vaBitmap;
+      vacomponent::info (vaName, vaBitmap, false, i.value());
 
-      if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
+      if((vaName.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
         //match
 
         // check if icon exists, fall back to default
@@ -1020,8 +1028,8 @@ void QucsApp::slotSearchComponent(const QString &searchText)
         }
 
         // Add icon an name tag to dock
-        QListWidgetItem *icon = new QListWidgetItem(vaIcon, Name);
-        icon->setToolTip(tr("verilog-a user devices") + ": " + Name);
+        QListWidgetItem *icon = new QListWidgetItem(vaIcon, vaName);
+        icon->setToolTip(tr("verilog-a user devices") + ": " + vaName);
         // Verilog-A is the last category
         iconCompInfo = iconCompInfoStruct{catIdx-1, compIdx};
         v.setValue(iconCompInfo);
