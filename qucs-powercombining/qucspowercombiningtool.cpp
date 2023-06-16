@@ -30,7 +30,7 @@
 #include "../qucs/qucs.h"
 #include "../qucs/misc.h"
 #include "../qucs-filter/material_props.h"
-
+#include "../qucs/extsimkernels/spicecompat.h"
 
 
 //---------------------------------------------------------

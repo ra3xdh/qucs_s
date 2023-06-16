@@ -32,6 +32,7 @@
 #include <QSettings>
 
 #include "qucsfilter.h"
+#include "../qucs/extsimkernels/spicecompat.h"
 
 struct tQucsSettings QucsSettings;
 
