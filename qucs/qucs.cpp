@@ -833,8 +833,6 @@ void QucsApp::slotChangeSimulator(int index) {
     if (tabType == "Schematic") {
         ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
     }
-
-    simulate->setEnabled(simulatorsCombobox->currentIndex() != 0);
     SimulatorLabel->setText(spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator));
 }
 
