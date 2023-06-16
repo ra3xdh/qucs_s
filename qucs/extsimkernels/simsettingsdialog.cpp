@@ -189,8 +189,8 @@ void SimSettingsDialog::slotApply()
 
 void SimSettingsDialog::slotCancel()
 {
-    if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified)
-    QucsSettings.DefaultSimulator = spicecompat::simQucsator;
+    //if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified)
+    //QucsSettings.DefaultSimulator = spicecompat::simQucsator;
     reject();
 }
 

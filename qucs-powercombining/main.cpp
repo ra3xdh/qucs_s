@@ -23,6 +23,7 @@
 
 #include <QApplication>
 #include "qucspowercombiningtool.h"
+#include "../qucs/extsimkernels/spicecompat.h"
 
 struct tQucsSettings QucsSettings;
 

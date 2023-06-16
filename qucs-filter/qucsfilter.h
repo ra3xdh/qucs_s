@@ -30,9 +30,9 @@ class QLabel;
 class QIntValidator;
 class QDoubleValidator;
 
-namespace spicecompat {
-    enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};
-}
+//namespace spicecompat {
+//    enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};
+//}
 
 struct tQucsSettings {
   int x, y;      // position of main window
