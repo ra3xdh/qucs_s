@@ -20,68 +20,65 @@
 #include "extsimkernels/spicecompat.h"
 
 
-JFET::JFET()
-{
+JFET::JFET() {
     Description = QObject::tr("junction field-effect transistor");
-    Simulator = spicecompat::simQucsator;
 
+    // this must be the first property in the list !!!
+    Props.append(new Property("Type", "nfet", true,
+                              QObject::tr("polarity") + " [nfet, pfet]"));
+    Props.append(new Property("Vt0", "-2.0 V", true,
+                              QObject::tr("threshold voltage")));
+    Props.append(new Property("Beta", "1e-4", true,
+                              QObject::tr("transconductance parameter")));
+    Props.append(new Property("Lambda", "0.0", true,
+                              QObject::tr("channel-length modulation parameter")));
+    Props.append(new Property("Rd", "0.0", false,
+                              QObject::tr("parasitic drain resistance")));
+    Props.append(new Property("Rs", "0.0", false,
+                              QObject::tr("parasitic source resistance")));
+    Props.append(new Property("Is", "1e-14", false,
+                              QObject::tr("gate-junction saturation current")));
+    Props.append(new Property("N", "1.0", false,
+                              QObject::tr("gate-junction emission coefficient")));
+    Props.append(new Property("Isr", "1e-14", false,
+                              QObject::tr("gate-junction recombination current parameter")));
+    Props.append(new Property("Nr", "2.0", false,
+                              QObject::tr("Isr emission coefficient")));
+    Props.append(new Property("Cgs", "0.0", false,
+                              QObject::tr("zero-bias gate-source junction capacitance")));
+    Props.append(new Property("Cgd", "0.0", false,
+                              QObject::tr("zero-bias gate-drain junction capacitance")));
+    Props.append(new Property("Pb", "1.0", false,
+                              QObject::tr("gate-junction potential")));
+    Props.append(new Property("Fc", "0.5", false,
+                              QObject::tr("forward-bias junction capacitance coefficient")));
+    Props.append(new Property("M", "0.5", false,
+                              QObject::tr("gate P-N grading coefficient")));
+    Props.append(new Property("Kf", "0.0", false,
+                              QObject::tr("flicker noise coefficient")));
+    Props.append(new Property("Af", "1.0", false,
+                              QObject::tr("flicker noise exponent")));
+    Props.append(new Property("Ffe", "1.0", false,
+                              QObject::tr("flicker noise frequency exponent")));
+    Props.append(new Property("Temp", "26.85", false,
+                              QObject::tr("simulation temperature in degree Celsius")));
+    Props.append(new Property("Xti", "3.0", false,
+                              QObject::tr("saturation current temperature exponent")));
+    Props.append(new Property("Vt0tc", "0.0", false,
+                              QObject::tr("Vt0 temperature coefficient")));
+    Props.append(new Property("Betatce", "0.0", false,
+                              QObject::tr("Beta exponential temperature coefficient")));
+    Props.append(new Property("Tnom", "26.85", false,
+                              QObject::tr("temperature at which parameters were extracted")));
+    Props.append(new Property("Area", "1.0", false,
+                              QObject::tr("default area for JFET")));
 
-  // this must be the first property in the list !!!
-  Props.append(new Property("Type", "nfet", true,
-	QObject::tr("polarity")+" [nfet, pfet]"));
-  Props.append(new Property("Vt0", "-2.0 V", true,
-	QObject::tr("threshold voltage")));
-  Props.append(new Property("Beta", "1e-4", true,
-	QObject::tr("transconductance parameter")));
-  Props.append(new Property("Lambda", "0.0", true,
-	QObject::tr("channel-length modulation parameter")));
-  Props.append(new Property("Rd", "0.0", false,
-	QObject::tr("parasitic drain resistance")));
-  Props.append(new Property("Rs", "0.0", false,
-	QObject::tr("parasitic source resistance")));
-  Props.append(new Property("Is", "1e-14", false,
-	QObject::tr("gate-junction saturation current")));
-  Props.append(new Property("N", "1.0", false,
-	QObject::tr("gate-junction emission coefficient")));
-  Props.append(new Property("Isr", "1e-14", false,
-	QObject::tr("gate-junction recombination current parameter")));
-  Props.append(new Property("Nr", "2.0", false,
-	QObject::tr("Isr emission coefficient")));
-  Props.append(new Property("Cgs", "0.0", false,
-	QObject::tr("zero-bias gate-source junction capacitance")));
-  Props.append(new Property("Cgd", "0.0", false,
-	QObject::tr("zero-bias gate-drain junction capacitance")));
-  Props.append(new Property("Pb", "1.0", false,
-	QObject::tr("gate-junction potential")));
-  Props.append(new Property("Fc", "0.5", false,
-	QObject::tr("forward-bias junction capacitance coefficient")));
-  Props.append(new Property("M", "0.5", false,
-	QObject::tr("gate P-N grading coefficient")));
-  Props.append(new Property("Kf", "0.0", false,
-	QObject::tr("flicker noise coefficient")));
-  Props.append(new Property("Af", "1.0", false,
-	QObject::tr("flicker noise exponent")));
-  Props.append(new Property("Ffe", "1.0", false,
-	QObject::tr("flicker noise frequency exponent")));
-  Props.append(new Property("Temp", "26.85", false,
-	QObject::tr("simulation temperature in degree Celsius")));
-  Props.append(new Property("Xti", "3.0", false,
-	QObject::tr("saturation current temperature exponent")));
-  Props.append(new Property("Vt0tc", "0.0", false,
-	QObject::tr("Vt0 temperature coefficient")));
-  Props.append(new Property("Betatce", "0.0", false,
-	QObject::tr("Beta exponential temperature coefficient")));
-  Props.append(new Property("Tnom", "26.85", false,
-	QObject::tr("temperature at which parameters were extracted")));
-  Props.append(new Property("Area", "1.0", false,
-	QObject::tr("default area for JFET")));
-
-  createSymbol();
-  tx = x2+4;
-  ty = y1+4;
-  Model = "JFET";
-  Name  = "T";
-  SpiceModel = "J";
+    createSymbol();
+    tx = x2 + 4;
+    ty = y1 + 4;
+    Model = "JFET";
+    Name = "T";
+    SpiceModel = "J";
 }
 
 // -------------------------------------------------------
