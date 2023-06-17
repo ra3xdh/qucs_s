@@ -93,6 +93,9 @@ namespace misc {
   QString getIconPath(const QString &file, int icon_type);
   bool isDarkTheme();
   QString wildcardToRegularExpression(const QString &wc_str, const bool enableEscaping);
+
+  bool simulatorExisits(const QString &exe_file);
+  QString unwrapExePath(const QString &exe_file);
 }
 
 /*! handle the application version string

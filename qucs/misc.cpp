@@ -618,6 +618,44 @@ QString misc::wildcardToRegularExpression(const QString &wc_str, const bool enab
     return rx;
 }
 
+bool misc::simulatorExisits(const QString &exe_file)
+{
+    if (QFile::exists(exe_file)) return true; // absolute path
+
+    QFileInfo inf(exe_file); // try to find exe in $PATH
+    char *p = getenv("PATH");
+    QStringList paths;
+    bool found = false;
+    if (p != nullptr) paths = QString(p).split(':');
+    for (const auto &pp : paths) {
+        inf.setFile(pp + QDir::separator() + exe_file);
+        if (inf.exists()) {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+
+QString misc::unwrapExePath(const QString &exe_file)
+{
+    if (QFile::exists(exe_file)) return exe_file; // absolute path
+
+    QFileInfo inf(exe_file); // try to find exe in $PATH
+    char *p = getenv("PATH");
+    QStringList paths;
+    QString abs_exe_path = exe_file;
+    if (p != nullptr) paths = QString(p).split(':');
+    for (const auto &pp : paths) {
+        inf.setFile(pp + QDir::separator() + exe_file);
+        if (inf.exists()) {
+            abs_exe_path = inf.canonicalFilePath();
+            break;
+        }
+    }
+    return abs_exe_path;
+}
+
 
 VersionTriplet::VersionTriplet(){
   major = minor = patch = 0;
