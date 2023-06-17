@@ -771,16 +771,20 @@ void QucsApp::fillSimulatorsComboBox() {
     simulatorsCombobox->clear();
     //simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNotSpecified), 0);
 
-    if (QFile::exists(QucsSettings.NgspiceExecutable)) {
+    if (misc::simulatorExists(QucsSettings.NgspiceExecutable)) {
+        QucsSettings.NgspiceExecutable = misc::unwrapExePath(QucsSettings.NgspiceExecutable);
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNgspice), 1);
     }
-    if (QFile::exists(QucsSettings.XyceExecutable)) {
+    if (misc::simulatorExists(QucsSettings.XyceExecutable)) {
+        QucsSettings.XyceExecutable = misc::unwrapExePath(QucsSettings.XyceExecutable);
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simXyce), 2);
     }
-    if (QFile::exists(QucsSettings.SpiceOpusExecutable)) {
+    if (misc::simulatorExists(QucsSettings.SpiceOpusExecutable)) {
+        QucsSettings.SpiceOpusExecutable = misc::unwrapExePath(QucsSettings.SpiceOpusExecutable);
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simSpiceOpus), 4);
     }
-    if (QFile::exists(QucsSettings.Qucsator)) {
+    if (misc::simulatorExists(QucsSettings.Qucsator)) {
+        QucsSettings.Qucsator = misc::unwrapExePath(QucsSettings.Qucsator);
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simQucsator), 8);
     }
 

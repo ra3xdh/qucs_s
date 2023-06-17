@@ -618,7 +618,7 @@ QString misc::wildcardToRegularExpression(const QString &wc_str, const bool enab
     return rx;
 }
 
-bool misc::simulatorExisits(const QString &exe_file)
+bool misc::simulatorExists(const QString &exe_file)
 {
     if (QFile::exists(exe_file)) return true; // absolute path
 
