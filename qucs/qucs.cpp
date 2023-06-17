@@ -230,23 +230,24 @@ QucsApp::QucsApp()
 #endif
       ngspice_exe = QDir::toNativeSeparators(ngspice_exe);
       if (found) {
-//          QMessageBox::information(nullptr,tr("Set simulator"),
-//                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
-//                                   tr("You can specify another location later"
-//                                      " using Simulation->Select default simulator"));
+          QMessageBox::information(nullptr,tr("Set simulator"),
+                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
+                                   tr("You can specify another location later"
+                                      " using Simulation->Simulators Setings"));
           QucsSettings.DefaultSimulator = spicecompat::simNgspice;
           QucsSettings.NgspiceExecutable = ngspice_exe;
+          fillSimulatorsComboBox();
       }
   }
 
-//  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
-//      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
-//                                         "Please setup it in the next dialog window.\n"
-//                                         "If you have no simulators except Qucs installed\n"
-//                                         "in your system leave default Qucsator setting\n"
-//                                         "and simple press Apply button"));
-//      slotSimSettings();
-//  }
+  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
+      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
+                                         "Please setup it in the next dialog window.\n"
+                                         "If you have no simulators except Qucs installed\n"
+                                         "in your system leave default Qucsator setting\n"
+                                         "and simple press Apply button"));
+      slotSimSettings();
+  }
 //  fillLibrariesTreeView();
 }
 
@@ -770,16 +771,20 @@ void QucsApp::fillSimulatorsComboBox() {
     simulatorsCombobox->clear();
     //simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNotSpecified), 0);
 
-    if (QFile::exists(QucsSettings.NgspiceExecutable)) {
+    if (misc::simulatorExists(QucsSettings.NgspiceExecutable)) {
+        QucsSettings.NgspiceExecutable = misc::unwrapExePath(QucsSettings.NgspiceExecutable);
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNgspice), 1);
     }
-    if (QFile::exists(QucsSettings.XyceExecutable)) {
+    if (misc::simulatorExists(QucsSettings.XyceExecutable)) {
+        QucsSettings.XyceExecutable = misc::unwrapExePath(QucsSettings.XyceExecutable);
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simXyce), 2);
     }
-    if (QFile::exists(QucsSettings.SpiceOpusExecutable)) {
+    if (misc::simulatorExists(QucsSettings.SpiceOpusExecutable)) {
+        QucsSettings.SpiceOpusExecutable = misc::unwrapExePath(QucsSettings.SpiceOpusExecutable);
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simSpiceOpus), 4);
     }
-    if (QFile::exists(QucsSettings.Qucsator)) {
+    if (misc::simulatorExists(QucsSettings.Qucsator)) {
+        QucsSettings.Qucsator = misc::unwrapExePath(QucsSettings.Qucsator);
         simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simQucsator), 8);
     }
 
