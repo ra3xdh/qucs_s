@@ -230,23 +230,24 @@ QucsApp::QucsApp()
 #endif
       ngspice_exe = QDir::toNativeSeparators(ngspice_exe);
       if (found) {
-//          QMessageBox::information(nullptr,tr("Set simulator"),
-//                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
-//                                   tr("You can specify another location later"
-//                                      " using Simulation->Select default simulator"));
+          QMessageBox::information(nullptr,tr("Set simulator"),
+                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
+                                   tr("You can specify another location later"
+                                      " using Simulation->Simulators Setings"));
           QucsSettings.DefaultSimulator = spicecompat::simNgspice;
           QucsSettings.NgspiceExecutable = ngspice_exe;
+          fillSimulatorsComboBox();
       }
   }
 
-//  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
-//      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
-//                                         "Please setup it in the next dialog window.\n"
-//                                         "If you have no simulators except Qucs installed\n"
-//                                         "in your system leave default Qucsator setting\n"
-//                                         "and simple press Apply button"));
-//      slotSimSettings();
-//  }
+  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
+      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
+                                         "Please setup it in the next dialog window.\n"
+                                         "If you have no simulators except Qucs installed\n"
+                                         "in your system leave default Qucsator setting\n"
+                                         "and simple press Apply button"));
+      slotSimSettings();
+  }
 //  fillLibrariesTreeView();
 }
 

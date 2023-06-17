@@ -130,14 +130,10 @@ bool loadSettings()
     if(settings.contains("NgspiceExecutable")) QucsSettings.NgspiceExecutable = settings.value("NgspiceExecutable").toString();
     else {
 #ifdef Q_OS_WIN
-        QString ngsp_base = "ngspice_con";
+        QucsSettings.NgspiceExecutable = "ngspice_con.exe";
 #else
-        QString ngsp_base = "ngspice";
+        QucsSettings.NgspiceExecutable = "ngspice";
 #endif
-        QString ngsp_exe = QCoreApplication::applicationDirPath() +
-                QDir::separator() + ngsp_base + executableSuffix;
-        if (!QFile::exists(ngsp_exe)) ngsp_exe = QString("ngspice") + executableSuffix;
-        QucsSettings.NgspiceExecutable = ngsp_exe;
     }
     if(settings.contains("XyceExecutable")) QucsSettings.XyceExecutable = settings.value("XyceExecutable").toString();
     else {
