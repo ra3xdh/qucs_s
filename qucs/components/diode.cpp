@@ -24,7 +24,6 @@
 Diode::Diode()
 {
   Description = QObject::tr("diode");
-  Simulator = spicecompat::simQucsator;
 
   Props.append(new Property("Is", "1e-15 A", true,
 	QObject::tr("saturation current")));
