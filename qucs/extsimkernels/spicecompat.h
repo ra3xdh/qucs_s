@@ -4,6 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <QRegularExpression>
+//#include "component.h"
 
 /*!
   \brief spicecompat namespace contains definitions responsible
@@ -25,9 +26,16 @@ namespace spicecompat {
      QString getSubcktName(const QString& subfilename);
      QString convert_sweep_type(const QString& sweep);
      bool check_nodename(QString &node);
-     QString getDefaultSimulatorName();
+     QString getDefaultSimulatorName(int simulator);
 
-     enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};
+     enum Simulator : int {
+         simNotSpecified = 0b00000000,
+         simNgspice      = 0b00000001,
+         simXyce         = 0b00000010,
+         simSpiceOpus    = 0b00000100,
+         simQucsator     = 0b00001000,
+         simSpice        = 0b00000111,
+         simAll          = 0b11111111};
      enum CMgen_mode {cmgenSUBifs = 0, cmgenEDDifs = 1, cmgenSUBmod = 2, cmgenEDDmod = 3};
 }
 

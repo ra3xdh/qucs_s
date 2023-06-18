@@ -24,6 +24,7 @@
 HB_Sim::HB_Sim()
 {
   Description = QObject::tr("Harmonic balance simulation");
+  Simulator = spicecompat::simXyce | spicecompat::simQucsator;
 
   QString  s = Description;
   int a = s.lastIndexOf(" ");

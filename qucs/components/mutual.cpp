@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "mutual.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Mutual::Mutual()
 {
   Description = QObject::tr("two mutual inductors");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-16,-18,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc(-16, -6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));

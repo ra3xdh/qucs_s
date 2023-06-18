@@ -37,6 +37,7 @@ SpiceLibComp::SpiceLibComp()
 {
   Type = isComponent;   // both analog and digital
   Description = QObject::tr("SPICE library device. You can attach symbol patterns to it.");
+  Simulator = spicecompat::simSpice;
 
   QStringList patterns;
   getSymbolPatternsList(patterns);

@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "diac.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Diac::Diac()
 {
   Description = QObject::tr("diac (bidirectional trigger diode)");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(  0,-30,  0, -6,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  0, 30,  0,  6,QPen(Qt::darkBlue,2)));

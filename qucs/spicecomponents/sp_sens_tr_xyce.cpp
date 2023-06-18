@@ -23,6 +23,7 @@ SpiceSENS_TR_Xyce::SpiceSENS_TR_Xyce()
 {
   isSimulation = true;
   Description = QObject::tr("Transient .SENS analysis with Xyce");
+  Simulator = spicecompat::simXyce;
 
   QString  s = Description;
   int a = s.indexOf(" ");

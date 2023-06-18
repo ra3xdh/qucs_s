@@ -24,6 +24,7 @@ SpiceOptions::SpiceOptions()
   isEquation = true;
   Type = isComponent; // Analogue and digital component.
   Description = QObject::tr(".OPTIONS section");
+  Simulator = spicecompat::simSpice;
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);

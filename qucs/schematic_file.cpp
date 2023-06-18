@@ -1405,8 +1405,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
     unsigned whatisit = isAnalog?1:(isVerilog?4:2);
     if(isAnalog) {
         if (QucsSettings.DefaultSimulator!=spicecompat::simQucsator) {
-            if ((QucsSettings.DefaultSimulator==spicecompat::simXyceSer)||
-                (QucsSettings.DefaultSimulator==spicecompat::simXycePar))
+            if (QucsSettings.DefaultSimulator==spicecompat::simXyce)
                 whatisit = 16;
             else whatisit = 8;
         } else whatisit = 1;

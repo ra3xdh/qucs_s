@@ -24,6 +24,7 @@
 Mutual2::Mutual2()
 {
   Description = QObject::tr("three mutual inductors");
+  Simulator = spicecompat::simQucsator;
 
   QFont Font(QucsSettings.font); // default application font
   // symbol text is smaller (10 pt default)

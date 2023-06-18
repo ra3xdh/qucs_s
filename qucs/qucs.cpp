@@ -166,6 +166,7 @@ QucsApp::QucsApp()
   initView();
   initActions();
   initMenuBar();
+  fillSimulatorsComboBox();
   initToolBar();
   initStatusBar();
   viewToolBar->setChecked(true);
@@ -174,12 +175,13 @@ QucsApp::QucsApp()
   slotViewOctaveDock(false);
   slotUpdateRecentFiles();
   initCursorMenu();
-  Module::registerModules ();
+  //Module::registerModules ();
 
   fileToolbar->setVisible(QucsSettings.FileToolbar);
   editToolbar->setVisible(QucsSettings.EditToolbar);
   viewToolbar->setVisible(QucsSettings.ViewToolbar);
   workToolbar->setVisible(QucsSettings.WorkToolbar);
+  simulateToolbar->setVisible(QucsSettings.SimulateToolbar);
 
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
@@ -231,9 +233,10 @@ QucsApp::QucsApp()
           QMessageBox::information(nullptr,tr("Set simulator"),
                                    tr("Ngspice found at: ") + ngspice_exe + "\n" +
                                    tr("You can specify another location later"
-                                      " using Simulation->Select default simulator"));
+                                      " using Simulation->Simulators Setings"));
           QucsSettings.DefaultSimulator = spicecompat::simNgspice;
           QucsSettings.NgspiceExecutable = ngspice_exe;
+          fillSimulatorsComboBox();
       }
   }
 
@@ -245,7 +248,7 @@ QucsApp::QucsApp()
                                          "and simple press Apply button"));
       slotSimSettings();
   }
-  fillLibrariesTreeView();
+//  fillLibrariesTreeView();
 }
 
 QucsApp::~QucsApp()
@@ -374,6 +377,9 @@ void QucsApp::initView()
   QVBoxLayout *CompGroupLayout = new QVBoxLayout();
   QHBoxLayout *CompSearchLayout = new QHBoxLayout();
 
+  simulatorsCombobox = new QComboBox(this);
+  connect(simulatorsCombobox, SIGNAL(activated(int)), SLOT(slotChangeSimulator(int)));
+
   CompChoose = new QComboBox(this);
   CompComps = new QListWidget(this);
   CompComps->setViewMode(QListView::IconMode);
@@ -405,9 +411,7 @@ void QucsApp::initView()
 
   TabView->addTab(CompGroup,tr("Components"));
   TabView->setTabToolTip(TabView->indexOf(CompGroup), tr("components and diagrams"));
-  fillComboBox(true);
 
-  slotSetCompView(0);
   connect(CompChoose, SIGNAL(activated(int)), SLOT(slotSetCompView(int)));
   connect(CompComps, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
   connect(CompComps, SIGNAL(itemPressed(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
@@ -461,6 +465,8 @@ void QucsApp::initView()
   LibGroup->setLayout (LibGroupLayout);
 
   //fillLibrariesTreeView ();
+  fillComboBox(true);
+  slotSetCompView(0);
 
   TabView->addTab (LibGroup, tr("Libraries"));
   TabView->setTabToolTip (TabView->indexOf (CompGroup), tr ("system and user component libraries"));
@@ -736,20 +742,103 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
 
 // if setAll, add all categories to combobox
 // if not, set just paintings (symbol painting mode)
-void QucsApp::fillComboBox (bool setAll)
-{
-  //CompChoose->setMaxVisibleItems (13); // Increase this if you add items below.
-  CompChoose->clear ();
-  CompSearch->clear(); // clear the search box, in case search was active...
+// return stored index
+int QucsApp::fillComboBox(bool setAll) {
+    fillLibrariesTreeView(); // заполняем библиотеки
+    //CompChoose->setMaxVisibleItems (13); // Increase this if you add items below.
+    auto currentText = CompChoose->currentText();
 
-  if (!setAll) {
-    CompChoose->insertItem(CompChoose->count(), QObject::tr("paintings"));
-  } else {
-    QStringList cats = Category::getCategories ();
-    for (const QString& it : cats) {
-      CompChoose->insertItem(CompChoose->count(), it);
+    CompChoose->clear();
+    CompSearch->clear(); // clear the search box, in case search was active...
+
+    Module::registerModules();
+    int idx = 0;
+    if (!setAll) {
+        CompChoose->insertItem(CompChoose->count(), QObject::tr("paintings"));
+    } else {
+        QStringList cats = Category::getCategories();
+        for (const QString &it: cats) {
+            CompChoose->insertItem(CompChoose->count(), it);
+        }
+        idx = CompChoose->findText(currentText);
+        //CompChoose->setCurrentIndex(idx == -1 ? 0 : idx);
     }
-  }
+    return idx == -1 ? 0 : idx;
+}
+
+void QucsApp::fillSimulatorsComboBox() {
+
+    simulatorsCombobox->clear();
+    //simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNotSpecified), 0);
+
+    if (misc::simulatorExists(QucsSettings.NgspiceExecutable)) {
+        QucsSettings.NgspiceExecutable = misc::unwrapExePath(QucsSettings.NgspiceExecutable);
+        simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNgspice), 1);
+    }
+    if (misc::simulatorExists(QucsSettings.XyceExecutable)) {
+        QucsSettings.XyceExecutable = misc::unwrapExePath(QucsSettings.XyceExecutable);
+        simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simXyce), 2);
+    }
+    if (misc::simulatorExists(QucsSettings.SpiceOpusExecutable)) {
+        QucsSettings.SpiceOpusExecutable = misc::unwrapExePath(QucsSettings.SpiceOpusExecutable);
+        simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simSpiceOpus), 4);
+    }
+    if (misc::simulatorExists(QucsSettings.Qucsator)) {
+        QucsSettings.Qucsator = misc::unwrapExePath(QucsSettings.Qucsator);
+        simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simQucsator), 8);
+    }
+
+    bool anySimulatorsFound = simulatorsCombobox->count() > 0;
+
+    if (anySimulatorsFound) {
+        QString current = spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator);
+        int idx = simulatorsCombobox->findText(current);
+        idx = idx < 0 ? 0 : idx;
+        simulatorsCombobox->setCurrentIndex(idx);
+        QucsSettings.DefaultSimulator = simulatorsCombobox->itemData(idx).toInt();
+    } else {
+        QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
+    }
+
+    simulate->setEnabled(anySimulatorsFound);
+    simulatorsCombobox->setEnabled(anySimulatorsFound);
+}
+
+
+void QucsApp::slotChangeSimulator(int index) {
+    int simu = spicecompat::simNotSpecified;
+    int idx = simulatorsCombobox->itemData(index).toInt();
+    switch (idx) {
+        case 1:
+            simu = spicecompat::simNgspice;
+            break;
+        case 2:
+            simu = spicecompat::simXyce;
+            break;
+        case 4:
+            simu = spicecompat::simSpiceOpus;
+            break;
+        case 8:
+            simu = spicecompat::simQucsator;
+            break;
+        default:
+            break;
+    }
+
+    QucsSettings.DefaultSimulator = simu;
+    saveApplSettings();
+
+    int idx1 = fillComboBox(true);
+    slotSetCompView(idx1);
+
+    // Call update() to update subcircuit symbols in current Schematic document.
+    // TextDoc has no viewport, it needs no update.
+    QString tabType = DocumentTab->currentWidget()->metaObject()->className();
+
+    if (tabType == "Schematic") {
+        ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
+    }
+    SimulatorLabel->setText(spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator));
 }
 
 // ----------------------------------------------------------
@@ -799,7 +888,7 @@ void QucsApp::slotSetCompView (int index)
       //Name = i.key();
 
       // Just need path to bitmap, do not create an object
-      QString Name, vaBitmap;
+      QString vaBitmap;
       Component * c = (Component *)
               vacomponent::info (Name, vaBitmap, false, i.value());
       if (c) delete c;
@@ -918,10 +1007,10 @@ void QucsApp::slotSearchComponent(const QString &searchText)
     while (i.hasNext()) {
       i.next();
       // Just need path to bitmap, do not create an object
-      QString Name, vaBitmap;
-      vacomponent::info (Name, vaBitmap, false, i.value());
+      QString vaName, vaBitmap;
+      vacomponent::info (vaName, vaBitmap, false, i.value());
 
-      if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
+      if((vaName.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
         //match
 
         // check if icon exists, fall back to default
@@ -942,8 +1031,8 @@ void QucsApp::slotSearchComponent(const QString &searchText)
         }
 
         // Add icon an name tag to dock
-        QListWidgetItem *icon = new QListWidgetItem(vaIcon, Name);
-        icon->setToolTip(tr("verilog-a user devices") + ": " + Name);
+        QListWidgetItem *icon = new QListWidgetItem(vaIcon, vaName);
+        icon->setToolTip(tr("verilog-a user devices") + ": " + vaName);
         // Verilog-A is the last category
         iconCompInfo = iconCompInfoStruct{catIdx-1, compIdx};
         v.setValue(iconCompInfo);
@@ -1864,7 +1953,7 @@ bool QucsApp::closeAllFiles()
 	delete doc;
 
 
-  switchEditMode(true);   // set schematic edit mode
+  //switchEditMode(true);   // set schematic edit mode
   return true;
 }
 
@@ -2135,6 +2224,7 @@ void QucsApp::saveSettings()
   QucsSettings.EditToolbar = editToolbar->isVisible();
   QucsSettings.ViewToolbar = viewToolbar->isVisible();
   QucsSettings.WorkToolbar = workToolbar->isVisible();
+  QucsSettings.SimulateToolbar = simulateToolbar->isVisible();
   saveApplSettings();
 }
 
@@ -3090,7 +3180,7 @@ void QucsApp::slotSimSettings()
     SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
     SetDlg->exec();
     delete SetDlg;
-    SimulatorLabel->setText(spicecompat::getDefaultSimulatorName());
+    fillSimulatorsComboBox();
 }
 
 void QucsApp::slotSimulateWithSpice()

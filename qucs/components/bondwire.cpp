@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "bondwire.h"
+#include "extsimkernels/spicecompat.h"
 
 
 BondWire::BondWire()
 {
   Description = QObject::tr("bond wire");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-30, 0,-8, 0,QPen(Qt::darkBlue,3)));
   Lines.append(new qucs::Line( 30, 0, 8, 0,QPen(Qt::darkBlue,3)));

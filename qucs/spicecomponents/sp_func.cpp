@@ -24,6 +24,7 @@ SpiceFunc::SpiceFunc()
   isEquation = false;
   Type = isComponent; // Analogue and digital component.
   Description = QObject::tr(".FUNC new function definition");
+  Simulator = spicecompat::simSpice;
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);
@@ -75,8 +76,7 @@ QString SpiceFunc::getExpression(bool)
     QString s;
     s.clear();
     for (Property *pp : Props) {
-        if ((QucsSettings.DefaultSimulator==spicecompat::simXyceSer)||
-            (QucsSettings.DefaultSimulator==spicecompat::simXycePar))
+        if (QucsSettings.DefaultSimulator==spicecompat::simXyce)
             s += QString(".FUNC %1 %2\n").arg(pp->Name).arg(pp->Value);
         else s += QString(".FUNC %1 = %2\n").arg(pp->Name).arg(pp->Value);
     }

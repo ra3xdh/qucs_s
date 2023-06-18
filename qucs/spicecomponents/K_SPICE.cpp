@@ -27,6 +27,7 @@
 K_SPICE::K_SPICE()
 {
     Description = QObject::tr("SPICE K:\nEnter the names of the coupled inductances and their coupling factor.");
+    Simulator = spicecompat::simSpice;
 
     Lines.append(new qucs::Line(-10,  0, 10,  0,QPen(Qt::darkRed,3)));
     Lines.append(new qucs::Line(-10,  0, -6,   4,QPen(Qt::darkRed,3)));

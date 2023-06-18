@@ -28,6 +28,7 @@
 Optimize_Sim::Optimize_Sim()
 {
   Description = QObject::tr("Optimization");
+  Simulator = spicecompat::simQucsator;
 
   Texts.append(new Text(0, 0, Description, Qt::darkBlue, QucsSettings.largeFontSize));
 

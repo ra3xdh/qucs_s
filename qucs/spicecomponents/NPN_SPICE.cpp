@@ -27,6 +27,7 @@
 NPN_SPICE::NPN_SPICE()
 {
     Description = QObject::tr("Q(NPN) BJT:\nMultiple line ngspice or Xyce Q model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+    Simulator = spicecompat::simSpice;
 
   Lines.append(new qucs::Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
   

@@ -26,6 +26,7 @@
 iSffm::iSffm()
 {
   Description = QObject::tr("SPICE I(SFFM):");
+  Simulator = spicecompat::simSpice;
 
   // normal current source symbol
   

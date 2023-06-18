@@ -9,10 +9,12 @@
  */
 
 #include "phototransistor.h"
+#include "extsimkernels/spicecompat.h"
 
 phototransistor::phototransistor()
 {
   Description = QObject::tr ("Phototransistor verilog device");
+  Simulator = spicecompat::simQucsator;
 
   Props.append (new Property ("Bf", "100", false,
     QObject::tr ("forward beta")));

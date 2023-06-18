@@ -9,10 +9,12 @@
  */
 
 #include "mod_amp.h"
+#include "extsimkernels/spicecompat.h"
 
 mod_amp::mod_amp()
 {
   Description = QObject::tr ("Modular Operational Amplifier verilog device");
+  Simulator = spicecompat::simQucsator;
 
   Props.append (new Property ("GBP", "1e6", false,
     QObject::tr ("Gain bandwidth product (Hz)")));

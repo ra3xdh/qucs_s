@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "coplanar.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Coplanar::Coplanar()
 {
   Description = QObject::tr("coplanar line");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));

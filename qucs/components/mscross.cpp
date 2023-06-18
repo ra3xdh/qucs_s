@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "mscross.h"
+#include "extsimkernels/spicecompat.h"
 
 
 MScross::MScross()
 {
   Description = QObject::tr("microstrip cross");
+  Simulator = spicecompat::simQucsator;
 
   Model = "MCROSS";
   Name  = "MS";

@@ -291,9 +291,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
     header += "\n";
     if (lib) stream<<"\n";
     stream<<header;
-    bool xyce = false;
-    if ((QucsSettings.DefaultSimulator == spicecompat::simXyceSer)||
-        (QucsSettings.DefaultSimulator == spicecompat::simXycePar)) xyce = true;
+    bool xyce = QucsSettings.DefaultSimulator == spicecompat::simXyce;
     startNetlist(stream,xyce);
     stream<<".ENDS\n";
 }
@@ -486,8 +484,7 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                 if (ss.endsWith(',')) ss.chop(1);
                 Nharm = ss.toInt();
                 while (!ngsp_data.readLine().contains(QRegularExpression("Harmonic\\s+Frequency")));
-                if (!(QucsSettings.DefaultSimulator == spicecompat::simXyceSer||
-                      QucsSettings.DefaultSimulator == spicecompat::simXycePar)) lin = ngsp_data.readLine(); // dummy line
+                if (QucsSettings.DefaultSimulator != spicecompat::simXyce) lin = ngsp_data.readLine(); // dummy line
                 for (int i=0;i<Nharm;i++) {
                     lin = ngsp_data.readLine();
                     if (!firstgroup) {

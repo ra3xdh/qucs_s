@@ -22,8 +22,6 @@
 */
 
 #include "node.h"
-#include "extsimkernels/spicecompat.h"
-
 #include "indq.h"
 
 

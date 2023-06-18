@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "phaseshifter.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Phaseshifter::Phaseshifter()
 {
   Description = QObject::tr("phase shifter");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-14,-14, 14,-14,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-14, 14, 14, 14,QPen(Qt::darkBlue,2)));

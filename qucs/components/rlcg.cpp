@@ -22,6 +22,7 @@
 RLCG::RLCG()
 {
   Description = QObject::tr("RLCG transmission line");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-30,  0, 30,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-28,  7, 28,  7,QPen(Qt::darkBlue,2)));

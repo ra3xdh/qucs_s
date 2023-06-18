@@ -24,6 +24,7 @@ SpiceIC::SpiceIC()
   isEquation = true;
   Type = isComponent; // Analogue and digital component.
   Description = QObject::tr(".IC section");
+  Simulator = spicecompat::simSpice;
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);

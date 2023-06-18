@@ -18,6 +18,7 @@
 #include "lc_filter.h"
 
 #include "qucsfilter.h"
+#include "../qucs/extsimkernels/spicecompat.h"
 
 #include <QString>
 
@@ -174,8 +175,7 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
       eqn_string = QString("<NutmegEq NutmegEq1 1 290 %1 -28 15 0 0 \"sp\" 1 \"dBS21=dB(S_2_1)\" 1 \"dBS11=dB(S_1_1)\" 1>\n").arg(yc+10);
       break;
   case spicecompat::simSpiceOpus:
-  case spicecompat::simXycePar:
-  case spicecompat::simXyceSer:
+  case spicecompat::simXyce:
   default: break;
   }
 

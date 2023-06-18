@@ -23,6 +23,7 @@ SpiceSENS::SpiceSENS()
 {
   isSimulation = true;
   Description = QObject::tr("DC sensitivity simulation");
+  Simulator = spicecompat::simNgspice | spicecompat::simSpiceOpus;
 
   QString  s = Description;
   int a = s.indexOf(" ");

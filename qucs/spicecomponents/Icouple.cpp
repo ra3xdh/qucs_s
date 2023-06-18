@@ -25,6 +25,7 @@
 Icouple::Icouple()
 {
   Description = QObject::tr("XSPICE coupled inductor block:\ntwo line XSPICE specification. ");
+  Simulator = spicecompat::simSpice;
 
   Lines.append(new qucs::Line(-40,  -40, -40,  -30,QPen(Qt::darkBlue,2)));  // L1
   Lines.append(new qucs::Line(-40,  -30, -40,  -25,QPen(Qt::blue,3)));      // L2 

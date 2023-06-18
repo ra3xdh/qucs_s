@@ -28,6 +28,8 @@
 SpiceGeneric::SpiceGeneric()
 {
   Description = QObject::tr("SPICE generic device");
+  Simulator = spicecompat::simSpice;
+
   // Property descriptions not needed, but must not be empty !
   Props.append(new Property("NPins", "3", true, QObject::tr("Number of pins")));
   Props.append(new Property("Letter", "Z", true, QObject::tr("SPICE device letter")));

@@ -21,6 +21,7 @@
 ETR_Sim::ETR_Sim()
 {
   Description = QObject::tr("externally driven transient simulation");
+  Simulator = spicecompat::simQucsator;
 
   QString s = Description;
   int a = 17;

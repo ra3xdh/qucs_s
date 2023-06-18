@@ -23,6 +23,7 @@
 MStee::MStee()
 {
   Description = QObject::tr("microstrip tee");
+  Simulator = spicecompat::simQucsator;
 
   x1 = -30; y1 = -11;
   x2 =  30; y2 =  30;

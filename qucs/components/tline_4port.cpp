@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "tline_4port.h"
+#include "extsimkernels/spicecompat.h"
 
 
 TLine_4Port::TLine_4Port()
 {
   Description = QObject::tr("ideal 4-terminal transmission line");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-28,-40, 18, 38,16*232, 16*33,QPen(Qt::darkBlue,1)));
   Arcs.append(new qucs::Arc(-28,  2, 18, 38, 16*95, 16*33,QPen(Qt::darkBlue,1)));

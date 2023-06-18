@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "thyristor.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Thyristor::Thyristor()
 {
   Description = QObject::tr("silicon controlled rectifier (SCR)");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(  0,-30,  0, 30,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( -9,  6,  9,  6,QPen(Qt::darkBlue,2)));

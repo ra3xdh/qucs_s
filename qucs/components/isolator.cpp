@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "isolator.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Isolator::Isolator()
 {
   Description = QObject::tr("isolator");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line( -8,  0,  8,  0,QPen(Qt::darkBlue,3)));
   Lines.append(new qucs::Line(  8,  0,  0, -5,QPen(Qt::darkBlue,3)));

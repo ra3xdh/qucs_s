@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "msstep.h"
+#include "extsimkernels/spicecompat.h"
 
 
 MSstep::MSstep()
 {
   Description = QObject::tr("microstrip impedance step");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));

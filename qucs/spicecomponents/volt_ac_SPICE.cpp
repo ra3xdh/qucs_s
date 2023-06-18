@@ -24,6 +24,7 @@
 Vac_SPICE::Vac_SPICE()
 {
   Description = QObject::tr("AC voltage source (SPICE)");
+  Simulator = spicecompat::simSpice;
 
   Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::red,2)));
   Arcs.append(new qucs::Arc( -3, -7,  7,  7,16*270, 16*180,QPen(Qt::red,2)));

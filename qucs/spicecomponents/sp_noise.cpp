@@ -24,6 +24,7 @@ SpiceNoise::SpiceNoise()
 {
   isSimulation = true;
   Description = QObject::tr("Noise simulation");
+  Simulator = spicecompat::simSpice;
 
   QString  s = Description;
   int a = s.indexOf(" ");

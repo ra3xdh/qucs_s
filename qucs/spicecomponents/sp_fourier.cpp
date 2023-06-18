@@ -24,6 +24,7 @@ SpiceFourier::SpiceFourier()
 {
   isSimulation = true;
   Description = QObject::tr("Fourier simulation");
+  Simulator = spicecompat::simSpice;
 
   QString  s = Description;
   int a = s.indexOf(" ");

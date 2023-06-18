@@ -23,6 +23,7 @@ SpiceSENS_Xyce::SpiceSENS_Xyce()
 {
   isSimulation = true;
   Description = QObject::tr("DC .SENS simulation with Xyce");
+  Simulator = spicecompat::simXyce;
 
   QString  s = Description;
   int a = s.indexOf(" ");

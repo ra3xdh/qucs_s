@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "biast.h"
+#include "extsimkernels/spicecompat.h"
 
 
 BiasT::BiasT()
 {
   Description = QObject::tr("bias t");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc( -3,  2, 6, 6, 16*270, 16*180,QPen(Qt::darkBlue,1)));
   Arcs.append(new qucs::Arc( -3,  8, 6, 6, 16*270, 16*180,QPen(Qt::darkBlue,1)));

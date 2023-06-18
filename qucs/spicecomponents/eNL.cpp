@@ -25,6 +25,7 @@
 eNL::eNL()
 {
   Description = QObject::tr("SPICE E (CUR, VALUE, TABLE, POLY):\nMultiple line ngspice non-linear E specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+  Simulator = spicecompat::simSpice;
   // Value, Table and POLY forms are allowed.
 
   Arcs.append(new qucs::Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::blue,3)));

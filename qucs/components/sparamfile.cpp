@@ -25,6 +25,7 @@
 SParamFile::SParamFile()
 {
   Description = QObject::tr("S parameter file");
+  Simulator = spicecompat::simQucsator;
 
   Model = "SPfile";
   Name  = "X";

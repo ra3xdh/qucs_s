@@ -27,6 +27,7 @@
 PMF_MESFET_SPICE::PMF_MESFET_SPICE()
 {
     Description = QObject::tr("Z(PMF) MESFET:\nMultiple line ngspice or Xyce Z model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+    Simulator = spicecompat::simSpice;
 
   Lines.append(new qucs::Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(-30,  0,-10,  0,QPen(Qt::darkRed,3)));

@@ -9,10 +9,12 @@
  */
 
 #include "potentiometer.h"
+#include "extsimkernels/spicecompat.h"
 
 potentiometer::potentiometer()
 {
   Description = QObject::tr ("Potentiometer verilog device");
+  Simulator = spicecompat::simQucsator;
 
   Props.append (new Property ("R_pot", "1e4", false,
     QObject::tr ("nominal device resistance")

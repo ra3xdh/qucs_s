@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "coupler.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Coupler::Coupler()
 {
   Description = QObject::tr("ideal coupler");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-23,-24, 23,-24,QPen(Qt::darkGray,1)));
   Lines.append(new qucs::Line( 23,-24, 23, 24,QPen(Qt::darkGray,1)));

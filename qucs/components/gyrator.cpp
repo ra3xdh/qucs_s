@@ -23,6 +23,7 @@
 Gyrator::Gyrator()
 {
   Description = QObject::tr("gyrator (impedance inverter)");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(  3, -9, 18, 18, 16*90, 16*180,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc(-21, -9, 18, 18,16*270, 16*180,QPen(Qt::darkBlue,2)));

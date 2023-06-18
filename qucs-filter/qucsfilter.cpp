@@ -40,6 +40,7 @@
 #include "qucsfilter.h"
 #include "helpdialog.h"
 #include "material_props.h"
+#include "../qucs/extsimkernels/spicecompat.h"
 
 QucsFilter::QucsFilter()
 {

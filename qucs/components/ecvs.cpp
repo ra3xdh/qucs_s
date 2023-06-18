@@ -15,11 +15,12 @@
  ***************************************************************************/
 #include "ecvs.h"
 #include "schematic.h"
+#include "extsimkernels/spicecompat.h"
 
 ecvs::ecvs()
 {
   Description = QObject::tr("externally controlled voltage source");
-
+  Simulator = spicecompat::simQucsator;
 
 //  Arcs.append(new Arc( -3, -7,  7,  7,16*270, 16*180,QPen(Qt::darkBlue,2)));
 //  Arcs.append(new Arc( -3,  0,  7,  7, 16*90, 16*180,QPen(Qt::darkBlue,2)));

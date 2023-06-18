@@ -829,16 +829,20 @@ void DiagramDialog::slotReadVarsAndSetSimulator(int)
 
     QString curr_sim;
     switch (QucsSettings.DefaultSimulator) {
-    case spicecompat::simQucsator: curr_sim = "Qucsator";
-        break;
-    case spicecompat::simNgspice: curr_sim = "Ngspice";
-        break;
-    case spicecompat::simXyceSer:
-    case spicecompat::simXycePar: curr_sim = "Xyce";
-        break;
-    case spicecompat::simSpiceOpus: curr_sim = "SpiceOpus";
-        break;
-    default: curr_sim = ChooseSimulator->currentText();
+        case spicecompat::simQucsator:
+            curr_sim = "Qucsator";
+            break;
+        case spicecompat::simNgspice:
+            curr_sim = "Ngspice";
+            break;
+        case spicecompat::simXyce:
+            curr_sim = "Xyce";
+            break;
+        case spicecompat::simSpiceOpus:
+            curr_sim = "SpiceOpus";
+            break;
+        default:
+            curr_sim = ChooseSimulator->currentText();
     }
 
     // Recreate items of ChooseSimulator. Only existing datasets

@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "pm_modulator.h"
+#include "extsimkernels/spicecompat.h"
 
 
 PM_Modulator::PM_Modulator()
 {
   Description = QObject::tr("ac voltage source with phase modulator");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( -7, -4,  7,  7,     0, 16*180,QPen(Qt::darkBlue,2)));

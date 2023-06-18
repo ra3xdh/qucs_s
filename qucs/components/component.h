@@ -19,10 +19,11 @@
 #define COMPONENT_H
 
 #include <QtCore>
-
+#include "extsimkernels/spicecompat.h"
 #include "qt3_compat/qt_compat.h"
 
 #include "element.h"
+
 
 class Schematic;
 class ViewPainter;
@@ -94,9 +95,11 @@ public:
   bool isSimulation; // is it AC,DC,TR or other spice-compatible simulation?
   bool isProbe; // is it Voltage/Current spice-compatible probe?
   bool isEquation;
+  int Simulator = spicecompat::simAll;;
   QString  Model, Name;
   QString  Description;
   QString  SpiceModel;
+  QPen WrongSimulatorPen;
 
 protected:
   virtual QString netlist();

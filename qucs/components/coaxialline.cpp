@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "coaxialline.h"
+#include "extsimkernels/spicecompat.h"
 
 
 CoaxialLine::CoaxialLine()
 {
   Description = QObject::tr("coaxial transmission line");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-20, -9, 8, 18,     0, 16*360,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( 11, -9, 8, 18,16*270, 16*180,QPen(Qt::darkBlue,2)));

@@ -30,6 +30,7 @@
 XspiceGeneric::XspiceGeneric()
 {
   Description = QObject::tr("XSPICE generic device");
+  Simulator = spicecompat::simSpice;
   // Property descriptions not needed, but must not be empty !
   Props.append(new Property("PortList", "v,v", true, QObject::tr("PortsList")));
   Props.append(new Property("Model", "generic_model", false, QObject::tr(".MODEL definition reference")));

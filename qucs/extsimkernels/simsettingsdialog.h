@@ -30,21 +30,21 @@ private:
     QLabel *lblXyce;
     QLabel *lblNgspice;
     QLabel *lblSpiceOpus;
-    QLabel *lblXycePar;
-    QLabel *lblNprocs;
+    //QLabel *lblXycePar;
+    //QLabel *lblNprocs;
     QLabel *lblQucsator;
     QLabel *lblWorkdir;
-    QLabel *lblSimulator;
+    //QLabel *lblSimulator;
     QLabel *lblSimParam;
 
-    QComboBox *cbxSimulator;
+    //QComboBox *cbxSimulator;
 
     QLineEdit *edtNgspice;
     QLineEdit *edtSpiceOpus;
     QLineEdit *edtXyce;
-    QLineEdit *edtXycePar;
+    //QLineEdit *edtXycePar;
     QLineEdit *edtQucsator;
-    QSpinBox  *spbNprocs;
+    //QSpinBox  *spbNprocs;
     QLineEdit *edtWorkdir;
     QLineEdit *edtSimParam;
 
@@ -54,7 +54,7 @@ private:
     QPushButton *btnSetNgspice;
     QPushButton *btnSetSpOpus;
     QPushButton *btnSetXyce;
-    QPushButton *btnSetXycePar;
+    //QPushButton *btnSetXycePar;
     QPushButton *btnSetQucsator;
     QPushButton *btnSetWorkdir;
 

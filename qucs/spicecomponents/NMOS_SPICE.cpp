@@ -27,6 +27,7 @@
 NMOS_SPICE::NMOS_SPICE()
 {
     Description = QObject::tr("M(NMOS) MOS:\nMultiple line ngspice or Xyce M model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+    Simulator = spicecompat::simSpice;
 
   Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::darkRed,2)));
 

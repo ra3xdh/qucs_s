@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "vcresistor.h"
+#include "extsimkernels/spicecompat.h"
 
 
 vcresistor::vcresistor()
 {
   Description = QObject::tr("voltage controlled resistor");
+  Simulator = spicecompat::simQucsator;
 
   // The resistor shape
   Lines.append(new qucs::Line(5, 18, 5, -18, QPen(Qt::darkBlue,2)));
