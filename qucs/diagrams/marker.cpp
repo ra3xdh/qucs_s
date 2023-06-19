@@ -228,7 +228,8 @@ void Marker::createText()
           break;
       }
   } else {
-      double val = qucs::num2db(fabs(*pz),ax->Units);
+      double mag = sqrt(pz[0]*pz[0] + pz[1]*pz[1]);
+      double val = qucs::num2db(mag,ax->Units);
       Text += QString::number(val,'g',Precision);
   }
 
