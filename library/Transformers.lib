@@ -24,13 +24,13 @@ Lsf=(1-K)*LMo*(1/N^2)
 .PARAM Ls={K*Lmo*(1/(N*N))}
 .PARAM Lpf={(1-K)*Lmo}
 .PARAM Lsf={(1-K)*Lmo*(1/(N*N))}
-R2 nSneg  n4 Rs
-L1 n1  n2 Lp
-L2 n3  n4 Ls
-L3 n1  nPplus Lpf
-R1 n2  nPneg Rp
-L4 n3  nSplus Lsf
-K1 L1 L2 K 
+R2 nSneg  n4 {Rs}
+L1 n1  n2 {Lp}
+L2 n3  n4 {Ls}
+L3 n1  nPplus {Lpf}
+R1 n2  nPneg {Rp}
+L4 n3  nSplus {Lsf}
+K1 L1 L2 {K} 
 .ENDS
 </Spice>
 
@@ -210,9 +210,9 @@ https://qucs-help.readthedocs.org/en/spice4qucs/index.html.
 
   <Spice>
 .SUBCKT Transformers_TransformerPS1S2  gnd nPplus nPneg nSplus nSneg nSPct L1=0.5 L2=0.125 L3=0.125 K12=0.99 K13=0.99 K23=0.99 Rp=2 Rs1=1 Rs2=1 
-L1 nP1  nPneg L1
-L2 nSPlus  nSPct L2
-L3 nSPct  nSPneg L3
+L1 nP1  nPneg {L1}
+L2 nSPlus  nSPct {L2}
+L3 nSPct  nSPneg {L3}
 R1 nPplus nP1  {RP}
 K13 L1 L3 {K13} 
 K12 L1 L2 {K12} 
@@ -312,8 +312,8 @@ https://qucs-help.readthedocs.org/en/spice4qucs/index.html.
 
   <Spice>
 .SUBCKT Transformers_PositiveCouplingPS gnd PL1neg PL1plus PL2plus PL2neg K=0.99 L1=0.5 L2=0.125 Rp=2 Rs=1 
-L2 nS1  PL2neg L2
-L1 nP1  PL1neg L1
+L2 nS1  PL2neg {L2}
+L1 nP1  PL1neg {L1}
 K1 L1 L2 {K} 
 R1 PL1plus nP1  {RP}
 R2 nS1 PL2plus  {RS}
@@ -390,8 +390,8 @@ https://qucs-help.readthedocs.org/en/spice4qucs/index.html.
 <Spice>
 .SUBCKT Transformers_NegativeCouplingPS gnd nPplus nPneg nSplus nSneg K=0.999 L1=0.5 L2=0.125 Rp=2 Rs=1 
 K1 L1 L2 {K} 
-L2 nSneg  _net0 L2
-L1 _net1  nPneg L1
+L2 nSneg  _net0 {L2}
+L1 _net1  nPneg {L1}
 R1 nPplus _net1  {RP}
 R2 _net0 nSplus  {RS}
 .ENDS
@@ -464,7 +464,7 @@ document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html.
   </Description>
 
  <Spice>
-.SUBCKT Transformers_XSPICEPS1 gnd Pplus Pneg Sneg Splus Rp=20 Rs=5 ntp=4350 nts=870 
+.SUBCKT Transformers_XSPICEPS1 gnd Pplus Pneg Sneg Splus Rp=20 Rs=5 ntp=4350 nts=870 L=0.2 A=2e-4
 R1 Pplus n3  {RP}
 R2 n4 Sneg  {RS}
 AICOUPLE2 n4 Splus n2 0 SIcouple
@@ -472,7 +472,7 @@ AICOUPLE2 n4 Splus n2 0 SIcouple
 AICOUPLE1 n3 Pneg n1 0 PIcouple
 .model PIcouple lcouple (num_turns={ntp})
 ACORE1 n1 n2  Steel
-.model Steel core length = 0.2 area=2e-4
+.model Steel core ( length={L} area={A}
 + H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
 + 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
 + B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
@@ -482,7 +482,7 @@ ACORE1 n1 n2  Steel
 
 
   <Model>
-.Def:Transformers_XSPICEPS1 gnd _net0 _net1 _net4 _net5 Rp="20" Rs="5" ntp="4350" nts="870"
+.Def:Transformers_XSPICEPS1 gnd _net0 _net1 _net4 _net5 Rp="20" Rs="5" ntp="4350" nts="870" L="0.2" A="2e-4"
 R:R1 _net0 _net2 R="Rp" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 R:R2 _net3 _net4 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 .Def:End
@@ -490,7 +490,7 @@ R:R2 _net3 _net4 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
   
   
   <Symbol>
-    <.ID -20 44 TRAN "1=Rp=20=primary winding resistance (Ohms)." "1=Rs=5=secondary winding resistance (Ohms)." "1=ntp=4350=number of primary turns," "1=nts=870=number of secondary turns.">
+    <.ID -20 44 TRAN "1=Rp=20=primary winding resistance (Ohms)." "1=Rs=5=secondary winding resistance (Ohms)." "1=ntp=4350=number of primary turns," "1=nts=870=number of secondary turns." "1=L=0.2=Core length" "1=A=2e-4=Core area">
     <Line 0 -30 0 0 #000000 0 1>
     <Line 0 20 0 0 #000000 0 1>
     <Line 20 -30 -10 0 #aa0000 3 1>
@@ -549,7 +549,7 @@ document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html.
 
 
   <Spice>
-.SUBCKT Transformers_XSPICEPS1S2 gnd Pplus Pneg S1plus PCT S2neg ntp=2500 nts1=1000 nts2=1000 Rp=5 Rs1=2 Rs2=2 
+.SUBCKT Transformers_XSPICEPS1S2 gnd Pplus Pneg S1plus PCT S2neg ntp=2500 nts1=1000 nts2=1000 Rp=5 Rs1=2 Rs2=2 L=0.2 A=2e-4
 AICOUPLE1 _net0 Pneg n1 0 PIcouple
 .model PIcouple lcouple (num_turns={ntp})
 R3 S2neg  _net1 Rs2
@@ -560,19 +560,19 @@ AICOUPLE3 PCT _net1 n3 0 SIcouple
 AICOUPLE2 _net2 PCT n2 0 SIcouple
 .model SIcouple lcouple (num_turns={nts1})
 ACORE1 n1 n2  Steel
-.model Steel core length = 0.2 area=2e-4
+.model Steel core ( length={L} area={A}
 + H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
 + 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
 + B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
 + 0.3 0.55 0.825 1.0 1.37 1.45 1.48 1.5 1.5005 1.501 1.502 1.503 1.5035 1.504 1.506 ] )
 ACORE2 n1 n3  Steel
-.model Steel core length = 0.2 area=2e-4
+.model Steel core ( length={L} area={A}
 + H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
 + 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
 + B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
 + 0.3 0.55 0.825 1.0 1.37 1.45 1.48 1.5 1.5005 1.501 1.502 1.503 1.5035 1.504 1.506 ] )
 ACORE3 n2 n3  Steel
-.model Steel core length = 0.2 area=2e-4
+.model Steel core ( length={L} area={A}
 + H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
 + 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
 + B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
@@ -582,7 +582,7 @@ ACORE3 n2 n3  Steel
 
 
   <Model>
-.Def:Transformers_XSPICEPS1S2 gnd _net3 _net1 _net4 _net5 _net6 ntp="2500" nts1="1000" nts2="1000" Rp="5" Rs1="2" Rs2="2"
+.Def:Transformers_XSPICEPS1S2 gnd _net3 _net1 _net4 _net5 _net6 ntp="2500" nts1="1000" nts2="1000" Rp="5" Rs1="2" Rs2="2" L="0.2" A="2e-4"
 .Def:End
   </Model>
 
@@ -644,7 +644,7 @@ ACORE3 n2 n3  Steel
     <Ellipse 4 -92 8 8 #aa0000 1 1 #aa0000 1 1>
     <Ellipse 4 8 8 8 #aa0000 1 1 #aa0000 1 1>
     <Line -80 -100 40 0 #000080 2 1>
-    <.ID -60 114 TRAN "1=ntp=2500=number of primary turns." "1=nts1=1000=number of secondary one turns." "1=nts2=1000=number of secondary two turns." "1=Rp=5=primary winding resistance (Ohms)." "1=Rs1=2=secondary one winding resistance (Ohms)." "1=Rs2=2=secondary two winding resistance (Ohms).">
+    <.ID -60 114 TRAN "1=ntp=2500=number of primary turns." "1=nts1=1000=number of secondary one turns." "1=nts2=1000=number of secondary two turns." "1=Rp=5=primary winding resistance (Ohms)." "1=Rs1=2=secondary one winding resistance (Ohms)." "1=Rs2=2=secondary two winding resistance (Ohms)." "1=L=0.2=Core length" "1=A=2e-4=Core area">
     <.PortSym -80 -100 1 0>
     <.PortSym -90 90 2 0>
     <.PortSym 40 -10 4 180>
