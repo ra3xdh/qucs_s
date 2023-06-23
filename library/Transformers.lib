@@ -458,7 +458,7 @@ R:R2 _net0 nSplus R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
   <Description>
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 25 Nov. 2015
 
-A two winding transformer with core saturation effects and resistive losses.
+A two winding transformer with steel core saturation effects and resistive losses.
 Background details and use of this model can be found in the "spice4qucs-help"
 document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
   </Description>
@@ -542,7 +542,7 @@ R:R2 _net3 _net4 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
   <Description>
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 25 Nov. 2015
 
-A three winding transformer with core saturation effects and resistive losses.
+A three winding transformer with steel core saturation effects and resistive losses.
 Background details and use of this model can be found in the "spice4qucs-help"
 document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
   </Description>
@@ -552,13 +552,13 @@ document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html.
 .SUBCKT Transformers_XSPICEPS1S2 gnd Pplus Pneg S1plus PCT S2neg ntp=2500 nts1=1000 nts2=1000 Rp=5 Rs1=2 Rs2=2 L=0.2 A=2e-4
 AICOUPLE1 _net0 Pneg n1 0 PIcouple
 .model PIcouple lcouple (num_turns={ntp})
-R3 S2neg  _net1 Rs2
-R2 S1plus  _net2 RS1
+R3 S1plus  _net1 RS1
+R2 S2neg  _net2 RS2
 R1 _net0  Pplus Rp
-AICOUPLE3 PCT _net1 n3 0 SIcouple
-.model SIcouple lcouple (num_turns={nts2})
-AICOUPLE2 _net2 PCT n2 0 SIcouple
-.model SIcouple lcouple (num_turns={nts1})
+AICOUPLE3 PCT _net1 n3 0 SIcouple3
+.model SIcouple3 lcouple (num_turns={nts2})
+AICOUPLE2 _net2 PCT n2 0 SIcouple2
+.model SIcouple2 lcouple (num_turns={nts1})
 ACORE1 n1 n2  Steel
 .model Steel core ( length={L} area={A}
 + H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
