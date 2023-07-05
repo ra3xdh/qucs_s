@@ -473,9 +473,7 @@ void Ngspice::slotSimulate()
 
     if (!checkGround()) {
         output.append("No Ground found. Please add at least one ground!\n");
-        emit finished();
-        emit errors(QProcess::FailedToStart);
-        return;
+        checker_error = true;
     }
 
     if (!checkSimulations()) {
