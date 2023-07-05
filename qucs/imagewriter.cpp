@@ -199,6 +199,9 @@ int ImageWriter::print(QWidget *doc)
           case ExportDialog::Coloured : 
             img = new QImage(w,h,QImage::Format_RGB888);
             break;
+          case ExportDialog::Grayscale :
+            img = new QImage(w,h,QImage::Format_Grayscale8);
+            break;
           case ExportDialog::Monochrome : 
             img = new QImage(w,h,QImage::Format_Mono);
             break;

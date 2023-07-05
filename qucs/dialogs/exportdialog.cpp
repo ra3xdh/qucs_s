@@ -72,7 +72,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
 
     cbxImgType = new QComboBox(this);
     QStringList lst;
-    lst<<tr("Colour")<<tr("Monochrome");
+    lst<<tr("Colour")<<tr("Grayscale")<<tr("Monochrome");
     cbxImgType->addItems(lst);
 
     cbRatio = new QCheckBox(tr("Original width to height ratio"));
@@ -365,6 +365,9 @@ ExportDialog::ImgFormat ExportDialog::getImgFormat()
         ImgFormat = ExportDialog::Coloured;
         break;
     case 1 :
+        ImgFormat = ExportDialog::Grayscale;
+        break;
+    case 2 :
         ImgFormat = ExportDialog::Monochrome;
         break;
     default : break;

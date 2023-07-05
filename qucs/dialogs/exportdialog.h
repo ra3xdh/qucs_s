@@ -72,7 +72,7 @@ private:
 
 public:
 
-    enum ImgFormat {Coloured, Monochrome};
+    enum ImgFormat {Coloured, Monochrome, Grayscale};
 
     QString FileToSave();
     bool isOriginalSize();
