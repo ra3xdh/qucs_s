@@ -3,7 +3,6 @@
 # Handle Qucs translations
 
 # TODO
-# - get list of .cpp files to refresh/update the .ts files
 # - evaluate need to merge the qtgeneric_XX.ts into the final .qm (see translations/Makefile.am)
 
 #
