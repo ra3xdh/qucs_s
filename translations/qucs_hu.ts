@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="hu">
+<TS version="2.1" language="hu">
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../qucs/dialogs/aboutdialog.cpp" line="+106"/>
+        <location filename="../qucs/dialogs/aboutdialog.cpp" line="+115"/>
         <source>About Qucs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -25,7 +25,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="-9"/>
+        <source>project maintainer, simulator interface and GUI design</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+1"/>
+        <source>component models, documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Xyce integration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Testing, examples</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Qt6 support, general improvements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Digital simulation, general improvements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>testing, general bugfixes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>testing, modelling and documentation, tutorial contributor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -222,41 +257,21 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Components reference manual</source>
+        <source>Bugtracker page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>If you need help on using Qucs, please join the</source>
+        <location line="+53"/>
+        <source>Qucs-S project team:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>help mailing list</source>
+        <location line="+7"/>
+        <source>Based on Qucs project developed by:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>qucs-help on SourceForge</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>please attach the schematic you are having problems with</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>IRC general discussion channel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Additional resources</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+15"/>
+        <location line="-45"/>
         <source>Authors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -281,12 +296,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>Current Qucs Team:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+41"/>
         <source>Previous Developers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -299,7 +309,7 @@
 <context>
     <name>ArrowDialog</name>
     <message>
-        <location filename="../qucs/paintings/arrowdialog.cpp" line="+33"/>
+        <location filename="../qucs/paintings/arrowdialog.cpp" line="+36"/>
         <source>Edit Arrow Properties</source>
         <translation>Nyíl tulajdonságainak beállítása</translation>
     </message>
@@ -382,7 +392,7 @@
 <context>
     <name>AuxFilesDialog</name>
     <message>
-        <location filename="../qucs/dialogs/settingsdialog.cpp" line="+359"/>
+        <location filename="../qucs/dialogs/settingsdialog.cpp" line="+360"/>
         <source>Select</source>
         <translation type="unfinished">Kijelölés</translation>
     </message>
@@ -395,7 +405,7 @@
 <context>
     <name>ChangeDialog</name>
     <message>
-        <location filename="../qucs/dialogs/changedialog.cpp" line="+41"/>
+        <location filename="../qucs/dialogs/changedialog.cpp" line="+42"/>
         <source>Change Component Properties</source>
         <translation>Komponens tulajdonságainak változtatása</translation>
     </message>
@@ -451,7 +461,7 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+70"/>
+        <location line="+75"/>
         <source>Cancel</source>
         <translation>Mégsem</translation>
     </message>
@@ -496,7 +506,7 @@
         <translation>Komponens tulajdonságainak beállítása</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+37"/>
         <source>Sweep</source>
         <translation>Léptetés</translation>
     </message>
@@ -565,13 +575,13 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+1151"/>
+        <location line="+1185"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>Léptetés:</translation>
     </message>
     <message>
-        <location line="-1166"/>
+        <location line="-1200"/>
         <source>Number:</source>
         <translation>Lépésszám:</translation>
     </message>
@@ -655,24 +665,24 @@
         <location line="+29"/>
         <location line="+92"/>
         <location line="+54"/>
-        <location line="+205"/>
+        <location line="+223"/>
         <location line="+215"/>
         <location line="+167"/>
-        <location line="+301"/>
+        <location line="+317"/>
         <source>yes</source>
         <translation>igen</translation>
     </message>
     <message>
-        <location line="-1032"/>
+        <location line="-1066"/>
         <location line="+92"/>
-        <location line="+259"/>
+        <location line="+277"/>
         <location line="+378"/>
-        <location line="+306"/>
+        <location line="+322"/>
         <source>no</source>
         <translation>nem</translation>
     </message>
     <message>
-        <location line="-366"/>
+        <location line="-382"/>
         <source>Select a file</source>
         <translation>Fájl kiválasztás</translation>
     </message>
@@ -707,20 +717,74 @@
         <translation>Verilog fájl</translation>
     </message>
     <message>
-        <location line="+194"/>
+        <location line="+210"/>
         <source>Points per decade:</source>
         <translation>Pont per dekád:</translation>
     </message>
 </context>
 <context>
+    <name>CustomSimDialog</name>
+    <message>
+        <location filename="../qucs/extsimkernels/customsimdialog.cpp" line="+40"/>
+        <location line="+44"/>
+        <source>Edit SPICE code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-43"/>
+        <source>Component: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Variables to plot (semicolon separated)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Extra outputs (semicolon separated; raw-SPICE or XYCE-STD format)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Apply</source>
+        <translation type="unfinished">Alkalmaz</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Mégsem</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>OK</source>
+        <translation type="unfinished">Ok</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Find all variables</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Find all outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>SPICE code editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DiagramDialog</name>
     <message>
-        <location filename="../qucs/diagrams/diagramdialog.cpp" line="+121"/>
+        <location filename="../qucs/diagrams/diagramdialog.cpp" line="+123"/>
         <source>Edit Diagram Properties</source>
         <translation>Diagram tulajdonságainak beállítása</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>left Axis</source>
         <translation>baloldali tengely</translation>
     </message>
@@ -759,7 +823,12 @@
         <translation>Grafikon bemenet</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+5"/>
+        <source>Plot Vs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Number Notation: </source>
         <translation>Szám jelzésmód:</translation>
     </message>
@@ -795,24 +864,24 @@
     </message>
     <message>
         <location line="+5"/>
-        <location line="+151"/>
+        <location line="+164"/>
         <source>solid line</source>
         <translation>folytonos vonal</translation>
     </message>
     <message>
-        <location line="-150"/>
-        <location line="+151"/>
+        <location line="-163"/>
+        <location line="+164"/>
         <source>dash line</source>
         <translation>szaggatott vonal</translation>
     </message>
     <message>
-        <location line="-150"/>
-        <location line="+151"/>
+        <location line="-163"/>
+        <location line="+164"/>
         <source>dot line</source>
         <translation>pontokból álló vonal</translation>
     </message>
     <message>
-        <location line="-149"/>
+        <location line="-162"/>
         <source>long dash line</source>
         <translation>hosszú szaggatott vonal</translation>
     </message>
@@ -847,7 +916,12 @@
         <translation>Adatok</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+18"/>
+        <source>Data from simulator:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <source>Name</source>
         <translation>Név</translation>
     </message>
@@ -862,7 +936,7 @@
         <translation>Méret</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>Graph</source>
         <translation>Grafikon</translation>
     </message>
@@ -882,7 +956,7 @@
         <translation>Adat</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>x-Axis Label:</source>
         <translation>X-tengely cimke:</translation>
     </message>
@@ -923,24 +997,47 @@
         <translation>pontvonal dupla ponttal</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+16"/>
+        <source>Number notation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>scientific notation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>engineering notation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>logarithmic X Axis Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>logarithmical X Axis Grid</source>
-        <translation>logaritmikus rácsozat az X tengelyen</translation>
+        <translation type="vanished">logaritmikus rácsozat az X tengelyen</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+4"/>
         <source>logarithmical</source>
-        <translation>logaritmikus</translation>
+        <translation type="vanished">logaritmikus</translation>
     </message>
     <message>
-        <location line="-4"/>
-        <location line="+4"/>
+        <location line="+7"/>
+        <location line="+11"/>
         <source>Grid</source>
         <translation>Rács</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="-11"/>
+        <location line="+11"/>
+        <source>logarithmic</source>
+        <translation type="unfinished">logaritmikus</translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>hide invisible lines</source>
         <translation>Láthatatlan vonalak rejtése</translation>
     </message>
@@ -950,17 +1047,17 @@
         <translation>Forgatás az X-tengely körül:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>Rotation around y-Axis:</source>
         <translation>Forgatás az Y-tengely körül:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+22"/>
         <source>Rotation around z-Axis:</source>
         <translation>Forgatás az Z-tengely körül:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+22"/>
         <source>2D-projection:</source>
         <translation>2D-megjelenítés:</translation>
     </message>
@@ -1014,7 +1111,7 @@
         <translation>Határadatok</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+55"/>
         <source>OK</source>
         <translation>Ok</translation>
     </message>
@@ -1086,22 +1183,29 @@
 <context>
     <name>DisplayDialog</name>
     <message>
-        <location filename="../qucs-lib/displaydialog.cpp" line="+39"/>
         <source>Analogue</source>
-        <translation>Analóg</translation>
+        <translation type="vanished">Analóg</translation>
     </message>
     <message>
-        <location line="+15"/>
         <source>VHDL</source>
-        <translation>VHDL</translation>
+        <translation type="vanished">VHDL</translation>
+    </message>
+    <message>
+        <source>Verilog</source>
+        <translation type="vanished">Verilog</translation>
+    </message>
+    <message>
+        <location filename="../qucs/dialogs/displaydialog.cpp" line="+39"/>
+        <source>SPICE</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
-        <source>Verilog</source>
-        <translation>Verilog</translation>
+        <source>Qucs</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+19"/>
         <source>Close</source>
         <translation>Bezár</translation>
     </message>
@@ -1154,7 +1258,7 @@
         <translation>Kiválasztás</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>Colour</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1174,7 +1278,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+11"/>
         <source>Export selected only</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1189,15 +1293,80 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+168"/>
+        <location line="+173"/>
         <source>Export diagram to raster or vector image</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExternSimDialog</name>
+    <message>
+        <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="+43"/>
+        <source>Simulate</source>
+        <translation type="unfinished">Szimuláció</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+228"/>
+        <source>Save netlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-225"/>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Simulation console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Simulate with external simulator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+146"/>
+        <source> started...
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Failed to start simulator!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Simulator crashed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Simulator error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Simulate with SPICE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source> error...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>FillDialog</name>
     <message>
-        <location filename="../qucs/paintings/filldialog.cpp" line="+46"/>
+        <location filename="../qucs/paintings/filldialog.cpp" line="+48"/>
         <source>Line Width: </source>
         <translation>Vonal szélesség:</translation>
     </message>
@@ -1350,249 +1519,58 @@
 <context>
     <name>FilterDialog</name>
     <message>
-        <location filename="../qucs-filter-v2/qf_dialog.cpp" line="+51"/>
         <source>E&amp;xit</source>
-        <translation>&amp;Kilépés</translation>
+        <translation type="vanished">&amp;Kilépés</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>&amp;About Qucs Filter...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>About Qt...</source>
-        <translation>Qt Névjegy...</translation>
+        <translation type="vanished">Qt Névjegy...</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>&amp;File</source>
-        <translation>&amp;Fájl</translation>
+        <translation type="vanished">&amp;Fájl</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>&amp;Help</source>
-        <translation>&amp;Súgó</translation>
+        <translation type="vanished">&amp;Súgó</translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Specify order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>b</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>c</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Cutoff/Center</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <location line="+40"/>
-        <location line="+13"/>
-        <source>Hz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-52"/>
-        <location line="+40"/>
-        <location line="+13"/>
-        <source>kHz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-52"/>
-        <location line="+40"/>
-        <location line="+13"/>
-        <source>MHz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-52"/>
-        <location line="+40"/>
-        <location line="+13"/>
-        <source>GHz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-50"/>
-        <source>Ripple</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <location line="+53"/>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="vanished">dB</translation>
     </message>
     <message>
-        <location line="-50"/>
         <source>Angle</source>
-        <translation>Szög</translation>
+        <translation type="vanished">Szög</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Â°</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Zin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <location line="+8"/>
         <source>Ohm</source>
-        <translation>Ohm</translation>
+        <translation type="vanished">Ohm</translation>
     </message>
     <message>
-        <location line="-5"/>
-        <source>Zout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Stopband corner</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Attenuation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>dual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Stopband is first pole</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Optimize cauer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Equal inductors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>+ rather than T</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Optimize C</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Cmin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Cmax</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>noC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Optimize L</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Lmin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Lmax</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>noL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>LC Filters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Microstrip Filters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Active Filters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Exit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Calculate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+16"/>
         <source>About...</source>
-        <translation>Névjegy...</translation>
+        <translation type="vanished">Névjegy...</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>
 Filter synthesis program
 </source>
-        <translation>
+        <translation type="vanished">
 Szűrő méretező program
 </translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Copyright (C) 2009 by</source>
-        <translation type="unfinished">Copyright (C) 2005, 2006 by {2009 ?}</translation>
+        <translation type="obsolete">Copyright (C) 2005, 2006 by {2009 ?}</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>About Qt</source>
-        <translation>Qt Névjegy</translation>
+        <translation type="vanished">Qt Névjegy</translation>
     </message>
 </context>
 <context>
     <name>GraphicTextDialog</name>
     <message>
-        <location filename="../qucs/paintings/graphictextdialog.cpp" line="+36"/>
+        <location filename="../qucs/paintings/graphictextdialog.cpp" line="+39"/>
         <source>Edit Text Properties</source>
         <translation>Szöveg tulajdonságainak beéllítása</translation>
     </message>
@@ -1645,26 +1623,19 @@ Szűrő méretező program
 <context>
     <name>HelpDialog</name>
     <message>
-        <location filename="../qucs-activefilter/helpdialog.cpp" line="+38"/>
-        <source>QucsActiveFilter is a active filter synthesis program. Butterworth, Chebyshev, Inverse Chebyshev, Cauer, Bessel and User defined transfer function are supported.To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
+        <location filename="../qucs-filter/helpdialog.cpp" line="+38"/>
+        <source>QucsFilter is a filter synthesis program. To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediately, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
-        <location filename="../qucs-filter/helpdialog.cpp" line="+67"/>
-        <location filename="../qucs-rescodes/helpdialog.cpp" line="+66"/>
+        <location line="+29"/>
+        <location filename="../qucs-activefilter/helpdialog.cpp" line="+69"/>
         <source>Close</source>
         <translation>Bezár</translation>
     </message>
     <message>
-        <location filename="../qucs-filter/helpdialog.cpp" line="-29"/>
         <source>QucsFilter is a filter synthesis program. To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
-        <translation>A QucsFilter egy szűrő méretező program. A szűrőkészítéshez egyszerüen csak meg kell adnia a paramétereket, és meg kell nyomni az ablak alján lévő nagy gombot. Azonnal a vágólapra helyezi a kiszámolt szűrő kapcsolási rajzát. Ezután a Qucs-ba beilleszthető a rajz a Szerkesztés / Beillesztés menüben vagy a CTRL-V billenytükombinációval. így a szűrőrajz beillesztkető és szimulálható. Jó szórakozást!</translation>
-    </message>
-    <message>
-        <location filename="../qucs-rescodes/helpdialog.cpp" line="-31"/>
-        <source>A program to compute color codes for resistors and resistance values for color codes. To obtain the color codes, simply enter the resistance and tolerance values and press the &quot;To Colors&quot; button. Alternatively to obtain the resistance, select the appropriate color bands and press the &quot;To Resistance&quot; button. The program computes the closest standard resistor value. You can paste the computed resistor in the schematic (by pressing ctrl+v). Have fun!</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">A QucsFilter egy szűrő méretező program. A szűrőkészítéshez egyszerüen csak meg kell adnia a paramétereket, és meg kell nyomni az ablak alján lévő nagy gombot. Azonnal a vágólapra helyezi a kiszámolt szűrő kapcsolási rajzát. Ezután a Qucs-ba beilleszthető a rajz a Szerkesztés / Beillesztés menüben vagy a CTRL-V billenytükombinációval. így a szűrőrajz beillesztkető és szimulálható. Jó szórakozást!</translation>
     </message>
     <message>
         <location filename="../qucs-transcalc/helpdialog.cpp" line="+32"/>
@@ -1687,6 +1658,11 @@ fizikai tulajdonságait számítja ki.</translation>
         <location line="+19"/>
         <source>Dismiss</source>
         <translation>Eldob</translation>
+    </message>
+    <message>
+        <location filename="../qucs-activefilter/helpdialog.cpp" line="-31"/>
+        <source>QucsActiveFilter is a active filter synthesis program. Butterworth, Chebyshev, Inverse Chebyshev, Cauer, Bessel and User defined transfer function are supported.To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediately, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1882,7 +1858,7 @@ fizikai tulajdonságait számítja ki.</translation>
         <translation>Üzenetek</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>Convert</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1897,7 +1873,7 @@ fizikai tulajdonságait számítja ki.</translation>
         <translation>Bezár</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>All known</source>
         <translation>Minden ismert fájl</translation>
     </message>
@@ -1947,12 +1923,12 @@ fizikai tulajdonságait számítja ki.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-12"/>
         <source>Enter a Data File Name</source>
         <translation>Adat fájl név</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+59"/>
         <source>Info</source>
         <translation>Infó</translation>
     </message>
@@ -2006,7 +1982,7 @@ fizikai tulajdonságait számítja ki.</translation>
 <context>
     <name>LabelDialog</name>
     <message>
-        <location filename="../qucs/dialogs/labeldialog.cpp" line="+30"/>
+        <location filename="../qucs/dialogs/labeldialog.cpp" line="+33"/>
         <source>Insert Nodename</source>
         <translation>Csomópont Beadása</translation>
     </message>
@@ -2042,27 +2018,39 @@ fizikai tulajdonságait számítja ki.</translation>
         <source>More...</source>
         <translation>Bővebb...</translation>
     </message>
+    <message>
+        <location line="+16"/>
+        <source>SPICE checker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Node name &quot;%1&quot; is Nutmeg reserved keyword!
+Please select another node name!
+Node name will not be changed.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LibraryDialog</name>
     <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="+56"/>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="+58"/>
         <source>Create Library</source>
         <translation>Alkatrész katalógus létrehozása</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location line="+108"/>
+        <location line="+99"/>
         <source>Library Name:</source>
         <translation>Alkatrész katalógus neve:</translation>
     </message>
     <message>
-        <location line="-101"/>
+        <location line="-92"/>
         <source>Choose subcircuits:</source>
         <translation>Beágyazott kapcsolás választás:</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+10"/>
         <source>Add subcircuit description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2105,18 +2093,17 @@ fizikai tulajdonságait számítja ki.</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+190"/>
+        <location line="+192"/>
         <source>Create</source>
         <translation>Létrehozás</translation>
     </message>
     <message>
-        <location line="-169"/>
+        <location line="-171"/>
         <source>Message:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
-        <location filename="../qucs-lib/librarydialog.cpp" line="+74"/>
         <source>Close</source>
         <translation>Bezár</translation>
     </message>
@@ -2126,33 +2113,20 @@ fizikai tulajdonságait számítja ki.</translation>
         <translation>Nincsenek projektek!</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <location line="+17"/>
+        <location line="+18"/>
+        <location line="+16"/>
         <location line="+16"/>
         <location line="+6"/>
-        <location filename="../qucs-lib/librarydialog.cpp" line="+60"/>
-        <location line="+14"/>
-        <location line="+11"/>
-        <location line="+6"/>
-        <location line="+7"/>
-        <location line="+6"/>
-        <location line="+20"/>
-        <location line="+10"/>
-        <location line="+5"/>
-        <location line="+11"/>
-        <location line="+17"/>
-        <location line="+8"/>
-        <location line="+13"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location line="-39"/>
+        <location line="-38"/>
         <source>Please insert a library name!</source>
         <translation>Adjon meg alkatrész katalógus nevet!</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+16"/>
         <source>Please choose at least one subcircuit!</source>
         <translation>Először válasszon egy  beágyazott kapcsolást!</translation>
     </message>
@@ -2168,13 +2142,11 @@ fizikai tulajdonságait számítja ki.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../qucs-lib/librarydialog.cpp" line="-103"/>
         <source>A system library with this name already exists!</source>
         <translation>A megadott rendszer alkatrész katalógus név már használt!</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location filename="../qucs-lib/librarydialog.cpp" line="+6"/>
         <source>A library with this name already exists!</source>
         <translation>A megadott alkatrész katalógus név már használt!</translation>
     </message>
@@ -2211,13 +2183,19 @@ fizikai tulajdonságait számítja ki.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+32"/>
         <source>Error: Cannot create netlist for &quot;%1&quot;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+7"/>
+        <source>Creating SPICE netlist.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>Creating Verilog netlist.
 </source>
         <translation type="unfinished"></translation>
@@ -2239,87 +2217,71 @@ fizikai tulajdonságait számítja ki.</translation>
         <translation>Alkatrész-katalógus létrehozása sikeres.</translation>
     </message>
     <message>
-        <location filename="../qucs-lib/librarydialog.cpp" line="-123"/>
         <source>Manage User Libraries</source>
-        <translation>Felhasználói alkatrész-katalógust kezelő</translation>
+        <translation type="vanished">Felhasználói alkatrész-katalógust kezelő</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Choose library:</source>
-        <translation>Alkatrész katalógus választás:</translation>
+        <translation type="vanished">Alkatrész katalógus választás:</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>New Name:</source>
-        <translation>Új név:</translation>
+        <translation type="vanished">Új név:</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>Delete</source>
-        <translation>Törlés</translation>
+        <translation type="vanished">Törlés</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Rename</source>
-        <translation>Átnevezés</translation>
+        <translation type="vanished">Átnevezés</translation>
     </message>
     <message>
-        <location line="+62"/>
         <source>Please insert a new library name!</source>
-        <translation>Adjon meg új alkatrész katalógus nevet!</translation>
+        <translation type="vanished">Adjon meg új alkatrész katalógus nevet!</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <location line="+93"/>
         <source>Please choose a library!</source>
-        <translation>Válasszon alkatrész katalógust!</translation>
+        <translation type="vanished">Válasszon alkatrész katalógust!</translation>
     </message>
     <message>
-        <location line="-69"/>
         <source>Cannot rename library subdirectory!</source>
-        <translation>Az alkatrész-katalógus nem nevezhető át!</translation>
+        <translation type="vanished">Az alkatrész-katalógus nem nevezhető át!</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Cannot open library!</source>
-        <translation>A &quot;%1&quot; alkatrész katalógus megnyitása nem sikerült!</translation>
+        <translation type="vanished">A &quot;%1&quot; alkatrész katalógus megnyitása nem sikerült!</translation>
     </message>
     <message>
-        <location line="+20"/>
         <source>No permission to modify library!</source>
-        <translation>Nincs joga a &quot;%1&quot; alkatrész katalógus módosításához! </translation>
+        <translation type="vanished">Nincs joga a &quot;%1&quot; alkatrész katalógus módosításához! </translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Writing new library not successful!</source>
-        <translation>
+        <translation type="vanished">
 Az alkatrész katalógus írása sikertelen!</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Cannot delete old library.</source>
-        <translation>Régi alkatrész katalógus nem törölhető.</translation>
+        <translation type="vanished">Régi alkatrész katalógus nem törölhető.</translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Library file is corrupt!</source>
-        <translation>Alkatrész katalógus fájl hibás!</translation>
+        <translation type="vanished">Alkatrész katalógus fájl hibás!</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>No permission to delete library &quot;%1&quot;.</source>
-        <translation>Nincs joga a &quot;%1&quot; alkatrész katalógus törléséhez. </translation>
+        <translation type="vanished">Nincs joga a &quot;%1&quot; alkatrész katalógus törléséhez. </translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>No permission to delete library subdirectory &quot;%1&quot;.</source>
-        <translation>Nincs joga a &quot;%1&quot; alkatrész-katalógus alkönyvtár törléséhez. </translation>
+        <translation type="vanished">Nincs joga a &quot;%1&quot; alkatrész-katalógus alkönyvtár törléséhez. </translation>
     </message>
 </context>
 <context>
     <name>LoadDialog</name>
     <message>
-        <location filename="../qucs/dialogs/loaddialog.cpp" line="+49"/>
+        <location filename="../qucs/dialogs/loaddialog.cpp" line="+45"/>
         <source>Load Verilog-A symbols</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2375,7 +2337,7 @@ Az alkatrész katalógus írása sikertelen!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+61"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2398,12 +2360,12 @@ Az alkatrész katalógus írása sikertelen!</translation>
 <context>
     <name>MarkerDialog</name>
     <message>
-        <location filename="../qucs/diagrams/markerdialog.cpp" line="+32"/>
+        <location filename="../qucs/diagrams/markerdialog.cpp" line="+33"/>
         <source>Edit Marker Properties</source>
         <translation>Jelző tulajdonságainak beállítása</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+21"/>
         <source>Precision: </source>
         <translation>Pontosság:</translation>
     </message>
@@ -2428,7 +2390,12 @@ Az alkatrész katalógus írása sikertelen!</translation>
         <translation>Szám jelzésmód:</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+3"/>
+        <source>X-axis position:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Z0: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2456,7 +2423,7 @@ Az alkatrész katalógus írása sikertelen!</translation>
         <translation>Illesztő áramkör létrehozása</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>calculate two-port matching</source>
         <translation>két portos illesző számolása</translation>
     </message>
@@ -2564,7 +2531,7 @@ de %1 !</translation>
 <context>
     <name>MessageDock</name>
     <message>
-        <location filename="../qucs/messagedock.cpp" line="+50"/>
+        <location filename="../qucs/messagedock.cpp" line="+51"/>
         <source>admsXml</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2582,56 +2549,28 @@ de %1 !</translation>
 <context>
     <name>MyWidget</name>
     <message>
-        <location filename="../qucs-rescodes/main.cpp" line="+62"/>
         <source>E&amp;xit</source>
-        <translation>&amp;Kilépés</translation>
+        <translation type="vanished">&amp;Kilépés</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>&amp;File</source>
-        <translation>&amp;Fájl</translation>
+        <translation type="vanished">&amp;Fájl</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Help...</source>
-        <translation>Súgó...</translation>
+        <translation type="vanished">Súgó...</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>&amp;About ResistorCodes...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>&amp;About Qt...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
         <source>&amp;Help</source>
-        <translation>&amp;Súgó</translation>
+        <translation type="vanished">&amp;Súgó</translation>
     </message>
     <message>
-        <location line="+69"/>
         <source>About...</source>
-        <translation>Névjegy...</translation>
+        <translation type="vanished">Névjegy...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>
-Resistor color code computation program
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Copyright (c) 2012 by</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
         <source>About Qt</source>
-        <translation>Qt Névjegy</translation>
+        <translation type="vanished">Qt Névjegy</translation>
     </message>
 </context>
 <context>
@@ -2663,9 +2602,17 @@ Resistor color code computation program
     </message>
 </context>
 <context>
+    <name>Ngspice</name>
+    <message>
+        <location filename="../qucs/extsimkernels/ngspice.cpp" line="+643"/>
+        <source>Problem with SaveNetlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>OctaveWindow</name>
     <message>
-        <location filename="../qucs/octave_window.cpp" line="+120"/>
+        <location filename="../qucs/octave_window.cpp" line="+122"/>
         <source>ERROR: Failed to execute &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2678,7 +2625,7 @@ Resistor color code computation program
         <translation>Az optimizáció tulajdonságainak beállítása</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+23"/>
         <location line="+120"/>
         <location line="+91"/>
         <source>Name:</source>
@@ -2800,26 +2747,26 @@ Resistor color code computation program
     <message>
         <location line="+10"/>
         <location line="+182"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>linear double</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-539"/>
+        <location line="-541"/>
         <location line="+183"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>logarithmic double</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-540"/>
+        <location line="-542"/>
         <location line="+184"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>linear integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-541"/>
+        <location line="-543"/>
         <location line="+199"/>
         <source>logarithmic integer</source>
         <translation type="unfinished"></translation>
@@ -2827,54 +2774,54 @@ Resistor color code computation program
     <message>
         <location line="-198"/>
         <location line="+184"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>E3 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-541"/>
+        <location line="-543"/>
         <location line="+185"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>E6 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-542"/>
+        <location line="-544"/>
         <location line="+186"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>E12 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-543"/>
+        <location line="-545"/>
         <location line="+187"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>E24 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-544"/>
+        <location line="-546"/>
         <location line="+188"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>E48 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-545"/>
+        <location line="-547"/>
         <location line="+189"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>E96 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-546"/>
+        <location line="-548"/>
         <location line="+190"/>
-        <location line="+358"/>
+        <location line="+360"/>
         <source>E192 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-544"/>
+        <location line="-546"/>
         <location line="+69"/>
         <source>Add</source>
         <translation>Hozzáadás</translation>
@@ -2913,40 +2860,40 @@ Resistor color code computation program
     <message>
         <location line="+4"/>
         <location line="+145"/>
-        <location line="+368"/>
+        <location line="+370"/>
         <source>minimize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-512"/>
+        <location line="-514"/>
         <location line="+146"/>
-        <location line="+368"/>
+        <location line="+370"/>
         <source>maximize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-513"/>
+        <location line="-515"/>
         <location line="+147"/>
-        <location line="+368"/>
+        <location line="+370"/>
         <source>less</source>
         <translation>kisebb</translation>
     </message>
     <message>
-        <location line="-514"/>
+        <location line="-516"/>
         <location line="+148"/>
-        <location line="+368"/>
+        <location line="+370"/>
         <source>greater</source>
         <translation>nagyobb</translation>
     </message>
     <message>
-        <location line="-515"/>
+        <location line="-517"/>
         <location line="+149"/>
-        <location line="+368"/>
+        <location line="+370"/>
         <source>equal</source>
         <translation>egyenlő</translation>
     </message>
     <message>
-        <location line="-516"/>
+        <location line="-518"/>
         <location line="+150"/>
         <source>monitor</source>
         <translation type="unfinished"></translation>
@@ -2976,12 +2923,12 @@ Resistor color code computation program
         <location line="+105"/>
         <location line="+34"/>
         <location line="+37"/>
-        <location line="+195"/>
+        <location line="+197"/>
         <source>yes</source>
         <translation>igen</translation>
     </message>
     <message>
-        <location line="-371"/>
+        <location line="-373"/>
         <location line="+139"/>
         <location line="+37"/>
         <source>no</source>
@@ -2990,29 +2937,29 @@ Resistor color code computation program
     <message>
         <location line="-57"/>
         <location line="+8"/>
-        <location line="+124"/>
+        <location line="+125"/>
         <location line="+8"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location line="-139"/>
-        <location line="+132"/>
+        <location line="-140"/>
+        <location line="+133"/>
         <source>Every text field must be non-empty!</source>
         <translation>Minden szövegmező kitöltendő!</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="-125"/>
         <source>Variable &quot;%1&quot; aleardy in list!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+132"/>
+        <location line="+133"/>
         <source>Goal &quot;%1&quot; already in list!</source>
         <translation>A &quot;%1&quot; cél már szerepel a listában!</translation>
     </message>
     <message>
-        <location line="+262"/>
+        <location line="+263"/>
         <source>Set precision</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3118,25 +3065,25 @@ Resistor color code computation program
         <translation>Bezár</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <location line="+186"/>
+        <location line="+20"/>
+        <location line="+187"/>
         <source>Qucs Packages</source>
         <translation>Qucs csomag</translation>
     </message>
     <message>
-        <location line="-185"/>
-        <location line="+186"/>
+        <location line="-186"/>
+        <location line="+187"/>
         <source>Any File</source>
         <translation>Bármelyik fájl</translation>
     </message>
     <message>
-        <location line="-185"/>
-        <location line="+186"/>
+        <location line="-190"/>
+        <location line="+187"/>
         <source>Enter a Package File Name</source>
         <translation>Csomag fájl név</translation>
     </message>
     <message>
-        <location line="-165"/>
+        <location line="-162"/>
         <location line="+69"/>
         <location line="+15"/>
         <location line="+19"/>
@@ -3196,17 +3143,17 @@ Resistor color code computation program
         <translation>A Qucs csomag létrehozása sikeres!</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+32"/>
         <source>ERROR: Cannot open package!</source>
         <translation>HIBA: A csomag nem nyitható meg!</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>ERROR: File contains wrong header!</source>
         <translation>HIBA: A Fájl rossz fejlécet tartalmaz!</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>ERROR: Wrong version number!</source>
         <translation>HIBA: Helytelen verziószám!</translation>
     </message>
@@ -3320,11 +3267,16 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+1"/>
+        <source>XSPICE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Others</source>
         <translation>Egyebek</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+48"/>
         <source>-port</source>
         <translation>-csatlakozás</translation>
     </message>
@@ -3332,40 +3284,64 @@ Resistor color code computation program
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../qucs/components/ac_sim.cpp" line="+23"/>
-        <location line="+48"/>
+        <location filename="../qucs/components/ac_sim.cpp" line="+28"/>
+        <location line="+49"/>
         <source>ac simulation</source>
         <translation>AC szimuláció</translation>
     </message>
     <message>
-        <location line="-23"/>
-        <location filename="../qucs/components/param_sweep.cpp" line="+45"/>
-        <location filename="../qucs/components/sp_sim.cpp" line="+47"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+43"/>
+        <location filename="../qucs/spicecomponents/sp_sens_ac.cpp" line="+25"/>
+        <location line="+43"/>
+        <source>AC sensitivity simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-22"/>
+        <location filename="../qucs/spicecomponents/sp_sens.cpp" line="+46"/>
+        <source>Output variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+47"/>
+        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+47"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+47"/>
+        <location filename="../qucs/components/sp_sim.cpp" line="+51"/>
+        <location filename="../qucs/components/param_sweep.cpp" line="+49"/>
+        <location filename="../qucs/components/ac_sim.cpp" line="-23"/>
         <source>sweep type</source>
         <translation>léptetés típus</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+2"/>
         <location filename="../qucs/components/sp_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/ac_sim.cpp" line="+2"/>
         <source>start frequency in Hertz</source>
         <translation>kezdő frekvencia Hertz-ben</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+2"/>
         <location filename="../qucs/components/sp_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/ac_sim.cpp" line="+2"/>
         <source>stop frequency in Hertz</source>
         <translation>befejező frekvencia Hertz-ben</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/param_sweep.cpp" line="+8"/>
+        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+2"/>
         <location filename="../qucs/components/sp_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/param_sweep.cpp" line="+8"/>
+        <location filename="../qucs/components/ac_sim.cpp" line="+2"/>
         <source>number of simulation steps</source>
         <translation>a szimuláció lépésszáma</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/ac_sim.cpp" line="+2"/>
         <source>calculate noise voltages</source>
         <translation>zajfeszültség számolás</translation>
     </message>
@@ -3380,32 +3356,32 @@ Resistor color code computation program
         <translation>AM</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="+50"/>
         <location filename="../qucs/components/pm_modulator.cpp" line="+52"/>
-        <location filename="../qucs/components/volt_ac.cpp" line="+46"/>
+        <location filename="../qucs/components/am_modulator.cpp" line="+15"/>
         <source>peak voltage in Volts</source>
         <translation>csúcs feszültség [V]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/ampere_ac.cpp" line="+48"/>
-        <location filename="../qucs/components/hb_sim.cpp" line="+42"/>
+        <location filename="../qucs/components/source_ac.cpp" line="+69"/>
         <location filename="../qucs/components/pm_modulator.cpp" line="+2"/>
-        <location filename="../qucs/components/source_ac.cpp" line="+65"/>
-        <location filename="../qucs/components/volt_ac.cpp" line="+2"/>
+        <location filename="../qucs/components/hb_sim.cpp" line="+47"/>
+        <location filename="../qucs/components/ampere_ac.cpp" line="+52"/>
+        <location filename="../qucs/components/am_modulator.cpp" line="+2"/>
         <source>frequency in Hertz</source>
         <translation>frekvencia Hertz-ben</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/ampere_ac.cpp" line="+2"/>
         <location filename="../qucs/components/pm_modulator.cpp" line="+2"/>
-        <location filename="../qucs/components/volt_ac.cpp" line="+2"/>
+        <location filename="../qucs/components/ampere_ac.cpp" line="+2"/>
+        <location filename="../qucs/components/am_modulator.cpp" line="+2"/>
         <source>initial phase in degrees</source>
         <translation>Kezdő fázis fokban</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/am_modulator.cpp" line="+2"/>
         <source>modulation level</source>
         <translation>modulációs szint</translation>
     </message>
@@ -3415,43 +3391,43 @@ Resistor color code computation program
         <translation>AM modulált jelforrás</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ampere_ac.cpp" line="-27"/>
+        <location filename="../qucs/components/ampere_ac.cpp" line="-28"/>
         <source>ideal ac current source</source>
         <translation>ideális váltóáram AC generátor</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>peak current in Ampere</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
         <location filename="../qucs/components/volt_ac.cpp" line="+2"/>
+        <location filename="../qucs/components/ampere_ac.cpp" line="+6"/>
         <source>damping factor (transient simulation only)</source>
         <translation>csillapítási faktor (csak tranziens szimuláció)</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/components/ampere_ac.cpp" line="+16"/>
         <source>ac Current Source</source>
         <translation>váltóáram AC generátor</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ampere_dc.cpp" line="+23"/>
+        <location filename="../qucs/components/ampere_dc.cpp" line="+26"/>
         <source>ideal dc current source</source>
         <translation>ideális egyenfeszültség DC forrás</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>current in Ampere</source>
         <translation>áram Amper-ben</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+28"/>
         <source>dc Current Source</source>
         <translation>egyenáram DC forrás</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ampere_noise.cpp" line="+23"/>
+        <location filename="../qucs/components/ampere_noise.cpp" line="+25"/>
         <source>noise current source</source>
         <translation>zajáram generátor</translation>
     </message>
@@ -3461,34 +3437,34 @@ Resistor color code computation program
         <translation>zajáram-sűrűség A^2/Hz-ben</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/noise_ii.cpp" line="+77"/>
-        <location filename="../qucs/components/noise_iv.cpp" line="+72"/>
-        <location filename="../qucs/components/noise_vv.cpp" line="+67"/>
         <location filename="../qucs/components/volt_noise.cpp" line="+48"/>
+        <location filename="../qucs/components/noise_vv.cpp" line="+67"/>
+        <location filename="../qucs/components/noise_iv.cpp" line="+72"/>
+        <location filename="../qucs/components/noise_ii.cpp" line="+77"/>
+        <location filename="../qucs/components/ampere_noise.cpp" line="+2"/>
         <source>frequency exponent</source>
         <translation>frekvencia kitevő</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
-        <location filename="../qucs/components/noise_iv.cpp" line="+2"/>
         <location filename="../qucs/components/noise_vv.cpp" line="+2"/>
-        <location filename="../qucs/components/volt_noise.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_iv.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
+        <location filename="../qucs/components/ampere_noise.cpp" line="+2"/>
         <source>frequency coefficient</source>
         <translation>frekvencia tényező</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
-        <location filename="../qucs/components/noise_iv.cpp" line="+2"/>
         <location filename="../qucs/components/noise_vv.cpp" line="+2"/>
-        <location filename="../qucs/components/volt_noise.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_iv.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
+        <location filename="../qucs/components/ampere_noise.cpp" line="+2"/>
         <source>additive frequency term</source>
         <translation>járulékos frekvencia idő</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/components/ampere_noise.cpp" line="+16"/>
         <source>Noise Current Source</source>
         <translation>Zajáram generátor</translation>
     </message>
@@ -3498,26 +3474,26 @@ Resistor color code computation program
         <translation>ideális erősítő</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <location filename="../qucs/components/opamp.cpp" line="+50"/>
-        <location filename="../qucs/components/vfile.cpp" line="+60"/>
+        <location filename="../qucs/components/vfile.cpp" line="+63"/>
+        <location filename="../qucs/components/opamp.cpp" line="+54"/>
+        <location filename="../qucs/components/amplifier.cpp" line="+21"/>
         <source>voltage gain</source>
         <translation>feszültség erősítés</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/isolator.cpp" line="+49"/>
+        <location filename="../qucs/components/amplifier.cpp" line="+2"/>
         <source>reference impedance of input port</source>
         <translation>névleges impedancia a bemeneten</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/isolator.cpp" line="+2"/>
+        <location filename="../qucs/components/amplifier.cpp" line="+2"/>
         <source>reference impedance of output port</source>
         <translation>névleges impedancia a kimeneten</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/amplifier.cpp" line="+2"/>
         <source>noise figure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3532,82 +3508,89 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/andor4x3.cpp" line="+28"/>
-        <location filename="../qucs/components/andor4x4.cpp" line="+28"/>
-        <location filename="../qucs/components/comp_1bit.cpp" line="+28"/>
-        <location filename="../qucs/components/comp_2bit.cpp" line="+28"/>
-        <location filename="../qucs/components/comp_4bit.cpp" line="+28"/>
-        <location filename="../qucs/components/dmux2to4.cpp" line="+28"/>
-        <location filename="../qucs/components/dmux3to8.cpp" line="+29"/>
-        <location filename="../qucs/components/dmux4to16.cpp" line="+28"/>
-        <location filename="../qucs/components/fa1b.cpp" line="+28"/>
-        <location filename="../qucs/components/fa2b.cpp" line="+28"/>
-        <location filename="../qucs/components/ha1b.cpp" line="+28"/>
-        <location filename="../qucs/components/mux2to1.cpp" line="+28"/>
-        <location filename="../qucs/components/mux4to1.cpp" line="+28"/>
         <location filename="../qucs/components/mux8to1.cpp" line="+28"/>
+        <location filename="../qucs/components/mux4to1.cpp" line="+28"/>
+        <location filename="../qucs/components/mux2to1.cpp" line="+28"/>
+        <location filename="../qucs/components/ha1b.cpp" line="+28"/>
+        <location filename="../qucs/components/fa2b.cpp" line="+28"/>
+        <location filename="../qucs/components/fa1b.cpp" line="+28"/>
+        <location filename="../qucs/components/dmux4to16.cpp" line="+28"/>
+        <location filename="../qucs/components/dmux3to8.cpp" line="+29"/>
+        <location filename="../qucs/components/dmux2to4.cpp" line="+28"/>
+        <location filename="../qucs/components/comp_4bit.cpp" line="+28"/>
+        <location filename="../qucs/components/comp_2bit.cpp" line="+28"/>
+        <location filename="../qucs/components/comp_1bit.cpp" line="+28"/>
+        <location filename="../qucs/components/andor4x4.cpp" line="+28"/>
+        <location filename="../qucs/components/andor4x3.cpp" line="+28"/>
+        <location filename="../qucs/components/andor4x2.cpp" line="+3"/>
         <source>transfer function high scaling factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/andor4x3.cpp" line="+2"/>
-        <location filename="../qucs/components/andor4x4.cpp" line="+2"/>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+30"/>
-        <location filename="../qucs/components/comp_1bit.cpp" line="+2"/>
-        <location filename="../qucs/components/comp_2bit.cpp" line="+2"/>
-        <location filename="../qucs/components/comp_4bit.cpp" line="+2"/>
-        <location filename="../qucs/components/dmux2to4.cpp" line="+2"/>
-        <location filename="../qucs/components/dmux3to8.cpp" line="+2"/>
-        <location filename="../qucs/components/dmux4to16.cpp" line="+2"/>
-        <location filename="../qucs/components/fa1b.cpp" line="+2"/>
-        <location filename="../qucs/components/fa2b.cpp" line="+2"/>
-        <location filename="../qucs/components/greytobinary4bit.cpp" line="+30"/>
-        <location filename="../qucs/components/ha1b.cpp" line="+2"/>
-        <location filename="../qucs/components/hpribin4bit.cpp" line="+30"/>
-        <location filename="../qucs/components/mux2to1.cpp" line="+2"/>
         <location filename="../qucs/components/mux4to1.cpp" line="+2"/>
-        <location filename="../qucs/components/mux8to1.cpp" line="+2"/>
+        <location filename="../qucs/components/mux2to1.cpp" line="+2"/>
+        <location filename="../qucs/components/hpribin4bit.cpp" line="+30"/>
+        <location filename="../qucs/components/ha1b.cpp" line="+2"/>
+        <location filename="../qucs/components/greytobinary4bit.cpp" line="+30"/>
+        <location filename="../qucs/components/fa2b.cpp" line="+2"/>
+        <location filename="../qucs/components/fa1b.cpp" line="+2"/>
+        <location filename="../qucs/components/dmux4to16.cpp" line="+2"/>
+        <location filename="../qucs/components/dmux3to8.cpp" line="+2"/>
+        <location filename="../qucs/components/dmux2to4.cpp" line="+2"/>
+        <location filename="../qucs/components/comp_4bit.cpp" line="+2"/>
+        <location filename="../qucs/components/comp_2bit.cpp" line="+2"/>
+        <location filename="../qucs/components/comp_1bit.cpp" line="+2"/>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+30"/>
+        <location filename="../qucs/components/andor4x4.cpp" line="+2"/>
+        <location filename="../qucs/components/andor4x3.cpp" line="+2"/>
+        <location filename="../qucs/components/andor4x2.cpp" line="+2"/>
         <source>output delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location filename="../qucs/components/andor4x3.cpp" line="+1"/>
-        <location filename="../qucs/components/andor4x4.cpp" line="+1"/>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+1"/>
-        <location filename="../qucs/components/comp_1bit.cpp" line="+1"/>
-        <location filename="../qucs/components/comp_2bit.cpp" line="+1"/>
-        <location filename="../qucs/components/comp_4bit.cpp" line="+1"/>
-        <location filename="../qucs/components/dff_SR.cpp" line="+33"/>
-        <location filename="../qucs/components/DLS_1ton.cpp" line="+21"/>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="+22"/>
-        <location filename="../qucs/components/dmux2to4.cpp" line="+1"/>
-        <location filename="../qucs/components/dmux3to8.cpp" line="+1"/>
-        <location filename="../qucs/components/dmux4to16.cpp" line="+1"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+153"/>
-        <location filename="../qucs/components/fa1b.cpp" line="+1"/>
-        <location filename="../qucs/components/fa2b.cpp" line="+1"/>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="+33"/>
-        <location filename="../qucs/components/greytobinary4bit.cpp" line="+1"/>
-        <location filename="../qucs/components/ha1b.cpp" line="+1"/>
-        <location filename="../qucs/components/hpribin4bit.cpp" line="+1"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="+33"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+69"/>
-        <location filename="../qucs/components/mux2to1.cpp" line="+1"/>
-        <location filename="../qucs/components/mux4to1.cpp" line="+1"/>
-        <location filename="../qucs/components/mux8to1.cpp" line="+1"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+28"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+48"/>
+        <location filename="../qucs/components/tff_SR.cpp" line="+34"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+52"/>
         <location line="+3"/>
-        <location filename="../qucs/components/tff_SR.cpp" line="+33"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+48"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+28"/>
+        <location filename="../qucs/components/mux8to1.cpp" line="+1"/>
+        <location filename="../qucs/components/mux4to1.cpp" line="+1"/>
+        <location filename="../qucs/components/mux2to1.cpp" line="+1"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="+34"/>
+        <location filename="../qucs/components/hpribin4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="+58"/>
+        <location line="+62"/>
+        <location line="+66"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+19"/>
+        <location filename="../qucs/components/ha1b.cpp" line="+1"/>
+        <location filename="../qucs/components/greytobinary4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="+33"/>
+        <location filename="../qucs/components/fa2b.cpp" line="+1"/>
+        <location filename="../qucs/components/fa1b.cpp" line="+1"/>
+        <location filename="../qucs/components/dmux4to16.cpp" line="+1"/>
+        <location filename="../qucs/components/dmux3to8.cpp" line="+1"/>
+        <location filename="../qucs/components/dmux2to4.cpp" line="+1"/>
+        <location filename="../qucs/components/dff_SR.cpp" line="+34"/>
+        <location filename="../qucs/components/comp_4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/comp_2bit.cpp" line="+1"/>
+        <location filename="../qucs/components/comp_1bit.cpp" line="+1"/>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/andor4x4.cpp" line="+1"/>
+        <location filename="../qucs/components/andor4x3.cpp" line="+1"/>
+        <location filename="../qucs/components/andor4x2.cpp" line="+1"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+69"/>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="+22"/>
+        <location filename="../qucs/components/DLS_1ton.cpp" line="+21"/>
         <source>s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location filename="../qucs/components/andor4x2.cpp" line="+19"/>
         <source>4x2 AndOr</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3642,46 +3625,48 @@ Resistor color code computation program
         <translation>csillapítás</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/coupler.cpp" line="+68"/>
-        <location filename="../qucs/components/gyrator.cpp" line="+57"/>
-        <location filename="../qucs/components/hybrid.cpp" line="+58"/>
         <location filename="../qucs/components/phaseshifter.cpp" line="+49"/>
+        <location filename="../qucs/components/hybrid.cpp" line="+58"/>
+        <location filename="../qucs/components/gyrator.cpp" line="+60"/>
+        <location filename="../qucs/components/coupler.cpp" line="+68"/>
+        <location filename="../qucs/components/attenuator.cpp" line="+2"/>
         <source>reference impedance</source>
         <translation>névleges impedancia</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+95"/>
-        <location filename="../qucs/components/bondwire.cpp" line="+58"/>
-        <location filename="../qucs/components/coaxialline.cpp" line="+59"/>
-        <location filename="../qucs/components/ctline.cpp" line="+69"/>
-        <location filename="../qucs/components/dc_sim.cpp" line="+47"/>
-        <location filename="../qucs/components/diode.cpp" line="+60"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+59"/>
-        <location filename="../qucs/components/isolator.cpp" line="+2"/>
-        <location filename="../qucs/components/jfet.cpp" line="+63"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+118"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="+70"/>
-        <location filename="../qucs/components/mslange.cpp" line="+62"/>
-        <location filename="../qucs/components/msline.cpp" line="+56"/>
-        <location filename="../qucs/components/msvia.cpp" line="+49"/>
-        <location filename="../qucs/components/rectline.cpp" line="+64"/>
-        <location filename="../qucs/components/relais.cpp" line="+68"/>
-        <location filename="../qucs/components/resistor.cpp" line="+29"/>
-        <location filename="../qucs/components/rlcg.cpp" line="+70"/>
-        <location filename="../qucs/components/source_ac.cpp" line="+2"/>
-        <location filename="../qucs/components/switch.cpp" line="+35"/>
-        <location filename="../qucs/components/tline.cpp" line="+55"/>
-        <location filename="../qucs/components/tline_4port.cpp" line="+59"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+25"/>
-        <location filename="../qucs/components/tunneldiode.cpp" line="+52"/>
         <location filename="../qucs/components/twistedpair.cpp" line="+75"/>
+        <location filename="../qucs/components/tunneldiode.cpp" line="+52"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+25"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="+59"/>
+        <location filename="../qucs/components/tline.cpp" line="+55"/>
+        <location filename="../qucs/components/switch.cpp" line="+35"/>
+        <location filename="../qucs/components/source_ac.cpp" line="+2"/>
+        <location filename="../qucs/components/rlcg.cpp" line="+70"/>
+        <location filename="../qucs/components/resistor.cpp" line="+31"/>
+        <location filename="../qucs/components/relais.cpp" line="+72"/>
+        <location filename="../qucs/components/rectline.cpp" line="+64"/>
+        <location filename="../qucs/components/msvia.cpp" line="+49"/>
+        <location filename="../qucs/components/msline.cpp" line="+56"/>
+        <location filename="../qucs/components/mslange.cpp" line="+62"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="+70"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+121"/>
+        <location filename="../qucs/components/jfet.cpp" line="+65"/>
+        <location filename="../qucs/components/isolator.cpp" line="+2"/>
+        <location filename="../qucs/components/indq.cpp" line="+77"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+59"/>
+        <location filename="../qucs/components/diode.cpp" line="+63"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="+50"/>
+        <location filename="../qucs/components/ctline.cpp" line="+69"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="+59"/>
+        <location filename="../qucs/components/capq.cpp" line="+76"/>
+        <location filename="../qucs/components/bondwire.cpp" line="+58"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+97"/>
+        <location filename="../qucs/components/attenuator.cpp" line="+2"/>
         <source>simulation temperature in degree Celsius</source>
         <translation>Szimulációs hőmérséklet Celziuszfok-ban</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location filename="../qucs/components/attenuator.cpp" line="+14"/>
         <source>Attenuator</source>
         <translation>Csillapító</translation>
     </message>
@@ -3691,19 +3676,19 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
         <location filename="../qucs/components/dcfeed.cpp" line="+48"/>
+        <location filename="../qucs/components/biast.cpp" line="+33"/>
         <source>for transient simulation: inductance in Henry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/dcblock.cpp" line="+46"/>
+        <location filename="../qucs/components/biast.cpp" line="+2"/>
         <source>for transient simulation: capacitance in Farad</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location filename="../qucs/components/biast.cpp" line="+14"/>
         <source>Bias T</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3713,93 +3698,91 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/component.cpp" line="+1310"/>
-        <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
+        <location filename="../qucs/components/logical_inv.cpp" line="+35"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="+35"/>
         <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
-        <location filename="../qucs/components/logical_inv.cpp" line="+34"/>
+        <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
+        <location filename="../qucs/components/component.cpp" line="+1447"/>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+3"/>
         <source>transfer function scaling factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+22"/>
         <source>4Bit Bin2Gray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjt.cpp" line="+25"/>
+        <location filename="../qucs/components/bjt.cpp" line="+26"/>
         <source>bipolar junction transistor</source>
         <translation>bipoláris tranzisztor</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+50"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+51"/>
+        <location filename="../qucs/components/bjt.cpp" line="+45"/>
         <source>npn transistor</source>
         <translation>npn tranzisztor</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+10"/>
+        <location filename="../qucs/components/bjt.cpp" line="+10"/>
         <source>pnp transistor</source>
         <translation>pnp tranzisztor</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="-130"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-135"/>
-        <location filename="../qucs/components/jfet.cpp" line="-36"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="-94"/>
+        <location filename="../qucs/components/jfet.cpp" line="-36"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="-131"/>
         <source>polarity</source>
         <translation>polaritás</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/diac.cpp" line="+53"/>
-        <location filename="../qucs/components/diode.cpp" line="-34"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+113"/>
-        <location filename="../qucs/components/thyristor.cpp" line="+53"/>
         <location filename="../qucs/components/triac.cpp" line="+57"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+53"/>
+        <location filename="../qucs/components/diode.cpp" line="-34"/>
+        <location filename="../qucs/components/diac.cpp" line="+53"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>saturation current</source>
         <translation>szaturációs áram</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-30"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>forward emission coefficient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>reverse emission coefficient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+30"/>
+        <location line="+30"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>high current corner for forward beta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+3"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>high current corner for reverse beta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="-31"/>
+        <location line="-31"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>forward early voltage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+3"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>reverse early voltage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>base-emitter leakage saturation current</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3819,19 +3802,19 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-14"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>forward beta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>reverse beta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>minimum base resistance for high currents</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3856,43 +3839,43 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+20"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>base-emitter zero-bias depletion capacitance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="-3"/>
+        <location line="-3"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>base-emitter junction built-in potential</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="-2"/>
+        <location line="-2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>base-emitter junction exponential factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+13"/>
+        <location line="+13"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>base-collector zero-bias depletion capacitance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="-3"/>
+        <location line="-3"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>base-collector junction built-in potential</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="-2"/>
+        <location line="-2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>base-collector junction exponential factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>fraction of Cjc that goes to internal base pin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3912,22 +3895,21 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/diode.cpp" line="+10"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+19"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-3"/>
         <location filename="../qucs/components/photodiode.cpp" line="-3"/>
+        <location filename="../qucs/components/diode.cpp" line="+10"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-3"/>
         <source>forward-bias depletion capacitance coefficient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+11"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>ideal forward transit time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>coefficient of bias-dependence for Tf</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3942,47 +3924,45 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-3"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>ideal reverse transit time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location filename="../qucs/components/diode.cpp" line="+14"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-34"/>
-        <location filename="../qucs/components/jfet.cpp" line="+30"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+78"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+88"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+24"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+21"/>
+        <location line="+21"/>
         <location line="+2"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+24"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+88"/>
+        <location filename="../qucs/components/jfet.cpp" line="+30"/>
+        <location filename="../qucs/components/diode.cpp" line="+14"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+4"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+78"/>
         <source>flicker noise coefficient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+2"/>
-        <location filename="../qucs/components/jfet.cpp" line="+2"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-2"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
+        <location filename="../qucs/components/jfet.cpp" line="+2"/>
+        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-2"/>
         <source>flicker noise exponent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
-        <location filename="../qucs/components/jfet.cpp" line="+2"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+2"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
+        <location filename="../qucs/components/jfet.cpp" line="+2"/>
+        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>flicker noise frequency exponent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>burst noise coefficient</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4007,30 +3987,29 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/diode.cpp" line="+8"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+37"/>
-        <location filename="../qucs/components/jfet.cpp" line="+4"/>
         <location filename="../qucs/components/photodiode.cpp" line="-23"/>
+        <location filename="../qucs/components/jfet.cpp" line="+4"/>
+        <location filename="../qucs/components/diode.cpp" line="+8"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>saturation current temperature exponent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>energy bandgap in eV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/diode.cpp" line="+14"/>
-        <location filename="../qucs/components/jfet.cpp" line="+6"/>
         <location filename="../qucs/components/resistor.cpp" line="+6"/>
+        <location filename="../qucs/components/jfet.cpp" line="+6"/>
+        <location filename="../qucs/components/diode.cpp" line="+14"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>temperature at which parameters were extracted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>default area for bipolar transistor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4075,37 +4054,37 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/mscorner.cpp" line="+46"/>
-        <location filename="../qucs/components/mscross.cpp" line="+29"/>
-        <location filename="../qucs/components/msmbend.cpp" line="+47"/>
-        <location filename="../qucs/components/msstep.cpp" line="+50"/>
-        <location filename="../qucs/components/mstee.cpp" line="+38"/>
         <location filename="../qucs/components/msvia.cpp" line="-4"/>
+        <location filename="../qucs/components/mstee.cpp" line="+38"/>
+        <location filename="../qucs/components/msstep.cpp" line="+50"/>
+        <location filename="../qucs/components/msmbend.cpp" line="+47"/>
+        <location filename="../qucs/components/mscross.cpp" line="+29"/>
+        <location filename="../qucs/components/mscorner.cpp" line="+46"/>
+        <location filename="../qucs/components/bondwire.cpp" line="+2"/>
         <source>substrate</source>
         <translation>szubsztrát</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location filename="../qucs/components/bondwire.cpp" line="+12"/>
         <source>Bond Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/diac.cpp" line="+6"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+7"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+64"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+9"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+41"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+25"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+15"/>
-        <location filename="../qucs/components/potentiometer.cpp" line="+46"/>
-        <location filename="../qucs/components/thyristor.cpp" line="+8"/>
         <location filename="../qucs/components/triac.cpp" line="+8"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+8"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="+46"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+15"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+25"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+41"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+64"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="+86"/>
+        <location filename="../qucs/components/diac.cpp" line="+6"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+9"/>
         <source>simulation temperature</source>
         <translation>szimulációs hőmérséklet</translation>
     </message>
     <message>
-        <location filename="../qucs/components/capacitor.cpp" line="+23"/>
+        <location filename="../qucs/components/capacitor.cpp" line="+27"/>
         <source>capacitor</source>
         <translation>kondenzátor</translation>
     </message>
@@ -4120,60 +4099,60 @@ Resistor color code computation program
         <translation>kezdeti feszültség tranziens szimulációhoz</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/component.cpp" line="+4"/>
-        <location filename="../qucs/components/diode.cpp" line="+4"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="+4"/>
-        <location filename="../qucs/components/logical_inv.cpp" line="+4"/>
         <location filename="../qucs/components/resistor.cpp" line="+4"/>
+        <location filename="../qucs/components/logical_inv.cpp" line="+4"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="+4"/>
+        <location filename="../qucs/components/diode.cpp" line="+4"/>
+        <location filename="../qucs/components/component.cpp" line="+4"/>
+        <location filename="../qucs/components/capacitor.cpp" line="+2"/>
         <source>schematic symbol</source>
         <translation>Rajzjel</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/components/capacitor.cpp" line="+17"/>
         <source>Capacitor</source>
         <translation>Kondenzátor</translation>
     </message>
     <message>
-        <location filename="../qucs/components/cccs.cpp" line="+23"/>
+        <location filename="../qucs/components/cccs.cpp" line="+27"/>
         <source>current controlled current source</source>
         <translation>áramvezérelt áramgenerátor</translation>
     </message>
     <message>
-        <location line="+38"/>
-        <location filename="../qucs/components/ccvs.cpp" line="+62"/>
-        <location filename="../qucs/components/vcvs.cpp" line="+64"/>
+        <location filename="../qucs/components/vcvs.cpp" line="+69"/>
+        <location filename="../qucs/components/ccvs.cpp" line="+66"/>
+        <location filename="../qucs/components/cccs.cpp" line="+39"/>
         <source>forward transfer factor</source>
         <translation>áttétel</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location filename="../qucs/components/ccvs.cpp" line="+1"/>
-        <location filename="../qucs/components/component.cpp" line="-6"/>
-        <location filename="../qucs/components/d_flipflop.cpp" line="+26"/>
-        <location filename="../qucs/components/ifile.cpp" line="+59"/>
-        <location filename="../qucs/components/jk_flipflop.cpp" line="+28"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="-6"/>
-        <location filename="../qucs/components/logical_inv.cpp" line="-6"/>
-        <location filename="../qucs/components/rs_flipflop.cpp" line="+26"/>
-        <location filename="../qucs/components/vccs.cpp" line="+64"/>
-        <location filename="../qucs/components/vcvs.cpp" line="+1"/>
         <location filename="../qucs/components/vfile.cpp" line="+1"/>
+        <location filename="../qucs/components/vcvs.cpp" line="+1"/>
+        <location filename="../qucs/components/vccs.cpp" line="+68"/>
+        <location filename="../qucs/components/rs_flipflop.cpp" line="+26"/>
+        <location filename="../qucs/components/logical_inv.cpp" line="-6"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="-6"/>
+        <location filename="../qucs/components/jk_flipflop.cpp" line="+28"/>
+        <location filename="../qucs/components/ifile.cpp" line="+62"/>
+        <location filename="../qucs/components/d_flipflop.cpp" line="+27"/>
+        <location filename="../qucs/components/component.cpp" line="-6"/>
+        <location filename="../qucs/components/ccvs.cpp" line="+1"/>
+        <location filename="../qucs/components/cccs.cpp" line="+1"/>
         <source>delay time</source>
         <translation>késleltetési idő</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location filename="../qucs/components/cccs.cpp" line="+14"/>
         <source>Current Controlled Current Source</source>
         <translation>Áramvezérelt áramgenerátor</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ccvs.cpp" line="-40"/>
+        <location filename="../qucs/components/ccvs.cpp" line="-41"/>
         <source>current controlled voltage source</source>
         <translation>áramvezérelt feszültséggenerátor</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+55"/>
         <source>Current Controlled Voltage Source</source>
         <translation>Áramvezérelt feszültség generátor</translation>
     </message>
@@ -4208,27 +4187,27 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
         <location filename="../qucs/components/rectline.cpp" line="-8"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="+22"/>
         <source>relative permittivity of dielectric</source>
         <translation>szigetelő relatív permittivitása</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/rectline.cpp" line="+6"/>
         <location filename="../qucs/components/twistedpair.cpp" line="-4"/>
+        <location filename="../qucs/components/rectline.cpp" line="+6"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
         <source>specific resistance of conductor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-2"/>
         <location filename="../qucs/components/rectline.cpp" line="-4"/>
-        <location filename="../qucs/components/twistedpair.cpp" line="-2"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
         <source>relative permeability of conductor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
         <source>inner diameter of shield</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4238,21 +4217,21 @@ Resistor color code computation program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/rectline.cpp" line="-4"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
         <source>mechanical length of the line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/rectline.cpp" line="+6"/>
-        <location filename="../qucs/components/substrate.cpp" line="+65"/>
         <location filename="../qucs/components/twistedpair.cpp" line="+4"/>
+        <location filename="../qucs/components/substrate.cpp" line="+65"/>
+        <location filename="../qucs/components/rectline.cpp" line="+6"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
         <source>loss tangent</source>
         <translation>érintő veszteség</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="+16"/>
         <source>Coaxial Line</source>
         <translation>Koax kábel</translation>
     </message>
@@ -4292,26 +4271,24 @@ Resistor color code computation program
         <translation>bemenetek száma</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/digi_source.cpp" line="+58"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="-2"/>
         <location filename="../qucs/components/logical_inv.cpp" line="-2"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="-2"/>
+        <location filename="../qucs/components/digi_source.cpp" line="+60"/>
+        <location filename="../qucs/components/component.cpp" line="+2"/>
         <source>voltage of high level</source>
         <translation>a magas szint feszültsége</translation>
     </message>
     <message>
-        <location line="+248"/>
-        <location line="+46"/>
-        <location filename="../qucs/components/vacomponent.cpp" line="+306"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1253"/>
-        <location filename="../qucs/schematic_file.cpp" line="+114"/>
+        <location filename="../qucs/schematic_file.cpp" line="+115"/>
         <location line="+18"/>
         <location line="+21"/>
         <location line="+24"/>
         <location line="+17"/>
-        <location line="+72"/>
+        <location line="+70"/>
+        <location line="+32"/>
+        <location line="+43"/>
         <location line="+78"/>
-        <location line="+189"/>
+        <location line="+196"/>
         <location line="+5"/>
         <location line="+37"/>
         <location line="+5"/>
@@ -4329,12 +4306,18 @@ Resistor color code computation program
         <location line="+15"/>
         <location line="+26"/>
         <location line="+54"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1313"/>
+        <location filename="../qucs/components/vacomponent.cpp" line="+333"/>
+        <location line="+24"/>
+        <location filename="../qucs/components/component.cpp" line="+268"/>
+        <location line="+46"/>
+        <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="+788"/>
         <location filename="../qucs-filter/quarterwave_filter.cpp" line="+51"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location filename="../qucs/components/component.cpp" line="-45"/>
         <source>Format Error:
 Wrong line start!</source>
         <translation>Formázási hiba:
@@ -4364,58 +4347,58 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation>sík vonal</translation>
     </message>
     <message>
-        <location line="+37"/>
-        <location filename="../qucs/components/cpwgap.cpp" line="+64"/>
-        <location filename="../qucs/components/cpwopen.cpp" line="+63"/>
-        <location filename="../qucs/components/cpwshort.cpp" line="+62"/>
-        <location filename="../qucs/components/cpwstep.cpp" line="+66"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="-13"/>
-        <location filename="../qucs/components/msgap.cpp" line="+51"/>
-        <location filename="../qucs/components/mslange.cpp" line="-13"/>
-        <location filename="../qucs/components/msline.cpp" line="-12"/>
-        <location filename="../qucs/components/msopen.cpp" line="+42"/>
         <location filename="../qucs/components/msrstub.cpp" line="+42"/>
+        <location filename="../qucs/components/msopen.cpp" line="+42"/>
+        <location filename="../qucs/components/msline.cpp" line="-12"/>
+        <location filename="../qucs/components/mslange.cpp" line="-13"/>
+        <location filename="../qucs/components/msgap.cpp" line="+51"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="-13"/>
+        <location filename="../qucs/components/cpwstep.cpp" line="+66"/>
+        <location filename="../qucs/components/cpwshort.cpp" line="+62"/>
+        <location filename="../qucs/components/cpwopen.cpp" line="+63"/>
+        <location filename="../qucs/components/cpwgap.cpp" line="+64"/>
+        <location filename="../qucs/components/coplanar.cpp" line="+37"/>
         <source>name of substrate definition</source>
         <translation>szubsztrát definició neve</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/cpwgap.cpp" line="+2"/>
-        <location filename="../qucs/components/cpwopen.cpp" line="+2"/>
-        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
-        <location filename="../qucs/components/mslange.cpp" line="+2"/>
-        <location filename="../qucs/components/msline.cpp" line="+2"/>
         <location filename="../qucs/components/msopen.cpp" line="+2"/>
+        <location filename="../qucs/components/msline.cpp" line="+2"/>
+        <location filename="../qucs/components/mslange.cpp" line="+2"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwopen.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwgap.cpp" line="+2"/>
+        <location filename="../qucs/components/coplanar.cpp" line="+2"/>
         <source>width of the line</source>
         <translation>a vonal szélessége</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/cpwgap.cpp" line="+2"/>
-        <location filename="../qucs/components/cpwopen.cpp" line="+2"/>
         <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwopen.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwgap.cpp" line="+2"/>
+        <location filename="../qucs/components/coplanar.cpp" line="+2"/>
         <source>width of a gap</source>
         <translation>a rés szélessége</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
-        <location filename="../qucs/components/mslange.cpp" line="+2"/>
         <location filename="../qucs/components/msline.cpp" line="+2"/>
+        <location filename="../qucs/components/mslange.cpp" line="+2"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
+        <location filename="../qucs/components/coplanar.cpp" line="+2"/>
         <source>length of the line</source>
         <translation>a vonal hossza</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/cpwopen.cpp" line="+4"/>
-        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
         <location filename="../qucs/components/cpwstep.cpp" line="+8"/>
+        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwopen.cpp" line="+4"/>
+        <location filename="../qucs/components/coplanar.cpp" line="+2"/>
         <source>material at the backside of the substrate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location filename="../qucs/components/coplanar.cpp" line="+3"/>
         <source>use approximation instead of precise equation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4490,21 +4473,21 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+45"/>
-        <location filename="../qucs/components/mscross.cpp" line="+2"/>
         <location filename="../qucs/components/mstee.cpp" line="+2"/>
+        <location filename="../qucs/components/mscross.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwstep.cpp" line="+45"/>
         <source>width of line 1</source>
         <translation>1-es vonal szélessége</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/mscross.cpp" line="+2"/>
-        <location filename="../qucs/components/mstee.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwstep.cpp" line="+2"/>
         <source>width of line 2</source>
         <translation>2-es vonal szélessége</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/cpwstep.cpp" line="+2"/>
         <source>distance between ground planes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4529,15 +4512,15 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/rlcg.cpp" line="-2"/>
-        <location filename="../qucs/components/tline.cpp" line="-4"/>
         <location filename="../qucs/components/tline_4port.cpp" line="-4"/>
+        <location filename="../qucs/components/tline.cpp" line="-4"/>
+        <location filename="../qucs/components/rlcg.cpp" line="-2"/>
+        <location filename="../qucs/components/ctline.cpp" line="+2"/>
         <source>electrical length of the line</source>
         <translation>a vonal elektromos hossza</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/ctline.cpp" line="+2"/>
         <source>relative dielectric constant of even mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4563,59 +4546,59 @@ Helytelen &apos;component&apos; sor!</translation>
     </message>
     <message>
         <location filename="../qucs/components/d_flipflop.cpp" line="-2"/>
-        <source>D flip flop with asynchron reset</source>
+        <source>D flip flop with asynchronous reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+92"/>
+        <location line="+93"/>
         <source>D-FlipFlop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/dc_sim.cpp" line="-24"/>
-        <location line="+58"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="-26"/>
+        <location line="+60"/>
         <source>dc simulation</source>
         <translation>DC szimuláció</translation>
     </message>
     <message>
-        <location line="-32"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="-6"/>
-        <location filename="../qucs/components/hb_sim.cpp" line="+8"/>
         <location filename="../qucs/components/tr_sim.cpp" line="-6"/>
+        <location filename="../qucs/components/hb_sim.cpp" line="+8"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="-6"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="-32"/>
         <source>relative tolerance for convergence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <location filename="../qucs/components/hb_sim.cpp" line="-4"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="+2"/>
         <source>absolute tolerance for currents</source>
         <translation>abszolút áram tűrés </translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <location filename="../qucs/components/hb_sim.cpp" line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="+2"/>
         <source>absolute tolerance for voltages</source>
         <translation>abszolút feszültség tűrés</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="+2"/>
         <source>put operating points into dataset</source>
         <translation>müködési pontok mentése az adatbeállításba</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="-6"/>
-        <location filename="../qucs/components/hb_sim.cpp" line="+4"/>
         <location filename="../qucs/components/tr_sim.cpp" line="-6"/>
+        <location filename="../qucs/components/hb_sim.cpp" line="+4"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="-6"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="+3"/>
         <source>maximum number of iterations until error</source>
         <translation>iterációk maximális száma a hibáig</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="+2"/>
         <source>save subcircuit nodes into dataset</source>
         <translation> beágyazott kapcsolás csomopontjainak mentése az adatbeállításba</translation>
     </message>
@@ -4625,9 +4608,9 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation>preferált konvergencia algoritmus</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+16"/>
         <location filename="../qucs/components/tr_sim.cpp" line="+16"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+16"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="+3"/>
         <source>method for solving the circuit matrix</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4657,31 +4640,31 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="-5"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="-5"/>
         <location filename="../qucs/components/tff_SR.cpp" line="-5"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="-5"/>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="-5"/>
+        <location filename="../qucs/components/dff_SR.cpp" line="+3"/>
         <source>cross coupled gate transfer function high scaling factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
         <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
-        <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
+        <location filename="../qucs/components/dff_SR.cpp" line="+2"/>
         <source>cross coupled gate transfer function low scaling factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
         <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
-        <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
+        <location filename="../qucs/components/dff_SR.cpp" line="+2"/>
         <source>cross coupled gate delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location filename="../qucs/components/dff_SR.cpp" line="+21"/>
         <source>D-FlipFlop w/ SR</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4691,41 +4674,40 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
         <location filename="../qucs/components/triac.cpp" line="-14"/>
+        <location filename="../qucs/components/diac.cpp" line="+24"/>
         <source>(bidirectional) breakover voltage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/diac.cpp" line="+2"/>
         <source>(bidirectional) breakover current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/thyristor.cpp" line="-10"/>
         <location filename="../qucs/components/triac.cpp" line="+4"/>
+        <location filename="../qucs/components/thyristor.cpp" line="-10"/>
+        <location filename="../qucs/components/diac.cpp" line="+2"/>
         <source>parasitic capacitance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <location filename="../qucs/components/diode.cpp" line="-54"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-33"/>
         <location filename="../qucs/components/thyristor.cpp" line="+4"/>
-        <location filename="../qucs/components/triac.cpp" line="+4"/>
+        <location filename="../qucs/components/diode.cpp" line="-54"/>
+        <location filename="../qucs/components/diac.cpp" line="+4"/>
         <source>emission coefficient</source>
         <translation>emissziós együttható</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/thyristor.cpp" line="+2"/>
-        <location filename="../qucs/components/triac.cpp" line="+2"/>
+        <location filename="../qucs/components/diac.cpp" line="+2"/>
         <source>intrinsic junction resistance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location filename="../qucs/components/diac.cpp" line="+12"/>
         <source>Diac</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4752,19 +4734,19 @@ Digitális szimuláció</translation>
         <translation>kötéslista formátum</translation>
     </message>
     <message>
-        <location filename="../qucs/components/digi_source.cpp" line="-33"/>
-        <location line="+50"/>
+        <location filename="../qucs/components/digi_source.cpp" line="-34"/>
+        <location line="+51"/>
         <source>digital source</source>
         <translation>Digitális jelforrás</translation>
     </message>
     <message>
-        <location line="-23"/>
         <location filename="../qucs/components/source_ac.cpp" line="-8"/>
+        <location filename="../qucs/components/digi_source.cpp" line="-23"/>
         <source>number of the port</source>
         <translation>kivezetések száma</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/digi_source.cpp" line="+2"/>
         <source>initial output value</source>
         <translation>kezdeti kimeneti érték</translation>
     </message>
@@ -4779,31 +4761,28 @@ Digitális szimuláció</translation>
         <translation>Dióda</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+14"/>
         <location filename="../qucs/components/photodiode.cpp" line="-40"/>
+        <location filename="../qucs/components/diode.cpp" line="+7"/>
         <source>zero-bias junction capacitance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+3"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-72"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+3"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="-7"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+3"/>
+        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-72"/>
         <source>grading coefficient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-6"/>
         <location filename="../qucs/components/photodiode.cpp" line="-6"/>
-        <location filename="../qucs/components/tunneldiode.cpp" line="+2"/>
+        <location filename="../qucs/components/diode.cpp" line="+2"/>
         <source>junction potential</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location filename="../qucs/components/diode.cpp" line="+4"/>
         <source>linear capacitance</source>
         <translation>lineáris kapacitás</translation>
     </message>
@@ -4823,33 +4802,30 @@ Digitális szimuláció</translation>
         <translation>ohmikus soros ellenállás</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+12"/>
         <location filename="../qucs/components/photodiode.cpp" line="+15"/>
+        <location filename="../qucs/components/diode.cpp" line="+2"/>
         <source>transit time</source>
         <translation>átviteli idő</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/diode.cpp" line="+2"/>
         <source>high-injection knee current (0=infinity)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-18"/>
         <location filename="../qucs/components/photodiode.cpp" line="-21"/>
+        <location filename="../qucs/components/diode.cpp" line="+8"/>
         <source>reverse breakdown voltage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+3"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+3"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/diode.cpp" line="+2"/>
         <source>current at reverse breakdown voltage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location filename="../qucs/components/diode.cpp" line="+8"/>
         <source>Bv linear temperature coefficient</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4879,13 +4855,13 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="+7"/>
+        <location filename="../qucs/components/diode.cpp" line="+4"/>
         <source>default area for diode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location filename="../qucs/components/diode.cpp" line="+77"/>
         <source>Diode</source>
         <translation>Dióda</translation>
     </message>
@@ -4895,19 +4871,19 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
         <location filename="../qucs/components/DLS_nto1.cpp" line="-4"/>
+        <location filename="../qucs/components/DLS_1ton.cpp" line="+3"/>
         <source>voltage level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="+3"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/DLS_1ton.cpp" line="+2"/>
         <source>time delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location filename="../qucs/components/DLS_1ton.cpp" line="+20"/>
         <source>D2A Level Shifter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4917,33 +4893,44 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-92"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-61"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+8"/>
+        <location filename="../qucs/components/photodiode.cpp" line="-2"/>
         <location line="+6"/>
-        <location line="+84"/>
-        <location line="+6"/>
-        <location filename="../qucs/components/log_amp.cpp" line="-29"/>
-        <location filename="../qucs/components/logic_0.cpp" line="+28"/>
+        <location filename="../qucs/components/nigbt.cpp" line="-8"/>
+        <location line="+3"/>
         <location filename="../qucs/components/logic_1.cpp" line="+28"/>
+        <location filename="../qucs/components/logic_0.cpp" line="+28"/>
+        <location filename="../qucs/components/log_amp.cpp" line="-29"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="-173"/>
+        <location line="+10"/>
+        <location line="+10"/>
+        <location line="+5"/>
+        <location line="+6"/>
+        <location line="+5"/>
+        <location line="+10"/>
+        <location line="+5"/>
+        <location line="+27"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+28"/>
+        <location line="+26"/>
+        <location line="+3"/>
+        <location line="+3"/>
         <location filename="../qucs/components/MESFET.cpp" line="-58"/>
         <location line="+20"/>
         <location line="+3"/>
         <location line="+3"/>
         <location line="+12"/>
         <location line="+3"/>
-        <location filename="../qucs/components/nigbt.cpp" line="-8"/>
-        <location line="+3"/>
-        <location filename="../qucs/components/photodiode.cpp" line="-2"/>
-        <location line="+6"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="-61"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+8"/>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="+4"/>
         <source>V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="+22"/>
         <source>A2D Level Shifter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4983,388 +4970,754 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+45"/>
-        <location filename="../qucs/components/volt_dc.cpp" line="+45"/>
+        <location filename="../qucs/components/volt_dc.cpp" line="+49"/>
+        <location filename="../qucs/components/ecvs.cpp" line="+45"/>
         <source>voltage in Volts</source>
         <translation>feszültség Voltban</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location filename="../qucs/components/ecvs.cpp" line="+18"/>
         <source>Externally Controlled Voltage Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-126"/>
-        <source>EPFL-EKV MOS 2.6 verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>long = 1, short = 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>length parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <location line="+10"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+33"/>
-        <location line="+13"/>
-        <location line="+36"/>
         <location filename="../qucs/components/nigbt.cpp" line="-33"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-99"/>
-        <source>Width parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>parallel multiple device number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>series multiple device number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>gate oxide capacitance per unit area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>F/m**2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>metallurgical junction depth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>channel width correction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>channel length correction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>long channel threshold voltage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>body effect parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>V**(1/2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>bulk Fermi potential</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
         <location filename="../qucs/components/jfet.cpp" line="-40"/>
         <location filename="../qucs/components/MESFET.cpp" line="-39"/>
         <source>transconductance parameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
         <location filename="../qucs/components/nigbt.cpp" line="-6"/>
         <source>A/V**2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>mobility reduction coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+33"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="-198"/>
         <location filename="../qucs/components/MESFET.cpp" line="+4"/>
         <location line="+3"/>
         <location line="+3"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+33"/>
         <source>1/V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qucs/components/hic2_full.cpp" line="-63"/>
+        <source>HICUM Level 2 v2.22 verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>GICCR constant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>A^2s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+2"/>
-        <source>mobility coefficient</source>
+        <source>Zero-bias hole charge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+59"/>
+        <source>Coul</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-57"/>
+        <source>High-current correction for 2D and 3D effects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Emitter minority charge weighting factor in HBTs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Collector minority charge weighting factor in HBTs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>B-E depletion charge weighting factor in HBTs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>B-C depletion charge weighting factor in HBTs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Internal B-E saturation current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal B-E current ideality factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Internal B-E recombination saturation current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal B-E recombination current ideality factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Peripheral B-E saturation current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Peripheral B-E current ideality factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Peripheral B-E recombination saturation current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Peripheral B-E recombination current ideality factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Non-ideality factor for III-V HBTs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Base current recombination time constant at B-C barrier for high forward injection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal B-C saturation current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal B-C current ideality factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>External B-C saturation current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>External B-C current ideality factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>B-E tunneling saturation current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Exponent factor for tunneling current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Specifies the base node connection for the tunneling current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Avalanche current factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Exponent factor for avalanche current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Relative TC for FAVL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+3"/>
-        <location line="+49"/>
-        <source>V/m</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-50"/>
+        <location line="+160"/>
         <location line="+7"/>
-        <source>longitudinal critical field</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-4"/>
-        <source>depletion length coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>narrow-channel effect coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>reverse short channel charge density</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>A*s/m**2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>characteristic length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+3"/>
-        <source>threshold voltage temperature coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>V/K</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>mobility temperature coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Longitudinal critical field temperature exponent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Ibb temperature coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+30"/>
         <source>1/K</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>heavily doped diffusion length</source>
+        <location line="-201"/>
+        <source>Relative TC for QAVL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>drain/source diffusion sheet resistance</source>
+        <source>Zero bias internal base resistance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Ohm/square</source>
+        <location line="+3"/>
+        <source>External base series resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Factor for geometry dependence of emitter current crowding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>source contact resistance</source>
+        <source>Correction factor for modulation by B-E and B-C space charge layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ratio of HF shunt to total internal capacitance (lateral NQS effect)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ration of internal to total minority charge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Emitter series resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>External collector series resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Substrate transistor transfer saturation current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Forward ideality factor of substrate transfer current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>C-S diode saturation current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ideality factor of C-S diode current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Transit time for forward operation of substrate transistor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Substrate series resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Substrate shunt capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal B-E zero-bias depletion capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal B-E built-in potential</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal B-E grading coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ratio of maximum to zero-bias value of internal B-E capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Peripheral B-E zero-bias depletion capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Peripheral B-E built-in potential</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Peripheral B-E grading coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ratio of maximum to zero-bias value of peripheral B-E capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Internal B-C zero-bias depletion capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal B-C built-in potential</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal B-C grading coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Internal B-C punch-through voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>External B-C zero-bias depletion capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>External B-C built-in potential</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>External B-C grading coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>External B-C punch-through voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Partitioning factor of parasitic B-C cap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Partitioning factor of parasitic B-E cap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>C-S zero-bias depletion capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>C-S built-in potential</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>C-S grading coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>C-S punch-through voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Low current forward transit time at VBC=0V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Time constant for base and B-C space charge layer width modulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Time constant for modelling carrier jam at low VCE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Neutral emitter storage time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Exponent factor for current dependence of neutral emitter storage time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Saturation time constant at high current densities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Smoothing factor for current dependence of base and collector transit time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Partitioning factor for base and collector portion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Internal collector resistance at low electric field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Voltage separating ohmic and saturation velocity regime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Internal C-E saturation voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Collector punch-through voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Storage time for inverse operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Total parasitic B-E capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Total parasitic B-C capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Factor for additional delay time of minority charge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Factor for additional delay time of transfer current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Flag for turning on and off of vertical NQS effect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Flicker noise coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Flicker noise exponent factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Flag for determining where to tag the flicker noise source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Scaling factor for collector minority charge in direction of emitter width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Scaling factor for collector minority charge in direction of emitter length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Bandgap voltage extrapolated to 0 K</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>First order relative TC of parameter T0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Second order relative TC of parameter T0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Temperature exponent for RCI0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Relative TC of saturation drift velocity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Relative TC of VCES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Temperature exponent of internal base resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Temperature exponent of external base resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Temperature exponent of external collector resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Temperature exponent of emitter resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Temperature exponent of mobility in substrate transistor transit time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Effective emitter bandgap voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Effective collector bandgap voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Effective substrate bandgap voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Coefficient K1 in T-dependent band-gap equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Coefficient K2 in T-dependent band-gap equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Exponent coefficient in transfer current temperature dependence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Exponent coefficient in B-E junction current temperature dependence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Relative TC of forward current gain for V2.1 model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Flag for turning on and off self-heating effect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Thermal resistance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+3"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+3"/>
-        <location line="+6"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+39"/>
-        <location filename="../qucs/components/photodiode.cpp" line="-12"/>
-        <location line="+38"/>
+        <source>K/W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Thermal capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>J/W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Flag for compatibility with v2.1 model (0=v2.1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Temperature at which parameters are specified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Temperature change w.r.t. chip temperature for particular transistor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>K</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>HICUM L2 v2.22</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/potentiometer.cpp" line="-27"/>
+        <location line="+19"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+18"/>
         <location line="+3"/>
         <location line="+3"/>
-        <location filename="../qucs/components/potentiometer.cpp" line="-27"/>
-        <location line="+19"/>
+        <location filename="../qucs/components/photodiode.cpp" line="-12"/>
+        <location line="+38"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+3"/>
+        <location line="+6"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="-234"/>
+        <location line="+3"/>
+        <location line="+11"/>
+        <location line="+3"/>
+        <location line="+16"/>
+        <location line="+84"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+39"/>
         <source>Ohm</source>
         <translation>Ohm</translation>
     </message>
     <message>
-        <location line="-1"/>
-        <source>drain contact resistance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>gate to source overlap capacitance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <location line="+3"/>
         <location filename="../qucs/components/rlcg.cpp" line="-4"/>
         <source>F/m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-4"/>
-        <source>gate to drain overlap capacitance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>gate to bulk overlap capacitance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>first impact ionization coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>1/m</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>second impact ionization coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>saturation voltage factor for impact ionization</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>area related theshold voltage mismatch parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>V*m</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>area related gain mismatch parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>area related body effect mismatch parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>sqrt(V)*m</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <location line="+6"/>
-        <location filename="../qucs/components/log_amp.cpp" line="-20"/>
-        <location line="+3"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+62"/>
-        <location filename="../qucs/components/photodiode.cpp" line="-35"/>
-        <location line="+6"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-47"/>
         <location line="+35"/>
         <location line="+3"/>
+        <location filename="../qucs/components/photodiode.cpp" line="-35"/>
+        <location line="+6"/>
+        <location filename="../qucs/components/log_amp.cpp" line="-20"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="-182"/>
+        <location line="+11"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <location line="+10"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <location line="+39"/>
+        <location line="+5"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+62"/>
         <source>A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="-20"/>
+        <location line="+8"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+6"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="+11"/>
+        <location line="+3"/>
+        <location line="+10"/>
+        <location line="+10"/>
+        <location line="+11"/>
+        <location line="+15"/>
+        <location line="+47"/>
+        <location line="+3"/>
         <location filename="../qucs/components/MESFET.cpp" line="-52"/>
         <location line="+3"/>
         <location line="+3"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+6"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="-20"/>
-        <location line="+8"/>
         <source>F</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
         <location filename="../qucs/components/photodiode.cpp" line="+4"/>
         <source>diode relative area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>charge partition parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="+5"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+8"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+4"/>
         <location filename="../qucs/components/log_amp.cpp" line="+34"/>
         <location filename="../qucs/components/MESFET.cpp" line="+60"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+4"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+8"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
-        <location filename="../qucs/components/potentiometer.cpp" line="+5"/>
         <source>parameter measurement temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+1"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+1"/>
         <location filename="../qucs/components/nigbt.cpp" line="+1"/>
         <location line="+3"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+1"/>
-        <location filename="../qucs/components/potentiometer.cpp" line="+1"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+1"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
         <source>Celsius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>EPFL-EKV NMOS 2.6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>EPFL-EKV PMOS 2.6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/eqndefined.cpp" line="+25"/>
+        <location filename="../qucs/components/eqndefined.cpp" line="+33"/>
         <source>equation defined device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>type of equations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5375,37 +5728,41 @@ Digitális szimuláció</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+82"/>
+        <location line="+236"/>
         <source>current equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-80"/>
-        <location line="+82"/>
+        <location line="-234"/>
+        <location line="+236"/>
         <source>charge equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-218"/>
         <source>Equation Defined Device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/equation.cpp" line="+25"/>
+        <location filename="../qucs/components/equation.cpp" line="+28"/>
         <source>equation</source>
         <translation>egyenlet</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
-        <location line="+49"/>
         <source>Equation</source>
         <translation>Egyenlet</translation>
     </message>
     <message>
-        <location line="-36"/>
+        <location line="+13"/>
         <source>put result into dataset</source>
         <translation>eredmény mentése az adatbeállításba</translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>Qucs legacy equation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/etr_sim.cpp" line="-44"/>
@@ -5413,67 +5770,67 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
         <location filename="../qucs/components/tr_sim.cpp" line="-25"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+19"/>
         <source>integration method</source>
         <translation>integrációs módszer</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+3"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+3"/>
         <source>order of integration method</source>
         <translation>integrációs módszer sorrendje</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <source>initial step size in seconds</source>
         <translation>kezdeti lépésméret másodpercekben</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <source>minimum step size in seconds</source>
         <translation>minimum lépésszám másodpercenként</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+12"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+12"/>
         <source>relative tolerance of local truncation error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <source>absolute tolerance of local truncation error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <source>overestimation of local truncation error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+5"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+5"/>
         <source>relax time step raster</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="+58"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <source>perform an initial DC analysis</source>
         <translation>kezdeti DC analízis végrehajtása</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+4"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <source>maximum step size in seconds</source>
         <translation>maximális lépésköz [mp]</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+14"/>
         <source>External transient simulation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5523,17 +5880,17 @@ Digitális szimuláció</translation>
         <translation>föld (referencia potenciál)</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>Ground</source>
         <translation>Föld</translation>
     </message>
     <message>
-        <location filename="../qucs/components/gyrator.cpp" line="-34"/>
+        <location filename="../qucs/components/gyrator.cpp" line="-35"/>
         <source>gyrator (impedance inverter)</source>
         <translation>girátor (impedanciatranszformátor)</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+33"/>
         <source>gyrator ratio</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5553,12 +5910,12 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/hb_sim.cpp" line="-29"/>
+        <location filename="../qucs/components/hb_sim.cpp" line="-31"/>
         <source>Harmonic balance simulation</source>
         <translation>Harmonikus egyensúly szimuláció</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+23"/>
         <source>number of harmonics</source>
         <translation>harmonikusok száma</translation>
     </message>
@@ -5583,23 +5940,23 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+37"/>
         <location filename="../qucs/components/phaseshifter.cpp" line="-2"/>
+        <location filename="../qucs/components/hybrid.cpp" line="+37"/>
         <source>phase shift in degree</source>
         <translation>fázishasítás szöge</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location filename="../qucs/components/hybrid.cpp" line="+13"/>
         <source>Hybrid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/iexp.cpp" line="+23"/>
+        <location filename="../qucs/components/iexp.cpp" line="+29"/>
         <source>exponential current source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+35"/>
         <source>current before rising edge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5609,19 +5966,19 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/vexp.cpp" line="+61"/>
+        <location filename="../qucs/components/vexp.cpp" line="+69"/>
+        <location filename="../qucs/components/iexp.cpp" line="+2"/>
         <source>start time of the exponentially rising edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/vexp.cpp" line="+2"/>
+        <location filename="../qucs/components/iexp.cpp" line="+2"/>
         <source>start of exponential decay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/iexp.cpp" line="+2"/>
         <source>time constant of the rising edge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5636,31 +5993,31 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/ifile.cpp" line="-35"/>
+        <location filename="../qucs/components/ifile.cpp" line="-36"/>
         <source>file based current source</source>
         <translation>fájl bázisú áramgenerátor</translation>
     </message>
     <message>
-        <location line="+29"/>
         <location filename="../qucs/components/vfile.cpp" line="-6"/>
+        <location filename="../qucs/components/ifile.cpp" line="+30"/>
         <source>name of the sample file</source>
         <translation>Minta fájl neve</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/sparamfile.cpp" line="+38"/>
-        <location filename="../qucs/components/vfile.cpp" line="+2"/>
+        <location filename="../qucs/components/ifile.cpp" line="+2"/>
         <source>interpolation type</source>
         <translation>interpolációs típus</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/vfile.cpp" line="+2"/>
+        <location filename="../qucs/components/ifile.cpp" line="+2"/>
         <source>repeat waveform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../qucs/components/ifile.cpp" line="+1"/>
         <source>current gain</source>
         <translation>áramerősítés</translation>
     </message>
@@ -5670,12 +6027,12 @@ Digitális szimuláció</translation>
         <translation>Fájl bázisú áramgenerátor</translation>
     </message>
     <message>
-        <location filename="../qucs/components/inductor.cpp" line="+23"/>
+        <location filename="../qucs/components/inductor.cpp" line="+27"/>
         <source>inductor</source>
         <translation>tekercs</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>inductance in Henry</source>
         <translation>Induktivitás Henry-ben</translation>
     </message>
@@ -5685,27 +6042,27 @@ Digitális szimuláció</translation>
         <translation>kezdeti áram tranziens szimulációhoz</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+52"/>
         <source>Inductor</source>
         <translation>Tekercs</translation>
     </message>
     <message>
-        <location filename="../qucs/components/iprobe.cpp" line="+23"/>
+        <location filename="../qucs/components/iprobe.cpp" line="+24"/>
         <source>current probe</source>
         <translation>áram próba</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+45"/>
         <source>Current Probe</source>
         <translation>Áram próba</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ipulse.cpp" line="+23"/>
+        <location filename="../qucs/components/ipulse.cpp" line="+28"/>
         <source>ideal current pulse source</source>
         <translation>ideális áramimpulzus generátor</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+29"/>
         <source>current before and after the pulse</source>
         <translation>impulzus előtti és utáni áram</translation>
     </message>
@@ -5715,68 +6072,68 @@ Digitális szimuláció</translation>
         <translation>impulzus áram</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/vpulse.cpp" line="+54"/>
+        <location filename="../qucs/components/vpulse.cpp" line="+61"/>
+        <location filename="../qucs/components/ipulse.cpp" line="+2"/>
         <source>start time of the pulse</source>
         <translation>impulzus indulási idő</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/vpulse.cpp" line="+2"/>
+        <location filename="../qucs/components/ipulse.cpp" line="+2"/>
         <source>ending time of the pulse</source>
         <translation>impulzus befelyezési idő</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/irect.cpp" line="+59"/>
+        <location filename="../qucs/components/vrect.cpp" line="+62"/>
         <location filename="../qucs/components/vpulse.cpp" line="+2"/>
-        <location filename="../qucs/components/vrect.cpp" line="+58"/>
+        <location filename="../qucs/components/irect.cpp" line="+67"/>
+        <location filename="../qucs/components/ipulse.cpp" line="+2"/>
         <source>rise time of the leading edge</source>
         <translation>felfutási idő</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/irect.cpp" line="+2"/>
         <location filename="../qucs/components/vpulse.cpp" line="+2"/>
-        <location filename="../qucs/components/vrect.cpp" line="+2"/>
+        <location filename="../qucs/components/irect.cpp" line="+2"/>
+        <location filename="../qucs/components/ipulse.cpp" line="+2"/>
         <source>fall time of the trailing edge</source>
         <translation>lefutási idő</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/components/ipulse.cpp" line="+16"/>
         <source>Current Pulse</source>
         <translation>Áram impulzus</translation>
     </message>
     <message>
-        <location filename="../qucs/components/irect.cpp" line="-38"/>
+        <location filename="../qucs/components/irect.cpp" line="-39"/>
         <source>ideal rectangle current source</source>
         <translation>ideális négyszögáram generátor</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>current at high pulse</source>
         <translation>magas impulzus áram</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/vrect.cpp" line="-6"/>
+        <location filename="../qucs/components/irect.cpp" line="+2"/>
         <source>duration of high pulses</source>
         <translation>a magas szint szélessége</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/vrect.cpp" line="+2"/>
+        <location filename="../qucs/components/irect.cpp" line="+2"/>
         <source>duration of low pulses</source>
         <translation>az alacsony szint szélessége</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location filename="../qucs/components/vrect.cpp" line="+6"/>
+        <location filename="../qucs/components/irect.cpp" line="+6"/>
         <source>initial delay time</source>
         <translation>kezdeti késleltetési idő</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/components/irect.cpp" line="+47"/>
         <source>Rectangle Current</source>
         <translation>Négyszögáram</translation>
     </message>
@@ -5796,13 +6153,13 @@ Digitális szimuláció</translation>
         <translation>JFET</translation>
     </message>
     <message>
-        <location line="+6"/>
         <location filename="../qucs/components/nigbt.cpp" line="-10"/>
+        <location filename="../qucs/components/jfet.cpp" line="+6"/>
         <source>threshold voltage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location filename="../qucs/components/jfet.cpp" line="+4"/>
         <source>channel-length modulation parameter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5877,7 +6234,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+59"/>
         <source>n-JFET</source>
         <translation>n-JFET</translation>
     </message>
@@ -5888,7 +6245,7 @@ Digitális szimuláció</translation>
     </message>
     <message>
         <location filename="../qucs/components/jk_flipflop.cpp" line="-2"/>
-        <source>JK flip flop with asynchron set and reset</source>
+        <source>JK flip flop with asynchronous set and reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5902,17 +6259,17 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+28"/>
         <source>JK-FlipFlop w/ SR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/libcomp.cpp" line="+34"/>
+        <location filename="../qucs/components/libcomp.cpp" line="+36"/>
         <source>Component taken from Qucs library</source>
         <translation>Az alkatrész ki van véve a Qucs katalógusból</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>name of qucs library file</source>
         <translation>qucs alkatrész-katalógus fájl neve
 </translation>
@@ -5938,16 +6295,16 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+11"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+19"/>
         <location filename="../qucs/components/potentiometer.cpp" line="-12"/>
         <location line="+3"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+19"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+1"/>
+        <location line="+11"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-9"/>
+        <location filename="../qucs/components/log_amp.cpp" line="-9"/>
         <source>input I1 bias current</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5962,13 +6319,13 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/potentiometer.cpp" line="-4"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+2"/>
         <source>conformity error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+3"/>
         <source>output offset error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6089,7 +6446,7 @@ Digitális szimuláció</translation>
         <translation>logikai AND</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>n-port AND</source>
         <translation>n-bemenetű AND</translation>
     </message>
@@ -6099,7 +6456,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+104"/>
+        <location line="+105"/>
         <source>Buffer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6109,17 +6466,17 @@ Digitális szimuláció</translation>
         <translation>logikai inverter</translation>
     </message>
     <message>
-        <location line="+121"/>
+        <location line="+122"/>
         <source>Inverter</source>
         <translation>Inverter</translation>
     </message>
     <message>
-        <location filename="../qucs/components/logical_nand.cpp" line="+22"/>
+        <location filename="../qucs/components/logical_nand.cpp" line="+23"/>
         <source>logical NAND</source>
         <translation>logikai NAND</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>n-port NAND</source>
         <translation>n-bemenetű NAND</translation>
     </message>
@@ -6129,7 +6486,7 @@ Digitális szimuláció</translation>
         <translation>logikai NOR</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>n-port NOR</source>
         <translation>n-bemenetű NOR</translation>
     </message>
@@ -6139,7 +6496,7 @@ Digitális szimuláció</translation>
         <translation>logikai OR</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>n-port OR</source>
         <translation>n-bemenetű OR</translation>
     </message>
@@ -6149,7 +6506,7 @@ Digitális szimuláció</translation>
         <translation>logikai XNOR</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>n-port XNOR</source>
         <translation>n-bemenetű XNOR</translation>
     </message>
@@ -6159,7 +6516,7 @@ Digitális szimuláció</translation>
         <translation>logikai XOR</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>n-port XOR</source>
         <translation>n-bemenetű XOR</translation>
     </message>
@@ -6279,19 +6636,24 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+59"/>
+        <source>gate reverse breakdown current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/photodiode.cpp" line="-10"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-57"/>
         <source>energy gap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+1"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
         <source>eV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+4"/>
         <source>zero bias gate-drain junction capacitance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6361,14 +6723,14 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/thyristor.cpp" line="+2"/>
         <location filename="../qucs/components/triac.cpp" line="+2"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+2"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+2"/>
         <source>gate resistance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
         <location line="+3"/>
         <location line="+3"/>
         <location line="+15"/>
@@ -6409,12 +6771,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>gate reverse breakdown currrent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>forward bias slope resistance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6529,30 +6886,30 @@ Digitális szimuláció</translation>
         <translation>Műveleti erősítő</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mosfet.cpp" line="+25"/>
+        <location filename="../qucs/components/mosfet.cpp" line="+27"/>
         <source>MOS field-effect transistor</source>
         <translation>MOS térvezérlésű tranzisztor</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+27"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+86"/>
+        <location filename="../qucs/components/mosfet.cpp" line="+20"/>
         <source>n-MOSFET</source>
         <translation>n-MOSFET</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+11"/>
+        <location line="+11"/>
+        <location filename="../qucs/components/mosfet.cpp" line="+10"/>
         <source>p-MOSFET</source>
         <translation>p-MOSFET</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+17"/>
+        <location line="+17"/>
+        <location filename="../qucs/components/mosfet.cpp" line="+16"/>
         <source>depletion MOSFET</source>
         <translation>kiürítéses MOSFET</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="-149"/>
+        <location line="-208"/>
         <source>zero-bias threshold voltage</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6742,7 +7099,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+18"/>
         <source>MOS field-effect transistor with substrate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6752,13 +7109,13 @@ Digitális szimuláció</translation>
         <translation>mikrosztrip sarok</translation>
     </message>
     <message>
-        <location line="+25"/>
         <location filename="../qucs/components/msmbend.cpp" line="+2"/>
+        <location filename="../qucs/components/mscorner.cpp" line="+25"/>
         <source>width of line</source>
         <translation>vonal szélessége</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location filename="../qucs/components/mscorner.cpp" line="+14"/>
         <source>Microstrip Corner</source>
         <translation>Mikrosztrip Sarok</translation>
     </message>
@@ -6768,31 +7125,31 @@ Digitális szimuláció</translation>
         <translation>páros mikrosztrip vonal</translation>
     </message>
     <message>
-        <location line="+40"/>
         <location filename="../qucs/components/mslange.cpp" line="+2"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="+40"/>
         <source>spacing between the lines</source>
         <translation>vonalak közötti távolság</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/mslange.cpp" line="+2"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
         <source>microstrip model</source>
         <translation>mikrosztrip modell</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/mscross.cpp" line="+9"/>
-        <location filename="../qucs/components/msgap.cpp" line="+11"/>
-        <location filename="../qucs/components/mslange.cpp" line="+2"/>
-        <location filename="../qucs/components/msline.cpp" line="+5"/>
-        <location filename="../qucs/components/msopen.cpp" line="+5"/>
-        <location filename="../qucs/components/msstep.cpp" line="+9"/>
         <location filename="../qucs/components/mstee.cpp" line="+7"/>
+        <location filename="../qucs/components/msstep.cpp" line="+9"/>
+        <location filename="../qucs/components/msopen.cpp" line="+5"/>
+        <location filename="../qucs/components/msline.cpp" line="+5"/>
+        <location filename="../qucs/components/mslange.cpp" line="+2"/>
+        <location filename="../qucs/components/msgap.cpp" line="+11"/>
+        <location filename="../qucs/components/mscross.cpp" line="+9"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
         <source>microstrip dispersion model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="+17"/>
         <source>Coupled Microstrip Line</source>
         <translation>Páros Mikrosztrip Vonal</translation>
     </message>
@@ -6802,34 +7159,34 @@ Digitális szimuláció</translation>
         <translation>mikrosztrip kereszteződés</translation>
     </message>
     <message>
-        <location line="+12"/>
         <location filename="../qucs/components/mstee.cpp" line="-5"/>
+        <location filename="../qucs/components/mscross.cpp" line="+12"/>
         <source>width of line 3</source>
         <translation>3-es vonal szélessége</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/mscross.cpp" line="+2"/>
         <source>width of line 4</source>
         <translation>4-es vonal szélessége</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/msgap.cpp" line="-3"/>
-        <location filename="../qucs/components/msline.cpp" line="-3"/>
-        <location filename="../qucs/components/msopen.cpp" line="-3"/>
-        <location filename="../qucs/components/msstep.cpp" line="-3"/>
         <location filename="../qucs/components/mstee.cpp" line="+2"/>
+        <location filename="../qucs/components/msstep.cpp" line="-3"/>
+        <location filename="../qucs/components/msopen.cpp" line="-3"/>
+        <location filename="../qucs/components/msline.cpp" line="-3"/>
+        <location filename="../qucs/components/msgap.cpp" line="-3"/>
+        <location filename="../qucs/components/mscross.cpp" line="+2"/>
         <source>quasi-static microstrip model</source>
         <translation>kvázi-sztatikus mikrosztrip modell</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location filename="../qucs/components/mstee.cpp" line="+8"/>
+        <location line="+8"/>
+        <location filename="../qucs/components/mscross.cpp" line="+6"/>
         <source>show port numbers in symbol or not</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location filename="../qucs/components/mscross.cpp" line="+17"/>
         <source>Microstrip Cross</source>
         <translation>Mikrosztrip Kereszteződés</translation>
     </message>
@@ -6924,14 +7281,14 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+0"/>
         <location filename="../qucs/components/potentiometer.cpp" line="-9"/>
         <location line="+7"/>
+        <location filename="../qucs/components/msrstub.cpp" line="+0"/>
         <source>degrees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location filename="../qucs/components/msrstub.cpp" line="+14"/>
         <source>Microstrip Radial Stub</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6991,25 +7348,25 @@ Digitális szimuláció</translation>
         <translation>két csatolt tekercs</translation>
     </message>
     <message>
-        <location line="+35"/>
         <location filename="../qucs/components/mutual2.cpp" line="+83"/>
+        <location filename="../qucs/components/mutual.cpp" line="+35"/>
         <source>inductance of coil 1</source>
         <translation>1. tekercs induktivitása</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/mutual2.cpp" line="+2"/>
+        <location filename="../qucs/components/mutual.cpp" line="+2"/>
         <source>inductance of coil 2</source>
         <translation>2. tekercs induktivitása</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/mutual2.cpp" line="+4"/>
+        <location line="+4"/>
+        <location filename="../qucs/components/mutual.cpp" line="+2"/>
         <source>coupling factor between coil 1 and 2</source>
         <translation>1-2 tekercs közötti csatolási tényező</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location filename="../qucs/components/mutual.cpp" line="+14"/>
         <source>Mutual Inductors</source>
         <translation>Csatolt tekercs</translation>
     </message>
@@ -7215,55 +7572,55 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/noise_ii.cpp" line="-58"/>
-        <location filename="../qucs/components/noise_iv.cpp" line="-53"/>
         <location filename="../qucs/components/noise_vv.cpp" line="-48"/>
+        <location filename="../qucs/components/noise_iv.cpp" line="-53"/>
+        <location filename="../qucs/components/noise_ii.cpp" line="-58"/>
         <source>correlated current sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+48"/>
         <location filename="../qucs/components/noise_iv.cpp" line="+43"/>
+        <location filename="../qucs/components/noise_ii.cpp" line="+48"/>
         <source>current power spectral density of source 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
         <source>current power spectral density of source 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/noise_iv.cpp" line="+4"/>
         <location filename="../qucs/components/noise_vv.cpp" line="+42"/>
+        <location filename="../qucs/components/noise_iv.cpp" line="+4"/>
+        <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
         <source>normalized correlation coefficient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <location filename="../qucs/components/noise_iv.cpp" line="+20"/>
-        <location filename="../qucs/components/noise_vv.cpp" line="+20"/>
+        <location filename="../qucs/components/noise_ii.cpp" line="+20"/>
         <source>Correlated Noise Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="-22"/>
         <location filename="../qucs/components/noise_iv.cpp" line="-22"/>
-        <location filename="../qucs/components/noise_vv.cpp" line="-22"/>
         <source>voltage power spectral density of source 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/noise_vv.cpp" line="-2"/>
+        <location line="-2"/>
         <source>voltage power spectral density of source 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/opamp.cpp" line="-27"/>
+        <location filename="../qucs/components/opamp.cpp" line="-28"/>
         <source>operational amplifier</source>
         <translation>műveleti erősítő</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+30"/>
         <source>absolute value of maximum and minimum output voltage</source>
         <translation>maximum és minimum kimeneti feszültség abszolútértéke</translation>
     </message>
@@ -7288,14 +7645,14 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/pad3bit.cpp" line="+20"/>
         <location filename="../qucs/components/pad4bit.cpp" line="+20"/>
+        <location filename="../qucs/components/pad3bit.cpp" line="+20"/>
+        <location filename="../qucs/components/pad2bit.cpp" line="+3"/>
         <source>pad output value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location filename="../qucs/components/pad2bit.cpp" line="+19"/>
         <source>2Bit Pattern</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7320,30 +7677,38 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/param_sweep.cpp" line="-30"/>
-        <location line="+44"/>
+        <location filename="../qucs/components/param_sweep.cpp" line="-32"/>
+        <location line="+48"/>
         <source>Parameter sweep</source>
         <translation>Paraméter léptetés</translation>
     </message>
     <message>
-        <location line="-24"/>
+        <location line="-26"/>
         <source>simulation to perform parameter sweep on</source>
         <translation>szimuláció, amelyikhez a paramétert léptetni kell</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location filename="../qucs/spicecomponents/sp_sens.cpp" line="+2"/>
+        <location filename="../qucs/components/param_sweep.cpp" line="+4"/>
         <source>parameter to sweep</source>
         <translation>paramáter amelyiket léptetjük</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs/components/param_sweep.cpp" line="+2"/>
         <source>start value for sweep</source>
         <translation>kezdő érték a léptetéshez</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs/components/param_sweep.cpp" line="+2"/>
         <source>stop value for sweep</source>
         <translation>befejező érték a léptetéshez</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Simulation step</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/phaseshifter.cpp" line="-24"/>
@@ -7381,13 +7746,13 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+30"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+1"/>
         <source>A/W</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
         <source>shunt resistance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7471,12 +7836,46 @@ Digitális szimuláció</translation>
         <translation>PM</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location filename="../qucs/spicecomponents/vsffm.cpp" line="+29"/>
+        <source>SPICE V(SFFM):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>offset volage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>carrier amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/isffm.cpp" line="+57"/>
+        <source>carrier signal frequency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/isffm.cpp" line="+2"/>
+        <location filename="../qucs/components/pm_modulator.cpp" line="+21"/>
         <source>modulation index</source>
         <translation>modulációs index</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/isffm.cpp" line="+2"/>
+        <source>modulating signal frequency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>V(SFFM)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/pm_modulator.cpp" line="+14"/>
         <source>PM modulated Source</source>
         <translation>PM modulált jelforrás</translation>
     </message>
@@ -7541,7 +7940,53 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qucs/spicecomponents/LTL_SPICE.cpp" line="+26"/>
+        <source>SPICE T:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Characteristic impedance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+1"/>
+        <source>Transmission delay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Frequency</source>
+        <translation type="unfinished">Frekvencia</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Normalised length at given frequency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Initial voltage at end 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Initial current at end 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Initial voltage at end 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Initial current at end 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="+1"/>
         <source>T</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7567,12 +8012,12 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/relais.cpp" line="-45"/>
+        <location filename="../qucs/components/relais.cpp" line="-46"/>
         <source>relay</source>
         <translation>relé</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+38"/>
         <source>threshold voltage in Volts</source>
         <translation>letörési feszültség [V]</translation>
     </message>
@@ -7592,7 +8037,7 @@ Digitális szimuláció</translation>
         <translation>ellenállás a kikapcsolt állapotban [Ohm]</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+54"/>
         <source>Relay</source>
         <translation>Relé</translation>
     </message>
@@ -7617,7 +8062,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+87"/>
         <source>Resistor</source>
         <translation>Ellenállás</translation>
     </message>
@@ -7632,41 +8077,41 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
         <location filename="../qucs/components/rfedd2p.cpp" line="+34"/>
+        <location filename="../qucs/components/rfedd.cpp" line="+7"/>
         <source>type of parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/sparamfile.cpp" line="+7"/>
+        <location filename="../qucs/components/rfedd.cpp" line="+2"/>
         <source>number of ports</source>
         <translation>kivezetések száma</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-5"/>
         <location filename="../qucs/components/rfedd2p.cpp" line="+2"/>
-        <location filename="../qucs/components/sparamfile.cpp" line="-5"/>
+        <location filename="../qucs/components/rfedd.cpp" line="+2"/>
         <source>representation during DC analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location filename="../qucs/components/rfedd2p.cpp" line="+5"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/rfedd.cpp" line="+5"/>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+85"/>
         <location line="+5"/>
         <location line="+9"/>
-        <location filename="../qucs/components/rfedd2p.cpp" line="+5"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
         <source>parameter equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-81"/>
+        <location filename="../qucs/components/rfedd.cpp" line="-81"/>
         <source>Equation Defined RF Device</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7746,12 +8191,12 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/source_ac.cpp" line="-36"/>
+        <location filename="../qucs/components/source_ac.cpp" line="-37"/>
         <source>ac power source</source>
         <translation>AC teljesítmény generátor</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+39"/>
         <source>port impedance</source>
         <translation>kivezetés impedancia</translation>
     </message>
@@ -7766,12 +8211,12 @@ Digitális szimuláció</translation>
         <translation>AC teljesítmény generátor</translation>
     </message>
     <message>
-        <location filename="../qucs/components/sp_sim.cpp" line="-30"/>
+        <location filename="../qucs/components/sp_sim.cpp" line="-31"/>
         <source>S parameter simulation</source>
         <translation>S paraméter szimuláció</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+33"/>
         <source>calculate noise parameters</source>
         <translation>zaj paraméter számolás</translation>
     </message>
@@ -7836,12 +8281,12 @@ Digitális szimuláció</translation>
         <translation>fájl</translation>
     </message>
     <message>
-        <location filename="../qucs/components/spicefile.cpp" line="+43"/>
+        <location filename="../qucs/components/spicefile.cpp" line="+44"/>
         <source>SPICE netlist file</source>
         <translation>SPICE kötéslista fájl</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+28"/>
         <source>SPICE netlist</source>
         <translation>SPICE kötéslista</translation>
     </message>
@@ -7856,13 +8301,13 @@ Digitális szimuláció</translation>
         <translation>spice</translation>
     </message>
     <message>
-        <location line="+160"/>
-        <location filename="../qucs/schematic_file.cpp" line="+425"/>
+        <location filename="../qucs/schematic_file.cpp" line="+434"/>
+        <location filename="../qucs/components/spicefile.cpp" line="+169"/>
         <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
         <translation>HIBA: A &quot;%1&quot; SPICE komponensnek nincs fájlneve.</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location filename="../qucs/components/spicefile.cpp" line="+10"/>
         <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
         <translation>HIBA: A &quot;%1&quot; SPICE fájl nem nyitható meg.</translation>
     </message>
@@ -7877,13 +8322,13 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+67"/>
-        <location filename="../qucs/mouseactions.cpp" line="+847"/>
+        <location filename="../qucs/mouseactions.cpp" line="+903"/>
+        <location filename="../qucs/components/spicefile.cpp" line="+81"/>
         <source>Info</source>
         <translation>Infó</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../qucs/components/spicefile.cpp" line="+1"/>
         <source>Preprocessing SPICE file &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; SPICE fájl előfeldolgozása.</translation>
     </message>
@@ -7893,7 +8338,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+18"/>
         <source>ERROR: Cannot execute &quot;%1&quot;.</source>
         <translation>HIBA: A &quot;%1&quot; nem futtatható.</translation>
     </message>
@@ -7908,7 +8353,7 @@ Digitális szimuláció</translation>
         <translation>&quot;%1&quot; SPICE fájl konvertásása.</translation>
     </message>
     <message>
-        <location filename="../qucs/components/subcircuit.cpp" line="+35"/>
+        <location filename="../qucs/components/subcircuit.cpp" line="+36"/>
         <source>subcircuit</source>
         <translation>beágyazott kapcsolás</translation>
     </message>
@@ -7918,7 +8363,7 @@ Digitális szimuláció</translation>
         <translation>qucs kapcsolási rajz fájl neve</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>Subcircuit</source>
         <translation>beágyazott kapcsolás</translation>
     </message>
@@ -7936,6 +8381,11 @@ Digitális szimuláció</translation>
         <location line="+3"/>
         <source>type of the port (for digital simulation only)</source>
         <translation>a kivezetés típusa (csak digitális szimulációhoz)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Conjugated port for XSPICE differential ports</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+61"/>
@@ -8043,7 +8493,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+28"/>
         <source>T-FlipFlop w/ SR</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8073,19 +8523,19 @@ Digitális szimuláció</translation>
         <translation>ideális tápvonal</translation>
     </message>
     <message>
-        <location line="+26"/>
         <location filename="../qucs/components/tline_4port.cpp" line="-2"/>
+        <location filename="../qucs/components/tline.cpp" line="+26"/>
         <source>characteristic impedance</source>
         <translation>karakterisztikus ellenállás</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location filename="../qucs/components/tline_4port.cpp" line="+4"/>
+        <location filename="../qucs/components/tline.cpp" line="+4"/>
         <source>attenuation factor per length in 1/m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/components/tline.cpp" line="+16"/>
         <source>Transmission Line</source>
         <translation>Tápvonal</translation>
     </message>
@@ -8100,27 +8550,54 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="-60"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="-61"/>
         <source>transient simulation</source>
         <translation>Tranziens szimuláció</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="-33"/>
+        <source>Transient .SENS analysis with Xyce</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Analysis mode </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+23"/>
         <source>start time in seconds</source>
         <translation>Indítási idő másodpercben</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>stop time in seconds</source>
         <translation>Leállítási idő másodpercben</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>simulation time step</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Transient sensitivity analysis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>number of simulation time steps</source>
         <translation>Lépészsám a szimuláció alatt </translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+32"/>
+        <source>perform initial DC (set &quot;no&quot; to activate UIC)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Transient simulation</source>
         <translation>Tranziens szimuláció</translation>
     </message>
@@ -8260,17 +8737,18 @@ Digitális szimuláció</translation>
         <translation>Csavart érpár</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vacomponent.cpp" line="+1"/>
+        <location filename="../qucs/components/vacomponent.cpp" line="-23"/>
+        <location line="+24"/>
         <source>Symbol file not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/vccs.cpp" line="-41"/>
+        <location filename="../qucs/components/vccs.cpp" line="-42"/>
         <source>voltage controlled current source</source>
         <translation>feszültségvezérelt áramgenerátor</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+41"/>
         <source>forward transconductance</source>
         <translation>áttétel (transzkonduktance)</translation>
     </message>
@@ -8280,7 +8758,7 @@ Digitális szimuláció</translation>
         <translation>Feszültség vezérelt áramgenerátor</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vcvs.cpp" line="-42"/>
+        <location filename="../qucs/components/vcvs.cpp" line="-43"/>
         <source>voltage controlled voltage source</source>
         <translation>feszültségvezérelt feszültséggenerátor</translation>
     </message>
@@ -8300,7 +8778,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/vcvs.cpp" line="+56"/>
+        <location filename="../qucs/components/vcvs.cpp" line="+57"/>
         <source>Voltage Controlled Voltage Source</source>
         <translation>Feszültség vezérelt feszültség generátor</translation>
     </message>
@@ -8321,25 +8799,25 @@ Digitális szimuláció</translation>
         <translation>verilog</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location filename="../qucs/schematic_file.cpp" line="+29"/>
         <location filename="../qucs/components/vhdlfile.cpp" line="+221"/>
-        <location filename="../qucs/schematic_file.cpp" line="+27"/>
+        <location filename="../qucs/components/verilogfile.cpp" line="+45"/>
         <source>ERROR: No file name in %1 component &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
         <location filename="../qucs/components/vhdlfile.cpp" line="+11"/>
+        <location filename="../qucs/components/verilogfile.cpp" line="+11"/>
         <source>ERROR: Cannot open %1 file &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/vexp.cpp" line="-40"/>
+        <location filename="../qucs/components/vexp.cpp" line="-41"/>
         <source>exponential voltage source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+35"/>
         <source>voltage before rising edge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8364,12 +8842,12 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/vfile.cpp" line="-35"/>
+        <location filename="../qucs/components/vfile.cpp" line="-36"/>
         <source>file based voltage source</source>
         <translation>fájl bázisú feszültség generátor</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+54"/>
         <source>File Based Voltage Source</source>
         <translation>Fájl bázisú feszültség generátor</translation>
     </message>
@@ -8396,22 +8874,28 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/volt_ac.cpp" line="-29"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="-30"/>
         <source>ideal ac voltage source</source>
         <translation>ideális váltófeszültség AC generátor</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location filename="../qucs/spicecomponents/volt_ac_SPICE.cpp" line="+26"/>
+        <source>AC voltage source (SPICE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="+46"/>
         <source>ac Voltage Source</source>
         <translation>váltófeszültség AC generátor</translation>
     </message>
     <message>
-        <location filename="../qucs/components/volt_dc.cpp" line="-22"/>
+        <location filename="../qucs/components/volt_dc.cpp" line="-23"/>
         <source>ideal dc voltage source</source>
         <translation>ideális egyenfeszültség DC forrás</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+52"/>
         <source>dc Voltage Source</source>
         <translation>Egyenfeszültség DC forrás</translation>
     </message>
@@ -8431,22 +8915,22 @@ Digitális szimuláció</translation>
         <translation>Zajfeszültség generátor</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vprobe.cpp" line="+23"/>
+        <location filename="../qucs/components/vprobe.cpp" line="+24"/>
         <source>voltage probe</source>
         <translation>feszültség próba</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+45"/>
         <source>Voltage Probe</source>
         <translation>Feszültség próba</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vpulse.cpp" line="-37"/>
+        <location filename="../qucs/components/vpulse.cpp" line="-38"/>
         <source>ideal voltage pulse source</source>
         <translation>ideális feszültségimpulzus generátor</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+28"/>
         <source>voltage before and after the pulse</source>
         <translation>impulzus előtti és utáni feszültség</translation>
     </message>
@@ -8456,22 +8940,22 @@ Digitális szimuláció</translation>
         <translation>impulzus feszültség</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+57"/>
         <source>Voltage Pulse</source>
         <translation>Feszültség impulzus</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vrect.cpp" line="-39"/>
+        <location filename="../qucs/components/vrect.cpp" line="-40"/>
         <source>ideal rectangle voltage source</source>
         <translation>ideális négyszögfeszültség generátor</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+30"/>
         <source>voltage of high signal</source>
         <translation>a magas szint feszültsége</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+57"/>
         <source>Rectangle Voltage</source>
         <translation>Négyszögfeszültség</translation>
     </message>
@@ -8486,8 +8970,8 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/marker.cpp" line="+252"/>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+256"/>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+261"/>
+        <location filename="../qucs/diagrams/marker.cpp" line="+260"/>
         <source>invalid</source>
         <translation>érvénytelen</translation>
     </message>
@@ -8507,12 +8991,12 @@ Digitális szimuláció</translation>
         <translation>Smith-Poláris kombinált</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1048"/>
+        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1076"/>
         <source>3D-Cartesian</source>
         <translation>3D-Derékszögű</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+256"/>
+        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+258"/>
         <source>Cartesian</source>
         <translation>Derékszögű</translation>
     </message>
@@ -8527,17 +9011,17 @@ Digitális szimuláció</translation>
         <translation>Belépő Smith</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="-93"/>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+158"/>
         <location filename="../qucs/diagrams/truthdiagram.cpp" line="+88"/>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+163"/>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="-93"/>
         <source>no variables</source>
         <translation>nincsenek változók</translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+133"/>
         <location filename="../qucs/diagrams/timingdiagram.cpp" line="+49"/>
         <location line="+89"/>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+133"/>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+142"/>
         <source>wrong dependency</source>
         <translation>rossz függőség</translation>
     </message>
@@ -8545,12 +9029,12 @@ Digitális szimuláció</translation>
         <location line="+7"/>
         <location filename="../qucs/diagrams/timingdiagram.cpp" line="-122"/>
         <location line="+113"/>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+7"/>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+7"/>
         <source>no data</source>
         <translation>nincs adat</translation>
     </message>
     <message>
-        <location line="+98"/>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+98"/>
         <source>Tabular</source>
         <translation>Táblázatos</translation>
     </message>
@@ -8565,7 +9049,7 @@ Digitális szimuláció</translation>
         <translation>Igazságtábla</translation>
     </message>
     <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="-267"/>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="-302"/>
         <source>ERROR: Cannot open file &quot;%1&quot;.
 </source>
         <translation type="unfinished"></translation>
@@ -8583,7 +9067,19 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/imagewriter.cpp" line="+252"/>
+        <location filename="../qucs/imagewriter.cpp" line="+163"/>
+        <source>Overwrite</source>
+        <translation type="unfinished">Felülírás</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>File &quot;%1&quot; already exists.
+Overwrite ?</source>
+        <translation type="unfinished">A &quot;%1&quot; fájl létezik.
+Felülírjam?</translation>
+    </message>
+    <message>
+        <location line="+108"/>
         <location line="+13"/>
         <location line="+5"/>
         <source>Export to image</source>
@@ -8595,12 +9091,13 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+2836"/>
+        <location filename="../qucs/qucs.cpp" line="+3052"/>
         <source>Successfully exported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/imagewriter.cpp" line="+13"/>
+        <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="+39"/>
         <source>Disk write error!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8611,21 +9108,21 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/misc.cpp" line="+343"/>
-        <location line="+63"/>
+        <location filename="../qucs/misc.cpp" line="+391"/>
+        <location line="+64"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/module.cpp" line="+116"/>
-        <location filename="../qucs/qucs.cpp" line="-2185"/>
         <location filename="../qucs/qucs_actions.cpp" line="+146"/>
         <location line="+20"/>
+        <location filename="../qucs/qucs.cpp" line="-2291"/>
+        <location filename="../qucs/module.cpp" line="+119"/>
         <source>verilog-a user devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+66"/>
+        <location filename="../qucs/module.cpp" line="+66"/>
         <location line="+2"/>
         <source>lumped components</source>
         <translation type="unfinished"></translation>
@@ -8675,36 +9172,68 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>equations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>SPICE components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>SPICE specific sections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>SPICE simulations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>XSPICE devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="+1555"/>
+        <location line="+2"/>
+        <source>Qucs legacy devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucs.cpp" line="+1616"/>
+        <location filename="../qucs/module.cpp" line="-24"/>
+        <location line="+4"/>
         <source>diagrams</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="-1661"/>
+        <location filename="../qucs/module.cpp" line="+2"/>
         <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="-1600"/>
         <source>paintings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/module.cpp" line="+2"/>
         <source>external sim components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/mouseactions.cpp" line="-106"/>
+        <location filename="../qucs/mouseactions.cpp" line="-124"/>
         <source>Edit Properties</source>
         <translation>Tulajdonságok beállítása</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+32"/>
         <source>Export as image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+23"/>
         <source>power matching</source>
         <translation>Teljesítmény illesztő</translation>
     </message>
@@ -8714,12 +9243,12 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>Zaj illesztő</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>2-port matching</source>
         <translation>2-portos illesztő</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+63"/>
         <source>The ground potential cannot be labeled!</source>
         <translation>A földpotenciál nem lehet cimke!</translation>
     </message>
@@ -8729,7 +9258,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>Nyíl</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/ellipse.cpp" line="+98"/>
+        <location filename="../qucs/paintings/ellipse.cpp" line="+100"/>
         <source>Ellipse</source>
         <translation>Elipszis</translation>
     </message>
@@ -8744,7 +9273,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>Elipszis tulajdonságainak beállítása</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/ellipsearc.cpp" line="+91"/>
+        <location filename="../qucs/paintings/ellipsearc.cpp" line="+93"/>
         <source>Elliptic Arc</source>
         <translation>Körív</translation>
     </message>
@@ -8754,7 +9283,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>Körív tulajdonságainak beállítása</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/graphicline.cpp" line="+90"/>
+        <location filename="../qucs/paintings/graphicline.cpp" line="+92"/>
         <source>Line</source>
         <translation>Vonal</translation>
     </message>
@@ -8769,7 +9298,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>Szöveg</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/rectangle.cpp" line="+97"/>
+        <location filename="../qucs/paintings/rectangle.cpp" line="+99"/>
         <source>Rectangle</source>
         <translation>Téglalap</translation>
     </message>
@@ -8794,25 +9323,19 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>A kimeneti fájl nem hozható létre!</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-435"/>
-        <location line="+1019"/>
-        <location line="+65"/>
-        <location line="+123"/>
-        <location line="+12"/>
-        <location line="+299"/>
         <source>untitled</source>
-        <translation>cím nélkül</translation>
+        <translation type="vanished">cím nélkül</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1253"/>
-        <location line="+707"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1344"/>
+        <location line="+787"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>Formázási hiba:
 &apos;Painting&apos; mező nincs lezárva!</translation>
     </message>
     <message>
-        <location line="-689"/>
+        <location line="-769"/>
         <source>Wrong document version: </source>
         <translation>Helytelen dokumentum verzió:</translation>
     </message>
@@ -8830,7 +9353,17 @@ Ismeretlen mező!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+72"/>
+        <location line="+70"/>
+        <source>Cannot open Verilog-A file &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Cannot save JSON props file &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
         <source>Cannot save JSON symbol file &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8840,7 +9373,7 @@ Ismeretlen mező!</translation>
         <translation>Dokumentum nem menthető!</translation>
     </message>
     <message>
-        <location line="+189"/>
+        <location line="+196"/>
         <location line="+5"/>
         <source>Format Error:
 Wrong property field limiter!</source>
@@ -8943,23 +9476,26 @@ Helytelen &apos;painting&apos; sor!</translation>
         <translation>Helytelen dokumentum típus:</translation>
     </message>
     <message>
+        <location line="+9"/>
         <location filename="../qucs/components/component.cpp" line="-26"/>
-        <location filename="../qucs/schematic_file.cpp" line="+9"/>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="+1134"/>
         <location filename="../qucs-filter/stepz_filter.cpp" line="+45"/>
-        <location filename="../qucs-filter-v2/qf_settings.cpp" line="+90"/>
-        <location line="+72"/>
-        <location filename="../qucs-transcalc/qucstrans.cpp" line="+1088"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+1"/>
+        <location line="+1"/>
         <source>Wrong document version 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+2"/>
+        <source>Try to open it anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+42"/>
         <source>File Format Error:
 Unknown field!</source>
         <translation>Fájl formátum hiba:
@@ -8981,27 +9517,27 @@ Ismeretlen mező!</translation>
         <translation>HIBA: A &quot;%1&quot;  beágyazott kapcsolás nem tölthető be.</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+38"/>
         <source>WARNING: Skipping library component &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+25"/>
         <source>ERROR: &quot;%1&quot;: Cannot load library component &quot;%2&quot; from &quot;%3&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+194"/>
+        <location line="+196"/>
         <source>WARNING: Ignore simulation component in subcircuit &quot;%1&quot;.</source>
         <translation>FIGYELMEZTETÉS: Mellőzve az alkatrész a &quot;%1&quot; beágyazott kapcsolásban.</translation>
     </message>
     <message>
-        <location line="+201"/>
+        <location line="+206"/>
         <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+110"/>
         <source>ERROR: Only one digital simulation allowed.</source>
         <translation>HIBA: Csak egy digitális szimáció megengedett.</translation>
     </message>
@@ -9016,12 +9552,12 @@ Ismeretlen mező!</translation>
         <translation>HIBA: A digitális szimulációhoz szükséges egy digitális jelforrás.</translation>
     </message>
     <message>
-        <location filename="../qucs-activefilter/filter.cpp" line="+234"/>
+        <location filename="../qucs-activefilter/filter.cpp" line="+233"/>
         <source>Part list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+24"/>
         <source>Filter order = %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9031,7 +9567,7 @@ Ismeretlen mező!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+7"/>
         <source>LPF prototype poles list Pk=Re+j*Im</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9041,73 +9577,64 @@ Ismeretlen mező!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs-edit/main.cpp" line="+76"/>
         <source>Qucs Editor Version </source>
-        <translation>Qucs editor verzió</translation>
+        <translation type="vanished">Qucs editor verzió</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>
 Very simple text editor for Qucs
 </source>
-        <translation>
+        <translation type="vanished">
 Egyszerü szövegszerkesztő a Qucs-hoz
 </translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Copyright (C) 2004, 2005 by Michael Margraf
 </source>
-        <translation>Copyright (C) 2004, 2005 by Michael Margraf
+        <translation type="vanished">Copyright (C) 2004, 2005 by Michael Margraf
 </translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>
 Usage:  qucsedit [-r] file
 </source>
-        <translation>
+        <translation type="vanished">
 Használat:  qucsedit [-r] fájl
 </translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>    -h  display this help and exit
 </source>
-        <translation>    -h  súgó kiírása és kilépés
+        <translation type="vanished">    -h  súgó kiírása és kilépés
 </translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>    -r  open file read-only
 </source>
-        <translation>    -r  fájl nyitása csak olvasásra
+        <translation type="vanished">    -r  fájl nyitása csak olvasásra
 </translation>
     </message>
     <message>
-        <location line="+57"/>
         <source>Too long command line argument!
 
 </source>
-        <translation>Túl hosszú parancssori argomentum!
+        <translation type="vanished">Túl hosszú parancssori argomentum!
 
 </translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Wrong command line argument!
 
 </source>
-        <translation>Helytelen parancssori argomentum!
+        <translation type="vanished">Helytelen parancssori argomentum!
 
 </translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Only one filename allowed!
 
 </source>
-        <translation>Csak egy fájlnév megengedett!
+        <translation type="vanished">Csak egy fájlnév megengedett!
 
 </translation>
     </message>
@@ -9120,14 +9647,8 @@ a substrate with lower permittivity and larger height.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs-filter-v2/qf_settings.cpp" line="-71"/>
         <source>Cannot save settings !</source>
-        <translation>Beállítások nem menthetőek!</translation>
-    </message>
-    <message>
-        <location line="+72"/>
-        <source>Cannot save settings file !</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Beállítások nem menthetőek!</translation>
     </message>
     <message>
         <location filename="../qucs-filter/quarterwave_filter.cpp" line="+1"/>
@@ -9141,11 +9662,1128 @@ a substrate with lower permittivity and larger height.
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../qucs/spicecomponents/xyce_script.cpp" line="+25"/>
+        <location line="+34"/>
+        <source>XYCE script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/xspicegeneric.cpp" line="+32"/>
+        <location line="+25"/>
+        <source>XSPICE generic device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-23"/>
+        <source>PortsList</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>.MODEL definition reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+70"/>
+        <source>XSPICE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/xsp_codemodel.cpp" line="+26"/>
+        <source>XSPICE CodeModel: cfunc.mod and ifspec.ifs files pair
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <location line="+27"/>
+        <source>XSPICE CodeModel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/xsp_cmlib.cpp" line="+26"/>
+        <source>XSPICE precompiled CodeModel library
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>Precompiled CM-library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>XSPICE precompiled CM-library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/vTRRANDOM.cpp" line="+29"/>
+        <source>SPICE V(TRRANDOM):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source> Distribution selector (1 to 4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Duration of each random voltage value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Time delay before random voltages output ( for time &lt; Td  Vout  =  0 V)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Changes with  different values of Type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Changes with different values of Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>V(TRRANDOM)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/vTRNOISE.cpp" line="+29"/>
+        <source>SPICE V(TRNOISE): </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+60"/>
+        <source> Rms noise amplitude Gaussian)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <source>Time step</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <source>1/f exponent (0  &lt; alpha &lt; 2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <location line="+2"/>
+        <source>Amplitude (1/f)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <source>Trap capture time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <source>Trap emission time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>V(TRNOISE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/vPWL.cpp" line="+29"/>
+        <source>SPICE V(PWL):
+Multiple line ngspice or Xyce V specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>V(PWL)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/vAmpMod.cpp" line="+29"/>
+        <source>SPICE V(AM): ngspice only.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+53"/>
+        <source>voltage amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
+        <source>offset voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
+        <source>modulation frequency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
+        <source>carrier frequency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
+        <source>signal delay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>V(AM)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/src_eqndef.cpp" line="+9"/>
+        <source>SPICE B (V type):
+Multiple line ngspice or Xyce B specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>B source (V)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/spicelibcomp.cpp" line="+39"/>
+        <source>SPICE library device. You can attach symbol patterns to it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>SpiceLibrary file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Subcircuit entry (.SUBCKT) name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Extra parameters list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>SpiceLibComp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/spicegeneric.cpp" line="+30"/>
+        <location line="+27"/>
+        <source>SPICE generic device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-25"/>
+        <source>Number of pins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>SPICE device letter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>.MODEL definition reference (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Parameter string (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
+        <source>SPICE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_spiceinit.cpp" line="+23"/>
+        <source>.spiceinit file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>.spiceinit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>.spiceinit contents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_spectrum.cpp" line="+26"/>
+        <location line="+39"/>
+        <source>Spectrum analysis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_sens_xyce.cpp" line="+25"/>
+        <source>DC .SENS simulation with Xyce</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="-26"/>
+        <source>Output expressions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="+2"/>
+        <source>Reference parameter for .SENS analysis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Parameter for DC sweep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>start value for DC sweep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>stop value for DC sweep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Simulation step for DC sweep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <location filename="../qucs/spicecomponents/sp_sens.cpp" line="-29"/>
+        <location line="+43"/>
+        <source>DC sensitivity simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_pz.cpp" line="+25"/>
+        <location line="+42"/>
+        <source>Pole-Zero simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-21"/>
+        <source>Two input nodes list (space separated)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Two output nodes list (space separated)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Transfer function type (current/voltage)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Analysis mode (Pole-Zero, Poles only, Zeros only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_parameter.cpp" line="+26"/>
+        <source>.PARAM section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>.PARAM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>.PARAM Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_options.cpp" line="+26"/>
+        <source>.OPTIONS section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>.OPTIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Xyce option package name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>.OPTIONS Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_nutmeg.cpp" line="+26"/>
+        <source>Nutmeg equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>Nutmeg</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Nutmeg Equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="-27"/>
+        <location line="+46"/>
+        <source>Noise simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-17"/>
+        <source>Node at which the total output is desired</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Independent source to which input noise is referred.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_nodeset.cpp" line="+26"/>
+        <source>.NODESET section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>.NODESET</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>.NODESET Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_model.cpp" line="+26"/>
+        <source>.MODEL section
+Multiple line ngspice or Xyce .MODEL allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <location line="+6"/>
+        <source>.MODEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>.MODEL Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_lib.cpp" line="+26"/>
+        <source>.LIB directive
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>.LIB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>.Lib directive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_include.cpp" line="+26"/>
+        <source>.INCLUDE statement
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>.INCLUDE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>.INCLUDE statement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_ic.cpp" line="+26"/>
+        <source>.IC section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>.IC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>.IC Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_globalpar.cpp" line="+26"/>
+        <source>.GLOBAL_PARAM section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>.GLOBAL_PARAM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>.GLOBAL PARAM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>.GLOBAL_PARAM Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_func.cpp" line="+26"/>
+        <source>.FUNC new function definition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>.FUNC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>.FUNC new function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_fourier.cpp" line="+26"/>
+        <location line="+38"/>
+        <source>Fourier simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="-27"/>
+        <location line="+44"/>
+        <source>Distortion simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-15"/>
+        <source>Second frequency parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/sp_customsim.cpp" line="+25"/>
+        <location line="+34"/>
+        <source>Nutmeg script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/isffm.cpp" line="-33"/>
+        <source>SPICE I(SFFM):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>offset current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>carrier current amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>I(SFFM)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/incl_script.cpp" line="+26"/>
+        <source>Include script before simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>.INCLUDE SCRIPT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Include script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="-43"/>
+        <source>SPICE I(TRNOISE):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+59"/>
+        <source>I(TRNOISE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/iPWL.cpp" line="+29"/>
+        <source>SPICE I(PWL):
+Multiple line ngspice or Xyce I specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+50"/>
+        <source>I(PWL)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="-32"/>
+        <source>SPICE I(AM): ngspice only.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>I(AM)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/gNL.cpp" line="+27"/>
+        <source>SPICE G (VOL, VALUE, TABLE, POLY):
+Multiple line ngspice non-linear G specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/eNL.cpp" line="+27"/>
+        <source>SPICE E (CUR, VALUE, TABLE, POLY):
+Multiple line ngspice non-linear E specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/core.cpp" line="+27"/>
+        <source>XSPICE core block:
+seven line XSPICE specification. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <source>core</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/XAPWL.cpp" line="+27"/>
+        <source>PWL controlled voltage source:
+Seven line XSPICE specification. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+47"/>
+        <source>XAPWL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/UDRCTL_SPICE.cpp" line="+29"/>
+        <source>SPICE U(URC):
+Multiple line ngspice or Xyce U specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <source>U(URC)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/SDTF.cpp" line="+27"/>
+        <source>S domain transfer function block:
+Seven line XSPICE specification. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+47"/>
+        <source>SDTF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/S4Q_W.cpp" line="+29"/>
+        <source>SPICE W:
+Multiple line ngspice or Xyce W specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source> W(CSW)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/S4Q_V.cpp" line="+30"/>
+        <source>SPICE V:
+Multiple line ngspice or Xyce V specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>V Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/S4Q_S.cpp" line="+29"/>
+        <source>SPICE S:
+Multiple line ngspice or Xyce S specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+55"/>
+        <source> S(SW)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/S4Q_Ieqndef.cpp" line="+26"/>
+        <source>SPICE B (I type):
+Multiple line ngspice or Xyce B specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>B source (I)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/S4Q_I.cpp" line="+30"/>
+        <source>SPICE I:
+Multiple line ngspice or Xyce I specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+42"/>
+        <source>I Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/R_SPICE.cpp" line="+29"/>
+        <source>SPICE R:
+Multiple line ngspice or Xyce R specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source> R Resistor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/PNP_SPICE.cpp" line="+29"/>
+        <source>Q(PNP) BJT:
+Multiple line ngspice or Xyce Q model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
+        <source>Q(PNP) BJT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/PMOS_SPICE.cpp" line="+29"/>
+        <source>M(PMOS) MOS:
+Multiple line ngspice or Xyce M model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+64"/>
+        <source>M(PMOS)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/PMF_MESFET_SPICE.cpp" line="+29"/>
+        <source>Z(PMF) MESFET:
+Multiple line ngspice or Xyce Z model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Z(PMF)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/PJF_SPICE.cpp" line="+29"/>
+        <source>J(PJF) JFET:
+Multiple line ngspice or Xyce J model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <source>J(PJF) JFET</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/NPN_SPICE.cpp" line="+29"/>
+        <location filename="../qucs/spicecomponents/BJT_SPICE.cpp" line="+29"/>
+        <source>Q(NPN) BJT:
+Multiple line ngspice or Xyce Q model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+56"/>
+        <location filename="../qucs/spicecomponents/BJT_SPICE.cpp" line="+83"/>
+        <source>Q(NPN) BJT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/NMOS_SPICE.cpp" line="+29"/>
+        <source>M(NMOS) MOS:
+Multiple line ngspice or Xyce M model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+64"/>
+        <source>M(NMOS)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/NJF_SPICE.cpp" line="+29"/>
+        <source>J(NJF) JFET:
+Multiple line ngspice or Xyce J model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <source>J(NJF) JFET</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/MOS_SPICE.cpp" line="+29"/>
+        <source>Unified (M,X,3-,4-pin) MOS:
+Multiple line ngspice or Xyce M model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>unified MOSFET (3-4 pin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>M(NMOS 3 pin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>M(PMOS 3 pin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>X(NMOS 3 pin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>X(PMOS 3 pin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>X(NMOS 4 pin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>X(PMOS 4 pin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/MESFET_SPICE.cpp" line="+29"/>
+        <source>Z(NMF) MESFET:
+Multiple line ngspice or Xyce Z model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Z(NMF)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/L_SPICE.cpp" line="+29"/>
+        <source>SPICE L:
+Multiple line ngspice or Xyce L specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>L Inductor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/LTRA_SPICE.cpp" line="+29"/>
+        <source>SPICE O(LTRA):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+56"/>
+        <source>O(LTRA)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/K_SPICE.cpp" line="+29"/>
+        <source>SPICE K:
+Enter the names of the coupled inductances and their coupling factor.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Coupling factor ( 0  &lt;  K  &lt;= 1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>K coupling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/Icouple.cpp" line="+27"/>
+        <source>XSPICE coupled inductor block:
+two line XSPICE specification. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+64"/>
+        <source>Icouple</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/DIODE_SPICE.cpp" line="+29"/>
+        <source>SPICE D:
+Multiple line ngspice or Xyce D model specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>D Diode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/C_SPICE.cpp" line="+29"/>
+        <source>SPICE C:
+Multiple line ngspice or Xyce C specifications allowed using &quot;+&quot; continuation lines.
+Leave continuation lines blank when NOT in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>C Capacitor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/spicecomponents/BJT_SPICE.cpp" line="+9"/>
+        <source>Q(NPN) 4 pin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Q(PNP) 4 pin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Q(NPN) 5 pin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Q(PNP) 5 pin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/schematic.cpp" line="+2202"/>
+        <source>The schematic name and dataset/display file name is not matching! This may happen if schematic was copied using the file manager instead of using File-&gt;SaveAs. Correct dataset and display names automatically?
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Schematic file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dataset file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Display file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/extsimkernels/spicecompat.cpp" line="+361"/>
+        <location line="+10"/>
+        <source>Qucsator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-8"/>
+        <source>Ngspice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>SpiceOpus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Xyce (Serial)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Xyce (Parallel)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="-1"/>
+        <source>Save netlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/indq.cpp" line="-45"/>
+        <source>Lossy inductor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>Inductance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/capq.cpp" line="-7"/>
+        <source>Quality factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/capq.cpp" line="+2"/>
+        <source>Frequency at which Q is measured</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/capq.cpp" line="+2"/>
+        <source>Q frequency profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Inductor with Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/capq.cpp" line="-42"/>
+        <source>Lossy capacitor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>Capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Capacitor with Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="+1"/>
+        <source>Chebyshev weighting for N&gt;7 is not available</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QucsActiveFilter</name>
     <message>
-        <location filename="../qucs-activefilter/qucsactivefilter.cpp" line="+47"/>
+        <location filename="../qucs-activefilter/qucsactivefilter.cpp" line="+45"/>
         <source>&amp;File</source>
         <translation>&amp;Fájl</translation>
     </message>
@@ -9198,29 +10836,29 @@ Enables/disables the filter calculation console</source>
     </message>
     <message>
         <location line="+15"/>
-        <location line="+466"/>
+        <location line="+467"/>
         <source>Passband attenuation, Ap (dB)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-465"/>
+        <location line="-466"/>
         <source>Stopband attenuation, As (dB)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+462"/>
+        <location line="+463"/>
         <source>Cutoff frequency, Fc (Hz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-461"/>
-        <location line="+462"/>
+        <location line="-462"/>
+        <location line="+463"/>
         <source>Stopband frequency, Fs (Hz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-461"/>
+        <location line="-462"/>
         <source>Passband ripple Rp(dB)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9230,7 +10868,7 @@ Enables/disables the filter calculation console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Filter order</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9456,7 +11094,7 @@ Active Filter synthesis program
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-1557"/>
+        <location filename="../qucs/qucs.cpp" line="-571"/>
         <source>Schematic</source>
         <translation>Kapcsolási rajz</translation>
     </message>
@@ -9472,47 +11110,47 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1393"/>
+        <location line="+1500"/>
         <source>VHDL Sources</source>
         <translation>VHDL forrás</translation>
     </message>
     <message>
-        <location line="-1392"/>
-        <location line="+1393"/>
+        <location line="-1499"/>
+        <location line="+1500"/>
         <source>Verilog Sources</source>
         <translation>Verilog forrás</translation>
     </message>
     <message>
-        <location line="-1392"/>
-        <location line="+1393"/>
+        <location line="-1499"/>
+        <location line="+1500"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1392"/>
-        <location line="+1393"/>
+        <location line="-1499"/>
+        <location line="+1500"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1392"/>
+        <location line="-1499"/>
         <source>Spice Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+1394"/>
         <location filename="../qucs/qucs_actions.cpp" line="-19"/>
+        <location filename="../qucs/qucs.cpp" line="+1"/>
+        <location line="+1501"/>
         <source>Any File</source>
         <translation>Bármelyik fájl</translation>
     </message>
     <message>
-        <location line="+308"/>
+        <location filename="../qucs/qucs.cpp" line="+308"/>
         <source>The schematic search path has been refreshed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+485"/>
+        <location line="+539"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
@@ -9522,22 +11160,58 @@ Active Filter synthesis program
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-4"/>
+        <location line="-966"/>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Document opened in read-only mode! Simulation will not work. Please copy the document to the directory where you have write permission!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+653"/>
+        <location line="+886"/>
+        <location line="+18"/>
+        <source>Simulate schematic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-903"/>
+        <source>DC bias simulation mode is not supported for digital schematic!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+307"/>
         <source>Schematics</source>
         <translation>Kapcsolási rajzok</translation>
     </message>
     <message>
-        <location line="-2064"/>
+        <location line="-2201"/>
         <source>New</source>
         <translation>Új</translation>
     </message>
     <message>
-        <location line="-26"/>
+        <location line="-83"/>
+        <source>Qucs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Default simulator is not specified yet.
+Please setup it in the next dialog window.
+If you have no simulators except Qucs installed
+in your system leave default Qucsator setting
+and simple press Apply button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
         <source>Main Dock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+31"/>
         <source>Open</source>
         <translation>Megnyitás</translation>
     </message>
@@ -9547,7 +11221,7 @@ Active Filter synthesis program
         <translation>Törlés</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+23"/>
         <source>Projects</source>
         <translation>Projektek</translation>
     </message>
@@ -9567,17 +11241,18 @@ Active Filter synthesis program
         <translation>aktuális projekt tartalma</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+25"/>
         <source>Search Components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+35"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-18"/>
         <source>Components</source>
         <translation>Komponensek</translation>
     </message>
@@ -9587,13 +11262,8 @@ Active Filter synthesis program
         <translation>Komponensek és Diagramok</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Manage Libraries</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <location line="+8"/>
+        <location line="+37"/>
+        <location line="+21"/>
         <source>Libraries</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9603,85 +11273,87 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+21"/>
         <source>Octave Dock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+60"/>
-        <location line="+3"/>
-        <location line="+64"/>
-        <location line="+3"/>
-        <location line="+527"/>
-        <location line="+25"/>
-        <location line="+20"/>
-        <location line="+19"/>
-        <location line="+10"/>
-        <location line="+73"/>
-        <location line="+6"/>
-        <location line="+130"/>
-        <location line="+877"/>
-        <location line="+28"/>
-        <location line="+72"/>
-        <location line="+312"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+6"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-516"/>
-        <location line="+103"/>
-        <location line="+62"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-564"/>
+        <location line="+149"/>
+        <location line="+61"/>
         <location line="+32"/>
         <location line="+16"/>
         <location line="+10"/>
         <location line="+5"/>
-        <location line="+244"/>
+        <location line="+247"/>
         <location line="+15"/>
         <location line="+19"/>
         <location line="+138"/>
+        <location filename="../qucs/qucs.cpp" line="+83"/>
+        <location line="+4"/>
+        <location line="+73"/>
+        <location line="+4"/>
+        <location line="+525"/>
+        <location line="+25"/>
+        <location line="+20"/>
+        <location line="+19"/>
+        <location line="+10"/>
+        <location line="+79"/>
+        <location line="+6"/>
+        <location line="+114"/>
+        <location line="+942"/>
+        <location line="+28"/>
+        <location line="+75"/>
+        <location line="+112"/>
+        <location line="+23"/>
+        <location line="+220"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+6"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location line="-2196"/>
-        <location line="+67"/>
+        <location filename="../qucs/qucs.cpp" line="-2306"/>
+        <location line="+77"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; megnyitása nem sikerült.</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+67"/>
+        <location line="-73"/>
+        <location line="+77"/>
+        <location line="+1955"/>
+        <location line="+23"/>
         <source>Library is corrupt.</source>
         <translation>Alkatrész katalógus hibás.</translation>
     </message>
     <message>
-        <location line="+177"/>
-        <location line="+479"/>
-        <location line="+73"/>
-        <location line="+52"/>
-        <location line="+8"/>
-        <location line="+29"/>
-        <location line="+11"/>
-        <location line="+26"/>
-        <location line="+210"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-844"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-892"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+634"/>
+        <location line="+682"/>
+        <location filename="../qucs/qucs.cpp" line="-1809"/>
+        <location line="+491"/>
+        <location line="+74"/>
+        <location line="+72"/>
+        <location line="+11"/>
+        <location line="+26"/>
+        <location line="+223"/>
         <source>Info</source>
         <translation>Infó</translation>
     </message>
     <message>
-        <location line="-887"/>
+        <location filename="../qucs/qucs.cpp" line="-896"/>
         <source>Default icon not found:
  %1.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+258"/>
+        <location line="+264"/>
         <source>-port</source>
         <translation>-csatlakozás</translation>
     </message>
@@ -9692,7 +11364,7 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+682"/>
+        <location line="+685"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>A dokumentum tartalmaz mentetlen változásokat!
@@ -9700,7 +11372,7 @@ Active Filter synthesis program
 </translation>
     </message>
     <message>
-        <location line="-681"/>
+        <location line="-684"/>
         <source>Do you want to save the changes before copying?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9710,14 +11382,14 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+0"/>
-        <location line="+682"/>
-        <location filename="../qucs/qucs_init.cpp" line="+66"/>
+        <location filename="../qucs/qucs_init.cpp" line="+67"/>
+        <location filename="../qucs/qucs.cpp" line="+0"/>
+        <location line="+685"/>
         <source>&amp;Save</source>
         <translation>&amp;Mentés</translation>
     </message>
     <message>
-        <location line="-660"/>
+        <location filename="../qucs/qucs.cpp" line="-663"/>
         <source>Copy file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9747,35 +11419,33 @@ Active Filter synthesis program
         <translation>Nyitott fájlt nem lehet törölni!</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location line="+32"/>
-        <location line="+196"/>
-        <location line="+230"/>
-        <location line="+493"/>
+        <location line="-726"/>
+        <location line="+731"/>
+        <location line="+218"/>
+        <location line="+243"/>
+        <location line="+545"/>
         <source>Warning</source>
         <translation>Figyelmeztetések</translation>
     </message>
     <message>
-        <location line="-950"/>
+        <location line="-1005"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>A fájl véglegesen törlődik! Folytatja?</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+459"/>
-        <location line="+370"/>
+        <location line="+462"/>
         <source>No</source>
         <translation>Nem</translation>
     </message>
     <message>
-        <location line="-829"/>
-        <location line="+459"/>
-        <location line="+370"/>
+        <location line="-462"/>
+        <location line="+462"/>
         <source>Yes</source>
         <translation>Igen</translation>
     </message>
     <message>
-        <location line="-982"/>
+        <location line="-615"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9825,12 +11495,12 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="-597"/>
         <source>Cannot create work directory !</source>
         <translation>A munkakönyvtárat nem tudtam létrehozni!</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+797"/>
         <source>Cannot create project directory !</source>
         <translation>Nem lehet létrehozni a projekt könyvtárat!</translation>
     </message>
@@ -9839,13 +11509,11 @@ Active Filter synthesis program
         <translation type="obsolete">Nincs hozzáférés a projekt könyvtárhoz:</translation>
     </message>
     <message>
-        <location line="+48"/>
-        <location line="+53"/>
         <source> - Project: </source>
-        <translation>- Projekt:</translation>
+        <translation type="vanished">- Projekt:</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="+57"/>
         <source>Choose Project Directory for Opening</source>
         <translation>Válassz projekt könyvtárat a megnyitáshoz</translation>
     </message>
@@ -9855,31 +11523,36 @@ Active Filter synthesis program
         <translation>Nincs kiválasztott projekt!</translation>
     </message>
     <message>
-        <location line="+52"/>
-        <source>Cannot remove directory: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-180"/>
-        <location line="+188"/>
+        <location line="-135"/>
         <source>Cannot delete file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-665"/>
-        <location line="+97"/>
+        <location line="-483"/>
+        <location line="+98"/>
         <location line="+3"/>
-        <location line="+92"/>
+        <location line="+93"/>
+        <location line="+79"/>
         <source>Search results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-618"/>
+        <source>Search Lib Components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Show model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+497"/>
         <source>verilog-a user devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+221"/>
+        <location line="+225"/>
         <source>Cannot copy file to identical name: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9899,7 +11572,7 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+103"/>
+        <location line="+109"/>
         <source>Cannot access project directory: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9909,7 +11582,17 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+25"/>
+        <source>Project: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+60"/>
+        <source>No project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Project directory name does not end in &apos;_prj&apos; (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9924,19 +11607,19 @@ Active Filter synthesis program
         <translation>Ez véglegesen törli a projekt fájlt! Folytatja?</translation>
     </message>
     <message>
-        <location line="+1"/>
         <location filename="../qucs/qucs_actions.cpp" line="+2"/>
+        <location filename="../qucs/qucs.cpp" line="+1"/>
         <source>&amp;Yes</source>
         <translation>&amp;Igen</translation>
     </message>
     <message>
         <location line="+0"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+0"/>
+        <location filename="../qucs/qucs.cpp" line="+0"/>
         <source>&amp;No</source>
         <translation>&amp;Nem</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location filename="../qucs/qucs.cpp" line="+4"/>
         <source>Cannot remove project directory!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9956,40 +11639,40 @@ Active Filter synthesis program
         <translation>Új kapcsolási rajz létrehozása...</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location filename="../qucs/qucs_init.cpp" line="+874"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-1018"/>
+        <location line="+15"/>
+        <location line="+383"/>
+        <location line="+327"/>
+        <location filename="../qucs/qucs.cpp" line="+7"/>
         <location line="+12"/>
-        <location line="+68"/>
+        <location line="+82"/>
         <location line="+31"/>
         <location line="+5"/>
-        <location line="+101"/>
+        <location line="+100"/>
         <location line="+5"/>
         <location line="+36"/>
         <location line="+54"/>
         <location line="+35"/>
-        <location line="+176"/>
-        <location line="+34"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-966"/>
-        <location line="+15"/>
-        <location line="+379"/>
-        <location line="+282"/>
-        <location filename="../qucs/qucs_init.cpp" line="+885"/>
+        <location line="+200"/>
+        <location line="+30"/>
         <source>Ready.</source>
         <translation>Kész.
 </translation>
     </message>
     <message>
-        <location line="-551"/>
+        <location filename="../qucs/qucs.cpp" line="-584"/>
         <source>Creating new text editor...</source>
         <translation>Új szövegszerkesztő készítése...</translation>
     </message>
     <message>
-        <location line="+61"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-291"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-336"/>
+        <location filename="../qucs/qucs.cpp" line="+75"/>
         <source>Opening file...</source>
         <translation>Fájl nyitása...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/qucs.cpp" line="+2"/>
         <source>Enter a Schematic Name</source>
         <translation>Kapcsolási rajz neve</translation>
     </message>
@@ -10005,12 +11688,12 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+6"/>
-        <location line="+106"/>
+        <location line="+105"/>
         <source>Saving aborted</source>
         <translation>Mentés megszakítva</translation>
     </message>
     <message>
-        <location line="-65"/>
+        <location line="-64"/>
         <source>Qucs Netlist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10025,7 +11708,7 @@ Active Filter synthesis program
         <translation>Dokumentum neve</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+19"/>
         <source>The file &apos;</source>
         <translation>A &apos;</translation>
     </message>
@@ -10088,7 +11771,12 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+171"/>
+        <location line="+170"/>
+        <source>untitled</source>
+        <translation type="unfinished">cím nélkül</translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>Printing...</source>
         <translation>Nyomtatás...</translation>
     </message>
@@ -10098,17 +11786,46 @@ Active Filter synthesis program
         <translation>Kilépés a programból...</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+1006"/>
+        <source>Schematic not saved! Simulation of unsaved schematic not possible. Save schematic first!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Simulation of text document is not possible!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>This action is supported only for SPICE simulators!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Save Verilog-A module</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Build Verilog-A module</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This schematic is not a subcircuit!
+Use subcircuit to crete Verilog-A module!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Quit...</source>
-        <translation>Kilépés...</translation>
+        <translation type="vanished">Kilépés...</translation>
     </message>
     <message>
-        <location line="+0"/>
         <source>Do you really want to quit?</source>
-        <translation>Biztosan kilép?</translation>
+        <translation type="vanished">Biztosan kilép?</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="-918"/>
         <source>The document was modified by another program !</source>
         <translation>A dokumentumot másik program módosította!</translation>
     </message>
@@ -10138,12 +11855,12 @@ Active Filter synthesis program
         <translation>Oldal nincs beállítva!</translation>
     </message>
     <message>
-        <location line="+73"/>
+        <location line="+76"/>
         <source>Cannot start &quot;%1&quot;!</source>
         <translation>&quot;%1&quot; nem indítható!</translation>
     </message>
     <message>
-        <location line="+311"/>
+        <location line="+354"/>
         <source>Could not load S[1,1].</source>
         <translation>S[1,1] nem betölthető.</translation>
     </message>
@@ -10168,7 +11885,7 @@ Active Filter synthesis program
         <translation>Rossz függőség!</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-395"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-399"/>
         <source>Cutting selection...</source>
         <translation>A kijelölés kivágása...</translation>
     </message>
@@ -10178,7 +11895,7 @@ Active Filter synthesis program
         <translation>A kijelölés másolása a vágólapra...</translation>
     </message>
     <message>
-        <location line="+231"/>
+        <location line="+235"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -10200,14 +11917,24 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+104"/>
+        <location line="+30"/>
+        <source>Show netlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Not a schematic tab!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+119"/>
         <source>Cannot start %1 program! 
 
 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+60"/>
         <source>No project open!</source>
         <translation>Nincs nyitott projekt!</translation>
     </message>
@@ -10254,7 +11981,7 @@ Felülírjam?</translation>
         <translation>&quot;%1&quot; nem írható!</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+247"/>
         <source>Please open project with subcircuits!</source>
         <translation>Nyisson projektet a beágyazott kapcsoláshoz!</translation>
     </message>
@@ -10298,7 +12025,32 @@ Have you saved the Verilog-A symbols?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="-904"/>
+        <location line="+92"/>
+        <source>admsXml</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Compiler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>admsXml Dock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+107"/>
+        <source>OpenVAF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>OpenVAF Dock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucs_init.cpp" line="-893"/>
         <source>&amp;New</source>
         <translation>Ú&amp;j</translation>
     </message>
@@ -10322,7 +12074,12 @@ Creates a new schematic or data display document</source>
         <translation>Új &amp;Szöveg</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Creates a new text document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10372,12 +12129,12 @@ Menti az aktuális dokumentumot</translation>
         <translation>Mentés másként...</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Saves the current document under a new filename</source>
         <translation>Menti az aktuális dokumentumot új fájlnévvel</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Save As
 
 Saves the current document under a new filename</source>
@@ -10391,7 +12148,12 @@ Menti az aktuális dokumentumot új fájlnévvel</translation>
         <translation>Min&amp;dent ment</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Saves all open documents</source>
         <translation>Ment minden nyitott dokumentumot</translation>
     </message>
@@ -10470,7 +12232,12 @@ Szerkeszti az áramköri szimbólumot a kapcsoláshoz</translation>
         <translation>&amp;Dokumentum tulajdonságai...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Document Settings</source>
         <translation>Dokumentum tulajdonságai</translation>
     </message>
@@ -10508,7 +12275,12 @@ Nyomtatja az aktuális dokumentumot</translation>
         <translation>Nyomtatás oldalra illesztve...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Print Fit to Page</source>
         <translation>Nyomtatás oldalra illesztve</translation>
     </message>
@@ -10546,7 +12318,12 @@ Kilépés a programból</translation>
         <translation>Beállítások...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+,</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Application Settings</source>
         <translation>Beállítások</translation>
     </message>
@@ -10582,7 +12359,12 @@ Rechecks the list of paths for subcircuit files.</source>
         <translation>Tetejéhez igazít</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Align top selected elements</source>
         <translation>A kiválasztott elemeket a tetejéhez igazítja</translation>
     </message>
@@ -10606,7 +12388,7 @@ A kiválasztott elemeket a tetejéhez igazítja</translation>
         <translation>A kiválasztott elemeket az aljához igazítja</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Align bottom
 
 Align selected elements to their lower edge</source>
@@ -10625,7 +12407,7 @@ A kiválasztott elemeket az aljához igazítja</translation>
         <translation>A kiválasztott elemeket balra igazítja</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Align left
 
 Align selected elements to their left edge</source>
@@ -10644,7 +12426,7 @@ A kiválasztott elemeket balra igazítja</translation>
         <translation>A kiválasztott elemeket jobbra igazítja</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Align right
 
 Align selected elements to their right edge</source>
@@ -10653,7 +12435,7 @@ Align selected elements to their right edge</source>
 A kiválasztott elemeket jobbra igazítja</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Distribute horizontally</source>
         <translation>Vízszintesen elterít</translation>
     </message>
@@ -10663,7 +12445,7 @@ A kiválasztott elemeket jobbra igazítja</translation>
         <translation>Vízszintesen egyenletesen elterít</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Distribute horizontally
 
 Distribute horizontally selected elements</source>
@@ -10682,7 +12464,7 @@ A kiválasztott elemeket vízszintesen elteríti</translation>
         <translation>Függőlegesen egyenletesen elterít</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Distribute vertically
 
 Distribute vertically selected elements</source>
@@ -10701,7 +12483,7 @@ A kiválasztott elemeket függőlegesen elteríti</translation>
         <translation>A kiválasztott elemeket függőlegesen egyvonalba mozgatja</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Center horizontally
 
 Center horizontally selected elements</source>
@@ -10711,7 +12493,7 @@ A kiválasztott elemeket függőlegesen egyvonalba mozgatja
 </translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Center vertically</source>
         <translation>Vízszintesen egyvonalba</translation>
     </message>
@@ -10721,7 +12503,7 @@ A kiválasztott elemeket függőlegesen egyvonalba mozgatja
         <translation>A kiválasztott elemeket vízszintesen egyvonalba mozgatja</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Center vertically
 
 Center vertically selected elements</source>
@@ -10730,17 +12512,22 @@ Center vertically selected elements</source>
 A kiválasztott elemeket vízszintesen egyvonalba mozgatja</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Set on Grid</source>
         <translation>Rácshoz illeszt</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+U</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Sets selected elements on grid</source>
         <translation>A kiválasztott elemet rácshoz illeszti</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Set on Grid
 
 Sets selected elements on grid</source>
@@ -10754,7 +12541,12 @@ A kiválasztott elemet rácshoz illeszti</translation>
         <translation>Alkatrészfelirat mozgatás</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+K</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Moves the property text of components</source>
         <translation>Mozgatja az alkatrészfeliratokat</translation>
     </message>
@@ -10796,12 +12588,17 @@ szöveg csere VHDL kódban </translation>
         <translation>&amp;Kivágás</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
+        <source>Ctrl+X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Cuts out the selection and puts it into the clipboard</source>
         <translation>Kijelölés kivágása, vágólapra helyezése</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Cut
 
 Cuts out the selection and puts it into the clipboard</source>
@@ -10815,12 +12612,12 @@ Kijelölés kivágása, vágólapra helyezése</translation>
         <translation>&amp;Másolás</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Copies the selection into the clipboard</source>
         <translation>Kijelölés vágólapra másolása</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Copy
 
 Copies the selection into the clipboard</source>
@@ -10834,12 +12631,12 @@ Kijelölés vágólapra másolása</translation>
         <translation>&amp;Beillesztés</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Pastes the clipboard contents to the cursor position</source>
         <translation>Beilleszti a vágólap tartalmát a kurzor pozicióhoz</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Paste
 
 Pastes the clipboard contents to the cursor position</source>
@@ -10946,7 +12743,12 @@ Az utolsó visszavont parancsot újból végrehajtja</translation>
         <translation>Ú&amp;j Projekt...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Creates a new project</source>
         <translation>Új projektet hoz létre</translation>
     </message>
@@ -10965,7 +12767,12 @@ Creates a new project</source>
         <translation>Projekt &amp;megnyitása...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Opens an existing project</source>
         <translation>Megnyit egy létező projektet</translation>
     </message>
@@ -10984,7 +12791,12 @@ Projektet nyit meg</translation>
         <translation>Projekt &amp;törlése...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Deletes an existing project</source>
         <translation>Töröl egy létező projektet</translation>
     </message>
@@ -11003,7 +12815,12 @@ Projektet töröl</translation>
         <translation>Projekt &amp;bezárása</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Closes the current project</source>
         <translation>Bezárja az aktuális projektet</translation>
     </message>
@@ -11022,12 +12839,17 @@ Aktuális projekt bezárása</translation>
         <translation>Fájlok &amp;hozzáadása a Projekthez...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Copies files to project directory</source>
         <translation>Fájlok másolása a projekt könyvtárba</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Add Files to Project
 
 Copies files to project directory</source>
@@ -11041,7 +12863,12 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation>Új alkatrész &amp;katalógus létrehozás...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Create Library from Subcircuits</source>
         <translation>Alkatrész-katalógus létrehozása a beágyazott kapcsoláshoz</translation>
     </message>
@@ -11060,12 +12887,17 @@ Alkatrész-katalógust hoz létre a beágyazott kapcsoláshoz</translation>
         <translation>Új &amp;csomag létrehozás...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Create compressed Package from Projects</source>
         <translation>Tömörített csomag létrehozása a projektekből</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Create Package
 
 Create compressed Package from complete Projects</source>
@@ -11079,12 +12911,17 @@ Tömörített csomag létrehozása a projektekből</translation>
         <translation>Tömörített csomag &amp;kibontása...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Install Content of a Package</source>
         <translation>Összetevők installálása a csomagból</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Extract Package
 
 Install Content of a Package</source>
@@ -11098,12 +12935,17 @@ Install Content of a Package</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Convert data file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Import/Export Data
 
 Convert data file to various file formats</source>
@@ -11115,12 +12957,17 @@ Convert data file to various file formats</source>
         <translation>Exportálás &amp;CVS-be...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Convert graph data to CSV file</source>
         <translation>Grafikon adatok CVS fájlba konvertálása</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Export to CSV
 
 Convert graph data to CSV file</source>
@@ -11259,12 +13106,17 @@ Kiválasztás aktiválása</translation>
         <translation>Mindent kijelöl</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Selects all elements</source>
         <translation>Kijelöl minden elemet</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Select All
 
 Selects all elements of the document</source>
@@ -11278,12 +13130,17 @@ Kijelöl minden elemet a dokumnetumban</translation>
         <translation>Diagramjelzők kijelölése</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Shift+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Selects all markers</source>
         <translation>Összes diagramjelző kijelölése</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Select Markers
 
 Selects all diagram markers of the document</source>
@@ -11297,31 +13154,87 @@ Selects all diagram markers of the document</source>
         <translation>Forgatás</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Rotates the selected component by 90°</source>
-        <translation>Elforgatja a kiválasztott komponenst  90°-kal</translation>
+        <location line="+1"/>
+        <source>Ctrl+R</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Rotates the selected component by 90�</source>
+        <translation type="unfinished">Elforgatja a kiválasztott komponenst  90°-kal {90�?}</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Rotate
+
+Rotates the selected component by 90� counter-clockwise</source>
+        <translation type="unfinished">Forgatás
+
+Elforgatja a kiválasztott komponenst  90°-kal jobbra {90�?}</translation>
+    </message>
+    <message>
+        <location line="+116"/>
+        <source>Power combining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ctrl+7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Starts QucsPowerCombining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Power combining
+
+Starts power combining calculation program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>View Data Display/Schematic
+
+Changes to data display or schematic page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
+        <source>&amp;About Qucs-S...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotates the selected component by 90°</source>
+        <translation type="vanished">Elforgatja a kiválasztott komponenst  90°-kal</translation>
+    </message>
+    <message>
         <source>Rotate
 
 Rotates the selected component by 90° counter-clockwise</source>
-        <translation>Forgatás
+        <translation type="vanished">Forgatás
 
 Elforgatja a kiválasztott komponenst  90°-kal jobbra</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-208"/>
         <source>Mirror about X Axis</source>
         <translation>Tükrözés X tengelyre</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+J</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Mirrors the selected item about X Axis</source>
         <translation>Tükrözi a kiválasztott elemet az X tengelyre</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Mirror about X Axis
 
 Mirrors the selected item about X Axis</source>
@@ -11335,12 +13248,17 @@ Tükrözi a kiválasztott elemet az X tengelyre</translation>
         <translation>Tükrözés Y tengelyre</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Mirrors the selected item about Y Axis</source>
         <translation>Tükrözi a kiválasztott elemet Y tengelyre</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Mirror about Y Axis
 
 Mirrors the selected item about Y Axis</source>
@@ -11354,7 +13272,12 @@ Tükrözi a kiválasztott elemet Y tengelyre</translation>
         <translation>Ugrás a beágyazott kapcsolásba</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Goes inside the selected subcircuit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11373,12 +13296,17 @@ Beugrik a beágyazott kapcsolásba</translation>
         <translation>Kiugrás</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+H</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Pop outside subcircuit</source>
         <translation>Kiugrik a beágyazott kapcsolásból</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Pop out
 
 Goes up one hierarchy level, i.e. leaves subcircuit</source>
@@ -11392,12 +13320,17 @@ Kiugrik a beágyazott kapcsolásból</translation>
         <translation>Passziválás/Aktiválás</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Deactivate/Activate selected components</source>
         <translation>A kijelölt alkatrész Passziválása/Aktiválása </translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Deactivate/Activate
 
 Deactivate/Activate the selected components</source>
@@ -11411,12 +13344,17 @@ A kijelölt alkatrész Passziválása/Aktiválása </translation>
         <translation>Egyenlet beszúrása</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+&lt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Inserts an equation</source>
         <translation>Egyenlet szúr be</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Insert Equation
 
 Inserts a user defined equation</source>
@@ -11430,7 +13368,12 @@ Beszúr egy felhasználói egyenletet</translation>
         <translation>Földelés beszúrása</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Inserts a ground symbol</source>
         <translation>Beszúr egy földelést</translation>
     </message>
@@ -11468,7 +13411,12 @@ Beszúr egy csatlakozópont rajzot</translation>
         <translation>Vezeték</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Inserts a wire</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11487,7 +13435,12 @@ Vezeték beszúrása</translation>
         <translation>Vezeték cimke</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Inserts a wire or pin label</source>
         <translation>Vezeték/Csomópont cimke beszúrása</translation>
     </message>
@@ -11506,7 +13459,12 @@ Vezeték/Csomópont cimke beszúrása</translation>
         <translation>VHDL entitás</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+Space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Inserts skeleton of VHDL entity</source>
         <translation>Váz illesztés a VHDL entitáshoz</translation>
     </message>
@@ -11525,7 +13483,12 @@ Váz illesztés a VHDL entitáshoz</translation>
         <translation>Szövegszerkesztő</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Starts the Qucs text editor</source>
         <translation>Qucs szövegszerkesztő indítása</translation>
     </message>
@@ -11544,7 +13507,12 @@ Qucs szövegszerkesztő indítása</translation>
         <translation>Szűrő méretező</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Starts QucsFilter</source>
         <translation>QucsFilter indítása</translation>
     </message>
@@ -11563,7 +13531,12 @@ QucsFilter indítása</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Starts QucsActiveFilter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11580,12 +13553,17 @@ Starts QucsActiveFilter</source>
         <translation>Tápvonal számítás</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Starts QucsTrans</source>
         <translation>QucsTrans indítása</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Line calculation
 
 Starts transmission line calculator</source>
@@ -11594,21 +13572,18 @@ Starts transmission line calculator</source>
 QucsTrans indítása</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Component Library</source>
-        <translation>Alkatrész katalógus</translation>
+        <translation type="vanished">Alkatrész katalógus</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Starts QucsLib</source>
-        <translation>QucsLib indítása</translation>
+        <translation type="vanished">QucsLib indítása</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Component Library
 
 Starts component library program</source>
-        <translation>Alkatrész katalógus
+        <translation type="vanished">Alkatrész katalógus
 
 Alkatrész-katalógus kezelő indítása</translation>
     </message>
@@ -11618,12 +13593,17 @@ Alkatrész-katalógus kezelő indítása</translation>
         <translation>Illesztő áramkör</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Creates Matching Circuit</source>
         <translation>Illesztő áramkör létrehozása</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Matching Circuit
 
 Dialog for Creating Matching Circuit</source>
@@ -11637,12 +13617,17 @@ Illesztő áramkör létrehozó párbeszédablak</translation>
         <translation>Csillapító méretező</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Ctrl+6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Starts QucsAttenuator</source>
         <translation>QucsAttenuator (Csillapító méretező) indítása</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Attenuator synthesis
 
 Starts attenuator calculation program</source>
@@ -11651,24 +13636,7 @@ Starts attenuator calculation program</source>
 Csillapító méretező program indítása</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Resistor color codes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Starts Qucs resistor color codes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Resistor color codes
-
-Starts standard resistor color code computation program</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+9"/>
         <source>Simulate</source>
         <translation>Szimuláció</translation>
     </message>
@@ -11693,16 +13661,14 @@ Szimuláció futtatása az aktuális kapcsoláson</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+3"/>
         <source>Changes to data display or schematic page</source>
         <translation>Átkapcsolás az Adatmegjelenítő(dpl) és a Kapcsolási rajz(sch) között</translation>
     </message>
     <message>
-        <location line="-1"/>
         <source>View Data Display/Schematic
 
 </source>
-        <translation>Adatmegjelenítő(dpl) / Kapcsolási rajz(sch) nézet
+        <translation type="vanished">Adatmegjelenítő(dpl) / Kapcsolási rajz(sch) nézet
 
 </translation>
     </message>
@@ -11717,13 +13683,25 @@ Szimuláció futtatása az aktuális kapcsoláson</translation>
         <translation>Kiszámítja a DC munkapontokat és megjeleníti</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Calculate DC bias
 
 Calculates DC bias and shows it</source>
         <translation>DC munkapont számítása
 
 Kiszámítja a DC munkapontokat és megjeleníti</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location line="+1"/>
+        <location filename="../qucs/qucs.cpp" line="+253"/>
+        <source>Save netlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Save netlist to file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -11736,7 +13714,7 @@ Kiszámítja a DC munkapontokat és megjeleníti</translation>
         <translation>Jelző beállítása a diagram grafikonjain</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Set Marker
 
 Sets a marker on a diagram&apos;s graph</source>
@@ -11755,7 +13733,7 @@ Jelző beállítása a diagram grafikonjain</translation>
         <translation>Utolsó szimuláció üzeneteinek megjelenítése</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Show Last Messages
 
 Shows the messages of the last simulation</source>
@@ -11774,7 +13752,7 @@ Utolsó szimuláció üzeneteinek megjelenítése</translation>
         <translation>Utolsó szimuláció kötéslistájának megjelenítése</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Show Last Netlist
 
 Shows the netlist of the last simulation</source>
@@ -11784,6 +13762,16 @@ Utolsó szimuláció kötéslistájának megjelenítése</translation>
     </message>
     <message>
         <location line="+3"/>
+        <source>Select default simulator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Build Verilog-A module from subcircuit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Tool&amp;bar</source>
         <translation>Esz&amp;köztár</translation>
     </message>
@@ -11812,7 +13800,7 @@ Eszköztár be/ki</translation>
         <translation>Státuszsor be/ki</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Statusbar
 
 Enables/disables the statusbar</source>
@@ -11831,7 +13819,7 @@ Státuszsor be/ki</translation>
         <translation>Navigátor ablak be/ki</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Browse Window
 
 Enables/disables the browse dock window</source>
@@ -11850,7 +13838,7 @@ Bekapcsolja/Kikapcsolja a navigátor ablakot</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Octave Window
 
 Shows/hides the Octave dock window</source>
@@ -11877,7 +13865,7 @@ Index of intern Qucs help</source>
 Tartalomjegyzék az internetes Qucs súgóhoz </translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+8"/>
         <source>Getting Started...</source>
         <translation>Kezd így...</translation>
     </message>
@@ -11887,7 +13875,7 @@ Tartalomjegyzék az internetes Qucs súgóhoz </translation>
         <translation>Kezd így a Qucs-ot</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Getting Started
 
 Short introduction into Qucs</source>
@@ -11896,12 +13884,11 @@ Short introduction into Qucs</source>
 Rövid bemutatás a Qucs-hoz</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>&amp;About Qucs...</source>
-        <translation>Qucs &amp;Névjegy...</translation>
+        <translation type="vanished">Qucs &amp;Névjegy...</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>About the application</source>
         <translation>Program névjegye</translation>
     </message>
@@ -11964,17 +13951,22 @@ Qt a Trolltech-től</translation>
         <translation>&amp;Projekt</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+22"/>
         <source>&amp;Tools</source>
         <translation>&amp;Eszközök</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+11"/>
+        <source>Compact modelling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>&amp;Simulation</source>
         <translation>Sz&amp;imuláció</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+10"/>
         <source>&amp;View</source>
         <translation>&amp;Megjelenítés</translation>
     </message>
@@ -11984,7 +13976,7 @@ Qt a Trolltech-től</translation>
         <translation>&amp;Súgó</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>&amp;Technical Papers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11996,7 +13988,16 @@ Qt a Trolltech-től</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-27"/>
+        <location line="-38"/>
+        <location line="+20"/>
+        <location line="+19"/>
+        <source>
+
+Open </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-28"/>
         <source>Technical &amp;Reports</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12026,8 +14027,8 @@ Qt a Trolltech-től</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
-        <location line="+41"/>
+        <location line="+28"/>
+        <location line="+43"/>
         <source>no warnings</source>
         <translation>nincs figyelmeztetés</translation>
     </message>
@@ -12076,7 +14077,7 @@ Qt a Trolltech-től</translation>
         <translation>Bemenet</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Attenuation:</source>
         <translation>Csillapítás:</translation>
     </message>
@@ -12160,7 +14161,7 @@ Qt a Trolltech-től</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
+        <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediately, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12202,111 +14203,90 @@ Csillapító méretező program
 <context>
     <name>QucsEdit</name>
     <message>
-        <location filename="../qucs-edit/qucsedit.cpp" line="+44"/>
-        <location line="+148"/>
         <source>File: </source>
-        <translation>Fájl:</translation>
+        <translation type="vanished">Fájl:</translation>
     </message>
     <message>
-        <location line="-137"/>
-        <location line="+49"/>
         <source>Line: %1  -  Column: %2</source>
-        <translation>Sor: %1  -  Oszlop: %2</translation>
+        <translation type="vanished">Sor: %1  -  Oszlop: %2</translation>
     </message>
     <message>
-        <location line="-47"/>
         <source>About</source>
-        <translation>Névjegy</translation>
+        <translation type="vanished">Névjegy</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Quit</source>
-        <translation>Kilépés</translation>
+        <translation type="vanished">Kilépés</translation>
     </message>
     <message>
-        <location line="+50"/>
         <source>About...</source>
-        <translation>Névjegy...</translation>
+        <translation type="vanished">Névjegy...</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>
 Very simple text editor for Qucs
 </source>
-        <translation>
+        <translation type="vanished">
 Egyszerü szövegszerkesztő a Qucs-hoz
 </translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Copyright (C) 2004, 2005 by Michael Margraf
 </source>
-        <translation>Copyright (C) 2004, 2005 by Michael Margraf
+        <translation type="vanished">Copyright (C) 2004, 2005 by Michael Margraf
 </translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Enter a Filename</source>
-        <translation>Fájl név</translation>
+        <translation type="vanished">Fájl név</translation>
     </message>
     <message>
-        <location line="+12"/>
         <source>Enter a Document Name</source>
-        <translation>Dokumentum neve</translation>
+        <translation type="vanished">Dokumentum neve</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+39"/>
         <source>Error</source>
-        <translation>Hiba</translation>
+        <translation type="vanished">Hiba</translation>
     </message>
     <message>
-        <location line="-38"/>
         <source>Cannot write file: </source>
-        <translation>A fájl nem írható:</translation>
+        <translation type="vanished">A fájl nem írható:</translation>
     </message>
     <message>
-        <location line="+39"/>
         <source>Cannot read file: </source>
-        <translation>A fájl nem olvasható:</translation>
+        <translation type="vanished">A fájl nem olvasható:</translation>
     </message>
     <message>
-        <location line="+19"/>
         <source>Closing document</source>
-        <translation>Dokumentum bezárva</translation>
+        <translation type="vanished">Dokumentum bezárva</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>The text contains unsaved changes!
 </source>
-        <translation>A szöveg tartalmaz mentetlen változásokat!
+        <translation type="vanished">A szöveg tartalmaz mentetlen változásokat!
 </translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Do you want to save the changes?</source>
-        <translation>El akarod menteni a változásokat?</translation>
+        <translation type="vanished">El akarod menteni a változásokat?</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>&amp;Save</source>
-        <translation>&amp;Mentés</translation>
+        <translation type="vanished">&amp;Mentés</translation>
     </message>
     <message>
-        <location line="+0"/>
         <source>&amp;Discard</source>
-        <translation>&amp;Eldob</translation>
+        <translation type="vanished">&amp;Eldob</translation>
     </message>
     <message>
-        <location line="+0"/>
         <source>&amp;Cancel</source>
-        <translation>&amp;Mégsem</translation>
+        <translation type="vanished">&amp;Mégsem</translation>
     </message>
 </context>
 <context>
     <name>QucsFilter</name>
     <message>
-        <location filename="../qucs-filter/qucsfilter.cpp" line="+65"/>
+        <location filename="../qucs-filter/qucsfilter.cpp" line="+54"/>
         <source>&amp;File</source>
         <translation>&amp;Fájl</translation>
     </message>
@@ -12346,7 +14326,7 @@ Egyszerü szövegszerkesztő a Qucs-hoz
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+29"/>
         <source>Filter type:</source>
         <translation>Szűrő típus:</translation>
     </message>
@@ -12376,7 +14356,7 @@ Egyszerü szövegszerkesztő a Qucs-hoz
         <translation>Sávzáró szűrő</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Order:</source>
         <translation>Fokszám:</translation>
     </message>
@@ -12530,242 +14510,178 @@ Szűrő méretező program
 <context>
     <name>QucsHelp</name>
     <message>
-        <location filename="../qucs-help/qucshelp.cpp" line="+51"/>
         <source>Qucs Help System</source>
-        <translation>Qucs súgó rendszer</translation>
+        <translation type="vanished">Qucs súgó rendszer</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Cannot load Help files.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Cannot find:
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Setting QUCSDIR variable might be necessary.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+23"/>
         <source>&amp;Quit</source>
-        <translation>&amp;Kilépés</translation>
+        <translation type="vanished">&amp;Kilépés</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>&amp;Back</source>
-        <translation>&amp;Vissza</translation>
+        <translation type="vanished">&amp;Vissza</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>&amp;Forward</source>
-        <translation>&amp;Előre</translation>
+        <translation type="vanished">&amp;Előre</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>&amp;Home</source>
-        <translation>&amp;Kezdőlap</translation>
+        <translation type="vanished">&amp;Kezdőlap</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>&amp;Previous</source>
-        <translation>&amp;Előző</translation>
+        <translation type="vanished">&amp;Előző</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>&amp;Next</source>
-        <translation>&amp;Következő</translation>
+        <translation type="vanished">&amp;Következő</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>&amp;Table of Contents</source>
-        <translation>&amp;Tartalomjegyzék</translation>
+        <translation type="vanished">&amp;Tartalomjegyzék</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>Enables/disables the table of contents</source>
-        <translation>Tartalomjegyzék Be/Ki </translation>
+        <translation type="vanished">Tartalomjegyzék Be/Ki </translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Table of Contents
 
 Enables/disables the table of contents</source>
-        <translation>Tartalomjegyzék
+        <translation type="vanished">Tartalomjegyzék
 
 Be vagy Kikapcsolja a tartalomjegyzéket</translation>
     </message>
     <message>
-        <location line="+41"/>
         <source>&amp;About Qt</source>
-        <translation>&amp;Qt Névjegy</translation>
+        <translation type="vanished">&amp;Qt Névjegy</translation>
     </message>
     <message>
-        <location line="-14"/>
         <source>&amp;File</source>
-        <translation>&amp;Fájl</translation>
+        <translation type="vanished">&amp;Fájl</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>&amp;View</source>
-        <translation>&amp;Megjelenítés</translation>
+        <translation type="vanished">&amp;Megjelenítés</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>&amp;Help</source>
-        <translation>&amp;Súgó</translation>
+        <translation type="vanished">&amp;Súgó</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Contents</source>
-        <translation>Összetevők</translation>
+        <translation type="vanished">Összetevők</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>Home</source>
-        <translation>Kezdőlap</translation>
+        <translation type="vanished">Kezdőlap</translation>
     </message>
 </context>
 <context>
     <name>QucsLib</name>
     <message>
-        <location filename="../qucs-lib/qucslib.cpp" line="+60"/>
         <source>&amp;File</source>
-        <translation>&amp;Fájl</translation>
+        <translation type="vanished">&amp;Fájl</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Manage User &amp;Libraries...</source>
-        <translation>Felhasználói alkatrész-&amp;katalógust kezelő...</translation>
+        <translation type="vanished">Felhasználói alkatrész-&amp;katalógust kezelő...</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>&amp;Quit</source>
-        <translation>&amp;Kilépés</translation>
+        <translation type="vanished">&amp;Kilépés</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location line="+2"/>
         <source>&amp;Help</source>
-        <translation>&amp;Súgó</translation>
+        <translation type="vanished">&amp;Súgó</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>About</source>
-        <translation>Névjegy</translation>
+        <translation type="vanished">Névjegy</translation>
     </message>
     <message>
-        <location line="+25"/>
         <source>Component Selection</source>
-        <translation>Alkatrész kiválasztás</translation>
+        <translation type="vanished">Alkatrész kiválasztás</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Search Lib Components</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
         <source>Component</source>
-        <translation>Alkatrész</translation>
+        <translation type="vanished">Alkatrész</translation>
     </message>
     <message>
-        <location line="+12"/>
         <source>Copy to clipboard</source>
-        <translation>Másolás a vágólapra</translation>
+        <translation type="vanished">Másolás a vágólapra</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Show Model</source>
-        <translation>Modell megjelenítése</translation>
+        <translation type="vanished">Modell megjelenítése</translation>
     </message>
     <message>
-        <location line="+72"/>
         <source>About...</source>
-        <translation>Névjegy...</translation>
+        <translation type="vanished">Névjegy...</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Library Manager for Qucs
 </source>
-        <translation>Alkatrész-katalógus kezelő a Qucs-hoz
+        <translation type="vanished">Alkatrész-katalógus kezelő a Qucs-hoz
 </translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Copyright (C) 2011-2015 Qucs Team
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Copyright (C) 2005 by Michael Margraf
 </source>
-        <translation>Copyright (C) 2005 by Michael Margraf
+        <translation type="vanished">Copyright (C) 2005 by Michael Margraf
 </translation>
     </message>
     <message>
-        <location line="+44"/>
         <source>QucsLib Help</source>
-        <translation>QucsLib súgó</translation>
+        <translation type="vanished">QucsLib súgó</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>QucsLib is a program to manage Qucs component libraries. On the left side of the application window the available libraries can be browsed to find the wanted component. By clicking on the component name its description can be seen on the right side. The selected component is transported to the Qucs application by clicking on the button &quot;Copy to Clipboard&quot;. Being back in the schematic window the component can be inserted by pressing CTRL-V  (paste from clipboard).</source>
-        <translation>A alkatrész-katalógus (QucsLib) egy alkatrész-katalógus kezelő program. A bal oldalon legördülő menüből lehet alkatrész csoportot választani, majd a listából lehet a kívánt alkatrészt kikeresni. Az alkatrész nevére klikkelve jobb oldalon megjelennek az alkatrész adatai. A &quot;Másolás vágólapra&quot; gombbal azonnal a vágólapra helyezi az alkatrészt. Ezután a Qucs-ba beilleszthető az alkatrész a Szerkesztés / Beillesztés menüben vagy a CTRL-V billenytükombinációval.</translation>
+        <translation type="vanished">A alkatrész-katalógus (QucsLib) egy alkatrész-katalógus kezelő program. A bal oldalon legördülő menüből lehet alkatrész csoportot választani, majd a listából lehet a kívánt alkatrészt kikeresni. Az alkatrész nevére klikkelve jobb oldalon megjelennek az alkatrész adatai. A &quot;Másolás vágólapra&quot; gombbal azonnal a vágólapra helyezi az alkatrészt. Ezután a Qucs-ba beilleszthető az alkatrész a Szerkesztés / Beillesztés menüben vagy a CTRL-V billenytükombinációval.</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>A more comfortable way: The component can also be placed onto the schematic by using Drag n&apos;Drop.</source>
-        <translation>További lehetőség: Az alkatrész a jobb alsó &quot;Szimbólum:&quot; ablakból ! Húzd és Ejtsd ! módszerrel a kapcsolási rajz szerkesztőbe másolható.</translation>
+        <translation type="vanished">További lehetőség: Az alkatrész a jobb alsó &quot;Szimbólum:&quot; ablakból ! Húzd és Ejtsd ! módszerrel a kapcsolási rajz szerkesztőbe másolható.</translation>
     </message>
     <message>
-        <location line="+22"/>
         <source>Model</source>
-        <translation>Modell</translation>
+        <translation type="vanished">Modell</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location line="+66"/>
-        <location line="+4"/>
-        <location line="+72"/>
-        <source>Search results</source>
+        <source>Error</source>
+        <translation type="vanished">Hiba</translation>
+    </message>
+    <message>
+        <source>Cannot open &quot;%1&quot;.</source>
+        <translation type="vanished">&quot;%1&quot; megnyitása nem sikerült.</translation>
+    </message>
+    <message>
+        <source>Library is corrupt.</source>
+        <translation type="vanished">Alkatrész katalógus hibás.</translation>
+    </message>
+</context>
+<context>
+    <name>QucsPowerCombiningTool</name>
+    <message>
+        <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="-218"/>
+        <source>Ready! Use CTRL+V to paste the schematic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-108"/>
-        <location line="+3"/>
-        <location line="+136"/>
-        <location line="+7"/>
-        <location line="+9"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <source>Error</source>
-        <translation>Hiba</translation>
+        <location line="+4"/>
+        <source>Error! The network could not be generated</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-169"/>
-        <source>Cannot open &quot;%1&quot;.</source>
-        <translation>&quot;%1&quot; megnyitása nem sikerült.</translation>
+        <location line="+785"/>
+        <source>Bagley</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location line="+136"/>
-        <location line="+7"/>
-        <location line="+9"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <source>Library is corrupt.</source>
-        <translation>Alkatrész katalógus hibás.</translation>
+        <location line="+340"/>
+        <source>Tree combiner</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12776,12 +14692,11 @@ Be vagy Kikapcsolja a tartalomjegyzéket</translation>
         <translation>Qucs tulajdonságainak beéllítása</translation>
     </message>
     <message>
-        <location line="+14"/>
         <source>Font (set after reload):</source>
-        <translation>Betűkészlet (beállítva ujratöltés után):</translation>
+        <translation type="vanished">Betűkészlet (beállítva ujratöltés után):</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+25"/>
         <source>Large font size:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12901,7 +14816,17 @@ Be vagy Kikapcsolja a tartalomjegyzéket</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-7"/>
+        <location line="-39"/>
+        <source>Schematic font (set after reload):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Application font (set after reload):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>Kazakh</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12941,22 +14866,42 @@ Be vagy Kikapcsolja a tartalomjegyzéket</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Use anti-aliasing for graphs for a smoother appereance.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Draw text with anti-aliasing feature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Use anti-aliasing for text for a smoother appereance.</source>
+        <location line="-4"/>
+        <source>Use anti-aliasing for graphs for a smoother appearance.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Use anti-aliasing for text for a smoother appearance.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
+        <source>Show trace name prefix on diagrams:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show prefixes for trace names on diagrams like &quot;ngspice/&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Panel icons theme (set after reload):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Components icons theme (set after reload):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Settings</source>
         <translation>Beállítások</translation>
     </message>
@@ -13083,6 +15028,11 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+7"/>
+        <source>OpenVAF Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+16"/>
         <source>Subcircuit Search Path List</source>
         <translation type="unfinished"></translation>
@@ -13113,7 +15063,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Alapértelmezett értékek</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+62"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
@@ -13123,7 +15073,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Ez az utótag már regisztrált!</translation>
     </message>
     <message>
-        <location line="+422"/>
+        <location line="+457"/>
         <source>Select the home directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13143,6 +15093,11 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+9"/>
+        <source>Select the OpenVAF executable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+28"/>
         <location line="+20"/>
         <source>Select a directory</source>
@@ -13152,7 +15107,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
 <context>
     <name>QucsTranscalc</name>
     <message>
-        <location filename="../qucs-transcalc/qucstrans.cpp" line="-827"/>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="-846"/>
         <source>&amp;File</source>
         <translation>&amp;Fájl</translation>
     </message>
@@ -13162,17 +15117,32 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>&amp;Betölt</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+1"/>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>&amp;Save</source>
         <translation>&amp;Mentés</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+1"/>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>&amp;Options</source>
         <translation>&amp;Opciók</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+1"/>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>&amp;Quit</source>
         <translation>&amp;Kilépés</translation>
     </message>
@@ -13243,17 +15213,22 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Páros Mikrosztrip</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Stripline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+25"/>
         <source>Substrate Parameters</source>
         <translation>Szubsztrát paraméterek</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+5"/>
         <source>Component Parameters</source>
         <translation>Komponens paraméterek</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+9"/>
         <source>Physical Parameters</source>
         <translation>Fizikai paraméterek</translation>
     </message>
@@ -13289,7 +15264,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+571"/>
+        <location line="+592"/>
         <location line="+171"/>
         <location line="+19"/>
         <source>Ready.</source>
@@ -13297,7 +15272,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
 </translation>
     </message>
     <message>
-        <location line="-712"/>
+        <location line="-731"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
@@ -13310,28 +15285,31 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
+        <location line="+15"/>
         <source>Conductor Losses</source>
         <translation>Vezető veszteségei</translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="-38"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
+        <location line="+15"/>
         <source>Dielectric Losses</source>
         <translation>Dielektrikum veszteségei</translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="-38"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+22"/>
+        <location line="+5"/>
         <source>Skin Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-21"/>
         <location line="+6"/>
         <source>TE-Modes</source>
         <translation>TE-Módok</translation>
@@ -13373,25 +15351,27 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Dielektrikum páratlan veszteségei</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+11"/>
         <location line="+15"/>
         <location line="+13"/>
         <location line="+13"/>
         <location line="+13"/>
         <location line="+12"/>
+        <location line="+17"/>
         <source>Relative Permittivity</source>
         <translation>Relatív dielektromos állandó</translation>
     </message>
     <message>
-        <location line="-65"/>
+        <location line="-82"/>
         <location line="+41"/>
         <location line="+13"/>
         <location line="+12"/>
+        <location line="+17"/>
         <source>Relative Permeability</source>
         <translation>Relatív permeabilitás</translation>
     </message>
     <message>
-        <location line="-65"/>
+        <location line="-82"/>
         <location line="+14"/>
         <location line="+13"/>
         <location line="+39"/>
@@ -13427,11 +15407,12 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <location line="+12"/>
         <location line="+12"/>
         <location line="+16"/>
+        <location line="+13"/>
         <source>Dielectric Loss Tangent</source>
         <translation>Dielektrikum veszteség tangense</translation>
     </message>
     <message>
-        <location line="-65"/>
+        <location line="-78"/>
         <location line="+66"/>
         <source>Conductor Roughness</source>
         <translation>Vezető érdessége</translation>
@@ -13443,11 +15424,12 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <location line="+13"/>
         <location line="+12"/>
         <location line="+16"/>
+        <location line="+15"/>
         <source>Frequency</source>
         <translation>Frekvencia</translation>
     </message>
     <message>
-        <location line="-65"/>
+        <location line="-80"/>
         <location line="+12"/>
         <location line="+13"/>
         <location line="+41"/>
@@ -13467,21 +15449,23 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <location line="+13"/>
         <location line="+13"/>
         <location line="+12"/>
+        <location line="+30"/>
         <source>Characteristic Impedance</source>
         <translation>Karakterisztikus ellenállás</translation>
     </message>
     <message>
-        <location line="-50"/>
+        <location line="-80"/>
         <location line="+13"/>
         <location line="+13"/>
         <location line="+13"/>
         <location line="+12"/>
         <location line="+17"/>
+        <location line="+13"/>
         <source>Electrical Length</source>
         <translation>Elektromos hossz</translation>
     </message>
     <message>
-        <location line="-58"/>
+        <location line="-71"/>
         <location line="+13"/>
         <location line="+41"/>
         <source>Gap Width</source>
@@ -13490,11 +15474,12 @@ a fájlt a megfelelő program nyissa meg.</translation>
     <message>
         <location line="-33"/>
         <location line="+14"/>
+        <location line="+29"/>
         <source>Conductivity of Metal</source>
         <translation>Fém vezetése</translation>
     </message>
     <message>
-        <location line="-12"/>
+        <location line="-41"/>
         <source>Magnetic Loss Tangent</source>
         <translation>Mágneses veszteség tangense</translation>
     </message>
@@ -13526,11 +15511,12 @@ a fájlt a megfelelő program nyissa meg.</translation>
     <message>
         <location line="+1"/>
         <location line="+16"/>
+        <location line="+14"/>
         <source>Length</source>
         <translation>Hossz</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-13"/>
         <source>Even-Mode Impedance</source>
         <translation>Páros-Módú impedancia</translation>
     </message>
@@ -13540,7 +15526,22 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Páratlan-Módú impedancia</translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+8"/>
+        <source>Conductor thickness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Substrate height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+141"/>
         <source>Selected for Calculation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13550,7 +15551,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+217"/>
+        <location line="+216"/>
         <source>About...</source>
         <translation>Névjegy...</translation>
     </message>
@@ -13590,7 +15591,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
  {2008 ?}</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+43"/>
         <location line="+11"/>
         <source>Values are consistent.</source>
         <translation>Az értékek konzisztensek.</translation>
@@ -13667,7 +15668,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
 <context>
     <name>SaveDialog</name>
     <message>
-        <location filename="../qucs/dialogs/savedialog.cpp" line="+38"/>
+        <location filename="../qucs/dialogs/savedialog.cpp" line="+39"/>
         <source>Save the modified files</source>
         <translation>Módosított fájlok mentése</translation>
     </message>
@@ -13705,7 +15706,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
 <context>
     <name>Schematic</name>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+98"/>
+        <location filename="../qucs/schematic.cpp" line="-2109"/>
         <source>Title</source>
         <translation>Cím</translation>
     </message>
@@ -13778,12 +15779,12 @@ Edits the symbol for this schematic</source>
 Szerkeszti az áramköri szimbólumot a kapcsoláshoz</translation>
     </message>
     <message>
-        <location line="+1258"/>
+        <location line="+1252"/>
         <source>generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1373"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1423"/>
         <location line="+22"/>
         <source>Error</source>
         <translation>Hiba</translation>
@@ -13801,7 +15802,7 @@ Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1022"/>
+        <location line="+1036"/>
         <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
         <translation>HIBA: A &quot;%1&quot; alkatrész-katalógus fájl nem hozható létre.</translation>
     </message>
@@ -13998,7 +15999,7 @@ Rács megjelenítése</translation>
 <context>
     <name>SimMessage</name>
     <message>
-        <location filename="../qucs/dialogs/simmessage.cpp" line="+67"/>
+        <location filename="../qucs/dialogs/simmessage.cpp" line="+65"/>
         <source>Qucs Simulation Messages</source>
         <translation>Qucs szimulációs üzenetek</translation>
     </message>
@@ -14090,7 +16091,7 @@ Rács megjelenítése</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+273"/>
+        <location line="+279"/>
         <source>ERROR: Cannot start </source>
         <translation type="unfinished"></translation>
     </message>
@@ -14155,9 +16156,133 @@ Rács megjelenítése</translation>
     </message>
 </context>
 <context>
+    <name>SimSettingsDialog</name>
+    <message>
+        <location filename="../qucs/extsimkernels/simsettingsdialog.cpp" line="+29"/>
+        <source>Default simulator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ngspice executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Xyce executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Xyce Parallel executable location (openMPI installed required)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>SpiceOpus executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Qucsator executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Number of processors in a system:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Directory to store netlist and simulator output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Extra simulator parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Apply changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Mégsem</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>Select ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>SPICE settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+47"/>
+        <source>Qucsator settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Setup simulators executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Simulator settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Default simulator engine was changed!
+Please restart Qucs to affect changes!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Select Ngspice executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Select Xyce executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Select Xyce Parallel executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Select SpiceOpus executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Select Qucsator executable location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Select directory to store netlist and simulator output</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SpiceDialog</name>
     <message>
-        <location filename="../qucs/components/spicedialog.cpp" line="+47"/>
+        <location filename="../qucs/components/spicedialog.cpp" line="+48"/>
         <source>Edit SPICE Component Properties</source>
         <translation>SPICE komponens tulajdonságainak beállítása</translation>
     </message>
@@ -14247,7 +16372,7 @@ Rács megjelenítése</translation>
         <translation>Minden fájl</translation>
     </message>
     <message>
-        <location line="+90"/>
+        <location line="+91"/>
         <location line="+67"/>
         <source>Info</source>
         <translation>Infó</translation>
@@ -14258,7 +16383,7 @@ Rács megjelenítése</translation>
         <translation>&quot;%1&quot; SPICE fájl előfeldolgozása.</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+11"/>
         <location line="+11"/>
         <location line="+55"/>
         <source>Error</source>
@@ -14281,12 +16406,12 @@ Rács megjelenítése</translation>
         <translation>SPICE előfeldolgozó HIBA</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; SPICE fájl konvertásása.</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+24"/>
         <source>QucsConv Error</source>
         <translation>QucsConv Hiba</translation>
     </message>
@@ -14302,7 +16427,7 @@ Rács megjelenítése</translation>
 <context>
     <name>SweepDialog</name>
     <message>
-        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+85"/>
+        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+92"/>
         <source>Bias Points</source>
         <translation>Pontok eltolása</translation>
     </message>
@@ -14315,27 +16440,72 @@ Rács megjelenítése</translation>
 <context>
     <name>SymbolWidget</name>
     <message>
-        <location filename="../qucs-lib/symbolwidget.cpp" line="+53"/>
+        <location filename="../qucs/symbolwidget.cpp" line="+49"/>
         <source>Symbol:</source>
         <translation>Szimbólum:</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
+        <location line="+18"/>
         <source>! Drag n&apos;Drop me !</source>
         <translation>! Húzd és ejtsd !</translation>
     </message>
     <message>
-        <location line="+272"/>
+        <location line="+274"/>
         <source>Warning: Symbol &apos;%1&apos; missing in Qucs Library.
 Drag and Drop may still work.
 Please contact the developers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <location line="+4"/>
+        <source>Error</source>
+        <translation type="unfinished">Hiba</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Cannot open &quot;%1&quot;.</source>
+        <translation type="unfinished">&quot;%1&quot; megnyitása nem sikerült.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Library is corrupt.</source>
+        <translation type="unfinished">Alkatrész katalógus hibás.</translation>
+    </message>
+</context>
+<context>
+    <name>TextBoxDialog</name>
+    <message>
+        <location filename="../qucs/dialogs/textboxdialog.cpp" line="+36"/>
+        <source>Component: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Apply</source>
+        <translation type="unfinished">Alkalmaz</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Mégsem</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>OK</source>
+        <translation type="unfinished">Ok</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Editor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TextDoc</name>
     <message>
-        <location filename="../qucs/textdoc.cpp" line="+228"/>
+        <location filename="../qucs/textdoc.cpp" line="+229"/>
         <source>Edit Text Symbol</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14448,12 +16618,12 @@ Inserts the skeleton of a Octave function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+20"/>
         <source>b[i]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+17"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14541,7 +16711,7 @@ Inserts the skeleton of a Octave function</source>
         <translation>Mégsem</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+60"/>
         <source>PNG files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14551,7 +16721,7 @@ Inserts the skeleton of a Octave function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-3"/>
         <source>Enter an Icon File Name</source>
         <translation type="unfinished"></translation>
     </message>
