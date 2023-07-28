@@ -53,6 +53,10 @@ add_subdirectory( library )
 add_subdirectory( qucs-transcalc )
 add_subdirectory( qucs-powercombining )
 #add_subdirectory( examples )
+
+IF (UPDATE_TRANSLATIONS)
+  file(GLOB_RECURSE FILES_TO_TRANSLATE "*.cpp" "*.h" "*.ui")
+ENDIF (UPDATE_TRANSLATIONS)
 add_subdirectory( translations )
 
 install(DIRECTORY "examples" DESTINATION "share/${QUCS_NAME}")
