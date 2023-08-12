@@ -208,6 +208,34 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
             }
         }
 
+        // create .IC from wire labels
+        QStringList wire_labels;
+        for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+            if (pw->Label != nullptr) {
+                QString label = pw->Label->Name;
+                if (!wire_labels.contains(label)) wire_labels.append(label);
+                else continue;
+                QString ic = pw->Label->initValue;
+                if (!ic.isEmpty()) {
+                    QString ic_str = QString(".IC v(%1)=%2\n").arg(label).arg(ic);
+                    stream<<ic_str;
+                }
+            }
+        }
+        for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
+            Conductor *pw = (Conductor*) pn;
+            if (pw->Label != nullptr) {
+                QString label = pw->Label->Name;
+                if (!wire_labels.contains(label)) wire_labels.append(label);
+                else continue;
+                QString ic = pw->Label->initValue;
+                if (!ic.isEmpty()) {
+                    QString ic_str = QString(".IC v(%1)=%2\n").arg(label).arg(ic);
+                    stream<<ic_str;
+                }
+            }
+        }
+
         // Parameters, Initial conditions, Options
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             if (pc->isEquation) {
