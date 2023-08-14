@@ -1,3 +1,27 @@
+# Qucs-S 2.0.0
+
+## New features
+
+* Implemented quick switch of the simulator without application restart #274 (thanks @Zergud)
+
+## Packaging
+
+* Linux AppImage build switched to Github workflow #281 
+* Added Windows 64-bit installer with Ngspice
+
+## Component library
+
+* Fixed issues in Transformers library #228 and #231
+
+## General improvements
+
+* Finished Qt6 porting #190
+* Show warning if the directory protected by Windows UAC #282
+* Fixed PDF print on Windows #285
+* Added option to export grayscale image #288
+* Fixed setting initial conditions in wire labels #291
+* Fixed missing ground warning
+
 # Qucs-S 1.1.0
 
 ## New features
