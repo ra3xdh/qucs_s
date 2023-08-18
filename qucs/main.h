@@ -112,6 +112,8 @@ struct tQucsSettings {
   bool ViewToolbar;
   bool WorkToolbar;
   bool SimulateToolbar;
+
+  bool firstRun;
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used

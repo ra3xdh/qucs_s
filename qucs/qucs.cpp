@@ -209,7 +209,7 @@ QucsApp::QucsApp()
     }
   }
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) { // try to find Ngspice
+  if (QucsSettings.firstRun) { // try to find Ngspice
 #ifdef Q_OS_WIN
       QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice_con.exe";
       QString ngspice_exe2 = "C:\\Spice64\\bin\\ngspice_con.exe";
@@ -237,17 +237,14 @@ QucsApp::QucsApp()
           QucsSettings.DefaultSimulator = spicecompat::simNgspice;
           QucsSettings.NgspiceExecutable = ngspice_exe;
           fillSimulatorsComboBox();
+      } else {
+          QMessageBox::information(this,tr("Qucs"),tr("Ngspice not found automatically. Please specify simulators"
+                                                      " in the next dialog window."));
+          slotSimSettings();
       }
+      QucsSettings.firstRun = false;
   }
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
-      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
-                                         "Please setup it in the next dialog window.\n"
-                                         "If you have no simulators except Qucs installed\n"
-                                         "in your system leave default Qucsator setting\n"
-                                         "and simple press Apply button"));
-      slotSimSettings();
-  }
 //  fillLibrariesTreeView();
 }
 

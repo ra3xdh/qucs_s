@@ -79,6 +79,10 @@ bool loadSettings()
         QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
     else QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
 
+    if(settings.contains("firstRun"))
+        QucsSettings.firstRun = settings.value("firstRun").toBool();
+    else QucsSettings.firstRun = true;
+
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
     if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
@@ -220,6 +224,7 @@ bool saveApplSettings()
     QSettings settings ("qucs","qucs_s");
 
     settings.setValue("DefaultSimulator", QucsSettings.DefaultSimulator);
+    settings.setValue("firstRun", false);
 
     settings.setValue("x", QucsSettings.x);
     settings.setValue("y", QucsSettings.y);
