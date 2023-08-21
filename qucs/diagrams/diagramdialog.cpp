@@ -738,7 +738,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   }
   else  stepX = 0;
 
-  connect(t, SIGNAL(currentChanged(QWidget*)), SLOT(slotChangeTab(QWidget*)));
+  connect(t, SIGNAL(currentChanged(int)), SLOT(slotChangeTab(int)));
   // ...........................................................
   QWidget *Butts = new QWidget();
   QHBoxLayout *ButtsLayout = new QHBoxLayout();
@@ -1564,7 +1564,7 @@ void DiagramDialog::slotManualZ(int state)
 /*!
  Is called if the current tab of the QTabWidget changes.
 */
-void DiagramDialog::slotChangeTab(QWidget*)
+void DiagramDialog::slotChangeTab(int)
 {
   if(stepX == 0) return;   // defined ?
   if(GridLogX) {

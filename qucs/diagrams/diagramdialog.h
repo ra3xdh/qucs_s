@@ -77,7 +77,7 @@ private slots:
   void slotManualX(int);
   void slotManualY(int);
   void slotManualZ(int);
-  void slotChangeTab(QWidget*);
+  void slotChangeTab(int);
 
   void slotNewRotX(int);
   void slotNewRotY(int);
