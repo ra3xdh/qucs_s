@@ -83,6 +83,7 @@ public:
   void MMoveScrollBar(Schematic*, QMouseEvent*);
 
   void MPressSelect(Schematic*, QMouseEvent*, float, float);
+  void MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, float fY);
   void MPressDelete(Schematic*, QMouseEvent*, float, float);
   void MPressActivate(Schematic*, QMouseEvent*, float, float);
   void MPressMirrorX(Schematic*, QMouseEvent*, float, float);

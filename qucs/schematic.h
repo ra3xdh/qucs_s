@@ -170,6 +170,7 @@ signals:
   void signalUndoState(bool);
   void signalRedoState(bool);
   void signalFileChanged(bool);
+  void signalComponentDeleted(Component *);
 
 protected:
   void paintFrame(ViewPainter*);

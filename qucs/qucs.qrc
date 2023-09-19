@@ -318,6 +318,8 @@
         <file>bitmaps/spicegeneric.png</file>
         <file>bitmaps/spicelibcomp.png</file>
         <file>bitmaps/xyce_script.png</file>
+        <file>bitmaps/RemoveElementTuning.png</file>
+        <file>bitmaps/tune.png</file>
         <file>bitmaps/dark/ac_current.png</file>
         <file>bitmaps/dark/ac_voltage.png</file>
         <file>bitmaps/dark/am_mod.png</file>

@@ -2856,7 +2856,7 @@ void Schematic::deleteComp(Component *c)
             pn->Connection->Connections.removeRef(c);// remove connection
             break;
         }
-
+    emit signalComponentDeleted(c);
     Components->removeRef(c);   // delete component
 }
 

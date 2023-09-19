@@ -75,6 +75,7 @@
 //#include "dialogs/vtabwidget.h"
 //#include "dialogs/vtabbeddockwidget.h"
 #include "extsimkernels/externsimdialog.h"
+#include "dialogs/tuner.h"
 #include "octave_window.h"
 #include "printerwriter.h"
 #include "imagewriter.h"
@@ -1891,6 +1892,8 @@ void QucsApp::slotFileClose(int index)
 {
     // Call closeFile with a specific tab index
     closeFile(index);
+    // Reset Tunerdialog
+    if (TuningMode) tunerDia->slotResetTunerDialog();
 }
 
 // --------------------------------------------------------------
@@ -2284,15 +2287,60 @@ void QucsApp::slotZoomOut()
   getDoc()->zoomBy(0.5f);
 }
 
+/*!
+ * \brief QucsApp::slotTune
+ *  is called when the tune toolbar button is pressed.
+ */
+void QucsApp::slotTune(bool checked)
+{
+    if (checked)
+    {
+        QWidget *w = DocumentTab->currentWidget(); // remember from which Tab the tuner was started
+        if (isTextDocument(w))
+        {
+            //Probably digital Simulation
+            QMessageBox::warning(this, "Not implemented",
+                                 "Currently tuning is not supported for this document type", QMessageBox::Ok);
+            return;
+        }
+        // instance of tuner
+        TuningMode = true;
+        tunerDia = new TunerDialog(w, this);//The object can be instantiated here since when checked == false the memory will be freed
+        // inform the Tuner Dialog when a component is deleted
+        Schematic *d = dynamic_cast<Schematic*>(w);
+        assert(d);
+        connect(d, SIGNAL(signalComponentDeleted(Component *)),
+                tunerDia, SLOT(slotComponentDeleted(Component *)));
+
+        slotHideEdit(); // disable text edit of component property
+        workToolbar->setEnabled(false); // disable workToolbar to preserve TuneMouseAction
+
+        MousePressAction = &MouseActions::MPressTune;
+        MouseReleaseAction = 0; //While Tune is active release is not needed. This puts Press Action back to normal select
+
+        tunerDia->show();
+    }
+    else
+    {
+        this->workToolbar->setEnabled(true);
+
+        // MouseActions are reset in closing of tunerDialog class
+        tunerDia->close();//According to QWidget documentation (http://doc.qt.io/qt-4.8/qwidget.html#close),
+                          //the object is removed since it has the Qt::WA_DeleteOnClose flag
+        TuningMode = false;
+    }
+}
+
 
 /*!
  * \brief QucsApp::slotSimulate
  *  is called when the simulate toolbar button is pressed.
  */
-void QucsApp::slotSimulate()
+void QucsApp::slotSimulate(QWidget *w)
 {
 
-  QWidget *w = DocumentTab->currentWidget();
+  if (w == nullptr)
+      w = DocumentTab->currentWidget();
 
   //Check is schematic digital
   bool isDigital = false;
@@ -2333,6 +2381,7 @@ void QucsApp::slotSimulate()
 
   // Perhaps the document was modified from another program ?
   QFileInfo Info(Doc->DocName);
+  QString ext = Info.suffix();
   if(Doc->lastSaved.isValid()) {
     if(Doc->lastSaved < Info.lastModified()) {
       int No = QMessageBox::warning(this, tr("Warning"),
@@ -2355,7 +2404,50 @@ void QucsApp::slotSimulate()
     return;
   }
 
+  if (ext == "dpl")
+    {
+        // simulation started from Data Display: open referenced schematic
+        QString _tabToFind = Doc->DataDisplay; // name of the referenced schematic
+        QFileInfo Info(QucsSettings.QucsWorkDir.filePath(_tabToFind));
+        int z = 0;
+        QucsDoc *d = findDoc(Info.absoluteFilePath(), &z);  // check if schematic is already open in a Tab
+
+        if (d)
+        {
+            // schematic already loaded
+            // this should be the simulation schematic of this data display
+            w = DocumentTab->widget(z);
+        }
+        else
+        {
+            // schematic not yet loaded
+            int i = 0;
+            int No = DocumentTab->currentIndex(); // remember current Tab
+            if(Info.suffix() == "sch" || Info.suffix() == "dpl" ||
+               Info.suffix() == "sym") {
+              d = new Schematic(this, Info.absoluteFilePath());
+              i = DocumentTab->addTab((Schematic *)d, QPixmap(":/bitmaps/empty.xpm"), Info.fileName());
+            } else {
+              d = new TextDoc(this, Info.absoluteFilePath());
+              i = DocumentTab->addTab((TextDoc *)d, QPixmap(":/bitmaps/empty.xpm"), Info.fileName());
+            }
+            DocumentTab->setCurrentIndex(i); // temporarily switch to the newly created Tab
+
+            if(d->load()) {
+              // document loaded successfully
+              w = DocumentTab->widget(i);
+            } else {
+              // failed loading document
+              // load() above has already shown a QMessageBox about not being able to load the file
+              delete d;
+              DocumentTab->setCurrentIndex(No);
+            }
+            DocumentTab->setCurrentIndex(No);
+        }
+    }
+
   SimMessage *sim = new SimMessage(w, this);
+  sim->setDocWidget(w);
   // disconnect is automatically performed, if one of the involved objects
   // is destroyed !
   connect(sim, SIGNAL(SimulationEnded(int, SimMessage*)), this,
@@ -2363,8 +2455,16 @@ void QucsApp::slotSimulate()
   connect(sim, SIGNAL(displayDataPage(QString&, QString&)),
 		this, SLOT(slotChangePage(QString&, QString&)));
 
-  sim->show();
-  if(!sim->startProcess()) return;
+  if (TuningMode == true) {
+      connect(sim, SIGNAL(progressBarChanged(int)), tunerDia, SLOT(slotUpdateProgressBar(int)));
+  } else { //It doesn't make sense to connect the slot outside the tuning mode
+      sim->show();
+  }
+
+  if(!sim->startProcess()) {
+      if (TuningMode == true) sim->show();//The message window is hidden when the tuning mode is active, but in case of error such window pops up
+      return;
+  }
 
   // to kill it before qucs ends
   connect(this, SIGNAL(signalKillEmAll()), sim, SLOT(slotClose()));
@@ -2374,7 +2474,14 @@ void QucsApp::slotSimulate()
 // Is called after the simulation process terminates.
 void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 {
-  if(Status != 0) return;  // errors occurred ?
+
+  if(Status != 0) { // errors ocurred ?
+      if (TuningMode) {
+          sim->show();
+          tunerDia->SimulationEnded();
+      }
+      return;
+  }
 
   if(sim->ErrText->document()->lineCount() > 1)   // were there warnings ?
     slotShowWarnings();
@@ -2417,8 +2524,16 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 	((Schematic*)sim->DocWidget)->reloadGraphs();
   }
 
-  if(!isTextDocument (sim->DocWidget))
-    ((Schematic*)sim->DocWidget)->viewport()->update();
+  if(!isTextDocument (sim->DocWidget)) {
+    //((Schematic*)sim->DocWidget)->viewport()->update();
+    ((Schematic*)DocumentTab->currentWidget())->viewport()->update();
+  }
+
+  // Kill the simulation process, otherwise we have 200+++ sims in the background
+  if(TuningMode) {
+    sim->slotClose();
+    tunerDia->SimulationEnded();
+  }
 
 }
 

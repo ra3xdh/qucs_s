@@ -841,7 +841,8 @@ int Graph::loadDatFile(const QString &fileName) {
 
     Info.setFile(file);
     if (g->lastLoaded.isValid())
-        if (g->lastLoaded > Info.lastModified())
+        if (g->lastLoaded.currentMSecsSinceEpoch() >
+            Info.lastModified().currentMSecsSinceEpoch()) //Millisecond resulution is needed for tuning
             return 1;    // dataset unchanged -> no update necessary
 
     g->countY = 0;

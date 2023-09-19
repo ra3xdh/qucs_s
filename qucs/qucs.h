@@ -37,6 +37,8 @@ class SearchDialog;
 class OctaveWindow;
 class MessageDock;
 class ProjectView;
+class TunerDialog;
+class tunerElement;
 
 class QLabel;
 class QAction;
@@ -100,6 +102,8 @@ public:
 
   QLineEdit *editText;  // for edit component properties on schematic
   SearchDialog *SearchDia;  // global in order to keep values
+  TunerDialog *tunerDia; // global in order to keep values
+  SimMessage *sim; // global in order to keep values
 
   // current mouse methods
   void (MouseActions::*MouseMoveAction) (Schematic*, QMouseEvent*);
@@ -160,6 +164,9 @@ public slots:
 
   void slotMenuProjClose();
 
+  void slotSimulate(QWidget *w = nullptr);
+  void slotTune(bool checked);
+
 private slots:
   void slotMenuProjOpen();
   void slotMenuProjDel();
@@ -173,7 +180,6 @@ private slots:
   void slotButtonProjOpen();
   void slotButtonProjDel();
   void slotChangeView();
-  void slotSimulate();
   void slotAfterSimulation(int, SimMessage*);
   void slotDCbias();
   void slotChangePage(QString&, QString&);
@@ -213,12 +219,13 @@ public:
   QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
-          *editCut, *editCopy, *magAll, *magOne, *magMinus, *filePrintFit,
+          *editCut, *editCopy, *magAll, *magOne, *magMinus, *filePrintFit, *tune,
           *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias;
 
   QAction *exportAsImage;
 
   QAction *activeAction;    // pointer to the action selected by the user
+  bool TuningMode;
 
 private:
 // ********* Widgets on the main area **********************************
