@@ -22,6 +22,7 @@
 #include "externsimdialog.h"
 #include "simsettingsdialog.h"
 #include "main.h"
+#include "qucs.h"
 
 ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_mode) :
     QDialog(parent)
@@ -87,7 +88,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_m
     this->setWindowTitle(tr("Simulate with external simulator"));
 
     slotSetSimulator();
-    if (!netlist_mode)
+    if (!netlist_mode && !QucsMain->TuningMode)
         buttonSimulate->click(); // Start simulation
 
 }
@@ -209,9 +210,9 @@ void ExternSimDialog::slotProcessOutput()
         default:
             break;
     }
-    emit simulated();
+    emit simulated(this);
     wasSimulated = true;
-    if (Sch->showBias>0) this->close();
+    //if (Sch->showBias>0 || QucsMain->TuningMode) this->close();
 }
 
 
@@ -291,4 +292,8 @@ void ExternSimDialog::saveLog()
     }
 }
 
+void ExternSimDialog::slotStartSilent()
+{
+    buttonSimulate->click();
+}
 

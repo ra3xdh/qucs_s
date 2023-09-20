@@ -929,7 +929,7 @@ void QucsApp::initToolBar()
   this->addToolBar(simulateToolbar);
   simulateToolbar->addWidget(reinterpret_cast<QWidget *>(simulatorsCombobox));
   simulateToolbar->addAction(simulate);
-  workToolbar->addAction(tune);
+  simulateToolbar->addAction(tune);
   simulateToolbar->addAction(dpl_sch);
   simulateToolbar->addAction(setMarker);
 }

@@ -17,6 +17,8 @@
 #include "tuner.h"
 
 #include "main.h"
+#include "extsimkernels/spicecompat.h"
+
 #include <QCloseEvent>
 
 
@@ -753,7 +755,18 @@ void TunerDialog::slotElementValueUpdated()
 
     progressBar->setVisible(true);
     this->setEnabled(false);
-    QucsMain->slotSimulate(w);
+
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simQucsator:
+        QucsMain->slotSimulate(w);
+        break;
+    case spicecompat::simNgspice:
+    case spicecompat::simXyce:
+    case spicecompat::simSpiceOpus:
+        QucsMain->slotSimulateWithSpice();
+        break;
+    default: break;
+    }
 }
 
 void TunerDialog::SimulationEnded()

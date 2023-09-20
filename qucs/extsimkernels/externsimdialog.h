@@ -57,12 +57,13 @@ private:
     void saveLog();
     
 signals:
-    void simulated();
+    void simulated(ExternSimDialog *);
     void warnings();
     void success();
     
 public slots:
     void slotSaveNetlist();
+    void slotStartSilent();
 
 private slots:
     void slotProcessOutput();

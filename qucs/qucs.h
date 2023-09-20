@@ -39,6 +39,7 @@ class MessageDock;
 class ProjectView;
 class TunerDialog;
 class tunerElement;
+class ExternSimDialog;
 
 class QLabel;
 class QAction;
@@ -165,6 +166,7 @@ public slots:
   void slotMenuProjClose();
 
   void slotSimulate(QWidget *w = nullptr);
+  void slotSimulateWithSpice();
   void slotTune(bool checked);
 
 private slots:
@@ -186,9 +188,8 @@ private slots:
   void slotHideEdit();
   void slotFileChanged(bool);
   void slotSimSettings();
-  void slotSimulateWithSpice();
   void slotSaveNetlist();
-  void slotAfterSpiceSimulation();
+  void slotAfterSpiceSimulation(ExternSimDialog *SimDlg);
   void slotBuildVAModule();
   /*void slotBuildXSPICEIfs(int mode = 0);
   void slotEDDtoIFS();

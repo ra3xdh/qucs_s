@@ -186,6 +186,7 @@ QucsApp::QucsApp()
 
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
+  TuningMode = false;
 
   // creates a document called "untitled"
   Schematic *d = new Schematic(this, "");
@@ -2313,7 +2314,7 @@ void QucsApp::slotTune(bool checked)
                 tunerDia, SLOT(slotComponentDeleted(Component *)));
 
         slotHideEdit(); // disable text edit of component property
-        workToolbar->setEnabled(false); // disable workToolbar to preserve TuneMouseAction
+        simulateToolbar->setEnabled(false); // disable workToolbar to preserve TuneMouseAction
 
         MousePressAction = &MouseActions::MPressTune;
         MouseReleaseAction = 0; //While Tune is active release is not needed. This puts Press Action back to normal select
@@ -2322,7 +2323,7 @@ void QucsApp::slotTune(bool checked)
     }
     else
     {
-        this->workToolbar->setEnabled(true);
+        this->simulateToolbar->setEnabled(true);
 
         // MouseActions are reset in closing of tunerDialog class
         tunerDia->close();//According to QWidget documentation (http://doc.qt.io/qt-4.8/qwidget.html#close),
@@ -3309,16 +3310,18 @@ void QucsApp::slotSimulateWithSpice()
             sch->showBias = biasState;
         }
         ExternSimDialog *SimDlg = new ExternSimDialog(sch);
-        connect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
+        connect(SimDlg,SIGNAL(simulated(ExternSimDialog*)),
+                this,SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         connect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-        SimDlg->exec();
-        disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
+        if (!TuningMode) SimDlg->exec();
+        else SimDlg->slotStartSilent();
+        /*disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
-        disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-        if (SimDlg->wasSimulated && sch->SimOpenDpl)
+        disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));*/
+        /*if (SimDlg->wasSimulated && sch->SimOpenDpl)
             if (sch->showBias < 1) slotChangePage(sch->DocName,sch->DataDisplay);
-        delete SimDlg;
+        delete SimDlg;*/
     } else {
         QMessageBox::warning(this,tr("Simulate schematic"),
                              tr("Simulation of text document is not possible!"));
@@ -3340,9 +3343,14 @@ void QucsApp::slotSaveNetlist()
     }
 }
 
-void QucsApp::slotAfterSpiceSimulation()
+void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
 {
     Schematic *sch = (Schematic*)DocumentTab->currentWidget();
+    disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
+    disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
+    disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
+    if (SimDlg->wasSimulated && sch->SimOpenDpl)
+        if (sch->showBias < 1) slotChangePage(sch->DocName,sch->DataDisplay);
     sch->reloadGraphs();
     sch->viewport()->update();
     if(sch->SimRunScript) {
@@ -3350,6 +3358,10 @@ void QucsApp::slotAfterSpiceSimulation()
       octave->startOctave();
       octave->runOctaveScript(sch->Script);
     }
+    if (TuningMode) {
+        tunerDia->SimulationEnded();
+    }
+    if (sch->showBias>0 || QucsMain->TuningMode) SimDlg->close();
 }
 
 void QucsApp::slotBuildVAModule()

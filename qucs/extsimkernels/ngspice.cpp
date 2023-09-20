@@ -527,6 +527,7 @@ void Ngspice::slotSimulate()
     QString ngsp_cmd = cmd_args.at(0);
     cmd_args.removeAt(0);
     SimProcess->start(ngsp_cmd,cmd_args);
+    if (QucsMain)
     emit started();
 }
 
