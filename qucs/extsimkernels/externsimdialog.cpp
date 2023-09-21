@@ -210,8 +210,8 @@ void ExternSimDialog::slotProcessOutput()
         default:
             break;
     }
-    emit simulated(this);
     wasSimulated = true;
+    emit simulated(this);
     //if (Sch->showBias>0 || QucsMain->TuningMode) this->close();
 }
 

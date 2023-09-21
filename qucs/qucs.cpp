@@ -2333,10 +2333,54 @@ void QucsApp::slotTune(bool checked)
 }
 
 
+QWidget *QucsApp::getSchematicWidget(QucsDoc *Doc)
+{
+    QWidget *w = nullptr;
+    QFileInfo Info(QucsSettings.QucsWorkDir.filePath(Doc->DataDisplay));
+    int z = 0;
+    QFileInfo sch_inf(Doc->DocName);
+    QString sch_name = sch_inf.absolutePath() + QDir::separator() + Doc->DataDisplay;
+    QucsDoc *d = findDoc(sch_name, &z);  // check if schematic is already open in a Tab
+
+    if (d)
+    {
+        // schematic already loaded
+        // this should be the simulation schematic of this data display
+        w = DocumentTab->widget(z);
+    }
+    else
+    {
+        // schematic not yet loaded
+        int i = 0;
+        int No = DocumentTab->currentIndex(); // remember current Tab
+        if(Info.suffix() == "sch" || Info.suffix() == "dpl" ||
+           Info.suffix() == "sym") {
+          d = new Schematic(this, Info.absoluteFilePath());
+          i = DocumentTab->addTab((Schematic *)d, QPixmap(":/bitmaps/empty.xpm"), Info.fileName());
+        } else {
+          d = new TextDoc(this, Info.absoluteFilePath());
+          i = DocumentTab->addTab((TextDoc *)d, QPixmap(":/bitmaps/empty.xpm"), Info.fileName());
+        }
+        DocumentTab->setCurrentIndex(i); // temporarily switch to the newly created Tab
+
+        if(d->load()) {
+          // document loaded successfully
+          w = DocumentTab->widget(i);
+        } else {
+          // failed loading document
+          // load() above has already shown a QMessageBox about not being able to load the file
+          delete d;
+          DocumentTab->setCurrentIndex(No);
+        }
+        DocumentTab->setCurrentIndex(No);
+    }
+    return w;
+}
+
 /*!
  * \brief QucsApp::slotSimulate
  *  is called when the simulate toolbar button is pressed.
- */
+*/
 void QucsApp::slotSimulate(QWidget *w)
 {
 
@@ -2405,47 +2449,10 @@ void QucsApp::slotSimulate(QWidget *w)
     return;
   }
 
-  if (ext == "dpl")
-    {
-        // simulation started from Data Display: open referenced schematic
-        QString _tabToFind = Doc->DataDisplay; // name of the referenced schematic
-        QFileInfo Info(QucsSettings.QucsWorkDir.filePath(_tabToFind));
-        int z = 0;
-        QucsDoc *d = findDoc(Info.absoluteFilePath(), &z);  // check if schematic is already open in a Tab
-
-        if (d)
-        {
-            // schematic already loaded
-            // this should be the simulation schematic of this data display
-            w = DocumentTab->widget(z);
-        }
-        else
-        {
-            // schematic not yet loaded
-            int i = 0;
-            int No = DocumentTab->currentIndex(); // remember current Tab
-            if(Info.suffix() == "sch" || Info.suffix() == "dpl" ||
-               Info.suffix() == "sym") {
-              d = new Schematic(this, Info.absoluteFilePath());
-              i = DocumentTab->addTab((Schematic *)d, QPixmap(":/bitmaps/empty.xpm"), Info.fileName());
-            } else {
-              d = new TextDoc(this, Info.absoluteFilePath());
-              i = DocumentTab->addTab((TextDoc *)d, QPixmap(":/bitmaps/empty.xpm"), Info.fileName());
-            }
-            DocumentTab->setCurrentIndex(i); // temporarily switch to the newly created Tab
-
-            if(d->load()) {
-              // document loaded successfully
-              w = DocumentTab->widget(i);
-            } else {
-              // failed loading document
-              // load() above has already shown a QMessageBox about not being able to load the file
-              delete d;
-              DocumentTab->setCurrentIndex(No);
-            }
-            DocumentTab->setCurrentIndex(No);
-        }
-    }
+  if (ext == "dpl") {
+      // simulation started from Data Display: open referenced schematic
+      w = getSchematicWidget(Doc);
+  }
 
   SimMessage *sim = new SimMessage(w, this);
   sim->setDocWidget(w);
@@ -3300,6 +3307,15 @@ void QucsApp::slotSimulateWithSpice()
 {
     if (!isTextDocument(DocumentTab->currentWidget())) {
         Schematic *sch = (Schematic*)DocumentTab->currentWidget();
+        if (TuningMode) {
+            QFileInfo Info(sch->DocName);
+            QString ext = Info.suffix();
+            if (ext == "dpl") {
+                QucsDoc *Doc = (QucsDoc *)sch;
+                sch = (Schematic *) getSchematicWidget(Doc);
+                if (sch == nullptr) return;
+            }
+        }
 
         if (sch->DocName.isEmpty()) {
             auto biasState = sch->showBias;
@@ -3349,8 +3365,15 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
     disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
     disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
     disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-    if (SimDlg->wasSimulated && sch->SimOpenDpl)
-        if (sch->showBias < 1) slotChangePage(sch->DocName,sch->DataDisplay);
+    if (SimDlg->wasSimulated && sch->SimOpenDpl) {
+        if (sch->showBias < 1) {
+            if (!TuningMode) {
+                slotChangePage(sch->DocName,sch->DataDisplay);
+            } else if (!sch->DocName.endsWith(".dpl")) {
+                slotChangePage(sch->DocName,sch->DataDisplay);
+            }
+        }
+    }
     sch->reloadGraphs();
     sch->viewport()->update();
     if(sch->SimRunScript) {

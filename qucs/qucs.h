@@ -275,6 +275,7 @@ private:
   void successExportMessages(bool ok);
   void fillLibrariesTreeView (void);
   void saveSettings();
+  QWidget *getSchematicWidget(QucsDoc *Doc);
 
 public:
 
@@ -357,7 +358,7 @@ public:
   QAction *helpQucsIndex;
   QAction *simSettings;
   QAction *buildVAModule;
-
+  
 public slots:
   void slotEditRotate(bool);  // rotate the selected items
   void slotEditMirrorX(bool); // mirror the selected items about X axis
