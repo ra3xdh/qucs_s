@@ -52,6 +52,7 @@ public:
     ~ExternSimDialog();
 
     bool wasSimulated;
+    bool hasError;
 
 private:
     void saveLog();

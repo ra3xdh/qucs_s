@@ -29,6 +29,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_m
 {
     Sch = sch;
     wasSimulated = false;
+    hasError = false;
 
     workdir = QucsSettings.S4Qworkdir;
     QFileInfo inf(workdir);
@@ -211,6 +212,8 @@ void ExternSimDialog::slotProcessOutput()
             break;
     }
     wasSimulated = true;
+    if (out.contains("error",Qt::CaseInsensitive))
+        hasError = true;
     emit simulated(this);
     //if (Sch->showBias>0 || QucsMain->TuningMode) this->close();
 }
