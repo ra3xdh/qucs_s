@@ -2206,7 +2206,7 @@ bool Schematic::checkDplAndDatNames()
     if(!DocName.isEmpty() &&
         DataSet.size()>4 &&
         DataDisplay.size()>4) {
-      QString base = Info.baseName();
+      QString base = Info.completeBaseName();
       QString base_dat = DataSet;
       base_dat.chop(4);
       QString base_dpl = DataDisplay;

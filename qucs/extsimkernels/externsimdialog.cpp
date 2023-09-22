@@ -197,7 +197,7 @@ void ExternSimDialog::slotProcessOutput()
 
     QFileInfo inf(Sch->DocName);
     //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
-    QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+ext;
+    QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.completeBaseName()+ext;
     switch (QucsSettings.DefaultSimulator) {
         case spicecompat::simNgspice:
         case spicecompat::simSpiceOpus:
