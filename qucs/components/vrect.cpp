@@ -64,6 +64,8 @@ vRect::vRect()
 		QObject::tr("fall time of the trailing edge")));
   Props.append(new Property("Td", "0 ns", false,
 		QObject::tr("initial delay time")));
+  Props.append(new Property("U0", "0 V", true,
+        QObject::tr("voltage of low signal (SPICE only)")));
 
   rotate();  // fix historical flaw
 }
@@ -89,6 +91,7 @@ QString vRect::spice_netlist(bool)
     QString Td = spicecompat::normalize_value(Props.at(5)->Value); // Td
     QString Tr = spicecompat::normalize_value(Props.at(3)->Value); // Tr
     QString Tf = spicecompat::normalize_value(Props.at(4)->Value); //Tf
+    QString U0 = spicecompat::normalize_value(getProperty("U0")->Value); //VL
     misc::str2num(Props.at(1)->Value,TH,unit,fac); //TH
     TH *= fac;    // TH = pw
     misc::str2num(Props.at(2)->Value,TL,unit,fac);
@@ -98,7 +101,7 @@ QString vRect::spice_netlist(bool)
    misc::str2num(Props.at(4)->Value,Tfval,unit,fac); 
      T = Tfval*fac+T;    
      
-    s += QString(" DC 0 PULSE( 0  %1 %2 %3 %4 %5 %6)  AC 0\n").arg(U).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T);
+    s += QString(" DC 0 PULSE( %1 %2 %3 %4 %5 %6 %7 )  AC 0\n").arg(U0).arg(U).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T);
 
     return s;
 }
@@ -115,4 +118,20 @@ Element* vRect::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new vRect();
   return 0;
+}
+
+QString vRect::netlist()
+{
+  QString s = Model+":"+Name;
+
+  // output all node names
+  for (Port *p1 : Ports)
+    s += " "+p1->Connection->Name;   // node names
+
+  // output all properties
+  for(unsigned int i=0; i <= Props.count()-2; i++)
+    if(Props.at(i)->Name != "Symbol")
+      s += " "+Props.at(i)->Name+"=\""+Props.at(i)->Value+"\"";
+
+  return s + '\n';
 }
