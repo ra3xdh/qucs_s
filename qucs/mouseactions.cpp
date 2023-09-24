@@ -2090,12 +2090,21 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
 
     if(focusElement && App->TuningMode)
     {
+        Component *pc = nullptr;
+        Property *pp = nullptr;
         switch(focusElement->Type)
         {
+        case isComponent: // pick first property if device is clicked (i.e. R,C)
+        case isAnalogComponent:
+            pc = (Component*)focusElement;
+            if(!pc) return;
+            if (pc->Props.isEmpty()) return;
+            pp = pc->Props.at(0);
+            break;
         case isComponentText:  // property text of component ?
             focusElement->Type &= (~isComponentText) | isComponent;
-            Component *pc = (Component*)focusElement;
-            Property *pp = 0;
+            pc = (Component*)focusElement;
+            pp = 0;
             if(!pc) return;  // should never happen
 
             // current property
@@ -2104,24 +2113,20 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
                 pp = pc->Props.at(No);
             }
             if (!pp) return; // should not happen
-
-            if (! App->tunerDia->containsProperty(pp) )
-            {
-                if (checkProperty(pc, pp))
-                {
-                    tunerElement *tune = new tunerElement(App->tunerDia, pc, pp, No);
-                    if (tune != NULL) App->tunerDia->addTunerElement(tune);//Tunable property
-                }
-                else
-                {
-                    QMessageBox::warning(0,
-                                         "Property not correct",
-                                         "You selected a non-tunable property",
-                                         QMessageBox::Ok);
-                    return;
-                }
+            break;
+        default: return;
+        }
+        if (pc == nullptr || pp == nullptr ) return;
+        if (!App->tunerDia->containsProperty(pp) ) {
+            if (checkProperty(pc, pp)) {
+                tunerElement *tune = new tunerElement(App->tunerDia, pc, pp, No);
+                if (tune != NULL) App->tunerDia->addTunerElement(tune);//Tunable property
+            } else {
+                QMessageBox::warning(nullptr, "Property not correct",
+                                     "You selected a non-tunable property",
+                                     QMessageBox::Ok);
+                return;
             }
-            return;
         }
     }
 }
