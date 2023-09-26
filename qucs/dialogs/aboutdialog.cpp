@@ -164,7 +164,8 @@ AboutDialog::AboutDialog(QWidget *parent)
   // link to home page, help mailing list, IRC ?
   supportText = tr("Home Page") + " : <a href='https://ra3xdh.github.io/'>https://ra3xdh.github.io/</a><br/>"+
     tr("Documentation start page") + " : <a href='https://qucs-s-help.readthedocs.io/'>https://qucs-s-help.readthedocs.io/</a><br/>" +
-    tr("Bugtracker page") + " : <a href='https://github.com/ra3xdh/qucs_s/issues'>https://github.com/ra3xdh/qucs_s/issues</a><br/>";
+    tr("Bugtracker page") + " : <a href='https://github.com/ra3xdh/qucs_s/issues'>https://github.com/ra3xdh/qucs_s/issues</a><br/>" +
+    tr("Forum") + " : <a href='https://github.com/ra3xdh/qucs_s/discussions'>https://github.com/ra3xdh/qucs_s/discussions</a><br/>";
 
   QTextBrowser *supportBrowser = new QTextBrowser;
   supportBrowser->viewport()->installEventFilter(this);
