@@ -137,6 +137,7 @@ Q_DECLARE_METATYPE(iconCompInfoStruct)
 
 QucsApp::QucsApp()
 {
+  QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
   setWindowTitle(QUCS_NAME " " PACKAGE_VERSION);
 
   QucsSettings.hasDarkTheme = misc::isDarkTheme();
