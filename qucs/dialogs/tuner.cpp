@@ -695,6 +695,14 @@ void TunerDialog::addTunerElement(tunerElement *element)
     if (!element)
         return;
 
+    for(auto &el : currentElements) {
+        if (el->schematicName != element->schematicName) {
+            QMessageBox::warning(this,tr("Add component"),
+                                 tr("Adding components from different schematics is not supported!"));
+            return;
+        }
+    }
+
     updateValues->setEnabled(true);
     resetValues->setEnabled(true);
 

@@ -64,6 +64,7 @@ class tunerElement : public QWidget
         QString originalValue;//OriginalValue and numValue need to be public since they need to be accessed by tunerDialog when checking if the initial value was modified
         float numValue;
         Component *c;
+        QString schematicName;
 
         virtual ~tunerElement();
     signals:

@@ -2120,6 +2120,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
         if (!App->tunerDia->containsProperty(pp) ) {
             if (checkProperty(pc, pp)) {
                 tunerElement *tune = new tunerElement(App->tunerDia, pc, pp, No);
+                tune->schematicName = Doc->DocName;
                 if (tune != NULL) App->tunerDia->addTunerElement(tune);//Tunable property
             } else {
                 QMessageBox::warning(nullptr, "Property not correct",
