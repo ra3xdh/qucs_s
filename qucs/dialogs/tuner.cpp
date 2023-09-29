@@ -17,6 +17,7 @@
 #include "tuner.h"
 
 #include "main.h"
+#include "schematic.h"
 #include "extsimkernels/spicecompat.h"
 
 #include <QCloseEvent>
@@ -811,6 +812,10 @@ void TunerDialog::slotUpdateValues()
     {
         qDebug() << "Tuner::slotUpdateValues()::updateProperty()";
         currentElements.at(i)->updateProperty();
+    }
+    if (w != nullptr) { // Reflect changes in undo buffer
+        Schematic *d = dynamic_cast<Schematic*>(w);
+        d->setChanged(true,true);
     }
     this->infoMsg("Updated Schematic values");
     valuesUpdated = true;
