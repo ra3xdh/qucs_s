@@ -633,9 +633,6 @@ TunerDialog::TunerDialog(QWidget *_w, QWidget *parent) :
     QGridLayout * buttonsLayout = new QGridLayout();
     ButtonsPanel->setLayout(buttonsLayout);
 
-    currentElements = new QList<tunerElement*>();
-    currentProps = new QList<Property*>();
-
     closeButton = new QPushButton("Close", this);
     updateValues = new QPushButton("Update Values", this);
     updateValues->setEnabled(false);//It doesn't make sense to activate it at first... only when at least a tuning element is active...
@@ -688,7 +685,7 @@ void TunerDialog::infoMsg(const QString msg)
 
 bool TunerDialog::containsProperty(Property* prop)
 {
-    if (currentProps->contains(prop)) return true;
+    if (currentProps.contains(prop)) return true;
     else return false;
 }
 
@@ -704,11 +701,11 @@ void TunerDialog::addTunerElement(tunerElement *element)
     connect(element, SIGNAL(elementValueUpdated()), this, SLOT(slotElementValueUpdated()));
     connect(element, SIGNAL(removeElement(tunerElement*)), this, SLOT(slotRemoveTunerElement(tunerElement*)));
 
-    if (!currentProps->contains(element->getElementProperty()))
+    if (!currentProps.contains(element->getElementProperty()))
     {
         splitter->addWidget(element);
-        currentProps->append(element->getElementProperty());
-        currentElements->append(element);
+        currentProps.append(element->getElementProperty());
+        currentElements.append(element);
         this->adjustSize();
         this->update();
     }
@@ -727,19 +724,19 @@ void TunerDialog::addTunerElement(tunerElement *element)
 void TunerDialog::slotComponentDeleted(Component *c)
 {
   // remove elements related to the component
-  for(int i = currentElements->count()-1; i >= 0; --i) {
-    if (currentElements->at(i)->c == c)
-      slotRemoveTunerElement(currentElements->at(i));
+  for(int i = currentElements.count()-1; i >= 0; --i) {
+    if (currentElements.at(i)->c == c)
+      slotRemoveTunerElement(currentElements.at(i));
   }
 }
 
 void TunerDialog::slotRemoveTunerElement(tunerElement *e)
 {
     qDebug() << "Tuner::slotRemoveTunerElement()";
-    currentProps->removeAll(e->getElementProperty());
-    currentElements->removeAll(e);//This will also destroy the element in QSplitter: https://stackoverflow.com/questions/371599/how-to-remove-qwidgets-from-qsplitter
+    currentProps.removeAll(e->getElementProperty());
+    currentElements.removeAll(e);//This will also destroy the element in QSplitter: https://stackoverflow.com/questions/371599/how-to-remove-qwidgets-from-qsplitter
     delete e;
-    if (currentProps->size() == 0)
+    if (currentProps.size() == 0)
     {//No tuning boxes
         updateValues->setEnabled(false);
         resetValues->setEnabled(false);
@@ -780,12 +777,12 @@ void TunerDialog::SimulationEnded()
 
 bool TunerDialog::checkChanges()
 {
-  for (int i = 0; i < currentElements->count(); i++)
+  for (int i = 0; i < currentElements.count(); i++)
   {
       int index=-1;
-      QString val = SeparateMagnitudeFromSuffix(currentElements->at(i)->originalValue, index);
+      QString val = SeparateMagnitudeFromSuffix(currentElements.at(i)->originalValue, index);
       float initial_val = val.toFloat()*getScale(index);
-      if (initial_val != currentElements->at(i)->numValue) return true;
+      if (initial_val != currentElements.at(i)->numValue) return true;
   }
   return false;
 }
@@ -793,19 +790,19 @@ bool TunerDialog::checkChanges()
 void TunerDialog::slotResetValues()
 {
     qDebug() << "Tuner::slotResetValues()";
-    for (int i = 0; i < currentElements->count(); i++)
+    for (int i = 0; i < currentElements.count(); i++)
     {
-        currentElements->at(i)->resetValue();
+        currentElements.at(i)->resetValue();
     }
 }
 
 void TunerDialog::slotUpdateValues()
 {
     qDebug() << "Tuner::slotUpdateValues()";
-    for (int i = 0; i < currentElements->count(); i++)
+    for (int i = 0; i < currentElements.count(); i++)
     {
         qDebug() << "Tuner::slotUpdateValues()::updateProperty()";
-        currentElements->at(i)->updateProperty();
+        currentElements.at(i)->updateProperty();
     }
     this->infoMsg("Updated Schematic values");
     valuesUpdated = true;
@@ -816,11 +813,11 @@ void TunerDialog::slotResetTunerDialog()
     // Document closed. Reset tuner
     qDebug() << "Tuner::slotResetTunerDialog()";
     infoMsg("Document closed");
-    for (int i = 0; i < currentElements->count(); i++)
+    for (int i = 0; i < currentElements.count(); i++)
     {
        qDebug() << "Tuner::slotResetTunerDialog()::delete";
-       delete currentElements->at(i);
-       currentElements->removeAt(i);
+       delete currentElements.at(i);
+       currentElements.removeAt(i);
     }
     this->update();
 }
@@ -853,10 +850,10 @@ void TunerDialog::closeEvent(QCloseEvent *event)
 void TunerDialog::showEvent(QShowEvent *e)
 {
     Q_UNUSED(e);
-    for (int i = 0; i < currentElements->count(); i++)
+    for (int i = 0; i < currentElements.count(); i++)
     {
-        if (currentElements->at(i)->getElementProperty() == nullptr)
-            currentElements->removeAt(i);
+        if (currentElements.at(i)->getElementProperty() == nullptr)
+            currentElements.removeAt(i);
     }
 }
 

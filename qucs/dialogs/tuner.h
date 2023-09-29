@@ -126,8 +126,8 @@ private:
     QWidget *w; // widget holding the Qucs document to be tuned
     QPushButton *closeButton;
     QGridLayout *gbox;
-    QList<tunerElement*> *currentElements;
-    QList<Property*> *currentProps;
+    QList<tunerElement*> currentElements;
+    QList<Property*> currentProps;
     QStatusBar *info;
     QSplitter *splitter;
     QWidget *ButtonsPanel;
