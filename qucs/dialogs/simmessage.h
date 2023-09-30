@@ -45,10 +45,12 @@ public:
  ~SimMessage();
 
   bool startProcess();
+  void setDocWidget(QWidget*);
 
 signals:
   void SimulationEnded(int, SimMessage*);
   void displayDataPage(QString&, QString&);
+  void progressBarChanged(int);
 
 public slots:
   void slotClose();

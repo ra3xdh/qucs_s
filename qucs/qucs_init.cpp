@@ -537,6 +537,13 @@ void QucsApp::initActions()
   simulate->setWhatsThis(tr("Simulate\n\nSimulates the current schematic"));
   connect(simulate, SIGNAL(triggered()), SLOT(slotSimulate()));
 
+  tune = new QAction(QIcon((":/bitmaps/tune.png")),"Tune", this);
+  tune->setShortcut(Qt::Key_F3);
+  tune->setStatusTip("Tuner");
+  tune->setWhatsThis("Allows to live tune variables and show the result in the dataview");
+  tune->setCheckable(true);
+  connect(tune, SIGNAL(toggled(bool)), SLOT(slotTune(bool)));
+
   dpl_sch = new QAction(QIcon((":/bitmaps/rebuild.png")), tr("View Data Display/Schematic"), this);
   dpl_sch->setShortcut(Qt::Key_F4);
   dpl_sch->setStatusTip(tr("Changes to data display or schematic page"));
@@ -760,6 +767,7 @@ void QucsApp::initMenuBar()
 
   simMenu = new QMenu(tr("&Simulation"));  // menuBar entry simMenu
   simMenu->addAction(simulate);
+  simMenu->addAction(tune);
   simMenu->addAction(dpl_sch);
   simMenu->addAction(dcbias);
   simMenu->addAction(showMsg);
@@ -921,6 +929,7 @@ void QucsApp::initToolBar()
   this->addToolBar(simulateToolbar);
   simulateToolbar->addWidget(reinterpret_cast<QWidget *>(simulatorsCombobox));
   simulateToolbar->addAction(simulate);
+  simulateToolbar->addAction(tune);
   simulateToolbar->addAction(dpl_sch);
   simulateToolbar->addAction(setMarker);
 }

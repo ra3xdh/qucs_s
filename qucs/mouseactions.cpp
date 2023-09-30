@@ -36,6 +36,7 @@
 #include "dialogs/labeldialog.h"
 #include "dialogs/textboxdialog.h"
 #include "extsimkernels/customsimdialog.h"
+#include "dialogs/tuner.h"
 
 #include <QTextStream>
 #include <qt3_compat/q3ptrlist.h>
@@ -2070,6 +2071,65 @@ void MouseActions::MDoubleClickWire2(Schematic *Doc, QMouseEvent *Event)
     QucsMain->MousePressAction = &MouseActions::MPressWire1;
     QucsMain->MouseDoubleClickAction = 0;
   }
+}
+
+void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
+{
+    Q_UNUSED(Event);
+    int No=0;
+    MAx1 = int(fX);
+    MAy1 = int(fY);
+    focusElement = Doc->selectElement(fX, fY, false, &No);
+    isMoveEqual = false;   // moving not neccessarily square
+
+    if(focusElement)
+      // print define value in hex, see element.h
+      qDebug() << "MPressTune: focusElement->Type" <<  QString("0x%1").arg(focusElement->Type, 0, 16);
+    else
+      qDebug() << "MPressTune";
+
+    if(focusElement && App->TuningMode)
+    {
+        Component *pc = nullptr;
+        Property *pp = nullptr;
+        switch(focusElement->Type)
+        {
+        case isComponent: // pick first property if device is clicked (i.e. R,C)
+        case isAnalogComponent:
+            pc = (Component*)focusElement;
+            if(!pc) return;
+            if (pc->Props.isEmpty()) return;
+            pp = pc->Props.at(0);
+            break;
+        case isComponentText:  // property text of component ?
+            focusElement->Type &= (~isComponentText) | isComponent;
+            pc = (Component*)focusElement;
+            pp = 0;
+            if(!pc) return;  // should never happen
+
+            // current property
+            if (No > 0) {
+                No--;// No counts also the on/screen component Name, so subtract 1 to get the actual property number
+                pp = pc->Props.at(No);
+            }
+            if (!pp) return; // should not happen
+            break;
+        default: return;
+        }
+        if (pc == nullptr || pp == nullptr ) return;
+        if (!App->tunerDia->containsProperty(pp) ) {
+            if (checkProperty(pc, pp)) {
+                tunerElement *tune = new tunerElement(App->tunerDia, pc, pp, No);
+                tune->schematicName = Doc->DocName;
+                if (tune != NULL) App->tunerDia->addTunerElement(tune);//Tunable property
+            } else {
+                QMessageBox::warning(nullptr, "Property not correct",
+                                     "You selected a non-tunable property",
+                                     QMessageBox::Ok);
+                return;
+            }
+        }
+    }
 }
 
 // vim:ts=8:sw=2:noet

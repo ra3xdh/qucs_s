@@ -37,6 +37,9 @@ class SearchDialog;
 class OctaveWindow;
 class MessageDock;
 class ProjectView;
+class TunerDialog;
+class tunerElement;
+class ExternSimDialog;
 
 class QLabel;
 class QAction;
@@ -100,6 +103,8 @@ public:
 
   QLineEdit *editText;  // for edit component properties on schematic
   SearchDialog *SearchDia;  // global in order to keep values
+  TunerDialog *tunerDia; // global in order to keep values
+  SimMessage *sim; // global in order to keep values
 
   // current mouse methods
   void (MouseActions::*MouseMoveAction) (Schematic*, QMouseEvent*);
@@ -160,6 +165,10 @@ public slots:
 
   void slotMenuProjClose();
 
+  void slotSimulate(QWidget *w = nullptr);
+  void slotSimulateWithSpice();
+  void slotTune(bool checked);
+
 private slots:
   void slotMenuProjOpen();
   void slotMenuProjDel();
@@ -173,16 +182,14 @@ private slots:
   void slotButtonProjOpen();
   void slotButtonProjDel();
   void slotChangeView();
-  void slotSimulate();
   void slotAfterSimulation(int, SimMessage*);
   void slotDCbias();
   void slotChangePage(QString&, QString&);
   void slotHideEdit();
   void slotFileChanged(bool);
   void slotSimSettings();
-  void slotSimulateWithSpice();
   void slotSaveNetlist();
-  void slotAfterSpiceSimulation();
+  void slotAfterSpiceSimulation(ExternSimDialog *SimDlg);
   void slotBuildVAModule();
   /*void slotBuildXSPICEIfs(int mode = 0);
   void slotEDDtoIFS();
@@ -213,12 +220,13 @@ public:
   QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
-          *editCut, *editCopy, *magAll, *magOne, *magMinus, *filePrintFit,
+          *editCut, *editCopy, *magAll, *magOne, *magMinus, *filePrintFit, *tune,
           *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias;
 
   QAction *exportAsImage;
 
   QAction *activeAction;    // pointer to the action selected by the user
+  bool TuningMode;
 
 private:
 // ********* Widgets on the main area **********************************
@@ -267,6 +275,7 @@ private:
   void successExportMessages(bool ok);
   void fillLibrariesTreeView (void);
   void saveSettings();
+  QWidget *getSchematicWidget(QucsDoc *Doc);
 
 public:
 
@@ -349,7 +358,7 @@ public:
   QAction *helpQucsIndex;
   QAction *simSettings;
   QAction *buildVAModule;
-
+  
 public slots:
   void slotEditRotate(bool);  // rotate the selected items
   void slotEditMirrorX(bool); // mirror the selected items about X axis
