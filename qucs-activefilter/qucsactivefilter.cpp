@@ -122,6 +122,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
         <<tr("Inverse Chebyshev")
         <<tr("Cauer (Elliptic)")
         <<tr("Bessel")
+        <<tr("Legendre")
         <<tr("User defined");
     cbxFilterFunc->addItems(lst_2);
     connect(cbxFilterFunc,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSwitchParameters()));
@@ -316,6 +317,9 @@ void QucsActiveFilter::slotCalcSchematic()
             case funcCauer : ffunc = Filter::Cauer;
                      break;
             case funcBessel : ffunc = Filter::Bessel;
+                     par.order = edtOrder->text().toInt();
+                     break;
+            case funcLegendre : ffunc = Filter::Legendre;
                      par.order = edtOrder->text().toInt();
                      break;
             case funcUser : ffunc = Filter::User;
@@ -516,7 +520,8 @@ void QucsActiveFilter::slotSwitchParameters()
         cbxFilterType->removeItem(topoCauer);
     }
 
-    if ((cbxFilterFunc->currentIndex())==funcBessel) { // Bessel
+    if (cbxFilterFunc->currentIndex() == funcBessel ||
+        cbxFilterFunc->currentIndex() == funcLegendre) { // Bessel
         edtOrder->setEnabled(true);
     } else {
         edtOrder->setEnabled(false);

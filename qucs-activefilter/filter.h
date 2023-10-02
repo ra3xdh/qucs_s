@@ -55,7 +55,7 @@ class Filter
 
 public:
     enum FType {HighPass, LowPass, BandPass, BandStop, NoFilter};
-    enum FilterFunc {Butterworth, Chebyshev, Cauer, Bessel, InvChebyshev, NoFunc, User};
+    enum FilterFunc {Butterworth, Chebyshev, Cauer, Bessel, InvChebyshev, Legendre, NoFunc, User};
 
 private:
     void cauerOrderEstim();
@@ -81,6 +81,7 @@ protected:
     bool calcInvChebyshev();
     bool calcCauer();
     bool calcBessel();
+    bool calcLegendre();
     bool calcUserTrFunc();
     bool checkRCL(); // Checks RCL values. Are one of them NaN or not?
 
