@@ -48,6 +48,7 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_, QObject *parent) :
     QObject(parent)
 {
     Sch = sch_;
+    console = nullptr;
 
     if (Sch->showBias == 0) DC_OP_only = true;
     else DC_OP_only = false;
@@ -351,7 +352,6 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
     int NumPoints = 0;
     int bin_offset = 0;
     QByteArray content;
-    console = nullptr;
 
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {

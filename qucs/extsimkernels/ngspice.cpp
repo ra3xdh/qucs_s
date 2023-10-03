@@ -495,7 +495,8 @@ void Ngspice::slotSimulate()
     }
 
     if (checker_error) {
-        console->insertPlainText(output);
+        if (console != nullptr)
+            console->insertPlainText(output);
         emit finished();
         emit errors(QProcess::FailedToStart);
         return;
