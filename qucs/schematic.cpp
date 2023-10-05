@@ -2217,8 +2217,8 @@ bool Schematic::checkDplAndDatNames()
                                     "instead of using File->SaveAs. Correct dataset and display names "
                                     "automatically?\n\n");
           msg += QString(QObject::tr("Schematic file: ")) + base + ".sch\n";
-          msg += QString(QObject::tr("Dataset file: ")) + base_dat + ".sch \n";
-          msg += QString(QObject::tr("Display file: ")) + base_dpl + ".sch\n";
+          msg += QString(QObject::tr("Dataset file: ")) + DataSet + "\n";
+          msg += QString(QObject::tr("Display file: ")) + DataDisplay + "\n";
           auto r = QMessageBox::information(this,
                                            QObject::tr("Open document"),
                                            msg, QMessageBox::Yes, QMessageBox::No);
