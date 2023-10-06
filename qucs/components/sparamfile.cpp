@@ -25,10 +25,12 @@
 SParamFile::SParamFile()
 {
   Description = QObject::tr("S parameter file");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simQucsator
+            + spicecompat::simNgspice;
 
   Model = "SPfile";
   Name  = "X";
+  SpiceModel = "X";
 
   // must be the first property !!!
   Props.append(new Property("File", "test.s1p", true,
@@ -195,4 +197,16 @@ void SParamFile::createSymbol()
   QFontMetrics  metrics(QucsSettings.font, 0);   // use the screen-compatible metric
   tx = x1+4;
   ty = y1 - 2*metrics.lineSpacing() - 4;
+}
+
+QString SParamFile::spice_netlist(bool isXyce)
+{
+    QString s;
+    if (isXyce) return s;
+    s += SpiceModel+Name;
+    for (Port *p1 : Ports) {
+        s += " "+ spicecompat::normalize_node_name(p1->Connection->Name);   // node names
+    }
+    s += " Sub_" + Model + "_" + Name + "\n";
+    return s;
 }

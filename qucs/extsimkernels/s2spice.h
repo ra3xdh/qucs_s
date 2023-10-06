@@ -16,7 +16,7 @@ public:
     void setFile(const QString &file_) { file = file_; }
     void setDeviceName(const QString &name_) {device_name = name_; }
 
-    QString convertTouchstone();
+    bool convertTouchstone(QTextStream *stream);
 
 
     S2Spice();

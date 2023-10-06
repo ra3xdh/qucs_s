@@ -25,13 +25,10 @@ S2Spice::S2Spice()
     z0 = -1;
 }
 
-QString S2Spice::convertTouchstone()
+bool S2Spice::convertTouchstone(QTextStream *stream)
 {
 
-    QString out_str;
-    QString next_line;
-
-    double s[MAXFREQS][MAXPORTS][MAXPORTS][2];
+    auto s = new double [MAXFREQS][MAXPORTS][MAXPORTS][2];
     double freqs[MAXFREQS];
 
     int f;
@@ -45,7 +42,7 @@ QString S2Spice::convertTouchstone()
 
     QFile ff(file);
     if (!ff.open(QIODevice::ReadOnly)) {
-        return out_str;
+        return false;
     }
     QTextStream in_stream(&ff);
 
@@ -54,43 +51,45 @@ QString S2Spice::convertTouchstone()
     ports = inf.suffix().mid(1,1).toInt();
     if ( (ports < 1) || (ports > MAXPORTS) ) {
         //printf( "The circuit has %d ports\n", ports );
-        return out_str;
+        return false;
     }
 
 
     /* build first line of output file */
-    out_str = ".SUBCKT " + device_name;
-    for (int i = 0; i < ports; i++) {
-        out_str += QString(" %1").arg(i+1);
+    (*stream) << ".SUBCKT " + device_name;
+    for (int i = 0; i <= ports; i++) {
+        (*stream) << QString(" %1").arg(i+1);
     }
-    out_str += "\n";
+    (*stream) << "\n";
 
     /* read and decode format line */
 
+   QString next_line;
    while(!in_stream.readLineInto(&next_line)) {
        if (next_line.at(0) == '#') break;
    }
 
+    next_line = next_line.toUpper();
     funits = 1000000000;    /* GHz is the default frequency units */
-    if ( next_line.contains(" Hz ") )
+    if ( next_line.contains(" HZ ") )
         funits = 1;
-    else if ( next_line.contains(" kHz ") )
+    else if ( next_line.contains(" KHZ ") )
         funits = 1000;
-    else if ( next_line.contains(" MHz ") )
+    else if ( next_line.contains(" MHZ ") )
         funits = 1000000;
-    else if ( next_line.contains(" GHz ") )
+    else if ( next_line.contains(" GHZ ") )
         funits = 1000000000;
 
     bool dB = false;
     bool RI = false;
-    if ( next_line.contains(" dB " ) ) {
+    if ( next_line.contains(" DB " ) ) {
         dB = true;
     } else if ( next_line.contains(" RI " ) ) {
         RI = true;
     }
 
     if (!next_line.contains(" S " )) {
-        return out_str;
+        return false;
     }
     /* input impedances */
 
@@ -108,10 +107,10 @@ QString S2Spice::convertTouchstone()
     /* define resistances for Spice model */
 
     for ( int i = 0; i < ports; i++ ) {
-        out_str += QString("R%1N %2 %3 %4\n").arg(i+1).arg(i+1).arg(10*(i+1)).arg(-z[i]);
-        out_str += QString("R%dP %d %d %e\n").arg(i+1).arg(10*(i+1)).arg(10*(i+1)+1).arg(2*z[i]);
+        (*stream) << QString("R%1N %2 %3 %4\n").arg(i+1).arg(i+1).arg(10*(i+1)).arg(-z[i]);
+        (*stream) << QString("R%1P %2 %3 %4\n").arg(i+1).arg(10*(i+1)).arg(10*(i+1)+1).arg(2*z[i]);
     }
-    out_str += "\n";
+    (*stream) << "\n";
 
     /* read S parameters into matrix */
 
@@ -161,14 +160,15 @@ QString S2Spice::convertTouchstone()
             //fprintf( out, "*S%d%d FREQ " FORM  PHASE "\n", i + 1, j + 1 );
             model_cnt++;
             if ( j + 1 == ports ) {
-                out_str +=QString("A%1%2 %%vd(%6 %7) %%vd(%3%4, %5) xfer%8\n")
-                        .arg(i+1).arg(j+1).arg(i+1).arg(j+1).arg(ports + 1).arg(10 * (j + 1)).arg(model_cnt);
+                (*stream) << QString("A%1%2 %vd(%6 %7) %vd(%3%4, %5) xfer%8\n")
+                        .arg(i+1).arg(j+1).arg(i+1).arg(j+1).arg(ports + 1).arg(10 * (j + 1))
+                         .arg(ports + 1).arg(model_cnt);
             } else {
-                out_str += QString("A%d%d %%vd(%7 %8) %%vd(%3%4, %5%6) xfer%9\n")
+                (*stream) << QString("A%1%2 %vd(%7 %8) %vd(%3%4, %5%6) xfer%9\n")
                         .arg(i + 1).arg(j + 1).arg(i + 1).arg(j + 1).arg(i + 1)
                         .arg(j + 2).arg(10 * (j + 1)).arg(ports + 1).arg(model_cnt);
             }
-            out_str += QString(".model xfer%1 xfer " FORM "=true table=[\n").arg(model_cnt);
+            (*stream) << QString(".model xfer%1 xfer " FORM "=true table=[\n").arg(model_cnt);
             offset = 0;
             prevph = 0;
             for ( f = 0; f < numf; f++ )
@@ -208,13 +208,16 @@ QString S2Spice::convertTouchstone()
                     mag *= cos(ph);
                 }
 #endif
-                out_str += QString("+ %1Hz %2 %3\n").arg(freqs[f] * funits).arg(mag).arg(ph + offset);
+                (*stream) << QString("+ %1Hz %2 %3\n").arg(freqs[f] * funits).arg(mag).arg(ph + offset);
             }
-            out_str += "+ ]\n\n";
+            (*stream) << "+ ]\n\n";
         }
     }
 
-    out_str += ".ENDS\n";
-    return out_str;
+    (*stream) << ".ENDS\n";
+
+    delete [] s;
+
+    return true;
 
 }
