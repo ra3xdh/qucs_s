@@ -161,7 +161,7 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     minimum = new QLineEdit();
     minimum->setValidator( new QDoubleValidator(minValueValidator, 100, 2, this) );//Prevent the user from entering text
     MinUnitsCombobox = new QComboBox(this);
-    MinUnitsCombobox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    MinUnitsCombobox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
     MinUnitsCombobox->addItems(ScaleFactorList);
     MinUnitsCombobox->setCurrentIndex(magnitudeIndex);
 
