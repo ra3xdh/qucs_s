@@ -39,9 +39,11 @@
 #include "components/vhdlfile.h"
 #include "components/verilogfile.h"
 #include "components/libcomp.h"
+#include "components/sparamfile.h"
 #include "module.h"
 #include "misc.h"
 #include "extsimkernels/abstractspicekernel.h"
+#include "extsimkernels/s2spice.h"
 
 
 // Here the subcircuits, SPICE components etc are collected. It must be
@@ -1446,6 +1448,17 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
         return false;
       }
       continue;
+    }
+
+    if (pc->Model == "SPfile" &&
+        QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+        QString f = pc->getSubcircuitFile();
+        QString sub_name = "Sub_" + pc->Model + "_" + pc->Name;
+        S2Spice *conv = new S2Spice();
+        conv->setFile(f);
+        conv->setDeviceName(sub_name);
+        conv->convertTouchstone(stream);
+        delete conv;
     }
 
     // handle digital file subcircuits
