@@ -1,3 +1,23 @@
+/***************************************************************************
+                               s2spice.cpp
+                             ----------------
+    begin                : Thu Oct 05 2023
+    copyright            : (C) 2023 by Vadim Kuznetsov
+    based on S2Spice utility by Dan Dickey and Jim Mittel
+    see https://sourceforge.net/p/ngspice/discussion/120973/thread/51228e0b01/
+    email                : ra3xdh@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+
 #include <QtCore>
 #include <cmath>
 
@@ -8,17 +28,6 @@
 #define MAXFREQS 16001
 #define MAXPORTS 8
 #define MAXNAME 128
-
-
-#ifdef PREFER_DB
-#define FORM "DB"
-#define PHASE " PHASE"
-#else
-#define FORM "R_I"
-#define PHASE
-#endif
-
-#define FMT_2 "A%d%d %%vd(%7$d %8$d) %%vd(%3$d%4$d, %5$d%6$d) xfer%9$d\n"
 
 S2Spice::S2Spice()
 {
@@ -168,36 +177,13 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
                         .arg(i + 1).arg(j + 1).arg(i + 1).arg(j + 1).arg(i + 1)
                         .arg(j + 2).arg(10 * (j + 1)).arg(ports + 1).arg(model_cnt);
             }
-            (*stream) << QString(".model xfer%1 xfer " FORM "=true table=[\n").arg(model_cnt);
+            (*stream) << QString(".model xfer%1 xfer R_I=true table=[\n").arg(model_cnt);
             offset = 0;
             prevph = 0;
             for ( f = 0; f < numf; f++ )
             {
                 double a = s[f][i][j][0];
                 double b = s[f][i][j][1];
-#ifdef PREFER_DB
-                if ( dB )
-                {
-                    mag = a;
-                    ph = b;
-                }
-                else if ( RI )
-                {
-                    mag = 20* log10( sqrt( pow( a, 2.0 ) + pow( b, 2.0 ) ) );
-                    ph = atan2( b, a ) * 180.0 / M_PI;
-                }
-                else    /* MA is the default */
-                {
-                    mag = 20 * log10( a );
-                    ph = b;
-                }
-
-                if ( (absol( ph - prevph )) > 180 )
-                {
-                    offset = offset - 360.0 * (double) sgn( ph - prevph );
-                }
-                prevph = ph;
-#else // Prefer RI
                 if (RI) {
                     mag = a;
                     ph = b;
@@ -207,7 +193,6 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
                     ph = mag * sin(ph);
                     mag *= cos(ph);
                 }
-#endif
                 (*stream) << QString("+ %1Hz %2 %3\n").arg(freqs[f] * funits).arg(mag).arg(ph + offset);
             }
             (*stream) << "+ ]\n\n";
