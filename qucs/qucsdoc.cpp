@@ -45,7 +45,7 @@ QucsDoc::QucsDoc(QucsApp *App_, const QString& Name_)
       GridOn = false;              // data display without grid (per default)
     }
   }
-  SimOpenDpl = true;
+  SimOpenDpl = false;
   SimRunScript = false;
 
   DocChanged = false;
