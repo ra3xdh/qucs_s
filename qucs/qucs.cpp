@@ -2530,10 +2530,17 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 	slotChangePage(sim->DocName, sim->DataDisplay);
       //sim->slotClose();   // close and delete simulation window
     }
-    else
-      if(w) if(!isTextDocument (sim->DocWidget))
-	// load recent simulation data (if document is still open)
-	((Schematic*)sim->DocWidget)->reloadGraphs();
+    else {
+        if(w) {
+            if(!isTextDocument (sim->DocWidget)) {
+                int idx = Category::getModulesNr (QObject::tr("diagrams"));
+                CompChoose->setCurrentIndex(idx);   // switch to diagrams
+                slotSetCompView (idx);
+                // load recent simulation data (if document is still open)
+                ((Schematic*)sim->DocWidget)->reloadGraphs();
+            }
+        }
+    }
   }
 
   if(!isTextDocument (sim->DocWidget)) {
@@ -3373,15 +3380,24 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
         SimDlg->show();
         return;
     }
-    if (SimDlg->wasSimulated && sch->SimOpenDpl) {
-        if (sch->showBias < 1) {
-            if (!TuningMode) {
-                slotChangePage(sch->DocName,sch->DataDisplay);
-            } else if (!sch->DocName.endsWith(".dpl")) {
-                slotChangePage(sch->DocName,sch->DataDisplay);
+    if (SimDlg->wasSimulated) {
+        if(sch->SimOpenDpl) {
+            if (sch->showBias < 1) {
+                if (!TuningMode) {
+                    slotChangePage(sch->DocName,sch->DataDisplay);
+                } else if (!sch->DocName.endsWith(".dpl")) {
+                    slotChangePage(sch->DocName,sch->DataDisplay);
+                }
+            }
+        } else {
+            if (sch->showBias < 1  && !TuningMode) {
+                int idx = Category::getModulesNr (QObject::tr("diagrams"));
+                CompChoose->setCurrentIndex(idx);   // switch to diagrams
+                slotSetCompView (idx);
             }
         }
     }
+
     sch->reloadGraphs();
     sch->viewport()->update();
     if(sch->SimRunScript) {
