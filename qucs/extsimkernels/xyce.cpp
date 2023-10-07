@@ -276,26 +276,29 @@ void Xyce::slotSimulate()
 {
 
     QStringList incompat;
+    bool checker_error = false;
     if (!checkSchematic(incompat)) {
         QString s = incompat.join("; ");
         output.append("There were SPICE-incompatible components. Simulator cannot proceed.");
         output.append("Incompatible components are: " + s + "\n");
-        emit finished();
-        emit errors(QProcess::FailedToStart);
-        return;
+        checker_error = true;
     }
 
     if (!checkGround()) {
         output.append("No Ground found. Please add at least one ground!\n");
-        emit finished();
-        emit errors(QProcess::FailedToStart);
-        return;
+        checker_error = true;
     }
 
     if (!checkDCSimulation()) {
         output.append("Only DC simulation found in the schematic. It has no effect!"
                       " Add TRAN, AC, or Sweep simulation to proceed.\n");
-        emit finished();
+        checker_error = true;
+    }
+
+    if (checker_error) {
+        if (console != nullptr)
+            console->insertPlainText(output);
+        //emit finished();
         emit errors(QProcess::FailedToStart);
         return;
     }
