@@ -37,6 +37,7 @@ private:
     QPushButton *buttonExit;
 
     QPlainTextEdit *editSimConsole;
+    QListWidget *simStatusLog;
 
     QProgressBar *simProgress;
 
@@ -55,6 +56,7 @@ public:
 
 private:
     void saveLog();
+    void addLogEntry(const QString&text, const QIcon &icon);
     
 signals:
     void simulated(ExternSimDialog *);

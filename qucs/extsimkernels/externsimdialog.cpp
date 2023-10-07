@@ -68,12 +68,15 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_m
     ngspice->setConsole(editSimConsole);
     xyce->setConsole(editSimConsole);
 
+    simStatusLog = new QListWidget;
+
     simProgress = new QProgressBar(this);
     connect(ngspice,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
     connect(xyce,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
 
     QVBoxLayout *vl_top = new QVBoxLayout;
-    vl_top->addWidget(grp_1);
+    vl_top->addWidget(grp_1,3);
+    vl_top->addWidget(simStatusLog,1);
     vl_top->addWidget(simProgress);
     QHBoxLayout *hl1 = new QHBoxLayout;
     hl1->addWidget(buttonStopSim);
@@ -82,6 +85,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_m
     vl_top->addLayout(hl1);
     this->setLayout(vl_top);
     this->setWindowTitle(tr("Simulate with external simulator"));
+    this->setMinimumWidth(500);
 
     slotSetSimulator();
     if (!netlist_mode && !QucsMain->TuningMode)
@@ -181,8 +185,14 @@ void ExternSimDialog::slotProcessOutput()
 
     if (out.contains("warning",Qt::CaseInsensitive)||
         out.contains("error",Qt::CaseInsensitive)) {
+        addLogEntry(tr("There were simulation errors. Please check log."),
+                    this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
         emit warnings();
-    } else emit success();
+    } else {
+        addLogEntry(tr("Simulation successful. Now place diagram on schematic to plot the result."),
+                    QIcon(":/bitmaps/tick.png"));
+        emit success();
+    }
     //editSimConsole->clear();
     /*editSimConsole->insertPlainText(out);
     editSimConsole->moveCursor(QTextCursor::End);*/
@@ -216,6 +226,8 @@ void ExternSimDialog::slotNgspiceStarted()
     editSimConsole->clear();
     QString sim = spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator);
     editSimConsole->insertPlainText(sim + tr(" started...\n"));
+    addLogEntry(tr("Simulation started on: ") + QDateTime::currentDateTime().toString(),
+                this->style()->standardIcon(QStyle::SP_MessageBoxInformation));
 }
 
 void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
@@ -229,7 +241,8 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
     default : msg = tr("Simulator error!");
     }
 
-    QMessageBox::critical(this,tr("Simulate with SPICE"),msg,QMessageBox::Ok);
+    //QMessageBox::critical(this,tr("Simulate with SPICE"),msg,QMessageBox::Ok);
+    addLogEntry(msg,this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
 
     QString sim = spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator);
     editSimConsole->insertPlainText(sim + tr(" error..."));
@@ -299,3 +312,10 @@ void ExternSimDialog::saveLog()
     }
 }
 
+void ExternSimDialog::addLogEntry(const QString &text, const QIcon &icon)
+{
+    QListWidgetItem *itm = new QListWidgetItem;
+    itm->setText(text);
+    itm->setIcon(icon);
+    simStatusLog->addItem(itm);
+}
