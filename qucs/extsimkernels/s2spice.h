@@ -30,11 +30,14 @@ private:
     double z0;
     QString file;
     QString device_name;
+    QString err_text;
 
 public:
     void setZ0(double z0_) { z0 = z0_; }
     void setFile(const QString &file_) { file = file_; }
     void setDeviceName(const QString &name_) {device_name = name_; }
+
+    QString getErrText() { return err_text; }
 
     bool convertTouchstone(QTextStream *stream);
 

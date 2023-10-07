@@ -46,11 +46,12 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     int numf;
 
     double z[MAXPORTS];
-    double ph, prevph, offset, mag;
+    double ph, offset, mag;
 
 
     QFile ff(file);
     if (!ff.open(QIODevice::ReadOnly)) {
+        err_text = "Failed to open file: " + file + "\n";
         return false;
     }
     QTextStream in_stream(&ff);
@@ -59,7 +60,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     QFileInfo inf(file);
     ports = inf.suffix().mid(1,1).toInt();
     if ( (ports < 1) || (ports > MAXPORTS) ) {
-        //printf( "The circuit has %d ports\n", ports );
+        err_text = "Invalid port number in file: " + file + "\n";
         return false;
     }
 
@@ -98,6 +99,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     }
 
     if (!next_line.contains(" S " )) {
+        err_text = "Wrong data in file: " + file + "\n";
         return false;
     }
     /* input impedances */
@@ -178,8 +180,8 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
                         .arg(j + 2).arg(10 * (j + 1)).arg(ports + 1).arg(model_cnt);
             }
             (*stream) << QString(".model xfer%1 xfer R_I=true table=[\n").arg(model_cnt);
+
             offset = 0;
-            prevph = 0;
             for ( f = 0; f < numf; f++ )
             {
                 double a = s[f][i][j][0];

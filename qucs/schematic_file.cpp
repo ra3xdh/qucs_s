@@ -1457,7 +1457,11 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
         S2Spice *conv = new S2Spice();
         conv->setFile(f);
         conv->setDeviceName(sub_name);
-        conv->convertTouchstone(stream);
+        if (!conv->convertTouchstone(stream)) {
+            QMessageBox::warning(this,tr("Netlist error"),
+                                 conv->getErrText());
+            return false;
+        }
         delete conv;
     }
 
