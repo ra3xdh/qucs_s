@@ -41,10 +41,6 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_m
     ngspice = new Ngspice(sch,this);
     xyce = new Xyce(sch,this);
 
-
-    buttonSimulate = new QPushButton(tr("Simulate"),this);
-    connect(buttonSimulate,SIGNAL(clicked()),this,SLOT(slotStart()));
-
     buttonStopSim = new QPushButton(tr("Stop"),this);
     connect(buttonStopSim,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
     connect(buttonStopSim,SIGNAL(clicked()),xyce,SLOT(killThemAll()));
@@ -80,7 +76,6 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_m
     vl_top->addWidget(grp_1);
     vl_top->addWidget(simProgress);
     QHBoxLayout *hl1 = new QHBoxLayout;
-    hl1->addWidget(buttonSimulate);
     hl1->addWidget(buttonStopSim);
     hl1->addWidget(buttonSaveNetlist);
     hl1->addWidget(buttonExit);
@@ -90,7 +85,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_m
 
     slotSetSimulator();
     if (!netlist_mode && !QucsMain->TuningMode)
-        buttonSimulate->click(); // Start simulation
+        slotStart(); // Start simulation
 
 }
 
@@ -107,7 +102,6 @@ void ExternSimDialog::slotSetSimulator()
         connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
-        connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
         QString cmd;
         if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) { // this check is related to MacOS
             cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
@@ -127,7 +121,6 @@ void ExternSimDialog::slotSetSimulator()
         connect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
-        connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         xyce->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
@@ -149,7 +142,6 @@ void ExternSimDialog::slotSetSimulator()
         connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()),Qt::UniqueConnection);
         connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()),Qt::UniqueConnection);
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
-        connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()),Qt::UniqueConnection);
         ngspice->setSimulatorCmd(QucsSettings.SpiceOpusExecutable);
         ngspice->setSimulatorParameters(QucsSettings.SimParameters);
     }
@@ -247,6 +239,18 @@ void ExternSimDialog::slotStart()
 {
     buttonStopSim->setEnabled(true);
     buttonSaveNetlist->setEnabled(false);
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice:
+        ngspice->slotSimulate();
+        break;
+    case spicecompat::simXyce:
+        xyce->slotSimulate();
+        break;
+    case spicecompat::simSpiceOpus:
+        ngspice->slotSimulate();
+        break;
+    default: break;
+    }
 }
 
 void ExternSimDialog::slotStop()
@@ -293,10 +297,5 @@ void ExternSimDialog::saveLog()
         log.flush();
         log.close();
     }
-}
-
-void ExternSimDialog::slotStartSilent()
-{
-    buttonSimulate->click();
 }
 

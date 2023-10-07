@@ -32,7 +32,6 @@ private:
 
     Schematic *Sch;
 
-    QPushButton *buttonSimulate;
     QPushButton *buttonStopSim;
     QPushButton *buttonSaveNetlist;
     QPushButton *buttonExit;
@@ -64,14 +63,13 @@ signals:
     
 public slots:
     void slotSaveNetlist();
-    void slotStartSilent();
+    void slotStart();
 
 private slots:
     void slotProcessOutput();
     //void slotProcessXyceOutput();
     void slotNgspiceStarted();
     void slotNgspiceStartError(QProcess::ProcessError err);
-    void slotStart();
     void slotStop();
     void slotSetSimulator();
     

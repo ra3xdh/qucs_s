@@ -3335,7 +3335,7 @@ void QucsApp::slotSimulateWithSpice()
         connect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         connect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
         if (!TuningMode) SimDlg->exec();
-        else SimDlg->slotStartSilent();
+        else SimDlg->slotStart();
         /*disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));*/
