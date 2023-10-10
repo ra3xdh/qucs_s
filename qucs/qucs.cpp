@@ -2306,14 +2306,36 @@ void QucsApp::slotTune(bool checked)
             //Probably digital Simulation
             QMessageBox::warning(this, "Not implemented",
                                  "Currently tuning is not supported for this document type", QMessageBox::Ok);
+            tune->blockSignals(true);
+            tune->setChecked(false);
+            tune->blockSignals(false);
             return;
         }
+
+        Schematic *d = dynamic_cast<Schematic*>(w);
+        assert(d);
+
+        bool found = false;
+        for(Component *pc = d->DocComps.first(); pc != 0; pc = d->DocComps.next()) {
+            if (pc->isSimulation && pc->Model != ".DC") {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            QMessageBox::warning(this,tr("Error"),tr("No simulations found. Tuning not possible."
+                                                     " Please add at least one simulation."));
+            tune->blockSignals(true);
+            tune->setChecked(false);
+            tune->blockSignals(false);
+            return;
+        }
+
+
         // instance of tuner
         TuningMode = true;
         tunerDia = new TunerDialog(w, this);//The object can be instantiated here since when checked == false the memory will be freed
         // inform the Tuner Dialog when a component is deleted
-        Schematic *d = dynamic_cast<Schematic*>(w);
-        assert(d);
         connect(d, SIGNAL(signalComponentDeleted(Component *)),
                 tunerDia, SLOT(slotComponentDeleted(Component *)));
 
