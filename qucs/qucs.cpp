@@ -2316,15 +2316,33 @@ void QucsApp::slotTune(bool checked)
         assert(d);
 
         bool found = false;
+        bool digi_found = false;
+        bool exit = false;
         for(Component *pc = d->DocComps.first(); pc != 0; pc = d->DocComps.next()) {
             if (pc->isSimulation && pc->Model != ".DC") {
                 found = true;
-                break;
+            }
+            if (pc->Type == isDigitalComponent) {
+                digi_found = true;
+                exit = true;
             }
         }
         if (!found) {
             QMessageBox::warning(this,tr("Error"),tr("No simulations found. Tuning not possible."
                                                      " Please add at least one simulation."));
+            exit = true;
+        }
+        if (digi_found) {
+            QMessageBox::warning(this,tr("Error"),tr("Tuning not possible for digital simulation. "
+                                                     "Only analog simulation supported."));
+        }
+        if (d->Diagrams->isEmpty() && !d->SimOpenDpl) {
+            QMessageBox::warning(this,tr("Error"),tr("Tuning has no effect without diagrams. "
+                                                     "Add at least one diagram on schematic."));
+            exit = true;
+        }
+
+        if (exit) {
             tune->blockSignals(true);
             tune->setChecked(false);
             tune->blockSignals(false);
