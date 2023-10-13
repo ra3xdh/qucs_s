@@ -57,6 +57,7 @@ vacomponent.cpp
 mutualx.cpp
 indq.cpp
 capq.cpp
+circline.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -79,6 +80,7 @@ capacitor.h
 capq.h
 cccs.h
 ccvs.h
+circline.h
 circulator.h
 coaxialline.h
 comp_1bit.h

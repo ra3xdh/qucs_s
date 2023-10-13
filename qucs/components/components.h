@@ -63,6 +63,7 @@
 #include "twistedpair.h"
 #include "coaxialline.h"
 #include "rectline.h"
+#include "circline.h"
 #include "rlcg.h"
 #include "substrate.h"
 #include "msline.h"
