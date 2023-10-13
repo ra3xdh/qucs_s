@@ -361,6 +361,7 @@ void Module::registerModules (void) {
       REGISTER_TRANS_1 (RectLine);
       REGISTER_TRANS_1 (CircLine);
       REGISTER_TRANS_1 (RLCG);
+      REGISTER_TRANS_1 (taperedline);
       REGISTER_TRANS_1 (Substrate);
       REGISTER_TRANS_1 (MSline);
       REGISTER_TRANS_1 (MScoupled);

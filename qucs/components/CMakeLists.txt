@@ -58,6 +58,7 @@ mutualx.cpp
 indq.cpp
 capq.cpp
 circline.cpp
+taperedline.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -201,6 +202,7 @@ subcirport.h
 substrate.h
 switch.h
 symtrafo.h
+taperedline.h
 tff_SR.h
 thyristor.h
 tline_4port.h

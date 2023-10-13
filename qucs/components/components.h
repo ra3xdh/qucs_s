@@ -143,6 +143,7 @@
 #include "rfedd2p.h"
 #include "indq.h"
 #include "capq.h"
+#include "taperedline.h"
 
 #include "mod_amp.h"
 #include "log_amp.h"
