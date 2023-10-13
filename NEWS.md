@@ -1,3 +1,31 @@
+# Qucs-S 2.1.0
+
+## New features
+
+* Added tuner simulation mode #123 (used implementation by @tipofthesowrd)
+* Added support for touchstone s2p file devices for Ngspice #233 (implementation by @transmitterdan)
+* Redesign of the simulation window #309
+* Diagrams are placed on schematic and `*.dpl` files are disabled by default  #309 
+* Added low voltage for VRect source #310
+* Backport of the active Legendre filter synthesis from Qucs-0.0.20rc2 #318
+* Backported circular waveguide and tapered line symbols form Qucs-0.0.20rc2
+
+## Bugfixes
+
+* Fixed simulation of the files with double extension #311
+* Fixed simulation of the files containing unicode symbols #312
+* Fixed display of the Xanalogue.lib library #308
+* Fixed show checker errors for Xyce
+
+## Documentation
+
+* Added subcircuit symbols templates to `share/qucs_s/examples/symbols` (by @tomhajjar)
+* Added sections on tuner simulation mode and RF simulation to the Qucs-S tutorial
+
+## Packaging
+
+* Windows 32-bit package is not provided anymore
+
 # Qucs-S 2.0.0
 
 ## New features
