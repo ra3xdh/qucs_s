@@ -27,13 +27,15 @@
 class MutualX : public MultiViewComponent  {
 public:
   MutualX();
-  ~MutualX() {};
+  ~MutualX() {}
+
   Component* newOne();
   static Element* info(QString& Name, char* &BitmapFile, bool getNewOne);
 
 protected:
   void createSymbol();
   QString netlist();
+  QString spice_netlist(bool isXyce);
 };
 
 #endif

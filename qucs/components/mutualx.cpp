@@ -26,10 +26,11 @@
 MutualX::MutualX()
 {
   Description = QObject::tr("several mutual inductors");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Model = "MUTX";
   Name  = "Tr";
+  SpiceModel = "K";
 
   const int init_coils=2; // initial number of coils
   // must be the first property!
@@ -223,4 +224,36 @@ void MutualX::createSymbol()
     Ports.append(new Port(x, 30));
     x += 14;
   }
+}
+
+QString MutualX::spice_netlist(bool isXyce)
+{
+    Q_UNUSED(isXyce);
+    int coils = getProperty("coils")->Value.toInt();
+
+    QString s;
+    for (int i = 0; i < coils; i++) {
+        QString li = "L" + Name + "_L" + QString::number(i+1);
+        QString prop_l = "L" + QString::number(i+1);
+        QString ind = spicecompat::normalize_value(getProperty(prop_l)->Value);
+        s += QString("%1 %2 %3 %4\n").arg(li)
+                .arg(spicecompat::normalize_node_name(Ports.at(2*i)->Connection->Name))
+                .arg(spicecompat::normalize_node_name(Ports.at(2*i+1)->Connection->Name))
+                .arg(ind);
+    }
+    for (int i = 0; i < coils; i++) {
+        for (int j = i; j < coils; j++) {
+            if (i == j) continue;
+            QString kij = "K" + Name + "_K"
+                    + QString::number(i+1) + QString::number(j+1);
+            QString li = "L" + Name + "_L" + QString::number(i+1);
+            QString lj = "L" + Name + "_L" + QString::number(j+1);
+            auto pp = getProperty("k" + QString::number(i+1) + QString::number(j+1));
+            if (pp == nullptr) continue;
+            QString val_k = spicecompat::normalize_value(pp->Value);
+            s += QString("%1 %2 %3 %4\n").arg(kij).arg(li).arg(lj).arg(val_k);
+        }
+    }
+    return s;
+
 }
