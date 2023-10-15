@@ -388,7 +388,7 @@ void QucsApp::initActions()
   connect(escape, SIGNAL(triggered()), SLOT(slotEscape()));
   this->addAction(escape);
 
-  select = new QAction(QIcon((":/bitmaps/pointer.png")), tr("Select"), this);
+  select = new QAction(QIcon((":/bitmaps/svg/pointer.svg")), tr("Select"), this);
   select->setStatusTip(tr("Activate select mode"));
   select->setWhatsThis(tr("Select\n\nActivates select mode"));
   select->setCheckable(true);
@@ -406,7 +406,7 @@ void QucsApp::initActions()
   selectMarker->setWhatsThis(tr("Select Markers\n\nSelects all diagram markers of the document"));
   connect(selectMarker, SIGNAL(triggered()), SLOT(slotSelectMarker()));
 
-  editRotate = new QAction(QIcon(misc::getIconPath("rotate_ccw.png", qucs::panelIcons)), tr("Rotate"), this);
+  editRotate = new QAction(QIcon(":/bitmaps/svg/rotate_ccw.svg"), tr("Rotate"), this);
   editRotate->setShortcut(tr("Ctrl+R"));
   editRotate->setStatusTip(tr("Rotates the selected component by 90\x00B0"));
   editRotate->setWhatsThis(tr("Rotate\n\nRotates the selected component by 90\x00B0 counter-clockwise"));

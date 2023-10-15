@@ -508,6 +508,8 @@
         <file>bitmaps/svg/editundo.svg</file>
         <file>bitmaps/svg/mirror.svg</file>
         <file>bitmaps/svg/mirrory.svg</file>
+        <file>bitmaps/svg/rotate_ccw.svg</file>
+        <file>bitmaps/svg/pointer.svg</file>
         <file>bitmaps/svg/top.svg</file>
         <file>bitmaps/svg/bottom.svg</file>
         <file>bitmaps/svg/gear.svg</file>
