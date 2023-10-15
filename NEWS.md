@@ -8,6 +8,7 @@
 * Diagrams are placed on schematic and `*.dpl` files are disabled by default  #309 
 * Added low voltage for VRect source #310
 * Backport of the active Legendre filter synthesis from Qucs-0.0.20rc2 #318
+* Added SPICE entry for MUT and MUT2 devices
 * Backported circular waveguide and tapered line symbols form Qucs-0.0.20rc2
 
 ## Bugfixes
@@ -16,10 +17,11 @@
 * Fixed simulation of the files containing unicode symbols #312
 * Fixed display of the Xanalogue.lib library #308
 * Fixed show checker errors for Xyce
+* Fixed load symbol for Verilog-A device #321
 
 ## Documentation
 
-* Added subcircuit symbols templates to `share/qucs_s/examples/symbols` (by @tomhajjar)
+* Added subcircuit symbol templates to `share/qucs_s/examples/symbols` (by @tomhajjar)
 * Added sections on tuner simulation mode and RF simulation to the Qucs-S tutorial
 
 ## Packaging
