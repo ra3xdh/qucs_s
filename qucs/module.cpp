@@ -249,6 +249,9 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (Inductor);
   REGISTER_LUMPED_1 (IndQ);
   REGISTER_LUMPED_1 (CapQ);
+  REGISTER_LUMPED_1 (Mutual);
+  REGISTER_LUMPED_1 (Mutual2);
+  REGISTER_LUMPED_1 (MutualX);
   // lumped components
   //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_LUMPED_1 (R_SPICE);
@@ -256,12 +259,12 @@ void Module::registerModules (void) {
       REGISTER_LUMPED_1 (L_SPICE);
       REGISTER_LUMPED_1 (K_SPICE);
   //}
-  REGISTER_LUMPED_1 (Ground);
-  REGISTER_LUMPED_1 (SubCirPort);
 
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_LUMPED_1 (Transformer);
       REGISTER_LUMPED_1 (symTrafo);
+      REGISTER_LUMPED_1 (Ground);
+      REGISTER_LUMPED_1 (SubCirPort);
       REGISTER_LUMPED_1 (dcBlock);
       REGISTER_LUMPED_1 (dcFeed);
       REGISTER_LUMPED_1 (BiasT);
@@ -280,9 +283,6 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (vProbe);
 
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_LUMPED_1 (Mutual);
-      REGISTER_LUMPED_1 (Mutual2);
-      REGISTER_LUMPED_1 (MutualX);
       REGISTER_LUMPED_1 (Switch);
   //} else {
       REGISTER_LUMPED_1 (S4Q_S);
