@@ -24,7 +24,7 @@
 Mutual2::Mutual2()
 {
   Description = QObject::tr("three mutual inductors");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   QFont Font(QucsSettings.font); // default application font
   // symbol text is smaller (10 pt default)
@@ -79,6 +79,7 @@ Mutual2::Mutual2()
   ty = y2+4;
   Model = "MUT2";
   Name  = "Tr";
+  SpiceModel = "K";
 
   Props.append(new Property("L1", "1 mH", false,
 		QObject::tr("inductance of coil 1")));
@@ -111,3 +112,38 @@ Element* Mutual2::info(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne)  return new Mutual2();
   return 0;
 }
+
+QString Mutual2::spice_netlist(bool isXyce)
+{
+    Q_UNUSED(isXyce);
+    Q_UNUSED(isXyce);
+    QString l1 = "L" + Name + "_L1";
+    QString l2 = "L" + Name + "_L2";
+    QString l3 = "L" + Name + "_L3";
+    QString k12 = "K12_" + Name;
+    QString k13 = "K13_" + Name;
+    QString k23 = "K23_" + Name;
+    QString ind1 = spicecompat::normalize_value(getProperty("L1")->Value);
+    QString ind2 = spicecompat::normalize_value(getProperty("L2")->Value);
+    QString ind3 = spicecompat::normalize_value(getProperty("L3")->Value);
+    QString s = QString("%1 %2 %3 %4\n").arg(l1)
+            .arg(spicecompat::normalize_node_name(Ports.at(0)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(5)->Connection->Name))
+            .arg(ind1);
+    s += QString("%1 %2 %3 %4\n").arg(l2)
+            .arg(spicecompat::normalize_node_name(Ports.at(4)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(3)->Connection->Name))
+            .arg(ind2);
+    s += QString("%1 %2 %3 %4\n").arg(l3)
+            .arg(spicecompat::normalize_node_name(Ports.at(1)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(2)->Connection->Name))
+            .arg(ind3);
+    s += QString("%1 %2 %3 %4\n").arg(k12).arg(l1).arg(l2)
+            .arg(spicecompat::normalize_value(getProperty("k12")->Value));
+    s += QString("%1 %2 %3 %4\n").arg(k13).arg(l1).arg(l3)
+            .arg(spicecompat::normalize_value(getProperty("k12")->Value));
+    s += QString("%1 %2 %3 %4\n").arg(k23).arg(l2).arg(l3)
+            .arg(spicecompat::normalize_value(getProperty("k23")->Value));
+    return s;
+}
+
