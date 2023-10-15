@@ -16,13 +16,14 @@
  ***************************************************************************/
 
 #include "mutual.h"
+#include "node.h"
 #include "extsimkernels/spicecompat.h"
 
 
 Mutual::Mutual()
 {
   Description = QObject::tr("two mutual inductors");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Arcs.append(new qucs::Arc(-16,-18,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc(-16, -6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
@@ -55,6 +56,7 @@ Mutual::Mutual()
   ty = y2+4;
   Model = "MUT";
   Name  = "Tr";
+  SpiceModel = "K";
 
   Props.append(new Property("L1", "1 mH", false,
 		QObject::tr("inductance of coil 1")));
@@ -80,4 +82,25 @@ Element* Mutual::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new Mutual();
   return 0;
+}
+
+QString Mutual::spice_netlist(bool isXyce)
+{
+    Q_UNUSED(isXyce);
+    QString l1 = "L" + Name + "_L1";
+    QString l2 = "L" + Name + "_L2";
+    QString k1 = "K" + Name;
+    QString ind1 = spicecompat::normalize_value(getProperty("L1")->Value);
+    QString ind2 = spicecompat::normalize_value(getProperty("L2")->Value);
+    QString s = QString("%1 %2 %3 %4\n").arg(l1)
+            .arg(spicecompat::normalize_node_name(Ports.at(0)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(3)->Connection->Name))
+            .arg(ind1);
+    s += QString("%1 %2 %3 %4\n").arg(l2)
+            .arg(spicecompat::normalize_node_name(Ports.at(1)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(2)->Connection->Name))
+            .arg(ind2);
+    s += QString("%1 %2 %3 %4\n").arg(k1).arg(l1).arg(l2)
+            .arg(spicecompat::normalize_value(getProperty("k")->Value));
+    return s;
 }
