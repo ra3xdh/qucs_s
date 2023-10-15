@@ -494,5 +494,23 @@
         <file>bitmaps/dark/vpulse.png</file>
         <file>bitmaps/dark/vrect.png</file>
         <file>bitmaps/dark/irect.png</file>
+        <file>bitmaps/svg/filenew.svg</file>
+        <file>bitmaps/svg/textnew.svg</file>
+        <file>bitmaps/svg/filesave.svg</file>
+        <file>bitmaps/svg/filesaveall.svg</file>
+        <file>bitmaps/svg/fileclose.svg</file>
+        <file>bitmaps/svg/fileprint.svg</file>
+        <file>bitmaps/svg/editcopy.svg</file>
+        <file>bitmaps/svg/editcut.svg</file>
+        <file>bitmaps/svg/editpaste.svg</file>
+        <file>bitmaps/svg/editdelete.svg</file>
+        <file>bitmaps/svg/editredo.svg</file>
+        <file>bitmaps/svg/editundo.svg</file>
+        <file>bitmaps/svg/mirror.svg</file>
+        <file>bitmaps/svg/mirrory.svg</file>
+        <file>bitmaps/svg/top.svg</file>
+        <file>bitmaps/svg/bottom.svg</file>
+        <file>bitmaps/svg/gear.svg</file>
+        <file>bitmaps/svg/tune.svg</file>
     </qresource>
 </RCC>

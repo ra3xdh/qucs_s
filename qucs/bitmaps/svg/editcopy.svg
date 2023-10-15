@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 12.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 51448)  -->
+<svg enable-background="new 0 0 128 128" height="128" viewBox="0 0 128 128" width="128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <filter id="filter6241">
+      <feGaussianBlur stdDeviation="1.2065414"/>
+    </filter>
+    <radialGradient id="radialGradient6272" cx="102" cy="112.3047" gradientTransform="matrix(.8749999 0 0 .8571428 10.000003 17.142857)" gradientUnits="userSpaceOnUse" r="139.5585">
+      <stop offset="0" stop-color="#00537d"/>
+      <stop offset=".0151" stop-color="#186389"/>
+      <stop offset=".0558" stop-color="#558ca8"/>
+      <stop offset=".0964" stop-color="#89afc3"/>
+      <stop offset=".1357" stop-color="#b3ccd8"/>
+      <stop offset=".1737" stop-color="#d4e2e9"/>
+      <stop offset=".2099" stop-color="#ecf2f5"/>
+      <stop offset=".2435" stop-color="#fafcfd"/>
+      <stop offset=".2722" stop-color="#fff"/>
+    </radialGradient>
+    <radialGradient id="radialGradient6274" cx="99.080742" cy="109.33402" gradientTransform="matrix(.856383 0 0 .8415585 11.191492 18.14026)" gradientUnits="userSpaceOnUse" r="139.55859">
+      <stop offset="0" stop-color="#7a7d80"/>
+      <stop offset=".12617962" stop-color="#c2c2c2"/>
+      <stop offset=".23250513" stop-color="#fafafa"/>
+      <stop offset=".2722" stop-color="#fff"/>
+      <stop offset=".5313" stop-color="#fafafa"/>
+      <stop offset=".8449" stop-color="#ebecec"/>
+      <stop offset="1" stop-color="#e1e2e3"/>
+    </radialGradient>
+    <linearGradient id="linearGradient6276" gradientTransform="matrix(.8749999 0 0 .8571428 10.000003 17.142857)" gradientUnits="userSpaceOnUse" x1="96" x2="86.571632" y1="104" y2="94.104362">
+      <stop offset="0" stop-color="#888a85"/>
+      <stop offset=".0072" stop-color="#8c8e89"/>
+      <stop offset=".0673" stop-color="#abaca9"/>
+      <stop offset=".1347" stop-color="#c5c6c4"/>
+      <stop offset=".2115" stop-color="#dbdbda"/>
+      <stop offset=".3012" stop-color="#ebebeb"/>
+      <stop offset=".4122" stop-color="#f7f7f6"/>
+      <stop offset=".5679" stop-color="#fdfdfd"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <filter id="filter3217">
+      <feGaussianBlur stdDeviation=".89955545"/>
+    </filter>
+  </defs>
+  <g>
+    <g id="g6263" transform="translate(12)">
+      <path d="m23 25v96h53.525498c.463749 0 30.474502-29.398285 30.474502-29.852572v-66.147428z" filter="url(#filter3217)" opacity=".6" transform="matrix(1.047619 0 0 1.0416667 -2.095238 -4.041666)"/>
+      <path d="m24.000002 24v96h53.525498c.463749 0 30.4745-29.398285 30.4745-29.852572v-66.147428z" fill="url(#radialGradient6272)"/>
+      <path d="m26.606384 25.714285c-.471866 0-.856383.37786-.856383.841559v90.888306c0 .46455.384517.84157.856383.84157h50.673893c.225229 0 .446176-.0892.605462-.24658l28.113341-27.626683c.16013-.157372.25092-.373652.25092-.594982v-63.261631c0-.463699-.38366-.841559-.85639-.841559z" fill="url(#radialGradient6274)"/>
+      <path d="m76.5255 120s11.66199-9.00001 16.47449-13.71429c4.8125-4.71429 14.00001-16.138282 14.00001-16.138282s-8 5.852572-24 5.852572c0 16-6.4745 24-6.4745 24z" filter="url(#filter6241)" opacity=".5"/>
+      <path d="m77.5255 120s11.66199-9.00001 16.47449-13.71429c4.8125-4.71429 14.00001-16.138282 14.00001-16.138282s-8 5.852572-24 5.852572c0 16-6.4745 24-6.4745 24z" fill="url(#linearGradient6276)"/>
+    </g>
+    <use height="128" transform="translate(-28 -16)" width="128" xlink:href="#g6263"/>
+  </g>
+</svg>
