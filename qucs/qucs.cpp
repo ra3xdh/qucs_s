@@ -755,6 +755,7 @@ int QucsApp::fillComboBox(bool setAll) {
     CompSearch->clear(); // clear the search box, in case search was active...
 
     Module::registerModules();
+    Module::registerDynamicComponents();
     int idx = 0;
     if (!setAll) {
         CompChoose->insertItem(CompChoose->count(), QObject::tr("paintings"));

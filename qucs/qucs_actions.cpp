@@ -1463,7 +1463,7 @@ void QucsApp::slotLoadModule()
 
       if (! Module::vaComponents.isEmpty()) {
         // Register whatever is in Module::vaComponents
-        Module::registerDynamicComponents();
+        //Module::registerDynamicComponents();
 
         // update the combobox, set new category in view
         // pick up new category 'verilog-a user components' from `Module::category`

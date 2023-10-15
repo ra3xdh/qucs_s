@@ -61,6 +61,7 @@ void vacomponent::parseJson(QJsonObject json)
     /// \todo Need to destroy engine?
 
     Description = getString(json, "description");
+    Simulator = spicecompat::simAll;
 
     QJsonArray propArray = json["property"].toArray();
 
