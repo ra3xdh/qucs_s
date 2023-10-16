@@ -17,7 +17,6 @@
         <file>bitmaps/big.qucs.xpm</file>
         <file>bitmaps/binarytogrey4bit.png</file>
         <file>bitmaps/bondwire.png</file>
-        <file>bitmaps/bottom.png</file>
         <file>bitmaps/buffer.png</file>
         <file>bitmaps/capacitor.png</file>
         <file>bitmaps/capq.png</file>
@@ -42,7 +41,6 @@
         <file>bitmaps/dc.png</file>
         <file>bitmaps/dcblock.png</file>
         <file>bitmaps/dcfeed.png</file>
-        <file>bitmaps/deactiv.png</file>
         <file>bitmaps/dff_SR.png</file>
         <file>bitmaps/dflipflop.png</file>
         <file>bitmaps/diac.png</file>
@@ -57,10 +55,6 @@
         <file>bitmaps/dmux3to8.png</file>
         <file>bitmaps/dmux4to16.png</file>
         <file>bitmaps/edd.png</file>
-        <file>bitmaps/editcopy.png</file>
-        <file>bitmaps/editcut.png</file>
-        <file>bitmaps/editdelete.png</file>
-        <file>bitmaps/editpaste.png</file>
         <file>bitmaps/EKV26nMOS.png</file>
         <file>bitmaps/EKV26pMOS.png</file>
         <file>bitmaps/ellipse.png</file>
@@ -68,17 +62,11 @@
         <file>bitmaps/equation.png</file>
         <file>bitmaps/fa1b.png</file>
         <file>bitmaps/fa2b.png</file>
-        <file>bitmaps/fileclose.png</file>
-        <file>bitmaps/filenew.png</file>
         <file>bitmaps/fileopen.png</file>
-        <file>bitmaps/fileprint.png</file>
-        <file>bitmaps/filesave.png</file>
-        <file>bitmaps/filesaveall.png</file>
         <file>bitmaps/filledellipse.png</file>
         <file>bitmaps/filledrect.png</file>
         <file>bitmaps/forward.png</file>
         <file>bitmaps/gatedDlatch.png</file>
-        <file>bitmaps/gear.png</file>
         <file>bitmaps/gnd.png</file>
         <file>bitmaps/greytobinary4bit.png</file>
         <file>bitmaps/ground.png</file>
@@ -103,10 +91,7 @@
         <file>bitmaps/log_amp.png</file>
         <file>bitmaps/logic_0.png</file>
         <file>bitmaps/logic_1.png</file>
-        <file>bitmaps/marker.png</file>
         <file>bitmaps/MESFET.png</file>
-        <file>bitmaps/mirror.png</file>
-        <file>bitmaps/mirrory.png</file>
         <file>bitmaps/mod_amp.png</file>
         <file>bitmaps/mscorner.png</file>
         <file>bitmaps/mscoupled.png</file>
@@ -132,7 +117,6 @@
         <file>bitmaps/nigbt.png</file>
         <file>bitmaps/nmosfet_sub.png</file>
         <file>bitmaps/nmosfet.png</file>
-        <file>bitmaps/nodename.png</file>
         <file>bitmaps/noise_current.png</file>
         <file>bitmaps/noise_ii.png</file>
         <file>bitmaps/noise_iv.png</file>
@@ -159,7 +143,6 @@
         <file>bitmaps/pnp.png</file>
         <file>bitmaps/pnpsub_therm.png</file>
         <file>bitmaps/pnpsub.png</file>
-        <file>bitmaps/pointer.png</file>
         <file>bitmaps/polar.png</file>
         <file>bitmaps/polarsmith.png</file>
         <file>bitmaps/port.png</file>
@@ -167,7 +150,6 @@
         <file>bitmaps/previous.png</file>
         <file>bitmaps/pshifter.png</file>
         <file>bitmaps/quit.png</file>
-        <file>bitmaps/rebuild.png</file>
         <file>bitmaps/rect.png</file>
         <file>bitmaps/rect3d.png</file>
         <file>bitmaps/rectangle.png</file>
@@ -178,7 +160,6 @@
         <file>bitmaps/resistor.png</file>
         <file>bitmaps/rfedd.png</file>
         <file>bitmaps/rlcg.png</file>
-        <file>bitmaps/rotate_ccw.png</file>
         <file>bitmaps/rsflipflop.png</file>
         <file>bitmaps/smith.png</file>
         <file>bitmaps/smithpolar.png</file>
@@ -197,7 +178,6 @@
         <file>bitmaps/tabular.png</file>
         <file>bitmaps/taperedline.png</file>
         <file>bitmaps/text.png</file>
-        <file>bitmaps/textnew.png</file>
         <file>bitmaps/tff_SR.png</file>
         <file>bitmaps/thyristor.png</file>
         <file>bitmaps/timing.png</file>
@@ -205,7 +185,6 @@
         <file>bitmaps/tiny.qucs.xpm</file>
         <file>bitmaps/tline_4port.png</file>
         <file>bitmaps/tline.png</file>
-        <file>bitmaps/top.png</file>
         <file>bitmaps/tran.png</file>
         <file>bitmaps/transformer.png</file>
         <file>bitmaps/triac.png</file>
@@ -225,7 +204,6 @@
         <file>bitmaps/vprobe.png</file>
         <file>bitmaps/vpulse.png</file>
         <file>bitmaps/vrect.png</file>
-        <file>bitmaps/wire.png</file>
         <file>bitmaps/xnor.png</file>
         <file>bitmaps/xor.png</file>
         <file>bitmaps/ysmith.png</file>
@@ -322,7 +300,6 @@
         <file>bitmaps/spicelibcomp.png</file>
         <file>bitmaps/xyce_script.png</file>
         <file>bitmaps/RemoveElementTuning.png</file>
-        <file>bitmaps/tune.png</file>
         <file>bitmaps/dark/ac_current.png</file>
         <file>bitmaps/dark/ac_voltage.png</file>
         <file>bitmaps/dark/am_mod.png</file>
