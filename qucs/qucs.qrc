@@ -512,7 +512,15 @@
         <file>bitmaps/svg/pointer.svg</file>
         <file>bitmaps/svg/top.svg</file>
         <file>bitmaps/svg/bottom.svg</file>
+        <file>bitmaps/svg/deactiv.svg</file>
+        <file>bitmaps/svg/wire.svg</file>
+        <file>bitmaps/svg/nodename.svg</file>
+        <file>bitmaps/svg/equation.svg</file>
+        <file>bitmaps/svg/ground.svg</file>
+        <file>bitmaps/svg/port.svg</file>
         <file>bitmaps/svg/gear.svg</file>
         <file>bitmaps/svg/tune.svg</file>
+        <file>bitmaps/svg/rebuild.svg</file>
+        <file>bitmaps/svg/marker.svg</file>
     </qresource>
 </RCC>

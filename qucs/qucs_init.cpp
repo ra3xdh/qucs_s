@@ -441,41 +441,41 @@ void QucsApp::initActions()
   connect(popH, SIGNAL(triggered()), SLOT(slotPopHierarchy()));
   popH->setEnabled(false);  // only enabled if useful !!!!
 
-  editActivate = new QAction(QIcon(misc::getIconPath("deactiv.png", qucs::panelIcons)),	tr("Deactivate/Activate"), this);
+  editActivate = new QAction(QIcon(":bitmaps/svg/deactiv.svg"),	tr("Deactivate/Activate"), this);
   editActivate->setShortcut(tr("Ctrl+D"));
   editActivate->setStatusTip(tr("Deactivate/Activate selected components"));
   editActivate->setWhatsThis(tr("Deactivate/Activate\n\nDeactivate/Activate the selected components"));
   editActivate->setCheckable(true);
   connect(editActivate, SIGNAL(toggled(bool)), SLOT(slotEditActivate(bool)));
 
-  insEquation = new QAction(QIcon(misc::getIconPath("equation.png", qucs::panelIcons)),	tr("Insert Equation"), this);
+  insEquation = new QAction(QIcon(":bitmaps/svg/equation.svg"),	tr("Insert Equation"), this);
   insEquation->setShortcut(tr("Ctrl+<"));
   insEquation->setStatusTip(tr("Inserts an equation"));
   insEquation->setWhatsThis(tr("Insert Equation\n\nInserts a user defined equation"));
   insEquation->setCheckable(true);
   connect(insEquation, SIGNAL(toggled(bool)), SLOT(slotInsertEquation(bool)));
 
-  insGround = new QAction(QIcon(misc::getIconPath("ground.png", qucs::panelIcons)), tr("Insert Ground"), this);
+  insGround = new QAction(QIcon(":/bitmaps/svg/ground.svg"), tr("Insert Ground"), this);
   insGround->setShortcut(tr("Ctrl+G"));
   insGround->setStatusTip(tr("Inserts a ground symbol"));
   insGround->setWhatsThis(tr("Insert Ground\n\nInserts a ground symbol"));
   insGround->setCheckable(true);
   connect(insGround, SIGNAL(toggled(bool)), SLOT(slotInsertGround(bool)));
 
-  insPort = new QAction(QIcon(misc::getIconPath("port.png", qucs::panelIcons)),	tr("Insert Port"), this);
+  insPort = new QAction(QIcon(":/bitmaps/svg/port.svg"),	tr("Insert Port"), this);
   insPort->setStatusTip(tr("Inserts a port symbol"));
   insPort->setWhatsThis(tr("Insert Port\n\nInserts a port symbol"));
   insPort->setCheckable(true);
   connect(insPort, SIGNAL(toggled(bool)), SLOT(slotInsertPort(bool)));
 
-  insWire = new QAction(QIcon(misc::getIconPath("wire.png", qucs::panelIcons)),	tr("Wire"), this);
+  insWire = new QAction(QIcon(":bitmaps/svg/wire.svg"),	tr("Wire"), this);
   insWire->setShortcut(tr("Ctrl+E"));
   insWire->setStatusTip(tr("Inserts a wire"));
   insWire->setWhatsThis(tr("Wire\n\nInserts a wire"));
   insWire->setCheckable(true);
   connect(insWire, SIGNAL(toggled(bool)), SLOT(slotSetWire(bool)));
 
-  insLabel = new QAction(QIcon(misc::getIconPath("nodename.png", qucs::panelIcons)), tr("Wire Label"), this);
+  insLabel = new QAction(QIcon(":/bitmaps/svg/nodename.svg"), tr("Wire Label"), this);
   insLabel->setShortcut(tr("Ctrl+L"));
   insLabel->setStatusTip(tr("Inserts a wire or pin label"));
   insLabel->setWhatsThis(tr("Wire Label\n\nInserts a wire or pin label"));
@@ -544,7 +544,7 @@ void QucsApp::initActions()
   tune->setCheckable(true);
   connect(tune, SIGNAL(toggled(bool)), SLOT(slotTune(bool)));
 
-  dpl_sch = new QAction(QIcon((":/bitmaps/rebuild.png")), tr("View Data Display/Schematic"), this);
+  dpl_sch = new QAction(QIcon((":/bitmaps/svg/rebuild.svg")), tr("View Data Display/Schematic"), this);
   dpl_sch->setShortcut(Qt::Key_F4);
   dpl_sch->setStatusTip(tr("Changes to data display or schematic page"));
   dpl_sch->setWhatsThis(tr("View Data Display/Schematic\n\nChanges to data display or schematic page"));
@@ -561,7 +561,7 @@ void QucsApp::initActions()
   save_netlist->setWhatsThis(tr("Save netlist to file"));
   connect(save_netlist, SIGNAL(triggered()), SLOT(slotSaveNetlist()));
 
-  setMarker = new QAction(QIcon((":/bitmaps/marker.png")),	tr("Set Marker on Graph"), this);
+  setMarker = new QAction(QIcon((":/bitmaps/svg/marker.svg")),	tr("Set Marker on Graph"), this);
   setMarker->setShortcut(Qt::CTRL|Qt::Key_B);
   setMarker->setStatusTip(tr("Sets a marker on a diagram's graph"));
   setMarker->setWhatsThis(tr("Set Marker\n\nSets a marker on a diagram's graph"));
