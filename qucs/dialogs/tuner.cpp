@@ -193,10 +193,7 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
 
     QPushButton *remove = new QPushButton("", this);
     gbox->addWidget(remove, 0, 2);
-    QPixmap pixmap(":/bitmaps/RemoveElementTuning.png");
-    QIcon ButtonIcon(pixmap);
-    remove->setIcon(ButtonIcon);
-    remove->setIconSize(pixmap.rect().size()/2);
+    remove->setIcon(QIcon(":/bitmaps/svg/editdelete.svg"));
 
     Up_Down_Buttons_Widget = new QWidget();
     QGridLayout *buttonsLayout = new QGridLayout();
