@@ -93,6 +93,7 @@ public:
   float textCorr();
   bool sizeOfFrame(int&, int&);
   void  sizeOfAll(int&, int&, int&, int&);
+  void  sizeOfSelection(int&, int&, int&, int&);
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
@@ -102,6 +103,7 @@ public:
   float zoom(float);
   float zoomBy(float);
   void  showAll();
+  void zoomToSelection();
   void  showNoZoom();
   void  enlargeView(int, int, int, int);
   void  switchPaintMode();
@@ -325,6 +327,7 @@ public:
   bool isAnalog;
   bool isVerilog;
   bool creatingLib;
+
 };
 
 #endif

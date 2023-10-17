@@ -364,6 +364,12 @@ void QucsApp::initActions()
   magAll->setWhatsThis(tr("View All\n\nShows the whole page content"));
   connect(magAll, SIGNAL(triggered()), SLOT(slotShowAll()));
 
+  magSel = new QAction(QIcon((":/bitmaps/viewmagsel.png")), tr("Zoom to selection"), this);
+  magSel->setShortcut(tr("Z"));
+  magSel->setStatusTip(tr("Zoom to selected components"));
+  magSel->setWhatsThis(tr("Zoom to selection\n\nZoom to selected components"));
+  connect(magSel, SIGNAL(triggered()), SLOT(slotZoomToSelection()));
+
   magOne = new QAction(QIcon((":/bitmaps/viewmag1.png")), tr("View 1:1"), this);
   magOne->setShortcut(Qt::Key_1);
   magOne->setStatusTip(tr("Views without magnification"));
@@ -778,6 +784,7 @@ void QucsApp::initMenuBar()
 
   viewMenu = new QMenu(tr("&View"));  // menuBar entry viewMenu
   viewMenu->addAction(magAll);
+  viewMenu->addAction(magSel);
   viewMenu->addAction(magOne);
   viewMenu->addAction(magPlus);
   viewMenu->addAction(magMinus);
@@ -904,6 +911,7 @@ void QucsApp::initToolBar()
   viewToolbar = new QToolBar(tr("View"));
   this->addToolBar(viewToolbar);
   viewToolbar->addAction(magAll);
+  viewToolbar->addAction(magSel);
   viewToolbar->addAction(magOne);
   viewToolbar->addAction(magPlus);
   viewToolbar->addAction(magMinus);

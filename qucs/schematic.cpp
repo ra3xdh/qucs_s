@@ -794,6 +794,30 @@ void Schematic::showAll()
   zoom(xScale);
 }
 
+// ------------------------------------------------------
+void Schematic::zoomToSelection()
+{
+    sizeOfSelection(UsedX1, UsedY1, UsedX2, UsedY2);
+    if(UsedX1 == 0)
+        if(UsedX2 == 0)
+            if(UsedY1 == 0)
+                if(UsedY2 == 0) {
+                    showAll();
+                    return;
+                }
+
+    float xScale = float(visibleWidth()) / float(UsedX2-UsedX1+80);
+    float yScale = float(visibleHeight()) / float(UsedY2-UsedY1+80);
+    if(xScale > yScale) xScale = yScale;
+    xScale /= Scale;
+
+    ViewX1 = UsedX1 - 40;
+    ViewY1 = UsedY1 - 40;
+    ViewX2 = UsedX2 + 40;
+    ViewY2 = UsedY2 + 40;
+    zoom(xScale);
+}
+
 // ---------------------------------------------------
 void Schematic::showNoZoom()
 {
@@ -1016,6 +1040,124 @@ void Schematic::sizeOfAll(int& xmin, int& ymin, int& xmax, int& ymax)
     if(y1 < ymin) ymin = y1;
     if(y2 > ymax) ymax = y2;
   }
+}
+
+void Schematic::sizeOfSelection(int& xmin, int& ymin, int& xmax, int& ymax)
+{
+    xmin=INT_MAX;
+    ymin=INT_MAX;
+    xmax=INT_MIN;
+    ymax=INT_MIN;
+    Component *pc;
+    Diagram *pd;
+    Wire *pw;
+    WireLabel *pl;
+    Painting *pp;
+
+    bool isAnySelected = false;
+
+    if(Components->isEmpty())
+        if(Wires->isEmpty())
+            if(Diagrams->isEmpty())
+                if(Paintings->isEmpty()) {
+                    xmin = xmax = 0;
+                    ymin = ymax = 0;
+                    return;
+                }
+
+
+    float Corr = textCorr();
+    int x1, y1, x2, y2;
+    // find boundings of all components
+    for(pc = Components->first(); pc != 0; pc = Components->next()) {
+        if (!pc->isSelected) {
+            continue;
+        }
+        isAnySelected = true;
+        pc->entireBounds(x1, y1, x2, y2, Corr);
+        if(x1 < xmin) xmin = x1;
+        if(x2 > xmax) xmax = x2;
+        if(y1 < ymin) ymin = y1;
+        if(y2 > ymax) ymax = y2;
+    }
+
+    // find boundings of all wires
+    for(pw = Wires->first(); pw != 0; pw = Wires->next()) {
+        if (!pw->isSelected) {
+            continue;
+        }
+        isAnySelected = true;
+        if(pw->x1 < xmin) xmin = pw->x1;
+        if(pw->x2 > xmax) xmax = pw->x2;
+        if(pw->y1 < ymin) ymin = pw->y1;
+        if(pw->y2 > ymax) ymax = pw->y2;
+
+        pl = pw->Label;
+        if(pl) {     // check position of wire label
+            pl->getLabelBounding(x1,y1,x2,y2);
+            if(x1 < xmin) xmin = x1;
+            if(x2 > xmax) xmax = x2;
+            if(y1 < ymin) ymin = y1;
+            if(y2 > ymax) ymax = y2;
+        }
+    }
+
+    // find boundings of all node labels
+    for(Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
+        if (!pn->isSelected) {
+            continue;
+        }
+        isAnySelected = true;
+        pl = pn->Label;
+        if(pl) {     // check position of node label
+            pl->getLabelBounding(x1,y1,x2,y2);
+            if(x1 < xmin) xmin = x1;
+            if(x2 > xmax) xmax = x2;
+            if(y1 < ymin) ymin = y1;
+            if(y2 > ymax) ymax = y2;
+        }
+    }
+
+    // find boundings of all diagrams
+    for(pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
+        if (!pd->isSelected) {
+            continue;
+        }
+        isAnySelected = true;
+        pd->Bounding(x1, y1, x2, y2);
+        if(x1 < xmin) xmin = x1;
+        if(x2 > xmax) xmax = x2;
+        if(y1 < ymin) ymin = y1;
+        if(y2 > ymax) ymax = y2;
+
+        for (Graph *pg : pd->Graphs)
+            // test all markers of diagram
+            for (Marker *pm : pg->Markers) {
+                pm->Bounding(x1, y1, x2, y2);
+                if(x1 < xmin) xmin = x1;
+                if(x2 > xmax) xmax = x2;
+                if(y1 < ymin) ymin = y1;
+                if(y2 > ymax) ymax = y2;
+            }
+    }
+
+    // find boundings of all Paintings
+    for(pp = Paintings->first(); pp != nullptr; pp = Paintings->next()) {
+        if (!pp->isSelected) {
+            continue;
+        }
+        isAnySelected = true;
+        pp->Bounding(x1, y1, x2, y2);
+        if(x1 < xmin) xmin = x1;
+        if(x2 > xmax) xmax = x2;
+        if(y1 < ymin) ymin = y1;
+        if(y2 > ymax) ymax = y2;
+    }
+
+    if (!isAnySelected) {
+        xmin = xmax = 0;
+        ymin = ymax = 0;
+    }
 }
 
 // ---------------------------------------------------

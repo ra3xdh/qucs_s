@@ -140,6 +140,7 @@ public slots:
   void slotPopHierarchy();
 
   void slotShowAll();
+  void slotZoomToSelection();
   void slotShowOne();
   void slotZoomOut(); // Zoom out by 2
 
@@ -220,7 +221,7 @@ public:
   QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
-          *editCut, *editCopy, *magAll, *magOne, *magMinus, *filePrintFit, *tune,
+          *editCut, *editCopy, *magAll, *magSel, *magOne, *magMinus, *filePrintFit, *tune,
           *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias;
 
   QAction *exportAsImage;

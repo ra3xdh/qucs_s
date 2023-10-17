@@ -37,6 +37,7 @@ public:
   virtual void  becomeCurrent(bool) {};
   virtual float zoomBy(float) { return 1.0; };
   virtual void  showAll() {};
+  virtual void  zoomToSelection() {};
   virtual void  showNoZoom() {};
 
   static QString fileSuffix (const QString&);
