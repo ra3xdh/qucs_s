@@ -10446,7 +10446,7 @@ Leave continuation lines blank when NOT in use.  </source>
         <location filename="../qucs/spicecomponents/sp_pz.cpp" line="+25"/>
         <location line="+42"/>
         <source>Pole-Zero simulation</source>
-        <translation>Моделирование полюсов и нулей</translation>
+        <translation>Анализ полюсов и нулей</translation>
     </message>
     <message>
         <location line="-21"/>
@@ -10594,7 +10594,7 @@ Leave continuation lines blank when NOT in use.</source>
         <location filename="../qucs/spicecomponents/sp_include.cpp" line="+26"/>
         <source>.INCLUDE statement
 </source>
-        <translation>Оператор .INCLUDE</translation>
+        <translation>Раздел .INCLUDE</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -10605,7 +10605,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+30"/>
         <source>.INCLUDE statement</source>
-        <translation>Оператор .INCLUDE</translation>
+        <translation>Раздел .INCLUDE</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_ic.cpp" line="+26"/>
@@ -10663,7 +10663,7 @@ Leave continuation lines blank when NOT in use.</source>
         <location filename="../qucs/spicecomponents/sp_fourier.cpp" line="+26"/>
         <location line="+38"/>
         <source>Fourier simulation</source>
-        <translation>Моделирование Фурье</translation>
+        <translation>Анализ Фурье</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_disto.cpp" line="-27"/>
@@ -10856,7 +10856,7 @@ Leave continuation lines blank when NOT in use.  </source>
     <message>
         <location line="+43"/>
         <source>V Source</source>
-        <translation>V Источник</translation>
+        <translation>Источник напряжения</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/S4Q_S.cpp" line="+29"/>
@@ -10898,7 +10898,7 @@ Leave continuation lines blank when NOT in use.  </source>
     <message>
         <location line="+42"/>
         <source>I Source</source>
-        <translation>I Источник</translation>
+        <translation>Источник тока</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/R_SPICE.cpp" line="+29"/>
@@ -11111,7 +11111,7 @@ Enter the names of the coupled inductances and their coupling factor.</source>
     <message>
         <location line="+16"/>
         <source>K coupling</source>
-        <translation>K связывание</translation>
+        <translation>Индуктивная связь</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/Icouple.cpp" line="+27"/>
@@ -11247,7 +11247,7 @@ Leave continuation lines blank when NOT in use.</source>
         <location line="+2"/>
         <location filename="../qucs/components/capq.cpp" line="-7"/>
         <source>Quality factor</source>
-        <translation>Коэффициент качества</translation>
+        <translation>Добротность</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -11264,7 +11264,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+16"/>
         <source>Inductor with Q</source>
-        <translation>Индуктор с Q</translation>
+        <translation>Катушка с добротностью</translation>
     </message>
     <message>
         <location filename="../qucs/components/capq.cpp" line="-42"/>
@@ -11279,7 +11279,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+22"/>
         <source>Capacitor with Q</source>
-        <translation>Конденсатор с Q</translation>
+        <translation>Конденсатор с добротностью</translation>
     </message>
     <message>
         <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="+1"/>
