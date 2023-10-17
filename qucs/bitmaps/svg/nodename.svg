@@ -23,7 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -37,13 +37,13 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1014"
+     inkscape:window-height="1050"
      id="namedview489"
      showgrid="true"
      inkscape:zoom="3.1210938"
-     inkscape:cx="67.124815"
+     inkscape:cx="68.726817"
      inkscape:cy="47.924409"
-     inkscape:window-x="0"
+     inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg487">
@@ -145,13 +145,13 @@
      sodipodi:open="true"
      d="M 90.000003,16.999999 A 30,30 0 0 1 118.91102,47.457607 30,30 0 0 1 89.045716,76.98008 30,30 0 0 1 58.923921,47.719349 30,30 0 0 1 87.568052,17.010611" />
   <path
-     style="fill:none;stroke:#3232ff;stroke-width:20;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:none;stroke:#5698f5;stroke-width:20;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="M 90,47 H 15"
      id="path1596"
      inkscape:connector-curvature="0" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:42.66666794px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#3232ff;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-weight:normal;font-size:42.66666794px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#5698f5;fill-opacity:1;stroke:none;"
      x="2"
      y="121"
      id="text1896"><tspan

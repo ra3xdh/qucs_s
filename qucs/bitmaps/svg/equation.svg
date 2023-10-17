@@ -23,7 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -37,13 +37,13 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1014"
+     inkscape:window-height="1050"
      id="namedview489"
      showgrid="true"
      inkscape:zoom="3.1210938"
-     inkscape:cx="67.124815"
+     inkscape:cx="9.9333266"
      inkscape:cy="47.924409"
-     inkscape:window-x="0"
+     inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg487">
@@ -133,7 +133,7 @@
     </filter>
   </defs>
   <rect
-     style="fill:none;fill-opacity:1;stroke:#3232ff;stroke-width:10.08658123;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill"
+     style="fill:none;fill-opacity:1;stroke:#5698f5;stroke-width:10.08658123;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill"
      id="rect1999"
      width="117"
      height="110"
@@ -141,7 +141,7 @@
      y="8" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:41.96813965px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#3232ff;fill-opacity:1;stroke:none;stroke-width:0.98362821"
+     style="font-style:normal;font-weight:normal;font-size:41.96813965px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#5698f5;fill-opacity:1;stroke:none;stroke-width:0.98362821;"
      x="11.112843"
      y="53.296253"
      id="text2003"
@@ -150,10 +150,10 @@
        x="11.112843"
        y="53.296253"
        id="tspan2005"
-       style="stroke-width:0.98362821">f(u)=</tspan></text>
+       style="stroke-width:0.98362821;fill:#5698f5;fill-opacity:1;">f(u)=</tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:42.66666794px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#3232ff;fill-opacity:1;stroke:none;"
+     style="font-style:normal;font-weight:normal;font-size:42.66666794px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#5698f5;fill-opacity:1;stroke:none;"
      x="18.718397"
      y="96.630791"
      id="text2030"><tspan

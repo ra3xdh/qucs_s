@@ -38,13 +38,13 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1014"
+     inkscape:window-height="1050"
      id="namedview489"
      showgrid="true"
      inkscape:zoom="3.1210938"
-     inkscape:cx="68.726817"
+     inkscape:cx="11.535329"
      inkscape:cy="47.924409"
-     inkscape:window-x="0"
+     inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg487">
@@ -144,7 +144,7 @@
   </defs>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:85.33333588px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#3232ff;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-weight:normal;font-size:85.33333588px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#5698f5;fill-opacity:1;stroke:none;"
      x="3"
      y="63"
      id="text2057"><tspan
@@ -154,7 +154,7 @@
        y="63">M1</tspan></text>
   <path
      sodipodi:type="star"
-     style="fill:#3232ff;fill-opacity:1;fill-rule:evenodd"
+     style="fill:#5698f5;fill-opacity:1;fill-rule:evenodd"
      id="path2084"
      sodipodi:sides="3"
      sodipodi:cx="65"
@@ -169,5 +169,5 @@
      d="M 110,68.000001 64.150635,144.47114 20.849366,66.528857 Z"
      inkscape:transform-center-x="-0.50018247"
      inkscape:transform-center-y="9.0565641"
-     transform="matrix(1.1777819,0,0,0.72452512,-10.556006,24.327029)" />
+     transform="matrix(1.1777819,0,0,0.72452512,-12.556006,24.327029)" />
 </svg>
