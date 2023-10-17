@@ -3377,7 +3377,8 @@ void QucsApp::slotSaveNetlist()
 void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
 {
     Schematic *sch = (Schematic*)DocumentTab->currentWidget();
-    disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
+    disconnect(SimDlg,SIGNAL(simulated(ExternSimDialog *)),
+               this,SLOT(slotAfterSpiceSimulation(ExternSimDialog *)));
     disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
     disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
     if (TuningMode && SimDlg->hasError) {
