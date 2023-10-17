@@ -45,14 +45,14 @@ void QucsApp::initActions()
 
   // note: first argument of QAction() for backward compatibility Qt < 3.2
 
-  fileNew = new QAction(QIcon((":/bitmaps/filenew.png")), tr("&New"), this);
+  fileNew = new QAction(QIcon((":/bitmaps/svg/filenew.svg")), tr("&New"), this);
   fileNew->setShortcut(QKeySequence::New);
   fileNew->setStatusTip(tr("Creates a new document"));
   fileNew->setWhatsThis(
 	        tr("New\n\nCreates a new schematic or data display document"));
   connect(fileNew, SIGNAL(triggered()), SLOT(slotFileNew()));
 
-  textNew = new QAction(QIcon((":/bitmaps/textnew.png")), tr("New &Text"), this);
+  textNew = new QAction(QIcon((":/bitmaps/svg/textnew.svg")), tr("New &Text"), this);
   textNew->setShortcut(tr("Ctrl+Shift+V"));
   textNew->setStatusTip(tr("Creates a new text document"));
   textNew->setWhatsThis(tr("New Text\n\nCreates a new text document"));
@@ -64,7 +64,7 @@ void QucsApp::initActions()
   fileOpen->setWhatsThis(tr("Open File\n\nOpens an existing document"));
   connect(fileOpen, SIGNAL(triggered()), SLOT(slotFileOpen()));
 
-  fileSave = new QAction(QIcon((":/bitmaps/filesave.png")),	tr("&Save"), this);
+  fileSave = new QAction(QIcon((":/bitmaps/svg/filesave.svg")),	tr("&Save"), this);
   fileSave->setShortcut(QKeySequence::Save);
   fileSave->setStatusTip(tr("Saves the current document"));
   fileSave->setWhatsThis(tr("Save File\n\nSaves the current document"));
@@ -76,13 +76,13 @@ void QucsApp::initActions()
   fileSaveAs->setWhatsThis(	tr("Save As\n\nSaves the current document under a new filename"));
   connect(fileSaveAs, SIGNAL(triggered()), SLOT(slotFileSaveAs()));
 
-  fileSaveAll = new QAction(QIcon((":/bitmaps/filesaveall.png")),	tr("Save &All"), this);
+  fileSaveAll = new QAction(QIcon((":/bitmaps/svg/filesaveall.svg")),	tr("Save &All"), this);
   fileSaveAll->setShortcut(tr("Ctrl+Shift+S"));
   fileSaveAll->setStatusTip(tr("Saves all open documents"));
   fileSaveAll->setWhatsThis(tr("Save All Files\n\nSaves all open documents"));
   connect(fileSaveAll, SIGNAL(triggered()), SLOT(slotFileSaveAll()));
 
-  fileClose = new QAction(QIcon((":/bitmaps/fileclose.png")), tr("&Close"), this);
+  fileClose = new QAction(QIcon((":/bitmaps/svg/fileclose.svg")), tr("&Close"), this);
   fileClose->setShortcut(QKeySequence::Close);
   fileClose->setStatusTip(tr("Closes the current document"));
   fileClose->setWhatsThis(tr("Close File\n\nCloses the current document"));
@@ -117,7 +117,7 @@ void QucsApp::initActions()
   fileSettings->setWhatsThis(tr("Settings\n\nSets properties of the file"));
   connect(fileSettings, SIGNAL(triggered()), SLOT(slotFileSettings()));
 
-  filePrint = new QAction(QIcon((":/bitmaps/fileprint.png")), tr("&Print..."), this);
+  filePrint = new QAction(QIcon((":/bitmaps/svg/fileprint.svg")), tr("&Print..."), this);
   filePrint->setShortcut(QKeySequence::Print);
   filePrint->setStatusTip(tr("Prints the current document"));
   filePrint->setWhatsThis(tr("Print File\n\nPrints the current document"));
@@ -220,26 +220,26 @@ void QucsApp::initActions()
 	tr("Replace\n\nChange component properties\nor\ntext in VHDL code"));
   connect(changeProps, SIGNAL(triggered()), SLOT(slotChangeProps()));
 
-  editCut = new QAction(QIcon((":/bitmaps/editcut.png")),	tr("Cu&t"), this);
+  editCut = new QAction(QIcon((":/bitmaps/svg/editcut.svg")),	tr("Cu&t"), this);
   editCut->setShortcut(tr("Ctrl+X"));
   editCut->setStatusTip(tr("Cuts out the selection and puts it into the clipboard"));
   editCut->setWhatsThis(tr("Cut\n\nCuts out the selection and puts it into the clipboard"));
   connect(editCut, SIGNAL(triggered()), SLOT(slotEditCut()));
 
-  editCopy = new QAction(QIcon((":/bitmaps/editcopy.png")), tr("&Copy"), this);
+  editCopy = new QAction(QIcon((":/bitmaps/svg/editcopy.svg")), tr("&Copy"), this);
   editCopy->setShortcut(QKeySequence::Copy);
   editCopy->setStatusTip(tr("Copies the selection into the clipboard"));
   editCopy->setWhatsThis(tr("Copy\n\nCopies the selection into the clipboard"));
   connect(editCopy, SIGNAL(triggered()), SLOT(slotEditCopy()));
 
-  editPaste = new QAction(QIcon((":/bitmaps/editpaste.png")), tr("&Paste"), this);
+  editPaste = new QAction(QIcon((":/bitmaps/svg/editpaste.svg")), tr("&Paste"), this);
   editPaste->setShortcut(QKeySequence::Paste);
   editPaste->setStatusTip(tr("Pastes the clipboard contents to the cursor position"));
   editPaste->setWhatsThis(tr("Paste\n\nPastes the clipboard contents to the cursor position"));
   editPaste->setCheckable(true);
   connect(editPaste, SIGNAL(toggled(bool)), SLOT(slotEditPaste(bool)));
 
-  editDelete = new QAction(QIcon((":/bitmaps/editdelete.png")), tr("&Delete"), this);
+  editDelete = new QAction(QIcon((":/bitmaps/svg/editdelete.svg")), tr("&Delete"), this);
   editDelete->setShortcut(QKeySequence::Delete);
   editDelete->setStatusTip(tr("Deletes the selected components"));
   editDelete->setWhatsThis(tr("Delete\n\nDeletes the selected components"));
@@ -275,13 +275,13 @@ void QucsApp::initActions()
   cursorDown = new QShortcut(QKeySequence(Qt::Key_Down), this);
   connect(cursorDown, SIGNAL(activated()), SLOT(slotCursorDown()));
 
-  undo = new QAction(QIcon((":/bitmaps/undo.png")), tr("&Undo"), this);
+  undo = new QAction(QIcon((":/bitmaps/svg/editundo.svg")), tr("&Undo"), this);
   undo->setShortcut(QKeySequence::Undo);
   undo->setStatusTip(tr("Undoes the last command"));
   undo->setWhatsThis(tr("Undo\n\nMakes the last action undone"));
   connect(undo, SIGNAL(triggered()), SLOT(slotEditUndo()));
 
-  redo = new QAction(QIcon((":/bitmaps/redo.png")), tr("&Redo"), this);
+  redo = new QAction(QIcon((":/bitmaps/svg/editredo.svg")), tr("&Redo"), this);
   redo->setShortcut(QKeySequence::Redo);
   redo->setStatusTip(tr("Redoes the last command"));
   redo->setWhatsThis(tr("Redo\n\nRepeats the last action once more"));
@@ -388,7 +388,7 @@ void QucsApp::initActions()
   connect(escape, SIGNAL(triggered()), SLOT(slotEscape()));
   this->addAction(escape);
 
-  select = new QAction(QIcon((":/bitmaps/pointer.png")), tr("Select"), this);
+  select = new QAction(QIcon((":/bitmaps/svg/pointer.svg")), tr("Select"), this);
   select->setStatusTip(tr("Activate select mode"));
   select->setWhatsThis(tr("Select\n\nActivates select mode"));
   select->setCheckable(true);
@@ -406,76 +406,76 @@ void QucsApp::initActions()
   selectMarker->setWhatsThis(tr("Select Markers\n\nSelects all diagram markers of the document"));
   connect(selectMarker, SIGNAL(triggered()), SLOT(slotSelectMarker()));
 
-  editRotate = new QAction(QIcon(misc::getIconPath("rotate_ccw.png", qucs::panelIcons)), tr("Rotate"), this);
+  editRotate = new QAction(QIcon(":/bitmaps/svg/rotate_ccw.svg"), tr("Rotate"), this);
   editRotate->setShortcut(tr("Ctrl+R"));
   editRotate->setStatusTip(tr("Rotates the selected component by 90\x00B0"));
   editRotate->setWhatsThis(tr("Rotate\n\nRotates the selected component by 90\x00B0 counter-clockwise"));
   editRotate->setCheckable(true);
   connect(editRotate, SIGNAL(toggled(bool)), SLOT(slotEditRotate(bool)));
 
-  editMirror = new QAction(QIcon(misc::getIconPath("mirror.png", qucs::panelIcons)), tr("Mirror about X Axis"), this);
+  editMirror = new QAction(QIcon(":/bitmaps/svg/mirror.svg"), tr("Mirror about X Axis"), this);
   editMirror->setShortcut(tr("Ctrl+J"));
   editMirror->setStatusTip(tr("Mirrors the selected item about X Axis"));
   editMirror->setWhatsThis(tr("Mirror about X Axis\n\nMirrors the selected item about X Axis"));
   editMirror->setCheckable(true);
   connect(editMirror, SIGNAL(toggled(bool)), SLOT(slotEditMirrorX(bool)));
 
-  editMirrorY = new QAction(QIcon(misc::getIconPath("mirrory.png", qucs::panelIcons)), tr("Mirror about Y Axis"), this);
+  editMirrorY = new QAction(QIcon(":/bitmaps/svg/mirrory.svg"), tr("Mirror about Y Axis"), this);
   editMirrorY->setShortcut(tr("Ctrl+M"));
   editMirrorY->setStatusTip(tr("Mirrors the selected item about Y Axis"));
   editMirrorY->setWhatsThis(tr("Mirror about Y Axis\n\nMirrors the selected item about Y Axis"));
   editMirrorY->setCheckable(true);
   connect(editMirrorY, SIGNAL(toggled(bool)), SLOT(slotEditMirrorY(bool)));
 
-  intoH = new QAction(QIcon((":/bitmaps/bottom.png")), tr("Go into Subcircuit"), this);
+  intoH = new QAction(QIcon((":/bitmaps/svg/bottom.svg")), tr("Go into Subcircuit"), this);
   intoH->setShortcut(tr("Ctrl+I"));
   intoH->setStatusTip(tr("Goes inside the selected subcircuit"));
   intoH->setWhatsThis(
 	tr("Go into Subcircuit\n\nGoes inside the selected subcircuit"));
   connect(intoH, SIGNAL(triggered()), SLOT(slotIntoHierarchy()));
 
-  popH = new QAction(QIcon((":/bitmaps/top.png")), tr("Pop out"), this);
+  popH = new QAction(QIcon((":/bitmaps/svg/top.svg")), tr("Pop out"), this);
   popH->setShortcut(tr("Ctrl+H"));
   popH->setStatusTip(tr("Pop outside subcircuit"));
   popH->setWhatsThis(tr("Pop out\n\nGoes up one hierarchy level, i.e. leaves subcircuit"));
   connect(popH, SIGNAL(triggered()), SLOT(slotPopHierarchy()));
   popH->setEnabled(false);  // only enabled if useful !!!!
 
-  editActivate = new QAction(QIcon(misc::getIconPath("deactiv.png", qucs::panelIcons)),	tr("Deactivate/Activate"), this);
+  editActivate = new QAction(QIcon(":bitmaps/svg/deactiv.svg"),	tr("Deactivate/Activate"), this);
   editActivate->setShortcut(tr("Ctrl+D"));
   editActivate->setStatusTip(tr("Deactivate/Activate selected components"));
   editActivate->setWhatsThis(tr("Deactivate/Activate\n\nDeactivate/Activate the selected components"));
   editActivate->setCheckable(true);
   connect(editActivate, SIGNAL(toggled(bool)), SLOT(slotEditActivate(bool)));
 
-  insEquation = new QAction(QIcon(misc::getIconPath("equation.png", qucs::panelIcons)),	tr("Insert Equation"), this);
+  insEquation = new QAction(QIcon(":bitmaps/svg/equation.svg"),	tr("Insert Equation"), this);
   insEquation->setShortcut(tr("Ctrl+<"));
   insEquation->setStatusTip(tr("Inserts an equation"));
   insEquation->setWhatsThis(tr("Insert Equation\n\nInserts a user defined equation"));
   insEquation->setCheckable(true);
   connect(insEquation, SIGNAL(toggled(bool)), SLOT(slotInsertEquation(bool)));
 
-  insGround = new QAction(QIcon(misc::getIconPath("ground.png", qucs::panelIcons)), tr("Insert Ground"), this);
+  insGround = new QAction(QIcon(":/bitmaps/svg/ground.svg"), tr("Insert Ground"), this);
   insGround->setShortcut(tr("Ctrl+G"));
   insGround->setStatusTip(tr("Inserts a ground symbol"));
   insGround->setWhatsThis(tr("Insert Ground\n\nInserts a ground symbol"));
   insGround->setCheckable(true);
   connect(insGround, SIGNAL(toggled(bool)), SLOT(slotInsertGround(bool)));
 
-  insPort = new QAction(QIcon(misc::getIconPath("port.png", qucs::panelIcons)),	tr("Insert Port"), this);
+  insPort = new QAction(QIcon(":/bitmaps/svg/port.svg"),	tr("Insert Port"), this);
   insPort->setStatusTip(tr("Inserts a port symbol"));
   insPort->setWhatsThis(tr("Insert Port\n\nInserts a port symbol"));
   insPort->setCheckable(true);
   connect(insPort, SIGNAL(toggled(bool)), SLOT(slotInsertPort(bool)));
 
-  insWire = new QAction(QIcon(misc::getIconPath("wire.png", qucs::panelIcons)),	tr("Wire"), this);
+  insWire = new QAction(QIcon(":bitmaps/svg/wire.svg"),	tr("Wire"), this);
   insWire->setShortcut(tr("Ctrl+E"));
   insWire->setStatusTip(tr("Inserts a wire"));
   insWire->setWhatsThis(tr("Wire\n\nInserts a wire"));
   insWire->setCheckable(true);
   connect(insWire, SIGNAL(toggled(bool)), SLOT(slotSetWire(bool)));
 
-  insLabel = new QAction(QIcon(misc::getIconPath("nodename.png", qucs::panelIcons)), tr("Wire Label"), this);
+  insLabel = new QAction(QIcon(":/bitmaps/svg/nodename.svg"), tr("Wire Label"), this);
   insLabel->setShortcut(tr("Ctrl+L"));
   insLabel->setStatusTip(tr("Inserts a wire or pin label"));
   insLabel->setWhatsThis(tr("Wire Label\n\nInserts a wire or pin label"));
@@ -531,20 +531,20 @@ void QucsApp::initActions()
   callPwrComb->setWhatsThis(tr("Power combining\n\nStarts power combining calculation program"));
   connect(callPwrComb, SIGNAL(triggered()), SLOT(slotCallPwrComb()));
 
-  simulate = new QAction(QIcon((":/bitmaps/gear.png")), tr("Simulate"), this);
+  simulate = new QAction(QIcon((":/bitmaps/svg/gear.svg")), tr("Simulate"), this);
   simulate->setShortcut(Qt::Key_F2);
   simulate->setStatusTip(tr("Simulates the current schematic"));
   simulate->setWhatsThis(tr("Simulate\n\nSimulates the current schematic"));
   connect(simulate, SIGNAL(triggered()), SLOT(slotSimulate()));
 
-  tune = new QAction(QIcon((":/bitmaps/tune.png")),"Tune", this);
+  tune = new QAction(QIcon((":/bitmaps/svg/tune.svg")),"Tune", this);
   tune->setShortcut(Qt::Key_F3);
   tune->setStatusTip("Tuner");
   tune->setWhatsThis("Allows to live tune variables and show the result in the dataview");
   tune->setCheckable(true);
   connect(tune, SIGNAL(toggled(bool)), SLOT(slotTune(bool)));
 
-  dpl_sch = new QAction(QIcon((":/bitmaps/rebuild.png")), tr("View Data Display/Schematic"), this);
+  dpl_sch = new QAction(QIcon((":/bitmaps/svg/rebuild.svg")), tr("View Data Display/Schematic"), this);
   dpl_sch->setShortcut(Qt::Key_F4);
   dpl_sch->setStatusTip(tr("Changes to data display or schematic page"));
   dpl_sch->setWhatsThis(tr("View Data Display/Schematic\n\nChanges to data display or schematic page"));
@@ -561,7 +561,7 @@ void QucsApp::initActions()
   save_netlist->setWhatsThis(tr("Save netlist to file"));
   connect(save_netlist, SIGNAL(triggered()), SLOT(slotSaveNetlist()));
 
-  setMarker = new QAction(QIcon((":/bitmaps/marker.png")),	tr("Set Marker on Graph"), this);
+  setMarker = new QAction(QIcon((":/bitmaps/svg/marker.svg")),	tr("Set Marker on Graph"), this);
   setMarker->setShortcut(Qt::CTRL|Qt::Key_B);
   setMarker->setStatusTip(tr("Sets a marker on a diagram's graph"));
   setMarker->setWhatsThis(tr("Set Marker\n\nSets a marker on a diagram's graph"));

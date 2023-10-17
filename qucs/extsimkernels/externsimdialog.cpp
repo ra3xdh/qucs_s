@@ -190,7 +190,7 @@ void ExternSimDialog::slotProcessOutput()
         emit warnings();
     } else {
         addLogEntry(tr("Simulation successful. Now place diagram on schematic to plot the result."),
-                    QIcon(":/bitmaps/tick.png"));
+                    QIcon(":/bitmaps/svg/ok_apply.svg"));
         emit success();
     }
     //editSimConsole->clear();

@@ -952,6 +952,9 @@ int main(int argc, char *argv[])
   QucsSettings.sysDefaultFont = QApplication::font();
   a.setFont(QucsSettings.appFont);
   a.setAttribute(Qt::AA_EnableHighDpiScaling,true);
+#if QT_VERSION < 0x060000
+  a.setAttribute(Qt::AA_UseHighDpiPixmaps,true);
+#endif
 
   // set codecs
   //QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));

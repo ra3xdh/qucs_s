@@ -137,9 +137,9 @@ void MessageDock::slotAdmsChanged()
 
     // Change adms tab icon
     if (error)
-         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/error.png"));
+         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/svg/error.svg"));
     else
-         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/tick.png"));
+         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/svg/ok_apply.svg"));
 }
 
 /*!
@@ -160,9 +160,9 @@ void MessageDock::slotCppChanged()
 
     // Change compiler tab icon
     if (error)
-         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/error.png"));
+         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/svg/error.svg"));
     else
-         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/tick.png"));
+         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/svg/ok_apply.svg"));
 }
 
 /*!
