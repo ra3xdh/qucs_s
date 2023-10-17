@@ -498,5 +498,6 @@
         <file>bitmaps/svg/marker.svg</file>
         <file>bitmaps/svg/ok_apply.svg</file>
         <file>bitmaps/svg/error.svg</file>
+        <file>bitmaps/svg/rect.svg</file>
     </qresource>
 </RCC>

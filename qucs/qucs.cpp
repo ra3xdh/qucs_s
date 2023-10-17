@@ -893,7 +893,7 @@ void QucsApp::slotSetCompView (int index)
       if (Infos) {
         /// \todo warning: expression result unused, can we rewrite this?
         (void) *((*it)->info) (Name, File, false);
-        QString icon_path = misc::getIconPath(QString (File) + ".png", qucs::compIcons);
+        QString icon_path = misc::getIconPath(QString (File), qucs::compIcons);
         QListWidgetItem *icon = new QListWidgetItem(QPixmap(icon_path), Name);
         icon->setToolTip(Name);
         iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
@@ -950,7 +950,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
 
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
             //match
-            QString icon_path = misc::getIconPath(QString (File) + ".png", qucs::compIcons);
+            QString icon_path = misc::getIconPath(QString (File), qucs::compIcons);
             QListWidgetItem *icon = new QListWidgetItem(QPixmap(icon_path), Name);
             icon->setToolTip(it + ": " + Name);
             // add component category and module indexes to the icon
