@@ -22,52 +22,52 @@
     <message>
         <location line="-84"/>
         <source>GUI programmer, Verilog-A dynamic loader</source>
-        <translation>Разработчик графического интерфейса, Verilog-A динамического загрузчика</translation>
+        <translation>разработчик графического интерфейса, динамический загрузчик Verilog-A</translation>
     </message>
     <message>
         <location line="-9"/>
         <source>project maintainer, simulator interface and GUI design</source>
-        <translation type="unfinished"></translation>
+        <translation>сопровождающий проекта, интерфейс симулятора и дизайн графического интерфейса</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>component models, documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>модели компонентов, документация</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Xyce integration</source>
-        <translation type="unfinished"></translation>
+        <translation>интеграция Xyce</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Testing, examples</source>
-        <translation type="unfinished"></translation>
+        <translation>тестирование, примеры</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Qt6 support, general improvements</source>
-        <translation type="unfinished"></translation>
+        <translation>поддержка Qt6, общие улучшения</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Digital simulation, general improvements</source>
-        <translation type="unfinished"></translation>
+        <translation>цифровая симуляция, общие улучшения</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>testing, general bugfixes</source>
-        <translation type="unfinished"></translation>
+        <translation>тестирование, общее исправление ошибок</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>testing, modelling and documentation, tutorial contributor</source>
-        <translation>тестирование, моделирование и документация, участие в создании учебника</translation>
+        <translation>тестирование, моделирование и документация, участник создания учебника</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>testing, modelling, Octave.</source>
-        <translation>тестирование, моделирование, Octave.</translation>
+        <translation>тестирование, моделирование, Octave</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -77,7 +77,7 @@
     <message>
         <location line="+1"/>
         <source>GUI programmer, release</source>
-        <translation>Разработчик графического интерфейса, выпуск версий</translation>
+        <translation>разработчик графического интерфейса, выпуск версий</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -107,7 +107,7 @@
     <message>
         <location line="+1"/>
         <source>Programmer of simulator</source>
-        <translation>Программист симулятора</translation>
+        <translation>программист симулятора</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -117,7 +117,7 @@
     <message>
         <location line="+1"/>
         <source>tester and applyer of Stefan&apos;s patches, author of documentation</source>
-        <translation>Тестирование и применение патчей Стефана, автор документации</translation>
+        <translation>тестирование и применение патчей Стефана, автор документации</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -133,12 +133,12 @@
         <location line="+1"/>
         <location line="+5"/>
         <source>GUI programmer, Qt4 porter</source>
-        <translation>Разработчик графического интерфейса, портирование на Qt4</translation>
+        <translation>разработчик графического интерфейса, портирование на Qt4</translation>
     </message>
     <message>
         <location line="-4"/>
         <source>programmer of the Verilog-AMS interface</source>
-        <translation>Разработчик интерфейса Verilog-AMS</translation>
+        <translation>разработчик интерфейса Verilog-AMS</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -153,7 +153,7 @@
     <message>
         <location line="+1"/>
         <source>GUI programmer</source>
-        <translation>Разработчик графического интерфейса</translation>
+        <translation>разработчик графического интерфейса</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -258,17 +258,17 @@
     <message>
         <location line="+1"/>
         <source>Bugtracker page</source>
-        <translation type="unfinished"></translation>
+        <translation>Страница системы отслеживания ошибок</translation>
     </message>
     <message>
         <location line="+53"/>
         <source>Qucs-S project team:</source>
-        <translation type="unfinished"></translation>
+        <translation>Команда проекта Qucs-S:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Based on Qucs project developed by:</source>
-        <translation type="unfinished"></translation>
+        <translation>Основано на проекте Qucs, разработанном:</translation>
     </message>
     <message>
         <source>Components reference manual</source>
@@ -426,12 +426,12 @@
     <message>
         <location filename="../qucs/dialogs/settingsdialog.cpp" line="+360"/>
         <source>Select</source>
-        <translation type="unfinished">Выделить</translation>
+        <translation>Выделить</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>Отменить</translation>
     </message>
 </context>
 <context>
@@ -760,52 +760,52 @@
         <location filename="../qucs/extsimkernels/customsimdialog.cpp" line="+40"/>
         <location line="+44"/>
         <source>Edit SPICE code</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать код SPICE</translation>
     </message>
     <message>
         <location line="-43"/>
         <source>Component: </source>
-        <translation type="unfinished"></translation>
+        <translation>Компонент</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Variables to plot (semicolon separated)</source>
-        <translation type="unfinished"></translation>
+        <translation>Переменные для построения (через точку с запятой)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Extra outputs (semicolon separated; raw-SPICE or XYCE-STD format)</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнительные форматы вывода (через точку с запятой; необработанный формат SPICE или STD XYCE</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Apply</source>
-        <translation type="unfinished">Применить</translation>
+        <translation>Применить</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Find all variables</source>
-        <translation type="unfinished"></translation>
+        <translation>Найти все переменные</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Find all outputs</source>
-        <translation type="unfinished"></translation>
+        <translation>Найти все форматы вывода</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>SPICE code editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактор кода SPICE</translation>
     </message>
 </context>
 <context>
@@ -857,7 +857,7 @@
     <message>
         <location line="+5"/>
         <source>Plot Vs.</source>
-        <translation type="unfinished"></translation>
+        <translation>График зависимости от</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -950,7 +950,7 @@
     <message>
         <location line="+18"/>
         <source>Data from simulator:</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные из симулятора:</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1031,22 +1031,22 @@
     <message>
         <location line="+16"/>
         <source>Number notation: </source>
-        <translation type="unfinished"></translation>
+        <translation>Представление чисел: </translation>
     </message>
     <message>
         <location line="+3"/>
         <source>scientific notation</source>
-        <translation type="unfinished"></translation>
+        <translation>научное представление</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>engineering notation</source>
-        <translation type="unfinished"></translation>
+        <translation>инженерное представление</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>logarithmic X Axis Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>логарифмическая разметка оси X</translation>
     </message>
     <message>
         <source>logarithmical X Axis Grid</source>
@@ -1066,7 +1066,7 @@
         <location line="-11"/>
         <location line="+11"/>
         <source>logarithmic</source>
-        <translation type="unfinished">логарифмический</translation>
+        <translation>логарифмическая</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1229,12 +1229,12 @@
     <message>
         <location filename="../qucs/dialogs/displaydialog.cpp" line="+39"/>
         <source>SPICE</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Qucs</source>
-        <translation type="unfinished"></translation>
+        <translation>Qucs</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1335,64 +1335,65 @@
     <message>
         <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="+43"/>
         <source>Simulate</source>
-        <translation type="unfinished">Моделировать</translation>
+        <translation>Моделировать</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Остановить</translation>
     </message>
     <message>
         <location line="+5"/>
         <location line="+228"/>
         <source>Save netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить список цепей</translation>
     </message>
     <message>
         <location line="-225"/>
         <source>Exit</source>
-        <translation type="unfinished">Выход</translation>
+        <translation>Выход</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Simulation console</source>
-        <translation type="unfinished"></translation>
+        <translation>Консоль моделирования</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Simulate with external simulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделировать с помощью внешнего симулятора</translation>
     </message>
     <message>
         <location line="+146"/>
         <source> started...
 </source>
-        <translation type="unfinished"></translation>
+        <translation> запущено…
+</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Failed to start simulator!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось запустить симулятор!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Simulator crashed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Сбой симулятора!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Simulator error!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка симулятора!</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Simulate with SPICE</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирование с помощью SPICE</translation>
     </message>
     <message>
         <location line="+13"/>
         <source> error...</source>
-        <translation type="unfinished"></translation>
+        <translation> ошибка…</translation>
     </message>
 </context>
 <context>
@@ -1797,7 +1798,7 @@ Filter synthesis program
     <message>
         <location filename="../qucs-filter/helpdialog.cpp" line="+38"/>
         <source>QucsFilter is a filter synthesis program. To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediately, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
-        <translation type="unfinished"></translation>
+        <translation>QucsFilter — это программа синтеза фильтров. Для создания фильтра просто введите все параметры и нажмите большую кнопку внизу главного окна. Сразу после этого фильтр рассчитывается и помещается в буфер обмена. Теперь перейдите в Qucs, откройте пустой документ схемы и нажмите CTRL-V (вставить из буфера обмена). Теперь схема фильтра может быть вставлена и использована для моделирования. Удачи!</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -1837,7 +1838,7 @@ Filter synthesis program
     <message>
         <location filename="../qucs-activefilter/helpdialog.cpp" line="-31"/>
         <source>QucsActiveFilter is a active filter synthesis program. Butterworth, Chebyshev, Inverse Chebyshev, Cauer, Bessel and User defined transfer function are supported.To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediately, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
-        <translation type="unfinished"></translation>
+        <translation>QucsActiveFilter — это программа синтеза активных фильтров. Поддерживаются фильтры Баттерворта, Чебышева, Инверсный Чебышева, Кауэра, Бесселя и определённая пользователем передаточная функция. Для создания фильтра просто введите все параметры и нажмите большую кнопку внизу главного окна. Сразу после этого фильтр рассчитывается и помещается в буфер обмена. Теперь перейдите в Qucs, откройте пустой документ схемы и нажмите CTRL-V (вставить из буфера обмена). Теперь схема фильтра может быть вставлена и использована для моделирования. Удачи!</translation>
     </message>
 </context>
 <context>
@@ -2195,14 +2196,16 @@ Filter synthesis program
     <message>
         <location line="+16"/>
         <source>SPICE checker</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверка SPICE</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Node name &quot;%1&quot; is Nutmeg reserved keyword!
 Please select another node name!
 Node name will not be changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Название узла &quot;%1&quot; является зарезервированным ключевым словом Nutmeg!
+Выберите другое название узла!
+Название узла не будет изменено.</translation>
     </message>
 </context>
 <context>
@@ -2367,7 +2370,8 @@ Node name will not be changed.</source>
         <location line="+7"/>
         <source>Creating SPICE netlist.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Создание списка цепей SPICE
+</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -2569,7 +2573,7 @@ Node name will not be changed.</source>
     <message>
         <location line="+3"/>
         <source>X-axis position:</source>
-        <translation type="unfinished"></translation>
+        <translation>Положение оси X:</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2801,7 +2805,7 @@ Resistor color code computation program
     <message>
         <location filename="../qucs/extsimkernels/ngspice.cpp" line="+643"/>
         <source>Problem with SaveNetlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Проблема с SaveNetlist</translation>
     </message>
 </context>
 <context>
@@ -2813,7 +2817,7 @@ Resistor color code computation program
     <message>
         <location filename="../qucs/octave_window.cpp" line="+122"/>
         <source>ERROR: Failed to execute &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>ОШИБКА: не удалось выполнить &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -2975,49 +2979,49 @@ Resistor color code computation program
         <location line="+184"/>
         <location line="+360"/>
         <source>E3 series</source>
-        <translation type="unfinished"></translation>
+        <translation>Ряд E3</translation>
     </message>
     <message>
         <location line="-543"/>
         <location line="+185"/>
         <location line="+360"/>
         <source>E6 series</source>
-        <translation type="unfinished"></translation>
+        <translation>Ряд E6</translation>
     </message>
     <message>
         <location line="-544"/>
         <location line="+186"/>
         <location line="+360"/>
         <source>E12 series</source>
-        <translation type="unfinished"></translation>
+        <translation>Ряд E12</translation>
     </message>
     <message>
         <location line="-545"/>
         <location line="+187"/>
         <location line="+360"/>
         <source>E24 series</source>
-        <translation type="unfinished"></translation>
+        <translation>Ряд E24</translation>
     </message>
     <message>
         <location line="-546"/>
         <location line="+188"/>
         <location line="+360"/>
         <source>E48 series</source>
-        <translation type="unfinished"></translation>
+        <translation>Ряд E48</translation>
     </message>
     <message>
         <location line="-547"/>
         <location line="+189"/>
         <location line="+360"/>
         <source>E96 series</source>
-        <translation type="unfinished"></translation>
+        <translation>Ряд E96</translation>
     </message>
     <message>
         <location line="-548"/>
         <location line="+190"/>
         <location line="+360"/>
         <source>E192 series</source>
-        <translation type="unfinished"></translation>
+        <translation>Ряд E192</translation>
     </message>
     <message>
         <location line="-546"/>
@@ -3466,7 +3470,7 @@ Resistor color code computation program
     <message>
         <location line="+1"/>
         <source>XSPICE</source>
-        <translation type="unfinished"></translation>
+        <translation>XSPICE</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3491,13 +3495,13 @@ Resistor color code computation program
         <location filename="../qucs/spicecomponents/sp_sens_ac.cpp" line="+25"/>
         <location line="+43"/>
         <source>AC sensitivity simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Симуляция динамической чувствительности</translation>
     </message>
     <message>
         <location line="-22"/>
         <location filename="../qucs/spicecomponents/sp_sens.cpp" line="+46"/>
         <source>Output variable</source>
-        <translation type="unfinished"></translation>
+        <translation>Выходная переменная</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4530,7 +4534,13 @@ Unknown component!
 Do you want to load schematic anyway?
 Unknown components will be replaced 
 by dummy subcircuit placeholders.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка форматирования:
+Неизвестный компонент!
+%1
+
+Всё равно загрузить схему?
+Неизвестные компоненты будут заменены на 
+заглушки-подсхемы.</translation>
     </message>
     <message>
         <source>Format Error:
@@ -4761,7 +4771,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/d_flipflop.cpp" line="-2"/>
         <source>D flip flop with asynchronous reset</source>
-        <translation type="unfinished"></translation>
+        <translation>D-триггер с асинхронным сбросом</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -4831,7 +4841,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/dcblock.cpp" line="-24"/>
         <source>dc block</source>
-        <translation>развязка</translation>
+        <translation>развязка от постоянного тока</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -5018,7 +5028,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/photodiode.cpp" line="+15"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
         <source>transit time</source>
-        <translation>время перехода</translation>
+        <translation>время переноса заряда</translation>
     </message>
     <message>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
@@ -5337,153 +5347,153 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/hic2_full.cpp" line="-63"/>
         <source>HICUM Level 2 v2.22 verilog device</source>
-        <translation type="unfinished"></translation>
+        <translation>verilog-модель HICUM Level 2 v2.22</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>GICCR constant</source>
-        <translation type="unfinished"></translation>
+        <translation>Константа GICCR</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A^2s</source>
-        <translation type="unfinished"></translation>
+        <translation>A^2s</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Zero-bias hole charge</source>
-        <translation type="unfinished"></translation>
+        <translation>Заряд дырок при нулевом смещении</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+59"/>
         <source>Coul</source>
-        <translation type="unfinished"></translation>
+        <translation>Кл</translation>
     </message>
     <message>
         <location line="-57"/>
         <source>High-current correction for 2D and 3D effects</source>
-        <translation type="unfinished"></translation>
+        <translation>Коррекция высокого тока для 2D- и 3D-эффектов</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Emitter minority charge weighting factor in HBTs</source>
-        <translation type="unfinished"></translation>
+        <translation>Весовой коэффициент неосновных носителей заряда эмиттера в HBT</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Collector minority charge weighting factor in HBTs</source>
-        <translation type="unfinished"></translation>
+        <translation>Весовой коэффициент неосновных носителей заряда коллектора в HBT</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-E depletion charge weighting factor in HBTs</source>
-        <translation type="unfinished"></translation>
+        <translation>Весовой коэффициент истощения заряда B-E в HBT</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-C depletion charge weighting factor in HBTs</source>
-        <translation type="unfinished"></translation>
+        <translation>Весовой коэффициент истощения заряда B-C в HBT</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Internal B-E saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренний ток насыщения B-E</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal B-E current ideality factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент идеальности внутреннего тока B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Internal B-E recombination saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренний ток насыщения рекомбинации B-E</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal B-E recombination current ideality factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент идеальности внутреннего тока рекомбинации B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Peripheral B-E saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation>Периферийный ток насыщения B-E</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Peripheral B-E current ideality factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент идеальности периферийного тока B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Peripheral B-E recombination saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation>Периферийный ток насыщения рекомбинации B-E</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Peripheral B-E recombination current ideality factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент идеальности периферийного тока рекомбинации B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Non-ideality factor for III-V HBTs</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент неидеальности для III-V HBT</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Base current recombination time constant at B-C barrier for high forward injection</source>
-        <translation type="unfinished"></translation>
+        <translation>Константа времени рекомбинации базового тока на барьере B-C при большом уровне прямой инжекции</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal B-C saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренний ток насыщения B-C</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal B-C current ideality factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент идеальности внутреннего тока B-C</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>External B-C saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешний ток насыщения B-C</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>External B-C current ideality factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент идеальности внешнего тока B-C</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-E tunneling saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation>Ток насыщения туннелирования B-E</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Exponent factor for tunneling current</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент экспоненты для туннельного тока</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Specifies the base node connection for the tunneling current</source>
-        <translation type="unfinished"></translation>
+        <translation>Указывает соединение базового узла для туннелирующего тока</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Avalanche current factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент лавинного тока</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Exponent factor for avalanche current</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент экспоненты для лавинного тока</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Relative TC for FAVL</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная теплопроводность компонентов FAVL</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5498,457 +5508,457 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="-201"/>
         <source>Relative TC for QAVL</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная теплопроводность компонентов QAVL</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Zero bias internal base resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутреннее сопротивление базы при нулевом смещении</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>External base series resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешнее последовательное сопротивление базы</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Factor for geometry dependence of emitter current crowding</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент для геометрической зависимости от сжатия тока эмиттера</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Correction factor for modulation by B-E and B-C space charge layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент коррекции для модуляции по слою пространственного заряда B-E и B-C</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ratio of HF shunt to total internal capacitance (lateral NQS effect)</source>
-        <translation type="unfinished"></translation>
+        <translation>Отношение шунтирующей на ВЧ к полной внутренней ёмкости (побочный неквазистатический эффект)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ration of internal to total minority charge</source>
-        <translation type="unfinished"></translation>
+        <translation>Отношение внутреннего к полному неосновному заряду</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emitter series resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательное сопротивление эмиттера</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>External collector series resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешнее последовательное сопротивление коллектора</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Substrate transistor transfer saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation>Ток насыщения переноса заряда транзистора на подложке</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Forward ideality factor of substrate transfer current</source>
-        <translation type="unfinished"></translation>
+        <translation>Прямой коэффициент идеальности тока переноса заряда подложки</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>C-S diode saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation>Ток насыщения диода C-S</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ideality factor of C-S diode current</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент идеальности тока диода C-S</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Transit time for forward operation of substrate transistor</source>
-        <translation type="unfinished"></translation>
+        <translation>Время переноса заряда для прямой операции транзистора с подложкой</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Substrate series resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательное сопротивление подложки</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Substrate shunt capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Шунтирующая ёмкость подложки</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal B-E zero-bias depletion capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренняя барьерная ёмкость B-E при нулевом смещении</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal B-E built-in potential</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренняя контактная разность потенциалов B-E</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal B-E grading coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент неидеальности внутреннего B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ratio of maximum to zero-bias value of internal B-E capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Отношение максимального значения к значению нулевого смещения внутренней ёмкости B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Peripheral B-E zero-bias depletion capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Периферийная ёмкость B-E при нулевом смещении</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Peripheral B-E built-in potential</source>
-        <translation type="unfinished"></translation>
+        <translation>Периферийная контактная разность потенциалов B-E</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Peripheral B-E grading coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент неидеальности периферийного B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ratio of maximum to zero-bias value of peripheral B-E capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Отношение максимального значения к значению нулевого смещения периферийной ёмкости B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Internal B-C zero-bias depletion capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренняя барьерная ёмкость B-C при нулевом смещении</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal B-C built-in potential</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренняя контактная разность потенциалов B-C</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal B-C grading coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент неидеальности внутреннего B-C</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Internal B-C punch-through voltage</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутреннее пробивное напряжение B-C</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>External B-C zero-bias depletion capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешняя барьерная ёмкость B-C при нулевом смещении</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>External B-C built-in potential</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешняя контактная разность потенциалов B-C</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>External B-C grading coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент неидеальности внешнего B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>External B-C punch-through voltage</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешнее пробивное напряжение B-C</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Partitioning factor of parasitic B-C cap</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент распределения паразитной ёмкости B-C</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Partitioning factor of parasitic B-E cap</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент распределения паразитной ёмкости B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>C-S zero-bias depletion capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Барьерная ёмкость C-S при нулевом смещении</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>C-S built-in potential</source>
-        <translation type="unfinished"></translation>
+        <translation>Контактная разность потенциалов C-S</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>C-S grading coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент неидеальности C-S</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>C-S punch-through voltage</source>
-        <translation type="unfinished"></translation>
+        <translation>Пробивное напряжение C-S</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low current forward transit time at VBC=0V</source>
-        <translation type="unfinished"></translation>
+        <translation>Время переноса заряда в прямом включении слабого тока при VBC=0V</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Time constant for base and B-C space charge layer width modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Константа времени для модуляции по слою пространственного заряда базы и B-C</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Time constant for modelling carrier jam at low VCE</source>
-        <translation type="unfinished"></translation>
+        <translation>Константа времени для моделирования затора несущей при низком VCE</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Neutral emitter storage time</source>
-        <translation type="unfinished"></translation>
+        <translation>Время хранения нейтрального эмиттера</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Exponent factor for current dependence of neutral emitter storage time</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент экспоненты для токовой зависимости от времени хранения нейтрального эмиттера</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Saturation time constant at high current densities</source>
-        <translation type="unfinished"></translation>
+        <translation>Константа времени насыщения на высоких плотностях тока</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Smoothing factor for current dependence of base and collector transit time</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент сглаживания для токовой зависимости от времени перехода база-коллектор</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Partitioning factor for base and collector portion</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент распределения для участка база-коллектор</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Internal collector resistance at low electric field</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутреннее сопротивление коллектора при малой силе электрического поля</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Voltage separating ohmic and saturation velocity regime</source>
-        <translation type="unfinished"></translation>
+        <translation>Напряжение, разделяющее омический и насыщения скоростные режимы</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Internal C-E saturation voltage</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутреннее напряжение насыщения C-E</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Collector punch-through voltage</source>
-        <translation type="unfinished"></translation>
+        <translation>Пробивное напряжение коллектора</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Storage time for inverse operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Время хранения для обратной операции</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Total parasitic B-E capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Общая паразитная ёмкость B-E</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Total parasitic B-C capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Общая паразитная ёмкость B-C</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Factor for additional delay time of minority charge</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент для дополнительного времени задержки неосновных носителей заряда</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Factor for additional delay time of transfer current</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент для дополнительного времени задержки тока переноса</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flag for turning on and off of vertical NQS effect</source>
-        <translation type="unfinished"></translation>
+        <translation>Флаг для включения и отключения вертикального неквазистатического эффекта</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flicker noise coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент 1/f-шума</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flicker noise exponent factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент экспоненты 1/f-шума</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flag for determining where to tag the flicker noise source</source>
-        <translation type="unfinished"></translation>
+        <translation>Флаг для определения места отметки источника 1/f-шума</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scaling factor for collector minority charge in direction of emitter width</source>
-        <translation type="unfinished"></translation>
+        <translation>Масштабный коэффициент для неосновных носителей заряда коллектора в направлении ширины эмиттера</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scaling factor for collector minority charge in direction of emitter length</source>
-        <translation type="unfinished"></translation>
+        <translation>Масштабный коэффициент для неосновных носителей заряда коллектора в направлении длины эмиттера</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Bandgap voltage extrapolated to 0 K</source>
-        <translation type="unfinished"></translation>
+        <translation>Напряжение ширины запрещённой зоны, экстраполированное к 0 K</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>First order relative TC of parameter T0</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная теплопроводность компонентов первого порядка параметра T0</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Second order relative TC of parameter T0</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная теплопроводность компонентов второго порядка параметра T0</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature exponent for RCI0</source>
-        <translation type="unfinished"></translation>
+        <translation>Температурный показатель для RCI0</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Relative TC of saturation drift velocity</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная теплопроводность компонентов дрейфовой скорости насыщения</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Relative TC of VCES</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная теплопроводность компонентов VCES</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Temperature exponent of internal base resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Температурный показатель внутреннего сопротивления базы</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature exponent of external base resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Температурный показатель внешнего сопротивления базы</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature exponent of external collector resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Температурный показатель внешнего сопротивления коллектора</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature exponent of emitter resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Температурный показатель сопротивления эмиттера</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature exponent of mobility in substrate transistor transit time</source>
-        <translation type="unfinished"></translation>
+        <translation>Температурный показатель подвижности во времени переноса заряда транзистора с подложкой</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Effective emitter bandgap voltage</source>
-        <translation type="unfinished"></translation>
+        <translation>Эффективное напряжение ширины запрещённой зоны эмиттера</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Effective collector bandgap voltage</source>
-        <translation type="unfinished"></translation>
+        <translation>Эффективное напряжение ширины запрещённой зоны коллектора</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Effective substrate bandgap voltage</source>
-        <translation type="unfinished"></translation>
+        <translation>Эффективное напряжение ширины запрещённой зоны подложки</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Coefficient K1 in T-dependent band-gap equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент K1 в T-зависимом уравнении ширины запрещённой зоны</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Coefficient K2 in T-dependent band-gap equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент K2 в T-зависимом уравнении ширины запрещённой зоны</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Exponent coefficient in transfer current temperature dependence</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент показателя в зависимости температуры тока переноса</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Exponent coefficient in B-E junction current temperature dependence</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент показателя в зависимости температуры тока перехода B-E</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Relative TC of forward current gain for V2.1 model</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная теплопроводность усиления прямого тока для модели V2.1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Flag for turning on and off self-heating effect</source>
-        <translation type="unfinished"></translation>
+        <translation>Флаг для включения и отключения эффекта самонагрева</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Thermal resistance</source>
-        <translation type="unfinished"></translation>
+        <translation>Тепловое сопротивление</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>K/W</source>
-        <translation type="unfinished"></translation>
+        <translation>K/W</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Thermal capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Тепловая ёмкость</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>J/W</source>
-        <translation type="unfinished"></translation>
+        <translation>J/W</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flag for compatibility with v2.1 model (0=v2.1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Флаг для совместимости с моделью v2.1 (0=v2.1)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature at which parameters are specified</source>
-        <translation type="unfinished"></translation>
+        <translation>Температура, при которой указываются параметры</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>C</source>
-        <translation type="unfinished"></translation>
+        <translation>C</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature change w.r.t. chip temperature for particular transistor</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменение температуры относительно температуры чипа для определённого транзистора</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>K</source>
-        <translation type="unfinished"></translation>
+        <translation>K</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>HICUM L2 v2.22</source>
-        <translation type="unfinished"></translation>
+        <translation>HICUM L2 v2.22</translation>
     </message>
     <message>
         <source>heavily doped diffusion length</source>
@@ -6171,7 +6181,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+36"/>
         <source>Qucs legacy equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Устаревшее уравнение Qucs</translation>
     </message>
     <message>
         <location filename="../qucs/components/etr_sim.cpp" line="-44"/>
@@ -6230,7 +6240,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="+58"/>
         <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <source>perform an initial DC analysis</source>
-        <translation>выполнить начальный анализ на постоянном токе</translation>
+        <translation>выполнить анализ на начальном постоянном токе</translation>
     </message>
     <message>
         <location filename="../qucs/components/tr_sim.cpp" line="+4"/>
@@ -6659,7 +6669,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/jk_flipflop.cpp" line="-2"/>
         <source>JK flip flop with asynchronous set and reset</source>
-        <translation type="unfinished"></translation>
+        <translation>JK-триггер с асинхронными входами установки и сброса</translation>
     </message>
     <message>
         <location line="+119"/>
@@ -7050,7 +7060,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+59"/>
         <source>gate reverse breakdown current</source>
-        <translation type="unfinished"></translation>
+        <translation>обратный ток пробоя затвора</translation>
     </message>
     <message>
         <location filename="../qucs/components/photodiode.cpp" line="-10"/>
@@ -7310,7 +7320,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+86"/>
         <location filename="../qucs/components/mosfet.cpp" line="+20"/>
         <source>n-MOSFET</source>
-        <translation>n-МОП</translation>
+        <translation>МОП полевой транзистор с n-каналом</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -7898,7 +7908,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+3"/>
         <source>ambipolar recombination lifetime</source>
-        <translation type="unfinished"></translation>
+        <translation>срок жизни амбиполярной рекомбинации</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8124,7 +8134,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>Simulation step</source>
-        <translation type="unfinished"></translation>
+        <translation>Шаг моделирования</translation>
     </message>
     <message>
         <location filename="../qucs/components/phaseshifter.cpp" line="-24"/>
@@ -8254,23 +8264,23 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/spicecomponents/vsffm.cpp" line="+29"/>
         <source>SPICE V(SFFM):</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE V(SFFM):</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>offset volage</source>
-        <translation type="unfinished"></translation>
+        <translation>напряжение смещения</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>carrier amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>амплитуда несущей</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/isffm.cpp" line="+57"/>
         <source>carrier signal frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>несущая частота сигнала</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8283,12 +8293,12 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/isffm.cpp" line="+2"/>
         <source>modulating signal frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>частота модулирующего сигнала</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>V(SFFM)</source>
-        <translation type="unfinished"></translation>
+        <translation>V(SFFM)</translation>
     </message>
     <message>
         <location filename="../qucs/components/pm_modulator.cpp" line="+14"/>
@@ -8358,47 +8368,47 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/spicecomponents/LTL_SPICE.cpp" line="+26"/>
         <source>SPICE T:</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE T:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Characteristic impedance</source>
-        <translation type="unfinished"></translation>
+        <translation>Характеристическое полное сопротивление</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Transmission delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка передачи</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Frequency</source>
-        <translation type="unfinished">Частота</translation>
+        <translation>Частота</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Normalised length at given frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Нормализованная длина на указанной частоте</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Initial voltage at end 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Начальное напряжение на конце 1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Initial current at end 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Начальный ток на конце 1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Initial voltage at end 2</source>
-        <translation type="unfinished"></translation>
+        <translation>Начальное напряжение на конце 2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Initial current at end 2</source>
-        <translation type="unfinished"></translation>
+        <translation>Начальный ток на конце 2</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -8801,7 +8811,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+4"/>
         <source>Conjugated port for XSPICE differential ports</source>
-        <translation type="unfinished"></translation>
+        <translation>Связанный порт для дифференциальных портов XSPICE</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -8856,7 +8866,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>time when state changes (semicolon separated list possible, even numbered lists are repeated)</source>
-        <translation>время изменения состояния (допустим список с разделением двоеточиями, списки с четными числами повторяются)</translation>
+        <translation>время изменения состояния (допустим список с разделением точкой с запятой, списки с четными числами повторяются)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8871,12 +8881,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+4"/>
         <source>Max possible switch transition time (transition time 1/100 smallest value in &apos;time&apos;, or this number)</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальное возможное время перехода переключателя (время перехода — 1/100 наименьшего значения «времени» или это число)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Resistance transition shape</source>
-        <translation type="unfinished"></translation>
+        <translation>Форма перехода сопротивления</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -8973,12 +8983,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="-33"/>
         <source>Transient .SENS analysis with Xyce</source>
-        <translation type="unfinished"></translation>
+        <translation>Анализ .SENS переходного процесса с помощью Xyce</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Analysis mode </source>
-        <translation type="unfinished"></translation>
+        <translation>Режим анализа</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8995,12 +9005,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>simulation time step</source>
-        <translation type="unfinished"></translation>
+        <translation>шаг времени моделирования</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Transient sensitivity analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Анализ чувствительности переходного процесса</translation>
     </message>
     <message>
         <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
@@ -9010,7 +9020,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+32"/>
         <source>perform initial DC (set &quot;no&quot; to activate UIC)</source>
-        <translation type="unfinished"></translation>
+        <translation>выполнить начальный постоянный ток (установите «нет» для активации UIC)</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -9297,7 +9307,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/spicecomponents/volt_ac_SPICE.cpp" line="+26"/>
         <source>AC voltage source (SPICE)</source>
-        <translation type="unfinished"></translation>
+        <translation>Источник переменного напряжения (SPICE)</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -9488,13 +9498,13 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/imagewriter.cpp" line="+163"/>
         <source>Overwrite</source>
-        <translation type="unfinished">Заменить</translation>
+        <translation>Заменить</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>File &quot;%1&quot; already exists.
 Overwrite ?</source>
-        <translation type="unfinished">Файл &quot;%1&quot; уже существует.
+        <translation>Файл «%1» уже существует.
 Заменить ?</translation>
     </message>
     <message>
@@ -9594,34 +9604,34 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location line="+4"/>
         <source>equations</source>
-        <translation type="unfinished"></translation>
+        <translation>уравнения</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>SPICE components</source>
-        <translation type="unfinished"></translation>
+        <translation>компоненты SPICE</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SPICE specific sections</source>
-        <translation type="unfinished"></translation>
+        <translation>специальные разделы SPICE</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SPICE simulations</source>
-        <translation type="unfinished"></translation>
+        <translation>симуляции SPICE</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>XSPICE devices</source>
-        <translation type="unfinished"></translation>
+        <translation>устройства XSPICE</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+2"/>
         <source>Qucs legacy devices</source>
-        <translation type="unfinished"></translation>
+        <translation>устаревшие устройства Qucs</translation>
     </message>
     <message>
         <location filename="../qucs/qucs.cpp" line="+1616"/>
@@ -9708,7 +9718,7 @@ Set the Octave location on the application settings.</source>
     <message>
         <location line="+296"/>
         <source>Edit Arc Properties</source>
-        <translation>Редактирование свойств дуги</translation>
+        <translation>Изменение свойств дуги</translation>
     </message>
     <message>
         <location filename="../qucs/paintings/graphicline.cpp" line="+92"/>
@@ -9783,12 +9793,12 @@ Unknown field!</source>
     <message>
         <location line="+70"/>
         <source>Cannot open Verilog-A file &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть файл Verilog-A «%1»!</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Cannot save JSON props file &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно сохранить файл свойств JSON «%1»!</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -9921,7 +9931,7 @@ Wrong &apos;painting&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>Try to open it anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Всё равно попытаться открыть?</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -10097,122 +10107,125 @@ a substrate with lower permittivity and larger height.
         <location filename="../qucs-transcalc/qucstrans.cpp" line="+1"/>
         <source>Cannot save GUI settings in
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно сохранить параметры графического интерфейса в
+</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/xyce_script.cpp" line="+25"/>
         <location line="+34"/>
         <source>XYCE script</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт XYCE</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/xspicegeneric.cpp" line="+32"/>
         <location line="+25"/>
         <source>XSPICE generic device</source>
-        <translation type="unfinished"></translation>
+        <translation>Типовое устройство XSPICE</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>PortsList</source>
-        <translation type="unfinished"></translation>
+        <translation>Список портов</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>.MODEL definition reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Ссылка на определение .MODEL</translation>
     </message>
     <message>
         <location line="+70"/>
         <source>XSPICE</source>
-        <translation type="unfinished"></translation>
+        <translation>XSPICE</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/xsp_codemodel.cpp" line="+26"/>
         <source>XSPICE CodeModel: cfunc.mod and ifspec.ifs files pair
 </source>
-        <translation type="unfinished"></translation>
+        <translation>XSPICE CodeModel: пара файлов cfunc.mod и ifspec.ifs
+</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+27"/>
         <source>XSPICE CodeModel</source>
-        <translation type="unfinished"></translation>
+        <translation>XSPICE CodeModel</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/xsp_cmlib.cpp" line="+26"/>
         <source>XSPICE precompiled CodeModel library
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Предкомплированная библиотека CodeModel XSPICE
+</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>Precompiled CM-library</source>
-        <translation type="unfinished"></translation>
+        <translation>Предкомплированная CM-библиотека</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>XSPICE precompiled CM-library</source>
-        <translation type="unfinished"></translation>
+        <translation>Предкомплированная CM-библиотека XSPICE</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/vTRRANDOM.cpp" line="+29"/>
         <source>SPICE V(TRRANDOM):</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE V(TRRANDOM):</translation>
     </message>
     <message>
         <location line="+32"/>
         <source> Distribution selector (1 to 4)</source>
-        <translation type="unfinished"></translation>
+        <translation> Выбор распределения (от 1 до 4)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Duration of each random voltage value</source>
-        <translation type="unfinished"></translation>
+        <translation>Длительность каждого случайного значения напряжения</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Time delay before random voltages output ( for time &lt; Td  Vout  =  0 V)</source>
-        <translation type="unfinished"></translation>
+        <translation>Временная задержка перед выводом случайных напряжений (на время &lt; Td  Vout  =  0 V)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Changes with  different values of Type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменения с разными значениями Type.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Changes with different values of Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменения с разными значениями Type</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>V(TRRANDOM)</source>
-        <translation type="unfinished"></translation>
+        <translation>V(TRRANDOM)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/vTRNOISE.cpp" line="+29"/>
         <source>SPICE V(TRNOISE): </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE V(TRNOISE): </translation>
     </message>
     <message>
         <location line="+27"/>
         <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+60"/>
         <source> Rms noise amplitude Gaussian)</source>
-        <translation type="unfinished"></translation>
+        <translation> Среднеквадратичная амплитуда шума (Гаусс)</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
         <source>Time step</source>
-        <translation type="unfinished"></translation>
+        <translation>Временной шаг</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
         <source>1/f exponent (0  &lt; alpha &lt; 2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспонента 1/f (0  &lt; альфа &lt; 2)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -10220,705 +10233,742 @@ a substrate with lower permittivity and larger height.
         <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
         <location line="+2"/>
         <source>Amplitude (1/f)</source>
-        <translation type="unfinished"></translation>
+        <translation>Амплитуда (1/f)</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
         <source>Trap capture time</source>
-        <translation type="unfinished"></translation>
+        <translation>Время захвата ловушки</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
         <source>Trap emission time</source>
-        <translation type="unfinished"></translation>
+        <translation>Время эмиссии ловушки</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>V(TRNOISE)</source>
-        <translation type="unfinished"></translation>
+        <translation>V(TRNOISE)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/vPWL.cpp" line="+29"/>
         <source>SPICE V(PWL):
 Multiple line ngspice or Xyce V specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use. </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE V(PWL):
+Допускаются многострочные спецификации V ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
     </message>
     <message>
         <location line="+48"/>
         <source>V(PWL)</source>
-        <translation type="unfinished"></translation>
+        <translation>V(PWL)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/vAmpMod.cpp" line="+29"/>
         <source>SPICE V(AM): ngspice only.</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE V(AM): только ngspice.</translation>
     </message>
     <message>
         <location line="+27"/>
         <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+53"/>
         <source>voltage amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>амплитуда напряжения</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
         <source>offset voltage</source>
-        <translation type="unfinished"></translation>
+        <translation>напряжение смещения</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
         <source>modulation frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>частота модуляции</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
         <source>carrier frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>несущая частота</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
         <source>signal delay</source>
-        <translation type="unfinished"></translation>
+        <translation>задержка сигнала</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>V(AM)</source>
-        <translation type="unfinished"></translation>
+        <translation>V(AM)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/src_eqndef.cpp" line="+9"/>
         <source>SPICE B (V type):
 Multiple line ngspice or Xyce B specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE B (V-тип):
+Допускаются многострочные спецификации B ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.  </translation>
     </message>
     <message>
         <location line="+46"/>
         <source>B source (V)</source>
-        <translation type="unfinished"></translation>
+        <translation>B-источник (V)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/spicelibcomp.cpp" line="+39"/>
         <source>SPICE library device. You can attach symbol patterns to it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Библиотечное устройство SPICE. С ним можно связать символьные шаблоны.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>SpiceLibrary file</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл SpiceLibrary</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Subcircuit entry (.SUBCKT) name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя записи подсхемы (.SUBCKT)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Extra parameters list</source>
-        <translation type="unfinished"></translation>
+        <translation>Список дополнительных параметров</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>SpiceLibComp</source>
-        <translation type="unfinished"></translation>
+        <translation>SpiceLibComp</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/spicegeneric.cpp" line="+30"/>
         <location line="+27"/>
         <source>SPICE generic device</source>
-        <translation type="unfinished"></translation>
+        <translation>Типовое устройство SPICE</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>Number of pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество выводов</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>SPICE device letter</source>
-        <translation type="unfinished"></translation>
+        <translation>Буква устройства SPICE</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>.MODEL definition reference (optional)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ссылка на определение .MODEL (необязательно)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Parameter string (optional)</source>
-        <translation type="unfinished"></translation>
+        <translation>Строка параметров (необязательно)</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>SPICE</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_spiceinit.cpp" line="+23"/>
         <source>.spiceinit file</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл .spiceinit</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>.spiceinit</source>
-        <translation type="unfinished"></translation>
+        <translation>.spiceinit</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>.spiceinit contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Содержимое .spiceinit</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_spectrum.cpp" line="+26"/>
         <location line="+39"/>
         <source>Spectrum analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Спектральный анализ</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_sens_xyce.cpp" line="+25"/>
         <source>DC .SENS simulation with Xyce</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирование DC .SENS с помощью Xyce</translation>
     </message>
     <message>
         <location line="+21"/>
         <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="-26"/>
         <source>Output expressions</source>
-        <translation type="unfinished"></translation>
+        <translation>Выходные выражения</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="+2"/>
         <source>Reference parameter for .SENS analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Контрольный параметр для анализа .SENS</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Parameter for DC sweep</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметр для вариации параметров при расчёте режима по постоянному току</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>start value for DC sweep</source>
-        <translation type="unfinished"></translation>
+        <translation>начальное значение для вариации параметров при расчёте режима по постоянному току</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>stop value for DC sweep</source>
-        <translation type="unfinished"></translation>
+        <translation>конечное значение для вариации параметров при расчёте режима по постоянному току</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Simulation step for DC sweep</source>
-        <translation type="unfinished"></translation>
+        <translation>Шаг моделирования для вариации параметров при расчёте режима по постоянному току</translation>
     </message>
     <message>
         <location line="+14"/>
         <location filename="../qucs/spicecomponents/sp_sens.cpp" line="-29"/>
         <location line="+43"/>
         <source>DC sensitivity simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Симуляция статической чувствительности</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_pz.cpp" line="+25"/>
         <location line="+42"/>
         <source>Pole-Zero simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирование полюсов и нулей</translation>
     </message>
     <message>
         <location line="-21"/>
         <source>Two input nodes list (space separated)</source>
-        <translation type="unfinished"></translation>
+        <translation>Список двухвходных узлов (разделённых пробелом)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Two output nodes list (space separated)</source>
-        <translation type="unfinished"></translation>
+        <translation>Список двухвыходных узлов (разделённых пробелом)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Transfer function type (current/voltage)</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип функции переноса (ток/напряжение)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Analysis mode (Pole-Zero, Poles only, Zeros only)</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим анализа (полюса и нули, только полюса, только нули)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_parameter.cpp" line="+26"/>
         <source>.PARAM section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .PARAM</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>.PARAM</source>
-        <translation type="unfinished"></translation>
+        <translation>.PARAM</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>.PARAM Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .PARAM</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_options.cpp" line="+26"/>
         <source>.OPTIONS section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .OPTIONS</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>.OPTIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>.OPTIONS</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Xyce option package name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя пакета опции Xyce</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>.OPTIONS Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .OPTIONS</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_nutmeg.cpp" line="+26"/>
         <source>Nutmeg equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Уравнение Nutmeg</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>Nutmeg</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutmeg</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Nutmeg Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Уравнение Nutmeg</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_noise.cpp" line="-27"/>
         <location line="+46"/>
         <source>Noise simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирование шума</translation>
     </message>
     <message>
         <location line="-17"/>
         <source>Node at which the total output is desired</source>
-        <translation type="unfinished"></translation>
+        <translation>Узел, на котором должен быть общий выход</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Independent source to which input noise is referred.</source>
-        <translation type="unfinished"></translation>
+        <translation>Независимый источник, к которому относится входной шум.</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_nodeset.cpp" line="+26"/>
         <source>.NODESET section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .NODESET</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>.NODESET</source>
-        <translation type="unfinished"></translation>
+        <translation>.NODESET</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>.NODESET Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .NODESET</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_model.cpp" line="+26"/>
         <source>.MODEL section
 Multiple line ngspice or Xyce .MODEL allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .MODEL
+Допускаются многострочные ngspice или Xyce .MODEL с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+6"/>
         <source>.MODEL</source>
-        <translation type="unfinished"></translation>
+        <translation>.MODEL</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>.MODEL Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .MODEL</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_lib.cpp" line="+26"/>
         <source>.LIB directive
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Директива .LIB</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>.LIB</source>
-        <translation type="unfinished"></translation>
+        <translation>.LIB</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>.Lib directive</source>
-        <translation type="unfinished"></translation>
+        <translation>Директива .Lib</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_include.cpp" line="+26"/>
         <source>.INCLUDE statement
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Оператор .INCLUDE</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>.INCLUDE</source>
-        <translation type="unfinished"></translation>
+        <translation>.INCLUDE</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>.INCLUDE statement</source>
-        <translation type="unfinished"></translation>
+        <translation>Оператор .INCLUDE</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_ic.cpp" line="+26"/>
         <source>.IC section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .IC</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>.IC</source>
-        <translation type="unfinished"></translation>
+        <translation>.IC</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>.IC Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .IC</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_globalpar.cpp" line="+26"/>
         <source>.GLOBAL_PARAM section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .GLOBAL_PARAM</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>.GLOBAL_PARAM</source>
-        <translation type="unfinished"></translation>
+        <translation>.GLOBAL_PARAM</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>.GLOBAL PARAM</source>
-        <translation type="unfinished"></translation>
+        <translation>.GLOBAL PARAM</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>.GLOBAL_PARAM Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .GLOBAL_PARAM</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_func.cpp" line="+26"/>
         <source>.FUNC new function definition</source>
-        <translation type="unfinished"></translation>
+        <translation>Определение новой функции .FUNC</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>.FUNC</source>
-        <translation type="unfinished"></translation>
+        <translation>.FUNC</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>.FUNC new function</source>
-        <translation type="unfinished"></translation>
+        <translation>Новая функция .FUNC</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_fourier.cpp" line="+26"/>
         <location line="+38"/>
         <source>Fourier simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирование Фурье</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_disto.cpp" line="-27"/>
         <location line="+44"/>
         <source>Distortion simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирование искажения</translation>
     </message>
     <message>
         <location line="-15"/>
         <source>Second frequency parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Второй параметр частоты</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_customsim.cpp" line="+25"/>
         <location line="+34"/>
         <source>Nutmeg script</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт Nutmeg</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/isffm.cpp" line="-33"/>
         <source>SPICE I(SFFM):</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE I(SFFM):</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>offset current</source>
-        <translation type="unfinished"></translation>
+        <translation>ток смещения</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>carrier current amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>амплитуда тока несущей</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>I(SFFM)</source>
-        <translation type="unfinished"></translation>
+        <translation>I(SFFM)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/incl_script.cpp" line="+26"/>
         <source>Include script before simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт включения перед симуляцией</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+6"/>
         <source>.INCLUDE SCRIPT</source>
-        <translation type="unfinished"></translation>
+        <translation>.INCLUDE SCRIPT</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Include script</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт включения</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="-43"/>
         <source>SPICE I(TRNOISE):</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE I(TRNOISE):</translation>
     </message>
     <message>
         <location line="+59"/>
         <source>I(TRNOISE)</source>
-        <translation type="unfinished"></translation>
+        <translation>I(TRNOISE)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/iPWL.cpp" line="+29"/>
         <source>SPICE I(PWL):
 Multiple line ngspice or Xyce I specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use. </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE I(PWL):
+Допускаются многострочные спецификации I ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
     </message>
     <message>
         <location line="+50"/>
         <source>I(PWL)</source>
-        <translation type="unfinished"></translation>
+        <translation>I(PWL)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="-32"/>
         <source>SPICE I(AM): ngspice only.</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE I(AM): только ngspice.</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>I(AM)</source>
-        <translation type="unfinished"></translation>
+        <translation>I(AM)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/gNL.cpp" line="+27"/>
         <source>SPICE G (VOL, VALUE, TABLE, POLY):
 Multiple line ngspice non-linear G specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE G (VOL, VALUE, TABLE, POLY):
+Допускаются многострочные спецификации нелинейного G ngspice с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
     </message>
     <message>
         <location line="+43"/>
         <source>G</source>
-        <translation type="unfinished"></translation>
+        <translation>G</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/eNL.cpp" line="+27"/>
         <source>SPICE E (CUR, VALUE, TABLE, POLY):
 Multiple line ngspice non-linear E specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE E (CUR, VALUE, TABLE, POLY):
+Допускаются многострочные спецификации нелинейного E ngspice с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>E</source>
-        <translation type="unfinished"></translation>
+        <translation>E</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/core.cpp" line="+27"/>
         <source>XSPICE core block:
 seven line XSPICE specification. </source>
-        <translation type="unfinished"></translation>
+        <translation>Блок ядра XSPICE:
+семистрочная спецификация XSPICE. </translation>
     </message>
     <message>
         <location line="+54"/>
         <source>core</source>
-        <translation type="unfinished"></translation>
+        <translation>ядро</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/XAPWL.cpp" line="+27"/>
         <source>PWL controlled voltage source:
 Seven line XSPICE specification. </source>
-        <translation type="unfinished"></translation>
+        <translation>Управляемый PWL источник напряжения:
+Семистрочная спецификация XSPICE. </translation>
     </message>
     <message>
         <location line="+47"/>
         <source>XAPWL</source>
-        <translation type="unfinished"></translation>
+        <translation>XAPWL</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/UDRCTL_SPICE.cpp" line="+29"/>
         <source>SPICE U(URC):
 Multiple line ngspice or Xyce U specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE U(URC):
+Допускаются многострочные спецификации U ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
     </message>
     <message>
         <location line="+54"/>
         <source>U(URC)</source>
-        <translation type="unfinished"></translation>
+        <translation>U(URC)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/SDTF.cpp" line="+27"/>
         <source>S domain transfer function block:
 Seven line XSPICE specification. </source>
-        <translation type="unfinished"></translation>
+        <translation>Блок передаточной функции S-области:
+Семистрочная спецификация XSPICE. </translation>
     </message>
     <message>
         <location line="+47"/>
         <source>SDTF</source>
-        <translation type="unfinished"></translation>
+        <translation>SDTF</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/S4Q_W.cpp" line="+29"/>
         <source>SPICE W:
 Multiple line ngspice or Xyce W specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE W:
+Допускаются многострочные спецификации W ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.  </translation>
     </message>
     <message>
         <location line="+48"/>
         <source> W(CSW)</source>
-        <translation type="unfinished"></translation>
+        <translation> W(CSW)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/S4Q_V.cpp" line="+30"/>
         <source>SPICE V:
 Multiple line ngspice or Xyce V specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE V:
+Допускаются многострочные спецификации V ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.  </translation>
     </message>
     <message>
         <location line="+43"/>
         <source>V Source</source>
-        <translation type="unfinished"></translation>
+        <translation>V Источник</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/S4Q_S.cpp" line="+29"/>
         <source>SPICE S:
 Multiple line ngspice or Xyce S specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE S:
+Допускаются многострочные спецификации S ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.  </translation>
     </message>
     <message>
         <location line="+55"/>
         <source> S(SW)</source>
-        <translation type="unfinished"></translation>
+        <translation> S(SW)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/S4Q_Ieqndef.cpp" line="+26"/>
         <source>SPICE B (I type):
 Multiple line ngspice or Xyce B specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE B (I -тип):
+Допускаются многострочные спецификации B ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.  </translation>
     </message>
     <message>
         <location line="+51"/>
         <source>B source (I)</source>
-        <translation type="unfinished"></translation>
+        <translation>B-источник (I)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/S4Q_I.cpp" line="+30"/>
         <source>SPICE I:
 Multiple line ngspice or Xyce I specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE I:
+Допускаются многострочные спецификации I ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.  </translation>
     </message>
     <message>
         <location line="+42"/>
         <source>I Source</source>
-        <translation type="unfinished"></translation>
+        <translation>I Источник</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/R_SPICE.cpp" line="+29"/>
         <source>SPICE R:
 Multiple line ngspice or Xyce R specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE R:
+Допускаются многострочные спецификации R ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.  </translation>
     </message>
     <message>
         <location line="+44"/>
         <source> R Resistor</source>
-        <translation type="unfinished"></translation>
+        <translation> R Резистор</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/PNP_SPICE.cpp" line="+29"/>
         <source>Q(PNP) BJT:
 Multiple line ngspice or Xyce Q model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Q(PNP) BJT:
+Допускаются многострочные спецификации модели Q ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>Q(PNP) BJT</source>
-        <translation type="unfinished"></translation>
+        <translation>Q(PNP) BJT</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/PMOS_SPICE.cpp" line="+29"/>
         <source>M(PMOS) MOS:
 Multiple line ngspice or Xyce M model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>M(PMOS) MOS:
+Допускаются многострочные спецификации модели M ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
     </message>
     <message>
         <location line="+64"/>
         <source>M(PMOS)</source>
-        <translation type="unfinished"></translation>
+        <translation>M(PMOS)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/PMF_MESFET_SPICE.cpp" line="+29"/>
         <source>Z(PMF) MESFET:
 Multiple line ngspice or Xyce Z model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Z(PMF) MESFET:
+Допускаются многострочные спецификации модели Z ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Z(PMF)</source>
-        <translation type="unfinished"></translation>
+        <translation>Z(PMF)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/PJF_SPICE.cpp" line="+29"/>
         <source>J(PJF) JFET:
 Multiple line ngspice or Xyce J model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>J(PJF) JFET:
+Допускаются многострочные спецификации модели J ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>J(PJF) JFET</source>
-        <translation type="unfinished"></translation>
+        <translation>J(PJF) JFET</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/NPN_SPICE.cpp" line="+29"/>
@@ -10926,295 +10976,315 @@ Leave continuation lines blank when NOT in use.</source>
         <source>Q(NPN) BJT:
 Multiple line ngspice or Xyce Q model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Q(NPN) BJT:
+Допускаются многострочные спецификации модели Q ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+56"/>
         <location filename="../qucs/spicecomponents/BJT_SPICE.cpp" line="+83"/>
         <source>Q(NPN) BJT</source>
-        <translation type="unfinished"></translation>
+        <translation>Q(NPN) BJT</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/NMOS_SPICE.cpp" line="+29"/>
         <source>M(NMOS) MOS:
 Multiple line ngspice or Xyce M model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>M(NMOS) MOS:
+Допускаются многострочные спецификации модели M ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+64"/>
         <source>M(NMOS)</source>
-        <translation type="unfinished"></translation>
+        <translation>M(NMOS)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/NJF_SPICE.cpp" line="+29"/>
         <source>J(NJF) JFET:
 Multiple line ngspice or Xyce J model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>J(NJF) JFET:
+Допускаются многострочные спецификации модели J ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>J(NJF) JFET</source>
-        <translation type="unfinished"></translation>
+        <translation>J(NJF) JFET</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/MOS_SPICE.cpp" line="+29"/>
         <source>Unified (M,X,3-,4-pin) MOS:
 Multiple line ngspice or Xyce M model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Унифицированный (M,X,3-,4-выводной) MOS:
+Допускаются многострочные спецификации модели M ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>unified MOSFET (3-4 pin)</source>
-        <translation type="unfinished"></translation>
+        <translation>унифицированный MOSFET (3-4 вывода)</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>M(NMOS 3 pin)</source>
-        <translation type="unfinished"></translation>
+        <translation>M(NMOS 3 вывода)</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>M(PMOS 3 pin)</source>
-        <translation type="unfinished"></translation>
+        <translation>M(PMOS 3 вывода)</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>X(NMOS 3 pin)</source>
-        <translation type="unfinished"></translation>
+        <translation>X(NMOS 3 вывода)</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>X(PMOS 3 pin)</source>
-        <translation type="unfinished"></translation>
+        <translation>X(PMOS 3 вывода)</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>X(NMOS 4 pin)</source>
-        <translation type="unfinished"></translation>
+        <translation>X(NMOS 4 вывода)</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>X(PMOS 4 pin)</source>
-        <translation type="unfinished"></translation>
+        <translation>X(PMOS 4 вывода)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/MESFET_SPICE.cpp" line="+29"/>
         <source>Z(NMF) MESFET:
 Multiple line ngspice or Xyce Z model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Z(NMF) MESFET:
+Допускаются многострочные спецификации модели Z ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Z(NMF)</source>
-        <translation type="unfinished"></translation>
+        <translation>Z(NMF)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/L_SPICE.cpp" line="+29"/>
         <source>SPICE L:
 Multiple line ngspice or Xyce L specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE L:
+Допускаются многострочные спецификации L ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.  </translation>
     </message>
     <message>
         <location line="+45"/>
         <source>L Inductor</source>
-        <translation type="unfinished"></translation>
+        <translation>L Катушка индуктивности</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/LTRA_SPICE.cpp" line="+29"/>
         <source>SPICE O(LTRA):</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE O(LTRA):</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>O(LTRA)</source>
-        <translation type="unfinished"></translation>
+        <translation>O(LTRA)</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/K_SPICE.cpp" line="+29"/>
         <source>SPICE K:
 Enter the names of the coupled inductances and their coupling factor.</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE K:
+Введите имена индуктивно связанных катушек и их коэффициент связи.</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Coupling factor ( 0  &lt;  K  &lt;= 1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент связи ( 0  &lt;  K  &lt;= 1)</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>K coupling</source>
-        <translation type="unfinished"></translation>
+        <translation>K связывание</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/Icouple.cpp" line="+27"/>
         <source>XSPICE coupled inductor block:
 two line XSPICE specification. </source>
-        <translation type="unfinished"></translation>
+        <translation>Блок спаренной катушки XSPICE:
+двухстрочная спецификация XSPICE. </translation>
     </message>
     <message>
         <location line="+64"/>
         <source>Icouple</source>
-        <translation type="unfinished"></translation>
+        <translation>I связывание</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/DIODE_SPICE.cpp" line="+29"/>
         <source>SPICE D:
 Multiple line ngspice or Xyce D model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE D:
+Допускаются многострочные спецификации модели D ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
     </message>
     <message>
         <location line="+46"/>
         <source>D Diode</source>
-        <translation type="unfinished"></translation>
+        <translation>D Диод</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/C_SPICE.cpp" line="+29"/>
         <source>SPICE C:
 Multiple line ngspice or Xyce C specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE C:
+Допускаются многострочные спецификации C ngspice или Xyce с использованием строк продолжения «+».
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>C Capacitor</source>
-        <translation type="unfinished"></translation>
+        <translation>C Конденсатор</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/BJT_SPICE.cpp" line="+9"/>
         <source>Q(NPN) 4 pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Q(NPN) 4 вывода</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Q(PNP) 4 pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Q(PNP) 4 вывода</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Q(NPN) 5 pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Q(NPN) 5 выводов</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Q(PNP) 5 pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Q(PNP) 5 выводов</translation>
     </message>
     <message>
         <location filename="../qucs/schematic.cpp" line="+2202"/>
         <source>The schematic name and dataset/display file name is not matching! This may happen if schematic was copied using the file manager instead of using File-&gt;SaveAs. Correct dataset and display names automatically?
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Название схемы и название файла набора данных / дисплейного файла не совпадают! Это могло произойти из-за того, что схема была скопирована с помощью диспетчера файлов, а не пункта меню «Файл &gt; Сохранить как». Выполнить автоматическое исправление названий файла набора данных и дисплейного файла?
+
+</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Schematic file: </source>
-        <translation type="unfinished"></translation>
+        <translation>Файл схемы: </translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dataset file: </source>
-        <translation type="unfinished"></translation>
+        <translation>Файл набора данных: </translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display file: </source>
-        <translation type="unfinished"></translation>
+        <translation>Дисплейный файл: </translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open document</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть документ</translation>
     </message>
     <message>
         <location filename="../qucs/extsimkernels/spicecompat.cpp" line="+361"/>
         <location line="+10"/>
         <source>Qucsator</source>
-        <translation type="unfinished"></translation>
+        <translation>Qucsator</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Ngspice</source>
-        <translation type="unfinished"></translation>
+        <translation>Ngspice</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SpiceOpus</source>
-        <translation type="unfinished"></translation>
+        <translation>SpiceOpus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Xyce (Serial)</source>
-        <translation type="unfinished"></translation>
+        <translation>Xyce (последовательный)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Xyce (Parallel)</source>
-        <translation type="unfinished"></translation>
+        <translation>Xyce (параллельный)</translation>
     </message>
     <message>
         <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="-1"/>
         <source>Save netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить список цепей</translation>
     </message>
     <message>
         <location filename="../qucs/components/indq.cpp" line="-45"/>
         <source>Lossy inductor</source>
-        <translation type="unfinished"></translation>
+        <translation>Индуктор с потерями</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Inductance</source>
-        <translation type="unfinished"></translation>
+        <translation>Индуктивность</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/capq.cpp" line="-7"/>
         <source>Quality factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коэффициент качества</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/capq.cpp" line="+2"/>
         <source>Frequency at which Q is measured</source>
-        <translation type="unfinished"></translation>
+        <translation>Частота, на которой измеряется Q</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/capq.cpp" line="+2"/>
         <source>Q frequency profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Частотный профиль Q</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Inductor with Q</source>
-        <translation type="unfinished"></translation>
+        <translation>Индуктор с Q</translation>
     </message>
     <message>
         <location filename="../qucs/components/capq.cpp" line="-42"/>
         <source>Lossy capacitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Конденсатор с потерями</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Capacitance</source>
-        <translation type="unfinished"></translation>
+        <translation>Ёмкость</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Capacitor with Q</source>
-        <translation type="unfinished"></translation>
+        <translation>Конденсатор с Q</translation>
     </message>
     <message>
         <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="+1"/>
         <source>Chebyshev weighting for N&gt;7 is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Взвешивание Чебышева для N&gt;7 недоступно</translation>
     </message>
 </context>
 <context>
@@ -11553,7 +11623,7 @@ Active Filter synthesis program
         <location line="+1"/>
         <location line="+1500"/>
         <source>VHDL Sources</source>
-        <translation>Исходники VHDL</translation>
+        <translation>Исходные тексты VHDL</translation>
     </message>
     <message>
         <location line="-1499"/>
@@ -11603,24 +11673,24 @@ Active Filter synthesis program
     <message>
         <location line="-966"/>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть файл</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Document opened in read-only mode! Simulation will not work. Please copy the document to the directory where you have write permission!</source>
-        <translation type="unfinished"></translation>
+        <translation>Документ открыт в режиме только для чтения! Моделирование не будет работать. Скопируйте документ в каталог, для которого у вас есть права на запись!</translation>
     </message>
     <message>
         <location line="+653"/>
         <location line="+886"/>
         <location line="+18"/>
         <source>Simulate schematic</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделировать схему</translation>
     </message>
     <message>
         <location line="-903"/>
         <source>DC bias simulation mode is not supported for digital schematic!</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим симуляции рабочей точки по постоянному току не поддерживается для цифровой схемы!</translation>
     </message>
     <message>
         <location line="+307"/>
@@ -11635,7 +11705,7 @@ Active Filter synthesis program
     <message>
         <location line="-83"/>
         <source>Qucs</source>
-        <translation type="unfinished"></translation>
+        <translation>Qucs</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -11644,7 +11714,11 @@ Please setup it in the next dialog window.
 If you have no simulators except Qucs installed
 in your system leave default Qucsator setting
 and simple press Apply button</source>
-        <translation type="unfinished"></translation>
+        <translation>Симулятор по умолчанию ещё не указан.
+Настройте его в следующем диалоговом окне.
+Если в системе установлен только симулятор Qucs,
+оставьте значение по умолчанию (Qucsator)
+и просто нажмите кнопку «Применить»</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -11988,12 +12062,12 @@ and simple press Apply button</source>
     <message>
         <location line="-618"/>
         <source>Search Lib Components</source>
-        <translation type="unfinished">Поиск библиотечных компонентов</translation>
+        <translation>Поиск библиотечных компонентов</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Show model</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать модель</translation>
     </message>
     <message>
         <location line="+497"/>
@@ -12023,27 +12097,27 @@ and simple press Apply button</source>
     <message>
         <location line="+109"/>
         <source>Cannot access project directory: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удаётся получить доступ к каталогу проекта: %1</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Project directory name does not end in &apos;_prj&apos;(%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя каталога проекта не заканчивается на &apos;_prj&apos;(%1)</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Project: </source>
-        <translation type="unfinished"></translation>
+        <translation>Проект: </translation>
     </message>
     <message>
         <location line="+60"/>
         <source>No project</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет проекта</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Project directory name does not end in &apos;_prj&apos; (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя каталога проекта не заканчивается на &apos;_prj&apos;(%1)</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -12221,7 +12295,7 @@ and simple press Apply button</source>
     <message>
         <location line="+170"/>
         <source>untitled</source>
-        <translation type="unfinished">без названия</translation>
+        <translation>без названия</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -12236,33 +12310,34 @@ and simple press Apply button</source>
     <message>
         <location line="+1006"/>
         <source>Schematic not saved! Simulation of unsaved schematic not possible. Save schematic first!</source>
-        <translation type="unfinished"></translation>
+        <translation>Схема не сохранена! Невозможно смоделировать несохранённую схему. Сначала выполните сохранение схемы!</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Simulation of text document is not possible!</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирование текстового документа невозможно!</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>This action is supported only for SPICE simulators!</source>
-        <translation type="unfinished"></translation>
+        <translation>Это действие поддерживается только для симуляторов SPICE!</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Save Verilog-A module</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить модуль Verilog-A</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Build Verilog-A module</source>
-        <translation type="unfinished"></translation>
+        <translation>Собрать модуль Verilog-A</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This schematic is not a subcircuit!
 Use subcircuit to crete Verilog-A module!</source>
-        <translation type="unfinished"></translation>
+        <translation>Эта схема не является подсхемой!
+Используйте подсхему для создания модуля Verilog-A!</translation>
     </message>
     <message>
         <source>Quit...</source>
@@ -12369,12 +12444,12 @@ Use subcircuit to crete Verilog-A module!</source>
     <message>
         <location line="+30"/>
         <source>Show netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать список цепей</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Not a schematic tab!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не является вкладкой схемы!</translation>
     </message>
     <message>
         <location line="+119"/>
@@ -12481,27 +12556,27 @@ Have you saved the Verilog-A symbols?</source>
     <message>
         <location line="+92"/>
         <source>admsXml</source>
-        <translation type="unfinished">admsXml</translation>
+        <translation>admsXml</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Compiler</source>
-        <translation type="unfinished">Компилятор</translation>
+        <translation>Компилятор</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>admsXml Dock</source>
-        <translation type="unfinished">Окно admsXml</translation>
+        <translation>Прикрепляемое окно admsXml</translation>
     </message>
     <message>
         <location line="+107"/>
         <source>OpenVAF</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenVAF</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>OpenVAF Dock</source>
-        <translation type="unfinished"></translation>
+        <translation>Прикрепляемое окно OpenVAF</translation>
     </message>
     <message>
         <location filename="../qucs/qucs_init.cpp" line="-893"/>
@@ -12530,7 +12605,7 @@ Creates a new schematic or data display document</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+V</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12606,7 +12681,7 @@ Saves the current document under a new filename</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12692,7 +12767,7 @@ Edits the symbol for this schematic</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12735,7 +12810,7 @@ Prints the current document</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+P</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+P</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12778,7 +12853,7 @@ Quits the application</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+,</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+,</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12821,7 +12896,7 @@ Rechecks the list of paths for subcircuit files.</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+T</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12978,7 +13053,7 @@ Center vertically selected elements</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+U</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+U</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13002,7 +13077,7 @@ Sets selected elements on grid</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+K</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13049,7 +13124,7 @@ text in VHDL code</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+X</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+X</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13208,7 +13283,7 @@ Repeats the last action once more</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+N</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+N</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13232,7 +13307,7 @@ Creates a new project</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+O</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13256,7 +13331,7 @@ Opens an existing project</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+D</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13280,7 +13355,7 @@ Deletes an existing project</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+W</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13304,7 +13379,7 @@ Closes the current project</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+A</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+A</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13328,7 +13403,7 @@ Copies files to project directory</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+L</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13352,7 +13427,7 @@ Create Library from Subcircuits</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+Y</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13376,7 +13451,7 @@ Create compressed Package from complete Projects</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+X</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+X</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13400,7 +13475,7 @@ Install Content of a Package</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+I</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+I</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13424,7 +13499,7 @@ Convert data file to various file formats</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13577,7 +13652,7 @@ Activates select mode</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+A</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+A</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13601,7 +13676,7 @@ Selects all elements of the document</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+M</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13625,55 +13700,59 @@ Selects all diagram markers of the document</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+R</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+R</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Rotates the selected component by 90�</source>
-        <translation type="unfinished">Поворачивает выделенный компонент на 90° {90�?}</translation>
+        <translation>Поворачивает выделенный компонент на 90�</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Rotate
 
 Rotates the selected component by 90� counter-clockwise</source>
-        <translation type="unfinished">Повернуть
+        <translation>Повернуть
 
-Поворачивает выделенный компонент на 90° против часовой стрелки {90�?}</translation>
+Поворачивает выделенный компонент на 90� против часовой стрелки</translation>
     </message>
     <message>
         <location line="+116"/>
         <source>Power combining</source>
-        <translation type="unfinished"></translation>
+        <translation>Суммирование мощности</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ctrl+7</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+7</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Starts QucsPowerCombining</source>
-        <translation type="unfinished"></translation>
+        <translation>Запускается QucsPowerCombining</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power combining
 
 Starts power combining calculation program</source>
-        <translation type="unfinished"></translation>
+        <translation>Суммирование мощности
+
+Запускает программу расчёта суммирования мощности</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>View Data Display/Schematic
 
 Changes to data display or schematic page</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмотр данных/схемы
+
+Переход между просмотром данных или схемы</translation>
     </message>
     <message>
         <location line="+81"/>
         <source>&amp;About Qucs-S...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;О программе Qucs-S...</translation>
     </message>
     <message>
         <source>Rotates the selected component by 90°</source>
@@ -13695,7 +13774,7 @@ Rotates the selected component by 90° counter-clockwise</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+J</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+J</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13719,7 +13798,7 @@ Mirrors the selected item about X Axis</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+M</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13743,7 +13822,7 @@ Mirrors the selected item about Y Axis</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13767,7 +13846,7 @@ Goes inside the selected subcircuit</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+H</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13791,7 +13870,7 @@ Goes up one hierarchy level, i.e. leaves subcircuit</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13815,7 +13894,7 @@ Deactivate/Activate the selected components</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+&lt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+&lt;</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13839,7 +13918,7 @@ Inserts a user defined equation</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+G</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13882,7 +13961,7 @@ Inserts a port symbol</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13906,7 +13985,7 @@ Inserts a wire</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+L</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13930,7 +14009,7 @@ Inserts a wire or pin label</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+Space</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+пробел</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13954,7 +14033,7 @@ Inserts the skeleton of a VHDL entity</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+1</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13978,7 +14057,7 @@ Starts the Qucs text editor</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+2</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -14002,7 +14081,7 @@ Starts QucsFilter</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+3</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+3</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -14026,7 +14105,7 @@ Starts QucsActiveFilter</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+4</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+4</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -14066,7 +14145,7 @@ Starts component library program</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+5</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+5</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -14090,7 +14169,7 @@ Dialog for Creating Matching Circuit</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+6</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+6</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -14183,12 +14262,12 @@ Calculates DC bias and shows it</source>
         <location line="+1"/>
         <location filename="../qucs/qucs.cpp" line="+253"/>
         <source>Save netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить список цепей</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Save netlist to file</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить список цепей в файл</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -14250,12 +14329,12 @@ Shows the netlist of the last simulation</source>
     <message>
         <location line="+3"/>
         <source>Select default simulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать симулятор по умолчанию</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Build Verilog-A module from subcircuit</source>
-        <translation type="unfinished"></translation>
+        <translation>Собрать модуль Verilog-A из подсхемы</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -14446,7 +14525,7 @@ About Qt by Trolltech</source>
     <message>
         <location line="+11"/>
         <source>Compact modelling</source>
-        <translation type="unfinished"></translation>
+        <translation>Компактное моделирование</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -14482,7 +14561,9 @@ About Qt by Trolltech</source>
         <source>
 
 Open </source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+Открыть </translation>
     </message>
     <message>
         <location line="-28"/>
@@ -14650,7 +14731,7 @@ Open </source>
     <message>
         <location line="+1"/>
         <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediately, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
-        <translation type="unfinished"></translation>
+        <translation>QucsAttenuator — это программа синтеза аттенюаторов. Для создания аттенюатора нужно просто ввести все входные параметры и нажать кнопку расчёта. Сразу после этого схема аттенюатора рассчитывается и помещается в буфер обмена. Теперь нужно перейти в Qucs, открыть документ схемы и нажать CTRL-V (вставить из буфера обмена). Схема аттенюатра теперь может быть вставлена. Удачи!</translation>
     </message>
     <message>
         <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
@@ -15192,22 +15273,22 @@ Enables/disables the table of contents</source>
     <message>
         <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="-218"/>
         <source>Ready! Use CTRL+V to paste the schematic</source>
-        <translation type="unfinished"></translation>
+        <translation>Готово! Воспользуйтесь CTRL+V для вставки схемы</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Error! The network could not be generated</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка! Не удалось создать сеть</translation>
     </message>
     <message>
         <location line="+785"/>
         <source>Bagley</source>
-        <translation type="unfinished"></translation>
+        <translation>Бейгли</translation>
     </message>
     <message>
         <location line="+340"/>
         <source>Tree combiner</source>
-        <translation type="unfinished"></translation>
+        <translation>Древовидный объединитель</translation>
     </message>
 </context>
 <context>
@@ -15344,12 +15425,12 @@ Enables/disables the table of contents</source>
     <message>
         <location line="-39"/>
         <source>Schematic font (set after reload):</source>
-        <translation type="unfinished"></translation>
+        <translation>Шрифт схемы (устанавливается после перезагрузки)</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Application font (set after reload):</source>
-        <translation type="unfinished"></translation>
+        <translation>Шрифт приложения (устанавливается после перезагрузки)</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -15407,32 +15488,32 @@ Enables/disables the table of contents</source>
     <message>
         <location line="-4"/>
         <source>Use anti-aliasing for graphs for a smoother appearance.</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать сглаживание для графиков для улучшения внешнего вида.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Use anti-aliasing for text for a smoother appearance.</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать сглаживание для текста для улучшения внешнего вида.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Show trace name prefix on diagrams:</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать префикс имени трассировки на диаграммах:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show prefixes for trace names on diagrams like &quot;ngspice/&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать префиксы для имён трассировки на диаграммах (например, «ngspice/»)</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Panel icons theme (set after reload):</source>
-        <translation type="unfinished"></translation>
+        <translation>Тема значков панели (устанавливается после перезагрузки):</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Components icons theme (set after reload):</source>
-        <translation type="unfinished"></translation>
+        <translation>Тема значков компонентов (устанавливается после перезагрузки):</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -15563,7 +15644,7 @@ open files with an appropriate program.</source>
     <message>
         <location line="+7"/>
         <source>OpenVAF Path:</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь OpenVAF:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -15623,12 +15704,12 @@ open files with an appropriate program.</source>
     <message>
         <location line="+10"/>
         <source>Select the octave executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать исполняемый файл Octave</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Select the OpenVAF executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать исполняемый файл OpenVAF</translation>
     </message>
     <message>
         <source>Select the octave bin directory</source>
@@ -15656,7 +15737,7 @@ open files with an appropriate program.</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+L</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -15666,7 +15747,7 @@ open files with an appropriate program.</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -15676,7 +15757,7 @@ open files with an appropriate program.</source>
     <message>
         <location line="+1"/>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -15752,7 +15833,7 @@ open files with an appropriate program.</source>
     <message>
         <location line="+1"/>
         <source>Stripline</source>
-        <translation type="unfinished"></translation>
+        <translation>Полосковая линия</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -16064,17 +16145,17 @@ open files with an appropriate program.</source>
     <message>
         <location line="+8"/>
         <source>Conductor thickness</source>
-        <translation type="unfinished"></translation>
+        <translation>Толщина проводника</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Substrate height</source>
-        <translation type="unfinished"></translation>
+        <translation>Высота подложки</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Ширина</translation>
     </message>
     <message>
         <location line="+141"/>
@@ -16424,7 +16505,7 @@ Set the admsXml location on the application settings.</source>
         <location line="+8"/>
         <location line="+11"/>
         <source>Browse</source>
-        <translation type="unfinished">Просмотр</translation>
+        <translation>Просмотр</translation>
     </message>
     <message>
         <location line="-15"/>
@@ -16702,57 +16783,57 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location filename="../qucs/extsimkernels/simsettingsdialog.cpp" line="+29"/>
         <source>Default simulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Симулятор по умолчанию</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ngspice executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Расположение исполняемого файла Ngspice</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Xyce executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Расположение исполняемого файла Xyce</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Xyce Parallel executable location (openMPI installed required)</source>
-        <translation type="unfinished"></translation>
+        <translation>Расположение исполняемого файла Xyce Parallel (необходима установка openMPI)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>SpiceOpus executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Расположение исполняемого файла SpiceOpus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Qucsator executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Расположение исполняемого файла Qucsator</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Number of processors in a system:</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество процессоров в системе:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Directory to store netlist and simulator output</source>
-        <translation type="unfinished"></translation>
+        <translation>Каталог для сохранения выходных файлов списка цепей и симулятора</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Extra simulator parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнительные параметры симулятора</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Apply changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить изменения</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -16762,63 +16843,64 @@ Set the admsXml location on the application settings.</source>
         <location line="+2"/>
         <location line="+2"/>
         <source>Select ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать…</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>SPICE settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры SPICE</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Qucsator settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры Qucsator</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Setup simulators executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка расположения исполняемого файла симулятора</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Simulator settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры симулятора</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Default simulator engine was changed!
 Please restart Qucs to affect changes!</source>
-        <translation type="unfinished"></translation>
+        <translation>Движок симулятора по умолчанию был изменён!
+Перезапустите Qucs, чтобы применить изменения!</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Select Ngspice executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать расположение исполняемого файла Ngspice</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Select Xyce executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать расположение исполняемого файла Xyce</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Select Xyce Parallel executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать расположение исполняемого файла Xyce Parallel</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Select SpiceOpus executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать расположение исполняемого файла SpiceOpus</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Select Qucsator executable location</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать расположение исполняемого файла Qucsator</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Select directory to store netlist and simulator output</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать каталог для сохранения выходных файлов списка цепей и симулятора</translation>
     </message>
 </context>
 <context>
@@ -16866,7 +16948,7 @@ Please restart Qucs to affect changes!</source>
     <message>
         <location line="+11"/>
         <source>SPICE net nodes:</source>
-        <translation>узлы цепей SPICE:</translation>
+        <translation>Узлы цепей SPICE:</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -17005,17 +17087,17 @@ Please contact the developers.</source>
         <location line="+52"/>
         <location line="+4"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location line="-4"/>
         <source>Cannot open &quot;%1&quot;.</source>
-        <translation type="unfinished">Не удаётся открыть &quot;%1&quot;.</translation>
+        <translation>Не удалось открыть «%1».</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Library is corrupt.</source>
-        <translation type="unfinished"></translation>
+        <translation>Библиотека повреждена.</translation>
     </message>
 </context>
 <context>
@@ -17023,27 +17105,27 @@ Please contact the developers.</source>
     <message>
         <location filename="../qucs/dialogs/textboxdialog.cpp" line="+36"/>
         <source>Component: </source>
-        <translation type="unfinished"></translation>
+        <translation>Компонент: </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Apply</source>
-        <translation type="unfinished">Применить</translation>
+        <translation>Применить</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактор</translation>
     </message>
 </context>
 <context>
