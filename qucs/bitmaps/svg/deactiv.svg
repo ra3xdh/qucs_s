@@ -23,7 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -37,13 +37,13 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1014"
+     inkscape:window-height="1050"
      id="namedview489"
      showgrid="true"
      inkscape:zoom="6.2421875"
-     inkscape:cx="35.877256"
+     inkscape:cx="9.3641146"
      inkscape:cy="62.192506"
-     inkscape:window-x="0"
+     inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg487" />
@@ -135,17 +135,17 @@
      id="path1318-3"
      inkscape:connector-curvature="0" />
   <path
-     style="fill:none;stroke:#3232ff;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:none;stroke:#5698f5;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="M 64.621223,96.131279 V 113.62058"
      id="path1425"
      inkscape:connector-curvature="0" />
   <path
-     style="fill:none;stroke:#3232ff;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:none;stroke:#5698f5;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="M 64.621223,14.514554 V 32.003852"
      id="path1421"
      inkscape:connector-curvature="0" />
   <rect
-     style="fill:none;fill-opacity:1;stroke:#3232ff;stroke-width:6;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill"
+     style="fill:none;fill-opacity:1;stroke:#5698f5;stroke-width:6;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill"
      id="rect1423"
      width="23.319063"
      height="64.127426"
