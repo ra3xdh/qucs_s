@@ -11,6 +11,11 @@
 * Added SPICE entry for MUT and MUT2 devices
 * Backported circular waveguide and tapered line symbols form Qucs-0.0.20rc2
 
+## General improvements
+
+* Toolbar icons replaced by SVG; improved look for HiDPI #323 #304
+* Russian translation update #292 #324
+
 ## Bugfixes
 
 * Fixed simulation of the files with double extension #311
