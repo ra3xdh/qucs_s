@@ -13,7 +13,7 @@
    width="128"
    version="1.1"
    id="svg487"
-   sodipodi:docname="rect.svg"
+   sodipodi:docname="filledellipse.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)">
   <metadata
      id="metadata491">
@@ -23,7 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -41,8 +41,8 @@
      id="namedview489"
      showgrid="true"
      inkscape:zoom="4.4138931"
-     inkscape:cx="50.303846"
-     inkscape:cy="62.863769"
+     inkscape:cx="-5.4302201"
+     inkscape:cy="57.31163"
      inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -140,24 +140,15 @@
      x="0.50"
      y="0.50" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 26,107 C 26,107 42.601058,13.830046 64.937193,56.635128 86,97 106,17 106,17 v 0"
-     id="path1150"
-     inkscape:connector-curvature="0"
-     sodipodi:nodetypes="cscc" />
-  <path
-     style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-     d="M 20,23 15,8 10,23"
-     id="path1156"
-     inkscape:connector-curvature="0" />
-  <path
-     style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-     d="M 15,8 V 118 H 120"
-     id="path1158"
-     inkscape:connector-curvature="0" />
-  <path
-     style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-     d="m 105,113 15,5 -15,5"
-     id="path1160"
-     inkscape:connector-curvature="0" />
+     style="fill:#c8c8c8;fill-opacity:1;stroke:#000000;stroke-width:6;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+     id="path913"
+     sodipodi:type="arc"
+     sodipodi:cx="64.5"
+     sodipodi:cy="63"
+     sodipodi:rx="57.5"
+     sodipodi:ry="35"
+     sodipodi:start="3.2003467"
+     sodipodi:end="3.1992932"
+     sodipodi:open="true"
+     d="M 7.0992175,60.944791 A 57.5,35 0 0 1 67.861296,28.059853 57.5,35 0 0 1 121.90255,65.036804 57.5,35 0 0 1 61.168941,97.94122 57.5,35 0 0 1 7.0956923,60.981601" />
 </svg>

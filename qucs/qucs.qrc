@@ -499,5 +499,23 @@
         <file>bitmaps/svg/ok_apply.svg</file>
         <file>bitmaps/svg/error.svg</file>
         <file>bitmaps/svg/rect.svg</file>
+        <file>bitmaps/svg/polar.svg</file>
+        <file>bitmaps/svg/tabular.svg</file>
+        <file>bitmaps/svg/smith.svg</file>
+        <file>bitmaps/svg/ysmith.svg</file>
+        <file>bitmaps/svg/polarsmith.svg</file>
+        <file>bitmaps/svg/smithpolar.svg</file>
+        <file>bitmaps/svg/rect3d.svg</file>
+        <file>bitmaps/svg/curve.svg</file>
+        <file>bitmaps/svg/truth.svg</file>
+        <file>bitmaps/svg/timing.svg</file>
+        <file>bitmaps/svg/line.svg</file>
+        <file>bitmaps/svg/arrow.svg</file>
+        <file>bitmaps/svg/text.svg</file>
+        <file>bitmaps/svg/ellipse.svg</file>
+        <file>bitmaps/svg/filledellipse.svg</file>
+        <file>bitmaps/svg/rectangle.svg</file>
+        <file>bitmaps/svg/filledrect.svg</file>
+        <file>bitmaps/svg/ellipsearc.svg</file>
     </qresource>
 </RCC>
