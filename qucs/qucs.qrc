@@ -9,7 +9,6 @@
         <file>bitmaps/andor4x2.png</file>
         <file>bitmaps/andor4x3.png</file>
         <file>bitmaps/andor4x4.png</file>
-        <file>bitmaps/arrow.png</file>
         <file>bitmaps/attenuator.png</file>
         <file>bitmaps/back.png</file>
         <file>bitmaps/biast.png</file>
@@ -35,7 +34,6 @@
         <file>bitmaps/cpwshort.png</file>
         <file>bitmaps/cpwstep.png</file>
         <file>bitmaps/ctline.png</file>
-        <file>bitmaps/curve.png</file>
         <file>bitmaps/dc_current.png</file>
         <file>bitmaps/dc_voltage.png</file>
         <file>bitmaps/dc.png</file>
@@ -57,14 +55,10 @@
         <file>bitmaps/edd.png</file>
         <file>bitmaps/EKV26nMOS.png</file>
         <file>bitmaps/EKV26pMOS.png</file>
-        <file>bitmaps/ellipse.png</file>
-        <file>bitmaps/ellipsearc.png</file>
         <file>bitmaps/equation.png</file>
         <file>bitmaps/fa1b.png</file>
         <file>bitmaps/fa2b.png</file>
         <file>bitmaps/fileopen.png</file>
-        <file>bitmaps/filledellipse.png</file>
-        <file>bitmaps/filledrect.png</file>
         <file>bitmaps/forward.png</file>
         <file>bitmaps/gatedDlatch.png</file>
         <file>bitmaps/gnd.png</file>
@@ -87,7 +81,6 @@
         <file>bitmaps/isolator.png</file>
         <file>bitmaps/jkff_SR.png</file>
         <file>bitmaps/jkflipflop.png</file>
-        <file>bitmaps/line.png</file>
         <file>bitmaps/log_amp.png</file>
         <file>bitmaps/logic_0.png</file>
         <file>bitmaps/logic_1.png</file>
@@ -143,26 +136,18 @@
         <file>bitmaps/pnp.png</file>
         <file>bitmaps/pnpsub_therm.png</file>
         <file>bitmaps/pnpsub.png</file>
-        <file>bitmaps/polar.png</file>
-        <file>bitmaps/polarsmith.png</file>
         <file>bitmaps/port.png</file>
         <file>bitmaps/potentiometer.png</file>
         <file>bitmaps/previous.png</file>
         <file>bitmaps/pshifter.png</file>
         <file>bitmaps/quit.png</file>
-        <file>bitmaps/rect.png</file>
-        <file>bitmaps/rect3d.png</file>
-        <file>bitmaps/rectangle.png</file>
         <file>bitmaps/rectline.png</file>
-        <file>bitmaps/redo.png</file>
         <file>bitmaps/relais.png</file>
         <file>bitmaps/resistor_us.png</file>
         <file>bitmaps/resistor.png</file>
         <file>bitmaps/rfedd.png</file>
         <file>bitmaps/rlcg.png</file>
         <file>bitmaps/rsflipflop.png</file>
-        <file>bitmaps/smith.png</file>
-        <file>bitmaps/smithpolar.png</file>
         <file>bitmaps/source.png</file>
         <file>bitmaps/sparameter.png</file>
         <file>bitmaps/spfile1.png</file>
@@ -175,12 +160,9 @@
         <file>bitmaps/sweep.png</file>
         <file>bitmaps/switch.png</file>
         <file>bitmaps/symtrans.png</file>
-        <file>bitmaps/tabular.png</file>
         <file>bitmaps/taperedline.png</file>
-        <file>bitmaps/text.png</file>
         <file>bitmaps/tff_SR.png</file>
         <file>bitmaps/thyristor.png</file>
-        <file>bitmaps/timing.png</file>
         <file>bitmaps/tiny.button.qucs.xpm</file>
         <file>bitmaps/tiny.qucs.xpm</file>
         <file>bitmaps/tline_4port.png</file>
@@ -188,25 +170,18 @@
         <file>bitmaps/tran.png</file>
         <file>bitmaps/transformer.png</file>
         <file>bitmaps/triac.png</file>
-        <file>bitmaps/truth.png</file>
         <file>bitmaps/tunneldiode.png</file>
         <file>bitmaps/twistedpair.png</file>
-        <file>bitmaps/undo.png</file>
         <file>bitmaps/vccs.png</file>
         <file>bitmaps/vcvs.png</file>
         <file>bitmaps/vexp.png</file>
         <file>bitmaps/vfile.png</file>
         <file>bitmaps/vhdlfile.png</file>
-        <file>bitmaps/viewmag-.png</file>
-        <file>bitmaps/viewmag+.png</file>
-        <file>bitmaps/viewmag1.png</file>
-        <file>bitmaps/viewmagfit.png</file>
         <file>bitmaps/vprobe.png</file>
         <file>bitmaps/vpulse.png</file>
         <file>bitmaps/vrect.png</file>
         <file>bitmaps/xnor.png</file>
         <file>bitmaps/xor.png</file>
-        <file>bitmaps/ysmith.png</file>
         <file>bitmaps/etran.png</file>
         <file>bitmaps/ecvs.png</file>
         <file>bitmaps/vcresistor.png</file>
@@ -304,15 +279,9 @@
         <file>bitmaps/dark/and.png</file>
         <file>bitmaps/dark/andor4x3.png</file>
         <file>bitmaps/dark/andor4x4.png</file>
-        <file>bitmaps/dark/equation.png</file>
-        <file>bitmaps/dark/gear.png</file>
         <file>bitmaps/dark/ground.png</file>
-        <file>bitmaps/dark/mirror.png</file>
-        <file>bitmaps/dark/mirrory.png</file>
         <file>bitmaps/dark/port.png</file>
-        <file>bitmaps/dark/wire.png</file>
         <file>bitmaps/dark/andor4x2.png</file>
-        <file>bitmaps/dark/arrow.png</file>
         <file>bitmaps/dark/attenuator.png</file>
         <file>bitmaps/dark/biast.png</file>
         <file>bitmaps/dark/binarytogrey4bit.png</file>
@@ -333,7 +302,6 @@
         <file>bitmaps/dark/cpwshort.png</file>
         <file>bitmaps/dark/cpwstep.png</file>
         <file>bitmaps/dark/ctline.png</file>
-        <file>bitmaps/dark/curve.png</file>
         <file>bitmaps/dark/dc.png</file>
         <file>bitmaps/dark/dc_current.png</file>
         <file>bitmaps/dark/dc_voltage.png</file>
@@ -352,8 +320,6 @@
         <file>bitmaps/dark/edd.png</file>
         <file>bitmaps/dark/EKV26nMOS.png</file>
         <file>bitmaps/dark/EKV26pMOS.png</file>
-        <file>bitmaps/dark/ellipse.png</file>
-        <file>bitmaps/dark/ellipsearc.png</file>
         <file>bitmaps/dark/fa1b.png</file>
         <file>bitmaps/dark/fa2b.png</file>
         <file>bitmaps/dark/gatedDlatch.png</file>
@@ -372,7 +338,6 @@
         <file>bitmaps/dark/isolator.png</file>
         <file>bitmaps/dark/jkff_SR.png</file>
         <file>bitmaps/dark/jkflipflop.png</file>
-        <file>bitmaps/dark/line.png</file>
         <file>bitmaps/dark/log_amp.png</file>
         <file>bitmaps/dark/mscorner.png</file>
         <file>bitmaps/dark/mscoupled.png</file>
@@ -412,23 +377,15 @@
         <file>bitmaps/dark/pmosfet.png</file>
         <file>bitmaps/dark/pmosfet_sub.png</file>
         <file>bitmaps/dark/pnp.png</file>
-        <file>bitmaps/dark/polar.png</file>
-        <file>bitmaps/dark/polarsmith.png</file>
         <file>bitmaps/dark/potentiometer.png</file>
         <file>bitmaps/dark/pshifter.png</file>
-        <file>bitmaps/dark/rect.png</file>
-        <file>bitmaps/dark/rect3d.png</file>
-        <file>bitmaps/dark/rectangle.png</file>
         <file>bitmaps/dark/rectline.png</file>
         <file>bitmaps/dark/relais.png</file>
         <file>bitmaps/dark/resistor.png</file>
         <file>bitmaps/dark/resistor_us.png</file>
         <file>bitmaps/dark/rfedd.png</file>
         <file>bitmaps/dark/rlcg.png</file>
-        <file>bitmaps/dark/rotate_ccw.png</file>
         <file>bitmaps/dark/rsflipflop.png</file>
-        <file>bitmaps/dark/smith.png</file>
-        <file>bitmaps/dark/smithpolar.png</file>
         <file>bitmaps/dark/source.png</file>
         <file>bitmaps/dark/spfile1.png</file>
         <file>bitmaps/dark/spfile2.png</file>
@@ -439,17 +396,13 @@
         <file>bitmaps/dark/sweep.png</file>
         <file>bitmaps/dark/switch.png</file>
         <file>bitmaps/dark/symtrans.png</file>
-        <file>bitmaps/dark/tabular.png</file>
-        <file>bitmaps/dark/text.png</file>
         <file>bitmaps/dark/tff_SR.png</file>
         <file>bitmaps/dark/thyristor.png</file>
-        <file>bitmaps/dark/timing.png</file>
         <file>bitmaps/dark/tline.png</file>
         <file>bitmaps/dark/tline_4port.png</file>
         <file>bitmaps/dark/tran.png</file>
         <file>bitmaps/dark/transformer.png</file>
         <file>bitmaps/dark/triac.png</file>
-        <file>bitmaps/dark/truth.png</file>
         <file>bitmaps/dark/tunneldiode.png</file>
         <file>bitmaps/dark/twistedpair.png</file>
         <file>bitmaps/dark/vccs.png</file>
@@ -461,10 +414,7 @@
         <file>bitmaps/dark/vprobe.png</file>
         <file>bitmaps/dark/xnor.png</file>
         <file>bitmaps/dark/xor.png</file>
-        <file>bitmaps/dark/ysmith.png</file>
         <file>bitmaps/dark/ac.png</file>
-        <file>bitmaps/dark/marker.png</file>
-        <file>bitmaps/dark/nodename.png</file>
         <file>bitmaps/dark/vpulse.png</file>
         <file>bitmaps/dark/vrect.png</file>
         <file>bitmaps/dark/irect.png</file>
