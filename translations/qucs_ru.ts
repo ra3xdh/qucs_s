@@ -264,7 +264,7 @@
     <message>
         <location line="+1"/>
         <source>Forum</source>
-        <translation type="unfinished"></translation>
+        <translation>Форум</translation>
     </message>
     <message>
         <location line="+53"/>
@@ -349,17 +349,17 @@
     <message>
         <location filename="../qucs/extsimkernels/abstractspicekernel.cpp" line="+1274"/>
         <source>Simulate</source>
-        <translation type="unfinished">Моделировать</translation>
+        <translation>Моделировать</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Failed to create dataset file </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка создания файла данных</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Check write permission of the directory </source>
-        <translation type="unfinished"></translation>
+        <translation>Проверьте права на запись в каталог</translation>
     </message>
 </context>
 <context>
@@ -1326,7 +1326,7 @@
     <message>
         <location line="+0"/>
         <source>Grayscale</source>
-        <translation type="unfinished"></translation>
+        <translation>Оттенки серого</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1394,12 +1394,12 @@
     <message>
         <location line="+101"/>
         <source>There were simulation errors. Please check log.</source>
-        <translation type="unfinished"></translation>
+        <translation>Были ошибки моделирования. Пожалуйста, проверьте журнал.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Simulation successful. Now place diagram on schematic to plot the result.</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирование прошло успешно. Теперь поместите диаграмму на схему, чтобы отобразить результат.</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -1411,7 +1411,7 @@
     <message>
         <location line="+1"/>
         <source>Simulation started on: </source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирование началось:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -9423,7 +9423,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+12"/>
         <source>voltage of low signal (SPICE only)</source>
-        <translation type="unfinished"></translation>
+        <translation>напряжение низины импульса (только SPICE)</translation>
     </message>
     <message>
         <location line="+48"/>
@@ -11252,7 +11252,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location filename="../qucs/extsimkernels/spicecompat.cpp" line="+362"/>
         <source>Not Specified</source>
-        <translation type="unfinished"></translation>
+        <translation>Не указан</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -11273,7 +11273,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+3"/>
         <source>Xyce</source>
-        <translation type="unfinished"></translation>
+        <translation>Xyce</translation>
     </message>
     <message>
         <source>Xyce (Serial)</source>
@@ -11344,22 +11344,22 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location filename="../qucs/components/taperedline.cpp" line="-37"/>
         <source>Exponential Tapered line</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспоненциальная коническая линия</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Characteristic impedance at port 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Характеристическое сопротивление на выводе 1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Characteristic impedance at port 2</source>
-        <translation type="unfinished"></translation>
+        <translation>Характеристическое сопротивление на выводе 2</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line length</source>
-        <translation type="unfinished"></translation>
+        <translation>Длина линии</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -11369,58 +11369,58 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+3"/>
         <source>Maximum ripple (Klopfenstein taper only) </source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная пульсация (только конус Клопфенштайна)</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Tapered line</source>
-        <translation type="unfinished"></translation>
+        <translation>Коническая линия</translation>
     </message>
     <message>
         <location filename="../qucs/components/circline.cpp" line="+30"/>
         <location line="+53"/>
         <source>Circular Waveguide</source>
-        <translation type="unfinished"></translation>
+        <translation>Круглый волновод</translation>
     </message>
     <message>
         <location line="-29"/>
         <source>Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Радиус</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Mechanical length of the line</source>
-        <translation type="unfinished"></translation>
+        <translation>Механическая длина линии</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Relative permittivity of dielectric</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная проницаемость диэлектрика</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Relative permeability of conductor</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная проницаемость проводника</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Loss tangent</source>
-        <translation type="unfinished"></translation>
+        <translation>Тангенс угла потерь</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Specific resistance of conductor</source>
-        <translation type="unfinished"></translation>
+        <translation>Удельное сопротивление проводника</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Simulation temperature in degree Celsius</source>
-        <translation type="unfinished"></translation>
+        <translation>Температура моделирования в градусах Цельсия</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Material parameter for temperature model</source>
-        <translation type="unfinished"></translation>
+        <translation>Материал для температурной модели</translation>
     </message>
 </context>
 <context>
@@ -11550,7 +11550,7 @@ Enables/disables the filter calculation console</source>
     <message>
         <location line="+1"/>
         <source>Legendre</source>
-        <translation type="unfinished"></translation>
+        <translation>Лежандр</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12198,22 +12198,22 @@ and simple press Apply button</source>
     <message>
         <location line="-895"/>
         <source>Set simulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить симулятор</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ngspice found at: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ngspice найден в:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You can specify another location later using Simulation-&gt;Simulators Setings</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы можете указать другое местоположение позже, используя «Моделирование» -> «Настройки симуляторов».</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Ngspice not found automatically. Please specify simulators in the next dialog window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ngspice не найден автоматически. Пожалуйста, укажите симуляторы в следующем диалоговом окне.</translation>
     </message>
     <message>
         <location line="+183"/>
@@ -12459,17 +12459,17 @@ and simple press Apply button</source>
     <message>
         <location line="+139"/>
         <source>No simulations found. Tuning not possible. Please add at least one simulation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделирований не обнаружено. Тюнинг невозможен. Пожалуйста, добавьте хотя бы одно моделирование.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Tuning not possible for digital simulation. Only analog simulation supported.</source>
-        <translation type="unfinished"></translation>
+        <translation>Тюнинг невозможен для цифрового моделирования. Поддерживается только аналоговое моделирование.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Tuning has no effect without diagrams. Add at least one diagram on schematic.</source>
-        <translation type="unfinished"></translation>
+        <translation>Без диаграмм тюнинг не имеет никакого эффекта. Добавьте хотя бы одну диаграмму в схему.</translation>
     </message>
     <message>
         <location line="+1034"/>
@@ -13914,7 +13914,7 @@ Changes to data display or schematic page</source>
     <message>
         <location line="+33"/>
         <source>Simulators Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка симуляторов...</translation>
     </message>
     <message>
         <location line="+48"/>
@@ -16594,7 +16594,7 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location line="+893"/>
         <source>Netlist error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка списка цепей</translation>
     </message>
     <message>
         <location line="+157"/>
@@ -17435,12 +17435,12 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location filename="../qucs/dialogs/tuner.cpp" line="+698"/>
         <source>Add component</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить компонент</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Adding components from different schematics is not supported!</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавление компонентов из разных схем не поддерживается!</translation>
     </message>
 </context>
 <context>
@@ -17541,27 +17541,27 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location filename="../qucs/dialogs/tuner.cpp" line="-558"/>
         <source>Max.:</source>
-        <translation type="unfinished"></translation>
+        <translation>Макс.:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Min.:</source>
-        <translation type="unfinished"></translation>
+        <translation>Мин.:</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Val.:</source>
-        <translation type="unfinished"></translation>
+        <translation>Знач.:</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Step</source>
-        <translation type="unfinished"></translation>
+        <translation>Шаг</translation>
     </message>
     <message>
         <location line="+91"/>
         <source> </source>
-        <translation type="unfinished"></translation>
+        <translation> </translation>
     </message>
 </context>
 </TS>
