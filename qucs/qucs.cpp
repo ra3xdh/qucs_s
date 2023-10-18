@@ -3027,6 +3027,8 @@ void QucsApp::slotSymbolEdit()
 // -----------------------------------------------------------
 void QucsApp::slotPowerMatching()
 {
+  QWidget *w = DocumentTab->currentWidget(); // remember from which Tab the tuner was started
+  if (isTextDocument(w)) return;
   if(!view->focusElement) return;
   if(view->focusElement->Type != isMarker) return;
   Marker *pm = (Marker*)view->focusElement;
@@ -3043,7 +3045,10 @@ void QucsApp::slotPowerMatching()
   Dia->setFrequency(pm->powFreq());
   Dia->setTwoPortMatch(false); // will also cause the corresponding impedance LineEdit to be updated
 
-  slotToPage();
+  Schematic *sch = dynamic_cast<Schematic*>(w);
+  if (sch->SimOpenDpl || sch->DocName.endsWith(".dpl")) {
+      slotToPage();
+  }
   if(Dia->exec() != QDialog::Accepted)
     return;
 }
@@ -3051,6 +3056,8 @@ void QucsApp::slotPowerMatching()
 // -----------------------------------------------------------
 void QucsApp::slot2PortMatching()
 {
+  QWidget *w = DocumentTab->currentWidget(); // remember from which Tab the tuner was started
+  if (isTextDocument(w)) return;
   if(!view->focusElement) return;
   if(view->focusElement->Type != isMarker) return;
   Marker *pm = (Marker*)view->focusElement;
@@ -3126,7 +3133,10 @@ void QucsApp::slot2PortMatching()
   Dia->setS21LineEdits(S21real, S21imag);
   Dia->setS22LineEdits(S22real, S22imag);
 
-  slotToPage();
+  Schematic *sch = dynamic_cast<Schematic*>(w);
+  if (sch->SimOpenDpl || sch->DocName.endsWith(".dpl")) {
+      slotToPage();
+  }
   if(Dia->exec() != QDialog::Accepted)
     return;
 }
