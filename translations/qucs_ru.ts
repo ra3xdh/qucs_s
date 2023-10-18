@@ -16858,7 +16858,7 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location line="+19"/>
         <source>Setup simulators executable location</source>
-        <translation>Настройка расположения исполняемого файла симулятора</translation>
+        <translation>Настройки путей к симуляторам</translation>
     </message>
     <message>
         <location line="+25"/>
