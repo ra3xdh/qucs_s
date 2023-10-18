@@ -153,7 +153,7 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     top->addLayout(h3);
 
     this->setLayout(top);
-    this->setFixedWidth(500);
+    this->setFixedWidth(750);
     this->setWindowTitle(tr("Setup simulators executable location"));
 
 #ifndef Q_OS_UNIX
