@@ -75,6 +75,7 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
   ViewX2=ViewY2=800;
   UsedX1 = UsedY1 = INT_MAX;
   UsedX2 = UsedY2 = INT_MIN;
+  zx1 = zx2 = zy1 = zy2 = 0;
 
   tmpPosX = tmpPosY = -100;
   tmpUsedX1 = tmpUsedY1 = tmpViewX1 = tmpViewY1 = -200;
@@ -797,25 +798,37 @@ void Schematic::showAll()
 // ------------------------------------------------------
 void Schematic::zoomToSelection()
 {
-    sizeOfSelection(UsedX1, UsedY1, UsedX2, UsedY2);
-    if(UsedX1 == 0)
-        if(UsedX2 == 0)
-            if(UsedY1 == 0)
-                if(UsedY2 == 0) {
-                    showAll();
-                    return;
-                }
+    int x1, x2, y1, y2 = 0;
+    sizeOfSelection(x1, y1, x2, y2);
+    if (x1 == 0 && x2 == 0 && y1 == 0 && y2 == 0) {
+        showAll();
+        return;
+    }
 
-    float xScale = float(visibleWidth()) / float(UsedX2-UsedX1+80);
-    float yScale = float(visibleHeight()) / float(UsedY2-UsedY1+80);
-    if(xScale > yScale) xScale = yScale;
-    xScale /= Scale;
+    if (x1 == zx1 && x2 == zx2 && y1 == zy1 && y2 == zy2) {
+        return;
+    }
 
-    ViewX1 = UsedX1 - 40;
-    ViewY1 = UsedY1 - 40;
-    ViewX2 = UsedX2 + 40;
-    ViewY2 = UsedY2 + 40;
-    zoom(xScale);
+    zx1 = x1;
+    zy1 = y1;
+    zx2 = x2;
+    zy2 = y2;
+
+    float xScale = float(visibleWidth()) / float(x2 - x1 + 80);
+    float yScale = float(visibleHeight()) / float(y2 - y1 + 80);
+    float scale = qMin(xScale, yScale);
+
+    ViewX1 = x1 - 40;
+    ViewY1 = y1 - 40;
+    ViewX2 = x2 + 40;
+    ViewY2 = y2 + 40;
+
+    scale = zoom(scale / Scale);
+
+//    float xShift = scale * (x2 - 0.5 * (x2 - x1)) - (0.5 * visibleWidth() + contentsX());
+//    float yShift = scale * (y2 - 0.5 * (y2 - y1)) - (0.5 * visibleHeight() + contentsY());
+//
+//    scrollBy(xShift, yShift);
 }
 
 // ---------------------------------------------------
