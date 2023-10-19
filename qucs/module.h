@@ -22,6 +22,8 @@
 #include <QHash>
 #include <QMap>
 
+class QPixmap;
+
 // function typedefs for circuits and analyses
 typedef Element * (* pInfoFunc) (QString&, char * &, bool);
 typedef Element * (* pInfoVAFunc) (QString&, QString&, bool, QString);
@@ -50,6 +52,8 @@ class Module
   pInfoFunc info = 0;
   pInfoVAFunc infoVA = 0;
   QString category;
+
+  QPixmap *icon;
 };
 
 class Category

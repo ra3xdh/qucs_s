@@ -346,6 +346,124 @@ void Component::paint(ViewPainter *p) {
     }
 }
 
+// paint device icon for left panel list
+void Component::paintIcon(QPixmap *pixmap)
+{
+    pixmap->fill(Qt::white);
+    QPainter *pp = new QPainter(pixmap);
+    ViewPainter *p = new ViewPainter(pp);
+    int bx1,by1,bx2,by2;
+    Bounding(bx1,by1,bx2,by2);
+    int h = std::abs(bx1-bx2)+8;
+    int w = std::abs(by1-by2)+8;
+    p->Scale = (float)pixmap->size().height()/std::max(w,h);
+
+    int x, y, a, b, xb, yb;
+    QFont f = p->Painter->font();   // save current font
+    QFont newFont = f;
+    cx += h/2;
+    cy += w/2;
+    if (Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
+        newFont.setPointSizeF(p->Scale * Texts.first()->Size);
+        newFont.setWeight(QFont::DemiBold);
+        p->Painter->setFont(newFont);
+        p->map(cx, cy, x, y);
+
+        if ((Model == ".CUSTOMSIM") || (Model == ".DISTO")
+                || (Model == ".NOISE") || (Model == ".PZ") ||
+                (Model == ".SENS") || (Model == ".SENS_AC") ||
+                (Model == ".FFT"))
+            p->Painter->setPen(QPen(Qt::blue, 6));
+        else if ((Model == ".XYCESCR") || (Model == ".SENS_XYCE")
+                 || (Model == ".SENS_TR_XYCE"))
+            p->Painter->setPen(QPen(Qt::darkGreen, 6));
+        else if (Model == ".FOURIER") p->Painter->setPen(QPen(Qt::darkRed, 6));
+        else p->Painter->setPen(QPen(Qt::darkBlue, 6));
+
+        a = b = 0;
+        QRect r, t;
+        QString mtext = Model;
+        mtext.remove('.');
+        //for (Text *pt: Texts) {
+            t.setRect(x, y + b, 0, 0);
+            p->Painter->drawText(t, Qt::AlignLeft | Qt::TextDontClip, mtext, &r);
+            b += r.height();
+            if (a < r.width()) a = r.width();
+        //}
+        xb = a + int(12.0 * p->Scale);
+        yb = b + int(10.0 * p->Scale);
+        x2 = x1 + 25 + int(float(a) / p->Scale);
+        y2 = y1 + 23 + int(float(b) / p->Scale);
+        if (ty < y2 + 1) if (ty > y1 - r.height()) ty = y2 + 1;
+
+        p->map(cx - 1, cy, x, y);
+        p->map(cx - 6, cy - 5, a, b);
+        p->Painter->drawRect(a, b, xb, yb);
+        p->Painter->drawLine(x, y + yb, a, b + yb);
+        p->Painter->drawLine(x + xb - 1, y + yb, x, y + yb);
+        p->Painter->drawLine(x + xb - 1, y + yb, a + xb, b + yb);
+        p->Painter->drawLine(x + xb - 1, y + yb, x + xb - 1, y);
+        p->Painter->drawLine(x + xb - 1, y, a + xb, b);
+    } else {    // normal components go here
+
+        // paint all lines
+        for (auto pp: Ports) {
+            QPen pa;
+            pa.setWidth(3);
+            pa.setColor(Qt::red);
+            p->Painter->setPen(pa);
+            p->drawEllipse(cx+pp->x-4,cy+pp->y-4,8,8);
+        }
+
+        for (qucs::Line *p1: Lines) {
+            p1->style.setWidth(3);
+            p->Painter->setPen(p1->style);
+            p->drawLine(cx + p1->x1, cy + p1->y1, cx + p1->x2, cy + p1->y2);
+        }
+
+        // paint all arcs
+        for (qucs::Arc *p3: Arcs) {
+            p3->style.setWidth(3);
+            p->Painter->setPen(p3->style);
+            p->drawArc(cx + p3->x, cy + p3->y, p3->w, p3->h, p3->angle, p3->arclen);
+        }
+
+        // paint all rectangles
+        for (qucs::Area *pa: Rects) {
+            pa->Pen.setWidth(3);
+            p->Painter->setPen(pa->Pen);
+            p->Painter->setBrush(pa->Brush);
+            p->drawRect(cx + pa->x, cy + pa->y, pa->w, pa->h);
+        }
+
+        // paint all ellipses
+        for (qucs::Area *pa: Ellips) {
+            p->Painter->setPen(pa->Pen);
+            p->Painter->setBrush(pa->Brush);
+            p->drawEllipse(cx + pa->x, cy + pa->y, pa->w, pa->h);
+        }
+        p->Painter->setBrush(Qt::NoBrush);
+
+        newFont.setWeight(QFont::Light);
+
+        for (Text *pt: Texts) {
+            p->Painter->setWorldTransform(
+                    QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
+                               p->DX + float(cx + pt->x) * p->Scale,
+                               p->DY + float(cy + pt->y) * p->Scale));
+            newFont.setPointSizeF(p->Scale * pt->Size);
+            newFont.setOverline(pt->over);
+            newFont.setUnderline(pt->under);
+            p->Painter->setFont(newFont);
+            p->Painter->setPen(pt->Color);
+            int w, h;
+            w = p->drawTextMapped(pt->s, 0, 0, &h);
+            Q_UNUSED(w)
+            Q_UNUSED(h)
+        }
+    }
+}
+
 // -------------------------------------------------------
 // Paints the component when moved with the mouse.
 void Component::paintScheme(Schematic *p) {

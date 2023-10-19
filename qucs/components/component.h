@@ -101,6 +101,8 @@ public:
   QString  SpiceModel;
   QPen WrongSimulatorPen;
 
+  void paintIcon(QPixmap *pixmap);
+
 protected:
   virtual QString netlist();
   virtual QString spice_netlist(bool isXyce = false);

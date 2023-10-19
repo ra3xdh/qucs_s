@@ -88,7 +88,7 @@ QString misc::getIconPath(const QString &file, int icon_type)
         if (QFileInfo::exists(icon_path_dark + file + ".png"))
             icon_path = icon_path_dark;
     }
-    icon_path += file;
+    icon_path += file + ".png";
     return icon_path;
 }
 
