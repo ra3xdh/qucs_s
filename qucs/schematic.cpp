@@ -814,21 +814,36 @@ void Schematic::zoomToSelection()
     zx2 = x2;
     zy2 = y2;
 
-    float xScale = float(visibleWidth()) / float(x2 - x1 + 80);
-    float yScale = float(visibleHeight()) / float(y2 - y1 + 80);
-    float scale = qMin(xScale, yScale);
+    float initialScale = Scale;
+    float scale = 1;
+    float xShift = 0;
+    float yShift = 0;
 
-    ViewX1 = x1 - 40;
-    ViewY1 = y1 - 40;
-    ViewX2 = x2 + 40;
-    ViewY2 = y2 + 40;
+    float ax1 = (x2 - ViewX1) * initialScale;
+    float ay1 = (y2 - ViewY1) * initialScale;
+    float DX = float(x2 - x1);
+    float DY = float(y2 - y1);
 
-    scale = zoom(scale / Scale);
+    if((Scale * DX) < 6.0) {
+        // a simple click zooms by constant factor
+        scale = zoom(1.5)/initialScale;
 
-//    float xShift = scale * (x2 - 0.5 * (x2 - x1)) - (0.5 * visibleWidth() + contentsX());
-//    float yShift = scale * (y2 - 0.5 * (y2 - y1)) - (0.5 * visibleHeight() + contentsY());
-//
-//    scrollBy(xShift, yShift);
+        xShift = scale * x2;
+        yShift = scale * x2;
+    } else {
+        float xScale = float(visibleWidth())  / std::abs(DX);
+        float yScale = float(visibleHeight()) / std::abs(DY);
+        scale = qMin(xScale, yScale)/initialScale;
+        scale = zoom(scale)/initialScale;
+
+        xShift = scale * (ax1 - 0.5*DX);
+        yShift = scale * (ay1 - 0.5*DY);
+    }
+    xShift -= (0.5*visibleWidth() + contentsX());
+    yShift -= (0.5*visibleHeight() + contentsY());
+    scrollBy(xShift, yShift);
+
+    releaseKeyboard();  // allow keyboard inputs again
 }
 
 // ---------------------------------------------------
