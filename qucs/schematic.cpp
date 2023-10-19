@@ -75,7 +75,6 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
   ViewX2=ViewY2=800;
   UsedX1 = UsedY1 = INT_MAX;
   UsedX2 = UsedY2 = INT_MIN;
-  zx1 = zx2 = zy1 = zy2 = 0;
 
   tmpPosX = tmpPosY = -100;
   tmpUsedX1 = tmpUsedY1 = tmpViewX1 = tmpViewY1 = -200;
@@ -804,15 +803,6 @@ void Schematic::zoomToSelection()
         showAll();
         return;
     }
-
-    if (x1 == zx1 && x2 == zx2 && y1 == zy1 && y2 == zy2) {
-        return;
-    }
-
-    zx1 = x1;
-    zy1 = y1;
-    zx2 = x2;
-    zy2 = y2;
 
     float initialScale = Scale;
     float scale = 1;
