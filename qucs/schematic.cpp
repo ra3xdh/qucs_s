@@ -76,6 +76,8 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
   UsedX1 = UsedY1 = INT_MAX;
   UsedX2 = UsedY2 = INT_MIN;
 
+  zx1 = zy1 = zx2 = zy2 = dx = dy = 0;
+
   tmpPosX = tmpPosY = -100;
   tmpUsedX1 = tmpUsedY1 = tmpViewX1 = tmpViewY1 = -200;
   tmpUsedX2 = tmpUsedY2 = tmpViewX2 = tmpViewY2 =  200;
@@ -795,45 +797,39 @@ void Schematic::showAll()
 }
 
 // ------------------------------------------------------
-void Schematic::zoomToSelection()
-{
+void Schematic::zoomToSelection() {
     int x1, x2, y1, y2 = 0;
     sizeOfSelection(x1, y1, x2, y2);
     if (x1 == 0 && x2 == 0 && y1 == 0 && y2 == 0) {
         showAll();
         return;
     }
-
-    float initialScale = Scale;
-    float scale = 1;
-    float xShift = 0;
-    float yShift = 0;
-
-    float ax1 = (x2 - ViewX1) * initialScale;
-    float ay1 = (y2 - ViewY1) * initialScale;
-    float DX = float(x2 - x1);
-    float DY = float(y2 - y1);
-
-    if((Scale * DX) < 6.0) {
-        // a simple click zooms by constant factor
-        scale = zoom(1.5)/initialScale;
-
-        xShift = scale * x2;
-        yShift = scale * x2;
-    } else {
-        float xScale = float(visibleWidth())  / std::abs(DX);
-        float yScale = float(visibleHeight()) / std::abs(DY);
-        scale = qMin(xScale, yScale)/initialScale;
-        scale = zoom(scale)/initialScale;
-
-        xShift = scale * (ax1 - 0.5*DX);
-        yShift = scale * (ay1 - 0.5*DY);
+    //
+    if (zx1 == contentsX() && zx2 == contentsWidth() &&
+        zy1 == contentsY() && zy2 == contentsHeight() &&
+        dx == x2 - x1 &&
+        dy == y2 - y1) {
+        return;
     }
-    xShift -= (0.5*visibleWidth() + contentsX());
-    yShift -= (0.5*visibleHeight() + contentsY());
-    scrollBy(xShift, yShift);
 
-    releaseKeyboard();  // allow keyboard inputs again
+    dx = x2 - x1;
+    dy = y2 - y1;
+
+    float xScale = float(visibleWidth()) / std::abs(dx + 80);
+    float yScale = float(visibleHeight()) / std::abs(dy + 80);
+    float scale = qMin(xScale, yScale) / Scale;
+    zoom(scale);
+
+    ViewX1 = x1 - 40;
+    ViewY1 = y1 - 40;
+    ViewX2 = x2 + 40;
+    ViewY2 = y2 + 40;
+    zx1 = contentsX();
+    zy1 = contentsY();
+    zx2 = contentsWidth();
+    zy2 = contentsHeight();
+
+    //releaseKeyboard();  // allow keyboard inputs again
 }
 
 // ---------------------------------------------------
@@ -2071,7 +2067,6 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
       viewport()->update(); // because QScrollView thinks nothing has changed
       App->view->drawn = false;
   }
-
   Event->accept();   // QScrollView must not handle this event
 }
 
