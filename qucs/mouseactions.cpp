@@ -1242,98 +1242,97 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent*, float fX, float fY
 
 // -----------------------------------------------------------
 // insert component, diagram, painting into schematic ?!
-void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, float)
-{
-  if(selElem == 0) return;
-  //QPainter painter(Doc->viewport());
-  //setPainter(Doc, &painter);
+void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, float) {
+    if (selElem == 0) return;
+    //QPainter painter(Doc->viewport());
+    //setPainter(Doc, &painter);
 
 
-  int x1, y1, x2, y2, rot;
-  if(selElem->Type & isComponent) {
-    Component *Comp = (Component*)selElem;
+    int x1, y1, x2, y2, rot;
+    if (selElem->Type & isComponent) {
+        Component *Comp = (Component *) selElem;
 //    qDebug() << "+-+ got to switch:" << Comp->Name;
-    QString entryName = Comp->Name;
+        QString entryName = Comp->Name;
 
-    switch(Event->button()) {
-      case Qt::LeftButton :
-	// left mouse button inserts component into the schematic
-	// give the component a pointer to the schematic it's a
-	// part of
-	Comp->setSchematic (Doc);
-	Comp->textSize(x1, y1);
-	Doc->insertComponent(Comp);
-	Comp->textSize(x2, y2);
-	if(Comp->tx < Comp->x1) Comp->tx -= x2 - x1;
+        switch (Event->button()) {
+            case Qt::LeftButton :
+                // left mouse button inserts component into the schematic
+                // give the component a pointer to the schematic it's a
+                // part of
+                Comp->setSchematic(Doc);
+                Comp->textSize(x1, y1);
+                Doc->insertComponent(Comp);
+                Comp->textSize(x2, y2);
+                if (Comp->tx < Comp->x1) Comp->tx -= x2 - x1;
 
-    // Note: insertCopmponents does increment  name1 -> name2
+                // Note: insertCopmponents does increment  name1 -> name2
 //    qDebug() << "  +-+ got to insert:" << Comp->Name;
 
-	// enlarge viewarea if component lies outside the view
-	Comp->entireBounds(x1,y1,x2,y2, Doc->textCorr());
-	Doc->enlargeView(x1, y1, x2, y2);
+                // enlarge viewarea if component lies outside the view
+                Comp->entireBounds(x1, y1, x2, y2, Doc->textCorr());
+                Doc->enlargeView(x1, y1, x2, y2);
 
-	drawn = false;
-	Doc->viewport()->update();
-	Doc->setChanged(true, true);
-	rot = Comp->rotated;
+                drawn = false;
+                Doc->viewport()->update();
+                Doc->setChanged(true, true);
+                rot = Comp->rotated;
 
-    // handle static and dynamic components
+                // handle static and dynamic components
 //    QucsApp::CompChoose;
-    if (Module::vaComponents.contains(entryName)){
-      QString filename = Module::vaComponents[entryName];
+                if (Module::vaComponents.contains(entryName)) {
+                    QString filename = Module::vaComponents[entryName];
 //      qDebug() << "   ===+ recast";
-      Comp = dynamic_cast<vacomponent*>(Comp)->newOne(filename); //va component
-      qDebug() << "   => recast = Comp;" << Comp->Name << "filename: " << filename;
-    }
-    else {
-	  Comp = Comp->newOne(); // static component is used, so create a new one
-    }
-	rot -= Comp->rotated;
-	rot &= 3;
-	while(rot--) Comp->rotate(); // keep last rotation for single component
-	break;
+                    Comp = dynamic_cast<vacomponent *>(Comp)->newOne(filename); //va component
+                    qDebug() << "   => recast = Comp;" << Comp->Name << "filename: " << filename;
+                } else {
+                    Comp = Comp->newOne(); // static component is used, so create a new one
+                }
+                rot -= Comp->rotated;
+                rot &= 3;
+                while (rot--) Comp->rotate(); // keep last rotation for single component
+                break;
 
-      case Qt::RightButton :  // right mouse button rotates the component
-	if(Comp->Ports.count() == 0)
-	  break;  // do not rotate components without ports
-	Comp->paintScheme(Doc); // erase old component scheme
-	Comp->rotate();
-	Comp->paintScheme(Doc); // paint new component scheme
-	break;
+            case Qt::RightButton :  // right mouse button rotates the component
+                if (Comp->Ports.count() == 0)
+                    break;  // do not rotate components without ports
+                Comp->paintScheme(Doc); // erase old component scheme
+                Doc->viewport()->repaint();
+                Comp->rotate();
+                Comp->paintScheme(Doc); // paint new component scheme
+                break;
 
-      default: ;   // avoids compiler warnings
-    }
+            default:;   // avoids compiler warnings
+        }
 //    qDebug() << "   => selElem = Comp;" << Comp->Name;
-    // comp it getting empty
-    selElem = Comp;
-    return;
+        // comp it getting empty
+        selElem = Comp;
+        return;
 
-  }  // of "if(isComponent)"
-  else if(selElem->Type == isDiagram) {
-    if(Event->button() != Qt::LeftButton) return;
+    }  // of "if(isComponent)"
+    else if (selElem->Type == isDiagram) {
+        if (Event->button() != Qt::LeftButton) return;
 
-    Diagram *Diag = (Diagram*)selElem;
-    QFileInfo Info(Doc->DocName);
-    // dialog is Qt::WDestructiveClose !!!
-    DiagramDialog *dia =
-       new DiagramDialog(Diag, Doc);
-    if(dia->exec() == QDialog::Rejected) {  // don't insert if dialog canceled
-      Doc->viewport()->update();
-      drawn = false;
-      return;
-    }
+        Diagram *Diag = (Diagram *) selElem;
+        QFileInfo Info(Doc->DocName);
+        // dialog is Qt::WDestructiveClose !!!
+        DiagramDialog *dia =
+                new DiagramDialog(Diag, Doc);
+        if (dia->exec() == QDialog::Rejected) {  // don't insert if dialog canceled
+            Doc->viewport()->update();
+            drawn = false;
+            return;
+        }
 
-    Doc->Diagrams->append(Diag);
-    Doc->enlargeView(Diag->cx, Diag->cy-Diag->y2, Diag->cx+Diag->x2, Diag->cy);
-    Doc->setChanged(true, true);   // document has been changed
+        Doc->Diagrams->append(Diag);
+        Doc->enlargeView(Diag->cx, Diag->cy - Diag->y2, Diag->cx + Diag->x2, Diag->cy);
+        Doc->setChanged(true, true);   // document has been changed
 
-    Doc->viewport()->repaint();
-    Diag = Diag->newOne(); // the component is used, so create a new one
-    Diag->paintScheme(Doc);
-    selElem = Diag;
-    return;
-  }  // of "if(isDiagram)"
+        Doc->viewport()->repaint();
+        Diag = Diag->newOne(); // the component is used, so create a new one
+        Diag->paintScheme(Doc);
+        selElem = Diag;
+        return;
+    }  // of "if(isDiagram)"
 
 
   // ***********  it is a painting !!!
