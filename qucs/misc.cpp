@@ -71,10 +71,21 @@ QString misc::getIconPath(const QString &file, int icon_type)
         break;
     }
 
-    QString icon_path =":bitmaps/";
+    QString icon_path =":bitmaps/svg/"; // look for svg version first
+    if (loadDark) {
+        QString icon_path_dark = ":bitmaps/svg/dark/";
+        if (QFileInfo::exists(icon_path_dark + file + ".svg"))
+            icon_path = icon_path_dark;
+    }
+    icon_path += file + ".svg";
+    if (QFile::exists(icon_path)) {
+        return icon_path;
+    }
+
+    icon_path =":bitmaps/";
     if (loadDark) {
         QString icon_path_dark = ":bitmaps/dark/";
-        if (QFileInfo::exists(icon_path_dark + file))
+        if (QFileInfo::exists(icon_path_dark + file + ".png"))
             icon_path = icon_path_dark;
     }
     icon_path += file;

@@ -893,7 +893,7 @@ void QucsApp::slotSetCompView (int index)
       if (Infos) {
         /// \todo warning: expression result unused, can we rewrite this?
         (void) *((*it)->info) (Name, File, false);
-        QString icon_path = misc::getIconPath(QString (File) + ".png", qucs::compIcons);
+        QString icon_path = misc::getIconPath(QString (File), qucs::compIcons);
         QListWidgetItem *icon = new QListWidgetItem(QPixmap(icon_path), Name);
         icon->setToolTip(Name);
         iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
@@ -950,7 +950,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
 
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
             //match
-            QString icon_path = misc::getIconPath(QString (File) + ".png", qucs::compIcons);
+            QString icon_path = misc::getIconPath(QString (File), qucs::compIcons);
             QListWidgetItem *icon = new QListWidgetItem(QPixmap(icon_path), Name);
             icon->setToolTip(it + ": " + Name);
             // add component category and module indexes to the icon
@@ -3034,6 +3034,8 @@ void QucsApp::slotSymbolEdit()
 // -----------------------------------------------------------
 void QucsApp::slotPowerMatching()
 {
+  QWidget *w = DocumentTab->currentWidget(); // remember from which Tab the tuner was started
+  if (isTextDocument(w)) return;
   if(!view->focusElement) return;
   if(view->focusElement->Type != isMarker) return;
   Marker *pm = (Marker*)view->focusElement;
@@ -3050,7 +3052,10 @@ void QucsApp::slotPowerMatching()
   Dia->setFrequency(pm->powFreq());
   Dia->setTwoPortMatch(false); // will also cause the corresponding impedance LineEdit to be updated
 
-  slotToPage();
+  Schematic *sch = dynamic_cast<Schematic*>(w);
+  if (sch->SimOpenDpl || sch->DocName.endsWith(".dpl")) {
+      slotToPage();
+  }
   if(Dia->exec() != QDialog::Accepted)
     return;
 }
@@ -3058,6 +3063,8 @@ void QucsApp::slotPowerMatching()
 // -----------------------------------------------------------
 void QucsApp::slot2PortMatching()
 {
+  QWidget *w = DocumentTab->currentWidget(); // remember from which Tab the tuner was started
+  if (isTextDocument(w)) return;
   if(!view->focusElement) return;
   if(view->focusElement->Type != isMarker) return;
   Marker *pm = (Marker*)view->focusElement;
@@ -3133,7 +3140,10 @@ void QucsApp::slot2PortMatching()
   Dia->setS21LineEdits(S21real, S21imag);
   Dia->setS22LineEdits(S22real, S22imag);
 
-  slotToPage();
+  Schematic *sch = dynamic_cast<Schematic*>(w);
+  if (sch->SimOpenDpl || sch->DocName.endsWith(".dpl")) {
+      slotToPage();
+  }
   if(Dia->exec() != QDialog::Accepted)
     return;
 }

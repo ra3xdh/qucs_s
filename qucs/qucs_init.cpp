@@ -358,7 +358,7 @@ void QucsApp::initActions()
   loadModule->setWhatsThis(tr("Load Verilog-A module\nLet the user select and load symbols"));
   connect(loadModule, SIGNAL(triggered()), SLOT(slotLoadModule()));
 
-  magAll = new QAction(QIcon((":/bitmaps/viewmagfit.png")), tr("View All"), this);
+  magAll = new QAction(QIcon((":/bitmaps/svg/viewmagfit.svg")), tr("View All"), this);
   magAll->setShortcut(Qt::Key_0);
   magAll->setStatusTip(tr("Show the whole page"));
   magAll->setWhatsThis(tr("View All\n\nShows the whole page content"));
@@ -371,19 +371,20 @@ void QucsApp::initActions()
   connect(magSel, SIGNAL(triggered()), SLOT(slotZoomToSelection()));
 
   magOne = new QAction(QIcon((":/bitmaps/viewmag1.png")), tr("View 1:1"), this);
+  magOne = new QAction(QIcon((":/bitmaps/svg/viewmag1.svg")), tr("View 1:1"), this);
   magOne->setShortcut(Qt::Key_1);
   magOne->setStatusTip(tr("Views without magnification"));
   magOne->setWhatsThis(tr("View 1:1\n\nShows the page content without magnification"));
   connect(magOne, SIGNAL(triggered()), SLOT(slotShowOne()));
 
-  magPlus = new QAction(QIcon((":/bitmaps/viewmag+.png")),	tr("Zoom in"), this);
+  magPlus = new QAction(QIcon((":/bitmaps/svg/viewmag+.svg")),	tr("Zoom in"), this);
   magPlus->setShortcut(Qt::Key_Plus);
   magPlus->setStatusTip(tr("Zooms into the current view"));
   magPlus->setWhatsThis(tr("Zoom in\n\nZooms the current view"));
   magPlus->setCheckable(true);
   connect(magPlus, SIGNAL(toggled(bool)), SLOT(slotZoomIn(bool)));
 
-  magMinus = new QAction(QIcon((":/bitmaps/viewmag-.png")), tr("Zoom out"), this);
+  magMinus = new QAction(QIcon((":/bitmaps/svg/viewmag-.svg")), tr("Zoom out"), this);
   magMinus->setShortcut(Qt::Key_Minus);
   magMinus->setStatusTip(tr("Zooms out the current view"));
   magMinus->setWhatsThis(tr("Zoom out\n\nZooms out the current view"));
