@@ -364,13 +364,12 @@ void QucsApp::initActions()
   magAll->setWhatsThis(tr("View All\n\nShows the whole page content"));
   connect(magAll, SIGNAL(triggered()), SLOT(slotShowAll()));
 
-  magSel = new QAction(QIcon((":/bitmaps/viewmagsel.png")), tr("Zoom to selection"), this);
+  magSel = new QAction(QIcon((":/bitmaps/svg/viewmagsel.svg")), tr("Zoom to selection"), this);
   magSel->setShortcut(tr("Z"));
   magSel->setStatusTip(tr("Zoom to selected components"));
   magSel->setWhatsThis(tr("Zoom to selection\n\nZoom to selected components"));
   connect(magSel, SIGNAL(triggered()), SLOT(slotZoomToSelection()));
 
-  magOne = new QAction(QIcon((":/bitmaps/viewmag1.png")), tr("View 1:1"), this);
   magOne = new QAction(QIcon((":/bitmaps/svg/viewmag1.svg")), tr("View 1:1"), this);
   magOne->setShortcut(Qt::Key_1);
   magOne->setStatusTip(tr("Views without magnification"));
