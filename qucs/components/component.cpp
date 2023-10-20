@@ -358,53 +358,11 @@ void Component::paintIcon(QPixmap *pixmap)
     int w = std::abs(by1-by2)+8;
     p->Scale = (float)pixmap->size().height()/std::max(w,h);
 
-    int x, y, a, b, xb, yb;
     QFont f = p->Painter->font();   // save current font
     QFont newFont = f;
     cx += h/2;
     cy += w/2;
-    if (Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
-        newFont.setPointSizeF(p->Scale * Texts.first()->Size);
-        newFont.setWeight(QFont::DemiBold);
-        p->Painter->setFont(newFont);
-        p->map(cx, cy, x, y);
-
-        if ((Model == ".CUSTOMSIM") || (Model == ".DISTO")
-                || (Model == ".NOISE") || (Model == ".PZ") ||
-                (Model == ".SENS") || (Model == ".SENS_AC") ||
-                (Model == ".FFT"))
-            p->Painter->setPen(QPen(Qt::blue, 6));
-        else if ((Model == ".XYCESCR") || (Model == ".SENS_XYCE")
-                 || (Model == ".SENS_TR_XYCE"))
-            p->Painter->setPen(QPen(Qt::darkGreen, 6));
-        else if (Model == ".FOURIER") p->Painter->setPen(QPen(Qt::darkRed, 6));
-        else p->Painter->setPen(QPen(Qt::darkBlue, 6));
-
-        a = b = 0;
-        QRect r, t;
-        QString mtext = Model;
-        mtext.remove('.');
-        //for (Text *pt: Texts) {
-            t.setRect(x, y + b, 0, 0);
-            p->Painter->drawText(t, Qt::AlignLeft | Qt::TextDontClip, mtext, &r);
-            b += r.height();
-            if (a < r.width()) a = r.width();
-        //}
-        xb = a + int(12.0 * p->Scale);
-        yb = b + int(10.0 * p->Scale);
-        x2 = x1 + 25 + int(float(a) / p->Scale);
-        y2 = y1 + 23 + int(float(b) / p->Scale);
-        if (ty < y2 + 1) if (ty > y1 - r.height()) ty = y2 + 1;
-
-        p->map(cx - 1, cy, x, y);
-        p->map(cx - 6, cy - 5, a, b);
-        p->Painter->drawRect(a, b, xb, yb);
-        p->Painter->drawLine(x, y + yb, a, b + yb);
-        p->Painter->drawLine(x + xb - 1, y + yb, x, y + yb);
-        p->Painter->drawLine(x + xb - 1, y + yb, a + xb, b + yb);
-        p->Painter->drawLine(x + xb - 1, y + yb, x + xb - 1, y);
-        p->Painter->drawLine(x + xb - 1, y, a + xb, b);
-    } else {    // normal components go here
+    if (Model.at(0) != '.' && !isEquation) {    // normal components go here
 
         // paint all lines
         for (auto pp: Ports) {
