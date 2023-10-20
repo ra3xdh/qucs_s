@@ -475,5 +475,17 @@
         <file>bitmaps/svg/xyce_script.svg</file>
         <file>bitmaps/svg/sp_sens_xyce.svg</file>
         <file>bitmaps/svg/sp_sens_tr_xyce.svg</file>
+        <file>bitmaps/svg/sp_func.svg</file>
+        <file>bitmaps/svg/sp_globpar.svg</file>
+        <file>bitmaps/svg/sp_ic.svg</file>
+        <file>bitmaps/svg/sp_include.svg</file>
+        <file>bitmaps/svg/sp_lib.svg</file>
+        <file>bitmaps/svg/sp_model.svg</file>
+        <file>bitmaps/svg/sp_nodeset.svg</file>
+        <file>bitmaps/svg/sp_nutmeg.svg</file>
+        <file>bitmaps/svg/sp_options.svg</file>
+        <file>bitmaps/svg/sp_param.svg</file>
+        <file>bitmaps/svg/incl_script.svg</file>
+        <file>bitmaps/svg/sp_spiceinit.svg</file>
     </qresource>
 </RCC>
