@@ -487,5 +487,16 @@
         <file>bitmaps/svg/sp_param.svg</file>
         <file>bitmaps/svg/incl_script.svg</file>
         <file>bitmaps/svg/sp_spiceinit.svg</file>
+        <file>bitmaps/svg/spicefile.svg</file>
+        <file>bitmaps/svg/subcircuit.svg</file>
+        <file>bitmaps/svg/spfile1.svg</file>
+        <file>bitmaps/svg/spfile2.svg</file>
+        <file>bitmaps/svg/spfile3.svg</file>
+        <file>bitmaps/svg/spicegeneric.svg</file>
+        <file>bitmaps/svg/spicelibcomp.svg</file>
+        <file>bitmaps/svg/xspicegeneric.svg</file>
+        <file>bitmaps/svg/SDTF.svg</file>
+        <file>bitmaps/svg/XAPWL.svg</file>
+        <file>bitmaps/svg/vhdlfile.svg</file>
     </qresource>
 </RCC>
