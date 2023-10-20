@@ -93,6 +93,7 @@ public:
   float textCorr();
   bool sizeOfFrame(int&, int&);
   void  sizeOfAll(int&, int&, int&, int&);
+  void  sizeOfSelection(int&, int&, int&, int&);
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
@@ -102,6 +103,7 @@ public:
   float zoom(float);
   float zoomBy(float);
   void  showAll();
+  void zoomToSelection();
   void  showNoZoom();
   void  enlargeView(int, int, int, int);
   void  switchPaintMode();
@@ -145,6 +147,7 @@ public:
   int GridX, GridY;
   int ViewX1, ViewY1, ViewX2, ViewY2;  // size of the document area
   int UsedX1, UsedY1, UsedX2, UsedY2;  // document area used by elements
+  int zx1, zy1, zx2, zy2, dx, dy = 0;
 
   int showFrame;
   QString Frame_Text0, Frame_Text1, Frame_Text2, Frame_Text3;
@@ -325,6 +328,7 @@ public:
   bool isAnalog;
   bool isVerilog;
   bool creatingLib;
+
 };
 
 #endif

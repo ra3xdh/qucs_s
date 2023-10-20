@@ -2241,6 +2241,13 @@ void QucsApp::slotShowAll()
   getDoc()->showAll();
 }
 
+// --------------------------------------------------------------
+void QucsApp::slotZoomToSelection()
+{
+    slotHideEdit(); // disable text edit of component property
+    getDoc()->zoomToSelection();
+}
+
 // -----------------------------------------------------------
 // Sets the scale factor to 1.
 void QucsApp::slotShowOne()
