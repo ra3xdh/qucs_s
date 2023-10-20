@@ -42,6 +42,8 @@ MSmbend::MSmbend()
 
   tx = x2+4;
   ty = y1+4;
+  icon_dx = 6;
+  icon_dy = -6;
   Model = "MMBEND";
   Name  = "MS";
 

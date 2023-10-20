@@ -102,7 +102,5 @@
         <file>bitmaps/svg/SDTF.svg</file>
         <file>bitmaps/svg/XAPWL.svg</file>
         <file>bitmaps/svg/vhdlfile.svg</file>
-        <file>bitmaps/svg/gnd.svg</file>
-        <file>bitmaps/svg/subport.svg</file>
     </qresource>
 </RCC>

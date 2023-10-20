@@ -54,6 +54,7 @@ Substrate::Substrate()
 
   tx = x1+4;
   ty = y2+4;
+  icon_dx = -18;
   Model = "SUBST";
   Name  = "Subst";
 

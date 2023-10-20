@@ -37,6 +37,7 @@ MSopen::MSopen()
 
   tx = x1+4;
   ty = y2+4;
+  icon_dx = 6;
   Model = "MOPEN";
   Name  = "MS";
 

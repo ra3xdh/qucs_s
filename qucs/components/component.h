@@ -73,6 +73,9 @@ public:
   bool mirroredX;   // is it mirrored about X axis or not
   int  rotated;     // rotation angle divided by 90 degrees
 
+  int icon_dx = 0; // used to adjust icon position
+  int icon_dy = 0;
+
   virtual QString getSubcircuitFile() { return ""; }
   // set the pointer scematic associated with the component
   virtual void setSchematic (Schematic* p) { containingSchematic = p; }

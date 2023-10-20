@@ -49,6 +49,8 @@ Digi_Source::Digi_Source()
   Name  = "S";
   SpiceModel = "V";
 
+  icon_dx = 6;
+
   // This property must stay in this order !
   Props.append(new Property("Num", "1", true,
 		QObject::tr("number of the port")));

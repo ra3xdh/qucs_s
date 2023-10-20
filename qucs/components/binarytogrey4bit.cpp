@@ -33,6 +33,7 @@ binarytogrey4bit::binarytogrey4bit()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
+  icon_dy = 8;
   Model = "binarytogrey4bit";
   Name  = "Y";
 }

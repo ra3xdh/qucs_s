@@ -33,6 +33,7 @@ comp_1bit::comp_1bit()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
+  icon_dy = 8;
   Model = "comp_1bit";
   Name  = "Y";
 }

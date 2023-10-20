@@ -362,8 +362,8 @@ void Component::paintIcon(QPixmap *pixmap)
     QFont f = p->Painter->font();   // save current font
     QFont newFont = f;
     int c_sc = ph / (2*p->Scale);
-    cx += std::max(h/2, c_sc);
-    cy += std::max(w/2, c_sc);
+    cx += c_sc + icon_dx*p->Scale;
+    cy += c_sc + icon_dy*p->Scale;
     if (Model.at(0) != '.' && !isEquation) {    // normal components go here
         // paint all lines
         for (auto pp: Ports) {
