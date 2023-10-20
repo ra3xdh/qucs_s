@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>bitmaps/ac_current.png</file>
         <file>bitmaps/ac_voltage.png</file>
-        <file>bitmaps/ac.png</file>
         <file>bitmaps/am_mod.png</file>
         <file>bitmaps/amplifier.png</file>
         <file>bitmaps/and.png</file>
@@ -36,14 +35,12 @@
         <file>bitmaps/ctline.png</file>
         <file>bitmaps/dc_current.png</file>
         <file>bitmaps/dc_voltage.png</file>
-        <file>bitmaps/dc.png</file>
         <file>bitmaps/dcblock.png</file>
         <file>bitmaps/dcfeed.png</file>
         <file>bitmaps/dff_SR.png</file>
         <file>bitmaps/dflipflop.png</file>
         <file>bitmaps/diac.png</file>
         <file>bitmaps/digi_source.png</file>
-        <file>bitmaps/digi.png</file>
         <file>bitmaps/diode.png</file>
         <file>bitmaps/DLS_1ton.png</file>
         <file>bitmaps/DLS_nto1.png</file>
@@ -149,7 +146,6 @@
         <file>bitmaps/rlcg.png</file>
         <file>bitmaps/rsflipflop.png</file>
         <file>bitmaps/source.png</file>
-        <file>bitmaps/sparameter.png</file>
         <file>bitmaps/spfile1.png</file>
         <file>bitmaps/spfile2.png</file>
         <file>bitmaps/spfile3.png</file>
@@ -157,7 +153,6 @@
         <file>bitmaps/subcircuit.png</file>
         <file>bitmaps/subport.png</file>
         <file>bitmaps/substrate.png</file>
-        <file>bitmaps/sweep.png</file>
         <file>bitmaps/switch.png</file>
         <file>bitmaps/symtrans.png</file>
         <file>bitmaps/taperedline.png</file>
@@ -229,17 +224,12 @@
         <file>bitmaps/NMOS_SPICE_3.png</file>
         <file>bitmaps/PMOS_SPICE.png</file>
         <file>bitmaps/PMOS_SPICE_3.png</file>
-        <file>bitmaps/sp_fourier.png</file>
-        <file>bitmaps/sp_fft.png</file>
-        <file>bitmaps/sp_customsim.png</file>
-        <file>bitmaps/sp_disto.png</file>
         <file>bitmaps/Vac_SPICE.png</file>
         <file>bitmaps/sp_nutmeg.png</file>
         <file>bitmaps/sp_ic.png</file>
         <file>bitmaps/sp_func.png</file>
         <file>bitmaps/incl_script.png</file>
         <file>bitmaps/sp_nodeset.png</file>
-        <file>bitmaps/sp_noise.png</file>
         <file>bitmaps/Cmeter_SPICE.png</file>
         <file>bitmaps/SE_V_amp.png</file>
         <file>bitmaps/DE_V_amp.png</file>
@@ -271,7 +261,6 @@
         <file>bitmaps/xsp_cmod.png</file>
         <file>bitmaps/spicegeneric.png</file>
         <file>bitmaps/spicelibcomp.png</file>
-        <file>bitmaps/xyce_script.png</file>
         <file>bitmaps/dark/ac_current.png</file>
         <file>bitmaps/dark/ac_voltage.png</file>
         <file>bitmaps/dark/am_mod.png</file>
@@ -302,14 +291,12 @@
         <file>bitmaps/dark/cpwshort.png</file>
         <file>bitmaps/dark/cpwstep.png</file>
         <file>bitmaps/dark/ctline.png</file>
-        <file>bitmaps/dark/dc.png</file>
         <file>bitmaps/dark/dc_current.png</file>
         <file>bitmaps/dark/dc_voltage.png</file>
         <file>bitmaps/dark/dcblock.png</file>
         <file>bitmaps/dark/dcfeed.png</file>
         <file>bitmaps/dark/dff_SR.png</file>
         <file>bitmaps/dark/diac.png</file>
-        <file>bitmaps/dark/digi.png</file>
         <file>bitmaps/dark/diode.png</file>
         <file>bitmaps/dark/dmosfet.png</file>
         <file>bitmaps/dark/dmosfet_sub.png</file>
@@ -393,7 +380,6 @@
         <file>bitmaps/dark/subcircuit.png</file>
         <file>bitmaps/dark/subport.png</file>
         <file>bitmaps/dark/substrate.png</file>
-        <file>bitmaps/dark/sweep.png</file>
         <file>bitmaps/dark/switch.png</file>
         <file>bitmaps/dark/symtrans.png</file>
         <file>bitmaps/dark/tff_SR.png</file>
@@ -414,7 +400,6 @@
         <file>bitmaps/dark/vprobe.png</file>
         <file>bitmaps/dark/xnor.png</file>
         <file>bitmaps/dark/xor.png</file>
-        <file>bitmaps/dark/ac.png</file>
         <file>bitmaps/dark/vpulse.png</file>
         <file>bitmaps/dark/vrect.png</file>
         <file>bitmaps/dark/irect.png</file>
@@ -472,5 +457,23 @@
         <file>bitmaps/svg/rectangle.svg</file>
         <file>bitmaps/svg/filledrect.svg</file>
         <file>bitmaps/svg/ellipsearc.svg</file>
+        <file>bitmaps/svg/ac.svg</file>
+        <file>bitmaps/svg/dc.svg</file>
+        <file>bitmaps/svg/tran.svg</file>
+        <file>bitmaps/svg/sweep.svg</file>
+        <file>bitmaps/svg/digi.svg</file>
+        <file>bitmaps/svg/sparameter.svg</file>
+        <file>bitmaps/svg/hb.svg</file>
+        <file>bitmaps/svg/sp_fourier.svg</file>
+        <file>bitmaps/svg/sp_fft.svg</file>
+        <file>bitmaps/svg/sp_customsim.svg</file>
+        <file>bitmaps/svg/sp_noise.svg</file>
+        <file>bitmaps/svg/sp_sens.svg</file>
+        <file>bitmaps/svg/sp_sens_ac.svg</file>
+        <file>bitmaps/svg/sp_disto.svg</file>
+        <file>bitmaps/svg/sp_pz.svg</file>
+        <file>bitmaps/svg/xyce_script.svg</file>
+        <file>bitmaps/svg/sp_sens_xyce.svg</file>
+        <file>bitmaps/svg/sp_sens_tr_xyce.svg</file>
     </qresource>
 </RCC>
