@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="128"
+   height="128"
+   version="1.1"
+   id="svg857"
+   sodipodi:docname="gnd.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata863">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs861" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1050"
+     id="namedview859"
+     showgrid="false"
+     inkscape:zoom="1.84375"
+     inkscape:cx="-25.220339"
+     inkscape:cy="64"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg857" />
+  <path
+     d="M.5.5h127v127H.5z"
+     style="fill:#fff;fill-opacity:1;stroke:#fff;stroke-width:1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+     id="path843" />
+  <g
+     id="g24"
+     font-style="normal"
+     font-weight="400"
+     font-size="10"
+     style="font-style:normal;font-weight:400;font-size:10px;font-family:'Noto Sans';fill:none;fill-rule:evenodd;stroke:#000080;stroke-width:3;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1"
+     transform="translate(259.08475,-16.110169)" />
+  <g
+     id="g14"
+     font-style="normal"
+     font-weight="400"
+     font-size="10"
+     style="font-style:normal;font-weight:400;font-size:10px;font-family:'Noto Sans';fill:none;fill-rule:evenodd;stroke:#000080;stroke-width:0.66535159;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     transform="matrix(4.4970135,0,0,4.5208065,-55.652182,-46.472133)">
+    <polyline
+       id="polyline12"
+       points="27,15 27,25 "
+       style="vector-effect:none;fill:none;stroke-width:0.66535159;stroke-miterlimit:4;stroke-dasharray:none" />
+  </g>
+  <polyline
+     style="font-style:normal;font-weight:400;font-size:medium;font-family:'Noto Sans';vector-effect:none;fill:none;fill-rule:evenodd;stroke:#000080;stroke-width:1.33070318;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     points="16,25 38,25 "
+     id="polyline16"
+     transform="matrix(4.4970135,0,0,4.5208065,-55.652182,-46.472133)" />
+  <polyline
+     style="font-style:normal;font-weight:400;font-size:medium;font-family:'Noto Sans';vector-effect:none;fill:none;fill-rule:evenodd;stroke:#000080;stroke-width:1.33070318;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     points="20,31 34,31 "
+     id="polyline18"
+     transform="matrix(4.4970135,0,0,4.5208065,-55.652182,-46.472133)" />
+  <polyline
+     style="font-style:normal;font-weight:400;font-size:medium;font-family:'Noto Sans';vector-effect:none;fill:none;fill-rule:evenodd;stroke:#000080;stroke-width:1.33070318;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     points="24,37 30,37 "
+     id="polyline20"
+     transform="matrix(4.4970135,0,0,4.5208065,-55.652182,-46.472133)" />
+  <g
+     id="g28"
+     font-style="normal"
+     font-weight="400"
+     font-size="10"
+     style="font-style:normal;font-weight:400;font-size:10px;font-family:'Noto Sans';fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.66535159;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     transform="matrix(4.4970135,0,0,4.5208065,-55.652182,-46.472133)">
+    <circle
+       id="circle26"
+       r="4"
+       cy="15"
+       cx="27"
+       style="stroke-width:0.66535159;stroke-miterlimit:4;stroke-dasharray:none" />
+  </g>
+</svg>

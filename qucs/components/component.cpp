@@ -354,16 +354,17 @@ void Component::paintIcon(QPixmap *pixmap)
     ViewPainter *p = new ViewPainter(pp);
     int bx1,by1,bx2,by2;
     Bounding(bx1,by1,bx2,by2);
-    int h = std::abs(bx1-bx2)+8;
-    int w = std::abs(by1-by2)+8;
-    p->Scale = (float)pixmap->size().height()/std::max(w,h);
+    int h = std::abs(bx1-bx2)+10;
+    int w = std::abs(by1-by2)+10;
+    int ph = pixmap->size().height();
+    p->Scale = (float) ph / std::max(w,h);
 
     QFont f = p->Painter->font();   // save current font
     QFont newFont = f;
-    cx += h/2;
-    cy += w/2;
+    int c_sc = ph / (2*p->Scale);
+    cx += std::max(h/2, c_sc);
+    cy += std::max(w/2, c_sc);
     if (Model.at(0) != '.' && !isEquation) {    // normal components go here
-
         // paint all lines
         for (auto pp: Ports) {
             QPen pa;
