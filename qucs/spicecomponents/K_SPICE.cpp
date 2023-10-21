@@ -36,8 +36,8 @@ K_SPICE::K_SPICE()
     Lines.append(new qucs::Line( 10,  0,   6,  -4,QPen(Qt::darkRed,3)));
    
  
-    x1 = -30; y1 = -13;
-    x2 =  30; y2 =  13;
+    x1 = -15; y1 = -13;
+    x2 =  15; y2 =  13;
 
     tx = x1+4;
     ty = y2+4;

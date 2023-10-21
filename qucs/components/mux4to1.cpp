@@ -33,6 +33,7 @@ mux4to1::mux4to1()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
+  icon_dy = -10;
   Model = "mux4to1";
   Name  = "Y";
 }

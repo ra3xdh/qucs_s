@@ -33,6 +33,7 @@ greytobinary4bit::greytobinary4bit()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
+  icon_dy = 8;
   Model = "greytobinary4bit";
   Name  = "Y";
 }

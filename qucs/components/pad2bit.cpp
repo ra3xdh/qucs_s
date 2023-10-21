@@ -22,6 +22,7 @@ pad2bit::pad2bit()
   createSymbol ();
   tx = x1 + 4;
   ty = y2 + 4;
+  icon_dx = 6;
   Model = "pad2bit";
   Name  = "Y";
 }

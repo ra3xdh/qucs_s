@@ -40,10 +40,12 @@ QMap<QString, QString> Module::vaComponents;
 Module::Module () {
   info = 0;
   category = "#special";
+  icon = nullptr;
 }
 
 // Destructor removes instance of module object from memory.
 Module::~Module () {
+    if (icon != nullptr) delete icon;
 }
 
 // Module registration using a category name and the appropriate
@@ -68,6 +70,9 @@ void Module::registerComponent(QString category, pInfoFunc info) {
     char *File;
     Component *c = (Component *) info(Name, File, true);
     Model = c->Model;
+
+    m->icon = new QPixmap(128,128);
+    c->paintIcon(m->icon);
 
     // put into category and the component hash
     if ((c->Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {

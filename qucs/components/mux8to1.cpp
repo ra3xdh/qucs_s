@@ -33,6 +33,7 @@ mux8to1::mux8to1()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
+  icon_dy = -112;
   Model = "mux8to1";
   Name  = "Y";
 }

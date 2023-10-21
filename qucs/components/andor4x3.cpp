@@ -33,6 +33,7 @@ andor4x3::andor4x3()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
+  icon_dy = -32;
   Model = "andor4x3";
   Name  = "Y";
 }

@@ -36,6 +36,7 @@ Ground::Ground()
 
   tx = 0;
   ty = 0;
+  icon_dy = -2;
   Model = "GND";
   Name  = "";
   SpiceModel = "*";

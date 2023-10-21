@@ -33,6 +33,7 @@ dmux2to4::dmux2to4()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
+  icon_dy = 28;
   Model = "dmux2to4";
   Name  = "Y";
 }

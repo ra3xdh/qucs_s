@@ -33,6 +33,7 @@ fa2b::fa2b()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
+  icon_dy = -16;
   Model = "fa2b";
   Name  = "Y";
 }

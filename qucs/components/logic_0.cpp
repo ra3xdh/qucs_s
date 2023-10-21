@@ -30,6 +30,7 @@ logic_0::logic_0()
   createSymbol ();
   tx = x1 + 4;
   ty = y2 + 4;
+  icon_dx = 6;
   Model = "logic_0";
   Name  = "S";
 }

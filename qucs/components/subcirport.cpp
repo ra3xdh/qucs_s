@@ -38,6 +38,7 @@ SubCirPort::SubCirPort()
   createSymbol();
   tx = x1+4;
   ty = y2+4;
+  icon_dx = 4;
   Model = "Port";
   Name  = "P";
   SpiceModel = "*";
