@@ -6,14 +6,17 @@
 * Added support for touchstone s2p file devices for Ngspice #233 (implementation by @transmitterdan)
 * Redesign of the simulation window #309
 * Diagrams are placed on schematic and `*.dpl` files are disabled by default  #309 
-* Added low voltage for VRect source #310
 * Backport of the active Legendre filter synthesis from Qucs-0.0.20rc2 #318
 * Added SPICE entry for MUT and MUT2 devices
 * Backported circular waveguide and tapered line symbols form Qucs-0.0.20rc2
+* Added zoom to selection mode #327
+* Toolbar icons replaced by SVG; improved look for HiDPI #323 #304
+* Implemented automatic generation of high resolution device icons #334 #304
 
 ## General improvements
 
-* Toolbar icons replaced by SVG; improved look for HiDPI #323 #304
+* Added Tstart option for Spectrum simulaiton #336
+* Added low voltage for VRect source #310
 * Russian translation update #292 #324
 
 ## Bugfixes
@@ -23,6 +26,7 @@
 * Fixed display of the Xanalogue.lib library #308
 * Fixed show checker errors for Xyce
 * Fixed load symbol for Verilog-A device #321
+* Fixed component rotation with right mouse button
 
 ## Documentation
 
