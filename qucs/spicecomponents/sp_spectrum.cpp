@@ -49,6 +49,7 @@ SpiceFFT::SpiceFFT()
   Props.append(new Property("Window","hanning", true, "Window type "
                                      "[none,rectangular,bartlet,blackman,hanning,hamming,gaussian,flattop]"));
   Props.append(new Property("Order","2",false,"Order of the Gaussian window"));
+  Props.append(new Property("Tstart","0",false,"Transient starting time"));
 
 }
 
@@ -81,10 +82,12 @@ QString SpiceFFT::spice_netlist(bool isXyce)
     double bw = num*fac;
     misc::str2num(getProperty("dF")->Value,num,unit,fac);
     double df = num*fac;
-    double tstop = 1.0/df;
+    misc::str2num(getProperty("Tstart")->Value,num,unit,fac);
+    double tstart = num*fac;
+    double tstop = 1.0/df + tstart;
     double tstep = 1.0/(2*bw);
     QString win = getProperty("Window")->Value;
-    s =  QString("tran %1 %2 0\n").arg(tstep).arg(tstop);
+    s =  QString("tran %1 %2 %3\n").arg(tstep).arg(tstop).arg(tstart);
     s += QString("set specwindow=%1\n").arg(win);
     if (win == "gaussian") {
         s += QString("set specwindoworder=%1\n")
