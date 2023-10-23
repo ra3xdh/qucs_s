@@ -348,7 +348,7 @@ void QucsApp::initView()
   CompComps->setGridSize(QSize(110,90));
   CompComps->setIconSize(QSize(64,64));
   CompComps->setAcceptDrops(false);
-  CompComps->setStyleSheet("QListWidget{background: white;}");
+  CompComps->setStyleSheet("QListWidget{background: white; color: black;}");
   
   #ifdef _MSC_VER
     CompComps->setDragEnabled(false);
