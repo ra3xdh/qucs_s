@@ -364,12 +364,12 @@ void Component::paintIcon(QPixmap *pixmap)
     cy += c_sc + icon_dy*p->Scale;
     if (Model.at(0) != '.' && !isEquation) {    // normal components go here
         // paint all lines
+        QPen portPen;
+        portPen.setWidth(3);
+        portPen.setColor(Qt::red);
+        p->Painter->setPen(portPen);
         for (auto pp: Ports) {
-            QPen pa;
-            pa.setWidth(3);
-            pa.setColor(Qt::red);
-            p->Painter->setPen(pa);
-            p->drawEllipse(cx+pp->x-4,cy+pp->y-4,8,8);
+            p->drawEllipse(cx+pp->x-2,cy+pp->y-2,4,4);
         }
 
         for (qucs::Line *p1: Lines) {
