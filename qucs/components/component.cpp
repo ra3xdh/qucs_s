@@ -349,13 +349,11 @@ void Component::paint(ViewPainter *p) {
 // paint device icon for left panel list
 void Component::paintIcon(QPixmap *pixmap)
 {
-    pixmap->fill(Qt::white);
-    QPainter *pp = new QPainter(pixmap);
-    ViewPainter *p = new ViewPainter(pp);
-    int bx1,by1,bx2,by2;
-    Bounding(bx1,by1,bx2,by2);
-    int h = std::abs(bx1-bx2)+10;
-    int w = std::abs(by1-by2)+10;
+    pixmap->fill(Qt::transparent);
+    QPainter *painter = new QPainter(pixmap);
+    ViewPainter *p = new ViewPainter(painter);
+    int h = std::abs(x2 - x1) + 10;
+    int w = std::abs(y2 - y1) + 10;
     int ph = pixmap->size().height();
     p->Scale = (float) ph / std::max(w,h);
 
@@ -415,7 +413,6 @@ void Component::paintIcon(QPixmap *pixmap)
             newFont.setUnderline(pt->under);
             p->Painter->setFont(newFont);
             p->Painter->setPen(pt->Color);
-            int w, h;
             w = p->drawTextMapped(pt->s, 0, 0, &h);
             Q_UNUSED(w)
             Q_UNUSED(h)
