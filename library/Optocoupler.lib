@@ -1,0 +1,296 @@
+<Qucs Library 2.1.0 "Optocoupler">
+
+<Component 4N25>
+  <Description>
+4N25 optocoupler
+  </Description>
+  <Model>
+.Def:Optocoupler_4N25 _net0 _net1 _net2 _net3
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="n4N25_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "4N25.cir.lst">
+  <Spice>* Qucs 2.1.0  Optocoupler_4N25.sch
+
+* OPTO-ISO from User Library in TURBO SPICE
+* Orig 8/17/99
+* Modified TMH 2/15/23
+*
+*4N25 NPN Optoisolator pkg:DIP6
+* Transistor Base not modeled
+*            A K C E 
+.SUBCKT 4N25 1 2 5 4
+VM    1 12 DC 0
+D1   12  2 LED
+R1   10 11 450
+C1   11  0 1000PF
+H1   10  0 VM 3.33E-2
+G1    5  6 11 0 1
+Q1    5  6  4 QNPN
+.MODEL LED D(IS=2.5E-12 RS=.75 CJO=3.5E-11 N=2)
+.MODEL QNPN NPN(IS=3.33E-11 NF=1.35 CJC=4.74E-11 CJE=167E-12 TF=9.23E-10 TR=1.48E-7 BF=150 BR=10 IKF=.1 VAF=100)
+.ENDS
+
+.SUBCKT Optocoupler_4N25  gnd _net0 _net1 _net2 _net3 
+X1 _net0 _net1 _net2 _net3 4N25
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -21 6 -18 0 #000080 2 1>
+    <Line -21 -6 -18 0 #000080 2 1>
+    <Line 20 15 0 -30 #000080 3 1>
+    <Line 30 30 0 -15 #000080 2 1>
+    <Line 20 -5 10 -10 #000080 2 1>
+    <Arrow 20 5 10 10 6 3 #000080 2 1 1>
+    <Line -30 6 -9 -12 #000080 2 1>
+    <Line -30 6 9 -12 #000080 2 1>
+    <Line -6 -6 4 -4 #000080 2 1>
+    <Line -12 -12 6 6 #000080 2 1>
+    <Arrow -2 -10 10 10 9 3 #000080 2 1 1>
+    <Arrow -4 0 10 10 9 3 #000080 2 1 1>
+    <Line -8 4 4 -4 #000080 2 1>
+    <Line -14 -2 6 6 #000080 2 1>
+    <Line -50 -20 100 0 #808080 2 1>
+    <Line -50 20 0 -40 #808080 2 1>
+    <Line 50 20 0 -40 #808080 2 1>
+    <Line -30 30 0 -24 #000080 2 1>
+    <Line -30 -6 0 -24 #000080 2 1>
+    <Line 30 -15 0 -15 #000080 2 1>
+    <Line -50 20 100 0 #808080 2 1>
+    <.PortSym -30 -30 1 0>
+    <.PortSym -30 30 2 0>
+    <.PortSym 30 -30 3 180>
+    <.PortSym 30 30 4 180>
+    <.ID 70 -16 X>
+  </Symbol>
+</Component>
+
+<Component 4N33>
+  <Description>
+4N33 Darlington optocoupler
+  </Description>
+  <Model>
+.Def:Optocoupler_4N33 _net3 _net4 _net2 _net0 _net1
+Sub:X2 _net0 _net1 _net2 _net3 _net4 gnd Type="n4n33_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "4n33.cir.lst">
+  <Spice>* Qucs 2.1.0  Optocoupler_4N33.sch
+
+.subckt 4n33_MC 4 5 3 1 2
+* 4 -> LED ANODE   5 -> LED CATHODE
+* 3 -> EMITTER     1 -> COLLECTOR   2 -> BASE
+
+DIO  4  10  4n33_dio
+VD  10  5  0V
+RD  4  5  6e7
+FDD  0  2  VD  0.15
+RF  2  0  1e9
+CF  1  4  1e-12
+XDAR  1 2 3  4n33_dar
+RDAR  1  3  4e9
+* MODEL FORMAT: PSpice
+.MODEL 4n33_dio d(
++ IS=2.90836e-12 RS=1.81548 N=2 EG=0.644108
++ XTI=3.99996 BV=1000 IBV=0.0001 CJO=2.02387e-11
++ VJ=0.4 M=0.271299 FC=0.5 TT=1e-09
++ KF=0 AF=1)
+.ends 4n33_MC
+
+.SUBCKT 4n33_dar 1 2 3
+* MODEL FORMAT: PSpice
+* Darlington macro model
+* External node designations
+* Node 1 -> Collect
+* Node 2 -> Base
+* Node 3 -> Emitter
+Q1 1 2 4 qmodel
+Q2 1 4 3 q1model 8.93463
+D1 3 1 dmodel
+R1 2 4 10000
+R2 4 3 1000
+* Default values used in dmodel
+*   EG=1.11 TT=0 BV=infinite
+.MODEL dmodel d(
++ IS=1e-12 RS=10.5392 N=1.00539 XTI=3.00539
++ CJO=0 VJ=0.75 M=0.33 FC=0.5
+.MODEL qmodel npn(
++ IS=2.40152e-12 BF=46.1011 NF=1.2 VAF=30
++ IKF=0.00662634 ISE=9.73117e-14 NE=1.23006 BR=4.14416
++ NR=1.5 VAR=146.759 IKR=0.0662634 ISC=9.73117e-14
++ NC=2.0474 RB=10.7666 IRB=0.205422 RBM=10.5475
++ RE=0.100058 RC=0.99859 XTB=0.457057 XTI=2.9909 EG=1.05
++ CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++ XTF=1 VTF=10 ITF=0.01 CJC=1e-11
++ VJC=0.75 MJC=0.33 XCJC=0.9 FC=0.5
++ TR=1e-07 PTF=0 KF=0 AF=1)
+.MODEL q1model npn(
++ IS=2.40152e-12 BF=46.1011 NF=1.2 VAF=30
++ IKF=0.00662634 ISE=9.73117e-14 NE=1.23006 BR=4.14416
++ NR=1.5 VAR=146.759 IKR=0.0662634 ISC=9.73117e-14
++ NC=2.0474 RB=10.7666 IRB=0.205422 RBM=10.5475
++ RE=0.100058 RC=0.99859 XTB=0.457057 XTI=2.9909 EG=1.05
++ CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++ XTF=1 VTF=10 ITF=0.01 CJC=0
++ VJC=0.75 MJC=0.33 XCJC=0.9 FC=0.5
++ TR=1e-07 PTF=0 KF=0 AF=1)
+.ENDS
+
+
+
+.SUBCKT Optocoupler_4N33  gnd _net3 _net4 _net2 _net0 _net1 
+X2 _net0 _net1 _net2 _net3 _net4 4n33_MC
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID 70 -16 X>
+    <Line -21 6 -18 0 #000080 2 1>
+    <Line -21 -6 -18 0 #000080 2 1>
+    <Line -30 6 -9 -12 #000080 2 1>
+    <Line -30 6 9 -12 #000080 2 1>
+    <Line -30 30 0 -24 #000080 2 1>
+    <Line -30 -6 0 -24 #000080 2 1>
+    <Line 40 15 0 -30 #000080 3 1>
+    <Line 50 30 0 -15 #000080 2 1>
+    <Line 40 -5 10 -10 #000080 2 1>
+    <Arrow 40 5 10 10 6 3 #000080 2 1 1>
+    <Line 50 -15 0 -15 #000080 2 1>
+    <Line 20 -10 0 -20 #000080 2 1>
+    <Line 40 0 -10 0 #000080 2 1>
+    <Line 30 0 -10 -10 #000080 2 1>
+    <Line 4 -6 4 -4 #000080 2 1>
+    <Line -2 -12 6 6 #000080 2 1>
+    <Arrow 8 -10 10 10 9 3 #000080 2 1 1>
+    <Arrow 6 0 10 10 9 3 #000080 2 1 1>
+    <Line 2 4 4 -4 #000080 2 1>
+    <Line -4 -2 6 6 #000080 2 1>
+    <Line -45 20 0 -40 #000080 2 1>
+    <Line 65 20 0 -40 #000080 2 1>
+    <Line -45 20 110 0 #000080 2 1>
+    <Line -45 -20 110 0 #000080 2 1>
+    <.PortSym -30 -30 4 180>
+    <.PortSym -30 30 5 0>
+    <.PortSym 50 30 3 180>
+    <.PortSym 50 -30 1 0>
+    <.PortSym 20 -30 2 0>
+  </Symbol>
+</Component>
+
+<Component MOC223>
+  <Description>
+MOC223 Darlington optocoupler
+  </Description>
+  <Model>
+.Def:Optocoupler_MOC223 _net0 _net2 _net1 _net3 _net4
+Sub:X2 _net3 _net4 _net1 _net0 _net2 gnd Type="moc223_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "moc223.cir.lst">
+  <Spice>* Qucs 2.1.0  Optocoupler_MOC223.sch
+
+.subckt moc223_MC 4 5 3 1 2
+
+
+DIO  4  10  moc223_dio
+VD  10  5  0V
+RD  4  5  6e7
+FI  0  11  VD  1
+RFI  11  0  1000
+XDL  11  0  12  delay_Sub
+VDD  12  13  0
+RXDL  13  0  1000
+FDD  0  2  VDD  0.1
+RF  2  0  1e9
+CF  1  4  1e-12
+XDAR  1 2 3  moc223_dar
+RDAR  1  3  4e9
+
+.MODEL moc223_dio d
++ IS=2.12534e-12 RS=1.37765 N=2 EG=0.6
++ XTI=2.96819 BV=1000 IBV=0.0001 CJO=1.84171e-11
++ VJ=1.203 M=0.356504 FC=0.5 TT=1e-09
++ KF=0 AF=1
+
+.ends moc223_MC
+
+.SUBCKT  delay_Sub  1  2  3
+RIN	1	2	1.0E9
+E1	10	0	1	2	1
+TD	10	0	11	0	Z0=50 TD=3e-06
+RD	11	0	50
+EO	30	2	11	0	1
+RO1	30	3	1
+RO2	3	2	1.0E9
+.ENDS
+
+.SUBCKT moc223_dar 1 2 3
+Q1 1 2 4 qmodel
+Q2 1 4 3 q1model 8.88022
+D1 3 1 dmodel
+R1 2 4 10000
+R2 4 3 1000
+* Default values used in dmodel
+*   EG=1.11 TT=0 BV=infinite
+.MODEL dmodel d
++ IS=1e-12 RS=9.52529 N=0.995253 XTI=2.99525
++ CJO=0 VJ=0.75 M=0.33 FC=0.5
+.MODEL qmodel npn
++ IS=2.99506e-12 BF=19.5647 NF=1.11791 VAF=56.0325
++ IKF=0.088067 ISE=1.43852e-13 NE=2.13329 BR=1.01562
++ NR=1.45409 VAR=98.9714 IKR=0.0952542 ISC=9.99997e-14
++ NC=1.99519 RB=9.57894 IRB=0.195253 RBM=9.52549
++ RE=0.0977153 RC=0.999915 XTB=0.503191 XTI=2.99553 EG=1.11591
++ CJE=2.15822e-11 VJE=0.95 MJE=0.23 TF=9.99885e-10
++ XTF=1 VTF=10 ITF=0.01 CJC=1.56635e-11
++ VJC=0.432344 MJC=0.345351 XCJC=0.9 FC=0.5
++ TR=1e-07 PTF=0 KF=0 AF=1
+.MODEL q1model npn
++ IS=2.99506e-12 BF=19.5647 NF=1.11791 VAF=56.0325
++ IKF=0.088067 ISE=1.43852e-13 NE=2.13329 BR=1.01562
++ NR=1.45409 VAR=98.9714 IKR=0.0952542 ISC=9.99997e-14
++ NC=1.99519 RB=9.57894 IRB=0.195253 RBM=9.52549
++ RE=0.0977153 RC=0.999915 XTB=0.503191 XTI=2.99553 EG=1.11591
++ CJE=2.15822e-11 VJE=0.95 MJE=0.23 TF=9.99885e-10
++ XTF=1 VTF=10 ITF=0.01 CJC=0
++ VJC=0.432344 MJC=0.345351 XCJC=0.9 FC=0.5
++ TR=1e-07 PTF=0 KF=0 AF=1
+.ENDS
+
+.SUBCKT Optocoupler_MOC223  gnd _net0 _net2 _net1 _net3 _net4 
+X2 _net3 _net4 _net1 _net0 _net2 moc223_MC
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID 70 -16 X>
+    <Line -21 6 -18 0 #000080 2 1>
+    <Line -21 -6 -18 0 #000080 2 1>
+    <Line -30 6 -9 -12 #000080 2 1>
+    <Line -30 6 9 -12 #000080 2 1>
+    <Line -30 30 0 -24 #000080 2 1>
+    <Line -30 -6 0 -24 #000080 2 1>
+    <Line 40 15 0 -30 #000080 3 1>
+    <Line 50 30 0 -15 #000080 2 1>
+    <Line 40 -5 10 -10 #000080 2 1>
+    <Arrow 40 5 10 10 6 3 #000080 2 1 1>
+    <Line 50 -15 0 -15 #000080 2 1>
+    <Line 20 -10 0 -20 #000080 2 1>
+    <Line 40 0 -10 0 #000080 2 1>
+    <Line 30 0 -10 -10 #000080 2 1>
+    <Line 4 -6 4 -4 #000080 2 1>
+    <Line -2 -12 6 6 #000080 2 1>
+    <Arrow 8 -10 10 10 9 3 #000080 2 1 1>
+    <Arrow 6 0 10 10 9 3 #000080 2 1 1>
+    <Line 2 4 4 -4 #000080 2 1>
+    <Line -4 -2 6 6 #000080 2 1>
+    <Line -45 20 0 -40 #000080 2 1>
+    <Line 65 20 0 -40 #000080 2 1>
+    <Line -45 20 110 0 #000080 2 1>
+    <Line -45 -20 110 0 #000080 2 1>
+    <.PortSym -30 -30 4 180>
+    <.PortSym -30 30 5 0>
+    <.PortSym 50 30 3 180>
+    <.PortSym 50 -30 1 0>
+    <.PortSym 20 -30 2 0>
+  </Symbol>
+</Component>
+

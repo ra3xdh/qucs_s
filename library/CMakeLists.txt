@@ -13,6 +13,7 @@ LEDs.lib
 MOSFETs.lib
 NMOSFETs.lib
 OpAmps.lib
+Optocoupler.lib
 PMOSFETs.lib
 Regulators.lib
 Substrates.lib
