@@ -219,23 +219,25 @@ void Diagram::createAxisLabels() {
     wmax = 0;
     x = -x1;
     y = y2 >> 1;
+
+    QStringList used_kernels, used_simulations;
+    for (const auto pg: Graphs) {
+        QString kernel_name = pg->Var.section('/', 0, 0);
+        QString var_name = pg->Var;
+        auto p = var_name.indexOf('/');
+        var_name = var_name.mid(p + 1);
+        QString sim_name = var_name.section('.', 0, 0);
+        if (!used_simulations.contains(sim_name))
+            used_simulations.append(sim_name);
+        if (!used_kernels.contains(kernel_name))
+            used_kernels.append(kernel_name);
+    }
+
     if (yAxis.Label.isEmpty()) {
         // draw left y-label for all graphs ------------------------------
 
         // strip simulator name and simulation name like ngspice/ac.
         // if all graphs are from the same simulator and simulation
-        QStringList used_kernels, used_simulations;
-        for (const auto pg: Graphs) {
-            QString kernel_name = pg->Var.section('/', 0, 0);
-            QString var_name = pg->Var;
-            auto p = var_name.indexOf('/');
-            var_name = var_name.mid(p + 1);
-            QString sim_name = var_name.section('.', 0, 0);
-            if (!used_simulations.contains(sim_name))
-                used_simulations.append(sim_name);
-            if (!used_kernels.contains(kernel_name))
-                used_kernels.append(kernel_name);
-        }
 
         for (Graph *pg: Graphs) {
             if (pg->yAxisNo != 0) continue;
@@ -286,15 +288,26 @@ void Diagram::createAxisLabels() {
         for (Graph *pg: Graphs) {
             if (pg->yAxisNo != 1) continue;
             if (pg->cPointsY) {
+                QString var_name = pg->Var;
+                if (!QucsSettings.fullTraceName) {
+                    if (used_kernels.count() == 1) {
+                        auto p = var_name.indexOf('/');
+                        var_name = var_name.mid(p + 1);
+                    }
+                    if (used_simulations.count() == 1) {
+                        auto p = var_name.indexOf('.');
+                        var_name = var_name.mid(p + 1);
+                    }
+                }
                 if (Name[0] != 'C') {   // location curve ?
-                    w = metrics.boundingRect(pg->Var).width() >> 1;
+                    w = metrics.boundingRect(var_name).width() >> 1;
                     if (w > wmax) wmax = w;
-                    Texts.append(new Text(x, y + w, pg->Var,
+                    Texts.append(new Text(x, y + w, var_name,
                                           pg->Color, 12.0, 0.0, -1.0));
                 } else {
-                    w = metrics.boundingRect("imag(" + pg->Var + ")").width() >> 1;
+                    w = metrics.boundingRect("imag(" + var_name + ")").width() >> 1;
                     if (w > wmax) wmax = w;
-                    Texts.append(new Text(x, y + w, "imag(" + pg->Var + ")",
+                    Texts.append(new Text(x, y + w, "imag(" + var_name + ")",
                                           pg->Color, 12.0, 0.0, -1.0));
                 }
             } else {     // if no data => <invalid>
