@@ -14,6 +14,7 @@ MOSFETs.lib
 NMOSFETs.lib
 OpAmps.lib
 Optocoupler.lib
+PhotovoltaicRelay.lib
 PMOSFETs.lib
 Regulators.lib
 Substrates.lib

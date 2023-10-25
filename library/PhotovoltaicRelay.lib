@@ -1,0 +1,213 @@
+<Qucs Library 2.0.0 "PhotovoltaicRelay">
+
+<Component CPC1018>
+  <Description>
+CPC1018 phtovoltaic relay. 
+  </Description>
+  <Model>
+.Def:PhotovoltaicRelay_CPC1018 _net0 _net1 _net2 _net3
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="CPC1018N_sub_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CPC1018N_sub.cir.lst">
+  <Spice>* Qucs 2.0.0  PhotovoltaicRelay_CPC1018.sch
+
+* IXYS-Clare CPC1018N Photovoltaic AC/DC Relay
+* Helmut Sennewald 2008
+.subckt CPC1018N A K D1 D2
+*.param IFON=1m RON=0.65 TOFF=250u COUT=25p CIO=1p
+.PARAM IFON=1m
+.PARAM RON=0.65
+.PARAM TOFF=250u
+.PARAM COUT=25p
+.PARAM CIO=1p
+D1 A N003 LED
+C1 A K 10p
+V1 N003 K 0
+R2 gs 0 1k
+C2 gs 0 {2*TOFF/1000}
+B1 0 gs I=7m*atan(abs(0.8*I(V1)/IFON))
+C4 A D2 {CIO/2}
+C5 K D1 {CIO/2}
+C7 D2 D1 {COUT}
+M1 D2 N001 N004 N004 NMOS1
+M2 D1 N005 N004 N004 NMOS1
+G1 N004 N001 gs 0 1m
+R1 N001 N004 1k
+G2 N004 N005 gs 0 1m
+R3 N005 N004 1k
+V2 N002 0 6
+D2 gs N002 DD
+.model LED D(Is=1e-16 Rs=3 N=1.5 Eg=1.8 CJO=18p TT=100n)
+.model NMOS1 NMOS(Vto=3.5 Kp={0.65/RON})
+.model DD D(Is=1e-14 N=1)
+.ends
+
+
+.SUBCKT PhotovoltaicRelay_CPC1018  gnd _net0 _net1 _net2 _net3 
+X1 _net0 _net1 _net2 _net3 CPC1018N
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 -40 -30 0 #000080 2 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 -20 10 20 #000080 2 1>
+    <Line -40 0 20 0 #000080 2 1>
+    <Line -30 20 0 -20 #000080 2 1>
+    <Line -30 -40 0 20 #000080 2 1>
+    <Line -30 0 10 -20 #000080 2 1>
+    <Rectangle -50 -70 120 120 #000080 2 1 #c0c0c0 1 0>
+    <Line 26 -43 0 26 #000080 3 1>
+    <Line 30 -41 10 0 #000080 2 1>
+    <Line 30 -19 10 0 #000080 2 1>
+    <Line 30 -30 10 0 #000080 2 1>
+    <Line 31 -30 5 -5 #000080 2 1>
+    <Line 31 -30 5 5 #000080 2 1>
+    <Line 26 -3 0 26 #000080 3 1>
+    <Line 30 -1 10 0 #000080 2 1>
+    <Line 30 21 10 0 #000080 2 1>
+    <Line 30 10 10 0 #000080 2 1>
+    <Line 31 10 5 -5 #000080 2 1>
+    <Line 31 10 5 5 #000080 2 1>
+    <Line 30 -6 0 32 #000080 3 1>
+    <Line 30 -46 0 32 #000080 3 1>
+    <Line 16 10 10 0 #000080 2 1>
+    <Line 16 -30 10 0 #000080 2 1>
+    <Line 16 10 0 -40 #000080 2 1>
+    <Line 40 10 0 -40 #000080 2 1>
+    <Line 40 -41 0 -19 #000080 2 1>
+    <Ellipse 38 -12 4 4 #000080 1 1 #000080 1 1>
+    <Line -6 -10 4 -4 #000080 2 1>
+    <Line -12 -16 6 6 #000080 2 1>
+    <Arrow -2 -14 10 10 9 3 #000080 2 1 1>
+    <Arrow -4 -4 10 10 9 3 #000080 2 1 1>
+    <Line -8 0 4 -4 #000080 2 1>
+    <Line -14 -6 6 6 #000080 2 1>
+    <Line -60 20 30 0 #000080 2 1>
+    <.PortSym -60 -40 1 0>
+    <.PortSym -60 20 2 0>
+    <.ID -30 -116 SUB>
+    <.PortSym 80 -60 3 180>
+    <.PortSym 80 40 4 180>
+    <Line 80 -60 -40 0 #000080 2 1>
+    <Line 80 40 -40 0 #000080 2 1>
+    <Line 40 40 0 -19 #000080 2 1>
+    <Ellipse 52 38 4 4 #000080 1 1 #000080 1 1>
+    <Line 54 12 0 28 #000080 2 1>
+    <Line 54 -34 -6 6 #000080 2 1>
+    <Line 60 -34 -12 0 #000080 2 1>
+    <Line 54 -60 0 26 #000080 2 1>
+    <Line 54 -34 6 6 #000080 2 1>
+    <Line 60 -28 -12 0 #000080 2 1>
+    <Ellipse 54 -12 0 1 #000080 1 1 #c0c0c0 1 1>
+    <Line 54 12 6 -6 #000080 2 1>
+    <Line 54 12 -6 -6 #000080 2 1>
+    <Line 60 6 -12 0 #000080 2 1>
+    <Line 60 12 -12 0 #000080 2 1>
+    <Line 54 -10 -14 0 #000080 2 1>
+    <Line 54 -28 0 18 #000080 2 1>
+    <Line 54 -10 0 16 #000080 2 1>
+    <Ellipse 52 -12 4 4 #000080 1 1 #000080 1 1>
+    <Ellipse 52 -62 4 4 #000080 1 1 #000080 1 1>
+  </Symbol>
+</Component>
+
+<Component VOR14642>
+  <Description>
+Vishay VO14642 photovoltaic relay
+  </Description>
+  <Model>
+.Def:PhotovoltaicRelay_VOR14642 _net0 _net1 _net2 _net3 _net4
+Sub:X1 _net0 _net1 _net2 _net3 _net4 gnd Type="VO14642_sub_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "VO14642_sub.cir.lst">
+  <Spice>* Qucs 2.0.0  PhotovoltaicRelay_VOR14642.sch
+
+* Vishay VO14642 SSR SPICE MODEL
+* 
+*					LED ANODE
+*					| LED Cathode
+*					| | Pin 4 SSR contact
+*					| | |  Pin 5 CT
+*					| | |  |  Pin 6 SSR contact
+*					| | |  |  |
+.SUBCKT VO14642     A C S1 DC S2
+W1 DC S2 Vsensor SSR_switch
+R2 DC C1 100Meg
+W2 S1 DC Vsensor SSR_switch
+F1 C C1 V1 1
+V1 A C 0
+Vsensor C1 DC 0
+.model SSR_Switch CSW(Ron=0.125 Roff=500Meg It=2mA Ih=0.5ms)
+.ENDS
+
+.SUBCKT PhotovoltaicRelay_VOR14642  gnd _net0 _net1 _net2 _net3 _net4 
+X1 _net0 _net1 _net2 _net3 _net4 VO14642
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 -40 -30 0 #000080 2 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 -20 10 20 #000080 2 1>
+    <Line -40 0 20 0 #000080 2 1>
+    <Line -30 20 0 -20 #000080 2 1>
+    <Line -30 -40 0 20 #000080 2 1>
+    <Line -30 0 10 -20 #000080 2 1>
+    <Rectangle -50 -70 120 120 #000080 2 1 #c0c0c0 1 0>
+    <Line 26 -43 0 26 #000080 3 1>
+    <Line 30 -41 10 0 #000080 2 1>
+    <Line 30 -19 10 0 #000080 2 1>
+    <Line 30 -30 10 0 #000080 2 1>
+    <Line 31 -30 5 -5 #000080 2 1>
+    <Line 31 -30 5 5 #000080 2 1>
+    <Line 26 -3 0 26 #000080 3 1>
+    <Line 30 -1 10 0 #000080 2 1>
+    <Line 30 21 10 0 #000080 2 1>
+    <Line 30 10 10 0 #000080 2 1>
+    <Line 31 10 5 -5 #000080 2 1>
+    <Line 31 10 5 5 #000080 2 1>
+    <Line 30 -6 0 32 #000080 3 1>
+    <Line 30 -46 0 32 #000080 3 1>
+    <Line 16 10 10 0 #000080 2 1>
+    <Line 16 -30 10 0 #000080 2 1>
+    <Line 16 10 0 -40 #000080 2 1>
+    <Line 40 10 0 -40 #000080 2 1>
+    <Line 40 -41 0 -19 #000080 2 1>
+    <Ellipse 38 -12 4 4 #000080 1 1 #000080 1 1>
+    <Line -6 -10 4 -4 #000080 2 1>
+    <Line -12 -16 6 6 #000080 2 1>
+    <Arrow -2 -14 10 10 9 3 #000080 2 1 1>
+    <Arrow -4 -4 10 10 9 3 #000080 2 1 1>
+    <Line -8 0 4 -4 #000080 2 1>
+    <Line -14 -6 6 6 #000080 2 1>
+    <Line -60 20 30 0 #000080 2 1>
+    <.PortSym -60 -40 1 0>
+    <.PortSym -60 20 2 0>
+    <.ID -30 -116 SUB>
+    <.PortSym 80 -60 3 180>
+    <Line 80 -60 -40 0 #000080 2 1>
+    <Line 80 40 -40 0 #000080 2 1>
+    <Line 40 40 0 -19 #000080 2 1>
+    <Ellipse 52 38 4 4 #000080 1 1 #000080 1 1>
+    <Line 54 12 0 28 #000080 2 1>
+    <Line 54 -34 -6 6 #000080 2 1>
+    <Line 60 -34 -12 0 #000080 2 1>
+    <Line 54 -60 0 26 #000080 2 1>
+    <Line 54 -34 6 6 #000080 2 1>
+    <Line 60 -28 -12 0 #000080 2 1>
+    <Ellipse 54 -12 0 1 #000080 1 1 #c0c0c0 1 1>
+    <Line 54 12 6 -6 #000080 2 1>
+    <Line 54 12 -6 -6 #000080 2 1>
+    <Line 60 6 -12 0 #000080 2 1>
+    <Line 60 12 -12 0 #000080 2 1>
+    <Line 54 -28 0 18 #000080 2 1>
+    <Line 54 -10 0 16 #000080 2 1>
+    <Ellipse 52 -12 4 4 #000080 1 1 #000080 1 1>
+    <Ellipse 52 -62 4 4 #000080 1 1 #000080 1 1>
+    <.PortSym 80 -10 4 180>
+    <.PortSym 80 40 5 180>
+    <Line 80 -10 -40 0 #000080 2 1>
+  </Symbol>
+</Component>
+
