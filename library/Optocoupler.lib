@@ -2,7 +2,7 @@
 
 <Component 4N25>
   <Description>
-4N25 optocoupler
+4N25 BJT optocoupler 
   </Description>
   <Model>
 .Def:Optocoupler_4N25 _net0 _net1 _net2 _net3
@@ -291,6 +291,110 @@ X2 _net3 _net4 _net1 _net0 _net2 moc223_MC
     <.PortSym 50 30 3 180>
     <.PortSym 50 -30 1 0>
     <.PortSym 20 -30 2 0>
+  </Symbol>
+</Component>
+
+<Component MOC3082>
+  <Description>
+MOC3082 OPTO TRIAC with zero crossing switching
+model provided by Helmut Sennewald  11/23/2008
+  </Description>
+  <Model>
+.Def:Optocoupler_MOC3082 _net0 _net3 _net1 _net2
+Sub:X1 _net0 _net3 _net1 _net2 gnd Type="MOC3082_sub_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "MOC3082_sub.cir.lst">
+  <Spice>* Qucs 2.1.0  Optocoupler_MOC3082.sch
+
+* OPTO TRIAC With Zero Crossing Switching
+* Helmut Sennewald  11/23/2008
+* 04/12/2009, change in B-sources: V(ctrl10) -> V(ctrl10,4)
+*
+* Ported to ngspice Vadim Kusnetsov 2/15/23
+*
+* MOC3082  I_trig=10mA
+*  D+  D-  MT2  MT1
+*
+.subckt moc3082_sub 1 2 3 4
+.PARAM Itrig=10m
+.PARAM RH1=20k
+.PARAM RH2=20k
+.PARAM RH3=16.7k
+Q1 vb1p vb1 4 0 NPN1
+Q2 vb1 vb1p vd1 0 PNP1
+R3 vb1 4 {RH2}
+D1 1 2 DL
+R1 ctrl10 4 1
+C1 ctrl10 4 10u
+R2 ctrl1 vb1 {RH1}
+R4 vd1 vb1p {RH3}
+B1 ctrl10 4 I=-500*I(D1)*3m/Itrig
+R7 vb2p 4 {RH3}
+R6 vd2 vb2 {RH2}
+Q3 vb2p vb2 vd2 0 NPN1
+Q4 vb2 vb2p 4 0 PNP1
+D3 vd2 3 D1
+D2 3 vd1 D1
+R5 N001 vb2 {RH1}
+E1 vd2 N001 ctrl1 4 -1
+R34 3 4 100MEG
+R12 ctrl1 4 1
+B2 ctrl1 4 V=(V(ctrl10,4)>1.45 && abs(V(34)) < 12?2:0)
+C2 ctrl1 4 1u
+B3 34 0 I=-V(3,4)/1000
+R13 34 0 1k
+C3 34 0 .1u
+.MODEL PNP1 PNP(Is=1e-15 BF=10 Cjc=10p Cje=20p Tf=0.1u Ise=1e-12)
+.MODEL NPN1 NPN(Is=1e-15 BF=10 Cjc=10p Cje=20p Tf=0.1u Ise=1e-12)
+.MODEL D1 D(Is=0.1u Rs=2 Cj0=50p)
+.MODEL DL D(Is=1e-20 Rs=5)
+*.ends moc3082_sub
+.ends moc3082
+
+.SUBCKT Optocoupler_MOC3082  gnd _net0 _net3 _net1 _net2 
+X1 _net0 _net3 _net1 _net2 moc3082_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -40 -96 X>
+    <.PortSym -60 -30 1 0>
+    <.PortSym -60 30 2 0>
+    <.PortSym 80 -30 3 180>
+    <.PortSym 80 30 4 180>
+    <Line -30 -30 -30 0 #000080 2 1>
+    <Line -60 30 30 0 #000080 2 1>
+    <Line -40 -10 20 0 #000080 2 1>
+    <Line -40 -10 10 20 #000080 2 1>
+    <Line -40 10 20 0 #000080 2 1>
+    <Line -30 30 0 -20 #000080 2 1>
+    <Line -30 -30 0 20 #000080 2 1>
+    <Line -30 10 10 -20 #000080 2 1>
+    <Rectangle -50 -50 120 100 #000080 2 1 #c0c0c0 1 0>
+    <Line 40 6 0 24 #000080 2 1>
+    <Line 40 -30 0 24 #000080 2 1>
+    <Line 58 6 -36 0 #000080 2 1>
+    <Line 22 10 5 0 #000080 2 3>
+    <Line 27 10 4 -4 #000080 2 3>
+    <Line 31 6 -9 -12 #000080 2 1>
+    <Line 31 6 9 -12 #000080 2 1>
+    <Line 49 -6 9 12 #000080 2 1>
+    <Line 49 -6 -9 12 #000080 2 1>
+    <Line 58 -6 -36 0 #000080 2 1>
+    <Line -10 2 4 -4 #000080 2 1>
+    <Line -16 -4 6 6 #000080 2 1>
+    <Arrow -6 -2 10 10 9 3 #000080 2 1 1>
+    <Arrow -8 8 10 10 9 3 #000080 2 1 1>
+    <Line -12 12 4 -4 #000080 2 1>
+    <Line -18 6 6 6 #000080 2 1>
+    <Rectangle 6 14 24 20 #000080 2 1 #c0c0c0 1 0>
+    <Line 22 14 0 -4 #000080 2 3>
+    <Text 8 18 8 #000080 0 "ZCC">
+    <Line 14 14 0 -28 #000080 2 3>
+    <Line 14 -14 26 0 #000080 2 3>
+    <Line 30 24 10 0 #000080 2 3>
+    <Line 80 30 -40 0 #000080 2 1>
+    <Line 80 -30 -40 0 #000080 2 1>
   </Symbol>
 </Component>
 
