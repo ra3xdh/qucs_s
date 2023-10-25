@@ -8,7 +8,7 @@
 * Diagrams are placed on schematic and `*.dpl` files are disabled by default  #309 
 * Backport of the active Legendre filter synthesis from Qucs-0.0.20rc2 #318
 * Added SPICE entry for MUT and MUT2 devices
-* Backported circular waveguide and tapered line symbols form Qucs-0.0.20rc2
+* Backported circular waveguide and tapered line symbols from Qucs-0.0.20rc2
 * Added zoom to selection mode #327
 * Toolbar icons replaced by SVG; improved look for HiDPI #323 #304
 * Implemented automatic generation of high resolution device icons #334 #304
@@ -28,10 +28,15 @@
 * Fixed load symbol for Verilog-A device #321
 * Fixed component rotation with right mouse button
 
+## Library
+
+* Added optocoupler library #213
+* Added photovoltaic relays library #222
+
 ## Documentation
 
 * Added subcircuit symbol templates to `share/qucs_s/examples/symbols` (by @tomhajjar)
-* Added sections on tuner simulation mode and RF simulation to the Qucs-S tutorial
+* Added sections on tuner mode and RF simulation to the Qucs-S tutorial
 
 ## Packaging
 
