@@ -183,12 +183,17 @@ void ExternSimDialog::slotProcessOutput()
         break;
     }
 
-    if (out.contains("warning",Qt::CaseInsensitive)||
-        out.contains("error",Qt::CaseInsensitive)) {
+    if (out.contains("error",Qt::CaseInsensitive)) {
         addLogEntry(tr("There were simulation errors. Please check log."),
                     this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
         emit warnings();
-    } else {
+    } else if (out.contains("warning",Qt::CaseInsensitive)) {
+        addLogEntry(tr("There were simulation warnings. Please check log."),
+                    this->style()->standardIcon(QStyle::SP_MessageBoxWarning));
+        addLogEntry(tr("Simulation finished. Now place diagram on schematic to plot the result."),
+                    QIcon(":/bitmaps/svg/ok_apply.svg"));
+        emit warnings();
+    } else  {
         addLogEntry(tr("Simulation successful. Now place diagram on schematic to plot the result."),
                     QIcon(":/bitmaps/svg/ok_apply.svg"));
         emit success();
