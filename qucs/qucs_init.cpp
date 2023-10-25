@@ -758,8 +758,7 @@ void QucsApp::initMenuBar()
   toolMenu->addAction(callFilter);
   toolMenu->addAction(callActiveFilter);
   toolMenu->addAction(callLine);
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
-      toolMenu->addAction(callMatch);
+  toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
   toolMenu->addAction(callPwrComb);
   toolMenu->addSeparator();
