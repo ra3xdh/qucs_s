@@ -22,6 +22,7 @@ Transistors.lib
 Varistors.lib
 Z-Diodes.lib
 SpiceOpamp.lib
+Thyristor.lib
 Transformers.lib
 Xanalogue.lib
 XyceDigital.lib
