@@ -1729,7 +1729,7 @@ bool QucsApp::saveAs()
     }
 
     // list of known file extensions
-    QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct;net;qnet;txt";
+    QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct;net;qnet;ckt;cir;sp;txt";
     QStringList extlist = ext.split (';');
 
     if(isTextDocument (w))
@@ -1738,6 +1738,7 @@ bool QucsApp::saveAs()
 	       tr("Verilog-A Sources")+" (*.va);;"+
 	       tr("Octave Scripts")+" (*.m *.oct);;"+
 	       tr("Qucs Netlist")+" (*.net *.qnet);;"+
+           tr("SPICE Netlist")+" (*.ckt *.cir *.sp);;"+
 	       tr("Plain Text")+" (*.txt);;"+
 	       tr("Any File")+" (*)";
     else
