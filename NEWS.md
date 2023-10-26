@@ -18,6 +18,7 @@
 * Added Tstart option for Spectrum simulaiton #336
 * Added low voltage for VRect source #310
 * Russian translation update #292 #324
+* Added SPICE group for project tree
 
 ## Bugfixes
 
@@ -30,6 +31,7 @@
 
 ## Library
 
+* Added thyristor library #212
 * Added optocoupler library #213
 * Added photovoltaic relays library #222
 
