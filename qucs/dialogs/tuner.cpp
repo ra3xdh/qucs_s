@@ -85,6 +85,7 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     else
     {//The property value contains only numbers
       numValue = val.toFloat();
+      has_unit = false;
     }
        if ((unit.length() <= 1) && (!pp->Description.isEmpty()))
        {//It comes with no units... so let's try to find a suitable unit
@@ -115,10 +116,12 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
           }
           if (found) break;
         }
+        has_unit = found;
        }
        else
        {//The value comes with unit
           if (magnitudeIndex != 5) unit = unit.mid(1);
+          has_unit = true;
        }
 
         //Finally, add the unit to the QStringList for adding it to the scale comboboxes later
@@ -270,7 +273,7 @@ void tunerElement::resetValue()
  */
 void tunerElement::updateProperty()
 {
-    prop->Value = value->text().append(tr(" ") + ValueUnitsCombobox->currentText());
+    prop->Value = value->text().append(ValueUnitsCombobox->currentText());
         qDebug() << "Updated property: " << prop->Value;
 }
 
