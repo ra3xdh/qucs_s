@@ -64,7 +64,7 @@ CCCS::CCCS()
 
   Props.append(new Property("G", "1", true,
 		QObject::tr("forward transfer factor")));
-  Props.append(new Property("T", "0", false, QObject::tr("delay time")));
+  Props.append(new Property("T", "0", false, QObject::tr("delay time (Qucsator only)")));
 }
 
 CCCS::~CCCS()
