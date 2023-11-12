@@ -27,6 +27,7 @@
 #include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
 #include "misc.h"
+#include "qucs.h"
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -145,12 +146,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
           <<"echo \"\" > spice4qucs.cir.noise\n"
           <<"echo \"\" > spice4qucs.cir.pz\n";
 
-    bool load_osdi = false;
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->SpiceModel == "N") load_osdi = true;
-    }
 
-    if (load_osdi) {
+    if (!QucsMain->ProjName.isEmpty()) {
+        // always load osdi from the project directory
         QStringList osdi_ext;
         osdi_ext<<"*.osdi";
         QStringList osdi_files = QucsSettings.QucsWorkDir.entryList(osdi_ext,QDir::Files);
@@ -160,6 +158,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             stream<<QString("pre_osdi '%1'\n").arg(abs_file);
         }
     }
+
 
     outputs.clear();
 
