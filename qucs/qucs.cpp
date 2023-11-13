@@ -2994,6 +2994,11 @@ void QucsApp::slotSymbolEdit()
   // in a text document (e.g. VHDL)
   if (isTextDocument (w)) {
     TextDoc *TDoc = (TextDoc*)w;
+    if (!TDoc->DocName.endsWith(".va")) {
+        QMessageBox::warning(this,tr("Error"),
+                tr("Symbol editing supported only for schematics and Verilog-A documents!"));
+        return;
+    }
     // set 'DataDisplay' document of text file to symbol file
     QFileInfo Info(TDoc->DocName);
     QString sym = Info.completeBaseName()+".sym";
