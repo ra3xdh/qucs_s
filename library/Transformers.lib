@@ -211,14 +211,14 @@ https://qucs-help.readthedocs.org/en/spice4qucs/index.html.
   <Spice>
 .SUBCKT Transformers_TransformerPS1S2  gnd nPplus nPneg nSplus nSneg nSPct L1=0.5 L2=0.125 L3=0.125 K12=0.99 K13=0.99 K23=0.99 Rp=2 Rs1=1 Rs2=1 
 L1 nP1  nPneg {L1}
-L2 nSPlus  nSPct {L2}
+L2 nSPplus  nSPct {L2}
 L3 nSPct  nSPneg {L3}
 R1 nPplus nP1  {RP}
 K13 L1 L3 {K13} 
 K12 L1 L2 {K12} 
 K23 L2 L3 {K23} 
 R2 nSneg nSPneg  {RS2}
-R3 nSPlus nSplus  {RS1}
+R3 nSPplus nSplus  {RS1}
 .ENDS
   </Spice>
 
