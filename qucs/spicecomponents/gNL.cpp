@@ -29,7 +29,7 @@ gNL::gNL()
   // Value, Table and POLY forms are allowed: should work with ngspice and Xyce.
 
   Arcs.append(new qucs::Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::blue,3)));
-  Texts.append(new Text(30, 12,"GNL",Qt::blue,10.0,0.0,-1.0));
+  Texts.append(new Text(36, 4,"GNL",Qt::blue,10.0,0.0,-1.0));
   Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));

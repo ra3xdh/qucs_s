@@ -31,7 +31,7 @@ iPWL::iPWL()
 
   // normal voltage source symbol
   Arcs.append(new qucs::Arc(-12,-12, 24, 24, 0, 16*360,QPen(Qt::darkRed,3)));
-  Texts.append(new Text(30, 12,"PWL",Qt::darkRed,10.0,0.0,-1.0));
+  Texts.append(new Text(36, 4,"PWL",Qt::darkRed,10.0,0.0,-1.0));
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
    Lines.append(new qucs::Line( -7,  0,  7,  0,QPen(Qt::darkRed,3)));

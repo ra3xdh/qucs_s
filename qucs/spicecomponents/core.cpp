@@ -48,8 +48,8 @@ core::core()
   Ports.append(new Port( -40,    0));  // Pin
   Ports.append(new Port(  40,    0));  // Pout
 
-  x1 = -35; y1 = -30;
-  x2 =  35; y2 =  30;
+  x1 = -45; y1 = -30;
+  x2 =  45; y2 =  30;
 
   tx = x1+5;
   ty = y2+5;
