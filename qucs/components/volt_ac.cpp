@@ -54,6 +54,10 @@ Volt_ac::Volt_ac()
 		QObject::tr("initial phase in degrees")));
   Props.append(new Property("Theta", "0", false,
 		QObject::tr("damping factor (transient simulation only)")));
+  Props.append(new Property("VO", "0", false,
+                            QObject::tr("offset voltage (SPICE only)")));
+  Props.append(new Property("TD", "0", false,
+                            QObject::tr("delay time (SPICE only)")));
 
   rotate();  // fix historical flaw
 }
@@ -96,6 +100,26 @@ QString Volt_ac::spice_netlist(bool)
     theta.remove(' ');
     if (theta.isEmpty()) theta="0";
 
-    s += QString(" DC 0 SIN(0 %1 %2 0 %3 %4) AC %5 ACPHASE %6\n").arg(volts).arg(freq).arg(theta).arg(phase).arg(volts).arg(phase);
+    QString VO = spicecompat::normalize_value(getProperty("VO")->Value);
+    QString TD = spicecompat::normalize_value(getProperty("TD")->Value);
+
+    s += QString(" DC %1 SIN(%1 %2 %3 %4 %5 %6) AC %7 ACPHASE %8\n")
+            .arg(VO).arg(volts).arg(freq).arg(TD).arg(theta).arg(phase).arg(volts).arg(phase);
     return s;
+}
+
+QString Volt_ac::netlist()
+{
+  QString s = Model+":"+Name;
+
+  // output all node names
+  for (Port *p1 : Ports)
+    s += " "+p1->Connection->Name;   // node names
+
+  // output all properties
+  for(unsigned int i=0; i <= Props.count()-3; i++)
+    if(Props.at(i)->Name != "Symbol")
+      s += " "+Props.at(i)->Name+"=\""+Props.at(i)->Value+"\"";
+
+  return s + '\n';
 }
