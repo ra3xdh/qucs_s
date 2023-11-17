@@ -958,7 +958,12 @@ void QucsApp::slotSearchComponent(const QString &searchText)
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
             //match
             QString icon_path = misc::getIconPath(QString (File), qucs::compIcons);
-            QListWidgetItem *icon = new QListWidgetItem(QPixmap(icon_path), Name);
+            QListWidgetItem *icon = new QListWidgetItem(Name);
+            if (QFileInfo::exists(icon_path)) {
+                icon->setIcon(QPixmap(icon_path));
+            } else {
+                icon->setIcon(*(*modit)->icon);
+            }
             icon->setToolTip(it + ": " + Name);
             // add component category and module indexes to the icon
             iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
