@@ -349,7 +349,6 @@ void Module::registerModules (void) {
       REGISTER_SOURCE_1 (vTRNOISE);
       REGISTER_SOURCE_1 (iTRNOISE);
       REGISTER_SOURCE_1 (vTRRANDOM);
-      REGISTER_SOURCE_1 (Vac_SPICE);
   //}
 
   // probes
