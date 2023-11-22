@@ -18,6 +18,8 @@
 #ifndef MARKER_H
 #define MARKER_H
 
+#include <vector>
+
 #include "element.h"
 #include "viewpainter.h"
 
