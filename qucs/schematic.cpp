@@ -2245,11 +2245,13 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 
 #if QT_VERSION >= 0x060000
   auto ev_pos = Event->position();
+  QMouseEvent e(QEvent::MouseButtonPress, ev_pos, ev_pos,
+                Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 #else
   auto ev_pos = Event->pos();
-#endif
   QMouseEvent e(QEvent::MouseButtonPress, ev_pos,
                 Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#endif
   int x = int(ev_pos.x()/Scale) + ViewX1;
   int y = int(ev_pos.y()/Scale) + ViewY1;
 
@@ -2343,8 +2345,8 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
     }
 
 #if QT_VERSION >= 0x060000
-    QMouseEvent e(QEvent::MouseMove, Event->position(), Qt::NoButton,
-		  Qt::NoButton, Qt::NoModifier);
+    QMouseEvent e(QEvent::MouseMove, Event->position(), Event->position(),
+          Qt::NoButton, Qt::NoButton, Qt::NoModifier);
 #else
     QMouseEvent e(QEvent::MouseMove, Event->pos(), Qt::NoButton,
           Qt::NoButton, Qt::NoModifier);

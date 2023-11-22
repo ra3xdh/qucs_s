@@ -123,7 +123,11 @@ bool Graph::load(const QString& _s)
 
   QString n;
   n  = s.section(' ',1,1);    // Color
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+  Color.fromString(n);
+#else
   Color.setNamedColor(n);
+#endif
   if(!Color.isValid()) return false;
 
   n  = s.section(' ',2,2);    // Thick

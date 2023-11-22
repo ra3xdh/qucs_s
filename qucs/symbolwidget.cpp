@@ -591,7 +591,11 @@ int SymbolWidget::analyseLine(const QString& Row)
   }
   else if(s == "Text") {  // must be last in order to reuse "s" *********
     if(!getCompLineIntegers(Row, &i1, &i2, &i3))  return -1;
-    Color.setNamedColor(Row.section(' ',4,4));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    Color.fromString(Row.section(' ', 4, 4));
+#else
+    Color.setNamedColor(Row.section(' ', 4, 4));
+#endif
     if(!Color.isValid()) return -1;
 
     s = Row.mid(Row.indexOf('"')+1);    // Text (can contain " !!!)
@@ -627,7 +631,11 @@ bool SymbolWidget::getPen(const QString& s, QPen& Pen, int i)
 
   n = s.section(' ',i,i);    // color
   QColor co;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+  co.fromString(n);
+#else
   co.setNamedColor(n);
+#endif
   Pen.setColor(co);
   if(!Pen.color().isValid()) return false;
 
@@ -652,7 +660,11 @@ bool SymbolWidget::getBrush(const QString& s, QBrush& Brush, int i)
 
   n = s.section(' ',i,i);    // fill color
   QColor co;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+  co.fromString(n);
+#else
   co.setNamedColor(n);
+#endif
   Brush.setColor(co);
   if(!Brush.color().isValid()) return false;
 

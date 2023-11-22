@@ -1332,7 +1332,7 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
                 if ((*it).startsWith('I')) suffix = ".Ib";
                 else suffix = ".Vb";
                 int idx = it->indexOf('(');
-                int cnt = it->count();
+                int cnt = it->size();
                 *it = it->right(cnt-idx-1);
                 it->remove(')');
                 *it += suffix;

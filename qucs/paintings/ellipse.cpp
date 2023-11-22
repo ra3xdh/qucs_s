@@ -138,7 +138,11 @@ bool qucs::Ellipse::load(const QString& s)
 
   n  = s.section(' ',5,5);    // color
   QColor co;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+  co.fromString(n);
+#else
   co.setNamedColor(n);
+#endif
   Pen.setColor(co);
   if(!Pen.color().isValid()) return false;
 
@@ -151,7 +155,11 @@ bool qucs::Ellipse::load(const QString& s)
   if(!ok) return false;
 
   n  = s.section(' ',8,8);    // fill color
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+  co.fromString(n);
+#else
   co.setNamedColor(n);
+#endif
   Brush.setColor(co);
   if(!Brush.color().isValid()) return false;
 

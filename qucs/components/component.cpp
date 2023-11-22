@@ -1290,7 +1290,11 @@ int Component::analyseLine(const QString &Row, int numProps) {
         return 1;
     } else if (s == "Text") {  // must be last in order to reuse "s" *********
         if (!getIntegers(Row, &i1, &i2, &i3, 0, &i4)) return -1;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+        Color.fromString(Row.section(' ', 4, 4));
+#else
         Color.setNamedColor(Row.section(' ', 4, 4));
+#endif
         if (!Color.isValid()) return -1;
 
         s = Row.mid(Row.indexOf('"') + 1);    // Text (can contain " !!!)
@@ -1373,7 +1377,11 @@ bool Component::getPen(const QString &s, QPen &Pen, int i) {
 
     n = s.section(' ', i, i);    // color
     QColor co;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    co.fromString(n);
+#else
     co.setNamedColor(n);
+#endif
     Pen.setColor(co);
     if (!Pen.color().isValid()) return false;
 
@@ -1397,7 +1405,11 @@ bool Component::getBrush(const QString &s, QBrush &Brush, int i) {
 
     n = s.section(' ', i, i);    // fill color
     QColor co;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    co.fromString(n);
+#else
     co.setNamedColor(n);
+#endif
     Brush.setColor(co);
     if (!Brush.color().isValid()) return false;
 

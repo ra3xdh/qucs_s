@@ -92,10 +92,22 @@ bool loadSettings()
     if(settings.contains("LargeFontSize"))QucsSettings.largeFontSize=settings.value("LargeFontSize").toDouble(); // use toDouble() as it can interpret the string according to the current locale
     if(settings.contains("maxUndo"))QucsSettings.maxUndo=settings.value("maxUndo").toInt();
     if(settings.contains("NodeWiring"))QucsSettings.NodeWiring=settings.value("NodeWiring").toInt();
-    if(settings.contains("BGColor"))QucsSettings.BGColor.setNamedColor(settings.value("BGColor").toString());
     if(settings.contains("Editor"))QucsSettings.Editor=settings.value("Editor").toString();
     if(settings.contains("FileTypes"))QucsSettings.FileTypes=settings.value("FileTypes").toStringList();
     if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    if(settings.contains("BGColor"))QucsSettings.BGColor.fromString(settings.value("BGColor").toString());
+    if(settings.contains("Comment"))QucsSettings.Comment.fromString(settings.value("Comment").toString());
+    if(settings.contains("String"))QucsSettings.String.fromString(settings.value("String").toString());
+    if(settings.contains("Integer"))QucsSettings.Integer.fromString(settings.value("Integer").toString());
+    if(settings.contains("Real"))QucsSettings.Real.fromString(settings.value("Real").toString());
+    if(settings.contains("Character"))QucsSettings.Character.fromString(settings.value("Character").toString());
+    if(settings.contains("Type"))QucsSettings.Type.fromString(settings.value("Type").toString());
+    if(settings.contains("Attribute"))QucsSettings.Attribute.fromString(settings.value("Attribute").toString());
+    if(settings.contains("Directive"))QucsSettings.Directive.fromString(settings.value("Directive").toString());
+    if(settings.contains("Task"))QucsSettings.Task.fromString(settings.value("Task").toString());
+#else
+    if(settings.contains("BGColor"))QucsSettings.BGColor.setNamedColor(settings.value("BGColor").toString());
     if(settings.contains("Comment"))QucsSettings.Comment.setNamedColor(settings.value("Comment").toString());
     if(settings.contains("String"))QucsSettings.String.setNamedColor(settings.value("String").toString());
     if(settings.contains("Integer"))QucsSettings.Integer.setNamedColor(settings.value("Integer").toString());
@@ -105,6 +117,7 @@ bool loadSettings()
     if(settings.contains("Attribute"))QucsSettings.Attribute.setNamedColor(settings.value("Attribute").toString());
     if(settings.contains("Directive"))QucsSettings.Directive.setNamedColor(settings.value("Directive").toString());
     if(settings.contains("Task"))QucsSettings.Task.setNamedColor(settings.value("Task").toString());
+#endif
 
     if (settings.contains("panelIconsTheme")) QucsSettings.panelIconsTheme = settings.value("panelIconsTheme").toInt();
     else QucsSettings.panelIconsTheme = qucs::autoIcons;
@@ -823,8 +836,8 @@ int main(int argc, char *argv[])
   QucsSettings.maxUndo = 20;
   QucsSettings.NodeWiring = 0;
 
-  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling,true);
 #if QT_VERSION < 0x060000
+  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling,true);
   QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps,true);
 #endif
 

@@ -1323,7 +1323,11 @@ bool Diagram::load(const QString &Line, QTextStream *stream) {
 
     n = s.section(' ', 6, 6);    // color for GridPen
     QColor co;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    co.fromString(n);
+#else
     co.setNamedColor(n);
+#endif
     GridPen.setColor(co);
     if (!GridPen.color().isValid()) return false;
 

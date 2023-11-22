@@ -156,7 +156,11 @@ bool GraphicText::load(const QString& s)
   if(!ok) return false;
 
   n  = s.section(' ',4,4);    // Color
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+  Color.fromString(n);
+#else
   Color.setNamedColor(n);
+#endif
   if(!Color.isValid()) return false;
 
   n  = s.section(' ',5,5);    // Angle

@@ -371,8 +371,8 @@ void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel,
             pd->Bounding(x1,y1,x2,y2);
             updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
 
-            for (auto& pg: qAsConst(pd->Graphs)) {
-                for (auto& pm: qAsConst(pg->Markers)) {
+            for (auto& pg: std::as_const(pd->Graphs)) {
+                for (auto& pm: std::as_const(pg->Markers)) {
                     if (pm->isSelected) {
                         //int x1,y1,x2,y2;
                         pm->Bounding(x1,y1,x2,y2);

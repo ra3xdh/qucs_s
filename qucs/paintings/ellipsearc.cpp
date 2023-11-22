@@ -129,7 +129,11 @@ bool EllipseArc::load(const QString& s)
 
   n  = s.section(' ',7,7);    // color
   QColor co;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+  co.fromString(n);
+#else
   co.setNamedColor(n);
+#endif
   Pen.setColor(co);
   if(!Pen.color().isValid()) return false;
 
