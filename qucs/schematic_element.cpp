@@ -2860,10 +2860,12 @@ void Schematic::deleteComp(Component *c)
     Components->removeRef(c);   // delete component
 }
 
-Component* Schematic::getComponentByName(const QString& compname)
+Component *Schematic::getComponentByName(const QString& compname) const
 {
-    for(Component *pc = DocComps.first(); pc != nullptr; pc = DocComps.next()) {
-        if (pc->Name == compname) return pc;
+    for(Component *pc = Components->first(); pc != nullptr; pc = Components->next()) {
+        if (pc->Name.toLower() == compname.toLower()) {
+            return pc;
+        }
     }
     return nullptr;
 }

@@ -252,7 +252,7 @@ public:
   Component* searchSelSubcircuit();
   Component* selectedComponent(int, int);
   void       deleteComp(Component*);
-  Component* getComponentByName(const QString& compname);
+  Component* getComponentByName(const QString& compname) const;
 
   void     oneLabel(Node*);
   int      placeNodeLabel(WireLabel*);
