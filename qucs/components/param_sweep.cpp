@@ -116,11 +116,11 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     s += QString("foreach  %1_act ").arg(step_var);
 
     if((type == "list") || (type == "const")) {
-        QStringList List;
-        List = getProperty("Values")->Value.split(";");
-
+        QString list_str = getProperty("Values")->Value;
+        list_str.remove(0,1); // remove  [ ]
+        list_str.chop(1);
+        QStringList List = list_str.split(";");
         for(int i = 0; i < List.length(); i++) {
-            List[i].remove(QRegularExpression("[A-Z a-z [\\] s/' '//g]"));
             s += QString("%1 ").arg(List[i]);
         }
     } else {
