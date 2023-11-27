@@ -25,6 +25,7 @@
 #include "symbolwidget.h"
 #include "main.h"
 #include "qucslib_common.h"
+#include "misc.h"
 
 /*!
  * \file symbolwidget.cpp
@@ -591,7 +592,7 @@ int SymbolWidget::analyseLine(const QString& Row)
   }
   else if(s == "Text") {  // must be last in order to reuse "s" *********
     if(!getCompLineIntegers(Row, &i1, &i2, &i3))  return -1;
-    Color.setNamedColor(Row.section(' ',4,4));
+    Color=misc::ColorFromString(Row.section(' ',4,4));
     if(!Color.isValid()) return -1;
 
     s = Row.mid(Row.indexOf('"')+1);    // Text (can contain " !!!)
@@ -626,8 +627,7 @@ bool SymbolWidget::getPen(const QString& s, QPen& Pen, int i)
   QString n;
 
   n = s.section(' ',i,i);    // color
-  QColor co;
-  co.setNamedColor(n);
+  QColor co = misc::ColorFromString(n);
   Pen.setColor(co);
   if(!Pen.color().isValid()) return false;
 
@@ -651,8 +651,7 @@ bool SymbolWidget::getBrush(const QString& s, QBrush& Brush, int i)
   QString n;
 
   n = s.section(' ',i,i);    // fill color
-  QColor co;
-  co.setNamedColor(n);
+  QColor co=misc::ColorFromString(n);
   Brush.setColor(co);
   if(!Brush.color().isValid()) return false;
 

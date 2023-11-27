@@ -137,8 +137,7 @@ bool qucs::Ellipse::load(const QString& s)
   if(!ok) return false;
 
   n  = s.section(' ',5,5);    // color
-  QColor co;
-  co.setNamedColor(n);
+  QColor co = misc::ColorFromString(n);
   Pen.setColor(co);
   if(!Pen.color().isValid()) return false;
 
@@ -151,7 +150,7 @@ bool qucs::Ellipse::load(const QString& s)
   if(!ok) return false;
 
   n  = s.section(' ',8,8);    // fill color
-  co.setNamedColor(n);
+  co = misc::ColorFromString(n);
   Brush.setColor(co);
   if(!Brush.color().isValid()) return false;
 

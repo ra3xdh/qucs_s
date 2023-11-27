@@ -128,8 +128,7 @@ bool EllipseArc::load(const QString& s)
   if(!ok) return false;
 
   n  = s.section(' ',7,7);    // color
-  QColor co;
-  co.setNamedColor(n);
+  QColor co = misc::ColorFromString(n);
   Pen.setColor(co);
   if(!Pen.color().isValid()) return false;
 

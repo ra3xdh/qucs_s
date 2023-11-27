@@ -66,7 +66,7 @@ private:
 
   int  analyseLine(const QString&);
 
-  bool getPen  (const QString&, QPen&, int);
+  static bool getPen  (const QString&, QPen&, int);
   bool getBrush(const QString&, QBrush&, int);
 
   bool dragNDrop;

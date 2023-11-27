@@ -232,8 +232,8 @@ void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
                 if ((it->endsWith(".Vt"))||(it->endsWith(".It"))) sim = "tran";
                 if ((it->endsWith(".V"))||(it->endsWith(".I"))) sim = "dc";
                 QString suffix = it->section('.',1,1);
-                int idx = it->indexOf('.');
-                int cnt = it->count();
+                auto idx = it->indexOf('.');
+                auto cnt = it->size();
                 it->chop(cnt-idx);
                 if (suffix.toUpper().startsWith("I"))
                     *it = QString("V%1#branch").arg(*it);

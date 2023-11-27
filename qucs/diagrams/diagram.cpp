@@ -1322,8 +1322,7 @@ bool Diagram::load(const QString &Line, QTextStream *stream) {
     hideLines = (c & 2) != 0;
 
     n = s.section(' ', 6, 6);    // color for GridPen
-    QColor co;
-    co.setNamedColor(n);
+    QColor co = misc::ColorFromString(n);
     GridPen.setColor(co);
     if (!GridPen.color().isValid()) return false;
 

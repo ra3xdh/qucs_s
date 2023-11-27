@@ -23,6 +23,7 @@
 #include "arrow.h"
 #include "arrowdialog.h"
 #include "schematic.h"
+#include "misc.h"
 #include <cmath>
 
 #include <QPolygon>
@@ -176,8 +177,7 @@ bool Arrow::load(const QString& s)
   if(!ok) return false;
 
   n  = s.section(' ',7,7);    // color
-  QColor co;
-  co.setNamedColor(n);
+  QColor co = misc::ColorFromString(n);
   Pen.setColor(co);
   if(!Pen.color().isValid()) return false;
 
