@@ -92,19 +92,19 @@ bool loadSettings()
     if(settings.contains("LargeFontSize"))QucsSettings.largeFontSize=settings.value("LargeFontSize").toDouble(); // use toDouble() as it can interpret the string according to the current locale
     if(settings.contains("maxUndo"))QucsSettings.maxUndo=settings.value("maxUndo").toInt();
     if(settings.contains("NodeWiring"))QucsSettings.NodeWiring=settings.value("NodeWiring").toInt();
-    if(settings.contains("BGColor"))QucsSettings.BGColor.setNamedColor(settings.value("BGColor").toString());
+    if(settings.contains("BGColor"))QucsSettings.BGColor = misc::ColorFromString(settings.value("BGColor").toString());
     if(settings.contains("Editor"))QucsSettings.Editor=settings.value("Editor").toString();
     if(settings.contains("FileTypes"))QucsSettings.FileTypes=settings.value("FileTypes").toStringList();
     if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
-    if(settings.contains("Comment"))QucsSettings.Comment.setNamedColor(settings.value("Comment").toString());
-    if(settings.contains("String"))QucsSettings.String.setNamedColor(settings.value("String").toString());
-    if(settings.contains("Integer"))QucsSettings.Integer.setNamedColor(settings.value("Integer").toString());
-    if(settings.contains("Real"))QucsSettings.Real.setNamedColor(settings.value("Real").toString());
-    if(settings.contains("Character"))QucsSettings.Character.setNamedColor(settings.value("Character").toString());
-    if(settings.contains("Type"))QucsSettings.Type.setNamedColor(settings.value("Type").toString());
-    if(settings.contains("Attribute"))QucsSettings.Attribute.setNamedColor(settings.value("Attribute").toString());
-    if(settings.contains("Directive"))QucsSettings.Directive.setNamedColor(settings.value("Directive").toString());
-    if(settings.contains("Task"))QucsSettings.Task.setNamedColor(settings.value("Task").toString());
+    if(settings.contains("Comment"))QucsSettings.Comment=misc::ColorFromString(settings.value("Comment").toString());
+    if(settings.contains("String"))QucsSettings.String=misc::ColorFromString(settings.value("String").toString());
+    if(settings.contains("Integer"))QucsSettings.Integer=misc::ColorFromString(settings.value("Integer").toString());
+    if(settings.contains("Real"))QucsSettings.Real=misc::ColorFromString(settings.value("Real").toString());
+    if(settings.contains("Character"))QucsSettings.Character=misc::ColorFromString(settings.value("Character").toString());
+    if(settings.contains("Type"))QucsSettings.Type=misc::ColorFromString(settings.value("Type").toString());
+    if(settings.contains("Attribute"))QucsSettings.Attribute=misc::ColorFromString(settings.value("Attribute").toString());
+    if(settings.contains("Directive"))QucsSettings.Directive=misc::ColorFromString(settings.value("Directive").toString());
+    if(settings.contains("Task"))QucsSettings.Task=misc::ColorFromString(settings.value("Task").toString());
 
     if (settings.contains("panelIconsTheme")) QucsSettings.panelIconsTheme = settings.value("panelIconsTheme").toInt();
     else QucsSettings.panelIconsTheme = qucs::autoIcons;
@@ -823,8 +823,8 @@ int main(int argc, char *argv[])
   QucsSettings.maxUndo = 20;
   QucsSettings.NodeWiring = 0;
 
-  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling,true);
 #if QT_VERSION < 0x060000
+  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling,true);
   QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps,true);
 #endif
 
@@ -955,7 +955,7 @@ int main(int argc, char *argv[])
     QucsSettings.Task = Qt::darkRed;
 
   QucsSettings.sysDefaultFont = QApplication::font();
-  a.setFont(QucsSettings.appFont);
+  QApplication::setFont(QucsSettings.appFont);
 
   QTranslator tor( 0 );
   QString lang = QucsSettings.Language;
@@ -965,7 +965,7 @@ int main(int argc, char *argv[])
 //    lang = QTextCodec::locale();
   }
   tor.load( QString("qucs_") + lang, QucsSettings.LangDir);
-  a.installTranslator( &tor );
+  QApplication::installTranslator( &tor );
 
   // This seems to be necessary on a few system to make strtod()
   // work properly !???!

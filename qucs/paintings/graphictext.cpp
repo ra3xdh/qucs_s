@@ -156,7 +156,7 @@ bool GraphicText::load(const QString& s)
   if(!ok) return false;
 
   n  = s.section(' ',4,4);    // Color
-  Color.setNamedColor(n);
+  Color = misc::ColorFromString(n);
   if(!Color.isValid()) return false;
 
   n  = s.section(' ',5,5);    // Angle

@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "graph.h"
+#include "misc.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -123,7 +124,7 @@ bool Graph::load(const QString& _s)
 
   QString n;
   n  = s.section(' ',1,1);    // Color
-  Color.setNamedColor(n);
+  Color = misc::ColorFromString(n);
   if(!Color.isValid()) return false;
 
   n  = s.section(' ',2,2);    // Thick

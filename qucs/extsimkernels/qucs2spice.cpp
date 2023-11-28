@@ -34,9 +34,9 @@ namespace qucs2spice
    QString convert_rcl(const QString& line);
    QString convert_header(QString line);
    QString convert_diode(QString line,bool xyce=false);
-   QString convert_jfet(QString line, bool xyce=false);
+   QString convert_jfet(const QString& line, bool xyce=false);
    QString convert_mosfet(QString line, bool xyce=false);
-   QString convert_bjt(QString line);
+   QString convert_bjt(const QString& line);
    QString convert_cccs(const QString& line);
    QString convert_ccvs(const QString& line);
    QString convert_ccs(const QString& line, bool voltage);
@@ -131,8 +131,8 @@ QString qucs2spice::convert_rcl(const QString& line)
     s += " " + lst.takeFirst();
     s += " " + lst.takeFirst() + " ";
     s1 = lst.takeFirst().remove("\"");
-    int idx = s1.indexOf('=');
-    s += s1.right(s1.count()-idx-1);
+    auto idx = s1.indexOf('=');
+    s += s1.right(s1.size()-idx-1);
     s += "\n";
     return s;
 }
@@ -153,8 +153,8 @@ QString qucs2spice::convert_diode(QString line,bool xyce)
     QString s="";
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
     QString name = lst.takeFirst();
-    int idx = name.indexOf(':');
-    name =  name.right(name.count()-idx-1); // name
+    auto idx = name.indexOf(':');
+    name =  name.right(name.size()-idx-1); // name
     QString K = lst.takeFirst();
     QString A = lst.takeFirst();
     s += QString("D%1 %2 %3 DMOD_%4 \n").arg(name).arg(A).arg(K).arg(name);
@@ -170,8 +170,8 @@ QString qucs2spice::convert_mosfet(QString line, bool xyce)
     QString s="";
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
     QString name = lst.takeFirst();
-    int idx = name.indexOf(':');
-    name =  name.right(name.count()-idx-1); // name
+    auto idx = name.indexOf(':');
+    name =  name.right(name.size()-idx-1); // name
     QString G = lst.takeFirst();
     QString D = lst.takeFirst();
     QString S = lst.takeFirst();
@@ -207,13 +207,13 @@ QString qucs2spice::convert_mosfet(QString line, bool xyce)
     return s;
 }
 
-QString qucs2spice::convert_jfet(QString line, bool xyce)
+QString qucs2spice::convert_jfet(const QString& line, bool xyce)
 {
     QString s="";
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
     QString name = lst.takeFirst();
-    int idx = name.indexOf(':');
-    name =  name.right(name.count()-idx-1); // name
+    auto idx = name.indexOf(':');
+    name =  name.right(name.size()-idx-1); // name
     QString G = lst.takeFirst();
     QString D = lst.takeFirst();
     QString S = lst.takeFirst();
@@ -221,7 +221,7 @@ QString qucs2spice::convert_jfet(QString line, bool xyce)
     QStringList par_lst;
     par_lst.clear();
     for(int i=0;i<lst.count();i++) {
-        QString s1 = lst.at(i);
+        const QString& s1 = lst.at(i);
         if (s1.startsWith("Type=\"nfet\"")) {
             Typ = "NJF";
         } else if (s1.startsWith("Type=\"pfet\"")) {
@@ -238,13 +238,13 @@ QString qucs2spice::convert_jfet(QString line, bool xyce)
     return s;
 }
 
-QString qucs2spice::convert_bjt(QString line)
+QString qucs2spice::convert_bjt(const QString& line)
 {
     QString s="";
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
     QString name = lst.takeFirst();
-    int idx = name.indexOf(':');
-    name =  name.right(name.count()-idx-1); // name
+    auto idx = name.indexOf(':');
+    name =  name.right(name.size()-idx-1); // name
     QString B = lst.takeFirst();
     QString C = lst.takeFirst();
     QString E = lst.takeFirst();
@@ -293,8 +293,8 @@ QString qucs2spice::convert_ccs(const QString& line, bool voltage)
 {
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
     QString name = lst.takeFirst();
-    int idx = name.indexOf(':');
-    name =  name.right(name.count()-idx-1); // name
+    auto idx = name.indexOf(':');
+    name =  name.right(name.size()-idx-1); // name
 
     QString nod0 = lst.takeFirst();
     QString nod1 = lst.takeFirst();
@@ -302,7 +302,7 @@ QString qucs2spice::convert_ccs(const QString& line, bool voltage)
     QString nod3 = lst.takeFirst();
     QString s1 = lst.takeFirst().remove("\"");
     idx = s1.indexOf('=');
-    QString val = s1.right(s1.count()-idx-1);
+    QString val = s1.right(s1.size()-idx-1);
     QString s;
     if (voltage) s="H";
     else s="F";
@@ -325,8 +325,8 @@ QString qucs2spice::convert_vcs(const QString& line,bool voltage)
 {
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
     QString name = lst.takeFirst();
-    int idx = name.indexOf(':');
-    name =  name.right(name.count()-idx-1); // name
+    auto idx = name.indexOf(':');
+    name =  name.right(name.size()-idx-1); // name
 
     QString nod0 = lst.takeFirst();
     QString nod1 = lst.takeFirst();
@@ -334,7 +334,7 @@ QString qucs2spice::convert_vcs(const QString& line,bool voltage)
     QString nod3 = lst.takeFirst();
     QString s1 = lst.takeFirst().remove("\"");
     idx = s1.indexOf('=');
-    QString val = s1.right(s1.count()-idx-1);
+    QString val = s1.right(s1.size()-idx-1);
 
     QString s;
     if (voltage) s="E";
@@ -352,8 +352,8 @@ QString qucs2spice::convert_dc_src(const QString& line)
     s += " " + lst.takeFirst();
     s += " " + lst.takeFirst() + " ";
     s1 = lst.takeFirst().remove("\"");
-    int idx = s1.indexOf('=');
-    QString val = s1.right(s1.count()-idx-1);
+    auto idx = s1.indexOf('=');
+    QString val = s1.right(s1.size()-idx-1);
     s += "DC " + val + "\n";
     return s;
 }

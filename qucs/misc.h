@@ -51,6 +51,7 @@ namespace misc {
   QString StringNum  (double, char form='g', int Precision=3);
   void    str2num    (const QString&, double&, QString&, double&);
   QString num2str    (double);
+  QColor ColorFromString(const QString& color);
   QString StringNiceNum(double);
   void    convert2Unicode(QString&);
   void    convert2ASCII(QString&);

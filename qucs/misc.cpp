@@ -284,6 +284,18 @@ QString misc::num2str(double Num)
   return Str;
 }
 
+QColor misc::ColorFromString(const QString& color)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    return QColor::fromString(color);
+#else
+    QColor c;
+    c.setNamedColor(color);
+    return c;
+#endif
+
+}
+
 // #########################################################################
 void misc::convert2Unicode(QString& Text)
 {
