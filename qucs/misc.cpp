@@ -286,7 +286,7 @@ QString misc::num2str(double Num)
 
 QColor misc::ColorFromString(const QString& color)
 {
-#if QT_VERSION >= 0x060000
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
     return QColor::fromString(color);
 #else
     QColor c;
