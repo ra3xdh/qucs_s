@@ -37,6 +37,23 @@
 #include <QtWidgets>
 
 
+QString misc::getWindowTitle()
+{
+    QString title = QUCS_NAME " " PACKAGE_VERSION;
+    if (title.endsWith(".0")) {
+        title.chop(2);
+    }
+#if defined(GIT)
+    QString hash = GIT;
+    if (hash != "unknown") {
+        title = title + "-" + hash;
+    }
+#endif
+
+    return title;
+}
+
+
 bool misc::isDarkTheme()
 {
     QLabel *lbl = new QLabel("check dark");

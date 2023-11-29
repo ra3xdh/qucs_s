@@ -228,6 +228,7 @@ public:
 
   QAction *activeAction;    // pointer to the action selected by the user
   bool TuningMode;
+  QString windowTitle;
 
 private:
 // ********* Widgets on the main area **********************************

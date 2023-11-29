@@ -1016,7 +1016,7 @@ int main(int argc, char *argv[])
     }
     else if (!strcmp(argv[i], "-v") || !strcmp(argv[i], "--version")) {
 #ifdef GIT
-      fprintf(stdout, "Qucs " PACKAGE_VERSION " (" GIT ")" "\n");
+      fprintf(stdout, "qucs s" PACKAGE_VERSION " (" GIT ")" "\n");
 #else
       fprintf(stdout, "Qucs " PACKAGE_VERSION "\n");
 #endif
