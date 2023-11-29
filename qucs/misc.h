@@ -93,6 +93,7 @@ namespace misc {
   QStringList parseCmdArgs(const QString &program);
   QString getIconPath(const QString &file, int icon_type);
   bool isDarkTheme();
+  QString getWindowTitle();
   QString wildcardToRegularExpression(const QString &wc_str, const bool enableEscaping);
 
   bool simulatorExists(const QString &exe_file);

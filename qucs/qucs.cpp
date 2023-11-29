@@ -101,7 +101,8 @@ QucsApp::QucsApp()
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 #endif
 
-  setWindowTitle(QUCS_NAME " " PACKAGE_VERSION);
+  windowTitle = misc::getWindowTitle();
+  setWindowTitle(windowTitle);
 
   QucsSettings.hasDarkTheme = misc::isDarkTheme();
 
@@ -1422,7 +1423,7 @@ void QucsApp::openProject(const QString& Path)
   QDir parentDir = QucsSettings.QucsWorkDir;
   parentDir.cdUp();
     // show name in title of main window
-  setWindowTitle(QUCS_NAME " " PACKAGE_VERSION  " - " + tr("Project: ") + ProjName + " (" +  parentDir.absolutePath() + ")");
+  setWindowTitle( tr("Project: ") + ProjName + " (" +  parentDir.absolutePath() + ") - " + windowTitle);
 }
 
 // ----------------------------------------------------------
@@ -1482,7 +1483,7 @@ void QucsApp::slotMenuProjClose()
   view->drawn = false;
 
   slotResetWarnings();
-  setWindowTitle(QUCS_NAME " " PACKAGE_VERSION " - " + tr("No project"));
+  setWindowTitle(windowTitle);
   QucsSettings.QucsWorkDir.setPath(QDir::homePath()+QDir::toNativeSeparators ("/.qucs"));
   octave->adjustDirectory();
 
@@ -2003,6 +2004,19 @@ void QucsApp::slotChangeView()
   }
 
   Doc->becomeCurrent(true);
+
+//  TODO proper window title
+//  QFileInfo Info (Doc-> DocName);
+//
+//  if (!ProjName.isEmpty()) {
+//    QDir parentDir = QucsSettings.QucsWorkDir;
+//    parentDir.cdUp();
+//    setWindowTitle(tr("Project: ") + ProjName + " (" + parentDir.absolutePath() + ") "
+//                   + windowTitle);
+//  } else {
+//    setWindowTitle(Info.fileName() + " (" + Info.filePath() +") - " + windowTitle);
+//  }
+
   view->drawn = false;
 
   HierarchyHistory.clear();
