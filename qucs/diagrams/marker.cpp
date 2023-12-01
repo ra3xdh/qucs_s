@@ -210,8 +210,14 @@ void Marker::createText()
   pz[1] = VarDep[1];
 
   // now actually create text.
+  bool engNotation = pGraph->parentDiagram()->engineeringNotation;
   for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
-    Text += pD->Var + ": " + QString::number(VarPos[ii],'g',Precision) + "\n";
+    Text += pD->Var + ": ";
+    if (engNotation) {
+        Text += misc::num2str(VarPos[ii],Precision) + "\n";
+    } else {
+        Text += QString::number(VarPos[ii],'g',Precision) + "\n";
+    }
   }
 
   Text += pGraph->Var + ": ";
@@ -230,7 +236,11 @@ void Marker::createText()
   } else {
       double mag = sqrt(pz[0]*pz[0] + pz[1]*pz[1]);
       double val = qucs::num2db(mag,ax->Units);
-      Text += QString::number(val,'g',Precision);
+      if (engNotation) {
+          Text += misc::num2str(val,Precision) + "\n";
+      } else {
+          Text += QString::number(val,'g',Precision);
+      }
   }
 
   assert(diag());
