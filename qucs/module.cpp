@@ -254,6 +254,7 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (Inductor);
   REGISTER_LUMPED_1 (IndQ);
   REGISTER_LUMPED_1 (CapQ);
+  REGISTER_LUMPED_1 (potentiometer);
   REGISTER_LUMPED_1 (Mutual);
   REGISTER_LUMPED_1 (Mutual2);
   REGISTER_LUMPED_1 (MutualX);
@@ -434,7 +435,6 @@ void Module::registerModules (void) {
       // verilog-a devices
       REGISTER_VERILOGA_1 (mod_amp);
       REGISTER_VERILOGA_1 (log_amp);
-      REGISTER_VERILOGA_1 (potentiometer);
       REGISTER_VERILOGA_1 (MESFET);
       REGISTER_VERILOGA_1 (photodiode);
       REGISTER_VERILOGA_1 (phototransistor);

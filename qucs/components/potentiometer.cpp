@@ -10,23 +10,24 @@
 
 #include "potentiometer.h"
 #include "extsimkernels/spicecompat.h"
+#include "node.h"
 
 potentiometer::potentiometer()
 {
   Description = QObject::tr ("Potentiometer verilog device");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
-  Props.append (new Property ("R_pot", "1e4", false,
+  Props.append (new Property ("R_pot", "10k", true,
     QObject::tr ("nominal device resistance")
     +" ("+QObject::tr ("Ohm")+")"));
-  Props.append (new Property ("Rotation", "120", false,
+  Props.append (new Property ("Rotation", "120", true,
     QObject::tr ("shaft/wiper arm rotation")
     +" ("+QObject::tr ("degrees")+")"));
   Props.append (new Property ("Taper_Coeff", "0", false,
     QObject::tr ("resistive law taper coefficient")));
   Props.append (new Property ("LEVEL", "1", false,
     QObject::tr ("device type selector")+" [1, 2, 3]"));
-  Props.append (new Property ("Max_Rotation", "240.0", false,
+  Props.append (new Property ("Max_Rotation", "240.0", true,
     QObject::tr ("maximum shaft/wiper rotation")
     +" ("+QObject::tr ("degrees")+")"));
   Props.append (new Property ("Conformity", "0.2", false,
@@ -51,6 +52,7 @@ potentiometer::potentiometer()
   tx = x1 + 8;
   ty = y2 + 4;
   Model = "potentiometer";
+  SpiceModel = "R";
   Name  = "POT";
 }
 
@@ -107,4 +109,18 @@ void potentiometer::createSymbol()
 
   x1 = -40; y1 = -20;
   x2 =  40; y2 =  15;
+}
+
+QString potentiometer::spice_netlist(bool isXyce)
+{
+    QString s;
+    QString R = getProperty("R_pot")->Value;
+    QString rot = getProperty("Rotation")->Value;
+    QString max_rot = getProperty("Max_Rotation")->Value;
+    QString pin1 = Ports.at(0)->Connection->Name;
+    QString pin2 = Ports.at(1)->Connection->Name;
+    QString pin3 = Ports.at(2)->Connection->Name;
+    s += QString("R%1_1 %2 %3 R='(%4)*(%5)/(%6)'\n").arg(Name).arg(pin1).arg(pin2).arg(R).arg(rot).arg(max_rot);
+    s += QString("R%1_2 %2 %3 R='(%4)*(1.0-(%5)/(%6))'\n").arg(Name).arg(pin2).arg(pin3).arg(R).arg(rot).arg(max_rot);
+    return s;
 }
