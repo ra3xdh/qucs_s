@@ -193,11 +193,11 @@ QString BJT_SPICE::spice_netlist(bool)
         s += " "+ nam+" ";   // node names
     }
  
-    QString Q= Props.at(2)->Value;
-    QString Q_Line_2= Props.at(3)->Value;
-    QString Q_Line_3= Props.at(4)->Value;
-    QString Q_Line_4= Props.at(5)->Value;
-    QString Q_Line_5= Props.at(6)->Value;
+    QString Q= Props.at(3)->Value;
+    QString Q_Line_2= Props.at(4)->Value;
+    QString Q_Line_3= Props.at(5)->Value;
+    QString Q_Line_4= Props.at(6)->Value;
+    QString Q_Line_5= Props.at(7)->Value;
 
     if(  Q.length()  > 0)          s += QString("%1").arg(Q);
     if(  Q_Line_2.length() > 0 )   s += QString("\n%1").arg(Q_Line_2);
