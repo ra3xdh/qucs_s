@@ -192,9 +192,9 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
                     ph = b;
                 } else {
                     if ( dB )
-                        mag = pow(10, a / 20.0);
-                    ph = mag * sin(ph);
-                    mag *= cos(ph);
+                        a = pow(10, a / 20.0);
+                    ph = a * sin(b);
+                    mag = a * cos(b);
                 }
                 (*stream) << QString("+ %1Hz %2 %3\n").arg(freqs[f] * funits).arg(mag).arg(ph + offset);
             }
