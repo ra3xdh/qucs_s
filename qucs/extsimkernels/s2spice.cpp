@@ -129,6 +129,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     while(in_stream.readLineInto(&next_line)) {
         if(next_line.isEmpty()) continue;
         if(next_line.at(0)=='#') continue;
+        if(next_line.at(0)=='!') continue;
         tmp_lst = next_line.split(" ", qucs::SkipEmptyParts);
         numf = f + 1;
         freqs[f] = tmp_lst.at(0).toDouble();
