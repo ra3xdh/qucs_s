@@ -23,6 +23,7 @@
 
 #include "misc.h"
 #include "s2spice.h"
+#include "main.h"
 
 #define MAXLINE 500
 #define MAXFREQS 16001
@@ -193,8 +194,8 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
                 } else {
                     if ( dB )
                         a = pow(10, a / 20.0);
-                    ph = a * sin(b);
-                    mag = a * cos(b);
+                    ph = a * sin(b * pi / 180);
+                    mag = a * cos(b * pi / 180);
                 }
                 (*stream) << QString("+ %1Hz %2 %3\n").arg(freqs[f] * funits).arg(mag).arg(ph + offset);
             }
