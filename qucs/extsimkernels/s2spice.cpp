@@ -76,7 +76,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     /* read and decode format line */
 
    QString next_line;
-   while(!in_stream.readLineInto(&next_line)) {
+   while(in_stream.readLineInto(&next_line)) {
        if (next_line.at(0) == '#') break;
    }
 
