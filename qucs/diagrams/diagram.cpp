@@ -85,7 +85,7 @@ Diagram::Diagram(int _cx, int _cy) {
     rotZ = 225;
     hideLines = true;  // hide invisible lines
 
-    engineeringNotation = false;
+    engineeringNotation = true;
 
     Type = isDiagram;
     isSelected = false;
