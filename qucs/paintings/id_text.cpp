@@ -168,7 +168,7 @@ bool ID_Text::getSelected(float fX, float fY, float)
 
 // --------------------------------------------------------------------------
 // Rotates around the center.
-void ID_Text::rotate()
+void ID_Text::rotate(int, int)
 {
 }
 

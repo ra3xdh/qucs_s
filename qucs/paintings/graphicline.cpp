@@ -291,14 +291,25 @@ void GraphicLine::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
 
 // --------------------------------------------------------------------------
 // Rotates around the center.
-void GraphicLine::rotate()
+void GraphicLine::rotate(int xc, int yc)
 {
-  cx += (x2>>1) - (y2>>1);
-  cy += (x2>>1) + (y2>>1);
+    int xr1 = cx - xc;
+    int yr1 = cy - yc;
+    int xr2 = cx + x2 - xc;
+    int yr2 = cy + y2 - yc;
 
-  int tmp = x2;
-  x2  =  y2;
-  y2  = -tmp;
+    int tmp = xr2;
+    xr2  =  yr2;
+    yr2  = -tmp;
+
+    tmp = xr1;
+    xr1  =  yr1;
+    yr1  = -tmp;
+
+    cx = xr1 + xc;
+    cy = yr1 + yc;
+    x2 = xr2 - xr1;
+    y2 = yr2 - yr1;
 }
 
 // --------------------------------------------------------------------------

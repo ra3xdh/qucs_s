@@ -40,7 +40,7 @@ public:
   bool getSelected(float, float, float);
   void Bounding(int&, int&, int&, int&);
 
-  void rotate();
+  void rotate(int, int);
   void mirrorX();
   void mirrorY();
 
