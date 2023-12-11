@@ -204,7 +204,7 @@ void PortSymbol::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
 
 // --------------------------------------------------------------------------
 // Rotates around the center.
-void PortSymbol::rotate()
+void PortSymbol::rotate(int, int)
 {
   if(Angel < 270)  Angel += 90;
   else  Angel = 0;

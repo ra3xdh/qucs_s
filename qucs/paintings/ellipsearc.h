@@ -45,7 +45,7 @@ public:
   bool resizeTouched(float, float, float);
   void MouseResizeMoving(int, int, Schematic*);
 
-  void rotate();
+  void rotate(int, int);
   void mirrorX();
   void mirrorY();
   bool Dialog();

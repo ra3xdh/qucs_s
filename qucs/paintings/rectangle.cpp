@@ -342,13 +342,25 @@ bool qucs::Rectangle::getSelected(float fX, float fY, float w)
 
 // --------------------------------------------------------------------------
 // Rotates around the center.
-void qucs::Rectangle::rotate()
+void qucs::Rectangle::rotate(int xc, int yc)
 {
-  cy += (y2-x2) >> 1;
-  cx += (x2-y2) >> 1;
-  int tmp = x2;
-  x2 = y2;
-  y2 = tmp;
+    int xr1 = cx - xc;
+    int yr1 = cy - yc;
+    int xr2 = cx + x2 - xc;
+    int yr2 = cy + y2 - yc;
+
+    int tmp = xr2;
+    xr2  =  yr2;
+    yr2  = -tmp;
+
+    tmp = xr1;
+    xr1  =  yr1;
+    yr1  = -tmp;
+
+    cx = xr1 + xc;
+    cy = yr1 + yc;
+    x2 = xr2 - xr1;
+    y2 = yr2 - yr1;
 }
 
 // --------------------------------------------------------------------------

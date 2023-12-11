@@ -43,7 +43,7 @@ public:
   virtual bool resizeTouched(float, float, float) { return false; };
   virtual void MouseResizeMoving(int, int, Schematic*) {};
 
-  virtual void rotate() {};
+  virtual void rotate(int, int) {};
   virtual void mirrorX() {};
   virtual void mirrorY() {};
   virtual bool Dialog() { return false; };

@@ -51,7 +51,7 @@ public:
   void paint(ViewPainter*);
   bool getSelected(float, float, float);
 
-  void rotate();
+  void rotate(int, int);
   void mirrorX();
   void mirrorY();
   bool Dialog();
