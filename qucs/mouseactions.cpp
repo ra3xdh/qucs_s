@@ -1330,6 +1330,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             // enlarge viewarea if component lies outside the view
             Comp->entireBounds(x1, y1, x2, y2, Doc->textCorr());
             Doc->enlargeView(x1, y1, x2, y2);
+            Doc->setOnGrid(Comp->cx,Comp->cy);
 
             drawn = false;
             Doc->viewport()->update();
@@ -1358,6 +1359,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             Comp->paintScheme(Doc); // erase old component scheme
             Doc->viewport()->repaint();
             Comp->rotate();
+            Doc->setOnGrid(Comp->cx,Comp->cy);
             Comp->paintScheme(Doc); // paint new component scheme
             break;
 
