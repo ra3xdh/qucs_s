@@ -1330,7 +1330,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             // enlarge viewarea if component lies outside the view
             Comp->entireBounds(x1, y1, x2, y2, Doc->textCorr());
             Doc->enlargeView(x1, y1, x2, y2);
-            Doc->setOnGrid(Comp->cx,Comp->cy);
+            //Doc->setOnGrid(Comp->cx,Comp->cy);
 
             drawn = false;
             Doc->viewport()->update();
