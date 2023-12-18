@@ -1077,9 +1077,12 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
             return;
 
         case isDiagramHScroll: // scroll in tabular ?
-            MAy1 = MAx1;
-
         case isDiagramVScroll:
+            if (focusElement->Type == isDiagramHScroll)
+            {
+                MAy1 = MAx1;
+            }
+
             focusElement->Type = isDiagram;
 
             No = ((TabDiagram *) focusElement)->scroll(MAy1);
@@ -1799,7 +1802,7 @@ void MouseActions::moveElements(Schematic *Doc, int &x1, int &y1)
 // -----------------------------------------------------------
 void MouseActions::rotateElements(Schematic *Doc, int &x1, int &y1)
 {
-    int x2, y2;
+    int x2;
     Element *pe;
     Doc->setOnGrid(x1, y1);
 

@@ -88,7 +88,6 @@ nr_double_t erf(const nr_double_t );
 //
 nr_double_t ceil(const nr_double_t );
 nr_double_t floor(const nr_double_t );
-nr_double_t fmod(const nr_double_t ); //FIXME
 nr_double_t trunc(const nr_double_t ); // c++11
 nr_double_t round(const nr_double_t ); // c++11
 

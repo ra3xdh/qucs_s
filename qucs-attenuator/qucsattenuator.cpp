@@ -239,6 +239,7 @@ void QucsAttenuator::slotQuit()
   tmp = y();
   tmp = width();
   tmp = height();
+  Q_UNUSED(tmp);
 
   qApp->quit();
 }

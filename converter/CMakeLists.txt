@@ -32,7 +32,7 @@ ENDIF()
 # This is a HACK to get arround a PATH issue with Qt Creator on OSX.
 # It seams impossible to pass a custom PATH to Qt Creator on OSX, ie, cannot prepend `/usr/local/bin/` for intance.
 # The FIND_PACKAGE fails. For now we provide a fallback with a custom FIND_PROGRAM. The variable BISON_DIR is also available.
-FIND_PACKAGE(BISON 2.4 REQUIRED)
+FIND_PACKAGE(BISON 3.0 REQUIRED)
 IF(BISON_FOUND)
   #MESSAGE(STATUS "Found bison: ${BISON_EXECUTABLE} / Version: ${BISON_VERSION}" )
 ENDIF()
@@ -96,7 +96,7 @@ FOREACH( type ${ParserTypes} )
   # Create custom Bison
   SET(BO_${type}
     ${CMAKE_CURRENT_BINARY_DIR}/parse_${type}.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/tokens_${type}.h )
+    ${CMAKE_CURRENT_BINARY_DIR}/parse_${type}.hpp )
   ADD_CUSTOM_COMMAND(
     OUTPUT ${BO_${type}}
     COMMAND ${BISON_EXECUTABLE}

@@ -53,7 +53,6 @@ class strlist
   char * last (void) const;
   int index (char *);
   static strlist * join (strlist *, strlist *);
-  void del (strlist *);
   char * toString (const char * concat = " ");
 
  private:

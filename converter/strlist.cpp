@@ -150,22 +150,6 @@ char * strlist::first (void) const {
   return s ? s->str : NULL;
 }
 
-/* The function removes each occurrence of the given string list entry
-   from the string list object. */
-void strlist::del (strlist * cand) {
-  if (cand == NULL) return;
-  struct strlist_t * next;
-  strlist * res = new strlist ();
-  while (root) {
-    next = root->next;
-    if (cand->contains (root->str) == 0) res->append (root->str);
-    free (root->str);
-    free (root);
-    root = next;
-  }
-  *this = *res;
-}
-
 /* The function joins the given string lists to each other and returns
    the resulting list. */
 strlist * strlist::join (strlist * pre, strlist * post) {

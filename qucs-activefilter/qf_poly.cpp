@@ -1255,8 +1255,6 @@ void qf_poly::to_roots (void) {
     exit (-1);
   }
 
-  int status;
-
   if ((rep == ROOTS) || (rep == BOTH))
     return;			// Nothing to do
 
@@ -1275,7 +1273,7 @@ void qf_poly::to_roots (void) {
 
   qf_scm (m);
   qf_bcm (m);
-  status = qf_qrc (m, rts);
+  qf_qrc (m, rts);
 
   // root solving qr method failed to converge
   for (unsigned i = 0; i < 2 * d; i++) {
