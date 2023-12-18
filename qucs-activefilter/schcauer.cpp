@@ -120,7 +120,7 @@ void SchCauer::calcHighPass()
 
 void SchCauer::calcBandPass()
 {
-    double  R1,R2,R3,R4,R5,R6,R7,C1,C2;
+    double  R1,R2,R3,R4,R5,R6,C1,C2;
     double  W0 = 2*pi*F0;
     double  Kv1 = pow(Kv,1.0/order);
     int cnt = 1;
@@ -150,7 +150,6 @@ void SchCauer::calcBandPass()
         R5 = R3;
         R4 = (Kv1/mu)*sqrt(C/A)*R5;
         R6 = mu*R2/(mu-1);
-        R7 = mu*R2;
 
         RC_elements current_section;
         current_section.N = cnt;
@@ -172,7 +171,6 @@ void SchCauer::calcBandPass()
         R5 = R3;
         R4 = (Kv1/mu)*sqrt(C/A)*R5;
         R6 = mu*R2/(mu-1);
-        R7 = mu*R2;
 
         current_section.N = cnt;
         current_section.R1 = 1000*R1;

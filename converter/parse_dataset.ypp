@@ -52,7 +52,7 @@ using namespace qucs;
 
 %}
 
-%name-prefix "dataset_"
+%define api.prefix {dataset_}
 
 %token InvalidCharacter
 %token Identifier

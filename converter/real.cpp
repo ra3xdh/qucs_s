@@ -252,14 +252,6 @@ nr_double_t floor( nr_double_t arg) {
   return std::floor(arg);
 }
 
-nr_double_t fmod( nr_double_t arg) {
-#ifdef HAVE_STD_TRUNC
-  return std::fmod(arg);
-#else
-  return fmod(arg);
-#endif
-}
-
 nr_double_t trunc( nr_double_t arg) {
 #ifdef HAVE_STD_TRUNC
   return std::trunc(arg);
