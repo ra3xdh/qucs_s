@@ -593,7 +593,9 @@ QString SpiceFile::spice_netlist(bool)
     QList<int> seq;
     seq.clear();
     for(int i=0;i<nod_lst.count();i++) {
-        seq.append(ports_lst.indexOf(nod_lst.at(i)));
+        int idx = ports_lst.indexOf(nod_lst.at(i));
+        if (idx >= 0)
+            seq.append(ports_lst.indexOf(nod_lst.at(i)));
     }
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
