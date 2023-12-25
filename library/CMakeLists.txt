@@ -1,6 +1,7 @@
 
 SET(COMPLIBS
 555_timer.lib
+AudioIC.lib
 Bridges.lib
 BJT_Extended.lib
 Cores.lib

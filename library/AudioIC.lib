@@ -1,0 +1,650 @@
+<Qucs Library 2.1.0 "AudioIC">
+
+<Component LM386>
+  <Description>
+LM386 0.3W 4-18V audio amplified 
+  </Description>
+  <Model>
+.Def:AudioIC_LM386 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="LM386_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "LM386.cir.lst">
+  <Spice>* Qucs 2.1.0  AudioIC_LM386.sch
+
+* lm386 subcircuit model follows:
+
+************************************original* IC pins:     2   3   7   1   8   5   6   4
+* IC pins:     1   2   3   4   5   6   7   8
+*              |   |   |   |   |   |   |   |
+.subckt lm386_sub g1  inn inp gnd out  vs byp g8
+************************************original*.subckt lm386 inn inp byp  g1  g8 out  vs gnd
+
+* input emitter-follower buffers:
+
+q1 gnd inn 10011 ddpnp
+r1 inn gnd 50k
+q2 gnd inp 10012 ddpnp
+r2 inp gnd 50k
+
+* differential input stage, gain-setting
+* resistors, and internal feedback resistor:
+
+q3 10013 10011 10008 ddpnp
+q4 10014 10012 g1 ddpnp
+r3 vs byp 15k
+r4 byp 10008 15k
+r5 10008 g8 150
+r6 g8 g1 1.35k
+r7 g1 out 15k
+
+* input stage current mirror:
+
+q5 10013 10013 gnd ddnpn
+q6 10014 10013 gnd ddnpn
+
+* voltage gain stage & rolloff cap:
+
+q7 10017 10014 gnd ddnpn
+c1 10014 10017 15pf
+
+* current mirror source for gain stage:
+
+i1 10002 vs dc 5m
+q8 10004 10002 vs ddpnp
+q9 10002 10002 vs ddpnp
+
+* Sziklai-connected push-pull output stage:
+
+q10 10018 10017 out ddpnp
+q11 10004 10004 10009 ddnpn 100
+q12 10009 10009 10017 ddnpn 100
+q13 vs 10004 out ddnpn 100
+q14 out 10018 gnd ddnpn 100
+
+* generic transistor models generated
+* with MicroSim's PARTs utility, using
+* default parameters except Bf:
+
+.model ddnpn NPN(Is=10f Xti=3 Eg=1.11 Vaf=100
++ Bf=400 Ise=0 Ne=1.5 Ikf=0 Nk=.5 Xtb=1.5 Var=100
++ Br=1 Isc=0 Nc=2 Ikr=0 Rc=0 Cjc=2p Mjc=.3333
++ Vjc=.75 Fc=.5 Cje=5p Mje=.3333 Vje=.75 Tr=10n
++ Tf=1n Itf=1 Xtf=0 Vtf=10)
+
+.model ddpnp PNP(Is=10f Xti=3 Eg=1.11 Vaf=100
++ Bf=200 Ise=0 Ne=1.5 Ikf=0 Nk=.5 Xtb=1.5 Var=100
++ Br=1 Isc=0 Nc=2 Ikr=0 Rc=0 Cjc=2p Mjc=.3333
++ Vjc=.75 Fc=.5 Cje=5p Mje=.3333 Vje=.75 Tr=10n
++ Tf=1n Itf=1 Xtf=0 Vtf=10)
+
+.ends
+
+.SUBCKT AudioIC_LM386  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 lm386_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 -60 0 120 #000080 2 1>
+    <Line -10 -60 90 60 #000080 2 1>
+    <Line 80 0 20 0 #000080 2 1>
+    <Line -10 60 90 -60 #000080 2 1>
+    <Line 10 -50 0 -30 #000080 2 1>
+    <Line 10 50 0 30 #000080 2 1>
+    <Text -30 -80 12 #000000 0 "VDD">
+    <Text -30 60 12 #000000 0 "VSS">
+    <Line -30 -30 20 0 #000080 2 1>
+    <Line 0 -35 0 10 #ff0000 0 1>
+    <Line -5 -30 10 0 #ff0000 0 1>
+    <Line -30 30 20 0 #000080 2 1>
+    <Line -5 30 10 0 #000000 2 1>
+    <Line 40 -30 0 -50 #000080 2 1>
+    <Line 50 80 0 -60 #000080 2 1>
+    <Text 40 -80 12 #000000 0 "G1">
+    <Text 70 -80 12 #000000 0 "G2">
+    <Line 70 -10 0 -70 #000080 2 1>
+    <Text 50 30 12 #000000 0 "BYP">
+    <.PortSym 40 -80 1 0>
+    <.PortSym 70 -80 8 0>
+    <.PortSym 100 0 5 0>
+    <.PortSym -30 -30 3 0>
+    <.PortSym -30 30 2 0>
+    <.PortSym 10 80 4 0>
+    <.PortSym 10 -80 6 0>
+    <.PortSym 50 80 7 0>
+    <.ID 90 24 X>
+  </Symbol>
+</Component>
+
+<Component LM3886>
+  <Description>
+LM3886 68W audio amplifier. The model works only using LTSPICE compatibility mode. 
+  </Description>
+  <Model>
+.Def:AudioIC_LM3886 _net0 _net1 _net2 _net3 _net4 _net5
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 gnd Type="LM3886_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "LM3886.cir.lst">
+  <Spice>* Qucs 2.1.0  AudioIC_LM3886.sch
+
+.SUBCKT lm3886_sub Vip Vin VDD VSS Vout MUTE
+IS2         VDD 19 200N
+IS3         18 VSS -210N
+Vos         19 20 1M
+XU7         VDD VSS Vimon PD ILOAD_PD_0
+XU2         12 10 11 GNDF PD GBW_SLEW_SE_0
++ PARAMS: AOL=115 GBW=8MEG SRP=19.1MEG SRN=19.1MEG IT=1M VON=0.5 ROFF=1M 
+XU3         14 13 PD OUT_CURRENT_CLAMP_PD_0
++ PARAMS: RON=0.1 ROFF=100MEG VON=0.5 IMAX=11.5 IMIN=-11.5 
+XU5         MUTE PD VDD VSS IV110_0
+XU4         VDD GNDF 15 16 GNDF PSRR_0
++ PARAMS: PSRR=120 FPSRR=8K 
+XU_TF       11 17 GNDF TF_0
++ PARAMS: FZ1=10G FZ2=10G FZ3=10G FZ4=10G FZ5=10G FP1=10E6 FP2=10G FP3=10G
++ FP4=10G
+XU1         VDD VSS PD IQ_IOFF_0
++ PARAMS: VON=0.5 IQQ=50M IOFF=0.5M 
+XD4         VSS 18 IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD3         18 VDD IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD2         VSS 19 IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD1         19 VDD IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XU_GND      VDD VSS GNDF GND_FLOAT_0
+XU6         13 Vout Vimon AMETER_0
++ PARAMS: GAIN=1
+XU_CLAW     VDD VSS 17 14 Vimon GNDF VCLAMP_W_SENSE_0
++ PARAMS: VMAXIO=1.6 VMINIO=2.5 SLOPE=0 
+XU2_VCLAMP  VDD VSS 18 10 GNDF VCLAMP_0
++ PARAMS: VMAX=0.1 VMIN=0.1 
+XU1_VCLAMP  VDD VSS 19 12 GNDF VCLAMP_0
++ PARAMS: VMAX=0.1 VMIN=0.1 
+XU_CMRR     16 18 GNDF CMRR_0
++ PARAMS: CMRR=110 FCMRR=20 
+XU_PSRR     VSS GNDF 21 15 GNDF PSRR_0
++ PARAMS: PSRR=105 FPSRR=40 
+XU_INOISE   20 21 FEMT_0
++ PARAMS: NLFF=0.1 FLWF=0.001 NVRF=0.1
+XU_VNOISE   22 20 VNSE_0
++ PARAMS: NLF=10 FLW=4 NVR=2000 
+XUINPUT     Vip Vin 22 21 GNDF INPUT_0
++ PARAMS: RCM=1 CCM=1000F CDM=100F 
+.ENDS
+
+
+.SUBCKT ILOAD_PD_0   VDD VSS VIMON PD
++ PARAMS: VON = 0.5
+G1 VDD 0 VALUE = {IF(V(VIMON) >= 0 & V(PD) < VON,V(VIMON),0)}
+G2 0 VSS VALUE = {IF(V(VIMON) < 0 & V(PD) < VON,V(VIMON),0)}
+.ENDS
+
+
+.SUBCKT GBW_SLEW_SE_0    VIP  VIM  VO  GNDF  PD
++ PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M  
++ VON = 0.5 ROFF = 1M
+.PARAM PI = 3.141592
+.PARAM IP = {IF(SRP <= SRN,IT,IT*(SRP/SRN))}
+.PARAM IN = {IF(SRN <= SRP,-IT,-IT*(SRN/SRP))}
+.PARAM CC = {IF(SRP <= SRN,IT/SRP,IT/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1          GNDF VO VALUE = {IF(V(PD) >= VON,LIMIT(GC*V(VIP,VIM),IP,IN),0)}
+C1          VO GNDF {CC}
+GR1          VO GNDF VALUE =  {IF(V(PD) >= VON,V(VO,GNDF)/RC,V(VO,GNDF)/ROFF)}
+.ENDS
+
+
+
+.SUBCKT OUT_CURRENT_CLAMP_PD_0   IN  OUT  PD  
++PARAMS: RON = 1 ROFF = 1G   VON = 0.5 IMAX = 10M  IMIN = -10M
+GRES  IN OUT VALUE = {LIMIT(IF(V(PD) >= VON,1,0)*V(IN,OUT)/RON 
++ + IF(V(PD) >= VON,0,1)*V(IN,OUT)/ROFF,IMAX,IMIN)}
+.ENDS
+
+
+**** INVERTER *********************************************************************************************
+*$
+.SUBCKT IV110_0  A Y DVDD DVSS PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A DVSS 1E11
+CA A DVSS 0.01PF
+EINV YI 0 VALUE={IF(V(A,DVSS) > (V(DVDD,DVSS)/{DIV}), V(DVSS), V(DVDD))}
+RD YI YP {RDLY}
+CD YP DVSS {CDLY}
+EOUT YPP DVSS YP DVSS 1
+RDR YPP Y {RDRV}
+RO Y DVSS 1E11
+.ENDS IV110_0 
+*$
+
+
+.SUBCKT PSRR_0   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR} IC = 0
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P IC = 0
+.ENDS
+
+
+.SUBCKT TF_0    VI  VO  GNDF
++ PARAMS: FZ1 = 10G FZ2 = 10G FZ3 = 10G FZ4 = 10G FZ5 = 10G
++ FP1 = 1 FP2 = 10G FP3 = 10G FP4 = 10G
+.PARAM GM = 1M
+.PARAM RO = {1/GM}
+.PARAM PI = 3.141592
+
+GP1  GNDF VP1 VI GNDF {GM}
+GRP1 VP1 GNDF VALUE = {V(VP1,GNDF)/RO}
+CP1  VP1 GNDF {1/(2*PI*RO*FP1)}
+
+GP2  GNDF VP2 VP1 GNDF {GM}
+GRP2 VP2 GNDF VALUE = {V(VP2,GNDF)/RO}
+CP2  VP2 GNDF {1/(2*PI*RO*FP2)}
+
+GP3  GNDF VP3 VP2 GNDF {GM}
+GRP3 VP3 GNDF VALUE = {V(VP3,GNDF)/RO}
+CP3  VP3 GNDF {1/(2*PI*RO*FP3)}
+
+GP4  GNDF VP4 VP3 GNDF {GM}
+GRP4 VP4 GNDF VALUE = {V(VP4,GNDF)/RO}
+CP4  VP4 GNDF {1/(2*PI*RO*FP4)}
+
+GZ1  GNDF VZ1 VP4 GNDF {GM}
+GRZ1  VZ1 VX1 VALUE =  {V(VZ1,VX1)/RO}
+LZ1  VX1 GNDF {RO/(2*PI*FZ1)}
+
+GZ2  GNDF VZ2 VZ1 GNDF {GM}
+GRZ2  VZ2 VX2 VALUE =  {V(VZ2,VX2)/RO}
+LZ2  VX2 GNDF {RO/(2*PI*FZ2)}
+
+GZ3  GNDF VZ3 VZ2 GNDF {GM}
+GRZ3  VZ3 VX3 VALUE =  {V(VZ3,VX3)/RO}
+LZ3  VX3 GNDF {RO/(2*PI*FZ3)}
+
+GZ4  GNDF VZ4 VZ3 GNDF {GM}
+GRZ4  VZ4 VX4 VALUE =  {V(VZ4,VX4)/RO}
+LZ4  VX4 GNDF {RO/(2*PI*FZ4)}
+
+GZ5  GNDF VO VZ4 GNDF {GM}
+GRZ5  VO VX5  VALUE = {V(VO,VX5)/RO}
+LZ5  VX5 GNDF {RO/(2*PI*FZ5)}
+
+.ENDS
+
+
+
+
+.SUBCKT IQ_IOFF_0   VDD VSS PD 
++ PARAMS: VON = 0.5 IQQ = 1M  IOFF = 1P
+G1 VDD VSS VALUE = {IF(V(PD) >= VON,IQQ,IOFF)}
+.ENDS
+
+
+
+.SUBCKT IDEAL_DIODE_0  A C 
++PARAMS: EMCO = 0.01 BRKV = 60 IBRKV = 1M)
+D1 A C IDIODE
+.MODEL IDIODE D(N = {EMCO} BV = {BRKV} IBV = {IBRKV})
+.ENDS
+
+
+.SUBCKT GND_FLOAT_0   VDD VSS GNDF 
+EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+.ENDS
+
+
+.SUBCKT AMETER_0   VI  VO VIMON
++ PARAMS: GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON 0 VALUE = {I(VSENSE)*GAIN}
+.ENDS
+
+
+.SUBCKT VCLAMP_W_SENSE_0   VDD  VSS  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0.1 VMINIO = 0.1 SLOPE = 20
+EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) - SLOPE*V(VIMON) - VMAXIO}
+ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF) - SLOPE*V(VIMON) + VMINIO}
+*EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) -  VMAXIO}
+*ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF)  + VMINIO}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
+.ENDS
+
+
+
+.SUBCKT VCLAMP_0   VDD  VSS  VI  VO  GNDF PARAMS: VMAX = 0.1 VMIN = 0.1
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+
+
+
+.SUBCKT CMRR_0   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR} IC = 0
+E1  VI VO 1 GNDF 1
+.ENDS
+
+
+* BEGIN PROG NSE FEMTO AMP/RT-HZ 
+.SUBCKT FEMT_0  1 2 PARAMS: NLFF = 0.1 FLWF = 0.001 NVRF = 0.1
+* BEGIN SETUP OF NOISE GEN - FEMPTOAMPS/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP INSE 1/F
+********************
+* FA/RHZ AT 1/F FREQ
+* NLFF
+********************
+* FREQ FOR 1/F VAL
+* FLWF
+********************
+* SET UP INSE FB
+* FA/RHZ FLATBAND
+* NVRF
+********************
+* END USER INPUT
+* START CALC VALS
+.PARAM GLFF={PWR(FLWF,0.25)*NLFF/1164}
+.PARAM RNVF={1.184*PWR(NVRF,2)}
+.MODEL DVNF D KF={PWR(FLWF,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVNF
+D2 8 0 DVNF
+E1 3 6 7 8 {GLFF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNVF}
+R5 5 0 {RNVF}
+R6 3 4 1E9
+R7 4 0 1E9
+G1 1 2 3 4 1E-6
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+* END PROG NSE FEMTO AMP/RT-HZ
+
+
+* BEGIN PROG NSE NANO VOLT/RT-HZ
+.SUBCKT VNSE_0  1 2 PARAMS: NLF = 10 FLW = 4  NVR = 4.6
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP VNSE 1/F
+********************
+* NV/RHZ AT 1/F FREQ
+* NLF
+********************
+* FREQ FOR 1/F VAL
+* FLW
+********************
+* SET UP VNSE FB
+* NV/RHZ FLATBAND
+* NVR
+********************
+* END USER INPUT
+* START CALC VALS
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+* END PROG NSE NANOV/RT-HZ
+
+.SUBCKT INPUT_0    VIP  VIN  VOP  VON  GNDF PARAMS: RCM = 1  CCM = 100F  CDM = 100F
+C1          VOP GNDF {CCM} 
+C2          VON GNDF {CCM}
+C3          VOP VON {CDM}
+G1          VIP VOP VALUE =  {V(VIP,VOP)/RCM}
+G2          VIN VON VALUE = {V(VIN,VON)/RCM} 
+.ENDS
+
+
+
+.SUBCKT AudioIC_LM3886  gnd _net0 _net1 _net2 _net3 _net4 _net5 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 lm3886_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -40 0 80 #000080 2 1>
+    <Line -20 -40 60 40 #000080 2 1>
+    <Line -20 40 60 -40 #000080 2 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 20 20 0 #000080 2 1>
+    <Line -15 20 10 0 #000000 2 1>
+    <Line -10 -25 0 10 #ff0000 0 1>
+    <Line -15 -20 10 0 #ff0000 0 1>
+    <Line 10 -20 0 -20 #000080 2 1>
+    <Line 10 20 0 20 #000080 2 1>
+    <.PortSym -40 -20 1 0>
+    <.PortSym -40 20 2 0>
+    <.PortSym 10 -40 3 0>
+    <.PortSym 10 40 4 0>
+    <.PortSym 60 0 5 0>
+    <Line 30 10 0 30 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <.PortSym 50 40 6 0>
+    <.ID 30 -56 X>
+  </Symbol>
+</Component>
+
+<Component TDA2003>
+  <Description>
+TDA2003 10W audio amplifier. The model reuires setting LTSPICE compatibility mode
+  </Description>
+  <Model>
+.Def:AudioIC_TDA2003 _net0 _net1 _net2 _net3 _net4
+Sub:X1 _net0 _net1 _net2 _net3 _net4 gnd Type="TDA2003_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "TDA2003.cir.lst">
+  <Spice>* Qucs 2.1.0  AudioIC_TDA2003.sch
+
+***********************************************************************************
+**** SPICE MODELING by JIM THOMPSON, http://www.analog-innovations.com/ © 2014 ****
+***********************************************************************************
+*               IN+
+*               | IN-
+*               | | GND
+*               | | | OUT
+*               | | | | VPLUS                
+*               | | | | |
+.SUBCKT TDA2003 1 2 3 4 5 
+R_R6         1 N_1  150K 
+RCON_TAG2         1 0 1G
+V_VOS2          N_2  2  0.65V
+R_R8         5 N_3  20K 
+V_VOS1          N_1  3  1.3V
+F_F1         2 3 VF_F1 0.5
+        VF_F1 N_3 3 1.8V
+**         Text Force ** 
+.MODEL         D D
+D_D1         N_4 N_5 D 
+RCON_TAG3         N_6 0 1G
+G_G1         N_7 N_6 VALUE { 5*TANH(450*V(N_8, N_6)) }
+R_R7         2 4  20K 
+F_F3         N_4 5 VF_F3 1
+        VF_F3 5 N_7 0
+D_D2         5 N_4 D 
+R_RNOF1         5 4  1G 
+RFUD1      N_9  N_8  1
+RFUD2      N_8 0 1G
+RCON_TAG4         N_9 0 1G
+R_RNOF2         4 3  1G 
+C_COUT         4 3  5pF 
+F_F2         5 3 VF_F2 1
+        VF_F2 N_5 5 0
+X_U1         1 N_2 N_9 5 3 OpAmpConfigRails PARAMS: GDC=100K GBW=10 SLEW=1
++  ROUT=100 PM=45 VMP=0.65 VMN=0.65 W=10m
+R_ROUT         N_6 4  120m 
+.ENDS    TDA2003
+****
+.SUBCKT OpAmpConfigRails INP INN OUT VP VN PARAMS: GDC=100K GBW=10 SLEW=1 ROUT=100 PM=45 VMP=0.5 VMN=0.5 W=10m
+.PARAM  PI=3.141593 PMR={PM/180*PI} GBR={GBW*1E6*2*PI} DELT={(90-PM)/90}
+.PARAM  OMEGAZ={GBR/DELT} PROCPM={(1-TAN(PMR/2))/(1+TAN(PMR/2))} L={(PROCPM-DELT)/GBR/GBR/(PROCPM-(1/DELT))}
+.PARAM  R={(1-OMEGAZ*OMEGAZ*L)/OMEGAZ}
+RRR VP VN 100Meg
+G1 0 N2 N1 0 1
+G2 N2 0 N2 N3 1
+R1 N3 OUT {ROUT}
+R2 N2 0 {GDC}
+R3 N5 N4 {R/(sqrt(L))} ;{R}
+XLIM N2 N3 VP VN SwingLimiter PARAMS: VMP={VMP} VMN={VMN} W={W}
+E2 N1 0 VALUE {LIMIT(V(N4),{-(SLEW)/(2*PI*GBW)},{SLEW/(2*PI*GBW)})}
+E3 N5 0 INP INN 1
+RE3 N5 0 100K
+E4 0 N6 INP INN 1 
+RE4 N6 0 100K
+C1 0 N2 {1/(2*PI*GBW*1E6)}
+C2 N4 N7 {sqrt(L)} ;1
+L1 N7 N6 {sqrt(L)} ;{L}
+.ENDS OpAmpConfigRails
+***********************************************************************************
+.SUBCKT MOST_POS A B OUT COM PARAMS: W=0.1
+E OUT COM VALUE {(TANH(V(A,B)/(0.679*W))*V(A,B)+V(A)+V(B))/2}
+.ENDS MOST_POS
+***********************************************************************************
+.SUBCKT MOST_NEG A B OUT COM PARAMS: W=0.1
+E OUT COM VALUE {(TANH(V(B,A)/(0.679*W))*V(A,B)+V(A)+V(B))/2}
+.ENDS MOST_NEG
+***********************************************************************************
+.SUBCKT SwingLimiter IN OUT VP VN PARAMS: VMP=0.5 VMN=0.5 W=10m
+X_U1         N_1 N_2 OUT 0 MOST_NEG PARAMS: W={W}
+V_VOS2          N_3  VN  {VMN}
+V_VOS1          VP  N_2  {VMP}
+X_U2         IN N_3 N_1 0 MOST_POS PARAMS: W={W}
+.ENDS   SwingLimiter
+***********************************************************************************
+
+.SUBCKT AudioIC_TDA2003  gnd _net0 _net1 _net2 _net3 _net4 
+X1 _net0 _net1 _net2 _net3 _net4 TDA2003
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -40 0 80 #000080 2 1>
+    <Line -20 -40 60 40 #000080 2 1>
+    <Line -20 40 60 -40 #000080 2 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 20 20 0 #000080 2 1>
+    <Line -15 20 10 0 #000000 2 1>
+    <Line -10 -25 0 10 #ff0000 0 1>
+    <Line -15 -20 10 0 #ff0000 0 1>
+    <Line 10 -20 0 -20 #000080 2 1>
+    <Line 10 20 0 20 #000080 2 1>
+    <.ID 20 14 X>
+    <.PortSym -40 -20 1 0>
+    <.PortSym -40 20 2 0>
+    <.PortSym 10 40 3 0>
+    <.PortSym 60 0 4 0>
+    <.PortSym 10 -40 5 0>
+  </Symbol>
+</Component>
+
+<Component TDA2030>
+  <Description>
+TDA2030 18W audio amplifier. 
+  </Description>
+  <Model>
+.Def:AudioIC_TDA2030 _net0 _net2 _net4 _net3 _net1
+Sub:X1 _net0 _net1 _net2 _net3 _net4 gnd Type="TDA2030_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "TDA2030.cir.lst">
+  <Spice>* Qucs 2.1.0  AudioIC_TDA2030.sch
+
+.SUBCKT TDA2030__OPAMP__1 3 2 6 7 4
+
+* 3 2 6 7 4
+* +in -in out Vcc Vee
+Rc1 7 11 3.316e+003
+Rc2 7 12 3.316e+003
+Re1 13 15 3.068e+003
+Re2 14 15 3.068e+003
+RE 15 0 1.299e+007
+IEE 15 4 1.540e-005
+Rp 7 4 1.802e+003
+VC 7 16 1.922e+000
+VE 17 4 2.422e+000
+D4 17 6 dmod34
+D3 6 16 dmod34
+R01 18 6 4.000e+000
+R02 18 0 5.000e-001
+RC 19 0 5.027e-006
+C1 11 12 5.460e-012
+Ce 15 0 1.000e-012
+C2 18 20 3.000e-011
+R2 20 0 1.000e+005
+D1 18 19 dmod12
+D2 19 18 dmod12
+Ga 20 0 11 12 3.016e-004
+Gcm 0 20 15 0 9.537e-009
+Gb 18 0 20 0 1.326e+004
+Gc 0 19 18 0 1.989e+005
+.MODEL dmod12 D(IS=1.964e-164)
+.MODEL dmod34 D(IS=8.000e-016)
+Q1 11 2 13 QMOD1
+Q2 12 3 14 QMOD2
+.MODEL QMOD1 NPN(IS=8.0e-16 BF=3.571e+001 VAF=200)
+.MODEL QMOD2 NPN(IS=8.0e-16 BF=3.947e+001 VAF=200)
+.ends
+
+
+
+.SUBCKT AudioIC_TDA2030  gnd _net0 _net2 _net4 _net3 _net1 
+X1 _net0 _net1 _net2 _net3 _net4 TDA2030__OPAMP__1
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -40 0 80 #000080 2 1>
+    <Line -20 -40 60 40 #000080 2 1>
+    <Line -20 40 60 -40 #000080 2 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 20 20 0 #000080 2 1>
+    <Line -15 20 10 0 #000000 2 1>
+    <Line -10 -25 0 10 #ff0000 0 1>
+    <Line -15 -20 10 0 #ff0000 0 1>
+    <Line 10 -20 0 -20 #000080 2 1>
+    <Line 10 20 0 20 #000080 2 1>
+    <.PortSym -40 -20 1 0>
+    <.PortSym -40 20 5 0>
+    <.PortSym 60 0 2 0>
+    <.PortSym 10 -40 4 0>
+    <.ID 30 -66 X>
+    <.PortSym 10 40 3 0>
+  </Symbol>
+</Component>
+
