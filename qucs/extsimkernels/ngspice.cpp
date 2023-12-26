@@ -97,7 +97,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     // determine which simulations are in use
     simulations.clear();
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-       if(pc->isSimulation) {
+       if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {
            s = pc->getSpiceNetlist();
            QString sim_typ = pc->Model;
            if (sim_typ==".AC") simulations.append("ac");
