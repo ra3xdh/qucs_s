@@ -231,7 +231,7 @@ void Module::intoCategory (Module * m) {
 #define REGISTER_SPICE_1(val) \
   REGISTER_COMP_1 (QObject::tr("SPICE components"),val)
 #define REGISTER_SPICE_SEC_1(val) \
-  REGISTER_COMP_1 (QObject::tr("SPICE specific sections"),val)
+  REGISTER_COMP_1 (QObject::tr("SPICE netlist sections"),val)
 #define REGISTER_SPICE_SIM_1(val) \
   REGISTER_COMP_1 (QObject::tr("SPICE simulations"),val)
 #define REGISTER_XSPICE_1(val) \
