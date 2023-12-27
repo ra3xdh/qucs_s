@@ -1107,6 +1107,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         bool hasParSweep = false;
         bool hasDblParSweep = false;
 
+        QRegularExpression custom_prefix_rx("(?<=#).*?(?=#)");
+        QString custom_prefix = custom_prefix_rx.match(ngspice_output_filename).captured(0);
         QRegularExpression four_rx(".*\\.four[0-9]+$");
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
@@ -1199,7 +1201,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             }
         }
         if (var_list.isEmpty()) continue; // nothing to convert
-        normalizeVarsNames(var_list);
+        normalizeVarsNames(var_list, custom_prefix);
 
         QString indep = var_list.first();
         //QList<double> sim_point;
@@ -1298,22 +1300,26 @@ void AbstractSpiceKernel::removeAllSimulatorOutputs()
  *        for harmonic balance variable and current probes variables are supported.
  * \param var_list This list contains variable names that need normalization.
  */
-void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
+void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list, const QString &custom_prefix)
 {
     QString prefix="";
     QString iprefix="";
     QString indep = var_list.first();
+    QString cprefix = custom_prefix;
+    if(!cprefix.isEmpty())
+      cprefix.append(".");
     bool HB = false;
     indep = indep.toLower();
     if (indep=="time") {
-        prefix = "tran.";
-        iprefix = "i(tran.";
+        prefix = cprefix + "tran.";
+        iprefix = cprefix + "i(tran.";
     } else if (indep=="frequency") {
-        prefix = "ac.";
-        iprefix = "i(ac.";
+        prefix = cprefix + "ac.";
+        iprefix = cprefix + "i(ac.";
     } else if (indep=="hbfrequency") {
         HB = true;
     }
+    var_list.first().insert(0, cprefix);
 
     for(auto & it : var_list) { // For subcircuit nodes output i.e. v(X1:n1)
         it.replace(":","_");         // colon symbol is reserved in Qucs as dataset specifier

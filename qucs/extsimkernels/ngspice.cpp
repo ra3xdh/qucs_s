@@ -100,18 +100,18 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
        if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {
            s = pc->getSpiceNetlist();
            QString sim_typ = pc->Model;
-           if (sim_typ==".AC") simulations.append("ac");
-           if (sim_typ==".TR") simulations.append("tran");
-           if (sim_typ==".CUSTOMSIM") simulations.append("custom");
-           if (sim_typ==".DISTO") simulations.append("disto");
-           if (sim_typ==".NOISE") simulations.append("noise");
-           if (sim_typ==".PZ") simulations.append("pz");
-           if (sim_typ==".SENS") simulations.append("sens");
-           if (sim_typ==".SENS_AC") simulations.append("sens_ac");
-           if (sim_typ==".SP") simulations.append("sp");
-           if (sim_typ==".FFT") simulations.append("fft");
+           if (sim_typ==".AC") if(!simulations.contains("ac")) simulations.append("ac");
+           if (sim_typ==".TR") if(!simulations.contains("tran")) simulations.append("tran");
+           if (sim_typ==".CUSTOMSIM") if(!simulations.contains("custom")) simulations.append("custom");
+           if (sim_typ==".DISTO") if(!simulations.contains("disto")) simulations.append("disto");
+           if (sim_typ==".NOISE") if(!simulations.contains("noise")) simulations.append("noise");
+           if (sim_typ==".PZ") if(!simulations.contains("pz")) simulations.append("pz");
+           if (sim_typ==".SENS") if(!simulations.contains("sens")) simulations.append("sens");
+           if (sim_typ==".SENS_AC") if(!simulations.contains("sens_ac")) simulations.append("sens_ac");
+           if (sim_typ==".SP") if(!simulations.contains("sp")) simulations.append("sp");
+           if (sim_typ==".FFT") if(!simulations.contains("fft")) simulations.append("fft");
            if ((sim_typ==".SW")&&
-               (pc->Props.at(0)->Value.startsWith("DC"))) simulations.append("dc");
+               (pc->Props.at(0)->Value.startsWith("DC"))) if(!simulations.contains("dc")) simulations.append("dc");
            // stream<<s;
        }
     }
