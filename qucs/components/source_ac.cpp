@@ -69,6 +69,8 @@ Source_ac::Source_ac()
 		QObject::tr("frequency in Hertz")));
   Props.append(new Property("Temp", "26.85", false,
 	QObject::tr("simulation temperature in degree Celsius")));
+  Props.append(new Property("EnableTran", "true", false,
+    QObject::tr("enable transient model as sine source [true,false]")));
 
   rotate();  // fix historical flaw
 }
@@ -106,8 +108,18 @@ QString Source_ac::ngspice_netlist()
     double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
     double vamp = vrms*sqrt(2.0);
     QString f = spicecompat::normalize_value(getProperty("f")->Value);
+
+    bool en_tran = true;
+    if (getProperty("EnableTran")->Value == "true") {
+        en_tran = true;
+    } else {
+        en_tran = false;
+    }
+
     s += QString(" dc 0 ac %1").arg(vamp);
-    s += QString(" SIN(0 %1 %2)").arg(vamp).arg(f);
+    if (en_tran) {
+        s += QString(" SIN(0 %1 %2)").arg(vamp).arg(f);
+    }
     s += QString(" portnum %1").arg(getProperty("Num")->Value);
     s += QString(" z0 %1").arg(z0);
     s += "\n";
@@ -129,10 +141,20 @@ QString Source_ac::xyce_netlist()
     double p = s_p.toDouble();
     double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
     double vamp = vrms*sqrt(2.0);
+
+    bool en_tran = true;
+    if (getProperty("EnableTran")->Value == "true") {
+        en_tran = true;
+    } else {
+        en_tran = false;
+    }
+
     s += QString(" z0=%1 ").arg(s_z0);
     QString f = spicecompat::normalize_value(getProperty("f")->Value);
     s += QString(" AC %1 ").arg(vamp);
-    s += QString(" SIN 0 %1 %2").arg(vamp).arg(f);
+    if (en_tran) {
+        s += QString(" SIN 0 %1 %2").arg(vamp).arg(f);
+    }
     s += "\n";
     return s;
 }
