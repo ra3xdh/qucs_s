@@ -145,8 +145,24 @@ public:
 
 
   int GridX, GridY;
-  int ViewX1, ViewY1, ViewX2, ViewY2;  // size of the document area
-  int UsedX1, UsedY1, UsedX2, UsedY2;  // document area used by elements
+
+  // Variables View* are the coordinates of top-level and bottom-right corners
+  // of a rectangle representing the schematic document as a whole. This
+  // rectangle may grow and shrink when user scrolls the view, and its
+  // coordinates change accordingly. Everything (elements, wires, etc.) lies
+  // inside this rectangle. The size of this rectangle is the "logical" size
+  // of the schematic.
+  // Schematic is displayed to user in some scale: its "logical" size
+  // is multiplied by scale factor, and the result describes the size of a
+  // canvas required to draw the schematic in chosen scale. Every element of
+  // the schematic is drawn in the same scale on this canvas. That's the way
+  // "zooming" works.
+  int ViewX1, ViewY1, ViewX2, ViewY2;
+
+  // Variables Used* hold the coordinates of top-left and bottom-right corners
+  // of a smallest rectangle which can fit all elements of the schematic.
+  // This rectangle exists in the same coordinate system as View*-rectangle
+  int UsedX1, UsedY1, UsedX2, UsedY2;
   int zx1, zy1, zx2, zy2, dx, dy = 0;
 
   int showFrame;
