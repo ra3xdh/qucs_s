@@ -101,6 +101,22 @@ public:
   bool  elementsOnGrid();
 
   float zoom(float);
+
+  /**
+    Zoom around a "zooming center". Zooming center is a point on the canvas,
+    which doesn't move relative to a viewport while canvas is being zoomed in or out.
+
+    This produces the effect of "concentrating" on a zooming center: with each zoom-in step
+    one would get closer and closer to the point, while point's surroundings would go "out of sight",
+    beyound the viewport's borders.
+
+    Zooming out works in backwards order: everything is like being "sucked into" the zooming center.
+
+    @param scaleChange  a multiplier for a current scale value.
+    @param zpx          x coordinate of zooming center, relative to viewport's top-left corner
+    @param zpy          y coordinate of zooming center, relative to viewport's top-left corner
+  */
+  double zoomAroundPoint(double scaleChange, const int zpx, const int zpy);
   float zoomBy(float);
   void  showAll();
   void zoomToSelection();
@@ -216,6 +232,55 @@ private:
   bool dragIsOkay;
   /*! \brief hold system-independent information about a schematic file */
   QFileInfo FileInfo;
+
+  /**
+    Enlarge canvas by "moving" its top side up. Schematic::ViewY1 is updated accordingly.
+
+    @param d  number of size points (pixels) to add to canvas size. Must be non-negative.
+  */
+  void growUp(const int d);
+
+  /**
+    Enlarge canvas by "moving" its bottom side down. Schematic::ViewY2 is updated accordingly.
+
+    @param d  number of size points (pixels) to add to canvas size. Must be non-negative.
+  */
+  void growDown(const int d);
+
+  /**
+    Enlarge canvas by "moving" its left side to the left. Schematic::ViewX1 is updated accordingly.
+
+    @param d  number of size points (pixels) to add to canvas size. Must be non-negative.
+  */
+  void growLeft(const int d);
+
+  /**
+    Enlarge canvas by "moving" its right side to the right. Schematic::ViewX2 is updated accordingly.
+
+    @param d  number of size points (pixels) to add to canvas size. Must be non-negative.
+  */
+  void growRight(const int d);
+
+  /**
+    Redraw schematic at given scale.
+
+    If \a newScale is larger than Schematic::maxScale then Schematic::maxScale becomes new scale.
+    If \a newScale is less than Schematic::minScale then Schematic::minScale becomes new scale.
+
+    @param newScale   a desired scale for schematic to be drawn in
+    @return relative scale change, i.e. \c newScale/oldScale
+    */
+  double scale(const double newScale);
+
+  /**
+    Minimum scale at which schematic could be drawn.
+  */
+  static constexpr double minScale = 0.1;
+
+  /**
+    Maximum scale at which schematic could be drawn.
+  */
+  static constexpr double maxScale = 10.0;
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
