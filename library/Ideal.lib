@@ -1,8 +1,8 @@
-<Qucs Library 0.0.14 "Ideal">
-
+<Qucs Library 2.1.0 "Ideal">
+* Modified descriptions and symbols by Tom Hajjar
 <Component VSum>
   <Description>
-Voltage adder
+Voltage Adder
   </Description>
   <Model>
 .Def:Ideal_VSum _net0   _net3   _net1
@@ -11,22 +11,24 @@ VCVS:SRC2 _net3 _net2 gnd gnd G="1" T="0"
 .Def:End
   </Model>
   <Symbol>
-    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <Line -10 0 20 0 #000080 1 1>
-    <Line 0 -10 0 20 #000080 1 1>
-    <Line 0 30 0 -10 #000080 2 1>
+    <.ID 10 14 VADD>
+    <.PortSym 0 -30 1 0>
     <.PortSym 0 30 2 0>
     <.PortSym 30 0 3 180>
+    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -10 0 20 0 #000080 3 1>
+    <Line 0 -10 0 20 #000080 3 1>
     <Line 20 0 10 0 #000080 2 1>
-    <.ID 10 14 VADD>
     <Line 0 -20 0 -10 #000080 2 1>
-    <.PortSym 0 -30 1 0>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Text -20 -30 12 #000080 0 "+">
+    <Text -20 10 12 #000080 0 "+">
   </Symbol>
 </Component>
 
 <Component VSub>
   <Description>
-Voltage subtractor
+Voltage Subtractor
   </Description>
   <Model>
 .Def:Ideal_VSub _net0   _net3   _net1
@@ -35,41 +37,240 @@ VCVS:SRC2 _net3 _net2 gnd gnd G="-1" T="0"
 .Def:End
   </Model>
   <Symbol>
-    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <Line -10 0 20 0 #000080 1 1>
-    <Line 0 -10 0 20 #000080 1 1>
+    <.ID 10 14 VSUB>
+    <.PortSym 0 -30 1 0>
+    <.PortSym 0 30 2 0>
     <.PortSym 30 0 3 180>
+    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -10 0 20 0 #000080 3 1>
     <Line 20 0 10 0 #000080 2 1>
     <Line 0 -20 0 -10 #000080 2 1>
     <Line 0 30 0 -10 #000080 2 1>
-    <.ID 10 14 VSUB>
-    <.PortSym 0 30 2 0>
-    <Text -30 10 12 #000080 0 "-">
-    <Text -30 -30 12 #000080 0 "+">
+    <Text -20 -30 12 #000080 0 "+">
+    <Text -20 10 12 #000080 0 "-">
+  </Symbol>
+</Component>
+
+<Component Mul>
+  <Description>
+Voltage Multiplier
+  </Description>
+  <Model>
+.Def:Ideal_Mul _net0 _net1 _net3
+CCVS:SRC1 _net2 _net3 gnd gnd G="1 Ohm" T="0"
+EDD:D1 _net0 gnd _net1 gnd gnd _net2 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2" I3="D1.I3" Q3="D1.Q3"
+  Eqn:EqnD1I1 D1.I1="0" Export="no"
+  Eqn:EqnD1Q1 D1.Q1="0" Export="no"
+  Eqn:EqnD1I2 D1.I2="0" Export="no"
+  Eqn:EqnD1Q2 D1.Q2="0" Export="no"
+  Eqn:EqnD1I3 D1.I3="V1*V2" Export="no"
+  Eqn:EqnD1Q3 D1.Q3="0" Export="no"
+.Def:End
+  </Model>
+  <Symbol>
+    <.ID 10 14 MUL>
     <.PortSym 0 -30 1 0>
+    <.PortSym 0 30 2 0>
+    <.PortSym 30 0 3 180>
+    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line 20 0 10 0 #000080 2 1>
+    <Line 0 -20 0 -10 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 10 -10 -20 20 #000080 3 1>
+    <Line -10 -10 20 20 #000080 3 1>
+  </Symbol>
+</Component>
+
+<Component Div>
+  <Description>
+Voltage Divider
+  </Description>
+  <Model>
+.Def:Ideal_Div _net0 _net1 _net3
+CCVS:SRC1 _net2 _net3 gnd gnd G="1 Ohm" T="0"
+EDD:D1 _net0 gnd _net1 gnd gnd _net2 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2" I3="D1.I3" Q3="D1.Q3"
+  Eqn:EqnD1I1 D1.I1="0" Export="no"
+  Eqn:EqnD1Q1 D1.Q1="0" Export="no"
+  Eqn:EqnD1I2 D1.I2="0" Export="no"
+  Eqn:EqnD1Q2 D1.Q2="0" Export="no"
+  Eqn:EqnD1I3 D1.I3="V1/(V2+1E-160)" Export="no"
+  Eqn:EqnD1Q3 D1.Q3="0" Export="no"
+.Def:End
+  </Model>
+  <Symbol>
+    <.ID 10 14 DIV>
+    <.PortSym 0 -30 1 0>
+    <.PortSym 0 30 2 0>
+    <.PortSym 30 0 3 180>
+    <Ellipse -2 -9 5 5 #000080 0 1 #000080 1 1>
+    <Ellipse -2 4 5 5 #000080 0 1 #000080 1 1>
+    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line 20 0 10 0 #000080 2 1>
+    <Line 0 -20 0 -10 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line -10 0 20 0 #000080 3 1>
+  </Symbol>
+</Component>
+
+<Component Sqrt>
+  <Description>
+Square Root of Voltage
+  </Description>
+  <Model>
+.Def:Ideal_Sqrt _net2   _net1
+CCVS:SRC1 _net0 _net1 gnd gnd G="1 Ohm" T="0"
+EDD:D1 _net2 gnd gnd _net0 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
+  Eqn:EqnD1I1 D1.I1="0" Export="no"
+  Eqn:EqnD1Q1 D1.Q1="0" Export="no"
+  Eqn:EqnD1I2 D1.I2="(V1<=0)?0:sqrt(V1+1E-323)" Export="no"
+  Eqn:EqnD1Q2 D1.Q2="0" Export="no"
+.Def:End
+  </Model>
+  <Symbol>
+    <.ID -20 24 SQRT>
+    <.PortSym -30 0 1 0>
+    <.PortSym 30 0 2 180>    
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -30 0 10 0 #000080 2 1> 
+    <Line 20 0 10 0 #000080 2 1>
+    <Line -15 0 5 0 #000080 3 1>
+    <Line -10 0 5 10 #000080 3 1>
+    <Line -5 10 5 -20 #000080 3 1>
+    <Line 0 -10 15 0 #000080 3 1>    
+  </Symbol>
+</Component>
+
+<Component Int>
+  <Description>
+Voltage Integrator
+  </Description>
+  <Spice>
+.SUBCKT Ideal_Int 0 _net0 _net2 Kint=1 V0=0 
+.PARAM C=1/Kint
+ESRC2 _net2 0 _net1 0 -1
+GSRC1 _net1 0 _net0 0 1
+C1 0 _net1 {C}  IC=0
+.ENDS
+  </Spice>
+  <Model>
+.Def:Ideal_Int _net0 _net2 Kint="1" V0="0"
+VCCS:SRC1 _net0 _net1 gnd gnd G="1 S" T="0"
+VCVS:SRC2 _net1 _net2 gnd gnd G="-1" T="0"
+C:C1 gnd _net1 C="C" V="V0"
+Eqn:Eqn1 C="1/Kint" Export="yes"
+R:R1 gnd _net1 R="1E15 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  <Symbol>
+    <.ID -20 24 INT "0=Kint=1=Integrator constant" "0=V0=0=Initial DC voltage">
+    <.PortSym -30 0 1 0>
+    <.PortSym 30 0 2 180>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -30 0 10 0 #000080 2 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <EArc 0 -15 15 15 1532 1348 #000080 3 1>
+    <EArc -15 0 15 15 4412 1348 #000080 3 1>
+    <Line 0 8 0 -17 #000080 3 1>
+  </Symbol>
+</Component>
+
+<Component Diff>
+  <Description>
+Differentiate Voltage
+  </Description>
+  <Model>
+.Def:Ideal_Diff _net0 _net1 Kd="1"
+Eqn:Eqn1 C="Kd" Export="yes"
+VCVS:SRC1 _net0 _net2 gnd gnd G="1" T="0"
+CCVS:SRC2 _net3 _net1 gnd gnd G="1 Ohm" T="0"
+C:C1 _net3 _net2 C="C" V="0"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT Ideal_Diff 0 _net0 _net1 Kd=1 
+ESRC1 _net2 0 _net0 0 1
+C1 _net3 _net2  {Kd}  IC=0
+HSRC2 _net1 0  VSRC2 1
+VSRC2 _net3 0 DC 0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -20 24 DIFF "0=Kd=1=Differentiator constant">
+    <.PortSym -30 0 1 0>
+    <.PortSym 30 0 2 180>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -30 0 10 0 #000080 2 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <Line 10 0 -20 0 #000080 3 1>
+    <Text -5 1 12 #000080 0 "dt">
+    <Text -4 -19 12 #000080 0 "d">
+  </Symbol>
+</Component>
+
+<Component Abs>
+  <Description>
+Absolute Value of Voltage
+  </Description>
+  <Model>
+.Def:Ideal_Abs _net2   _net1
+CCVS:SRC1 _net0 _net1 gnd gnd G="1 Ohm" T="0"
+EDD:D1 _net2 gnd gnd _net0 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
+  Eqn:EqnD1I1 D1.I1="0" Export="no"
+  Eqn:EqnD1Q1 D1.Q1="0" Export="no"
+  Eqn:EqnD1I2 D1.I2="abs(V1)" Export="no"
+  Eqn:EqnD1Q2 D1.Q2="0" Export="no"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT Ideal_Abs 0 _Vin _net1 
+HSRC2 _net1 0  VSRC2 1
+VSRC2 _net0 0 DC 0 
+B2 0 _net0  I = abs(V(_Vin)) 
+B1 _Vin 0  I = 0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -20 24 ABS>
+    <.PortSym -30 0 1 0>
+    <.PortSym 30 0 2 180>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -30 0 10 0 #000080 2 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <Ellipse -2 -2 5 5 #000080 0 1 #000080 1 1>
+    <Line -10 -10 0 20 #000080 3 1>
+    <Line 10 -10 0 20 #000080 3 1>
   </Symbol>
 </Component>
 
 <Component VDelay>
   <Description>
-Delay
+Voltage Delay
   </Description>
   <Model>
 .Def:Ideal_VDelay _net0 _net1 Tdel="0"
 VCVS:SRC1 _net0 _net1 gnd gnd G="1" T="Tdel"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT ideal_vdelay 0 _net1 _net0 Tdel=0 
+R1 0 _net1  1E15
+ESRC1 _net3 0 _net1 0 1
+R2 0 _net2  1
+T1 _net3 0 _net2 0 Z0=1 Td={TDEL} F=0 NL=0 IC=0, 0, 0, 0 
+ESRC2 _net0 0 _net2 0 1
+.ENDS
+  </Spice>
   <Symbol>
-    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <.PortSym -30 0 1 0>
-    <Line -30 0 10 0 #000080 2 1>
-    <Line 30 0 -10 0 #000080 2 1>
     <.ID -20 24 DLY "1=Tdel=0=Delay">
-    <Line -8 -11 21 0 #000080 1 1>
-    <Line 0 -11 0 14 #000080 1 1>
-    <EArc -15 -11 16 13 1532 1348 #000080 1 1>
-    <EArc 0 -5 13 16 2972 1348 #000080 1 1>
+    <.PortSym -30 0 1 0>
     <.PortSym 30 0 2 180>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>  
+    <Line -30 0 10 0 #000080 2 1>
+    <Line 30 0 -10 0 #000080 2 1>  
+    <Line -8 -11 21 0 #000080 3 1>
+    <Line 0 -11 0 14 #000080 3 1>
+    <EArc -15 -11 16 13 1532 1348 #000080 3 1>
+    <EArc 0 -5 13 16 2972 1348 #000080 3 1>    
   </Symbol>
 </Component>
 
@@ -92,48 +293,20 @@ EDD:D1 _net0 gnd gnd _net1 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
 .Def:End
   </Model>
   <Symbol>
-    <Line 20 0 10 0 #000080 2 1>
     <.ID -19 21 VCO "1=VMIN=0=Minimum control voltage (V)" "1=K=1E5=VCO slope (Hz/V)" "1=f=1E6=Basic frequency (Hz) at VMIN" "1=U=1=Output amplitude (V)">
+    <.PortSym -60 0 1 0>
     <.PortSym 30 0 2 180>
     <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <.PortSym -60 0 1 0>
     <Arrow -60 0 40 0 20 8 #000080 2 1 0>
-    <EArc -14 -10 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -4 14 12 169 2382 #000080 1 1>
-  </Symbol>
-</Component>
-
-<Component Sqrt>
-  <Description>
-Square root of voltage
-  </Description>
-  <Model>
-.Def:Ideal_Sqrt _net2   _net1
-CCVS:SRC1 _net0 _net1 gnd gnd G="1 Ohm" T="0"
-EDD:D1 _net2 gnd gnd _net0 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
-  Eqn:EqnD1I1 D1.I1="0" Export="no"
-  Eqn:EqnD1Q1 D1.Q1="0" Export="no"
-  Eqn:EqnD1I2 D1.I2="(V1<=0)?0:sqrt(V1+1E-323)" Export="no"
-  Eqn:EqnD1Q2 D1.Q2="0" Export="no"
-.Def:End
-  </Model>
-  <Symbol>
-    <.PortSym 30 0 3 180>
-    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <Line -30 0 10 0 #000080 2 1>
-    <.PortSym -30 0 1 0>
     <Line 20 0 10 0 #000080 2 1>
-    <Line -15 0 5 0 #000080 1 1>
-    <Line -10 0 5 10 #000080 1 1>
-    <Line -5 10 5 -20 #000080 1 1>
-    <Line 0 -10 15 0 #000080 1 1>
-    <.ID -20 24 SQRT>
+    <EArc -14 -10 15 14 3049 2382 #000080 3 1>
+    <EArc 0 -4 14 12 169 2382 #000080 3 1>
   </Symbol>
 </Component>
 
 <Component Quantizer>
   <Description>
-Voltage quantizer
+Voltage Quantizer
   </Description>
   <Model>
 .Def:Ideal_Quantizer _net2 _net1 VMIN="0" VMAX="1" STEPS="16"
@@ -145,43 +318,35 @@ EDD:D1 _net2 gnd gnd _net0 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
   Eqn:EqnD1Q2 D1.Q2="0" Export="no"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT Ideal_Quantizer 0 _Vin _net1 VMIN=0 VMAX=1 STEPS=16
+HSRC1 _net1 0  VSRC1 1
+VSRC1 _net0 0 DC 0
+B1 _Vin  0  I = 0
+BQuantB2 0  _net0  I = (V(_Vin)<VMIN)?VMIN:((V(_Vin)>VMAX)?VMAX:floor(V(_Vin)/((VMAX-VMIN)/STEPS))*(VMAX-VMIN)/STEPS)
+.ENDS
+  </Spice>
   <Symbol>
-    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <.ID -19 21 QNT "1=VMIN=0=Minimum voltage (V)" "1=VMAX=1=Maximum voltage (V)" "1=STEPS=16=Number of quantizing steps between VMIN and VMAX">   
     <.PortSym -30 0 1 0>
-    <Line -30 0 10 0 #000080 2 1>
-    <Line 20 0 10 0 #000080 2 1>
-    <.ID -19 21 QNT "1=VMIN=0=Minimum voltage (V)" "1=VMAX=1=Maximum voltage (V)" "1=STEPS=16=Number of quantizing steps between VMIN and VMAX">
-    <Line -6 9 -6 0 #000080 1 1>
-    <Line 0 3 -6 0 #000080 1 1>
-    <Line 6 -3 -6 0 #000080 1 1>
-    <Line 12 -9 -6 0 #000080 1 1>
-    <Line -6 3 0 6 #000080 1 1>
-    <Line 0 -3 0 6 #000080 1 1>
-    <Line 6 -9 0 6 #000080 1 1>
     <.PortSym 30 0 2 180>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -30 0 10 0 #000080 2 1>
+    <Line 20 0 10 0 #000080 2 1>   
+    <Line -6 9 -6 0 #000080 3 1>
+    <Line 0 3 -6 0 #000080 3 1>
+    <Line 6 -3 -6 0 #000080 3 1>
+    <Line 12 -9 -6 0 #000080 3 1>
+    <Line -6 3 0 6 #000080 3 1>
+    <Line 0 -3 0 6 #000080 3 1>
+    <Line 6 -9 0 6 #000080 3 1>  
   </Symbol>
 </Component>
 
 <Component OpAmp>
   <Description>
-  Simple operational amplifier model. SPICE model also available.
+Simple operational amplifier model
   </Description>
-<Spice>
-.SUBCKT Ideal_OpAmp gnd in_p in_m out AOLDC=106 GBP=1e6 RO=75 VLIMP=14 VLIMN=-14 
-.PARAM OLG = {10**(AOLDC/20)}
-.PARAM Fg = {GBP/OLG}
-.PARAM pi = 3.14159
-.PARAM C1 = {1e-3/sqrt(2*pi*fg)}
-.PARAM R1 = {1e3/sqrt(2*pi*fg)}
-ESRC1 _net0 0 in_p in_m OLG
-R2 out  _net1 RO
-R1 nC  _net0 R1
-C1 nC  0 C1
-B1 _net1  0  V = V(nC)*u(VLIMP-V(nC))*u(V(nC)-VLIMN)+VLIMP*u(V(nC)-VLIMP)+VLIMN*u(VLIMN-V(nC)) 
-.ENDS
-           
-</Spice>         
-         
   <Model>
 .Def:Ideal_OpAmp _net0 _net2 _net6 GBP="1E6" AOLDC="106" RO="75" VLIMP="14" VLIMN="-14"
 VCVS:SRC1 _net0 _net1 gnd _net2 G="OLG" T="0"
@@ -197,87 +362,39 @@ EDD:D1 _net3 gnd gnd _net4 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
   Eqn:EqnD1Q2 D1.Q2="0" Export="no"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT Ideal_OpAmp 0 in_p in_m out GBP=1e6 AOLDC=106 RO=75 VLIMP=14 VLIMN=-14 
+.PARAM OLG = 10**(AOLDC/20)
+.PARAM fg = GBP/OLG
+.PARAM C1 = 1e-3/sqrt(6.2831853*fg)
+.PARAM R1 = 1e3/sqrt(6.2831853*fg)
+ESRC1 _net0 0 in_p in_m {OLG}
+R2 out _net1 {RO}
+R1 nC _net0 {R1}
+C1 nC 0 {C1}
+B1 _net1 0 V = V(nC)*u(VLIMP-V(nC))*u(V(nC)-VLIMN)+VLIMP*u(V(nC)-VLIMP)+VLIMN*u(VLIMN-V(nC)) 
+.ENDS         
+  </Spice>  
   <Symbol>
-    <Line -20 -20 0 40 #000080 2 1>
-    <.PortSym 30 0 3 180>
-    <Line 30 0 -10 0 #000080 2 1>
+    <.ID -20 23 OP "0=GBP=1E6=Gain bandwidth product (Hz)" "0=AOLDC=106=Differential open loop gain at DC (dB)" "0=RO=75=Output resistance (Ohm)" "0=VLIMP=14=Positive output voltage limit (V)" "0=VLIMN=-14=Negative output voltage limit (V)">
     <.PortSym -30 -10 1 0>
+    <.PortSym -30 10 2 0>
+    <.PortSym 30 0 3 180>
+    <Line -20 -20 0 40 #000080 2 1>
+    <Line 30 0 -10 0 #000080 2 1>
     <Line -30 -10 10 0 #000080 2 1>
     <Line -20 10 -10 0 #000080 2 1>
-    <.PortSym -30 10 2 0>
     <Line -20 -20 40 20 #000080 2 1>
     <Line -20 20 40 -20 #000080 2 1>
-    <Line -17 -10 6 0 #000080 1 1>
-    <Line -14 -13 0 6 #000080 1 1>
-    <Line -17 10 6 0 #000080 1 1>
-    <.ID -20 23 OP "0=GBP=1E6=Gain bandwidth product (Hz)" "0=AOLDC=106=Differential open loop gain at DC (dB)" "0=RO=75=Output resistance (Ohm)" "0=VLIMP=14=Positive output voltage limit (V)" "0=VLIMN=-14=Negative output voltage limit (V)">
-  </Symbol>
-</Component>
-
-<Component Notch2>
-  <Description>
-Notch filter, 2nd order
-  </Description>
-  <Model>
-.Def:Ideal_Notch2 _net0 _net3 fc="1E3" Q="1"
-VCVS:SRC1 _net0 _net1 gnd gnd G="1" T="0"
-VCVS:SRC2 _net2 _net3 gnd gnd G="1" T="0"
-R:R1 _net1 _net2 R="R" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
-L:L1 gnd _net4 L="L" I=""
-Eqn:Eqn1 wc="2*pi*fc" C="1E-6" L="1/(wc*wc*C)" R="1/Q*sqrt(L/C)" Export="yes"
-C:C1 _net4 _net2 C="C" V="0"
-.Def:End
-  </Model>
-  <Symbol>
-    <.PortSym -30 0 1 0>
-    <Line -30 0 10 0 #000080 2 1>
-    <Line 20 0 10 0 #000080 2 1>
-    <.PortSym 30 0 2 180>
-    <EArc -14 -22 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -17 14 13 169 2382 #000080 1 1>
-    <Line 3 3 -6 -6 #000080 1 1>
-    <EArc -14 -10 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -5 14 13 169 2382 #000080 1 1>
-    <EArc 0 7 14 13 169 2382 #000080 1 1>
-    <EArc -14 2 15 14 3049 2382 #000080 1 1>
-    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <.ID -20 24 N2F "1=fc=1E3=Notch frequency (Hz)" "1=Q=1=Quality factor">
-  </Symbol>
-</Component>
-
-<Component Mul>
-  <Description>
-Voltage multiplier
-  </Description>
-  <Model>
-.Def:Ideal_Mul _net0 _net1 _net3
-CCVS:SRC1 _net2 _net3 gnd gnd G="1 Ohm" T="0"
-EDD:D1 _net0 gnd _net1 gnd gnd _net2 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2" I3="D1.I3" Q3="D1.Q3"
-  Eqn:EqnD1I1 D1.I1="0" Export="no"
-  Eqn:EqnD1Q1 D1.Q1="0" Export="no"
-  Eqn:EqnD1I2 D1.I2="0" Export="no"
-  Eqn:EqnD1Q2 D1.Q2="0" Export="no"
-  Eqn:EqnD1I3 D1.I3="V1*V2" Export="no"
-  Eqn:EqnD1Q3 D1.Q3="0" Export="no"
-.Def:End
-  </Model>
-  <Symbol>
-    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <Line 20 0 10 0 #000080 2 1>
-    <.PortSym 30 0 3 180>
-    <.ID -20 24 MUL>
-    <Line 14 -14 -28 28 #000080 2 1>
-    <Line -14 -14 28 28 #000080 2 1>
-    <Line 0 -20 0 -10 #000080 2 1>
-    <.PortSym -30 0 1 0>
-    <Line -30 0 10 0 #000080 2 1>
-    <.PortSym 0 -30 2 0>
+    <Line -17 -10 6 0 #000080 2 1>
+    <Line -14 -13 0 6 #000080 2 1>
+    <Line -17 10 6 0 #000080 2 1>    
   </Symbol>
 </Component>
 
 <Component Limiter>
   <Description>
-Limiter block
+Voltage Limiter
   </Description>
   <Model>
 .Def:Ideal_Limiter _net2 _net1 VLIMP="14" VLIMN="-14"
@@ -289,114 +406,30 @@ EDD:D1 _net2 gnd gnd _net0 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
   Eqn:EqnD1Q2 D1.Q2="0" Export="no"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT Ideal_Limiter 0 _net2 _net1 VLIMP=14 VLIMN=-14 
+HSRC1 _net1 0  VSRC1 1
+VSRC1 _net0 0 DC 0 
+BD1I0 _net2 0 I=0
+BD1I1 0 _net0 I=(V(_net2)<VLIMP)?((V(_net2)>VLIMN)?V(_net2):VLIMN):VLIMP
+.ENDS
+  </Spice>
   <Symbol>
-    <Line -20 -20 0 40 #000080 2 1>
-    <Line 30 0 -10 0 #000080 2 1>
     <.ID -20 33 LIM "0=VLIMP=14=Positive voltage limit (V)" "0=VLIMN=-14=Negative voltage limit (V)">
-    <Line -30 0 10 0 #000080 2 1>
-    <Line -20 -20 40 0 #000080 2 1>
-    <Line -20 20 40 0 #000080 2 1>
-    <Line 20 -20 0 40 #000080 2 1>
     <.PortSym -30 0 1 0>
-    <Line -10 10 20 -20 #000080 1 1>
-    <Line 10 -10 6 0 #000080 1 1>
-    <Line -16 10 6 0 #000080 1 1>
     <.PortSym 30 0 2 180>
-  </Symbol>
-</Component>
-
-<Component LP2>
-  <Description>
-Lowpass filter, 2nd order
-  </Description>
-  <Model>
-.Def:Ideal_LP2 _net0 _net4 fc="1E3" a1="1.4142" b1="1" V0="0"
-VCVS:SRC1 _net0 _net1 gnd gnd G="1" T="0"
-L:L1 _net1 _net2 L="L" I=""
-R:R1 _net2 _net3 R="R" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
-VCVS:SRC2 _net3 _net4 gnd gnd G="1" T="0"
-Eqn:Eqn1 wc="2*pi*fc" R="1E3" C="a1/(wc*R)" L="b1/(wc*wc*C)" VDC="-V0" Export="yes"
-C:C1 gnd _net3 C="C" V="VDC"
-.Def:End
-  </Model>
-  <Symbol>
-    <.PortSym -30 0 1 0>
-    <Line -30 0 10 0 #000080 2 1>
-    <Line 20 0 10 0 #000080 2 1>
-    <.PortSym 30 0 2 180>
-    <Line 3 -9 -6 -6 #000080 1 1>
-    <EArc -14 -22 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -17 14 13 169 2382 #000080 1 1>
-    <Line 3 3 -6 -6 #000080 1 1>
-    <EArc -14 -10 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -5 14 13 169 2382 #000080 1 1>
-    <EArc 0 7 14 13 169 2382 #000080 1 1>
-    <EArc -14 2 15 14 3049 2382 #000080 1 1>
-    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <.ID -20 24 LP2F "1=fc=1E3=3dB cut-off frequency (Hz)" "0=a1=1.4142=Filter coefficient a1*P" "0=b1=1=Filter coefficient b1*P*P" "1=V0=0=Initial DC output voltage (V)">
-  </Symbol>
-</Component>
-
-<Component LP1>
-  <Description>
-Lowpass filter, 1st  order
-  </Description>
-  <Model>
-.Def:Ideal_LP1 _net0   _net2 fc="1E3" V0="0"
-VCCS:SRC1 _net0 _net1 gnd gnd G="1E-3" T="0"
-VCVS:SRC2 _net1 _net2 gnd gnd G="-1" T="0"
-Eqn:Eqn1 C1="1E-3/(2*pi*fc)" R1="1E3" Export="yes"
-C:C1 gnd _net1 C="C1" V="V0"
-R:R1 gnd _net1 R="R1" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
-.Def:End
-  </Model>
-  <Symbol>
-    <Line 3 -9 -6 -6 #000080 1 1>
-    <EArc -14 -22 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -17 14 13 169 2382 #000080 1 1>
-    <Line 3 3 -6 -6 #000080 1 1>
-    <EArc -14 -10 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -5 14 13 169 2382 #000080 1 1>
-    <EArc 0 7 14 13 169 2382 #000080 1 1>
-    <EArc -14 2 15 14 3049 2382 #000080 1 1>
-    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <.PortSym -30 0 1 0>
-    <Line -30 0 10 0 #000080 2 1>
-    <Line 20 0 10 0 #000080 2 1>
-    <.PortSym 30 0 2 180>
-    <.ID -19 21 LP1F "1=fc=1E3=3dB cut-off frequency (Hz)" "0=V0=0=Initial DC voltage (V)">
-  </Symbol>
-</Component>
-
-<Component Int>
-  <Description>
-Voltage integrator
-  </Description>
-  <Model>
-.Def:Ideal_Int _net0 _net2 Kint="1" V0="0"
-VCCS:SRC1 _net0 _net1 gnd gnd G="1 S" T="0"
-VCVS:SRC2 _net1 _net2 gnd gnd G="-1" T="0"
-C:C1 gnd _net1 C="C" V="V0"
-Eqn:Eqn1 C="1/Kint" Export="yes"
-R:R1 gnd _net1 R="1E15 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
-.Def:End
-  </Model>
-  <Symbol>
     <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
     <Line -30 0 10 0 #000080 2 1>
-    <.PortSym -30 0 1 0>
-    <Line 20 0 10 0 #000080 2 1>
-    <.ID -20 24 INT "0=Kint=1=Integrator constant" "0=V0=0=Initial DC voltage">
-    <.PortSym 30 0 2 180>
-    <EArc 0 -15 15 15 1532 1348 #000080 1 1>
-    <EArc -15 0 15 15 4412 1348 #000080 1 1>
-    <Line 0 8 0 -17 #000080 1 1>
+    <Line 20 0 10 0 #000080 2 1>   
+    <Line -10 10 20 -20 #000080 3 1>
+    <Line 10 -10 6 0 #000080 3 1>
+    <Line -16 10 6 0 #000080 3 1> 
   </Symbol>
 </Component>
 
 <Component HardLimiter>
   <Description>
-Hard limiter
+Voltage Hard Limiter
   </Description>
   <Model>
 .Def:Ideal_HardLimiter _net2   _net1 VLIMP="14" VLIMN="-14"
@@ -409,56 +442,109 @@ EDD:D1 _net2 gnd gnd _net0 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
 .Def:End
   </Model>
   <Symbol>
-    <Line -20 -20 0 40 #000080 2 1>
-    <.PortSym 30 0 2 180>
-    <Line 30 0 -10 0 #000080 2 1>
-    <Line -30 0 10 0 #000080 2 1>
-    <Line -20 -20 40 0 #000080 2 1>
-    <Line -20 20 40 0 #000080 2 1>
-    <Line 20 -20 0 40 #000080 2 1>
-    <.PortSym -30 0 1 0>
-    <Line 0 -10 16 0 #000080 1 1>
-    <Line -16 10 16 0 #000080 1 1>
     <.ID -20 33 LIM "0=VLIMP=14=Positive voltage limit (V)" "0=VLIMN=-14=Negative voltage limit (V)">
-    <Line 0 10 0 -20 #000080 1 1>
+    <.PortSym -30 0 1 0>
+    <.PortSym 30 0 2 180>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -30 0 10 0 #000080 2 1>
+    <Line 20 0 10 0 #000080 2 1>   
+    <Line 0 -10 16 0 #000080 3 1>
+    <Line -16 10 16 0 #000080 3 1>  
+    <Line 0 10 0 -20 #000080 3 1>
   </Symbol>
 </Component>
 
-<Component HP2>
+<Component LP1>
   <Description>
-Highpass filter, 2nd order
+Lowpass Filter, 1st Order
   </Description>
   <Model>
-.Def:Ideal_HP2 _net0 _net4 fc="1E3" a1="1.4142" b1="1"
-VCVS:SRC1 _net0 _net1 gnd gnd G="1" T="0"
-R:R1 _net2 _net3 R="R" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
-VCVS:SRC2 _net3 _net4 gnd gnd G="1" T="0"
-L:L1 gnd _net3 L="L" I=""
-Eqn:Eqn1 wc="2*pi*fc" R="1E3" L="R/(wc*a1)" C="1/(b1*wc*wc*L)" Export="yes"
-C:C1 _net2 _net1 C="C" V="0"
+.Def:Ideal_LP1 _net0   _net2 fc="1E3" V0="0"
+VCCS:SRC1 _net0 _net1 gnd gnd G="1E-3" T="0"
+VCVS:SRC2 _net1 _net2 gnd gnd G="-1" T="0"
+Eqn:Eqn1 C1="1E-3/(2*pi*fc)" R1="1E3" Export="yes"
+C:C1 gnd _net1 C="C1" V="V0"
+R:R1 gnd _net1 R="R1" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT Ideal_LP1 0 _net0 _net2 fc=1E3 V0=0 
+.PARAM R=1k
+.PARAM C=1E-3/(2*3.1415926539*fc)
+.PARAM V0=0
+GSRC1 _net1 0 _net0 0 1E-3
+ESRC2 _net2 0 _net1 0 -1
+R1 0 _net1  {R}
+C1 0 _net1  {C}  IC=V0
+.ENDS
+  </Spice>
   <Symbol>
+    <.ID -19 21 LP1F "1=fc=1E3=3dB Cut-off frequency (Hz)" "0=V0=0=Initial DC voltage (V)">
     <.PortSym -30 0 1 0>
+    <.PortSym 30 0 2 180>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
     <Line -30 0 10 0 #000080 2 1>
     <Line 20 0 10 0 #000080 2 1>
+    <Line 3 -9 -6 -6 #000080 2 1>
+    <EArc -14 -22 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -17 14 13 169 2382 #000080 2 1>
+    <Line 3 3 -6 -6 #000080 2 1>
+    <EArc -14 -10 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -5 14 13 169 2382 #000080 2 1>
+    <EArc 0 7 14 13 169 2382 #000080 2 1>
+    <EArc -14 2 15 14 3049 2382 #000080 2 1>  
+  </Symbol>
+</Component>
+
+<Component LP2>
+  <Description>
+Lowpass Filter, 2nd Order
+  </Description>
+  <Model>
+.Def:Ideal_LP2 _net0 _net4 fc="1E3" a1="1.4142" b1="1" V0="0"
+VCVS:SRC1 _net0 _net1 gnd gnd G="1" T="0"
+L:L1 _net1 _net2 L="L" I=""
+R:R1 _net2 _net3 R="R" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+VCVS:SRC2 _net3 _net4 gnd gnd G="1" T="0"
+Eqn:Eqn1 wc="2*pi*fc" R="1E3" C="a1/(wc*R)" L="b1/(wc*wc*C)" VDC="-V0" Export="yes"
+C:C1 gnd _net3 C="C" V="VDC"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT Ideal_LP2 0 _net0 _net4 fc=1E3 a1=1.4142 b1=1 V0=0 
+.PARAM R=1
+.PARAM wc=2*3.1415926539*fc
+.PARAM C=a1/(wc*R)
+.PARAM L=b1/(wc*wc*C)
+ESRC1 _net1 0 _net0 0 1
+ESRC2 _net4 0 _net3 0 1
+R2 _net3 0 1E15
+R1 _net3 _net2 {R}
+C1 0 _net3 {C} IC=V0
+L1 _net1 _net2 {L} 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -20 24 LP2F "1=fc=1E3=3dB Cut-off frequency (Hz)" "0=a1=1.4142=Filter coefficient a1*P" "0=b1=1=Filter coefficient b1*P*P" "0=V0=0=Initial DC output voltage (V)">
+    <.PortSym -30 0 1 0>
     <.PortSym 30 0 2 180>
-    <EArc -14 -22 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -17 14 13 169 2382 #000080 1 1>
-    <Line 3 3 -6 -6 #000080 1 1>
-    <EArc -14 -10 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -5 14 13 169 2382 #000080 1 1>
-    <EArc 0 7 14 13 169 2382 #000080 1 1>
-    <EArc -14 2 15 14 3049 2382 #000080 1 1>
     <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <.ID -20 24 HP2F "1=fc=1E3=3dB cut-off frequency (Hz)" "0=a1=1.4142=Filter coefficient a1*P" "0=b1=1=Filter coefficient b1*P*P">
-    <Line 3 15 -6 -6 #000080 1 1>
+    <Line -30 0 10 0 #000080 2 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <Line 3 -9 -6 -6 #000080 2 1>
+    <EArc -14 -22 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -17 14 13 169 2382 #000080 2 1>
+    <Line 3 3 -6 -6 #000080 2 1>
+    <EArc -14 -10 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -5 14 13 169 2382 #000080 2 1>
+    <EArc 0 7 14 13 169 2382 #000080 2 1>
+    <EArc -14 2 15 14 3049 2382 #000080 2 1>
   </Symbol>
 </Component>
 
 <Component HP1>
   <Description>
-Highpass filter, 1st  order
+Highpass Filter, 1st Order
   </Description>
   <Model>
 .Def:Ideal_HP1 _net2 _net1 fc="1E3"
@@ -469,83 +555,84 @@ C:C1 _net0 _net3 C="C" V="0"
 Eqn:Eqn1 C="1E-3/(2*pi*fc)" Export="yes"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT Ideal_HP1 0 _net0 _net3 fc=1E3 
+.PARAM R=1k
+.PARAM C=1E-3/(2*3.1415926539*fc)
+.PARAM V0=0
+ESRC1 _net1 0 _net0 0 1
+ESRC2 _net3 0 _net2 0 1
+C1 _net2 _net1 {C} IC=V0
+R1 0 _net2 {R}
+.ENDS
+  </Spice>
   <Symbol>
-    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <EArc -14 -22 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -17 14 13 169 2382 #000080 1 1>
-    <Line 3 3 -6 -6 #000080 1 1>
-    <EArc -14 -10 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -5 14 13 169 2382 #000080 1 1>
-    <EArc -14 2 15 14 3049 2382 #000080 1 1>
-    <EArc 0 7 14 13 169 2382 #000080 1 1>
-    <Line 3 14 -6 -6 #000080 1 1>
+    <.ID -19 31 HP1F "1=fc=1E3=3dB Cut-off frequency (Hz)">
     <.PortSym -30 0 1 0>
-    <Line -30 0 10 0 #000080 2 1>
-    <Line 20 0 10 0 #000080 2 1>
-    <.ID -19 31 HP1F "1=fc=1E3=3dB cut-off frequency (Hz)">
     <.PortSym 30 0 2 180>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <EArc -14 -22 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -17 14 13 169 2382 #000080 2 1>
+    <Line 3 3 -6 -6 #000080 2 1>
+    <EArc -14 -10 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -5 14 13 169 2382 #000080 2 1>
+    <EArc -14 2 15 14 3049 2382 #000080 2 1>
+    <EArc 0 7 14 13 169 2382 #000080 2 1>
+    <Line 3 14 -6 -6 #000080 2 1>  
+    <Line -30 0 10 0 #000080 2 1>
+    <Line 20 0 10 0 #000080 2 1>  
   </Symbol>
 </Component>
 
-<Component Div>
+<Component HP2>
   <Description>
-Voltage Divider
+Highpass Filter, 2nd Order
   </Description>
   <Model>
-.Def:Ideal_Div _net0 _net1 _net3
-CCVS:SRC1 _net2 _net3 gnd gnd G="1 Ohm" T="0"
-EDD:D1 _net0 gnd _net1 gnd gnd _net2 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2" I3="D1.I3" Q3="D1.Q3"
-  Eqn:EqnD1I1 D1.I1="0" Export="no"
-  Eqn:EqnD1Q1 D1.Q1="0" Export="no"
-  Eqn:EqnD1I2 D1.I2="0" Export="no"
-  Eqn:EqnD1Q2 D1.Q2="0" Export="no"
-  Eqn:EqnD1I3 D1.I3="V1/(V2+1E-160)" Export="no"
-  Eqn:EqnD1Q3 D1.Q3="0" Export="no"
+.Def:Ideal_HP2 _net0 _net4 fc="1E3" a1="1.4142" b1="1"
+VCVS:SRC1 _net0 _net1 gnd gnd G="1" T="0"
+R:R1 _net2 _net3 R="R" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+VCVS:SRC2 _net3 _net4 gnd gnd G="1" T="0"
+L:L1 gnd _net3 L="L" I="0"
+Eqn:Eqn1 wc="2*pi*fc" R="1E3" L="R/(wc*a1)" C="1/(b1*wc*wc*L)" Export="yes"
+C:C1 _net2 _net1 C="C" V="0"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT Ideal_HP2 0 _net0 _net4 fc=1E3 a1=1.4142 b1=1 
+.PARAM R=1e3
+.PARAM V0=0
+.PARAM wc=2*3.1415926539*fc
+.PARAM C=1/(b1*wc*wc*L)
+.PARAM L=R/(wc*a1)
+ESRC2 _net4 0 _net3 0 1
+ESRC1 _net1 0 _net0 0 1
+C1 _net2 _net1 {C} IC=V0
+L1 0 _net3 {L} 
+R1 _net2 _net3 {R}
+.ENDS
+  </Spice>
   <Symbol>
-    <Line 20 0 10 0 #000080 2 1>
-    <.PortSym 30 0 3 180>
-    <Line -10 0 20 0 #000080 1 1>
-    <Ellipse -2 -9 5 5 #000080 0 1 #000080 1 1>
-    <Ellipse -2 4 5 5 #000080 0 1 #000080 1 1>
-    <.ID 20 -66 DIV>
-    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <Line 0 -20 0 -10 #000080 2 1>
-    <Line 0 30 0 -10 #000080 2 1>
-    <.PortSym 0 -30 1 0>
-    <.PortSym 0 30 2 0>
-  </Symbol>
-</Component>
-
-<Component Diff>
-  <Description>
-Differentiate voltage
-  </Description>
-  <Model>
-.Def:Ideal_Diff _net0 _net1 Kd="1"
-Eqn:Eqn1 C="Kd" Export="yes"
-VCVS:SRC1 _net0 _net2 gnd gnd G="1" T="0"
-CCVS:SRC2 _net3 _net1 gnd gnd G="1 Ohm" T="0"
-C:C1 _net3 _net2 C="C" V="0"
-.Def:End
-  </Model>
-  <Symbol>
+    <.ID -20 24 HP2F "1=fc=1E3=3dB Cut-off frequency (Hz)" "0=a1=1.4142=Filter coefficient a1*P" "0=b1=1=Filter coefficient b1*P*P">
+    <.PortSym -30 0 1 0>
+    <.PortSym 30 0 2 180>
     <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
     <Line -30 0 10 0 #000080 2 1>
-    <.PortSym -30 0 1 0>
-    <Line 20 0 10 0 #000080 2 1>
-    <.ID -20 24 DIFF "0=Kd=1=Differentiator constant">
-    <.PortSym 30 0 2 180>
-    <Line 8 0 -17 0 #000080 1 1>
-    <Text -4 -14 12 #000080 0 "d">
-    <Text -5 1 12 #000080 0 "dt">
+    <Line 20 0 10 0 #000080 2 1> 
+    <EArc -14 -22 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -17 14 13 169 2382 #000080 2 1>
+    <Line 3 3 -6 -6 #000080 2 1>
+    <EArc -14 -10 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -5 14 13 169 2382 #000080 2 1>
+    <EArc 0 7 14 13 169 2382 #000080 2 1>
+    <EArc -14 2 15 14 3049 2382 #000080 2 1>
+    <Line 3 15 -6 -6 #000080 2 1>
   </Symbol>
 </Component>
 
 <Component BP2>
   <Description>
-Bandpass filter, 2nd order
+Bandpass Filter, 2nd order
   </Description>
   <Model>
 .Def:Ideal_BP2 _net0 _net3 fc="1E3" Q="1"
@@ -554,80 +641,81 @@ VCVS:SRC2 _net2 _net3 gnd gnd G="1" T="0"
 Eqn:Eqn1 wc="2*pi*fc" C="1E-6" L="1/(wc*wc*C)" R="1/Q*sqrt(L/C)" Export="yes"
 R:R1 gnd _net2 R="R" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 C:C1 _net4 _net1 C="C" V="0"
-L:L1 _net2 _net4 L="L" I=""
+L:L1 _net2 _net4 L="L" I="0"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT Ideal_BP2 0 _net0 _net3 fc=1E3 Q=1
+.PARAM C=1e-6
+.PARAM wc=2*3.1415926539*fc
+.PARAM L=1/(wc*wc*C)
+.PARAM R=1/Q*sqrt(L/C)
+ESRC1 _net1 0 _net0 0 1
+R1 _net2 0 {R}
+ESRC2 _net3 0 _net2 0 1
+C1 net4 _net1 {C} IC=0
+L1 net4 _net2 {L} IC=0
+.ENDS
+  </Spice>
   <Symbol>
+    <.ID -20 24 BP2F "1=fc=1E3=Center frequency (Hz)" "1=Q=1=Quality factor">
     <.PortSym -30 0 1 0>
+    <.PortSym 30 0 2 180>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
     <Line -30 0 10 0 #000080 2 1>
     <Line 20 0 10 0 #000080 2 1>
-    <.PortSym 30 0 2 180>
-    <EArc -14 -22 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -17 14 13 169 2382 #000080 1 1>
-    <EArc -14 -10 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -5 14 13 169 2382 #000080 1 1>
-    <EArc 0 7 14 13 169 2382 #000080 1 1>
-    <EArc -14 2 15 14 3049 2382 #000080 1 1>
-    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <.ID -20 24 BP2F "1=fc=1E3=Notch frequency (Hz)" "1=Q=1=Quality factor">
-    <Line 3 14 -6 -6 #000080 1 1>
-    <Line 3 -10 -6 -6 #000080 1 1>
+    <EArc -14 -22 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -17 14 13 169 2382 #000080 2 1>
+    <EArc -14 -10 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -5 14 13 169 2382 #000080 2 1>
+    <EArc 0 7 14 13 169 2382 #000080 2 1>
+    <EArc -14 2 15 14 3049 2382 #000080 2 1>
+    <Line 3 14 -6 -6 #000080 2 1>
+    <Line 3 -10 -6 -6 #000080 2 1>
   </Symbol>
 </Component>
 
-<Component Abs>
+<Component Notch2>
   <Description>
-Absolute value of voltage
+Notch Filter, 2nd Order
   </Description>
   <Model>
-.Def:Ideal_Abs _net2   _net1
-CCVS:SRC1 _net0 _net1 gnd gnd G="1 Ohm" T="0"
-EDD:D1 _net2 gnd gnd _net0 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
-  Eqn:EqnD1I1 D1.I1="0" Export="no"
-  Eqn:EqnD1Q1 D1.Q1="0" Export="no"
-  Eqn:EqnD1I2 D1.I2="abs(V1)" Export="no"
-  Eqn:EqnD1Q2 D1.Q2="0" Export="no"
+.Def:Ideal_Notch2 _net0 _net3 fc="1E3" Q="1"
+VCVS:SRC1 _net0 _net1 gnd gnd G="1" T="0"
+VCVS:SRC2 _net2 _net3 gnd gnd G="1" T="0"
+R:R1 _net1 _net2 R="R" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+L:L1 gnd _net4 L="L" I="0"
+Eqn:Eqn1 wc="2*pi*fc" C="1E-6" L="1/(wc*wc*C)" R="1/Q*sqrt(L/C)" Export="yes"
+C:C1 _net4 _net2 C="C" V="0"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT Ideal_Notch2 0 _net0 _net3 fc=1E3 Q=1 
+.PARAM C=1e-6
+.PARAM wc=2*3.1415926539*fc
+.PARAM L=1/(wc*wc*C)
+.PARAM R=1/Q*sqrt(L/C)
+ESRC1 _net1 0 _net0 0 1
+ESRC2 _net3 0 _net2 0 1
+R1 _net1 _net2 {R}
+L1 0 _net4 {L} IC=0
+C1 _net2 _net4 {C} IC=0
+.ENDS
+  </Spice>
   <Symbol>
+    <.ID -20 24 N2F "1=fc=1E3=Notch frequency (Hz)" "1=Q=1=Quality factor">
+    <.PortSym -30 0 1 0>
     <.PortSym 30 0 2 180>
     <Line -30 0 10 0 #000080 2 1>
-    <.PortSym -30 0 1 0>
     <Line 20 0 10 0 #000080 2 1>
-    <.ID -20 24 ABS>
     <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <Line -10 -10 0 20 #000080 1 1>
-    <Line 10 -10 0 20 #000080 1 1>
-    <Ellipse -2 -2 5 5 #000080 0 1 #000080 1 1>
-  </Symbol>
-</Component>
-
-<Component AP2>
-  <Description>
-Allpass filter, 2nd order
-  </Description>
-  <Model>
-.Def:Ideal_AP2 _net0 _net2 fc="1E3"
-Sub:VSUB1 _net0 _net1 _net2 Type="VSub"
-Eqn:Eqn1 fc2="1.064*fc" Export="yes"
-Sub:BP2F1 _net0 _net3 Type="BP2" fc="fc2" Q="0.58"
-VCVS:SRC1 _net3 _net1 gnd gnd G="2" T="0"
-.Def:End
-  </Model>
-  <ModelIncludes "BP2.sch.lst" "VSub.sch.lst">
-  <Symbol>
-    <Line 20 0 10 0 #000080 2 1>
-    <EArc -14 -22 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -17 14 13 169 2382 #000080 1 1>
-    <EArc -14 -10 15 14 3049 2382 #000080 1 1>
-    <EArc 0 -5 14 13 169 2382 #000080 1 1>
-    <EArc 0 7 14 13 169 2382 #000080 1 1>
-    <EArc -14 2 15 14 3049 2382 #000080 1 1>
-    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
-    <Line -30 0 10 0 #000080 2 1>
-    <.ID -20 24 AP2F "1=fc=1E3=Cut-off frequency (Hz)">
-    <.PortSym 30 0 2 180>
-    <.PortSym -30 0 1 0>
+    <EArc -14 -22 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -17 14 13 169 2382 #000080 2 1>
+    <Line 3 3 -6 -6 #000080 2 1>
+    <EArc -14 -10 15 14 3049 2382 #000080 2 1>
+    <EArc 0 -5 14 13 169 2382 #000080 2 1>
+    <EArc 0 7 14 13 169 2382 #000080 2 1>
+    <EArc -14 2 15 14 3049 2382 #000080 2 1> 
   </Symbol>
 </Component>
 
@@ -643,6 +731,24 @@ Sub:HP1F1 _net3 _net1 Type="HP1" fc="fc2"
 Eqn:Eqn1 fc2="fc/0.6436" Export="yes"
 .Def:End
   </Model>
+  <Spice>
+.SUBCKT Ideal_APF1 0 _net3 _net2 fc=1E3 
+.PARAM R=1k
+.PARAM C=1E-3/(6.2831853*fc2)
+.PARAM V0=0
+.PARAM fc2=fc/0.6436
+ESRC2 _net0 0 _net01 0 -1
+ESRC4 _net1 0 _net04 0 1
+C2 _net04 _net05 {C} IC=V0
+ESRC5 _net2 _net03 _net0 0 1
+ESRC6 _net03 0 _net1 0 -1
+R1 0 _net01 {R}
+C1 0 _net01 {C} IC=V0
+R2 0 _net04 {R}
+GSRC1 _net01 0 _net3 0 1E-3
+ESRC3 _net05 0 _net3 0 1
+.ENDS
+  </Spice>
   <ModelIncludes "HP1.sch.lst" "LP1.sch.lst" "VSub.sch.lst">
   <Symbol>
     <Line 20 0 10 0 #000080 2 1>
@@ -660,3 +766,49 @@ Eqn:Eqn1 fc2="fc/0.6436" Export="yes"
   </Symbol>
 </Component>
 
+<Component AP2>
+  <Description>
+Allpass filter, 2nd order
+  </Description>
+  <Model>
+.Def:Ideal_AP2 _net0 _net2 fc="1E3"
+Sub:VSUB1 _net0 _net1 _net2 Type="VSub"
+Eqn:Eqn1 fc2="1.064*fc" Export="yes"
+Sub:BP2F1 _net0 _net3 Type="BP2" fc="fc2" Q="0.58"
+VCVS:SRC1 _net3 _net1 gnd gnd G="2" T="0"
+.Def:End
+  </Model>
+  <ModelIncludes "BP2.sch.lst" "VSub.sch.lst">
+  <Spice>
+.SUBCKT Ideal_APF2 0 _net0 _net2 fc=1E3 
+.PARAM fc2=1.064*fc
+.PARAM Q=0.58
+.PARAM C=1e-6
+.PARAM wc=2*6.2831853*fc2
+.PARAM L=1/(wc*wc*C)
+.PARAM R=1/Q*sqrt(L/C)
+R1 _net03 0 {R}
+C1 _net02 _net01 {C} IC=0
+L1 _net02 _net03 {L} IC=0
+ESRC4 _net01 0 _net0 0 1
+ESRC5 _net04 0 _net03 0 1
+ESRC2 _net2 _net06 _net0 0 1
+ESRC3 _net06 0 _net05 0 -1
+ESRC1 _net05 0 _net04 0 2
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 20 0 10 0 #000080 2 1>
+    <EArc -14 -22 15 14 3049 2382 #000080 1 1>
+    <EArc 0 -17 14 13 169 2382 #000080 1 1>
+    <EArc -14 -10 15 14 3049 2382 #000080 1 1>
+    <EArc 0 -5 14 13 169 2382 #000080 1 1>
+    <EArc 0 7 14 13 169 2382 #000080 1 1>
+    <EArc -14 2 15 14 3049 2382 #000080 1 1>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -30 0 10 0 #000080 2 1>
+    <.ID -20 24 AP2F "1=fc=1E3=Cut-off frequency (Hz)">
+    <.PortSym 30 0 2 180>
+    <.PortSym -30 0 1 0>
+  </Symbol>
+</Component>
