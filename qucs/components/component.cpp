@@ -84,23 +84,26 @@ void Component::Bounding(int &_x1, int &_y1, int &_x2, int &_y2) {
 int Component::textSize(int &_dx, int &_dy) {
     // get size of text using the screen-compatible metric
     QFontMetrics metrics(QucsSettings.font, 0);
-
-    int tmp, count = 0;
+    int count = 0;
     _dx = _dy = 0;
+
     if (showName) {
         _dx = metrics.boundingRect(Name).width();
         _dy = metrics.height();
         count++;
     }
-    for (Property *pp = Props.first(); pp != 0; pp = Props.next())
-        if (pp->display) {
-            // get width of text
-            tmp = metrics.size(flags, pp->Name + "=" + pp->Value).width();
-            if (tmp > _dx) _dx = tmp;
-            _dy += metrics.height();
-            count++;
+
     constexpr int flags = 0b00000000;
+    for (Property* p : Props) {
+        if (!(p->display)) continue;
+
+        // Update overall width if text of the current property is wider
+        if (auto w = metrics.size(flags, p->Name + "=" + p->Value).width(); w > _dx) {
+            _dx = w;
         }
+        _dy += metrics.height();
+        count++;
+    }
     return count;
 }
 
