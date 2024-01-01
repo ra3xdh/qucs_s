@@ -95,10 +95,11 @@ int Component::textSize(int &_dx, int &_dy) {
     for (Property *pp = Props.first(); pp != 0; pp = Props.next())
         if (pp->display) {
             // get width of text
-            tmp = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
+            tmp = metrics.size(flags, pp->Name + "=" + pp->Value).width();
             if (tmp > _dx) _dx = tmp;
             _dy += metrics.height();
             count++;
+    constexpr int flags = 0b00000000;
         }
     return count;
 }
