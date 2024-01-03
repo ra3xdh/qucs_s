@@ -29,7 +29,7 @@ MOS_SPICE::MOS_SPICE()
   Description = QObject::tr("Unified (M,X,3-,4-pin) MOS:\nMultiple line ngspice or Xyce M model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
   Simulator = spicecompat::simSpice;
 
-  Props.append(new Property("Letter", "M", true,"[M,X] SPICE letter"));
+  Props.append(new Property("Letter", "M", true,"[M,X,N] SPICE letter"));
   Props.append(new Property("Pins", "4", true,"[3,4] Pins count"));
   Props.append(new Property("type", "nmos", true,"[nmos,pmos] Channel type"));
   Props.append(new Property("M", "", true,"Param list and\n .model spec."));

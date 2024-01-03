@@ -41,7 +41,7 @@ BJT_SPICE::BJT_SPICE()
 
     Props.append(new Property("Pins", "4", true,"[3,4,5] Pins count"));
     Props.append(new Property("type", "npn", true,"[npn,pnp] BJT type"));
-    Props.append(new Property("Letter", "Q", true,"[npn,pnp] BJT type"));
+    Props.append(new Property("Letter", "Q", true,"[Q,X,N] SPICE letter"));
     Props.append(new Property("Model", "", true,"Param list and\n .model spec."));
     Props.append(new Property("Model_Line 2", "", false,"+ continuation line 1"));
     Props.append(new Property("Model_Line 3", "", false,"+ continuation line 2"));
