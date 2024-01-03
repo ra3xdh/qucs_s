@@ -35,7 +35,9 @@
 #include <QPaintDevice>
 #include <QPainter>
 #include <QPixmap>
+#include <QPoint>
 #include <QPrinter>
+#include <QRect>
 #include <QTextStream>
 #include <QUrl>
 #include <QWheelEvent>
@@ -761,6 +763,123 @@ void Schematic::paintSchToViewpainter(
             p->drawText(pn->Name, x, y);
         }
     }
+}
+
+double Schematic::scale(const double newScale) {
+  // If current scale is minimum or maximum possible one and new scale
+  // exceeds the limits then short-circuit and do nothing.
+  // Return 1.0 as relative scale because scale stays the same.
+  if ((Scale >= maxScale && newScale >= maxScale) ||
+      (Scale <= minScale && newScale <= minScale)) return 1.0;
+
+  const double originalScale = Scale;
+
+  if (newScale > maxScale) {
+    Scale = maxScale;
+  } else if (newScale < minScale) {
+    Scale = minScale;
+  } else {
+    Scale = newScale;
+  }
+
+  // Variable ViewX* and ViewY* describe "logical" size of the schematic.
+  // Logical schematic size and canvas size are connected:
+  // <canvas size> = <schematic logical size> * <scale>.
+  auto newWidth  = static_cast<int>(std::ceil(Scale * (ViewX2 - ViewX1)));
+  auto newHeight = static_cast<int>(std::ceil(Scale * (ViewY2 - ViewY1)));
+
+  resizeContents(newWidth, newHeight);
+
+  return Scale / originalScale;
+}
+
+// - - - - -
+// After changing canvas size schematic's logical size must be updated to reflect
+// this change, otherwise there would be inconsistency.
+//
+// Param d in each of grow* method must be non-negative.
+//
+void Schematic::growUp(const int d) {
+  if (d == 0) return;
+  resizeContents(contentsWidth(), contentsHeight() + d);
+  // logical bottom stays, logical top must be moved
+  ViewY1 = ViewY2 - static_cast<int>(std::round(contentsHeight() / Scale));
+}
+
+void Schematic::growDown(const int d) {
+  if (d == 0) return;
+  resizeContents(contentsWidth(), contentsHeight() + d);
+  // logical top stays, logical bottom must be moved
+  ViewY2 = ViewY1 + static_cast<int>(std::round(contentsHeight() / Scale));
+}
+
+void Schematic::growLeft(const int d) {
+  if (d == 0) return;
+  resizeContents(contentsWidth() + d, contentsHeight());
+  // logical left stays, logical right must be moved
+  ViewX1 = ViewX2 - static_cast<int>(std::round(contentsWidth() / Scale));
+}
+
+void Schematic::growRight(const int d) {
+  if (d == 0) return;
+  resizeContents(contentsWidth() + d, contentsHeight());
+  ViewX2 = ViewX1 + static_cast<int>(std::round(contentsWidth() / Scale));
+}
+// - - - - -
+
+double Schematic::zoomAroundPoint(double offeredScaleChange, const int zpx, const int zpy) {
+  // This statement is copied from the 'zoom' method. In 'zoom' it has the comment:
+  //  "resizeContents() performs an immediate repaint. So, set widget
+  //   to hidden. This causes some flicker, but it is still nicer"
+  //
+  // Maybe it's of no use and shouldn't be there, but for now, let's go the way 'zoom' goes,
+  // at least 'zoom' has proven to work.
+  viewport()->setHidden(true);
+
+  // zpx and zpy are coordinates relative to viewport's top-left corner. Convert them
+  // to coordinates on the canvas
+  QPoint zoomingCenter(contentsX() + zpx, contentsY() + zpy);
+
+  const double actualScaleChange = scale(Scale * offeredScaleChange);
+
+  // Canvas must have changed its size. If so, then zooming center coordinates
+  // has changed too.
+  zoomingCenter.setX(static_cast<int>(std::round(zoomingCenter.x() * actualScaleChange)));
+  zoomingCenter.setY(static_cast<int>(std::round(zoomingCenter.y() * actualScaleChange)));
+
+  // visibleArea describes an area on the canvas, which should be displayed in order
+  // to keep zoomingCenter in the same place relative to viewport.
+  QRect visibleArea(
+    zoomingCenter.x() - zpx, zoomingCenter.y() - zpy,
+    viewport()->width(), viewport()->height()
+  );
+
+  if (visibleArea.left() < 0) {
+    growLeft(std::abs(visibleArea.left()));
+    visibleArea.setLeft(0);
+  }
+
+  if (visibleArea.top() < 0) {
+    growUp(std::abs(visibleArea.top()));
+    visibleArea.setTop(0);
+  }
+
+  if (auto extraWidth = visibleArea.left() + visibleArea.width() - contentsWidth(); extraWidth > 0) {
+    growRight(extraWidth);
+  }
+
+  if (auto extraHeight = visibleArea.top() + visibleArea.height() - contentsHeight(); extraHeight > 0) {
+    growDown(extraHeight);
+  }
+
+  setContentsPos(visibleArea.left(), visibleArea.top());
+
+  // This block is also copied from 'zoom' method
+  viewport()->setHidden(false);
+  viewport()->update();
+  App->view->drawn = false;
+
+  return Scale;
 }
 
 // -----------------------------------------------------------
@@ -2169,13 +2288,10 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
         //  values different from 60 (slower or faster zoom)
         int delta = Event->angleDelta().y();
         float Scaling = pow(1.1, delta / 60.0);
-        zoom(Scaling);
-        Scaling -= 1.0;
 #if QT_VERSION >= 0x050f00
-        scrollBy(int(Scaling * float(Event->position().x())),
-                 int(Scaling * float(Event->position().y())));
+      zoomAroundPoint(Scaling, Event->position().x(), Event->position().y());
 #else
-        scrollBy(int(Scaling * float(Event->pos().x())), int(Scaling * float(Event->pos().y())));
+      zoomAroundPoint(Scaling, Event->pos().x(), Event->pos().y());
 #endif
     }
     // ...................................................................
