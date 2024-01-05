@@ -79,7 +79,6 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_)
     UsedX1 = UsedY1 = INT_MAX;
     UsedX2 = UsedY2 = INT_MIN;
 
-    zx1 = zy1 = zx2 = zy2 = dx = dy = 0;
 
     tmpPosX = tmpPosY = -100;
     tmpUsedX1 = tmpUsedY1 = tmpViewX1 = tmpViewY1 = -200;
@@ -950,38 +949,51 @@ void Schematic::showAll()
 }
 
 // ------------------------------------------------------
-void Schematic::zoomToSelection()
-{
-    int x1, x2, y1, y2 = 0;
-    sizeOfSelection(x1, y1, x2, y2);
-    if (x1 == 0 && x2 == 0 && y1 == 0 && y2 == 0) {
-        showAll();
+void Schematic::zoomToSelection() {
+    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+    if (UsedX1 == 0)
+        if (UsedX2 == 0)
+            if (UsedY1 == 0)
+                if (UsedY2 == 0) {
+                    UsedX1 = UsedY1 = INT_MAX;
+                    UsedX2 = UsedY2 = INT_MIN;
+
+                    // No elements present – nothing can be selected; quit
+                    return;
+                }
+
+    // Coordinates of top-left and bottom-right corners of the selected
+    // elements bounding rectangle
+    int selectedX1, selectedX2, selectedY1, selectedY2 = 0;
+    sizeOfSelection(selectedX1, selectedY1, selectedX2, selectedY2);
+
+    // Working with raw coordinates is clumsy, abstract them out
+    const QRect usedBoundingRect{UsedX1, UsedY1, UsedX2 - UsedX1, UsedY2 - UsedY1};
+    const QRect selectedBoundingRect{selectedX1, selectedY1, selectedX2 - selectedX1, selectedY2 - selectedY1};
+
+    if (selectedBoundingRect.width() == 0 || selectedBoundingRect.height() == 0) {
+        // If nothing is selected, then what should be shown? Probably it's best
+        // to do nothing.
         return;
     }
-    //
-    if (zx1 == contentsX() && zx2 == contentsWidth() && zy1 == contentsY()
-        && zy2 == contentsHeight() && dx == x2 - x1 && dy == y2 - y1) {
-        return;
-    }
 
-    dx = x2 - x1;
-    dy = y2 - y1;
+    // While we here, lets reshape model plane to cut off unused parts
+    constexpr int margin = 40;
+    QRect modelBounds = modelRect();
+    modelBounds.setLeft(usedBoundingRect.left() - margin);
+    modelBounds.setTop(usedBoundingRect.top() - margin);
+    modelBounds.setRight(usedBoundingRect.right() + margin);
+    modelBounds.setBottom(usedBoundingRect.bottom() + margin);
 
-    float xScale = float(visibleWidth()) / std::abs(dx + 80);
-    float yScale = float(visibleHeight()) / std::abs(dy + 80);
-    float scale = qMin(xScale, yScale) / Scale;
-    zoom(scale);
+    // Find out the scale at which selected area's longest side would fit
+    // into the viewport
+    const double xScale = static_cast<double>(viewport()->width()) /
+                          static_cast<double>(selectedBoundingRect.width());
+    const double yScale = static_cast<double>(viewport()->height()) /
+                          static_cast<double>(selectedBoundingRect.height());
+    const double newScale = std::min(xScale, yScale);
 
-    ViewX1 = x1 - 40;
-    ViewY1 = y1 - 40;
-    ViewX2 = x2 + 40;
-    ViewY2 = y2 + 40;
-    zx1 = contentsX();
-    zy1 = contentsY();
-    zx2 = contentsWidth();
-    zy2 = contentsHeight();
-
-    //releaseKeyboard();  // allow keyboard inputs again
+    renderModel(newScale, modelBounds, selectedBoundingRect.center(), viewportRect().center());
 }
 
 // ---------------------------------------------------

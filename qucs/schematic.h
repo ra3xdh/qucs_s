@@ -175,7 +175,6 @@ public:
   // of a smallest rectangle which can fit all elements of the schematic.
   // This rectangle exists in the same coordinate system as View*-rectangle
   int UsedX1, UsedY1, UsedX2, UsedY2;
-  int zx1, zy1, zx2, zy2, dx, dy = 0;
 
   int showFrame;
   QString Frame_Text0, Frame_Text1, Frame_Text2, Frame_Text3;
