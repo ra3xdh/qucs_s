@@ -206,10 +206,10 @@ registerComponent (cat, &val::inf1)
   REGISTER_COMP_2 (QObject::tr("nonlinear components"),val,inf1,inf2)
 #define REGISTER_NONLINEAR_3(val,inf1,inf2,inf3) \
   REGISTER_COMP_3 (QObject::tr("nonlinear components"),val,inf1,inf2,inf3)
-#define REGISTER_PDK_1(val,inf1) \
-REGISTER_SPECIFIC_COMP_1 (QObject::tr("PDK devices"),val,inf1)
-#define REGISTER_PDK_2(val,inf1,inf2) \
-REGISTER_COMP_2 (QObject::tr("PDK devices"),val,inf1,inf2)
+#define REGISTER_MICROEL_1(val,inf1) \
+REGISTER_SPECIFIC_COMP_1 (QObject::tr("microelectronics"),val,inf1)
+#define REGISTER_MICROEL_2(val,inf1,inf2) \
+REGISTER_COMP_2 (QObject::tr("microelectronics"),val,inf1,inf2)
 #define REGISTER_VERILOGA_1(val) \
   REGISTER_COMP_1 (QObject::tr("verilog-a devices"),val)
 #define REGISTER_VERILOGA_2(val,inf1,inf2) \
@@ -411,6 +411,7 @@ void Module::registerModules (void) {
       REGISTER_NONLINEAR_1 (DIODE_SPICE);
       REGISTER_NONLINEAR_1 (NPN_SPICE);
       REGISTER_NONLINEAR_1 (PNP_SPICE);
+      REGISTER_NONLINEAR_2 (MOS_SPICE,info_NM3pin,info_PM3pin);
       REGISTER_NONLINEAR_1 (NJF_SPICE);
       REGISTER_NONLINEAR_1 (PJF_SPICE);
       REGISTER_NONLINEAR_1 (NMOS_SPICE);
@@ -432,14 +433,16 @@ void Module::registerModules (void) {
   //}
 
 // PDK devices
-      REGISTER_PDK_1 (R_SPICE, info_R3);
-      REGISTER_PDK_1 (C_SPICE, info_C3);
-      REGISTER_PDK_1 (DIODE_SPICE, info_DIODE3);
-      REGISTER_PDK_2 (MOS_SPICE,info_NM3pin,info_PM3pin);
-      REGISTER_PDK_2 (MOS_SPICE,info_NX3pin,info_PX3pin);
-      REGISTER_PDK_2 (MOS_SPICE,info_NX4pin,info_PX4pin);
-      REGISTER_PDK_2 (BJT_SPICE,infoNPN4,infoPNP4);
-      REGISTER_PDK_2 (BJT_SPICE,infoNPN5,infoPNP5);
+      REGISTER_MICROEL_1 (R_SPICE, info_R3);
+      REGISTER_MICROEL_1 (C_SPICE, info_C3);
+      REGISTER_MICROEL_1 (DIODE_SPICE, info_DIODE3);
+      REGISTER_MICROEL_1 (NMOS_SPICE, info);
+      REGISTER_MICROEL_1 (PMOS_SPICE, info);
+      REGISTER_MICROEL_2 (MOS_SPICE,info_NM3pin,info_PM3pin);
+      REGISTER_MICROEL_2 (MOS_SPICE,info_NX3pin,info_PX3pin);
+      REGISTER_MICROEL_2 (MOS_SPICE,info_NX4pin,info_PX4pin);
+      REGISTER_MICROEL_2 (BJT_SPICE,infoNPN4,infoPNP4);
+      REGISTER_MICROEL_2 (BJT_SPICE,infoNPN5,infoPNP5);
 
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       // verilog-a devices
