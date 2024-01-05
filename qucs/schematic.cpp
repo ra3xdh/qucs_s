@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cassert>
 #include <limits.h>
 #include <stdlib.h>
 
@@ -2692,3 +2693,128 @@ QPoint Schematic::modelToView(const QPoint& coordinates)
     return viewCoords;
 }
 
+double Schematic::clipScale(double offeredScale)
+{
+    if (offeredScale > maxScale) {
+        return maxScale;
+    } else if (offeredScale < minScale) {
+        return minScale;
+    } else {
+       return offeredScale;
+    }
+}
+
+bool Schematic::shouldRender(const double& newScale, const QRect& newModelBounds, const QPoint& toBeDisplayed, const QPoint& viewportCoords) {
+    const QRect currentModelBounds = modelRect();
+    // This point currently displayed at "viewportCoords" of the viewport
+    const QPoint currenlyDisplayed = viewportToModel(viewportCoords);
+    return Scale != newScale || toBeDisplayed != currenlyDisplayed || currentModelBounds != newModelBounds;
+}
+
+double Schematic::renderModel(const double offeredScale, QRect newModel, const QPoint modelPoint, const QPoint viewportPoint)
+{
+    // This is the core method to render the schematic. It employs
+    // an approach similar to MVC (model-view-controller).
+    //
+    // There is a "model plane" – a rectangle located somewhere in some
+    // abstract cartesian coordinate system. This coordinate system has
+    // its X-axis directed left-to-right and Y-axis top-to-bottom. Every element
+    // of the schematic "lives" in this coordinate system inside the model
+    // plane. The model plane is described by class properties ViewX1, ViewY1,
+    // ViewX2, ViewY1.
+    //
+    // To see the schematic we need to "render" the model plane. To do so the
+    // "view plane" is used. Technically it is the Q3ScrollView's "contents",
+    // but in the abstraction being described its just another plane. In
+    // contrast to the model plane, its top-left corner is always (0,0), but the
+    // axes are directed the same way: left-to-right and top-to-bottom.
+    //
+    // The "scale" is the ratio between the view plane and model plane sizes.
+    // When being rendered, the model is like being "projected" on the view
+    // plane. Think of the film projector: the film ("model") could be displayed
+    // on screens ("views") of different sizes by adjusting the lense ("scale").
+    //
+    // Finally there is a "viewport". Technically its the very Q3ScrollView
+    // widget, but in the abstraction being described its the part of the
+    // view which is currently observed by the user. Sometimes the view is
+    // very large (when we "zoom in") and only the part of it could be observed.
+    //
+    // Summarizing everything said:
+    // 1. The model plane is drawn on the view plane at some scale and then
+    // a part of the view plane is observed by the user.
+    // 2. <size in model plane> * <Scale> = <size in view plane>
+
+    // DO NOT alter model bounds or scale and DO NOT call resizeContens() outside
+    // of this method. It will break the state and lead to hard-to-find bugs.
+    // Pass the desired model bounds or scale as the argument to this method.
+
+    assert(modelPoint.x() >= newModel.left() && modelPoint.x() <= newModel.right());
+    assert(modelPoint.y() >= newModel.top() && modelPoint.y() <= newModel.bottom());
+    assert(viewportPoint.x() >= 0 && viewportPoint.x() < viewport()->width());
+    assert(viewportPoint.y() >= 0 && viewportPoint.y() < viewport()->height());
+
+    // Maybe there is no need to do anything
+    const double newScale = clipScale(offeredScale);
+    if (!shouldRender(newScale, newModel, modelPoint, viewportPoint)) {
+       return Scale;
+    }
+
+    // The part below is quite tricky: while working at the model plane scale,
+    // we construct a "viewport" rectangle and position it so that it contains the
+    // area of the model, which should be displayed in the real viewport at the
+    // end. We do this because the "should-be-displayed" area might go beyond
+    // the model plane bounds, in which case the model plane size would have to
+    // be adjusted to include this area.
+    //
+    // Remember that <size in model plane> * <Scale> = <size in view plane>
+
+    QSize viewportSizeOnModelPlane = viewportRect().size() / newScale;
+
+    QPoint vpTopLeftOnModelPlane{
+        modelPoint.x() - static_cast<int>(viewportPoint.x() / newScale),
+        modelPoint.y() - static_cast<int>(viewportPoint.y() / newScale)
+    };
+
+    QRect viewportOnModelPlane{vpTopLeftOnModelPlane, viewportSizeOnModelPlane};
+    newModel |= viewportOnModelPlane;
+
+    // At this point everything is ready for rendering and positioning
+
+    // This statement is copied from the legacy implmentation where it had the
+    // comment:
+    //  "resizeContents() performs an immediate repaint. So, set widget
+    //   to hidden. This causes some flicker, but it is still nicer"
+    viewport()->setHidden(true);
+
+    // Set new model size
+    ViewX1 = newModel.left();
+    ViewY1 = newModel.top();
+    ViewX2 = newModel.left() + newModel.width();
+    ViewY2 = newModel.top() + newModel.height();
+
+    Scale = newScale;
+    resizeContents(static_cast<int>(std::round(newModel.width() * Scale)),
+                   static_cast<int>(std::round(newModel.height() * Scale)));
+
+    auto contentTopLeft = modelToView(vpTopLeftOnModelPlane);
+    setContentsPos(contentTopLeft.x(), contentTopLeft.y());
+
+    // This block is also copied from legacy implementation
+    viewport()->setHidden(false);
+    viewport()->update();
+    App->view->drawn = false;
+
+    return Scale;
+}
+
+double Schematic::renderModel(const double offeredScale)
+{
+    const auto currentModelBounds = modelRect();
+    return renderModel(offeredScale, currentModelBounds,
+                       currentModelBounds.center(), viewportRect().center());
+}
+
+double Schematic::renderModel(const double offeredScale,const QPoint modelPoint, const QPoint viewportPoint)
+{
+    return renderModel(offeredScale, modelRect(), modelPoint, viewportPoint);
+}

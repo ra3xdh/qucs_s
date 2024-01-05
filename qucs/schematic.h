@@ -163,16 +163,12 @@ public:
   int GridX, GridY;
 
   // Variables View* are the coordinates of top-level and bottom-right corners
-  // of a rectangle representing the schematic document as a whole. This
+  // of a rectangle representing the schematic "model". This
   // rectangle may grow and shrink when user scrolls the view, and its
   // coordinates change accordingly. Everything (elements, wires, etc.) lies
   // inside this rectangle. The size of this rectangle is the "logical" size
-  // of the schematic.
-  // Schematic is displayed to user in some scale: its "logical" size
-  // is multiplied by scale factor, and the result describes the size of a
-  // canvas required to draw the schematic in chosen scale. Every element of
-  // the schematic is drawn in the same scale on this canvas. That's the way
-  // "zooming" works.
+  // of the schematic. The comment in "renderModel" method describes how
+  // these variables ("model") is used to draw the scematic.
   int ViewX1, ViewY1, ViewX2, ViewY2;
 
   // Variables Used* hold the coordinates of top-left and bottom-right corners
@@ -317,6 +313,65 @@ private:
     @return a corresponding point on the view plane
   */
   QPoint modelToView(const QPoint& modelCoordinates);
+
+  /**
+    If given value violates lower or upper scale limit, then returns
+    the limit value, original value otherwise.
+  */
+  static double clipScale(double);
+
+  /**
+    Tells whether the model should be rerendered. Model should be rendered
+    if the given scale differs from the current one or if the point displayed
+    at \a viewportCoords in the viewport differs from the point \a modelCoords.
+    Otherwise there is no changes and no need to rerender.
+
+    @param scale desired scale
+    @param newModelBounds a rectangle describing the desired model bounds
+    @param modelCoords coordinates of a point on the model plane
+    @param viewportCoords coordinates of a point in the viewport.
+  */
+  bool shouldRender(const double& scale, const QRect& newModelBounds, const QPoint& modelCoords, const QPoint& viewportCoords);
+
+  /**
+    Renders schematic model on Q3ScrollView's contents at a given scale,
+    and positions the contents so that the point \a modelPlaneCoords of the
+    model is displayed at location \a viewportCoords of the viewport.
+
+    There is no need to call "update" on Q3ScrollView after using this method.
+    It is done as a part of rendering process.
+
+    @param  scale            desired new scale. It is clipped when exceeds
+                             a lower or upperlimit
+    @param  newModelBounds   a rectangle describing the desired model bounds
+    @param  modelPlaneCoords coordinates of a point somewhere within
+                             \a newModelBounds
+    @param  viewportCoords   coordinates of the point on the viewport where
+                             \a modelPlaneCoords should be placed after rendering
+    @return new scale value
+  */
+  double renderModel(double scale, QRect newModelBounds, QPoint modelPlaneCoords, QPoint viewportCoords);
+
+  /**
+    Render the model without changing its size and position the contents
+    so that the center of the model is displayed at center of the viewport.
+
+    @param scale desired new scale. It is clipped if exceeds bounds.
+    @return new scale value
+  */
+  double renderModel(double scale);
+
+  /**
+    Render the model without changing its size and position the contents so that
+    the point \a modelPlaneCoords of the model is displayed at location \a
+    viewportCoords of the viewport.
+
+    @param scale desired new scale. It is clipped if exceeds limits
+    @param modelPlaneCoords coordinates of the point on the model plane
+    @param viewportCoords coordinates of the point on the viewport
+    @return new scale value
+  */
+  double renderModel(double scale, QPoint modelPlaneCoords, QPoint viewportCoords);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
