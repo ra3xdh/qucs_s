@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
 #include <cassert>
 #include <limits.h>
 #include <stdlib.h>
@@ -928,17 +929,24 @@ void Schematic::showAll()
                     return;
                 }
 
-    float xScale = float(visibleWidth()) / float(UsedX2 - UsedX1 + 80);
-    float yScale = float(visibleHeight()) / float(UsedY2 - UsedY1 + 80);
-    if (xScale > yScale)
-        xScale = yScale;
-    xScale /= Scale;
+    // Reshape model plane to cut off unused parts
+    constexpr int margin = 40;
+    QRect newModelBounds = modelRect();
+    newModelBounds.setLeft(UsedX1 - margin);
+    newModelBounds.setTop(UsedY1 - margin);
+    newModelBounds.setRight(UsedX2 + margin);
+    newModelBounds.setBottom(UsedY2 + margin);
 
-    ViewX1 = UsedX1 - 40;
-    ViewY1 = UsedY1 - 40;
-    ViewX2 = UsedX2 + 40;
-    ViewY2 = UsedY2 + 40;
-    zoom(xScale);
+    // The shape of the model plane may not fit the shape of the viewport,
+    // so we looking for a scale value which enables to fit the whole model
+    // into the viewport
+    const double xScale = static_cast<double>(viewport()->width()) /
+                          static_cast<double>(newModelBounds.width());
+    const double yScale = static_cast<double>(viewport()->height()) /
+                          static_cast<double>(newModelBounds.height());
+    const double newScale = std::min(xScale, yScale);
+
+    renderModel(newScale, newModelBounds, newModelBounds.center(), viewportRect().center());
 }
 
 // ------------------------------------------------------
