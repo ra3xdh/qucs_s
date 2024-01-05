@@ -908,10 +908,12 @@ float Schematic::zoom(float s)
 // -----------------------------------------------------------
 float Schematic::zoomBy(float s)
 {
-    zoom(s);
-    s -= 1.0;
-    scrollBy(int(s * float(contentsX() + visibleWidth() / 2)),
-             int(s * float(contentsY() + visibleHeight() / 2)));
+    // Change scale and keep the point displayed in the center
+    // of the viewport at same place after scaling.
+
+    const double newScale = Scale * s;
+    const auto vpCenter = viewportRect().center();
+    renderModel(newScale, viewportToModel(vpCenter), vpCenter);
     return Scale;
 }
 
