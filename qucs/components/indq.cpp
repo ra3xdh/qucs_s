@@ -72,7 +72,7 @@ IndQ::IndQ()
 		QObject::tr("Q frequency profile")+
 		" [Linear, SquareRoot, Constant]"));
    Props.append(new Property("Temp", "26.85", false,
-		QObject::tr("simulation temperature in degree Celsius")));
+        QObject::tr("simulation temperature in degree Celsius (Qucsator only)")));
 }
 IndQ::~IndQ()
 {
