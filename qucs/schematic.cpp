@@ -886,22 +886,11 @@ double Schematic::zoomAroundPoint(double offeredScaleChange, const int zpx, cons
 // -----------------------------------------------------------
 float Schematic::zoom(float s)
 {
-    Scale *= s;
-    if (Scale > 10.0)
-        Scale = 10.0f;
-    if (Scale < 0.1)
-        Scale = 0.1f;
+    // Change scale and position view so that model's top-left
+    // corner is displayed in the viewport's top-left corner
 
-    // "resizeContents()" performs an immediate repaint. So, set widget
-    // to hidden. This causes some flicker, but it is still nicer.
-    viewport()->setHidden(true);
-    //  setHidden(true);
-    resizeContents(int(Scale * float(ViewX2 - ViewX1)), int(Scale * float(ViewY2 - ViewY1)));
-    //  setHidden(false);
-    viewport()->setHidden(false);
-
-    viewport()->update();
-    App->view->drawn = false;
+    const double newScale = Scale * s;
+    renderModel(newScale, modelRect().topLeft(), viewportRect().topLeft());
     return Scale;
 }
 
