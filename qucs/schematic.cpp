@@ -999,35 +999,43 @@ void Schematic::zoomToSelection() {
 // ---------------------------------------------------
 void Schematic::showNoZoom()
 {
-    Scale = 1.0;
+    constexpr double noScale = 1.0;
+    const QPoint vpCenter = viewportRect().center();
+    const QPoint displayedInCenter = viewportToModel(vpCenter);
 
-    int x1 = UsedX1;
-    int y1 = UsedY1;
-    int x2 = UsedX2;
-    int y2 = UsedY2;
+    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+    if (UsedX1 == 0)
+        if (UsedX2 == 0)
+            if (UsedY1 == 0)
+                if (UsedY2 == 0) {
+                    UsedX1 = UsedY1 = INT_MAX;
+                    UsedX2 = UsedY2 = INT_MIN;
+                    // If there is no elements in schematic, then just set scale 1.0
+                    // at the place we currently in.
+                    renderModel(noScale, displayedInCenter, vpCenter);
+                    return;
+                }
 
-    if (x1 > x2) { // happens e.g. if untitled without changes
-        x1 = 0;
-        x2 = 800;
+    // Working with raw coordinates is clumsy. Wrap them in useful abstraction.
+    const QRect usedBoundingRect{UsedX1, UsedY1, UsedX2 - UsedX1, UsedY2 - UsedY1};
+
+    // Trim unused model space
+    constexpr int margin = 40;
+    QRect newModelBounds = modelRect();
+    newModelBounds.setLeft(usedBoundingRect.left() - margin);
+    newModelBounds.setTop(usedBoundingRect.top() - margin);
+    newModelBounds.setRight(usedBoundingRect.right() + margin);
+    newModelBounds.setBottom(usedBoundingRect.bottom() + margin);
+
+    // If a part of "used" area is currently displayed in the center of the
+    // viewport, then keep it in the same place after scaling. Otherwise focus
+    // on the center of the used area after scale change.
+    if (usedBoundingRect.contains(displayedInCenter)) {
+        renderModel(noScale, newModelBounds, displayedInCenter, vpCenter);
+    } else {
+        renderModel(noScale, newModelBounds, usedBoundingRect.center(), vpCenter);
     }
-    if (y1 > y2) {
-        y1 = 0;
-        y2 = 800;
-    }
-    if (x2 == 0)
-        if (y2 == 0)
-            if (x1 == 0)
-                if (y1 == 0)
-                    x2 = y2 = 800;
-
-    ViewX1 = x1 - 40;
-    ViewY1 = y1 - 40;
-    ViewX2 = x2 + 40;
-    ViewY2 = y2 + 40;
-    resizeContents(x2 - x1 + 80, y2 - y1 + 80);
-    viewport()->update();
-    App->view->drawn = false;
-}
+ }
 
 // -----------------------------------------------------------
 // Enlarge the viewport area if the coordinates x1-x2/y1-y2 exceed the
