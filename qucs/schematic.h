@@ -282,6 +282,42 @@ private:
   */
   static constexpr double maxScale = 10.0;
 
+  /**
+    Returns a rectangle which describes the model plane of the schematic.
+    The rectangle is a copy, changes made to it do not affect schematic state.
+  */
+  QRect modelRect();
+
+  /**
+    Returns a rectangle which describes the viewport. Top-left corner is (0,0),
+    width and height are equal to viewport's width and height.
+  */
+  QRect viewportRect();
+
+  /**
+    Given a coordinates of viewport point returns coordinates of the model plane point
+    displayed at given location of the viewport.
+  */
+  QPoint viewportToModel(QPoint viewportCoordinates);
+
+  /**
+    Given coordinates of a point on the view plane (schematic's canvas), this method
+    returns coordinates of a corresponding point on the model plane.
+
+    @param viewCoordinates a point on the view plane
+    @return a corresponding point on the model plane
+  */
+  QPoint viewToModel(const QPoint& viewCoordinates);
+
+  /**
+    Given coordinates of a point on the model plane, this method returns coordinates
+    of a corresponding point on the view plane (schematic's canvas).
+
+    @param modelCoordinates a point on the model plane
+    @return a corresponding point on the view plane
+  */
+  QPoint modelToView(const QPoint& modelCoordinates);
+
 /* ********************************************************************
    *****  The following methods are in the file                   *****
    *****  "schematic_element.cpp". They only access the QPtrList  *****

@@ -2630,3 +2630,65 @@ bool Schematic::checkDplAndDatNames()
     }
     return false;
 }
+
+QRect Schematic::modelRect()
+{
+    return QRect{ViewX1, ViewY1, ViewX2 - ViewX1, ViewY2 - ViewY1};
+}
+
+QRect Schematic::viewportRect() {
+    return QRect{0, 0, viewport()->width(), viewport()->height()};
+}
+
+QPoint Schematic::viewportToModel(QPoint viewportCoordinates)
+{
+    viewportCoordinates.setX(contentsX() + viewportCoordinates.x());
+    viewportCoordinates.setY(contentsY() + viewportCoordinates.y());
+    return viewToModel(viewportCoordinates);
+}
+
+QPoint Schematic::viewToModel(const QPoint& coordinates)
+{
+    // Sizes in the model and view planes are interconnected and obey the rule:
+    //     <size in model plane> * <Scale> = <size in view plane>
+    //
+    // View plane is a rectangle with (0, 0) at its top-left corner. Model plane
+    // is rectangular area of abstract infinite plane, so model plane's top-left
+    // corner may have any coordinates.
+    //
+    // To transform coordinates of a point on the view plane to coordinates
+    // of corresponding point on model plane:
+    // 1. Adjust "view" coordinates so that they become having the same scale
+    //    the model plane has
+    // 2. Adjust resulting coordinates so they become absolute coordinates
+    //    in model plane
+
+    // QPoint overrides operator /. It divides both coordinates on given value
+    QPoint modelCoords = coordinates / Scale;
+
+    modelCoords.setX(ViewX1 + modelCoords.x());
+    modelCoords.setY(ViewY1 + modelCoords.y());
+    return modelCoords;
+}
+
+QPoint Schematic::modelToView(const QPoint& coordinates)
+{
+    // Sizes in the model and view planes are interconnected and obey the rule:
+    //     <size in model plane> * <Scale> = <size in view plane>
+    //
+    // View plane is a rectangle with (0, 0) at its top-left corner. Model plane
+    // is rectangular area of abstract infinite plane, so model plane's top-left
+    // corner may have any coordinates.
+    //
+    // To transform coordinates of a point on the model plane to coordinates
+    // of corresponding point on the view plane:
+    // 1. Adjust coordinates so that they become relative to model planes'
+    //    top-left corner
+    // 2. Adjust resulting coordinates so thay they become having the same scale
+    //    as view plane
+
+    QPoint viewCoords{coordinates.x() - ViewX1, coordinates.y() - ViewY1};
+    viewCoords *= Scale;
+    return viewCoords;
+}
+
