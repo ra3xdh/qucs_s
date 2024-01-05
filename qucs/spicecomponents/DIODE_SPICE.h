@@ -23,13 +23,15 @@
 
 #include "components/component.h"
 
-class DIODE_SPICE : public Component {
+class DIODE_SPICE : public MultiViewComponent {
 public:
   DIODE_SPICE();
   ~DIODE_SPICE();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+  static Element* info_DIODE3(QString&, char* &, bool getNewOne=false);
 protected:
+  void createSymbol();
   QString netlist();
   QString spice_netlist(bool isXyce = false);
 };
