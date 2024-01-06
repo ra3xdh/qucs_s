@@ -1100,8 +1100,7 @@ void QucsApp::slotCursorUp(bool up)
     if(markerCount > 0) {  // only move marker if nothing else selected
       Doc->markerUpDown(up, &movingElements);
     } else if(up) { // nothing selected at all
-      if(Doc->scrollUp(Doc->verticalScrollBar()->singleStep()))
-        Doc->scrollBy(0, -Doc->verticalScrollBar()->singleStep());
+      Doc->scrollUp(Doc->verticalScrollBar()->singleStep());
     } else { // down
       Doc->scrollDown(Doc->verticalScrollBar()->singleStep());
     }

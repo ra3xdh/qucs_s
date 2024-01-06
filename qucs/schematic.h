@@ -139,7 +139,7 @@ public:
   bool    undo();
   bool    redo();
 
-  bool scrollUp(int);
+  void scrollUp(int);
   void scrollDown(int);
   void scrollLeft(int);
   void scrollRight(int);
