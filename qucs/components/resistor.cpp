@@ -28,13 +28,13 @@ Resistor::Resistor(bool european)
   Props.append(new Property("R", "1 kOhm", true,
     QObject::tr("ohmic resistance in Ohms")));
   Props.append(new Property("Temp", "26.85", false,
-    QObject::tr("simulation temperature in degree Celsius")));
+    QObject::tr("simulation temperature in degree Celsius (Qucsator only)")));
   Props.append(new Property("Tc1", "0.0", false,
     QObject::tr("first order temperature coefficient")));
   Props.append(new Property("Tc2", "0.0", false,
     QObject::tr("second order temperature coefficient")));
   Props.append(new Property("Tnom", "26.85", false,
-    QObject::tr("temperature at which parameters were extracted")));
+    QObject::tr("temperature at which parameters were extracted (Qucsator only)")));
 
   // this must be the last property in the list !!!
   Props.append(new Property("Symbol", "european", false,
@@ -57,13 +57,26 @@ Component* Resistor::newOne()
 
 QString Resistor::spice_netlist(bool )
 {
-    QString s=spicecompat::check_refdes(Name,SpiceModel);
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     s += QString(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
             .arg(Ports.at(1)->Connection->Name); // output 2 nodes
     s.replace(" gnd ", " 0 ");
 
-    s += QString(" %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
+    QString Tc1 = getProperty("Tc1")->Value;
+    QString Tc2 = getProperty("Tc2")->Value;
+
+    s += QString(" %1").arg(spicecompat::normalize_value(Props.at(0)->Value));
+
+    if (!Tc1.isEmpty()) {
+        s += " tc1=" + Tc1;
+    }
+
+    if (!Tc2.isEmpty()) {
+        s += " tc2=" + Tc2;
+    }
+
+    s += QString(" \n");
 
     return s;
 }
