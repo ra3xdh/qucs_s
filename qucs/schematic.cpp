@@ -1028,12 +1028,10 @@ void Schematic::showNoZoom()
     }
  }
 
-// -----------------------------------------------------------
-// Enlarge the viewport area if the coordinates x1-x2/y1-y2 exceed the
-// visible area.
-void Schematic::enlargeView(int x1, int y1, int x2, int y2)
-{
-    int dx = 0, dy = 0;
+ // If the model plane is smaller than rectangle described by points (x1, y1)
+ // and (x2, y2) than extend the model plane size.
+ void Schematic::enlargeView(int x1, int y1, int x2, int y2) {
+    // Set 'Used' area size to the of the given rectangle
     if (x1 < UsedX1)
         UsedX1 = x1;
     if (y1 < UsedY1)
@@ -1043,22 +1041,22 @@ void Schematic::enlargeView(int x1, int y1, int x2, int y2)
     if (y2 > UsedY2)
         UsedY2 = y2;
 
-    if (x1 < ViewX1) {
-        dx = int(Scale * float(ViewX1 - x1 + 40));
-        ViewX1 = x1 - 40;
-    }
-    if (y1 < ViewY1) {
-        dy = int(Scale * float(ViewY1 - y1 + 40));
-        ViewY1 = y1 - 40;
-    }
+    // Construct the desired model plane
+    constexpr int margin = 40;
+    QRect newModel = modelRect();
+    if (x1 < ViewX1)
+        newModel.setLeft(x1 - margin);
+    if (y1 < ViewY1)
+        newModel.setTop(y1 - margin);
     if (x2 > ViewX2)
-        ViewX2 = x2 + 40;
+        newModel.setRight(x2 + margin);
     if (y2 > ViewY2)
-        ViewY2 = y2 + 40;
+        newModel.setBottom(y2 + margin);
 
-    resizeContents(int(Scale * float(ViewX2 - ViewX1)), int(Scale * float(ViewY2 - ViewY1)));
-    scrollBy(dx, dy);
-}
+    const auto vpCenter = viewportRect().center();
+    const auto displayedInCenter = viewportToModel(vpCenter);
+    renderModel(Scale, newModel, displayedInCenter, vpCenter);
+ }
 
 // ---------------------------------------------------
 // Sets an arbitrary coordinate onto the next grid coordinate.
