@@ -1305,21 +1305,17 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list, const QStrin
     QString prefix="";
     QString iprefix="";
     QString indep = var_list.first();
-    QString cprefix = custom_prefix;
-    if(!cprefix.isEmpty())
-      cprefix.append(".");
     bool HB = false;
     indep = indep.toLower();
     if (indep=="time") {
-        prefix = cprefix + "tran.";
-        iprefix = cprefix + "i(tran.";
+        prefix = "tran.";
+        iprefix = "i(tran.";
     } else if (indep=="frequency") {
-        prefix = cprefix + "ac.";
-        iprefix = cprefix + "i(ac.";
+        prefix = "ac.";
+        iprefix = "i(ac.";
     } else if (indep=="hbfrequency") {
         HB = true;
     }
-    var_list.first().insert(0, cprefix);
 
     for(auto & it : var_list) { // For subcircuit nodes output i.e. v(X1:n1)
         it.replace(":","_");         // colon symbol is reserved in Qucs as dataset specifier
@@ -1361,6 +1357,11 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list, const QStrin
         }
     }
 
+    if ( !custom_prefix.isEmpty() ) {
+        for ( it = var_list.begin() ; it != var_list.end() ; ++it)
+            if ( !(*it).isEmpty() )
+                (*it).prepend(custom_prefix + ".");
+    }
 }
 
 /*!
