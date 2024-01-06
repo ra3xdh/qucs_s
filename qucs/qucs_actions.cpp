@@ -1103,8 +1103,7 @@ void QucsApp::slotCursorUp(bool up)
       if(Doc->scrollUp(Doc->verticalScrollBar()->singleStep()))
         Doc->scrollBy(0, -Doc->verticalScrollBar()->singleStep());
     } else { // down
-      if(Doc->scrollDown(-Doc->verticalScrollBar()->singleStep()))
-        Doc->scrollBy(0, Doc->verticalScrollBar()->singleStep());
+      Doc->scrollDown(Doc->verticalScrollBar()->singleStep());
     }
 
     Doc->viewport()->update();

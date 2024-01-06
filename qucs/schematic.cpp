@@ -2309,8 +2309,7 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
             if (scrollUp(delta))
                 scrollBy(0, -delta);
         } else {
-            if (scrollDown(delta))
-                scrollBy(0, -delta);
+            scrollDown(-delta);
         }
         viewport()->update(); // because QScrollView thinks nothing has changed
         App->view->drawn = false;
@@ -2344,31 +2343,37 @@ bool Schematic::scrollUp(int step)
     return true;
 }
 
-// -----------------------------------------------------------
 // Scrolls the visible area downwards and enlarges or reduces the view
-// area accordingly. ("step" must be negative!)
-bool Schematic::scrollDown(int step)
+// area accordingly.
+void Schematic::scrollDown(int step)
 {
-    int diff;
+    assert(step >= 0);
 
-    diff = contentsHeight() - contentsY() - visibleHeight() + step;
-    if (diff < 0) { // scroll outside the active area ?  (downwards)
-        resizeContents(contentsWidth(), contentsHeight() - diff);
-        ViewY2 -= diff;
-        scrollBy(0, -step);
-        return false;
+    // Y-axis is directed "from top to bottom": the lower a point is
+    // located, the bigger its y-coordinate and vice versa. Keep this in mind
+    // while reading the code below.
+
+    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const QPoint viewportBottomLeft = viewportRect().bottomLeft();
+
+    // A point currently displayed in bottom left corner
+    QPoint mbl = viewportToModel(viewportBottomLeft);
+    // A point that should be displayed in bottom left corner after scrolling
+    mbl.setY(mbl.y() + stepInModel);
+
+    QRect modelBounds = modelRect();
+
+    // If the "should-be-displayed" point is lower than model bottom bound,
+    // then extend the model
+    modelBounds.setBottom(std::max(mbl.y(), modelBounds.bottom()));
+
+    // Cut off a bit of unused model space from its top side.
+    if (const auto t = modelBounds.top() + stepInModel; t < UsedY1) {
+        modelBounds.setTop(t);
     }
 
-    diff = ViewY1 - UsedY1 + 20; // keep border of 20
-    if (diff < 0) {              // make active area smaller ?
-        if (step > diff)
-            diff = step;
-        resizeContents(contentsWidth(), contentsHeight() + diff);
-        ViewY1 -= diff;
-        return false;
-    }
-
-    return true;
+    // Render model in its new size and position point in the top left corner of viewport
+    renderModel(Scale, modelBounds, mbl, viewportBottomLeft);
 }
 
 // Scrolls the visible area to the left and enlarges or reduces the view
@@ -2450,8 +2455,7 @@ void Schematic::slotScrollUp()
 void Schematic::slotScrollDown()
 {
     App->editText->setHidden(true); // disable edit of component property
-    scrollDown(-verticalScrollBar()->singleStep());
-    viewport()->update(); // because QScrollView thinks nothing has changed
+    scrollDown(verticalScrollBar()->singleStep());
     App->view->drawn = false;
 }
 
