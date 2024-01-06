@@ -1035,8 +1035,7 @@ void QucsApp::slotCursorLeft(bool left)
     } else if(left) {
       Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep());
     }else{ // right
-      if(Doc->scrollRight(-Doc->horizontalScrollBar()->singleStep()))
-        Doc->scrollBy(Doc->horizontalScrollBar()->singleStep(), 0);
+      Doc->scrollRight(-Doc->horizontalScrollBar()->singleStep());
     }
 
     Doc->viewport()->update();

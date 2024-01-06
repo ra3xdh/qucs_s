@@ -2285,8 +2285,7 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
         if (delta > 0) {
             scrollLeft(delta);
         } else {
-            if (scrollRight(delta))
-                scrollBy(-delta, 0);
+            scrollRight(-delta);
         }
         viewport()->update(); // because QScrollView thinks nothing has changed
         App->view->drawn = false;
@@ -2404,31 +2403,36 @@ void Schematic::scrollLeft(int step)
     renderModel(Scale, modelBounds, mtl, viewportTopLeft);
 }
 
-// -----------------------------------------------------------
 // Scrolls the visible area to the right and enlarges or reduces the
-// view area accordingly. ("step" must be negative!)
-bool Schematic::scrollRight(int step)
+// view area accordingly.
+void Schematic::scrollRight(int step)
 {
-    int diff;
+    assert(step >= 0);
 
-    diff = contentsWidth() - contentsX() - visibleWidth() + step;
-    if (diff < 0) { // scroll outside the active area ?  (to the right)
-        resizeContents(contentsWidth() - diff, contentsHeight());
-        ViewX2 -= diff;
-        scrollBy(-step, 0);
-        return false;
+    // X-axis is directed "from left to right": the more to the right a point is
+    // located, the bigger its x-coordinate and vice versa. Keep this in mind
+    // while reading the code below.
+
+    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const QPoint viewportTopRight = viewportRect().topRight();
+
+    // A point currently displayed in top right corner
+    QPoint mtr = viewportToModel(viewportTopRight);
+    // A point that should be displayed in top right corner after scrolling
+    mtr.setX(mtr.x() + stepInModel);
+
+    QRect modelBounds = modelRect();
+
+    // If the "should-be-displayed" point is to the right of the model right bound,
+    // then extend the model
+    modelBounds.setRight(std::max(mtr.x(), modelBounds.right()));
+
+    // Cut off a bit of unused model space from its left side.
+    if (const auto l = modelBounds.left() + stepInModel; l < UsedX1) {
+        modelBounds.setLeft(l);
     }
 
-    diff = ViewX1 - UsedX1 + 20; // keep border of 20
-    if (diff < 0) {              // make active area smaller ?
-        if (step > diff)
-            diff = step;
-        resizeContents(contentsWidth() + diff, contentsHeight());
-        ViewX1 -= diff;
-        return false;
-    }
-
-    return true;
+    renderModel(Scale, modelBounds, mtr, viewportTopRight);
 }
 
 // -----------------------------------------------------------
@@ -2465,8 +2469,7 @@ void Schematic::slotScrollLeft()
 void Schematic::slotScrollRight()
 {
     App->editText->setHidden(true); // disable edit of component property
-    scrollRight(-horizontalScrollBar()->singleStep());
-    viewport()->update(); // because QScrollView thinks nothing has changed
+    scrollRight(horizontalScrollBar()->singleStep());
     App->view->drawn = false;
 }
 
