@@ -46,7 +46,7 @@ class AbstractSpiceKernel : public QObject
 {
     Q_OBJECT
 private:
-    enum outType {xyceSTD, spiceRaw, spiceRawSwp, xyceSTDswp, Unknown};
+    enum outType {xyceSTD, spiceRaw, spiceRawSwp, xyceSTDswp, spicePrn, Unknown};
 
     void normalizeVarsNames(QStringList &var_list);
     int checkRawOutupt(QString ngspice_file, QStringList &values);
@@ -101,6 +101,10 @@ public:
     void parseSTEPOutput(QString ngspice_file,
                          QList< QList<double> > &sim_points,
                          QStringList &var_list, bool &isComplex);
+    void parsePrnOutput(const QString &ngspice_file,
+                        QList< QList<double> > &sim_points,
+                        QStringList &var_list,
+                        bool isComplex);
     void parseXYCESTDOutput(QString std_file,
                             QList< QList<double> > &sim_points,
                             QStringList &var_list, bool &isComplex, bool &hasParSweep);

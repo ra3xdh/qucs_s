@@ -820,6 +820,46 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
     }
 }
 
+/*!
+ * \brief AbstractSpiceKernel::parsePrnOutput Parse scalar print output.
+ * \param[in] ngspice_file Spice output file name
+ * \param[out] sim_points 2D array in which simulation points should be extracted. All simulation
+ *        points from all sweep variable steps are extracted in a single array
+ * \param[out] var_list This list is filled by simulation variables. There is a list of dependent
+ *        and independent variables. An independent variable is the first in list.
+ */
+void AbstractSpiceKernel::parsePrnOutput(const QString &ngspice_file,
+                                         QList<QList<double> > &sim_points,
+                                         QStringList &var_list,
+                                         bool isComplex) {
+    QChar eq_sep = '=';
+    QChar reim_sep = ',';
+    QList <double> sim_point;
+
+    QFile ofile(ngspice_file);
+    if (ofile.open(QFile::ReadOnly)) {
+        var_list.clear();
+        sim_points.clear();
+        var_list.append("");  // dummy indep var
+        sim_point.append(0.0);
+        QTextStream data(&ofile);
+        while (!data.atEnd()) {
+            QString line = data.readLine();
+            if (line.contains(eq_sep)) {
+                QString var = line.section(eq_sep, 0, 0).trimmed();
+                QString val = line.section(eq_sep, 1, 1).trimmed();
+                double re = val.section(reim_sep, 0, 0).toDouble();
+                double im = val.section(reim_sep, 1, 1).toDouble();
+                var_list.append(var);
+                sim_point.append(re);
+                if ( isComplex )
+                    sim_point.append(im);
+            }
+        }
+        sim_points.append(sim_point);
+        ofile.close();
+    }
+}
 
 void AbstractSpiceKernel::extractBinSamples(QDataStream &dbl, QList<QList<double> > &sim_points,
                                             int NumPoints, int NumVars, bool isComplex)
@@ -1041,9 +1081,11 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
     QFile ofile(ngspice_file);
     int plots_cnt = 0;
     int zeroindex_cnt = 0;
+    int prnln_cnt = 0;
     bool isXyce = false;
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
+        QRegularExpression prnln_rx("^\\D\\w*\\s=\\s-?\\d.\\d+[Ee][+-]\\d+");
         QRegularExpression rx("^0\\s+[0-9].*"); // Zero index pattern
         while (!ngsp_data.atEnd()) {
             QString lin = ngsp_data.readLine();
@@ -1056,6 +1098,8 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
                 zeroindex_cnt++;
                 values.append(QString::number(zeroindex_cnt));
             }
+            if (prnln_rx.match(lin).hasMatch())
+                prnln_cnt++;
         }
         ofile.close();
     }
@@ -1065,6 +1109,8 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
         if (zeroindex_cnt>1) filetype = xyceSTDswp;
         else filetype = xyceSTD;
     } else filetype = spiceRaw;
+    if ( (plots_cnt == 0) && (zeroindex_cnt == 0) && (prnln_cnt > 0) )
+        filetype = spicePrn;
     return filetype;
 }
 
@@ -1195,6 +1241,11 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 hasParSweep = true;
                 swp_var = "Number";
                 parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex,hasSwp);
+                break;
+            case spicePrn:
+                isComplex = true;
+                parsePrnOutput(full_outfile, sim_points, var_list, isComplex);
+                break;
             default: break;
             }
         }
