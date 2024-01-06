@@ -1033,8 +1033,7 @@ void QucsApp::slotCursorLeft(bool left)
     if(markerCount > 0) {  // only move marker if nothing else selected
       Doc->markerLeftRight(left, &movingElements);
     } else if(left) {
-      if(Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep()))
-        Doc->scrollBy(-Doc->horizontalScrollBar()->singleStep(), 0);
+      Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep());
     }else{ // right
       if(Doc->scrollRight(-Doc->horizontalScrollBar()->singleStep()))
         Doc->scrollBy(Doc->horizontalScrollBar()->singleStep(), 0);

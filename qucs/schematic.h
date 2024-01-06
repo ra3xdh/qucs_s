@@ -141,7 +141,7 @@ public:
 
   bool scrollUp(int);
   bool scrollDown(int);
-  bool scrollLeft(int);
+  void scrollLeft(int);
   bool scrollRight(int);
 
   bool checkDplAndDatNames();
