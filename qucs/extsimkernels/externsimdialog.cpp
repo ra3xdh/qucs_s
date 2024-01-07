@@ -183,11 +183,11 @@ void ExternSimDialog::slotProcessOutput()
         break;
     }
 
-    if (out.contains("error",Qt::CaseInsensitive)) {
+    if (logContainsError(out)) {
         addLogEntry(tr("There were simulation errors. Please check log."),
                     this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
         emit warnings();
-    } else if (out.contains("warning",Qt::CaseInsensitive)) {
+    } else if (logContainsWarning(out)) {
         addLogEntry(tr("There were simulation warnings. Please check log."),
                     this->style()->standardIcon(QStyle::SP_MessageBoxWarning));
         addLogEntry(tr("Simulation finished. Now place diagram on schematic to plot the result."),
@@ -324,3 +324,55 @@ void ExternSimDialog::addLogEntry(const QString &text, const QIcon &icon)
     itm->setIcon(icon);
     simStatusLog->addItem(itm);
 }
+
+bool ExternSimDialog::logContainsError(const QString &out)
+{
+    bool found = false;
+    QStringList err_patterns;
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice:
+        err_patterns<<"Error:"<<"ERROR"<<"Error "
+                    <<"Syntax error:"<<"Expression err:"
+                    <<"errors:";
+        break;
+    case spicecompat::simXyce:
+        err_patterns<<"Error:"<<"ERROR"<<"MSG_ERROR"
+                    <<"error:"<<"MSG_FATAL";
+        break;
+    default: err_patterns<<"error";
+        break;
+    }
+    for(const auto &err_str: err_patterns) {
+        if (out.contains(err_str)) {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+
+bool ExternSimDialog::logContainsWarning(const QString &out)
+{
+    bool found = false;
+    QStringList warn_patterns;
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice:
+        warn_patterns<<"Warning:"<<"WARNING"<<"Warning "
+                    <<"warning:";
+        break;
+    case spicecompat::simXyce:
+        warn_patterns<<"Warning:"<<"WARNING"<<"Warning "
+                    <<"warning:";
+        break;
+    default: warn_patterns<<"warning";
+        break;
+    }
+    for(const auto &warn_str: warn_patterns) {
+        if (out.contains(warn_str)) {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+

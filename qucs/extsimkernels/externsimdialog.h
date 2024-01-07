@@ -57,6 +57,8 @@ public:
 private:
     void saveLog();
     void addLogEntry(const QString&text, const QIcon &icon);
+    bool logContainsError(const QString &out);
+    bool logContainsWarning(const QString &out);
     
 signals:
     void simulated(ExternSimDialog *);
