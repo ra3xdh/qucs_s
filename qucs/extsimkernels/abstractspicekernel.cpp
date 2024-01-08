@@ -1107,6 +1107,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         bool hasParSweep = false;
         bool hasDblParSweep = false;
 
+        QRegularExpression custom_prefix_rx("(?<=#).*?(?=#)");
+        QString custom_prefix = custom_prefix_rx.match(ngspice_output_filename).captured(0);
         QRegularExpression four_rx(".*\\.four[0-9]+$");
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
@@ -1199,7 +1201,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             }
         }
         if (var_list.isEmpty()) continue; // nothing to convert
-        normalizeVarsNames(var_list);
+        normalizeVarsNames(var_list, custom_prefix);
 
         QString indep = var_list.first();
         //QList<double> sim_point;
@@ -1298,7 +1300,7 @@ void AbstractSpiceKernel::removeAllSimulatorOutputs()
  *        for harmonic balance variable and current probes variables are supported.
  * \param var_list This list contains variable names that need normalization.
  */
-void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
+void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list, const QString &custom_prefix)
 {
     QString prefix="";
     QString iprefix="";
@@ -1355,6 +1357,11 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
         }
     }
 
+    if ( !custom_prefix.isEmpty() ) {
+        for ( it = var_list.begin() ; it != var_list.end() ; ++it)
+            if ( !(*it).isEmpty() )
+                (*it).prepend(custom_prefix + ".");
+    }
 }
 
 /*!
