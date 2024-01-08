@@ -1,0 +1,1127 @@
+<Qucs Library 24.1.0 "VoltageRegulators">
+
+<Component LM1084_ADJ>
+  <Description>
+Adjustable 5A low-drop positive voltage regulator
+  </Description>
+  <Model>
+.Def:VoltageRegulators_LM1084_ADJ _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="LM1084_ADJ_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageRegulators_LM1084_ADJ.sch
+
+* LM1084_ADJ Transient Model
+*************************************
+* (C) Texas Instruments Incorporated
+*************************************
+*
+.SUBCKT LM1084_ADJ_sub IN OUT ADJ
+.PARAM  psrr=177.8279e-6 uvlo=2.75 ilim=8 pole=400 zero=1e4 rinp=1e7 ttrn=1e-4 rout=4m vref=1.25 drop=1.5 uhys=0.1
+R_R1       VXX IN  {RINP}  
+R_R6       N242982 VYY  10 TC1=0 tc2=0 
+R_R5       VZZ VYY  {ROUT}  
+E_ABM1     N242982 0 VALUE { MIN(V(VXX), (V(Vzz)+(ILIM*ROUT))) }
+R_R2       N222524 VXX  {PSRR*RINP}  
+X_U2       0 OUT D_D1
+R_U1_R2    0 U1_N05398  1G  
+E_U1_ABM5  U1_N09745 0 VALUE { MIN(V(U1_N05398), MAX(V(IN) - {DROP}, 0)) }
+C_U1_C3    0 N222524  1n  
+C_U1_C2    0 U1_N05398  1n  
+R_U1_R1    0 U1_N08257  1G  
+R_U1_R4    U1_N27716 U1_N05398  10 TC1=0 tc2=0 
+X_U1_U2    IN U1_N12783 U1_N12664 U1_EN COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+C_U1_C1    0 U1_N08257  {1e-6*SQRT(TTRN)}  
+V_U1_V4    U1_N12783 0 {UVLO}
+V_U1_V3    U1_N12664 0 {UHYS}
+E_U1_ABM6  U1_EN_OUT 0 VALUE { (V(U1_EN)> 0.6?{VREF}:0)    }
+R_U1_R3    U1_EN_OUT U1_N08257  {3.333e5*SQRT(TTRN)} TC1=0 tc2=0 
+R_U1_R5    U1_N09745 N222524  10 TC1=0 tc2=0 
+E_U1_ABM4  U1_N27716 0 VALUE { V(U1_N08257)*(ABS(V(OUT))/(ABS(V(OUT)-v(ADJ))))    }
+X_F1       VZZ OUT IN VYY LM1084_ADJ_F1 
+C_C1       VXX IN  {1/(6.28*RINP*POLE)}  
+C_C2       VXX N222524  {1/(6.28*PSRR*RINP*ZERO)}  
+C_C3       0 VYY  1n  
+.ENDS LM1084_ADJ_sub
+*$
+.SUBCKT LM1084_ADJ_F1 1 2 3 4  
+F_F1    3 4 VF_F1 1
+VF_F1   1 2 0V
+.ENDS LM1084_ADJ_F1
+*$
+***********END OF FALTTEN MODEL************
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM   Yint 0 VALUE {(V(INP) > V(INM)?{VDD}:{VSS})}
+R1      Yint Y 1
+C1      Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN     INP1 INM1 INP INM 1 
+EHYS    INP1 INP2 VALUE { ( V(1) > {VTHRESH}?-V(HYS):0) }
+EOUT    OUT 0 VALUE { (V(INP2)>V(INM1)?{VDD}:{VSS}) }
+R1      OUT 1 1
+C1      1 0 5n
+RINP1   INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT COMPHYS2_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
++ T=10
+EIN     INP1 INM1 INP INM 1 
+EHYS    INM2 INM1 VALUE { ( V(1) > {VTHRESH}?-V(HYS)/2:V(HYS)/2) }
+EOUT    OUT 0 VALUE { ( V(INP1)>V(INM2)?{VDD}:{VSS}) }
+R1      OUT 1 1
+C1      1 0 {T*1e-9}
+RINP1   INP1 0 10K
+RINM2   INM2 0 10K
+.ENDS   COMPHYS2_BASIC_GEN
+***********COMP**********
+*$
+.SUBCKT D_D1 1 2
+D1      1 2 DD1
+.MODEL DD1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+.ENDS D_D1
+*$
+***********DIODE************
+
+
+
+
+.SUBCKT VoltageRegulators_LM1084_ADJ  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 LM1084_ADJ_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -40 -66 REG>
+    <Line -40 -20 0 40 #000080 2 1>
+    <Line -50 0 10 0 #000080 2 1>
+    <Line -40 -20 80 0 #000080 2 1>
+    <Line -40 20 80 0 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 40 -20 0 40 #000080 2 1>
+    <Line 40 0 10 0 #000080 2 1>
+    <Line 21 3 0 -6 #000000 1 1>
+    <Line 25 3 0 -6 #000000 1 1>
+    <Line 24 5 -2 0 #000000 1 1>
+    <Line 24 -5 -2 0 #000000 1 1>
+    <Line 22 -5 -1 2 #000000 1 1>
+    <Line 25 3 -1 2 #000000 1 1>
+    <Line 21 3 1 2 #000000 1 1>
+    <Line 24 -5 1 2 #000000 1 1>
+    <Line 27 -5 0 8 #000000 1 1>
+    <Line 30 5 -2 0 #000000 1 1>
+    <Line 31 3 -1 2 #000000 1 1>
+    <Line 27 3 1 2 #000000 1 1>
+    <Line 31 -5 0 8 #000000 1 1>
+    <Line 33 -5 4 0 #000000 1 1>
+    <Line 35 5 0 -10 #000000 1 1>
+    <Line -8 17 0 -8 #000000 1 1>
+    <Line -5 7 -2 0 #000000 1 1>
+    <Line -7 7 -1 2 #000000 1 1>
+    <Line -5 7 1 2 #000000 1 1>
+    <Line -4 17 0 -8 #000000 1 1>
+    <Line -35 -5 0 10 #000000 1 1>
+    <Line -37 5 4 0 #000000 1 1>
+    <Line -37 -5 4 0 #000000 1 1>
+    <Line -31 5 0 -10 #000000 1 1>
+    <Line -27 5 -4 -10 #000000 1 1>
+    <Line -27 5 0 -10 #000000 1 1>
+    <Line -1 17 0 -10 #000000 1 1>
+    <Line 2 15 0 -6 #000000 1 1>
+    <Line 1 17 -2 0 #000000 1 1>
+    <Line 1 7 -2 0 #000000 1 1>
+    <Line 2 15 -1 2 #000000 1 1>
+    <Line 1 7 1 2 #000000 1 1>
+    <Line -4 12 -4 0 #000000 1 1>
+    <Line 7 17 -2 0 #000000 1 1>
+    <Line 8 15 -1 2 #000000 1 1>
+    <Line 4 15 1 2 #000000 1 1>
+    <Line 8 15 0 -8 #000000 1 1>
+    <Line 8 7 -4 0 #000000 1 1>
+    <Line 4 7 0 2 #000000 1 1>
+    <.PortSym 50 0 2 180>
+    <.PortSym -50 0 1 0>
+    <.PortSym 0 30 3 0>
+  </Symbol>
+</Component>
+
+<Component LM317>
+  <Description>
+Adjustable 1.5A positive voltage regulator
+  </Description>
+  <Model>
+.Def:VoltageRegulators_LM317 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="LM317_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageRegulators_LM317.sch
+
+* LM317 Transient Model
+*************************************
+* (C) Texas Instruments Incorporated
+*************************************
+*
+.SUBCKT LM317_sub IN ADJ OUT
+.PARAM  psrr=7.9432e-4 uvlo=0 ilim=2.2 pole=15k rinp=1e7 zero=100e6 rout=0.4m ttrn=1e-4 vref=1.25 uhys=0 drop=.5
+R_R1       VXX IN  {RINP}  
+R_R6       N242982 VYY  10 tc1=0 tc2=0 
+R_R5       VZZ VYY  {ROUT}  
+E_ABM1     N242982 0 VALUE { MIN(V(VXX), (V(Vzz)+(ILIM*ROUT)))    }
+R_R2       N222524 VXX  {PSRR*RINP}  
+R_U1_R2    0 U1_N26728  1G  
+E_U1_ABM5  U1_N31197 0 VALUE { MIN(V(U1_N26728), MAX(V(IN) - {DROP}, 0))   }
+C_U1_C2    0 U1_N26728  1n  
+R_U1_R1    0 U1_N08257  1G  
+R_U1_R4    U1_N28933 U1_N26728  10 TC1=0 tc2=0 
+R_U1_R5    U1_N31197 N222524  10 TC1=0 tc2=0 
+C_U1_C3    0 N222524  1n  
+X_U1_U2    IN U1_N12783 U1_N12664 U1_UVLO_OK COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+C_U1_C1    0 U1_N08257  {1e-6*SQRT(TTRN)}  
+V_U1_V4    U1_N12783 0 {UVLO}
+V_U1_V3    U1_N12664 0 {UHYS}
+E_U1_ABM6  U1_EN_OUT 0 VALUE { (V(U1_UVLO_OK)> 0.6?{VREF}:0)    }
+R_U1_R3    U1_EN_OUT U1_N08257  {3.333e5*SQRT(TTRN)} TC1=0 tc2=0 
+E_U1_ABM4  U1_N28933 0 VALUE { V(U1_N08257)* (ABS(V(OUT))/(ABS(V(OUT)-v(ADJ))))    }
+X_U2       0 OUT d_d 
+X_F1       VZZ OUT IN VYY LM317_TRANS_F1 
+C_C1       VXX IN  {1/(6.28*RINP*POLE)}  
+C_C2       VXX N222524  {1/(6.28*PSRR*RINP*ZERO)}  
+C_C3       0 VYY  1n  
+.ENDS LM317_sub
+*$
+.SUBCKT LM317_TRANS_F1 1 2 3 4  
+F_F1      3 4 VF_F1 1
+VF_F1     1 2 0V
+.ENDS LM317_TRANS_F1
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {(V(INP) > V(INM)?{VDD}:{VSS})}
+R1        Yint Y 1
+C1        Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { ( V(1) > {VTHRESH}?-V(HYS):0) }
+EOUT OUT 0 VALUE { (V(INP2)>V(INM1)?{VDD} :{VSS}) }
+R1        OUT 1 1
+C1        1 0 5n
+RINP1     INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT COMPHYS2_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5 T=10
+EIN       INP1 INM1 INP INM 1 
+EHYS      INM2 INM1 VALUE { (V(1)>{VTHRESH}?-V(HYS)/2:V(HYS)/2) }
+EOUT      OUT 0 VALUE { (V(INP1)>V(INM2)?{VDD}:{VSS}) }
+R1        OUT 1 1
+C1        1 0 {T*1e-9}
+RINP1     INP1 0 10K
+RINM2     INM2 0 10K
+.ENDS COMPHYS2_BASIC_GEN
+*$
+.SUBCKT D_D 1 2
+D1        1 2 DD
+.MODEL DD D (IS=1E-015 N=0.01 TT=1e-011)
+.ENDS D_D
+*$
+
+
+
+.SUBCKT VoltageRegulators_LM317  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 LM317_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -40 -66 REG>
+    <Line -40 -20 0 40 #000080 2 1>
+    <Line -50 0 10 0 #000080 2 1>
+    <Line -40 -20 80 0 #000080 2 1>
+    <Line -40 20 80 0 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 40 -20 0 40 #000080 2 1>
+    <Line 40 0 10 0 #000080 2 1>
+    <Line 21 3 0 -6 #000000 1 1>
+    <Line 25 3 0 -6 #000000 1 1>
+    <Line 24 5 -2 0 #000000 1 1>
+    <Line 24 -5 -2 0 #000000 1 1>
+    <Line 22 -5 -1 2 #000000 1 1>
+    <Line 25 3 -1 2 #000000 1 1>
+    <Line 21 3 1 2 #000000 1 1>
+    <Line 24 -5 1 2 #000000 1 1>
+    <Line 27 -5 0 8 #000000 1 1>
+    <Line 30 5 -2 0 #000000 1 1>
+    <Line 31 3 -1 2 #000000 1 1>
+    <Line 27 3 1 2 #000000 1 1>
+    <Line 31 -5 0 8 #000000 1 1>
+    <Line 33 -5 4 0 #000000 1 1>
+    <Line 35 5 0 -10 #000000 1 1>
+    <Line -8 17 0 -8 #000000 1 1>
+    <Line -5 7 -2 0 #000000 1 1>
+    <Line -7 7 -1 2 #000000 1 1>
+    <Line -5 7 1 2 #000000 1 1>
+    <Line -4 17 0 -8 #000000 1 1>
+    <Line -35 -5 0 10 #000000 1 1>
+    <Line -37 5 4 0 #000000 1 1>
+    <Line -37 -5 4 0 #000000 1 1>
+    <Line -31 5 0 -10 #000000 1 1>
+    <Line -27 5 -4 -10 #000000 1 1>
+    <Line -27 5 0 -10 #000000 1 1>
+    <Line -1 17 0 -10 #000000 1 1>
+    <Line 2 15 0 -6 #000000 1 1>
+    <Line 1 17 -2 0 #000000 1 1>
+    <Line 1 7 -2 0 #000000 1 1>
+    <Line 2 15 -1 2 #000000 1 1>
+    <Line 1 7 1 2 #000000 1 1>
+    <Line -4 12 -4 0 #000000 1 1>
+    <Line 7 17 -2 0 #000000 1 1>
+    <Line 8 15 -1 2 #000000 1 1>
+    <Line 4 15 1 2 #000000 1 1>
+    <Line 8 15 0 -8 #000000 1 1>
+    <Line 8 7 -4 0 #000000 1 1>
+    <Line 4 7 0 2 #000000 1 1>
+    <.PortSym -50 0 1 0>
+    <.PortSym 50 0 3 180>
+    <.PortSym 0 30 2 0>
+  </Symbol>
+</Component>
+
+<Component LM320_05>
+  <Description>
+5V 1.5A negative voltage regulator
+  </Description>
+  <Model>
+.Def:VoltageRegulators_LM320_05 _net0 _net2 _net1
+Sub:X1 _net0 _net2 _net1 gnd Type="LM320_05_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageRegulators_LM320_05.sch
+
+* Developer: ETech (eetech00@yahoo.com)
+* Created: Oct 03 2018
+* 5V Negative Voltage Regulator
+*
+.SUBCKT LM320_05_sub IN VGND OUT
+R2 19 IN 1k
+R1 13 IN 750
+Q3 11 18 13 0 NP 0.1
+Q4 18 18 19 0 NP 0.1
+Q5 21 18 22 0 NP 0.1
+R3 22 IN 6k
+J1 10 IN IN JN
+Q2 IN 10 11 0 PN 0.1
+Q6 18 11 17 0 PN 0.1
+Q13 25 20 24 0 NP 0.1
+R4 20 IN 20k
+Q14 24 26 IN 0 NP 0.1
+R8 24 26 20k
+R9 28 24 20k
+Q15 25 28 IN 0 NP 0.1
+C2 25 28 20p
+Q20 30 33 IN 0 NP 0.1
+R13 34 33 5k
+C1 25 33 10p
+Q16 25 31 30 0 NP 0.1
+R10 31 30 3k
+R11 31 32 10k
+R12 32 34 600
+Q17 N001 25 31 0 NP 0.1
+Q21 34 N002 38 0 NP 0.1
+R14 32 N002 15k
+Q18 OUT 31 35 0 NP 0.1
+Q19 OUT 35 36 0 NP 2.5
+R15 35 36 2k
+R20 37 38 20k
+R21 36 38 150
+D3 37 OUT DZ1
+R16 36 IN 0.05
+Q12 25 21 27 0 PN 0.1
+Q11 24 21 23 0 PN 0.1
+Q10 VGND 29 27 0 NP 0.1
+R17 29 OUT 4.65k
+R5 16 17 15k
+R6 15 16 7k
+Q7 14 14 15 0 NP 0.1
+D1 10 VGND DZ1
+D2 11 VGND DZ1
+R7 VGND 14 1.4k
+R18 VGND N001 4k
+R19 VGND 29 5k
+Q1 VGND 16 23 0 NP 0.1
+Q8 20 14 VGND 0 PN 0.1
+*
+.MODEL DZ1 D(BV=6.2)
+.MODEL DZ2 D(BV=6.0)
+.MODEL NP NPN(EG=1.22 BF=350 RB=100 CCS=2PF TF=.3NS TR=6NS CJE=3PF CJC=2PF VAF=100 IS=1.81110E-15 RC=1 RE=1)
+.MODEL PN PNP(BF=175 RB=20 TF=1NS TR=20NS CJE=6PF CJC=4PF VAF=100 IS=1.81110E-15 RC=1 RE=1)
+.MODEL JN NJF(BETA=1E-4 VTO=-7)
+.ENDS LM320_05_sub
+
+.SUBCKT VoltageRegulators_LM320_05  gnd _net0 _net2 _net1 
+X1 _net0 _net2 _net1 LM320_05_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -50 0 1 0>
+    <Line -40 -20 0 40 #000080 2 1>
+    <Line -50 0 10 0 #000080 2 1>
+    <Line -40 -20 80 0 #000080 2 1>
+    <Line -40 20 80 0 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 40 -20 0 40 #000080 2 1>
+    <Line 40 0 10 0 #000080 2 1>
+    <Line 21 3 0 -6 #000000 1 1>
+    <Line 25 3 0 -6 #000000 1 1>
+    <Line 24 5 -2 0 #000000 1 1>
+    <Line 24 -5 -2 0 #000000 1 1>
+    <Line 22 -5 -1 2 #000000 1 1>
+    <Line 25 3 -1 2 #000000 1 1>
+    <Line 21 3 1 2 #000000 1 1>
+    <Line 24 -5 1 2 #000000 1 1>
+    <Line 27 -5 0 8 #000000 1 1>
+    <Line 30 5 -2 0 #000000 1 1>
+    <Line 31 3 -1 2 #000000 1 1>
+    <Line 27 3 1 2 #000000 1 1>
+    <Line 31 -5 0 8 #000000 1 1>
+    <Line 33 -5 4 0 #000000 1 1>
+    <Line 35 5 0 -10 #000000 1 1>
+    <Line -8 15 0 -6 #000000 1 1>
+    <Line -5 17 -2 0 #000000 1 1>
+    <Line -5 7 -2 0 #000000 1 1>
+    <Line -7 7 -1 2 #000000 1 1>
+    <Line -4 15 -1 2 #000000 1 1>
+    <Line -8 15 1 2 #000000 1 1>
+    <Line -5 7 1 2 #000000 1 1>
+    <Line -4 15 0 -2 #000000 1 1>
+    <Line -4 13 -2 0 #000000 1 1>
+    <Line -2 17 0 -10 #000000 1 1>
+    <Line 2 17 -4 -10 #000000 1 1>
+    <Line 2 17 0 -10 #000000 1 1>
+    <Line 4 17 0 -10 #000000 1 1>
+    <Line 7 15 0 -6 #000000 1 1>
+    <Line 6 17 -2 0 #000000 1 1>
+    <Line 6 7 -2 0 #000000 1 1>
+    <Line 7 15 -1 2 #000000 1 1>
+    <Line 6 7 1 2 #000000 1 1>
+    <Line -35 -5 0 10 #000000 1 1>
+    <Line -37 5 4 0 #000000 1 1>
+    <Line -37 -5 4 0 #000000 1 1>
+    <Line -31 5 0 -10 #000000 1 1>
+    <Line -27 5 -4 -10 #000000 1 1>
+    <Line -27 5 0 -10 #000000 1 1>
+    <.PortSym 0 30 2 0>
+    <.PortSym 50 0 3 180>
+    <.ID -40 -66 REG>
+  </Symbol>
+</Component>
+
+<Component LM337>
+  <Description>
+Adjustable 1.5A negative voltage regulator
+  </Description>
+  <Model>
+.Def:VoltageRegulators_LM337 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="LM337_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageRegulators_LM337.sch
+
+* LM337 Transient Model
+*************************************
+* (C) Texas Instruments Incorporated
+*************************************
+*
+.SUBCKT LM337_sub IN ADJ OUT
+.PARAM  psrr=0.08e-2 uvlo=-1.9 venb=-0.9 ilim=-2.2 pole=300 rinp=1e7 zero=1e5 rout=10m ttrn=100n ehys=0.4 vref=-1.25 uhys=0 drop=-250m
+C_C5      0 N315027  1n  
+X_F1      OUT VZZ N315027 N310601 LM337_N_F1 
+C_U1_C2   0 U1_ERROR_AMP_OUT  1n  
+E_U1_ABM4 U1_N09035 0 VALUE { V(U1_REF)  * (V(OUT) + 1e-6) / ((V(OUT)-V(ADJ)) + 1e-6)  }
+C_U1_C1   0 U1_REF  {1e-6*SQRT(TTRN)}  
+R_U1_R1   0 U1_REF  1G  
+V_U1_V5   U1_N11113 0 1
+X_U1_U2   U1_N12560 IN U1_N48025 VEN COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VSS=0 VTHRESH=0.5
+V_U1_V3   U1_N48025 0 {UHYS}
+V_U1_V4   U1_N12560 0 {UVLO}
+R_U1_R5   U1_N09745 N222524  10 TC1=0 tc2=0 
+R_U1_R3   U1_N08164 U1_REF  {3.333e5*SQRT(TTRN)} TC1=0 tc2=0 
+C_U1_C3   0 N222524  1n  
+R_U1_R2   0 U1_ERROR_AMP_OUT  1G  
+E_U1_E1   U1_VDROP 0 TABLE { V(ILOAD, 0) } ( (-1.5, 2.4) (-1, 2.2) (-0.5, 1.9) (-0.2, 1.7) (-0.02, 1.55) )
+E_U1_ABM6 U1_N08164 0 VALUE { (V(VEN)>0.6&&V(U1_N11113)>0.6?{VREF}:0)    }
+E_U1_ABM5 U1_N09745 0 VALUE { MAX(V(U1_ERROR_AMP_OUT), MIN(V(IN) + V(U1_VDROP), 0))   }
+R_U1_R4   U1_N09035 U1_ERROR_AMP_OUT  10 TC=0,0 
+R_R5      VZZ N334642  {ROUT}  
+X_H1      N334642 N315027 0 ILOAD LM337_N_H1 
+R_R6      VYY N315027  10 TC=0,0 
+R_R3      N310601 IN  3.5  
+R_R2      N222524 VXX  {PSRR*RINP}  
+R_R1      VXX N310601  {RINP}  
+C_C2      VXX N222524  {1/(6.28*PSRR*RINP*ZERO)}  
+C_C1      VXX N310601  {1/(6.28*RINP*POLE)}  
+E_ABM1    VYY 0 VALUE { {MAX(V(VXX), (V(Vzz)+(ILIM*ROUT)))}    }
+E_ABM2    N350468 0 VALUE { (V(Vzz)+(ILIM*ROUT))    }
+.ENDS LM337_sub
+.subckt LM337_N_F1 1 2 3 4  
+F_F1      3 4 VF_F1 1
+VF_F1     1 2 0V
+.ends LM337_N_F1
+*$
+.subckt LM337_N_H1 1 2 3 4  
+H_H1      3 4 VH_H1 1
+VH_H1     1 2 0V
+.ends LM337_N_H1
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { ( V(1) > {VTHRESH}?-V(HYS):0) }
+EOUT OUT 0 VALUE { (V(INP2)>V(INM1)?{VDD}:{VSS}) }
+R1        OUT 1 1
+C1        1 0 5n
+RINP1     INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+
+
+
+.SUBCKT VoltageRegulators_LM337  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 LM337_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -40 -66 REG>
+    <Line -40 -20 0 40 #000080 2 1>
+    <Line -50 0 10 0 #000080 2 1>
+    <Line -40 -20 80 0 #000080 2 1>
+    <Line -40 20 80 0 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 40 -20 0 40 #000080 2 1>
+    <Line 40 0 10 0 #000080 2 1>
+    <Line 21 3 0 -6 #000000 1 1>
+    <Line 25 3 0 -6 #000000 1 1>
+    <Line 24 5 -2 0 #000000 1 1>
+    <Line 24 -5 -2 0 #000000 1 1>
+    <Line 22 -5 -1 2 #000000 1 1>
+    <Line 25 3 -1 2 #000000 1 1>
+    <Line 21 3 1 2 #000000 1 1>
+    <Line 24 -5 1 2 #000000 1 1>
+    <Line 27 -5 0 8 #000000 1 1>
+    <Line 30 5 -2 0 #000000 1 1>
+    <Line 31 3 -1 2 #000000 1 1>
+    <Line 27 3 1 2 #000000 1 1>
+    <Line 31 -5 0 8 #000000 1 1>
+    <Line 33 -5 4 0 #000000 1 1>
+    <Line 35 5 0 -10 #000000 1 1>
+    <Line -8 17 0 -8 #000000 1 1>
+    <Line -5 7 -2 0 #000000 1 1>
+    <Line -7 7 -1 2 #000000 1 1>
+    <Line -5 7 1 2 #000000 1 1>
+    <Line -4 17 0 -8 #000000 1 1>
+    <Line -35 -5 0 10 #000000 1 1>
+    <Line -37 5 4 0 #000000 1 1>
+    <Line -37 -5 4 0 #000000 1 1>
+    <Line -31 5 0 -10 #000000 1 1>
+    <Line -27 5 -4 -10 #000000 1 1>
+    <Line -27 5 0 -10 #000000 1 1>
+    <Line -1 17 0 -10 #000000 1 1>
+    <Line 2 15 0 -6 #000000 1 1>
+    <Line 1 17 -2 0 #000000 1 1>
+    <Line 1 7 -2 0 #000000 1 1>
+    <Line 2 15 -1 2 #000000 1 1>
+    <Line 1 7 1 2 #000000 1 1>
+    <Line -4 12 -4 0 #000000 1 1>
+    <Line 7 17 -2 0 #000000 1 1>
+    <Line 8 15 -1 2 #000000 1 1>
+    <Line 4 15 1 2 #000000 1 1>
+    <Line 8 15 0 -8 #000000 1 1>
+    <Line 8 7 -4 0 #000000 1 1>
+    <Line 4 7 0 2 #000000 1 1>
+    <.PortSym -50 0 1 0>
+    <.PortSym 0 30 2 0>
+    <.PortSym 50 0 3 180>
+  </Symbol>
+</Component>
+
+<Component LM340_05>
+  <Description>
+5V 1.5A positive voltage regulator
+  </Description>
+  <Model>
+.Def:VoltageRegulators_LM340_05 _net0 _net2 _net1
+Sub:X1 _net0 _net2 _net1 gnd Type="LM340_05_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageRegulators_LM340_05.sch
+
+* Developer: ETech (eetech00@yahoo.com)
+* Created: Oct 03 2018
+* 5V Positive Voltage Regulator
+*
+.SUBCKT LM340_05_sub IN VGND OUT
+Q13 15 18 VGND 0 NP 0.1
+Q1A 15 10 IN 0 PN 0.1
+Q11B 16 10 IN 0 PN 0.1
+Q11C 10 10 IN 0 PN 0.1
+Q12 IN 16 31 0 NP 0.1
+D1 VGND 16 DZ1
+R11 31 18 3.4k
+R12 18 VGND 200
+Q14 15 22 OUT 0 NP 0.1
+D2 22 21 DZ2
+R13 IN 21 10k
+R10 15 30 1k
+R14 25 22 230
+Q15 IN 15 29 0 NP 0.1
+Q16 IN 29 25 0 NP 2.5
+R15 29 25 2k
+R16 25 OUT 0.31
+R17 OUT 11 740
+Q6 OUT 11 19 0 NP 0.1
+Q1 10 11 12 0 NP 0.1
+R1 10 12 30k
+R2 12 13 1.9k
+R3 13 17 26
+Q2 12 13 14 0 NP 0.1
+Q3 17 14 VGND 0 NP 0.1
+Q4 19 17 20 0 NP 0.1
+Q5 23 20 24 0 NP 0.1
+R7 19 23 17k
+Q7 26 23 27 0 NP 0.1
+C1 26 23 20p
+Q8 26 27 VGND 0 NP 0.1
+R8 27 28 4k
+Q9 28 28 VGND 0 NP 0.1
+Q10 VGND 26 30 0 PN 0.1
+R9 30 26 4k
+R18 11 VGND 2.6k
+R6 24 VGND 1k
+R5 20 VGND 12.1k
+R4 14 VGND 1.2k
+*
+.MODEL DZ1 D(BV=6.3)
+.MODEL DZ2 D(BV=6.0)
+.MODEL NP NPN(EG=1.22 BF=350 RB=100 CCS=2PF TF=.3NS TR=6NS CJE=3PF CJC=2PF VAF=100 IS=1.81110E-15 RC=1 RE=1)
+.MODEL PN PNP(BF=175 RB=20 TF=1NS TR=20NS CJE=6PF CJC=4PF VAF=100 IS=1.81110E-15 RC=1 RE=1)
+.ENDS LM340_05_sub
+
+
+.SUBCKT VoltageRegulators_LM340_05  gnd _net0 _net2 _net1 
+X1 _net0 _net2 _net1 LM340_05_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -50 0 1 0>
+    <Line -40 -20 0 40 #000080 2 1>
+    <Line -50 0 10 0 #000080 2 1>
+    <Line -40 -20 80 0 #000080 2 1>
+    <Line -40 20 80 0 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 40 -20 0 40 #000080 2 1>
+    <Line 40 0 10 0 #000080 2 1>
+    <Line 21 3 0 -6 #000000 1 1>
+    <Line 25 3 0 -6 #000000 1 1>
+    <Line 24 5 -2 0 #000000 1 1>
+    <Line 24 -5 -2 0 #000000 1 1>
+    <Line 22 -5 -1 2 #000000 1 1>
+    <Line 25 3 -1 2 #000000 1 1>
+    <Line 21 3 1 2 #000000 1 1>
+    <Line 24 -5 1 2 #000000 1 1>
+    <Line 27 -5 0 8 #000000 1 1>
+    <Line 30 5 -2 0 #000000 1 1>
+    <Line 31 3 -1 2 #000000 1 1>
+    <Line 27 3 1 2 #000000 1 1>
+    <Line 31 -5 0 8 #000000 1 1>
+    <Line 33 -5 4 0 #000000 1 1>
+    <Line 35 5 0 -10 #000000 1 1>
+    <Line -8 15 0 -6 #000000 1 1>
+    <Line -5 17 -2 0 #000000 1 1>
+    <Line -5 7 -2 0 #000000 1 1>
+    <Line -7 7 -1 2 #000000 1 1>
+    <Line -4 15 -1 2 #000000 1 1>
+    <Line -8 15 1 2 #000000 1 1>
+    <Line -5 7 1 2 #000000 1 1>
+    <Line -4 15 0 -2 #000000 1 1>
+    <Line -4 13 -2 0 #000000 1 1>
+    <Line -2 17 0 -10 #000000 1 1>
+    <Line 2 17 -4 -10 #000000 1 1>
+    <Line 2 17 0 -10 #000000 1 1>
+    <Line 4 17 0 -10 #000000 1 1>
+    <Line 7 15 0 -6 #000000 1 1>
+    <Line 6 17 -2 0 #000000 1 1>
+    <Line 6 7 -2 0 #000000 1 1>
+    <Line 7 15 -1 2 #000000 1 1>
+    <Line 6 7 1 2 #000000 1 1>
+    <Line -35 -5 0 10 #000000 1 1>
+    <Line -37 5 4 0 #000000 1 1>
+    <Line -37 -5 4 0 #000000 1 1>
+    <Line -31 5 0 -10 #000000 1 1>
+    <Line -27 5 -4 -10 #000000 1 1>
+    <Line -27 5 0 -10 #000000 1 1>
+    <.PortSym 0 30 2 0>
+    <.PortSym 50 0 3 180>
+    <.ID -40 -66 REG>
+  </Symbol>
+</Component>
+
+<Component LM7805>
+  <Description>
+5V 1.5A positive voltage regulator
+  </Description>
+  <Model>
+.Def:VoltageRegulators_LM7805 _net0 _net2 _net1
+Sub:X1 _net0 _net2 _net1 gnd Type="LM7805_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageRegulators_LM7805.sch
+
+* LM7805 model. 
+*
+*                   In   GND  Out
+.SUBCKT LM7805_sub  1    2    3
+*
+QT6   23  10  2   Q_NPN 0.1
+QT7   5   4   10  Q_NPN 0.1
+QT5   7   6   5   Q_NPN 0.1
+QT1   1   9   8   Q_NPN 0.1
+QT3   11  8   7   Q_NPN 0.1
+QT2   11  13  12  Q_NPN 0.1
+QT17  1   15  14  Q_NPN 10
+C2    10  23      4P
+R16   12  5       500
+R12   16  2       12.1K
+QT18  17  23  16  Q_NPN 0.1
+D1    18  19  	 D_D 
+R11   20  21      850
+R5    22  3       100
+QT14  24  18  2   Q_NPN 0.1
+R21   6   2       2.67K
+R20   3   6       640
+DZ2   25  26      D_5V1 
+R19   1   26      16K
+R18   14  3       250M
+R17   25  14      380
+R15   25  15      1.62K
+QT16  1   20  15  Q_NPN 1
+QT15  2   24  21  Q_PNP 0.1
+*OFF
+R14   21  24      4K
+C1    27  24      20P
+R13   19  2       4K
+QT13  24  27  18  Q_NPN 0.1
+QT12  20  25  22  Q_NPN 1 
+*OFF
+QT11  20  28  2   Q_NPN 0.1
+*OFF
+QT10  20  11  1   Q_PNP 0.1
+R10   17  27      16.5K
+R9    5   4       1.9K
+R8    4   23      26
+R7    10  2       1.2K
+R6    29  2       1K
+QT9   11  11  1   Q_PNP 0.1
+QT8   27  16  29  Q_NPN 0.1
+QT4   15  6   17  Q_NPN 0.1
+DZ1   2   9       D_5V6
+R4    1   9       80K
+R3    28  2       830
+R2    13  28      4.97K
+R1    8   13      7K
+*
+.MODEL D_5V1 D( IS=10F N=1.16 BV=5.1 IBV=0.5M CJ0 = 1P TT = 10p )
+.MODEL D_5V6 D( IS=10F N=1.16 BV=5.6 IBV=5U CJ0 = 1P TT = 10p )
+.MODEL Q_NPN NPN( IS=10F NF=1.16 NR=1.16 BF=80 CJC=1P CJE=2P TF=10P TR=1N )
+.MODEL Q_PNP PNP( IS=10F NF=1.16 NR=1.16 BF=80 CJC=1P CJE=2P TF=10P TR=1N )
+.MODEL D_D D( IS=1F N=1.16 CJ0 = 1P TT = 10p )
+*
+.ENDS LM7805_sub
+
+.SUBCKT VoltageRegulators_LM7805  gnd _net0 _net2 _net1 
+X1 _net0 _net2 _net1 LM7805_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -50 0 1 0>
+    <.ID -40 -66 REG>
+    <Line -40 -20 0 40 #000080 2 1>
+    <Line -50 0 10 0 #000080 2 1>
+    <Line -40 -20 80 0 #000080 2 1>
+    <Line -40 20 80 0 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 40 -20 0 40 #000080 2 1>
+    <Line 40 0 10 0 #000080 2 1>
+    <Line 21 3 0 -6 #000000 1 1>
+    <Line 25 3 0 -6 #000000 1 1>
+    <Line 24 5 -2 0 #000000 1 1>
+    <Line 24 -5 -2 0 #000000 1 1>
+    <Line 22 -5 -1 2 #000000 1 1>
+    <Line 25 3 -1 2 #000000 1 1>
+    <Line 21 3 1 2 #000000 1 1>
+    <Line 24 -5 1 2 #000000 1 1>
+    <Line 27 -5 0 8 #000000 1 1>
+    <Line 30 5 -2 0 #000000 1 1>
+    <Line 31 3 -1 2 #000000 1 1>
+    <Line 27 3 1 2 #000000 1 1>
+    <Line 31 -5 0 8 #000000 1 1>
+    <Line 33 -5 4 0 #000000 1 1>
+    <Line 35 5 0 -10 #000000 1 1>
+    <Line -8 15 0 -6 #000000 1 1>
+    <Line -5 17 -2 0 #000000 1 1>
+    <Line -5 7 -2 0 #000000 1 1>
+    <Line -7 7 -1 2 #000000 1 1>
+    <Line -4 15 -1 2 #000000 1 1>
+    <Line -8 15 1 2 #000000 1 1>
+    <Line -5 7 1 2 #000000 1 1>
+    <Line -4 15 0 -2 #000000 1 1>
+    <Line -4 13 -2 0 #000000 1 1>
+    <Line -2 17 0 -10 #000000 1 1>
+    <Line 2 17 -4 -10 #000000 1 1>
+    <Line 2 17 0 -10 #000000 1 1>
+    <Line 4 17 0 -10 #000000 1 1>
+    <Line 7 15 0 -6 #000000 1 1>
+    <Line 6 17 -2 0 #000000 1 1>
+    <Line 6 7 -2 0 #000000 1 1>
+    <Line 7 15 -1 2 #000000 1 1>
+    <Line 6 7 1 2 #000000 1 1>
+    <Line -35 -5 0 10 #000000 1 1>
+    <Line -37 5 4 0 #000000 1 1>
+    <Line -37 -5 4 0 #000000 1 1>
+    <Line -31 5 0 -10 #000000 1 1>
+    <Line -27 5 -4 -10 #000000 1 1>
+    <Line -27 5 0 -10 #000000 1 1>
+    <.PortSym 0 30 2 0>
+    <.PortSym 50 0 3 180>
+  </Symbol>
+</Component>
+
+<Component LM7809>
+  <Description>
+9V 1.5A positive voltage regulator
+  </Description>
+  <Model>
+.Def:VoltageRegulators_LM7809 _net0 _net2 _net1
+Sub:X1 _net0 _net2 _net1 gnd Type="LM7809_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageRegulators_LM7809.sch
+
+* LM7809
+*
+* SPICE (Simulation Program with Integrated Circuit Emphasis)
+* SUBCIRCUIT
+*
+* Connections:     In
+*                  |    Gnd
+*                  |    |    Out
+*                  |    |    |
+.SUBCKT LM7809_sub 1    2    3
+RBIAS         40  3  220
+RADJ          2  40  1365
+D4            4   3  D_Z6V0
+D3            5   6  D_Z6V3
+D2            7   1  D_Z6V3
+D1            3   8  D_Z6V3
+QT26          1  10   9  Q_NPN 20.0
+QT25          1  11  10  Q_NPN 2.0
+QT24_2       13  12   5  Q_NPN 0.1
+QT24         13  12  14  Q_NPN 0.1
+QT23         17  16  15  Q_NPN 1.0
+QT21         19  18   3  Q_NPN 0.1
+QT19         21   3  20  Q_NPN 1.0
+QT17         23   3  22  Q_NPN 0.1
+QT13          1  25  24  Q_NPN 0.1
+QT11         16  27  26  Q_NPN 0.1
+QT7          30  29  28  Q_NPN 0.1
+QT5          29  31   3  Q_NPN 0.1
+QT3          33  31  32  Q_NPN 0.1
+QT22_2       17  17   1  Q_PNP 1.0
+QT22         16  17   1  Q_PNP 1.0
+QT20          3  19  16  Q_PNP 0.1
+QT18         21  21  16  Q_PNP 0.1
+QT16         23  21  16  Q_PNP 0.1
+QT15          3  23  25  Q_PNP 0.1
+QT12          3  24  16  Q_PNP 0.1
+QT9          27  30  34  Q_PNP 0.1
+QT6           3  29  34  Q_PNP 0.1
+QT14         25  33  35  Q_PNP 0.1
+QT10         16  33  36  Q_PNP 0.1
+QT8          34  33  37  Q_PNP 0.1
+QT4          31  33  38  Q_PNP 0.1
+QT2          33  33  39  Q_PNP 0.1
+R27           4  40  50
+R26           9   3  100M
+R25           9  14  2
+R24           5  14  160
+R23           7   6  18K
+R22          10   3  160
+R21          12  13  400
+R20          18  13  13K
+R19          16  11  370
+R18          15  10  130
+R17          16  12  12K
+C3           19  18  5P
+R16          16  19  6.7K
+R15          20  22  2.4K
+R14          22   4  12K
+C2           23   4  30P
+C1           23   3  30P
+R13          24   3  5.1K
+R12          26   3  72
+R11          27   3  5.8K
+R10          28   3  4.1K
+R9           32   3  180
+R8           34  30  12.4K
+R7           31  29  130
+R6            8  31  100K
+R5            1  35  5.6K
+R4            1  36  82
+R3            1  37  190
+R2            1  38  310
+R1            1  39  310
+JT1           1   3   8  J_N
+*
+.MODEL D_Z6V0 D(IS=10F N=1.04 BV=6.0 IBV=1M CJO = 1P TT = 10p)
+.MODEL D_Z6V3 D(IS=10F N=1.04 BV=6.3 IBV=1M CJO = 1P TT = 10p)
+.MODEL Q_NPN NPN(IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P TF=10P TR=1N VAF=90)
+.MODEL Q_PNP PNP(IS=10F NF=1.04 NR=1.04 BF=50 CJC=1P CJE=2P TF=10P TR=1N VAF=45)
+.MODEL J_N NJF(VTO=-7)
+*
+.ENDS LM7809_sub
+
+.SUBCKT VoltageRegulators_LM7809  gnd _net0 _net2 _net1 
+X1 _net0 _net2 _net1 LM7809_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -50 0 1 0>
+    <.ID -40 -66 REG>
+    <Line -40 -20 0 40 #000080 2 1>
+    <Line -50 0 10 0 #000080 2 1>
+    <Line -40 -20 80 0 #000080 2 1>
+    <Line -40 20 80 0 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 40 -20 0 40 #000080 2 1>
+    <Line 40 0 10 0 #000080 2 1>
+    <Line 21 3 0 -6 #000000 1 1>
+    <Line 25 3 0 -6 #000000 1 1>
+    <Line 24 5 -2 0 #000000 1 1>
+    <Line 24 -5 -2 0 #000000 1 1>
+    <Line 22 -5 -1 2 #000000 1 1>
+    <Line 25 3 -1 2 #000000 1 1>
+    <Line 21 3 1 2 #000000 1 1>
+    <Line 24 -5 1 2 #000000 1 1>
+    <Line 27 -5 0 8 #000000 1 1>
+    <Line 30 5 -2 0 #000000 1 1>
+    <Line 31 3 -1 2 #000000 1 1>
+    <Line 27 3 1 2 #000000 1 1>
+    <Line 31 -5 0 8 #000000 1 1>
+    <Line 33 -5 4 0 #000000 1 1>
+    <Line 35 5 0 -10 #000000 1 1>
+    <Line -8 15 0 -6 #000000 1 1>
+    <Line -5 17 -2 0 #000000 1 1>
+    <Line -5 7 -2 0 #000000 1 1>
+    <Line -7 7 -1 2 #000000 1 1>
+    <Line -4 15 -1 2 #000000 1 1>
+    <Line -8 15 1 2 #000000 1 1>
+    <Line -5 7 1 2 #000000 1 1>
+    <Line -4 15 0 -2 #000000 1 1>
+    <Line -4 13 -2 0 #000000 1 1>
+    <Line -2 17 0 -10 #000000 1 1>
+    <Line 2 17 -4 -10 #000000 1 1>
+    <Line 2 17 0 -10 #000000 1 1>
+    <Line 4 17 0 -10 #000000 1 1>
+    <Line 7 15 0 -6 #000000 1 1>
+    <Line 6 17 -2 0 #000000 1 1>
+    <Line 6 7 -2 0 #000000 1 1>
+    <Line 7 15 -1 2 #000000 1 1>
+    <Line 6 7 1 2 #000000 1 1>
+    <Line -35 -5 0 10 #000000 1 1>
+    <Line -37 5 4 0 #000000 1 1>
+    <Line -37 -5 4 0 #000000 1 1>
+    <Line -31 5 0 -10 #000000 1 1>
+    <Line -27 5 -4 -10 #000000 1 1>
+    <Line -27 5 0 -10 #000000 1 1>
+    <.PortSym 0 30 2 0>
+    <.PortSym 50 0 3 180>
+  </Symbol>
+</Component>
+
+<Component LM7909>
+  <Description>
+9V 1.5A negative voltage regulator
+  </Description>
+  <Model>
+.Def:VoltageRegulators_LM7909 _net1 _net0 _net2
+Sub:X1 _net1 _net0 _net2 gnd Type="LM7909_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageRegulators_LM7909.sch
+
+* LM7909
+*
+* SPICE (Simulation Program with Integrated Circuit Emphasis)
+* SUBCIRCUIT
+*
+* Connections:     Gnd
+*                  |    In
+*                  |    |    Out
+*                  |    |    |
+.SUBCKT LM7909_sub 2    1    3
+RBIAS         55  3    220
+RADJ          2   55   1465
+D6            14  15   D_6V3_0
+D5             3  17   D_1
+D4             3  19   D_1
+D3            12  13   D_0
+D2            16   3   D_6V3_1
+D1             3  18   D_2
+QTU37         20  22  21   Q_PNP_1 1.000
+QTU36         21  27  26   Q_PNP_1 1.000
+QTU35          1  25   7   Q_PNP_0 1.000
+QTU34         30   3  13   Q_PNP_2 0.090
+QTU33          4   5   3   Q_PNP_0 1.000
+QTU32          6   5   3   Q_PNP_0 1.000
+QTU31          7   5   3   Q_PNP_0 1.000
+QTU30         28   5   3   Q_PNP_0 1.000
+QTU29          5  11   3   Q_PNP_0 1.000
+QTU28         29  11   3   Q_PNP_0 1.000
+QTU27         31   8  32   Q_PNP_0 1.000
+QTU26          8   8  32   Q_PNP_0 1.000
+QTU25          8   8   9   Q_PNP_0 1.000
+QTU24         10   8   9   Q_PNP_0 1.000
+QTU23          3  47  27   Q_NPN_0 1.000
+QTU22          3  45  44   Q_NPN_1 10.00
+QTU21          3  46  45   Q_NPN_2 3.000
+QTU20         33  34  35   Q_NPN_0 1.000
+QTU19         33  34  14   Q_NPN_0 1.000
+QTU17         27  37  20   Q_NPN_0 1.000
+QTU16         22  36   1   Q_NPN_0 1.000
+QTU15         21  37  38   Q_NPN_0 1.000
+QTU14          8  37  39   Q_NPN_0 1.000
+QTU13         17  37  40   Q_NPN_0 1.000
+QTU12         30  31  17   Q_NPN_0 1.000
+QTU11         31  10  17   Q_NPN_0 1.000
+QTU10         10  10  17   Q_NPN_0 1.000
+QTU9          21   4   1   Q_NPN_0 1.000
+QTU8           4   6   1   Q_NPN_0 1.000
+QTU7           6  23   1   Q_NPN_0 1.000
+QTU6          24  25  41   Q_NPN_0 1.000
+QTU5          25  42   1   Q_NPN_0 1.000
+QTU4          29  42  43   Q_NPN_0 1.000
+QTU3           5  28  29   Q_NPN_0 1.000
+QTU2          19  48  32   Q_NPN_0 1.000
+QTU1          19  49   9   Q_NPN_0 1.000
+R37          36  33  15K
+R36          16  15  18K
+R35          15  14  100K
+R34          35  50  10
+R33          14  35  150
+R32          51  34  12K
+C5           33  34  2P
+R31          51  33  390
+R30          21  51  12K
+C4           22  36  5P
+R29          21  22  6.8K
+R28          20   1  500
+R27          40  39  6K
+R26          38   1  2.4K
+R25          40   1  500
+R24          50   1  40M
+R23           4  52  20K
+R22          52   1  4K
+R21          23  52  8K
+R20          41   1  4.2K
+R19           7  24  12K
+R18          43   1  600
+R17          42  25  270
+R16          37  42  1K
+R15          28  37  4K
+R14          11   5  750
+R13           5  18  60K
+R12          18  16  100K
+R11          44  50  200M
+R10          45  44  250
+R9           21  46  100
+R8           31  53  5K
+C3           53  30  15P
+C2           48  30  15P
+R7            3  26  220
+R6           30  47  2K
+R5           54  47  800
+C1            3  54  25P
+R4           55  19  60
+R3           48  12  20K
+R2           19  48  2K
+R1           19  49  2K
+*
+.MODEL D_6V3_0 D(IS=10F N=1.04 BV=6.3 IBV=1M CJO=1P TT=10p)
+.MODEL D_6V3_1 D(IS=10F N=1.04 BV=6.3 IBV=1M CJO=1P TT=10p)
+.MODEL D_0 D(IS=1F N=1.14 CJO=1P TT=10p)
+.MODEL D_1 D(IS=1F N=1.16 CJO=1P TT=10p)
+.MODEL D_2 D(IS=1F N=1.16 CJO=1P TT=10p)
+.MODEL Q_PNP_0 PNP(IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P TF=10P TR=1N VAF=45)
+.MODEL Q_PNP_1 PNP(IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P TF=10P TR=1N VAF=45)
+.MODEL Q_PNP_2 PNP(IS=10F NF=1.14 NR=1.14 BF=100 CJC=1P CJE=2P TF=10P TR=1N VAF=45)
+.MODEL Q_NPN_0 NPN(IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P TF=10P TR=1N VAF=90)
+.MODEL Q_NPN_1 NPN(IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P TF=10P TR=1N VAF=90)
+.MODEL Q_NPN_2 NPN(IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P TF=10P TR=1N VAF=90)
+*
+.ENDS LM7909_sub
+
+.SUBCKT VoltageRegulators_LM7909  gnd _net1 _net0 _net2 
+X1 _net1 _net0 _net2 LM7909_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -40 -66 REG>
+    <Line -40 -20 0 40 #000080 2 1>
+    <Line -50 0 10 0 #000080 2 1>
+    <Line -40 -20 80 0 #000080 2 1>
+    <Line -40 20 80 0 #000080 2 1>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 40 -20 0 40 #000080 2 1>
+    <Line 40 0 10 0 #000080 2 1>
+    <Line 21 3 0 -6 #000000 1 1>
+    <Line 25 3 0 -6 #000000 1 1>
+    <Line 24 5 -2 0 #000000 1 1>
+    <Line 24 -5 -2 0 #000000 1 1>
+    <Line 22 -5 -1 2 #000000 1 1>
+    <Line 25 3 -1 2 #000000 1 1>
+    <Line 21 3 1 2 #000000 1 1>
+    <Line 24 -5 1 2 #000000 1 1>
+    <Line 27 -5 0 8 #000000 1 1>
+    <Line 30 5 -2 0 #000000 1 1>
+    <Line 31 3 -1 2 #000000 1 1>
+    <Line 27 3 1 2 #000000 1 1>
+    <Line 31 -5 0 8 #000000 1 1>
+    <Line 33 -5 4 0 #000000 1 1>
+    <Line 35 5 0 -10 #000000 1 1>
+    <Line -8 15 0 -6 #000000 1 1>
+    <Line -5 17 -2 0 #000000 1 1>
+    <Line -5 7 -2 0 #000000 1 1>
+    <Line -7 7 -1 2 #000000 1 1>
+    <Line -4 15 -1 2 #000000 1 1>
+    <Line -8 15 1 2 #000000 1 1>
+    <Line -5 7 1 2 #000000 1 1>
+    <Line -4 15 0 -2 #000000 1 1>
+    <Line -4 13 -2 0 #000000 1 1>
+    <Line -2 17 0 -10 #000000 1 1>
+    <Line 2 17 -4 -10 #000000 1 1>
+    <Line 2 17 0 -10 #000000 1 1>
+    <Line 4 17 0 -10 #000000 1 1>
+    <Line 7 15 0 -6 #000000 1 1>
+    <Line 6 17 -2 0 #000000 1 1>
+    <Line 6 7 -2 0 #000000 1 1>
+    <Line 7 15 -1 2 #000000 1 1>
+    <Line 6 7 1 2 #000000 1 1>
+    <Line -35 -5 0 10 #000000 1 1>
+    <Line -37 5 4 0 #000000 1 1>
+    <Line -37 -5 4 0 #000000 1 1>
+    <Line -31 5 0 -10 #000000 1 1>
+    <Line -27 5 -4 -10 #000000 1 1>
+    <Line -27 5 0 -10 #000000 1 1>
+    <.PortSym 50 0 3 180>
+    <.PortSym -50 0 2 0>
+    <.PortSym 0 30 1 0>
+  </Symbol>
+</Component>
+
