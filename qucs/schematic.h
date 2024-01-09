@@ -100,8 +100,6 @@ public:
   void  setOnGrid(int&, int&);
   bool  elementsOnGrid();
 
-  float zoom(float);
-
   /**
     Zoom around a "zooming center". Zooming center is a point on the canvas,
     which doesn't move relative to a viewport while canvas is being zoomed in or out.

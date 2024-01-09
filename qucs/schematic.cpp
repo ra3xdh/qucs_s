@@ -884,17 +884,6 @@ double Schematic::zoomAroundPoint(double offeredScaleChange, const int zpx, cons
 }
 
 // -----------------------------------------------------------
-float Schematic::zoom(float s)
-{
-    // Change scale and position view so that model's top-left
-    // corner is displayed in the viewport's top-left corner
-
-    const double newScale = Scale * s;
-    renderModel(newScale, modelRect().topLeft(), viewportRect().topLeft());
-    return Scale;
-}
-
-// -----------------------------------------------------------
 float Schematic::zoomBy(float s)
 {
     // Change scale and keep the point displayed in the center
