@@ -1,5 +1,7 @@
 <Qucs Library 0.0.19 "Transformers">
-
+* Author Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
+* Fixed Tom Hajjar 11/16/23 with Vadim Kuznetsov and Holger Vogt's assitance.
+* https://qucs-s-help.readthedocs.io/en/latest/SPICEComp.html?highlight=transformer#linear-and-non-linear-transformer-models
 <Component LossyTransformer1>
   <Description>
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
@@ -34,13 +36,11 @@ K1 L1 L2 {K}
 .ENDS
 </Spice>
 
-
   <Model>
 .Def:Transformers_LossyTransformer1 gnd _net5 _net6 _net7 _net0 Lmo="12u" Lmf="0.24u" Np="11" Ns="22" Rp="0.017" Rs="0.143"
 Eqn:Eqn1 K="sqrt(1-Lmf/Lmo)" Lp="K*Lmo" N="Np/Ns" Ls="K*Lmo*(1/(N*N))" Lpf="(1-K)*Lmo" Lsf="(1-K)*Lmo*(1/(N*N))" Export="yes"
 .Def:End
   </Model>
-
 
   <Symbol>
     <.ID -20 50 TRAN "1=Lmo=12u=primary inductance with secondary OPEN circuit (Henries)." "1=Lmf=0.24u=primary inductance with secondary SHORT circuit (Henries)." "1=Np=11=number of primary turns."    "1=Ns=22=number of secondary turns." "1=Rp=0.017=primary winding resistance (Ohms)." "1=Rs=0.143=secondary winding resistance (Ohms).">
@@ -88,20 +88,15 @@ Eqn:Eqn1 K="sqrt(1-Lmf/Lmo)" Lp="K*Lmo" N="Np/Ns" Ls="K*Lmo*(1/(N*N))" Lpf="(1-K
   </Symbol>
 </Component>
 
-
-
 <Component LossyTransformer2>
   <Description>
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 25 Nov. 2015
 
 A two winding transformer with core saturation effects and resistive losses.
-Background details and use of this model can be found in the "spice4qucs-help"
-document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
 
 Outputs H abd B allow the B versus curve to be plotted using the Qucs-0.0.19S emulation of
 Qucs function PlotVs().
   </Description>
-
 
   <Spice>
 .SUBCKT Transformers_LossyTransformer2 gnd nPlus nPneg nSplus nSneg nH nB np=4470 ns=870 Rp=30 Rs=5 L=0.2 A=2e-4 
@@ -113,8 +108,8 @@ B3 0  n1  I = pwl ( V(nH), -10000, -1.506, -9000, -1.504, -8000, -1.5035, -7000,
 R4 0  nH 1
 ESRC1 nP2 nPneg ndB 0 {np*A}
 ESRC2 nS2 nSneg ndB 0 {ns*A}
-R1 nP1  nPlus Rp
-R2 nSplus  nS1 Rs
+R1 nP1  nPlus {Rp}
+R2 nSplus  nS1 {Rs}
 HSRC3 nB 0  VSRC3 1
 VSRC3 n1 ndB DC 0 
 HSRC4 nIp 0  VSRC4 1
@@ -124,7 +119,6 @@ VSRC5 nS1 nS2 DC 0
 BD2I0 0 nH I=({np}*V(nIp)+{ns}*V(nIs))/{L}
 .ENDS
   </Spice>
-
 
   <Model>
 .Def:Transformers_LossyTransformer2 gnd nPlus nPneg nSplus nSneg nH nB np="4470" ns="870" Rp="30" Rs="5" L="0.2" A="2e-4"
@@ -138,7 +132,6 @@ EDD:D2 gnd nH I1="D2.I1" Q1="D2.Q1"
   Eqn:EqnD2Q1 D2.Q1="0" Export="no"
 .Def:End
   </Model>
-
 
   <Symbol>
     <Line 0 -20 0 0 #000000 0 1>
@@ -195,18 +188,13 @@ EDD:D2 gnd nH I1="D2.I1" Q1="D2.Q1"
   </Symbol>
 </Component>
 
-
-
 <Component TransformerPS1S2>
   <Description>
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
 
 A three winding transformer(P and S1 and S2) with SPICE K style coupling and
-winding resistors (Rp, Rs1 and Rs2). Background details and use of this 
-model can be found in the "spice4qucs-help" document, at 
-https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+winding resistors (Rp, Rs1 and Rs2).
   </Description>
-
 
   <Spice>
 .SUBCKT Transformers_TransformerPS1S2  gnd nPplus nPneg nSplus nSneg nSPct L1=0.5 L2=0.125 L3=0.125 K12=0.99 K13=0.99 K23=0.99 Rp=2 Rs1=1 Rs2=1 
@@ -222,7 +210,6 @@ R3 nSPplus nSplus  {RS1}
 .ENDS
   </Spice>
 
-
   <Model>
 .Def:Transformers_TransformerPS1S2 gnd nPplus nPneg nSplus nSneg nSPct L1="0.5" L2="0.125" L3="0.125" K12="0.99" K13="0.99" K23="0.99" Rp="2" Rs1="1" Rs2="1"
 R:R1 nPplus nP1 R="Rp" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
@@ -230,7 +217,6 @@ R:R2 nSneg nSPneg R="Rs2" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 R:R3 nSPlus nSplus R="Rs1" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 .Def:End
   </Model>
-  
   
   <Symbol>
     <Line 60 -60 0 0 #000000 0 1>
@@ -298,16 +284,12 @@ R:R3 nSPlus nSplus R="Rs1" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
   </Symbol>
 </Component>
 
-
-
 <Component PositiveCouplingPS>
   <Description>
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
 
 A two winding transformer(P and S) with SPICE K style coupling and
-winding resistors (Rp, Rs). Background details and use of this 
-model can be found in the "spice4qucs-help" document, at 
-https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+winding resistors (Rp, Rs).
   </Description> 
 
   <Spice>
@@ -326,7 +308,6 @@ R:R1 PL1plus nP1 R="Rp" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 R:R2 nS1 PL2plus R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 .Def:End
   </Model>
-
 
   <Symbol>
     <Line 10 30 0 0 #000000 0 1>
@@ -374,18 +355,13 @@ R:R2 nS1 PL2plus R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
   </Symbol>
 </Component>
 
-
-
 <Component NegativeCouplingPS>
   <Description>
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
 
 A two winding transformer(P and S) with SPICE K style coupling and
-winding resistors (Rp, Rs). Background details and use of this 
-model can be found in the "spice4qucs-help" document, at 
-https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+winding resistors (Rp, Rs). 
   </Description>
-  
 
 <Spice>
 .SUBCKT Transformers_NegativeCouplingPS gnd nPplus nPneg nSplus nSneg K=0.999 L1=0.5 L2=0.125 Rp=2 Rs=1 
@@ -396,7 +372,6 @@ R1 nPplus _net1  {RP}
 R2 _net0 nSplus  {RS}
 .ENDS
 </Spice>
-
   
   <Model>
 .Def:Transformers_NegativeCouplingPS gnd nPplus nPneg nSplus nSneg K="0.999" L1="0.5" L2="0.125" Rp="2" Rs="1"
@@ -404,7 +379,6 @@ R:R1 nPplus _net1 R="Rp" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 R:R2 _net0 nSplus R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 .Def:End
   </Model>
-  
   
   <Symbol>
     <Line 0 -30 0 0 #000000 0 1>
@@ -452,15 +426,11 @@ R:R2 _net0 nSplus R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
   </Symbol>
 </Component>
 
-
-
 <Component XSPICEPS1>
   <Description>
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 25 Nov. 2015
 
 A two winding transformer with steel core saturation effects and resistive losses.
-Background details and use of this model can be found in the "spice4qucs-help"
-document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
   </Description>
 
  <Spice>
@@ -480,14 +450,12 @@ ACORE1 n1 n2  Steel
 .ENDS
   </Spice>
 
-
   <Model>
 .Def:Transformers_XSPICEPS1 gnd _net0 _net1 _net4 _net5 Rp="20" Rs="5" ntp="4350" nts="870" L="0.2" A="2e-4"
 R:R1 _net0 _net2 R="Rp" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 R:R2 _net3 _net4 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
 .Def:End
   </Model>
-  
   
   <Symbol>
     <.ID -20 44 TRAN "1=Rp=20=primary winding resistance (Ohms)." "1=Rs=5=secondary winding resistance (Ohms)." "1=ntp=4350=number of primary turns," "1=nts=870=number of secondary turns." "1=L=0.2=Core length" "1=A=2e-4=Core area">
@@ -536,57 +504,42 @@ R:R2 _net3 _net4 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
   </Symbol>
 </Component>
 
-
-
 <Component XSPICEPS1S2>
   <Description>
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 25 Nov. 2015
-
-A three winding transformer with steel core saturation effects and resistive losses.
-Background details and use of this model can be found in the "spice4qucs-help"
-document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+        Modifed by Holger Vogt 11/15/23   
+A three winding transformer with steel core saturation effects and resistive losses
   </Description>
-
-
-  <Spice>
-.SUBCKT Transformers_XSPICEPS1S2 gnd Pplus Pneg S1plus PCT S2neg ntp=2500 nts1=1000 nts2=1000 Rp=5 Rs1=2 Rs2=2 L=0.2 A=2e-4
-AICOUPLE1 _net0 Pneg n1 0 PIcouple
-.model PIcouple lcouple (num_turns={ntp})
-R3 S1plus  _net1 RS1
-R2 S2neg  _net2 RS2
-R1 _net0  Pplus Rp
-AICOUPLE3 PCT _net1 n3 0 SIcouple3
-.model SIcouple3 lcouple (num_turns={nts2})
-AICOUPLE2 _net2 PCT n2 0 SIcouple2
-.model SIcouple2 lcouple (num_turns={nts1})
-ACORE1 n1 n2  Steel
-.model Steel core ( length={L} area={A}
-+ H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
-+ 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
-+ B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
-+ 0.3 0.55 0.825 1.0 1.37 1.45 1.48 1.5 1.5005 1.501 1.502 1.503 1.5035 1.504 1.506 ] )
-ACORE2 n1 n3  Steel
-.model Steel core ( length={L} area={A}
-+ H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
-+ 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
-+ B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
-+ 0.3 0.55 0.825 1.0 1.37 1.45 1.48 1.5 1.5005 1.501 1.502 1.503 1.5035 1.504 1.506 ] )
-ACORE3 n2 n3  Steel
-.model Steel core ( length={L} area={A}
-+ H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
-+ 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
-+ B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
-+ 0.3 0.55 0.825 1.0 1.37 1.45 1.48 1.5 1.5005 1.501 1.502 1.503 1.5035 1.504 1.506 ] )
-.ENDS
-  </Spice>
-
-
   <Model>
-.Def:Transformers_XSPICEPS1S2 gnd _net3 _net1 _net4 _net5 _net6 ntp="2500" nts1="1000" nts2="1000" Rp="5" Rs1="2" Rs2="2" L="0.2" A="2e-4"
+.Def:Transformers_XSPICEPS1S2 _net0 _net1 _net10 _net8 _net5 ntp="2500" nts1="1000" nts2="1000" Rp="5" Rs1="2" Rs2="2" L="0.2" A="2e-4 "
+Sub:CORE1 _net3 _net6 Type="Cores_SheetSteel" Length="{L}" Area="{A}"
 .Def:End
   </Model>
+  <Spice>* Qucs 2.1.0  Transformers_XSPICEPS1S2.sch
 
+.SUBCKT Cores_SheetSteel gnd nPplus nPneg Length=0.2 Area=2e-4 
+ACORE nPplus nPneg  SheetSteel
+.model SheetSteel core ( mode=1 length = {Length} area={Area}
++ H_array = [ -6299 -5906  -5512 -5118 -4724 -4367 -3937 -3543 -3150 -2756 -2362 -1969 -1575 -1378 -1181 -984 -787 -591 -394 -197 0 
++            197 394 591 787 984 1181 1378 1575 1969 2362 2756 3150 3543 3937 4367 4724 5118 5512 5906 6299 ] 
++ B_array = [ -1.83 -1.82 -1.81 -1.80 -1.79 -1.77 -1.75 -1.73 -1.72 -1.70 -1.68 -1.65 -1.63 -1.61 -1.59 -1.57 -1.54 -1.50 -1.44 -1.30 0
++            1.30 1.44 1.50 1.54 1.57 1.59 1.61 1.63 1.65 1.68 1.70 1.72 1.73 1.75 1.77 1.79 1.80 1.81 1.82 1.83 ] )
+.ENDS
+  
 
+.SUBCKT Transformers_XSPICEPS1S2  gnd _net0 _net1 _net10 _net8 _net5 ntp=2500 nts1=1000 nts2=1000 Rp=5 Rs1=2 Rs2=2 L=0.2 A=2e-4  
+AICOUPLE1 _net2 _net1 _net3 0 Plcouple
+.model Plcouple lcouple (num_turns={ntp})
+R1 _net2  _net0 {Rp}
+AICOUPLE3 _net4 _net5 _net6 _net7 Slcouple
+.model Slcouple lcouple (num_turns={nts1})
+R3 _net8  _net4 {Rs1}
+XCORE1 0  _net3 _net6 Cores_SheetSteel Length={L} Area={A}
+AICOUPLE2 _net5 _net9 _net7 0 Slcouple
+.model Slcouple lcouple (num_turns={nts2})
+R2 _net10  _net9 {Rs2}
+.ENDS
+  </Spice>
   <Symbol>
     <Line 20 -110 0 0 #000000 0 1>
     <Line 20 -60 0 0 #000000 0 1>
@@ -644,12 +597,11 @@ ACORE3 n2 n3  Steel
     <Ellipse 4 -92 8 8 #aa0000 1 1 #aa0000 1 1>
     <Ellipse 4 8 8 8 #aa0000 1 1 #aa0000 1 1>
     <Line -80 -100 40 0 #000080 2 1>
-    <.ID -60 114 TRAN "1=ntp=2500=number of primary turns." "1=nts1=1000=number of secondary one turns." "1=nts2=1000=number of secondary two turns." "1=Rp=5=primary winding resistance (Ohms)." "1=Rs1=2=secondary one winding resistance (Ohms)." "1=Rs2=2=secondary two winding resistance (Ohms)." "1=L=0.2=Core length" "1=A=2e-4=Core area">
-    <.PortSym -80 -100 1 0>
     <.PortSym -90 90 2 0>
-    <.PortSym 40 -10 4 180>
+    <.PortSym -80 -100 1 0>
+    <.PortSym 40 -10 5 180>
     <.PortSym 40 -100 3 180>
-    <.PortSym 40 90 5 180>
+    <.PortSym 40 90 4 180>
+    <.ID -40 114 TRAN "1=ntp=2500=number of primary turns.=" "1=nts1=1000=number of secondary one turns.=" "1=nts2=1000=number of secondary two turns.=" "1=Rp=5=primary winding resistance (Ohms).=" "1=Rs1=2=secondary one winding resistance (Ohms).=" "1=Rs2=2=secondary two winding resistance (Ohms).=" "1=L=0.2=core magnetic path length (m)=" "1=A=2e-4 =core cross sectional area (m^2)=">
   </Symbol>
 </Component>
-
