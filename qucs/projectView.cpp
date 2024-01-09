@@ -97,7 +97,7 @@ ProjectView::refresh()
   QDir workPath(m_projPath);
   QStringList files = workPath.entryList(QStringList() << "*", QDir::Files, QDir::Name);
   QStringList::iterator it;
-  QString extName, fileName;
+  QString extName, fileName, fullExtName;
   QList<QStandardItem *> columnData;
 
 #define APPEND_CHILD(category, data) \
@@ -105,12 +105,14 @@ ProjectView::refresh()
 
   for(it = files.begin(); it != files.end(); ++it) {
     fileName = (*it).toLatin1();
-    extName = QFileInfo(workPath.filePath(fileName)).suffix();
+    extName = QFileInfo(workPath.filePath(fileName)).suffix().toLower();
+    fullExtName = QFileInfo(workPath.filePath(fileName)).completeSuffix().toLower();
 
     columnData.clear();
     columnData.append(new QStandardItem(fileName));
 
-    if(extName == "dat") {
+    if(extName == "dat" || fullExtName == "dat.ngspice" ||
+       fullExtName == "dat.xyce" || fullExtName == "dat.spopus" ) {
       APPEND_CHILD(0, columnData);
     }
     else if(extName == "dpl") {
