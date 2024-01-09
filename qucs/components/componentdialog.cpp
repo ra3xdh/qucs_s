@@ -1242,16 +1242,14 @@ void ComponentDialog::slotButtRem()
 
   // peek next, delete current, set next current
   if ( row < prop->rowCount()) {
-    prop->setCurrentItem(prop->item(row-1,0)); // Shift selection up
-    slotSelectProperty(prop->item(row-1,0));
-
-    if (!prop->selectedItems().size()) { // The first item was removed
-        prop->setCurrentItem(prop->item(0,0)); // Select the first item
-        slotSelectProperty(prop->item(0,0));
-    }
-
-    prop->removeRow(row);
-    }
+      prop->setCurrentItem(prop->item(row-1,0)); // Shift selection up
+      slotSelectProperty(prop->item(row-1,0));
+      prop->removeRow(row);
+      if (!prop->selectedItems().size()) { // The first item was removed
+          prop->setCurrentItem(prop->item(0,0)); // Select the first item
+          slotSelectProperty(prop->item(0,0));
+      }
+  }
 }
 
 /*!
