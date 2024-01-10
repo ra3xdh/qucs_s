@@ -228,6 +228,10 @@ protected slots:
   void slotScrollRight();
 
 private:
+  // Viewport-realative coordinates of the cursor between mouse movements.
+  // Used in "pan with mouse" feature.
+  QPoint previousCursorPosition;
+
   bool dragIsOkay;
   /*! \brief hold system-independent information about a schematic file */
   QFileInfo FileInfo;
