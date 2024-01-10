@@ -89,21 +89,21 @@ X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 lm386_sub
     <Line -10 -60 90 60 #000080 2 1>
     <Line 80 0 20 0 #000080 2 1>
     <Line -10 60 90 -60 #000080 2 1>
-    <Line 10 -50 0 -30 #000080 2 1>
-    <Line 10 50 0 30 #000080 2 1>
-    <Text -30 -80 12 #000000 0 "VDD">
-    <Text -30 60 12 #000000 0 "VSS">
+    <Line 10 -47 0 -33 #000080 2 1>
+    <Line 10 47 0 33 #000080 2 1>
     <Line -30 -30 20 0 #000080 2 1>
-    <Line 0 -35 0 10 #ff0000 0 1>
-    <Line -5 -30 10 0 #ff0000 0 1>
+    <Line 0 -35 0 10 #ff0000 2 1>
+    <Line -5 -30 10 0 #ff0000 2 1>
     <Line -30 30 20 0 #000080 2 1>
-    <Line -5 30 10 0 #000000 2 1>
-    <Line 40 -30 0 -50 #000080 2 1>
+    <Line 40 -27 0 -53 #000080 2 1>
     <Line 50 80 0 -60 #000080 2 1>
-    <Text 40 -80 12 #000000 0 "G1">
-    <Text 70 -80 12 #000000 0 "G2">
-    <Line 70 -10 0 -70 #000080 2 1>
-    <Text 50 30 12 #000000 0 "BYP">
+    <Line 70 -7 0 -73 #000080 2 1>
+    <Line -5 30 10 0 #000000 2 1>
+    <Text 14 60 10 #000000 0 "GND">
+    <Text 53 60 10 #000000 0 "BYP">
+    <Text 73 -77 10 #000000 0 "G2">
+    <Text 43 -77 10 #000000 0 "G1">
+    <Text 13 -77 10 #000000 0 "VS">
     <.PortSym 40 -80 1 0>
     <.PortSym 70 -80 8 0>
     <.PortSym 100 0 5 0>
@@ -174,13 +174,11 @@ XUINPUT     Vip Vin 22 21 GNDF INPUT_0
 + PARAMS: RCM=1 CCM=1000F CDM=100F 
 .ENDS
 
-
 .SUBCKT ILOAD_PD_0   VDD VSS VIMON PD
 + PARAMS: VON = 0.5
 G1 VDD 0 VALUE = {IF(V(VIMON) >= 0 & V(PD) < VON,V(VIMON),0)}
 G2 0 VSS VALUE = {IF(V(VIMON) < 0 & V(PD) < VON,V(VIMON),0)}
 .ENDS
-
 
 .SUBCKT GBW_SLEW_SE_0    VIP  VIM  VO  GNDF  PD
 + PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M  
@@ -197,14 +195,11 @@ C1          VO GNDF {CC}
 GR1          VO GNDF VALUE =  {IF(V(PD) >= VON,V(VO,GNDF)/RC,V(VO,GNDF)/ROFF)}
 .ENDS
 
-
-
 .SUBCKT OUT_CURRENT_CLAMP_PD_0   IN  OUT  PD  
 +PARAMS: RON = 1 ROFF = 1G   VON = 0.5 IMAX = 10M  IMIN = -10M
 GRES  IN OUT VALUE = {LIMIT(IF(V(PD) >= VON,1,0)*V(IN,OUT)/RON 
 + + IF(V(PD) >= VON,0,1)*V(IN,OUT)/ROFF,IMAX,IMIN)}
 .ENDS
-
 
 **** INVERTER *********************************************************************************************
 *$
@@ -220,7 +215,6 @@ RO Y DVSS 1E11
 .ENDS IV110_0 
 *$
 
-
 .SUBCKT PSRR_0   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
 .PARAM PI = 3.141592
 .PARAM RPSRR = 1
@@ -232,7 +226,6 @@ L1  2 GNDF {LPSRR} IC = 0
 E1  VO VI 1 GNDF 1
 C2  VDD VSS 10P IC = 0
 .ENDS
-
 
 .SUBCKT TF_0    VI  VO  GNDF
 + PARAMS: FZ1 = 10G FZ2 = 10G FZ3 = 10G FZ4 = 10G FZ5 = 10G
@@ -279,15 +272,10 @@ LZ5  VX5 GNDF {RO/(2*PI*FZ5)}
 
 .ENDS
 
-
-
-
 .SUBCKT IQ_IOFF_0   VDD VSS PD 
 + PARAMS: VON = 0.5 IQQ = 1M  IOFF = 1P
 G1 VDD VSS VALUE = {IF(V(PD) >= VON,IQQ,IOFF)}
 .ENDS
-
-
 
 .SUBCKT IDEAL_DIODE_0  A C 
 +PARAMS: EMCO = 0.01 BRKV = 60 IBRKV = 1M)
@@ -295,18 +283,15 @@ D1 A C IDIODE
 .MODEL IDIODE D(N = {EMCO} BV = {BRKV} IBV = {IBRKV})
 .ENDS
 
-
 .SUBCKT GND_FLOAT_0   VDD VSS GNDF 
 EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
 .ENDS
-
 
 .SUBCKT AMETER_0   VI  VO VIMON
 + PARAMS: GAIN = 1
 VSENSE VI VO DC = 0
 EMETER VIMON 0 VALUE = {I(VSENSE)*GAIN}
 .ENDS
-
 
 .SUBCKT VCLAMP_W_SENSE_0   VDD  VSS  VI  VO VIMON  GNDF
 + PARAMS: VMAXIO = 0.1 VMINIO = 0.1 SLOPE = 20
@@ -317,13 +302,9 @@ ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF) - SLOPE*V(VIMON) + VMINIO}
 ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
 .ENDS
 
-
-
 .SUBCKT VCLAMP_0   VDD  VSS  VI  VO  GNDF PARAMS: VMAX = 0.1 VMIN = 0.1
 ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
 .ENDS
-
-
 
 .SUBCKT CMRR_0   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
 .PARAM PI = 3.141592
@@ -335,7 +316,6 @@ R1  1 2 {RCMRR}
 L1  2 GNDF {LCMRR} IC = 0
 E1  VI VO 1 GNDF 1
 .ENDS
-
 
 * BEGIN PROG NSE FEMTO AMP/RT-HZ 
 .SUBCKT FEMT_0  1 2 PARAMS: NLFF = 0.1 FLWF = 0.001 NVRF = 0.1
@@ -378,7 +358,6 @@ C2 2 0 1E-15
 C3 1 2 1E-15
 .ENDS
 * END PROG NSE FEMTO AMP/RT-HZ
-
 
 * BEGIN PROG NSE NANO VOLT/RT-HZ
 .SUBCKT VNSE_0  1 2 PARAMS: NLF = 10 FLW = 4  NVR = 4.6
@@ -430,8 +409,6 @@ G1          VIP VOP VALUE =  {V(VIP,VOP)/RCM}
 G2          VIN VON VALUE = {V(VIN,VON)/RCM} 
 .ENDS
 
-
-
 .SUBCKT AudioIC_LM3886  gnd _net0 _net1 _net2 _net3 _net4 _net5 
 X1 _net0 _net1 _net2 _net3 _net4 _net5 lm3886_sub
 .ENDS
@@ -444,17 +421,20 @@ X1 _net0 _net1 _net2 _net3 _net4 _net5 lm3886_sub
     <Line -40 -20 20 0 #000080 2 1>
     <Line -40 20 20 0 #000080 2 1>
     <Line -15 20 10 0 #000000 2 1>
-    <Line -10 -25 0 10 #ff0000 0 1>
-    <Line -15 -20 10 0 #ff0000 0 1>
+    <Line -10 -25 0 10 #ff0000 2 1>
+    <Line -15 -20 10 0 #ff0000 2 1>
     <Line 10 -20 0 -20 #000080 2 1>
     <Line 10 20 0 20 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 7 0 33 #000080 2 1>
+    <Text 13 27 6 #000000 0 "VSS">
+    <Text 32 27 6 #000000 0 "MUT">
+    <Text 13 -37 6 #000000 0 "VDD">
     <.PortSym -40 -20 1 0>
     <.PortSym -40 20 2 0>
     <.PortSym 10 -40 3 0>
     <.PortSym 10 40 4 0>
     <.PortSym 60 0 5 0>
-    <Line 30 10 0 30 #000080 2 1>
-    <Line 30 40 20 0 #000080 2 1>
     <.PortSym 50 40 6 0>
     <.ID 30 -56 X>
   </Symbol>
@@ -560,10 +540,12 @@ X1 _net0 _net1 _net2 _net3 _net4 TDA2003
     <Line -40 -20 20 0 #000080 2 1>
     <Line -40 20 20 0 #000080 2 1>
     <Line -15 20 10 0 #000000 2 1>
-    <Line -10 -25 0 10 #ff0000 0 1>
-    <Line -15 -20 10 0 #ff0000 0 1>
+    <Line -10 -25 0 10 #ff0000 2 1>
+    <Line -15 -20 10 0 #ff0000 2 1>
     <Line 10 -20 0 -20 #000080 2 1>
     <Line 10 20 0 20 #000080 2 1>
+    <Text 13 27 6 #000000 0 "GND">
+    <Text 13 -37 6 #000000 0 "VDD">
     <.ID 20 14 X>
     <.PortSym -40 -20 1 0>
     <.PortSym -40 20 2 0>
@@ -621,8 +603,6 @@ Q2 12 3 14 QMOD2
 .MODEL QMOD2 NPN(IS=8.0e-16 BF=3.947e+001 VAF=200)
 .ends
 
-
-
 .SUBCKT AudioIC_TDA2030  gnd _net0 _net2 _net4 _net3 _net1 
 X1 _net0 _net1 _net2 _net3 _net4 TDA2030__OPAMP__1
 .ENDS
@@ -635,16 +615,18 @@ X1 _net0 _net1 _net2 _net3 _net4 TDA2030__OPAMP__1
     <Line -40 -20 20 0 #000080 2 1>
     <Line -40 20 20 0 #000080 2 1>
     <Line -15 20 10 0 #000000 2 1>
-    <Line -10 -25 0 10 #ff0000 0 1>
-    <Line -15 -20 10 0 #ff0000 0 1>
+    <Line -10 -25 0 10 #ff0000 2 1>
+    <Line -15 -20 10 0 #ff0000 2 1>
     <Line 10 -20 0 -20 #000080 2 1>
     <Line 10 20 0 20 #000080 2 1>
+    <Text 13 27 6 #000000 0 "VSS">
+    <Text 13 -37 6 #000000 0 "VDD">
     <.PortSym -40 -20 1 0>
     <.PortSym -40 20 5 0>
     <.PortSym 60 0 2 0>
     <.PortSym 10 -40 4 0>
-    <.ID 30 -66 X>
     <.PortSym 10 40 3 0>
+    <.ID 30 -66 X>
   </Symbol>
 </Component>
 
