@@ -1,0 +1,247 @@
+<Qucs Library 24.1.0 "VoltageReferences">
+
+<Component AD581>
+  <Description>
+10V precison reference
+  </Description>
+  <Model>
+.Def:VoltageReferences_AD581 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="AD581_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageReferences_AD581.sch
+
+.SUBCKT AD581_AD  1  4  8
+*
+* BANDGAP REFERENCE
+*
+I1 4 10 DC 1.21485E-3
+R1 10 4 1E3 TC=30E-6
+EN 10 11 41 0 1
+G1 4 11 8 4 2.430243E-8
+F1 4 11 POLY(2) VS1 VS2 (0,2.43024E-5,2.43024E-5)
+*
+* NOISE VOLTAGE GENERATOR
+*
+VN1 40 0 DC 2
+DN1 40 41 DEN
+CN 41 0 50E-12
+DN2 41 42 DEN
+VN2 0 42 DC 2
+*
+* INTERNAL OP AMP AND DOMINANT POLE @ 5 Hz
+*
+G2 4 7 11 6 1E-3
+R2 7 4 1E8
+C1 7 4 3.1831E-10
+D1 7 12 DX
+V1 8 12 DC 1.5
+*
+* SECONDARY POLE @ 1 MHz
+*
+G3 4 13 7 4 1E-6
+R3 13 4 1E6
+C2 13 4 1.5915E-13
+*
+* OUTPUT STAGE
+*
+ISY 8 4 3.5027E-4
+FSY 8 4 V1 -1
+*
+G4 4 14 13 4 20E-6
+R4 14 4 50E3
+FSC 14 4 VSC 1
+Q1 4 14 5 QP
+I2 8 5 DC 100E-6
+VSC 8 15 DC 0
+QSC 15 8 16 QN
+RSC 8 16 24.5
+Q2 16 5 17 QN
+VS1 19 17 DC 0
+Q3 4 5 18 QP
+VS2 18 19 DC 0
+R5 19 2 16.667E3
+R6 2 3 8.3333E3
+R7 3 6 4.2827E3
+R8 6 4 4.05E3
+LO 19 1 1E-7
+*
+.MODEL QN NPN(IS=1E-15 BF=1E3)
+.MODEL QP PNP(IS=1E-15 BF=1E3)
+.MODEL DX D(IS=1E-15)
+.MODEL DEN D(IS=1E-12 RS=4.56436E5 AF=1 KF=2.81234E-17)
+.ENDS
+
+.SUBCKT VoltageReferences_AD581  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 AD581_AD
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 0 50 0 -20 #000080 2 1>
+    <Line -40 30 80 0 #000080 2 1>
+    <.ID -30 -86 X>
+    <.PortSym 0 50 2 0>
+    <Line -40 -30 0 60 #000080 2 1>
+    <Line -60 -10 20 0 #000080 2 1>
+    <.PortSym -60 -10 3 0>
+    <Line 40 -30 0 60 #000080 2 1>
+    <Line 40 -10 20 0 #000080 2 1>
+    <.PortSym 60 -10 1 180>
+    <Line -40 -30 80 0 #000080 2 1>
+    <Text 10 -20 12 #000000 0 "10V">
+    <Text -40 -20 12 #000000 0 " VIN">
+    <Text -20 10 12 #000000 0 "GND">
+  </Symbol>
+</Component>
+
+<Component REF191>
+  <Description>
+2.048V precision micropower low-drop reference
+  </Description>
+  <Model>
+.Def:VoltageReferences_REF191 _net0 _net1 _net2 _net3
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="REF191_ckt"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageReferences_REF191.sch
+
+.SUBCKT REF191_AD  2  3  4  6
+*
+* 1.23V REFERENCE
+*
+I1 4 10 DC 5.8088E-8
+R1 10 4 21.18E6 TC=1.04E-6
+GLR 4 10 2 4 1.1615E-13
+GLDR 4 10 22 6 2.785E-10
+C1 4 10 4.7214E-13
+*
+* OPEN-LOOP GAIN
+*
+G2 4 11 10 21 1E-4
+R2 4 11 1E6
+*
+* 3 POLES AT 2 MHZ
+*
+G3 4 12 11 4 1E-6
+R3 4 12 1E6
+C2 4 12 0.0796E-12
+*
+G4 4 13 12 4 1E-6
+R4 4 13 1E6
+C3 4 13 0.0796E-12
+*
+GX5 4 17 13 4 1E-6
+RX5 4 17 1E6
+CX3 4 17 0.0796E-12
+*
+* SHORT CIRCUIT LIMIT
+*
+G5 14 4 17 4 1E-4
+R10 14 4 1E4
+D1 4 14 DX
+G6 15 4 4 14 100E-6
+GSC 4 15 22 6 54E-6
+D2 16 15 DX
+V1 4 16 DC 0
+D3 15 4 DX
+F1 4 15 V3 100
+*
+* SHUTDOWN CIRCUIT
+*
+R12 2 3 10E6
+Q2 2 3 30 QN
+V2 30 31 DC 0
+R11 31 4 1.97E5
+F3 4 32 POLY(1) V2 5E-6 -1000
+D4 32 33 DX
+V3 33 4 DC 0
+D5 4 32 DX
+*
+* OUTPUT STAGE
+*
+ISY 2 4 DC 14.67E-6
+F2 20 4 V1 1
+R5 2 20 200E3
+Q1 22 20 2 QP 80
+R6 6 21 56.528E3
+R7 21 4 85E3
+RDO 22 6 27
+*
+.MODEL QP PNP(IS=1E-15 BF=10000)
+.MODEL QN NPN(BF=100000)
+.MODEL DX D(IS=1E-15)
+.ENDS
+
+.SUBCKT VoltageReferences_REF191  gnd _net0 _net1 _net2 _net3 
+X1 _net0 _net1 _net2 _net3 REF191_AD
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 30 120 0 #000080 2 1>
+    <Line -60 -30 120 0 #000080 2 1>
+    <Line -20 50 0 -20 #000080 2 1>
+    <Line -60 -30 0 60 #000080 2 1>
+    <Line -80 -10 20 0 #000080 2 1>
+    <Text -60 -20 12 #000000 0 " VIN">
+    <Line 60 -30 0 60 #000080 2 1>
+    <Line 60 -10 20 0 #000080 2 1>
+    <Text -40 10 12 #000000 0 "GND">
+    <Line 30 50 0 -20 #000080 2 1>
+    <Text 10 10 12 #000000 0 "SHDN">
+    <.PortSym -80 -10 1 0>
+    <.PortSym 30 50 2 0>
+    <.PortSym -20 50 3 0>
+    <.PortSym 80 -10 4 180>
+    <Text 20 -20 12 #000000 0 "OUT">
+    <.ID -50 -76 X>
+  </Symbol>
+</Component>
+
+<Component TL431>
+  <Description>
+2.5V precision programmable reference
+  </Description>
+  <Model>
+.Def:VoltageReferences_TL431 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="TL431_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  VoltageReferences_TL431.sch
+
+* TL431 Current Regulator
+.subckt nTL431 CATHODE ANODE REF
+Q1 N004 N003 N001 0 P
+Q2 ANODE N002 N001 0 P
+Q3 CATHODE N005 ANODE 0 N
+R1 N002 ANODE 600k
+R2 REF N002 648k
+I1 CATHODE N001 5u
+V1 N003 ANODE 1.2V
+Q4 CATHODE N004 N005 0 N
+R6 N004 ANODE 640k
+.model N NPN(BF=250 Cje=.5p Cjc=.5p Rb=500)
+.model P PNP(BF=120 Cje=.3p Cjc=1.5p Rb=250)
+.ends TL431
+
+
+
+.SUBCKT VoltageReferences_TL431  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 nTL431
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 80 0 0 90 #000080 2 1>
+    <Line 40 50 10 0 #000080 2 1>
+    <.PortSym 80 0 1 0>
+    <.PortSym 80 90 2 0>
+    <.PortSym 40 50 3 0>
+    <Line 100 60 -20 -30 #00007f 2 1>
+    <Line 80 30 -20 30 #00007f 2 1>
+    <Line 60 60 40 0 #00007f 2 1>
+    <Line 60 30 40 0 #00007f 2 1>
+    <Rectangle 50 20 60 50 #00007f 2 1 #c0c0c0 1 0>
+    <Line 60 40 0 -10 #00007f 2 1>
+    <.ID 120 24 X>
+  </Symbol>
+</Component>
+
