@@ -223,8 +223,6 @@ R6 N004 ANODE 640k
 .model P PNP(BF=120 Cje=.3p Cjc=1.5p Rb=250)
 .ends TL431
 
-
-
 .SUBCKT VoltageReferences_TL431  gnd _net0 _net1 _net2 
 X1 _net0 _net1 _net2 nTL431
 .ENDS
@@ -242,6 +240,260 @@ X1 _net0 _net1 _net2 nTL431
     <Rectangle 50 20 60 50 #00007f 2 1 #c0c0c0 1 0>
     <Line 60 40 0 -10 #00007f 2 1>
     <.ID 120 24 X>
+  </Symbol>
+</Component>
+
+<Component LM334>
+  <Description>
+Adjustable Current Source
+By Helmut Sennewald
+  </Description>
+  <Model>
+.Def:VoltageReferences_LM334 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="LM334_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "LM334.cir.lst">
+  <Spice>* Qucs 24.1.0  VoltageReferences_LM334.sch
+
+* LM334 Adjustable Current Source
+*
+* Helmut Sennewald
+*
+* Pin order: v+  v-  R
+.SUBCKT LM334 v+ v- R
+Q4 N002 N001 v+ 0 pnp1
+Q5 N003 N001 v+ 0 pnp1
+Q6 R N001 v+ 0 pnp1 16
+Q1 N003 N003 R 0 npn1 12
+Q2 N002 N003 N004 0 npn1
+Q3 N001 N002 R 0 npn1
+C1 N002 N004 50p
+R2 N004 v- 1?
+R8 v+ v- 1G
+C2 v+ v- 10p
+C3 N003 v- 1p
+C4 R v- 1p
+.model npn1 NPN(Is=1e-15 BF=200 TF=1e-9 Cjc=0.5e-12 Cje=1e-12 VAF=100 Rb=100 Re=5)
+.model pnp1 PNP(Is=1e-15 BF=100 TF=1e-7 Cjc=0.5e-12 Cje=1e-12 VAF=100 Rb=100 Re=5)
+.ENDS
+
+.SUBCKT VoltageReferences_LM334  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 LM334
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 0 15 0 15 #000080 2 1>
+    <Ellipse -10 -15 20 20 #000080 3 1 #c0c0c0 1 0>
+    <Ellipse -10 -5 20 20 #000080 3 1 #c0c0c0 1 0>
+    <Line 9 0 21 0 #000080 2 1>
+    <Line 0 -30 0 15 #000080 2 1>
+    <.PortSym 0 30 2 0>
+    <.PortSym 30 0 3 180>
+    <.PortSym 0 -30 1 0>
+    <.ID 20 -36 REF>
+    <Line -8 22 4 0 #000000 2 1>
+    <Line -8 -20 4 0 #ff0000 2 1>
+    <Line -6 -18 0 -4 #ff0000 2 1>
+  </Symbol>
+</Component>
+
+<Component LM4041_1>
+  <Description>
+1.225 Volt Voltage Reference
+  </Description>
+  <Model>
+.Def:VoltageReferences_LM4041_1_2 _net0 _net1
+Sub:X1 _net0 _net1 gnd Type="LM4041_1_2_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "LM4041_1.2.cir.lst">
+  <Spice>* Qucs 24.1.0  VoltageReferences_LM4041_1.2.sch
+
+* LM4041_1.2 1.225 Volt Voltage Reference
+*
+.SUBCKT LM4041_NB1P2  V+ V- PARAMS: TOL=1
+C_Cstart      V- START 1nF   
+Q_Q22         N03098 N01931 V- NPN1X 
+Q_Q7          N02184 VC_Q2 N01786 NPN1X 
+Q_Q12         N02229 N03098 N04190 NPN1X 
+Q_Q13         N04160 N04160 N04190 NPN1X 10
+Q_Q3          VC_Q3 VB_Q3 VE NPN1X 10
+Q_Q5          VC_Q3 N01129 N01136 PNPL1X 1.8
+Q_Q6          N01129 N01129 N01136 PNPL1X 1.8
+C_C3          N03098 N01136 3pF   
+Q_Q23         N01136 N01136 N08107 NPN1X 
+R_R10         N01129 N01786 60K  
+Q_Q15         N04160 N02229 N01136 PNPL1X 10
+R_R1toR5      N07686 N01136 30.5K  
+R_R15         N01931 Q20B  66K  
+Q_Q14         N02229 N02229 N01136 PNPL1X 1
+Q_Q20         N01533 Q20B V- NPN1X 
+R_R6          VB_Q2 N07686 20K  
+C_Cx          V- N01136 10pF   
+C_C2          VC_Q3 N02514 6pF   
+E_Estart      N30465 V- VALUE { max(0.4*(1-V(VB_Q2, VB_Q3)/.05), 0)+V(Q20B) }
+Q_Q1          V- FB_TEMP Q1E PNPV1X 5
+Q_Q17         N01533 FB_TEMP Q1E PNPL1X 1
+R_Rx6         V+ N01136  1000  
+Q_Q19         Q20B VE N08426 PNPL1X 1
+R_R8          Q1E VB_Q3  45K  
+Q_Q16         N01136 N04160 V- NPN1X 10
+Q_Q4          VC_Q2 N01129 N01136 PNPL1X 1.8
+R_R13         Q20B N01533 40K  
+R_Rstart0     START N30465 1  
+R_R11         N02514 N02184 100K  
+R_R14         N01755 V- 3.3K  
+Q_Q11         N03098 N02514 N01136 PNPL1X 1.8
+Q_Q21         N01786 Q20B N01755 NPN1X 6.75
+Q_Q24         N01136 N07686 N08116 NPN1X 
+Q_Q8          N02514 VC_Q3 N01786 NPN1X 
+Q_Q2          VC_Q2 VB_Q2 VE NPN1X 
+Q_Q10         N02514 N02184 N01136 PNPL1X 3.1
+Q_Q9          N02184 N02184 N01136 PNPL1X 3.1
+R_R18         Q1E N08116  69K  
+R_R59         N01136 N08426  51K  
+R_R12         N01505 V- 6K  
+L_Lx1         N01136 V+ 10uH  
+R_R16         N04190 V- 1K  
+Q_Q18         VE Q20B N01505 NPN1X 
+R_Rstart1     Q20B START 20K  
+R_R17         N08116 N08107 130K  
+R_R7          VB_Q3 VB_Q2 10K  
+C_C1          VC_Q2 N03098 3pF   
+R_R19         V+ FB_TEMP {({TOL}>0?225K:670K)}
+R_R20         FB_TEMP V- 1k
+*
+.model Menable NMOS LEVEL 1 VTO=0 KP=20E-06 PHI=0.6 IS=10E-15 PB=0.8 PBSW=0.8 UCRIT=10E+03 DIOMOD=1 VDD=5 XPART=0            
+*
+.model NPN1X NPN Is=13.84e-18 Bf=130 TR=8ns
+*+ ne=3 CJE=.2pF CJC=4pF TF=8ns Bf=40
+*
+.model PNPV1X PNP Is=261.8e-18 Bf=222
+*
+.model PNPL1X PNP Is=48e-18 Bf=63
+*+ CJE=1pF
+*
+.model Dideal D Is=0.001p N=0.01 Rs=0 Ikf=0 Xti=2 Eg=1.11 Cjo=0 M=0.33 Vj=1 Fc=0.5 Isr=0.1n Nr=2 Bv=75 Ibv=1e-10 Tt=0
+*
+.ENDS  
+
+.SUBCKT VoltageReferences_LM4041_1  gnd _net0 _net1 
+X1 _net0 _net1 LM4041_NB1P2
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 9 -6 -18 0 #000080 2 1>
+    <Line 9 6 -18 0 #000080 2 1>
+    <Line 0 -20 0 14 #000080 2 1>
+    <Line 0 6 0 14 #000080 2 1>
+    <Line -9 -6 -3 6 #000080 2 1>
+    <Line 9 -6 3 -6 #000080 2 1>
+    <Line 0 -6 -9 12 #000080 2 1>
+    <Line 0 -6 9 12 #000080 2 1>
+    <.PortSym 0 20 2 0>
+    <.PortSym 0 -20 1 0>
+    <.ID 20 -26 REF>
+  </Symbol>
+</Component>
+
+<Component LM4041_ADJ>
+  <Description>
+Adjustable Voltage Reference
+  </Description>
+  <Model>
+.Def:VoltageReferences_LM4041_ADJ _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="LM4041_ADJ_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "LM4041_ADJ.cir.lst">
+  <Spice>* Qucs 24.1.0  VoltageReferences_LM4041_ADJ.sch
+
+* LM4041_ADJ Adjustable Voltage Reference
+*
+.SUBCKT LM4041_ADJ_sub FB V+ V- PARAMS: TOL=1 
+C_Cstart      V- START 60nF 
+Q_Q22         N03098 N01931 V- NPN1X 
+Q_Q7          N02184 VC_Q2 N01786 NPN1X 
+Q_Q12         N02229 N03098 N04190 NPN1X 
+Q_Q13         N04160 N04160 N04190 NPN1X 10
+Q_Q3          VC_Q3 VB_Q3 VE NPN1X 10
+Q_Q5          VC_Q3 N01129 N01136 PNPL1X 1.8
+Q_Q6          N01129 N01129 N01136 PNPL1X 1.8
+C_C3          N03098 N01136 3pF
+Q_Q23         N01136 N01136 N08107 NPN1X 
+R_R10         N01129 N01786 60K 
+Q_Q15         N04160 N02229 N01136 PNPL1X 10
+R_R1toR5      N07686 N01136 30.5K
+R_R15         N01931 Q20B  66K 
+Q_Q14         N02229 N02229 N01136 PNPL1X 1
+Q_Q20         N01533 Q20B V- NPN1X 
+R_R6          VB_Q2 N07686 20K
+C_Cx          V- N01136 150pF 
+C_C2          VC_Q3 N02514 6pF 
+E_Estart      N30465 V- VALUE { max(0.4*(1-V(VB_Q2, VB_Q3)/.05), 0)+V(Q20B) }
+Q_Q1          V- FB Q1E PNPV1X 5
+Q_Q17         N01533 FB Q1E PNPL1X 1
+R_Rx6         V+ N01136 40 
+Q_Q19         Q20B VE N08426 PNPL1X 1
+R_R8          Q1E VB_Q3 45K
+Q_Q16         N01136 N04160 V- NPN1X 10
+Q_Q4          VC_Q2 N01129 N01136 PNPL1X 1.8
+R_R13         Q20B N01533 40K
+R_Rstart0     START N30465 100 
+R_R11         N02514 N02184 100K
+R_R14         N01755 V- {({TOL}>0?7K:4.95K)}
+Q_Q11         N03098 N02514 N01136 PNPL1X 1.8
+Q_Q21         N01786 Q20B N01755 NPN1X 6.75
+Q_Q24         N01136 N07686 N08116 NPN1X 
+Q_Q8          N02514 VC_Q3 N01786 NPN1X 
+Q_Q2          VC_Q2 VB_Q2 VE NPN1X 
+Q_Q10         N02514 N02184 N01136 PNPL1X 3.1
+Q_Q9          N02184 N02184 N01136 PNPL1X 3.1
+R_R18         Q1E N08116 138K 
+R_R59         N01136 N08426 51K 
+R_R12         N01505 V- 6K
+L_Lx1         N01136 V+ 10uH  
+R_R16         N04190 V- 1K
+Q_Q18         VE Q20B N01505 NPN1X 
+R_Rstart1     Q20B START 20K
+R_R17         N08116 N08107 260K
+R_R7          VB_Q3 VB_Q2 10K
+C_C1          VC_Q2 N03098 3pF
+*
+.model Menable NMOS LEVEL 1 VTO=0 KP=20E-06 PHI=0.6 IS=10E-15 PB=0.8 PBSW=0.8 UCRIT=10E+03 DIOMOD=1 VDD=5 XPART=0            
+*
+.model NPN1X NPN Is=13.84e-18 Bf=130 TR=8ns
+*+ ne=3 CJE=.2pF CJC=4pF TF=8ns Bf=40
+*
+.model PNPV1X PNP Is=261.8e-18 Bf=222
+*
+.model PNPL1X PNP Is=48e-18 Bf=63
+*+ CJE=1pF
+*
+.model Dideal D Is=0.001p N=0.01 Rs=0 Ikf=0 Xti=2 Eg=1.11 Cjo=0 M=0.33 Vj=1 Fc=0.5 Isr=0.1n Nr=2 Bv=75 Ibv=1e-10 Tt=0
+*
+.ENDS  LM4041_ADJ_sub
+*
+
+.SUBCKT VoltageReferences_LM4041_ADJ  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 LM4041_ADJ_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 9 -6 -18 0 #000080 2 1>
+    <Line 9 6 -18 0 #000080 2 1>
+    <Line 0 -20 0 14 #000080 2 1>
+    <Line 0 6 0 14 #000080 2 1>
+    <Line -9 -6 -3 6 #000080 2 1>
+    <Line 9 -6 3 -6 #000080 2 1>
+    <Line 0 -6 -9 12 #000080 2 1>
+    <Line 0 -6 9 12 #000080 2 1>
+    <Line 5 0 15 0 #000080 2 1>
+    <.PortSym 0 -20 2 0>
+    <.PortSym 20 0 1 180>
+    <.PortSym 0 20 3 0>
+    <.ID 10 -46 REF>
   </Symbol>
 </Component>
 
