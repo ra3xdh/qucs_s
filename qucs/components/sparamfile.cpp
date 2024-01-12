@@ -25,8 +25,7 @@
 SParamFile::SParamFile()
 {
   Description = QObject::tr("S parameter file");
-  Simulator = spicecompat::simQucsator
-            + spicecompat::simNgspice;
+  Simulator = spicecompat::simAll;
 
   Model = "SPfile";
   Name  = "X";
@@ -202,11 +201,24 @@ void SParamFile::createSymbol()
 QString SParamFile::spice_netlist(bool isXyce)
 {
     QString s;
-    if (isXyce) return s;
-    s += SpiceModel+Name;
-    for (Port *p1 : Ports) {
-        s += " "+ spicecompat::normalize_node_name(p1->Connection->Name);   // node names
+    if (isXyce) {
+        int Np = getProperty("Ports")->Value.toInt();
+        s = "YLIN YLIN_" + Name;
+        QString s_mod = "YLIN_" + Name + "_model";
+        for(int i = 0; i < Np; i++) {
+            QString p_in = spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
+            QString p_com = spicecompat::normalize_node_name(Ports.at(Np-1)->Connection->Name);
+            s += QString(" %1 %2").arg(p_in).arg(p_com);
+        }
+        s += QString(" %1\n").arg(s_mod);
+        s += QString(".MODEL %1 LIN TSTONEFILE=%2\n").arg(s_mod)
+                .arg(getSubcircuitFile());
+    } else {
+        s += SpiceModel+Name;
+        for (Port *p1 : Ports) {
+            s += " "+ spicecompat::normalize_node_name(p1->Connection->Name);   // node names
+        }
+        s += " Sub_" + Model + "_" + Name + "\n";
     }
-    s += " Sub_" + Model + "_" + Name + "\n";
     return s;
 }

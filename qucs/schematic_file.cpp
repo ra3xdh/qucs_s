@@ -1451,7 +1451,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
     }
 
     if (pc->Model == "SPfile" &&
-        QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+        QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
         QString f = pc->getSubcircuitFile();
         QString sub_name = "Sub_" + pc->Model + "_" + pc->Name;
         S2Spice *conv = new S2Spice();
