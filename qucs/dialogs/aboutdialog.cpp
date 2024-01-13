@@ -105,7 +105,8 @@ AboutDialog::AboutDialog(QWidget *parent)
     tr("Catalan by") + " Antoni Subirats",
     tr("Ukrainian by") + " Dystryk",
     tr("Arabic by") + " Chabane Noureddine",
-    tr("Kazakh by") + " Erbol Keshubaev"
+    tr("Kazakh by") + " Erbol Keshubaev",
+    tr("Chinese by") + " HGC"
   }};
 
   std::shuffle(currAuths.begin(), currAuths.end(), rng);
