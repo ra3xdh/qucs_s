@@ -59,7 +59,7 @@ CapQ::CapQ()
   ty = y2+4;
   Model = "CAPQ";
   SpiceModel = "C";
-  Name  = "CAPQ";
+  Name  = "CQ";
 
   Props.append(new Property("C", "1 pF", true,
 		QObject::tr("Capacitance")));
@@ -99,7 +99,7 @@ QString CapQ::spice_netlist(bool isXyce)
     pin1 = spicecompat::normalize_node_name(pin1);
     QString pin2 = Ports.at(1)->Connection->Name;
     pin2 = spicecompat::normalize_node_name(pin2);
-    QString Cname = "C" + Name;
+    QString Cname = spicecompat::check_refdes(Name, SpiceModel);
     QString Rname = "R" + Name;
 
     QString C = getProperty("C")->Value;
