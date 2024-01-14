@@ -178,6 +178,7 @@ void CustomSimDialog::slotFindVars()
 void CustomSimDialog::slotFindOutputs()
 {
     QStringList outps;
+    QString outp;
     QStringList strings = edtCode->toPlainText().split('\n');
     if (isXyceScr) {
         QRegularExpression print_ex("^\\s*\\.print\\s.*", QRegularExpression::CaseInsensitiveOption);
@@ -189,7 +190,8 @@ void CustomSimDialog::slotFindOutputs()
                 p = line.indexOf('=',p);
                 int l = line.size()-(p+1);
                 QString sub = line.right(l);
-                outps.append(sub.section(" ",0,0,QString::SectionSkipEmpty));
+                outp = sub.section(" ",0,0,QString::SectionSkipEmpty);
+                if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
             }
         }
     } else {
@@ -199,10 +201,12 @@ void CustomSimDialog::slotFindOutputs()
         print_rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
             if (write_ex.match(line).hasMatch()) {
-                outps.append(line.section(QRegularExpression("\\s"),1,1,QString::SectionSkipEmpty));
+                outp = line.section(QRegularExpression("\\s"),1,1,QString::SectionSkipEmpty);
+                if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
             }
             else if ( print_rx.match(line).hasMatch() ) {
-                outps.append(line.section('>', 1, 1, QString::SectionSkipEmpty).trimmed());
+                outp = line.section('>', 1, 1, QString::SectionSkipEmpty).trimmed();
+                if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
             }
         }
     }
