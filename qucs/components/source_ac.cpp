@@ -167,3 +167,19 @@ QString Source_ac::spice_netlist(bool isXyce)
         return ngspice_netlist();
     }
 }
+
+QString Source_ac::netlist()
+{
+    QString s = Model+":"+Name;
+
+    // output all node names
+    for (Port *p1 : Ports)
+      s += " "+p1->Connection->Name;   // node names
+
+    // output all properties
+    for(unsigned int i=0; i <= Props.count()-2; i++)
+      if(Props.at(i)->Name != "EnableTran")
+        s += " "+Props.at(i)->Name+"=\""+Props.at(i)->Value+"\"";
+
+    return s + '\n';
+}

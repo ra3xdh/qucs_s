@@ -29,7 +29,9 @@ public:
   ~Source_ac();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+protected:
   QString spice_netlist(bool isXyce);
+  QString netlist();
 };
 
 #endif
