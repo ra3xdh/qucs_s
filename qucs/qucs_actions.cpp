@@ -643,6 +643,10 @@ void QucsApp::slotSelectAll()
   else {
     int xmin, ymin, xmax, ymax;
     ((Schematic*)Doc)->sizeOfAll(xmin, ymin, xmax, ymax);
+    xmin--;
+    ymin--;
+    xmax++;
+    ymax++;
     ((Schematic*)Doc)->selectElements(xmin, ymin, xmax, ymax, true, false);
     ((Schematic*)Doc)->viewport()->update();
     view->drawn = false;
