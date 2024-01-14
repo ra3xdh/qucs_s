@@ -45,7 +45,7 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     QLabel* lblVars = new QLabel(tr("Variables to plot (semicolon separated)"));
     edtVars = new QLineEdit(comp->Props.at(1)->Value);
 
-    QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw-SPICE or XYCE-STD format)"));
+    QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw-SPICE or XYCE-STD or scalars print format)"));
     edtOutputs = new QLineEdit(comp->Props.at(2)->Value);
 
     btnApply = new QPushButton(tr("Apply"));
@@ -195,9 +195,14 @@ void CustomSimDialog::slotFindOutputs()
     } else {
         QRegularExpression write_ex("^\\s*write\\s.*");
         write_ex.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
+        QRegularExpression print_rx("^print\\s+[\\w\\s]+>.+");
+        print_rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
             if (write_ex.match(line).hasMatch()) {
                 outps.append(line.section(QRegularExpression("\\s"),1,1,QString::SectionSkipEmpty));
+            }
+            else if ( print_rx.match(line).hasMatch() ) {
+                outps.append(line.section('>', 1, 1, QString::SectionSkipEmpty).trimmed());
             }
         }
     }
