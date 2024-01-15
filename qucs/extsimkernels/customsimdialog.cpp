@@ -102,6 +102,8 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
  */
 void CustomSimDialog::slotApply()
 {
+    edtVars->setText(edtVars->text().remove(' '));
+    edtOutputs->setText(edtOutputs->text().remove(' '));
     comp->Props.at(0)->Value = edtCode->document()->toPlainText();
     comp->Props.at(1)->Value = edtVars->text();
     comp->Props.at(2)->Value = edtOutputs->text();
