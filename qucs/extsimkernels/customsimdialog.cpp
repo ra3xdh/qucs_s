@@ -41,12 +41,18 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
     edtCode = new QTextEdit(this);
     edtCode->insertPlainText(comp->Props.at(0)->Value);
+    connect(edtCode, SIGNAL(textChanged()), this, SLOT(slotChanged()));
+    checkCode = new QCheckBox(tr("display in schematic"), this);
+    checkCode->setChecked(comp->Props.at(0)->display);
+    connect(checkCode, SIGNAL(stateChanged(int)), this, SLOT(slotChanged()));
 
     QLabel* lblVars = new QLabel(tr("Variables to plot (semicolon separated)"));
     edtVars = new QLineEdit(comp->Props.at(1)->Value);
+    connect(edtVars, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
 
     QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw-SPICE or XYCE-STD or scalars print format)"));
     edtOutputs = new QLineEdit(comp->Props.at(2)->Value);
+    connect(edtOutputs, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
 
     btnApply = new QPushButton(tr("Apply"));
     connect(btnApply,SIGNAL(clicked()),this,SLOT(slotApply()));
@@ -66,6 +72,7 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     vl1->addWidget(lblName);
     QGroupBox *gpb1 = new QGroupBox(tr("SPICE code editor"));
     vl2->addWidget(edtCode);
+    vl2->addWidget(checkCode);
     gpb1->setLayout(vl2);
     vl1->addWidget(gpb1);
     vl1->addWidget(lblVars);
@@ -98,15 +105,31 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
 }
 
 /*!
+ * \brief CustomSimDialog::slotChanged Set isChanged state.
+ */
+void CustomSimDialog::slotChanged()
+{
+    isChanged = true;
+}
+/*!
  * \brief CustomSimDialog::slotApply Apply changes of component properties.
  */
 void CustomSimDialog::slotApply()
 {
-    edtVars->setText(edtVars->text().remove(' '));
-    edtOutputs->setText(edtOutputs->text().remove(' '));
-    comp->Props.at(0)->Value = edtCode->document()->toPlainText();
-    comp->Props.at(1)->Value = edtVars->text();
-    comp->Props.at(2)->Value = edtOutputs->text();
+    if ( isChanged ) {
+        edtVars->setText(edtVars->text().remove(' '));
+        edtOutputs->setText(edtOutputs->text().remove(' '));
+
+        comp->Props.at(0)->Value = edtCode->document()->toPlainText();
+        comp->Props.at(0)->display = checkCode->isChecked();
+        comp->Props.at(1)->Value = edtVars->text();
+        comp->Props.at(2)->Value = edtOutputs->text();
+
+        Sch->recreateComponent(comp);
+        Sch->viewport()->repaint();
+
+        isChanged = false;
+    }
 }
 
 /*!
