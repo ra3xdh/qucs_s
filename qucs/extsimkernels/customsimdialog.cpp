@@ -17,6 +17,7 @@
 
 
 
+#include "main.h"
 #include "customsimdialog.h"
 #include "node.h"
 
@@ -39,9 +40,17 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
 
     setWindowTitle(tr("Edit SPICE code"));
     QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
+
     edtCode = new QTextEdit(this);
+    QFont font("Monospace");
+    font.setPointSize(QucsSettings.font.pointSize());
+    font.setStyleHint(QFont::Courier);
+    font.setFixedPitch(true);
+    edtCode->document()->setDefaultFont(font);
+    edtCode->setWordWrapMode(QTextOption::NoWrap);
     edtCode->insertPlainText(comp->Props.at(0)->Value);
     connect(edtCode, SIGNAL(textChanged()), this, SLOT(slotChanged()));
+
     checkCode = new QCheckBox(tr("display in schematic"), this);
     checkCode->setChecked(comp->Props.at(0)->display);
     connect(checkCode, SIGNAL(stateChanged(int)), this, SLOT(slotChanged()));
