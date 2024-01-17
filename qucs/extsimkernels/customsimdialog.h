@@ -60,7 +60,7 @@ private:
     QLineEdit *edtOutputs;
 
 public:
-    explicit CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *parent = 0);
+    explicit CustomSimDialog(SpiceCustomSim *pc, Schematic *sch);
     
 signals:
 

@@ -30,13 +30,14 @@
  * \brief CustomSimDialog::CustomSimDialog class constructor
  * \param pc[in] Component that need to be edit.
  * \param sch[in] Schematic on which component presents.
- * \param parent[in] Parent object.
  */
-CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *parent) :
-    QDialog(parent)
+CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
+    QDialog(sch)
 {
     comp = pc;
     Sch = sch;
+
+    resize(640, 480);
 
     setWindowTitle(tr("Edit SPICE code"));
     QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
