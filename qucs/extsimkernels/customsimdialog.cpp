@@ -196,7 +196,7 @@ void CustomSimDialog::slotFindVars()
 
 
     QStringList strings = edtCode->toPlainText().split('\n');
-    QRegularExpression let_pattern("^\\s*let\\s+[A-Za-z]+\\w*\\s*\\=\\s*[A-Za-z]+.*$");
+    QRegularExpression let_pattern("^\\s*let\\s+[A-Za-z]+\\w*\\s*=.+");
 
     for (const QString& line : strings) {
         if (let_pattern.match(line).hasMatch()) {
