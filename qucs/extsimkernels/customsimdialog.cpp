@@ -232,7 +232,7 @@ void CustomSimDialog::slotFindOutputs()
     } else {
         QRegularExpression write_ex("^\\s*write\\s.*");
         write_ex.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
-        QRegularExpression print_rx("^print\\s+[\\w\\s]+>.+");
+        QRegularExpression print_rx("^\\s*print\\s.*>.+");
         print_rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
             if (write_ex.match(line).hasMatch()) {
