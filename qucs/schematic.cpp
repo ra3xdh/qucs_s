@@ -1320,9 +1320,9 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
         if (!pn->isSelected) {
             continue;
         }
-        isAnySelected = true;
         pl = pn->Label;
         if (pl) { // check position of node label
+            isAnySelected = true;
             pl->getLabelBounding(x1, y1, x2, y2);
             if (x1 < xmin)
                 xmin = x1;
