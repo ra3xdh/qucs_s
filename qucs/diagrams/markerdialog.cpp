@@ -29,7 +29,7 @@
 MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
                      : QDialog(parent)
 {
-    setAttribute(Qt::WA_DeleteOnClose);
+  setAttribute(Qt::WA_DeleteOnClose);
   setWindowTitle(tr("Edit Marker Properties"));
   pMarker = pm_;
 
@@ -67,6 +67,16 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   g->addWidget(lblXpos, 2, 0);
   g->addWidget(XPosition, 2, 1);
 
+  IndicatorBox = new QComboBox();
+  IndicatorBox->addItem(tr("Off"));
+  IndicatorBox->addItem(tr("Square"));
+  IndicatorBox->addItem(tr("Triangle"));
+  IndicatorBox->setCurrentIndex(pMarker->indicatorMode);
+
+  QLabel *lblIndicator = new QLabel(tr("Marker Indicator"));
+  g->addWidget(lblIndicator, 3, 0);
+  g->addWidget(IndicatorBox, 3, 1);
+
   assert(pMarker->diag());
   if(pMarker->diag()->Name=="Smith") // BUG
   {
@@ -75,13 +85,13 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
       SourceImpedance = new QLineEdit();
       SourceImpedance->setText(QString::number(pMarker->Z0));
 
-      g->addWidget(new QLabel(tr("Z0: ")), 3,0);
-      g->addWidget(SourceImpedance,3,1);
+      g->addWidget(new QLabel(tr("Z0: ")), 4, 0);
+      g->addWidget(SourceImpedance, 4, 1);
   }
   
   TransBox = new QCheckBox(tr("transparent"));
   TransBox->setChecked(pMarker->transparent);
-  g->addWidget(TransBox,4,0);
+  g->addWidget(TransBox, 5, 0);
 
   // first => activated by pressing RETURN
   QPushButton *ButtOK = new QPushButton(tr("OK"));
@@ -124,6 +134,10 @@ void MarkerDialog::slotAcceptValues()
 	}
   if(NumberBox->currentIndex() != pMarker->numMode) {
     pMarker->numMode = NumberBox->currentIndex();
+    changed = true;
+  }
+  if (IndicatorBox->currentIndex() != pMarker->indicatorMode) {
+    pMarker->indicatorMode = static_cast<indicatorMode_t>(IndicatorBox->currentIndex());
     changed = true;
   }
   if(TransBox->isChecked() != pMarker->transparent) {
