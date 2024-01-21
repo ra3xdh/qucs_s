@@ -32,6 +32,7 @@ public:
   int  calcDiagram();
   void calcLimits();
   void calcCoordinate(const double*, const double*, const double*, float*, float*, Axis const*) const;
+  virtual QPointF pointToValue(const QPointF& point) override;
   void finishMarkerCoordinates(float&, float&) const;
   bool insideDiagram(float, float) const;
 

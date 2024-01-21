@@ -83,6 +83,27 @@ void RectDiagram::calcCoordinate(const double* xD, const double* yD, const doubl
 }
 
 // --------------------------------------------------------------
+// Convert a point on the diagram to the value represented by that point.
+QPointF RectDiagram::pointToValue(const QPointF& point)
+{
+  // Update the value transform. TODO: This only needs to be called when the limits change.
+  valueTransform.reset();
+  qreal xMin = xAxis.log ? log10(xAxis.low) : xAxis.low;
+  qreal yMin = yAxis.log ? log10(yAxis.low) : yAxis.low;
+  qreal xMax = xAxis.log ? log10(xAxis.up) : xAxis.up;
+  qreal yMax = yAxis.log ? log10(yAxis.up) : yAxis.up;
+  valueTransform.translate(xMin, yMin);
+  valueTransform.scale((xMax - xMin) / x2, (yMax - yMin) / y2);
+
+  // Obtain the value at point.
+  QPointF value = valueTransform.map(point);
+  // qDebug() << "Transform yields: " << value;
+
+  // Convert to exponential if needed.
+  return QPointF(xAxis.log ? exp10(value.x()) : value.x(), yAxis.log ? exp10(value.y()) : value.y());
+}
+
+// --------------------------------------------------------------
 void RectDiagram::finishMarkerCoordinates(float& fCX, float& fCY) const
 {
   if(!insideDiagram(fCX, fCY)) {
@@ -174,7 +195,7 @@ if(xAxis.log) {
       Lines.prepend(new qucs::Line(z, y2, z, 0, GridPen));  // x grid
 
     if((zD < 1.5*zDstep) || (z == 0) || (z == x2)) {
-      if (engineeringNotation) tmp = misc::num2str(zD);
+      if (engineeringNotation) tmp = misc::num2str(zD, 2);
       else tmp = misc::StringNiceNum(zD);
       if(xAxis.up < 0.0)  tmp = '-'+tmp;
       w = metrics.boundingRect(tmp).width();  // width of text
@@ -204,7 +225,7 @@ else {  // not logarithmical
   z = int(zD);   //  "int(...)" implies "floor(...)"
   while((z <= x2) && (z >= 0)) {    // create all grid lines
     if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0;// make 0 really 0
-    if (engineeringNotation) tmp = misc::num2str(GridNum);
+    if (engineeringNotation) tmp = misc::num2str(GridNum, 2);
     else tmp = misc::StringNiceNum(GridNum);
     w = metrics.boundingRect(tmp).width();  // width of text
     // center text horizontally under the x tick mark

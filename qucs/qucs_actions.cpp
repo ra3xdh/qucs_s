@@ -212,6 +212,61 @@ void QucsApp::slotSetMarker(bool on)
 }
 
 // -----------------------------------------------------------------------
+// Toolbar button to update the diagram limits using the mouse - aka zooming.
+void QucsApp::slotSetDiagramLimits(bool on)
+{
+  performToggleAction(on, setDiagramLimits, 0,
+	                    &MouseActions::MMoveSetLimits, &MouseActions::MPressSetLimits);
+}
+
+// -----------------------------------------------------------------------
+// Context menu option to reset the diagram limits to defaults.
+void QucsApp::slotResetDiagramLimits()
+{
+  qDebug() << "Reset limits.";
+  if (view->focusElement && view->focusElement->Type == isDiagram)
+  {
+    Diagram* diagram = static_cast<Diagram*>(view->focusElement);
+    diagram->xAxis.autoScale = true;
+    diagram->yAxis.autoScale = true;
+
+    // The diagram dialog updates the graphs by making a copy of the diagrams
+    // graphs, deleting the original graphs and adding the copy back.
+    // TODO: Refactor this away from the diagram dialog to the diagram class.
+    Q3PtrList<Graph>  Graphs;
+
+    // Copy diagram graphs (this is implemented as a function in the diagram dialog)
+    Graphs.setAutoDelete(false);
+    for (Graph* graph : diagram->Graphs)
+        Graphs.append(graph->sameNewOne());
+
+    // Delete all the existing graphs in the diagram.                
+    diagram->Graphs.clear();
+
+    // Now copy the graphs back to the diagram.
+    for(Graph* graph = Graphs.first(); graph != 0; graph = Graphs.next())
+        diagram->Graphs.append(graph);  // transfer the new graphs to diagram
+    
+    // Cleanup the local copy of the graphs.
+    Graphs.clear();
+    Graphs.setAutoDelete(true);
+
+    // Now read in the data.
+    Schematic* Doc = static_cast<Schematic*>(getDoc(-1)); // Get a pointer to the current document.
+    QFileInfo Info(Doc->DocName);
+    QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
+    diagram->loadGraphData(defaultDataSet);
+
+    Doc->viewport()->repaint();
+    Doc->setChanged(true, true);
+    Doc->viewport()->update();
+  }
+
+  // Return to select mode (in case SetDiagramLimits is still selected).
+  slotEscape();
+}
+
+// -----------------------------------------------------------------------
 // Is called, when "move component text" action is triggered.
 void QucsApp::slotMoveText(bool on)
 {

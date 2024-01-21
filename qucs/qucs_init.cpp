@@ -475,7 +475,7 @@ void QucsApp::initActions()
   connect(insPort, SIGNAL(toggled(bool)), SLOT(slotInsertPort(bool)));
 
   insWire = new QAction(QIcon(":bitmaps/svg/wire.svg"),	tr("Wire"), this);
-  insWire->setShortcut(tr("Ctrl+E"));
+  insWire->setShortcut(tr("Ctrl+W"));
   insWire->setStatusTip(tr("Inserts a wire"));
   insWire->setWhatsThis(tr("Wire\n\nInserts a wire"));
   insWire->setCheckable(true);
@@ -573,6 +573,19 @@ void QucsApp::initActions()
   setMarker->setWhatsThis(tr("Set Marker\n\nSets a marker on a diagram's graph"));
   setMarker->setCheckable(true);
   connect(setMarker, SIGNAL(toggled(bool)), SLOT(slotSetMarker(bool)));
+
+  setDiagramLimits = new QAction(QIcon((":/bitmaps/svg/viewmag1.svg")),	tr("Set Diagram Limits"), this);
+  setDiagramLimits->setShortcut(tr("Ctrl+E"));
+  setDiagramLimits->setStatusTip(tr("Pick the diagram limits using the mouse. Right click for default."));
+  setDiagramLimits->setWhatsThis(tr("Set Diagram Limits\n\nPick the diagram limits using the mouse. Right click for default."));
+  setDiagramLimits->setCheckable(true);
+  connect(setDiagramLimits, SIGNAL(toggled(bool)), SLOT(slotSetDiagramLimits(bool)));
+
+  resetDiagramLimits = new QAction(tr("Reset Diagram Limits"), this);
+  resetDiagramLimits->setShortcut(tr("Ctrl+Shift+E"));
+  resetDiagramLimits->setStatusTip(tr("Resets the limits for all axis to auto."));
+  resetDiagramLimits->setWhatsThis(tr("Reset Diagram Limits\n\nResets the limits for all axis to auto."));
+  connect(resetDiagramLimits, SIGNAL(triggered()), SLOT(slotResetDiagramLimits()));
 
   showMsg = new QAction(tr("Show Last Messages"), this);
   showMsg->setShortcut(Qt::Key_F5);
@@ -787,6 +800,7 @@ void QucsApp::initMenuBar()
   viewMenu->addAction(magOne);
   viewMenu->addAction(magPlus);
   viewMenu->addAction(magMinus);
+  viewMenu->addAction(setDiagramLimits);
   viewMenu->addSeparator();
   //viewMenu->setCheckable(true);
   viewMenu->addAction(viewToolBar);
@@ -939,6 +953,7 @@ void QucsApp::initToolBar()
   simulateToolbar->addAction(tune);
   simulateToolbar->addAction(dpl_sch);
   simulateToolbar->addAction(setMarker);
+  simulateToolbar->addAction(setDiagramLimits);
 }
 
 // ----------------------------------------------------------

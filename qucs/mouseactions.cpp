@@ -656,6 +656,37 @@ void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 }
 
 /**
+ * @brief MouseActions::MMoveSetLimits Sets the cursor to a magnifying glass with a wave.
+ * @param Doc
+ * @param Event
+ */
+void MouseActions::MMoveSetLimits(Schematic *Doc, QMouseEvent *Event)
+{
+    // Set the start position. TODO: Refactor to a QRectF for easy normalisation etc.
+    MAx3 = DOC_X_POS(Event->pos().x());
+    MAy3 = DOC_Y_POS(Event->pos().y());
+
+#ifdef DEBUG_DIAGRAM_COORDS
+    for (Diagram *pd = Doc->Diagrams->last(); pd != 0; pd = Doc->Diagrams->prev()){
+        if (pd->getSelected(MAx3, MAy3)) {
+
+            QPointF diagramPoint(MAx3 - pd->cx, pd->cy - MAy3);
+            QPointF diagramValue(pd->pointToValue(diagramPoint));
+            // qDebug() << "Physical: " << Event->x() << "," << Event->y() << 
+            //             " Qucs Logical: " << MAx3 << "," << MAy3 << 
+            //             " Diagram point: " << diagramPoint <<
+            //             " Diagram value: " << diagramValue;
+        // No need to keep looking.
+        return;
+        }
+    }
+    // qDebug() << "Physical: " << Event->x() << "," << Event->y() << 
+    //             " Qucs Logical: " << MAx3 << "," << MAy3 << 
+    //             " Diagram: -,-";
+#endif
+}
+
+/**
  * @brief MouseActions::MMoveMirrorX Paints rounded "mirror about y axis" mouse cursor
  * @param Doc
  * @param Event
@@ -844,6 +875,8 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
     while (true) {
         if (focusElement) {
             if (focusElement->Type == isDiagram) {
+                ComponentMenu->addAction(QucsMain->resetDiagramLimits);
+                // TODO: This should probably be in qucs_init::initActions.
                 QAction *actExport = new QAction(QObject::tr("Export as image"), QucsMain);
                 QObject::connect(actExport,
                                  SIGNAL(triggered(bool)),
@@ -1552,6 +1585,40 @@ void MouseActions::MPressMarker(Schematic *Doc, QMouseEvent *, float fX, float f
     drawn = false;
 }
 
+/**
+ * @brief MouseActions::MPressSetLimits Sets the start point of the diagram limits.
+ * @param Doc
+ * @param Event
+ */
+void MouseActions::MPressSetLimits(Schematic *Doc, QMouseEvent*, float fX, float fY)
+{
+    // fX, fY are the scaled / adjusted coordinates, equivalent to DOC_X_POS(Event->x()).
+    // MAx1, MAy1 are needed to set the start of the selection box.
+    MAx1 = int(fX);
+    MAy1 = int(fY);
+
+    // Check to see if the mouse is within a diagram using the oddly named "getSelected".
+    for (Diagram *pd = Doc->Diagrams->last(); pd != 0; pd = Doc->Diagrams->prev()){
+        if (pd->getSelected(fX, fY)) {
+            qDebug() << "In a diagram, setting up for area selection.";
+
+            // cx and cy are the adjusted points of the bottom left hand corner.
+            mouseDownPoint = QPointF(fX - pd->cx, pd->cy - fY);
+            pActiveDiagram = pd;
+
+            QucsMain->MouseMoveAction = &MouseActions::MMoveSelect;
+            QucsMain->MouseReleaseAction = &MouseActions::MReleaseSetLimits;
+            Doc->grabKeyboard(); // no keyboard inputs during move actions
+            
+            // No need to continue searching;
+            break;
+        }
+    }
+
+    Doc->viewport()->update();
+    drawn = false;
+}
+
 // -----------------------------------------------------------
 void MouseActions::MPressOnGrid(Schematic *Doc, QMouseEvent *, float fX, float fY)
 {
@@ -1768,6 +1835,77 @@ void MouseActions::MReleaseResizePainting(Schematic *Doc, QMouseEvent *Event)
     Doc->viewport()->update();
     drawn = false;
     Doc->setChanged(true, true);
+}
+
+// -----------------------------------------------------------
+void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
+{
+    if (Event->button() != Qt::LeftButton) {
+        qDebug() << "Release set limits left button";
+        return;
+    }
+
+    // TODO: Make a point version of DOC_n_POS.
+    MAx2 = DOC_X_POS(Event->pos().x());
+    MAy2 = DOC_Y_POS(Event->pos().y());
+
+    qDebug() << "Mouse released after setting limits.";
+    // Check to see if the mouse is within a diagram using the oddly named "getSelected".
+    for (Diagram *pd = Doc->Diagrams->last(); pd != 0; pd = Doc->Diagrams->prev()){
+        if (pd->getSelected(MAx2, MAy2) && pd == pActiveDiagram) {
+            qDebug() << "In a diagram, setting limits";
+            
+            mouseUpPoint = QPointF(MAx2 - pd->cx, pd->cy - MAy2);
+
+            QPointF minValue = pd->pointToValue(mouseDownPoint);
+            QPointF maxValue = pd->pointToValue(mouseUpPoint);
+            // TODO: Create a rectangle and normalise.
+
+            pd->xAxis.limit_min = minValue.x();
+            pd->xAxis.limit_max = maxValue.x();
+            pd->xAxis.step = (maxValue.x() - minValue.x()) / 2;
+            pd->xAxis.autoScale = false;
+
+            pd->yAxis.limit_min = maxValue.y();
+            pd->yAxis.limit_max = minValue.y();
+            pd->yAxis.step = (maxValue.y() - minValue.y() / 2);
+            pd->yAxis.autoScale = false;
+
+            // The diagram dialog updates the graphs by making a copy of the diagrams
+            // graphs, deleting the original graphs and adding the copy back.
+            // TODO: Refactor this away from the diagram dialog to the diagram class.
+            Q3PtrList<Graph>  Graphs;
+
+            // Copy diagram graphs (this is implemented as a function in the diagram dialog)
+            Graphs.setAutoDelete(false);
+            for (Graph *pg : pd->Graphs)
+                Graphs.append(pg->sameNewOne());
+
+            // Delete all the existing graphs in the diagram.                
+            pd->Graphs.clear();
+
+            // Now copy the graphs back to the diagram.
+            for(Graph *pg = Graphs.first(); pg != 0; pg = Graphs.next())
+                pd->Graphs.append(pg);  // transfer the new graphs to diagram
+            
+            // Cleanup the local copy of the graphs.
+            Graphs.clear();
+            Graphs.setAutoDelete(true);
+
+            // Now read in the data.
+            QFileInfo Info(Doc->DocName);
+            QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
+            pd->loadGraphData(defaultDataSet);
+        }
+    }
+    // Stay in set limits and allow user to choose a new start point.
+    QucsMain->MouseMoveAction = &MouseActions::MMoveSetLimits;
+
+    Doc->viewport()->repaint();
+    Doc->setChanged(true, true);
+    Doc->viewport()->update();
+    drawn = false;
+
 }
 
 // -----------------------------------------------------------
