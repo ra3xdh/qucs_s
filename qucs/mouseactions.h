@@ -38,7 +38,7 @@ public:
   MouseActions(QucsApp*);
   virtual ~MouseActions();
 
-  void setPainter(Schematic*);
+  static void setPainter(Schematic*);
   bool pasteElements(Schematic*);
   void editElement(Schematic*, QMouseEvent*);
   void editLabel(Schematic*, WireLabel*);
@@ -115,8 +115,8 @@ public:
   void paintElementsScheme(Schematic*);
   void rotateElements(Schematic*, int&, int&);
   void moveElements(Schematic*, int&, int&);
-  void moveElements(Q3PtrList<Element>*, int, int);
-  void endElementMoving(Schematic*, Q3PtrList<Element>*);
+  static void moveElements(Q3PtrList<Element>*, int, int);
+  void endElementMoving(Schematic*, Q3PtrList<Element>*, bool);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
 };
 

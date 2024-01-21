@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <cassert>
 #include <limits.h>
 #include <stdlib.h>
 
@@ -77,7 +79,6 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_)
     UsedX1 = UsedY1 = INT_MAX;
     UsedX2 = UsedY2 = INT_MIN;
 
-    zx1 = zy1 = zx2 = zy2 = dx = dy = 0;
 
     tmpPosX = tmpPosY = -100;
     tmpUsedX1 = tmpUsedY1 = tmpViewX1 = tmpViewY1 = -200;
@@ -765,152 +766,33 @@ void Schematic::paintSchToViewpainter(
     }
 }
 
-double Schematic::scale(const double newScale) {
-  // If current scale is minimum or maximum possible one and new scale
-  // exceeds the limits then short-circuit and do nothing.
-  // Return 1.0 as relative scale because scale stays the same.
-  if ((Scale >= maxScale && newScale >= maxScale) ||
-      (Scale <= minScale && newScale <= minScale)) return 1.0;
-
-  const double originalScale = Scale;
-
-  if (newScale > maxScale) {
-    Scale = maxScale;
-  } else if (newScale < minScale) {
-    Scale = minScale;
-  } else {
-    Scale = newScale;
-  }
-
-  // Variable ViewX* and ViewY* describe "logical" size of the schematic.
-  // Logical schematic size and canvas size are connected:
-  // <canvas size> = <schematic logical size> * <scale>.
-  auto newWidth  = static_cast<int>(std::ceil(Scale * (ViewX2 - ViewX1)));
-  auto newHeight = static_cast<int>(std::ceil(Scale * (ViewY2 - ViewY1)));
-
-  resizeContents(newWidth, newHeight);
-
-  return Scale / originalScale;
-}
-
-// - - - - -
-// After changing canvas size schematic's logical size must be updated to reflect
-// this change, otherwise there would be inconsistency.
-//
-// Param d in each of grow* method must be non-negative.
-//
-void Schematic::growUp(const int d) {
-  if (d == 0) return;
-  resizeContents(contentsWidth(), contentsHeight() + d);
-  // logical bottom stays, logical top must be moved
-  ViewY1 = ViewY2 - static_cast<int>(std::round(contentsHeight() / Scale));
-}
-
-void Schematic::growDown(const int d) {
-  if (d == 0) return;
-  resizeContents(contentsWidth(), contentsHeight() + d);
-  // logical top stays, logical bottom must be moved
-  ViewY2 = ViewY1 + static_cast<int>(std::round(contentsHeight() / Scale));
-}
-
-void Schematic::growLeft(const int d) {
-  if (d == 0) return;
-  resizeContents(contentsWidth() + d, contentsHeight());
-  // logical left stays, logical right must be moved
-  ViewX1 = ViewX2 - static_cast<int>(std::round(contentsWidth() / Scale));
-}
-
-void Schematic::growRight(const int d) {
-  if (d == 0) return;
-  resizeContents(contentsWidth() + d, contentsHeight());
-  ViewX2 = ViewX1 + static_cast<int>(std::round(contentsWidth() / Scale));
-}
-// - - - - -
-
-double Schematic::zoomAroundPoint(double offeredScaleChange, const int zpx, const int zpy) {
-  // This statement is copied from the 'zoom' method. In 'zoom' it has the comment:
-  //  "resizeContents() performs an immediate repaint. So, set widget
-  //   to hidden. This causes some flicker, but it is still nicer"
-  //
-  // Maybe it's of no use and shouldn't be there, but for now, let's go the way 'zoom' goes,
-  // at least 'zoom' has proven to work.
-  viewport()->setHidden(true);
-
-  // zpx and zpy are coordinates relative to viewport's top-left corner. Convert them
-  // to coordinates on the canvas
-  QPoint zoomingCenter(contentsX() + zpx, contentsY() + zpy);
-
-  const double actualScaleChange = scale(Scale * offeredScaleChange);
-
-  // Canvas must have changed its size. If so, then zooming center coordinates
-  // has changed too.
-  zoomingCenter.setX(static_cast<int>(std::round(zoomingCenter.x() * actualScaleChange)));
-  zoomingCenter.setY(static_cast<int>(std::round(zoomingCenter.y() * actualScaleChange)));
-
-  // visibleArea describes an area on the canvas, which should be displayed in order
-  // to keep zoomingCenter in the same place relative to viewport.
-  QRect visibleArea(
-    zoomingCenter.x() - zpx, zoomingCenter.y() - zpy,
-    viewport()->width(), viewport()->height()
-  );
-
-  if (visibleArea.left() < 0) {
-    growLeft(std::abs(visibleArea.left()));
-    visibleArea.setLeft(0);
-  }
-
-  if (visibleArea.top() < 0) {
-    growUp(std::abs(visibleArea.top()));
-    visibleArea.setTop(0);
-  }
-
-  if (auto extraWidth = visibleArea.left() + visibleArea.width() - contentsWidth(); extraWidth > 0) {
-    growRight(extraWidth);
-  }
-
-  if (auto extraHeight = visibleArea.top() + visibleArea.height() - contentsHeight(); extraHeight > 0) {
-    growDown(extraHeight);
-  }
-
-  setContentsPos(visibleArea.left(), visibleArea.top());
-
-  // This block is also copied from 'zoom' method
-  viewport()->setHidden(false);
-  viewport()->update();
-  App->view->drawn = false;
-
-  return Scale;
-}
-
-// -----------------------------------------------------------
-float Schematic::zoom(float s)
+void Schematic::zoomAroundPoint(double offeredScaleChange, QPoint coords, bool viewportRelative=true)
 {
-    Scale *= s;
-    if (Scale > 10.0)
-        Scale = 10.0f;
-    if (Scale < 0.1)
-        Scale = 0.1f;
+    const double desiredScale = Scale * offeredScaleChange;
 
-    // "resizeContents()" performs an immediate repaint. So, set widget
-    // to hidden. This causes some flicker, but it is still nicer.
-    viewport()->setHidden(true);
-    //  setHidden(true);
-    resizeContents(int(Scale * float(ViewX2 - ViewX1)), int(Scale * float(ViewY2 - ViewY1)));
-    //  setHidden(false);
-    viewport()->setHidden(false);
-
-    viewport()->update();
-    App->view->drawn = false;
-    return Scale;
+    if (viewportRelative) {
+        // Coordinates are relative to the viewport top-left corner.
+        // Let's find what model point is shown at these coordinates
+        // and show this point at the same spot after scaling.
+        renderModel(desiredScale, viewportToModel(coords), coords);
+    } else {
+        // Coordinates are absolute coordinates, i.e. relative
+        // to canvas' top-left corner, not viewport's top-left.
+        // Let's find viewport relative coordinates of the same point
+        const QPoint vpCoords = coords - QPoint{contentsX(), contentsY()};
+        renderModel(desiredScale, viewportToModel(vpCoords), vpCoords);
+    }
 }
 
 // -----------------------------------------------------------
 float Schematic::zoomBy(float s)
 {
-    zoom(s);
-    s -= 1.0;
-    scrollBy(int(s * float(contentsX() + visibleWidth() / 2)),
-             int(s * float(contentsY() + visibleHeight() / 2)));
+    // Change scale and keep the point displayed in the center
+    // of the viewport at same place after scaling.
+
+    const double newScale = Scale * s;
+    const auto vpCenter = viewportRect().center();
+    renderModel(newScale, viewportToModel(vpCenter), vpCenter);
     return Scale;
 }
 
@@ -927,93 +809,119 @@ void Schematic::showAll()
                     return;
                 }
 
-    float xScale = float(visibleWidth()) / float(UsedX2 - UsedX1 + 80);
-    float yScale = float(visibleHeight()) / float(UsedY2 - UsedY1 + 80);
-    if (xScale > yScale)
-        xScale = yScale;
-    xScale /= Scale;
+    // Reshape model plane to cut off unused parts
+    constexpr int margin = 40;
+    QRect newModelBounds = modelRect();
+    newModelBounds.setLeft(UsedX1 - margin);
+    newModelBounds.setTop(UsedY1 - margin);
+    newModelBounds.setRight(UsedX2 + margin);
+    newModelBounds.setBottom(UsedY2 + margin);
 
-    ViewX1 = UsedX1 - 40;
-    ViewY1 = UsedY1 - 40;
-    ViewX2 = UsedX2 + 40;
-    ViewY2 = UsedY2 + 40;
-    zoom(xScale);
+    // The shape of the model plane may not fit the shape of the viewport,
+    // so we looking for a scale value which enables to fit the whole model
+    // into the viewport
+    const double xScale = static_cast<double>(viewport()->width()) /
+                          static_cast<double>(newModelBounds.width());
+    const double yScale = static_cast<double>(viewport()->height()) /
+                          static_cast<double>(newModelBounds.height());
+    const double newScale = std::min(xScale, yScale);
+
+    renderModel(newScale, newModelBounds, newModelBounds.center(), viewportRect().center());
 }
 
 // ------------------------------------------------------
-void Schematic::zoomToSelection()
-{
-    int x1, x2, y1, y2 = 0;
-    sizeOfSelection(x1, y1, x2, y2);
-    if (x1 == 0 && x2 == 0 && y1 == 0 && y2 == 0) {
-        showAll();
+void Schematic::zoomToSelection() {
+    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+    if (UsedX1 == 0)
+        if (UsedX2 == 0)
+            if (UsedY1 == 0)
+                if (UsedY2 == 0) {
+                    UsedX1 = UsedY1 = INT_MAX;
+                    UsedX2 = UsedY2 = INT_MIN;
+
+                    // No elements present – nothing can be selected; quit
+                    return;
+                }
+
+    // Coordinates of top-left and bottom-right corners of the selected
+    // elements bounding rectangle
+    int selectedX1, selectedX2, selectedY1, selectedY2 = 0;
+    sizeOfSelection(selectedX1, selectedY1, selectedX2, selectedY2);
+
+    // Working with raw coordinates is clumsy, abstract them out
+    const QRect usedBoundingRect{UsedX1, UsedY1, UsedX2 - UsedX1, UsedY2 - UsedY1};
+    const QRect selectedBoundingRect{selectedX1, selectedY1, selectedX2 - selectedX1, selectedY2 - selectedY1};
+
+    if (selectedBoundingRect.width() == 0 || selectedBoundingRect.height() == 0) {
+        // If nothing is selected, then what should be shown? Probably it's best
+        // to do nothing.
         return;
     }
-    //
-    if (zx1 == contentsX() && zx2 == contentsWidth() && zy1 == contentsY()
-        && zy2 == contentsHeight() && dx == x2 - x1 && dy == y2 - y1) {
-        return;
-    }
 
-    dx = x2 - x1;
-    dy = y2 - y1;
+    // While we here, lets reshape model plane to cut off unused parts
+    constexpr int margin = 40;
+    QRect modelBounds = modelRect();
+    modelBounds.setLeft(usedBoundingRect.left() - margin);
+    modelBounds.setTop(usedBoundingRect.top() - margin);
+    modelBounds.setRight(usedBoundingRect.right() + margin);
+    modelBounds.setBottom(usedBoundingRect.bottom() + margin);
 
-    float xScale = float(visibleWidth()) / std::abs(dx + 80);
-    float yScale = float(visibleHeight()) / std::abs(dy + 80);
-    float scale = qMin(xScale, yScale) / Scale;
-    zoom(scale);
+    // Find out the scale at which selected area's longest side would fit
+    // into the viewport
+    const double xScale = static_cast<double>(viewport()->width()) /
+                          static_cast<double>(selectedBoundingRect.width());
+    const double yScale = static_cast<double>(viewport()->height()) /
+                          static_cast<double>(selectedBoundingRect.height());
+    const double newScale = std::min(xScale, yScale);
 
-    ViewX1 = x1 - 40;
-    ViewY1 = y1 - 40;
-    ViewX2 = x2 + 40;
-    ViewY2 = y2 + 40;
-    zx1 = contentsX();
-    zy1 = contentsY();
-    zx2 = contentsWidth();
-    zy2 = contentsHeight();
-
-    //releaseKeyboard();  // allow keyboard inputs again
+    renderModel(newScale, modelBounds, selectedBoundingRect.center(), viewportRect().center());
 }
 
 // ---------------------------------------------------
 void Schematic::showNoZoom()
 {
-    Scale = 1.0;
+    constexpr double noScale = 1.0;
+    const QPoint vpCenter = viewportRect().center();
+    const QPoint displayedInCenter = viewportToModel(vpCenter);
 
-    int x1 = UsedX1;
-    int y1 = UsedY1;
-    int x2 = UsedX2;
-    int y2 = UsedY2;
+    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+    if (UsedX1 == 0)
+        if (UsedX2 == 0)
+            if (UsedY1 == 0)
+                if (UsedY2 == 0) {
+                    UsedX1 = UsedY1 = INT_MAX;
+                    UsedX2 = UsedY2 = INT_MIN;
+                    // If there is no elements in schematic, then just set scale 1.0
+                    // at the place we currently in.
+                    renderModel(noScale, displayedInCenter, vpCenter);
+                    return;
+                }
 
-    if (x1 > x2) { // happens e.g. if untitled without changes
-        x1 = 0;
-        x2 = 800;
+    // Working with raw coordinates is clumsy. Wrap them in useful abstraction.
+    const QRect usedBoundingRect{UsedX1, UsedY1, UsedX2 - UsedX1, UsedY2 - UsedY1};
+
+    // Trim unused model space
+    constexpr int margin = 40;
+    QRect newModelBounds = modelRect();
+    newModelBounds.setLeft(usedBoundingRect.left() - margin);
+    newModelBounds.setTop(usedBoundingRect.top() - margin);
+    newModelBounds.setRight(usedBoundingRect.right() + margin);
+    newModelBounds.setBottom(usedBoundingRect.bottom() + margin);
+
+    // If a part of "used" area is currently displayed in the center of the
+    // viewport, then keep it in the same place after scaling. Otherwise focus
+    // on the center of the used area after scale change.
+    if (usedBoundingRect.contains(displayedInCenter)) {
+        renderModel(noScale, newModelBounds, displayedInCenter, vpCenter);
+    } else {
+        renderModel(noScale, newModelBounds, usedBoundingRect.center(), vpCenter);
     }
-    if (y1 > y2) {
-        y1 = 0;
-        y2 = 800;
-    }
-    if (x2 == 0)
-        if (y2 == 0)
-            if (x1 == 0)
-                if (y1 == 0)
-                    x2 = y2 = 800;
+ }
 
-    ViewX1 = x1 - 40;
-    ViewY1 = y1 - 40;
-    ViewX2 = x2 + 40;
-    ViewY2 = y2 + 40;
-    resizeContents(x2 - x1 + 80, y2 - y1 + 80);
-    viewport()->update();
-    App->view->drawn = false;
-}
-
-// -----------------------------------------------------------
-// Enlarge the viewport area if the coordinates x1-x2/y1-y2 exceed the
-// visible area.
-void Schematic::enlargeView(int x1, int y1, int x2, int y2)
-{
-    int dx = 0, dy = 0;
+ // If the model plane is smaller than rectangle described by points (x1, y1)
+ // and (x2, y2) than extend the model plane size.
+ void Schematic::enlargeView(int x1, int y1, int x2, int y2) {
+    // Set 'Used' area size to the of the given rectangle
     if (x1 < UsedX1)
         UsedX1 = x1;
     if (y1 < UsedY1)
@@ -1023,22 +931,22 @@ void Schematic::enlargeView(int x1, int y1, int x2, int y2)
     if (y2 > UsedY2)
         UsedY2 = y2;
 
-    if (x1 < ViewX1) {
-        dx = int(Scale * float(ViewX1 - x1 + 40));
-        ViewX1 = x1 - 40;
-    }
-    if (y1 < ViewY1) {
-        dy = int(Scale * float(ViewY1 - y1 + 40));
-        ViewY1 = y1 - 40;
-    }
+    // Construct the desired model plane
+    constexpr int margin = 40;
+    QRect newModel = modelRect();
+    if (x1 < ViewX1)
+        newModel.setLeft(x1 - margin);
+    if (y1 < ViewY1)
+        newModel.setTop(y1 - margin);
     if (x2 > ViewX2)
-        ViewX2 = x2 + 40;
+        newModel.setRight(x2 + margin);
     if (y2 > ViewY2)
-        ViewY2 = y2 + 40;
+        newModel.setBottom(y2 + margin);
 
-    resizeContents(int(Scale * float(ViewX2 - ViewX1)), int(Scale * float(ViewY2 - ViewY1)));
-    scrollBy(dx, dy);
-}
+    const auto vpCenter = viewportRect().center();
+    const auto displayedInCenter = viewportToModel(vpCenter);
+    renderModel(Scale, newModel, displayedInCenter, vpCenter);
+ }
 
 // ---------------------------------------------------
 // Sets an arbitrary coordinate onto the next grid coordinate.
@@ -1320,9 +1228,9 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
         if (!pn->isSelected) {
             continue;
         }
-        isAnySelected = true;
         pl = pn->Label;
         if (pl) { // check position of node label
+            isAnySelected = true;
             pl->getLabelBounding(x1, y1, x2, y2);
             if (x1 < xmin)
                 xmin = x1;
@@ -1697,17 +1605,7 @@ bool Schematic::load()
     // have to call this to avoid crash at sizeOfAll
     becomeCurrent(false);
 
-    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
-    if (ViewX1 > UsedX1)
-        ViewX1 = UsedX1;
-    if (ViewY1 > UsedY1)
-        ViewY1 = UsedY1;
-    if (ViewX2 < UsedX2)
-        ViewX2 = UsedX2;
-    if (ViewY2 < UsedY2)
-        ViewY2 = UsedY2;
-    zoom(1.0f);
-    setContentsPos(tmpViewX1, tmpViewY1);
+    showAll();
     tmpViewX1 = tmpViewY1 = -200; // was used as temporary cache
     return true;
 }
@@ -2273,11 +2171,9 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
         if (Event->angleDelta().x() != 0)
             delta = Event->angleDelta().x() / 2;
         if (delta > 0) {
-            if (scrollLeft(delta))
-                scrollBy(-delta, 0);
+            scrollLeft(delta);
         } else {
-            if (scrollRight(delta))
-                scrollBy(-delta, 0);
+            scrollRight(-delta);
         }
         viewport()->update(); // because QScrollView thinks nothing has changed
         App->view->drawn = false;
@@ -2289,20 +2185,23 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
         int delta = Event->angleDelta().y();
         float Scaling = pow(1.1, delta / 60.0);
 #if QT_VERSION >= 0x050f00
-      zoomAroundPoint(Scaling, Event->position().x(), Event->position().y());
+        const QPoint pointer{
+            Event->position().x(),
+            Event->position().y()};
 #else
-      zoomAroundPoint(Scaling, Event->pos().x(), Event->pos().y());
+        const QPoint pointer{
+            Event->pos().x(),
+            Event->pos().y()};
 #endif
+        zoomAroundPoint(Scaling, pointer);
     }
     // ...................................................................
     else { // scroll vertically !
         int delta = Event->angleDelta().y() / 2;
         if (delta > 0) {
-            if (scrollUp(delta))
-                scrollBy(0, -delta);
+            scrollUp(delta);
         } else {
-            if (scrollDown(delta))
-                scrollBy(0, -delta);
+            scrollDown(-delta);
         }
         viewport()->update(); // because QScrollView thinks nothing has changed
         App->view->drawn = false;
@@ -2310,110 +2209,133 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
     Event->accept(); // QScrollView must not handle this event
 }
 
-// -----------------------------------------------------------
 // Scrolls the visible area upwards and enlarges or reduces the view
 // area accordingly.
-bool Schematic::scrollUp(int step)
+void Schematic::scrollUp(int step)
 {
-    int diff;
+    assert(step >= 0);
 
-    diff = contentsY() - step;
-    if (diff < 0) { // scroll outside the active area ?  (upwards)
-        resizeContents(contentsWidth(), contentsHeight() - diff);
-        ViewY1 += diff;
-        scrollBy(0, diff);
-        return false;
+    // Y-axis is directed "from top to bottom": the higher a point is
+    // located, the smaller its y-coordinate and vice versa. Keep this in mind
+    // while reading the code below.
+
+    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const QPoint viewportTopLeft = viewportRect().topLeft();
+
+    // A point currently displayed in top left corner
+    QPoint mtl = viewportToModel(viewportTopLeft);
+    // A point that should be displayed in top left corner after scrolling
+    mtl.setY(mtl.y() - stepInModel);
+
+    QRect modelBounds = modelRect();
+
+    // If the "should-be-displayed" point is located higher than model upper bound,
+    // then extend the model
+    modelBounds.setTop(std::min(mtl.y(), modelBounds.top()));
+
+    // Cut off a bit of unused model space from its bottom side.
+    if (const auto b = modelBounds.bottom() - stepInModel; b > UsedY2) {
+        modelBounds.setBottom(b);
     }
 
-    diff = ViewY2 - UsedY2 - 20; // keep border of 20
-    if (diff > 0) {              // make active area smaller ?
-        if (step < diff)
-            diff = step;
-        resizeContents(contentsWidth(), contentsHeight() - diff);
-        ViewY2 -= diff;
-    }
-
-    return true;
+    renderModel(Scale, modelBounds, mtl, viewportTopLeft);
 }
 
-// -----------------------------------------------------------
 // Scrolls the visible area downwards and enlarges or reduces the view
-// area accordingly. ("step" must be negative!)
-bool Schematic::scrollDown(int step)
+// area accordingly.
+void Schematic::scrollDown(int step)
 {
-    int diff;
+    assert(step >= 0);
 
-    diff = contentsHeight() - contentsY() - visibleHeight() + step;
-    if (diff < 0) { // scroll outside the active area ?  (downwards)
-        resizeContents(contentsWidth(), contentsHeight() - diff);
-        ViewY2 -= diff;
-        scrollBy(0, -step);
-        return false;
+    // Y-axis is directed "from top to bottom": the lower a point is
+    // located, the bigger its y-coordinate and vice versa. Keep this in mind
+    // while reading the code below.
+
+    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const QPoint viewportBottomLeft = viewportRect().bottomLeft();
+
+    // A point currently displayed in bottom left corner
+    QPoint mbl = viewportToModel(viewportBottomLeft);
+    // A point that should be displayed in bottom left corner after scrolling
+    mbl.setY(mbl.y() + stepInModel);
+
+    QRect modelBounds = modelRect();
+
+    // If the "should-be-displayed" point is lower than model bottom bound,
+    // then extend the model
+    modelBounds.setBottom(std::max(mbl.y(), modelBounds.bottom()));
+
+    // Cut off a bit of unused model space from its top side.
+    if (const auto t = modelBounds.top() + stepInModel; t < UsedY1) {
+        modelBounds.setTop(t);
     }
 
-    diff = ViewY1 - UsedY1 + 20; // keep border of 20
-    if (diff < 0) {              // make active area smaller ?
-        if (step > diff)
-            diff = step;
-        resizeContents(contentsWidth(), contentsHeight() + diff);
-        ViewY1 -= diff;
-        return false;
-    }
-
-    return true;
+    // Render model in its new size and position point in the top left corner of viewport
+    renderModel(Scale, modelBounds, mbl, viewportBottomLeft);
 }
 
-// -----------------------------------------------------------
 // Scrolls the visible area to the left and enlarges or reduces the view
 // area accordingly.
-bool Schematic::scrollLeft(int step)
+void Schematic::scrollLeft(int step)
 {
-    int diff;
+    assert(step >= 0);
 
-    diff = contentsX() - step;
-    if (diff < 0) { // scroll outside the active area ?  (to the left)
-        resizeContents(contentsWidth() - diff, contentsHeight());
-        ViewX1 += diff;
-        scrollBy(diff, 0);
-        return false;
+    // X-axis is directed "from left to right": the more to the left a point is
+    // located, the smaller its x-coordinate and vice versa. Keep this in mind
+    // while reading the code below.
+
+    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const QPoint viewportTopLeft = viewportRect().topLeft();
+
+    // A point currently displayed in top left corner
+    QPoint mtl = viewportToModel(viewportTopLeft);
+    // A point that should be displayed in top left corner after scrolling
+    mtl.setX(mtl.x() - stepInModel);
+
+    QRect modelBounds = modelRect();
+
+    // If the "should-be-displayed" point is to the left of model left bound,
+    // then extend the model
+    modelBounds.setLeft(std::min(mtl.x(), modelBounds.left()));
+
+    // Cut off a bit of unused model space from its right side.
+    if (const auto r = modelBounds.right() - stepInModel; r > UsedX2) {
+        modelBounds.setRight(r);
     }
 
-    diff = ViewX2 - UsedX2 - 20; // keep border of 20
-    if (diff > 0) {              // make active area smaller ?
-        if (step < diff)
-            diff = step;
-        resizeContents(contentsWidth() - diff, contentsHeight());
-        ViewX2 -= diff;
-    }
-
-    return true;
+    renderModel(Scale, modelBounds, mtl, viewportTopLeft);
 }
 
-// -----------------------------------------------------------
 // Scrolls the visible area to the right and enlarges or reduces the
-// view area accordingly. ("step" must be negative!)
-bool Schematic::scrollRight(int step)
+// view area accordingly.
+void Schematic::scrollRight(int step)
 {
-    int diff;
+    assert(step >= 0);
 
-    diff = contentsWidth() - contentsX() - visibleWidth() + step;
-    if (diff < 0) { // scroll outside the active area ?  (to the right)
-        resizeContents(contentsWidth() - diff, contentsHeight());
-        ViewX2 -= diff;
-        scrollBy(-step, 0);
-        return false;
+    // X-axis is directed "from left to right": the more to the right a point is
+    // located, the bigger its x-coordinate and vice versa. Keep this in mind
+    // while reading the code below.
+
+    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const QPoint viewportTopRight = viewportRect().topRight();
+
+    // A point currently displayed in top right corner
+    QPoint mtr = viewportToModel(viewportTopRight);
+    // A point that should be displayed in top right corner after scrolling
+    mtr.setX(mtr.x() + stepInModel);
+
+    QRect modelBounds = modelRect();
+
+    // If the "should-be-displayed" point is to the right of the model right bound,
+    // then extend the model
+    modelBounds.setRight(std::max(mtr.x(), modelBounds.right()));
+
+    // Cut off a bit of unused model space from its left side.
+    if (const auto l = modelBounds.left() + stepInModel; l < UsedX1) {
+        modelBounds.setLeft(l);
     }
 
-    diff = ViewX1 - UsedX1 + 20; // keep border of 20
-    if (diff < 0) {              // make active area smaller ?
-        if (step > diff)
-            diff = step;
-        resizeContents(contentsWidth() + diff, contentsHeight());
-        ViewX1 -= diff;
-        return false;
-    }
-
-    return true;
+    renderModel(Scale, modelBounds, mtr, viewportTopRight);
 }
 
 // -----------------------------------------------------------
@@ -2422,7 +2344,6 @@ void Schematic::slotScrollUp()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollUp(verticalScrollBar()->singleStep());
-    viewport()->update(); // because QScrollView thinks nothing has changed
     App->view->drawn = false;
 }
 
@@ -2431,8 +2352,7 @@ void Schematic::slotScrollUp()
 void Schematic::slotScrollDown()
 {
     App->editText->setHidden(true); // disable edit of component property
-    scrollDown(-verticalScrollBar()->singleStep());
-    viewport()->update(); // because QScrollView thinks nothing has changed
+    scrollDown(verticalScrollBar()->singleStep());
     App->view->drawn = false;
 }
 
@@ -2442,7 +2362,6 @@ void Schematic::slotScrollLeft()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollLeft(horizontalScrollBar()->singleStep());
-    viewport()->update(); // because QScrollView thinks nothing has changed
     App->view->drawn = false;
 }
 
@@ -2451,8 +2370,7 @@ void Schematic::slotScrollLeft()
 void Schematic::slotScrollRight()
 {
     App->editText->setHidden(true); // disable edit of component property
-    scrollRight(-horizontalScrollBar()->singleStep());
-    viewport()->update(); // because QScrollView thinks nothing has changed
+    scrollRight(horizontalScrollBar()->singleStep());
     App->view->drawn = false;
 }
 
@@ -2629,4 +2547,191 @@ bool Schematic::checkDplAndDatNames()
         return false;
     }
     return false;
+}
+
+QRect Schematic::modelRect()
+{
+    return QRect{ViewX1, ViewY1, ViewX2 - ViewX1, ViewY2 - ViewY1};
+}
+
+QRect Schematic::viewportRect() {
+    return QRect{0, 0, viewport()->width(), viewport()->height()};
+}
+
+QPoint Schematic::viewportToModel(QPoint viewportCoordinates)
+{
+    viewportCoordinates.setX(contentsX() + viewportCoordinates.x());
+    viewportCoordinates.setY(contentsY() + viewportCoordinates.y());
+    return viewToModel(viewportCoordinates);
+}
+
+QPoint Schematic::viewToModel(const QPoint& coordinates)
+{
+    // Sizes in the model and view planes are interconnected and obey the rule:
+    //     <size in model plane> * <Scale> = <size in view plane>
+    //
+    // View plane is a rectangle with (0, 0) at its top-left corner. Model plane
+    // is rectangular area of abstract infinite plane, so model plane's top-left
+    // corner may have any coordinates.
+    //
+    // To transform coordinates of a point on the view plane to coordinates
+    // of corresponding point on model plane:
+    // 1. Adjust "view" coordinates so that they become having the same scale
+    //    the model plane has
+    // 2. Adjust resulting coordinates so they become absolute coordinates
+    //    in model plane
+
+    // QPoint overrides operator /. It divides both coordinates on given value
+    QPoint modelCoords = coordinates / Scale;
+
+    modelCoords.setX(ViewX1 + modelCoords.x());
+    modelCoords.setY(ViewY1 + modelCoords.y());
+    return modelCoords;
+}
+
+QPoint Schematic::modelToView(const QPoint& coordinates)
+{
+    // Sizes in the model and view planes are interconnected and obey the rule:
+    //     <size in model plane> * <Scale> = <size in view plane>
+    //
+    // View plane is a rectangle with (0, 0) at its top-left corner. Model plane
+    // is rectangular area of abstract infinite plane, so model plane's top-left
+    // corner may have any coordinates.
+    //
+    // To transform coordinates of a point on the model plane to coordinates
+    // of corresponding point on the view plane:
+    // 1. Adjust coordinates so that they become relative to model planes'
+    //    top-left corner
+    // 2. Adjust resulting coordinates so thay they become having the same scale
+    //    as view plane
+
+    QPoint viewCoords{coordinates.x() - ViewX1, coordinates.y() - ViewY1};
+    viewCoords *= Scale;
+    return viewCoords;
+}
+
+double Schematic::clipScale(double offeredScale)
+{
+    if (offeredScale > maxScale) {
+        return maxScale;
+    } else if (offeredScale < minScale) {
+        return minScale;
+    } else {
+       return offeredScale;
+    }
+}
+
+bool Schematic::shouldRender(const double& newScale, const QRect& newModelBounds, const QPoint& toBeDisplayed, const QPoint& viewportCoords) {
+    const QRect currentModelBounds = modelRect();
+    // This point currently displayed at "viewportCoords" of the viewport
+    const QPoint currenlyDisplayed = viewportToModel(viewportCoords);
+    return Scale != newScale || toBeDisplayed != currenlyDisplayed || currentModelBounds != newModelBounds;
+}
+
+double Schematic::renderModel(const double offeredScale, QRect newModel, const QPoint modelPoint, const QPoint viewportPoint)
+{
+    // This is the core method to render the schematic. It employs
+    // an approach similar to MVC (model-view-controller).
+    //
+    // There is a "model plane" – a rectangle located somewhere in some
+    // abstract cartesian coordinate system. This coordinate system has
+    // its X-axis directed left-to-right and Y-axis top-to-bottom. Every element
+    // of the schematic "lives" in this coordinate system inside the model
+    // plane. The model plane is described by class properties ViewX1, ViewY1,
+    // ViewX2, ViewY1.
+    //
+    // To see the schematic we need to "render" the model plane. To do so the
+    // "view plane" is used. Technically it is the Q3ScrollView's "contents",
+    // but in the abstraction being described its just another plane. In
+    // contrast to the model plane, its top-left corner is always (0,0), but the
+    // axes are directed the same way: left-to-right and top-to-bottom.
+    //
+    // The "scale" is the ratio between the view plane and model plane sizes.
+    // When being rendered, the model is like being "projected" on the view
+    // plane. Think of the film projector: the film ("model") could be displayed
+    // on screens ("views") of different sizes by adjusting the lense ("scale").
+    //
+    // Finally there is a "viewport". Technically its the very Q3ScrollView
+    // widget, but in the abstraction being described its the part of the
+    // view which is currently observed by the user. Sometimes the view is
+    // very large (when we "zoom in") and only the part of it could be observed.
+    //
+    // Summarizing everything said:
+    // 1. The model plane is drawn on the view plane at some scale and then
+    // a part of the view plane is observed by the user.
+    // 2. <size in model plane> * <Scale> = <size in view plane>
+
+    // DO NOT alter model bounds or scale and DO NOT call resizeContens() outside
+    // of this method. It will break the state and lead to hard-to-find bugs.
+    // Pass the desired model bounds or scale as the argument to this method.
+
+    assert(modelPoint.x() >= newModel.left() && modelPoint.x() <= newModel.right());
+    assert(modelPoint.y() >= newModel.top() && modelPoint.y() <= newModel.bottom());
+    assert(viewportPoint.x() >= 0 && viewportPoint.x() < viewport()->width());
+    assert(viewportPoint.y() >= 0 && viewportPoint.y() < viewport()->height());
+
+    // Maybe there is no need to do anything
+    const double newScale = clipScale(offeredScale);
+    if (!shouldRender(newScale, newModel, modelPoint, viewportPoint)) {
+       return Scale;
+    }
+
+    // The part below is quite tricky: while working at the model plane scale,
+    // we construct a "viewport" rectangle and position it so that it contains the
+    // area of the model, which should be displayed in the real viewport at the
+    // end. We do this because the "should-be-displayed" area might go beyond
+    // the model plane bounds, in which case the model plane size would have to
+    // be adjusted to include this area.
+    //
+    // Remember that <size in model plane> * <Scale> = <size in view plane>
+
+    QSize viewportSizeOnModelPlane = viewportRect().size() / newScale;
+
+    QPoint vpTopLeftOnModelPlane{
+        modelPoint.x() - static_cast<int>(viewportPoint.x() / newScale),
+        modelPoint.y() - static_cast<int>(viewportPoint.y() / newScale)
+    };
+
+    QRect viewportOnModelPlane{vpTopLeftOnModelPlane, viewportSizeOnModelPlane};
+    newModel |= viewportOnModelPlane;
+
+    // At this point everything is ready for rendering and positioning
+
+    // This statement is copied from the legacy implmentation where it had the
+    // comment:
+    //  "resizeContents() performs an immediate repaint. So, set widget
+    //   to hidden. This causes some flicker, but it is still nicer"
+    viewport()->setHidden(true);
+
+    // Set new model size
+    ViewX1 = newModel.left();
+    ViewY1 = newModel.top();
+    ViewX2 = newModel.left() + newModel.width();
+    ViewY2 = newModel.top() + newModel.height();
+
+    Scale = newScale;
+    resizeContents(static_cast<int>(std::round(newModel.width() * Scale)),
+                   static_cast<int>(std::round(newModel.height() * Scale)));
+
+    auto contentTopLeft = modelToView(vpTopLeftOnModelPlane);
+    setContentsPos(contentTopLeft.x(), contentTopLeft.y());
+
+    // This block is also copied from legacy implementation
+    viewport()->setHidden(false);
+    viewport()->update();
+    App->view->drawn = false;
+
+    return Scale;
+}
+
+double Schematic::renderModel(const double offeredScale)
+{
+    const auto currentModelBounds = modelRect();
+    return renderModel(offeredScale, currentModelBounds,
+                       currentModelBounds.center(), viewportRect().center());
+}
+
+double Schematic::renderModel(const double offeredScale,const QPoint modelPoint, const QPoint viewportPoint)
+{
+    return renderModel(offeredScale, modelRect(), modelPoint, viewportPoint);
 }

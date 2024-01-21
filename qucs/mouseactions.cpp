@@ -66,7 +66,7 @@ QAction *formerAction; // remember action before drag n'drop etc.
 MouseActions::MouseActions(QucsApp *App_)
 {
     App = App_;          // pointer to main app
-    selElem = 0;         // no component/diagram is selected
+    selElem = nullptr;         // no component/diagram is selected
     isMoveEqual = false; // mouse cursor move x and y the same way
     focusElement = 0;    //element being interacted with mouse
 
@@ -190,57 +190,63 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
 
 // -----------------------------------------------------------
 // Reinserts all elements (moved by the user) back into the schematic.
-void MouseActions::endElementMoving(Schematic *Doc, Q3PtrList<Element> *movElements)
-{
-    Element *pe;
-    for (pe = movElements->first(); pe != 0; pe = movElements->next()) {
-        //    pe->isSelected = false;  // deselect first (maybe afterwards pe == NULL)
-        switch (pe->Type) { // FIXME: use casts.
-        case isWire:
-            if (pe->x1 == pe->x2)
-                if (pe->y1 == pe->y2) {
-                    // Delete wires with zero length, but preserve label.
-                    if (((Wire *) pe)->Label) {
-                        Doc->insertNodeLabel((WireLabel *) ((Wire *) pe)->Label);
-                        ((Wire *) pe)->Label = 0;
-                    }
-                    delete (Wire *) pe;
-                    break;
-                }
-
-            Doc->insertWire((Wire *) pe);
-            break;
-        case isDiagram:
-            Doc->Diagrams->append((Diagram *) pe);
-            break;
-        case isPainting:
-            Doc->Paintings->append((Painting *) pe);
-            break;
-        case isComponent:
-        case isAnalogComponent:
-        case isDigitalComponent:
-            Doc->insertRawComponent((Component *) pe, false);
-            break;
-        case isMovingLabel:
-        case isHMovingLabel:
-        case isVMovingLabel:
-            Doc->insertNodeLabel((WireLabel *) pe);
-            break;
-        case isMarker:
-            assert(dynamic_cast<Marker *>(pe));
-            break;
+void MouseActions::endElementMoving(Schematic *Doc,
+                                    Q3PtrList<Element> *movElements,
+                                    bool finalize) {
+  Element *pe;
+  for (pe = movElements->first(); pe != nullptr; pe = movElements->next()) {
+    //    pe->isSelected = false;  // deselect first (maybe afterwards pe ==
+    //    NULL)
+    switch (pe->Type) { // FIXME: use casts.
+    case isWire:
+      if (pe->x1 == pe->x2)
+        if (pe->y1 == pe->y2) {
+          // Delete wires with zero length, but preserve label.
+          if (((Wire *)pe)->Label) {
+            Doc->insertNodeLabel((WireLabel *)((Wire *)pe)->Label);
+            ((Wire *)pe)->Label = nullptr;
+          }
+          delete (Wire *)pe;
+          break;
         }
-    }
 
-    movElements->clear();
+      Doc->insertWire((Wire *)pe);
+      break;
+    case isDiagram:
+      Doc->Diagrams->append((Diagram *)pe);
+      break;
+    case isPainting:
+      Doc->Paintings->append((Painting *)pe);
+      break;
+    case isComponent:
+    case isAnalogComponent:
+    case isDigitalComponent:
+      Doc->insertRawComponent((Component *)pe, false);
+      break;
+    case isMovingLabel:
+    case isHMovingLabel:
+    case isVMovingLabel:
+      Doc->insertNodeLabel((WireLabel *)pe);
+      break;
+    case isMarker:
+      assert(dynamic_cast<Marker *>(pe));
+      break;
+    }
+  }
+
+  movElements->clear();
+
+  if (finalize) {
     if ((MAx3 != 0) || (MAy3 != 0)) // moved or put at the same place ?
-        Doc->setChanged(true, true);
+      Doc->setChanged(true, true);
 
     // enlarge viewarea if components lie outside the view
     Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
     Doc->enlargeView(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
-    Doc->viewport()->update();
-    drawn = false;
+  }
+
+  Doc->viewport()->update();
+  drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -302,7 +308,7 @@ void MouseActions::moveElements(Q3PtrList<Element> *movElements, int x, int y)
 // ***********************************************************************
 void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 {
-    if (selElem == 0)
+    if (selElem == nullptr)
         return;
 
     //  qDebug() << "MMoveElement got selElem";
@@ -540,15 +546,6 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
     MAx2 = DOC_X_POS(Event->pos().x());
     MAy2 = DOC_Y_POS(Event->pos().y());
 
-    Element *pe;
-    if (drawn) // erase old scheme
-        for (pe = movingElements.first(); pe != 0; pe = movingElements.next())
-            pe->paintScheme(Doc);
-    //      if(pe->Type == isWire)  if(((Wire*)pe)->Label)
-    //        if(!((Wire*)pe)->Label->isSelected)
-    //          ((Wire*)pe)->Label->paintScheme(&painter);
-
-    drawn = true;
     if ((Event->modifiers().testFlag(Qt::ControlModifier)) == 0)
         Doc->setOnGrid(MAx2, MAy2); // use grid only if CTRL key not pressed
     MAx1 = MAx2 - MAx1;
@@ -557,13 +554,12 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
     MAy3 += MAy1; // keep track of the complete movement
 
     moveElements(&movingElements, MAx1, MAy1); // moves elements by MAx1/MAy1
+    endElementMoving(Doc, &movingElements, false);
+    Doc->viewport()->repaint();
 
-    // paint afterwards to avoid conflict between wire and label painting
-    for (pe = movingElements.first(); pe != 0; pe = movingElements.next())
-        pe->paintScheme(Doc);
-    //    if(pe->Type == isWire)  if(((Wire*)pe)->Label)
-    //      if(!((Wire*)pe)->Label->isSelected)
-    //        ((Wire*)pe)->Label->paintScheme(&painter);
+    drawn = true;
+
+    Doc->copySelectedElements(&movingElements);
 
     MAx1 = MAx2;
     MAy1 = MAy2;
@@ -1692,10 +1688,10 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent *)
 {
     // Allow all mouse buttons, because for others than the left one,
     // a menu has already created.
-    endElementMoving(Doc, &movingElements);
+    endElementMoving(Doc, &movingElements, true);
     Doc->releaseKeyboard(); // allow keyboard inputs again
 
-    QucsMain->MouseMoveAction = 0;
+    QucsMain->MouseMoveAction = nullptr;
     QucsMain->MousePressAction = &MouseActions::MPressSelect;
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
     QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
@@ -1946,31 +1942,11 @@ void MouseActions::MReleaseZoomIn(Schematic *Doc, QMouseEvent *Event)
 
     MAx1 = Event->pos().x();
     MAy1 = Event->pos().y();
-    float DX = float(MAx2);
-    float DY = float(MAy2);
 
-    float initialScale = Doc->Scale;
-    float scale = 1;
-    float xShift = 0;
-    float yShift = 0;
-    if ((Doc->Scale * DX) < 6.0) {
-        // a simple click zooms by constant factor
-        scale = Doc->zoom(1.5) / initialScale;
 
-        xShift = scale * Event->pos().x();
-        yShift = scale * Event->pos().y();
-    } else {
-        float xScale = float(Doc->visibleWidth()) / std::abs(DX);
-        float yScale = float(Doc->visibleHeight()) / std::abs(DY);
-        scale = qMin(xScale, yScale) / initialScale;
-        scale = Doc->zoom(scale) / initialScale;
-
-        xShift = scale * (MAx1 - 0.5 * DX);
-        yShift = scale * (MAy1 - 0.5 * DY);
-    }
-    xShift -= (0.5 * Doc->visibleWidth() + Doc->contentsX());
-    yShift -= (0.5 * Doc->visibleHeight() + Doc->contentsY());
-    Doc->scrollBy(xShift, yShift);
+    const QPoint click{Event->pos().x() , Event->pos().y()};
+    // "false" = "coordinates are not relative to viewport"
+    Doc->zoomAroundPoint(1.5, click, false);
 
     QucsMain->MouseMoveAction = &MouseActions::MMoveZoomIn;
     QucsMain->MouseReleaseAction = 0;
