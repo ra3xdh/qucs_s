@@ -38,11 +38,21 @@ SpiceCustomSim::SpiceCustomSim()
 
   // The index of the first 4 properties must not changed. Used in recreate().
   Props.append(new Property("SpiceCode", "\n"
-                            "AC LIN 2000 100 10MEG\n"
-                            "let K=V(1)/V(2)\n", true,
+                            "AC DEC 100 1K 10MEG\n"
+                            "let K=V(out)/V(in)\n\n"
+                            "* Extra output\n"
+                            "* A custom prefix could be placed between # #\n"
+                            "* It will be prepended to all dataset variables\n"
+                            "write custom#ac1#.plot K\n\n"
+                            "* Scalars can be printed\n"
+                            "* They will be available in the dataset\n"
+                            "let Vout_max=vecmax(V(out))\n"
+                            "let KdB_max=db(vecmax(K))\n"
+                            "print Vout_max KdB_max > custom#ac1#.print\n",
+                            true,
                                          "Insert spice code here"));
-  Props.append(new Property("Vars","V(1);V(2)",false,"Vars to plot"));
-  Props.append(new Property("Outputs","Custom_ac.txt;Custom_tran.txt",false,"Extra outputs to parse"));
+  Props.append(new Property("Vars","V(out);V(in)",false,"Vars to plot"));
+  Props.append(new Property("Outputs","custom#ac1#.plot;custom#ac1#.print",false,"Extra outputs to parse"));
 
 }
 

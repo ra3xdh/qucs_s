@@ -17,6 +17,7 @@
 
 
 
+#include "main.h"
 #include "customsimdialog.h"
 #include "node.h"
 
@@ -29,24 +30,39 @@
  * \brief CustomSimDialog::CustomSimDialog class constructor
  * \param pc[in] Component that need to be edit.
  * \param sch[in] Schematic on which component presents.
- * \param parent[in] Parent object.
  */
-CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *parent) :
-    QDialog(parent)
+CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
+    QDialog(sch)
 {
     comp = pc;
     Sch = sch;
 
+    resize(640, 480);
+
     setWindowTitle(tr("Edit SPICE code"));
     QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
+
     edtCode = new QTextEdit(this);
+    QFont font("Monospace");
+    font.setPointSize(QucsSettings.font.pointSize());
+    font.setStyleHint(QFont::Courier);
+    font.setFixedPitch(true);
+    edtCode->document()->setDefaultFont(font);
+    edtCode->setWordWrapMode(QTextOption::NoWrap);
     edtCode->insertPlainText(comp->Props.at(0)->Value);
+    connect(edtCode, SIGNAL(textChanged()), this, SLOT(slotChanged()));
+
+    checkCode = new QCheckBox(tr("display in schematic"), this);
+    checkCode->setChecked(comp->Props.at(0)->display);
+    connect(checkCode, SIGNAL(stateChanged(int)), this, SLOT(slotChanged()));
 
     QLabel* lblVars = new QLabel(tr("Variables to plot (semicolon separated)"));
     edtVars = new QLineEdit(comp->Props.at(1)->Value);
+    connect(edtVars, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
 
     QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw-SPICE or XYCE-STD or scalars print format)"));
     edtOutputs = new QLineEdit(comp->Props.at(2)->Value);
+    connect(edtOutputs, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
 
     btnApply = new QPushButton(tr("Apply"));
     connect(btnApply,SIGNAL(clicked()),this,SLOT(slotApply()));
@@ -66,6 +82,7 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     vl1->addWidget(lblName);
     QGroupBox *gpb1 = new QGroupBox(tr("SPICE code editor"));
     vl2->addWidget(edtCode);
+    vl2->addWidget(checkCode);
     gpb1->setLayout(vl2);
     vl1->addWidget(gpb1);
     vl1->addWidget(lblVars);
@@ -98,13 +115,31 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
 }
 
 /*!
+ * \brief CustomSimDialog::slotChanged Set isChanged state.
+ */
+void CustomSimDialog::slotChanged()
+{
+    isChanged = true;
+}
+/*!
  * \brief CustomSimDialog::slotApply Apply changes of component properties.
  */
 void CustomSimDialog::slotApply()
 {
-    comp->Props.at(0)->Value = edtCode->document()->toPlainText();
-    comp->Props.at(1)->Value = edtVars->text();
-    comp->Props.at(2)->Value = edtOutputs->text();
+    if ( isChanged ) {
+        edtVars->setText(edtVars->text().remove(' '));
+        edtOutputs->setText(edtOutputs->text().remove(' '));
+
+        comp->Props.at(0)->Value = edtCode->document()->toPlainText();
+        comp->Props.at(0)->display = checkCode->isChecked();
+        comp->Props.at(1)->Value = edtVars->text();
+        comp->Props.at(2)->Value = edtOutputs->text();
+
+        Sch->recreateComponent(comp);
+        Sch->viewport()->repaint();
+
+        isChanged = false;
+    }
 }
 
 /*!
@@ -161,7 +196,7 @@ void CustomSimDialog::slotFindVars()
 
 
     QStringList strings = edtCode->toPlainText().split('\n');
-    QRegularExpression let_pattern("^\\s*let\\s+[A-Za-z]+\\w*\\s*\\=\\s*[A-Za-z]+.*$");
+    QRegularExpression let_pattern("^\\s*let\\s+[A-Za-z]+\\w*\\s*=.+");
 
     for (const QString& line : strings) {
         if (let_pattern.match(line).hasMatch()) {
@@ -178,6 +213,7 @@ void CustomSimDialog::slotFindVars()
 void CustomSimDialog::slotFindOutputs()
 {
     QStringList outps;
+    QString outp;
     QStringList strings = edtCode->toPlainText().split('\n');
     if (isXyceScr) {
         QRegularExpression print_ex("^\\s*\\.print\\s.*", QRegularExpression::CaseInsensitiveOption);
@@ -189,20 +225,23 @@ void CustomSimDialog::slotFindOutputs()
                 p = line.indexOf('=',p);
                 int l = line.size()-(p+1);
                 QString sub = line.right(l);
-                outps.append(sub.section(" ",0,0,QString::SectionSkipEmpty));
+                outp = sub.section(" ",0,0,QString::SectionSkipEmpty);
+                if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
             }
         }
     } else {
         QRegularExpression write_ex("^\\s*write\\s.*");
         write_ex.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
-        QRegularExpression print_rx("^print\\s+[\\w\\s]+>.+");
+        QRegularExpression print_rx("^\\s*print\\s.*>.+");
         print_rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
             if (write_ex.match(line).hasMatch()) {
-                outps.append(line.section(QRegularExpression("\\s"),1,1,QString::SectionSkipEmpty));
+                outp = line.section(QRegularExpression("\\s"),1,1,QString::SectionSkipEmpty);
+                if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
             }
             else if ( print_rx.match(line).hasMatch() ) {
-                outps.append(line.section('>', 1, 1, QString::SectionSkipEmpty).trimmed());
+                outp = line.section('>', 1, 1, QString::SectionSkipEmpty).trimmed();
+                if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
             }
         }
     }
