@@ -662,28 +662,10 @@ void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveSetLimits(Schematic *Doc, QMouseEvent *Event)
 {
-    // Set the start position. TODO: Refactor to a QRectF for easy normalisation etc.
+    // TODO: Refactor to a QRectF for easy normalisation etc.
+    // Update the second point of the selection rectangle. 
     MAx3 = DOC_X_POS(Event->pos().x());
     MAy3 = DOC_Y_POS(Event->pos().y());
-
-#ifdef DEBUG_DIAGRAM_COORDS
-    for (Diagram *pd = Doc->Diagrams->last(); pd != 0; pd = Doc->Diagrams->prev()){
-        if (pd->getSelected(MAx3, MAy3)) {
-
-            QPointF diagramPoint(MAx3 - pd->cx, pd->cy - MAy3);
-            QPointF diagramValue(pd->pointToValue(diagramPoint));
-            // qDebug() << "Physical: " << Event->x() << "," << Event->y() << 
-            //             " Qucs Logical: " << MAx3 << "," << MAy3 << 
-            //             " Diagram point: " << diagramPoint <<
-            //             " Diagram value: " << diagramValue;
-        // No need to keep looking.
-        return;
-        }
-    }
-    // qDebug() << "Physical: " << Event->x() << "," << Event->y() << 
-    //             " Qucs Logical: " << MAx3 << "," << MAy3 << 
-    //             " Diagram: -,-";
-#endif
 }
 
 /**
@@ -875,7 +857,14 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
     while (true) {
         if (focusElement) {
             if (focusElement->Type == isDiagram) {
-                ComponentMenu->addAction(QucsMain->resetDiagramLimits);
+                Diagram* diagram = static_cast<Diagram*>(focusElement);
+
+                // Only show reset limits action if one or more axis is not autoscaled.
+                if (diagram->Name == "Rect" && 
+                    (!diagram->xAxis.autoScale || !diagram->yAxis.autoScale || !diagram->zAxis.autoScale)) {
+                    ComponentMenu->addAction(QucsMain->resetDiagramLimits);
+                }
+
                 // TODO: This should probably be in qucs_init::initActions.
                 QAction *actExport = new QAction(QObject::tr("Export as image"), QucsMain);
                 QObject::connect(actExport,
@@ -1597,14 +1586,18 @@ void MouseActions::MPressSetLimits(Schematic *Doc, QMouseEvent*, float fX, float
     MAx1 = int(fX);
     MAy1 = int(fY);
 
+    // TODO: Diagrams is currently a Q3PtrList, but it would be better to refactor
+    // this (and many other collections) to be std::vector.
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
-    for (Diagram *pd = Doc->Diagrams->last(); pd != 0; pd = Doc->Diagrams->prev()){
-        if (pd->getSelected(fX, fY)) {
-            qDebug() << "In a diagram, setting up for area selection.";
+    for (Diagram* diagram = Doc->Diagrams->last(); diagram != 0; diagram = Doc->Diagrams->prev()) {
+        // BUG: Obtaining the diagram type by name is marked as a bug elsewhere (to be solved separately).
+        // TODO: Currently only rectangular diagrams are supported.
+        if (diagram->getSelected(fX, fY) && diagram->Name == "Rect") {
+            qDebug() << "In a rectangular diagram, setting up for area selection.";
 
-            // cx and cy are the adjusted points of the bottom left hand corner.
-            mouseDownPoint = QPointF(fX - pd->cx, pd->cy - fY);
-            pActiveDiagram = pd;
+            // cx and cy are the adjusted points of the diagram's bottom left hand corner.
+            mouseDownPoint = QPointF(fX - diagram->cx, diagram->cy - fY);
+            pActiveDiagram = diagram;
 
             QucsMain->MouseMoveAction = &MouseActions::MMoveSelect;
             QucsMain->MouseReleaseAction = &MouseActions::MReleaseSetLimits;
@@ -1840,10 +1833,7 @@ void MouseActions::MReleaseResizePainting(Schematic *Doc, QMouseEvent *Event)
 // -----------------------------------------------------------
 void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
 {
-    if (Event->button() != Qt::LeftButton) {
-        qDebug() << "Release set limits left button";
-        return;
-    }
+    Doc->releaseKeyboard();
 
     // TODO: Make a point version of DOC_n_POS.
     MAx2 = DOC_X_POS(Event->pos().x());
@@ -1851,61 +1841,41 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
 
     qDebug() << "Mouse released after setting limits.";
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
-    for (Diagram *pd = Doc->Diagrams->last(); pd != 0; pd = Doc->Diagrams->prev()){
-        if (pd->getSelected(MAx2, MAy2) && pd == pActiveDiagram) {
+    for (Diagram* diagram = Doc->Diagrams->last(); diagram != 0; diagram = Doc->Diagrams->prev()) {
+        if (diagram->getSelected(MAx2, MAy2) && diagram == pActiveDiagram) {
             qDebug() << "In a diagram, setting limits";
             
-            mouseUpPoint = QPointF(MAx2 - pd->cx, pd->cy - MAy2);
+            mouseUpPoint = QPointF(MAx2 - diagram->cx, diagram->cy - MAy2);
 
-            QPointF minValue = pd->pointToValue(mouseDownPoint);
-            QPointF maxValue = pd->pointToValue(mouseUpPoint);
-            // TODO: Create a rectangle and normalise.
+            // Normalise the selection in case user starts at bottom and/or right.
+            QRectF select = QRectF(mouseDownPoint, mouseUpPoint).normalized();      
+            QPointF minValue = diagram->pointToValue(select.bottomLeft());
+            QPointF maxValue = diagram->pointToValue(select.topRight());
 
-            pd->xAxis.limit_min = minValue.x();
-            pd->xAxis.limit_max = maxValue.x();
-            pd->xAxis.step = (maxValue.x() - minValue.x()) / 2;
-            pd->xAxis.autoScale = false;
+            // Set the diagram limits.
+            diagram->xAxis.limit_min = minValue.x();
+            diagram->xAxis.limit_max = maxValue.x();
+            // TODO: Implement something less arbitrary for the step size.
+            diagram->xAxis.step = (maxValue.x() - minValue.x()) / 2;
+            diagram->xAxis.autoScale = false;
 
-            pd->yAxis.limit_min = maxValue.y();
-            pd->yAxis.limit_max = minValue.y();
-            pd->yAxis.step = (maxValue.y() - minValue.y() / 2);
-            pd->yAxis.autoScale = false;
+            diagram->yAxis.limit_min = maxValue.y();
+            diagram->yAxis.limit_max = minValue.y();
+            // TODO: Implement something less arbitrary for the step size.
+            diagram->yAxis.step = (maxValue.y() - minValue.y() / 2);
+            diagram->yAxis.autoScale = false;
 
-            // The diagram dialog updates the graphs by making a copy of the diagrams
-            // graphs, deleting the original graphs and adding the copy back.
-            // TODO: Refactor this away from the diagram dialog to the diagram class.
-            Q3PtrList<Graph>  Graphs;
-
-            // Copy diagram graphs (this is implemented as a function in the diagram dialog)
-            Graphs.setAutoDelete(false);
-            for (Graph *pg : pd->Graphs)
-                Graphs.append(pg->sameNewOne());
-
-            // Delete all the existing graphs in the diagram.                
-            pd->Graphs.clear();
-
-            // Now copy the graphs back to the diagram.
-            for(Graph *pg = Graphs.first(); pg != 0; pg = Graphs.next())
-                pd->Graphs.append(pg);  // transfer the new graphs to diagram
-            
-            // Cleanup the local copy of the graphs.
-            Graphs.clear();
-            Graphs.setAutoDelete(true);
-
-            // Now read in the data.
+            // TODO: Consider refactoring loadGraphData to reload the current dataset if an empty string is passed.
             QFileInfo Info(Doc->DocName);
             QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
-            pd->loadGraphData(defaultDataSet);
+            diagram->loadGraphData(defaultDataSet);
+
+            Doc->setChanged(true, true);
+            Doc->viewport()->update();
         }
     }
     // Stay in set limits and allow user to choose a new start point.
     QucsMain->MouseMoveAction = &MouseActions::MMoveSetLimits;
-
-    Doc->viewport()->repaint();
-    Doc->setChanged(true, true);
-    Doc->viewport()->update();
-    drawn = false;
-
 }
 
 // -----------------------------------------------------------
