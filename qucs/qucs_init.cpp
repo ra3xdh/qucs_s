@@ -574,7 +574,7 @@ void QucsApp::initActions()
   setMarker->setCheckable(true);
   connect(setMarker, SIGNAL(toggled(bool)), SLOT(slotSetMarker(bool)));
 
-  setDiagramLimits = new QAction(QIcon((":/bitmaps/svg/viewmag1.svg")),	tr("Set Diagram Limits"), this);
+  setDiagramLimits = new QAction(QIcon((":/bitmaps/svg/viewwave.svg")),	tr("Set Diagram Limits"), this);
   setDiagramLimits->setShortcut(tr("Ctrl+E"));
   setDiagramLimits->setStatusTip(tr("Pick the diagram limits using the mouse. Right click for default."));
   setDiagramLimits->setWhatsThis(tr("Set Diagram Limits\n\nPick the diagram limits using the mouse. Right click for default."));
