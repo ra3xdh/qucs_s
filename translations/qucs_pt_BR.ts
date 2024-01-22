@@ -2608,7 +2608,7 @@ Node name will not be changed.</source>
     <message>
         <location line="+4"/>
         <source>transparent</source>
-        <translation>trasparente</translation>
+        <translation>transparente</translation>
     </message>
     <message>
         <location line="+5"/>

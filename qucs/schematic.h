@@ -100,23 +100,27 @@ public:
   void  setOnGrid(int&, int&);
   bool  elementsOnGrid();
 
-  float zoom(float);
-
   /**
     Zoom around a "zooming center". Zooming center is a point on the canvas,
-    which doesn't move relative to a viewport while canvas is being zoomed in or out.
+    which doesn't move relative to a viewport while canvas is being zoomed in or
+    out.
 
-    This produces the effect of "concentrating" on a zooming center: with each zoom-in step
-    one would get closer and closer to the point, while point's surroundings would go "out of sight",
-    beyound the viewport's borders.
+    This produces the effect of "concentrating" on a zooming center: with each
+    zoom-in step one would get closer and closer to the point, while point's
+    surroundings would go "out of sight", beyound the viewport's borders.
 
-    Zooming out works in backwards order: everything is like being "sucked into" the zooming center.
+    Zooming out works in backwards order: everything is like being "sucked into"
+    the zooming center.
 
-    @param scaleChange  a multiplier for a current scale value.
-    @param zpx          x coordinate of zooming center, relative to viewport's top-left corner
-    @param zpy          y coordinate of zooming center, relative to viewport's top-left corner
+    If param \c viewportRelative is \c true then the given coordinates are
+    treated as relative to the viewport top-left corner. Otherwise they're
+    considered to be absolute i.e. relative to canvas top-left corner.
+
+    @param scaleChange       a multiplier for a current scale value
+    @param coords            coordinates of the "zooming center"
+    @param viewportRelative  tells if coordinates are absolute or relative to viewport
   */
-  double zoomAroundPoint(double scaleChange, const int zpx, const int zpy);
+  void zoomAroundPoint(double scaleChange, QPoint coords, bool viewportRelative);
   float zoomBy(float);
   void  showAll();
   void zoomToSelection();
@@ -139,10 +143,10 @@ public:
   bool    undo();
   bool    redo();
 
-  bool scrollUp(int);
-  bool scrollDown(int);
-  bool scrollLeft(int);
-  bool scrollRight(int);
+  void scrollUp(int);
+  void scrollDown(int);
+  void scrollLeft(int);
+  void scrollRight(int);
 
   bool checkDplAndDatNames();
 
@@ -163,23 +167,18 @@ public:
   int GridX, GridY;
 
   // Variables View* are the coordinates of top-level and bottom-right corners
-  // of a rectangle representing the schematic document as a whole. This
+  // of a rectangle representing the schematic "model". This
   // rectangle may grow and shrink when user scrolls the view, and its
   // coordinates change accordingly. Everything (elements, wires, etc.) lies
   // inside this rectangle. The size of this rectangle is the "logical" size
-  // of the schematic.
-  // Schematic is displayed to user in some scale: its "logical" size
-  // is multiplied by scale factor, and the result describes the size of a
-  // canvas required to draw the schematic in chosen scale. Every element of
-  // the schematic is drawn in the same scale on this canvas. That's the way
-  // "zooming" works.
+  // of the schematic. The comment in "renderModel" method describes how
+  // these variables ("model") is used to draw the scematic.
   int ViewX1, ViewY1, ViewX2, ViewY2;
 
   // Variables Used* hold the coordinates of top-left and bottom-right corners
   // of a smallest rectangle which can fit all elements of the schematic.
   // This rectangle exists in the same coordinate system as View*-rectangle
   int UsedX1, UsedY1, UsedX2, UsedY2;
-  int zx1, zy1, zx2, zy2, dx, dy = 0;
 
   int showFrame;
   QString Frame_Text0, Frame_Text1, Frame_Text2, Frame_Text3;
@@ -234,45 +233,6 @@ private:
   QFileInfo FileInfo;
 
   /**
-    Enlarge canvas by "moving" its top side up. Schematic::ViewY1 is updated accordingly.
-
-    @param d  number of size points (pixels) to add to canvas size. Must be non-negative.
-  */
-  void growUp(const int d);
-
-  /**
-    Enlarge canvas by "moving" its bottom side down. Schematic::ViewY2 is updated accordingly.
-
-    @param d  number of size points (pixels) to add to canvas size. Must be non-negative.
-  */
-  void growDown(const int d);
-
-  /**
-    Enlarge canvas by "moving" its left side to the left. Schematic::ViewX1 is updated accordingly.
-
-    @param d  number of size points (pixels) to add to canvas size. Must be non-negative.
-  */
-  void growLeft(const int d);
-
-  /**
-    Enlarge canvas by "moving" its right side to the right. Schematic::ViewX2 is updated accordingly.
-
-    @param d  number of size points (pixels) to add to canvas size. Must be non-negative.
-  */
-  void growRight(const int d);
-
-  /**
-    Redraw schematic at given scale.
-
-    If \a newScale is larger than Schematic::maxScale then Schematic::maxScale becomes new scale.
-    If \a newScale is less than Schematic::minScale then Schematic::minScale becomes new scale.
-
-    @param newScale   a desired scale for schematic to be drawn in
-    @return relative scale change, i.e. \c newScale/oldScale
-    */
-  double scale(const double newScale);
-
-  /**
     Minimum scale at which schematic could be drawn.
   */
   static constexpr double minScale = 0.1;
@@ -281,6 +241,101 @@ private:
     Maximum scale at which schematic could be drawn.
   */
   static constexpr double maxScale = 10.0;
+
+  /**
+    Returns a rectangle which describes the model plane of the schematic.
+    The rectangle is a copy, changes made to it do not affect schematic state.
+  */
+  QRect modelRect();
+
+  /**
+    Returns a rectangle which describes the viewport. Top-left corner is (0,0),
+    width and height are equal to viewport's width and height.
+  */
+  QRect viewportRect();
+
+  /**
+    Given a coordinates of viewport point returns coordinates of the model plane point
+    displayed at given location of the viewport.
+  */
+  QPoint viewportToModel(QPoint viewportCoordinates);
+
+  /**
+    Given coordinates of a point on the view plane (schematic's canvas), this method
+    returns coordinates of a corresponding point on the model plane.
+
+    @param viewCoordinates a point on the view plane
+    @return a corresponding point on the model plane
+  */
+  QPoint viewToModel(const QPoint& viewCoordinates);
+
+  /**
+    Given coordinates of a point on the model plane, this method returns coordinates
+    of a corresponding point on the view plane (schematic's canvas).
+
+    @param modelCoordinates a point on the model plane
+    @return a corresponding point on the view plane
+  */
+  QPoint modelToView(const QPoint& modelCoordinates);
+
+  /**
+    If given value violates lower or upper scale limit, then returns
+    the limit value, original value otherwise.
+  */
+  static double clipScale(double);
+
+  /**
+    Tells whether the model should be rerendered. Model should be rendered
+    if the given scale differs from the current one or if the point displayed
+    at \a viewportCoords in the viewport differs from the point \a modelCoords.
+    Otherwise there is no changes and no need to rerender.
+
+    @param scale desired scale
+    @param newModelBounds a rectangle describing the desired model bounds
+    @param modelCoords coordinates of a point on the model plane
+    @param viewportCoords coordinates of a point in the viewport.
+  */
+  bool shouldRender(const double& scale, const QRect& newModelBounds, const QPoint& modelCoords, const QPoint& viewportCoords);
+
+  /**
+    Renders schematic model on Q3ScrollView's contents at a given scale,
+    and positions the contents so that the point \a modelPlaneCoords of the
+    model is displayed at location \a viewportCoords of the viewport.
+
+    There is no need to call "update" on Q3ScrollView after using this method.
+    It is done as a part of rendering process.
+
+    @param  scale            desired new scale. It is clipped when exceeds
+                             a lower or upperlimit
+    @param  newModelBounds   a rectangle describing the desired model bounds
+    @param  modelPlaneCoords coordinates of a point somewhere within
+                             \a newModelBounds
+    @param  viewportCoords   coordinates of the point on the viewport where
+                             \a modelPlaneCoords should be placed after rendering
+    @return new scale value
+  */
+  double renderModel(double scale, QRect newModelBounds, QPoint modelPlaneCoords, QPoint viewportCoords);
+
+  /**
+    Render the model without changing its size and position the contents
+    so that the center of the model is displayed at center of the viewport.
+
+    @param scale desired new scale. It is clipped if exceeds bounds.
+    @return new scale value
+  */
+  double renderModel(double scale);
+
+  /**
+    Render the model without changing its size and position the contents so that
+    the point \a modelPlaneCoords of the model is displayed at location \a
+    viewportCoords of the viewport.
+
+    @param scale desired new scale. It is clipped if exceeds limits
+    @param modelPlaneCoords coordinates of the point on the model plane
+    @param viewportCoords coordinates of the point on the viewport
+    @return new scale value
+  */
+  double renderModel(double scale, QPoint modelPlaneCoords, QPoint viewportCoords);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
