@@ -38,7 +38,7 @@ public:
   virtual void paint(ViewPainter*) {};
   virtual void MouseMoving(Schematic*, int, int, int, int,
                            Schematic*, int, int, bool) {};
-  virtual bool MousePressing() { return false; };
+  virtual bool MousePressing(Schematic *sch = 0) { Q_UNUSED(sch) return false; };
   virtual void Bounding(int&, int&, int&, int&);
   virtual bool resizeTouched(float, float, float) { return false; };
   virtual void MouseResizeMoving(int, int, Schematic*) {};
@@ -46,7 +46,7 @@ public:
   virtual void rotate(int, int) {};
   virtual void mirrorX() {};
   virtual void mirrorY() {};
-  virtual bool Dialog() { return false; };
+  virtual bool Dialog(QWidget *parent = 0) { Q_UNUSED(parent) return false; };
 
   QString toPenString (int);
   QString toBrushString (int);

@@ -258,9 +258,9 @@ void GraphicText::MouseMoving(
 }
 
 // ------------------------------------------------------------------------
-bool GraphicText::MousePressing()
+bool GraphicText::MousePressing(Schematic *sch)
 {
-    return Dialog();
+    return Dialog(sch);
 }
 
 // ------------------------------------------------------------------------
@@ -373,12 +373,12 @@ void GraphicText::mirrorY()
 // -----------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
-bool GraphicText::Dialog()
+bool GraphicText::Dialog(QWidget *parent)
 {
     QFont f(QucsSettings.font); // to avoid wrong text width
     bool changed = false;
 
-    GraphicTextDialog *d = new GraphicTextDialog();
+    GraphicTextDialog *d = new GraphicTextDialog(parent);
 
     QPalette palette;
     palette.setColor(d->ColorButt->backgroundRole(), Color);

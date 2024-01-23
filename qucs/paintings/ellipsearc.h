@@ -40,7 +40,7 @@ public:
   QString saveJSON();
   void paint(ViewPainter*);
   void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int, bool);
-  bool MousePressing();
+  bool MousePressing(Schematic *sch = 0);
   bool getSelected(float, float, float);
   bool resizeTouched(float, float, float);
   void MouseResizeMoving(int, int, Schematic*);
@@ -48,7 +48,7 @@ public:
   void rotate(int, int);
   void mirrorX();
   void mirrorY();
-  bool Dialog();
+  bool Dialog(QWidget *parent = 0);
 
   QPen  Pen;
   int   Angle, ArcLen;   // start angle and arc length

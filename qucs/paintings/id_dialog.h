@@ -39,7 +39,7 @@ class QRegExpValidator;
 class ID_Dialog : public QDialog  {
 Q_OBJECT
 public:
-  ID_Dialog(ID_Text*);
+  ID_Dialog(ID_Text*, QWidget *parent = 0);
  ~ID_Dialog();
 
 private:
