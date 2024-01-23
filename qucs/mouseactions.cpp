@@ -567,6 +567,41 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
     MAy1 = MAy2;
 }
 
+// moving after paste
+// TODO refactor mouse moving
+void MouseActions::MMoveMoving3(Schematic *Doc, QMouseEvent *Event)
+{
+  setPainter(Doc);
+
+  MAx2 = DOC_X_POS(Event->pos().x());
+  MAy2 = DOC_Y_POS(Event->pos().y());
+
+  Element *pe;
+  if (drawn) // erase old scheme
+    for (pe = movingElements.first(); pe != nullptr; pe = movingElements.next())
+      pe->paintScheme(Doc);
+
+  drawn = true;
+  if ((Event->modifiers().testFlag(Qt::ControlModifier)) == 0)
+    Doc->setOnGrid(MAx2, MAy2); // use grid only if CTRL key not pressed
+  MAx1 = MAx2 - MAx1;
+  MAy1 = MAy2 - MAy1;
+  MAx3 += MAx1;
+  MAy3 += MAy1; // keep track of the complete movement
+
+  moveElements(&movingElements, MAx1, MAy1); // moves elements by MAx1/MAy1
+
+  // paint afterwards to avoid conflict between wire and label painting
+  for (pe = movingElements.first(); pe != 0; pe = movingElements.next())
+    pe->paintScheme(Doc);
+  //    if(pe->Type == isWire)  if(((Wire*)pe)->Label)
+  //      if(!((Wire*)pe)->Label->isSelected)
+  //        ((Wire*)pe)->Label->paintScheme(&painter);
+
+  MAx1 = MAx2;
+  MAy1 = MAy2;
+}
+
 /**
  * @brief MouseActions::MMovePaste Moves components after paste from clipboard.
  * @param Doc
@@ -580,7 +615,7 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
     paintElementsScheme(Doc);
 
     drawn = true;
-    QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
+    QucsMain->MouseMoveAction = &MouseActions::MMoveMoving3;
     QucsMain->MouseReleaseAction = &MouseActions::MReleasePaste;
 }
 
