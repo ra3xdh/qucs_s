@@ -25,6 +25,7 @@
 
 class Wire;
 class Schematic;
+class Diagram;
 class QPainter;
 class QMenu;
 class QMouseEvent;
@@ -59,6 +60,10 @@ private:
   bool isMoveEqual;
   QucsApp* App;
 
+  Diagram* pActiveDiagram = nullptr;
+  QPointF mouseDownPoint;
+  QPointF mouseUpPoint;
+
   // -------------------------------------------------------------------
 public:
   void MMoveSelect(Schematic*, QMouseEvent*);
@@ -71,6 +76,7 @@ public:
   void MMoveDelete(Schematic*, QMouseEvent*);
   void MMoveLabel(Schematic*, QMouseEvent*);
   void MMoveMarker(Schematic*, QMouseEvent*);
+  void MMoveSetLimits(Schematic*, QMouseEvent*);
   void MMoveMirrorY(Schematic*, QMouseEvent*);
   void MMoveMirrorX(Schematic*, QMouseEvent*);
   void MMoveRotate(Schematic*, QMouseEvent*);
@@ -95,6 +101,7 @@ public:
   void MPressWire2(Schematic*, QMouseEvent*, float, float);
   void MPressPainting(Schematic*, QMouseEvent*, float, float);
   void MPressMarker(Schematic*, QMouseEvent*, float, float);
+  void MPressSetLimits(Schematic*, QMouseEvent*, float, float);
   void MPressOnGrid(Schematic*, QMouseEvent*, float, float);
   void MPressMoveText(Schematic*, QMouseEvent*, float, float);
   void MPressZoomIn(Schematic*, QMouseEvent*, float, float);
@@ -111,6 +118,7 @@ public:
   void MReleaseResizePainting(Schematic*, QMouseEvent*);
   void MReleaseMoveText(Schematic*, QMouseEvent*);
   void MReleaseZoomIn(Schematic*, QMouseEvent*);
+  void MReleaseSetLimits(Schematic*, QMouseEvent*);
 
   void paintElementsScheme(Schematic*);
   void rotateElements(Schematic*, int&, int&);

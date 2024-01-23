@@ -61,6 +61,8 @@
 #define SCR_X_POS(x) int(float(x - Doc->ViewX1) * Doc->Scale)
 #define SCR_Y_POS(y) int(float(y - Doc->ViewY1) * Doc->Scale)
 
+#define MIN_SELECT_SIZE 5.0
+
 QAction *formerAction; // remember action before drag n'drop etc.
 
 MouseActions::MouseActions(QucsApp *App_)
@@ -656,6 +658,19 @@ void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 }
 
 /**
+ * @brief MouseActions::MMoveSetLimits Sets the cursor to a magnifying glass with a wave.
+ * @param Doc
+ * @param Event
+ */
+void MouseActions::MMoveSetLimits(Schematic *Doc, QMouseEvent *Event)
+{
+    // TODO: Refactor to a QRectF for easy normalisation etc.
+    // Update the second point of the selection rectangle. 
+    MAx3 = DOC_X_POS(Event->pos().x());
+    MAy3 = DOC_Y_POS(Event->pos().y());
+}
+
+/**
  * @brief MouseActions::MMoveMirrorX Paints rounded "mirror about y axis" mouse cursor
  * @param Doc
  * @param Event
@@ -844,6 +859,15 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
     while (true) {
         if (focusElement) {
             if (focusElement->Type == isDiagram) {
+                Diagram* diagram = static_cast<Diagram*>(focusElement);
+
+                // Only show reset limits action if one or more axis is not autoscaled.
+                if (diagram->Name == "Rect" && 
+                    (!diagram->xAxis.autoScale || !diagram->yAxis.autoScale || !diagram->zAxis.autoScale)) {
+                    ComponentMenu->addAction(QucsMain->resetDiagramLimits);
+                }
+
+                // TODO: This should probably be in qucs_init::initActions.
                 QAction *actExport = new QAction(QObject::tr("Export as image"), QucsMain);
                 QObject::connect(actExport,
                                  SIGNAL(triggered(bool)),
@@ -1552,6 +1576,44 @@ void MouseActions::MPressMarker(Schematic *Doc, QMouseEvent *, float fX, float f
     drawn = false;
 }
 
+/**
+ * @brief MouseActions::MPressSetLimits Sets the start point of the diagram limits.
+ * @param Doc
+ * @param Event
+ */
+void MouseActions::MPressSetLimits(Schematic *Doc, QMouseEvent*, float fX, float fY)
+{
+    // fX, fY are the scaled / adjusted coordinates, equivalent to DOC_X_POS(Event->x()).
+    // MAx1, MAy1 are needed to set the start of the selection box.
+    MAx1 = int(fX);
+    MAy1 = int(fY);
+
+    // TODO: Diagrams is currently a Q3PtrList, but it would be better to refactor
+    // this (and many other collections) to be std::vector.
+    // Check to see if the mouse is within a diagram using the oddly named "getSelected".
+    for (Diagram* diagram = Doc->Diagrams->last(); diagram != 0; diagram = Doc->Diagrams->prev()) {
+        // BUG: Obtaining the diagram type by name is marked as a bug elsewhere (to be solved separately).
+        // TODO: Currently only rectangular diagrams are supported.
+        if (diagram->getSelected(fX, fY) && diagram->Name == "Rect") {
+            qDebug() << "In a rectangular diagram, setting up for area selection.";
+
+            // cx and cy are the adjusted points of the diagram's bottom left hand corner.
+            mouseDownPoint = QPointF(fX - diagram->cx, diagram->cy - fY);
+            pActiveDiagram = diagram;
+
+            QucsMain->MouseMoveAction = &MouseActions::MMoveSelect;
+            QucsMain->MouseReleaseAction = &MouseActions::MReleaseSetLimits;
+            Doc->grabKeyboard(); // no keyboard inputs during move actions
+            
+            // No need to continue searching;
+            break;
+        }
+    }
+
+    Doc->viewport()->update();
+    drawn = false;
+}
+
 // -----------------------------------------------------------
 void MouseActions::MPressOnGrid(Schematic *Doc, QMouseEvent *, float fX, float fY)
 {
@@ -1768,6 +1830,65 @@ void MouseActions::MReleaseResizePainting(Schematic *Doc, QMouseEvent *Event)
     Doc->viewport()->update();
     drawn = false;
     Doc->setChanged(true, true);
+}
+
+// -----------------------------------------------------------
+void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
+{
+    Doc->releaseKeyboard();
+
+    // TODO: Make a point version of DOC_n_POS.
+    MAx2 = DOC_X_POS(Event->pos().x());
+    MAy2 = DOC_Y_POS(Event->pos().y());
+
+    qDebug() << "Mouse released after setting limits.";
+    // Check to see if the mouse is within a diagram using the oddly named "getSelected".
+    for (Diagram* diagram = Doc->Diagrams->last(); diagram != 0; diagram = Doc->Diagrams->prev()) {
+        
+        // Only process the selection if it ends in a diagram, and is the same diagram as start.
+        if (diagram->getSelected(MAx2, MAy2) && diagram == pActiveDiagram) {
+            qDebug() << "In the same diagram, setting limits";
+            
+            mouseUpPoint = QPointF(MAx2 - diagram->cx, diagram->cy - MAy2);
+
+            // Normalise the selection in case user starts at bottom and/or right.
+            QRectF select = QRectF(mouseDownPoint, mouseUpPoint).normalized();      
+
+            // Only process if there is a valid selection box.
+            if (select.width() < MIN_SELECT_SIZE || select.height() < MIN_SELECT_SIZE)
+                break;
+
+            // Set the diagram limits.
+            QPointF minValue = diagram->pointToValue(select.bottomLeft());
+            QPointF maxValue = diagram->pointToValue(select.topRight());
+
+            diagram->xAxis.limit_min = minValue.x();
+            diagram->xAxis.limit_max = maxValue.x();
+            // TODO: Implement something less arbitrary for the step size.
+            diagram->xAxis.step = (maxValue.x() - minValue.x()) / 2;
+            diagram->xAxis.autoScale = false;
+
+            diagram->yAxis.limit_min = maxValue.y();
+            diagram->yAxis.limit_max = minValue.y();
+            // TODO: Implement something less arbitrary for the step size.
+            diagram->yAxis.step = (maxValue.y() - minValue.y() / 2);
+            diagram->yAxis.autoScale = false;
+
+            // TODO: Consider refactoring loadGraphData to reload the current dataset if an empty string is passed.
+            QFileInfo Info(Doc->DocName);
+            QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
+            diagram->loadGraphData(defaultDataSet);
+
+            Doc->setChanged(true, true);
+
+            // No need to keep searching.
+            break;
+        }
+    }
+
+    // Stay in set limits and allow user to choose a new start point.
+    QucsMain->MouseMoveAction = &MouseActions::MMoveSetLimits;
+    Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------

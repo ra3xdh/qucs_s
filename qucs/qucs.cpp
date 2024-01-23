@@ -2952,6 +2952,7 @@ void QucsApp::switchSchematicDoc (bool SchematicMode)
   insGround->setEnabled (SchematicMode);
   insEquation->setEnabled (SchematicMode);
   setMarker->setEnabled (SchematicMode);
+  setDiagramLimits->setEnabled (SchematicMode);
 
   exportAsImage->setEnabled (SchematicMode); // only export schematic, no text
 
@@ -2977,6 +2978,7 @@ void QucsApp::switchEditMode(bool SchematicMode)
   insWire->setEnabled(SchematicMode);
   insLabel->setEnabled(SchematicMode);
   setMarker->setEnabled(SchematicMode);
+  setDiagramLimits->setEnabled(SchematicMode);
   selectMarker->setEnabled(SchematicMode);
   simulate->setEnabled(SchematicMode);
   // no search in "symbol painting mode" as only paintings should be used
