@@ -54,7 +54,7 @@ public:
   void rotate(int, int);
   void mirrorX();
   void mirrorY();
-  bool Dialog();
+  bool Dialog(QWidget *parent = 0);
 
   QString Prefix;
   QList<SubParameter *> Parameter;

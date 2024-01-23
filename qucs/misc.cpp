@@ -181,7 +181,9 @@ QString misc::StringNum(double num, char form, int Precision)
 // #########################################################################
 QString misc::StringNiceNum(double num)
 {
-  char Format[6] = "%.8e";
+  // char Format[6] = "%.8e";
+  // TEMP: lower precision to avoid overly long graph axis values.
+  char Format[6] = "%.2e";
   if(fabs(num) < 1e-250)  return QString("0");  // avoid many problems
   if(fabs(log10(fabs(num))) < 3.0)  Format[3] = 'g';
 
@@ -300,6 +302,7 @@ QString misc::num2str(double Num, int Precision)
       Str = QString::number(Num);
   } else {
       Str = QString::number(Num,'f',Precision);
+      qDebug() << Str;
   }
 
   if(c)  Str += c;

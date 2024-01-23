@@ -24,8 +24,8 @@
 #include "main.h"
 #include "qucs.h"
 
-ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_mode) :
-    QDialog(parent)
+ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
+    QDialog(sch)
 {
     Sch = sch;
     wasSimulated = false;

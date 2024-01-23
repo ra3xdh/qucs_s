@@ -231,8 +231,9 @@ void GraphicLine::MouseMoving(
 }
 
 // --------------------------------------------------------------------------
-bool GraphicLine::MousePressing()
+bool GraphicLine::MousePressing(Schematic *sch)
 {
+  Q_UNUSED(sch)
   State++;
   if(State > 2) {
     x1 = y1 = 0;
@@ -331,11 +332,11 @@ void GraphicLine::mirrorY()
 // --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
-bool GraphicLine::Dialog()
+bool GraphicLine::Dialog(QWidget *parent)
 {
   bool changed = false;
 
-  FillDialog *d = new FillDialog(QObject::tr("Edit Line Properties"), false);
+  FillDialog *d = new FillDialog(QObject::tr("Edit Line Properties"), false, parent);
   misc::setPickerColor(d->ColorButt,Pen.color());
   d->LineWidth->setText(QString::number(Pen.width()));
   d->StyleBox->setCurrentIndex(Pen.style()-1);

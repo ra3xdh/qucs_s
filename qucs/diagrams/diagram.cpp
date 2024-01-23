@@ -1973,7 +1973,7 @@ bool Diagram::calcYAxis(Axis *Axis, int x0) {
 
             if ((zD < 1.5 * zDstep) || (z == 0)) {
                 double yVal = qucs::num2db(zD, Axis->Units);
-                if (engineeringNotation) tmp = misc::num2str(yVal);
+                if (engineeringNotation) tmp = misc::num2str(yVal, 2);
                 else tmp = misc::StringNiceNum(yVal);
 
                 if (Axis->up < 0.0) tmp = '-' + tmp;

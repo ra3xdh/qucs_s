@@ -78,17 +78,21 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
 	pToggleFunc Function, pMouseFunc MouseMove, pMouseFunc2 MousePress)
 {
   slotHideEdit(); // disable text edit of component property
+  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
 
+  // Perform toggle release clean up.
   if(!on) {
     MouseMoveAction = 0;
     MousePressAction = 0;
     MouseReleaseAction = 0;
     MouseDoubleClickAction = 0;
     activeAction = 0;   // no action active
+
+    // Return to select mode.
+    slotEscape();
     return false;
   }
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   do {
     if(Function) if((Doc->*Function)()) {
       Action->blockSignals(true);
@@ -209,6 +213,40 @@ void QucsApp::slotSetMarker(bool on)
 {
   performToggleAction(on, setMarker, 0,
 		&MouseActions::MMoveMarker, &MouseActions::MPressMarker);
+}
+
+// -----------------------------------------------------------------------
+// Toolbar button to update the diagram limits using the mouse - aka zooming.
+void QucsApp::slotSetDiagramLimits(bool on)
+{
+  performToggleAction(on, setDiagramLimits, 0,
+	                    &MouseActions::MMoveSetLimits, &MouseActions::MPressSetLimits);
+}
+
+// -----------------------------------------------------------------------
+// Context menu option to reset the diagram limits to defaults.
+void QucsApp::slotResetDiagramLimits()
+{
+  if (view->focusElement && view->focusElement->Type == isDiagram)
+  {   
+    Diagram* diagram = static_cast<Diagram*>(view->focusElement);
+    
+    diagram->xAxis.autoScale = true;
+    diagram->yAxis.autoScale = true;
+    diagram->zAxis.autoScale = true;
+
+    // Now read in the data.
+    Schematic* Doc = static_cast<Schematic*>(getDoc(-1)); // Get a pointer to the current document.
+    QFileInfo Info(Doc->DocName);
+    QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
+    diagram->loadGraphData(defaultDataSet);
+
+    Doc->setChanged(true, true);
+    Doc->viewport()->update();
+  }
+
+  // Return to select mode (in case SetDiagramLimits is still selected).
+  slotEscape();
 }
 
 // -----------------------------------------------------------------------
@@ -1037,11 +1075,9 @@ void QucsApp::slotCursorLeft(bool left)
     if(markerCount > 0) {  // only move marker if nothing else selected
       Doc->markerLeftRight(left, &movingElements);
     } else if(left) {
-      if(Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep()))
-        Doc->scrollBy(-Doc->horizontalScrollBar()->singleStep(), 0);
+      Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep());
     }else{ // right
-      if(Doc->scrollRight(-Doc->horizontalScrollBar()->singleStep()))
-        Doc->scrollBy(Doc->horizontalScrollBar()->singleStep(), 0);
+      Doc->scrollRight(-Doc->horizontalScrollBar()->singleStep());
     }
 
     Doc->viewport()->update();
@@ -1106,11 +1142,9 @@ void QucsApp::slotCursorUp(bool up)
     if(markerCount > 0) {  // only move marker if nothing else selected
       Doc->markerUpDown(up, &movingElements);
     } else if(up) { // nothing selected at all
-      if(Doc->scrollUp(Doc->verticalScrollBar()->singleStep()))
-        Doc->scrollBy(0, -Doc->verticalScrollBar()->singleStep());
+      Doc->scrollUp(Doc->verticalScrollBar()->singleStep());
     } else { // down
-      if(Doc->scrollDown(-Doc->verticalScrollBar()->singleStep()))
-        Doc->scrollBy(0, Doc->verticalScrollBar()->singleStep());
+      Doc->scrollDown(Doc->verticalScrollBar()->singleStep());
     }
 
     Doc->viewport()->update();

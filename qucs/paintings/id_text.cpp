@@ -187,9 +187,9 @@ void ID_Text::mirrorY()
 // --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
-bool ID_Text::Dialog()
+bool ID_Text::Dialog(QWidget *parent)
 {
-  ID_Dialog *d = new ID_Dialog(this);
+  ID_Dialog *d = new ID_Dialog(this, parent);
   if(d->exec() == QDialog::Rejected) {
     delete d;
     return false;

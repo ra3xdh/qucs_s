@@ -318,8 +318,9 @@ void Arrow::MouseMoving(
 }
 
 // --------------------------------------------------------------------------
-bool Arrow::MousePressing()
+bool Arrow::MousePressing(Schematic *sch)
 {
+  Q_UNUSED(sch)
   State++;
   if(State > 2) {
     x1 = y1 = 0;
@@ -491,11 +492,11 @@ void Arrow::mirrorY()
 // --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
-bool Arrow::Dialog()
+bool Arrow::Dialog(QWidget *parent)
 {
   bool changed = false;
 
-  ArrowDialog *d = new ArrowDialog();
+  ArrowDialog *d = new ArrowDialog(parent);
   d->HeadWidth->setText(QString::number(Width));
   d->HeadLength->setText(QString::number(Height));
 

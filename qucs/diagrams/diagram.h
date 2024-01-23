@@ -112,6 +112,8 @@ public:
   virtual void calcCoordinate
                (const double*, const double*, const double*, float*, float*, Axis const*) const {};
   void calcCoordinateP (const double*x, const double*y, const double*z, Graph::iterator& p, Axis const* A) const;
+  // TODO: Make pointToValue a pure virtual function.
+  virtual QPointF pointToValue(const QPointF&) { return QPointF(0.0, 0.0); };
   virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
   virtual QString extraMarkerText(Marker const*) const {return "";}
@@ -171,6 +173,9 @@ protected:
   void rectClip(Graph::iterator &) const;
 
   virtual void calcData(Graph*);
+
+  QTransform pointTransform; // Transform between Qucs-S logical coordinates and diagram (logical) point coordinates.
+  QTransform valueTransform; // Transform between diagram point coordinates and diagram values.
 
 private:
   int Bounding_x1, Bounding_x2, Bounding_y1, Bounding_y2;

@@ -292,8 +292,9 @@ void qucs::Rectangle::MouseMoving(
 }
 
 // --------------------------------------------------------------------------
-bool qucs::Rectangle::MousePressing()
+bool qucs::Rectangle::MousePressing(Schematic *sch)
 {
+  Q_UNUSED(sch)
   State++;
   if(State == 1) {
     x1 = x2;
@@ -380,11 +381,11 @@ void qucs::Rectangle::mirrorY()
 // --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
-bool qucs::Rectangle::Dialog()
+bool qucs::Rectangle::Dialog(QWidget *parent)
 {
   bool changed = false;
 
-  FillDialog *d = new FillDialog(QObject::tr("Edit Rectangle Properties"));
+  FillDialog *d = new FillDialog(QObject::tr("Edit Rectangle Properties"), true, parent);
   misc::setPickerColor(d->ColorButt,Pen.color());
   d->LineWidth->setText(QString::number(Pen.width()));
   d->StyleBox->setCurrentIndex(Pen.style()-1);

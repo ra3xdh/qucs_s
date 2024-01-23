@@ -131,7 +131,11 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
         if(next_line.isEmpty()) continue;
         if(next_line.at(0)=='#') continue;
         if(next_line.at(0)=='!') continue;
-        tmp_lst = next_line.split(" ", qucs::SkipEmptyParts);
+        tmp_lst = next_line.split(QRegularExpression("[ \\t]"), qucs::SkipEmptyParts);
+        if (tmp_lst.count() < (ports*ports)+1) {
+            err_text = "Touchstone file parse error!\n";
+            return false;
+        }
         numf = f + 1;
         freqs[f] = tmp_lst.at(0).toDouble();
         int idx = 1;
