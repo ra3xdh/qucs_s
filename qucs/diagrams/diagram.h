@@ -118,6 +118,7 @@ public:
   void calcCoordinateP (const double*x, const double*y, const double*z, Graph::iterator& p, Axis const* A) const;
   // TODO: Make pointToValue a pure virtual function.
   virtual MappedPoint pointToValue(const QPointF&) { return MappedPoint(); };
+  virtual void setLimitsBySelectionRect(QRectF) {};
   virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
   virtual QString extraMarkerText(Marker const*) const {return "";}

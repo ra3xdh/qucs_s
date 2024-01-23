@@ -113,9 +113,32 @@ MappedPoint RectDiagram::pointToValue(const QPointF& point)
   result.y2 = zAxis.log ? pow(10, value.y()) : value.y();
 
   // qDebug() << "Transform yields: " << value;
-
   // Convert to exponential if needed.
   return result;
+}
+
+void RectDiagram::setLimitsBySelectionRect(QRectF select) {
+
+  int i;
+  double a, b, c;
+  // Set the diagram limits.
+  auto minValue = pointToValue(select.bottomLeft());
+  auto maxValue = pointToValue(select.topRight());
+
+  xAxis.limit_min = minValue.x;
+  xAxis.limit_max = maxValue.x;
+  calcAxisScale(&xAxis, a, b, c, xAxis.step, double(x2)); // calculate step X
+  xAxis.autoScale = false;
+
+  yAxis.limit_min = maxValue.y1;
+  yAxis.limit_max = minValue.y1;
+  calcAxisScale(&yAxis, a, b, c, yAxis.step, double(y2)); // calculate step Y1
+  yAxis.autoScale = false;
+
+  zAxis.limit_min = maxValue.y2;
+  zAxis.limit_max = minValue.y2;
+  calcAxisScale(&zAxis, a, b, c, zAxis.step, double(y2)); // calculate step Y2
+  zAxis.autoScale = false;
 }
 
 // --------------------------------------------------------------
