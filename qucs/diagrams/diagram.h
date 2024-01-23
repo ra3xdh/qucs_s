@@ -58,6 +58,10 @@ struct Axis {
   double limit_min, limit_max, step;   // if not auto-scale
 };
 
+struct MappedPoint {
+  qreal x, y1, y2;
+};
+
 namespace qucs {
 double inline num2db(double zD, int unit) {
     double yVal = zD;
@@ -113,7 +117,7 @@ public:
                (const double*, const double*, const double*, float*, float*, Axis const*) const {};
   void calcCoordinateP (const double*x, const double*y, const double*z, Graph::iterator& p, Axis const* A) const;
   // TODO: Make pointToValue a pure virtual function.
-  virtual QPointF pointToValue(const QPointF&) { return QPointF(0.0, 0.0); };
+  virtual MappedPoint pointToValue(const QPointF&) { return MappedPoint(); };
   virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
   virtual QString extraMarkerText(Marker const*) const {return "";}

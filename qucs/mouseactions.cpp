@@ -1894,20 +1894,26 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
                 break;
 
             // Set the diagram limits.
-            QPointF minValue = diagram->pointToValue(select.bottomLeft());
-            QPointF maxValue = diagram->pointToValue(select.topRight());
+            auto minValue = diagram->pointToValue(select.bottomLeft());
+            auto maxValue = diagram->pointToValue(select.topRight());
 
-            diagram->xAxis.limit_min = minValue.x();
-            diagram->xAxis.limit_max = maxValue.x();
+            diagram->xAxis.limit_min = minValue.x;
+            diagram->xAxis.limit_max = maxValue.x;
             // TODO: Implement something less arbitrary for the step size.
-            diagram->xAxis.step = (maxValue.x() - minValue.x()) / 2;
+            diagram->xAxis.step = (maxValue.x - minValue.x) / 2;
             diagram->xAxis.autoScale = false;
 
-            diagram->yAxis.limit_min = maxValue.y();
-            diagram->yAxis.limit_max = minValue.y();
+            diagram->yAxis.limit_min = maxValue.y1;
+            diagram->yAxis.limit_max = minValue.y1;
             // TODO: Implement something less arbitrary for the step size.
-            diagram->yAxis.step = (maxValue.y() - minValue.y() / 2);
+            diagram->yAxis.step = (maxValue.y1 - minValue.y1 / 2);
             diagram->yAxis.autoScale = false;
+
+            diagram->zAxis.limit_min = maxValue.y2;
+            diagram->zAxis.limit_max = minValue.y2;
+            // TODO: Implement something less arbitrary for the step size.
+            diagram->zAxis.step = (maxValue.y2 - minValue.y2 / 2);
+            diagram->zAxis.autoScale = false;
 
             // TODO: Consider refactoring loadGraphData to reload the current dataset if an empty string is passed.
             QFileInfo Info(Doc->DocName);
@@ -1923,6 +1929,7 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
 
     // Stay in set limits and allow user to choose a new start point.
     QucsMain->MouseMoveAction = &MouseActions::MMoveSetLimits;
+    QucsMain->MouseReleaseAction = nullptr;
     Doc->viewport()->update();
 }
 

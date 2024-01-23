@@ -84,9 +84,10 @@ void RectDiagram::calcCoordinate(const double* xD, const double* yD, const doubl
 
 // --------------------------------------------------------------
 // Convert a point on the diagram to the value represented by that point.
-QPointF RectDiagram::pointToValue(const QPointF& point)
+MappedPoint RectDiagram::pointToValue(const QPointF& point)
 {
-  // Update the value transform. TODO: This only needs to be called when the limits change.
+  MappedPoint result{};
+      // Update the value transform. TODO: This only needs to be called when the limits change.
   valueTransform.reset();
   qreal xMin = xAxis.log ? log10(xAxis.low) : xAxis.low;
   qreal yMin = yAxis.log ? log10(yAxis.low) : yAxis.low;
@@ -97,10 +98,24 @@ QPointF RectDiagram::pointToValue(const QPointF& point)
 
   // Obtain the value at point.
   QPointF value = valueTransform.map(point);
+
+  result.x = xAxis.log ? pow(10, value.x()) : value.x();
+  result.y1 = yAxis.log ? pow(10, value.y()) : value.y();
+
+  valueTransform.reset();
+  yMin = zAxis.log ? log10(zAxis.low) : zAxis.low;
+  yMax = zAxis.log ? log10(zAxis.up) : zAxis.up;
+  valueTransform.translate(xMin, yMin);
+  valueTransform.scale((xMax - xMin) / x2, (yMax - yMin) / y2);
+  // Obtain the value at point.
+  value = valueTransform.map(point);
+
+  result.y2 = zAxis.log ? pow(10, value.y()) : value.y();
+
   // qDebug() << "Transform yields: " << value;
 
   // Convert to exponential if needed.
-  return QPointF(xAxis.log ? pow(10, value.x()) : value.x(), yAxis.log ? pow(10, value.y()) : value.y());
+  return result;
 }
 
 // --------------------------------------------------------------
