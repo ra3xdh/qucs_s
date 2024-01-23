@@ -100,7 +100,7 @@ QPointF RectDiagram::pointToValue(const QPointF& point)
   // qDebug() << "Transform yields: " << value;
 
   // Convert to exponential if needed.
-  return QPointF(xAxis.log ? exp10(value.x()) : value.x(), yAxis.log ? exp10(value.y()) : value.y());
+  return QPointF(xAxis.log ? pow(10, value.x()) : value.x(), yAxis.log ? pow(10, value.y()) : value.y());
 }
 
 // --------------------------------------------------------------
