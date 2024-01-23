@@ -61,6 +61,8 @@
 #define SCR_X_POS(x) int(float(x - Doc->ViewX1) * Doc->Scale)
 #define SCR_Y_POS(y) int(float(y - Doc->ViewY1) * Doc->Scale)
 
+#define MIN_SELECT_SIZE 5.0
+
 QAction *formerAction; // remember action before drag n'drop etc.
 
 MouseActions::MouseActions(QucsApp *App_)
@@ -1842,17 +1844,24 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
     qDebug() << "Mouse released after setting limits.";
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
     for (Diagram* diagram = Doc->Diagrams->last(); diagram != 0; diagram = Doc->Diagrams->prev()) {
+        
+        // Only process the selection if it ends in a diagram, and is the same diagram as start.
         if (diagram->getSelected(MAx2, MAy2) && diagram == pActiveDiagram) {
-            qDebug() << "In a diagram, setting limits";
+            qDebug() << "In the same diagram, setting limits";
             
             mouseUpPoint = QPointF(MAx2 - diagram->cx, diagram->cy - MAy2);
 
             // Normalise the selection in case user starts at bottom and/or right.
             QRectF select = QRectF(mouseDownPoint, mouseUpPoint).normalized();      
+
+            // Only process if there is a valid selection box.
+            if (select.width() < MIN_SELECT_SIZE || select.height() < MIN_SELECT_SIZE)
+                break;
+
+            // Set the diagram limits.
             QPointF minValue = diagram->pointToValue(select.bottomLeft());
             QPointF maxValue = diagram->pointToValue(select.topRight());
 
-            // Set the diagram limits.
             diagram->xAxis.limit_min = minValue.x();
             diagram->xAxis.limit_max = maxValue.x();
             // TODO: Implement something less arbitrary for the step size.
@@ -1871,11 +1880,15 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
             diagram->loadGraphData(defaultDataSet);
 
             Doc->setChanged(true, true);
-            Doc->viewport()->update();
+
+            // No need to keep searching.
+            break;
         }
     }
+
     // Stay in set limits and allow user to choose a new start point.
     QucsMain->MouseMoveAction = &MouseActions::MMoveSetLimits;
+    Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
