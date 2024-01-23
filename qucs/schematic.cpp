@@ -530,6 +530,26 @@ void Schematic::PostPaintEvent(
 void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
 {
     emit signalCursorPosChanged(Event->pos().x(), Event->pos().y());
+
+    // Perform "pan with mouse"
+    if (Event->buttons() & Qt::MiddleButton) {
+        const QPoint currentCursorPosition = contentsToViewport(Event->pos());
+
+        if (const int dx = currentCursorPosition.x() - previousCursorPosition.x(); dx < 0) {
+            scrollRight(std::abs(dx));
+        } else if (dx > 0) {
+            scrollLeft(dx);
+        }
+
+        if (const int dy = currentCursorPosition.y() - previousCursorPosition.y(); dy < 0) {
+            scrollDown(std::abs(dy));
+        } else if (dy > 0) {
+            scrollUp(dy);
+        }
+
+        previousCursorPosition = currentCursorPosition;
+    }
+
     if (App->MouseMoveAction)
         (App->view->*(App->MouseMoveAction))(this, Event);
 }
@@ -545,7 +565,7 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
     float x = float(Event->pos().x()) / Scale + float(ViewX1);
     float y = float(Event->pos().y()) / Scale + float(ViewY1);
 
-    if (Event->button() != Qt::LeftButton)
+    if (Event->button() == Qt::RightButton)
         if (App->MousePressAction != &MouseActions::MPressElement)
             if (App->MousePressAction != &MouseActions::MPressWire2) {
                 // show menu on right mouse button
@@ -556,6 +576,14 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
                 return;
             }
 
+    // Begin "pan with mouse" action. Panning starts if *only*
+    // the middle button is pressed.
+    if (Event->button() == Qt::MiddleButton) {
+        previousCursorPosition = contentsToViewport(Event->pos());
+        setCursor(Qt::ClosedHandCursor);
+        return;
+    }
+
     if (App->MousePressAction)
         (App->view->*(App->MousePressAction))(this, Event, x, y);
 }
@@ -563,6 +591,12 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
 // -----------------------------------------------------------
 void Schematic::contentsMouseReleaseEvent(QMouseEvent *Event)
 {
+    // End "pan with mouse" action.
+    if (Event->button() == Qt::MiddleButton) {
+        unsetCursor();
+        return;
+    }
+
     if (App->MouseReleaseAction)
         (App->view->*(App->MouseReleaseAction))(this, Event);
 }
@@ -2697,12 +2731,6 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
 
     // At this point everything is ready for rendering and positioning
 
-    // This statement is copied from the legacy implmentation where it had the
-    // comment:
-    //  "resizeContents() performs an immediate repaint. So, set widget
-    //   to hidden. This causes some flicker, but it is still nicer"
-    viewport()->setHidden(true);
-
     // Set new model size
     ViewX1 = newModel.left();
     ViewY1 = newModel.top();
@@ -2716,8 +2744,6 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
     auto contentTopLeft = modelToView(vpTopLeftOnModelPlane);
     setContentsPos(contentTopLeft.x(), contentTopLeft.y());
 
-    // This block is also copied from legacy implementation
-    viewport()->setHidden(false);
     viewport()->update();
     App->view->drawn = false;
 
