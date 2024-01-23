@@ -32,7 +32,8 @@
 #include <QMessageBox>
 
 
-ID_Dialog::ID_Dialog(ID_Text *idText_)
+ID_Dialog::ID_Dialog(ID_Text *idText_, QWidget *parent)
+    : QDialog(parent)
 {
   idText = idText_;
   setWindowTitle(tr("Edit Subcircuit Properties"));

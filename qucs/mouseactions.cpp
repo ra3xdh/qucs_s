@@ -1420,7 +1420,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
     } // of "if(isDiagram)"
 
     // ***********  it is a painting !!!
-    if (((Painting *) selElem)->MousePressing()) {
+    if (((Painting *) selElem)->MousePressing(Doc)) {
         Doc->Paintings->append((Painting *) selElem);
         ((Painting *) selElem)->Bounding(x1, y1, x2, y2);
         //Doc->enlargeView(x1, y1, x2, y2);
@@ -2192,7 +2192,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
         break;
 
     case isPainting:
-        if (((Painting *) focusElement)->Dialog())
+        if (((Painting *) focusElement)->Dialog(Doc))
             Doc->setChanged(true, true);
         break;
 

@@ -3419,7 +3419,7 @@ void QucsApp::slotSaveNetlist()
     }
     if (!isTextDocument(DocumentTab->currentWidget())) {
         Schematic *sch = (Schematic*)DocumentTab->currentWidget();
-        ExternSimDialog *SimDlg = new ExternSimDialog(sch,this,true);
+        ExternSimDialog *SimDlg = new ExternSimDialog(sch, true);
         SimDlg->slotSaveNetlist();
         delete SimDlg;
     }

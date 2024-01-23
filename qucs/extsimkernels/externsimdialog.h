@@ -47,7 +47,7 @@ private:
     Xyce *xyce;
 
 public:
-    explicit ExternSimDialog(Schematic *sch, QWidget *parent = 0,
+    explicit ExternSimDialog(Schematic *sch,
                              bool netlist_mode = false);
     ~ExternSimDialog();
 

@@ -298,8 +298,9 @@ void EllipseArc::MouseMoving(
 }
 
 // --------------------------------------------------------------------------
-bool EllipseArc::MousePressing()
+bool EllipseArc::MousePressing(Schematic *sch)
 {
+  Q_UNUSED(sch)
   State++;
   switch(State) {
     case 1 :
@@ -394,11 +395,11 @@ void EllipseArc::mirrorY()
 // --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
-bool EllipseArc::Dialog()
+bool EllipseArc::Dialog(QWidget *parent)
 {
   bool changed = false;
 
-  FillDialog *d = new FillDialog(QObject::tr("Edit Arc Properties"), false);
+  FillDialog *d = new FillDialog(QObject::tr("Edit Arc Properties"), false, parent);
   misc::setPickerColor(d->ColorButt,Pen.color());
   d->LineWidth->setText(QString::number(Pen.width()));
   d->StyleBox->setCurrentIndex(Pen.style()-1);
