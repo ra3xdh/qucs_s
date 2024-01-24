@@ -536,12 +536,14 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
     auto ypos = DOC_Y_POS(y);
     QString text = "";
 
-    for (Diagram* diagram = Diagrams->last(); diagram != 0; diagram = Diagrams->prev()) {
+    auto doubleToString = [](bool condition, double number) {
+      return condition ? misc::num2str(number) : misc::StringNiceNum(number);
+    };
+
+    for (Diagram* diagram = Diagrams->last(); diagram != nullptr; diagram = Diagrams->prev()) {
         // BUG: Obtaining the diagram type by name is marked as a bug elsewhere (to be solved separately).
         // TODO: Currently only rectangular diagrams are supported.
         if (diagram->getSelected(xpos, ypos) && diagram->Name == "Rect") {
-            qDebug() << "In a rectangular diagram";
-            text = "In a rectangular diagram";
             bool hasY1, hasY2 = false;
             for (auto graph: diagram->Graphs) {
                 hasY1 |= graph->yAxisNo == 0;
@@ -554,14 +556,17 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
             //          float fCX, fCY;
             //          diagram->calcCoordinate(reinterpret_cast<const double *>(xpos),
             //          reinterpret_cast<const double *>(ypos), 0, &fCX, &fCY, diagram->yAxis);
-            text = "X=" + misc::num2str(mp.x);
+            auto _x = doubleToString(diagram->engineeringNotation, mp.x);
+            text = "X=" + _x;
             if (hasY1) {
                 text.append("; Y1=");
-                text.append(misc::num2str(mp.y1));
+                auto _y1 = doubleToString(diagram->engineeringNotation, mp.y1);
+                text.append(_y1);
             }
             if (hasY2) {
                 text.append("; Y2=");
-                text.append(misc::num2str(mp.y2));
+                auto _y2 = doubleToString(diagram->engineeringNotation, mp.y2);
+                text.append(_y2);
             }
             break;
         }
