@@ -1893,21 +1893,7 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
             if (select.width() < MIN_SELECT_SIZE || select.height() < MIN_SELECT_SIZE)
                 break;
 
-            // Set the diagram limits.
-            QPointF minValue = diagram->pointToValue(select.bottomLeft());
-            QPointF maxValue = diagram->pointToValue(select.topRight());
-
-            diagram->xAxis.limit_min = minValue.x();
-            diagram->xAxis.limit_max = maxValue.x();
-            // TODO: Implement something less arbitrary for the step size.
-            diagram->xAxis.step = (maxValue.x() - minValue.x()) / 2;
-            diagram->xAxis.autoScale = false;
-
-            diagram->yAxis.limit_min = maxValue.y();
-            diagram->yAxis.limit_max = minValue.y();
-            // TODO: Implement something less arbitrary for the step size.
-            diagram->yAxis.step = (maxValue.y() - minValue.y() / 2);
-            diagram->yAxis.autoScale = false;
+            diagram->setLimitsBySelectionRect(select);
 
             // TODO: Consider refactoring loadGraphData to reload the current dataset if an empty string is passed.
             QFileInfo Info(Doc->DocName);
@@ -1923,6 +1909,7 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
 
     // Stay in set limits and allow user to choose a new start point.
     QucsMain->MouseMoveAction = &MouseActions::MMoveSetLimits;
+    QucsMain->MouseReleaseAction = nullptr;
     Doc->viewport()->update();
 }
 

@@ -2043,12 +2043,14 @@ bool Diagram::insideDiagramP(Graph::iterator const &p) const {
     return insideDiagram(f1, f2);
 }
 
-void
-Diagram::calcCoordinateP(const double *x, const double *y, const double *z, Graph::iterator &p, Axis const *A) const {
+void Diagram::calcCoordinateP(const double *x, const double *y, const double *z, Graph::iterator &p, Axis const *A) const {
     float f1, f2;
     calcCoordinate(x, y, z, &f1, &f2, A);
     p->setScr(f1, f2);
 };
+
+
+//void Diagram::SetLimitsBySelectionRect(QRectF) {}
 
 
 // vim:ts=8:sw=2:noet
