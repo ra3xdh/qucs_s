@@ -12553,7 +12553,7 @@ Fecha o documento atual</translation>
     <message>
         <location line="+3"/>
         <source>&amp;Examples</source>
-        <translation>&amp;Examplos</translation>
+        <translation>&amp;Exemplos</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12701,12 +12701,12 @@ Define as propriedades do aplicativo</translation>
     <message>
         <location line="+3"/>
         <source>Refresh Search Path...</source>
-        <translation type="unfinished"></translation>
+        <translation>Atualizar o Caminho de Busca...</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refresh Search Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Atualizar o Caminho de Busca</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -13045,7 +13045,7 @@ Busca por uma porção de texto</translation>
     <message>
         <location line="+8"/>
         <source>Export as image...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar como imagem...</translation>
     </message>
     <message>
         <location line="+2"/>
