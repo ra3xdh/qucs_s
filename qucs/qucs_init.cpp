@@ -959,6 +959,9 @@ void QucsApp::initToolBar()
 // ----------------------------------------------------------
 void QucsApp::initStatusBar()
 {
+    DiagramValuesLabel = new QLabel("", statusBar());
+    statusBar()->addPermanentWidget(DiagramValuesLabel, 0);
+
   // To reserve enough space, insert the longest text and rewrite it afterwards.
   SimulatorLabel = new QLabel(spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator));
   statusBar()->addPermanentWidget(SimulatorLabel, 0);
@@ -1010,10 +1013,12 @@ void QucsApp::slotResetWarnings()
 }
 
 // ----------------------------------------------------------
-void QucsApp::printCursorPosition(int x, int y)
+void QucsApp::printCursorPosition(int x, int y, QString text)
 {
   PositionLabel->setText(QString::number(x)+" : "+QString::number(y));
   PositionLabel->setMinimumWidth(PositionLabel->width());
+
+  DiagramValuesLabel->setText(text);
 }
 
 // --------------------------------------------------------------

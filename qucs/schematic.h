@@ -200,7 +200,7 @@ public:
   void setFileInfo(QString FileName) { FileInfo = QFileInfo(FileName); }
 
 signals:
-  void signalCursorPosChanged(int, int);
+  void signalCursorPosChanged(int, int, QString);
   void signalUndoState(bool);
   void signalRedoState(bool);
   void signalFileChanged(bool);

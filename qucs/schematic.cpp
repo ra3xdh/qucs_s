@@ -60,6 +60,9 @@
 
 #include "misc.h"
 
+#define DOC_X_POS(x) (int(float(x) / Scale) + ViewX1)
+#define DOC_Y_POS(y) (int(float(y) / Scale) + ViewY1)
+
 // just dummies for empty lists
 Q3PtrList<Wire> SymbolWires;
 Q3PtrList<Node> SymbolNodes;
@@ -117,10 +120,8 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_)
     connect(this, SIGNAL(horizontalSliderReleased()), viewport(), SLOT(update()));
     connect(this, SIGNAL(verticalSliderReleased()), viewport(), SLOT(update()));
     if (App_) {
-        connect(this,
-                SIGNAL(signalCursorPosChanged(int, int)),
-                App_,
-                SLOT(printCursorPosition(int, int)));
+        connect(this,SIGNAL(signalCursorPosChanged(int, int, QString)),App_,SLOT(printCursorPosition(int, int, QString)));
+
         connect(this, SIGNAL(horizontalSliderPressed()), App_, SLOT(slotHideEdit()));
         connect(this, SIGNAL(verticalSliderPressed()), App_, SLOT(slotHideEdit()));
         connect(this, SIGNAL(signalUndoState(bool)), App_, SLOT(slotUpdateUndo(bool)));
@@ -168,7 +169,7 @@ bool Schematic::createSubcircuitSymbol()
 // ---------------------------------------------------
 void Schematic::becomeCurrent(bool update)
 {
-    emit signalCursorPosChanged(0, 0);
+    emit signalCursorPosChanged(0, 0, "");
 
     // update appropriate menu entry
     if (symbolMode) {
@@ -529,7 +530,44 @@ void Schematic::PostPaintEvent(
 // ---------------------------------------------------
 void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
 {
-    emit signalCursorPosChanged(Event->pos().x(), Event->pos().y());
+    auto x = Event->pos().x();
+    auto y = Event->pos().y();
+    auto xpos = DOC_X_POS(x);
+    auto ypos = DOC_Y_POS(y);
+    QString text = "";
+
+    for (Diagram* diagram = Diagrams->last(); diagram != 0; diagram = Diagrams->prev()) {
+        // BUG: Obtaining the diagram type by name is marked as a bug elsewhere (to be solved separately).
+        // TODO: Currently only rectangular diagrams are supported.
+        if (diagram->getSelected(xpos, ypos) && diagram->Name == "Rect") {
+            qDebug() << "In a rectangular diagram";
+            text = "In a rectangular diagram";
+            bool hasY1, hasY2 = false;
+            for (auto graph: diagram->Graphs) {
+                hasY1 |= graph->yAxisNo == 0;
+                hasY2 |= graph->yAxisNo == 1;
+            }
+
+            QPointF mouseClickPoint = QPointF(xpos - diagram->cx, diagram->cy - ypos);
+            MappedPoint mp = diagram->pointToValue(mouseClickPoint);
+            // TODO take aware Axis format settings
+            //          float fCX, fCY;
+            //          diagram->calcCoordinate(reinterpret_cast<const double *>(xpos),
+            //          reinterpret_cast<const double *>(ypos), 0, &fCX, &fCY, diagram->yAxis);
+            text = "X=" + misc::num2str(mp.x);
+            if (hasY1) {
+                text.append("; Y1=");
+                text.append(misc::num2str(mp.y1));
+            }
+            if (hasY2) {
+                text.append("; Y2=");
+                text.append(misc::num2str(mp.y2));
+            }
+            break;
+        }
+    }
+
+    emit signalCursorPosChanged(x, y, text);
 
     // Perform "pan with mouse"
     if (Event->buttons() & Qt::MiddleButton) {
