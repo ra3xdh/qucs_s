@@ -967,7 +967,7 @@ void QucsApp::initStatusBar()
   //statusBar()->addPermanentWidget(SimulatorLabel, 0);
 
   WarningLabel = new QLabel(tr("no warnings"), statusBar());
-  statusBar()->addPermanentWidget(WarningLabel, 0);
+  statusBar()->addWidget(WarningLabel, 0);
 
   PositionLabel = new QLabel("0 : 0", statusBar());
 #ifndef __APPLE__
