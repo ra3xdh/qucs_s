@@ -335,7 +335,7 @@ private:
   QShortcut *cursorUp, *cursorLeft, *cursorRight, *cursorDown;
 
   QLabel *WarningLabel, *PositionLabel, *DiagramValuesLabel;  // labels in status bar
-  QLabel *SimulatorLabel;
+  // QLabel *SimulatorLabel;
 
 
 
