@@ -229,14 +229,14 @@ void QucsApp::slotResetDiagramLimits()
 {
   if (view->focusElement && view->focusElement->Type == isDiagram)
   {   
-    Diagram* diagram = static_cast<Diagram*>(view->focusElement);
+    Diagram* diagram = (Diagram*)(view->focusElement);
     
     diagram->xAxis.autoScale = true;
     diagram->yAxis.autoScale = true;
     diagram->zAxis.autoScale = true;
 
     // Now read in the data.
-    Schematic* Doc = static_cast<Schematic*>(getDoc(-1)); // Get a pointer to the current document.
+    auto* Doc = (Schematic*)DocumentTab->currentWidget();
     QFileInfo Info(Doc->DocName);
     QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
     diagram->loadGraphData(defaultDataSet);
@@ -261,7 +261,7 @@ void QucsApp::slotMoveText(bool on)
 // Is called, when "Zoom in" action is triggered.
 void QucsApp::slotZoomIn(bool on)
 {
-  TextDoc *Doc = (TextDoc*)DocumentTab->currentWidget();
+  auto *Doc = (TextDoc*)DocumentTab->currentWidget();
   if(isTextDocument(Doc)) {
     Doc->zoomBy(1.5f);
     magPlus->blockSignals(true);

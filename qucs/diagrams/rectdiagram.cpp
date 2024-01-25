@@ -118,8 +118,6 @@ MappedPoint RectDiagram::pointToValue(const QPointF& point)
 }
 
 void RectDiagram::setLimitsBySelectionRect(QRectF select) {
-
-  int i;
   double a, b, c;
   // Set the diagram limits.
   auto minValue = pointToValue(select.bottomLeft());
@@ -233,7 +231,7 @@ if(xAxis.log) {
       Lines.prepend(new qucs::Line(z, y2, z, 0, GridPen));  // x grid
 
     if((zD < 1.5*zDstep) || (z == 0) || (z == x2)) {
-      if (engineeringNotation) tmp = misc::num2str(zD, 2);
+      if (engineeringNotation) tmp = misc::num2str(zD);
       else tmp = misc::StringNiceNum(zD);
       if(xAxis.up < 0.0)  tmp = '-'+tmp;
       w = metrics.boundingRect(tmp).width();  // width of text
@@ -245,11 +243,11 @@ if(xAxis.log) {
     zD += zDstep;
     if(zD > 9.5*zDstep)  zDstep *= 10.0;
     if(back) {
-      z = int(corr*log10(zD / fabs(xAxis.up)) + 0.5); // int() implies floor()
+      z = lround(corr*log10(zD / fabs(xAxis.up)));
       z = x2 - z;
     }
     else
-      z = int(corr*log10(zD / fabs(xAxis.low)) + 0.5);// int() implies floor()
+      z = lround(corr*log10(zD / fabs(xAxis.low)));
   }
 }
 else {  // not logarithmical
@@ -263,7 +261,7 @@ else {  // not logarithmical
   z = int(zD);   //  "int(...)" implies "floor(...)"
   while((z <= x2) && (z >= 0)) {    // create all grid lines
     if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0;// make 0 really 0
-    if (engineeringNotation) tmp = misc::num2str(GridNum, 2);
+    if (engineeringNotation) tmp = misc::num2str(GridNum);
     else tmp = misc::StringNiceNum(GridNum);
     w = metrics.boundingRect(tmp).width();  // width of text
     // center text horizontally under the x tick mark

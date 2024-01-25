@@ -181,9 +181,7 @@ QString misc::StringNum(double num, char form, int Precision)
 // #########################################################################
 QString misc::StringNiceNum(double num)
 {
-  // char Format[6] = "%.8e";
-  // TEMP: lower precision to avoid overly long graph axis values.
-  char Format[6] = "%.2e";
+  char Format[6] = "%.8e";
   if(fabs(num) < 1e-250)  return QString("0");  // avoid many problems
   if(fabs(log10(fabs(num))) < 3.0)  Format[3] = 'g';
 
@@ -236,10 +234,10 @@ void misc::str2num(const QString& s_, double& Number, QString& Unit, double& Fac
   }*/
 
   QRegularExpression Expr( QRegularExpression("[^0-9\\x2E\\x2D\\x2B]") );
-  int i = str.indexOf( Expr );
+  auto i = str.indexOf( Expr );
   if(i >= 0)
     if((str.at(i).toLatin1() | 0x20) == 'e') {
-      int j = str.indexOf( Expr , ++i);
+      auto j = str.indexOf( Expr , ++i);
       if(j == i)  j--;
       i = j;
     }
@@ -267,8 +265,6 @@ void misc::str2num(const QString& s_, double& Number, QString& Unit, double& Fac
   {
     Factor = 1.0;
   }
-
-  return;
 }
 
 // #########################################################################

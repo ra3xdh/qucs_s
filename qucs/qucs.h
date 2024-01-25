@@ -295,7 +295,7 @@ public:
 public slots:
   void slotShowWarnings();
   void slotResetWarnings();
-  void printCursorPosition(int, int);
+  void printCursorPosition(int, int, QString);
   void slotUpdateUndo(bool);  // update undo available state
   void slotUpdateRedo(bool);  // update redo available state
 
@@ -334,8 +334,8 @@ private:
   // This is rather cumbersome -> Make this with a QScrollView instead??
   QShortcut *cursorUp, *cursorLeft, *cursorRight, *cursorDown;
 
-  QLabel *WarningLabel, *PositionLabel;  // labels in status bar
-  QLabel *SimulatorLabel;
+  QLabel *WarningLabel, *PositionLabel, *DiagramValuesLabel;  // labels in status bar
+  // QLabel *SimulatorLabel;
 
 
 
