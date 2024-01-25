@@ -572,7 +572,7 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
         }
     }
 
-    emit signalCursorPosChanged(x, y, text);
+    emit signalCursorPosChanged(xpos, ypos, text);
 
     // Perform "pan with mouse"
     if (Event->buttons() & Qt::MiddleButton) {
