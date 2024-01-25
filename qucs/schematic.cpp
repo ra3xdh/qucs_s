@@ -552,10 +552,7 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
 
             QPointF mouseClickPoint = QPointF(xpos - diagram->cx, diagram->cy - ypos);
             MappedPoint mp = diagram->pointToValue(mouseClickPoint);
-            // TODO take aware Axis format settings
-            //          float fCX, fCY;
-            //          diagram->calcCoordinate(reinterpret_cast<const double *>(xpos),
-            //          reinterpret_cast<const double *>(ypos), 0, &fCX, &fCY, diagram->yAxis);
+
             auto _x = doubleToString(diagram->engineeringNotation, mp.x);
             text = "X=" + _x;
             if (hasY1) {
