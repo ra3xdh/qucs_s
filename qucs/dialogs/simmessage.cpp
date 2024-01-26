@@ -397,9 +397,12 @@ void SimMessage::startSimulator()
         libs = "-c,-l" + libs;
       }
 #endif
+      // The following code runs the the qucs_run_hdl[.bat] script which in turn
+      // runs GHDL (three passes with -a -e and -r commands.). Note GHDL expects the
+      // time without spaces, so strip spaces from SimTime.
       Program = pathName(QucsSettings.BinDir + QucsDigi);
       Arguments  << QucsSettings.QucsHomeDir.filePath("netlist.txt")
-                 << DataSet << SimTime << pathName(SimPath)
+                 << DataSet << SimTime.remove(" ") << pathName(SimPath)
                  << pathName(QucsSettings.BinDir) << libs;
     }
     // Module.
@@ -572,7 +575,7 @@ void SimMessage::startSimulator()
 #else
     Program = QDir::toNativeSeparators(pathName(QucsSettings.BinDir + QucsDigi));
     Arguments << QucsSettings.QucsHomeDir.filePath("netlist.txt")
-              << DataSet << SimTime << pathName(SimPath)
+              << DataSet << SimTime.remove(" ") << pathName(SimPath)
 		      << pathName(QucsSettings.BinDir) << "-Wall" << "-c";
 
 #endif

@@ -60,7 +60,7 @@
 %token t_DUMPVARS
 
 %token s_MODULE s_TASK s_FUNCTION s_FORK s_BEGIN
-%token ONE B Z ZERO HASHMARK X R TEN HUNDRET
+%token ONE B Z ZERO HASHMARK U R TEN HUNDRET
 
 %token PICO MICRO NANO FEMTO SECOND MILLI
 
@@ -320,7 +320,7 @@ ScalarValueChange:
 Value:
     ZERO  /* low level       */
   | ONE   /* high level      */
-  | X     /* undefined/error */
+  | U     /* undefined/error */
   | Z     /* high impedance  */
 ;
 
