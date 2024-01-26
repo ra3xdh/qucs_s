@@ -2235,50 +2235,56 @@ void Schematic::switchPaintMode()
 void Schematic::contentsWheelEvent(QWheelEvent *Event)
 {
     App->editText->setHidden(true); // disable edit of component property
-    // use smaller steps; typically the returned delta() is a multiple of 120
-    //int delta = Event->delta() >> 1;
 
-    // ...................................................................
-    if ((Event->modifiers() & Qt::ShiftModifier)
-        || (Event->angleDelta().x() != 0)) { // scroll horizontally ?
-        int delta = Event->angleDelta().y() / 2;
-        if (Event->angleDelta().x() != 0)
-            delta = Event->angleDelta().x() / 2;
+    // A mouse wheel angle delta of a single step is typically 120,
+    // but other devices may produce various values. For example,
+    // angle values produced by a touchpad depend on how fast user
+    // moves their fingers.
+    //
+    // When used for scrolling the view here angle delta is divided by
+    // some number ("2" at the moment). There is nothing special about
+    // this number, its sole purpose is to reduce a scroll-step
+    // to a reasonable size.
+
+    // Mouse may have a special wheel for horizontal scrolling
+    const int horizontalWheelAngleDelta = Event->angleDelta().x();
+    const int verticalWheelAngleDelta = Event->angleDelta().y();
+
+    // Scroll horizontally
+    // Horizontal scroll is performed either by a special wheel
+    // or by usual mouse wheel with Shift pressed down.
+    if ((Event->modifiers() & Qt::ShiftModifier) || horizontalWheelAngleDelta) {
+        int delta = (horizontalWheelAngleDelta ? horizontalWheelAngleDelta : verticalWheelAngleDelta) / 2;
         if (delta > 0) {
             scrollLeft(delta);
         } else {
             scrollRight(-delta);
         }
-        viewport()->update(); // because QScrollView thinks nothing has changed
-        App->view->drawn = false;
     }
-    // ...................................................................
-    else if (Event->modifiers() & Qt::ControlModifier) { // use mouse wheel to zoom ?
+    // Zoom in or out
+    else if (Event->modifiers() & Qt::ControlModifier) {
         // zoom factor scaled according to the wheel delta, to accommodate
         //  values different from 60 (slower or faster zoom)
-        int delta = Event->angleDelta().y();
-        float Scaling = pow(1.1, delta / 60.0);
+        double scaleCoef = pow(1.1, verticalWheelAngleDelta / 60.0);
 #if QT_VERSION >= 0x050f00
         const QPoint pointer{
-            Event->position().x(),
-            Event->position().y()};
+            static_cast<int>(Event->position().x()),
+            static_cast<int>(Event->position().y())};
 #else
         const QPoint pointer{
             Event->pos().x(),
             Event->pos().y()};
 #endif
-        zoomAroundPoint(Scaling, pointer);
+        zoomAroundPoint(scaleCoef, pointer);
     }
-    // ...................................................................
-    else { // scroll vertically !
-        int delta = Event->angleDelta().y() / 2;
+    // Scroll vertically
+    else {
+        int delta = verticalWheelAngleDelta / 2;
         if (delta > 0) {
             scrollUp(delta);
         } else {
             scrollDown(-delta);
         }
-        viewport()->update(); // because QScrollView thinks nothing has changed
-        App->view->drawn = false;
     }
     Event->accept(); // QScrollView must not handle this event
 }
