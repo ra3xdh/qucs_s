@@ -69,6 +69,19 @@ Q3PtrList<Node> SymbolNodes;
 Q3PtrList<Diagram> SymbolDiags;
 Q3PtrList<Component> SymbolComps;
 
+/**
+    If \c point does not lie within \c rect then returns a new
+    rectangle made by enlarging the source rectangle to include
+    the \c point. Otherwise returns a rectangle of the same size.
+*/
+static QRect includePoint(QRect rect, QPoint point) {
+  if (rect.contains(point)) {
+    return rect;
+  } else {
+    return rect.united(QRect{point, point});
+  }
+}
+
 Schematic::Schematic(QucsApp *App_, const QString &Name_)
     : QucsDoc(App_, Name_)
 {
@@ -78,7 +91,7 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_)
     // ...........................................................
     GridX = GridY = 10;
     ViewX1 = ViewY1 = 0;
-    ViewX2 = ViewY2 = 800;
+    ViewX2 = ViewY2 = 1;
     UsedX1 = UsedY1 = INT_MAX;
     UsedX2 = UsedY2 = INT_MIN;
 
@@ -843,19 +856,12 @@ void Schematic::paintSchToViewpainter(
 void Schematic::zoomAroundPoint(double offeredScaleChange, QPoint coords, bool viewportRelative=true)
 {
     const double desiredScale = Scale * offeredScaleChange;
+    const auto viewportCoords =
+        viewportRelative ? coords : coords - QPoint{contentsX(), contentsY()};
+    const auto focusPoint = viewportToModel(viewportCoords);
+    const auto model = includePoint(modelRect(), focusPoint);
 
-    if (viewportRelative) {
-        // Coordinates are relative to the viewport top-left corner.
-        // Let's find what model point is shown at these coordinates
-        // and show this point at the same spot after scaling.
-        renderModel(desiredScale, viewportToModel(coords), coords);
-    } else {
-        // Coordinates are absolute coordinates, i.e. relative
-        // to canvas' top-left corner, not viewport's top-left.
-        // Let's find viewport relative coordinates of the same point
-        const QPoint vpCoords = coords - QPoint{contentsX(), contentsY()};
-        renderModel(desiredScale, viewportToModel(vpCoords), vpCoords);
-    }
+    renderModel(desiredScale, model, focusPoint, viewportCoords);
 }
 
 // -----------------------------------------------------------
@@ -866,8 +872,10 @@ float Schematic::zoomBy(float s)
 
     const double newScale = Scale * s;
     const auto vpCenter = viewportRect().center();
-    renderModel(newScale, viewportToModel(vpCenter), vpCenter);
-    return Scale;
+    const auto centerPoint = viewportToModel(vpCenter);
+    const auto model = includePoint(modelRect(), centerPoint);
+
+    return renderModel(newScale, model, centerPoint, vpCenter);
 }
 
 // ---------------------------------------------------
@@ -967,7 +975,7 @@ void Schematic::showNoZoom()
                     UsedX2 = UsedY2 = INT_MIN;
                     // If there is no elements in schematic, then just set scale 1.0
                     // at the place we currently in.
-                    renderModel(noScale, displayedInCenter, vpCenter);
+                    renderModel(noScale, includePoint(modelRect(), displayedInCenter), displayedInCenter, vpCenter);
                     return;
                 }
 
@@ -1019,6 +1027,7 @@ void Schematic::showNoZoom()
 
     const auto vpCenter = viewportRect().center();
     const auto displayedInCenter = viewportToModel(vpCenter);
+    newModel = includePoint(newModel, displayedInCenter);
     renderModel(Scale, newModel, displayedInCenter, vpCenter);
  }
 
