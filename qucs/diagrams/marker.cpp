@@ -28,6 +28,7 @@
 
 #include <QString>
 #include <QPainter>
+#include <QPainterPath>
 #include <QDebug>
 
 #include <limits.h>
@@ -37,6 +38,8 @@
 #include "misc.h"
 
 static double default_Z0=50;
+
+#define IND_SIZE 8
 
 /*!
  * create a marker based on click position and
@@ -51,6 +54,7 @@ Marker::Marker(Graph *pg_, int branchNo, int cx_, int cy_) :
   pGraph(pg_),
   Precision(3),
   numMode(0),
+  indicatorMode(indicator_Triangle),
   Z0(default_Z0) // BUG: see declaration.
 {
   Type = isMarker;
@@ -414,6 +418,20 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
   fx2 = (float(x0)+fCX)*p->Scale + p->DX;
   fy2 = (float(y0)-fCY)*p->Scale + p->DY;
   p->Painter->drawLine(x1_, y1_, lround(fx2), lround(fy2));
+
+  if (indicatorMode == indicator_Square) {
+    p->Painter->drawRect(fx2 - (IND_SIZE / 2 * p->Scale), fy2 - (IND_SIZE / 2 * p->Scale), 
+                            IND_SIZE * p->Scale, IND_SIZE * p->Scale);
+  }
+  else if (indicatorMode == indicator_Triangle) {
+    // Creating a path in case a filled triangle is needed.
+    QPainterPath path;
+    path.moveTo(fx2, fy2);
+    path.lineTo(fx2 - (IND_SIZE / 2 * p->Scale), fy2 - (IND_SIZE * p->Scale));
+    path.lineTo(fx2 + (IND_SIZE / 2 * p->Scale), fy2 - (IND_SIZE * p->Scale));
+    path.lineTo(fx2, fy2);
+    p->Painter->drawPath(path);
+  }
 
   if(isSelected) {
     p->Painter->setPen(QPen(Qt::darkGray,3));
