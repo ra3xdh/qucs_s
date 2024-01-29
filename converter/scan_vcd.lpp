@@ -2,7 +2,7 @@
 
 %{
 /*
- * scan_vcd.l - scanner for a VCD data file
+ * scan_vcd.lpp - scanner for a VCD data file
  *
  * Copyright (C) 2005 Raimund Jacob <raimi@lkcc.org>
  * Copyright (C) 2006, 2007, 2008 Stefan Jahn <stefan@lkcc.org>
@@ -63,9 +63,9 @@ DIGIT    [0-9]
 EXPONENT [Ee][+-]?{DIGIT}+
 INT      [+-]?{DIGIT}+
 REAL     [+-]?{DIGIT}+("."{DIGIT}+)?{EXPONENT}?
-BINARY   [01xXzZ]+
+BINARY   [01uUzZ]+
 DECIMAL  {DIGIT}+
-SCALAR   [01xXzZ]
+SCALAR   [01uUzZ]
 CODE     [!-~]+
 IDENT    [a-zA-Z_][a-zA-Z0-9_.-]*
 
@@ -155,10 +155,10 @@ IDENT    [a-zA-Z_][a-zA-Z0-9_.-]*
   return ZERO;
 }
 
-<INITIAL,DUMP>[xX] {
-  vcd_lval.value = strdup ("X");
+<INITIAL,DUMP>[uU] {
+  vcd_lval.value = strdup ("U");
   BEGIN(CHANGE);
-  return X;
+  return U;
 }
 
 <INITIAL,DUMP>[zZ] {
