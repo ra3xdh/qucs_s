@@ -1,0 +1,20 @@
+Source: qucs-s
+Section: electronics
+Priority: optional
+Maintainer: Vadim Kuznetsov <ra3xdh@gmail.com>
+Build-Depends: debhelper-compat (= 13), cmake, flex, bison,
+ qtbase5-dev, qttools5-dev, libqt5svg5-dev
+Rules-Requires-Root: no
+Standards-Version: 4.6.2
+Homepage: https://ra3xdh.github.io
+Vcs-Browser: https://github.com/ra3xdh/qucs_s/
+Vcs-Git: https://github.com/ra3xdh/qucs_s.git
+
+Package: qucs-s
+Section: electronics
+Priority: optional
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: ngspice
+Description: Quite Universal Circuit Simulator with SPICE (Qucs-S) 
+ allows to simulate electronic circuits with SPICE-compatible kernels
