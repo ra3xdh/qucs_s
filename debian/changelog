@@ -1,0 +1,82 @@
+qucs-s (2.1.0-1) stable; urgency=low
+
+  * version number update by debtransform
+
+ -- debtransform <build@opensuse.org>  Mon, 29 Jan 2024 04:56:12 +0000
+
+qucs-s (2.1.0) stable; urgency=low
+
+  * Eleventh release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Thu, 26 Oct 2023 18:00:00 +0200
+
+qucs-s (2.0.0) stable; urgency=low
+
+  * Tenth release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Sat, 19 Aug 2023 18:00:00 +0200
+
+qucs-s (1.1.0) stable; urgency=low
+
+  * Ninth release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Wed, 07 Jun 2023 18:00:00 +0200
+
+qucs-s (1.0.2) stable; urgency=low
+
+  * Eigth release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Sun, 23 Apr 2023 18:00:00 +0200
+
+
+qucs-s (1.0.1) stable; urgency=low
+
+  * Seventh release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Sat, 04 Feb 2023 18:00:00 +0200
+
+qucs-s (1.0.0) stable; urgency=low
+
+  * Seventh release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Sun, 30 Oct 2022 18:00:00 +0200
+
+qucs-s (0.0.24) stable; urgency=low
+
+  * Sixth release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Fri, 01 Jul 2022 18:00:00 +0200
+ 
+
+qucs-s (0.0.23) stable; urgency=low
+
+  * Ported to Qt5
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Sun, 20 Feb 2022 18:00:00 +0200
+
+
+qucs-s (0.0.22) stable; urgency=low
+
+  * Fourth release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Sun, 19 Jan 2020 18:00:00 +0200
+
+
+qucs-s (0.0.21) stable; urgency=low
+
+  * Third release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Tue, 30 Oct 2018 18:00:00 +0200
+ 
+
+qucs-s (0.0.20) stable; urgency=low
+
+  * Second release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Mon, 30 Oct 2017 18:00:00 +0300
+
+qucs-s (0.0.19S) stable; urgency=low
+
+  * Initial Release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Tue, 08 Nov 2016 18:00:00 +0300

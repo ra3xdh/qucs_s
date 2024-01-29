@@ -1,0 +1,8 @@
+version=4
+
+opts="\
+    compression=gz, \
+    dversionmangle=s/\+(?:git)?[0-9]*(?:\+g[0-9a-f]*)//, \
+    downloadurlmangle=s#/tag/#/download/#;s#(@ANY_VERSION@)$#$1/@PACKAGE@-$2.tar.gz#, \
+    filenamemangle=s#.*/@ANY_VERSION@#@PACKAGE@-$1.tar.gz#" \
+https://github.com/ra3xdh/qucs_s/tags .*/releases/tag/@ANY_VERSION@
