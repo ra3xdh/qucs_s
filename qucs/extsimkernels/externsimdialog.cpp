@@ -333,7 +333,8 @@ bool ExternSimDialog::logContainsError(const QString &out)
     case spicecompat::simNgspice:
         err_patterns<<"Error:"<<"ERROR"<<"Error "
                     <<"Syntax error:"<<"Expression err:"
-                    <<"errors:";
+                    <<"errors:"<<"simulation(s) aborted"
+                    <<"simulation aborted"<<"analysis aborted";
         break;
     case spicecompat::simXyce:
         err_patterns<<"Error:"<<"ERROR"<<"MSG_ERROR"
