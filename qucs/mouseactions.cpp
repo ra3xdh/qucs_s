@@ -193,8 +193,7 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
 // -----------------------------------------------------------
 // Reinserts all elements (moved by the user) back into the schematic.
 void MouseActions::endElementMoving(Schematic *Doc,
-                                    Q3PtrList<Element> *movElements,
-                                    bool finalize) {
+                                    Q3PtrList<Element> *movElements) {
   Element *pe;
   for (pe = movElements->first(); pe != nullptr; pe = movElements->next()) {
     //    pe->isSelected = false;  // deselect first (maybe afterwards pe ==
@@ -238,14 +237,12 @@ void MouseActions::endElementMoving(Schematic *Doc,
 
   movElements->clear();
 
-  if (finalize) {
-    if ((MAx3 != 0) || (MAy3 != 0)) // moved or put at the same place ?
-      Doc->setChanged(true, true);
+  if ((MAx3 != 0) || (MAy3 != 0)) // moved or put at the same place ?
+    Doc->setChanged(true, true);
 
-    // enlarge viewarea if components lie outside the view
-    Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
-    Doc->enlargeView(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
-  }
+  // enlarge viewarea if components lie outside the view
+  Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+  Doc->enlargeView(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
 
   Doc->viewport()->update();
   drawn = false;
@@ -543,34 +540,6 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 // Moves components by keeping the mouse button pressed.
 void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 {
-    setPainter(Doc);
-
-    MAx2 = DOC_X_POS(Event->pos().x());
-    MAy2 = DOC_Y_POS(Event->pos().y());
-
-    if ((Event->modifiers().testFlag(Qt::ControlModifier)) == 0)
-        Doc->setOnGrid(MAx2, MAy2); // use grid only if CTRL key not pressed
-    MAx1 = MAx2 - MAx1;
-    MAy1 = MAy2 - MAy1;
-    MAx3 += MAx1;
-    MAy3 += MAy1; // keep track of the complete movement
-
-    moveElements(&movingElements, MAx1, MAy1); // moves elements by MAx1/MAy1
-    endElementMoving(Doc, &movingElements, false);
-    Doc->viewport()->repaint();
-
-    drawn = true;
-
-    Doc->copySelectedElements(&movingElements);
-
-    MAx1 = MAx2;
-    MAy1 = MAy2;
-}
-
-// moving after paste
-// TODO refactor mouse moving
-void MouseActions::MMoveMoving3(Schematic *Doc, QMouseEvent *Event)
-{
   setPainter(Doc);
 
   MAx2 = DOC_X_POS(Event->pos().x());
@@ -615,7 +584,7 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
     paintElementsScheme(Doc);
 
     drawn = true;
-    QucsMain->MouseMoveAction = &MouseActions::MMoveMoving3;
+    QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
     QucsMain->MouseReleaseAction = &MouseActions::MReleasePaste;
 }
 
@@ -1785,7 +1754,7 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent *)
 {
     // Allow all mouse buttons, because for others than the left one,
     // a menu has already created.
-    endElementMoving(Doc, &movingElements, true);
+    endElementMoving(Doc, &movingElements);
     Doc->releaseKeyboard(); // allow keyboard inputs again
 
     QucsMain->MouseMoveAction = nullptr;
