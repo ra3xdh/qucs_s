@@ -61,7 +61,7 @@ struct DigSignal {
   QString Type; // type of signal
 };
 typedef QMap<QString, DigSignal> DigMap;
-typedef enum {_NotRop, _Rect, _SelectionRect, _Line, _Ellipse, _Arc, _DotLine, _Translate, _Scale} PE;
+typedef enum {_NotRop, _Rect, _SelectionRect, _Line, _Ellipse, _Arc, _DotLine, _DotRect, _Translate, _Scale} PE;
 typedef struct {PE pe; int x1; int y1;int x2;int y2;int a; int b; bool PaintOnViewport;}PostedPaintEvent;
 
 // subcircuit, vhdl, etc. file structure
