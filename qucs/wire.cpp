@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "wire.h"
+#include "schematic.h"
 
 #include <QPainter>
 
@@ -119,6 +120,11 @@ void Wire::paint(ViewPainter *p)
   }
 }
 
+void Wire::paintScheme(Schematic *p)
+{
+    p->PostPaintEvent(_Line, cx + x1, cy + y1, cx + x2, cy + y2);
+}
+
 // ----------------------------------------------------------------
 bool Wire::isHorizontal()
 {
@@ -129,8 +135,8 @@ bool Wire::isHorizontal()
 void Wire::setName(const QString& Name_, const QString& Value_, int delta_, int x_, int y_)
 {
   if(Name_.isEmpty() && Value_.isEmpty()) {
-    if(Label) delete Label;
-    Label = 0;
+    delete Label;
+    Label = nullptr;
     return;
   }
 
@@ -158,7 +164,7 @@ QString Wire::save()
           s += QString::number(Label->cx-x1 + Label->cy-y1);
           s += " \""+Label->initValue+"\">";
   }
-  else { s += " \"\" 0 0 0 \"\">"; }
+  else { s += R"( "" 0 0 0 "">)"; }
   return s;
 }
 
