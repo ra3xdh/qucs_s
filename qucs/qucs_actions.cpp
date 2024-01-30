@@ -1086,7 +1086,7 @@ void QucsApp::slotCursorLeft(bool left)
   } else { // random selection. move all of them
     view->moveElements(&movingElements, sign*Doc->GridX, 0);
     view->MAx3 = 1;  // sign for moved elements
-    view->endElementMoving(Doc, &movingElements, true);
+    view->endElementMoving(Doc, &movingElements);
   }
 }
 
@@ -1153,7 +1153,7 @@ void QucsApp::slotCursorUp(bool up)
   }else{ // some random selection, put it back
     view->moveElements(&movingElements, 0, ((up)?-1:1) * Doc->GridY);
     view->MAx3 = 1;  // sign for moved elements
-    view->endElementMoving(Doc, &movingElements, true);
+    view->endElementMoving(Doc, &movingElements);
   }
 }
 

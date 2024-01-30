@@ -521,9 +521,13 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
             break;
         case _DotLine:
             Painter.Painter->setPen(Qt::DotLine);
+            Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
+            break;
+        case _DotRect:
+            Painter.Painter->setPen(Qt::DotLine);
+            Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
             break;
         case _Translate:; //painter2.translate(p.x1, p.y1);
-            break;
         case _Scale:; //painter2.scale(p.x1,p.y1);
             break;
         }

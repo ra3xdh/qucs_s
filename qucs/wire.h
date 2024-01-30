@@ -23,6 +23,7 @@
 #include "components/component.h"    // because of struct Port
 #include "wirelabel.h"
 
+class Schematic;
 class QPainter;
 class QString;
 
@@ -33,7 +34,8 @@ public:
  ~Wire();
 
   void paint(ViewPainter*);
-  void paintScheme(QPainter*);
+  void paintScheme(QPainter*) override;
+  void paintScheme(Schematic*) override;
   void setCenter(int, int, bool relative=false);
   void getCenter(int&, int&);
   bool getSelected(int, int);

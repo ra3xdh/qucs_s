@@ -72,7 +72,6 @@ public:
   void MMoveWire2(Schematic*, QMouseEvent*);
   void MMoveMoving(Schematic*, QMouseEvent*);
   void MMoveMoving2(Schematic*, QMouseEvent*);
-  void MMoveMoving3(Schematic*, QMouseEvent*);
   void MMovePaste(Schematic*, QMouseEvent*);
   void MMoveDelete(Schematic*, QMouseEvent*);
   void MMoveLabel(Schematic*, QMouseEvent*);
@@ -125,7 +124,7 @@ public:
   void rotateElements(Schematic*, int&, int&);
   void moveElements(Schematic*, int&, int&);
   static void moveElements(Q3PtrList<Element>*, int, int);
-  void endElementMoving(Schematic*, Q3PtrList<Element>*, bool);
+  void endElementMoving(Schematic*, Q3PtrList<Element>*);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
 };
 
