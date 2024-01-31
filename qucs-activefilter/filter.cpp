@@ -235,7 +235,9 @@ void Filter::calcFirstOrder()
 
 void Filter::createPartList(QStringList &lst) {
     lst << QObject::tr("Part list");
-    lst << "Stage# C1(uF) C2(uF) R1(kOhm) R2(kOhm) R3(kOhm) R4(kOhm)  R5(kOhm) R6(kOhm)";
+    lst << QString("%1%2%3%4%5%6%7%8%9").arg("Stage#",6)
+           .arg("C1",12).arg("C2",12).arg("R1(kOhm)",10).arg("R2(kOhm)",10).arg("R3(kOhm)",10).arg("R4(kOhm)",10)
+           .arg("R5(kOhm)",10).arg("R6(kOhm)",10);
 
     for (const auto &stage: Sections) {
         QString suff1, suff2;
