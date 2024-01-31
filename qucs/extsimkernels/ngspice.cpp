@@ -210,7 +210,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         } else if ( sim_typ == ".CUSTOMSIM" ) {
             dcSims++; dcswpSims++; freqSims++; timeSims++; fourSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
-            nods = pc->Props.at(1)->Value.replace(';', ' ');
+            nods = pc->Props.at(1)->Value;
+            nods.replace(';', ' ');
             outputs.append(pc->Props.at(2)->Value.split(';', qucs::SkipEmptyParts));
         } else if ( sim_typ == ".DISTO" ) {
             freqSims++;
@@ -276,6 +277,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         nods.append(' ' + dep_vars.join(' '));
 
         if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") && (sim_typ != ".DC") ) {
+            nods = nods.simplified();
             if ( !nods.isEmpty() ) {
                 QString basenam = "spice4qucs";
                 QString filename;
