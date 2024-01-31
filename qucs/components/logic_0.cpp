@@ -78,6 +78,7 @@ QString logic_0::vhdlCode( int )
   s = "\n  " + Name + ":process\n" +
      "  begin\n    " +
      LO + " <= '0';\n" + 
+     "    wait for 1 ns;\n" +
      "  end process;\n";
   return s;
 }

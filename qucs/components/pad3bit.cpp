@@ -89,7 +89,8 @@ QString pad3bit::vhdlCode( int )
        "      when 7 => "+A+" <= '1'; "+B+" <= '1'; "+C+" <= '1';\n"+
        "      when others => null;\n" +
        "    end case;\n";
-  s3 = "  end process;\n";
+  s3 = "    wait for 1 ns;\n"
+       "  end process;\n";
   s = s1+s2+s3;
   return s;
 }
