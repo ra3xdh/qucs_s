@@ -592,13 +592,15 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
     if (Event->buttons() & Qt::MiddleButton) {
         const QPoint currentCursorPosition = contentsToViewport(Event->pos());
 
-        if (const int dx = currentCursorPosition.x() - previousCursorPosition.x(); dx < 0) {
+        const int dx = currentCursorPosition.x() - previousCursorPosition.x();
+        if (dx < 0) {
             scrollRight(std::abs(dx));
         } else if (dx > 0) {
             scrollLeft(dx);
         }
 
-        if (const int dy = currentCursorPosition.y() - previousCursorPosition.y(); dy < 0) {
+        const int dy = currentCursorPosition.y() - previousCursorPosition.y();
+        if (dy < 0) {
             scrollDown(std::abs(dy));
         } else if (dy > 0) {
             scrollUp(dy);
@@ -2327,7 +2329,8 @@ void Schematic::scrollUp(int step)
     modelBounds.setTop(std::min(mtl.y(), modelBounds.top()));
 
     // Cut off a bit of unused model space from its bottom side.
-    if (const auto b = modelBounds.bottom() - stepInModel; b > UsedY2) {
+    const auto b = modelBounds.bottom() - stepInModel;
+    if (b > UsedY2) {
         modelBounds.setBottom(b);
     }
 
@@ -2359,7 +2362,8 @@ void Schematic::scrollDown(int step)
     modelBounds.setBottom(std::max(mbl.y(), modelBounds.bottom()));
 
     // Cut off a bit of unused model space from its top side.
-    if (const auto t = modelBounds.top() + stepInModel; t < UsedY1) {
+    const auto t = modelBounds.top() + stepInModel;
+    if (t < UsedY1) {
         modelBounds.setTop(t);
     }
 
@@ -2392,7 +2396,8 @@ void Schematic::scrollLeft(int step)
     modelBounds.setLeft(std::min(mtl.x(), modelBounds.left()));
 
     // Cut off a bit of unused model space from its right side.
-    if (const auto r = modelBounds.right() - stepInModel; r > UsedX2) {
+    const auto r = modelBounds.right() - stepInModel;
+    if (r > UsedX2) {
         modelBounds.setRight(r);
     }
 
@@ -2424,7 +2429,8 @@ void Schematic::scrollRight(int step)
     modelBounds.setRight(std::max(mtr.x(), modelBounds.right()));
 
     // Cut off a bit of unused model space from its left side.
-    if (const auto l = modelBounds.left() + stepInModel; l < UsedX1) {
+    const auto l = modelBounds.left() + stepInModel;
+    if (l < UsedX1) {
         modelBounds.setLeft(l);
     }
 
