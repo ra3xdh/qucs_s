@@ -98,7 +98,8 @@ int Component::textSize(int &_dx, int &_dy) {
         if (!(p->display)) continue;
 
         // Update overall width if text of the current property is wider
-        if (auto w = metrics.size(flags, p->Name + "=" + p->Value).width(); w > _dx) {
+        auto w = metrics.size(flags, p->Name + "=" + p->Value).width();
+        if (w > _dx) {
             _dx = w;
         }
         _dy += metrics.height();
