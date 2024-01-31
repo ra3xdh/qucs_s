@@ -190,7 +190,8 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
                 int idx = ng_vars.indexOf(Props.at(i)->Name);
                 if (idx>=0) used_sim = ngsims.at(idx);
             }
-            if ((sim == used_sim)||(used_sim=="all")) {
+            if ( used_sim.toLower() == "tran" ) used_sim = "tr";
+            if ( (sim.startsWith(used_sim.toLower())) || (used_sim=="all") ) {
                 eqn = tokens.join("");
                 s += QString("let %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
                 dep_vars.append(Props.at(i)->Name);

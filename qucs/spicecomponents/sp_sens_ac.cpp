@@ -80,10 +80,11 @@ QString SpiceSENS_AC::spice_netlist(bool isXyce)
     if (!isXyce) {
         QString fstart = spicecompat::normalize_value(Props.at(2)->Value); // Start freq.
         QString fstop = spicecompat::normalize_value(Props.at(3)->Value); // Stop freq.
+        QString out = "spice4qucs." + Name.toLower() + ".sens.prn";
         s = QString("sens %1 ac %2 %3 %4 %5\n")
                 .arg(Props.at(0)->Value).arg(Props.at(1)->Value).arg(Props.at(4)->Value)
                 .arg(fstart).arg(fstop);
-        s += "write spice4qucs.sens.prn all\n";
+        s += QString("write %1 all\n").arg(out);
     }
 
     return s;

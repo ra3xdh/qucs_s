@@ -84,7 +84,7 @@ QString SpiceSENS::spice_netlist(bool isXyce)
         QString start = spicecompat::normalize_value(Props.at(2)->Value);
         QString stop = spicecompat::normalize_value(Props.at(3)->Value);
         QString step = spicecompat::normalize_value(Props.at(4)->Value);
-        QString output = "spice4qucs.ngspice.sens.dc.prn";
+        QString output = "spice4qucs." + Name.toLower() + ".ngspice.sens.dc.prn";
         s += QString("echo \"Start\">%1\n").arg(output);
         s += QString("let %1_start=%2\n").arg(sweepvar).arg(start);
         s += QString("let %1_sweep=%1_start\n").arg(sweepvar);
