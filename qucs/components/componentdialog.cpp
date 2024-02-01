@@ -676,6 +676,11 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
       else
         desc = desc.left(desc.length()-5) + "....";
     }
+
+    if (Comp->SpiceModel == "NutmegEq" && name == "Simulation") { // simulation selection required
+        List = getSimulationList();
+    }
+
     Description->setText(desc);
 
     if(List.count() >= 1) {    // ComboBox with value list or line edit ?
@@ -1518,4 +1523,32 @@ void ComponentDialog::slotHHeaderClicked(int headerIdx)
     cell->setText(s);
   }
   setAllVisible = not setAllVisible; // toggle visibility for the next double-click
+}
+
+
+QStringList ComponentDialog::getSimulationList()
+{
+    QStringList sim_lst;
+    Schematic *sch = Comp->getSchematic();
+    if (sch == nullptr) {
+        return sim_lst;
+    }
+    sim_lst.append("ALL");
+    for (size_t i = 0; i < sch->DocComps.count(); i++) {
+        Component *c = sch->DocComps.at(i);
+        if (c->isSimulation) {
+            sim_lst.append(c->Name);
+        }
+    }
+    QStringList sim_wo_numbers = sim_lst;
+    for(auto &s: sim_wo_numbers) {
+        s.remove(QRegularExpression("[0-9]+$"));
+    }
+    for(const auto &s: sim_wo_numbers) {
+        int cnt = sim_wo_numbers.count(s);
+        if (cnt > 1 && ! sim_lst.contains(s)) {
+            sim_lst.append(s);
+        }
+    }
+    return sim_lst;
 }
