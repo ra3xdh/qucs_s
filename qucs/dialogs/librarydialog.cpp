@@ -265,16 +265,18 @@ void LibraryDialog::slotCreateNext()
     LibDir.cd("user_lib");
   }
 
-  LibFile.setFileName(QucsSettings.LibDir + NameEdit->text() + ".lib");
+  /*LibFile.setFileName(QucsSettings.LibDir + NameEdit->text() + ".lib");
   if(LibFile.exists()) {
     QMessageBox::critical(this, tr("Error"), tr("A system library with this name already exists!"));
     return;
-  }
+  }*/
 
   LibFile.setFileName(LibDir.absoluteFilePath(NameEdit->text()) + ".lib");
   if(LibFile.exists()) {
-    QMessageBox::critical(this, tr("Error"), tr("A library with this name already exists!"));
-    return;
+    auto ans = QMessageBox::question(this, tr("Error"),
+                          tr("A library with this name already exists! Rewrite?"),
+                          QMessageBox::Yes, QMessageBox::No);
+    if (ans == QMessageBox::No) return;
   }
 
   if (checkDescr->checkState() == Qt::Checked){
