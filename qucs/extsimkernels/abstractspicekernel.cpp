@@ -160,16 +160,18 @@ bool AbstractSpiceKernel::checkSimulations()
 
 bool AbstractSpiceKernel::checkDCSimulation()
 {
-    if (DC_OP_only) return true;
-    bool r = false;
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (!pc->isActive) continue;
-        if (pc->isSimulation && pc->Model != ".DC") {
-            r = true;
-            break;
-        }
-    }
-    return r;
+    return true;  // DC OP is now saved in the dataset
+
+    //if (DC_OP_only) return true;
+    //bool r = false;
+    //for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+    //    if (!pc->isActive) continue;
+    //    if (pc->isSimulation && pc->Model != ".DC") {
+    //        r = true;
+    //        break;
+    //    }
+    //}
+    //return r;
 }
 
 /*!
