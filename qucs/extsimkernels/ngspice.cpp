@@ -69,6 +69,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                        QStringList &simulations, QStringList &vars, QStringList &outputs)
 {
     Q_UNUSED(simulations);
+
+    if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
+
     // include math. functions for inter-simulator compat.
     QString mathf_inc;
     bool found = findMathFuncInc(mathf_inc);
@@ -76,7 +79,6 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     if (found && QucsSettings.DefaultSimulator != spicecompat::simSpiceOpus)
         stream<<QString(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
-    if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
     startNetlist(stream); // output .PARAM and components
 
     if (DC_OP_only) {
