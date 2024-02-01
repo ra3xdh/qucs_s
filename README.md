@@ -1,4 +1,11 @@
-## Qucs-S: Quite universal circuit simulator with SPICE
+# Qucs-S: Quite universal circuit simulator with SPICE
+
+[![Boosty](https://img.shields.io/badge/Boosty-donate-orange.svg)](https://boosty.to/qucs_s)
+[![Telegram](https://img.shields.io/badge/Telegram-chat-blue.svg)](https://t.me/qucs_s)
+[![Website](https://img.shields.io/badge/Website-ra3xdh.github.io-29d682.svg)](https://ra3xdh.github.io/)
+[![Docs](https://img.shields.io/badge/Docs-readthedocs-yellow.svg)](https://qucs-s-help.readthedocs.io/en/latest/)
+
+## About Qucs-S
 
 Qucs-S provides a fancy graphical user interface for a number of popular circuit simulation
 engines. Qucs-S contains instruments for schematic capture, visualization and provides differents 
