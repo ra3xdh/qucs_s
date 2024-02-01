@@ -265,16 +265,18 @@ void LibraryDialog::slotCreateNext()
     LibDir.cd("user_lib");
   }
 
-  LibFile.setFileName(QucsSettings.LibDir + NameEdit->text() + ".lib");
+  /*LibFile.setFileName(QucsSettings.LibDir + NameEdit->text() + ".lib");
   if(LibFile.exists()) {
     QMessageBox::critical(this, tr("Error"), tr("A system library with this name already exists!"));
     return;
-  }
+  }*/
 
   LibFile.setFileName(LibDir.absoluteFilePath(NameEdit->text()) + ".lib");
   if(LibFile.exists()) {
-    QMessageBox::critical(this, tr("Error"), tr("A library with this name already exists!"));
-    return;
+    auto ans = QMessageBox::question(this, tr("Error"),
+                          tr("A library with this name already exists! Rewrite?"),
+                          QMessageBox::Yes, QMessageBox::No);
+    if (ans == QMessageBox::No) return;
   }
 
   if (checkDescr->checkState() == Qt::Checked){
@@ -489,7 +491,10 @@ void LibraryDialog::slotSave()
         ErrText->insertPlainText(tr("Error: Cannot create netlist for \"%1\".\n").arg(SelectedNames[i]));
     }
 
-    if (QucsSettings.DefaultSimulator != spicecompat::simQucsator ) { // SPICE
+    //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator ) { // SPICE
+    if (QucsSettings.DefaultSimulator == spicecompat::simQucsator ) {
+        QucsSettings.DefaultSimulator = spicecompat::simNgspice;
+    }
         tmp.truncate(0);
         QTextStream ts(&tmp,QIODevice::WriteOnly);
         ErrText->insertPlainText("\n");
@@ -504,22 +509,8 @@ void LibraryDialog::slotSave()
         kern->createSubNetlsit(ts,true);
         intoStream(Stream, tmp, "Spice");
         delete kern;
-        /*XSPICE_CMbuilder *bld = new XSPICE_CMbuilder(Doc);
-        QStringList srcs,dsts;
-        bld->getModIfsFileList(srcs);
-        for (QString& ifl : srcs) {
-            QString ofl=ifl;
-            intoFile(ifl,ofl,dsts);
-        }
-        QString s = "<SpiceAttach ";
-        for (const QString& f : dsts) {
-            s += " \"" + f + "\"";
-        }
-        s += ">\n";
-        Stream<<s;
-
-        delete bld;*/
-    }
+        QucsSettings.DefaultSimulator = sim;
+    //}
 
     // save verilog model
     tmp.truncate(0);
