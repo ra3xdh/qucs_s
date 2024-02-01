@@ -206,7 +206,7 @@ QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
 
     s = "set appendwrite\n";
 
-    if (lvl==0) s += QString("echo \"$&number_%1  $%2_act\">> spice4qucs.%3.cir.res\n").arg(par).arg(par).arg(sim);
+    if (lvl==0) s += QString("echo \"$&number_%1  $%2_act\" >> spice4qucs.%3.cir.res\n").arg(par).arg(par).arg(sim);
     else s += QString("echo \"$&number_%1\" $%1_act >> spice4qucs.%2.cir.res%3\n").arg(par).arg(sim).arg(lvl);
     s += QString("let number_%1 = number_%1 + 1\n").arg(par);
 
@@ -249,7 +249,7 @@ QString Param_Sweep::spice_netlist(bool isXyce)
         step = (stop-start)/points;
     }
 
-    if (Props.at(0)->Value.startsWith("DC")) {
+    if (Props.at(0)->Value.toLower().startsWith("dc")) {
         QString src = getProperty("Param")->Value;
         s = QString("DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
         if (isXyce) s.prepend('.');

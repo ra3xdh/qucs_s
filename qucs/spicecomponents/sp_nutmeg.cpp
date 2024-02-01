@@ -48,8 +48,7 @@ NutmegEquation::NutmegEquation()
   SpiceModel = "NutmegEq";
   Name  = "NutmegEq";
 
-  Props.append(new Property("Simulation","ac",true,
-                            "Used simulation [ac, tran, dc, disto, sp, fft, all]"));
+  Props.append(new Property("Simulation", "ALL", true, "Simulation name"));
   Props.append(new Property("y", "1", true));
 }
 
@@ -76,8 +75,14 @@ QString NutmegEquation::getEquations(QString sim, QStringList &dep_vars)
     if (isActive != COMP_IS_ACTIVE) return QString("");
 
     QString s;
-    s.clear();
-    if (Props.at(0)->Value==sim) {
+    QRegularExpression sim_rx("^\\w+\\d+");
+    QString used_sim =  Props.at(0)->Value.toLower();
+    bool match = false;
+    if ( sim_rx.match(used_sim).hasMatch() )
+        match = sim == used_sim;
+    else
+        match = sim.startsWith(used_sim);
+    if ( match || used_sim == "all" ) {
         Property *pp = Props.first();
         pp = Props.next();
         for (;pp!=0;pp=Props.next()) {

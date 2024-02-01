@@ -160,16 +160,18 @@ bool AbstractSpiceKernel::checkSimulations()
 
 bool AbstractSpiceKernel::checkDCSimulation()
 {
-    if (DC_OP_only) return true;
-    bool r = false;
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (!pc->isActive) continue;
-        if (pc->isSimulation && pc->Model != ".DC") {
-            r = true;
-            break;
-        }
-    }
-    return r;
+    return true;  // DC OP is now saved in the dataset
+
+    //if (DC_OP_only) return true;
+    //bool r = false;
+    //for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+    //    if (!pc->isActive) continue;
+    //    if (pc->isSimulation && pc->Model != ".DC") {
+    //        r = true;
+    //        break;
+    //    }
+    //}
+    //return r;
 }
 
 /*!
@@ -1153,8 +1155,13 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         bool hasParSweep = false;
         bool hasDblParSweep = false;
 
-        QRegularExpression custom_prefix_rx("(?<=#).*?(?=#)");
-        QString custom_prefix = custom_prefix_rx.match(ngspice_output_filename).captured(0);
+        QString custom_prefix;
+        if ( ngspice_output_filename.startsWith("spice4qucs.") ) {
+            custom_prefix = ngspice_output_filename.section('.', 1, 1).toLower();
+        } else {
+            QRegularExpression custom_prefix_rx("(?<=#).*?(?=#)");
+            custom_prefix = custom_prefix_rx.match(ngspice_output_filename).captured(0).toLower();
+        }
         QRegularExpression four_rx(".*\\.four[0-9]+$");
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
@@ -1183,7 +1190,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             parseNoiseOutput(full_outfile,sim_points,var_list,hasParSweep);
             if (hasParSweep) {
                 QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
-                                                        + "spice4qucs.noise.cir.res");
+                                                        + "spice4qucs." + custom_prefix + ".cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
         } else if (ngspice_output_filename.endsWith(".pz")) {
@@ -1191,7 +1198,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             parsePZOutput(full_outfile,sim_points,var_list,hasParSweep);
             if (hasParSweep) {
                 QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
-                                                        + "spice4qucs.pz.cir.res");
+                                                        + "spice4qucs." + custom_prefix + ".cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
         } else if (ngspice_output_filename.endsWith(".SENS.prn")) {
@@ -1204,23 +1211,17 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                                                         + "spice4qucs.sens.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
-        } else if (ngspice_output_filename.endsWith("_swp.txt")) {
+        } else if (ngspice_output_filename.endsWith("_swp.plot")) {
             hasParSweep = true;
-            QString simstr = full_outfile;
-            simstr.remove("_swp.txt");
-            if (ngspice_output_filename.endsWith("_swp_swp.txt")) { // 2-var parameter sweep
+            if (ngspice_output_filename.endsWith("_swp_swp.plot")) { // 2-var parameter sweep
                 hasDblParSweep = true;
-                simstr.chop(4);
-                simstr = simstr.split('_').last();
                 QString res2_file = QDir::toNativeSeparators(workdir + QDir::separator()
-                                                            + "spice4qucs." + simstr + ".cir.res1");
+                                                            + "spice4qucs." + custom_prefix + ".cir.res1");
                 parseResFile(res2_file,swp_var2,swp_var2_val);
-            } else {
-                simstr = simstr.split('_').last();
             }
 
             QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
-                                                    + "spice4qucs." + simstr + ".cir.res");
+                                                    + "spice4qucs." + custom_prefix + ".cir.res");
             parseResFile(res_file,swp_var,swp_var_val);
 
             parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
@@ -1343,6 +1344,11 @@ void AbstractSpiceKernel::removeAllSimulatorOutputs()
         QString full_outfile = workdir+QDir::separator()+output_filename;
         QFile::remove(full_outfile);
     }
+    QDir dir(workdir);
+    dir.setNameFilters(QStringList() << "*.cir.res*");
+    dir.setFilter(QDir::Files);
+    foreach(QString file, dir.entryList())
+        dir.remove(file);
 }
 
 /*!
@@ -1408,11 +1414,12 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list, const QStrin
         }
     }
 
-    if ( !custom_prefix.isEmpty() ) {
-        for ( it = var_list.begin() ; it != var_list.end() ; ++it)
-            if ( !(*it).isEmpty() )
-                (*it).prepend(custom_prefix + ".");
-    }
+    if ( needsPrefix )
+        if ( !custom_prefix.isEmpty() ) {
+            for ( it = var_list.begin() ; it != var_list.end() ; ++it)
+                if ( !(*it).isEmpty() )
+                    (*it).prepend(custom_prefix + ".");
+        }
 }
 
 /*!

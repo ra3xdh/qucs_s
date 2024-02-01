@@ -64,6 +64,7 @@ protected:
     QStringList sims,vars,output_files;
 
     bool DC_OP_only; // only calculate operating point to show DC bias
+    bool needsPrefix;
     Schematic *Sch;
 
     bool prepareSpiceNetlist(QTextStream &stream, bool isSubckt = false);
