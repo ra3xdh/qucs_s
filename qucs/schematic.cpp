@@ -1059,10 +1059,14 @@ void Schematic::drawGrid(const ViewPainter& p)
     if (!GridOn)
         return;
 
+    // A grid drawn with pen of 1.0 width reportedly looks good both
+    // on standard and HiDPI displays.
+    // See here for details https://github.com/ra3xdh/qucs_s/pull/524
+    p.Painter->setPen(QPen{ Qt::black, 1.0 });
+
     {
         // Draw small cross at origin of coordinates
         const QPoint origin = contentsToViewport(modelToView(QPoint{0, 0}));
-        p.Painter->setPen(QPen(Qt::black, 0));
         p.Painter->drawLine(origin.x() - 3, origin.y(), origin.x() + 4, origin.y());  // horizontal stick
         p.Painter->drawLine(origin.x(), origin.y() - 3, origin.x(), origin.y() + 4);  // vertical stick
     }
