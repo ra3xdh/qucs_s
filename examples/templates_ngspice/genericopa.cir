@@ -1,0 +1,16 @@
+* generic OpAmp model
+* gain, phase, offset, limits to power supply, input and output resistance
+.subckt genopa in+ in- vcc vee out POLE=20 GAIN=20k VOFFSET=5m ROUT=10 RIN=10Meg
+Rin in+ in+ {RIN}
+Voff in+ inoff dc {VOFFSET}
+G10 0 int inoff in- 100u
+R1 int 0 {GAIN/100u}
+C1 int 0 {1/(6.28*(GAIN/100u)*POLE)}
+Eout 2 0 int 0 1
+Rout 2 out {ROUT}
+Elow 3 0 vee 0 1
+Ehigh 8 0 vcc 0 1
+Dlow 3 int Dlimit
+Dhigh int 8 Dlimit
+.model Dlimit D N=0.01
+.ends genopa
