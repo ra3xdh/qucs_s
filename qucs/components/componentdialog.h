@@ -108,6 +108,7 @@ private:
   QComboBox *comboSim, *comboType;
 
   void updateCompPropsList(void);
+  QStringList getSimulationList();
 };
 
 #endif
