@@ -83,7 +83,7 @@ public:
 
   void setName(const QString&);
   void setChanged(bool, bool fillStack=false, char Op='*');
-  void paintGrid(ViewPainter*, int, int, int, int);
+  void drawGrid(const ViewPainter&);
   void print(QPrinter*, QPainter*, bool, bool);
 
   void paintSchToViewpainter(ViewPainter* p, bool printAll, bool toImage, int screenDpiX=96, int printerDpiX=300);
@@ -163,7 +163,7 @@ public:
   QList<PostedPaintEvent>   PostedPaintEvents;
   bool symbolMode;  // true if in symbol painting mode
 
-
+  // Horizontal and vertical grid step
   int GridX, GridY;
 
   // Variables View* are the coordinates of top-level and bottom-right corners

@@ -433,7 +433,7 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
 
     Painter.init(p, Scale, -ViewX1, -ViewY1, contentsX(), contentsY());
 
-    paintGrid(&Painter, contentsX(), contentsY(), visibleWidth(), visibleHeight());
+    drawGrid(Painter);
 
     if (!symbolMode)
         paintFrame(&Painter);
@@ -1054,60 +1054,78 @@ void Schematic::setOnGrid(int &x, int &y)
     y -= y % GridY;
 }
 
-// ---------------------------------------------------
-void Schematic::paintGrid(ViewPainter *p, int cX, int cY, int Width, int Height)
+void Schematic::drawGrid(const ViewPainter& p)
 {
     if (!GridOn)
         return;
 
-    p->Painter->setPen(QPen(Qt::black, 0));
-    int dx = -int(Scale * float(ViewX1)) - cX;
-    int dy = -int(Scale * float(ViewY1)) - cY;
-    p->Painter->drawLine(-3 + dx, dy, 4 + dx, dy); // small cross at origin
-    p->Painter->drawLine(dx, -3 + dy, dx, 4 + dy);
+    {
+        // Draw small cross at origin of coordinates
+        const QPoint origin = contentsToViewport(modelToView(QPoint{0, 0}));
+        p.Painter->setPen(QPen(Qt::black, 0));
+        p.Painter->drawLine(origin.x() - 3, origin.y(), origin.x() + 4, origin.y());  // horizontal stick
+        p.Painter->drawLine(origin.x(), origin.y() - 3, origin.x(), origin.y() + 4);  // vertical stick
+    }
 
-    int x1 = int(float(cX) / Scale) + ViewX1;
-    int y1 = int(float(cY) / Scale) + ViewY1;
+    // Grid is drawn as a set of nodes, each node looks like a point and a node
+    // is located at every horizontal and vertical step:
+    // .  .  .  .  .
+    // .  .  .  .  .
+    // .  .  .  .  .
+    // .  .  .  .  .
+    //
+    // To find out where to start drawing grid nodes, we find a point
+    // which is currently shown at the top left corner of the viewport
+    // and then find a grid-node nearest to this point. We then convert these
+    // grid-node coordinates back to viewport-coordinates. This gives us
+    // coordinates of a point somewhere around the top-left corner of the
+    // viewport. This point corresponds to a grid-node. The same is done to a
+    // bottom-right corner. Two resulting points decsribe the area where
+    // grid-nodes should be drawn — where to start and where to finish drawing
+    // these nodes.
 
-    /// \todo setting the center of rotation on the grid causes the center to move when doing multiple rotations when it is not already on the grid. Should not force the center but force the component alignment after rotation.
-    setOnGrid(x1, y1);
-    if (x1 < 0)
-        x1 -= GridX - 1;
-    else
-        x1 += GridX;
-    x1 -= x1 % (GridX << 1);
+    // Find a point displayed in top-left corner
+    QPoint gridTopLeft = viewportToModel(viewportRect().topLeft());
+    // Set its coordinates to coordinates of nearest grid-point
+    setOnGrid(gridTopLeft.rx(), gridTopLeft.ry());
+    // Convert coordinates from model back to viewport
+    gridTopLeft = modelToView(gridTopLeft);
+    gridTopLeft = contentsToViewport(gridTopLeft);
 
-    if (y1 < 0)
-        y1 -= GridY - 1;
-    else
-        y1 += GridY;
-    y1 -= y1 % (GridY << 1);
+    QPoint gridBottomRight = viewportToModel(viewportRect().bottomRight());
+    setOnGrid(gridBottomRight.rx(), gridBottomRight.ry());
+    gridBottomRight = modelToView(gridBottomRight);
+    gridBottomRight = contentsToViewport(gridBottomRight);
 
-    float X, Y, Y0, DX, DY;
-    X = float(x1) * Scale + p->DX;
-    Y = Y0 = float(y1) * Scale + p->DY;
-    x1 = X > 0.0 ? int(X + 0.5) : int(X - 0.5);
-    y1 = Y > 0.0 ? int(Y + 0.5) : int(Y - 0.5);
+    // This is the minimal distance between drawn grid-nodes. No matter how
+    // a user scales the view, any two adjacent nodes must have at least this
+    // amount of "free space" between them.
+    constexpr double minimalVisibleGridStep = 8.0;
 
-    int xEnd = x1 + Width;
-    int yEnd = y1 + Height;
-    DX = float(GridX << 1) * Scale; // every second grid a point
-    DY = float(GridY << 1) * Scale;
-    while (DX <= 8.0)
-        DX *= 1.5; // if too narrow, every third grid a point
-    while (DY <= 8.0)
-        DY *= 1.5; // if too narrow, every third grid a point
+    // In some scales drawing a point for every step may lead to a very dense
+    // grid without much space between nodes. But we want to have some minimal
+    // distance between them. In such cases nodes shouldn't be drawn for every
+    // grid-step, but instead for every two grid-steps, or every three, and so on.
+    //
+    // To find out how frequently grid nodes should be drawn, we start from single
+    // grid-step and grow it until its "size in scale" gets larger than the minimal
+    // distance between points.
 
-    while (x1 < xEnd) {
-        Y = Y0;
-        y1 = Y > 0.0 ? int(Y + 0.5) : int(Y - 0.5);
-        while (y1 < yEnd) {
-            p->Painter->drawPoint(x1, y1); // paint grid
-            Y += DY;
-            y1 = Y > 0.0 ? int(Y + 0.5) : int(Y - 0.5);
+    double horizontalStep{ GridX * Scale };
+    for (int n = 2; horizontalStep < minimalVisibleGridStep; n++) {
+        horizontalStep = n * GridX * Scale;
+    }
+
+    double verticalStep{ GridY * Scale };
+    for (int n = 2; verticalStep < minimalVisibleGridStep; n++) {
+        verticalStep = n * GridY * Scale;
+    }
+
+    // Finally draw the grid-nodes
+    for (double x = gridTopLeft.x(); x <= gridBottomRight.x(); x = std::round(x + horizontalStep)) {
+        for (double y = gridTopLeft.y(); y <= gridBottomRight.y(); y = std::round(y + verticalStep)) {
+            p.Painter->drawPoint(x, y);
         }
-        X += DX;
-        x1 = X > 0.0 ? int(X + 0.5) : int(X - 0.5);
     }
 }
 
