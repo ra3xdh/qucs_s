@@ -1122,9 +1122,9 @@ void Schematic::drawGrid(const ViewPainter& p)
     }
 
     // Finally draw the grid-nodes
-    for (double x = gridTopLeft.x(); x <= gridBottomRight.x(); x = std::round(x + horizontalStep)) {
-        for (double y = gridTopLeft.y(); y <= gridBottomRight.y(); y = std::round(y + verticalStep)) {
-            p.Painter->drawPoint(x, y);
+    for (double x = gridTopLeft.x(); x <= gridBottomRight.x(); x += horizontalStep) {
+        for (double y = gridTopLeft.y(); y <= gridBottomRight.y(); y += verticalStep) {
+            p.Painter->drawPoint(std::round(x), std::round(y));
         }
     }
 }
