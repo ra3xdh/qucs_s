@@ -557,6 +557,8 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
       return condition ? misc::num2str(number) : misc::StringNiceNum(number);
     };
 
+    if (Diagrams == nullptr) return; // fix for crash on document closing; appears time to time
+
     for (Diagram* diagram = Diagrams->last(); diagram != nullptr; diagram = Diagrams->prev()) {
         // BUG: Obtaining the diagram type by name is marked as a bug elsewhere (to be solved separately).
         // TODO: Currently only rectangular diagrams are supported.
