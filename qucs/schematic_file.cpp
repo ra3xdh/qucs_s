@@ -866,6 +866,8 @@ bool Schematic::loadPaintings(QTextStream *stream, Q3PtrList<Painting> *List)
   QString Line, cstr;
   while(!stream->atEnd()) {
     Line = stream->readLine();
+    if (Line.trimmed().isEmpty()) continue;
+
     if(Line.at(0) == '<') if(Line.at(1) == '/') return true;
 
     Line = Line.trimmed();
