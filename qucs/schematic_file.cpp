@@ -285,8 +285,13 @@ int Schematic::savePropsJSON()
         if (line.contains("parameter")) {
             auto tokens = line.split(QRegularExpression("[\\s=;]"),qucs::SkipEmptyParts);
             if (tokens.count() >= 4) {
-               prop_name.append(tokens.at(2));
-               prop_val.append(tokens.at(3));
+                for(int ic = 0; ic <= tokens.count(); ic++) {
+                    if (tokens.at(ic) == "parameter") {
+                        prop_name.append(tokens.at(ic+2));
+                        prop_val.append(tokens.at(ic+3));
+                        break;
+                    }
+                }
             }
         }
     }
