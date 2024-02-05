@@ -41,7 +41,9 @@
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 			: QDialog(d)
 {
-  resize(450, 250);
+  QSettings settings("qucs","qucs_s");
+  restoreGeometry(settings.value("ComponentDialog/geometry").toByteArray());
+
   setWindowTitle(tr("Edit Component Properties"));
   Comp  = c;
   Doc   = d;
@@ -469,7 +471,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
         prop->setCurrentItem(prop->item(0,0));
         slotSelectProperty(prop->item(0,0));
     }
-
+ 
 
   /// \todo add key up/down browse and select prop
   connect(prop, SIGNAL(itemClicked(QTableWidgetItem*)),
@@ -826,6 +828,9 @@ void ComponentDialog::slotApplyState(int State)
 // Is called if the "OK"-button is pressed.
 void ComponentDialog::slotButtOK()
 {
+  QSettings settings("qucs","qucs_s");
+  settings.setValue("ComponentDialog/geometry", saveGeometry());
+
   slotApplyInput();
   slotButtCancel();
 }
