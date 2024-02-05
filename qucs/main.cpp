@@ -80,20 +80,31 @@ bool loadSettings()
     // else QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
     QucsSettings.DefaultSimulator = _settings::Get().item<int>("DefaultSimulator");
 
-    if(settings.contains("firstRun"))
-        QucsSettings.firstRun = settings.value("firstRun").toBool();
-    else QucsSettings.firstRun = true;
+    // if(settings.contains("firstRun"))
+    //     QucsSettings.firstRun = settings.value("firstRun").toBool();
+    // else QucsSettings.firstRun = true;
+    QucsSettings.firstRun = _settings::Get().item<bool>("firstRun");
 
-    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
-    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
-    if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
-    if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
-    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
-    if(settings.contains("appFont"))QucsSettings.appFont.fromString(settings.value("appFont").toString());
-    if(settings.contains("LargeFontSize"))QucsSettings.largeFontSize=settings.value("LargeFontSize").toDouble(); // use toDouble() as it can interpret the string according to the current locale
-    if(settings.contains("maxUndo"))QucsSettings.maxUndo=settings.value("maxUndo").toInt();
-    if(settings.contains("NodeWiring"))QucsSettings.NodeWiring=settings.value("NodeWiring").toInt();
-    if(settings.contains("BGColor"))QucsSettings.BGColor = misc::ColorFromString(settings.value("BGColor").toString());
+    /*** The following can all be replaced by Qt standard restoreGeometry ***/
+    // if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+    // if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    // if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
+    // if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
+
+    /*** Temporarily continue to use QucsSettings to make sure all settings convert okay and remain compatible ***/
+    // if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    // if(settings.contains("appFont"))QucsSettings.appFont.fromString(settings.value("appFont").toString());
+    // if(settings.contains("LargeFontSize"))QucsSettings.largeFontSize=settings.value("LargeFontSize").toDouble(); // use toDouble() as it can interpret the string according to the current locale
+    // if(settings.contains("maxUndo"))QucsSettings.maxUndo=settings.value("maxUndo").toInt();
+    // if(settings.contains("NodeWiring"))QucsSettings.NodeWiring=settings.value("NodeWiring").toInt();
+    // if(settings.contains("BGColor"))QucsSettings.BGColor = misc::ColorFromString(settings.value("BGColor").toString());
+    QucsSettings.font = _settings::Get().item<QString>("font");
+    QucsSettings.appFont = _settings::Get().item<QString>("appFont");
+    QucsSettings.largeFontSize = _settings::Get().item<double>("LargeFontSize");
+    QucsSettings.maxUndo = _settings::Get().item<int>("maxUndo");
+    QucsSettings.NodeWiring = _settings::Get().item<int>("NodeWiring");
+    QucsSettings.BGColor = _settings::Get().item<QString>("BGColor");
+
     if(settings.contains("Editor"))QucsSettings.Editor=settings.value("Editor").toString();
     if(settings.contains("FileTypes"))QucsSettings.FileTypes=settings.value("FileTypes").toStringList();
     if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();

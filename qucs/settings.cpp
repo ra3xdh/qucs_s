@@ -1,3 +1,5 @@
+#include <QApplication>
+
 #include <settings.h>
 #include <extsimkernels/spicecompat.h>
 
@@ -6,8 +8,11 @@ settingsManager::settingsManager()
 {
     // qDebug() << this << " created " << organizationName() << " " << applicationName();
     // m_Defaults["Foo"] = 1234;
-    
+
     m_Defaults["DefaultSimulator"] = spicecompat::simNotSpecified;
+    m_Defaults["FirstRun"] = true;
+    m_Defaults["font"] = QApplication::font();
+    m_Defaults["appFont"] = QApplication::font();
 }
 
 settingsManager::~settingsManager()
