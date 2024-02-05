@@ -45,7 +45,7 @@ QString misc::getWindowTitle()
     }
 #if defined(GIT)
     QString hash = GIT;
-    if (hash != "unknown") {
+    if (!hash.isEmpty()) {
         title = title + "-" + hash;
     }
 #endif
