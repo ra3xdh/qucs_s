@@ -42,8 +42,8 @@
 #include "node.h"
 #include "printerwriter.h"
 #include "imagewriter.h"
-
 #include "schematic.h"
+#include "settings.h"
 #include "module.h"
 #include "misc.h"
 
@@ -75,9 +75,10 @@ bool loadSettings()
 {
     QSettings settings("qucs","qucs_s");
 
-    if(settings.contains("DefaultSimulator"))
-        QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
-    else QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
+    // if(settings.contains("DefaultSimulator"))
+    //     QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
+    // else QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
+    QucsSettings.DefaultSimulator = _settings::Get().item<int>("DefaultSimulator");
 
     if(settings.contains("firstRun"))
         QucsSettings.firstRun = settings.value("firstRun").toBool();

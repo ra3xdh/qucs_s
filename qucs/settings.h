@@ -13,6 +13,28 @@ public:
   explicit settingsManager();
   ~settingsManager();
 
+  /** \brief Set all settings in the given group to their default value.
+  */  
+  void resetDefaults(const QString& group = "All");
+
+  /** \brief Get the default value for a given setting.
+  */  
+  template<class T>
+  T itemDefault(const QString& key)
+  {
+    return value(key).value<T>();
+  }
+
+  /** \brief Store a setting.
+  */  
+  template<class T>
+  void setItem(const QString& key, const T& value)
+  {
+    setValue(key, value);
+  }
+
+  /** \brief Retrieve a setting value by its key.
+  */  
   template<class T>
   T item(const QString& key)
   {

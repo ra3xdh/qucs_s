@@ -34,6 +34,7 @@
 #include "main.h"
 #include "textdoc.h"
 #include "schematic.h"
+#include "settings.h"
 
 #include <QWidget>
 #include <QLabel>
