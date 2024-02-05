@@ -16,7 +16,7 @@ endif()
 file (STRINGS "${qucs-suite_SOURCE_DIR}/VERSION" QUCS_VERSION)
 message(STATUS "Configuring Qucs: VERSION ${QUCS_VERSION}")
 
-set(GIT unknown)
+set(GIT "")
 if(EXISTS ${CMAKE_SOURCE_DIR}/.git )
   find_package(Git)
   # Get the latest abbreviated commit hash of the working branch
