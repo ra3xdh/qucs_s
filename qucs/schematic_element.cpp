@@ -1549,7 +1549,8 @@ int Schematic::selectElements(int x1, int y1, int x2, int y2, bool append, bool 
     for (pw = Wires->first(); pw != nullptr; pw = Wires->next()) {
         if (pw->Label) {
             pl = pw->Label;
-            QRect componentRect(pl->x1, pl->y1, pl->x2 - pl->x1, pl->y2 - pl->y1);
+            pl->getLabelBounding(cx1,cy1,cx2,cy2);
+            QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
             if (shouldBeSelected(componentRect, selectionRect, entirely)) {
                 pl->isSelected = true;
                 z++;
@@ -1564,7 +1565,8 @@ int Schematic::selectElements(int x1, int y1, int x2, int y2, bool append, bool 
     for (Node *pn = Nodes->first(); pn != nullptr; pn = Nodes->next()) {
         pl = pn->Label;
         if (pl) {
-            QRect componentRect(pl->x1, pl->y1, pl->x2 - pl->x1, pl->y2 - pl->y1);
+            pl->getLabelBounding(cx1,cy1,cx2,cy2);
+            QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
             if (shouldBeSelected(componentRect, selectionRect, entirely)) {
                 pl->isSelected = true;
                 z++;
