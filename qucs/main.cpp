@@ -229,11 +229,11 @@ bool loadSettings()
     QucsSettings.QucsHomeDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
 
-    // TODO:
-    if (settings.contains("IgnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IgnoreVersion").toBool();
-    // check also for old setting name with typo...
-    else if (settings.contains("IngnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IngnoreVersion").toBool();
-    else QucsSettings.IgnoreFutureVersion = false;
+    // if (settings.contains("IgnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IgnoreVersion").toBool();
+    // // check also for old setting name with typo...
+    // else if (settings.contains("IngnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IngnoreVersion").toBool();
+    // else QucsSettings.IgnoreFutureVersion = false;
+    QucsSettings.IgnoreFutureVersion = _settings::Get().item<bool>("IgnoreVersion");
 
     // if (settings.contains("GraphAntiAliasing")) QucsSettings.GraphAntiAliasing = settings.value("GraphAntiAliasing").toBool();
     // else QucsSettings.GraphAntiAliasing = false;

@@ -17,10 +17,6 @@ public:
   */  
   void resetDefaults(const QString& group = "All");
 
-  /** \brief Initialise all settings to their (hard coded) default value.
-  */
-  void initDefaults();
-
   /** \brief Get the default value for a given setting.
   */  
   template<class T>
@@ -43,16 +39,30 @@ public:
   T item(const QString& key)
   {
     if (contains(key)) {
-        return value(key).value<T>();
+      return value(key).value<T>();
     }
-    
-    else {
-        return m_Defaults[key].value<T>();
+
+    for (auto alias : m_Aliases[key]) {
+      if (contains(alias)) {
+        // qDebug() << "Found alias: " << alias;
+        return value(alias).value<T>();
+      }
     }
+    return m_Defaults[key].value<T>();
   }
 
 private:
   std::map<QString, QVariant> m_Defaults;
+  std::map<QString, QStringList> m_Aliases;
+
+  /** \brief Populate the list of items that have a (hard coded) default value.
+  */
+  void initDefaults();
+
+  /** \brief Populate the list of aliases.
+   *         (legacy names for settings that have been used in the past).
+  */
+  void initAliases();  
 };
 
 typedef QucsSingleton<settingsManager> _settings;

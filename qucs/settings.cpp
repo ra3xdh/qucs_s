@@ -9,6 +9,7 @@ settingsManager::settingsManager()
 {
     // qDebug() << this << " created " << organizationName() << " " << applicationName();
 
+    initAliases();
     initDefaults();
 }
 
@@ -66,4 +67,9 @@ void settingsManager::initDefaults()
     m_Defaults["GraphAntiAliasing"] = false;
     m_Defaults["TextAntiAliasing"] = false;
     m_Defaults["fullTraceName"] = false;
+}
+
+void settingsManager::initAliases()
+{
+    m_Aliases["IgnoreVersion"] = QStringList({"IngnoreVersion"});
 }
