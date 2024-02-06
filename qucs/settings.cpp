@@ -46,6 +46,8 @@ void settingsManager::initDefaults()
     m_Defaults["FirstRun"] = true;
     m_Defaults["font"] = QApplication::font();
     m_Defaults["appFont"] = QApplication::font();
+    m_Defaults["LargeFontSize"] = static_cast<double>(16.0);
+    m_Defaults["maxUndo"] = 20;
     m_Defaults["panelIconsTheme"] = qucs::autoIcons;
     m_Defaults["compIconsTheme"] = qucs::autoIcons;
 
