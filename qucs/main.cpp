@@ -235,7 +235,6 @@ bool loadSettings()
     else if (settings.contains("IngnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IngnoreVersion").toBool();
     else QucsSettings.IgnoreFutureVersion = false;
 
-
     // if (settings.contains("GraphAntiAliasing")) QucsSettings.GraphAntiAliasing = settings.value("GraphAntiAliasing").toBool();
     // else QucsSettings.GraphAntiAliasing = false;
 
@@ -261,9 +260,9 @@ bool loadSettings()
 
     // QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",qucs::SkipEmptyParts);
     // QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
-    QucsSettings.RecentDocs = _settings::Get().item<QStringList>("RecentDocs");
+    // Recent docs is stored as a * separated list rather than as a string list.
+    QucsSettings.RecentDocs = _settings::Get().item<QString>("RecentDocs").split("*",qucs::SkipEmptyParts);
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
-    qDebug() << "Recent docs: " << QucsSettings.RecentDocs;
 
     QucsSettings.spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
 
