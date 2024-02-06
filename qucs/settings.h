@@ -17,6 +17,10 @@ public:
   */  
   void resetDefaults(const QString& group = "All");
 
+  /** \brief Initialise all settings to their (hard coded) default value.
+  */
+  void initDefaults();
+
   /** \brief Get the default value for a given setting.
   */  
   template<class T>

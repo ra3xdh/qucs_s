@@ -85,7 +85,7 @@ bool loadSettings()
     // else QucsSettings.firstRun = true;
     QucsSettings.firstRun = _settings::Get().item<bool>("firstRun");
 
-    /*** The following can all be replaced by Qt standard restoreGeometry ***/
+    /*** The following can all be replaced by Qt standard restoreGeometry and is not needed here ***/
     // if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     // if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
     // if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
@@ -98,31 +98,47 @@ bool loadSettings()
     // if(settings.contains("maxUndo"))QucsSettings.maxUndo=settings.value("maxUndo").toInt();
     // if(settings.contains("NodeWiring"))QucsSettings.NodeWiring=settings.value("NodeWiring").toInt();
     // if(settings.contains("BGColor"))QucsSettings.BGColor = misc::ColorFromString(settings.value("BGColor").toString());
-    QucsSettings.font = _settings::Get().item<QString>("font");
-    QucsSettings.appFont = _settings::Get().item<QString>("appFont");
+    // if(settings.contains("Editor"))QucsSettings.Editor=settings.value("Editor").toString();
+    // if(settings.contains("FileTypes"))QucsSettings.FileTypes=settings.value("FileTypes").toStringList();
+    // if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+    QucsSettings.font.fromString(_settings::Get().item<QString>("font"));
+    QucsSettings.appFont.fromString(_settings::Get().item<QString>("appFont"));
     QucsSettings.largeFontSize = _settings::Get().item<double>("LargeFontSize");
     QucsSettings.maxUndo = _settings::Get().item<int>("maxUndo");
     QucsSettings.NodeWiring = _settings::Get().item<int>("NodeWiring");
     QucsSettings.BGColor = _settings::Get().item<QString>("BGColor");
+    QucsSettings.Editor = _settings::Get().item<QString>("Editor");
+    QucsSettings.FileTypes = _settings::Get().item<QStringList>("FileTypes");
+    QucsSettings.Language = _settings::Get().item<QString>("Language");
 
-    if(settings.contains("Editor"))QucsSettings.Editor=settings.value("Editor").toString();
-    if(settings.contains("FileTypes"))QucsSettings.FileTypes=settings.value("FileTypes").toStringList();
-    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
-    if(settings.contains("Comment"))QucsSettings.Comment=misc::ColorFromString(settings.value("Comment").toString());
-    if(settings.contains("String"))QucsSettings.String=misc::ColorFromString(settings.value("String").toString());
-    if(settings.contains("Integer"))QucsSettings.Integer=misc::ColorFromString(settings.value("Integer").toString());
-    if(settings.contains("Real"))QucsSettings.Real=misc::ColorFromString(settings.value("Real").toString());
-    if(settings.contains("Character"))QucsSettings.Character=misc::ColorFromString(settings.value("Character").toString());
-    if(settings.contains("Type"))QucsSettings.Type=misc::ColorFromString(settings.value("Type").toString());
-    if(settings.contains("Attribute"))QucsSettings.Attribute=misc::ColorFromString(settings.value("Attribute").toString());
-    if(settings.contains("Directive"))QucsSettings.Directive=misc::ColorFromString(settings.value("Directive").toString());
-    if(settings.contains("Task"))QucsSettings.Task=misc::ColorFromString(settings.value("Task").toString());
+    // Editor syntax highlighting settings.
+    // if(settings.contains("Comment"))QucsSettings.Comment=misc::ColorFromString(settings.value("Comment").toString());
+    // if(settings.contains("String"))QucsSettings.String=misc::ColorFromString(settings.value("String").toString());
+    // if(settings.contains("Integer"))QucsSettings.Integer=misc::ColorFromString(settings.value("Integer").toString());
+    // if(settings.contains("Real"))QucsSettings.Real=misc::ColorFromString(settings.value("Real").toString());
+    // if(settings.contains("Character"))QucsSettings.Character=misc::ColorFromString(settings.value("Character").toString());
+    // if(settings.contains("Type"))QucsSettings.Type=misc::ColorFromString(settings.value("Type").toString());
+    // if(settings.contains("Attribute"))QucsSettings.Attribute=misc::ColorFromString(settings.value("Attribute").toString());
+    // if(settings.contains("Directive"))QucsSettings.Directive=misc::ColorFromString(settings.value("Directive").toString());
+    // if(settings.contains("Task"))QucsSettings.Task=misc::ColorFromString(settings.value("Task").toString());
+    QucsSettings.Comment = _settings::Get().item<QString>("Comment");
+    QucsSettings.String = _settings::Get().item<QString>("String");
+    QucsSettings.Integer = _settings::Get().item<QString>("Integer");
+    QucsSettings.Real = _settings::Get().item<QString>("Real");
+    QucsSettings.Character = _settings::Get().item<QString>("Character");
+    QucsSettings.Type = _settings::Get().item<QString>("Type");
+    QucsSettings.Attribute = _settings::Get().item<QString>("Attribute");
+    QucsSettings.Directive = _settings::Get().item<QString>("Directive");
+    QucsSettings.Task = _settings::Get().item<QString>("Task");
 
-    if (settings.contains("panelIconsTheme")) QucsSettings.panelIconsTheme = settings.value("panelIconsTheme").toInt();
-    else QucsSettings.panelIconsTheme = qucs::autoIcons;
-    if (settings.contains("compIconsTheme")) QucsSettings.compIconsTheme = settings.value("compIconsTheme").toInt();
-    else QucsSettings.compIconsTheme = qucs::autoIcons;
+    // if (settings.contains("panelIconsTheme")) QucsSettings.panelIconsTheme = settings.value("panelIconsTheme").toInt();
+    // else QucsSettings.panelIconsTheme = qucs::autoIcons;
+    // if (settings.contains("compIconsTheme")) QucsSettings.compIconsTheme = settings.value("compIconsTheme").toInt();
+    // else QucsSettings.compIconsTheme = qucs::autoIcons;   
+    QucsSettings.panelIconsTheme = _settings::Get().item<int>("panelIconsTheme");
+    QucsSettings.compIconsTheme = _settings::Get().item<int>("compIconsTheme");
 
+    // TODO: Convert this to the new settings model.
     if(settings.contains("Qucsator")) {
         QucsSettings.Qucsator = settings.value("Qucsator").toString();
         QFileInfo inf(QucsSettings.Qucsator);
@@ -135,81 +151,118 @@ bool loadSettings()
         if (QucsSettings.Qucsconv.isEmpty())
             QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv" + executableSuffix;
     }
+
+    // The following three lines were already commented out.
     //if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
     //if(settings.contains("LangDir"))QucsSettings.LangDir = settings.value("LangDir").toString();
-    //if(settings.contains("LibDir"))QucsSettings.LibDir = settings.value("LibDir").toString();
-    if(settings.contains("AdmsXmlBinDir"))QucsSettings.AdmsXmlBinDir.setPath(settings.value("AdmsXmlBinDir").toString());
-    if(settings.contains("AscoBinDir"))QucsSettings.AscoBinDir.setPath(settings.value("AscoBinDir").toString());
+    //if(settings.contains("LibDir"))QucsSettings.LibDir = settings.value("LibDir").toString();  
+
+    // if(settings.contains("AdmsXmlBinDir"))QucsSettings.AdmsXmlBinDir.setPath(settings.value("AdmsXmlBinDir").toString());
+    // if(settings.contains("AscoBinDir"))QucsSettings.AscoBinDir.setPath(settings.value("AscoBinDir").toString());
+    QucsSettings.AdmsXmlBinDir.setPath(_settings::Get().item<QString>("AdmsXmlBinDir"));
+    QucsSettings.AscoBinDir.setPath(_settings::Get().item<QString>("AscoBinDir"));
+
     //if(settings.contains("OctaveDir"))QucsSettings.OctaveDir = settings.value("OctaveDir").toString();
     //if(settings.contains("ExamplesDir"))QucsSettings.ExamplesDir = settings.value("ExamplesDir").toString();
     //if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
-    if(settings.contains("NgspiceExecutable")) QucsSettings.NgspiceExecutable = settings.value("NgspiceExecutable").toString();
-    else {
-#ifdef Q_OS_WIN
-        QucsSettings.NgspiceExecutable = "ngspice_con.exe";
-#else
-        QucsSettings.NgspiceExecutable = "ngspice";
-#endif
-    }
-    if(settings.contains("XyceExecutable")) QucsSettings.XyceExecutable = settings.value("XyceExecutable").toString();
-    else {
-#ifdef Q_OS_WIN
-        QucsSettings.XyceExecutable = "Xyce.exe";
-#else
-        QucsSettings.XyceExecutable = "/usr/local/Xyce-Release-6.8.0-OPENSOURCE/bin/Xyce";
-#endif
-    }
-    if(settings.contains("XyceParExecutable")) QucsSettings.XyceParExecutable = settings.value("XyceParExecutable").toString();
-    else QucsSettings.XyceParExecutable = "mpirun -np %p /usr/local/Xyce-Release-6.8.0-OPENMPI-OPENSOURCE/bin/Xyce";
-    if(settings.contains("SpiceOpusExecutable")) QucsSettings.SpiceOpusExecutable = settings.value("SpiceOpusExecutable").toString();
-    else QucsSettings.SpiceOpusExecutable = "spiceopus";
-    if(settings.contains("Nprocs")) QucsSettings.NProcs = settings.value("Nprocs").toInt();
-    else QucsSettings.NProcs = 4;
+
+    //     if(settings.contains("NgspiceExecutable")) QucsSettings.NgspiceExecutable = settings.value("NgspiceExecutable").toString();
+    //     else {
+    // #ifdef Q_OS_WIN
+    //         QucsSettings.NgspiceExecutable = "ngspice_con.exe";
+    // #else
+    //         QucsSettings.NgspiceExecutable = "ngspice";
+    // #endif
+    //     }
+    QucsSettings.NgspiceExecutable = _settings::Get().item<QString>("NgspiceExecutable");
+
+    //     if(settings.contains("XyceExecutable")) QucsSettings.XyceExecutable = settings.value("XyceExecutable").toString();
+    //     else {
+    // #ifdef Q_OS_WIN
+    //         QucsSettings.XyceExecutable = "Xyce.exe";
+    // #else
+    //         QucsSettings.XyceExecutable = "/usr/local/Xyce-Release-6.8.0-OPENSOURCE/bin/Xyce";
+    // #endif
+    //     }   
+    QucsSettings.XyceExecutable = _settings::Get().item<QString>("XyceExecutable");
+   
+    // if(settings.contains("XyceParExecutable")) QucsSettings.XyceParExecutable = settings.value("XyceParExecutable").toString();
+    // else QucsSettings.XyceParExecutable = "mpirun -np %p /usr/local/Xyce-Release-6.8.0-OPENMPI-OPENSOURCE/bin/Xyce";
+    // if(settings.contains("SpiceOpusExecutable")) QucsSettings.SpiceOpusExecutable = settings.value("SpiceOpusExecutable").toString();
+    // else QucsSettings.SpiceOpusExecutable = "spiceopus";
+    // if(settings.contains("Nprocs")) QucsSettings.NProcs = settings.value("Nprocs").toInt();
+    // else QucsSettings.NProcs = 4;
+    QucsSettings.XyceParExecutable = _settings::Get().item<QString>("XyceParExecutable");
+    QucsSettings.SpiceOpusExecutable = _settings::Get().item<QString>("SpiceOpusExecutable");
+    QucsSettings.NProcs = _settings::Get().item<int>("Nprocs");
+
+    // TODO:
     if(settings.contains("S4Q_workdir")) QucsSettings.S4Qworkdir = settings.value("S4Q_workdir").toString();
     else QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QucsSettings.QucsWorkDir.absolutePath()+"/spice4qucs");
-    if(settings.contains("SimParameters")) QucsSettings.SimParameters = settings.value("SimParameters").toString();
-    else QucsSettings.SimParameters = "";
-    if(settings.contains("OctaveExecutable")) {
-        QucsSettings.OctaveExecutable = settings.value("OctaveExecutable").toString();
-    } else {
-        if(settings.contains("OctaveBinDir")) {
-            QucsSettings.OctaveExecutable = settings.value("OctaveBinDir").toString() +
-                    QDir::separator() + "octave" + QString(executableSuffix);
-        } else QucsSettings.OctaveExecutable = "octave" + QString(executableSuffix);
-    }
-    if(settings.contains("OpenVAFExecutable")) {
-        QucsSettings.OpenVAFExecutable = settings.value("OpenVAFExecutable").toString();
-    } else {
-        QucsSettings.OpenVAFExecutable = "openvaf" + QString(executableSuffix);
-    }
-    if(settings.contains("QucsHomeDir"))
-      if(settings.value("QucsHomeDir").toString() != "")
-         QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
+    // QucsSettings.S4Qworkdir = _settings::Get().item<QString>("S4Q_workdir");
+    
+    // if(settings.contains("SimParameters")) QucsSettings.SimParameters = settings.value("SimParameters").toString();
+    // else QucsSettings.SimParameters = "";
+    QucsSettings.SimParameters = _settings::Get().item<QString>("SimParameters");
+
+    // if(settings.contains("OctaveExecutable")) {
+    //     QucsSettings.OctaveExecutable = settings.value("OctaveExecutable").toString();
+    // } else {
+    //     if(settings.contains("OctaveBinDir")) {
+    //         QucsSettings.OctaveExecutable = settings.value("OctaveBinDir").toString() +
+    //                 QDir::separator() + "octave" + QString(executableSuffix);
+    //     } else QucsSettings.OctaveExecutable = "octave" + QString(executableSuffix);
+    // }
+    QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveExecutable");
+    QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveBinDir");
+
+    // if(settings.contains("OpenVAFExecutable")) {
+    //     QucsSettings.OpenVAFExecutable = settings.value("OpenVAFExecutable").toString();
+    // } else {
+    //     QucsSettings.OpenVAFExecutable = "openvaf" + QString(executableSuffix);
+    // }
+    QucsSettings.OpenVAFExecutable = _settings::Get().item<QString>("OpenVAFExecutable");
+
+    // if(settings.contains("QucsHomeDir"))
+    //   if(settings.value("QucsHomeDir").toString() != "")
+    //      QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
+    QucsSettings.QucsHomeDir = _settings::Get().item<QString>("QucsHomeDir");
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
 
+    // TODO:
     if (settings.contains("IgnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IgnoreVersion").toBool();
     // check also for old setting name with typo...
     else if (settings.contains("IngnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IngnoreVersion").toBool();
     else QucsSettings.IgnoreFutureVersion = false;
 
-    if (settings.contains("GraphAntiAliasing")) QucsSettings.GraphAntiAliasing = settings.value("GraphAntiAliasing").toBool();
-    else QucsSettings.GraphAntiAliasing = false;
 
-    if (settings.contains("TextAntiAliasing")) QucsSettings.TextAntiAliasing = settings.value("TextAntiAliasing").toBool();
-    else QucsSettings.TextAntiAliasing = false;
+    // if (settings.contains("GraphAntiAliasing")) QucsSettings.GraphAntiAliasing = settings.value("GraphAntiAliasing").toBool();
+    // else QucsSettings.GraphAntiAliasing = false;
 
-    if (settings.contains("fullTraceName")) QucsSettings.fullTraceName = settings.value("fullTraceName").toBool();
-    else QucsSettings.fullTraceName = false;
+    // if (settings.contains("TextAntiAliasing")) QucsSettings.TextAntiAliasing = settings.value("TextAntiAliasing").toBool();
+    // else QucsSettings.TextAntiAliasing = false;
 
-    QucsSettings.FileToolbar = !settings.contains("FileToolbar") || settings.value("FileToolbar").toBool();
-    QucsSettings.EditToolbar = !settings.contains("EditToolbar") || settings.value("EditToolbar").toBool();
-    QucsSettings.ViewToolbar = !settings.contains("ViewToolbar") || settings.value("ViewToolbar").toBool();
-    QucsSettings.WorkToolbar = !settings.contains("WorkToolbar") || settings.value("WorkToolbar").toBool();
-    QucsSettings.SimulateToolbar = !settings.contains("SimulateToolbar") || settings.value("SimulateToolbar").toBool();
+    // if (settings.contains("fullTraceName")) QucsSettings.fullTraceName = settings.value("fullTraceName").toBool();
+    // else QucsSettings.fullTraceName = false;
+    QucsSettings.GraphAntiAliasing = _settings::Get().item<bool>("GraphAntiAliasing");
+    QucsSettings.TextAntiAliasing = _settings::Get().item<bool>("TextAntiAliasing");
+    QucsSettings.fullTraceName = _settings::Get().item<bool>("fullTraceName");
 
-    QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",qucs::SkipEmptyParts);
+    // QucsSettings.FileToolbar = !settings.contains("FileToolbar") || settings.value("FileToolbar").toBool();
+    // QucsSettings.EditToolbar = !settings.contains("EditToolbar") || settings.value("EditToolbar").toBool();
+    // QucsSettings.ViewToolbar = !settings.contains("ViewToolbar") || settings.value("ViewToolbar").toBool();
+    // QucsSettings.WorkToolbar = !settings.contains("WorkToolbar") || settings.value("WorkToolbar").toBool();
+    // QucsSettings.SimulateToolbar = !settings.contains("SimulateToolbar") || settings.value("SimulateToolbar").toBool();
+    QucsSettings.FileToolbar = _settings::Get().item<bool>("FileToolbar");
+    QucsSettings.EditToolbar = _settings::Get().item<bool>("EditToolbar");
+    QucsSettings.ViewToolbar = _settings::Get().item<bool>("ViewToolbar");
+    QucsSettings.WorkToolbar = _settings::Get().item<bool>("WorkToolbar");
+    QucsSettings.SimulateToolbar = _settings::Get().item<bool>("SimulateToolbar");
+
+    // QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",qucs::SkipEmptyParts);
+    // QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
+    QucsSettings.RecentDocs = _settings::Get().item<QStringList>("RecentDocs");
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
-
 
     QucsSettings.spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
 
