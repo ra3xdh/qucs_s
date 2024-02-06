@@ -288,65 +288,128 @@ bool saveApplSettings()
 {
     QSettings settings ("qucs","qucs_s");
 
-    settings.setValue("DefaultSimulator", QucsSettings.DefaultSimulator);
-    settings.setValue("firstRun", false);
+    // It is not really necessary to take the following reference, but it arguably
+    // makes the code slightly cleaner - thoughts? To be clear:
+    // qs.item<int>() is identical to _settings::get().item<int>()
+    settingsManager& qs = _settings::Get();    
 
-    settings.setValue("x", QucsSettings.x);
-    settings.setValue("y", QucsSettings.y);
-    settings.setValue("dx", QucsSettings.dx);
-    settings.setValue("dy", QucsSettings.dy);
-    settings.setValue("font", QucsSettings.font.toString());
-    settings.setValue("appFont", QucsSettings.appFont.toString());
+    // settings.setValue("DefaultSimulator", QucsSettings.DefaultSimulator);
+    // settings.setValue("firstRun", false);
+    qs.setItem<int>("DefaultSimulator", QucsSettings.DefaultSimulator);
+    qs.setItem<bool>("firstRun", false);
+
+    /*** The following can all be replaced by Qt standard restoreGeometry and is not needed here ***/
+    // settings.setValue("x", QucsSettings.x);
+    // settings.setValue("y", QucsSettings.y);
+    // settings.setValue("dx", QucsSettings.dx);
+    // settings.setValue("dy", QucsSettings.dy);
+
+    // settings.setValue("font", QucsSettings.font.toString());
+    // settings.setValue("appFont", QucsSettings.appFont.toString());
+    qs.setItem<QString>("font", QucsSettings.font.toString());
+    qs.setItem<QString>("appFont", QucsSettings.appFont.toString());
+    
     // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
-    settings.setValue("LargeFontSize", QString::number(QucsSettings.largeFontSize));
-    settings.setValue("maxUndo", QucsSettings.maxUndo);
-    settings.setValue("NodeWiring", QucsSettings.NodeWiring);
-    settings.setValue("BGColor", QucsSettings.BGColor.name());
-    settings.setValue("Editor", QucsSettings.Editor);
-    settings.setValue("FileTypes", QucsSettings.FileTypes);
-    settings.setValue("Language", QucsSettings.Language);
-    settings.setValue("Comment", QucsSettings.Comment.name());
-    settings.setValue("String", QucsSettings.String.name());
-    settings.setValue("Integer", QucsSettings.Integer.name());
-    settings.setValue("Real", QucsSettings.Real.name());
-    settings.setValue("Character", QucsSettings.Character.name());
-    settings.setValue("Type", QucsSettings.Type.name());
-    settings.setValue("Attribute", QucsSettings.Attribute.name());
-    settings.setValue("Directive", QucsSettings.Directive.name());
-    settings.setValue("Task", QucsSettings.Task.name());
+    // settings.setValue("LargeFontSize", QString::number(QucsSettings.largeFontSize));
+    // settings.setValue("maxUndo", QucsSettings.maxUndo);
+    // settings.setValue("NodeWiring", QucsSettings.NodeWiring);
+    // settings.setValue("BGColor", QucsSettings.BGColor.name());
+    // settings.setValue("Editor", QucsSettings.Editor);
+    // settings.setValue("FileTypes", QucsSettings.FileTypes);
+    // settings.setValue("Language", QucsSettings.Language);
+    // settings.setValue("Comment", QucsSettings.Comment.name());
+    // settings.setValue("String", QucsSettings.String.name());
+    // settings.setValue("Integer", QucsSettings.Integer.name());
+    // settings.setValue("Real", QucsSettings.Real.name());
+    // settings.setValue("Character", QucsSettings.Character.name());
+    // settings.setValue("Type", QucsSettings.Type.name());
+    // settings.setValue("Attribute", QucsSettings.Attribute.name());
+    // settings.setValue("Directive", QucsSettings.Directive.name());
+    // settings.setValue("Task", QucsSettings.Task.name());
+
+    // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
+    qs.setItem<QString>("LargeFontSize", QString::number(QucsSettings.largeFontSize));
+    qs.setItem<unsigned int>("maxUndo", QucsSettings.maxUndo);
+    qs.setItem<unsigned int>("NodeWiring", QucsSettings.NodeWiring);
+    qs.setItem<QString>("BGColor", QucsSettings.BGColor.name());
+    qs.setItem<QString>("Editor", QucsSettings.Editor);
+    qs.setItem<QStringList>("FileTypes", QucsSettings.FileTypes);
+    qs.setItem<QString>("Language", QucsSettings.Language);
+    qs.setItem<QString>("Comment", QucsSettings.Comment.name());
+    qs.setItem<QString>("String", QucsSettings.String.name());
+    qs.setItem<QString>("Integer", QucsSettings.Integer.name());
+    qs.setItem<QString>("Real", QucsSettings.Real.name());
+    qs.setItem<QString>("Character", QucsSettings.Character.name());
+    qs.setItem<QString>("Type", QucsSettings.Type.name());
+    qs.setItem<QString>("Attribute", QucsSettings.Attribute.name());
+    qs.setItem<QString>("Directive", QucsSettings.Directive.name());
+    qs.setItem<QString>("Task", QucsSettings.Task.name());
+
+    // The following four lines were already commented out.
     //settings.setValue("Qucsator", QucsSettings.Qucsator);
     //settings.setValue("BinDir", QucsSettings.BinDir);
     //settings.setValue("LangDir", QucsSettings.LangDir);
     //settings.setValue("LibDir", QucsSettings.LibDir);
-    settings.setValue("AdmsXmlBinDir", QucsSettings.AdmsXmlBinDir.canonicalPath());
-    settings.setValue("AscoBinDir", QucsSettings.AscoBinDir.canonicalPath());
+
+    // settings.setValue("AdmsXmlBinDir", QucsSettings.AdmsXmlBinDir.canonicalPath());
+    // settings.setValue("AscoBinDir", QucsSettings.AscoBinDir.canonicalPath());
+    qs.setItem<QString>("AdmsXmlBinDir", QucsSettings.AdmsXmlBinDir.canonicalPath());
+    qs.setItem<QString>("AscoBinDir", QucsSettings.AscoBinDir.canonicalPath());    
+
+    // The following four lines were already commented out.
     //settings.setValue("OctaveDir", QucsSettings.OctaveDir);
     //settings.setValue("ExamplesDir", QucsSettings.ExamplesDir);
     //settings.setValue("DocDir", QucsSettings.DocDir);
     //settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
-    settings.setValue("NgspiceExecutable",QucsSettings.NgspiceExecutable);
-    settings.setValue("XyceExecutable",QucsSettings.XyceExecutable);
-    settings.setValue("XyceParExecutable",QucsSettings.XyceParExecutable);
-    settings.setValue("SpiceOpusExecutable",QucsSettings.SpiceOpusExecutable);
-    settings.setValue("Qucsator",QucsSettings.Qucsator);
-    settings.setValue("Nprocs",QucsSettings.NProcs);
-    settings.setValue("S4Q_workdir",QucsSettings.S4Qworkdir);
-    settings.setValue("SimParameters",QucsSettings.SimParameters);
+
+    // settings.setValue("NgspiceExecutable",QucsSettings.NgspiceExecutable);
+    // settings.setValue("XyceExecutable",QucsSettings.XyceExecutable);
+    // settings.setValue("XyceParExecutable",QucsSettings.XyceParExecutable);
+    // settings.setValue("SpiceOpusExecutable",QucsSettings.SpiceOpusExecutable);
+    // settings.setValue("Qucsator",QucsSettings.Qucsator);
+    // settings.setValue("Nprocs",QucsSettings.NProcs);
+    // settings.setValue("S4Q_workdir",QucsSettings.S4Qworkdir);
+    // settings.setValue("SimParameters",QucsSettings.SimParameters);
+    qs.setItem<QString>("NgspiceExecutable",QucsSettings.NgspiceExecutable);
+    qs.setItem<QString>("XyceExecutable",QucsSettings.XyceExecutable);
+    qs.setItem<QString>("XyceParExecutable",QucsSettings.XyceParExecutable);
+    qs.setItem<QString>("SpiceOpusExecutable",QucsSettings.SpiceOpusExecutable);
+    qs.setItem<QString>("Qucsator",QucsSettings.Qucsator);
+    qs.setItem<int>("Nprocs",QucsSettings.NProcs);
+    qs.setItem<QString>("S4Q_workdir",QucsSettings.S4Qworkdir);
+    qs.setItem<QString>("SimParameters",QucsSettings.SimParameters);    
+
+    // The following line was already commented out.
     // settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
-    settings.setValue("OctaveExecutable",QucsSettings.OctaveExecutable);
-    settings.setValue("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
-    settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
-    settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
-    settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
-    settings.setValue("TextAntiAliasing", QucsSettings.TextAntiAliasing);
-    settings.setValue("fullTraceName",QucsSettings.fullTraceName);
-    settings.setValue("panelIconsTheme",QucsSettings.panelIconsTheme);
-    settings.setValue("compIconsTheme",QucsSettings.compIconsTheme);
-    settings.setValue("FileToolbar", QucsSettings.FileToolbar);
-    settings.setValue("EditToolbar", QucsSettings.EditToolbar);
-    settings.setValue("ViewToolbar", QucsSettings.ViewToolbar);
-    settings.setValue("WorkToolbar", QucsSettings.WorkToolbar);
-    settings.setValue("SimulateToolbar", QucsSettings.SimulateToolbar);
+
+    // settings.setValue("OctaveExecutable",QucsSettings.OctaveExecutable);
+    // settings.setValue("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
+    // settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
+    // settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
+    // settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
+    // settings.setValue("TextAntiAliasing", QucsSettings.TextAntiAliasing);
+    // settings.setValue("fullTraceName",QucsSettings.fullTraceName);
+    // settings.setValue("panelIconsTheme",QucsSettings.panelIconsTheme);
+    // settings.setValue("compIconsTheme",QucsSettings.compIconsTheme);
+    // settings.setValue("FileToolbar", QucsSettings.FileToolbar);
+    // settings.setValue("EditToolbar", QucsSettings.EditToolbar);
+    // settings.setValue("ViewToolbar", QucsSettings.ViewToolbar);
+    // settings.setValue("WorkToolbar", QucsSettings.WorkToolbar);
+    // settings.setValue("SimulateToolbar", QucsSettings.SimulateToolbar);
+    qs.setItem<QString>("OctaveExecutable",QucsSettings.OctaveExecutable);
+    qs.setItem<QString>("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
+    qs.setItem<QString>("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
+    qs.setItem<bool>("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
+    qs.setItem<bool>("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
+    qs.setItem<bool>("TextAntiAliasing", QucsSettings.TextAntiAliasing);
+    qs.setItem<bool>("fullTraceName",QucsSettings.fullTraceName);
+    qs.setItem<int>("panelIconsTheme",QucsSettings.panelIconsTheme);
+    qs.setItem<int>("compIconsTheme",QucsSettings.compIconsTheme);
+    qs.setItem<bool>("FileToolbar", QucsSettings.FileToolbar);
+    qs.setItem<bool>("EditToolbar", QucsSettings.EditToolbar);
+    qs.setItem<bool>("ViewToolbar", QucsSettings.ViewToolbar);
+    qs.setItem<bool>("WorkToolbar", QucsSettings.WorkToolbar);
+    qs.setItem<bool>("SimulateToolbar", QucsSettings.SimulateToolbar);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList
