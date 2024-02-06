@@ -226,7 +226,7 @@ bool loadSettings()
     // if(settings.contains("QucsHomeDir"))
     //   if(settings.value("QucsHomeDir").toString() != "")
     //      QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
-    QucsSettings.QucsHomeDir = _settings::Get().item<QString>("QucsHomeDir");
+    QucsSettings.QucsHomeDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
 
     // TODO:
@@ -263,6 +263,7 @@ bool loadSettings()
     // QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
     QucsSettings.RecentDocs = _settings::Get().item<QStringList>("RecentDocs");
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
+    qDebug() << "Recent docs: " << QucsSettings.RecentDocs;
 
     QucsSettings.spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
 
