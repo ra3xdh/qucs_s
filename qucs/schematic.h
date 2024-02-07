@@ -271,7 +271,7 @@ private:
     @param viewCoordinates a point on the view plane
     @return a corresponding point on the model plane
   */
-  QPoint viewToModel(const QPoint& viewCoordinates);
+  QPoint contentsToModel(const QPoint& viewCoordinates);
 
   /**
     Given coordinates of a point on the model plane, this method returns coordinates
