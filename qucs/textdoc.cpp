@@ -42,11 +42,10 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
  */
 TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDoc(App_, Name_)
 {
-  TextFont = QFont("Courier New");
-  TextFont.setPointSize(QucsSettings.font.pointSize()-1);
-  TextFont.setStyleHint(QFont::Courier);
-  TextFont.setFixedPitch(true);
-  document()->setDefaultFont(TextFont);
+  QFont font("Courier New", QucsSettings.font.pointSize());
+  font.setStyleHint(QFont::Courier);
+  font.setFixedPitch(true);
+  setFont(font);
 
   simulation = true;
   Library = "";
@@ -55,7 +54,6 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
   devtype = DEV_DEF;
 
   tmpPosX = tmpPosY = 1;  // set to 1 to trigger line highlighting
-  Scale = (float)TextFont.pointSize();
   setLanguage (Name_);
 
   viewport()->setFocus();
@@ -416,37 +414,32 @@ int TextDoc::save ()
 }
 
 /*!
- * \brief TextDoc::zoomBy increases/decreases the text font size.
- * \param s font size scaling factor
- * \return (required) final scale
- *
- * \fixme is the return value being saved on the saveSettings() ?
+ * \brief Zooms the document in and out. Note, the zoom amount is fixed by Qt and the 
+ *        amount passed is ignored.
  */
-float TextDoc::zoomBy(float s)
+float TextDoc::zoomBy(float zoom)
 {
-  if(s == 2.0) {
-      QFont f = document()->defaultFont();
-      f.setPointSize(f.pointSize()*2);
-      document()->setDefaultFont(f);
+  // qucs_actions defines zooming in as > 1.
+  if (zoom > 1.0) {
+    zoomIn();
   }
+
   else {
-      QFont f = document()->defaultFont();
-      f.setPointSize(f.pointSize()*s);
-      document()->setDefaultFont(f);
+    zoomOut();
   }
-  return Scale;
+
+  return zoom;
 }
 
 /*!
- * \brief TextDoc::showNoZoom resets the font scaling
+ * \brief Resets the font scaling to default.
  */
 void TextDoc::showNoZoom()
 {
-  TextFont = QFont("Courier New");
-  TextFont.setPointSize(QucsSettings.font.pointSize()-1);
-  TextFont.setStyleHint(QFont::Courier);
-  TextFont.setFixedPitch(true);
-  document()->setDefaultFont(TextFont);
+  // Get a copy of this editor's existing font and apply the default font size to it.
+  QFont tempFont = font();
+  tempFont.setPointSize(QucsSettings.font.pointSize());
+  setFont(tempFont);
 }
 
 /*!
@@ -564,6 +557,27 @@ QString TextDoc::getModuleName (void)
     }
   default:
     return "";
+  }
+}
+
+/*!
+ * \brief Handle mouse wheel events
+ *        Used to 'zoom' i.e., increase / reduce the font size.
+ */
+void TextDoc::wheelEvent(QWheelEvent* event)
+{
+  if (event->modifiers() & Qt::CTRL) {
+    if (event->angleDelta().y() > 0) {
+      zoomIn();
+    }
+    
+    else {
+      zoomOut();
+    }
+  }
+
+  else {
+    QPlainTextEdit::wheelEvent(event);
   }
 }
 
