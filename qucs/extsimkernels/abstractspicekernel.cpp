@@ -480,8 +480,6 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double
 void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<double> > &sim_points,
                                              QStringList &var_list)
 {
-    static bool thd = false;
-
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
 
@@ -490,14 +488,14 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
         int Nharm; // number of harmonics
         bool firstgroup = false;
         QRegularExpression sep("[ \t,]");
+        QRegularExpression thd_rx("(?<=THD:).*(?=%)");
         sim_points.clear();
         var_list.clear();
 
-        if ( thd ) {
+        if ( parseFourTHD ) {
             var_list.append("");
             sim_point.append(0.0);
-        }
-        else
+        } else
             var_list.append("fourierfreq");
 
         while (!ngsp_data.atEnd()) {
@@ -514,7 +512,7 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                 }
 
                 if (var.endsWith(':')) var.chop(1);
-                if ( thd )
+                if ( parseFourTHD )
                     var_list.append("thd_%("+var+")");
                 else {
                     var_list.append("magnitude("+var+")");
@@ -525,8 +523,7 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                 continue;
             }
             if (lin.contains("No. Harmonics:")) {
-                if ( thd ) {
-                    QRegularExpression thd_rx("(?<=THD:).*(?=%)");
+                if ( parseFourTHD ) {
                     sim_point.append(thd_rx.match(lin).captured(0).toDouble());
                     continue;
                 }
@@ -555,9 +552,9 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                 firstgroup = true;
             }
         }
-        if ( thd )
+        if ( parseFourTHD )
             sim_points.append(sim_point);
-        thd = !thd;
+        parseFourTHD = !parseFourTHD;
         ofile.close();
     }
 }
