@@ -259,6 +259,12 @@ private:
   QRect viewportRect();
 
   /**
+    @brief Given cordinates of a model point returns coordinates of this point
+           relative to viewport. It's a reverse of @ref Schematic::viewportToModel
+  */
+  QPoint modelToViewport(QPoint modelCoordinates);
+
+  /**
     Given a coordinates of viewport point returns coordinates of the model plane point
     displayed at given location of the viewport.
   */

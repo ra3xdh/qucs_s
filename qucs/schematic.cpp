@@ -2687,6 +2687,11 @@ QRect Schematic::viewportRect() {
     return QRect{0, 0, viewport()->width(), viewport()->height()};
 }
 
+QPoint Schematic::modelToViewport(QPoint modelCoordinates)
+{
+    return modelToContents(modelCoordinates) - QPoint{ contentsX(), contentsY() };
+}
+
 QPoint Schematic::viewportToModel(QPoint viewportCoordinates)
 {
     viewportCoordinates.setX(contentsX() + viewportCoordinates.x());
