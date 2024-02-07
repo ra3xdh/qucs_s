@@ -602,10 +602,10 @@ void AbstractSpiceKernel::parseNoiseOutput(QString ngspice_file, QList<QList<dou
 void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double> > &sim_points,
                                         QStringList &var_list, bool &ParSwp)
 {
-    static bool zeros = false; // first run --- poles; second run --- zeros
+    //static bool zeros = false; // first run --- poles; second run --- zeros
                         // because poles and zeros vectors have unequal dimension
     QString var;
-    if (zeros) var = "zero";
+    if (parsePZzeros) var = "zero";
     else var = "pole";
 
     var_list.clear();
@@ -632,7 +632,7 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
                 sim_points.append(sim_point);
             }
         }
-        zeros = !zeros;
+        parsePZzeros = !parsePZzeros;
         ofile.close();
     }
 }
