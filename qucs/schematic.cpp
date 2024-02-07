@@ -2694,9 +2694,7 @@ QPoint Schematic::modelToViewport(QPoint modelCoordinates)
 
 QPoint Schematic::viewportToModel(QPoint viewportCoordinates)
 {
-    viewportCoordinates.setX(contentsX() + viewportCoordinates.x());
-    viewportCoordinates.setY(contentsY() + viewportCoordinates.y());
-    return contentsToModel(viewportCoordinates);
+    return contentsToModel(QPoint{ contentsX(), contentsY() } + viewportCoordinates);
 }
 
 QPoint Schematic::contentsToModel(const QPoint& coordinates)
