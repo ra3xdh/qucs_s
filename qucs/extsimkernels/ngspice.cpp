@@ -204,6 +204,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 if ( pc1->Model == ".FOURIER" ) {
                     if ( pc1->Props.at(0)->Value.toLower() == sim_name ) {
                         fourSims++;
+                        // Add it twice for THD
+                        outputs.append("spice4qucs." + pc1->Name.toLower() + ".four");
                         outputs.append("spice4qucs." + pc1->Name.toLower() + ".four");
                         spiceNetlist.append(pc1->getSpiceNetlist());
                     }
