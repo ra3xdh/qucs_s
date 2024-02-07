@@ -280,7 +280,7 @@ private:
     @param modelCoordinates a point on the model plane
     @return a corresponding point on the view plane
   */
-  QPoint modelToView(const QPoint& modelCoordinates);
+  QPoint modelToContents(const QPoint& modelCoordinates);
 
   /**
     If given value violates lower or upper scale limit, then returns

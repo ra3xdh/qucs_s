@@ -1074,7 +1074,7 @@ void Schematic::drawGrid(const ViewPainter& p)
 
     {
         // Draw small cross at origin of coordinates
-        const QPoint origin = contentsToViewport(modelToView(QPoint{0, 0}));
+        const QPoint origin = contentsToViewport(modelToContents(QPoint{0, 0}));
         p.Painter->drawLine(origin.x() - 3, origin.y(), origin.x() + 4, origin.y());  // horizontal stick
         p.Painter->drawLine(origin.x(), origin.y() - 3, origin.x(), origin.y() + 4);  // vertical stick
     }
@@ -1101,12 +1101,12 @@ void Schematic::drawGrid(const ViewPainter& p)
     // Set its coordinates to coordinates of nearest grid-point
     setOnGrid(gridTopLeft.rx(), gridTopLeft.ry());
     // Convert coordinates from model back to viewport
-    gridTopLeft = modelToView(gridTopLeft);
+    gridTopLeft = modelToContents(gridTopLeft);
     gridTopLeft = contentsToViewport(gridTopLeft);
 
     QPoint gridBottomRight = viewportToModel(viewportRect().bottomRight());
     setOnGrid(gridBottomRight.rx(), gridBottomRight.ry());
-    gridBottomRight = modelToView(gridBottomRight);
+    gridBottomRight = modelToContents(gridBottomRight);
     gridBottomRight = contentsToViewport(gridBottomRight);
 
     // This is the minimal distance between drawn grid-nodes. No matter how
@@ -2718,25 +2718,25 @@ QPoint Schematic::viewToModel(const QPoint& coordinates)
     return modelCoords;
 }
 
-QPoint Schematic::modelToView(const QPoint& coordinates)
+QPoint Schematic::modelToContents(const QPoint& coordinates)
 {
-    // Sizes in the model and view planes are interconnected and obey the rule:
-    //     <size in model plane> * <Scale> = <size in view plane>
+    // Model and contents sizes are interconnected and obey the rule:
+    //     <size on model plane> * <Scale> = <size on contents>
     //
-    // View plane is a rectangle with (0, 0) at its top-left corner. Model plane
+    // Contents is a rectangle with (0, 0) at its top-left corner. Model plane
     // is rectangular area of abstract infinite plane, so model plane's top-left
     // corner may have any coordinates.
     //
     // To transform coordinates of a point on the model plane to coordinates
-    // of corresponding point on the view plane:
+    // of corresponding point on the contents:
     // 1. Adjust coordinates so that they become relative to model planes'
     //    top-left corner
     // 2. Adjust resulting coordinates so thay they become having the same scale
-    //    as view plane
+    //    as contents
 
-    QPoint viewCoords{coordinates.x() - ViewX1, coordinates.y() - ViewY1};
-    viewCoords *= Scale;
-    return viewCoords;
+    QPoint contentsCoords{coordinates.x() - ViewX1, coordinates.y() - ViewY1};
+    contentsCoords *= Scale;
+    return contentsCoords;
 }
 
 double Schematic::clipScale(double offeredScale)
@@ -2836,7 +2836,7 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
     resizeContents(static_cast<int>(std::round(newModel.width() * Scale)),
                    static_cast<int>(std::round(newModel.height() * Scale)));
 
-    auto contentTopLeft = modelToView(vpTopLeftOnModelPlane);
+    auto contentTopLeft = modelToContents(vpTopLeftOnModelPlane);
     setContentsPos(contentTopLeft.x(), contentTopLeft.y());
 
     viewport()->update();
