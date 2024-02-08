@@ -11,6 +11,7 @@ DiodesSchottky.lib
 Ideal.lib
 JFETs.lib
 LEDs.lib
+Loudspeaker.lib
 MOSFETs.lib
 NMOSFETs.lib
 OpAmps.lib
