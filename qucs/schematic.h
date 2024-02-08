@@ -315,6 +315,32 @@ private:
     There is no need to call "update" on Q3ScrollView after using this method.
     It is done as a part of rendering process.
 
+    Usage examples:
+    1. Imagine you want to handle user's right scroll and you want scrolling
+       to be infinite. Each scroll has to "stretch" schematic model to the right.
+       First step is to take current model and create a new desired
+       model size from it by shifting its right bound.
+       After scrolling you want rightmost point of the model to be diplayed
+       at right bound of the viewport. Then second step is to take coordinates
+       of top-right corner of @b new @b desired model and coordinates of top-rigth
+       corner of viewport and pass to @c renderModel along with new model:
+       @code
+       renderModel(sameScale, newModel, newModel.topRight(), viewportRect().topRight());
+       @endcode
+    2. Suppose you want to zoom at some element, so that its center would be
+       displayed at the center of the viewport after zooming.
+       First, find coordinates of the element center
+       Second, find coordinates of the viewport center
+       Third, call @c renderModel:
+       @code
+       renderModel(zoomScale, sameModel, elementCenter, viewportRect().center());
+       @endcode
+    3. Imagine you want to scroll and zoom so that the point currently
+       displayed at the center of the viewport would be at the viewport
+       top-left corner after.
+       @code
+       renderModel(zoomScale, sameModel, viewportToModel(viewportRect().center()), viewportRect.topLeft());
+       @endcode
     @param  scale            desired new scale. It is clipped when exceeds
                              a lower or upperlimit
     @param  newModelBounds   a rectangle describing the desired model bounds
