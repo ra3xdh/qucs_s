@@ -352,27 +352,6 @@ private:
   */
   double renderModel(double scale, QRect newModelBounds, QPoint modelPlaneCoords, QPoint viewportCoords);
 
-  /**
-    Render the model without changing its size and position the contents
-    so that the center of the model is displayed at center of the viewport.
-
-    @param scale desired new scale. It is clipped if exceeds bounds.
-    @return new scale value
-  */
-  double renderModel(double scale);
-
-  /**
-    Render the model without changing its size and position the contents so that
-    the point \a modelPlaneCoords of the model is displayed at location \a
-    viewportCoords of the viewport.
-
-    @param scale desired new scale. It is clipped if exceeds limits
-    @param modelPlaneCoords coordinates of the point on the model plane
-    @param viewportCoords coordinates of the point on the viewport
-    @return new scale value
-  */
-  double renderModel(double scale, QPoint modelPlaneCoords, QPoint viewportCoords);
-
 /* ********************************************************************
    *****  The following methods are in the file                   *****
    *****  "schematic_element.cpp". They only access the QPtrList  *****

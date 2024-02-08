@@ -193,15 +193,3 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
 
     return Scale;
 }
-
-double Schematic::renderModel(const double offeredScale)
-{
-    const auto currentModelBounds = modelRect();
-    return renderModel(offeredScale, currentModelBounds,
-                       currentModelBounds.center(), viewportRect().center());
-}
-
-double Schematic::renderModel(const double offeredScale,const QPoint modelPoint, const QPoint viewportPoint)
-{
-    return renderModel(offeredScale, modelRect(), modelPoint, viewportPoint);
-}
