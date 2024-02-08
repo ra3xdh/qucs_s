@@ -1,3 +1,55 @@
+/** @file
+ A set of methods to render schematic and to convert between viewport,
+ contents and model coordinate systems.
+
+ @c Schematic object has @e contents and @e viewport –– they are inherited
+ from Q3ScrollView.
+
+ @e Contents is basically a canvas to draw something on it. Its size is not
+ fixed and may be changed anytime (@ref Q3ScrollView::resizeContents)
+
+ @e Viewport is the visible part of the contents and at the same time it's
+ the widget you actually see. Contents may be larger than the display and
+ viewport allows us to scroll the contents and to observe parts of it.
+
+ @e Model is not inhereted from Q3ScrollView and is not represented by any
+ widget, it is actually entirely abstract/logical entity. It describes some
+ abstract space where an "idea" of the schematic lives. All dimensions and
+ sizes in model are @e reference dimensions and sizes. For example, when
+ schematic has to be drawn in double scale (twice as large), model size
+ multiplied by two is the contents size for double-scale schematic. Want
+ to draw schematic in half-scale? Take model size and divide it by two,
+ that would be the contents size for half-scale schematic. In other words
+ contents is the @em projection of model and there is a connection between
+ them: @code <size in model> * <Scale> = <size on contents> @endcode
+
+ Because of this connection between model and contents every point
+ on contents has a counterpart in model and vise-versa.
+
+ Contents coordinates originate at top-left corner and grow to the right
+ and downwards. Model coordinates also originate at top-left corner,
+ but while contents top-left is always (0,0), model's top-left is not
+ fixed and changes as user scrolls or occupies space with schematic
+ elements. Think about model as of a rectangle somewhere in cartesian
+ coordinate system.
+
+ There is also viewport coordinates; they are relative to top left
+ corner of the viewport widget.
+
+ When you click on schematic, position of the click may be described in
+  - viewport coordinates (relative to top left corner of what you see)
+  - contents coordinates (relative to top left corner of contents, which
+    may not be visible at them moment)
+  - model coordinates
+
+ There is a set of methods to convert between types of coordinates.
+
+ The core of drawing a schematic –– or @e rendering –– is @ref Schematic::renderModel
+ method. Use it when you need to show display changes applied to schematic, like:
+  - schematic should be drawn in another scale
+  - model size has changed because the view has been scrolled
+ See method description for example usage.
+*/
 #include "mouseactions.h"
 #include "qucsdoc.h"
 #include "qucs.h"
@@ -87,39 +139,8 @@ bool Schematic::shouldRender(const double& newScale, const QRect& newModelBounds
 
 double Schematic::renderModel(const double offeredScale, QRect newModel, const QPoint modelPoint, const QPoint viewportPoint)
 {
-    // This is the core method to render the schematic. It employs
-    // an approach similar to MVC (model-view-controller).
-    //
-    // There is a "model plane" – a rectangle located somewhere in some
-    // abstract cartesian coordinate system. This coordinate system has
-    // its X-axis directed left-to-right and Y-axis top-to-bottom. Every element
-    // of the schematic "lives" in this coordinate system inside the model
-    // plane. The model plane is described by class properties ViewX1, ViewY1,
-    // ViewX2, ViewY1.
-    //
-    // To see the schematic we need to "render" the model plane. To do so the
-    // "view plane" is used. Technically it is the Q3ScrollView's "contents",
-    // but in the abstraction being described its just another plane. In
-    // contrast to the model plane, its top-left corner is always (0,0), but the
-    // axes are directed the same way: left-to-right and top-to-bottom.
-    //
-    // The "scale" is the ratio between the view plane and model plane sizes.
-    // When being rendered, the model is like being "projected" on the view
-    // plane. Think of the film projector: the film ("model") could be displayed
-    // on screens ("views") of different sizes by adjusting the lense ("scale").
-    //
-    // Finally there is a "viewport". Technically its the very Q3ScrollView
-    // widget, but in the abstraction being described its the part of the
-    // view which is currently observed by the user. Sometimes the view is
-    // very large (when we "zoom in") and only the part of it could be observed.
-    //
-    // Summarizing everything said:
-    // 1. The model plane is drawn on the view plane at some scale and then
-    // a part of the view plane is observed by the user.
-    // 2. <size in model plane> * <Scale> = <size in view plane>
-
     // DO NOT alter model bounds or scale and DO NOT call resizeContens() outside
-    // of this method. It will break the state and lead to hard-to-find bugs.
+    // of this method. It may break the state and lead to hard-to-find bugs.
     // Pass the desired model bounds or scale as the argument to this method.
 
     assert(modelPoint.x() >= newModel.left() && modelPoint.x() <= newModel.right());
