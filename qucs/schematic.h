@@ -131,6 +131,36 @@ public:
   void  reloadGraphs();
   bool  createSubcircuitSymbol();
 
+  /**
+    @brief Given cordinates of a model point returns coordinates of this point
+           relative to viewport. It's a reverse of @ref Schematic::viewportToModel
+  */
+  QPoint modelToViewport(QPoint modelCoordinates);
+
+  /**
+    Given a coordinates of viewport point returns coordinates of the model plane point
+    displayed at given location of the viewport.
+  */
+  QPoint viewportToModel(QPoint viewportCoordinates);
+
+  /**
+    Given coordinates of a point on the view plane (schematic's canvas), this method
+    returns coordinates of a corresponding point on the model plane.
+
+    @param viewCoordinates a point on the view plane
+    @return a corresponding point on the model plane
+  */
+  QPoint contentsToModel(const QPoint& viewCoordinates);
+
+  /**
+    Given coordinates of a point on the model plane, this method returns coordinates
+    of a corresponding point on the view plane (schematic's canvas).
+
+    @param modelCoordinates a point on the model plane
+    @return a corresponding point on the view plane
+  */
+  QPoint modelToContents(const QPoint& modelCoordinates);
+
   void    cut();
   void    copy();
   bool    paste(QTextStream*, Q3PtrList<Element>*);
@@ -257,36 +287,6 @@ private:
     width and height are equal to viewport's width and height.
   */
   QRect viewportRect();
-
-  /**
-    @brief Given cordinates of a model point returns coordinates of this point
-           relative to viewport. It's a reverse of @ref Schematic::viewportToModel
-  */
-  QPoint modelToViewport(QPoint modelCoordinates);
-
-  /**
-    Given a coordinates of viewport point returns coordinates of the model plane point
-    displayed at given location of the viewport.
-  */
-  QPoint viewportToModel(QPoint viewportCoordinates);
-
-  /**
-    Given coordinates of a point on the view plane (schematic's canvas), this method
-    returns coordinates of a corresponding point on the model plane.
-
-    @param viewCoordinates a point on the view plane
-    @return a corresponding point on the model plane
-  */
-  QPoint contentsToModel(const QPoint& viewCoordinates);
-
-  /**
-    Given coordinates of a point on the model plane, this method returns coordinates
-    of a corresponding point on the view plane (schematic's canvas).
-
-    @param modelCoordinates a point on the model plane
-    @return a corresponding point on the view plane
-  */
-  QPoint modelToContents(const QPoint& modelCoordinates);
 
   /**
     If given value violates lower or upper scale limit, then returns
