@@ -53,8 +53,8 @@ public:
   void  setName (const QString&);
   bool  load ();
   int   save ();
-  float zoomBy (float);
-  void  showNoZoom ();
+  virtual float zoomBy (float zoom) override;
+  virtual void showNoZoom () override;
   void  becomeCurrent (bool);
   bool  loadSimulationTime (QString&);
   void  commentSelected ();
@@ -63,8 +63,7 @@ public:
   void  setLanguage (const QString&);
   QString getModuleName (void);
 
-
-  QFont TextFont;
+  virtual void wheelEvent(QWheelEvent* event) override;
 
   bool simulation;   // simulation or module
   QString Library;   // library this document belongs to

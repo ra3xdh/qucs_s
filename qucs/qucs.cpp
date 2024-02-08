@@ -1983,6 +1983,7 @@ void QucsApp::slotChangeView()
     Doc = (QucsDoc*)d;
     // update menu entries, etc. if necessary
     magAll->setDisabled(true);
+    magSel->setDisabled(true);
     if(cursorLeft->isEnabled())
       switchSchematicDoc (false);
   }
@@ -1991,6 +1992,7 @@ void QucsApp::slotChangeView()
     Schematic *d = (Schematic*)w;
     Doc = (QucsDoc*)d;
     magAll->setDisabled(false);
+    magSel->setDisabled(false);
     // already in schematic?
     if(cursorLeft->isEnabled()) {
       // which mode: schematic or symbol editor ?
