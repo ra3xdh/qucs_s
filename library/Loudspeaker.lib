@@ -1,0 +1,465 @@
+<Qucs Library 24.1.0 "Loudspeaker">
+
+<Component DC28F-4>
+  <Description>
+Dayton Audio DC28F-4 1-1/8" Silk Dome Tweeter
+  </Description>
+  <Model>
+.Def:Loudspeaker_DC28F_4 _net1 _net0 Re="2.82" Le="0.51m" Fs="535" Qms="2.3" Qes="0.99"
+L:L1 _net0 n3 L="Lces" I=""
+L:L2 n2 n3 L="Le" I=""
+C:C1 n3 _net0 C="Cmes" V=""
+R:R1 _net1 n2 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 n3 R="Res" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 Res="Qms/Qes*Re" Lces="Re/(2*pi*Fs*Qes)" Cmes="Qes/(2*pi*Fs*Re)" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_DC28F-4.sch
+
+.SUBCKT Loudspeaker_DC28F_4  gnd _net1 _net0 Re=2.82 Le=0.51m Fs=535 Qms=2.3 Qes=0.99 
+.PARAM Res=Qms/Qes*Re
+.PARAM Lces=Re/(2*3.1415926539*Fs*Qes)
+.PARAM Cmes=Qes/(2*3.1415926539*Fs*Re)
+L1 _net0 n3  {LCES} 
+L2 n2 n3  {LE} 
+C1 n3 _net0  {CMES} 
+R1 _net1 n2  {RE} tc1=0.0 tc2=0.0 
+R2 _net0 n3  {RES} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 30 0 -20 #000080 2 1>
+    <Line -20 10 20 0 #000080 2 1>
+    <Line -20 -10 0 20 #000080 2 1>
+    <Line 0 -10 0 20 #000080 2 1>
+    <Line -10 -10 0 -20 #000080 2 1>
+    <Line -20 -10 20 0 #000080 2 1>
+    <Line 0 -10 0 0 #000000 1 1>
+    <Line 0 -10 20 -20 #000080 2 1>
+    <Line 0 10 20 20 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <.PortSym -10 -30 2 0>
+    <.PortSym -10 30 1 0>
+    <.ID 30 -26 X "1=Re=2.82=Measured Voice Coil Resistance=" "1=Le=0.51m=Measured Voice Coil Inductance=" "1=Fs=535=Resonant Frequency=" "1=Qms=2.3=Mech Suspension control measurement (Surround and Spider)=" "1=Qes=0.99=Electrical Suspension control measurement (Voice coil and Magnet)=">
+  </Symbol>
+</Component>
+
+<Component DC28F-8>
+  <Description>
+Dayton Audio DC28F-8 1-1/8" Silk Dome Tweeter
+  </Description>
+  <Model>
+.Def:Loudspeaker_DC28F_8 _net1 _net0 Re="5.5" Le="0.09m" Fs="637" Qms="0.82" Qes="0.90"
+L:L1 _net0 n3 L="Lces" I=""
+L:L2 n2 n3 L="Le" I=""
+C:C1 n3 _net0 C="Cmes" V=""
+R:R1 _net1 n2 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 n3 R="Res" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 Res="Qms/Qes*Re" Lces="Re/(2*pi*Fs*Qes)" Cmes="Qes/(2*pi*Fs*Re)" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_DC28F-8.sch
+
+.SUBCKT Loudspeaker_DC28F_8  gnd _net1 _net0 Re=5.5 Le=0.09m Fs=637 Qms=0.82 Qes=0.90 
+.PARAM Res=Qms/Qes*Re
+.PARAM Lces=Re/(2*3.1415926539*Fs*Qes)
+.PARAM Cmes=Qes/(2*3.1415926539*Fs*Re)
+L1 _net0 n3  {LCES} 
+L2 n2 n3  {LE} 
+C1 n3 _net0  {CMES} 
+R1 _net1 n2  {RE} tc1=0.0 tc2=0.0 
+R2 _net0 n3  {RES} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 30 0 -20 #000080 2 1>
+    <Line -20 10 20 0 #000080 2 1>
+    <Line -20 -10 0 20 #000080 2 1>
+    <Line 0 -10 0 20 #000080 2 1>
+    <Line -10 -10 0 -20 #000080 2 1>
+    <Line -20 -10 20 0 #000080 2 1>
+    <Line 0 -10 0 0 #000000 1 1>
+    <Line 0 -10 20 -20 #000080 2 1>
+    <Line 0 10 20 20 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <.PortSym -10 -30 2 0>
+    <.PortSym -10 30 1 0>
+    <.ID 30 -26 X "1=Re=5.5=Measured Voice Coil Resistance=" "1=Le=0.09m=Measured Voice Coil Inductance=" "1=Fs=637=Resonant Frequency=" "1=Qms=0.82=Mech Suspension control measurement (Surround and Spider)=" "1=Qes=0.90=Electrical Suspension control measurement (Voice coil and Magnet)=">
+  </Symbol>
+</Component>
+
+<Component DC50FA-8>
+  <Description>
+Dayton Audio DC50FA-8 Classic Series 2" Dome Midrange
+  </Description>
+  <Model>
+.Def:Loudspeaker_DC50FA_8 _net1 _net0 Re="4.5" Le="0.41m" Fs="380" Qms="4.13" Qes="1.16"
+L:L1 _net0 n3 L="Lces" I=""
+L:L2 n2 n3 L="Le" I=""
+C:C1 n3 _net0 C="Cmes" V=""
+R:R1 _net1 n2 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 n3 R="Res" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 Res="Qms/Qes*Re" Lces="Re/(2*pi*Fs*Qes)" Cmes="Qes/(2*pi*Fs*Re)" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_DC50FA-8.sch
+
+.SUBCKT Loudspeaker_DC50FA_8  gnd _net1 _net0 Re=4.5 Le=0.41m Fs=380 Qms=4.13 Qes=1.16 
+.PARAM Res=Qms/Qes*Re
+.PARAM Lces=Re/(2*3.1415926539*Fs*Qes)
+.PARAM Cmes=Qes/(2*3.1415926539*Fs*Re)
+L1 _net0 n3  {LCES} 
+L2 n2 n3  {LE} 
+C1 n3 _net0  {CMES} 
+R1 _net1 n2  {RE} tc1=0.0 tc2=0.0 
+R2 _net0 n3  {RES} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 30 0 -20 #000080 2 1>
+    <Line -20 10 20 0 #000080 2 1>
+    <Line -20 -10 0 20 #000080 2 1>
+    <Line 0 -10 0 20 #000080 2 1>
+    <Line -10 -10 0 -20 #000080 2 1>
+    <Line -20 -10 20 0 #000080 2 1>
+    <Line 0 -10 0 0 #000000 1 1>
+    <Line 0 -10 20 -20 #000080 2 1>
+    <Line 0 10 20 20 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <.PortSym -10 -30 2 0>
+    <.PortSym -10 30 1 0>
+    <.ID 30 -26 X "1=Re=4.5=Measured Voice Coil Resistance=" "1=Le=0.41m=Measured Voice Coil Inductance=" "1=Fs=380=Resonant Frequency=" "1=Qms=4.13=Mech Suspension control measurement (Surround and Spider)=" "1=Qes=1.16=Electrical Suspension control measurement (Voice coil and Magnet)=">
+  </Symbol>
+</Component>
+
+<Component IB385-8>
+  <Description>
+Dayton Audio IB385-8 8" Reference Woofer
+  </Description>
+  <Model>
+.Def:Loudspeaker_IB385_8 _net1 _net0 Re="5.2" Le="3.08m" Fs="21.5" Qms="8.92" Qes="0.63"
+L:L1 _net0 n3 L="Lces" I=""
+L:L2 n2 n3 L="Le" I=""
+C:C1 n3 _net0 C="Cmes" V=""
+R:R1 _net1 n2 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 n3 R="Res" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 Res="Qms/Qes*Re" Lces="Re/(2*pi*Fs*Qes)" Cmes="Qes/(2*pi*Fs*Re)" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_IB385-8.sch
+
+.SUBCKT Loudspeaker_IB385_8  gnd _net1 _net0 Re=5.2 Le=3.08m Fs=21.5 Qms=8.92 Qes=0.63 
+.PARAM Res=Qms/Qes*Re
+.PARAM Lces=Re/(2*3.1415926539*Fs*Qes)
+.PARAM Cmes=Qes/(2*3.1415926539*Fs*Re)
+L1 _net0 n3  {LCES} 
+L2 n2 n3  {LE} 
+C1 n3 _net0  {CMES} 
+R1 _net1 n2  {RE} tc1=0.0 tc2=0.0 
+R2 _net0 n3  {RES} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 30 0 -20 #000080 2 1>
+    <Line -20 10 20 0 #000080 2 1>
+    <Line -20 -10 0 20 #000080 2 1>
+    <Line 0 -10 0 20 #000080 2 1>
+    <Line -10 -10 0 -20 #000080 2 1>
+    <Line -20 -10 20 0 #000080 2 1>
+    <Line 0 -10 0 0 #000000 1 1>
+    <Line 0 -10 20 -20 #000080 2 1>
+    <Line 0 10 20 20 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <.PortSym -10 -30 2 0>
+    <.PortSym -10 30 1 0>
+    <.ID 30 -26 X "1=Re=5.2=Measured Voice Coil Resistance=" "1=Le=3.08m=Measured Voice Coil Inductance=" "1=Fs=21.5=Resonant Frequency=" "1=Qms=8.92=Mech Suspension control measurement (Surround and Spider)=" "1=Qes=0.63=Electrical Suspension control measurement (Voice coil and Magnet)=">
+  </Symbol>
+</Component>
+
+<Component RS225-8>
+  <Description>
+Dayton Audio RS225-8 8" Reference Woofer
+  </Description>
+  <Model>
+.Def:Loudspeaker_RS225_8 _net1 _net0 Re="5.2" Le="3.08m" Fs="21.5" Qms="8.92" Qes="0.63"
+L:L1 _net0 n3 L="Lces" I=""
+L:L2 n2 n3 L="Le" I=""
+C:C1 n3 _net0 C="Cmes" V=""
+R:R1 _net1 n2 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 n3 R="Res" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 Res="Qms/Qes*Re" Lces="Re/(2*pi*Fs*Qes)" Cmes="Qes/(2*pi*Fs*Re)" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_RS225-8.sch
+
+.SUBCKT Loudspeaker_RS225_8  gnd _net1 _net0 Re=5.2 Le=3.08m Fs=21.5 Qms=8.92 Qes=0.63 
+.PARAM Res=Qms/Qes*Re
+.PARAM Lces=Re/(2*3.1415926539*Fs*Qes)
+.PARAM Cmes=Qes/(2*3.1415926539*Fs*Re)
+L1 _net0 n3  {LCES} 
+L2 n2 n3  {LE} 
+C1 n3 _net0  {CMES} 
+R1 _net1 n2  {RE} tc1=0.0 tc2=0.0 
+R2 _net0 n3  {RES} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 30 0 -20 #000080 2 1>
+    <Line -20 10 20 0 #000080 2 1>
+    <Line -20 -10 0 20 #000080 2 1>
+    <Line 0 -10 0 20 #000080 2 1>
+    <Line -10 -10 0 -20 #000080 2 1>
+    <Line -20 -10 20 0 #000080 2 1>
+    <Line 0 -10 0 0 #000000 1 1>
+    <Line 0 -10 20 -20 #000080 2 1>
+    <Line 0 10 20 20 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <.PortSym -10 -30 2 0>
+    <.PortSym -10 30 1 0>
+    <.ID 30 -26 X "1=Re=5.2=Measured Voice Coil Resistance=" "1=Le=3.08m=Measured Voice Coil Inductance=" "1=Fs=21.5=Resonant Frequency=" "1=Qms=8.92=Mech Suspension control measurement (Surround and Spider)=" "1=Qes=0.63=Electrical Suspension control measurement (Voice coil and Magnet)=">
+  </Symbol>
+</Component>
+
+<Component SPK>
+  <Description>
+Speaker model. See https://circuitdigest.com/electronic-circuits/simulate-speaker-with-equivalent-rlc-circuit
+  </Description>
+  <Model>
+.Def:Loudspeaker_SPK _net3 _net2 Re="6" Fs="28.6" Qms="5.9" Mms="0.127" BL="23" Le="0.43m" Sd="0.0498"
+L:L1 _net0 _net1 L="Le" I=""
+L:L2 _net2 _net1 L="Lm" I=""
+C:C1 _net2 _net1 C="Cm" V=""
+R:R1 _net3 _net0 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C2 _net2 _net1 C="Cal" V=""
+R:R2 _net2 _net1 R="Rsr" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 p="1.184" Ad="sqrt(Sd/pi)" Cm="Mms/(BL*BL)" Lm="Cm*BL*BL" Rm="(2*pi*Fs*Mms)/Qms" Rsr="BL*BL/Rm" Cal="(8*p*Ad*Ad*Ad)/(3*BL*BL)" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_SPK.sch
+
+.SUBCKT Loudspeaker_SPK  gnd _net3 _net2 Re=6 Fs=28.6 Qms=5.9 Mms=0.127 BL=23 Le=0.43m Sd=0.0498 
+.PARAM p=1.184
+.PARAM Ad=sqrt(Sd/3.1415926539)
+.PARAM Cm=Mms/(BL*BL)
+.PARAM Lm=Cm*BL*BL
+.PARAM Rm=(2*3.1415926539*Fs*Mms)/Qms
+.PARAM Rsr=BL*BL/Rm
+.PARAM Cal=(8*p*Ad*Ad*Ad)/(3*BL*BL)
+L1 _net0 _net1  {LE} 
+L2 _net2 _net1  {LM} 
+C1 _net2 _net1  {CM} 
+R1 _net3 _net0  {RE} tc1=0.0 tc2=0.0 
+C2 _net2 _net1  {CAL} 
+R2 _net2 _net1  {RSR} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 0 30 0 -20 #000080 2 1>
+    <Line -10 10 20 0 #000080 2 1>
+    <Line -10 -10 0 20 #000080 2 1>
+    <Line 10 -10 0 20 #000080 2 1>
+    <.PortSym 0 30 2 0>
+    <Line 0 -10 0 -20 #000080 2 1>
+    <Line -10 -10 20 0 #000080 2 1>
+    <.PortSym 0 -30 1 0>
+    <Line 10 -10 0 0 #000000 1 1>
+    <Line 10 -10 20 -20 #000080 2 1>
+    <Line 10 10 20 20 #000080 2 1>
+    <Line 30 -30 0 60 #000080 2 1>
+    <.ID 40 -66 X "1=Re=6=DC resisitance (Ohm)=" "1=Fs=28.6=Resosnant frequency (Hz)=" "1=Qms=5.9=Mechanical Q factor=" "1=Mms=0.127=Moving mass (kg)=" "1=BL=23=BL factor (Tesla m)=" "1=Le=0.43m=Coil inductance (H)=" "1=Sd=0.0498=Effective piston area (m^2)=">
+  </Symbol>
+</Component>
+
+<Component SPK_8Ohm>
+  <Description>
+Generic 8 Ohm speaker
+  </Description>
+  <Model>
+.Def:Loudspeaker_SPK_8Ohm _net1 _net9
+R:R3 _net0 _net1 R="5.6" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C1 _net2 _net3 C="4.7 uF" V=""
+R:R2 _net4 _net3 R="0.5" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R5 _net5 _net6 R="100" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+L:L3 _net7 _net5 L="1 mH" I=""
+R:R9 _net1 _net8 R="5" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C3 _net9 _net8 C="3.3 uF" V=""
+R:R8 _net9 _net6 R="39" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C2 _net9 _net6 C="500 uF" V=""
+R:R6 _net6 _net7 R="0.9" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R7 _net6 _net10 R="0.6" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+L:L4 _net9 _net10 L="10 mH" I=""
+L:L2 _net11 _net0 L="0.5 mH" I=""
+R:R4 _net5 _net11 R="0.7" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+L:L1 _net9 _net4 L="0.3 mH" I=""
+R:R1 _net1 _net2 R="4" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_SPK_8Ohm.sch
+
+.SUBCKT Loudspeaker_SPK_8Ohm  gnd _net1 _net9 
+R3 _net0 _net1  5.6 tc1=0.0 tc2=0.0 
+C1 _net2 _net3  4.7U 
+R2 _net4 _net3  0.5 tc1=0.0 tc2=0.0 
+R5 _net5 _net6  100 tc1=0.0 tc2=0.0 
+L3 _net7 _net5  1M 
+R9 _net1 _net8  5 tc1=0.0 tc2=0.0 
+C3 _net9 _net8  3.3U 
+R8 _net9 _net6  39 tc1=0.0 tc2=0.0 
+C2 _net9 _net6  500U 
+R6 _net6 _net7  0.9 tc1=0.0 tc2=0.0 
+R7 _net6 _net10  0.6 tc1=0.0 tc2=0.0 
+L4 _net9 _net10  10M 
+L2 _net11 _net0  0.5M 
+R4 _net5 _net11  0.7 tc1=0.0 tc2=0.0 
+L1 _net9 _net4  0.3M 
+R1 _net1 _net2  4 tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 10 20 0 #000080 2 1>
+    <Line -10 -10 20 0 #000080 2 1>
+    <Line 10 -20 0 40 #000080 4 1>
+    <Line 10 -10 10 -10 #000080 2 1>
+    <Line 10 10 10 10 #000080 2 1>
+    <Line -10 -10 0 20 #000080 2 1>
+    <Line 20 -20 0 40 #000080 2 1>
+    <Line 0 10 0 20 #000080 2 1>
+    <Line 0 -30 0 20 #000080 2 1>
+    <.PortSym 0 30 2 0>
+    <.PortSym 0 -30 1 0>
+    <.ID 30 -11 SPKR_>
+  </Symbol>
+</Component>
+
+<Component SPK_simp>
+  <Description>
+Simplifier speaker model. Adopted for Ngspice by Holger Vogt.
+  </Description>
+  <Model>
+.Def:Loudspeaker_SPK_simp _net1 _net0 Re="2.82" Le="0.51m" Fs="535" Qms="2.3" Qes="0.99"
+L:L1 _net0 n3 L="Lces" I=""
+L:L2 n2 n3 L="Le" I=""
+C:C1 n3 _net0 C="Cmes" V=""
+R:R1 _net1 n2 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 n3 R="Res" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 Res="Qms/Qes*Re" Lces="Re/(2*pi*Fs*Qes)" Cmes="Qes/(2*pi*Fs*Re)" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_SPK_simp.sch
+
+.SUBCKT Loudspeaker_SPK_simp  gnd _net1 _net0 Re=2.82 Le=0.51m Fs=535 Qms=2.3 Qes=0.99 
+.PARAM Res=Qms/Qes*Re
+.PARAM Lces=Re/(2*3.1415926539*Fs*Qes)
+.PARAM Cmes=Qes/(2*3.1415926539*Fs*Re)
+L1 _net0 n3  {LCES} 
+L2 n2 n3  {LE} 
+C1 n3 _net0  {CMES} 
+R1 _net1 n2  {RE} tc1=0.0 tc2=0.0 
+R2 _net0 n3  {RES} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 30 0 -20 #000080 2 1>
+    <Line -20 10 20 0 #000080 2 1>
+    <Line -20 -10 0 20 #000080 2 1>
+    <Line 0 -10 0 20 #000080 2 1>
+    <Line -10 -10 0 -20 #000080 2 1>
+    <Line -20 -10 20 0 #000080 2 1>
+    <Line 0 -10 0 0 #000000 1 1>
+    <Line 0 -10 20 -20 #000080 2 1>
+    <Line 0 10 20 20 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <.PortSym -10 -30 2 0>
+    <.PortSym -10 30 1 0>
+    <.ID 30 -26 X "1=Re=2.82=Measured Voice Coil Resistance=" "1=Le=0.51m=Measured Voice Coil Inductance=" "1=Fs=535=Resonant Frequency=" "1=Qms=2.3=Mech Suspension control measurement (Surround and Spider)=" "1=Qes=0.99=Electrical Suspension control measurement (Voice coil and Magnet)=">
+  </Symbol>
+</Component>
+
+<Component Tc120td5>
+  <Description>
+Focal Tc120td5 20mm Tioxid Dome Tweeter
+  </Description>
+  <Model>
+.Def:Loudspeaker_Tc120td5 _net1 _net0 Re="6" Le="1.49m" Fs="812.7" Qms="2.79" Qes="1.15"
+L:L1 _net0 n3 L="Lces" I=""
+L:L2 n2 n3 L="Le" I=""
+C:C1 n3 _net0 C="Cmes" V=""
+R:R1 _net1 n2 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 n3 R="Res" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 Res="Qms/Qes*Re" Lces="Re/(2*pi*Fs*Qes)" Cmes="Qes/(2*pi*Fs*Re)" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_Tc120td5.sch
+
+.SUBCKT Loudspeaker_Tc120td5  gnd _net1 _net0 Re=6 Le=1.49m Fs=812.7 Qms=2.79 Qes=1.15 
+.PARAM Res=Qms/Qes*Re
+.PARAM Lces=Re/(2*3.1415926539*Fs*Qes)
+.PARAM Cmes=Qes/(2*3.1415926539*Fs*Re)
+L1 _net0 n3  {LCES} 
+L2 n2 n3  {LE} 
+C1 n3 _net0  {CMES} 
+R1 _net1 n2  {RE} tc1=0.0 tc2=0.0 
+R2 _net0 n3  {RES} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 30 0 -20 #000080 2 1>
+    <Line -20 10 20 0 #000080 2 1>
+    <Line -20 -10 0 20 #000080 2 1>
+    <Line 0 -10 0 20 #000080 2 1>
+    <Line -10 -10 0 -20 #000080 2 1>
+    <Line -20 -10 20 0 #000080 2 1>
+    <Line 0 -10 0 0 #000000 1 1>
+    <Line 0 -10 20 -20 #000080 2 1>
+    <Line 0 10 20 20 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <.PortSym -10 -30 2 0>
+    <.PortSym -10 30 1 0>
+    <.ID 30 -26 X "1=Re=6=Measured Voice Coil Resistance=" "1=Le=1.49m=Measured Voice Coil Inductance=" "1=Fs=812.7=Resonant Frequency=" "1=Qms=2.79=Mech Suspension control measurement (Surround and Spider)=" "1=Qes=1.15=Electrical Suspension control measurement (Voice coil and Magnet)=">
+  </Symbol>
+</Component>
+
+<Component Tc120tdx>
+  <Description>
+Focal Tc120tdx 20mm Tioxid Dome Tweeter
+  </Description>
+  <Model>
+.Def:Loudspeaker_Tc120tdx _net1 _net0 Re="5.7" Le="0.08m" Fs="1181" Qms="2.16" Qes="1.42"
+L:L1 _net0 n3 L="Lces" I=""
+L:L2 n2 n3 L="Le" I=""
+C:C1 n3 _net0 C="Cmes" V=""
+R:R1 _net1 n2 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 n3 R="Res" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 Res="Qms/Qes*Re" Lces="Re/(2*pi*Fs*Qes)" Cmes="Qes/(2*pi*Fs*Re)" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Loudspeaker_Tc120tdx.sch
+
+.SUBCKT Loudspeaker_Tc120tdx  gnd _net1 _net0 Re=5.7 Le=0.08m Fs=1181 Qms=2.16 Qes=1.42 
+.PARAM Res=Qms/Qes*Re
+.PARAM Lces=Re/(2*3.1415926539*Fs*Qes)
+.PARAM Cmes=Qes/(2*3.1415926539*Fs*Re)
+L1 _net0 n3  {LCES} 
+L2 n2 n3  {LE} 
+C1 n3 _net0  {CMES} 
+R1 _net1 n2  {RE} tc1=0.0 tc2=0.0 
+R2 _net0 n3  {RES} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 30 0 -20 #000080 2 1>
+    <Line -20 10 20 0 #000080 2 1>
+    <Line -20 -10 0 20 #000080 2 1>
+    <Line 0 -10 0 20 #000080 2 1>
+    <Line -10 -10 0 -20 #000080 2 1>
+    <Line -20 -10 20 0 #000080 2 1>
+    <Line 0 -10 0 0 #000000 1 1>
+    <Line 0 -10 20 -20 #000080 2 1>
+    <Line 0 10 20 20 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <.PortSym -10 -30 2 0>
+    <.PortSym -10 30 1 0>
+    <.ID 30 -26 X "1=Re=5.7=Measured Voice Coil Resistance=" "1=Le=0.08m=Measured Voice Coil Inductance=" "1=Fs=1181=Resonant Frequency=" "1=Qms=2.16=Mech Suspension control measurement (Surround and Spider)=" "1=Qes=1.42=Electrical Suspension control measurement (Voice coil and Magnet)=">
+  </Symbol>
+</Component>
+
