@@ -122,6 +122,7 @@ SET(QUCS_SRCS
   mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
   wirelabel.cpp node.cpp qucs_init.cpp
   syntax.cpp misc.cpp messagedock.cpp
+  settings.cpp
   imagewriter.cpp printerwriter.cpp projectView.cpp
   symbolwidget.cpp
 )
@@ -139,6 +140,7 @@ octave_window.h
 qucs.h
 qucsdoc.h
 schematic.h
+settings.h
 syntax.h
 symbolwidget.h
 textdoc.h

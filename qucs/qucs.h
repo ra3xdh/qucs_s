@@ -441,4 +441,33 @@ private:
   QString lastExportFilename;
 };
 
+/** \brief Provide a template to declare singleton classes.
+  *
+  * Classes implemented using this template will be singletons (i.e., only
+  * one instance of the class will exist per invokation). Primarily this
+  * is used to support static / access to an application-wide function, e.g.
+  * settings.
+  *
+  */
+template < typename T >
+class QucsSingleton final
+{
+public:
+  static T& Get()
+  {
+    static T instance;
+    return instance;
+  }
+
+// Prevent overriding default ctor, dtor, copying, or multiple instances.
+private:
+  QucsSingleton() = default;
+  ~QucsSingleton() = default;
+
+  QucsSingleton(const QucsSingleton&) = delete;
+  QucsSingleton& operator=(const QucsSingleton&) = delete;
+  QucsSingleton(QucsSingleton&&) = delete;
+  QucsSingleton& operator=(QucsSingleton&&) = delete;
+};
+
 #endif /* QUCS_H */

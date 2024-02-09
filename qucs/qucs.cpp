@@ -53,6 +53,7 @@
 #include "schematic.h"
 #include "mouseactions.h"
 #include "messagedock.h"
+#include "settings.h"
 #include "wire.h"
 #include "module.h"
 #include "projectView.h"
@@ -100,6 +101,10 @@ QucsApp::QucsApp()
 #if QT_VERSION_MAJOR == 5
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 #endif
+
+  // Instantiate settings. It isn't necessary to do it at this point,
+  // but it is useful for testing.
+  _settings::Get();
 
   windowTitle = misc::getWindowTitle();
   setWindowTitle(windowTitle);

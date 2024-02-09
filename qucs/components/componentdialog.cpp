@@ -19,6 +19,7 @@
 #include "main.h"
 #include "qucs.h"
 #include "schematic.h"
+#include "settings.h"
 #include "misc.h"
 
 #include <cmath>
@@ -41,8 +42,13 @@
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 			: QDialog(d)
 {
-  QSettings settings("qucs","qucs_s");
-  restoreGeometry(settings.value("ComponentDialog/geometry").toByteArray());
+  // qDebug() << "Restore: " << _settings::Get().value("ComponentDialog/geometry").toByteArray();
+  // qDebug() << "Settings: " << _settings::Get().organizationName() << " " << _settings::Get().applicationName();
+  // qDebug() << "Default test (found)" << _settings::Get().item<int>("Foo");
+  // qDebug() << "Default test (not found int type)" << _settings::Get().item<int>("Bar");
+  // qDebug() << "Default test (found wrong type)" << _settings::Get().item<QString>("Foo");
+  // qDebug() << "Default test (not found string type)" << _settings::Get().item<QString>("Bar");
+  restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
 
   setWindowTitle(tr("Edit Component Properties"));
   Comp  = c;
