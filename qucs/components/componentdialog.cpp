@@ -1541,9 +1541,10 @@ QStringList ComponentDialog::getSimulationList()
     sim_lst.append("ALL");
     for (size_t i = 0; i < sch->DocComps.count(); i++) {
         Component *c = sch->DocComps.at(i);
-        if (c->isSimulation) {
-            sim_lst.append(c->Name);
-        }
+        if (!c->isSimulation) continue;
+        if (c->Model == ".FOUR") continue;
+        if (c->Model == ".SW") continue;
+        sim_lst.append(c->Name);
     }
     QStringList sim_wo_numbers = sim_lst;
     for(auto &s: sim_wo_numbers) {
