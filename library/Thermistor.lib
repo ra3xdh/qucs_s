@@ -1,0 +1,110 @@
+<Qucs Library 24.1.0 "Thermistor">
+
+<Component NTC>
+  <Description>
+NTC thermistor using global schematic temperature. This device is SPICE only.
+  </Description>
+  <Model>
+.Def:Thermistor_NTC _net0 _net1 R25="1000" BETA="4000" T0="25"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Thermistor_NTC.sch
+
+.SUBCKT Thermistor_NTC  gnd _net0 _net1 R25=1000 BETA=4000 T0=25 
+.PARAM TK = 273.15
+.PARAM T0 = 25
+R1 _net0  _net1 {R25*exp(BETA*(1/(TEMPER+TK)-1/(T0+TK)))}
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 0 6 0 #000080 2 1>
+    <Line 18 8 -36 0 #800000 2 1>
+    <Line -18 -8 36 0 #800000 2 1>
+    <Line -18 8 0 -16 #800000 2 1>
+    <Line 18 -8 0 16 #800000 2 1>
+    <Line 18 0 6 0 #800000 2 1>
+    <Line -18 0 -6 0 #800000 2 1>
+    <Line 24 0 6 0 #000080 2 1>
+    <Line 10 14 6 0 #000000 2 1>
+    <Line -10 -14 20 28 #000000 2 1>
+    <.PortSym -30 0 1 0>
+    <.ID -20 24 TH "1=R25=1000=Resistance at T0 temperature (Ohm)=" "1=BETA=4000=Sensitivity (K)=" "1=T0=25=Reference temperature (°C)=">
+    <.PortSym 30 0 2 180>
+  </Symbol>
+</Component>
+
+<Component NTC_e>
+  <Description>
+3-pin NTC thermistor. Connect the DC voltage source to the third pin to set the device temperature. 1V=°C. This device is SPICE only.
+  </Description>
+  <Model>
+.Def:Thermistor_NTC_e _net0 _net1 n1 R25="1000" BETA="4000" T0="25"
+R:R2 n1 gnd R="1e9" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Thermistor_NTC_e.sch
+
+.SUBCKT Thermistor_NTC_e  gnd _net0 _net1 n1 R25=1000 BETA=4000 T0=25 
+.PARAM TK = 273.15
+.PARAM T0 = 25
+R2 n1 0  1E9 tc1=0.0 tc2=0.0 
+R1 _net0  _net1 {R25*exp(BETA*(1/(v(n1)+TK)-1/(T0+TK)))}
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 0 1 0>
+    <.ID -20 24 TH "1=R25=1000=Resistance at T0 temperature (Ohm)=" "1=BETA=4000=Sensitivity (K)=" "1=T0=25=Reference temperature (°C)=">
+    <.PortSym 30 0 2 180>
+    <Line -30 0 6 0 #000080 2 1>
+    <Line 18 8 -36 0 #800000 2 1>
+    <Line -18 -8 36 0 #800000 2 1>
+    <Line -18 8 0 -16 #800000 2 1>
+    <Line 18 -8 0 16 #800000 2 1>
+    <Line 18 0 6 0 #800000 2 1>
+    <Line -18 0 -6 0 #800000 2 1>
+    <Line 24 0 6 0 #000080 2 1>
+    <Line 10 14 6 0 #000000 2 1>
+    <Line -10 -14 20 28 #000000 2 1>
+    <Line 0 -24 0 -6 #000080 2 1>
+    <Line 0 -14 0 -10 #800000 2 1>
+    <Line 6 -14 -12 0 #800000 3 1>
+    <.PortSym 0 -30 3 0>
+  </Symbol>
+</Component>
+
+<Component NTC_p>
+  <Description>
+NTC thermistor. Set the TA parameter to set device temperature. This device works for all simulators. 
+  </Description>
+  <Model>
+.Def:Thermistor_NTC_p _net0 _net1 R25="1000" BETA="4000" T0="25" TA="35"
+EDD:D1 _net0 _net1 I1="D1.I1" Q1="D1.Q1"
+  Eqn:EqnD1I1 D1.I1="V1/(R25*exp(BETA*(1/(TA+TK)-1/(T0+TK))))" Export="no"
+  Eqn:EqnD1Q1 D1.Q1="0" Export="no"
+Eqn:Eqn1 TK="273.15" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.1.0  Thermistor_NTC_p.sch
+
+.SUBCKT Thermistor_NTC_p  gnd _net0 _net1 R25=1000 BETA=4000 T0=25 TA=35 
+.PARAM TK=273.15
+BD1I0 _net0 _net1 I=V(_net0,_net1)/(R25*exp(BETA*(1/(TA+TK)-1/(T0+TK))))
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 0 6 0 #000080 2 1>
+    <Line 18 8 -36 0 #00007f 2 1>
+    <Line -18 -8 36 0 #00007f 2 1>
+    <Line -18 8 0 -16 #00007f 2 1>
+    <Line 18 -8 0 16 #00007f 2 1>
+    <Line 18 0 6 0 #00007f 2 1>
+    <Line -18 0 -6 0 #00007f 2 1>
+    <Line 24 0 6 0 #000080 2 1>
+    <Line 10 14 6 0 #000000 2 1>
+    <Line -10 -14 20 28 #000000 2 1>
+    <.PortSym -30 0 1 0>
+    <.ID -20 24 TH "1=R25=1000=Resistance at T0 temperature (Ohm)=" "1=BETA=4000=Sensitivity (K)=" "1=T0=25=Reference temperature (°C)=" "1=TA=35=Device temperature (°C)=">
+    <.PortSym 30 0 2 180>
+  </Symbol>
+</Component>
+
