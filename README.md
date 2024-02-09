@@ -79,4 +79,19 @@ cd /your_installation prefix/bin
 ./qucs-s
 ~~~
 
+### clangd LSP support
+Clangd looks for `compile_commands.json` file in parent folders of the file it processes.
+`compile_commands.json` should be generated along with other build configuration files
+when you run `cmake` as part of building routine:
+```
+mkdir builddir
+cd builddir
+cmake ..  -DCMAKE_INSTALL_PREFIX=/your_install_prefix/
+```
+If `compile_commands.json` is already there, create a symbolic link to it from project root dir:
+```
+cd project_root
+ln -s ./builddir/compile_commands.json compile_commands.json
+```
 
+It may take some time to index files at first run. Clangd configuration is in `.clangd` file.

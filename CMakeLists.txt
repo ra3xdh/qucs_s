@@ -13,6 +13,8 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
       "remove CMakeCache.txt and CMakeFiles.")
 endif()
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 file (STRINGS "${qucs-suite_SOURCE_DIR}/VERSION" QUCS_VERSION)
 message(STATUS "Configuring Qucs: VERSION ${QUCS_VERSION}")
 
