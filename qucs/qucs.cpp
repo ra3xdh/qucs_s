@@ -2319,7 +2319,7 @@ void QucsApp::slotTune(bool checked)
         bool digi_found = false;
         bool exit = false;
         for(Component *pc = d->DocComps.first(); pc != 0; pc = d->DocComps.next()) {
-            if (pc->isSimulation && pc->Model != ".DC") {
+            if (pc->isSimulation) {
                 found = true;
             }
             if (pc->Type == isDigitalComponent) {
