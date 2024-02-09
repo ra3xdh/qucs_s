@@ -247,7 +247,7 @@ int TabDiagram::calcDiagram()
     y = y2-tHeight-5;
     colWidth = 0;
 
-    Str = g->Var;
+    Str = g->Var.section('/', 1);
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
     if(colWidth < 0)  goto funcEnd;
     Texts.append(new Text(x, y2-2, Str));  // dependent variable
