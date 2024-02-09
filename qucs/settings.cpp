@@ -56,7 +56,7 @@ void settingsManager::initDefaults()
     m_Defaults["NgspiceExecutable"] = "ngspice_con.exe";
     m_Defaults["XyceExecutable"] = "Xyce.exe";
 #else
-    m_Defaults["NgspiceExecutable"] = "ngspice.exe";
+    m_Defaults["NgspiceExecutable"] = "ngspice";
     m_Defaults["XyceExecutable"] = "/usr/local/Xyce-Release-6.8.0-OPENSOURCE/bin/Xyce";
 #endif
 
