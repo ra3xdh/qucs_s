@@ -81,10 +81,27 @@ QString SpiceDisto::spice_netlist(bool isXyce)
     if (!isXyce) {
         QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
         QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
-        s = QString("disto %1 %2 %3 %4").arg(Props.at(0)->Value).arg(Props.at(3)->Value)
-                .arg(fstart).arg(fstop);
-        if (Props.at(4)->Value.remove(' ').isEmpty()) s += "\n";
-        else s += Props.at(4)->Value + "\n";
+        QString swp = spicecompat::convert_sweep_type(Props.at(0)->Value); // Sweep mode (lin,dec,etc.)
+
+        QString points;
+        if (swp=="dec") { // convert points number for spice compatibility
+            double Np,Fstart,Fstop,fac = 1.0;
+            QString unit;
+            misc::str2num(Props.at(3)->Value,Np,unit,fac); // Points number
+            Np *= fac;
+            misc::str2num(Props.at(1)->Value,Fstart,unit,fac);
+            Fstart *= fac;
+            misc::str2num(Props.at(2)->Value,Fstop,unit,fac);
+            Fstop *= fac;
+            double Nd = ceil(log10(Fstop/Fstart)); // number of decades
+            double Npd = ceil(Np/Nd); // points per decade
+            points = QString::number(Npd);
+        } else {
+            points = Props.at(3)->Value;
+        }
+
+        s = QString("disto %1 %2 %3 %4 %5\n").arg(swp).arg(points).arg(fstart).arg(fstop)
+                                             .arg(Props.at(4)->Value.simplified());
     } else {
         s.clear();
     }

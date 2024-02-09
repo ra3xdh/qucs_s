@@ -11,6 +11,7 @@ DiodesSchottky.lib
 Ideal.lib
 JFETs.lib
 LEDs.lib
+Loudspeaker.lib
 MOSFETs.lib
 NMOSFETs.lib
 OpAmps.lib
@@ -23,6 +24,7 @@ Transistors.lib
 Varistors.lib
 Z-Diodes.lib
 SpiceOpamp.lib
+Thermistor.lib
 Thyristor.lib
 Transformers.lib
 Xanalogue.lib

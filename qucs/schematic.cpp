@@ -108,6 +108,12 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_)
     DocPaints.setAutoDelete(true);
     SymbolPaints.setAutoDelete(true);
 
+    Nodes = &DocNodes;
+    Wires = &DocWires;
+    Diagrams = &DocDiags;
+    Paintings = &DocPaints;
+    Components = &DocComps;
+
     // The 'i' means state for being unchanged.
     undoActionIdx = 0;
     undoAction.append(new QString(" i\n</>\n</>\n</>\n</>\n"));

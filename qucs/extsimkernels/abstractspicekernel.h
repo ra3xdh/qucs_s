@@ -67,6 +67,9 @@ protected:
     bool needsPrefix;
     Schematic *Sch;
 
+    bool parseFourTHD = false;  // Fourier output is parsed twice, first freqencies, then THD
+    bool parsePZzeros = false;  // PZ output is parsed twice, first poles, then zeros
+
     bool prepareSpiceNetlist(QTextStream &stream, bool isSubckt = false);
     virtual void startNetlist(QTextStream& stream, bool xyce = false);
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
