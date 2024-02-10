@@ -77,6 +77,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
 
    QString next_line;
    while(in_stream.readLineInto(&next_line)) {
+       if (next_line.isEmpty()) continue;
        if (next_line.at(0) == '#') break;
    }
 
@@ -130,6 +131,11 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     while(in_stream.readLineInto(&next_line)) {
         if(next_line.isEmpty()) continue;
         if(next_line.at(0)=='#') continue;
+        if(next_line.startsWith("!noise parameters")) {
+            err_text = "Noise simulation in S2P files is not supported!\n"
+                       "Noise data ignored";
+            break;
+        }
         if(next_line.at(0)=='!') continue;
         tmp_lst = next_line.split(QRegularExpression("[ \\t]"), qucs::SkipEmptyParts);
         if (tmp_lst.count() < 2*(ports*ports)+1) {
