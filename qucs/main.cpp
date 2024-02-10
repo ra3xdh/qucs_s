@@ -89,6 +89,7 @@ bool loadSettings()
     if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
     if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
     if(settings.contains("appFont"))QucsSettings.appFont.fromString(settings.value("appFont").toString());
+    if(settings.contains("textFont"))QucsSettings.textFont.fromString(settings.value("textFont").toString());
     if(settings.contains("LargeFontSize"))QucsSettings.largeFontSize=settings.value("LargeFontSize").toDouble(); // use toDouble() as it can interpret the string according to the current locale
     if(settings.contains("maxUndo"))QucsSettings.maxUndo=settings.value("maxUndo").toInt();
     if(settings.contains("NodeWiring"))QucsSettings.NodeWiring=settings.value("NodeWiring").toInt();
@@ -232,6 +233,7 @@ bool saveApplSettings()
     settings.setValue("dy", QucsSettings.dy);
     settings.setValue("font", QucsSettings.font.toString());
     settings.setValue("appFont", QucsSettings.appFont.toString());
+    settings.setValue("textFont", QucsSettings.textFont.toString());
     // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
     settings.setValue("LargeFontSize", QString::number(QucsSettings.largeFontSize));
     settings.setValue("maxUndo", QucsSettings.maxUndo);
@@ -833,6 +835,7 @@ int main(int argc, char *argv[])
   //QDesktopWidget *d = a.desktop();
   QucsSettings.font = QApplication::font();
   QucsSettings.appFont = QApplication::font();
+  QucsSettings.textFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
   QucsSettings.font.setPointSize(12);
   QSize size = QGuiApplication::primaryScreen()->size();
   int w = size.width();
