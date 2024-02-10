@@ -25,56 +25,47 @@ if "X%6"=="X" goto usage
 
 set NAME=%1
 set NAMEOUT=%2
-set TIME=%~3
-set DIR=%4
+set SIMTIME=%~3
+set SIMDIR=%4
 set BINDIR=%5
-set VLIBS=%6
-set OPTION=%7
 
-if not exist "%DIR%" goto nodir
+REM echo %0 %1 %2 %3 %4 %5
 
-cd /d "%DIR%"
+REM Remove any spaces in the simulation time command.
+set SIMTIME=%SIMTIME: =%
+REM echo %SIMTIME%
+
+if not exist "%SIMDIR%" goto nodir
+
+cd /d "%SIMDIR%"
 
 if not exist %NAME% goto nofile
 
 copy %NAME% digi.vhdl > NUL
 set NAME=digi
 
-set CXX=g++
-set CXXFLAGS=-O2 -I"%FREEHDL%/include"
-set LDFLAGS=-L"%FREEHDL%/lib" -L"%FREEHDL%/lib/freehdl" -Wl,--enable-auto-import -s
-set LIBS=-lfreehdl-kernel -lfreehdl-std -lieee -lregex
+echo running GHDL analysis pass...
+ghdl -a %NAME%.vhdl
 
-set PATH=%PATH%;%FREEHDL%/bin
-
-echo running C++ conversion...
-freehdl-v2cc -m %NAME%._main_.cc -L"%FREEHDL%/share/freehdl/lib" -Lvhdl -o %NAME%.cc %NAME%.vhdl
-
-echo compiling functions...
-%CXX% %CXXFLAGS% -c %NAME%.cc
-
-echo compiling main...
-%CXX% %CXXFLAGS% -c %NAME%._main_.cc
-
-echo linking...
-%CXX% %NAME%._main_.o %NAME%.o %LDFLAGS% -Lvhdl %VLIBS% %LIBS% -static-libstdc++ -o %NAME%.exe
+echo running GHDL elaboration pass...
+ghdl -e TestBench
 
 echo simulating...
-%NAME%.exe -q -cmd "dc -f %NAME%.vcd -t 1 ps -q;d;run %TIME%;q;" < NUL
+ghdl -r TestBench --vcd=digi.vcd --stop-time=%SIMTIME%
 
 echo running VCD conversion...
-vcd2qucsdat %OPTION% -if vcd -of qucsdata -i %NAME%.vcd -o %NAMEOUT%
+%BINDIR%\vcd2qucsdat -if vcd -of qucsdata -i %NAME%.vcd -o %NAMEOUT%
 
 goto end
 
 :usage
-echo Usage: %0 "<netlist.txt> <output.dat> <time> <directory> <bindirectory> <vlibs> [<convoption>]"
+echo Usage: %0 "<netlist.txt> <output.dat> <time> <directory> <bindirectory>"
 echo Directory has to contain the file 'netlist.txt'.
 exit /b 1
 goto end
 
 :nodir
-echo %DIR%: Not a directory
+echo %SIMDIR%: Not a directory
 exit /b 1
 goto end
 
