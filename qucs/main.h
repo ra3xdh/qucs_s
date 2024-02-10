@@ -52,6 +52,7 @@ struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
   QFont font;
   QFont appFont;
+  QFont textFont;
   QFont sysDefaultFont;
   float largeFontSize;
   QColor BGColor;      // background color of view area

@@ -42,10 +42,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
  */
 TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDoc(App_, Name_)
 {
-  QFont font("Courier New", QucsSettings.font.pointSize());
-  font.setStyleHint(QFont::Courier);
-  font.setFixedPitch(true);
-  setFont(font);
+  setFont(QucsSettings.textFont);
 
   simulation = true;
   Library = "";
