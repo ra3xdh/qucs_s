@@ -25,13 +25,19 @@ if "X%6"=="X" goto usage
 
 set NAME=%1
 set NAMEOUT=%2
-set TIME=%~3
-set DIR=%4
+set SIMTIME=%~3
+set SIMDIR=%4
 set BINDIR=%5
 
-if not exist "%DIR%" goto nodir
+REM echo %0 %1 %2 %3 %4 %5
 
-cd /d "%DIR%"
+REM Remove any spaces in the simulation time command.
+set SIMTIME=%SIMTIME: =%
+REM echo %SIMTIME%
+
+if not exist "%SIMDIR%" goto nodir
+
+cd /d "%SIMDIR%"
 
 if not exist %NAME% goto nofile
 
@@ -45,10 +51,10 @@ echo running GHDL elaboration pass...
 ghdl -e TestBench
 
 echo simulating...
-ghdl -r TestBench --vcd=digi.vcd --stop-time=%TIME%
+ghdl -r TestBench --vcd=digi.vcd --stop-time=%SIMTIME%
 
 echo running VCD conversion...
-%BINDIR%\vcd2qucsdat %OPTION% -if vcd -of qucsdata -i %NAME%.vcd -o %NAMEOUT%
+%BINDIR%\vcd2qucsdat -if vcd -of qucsdata -i %NAME%.vcd -o %NAMEOUT%
 
 goto end
 
@@ -59,7 +65,7 @@ exit /b 1
 goto end
 
 :nodir
-echo %DIR%: Not a directory
+echo %SIMDIR%: Not a directory
 exit /b 1
 goto end
 
