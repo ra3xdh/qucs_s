@@ -43,11 +43,7 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
     QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
 
     edtCode = new QTextEdit(this);
-    QFont font("Monospace");
-    font.setPointSize(QucsSettings.font.pointSize());
-    font.setStyleHint(QFont::Courier);
-    font.setFixedPitch(true);
-    edtCode->document()->setDefaultFont(font);
+    edtCode->document()->setDefaultFont(QucsSettings.textFont);
     edtCode->setWordWrapMode(QTextOption::NoWrap);
     edtCode->insertPlainText(comp->Props.at(0)->Value);
     connect(edtCode, SIGNAL(textChanged()), this, SLOT(slotChanged()));
