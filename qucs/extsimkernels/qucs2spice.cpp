@@ -132,7 +132,7 @@ QString qucs2spice::convert_rcl(const QString& line)
     s += " " + lst.takeFirst() + " ";
     s1 = lst.takeFirst().remove("\"");
     auto idx = s1.indexOf('=');
-    s += s1.right(s1.size()-idx-1);
+    s += spicecompat::normalize_value(s1.right(s1.size()-idx-1));
     s += "\n";
     return s;
 }

@@ -1,0 +1,14 @@
+* Statz MESFET DC model example ngspice manual
+*
+.SUBCKT STATZ d g s
+*
+z1 d g s mesfetmod area=1.4
+*
+.MODEL mesfetmod NMF level=1 vt0=-1.3 lambda=0.03 alpha=3 beta=1.4e-3 rd=1.5 rs=1
+*
+.ENDS STATZ
+*
+*MESFET model level 1 is derived from the GaAs FET model of Statz et al.
+*DC characteristics defined by VTO, B and BETA which determine the variation of drain current with gate voltage
+*ALPHA, which determines saturation voltage
+*LAMBDA, which determines the output conductance
