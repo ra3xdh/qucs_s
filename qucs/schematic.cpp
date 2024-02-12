@@ -1080,7 +1080,7 @@ void Schematic::drawGrid(const ViewPainter& p)
 
     {
         // Draw small cross at origin of coordinates
-        const QPoint origin = contentsToViewport(modelToContents(QPoint{0, 0}));
+        const QPoint origin = modelToViewport(QPoint{0, 0});
         p.Painter->drawLine(origin.x() - 3, origin.y(), origin.x() + 4, origin.y());  // horizontal stick
         p.Painter->drawLine(origin.x(), origin.y() - 3, origin.x(), origin.y() + 4);  // vertical stick
     }
@@ -1102,18 +1102,11 @@ void Schematic::drawGrid(const ViewPainter& p)
     // grid-nodes should be drawn — where to start and where to finish drawing
     // these nodes.
 
-    // Find a point displayed in top-left corner
-    QPoint gridTopLeft = viewportToModel(viewportRect().topLeft());
-    // Set its coordinates to coordinates of nearest grid-point
-    setOnGrid(gridTopLeft.rx(), gridTopLeft.ry());
-    // Convert coordinates from model back to viewport
-    gridTopLeft = modelToContents(gridTopLeft);
-    gridTopLeft = contentsToViewport(gridTopLeft);
+    QPoint topLeft = viewportToModel(viewportRect().topLeft());
+    const QPoint gridTopLeft = modelToViewport(setOnGrid(topLeft));
 
-    QPoint gridBottomRight = viewportToModel(viewportRect().bottomRight());
-    setOnGrid(gridBottomRight.rx(), gridBottomRight.ry());
-    gridBottomRight = modelToContents(gridBottomRight);
-    gridBottomRight = contentsToViewport(gridBottomRight);
+    QPoint bottomRight = viewportToModel(viewportRect().bottomRight());
+    const QPoint gridBottomRight = modelToViewport(setOnGrid(bottomRight));
 
     // This is the minimal distance between drawn grid-nodes. No matter how
     // a user scales the view, any two adjacent nodes must have at least this
