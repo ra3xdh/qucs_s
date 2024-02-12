@@ -1045,6 +1045,12 @@ void Schematic::showNoZoom()
     renderModel(Scale, newModel, displayedInCenter, vpCenter);
  }
 
+ QPoint Schematic::setOnGrid(const QPoint& p) {
+   QPoint snappedToGrid{p.x(), p.y()};
+   setOnGrid(snappedToGrid.rx(), snappedToGrid.ry());
+   return snappedToGrid;
+ }
+
 // ---------------------------------------------------
 // Sets an arbitrary coordinate onto the next grid coordinate.
 void Schematic::setOnGrid(int &x, int &y)
