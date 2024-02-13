@@ -53,7 +53,11 @@ void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_,
 #ifdef __MINGW32__
   FontScale = Scale;
 #endif
-  f.setPointSizeF( FontScale * float(f.pointSize()) );
+  {
+    QFontInfo fontInfo{ f };
+    double fontSize{ static_cast<double>(fontInfo.pixelSize()) * FontScale};
+    f.setPixelSize( static_cast<int>(fontSize) );
+  }
   p->setFont(f);
   LineSpacing = p->fontMetrics().lineSpacing();
   p-> setWorldMatrixEnabled(false);   // we use our own coordinate transformation
