@@ -124,13 +124,16 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
             s += QString("%1 ").arg(List[i]);
         }
     } else {
-        double start,stop,step,fac,points;
-        misc::str2num(getProperty("Start")->Value,start,unit,fac);
-        start *= fac;
-        misc::str2num(getProperty("Stop")->Value,stop,unit,fac);
-        stop *= fac;
+        double start,stop,step,fac,points,ostart,ostop;
+        misc::str2num(getProperty("Start")->Value,ostart,unit,fac);
+        ostart *= fac;
+        misc::str2num(getProperty("Stop")->Value,ostop,unit,fac);
+        ostop *= fac;
         misc::str2num(getProperty("Points")->Value,points,unit,fac);
         points *= fac;
+
+        start = std::min(ostart,ostop);
+        stop = std::max(ostart,ostop);
 
         if(type == "lin") {
             step = (stop-start)/points;
