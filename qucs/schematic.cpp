@@ -2817,8 +2817,8 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
     QSize viewportSizeOnModelPlane = viewportRect().size() / newScale;
 
     QPoint vpTopLeftOnModelPlane{
-        modelPoint.x() - static_cast<int>(viewportPoint.x() / newScale),
-        modelPoint.y() - static_cast<int>(viewportPoint.y() / newScale)
+        modelPoint.x() - static_cast<int>(std::round(viewportPoint.x() / newScale)),
+        modelPoint.y() - static_cast<int>(std::round(viewportPoint.y() / newScale))
     };
 
     QRect viewportOnModelPlane{vpTopLeftOnModelPlane, viewportSizeOnModelPlane};
