@@ -3,20 +3,20 @@
 ## Important notes
 
 * Versioning switched to CalVer. The first digit means year, the second digit means the release number,
-  the second digit means patch number #328
+  the third digit means patch number #328
 
 ## New features
 
 * Added 3-pin RCD devices #349 to improve support of microelectronics PDKs
-* Improvements of Ngspice support; allowed multiple simulation of the same type #463 @ivandi69
-* Automatic extraction of THD from FOURIER simulation #525
+* Improvements of Ngspice support; allowed multiple simulation of the same type #463 by @ivandi69
+* Automatic extraction of THD from FOURIER simulation #525 @ivandi69
 * Nutmeg equations improvements; implemented simulation selection from drop-down list #463 #519
-* Improvements of Nutmeg script simulation type; implemented custom prefixes for plots #476 #435
-* Export DC OP simulation data to dataset #463 #140
+* Improvements of Nutmeg script simulation type; implemented custom prefixes for plots #476 #435 @ivandi69
+* Export DC OP simulation data to dataset #463 #140 @ivandi69
 * Implemented zoom by selection on the rectangular plots #305
 * Implemeted potentiometer device #122
-* Switched digital simulation from FreeHDL to GHDL #395
-* Status bar improvements #
+* Switched digital simulation from FreeHDL to GHDL #395 @iwbnwif
+* Status bar improvements #493
 
 ## RF simulation features
 
@@ -37,15 +37,15 @@
 * Added thermistor library #538
 * Fixed ideal library #258 #428
 * Fixed transformers library #362
+* Added new devices in SpiceOpamp library #501
 
 ## General improvements
 
 * Fixed different tuner issues
-* Schematic class refactoring #444
 * Schematic zooming improvements #502
 * Different improvements on schematic look and control
 * Added schematic pan mode with the middle mouse button #488
-* HiDPI support improvements
+* HiDPI support improvements including grid rendering
 * Fixed schematic glitches using Wayland #227
 * Added text document zoom and font setting #534
 
@@ -59,7 +59,7 @@
 
 * Added Chinese translation #453 by @hvwyl
 
-Thanks @wawuwo and @iwbnwif for providing refactoring PRs! Many thanks to @tomhajjar for proving libraries, examples and testing.
+Thanks @wawuwo and @iwbnwif for providing refactoring PRs! Many thanks to @tomhajjar for providing libraries, examples and testing.
 
 # Qucs-S 2.1.0
 
