@@ -1,3 +1,11 @@
+qucs-s (24.1.0) stable; urgency=low
+
+  * Twelfth release
+
+ -- Vadim Kuznetsov <ra3xdh@gmail.com>  Sun, 18 Feb 2024 18:00:00 +0200
+
+
+
 qucs-s (2.1.0-1) stable; urgency=low
 
   * version number update by debtransform
