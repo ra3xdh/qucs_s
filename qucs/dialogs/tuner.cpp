@@ -265,7 +265,7 @@ void tunerElement::resetValue()
     value->setText(val);
     ValueUnitsCombobox->setCurrentIndex(index);
     updateSlider();
-    slotValueChanged();
+    slotValueChanged(false);
 }
 
 /*
@@ -462,7 +462,7 @@ void tunerElement::slotSliderChanged()
  * The control reaches this function when one of the events above is triggered. It checks if the input value is correct, updates it
  * and finally runs the simulation
  */
-void tunerElement::slotValueChanged()
+void tunerElement::slotValueChanged(bool simulate)
 {
     bool ok;
     float v = getValue(ok);
@@ -501,7 +501,9 @@ void tunerElement::slotValueChanged()
 
     updateSlider();
     updateProperty();
-    emit elementValueUpdated();
+    if (simulate) {
+        emit elementValueUpdated();
+    }
     value->blockSignals(false);
     ValueUnitsCombobox->blockSignals(false);
 }
@@ -803,6 +805,7 @@ void TunerDialog::slotResetValues()
     {
         currentElements.at(i)->resetValue();
     }
+    slotElementValueUpdated();
 }
 
 void TunerDialog::slotUpdateValues()
