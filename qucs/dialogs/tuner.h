@@ -97,7 +97,7 @@ class tunerElement : public QWidget
         void slotMinValueChanged();
         void slotMaxValueChanged();
         void slotStepChanged();
-        void slotValueChanged();
+        void slotValueChanged(bool simulate = true);
         void slotDelete();
         void slotDownClicked();
         void slotUpClicked();
