@@ -1107,7 +1107,7 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
     bool isXyce = false;
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
-        QRegularExpression prnln_rx("^\\D\\w*\\s=\\s-?\\d.\\d+[Ee][+-]\\d+");
+        QRegularExpression prnln_rx("^[A-Za-z].*\\s=\\s-?\\d.\\d+[Ee][+-]\\d+");
         QRegularExpression rx("^0\\s+[0-9].*"); // Zero index pattern
         while (!ngsp_data.atEnd()) {
             QString lin = ngsp_data.readLine();
