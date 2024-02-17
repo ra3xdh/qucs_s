@@ -48,7 +48,7 @@ class AbstractSpiceKernel : public QObject
 private:
     enum outType {xyceSTD, spiceRaw, spiceRawSwp, xyceSTDswp, spicePrn, Unknown};
 
-    void normalizeVarsNames(QStringList &var_list, const QString &custom_prefix);
+    void normalizeVarsNames(QStringList &var_list, const QString &dataset_prefix, bool isCustom = false);
     int checkRawOutupt(QString ngspice_file, QStringList &values);
     void extractBinSamples(QDataStream &dbl, QList< QList<double> > &sim_points,
                            int NumPoints, int NumVars, bool isComplex);
