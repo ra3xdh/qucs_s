@@ -35,6 +35,7 @@ QString spicecompat::normalize_value(QString Value)
     const QRegularExpression c_pattern("^[0-9]+.*F$");
     const QRegularExpression l_pattern("^[0-9]+.*H$");
     const QRegularExpression v_pattern("^[0-9]+.*V$");
+    const QRegularExpression i_pattern("^[0-9]+.*A$");
     const QRegularExpression hz_pattern("^[0-9]+.*Hz$");
     const QRegularExpression s_pattern("^[0-9]+.*S$");
     const QRegularExpression sec_pattern("^[0-9]+.*s$");
@@ -54,6 +55,9 @@ QString spicecompat::normalize_value(QString Value)
         s.replace("M","Meg");
     } else if (v_pattern.match(s).hasMatch()) {
         s.remove("V");
+        s.replace("M","Meg");
+    } else if (i_pattern.match(s).hasMatch()) {
+        s.remove("A");
         s.replace("M","Meg");
     } else if (hz_pattern.match(s).hasMatch()) {
         s.remove("Hz");
