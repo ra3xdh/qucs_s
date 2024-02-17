@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru">
+<TS version="2.1" language="ru" sourcelanguage="en">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -68,7 +68,7 @@
     <message>
         <location line="+1"/>
         <source>testing, modelling, Octave.</source>
-        <translation>тестирование, моделирование, Octave</translation>
+        <translation>тестирование, моделирование, Octave.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -249,7 +249,7 @@
     <message>
         <location line="+1"/>
         <source>Chinese by</source>
-        <translation type="unfinished"></translation>
+        <translation>Китайский</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -359,12 +359,12 @@
     <message>
         <location line="+1"/>
         <source>Failed to create dataset file </source>
-        <translation>Ошибка создания файла данных</translation>
+        <translation>Ошибка создания файла данных </translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Check write permission of the directory </source>
-        <translation>Проверьте права на запись в каталог</translation>
+        <translation>Проверьте права на запись в каталог </translation>
     </message>
 </context>
 <context>
@@ -382,7 +382,7 @@
     <message>
         <location line="+7"/>
         <source>      Head Width: </source>
-        <translation>Ширина окончания стрелки: </translation>
+        <translation>      Ширина окончания стрелки: </translation>
     </message>
     <message>
         <location line="+8"/>
@@ -392,7 +392,7 @@
     <message>
         <location line="+6"/>
         <source>      Line Width: </source>
-        <translation>Толщина линии: </translation>
+        <translation>      Толщина линии: </translation>
     </message>
     <message>
         <location line="+8"/>
@@ -427,7 +427,7 @@
     <message>
         <location line="+5"/>
         <source>Arrow head: </source>
-        <translation>Окончание стрелки:</translation>
+        <translation>Окончание стрелки: </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -794,12 +794,12 @@
     <message>
         <location line="-54"/>
         <source>Component: </source>
-        <translation>Компонент</translation>
+        <translation>Компонент: </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>display in schematic</source>
-        <translation type="unfinished">показывать на схеме</translation>
+        <translation>показывать на схеме</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -813,7 +813,7 @@
     <message>
         <location line="+4"/>
         <source>Extra outputs (semicolon separated; raw-SPICE or XYCE-STD or scalars print format)</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнительные форматы вывода (через точку с запятой; необработанный формат SPICE или STD XYCE или скалярный формат)</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -900,7 +900,7 @@
     <message>
         <location line="+17"/>
         <source>Number Notation: </source>
-        <translation>Представление чисел:</translation>
+        <translation>Представление чисел: </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1300,12 +1300,12 @@
     <message>
         <location line="+1"/>
         <source>Scale factor: </source>
-        <translation>Масштаб</translation>
+        <translation>Масштаб: </translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Image format:</source>
-        <translation>Тип изображения</translation>
+        <translation>Тип изображения:</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1413,12 +1413,12 @@
     <message>
         <location line="+4"/>
         <source>There were simulation warnings. Please check log.</source>
-        <translation type="unfinished"></translation>
+        <translation>Были предупреждения при моделировании. Пожалуйста, проверьте журнал.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Simulation finished. Now place diagram on schematic to plot the result.</source>
-        <translation type="unfinished"></translation>
+        <translation>Моделировние завершено. Теперь поместите диаграмму на схему, чтобы отобразить результат.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1435,7 +1435,7 @@
     <message>
         <location line="+1"/>
         <source>Simulation started on: </source>
-        <translation>Моделирование началось:</translation>
+        <translation>Моделирование началось: </translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1467,7 +1467,7 @@
     <message>
         <location filename="../qucs/paintings/filldialog.cpp" line="+48"/>
         <source>Line Width: </source>
-        <translation>Ширина линии:</translation>
+        <translation>Ширина линии: </translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1837,12 +1837,12 @@ Filter synthesis program
     <message>
         <location line="+11"/>
         <source>  Text size: </source>
-        <translation>Размер текста: </translation>
+        <translation>  Размер текста: </translation>
     </message>
     <message>
         <location line="+9"/>
         <source>  Rotation angle: </source>
-        <translation>Угол поворота: </translation>
+        <translation>  Угол поворота: </translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2383,7 +2383,7 @@ Node name will not be changed.</source>
     <message>
         <location line="+15"/>
         <source>A library with this name already exists! Rewrite?</source>
-        <translation type="unfinished"></translation>
+        <translation>Библиотека с этим именем уже существует!</translation>
     </message>
     <message>
         <source>A system library with this name already exists!</source>
@@ -2412,7 +2412,8 @@ Node name will not be changed.</source>
         <location line="+26"/>
         <source>Loading subcircuit &quot;%1&quot;.
 </source>
-        <translation>Загрузка подсхемы &quot;%1&quot;</translation>
+        <translation>Загрузка подсхемы &quot;%1&quot;.
+</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2423,40 +2424,41 @@ Node name will not be changed.</source>
         <location line="+12"/>
         <source>Creating Qucs netlist.
 </source>
-        <translation>Создание списка цепей Qucs
+        <translation>Создание списка цепей Qucs.
 </translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Error: Cannot create netlist for &quot;%1&quot;.
 </source>
-        <translation>ОШИБКА: Невозможно создать список цепей для &quot;%1&quot;</translation>
+        <translation>ОШИБКА: Невозможно создать список цепей для &quot;%1&quot;.
+</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Creating SPICE netlist.
 </source>
-        <translation>Создание списка цепей SPICE
+        <translation>Создание списка цепей SPICE.
 </translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Creating Verilog netlist.
 </source>
-        <translation>Создание списка цепей Verilog
+        <translation>Создание списка цепей Verilog.
 </translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Creating VHDL netlist.
 </source>
-        <translation>Создание списка цепей VHDL
+        <translation>Создание списка цепей VHDL.
 </translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Error creating library.</source>
-        <translation>Ошибка создания библиотеки</translation>
+        <translation>Ошибка создания библиотеки.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2634,7 +2636,7 @@ Node name will not be changed.</source>
     <message>
         <location line="+3"/>
         <source>Number Notation: </source>
-        <translation>Представление чисел:</translation>
+        <translation>Представление чисел: </translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2644,27 +2646,27 @@ Node name will not be changed.</source>
     <message>
         <location line="+5"/>
         <source>Off</source>
-        <translation type="unfinished"></translation>
+        <translation>Отключен</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Square</source>
-        <translation type="unfinished"></translation>
+        <translation>Треугольник</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Квадрат</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Marker Indicator</source>
-        <translation type="unfinished"></translation>
+        <translation>Индикатор маркера</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Z0: </source>
-        <translation>Z0:</translation>
+        <translation>Z0: </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3554,7 +3556,7 @@ Resistor color code computation program
     <message>
         <location line="+1"/>
         <source>SPICE</source>
-        <translation type="unfinished">SPICE</translation>
+        <translation>SPICE</translation>
     </message>
     <message>
         <source>XSPICE</source>
@@ -3673,12 +3675,12 @@ Resistor color code computation program
     <message>
         <location line="+4"/>
         <source>offset voltage (SPICE only)</source>
-        <translation type="unfinished"></translation>
+        <translation>напряжение смещения (только SPICE)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>delay time (SPICE only)</source>
-        <translation type="unfinished"></translation>
+        <translation>время задержки (только SPICE)</translation>
     </message>
     <message>
         <location filename="../qucs/components/am_modulator.cpp" line="+2"/>
@@ -4427,7 +4429,7 @@ Resistor color code computation program
         <location filename="../qucs/components/ccvs.cpp" line="+1"/>
         <location filename="../qucs/components/cccs.cpp" line="+1"/>
         <source>delay time (Qucsator only)</source>
-        <translation type="unfinished"></translation>
+        <translation>время задержки (только Qucsator)</translation>
     </message>
     <message>
         <location filename="../qucs/components/vfile.cpp" line="+1"/>
@@ -6777,7 +6779,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/jkff_SR.cpp" line="-7"/>
         <source>jk flip flop with set and reset verilog device</source>
-        <translation>verilog-модель JK триггера с установкой и сбросом </translation>
+        <translation>verilog-модель JK триггера с установкой и сбросом</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -8588,7 +8590,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>temperature at which parameters were extracted (Qucsator only)</source>
-        <translation type="unfinished"></translation>
+        <translation>температура, при которой были извлечены параметры (только Qucsator)</translation>
     </message>
     <message>
         <location line="+98"/>
@@ -8737,7 +8739,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+6"/>
         <source>enable transient model as sine source [true,false]</source>
-        <translation type="unfinished"></translation>
+        <translation>включить переходную модель как источник синуса [true, false]</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -8992,7 +8994,8 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/indq.cpp" line="+75"/>
         <location filename="../qucs/components/capq.cpp" line="+74"/>
         <source>simulation temperature in degree Celsius (Qucsator only)</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>температура моделирования в градусах Цельсия (только Qucsator)</translatorcomment>
+        <translation>simulation temperature in degree Celsius (Qucsator only)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9002,7 +9005,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>Resistance transition shape (Qucsator only)</source>
-        <translation type="unfinished"></translation>
+        <translation>Форма перехода сопротивления (только Qucsator)</translation>
     </message>
     <message>
         <source>Resistance transition shape</source>
@@ -9109,7 +9112,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+26"/>
         <source>Analysis mode </source>
-        <translation>Режим анализа</translation>
+        <translation>Режим анализа </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9338,7 +9341,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="-21"/>
         <source>Name of Verilog file</source>
-        <translation>Имя Verilog-файла </translation>
+        <translation>Имя Verilog-файла</translation>
     </message>
     <message>
         <location line="+98"/>
@@ -9519,7 +9522,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/diagrams/diagram.h" line="+32"/>
         <source> &lt;invalid&gt;</source>
-        <translation>&lt;неправильно&gt;</translation>
+        <translation> &lt;неправильно&gt;</translation>
     </message>
     <message>
         <location filename="../qucs/diagrams/tabdiagram.cpp" line="+261"/>
@@ -9709,7 +9712,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <location line="+2"/>
         <location line="+2"/>
         <source>microelectronics</source>
-        <translation type="unfinished"></translation>
+        <translation>микроэлектроника</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9746,7 +9749,7 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location line="+2"/>
         <source>SPICE netlist sections</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделы списка соединений SPICE</translation>
     </message>
     <message>
         <source>SPICE specific sections</source>
@@ -10063,7 +10066,7 @@ Wrong &apos;painting&apos; line format!</source>
         <location line="+1"/>
         <source>Wrong document version 
 </source>
-        <translation>Неправильная версия документа
+        <translation>Неправильная версия документа 
 </translation>
     </message>
     <message>
@@ -10698,7 +10701,7 @@ Multiple line ngspice or Xyce .MODEL allowed using &quot;+&quot; continuation li
 Leave continuation lines blank when NOT in use.</source>
         <translation>Раздел .MODEL
 Допускаются многострочные ngspice или Xyce .MODEL с использованием строк продолжения «+».
-Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -10715,7 +10718,8 @@ Leave continuation lines blank when NOT in use.</source>
         <location filename="../qucs/spicecomponents/sp_lib.cpp" line="+26"/>
         <source>.LIB directive
 </source>
-        <translation>Директива .LIB</translation>
+        <translation>Директива .LIB
+</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -10732,7 +10736,8 @@ Leave continuation lines blank when NOT in use.</source>
         <location filename="../qucs/spicecomponents/sp_include.cpp" line="+26"/>
         <source>.INCLUDE statement
 </source>
-        <translation>Раздел .INCLUDE</translation>
+        <translation>Раздел .INCLUDE
+</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -10897,7 +10902,7 @@ Multiple line ngspice non-linear G specifications allowed using &quot;+&quot; co
 Leave continuation lines blank when NOT in use.</source>
         <translation>SPICE G (VOL, VALUE, TABLE, POLY):
 Допускаются многострочные спецификации нелинейного G ngspice с использованием строк продолжения «+».
-Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -10949,7 +10954,7 @@ Multiple line ngspice or Xyce U specifications allowed using &quot;+&quot; conti
 Leave continuation lines blank when NOT in use.</source>
         <translation>SPICE U(URC):
 Допускаются многострочные спецификации U ngspice или Xyce с использованием строк продолжения «+».
-Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+55"/>
@@ -11055,7 +11060,7 @@ Leave continuation lines blank when NOT in use.  </source>
     <message>
         <location line="+9"/>
         <source>R Resistor 3 pin</source>
-        <translation type="unfinished"></translation>
+        <translation>R резистор 3 вывода</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/PNP_SPICE.cpp" line="+29"/>
@@ -11078,7 +11083,7 @@ Multiple line ngspice or Xyce M model specifications allowed using &quot;+&quot;
 Leave continuation lines blank when NOT in use.</source>
         <translation>M(PMOS) MOS:
 Допускаются многострочные спецификации модели M ngspice или Xyce с использованием строк продолжения «+».
-Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -11275,7 +11280,7 @@ Multiple line ngspice or Xyce D model specifications allowed using &quot;+&quot;
 Leave continuation lines blank when NOT in use.</source>
         <translation>SPICE D:
 Допускаются многострочные спецификации модели D ngspice или Xyce с использованием строк продолжения «+».
-Оставляйте строки продолжения пустыми, когда НЕ используется. </translation>
+Оставляйте строки продолжения пустыми, когда НЕ используется.</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -11285,7 +11290,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+9"/>
         <source>D Diode 3 pin</source>
-        <translation type="unfinished"></translation>
+        <translation>D Диод 3 вывода</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/C_SPICE.cpp" line="+29"/>
@@ -11304,7 +11309,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+9"/>
         <source>C Capacitor 3 pin</source>
-        <translation type="unfinished"></translation>
+        <translation>C Конденсатор 3 вывода</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/BJT_SPICE.cpp" line="+9"/>
@@ -11475,7 +11480,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+3"/>
         <source>Maximum ripple (Klopfenstein taper only) </source>
-        <translation>Максимальная пульсация (только конус Клопфенштайна)</translation>
+        <translation>Максимальная пульсация (только конус Клопфенштайна) </translation>
     </message>
     <message>
         <location line="+17"/>
@@ -12095,7 +12100,7 @@ and simple press Apply button</source>
         <location line="+2245"/>
         <location line="+23"/>
         <source>Library is corrupt.</source>
-        <translation>Библиотека повреждена!</translation>
+        <translation>Библиотека повреждена.</translation>
     </message>
     <message>
         <location filename="../qucs/qucs_actions.cpp" line="-892"/>
@@ -12310,12 +12315,12 @@ and simple press Apply button</source>
     <message>
         <location line="+1"/>
         <source>Ngspice found at: </source>
-        <translation>Ngspice найден в:</translation>
+        <translation>Ngspice найден в: </translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You can specify another location later using Simulation-&gt;Simulators Setings</source>
-        <translation>Вы можете указать другое местоположение позже, используя «Моделирование» -&gt; «Настройки симуляторов».</translation>
+        <translation>Вы можете указать другое местоположение позже, используя «Моделирование» -&gt; «Настройки симуляторов»</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -12480,7 +12485,7 @@ and simple press Apply button</source>
     <message>
         <location line="+1"/>
         <source>SPICE Netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Список соединений SPICE</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12550,7 +12555,7 @@ and simple press Apply button</source>
     <message>
         <location line="+50"/>
         <source>Open examples directory...</source>
-        <translation>Отрыть каталог с примерами</translation>
+        <translation>Отрыть каталог с примерами...</translation>
     </message>
     <message>
         <location line="+185"/>
@@ -12585,7 +12590,7 @@ and simple press Apply button</source>
     <message>
         <location line="+682"/>
         <source>Symbol editing supported only for schematics and Verilog-A documents!</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактирование символов поддерживается только для схем и документов Verilog-A!</translation>
     </message>
     <message>
         <location line="+369"/>
@@ -13530,9 +13535,7 @@ Exports the current document to an image file</source>
 Makes the last action undone</source>
         <translation>Отменить
 
-Отменяет последнее действие
-
-</translation>
+Отменяет последнее действие</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -13818,7 +13821,7 @@ Runs amdsXml and C++ compiler</source>
     <message>
         <location line="+1"/>
         <source>Select Verilog-A symbols to be loaded</source>
-        <translation>Выберите обозначения Verilog-A для загрузки:</translation>
+        <translation>Выберите обозначения Verilog-A для загрузки</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13849,24 +13852,26 @@ Shows the whole page content</source>
     <message>
         <location line="+3"/>
         <source>Zoom to selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Приблизить к выделению</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Z</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Zoom to selected components</source>
-        <translation type="unfinished"></translation>
+        <translation>Приблизить к выбранным компонентам</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Zoom to selection
 
 Zoom to selected components</source>
-        <translation type="unfinished"></translation>
+        <translation>Приблизить к выделению
+
+Приблизить к выбранным компонентам</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -14019,7 +14024,7 @@ Rotates the selected component by 90� counter-clockwise</source>
     <message>
         <location line="+60"/>
         <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <location line="+56"/>
@@ -14057,41 +14062,45 @@ Changes to data display or schematic page</source>
     <message>
         <location line="+21"/>
         <source>Set Diagram Limits</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить пределы диаграммы</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pick the diagram limits using the mouse. Right click for default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите границы диаграммы с помощью мыши. Щелкните правой кнопкой мыши по умолчанию.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Set Diagram Limits
 
 Pick the diagram limits using the mouse. Right click for default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить пределы диаграммы
+
+Укажите пределы диаграммы с помощью мыши. Правый клик по умолчанию.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Reset Diagram Limits</source>
-        <translation type="unfinished"></translation>
+        <translation>Сбросить пределы диаграммы</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ctrl+Shift+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+E</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Resets the limits for all axis to auto.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сбрасывает пределы для всех осей на автоматические.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reset Diagram Limits
 
 Resets the limits for all axis to auto.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сбросить пределы диаграммы
+
+Сбрасывает пределы для всех осей на автоматические.</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -14731,7 +14740,7 @@ Enables/disables the statusbar</source>
     <message>
         <location line="+2"/>
         <source>Enables/disables the browse dock window</source>
-        <translation>Включает/выключает боковую панель.</translation>
+        <translation>Включает/выключает боковую панель</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -14901,7 +14910,7 @@ About Qt by Trolltech</source>
         <location line="+20"/>
         <location line="+19"/>
         <source>Open </source>
-        <translation>Открыть</translation>
+        <translation>Открыть </translation>
     </message>
     <message>
         <location line="-38"/>
@@ -15774,17 +15783,17 @@ Enables/disables the table of contents</source>
     <message>
         <location line="-44"/>
         <source>Schematic font (set after reload):</source>
-        <translation>Шрифт схемы (устанавливается после перезагрузки)</translation>
+        <translation>Шрифт схемы (устанавливается после перезагрузки):</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Application font (set after reload):</source>
-        <translation>Шрифт приложения (устанавливается после перезагрузки)</translation>
+        <translation>Шрифт приложения (устанавливается после перезагрузки):</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Text document font (set after reload):</source>
-        <translation type="unfinished"></translation>
+        <translation>Шрифт текстового документа (устанавливается после перезагрузки):</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -16786,7 +16795,7 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location line="+3"/>
         <source>S2Spice warning</source>
-        <translation type="unfinished"></translation>
+        <translation>S2Spice предупреждение</translation>
     </message>
     <message>
         <location line="+155"/>
@@ -17063,7 +17072,7 @@ Set the admsXml location on the application settings.</source>
         <location line="+104"/>
         <source>done.
 </source>
-        <translation>готово
+        <translation>готово.
 </translation>
     </message>
     <message>
@@ -17080,12 +17089,12 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location line="+280"/>
         <source>ERROR: Cannot start </source>
-        <translation>ОШИБКА: Невозможно запустить</translation>
+        <translation>ОШИБКА: Невозможно запустить </translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Starting </source>
-        <translation>Запуск</translation>
+        <translation>Запуск </translation>
     </message>
     <message>
         <location line="+31"/>
@@ -17571,7 +17580,7 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location line="+0"/>
         <source>Cannot find target: %1</source>
-        <translation>Не могу найти цель %1.</translation>
+        <translation>Не могу найти цель %1</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -17665,7 +17674,7 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location line="+7"/>
         <source>Icon description:</source>
-        <translation>Описание значка: </translation>
+        <translation>Описание значка:</translation>
     </message>
     <message>
         <location line="+10"/>
