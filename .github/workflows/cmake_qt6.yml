@@ -2,10 +2,10 @@ name: CMake-Qt6
 
 on:
   push:
-    branches: [ "master","current" ]
+    branches: [ "master", "current", "release/*" ]
     paths: [ "**.cpp", "**.h", "**/CMakeLists.txt" ]
   pull_request:
-    branches: [ "master","current" ]
+    branches: [ "master", "current", "release/*" ]
     paths: [ "**.cpp", "**.h", "**/CMakeLists.txt" ]
 
 env:
