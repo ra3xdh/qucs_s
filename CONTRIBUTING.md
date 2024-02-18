@@ -1,4 +1,4 @@
-# DRAFT Qucs-s guidelines
+# Qucs-S guidelines
 
 ## Communicating and contributing
 ### I have a question…
@@ -10,7 +10,7 @@ Check if there is no existing issue for the bug you've discovered. If there is n
 Write a concise title, shortly describing the bug. Don't go all along there, provide details in the description.
 
 Write the description:
-1. Mention the platform (Windows, Linux) and Qucs-s version
+1. Mention the platform (Windows, Linux), QT and Qucs-S version
 2. Show how to reproduce the bug step by step
 3. Add anything that would ease reproducing and/or understanding the problem: screenshots, videos, error messages.
 If the bug is related to schematic and its elements, then provide the schematic file. If you can't provide it for any reason (NDA, etc.), try to make a minimal substitute which is enough to reproduce the bug.
@@ -37,10 +37,10 @@ If the bug is related to schematic and its elements, then provide the schematic 
 1. Use `current` as a base branch for your changes
 
 ## Tooling and code guidelines
-Code base is old and at the moment it doesn't follow any rules uniformly. But for your changes please these follow these guidelines:
-- Prefer modern C++ features, everything up and including C++17  is OK
+Code base is old and at the moment it doesn't follow any rules uniformly. But for your changes please follow these guidelines:
+- Prefer modern C++ features, everything up to and including C++17 is OK
 - Use `camelCaseWithSmallFirstLetter` for variable names
-- Do not write `if`, `for`, etc. without a code block even when it contains only one statement
+- Do not write `if`, `for`, etc. without a code block even when it contains a single statement
 Bad:
 ```c++
 if (blah-blah) 
