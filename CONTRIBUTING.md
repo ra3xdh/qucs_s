@@ -52,4 +52,4 @@ if (blah-blah) {
   doFooBar();
 }
 ```
-- Do not use tabs and use <TODO> spaces for intendation
+- Format your changes with `clang-format`. You can use it to format a portion of a file: `clang-format --lines=<first line number>:<last line number> path/to/file` (number of last line is *inclusive*, i.e. `--lines=15:17` formats lines 15, 16 and 17)
