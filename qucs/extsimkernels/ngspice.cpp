@@ -290,7 +290,6 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         } else if ( sim_typ == ".DC" ) {
             dcSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
-            outputs.append("spice4qucs." + sim_name + ".ngspice.dc.print");
         } else if ( sim_typ == ".SW" ) {
             QString SwpSim = pc->Props.at(0)->Value.toLower();
             if ( SwpSim.startsWith("dc") ) {
@@ -310,7 +309,11 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         }
         nods.append(' ' + dep_vars.join(' '));
 
-        if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") && (sim_typ != ".DC") ) {
+        if ( sim_typ == ".DC" ) {
+            QString out = "spice4qucs." + sim_name + ".ngspice.dc.print";
+            spiceNetlist.append(QString("print all > %1\n").arg(out));
+            outputs.append(out);
+        } else if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
             nods = nods.simplified();
             if ( !nods.isEmpty() ) {
                 QString basenam = "spice4qucs";
