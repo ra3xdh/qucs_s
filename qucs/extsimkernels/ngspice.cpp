@@ -300,14 +300,16 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         } else
             continue;
 
-        QStringList dep_vars;
-        for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
-            Component *pc1 = Sch->DocComps.at(i);
-            if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
-            if ( pc1->Model == "Eqn" || pc1->Model == "NutmegEq" )
-                spiceNetlist.append(pc1->getEquations(sim_name, dep_vars));
+        if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
+            QStringList dep_vars;
+            for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
+                Component *pc1 = Sch->DocComps.at(i);
+                if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
+                if ( pc1->Model == "Eqn" || pc1->Model == "NutmegEq" )
+                    spiceNetlist.append(pc1->getEquations(sim_name, dep_vars));
+            }
+            nods.append(' ' + dep_vars.join(' '));
         }
-        nods.append(' ' + dep_vars.join(' '));
 
         if ( sim_typ == ".DC" ) {
             QString out = "spice4qucs." + sim_name + ".ngspice.dc.print";

@@ -1543,6 +1543,9 @@ QStringList ComponentDialog::getSimulationList()
         Component *c = sch->DocComps.at(i);
         if (!c->isSimulation) continue;
         if (c->Model == ".FOUR") continue;
+        if (c->Model == ".PZ") continue;
+        if (c->Model == ".SENS") continue;
+        if (c->Model == ".SENS_AC") continue;
         if (c->Model == ".SW" && !c->Props.at(0)->Value.toUpper().startsWith("DC") ) continue;
         sim_lst.append(c->Name);
     }
