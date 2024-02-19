@@ -1,3 +1,4 @@
+# Documentation for this file: https://clangd.llvm.org/config
 If:
     PathMatch: [ .*\.cpp, .*\.h ]
 
@@ -5,5 +6,9 @@ CompileFlags:
     Add: [-std=c++17]
 
 Diagnostics:
+    # List of clang-tidy checks: https://clang.llvm.org/extra/clang-tidy/checks/list.html
     ClangTidy:
-        Add: [ bugprone-*, readability-* ]
+        # Put here checks you want to use
+        Add: [ bugprone-*, readability-*, misc-*, cppcoreguidelines-* ]
+        # Put here checks you don't want to use
+        Remove: [ ]
