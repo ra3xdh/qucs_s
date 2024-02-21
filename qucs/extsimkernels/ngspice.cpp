@@ -313,7 +313,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
         if ( sim_typ == ".DC" ) {
             QString out = "spice4qucs." + sim_name + ".ngspice.dc.print";
-            spiceNetlist.append(QString("print all > %1\n").arg(out));
+            spiceNetlist.append(QString("print %1 > %2\n").arg(nods).arg(out));
             outputs.append(out);
         } else if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
             nods = nods.simplified();
