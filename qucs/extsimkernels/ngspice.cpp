@@ -137,7 +137,6 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
     // determine which simulations are in use
     unsigned int dcSims = 0;
-    unsigned int dcswpSims = 0;
     unsigned int freqSims = 0;
     unsigned int timeSims = 0;
     unsigned int fourSims = 0;
@@ -239,7 +238,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 else if ( disto_rx.match(line).hasMatch() )   freqSims++ ;
                 else if ( fft_rx.match(line).hasMatch() )     freqSims++ ;
                 else if ( four_rx.match(line).hasMatch() )    fourSims++ ;
-                else if ( dc_rx.match(line).hasMatch() )      dcswpSims++ ;
+                else if ( dc_rx.match(line).hasMatch() )      dcSims++ ;
                 else if ( op_rx.match(line).hasMatch() )      dcSims++ ;
                 else if ( tran_rx.match(line).hasMatch() )    timeSims++ ;
                 else if ( sens_ac_rx.match(line).hasMatch() ) freqSims++ ;
@@ -293,7 +292,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         } else if ( sim_typ == ".SW" ) {
             QString SwpSim = pc->Props.at(0)->Value.toLower();
             if ( SwpSim.startsWith("dc") ) {
-                dcswpSims++;
+                dcSims++;
                 spiceNetlist.append(pc->getSpiceNetlist());
             } else
                 continue;
@@ -357,12 +356,11 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
            << ".endc\n";
     stream << ".END\n";
 
-    needsPrefix = ( (dcSims | dcswpSims | freqSims | timeSims | fourSims | pzSims) > 1 );
+    needsPrefix = ( (dcSims | freqSims | timeSims | fourSims | pzSims) > 1 );
 
     qDebug() << '\n'
              << "Simulations:\n"
              << "DC:        " << dcSims << '\n'
-             << "DC sweep:  " << dcswpSims << '\n'
              << "Frequency: " << freqSims << '\n'
              << "Time:      " << timeSims << '\n'
              << "Fourier:   " << fourSims << '\n'
