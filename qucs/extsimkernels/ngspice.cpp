@@ -169,7 +169,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         QString nods;
         for (const QString& nod : vars) {
             if ( nod.endsWith("#branch") )
-                nods.append(QString("%1 ").arg(nod));
+                nods.append(QString("i(%1) ").arg(nod.section('#', 0, 0)));
             else
                 nods.append(QString("v(%1) ").arg(nod));
         }
