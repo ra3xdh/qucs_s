@@ -59,6 +59,8 @@ indq.cpp
 capq.cpp
 circline.cpp
 taperedline.cpp
+circularloop.cpp
+spiralinductor.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -227,6 +229,8 @@ volt_noise.h
 vprobe.h
 vpulse.h
 vrect.h
+circularloop.h
+spiralinductor.h
 )
 
 
