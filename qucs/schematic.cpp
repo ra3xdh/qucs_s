@@ -60,9 +60,6 @@
 
 #include "misc.h"
 
-#define DOC_X_POS(x) (int(float(x) / Scale) + ViewX1)
-#define DOC_Y_POS(y) (int(float(y) / Scale) + ViewY1)
-
 // just dummies for empty lists
 Q3PtrList<Wire> SymbolWires;
 Q3PtrList<Node> SymbolNodes;
@@ -553,10 +550,9 @@ void Schematic::PostPaintEvent(
 // ---------------------------------------------------
 void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
 {
-    auto x = Event->pos().x();
-    auto y = Event->pos().y();
-    auto xpos = DOC_X_POS(x);
-    auto ypos = DOC_Y_POS(y);
+    const QPoint modelPos = contentsToModel(Event->pos());
+    auto xpos = modelPos.x();
+    auto ypos = modelPos.y();
     QString text = "";
 
     auto doubleToString = [](bool condition, double number) {
@@ -629,14 +625,13 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
     if (App->MouseReleaseAction == &MouseActions::MReleasePaste)
         return;
 
-    float x = float(Event->pos().x()) / Scale + float(ViewX1);
-    float y = float(Event->pos().y()) / Scale + float(ViewY1);
+    const QPoint inModel = contentsToModel(Event->pos());
 
     if (Event->button() == Qt::RightButton)
         if (App->MousePressAction != &MouseActions::MPressElement)
             if (App->MousePressAction != &MouseActions::MPressWire2) {
                 // show menu on right mouse button
-                App->view->rightPressMenu(this, Event, x, y);
+                App->view->rightPressMenu(this, Event, inModel.x(), inModel.y());
                 if (App->MouseReleaseAction)
                     // Is not called automatically because menu has focus.
                     (App->view->*(App->MouseReleaseAction))(this, Event);
@@ -652,7 +647,7 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
     }
 
     if (App->MousePressAction)
-        (App->view->*(App->MousePressAction))(this, Event, x, y);
+        (App->view->*(App->MousePressAction))(this, Event, inModel.x(), inModel.y());
 }
 
 // -----------------------------------------------------------
@@ -2533,14 +2528,15 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 
 #if QT_VERSION >= 0x060000
     auto ev_pos = Event->position();
+    QPoint inModel = contentsToModel(ev_pos.toPoint());
 #else
     auto ev_pos = Event->pos();
+    QPoint inModel = contentsToModel(ev_pos);
 #endif
     QMouseEvent e(QEvent::MouseButtonPress, ev_pos, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
-    int x = int(ev_pos.x() / Scale) + ViewX1;
-    int y = int(ev_pos.y() / Scale) + ViewY1;
 
-    App->view->MPressElement(this, &e, x, y);
+
+    App->view->MPressElement(this, &e, inModel.x(), inModel.y());
 
     delete App->view->selElem;
     App->view->selElem = nullptr; // no component selected
