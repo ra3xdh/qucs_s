@@ -869,13 +869,15 @@ void AbstractSpiceKernel::parsePrnOutput(const QString &ngspice_file,
             QString line = data.readLine();
             if (line.contains(eq_sep)) {
                 QString var = line.section(eq_sep, 0, 0).trimmed();
-                QString val = line.section(eq_sep, 1, 1).trimmed();
-                double re = val.section(reim_sep, 0, 0).toDouble();
-                double im = val.section(reim_sep, 1, 1).toDouble();
-                var_list.append(var);
-                sim_point.append(re);
-                if ( isComplex )
-                    sim_point.append(im);
+                if (!var.startsWith('_')) {
+                    QString val = line.section(eq_sep, 1, 1).trimmed();
+                    double re = val.section(reim_sep, 0, 0).toDouble();
+                    double im = val.section(reim_sep, 1, 1).toDouble();
+                    var_list.append(var);
+                    sim_point.append(re);
+                    if ( isComplex )
+                        sim_point.append(im);
+                }
             }
         }
         sim_points.append(sim_point);

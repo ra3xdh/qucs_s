@@ -1,6 +1,6 @@
 <Qucs Schematic 24.1.0>
 <Properties>
-  <View=12,-397,3138,1378,0.50304,1,0>
+  <View=12,-400,3138,1375,0.50304,1,0>
   <Grid=10,10,1>
   <DataSet=Pwr-Amp_wingspread_analysis.dat>
   <DataDisplay=Pwr-Amp_wingspread_analysis.dpl>
@@ -98,8 +98,8 @@
   <600 300 600 300 "OUT" 610 270 0 "">
 </Wires>
 <Diagrams>
-  <Rect 840 520 382 280 3 #c0c0c0 1 00 1 -20 5 20 1 0.477221 1 6 1 -1 0.5 1 315 0 225 0 0 0 "" "" "">
-	<"ngspice/v(dd)" #0000ff 0 3 0 0 0>
+  <Rect 840 520 382 280 3 #c0c0c0 1 00 1 -1 0.2 1 1 -1 0.5 1 1 -1 0.5 1 315 0 225 0 0 0 "" "" "">
+	<"ngspice/sw1.v(dd)" #0000ff 0 3 0 0 0>
   </Rect>
 </Diagrams>
 <Paintings>
