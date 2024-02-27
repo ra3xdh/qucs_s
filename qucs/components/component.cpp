@@ -102,6 +102,8 @@ int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeigh
         if (w > textPropertyMaxWidth) {
             textPropertyMaxWidth = w;
         }
+        // keeps total height of all text properties of component
+        // taking line breaks into account
         totalTextPropertiesHeight += metrics.height();
         textPropertiesCount++;
     }
@@ -118,9 +120,6 @@ void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
 
     int textPropertyMaxWidth, totalTextPropertiesHeight, textPropertiesCount;
     textPropertiesCount = textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
-    totalTextPropertiesHeight =
-        int(float(textPropertiesCount) /
-            Corr); // correction for unproportional font scaling
 
     boundingRectRight  = std::max(tx + textPropertyMaxWidth, x2) + cx;
     boundingRectBottom = std::max(ty + totalTextPropertiesHeight, y2) + cy;

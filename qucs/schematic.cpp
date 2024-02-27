@@ -1149,6 +1149,26 @@ float Schematic::textCorr()
     Font.setPointSizeF(Scale * float(Font.pointSize()));
     // use the screen-compatible metric
     QFontMetrics metrics(Font, 0);
+    // Line spacing is the distance from one base line to the next
+    // and I think it's obvious that line spacing value somehow depends on
+    // font size.
+    // For simplicity let's say that this dependency has the form of
+    // a coefficient <k>, i.e. line spacing is equal to
+    //   fontSize * k.
+    //
+    // Then:
+    //   metrics.lineSpacing = (Scale * QucsSettings.font.pointSize()) * k
+    //
+    // And then the value returned here is a fraction:
+    //                   Scale
+    //   ———————————————————————————————————————————
+    //   (Scale * QucsSettings.font.pointSize()) * k
+    //
+    // Which is equal to one divided by original, n o t - s c a l e d
+    // lines spacing:
+    //                 1
+    //   —————————————————————————————————
+    //   QucsSettings.font.pointSize() * k
     return (Scale / float(metrics.lineSpacing()));
 }
 
