@@ -1194,11 +1194,10 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
                     return;
                 }
 
-    float Corr = textCorr();
     int x1, y1, x2, y2;
     // find boundings of all components
     for (pc = Components->first(); pc != 0; pc = Components->next()) {
-        pc->entireBounds(x1, y1, x2, y2, Corr);
+        pc->entireBounds(x1, y1, x2, y2);
         if (x1 < xmin)
             xmin = x1;
         if (x2 > xmax)
@@ -1314,7 +1313,6 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
                     return;
                 }
 
-    float Corr = textCorr();
     int x1, y1, x2, y2;
     // find boundings of all components
     for (pc = Components->first(); pc != 0; pc = Components->next()) {
@@ -1322,7 +1320,7 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
             continue;
         }
         isAnySelected = true;
-        pc->entireBounds(x1, y1, x2, y2, Corr);
+        pc->entireBounds(x1, y1, x2, y2);
         if (x1 < xmin)
             xmin = x1;
         if (x2 > xmax)

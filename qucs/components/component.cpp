@@ -113,8 +113,7 @@ int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeigh
 // -------------------------------------------------------
 // Boundings including the component text.
 void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
-                             int& boundingRectRight, int& boundingRectBottom,
-                             float Corr) {
+                             int& boundingRectRight, int& boundingRectBottom) {
     boundingRectLeft = std::min(x1, tx) + cx;
     boundingRectTop  = std::min(y1, ty) + cy;
 
@@ -460,7 +459,7 @@ void Component::paintScheme(Schematic *p) {
 
         int _x1, _x2, _y1, _y2;
         // textCorr to entireBounds
-        entireBounds(_x1, _y1, _x2, _y2, p->textCorr());
+        entireBounds(_x1, _y1, _x2, _y2);
         p->PostPaintEvent(_Rect, _x1, _y1, _x2 - _x1, _y2 - _y1);
 
         return;
