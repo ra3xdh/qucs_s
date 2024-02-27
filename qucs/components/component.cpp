@@ -460,6 +460,7 @@ void Component::paintScheme(Schematic *p) {
 //        p->PostPaintEvent(_Line, cx + xb - 2, cy, cx + xb - 6, cy - 5);
 
         int _x1, _x2, _y1, _y2;
+        // textCorr to entireBounds
         entireBounds(_x1, _y1, _x2, _y2, p->textCorr());
         p->PostPaintEvent(_Rect, _x1, _y1, _x2 - _x1, _y2 - _y1);
 
