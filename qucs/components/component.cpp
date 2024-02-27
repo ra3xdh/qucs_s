@@ -110,22 +110,34 @@ int Component::textSize(int &_dx, int &_dy) {
 
 // -------------------------------------------------------
 // Boundings including the component text.
-void Component::entireBounds(int &boundingRectLeft, int &boundingRectTop, int &boundingRectRight, int &boundingRectBottom, float Corr) {
-    boundingRectLeft = x1 + cx;
-    boundingRectTop = y1 + cy;
-    boundingRectRight = x2 + cx;
+void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
+                             int& boundingRectRight, int& boundingRectBottom,
+                             float Corr) {
+    boundingRectLeft   = x1 + cx;
+    boundingRectTop    = y1 + cy;
+    boundingRectRight  = x2 + cx;
     boundingRectBottom = y2 + cy;
 
     // text boundings
-    if (tx < x1) boundingRectLeft = tx + cx;
-    if (ty < y1) boundingRectTop = ty + cy;
+    if (tx < x1) {
+        boundingRectLeft = tx + cx;
+    }
+    if (ty < y1) {
+        boundingRectTop = ty + cy;
+    }
 
     int textPropertyMaxWidth, totalTextPropertiesHeight, textPropertiesCount;
     textPropertiesCount = textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
-    totalTextPropertiesHeight = int(float(textPropertiesCount) / Corr);  // correction for unproportional font scaling
+    totalTextPropertiesHeight =
+        int(float(textPropertiesCount) /
+            Corr); // correction for unproportional font scaling
 
-    if ((tx + textPropertyMaxWidth) > x2) boundingRectRight = tx + textPropertyMaxWidth + cx;
-    if ((ty + totalTextPropertiesHeight) > y2) boundingRectBottom = ty + totalTextPropertiesHeight + cy;
+    if ((tx + textPropertyMaxWidth) > x2) {
+        boundingRectRight = tx + textPropertyMaxWidth + cx;
+    }
+    if ((ty + totalTextPropertiesHeight) > y2) {
+        boundingRectBottom = ty + totalTextPropertiesHeight + cy;
+    }
 }
 
 // -------------------------------------------------------
