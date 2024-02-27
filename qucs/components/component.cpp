@@ -117,8 +117,8 @@ void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
     boundingRectLeft = std::min(x1, tx) + cx;
     boundingRectTop  = std::min(y1, ty) + cy;
 
-    int textPropertyMaxWidth, totalTextPropertiesHeight, textPropertiesCount;
-    textPropertiesCount = textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
+    int textPropertyMaxWidth, totalTextPropertiesHeight;
+    textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
 
     boundingRectRight  = std::max(tx + textPropertyMaxWidth, x2) + cx;
     boundingRectBottom = std::max(ty + totalTextPropertiesHeight, y2) + cy;
