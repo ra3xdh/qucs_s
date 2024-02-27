@@ -1395,7 +1395,7 @@ void ComponentDialog::slotNumberChanged(const QString&)
     if(y == 0.0)  y = x / 10.0;
     if(x == 0.0)  x = y * 10.0;
     if(y == 0.0) { y = 1.0;  x = 10.0; }
-    x = editNumber->text().toDouble() / log10(fabs(x / y));
+    x = (editNumber->text().toDouble() - 1) / log10(fabs(x / y));
     Unit = QString::number(x);
   }
   else {
