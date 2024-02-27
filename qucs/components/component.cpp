@@ -81,16 +81,16 @@ void Component::Bounding(int &_x1, int &_y1, int &_x2, int &_y2) {
 
 // -------------------------------------------------------
 // Size of component text.
-int Component::textSize(int &_dx, int &_dy) {
+int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeight) {
     // get size of text using the screen-compatible metric
     QFontMetrics metrics(QucsSettings.font, 0);
-    int count = 0;
-    _dx = _dy = 0;
+    int textPropertiesCount = 0;
+    textPropertyMaxWidth = totalTextPropertiesHeight = 0;
 
     if (showName) {
-        _dx = metrics.boundingRect(Name).width();
-        _dy = metrics.height();
-        count++;
+        textPropertyMaxWidth = metrics.boundingRect(Name).width();
+        totalTextPropertiesHeight = metrics.height();
+        textPropertiesCount++;
     }
 
     constexpr int flags = 0b00000000;
@@ -99,13 +99,13 @@ int Component::textSize(int &_dx, int &_dy) {
 
         // Update overall width if text of the current property is wider
         auto w = metrics.size(flags, p->Name + "=" + p->Value).width();
-        if (w > _dx) {
-            _dx = w;
+        if (w > textPropertyMaxWidth) {
+            textPropertyMaxWidth = w;
         }
-        _dy += metrics.height();
-        count++;
+        totalTextPropertiesHeight += metrics.height();
+        textPropertiesCount++;
     }
-    return count;
+    return textPropertiesCount;
 }
 
 // -------------------------------------------------------
