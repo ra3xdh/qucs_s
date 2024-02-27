@@ -249,7 +249,7 @@ QString Param_Sweep::spice_netlist(bool isXyce)
         stop *= fac;
         misc::str2num(getProperty("Points")->Value,points,unit,fac);
         points *= fac;
-        step = (stop-start)/points;
+        step = (stop-start)/(points-1);
     }
 
     if (Props.at(0)->Value.toLower().startsWith("dc")) {
