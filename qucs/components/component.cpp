@@ -113,18 +113,8 @@ int Component::textSize(int &_dx, int &_dy) {
 void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
                              int& boundingRectRight, int& boundingRectBottom,
                              float Corr) {
-    boundingRectLeft   = x1 + cx;
-    boundingRectTop    = y1 + cy;
-    boundingRectRight  = x2 + cx;
-    boundingRectBottom = y2 + cy;
-
-    // text boundings
-    if (tx < x1) {
-        boundingRectLeft = tx + cx;
-    }
-    if (ty < y1) {
-        boundingRectTop = ty + cy;
-    }
+    boundingRectLeft = std::min(x1, tx) + cx;
+    boundingRectTop  = std::min(y1, ty) + cy;
 
     int textPropertyMaxWidth, totalTextPropertiesHeight, textPropertiesCount;
     textPropertiesCount = textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
@@ -132,12 +122,8 @@ void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
         int(float(textPropertiesCount) /
             Corr); // correction for unproportional font scaling
 
-    if ((tx + textPropertyMaxWidth) > x2) {
-        boundingRectRight = tx + textPropertyMaxWidth + cx;
-    }
-    if ((ty + totalTextPropertiesHeight) > y2) {
-        boundingRectBottom = ty + totalTextPropertiesHeight + cy;
-    }
+    boundingRectRight  = std::max(tx + textPropertyMaxWidth, x2) + cx;
+    boundingRectBottom = std::max(ty + totalTextPropertiesHeight, y2) + cy;
 }
 
 // -------------------------------------------------------
