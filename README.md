@@ -3,6 +3,7 @@
 [![Boosty](https://img.shields.io/badge/Boosty-donate-orange.svg)](https://boosty.to/qucs_s)
 [![Telegram](https://img.shields.io/badge/Telegram-chat-blue.svg)](https://t.me/qucs_s)
 [![Website](https://img.shields.io/badge/Website-ra3xdh.github.io-29d682.svg)](https://ra3xdh.github.io/)
+[![Packaging status](https://repology.org/badge/tiny-repos/qucs-s.svg)](https://repology.org/project/qucs-s/versions)
 
 ## About Qucs-S
 
