@@ -137,8 +137,10 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 
         if(type == "lin") {
             step = (stop-start)/(points-1);
-            for (; start <= stop; start += step) {
+            while ( points > 0 ) {
                 s += QString("%1 ").arg(start);
+                start += step;
+                points -= 1;
             }
         } else {
             start = log10(start);
