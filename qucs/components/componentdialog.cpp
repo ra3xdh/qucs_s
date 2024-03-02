@@ -1450,7 +1450,7 @@ void ComponentDialog::slotStepChanged(const QString& Step)
   }
 
   editNumber->blockSignals(true);  // do not calculate number again
-  editNumber->setText(QString::number(floor(x + 1.0)));
+  editNumber->setText(QString::number(round(x + 1.0), 'g', 16));
   editNumber->blockSignals(false);
 }
 
