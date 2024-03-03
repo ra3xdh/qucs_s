@@ -1286,7 +1286,7 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
         ((Component *) e)->rotate();
         Doc->setCompPorts((Component *) e);
         // enlarge viewarea if component lies outside the view
-        ((Component *) e)->entireBounds(x1, y1, x2, y2, Doc->textCorr());
+        ((Component *) e)->entireBounds(x1, y1, x2, y2);
         Doc->enlargeView(x1, y1, x2, y2);
         break;
 
@@ -1353,7 +1353,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             //    qDebug() << "  +-+ got to insert:" << Comp->Name;
 
             // enlarge viewarea if component lies outside the view
-            Comp->entireBounds(x1, y1, x2, y2, Doc->textCorr());
+            Comp->entireBounds(x1, y1, x2, y2);
             Doc->enlargeView(x1, y1, x2, y2);
             //Doc->setOnGrid(Comp->cx,Comp->cy);
 
@@ -1983,7 +1983,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
             case isAnalogComponent:
             case isDigitalComponent:
                 Doc->insertComponent((Component *) pe);
-                ((Component *) pe)->entireBounds(x1, y1, x2, y2, Doc->textCorr());
+                ((Component *) pe)->entireBounds(x1, y1, x2, y2);
                 Doc->enlargeView(x1, y1, x2, y2);
                 break;
             }
@@ -2124,7 +2124,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
         }
 
         Doc->setChanged(true, true);
-        c->entireBounds(x1, y1, x2, y2, Doc->textCorr());
+        c->entireBounds(x1, y1, x2, y2);
         Doc->enlargeView(x1, y1, x2, y2);
         break;
 

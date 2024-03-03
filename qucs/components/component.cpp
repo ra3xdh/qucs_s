@@ -81,16 +81,16 @@ void Component::Bounding(int &_x1, int &_y1, int &_x2, int &_y2) {
 
 // -------------------------------------------------------
 // Size of component text.
-int Component::textSize(int &_dx, int &_dy) {
+int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeight) {
     // get size of text using the screen-compatible metric
     QFontMetrics metrics(QucsSettings.font, 0);
-    int count = 0;
-    _dx = _dy = 0;
+    int textPropertiesCount = 0;
+    textPropertyMaxWidth = totalTextPropertiesHeight = 0;
 
     if (showName) {
-        _dx = metrics.boundingRect(Name).width();
-        _dy = metrics.height();
-        count++;
+        textPropertyMaxWidth = metrics.boundingRect(Name).width();
+        totalTextPropertiesHeight = metrics.height();
+        textPropertiesCount++;
     }
 
     constexpr int flags = 0b00000000;
@@ -99,33 +99,29 @@ int Component::textSize(int &_dx, int &_dy) {
 
         // Update overall width if text of the current property is wider
         auto w = metrics.size(flags, p->Name + "=" + p->Value).width();
-        if (w > _dx) {
-            _dx = w;
+        if (w > textPropertyMaxWidth) {
+            textPropertyMaxWidth = w;
         }
-        _dy += metrics.height();
-        count++;
+        // keeps total height of all text properties of component
+        // taking line breaks into account
+        totalTextPropertiesHeight += metrics.height();
+        textPropertiesCount++;
     }
-    return count;
+    return textPropertiesCount;
 }
 
 // -------------------------------------------------------
 // Boundings including the component text.
-void Component::entireBounds(int &_x1, int &_y1, int &_x2, int &_y2, float Corr) {
-    _x1 = x1 + cx;
-    _y1 = y1 + cy;
-    _x2 = x2 + cx;
-    _y2 = y2 + cy;
+void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
+                             int& boundingRectRight, int& boundingRectBottom) {
+    boundingRectLeft = std::min(x1, tx) + cx;
+    boundingRectTop  = std::min(y1, ty) + cy;
 
-    // text boundings
-    if (tx < x1) _x1 = tx + cx;
-    if (ty < y1) _y1 = ty + cy;
+    int textPropertyMaxWidth, totalTextPropertiesHeight;
+    textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
 
-    int dx, dy, ny;
-    ny = textSize(dx, dy);
-    dy = int(float(ny) / Corr);  // correction for unproportional font scaling
-
-    if ((tx + dx) > x2) _x2 = tx + dx + cx;
-    if ((ty + dy) > y2) _y2 = ty + dy + cy;
+    boundingRectRight  = std::max(tx + textPropertyMaxWidth, x2) + cx;
+    boundingRectBottom = std::max(ty + totalTextPropertiesHeight, y2) + cy;
 }
 
 // -------------------------------------------------------
@@ -462,7 +458,8 @@ void Component::paintScheme(Schematic *p) {
 //        p->PostPaintEvent(_Line, cx + xb - 2, cy, cx + xb - 6, cy - 5);
 
         int _x1, _x2, _y1, _y2;
-        entireBounds(_x1, _y1, _x2, _y2, p->textCorr());
+        // textCorr to entireBounds
+        entireBounds(_x1, _y1, _x2, _y2);
         p->PostPaintEvent(_Rect, _x1, _y1, _x2 - _x1, _y2 - _y1);
 
         return;

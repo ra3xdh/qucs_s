@@ -1149,6 +1149,26 @@ float Schematic::textCorr()
     Font.setPointSizeF(Scale * float(Font.pointSize()));
     // use the screen-compatible metric
     QFontMetrics metrics(Font, 0);
+    // Line spacing is the distance from one base line to the next
+    // and I think it's obvious that line spacing value somehow depends on
+    // font size.
+    // For simplicity let's say that this dependency has the form of
+    // a coefficient <k>, i.e. line spacing is equal to
+    //   fontSize * k.
+    //
+    // Then:
+    //   metrics.lineSpacing = (Scale * QucsSettings.font.pointSize()) * k
+    //
+    // And then the value returned here is a fraction:
+    //                   Scale
+    //   ———————————————————————————————————————————
+    //   (Scale * QucsSettings.font.pointSize()) * k
+    //
+    // Which is equal to one divided by original, n o t - s c a l e d
+    // lines spacing:
+    //                 1
+    //   —————————————————————————————————
+    //   QucsSettings.font.pointSize() * k
     return (Scale / float(metrics.lineSpacing()));
 }
 
@@ -1174,11 +1194,10 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
                     return;
                 }
 
-    float Corr = textCorr();
     int x1, y1, x2, y2;
     // find boundings of all components
     for (pc = Components->first(); pc != 0; pc = Components->next()) {
-        pc->entireBounds(x1, y1, x2, y2, Corr);
+        pc->entireBounds(x1, y1, x2, y2);
         if (x1 < xmin)
             xmin = x1;
         if (x2 > xmax)
@@ -1294,7 +1313,6 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
                     return;
                 }
 
-    float Corr = textCorr();
     int x1, y1, x2, y2;
     // find boundings of all components
     for (pc = Components->first(); pc != 0; pc = Components->next()) {
@@ -1302,7 +1320,7 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
             continue;
         }
         isAnySelected = true;
-        pc->entireBounds(x1, y1, x2, y2, Corr);
+        pc->entireBounds(x1, y1, x2, y2);
         if (x1 < xmin)
             xmin = x1;
         if (x2 > xmax)
