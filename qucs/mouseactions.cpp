@@ -2278,7 +2278,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
         if (pc == nullptr || pp == nullptr)
             return;
         if (!App->tunerDia->containsProperty(pp)) {
-            if (checkProperty(pc, pp)) {
+            if (isPropertyTunable(pc, pp)) {
                 tunerElement *tune = new tunerElement(App->tunerDia, pc, pp, No);
                 tune->schematicName = Doc->DocName;
                 if (tune != NULL)
