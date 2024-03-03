@@ -47,7 +47,7 @@ extern QucsApp *QucsMain;  // the Qucs application itself
 
 float getScale(int);
 QString SeparateMagnitudeFromSuffix(QString num, int &);
-bool checkProperty(Component *component, Property *pp);
+bool isPropertyTunable(Component* propertyOwner, Property* property);
 
 class tunerElement : public QWidget
 {

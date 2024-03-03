@@ -22,22 +22,32 @@
 
 #include <QCloseEvent>
 
+bool isPropertyTunable(Component* propertyOwner, Property* property) {
+  // Simulation parameters
+  if (propertyOwner->Model.startsWith('.')) {
+    return false;
+  }
 
-bool checkProperty(Component *component, Property *pp)
-{
-    if (component->Model.at(0) == '.') return false;//Simulation parameters
-    // Properties defined in the integer+ domain
-    if (pp->Name=="Num") return false;//Port number
-    if (pp->Name=="Branches") return false;//Branches parameter in the EDD
-    if (pp->Name=="Ports") return false;//Number of ports in a SNP file component
-    if (!pp->Value.at(0).isNumber()) return false;//String
-    //Check if the value contains symbols *, /, -, +
-    for (int i = 0; i < pp->Value.length(); i++)
-    {
-        if (!pp->Value.at(i).isLetterOrNumber() && (pp->Value.at(i) != '.') && (pp->Value.at(i) != ' ')) return false;
-        if (pp->Value.at(i).toLower() == 'e') break;//Scientific notation
+  // Properties defined in the integer+ domain
+  // Port number, Branches parameter in the EDD, Number of ports in a SNP file
+  // component
+  if (auto n{property->Name}; n == "Num" || n == "Branches" || n == "Ports") {
+    return false;
+  }
+
+  if (!property->Value.at(0).isNumber()) {
+    return false; // String
+  }
+  // Check if the value contains symbols *, /, -, +
+  for (const auto& chr : property->Value) {
+    if (!chr.isLetterOrNumber() && (chr != '.') && (chr != ' ')) {
+      return false;
     }
-    return true;
+    if (chr.toLower() == 'e') {
+      break; // Scientific notation
+    }
+  }
+  return true;
 }
 
 tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, int selectedPropertyId)
