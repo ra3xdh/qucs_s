@@ -97,6 +97,7 @@ public:
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
+  QPoint setOnGrid(const QPoint& p);
   void  setOnGrid(int&, int&);
   bool  elementsOnGrid();
 

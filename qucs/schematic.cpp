@@ -60,9 +60,6 @@
 
 #include "misc.h"
 
-#define DOC_X_POS(x) (int(float(x) / Scale) + ViewX1)
-#define DOC_Y_POS(y) (int(float(y) / Scale) + ViewY1)
-
 // just dummies for empty lists
 Q3PtrList<Wire> SymbolWires;
 Q3PtrList<Node> SymbolNodes;
@@ -553,10 +550,9 @@ void Schematic::PostPaintEvent(
 // ---------------------------------------------------
 void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
 {
-    auto x = Event->pos().x();
-    auto y = Event->pos().y();
-    auto xpos = DOC_X_POS(x);
-    auto ypos = DOC_Y_POS(y);
+    const QPoint modelPos = contentsToModel(Event->pos());
+    auto xpos = modelPos.x();
+    auto ypos = modelPos.y();
     QString text = "";
 
     auto doubleToString = [](bool condition, double number) {
@@ -629,14 +625,13 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
     if (App->MouseReleaseAction == &MouseActions::MReleasePaste)
         return;
 
-    float x = float(Event->pos().x()) / Scale + float(ViewX1);
-    float y = float(Event->pos().y()) / Scale + float(ViewY1);
+    const QPoint inModel = contentsToModel(Event->pos());
 
     if (Event->button() == Qt::RightButton)
         if (App->MousePressAction != &MouseActions::MPressElement)
             if (App->MousePressAction != &MouseActions::MPressWire2) {
                 // show menu on right mouse button
-                App->view->rightPressMenu(this, Event, x, y);
+                App->view->rightPressMenu(this, Event, inModel.x(), inModel.y());
                 if (App->MouseReleaseAction)
                     // Is not called automatically because menu has focus.
                     (App->view->*(App->MouseReleaseAction))(this, Event);
@@ -652,7 +647,7 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
     }
 
     if (App->MousePressAction)
-        (App->view->*(App->MousePressAction))(this, Event, x, y);
+        (App->view->*(App->MousePressAction))(this, Event, inModel.x(), inModel.y());
 }
 
 // -----------------------------------------------------------
@@ -1045,6 +1040,12 @@ void Schematic::showNoZoom()
     renderModel(Scale, newModel, displayedInCenter, vpCenter);
  }
 
+ QPoint Schematic::setOnGrid(const QPoint& p) {
+   QPoint snappedToGrid{p.x(), p.y()};
+   setOnGrid(snappedToGrid.rx(), snappedToGrid.ry());
+   return snappedToGrid;
+ }
+
 // ---------------------------------------------------
 // Sets an arbitrary coordinate onto the next grid coordinate.
 void Schematic::setOnGrid(int &x, int &y)
@@ -1074,7 +1075,7 @@ void Schematic::drawGrid(const ViewPainter& p)
 
     {
         // Draw small cross at origin of coordinates
-        const QPoint origin = contentsToViewport(modelToContents(QPoint{0, 0}));
+        const QPoint origin = modelToViewport(QPoint{0, 0});
         p.Painter->drawLine(origin.x() - 3, origin.y(), origin.x() + 4, origin.y());  // horizontal stick
         p.Painter->drawLine(origin.x(), origin.y() - 3, origin.x(), origin.y() + 4);  // vertical stick
     }
@@ -1096,18 +1097,11 @@ void Schematic::drawGrid(const ViewPainter& p)
     // grid-nodes should be drawn — where to start and where to finish drawing
     // these nodes.
 
-    // Find a point displayed in top-left corner
-    QPoint gridTopLeft = viewportToModel(viewportRect().topLeft());
-    // Set its coordinates to coordinates of nearest grid-point
-    setOnGrid(gridTopLeft.rx(), gridTopLeft.ry());
-    // Convert coordinates from model back to viewport
-    gridTopLeft = modelToContents(gridTopLeft);
-    gridTopLeft = contentsToViewport(gridTopLeft);
+    QPoint topLeft = viewportToModel(viewportRect().topLeft());
+    const QPoint gridTopLeft = modelToViewport(setOnGrid(topLeft));
 
-    QPoint gridBottomRight = viewportToModel(viewportRect().bottomRight());
-    setOnGrid(gridBottomRight.rx(), gridBottomRight.ry());
-    gridBottomRight = modelToContents(gridBottomRight);
-    gridBottomRight = contentsToViewport(gridBottomRight);
+    QPoint bottomRight = viewportToModel(viewportRect().bottomRight());
+    const QPoint gridBottomRight = modelToViewport(setOnGrid(bottomRight));
 
     // This is the minimal distance between drawn grid-nodes. No matter how
     // a user scales the view, any two adjacent nodes must have at least this
@@ -2552,14 +2546,15 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 
 #if QT_VERSION >= 0x060000
     auto ev_pos = Event->position();
+    QPoint inModel = contentsToModel(ev_pos.toPoint());
 #else
     auto ev_pos = Event->pos();
+    QPoint inModel = contentsToModel(ev_pos);
 #endif
     QMouseEvent e(QEvent::MouseButtonPress, ev_pos, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
-    int x = int(ev_pos.x() / Scale) + ViewX1;
-    int y = int(ev_pos.y() / Scale) + ViewY1;
 
-    App->view->MPressElement(this, &e, x, y);
+
+    App->view->MPressElement(this, &e, inModel.x(), inModel.y());
 
     delete App->view->selElem;
     App->view->selElem = nullptr; // no component selected
