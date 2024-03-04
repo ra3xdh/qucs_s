@@ -2651,12 +2651,12 @@ Node name will not be changed.</source>
     <message>
         <location line="+1"/>
         <source>Square</source>
-        <translation>Треугольник</translation>
+        <translation>Квадрат</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Triangle</source>
-        <translation>Квадрат</translation>
+        <translation>Треугольник</translation>
     </message>
     <message>
         <location line="+3"/>

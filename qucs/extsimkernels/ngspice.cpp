@@ -137,10 +137,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
     // determine which simulations are in use
     unsigned int dcSims = 0;
-    unsigned int dcswpSims = 0;
     unsigned int freqSims = 0;
     unsigned int timeSims = 0;
     unsigned int fourSims = 0;
+    unsigned int pzSims = 0;
 
     outputs.clear();
     for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
@@ -168,7 +168,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         QString nods;
         for (const QString& nod : vars) {
             if ( nod.endsWith("#branch") )
-                nods.append(QString("%1 ").arg(nod));
+                nods.append(QString("i(%1) ").arg(nod.section('#', 0, 0)));
             else
                 nods.append(QString("v(%1) ").arg(nod));
         }
@@ -212,11 +212,39 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 }
             }
         } else if ( sim_typ == ".CUSTOMSIM" ) {
-            dcSims++; dcswpSims++; freqSims++; timeSims++; fourSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
             nods = pc->Props.at(1)->Value;
             nods.replace(';', ' ');
             outputs.append(pc->Props.at(2)->Value.split(';', qucs::SkipEmptyParts));
+
+            QRegularExpression ac_rx("^\\s*ac\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression sp_rx("^\\s*sp\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression noise_rx("^\\s*noise\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression disto_rx("^\\s*disto\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression fft_rx("^\\s*fft\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression four_rx("^\\s*(four|fourier)\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression dc_rx("^\\s*dc\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression op_rx("^\\s*op\\s*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression tran_rx("^\\s*tran\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression sens_ac_rx("^\\s*sens\\s.*ac\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression sens_dc_rx("^\\s*sens\\s.*", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpression pz_rx("^\\s*pz\\s.*", QRegularExpression::CaseInsensitiveOption);
+
+            QStringList lines = pc->getSpiceNetlist().split('\n');
+            for ( const QString& line : lines ) {
+                if      ( ac_rx.match(line).hasMatch() )      freqSims++ ;
+                else if ( sp_rx.match(line).hasMatch() )      freqSims++ ;
+                else if ( noise_rx.match(line).hasMatch() )   freqSims++ ;
+                else if ( disto_rx.match(line).hasMatch() )   freqSims++ ;
+                else if ( fft_rx.match(line).hasMatch() )     freqSims++ ;
+                else if ( four_rx.match(line).hasMatch() )    fourSims++ ;
+                else if ( dc_rx.match(line).hasMatch() )      dcSims++ ;
+                else if ( op_rx.match(line).hasMatch() )      dcSims++ ;
+                else if ( tran_rx.match(line).hasMatch() )    timeSims++ ;
+                else if ( sens_ac_rx.match(line).hasMatch() ) freqSims++ ;
+                else if ( sens_dc_rx.match(line).hasMatch() ) dcSims++ ;
+                else if ( pz_rx.match(line).hasMatch() )      pzSims++ ;
+            }
         } else if ( sim_typ == ".DISTO" ) {
             freqSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
@@ -234,6 +262,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             }
             nods = "inoise_spectrum onoise_spectrum";
         } else if ( sim_typ == ".PZ" ) {
+            pzSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
             QString out = "spice4qucs." + sim_name + ".cir.pz";
             // Add it twice for poles and zeros
@@ -260,27 +289,32 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         } else if ( sim_typ == ".DC" ) {
             dcSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
-            outputs.append("spice4qucs." + sim_name + ".ngspice.dc.print");
         } else if ( sim_typ == ".SW" ) {
             QString SwpSim = pc->Props.at(0)->Value.toLower();
             if ( SwpSim.startsWith("dc") ) {
-                dcswpSims++;
+                dcSims++;
                 spiceNetlist.append(pc->getSpiceNetlist());
             } else
                 continue;
         } else
             continue;
 
-        QStringList dep_vars;
-        for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
-            Component *pc1 = Sch->DocComps.at(i);
-            if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
-            if ( pc1->Model == "Eqn" || pc1->Model == "NutmegEq" )
-                spiceNetlist.append(pc1->getEquations(sim_name, dep_vars));
+        if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
+            QStringList dep_vars;
+            for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
+                Component *pc1 = Sch->DocComps.at(i);
+                if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
+                if ( pc1->Model == "Eqn" || pc1->Model == "NutmegEq" )
+                    spiceNetlist.append(pc1->getEquations(sim_name, dep_vars));
+            }
+            nods.append(' ' + dep_vars.join(' '));
         }
-        nods.append(' ' + dep_vars.join(' '));
 
-        if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") && (sim_typ != ".DC") ) {
+        if ( sim_typ == ".DC" ) {
+            QString out = "spice4qucs." + sim_name + ".ngspice.dc.print";
+            spiceNetlist.append(QString("print %1 > %2\n").arg(nods).arg(out));
+            outputs.append(out);
+        } else if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
             nods = nods.simplified();
             if ( !nods.isEmpty() ) {
                 QString basenam = "spice4qucs";
@@ -322,7 +356,16 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
            << ".endc\n";
     stream << ".END\n";
 
-    needsPrefix = ( (dcSims | dcswpSims | freqSims | timeSims | fourSims) > 1 );
+    needsPrefix = ( (dcSims | freqSims | timeSims | fourSims | pzSims) > 1 );
+
+    qDebug() << '\n'
+             << "Simulations:\n"
+             << "DC:        " << dcSims << '\n'
+             << "Frequency: " << freqSims << '\n'
+             << "Time:      " << timeSims << '\n'
+             << "Fourier:   " << fourSims << '\n'
+             << "Pole-Zero: " << pzSims << '\n'
+             << '\n';
 }
 
 /*!

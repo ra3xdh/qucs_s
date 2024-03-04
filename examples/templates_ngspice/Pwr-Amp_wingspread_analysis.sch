@@ -1,6 +1,6 @@
 <Qucs Schematic 24.1.0>
 <Properties>
-  <View=12,0,3504,1129,1,0,454>
+  <View=12,-400,3138,1375,0.50304,1,0>
   <Grid=10,10,1>
   <DataSet=Pwr-Amp_wingspread_analysis.dat>
   <DataDisplay=Pwr-Amp_wingspread_analysis.dpl>
@@ -33,7 +33,6 @@
   <GND * 1 100 400 0 0 0 0>
   <S4Q_V vin 1 100 350 -48 -26 1 1 "0" 1 "" 0 "" 0 "" 0 "" 0>
   <.DC DC1 1 80 620 0 49 0 0 "26.85" 0 "0.001" 0 "1 pA" 0 "1 uV" 0 "no" 0 "150" 0 "no" 0 "none" 0 "CroutLU" 0>
-  <NutmegEq NutmegEq1 1 290 630 -27 16 0 0 "dc" 1 "dd=deriv(out)" 1 "iload=i(V5)" 1>
   <.SW SW1 1 410 630 0 83 0 0 "DC1" 1 "lin" 1 "Vin" 1 "-20" 1 "20" 1 "101" 1 "false" 0>
   <SpicePar SpicePar1 1 290 750 -28 16 0 0 "Vv1=4.8" 1>
   <.SW SW2 1 570 630 0 83 0 0 "SW1" 1 "list" 1 "Vv1" 1 "5 Ohm" 0 "50 Ohm" 0 "[4.7;4.9;5.1]" 1 "false" 0>
@@ -46,6 +45,7 @@
   <GND * 1 600 400 0 0 0 0>
   <R RLoad 1 600 350 19 -19 0 1 "8" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "US" 0>
   <SpiceModel SpiceModel1 1 120 840 -27 16 0 0 ".model IRFP240 VDMOS (nchan Vto=4 Kp=5.9 Lambda=.001 Theta=0.015 ksubthres=.27 Rd=61m Rs=18m Rg=3 Rds=1e7 Cgdmax=2.45n Cgdmin=10p a=0.3 Cgs=1.2n Is=60p N=1.1 Rb=14m XTI=3 Cjo=1.5n Vj=0.8 m=0.5 tcvth=0.0065 MU=-1.27 texp0=1.5 mtriode=0.8)" 1 ".model IRFP9240 VDMOS (pchan Vto=-4 Kp=8.8 Lambda=.003 Theta=0.08 ksubthres=.35 Rd=180m Rs=50m Rg=3 Rds=1e7 Cgdmax=1.25n Cgdmin=50p a=0.23 Cgs=1.15n Is=150p N=1.3 Rb=16m XTI=2 Cjo=1.3n Vj=0.8 m=0.5 tcvth=0.004 MU=-1.27 texp0=1.5 mtriode=0.6)" 1 ".model MJE340 NPN (Is=1.03431e-13 BF=172.974 NF=.939811 VAF=27.3487 IKF=0.0260146 ISE=4.48447e-11 Ne=1.61605 Br=16.6725 Nr=0.796984 VAR=6.11596 IKR=0.10004 Isc=9.99914e-14 Nc=1.99995 RB=1.47761 IRB=0.2 RBM=1.47761 Re=0.0001 RC=1.42228 XTB=2.70726 XTI=1 Eg=1.206 CJE=1e-11 VJE=0.75 Mje=.33 TF=1e-09 XTF=1 VTF=10 ITF=0.01 CJC=1e-11 VJC=.75 MJC=0.33 XCJC=.9 Fc=0.5 CJS=0 VJS=0.75 MJS=0.5 TR=1e-07 PTF=0 KF=0 AF=1)" 1 ".model MJE350 PNP (Is=6.01619e-15 BF=157.387 NF=.910131 VAF=23.273 IKF=0.0564808 Ise=4.48479e-12 Ne=1.58557 BR=0.1 NR=1.03823 VAR=4.14543 IKR=.0999978 ISC=1.00199e-13 Nc=1.98851 RB=.1 IRB=0.202965 RBM=0.1 Re=.0710678 Rc=.355339 XTB=1.03638 XTI=3.8424 Eg=1.206 Cje=1e-11 Vje=0.75 Mje=0.33 TF=1e-09 XTF=1 VTF=10 ITF=0.01 Cjc=1e-11 Vjc=0.75 Mjc=0.33 XCJC=0.9 Fc=0.5 Cjs=0 Vjs=0.75 Mjs=0.5 TR=1e-07 PTF=0 KF=0 AF=1)" 1 "Line_5=" 0>
+  <NutmegEq NutmegEq1 1 290 630 -27 16 0 0 "SW1" 1 "dd=deriv(out)" 1 "iload=i(V5)" 1>
 </Components>
 <Wires>
   <200 120 200 130 "" 0 0 0 "">
@@ -98,8 +98,8 @@
   <600 300 600 300 "OUT" 610 270 0 "">
 </Wires>
 <Diagrams>
-  <Rect 840 520 382 280 3 #c0c0c0 1 00 1 -20 5 20 1 0.477221 1 6 1 -1 0.5 1 315 0 225 0 0 0 "" "" "">
-	<"ngspice/v(dd)" #0000ff 0 3 0 0 0>
+  <Rect 840 520 382 280 3 #c0c0c0 1 00 1 -1 0.2 1 1 -1 0.5 1 1 -1 0.5 1 315 0 225 0 0 0 "" "" "">
+	<"ngspice/sw1.v(dd)" #0000ff 0 3 0 0 0>
   </Rect>
 </Diagrams>
 <Paintings>

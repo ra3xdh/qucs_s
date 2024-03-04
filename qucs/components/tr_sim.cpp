@@ -116,7 +116,7 @@ QString TR_Sim::spice_netlist(bool isXyce)
     misc::str2num(Props.at(2)->Value,Tstop,unit,fac);
     Tstop *= fac;
     Npoints = Props.at(3)->Value.toDouble();
-    Tstep = (Tstop-Tstart)/Npoints;
+    Tstep = (Tstop-Tstart)/(Npoints-1);
 
     s += QString(" %1 %2 %3 ").arg(Tstep).arg(Tstop).arg(Tstart);
 

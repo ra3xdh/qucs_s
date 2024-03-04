@@ -136,21 +136,21 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         stop = std::max(ostart,ostop);
 
         if(type == "lin") {
-            step = (stop-start)/points;
-            for (; start <= stop; start += step) {
+            step = (stop-start)/(points-1);
+            while ( points > 0 ) {
                 s += QString("%1 ").arg(start);
+                start += step;
+                points -= 1;
             }
         } else {
             start = log10(start);
             stop = log10(stop);
-            step = (stop - start)/points;
+            step = (stop - start)/(points - 1);
 
-            for(; start <= stop; start += step) {
+            while ( points > 0 ) {
                 s += QString("%1 ").arg(pow(10, start));
-            }
-
-            if (start - step < stop) {
-                s += QString("%1 ").arg(pow(10, stop));
+                start += step;
+                points -= 1;
             }
         }
     }
@@ -249,7 +249,7 @@ QString Param_Sweep::spice_netlist(bool isXyce)
         stop *= fac;
         misc::str2num(getProperty("Points")->Value,points,unit,fac);
         points *= fac;
-        step = (stop-start)/points;
+        step = (stop-start)/(points-1);
     }
 
     if (Props.at(0)->Value.toLower().startsWith("dc")) {
