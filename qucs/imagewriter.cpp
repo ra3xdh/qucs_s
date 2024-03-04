@@ -326,7 +326,7 @@ void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel,
      for(Component *pc = sch->Components->first(); pc != 0; pc = sch->Components->next()) {
          if (pc->isSelected) {
            int x1,y1,x2,y2;
-           pc->entireBounds(x1,y1,x2,y2,sch->textCorr());
+           pc->entireBounds(x1, y1, x2, y2);
            updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
          }
     }
