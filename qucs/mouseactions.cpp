@@ -391,8 +391,9 @@ static void paintGhostLineV(Schematic *Doc, int fx, int fy, int fyy)
  */
 void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx2 = DOC_X_POS(Event->pos().x());
-    MAy2 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x();
+    MAy2 = inModel.y();
     Doc->setOnGrid(MAx2, MAy2);
     paintAim(Doc, MAx2, MAy2); //let we paint aim cross
 
@@ -418,8 +419,9 @@ void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
     Doc->setOnGrid(MAx3, MAy3);
     paintAim(Doc, MAx3, MAy3);
     MAx2 = DOC_X_POS(Doc->contentsX() + Doc->viewport()->width() - 1 - 2);
@@ -435,8 +437,9 @@ void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event)
 {
     //qDebug() << "MMoveSelect " << "select area";
-    MAx2 = DOC_X_POS(Event->pos().x()) - MAx1;
-    MAy2 = DOC_Y_POS(Event->pos().y()) - MAy1;
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x() - MAx1;
+    MAy2 = inModel.y() - MAy1;
     if (isMoveEqual) { // x and y size must be equal ?
         if (abs(MAx2) > abs(MAy2)) {
             if (MAx2 < 0)
@@ -459,8 +462,9 @@ void MouseActions::MMoveResizePainting(Schematic *Doc, QMouseEvent *Event)
 {
     setPainter(Doc);
 
-    MAx1 = DOC_X_POS(Event->pos().x());
-    MAy1 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx1 = inModel.x();
+    MAy1 = inModel.y();
     Doc->setOnGrid(MAx1, MAy1);
     ((Painting *) focusElement)->MouseResizeMoving(MAx1, MAy1, Doc);
 }
@@ -471,8 +475,9 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 {
     setPainter(Doc);
 
-    MAx2 = DOC_X_POS(Event->pos().x());
-    MAy2 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x();
+    MAy2 = inModel.y();
 
     Doc->setOnGrid(MAx2, MAy2);
     MAx3 = MAx1 = MAx2 - MAx1;
@@ -540,8 +545,9 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 {
   setPainter(Doc);
 
-  MAx2 = DOC_X_POS(Event->pos().x());
-  MAy2 = DOC_Y_POS(Event->pos().y());
+  auto inModel = Doc->contentsToModel(Event->pos());
+  MAx2 = inModel.x();
+  MAy2 = inModel.y();
 
   Element *pe;
   if (drawn) // erase old scheme
@@ -576,8 +582,9 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx1 = DOC_X_POS(Event->pos().x());
-    MAy1 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx1 = inModel.x();
+    MAy1 = inModel.y();
     moveElements(Doc, MAx1, MAy1);
     paintElementsScheme(Doc);
 
@@ -591,8 +598,9 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
 {
     TabDiagram *d = (TabDiagram *) focusElement;
-    int x = DOC_X_POS(Event->pos().x());
-    int y = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    int x = inModel.x();
+    int y = inModel.y();
 
     if (d->scrollTo(MAx2, x - MAx1, y - MAy1)) {
         Doc->setChanged(true, true, 'm'); // 'm' = only the first time
@@ -615,8 +623,9 @@ void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
 */
 void MouseActions::MMoveDelete(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     // cannot draw on the viewport, it is displaced by the size of dock and toolbar
     Doc->PostPaintEvent(_Line, MAx3 - 15, MAy3 - 15, MAx3 + 15, MAy3 + 15, 0, 0, false);
@@ -630,8 +639,9 @@ void MouseActions::MMoveDelete(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveLabel(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     // paint marker
     Doc->PostPaintEvent(_Line, MAx3, MAy3, MAx3 + 10, MAy3 - 10);
@@ -651,8 +661,9 @@ void MouseActions::MMoveLabel(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3, MAy3 - 2, MAx3 - 8, MAy3 - 10);
     Doc->PostPaintEvent(_Line, MAx3 + 1, MAy3 - 3, MAx3 + 8, MAy3 - 10);
@@ -667,9 +678,10 @@ void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveSetLimits(Schematic *Doc, QMouseEvent *Event)
 {
     // TODO: Refactor to a QRectF for easy normalisation etc.
-    // Update the second point of the selection rectangle. 
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    // Update the second point of the selection rectangle.
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 }
 
 /**
@@ -679,8 +691,9 @@ void MouseActions::MMoveSetLimits(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMirrorY(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 - 11, MAy3 - 4, MAx3 - 9, MAy3 - 9);
     Doc->PostPaintEvent(_Line, MAx3 - 11, MAy3 - 3, MAx3 - 6, MAy3 - 3);
@@ -696,8 +709,9 @@ void MouseActions::MMoveMirrorY(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMirrorX(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 - 4, MAy3 - 11, MAx3 - 9, MAy3 - 9);
     Doc->PostPaintEvent(_Line, MAx3 - 3, MAy3 - 11, MAx3 - 3, MAy3 - 6);
@@ -713,8 +727,9 @@ void MouseActions::MMoveMirrorX(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveRotate(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 - 6, MAy3 + 8, MAx3 - 6, MAy3 + 1);
     Doc->PostPaintEvent(_Line, MAx3 - 7, MAy3 + 8, MAx3 - 12, MAy3 + 8);
@@ -728,8 +743,9 @@ void MouseActions::MMoveRotate(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveActivate(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Rect, MAx3, MAy3 - 9, 14, 10);
     Doc->PostPaintEvent(_Line, MAx3, MAy3 - 9, MAx3 + 13, MAy3);
@@ -743,8 +759,9 @@ void MouseActions::MMoveActivate(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveOnGrid(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 + 10, MAy3 + 3, MAx3 + 25, MAy3 + 3);
     Doc->PostPaintEvent(_Line, MAx3 + 10, MAy3 + 7, MAx3 + 25, MAy3 + 7);
@@ -761,8 +778,9 @@ void MouseActions::MMoveOnGrid(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMoveTextB(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 + 14, MAy3, MAx3 + 16, MAy3);
     Doc->PostPaintEvent(_Line, MAx3 + 23, MAy3, MAx3 + 25, MAy3);
@@ -781,8 +799,9 @@ void MouseActions::MMoveMoveTextB(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMoveText(Schematic *Doc, QMouseEvent *Event)
 {
-    int newX = DOC_X_POS(Event->pos().x());
-    int newY = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    int newX = inModel.x();
+    int newY = inModel.y();
     MAx1 += newX - MAx3;
     MAy1 += newY - MAy3;
     MAx3 = newX;
@@ -798,8 +817,9 @@ void MouseActions::MMoveMoveText(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveZoomIn(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 + 14, MAy3, MAx3 + 22, MAy3);
     Doc->PostPaintEvent(_Line, MAx3 + 18, MAy3 - 4, MAx3 + 18, MAy3 + 4);
@@ -1840,8 +1860,9 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
     Doc->releaseKeyboard();
 
     // TODO: Make a point version of DOC_n_POS.
-    MAx2 = DOC_X_POS(Event->pos().x());
-    MAy2 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x();
+    MAy2 = inModel.y();
 
     qDebug() << "Mouse released after setting limits.";
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
@@ -2007,21 +2028,23 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
         break;
 
     // ............................................................
-    case Qt::RightButton: // right button rotates the elements
+    case Qt::RightButton: {// right button rotates the elements
         //setPainter(Doc, &painter);
 
         if (drawn) // erase old scheme
             paintElementsScheme(Doc);
         drawn = true;
 
-        x1 = DOC_X_POS(Event->pos().x());
-        y1 = DOC_Y_POS(Event->pos().y());
+        auto inModel = Doc->contentsToModel(Event->pos());
+        x1 = inModel.x();
+        y1 = inModel.y();
         rotateElements(Doc, x1, y1);
         paintElementsScheme(Doc);
         // save rotation
         movingRotated++;
         movingRotated &= 3;
         break;
+    }
 
     default:; // avoids compiler warnings
     }
