@@ -312,10 +312,13 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 
     //  qDebug() << "MMoveElement got selElem";
 
-    int x = Event->pos().x();
-    int y = Event->pos().y();
-    int fx = DOC_X_POS(x);
-    int fy = DOC_Y_POS(y);
+    QPoint contentsCoordinates = Event->pos();
+    QPoint modelCoordinates = Doc->contentsToModel(contentsCoordinates);
+
+    int x = contentsCoordinates.x();
+    int y = contentsCoordinates.y();
+    int fx = modelCoordinates.x();
+    int fy = modelCoordinates.y();
     int gx = fx;
     int gy = fy;
     Doc->setOnGrid(gx, gy);
@@ -424,8 +427,15 @@ void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
     MAy3 = inModel.y();
     Doc->setOnGrid(MAx3, MAy3);
     paintAim(Doc, MAx3, MAy3);
-    MAx2 = DOC_X_POS(Doc->contentsX() + Doc->viewport()->width() - 1 - 2);
-    MAx2 = DOC_Y_POS(Doc->contentsY() + Doc->viewport()->height() - 1 - 2);
+
+    inModel = Doc->contentsToModel(
+        QPoint{
+            Doc->contentsX() + Doc->viewport()->width() - 1 - 2,
+            Doc->contentsY() + Doc->viewport()->height() - 1 - 2
+        }
+    );
+    MAx2 = inModel.x();
+    MAx2 = inModel.y();
     Doc->viewport()->update();
 }
 
