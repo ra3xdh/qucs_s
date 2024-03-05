@@ -53,12 +53,6 @@
 #include <climits>
 #include <cstdlib>
 
-#define DOC_X_POS(x) (int(float(x) / Doc->Scale) + Doc->ViewX1)
-#define DOC_Y_POS(y) (int(float(y) / Doc->Scale) + Doc->ViewY1)
-
-#define SCR_X_POS(x) int(float(x - Doc->ViewX1) * Doc->Scale)
-#define SCR_Y_POS(y) int(float(y - Doc->ViewY1) * Doc->Scale)
-
 #define MIN_SELECT_SIZE 5.0
 
 QAction *formerAction; // remember action before drag n'drop etc.
