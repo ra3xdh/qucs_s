@@ -348,28 +348,53 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 }
 
 /**
- * @brief draws wire aiming cross on Document view
+ * @brief draws wire aiming cross
  * @param Doc - pointer to Schematics object
- * @param fx  - document x-coordinate of center
- * @param fy  - document x-coordinate of center
+ * @param aimX  - model x-coordinate of aim
+ * @param aimY  - model y-coordinate of aim
  */
-static void paintAim(Schematic *Doc, int fx, int fy)
-{
-    //let we reserve couple of points at the edges of lines for some aesthetics,
-    //and visual check that our calculations has fit the widget window.
-    const int ldelta = 2;
+static void paintAim(Schematic *Doc, int aimX, int aimY) {
+    // What we want to do here is to draw a cross centered at (aimX, aimY)
+    // which lines don't touch the bounds of visible part of schematic,
+    // i.e. there should be a little gap between the line ends and picture
+    // bounds:
+    //
+    //       Bad                Good
+    // +---------+---+    +--------------+
+    // |         |   |    |         |    |
+    // +---------+---+    | --------+--- |
+    // |         |   |    |         |    |
+    // |         |   |    |         |    |
+    // +---------+---+    +--------------+
+    //
+    // The cross is drawn using Schematic 'PostPaintEvent' subsystem.
+    // This is not a requirement, it's just an inherited implementation.
+    // Maybe there is a better way to do it, but until it's found let's
+    // stick to the way things already work.
+    //
+    // PostPaintEvent subsystem operates in *model* coordinates – the coordinates
+    // used to locate components, wires, etc.
+    //
+    // To draw the cross we want we have to follow these steps:
+    //   1. Find the size of viewport (visible part of schematic)
+    //   2. Shrink it a bit. The resulting rectangle is the *bounding* for the cross
+    //   3. Transform bounding rectangle coordinates to model coordinate system.
+    //   4. Using resulting 'in-model' coordinates of bounding rectangle, post
+    //      two 'paint line' events
 
-    //left and upper edges of our lines
-    int lx0 = DOC_X_POS(Doc->contentsX() + ldelta);
-    int ly0 = DOC_Y_POS(Doc->contentsY() + ldelta);
+    const QRect viewportAimBounds =
+        QRect{0, 0, Doc->viewport()->width(), Doc->viewport()->height()}
+        .marginsRemoved(QMargins{2, 2, 2, 2});
 
-    //right and bottom edges
-    int lx1 = DOC_X_POS(Doc->contentsX() + Doc->viewport()->width() - 1 - ldelta);
-    int ly1 = DOC_Y_POS(Doc->contentsY() + Doc->viewport()->height() - 1 - ldelta);
+    const QRect aimBounds{
+        Doc->viewportToModel(viewportAimBounds.topLeft()),
+        Doc->viewportToModel(viewportAimBounds.bottomRight())
+    };
 
-    //post line paint events
-    Doc->PostPaintEvent(_Line, lx0, fy, lx1, fy);
-    Doc->PostPaintEvent(_Line, fx, ly0, fx, ly1);
+    // Horizontal line of cross
+    Doc->PostPaintEvent(_Line, aimBounds.left(), aimY, aimBounds.right(), aimY);
+    // Vertical line of cross
+    Doc->PostPaintEvent(_Line, aimX, aimBounds.top(), aimX, aimBounds.bottom());
 }
 
 //paint ghost line - horizontal
