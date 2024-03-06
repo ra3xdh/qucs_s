@@ -64,12 +64,11 @@ installation steps. Default installation directory will be `/usr/local` if
 
 #### Qt6
 
-Since v1.0.1 Qucs-S supports build with Qt6. Set the `QT_DIR` environment variable 
-to tell CMake use the Qt6. For example use the following command sequence for Ubuntu-22.04
+Since v1.0.1 Qucs-S supports build with Qt6. Set the `WITH_QT6` flag to tell CMake use the Qt6. 
+For example use the following command sequence for Ubuntu-22.04
 
 ~~~
-export QT_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt6
-cmake ..  -DCMAKE_INSTALL_PREFIX=/your_install_prefix/
+cmake .. -DWITH_QT6=ON -DCMAKE_INSTALL_PREFIX=/your_install_prefix/
 ~~~ 
 
 ### Running
