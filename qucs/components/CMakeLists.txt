@@ -242,7 +242,6 @@ optimizedialog.h
 spicefile.h
 )
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 
 IF(QT_VERSION_MAJOR EQUAL 6)
     qt6_wrap_cpp(COMPONENTS_MOC_SRCS ${COMPONENTS_MOC_HDRS})

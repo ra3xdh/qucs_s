@@ -54,7 +54,12 @@ endif()
 add_compile_definitions(HAVE_CONFIG_H)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Widgets Svg Xml PrintSupport)
+if(WITH_QT6)
+    set(QT_VERSION_MAJOR 6)
+else()
+    set(QT_VERSION_MAJOR 5)
+endif()
+
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets Svg Xml PrintSupport)
 include_directories(
       ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}

@@ -45,7 +45,6 @@ customsimdialog.h
 simsettingsdialog.h
 )
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 
 IF(QT_VERSION_MAJOR EQUAL 6)
     QT6_WRAP_CPP( EXTSIMKERNELS_MOC_SRCS ${EXTSIMKERNELS_MOC_HDRS} )

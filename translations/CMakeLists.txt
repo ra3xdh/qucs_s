@@ -12,9 +12,8 @@ file (GLOB TRANSLATIONS_FILES qucs_*.ts)
 
 # WARNING: make clean might delete the source .ts files! Danger!
 option (UPDATE_TRANSLATIONS "Update source translation translations/*.ts" "OFF")
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 
-IF(QT_VERSION_MAJOR EQUAL 6)
+IF(WITH_QT6)
 IF (UPDATE_TRANSLATIONS)
   QT6_CREATE_TRANSLATION ( QM_FILES ${FILES_TO_TRANSLATE} ${TRANSLATIONS_FILES})
 ELSE (UPDATE_TRANSLATIONS)
