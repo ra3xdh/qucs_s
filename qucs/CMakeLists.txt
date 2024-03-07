@@ -106,6 +106,7 @@ INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}/dialogs
   #${qucs_SOURCE_DIR}/octave ->no sources here
   ${PROJECT_SOURCE_DIR}/paintings
+  ${PROJECT_SOURCE_DIR}/third_party
   )
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
