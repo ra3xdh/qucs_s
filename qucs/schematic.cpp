@@ -1289,12 +1289,9 @@ QRect Schematic::sizeOfSelection() const
 
     bool isAnySelected = false;
 
-    if (Components->isEmpty())
-        if (Wires->isEmpty())
-            if (Diagrams->isEmpty())
-                if (Paintings->isEmpty()) {
-                    return QRect{};
-                }
+    if (Components->isEmpty() && Wires->isEmpty() && Diagrams->isEmpty() && Paintings->isEmpty()) {
+        return QRect{};
+    }
 
     int x1, y1, x2, y2;
     // find boundings of all components
