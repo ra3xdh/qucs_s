@@ -1290,11 +1290,6 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
     ymin = INT_MAX;
     xmax = INT_MIN;
     ymax = INT_MIN;
-    Component *pc;
-    Diagram *pd;
-    Wire *pw;
-    WireLabel *pl;
-    Painting *pp;
 
     bool isAnySelected = false;
 
@@ -1309,7 +1304,7 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
 
     int x1, y1, x2, y2;
     // find boundings of all components
-    for (pc = Components->first(); pc != 0; pc = Components->next()) {
+    for (auto *pc = Components->first(); pc != 0; pc = Components->next()) {
         if (!pc->isSelected) {
             continue;
         }
@@ -1326,7 +1321,7 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all wires
-    for (pw = Wires->first(); pw != 0; pw = Wires->next()) {
+    for (auto *pw = Wires->first(); pw != 0; pw = Wires->next()) {
         if (!pw->isSelected) {
             continue;
         }
@@ -1340,8 +1335,7 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
         if (pw->y2 > ymax)
             ymax = pw->y2;
 
-        pl = pw->Label;
-        if (pl) { // check position of wire label
+        if (auto *pl = pw->Label; pl) { // check position of wire label
             pl->getLabelBounding(x1, y1, x2, y2);
             if (x1 < xmin)
                 xmin = x1;
@@ -1355,12 +1349,12 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all node labels
-    for (Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
+    for (auto *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
         if (!pn->isSelected) {
             continue;
         }
-        pl = pn->Label;
-        if (pl) { // check position of node label
+
+        if (auto *pl = pn->Label; pl) { // check position of node label
             isAnySelected = true;
             pl->getLabelBounding(x1, y1, x2, y2);
             if (x1 < xmin)
@@ -1375,7 +1369,7 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all diagrams
-    for (pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
+    for (auto *pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
         if (!pd->isSelected) {
             continue;
         }
@@ -1406,7 +1400,7 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all Paintings
-    for (pp = Paintings->first(); pp != nullptr; pp = Paintings->next()) {
+    for (auto *pp = Paintings->first(); pp != nullptr; pp = Paintings->next()) {
         if (!pp->isSelected) {
             continue;
         }
