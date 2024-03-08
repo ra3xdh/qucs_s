@@ -1280,8 +1280,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 }
 
-QRect Schematic::sizeOfSelection() const
-{
+QRect Schematic::sizeOfSelection() const {
     int xmin = INT_MAX;
     int ymin = INT_MAX;
     int xmax = INT_MIN;
@@ -1289,13 +1288,14 @@ QRect Schematic::sizeOfSelection() const
 
     bool isAnySelected = false;
 
-    if (Components->isEmpty() && Wires->isEmpty() && Diagrams->isEmpty() && Paintings->isEmpty()) {
+    if (Components->isEmpty() && Wires->isEmpty() && Diagrams->isEmpty() &&
+        Paintings->isEmpty()) {
         return QRect{};
     }
 
     int x1, y1, x2, y2;
     // find boundings of all components
-    for (auto *pc : *Components) {
+    for (auto* pc : *Components) {
         if (!pc->isSelected) {
             continue;
         }
@@ -1308,17 +1308,17 @@ QRect Schematic::sizeOfSelection() const
     }
 
     // find boundings of all wires
-    for (auto *pw : *Wires) {
+    for (auto* pw : *Wires) {
         if (!pw->isSelected) {
             continue;
         }
         isAnySelected = true;
-        xmin = std::min(pw->x1, xmin);
-        xmax = std::max(pw->x2, xmax);
-        ymin = std::min(pw->y1, ymin);
-        ymax = std::max(pw->y2, ymax);
+        xmin          = std::min(pw->x1, xmin);
+        xmax          = std::max(pw->x2, xmax);
+        ymin          = std::min(pw->y1, ymin);
+        ymax          = std::max(pw->y2, ymax);
 
-        if (auto *pl = pw->Label; pl) { // check position of wire label
+        if (auto* pl = pw->Label; pl) { // check position of wire label
             pl->getLabelBounding(x1, y1, x2, y2);
             xmin = std::min(x1, xmin);
             xmax = std::max(x2, xmax);
@@ -1328,12 +1328,12 @@ QRect Schematic::sizeOfSelection() const
     }
 
     // find boundings of all node labels
-    for (auto *pn : *Nodes) {
+    for (auto* pn : *Nodes) {
         if (!pn->isSelected) {
             continue;
         }
 
-        if (auto *pl = pn->Label; pl) { // check position of node label
+        if (auto* pl = pn->Label; pl) { // check position of node label
             isAnySelected = true;
             pl->getLabelBounding(x1, y1, x2, y2);
             xmin = std::min(x1, xmin);
@@ -1344,7 +1344,7 @@ QRect Schematic::sizeOfSelection() const
     }
 
     // find boundings of all diagrams
-    for (auto *pd : *Diagrams) {
+    for (auto* pd : *Diagrams) {
         if (!pd->isSelected) {
             continue;
         }
@@ -1355,19 +1355,20 @@ QRect Schematic::sizeOfSelection() const
         ymin = std::min(y1, ymin);
         ymax = std::max(y2, ymax);
 
-        for (Graph *pg : pd->Graphs)
+        for (Graph* pg : pd->Graphs) {
             // test all markers of diagram
-            for (Marker *pm : pg->Markers) {
+            for (Marker* pm : pg->Markers) {
                 pm->Bounding(x1, y1, x2, y2);
                 xmin = std::min(x1, xmin);
                 xmax = std::max(x2, xmax);
                 ymin = std::min(y1, ymin);
                 ymax = std::max(y2, ymax);
             }
+        }
     }
 
     // find boundings of all Paintings
-    for (auto *pp : *Paintings) {
+    for (auto* pp : *Paintings) {
         if (!pp->isSelected) {
             continue;
         }
