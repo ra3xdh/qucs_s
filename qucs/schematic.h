@@ -93,7 +93,7 @@ public:
   float textCorr();
   bool sizeOfFrame(int&, int&);
   void  sizeOfAll(int&, int&, int&, int&);
-  void  sizeOfSelection(int&, int&, int&, int&);
+  QRect  sizeOfSelection() const;
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();

@@ -934,14 +934,10 @@ void Schematic::zoomToSelection() {
                     return;
                 }
 
-    // Coordinates of top-left and bottom-right corners of the selected
-    // elements bounding rectangle
-    int selectedX1, selectedX2, selectedY1, selectedY2 = 0;
-    sizeOfSelection(selectedX1, selectedY1, selectedX2, selectedY2);
+    const QRect selectedBoundingRect{ sizeOfSelection() };
 
     // Working with raw coordinates is clumsy, abstract them out
     const QRect usedBoundingRect{UsedX1, UsedY1, UsedX2 - UsedX1, UsedY2 - UsedY1};
-    const QRect selectedBoundingRect{selectedX1, selectedY1, selectedX2 - selectedX1, selectedY2 - selectedY1};
 
     if (selectedBoundingRect.width() == 0 || selectedBoundingRect.height() == 0) {
         // If nothing is selected, then what should be shown? Probably it's best
@@ -1284,12 +1280,12 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 }
 
-void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
+QRect Schematic::sizeOfSelection() const
 {
-    xmin = INT_MAX;
-    ymin = INT_MAX;
-    xmax = INT_MIN;
-    ymax = INT_MIN;
+    int xmin = INT_MAX;
+    int ymin = INT_MAX;
+    int xmax = INT_MIN;
+    int ymax = INT_MIN;
 
     bool isAnySelected = false;
 
@@ -1297,9 +1293,7 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
         if (Wires->isEmpty())
             if (Diagrams->isEmpty())
                 if (Paintings->isEmpty()) {
-                    xmin = xmax = 0;
-                    ymin = ymax = 0;
-                    return;
+                    return QRect{};
                 }
 
     int x1, y1, x2, y2;
@@ -1417,9 +1411,10 @@ void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     if (!isAnySelected) {
-        xmin = xmax = 0;
-        ymin = ymax = 0;
+        return QRect{};
     }
+
+    return QRect{xmin, ymin, xmax - xmin, ymax - ymin};
 }
 
 // ---------------------------------------------------
