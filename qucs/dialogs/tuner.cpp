@@ -150,12 +150,25 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     tunerName->setStyleSheet("QLabel {font: bold}");
     gbox->addWidget(tunerName,0,0,1,2);
 
+    // This is locale for QDoubleValidators in QLineEdit used for editing
+    // max, min, current and step tuner values. We use special locale
+    // because we don't want QLineEdit to accept numbers in user's native
+    // locale, we want numbers only in "C" form: with dot as separator
+    // of integral and fractional part and no group separators.
+    //
+    // See also discussion here https://github.com/ra3xdh/qucs_s/issues/416
+    auto cDoubleLocale{ QLocale::c() };
+    auto opts = cDoubleLocale.numberOptions();
+    opts.setFlag(QLocale::RejectGroupSeparator);
+    cDoubleLocale.setNumberOptions(opts);
 
     QLabel * maxLabel = new QLabel(tr("Max.:"));
     maxLabel->setLineWidth(5);
     gbox->addWidget(maxLabel, 1, 0);
     maximum = new QLineEdit();
-    maximum->setValidator( new QDoubleValidator(minValueValidator, PTRDIFF_MAX, 2, this) );//Prevent the user from entering text
+    auto* maximumValidator = new QDoubleValidator(minValueValidator, PTRDIFF_MAX, 2, this);
+    maximumValidator->setLocale(cDoubleLocale);
+    maximum->setValidator(maximumValidator);//Prevent the user from entering text
     MaxUnitsCombobox = new QComboBox(this);
     MaxUnitsCombobox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     MaxUnitsCombobox->addItems(ScaleFactorList);
@@ -172,7 +185,9 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     minLabel->setLineWidth(5);
     gbox->addWidget(minLabel, 4, 0);
     minimum = new QLineEdit();
-    minimum->setValidator( new QDoubleValidator(minValueValidator, 100, 2, this) );//Prevent the user from entering text
+    auto* minumumValidator = new QDoubleValidator(minValueValidator, 100, 2, this);
+    minumumValidator->setLocale(cDoubleLocale);
+    minimum->setValidator(minumumValidator);//Prevent the user from entering text
     MinUnitsCombobox = new QComboBox(this);
     MinUnitsCombobox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
     MinUnitsCombobox->addItems(ScaleFactorList);
@@ -185,7 +200,9 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     valLabel->setLineWidth(5);
     gbox->addWidget(valLabel, 5, 0);
     value = new QLineEdit();
-    value->setValidator( new QDoubleValidator(minValueValidator, PTRDIFF_MAX, 2, this) );//Prevent the user from entering text
+    auto* valueValidator = new QDoubleValidator(minValueValidator, PTRDIFF_MAX, 2, this);
+    valueValidator->setLocale(cDoubleLocale);
+    value->setValidator(valueValidator);//Prevent the user from entering text
     ValueUnitsCombobox = new QComboBox(this);
     gbox->addWidget(value, 5, 1);
     gbox->addWidget(ValueUnitsCombobox,5,2);
@@ -196,7 +213,9 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     stepLabel->setLineWidth(5);
     gbox->addWidget(stepLabel, 6, 0);
     step = new QLineEdit();
-    step->setValidator( new QDoubleValidator(0, PTRDIFF_MAX, 2, this) );//Prevent the user from entering text
+    auto* stepValidator = new QDoubleValidator(0, PTRDIFF_MAX, 2, this);
+    stepValidator->setLocale(cDoubleLocale);
+    step->setValidator(stepValidator);//Prevent the user from entering text
     StepUnitsCombobox = new QComboBox(this);
     gbox->addWidget(step, 6, 1);
     gbox->addWidget(StepUnitsCombobox,6,2);
