@@ -934,14 +934,10 @@ void Schematic::zoomToSelection() {
                     return;
                 }
 
-    // Coordinates of top-left and bottom-right corners of the selected
-    // elements bounding rectangle
-    int selectedX1, selectedX2, selectedY1, selectedY2 = 0;
-    sizeOfSelection(selectedX1, selectedY1, selectedX2, selectedY2);
+    const QRect selectedBoundingRect{ sizeOfSelection() };
 
     // Working with raw coordinates is clumsy, abstract them out
     const QRect usedBoundingRect{UsedX1, UsedY1, UsedX2 - UsedX1, UsedY2 - UsedY1};
-    const QRect selectedBoundingRect{selectedX1, selectedY1, selectedX2 - selectedX1, selectedY2 - selectedY1};
 
     if (selectedBoundingRect.width() == 0 || selectedBoundingRect.height() == 0) {
         // If nothing is selected, then what should be shown? Probably it's best
@@ -1284,148 +1280,111 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 }
 
-void Schematic::sizeOfSelection(int &xmin, int &ymin, int &xmax, int &ymax)
-{
-    xmin = INT_MAX;
-    ymin = INT_MAX;
-    xmax = INT_MIN;
-    ymax = INT_MIN;
-    Component *pc;
-    Diagram *pd;
-    Wire *pw;
-    WireLabel *pl;
-    Painting *pp;
+QRect Schematic::sizeOfSelection() const {
+    int xmin = INT_MAX;
+    int ymin = INT_MAX;
+    int xmax = INT_MIN;
+    int ymax = INT_MIN;
 
     bool isAnySelected = false;
 
-    if (Components->isEmpty())
-        if (Wires->isEmpty())
-            if (Diagrams->isEmpty())
-                if (Paintings->isEmpty()) {
-                    xmin = xmax = 0;
-                    ymin = ymax = 0;
-                    return;
-                }
+    if (Components->isEmpty() && Wires->isEmpty() && Diagrams->isEmpty() &&
+        Paintings->isEmpty()) {
+        return QRect{};
+    }
 
     int x1, y1, x2, y2;
     // find boundings of all components
-    for (pc = Components->first(); pc != 0; pc = Components->next()) {
+    for (auto* pc : *Components) {
         if (!pc->isSelected) {
             continue;
         }
         isAnySelected = true;
         pc->entireBounds(x1, y1, x2, y2);
-        if (x1 < xmin)
-            xmin = x1;
-        if (x2 > xmax)
-            xmax = x2;
-        if (y1 < ymin)
-            ymin = y1;
-        if (y2 > ymax)
-            ymax = y2;
+        xmin = std::min(x1, xmin);
+        xmax = std::max(x2, xmax);
+        ymin = std::min(y1, ymin);
+        ymax = std::max(y2, ymax);
     }
 
     // find boundings of all wires
-    for (pw = Wires->first(); pw != 0; pw = Wires->next()) {
+    for (auto* pw : *Wires) {
         if (!pw->isSelected) {
             continue;
         }
         isAnySelected = true;
-        if (pw->x1 < xmin)
-            xmin = pw->x1;
-        if (pw->x2 > xmax)
-            xmax = pw->x2;
-        if (pw->y1 < ymin)
-            ymin = pw->y1;
-        if (pw->y2 > ymax)
-            ymax = pw->y2;
+        xmin          = std::min(pw->x1, xmin);
+        xmax          = std::max(pw->x2, xmax);
+        ymin          = std::min(pw->y1, ymin);
+        ymax          = std::max(pw->y2, ymax);
 
-        pl = pw->Label;
-        if (pl) { // check position of wire label
+        if (auto* pl = pw->Label; pl) { // check position of wire label
             pl->getLabelBounding(x1, y1, x2, y2);
-            if (x1 < xmin)
-                xmin = x1;
-            if (x2 > xmax)
-                xmax = x2;
-            if (y1 < ymin)
-                ymin = y1;
-            if (y2 > ymax)
-                ymax = y2;
+            xmin = std::min(x1, xmin);
+            xmax = std::max(x2, xmax);
+            ymin = std::min(y1, ymin);
+            ymax = std::max(y2, ymax);
         }
     }
 
     // find boundings of all node labels
-    for (Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
+    for (auto* pn : *Nodes) {
         if (!pn->isSelected) {
             continue;
         }
-        pl = pn->Label;
-        if (pl) { // check position of node label
+
+        if (auto* pl = pn->Label; pl) { // check position of node label
             isAnySelected = true;
             pl->getLabelBounding(x1, y1, x2, y2);
-            if (x1 < xmin)
-                xmin = x1;
-            if (x2 > xmax)
-                xmax = x2;
-            if (y1 < ymin)
-                ymin = y1;
-            if (y2 > ymax)
-                ymax = y2;
+            xmin = std::min(x1, xmin);
+            xmax = std::max(x2, xmax);
+            ymin = std::min(y1, ymin);
+            ymax = std::max(y2, ymax);
         }
     }
 
     // find boundings of all diagrams
-    for (pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
+    for (auto* pd : *Diagrams) {
         if (!pd->isSelected) {
             continue;
         }
         isAnySelected = true;
         pd->Bounding(x1, y1, x2, y2);
-        if (x1 < xmin)
-            xmin = x1;
-        if (x2 > xmax)
-            xmax = x2;
-        if (y1 < ymin)
-            ymin = y1;
-        if (y2 > ymax)
-            ymax = y2;
+        xmin = std::min(x1, xmin);
+        xmax = std::max(x2, xmax);
+        ymin = std::min(y1, ymin);
+        ymax = std::max(y2, ymax);
 
-        for (Graph *pg : pd->Graphs)
+        for (Graph* pg : pd->Graphs) {
             // test all markers of diagram
-            for (Marker *pm : pg->Markers) {
+            for (Marker* pm : pg->Markers) {
                 pm->Bounding(x1, y1, x2, y2);
-                if (x1 < xmin)
-                    xmin = x1;
-                if (x2 > xmax)
-                    xmax = x2;
-                if (y1 < ymin)
-                    ymin = y1;
-                if (y2 > ymax)
-                    ymax = y2;
+                xmin = std::min(x1, xmin);
+                xmax = std::max(x2, xmax);
+                ymin = std::min(y1, ymin);
+                ymax = std::max(y2, ymax);
             }
+        }
     }
 
     // find boundings of all Paintings
-    for (pp = Paintings->first(); pp != nullptr; pp = Paintings->next()) {
+    for (auto* pp : *Paintings) {
         if (!pp->isSelected) {
             continue;
         }
         isAnySelected = true;
         pp->Bounding(x1, y1, x2, y2);
-        if (x1 < xmin)
-            xmin = x1;
-        if (x2 > xmax)
-            xmax = x2;
-        if (y1 < ymin)
-            ymin = y1;
-        if (y2 > ymax)
-            ymax = y2;
+        xmin = std::min(x1, xmin);
+        xmax = std::max(x2, xmax);
+        ymin = std::min(y1, ymin);
+        ymax = std::max(y2, ymax);
     }
 
     if (!isAnySelected) {
-        xmin = xmax = 0;
-        ymin = ymax = 0;
+        return QRect{};
     }
+
+    return QRect{xmin, ymin, xmax - xmin, ymax - ymin};
 }
 
 // ---------------------------------------------------
