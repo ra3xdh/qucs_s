@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "spicedialog.h"
+#include "misc.h"
 #include "spicefile.h"
 #include "main.h"
 #include "qucs.h"
@@ -278,28 +279,54 @@ void SpiceDialog::slotButtApply()
 // -------------------------------------------------------------------------
 void SpiceDialog::slotButtBrowse()
 {
-  QString s = QFileDialog::getOpenFileName(this,
-                  tr("Select a file"),
-                  lastDir.isEmpty() ? QString(".") : lastDir,
-                  tr("SPICE netlist") + QString(" (") + QucsSettings.spiceExtensions.join(" ") + QString(");;")
-                      + tr("All Files") + " (*.*)");
+  // current file name from the component properties
+  QString currFileName = FileEdit->text();
+  QFileInfo currFileInfo(currFileName);
+  // name of the schematic where component is instantiated (may be empty)
+  QFileInfo schematicFileInfo = Comp->getSchematic()->getFileInfo();
+  QString schematicFileName = schematicFileInfo.fileName();
+  // directory to use for the file open dialog
+  QString currDir;
 
-  if(s.isEmpty()) {
-    return;
+  if (!currFileName.isEmpty()) { // a file name is already defined
+    if (currFileInfo.isRelative()) { // but has no absolute path
+      if (!schematicFileName.isEmpty()) // if schematic has a filename
+        currDir = schematicFileInfo.absolutePath();
+      else    // use the WorkDir path
+        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+    } else {  // current file name is absolute
+      currDir = currFileInfo.exists() ? currFileInfo.absolutePath() : QucsSettings.QucsWorkDir.absolutePath();
+    }
+  } else {    // a file name is not defined
+    if (!schematicFileName.isEmpty()) { // if schematic has a filename
+      currDir = schematicFileInfo.absolutePath();
+    } else {  // use the WorkDir path
+      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+    }
   }
 
-  QFileInfo Info(s);
-  lastDir = Info.absolutePath();  // remember last directory
+  QString s = QFileDialog::getOpenFileName (
+      this,
+      tr("Select a file"),
+      currDir,
+      tr("SPICE netlist") + QString(" (") + QucsSettings.spiceExtensions.join(" ") + QString(");;")
+      + tr("All Files") + " (*.*)");
 
-  // snip path if file in current directory
-  if(QucsSettings.QucsWorkDir.exists(Info.fileName()) &&
-          QucsSettings.QucsWorkDir.absolutePath() == Info.absolutePath()) {
-    s = Info.fileName();
+  if(!s.isEmpty()) {
+    // snip path if file in current directory
+    QFileInfo file(s);
+    lastDir = file.absolutePath();
+    currDir = schematicFileInfo.canonicalPath();
+    if ( file.canonicalFilePath().startsWith(currDir) ) {
+      s = QDir(currDir).relativeFilePath(s);
+    } else if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
+        QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) {
+      s = file.fileName();
+    }
+    FileEdit->setText(s);
+    Comp->Props.at(1)->Value = "";
+    loadSpiceNetList(s);
   }
-  FileEdit->setText(s);
-
-  Comp->Props.at(1)->Value = "";
-  loadSpiceNetList(s);
 }
 
 // -------------------------------------------------------------------------
@@ -318,7 +345,8 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
 {
   Comp->withSim = false;
   if(s.isEmpty()) return false;
-  QFileInfo FileInfo(QucsSettings.QucsWorkDir, s);
+  QString absFileName = misc::properAbsFileName(s, Doc);
+  QFileInfo FileInfo(QucsSettings.QucsWorkDir, absFileName);
 
   NodesList->clear();
   PortsList->clear();
@@ -358,7 +386,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
     spiceArgs.append(FileInfo.filePath());
 
     QFile PrepFile;
-    QFileInfo PrepInfo(QucsSettings.QucsWorkDir, s + ".pre");
+    QFileInfo PrepInfo(QucsSettings.QucsWorkDir, absFileName + ".pre");
     QString PrepName = PrepInfo.filePath();
 
     if (!piping)
@@ -419,7 +447,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
         QMessageBox::critical(this, tr("SPICE Preprocessor Error"), Error);
         return false;
     }
-    FileInfo = QFileInfo(QucsSettings.QucsWorkDir, s + ".pre");
+    FileInfo = QFileInfo(QucsSettings.QucsWorkDir, absFileName + ".pre");
   }
 
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
@@ -604,7 +632,7 @@ void SpiceDialog::slotGetNetlist()
 // -------------------------------------------------------------------------
 void SpiceDialog::slotButtEdit()
 {
-  Doc->App->editFile(QucsSettings.QucsWorkDir.filePath(FileEdit->text()));
+  Doc->App->editFile(misc::properAbsFileName(FileEdit->text(), Doc));
 }
 
 // -------------------------------------------------------------------------

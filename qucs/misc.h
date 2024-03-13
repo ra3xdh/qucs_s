@@ -44,6 +44,8 @@ namespace qucs {
 }
 
 
+class Schematic;
+
 namespace misc {
   QString complexRect(double, double, int Precision=3);
   QString complexDeg (double, double, int Precision=3);
@@ -56,7 +58,7 @@ namespace misc {
   void    convert2Unicode(QString&);
   void    convert2ASCII(QString&);
   QString properName(const QString&);
-  QString properAbsFileName(const QString&);
+  QString properAbsFileName(const QString&, Schematic* sch = nullptr);
   QString properFileName(const QString&);
   bool    VHDL_Time(QString&, const QString&);
   bool    VHDL_Delay(QString&, const QString&);
