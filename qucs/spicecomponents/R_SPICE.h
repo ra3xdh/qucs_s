@@ -23,7 +23,7 @@
 
 #include "components/component.h"
 
-class R_SPICE : public Component {
+class R_SPICE : public  MultiViewComponent {
 public:
   R_SPICE();
   ~R_SPICE();

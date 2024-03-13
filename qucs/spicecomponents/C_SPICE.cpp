@@ -29,11 +29,6 @@ C_SPICE::C_SPICE()
     Description = QObject::tr("SPICE C:\nMultiple line ngspice or Xyce C specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
     Simulator = spicecompat::simSpice;
 
-    x1 = -30; y1 = -13;
-    x2 =  30; y2 =  13;
-
-    tx = x1+4;
-    ty = y2+4;
     Model = "C_SPICE";
     SpiceModel = "C";
     Name  = "C";
@@ -47,6 +42,8 @@ C_SPICE::C_SPICE()
     Props.append(new Property("Letter", "C", true,"[C,X,N] SPICE letter"));
 
     createSymbol();
+    tx = x1+4;
+    ty = y2+4;
 
     // rotate();  // fix historical flaw
 }
@@ -67,7 +64,8 @@ void C_SPICE::createSymbol()
     Ports.append(new Port(-30,  0));
 
     if (Npins >= 3) Ports.append(new Port( 0, -30));
-
+    x1 = -30; y1 = -13;
+    x2 =  30; y2 =  13;
 }
 
 
@@ -77,7 +75,11 @@ C_SPICE::~C_SPICE()
 
 Component* C_SPICE::newOne()
 {
-  return new C_SPICE();
+    auto p = new C_SPICE();
+    p->getProperty("Pins")->Value = getProperty("Pins")->Value;
+    p->getProperty("Letter")->Value = getProperty("Letter")->Value;
+    p->recreate(0);
+    return p;
 }
 
 Element* C_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
