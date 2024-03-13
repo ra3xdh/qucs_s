@@ -57,7 +57,12 @@ MOS_SPICE::~MOS_SPICE()
 
 Component* MOS_SPICE::newOne()
 {
-  return new MOS_SPICE();
+    auto p = new MOS_SPICE();
+    p->getProperty("Pins")->Value = getProperty("Pins")->Value;
+    p->getProperty("Letter")->Value = getProperty("Letter")->Value;
+    p->getProperty("type")->Value = getProperty("type")->Value;
+    p->recreate(0);
+    return p;
 }
 
 Element* MOS_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)

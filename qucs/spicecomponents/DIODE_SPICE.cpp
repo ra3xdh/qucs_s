@@ -80,7 +80,11 @@ DIODE_SPICE::~DIODE_SPICE()
 
 Component* DIODE_SPICE::newOne()
 {
-  return new DIODE_SPICE();
+    auto p = new DIODE_SPICE();
+    p->getProperty("Pins")->Value = getProperty("Pins")->Value;
+    p->getProperty("Letter")->Value = getProperty("Letter")->Value;
+    p->recreate(0);
+    return p;
 }
 
 Element* DIODE_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
