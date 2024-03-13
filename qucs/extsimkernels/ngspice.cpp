@@ -123,15 +123,17 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
     stream << "\n.control\n\n";          //execute simulations
 
-    if (!QucsMain->ProjName.isEmpty()) {
-        // always load osdi from the project directory
-        QStringList osdi_ext;
-        osdi_ext<<"*.osdi";
-        QStringList osdi_files = QucsSettings.QucsWorkDir.entryList(osdi_ext,QDir::Files);
-        for(const auto &file : osdi_files) {
-            QString abs_file = QucsSettings.QucsWorkDir.absolutePath() +
-                               QDir::separator() + file;
-            stream<<QString("pre_osdi '%1'\n").arg(abs_file);
+    if (QucsMain != nullptr) { // if not run from CLI
+        if (!QucsMain->ProjName.isEmpty()) {
+            // always load osdi from the project directory
+            QStringList osdi_ext;
+            osdi_ext<<"*.osdi";
+            QStringList osdi_files = QucsSettings.QucsWorkDir.entryList(osdi_ext,QDir::Files);
+            for(const auto &file : osdi_files) {
+                QString abs_file = QucsSettings.QucsWorkDir.absolutePath() +
+                        QDir::separator() + file;
+                stream<<QString("pre_osdi '%1'\n").arg(abs_file);
+            }
         }
     }
 
