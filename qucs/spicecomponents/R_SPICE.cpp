@@ -28,12 +28,6 @@ R_SPICE::R_SPICE()
     Description = QObject::tr("SPICE R:\nMultiple line ngspice or Xyce R specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
     Simulator = spicecompat::simSpice;
 
-    x1 = -30; y1 = -11;
-    x2 =  30; y2 =  11;
-
-    tx = x1+4;
-    ty = y2+4;
-
     Model = "R_SPICE";
     SpiceModel = "R";
     Name  = "R";
@@ -47,6 +41,9 @@ R_SPICE::R_SPICE()
     Props.append(new Property("Letter", "R", true,"[R,X,N] SPICE letter"));
 
     createSymbol();
+
+    tx = x1+4;
+    ty = y2+4;
 
     // rotate();  // fix historical flaw
 
@@ -70,6 +67,9 @@ void R_SPICE::createSymbol()
     Ports.append(new Port( 30,  0));
 
     if (Npins >= 3) Ports.append(new Port( 0, -30));
+
+    x1 = -30; y1 = -11;
+    x2 =  30; y2 =  11;
 
 }
 

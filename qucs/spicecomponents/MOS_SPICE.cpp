@@ -40,9 +40,6 @@ MOS_SPICE::MOS_SPICE()
 
   createSymbol();
 
-  x1 = -30; y1 = -30;
-  x2 =   4; y2 =  30;
-
     tx = x1+4;
     ty = y2+4;
 
@@ -219,6 +216,9 @@ void MOS_SPICE::createSymbol()
         Lines.append(new qucs::Line( -1,  0, -6, -5,QPen(Qt::darkRed,2)));
         Lines.append(new qucs::Line( -1,  0, -6,  5,QPen(Qt::darkRed,2)));
     }
+
+    x1 = -30; y1 = -30;
+    x2 =   4; y2 =  30;
 }
 
 QString MOS_SPICE::spice_netlist(bool)
