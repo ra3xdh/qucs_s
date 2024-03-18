@@ -1,3 +1,27 @@
+# Qucs-S 24.2.0
+
+## New features
+
+* QucsatorRF is now a part of the package; No need to compile and install qucsator manually #370
+* Qucs-RFLayout tool could be launched from *Tools* menu #465; this tool must be installed separated
+* Redesign of the Qucsconv GUI #647
+* Matching tool backported from Qucs-0.0.20 #401
+* Added *RF devices* group; backported different RF devices for Qucsator #607
+
+## General imporvements and fixes
+
+* Fixed parameter sweep step issues #186 @ivandi69
+* Fixed SPICE devices bounding box #590 #637
+* Fixed netlist export from CLI #639
+* Fixed parameter sweep simulation with Xyce #624
+* Revert explicit WITH_QT6 compile flag because of cmake bug #592
+* Fixed tuner issues for German locale #416
+* Refactoring in schematic editor #626 #618 @wawuwo
+
+## Localization
+
+* Russian translation update
+
 # Qucs-S 24.1.0
 
 ## Important notes
