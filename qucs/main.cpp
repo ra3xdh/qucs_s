@@ -117,12 +117,12 @@ bool loadSettings()
         QFileInfo inf(QucsSettings.Qucsator);
         QucsSettings.QucsatorDir = inf.canonicalPath() + QDir::separator();
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QucsSettings.QucsatorDir + QDir::separator() + "qucsconv" + executableSuffix;
+            QucsSettings.Qucsconv = QucsSettings.QucsatorDir + QDir::separator() + "qucsconv_rf" + executableSuffix;
     } else {
-        QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
+        QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator_rf" + executableSuffix;
         QucsSettings.QucsatorDir = QucsSettings.BinDir;
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv" + executableSuffix;
+            QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv_rf" + executableSuffix;
     }
     //if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
     //if(settings.contains("LangDir"))QucsSettings.LangDir = settings.value("LangDir").toString();
