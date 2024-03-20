@@ -179,14 +179,21 @@ QucsApp::QucsApp()
 #ifdef Q_OS_WIN
       QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice_con.exe";
       QString ngspice_exe2 = "C:\\Spice64\\bin\\ngspice_con.exe";
+      QString qucsator_exe = QucsSettings.BinDir + QDir::separator() + "qucsator_rf.exe";
 #else
       QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice";
+      QString qucsator_exe = QucsSettings.BinDir + QDir::separator() + "qucsator_rf";
 #endif
       QString ngspice_exe;
-      bool found = false;
+      bool ngspice_found = false;
       if (QFile::exists(ngspice_exe1)) {
-          found = true;
+          ngspice_found = true;
           ngspice_exe = ngspice_exe1;
+      }
+      bool qucsator_found = false;
+      if (QFile::exists(qucsator_exe)) {
+          qucsator_found = true;
+          QucsSettings.Qucsator = qucsator_exe;
       }
 #ifdef Q_OS_WIN
       if (!found && QFile::exists(ngspice_exe2)) {
@@ -195,20 +202,39 @@ QucsApp::QucsApp()
       }
 #endif
       ngspice_exe = QDir::toNativeSeparators(ngspice_exe);
-      if (found) {
-          QMessageBox::information(nullptr,tr("Set simulator"),
-                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
-                                   tr("You can specify another location later"
-                                      " using Simulation->Simulators Setings"));
+      QString info_string;
+      if (ngspice_found) {
           QucsSettings.DefaultSimulator = spicecompat::simNgspice;
           QucsSettings.NgspiceExecutable = ngspice_exe;
+          info_string += tr("Ngspice found at: ") + ngspice_exe + "\n";
+      }
+      if (qucsator_found) {
+          info_string += tr("QucsatorRF found at: ") + qucsator_exe + "\n";
+      }
+      info_string += tr("\nYou can specify another location later"
+                        " using Simulation->Simulators Setings\n");
+      if (!ngspice_found && qucsator_found) {
+          QucsSettings.DefaultSimulator = spicecompat::simQucsator;
+          info_string += tr("\nNOTE: Only QucsatorRF found. This simulator is not"
+                            " recommended for general purpose schematics. "
+                            " Please install Ngspice.");
+      }
+      if (ngspice_found || qucsator_found) {
+          QMessageBox::information(nullptr,tr("Set simulator"), info_string);
           fillSimulatorsComboBox();
       } else {
-          QMessageBox::information(this,tr("Qucs"),tr("Ngspice not found automatically. Please specify simulators"
+          QMessageBox::information(this,tr("Qucs"),tr("No simulators found automatically. Please specify simulators"
                                                       " in the next dialog window."));
           slotSimSettings();
       }
       QucsSettings.firstRun = false;
+  } else if (!QFile::exists(QucsSettings.Qucsator)) {
+      QucsSettings.Qucsator = QucsSettings.BinDir + QDir::separator() + "qucsator_rf";
+#ifdef Q_OS_WIN
+      QucsSettings.Qucsator += ".exe";
+#endif
+      QMessageBox::information(this, "Qucs",
+                tr("QucsatorRF found at: ") + QucsSettings.Qucsator + "\n");
   }
 
 //  fillLibrariesTreeView();

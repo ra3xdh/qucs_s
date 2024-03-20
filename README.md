@@ -34,13 +34,13 @@ Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, Flex, Bi
 #### Ubuntu
 
 ~~~
-sudo apt-get install ngspice build-essential git cmake qtbase5-dev qttools5-dev libqt5svg5-dev flex bison
+sudo apt-get install ngspice build-essential git cmake qtbase5-dev qttools5-dev libqt5svg5-dev flex bison gperf dos2unix
 ~~~
 
 #### OpenSUSE Tumbleweed
 
 ~~~
-sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel libqt5-qtsvg-devel flex bison
+sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel libqt5-qtsvg-devel flex bison gperf dos2unix
 ~~~
 
 ### Compiling
@@ -50,6 +50,8 @@ sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel l
 Then clone this git repository and execute in the top directory:
 
 ~~~
+git submodule init
+git submodule update
 mkdir builddir
 cd builddir
 cmake ..  -DCMAKE_INSTALL_PREFIX=/your_install_prefix/

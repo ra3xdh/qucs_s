@@ -1,0 +1,3 @@
+[submodule "qucsator_rf"]
+	path = qucsator_rf
+	url = https://github.com/ra3xdh/qucsator_rf

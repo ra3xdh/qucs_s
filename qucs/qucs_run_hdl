@@ -73,6 +73,6 @@ ghdl -r TestBench --vcd=digi.vcd --stop-time=$TIME
 wait $!
 
 echo -n "running VCD conversion..."
-$BINDIR/vcd2qucsdat $OPTION -if vcd -of qucsdata -i $NAME.vcd -o "$NAMEOUT"
+$BINDIR/qucsconv_rf $OPTION -if vcd -of qucsdata -i $NAME.vcd -o "$NAMEOUT"
 echo " done."
 
