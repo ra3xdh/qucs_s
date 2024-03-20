@@ -475,6 +475,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     ascoEdit->setText(QucsSettings.AscoBinDir.canonicalPath());
     octaveEdit->setText(QucsSettings.OctaveExecutable);
     OpenVAFEdit->setText(QucsSettings.OpenVAFExecutable);
+    RFLayoutEdit->setText(QucsSettings.RFLayoutExecutable);
 
 
     resize(300, 200);
@@ -674,6 +675,7 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.AscoBinDir.setPath(ascoEdit->text());
     QucsSettings.OctaveExecutable = octaveEdit->text();
     QucsSettings.OpenVAFExecutable = OpenVAFEdit->text();
+    QucsSettings.RFLayoutExecutable = RFLayoutEdit->text();
 
     if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())
     {

@@ -171,6 +171,11 @@ bool loadSettings()
     } else {
         QucsSettings.OpenVAFExecutable = "openvaf" + QString(executableSuffix);
     }
+    if(settings.contains("RFLayoutExecutable")) {
+        QucsSettings.RFLayoutExecutable = settings.value("RFLayoutExecutable").toString();
+    } else {
+        QucsSettings.RFLayoutExecutable = "qucsrflayout" + QString(executableSuffix);
+    }
     if(settings.contains("QucsHomeDir"))
       if(settings.value("QucsHomeDir").toString() != "")
          QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
@@ -272,6 +277,7 @@ bool saveApplSettings()
     // settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
     settings.setValue("OctaveExecutable",QucsSettings.OctaveExecutable);
     settings.setValue("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
+    settings.setValue("RFLayoutExecutable",QucsSettings.RFLayoutExecutable);
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
