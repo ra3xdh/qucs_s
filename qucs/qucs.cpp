@@ -196,8 +196,8 @@ QucsApp::QucsApp()
           QucsSettings.Qucsator = qucsator_exe;
       }
 #ifdef Q_OS_WIN
-      if (!found && QFile::exists(ngspice_exe2)) {
-          found = true;
+      if (!ngspice_found && QFile::exists(ngspice_exe2)) {
+          ngspice_found = true;
           ngspice_exe = ngspice_exe2;
       }
 #endif
