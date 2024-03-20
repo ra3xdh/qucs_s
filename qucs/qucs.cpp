@@ -228,6 +228,13 @@ QucsApp::QucsApp()
           slotSimSettings();
       }
       QucsSettings.firstRun = false;
+  } else if (!QFile::exists(QucsSettings.Qucsator)) {
+      QucsSettings.Qucsator = QucsSettings.BinDir + QDir::separator() + "qucsator_rf";
+#ifdef Q_OS_WIN
+      QucsSettings.Qucsator += ".exe";
+#endif
+      QMessageBox::information(this, "Qucs",
+                tr("QucsatorRF found at: ") + QucsSettings.Qucsator + "\n");
   }
 
 //  fillLibrariesTreeView();
