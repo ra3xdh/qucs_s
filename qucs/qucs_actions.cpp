@@ -931,7 +931,7 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
 
 void QucsApp::slotCallRFLayout()
 {
-    QString input_file;
+    QString input_file, netlist_file, odir;
     if (!isTextDocument(DocumentTab->currentWidget())) {
         Schematic *sch = (Schematic*)DocumentTab->currentWidget();
         if(sch->fileSuffix() == "dpl") {
@@ -940,6 +940,26 @@ void QucsApp::slotCallRFLayout()
             return;
         }
         input_file = sch->DocName;
+        QFileInfo inf(sch->DocName);
+        odir = inf.absolutePath();
+        netlist_file = inf.absolutePath() + QDir::separator()
+                + inf.baseName() + ".net";
+        QFile f(netlist_file);
+        if (!f.open(QIODevice::WriteOnly)) {
+            QMessageBox::critical(this, tr("Error"), tr("Cannot write netlist!"));
+            return;
+        }
+        QTextStream stream(&f);
+        QStringList Collect;
+        QPlainTextEdit *ErrText = new QPlainTextEdit();  //dummy
+        int pNum = sch->prepareNetlist(stream, Collect, ErrText);
+        if (!sch->isAnalog) {
+            QMessageBox::critical(this, tr("Error"), tr("Digital schematic not supported!"));
+            return;
+        }
+        stream << '\n';
+        sch->createNetlist(stream, pNum);
+        f.close();
     } else {
         QMessageBox::critical(this,tr("Error"),
                               tr("Layouting of text documents is not supported!"));
@@ -951,6 +971,10 @@ void QucsApp::slotCallRFLayout()
     args.append("-G");
     args.append("-i");
     args.append(input_file);
+    args.append("-n");
+    args.append(netlist_file);
+    args.append("-o");
+    args.append(odir);
     tool->start(QucsSettings.RFLayoutExecutable,args);
 
     if(!tool->waitForStarted(1000) ) {
