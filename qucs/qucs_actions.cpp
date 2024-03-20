@@ -890,7 +890,6 @@ void QucsApp::slotCallPwrComb()
   launchTool(QUCS_NAME "powercombining", "power combining calculation",QStringList());
 }
 
-
 /*!
  * \brief launch an external application passing arguments
  *
@@ -929,6 +928,11 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
   connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
 }
 
+
+void QucsApp::slotCallRFLayout()
+{
+
+}
 
 // --------------------------------------------------------------
 void QucsApp::slotHelpIndex()
