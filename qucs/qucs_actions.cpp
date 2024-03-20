@@ -931,7 +931,36 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
 
 void QucsApp::slotCallRFLayout()
 {
+    QString input_file;
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
+        if(sch->fileSuffix() == "dpl") {
+            QMessageBox::critical(this,tr("Error"),
+                                  tr("Layouting of display pages is not supported!"));
+            return;
+        }
+        input_file = sch->DocName;
+    } else {
+        QMessageBox::critical(this,tr("Error"),
+                              tr("Layouting of text documents is not supported!"));
+        return;
+    }
 
+    QProcess *tool = new QProcess();
+    QStringList args;
+    args.append("-G");
+    args.append("-i");
+    args.append(input_file);
+    tool->start(QucsSettings.RFLayoutExecutable,args);
+
+    if(!tool->waitForStarted(1000) ) {
+      QMessageBox::critical(this, tr("Error"),
+                            tr("Cannot start Qucs-RFLayout: \n%1")
+                            .arg(QucsSettings.RFLayoutExecutable));
+      delete tool;
+      return;
+    }
+    connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
 }
 
 // --------------------------------------------------------------
