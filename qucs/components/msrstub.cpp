@@ -46,8 +46,14 @@ MSrstub::MSrstub()
 	QObject::tr("inner radius")));
   Props.append(new Property("ro", "10 mm", true,
 	QObject::tr("outer radius")));
+  Props.append(new Property("Wf", "1 mm", true,
+    QObject::tr("feeding line width")));
   Props.append(new Property("alpha", "90", true,
 	QObject::tr("stub angle")+" ("+QObject::tr ("degrees")+")"));
+  Props.append(new Property("EffDimens", "OldQucsNoCorrection", false,
+    QObject::tr("Effective dimension")+" [Chew_Kong,Giannini,OldQucsNoCorrection]"));
+  Props.append(new Property("Model", "OldQucsModel", false,
+    QObject::tr("Model")+" [March,Giannini,OldQucsModel]"));
 }
 
 MSrstub::~MSrstub()
