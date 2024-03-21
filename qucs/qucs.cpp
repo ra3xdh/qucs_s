@@ -3424,8 +3424,8 @@ void QucsApp::slotSimulateWithSpice()
                 this,SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         connect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-        if (!TuningMode) SimDlg->exec();
-        else SimDlg->slotStart();
+        if (TuningMode || sch->showBias == 0) SimDlg->slotStart();
+        else SimDlg->exec();
         /*disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));*/
