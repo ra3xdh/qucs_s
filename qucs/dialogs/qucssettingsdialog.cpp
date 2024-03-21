@@ -374,6 +374,13 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     locationsGrid->addWidget(OpenVAFButt, 5, 2);
     connect(OpenVAFButt, SIGNAL(clicked()), SLOT(slotOpenVAFDirBrowse()));
 
+    locationsGrid->addWidget(new QLabel(tr("RF Layout Path:"), locationsTab) ,6,0);
+    RFLayoutEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(RFLayoutEdit,6,1);
+    QPushButton *RFLButt = new QPushButton("Browse");
+    locationsGrid->addWidget(RFLButt, 6, 2);
+    connect(RFLButt, SIGNAL(clicked()), SLOT(slotRFLayoutDirBrowse()));
+
 
     // the pathsTableWidget displays the path list
     pathsTableWidget = new QTableWidget(locationsTab);
@@ -394,20 +401,20 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
     connect(pathsTableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotPathSelectionChanged()));
-    locationsGrid->addWidget(pathsTableWidget,6,0,3,2);
+    locationsGrid->addWidget(pathsTableWidget,7,0,3,2);
 
     QPushButton *AddPathButt = new QPushButton("Add Path");
-    locationsGrid->addWidget(AddPathButt, 6, 2);
+    locationsGrid->addWidget(AddPathButt, 7, 2);
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
     QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders");
-    locationsGrid->addWidget(AddPathSubFolButt, 7, 2);
+    locationsGrid->addWidget(AddPathSubFolButt, 8, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
     RemovePathButt = new QPushButton("Remove Path");
     // disable button if no paths in the table are selected
     RemovePathButt->setEnabled(false);
-    locationsGrid->addWidget(RemovePathButt , 8, 2);
+    locationsGrid->addWidget(RemovePathButt , 9, 2);
     connect(RemovePathButt, SIGNAL(clicked()), SLOT(slotRemovePath()));
 
     // create a copy of the current global path list
@@ -468,6 +475,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     ascoEdit->setText(QucsSettings.AscoBinDir.canonicalPath());
     octaveEdit->setText(QucsSettings.OctaveExecutable);
     OpenVAFEdit->setText(QucsSettings.OpenVAFExecutable);
+    RFLayoutEdit->setText(QucsSettings.RFLayoutExecutable);
 
 
     resize(300, 200);
@@ -667,6 +675,7 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.AscoBinDir.setPath(ascoEdit->text());
     QucsSettings.OctaveExecutable = octaveEdit->text();
     QucsSettings.OpenVAFExecutable = OpenVAFEdit->text();
+    QucsSettings.RFLayoutExecutable = RFLayoutEdit->text();
 
     if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())
     {
@@ -1010,10 +1019,19 @@ void QucsSettingsDialog::slotOctaveDirBrowse()
 void QucsSettingsDialog::slotOpenVAFDirBrowse()
 {
   QString d = QFileDialog::getOpenFileName(this, tr("Select the OpenVAF executable"),
-                                           octaveEdit->text(), "All files (*)");
+                                           OpenVAFEdit->text(), "All files (*)");
 
   if(!d.isEmpty())
     OpenVAFEdit->setText(d);
+}
+
+void QucsSettingsDialog::slotRFLayoutDirBrowse()
+{
+  QString d = QFileDialog::getOpenFileName(this, tr("Select the Qucs-RFLayout executable"),
+                                           RFLayoutEdit->text(), "All files (*)");
+
+  if(!d.isEmpty())
+    RFLayoutEdit->setText(d);
 }
 
 /*! \brief (seems unused at present)

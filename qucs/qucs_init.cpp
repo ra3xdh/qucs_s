@@ -537,6 +537,12 @@ void QucsApp::initActions()
   callPwrComb->setWhatsThis(tr("Power combining\n\nStarts power combining calculation program"));
   connect(callPwrComb, SIGNAL(triggered()), SLOT(slotCallPwrComb()));
 
+  callRFLayout = new QAction(tr("RF Layout"), this);
+  callRFLayout->setShortcut(tr("Ctrl+8"));
+  callRFLayout->setStatusTip(tr("Starts Qucs-RFLayout"));
+  callRFLayout->setWhatsThis(tr("Power combining\n\nStarts power combining calculation program"));
+  connect(callRFLayout, SIGNAL(triggered()), SLOT(slotCallRFLayout()));
+
   simulate = new QAction(QIcon((":/bitmaps/svg/gear.svg")), tr("Simulate"), this);
   simulate->setShortcut(Qt::Key_F2);
   simulate->setStatusTip(tr("Simulates the current schematic"));
@@ -774,6 +780,7 @@ void QucsApp::initMenuBar()
   toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
   toolMenu->addAction(callPwrComb);
+  toolMenu->addAction(callRFLayout);
   toolMenu->addSeparator();
 
   cmMenu = new QMenu(tr("Compact modelling"));
