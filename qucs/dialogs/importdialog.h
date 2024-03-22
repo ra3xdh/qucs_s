@@ -44,7 +44,10 @@ private slots:
   void slotImport();
   void slotAbort();
   void slotBrowse();
+  void slotSaveBrowse();
   void slotType(int);
+  void slotValidateInput();
+  void slotValidateOutput();
 
 private:
   void startSimulator();
@@ -57,7 +60,7 @@ public:
   QPlainTextEdit *MsgText;
   QLineEdit *ImportEdit, *OutputEdit, *OutputData;
   QPushButton *ImportButt, *CancelButt, *AbortButt;
-  QComboBox *OutType;
+  QComboBox *OutType, *InType;
 };
 
 #endif
