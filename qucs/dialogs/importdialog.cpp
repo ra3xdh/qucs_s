@@ -71,7 +71,7 @@ ImportDialog::ImportDialog(QWidget *parent)
   connect(SaveBrowseButt, SIGNAL(clicked()), SLOT(slotSaveBrowse()));
 
 
-  file->addWidget(new QLabel(tr("Output File:")), 3, 0);
+  file->addWidget(new QLabel(tr("Output Format:")), 3, 0);
   OutType = new QComboBox();
   OutType->addItem(tr("Qucs dataset"));
   OutType->addItem(tr("Touchstone"));
@@ -160,15 +160,13 @@ void ImportDialog::slotSaveBrowse()
        this, tr("Enter a Data File Name"),
        lastImportDir.isEmpty() ? QString(".") : lastImportDir,
        tr("All known")+
-       " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir);;"+
+       " (*.s?p *.csv *.dat *.cir *.net *.lib);;"+
        tr("Touchstone files")+" (*.s?p);;"+
        tr("CSV files")+" (*.csv);;"+
-       tr("CITI files")+" (*.citi *.cit);;"+
-       tr("ZVR ASCII files")+" (*.asc);;"+
-       tr("IC-CAP model files")+" (*.mdl);;"+
-       tr("VCD files")+" (*.vcd);;"+
        tr("Qucs dataset files")+" (*.dat);;"+
        tr("SPICE files")+" (*.cir);;"+
+       tr("Qucsator netlist")+" (*.net);;"+
+       tr("Qucs library")+" (*.lib);;"+
        tr("Any file")+" (*)");
     OutputEdit->setText(s);
 }
