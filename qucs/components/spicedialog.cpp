@@ -392,6 +392,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
       prestream = new QTextStream(&PrepFile);
     }
     SpicePrep->start(spiceExe, spiceArgs);
+    SpicePrep->waitForStarted();
     if ((SpicePrep->state() != QProcess::Starting) &&
         (SpicePrep->state() != QProcess::Running))
     {
@@ -446,6 +447,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
       connect(QucsConv, SIGNAL(finished(int, QProcess::ExitStatus)), MBox, SLOT(close()));
 
       QucsConv->start(Program, Arguments);
+      QucsConv->waitForStarted();
 
       if(QucsConv->state() != QProcess::Running)
       {
