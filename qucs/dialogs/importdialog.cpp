@@ -120,6 +120,7 @@ ImportDialog::ImportDialog(QWidget *parent)
   
   all->addLayout(Butts,2,0,1,1);
   slotValidateOutput();
+
 }
 
 ImportDialog::~ImportDialog()
@@ -133,7 +134,7 @@ void ImportDialog::slotBrowse()
 {
   QString s = QFileDialog::getOpenFileName(
      this, tr("Enter a Data File Name"),
-     lastDir.isEmpty() ? QString(".") : lastDir,
+     lastImportDir.isEmpty() ? QString(".") : lastImportDir,
      tr("All known")+
      " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir);;"+
      tr("Touchstone files")+" (*.s?p);;"+
@@ -148,7 +149,7 @@ void ImportDialog::slotBrowse()
 
   if(!s.isEmpty()) {
     QFileInfo Info(s);
-    lastDir = Info.absolutePath();  // remember last directory
+    lastImportDir = Info.absolutePath();  // remember last directory
     ImportEdit->setText(s);
   }
 }
@@ -157,7 +158,7 @@ void ImportDialog::slotSaveBrowse()
 {
     QString s = QFileDialog::getSaveFileName(
        this, tr("Enter a Data File Name"),
-       lastDir.isEmpty() ? QString(".") : lastDir,
+       lastImportDir.isEmpty() ? QString(".") : lastImportDir,
        tr("All known")+
        " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir);;"+
        tr("Touchstone files")+" (*.s?p);;"+

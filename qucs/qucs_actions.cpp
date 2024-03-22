@@ -1357,7 +1357,26 @@ void QucsApp::slotImportData()
 {
   slotHideEdit(); // disable text edit of component property
 
+  QString import_dir = ".";
+  if (!ProjName.isEmpty()) {
+      import_dir = QucsSettings.QucsWorkDir.absolutePath();
+  } else {
+      QString dname;
+      if (isTextDocument(DocumentTab->currentWidget())) {
+          TextDoc *doc = (TextDoc *)DocumentTab->currentWidget();
+          dname = doc->DocName;
+      } else {
+          Schematic *doc = (Schematic *)DocumentTab->currentWidget();
+          dname = doc->DocName;
+      }
+      QFileInfo inf(dname);
+      if (inf.exists()) {
+          import_dir = inf.absolutePath();
+      }
+  }
+
   ImportDialog *d = new ImportDialog(this);
+  d->setImportDir(import_dir);
   if(d->exec() == QDialog::Accepted)
     slotUpdateTreeview();
 }
