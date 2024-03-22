@@ -1357,11 +1357,6 @@ void QucsApp::slotImportData()
 {
   slotHideEdit(); // disable text edit of component property
 
-  if(ProjName.isEmpty()) {
-    QMessageBox::critical(this, tr("Error"), tr("Please open project first!"));
-    return;
-  }
-
   ImportDialog *d = new ImportDialog(this);
   if(d->exec() == QDialog::Accepted)
     slotUpdateTreeview();
