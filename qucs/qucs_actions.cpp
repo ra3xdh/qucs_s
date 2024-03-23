@@ -787,7 +787,7 @@ void QucsApp::editFile(const QString& File)
 // Is called to show the output messages of the last simulation.
 void QucsApp::slotShowLastMsg()
 {
-  editFile(QucsSettings.QucsHomeDir.filePath("log.txt"));
+  editFile(QucsSettings.tempFilesDir.filePath("log.txt"));
 }
 
 // ------------------------------------------------------------------------
@@ -814,7 +814,7 @@ void QucsApp::slotShowLastNetlist()
 
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simQucsator :
-        netlists.append(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+        netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
         break;
     case spicecompat::simNgspice :
     case spicecompat::simSpiceOpus :
@@ -835,7 +835,7 @@ void QucsApp::slotShowLastNetlist()
         Schematic *sch = (Schematic *) w;
         if (sch->isDigitalCircuit()) {
             netlists.clear();
-            netlists.append(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+            netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
         }
     }
 
