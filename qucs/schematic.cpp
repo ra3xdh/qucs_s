@@ -1170,14 +1170,11 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     xmax = INT_MIN;
     ymax = INT_MIN;
 
-    if (Components->isEmpty())
-        if (Wires->isEmpty())
-            if (Diagrams->isEmpty())
-                if (Paintings->isEmpty()) {
-                    xmin = xmax = 0;
-                    ymin = ymax = 0;
-                    return;
-                }
+    if (Components->isEmpty() && Wires->isEmpty() && Diagrams->isEmpty() && Paintings->isEmpty()) {
+        xmin = xmax = 0;
+        ymin = ymax = 0;
+        return;
+    }
 
     int x1, y1, x2, y2;
     // find boundings of all components
