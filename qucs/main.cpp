@@ -861,13 +861,13 @@ int main(int argc, char *argv[])
 
   // default
   QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/QucsWorkspace");
-  QDir().mkpath(QucsWorkdirPath);
   QucsSettings.qucsWorkspaceDir.setPath(QucsWorkdirPath);
   QucsSettings.QucsWorkDir.setPath(QucsSettings.qucsWorkspaceDir.canonicalPath());
 
   // load existing settings (if any)
   loadSettings();
 
+  QDir().mkpath(QucsSettings.qucsWorkspaceDir.absolutePath());
   QDir().mkpath(QucsSettings.tempFilesDir.absolutePath());
 
   // continue to set up overrides or default settings (some are saved on exit)
