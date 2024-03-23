@@ -1183,37 +1183,25 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     // find boundings of all components
     for (auto* pc : *Components) {
         pc->entireBounds(x1, y1, x2, y2);
-        if (x1 < xmin)
-            xmin = x1;
-        if (x2 > xmax)
-            xmax = x2;
-        if (y1 < ymin)
-            ymin = y1;
-        if (y2 > ymax)
-            ymax = y2;
+        xmin = std::min(x1, xmin);
+        xmax = std::max(x2, xmax);
+        ymin = std::min(y1, ymin);
+        ymax = std::max(y2, ymax);
     }
 
     // find boundings of all wires
     for (auto* pw : *Wires) {
-        if (pw->x1 < xmin)
-            xmin = pw->x1;
-        if (pw->x2 > xmax)
-            xmax = pw->x2;
-        if (pw->y1 < ymin)
-            ymin = pw->y1;
-        if (pw->y2 > ymax)
-            ymax = pw->y2;
+        xmin = std::min(pw->x1, xmin);
+        xmax = std::max(pw->x2, xmax);
+        ymin = std::min(pw->y1, ymin);
+        ymax = std::max(pw->y2, ymax);
 
         if (auto* pl = pw->Label; pl) { // check position of wire label
             pl->getLabelBounding(x1, y1, x2, y2);
-            if (x1 < xmin)
-                xmin = x1;
-            if (x2 > xmax)
-                xmax = x2;
-            if (y1 < ymin)
-                ymin = y1;
-            if (y2 > ymax)
-                ymax = y2;
+            xmin = std::min(x1, xmin);
+            xmax = std::max(x2, xmax);
+            ymin = std::min(y1, ymin);
+            ymax = std::max(y2, ymax);
         }
     }
 
@@ -1221,55 +1209,39 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     for (auto* pn : *Nodes) {
         if (auto* pl = pn->Label; pl) { // check position of node label
             pl->getLabelBounding(x1, y1, x2, y2);
-            if (x1 < xmin)
-                xmin = x1;
-            if (x2 > xmax)
-                xmax = x2;
-            if (y1 < ymin)
-                ymin = y1;
-            if (y2 > ymax)
-                ymax = y2;
+            xmin = std::min(x1, xmin);
+            xmax = std::max(x2, xmax);
+            ymin = std::min(y1, ymin);
+            ymax = std::max(y2, ymax);
         }
     }
 
     // find boundings of all diagrams
     for (auto* pd : *Diagrams) {
         pd->Bounding(x1, y1, x2, y2);
-        if (x1 < xmin)
-            xmin = x1;
-        if (x2 > xmax)
-            xmax = x2;
-        if (y1 < ymin)
-            ymin = y1;
-        if (y2 > ymax)
-            ymax = y2;
+        xmin = std::min(x1, xmin);
+        xmax = std::max(x2, xmax);
+        ymin = std::min(y1, ymin);
+        ymax = std::max(y2, ymax);
 
         for (auto* pg : pd->Graphs)
             // test all markers of diagram
             for (auto* pm : pg->Markers) {
                 pm->Bounding(x1, y1, x2, y2);
-                if (x1 < xmin)
-                    xmin = x1;
-                if (x2 > xmax)
-                    xmax = x2;
-                if (y1 < ymin)
-                    ymin = y1;
-                if (y2 > ymax)
-                    ymax = y2;
+                xmin = std::min(x1, xmin);
+                xmax = std::max(x2, xmax);
+                ymin = std::min(y1, ymin);
+                ymax = std::max(y2, ymax);
             }
     }
 
     // find boundings of all Paintings
     for (auto* pp : *Paintings) {
         pp->Bounding(x1, y1, x2, y2);
-        if (x1 < xmin)
-            xmin = x1;
-        if (x2 > xmax)
-            xmax = x2;
-        if (y1 < ymin)
-            ymin = y1;
-        if (y2 > ymax)
-            ymax = y2;
+        xmin = std::min(x1, xmin);
+        xmax = std::max(x2, xmax);
+        ymin = std::min(y1, ymin);
+        ymax = std::max(y2, ymax);
     }
 }
 
