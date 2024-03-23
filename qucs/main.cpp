@@ -154,8 +154,10 @@ bool loadSettings()
     else QucsSettings.SpiceOpusExecutable = "spiceopus";
     if(settings.contains("Nprocs")) QucsSettings.NProcs = settings.value("Nprocs").toInt();
     else QucsSettings.NProcs = 4;
-    if(settings.contains("S4Q_workdir")) QucsSettings.S4Qworkdir = settings.value("S4Q_workdir").toString();
-    else QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QucsSettings.QucsWorkDir.absolutePath()+"/spice4qucs");
+    // All usages of this path look like something involving a temporary data.
+    // This should be replaced with generic temp dir, but for now let's just
+    // place it under generic temp dir.
+    QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/spice4qucs");
     if(settings.contains("SimParameters")) QucsSettings.SimParameters = settings.value("SimParameters").toString();
     else QucsSettings.SimParameters = "";
     if(settings.contains("OctaveExecutable")) {
@@ -180,6 +182,7 @@ bool loadSettings()
       if(settings.value("QucsHomeDir").toString() != "")
          QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
+    QucsSettings.tempFilesDir.setPath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
 
     if (settings.contains("IgnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IgnoreVersion").toBool();
     // check also for old setting name with typo...
@@ -863,6 +866,7 @@ int main(int argc, char *argv[])
   // load existing settings (if any)
   loadSettings();
 
+  QDir().mkpath(QucsSettings.tempFilesDir.absolutePath());
 
   // continue to set up overrides or default settings (some are saved on exit)
 
