@@ -1169,11 +1169,6 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     ymin = INT_MAX;
     xmax = INT_MIN;
     ymax = INT_MIN;
-    Component *pc;
-    Diagram *pd;
-    Wire *pw;
-    WireLabel *pl;
-    Painting *pp;
 
     if (Components->isEmpty())
         if (Wires->isEmpty())
@@ -1186,7 +1181,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
 
     int x1, y1, x2, y2;
     // find boundings of all components
-    for (pc = Components->first(); pc != 0; pc = Components->next()) {
+    for (auto* pc : *Components) {
         pc->entireBounds(x1, y1, x2, y2);
         if (x1 < xmin)
             xmin = x1;
@@ -1199,7 +1194,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all wires
-    for (pw = Wires->first(); pw != 0; pw = Wires->next()) {
+    for (auto* pw : *Wires) {
         if (pw->x1 < xmin)
             xmin = pw->x1;
         if (pw->x2 > xmax)
@@ -1209,8 +1204,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
         if (pw->y2 > ymax)
             ymax = pw->y2;
 
-        pl = pw->Label;
-        if (pl) { // check position of wire label
+        if (auto* pl = pw->Label; pl) { // check position of wire label
             pl->getLabelBounding(x1, y1, x2, y2);
             if (x1 < xmin)
                 xmin = x1;
@@ -1224,9 +1218,8 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all node labels
-    for (Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-        pl = pn->Label;
-        if (pl) { // check position of node label
+    for (auto* pn : *Nodes) {
+        if (auto* pl = pn->Label; pl) { // check position of node label
             pl->getLabelBounding(x1, y1, x2, y2);
             if (x1 < xmin)
                 xmin = x1;
@@ -1240,7 +1233,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all diagrams
-    for (pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
+    for (auto* pd : *Diagrams) {
         pd->Bounding(x1, y1, x2, y2);
         if (x1 < xmin)
             xmin = x1;
@@ -1251,9 +1244,9 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
         if (y2 > ymax)
             ymax = y2;
 
-        for (Graph *pg : pd->Graphs)
+        for (auto* pg : pd->Graphs)
             // test all markers of diagram
-            for (Marker *pm : pg->Markers) {
+            for (auto* pm : pg->Markers) {
                 pm->Bounding(x1, y1, x2, y2);
                 if (x1 < xmin)
                     xmin = x1;
@@ -1267,7 +1260,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all Paintings
-    for (pp = Paintings->first(); pp != nullptr; pp = Paintings->next()) {
+    for (auto* pp : *Paintings) {
         pp->Bounding(x1, y1, x2, y2);
         if (x1 < xmin)
             xmin = x1;
