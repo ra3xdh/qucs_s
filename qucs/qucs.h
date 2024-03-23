@@ -354,7 +354,7 @@ public:
           *showMsg, *showNet, *alignTop, *alignBottom, *alignLeft, *alignRight,
           *distrHor, *distrVert, *selectAll, *callMatch, *changeProps,
           *addToProj, *editFind, *insEntity, *selectMarker,
-          *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
+          *createLib, *callConverter, *graph2csv, *createPkg, *extractPkg,
           *callAtt, *centerHor, *centerVert, *loadModule, *buildModule, *callPwrComb, *callRFLayout;
 
   QAction *helpQucsIndex;

@@ -336,12 +336,6 @@ void QucsApp::initActions()
   extractPkg->setWhatsThis(tr("Extract Package\n\nInstall Content of a Package"));
   connect(extractPkg, SIGNAL(triggered()), SLOT(slotExtractPackage()));
 
-  importData = new QAction(tr("&Import/Export Data..."), this);
-  importData->setShortcut(tr("Ctrl+Shift+I"));
-  importData->setStatusTip(tr("Convert data file"));
-  importData->setWhatsThis(tr("Import/Export Data\n\nConvert data file to various file formats"));
-  connect(importData, SIGNAL(triggered()), SLOT(slotImportData()));
-
   graph2csv = new QAction(tr("Export to &CSV..."), this);
   graph2csv->setShortcut(tr("Ctrl+Shift+C"));
   graph2csv->setStatusTip(tr("Convert graph data to CSV file"));
@@ -537,8 +531,14 @@ void QucsApp::initActions()
   callPwrComb->setWhatsThis(tr("Power combining\n\nStarts power combining calculation program"));
   connect(callPwrComb, SIGNAL(triggered()), SLOT(slotCallPwrComb()));
 
+  callConverter = new QAction(tr("Data files converter"), this);
+  callConverter->setShortcut(tr("Ctrl+8"));
+  callConverter->setStatusTip(tr("Convert data file"));
+  callConverter->setWhatsThis(tr("Import/Export Data\n\nConvert data file to various file formats"));
+  connect(callConverter, SIGNAL(triggered()), SLOT(slotImportData()));
+
   callRFLayout = new QAction(tr("RF Layout"), this);
-  callRFLayout->setShortcut(tr("Ctrl+8"));
+  callRFLayout->setShortcut(tr("Ctrl+9"));
   callRFLayout->setStatusTip(tr("Starts Qucs-RFLayout"));
   callRFLayout->setWhatsThis(tr("Power combining\n\nStarts power combining calculation program"));
   connect(callRFLayout, SIGNAL(triggered()), SLOT(slotCallRFLayout()));
@@ -761,7 +761,6 @@ void QucsApp::initMenuBar()
   projMenu->addAction(createPkg);
   projMenu->addAction(extractPkg);
   projMenu->addSeparator();
-  projMenu->addAction(importData);
   projMenu->addAction(graph2csv);
   // TODO only enable if document is VA file
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator ||
@@ -780,6 +779,7 @@ void QucsApp::initMenuBar()
   toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
   toolMenu->addAction(callPwrComb);
+  toolMenu->addAction(callConverter);
   toolMenu->addAction(callRFLayout);
   toolMenu->addSeparator();
 
