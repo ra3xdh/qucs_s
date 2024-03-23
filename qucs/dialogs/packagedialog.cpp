@@ -101,7 +101,7 @@ PackageDialog::PackageDialog(QWidget *parent_, bool create_)
 
     // ...........................................................
     // insert all projects
-    QStringList PrDirs = QucsSettings.QucsHomeDir.entryList(QStringList("*"), QDir::Dirs, QDir::Name);
+    QStringList PrDirs = QucsSettings.qucsWorkspaceDir.entryList(QStringList("*"), QDir::Dirs, QDir::Name);
     QStringList::iterator it;
     for(it = PrDirs.begin(); it != PrDirs.end(); it++)
        if((*it).right(4) == "_prj"){   // project directories end with "_prj"
@@ -230,7 +230,7 @@ int PackageDialog::insertDirectory(const QString& DirName,
 int PackageDialog::insertLibraries(QDataStream& Stream)
 {
   QFile File;
-  QDir myDir(QucsSettings.QucsHomeDir.absolutePath() + QDir::separator() + "user_lib");
+  QDir myDir(QucsSettings.qucsWorkspaceDir.absolutePath() + QDir::separator() + "user_lib");
   QStringList Entries = myDir.entryList(QStringList("*"), QDir::Files, QDir::Name);
   QStringList::iterator it;
   for(it = Entries.begin(); it != Entries.end(); ++it) {
@@ -299,7 +299,7 @@ void PackageDialog::slotCreate()
     if(p->isChecked()) {
       s = p->text() + "_prj";
       Stream << Q_UINT32(CODE_DIR) << s.toLatin1();
-      s = QucsSettings.QucsHomeDir.absolutePath() + QDir::separator() + s;
+      s = QucsSettings.qucsWorkspaceDir.absolutePath() + QDir::separator() + s;
       if(insertDirectory(s, Stream) < 0) {
         PkgFile.close();
         PkgFile.remove();
@@ -369,7 +369,7 @@ void PackageDialog::extractPackage()
   }
   QDataStream Stream(&PkgFile);
 
-  QDir currDir = QucsSettings.QucsHomeDir;
+  QDir currDir = QucsSettings.qucsWorkspaceDir;
   QString Version;
   VersionTriplet PackageVersion;
   quint16 Checksum, Checksum1;
@@ -494,7 +494,7 @@ int PackageDialog::extractLibrary(QFile& PkgFile, Q_UINT32 Count)
   free(p);
 
   p = Content.data();
-  QFile File(QucsSettings.QucsHomeDir.absolutePath() +
+  QFile File(QucsSettings.qucsWorkspaceDir.absolutePath() +
              QDir::toNativeSeparators("/user_lib/") + QString(p));
   if(File.exists()) {
     MsgText->append(tr("ERROR: User library \"%1\" already exists!").arg(QString(p)));

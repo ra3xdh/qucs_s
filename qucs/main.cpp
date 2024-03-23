@@ -178,10 +178,12 @@ bool loadSettings()
     } else {
         QucsSettings.RFLayoutExecutable = "qucsrflayout" + QString(executableSuffix);
     }
-    if(settings.contains("QucsHomeDir"))
-      if(settings.value("QucsHomeDir").toString() != "")
-         QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
-    QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
+
+    if (auto path = settings.value("QucsHomeDir", "").toString(); path != "") {
+      QucsSettings.qucsWorkspaceDir.setPath(path);
+    }
+
+    QucsSettings.QucsWorkDir = QucsSettings.qucsWorkspaceDir;
     QucsSettings.tempFilesDir.setPath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
 
     if (settings.contains("IgnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IgnoreVersion").toBool();
@@ -281,7 +283,7 @@ bool saveApplSettings()
     settings.setValue("OctaveExecutable",QucsSettings.OctaveExecutable);
     settings.setValue("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
     settings.setValue("RFLayoutExecutable",QucsSettings.RFLayoutExecutable);
-    settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
+    settings.setValue("QucsHomeDir", QucsSettings.qucsWorkspaceDir.canonicalPath());
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
     settings.setValue("TextAntiAliasing", QucsSettings.TextAntiAliasing);
@@ -858,10 +860,10 @@ int main(int argc, char *argv[])
   QucsSettings.dy = h*3/4;
 
   // default
-  QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/.qucs");
+  QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/QucsWorkspace");
   QDir().mkpath(QucsWorkdirPath);
-  QucsSettings.QucsHomeDir.setPath(QucsWorkdirPath);
-  QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
+  QucsSettings.qucsWorkspaceDir.setPath(QucsWorkdirPath);
+  QucsSettings.QucsWorkDir.setPath(QucsSettings.qucsWorkspaceDir.canonicalPath());
 
   // load existing settings (if any)
   loadSettings();
