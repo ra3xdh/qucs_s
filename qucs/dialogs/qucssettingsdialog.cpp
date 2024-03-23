@@ -470,7 +470,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
             LanguageCombo->setCurrentIndex(z);
 
     /*! Load paths from settings */
-    homeEdit->setText(QucsSettings.QucsHomeDir.canonicalPath());
+    homeEdit->setText(QucsSettings.qucsWorkspaceDir.canonicalPath());
     admsXmlEdit->setText(QucsSettings.AdmsXmlBinDir.canonicalPath());
     ascoEdit->setText(QucsSettings.AscoBinDir.canonicalPath());
     octaveEdit->setText(QucsSettings.OctaveExecutable);
@@ -558,12 +558,12 @@ void QucsSettingsDialog::slotApply()
     bool homeDirChanged = false;
 
     // check QucsHome is changed, will require to close all files and refresh tree
-    if (homeEdit->text() != QucsSettings.QucsHomeDir.path()) {
+    if (homeEdit->text() != QucsSettings.qucsWorkspaceDir.path()) {
       // close all open files, asking the user whether to save the modified ones
       // if user aborts closing, just return
       if(!App->closeAllFiles()) return;
 
-      QucsSettings.QucsHomeDir.setPath(homeEdit->text());
+      QucsSettings.qucsWorkspaceDir.setPath(homeEdit->text());
       homeDirChanged = true;
       // later below the file tree will be refreshed
     }
