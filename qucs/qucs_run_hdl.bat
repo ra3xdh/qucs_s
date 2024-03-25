@@ -54,7 +54,7 @@ echo simulating...
 ghdl -r TestBench --vcd=digi.vcd --stop-time=%SIMTIME%
 
 echo running VCD conversion...
-%BINDIR%\vcd2qucsdat -if vcd -of qucsdata -i %NAME%.vcd -o %NAMEOUT%
+%BINDIR%\qucsconv_rf.exe -if vcd -of qucsdata -i %NAME%.vcd -o %NAMEOUT%
 
 goto end
 

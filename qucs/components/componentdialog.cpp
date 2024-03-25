@@ -1395,7 +1395,7 @@ void ComponentDialog::slotNumberChanged(const QString&)
     if(y == 0.0)  y = x / 10.0;
     if(x == 0.0)  x = y * 10.0;
     if(y == 0.0) { y = 1.0;  x = 10.0; }
-    x = editNumber->text().toDouble() / log10(fabs(x / y));
+    x = (editNumber->text().toDouble() - 1) / log10(fabs(x / y));
     Unit = QString::number(x);
   }
   else {
@@ -1450,7 +1450,7 @@ void ComponentDialog::slotStepChanged(const QString& Step)
   }
 
   editNumber->blockSignals(true);  // do not calculate number again
-  editNumber->setText(QString::number(floor(x + 1.0)));
+  editNumber->setText(QString::number(round(x + 1.0), 'g', 16));
   editNumber->blockSignals(false);
 }
 
@@ -1543,7 +1543,10 @@ QStringList ComponentDialog::getSimulationList()
         Component *c = sch->DocComps.at(i);
         if (!c->isSimulation) continue;
         if (c->Model == ".FOUR") continue;
-        if (c->Model == ".SW") continue;
+        if (c->Model == ".PZ") continue;
+        if (c->Model == ".SENS") continue;
+        if (c->Model == ".SENS_AC") continue;
+        if (c->Model == ".SW" && !c->Props.at(0)->Value.toUpper().startsWith("DC") ) continue;
         sim_lst.append(c->Name);
     }
     QStringList sim_wo_numbers = sim_lst;

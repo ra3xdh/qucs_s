@@ -30,7 +30,6 @@ q3scrollview.h
 q3frame.h
 )
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 
 IF(QT_VERSION_MAJOR EQUAL 6)
     QT6_WRAP_CPP( QT3_COMPAT_SRCS ${QT3_COMPAT_MOC_HDRS} )

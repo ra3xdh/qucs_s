@@ -44,12 +44,22 @@
 #include "misc.h"
 #include "extsimkernels/abstractspicekernel.h"
 #include "extsimkernels/s2spice.h"
+#include "osdi/osdi_0_3.h"
 
 
 // Here the subcircuits, SPICE components etc are collected. It must be
 // global to also work within the subcircuits.
 SubMap FileList;
 
+// Dummy function for osdi_log callback.
+// Without it, the program will crash if print or display function called
+// in verilog-a model.
+extern void osdi_log_skip(void *handle, char* msg, uint32_t lvl)
+{
+  (void)handle;
+  (void)msg;
+  (void)lvl;
+}
 
 // -------------------------------------------------------------
 // Creates a Qucs file format (without document properties) in the returning
@@ -256,53 +266,56 @@ int Schematic::saveSymbolCpp (void)
 
 int Schematic::savePropsJSON()
 {
-    QFileInfo info (DocName);
-    QString jsonfile = info.absolutePath () + QDir::separator()
+  QFileInfo info (DocName);
+  QString jsonfile = info.absolutePath () + QDir::separator()
                      + info.baseName() + "_props.json";
-    QString vafilename = info.absolutePath () + QDir::separator()
-                     + info.baseName() + ".va";
+  QString vafilename = info.absolutePath () + QDir::separator()
+                       + info.baseName() + ".va";
+  QString osdifile = info.absolutePath() + QDir::separator()
+                     + info.baseName() + ".osdi";
 
-    QFile vafile(vafilename);
-    if (!vafile.open (QIODevice::ReadOnly)) {
-      QMessageBox::critical (0, QObject::tr("Error"),
-             QObject::tr("Cannot open Verilog-A file \"%1\"!").arg(vafilename));
-      return -1;
-    }
+  QFile vafile(vafilename);
+  if (!vafile.open (QIODevice::ReadOnly)) {
+    QMessageBox::critical (0, QObject::tr("Error"),
+                          QObject::tr("Cannot open Verilog-A file \"%1\"!").arg(vafilename));
+    return -1;
+  }
 
+  // if no osdi file exits, generete json file in the old way
+  if (!QFile::exists(osdifile)){
     QString module;
     QStringList prop_name;
     QStringList prop_val;
     QTextStream vastream (&vafile);
     while(!vastream.atEnd()) {
-        QString line = vastream.readLine();
-        line = line.toLower();
-        if (line.contains("module")) {
-            auto tokens = line.split(QRegularExpression("[\\s()]"));
-            if (tokens.count() > 1) module = tokens.at(1);
+      QString line = vastream.readLine();
+      line = line.toLower();
+      if (line.contains("module")) {
+        auto tokens = line.split(QRegularExpression("[\\s()]"));
+        if (tokens.count() > 1) module = tokens.at(1);
             module = module.trimmed();
-            continue;
-        }
-        if (line.contains("parameter")) {
-            auto tokens = line.split(QRegularExpression("[\\s=;]"),qucs::SkipEmptyParts);
-            if (tokens.count() >= 4) {
-                for(int ic = 0; ic <= tokens.count(); ic++) {
-                    if (tokens.at(ic) == "parameter") {
-                        prop_name.append(tokens.at(ic+2));
-                        prop_val.append(tokens.at(ic+3));
-                        break;
-                    }
-                }
+        continue;
+      }
+      if (line.contains("parameter")) {
+        auto tokens = line.split(QRegularExpression("[\\s=;]"),qucs::SkipEmptyParts);
+        if (tokens.count() >= 4) {
+          for(int ic = 0; ic <= tokens.count(); ic++) {
+            if (tokens.at(ic) == "parameter") {
+              prop_name.append(tokens.at(ic+2));
+              prop_val.append(tokens.at(ic+3));
+              break;
             }
+          }
         }
+      }
     }
     vafile.close();
-
 
     QFile file (jsonfile);
 
     if (!file.open (QIODevice::WriteOnly)) {
       QMessageBox::critical (0, QObject::tr("Error"),
-             QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
+                            QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
       return -1;
     }
 
@@ -315,8 +328,8 @@ int Schematic::savePropsJSON()
     auto name = prop_name.begin();
     auto val = prop_val.begin();
     for(; name != prop_name.end(); name++,val++) {
-        stream << QString("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"false\", \"desc\" : \"-\"},\n")
-                  .arg(*name,*val);
+      stream << QString("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"false\", \"desc\" : \"-\"},\n")
+                    .arg(*name,*val);
     }
     stream << "  ],\n\n";
     stream << "  \"tx\" : 4,\n";
@@ -329,7 +342,130 @@ int Schematic::savePropsJSON()
     stream << "}";
 
     file.close ();
-    return 0;
+  }else{
+    QString module;
+    QStringList prop_name;
+    QStringList prop_val;
+    QStringList prop_disp;
+    QStringList prop_desc;
+
+    QLibrary osdilib (osdifile);
+    if (!osdilib.load()){
+      QMessageBox::critical(0, QObject::tr("Error"),
+                            QObject::tr("No valid osdi file. Re-compile verilog-a file first!"));
+      return -1;
+    }
+
+    // log function is disabled here.
+    // the dummy function osdi_log_backup is assigned to callback pointer
+    // to avoid program crash.
+    void** osdi_log_ = reinterpret_cast<void**>(osdilib.resolve("osdi_log"));
+    void* osdi_log_backup = nullptr;
+    if (osdi_log_){
+      osdi_log_backup = *osdi_log_;
+    }
+    *osdi_log_ = (void*)osdi_log_skip;
+
+    OsdiDescriptor* descriptors = reinterpret_cast<OsdiDescriptor*>(osdilib.resolve("OSDI_DESCRIPTORS"));
+    auto descriptor = descriptors[0];
+    void* handler = nullptr;
+
+    // OsdiSimParas and OsdiInitInfo have to be initialized before setup_model and setup_instance
+    std::vector<char*> sim_params_names_vec={nullptr};
+    std::vector<double> sim_params_vals_vec={};
+    std::vector<char*> sim_params_str_vec = {nullptr};
+    OsdiSimParas sim_params = {
+                        .names = sim_params_names_vec.data(),
+                        .vals = sim_params_vals_vec.data(),
+                        .names_str = sim_params_str_vec.data(),
+                        .vals_str = nullptr
+    };
+    OsdiInitInfo sim_info = {
+        .flags = 0,
+        .num_errors = 0,
+        .errors = nullptr
+    };
+
+    void* model = calloc(1,descriptor.model_size);
+    void* instance = calloc(1,descriptor.instance_size);
+
+    descriptor.setup_model(handler,model,&sim_params,&sim_info);
+    descriptor.setup_instance(handler,instance,model,300,descriptor.num_terminals,&sim_params,&sim_info);
+
+    module = QString(descriptor.name);
+    for(uint32_t i=1;i<descriptor.num_params;i++) {
+      auto param = descriptor.param_opvar+i;
+      void* value;
+      if (i<descriptor.num_instance_params){
+        value = descriptor.access(instance,model,i,ACCESS_FLAG_INSTANCE);
+        prop_disp.append("true");
+      }else{
+        value = descriptor.access(instance,model,i,ACCESS_FLAG_READ);
+        prop_disp.append("false");
+      }
+
+      switch (param->flags & PARA_TY_MASK)
+      {
+      case PARA_TY_INT:
+        prop_val.append(QString::number(*static_cast<uint32_t*>(value)));
+        break;
+      case PARA_TY_REAL:
+        prop_val.append(QString::number(*static_cast<double*>(value)));
+        break;
+      case PARA_TY_STR:
+        prop_val.append(QString(static_cast<char*>(value)));
+        break;
+      default:
+        prop_val.append("");
+        break;
+      }
+
+      prop_name.append(param->name[0]);
+      prop_desc.append(param->description);
+    }
+
+    free(model);
+    free(instance);
+    if (osdi_log_backup) {
+      *osdi_log_ = osdi_log_backup;
+    }
+    osdilib.unload();
+
+    QFile file (jsonfile);
+
+    if (!file.open (QIODevice::WriteOnly)) {
+      QMessageBox::critical (0, QObject::tr("Error"),
+                            QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
+      return -1;
+    }
+
+    QTextStream stream (&file);
+
+    stream << "{\n";
+
+    stream << QString("  \"description\" : \"%1 verilog device\",\n").arg(module);
+    stream << "  \"property\" : [\n";
+    auto name = prop_name.begin();
+    auto val = prop_val.begin();
+    auto disp = prop_disp.begin();
+    auto desc = prop_desc.begin();
+    for(; name != prop_name.end(); name++,val++,disp++,desc++) {
+      stream << QString("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"%3\", \"desc\" : \"%4\"},\n")
+                    .arg(*name,*val,*disp,*desc);
+    }
+    stream << "  ],\n\n";
+    stream << "  \"tx\" : 4,\n";
+    stream << "  \"ty\" : 4,\n";
+    stream << QString("  \"Model\" : \"%1\",\n").arg(module);
+    stream << "  \"NetName\" : \"T\",\n\n\n";
+    stream << QString("  \"SymName\" : \"%1\",\n").arg(module);
+    stream << QString("  \"BitmapFile\" : \"%1\",\n").arg(module);
+
+    stream << "}";
+
+    file.close ();
+  }
+  return 0;
 }
 
 // save symbol paintings in JSON format

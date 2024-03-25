@@ -117,12 +117,12 @@ bool loadSettings()
         QFileInfo inf(QucsSettings.Qucsator);
         QucsSettings.QucsatorDir = inf.canonicalPath() + QDir::separator();
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QucsSettings.QucsatorDir + QDir::separator() + "qucsconv" + executableSuffix;
+            QucsSettings.Qucsconv = QucsSettings.QucsatorDir + QDir::separator() + "qucsconv_rf" + executableSuffix;
     } else {
-        QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
+        QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator_rf" + executableSuffix;
         QucsSettings.QucsatorDir = QucsSettings.BinDir;
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv" + executableSuffix;
+            QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv_rf" + executableSuffix;
     }
     //if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
     //if(settings.contains("LangDir"))QucsSettings.LangDir = settings.value("LangDir").toString();
@@ -170,6 +170,11 @@ bool loadSettings()
         QucsSettings.OpenVAFExecutable = settings.value("OpenVAFExecutable").toString();
     } else {
         QucsSettings.OpenVAFExecutable = "openvaf" + QString(executableSuffix);
+    }
+    if(settings.contains("RFLayoutExecutable")) {
+        QucsSettings.RFLayoutExecutable = settings.value("RFLayoutExecutable").toString();
+    } else {
+        QucsSettings.RFLayoutExecutable = "qucsrflayout" + QString(executableSuffix);
     }
     if(settings.contains("QucsHomeDir"))
       if(settings.value("QucsHomeDir").toString() != "")
@@ -272,6 +277,7 @@ bool saveApplSettings()
     // settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
     settings.setValue("OctaveExecutable",QucsSettings.OctaveExecutable);
     settings.setValue("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
+    settings.setValue("RFLayoutExecutable",QucsSettings.RFLayoutExecutable);
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
@@ -369,6 +375,7 @@ Schematic *openSchematic(QString schematic)
 int doNetlist(QString schematic, QString netlist)
 {
   QucsSettings.DefaultSimulator = spicecompat::simQucsator;
+  Module::registerModules();
   Schematic *sch = openSchematic(schematic);
   if (sch == NULL) {
     return 1;
@@ -473,6 +480,7 @@ int runXyce(QString schematic, QString dataset)
 int doNgspiceNetlist(QString schematic, QString netlist)
 {
     QucsSettings.DefaultSimulator = spicecompat::simNgspice;
+    Module::registerModules();
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -488,6 +496,7 @@ int doNgspiceNetlist(QString schematic, QString netlist)
 int doXyceNetlist(QString schematic, QString netlist)
 {
     QucsSettings.DefaultSimulator = spicecompat::simXyce;
+    Module::registerModules();
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;

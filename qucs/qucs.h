@@ -354,8 +354,8 @@ public:
           *showMsg, *showNet, *alignTop, *alignBottom, *alignLeft, *alignRight,
           *distrHor, *distrVert, *selectAll, *callMatch, *changeProps,
           *addToProj, *editFind, *insEntity, *selectMarker,
-          *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
-          *callAtt, *centerHor, *centerVert, *loadModule, *buildModule, *callPwrComb;
+          *createLib, *callConverter, *graph2csv, *createPkg, *extractPkg,
+          *callAtt, *centerHor, *centerVert, *loadModule, *buildModule, *callPwrComb, *callRFLayout;
 
   QAction *helpQucsIndex;
   QAction *simSettings;
@@ -406,6 +406,7 @@ public slots:
   void slotCallMatch();
   void slotCallAtt();
   void slotCallPwrComb();
+  void slotCallRFLayout();
   void slotHelpIndex();       // shows a HTML docu: Help Index
   void slotHelpQucsIndex();
   void slotGettingStarted();  // shows a HTML docu: Getting started

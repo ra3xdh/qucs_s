@@ -93,10 +93,11 @@ public:
   float textCorr();
   bool sizeOfFrame(int&, int&);
   void  sizeOfAll(int&, int&, int&, int&);
-  void  sizeOfSelection(int&, int&, int&, int&);
+  QRect  sizeOfSelection() const;
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
+  QPoint setOnGrid(const QPoint& p);
   void  setOnGrid(int&, int&);
   bool  elementsOnGrid();
 
@@ -130,6 +131,36 @@ public:
   int   adjustPortNumbers();
   void  reloadGraphs();
   bool  createSubcircuitSymbol();
+
+  /**
+    @brief Given cordinates of a model point returns coordinates of this point
+           relative to viewport. It's a reverse of @ref Schematic::viewportToModel
+  */
+  QPoint modelToViewport(QPoint modelCoordinates);
+
+  /**
+    Given a coordinates of viewport point returns coordinates of the model plane point
+    displayed at given location of the viewport.
+  */
+  QPoint viewportToModel(QPoint viewportCoordinates);
+
+  /**
+    Given coordinates of a point on the view plane (schematic's canvas), this method
+    returns coordinates of a corresponding point on the model plane.
+
+    @param viewCoordinates a point on the view plane
+    @return a corresponding point on the model plane
+  */
+  QPoint contentsToModel(const QPoint& viewCoordinates);
+
+  /**
+    Given coordinates of a point on the model plane, this method returns coordinates
+    of a corresponding point on the view plane (schematic's canvas).
+
+    @param modelCoordinates a point on the model plane
+    @return a corresponding point on the view plane
+  */
+  QPoint modelToContents(const QPoint& modelCoordinates);
 
   void    cut();
   void    copy();
@@ -259,30 +290,6 @@ private:
   QRect viewportRect();
 
   /**
-    Given a coordinates of viewport point returns coordinates of the model plane point
-    displayed at given location of the viewport.
-  */
-  QPoint viewportToModel(QPoint viewportCoordinates);
-
-  /**
-    Given coordinates of a point on the view plane (schematic's canvas), this method
-    returns coordinates of a corresponding point on the model plane.
-
-    @param viewCoordinates a point on the view plane
-    @return a corresponding point on the model plane
-  */
-  QPoint viewToModel(const QPoint& viewCoordinates);
-
-  /**
-    Given coordinates of a point on the model plane, this method returns coordinates
-    of a corresponding point on the view plane (schematic's canvas).
-
-    @param modelCoordinates a point on the model plane
-    @return a corresponding point on the view plane
-  */
-  QPoint modelToView(const QPoint& modelCoordinates);
-
-  /**
     If given value violates lower or upper scale limit, then returns
     the limit value, original value otherwise.
   */
@@ -309,6 +316,32 @@ private:
     There is no need to call "update" on Q3ScrollView after using this method.
     It is done as a part of rendering process.
 
+    Usage examples:
+    1. Imagine you want to handle user's right scroll and you want scrolling
+       to be infinite. Each scroll has to "stretch" schematic model to the right.
+       First step is to take current model and create a new desired
+       model size from it by shifting its right bound.
+       After scrolling you want rightmost point of the model to be diplayed
+       at right bound of the viewport. Then second step is to take coordinates
+       of top-right corner of @b new @b desired model and coordinates of top-rigth
+       corner of viewport and pass to @c renderModel along with new model:
+       @code
+       renderModel(sameScale, newModel, newModel.topRight(), viewportRect().topRight());
+       @endcode
+    2. Suppose you want to zoom at some element, so that its center would be
+       displayed at the center of the viewport after zooming.
+       First, find coordinates of the element center
+       Second, find coordinates of the viewport center
+       Third, call @c renderModel:
+       @code
+       renderModel(zoomScale, sameModel, elementCenter, viewportRect().center());
+       @endcode
+    3. Imagine you want to scroll and zoom so that the point currently
+       displayed at the center of the viewport would be at the viewport
+       top-left corner after.
+       @code
+       renderModel(zoomScale, sameModel, viewportToModel(viewportRect().center()), viewportRect.topLeft());
+       @endcode
     @param  scale            desired new scale. It is clipped when exceeds
                              a lower or upperlimit
     @param  newModelBounds   a rectangle describing the desired model bounds
@@ -319,27 +352,6 @@ private:
     @return new scale value
   */
   double renderModel(double scale, QRect newModelBounds, QPoint modelPlaneCoords, QPoint viewportCoords);
-
-  /**
-    Render the model without changing its size and position the contents
-    so that the center of the model is displayed at center of the viewport.
-
-    @param scale desired new scale. It is clipped if exceeds bounds.
-    @return new scale value
-  */
-  double renderModel(double scale);
-
-  /**
-    Render the model without changing its size and position the contents so that
-    the point \a modelPlaneCoords of the model is displayed at location \a
-    viewportCoords of the viewport.
-
-    @param scale desired new scale. It is clipped if exceeds limits
-    @param modelPlaneCoords coordinates of the point on the model plane
-    @param viewportCoords coordinates of the point on the viewport
-    @return new scale value
-  */
-  double renderModel(double scale, QPoint modelPlaneCoords, QPoint viewportCoords);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****

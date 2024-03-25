@@ -3,7 +3,7 @@ Section: electronics
 Priority: optional
 Maintainer: Vadim Kuznetsov <ra3xdh@gmail.com>
 Build-Depends: debhelper-compat (= 13), cmake, flex, bison,
- qtbase5-dev, qttools5-dev, libqt5svg5-dev
+ qtbase5-dev, qttools5-dev, libqt5svg5-dev, gperf, dos2unix
 Rules-Requires-Root: no
 Standards-Version: 4.6.2
 Homepage: https://ra3xdh.github.io

@@ -91,6 +91,7 @@ struct tQucsSettings {
   unsigned int NProcs; // Number of processors for Xyce
   QString OctaveExecutable; // OctaveExecutable location
   QString QucsOctave; // OUCS_OCTAVE variable
+  QString RFLayoutExecutable;
 
   // registered filename extensions with program to open the file
   QStringList FileTypes;

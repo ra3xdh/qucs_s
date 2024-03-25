@@ -54,7 +54,12 @@ endif()
 add_compile_definitions(HAVE_CONFIG_H)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Widgets Svg Xml PrintSupport)
+if(WITH_QT6)
+    set(QT_VERSION_MAJOR 6)
+else()
+    set(QT_VERSION_MAJOR 5)
+endif()
+
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets Svg Xml PrintSupport)
 include_directories(
       ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
@@ -101,6 +106,7 @@ INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}/dialogs
   #${qucs_SOURCE_DIR}/octave ->no sources here
   ${PROJECT_SOURCE_DIR}/paintings
+  ${PROJECT_SOURCE_DIR}/third_party
   )
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
@@ -118,7 +124,7 @@ SET(QUCS_SRCS
   element.cpp	octave_window.cpp	qucsdoc.cpp
   textdoc.cpp  main.cpp	schematic.cpp
   mnemo.cpp	qucs.cpp	viewpainter.cpp
-  module.cpp	schematic_element.cpp	wire.cpp
+  module.cpp	schematic_element.cpp	wire.cpp schematic_render.cpp
   mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
   wirelabel.cpp node.cpp qucs_init.cpp
   syntax.cpp misc.cpp messagedock.cpp

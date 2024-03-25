@@ -95,7 +95,7 @@ QString SpiceNoise::spice_netlist(bool isXyce)
         misc::str2num(Props.at(2)->Value,Fstop,unit,fac);
         Fstop *= fac;
         double Nd = ceil(log10(Fstop/Fstart)); // number of decades
-        double Npd = ceil(Np/Nd); // points per decade
+        double Npd = ceil((Np - 1)/Nd); // points per decade
         points = QString::number(Npd);
     } else {
         points = Props.at(3)->Value;

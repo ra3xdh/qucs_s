@@ -46,7 +46,7 @@ echo simulating...
 vvp %NAME%.bin -vcd
 
 echo running VCD conversion...
-vcd2qucsdat %OPTION% -if vcd -of qucsdata -i %NAME%.vcd -o %NAMEOUT%
+qucsconv_rf.exe %OPTION% -if vcd -of qucsdata -i %NAME%.vcd -o %NAMEOUT%
 
 goto end
 

@@ -33,6 +33,10 @@ class QLabel;
 
 class ImportDialog : public QDialog  {
    Q_OBJECT
+
+private:
+    QString lastImportDir;
+
 public:
   ImportDialog(QWidget*);
  ~ImportDialog();
@@ -44,12 +48,15 @@ private slots:
   void slotImport();
   void slotAbort();
   void slotBrowse();
+  void slotSaveBrowse();
   void slotType(int);
+  void slotValidateInput();
+  void slotValidateOutput();
 
 private:
   void startSimulator();
 
-public:
+private:
   QGridLayout *all;
 
   QLabel *OutputLabel;
@@ -57,7 +64,11 @@ public:
   QPlainTextEdit *MsgText;
   QLineEdit *ImportEdit, *OutputEdit, *OutputData;
   QPushButton *ImportButt, *CancelButt, *AbortButt;
-  QComboBox *OutType;
+  QComboBox *OutType, *InType;
+
+public:
+  void setImportDir(const QString &dir) { lastImportDir = dir; };
+
 };
 
 #endif

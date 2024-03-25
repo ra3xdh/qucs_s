@@ -268,7 +268,7 @@ void misc::str2num(const QString& s_, double& Number, QString& Unit, double& Fac
 }
 
 // #########################################################################
-QString misc::num2str(double Num, int Precision)
+QString misc::num2str(double Num, int Precision, QString unit)
 {
   char c = 0;
   double cal = fabs(Num);
@@ -302,6 +302,8 @@ QString misc::num2str(double Num, int Precision)
   }
 
   if(c)  Str += c;
+
+  if (unit != "m") Str += unit;
 
   return Str;
 }
