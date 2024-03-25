@@ -1275,10 +1275,8 @@ QString MatchDialog::calcDoubleStub(double r_real, double r_imag, double Z0,
   if (GL > Y0 * ((1 + t * t) / (2 * t * t))) // Not every load can be match
                                              // using the double stub technique.
   {
-    QString str = QString(
-        "It is not possible to match this load using the double stub method");
-    QMessageBox::warning(0, QObject::trUtf8("Error"),
-                         QObject::trUtf8(str.toUtf8()));
+    QMessageBox::warning(0, tr("Error"),
+                tr("It is not possible to match this load using the double stub method"));
     return QString("");
   }
 
