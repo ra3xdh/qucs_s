@@ -16,7 +16,7 @@
  ***************************************************************************/
 #include "sp_lib.h"
 #include "main.h"
-
+#include "misc.h"
 #include <QFontMetrics>
 
 S4Q_Lib::S4Q_Lib()
@@ -72,14 +72,17 @@ Element* S4Q_Lib::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString S4Q_Lib::getSpiceModel()
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
-    QString s;
-    s.clear();
+  if (isActive != COMP_IS_ACTIVE) return QString("");
+  QString s;
+  s.clear();
 
-    QString file = getProperty("File")->Value;
+  QString file = getProperty("File")->Value;
+  if ( !file.isEmpty() ){
+    file = misc::properAbsFileName(file, containingSchematic);
     QString sec = getProperty("Section")->Value;
     s += QString("%1 \"%2\" %3\n").arg(SpiceModel).arg(file).arg(sec);
+  }
 
-    return s;
+  return s;
 }
 

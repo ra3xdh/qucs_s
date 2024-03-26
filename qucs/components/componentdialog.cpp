@@ -1111,28 +1111,18 @@ void ComponentDialog::slotBrowseFile()
 
   if (!currFileName.isEmpty()) { // a file name is already defined
     if (currFileInfo.isRelative()) { // but has no absolute path
-      if (!schematicFileName.isEmpty()) { // if schematic has a filename
-	// build the an absolute file name using the schematic path
-	currDir = schematicFileInfo.absolutePath() + 
-	          QDir::separator() +
-                  currFileInfo.fileName();
-      } else { // no absolute paths around
-	// use the WorkDir path
-	currDir = QucsSettings.QucsWorkDir.path() + 
-	          QDir::separator() +
-	  currFileInfo.fileName();
-      }
-    } else { // current file name is absolute
-      // use it
-      currDir = currFileName;
+      if (!schematicFileName.isEmpty()) // if schematic has a filename
+        currDir = schematicFileInfo.absolutePath();
+      else    // use the WorkDir path
+        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+    } else {  // current file name is absolute
+      currDir = currFileInfo.exists() ? currFileInfo.absolutePath() : QucsSettings.QucsWorkDir.absolutePath();
     }
-  } else { // a file name is not defined
+  } else {    // a file name is not defined
     if (!schematicFileName.isEmpty()) { // if schematic has a filename
-      // use the schematic absolute path
       currDir = schematicFileInfo.absolutePath();
-    } else { // no absolute paths around
-      // use the WorkDir path
-      currDir = QucsSettings.QucsWorkDir.path();
+    } else {  // use the WorkDir path
+      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
     }
   }
   
@@ -1150,8 +1140,14 @@ void ComponentDialog::slotBrowseFile()
   if(!s.isEmpty()) {
     // snip path if file in current directory
     QFileInfo file(s);
-    if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
-       QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) s = file.fileName();
+    lastDir = file.absolutePath();
+    currDir = schematicFileInfo.canonicalPath();
+    if ( file.canonicalFilePath().startsWith(currDir) ) {
+      s = QDir(currDir).relativeFilePath(s);
+    } else if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
+        QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) {
+      s = file.fileName();
+    }
     edit->setText(s);
   }
   /* FIX
@@ -1161,7 +1157,7 @@ void ComponentDialog::slotBrowseFile()
 // -------------------------------------------------------------------------
 void ComponentDialog::slotEditFile()
 {
-  Doc->App->editFile(QucsSettings.QucsWorkDir.filePath(edit->text()));
+  Doc->App->editFile(misc::properAbsFileName(edit->text(), Doc));
 }
 
 /*!
