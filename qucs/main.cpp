@@ -157,7 +157,11 @@ bool loadSettings()
     // All usages of this path look like something involving a temporary data.
     // This should be replaced with generic temp dir, but for now let's just
     // place it under generic temp dir.
-    QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/spice4qucs");
+    if(settings.contains("S4Q_workdir")) {
+      QucsSettings.S4Qworkdir = settings.value("S4Q_workdir").toString();
+    } else {
+      QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/spice4qucs");
+    }
     if(settings.contains("SimParameters")) QucsSettings.SimParameters = settings.value("SimParameters").toString();
     else QucsSettings.SimParameters = "";
     if(settings.contains("OctaveExecutable")) {
