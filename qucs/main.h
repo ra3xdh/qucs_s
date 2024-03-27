@@ -77,7 +77,16 @@ struct tQucsSettings {
 
   unsigned int NodeWiring;
   QDir QucsWorkDir;
-  QDir QucsHomeDir;
+
+  // A dir for user projects and libraries. See also https://github.com/ra3xdh/qucs_s/issues/145
+  QDir qucsWorkspaceDir;
+
+  // This is the dir where all temporary or intermediate data should be stored.
+  // Consider a data "temporary" if its used only once or it makes sense only
+  // through out a single app run or a shorter period of time.
+  // Don't make any assumptions about the lifetime of contents in this dir,
+  // think that everything placed in here is deleted when app is terminated.
+  QDir tempFilesDir;
   QDir projsDir; // current user projects subdirectory
   QDir AdmsXmlBinDir;  // dir of admsXml executable
   QDir AscoBinDir;     // dir of asco executable
