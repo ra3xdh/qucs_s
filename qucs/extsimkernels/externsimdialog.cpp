@@ -88,7 +88,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
     this->setMinimumWidth(500);
 
     slotSetSimulator();
-    if (!netlist_mode && !QucsMain->TuningMode)
+    if (!netlist_mode && !QucsMain->TuningMode && Sch->showBias != 0)
         slotStart(); // Start simulation
 
 }
