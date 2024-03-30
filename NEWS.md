@@ -1,3 +1,12 @@
+# Qucs-S 24.2.1
+
+This release contains no new features except the fixing of the critical bugs.
+
+## General improvements
+
+* Fixed zero output on DC bias simulation (F8) #667
+* Fixed build failure of the Fedora RPM becuase of RPATH in qucsator_rf
+
 # Qucs-S 24.2.0
 
 ## New features
