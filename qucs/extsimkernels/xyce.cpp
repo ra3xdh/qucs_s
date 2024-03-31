@@ -423,7 +423,9 @@ void Xyce::nextSimulation()
         cmd_args.removeAt(0);
         SimProcess->start(xyce_cmd,cmd_args);
     } else {
-        output += "No simulations!\n"
+        output += "No simulation found. Please add at least one simulation!\n"
+                  "Navigate to the \"simulations\" group in the components panel (left)"
+                  " and drag simulation to the schematic sheet. Then define its parameters.\n"
                   "Exiting...\n";
         emit progress(100);
         emit finished(); // nothing to simulate
