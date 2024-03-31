@@ -423,12 +423,16 @@ void Ngspice::slotSimulate()
     }
 
     if (!checkGround()) {
-        output.append("No Ground found. Please add at least one ground!\n");
+        output.append("No Ground found. Please add at least one ground!\n"
+                      "Press Insert->Ground in the main menu and connect ground to one "
+                      "of the schematic nodes.\n");
         checker_error = true;
     }
 
     if (!checkSimulations()) {
-        output.append("No simulation found. Please add at least one simulation!\n");
+        output.append("No simulation found. Please add at least one simulation!\n"
+                      "Navigate to the \"simulations\" group in the components panel (left)"
+                      " and drag simulation to the schematic sheet. Then define its parameters.\n");
         checker_error = true;
     }
 
