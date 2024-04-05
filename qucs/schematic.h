@@ -92,7 +92,7 @@ public:
 
   float textCorr();
   bool sizeOfFrame(int&, int&);
-  void  sizeOfAll(int&, int&, int&, int&);
+
   /**
     Iterates over all elements of schematic to find the size of the smallest
     rectangle able to fit all elements. The bounds are then stored in members
@@ -218,11 +218,6 @@ public:
   // these variables ("model") is used to draw the scematic.
   int ViewX1, ViewY1, ViewX2, ViewY2;
 
-  // Variables Used* hold the coordinates of top-left and bottom-right corners
-  // of a smallest rectangle which can fit all elements of the schematic.
-  // This rectangle exists in the same coordinate system as View*-rectangle
-  int UsedX1, UsedY1, UsedX2, UsedY2;
-
   int showFrame;
   QString Frame_Text0, Frame_Text1, Frame_Text2, Frame_Text3;
 
@@ -271,6 +266,13 @@ protected slots:
   void slotScrollRight();
 
 private:
+  // Variables Used* hold the coordinates of top-left and bottom-right corners
+  // of a smallest rectangle which can fit all elements of the schematic.
+  // This rectangle exists in the same coordinate system as View*-rectangle
+  int UsedX1, UsedY1, UsedX2, UsedY2;
+
+  void  sizeOfAll(int&, int&, int&, int&);
+
   // Viewport-realative coordinates of the cursor between mouse movements.
   // Used in "pan with mouse" feature.
   QPoint previousCursorPosition;
