@@ -679,13 +679,8 @@ void QucsApp::slotSelectAll()
     ((TextDoc*)Doc)->selectAll();
   }
   else {
-    int xmin, ymin, xmax, ymax;
-    ((Schematic*)Doc)->sizeOfAll(xmin, ymin, xmax, ymax);
-    xmin--;
-    ymin--;
-    xmax++;
-    ymax++;
-    ((Schematic*)Doc)->selectElements(xmin, ymin, xmax, ymax, true, false);
+    auto selectionRect = ((Schematic*)Doc)->allBoundingRect().marginsAdded(QMargins{1, 1, 1, 1});
+    ((Schematic*)Doc)->selectElements(selectionRect.left(), selectionRect.top(), selectionRect.right(), selectionRect.bottom(), true, false);
     ((Schematic*)Doc)->viewport()->update();
     view->drawn = false;
   }
