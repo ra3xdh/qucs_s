@@ -1162,6 +1162,15 @@ float Schematic::textCorr()
     return (Scale / float(metrics.lineSpacing()));
 }
 
+void Schematic::updateAllBoundingRect() {
+    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+}
+
+QRect Schematic::allBoundingRect() {
+    updateAllBoundingRect();
+    return QRect{UsedX1, UsedY1, (UsedX2 - UsedX1), (UsedY2 - UsedY1)};
+}
+
 // ---------------------------------------------------
 void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
 {

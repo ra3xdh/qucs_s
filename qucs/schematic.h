@@ -93,6 +93,18 @@ public:
   float textCorr();
   bool sizeOfFrame(int&, int&);
   void  sizeOfAll(int&, int&, int&, int&);
+  /**
+    Iterates over all elements of schematic to find the size of the smallest
+    rectangle able to fit all elements. The bounds are then stored in members
+    @c UsedX1, @c UsedY1, @c UsedX2, @c UsedY2 , i.e. the internal state
+    of schematic is updated.
+  */
+  void updateAllBoundingRect();
+
+  /**
+    Returns the smallest rectangle enclosing all elements of schematic
+  */
+  QRect allBoundingRect();
   QRect  sizeOfSelection() const;
   bool  rotateElements();
   bool  mirrorXComponents();
