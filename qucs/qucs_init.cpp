@@ -98,9 +98,9 @@ void QucsApp::initActions()
   connect(fileClearRecent, SIGNAL(triggered()), SLOT(slotClearRecentFiles()));
 
   fileExamples = new QAction(tr("&Examples"), this);
-  fileExamples->setStatusTip(tr("Opens a file explorer with example documents"));
+  fileExamples->setStatusTip(tr("Starts file chooser dialog to open one of example schematics"));
   fileExamples->setWhatsThis(
-	        tr("Examples\n\nOpens a file explorer with example documents"));
+	        tr("Examples\n\nStart file chooser dialog and open one of example schematics"));
   connect(fileExamples, SIGNAL(triggered()), SLOT(slotFileExamples()));
 
 

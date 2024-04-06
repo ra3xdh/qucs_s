@@ -1962,12 +1962,19 @@ bool QucsApp::closeAllFiles()
   return true;
 }
 
+void QucsApp::slotFileExamples() {
+  statusBar()->showMessage(tr("Open example…"));
 
-void QucsApp::slotFileExamples()
-{
-  statusBar()->showMessage(tr("Open examples directory..."));
-  // pass the QUrl representation of a local file
-  QDesktopServices::openUrl(QUrl::fromLocalFile(QucsSettings.ExamplesDir));
+  auto exampleFile =
+      QFileDialog::getOpenFileName(this, tr("Select example schematic"),
+                                   QucsSettings.ExamplesDir, QucsFileFilter);
+
+  if (exampleFile.isEmpty()) {
+      statusBar()->showMessage(tr("Open example canceled"), 2000);
+      return;
+  }
+
+  gotoPage(exampleFile);
   statusBar()->showMessage(tr("Ready."));
 }
 
