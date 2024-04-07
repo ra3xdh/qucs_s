@@ -276,6 +276,7 @@ private:
   void updateRecentFilesList(QString s);
   void successExportMessages(bool ok);
   void fillLibrariesTreeView (void);
+  bool populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidgetItem *> &topitems);
   void saveSettings();
   QWidget *getSchematicWidget(QucsDoc *Doc);
 
