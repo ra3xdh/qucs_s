@@ -369,6 +369,7 @@ void QucsApp::initView()
   CompComps = new QListWidget(this);
   CompComps->setViewMode(QListView::IconMode);
   CompComps->setGridSize(QSize(110,90));
+  CompComps->setResizeMode(QListView::Adjust);
   CompComps->setIconSize(QSize(64,64));
   CompComps->setAcceptDrops(false);
   CompComps->setStyleSheet("QListWidget{background: white; color: black;}");
