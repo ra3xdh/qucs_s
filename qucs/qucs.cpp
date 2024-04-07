@@ -517,7 +517,6 @@ void QucsApp::initView()
 // Put all available libraries into ComboBox.
 void QucsApp::fillLibrariesTreeView ()
 {
-    QStringList LibFiles;
     QList<QTreeWidgetItem *> topitems;
 
     libTreeWidget->clear();
@@ -533,6 +532,7 @@ void QucsApp::fillLibrariesTreeView ()
     topitems.append (newitem);
 
     populateLibTreeFromDir(QucsSettings.LibDir, topitems);
+
     // make the user libraries section header
     newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("User Libraries"));
     newitem->setChildIndicatorPolicy (QTreeWidgetItem::DontShowIndicator);
@@ -541,6 +541,15 @@ void QucsApp::fillLibrariesTreeView ()
 
     QString UserLibDirPath = QucsSettings.QucsHomeDir.canonicalPath () + "/user_lib/";
     populateLibTreeFromDir(UserLibDirPath, topitems);
+
+    // make the user libraries section header
+    newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("Project Libraries"));
+    newitem->setChildIndicatorPolicy (QTreeWidgetItem::DontShowIndicator);
+    newitem->setFont (0, sectionFont);
+    topitems.append (newitem);
+    if (!ProjName.isEmpty()) {
+        populateLibTreeFromDir(QucsSettings.QucsWorkDir.absolutePath(), topitems);
+    }
 
     libTreeWidget->insertTopLevelItems(0, topitems);
 }
@@ -1371,6 +1380,7 @@ void QucsApp::openProject(const QString& Path)
   parentDir.cdUp();
     // show name in title of main window
   setWindowTitle( tr("Project: ") + ProjName + " (" +  parentDir.absolutePath() + ") - " + windowTitle);
+  fillLibrariesTreeView();
 }
 
 // ----------------------------------------------------------
@@ -1438,6 +1448,7 @@ void QucsApp::slotMenuProjClose()
 
   TabView->setCurrentIndex(0);   // switch to "Projects"-Tab
   ProjName = "";
+  fillLibrariesTreeView();
 }
 
 // remove a directory recursively
