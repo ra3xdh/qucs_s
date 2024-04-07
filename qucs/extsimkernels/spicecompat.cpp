@@ -255,6 +255,7 @@ QString spicecompat::normalize_node_name(QString nod) {
     return (nod == "gnd") ? QString("0") : nod;
 }
 
+/*
 QString spicecompat::convert_relative_filename(QString filename)
 {
     QFileInfo inf(filename);
@@ -264,13 +265,13 @@ QString spicecompat::convert_relative_filename(QString filename)
     inf.setFile(s);
     return inf.exists() ? s : filename;
 }
+*/
 
 int spicecompat::getPins(const QString &file, const QString &compname, QStringList &pin_names)
 {
     int r = 0;
     QString content;
-    QString LibName = spicecompat::convert_relative_filename(file);
-    QFile f(LibName);
+    QFile f(file);
     if (f.open(QIODevice::ReadOnly)) {
         QTextStream ts(&f);
         content = ts.readAll();

@@ -103,6 +103,8 @@ Element* SParamFile::info2(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 QString SParamFile::getSubcircuitFile()
 {
+  return misc::properAbsFileName(Props.getFirst()->Value, containingSchematic);
+
   // construct full filename
   QString FileName = Props.getFirst()->Value;
   return misc::properAbsFileName(FileName);

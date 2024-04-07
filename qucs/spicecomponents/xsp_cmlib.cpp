@@ -16,6 +16,7 @@
  ***************************************************************************/
 #include "xsp_cmlib.h"
 #include "main.h"
+#include "misc.h"
 
 #include <QFontMetrics>
 
@@ -78,7 +79,7 @@ QString XSP_CMlib::getSpiceInit()
     s.clear();
     for (Property *pp : Props) {
         if (!pp->Value.isEmpty()) {
-            QString f = spicecompat::convert_relative_filename(pp->Value);
+            QString f = misc::properAbsFileName(pp->Value, containingSchematic);
             s += "codemodel " + f + "\n";
         }
     }

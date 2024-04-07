@@ -1690,8 +1690,8 @@ int Schematic::save()
         undoSymbol.at(undoSymbolIdx)->replace(1, 1, 'i');
     }
     // update the subcircuit file lookup hashes
-    QucsMain->updateSchNameHash();
-    QucsMain->updateSpiceNameHash();
+    //QucsMain->updateSchNameHash();
+    //QucsMain->updateSpiceNameHash();
 
     return result;
 }

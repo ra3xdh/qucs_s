@@ -15,8 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "qlabel.h"
-#include "qtabbar.h"
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -57,8 +55,6 @@
 #include "module.h"
 #include "projectView.h"
 #include "components/components.h"
-#include "paintings/paintings.h"
-#include "diagrams/diagrams.h"
 #include "dialogs/savedialog.h"
 #include "dialogs/newprojdialog.h"
 #include "dialogs/settingsdialog.h"
@@ -117,8 +113,8 @@ QucsApp::QucsApp()
     tr("Spice Files") + QString(" (") + QucsSettings.spiceExtensions.join(" ") + QString(");;") +
     tr("Any File")+" (*)";
 
-  updateSchNameHash();
-  updateSpiceNameHash();
+  //updateSchNameHash();
+  //updateSpiceNameHash();
 
   move  (QucsSettings.x,  QucsSettings.y);
   resize(QucsSettings.dx, QucsSettings.dy);
@@ -1270,8 +1266,8 @@ void QucsApp::slotCMenuCopy()
     //TODO: maybe require disable edit here
 
     // refresh the schematic file path
-    this->updateSchNameHash();
-    this->updateSpiceNameHash();
+    //this->updateSchNameHash();
+    //this->updateSpiceNameHash();
 
     slotUpdateTreeview();
   }
@@ -2102,8 +2098,8 @@ void QucsApp::slotApplSettings()
 // --------------------------------------------------------------
 void QucsApp::slotRefreshSchPath()
 {
-  this->updateSchNameHash();
-  this->updateSpiceNameHash();
+  //this->updateSchNameHash();
+  //this->updateSpiceNameHash();
 
   statusBar()->showMessage(tr("The schematic search path has been refreshed."), 2000);
 }
@@ -3248,7 +3244,7 @@ void QucsApp::slotUpdateTreeview()
 {
   Content->refresh();
 }
-
+/*
 // -----------------------------------------------------------
 // Searches the qucs path list for all schematic files and creates
 // a hash for lookup later
@@ -3277,7 +3273,6 @@ void QucsApp::updateSchNameHash(void)
         // put each one in the hash table with the unique key the base name of
         // the file, note this will overwrite the value if the key already exists
         for (const QFileInfo& schfile : schfilesList) {
-            QString bn = schfile.completeBaseName();
             schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
         }
     }
@@ -3291,7 +3286,8 @@ void QucsApp::updateSchNameHash(void)
         schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
     }
 }
-
+*/
+/*
 // -----------------------------------------------------------
 // Searches the qucs path list for all spice files and creates
 // a hash for lookup later
@@ -3318,7 +3314,6 @@ void QucsApp::updateSpiceNameHash()
         // put each one in the hash table with the unique key the base name of
         // the file, note this will overwrite the value if the key already exists
         for (const QFileInfo& spicefile : spicefilesList) {
-            QString bn = spicefile.completeBaseName();
             schNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
         }
     }
@@ -3332,7 +3327,7 @@ void QucsApp::updateSpiceNameHash()
         spiceNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
     }
 }
-
+*/
 // -----------------------------------------------------------
 // update the list of paths, pruning non-existing paths
 void QucsApp::updatePathList()
