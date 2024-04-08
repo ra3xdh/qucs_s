@@ -176,7 +176,7 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
             pl->x1 -= pl->x2 - old_x2; // don't change position due to text width
     }
 
-    Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+    Doc->updateAllBoundingRect();
     Doc->viewport()->update();
     drawn = false;
     Doc->setChanged(true, true);
@@ -232,9 +232,11 @@ void MouseActions::endElementMoving(Schematic *Doc,
   if ((MAx3 != 0) || (MAy3 != 0)) // moved or put at the same place ?
     Doc->setChanged(true, true);
 
-  // enlarge viewarea if components lie outside the view
-  Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
-  Doc->enlargeView(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+  // Position of some elements of schematic has changed. This change
+  // is "external" to schematic and its state must be updated to
+  // take the changes into account
+  auto totalBounds = Doc->allBoundingRect();
+  Doc->enlargeView(totalBounds.left(), totalBounds.top(), totalBounds.right(), totalBounds.bottom());
 
   Doc->viewport()->update();
   drawn = false;
@@ -1075,7 +1077,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
             pn->setName(Name, Value, xl, yl);
     }
 
-    Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+    Doc->updateAllBoundingRect();
     Doc->viewport()->update();
     drawn = false;
     Doc->setChanged(true, true);
@@ -1246,7 +1248,7 @@ void MouseActions::MPressDelete(Schematic *Doc, QMouseEvent *, float fX, float f
         pe->isSelected = true;
         Doc->deleteElements();
 
-        Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+        Doc->updateAllBoundingRect();
         Doc->viewport()->update();
         drawn = false;
     }
@@ -1674,7 +1676,7 @@ void MouseActions::MPressOnGrid(Schematic *Doc, QMouseEvent *, float fX, float f
         pe->isSelected = true;
         Doc->elementsOnGrid();
 
-        Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+        Doc->updateAllBoundingRect();
         // Update matching wire label highlighting
         Doc->highlightWireLabels();
         Doc->viewport()->update();

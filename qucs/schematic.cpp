@@ -214,7 +214,7 @@ void Schematic::becomeCurrent(bool update)
 
         // if no symbol yet exists -> create one
         if (createSubcircuitSymbol()) {
-            sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+            updateAllBoundingRect();
             setChanged(true, true);
         }
 
@@ -682,7 +682,7 @@ void Schematic::print(QPrinter *, QPainter *Painter, bool printAll, bool fitToPa
     float screenDpiX = (float) pa.device()->logicalDpiX();
     float screenDpiY = (float) pa.device()->logicalDpiY();
     float PrintScale = 0.5;
-    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+    updateAllBoundingRect();
     int marginX = (int) (40 * printerDpiX / screenDpiX);
     int marginY = (int) (40 * printerDpiY / screenDpiY);
 
@@ -1160,6 +1160,15 @@ float Schematic::textCorr()
     //   —————————————————————————————————
     //   QucsSettings.font.pointSize() * k
     return (Scale / float(metrics.lineSpacing()));
+}
+
+void Schematic::updateAllBoundingRect() {
+    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+}
+
+QRect Schematic::allBoundingRect() {
+    updateAllBoundingRect();
+    return QRect{UsedX1, UsedY1, (UsedX2 - UsedX1), (UsedY2 - UsedY1)};
 }
 
 // ---------------------------------------------------

@@ -302,17 +302,19 @@ int ImageWriter::print(QWidget *doc)
 
 void ImageWriter::getSchWidthAndHeight(Schematic *sch, int &w, int &h, int &xmin, int &ymin)
 {
-    int xmax,ymax;
-    sch->sizeOfAll(xmin,ymin,xmax,ymax);
-    w = abs(xmax - xmin);
-    h = abs(ymax - ymin);
+    auto allBoundingRect = sch->allBoundingRect();
+    xmin = allBoundingRect.left();
+    ymin = allBoundingRect.top();
+
+    w = allBoundingRect.width();
+    h = allBoundingRect.height();
 
     int f_w, f_h;
     if (sch->sizeOfFrame(f_w,f_h)) {
         xmin = std::min(0,xmin); // For components
         ymin = std::min(0,ymin); // that fall out of frame
-        w = abs(std::max(f_w,sch->UsedX2) - xmin);
-        h = abs(std::max(f_h,sch->UsedY2) - ymin);
+        w = abs(std::max(f_w, allBoundingRect.right()) - xmin);
+        h = abs(std::max(f_h, allBoundingRect.bottom()) - ymin);
     }
 }
 
