@@ -497,7 +497,7 @@ void QucsApp::initView()
     m_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
 
     // ............................................
-    QString path = QucsSettings.QucsHomeDir.absolutePath();
+    QString path = QucsSettings.qucsWorkspaceDir.absolutePath();
     QDir ProjDir(path);
     // initial projects directory is the Qucs home directory
     QucsSettings.projsDir.setPath(path);
@@ -540,7 +540,7 @@ void QucsApp::fillLibrariesTreeView ()
     newitem->setFont (0, sectionFont);
     topitems.append (newitem);
 
-    QString UserLibDirPath = QucsSettings.QucsHomeDir.canonicalPath () + "/user_lib/";
+    QString UserLibDirPath = QucsSettings.qucsWorkspaceDir.canonicalPath () + "/user_lib/";
     populateLibTreeFromDir(UserLibDirPath, topitems);
 
     // make the user libraries section header
@@ -1291,7 +1291,7 @@ void QucsApp::slotCMenuInsert()
 void QucsApp::readProjects()
 {
     QString path = QucsSettings.projsDir.absolutePath();
-    QString homepath = QucsSettings.QucsHomeDir.absolutePath();
+    QString homepath = QucsSettings.qucsWorkspaceDir.absolutePath();
 
     if (path == homepath) {
         // in Qucs Home, disallow further up in the dirs tree
@@ -1390,7 +1390,7 @@ void QucsApp::slotMenuProjOpen()
 {
   QString d = QFileDialog::getExistingDirectory(
       this, tr("Choose Project Directory for Opening"),
-      QucsSettings.QucsHomeDir.path(),
+      QucsSettings.qucsWorkspaceDir.path(),
       QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
   if(d.isEmpty()) return;
 
@@ -1501,7 +1501,7 @@ void QucsApp::slotMenuProjDel()
 {
   QString d = QFileDialog::getExistingDirectory(
       this, tr("Choose Project Directory for Deleting"),
-      QucsSettings.QucsHomeDir.path(),
+      QucsSettings.qucsWorkspaceDir.path(),
       QFileDialog::ShowDirsOnly
       | QFileDialog::DontResolveSymlinks);
 

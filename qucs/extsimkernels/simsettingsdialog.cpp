@@ -33,7 +33,6 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     lblSpiceOpus = new QLabel(tr("SpiceOpus executable location"));
     lblQucsator = new QLabel(tr("Qucsator executable location"));
     //lblNprocs = new QLabel(tr("Number of processors in a system:"));
-    lblWorkdir = new QLabel(tr("Directory to store netlist and simulator output"));
     lblSimParam = new QLabel(tr("Extra simulator parameters"));
 
 //    cbxSimulator = new QComboBox(this);
@@ -59,7 +58,6 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
 //    spbNprocs->setMaximum(256);
 //    spbNprocs->setValue(1);
 //    spbNprocs->setValue(QucsSettings.NProcs);
-    edtWorkdir = new QLineEdit(QucsSettings.S4Qworkdir);
     edtSimParam = new QLineEdit(QucsSettings.SimParameters);
 
     btnOK = new QPushButton(tr("Apply changes"));
@@ -77,8 +75,6 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     connect(btnSetSpOpus,SIGNAL(clicked()),this,SLOT(slotSetSpiceOpus()));
     btnSetQucsator = new QPushButton(tr("Select ..."));
     connect(btnSetQucsator,SIGNAL(clicked()),this,SLOT(slotSetQucsator()));
-    btnSetWorkdir = new QPushButton(tr("Select ..."));
-    connect(btnSetWorkdir,SIGNAL(clicked()),this,SLOT(slotSetWorkdir()));
 
     QVBoxLayout *top = new QVBoxLayout;
 
@@ -119,12 +115,6 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h7->addWidget(btnSetSpOpus,1);
     top2->addLayout(h7);
 
-
-    top2->addWidget(lblWorkdir);
-    QHBoxLayout *h6 = new QHBoxLayout;
-    h6->addWidget(edtWorkdir,3);
-    h6->addWidget(btnSetWorkdir,1);
-    top2->addLayout(h6);
 
     top2->addWidget(lblSimParam);
     QHBoxLayout *h10 = new QHBoxLayout;
@@ -175,7 +165,6 @@ void SimSettingsDialog::slotApply()
     QucsSettings.SpiceOpusExecutable = edtSpiceOpus->text();
     QucsSettings.Qucsator = edtQucsator->text();
     //QucsSettings.NProcs = spbNprocs->value();
-    QucsSettings.S4Qworkdir = edtWorkdir->text();
     QucsSettings.SimParameters = edtSimParam->text();
 //    if ((QucsSettings.DefaultSimulator != cbxSimulator->currentIndex())&&
 //        (QucsSettings.DefaultSimulator != spicecompat::simNotSpecified)) {
@@ -232,16 +221,5 @@ void SimSettingsDialog::slotSetQucsator()
     QString s = QFileDialog::getOpenFileName(this,tr("Select Qucsator executable location"),edtQucsator->text(),"All files (*)");
     if (!s.isEmpty()) {
         edtQucsator->setText(s);
-    }
-}
-
-void SimSettingsDialog::slotSetWorkdir()
-{
-    QFileDialog dlg( this, tr("Select directory to store netlist and simulator output"), edtWorkdir->text() );
-    dlg.setAcceptMode(QFileDialog::AcceptOpen);
-    dlg.setFileMode(QFileDialog::Directory);
-    if (dlg.exec()) {
-        QString s = dlg.selectedFiles().first();
-        if (!s.isEmpty()) edtWorkdir->setText(s);
     }
 }
