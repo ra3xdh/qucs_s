@@ -83,7 +83,7 @@ bool loadSettings()
     /*** Temporarily continue to use QucsSettings to make sure all settings convert okay and remain compatible ***/
     QucsSettings.font.fromString(_settings::Get().item<QString>("font"));
     QucsSettings.appFont.fromString(_settings::Get().item<QString>("appFont"));
-    QucsSettings.textFont.fromString(_settings::Get().item<Qstring>("textFont"));
+    QucsSettings.textFont.fromString(_settings::Get().item<QString>("textFont"));
     QucsSettings.largeFontSize = _settings::Get().item<double>("LargeFontSize");
     QucsSettings.maxUndo = _settings::Get().item<int>("maxUndo");
     QucsSettings.NodeWiring = _settings::Get().item<int>("NodeWiring");
@@ -155,7 +155,7 @@ bool loadSettings()
     QucsSettings.QucsWorkDir = QucsSettings.qucsWorkspaceDir;
     QucsSettings.tempFilesDir.setPath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
 
-    QucsSettings.QucsHomeDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
+    // QucsSettings.QucsHomeDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
     // QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
     QucsSettings.IgnoreFutureVersion = _settings::Get().item<bool>("IgnoreVersion");
     QucsSettings.GraphAntiAliasing = _settings::Get().item<bool>("GraphAntiAliasing");
@@ -232,7 +232,7 @@ bool saveApplSettings()
     qs.setItem<QString>("SimParameters",QucsSettings.SimParameters);    
     qs.setItem<QString>("OctaveExecutable",QucsSettings.OctaveExecutable);
     qs.setItem<QString>("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
-    qs.setItem<QString>("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
+    qs.setItem<QString>("QucsHomeDir", QucsSettings.qucsWorkspaceDir.canonicalPath());
     qs.setItem<bool>("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     qs.setItem<bool>("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
     qs.setItem<bool>("TextAntiAliasing", QucsSettings.TextAntiAliasing);
