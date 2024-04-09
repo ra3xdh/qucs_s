@@ -33,7 +33,6 @@ SET(DIAGRAMS_MOC_HDRS
 diagramdialog.h
 markerdialog.h
 )
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 
 IF(QT_VERSION_MAJOR EQUAL 6)
     qt6_wrap_cpp( DIAGRAMS_MOC_SRCS ${DIAGRAMS_MOC_HDRS} )

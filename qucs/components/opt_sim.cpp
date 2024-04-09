@@ -80,7 +80,7 @@ QString Optimize_Sim::netlist()
 bool Optimize_Sim::createASCOFiles()
 {
   Property* pp;
-  QFile afile(QucsSettings.QucsHomeDir.filePath("asco_netlist.cfg"));
+  QFile afile(QucsSettings.tempFilesDir.filePath("asco_netlist.cfg"));
   if(afile.open(QIODevice::WriteOnly)) {
     QTextStream stream(&afile);
     stream << "*\n";
@@ -164,7 +164,7 @@ bool Optimize_Sim::createASCOFiles()
     afile.close();
   } else return false;
 
-  QDir ExtractDir(QucsSettings.QucsHomeDir);
+  QDir ExtractDir(QucsSettings.tempFilesDir);
   if(!ExtractDir.cd("extract")) {
     if(!ExtractDir.mkdir("extract"))
       return false;
@@ -210,8 +210,8 @@ bool Optimize_Sim::createASCOnetlist()
     }
   }
 
-  QFile infile(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
-  QFile outfile(QucsSettings.QucsHomeDir.filePath("asco_netlist.txt"));
+  QFile infile(QucsSettings.tempFilesDir.filePath("netlist.txt"));
+  QFile outfile(QucsSettings.tempFilesDir.filePath("asco_netlist.txt"));
   if(!infile.open(QIODevice::ReadOnly)) return false;
   if(!outfile.open(QIODevice::WriteOnly)) return false;
   QTextStream instream(&infile);
@@ -260,7 +260,7 @@ bool Optimize_Sim::loadASCOout()
     }
   }
 
-  QFile infile(QucsSettings.QucsHomeDir.filePath("asco_out.log"));
+  QFile infile(QucsSettings.tempFilesDir.filePath("asco_out.log"));
   if(!infile.open(QIODevice::ReadOnly)) return false;
   QTextStream instream(&infile);
   QString Line;

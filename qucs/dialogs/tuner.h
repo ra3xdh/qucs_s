@@ -47,7 +47,7 @@ extern QucsApp *QucsMain;  // the Qucs application itself
 
 float getScale(int);
 QString SeparateMagnitudeFromSuffix(QString num, int &);
-bool checkProperty(Component *component, Property *pp);
+bool isPropertyTunable(Component* propertyOwner, Property* property);
 
 class tunerElement : public QWidget
 {
@@ -97,7 +97,7 @@ class tunerElement : public QWidget
         void slotMinValueChanged();
         void slotMaxValueChanged();
         void slotStepChanged();
-        void slotValueChanged();
+        void slotValueChanged(bool simulate = true);
         void slotDelete();
         void slotDownClicked();
         void slotUpClicked();

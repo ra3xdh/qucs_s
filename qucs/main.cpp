@@ -83,6 +83,7 @@ bool loadSettings()
     /*** Temporarily continue to use QucsSettings to make sure all settings convert okay and remain compatible ***/
     QucsSettings.font.fromString(_settings::Get().item<QString>("font"));
     QucsSettings.appFont.fromString(_settings::Get().item<QString>("appFont"));
+    QucsSettings.textFont.fromString(_settings::Get().item<Qstring>("textFont"));
     QucsSettings.largeFontSize = _settings::Get().item<double>("LargeFontSize");
     QucsSettings.maxUndo = _settings::Get().item<int>("maxUndo");
     QucsSettings.NodeWiring = _settings::Get().item<int>("NodeWiring");
@@ -111,12 +112,12 @@ bool loadSettings()
         QFileInfo inf(QucsSettings.Qucsator);
         QucsSettings.QucsatorDir = inf.canonicalPath() + QDir::separator();
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QucsSettings.QucsatorDir + QDir::separator() + "qucsconv" + executableSuffix;
+            QucsSettings.Qucsconv = QucsSettings.QucsatorDir + QDir::separator() + "qucsconv_rf" + executableSuffix;
     } else {
-        QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
+        QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator_rf" + executableSuffix;
         QucsSettings.QucsatorDir = QucsSettings.BinDir;
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv" + executableSuffix;
+            QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv_rf" + executableSuffix;
     }
 
     QucsSettings.AdmsXmlBinDir.setPath(_settings::Get().item<QString>("AdmsXmlBinDir"));
@@ -128,6 +129,9 @@ bool loadSettings()
     QucsSettings.NProcs = _settings::Get().item<int>("Nprocs");
 
     // TODO:
+    // All usages of this path look like something involving a temporary data.
+    // This should be replaced with generic temp dir, but for now let's just
+    // place it under generic temp dir.
     if(settings.contains("S4Q_workdir")) QucsSettings.S4Qworkdir = settings.value("S4Q_workdir").toString();
     else QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QucsSettings.QucsWorkDir.absolutePath()+"/spice4qucs");
     // QucsSettings.S4Qworkdir = _settings::Get().item<QString>("S4Q_workdir");
@@ -136,8 +140,23 @@ bool loadSettings()
     QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveExecutable");
     QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveBinDir");
     QucsSettings.OpenVAFExecutable = _settings::Get().item<QString>("OpenVAFExecutable");
+
+    // TODO:
+    if(settings.contains("RFLayoutExecutable")) {
+        QucsSettings.RFLayoutExecutable = settings.value("RFLayoutExecutable").toString();
+    } else {
+        QucsSettings.RFLayoutExecutable = "qucsrflayout" + QString(executableSuffix);
+    }
+
+    if (auto path = settings.value("QucsHomeDir", "").toString(); path != "") {
+      QucsSettings.qucsWorkspaceDir.setPath(path);
+    }
+
+    QucsSettings.QucsWorkDir = QucsSettings.qucsWorkspaceDir;
+    QucsSettings.tempFilesDir.setPath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+
     QucsSettings.QucsHomeDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
-    QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
+    // QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
     QucsSettings.IgnoreFutureVersion = _settings::Get().item<bool>("IgnoreVersion");
     QucsSettings.GraphAntiAliasing = _settings::Get().item<bool>("GraphAntiAliasing");
     QucsSettings.TextAntiAliasing = _settings::Get().item<bool>("TextAntiAliasing");
@@ -182,6 +201,7 @@ bool saveApplSettings()
     qs.setItem<bool>("firstRun", false);
     qs.setItem<QString>("font", QucsSettings.font.toString());
     qs.setItem<QString>("appFont", QucsSettings.appFont.toString());
+    qs.setItem<QString>("textFont", QucsSettings.textFont.toString());
     
     // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
     qs.setItem<QString>("LargeFontSize", QString::number(QucsSettings.largeFontSize));
@@ -308,6 +328,7 @@ Schematic *openSchematic(QString schematic)
 int doNetlist(QString schematic, QString netlist)
 {
   QucsSettings.DefaultSimulator = spicecompat::simQucsator;
+  Module::registerModules();
   Schematic *sch = openSchematic(schematic);
   if (sch == NULL) {
     return 1;
@@ -412,6 +433,7 @@ int runXyce(QString schematic, QString dataset)
 int doNgspiceNetlist(QString schematic, QString netlist)
 {
     QucsSettings.DefaultSimulator = spicecompat::simNgspice;
+    Module::registerModules();
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -427,6 +449,7 @@ int doNgspiceNetlist(QString schematic, QString netlist)
 int doXyceNetlist(QString schematic, QString netlist)
 {
     QucsSettings.DefaultSimulator = spicecompat::simXyce;
+    Module::registerModules();
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -774,6 +797,7 @@ int main(int argc, char *argv[])
   //QDesktopWidget *d = a.desktop();
   QucsSettings.font = QApplication::font();
   QucsSettings.appFont = QApplication::font();
+  QucsSettings.textFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
   QucsSettings.font.setPointSize(12);
   QSize size = QGuiApplication::primaryScreen()->size();
   int w = size.width();
@@ -784,14 +808,15 @@ int main(int argc, char *argv[])
   QucsSettings.dy = h*3/4;
 
   // default
-  QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/.qucs");
-  QDir().mkpath(QucsWorkdirPath);
-  QucsSettings.QucsHomeDir.setPath(QucsWorkdirPath);
-  QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
+  QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/QucsWorkspace");
+  QucsSettings.qucsWorkspaceDir.setPath(QucsWorkdirPath);
+  QucsSettings.QucsWorkDir.setPath(QucsSettings.qucsWorkspaceDir.canonicalPath());
 
   // load existing settings (if any)
   loadSettings();
 
+  QDir().mkpath(QucsSettings.qucsWorkspaceDir.absolutePath());
+  QDir().mkpath(QucsSettings.tempFilesDir.absolutePath());
 
   // continue to set up overrides or default settings (some are saved on exit)
 

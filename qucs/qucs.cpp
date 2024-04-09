@@ -15,8 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "qlabel.h"
-#include "qtabbar.h"
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -58,8 +56,6 @@
 #include "module.h"
 #include "projectView.h"
 #include "components/components.h"
-#include "paintings/paintings.h"
-#include "diagrams/diagrams.h"
 #include "dialogs/savedialog.h"
 #include "dialogs/newprojdialog.h"
 #include "dialogs/settingsdialog.h"
@@ -122,8 +118,8 @@ QucsApp::QucsApp()
     tr("Spice Files") + QString(" (") + QucsSettings.spiceExtensions.join(" ") + QString(");;") +
     tr("Any File")+" (*)";
 
-  updateSchNameHash();
-  updateSpiceNameHash();
+  //updateSchNameHash();
+  //updateSpiceNameHash();
 
   move  (QucsSettings.x,  QucsSettings.y);
   resize(QucsSettings.dx, QucsSettings.dy);
@@ -184,36 +180,62 @@ QucsApp::QucsApp()
 #ifdef Q_OS_WIN
       QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice_con.exe";
       QString ngspice_exe2 = "C:\\Spice64\\bin\\ngspice_con.exe";
+      QString qucsator_exe = QucsSettings.BinDir + QDir::separator() + "qucsator_rf.exe";
 #else
       QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice";
+      QString qucsator_exe = QucsSettings.BinDir + QDir::separator() + "qucsator_rf";
 #endif
       QString ngspice_exe;
-      bool found = false;
+      bool ngspice_found = false;
       if (QFile::exists(ngspice_exe1)) {
-          found = true;
+          ngspice_found = true;
           ngspice_exe = ngspice_exe1;
       }
+      bool qucsator_found = false;
+      if (QFile::exists(qucsator_exe)) {
+          qucsator_found = true;
+          QucsSettings.Qucsator = qucsator_exe;
+      }
 #ifdef Q_OS_WIN
-      if (!found && QFile::exists(ngspice_exe2)) {
-          found = true;
+      if (!ngspice_found && QFile::exists(ngspice_exe2)) {
+          ngspice_found = true;
           ngspice_exe = ngspice_exe2;
       }
 #endif
       ngspice_exe = QDir::toNativeSeparators(ngspice_exe);
-      if (found) {
-          QMessageBox::information(nullptr,tr("Set simulator"),
-                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
-                                   tr("You can specify another location later"
-                                      " using Simulation->Simulators Setings"));
+      QString info_string;
+      if (ngspice_found) {
           QucsSettings.DefaultSimulator = spicecompat::simNgspice;
           QucsSettings.NgspiceExecutable = ngspice_exe;
+          info_string += tr("Ngspice found at: ") + ngspice_exe + "\n";
+      }
+      if (qucsator_found) {
+          info_string += tr("QucsatorRF found at: ") + qucsator_exe + "\n";
+      }
+      info_string += tr("\nYou can specify another location later"
+                        " using Simulation->Simulators Setings\n");
+      if (!ngspice_found && qucsator_found) {
+          QucsSettings.DefaultSimulator = spicecompat::simQucsator;
+          info_string += tr("\nNOTE: Only QucsatorRF found. This simulator is not"
+                            " recommended for general purpose schematics. "
+                            " Please install Ngspice.");
+      }
+      if (ngspice_found || qucsator_found) {
+          QMessageBox::information(nullptr,tr("Set simulator"), info_string);
           fillSimulatorsComboBox();
       } else {
-          QMessageBox::information(this,tr("Qucs"),tr("Ngspice not found automatically. Please specify simulators"
+          QMessageBox::information(this,tr("Qucs"),tr("No simulators found automatically. Please specify simulators"
                                                       " in the next dialog window."));
           slotSimSettings();
       }
       QucsSettings.firstRun = false;
+  } else if (!QFile::exists(QucsSettings.Qucsator)) {
+      QucsSettings.Qucsator = QucsSettings.BinDir + QDir::separator() + "qucsator_rf";
+#ifdef Q_OS_WIN
+      QucsSettings.Qucsator += ".exe";
+#endif
+      QMessageBox::information(this, "Qucs",
+                tr("QucsatorRF found at: ") + QucsSettings.Qucsator + "\n");
   }
 
 //  fillLibrariesTreeView();
@@ -352,6 +374,7 @@ void QucsApp::initView()
   CompComps = new QListWidget(this);
   CompComps->setViewMode(QListView::IconMode);
   CompComps->setGridSize(QSize(110,90));
+  CompComps->setResizeMode(QListView::Adjust);
   CompComps->setIconSize(QSize(64,64));
   CompComps->setAcceptDrops(false);
   CompComps->setStyleSheet("QListWidget{background: white; color: black;}");
@@ -479,7 +502,7 @@ void QucsApp::initView()
     m_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
 
     // ............................................
-    QString path = QucsSettings.QucsHomeDir.absolutePath();
+    QString path = QucsSettings.qucsWorkspaceDir.absolutePath();
     QDir ProjDir(path);
     // initial projects directory is the Qucs home directory
     QucsSettings.projsDir.setPath(path);
@@ -500,8 +523,6 @@ void QucsApp::initView()
 // Put all available libraries into ComboBox.
 void QucsApp::fillLibrariesTreeView ()
 {
-    QStringList LibFiles;
-    QStringList::iterator it;
     QList<QTreeWidgetItem *> topitems;
 
     libTreeWidget->clear();
@@ -516,17 +537,42 @@ void QucsApp::fillLibrariesTreeView ()
 //    newitem->setBackground
     topitems.append (newitem);
 
-    QDir LibDir(QucsSettings.LibDir);
-    LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+    populateLibTreeFromDir(QucsSettings.LibDir, topitems);
+
+    // make the user libraries section header
+    newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("User Libraries"));
+    newitem->setChildIndicatorPolicy (QTreeWidgetItem::DontShowIndicator);
+    newitem->setFont (0, sectionFont);
+    topitems.append (newitem);
+
+    QString UserLibDirPath = QucsSettings.qucsWorkspaceDir.canonicalPath () + "/user_lib/";
+    populateLibTreeFromDir(UserLibDirPath, topitems);
+
+    // make the user libraries section header
+    newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("Project Libraries"));
+    newitem->setChildIndicatorPolicy (QTreeWidgetItem::DontShowIndicator);
+    newitem->setFont (0, sectionFont);
+    topitems.append (newitem);
+    if (!ProjName.isEmpty()) {
+        populateLibTreeFromDir(QucsSettings.QucsWorkDir.absolutePath(), topitems);
+    }
+
+    libTreeWidget->insertTopLevelItems(0, topitems);
+}
+
+
+bool QucsApp::populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidgetItem *> &topitems)
+{
+    QDir LibDir(LibDirPath);
+    QStringList LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
     QStringList blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
     for (const QString& ss: blacklist) { // exclude blacklisted files
         LibFiles.removeAll(ss);
     }
-
     // create top level library items, base on the library names
-    for(it = LibFiles.begin(); it != LibFiles.end(); it++)
+    for(auto it = LibFiles.begin(); it != LibFiles.end(); it++)
     {
-        QString libPath(*it);
+        QString libPath(LibDir.absoluteFilePath(*it));
         libPath.chop(4); // remove extension
 
         ComponentLibrary parsedlibrary;
@@ -534,7 +580,7 @@ void QucsApp::fillLibrariesTreeView ()
         int result = parseComponentLibrary (libPath , parsedlibrary);
         QStringList nameAndFileName;
         nameAndFileName.append (parsedlibrary.name);
-        nameAndFileName.append (QucsSettings.LibDir + *it);
+        nameAndFileName.append (LibDirPath + *it);
 
         QTreeWidgetItem* newlibitem = new QTreeWidgetItem((QTreeWidget*)nullptr, nameAndFileName);
 
@@ -544,11 +590,11 @@ void QucsApp::fillLibrariesTreeView ()
             {
                 QString filename = getLibAbsPath(libPath);
                 QMessageBox::critical(nullptr, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
-                return;
+                return false;
             }
             case QUCS_COMP_LIB_CORRUPT:
                 QMessageBox::critical(nullptr, tr("Error"), tr("Library is corrupt."));
-                return;
+                return false;
             default:
                 break;
         }
@@ -578,97 +624,8 @@ void QucsApp::fillLibrariesTreeView ()
 
         topitems.append (newlibitem);
     }
-
-
-    // make the user libraries section header
-    newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("User Libraries"));
-    newitem->setChildIndicatorPolicy (QTreeWidgetItem::DontShowIndicator);
-    newitem->setFont (0, sectionFont);
-    topitems.append (newitem);
-
-    QDir UserLibDir = QDir (QucsSettings.QucsHomeDir.canonicalPath () + "/user_lib/");
-
-    LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
-    const QDir& UsrLibDir(UserLibDir);
-    LibFiles = UsrLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
-    blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
-    for (const QString& ss : blacklist) { // exclude blacklisted files
-        LibFiles.removeAll(ss);
-    }
-    int UserLibCount = LibFiles.count();
-
-    if (UserLibCount > 0) // there are user libraries
-    {
-
-        // create top level library itmes, base on the library names
-        for(it = LibFiles.begin(); it != LibFiles.end(); it++)
-        {
-            QString libPath(UserLibDir.absoluteFilePath(*it));
-            libPath.chop(4); // remove extension
-
-            ComponentLibrary parsedlibrary;
-
-            int result = parseComponentLibrary (libPath, parsedlibrary);
-            QStringList nameAndFileName;
-            nameAndFileName.append (parsedlibrary.name);
-            nameAndFileName.append (UserLibDir.absolutePath() +"/"+ *it);
-
-            QTreeWidgetItem* newlibitem = new QTreeWidgetItem((QTreeWidget*)0, nameAndFileName);
-
-            switch (result)
-            {
-                case QUCS_COMP_LIB_IO_ERROR:
-                {
-                    QString filename = getLibAbsPath(libPath);
-                    QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
-                    return;
-                }
-                case QUCS_COMP_LIB_CORRUPT:
-                    QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
-                    return;
-                default:
-                    break;
-            }
-
-            for (int i = 0; i < parsedlibrary.components.count (); i++)
-            {
-                QStringList compNameAndDefinition;
-
-                compNameAndDefinition.append (parsedlibrary.components[i].name);
-
-                QString s = "<Qucs Schematic " PACKAGE_VERSION ">\n";
-
-                s +=  "<Components>\n  " +
-                      parsedlibrary.components[i].modelString + "\n" +
-                      "</Components>\n";
-
-                compNameAndDefinition.append (s);
-                compNameAndDefinition.append(parsedlibrary.components[i].definition);
-                compNameAndDefinition.append(libPath);
-
-                QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
-
-                // Silence warning from the compiler about unused variable newcompitem
-                // we pass the pointer to the parent item in the constructor
-                Q_UNUSED( newcompitem )
-            }
-
-            topitems.append (newlibitem);
-        }
-        libTreeWidget->insertTopLevelItems(0, topitems);
-    }
-    else
-    {
-        // make the user libraries section header
-        newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("No User Libraries"));
-        sectionFont.setBold (false);
-        newitem->setFont (0, sectionFont);
-        topitems.append (newitem);
-    }
-
-    libTreeWidget->insertTopLevelItems(0, topitems);
+    return true;
 }
-
 
 // ---------------------------------------------------------------
 // Returns a pointer to the QucsDoc object whose number is "No".
@@ -1249,8 +1206,8 @@ void QucsApp::slotCMenuCopy()
     //TODO: maybe require disable edit here
 
     // refresh the schematic file path
-    this->updateSchNameHash();
-    this->updateSpiceNameHash();
+    //this->updateSchNameHash();
+    //this->updateSpiceNameHash();
 
     slotUpdateTreeview();
   }
@@ -1339,7 +1296,7 @@ void QucsApp::slotCMenuInsert()
 void QucsApp::readProjects()
 {
     QString path = QucsSettings.projsDir.absolutePath();
-    QString homepath = QucsSettings.QucsHomeDir.absolutePath();
+    QString homepath = QucsSettings.qucsWorkspaceDir.absolutePath();
 
     if (path == homepath) {
         // in Qucs Home, disallow further up in the dirs tree
@@ -1429,6 +1386,7 @@ void QucsApp::openProject(const QString& Path)
   parentDir.cdUp();
     // show name in title of main window
   setWindowTitle( tr("Project: ") + ProjName + " (" +  parentDir.absolutePath() + ") - " + windowTitle);
+  fillLibrariesTreeView();
 }
 
 // ----------------------------------------------------------
@@ -1437,7 +1395,7 @@ void QucsApp::slotMenuProjOpen()
 {
   QString d = QFileDialog::getExistingDirectory(
       this, tr("Choose Project Directory for Opening"),
-      QucsSettings.QucsHomeDir.path(),
+      QucsSettings.qucsWorkspaceDir.path(),
       QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
   if(d.isEmpty()) return;
 
@@ -1496,6 +1454,7 @@ void QucsApp::slotMenuProjClose()
 
   TabView->setCurrentIndex(0);   // switch to "Projects"-Tab
   ProjName = "";
+  fillLibrariesTreeView();
 }
 
 // remove a directory recursively
@@ -1547,7 +1506,7 @@ void QucsApp::slotMenuProjDel()
 {
   QString d = QFileDialog::getExistingDirectory(
       this, tr("Choose Project Directory for Deleting"),
-      QucsSettings.QucsHomeDir.path(),
+      QucsSettings.qucsWorkspaceDir.path(),
       QFileDialog::ShowDirsOnly
       | QFileDialog::DontResolveSymlinks);
 
@@ -1941,12 +1900,19 @@ bool QucsApp::closeAllFiles()
   return true;
 }
 
+void QucsApp::slotFileExamples() {
+  statusBar()->showMessage(tr("Open example…"));
 
-void QucsApp::slotFileExamples()
-{
-  statusBar()->showMessage(tr("Open examples directory..."));
-  // pass the QUrl representation of a local file
-  QDesktopServices::openUrl(QUrl::fromLocalFile(QucsSettings.ExamplesDir));
+  auto exampleFile =
+      QFileDialog::getOpenFileName(this, tr("Select example schematic"),
+                                   QucsSettings.ExamplesDir, QucsFileFilter);
+
+  if (exampleFile.isEmpty()) {
+      statusBar()->showMessage(tr("Open example canceled"), 2000);
+      return;
+  }
+
+  gotoPage(exampleFile);
   statusBar()->showMessage(tr("Ready."));
 }
 
@@ -2074,8 +2040,8 @@ void QucsApp::slotApplSettings()
 // --------------------------------------------------------------
 void QucsApp::slotRefreshSchPath()
 {
-  this->updateSchNameHash();
-  this->updateSpiceNameHash();
+  //this->updateSchNameHash();
+  //this->updateSpiceNameHash();
 
   statusBar()->showMessage(tr("The schematic search path has been refreshed."), 2000);
 }
@@ -3220,7 +3186,7 @@ void QucsApp::slotUpdateTreeview()
 {
   Content->refresh();
 }
-
+/*
 // -----------------------------------------------------------
 // Searches the qucs path list for all schematic files and creates
 // a hash for lookup later
@@ -3249,7 +3215,6 @@ void QucsApp::updateSchNameHash(void)
         // put each one in the hash table with the unique key the base name of
         // the file, note this will overwrite the value if the key already exists
         for (const QFileInfo& schfile : schfilesList) {
-            QString bn = schfile.completeBaseName();
             schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
         }
     }
@@ -3263,7 +3228,8 @@ void QucsApp::updateSchNameHash(void)
         schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
     }
 }
-
+*/
+/*
 // -----------------------------------------------------------
 // Searches the qucs path list for all spice files and creates
 // a hash for lookup later
@@ -3290,7 +3256,6 @@ void QucsApp::updateSpiceNameHash()
         // put each one in the hash table with the unique key the base name of
         // the file, note this will overwrite the value if the key already exists
         for (const QFileInfo& spicefile : spicefilesList) {
-            QString bn = spicefile.completeBaseName();
             schNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
         }
     }
@@ -3304,7 +3269,7 @@ void QucsApp::updateSpiceNameHash()
         spiceNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
     }
 }
-
+*/
 // -----------------------------------------------------------
 // update the list of paths, pruning non-existing paths
 void QucsApp::updatePathList()
@@ -3403,8 +3368,8 @@ void QucsApp::slotSimulateWithSpice()
                 this,SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         connect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-        if (!TuningMode) SimDlg->exec();
-        else SimDlg->slotStart();
+        if (TuningMode || sch->showBias == 0) SimDlg->slotStart();
+        else SimDlg->exec();
         /*disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));*/

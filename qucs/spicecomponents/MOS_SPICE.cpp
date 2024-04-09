@@ -40,9 +40,6 @@ MOS_SPICE::MOS_SPICE()
 
   createSymbol();
 
-  x1 = -30; y1 = -30;
-  x2 =   4; y2 =  30;
-
     tx = x1+4;
     ty = y2+4;
 
@@ -60,7 +57,12 @@ MOS_SPICE::~MOS_SPICE()
 
 Component* MOS_SPICE::newOne()
 {
-  return new MOS_SPICE();
+    auto p = new MOS_SPICE();
+    p->getProperty("Pins")->Value = getProperty("Pins")->Value;
+    p->getProperty("Letter")->Value = getProperty("Letter")->Value;
+    p->getProperty("type")->Value = getProperty("type")->Value;
+    p->recreate(0);
+    return p;
 }
 
 Element* MOS_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
@@ -219,6 +221,9 @@ void MOS_SPICE::createSymbol()
         Lines.append(new qucs::Line( -1,  0, -6, -5,QPen(Qt::darkRed,2)));
         Lines.append(new qucs::Line( -1,  0, -6,  5,QPen(Qt::darkRed,2)));
     }
+
+    x1 = -30; y1 = -30;
+    x2 =   4; y2 =  30;
 }
 
 QString MOS_SPICE::spice_netlist(bool)

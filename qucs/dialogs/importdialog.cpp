@@ -24,6 +24,7 @@
 #include <QMessageBox>
 #include <QGridLayout>
 #include <QDebug>
+#include <QListView>
 
 #include "importdialog.h"
 #include "main.h"
@@ -43,18 +44,34 @@ ImportDialog::ImportDialog(QWidget *parent)
   file->addWidget(new QLabel(tr("Input File:")),0, 0);
   ImportEdit = new QLineEdit();
   file->addWidget(ImportEdit, 0, 1);
+  connect(ImportEdit,SIGNAL(textChanged(QString)),this,SLOT(slotValidateInput()));
   QPushButton *BrowseButt = new QPushButton(tr("Browse"));
   file->addWidget(BrowseButt, 0, 2);
   connect(BrowseButt, SIGNAL(clicked()), SLOT(slotBrowse()));
-  file->addWidget(new QLabel(tr("Output File:")), 1, 0);
+
+  file->addWidget(new QLabel(tr("Input Format:")), 1, 0);
+  InType = new QComboBox();
+  InType->addItem(tr("SPICE netlist"));
+  InType->addItem(tr("VCD dataset"));
+  InType->addItem(tr("CSV"));
+  InType->addItem(tr("Qucs dataset"));
+  InType->addItem(tr("Citi"));
+  InType->addItem(tr("ZVR"));
+  InType->addItem(tr("MDL"));
+  InType->addItem(tr("Touchstone"));
+  file->addWidget(InType,1,1);
+  connect(InType,SIGNAL(currentIndexChanged(int)),this,SLOT(slotValidateOutput()));
+
+
+  file->addWidget(new QLabel(tr("Output File:")), 2, 0);
   OutputEdit = new QLineEdit();
-  file->addWidget(OutputEdit, 1, 1);
-  OutputLabel = new QLabel(tr("Output Data:"));
-  OutputLabel->setEnabled(false);
-  file->addWidget(OutputLabel, 2, 0);
-  OutputData = new QLineEdit();
-  OutputData->setEnabled(false);
-  file->addWidget(OutputData, 2, 1);
+  file->addWidget(OutputEdit, 2, 1);
+  QPushButton *SaveBrowseButt = new QPushButton(tr("Browse"));
+  file->addWidget(SaveBrowseButt, 2, 2);
+  connect(SaveBrowseButt, SIGNAL(clicked()), SLOT(slotSaveBrowse()));
+
+
+  file->addWidget(new QLabel(tr("Output Format:")), 3, 0);
   OutType = new QComboBox();
   OutType->addItem(tr("Qucs dataset"));
   OutType->addItem(tr("Touchstone"));
@@ -63,8 +80,15 @@ ImportDialog::ImportDialog(QWidget *parent)
   OutType->addItem(tr("Qucs netlist"));
   OutType->addItem(tr("Matlab"));
   connect(OutType, SIGNAL(activated(int)), SLOT(slotType(int)));
-  file->addWidget(OutType, 2, 2);
-  
+  file->addWidget(OutType, 3, 1);
+
+  OutputLabel = new QLabel(tr("Output Data:"));
+  OutputLabel->setEnabled(false);
+  file->addWidget(OutputLabel, 4, 0);
+  OutputData = new QLineEdit();
+  OutputData->setEnabled(false);
+  file->addWidget(OutputData, 4, 1);
+
   Group2->setLayout(file);
   all->addWidget(Group2, 0,0,1,1);
   
@@ -95,6 +119,8 @@ ImportDialog::ImportDialog(QWidget *parent)
   Butts->addWidget(CancelButt);
   
   all->addLayout(Butts,2,0,1,1);
+  slotValidateOutput();
+
 }
 
 ImportDialog::~ImportDialog()
@@ -108,7 +134,7 @@ void ImportDialog::slotBrowse()
 {
   QString s = QFileDialog::getOpenFileName(
      this, tr("Enter a Data File Name"),
-     lastDir.isEmpty() ? QString(".") : lastDir,
+     lastImportDir.isEmpty() ? QString(".") : lastImportDir,
      tr("All known")+
      " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir);;"+
      tr("Touchstone files")+" (*.s?p);;"+
@@ -123,35 +149,26 @@ void ImportDialog::slotBrowse()
 
   if(!s.isEmpty()) {
     QFileInfo Info(s);
-    lastDir = Info.absolutePath();  // remember last directory
+    lastImportDir = Info.absolutePath();  // remember last directory
     ImportEdit->setText(s);
-
-    if(OutputEdit->text().isEmpty()) {
-      switch(OutType->currentIndex()) {
-      case 0:
-	OutputEdit->setText(Info.completeBaseName()+".dat");
-	break;
-      case 1:
-	OutputEdit->setText(Info.completeBaseName()+".snp");
-	break;
-      case 2:
-	OutputEdit->setText(Info.completeBaseName()+".csv");
-	break;
-      case 3:
-	OutputEdit->setText(Info.completeBaseName()+".lib");
-	break;
-      case 4:
-	OutputEdit->setText(Info.completeBaseName()+".txt");
-	break;
-      case 5:
-	OutputEdit->setText(Info.completeBaseName()+".mat");
-	break;
-      default:
-	OutputEdit->setText(Info.completeBaseName()+".dat");
-	break;
-      }
-    }
   }
+}
+
+void ImportDialog::slotSaveBrowse()
+{
+    QString s = QFileDialog::getSaveFileName(
+       this, tr("Enter a Data File Name"),
+       lastImportDir.isEmpty() ? QString(".") : lastImportDir,
+       tr("All known")+
+       " (*.s?p *.csv *.dat *.cir *.net *.lib);;"+
+       tr("Touchstone files")+" (*.s?p);;"+
+       tr("CSV files")+" (*.csv);;"+
+       tr("Qucs dataset files")+" (*.dat);;"+
+       tr("SPICE files")+" (*.cir);;"+
+       tr("Qucsator netlist")+" (*.net);;"+
+       tr("Qucs library")+" (*.lib);;"+
+       tr("Any file")+" (*)");
+    OutputEdit->setText(s);
 }
 
 // ------------------------------------------------------------------------
@@ -175,39 +192,38 @@ void ImportDialog::slotImport()
 	return;
       }
 
-  QFileInfo Info(ImportEdit->text());
-  QString Suffix = Info.suffix();
   QString Program;
   QStringList CommandLine;
 
   Program = QucsSettings.Qucsconv;
   CommandLine  << "-if";
   
-  if((Suffix == "citi") || (Suffix == "cit"))
-    CommandLine << "citi";
-  else if(Suffix == "vcd")
-    CommandLine << "vcd";
-  else if(Suffix == "asc")
-    CommandLine << "zvr";
-  else if(Suffix == "mdl")
-    CommandLine << "mdl";
-  else if(Suffix == "csv")
-    CommandLine << "csv";
-  else if(Suffix == "dat")
-    CommandLine << "qucsdata";
-  else if(Suffix == "cir")
-    CommandLine << "spice";
-  else for(;;) {
-    if(Suffix.at(0) == 's')
-      if(Suffix.at(2) == 'p')
-        if(Suffix.length() == 3)
-          if(Suffix.at(1).isDigit()) {
-            CommandLine << "touchstone";
-            break;
-          }
-
-    MsgText->appendPlainText(tr("ERROR: Unknown file format! Please check file name extension!"));
-    return;
+  switch (InType->currentIndex()) {
+  case 0:
+      CommandLine << "spice";
+      break;
+  case 1:
+      CommandLine << "vcd";
+      break;
+  case 2:
+      CommandLine << "csv";
+      break;
+  case 3:
+      CommandLine << "qucsdata";
+      break;
+  case 4:
+      CommandLine << "citi";
+      break;
+  case 5:
+      CommandLine << "zvr";
+      break;
+  case 6:
+      CommandLine << "mdl";
+      break;
+  case 7:
+      CommandLine << "touchstone";
+      break;
+  default:  break;
   }
 
   CommandLine << "-of";
@@ -250,11 +266,12 @@ void ImportDialog::slotImport()
   connect(&Process, SIGNAL(finished(int)), SLOT(slotProcessEnded(int)));
 
   MsgText->appendPlainText(tr("Running command line:")+"\n");
-  MsgText->appendPlainText(Program + CommandLine.join(" "));
+  MsgText->appendPlainText(Program + " " + CommandLine.join(" "));
   MsgText->appendPlainText("\n");
 
   qDebug() << "Command:" << Program << CommandLine.join(" ");
   Process.start(Program, CommandLine);
+  Process.waitForStarted();
   
   if(Process.state() != QProcess::Running)
     MsgText->appendPlainText(tr("ERROR: Cannot start converter!"));
@@ -320,4 +337,84 @@ void ImportDialog::slotProcessEnded(int status)
   }
   else
     MsgText->appendPlainText(tr("Converter ended with errors!"));
+}
+
+void ImportDialog::slotValidateInput()
+{
+    QString in_file = ImportEdit->text();
+    if (in_file.isEmpty() || !QFile::exists(in_file)) return;
+
+    QFileInfo inf(in_file);
+    QString Suffix = inf.suffix().toLower();
+    int idx = 3;
+    QRegularExpression snp_expr("s[1-9]p");
+
+    if((Suffix == "citi") || (Suffix == "cit"))
+      idx = 4;
+    else if(Suffix == "vcd")
+      idx = 1;
+    else if(Suffix == "asc")
+      idx = 5;
+    else if(Suffix == "mdl")
+      idx = 6;
+    else if(Suffix == "csv")
+      idx = 2;
+    else if(Suffix == "dat")
+      idx = 3;
+    else if(Suffix == "cir" || Suffix == "ckt" || Suffix == "sp")
+      idx = 0;
+    else if (snp_expr.match(Suffix).hasMatch())
+      idx = 7;
+
+    InType->setCurrentIndex(idx);
+
+}
+
+
+void ImportDialog::slotValidateOutput()
+{
+    QListView* view = qobject_cast<QListView *>(OutType->view());
+
+    for (int i = 0; i < OutType->count(); i++) {
+        view->setRowHidden(i,false);
+    }
+
+    switch (InType->currentIndex()) {
+    case 0: // SPICE
+        view->setRowHidden(0,true);
+        view->setRowHidden(1,true);
+        view->setRowHidden(2,true);
+        view->setRowHidden(5,true);
+        OutType->setCurrentIndex(3);
+        break;
+    case 1: // CSV
+    case 2: // VCD
+        view->setRowHidden(1,true);
+        view->setRowHidden(2,true);
+        view->setRowHidden(3,true);
+        view->setRowHidden(4,true);
+        view->setRowHidden(5,true);
+        OutType->setCurrentIndex(0);
+        break;
+    case 3: // Qucsdata
+        view->setRowHidden(0,true);
+        view->setRowHidden(3,true);
+        view->setRowHidden(4,true);
+        OutType->setCurrentIndex(1);
+        break;
+    case 4: // Citi
+    case 5: // ZVR
+    case 6: // MDL
+    case 7: // Touchstone
+        view->setRowHidden(1,true);
+        view->setRowHidden(2,true);
+        view->setRowHidden(3,true);
+        view->setRowHidden(4,true);
+        view->setRowHidden(5,true);
+        OutType->setCurrentIndex(0);
+        break;
+        break;
+    default:
+        break;
+    }
 }

@@ -67,7 +67,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   Validator = new QRegularExpressionValidator(Expr, this);
   Expr.setPattern("[^\"]*");   // valid expression for property 'edit'
   Validator2 = new QRegularExpressionValidator(Expr, this);
-  Expr.setPattern("[\\w_\\.\\(\\) @:\\[\\]]+");  // valid expression for property 'NameEdit'. Space to enable Spice-style par sweep
+  Expr.setPattern("[\\w_.,\\(\\) @:\\[\\]]+");  // valid expression for property 'NameEdit'. Space to enable Spice-style par sweep
   ValRestrict = new QRegularExpressionValidator(Expr, this);
 
   checkSim  = 0;  comboSim  = 0;  comboType  = 0;  checkParam = 0;
@@ -1117,28 +1117,18 @@ void ComponentDialog::slotBrowseFile()
 
   if (!currFileName.isEmpty()) { // a file name is already defined
     if (currFileInfo.isRelative()) { // but has no absolute path
-      if (!schematicFileName.isEmpty()) { // if schematic has a filename
-	// build the an absolute file name using the schematic path
-	currDir = schematicFileInfo.absolutePath() + 
-	          QDir::separator() +
-                  currFileInfo.fileName();
-      } else { // no absolute paths around
-	// use the WorkDir path
-	currDir = QucsSettings.QucsWorkDir.path() + 
-	          QDir::separator() +
-	  currFileInfo.fileName();
-      }
-    } else { // current file name is absolute
-      // use it
-      currDir = currFileName;
+      if (!schematicFileName.isEmpty()) // if schematic has a filename
+        currDir = schematicFileInfo.absolutePath();
+      else    // use the WorkDir path
+        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+    } else {  // current file name is absolute
+      currDir = currFileInfo.exists() ? currFileInfo.absolutePath() : QucsSettings.QucsWorkDir.absolutePath();
     }
-  } else { // a file name is not defined
+  } else {    // a file name is not defined
     if (!schematicFileName.isEmpty()) { // if schematic has a filename
-      // use the schematic absolute path
       currDir = schematicFileInfo.absolutePath();
-    } else { // no absolute paths around
-      // use the WorkDir path
-      currDir = QucsSettings.QucsWorkDir.path();
+    } else {  // use the WorkDir path
+      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
     }
   }
   
@@ -1156,8 +1146,14 @@ void ComponentDialog::slotBrowseFile()
   if(!s.isEmpty()) {
     // snip path if file in current directory
     QFileInfo file(s);
-    if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
-       QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) s = file.fileName();
+    lastDir = file.absolutePath();
+    currDir = schematicFileInfo.canonicalPath();
+    if ( file.canonicalFilePath().startsWith(currDir) ) {
+      s = QDir(currDir).relativeFilePath(s);
+    } else if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
+        QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) {
+      s = file.fileName();
+    }
     edit->setText(s);
   }
   /* FIX
@@ -1167,7 +1163,7 @@ void ComponentDialog::slotBrowseFile()
 // -------------------------------------------------------------------------
 void ComponentDialog::slotEditFile()
 {
-  Doc->App->editFile(QucsSettings.QucsWorkDir.filePath(edit->text()));
+  Doc->App->editFile(misc::properAbsFileName(edit->text(), Doc));
 }
 
 /*!
@@ -1401,7 +1397,7 @@ void ComponentDialog::slotNumberChanged(const QString&)
     if(y == 0.0)  y = x / 10.0;
     if(x == 0.0)  x = y * 10.0;
     if(y == 0.0) { y = 1.0;  x = 10.0; }
-    x = editNumber->text().toDouble() / log10(fabs(x / y));
+    x = (editNumber->text().toDouble() - 1) / log10(fabs(x / y));
     Unit = QString::number(x);
   }
   else {
@@ -1456,7 +1452,7 @@ void ComponentDialog::slotStepChanged(const QString& Step)
   }
 
   editNumber->blockSignals(true);  // do not calculate number again
-  editNumber->setText(QString::number(floor(x + 1.0)));
+  editNumber->setText(QString::number(round(x + 1.0), 'g', 16));
   editNumber->blockSignals(false);
 }
 
@@ -1549,7 +1545,10 @@ QStringList ComponentDialog::getSimulationList()
         Component *c = sch->DocComps.at(i);
         if (!c->isSimulation) continue;
         if (c->Model == ".FOUR") continue;
-        if (c->Model == ".SW") continue;
+        if (c->Model == ".PZ") continue;
+        if (c->Model == ".SENS") continue;
+        if (c->Model == ".SENS_AC") continue;
+        if (c->Model == ".SW" && !c->Props.at(0)->Value.toUpper().startsWith("DC") ) continue;
         sim_lst.append(c->Name);
     }
     QStringList sim_wo_numbers = sim_lst;

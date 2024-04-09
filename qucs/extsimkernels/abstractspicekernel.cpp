@@ -869,13 +869,15 @@ void AbstractSpiceKernel::parsePrnOutput(const QString &ngspice_file,
             QString line = data.readLine();
             if (line.contains(eq_sep)) {
                 QString var = line.section(eq_sep, 0, 0).trimmed();
-                QString val = line.section(eq_sep, 1, 1).trimmed();
-                double re = val.section(reim_sep, 0, 0).toDouble();
-                double im = val.section(reim_sep, 1, 1).toDouble();
-                var_list.append(var);
-                sim_point.append(re);
-                if ( isComplex )
-                    sim_point.append(im);
+                if (!var.startsWith('_')) {
+                    QString val = line.section(eq_sep, 1, 1).trimmed();
+                    double re = val.section(reim_sep, 0, 0).toDouble();
+                    double im = val.section(reim_sep, 1, 1).toDouble();
+                    var_list.append(var);
+                    sim_point.append(re);
+                    if ( isComplex )
+                        sim_point.append(im);
+                }
             }
         }
         sim_points.append(sim_point);
@@ -1107,7 +1109,7 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
     bool isXyce = false;
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
-        QRegularExpression prnln_rx("^\\D\\w*\\s=\\s-?\\d.\\d+[Ee][+-]\\d+");
+        QRegularExpression prnln_rx("^[A-Za-z].*\\s=\\s-?\\d.\\d+[Ee][+-]\\d+");
         QRegularExpression rx("^0\\s+[0-9].*"); // Zero index pattern
         while (!ngsp_data.atEnd()) {
             QString lin = ngsp_data.readLine();
@@ -1175,12 +1177,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         bool hasParSweep = false;
         bool hasDblParSweep = false;
 
-        QString custom_prefix;
+        QString dataset_prefix;
+        bool isCustomPrefix = false;
         if ( ngspice_output_filename.startsWith("spice4qucs.") ) {
-            custom_prefix = ngspice_output_filename.section('.', 1, 1).toLower();
+            dataset_prefix = ngspice_output_filename.section('.', 1, 1).toLower();
         } else {
-            QRegularExpression custom_prefix_rx("(?<=#).*?(?=#)");
-            custom_prefix = custom_prefix_rx.match(ngspice_output_filename).captured(0).toLower();
+            QRegularExpression dataset_prefix_rx("(?<=#).*?(?=#)");
+            dataset_prefix = dataset_prefix_rx.match(ngspice_output_filename).captured(0).toLower();
+            isCustomPrefix = !dataset_prefix.isEmpty();
         }
         QRegularExpression four_rx(".*\\.four[0-9]+$");
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
@@ -1210,7 +1214,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             parseNoiseOutput(full_outfile,sim_points,var_list,hasParSweep);
             if (hasParSweep) {
                 QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
-                                                        + "spice4qucs." + custom_prefix + ".cir.res");
+                                                        + "spice4qucs." + dataset_prefix + ".cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
         } else if (ngspice_output_filename.endsWith(".pz")) {
@@ -1218,7 +1222,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             parsePZOutput(full_outfile,sim_points,var_list,hasParSweep);
             if (hasParSweep) {
                 QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
-                                                        + "spice4qucs." + custom_prefix + ".cir.res");
+                                                        + "spice4qucs." + dataset_prefix + ".cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
         } else if (ngspice_output_filename.endsWith(".SENS.prn")) {
@@ -1236,12 +1240,12 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             if (ngspice_output_filename.endsWith("_swp_swp.plot")) { // 2-var parameter sweep
                 hasDblParSweep = true;
                 QString res2_file = QDir::toNativeSeparators(workdir + QDir::separator()
-                                                            + "spice4qucs." + custom_prefix + ".cir.res1");
+                                                            + "spice4qucs." + dataset_prefix + ".cir.res1");
                 parseResFile(res2_file,swp_var2,swp_var2_val);
             }
 
             QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
-                                                    + "spice4qucs." + custom_prefix + ".cir.res");
+                                                    + "spice4qucs." + dataset_prefix + ".cir.res");
             parseResFile(res_file,swp_var,swp_var_val);
 
             parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
@@ -1273,7 +1277,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             }
         }
         if (var_list.isEmpty()) continue; // nothing to convert
-        normalizeVarsNames(var_list, custom_prefix);
+        normalizeVarsNames(var_list, dataset_prefix, isCustomPrefix);
 
         QString indep = var_list.first();
         //QList<double> sim_point;
@@ -1377,7 +1381,7 @@ void AbstractSpiceKernel::removeAllSimulatorOutputs()
  *        for harmonic balance variable and current probes variables are supported.
  * \param var_list This list contains variable names that need normalization.
  */
-void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list, const QString &custom_prefix)
+void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list, const QString &dataset_prefix, bool isCustom)
 {
     QString prefix="";
     QString iprefix="";
@@ -1434,11 +1438,11 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list, const QStrin
         }
     }
 
-    if ( needsPrefix )
-        if ( !custom_prefix.isEmpty() ) {
+    if ( needsPrefix || isCustom )
+        if ( !dataset_prefix.isEmpty() ) {
             for ( it = var_list.begin() ; it != var_list.end() ; ++it)
                 if ( !(*it).isEmpty() )
-                    (*it).prepend(custom_prefix + ".");
+                    (*it).prepend(dataset_prefix + ".");
         }
 }
 

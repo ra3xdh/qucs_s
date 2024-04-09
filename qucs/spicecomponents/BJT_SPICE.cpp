@@ -29,12 +29,6 @@ BJT_SPICE::BJT_SPICE()
     Description = QObject::tr("Q(NPN) BJT:\nMultiple line ngspice or Xyce Q model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
     Simulator = spicecompat::simSpice;
 
-    x1 = -30; y1 = -30;
-    x2 =   4; y2 =  30;
-
-    tx = x1+4;
-    ty = y2+4;
-
     Model = "BJT_SPICE";
     SpiceModel = "Q";
     Name  = "Q";
@@ -49,6 +43,8 @@ BJT_SPICE::BJT_SPICE()
     Props.append(new Property("Model_Line 5", "", false,"+ continuation line 4"));
 
     createSymbol();
+    tx = x1+4;
+    ty = y2+4;
 
 }
 
@@ -97,6 +93,9 @@ void BJT_SPICE::createSymbol()
     Ports.append(new Port(  0, 30));
     if (Npins >= 4) Ports.append(new Port( 30,  0)); // substrate
     if (Npins >= 5) Ports.append(new Port(-30, 20)); // thermal node
+
+    x1 = -30; y1 = -30;
+    x2 =   4; y2 =  30;
 }
 
 BJT_SPICE::~BJT_SPICE()
@@ -105,7 +104,12 @@ BJT_SPICE::~BJT_SPICE()
 
 Component* BJT_SPICE::newOne()
 {
-  return new BJT_SPICE();
+    auto p = new BJT_SPICE();
+    p->getProperty("Pins")->Value = getProperty("Pins")->Value;
+    p->getProperty("Letter")->Value = getProperty("Letter")->Value;
+    p->getProperty("type")->Value = getProperty("type")->Value;
+    p->recreate(0);
+    return p;
 }
 
 Element* BJT_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)

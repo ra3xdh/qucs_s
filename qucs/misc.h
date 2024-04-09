@@ -44,19 +44,21 @@ namespace qucs {
 }
 
 
+class Schematic;
+
 namespace misc {
   QString complexRect(double, double, int Precision=3);
   QString complexDeg (double, double, int Precision=3);
   QString complexRad (double, double, int Precision=3);
   QString StringNum  (double, char form='g', int Precision=3);
   void    str2num    (const QString&, double&, QString&, double&);
-  QString num2str    (double, int Precision = -1);
+  QString num2str    (double, int Precision = -1, QString unit="");
   QColor ColorFromString(const QString& color);
   QString StringNiceNum(double);
   void    convert2Unicode(QString&);
   void    convert2ASCII(QString&);
   QString properName(const QString&);
-  QString properAbsFileName(const QString&);
+  QString properAbsFileName(const QString&, Schematic* sch = nullptr);
   QString properFileName(const QString&);
   bool    VHDL_Time(QString&, const QString&);
   bool    VHDL_Delay(QString&, const QString&);

@@ -18,6 +18,7 @@
 #include "xspice_cmbuilder.h"
 #include "components/subcircuit.h"
 #include "components/libcomp.h"
+#include "misc.h"
 #include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
 
@@ -218,8 +219,8 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
                 mod_lst.append(libpc->getAttachedMOD());
                 ifs_lst.append(libpc->getAttachedIFS());
             } else {
-                mod_lst.append(spicecompat::convert_relative_filename(pc->Props.at(0)->Value));
-                ifs_lst.append(spicecompat::convert_relative_filename(pc->Props.at(1)->Value));
+                mod_lst.append(misc::properAbsFileName(pc->Props.at(0)->Value, Sch));
+                ifs_lst.append(misc::properAbsFileName(pc->Props.at(1)->Value, Sch));
             }
             QStringList::iterator mod = mod_lst.begin();
             QStringList::iterator ifs = ifs_lst.begin();
@@ -287,8 +288,8 @@ void XSPICE_CMbuilder::getModIfsFileList(QStringList &files)
 {
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
         if (pc->Model=="XSP_CMod") {
-            files.append(spicecompat::convert_relative_filename(pc->Props.at(0)->Value));
-            files.append(spicecompat::convert_relative_filename(pc->Props.at(1)->Value));
+            files.append(misc::properAbsFileName(pc->Props.at(0)->Value, Sch));
+            files.append(misc::properAbsFileName(pc->Props.at(1)->Value, Sch));
         }
         if (pc->Model=="Lib") {
             LibComp *libpc = (LibComp *)pc;

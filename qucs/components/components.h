@@ -184,6 +184,8 @@
 #include "comp_2bit.h"
 #include "comp_4bit.h"
 #include "hpribin4bit.h"
+#include "circularloop.h"
+#include "spiralinductor.h"
 
 // external simulation components
 #include "etr_sim.h"

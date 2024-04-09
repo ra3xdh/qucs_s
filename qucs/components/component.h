@@ -60,7 +60,7 @@ public:
   void    getCenter(int&, int&);
   int     textSize(int&, int&);
   void    Bounding(int&, int&, int&, int&);
-  void    entireBounds(int&, int&, int&, int&, float);
+  void    entireBounds(int&, int&, int&, int&);
   bool    getSelected(int, int);
   int     getTextSelected(int, int, float);
   void    rotate();

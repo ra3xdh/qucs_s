@@ -85,18 +85,23 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     connect(AppFontButton, SIGNAL(clicked()), SLOT(slotAppFontDialog()));
     appSettingsGrid->addWidget(AppFontButton,1,1);
 
+    appSettingsGrid->addWidget(new QLabel(tr("Text document font (set after reload):"), appSettingsTab), 2,0);
+    TextFontButton = new QPushButton(appSettingsTab);
+    connect(TextFontButton, SIGNAL(clicked()), SLOT(slotTextFontDialog()));
+    appSettingsGrid->addWidget(TextFontButton,2,1);
+
     val50 = new QIntValidator(1, 50, this);
-    appSettingsGrid->addWidget(new QLabel(tr("Large font size:"), appSettingsTab), 2,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Large font size:"), appSettingsTab), 3,0);
     LargeFontSizeEdit = new QLineEdit(appSettingsTab);
     LargeFontSizeEdit->setValidator(val50);
-    appSettingsGrid->addWidget(LargeFontSizeEdit,2,1);
+    appSettingsGrid->addWidget(LargeFontSizeEdit,3,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Document Background Color:"), appSettingsTab) ,3,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Document Background Color:"), appSettingsTab) ,4,0);
     BGColorButton = new QPushButton("      ", appSettingsTab);
     connect(BGColorButton, SIGNAL(clicked()), SLOT(slotBGColorDialog()));
-    appSettingsGrid->addWidget(BGColorButton,3,1);
+    appSettingsGrid->addWidget(BGColorButton,4,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Language (set after reload):"), appSettingsTab) ,4,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Language (set after reload):"), appSettingsTab) ,5,0);
     LanguageCombo = new QComboBox(appSettingsTab);
     LanguageCombo->insertItem(-1, tr("Ukrainian")+" (uk)");
     LanguageCombo->insertItem(-1, tr("Turkish")+" (tr)");
@@ -120,45 +125,45 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     LanguageCombo->insertItem(-1, tr("Arabic")+" (ar)");
     LanguageCombo->insertItem(-1, tr("English")+" (en)");
     LanguageCombo->insertItem(-1, tr("system language"));
-    appSettingsGrid->addWidget(LanguageCombo,4,1);
+    appSettingsGrid->addWidget(LanguageCombo,5,1);
 
     val200 = new QIntValidator(0, 200, this);
-    appSettingsGrid->addWidget(new QLabel(tr("Maximum undo operations:"), appSettingsTab) ,5,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Maximum undo operations:"), appSettingsTab) ,6,0);
     undoNumEdit = new QLineEdit(appSettingsTab);
     undoNumEdit->setValidator(val200);
-    appSettingsGrid->addWidget(undoNumEdit,5,1);
+    appSettingsGrid->addWidget(undoNumEdit,6,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Text editor:"), appSettingsTab) ,6,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Text editor:"), appSettingsTab) ,7,0);
     editorEdit = new QLineEdit(appSettingsTab);
     editorEdit->setToolTip(tr("Set to qucs, qucsedit or the path to your favorite text editor."));
-    appSettingsGrid->addWidget(editorEdit,6,1);
+    appSettingsGrid->addWidget(editorEdit,7,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Start wiring when clicking open node:"), appSettingsTab) ,7,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Start wiring when clicking open node:"), appSettingsTab) ,8,0);
     checkWiring = new QCheckBox(appSettingsTab);
-    appSettingsGrid->addWidget(checkWiring,7,1);
+    appSettingsGrid->addWidget(checkWiring,8,1);
 
     appSettingsGrid->addWidget(new QLabel(tr("Load documents from future versions:")));
     checkLoadFromFutureVersions = new QCheckBox(appSettingsTab);
     checkLoadFromFutureVersions->setToolTip(tr("Try to load also documents created with newer versions of Qucs."));
-    appSettingsGrid->addWidget(checkLoadFromFutureVersions,8,1);
+    appSettingsGrid->addWidget(checkLoadFromFutureVersions,9,1);
     checkLoadFromFutureVersions->setChecked(QucsSettings.IgnoreFutureVersion);
 
     appSettingsGrid->addWidget(new QLabel(tr("Draw diagrams with anti-aliasing feature:")));
     checkAntiAliasing = new QCheckBox(appSettingsTab);
     checkAntiAliasing->setToolTip(tr("Use anti-aliasing for graphs for a smoother appearance."));
-    appSettingsGrid->addWidget(checkAntiAliasing,9,1);
+    appSettingsGrid->addWidget(checkAntiAliasing,10,1);
     checkAntiAliasing->setChecked(QucsSettings.GraphAntiAliasing);
 
     appSettingsGrid->addWidget(new QLabel(tr("Draw text with anti-aliasing feature:")));
     checkTextAntiAliasing = new QCheckBox(appSettingsTab);
     checkTextAntiAliasing->setToolTip(tr("Use anti-aliasing for text for a smoother appearance."));
-    appSettingsGrid->addWidget(checkTextAntiAliasing,10,1);
+    appSettingsGrid->addWidget(checkTextAntiAliasing,11,1);
     checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);
 
     appSettingsGrid->addWidget(new QLabel(tr("Show trace name prefix on diagrams:")));
     checkFullTraceNames = new QCheckBox(appSettingsTab);
     checkFullTraceNames->setToolTip(tr("Show prefixes for trace names on diagrams like \"ngspice/\""));
-    appSettingsGrid->addWidget(checkFullTraceNames,11,1);
+    appSettingsGrid->addWidget(checkFullTraceNames,12,1);
     checkFullTraceNames->setChecked(QucsSettings.fullTraceName);
 
     QStringList lst_icons;
@@ -166,13 +171,13 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     PanelIconsCombo = new QComboBox;
     PanelIconsCombo->addItems(lst_icons);
     PanelIconsCombo->setCurrentIndex(QucsSettings.panelIconsTheme);
-    appSettingsGrid->addWidget(new QLabel(tr("Panel icons theme (set after reload):"),appSettingsTab),12,0);
-    appSettingsGrid->addWidget(PanelIconsCombo,12,1);
+    appSettingsGrid->addWidget(new QLabel(tr("Panel icons theme (set after reload):"),appSettingsTab),13,0);
+    appSettingsGrid->addWidget(PanelIconsCombo,13,1);
     CompIconsCombo = new QComboBox;
     CompIconsCombo->addItems(lst_icons);
     CompIconsCombo->setCurrentIndex(QucsSettings.compIconsTheme);
-    appSettingsGrid->addWidget(new QLabel(tr("Components icons theme (set after reload):"),appSettingsTab),13,0);
-    appSettingsGrid->addWidget(CompIconsCombo,13,1);
+    appSettingsGrid->addWidget(new QLabel(tr("Components icons theme (set after reload):"),appSettingsTab),14,0);
+    appSettingsGrid->addWidget(CompIconsCombo,14,1);
 
     t->addTab(appSettingsTab, tr("Settings"));
 
@@ -370,6 +375,13 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     locationsGrid->addWidget(OpenVAFButt, 5, 2);
     connect(OpenVAFButt, SIGNAL(clicked()), SLOT(slotOpenVAFDirBrowse()));
 
+    locationsGrid->addWidget(new QLabel(tr("RF Layout Path:"), locationsTab) ,6,0);
+    RFLayoutEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(RFLayoutEdit,6,1);
+    QPushButton *RFLButt = new QPushButton("Browse");
+    locationsGrid->addWidget(RFLButt, 6, 2);
+    connect(RFLButt, SIGNAL(clicked()), SLOT(slotRFLayoutDirBrowse()));
+
 
     // the pathsTableWidget displays the path list
     pathsTableWidget = new QTableWidget(locationsTab);
@@ -390,20 +402,20 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
     connect(pathsTableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotPathSelectionChanged()));
-    locationsGrid->addWidget(pathsTableWidget,6,0,3,2);
+    locationsGrid->addWidget(pathsTableWidget,7,0,3,2);
 
     QPushButton *AddPathButt = new QPushButton("Add Path");
-    locationsGrid->addWidget(AddPathButt, 6, 2);
+    locationsGrid->addWidget(AddPathButt, 7, 2);
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
     QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders");
-    locationsGrid->addWidget(AddPathSubFolButt, 7, 2);
+    locationsGrid->addWidget(AddPathSubFolButt, 8, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
     RemovePathButt = new QPushButton("Remove Path");
     // disable button if no paths in the table are selected
     RemovePathButt->setEnabled(false);
-    locationsGrid->addWidget(RemovePathButt , 8, 2);
+    locationsGrid->addWidget(RemovePathButt , 9, 2);
     connect(RemovePathButt, SIGNAL(clicked()), SLOT(slotRemovePath()));
 
     // create a copy of the current global path list
@@ -439,8 +451,10 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     // fill the fields with the Qucs-Properties
     Font  = QucsSettings.font;
     AppFont = QucsSettings.appFont;
+    TextFont = QucsSettings.textFont;
     FontButton->setText(Font.toString());
     AppFontButton->setText(AppFont.toString());
+    TextFontButton->setText(TextFont.toString());
     QString s = QString::number(QucsSettings.largeFontSize, 'f', 1);
     LargeFontSizeEdit->setText(s);
 
@@ -457,11 +471,12 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
             LanguageCombo->setCurrentIndex(z);
 
     /*! Load paths from settings */
-    homeEdit->setText(QucsSettings.QucsHomeDir.canonicalPath());
+    homeEdit->setText(QucsSettings.qucsWorkspaceDir.canonicalPath());
     admsXmlEdit->setText(QucsSettings.AdmsXmlBinDir.canonicalPath());
     ascoEdit->setText(QucsSettings.AscoBinDir.canonicalPath());
     octaveEdit->setText(QucsSettings.OctaveExecutable);
     OpenVAFEdit->setText(QucsSettings.OpenVAFExecutable);
+    RFLayoutEdit->setText(QucsSettings.RFLayoutExecutable);
 
 
     resize(300, 200);
@@ -544,12 +559,12 @@ void QucsSettingsDialog::slotApply()
     bool homeDirChanged = false;
 
     // check QucsHome is changed, will require to close all files and refresh tree
-    if (homeEdit->text() != QucsSettings.QucsHomeDir.path()) {
+    if (homeEdit->text() != QucsSettings.qucsWorkspaceDir.path()) {
       // close all open files, asking the user whether to save the modified ones
       // if user aborts closing, just return
       if(!App->closeAllFiles()) return;
 
-      QucsSettings.QucsHomeDir.setPath(homeEdit->text());
+      QucsSettings.qucsWorkspaceDir.setPath(homeEdit->text());
       homeDirChanged = true;
       // later below the file tree will be refreshed
     }
@@ -577,6 +592,7 @@ void QucsSettingsDialog::slotApply()
 
     QucsSettings.font=Font;
     QucsSettings.appFont = AppFont;
+    QucsSettings.textFont = TextFont;
 
     QucsSettings.panelIconsTheme = PanelIconsCombo->currentIndex();
     QucsSettings.compIconsTheme = CompIconsCombo->currentIndex();
@@ -660,6 +676,7 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.AscoBinDir.setPath(ascoEdit->text());
     QucsSettings.OctaveExecutable = octaveEdit->text();
     QucsSettings.OpenVAFExecutable = OpenVAFEdit->text();
+    QucsSettings.RFLayoutExecutable = RFLayoutEdit->text();
 
     if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())
     {
@@ -712,8 +729,8 @@ void QucsSettingsDialog::slotApply()
 
     // update the schenatic filelist hash
     QucsMain->updatePathList(currentPaths);
-    QucsMain->updateSchNameHash();
-    QucsMain->updateSpiceNameHash();
+    //QucsMain->updateSchNameHash();
+    //QucsMain->updateSpiceNameHash();
 
 }
 
@@ -741,6 +758,17 @@ void QucsSettingsDialog::slotAppFontDialog()
     }
 }
 
+void QucsSettingsDialog::slotTextFontDialog()
+{
+    bool ok;
+    QFont tmpFont = QFontDialog::getFont(&ok, TextFont, this);
+    if(ok)
+    {
+        TextFont = tmpFont;
+        TextFontButton->setText(TextFont.toString());
+    }
+}
+
 // -----------------------------------------------------------
 void QucsSettingsDialog::slotBGColorDialog()
 {
@@ -760,9 +788,10 @@ void QucsSettingsDialog::slotDefaultValues()
     QPalette p;
     Font = QApplication::font();
     AppFont = QucsSettings.sysDefaultFont;
-    Font.setPointSize(12);
+    TextFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
     FontButton->setText(Font.toString());
     AppFontButton->setText(AppFont.toString());
+    TextFontButton->setText(TextFont.toString());
     LargeFontSizeEdit->setText(QString::number(16.0));
 
     LanguageCombo->setCurrentIndex(0);
@@ -991,10 +1020,19 @@ void QucsSettingsDialog::slotOctaveDirBrowse()
 void QucsSettingsDialog::slotOpenVAFDirBrowse()
 {
   QString d = QFileDialog::getOpenFileName(this, tr("Select the OpenVAF executable"),
-                                           octaveEdit->text(), "All files (*)");
+                                           OpenVAFEdit->text(), "All files (*)");
 
   if(!d.isEmpty())
     OpenVAFEdit->setText(d);
+}
+
+void QucsSettingsDialog::slotRFLayoutDirBrowse()
+{
+  QString d = QFileDialog::getOpenFileName(this, tr("Select the Qucs-RFLayout executable"),
+                                           RFLayoutEdit->text(), "All files (*)");
+
+  if(!d.isEmpty())
+    RFLayoutEdit->setText(d);
 }
 
 /*! \brief (seems unused at present)

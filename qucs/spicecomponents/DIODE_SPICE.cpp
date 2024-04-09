@@ -29,12 +29,6 @@ DIODE_SPICE::DIODE_SPICE()
     Description = QObject::tr("SPICE D:\nMultiple line ngspice or Xyce D model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
     Simulator = spicecompat::simSpice;
 
-  x1 = -30; y1 = -11;
-  x2 =  30; y2 =  11;
-
-    tx = x1+4;
-    ty = y2+4;
-
     Model = "DIODE_SPICE";
     SpiceModel = "D";
     Name  = "D";
@@ -48,6 +42,8 @@ DIODE_SPICE::DIODE_SPICE()
     Props.append(new Property("Letter", "D", true,"[D,X,N] SPICE letter"));
 
     createSymbol();
+    tx = x1+4;
+    ty = y2+4;
 }
 
 void DIODE_SPICE::createSymbol()
@@ -73,6 +69,9 @@ void DIODE_SPICE::createSymbol()
 
     if (Npins >= 3) Ports.append(new Port( 0, -30));
 
+    x1 = -30; y1 = -11;
+    x2 =  30; y2 =  11;
+
 }
 
 DIODE_SPICE::~DIODE_SPICE()
@@ -81,7 +80,11 @@ DIODE_SPICE::~DIODE_SPICE()
 
 Component* DIODE_SPICE::newOne()
 {
-  return new DIODE_SPICE();
+    auto p = new DIODE_SPICE();
+    p->getProperty("Pins")->Value = getProperty("Pins")->Value;
+    p->getProperty("Letter")->Value = getProperty("Letter")->Value;
+    p->recreate(0);
+    return p;
 }
 
 Element* DIODE_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)

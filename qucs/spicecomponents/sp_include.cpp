@@ -16,6 +16,7 @@
  ***************************************************************************/
 #include "sp_include.h"
 #include "main.h"
+#include "misc.h"
 
 #include <QFontMetrics>
 
@@ -82,7 +83,7 @@ QString S4Q_Include::getSpiceModel()
     for (Property *pp : Props) {
         QString val = pp->Value;
         if (!val.isEmpty()) {
-            val = spicecompat::convert_relative_filename(val);
+            val = misc::properAbsFileName(val, containingSchematic);
             switch (QucsSettings.DefaultSimulator) {
             case spicecompat::simSpiceOpus: // Spice Opus doesn't support quotes
                 s += QString("%1 %2\n").arg(SpiceModel).arg(val);

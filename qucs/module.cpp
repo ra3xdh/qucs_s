@@ -198,6 +198,8 @@ registerComponent (cat, &val::inf1)
   REGISTER_COMP_1 (QObject::tr("sources"),val)
 #define REGISTER_PROBE_1(val) \
   REGISTER_COMP_1 (QObject::tr("probes"),val)
+#define REGISTER_RF_COMP_1(val) \
+  REGISTER_COMP_1 (QObject::tr("RF components"),val)
 #define REGISTER_TRANS_1(val) \
   REGISTER_COMP_1 (QObject::tr("transmission lines"),val)
 #define REGISTER_NONLINEAR_1(val) \
@@ -277,19 +279,8 @@ void Module::registerModules (void) {
       REGISTER_LUMPED_1 (symTrafo);
       REGISTER_LUMPED_1 (Ground);
       REGISTER_LUMPED_1 (SubCirPort);
-      REGISTER_LUMPED_1 (dcBlock);
-      REGISTER_LUMPED_1 (dcFeed);
-      REGISTER_LUMPED_1 (BiasT);
-      REGISTER_LUMPED_1 (Attenuator);
-      REGISTER_LUMPED_1 (Amplifier);
-      REGISTER_LUMPED_1 (Isolator);
-      REGISTER_LUMPED_1 (Circulator);
       REGISTER_LUMPED_1 (Gyrator);
-      REGISTER_LUMPED_1 (Phaseshifter);
-      REGISTER_LUMPED_1 (Coupler);
-      REGISTER_LUMPED_1 (Hybrid);
   //}
-
 
   REGISTER_LUMPED_1 (iProbe);
   REGISTER_LUMPED_1 (vProbe);
@@ -302,11 +293,6 @@ void Module::registerModules (void) {
   //}
 
   REGISTER_LUMPED_1 (Relais);
-
-  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_LUMPED_1 (RFedd);
-      REGISTER_LUMPED_1 (RFedd2P);
-  //}
 
   // sources
   REGISTER_SOURCE_1 (Volt_dc);
@@ -361,6 +347,22 @@ void Module::registerModules (void) {
   // probes
   REGISTER_PROBE_1 (iProbe);
   REGISTER_PROBE_1 (vProbe);
+
+  // RF devices except transmission line
+  REGISTER_RF_COMP_1 (dcBlock);
+  REGISTER_RF_COMP_1 (dcFeed);
+  REGISTER_RF_COMP_1 (circularloop);
+  REGISTER_RF_COMP_1 (spiralinductor);
+  REGISTER_RF_COMP_1 (BiasT);
+  REGISTER_RF_COMP_1 (Attenuator);
+  REGISTER_RF_COMP_1 (Amplifier);
+  REGISTER_RF_COMP_1 (Isolator);
+  REGISTER_RF_COMP_1 (Circulator);
+  REGISTER_RF_COMP_1 (Phaseshifter);
+  REGISTER_RF_COMP_1 (Coupler);
+  REGISTER_RF_COMP_1 (Hybrid);
+  REGISTER_RF_COMP_1 (RFedd);
+  REGISTER_RF_COMP_1 (RFedd2P);
 
   // transmission lines
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {

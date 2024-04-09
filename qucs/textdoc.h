@@ -84,7 +84,7 @@ public:
   QMenu* createStandardContextMenu();
 
 signals:
-  void signalCursorPosChanged(int, int);
+  void signalCursorPosChanged(int, int, QString);
   void signalFileChanged(bool);
   void signalUndoState(bool);
   void signalRedoState(bool);

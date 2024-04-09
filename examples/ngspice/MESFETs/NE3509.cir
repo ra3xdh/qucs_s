@@ -1,0 +1,23 @@
+* NE3509 packaged FET model
+* Model parameters found on-line are garbage
+* Modified to get DC to semi work
+*
+.SUBCKT NE3509 Drain Gate Source
+*
+L1 D D1 0.5204e-9
+L2 G G1 0.6696e-9
+L3 Source S 0.2064e-9
+L4 D1 Drain 0.2058e-9
+L5 G1 G2 0.0029e-9
+C1 G1 D1 1.0e-15
+C2 G1 Source 65.4e-15
+C3 D1 Source 19.9e-15
+C4 Gate Source 10.8e-15
+C5 Drain Source 144.9e-15
+R1 G2 Gate 1.321
+*
+ZDIE D G S qNE3509M04
+*
+.MODEL qNE3509M04 NMF(VTO=-0.9754 LAMBDA=0.03 ALPHA=5 BETA=0.22 RS=0.794 RD=1.455 CGD=102.8e-15 IS=0.8956e-12)
+*
+.ENDS NE3509

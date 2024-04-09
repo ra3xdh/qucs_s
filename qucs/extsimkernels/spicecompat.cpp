@@ -35,6 +35,7 @@ QString spicecompat::normalize_value(QString Value)
     const QRegularExpression c_pattern("^[0-9]+.*F$");
     const QRegularExpression l_pattern("^[0-9]+.*H$");
     const QRegularExpression v_pattern("^[0-9]+.*V$");
+    const QRegularExpression i_pattern("^[0-9]+.*A$");
     const QRegularExpression hz_pattern("^[0-9]+.*Hz$");
     const QRegularExpression s_pattern("^[0-9]+.*S$");
     const QRegularExpression sec_pattern("^[0-9]+.*s$");
@@ -54,6 +55,9 @@ QString spicecompat::normalize_value(QString Value)
         s.replace("M","Meg");
     } else if (v_pattern.match(s).hasMatch()) {
         s.remove("V");
+        s.replace("M","Meg");
+    } else if (i_pattern.match(s).hasMatch()) {
+        s.remove("A");
         s.replace("M","Meg");
     } else if (hz_pattern.match(s).hasMatch()) {
         s.remove("Hz");
@@ -251,6 +255,7 @@ QString spicecompat::normalize_node_name(QString nod) {
     return (nod == "gnd") ? QString("0") : nod;
 }
 
+/*
 QString spicecompat::convert_relative_filename(QString filename)
 {
     QFileInfo inf(filename);
@@ -260,13 +265,13 @@ QString spicecompat::convert_relative_filename(QString filename)
     inf.setFile(s);
     return inf.exists() ? s : filename;
 }
+*/
 
 int spicecompat::getPins(const QString &file, const QString &compname, QStringList &pin_names)
 {
     int r = 0;
     QString content;
-    QString LibName = spicecompat::convert_relative_filename(file);
-    QFile f(LibName);
+    QFile f(file);
     if (f.open(QIODevice::ReadOnly)) {
         QTextStream ts(&f);
         content = ts.readAll();

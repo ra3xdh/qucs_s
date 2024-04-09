@@ -17,12 +17,15 @@
 #include "main.h"
 #include "rlcg.h"
 
+#include "extsimkernels/spicecompat.h"
+#include "node.h"
+
 #include <QFontMetrics>
 
 RLCG::RLCG()
 {
   Description = QObject::tr("RLCG transmission line");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Lines.append(new qucs::Line(-30,  0, 30,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-28,  7, 28,  7,QPen(Qt::darkBlue,2)));
@@ -56,6 +59,7 @@ RLCG::RLCG()
   ty = y2+4;
   Model = "RLCG";
   Name  = "Line";
+  SpiceModel = "LTRA";
 
   Props.append(new Property("R", "0.0", false,
 		QObject::tr("resistive load")+" ("+QObject::tr ("Ohm/m")+")"));
@@ -87,4 +91,22 @@ Element* RLCG::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new RLCG();
   return 0;
+}
+
+QString RLCG::spice_netlist(bool isXyce)
+{
+    Q_UNUSED(isXyce);
+    QString s;
+    QString in = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+    QString out = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    QString R = spicecompat::normalize_value(getProperty("R")->Value);
+    QString L = spicecompat::normalize_value(getProperty("L")->Value);
+    QString C = spicecompat::normalize_value(getProperty("C")->Value);
+    QString G = spicecompat::normalize_value(getProperty("G")->Value);
+    QString LEN = spicecompat::normalize_value(getProperty("Length")->Value);
+    QString modname = "mod_" + Name;
+    s += QString("O%1 %2 0 %3 0 %4\n").arg(Name).arg(in).arg(out).arg(modname);
+    s += QString(".MODEL %1 LTRA(R=%2 C=%3 L=%4 G=%5 LEN=%6)\n")
+            .arg(modname).arg(R).arg(C).arg(L).arg(G).arg(LEN);
+    return s;
 }

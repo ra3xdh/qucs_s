@@ -22,22 +22,32 @@
 
 #include <QCloseEvent>
 
+bool isPropertyTunable(Component* propertyOwner, Property* property) {
+  // Simulation parameters
+  if (propertyOwner->Model.startsWith('.')) {
+    return false;
+  }
 
-bool checkProperty(Component *component, Property *pp)
-{
-    if (component->Model.at(0) == '.') return false;//Simulation parameters
-    // Properties defined in the integer+ domain
-    if (pp->Name=="Num") return false;//Port number
-    if (pp->Name=="Branches") return false;//Branches parameter in the EDD
-    if (pp->Name=="Ports") return false;//Number of ports in a SNP file component
-    if (!pp->Value.at(0).isNumber()) return false;//String
-    //Check if the value contains symbols *, /, -, +
-    for (int i = 0; i < pp->Value.length(); i++)
-    {
-        if (!pp->Value.at(i).isLetterOrNumber() && (pp->Value.at(i) != '.') && (pp->Value.at(i) != ' ')) return false;
-        if (pp->Value.at(i).toLower() == 'e') break;//Scientific notation
+  // Properties defined in the integer+ domain
+  // Port number, Branches parameter in the EDD, Number of ports in a SNP file
+  // component
+  if (auto n{property->Name}; n == "Num" || n == "Branches" || n == "Ports") {
+    return false;
+  }
+
+  if (!property->Value.at(0).isNumber()) {
+    return false; // String
+  }
+  // Check if the value contains symbols *, /, -, +
+  for (const auto& chr : property->Value) {
+    if (!chr.isLetterOrNumber() && (chr != '.') && (chr != ' ')) {
+      return false;
     }
-    return true;
+    if (chr.toLower() == 'e') {
+      break; // Scientific notation
+    }
+  }
+  return true;
 }
 
 tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, int selectedPropertyId)
@@ -140,12 +150,25 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     tunerName->setStyleSheet("QLabel {font: bold}");
     gbox->addWidget(tunerName,0,0,1,2);
 
+    // This is locale for QDoubleValidators in QLineEdit used for editing
+    // max, min, current and step tuner values. We use special locale
+    // because we don't want QLineEdit to accept numbers in user's native
+    // locale, we want numbers only in "C" form: with dot as separator
+    // of integral and fractional part and no group separators.
+    //
+    // See also discussion here https://github.com/ra3xdh/qucs_s/issues/416
+    auto cDoubleLocale{ QLocale::c() };
+    auto opts = cDoubleLocale.numberOptions();
+    opts.setFlag(QLocale::RejectGroupSeparator);
+    cDoubleLocale.setNumberOptions(opts);
 
     QLabel * maxLabel = new QLabel(tr("Max.:"));
     maxLabel->setLineWidth(5);
     gbox->addWidget(maxLabel, 1, 0);
     maximum = new QLineEdit();
-    maximum->setValidator( new QDoubleValidator(minValueValidator, PTRDIFF_MAX, 2, this) );//Prevent the user from entering text
+    auto* maximumValidator = new QDoubleValidator(minValueValidator, PTRDIFF_MAX, 2, this);
+    maximumValidator->setLocale(cDoubleLocale);
+    maximum->setValidator(maximumValidator);//Prevent the user from entering text
     MaxUnitsCombobox = new QComboBox(this);
     MaxUnitsCombobox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     MaxUnitsCombobox->addItems(ScaleFactorList);
@@ -162,7 +185,9 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     minLabel->setLineWidth(5);
     gbox->addWidget(minLabel, 4, 0);
     minimum = new QLineEdit();
-    minimum->setValidator( new QDoubleValidator(minValueValidator, 100, 2, this) );//Prevent the user from entering text
+    auto* minumumValidator = new QDoubleValidator(minValueValidator, 100, 2, this);
+    minumumValidator->setLocale(cDoubleLocale);
+    minimum->setValidator(minumumValidator);//Prevent the user from entering text
     MinUnitsCombobox = new QComboBox(this);
     MinUnitsCombobox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
     MinUnitsCombobox->addItems(ScaleFactorList);
@@ -175,7 +200,9 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     valLabel->setLineWidth(5);
     gbox->addWidget(valLabel, 5, 0);
     value = new QLineEdit();
-    value->setValidator( new QDoubleValidator(minValueValidator, PTRDIFF_MAX, 2, this) );//Prevent the user from entering text
+    auto* valueValidator = new QDoubleValidator(minValueValidator, PTRDIFF_MAX, 2, this);
+    valueValidator->setLocale(cDoubleLocale);
+    value->setValidator(valueValidator);//Prevent the user from entering text
     ValueUnitsCombobox = new QComboBox(this);
     gbox->addWidget(value, 5, 1);
     gbox->addWidget(ValueUnitsCombobox,5,2);
@@ -186,7 +213,9 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     stepLabel->setLineWidth(5);
     gbox->addWidget(stepLabel, 6, 0);
     step = new QLineEdit();
-    step->setValidator( new QDoubleValidator(0, PTRDIFF_MAX, 2, this) );//Prevent the user from entering text
+    auto* stepValidator = new QDoubleValidator(0, PTRDIFF_MAX, 2, this);
+    stepValidator->setLocale(cDoubleLocale);
+    step->setValidator(stepValidator);//Prevent the user from entering text
     StepUnitsCombobox = new QComboBox(this);
     gbox->addWidget(step, 6, 1);
     gbox->addWidget(StepUnitsCombobox,6,2);
@@ -265,7 +294,7 @@ void tunerElement::resetValue()
     value->setText(val);
     ValueUnitsCombobox->setCurrentIndex(index);
     updateSlider();
-    slotValueChanged();
+    slotValueChanged(false);
 }
 
 /*
@@ -462,7 +491,7 @@ void tunerElement::slotSliderChanged()
  * The control reaches this function when one of the events above is triggered. It checks if the input value is correct, updates it
  * and finally runs the simulation
  */
-void tunerElement::slotValueChanged()
+void tunerElement::slotValueChanged(bool simulate)
 {
     bool ok;
     float v = getValue(ok);
@@ -501,7 +530,9 @@ void tunerElement::slotValueChanged()
 
     updateSlider();
     updateProperty();
-    emit elementValueUpdated();
+    if (simulate) {
+        emit elementValueUpdated();
+    }
     value->blockSignals(false);
     ValueUnitsCombobox->blockSignals(false);
 }
@@ -803,6 +834,7 @@ void TunerDialog::slotResetValues()
     {
         currentElements.at(i)->resetValue();
     }
+    slotElementValueUpdated();
 }
 
 void TunerDialog::slotUpdateValues()

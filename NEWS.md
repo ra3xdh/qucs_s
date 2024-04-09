@@ -1,3 +1,99 @@
+# Qucs-S 24.2.1
+
+This release contains no new features except the fixing of the critical bugs.
+
+## General improvements
+
+* Fixed zero output on DC bias simulation (F8) #667
+* Fixed build failure of the Fedora RPM becuase of RPATH in qucsator_rf
+
+# Qucs-S 24.2.0
+
+## New features
+
+* QucsatorRF is now a part of the package; No need to compile and install qucsator manually #370
+* Qucs-RFLayout tool could be launched from *Tools* menu #465; this tool must be installed separated
+* Redesign of the Qucsconv GUI #647
+* Matching tool backported from Qucs-0.0.20 #401
+* Added *RF devices* group; backported different RF devices for Qucsator #607
+
+## General imporvements and fixes
+
+* Fixed parameter sweep step issues #186 @ivandi69
+* Fixed SPICE devices bounding box #590 #637
+* Fixed netlist export from CLI #639
+* Fixed parameter sweep simulation with Xyce #624
+* Revert explicit WITH_QT6 compile flag because of cmake bug #592
+* Fixed tuner issues for German locale #416
+* Refactoring in schematic editor #626 #618 @wawuwo
+
+## Localization
+
+* Russian translation update
+
+# Qucs-S 24.1.0
+
+## Important notes
+
+* Versioning switched to CalVer. The first digit means year, the second digit means the release number,
+  the third digit means patch number #328
+
+## New features
+
+* Added 3-pin RCD devices #349 to improve support of microelectronics PDKs
+* Improvements of Ngspice support; allowed multiple simulation of the same type #463 by @ivandi69
+* Automatic extraction of THD from FOURIER simulation #525 @ivandi69
+* Nutmeg equations improvements; implemented simulation selection from drop-down list #463 #519
+* Improvements of Nutmeg script simulation type; implemented custom prefixes for plots #476 #435 @ivandi69
+* Export DC OP simulation data to dataset #463 #140 @ivandi69
+* Implemented zoom by selection on the rectangular plots #305
+* Implemeted potentiometer device #122
+* Switched digital simulation from FreeHDL to GHDL #395 @iwbnwif
+* Status bar improvements #493
+
+## RF simulation features
+
+* Added RCLG device support for SPICE #564
+* Added YLIN device support for XYCE #451
+* Fixed touchstone simulation issues for Ngspice #392
+* Added BiasT device support for SPICE #374
+* Added option to disable transient model for RF port #410 
+
+## Libraries
+
+* Fixed different issues related to creating libraries #432
+* Added audio IC library
+* Added loudspeaker library #421
+* Added comparators library #436 
+* Modified voltage regulators library #433
+* Added voltage references library #439
+* Added thermistor library #538
+* Fixed ideal library #258 #428
+* Fixed transformers library #362
+* Added new devices in SpiceOpamp library #501
+
+## General improvements
+
+* Fixed different tuner issues
+* Schematic zooming improvements #502
+* Different improvements on schematic look and control
+* Added schematic pan mode with the middle mouse button #488
+* HiDPI support improvements including grid rendering
+* Fixed schematic glitches using Wayland #227
+* Added text document zoom and font setting #534
+
+## Documentation
+
+* Added new examples 
+* Added Ngspice templates #441
+* The readthdocs documentantion is a candidate for deprecation #554
+
+## Localization
+
+* Added Chinese translation #453 by @hvwyl
+
+Thanks @wawuwo and @iwbnwif for providing refactoring PRs! Many thanks to @tomhajjar for providing libraries, examples and testing.
+
 # Qucs-S 2.1.0
 
 ## New features

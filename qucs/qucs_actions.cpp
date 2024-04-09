@@ -679,13 +679,8 @@ void QucsApp::slotSelectAll()
     ((TextDoc*)Doc)->selectAll();
   }
   else {
-    int xmin, ymin, xmax, ymax;
-    ((Schematic*)Doc)->sizeOfAll(xmin, ymin, xmax, ymax);
-    xmin--;
-    ymin--;
-    xmax++;
-    ymax++;
-    ((Schematic*)Doc)->selectElements(xmin, ymin, xmax, ymax, true, false);
+    auto selectionRect = ((Schematic*)Doc)->allBoundingRect().marginsAdded(QMargins{1, 1, 1, 1});
+    ((Schematic*)Doc)->selectElements(selectionRect.left(), selectionRect.top(), selectionRect.right(), selectionRect.bottom(), true, false);
     ((Schematic*)Doc)->viewport()->update();
     view->drawn = false;
   }
@@ -787,7 +782,7 @@ void QucsApp::editFile(const QString& File)
 // Is called to show the output messages of the last simulation.
 void QucsApp::slotShowLastMsg()
 {
-  editFile(QucsSettings.QucsHomeDir.filePath("log.txt"));
+  editFile(QucsSettings.tempFilesDir.filePath("log.txt"));
 }
 
 // ------------------------------------------------------------------------
@@ -814,7 +809,7 @@ void QucsApp::slotShowLastNetlist()
 
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simQucsator :
-        netlists.append(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+        netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
         break;
     case spicecompat::simNgspice :
     case spicecompat::simSpiceOpus :
@@ -835,7 +830,7 @@ void QucsApp::slotShowLastNetlist()
         Schematic *sch = (Schematic *) w;
         if (sch->isDigitalCircuit()) {
             netlists.clear();
-            netlists.append(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+            netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
         }
     }
 
@@ -890,7 +885,6 @@ void QucsApp::slotCallPwrComb()
   launchTool(QUCS_NAME "powercombining", "power combining calculation",QStringList());
 }
 
-
 /*!
  * \brief launch an external application passing arguments
  *
@@ -929,6 +923,64 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
   connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
 }
 
+
+void QucsApp::slotCallRFLayout()
+{
+    QString input_file, netlist_file, odir;
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
+        if(sch->fileSuffix() == "dpl") {
+            QMessageBox::critical(this,tr("Error"),
+                                  tr("Layouting of display pages is not supported!"));
+            return;
+        }
+        input_file = sch->DocName;
+        QFileInfo inf(sch->DocName);
+        odir = inf.absolutePath();
+        netlist_file = inf.absolutePath() + QDir::separator()
+                + inf.baseName() + ".net";
+        QFile f(netlist_file);
+        if (!f.open(QIODevice::WriteOnly)) {
+            QMessageBox::critical(this, tr("Error"), tr("Cannot write netlist!"));
+            return;
+        }
+        QTextStream stream(&f);
+        QStringList Collect;
+        QPlainTextEdit *ErrText = new QPlainTextEdit();  //dummy
+        int pNum = sch->prepareNetlist(stream, Collect, ErrText);
+        if (!sch->isAnalog) {
+            QMessageBox::critical(this, tr("Error"), tr("Digital schematic not supported!"));
+            return;
+        }
+        stream << '\n';
+        sch->createNetlist(stream, pNum);
+        f.close();
+    } else {
+        QMessageBox::critical(this,tr("Error"),
+                              tr("Layouting of text documents is not supported!"));
+        return;
+    }
+
+    QProcess *tool = new QProcess();
+    QStringList args;
+    args.append("-G");
+    args.append("-i");
+    args.append(input_file);
+    args.append("-n");
+    args.append(netlist_file);
+    args.append("-o");
+    args.append(odir);
+    tool->start(QucsSettings.RFLayoutExecutable,args);
+
+    if(!tool->waitForStarted(1000) ) {
+      QMessageBox::critical(this, tr("Error"),
+                            tr("Cannot start Qucs-RFLayout: \n%1")
+                            .arg(QucsSettings.RFLayoutExecutable));
+      delete tool;
+      return;
+    }
+    connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
+}
 
 // --------------------------------------------------------------
 void QucsApp::slotHelpIndex()
@@ -1300,12 +1352,26 @@ void QucsApp::slotImportData()
 {
   slotHideEdit(); // disable text edit of component property
 
-  if(ProjName.isEmpty()) {
-    QMessageBox::critical(this, tr("Error"), tr("Please open project first!"));
-    return;
+  QString import_dir = ".";
+  if (!ProjName.isEmpty()) {
+      import_dir = QucsSettings.QucsWorkDir.absolutePath();
+  } else {
+      QString dname;
+      if (isTextDocument(DocumentTab->currentWidget())) {
+          TextDoc *doc = (TextDoc *)DocumentTab->currentWidget();
+          dname = doc->DocName;
+      } else {
+          Schematic *doc = (Schematic *)DocumentTab->currentWidget();
+          dname = doc->DocName;
+      }
+      QFileInfo inf(dname);
+      if (inf.exists()) {
+          import_dir = inf.absolutePath();
+      }
   }
 
   ImportDialog *d = new ImportDialog(this);
+  d->setImportDir(import_dir);
   if(d->exec() == QDialog::Accepted)
     slotUpdateTreeview();
 }

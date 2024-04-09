@@ -129,7 +129,7 @@ Basic_MOSFET::Basic_MOSFET()
 MOSFET_sub::MOSFET_sub()
 {
   Description = QObject::tr("MOS field-effect transistor with substrate");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
   createSymbol();
   tx = x2+4;
   ty = y1+4;

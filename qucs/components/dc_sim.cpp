@@ -93,7 +93,6 @@ QString DC_Sim::spice_netlist(bool isXyce)
     QString s;
     if ( !isXyce ) {
         s += "op\n";
-        s += QString("print all > spice4qucs.%1.ngspice.dc.print\n").arg(Name.toLower());
     }
 
     return s;

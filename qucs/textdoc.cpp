@@ -42,10 +42,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
  */
 TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDoc(App_, Name_)
 {
-  QFont font("Courier New", QucsSettings.font.pointSize());
-  font.setStyleHint(QFont::Courier);
-  font.setFixedPitch(true);
-  setFont(font);
+  setFont(QucsSettings.textFont);
 
   simulation = true;
   Library = "";
@@ -64,8 +61,8 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
   connect(this, SIGNAL(cursorPositionChanged()),
           SLOT(slotCursorPosChanged()));
   if (App_) {
-    connect(this, SIGNAL(signalCursorPosChanged(int, int)),
-        App_, SLOT(printCursorPosition(int, int)));
+    connect(this, SIGNAL(signalCursorPosChanged(int, int, QString)),
+        App_, SLOT(printCursorPosition(int, int, QString)));
     connect(this, SIGNAL(signalUndoState(bool)),
         App_, SLOT(slotUpdateUndo(bool)));
     connect(this, SIGNAL(signalRedoState(bool)),
@@ -321,7 +318,7 @@ void TextDoc::slotCursorPosChanged()
   QTextCursor pos = textCursor();
   int x = pos.blockNumber();
   int y = pos.columnNumber();
-  emit signalCursorPosChanged(x+1, y+1);
+  emit signalCursorPosChanged(x+1, y+1, "");
   tmpPosX = x;
   tmpPosY = y;
 }

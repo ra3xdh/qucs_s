@@ -190,7 +190,7 @@ QString SP_Sim::getSweepString()
         misc::str2num(Props.at(2)->Value,Fstop,unit,fac);
         Fstop *= fac;
         double Nd = ceil(log10(Fstop/Fstart)); // number of decades
-        double Npd = ceil(Np/Nd); // points per decade
+        double Npd = ceil((Np - 1)/Nd); // points per decade
         s += QString("DEC %1 ").arg(Npd);
     } else {  // no need conversion
         s += QString("LIN %1 ").arg(Props.at(3)->Value);

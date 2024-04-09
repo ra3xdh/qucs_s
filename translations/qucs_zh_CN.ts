@@ -4,7 +4,7 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../qucs/dialogs/aboutdialog.cpp" line="+115"/>
+        <location filename="../qucs/dialogs/aboutdialog.cpp" line="+116"/>
         <source>About Qucs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21,7 +21,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-81"/>
+        <location line="-82"/>
         <source>GUI programmer, Verilog-A dynamic loader</source>
         <translation type="unfinished"></translation>
     </message>
@@ -247,6 +247,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Chinese by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+57"/>
         <source>Home Page</source>
         <translation type="unfinished"></translation>
@@ -299,7 +304,7 @@
     <message>
         <location line="+7"/>
         <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">确定</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -315,7 +320,7 @@
 <context>
     <name>AbstractSpiceKernel</name>
     <message>
-        <location filename="../qucs/extsimkernels/abstractspicekernel.cpp" line="+1274"/>
+        <location filename="../qucs/extsimkernels/abstractspicekernel.cpp" line="+1348"/>
         <source>Simulate</source>
         <translation>仿真</translation>
     </message>
@@ -525,7 +530,7 @@
 <context>
     <name>ComponentDialog</name>
     <message>
-        <location filename="../qucs/components/componentdialog.cpp" line="+45"/>
+        <location filename="../qucs/components/componentdialog.cpp" line="+47"/>
         <source>Edit Component Properties</source>
         <translation>编辑元件属性</translation>
     </message>
@@ -599,13 +604,13 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+1185"/>
+        <location line="+1191"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>步进值</translation>
     </message>
     <message>
-        <location line="-1200"/>
+        <location line="-1206"/>
         <source>Number:</source>
         <translation>点数</translation>
     </message>
@@ -689,24 +694,24 @@
         <location line="+29"/>
         <location line="+92"/>
         <location line="+54"/>
-        <location line="+223"/>
-        <location line="+215"/>
+        <location line="+228"/>
+        <location line="+218"/>
         <location line="+167"/>
-        <location line="+317"/>
+        <location line="+315"/>
         <source>yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location line="-1066"/>
+        <location line="-1072"/>
         <location line="+92"/>
-        <location line="+277"/>
-        <location line="+378"/>
-        <location line="+322"/>
+        <location line="+282"/>
+        <location line="+381"/>
+        <location line="+320"/>
         <source>no</source>
         <translation>否</translation>
     </message>
     <message>
-        <location line="-382"/>
+        <location line="-380"/>
         <source>Select a file</source>
         <translation>选择文件</translation>
     </message>
@@ -741,7 +746,7 @@
         <translation>Verilog文件</translation>
     </message>
     <message>
-        <location line="+210"/>
+        <location line="+208"/>
         <source>Points per decade:</source>
         <translation>每十倍频程的点数：</translation>
     </message>
@@ -749,15 +754,20 @@
 <context>
     <name>CustomSimDialog</name>
     <message>
-        <location filename="../qucs/extsimkernels/customsimdialog.cpp" line="+40"/>
-        <location line="+44"/>
+        <location filename="../qucs/extsimkernels/customsimdialog.cpp" line="+42"/>
+        <location line="+55"/>
         <source>Edit SPICE code</source>
         <translation>编辑SPICE代码</translation>
     </message>
     <message>
-        <location line="-43"/>
+        <location line="-54"/>
         <source>Component: </source>
         <translation>元件：</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>display in schematic</source>
+        <translation type="unfinished">在原理图中显示</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -765,12 +775,16 @@
         <translation>要绘制的变量(以分号作为分隔符)</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Extra outputs (semicolon separated; raw-SPICE or XYCE-STD format)</source>
-        <translation>额外输出(分号分隔;raw-SPICE或XYCE-STD格式)</translation>
+        <translation type="vanished">额外输出(分号分隔;raw-SPICE或XYCE-STD格式)</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
+        <source>Extra outputs (semicolon separated; raw-SPICE or XYCE-STD or scalars print format)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Apply</source>
         <translation>应用</translation>
     </message>
@@ -1042,11 +1056,11 @@
     </message>
     <message>
         <source>logarithmical X Axis Grid</source>
-        <translation>对数X轴刻度</translation>
+        <translation type="vanished">对数X轴刻度</translation>
     </message>
     <message>
         <source>logarithmical</source>
-        <translation>对数</translation>
+        <translation type="vanished">对数</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1208,15 +1222,15 @@
     <name>DisplayDialog</name>
     <message>
         <source>Analogue</source>
-        <translation>模拟</translation>
+        <translation type="vanished">模拟</translation>
     </message>
     <message>
         <source>VHDL</source>
-        <translation>VHDL</translation>
+        <translation type="vanished">VHDL</translation>
     </message>
     <message>
         <source>Verilog</source>
-        <translation>Verilog</translation>
+        <translation type="vanished">Verilog</translation>
     </message>
     <message>
         <location filename="../qucs/dialogs/displaydialog.cpp" line="+39"/>
@@ -1336,12 +1350,12 @@
     </message>
     <message>
         <location line="+5"/>
-        <location line="+230"/>
+        <location line="+235"/>
         <source>Save netlist</source>
         <translation>保存网表</translation>
     </message>
     <message>
-        <location line="-227"/>
+        <location line="-232"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -1356,9 +1370,19 @@
         <translation>使用外部仿真器仿真</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+100"/>
         <source>There were simulation errors. Please check log.</source>
         <translation>仿真出错，请检查日志</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>There were simulation warnings. Please check log.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Simulation finished. Now place diagram on schematic to plot the result.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1555,131 +1579,131 @@
     <name>FilterDialog</name>
     <message>
         <source>E&amp;xit</source>
-        <translation>退出</translation>
+        <translation type="vanished">退出</translation>
     </message>
     <message>
         <source>&amp;About Qucs Filter...</source>
-        <translation>关于Qucs Filter</translation>
+        <translation type="vanished">关于Qucs Filter</translation>
     </message>
     <message>
         <source>About Qt...</source>
-        <translation>关于Qt</translation>
+        <translation type="vanished">关于Qt</translation>
     </message>
     <message>
         <source>Cutoff/Center</source>
-        <translation>截止频率/中心频率</translation>
+        <translation type="vanished">截止频率/中心频率</translation>
     </message>
     <message>
         <source>Hz</source>
-        <translation>Hz</translation>
+        <translation type="vanished">Hz</translation>
     </message>
     <message>
         <source>kHz</source>
-        <translation>kHz</translation>
+        <translation type="vanished">kHz</translation>
     </message>
     <message>
         <source>MHz</source>
-        <translation>MHz</translation>
+        <translation type="vanished">MHz</translation>
     </message>
     <message>
         <source>GHz</source>
-        <translation>GHz</translation>
+        <translation type="vanished">GHz</translation>
     </message>
     <message>
         <source>Ripple</source>
-        <translation>纹波</translation>
+        <translation type="vanished">纹波</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="vanished">dB</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation>角度</translation>
+        <translation type="vanished">角度</translation>
     </message>
     <message>
         <source>Ohm</source>
-        <translation>Ω</translation>
+        <translation type="vanished">Ω</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation>带宽</translation>
+        <translation type="vanished">带宽</translation>
     </message>
     <message>
         <source>Attenuation</source>
-        <translation>衰减</translation>
+        <translation type="vanished">衰减</translation>
     </message>
     <message>
         <source>dual</source>
-        <translation>双</translation>
+        <translation type="vanished">双</translation>
     </message>
     <message>
         <source>Optimize C</source>
-        <translation>C 最佳值</translation>
+        <translation type="vanished">C 最佳值</translation>
     </message>
     <message>
         <source>Cmin</source>
-        <translation>C 最小值</translation>
+        <translation type="vanished">C 最小值</translation>
     </message>
     <message>
         <source>Cmax</source>
-        <translation>C 最大值</translation>
+        <translation type="vanished">C 最大值</translation>
     </message>
     <message>
         <source>noC</source>
-        <translation>忽略 C</translation>
+        <translation type="vanished">忽略 C</translation>
     </message>
     <message>
         <source>Optimize L</source>
-        <translation>L 最佳值</translation>
+        <translation type="vanished">L 最佳值</translation>
     </message>
     <message>
         <source>Lmin</source>
-        <translation>L 最小值</translation>
+        <translation type="vanished">L 最小值</translation>
     </message>
     <message>
         <source>Lmax</source>
-        <translation>L 最大值</translation>
+        <translation type="vanished">L 最大值</translation>
     </message>
     <message>
         <source>noL</source>
-        <translation>忽略 L</translation>
+        <translation type="vanished">忽略 L</translation>
     </message>
     <message>
         <source>LC Filters</source>
-        <translation>LC 滤波器</translation>
+        <translation type="vanished">LC 滤波器</translation>
     </message>
     <message>
         <source>Microstrip Filters</source>
-        <translation>微带线滤波器</translation>
+        <translation type="vanished">微带线滤波器</translation>
     </message>
     <message>
         <source>Active Filters</source>
-        <translation>有源滤波器</translation>
+        <translation type="vanished">有源滤波器</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation>退出</translation>
+        <translation type="vanished">退出</translation>
     </message>
     <message>
         <source>Calculate</source>
-        <translation>计算</translation>
+        <translation type="vanished">计算</translation>
     </message>
     <message>
         <source>About...</source>
-        <translation>关于</translation>
+        <translation type="vanished">关于</translation>
     </message>
     <message>
         <source>
 Filter synthesis program
 </source>
-        <translation>
+        <translation type="vanished">
 滤波器综合程序
 </translation>
     </message>
     <message>
         <source>About Qt</source>
-        <translation>关于Qt</translation>
+        <translation type="vanished">关于Qt</translation>
     </message>
 </context>
 <context>
@@ -1739,7 +1763,7 @@ Filter synthesis program
     <name>HelpDialog</name>
     <message>
         <source>QucsActiveFilter is a active filter synthesis program. Butterworth, Chebyshev, Inverse Chebyshev, Cauer, Bessel and User defined transfer function are supported.To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
-        <translation>QucsActiveFilter可生成巴特沃斯、切比雪夫、反切比雪夫、椭圆、贝赛尔以及用户自定义的各种有源滤波器。输入参数并点击窗口下方的按钮即可生成有源滤波器。与此同时，生成的滤波器自动保存于剪切板中。在Qucs中打开一个空原理图文件并按下Ctrl-V(从剪切板中粘贴热键)，滤波器电路就被拷贝至该原理图中了。</translation>
+        <translation type="vanished">QucsActiveFilter可生成巴特沃斯、切比雪夫、反切比雪夫、椭圆、贝赛尔以及用户自定义的各种有源滤波器。输入参数并点击窗口下方的按钮即可生成有源滤波器。与此同时，生成的滤波器自动保存于剪切板中。在Qucs中打开一个空原理图文件并按下Ctrl-V(从剪切板中粘贴热键)，滤波器电路就被拷贝至该原理图中了。</translation>
     </message>
     <message>
         <location filename="../qucs-filter/helpdialog.cpp" line="+38"/>
@@ -1781,7 +1805,7 @@ Filter synthesis program
 <context>
     <name>ID_Dialog</name>
     <message>
-        <location filename="../qucs/paintings/id_dialog.cpp" line="+38"/>
+        <location filename="../qucs/paintings/id_dialog.cpp" line="+39"/>
         <source>Edit Subcircuit Properties</source>
         <translation>编辑子电路属性</translation>
     </message>
@@ -2197,12 +2221,12 @@ Node name will not be changed.</source>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+192"/>
+        <location line="+194"/>
         <source>Create</source>
         <translation>创建</translation>
     </message>
     <message>
-        <location line="-171"/>
+        <location line="-173"/>
         <source>Message:</source>
         <translation>信息：</translation>
     </message>
@@ -2219,8 +2243,7 @@ Node name will not be changed.</source>
     <message>
         <location line="+18"/>
         <location line="+16"/>
-        <location line="+16"/>
-        <location line="+6"/>
+        <location line="+22"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -2245,17 +2268,20 @@ Node name will not be changed.</source>
         <translation>无法创建用户库目录！</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+15"/>
+        <source>A library with this name already exists! Rewrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>A system library with this name already exists!</source>
-        <translation>相同名称的系统库文件已存在</translation>
+        <translation type="vanished">相同名称的系统库文件已存在</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>A library with this name already exists!</source>
-        <translation>相同名称的库文件已存在</translation>
+        <translation type="vanished">相同名称的库文件已存在</translation>
     </message>
     <message>
-        <location line="+87"/>
+        <location line="+88"/>
         <source>Next...</source>
         <translation>下一个...</translation>
     </message>
@@ -2296,14 +2322,14 @@ Node name will not be changed.</source>
 </translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+10"/>
         <source>Creating SPICE netlist.
 </source>
         <translation>创建SPICE网表.
 </translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+20"/>
         <source>Creating Verilog netlist.
 </source>
         <translation>创建Verilog网表.
@@ -2451,6 +2477,26 @@ Node name will not be changed.</source>
         <location line="+3"/>
         <source>X-axis position:</source>
         <translation>X轴位置：</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Square</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Triangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Marker Indicator</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2608,15 +2654,15 @@ but is %1 !</source>
     <name>MyWidget</name>
     <message>
         <source>E&amp;xit</source>
-        <translation>退出</translation>
+        <translation type="vanished">退出</translation>
     </message>
     <message>
         <source>About...</source>
-        <translation>关于</translation>
+        <translation type="vanished">关于</translation>
     </message>
     <message>
         <source>About Qt</source>
-        <translation>关于Qt</translation>
+        <translation type="vanished">关于Qt</translation>
     </message>
 </context>
 <context>
@@ -2650,7 +2696,7 @@ but is %1 !</source>
 <context>
     <name>Ngspice</name>
     <message>
-        <location filename="../qucs/extsimkernels/ngspice.cpp" line="+643"/>
+        <location filename="../qucs/extsimkernels/ngspice.cpp" line="+549"/>
         <source>Problem with SaveNetlist</source>
         <translation>保存网表时出现了位图</translation>
     </message>
@@ -3302,8 +3348,12 @@ but is %1 !</source>
     </message>
     <message>
         <location line="+1"/>
+        <source>SPICE</source>
+        <translation type="unfinished">SPICE</translation>
+    </message>
+    <message>
         <source>XSPICE</source>
-        <translation>XSPICE</translation>
+        <translation type="vanished">XSPICE</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3311,7 +3361,7 @@ but is %1 !</source>
         <translation>Others</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+50"/>
         <source>-port</source>
         <translation>-端口</translation>
     </message>
@@ -3416,6 +3466,16 @@ but is %1 !</source>
         <translation>初始相位(deg)</translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>offset voltage (SPICE only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>delay time (SPICE only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/am_modulator.cpp" line="+2"/>
         <source>modulation level</source>
         <translation>调制电平</translation>
@@ -3436,7 +3496,7 @@ but is %1 !</source>
         <translation>峰值电流(A)</translation>
     </message>
     <message>
-        <location filename="../qucs/components/volt_ac.cpp" line="+2"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="-4"/>
         <location filename="../qucs/components/ampere_ac.cpp" line="+6"/>
         <source>damping factor (transient simulation only)</source>
         <translation>阻尼系数(仅限瞬态模拟)</translation>
@@ -3635,7 +3695,7 @@ but is %1 !</source>
         <translation>verilog 4x3 andor 设备</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>4x3 AndOr</source>
         <translation>4x3 AndOr</translation>
     </message>
@@ -3675,10 +3735,8 @@ but is %1 !</source>
         <location filename="../qucs/components/tline_4port.cpp" line="+61"/>
         <location filename="../qucs/components/tline.cpp" line="+57"/>
         <location filename="../qucs/components/taperedline.cpp" line="+67"/>
-        <location filename="../qucs/components/switch.cpp" line="+37"/>
         <location filename="../qucs/components/source_ac.cpp" line="+2"/>
-        <location filename="../qucs/components/rlcg.cpp" line="+71"/>
-        <location filename="../qucs/components/resistor.cpp" line="+31"/>
+        <location filename="../qucs/components/rlcg.cpp" line="+75"/>
         <location filename="../qucs/components/relais.cpp" line="+72"/>
         <location filename="../qucs/components/rectline.cpp" line="+66"/>
         <location filename="../qucs/components/msvia.cpp" line="+51"/>
@@ -3688,13 +3746,11 @@ but is %1 !</source>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+121"/>
         <location filename="../qucs/components/jfet.cpp" line="+64"/>
         <location filename="../qucs/components/isolator.cpp" line="+2"/>
-        <location filename="../qucs/components/indq.cpp" line="+75"/>
         <location filename="../qucs/components/etr_sim.cpp" line="+60"/>
         <location filename="../qucs/components/diode.cpp" line="+63"/>
         <location filename="../qucs/components/dc_sim.cpp" line="+50"/>
         <location filename="../qucs/components/ctline.cpp" line="+71"/>
         <location filename="../qucs/components/coaxialline.cpp" line="+61"/>
-        <location filename="../qucs/components/capq.cpp" line="+74"/>
         <location filename="../qucs/components/bondwire.cpp" line="+60"/>
         <location filename="../qucs/components/bjtsub.cpp" line="+97"/>
         <location filename="../qucs/components/attenuator.cpp" line="+2"/>
@@ -3707,13 +3763,13 @@ but is %1 !</source>
         <translation>衰减器</translation>
     </message>
     <message>
-        <location filename="../qucs/components/biast.cpp" line="+24"/>
+        <location filename="../qucs/components/biast.cpp" line="+25"/>
         <source>bias t</source>
         <translation>bias t</translation>
     </message>
     <message>
         <location filename="../qucs/components/dcfeed.cpp" line="+49"/>
-        <location filename="../qucs/components/biast.cpp" line="+34"/>
+        <location filename="../qucs/components/biast.cpp" line="+35"/>
         <source>for transient simulation: inductance in Henry</source>
         <translation>用于瞬态仿真：电感(H)</translation>
     </message>
@@ -3738,13 +3794,13 @@ but is %1 !</source>
         <location filename="../qucs/components/logical_buf.cpp" line="+35"/>
         <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
         <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
-        <location filename="../qucs/components/component.cpp" line="+1438"/>
+        <location filename="../qucs/components/component.cpp" line="+1529"/>
         <location filename="../qucs/components/binarytogrey4bit.cpp" line="+3"/>
         <source>transfer function scaling factor</source>
         <translation>传递函数比例因子</translation>
     </message>
     <message>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+22"/>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+23"/>
         <source>4Bit Bin2Gray</source>
         <translation>4位Bin2Gray</translation>
     </message>
@@ -4037,7 +4093,6 @@ but is %1 !</source>
         <translation>能量带隙(eV)</translation>
     </message>
     <message>
-        <location filename="../qucs/components/resistor.cpp" line="+6"/>
         <location filename="../qucs/components/jfet.cpp" line="+6"/>
         <location filename="../qucs/components/diode.cpp" line="+14"/>
         <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
@@ -4093,9 +4148,9 @@ but is %1 !</source>
         <location filename="../qucs/components/msvia.cpp" line="-4"/>
         <location filename="../qucs/components/mstee.cpp" line="+39"/>
         <location filename="../qucs/components/msstep.cpp" line="+52"/>
-        <location filename="../qucs/components/msmbend.cpp" line="+49"/>
+        <location filename="../qucs/components/msmbend.cpp" line="+51"/>
         <location filename="../qucs/components/mscross.cpp" line="+31"/>
-        <location filename="../qucs/components/mscorner.cpp" line="+48"/>
+        <location filename="../qucs/components/mscorner.cpp" line="+50"/>
         <location filename="../qucs/components/bondwire.cpp" line="+2"/>
         <source>substrate</source>
         <translation>衬底</translation>
@@ -4108,7 +4163,7 @@ but is %1 !</source>
     <message>
         <location filename="../qucs/components/triac.cpp" line="+8"/>
         <location filename="../qucs/components/thyristor.cpp" line="+8"/>
-        <location filename="../qucs/components/potentiometer.cpp" line="+48"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="+49"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+15"/>
         <location filename="../qucs/components/photodiode.cpp" line="+25"/>
         <location filename="../qucs/components/nigbt.cpp" line="+41"/>
@@ -4135,7 +4190,7 @@ but is %1 !</source>
         <translation>瞬态仿真的初始电压</translation>
     </message>
     <message>
-        <location filename="../qucs/components/resistor.cpp" line="+4"/>
+        <location filename="../qucs/components/resistor.cpp" line="+41"/>
         <location filename="../qucs/components/logical_inv.cpp" line="+4"/>
         <location filename="../qucs/components/logical_buf.cpp" line="+4"/>
         <location filename="../qucs/components/diode.cpp" line="+4"/>
@@ -4162,9 +4217,15 @@ but is %1 !</source>
         <translation>前向传递因子</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vfile.cpp" line="+1"/>
-        <location filename="../qucs/components/vcvs.cpp" line="+1"/>
+        <location line="+1"/>
         <location filename="../qucs/components/vccs.cpp" line="+68"/>
+        <location filename="../qucs/components/ccvs.cpp" line="+1"/>
+        <location filename="../qucs/components/cccs.cpp" line="+1"/>
+        <source>delay time (Qucsator only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vfile.cpp" line="+1"/>
         <location filename="../qucs/components/rs_flipflop.cpp" line="+26"/>
         <location filename="../qucs/components/logical_inv.cpp" line="-6"/>
         <location filename="../qucs/components/logical_buf.cpp" line="-6"/>
@@ -4172,8 +4233,6 @@ but is %1 !</source>
         <location filename="../qucs/components/ifile.cpp" line="+62"/>
         <location filename="../qucs/components/d_flipflop.cpp" line="+27"/>
         <location filename="../qucs/components/component.cpp" line="-6"/>
-        <location filename="../qucs/components/ccvs.cpp" line="+1"/>
-        <location filename="../qucs/components/cccs.cpp" line="+1"/>
         <source>delay time</source>
         <translation>延迟</translation>
     </message>
@@ -4260,7 +4319,7 @@ but is %1 !</source>
     </message>
     <message>
         <location filename="../qucs/components/twistedpair.cpp" line="+4"/>
-        <location filename="../qucs/components/substrate.cpp" line="+67"/>
+        <location filename="../qucs/components/substrate.cpp" line="+68"/>
         <location filename="../qucs/components/rectline.cpp" line="+6"/>
         <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
         <source>loss tangent</source>
@@ -4277,7 +4336,7 @@ but is %1 !</source>
         <translation>verilog 1位比较器 设备</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>1Bit Comparator</source>
         <translation>1位比较器</translation>
     </message>
@@ -4309,7 +4368,7 @@ but is %1 !</source>
     <message>
         <location filename="../qucs/components/logical_inv.cpp" line="-2"/>
         <location filename="../qucs/components/logical_buf.cpp" line="-2"/>
-        <location filename="../qucs/components/digi_source.cpp" line="+60"/>
+        <location filename="../qucs/components/digi_source.cpp" line="+62"/>
         <location filename="../qucs/components/component.cpp" line="+2"/>
         <source>voltage of high level</source>
         <translation>高电平电压</translation>
@@ -4321,7 +4380,7 @@ but is %1 !</source>
         <location line="+24"/>
         <location line="+17"/>
         <location line="+70"/>
-        <location line="+32"/>
+        <location line="+37"/>
         <location line="+43"/>
         <location line="+78"/>
         <location line="+196"/>
@@ -4335,14 +4394,14 @@ but is %1 !</source>
         <location line="+29"/>
         <location line="+6"/>
         <location line="+8"/>
-        <location line="+17"/>
+        <location line="+19"/>
         <location line="+16"/>
         <location line="+6"/>
         <location line="+8"/>
         <location line="+15"/>
         <location line="+26"/>
         <location line="+54"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1313"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1351"/>
         <location filename="../qucs/components/vacomponent.cpp" line="+334"/>
         <location line="+24"/>
         <location filename="../qucs/components/component.cpp" line="+259"/>
@@ -4390,7 +4449,7 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location filename="../qucs/components/msrstub.cpp" line="+44"/>
-        <location filename="../qucs/components/msopen.cpp" line="+44"/>
+        <location filename="../qucs/components/msopen.cpp" line="+45"/>
         <location filename="../qucs/components/msline.cpp" line="-12"/>
         <location filename="../qucs/components/mslange.cpp" line="-13"/>
         <location filename="../qucs/components/msgap.cpp" line="+53"/>
@@ -4775,8 +4834,8 @@ Wrong &apos;component&apos; line format!</source>
         <translation>网表格式</translation>
     </message>
     <message>
-        <location filename="../qucs/components/digi_source.cpp" line="-34"/>
-        <location line="+51"/>
+        <location filename="../qucs/components/digi_source.cpp" line="-36"/>
+        <location line="+53"/>
         <source>digital source</source>
         <translation>数字源</translation>
     </message>
@@ -4981,7 +5040,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>verilog 2to4解复用器 设备</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>2to4 Demux</source>
         <translation>2to4解复用器</translation>
     </message>
@@ -5891,7 +5950,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>verilog 2位全加器 设备</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>2Bit FullAdder</source>
         <translation>2位全加器</translation>
     </message>
@@ -5911,7 +5970,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>verilog 4位格雷码转二进制码转换器 设备</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>4Bit Gray2Bin</source>
         <translation>4位Gray2Bin</translation>
     </message>
@@ -5921,7 +5980,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>地(参考电位)</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+32"/>
         <source>Ground</source>
         <translation>地</translation>
     </message>
@@ -6046,7 +6105,7 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/sparamfile.cpp" line="+41"/>
+        <location filename="../qucs/components/sparamfile.cpp" line="+40"/>
         <location filename="../qucs/components/ifile.cpp" line="+2"/>
         <source>interpolation type</source>
         <translation>插值类型</translation>
@@ -6461,7 +6520,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>逻辑0 (低电平)</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Logic 0</source>
         <translation>逻辑0</translation>
     </message>
@@ -6476,7 +6535,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>逻辑1 (高电平)</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Logic 1</source>
         <translation>逻辑1</translation>
     </message>
@@ -7144,13 +7203,13 @@ Wrong &apos;component&apos; line format!</source>
         <translation>带衬底的MOS场效应晶体管</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mscorner.cpp" line="-24"/>
+        <location filename="../qucs/components/mscorner.cpp" line="-26"/>
         <source>microstrip corner</source>
         <translation>微带角形</translation>
     </message>
     <message>
         <location filename="../qucs/components/msmbend.cpp" line="+2"/>
-        <location filename="../qucs/components/mscorner.cpp" line="+26"/>
+        <location filename="../qucs/components/mscorner.cpp" line="+28"/>
         <source>width of line</source>
         <translation>线宽</translation>
     </message>
@@ -7276,22 +7335,22 @@ Wrong &apos;component&apos; line format!</source>
         <translation>微带线</translation>
     </message>
     <message>
-        <location filename="../qucs/components/msmbend.cpp" line="-27"/>
+        <location filename="../qucs/components/msmbend.cpp" line="-29"/>
         <source>microstrip mitered bend</source>
         <translation>微带弯曲</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+43"/>
         <source>Microstrip Mitered Bend</source>
         <translation>微带弯曲</translation>
     </message>
     <message>
-        <location filename="../qucs/components/msopen.cpp" line="-24"/>
+        <location filename="../qucs/components/msopen.cpp" line="-25"/>
         <source>microstrip open</source>
         <translation>微带开放</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>microstrip open end model</source>
         <translation>微带开放模型</translation>
     </message>
@@ -7479,7 +7538,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>verilog 4to1多路复用器 设备</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>4to1 Mux</source>
         <translation>4to1多路复用器</translation>
     </message>
@@ -7489,7 +7548,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>verilog 8to1多路复用器 设备</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>8to1 Mux</source>
         <translation>8to1多路复用器</translation>
     </message>
@@ -7692,7 +7751,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished">测试信号发生器的输出值</translation>
     </message>
     <message>
-        <location filename="../qucs/components/pad2bit.cpp" line="+19"/>
+        <location filename="../qucs/components/pad2bit.cpp" line="+20"/>
         <source>2Bit Pattern</source>
         <translation>2位测试信号发生器</translation>
     </message>
@@ -7702,7 +7761,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>verilog 3位测试信号发生器 设备</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+23"/>
         <source>3Bit Pattern</source>
         <translation>3位测试信号发生器</translation>
     </message>
@@ -7712,7 +7771,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>verilog 4位测试信号发生器 设备</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+23"/>
         <source>4Bit Pattern</source>
         <translation>4位测试信号发生器</translation>
     </message>
@@ -7970,7 +8029,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>PPM/摄氏度</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>Potentiometer</source>
         <translation>电位计</translation>
     </message>
@@ -8102,7 +8161,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>第二温度系数</translation>
     </message>
     <message>
-        <location line="+87"/>
+        <location line="+2"/>
+        <source>temperature at which parameters were extracted (Qucsator only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+98"/>
         <source>Resistor</source>
         <translation>电阻</translation>
     </message>
@@ -8171,7 +8235,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>方程定义的2端RF器件</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rlcg.cpp" line="-41"/>
+        <location filename="../qucs/components/rlcg.cpp" line="-42"/>
         <source>RLCG transmission line</source>
         <translation>RLCG传输线</translation>
     </message>
@@ -8181,7 +8245,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>RLCG</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>resistive load</source>
         <translation>阻性负载</translation>
     </message>
@@ -8246,7 +8310,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>(可用)交流功率(W)</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+6"/>
+        <source>enable transient model as sine source [true,false]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Power Source</source>
         <translation>功率源</translation>
     </message>
@@ -8286,12 +8355,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>S参数仿真</translation>
     </message>
     <message>
-        <location filename="../qucs/components/sparamfile.cpp" line="-16"/>
+        <location filename="../qucs/components/sparamfile.cpp" line="-15"/>
         <source>S parameter file</source>
         <translation>S参数文件</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+9"/>
         <source>name of the s parameter file</source>
         <translation>S参数文件名</translation>
     </message>
@@ -8362,7 +8431,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>错误：无法转换SPICE文件&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../qucs/mouseactions.cpp" line="+908"/>
+        <location filename="../qucs/mouseactions.cpp" line="+985"/>
         <location filename="../qucs/components/spicefile.cpp" line="+81"/>
         <source>Info</source>
         <translation>信息</translation>
@@ -8428,17 +8497,17 @@ Wrong &apos;component&apos; line format!</source>
         <translation>XSPICE差分端口的关联端口</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+62"/>
         <source>Subcircuit Port</source>
         <translation>子电路端口</translation>
     </message>
     <message>
-        <location filename="../qucs/components/substrate.cpp" line="-43"/>
+        <location filename="../qucs/components/substrate.cpp" line="-44"/>
         <source>substrate definition</source>
         <translation>基板定义</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+38"/>
         <source>relative permittivity</source>
         <translation>相对介电常数</translation>
     </message>
@@ -8468,12 +8537,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>基板</translation>
     </message>
     <message>
-        <location filename="../qucs/components/switch.cpp" line="-12"/>
+        <location filename="../qucs/components/switch.cpp" line="+26"/>
         <source>switch (time controlled)</source>
         <translation>开关(时间控制)</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>initial state</source>
         <translation>初始状态</translation>
     </message>
@@ -8493,17 +8562,29 @@ Wrong &apos;component&apos; line format!</source>
         <translation>&quot;关闭&quot;状态的电阻(Ω)</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/resistor.cpp" line="-114"/>
+        <location filename="../qucs/components/indq.cpp" line="+75"/>
+        <location filename="../qucs/components/capq.cpp" line="+74"/>
+        <source>simulation temperature in degree Celsius (Qucsator only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Max possible switch transition time (transition time 1/100 smallest value in &apos;time&apos;, or this number)</source>
         <translation>最大可能的开关转换时间(转换时间是&apos;time&apos;中最小值的1/100，或此数字)</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Resistance transition shape</source>
-        <translation>电阻过渡形状</translation>
+        <source>Resistance transition shape (Qucsator only)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <source>Resistance transition shape</source>
+        <translation type="vanished">电阻过渡形状</translation>
+    </message>
+    <message>
+        <location line="+22"/>
         <source>Switch</source>
         <translation>开关</translation>
     </message>
@@ -8840,7 +8921,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Verilog</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+44"/>
+        <location filename="../qucs/schematic_file.cpp" line="+47"/>
         <location filename="../qucs/components/vhdlfile.cpp" line="+221"/>
         <location filename="../qucs/components/verilogfile.cpp" line="+45"/>
         <source>ERROR: No file name in %1 component &quot;%2&quot;.</source>
@@ -8926,7 +9007,7 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+44"/>
-        <location filename="../qucs/components/volt_ac.cpp" line="+46"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="+50"/>
         <source>ac Voltage Source</source>
         <translation>交流电压源</translation>
     </message>
@@ -9017,7 +9098,7 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location filename="../qucs/diagrams/tabdiagram.cpp" line="+261"/>
-        <location filename="../qucs/diagrams/marker.cpp" line="+261"/>
+        <location filename="../qucs/diagrams/marker.cpp" line="+275"/>
         <source>invalid</source>
         <translation>无效</translation>
     </message>
@@ -9042,7 +9123,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>3D-笛卡尔坐标图</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+258"/>
+        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+315"/>
         <source>Cartesian</source>
         <translation>笛卡尔坐标图</translation>
     </message>
@@ -9095,7 +9176,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>真值表</translation>
     </message>
     <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="-302"/>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="-291"/>
         <source>ERROR: Cannot open file &quot;%1&quot;.
 </source>
         <translation>错误：无法打开文件&quot;%1&quot;
@@ -9140,7 +9221,7 @@ Overwrite ?</source>
         <translation>Inkscape启动错误！</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+3307"/>
+        <location filename="../qucs/qucs.cpp" line="+3360"/>
         <source>Successfully exported</source>
         <translation>Successfully exported</translation>
     </message>
@@ -9158,7 +9239,7 @@ Use PNG, JPEG or SVG graphics!</source>
 使用PNG、JPEG或SVG格式！</translation>
     </message>
     <message>
-        <location filename="../qucs/misc.cpp" line="+391"/>
+        <location filename="../qucs/misc.cpp" line="+436"/>
         <location line="+64"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation>错误：&quot;%1&quot;中的时间格式错误。使用正数和单位</translation>
@@ -9166,13 +9247,13 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location filename="../qucs/qucs_actions.cpp" line="+146"/>
         <location line="+20"/>
-        <location filename="../qucs/qucs.cpp" line="-2464"/>
-        <location filename="../qucs/module.cpp" line="+121"/>
+        <location filename="../qucs/qucs.cpp" line="-2514"/>
+        <location filename="../qucs/module.cpp" line="+126"/>
         <source>verilog-a user devices</source>
         <translation>verilog-a用户元件</translation>
     </message>
     <message>
-        <location filename="../qucs/module.cpp" line="+66"/>
+        <location filename="../qucs/module.cpp" line="+68"/>
         <location line="+2"/>
         <source>lumped components</source>
         <translation>集总参数元件</translation>
@@ -9198,6 +9279,12 @@ Use PNG, JPEG or SVG graphics!</source>
         <location line="+2"/>
         <source>nonlinear components</source>
         <translation>非线性元件</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>microelectronics</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9233,8 +9320,12 @@ Use PNG, JPEG or SVG graphics!</source>
     </message>
     <message>
         <location line="+2"/>
+        <source>SPICE netlist sections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>SPICE specific sections</source>
-        <translation>SPICE特定部分</translation>
+        <translation type="vanished">SPICE特定部分</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9254,16 +9345,16 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>Qucslegacy设备</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+1697"/>
+        <location filename="../qucs/qucs.cpp" line="+1730"/>
         <location line="+92"/>
-        <location line="+767"/>
+        <location line="+784"/>
         <location filename="../qucs/module.cpp" line="-24"/>
         <location line="+4"/>
         <source>diagrams</source>
         <translation>图表</translation>
     </message>
     <message>
-        <location line="-2679"/>
+        <location line="-2729"/>
         <location filename="../qucs/module.cpp" line="+2"/>
         <location line="+2"/>
         <source>paintings</source>
@@ -9275,17 +9366,17 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>外部信号元件</translation>
     </message>
     <message>
-        <location filename="../qucs/mouseactions.cpp" line="-128"/>
+        <location filename="../qucs/mouseactions.cpp" line="-154"/>
         <source>Edit Properties</source>
         <translation>编辑属性</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+42"/>
         <source>Export as image</source>
         <translation>导出为图像</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+27"/>
         <source>power matching</source>
         <translation>功率匹配</translation>
     </message>
@@ -9295,17 +9386,17 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>噪声匹配</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>2-port matching</source>
         <translation>2端口匹配</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+76"/>
         <source>The ground potential cannot be labeled!</source>
         <translation>接地电位无法标记！</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/arrow.cpp" line="+141"/>
+        <location filename="../qucs/paintings/arrow.cpp" line="+142"/>
         <source>Arrow</source>
         <translation>箭头</translation>
     </message>
@@ -9320,7 +9411,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>椭圆(实心)</translation>
     </message>
     <message>
-        <location line="+265"/>
+        <location line="+277"/>
         <source>Edit Ellipse Properties</source>
         <translation>编辑椭圆属性</translation>
     </message>
@@ -9330,7 +9421,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>椭圆弧</translation>
     </message>
     <message>
-        <location line="+296"/>
+        <location line="+309"/>
         <source>Edit Arc Properties</source>
         <translation>编辑椭圆弧属性</translation>
     </message>
@@ -9340,12 +9431,12 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>线</translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="+247"/>
         <source>Edit Line Properties</source>
         <translation>编辑线属性</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/graphictext.cpp" line="+133"/>
+        <location filename="../qucs/paintings/graphictext.cpp" line="+135"/>
         <source>Text</source>
         <translation>文本</translation>
     </message>
@@ -9360,7 +9451,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>矩形(实心)</translation>
     </message>
     <message>
-        <location line="+267"/>
+        <location line="+279"/>
         <source>Edit Rectangle Properties</source>
         <translation>编辑矩形属性</translation>
     </message>
@@ -9375,15 +9466,15 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>无法创建输出文件！</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1358"/>
-        <location line="+787"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1368"/>
+        <location line="+794"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>格式错误：
 &apos;绘画&apos;字段没有关闭！</translation>
     </message>
     <message>
-        <location line="-769"/>
+        <location line="-776"/>
         <source>Wrong document version: </source>
         <translation>错误的文档版本：</translation>
     </message>
@@ -9406,7 +9497,7 @@ Unknown field!</source>
         <translation>无法打开Verilog-A文件&quot;%1&quot;！</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+37"/>
         <source>Cannot save JSON props file &quot;%1&quot;!</source>
         <translation>无法保存JSON属性文件&quot;%1&quot;！</translation>
     </message>
@@ -9492,7 +9583,7 @@ Wrong &apos;diagram&apos; line format!</source>
 &apos;图表&apos;字段未闭合！</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+19"/>
         <source>Format Error:
 Wrong &apos;painting&apos; line delimiter!</source>
         <translation>格式错误：
@@ -9576,12 +9667,12 @@ Unknown field!</source>
         <translation>错误：&quot;%1&quot;：无法从&quot;%3&quot;中加载库元件&quot;%2&quot; </translation>
     </message>
     <message>
-        <location line="+211"/>
+        <location line="+214"/>
         <source>WARNING: Ignore simulation component in subcircuit &quot;%1&quot;.</source>
         <translation>警告：警告：忽略子电路中的仿真元件&quot;%1&quot;</translation>
     </message>
     <message>
-        <location line="+206"/>
+        <location line="+207"/>
         <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
         <translation>警告：&quot;%1&quot;中的等式是&apos;时间&apos;类型的</translation>
     </message>
@@ -9606,7 +9697,7 @@ Unknown field!</source>
         <translation>组件列表</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+26"/>
         <source>Filter order = %1</source>
         <translation>滤波器顺序 = %1</translation>
     </message>
@@ -9926,7 +10017,7 @@ Leave continuation lines blank when NOT in use.  </source>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_spectrum.cpp" line="+26"/>
-        <location line="+40"/>
+        <location line="+41"/>
         <source>Spectrum analysis</source>
         <translation>频谱分析</translation>
     </message>
@@ -10049,7 +10140,7 @@ Leave continuation lines blank when NOT in use.  </source>
         <translation>Nutmeg</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+27"/>
         <source>Nutmeg Equation</source>
         <translation>Nutmeg方程</translation>
     </message>
@@ -10210,7 +10301,7 @@ Leave continuation lines blank when NOT in use.</source>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_customsim.cpp" line="+25"/>
-        <location line="+35"/>
+        <location line="+45"/>
         <source>Nutmeg script</source>
         <translation>Nutmeg脚本</translation>
     </message>
@@ -10412,16 +10503,21 @@ Leave continuation lines blank when NOT in use.  </source>
         <translation>I 源</translation>
     </message>
     <message>
-        <location filename="../qucs/spicecomponents/R_SPICE.cpp" line="+29"/>
+        <location filename="../qucs/spicecomponents/R_SPICE.cpp" line="+28"/>
         <source>SPICE R:
 Multiple line ngspice or Xyce R specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+59"/>
         <source> R Resistor</source>
         <translation> R 电阻</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>R Resistor 3 pin</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/PNP_SPICE.cpp" line="+29"/>
@@ -10620,9 +10716,14 @@ Leave continuation lines blank when NOT in use.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+60"/>
         <source>D Diode</source>
         <translation>D 二极管</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>D Diode 3 pin</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/C_SPICE.cpp" line="+29"/>
@@ -10632,9 +10733,14 @@ Leave continuation lines blank when NOT in use.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+56"/>
         <source>C Capacitor</source>
         <translation>C 电容</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>C Capacitor 3 pin</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/BJT_SPICE.cpp" line="+9"/>
@@ -10657,7 +10763,7 @@ Leave continuation lines blank when NOT in use.</source>
         <translation>Q(PNP) 5 pin</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+2215"/>
+        <location filename="../qucs/schematic.cpp" line="+2656"/>
         <source>The schematic name and dataset/display file name is not matching! This may happen if schematic was copied using the file manager instead of using File-&gt;SaveAs. Correct dataset and display names automatically?
 
 </source>
@@ -10666,7 +10772,7 @@ Leave continuation lines blank when NOT in use.</source>
 </translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Schematic file: </source>
         <translation>原理图文件：</translation>
     </message>
@@ -11178,7 +11284,7 @@ Active Filter synthesis program
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-611"/>
+        <location filename="../qucs/qucs.cpp" line="-613"/>
         <source>Schematic</source>
         <translation>原理图</translation>
     </message>
@@ -11194,47 +11300,47 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1617"/>
+        <location line="+1629"/>
         <source>VHDL Sources</source>
         <translation>VHDL源代码</translation>
     </message>
     <message>
-        <location line="-1616"/>
-        <location line="+1617"/>
+        <location line="-1628"/>
+        <location line="+1629"/>
         <source>Verilog Sources</source>
         <translation>Verilog源代码</translation>
     </message>
     <message>
-        <location line="-1616"/>
-        <location line="+1617"/>
+        <location line="-1628"/>
+        <location line="+1629"/>
         <source>Verilog-A Sources</source>
         <translation>Verilog-A源代码</translation>
     </message>
     <message>
-        <location line="-1616"/>
-        <location line="+1617"/>
+        <location line="-1628"/>
+        <location line="+1629"/>
         <source>Octave Scripts</source>
         <translation>Octave脚本</translation>
     </message>
     <message>
-        <location line="-1616"/>
+        <location line="-1628"/>
         <source>Spice Files</source>
         <translation>SPICE文件</translation>
     </message>
     <message>
         <location filename="../qucs/qucs_actions.cpp" line="-19"/>
         <location filename="../qucs/qucs.cpp" line="+1"/>
-        <location line="+1618"/>
+        <location line="+1631"/>
         <source>Any File</source>
         <translation>任何文件</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+311"/>
+        <location filename="../qucs/qucs.cpp" line="+326"/>
         <source>The schematic search path has been refreshed.</source>
         <translation>原理图搜索路径已刷新</translation>
     </message>
     <message>
-        <location line="+710"/>
+        <location line="+717"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
@@ -11244,7 +11350,7 @@ Active Filter synthesis program
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-1140"/>
+        <location line="-1163"/>
         <source>Open file</source>
         <translation>打开文件</translation>
     </message>
@@ -11254,14 +11360,14 @@ Active Filter synthesis program
         <translation>文档以只读模式打开！仿真器将无法工作。请将文档复制到您有写入权限的目录！</translation>
     </message>
     <message>
-        <location line="+790"/>
-        <location line="+932"/>
+        <location line="+813"/>
+        <location line="+949"/>
         <location line="+20"/>
         <source>Simulate schematic</source>
         <translation>仿真原理图</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-968"/>
         <source>DC bias simulation mode is not supported for digital schematic!</source>
         <translation>数字原理图不支持直流偏置仿真模式！</translation>
     </message>
@@ -11271,7 +11377,7 @@ Active Filter synthesis program
         <translation>原理图</translation>
     </message>
     <message>
-        <location line="-2461"/>
+        <location line="-2496"/>
         <source>New</source>
         <translation>新建</translation>
     </message>
@@ -11316,7 +11422,7 @@ Active Filter synthesis program
         <translation>当前项目内容</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+30"/>
         <source>Search Components</source>
         <translation>搜索元件</translation>
     </message>
@@ -11353,14 +11459,14 @@ Active Filter synthesis program
         <translation>Octave窗口</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-562"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-558"/>
         <location line="+147"/>
         <location line="+61"/>
         <location line="+32"/>
         <location line="+16"/>
         <location line="+10"/>
         <location line="+5"/>
-        <location line="+247"/>
+        <location line="+243"/>
         <location line="+15"/>
         <location line="+19"/>
         <location line="+138"/>
@@ -11368,7 +11474,7 @@ Active Filter synthesis program
         <location line="+4"/>
         <location line="+73"/>
         <location line="+4"/>
-        <location line="+609"/>
+        <location line="+619"/>
         <location line="+25"/>
         <location line="+20"/>
         <location line="+19"/>
@@ -11376,7 +11482,7 @@ Active Filter synthesis program
         <location line="+79"/>
         <location line="+6"/>
         <location line="+113"/>
-        <location line="+795"/>
+        <location line="+818"/>
         <location line="+5"/>
         <location line="+4"/>
         <location line="+312"/>
@@ -11384,7 +11490,8 @@ Active Filter synthesis program
         <location line="+75"/>
         <location line="+112"/>
         <location line="+23"/>
-        <location line="+220"/>
+        <location line="+131"/>
+        <location line="+103"/>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+7"/>
@@ -11393,7 +11500,7 @@ Active Filter synthesis program
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-2563"/>
+        <location filename="../qucs/qucs.cpp" line="-2610"/>
         <location line="+77"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation>无法打开&quot;%1&quot;</translation>
@@ -11401,7 +11508,7 @@ Active Filter synthesis program
     <message>
         <location line="-73"/>
         <location line="+77"/>
-        <location line="+2212"/>
+        <location line="+2245"/>
         <location line="+23"/>
         <source>Library is corrupt.</source>
         <translation>库已损坏</translation>
@@ -11414,25 +11521,25 @@ Active Filter synthesis program
         <location line="+38"/>
         <location line="+14"/>
         <location line="+682"/>
-        <location filename="../qucs/qucs.cpp" line="-1982"/>
-        <location line="+491"/>
+        <location filename="../qucs/qucs.cpp" line="-2015"/>
+        <location line="+501"/>
         <location line="+74"/>
         <location line="+71"/>
         <location line="+11"/>
         <location line="+26"/>
-        <location line="+223"/>
+        <location line="+224"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-895"/>
+        <location filename="../qucs/qucs.cpp" line="-906"/>
         <source>Default icon not found:
  %1.png</source>
         <translation>默认图标未找到：
  %1.png</translation>
     </message>
     <message>
-        <location line="+264"/>
+        <location line="+274"/>
         <source>-port</source>
         <translation>-端口</translation>
     </message>
@@ -11443,14 +11550,14 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+686"/>
+        <location line="+687"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>文档包含未保存的更改！
 </translation>
     </message>
     <message>
-        <location line="-685"/>
+        <location line="-686"/>
         <source>Do you want to save the changes before copying?</source>
         <translation>是否要在复制之前保存更改？</translation>
     </message>
@@ -11490,22 +11597,22 @@ Active Filter synthesis program
         <translation>无法删除一个打开的文件！</translation>
     </message>
     <message>
-        <location line="-810"/>
-        <location line="+815"/>
+        <location line="-820"/>
+        <location line="+825"/>
         <location line="+217"/>
-        <location line="+243"/>
-        <location line="+683"/>
+        <location line="+244"/>
+        <location line="+705"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location line="-1142"/>
+        <location line="-1165"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>这将永久删除该文件！继续吗？</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation>确定</translation>
+        <translation type="vanished">确定</translation>
     </message>
     <message>
         <location line="-152"/>
@@ -11558,12 +11665,12 @@ Active Filter synthesis program
         <translation>配置</translation>
     </message>
     <message>
-        <location line="-681"/>
+        <location line="-691"/>
         <source>Cannot create work directory !</source>
         <translation>无法创建工作目录！</translation>
     </message>
     <message>
-        <location line="+881"/>
+        <location line="+891"/>
         <source>Cannot create project directory !</source>
         <translation>无法创建项目目录！</translation>
     </message>
@@ -11583,21 +11690,21 @@ Active Filter synthesis program
         <translation>无法删除文件：%1</translation>
     </message>
     <message>
-        <location line="-483"/>
-        <location line="+98"/>
+        <location line="-493"/>
+        <location line="+103"/>
         <location line="+3"/>
-        <location line="+93"/>
+        <location line="+98"/>
         <location line="+79"/>
         <source>Search results</source>
         <translation>搜索结果</translation>
     </message>
     <message>
-        <location line="-704"/>
+        <location line="-714"/>
         <source>Search Lib Components</source>
         <translation>搜索库元件</translation>
     </message>
     <message>
-        <location line="-191"/>
+        <location line="-193"/>
         <source>Set simulator</source>
         <translation>设置仿真器</translation>
     </message>
@@ -11617,12 +11724,12 @@ Active Filter synthesis program
         <translation>未找到Ngspice。请在指定仿真器的位置</translation>
     </message>
     <message>
-        <location line="+209"/>
+        <location line="+211"/>
         <source>Show model</source>
         <translation>显示模型</translation>
     </message>
     <message>
-        <location line="+583"/>
+        <location line="+593"/>
         <source>verilog-a user devices</source>
         <translation>verilog-a用户设备</translation>
     </message>
@@ -11662,12 +11769,11 @@ Active Filter synthesis program
         <translation>项目：</translation>
     </message>
     <message>
-        <location line="+60"/>
         <source>No project</source>
-        <translation>无项目</translation>
+        <translation type="vanished">无项目</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+88"/>
         <source>Project directory name does not end in &apos;_prj&apos; (%1)</source>
         <translation>项目目录的名称不应以&apos;_prj&apos;结尾 (%1)</translation>
     </message>
@@ -11702,28 +11808,28 @@ Active Filter synthesis program
         <translation>创建新的原理图...</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="+886"/>
+        <location filename="../qucs/qucs_init.cpp" line="+911"/>
         <location filename="../qucs/qucs_actions.cpp" line="-1016"/>
         <location line="+15"/>
-        <location line="+385"/>
+        <location line="+389"/>
         <location line="+325"/>
         <location filename="../qucs/qucs.cpp" line="+7"/>
         <location line="+12"/>
         <location line="+82"/>
         <location line="+31"/>
         <location line="+5"/>
-        <location line="+100"/>
+        <location line="+101"/>
         <location line="+5"/>
         <location line="+36"/>
         <location line="+57"/>
         <location line="+35"/>
-        <location line="+204"/>
+        <location line="+219"/>
         <location line="+30"/>
         <source>Ready.</source>
         <translation>准备</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-591"/>
+        <location filename="../qucs/qucs.cpp" line="-607"/>
         <source>Creating new text editor...</source>
         <translation>创建新的文本编辑器...</translation>
     </message>
@@ -11750,14 +11856,19 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+6"/>
-        <location line="+105"/>
+        <location line="+106"/>
         <source>Saving aborted</source>
         <translation>中止保存</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-65"/>
         <source>Qucs Netlist</source>
         <translation>Qucs网表</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>SPICE Netlist</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -11788,7 +11899,7 @@ Active Filter synthesis program
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="vanished">取消</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -11826,7 +11937,7 @@ Active Filter synthesis program
         <translation>打开示例目录...</translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+185"/>
         <source>untitled</source>
         <translation>untitled</translation>
     </message>
@@ -11841,7 +11952,7 @@ Active Filter synthesis program
         <translation>退出应用程序...</translation>
     </message>
     <message>
-        <location line="+139"/>
+        <location line="+146"/>
         <source>No simulations found. Tuning not possible. Please add at least one simulation.</source>
         <translation>未找到仿真器。无法进行调整。请至少添加一个仿真器</translation>
     </message>
@@ -11856,7 +11967,12 @@ Active Filter synthesis program
         <translation>在没有图表的情况下调整将没有效果。在原理图上添加至少一个图表</translation>
     </message>
     <message>
-        <location line="+1034"/>
+        <location line="+682"/>
+        <source>Symbol editing supported only for schematics and Verilog-A documents!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+369"/>
         <source>Schematic not saved! Simulation of unsaved schematic not possible. Save schematic first!</source>
         <translation>原理图未保存！无法仿真未保存的原理图。请先保存原理图！</translation>
     </message>
@@ -11888,7 +12004,7 @@ Use subcircuit to crete Verilog-A module!</source>
 使用子电路来构建Verilog-A模块！</translation>
     </message>
     <message>
-        <location line="-995"/>
+        <location line="-1012"/>
         <source>The document was modified by another program !</source>
         <translation>该文档被另一个程序修改了！</translation>
     </message>
@@ -11913,7 +12029,7 @@ Use subcircuit to crete Verilog-A module!</source>
         <translation>无法启动&quot;%1&quot;！</translation>
     </message>
     <message>
-        <location line="+354"/>
+        <location line="+368"/>
         <source>Could not load S[1,1].</source>
         <translation>无法加载 S[1,1]</translation>
     </message>
@@ -11938,7 +12054,7 @@ Use subcircuit to crete Verilog-A module!</source>
         <translation>错误的依赖！</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-401"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-405"/>
         <source>Cutting selection...</source>
         <translation>切割选择...</translation>
     </message>
@@ -11958,7 +12074,7 @@ Use subcircuit to crete Verilog-A module!</source>
         <translation>必须至少选择两个元素！</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+65"/>
         <source>Opening aborted, file not found.</source>
         <translation>打开中止，找不到文件</translation>
     </message>
@@ -12038,7 +12154,7 @@ Overwrite ?</source>
         <translation>无法写入&quot;%1&quot;！</translation>
     </message>
     <message>
-        <location line="+247"/>
+        <location line="+243"/>
         <source>Please open project with subcircuits!</source>
         <translation>请打开带有子电路的项目！</translation>
     </message>
@@ -12109,7 +12225,7 @@ Have you saved the Verilog-A symbols?</source>
         <translation>OpenVAF窗口</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="-905"/>
+        <location filename="../qucs/qucs_init.cpp" line="-930"/>
         <source>&amp;New</source>
         <translation>新建</translation>
     </message>
@@ -13059,7 +13175,7 @@ Convert graph data to CSV file</source>
 Runs amdsXml and C++ compiler</source>
         <translation>构建Verilog-A模块
         
->运行admsXml和C++编译器</translation>
+&gt;运行admsXml和C++编译器</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -13096,6 +13212,28 @@ Shows the whole page content</source>
         <translation>查看全部
         
 显示整个页面</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Zoom to selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Zoom to selected components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Zoom to selection
+
+Zoom to selected components</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -13246,7 +13384,12 @@ Rotates the selected component by 90� counter-clockwise</source>
 将所选元件旋转90度</translation>
     </message>
     <message>
-        <location line="+116"/>
+        <location line="+60"/>
+        <source>Ctrl+W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+56"/>
         <source>Power combining</source>
         <translation>功率合成器</translation>
     </message>
@@ -13279,7 +13422,46 @@ Changes to data display or schematic page</source>
 切换数据显示器视图或原理图页面</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+21"/>
+        <source>Set Diagram Limits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Pick the diagram limits using the mouse. Right click for default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Set Diagram Limits
+
+Pick the diagram limits using the mouse. Right click for default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Reset Diagram Limits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ctrl+Shift+E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Resets the limits for all axis to auto.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Reset Diagram Limits
+
+Resets the limits for all axis to auto.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Simulators Settings...</source>
         <translation>仿真器设置...</translation>
     </message>
@@ -13289,7 +13471,7 @@ Changes to data display or schematic page</source>
         <translation>关于Qucs-S...</translation>
     </message>
     <message>
-        <location line="-215"/>
+        <location line="-228"/>
         <source>Mirror about X Axis</source>
         <translation>垂直翻转</translation>
     </message>
@@ -13481,12 +13663,12 @@ Inserts a port symbol</source>
         <translation>导线</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+101"/>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-99"/>
         <source>Inserts a wire</source>
         <translation>绘制导线</translation>
     </message>
@@ -13693,12 +13875,12 @@ Starts attenuator calculation program</source>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+394"/>
+        <location line="+409"/>
         <source>Simulate</source>
         <translation>仿真</translation>
     </message>
     <message>
-        <location line="-392"/>
+        <location line="-407"/>
         <source>Simulates the current schematic</source>
         <translation>仿真当前原理图</translation>
     </message>
@@ -13743,7 +13925,7 @@ Calculates DC bias and shows it</source>
     <message>
         <location line="+3"/>
         <location line="+1"/>
-        <location filename="../qucs/qucs.cpp" line="+264"/>
+        <location filename="../qucs/qucs.cpp" line="+267"/>
         <source>Save netlist</source>
         <translation>保存网表</translation>
     </message>
@@ -13772,7 +13954,7 @@ Sets a marker on a diagram&apos;s graph</source>
 在图表上设置标记</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+17"/>
         <source>Show Last Messages</source>
         <translation>显示最后一次信息</translation>
     </message>
@@ -13997,7 +14179,7 @@ About Qt by Trolltech</translation>
         <translation>工具</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+10"/>
         <source>Compact modelling</source>
         <translation>紧凑型模型</translation>
     </message>
@@ -14012,7 +14194,7 @@ About Qt by Trolltech</translation>
         <translation>视图</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+15"/>
         <source>&amp;Help</source>
         <translation>帮助</translation>
     </message>
@@ -14065,12 +14247,12 @@ Open </source>
         <translation>视图</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Work</source>
         <translation>工作</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+36"/>
         <location line="+43"/>
         <source>no warnings</source>
         <translation>无警告</translation>
@@ -14193,12 +14375,12 @@ Open </source>
     </message>
     <message>
         <location line="+16"/>
-        <location line="+125"/>
+        <location line="+126"/>
         <source>Result:</source>
         <translation>结果:</translation>
     </message>
     <message>
-        <location line="-107"/>
+        <location line="-108"/>
         <source>Qucs Attenuator Help</source>
         <translation>Qucs Attenuator帮助</translation>
     </message>
@@ -14233,7 +14415,7 @@ Attenuator synthesis program
         <translation>Copyright (C) 2006 by</translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="+83"/>
         <source>Success!</source>
         <translation>成功！</translation>
     </message>
@@ -14333,29 +14515,29 @@ Attenuator synthesis program
     </message>
     <message>
         <location line="+6"/>
-        <location line="+407"/>
+        <location line="+409"/>
         <source>Corner frequency:</source>
         <translation>拐点频率</translation>
     </message>
     <message>
-        <location line="-394"/>
+        <location line="-396"/>
         <source>Stop frequency:</source>
         <translation>截止频率</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location line="+392"/>
+        <location line="+394"/>
         <source>Stop band frequency:</source>
         <translation>阻带频率</translation>
     </message>
     <message>
-        <location line="-379"/>
-        <location line="+380"/>
+        <location line="-381"/>
+        <location line="+382"/>
         <source>Pass band ripple:</source>
         <translation>带内纹波</translation>
     </message>
     <message>
-        <location line="-372"/>
+        <location line="-374"/>
         <source>Stop band attenuation:</source>
         <translation>带外衰减</translation>
     </message>
@@ -14400,7 +14582,7 @@ Attenuator synthesis program
         <translation>计算并复制到剪切板</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+41"/>
         <source>About...</source>
         <translation>关于</translation>
     </message>
@@ -14527,7 +14709,7 @@ Filter synthesis program
         <translation>编辑Qucs属性</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+30"/>
         <source>Large font size:</source>
         <translation>大字体字号：</translation>
     </message>
@@ -14647,7 +14829,7 @@ Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-39"/>
+        <location line="-44"/>
         <source>Schematic font (set after reload):</source>
         <translation>原理图字体(重启后生效)：</translation>
     </message>
@@ -14657,7 +14839,7 @@ Filter synthesis program
         <translation>应用程序字体(重启后生效)：</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+32"/>
         <source>Kazakh</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14707,7 +14889,12 @@ Filter synthesis program
         <translation>对图形使用抗锯齿以获得更平滑的外观。</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="-65"/>
+        <source>Text document font (set after reload):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+71"/>
         <source>Use anti-aliasing for text for a smoother appearance.</source>
         <translation>对文本使用抗锯齿以获得更平滑的外观。</translation>
     </message>
@@ -14894,7 +15081,7 @@ open files with an appropriate program.</source>
         <translation>默认值</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+64"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -14904,7 +15091,7 @@ open files with an appropriate program.</source>
         <translation>此后缀已经被注册！</translation>
     </message>
     <message>
-        <location line="+457"/>
+        <location line="+470"/>
         <source>Select the home directory</source>
         <translation>选择主目录</translation>
     </message>
@@ -15536,7 +15723,7 @@ open files with an appropriate program.</source>
 <context>
     <name>Schematic</name>
     <message>
-        <location filename="../qucs/schematic.cpp" line="-2122"/>
+        <location filename="../qucs/schematic.cpp" line="-2538"/>
         <source>Title</source>
         <translation>标题</translation>
     </message>
@@ -15556,7 +15743,7 @@ open files with an appropriate program.</source>
         <translation>修订：</translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="+66"/>
         <source>Edit Text</source>
         <translation>编辑文本</translation>
     </message>
@@ -15575,7 +15762,7 @@ Edits the text file</source>
 编辑文本文件</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Edit Schematic</source>
         <translation>编辑原理图</translation>
     </message>
@@ -15594,7 +15781,7 @@ Edits the schematic</source>
 编辑原理图</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>Edit Circuit Symbol</source>
         <translation>编辑电路符号</translation>
     </message>
@@ -15613,12 +15800,12 @@ Edits the symbol for this schematic</source>
 编辑此原理图的电路符号</translation>
     </message>
     <message>
-        <location line="+1252"/>
+        <location line="+1634"/>
         <source>generic</source>
         <translation>通用</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1437"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1443"/>
         <location line="+22"/>
         <source>Error</source>
         <translation>错误</translation>
@@ -15638,12 +15825,17 @@ Set the admsXml location on the application settings.</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location line="+893"/>
+        <location line="+897"/>
         <source>Netlist error</source>
         <translation>网表错误</translation>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+3"/>
+        <source>S2Spice warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+155"/>
         <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
         <translation>错误：无法创建库文件&quot;%s&quot;</translation>
     </message>
@@ -15876,7 +16068,7 @@ Set the admsXml location on the application settings.</source>
         <translation>创建网表...</translation>
     </message>
     <message>
-        <location line="+324"/>
+        <location line="+327"/>
         <location line="+24"/>
         <source>Error</source>
         <translation>错误</translation>
@@ -15888,7 +16080,7 @@ Set the admsXml location on the application settings.</source>
         <translation>无法读取网表</translation>
     </message>
     <message>
-        <location line="-354"/>
+        <location line="-357"/>
         <source>ERROR: Simulator is still running!</source>
         <translation>错误：仿真器仍在运行！</translation>
     </message>
@@ -15914,7 +16106,7 @@ Set the admsXml location on the application settings.</source>
     </message>
     <message>
         <location line="+105"/>
-        <location line="+101"/>
+        <location line="+104"/>
         <source>done.
 </source>
         <translation>结束
@@ -16184,12 +16376,12 @@ Set the admsXml location on the application settings.</source>
         <location line="+91"/>
         <location line="+66"/>
         <source>Info</source>
-        <translation >信息</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <location line="-65"/>
         <source>Preprocessing SPICE file &quot;%1&quot;.</source>
-        <translation >预处理SPICE文件&quot;%1&quot;</translation>
+        <translation>预处理SPICE文件&quot;%1&quot;</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -16238,7 +16430,7 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location filename="../qucs/dialogs/sweepdialog.cpp" line="+92"/>
         <source>Bias Points</source>
-        <translation >偏置点</translation>
+        <translation>偏置点</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -16249,7 +16441,7 @@ Set the admsXml location on the application settings.</source>
 <context>
     <name>SymbolWidget</name>
     <message>
-        <location filename="../qucs/symbolwidget.cpp" line="+49"/>
+        <location filename="../qucs/symbolwidget.cpp" line="+50"/>
         <source>Symbol:</source>
         <translation>符号：</translation>
     </message>
@@ -16316,7 +16508,7 @@ Please contact the developers.</source>
 <context>
     <name>TextDoc</name>
     <message>
-        <location filename="../qucs/textdoc.cpp" line="+229"/>
+        <location filename="../qucs/textdoc.cpp" line="+224"/>
         <source>Edit Text Symbol</source>
         <translation>编辑文本符号</translation>
     </message>
@@ -16453,7 +16645,7 @@ Inserts the skeleton of a Octave function</source>
 <context>
     <name>TunerDialog</name>
     <message>
-        <location filename="../qucs/dialogs/tuner.cpp" line="+698"/>
+        <location filename="../qucs/dialogs/tuner.cpp" line="+703"/>
         <source>Add component</source>
         <translation>添加元件</translation>
     </message>
@@ -16559,7 +16751,7 @@ Inserts the skeleton of a Octave function</source>
 <context>
     <name>tunerElement</name>
     <message>
-        <location filename="../qucs/dialogs/tuner.cpp" line="-558"/>
+        <location filename="../qucs/dialogs/tuner.cpp" line="-560"/>
         <source>Max.:</source>
         <translation>Max.:</translation>
     </message>
@@ -16579,9 +16771,8 @@ Inserts the skeleton of a Octave function</source>
         <translation>Step</translation>
     </message>
     <message>
-        <location line="+91"/>
         <source> </source>
-        <translation> </translation>
+        <translation type="vanished"> </translation>
     </message>
 </context>
 </TS>

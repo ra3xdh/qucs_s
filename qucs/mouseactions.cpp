@@ -53,14 +53,6 @@
 #include <climits>
 #include <cstdlib>
 
-#define DOC_X_POS(x) (int(float(x) / Doc->Scale) + Doc->ViewX1)
-#define DOC_Y_POS(y) (int(float(y) / Doc->Scale) + Doc->ViewY1)
-#define DOC_X_FPOS (float(Event->pos().x()) / Doc->Scale + float(Doc->ViewX1))
-#define DOC_Y_FPOS (float(Event->pos().y()) / Doc->Scale + float(Doc->ViewY1))
-
-#define SCR_X_POS(x) int(float(x - Doc->ViewX1) * Doc->Scale)
-#define SCR_Y_POS(y) int(float(y - Doc->ViewY1) * Doc->Scale)
-
 #define MIN_SELECT_SIZE 5.0
 
 QAction *formerAction; // remember action before drag n'drop etc.
@@ -184,7 +176,7 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
             pl->x1 -= pl->x2 - old_x2; // don't change position due to text width
     }
 
-    Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+    Doc->updateAllBoundingRect();
     Doc->viewport()->update();
     drawn = false;
     Doc->setChanged(true, true);
@@ -240,9 +232,11 @@ void MouseActions::endElementMoving(Schematic *Doc,
   if ((MAx3 != 0) || (MAy3 != 0)) // moved or put at the same place ?
     Doc->setChanged(true, true);
 
-  // enlarge viewarea if components lie outside the view
-  Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
-  Doc->enlargeView(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+  // Position of some elements of schematic has changed. This change
+  // is "external" to schematic and its state must be updated to
+  // take the changes into account
+  auto totalBounds = Doc->allBoundingRect();
+  Doc->enlargeView(totalBounds.left(), totalBounds.top(), totalBounds.right(), totalBounds.bottom());
 
   Doc->viewport()->update();
   drawn = false;
@@ -312,10 +306,13 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 
     //  qDebug() << "MMoveElement got selElem";
 
-    int x = Event->pos().x();
-    int y = Event->pos().y();
-    int fx = DOC_X_POS(x);
-    int fy = DOC_Y_POS(y);
+    QPoint contentsCoordinates = Event->pos();
+    QPoint modelCoordinates = Doc->contentsToModel(contentsCoordinates);
+
+    int x = contentsCoordinates.x();
+    int y = contentsCoordinates.y();
+    int fx = modelCoordinates.x();
+    int fy = modelCoordinates.y();
     int gx = fx;
     int gy = fy;
     Doc->setOnGrid(gx, gy);
@@ -325,9 +322,7 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 
     if (selElem->Type == isPainting) {
         Doc->PostPaintEvent(_NotRop, 0, 0, 0, 0);
-        x -= Doc->contentsX();
-        y -= Doc->contentsY();
-        ((Painting *) selElem)->MouseMoving(Doc, x, y, gx, gy, Doc, x, y, drawn);
+        ((Painting *) selElem)->MouseMoving(Doc, x, y, gx, gy, Doc, fx, fy, drawn);
         drawn = true;
         Doc->viewport()->update();
         return;
@@ -347,28 +342,53 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 }
 
 /**
- * @brief draws wire aiming cross on Document view
+ * @brief draws wire aiming cross
  * @param Doc - pointer to Schematics object
- * @param fx  - document x-coordinate of center
- * @param fy  - document x-coordinate of center
+ * @param aimX  - model x-coordinate of aim
+ * @param aimY  - model y-coordinate of aim
  */
-static void paintAim(Schematic *Doc, int fx, int fy)
-{
-    //let we reserve couple of points at the edges of lines for some aesthetics,
-    //and visual check that our calculations has fit the widget window.
-    const int ldelta = 2;
+static void paintAim(Schematic *Doc, int aimX, int aimY) {
+    // What we want to do here is to draw a cross centered at (aimX, aimY)
+    // which lines don't touch the bounds of visible part of schematic,
+    // i.e. there should be a little gap between the line ends and picture
+    // bounds:
+    //
+    //       Bad                Good
+    // +---------+---+    +--------------+
+    // |         |   |    |         |    |
+    // +---------+---+    | --------+--- |
+    // |         |   |    |         |    |
+    // |         |   |    |         |    |
+    // +---------+---+    +--------------+
+    //
+    // The cross is drawn using Schematic 'PostPaintEvent' subsystem.
+    // This is not a requirement, it's just an inherited implementation.
+    // Maybe there is a better way to do it, but until it's found let's
+    // stick to the way things already work.
+    //
+    // PostPaintEvent subsystem operates in *model* coordinates – the coordinates
+    // used to locate components, wires, etc.
+    //
+    // To draw the cross we want we have to follow these steps:
+    //   1. Find the size of viewport (visible part of schematic)
+    //   2. Shrink it a bit. The resulting rectangle is the *bounding* for the cross
+    //   3. Transform bounding rectangle coordinates to model coordinate system.
+    //   4. Using resulting 'in-model' coordinates of bounding rectangle, post
+    //      two 'paint line' events
 
-    //left and upper edges of our lines
-    int lx0 = DOC_X_POS(Doc->contentsX() + ldelta);
-    int ly0 = DOC_Y_POS(Doc->contentsY() + ldelta);
+    const QRect viewportAimBounds =
+        QRect{0, 0, Doc->viewport()->width(), Doc->viewport()->height()}
+        .marginsRemoved(QMargins{2, 2, 2, 2});
 
-    //right and bottom edges
-    int lx1 = DOC_X_POS(Doc->contentsX() + Doc->viewport()->width() - 1 - ldelta);
-    int ly1 = DOC_Y_POS(Doc->contentsY() + Doc->viewport()->height() - 1 - ldelta);
+    const QRect aimBounds{
+        Doc->viewportToModel(viewportAimBounds.topLeft()),
+        Doc->viewportToModel(viewportAimBounds.bottomRight())
+    };
 
-    //post line paint events
-    Doc->PostPaintEvent(_Line, lx0, fy, lx1, fy);
-    Doc->PostPaintEvent(_Line, fx, ly0, fx, ly1);
+    // Horizontal line of cross
+    Doc->PostPaintEvent(_Line, aimBounds.left(), aimY, aimBounds.right(), aimY);
+    // Vertical line of cross
+    Doc->PostPaintEvent(_Line, aimX, aimBounds.top(), aimX, aimBounds.bottom());
 }
 
 //paint ghost line - horizontal
@@ -393,8 +413,9 @@ static void paintGhostLineV(Schematic *Doc, int fx, int fy, int fyy)
  */
 void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx2 = DOC_X_POS(Event->pos().x());
-    MAy2 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x();
+    MAy2 = inModel.y();
     Doc->setOnGrid(MAx2, MAy2);
     paintAim(Doc, MAx2, MAy2); //let we paint aim cross
 
@@ -420,12 +441,20 @@ void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
     Doc->setOnGrid(MAx3, MAy3);
     paintAim(Doc, MAx3, MAy3);
-    MAx2 = DOC_X_POS(Doc->contentsX() + Doc->viewport()->width() - 1 - 2);
-    MAx2 = DOC_Y_POS(Doc->contentsY() + Doc->viewport()->height() - 1 - 2);
+
+    inModel = Doc->contentsToModel(
+        QPoint{
+            Doc->contentsX() + Doc->viewport()->width() - 1 - 2,
+            Doc->contentsY() + Doc->viewport()->height() - 1 - 2
+        }
+    );
+    MAx2 = inModel.x();
+    MAx2 = inModel.y();
     Doc->viewport()->update();
 }
 
@@ -437,8 +466,9 @@ void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event)
 {
     //qDebug() << "MMoveSelect " << "select area";
-    MAx2 = DOC_X_POS(Event->pos().x()) - MAx1;
-    MAy2 = DOC_Y_POS(Event->pos().y()) - MAy1;
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x() - MAx1;
+    MAy2 = inModel.y() - MAy1;
     if (isMoveEqual) { // x and y size must be equal ?
         if (abs(MAx2) > abs(MAy2)) {
             if (MAx2 < 0)
@@ -461,8 +491,9 @@ void MouseActions::MMoveResizePainting(Schematic *Doc, QMouseEvent *Event)
 {
     setPainter(Doc);
 
-    MAx1 = DOC_X_POS(Event->pos().x());
-    MAy1 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx1 = inModel.x();
+    MAy1 = inModel.y();
     Doc->setOnGrid(MAx1, MAy1);
     ((Painting *) focusElement)->MouseResizeMoving(MAx1, MAy1, Doc);
 }
@@ -473,8 +504,9 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 {
     setPainter(Doc);
 
-    MAx2 = DOC_X_POS(Event->pos().x());
-    MAy2 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x();
+    MAy2 = inModel.y();
 
     Doc->setOnGrid(MAx2, MAy2);
     MAx3 = MAx1 = MAx2 - MAx1;
@@ -542,8 +574,9 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 {
   setPainter(Doc);
 
-  MAx2 = DOC_X_POS(Event->pos().x());
-  MAy2 = DOC_Y_POS(Event->pos().y());
+  auto inModel = Doc->contentsToModel(Event->pos());
+  MAx2 = inModel.x();
+  MAy2 = inModel.y();
 
   Element *pe;
   if (drawn) // erase old scheme
@@ -578,8 +611,9 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx1 = DOC_X_POS(Event->pos().x());
-    MAy1 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx1 = inModel.x();
+    MAy1 = inModel.y();
     moveElements(Doc, MAx1, MAy1);
     paintElementsScheme(Doc);
 
@@ -593,8 +627,9 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
 {
     TabDiagram *d = (TabDiagram *) focusElement;
-    int x = DOC_X_POS(Event->pos().x());
-    int y = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    int x = inModel.x();
+    int y = inModel.y();
 
     if (d->scrollTo(MAx2, x - MAx1, y - MAy1)) {
         Doc->setChanged(true, true, 'm'); // 'm' = only the first time
@@ -617,8 +652,9 @@ void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
 */
 void MouseActions::MMoveDelete(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     // cannot draw on the viewport, it is displaced by the size of dock and toolbar
     Doc->PostPaintEvent(_Line, MAx3 - 15, MAy3 - 15, MAx3 + 15, MAy3 + 15, 0, 0, false);
@@ -632,8 +668,9 @@ void MouseActions::MMoveDelete(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveLabel(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     // paint marker
     Doc->PostPaintEvent(_Line, MAx3, MAy3, MAx3 + 10, MAy3 - 10);
@@ -653,8 +690,9 @@ void MouseActions::MMoveLabel(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3, MAy3 - 2, MAx3 - 8, MAy3 - 10);
     Doc->PostPaintEvent(_Line, MAx3 + 1, MAy3 - 3, MAx3 + 8, MAy3 - 10);
@@ -669,9 +707,10 @@ void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveSetLimits(Schematic *Doc, QMouseEvent *Event)
 {
     // TODO: Refactor to a QRectF for easy normalisation etc.
-    // Update the second point of the selection rectangle. 
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    // Update the second point of the selection rectangle.
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 }
 
 /**
@@ -681,8 +720,9 @@ void MouseActions::MMoveSetLimits(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMirrorY(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 - 11, MAy3 - 4, MAx3 - 9, MAy3 - 9);
     Doc->PostPaintEvent(_Line, MAx3 - 11, MAy3 - 3, MAx3 - 6, MAy3 - 3);
@@ -698,8 +738,9 @@ void MouseActions::MMoveMirrorY(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMirrorX(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 - 4, MAy3 - 11, MAx3 - 9, MAy3 - 9);
     Doc->PostPaintEvent(_Line, MAx3 - 3, MAy3 - 11, MAx3 - 3, MAy3 - 6);
@@ -715,8 +756,9 @@ void MouseActions::MMoveMirrorX(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveRotate(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 - 6, MAy3 + 8, MAx3 - 6, MAy3 + 1);
     Doc->PostPaintEvent(_Line, MAx3 - 7, MAy3 + 8, MAx3 - 12, MAy3 + 8);
@@ -730,8 +772,9 @@ void MouseActions::MMoveRotate(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveActivate(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Rect, MAx3, MAy3 - 9, 14, 10);
     Doc->PostPaintEvent(_Line, MAx3, MAy3 - 9, MAx3 + 13, MAy3);
@@ -745,8 +788,9 @@ void MouseActions::MMoveActivate(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveOnGrid(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 + 10, MAy3 + 3, MAx3 + 25, MAy3 + 3);
     Doc->PostPaintEvent(_Line, MAx3 + 10, MAy3 + 7, MAx3 + 25, MAy3 + 7);
@@ -763,8 +807,9 @@ void MouseActions::MMoveOnGrid(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMoveTextB(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 + 14, MAy3, MAx3 + 16, MAy3);
     Doc->PostPaintEvent(_Line, MAx3 + 23, MAy3, MAx3 + 25, MAy3);
@@ -783,8 +828,9 @@ void MouseActions::MMoveMoveTextB(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveMoveText(Schematic *Doc, QMouseEvent *Event)
 {
-    int newX = DOC_X_POS(Event->pos().x());
-    int newY = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    int newX = inModel.x();
+    int newY = inModel.y();
     MAx1 += newX - MAx3;
     MAy1 += newY - MAy3;
     MAx3 = newX;
@@ -800,8 +846,9 @@ void MouseActions::MMoveMoveText(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMoveZoomIn(Schematic *Doc, QMouseEvent *Event)
 {
-    MAx3 = DOC_X_POS(Event->pos().x());
-    MAy3 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx3 = inModel.x();
+    MAy3 = inModel.y();
 
     Doc->PostPaintEvent(_Line, MAx3 + 14, MAy3, MAx3 + 22, MAy3);
     Doc->PostPaintEvent(_Line, MAx3 + 18, MAy3 - 4, MAx3 + 18, MAy3 + 4);
@@ -1030,7 +1077,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
             pn->setName(Name, Value, xl, yl);
     }
 
-    Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+    Doc->updateAllBoundingRect();
     Doc->viewport()->update();
     drawn = false;
     Doc->setChanged(true, true);
@@ -1201,7 +1248,7 @@ void MouseActions::MPressDelete(Schematic *Doc, QMouseEvent *, float fX, float f
         pe->isSelected = true;
         Doc->deleteElements();
 
-        Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+        Doc->updateAllBoundingRect();
         Doc->viewport()->update();
         drawn = false;
     }
@@ -1288,7 +1335,7 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
         ((Component *) e)->rotate();
         Doc->setCompPorts((Component *) e);
         // enlarge viewarea if component lies outside the view
-        ((Component *) e)->entireBounds(x1, y1, x2, y2, Doc->textCorr());
+        ((Component *) e)->entireBounds(x1, y1, x2, y2);
         Doc->enlargeView(x1, y1, x2, y2);
         break;
 
@@ -1355,7 +1402,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             //    qDebug() << "  +-+ got to insert:" << Comp->Name;
 
             // enlarge viewarea if component lies outside the view
-            Comp->entireBounds(x1, y1, x2, y2, Doc->textCorr());
+            Comp->entireBounds(x1, y1, x2, y2);
             Doc->enlargeView(x1, y1, x2, y2);
             //Doc->setOnGrid(Comp->cx,Comp->cy);
 
@@ -1629,7 +1676,7 @@ void MouseActions::MPressOnGrid(Schematic *Doc, QMouseEvent *, float fX, float f
         pe->isSelected = true;
         Doc->elementsOnGrid();
 
-        Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+        Doc->updateAllBoundingRect();
         // Update matching wire label highlighting
         Doc->highlightWireLabels();
         Doc->viewport()->update();
@@ -1842,8 +1889,9 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
     Doc->releaseKeyboard();
 
     // TODO: Make a point version of DOC_n_POS.
-    MAx2 = DOC_X_POS(Event->pos().x());
-    MAy2 = DOC_Y_POS(Event->pos().y());
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x();
+    MAy2 = inModel.y();
 
     qDebug() << "Mouse released after setting limits.";
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
@@ -1985,7 +2033,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
             case isAnalogComponent:
             case isDigitalComponent:
                 Doc->insertComponent((Component *) pe);
-                ((Component *) pe)->entireBounds(x1, y1, x2, y2, Doc->textCorr());
+                ((Component *) pe)->entireBounds(x1, y1, x2, y2);
                 Doc->enlargeView(x1, y1, x2, y2);
                 break;
             }
@@ -2009,21 +2057,23 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
         break;
 
     // ............................................................
-    case Qt::RightButton: // right button rotates the elements
+    case Qt::RightButton: {// right button rotates the elements
         //setPainter(Doc, &painter);
 
         if (drawn) // erase old scheme
             paintElementsScheme(Doc);
         drawn = true;
 
-        x1 = DOC_X_POS(Event->pos().x());
-        y1 = DOC_Y_POS(Event->pos().y());
+        auto inModel = Doc->contentsToModel(Event->pos());
+        x1 = inModel.x();
+        y1 = inModel.y();
         rotateElements(Doc, x1, y1);
         paintElementsScheme(Doc);
         // save rotation
         movingRotated++;
         movingRotated &= 3;
         break;
+    }
 
     default:; // avoids compiler warnings
     }
@@ -2087,7 +2137,9 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     int x1, y1, x2, y2;
 
     QFileInfo Info(Doc->DocName);
-    float fX = DOC_X_FPOS, fY = DOC_Y_FPOS;
+    auto inModel = Doc->contentsToModel(Event->pos());
+    float fX = static_cast<float>(inModel.x());
+    float fY = static_cast<float>(inModel.y());
 
     switch (focusElement->Type) {
     case isComponent:
@@ -2126,7 +2178,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
         }
 
         Doc->setChanged(true, true);
-        c->entireBounds(x1, y1, x2, y2, Doc->textCorr());
+        c->entireBounds(x1, y1, x2, y2);
         Doc->enlargeView(x1, y1, x2, y2);
         break;
 
@@ -2219,7 +2271,8 @@ void MouseActions::MDoubleClickSelect(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MDoubleClickWire2(Schematic *Doc, QMouseEvent *Event)
 {
-    MPressWire2(Doc, Event, DOC_X_FPOS, DOC_Y_FPOS);
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MPressWire2(Doc, Event, static_cast<float>(inModel.x()), static_cast<float>(inModel.y()));
 
     if (formerAction)
         QucsMain->select->setChecked(true); // restore old action
@@ -2280,7 +2333,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
         if (pc == nullptr || pp == nullptr)
             return;
         if (!App->tunerDia->containsProperty(pp)) {
-            if (checkProperty(pc, pp)) {
+            if (isPropertyTunable(pc, pp)) {
                 tunerElement *tune = new tunerElement(App->tunerDia, pc, pp, No);
                 tune->schematicName = Doc->DocName;
                 if (tune != NULL)

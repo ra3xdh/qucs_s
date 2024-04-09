@@ -90,7 +90,7 @@ void SpiceLibComp::createSymbol()
   FileName += QString("/../share/" QUCS_NAME "/symbols/%1.sym").arg(Props.at(2)->Value);
 
   // Default symbol: LM358 in opamps.lib ---> opamps/LM358.sym
-  QString LibName = spicecompat::convert_relative_filename(Props.at(0)->Value);
+  QString LibName = misc::properAbsFileName(Props.at(0)->Value, containingSchematic);
   QString DefSym = LibName;
   QFileInfo inf(LibName); // Remove extension
   int l = inf.suffix().size();
@@ -108,7 +108,7 @@ void SpiceLibComp::createSymbol()
       removeUnusedPorts();
   } else {
     QStringList pins;
-    No = spicecompat::getPins(Props.at(0)->Value,Props.at(1)->Value,pins);
+    No = spicecompat::getPins(LibName,Props.at(1)->Value,pins);
     Ports.clear();
     remakeSymbol(No,pins);  // no symbol was found -> create standard symbol
   }
@@ -225,7 +225,8 @@ QString SpiceLibComp::spice_netlist(bool)
 
 QString SpiceLibComp::getSpiceModel()
 {
-    QString f = spicecompat::convert_relative_filename(Props.at(0)->Value);
+    if (isActive != COMP_IS_ACTIVE) return QString("");
+    QString f = misc::properAbsFileName(Props.at(0)->Value, containingSchematic);
     QString s = QString(".INCLUDE \"%1\"\n").arg(f);
     return s;
 }

@@ -88,7 +88,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
     this->setMinimumWidth(500);
 
     slotSetSimulator();
-    if (!netlist_mode && !QucsMain->TuningMode)
+    if (!netlist_mode && !QucsMain->TuningMode && Sch->showBias != 0)
         slotStart(); // Start simulation
 
 }
@@ -307,7 +307,7 @@ void ExternSimDialog::slotSaveNetlist()
 
 void ExternSimDialog::saveLog()
 {
-    QString filename = QucsSettings.QucsHomeDir.filePath("log.txt");
+    QString filename = QucsSettings.tempFilesDir.filePath("log.txt");
     QFile log(filename);
     if (log.open(QIODevice::WriteOnly)) {
         QTextStream ts_log(&log);

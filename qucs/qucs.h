@@ -98,8 +98,8 @@ public:
   static bool isTextDocument(QWidget *);
 
   QString ProjName;   // name of the project, that is open
-  QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
-  QHash<QString,QString> spiceNameHash; // QHash for the spice files lookup
+  //QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
+  //QHash<QString,QString> spiceNameHash; // QHash for the spice files lookup
 
   QLineEdit *editText;  // for edit component properties on schematic
   SearchDialog *SearchDia;  // global in order to keep values
@@ -276,6 +276,7 @@ private:
   void updateRecentFilesList(QString s);
   void successExportMessages(bool ok);
   void fillLibrariesTreeView (void);
+  bool populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidgetItem *> &topitems);
   void saveSettings();
   QWidget *getSchematicWidget(QucsDoc *Doc);
 
@@ -284,8 +285,8 @@ public:
   void readProjects();
   void updatePathList(void); // update the list of paths, pruning non-existing paths
   void updatePathList(QStringList);
-  void updateSchNameHash(void); // maps all schematic files in the path list
-  void updateSpiceNameHash(void); // maps all spice files in the path list
+  //void updateSchNameHash(void); // maps all schematic files in the path list
+  //void updateSpiceNameHash(void); // maps all spice files in the path list
 
 /* **************************************************
    *****  The following methods are located in  *****
@@ -354,8 +355,8 @@ public:
           *showMsg, *showNet, *alignTop, *alignBottom, *alignLeft, *alignRight,
           *distrHor, *distrVert, *selectAll, *callMatch, *changeProps,
           *addToProj, *editFind, *insEntity, *selectMarker,
-          *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
-          *callAtt, *centerHor, *centerVert, *loadModule, *buildModule, *callPwrComb;
+          *createLib, *callConverter, *graph2csv, *createPkg, *extractPkg,
+          *callAtt, *centerHor, *centerVert, *loadModule, *buildModule, *callPwrComb, *callRFLayout;
 
   QAction *helpQucsIndex;
   QAction *simSettings;
@@ -406,6 +407,7 @@ public slots:
   void slotCallMatch();
   void slotCallAtt();
   void slotCallPwrComb();
+  void slotCallRFLayout();
   void slotHelpIndex();       // shows a HTML docu: Help Index
   void slotHelpQucsIndex();
   void slotGettingStarted();  // shows a HTML docu: Getting started

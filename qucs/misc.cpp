@@ -26,6 +26,8 @@
 #include <cmath>
 #include "misc.h"
 #include "main.h"
+#include "qucs.h"
+#include "schematic.h"
 
 #include <cstdio>
 #include <QString>
@@ -268,7 +270,7 @@ void misc::str2num(const QString& s_, double& Number, QString& Unit, double& Fac
 }
 
 // #########################################################################
-QString misc::num2str(double Num, int Precision)
+QString misc::num2str(double Num, int Precision, QString unit)
 {
   char c = 0;
   double cal = fabs(Num);
@@ -302,6 +304,8 @@ QString misc::num2str(double Num, int Precision)
   }
 
   if(c)  Str += c;
+
+  if (unit != "m") Str += unit;
 
   return Str;
 }
@@ -353,21 +357,33 @@ void misc::convert2ASCII(QString& Text)
 }
 
 // #########################################################################
-// Converts a path to an absolute path and resolves paths relative to the
-// Qucs home directory
-QString misc::properAbsFileName(const QString& Name)
+// Converts a path to an absolute path
+QString misc::properAbsFileName(const QString& filename, Schematic* sch)
 {
-  QString s = Name;
-  QFileInfo Info(s);
+  QString fName = filename;
+  QFileInfo fileInfo(fName);
 
-  if(Info.isRelative())
-  {
-      // if it's a relative file, look for it relative to the
-      // working directory (the qucs home directory)
-      s = QucsSettings.QucsWorkDir.filePath(s);
+  if ( fileInfo.isAbsolute() ) {
+    if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
+    fName = fileInfo.fileName();
   }
-  // return the clean path
-  return QDir::cleanPath(s);
+
+  if ( sch != nullptr ) {
+    fileInfo.setFile(sch->getFileInfo().dir().filePath(fName));
+    if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
+  }
+
+  fName = fileInfo.fileName();
+
+  fileInfo.setFile(QucsSettings.QucsWorkDir.filePath(fName));
+  if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
+
+  for (const QString& path : qucsPathList) {
+    fileInfo.setFile(QDir(path).filePath(fName));
+    if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
+  }
+
+  return filename;
 }
 
 // #########################################################################

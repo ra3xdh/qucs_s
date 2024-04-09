@@ -134,8 +134,9 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     //execute simulations
 
-    QFileInfo inf(Sch->DocName);
-    QString basenam = inf.baseName();
+    //QFileInfo inf(Sch->DocName);
+    //QString basenam = inf.baseName();
+    QString basenam = "spice4qucs";
 
     QString nods;
     nods.clear();
@@ -228,8 +229,8 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     }
 
     QString filename;
-    if (hasParSweep) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
-    else filename = QString("%1_%2.txt").arg(basenam).arg(sim);
+    if (hasParSweep) filename = QString("%1.%2._swp.plot").arg(basenam).arg(sim);
+    else filename = QString("%1.%2.plot").arg(basenam).arg(sim);
     filename.remove(QRegularExpression("\\s")); // XYCE don't support spaces and quotes
     QString write_str;
     if (sim=="hb") {
@@ -422,7 +423,9 @@ void Xyce::nextSimulation()
         cmd_args.removeAt(0);
         SimProcess->start(xyce_cmd,cmd_args);
     } else {
-        output += "No simulations!\n"
+        output += "No simulation found. Please add at least one simulation!\n"
+                  "Navigate to the \"simulations\" group in the components panel (left)"
+                  " and drag simulation to the schematic sheet. Then define its parameters.\n"
                   "Exiting...\n";
         emit progress(100);
         emit finished(); // nothing to simulate

@@ -3,6 +3,7 @@
 [![Boosty](https://img.shields.io/badge/Boosty-donate-orange.svg)](https://boosty.to/qucs_s)
 [![Telegram](https://img.shields.io/badge/Telegram-chat-blue.svg)](https://t.me/qucs_s)
 [![Website](https://img.shields.io/badge/Website-ra3xdh.github.io-29d682.svg)](https://ra3xdh.github.io/)
+[![Packaging status](https://repology.org/badge/tiny-repos/qucs-s.svg)](https://repology.org/project/qucs-s/versions)
 
 ## About Qucs-S
 
@@ -33,13 +34,13 @@ Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, Flex, Bi
 #### Ubuntu
 
 ~~~
-sudo apt-get install ngspice build-essential git cmake qtbase5-dev qttools5-dev libqt5svg5-dev flex bison
+sudo apt-get install ngspice build-essential git cmake qtbase5-dev qttools5-dev libqt5svg5-dev flex bison gperf dos2unix
 ~~~
 
 #### OpenSUSE Tumbleweed
 
 ~~~
-sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel libqt5-qtsvg-devel flex bison
+sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel libqt5-qtsvg-devel flex bison gperf dos2unix
 ~~~
 
 ### Compiling
@@ -49,6 +50,8 @@ sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel l
 Then clone this git repository and execute in the top directory:
 
 ~~~
+git submodule init
+git submodule update
 mkdir builddir
 cd builddir
 cmake ..  -DCMAKE_INSTALL_PREFIX=/your_install_prefix/
@@ -63,12 +66,11 @@ installation steps. Default installation directory will be `/usr/local` if
 
 #### Qt6
 
-Since v1.0.1 Qucs-S supports build with Qt6. Set the `QT_DIR` environment variable 
-to tell CMake use the Qt6. For example use the following command sequence for Ubuntu-22.04
+Since v1.0.1 Qucs-S supports build with Qt6. Set the `WITH_QT6` flag to tell CMake use the Qt6. 
+For example use the following command sequence for Ubuntu-22.04
 
 ~~~
-export QT_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt6
-cmake ..  -DCMAKE_INSTALL_PREFIX=/your_install_prefix/
+cmake .. -DWITH_QT6=ON -DCMAKE_INSTALL_PREFIX=/your_install_prefix/
 ~~~ 
 
 ### Running
