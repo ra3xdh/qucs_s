@@ -241,42 +241,34 @@ void Component::paint(ViewPainter *p) {
 
         // paint all lines
         for (qucs::DrawingPrimitive *line: Lines) {
-            if (correctSimulator) {
-                p->Painter->setPen(line->penHint());
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
+            p->Painter->setPen(
+                correctSimulator ? line->penHint() : WrongSimulatorPen
+            );
             line->draw(p, cx, cy);
         }
 
         // paint all arcs
         for (qucs::DrawingPrimitive *arc: Arcs) {
-            if (correctSimulator) {
-                p->Painter->setPen(arc->penHint());
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
+            p->Painter->setPen(
+                correctSimulator ? arc->penHint() : WrongSimulatorPen
+            );
             arc->draw(p, cx, cy);
         }
 
         // paint all rectangles
         for (qucs::DrawingPrimitive *rect: Rects) {
-            if (correctSimulator) {
-                p->Painter->setPen(rect->penHint());
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
+            p->Painter->setPen(
+                correctSimulator ? rect->penHint() : WrongSimulatorPen
+            );
             p->Painter->setBrush(rect->brushHint());
             rect->draw(p, cx, cy);
         }
 
         // paint all ellipses
         for (qucs::DrawingPrimitive *ellips: Ellipses) {
-            if (correctSimulator) {
-                p->Painter->setPen(ellips->penHint());
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
+            p->Painter->setPen(
+                correctSimulator ? ellips->penHint() : WrongSimulatorPen
+            );
             p->Painter->setBrush(ellips->brushHint());
             ellips->draw(p, cx, cy);
         }
@@ -298,11 +290,7 @@ void Component::paint(ViewPainter *p) {
             newFont.setOverline(pt->over);
             newFont.setUnderline(pt->under);
             p->Painter->setFont(newFont);
-            if (correctSimulator) {
-                p->Painter->setPen(pt->Color);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
+            p->Painter->setPen(correctSimulator ? pt->Color : WrongSimulatorPen);
             int w, h;
             w = p->drawTextMapped(pt->s, 0, 0, &h);
             Q_UNUSED(w)
