@@ -104,16 +104,22 @@ void Diagram::paint(ViewPainter *p) {
 }
 
 void Diagram::paintDiagram(ViewPainter *p) {
+    // Drawing primitives in Diagram have their coordinates
+    // as if they exist in space where Y-axis oriented upwards
+    // in contrast to downwards-oriented Y-axis of ViewPainter.
+    // We need to pass this flag to draw primitives correctly.
+    const bool y_directed_upwards = true;
+
     // paint all lines
-    for (qucs::Line *pl: Lines) {
-        p->Painter->setPen(pl->style);
-        p->drawLine(cx + pl->x1, cy - pl->y1, cx + pl->x2, cy - pl->y2);
+    for (qucs::DrawingPrimitive* line : Lines) {
+        p->Painter->setPen(line->penHint());
+        line->draw(p, cx, cy, y_directed_upwards);
     }
 
     // paint all arcs (1 pixel larger to compensate for strange circle method)
-    for (qucs::Arc *pa: Arcs) {
-        p->Painter->setPen(pa->style);
-        p->drawArc(cx + pa->x, cy - pa->y, pa->w, pa->h, pa->angle, pa->arclen);
+    for (qucs::DrawingPrimitive* arc : Arcs) {
+        p->Painter->setPen(arc->penHint());
+        arc->draw(p, cx, cy, y_directed_upwards);
     }
 
     // draw all graphs

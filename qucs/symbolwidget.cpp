@@ -130,33 +130,29 @@ void SymbolWidget::paintEvent(QPaintEvent*)
   Painter.drawText(dx, y2-y1+2, 0, 0, Qt::AlignLeft | Qt::TextDontClip, DragNDropText);
 
   // paint all lines
-  for(int i=0; i<Lines.size(); i++) {
-    qucs::Line *pl = Lines.at(i);
-    Painter.setPen(pl->style);
-    Painter.drawLine(cx+pl->x1, cy+pl->y1, cx+pl->x2, cy+pl->y2);
+  for (auto* line : Lines) {
+    Painter.setPen(line->penHint());
+    line->draw(&Painter, cx, cy);
   }
 
   // paint all arcs
-  for(int i=0; i<Arcs.size(); i++) {
-    qucs::Arc *pc = Arcs.at(i);
-    Painter.setPen(pc->style);
-    Painter.drawArc(cx+pc->x, cy+pc->y, pc->w, pc->h, pc->angle, pc->arclen);
+  for (auto* arc : Arcs) {
+    Painter.setPen(arc->penHint());
+    arc->draw(&Painter, cx, cy);
   }
 
   // paint all rectangles
-  for(int i=0; i<Rects.size(); i++) {
-    qucs::Rect *pa = Rects.at(i);
-    Painter.setPen(pa->Pen);
-    Painter.setBrush(pa->Brush);
-    Painter.drawRect(cx+pa->x, cy+pa->y, pa->w, pa->h);
+  for (auto* rect : Rects) {
+    Painter.setPen(rect->penHint());
+    Painter.setBrush(rect->brushHint());
+    rect->draw(&Painter, cx, cy);
   }
 
   // paint all ellipses
-  for(int i=0; i<Ellipses.size(); i++) {
-    qucs::Ellips *pa = Ellipses.at(i);
-    Painter.setPen(pa->Pen);
-    Painter.setBrush(pa->Brush);
-    Painter.drawEllipse(cx+pa->x, cy+pa->y, pa->w, pa->h);
+  for (auto* ellipse : Ellipses) {
+    Painter.setPen(ellipse->penHint());
+    Painter.setBrush(ellipse->brushHint());
+    ellipse->draw(&Painter, cx, cy);
   }
 
   Painter.setPen(QPen(Qt::black,1));

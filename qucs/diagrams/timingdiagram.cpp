@@ -54,9 +54,9 @@ void TimingDiagram::paint(ViewPainter *p)
 void TimingDiagram::paintDiagram(ViewPainter *p)
 {
   // paint all lines
-  for(qucs::Line *pl : Lines) {
-    p->Painter->setPen(pl->style);
-    p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
+  for(qucs::DrawingPrimitive* line : Lines) {
+    p->Painter->setPen(line->penHint());
+    line->draw(p, cx, cy, true);
   }
 
   p->Painter->setPen(Qt::black);

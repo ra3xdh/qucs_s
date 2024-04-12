@@ -55,9 +55,9 @@ void TabDiagram::paint(ViewPainter *p)
 void TabDiagram::paintDiagram(ViewPainter *p)
 {
   // paint all lines
-  for (qucs::Line *pl : Lines) {
-    p->Painter->setPen(pl->style);
-    p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
+  for (qucs::DrawingPrimitive* line : Lines) {
+    p->Painter->setPen(line->penHint());
+    line->draw(p, cx, cy, true);
   }
 
   if(x1 > 0) {  // paint scroll bar ?

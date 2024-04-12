@@ -239,45 +239,45 @@ void Component::paint(ViewPainter *p) {
     } else {    // normal components go here
 
         // paint all lines
-        for (qucs::Line *p1: Lines) {
+        for (qucs::DrawingPrimitive *line: Lines) {
             if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(p1->style);
+                p->Painter->setPen(line->penHint());
             } else {
                 p->Painter->setPen(WrongSimulatorPen);
             }
-            p->drawLine(cx + p1->x1, cy + p1->y1, cx + p1->x2, cy + p1->y2);
+            line->draw(p, cx, cy);
         }
 
         // paint all arcs
-        for (qucs::Arc *p3: Arcs) {
+        for (qucs::DrawingPrimitive *arc: Arcs) {
             if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(p3->style);
+                p->Painter->setPen(arc->penHint());
             } else {
                 p->Painter->setPen(WrongSimulatorPen);
             }
-            p->drawArc(cx + p3->x, cy + p3->y, p3->w, p3->h, p3->angle, p3->arclen);
+            arc->draw(p, cx, cy);
         }
 
         // paint all rectangles
-        for (qucs::Rect *pa: Rects) {
+        for (qucs::DrawingPrimitive *rect: Rects) {
             if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(pa->Pen);
+                p->Painter->setPen(rect->penHint());
             } else {
                 p->Painter->setPen(WrongSimulatorPen);
             }
-            p->Painter->setBrush(pa->Brush);
-            p->drawRect(cx + pa->x, cy + pa->y, pa->w, pa->h);
+            p->Painter->setBrush(rect->brushHint());
+            rect->draw(p, cx, cy);
         }
 
         // paint all ellipses
-        for (qucs::Ellips *pa: Ellipses) {
+        for (qucs::DrawingPrimitive *ellips: Ellipses) {
             if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(pa->Pen);
+                p->Painter->setPen(ellips->penHint());
             } else {
                 p->Painter->setPen(WrongSimulatorPen);
             }
-            p->Painter->setBrush(pa->Brush);
-            p->drawEllipse(cx + pa->x, cy + pa->y, pa->w, pa->h);
+            p->Painter->setBrush(ellips->brushHint());
+            ellips->draw(p, cx, cy);
         }
         p->Painter->setBrush(Qt::NoBrush);
 
@@ -373,32 +373,35 @@ void Component::paintIcon(QPixmap *pixmap)
             p->drawEllipse(cx+pp->x-2,cy+pp->y-2,4,4);
         }
 
-        for (qucs::Line *p1: Lines) {
-            p1->style.setWidth(3);
-            p->Painter->setPen(p1->style);
-            p->drawLine(cx + p1->x1, cy + p1->y1, cx + p1->x2, cy + p1->y2);
+        for (qucs::DrawingPrimitive *line: Lines) {
+            auto pen = line->penHint();
+            pen.setWidth(3);
+            p->Painter->setPen(pen);
+            line->draw(p, cx, cy);
         }
 
         // paint all arcs
-        for (qucs::Arc *p3: Arcs) {
-            p3->style.setWidth(3);
-            p->Painter->setPen(p3->style);
-            p->drawArc(cx + p3->x, cy + p3->y, p3->w, p3->h, p3->angle, p3->arclen);
+        for (qucs::DrawingPrimitive *arc: Arcs) {
+            auto pen = arc->penHint();
+            pen.setWidth(3);
+            p->Painter->setPen(pen);
+            arc->draw(p, cx, cy);
         }
 
         // paint all rectangles
-        for (qucs::Rect *pa: Rects) {
-            pa->Pen.setWidth(3);
-            p->Painter->setPen(pa->Pen);
-            p->Painter->setBrush(pa->Brush);
-            p->drawRect(cx + pa->x, cy + pa->y, pa->w, pa->h);
+        for (qucs::DrawingPrimitive *rect: Rects) {
+            auto pen = rect->penHint();
+            pen.setWidth(3);
+            p->Painter->setPen(pen);
+            p->Painter->setBrush(rect->brushHint());
+            rect->draw(p, cx, cy);
         }
 
         // paint all ellipses
-        for (qucs::Ellips *pa: Ellipses) {
-            p->Painter->setPen(pa->Pen);
-            p->Painter->setBrush(pa->Brush);
-            p->drawEllipse(cx + pa->x, cy + pa->y, pa->w, pa->h);
+        for (qucs::DrawingPrimitive *ellipse: Ellipses) {
+            p->Painter->setPen(ellipse->penHint());
+            p->Painter->setBrush(ellipse->brushHint());
+            ellipse->draw(p, cx, cy);
         }
         p->Painter->setBrush(Qt::NoBrush);
 
