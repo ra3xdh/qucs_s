@@ -37,49 +37,102 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
+#include "viewpainter.h"
+#include <QPainter>
 #include <QPen>
 #include <QBrush>
 
 class Node;
-class QPainter;
 class WireLabel;
 class Schematic;
 
 namespace qucs { // otherwise conflict with <windows.h>
                  // coming from Qt5 headers
 
-struct Line {
+class DrawingPrimitive {
+public:
+  /**
+     Draws a primitive using given @c ViewPainter
+
+     Params @c cx and @c cy define offset on corresponding axis. Actually, the
+     proper way to offset primitive coordinates is to use "translate" mechanism
+     of QPainter, but historically Qucs-S codebase doesn't use it, relying
+     instead on manual control of offsets. I think this something what should be
+     refactored; lines, ellipses, etc. should not be aware of any "offsets".
+
+         Boolean switch @c y_grows_up tells whether Y-axis coordinates of
+     primitive should be treated as if they are defined in space where the
+     Y-axis directed upwards or downwards. Painting devices like QPainter or
+     ViewPainter always operate in space where Y-axis directed downwards, but
+     drawing primitives maybe defined with upwards Y-axis in mind, so to draw
+     them correctly this switch must be used. Inheriting implementations MUST
+     take this switch into account and alter their drawing logic accordingly.
+         This is actually a workaround for a couple of cases. Diagram and some
+     of its subclasses define a handful of primitives in upwards Y-axis space
+     (I believe it's easier to reason about lines, rectangles, etc. that way when
+     you drawing a diagram). It should be refactored in future: that's a painting
+     device liability change orientation, calculate offsets, etc. Drawing
+     primitives should concentrate on drawing only.
+
+     @param cx offset on X-axis
+     @param cy offset on Y-axis
+     @param y_grows_up Y-axis orientation switch
+  */
+  virtual void draw([[maybe_unused]] ViewPainter* painter, [[maybe_unused]] int cx, [[maybe_unused]] int cy, [[maybe_unused]] bool y_grows_up=false) const {};
+  /**
+     The same as the version with @c ViewPainter, but with @c QPainter
+  */
+  virtual void draw([[maybe_unused]] QPainter* painter, [[maybe_unused]] int cx, [[maybe_unused]] int cy, [[maybe_unused]] bool y_grows_up=false) const {};
+  virtual QBrush brushHint() const { return Qt::NoBrush; }
+  virtual QPen penHint() const { return Qt::NoPen; }
+};
+
+struct Line : DrawingPrimitive {
   Line(int _x1, int _y1, int _x2, int _y2, QPen _style)
        : x1(_x1), y1(_y1), x2(_x2), y2(_y2), style(_style) {};
   int   x1, y1, x2, y2;
   QPen  style;
+  void draw(ViewPainter* painter, int cx, int cy, bool y_grows_up=false) const override;
+  void draw(QPainter* painter, int cx, int cy, bool y_grows_up=false) const override;
+  QPen penHint() const override { return style; }
 };
 
-struct Arc {
+struct Arc : DrawingPrimitive {
   Arc(int _x, int _y, int _w, int _h, int _angle, int _arclen, QPen _style)
       : x(_x), y(_y), w(_w), h(_h), angle(_angle),
 	arclen(_arclen), style(_style) {};
   int   x, y, w, h, angle, arclen;
   QPen  style;
+  void draw(ViewPainter* painter, int cx, int cy, bool y_grows_up=false) const override;
+  void draw(QPainter* painter, int cx, int cy, bool y_grows_up=false) const override;
+  QPen penHint() const override { return style; }
 };
 
-struct Rect {
+struct Rect : DrawingPrimitive {
   Rect(int _x, int _y, int _w, int _h, QPen _Pen,
 	QBrush _Brush = QBrush(Qt::NoBrush))
 	: x(_x), y(_y), w(_w), h(_h), Pen(_Pen), Brush(_Brush) {};
   int    x, y, w, h;
   QPen   Pen;
   QBrush Brush;    // filling style/color
+  void draw(ViewPainter* painter, int cx, int cy, bool y_grows_up=false) const override;
+  void draw(QPainter* painter, int cx, int cy, bool y_grows_up=false) const override;
+  QPen penHint() const override { return Pen; }
+  QBrush brushHint() const override { return Brush; }
 };
 
 // 'ellipse' conflicts 'ellipse' defined in paintings.h in the same namespace
-struct Ellips {
+struct Ellips : DrawingPrimitive {
   Ellips(int _x, int _y, int _w, int _h, QPen _Pen,
 	QBrush _Brush = QBrush(Qt::NoBrush))
 	: x(_x), y(_y), w(_w), h(_h), Pen(_Pen), Brush(_Brush) {};
   int    x, y, w, h;
   QPen   Pen;
   QBrush Brush;    // filling style/color
+  void draw(ViewPainter* painter, int cx, int cy, bool y_grows_up=false) const override;
+  void draw(QPainter* painter, int cx, int cy, bool y_grows_up=false) const override;
+  QPen penHint() const override { return Pen; }
+  QBrush brushHint() const override { return Brush; }
 };
 
 }

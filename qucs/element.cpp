@@ -17,6 +17,82 @@
 
 #include "element.h"
 
+namespace qucs {
+
+void Line::draw(ViewPainter* painter, int cx, int cy, bool y_grows_up) const {
+  // For explanation please refer to parent class doc
+  if (y_grows_up) {
+    painter->drawLine(cx + x1, cy - y1, cx + x2, cy - y2);
+  } else {
+    painter->drawLine(cx + x1, cy + y1, cx + x2, cy + y2);
+  }
+}
+
+void Line::draw(QPainter* painter, int cx, int cy, bool y_grows_up) const {
+  // For explanation please refer to parent class doc
+  if (y_grows_up) {
+    painter->drawLine(cx + x1, cy - y1, cx + x2, cy - y2);
+  } else {
+    painter->drawLine(cx + x1, cy + y1, cx + x2, cy + y2);
+  }
+}
+
+void Arc::draw(ViewPainter* painter, int cx, int cy, bool y_grows_up) const {
+  // For explanation please refer to parent class doc
+  if (y_grows_up) {
+    painter->drawArc(cx + x, cy - y, w, h, angle, arclen);
+  } else {
+    painter->drawArc(cx + x, cy + y, w, h, angle, arclen);
+  }
+}
+
+void Arc::draw(QPainter* painter, int cx, int cy, bool y_grows_up) const {
+  // For explanation please refer to parent class doc
+  if (y_grows_up) {
+    painter->drawArc(cx + x, cy - y, w, h, angle, arclen);
+  } else {
+    painter->drawArc(cx + x, cy + y, w, h, angle, arclen);
+  }
+}
+
+void Rect::draw(ViewPainter* painter, int cx, int cy, bool y_grows_up) const {
+  // For explanation please refer to parent class doc
+  if (y_grows_up) {
+    painter->drawRect(cx + x, cy - y, w, h);
+  } else {
+    painter->drawRect(cx + x, cy + y, w, h);
+  }
+}
+
+void Rect::draw(QPainter* painter, int cx, int cy, bool y_grows_up) const {
+  // For explanation please refer to parent class doc
+  if (y_grows_up) {
+    painter->drawRect(cx + x, cy - y, w, h);
+  } else {
+    painter->drawRect(cx + x, cy + y, w, h);
+  }
+}
+
+void Ellips::draw(ViewPainter* painter, int cx, int cy, bool y_grows_up) const {
+  // For explanation please refer to parent class doc
+  if (y_grows_up) {
+    painter->drawEllipse(cx + x, cy - y, w, h);
+  } else {
+    painter->drawEllipse(cx + x, cy + y, w, h);
+  }
+}
+
+void Ellips::draw(QPainter* painter, int cx, int cy, bool y_grows_up) const {
+  // For explanation please refer to parent class doc
+  if (y_grows_up) {
+    painter->drawEllipse(cx + x, cy - y, w, h);
+  } else {
+    painter->drawEllipse(cx + x, cy + y, w, h);
+  }
+}
+
+} // namespace qucs
+
 Element::Element()
 {
   Type = isDummyElement;
