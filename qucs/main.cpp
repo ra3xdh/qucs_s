@@ -579,7 +579,7 @@ void createIcons() {
         QList<qucs::Line *> Lines      = c->Lines;
         QList<struct qucs::Arc *> Arcs = c-> Arcs;
         QList<qucs::Area *> Rects      = c-> Rects;
-        QList<qucs::Area *> Ellips     = c-> Ellips;
+        QList<qucs::Ellips *> Ellips     = c-> Ellips;
         QList<Port *> Ports      = c->Ports;
         QList<Text*> Texts       = c->Texts;
 
@@ -602,7 +602,7 @@ void createIcons() {
           scene->addRect(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
         }
 
-        for(qucs::Area *a: Ellips) {
+        for(qucs::Ellips *a: Ellips) {
           scene->addEllipse(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
         }
 
