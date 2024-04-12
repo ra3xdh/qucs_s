@@ -193,13 +193,14 @@ void Component::paint(ViewPainter *p) {
     int x, y, a, b, xb, yb;
     QFont f = p->Painter->font();   // save current font
     QFont newFont = f;
+    const bool correctSimulator = (Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator;
     if (Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
         newFont.setPointSizeF(p->Scale * Texts.first()->Size);
         newFont.setWeight(QFont::DemiBold);
         p->Painter->setFont(newFont);
         p->map(cx, cy, x, y);
 
-        if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
+        if (correctSimulator) {
             if ((Model == ".CUSTOMSIM") || (Model == ".DISTO")
                 || (Model == ".NOISE") || (Model == ".PZ") ||
                 (Model == ".SENS") || (Model == ".SENS_AC") ||
@@ -240,7 +241,7 @@ void Component::paint(ViewPainter *p) {
 
         // paint all lines
         for (qucs::DrawingPrimitive *line: Lines) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
+            if (correctSimulator) {
                 p->Painter->setPen(line->penHint());
             } else {
                 p->Painter->setPen(WrongSimulatorPen);
@@ -250,7 +251,7 @@ void Component::paint(ViewPainter *p) {
 
         // paint all arcs
         for (qucs::DrawingPrimitive *arc: Arcs) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
+            if (correctSimulator) {
                 p->Painter->setPen(arc->penHint());
             } else {
                 p->Painter->setPen(WrongSimulatorPen);
@@ -260,7 +261,7 @@ void Component::paint(ViewPainter *p) {
 
         // paint all rectangles
         for (qucs::DrawingPrimitive *rect: Rects) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
+            if (correctSimulator) {
                 p->Painter->setPen(rect->penHint());
             } else {
                 p->Painter->setPen(WrongSimulatorPen);
@@ -271,7 +272,7 @@ void Component::paint(ViewPainter *p) {
 
         // paint all ellipses
         for (qucs::DrawingPrimitive *ellips: Ellipses) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
+            if (correctSimulator) {
                 p->Painter->setPen(ellips->penHint());
             } else {
                 p->Painter->setPen(WrongSimulatorPen);
@@ -297,7 +298,7 @@ void Component::paint(ViewPainter *p) {
             newFont.setOverline(pt->over);
             newFont.setUnderline(pt->under);
             p->Painter->setFont(newFont);
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
+            if (correctSimulator) {
                 p->Painter->setPen(pt->Color);
             } else {
                 p->Painter->setPen(WrongSimulatorPen);
