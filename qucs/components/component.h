@@ -84,7 +84,7 @@ public:
   QList<qucs::Line *>     Lines;
   QList<struct qucs::Arc *>      Arcs;
   QList<qucs::Area *>     Rects;
-  QList<qucs::Ellips *>     Ellips;
+  QList<qucs::Ellips *>     Ellipses;
   QList<Port *>     Ports;
   QList<Text *>     Texts;
   Q3PtrList<Property> Props;

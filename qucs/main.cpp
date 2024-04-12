@@ -579,7 +579,7 @@ void createIcons() {
         QList<qucs::Line *> Lines      = c->Lines;
         QList<struct qucs::Arc *> Arcs = c-> Arcs;
         QList<qucs::Area *> Rects      = c-> Rects;
-        QList<qucs::Ellips *> Ellips     = c-> Ellips;
+        QList<qucs::Ellips *> Ellips     = c-> Ellipses;
         QList<Port *> Ports      = c->Ports;
         QList<Text*> Texts       = c->Texts;
 
