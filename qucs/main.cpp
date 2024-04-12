@@ -578,7 +578,7 @@ void createIcons() {
 
         QList<qucs::Line *> Lines      = c->Lines;
         QList<struct qucs::Arc *> Arcs = c-> Arcs;
-        QList<qucs::Area *> Rects      = c-> Rects;
+        QList<qucs::Rect *> Rects      = c-> Rects;
         QList<qucs::Ellips *> Ellips     = c-> Ellipses;
         QList<Port *> Ports      = c->Ports;
         QList<Text*> Texts       = c->Texts;
@@ -598,7 +598,7 @@ void createIcons() {
           scene->addPath(*path);
         }
 
-        for(qucs::Area *a: Rects) {
+        for(qucs::Rect *a: Rects) {
           scene->addRect(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
         }
 

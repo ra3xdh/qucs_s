@@ -259,7 +259,7 @@ void Component::paint(ViewPainter *p) {
         }
 
         // paint all rectangles
-        for (qucs::Area *pa: Rects) {
+        for (qucs::Rect *pa: Rects) {
             if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
                 p->Painter->setPen(pa->Pen);
             } else {
@@ -387,7 +387,7 @@ void Component::paintIcon(QPixmap *pixmap)
         }
 
         // paint all rectangles
-        for (qucs::Area *pa: Rects) {
+        for (qucs::Rect *pa: Rects) {
             pa->Pen.setWidth(3);
             p->Painter->setPen(pa->Pen);
             p->Painter->setBrush(pa->Brush);
@@ -482,7 +482,7 @@ void Component::paintScheme(Schematic *p) {
         p->PostPaintEvent(_Arc, cx + p3->x, cy + p3->y, p3->w, p3->h, p3->angle, p3->arclen);
 
 
-    for (qucs::Area *pa: Rects) // paint all rectangles
+    for (qucs::Rect *pa: Rects) // paint all rectangles
         p->PostPaintEvent(_Rect, cx + pa->x, cy + pa->y, pa->w, pa->h);
 
     for (qucs::Ellips *pa: Ellipses) // paint all ellipses
@@ -540,7 +540,7 @@ void Component::rotate() {
     }
 
     // rotate all rectangles
-    for (qucs::Area *pa: Rects) {
+    for (qucs::Rect *pa: Rects) {
         tmp = -pa->x;
         pa->x = pa->y;
         pa->y = tmp - pa->w;
@@ -638,7 +638,7 @@ void Component::mirrorX() {
     }
 
     // mirror all rectangles
-    for (qucs::Area *pa: Rects)
+    for (qucs::Rect *pa: Rects)
         pa->y = -pa->y - pa->h;
 
     // mirror all ellipses
@@ -699,7 +699,7 @@ void Component::mirrorY() {
     }
 
     // mirror all rectangles
-    for (qucs::Area *pa: Rects)
+    for (qucs::Rect *pa: Rects)
         pa->x = -pa->x - pa->w;
 
     // mirror all ellipses
@@ -1293,7 +1293,7 @@ int Component::analyseLine(const QString &Row, int numProps) {
         if (!getIntegers(Row, &i1, &i2, &i3, &i4)) return -1;
         if (!getPen(Row, Pen, 5)) return -1;
         if (!getBrush(Row, Brush, 8)) return -1;
-        Rects.append(new qucs::Area(i1, i2, i3, i4, Pen, Brush));
+        Rects.append(new qucs::Rect(i1, i2, i3, i4, Pen, Brush));
 
         if (i1 < x1) x1 = i1;  // keep track of component boundings
         if (i1 > x2) x2 = i1;

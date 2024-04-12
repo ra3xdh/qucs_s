@@ -145,7 +145,7 @@ void SymbolWidget::paintEvent(QPaintEvent*)
 
   // paint all rectangles
   for(int i=0; i<Rects.size(); i++) {
-    qucs::Area *pa = Rects.at(i);
+    qucs::Rect *pa = Rects.at(i);
     Painter.setPen(pa->Pen);
     Painter.setBrush(pa->Brush);
     Painter.drawRect(cx+pa->x, cy+pa->y, pa->w, pa->h);
@@ -578,7 +578,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     if(!getCompLineIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
     if(!getPen(Row, Pen, 5))  return -1;
     if(!getBrush(Row, Brush, 8))  return -1;
-    Rects.append(new qucs::Area(i1, i2, i3, i4, Pen, Brush));
+    Rects.append(new qucs::Rect(i1, i2, i3, i4, Pen, Brush));
 
     if(i1 < x1)  x1 = i1;  // keep track of component boundings
     if(i1 > x2)  x2 = i1;
