@@ -189,15 +189,9 @@ void Schematic::becomeCurrent(bool update)
 
     // update appropriate menu entry
     if (symbolMode) {
-        if (DocName.right(4) == ".sym") {
-            App->symEdit->setText(tr("Edit Text"));
-            App->symEdit->setStatusTip(tr("Edits the Text"));
-            App->symEdit->setWhatsThis(tr("Edit Text\n\nEdits the text file"));
-        } else {
-            App->symEdit->setText(tr("Edit Schematic"));
-            App->symEdit->setStatusTip(tr("Edits the schematic"));
-            App->symEdit->setWhatsThis(tr("Edit Schematic\n\nEdits the schematic"));
-        }
+        App->symEdit->setText(tr("Edit Schematic"));
+        App->symEdit->setStatusTip(tr("Edits the schematic"));
+        App->symEdit->setWhatsThis(tr("Edit Schematic\n\nEdits the schematic"));
     } else {
         App->symEdit->setText(tr("Edit Circuit Symbol"));
         App->symEdit->setStatusTip(tr("Edits the symbol for this schematic"));
@@ -212,8 +206,12 @@ void Schematic::becomeCurrent(bool update)
         Paintings = &SymbolPaints;
         Components = &SymbolComps;
 
-        // if no symbol yet exists -> create one
-        if (createSubcircuitSymbol()) {
+        // "Schematic" is used to edit usual schematic files (containing
+        // a schematic and a subcircuit symbol) and *.sym files (which
+        // contain *only* a symbol definition). If we're dealing with
+        // symbol file, then there is no need to create a subcircuit
+        // symbol, a symbol is already there.
+        if (!DocName.endsWith(".sym") && createSubcircuitSymbol()) {
             updateAllBoundingRect();
             setChanged(true, true);
         }
