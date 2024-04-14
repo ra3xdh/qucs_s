@@ -122,7 +122,7 @@ void Logical_Inv::createSymbol()
     xr =  10;
   }
 
-  Ellips.append(new qucs::Ellips(xr,-4, 8, 8,
+  Ellipses.append(new qucs::Ellips(xr,-4, 8, 8,
                 QPen(Qt::darkBlue,0), QBrush(Qt::darkBlue)));
 
   Lines.append(new qucs::Line( xr, 0, 30, 0, QPen(Qt::darkBlue,2)));

@@ -78,7 +78,7 @@ private:
   QList<qucs::Line *> Lines;
   QList<qucs::Arc *> Arcs;
   QList<qucs::Area *> Rects;
-  QList<qucs::Ellips *> Ellips;
+  QList<qucs::Ellips *> Ellipses;
   QList<Text *>  Texts;
 };
 

@@ -152,8 +152,8 @@ void SymbolWidget::paintEvent(QPaintEvent*)
   }
 
   // paint all ellipses
-  for(int i=0; i<Ellips.size(); i++) {
-    qucs::Ellips *pa = Ellips.at(i);
+  for(int i=0; i<Ellipses.size(); i++) {
+    qucs::Ellips *pa = Ellipses.at(i);
     Painter.setPen(pa->Pen);
     Painter.setBrush(pa->Brush);
     Painter.drawEllipse(cx+pa->x, cy+pa->y, pa->w, pa->h);
@@ -183,7 +183,7 @@ int SymbolWidget::createStandardSymbol(const QString& Lib_, const QString& Comp_
   Arcs.clear();
   Lines.clear();
   Rects.clear();
-  Ellips.clear();
+  Ellipses.clear();
   Texts.clear();
   LibraryPath = Lib_;
   ComponentName = Comp_;
@@ -415,7 +415,7 @@ int SymbolWidget::setSymbol( QString& SymbolString,
   Arcs.clear();
   Lines.clear();
   Rects.clear();
-  Ellips.clear();
+  Ellipses.clear();
   Texts.clear();
   LibraryPath = Lib_;
   ComponentName = Comp_;
@@ -562,7 +562,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     if(!getCompLineIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
     if(!getPen(Row, Pen, 5))  return -1;
     if(!getBrush(Row, Brush, 8))  return -1;
-    Ellips.append(new qucs::Ellips(i1, i2, i3, i4, Pen, Brush));
+    Ellipses.append(new qucs::Ellips(i1, i2, i3, i4, Pen, Brush));
 
     if(i1 < x1)  x1 = i1;  // keep track of component boundings
     if(i1 > x2)  x2 = i1;

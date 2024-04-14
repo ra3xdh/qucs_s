@@ -270,7 +270,7 @@ void Component::paint(ViewPainter *p) {
         }
 
         // paint all ellipses
-        for (qucs::Ellips *pa: Ellips) {
+        for (qucs::Ellips *pa: Ellipses) {
             if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
                 p->Painter->setPen(pa->Pen);
             } else {
@@ -395,7 +395,7 @@ void Component::paintIcon(QPixmap *pixmap)
         }
 
         // paint all ellipses
-        for (qucs::Ellips *pa: Ellips) {
+        for (qucs::Ellips *pa: Ellipses) {
             p->Painter->setPen(pa->Pen);
             p->Painter->setBrush(pa->Brush);
             p->drawEllipse(cx + pa->x, cy + pa->y, pa->w, pa->h);
@@ -485,7 +485,7 @@ void Component::paintScheme(Schematic *p) {
     for (qucs::Area *pa: Rects) // paint all rectangles
         p->PostPaintEvent(_Rect, cx + pa->x, cy + pa->y, pa->w, pa->h);
 
-    for (qucs::Ellips *pa: Ellips) // paint all ellipses
+    for (qucs::Ellips *pa: Ellipses) // paint all ellipses
         p->PostPaintEvent(_Ellipse, cx + pa->x, cy + pa->y, pa->w, pa->h);
 }
 
@@ -550,7 +550,7 @@ void Component::rotate() {
     }
 
     // rotate all ellipses
-    for (qucs::Ellips *pa: Ellips) {
+    for (qucs::Ellips *pa: Ellipses) {
         tmp = -pa->x;
         pa->x = pa->y;
         pa->y = tmp - pa->w;
@@ -642,7 +642,7 @@ void Component::mirrorX() {
         pa->y = -pa->y - pa->h;
 
     // mirror all ellipses
-    for (qucs::Ellips *pa: Ellips)
+    for (qucs::Ellips *pa: Ellipses)
         pa->y = -pa->y - pa->h;
 
     QFont f = QucsSettings.font;
@@ -703,7 +703,7 @@ void Component::mirrorY() {
         pa->x = -pa->x - pa->w;
 
     // mirror all ellipses
-    for (qucs::Ellips *pa: Ellips)
+    for (qucs::Ellips *pa: Ellipses)
         pa->x = -pa->x - pa->w;
 
     int tmp;
@@ -1278,7 +1278,7 @@ int Component::analyseLine(const QString &Row, int numProps) {
         if (!getIntegers(Row, &i1, &i2, &i3, &i4)) return -1;
         if (!getPen(Row, Pen, 5)) return -1;
         if (!getBrush(Row, Brush, 8)) return -1;
-        Ellips.append(new qucs::Ellips(i1, i2, i3, i4, Pen, Brush));
+        Ellipses.append(new qucs::Ellips(i1, i2, i3, i4, Pen, Brush));
 
         if (i1 < x1) x1 = i1;  // keep track of component boundings
         if (i1 > x2) x2 = i1;
@@ -1461,7 +1461,7 @@ void Component::copyComponent(Component *pc) {
     Lines = pc->Lines;
     Arcs = pc->Arcs;
     Rects = pc->Rects;
-    Ellips = pc->Ellips;
+    Ellipses = pc->Ellipses;
     Texts = pc->Texts;
 }
 
@@ -1477,7 +1477,7 @@ void MultiViewComponent::recreate(Schematic *Doc) {
         Doc->deleteComp(this);
     }
 
-    Ellips.clear();
+    Ellipses.clear();
     Texts.clear();
     Ports.clear();
     Lines.clear();
@@ -1717,7 +1717,7 @@ void GateComponent::createSymbol() {
             Texts.append(new Text(-10, 3 - y, "&", Qt::darkBlue, 15.0));
         else if (Model.at(0) == 'X') {
             if (Model.at(1) == 'N') {
-                Ellips.append(new qucs::Ellips(xr, -4, 8, 8,
+                Ellipses.append(new qucs::Ellips(xr, -4, 8, 8,
                                              QPen(Qt::darkBlue, 0), QBrush(Qt::darkBlue)));
                 Texts.append(new Text(-11, 3 - y, "=1", Qt::darkBlue, 15.0));
             } else
@@ -1747,7 +1747,7 @@ void GateComponent::createSymbol() {
     }
 
     if (Model.at(0) == 'N')
-        Ellips.append(new qucs::Ellips(xr, -4, 8, 8,
+        Ellipses.append(new qucs::Ellips(xr, -4, 8, 8,
                                      QPen(Qt::darkBlue, 0), QBrush(Qt::darkBlue)));
 
     Ports.append(new Port(30, 0));
