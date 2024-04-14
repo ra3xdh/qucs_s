@@ -141,7 +141,7 @@ bool loadSettings()
     QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveBinDir");
     QucsSettings.OpenVAFExecutable = _settings::Get().item<QString>("OpenVAFExecutable");
 
-    // TODO:
+    // TODO: This is a new settings parameter and needs to be ported to the new model.
     if(settings.contains("RFLayoutExecutable")) {
         QucsSettings.RFLayoutExecutable = settings.value("RFLayoutExecutable").toString();
     } else {
