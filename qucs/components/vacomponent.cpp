@@ -236,7 +236,7 @@ void vacomponent::createSymbol(QJsonObject json)
             colorfill = getString(paint, "colorfill");
             stylefill = getString(paint, "stylefill");
 
-            Ellips.append (new qucs::Area (x, y, w, h,
+            Ellips.append (new qucs::Ellips (x, y, w, h,
                                          QPen (QColor (color), thick, penMap.value(style)),
                                          QBrush(QColor (colorfill), brushMap.value(stylefill))
                                          ));

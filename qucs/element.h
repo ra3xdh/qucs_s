@@ -72,6 +72,16 @@ struct Area {
   QBrush Brush;    // filling style/color
 };
 
+// 'ellipse' conflicts 'ellipse' defined in paintings.h in the same namespace
+struct Ellips {
+  Ellips(int _x, int _y, int _w, int _h, QPen _Pen,
+	QBrush _Brush = QBrush(Qt::NoBrush))
+	: x(_x), y(_y), w(_w), h(_h), Pen(_Pen), Brush(_Brush) {};
+  int    x, y, w, h;
+  QPen   Pen;
+  QBrush Brush;    // filling style/color
+};
+
 }
 
 struct Port {
