@@ -69,7 +69,7 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_, QObject *parent) :
     SimProcess->setProcessChannelMode(QProcess::MergedChannels);
     connect(SimProcess,SIGNAL(finished(int)),this,SLOT(slotFinished()));
     connect(SimProcess,SIGNAL(readyRead()),this,SLOT(slotProcessOutput()));
-    connect(SimProcess,SIGNAL(error(QProcess::ProcessError)),this,SLOT(slotErrors(QProcess::ProcessError)));
+    connect(SimProcess,SIGNAL(errorOccurred(QProcess::ProcessError)),this,SLOT(slotErrors(QProcess::ProcessError)));
     connect(this,SIGNAL(destroyed()),this,SLOT(killThemAll()));
 
 }
