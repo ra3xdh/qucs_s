@@ -63,8 +63,8 @@ struct Arc {
   QPen  style;
 };
 
-struct Area {
-  Area(int _x, int _y, int _w, int _h, QPen _Pen,
+struct Rect {
+  Rect(int _x, int _y, int _w, int _h, QPen _Pen,
 	QBrush _Brush = QBrush(Qt::NoBrush))
 	: x(_x), y(_y), w(_w), h(_h), Pen(_Pen), Brush(_Brush) {};
   int    x, y, w, h;
