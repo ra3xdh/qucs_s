@@ -53,7 +53,7 @@ void PortSymbol::paint(ViewPainter *p)
   p->Painter->setPen(QPen(Qt::red,1));  // like open node
   p->drawEllipse(cx-4, cy-4, 8, 8);
 
-  QSize r = p->Painter->fontMetrics().size(0, nameStr);
+  QSize r = p->Painter->fontMetrics().size(0, nameStr.isEmpty() ? numberStr : nameStr);
   int Unit = int(8.0 * p->Scale);
   x1 = -r.width() - Unit;
   y1 = -((r.height() + Unit) >> 1);
@@ -88,7 +88,7 @@ void PortSymbol::paint(ViewPainter *p)
   }
 
   p->Painter->setPen(Qt::black);
-  p->Painter->drawText(tx, ty, 0, 0, Qt::TextDontClip, nameStr);
+  p->Painter->drawText(tx, ty, 0, 0, Qt::TextDontClip, nameStr.isEmpty() ? numberStr : nameStr);
 
 
   p->Painter->setWorldTransform(wm);
