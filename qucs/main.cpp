@@ -78,8 +78,6 @@ bool loadSettings()
     QucsSettings.DefaultSimulator = _settings::Get().item<int>("DefaultSimulator");
     QucsSettings.firstRun = _settings::Get().item<bool>("firstRun");
 
-    // See note in saveApplSettings about taking a reference to the settings singleton.
-
     /*** Temporarily continue to use QucsSettings to make sure all settings convert okay and remain compatible ***/
     QucsSettings.font.fromString(_settings::Get().item<QString>("font"));
     QucsSettings.appFont.fromString(_settings::Get().item<QString>("appFont"));
@@ -127,36 +125,25 @@ bool loadSettings()
     QucsSettings.XyceParExecutable = _settings::Get().item<QString>("XyceParExecutable");
     QucsSettings.SpiceOpusExecutable = _settings::Get().item<QString>("SpiceOpusExecutable");
     QucsSettings.NProcs = _settings::Get().item<int>("Nprocs");
-
-    // TODO:
-    // All usages of this path look like something involving a temporary data.
-    // This should be replaced with generic temp dir, but for now let's just
-    // place it under generic temp dir.
-    if(settings.contains("S4Q_workdir")) QucsSettings.S4Qworkdir = settings.value("S4Q_workdir").toString();
-    else QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QucsSettings.QucsWorkDir.absolutePath()+"/spice4qucs");
-    // QucsSettings.S4Qworkdir = _settings::Get().item<QString>("S4Q_workdir");
+   
+    // TODO: Currently the default settings cannot include other settings during initialisation. This is a 
+    // problem for this setting as it needs to include the QucsWorkDir setting. Therefore, set the default to an
+    // empty string and populate it here by brute force.
+    QucsSettings.S4Qworkdir = _settings::Get().item<QString>("S4Q_workdir");
+    if (QucsSettings.S4Qworkdir == "")
+      QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QucsSettings.QucsWorkDir.absolutePath()+"/spice4qucs");
 
     QucsSettings.SimParameters = _settings::Get().item<QString>("SimParameters");
     QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveExecutable");
     QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveBinDir");
     QucsSettings.OpenVAFExecutable = _settings::Get().item<QString>("OpenVAFExecutable");
 
-    // TODO: This is a new settings parameter and needs to be ported to the new model.
-    if(settings.contains("RFLayoutExecutable")) {
-        QucsSettings.RFLayoutExecutable = settings.value("RFLayoutExecutable").toString();
-    } else {
-        QucsSettings.RFLayoutExecutable = "qucsrflayout" + QString(executableSuffix);
-    }
+    QucsSettings.RFLayoutExecutable = _settings::Get().item<QString>("RFLayoutExecutable");
 
-    if (auto path = settings.value("QucsHomeDir", "").toString(); path != "") {
-      QucsSettings.qucsWorkspaceDir.setPath(path);
-    }
-
+    QucsSettings.qucsWorkspaceDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
     QucsSettings.QucsWorkDir = QucsSettings.qucsWorkspaceDir;
     QucsSettings.tempFilesDir.setPath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
 
-    // QucsSettings.QucsHomeDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
-    // QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
     QucsSettings.IgnoreFutureVersion = _settings::Get().item<bool>("IgnoreVersion");
     QucsSettings.GraphAntiAliasing = _settings::Get().item<bool>("GraphAntiAliasing");
     QucsSettings.TextAntiAliasing = _settings::Get().item<bool>("TextAntiAliasing");
