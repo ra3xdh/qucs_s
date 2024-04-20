@@ -41,6 +41,7 @@
 #include <QListWidget>
 #include <QDesktopServices>
 
+#include "portsymbol.h"
 #include "projectView.h"
 #include "main.h"
 #include "qucs.h"
@@ -513,9 +514,13 @@ void QucsApp::slotInsertPort(bool on)
   if(view->selElem)
     delete view->selElem;  // delete previously selected component
 
-  view->selElem = new SubCirPort();
-
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
+  if (Doc->symbolMode) {
+    view->selElem = new PortSymbol();
+  } else {
+     view->selElem = new SubCirPort();
+  }
+
   if(view->drawn) Doc->viewport()->update();
   view->drawn = false;
   MouseMoveAction = &MouseActions::MMoveElement;

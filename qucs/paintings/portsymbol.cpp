@@ -18,6 +18,7 @@
 #include "portsymbol.h"
 #include "schematic.h"
 
+#include <QInputDialog>
 #include <QPainter>
 
 PortSymbol::PortSymbol(int cx_, int cy_, const QString& numberStr_,
@@ -224,4 +225,53 @@ void PortSymbol::mirrorY()
 {
   if(Angel == 0)  Angel = 180;
   else  if(Angel == 180)  Angel = 0;
+}
+
+bool PortSymbol::MousePressing(Schematic *) {
+  QString text = QInputDialog::getText(nullptr, QObject::tr("Port name"),
+                                        QObject::tr("Input port name:"));
+  if (!text.isNull() && !text.isEmpty()) {
+    numberStr = text;
+    return true;
+  }
+
+  return false;
+}
+
+void PortSymbol::MouseMoving(Schematic* doc, int, int, int gx, int gy, Schematic *, int, int, bool) {
+  cx = gx;
+  cy = gy;
+  paintScheme(doc);
+}
+
+Painting* PortSymbol::newOne() {
+  return new PortSymbol();
+}
+
+// This function is called from double click handler, see mouseactions.cpp
+// Returned bool signal whether the object has changed as a result of
+// the invocation.
+bool PortSymbol::Dialog(QWidget* /*parent*/) {
+  // nameStr is not empty only in case when it got its value from a
+  // corresponding port in schematic. Forbid manual editing, change
+  // port name on schematic to change it in the symbol
+  if (!nameStr.isEmpty()) {
+    return false;
+  }
+
+  // When nameStr is empty, we're dealing with just a symbol without
+  // a corresponding schematic. In that case allow to user to input
+  // port name
+  QString text = QInputDialog::getText(nullptr, QObject::tr("Port name"),
+                                        QObject::tr("Input port name:"),
+                                        QLineEdit::Normal,
+                                        numberStr);
+  if (text.isNull() || text.isEmpty()) {
+    return false;
+  }
+
+  // nameStr is auto derived from corresponding port in schematic.
+  // When there is no such port, fallback value is used.
+  numberStr = text;
+  return true;
 }

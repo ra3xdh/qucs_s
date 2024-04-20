@@ -1673,7 +1673,16 @@ bool Schematic::load()
 // Saves this Qucs document. Returns the number of subcircuit ports.
 int Schematic::save()
 {
-    int result = adjustPortNumbers(); // same port number for schematic and symbol
+    int result = 0;
+    // When saving *only* a symbol, there is no corresponding schematic:
+    // and thus ports in symbol don't have corresponding ports in schematic.
+    // There is just nothing to adjust.
+    //
+    // In other cases we want to delete any dangling ports from symbol
+    // and invoke "adjustPortNumbers" for it.
+    if (!DocName.endsWith("sym")) {
+        result = adjustPortNumbers(); // same port number for schematic and symbol
+    }
     if (saveDocument() < 0)
         return -1;
 

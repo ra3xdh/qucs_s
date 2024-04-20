@@ -2961,7 +2961,6 @@ void QucsApp::switchEditMode(bool SchematicMode)
   changeProps->setEnabled(SchematicMode);
   insEquation->setEnabled(SchematicMode);
   insGround->setEnabled(SchematicMode);
-  insPort->setEnabled(SchematicMode);
   insWire->setEnabled(SchematicMode);
   insLabel->setEnabled(SchematicMode);
   setMarker->setEnabled(SchematicMode);
