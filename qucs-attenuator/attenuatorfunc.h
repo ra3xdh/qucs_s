@@ -30,7 +30,15 @@ struct tagATT
   double R1;
   double R2;
   double R3;
-  bool minR; //Only for the reflection attenuator
+  double R4;
+  double PR1;//Power dissipated by R1 [W]
+  double PR2;//Power dissipated by R2 [W]
+  double PR3;//Power dissipated by R3 [W]
+  double PR4;//Power dissipated by R4 [W]
+  double Pin;//Input power [W]
+  bool minR; //The reflection attenuator can be designed using two different resistor values. The first one is such
+             //as R < Z0 whereas the other is such as R > Z0. This field is just a flag to indicate what solution
+             //qucsattenuator should use.
 };
 
 class QString;

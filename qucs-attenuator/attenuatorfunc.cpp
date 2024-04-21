@@ -49,33 +49,55 @@ int QUCS_Att::Calc(tagATT *ATT)
 	{
 	case PI_TYPE:
 	  {
+        //Design equations
 	    ATT->R2 = ((L - 1) / 2) * sqrt(ATT->Zin * ATT->Zout / L);
 	    ATT->R1 = 1 / (((A / ATT->Zin)) - (1 / ATT->R2));
 	    ATT->R3 = 1 / (((A / ATT->Zout)) - (1 / ATT->R2));
+        //Power dissipation
+        ATT->PR1 = ATT->Pin*(ATT->Zin/ATT->R1);//[W]
+        ATT->PR2 = ATT->Pin*(ATT->R2*pow(ATT->R1-ATT->Zin,2)/(ATT->R1*ATT->R1*ATT->Zin));//[W]
+        ATT->PR3 = ATT->Pin*(pow(ATT->R1*ATT->R2-ATT->Zin*(ATT->R1+ATT->R2),2))/(ATT->R1*ATT->R1*ATT->R3*ATT->Zin);//[W]
 	    break;
 	  }
 	case TEE_TYPE:
 	  {
+        //Design equations
 	    ATT->R2 = (2 * sqrt(L * ATT->Zin * ATT->Zout)) / (L - 1);
 	    ATT->R1 = ATT->Zin * A - ATT->R2;
 	    ATT->R3 = ATT->Zout * A - ATT->R2;
+        //Power dissipation
+        ATT->PR1 = ATT->Pin*(ATT->R1/ATT->Zin);//[W]
+        ATT->PR2 = ATT->Pin*(pow(ATT->R1-ATT->Zin,2))/(ATT->R2*ATT->Zin);//[W]
+        ATT->PR3 = ATT->Pin*(ATT->R3*pow(ATT->R1+ATT->R2-ATT->Zin,2)/(ATT->Zin*ATT->R2*ATT->R2));//[W]
 	    break;
 	  }
 	case BRIDGE_TYPE:
 	  {
+        //Design equations
 	    L = pow(10, ATT->Attenuation / 20);
 	    ATT->R1 = ATT->Zin * (L - 1);
 	    ATT->R2 = ATT->Zin / (L - 1);
+        ATT->R3 = ATT->Zin;//Z01
+        ATT->R4 = ATT->Zin;//Z02
+        //Power dissipation
+        ATT->PR1 = ATT->Pin*((4*ATT->R1*ATT->R2*ATT->R2*ATT->Zin)/(pow(ATT->R1*ATT->R2+ATT->Zin*(2*ATT->R2+ATT->Zin),2)));//[W]
+        ATT->PR2 = ATT->Pin*(4*ATT->R2*ATT->Zin*ATT->Zin*ATT->Zin)/pow(ATT->R1*ATT->R2+ATT->Zin*(2*ATT->R2+ATT->Zin),2);//[W]
+        ATT->PR3 = ATT->Pin*(pow(ATT->R1*ATT->R2+ATT->Zin*ATT->Zin,2)/pow(ATT->R1*ATT->R2+ATT->Zin*(2*ATT->R2+ATT->Zin),2));//[W]
+        ATT->PR4 = 0;//Z02 dissipates no power.
 	    break;
 	  }
       case REFLECTION_TYPE:
       {
-          L = pow(10, 0.05*ATT->Attenuation);
-         if (ATT->minR)
+        //Design equations
+        L = pow(10, ATT->Attenuation / 20);
+        if (ATT->minR)
             ATT->R1 = ATT->Zin*(L + 1)/(L - 1);
-         else
+        else
             ATT->R1 = ATT->Zin*(L - 1)/(L + 1);
-         ATT->R2 = ATT->R1;
+        ATT->R2 = ATT->R1;
+        //Power dissipation. Both resistor dissipate the same power
+        ATT->PR1 = 0.5*ATT->Pin*(1-pow(abs((ATT->Zin-ATT->R1)/(ATT->Zin+ATT->R1)),2));
+        ATT->PR2 = ATT->PR1;
          break;
       }
 	}
