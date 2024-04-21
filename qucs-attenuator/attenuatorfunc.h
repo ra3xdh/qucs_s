@@ -40,7 +40,7 @@ class QUCS_Att
   ~QUCS_Att();
 
   int Calc(tagATT*);
-  static QString* createSchematic(tagATT*);
+  static QString* createSchematic(tagATT*, bool);
 
 
 };

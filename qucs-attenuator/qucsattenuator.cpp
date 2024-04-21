@@ -98,6 +98,10 @@ QucsAttenuator::QucsAttenuator()
 
   vboxLeft->addWidget(TopoGroup);
 
+  //S-parameter box option
+  SparBoxCheckbox = new QCheckBox("Add S-parameter simulation");
+  SparBoxCheckbox->setChecked(false);
+  vboxLeft->addWidget(SparBoxCheckbox);
 
   //==========Right
   QVBoxLayout *vboxRight = new QVBoxLayout();
@@ -313,7 +317,7 @@ void QucsAttenuator::slotCalculate()
       lineEdit_R2->setText(QString::number(Values.R2, 'f', 1));
       lineEdit_R3->setText(QString::number(Values.R3, 'f', 1));
       
-      s = qatt.createSchematic(&Values);
+      s = qatt.createSchematic(&Values, this->SparBoxCheckbox->isChecked());
       if(!s) return;
       
       QClipboard *cb = QApplication::clipboard();
