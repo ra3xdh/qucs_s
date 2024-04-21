@@ -310,8 +310,11 @@ QucsAttenuator::QucsAttenuator()
   hbox->addLayout(vboxRight);
 
   // append the result label
-  LabelResult = new QLabel(tr("Result:"));
+  LabelResult = new QLabel(tr(""));//It is not needed to provide a "Success" message.
+                                     //The synthesis will fail only for certain attenuation-Z0 ratios
+                                     //in Pi or Tee type attenuators
   LabelResult->setAlignment(Qt::AlignHCenter);
+  LabelResult->setStyleSheet("QLabel {color : red; }");
 
   QVBoxLayout *vbox = new QVBoxLayout();
   vbox->addLayout(hbox);
@@ -503,7 +506,7 @@ void QucsAttenuator::slotCalculate()
 
     if(result != -1)
     {
-      LabelResult->setText(tr("Result:")+" "+tr("Success!"));
+      LabelResult->setText(tr(""));
       lineEdit_R1->setText(QString::number(Values.R1, 'f', 1));
       lineEdit_R2->setText(QString::number(Values.R2, 'f', 1));
       lineEdit_R3->setText(QString::number(Values.R3, 'f', 1));
@@ -527,6 +530,10 @@ void QucsAttenuator::slotCalculate()
       lineEdit_R1->setText("--");
       lineEdit_R2->setText("--");
       lineEdit_R3->setText("--");
+
+      lineEdit_R1_Pdiss->setText("--");
+      lineEdit_R2_Pdiss->setText("--");
+      lineEdit_R3_Pdiss->setText("--");
     }
     adjustSize();
 }
