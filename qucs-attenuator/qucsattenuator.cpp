@@ -86,6 +86,7 @@ QucsAttenuator::QucsAttenuator()
   ComboTopology->insertItem(1, "Pi");
   ComboTopology->insertItem(2, "Tee");
   ComboTopology->insertItem(3, "Bridged Tee");
+  ComboTopology->insertItem(4, "Reflection attenuator");
   connect(ComboTopology, SIGNAL(activated(int)), SLOT(slotTopologyChanged()));
   topoGrid->addWidget(ComboTopology, 1,0,1,2);
 
@@ -142,6 +143,10 @@ QucsAttenuator::QucsAttenuator()
   inGrid->addWidget(lineEdit_Zout, 3,1);
   QLabel *Label3 = new QLabel(tr("Ohm"), InputGroup);
   inGrid->addWidget(Label3, 3,2);
+
+  // Reflection attenuator only
+  minR_Reflection_Att = new QCheckBox("Use R > Z0");
+  inGrid->addWidget(minR_Reflection_Att, 4,0);
 
   InputGroup->setLayout(inGrid);
 
@@ -250,7 +255,7 @@ void QucsAttenuator::slotQuit()
 
 void QucsAttenuator::slotSetText_Zin( const QString &text )
 {
-  if(ComboTopology->currentIndex() == BRIDGE_TYPE) {
+  if((ComboTopology->currentIndex() == BRIDGE_TYPE) || (ComboTopology->currentIndex() == REFLECTION_TYPE)) {
     lineEdit_Zout->blockSignals( true );
     lineEdit_Zout->setText( text );
     lineEdit_Zout->blockSignals( false );
@@ -276,6 +281,7 @@ void QucsAttenuator::slotTopologyChanged()
       LabelR3->show();
       lineEdit_R3->show();
       LabelR3_Ohm->show();
+      minR_Reflection_Att->hide();
       break;
     case TEE_TYPE:
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_tee.png")));
@@ -283,6 +289,7 @@ void QucsAttenuator::slotTopologyChanged()
       LabelR3->show();
       lineEdit_R3->show();
       LabelR3_Ohm->show();
+      minR_Reflection_Att->hide();
       break;
     case BRIDGE_TYPE:
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_bridge.png")));
@@ -291,6 +298,16 @@ void QucsAttenuator::slotTopologyChanged()
       lineEdit_R3->hide();
       LabelR3_Ohm->hide();
       lineEdit_Zout->setText( lineEdit_Zin->text() );
+      minR_Reflection_Att->hide();
+      break;
+      case REFLECTION_TYPE:
+        pixTopology->setPixmap(QPixmap((":/bitmaps/att_reflection.png")));
+        LabelR2->setText("R2:");
+        LabelR3->hide();
+        lineEdit_R3->hide();
+        LabelR3_Ohm->hide();
+        lineEdit_Zout->setText( lineEdit_Zin->text() );
+        minR_Reflection_Att->show();
       break;
     }
     adjustSize();
@@ -308,6 +325,7 @@ void QucsAttenuator::slotCalculate()
     Values.Attenuation = lineEdit_Attvalue->text().toDouble();
     Values.Zin = lineEdit_Zin->text().toDouble();
     Values.Zout = lineEdit_Zout->text().toDouble();
+    Values.minR = minR_Reflection_Att->isChecked();
     result = qatt.Calc(&Values);
 
     if(result != -1)

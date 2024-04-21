@@ -68,6 +68,16 @@ int QUCS_Att::Calc(tagATT *ATT)
 	    ATT->R2 = ATT->Zin / (L - 1);
 	    break;
 	  }
+      case REFLECTION_TYPE:
+      {
+          L = pow(10, 0.05*ATT->Attenuation);
+         if (ATT->minR)
+            ATT->R1 = ATT->Zin*(L + 1)/(L - 1);
+         else
+            ATT->R1 = ATT->Zin*(L - 1)/(L + 1);
+         ATT->R2 = ATT->R1;
+         break;
+      }
 	}
       return 0;
     }
@@ -250,6 +260,73 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
       }
       *s += "</Paintings>\n";
       break;
+
+      case REFLECTION_TYPE:
+        *s += QString("<R R1 1 130 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->R1);
+        *s += "<GND * 1 130 330 0 0 0 0>\n";
+        *s += QString("<Coupler X1 5 200 200 29 -26 0 1 \"0.7071\" 0 \"90\" 0 \"%1\" 0>\n").arg(ATT->Zin);
+        *s += QString("<R R1 1 270 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->R1);
+        *s += "<GND * 1 270 330 0 0 0 0>\n";
+
+        if (SP_box)
+        {
+          // S-parameter simulation block
+          //-----------------------------
+          // Resistor attenuators are broadband ckts, so it's pointless to ask the user to input the analysis freq sweep. Let's do a wideband
+          // sweep and then the user can modify that in the schematic
+          *s += "<.SP SP1 1 80 400 0 83 0 0 \"lin\" 1 \"50 MHz\" 1 \"3 GHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n";
+
+          // Equations
+          *s += "<Eqn Eqn1 1 300 400 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
+
+          // Input term
+          *s += QString("<Pac P1 1 50 200 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+          *s += "<GND * 1 50 230 0 0 0 0>\n";
+
+          // Output term
+          *s += QString("<Pac P1 1 350 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+          *s += "<GND * 1 350 230 0 0 0 0>\n";
+        }
+        *s += "</Components>\n";
+
+        *s += "<Wires>\n";
+        //First resistor to the coupler
+        *s += "<130 270 130 250 \"\" 0 0 0 \"\">\n";
+        *s += "<130 250 180 250 \"\" 0 0 0 \"\">\n";
+        *s += "<180 230 180 250 \"\" 0 0 0 \"\">\n";
+
+        //Second resistor to the coupler
+        *s += "<270 270 270 250 \"\" 0 0 0 \"\">\n";
+        *s += "<270 250 220 250 \"\" 0 0 0 \"\">\n";
+        *s += "<220 230 220 250 \"\" 0 0 0 \"\">\n";
+
+        *s += "<100 170 180 170 \"\" 0 0 0 \"\">\n";
+        *s += "<220 170 300 170 \"\" 0 0 0 \"\">\n";
+
+        if (SP_box)
+        {   // Additional wiring because of the input/output ports
+
+            // Input port
+            *s += "<50 170 100 170 \"\" 0 0 0 \"\">\n";
+
+            // Output port
+            *s += "<300 170 350 170 \"\" 0 0 0 \"\">\n";
+        }
+        *s += "</Wires>\n";
+
+        *s += "<Diagrams>\n";
+        *s += "</Diagrams>\n";
+        *s += "<Paintings>\n";
+        *s += QString("<Text 100 100 12 #000000 0 \"%1 dB Reflection Attenuator\">\n").arg(ATT->Attenuation);
+        if (!SP_box)
+        {// If the SP simulation box option is activated, then the input and output ports are attached.
+         // Thus, it doesn't make sense to have a text field indicating the input/output impedance
+            *s += QString("<Text 70 135 10 #000000 0 \"Z0: %1 Ohm\">\n").arg(ATT->Zin);
+            *s += QString("<Text 270 135 10 #000000 0 \"Z0: %1 Ohm\">\n").arg(ATT->Zout);
+        }
+        *s += "</Paintings>\n";
+
+    break;
     }
 
   return s;

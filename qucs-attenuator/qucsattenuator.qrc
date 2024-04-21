@@ -4,5 +4,6 @@
         <file>bitmaps/att_pi.png</file>
         <file>bitmaps/att_tee.png</file>
         <file>bitmaps/big.qucs.xpm</file>
+        <file>bitmaps/att_reflection.png</file>
     </qresource>
 </RCC>

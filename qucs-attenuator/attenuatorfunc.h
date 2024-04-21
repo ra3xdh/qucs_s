@@ -16,6 +16,7 @@
 #define PI_TYPE 0
 #define TEE_TYPE 1
 #define BRIDGE_TYPE 2
+#define REFLECTION_TYPE 3
 
 #include <cmath>
 
@@ -29,6 +30,7 @@ struct tagATT
   double R1;
   double R2;
   double R3;
+  bool minR; //Only for the reflection attenuator
 };
 
 class QString;
