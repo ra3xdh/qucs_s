@@ -73,8 +73,14 @@ class QucsAttenuator : public QMainWindow
   QDoubleSpinBox *QSpinBox_InputPower, *QSpinBox_Attvalue, *QSpinBox_Zin, *QSpinBox_Zout;
   QPushButton *Calculate;
   QDoubleValidator *DoubleVal, *DoubleValPower;
-  QCheckBox *SparBoxCheckbox, *minR_Reflection_Att;
+  QCheckBox *SparBoxCheckbox, *R_Check;
   QStringList LastUnits;
+
+  //Quarter-wave attenuators
+  QLabel *Label_Freq;
+  QComboBox *Combo_FreqUnits;
+  QDoubleSpinBox *QSpinBox_Freq;
+  QCheckBox *Check_QW_CLC;
 };
 
 #endif

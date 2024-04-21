@@ -5,5 +5,9 @@
         <file>bitmaps/att_tee.png</file>
         <file>bitmaps/big.qucs.xpm</file>
         <file>bitmaps/att_reflection.png</file>
+        <file>bitmaps/qw_series.png</file>
+        <file>bitmaps/qw_shunt.png</file>
+        <file>bitmaps/qw_shunt_CLC.png</file>
+        <file>bitmaps/qw_series_CLC.png</file>
     </qresource>
 </RCC>

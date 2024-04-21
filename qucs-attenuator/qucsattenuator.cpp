@@ -87,6 +87,8 @@ QucsAttenuator::QucsAttenuator()
   ComboTopology->insertItem(2, "Tee");
   ComboTopology->insertItem(3, "Bridged Tee");
   ComboTopology->insertItem(4, "Reflection attenuator");
+  ComboTopology->insertItem(5, "Quarter-wave series");
+  ComboTopology->insertItem(6, "Quarter-wave shunt");
   connect(ComboTopology, SIGNAL(activated(int)), SLOT(slotTopologyChanged()));
   topoGrid->addWidget(ComboTopology, 1,0,1,2);
 
@@ -181,10 +183,41 @@ QucsAttenuator::QucsAttenuator()
       SLOT(slot_ComboInputPowerUnits_Changed(const QString&)) );
   inGrid->addWidget(Combo_InputPowerUnits, 4,2);
 
-  // Reflection attenuator only
-  minR_Reflection_Att = new QCheckBox("Use R > Z0");
-  minR_Reflection_Att->hide();
-  inGrid->addWidget(minR_Reflection_Att, 5,0);
+  //Central frequency
+  Label_Freq = new QLabel(tr("Freq:"), InputGroup);
+  Label_Freq->setWhatsThis("Central frequency");
+  Label_Freq->hide();
+  inGrid->addWidget(Label_Freq, 5,0);
+  QSpinBox_Freq = new QDoubleSpinBox(0);
+  QSpinBox_Freq->setMinimum(0.1);
+  QSpinBox_Freq->setMaximum(1e5);
+  QSpinBox_Freq->setValue(1500);
+  QSpinBox_Freq->hide();
+  connect(QSpinBox_Freq, SIGNAL(valueChanged(double)), this, SLOT(slotCalculate()));
+  inGrid->addWidget(QSpinBox_Freq, 5,1);
+  QStringList frequnits;
+  frequnits.append("GHz");
+  frequnits.append("MHz");
+  frequnits.append("kHz");
+  frequnits.append("Hz");
+  Combo_FreqUnits = new QComboBox();
+  Combo_FreqUnits->addItems(frequnits);
+  Combo_FreqUnits->setCurrentIndex(1);//MHz
+  Combo_FreqUnits->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+  Combo_FreqUnits->hide();
+  inGrid->addWidget(Combo_FreqUnits, 5,2);
+
+
+  // R higher or lower than Z0. Only for reflection and QW series/shunt
+  R_Check = new QCheckBox("Use R > Z0");
+  R_Check->hide();
+  inGrid->addWidget(R_Check, 6,0);
+
+  //Option for transforming a quarter wavelength transmission line into its lumped element equivalent
+  Check_QW_CLC = new QCheckBox("Use lumped components");
+  Check_QW_CLC->hide();
+  connect(Check_QW_CLC, SIGNAL(clicked(bool)), this, SLOT(slotTopologyChanged()));
+  inGrid->addWidget(Check_QW_CLC, 7,0);
 
   InputGroup->setLayout(inGrid);
 
@@ -417,7 +450,11 @@ void QucsAttenuator::slotTopologyChanged()
       ComboR3_PowerUnits->show();
       lineEdit_R4_Pdiss->hide();
       ComboR4_PowerUnits->hide();
-      minR_Reflection_Att->hide();
+      R_Check->hide();
+      Check_QW_CLC->hide();
+      Label_Freq->hide();
+      QSpinBox_Freq->hide();
+      Combo_FreqUnits->hide();
       break;
     case TEE_TYPE:
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_tee.png")));
@@ -437,7 +474,11 @@ void QucsAttenuator::slotTopologyChanged()
       ComboR3_PowerUnits->show();
       lineEdit_R4_Pdiss->hide();
       ComboR4_PowerUnits->hide();
-      minR_Reflection_Att->hide();
+      R_Check->hide();
+      Check_QW_CLC->hide();
+      Label_Freq->hide();
+      QSpinBox_Freq->hide();
+      Combo_FreqUnits->hide();
       break;
     case BRIDGE_TYPE:
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_bridge.png")));
@@ -459,7 +500,11 @@ void QucsAttenuator::slotTopologyChanged()
       ComboR3_PowerUnits->show();
       ComboR4_PowerUnits->show();
       QSpinBox_Zout->setValue(QSpinBox_Zin->value());
-      minR_Reflection_Att->hide();
+      R_Check->hide();
+      Check_QW_CLC->hide();
+      Label_Freq->hide();
+      QSpinBox_Freq->hide();
+      Combo_FreqUnits->hide();
       break;
     case REFLECTION_TYPE:
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_reflection.png")));
@@ -479,7 +524,63 @@ void QucsAttenuator::slotTopologyChanged()
       ComboR3_PowerUnits->hide();
       ComboR4_PowerUnits->hide();
       QSpinBox_Zout->setValue(QSpinBox_Zin->value());
-      minR_Reflection_Att->show();
+      R_Check->show();
+      Check_QW_CLC->hide();
+      Label_Freq->hide();
+      QSpinBox_Freq->hide();
+      Combo_FreqUnits->hide();
+      break;
+    case QW_SERIES_TYPE:
+      if (Check_QW_CLC->isChecked()) pixTopology->setPixmap(QPixmap((":/bitmaps/qw_series_CLC.png")));
+      else pixTopology->setPixmap(QPixmap((":/bitmaps/qw_series.png")));
+      LabelImp1->setText("Z0:");
+      LabelImp2->hide();
+      QSpinBox_Zout->hide();
+      LabelImp2_Ohm->hide();
+      LabelR2->setText("R2:");
+      LabelR3->show();
+      LabelR3->setText("R3:");
+      LabelR4->show();
+      LabelR4->setText("Zout");
+      lineEdit_R3->show();
+      lineEdit_R4->show();
+      LabelR3_Ohm->show();
+      LabelR4_Ohm->show();
+      lineEdit_R3_Pdiss->show();
+      lineEdit_R4_Pdiss->hide();
+      ComboR3_PowerUnits->show();
+      ComboR4_PowerUnits->hide();
+      R_Check->hide();
+      Check_QW_CLC->show();
+      Label_Freq->show();
+      QSpinBox_Freq->show();
+      Combo_FreqUnits->show();
+      break;
+    case QW_SHUNT_TYPE:
+      if (Check_QW_CLC->isChecked()) pixTopology->setPixmap(QPixmap((":/bitmaps/qw_shunt_CLC.png")));
+      else pixTopology->setPixmap(QPixmap((":/bitmaps/qw_shunt.png")));
+      LabelImp1->setText("Z0:");
+      LabelImp2->hide();
+      QSpinBox_Zout->hide();
+      LabelImp2_Ohm->hide();
+      LabelR2->setText("R2:");
+      LabelR3->show();
+      LabelR3->setText("R3:");
+      LabelR4->show();
+      LabelR4->setText("Zout");
+      lineEdit_R3->show();
+      lineEdit_R4->show();
+      LabelR4_Ohm->show();
+      LabelR3_Ohm->show();
+      lineEdit_R3_Pdiss->show();
+      lineEdit_R4_Pdiss->hide();
+      ComboR3_PowerUnits->show();
+      ComboR4_PowerUnits->hide();
+      R_Check->hide();
+      Check_QW_CLC->show();
+      Label_Freq->show();
+      QSpinBox_Freq->show();
+      Combo_FreqUnits->show();
       break;
     }
     adjustSize();
@@ -493,12 +594,18 @@ void QucsAttenuator::slotCalculate()
     QString * s = NULL;
     struct tagATT Values;
 
-
     Values.Topology = ComboTopology->currentIndex();
     Values.Attenuation = QSpinBox_Attvalue->value();
     Values.Zin = QSpinBox_Zin->value();
     Values.Zout = QSpinBox_Zout->value();
-    Values.minR = minR_Reflection_Att->isChecked();
+    Values.minR = R_Check->isChecked();
+    Values.freq = QSpinBox_Freq->value();
+    Values.useLumped = Check_QW_CLC->isChecked();
+
+    //Frequency scale
+    if (Combo_FreqUnits->currentText() == "GHz") Values.freq*=1e9;
+    else if (Combo_FreqUnits->currentText() == "MHz") Values.freq*=1e6;
+         else if (Combo_FreqUnits->currentText() == "kHz") Values.freq*=1e3;
 
     //Calculate the input power
     Values.Pin = ConvertPowerUnits(QSpinBox_InputPower->value(), Combo_InputPowerUnits->currentText(), "W");

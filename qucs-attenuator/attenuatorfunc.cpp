@@ -17,6 +17,10 @@
 
 #include <QString>
 
+// References:
+// [1] RF design guide. Systems, circuits, and equations. Peter Vizmuller. Artech House, 1995
+// [2] The PIN diode circuit designer's handbook. W.E. Doherty, Jr., R.D. Joos, Microsemi Corp., 1998
+
 QUCS_Att::QUCS_Att(){}
 QUCS_Att::~QUCS_Att(){}
 
@@ -26,30 +30,31 @@ int QUCS_Att::Calc(tagATT *ATT)
   L = pow(10, ATT->Attenuation / 10);
 
   A = (L + 1) / (L - 1);
+  //Check minumum attenuation for Pi and Tee type attenuators
+   if ((ATT->Topology == PI_TYPE) || (ATT->Topology == TEE_TYPE))
+   {
+      if(ATT->Zin > ATT->Zout)
+        {
+          Lmin = (2 * ATT->Zin / ATT->Zout) - 1 + 2 *
+        sqrt(ATT->Zin / ATT->Zout * (ATT->Zin / ATT->Zout - 1));
+        }
+      else
+        {
+          Lmin = (2 * ATT->Zout / ATT->Zin) - 1 + 2 *
+        sqrt(ATT->Zout / ATT->Zin * (ATT->Zout / ATT->Zin - 1));
+        }
+      ATT->MinimumATT = 10 * log10(Lmin);
 
-  if(ATT->Zin > ATT->Zout)
-    {
-      Lmin = (2 * ATT->Zin / ATT->Zout) - 1 + 2 * 
-	sqrt(ATT->Zin / ATT->Zout * (ATT->Zin / ATT->Zout - 1));
+      if(ATT->MinimumATT > ATT->Attenuation)
+        {
+          return -1;
+        }
     }
-  else
-    {
-      Lmin = (2 * ATT->Zout / ATT->Zin) - 1 + 2 * 
-	sqrt(ATT->Zout / ATT->Zin * (ATT->Zout / ATT->Zin - 1));
-    }
-  ATT->MinimumATT = 10 * log10(Lmin);  
-
-  if(ATT->MinimumATT > ATT->Attenuation)
-    {
-      return -1;
-    }
-  else
-    {
-      switch(ATT->Topology)
+    switch(ATT->Topology)
 	{
 	case PI_TYPE:
 	  {
-        //Design equations
+        //Design equations [1]
 	    ATT->R2 = ((L - 1) / 2) * sqrt(ATT->Zin * ATT->Zout / L);
 	    ATT->R1 = 1 / (((A / ATT->Zin)) - (1 / ATT->R2));
 	    ATT->R3 = 1 / (((A / ATT->Zout)) - (1 / ATT->R2));
@@ -61,7 +66,7 @@ int QUCS_Att::Calc(tagATT *ATT)
 	  }
 	case TEE_TYPE:
 	  {
-        //Design equations
+        //Design equations [1]
 	    ATT->R2 = (2 * sqrt(L * ATT->Zin * ATT->Zout)) / (L - 1);
 	    ATT->R1 = ATT->Zin * A - ATT->R2;
 	    ATT->R3 = ATT->Zout * A - ATT->R2;
@@ -73,7 +78,7 @@ int QUCS_Att::Calc(tagATT *ATT)
 	  }
 	case BRIDGE_TYPE:
 	  {
-        //Design equations
+        //Design equations [1]
 	    L = pow(10, ATT->Attenuation / 20);
 	    ATT->R1 = ATT->Zin * (L - 1);
 	    ATT->R2 = ATT->Zin / (L - 1);
@@ -86,23 +91,53 @@ int QUCS_Att::Calc(tagATT *ATT)
         ATT->PR4 = 0;//Z02 dissipates no power.
 	    break;
 	  }
-      case REFLECTION_TYPE:
+    case REFLECTION_TYPE:
       {
-        //Design equations
+        //Design equations [2]
         L = pow(10, ATT->Attenuation / 20);
         if (ATT->minR)
             ATT->R1 = ATT->Zin*(L + 1)/(L - 1);
         else
             ATT->R1 = ATT->Zin*(L - 1)/(L + 1);
         ATT->R2 = ATT->R1;
-        //Power dissipation. Both resistor dissipate the same power
+        //Power dissipation. Both resistors dissipate the same power
         ATT->PR1 = 0.5*ATT->Pin*(1-pow(abs((ATT->Zin-ATT->R1)/(ATT->Zin+ATT->R1)),2));
         ATT->PR2 = ATT->PR1;
          break;
       }
+    case QW_SERIES_TYPE:
+      {
+         //Design equations [2]
+         L = pow(10, 0.05*ATT->Attenuation);
+         ATT->R1  = ATT->Zin/(L-1);
+         ATT->R2 = ATT->Zin;
+         ATT->R3 = ATT->R1;
+         ATT->R4 = (ATT->R1*ATT->R1*ATT->Zin + 2*ATT->R1*ATT->Zin*ATT->Zin)/(ATT->R1*ATT->R1 + 2*ATT->R1*ATT->Zin+2*ATT->Zin*ATT->Zin); // Zout
+         ATT->L = 0.25*C0/ATT->freq;//lambda/4
+         //Power dissipation.
+         ATT->PR1 = ATT->Pin*ATT->R1*ATT->Zin/pow(ATT->R1 + ATT->Zin,2);
+         ATT->PR2 = ATT->Pin*ATT->Zin*ATT->Zin/pow(ATT->R1 + ATT->Zin,2);
+         ATT->PR3 = ATT->PR1;
+         break;
+      }
+    case QW_SHUNT_TYPE:
+      {
+         //Design equations [2]
+         L = pow(10, 0.05*ATT->Attenuation);
+         ATT->R1  = ATT->Zin*(L-1);
+         ATT->R2 = ATT->Zin;
+         ATT->R3 = ATT->R1;
+         ATT->R4 = ATT->R1 + ATT->Zin*(ATT->R1+ATT->Zin)/(2*ATT->R1+ATT->Zin); // Zout
+         ATT->L = 0.25*C0/ATT->freq;//lambda/4
+         //Power dissipation.
+         ATT->PR1 = ATT->Pin*ATT->R1*ATT->Zin/pow(ATT->R1 + ATT->Zin,2);
+         ATT->PR2 = ATT->Pin*ATT->R1*ATT->R1/pow(ATT->R1 + ATT->Zin,2);
+         ATT->PR3 = ATT->PR1;
+         break;
+       }
 	}
-      return 0;
-    }
+   return 0;
+
 }
 
 //This function creates the schematic. It receives the attenuator resistor values (tagATT * ATT) and bool flag to include a S-parameter box in the schematic
@@ -284,10 +319,10 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
       break;
 
       case REFLECTION_TYPE:
-        *s += QString("<R R1 1 130 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->R1);
+        *s += QString("<R R1 1 130 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
         *s += "<GND * 1 130 330 0 0 0 0>\n";
         *s += QString("<Coupler X1 5 200 200 29 -26 0 1 \"0.7071\" 0 \"90\" 0 \"%1\" 0>\n").arg(ATT->Zin);
-        *s += QString("<R R1 1 270 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->R1);
+        *s += QString("<R R1 1 270 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
         *s += "<GND * 1 270 330 0 0 0 0>\n";
 
         if (SP_box)
@@ -296,7 +331,7 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
           //-----------------------------
           // Resistor attenuators are broadband ckts, so it's pointless to ask the user to input the analysis freq sweep. Let's do a wideband
           // sweep and then the user can modify that in the schematic
-          *s += "<.SP SP1 1 80 400 0 83 0 0 \"lin\" 1 \"50 MHz\" 1 \"3 GHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n";
+          *s += QString("<.SP SP1 1 80 400 0 83 0 0 \"lin\" 1 \"50 MHz\" 1 \"3 GHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n");
 
           // Equations
           *s += "<Eqn Eqn1 1 300 400 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
@@ -348,8 +383,215 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
         }
         *s += "</Paintings>\n";
 
-    break;
+        break;
+
+      case QW_SERIES_TYPE:
+        if (ATT->useLumped)
+        {
+          double w = 2*PI*ATT->freq;
+          *s += QString("<L L1 1 250 0 -40 -60 0 0 \"%1H\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(num2str(ATT->Zin/w));
+          *s += QString("<C C1 1 180 -60 -90 -20 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
+          *s += "<GND * 1 180 -90 0 0 1 0>\n";
+          *s += QString("<C C1 1 320 -60 20 -20 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
+          *s += "<GND * 1 320 -90 0 0 1 0>\n";
+        }
+        else
+        {
+            *s += QString("<TLIN Line1 1 250 0 -38 -75 0 0 \"%1 Ohm\" 1 \"%2 mm\" 1 \"0 dB\" 0 \"26.85\" 0>\n").arg(ATT->Zin).arg(QString::number(ATT->L*1e3, 'f', 1));
+        }
+        *s += QString("<R R1 1 100 50 15 -26 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += QString("<R R1 1 100 150 15 -26 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zin);
+        *s += "<GND * 1 100 180 0 0 0 0>\n";
+        *s += QString("<R R1 1 400 150 -100 -15 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += "<GND * 1 400 180 0 0 0 0>\n";
+
+        if (SP_box)
+        {
+          // S-parameter simulation block
+          //-----------------------------
+          // The quarter-wave line is a narrowband device... so let's set the SP sweep from f0/2 to 3*f0/2
+          QString freq_start = QString("%1").arg(0.5*ATT->freq*1e-6);//MHz
+          QString freq_stop = QString("%1").arg(1.5*ATT->freq*1e-6);//MHz
+          *s += QString("<.SP SP1 1 100 270 0 83 0 0 \"lin\" 1 \"%1 MHz\" 1 \"%2 MHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n").arg(freq_start).arg(freq_stop);
+
+          // Equations
+          *s += "<Eqn Eqn1 1 320 270 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
+
+          // Input term
+          *s += QString("<Pac P1 1 0 150 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+          *s += "<GND * 1 0 180 0 0 0 0>\n";
+
+          // Output term
+          *s += QString("<Pac P1 1 500 150 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+          *s += "<GND * 1 500 180 0 0 0 0>\n";
+        }
+        *s += "</Components>\n";
+
+        *s += "<Wires>\n";
+        *s += "<100 20 100 0 \"\" 0 0 0 \"\">\n";
+        *s += "<50 0 220 0 \"\" 0 0 0 \"\">\n";
+        *s += "<100 80 100 120 \"\" 0 0 0 \"\">\n";
+        *s += "<400 120 400 0 \"\" 0 0 0 \"\">\n";
+        *s += "<280 0 450 0 \"\" 0 0 0 \"\">\n";
+
+        if (SP_box)
+        {
+            //Term 1 to input port
+            *s += "<0 120 0 0 \"\" 0 0 0 \"\">\n";
+            *s += "<0 0 50 0 \"\" 0 0 0 \"\">\n";
+
+            //Term 2 to output port
+            *s += "<500 120 500 0 \"\" 0 0 0 \"\">\n";
+            *s += "<450 0 500 0 \"\" 0 0 0 \"\">\n";
+        }
+        if (ATT->useLumped)
+        {//Add extra wiring to connect the shunt capacitors to the main line
+            *s += "<180 -30 180 0 \"\" 0 0 0 \"\">\n";
+            *s += "<320 -30 320 0 \"\" 0 0 0 \"\">\n";
+        }
+        *s += "</Wires>\n";
+        *s += "<Diagrams>\n";
+        *s += "</Diagrams>\n";
+        *s += "<Paintings>\n";
+
+        //In the case of the Pi-equivalent of the quarter wavelength line it is needed to put the title slighly higher.
+        if (ATT->useLumped) *s += QString("<Text 80 -140 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave series attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
+        else *s += QString("<Text 80 -120 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave series attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
+
+        if (!SP_box)
+        {// If the SP simulation box option is activated, then the input and output ports are attached.
+         // Thus, it doesn't make sense to have a text field indicating the input/output impedance
+            *s += QString("<Text 50 -30 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+            *s += QString("<Text 390 -30 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
+        }
+        *s += "</Paintings>\n";
+        break;
+      case QW_SHUNT_TYPE:
+        if (ATT->useLumped)
+        {
+           double w = 2*PI*ATT->freq;
+           *s += QString("<L L1 1 200 60 20 -35 0 1 \"%1H\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(num2str(ATT->Zin/w));
+           *s += QString("<C C1 1 200 -60 -90 -20 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
+           *s += "<GND * 1 200 -90 0 0 1 0>\n";
+           *s += QString("<C C1 1 320 150 0 60 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
+           *s += "<GND * 1 320 180 0 0 0 0>\n";
+        }
+        else
+        {
+           *s += QString("<TLIN Line1 1 200 60 20 -35 0 1 \"%1 Ohm\" 1 \"%2 mm\" 1 \"0 dB\" 0 \"26.85\" 0>\n").arg(ATT->Zin).arg(QString::number(ATT->L*1e3, 'f', 1));
+        }
+        *s += QString("<R R1 1 160 150 -40 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += "<GND * 1 160 180 0 0 0 0>\n";
+        *s += QString("<R R1 1 240 150 -20 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zin);
+        *s += "<GND * 1 240 180 0 0 0 0>\n";
+        *s += QString("<R R1 1 300 0 -30 -60 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+
+        if (SP_box)
+        {
+           // S-parameter simulation block
+           //-----------------------------
+           // The quarter-wave line is a narrowband device... so let's set the SP sweep from f0/2 to 3*f0/2
+           QString freq_start = QString("%1").arg(0.5*ATT->freq*1e-6);//MHz
+           QString freq_stop = QString("%1").arg(1.5*ATT->freq*1e-6);//MHz
+           *s += QString("<.SP SP1 1 100 270 0 83 0 0 \"lin\" 1 \"%1 MHz\" 1 \"%2 MHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n").arg(freq_start).arg(freq_stop);
+
+           // Equations
+           *s += "<Eqn Eqn1 1 320 270 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
+
+           // Input term
+           *s += QString("<Pac P1 1 0 150 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+           *s += "<GND * 1 0 180 0 0 0 0>\n";
+
+           // Output term
+           *s += QString("<Pac P1 1 500 150 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+           *s += "<GND * 1 500 180 0 0 0 0>\n";
+        }
+        *s += "</Components>\n";
+        *s += "<Wires>\n";
+        *s += "<160 120 160 105 \"\" 0 0 0 \"\">\n";//First resistor to qw line
+        *s += "<160 105 200 105 \"\" 0 0 0 \"\">\n";//First resistor to qw line
+
+        *s += "<240 120 240 105 \"\" 0 0 0 \"\">\n";//Second resistor to qw line
+        *s += "<240 105 200 105 \"\" 0 0 0 \"\">\n";//First resistor to qw line
+
+        *s += "<200 105 200 90 \"\" 0 0 0 \"\">\n";//Connect the previous wires to the line
+
+        *s += "<200 30 200 0 \"\" 0 0 0 \"\">\n";//Connect qw line to main branch
+        *s += "<200 0 270 0 \"\" 0 0 0 \"\">\n";//qw line to series resistor
+
+        *s += "<120 0 200 0 \"\" 0 0 0 \"\">\n";//Input port
+        *s += "<330 0 410 0 \"\" 0 0 0 \"\">\n";//Output port
+
+        if (SP_box)
+        {
+            //Term 1 to input port
+            *s += "<0 120 0 0 \"\" 0 0 0 \"\">\n";
+            *s += "<0 0 120 0 \"\" 0 0 0 \"\">\n";
+
+            //Term 2 to output port
+            *s += "<500 120 500 0 \"\" 0 0 0 \"\">\n";
+            *s += "<410 0 500 0 \"\" 0 0 0 \"\">\n";
+        }
+
+        if (ATT->useLumped)
+        {//Add extra wiring to connect the shunt capacitors
+              *s += "<320 120 320 105 \"\" 0 0 0 \"\">\n";
+              *s += "<320 105 180 105 \"\" 0 0 0 \"\">\n";
+
+              *s += "<200 -30 200 0 \"\" 0 0 0 \"\">\n";
+        }
+
+        *s += "</Wires>\n";
+        *s += "<Diagrams>\n";
+        *s += "</Diagrams>\n";
+        *s += "<Paintings>\n";
+
+        //Put the title a little bit higher because of the shunt cpa
+        if (ATT->useLumped) *s += QString("<Text 80 -140 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave shunt attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
+        else *s += QString("<Text 80 -120 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave shunt attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
+
+        if (!SP_box)
+        {// If the SP simulation box option is activated, then the input and output ports are attached.
+         // Thus, it doesn't make sense to have a text field indicating the input/output impedance
+            *s += QString("<Text 50 -30 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+            *s += QString("<Text 390 -30 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
+        }
+        *s += "</Paintings>\n";
+        break;
     }
 
   return s;
+}
+
+//COPIED FROM QUCS-POWERCOMBINING TOOL
+// Converts a double number into string adding the corresponding prefix
+QString num2str(double Num)
+{
+  char c = 0;
+  double cal = fabs(Num);
+  if(cal > 1e-20) {
+    cal = log10(cal) / 3.0;
+    if(cal < -0.2)  cal -= 0.98;
+    int Expo = int(cal);
+
+    if(Expo >= -5) if(Expo <= 4)
+      switch(Expo) {
+        case -5: c = 'f'; break;
+        case -4: c = 'p'; break;
+        case -3: c = 'n'; break;
+        case -2: c = 'u'; break;
+        case -1: c = 'm'; break;
+        case  1: c = 'k'; break;
+        case  2: c = 'M'; break;
+        case  3: c = 'G'; break;
+        case  4: c = 'T'; break;
+      }
+
+    if(c)  Num /= pow(10.0, double(3*Expo));
+  }
+
+  QString Str = QString::number(Num, 'f', 1);
+  if(c)  Str += c;
+
+  return Str;
 }
