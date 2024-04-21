@@ -53,8 +53,8 @@ class QucsAttenuator : public QMainWindow
   void slotTopologyChanged();
   void slotCalculate();
   void slotQuit();
-  void slotSetText_Zin(const QString &);
-  void slotSetText_Zout(const QString &);
+  void slotSetText_Zin(double);
+  void slotSetText_Zout(double);
   void slot_ComboInputPowerUnits_Changed(const QString&);
   void slot_ComboR1PowerUnits_Changed(const QString&);
   void slot_ComboR2PowerUnits_Changed(const QString&);
@@ -68,10 +68,9 @@ class QucsAttenuator : public QMainWindow
   QLabel *LabelR3_Ohm, *LabelR4_Ohm;
   QComboBox *ComboR1_PowerUnits, *ComboR2_PowerUnits, *ComboR3_PowerUnits, *ComboR4_PowerUnits, *Combo_InputPowerUnits;
   QLabel *PdissLabel, *Label_Pin;
-  QLineEdit *lineEdit_Attvalue, *lineEdit_Zin, *lineEdit_Zout;
   QLineEdit *lineEdit_R1, *lineEdit_R2, *lineEdit_R3, *lineEdit_R4, *lineEdit_Results;
   QLineEdit *lineEdit_R1_Pdiss, *lineEdit_R2_Pdiss, *lineEdit_R3_Pdiss, *lineEdit_R4_Pdiss;
-  QDoubleSpinBox *QSpinBox_InputPower;
+  QDoubleSpinBox *QSpinBox_InputPower, *QSpinBox_Attvalue, *QSpinBox_Zin, *QSpinBox_Zout;
   QPushButton *Calculate;
   QDoubleValidator *DoubleVal, *DoubleValPower;
   QCheckBox *SparBoxCheckbox, *minR_Reflection_Att;

@@ -120,34 +120,41 @@ QucsAttenuator::QucsAttenuator()
 
   LabelAtten = new QLabel(tr("Attenuation:"), InputGroup);
   inGrid ->addWidget(LabelAtten, 1,0);
-  lineEdit_Attvalue = new QLineEdit(tr("1"), InputGroup);
-  lineEdit_Attvalue->setValidator(DoubleVal);
-  inGrid->addWidget(lineEdit_Attvalue, 1,1);
+  QSpinBox_Attvalue = new QDoubleSpinBox();
+  QSpinBox_Attvalue->setValue(1);
+  QSpinBox_Attvalue->setMinimum(0.1);
+  QSpinBox_Attvalue->setMaximum(1e6);
+  connect(QSpinBox_Attvalue, SIGNAL(valueChanged(double)), this,
+       SLOT(slotCalculate()) );
+  inGrid->addWidget(QSpinBox_Attvalue, 1,1);
   QLabel *Label1 = new QLabel(tr("dB"), InputGroup);
   inGrid->addWidget(Label1, 1,2);
 
   LabelImp1 = new QLabel(tr("Zin:"), InputGroup);
   LabelImp1->setWhatsThis("Input impedance");
   inGrid->addWidget(LabelImp1, 2,0);
-  lineEdit_Zin = new QLineEdit(tr("50"), InputGroup);
-  lineEdit_Zin->setValidator(DoubleVal);
-  connect(lineEdit_Zin, SIGNAL(textChanged(const QString&)), this,
-      SLOT(slotSetText_Zin(const QString&)) );
+  QSpinBox_Zin = new QDoubleSpinBox();
+  QSpinBox_Zin->setValue(50);
+  QSpinBox_Zin->setMinimum(0);
+  QSpinBox_Zin->setMaximum(1e6);
+  connect(QSpinBox_Zin, SIGNAL(valueChanged(double)), this,
+      SLOT(slotSetText_Zin(double)) );
 
-  inGrid->addWidget(lineEdit_Zin, 2,1);
-  QLabel *Label2 = new QLabel(tr("Ohm"), InputGroup);
+  inGrid->addWidget(QSpinBox_Zin, 2,1);
+  QLabel *Label2 = new QLabel(QChar(0xa9, 0x03), InputGroup);
   inGrid->addWidget(Label2, 2,2);
 
   LabelImp2 = new QLabel(tr("Zout:"), InputGroup);
   LabelImp2->setWhatsThis("Output impedance");
   inGrid->addWidget(LabelImp2, 3,0);
-  lineEdit_Zout = new QLineEdit(tr("50"), InputGroup);
-  lineEdit_Zout->setValidator(DoubleVal);
-  connect(lineEdit_Zout, SIGNAL(textChanged(const QString&)), this,
-      SLOT(slotSetText_Zout(const QString&)) );
-  inGrid->addWidget(lineEdit_Zout, 3,1);
-
-  LabelImp2_Ohm = new QLabel(tr("Ohm"), InputGroup);
+  QSpinBox_Zout = new QDoubleSpinBox();
+  QSpinBox_Zout->setValue(50);
+  QSpinBox_Zout->setMinimum(0);
+  QSpinBox_Zout->setMaximum(1e6);
+  connect(QSpinBox_Zout, SIGNAL(valueChanged(double)), this,
+      SLOT(slotSetText_Zout(double)) );
+  inGrid->addWidget(QSpinBox_Zout, 3,1);
+  LabelImp2_Ohm = new QLabel(QChar(0xa9, 0x03), InputGroup);
   inGrid->addWidget(LabelImp2_Ohm, 3,2);
 
   Label_Pin = new  QLabel(tr("Pin:"), InputGroup);
@@ -365,22 +372,22 @@ void QucsAttenuator::slotQuit()
   qApp->quit();
 }
 
-void QucsAttenuator::slotSetText_Zin( const QString &text )
+void QucsAttenuator::slotSetText_Zin( double val )
 {
   if((ComboTopology->currentIndex() == BRIDGE_TYPE) || (ComboTopology->currentIndex() == REFLECTION_TYPE)) {
-    lineEdit_Zout->blockSignals( true );
-    lineEdit_Zout->setText( text );
-    lineEdit_Zout->blockSignals( false );
+      QSpinBox_Zout->blockSignals(true);
+      QSpinBox_Zout->setValue(val);
+      QSpinBox_Zout->blockSignals(false);
   }
   slotCalculate();
 }
 
-void QucsAttenuator::slotSetText_Zout( const QString &text )
+void QucsAttenuator::slotSetText_Zout( double val)
 {
   if(ComboTopology->currentIndex() == BRIDGE_TYPE) {
-    lineEdit_Zin->blockSignals( true );
-    lineEdit_Zin->setText( text );
-    lineEdit_Zin->blockSignals( false );
+      QSpinBox_Zin->blockSignals(true);
+      QSpinBox_Zin->setValue(val);
+      QSpinBox_Zin->blockSignals(false);
   }
   slotCalculate();
 }
@@ -393,7 +400,7 @@ void QucsAttenuator::slotTopologyChanged()
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_pi.png")));
       LabelImp1->setText("Zin:");
       LabelImp2->show();
-      lineEdit_Zout->show();
+      QSpinBox_Zout->show();
       LabelImp2_Ohm->show();
       LabelR2->setText("R2:");
       LabelR3->show();
@@ -413,7 +420,7 @@ void QucsAttenuator::slotTopologyChanged()
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_tee.png")));
       LabelImp1->setText("Zin:");
       LabelImp2->show();
-      lineEdit_Zout->show();
+      QSpinBox_Zout->show();
       LabelImp2_Ohm->show();
       LabelR2->setText("R2:");
       LabelR3->show();
@@ -433,7 +440,7 @@ void QucsAttenuator::slotTopologyChanged()
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_bridge.png")));
       LabelImp1->setText("Z0:");
       LabelImp2->hide();
-      lineEdit_Zout->hide();
+      QSpinBox_Zout->hide();
       LabelImp2_Ohm->hide();
       LabelR2->setText("R4:");
       LabelR3->show();
@@ -448,14 +455,14 @@ void QucsAttenuator::slotTopologyChanged()
       lineEdit_R4_Pdiss->show();
       ComboR3_PowerUnits->show();
       ComboR4_PowerUnits->show();
-      lineEdit_Zout->setText( lineEdit_Zin->text() );
+      QSpinBox_Zout->setValue(QSpinBox_Zin->value());
       minR_Reflection_Att->hide();
       break;
     case REFLECTION_TYPE:
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_reflection.png")));
       LabelImp1->setText("Z0:");
       LabelImp2->hide();
-      lineEdit_Zout->hide();
+      QSpinBox_Zout->hide();
       LabelImp2_Ohm->hide();
       LabelR2->setText("R2:");
       LabelR3->hide();
@@ -468,7 +475,7 @@ void QucsAttenuator::slotTopologyChanged()
       lineEdit_R4_Pdiss->hide();
       ComboR3_PowerUnits->hide();
       ComboR4_PowerUnits->hide();
-      lineEdit_Zout->setText( lineEdit_Zin->text() );
+      QSpinBox_Zout->setValue(QSpinBox_Zin->value());
       minR_Reflection_Att->show();
       break;
     }
@@ -485,9 +492,9 @@ void QucsAttenuator::slotCalculate()
 
 
     Values.Topology = ComboTopology->currentIndex();
-    Values.Attenuation = lineEdit_Attvalue->text().toDouble();
-    Values.Zin = lineEdit_Zin->text().toDouble();
-    Values.Zout = lineEdit_Zout->text().toDouble();
+    Values.Attenuation = QSpinBox_Attvalue->value();
+    Values.Zin = QSpinBox_Zin->value();
+    Values.Zout = QSpinBox_Zout->value();
     Values.minR = minR_Reflection_Att->isChecked();
 
     //Calculate the input power
