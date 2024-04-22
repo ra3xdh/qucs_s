@@ -2076,7 +2076,19 @@ bool Schematic::deleteElements()
     Painting *pp = Paintings->first();
     while(pp != 0)      // test all paintings
     {
-        if(pp->isSelected)
+        if(pp->isSelected) {
+            // Allow removing of manually inserted port symbols when in symbol
+            // editing mode. If port symbol is inserted manually i.e. doesn't
+            // have a corresponding port in schematic, its nameStr is empty.
+            // If it's not empty, then invocation of Schematic::adjustPortNumbers
+            // must have found a pairing port in schematic.
+            if (pp->Name.trimmed() == ".PortSym" && ((PortSymbol*)pp)->nameStr.isEmpty()) {
+                sel = true;
+                Paintings->remove();
+                pp = Paintings->current();
+                continue;
+            }
+
             if(pp->Name.at(0) != '.')    // do not delete "PortSym", "ID_text"
             {
                 sel = true;
@@ -2084,6 +2096,7 @@ bool Schematic::deleteElements()
                 pp = Paintings->current();
                 continue;
             }
+        }
         pp = Paintings->next();
     }
 
