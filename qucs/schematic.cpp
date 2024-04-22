@@ -1954,7 +1954,6 @@ bool Schematic::undo()
         }
 
         rebuildSymbol(undoSymbol.at(--undoSymbolIdx));
-        adjustPortNumbers(); // set port names
 
         emit signalUndoState(undoSymbolIdx != 0);
         emit signalRedoState(undoSymbolIdx != undoSymbol.size() - 1);
