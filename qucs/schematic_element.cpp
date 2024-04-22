@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#include "portsymbol.h"
 #include "schematic.h"
 #include <qt3_compat/qt_compat.h>
 #include <QDebug>
