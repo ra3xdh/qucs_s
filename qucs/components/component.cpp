@@ -239,38 +239,26 @@ void Component::paint(ViewPainter *p) {
         p->Painter->drawLine(x + xb - 1, y, a + xb, b);
     } else {    // normal components go here
 
-        // paint all lines
+        auto draw_primitive = [&](qucs::DrawingPrimitive* prim, ViewPainter* p) {
+            p->Painter->setPen(correctSimulator ? prim->penHint() : WrongSimulatorPen);
+            p->Painter->setBrush(prim->brushHint());
+            prim->draw(p, cx, cy);
+        };
+
         for (qucs::DrawingPrimitive *line: Lines) {
-            p->Painter->setPen(
-                correctSimulator ? line->penHint() : WrongSimulatorPen
-            );
-            line->draw(p, cx, cy);
+            draw_primitive(line, p);
         }
 
-        // paint all arcs
         for (qucs::DrawingPrimitive *arc: Arcs) {
-            p->Painter->setPen(
-                correctSimulator ? arc->penHint() : WrongSimulatorPen
-            );
-            arc->draw(p, cx, cy);
+            draw_primitive(arc, p);
         }
 
-        // paint all rectangles
         for (qucs::DrawingPrimitive *rect: Rects) {
-            p->Painter->setPen(
-                correctSimulator ? rect->penHint() : WrongSimulatorPen
-            );
-            p->Painter->setBrush(rect->brushHint());
-            rect->draw(p, cx, cy);
+            draw_primitive(rect, p);
         }
 
-        // paint all ellipses
         for (qucs::DrawingPrimitive *ellips: Ellipses) {
-            p->Painter->setPen(
-                correctSimulator ? ellips->penHint() : WrongSimulatorPen
-            );
-            p->Painter->setBrush(ellips->brushHint());
-            ellips->draw(p, cx, cy);
+            draw_primitive(ellips, p);
         }
         p->Painter->setBrush(Qt::NoBrush);
 
