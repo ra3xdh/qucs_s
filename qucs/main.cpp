@@ -189,6 +189,7 @@ bool saveApplSettings()
     qs.setItem<QString>("font", QucsSettings.font.toString());
     qs.setItem<QString>("appFont", QucsSettings.appFont.toString());
     qs.setItem<QString>("textFont", QucsSettings.textFont.toString());
+    qs.setItem<QByteArray>("MainWindowGeometry", QucsMain->saveGeometry());
     
     // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
     qs.setItem<QString>("LargeFontSize", QString::number(QucsSettings.largeFontSize));
@@ -786,13 +787,6 @@ int main(int argc, char *argv[])
   QucsSettings.appFont = QApplication::font();
   QucsSettings.textFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
   QucsSettings.font.setPointSize(12);
-  QSize size = QGuiApplication::primaryScreen()->size();
-  int w = size.width();
-  int h = size.height();
-  QucsSettings.x = w/8;
-  QucsSettings.y = h/8;
-  QucsSettings.dx = w*3/4;
-  QucsSettings.dy = h*3/4;
 
   // default
   QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/QucsWorkspace");

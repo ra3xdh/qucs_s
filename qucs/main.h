@@ -49,7 +49,6 @@ struct tQucsSettings {
   int panelIconsTheme;
   int compIconsTheme;
 
-  int x, y, dx, dy;    // position and size of main window
   QFont font;
   QFont appFont;
   QFont textFont;
