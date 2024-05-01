@@ -93,6 +93,27 @@ void Ellips::draw(QPainter* painter, int cx, int cy, bool y_grows_up) const {
 
 } // namespace qucs
 
+void Text::draw(ViewPainter *painter, int cx, int cy, bool) const {
+  painter->Painter->save();
+
+  QFont newFont = painter->Painter->font();
+  newFont.setWeight(QFont::Light);
+  newFont.setPointSizeF(painter->Scale * Size);
+  newFont.setOverline(over);
+  newFont.setUnderline(under);
+  painter->Painter->setFont(newFont);
+
+  painter->Painter->setWorldTransform(
+        QTransform(mCos, -mSin, mSin, mCos,
+                    painter->DX + float(cx + x) * painter->Scale,
+                    painter->DY + float(cy + y) * painter->Scale));
+
+  painter->drawTextMapped(s, 0, 0);
+
+  painter->Painter->restore();
+}
+
+
 Element::Element()
 {
   Type = isDummyElement;

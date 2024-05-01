@@ -262,28 +262,15 @@ void Component::paint(ViewPainter *p) {
         }
         p->Painter->setBrush(Qt::NoBrush);
 
-        newFont.setWeight(QFont::Light);
-
         // keep track of painter state
         p->Painter->save();
 
         QTransform wm = p->Painter->worldTransform();
-        // write all text
-        for (Text *pt: Texts) {
-            p->Painter->setWorldTransform(
-                    QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
-                               p->DX + float(cx + pt->x) * p->Scale,
-                               p->DY + float(cy + pt->y) * p->Scale));
-            newFont.setPointSizeF(p->Scale * pt->Size);
-            newFont.setOverline(pt->over);
-            newFont.setUnderline(pt->under);
-            p->Painter->setFont(newFont);
-            p->Painter->setPen(correctSimulator ? pt->Color : WrongSimulatorPen);
-            int w, h;
-            w = p->drawTextMapped(pt->s, 0, 0, &h);
-            Q_UNUSED(w)
-            Q_UNUSED(h)
+
+        for (qucs::DrawingPrimitive *text: Texts) {
+            draw_primitive(text, p);
         }
+
         p->Painter->setWorldTransform(wm);
         p->Painter->setWorldMatrixEnabled(false);
 
@@ -380,23 +367,11 @@ void Component::paintIcon(QPixmap *pixmap)
             p->Painter->setBrush(ellipse->brushHint());
             ellipse->draw(p, cx, cy);
         }
-        p->Painter->setBrush(Qt::NoBrush);
 
-        newFont.setWeight(QFont::Light);
-
-        for (Text *pt: Texts) {
-            p->Painter->setWorldTransform(
-                    QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
-                               p->DX + float(cx + pt->x) * p->Scale,
-                               p->DY + float(cy + pt->y) * p->Scale));
-            newFont.setPointSizeF(p->Scale * pt->Size);
-            newFont.setOverline(pt->over);
-            newFont.setUnderline(pt->under);
-            p->Painter->setFont(newFont);
-            p->Painter->setPen(pt->Color);
-            w = p->drawTextMapped(pt->s, 0, 0, &h);
-            Q_UNUSED(w)
-            Q_UNUSED(h)
+        for (qucs::DrawingPrimitive *text: Texts) {
+            p->Painter->setPen(text->penHint());
+            p->Painter->setBrush(text->brushHint());
+            text->draw(p, cx, cy);
         }
     }
 }

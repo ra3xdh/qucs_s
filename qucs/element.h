@@ -147,7 +147,7 @@ struct Port {
   Node *Connection;
 };
 
-struct Text {
+struct Text : qucs::DrawingPrimitive {
   Text(int _x, int _y, const QString& _s, QColor _Color = QColor(0,0,0),
 	float _Size = 10.0, float _mCos=1.0, float _mSin=0.0)
 	: x(_x), y(_y), s(_s), Color(_Color), Size(_Size),
@@ -157,6 +157,8 @@ struct Text {
   QColor  Color;
   float	  Size, mSin, mCos; // font size and rotation coefficients
   bool	  over, under;      // text attributes
+  void draw(ViewPainter* painter, int cx, int cy, bool y_grows_up=false) const override;
+  QPen penHint() const override { return Color; }
 };
 
 struct Property {
