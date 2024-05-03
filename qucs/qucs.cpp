@@ -51,6 +51,7 @@
 #include "schematic.h"
 #include "mouseactions.h"
 #include "messagedock.h"
+#include "settings.h"
 #include "wire.h"
 #include "module.h"
 #include "projectView.h"
@@ -102,6 +103,21 @@ QucsApp::QucsApp()
 
   QucsSettings.hasDarkTheme = misc::isDarkTheme();
 
+  // Instantiate settings singleton and restore window geometry.
+  const auto geometry = _settings::Get().item<QByteArray>("MainWindowGeometry");
+
+  if (!geometry.isEmpty()) {
+    qDebug() << "Saved geometry is: " << geometry;
+    restoreGeometry(geometry);
+  }
+  // Set a default size and position if geometry does not yet exist.
+  else {
+    QSize size = QGuiApplication::primaryScreen()->size();
+    int w = size.width();
+    int h = size.height();
+    setGeometry (w * 0.25, h * 0.25, w * 0.5, h * 0.5);
+  }
+  
   QucsFileFilter =
     tr("Schematic") + " (*.sch);;" +
     tr("Data Display") + " (*.dpl);;" +
@@ -115,9 +131,6 @@ QucsApp::QucsApp()
 
   //updateSchNameHash();
   //updateSpiceNameHash();
-
-  move  (QucsSettings.x,  QucsSettings.y);
-  resize(QucsSettings.dx, QucsSettings.dy);
 
   MouseMoveAction = 0;
   MousePressAction = 0;
@@ -2178,12 +2191,6 @@ void QucsApp::closeEvent(QCloseEvent* Event)
 // Saves settings
 void QucsApp::saveSettings()
 {
-  qDebug()<<"x"<<pos().x()<<" ,y"<<pos().y();
-  qDebug()<<"dx"<<size().width()<<" ,dy"<<size().height();
-  QucsSettings.x=pos().x();
-  QucsSettings.y=pos().y();
-  QucsSettings.dx=size().width();
-  QucsSettings.dy=size().height();
   QucsSettings.FileToolbar = fileToolbar->isVisible();
   QucsSettings.EditToolbar = editToolbar->isVisible();
   QucsSettings.ViewToolbar = viewToolbar->isVisible();
