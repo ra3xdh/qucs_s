@@ -120,6 +120,7 @@ QucsApp::QucsApp()
   
   QucsFileFilter =
     tr("Schematic") + " (*.sch);;" +
+    tr("Symbol only") + " (*.sym);;" +
     tr("Data Display") + " (*.dpl);;" +
     tr("Qucs Documents") + " (*.sch *.dpl);;" +
     tr("VHDL Sources") + " (*.vhdl *.vhd);;" +
@@ -1610,7 +1611,12 @@ bool QucsApp::gotoPage(const QString& Name)
     return false;
   }
   slotChangeView();
-  if (is_sch) {
+  if (Info.suffix() == "sym") {
+    // We dealing with a file containing *only* a symbol definition.
+    // Because of that we want to switch straight to symbol editing mode
+    // and skip any actions performed with a usual schematic.
+    slotSymbolEdit();
+  } else if (is_sch) {
       Schematic *sch = (Schematic *)d;
       if (sch->checkDplAndDatNames()) sch->setChanged(true,true);
   }
@@ -1660,7 +1666,13 @@ bool QucsApp::saveFile(QucsDoc *Doc)
   int Result = Doc->save();
   if(Result < 0)  return false;
 
-  updatePortNumber(Doc, Result);
+  // It's assumed that *.sym files contain *only* a symbol
+  // definition. We don't want these files to be subject
+  // of any activities or "optimizations" which may change
+  // the symbol.
+  if (!Doc->DocName.endsWith(".sym")) {
+    updatePortNumber(Doc, Result);
+  }
   slotUpdateTreeview();
   return true;
 }
@@ -1707,7 +1719,7 @@ bool QucsApp::saveAs()
     }
 
     // list of known file extensions
-    QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct;net;qnet;ckt;cir;sp;txt";
+    QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct;net;qnet;ckt;cir;sp;txt;sym";
     QStringList extlist = ext.split (';');
 
     if(isTextDocument (w))
@@ -1765,7 +1777,14 @@ bool QucsApp::saveAs()
   n = Doc->save();   // SAVE
   if(n < 0)  return false;
 
-  updatePortNumber(Doc, n);
+  // It's assumed that *.sym files contain *only* a symbol
+  // definition. We don't want these files to be subject
+  // of any activities or "optimizations" which may change
+  // the symbol.
+  if (!Doc->DocName.endsWith(".sym")) {
+    updatePortNumber(Doc, n);
+  }
+
   slotUpdateTreeview();
   updateRecentFilesList(s);
   return true;
@@ -2949,7 +2968,6 @@ void QucsApp::switchEditMode(bool SchematicMode)
   changeProps->setEnabled(SchematicMode);
   insEquation->setEnabled(SchematicMode);
   insGround->setEnabled(SchematicMode);
-  insPort->setEnabled(SchematicMode);
   insWire->setEnabled(SchematicMode);
   insLabel->setEnabled(SchematicMode);
   setMarker->setEnabled(SchematicMode);
@@ -3021,22 +3039,15 @@ void QucsApp::slotSymbolEdit()
     SDoc->viewport()->update();
     view->drawn = false;
   }
-  // in a normal schematic, data display or symbol file
+  // in a normal schematic, symbol file
   else {
     Schematic *SDoc = (Schematic*)w;
-    // in a symbol file
-    if(SDoc->DocName.right(4) == ".sym") {
-      slotChangePage(SDoc->DocName, SDoc->DataDisplay);
-    }
-    // in a normal schematic
-    else {
-      slotHideEdit(); // disable text edit of component property
-      SDoc->switchPaintMode();   // twist the view coordinates
-      changeSchematicSymbolMode(SDoc);
-      SDoc->becomeCurrent(true);
-      SDoc->viewport()->update();
-      view->drawn = false;
-    }
+    slotHideEdit(); // disable text edit of component property
+    SDoc->switchPaintMode();   // twist the view coordinates
+    changeSchematicSymbolMode(SDoc);
+    SDoc->becomeCurrent(true);
+    SDoc->viewport()->update();
+    view->drawn = false;
   }
 }
 

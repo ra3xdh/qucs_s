@@ -189,15 +189,9 @@ void Schematic::becomeCurrent(bool update)
 
     // update appropriate menu entry
     if (symbolMode) {
-        if (DocName.right(4) == ".sym") {
-            App->symEdit->setText(tr("Edit Text"));
-            App->symEdit->setStatusTip(tr("Edits the Text"));
-            App->symEdit->setWhatsThis(tr("Edit Text\n\nEdits the text file"));
-        } else {
-            App->symEdit->setText(tr("Edit Schematic"));
-            App->symEdit->setStatusTip(tr("Edits the schematic"));
-            App->symEdit->setWhatsThis(tr("Edit Schematic\n\nEdits the schematic"));
-        }
+        App->symEdit->setText(tr("Edit Schematic"));
+        App->symEdit->setStatusTip(tr("Edits the schematic"));
+        App->symEdit->setWhatsThis(tr("Edit Schematic\n\nEdits the schematic"));
     } else {
         App->symEdit->setText(tr("Edit Circuit Symbol"));
         App->symEdit->setStatusTip(tr("Edits the symbol for this schematic"));
@@ -212,8 +206,12 @@ void Schematic::becomeCurrent(bool update)
         Paintings = &SymbolPaints;
         Components = &SymbolComps;
 
-        // if no symbol yet exists -> create one
-        if (createSubcircuitSymbol()) {
+        // "Schematic" is used to edit usual schematic files (containing
+        // a schematic and a subcircuit symbol) and *.sym files (which
+        // contain *only* a symbol definition). If we're dealing with
+        // symbol file, then there is no need to create a subcircuit
+        // symbol, a symbol is already there.
+        if (!DocName.endsWith(".sym") && createSubcircuitSymbol()) {
             updateAllBoundingRect();
             setChanged(true, true);
         }
@@ -1675,7 +1673,16 @@ bool Schematic::load()
 // Saves this Qucs document. Returns the number of subcircuit ports.
 int Schematic::save()
 {
-    int result = adjustPortNumbers(); // same port number for schematic and symbol
+    int result = 0;
+    // When saving *only* a symbol, there is no corresponding schematic:
+    // and thus ports in symbol don't have corresponding ports in schematic.
+    // There is just nothing to adjust.
+    //
+    // In other cases we want to delete any dangling ports from symbol
+    // and invoke "adjustPortNumbers" for it.
+    if (!DocName.endsWith("sym")) {
+        result = adjustPortNumbers(); // same port number for schematic and symbol
+    }
     if (saveDocument() < 0)
         return -1;
 
@@ -1947,7 +1954,6 @@ bool Schematic::undo()
         }
 
         rebuildSymbol(undoSymbol.at(--undoSymbolIdx));
-        adjustPortNumbers(); // set port names
 
         emit signalUndoState(undoSymbolIdx != 0);
         emit signalRedoState(undoSymbolIdx != undoSymbol.size() - 1);

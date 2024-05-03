@@ -567,6 +567,18 @@ int Schematic::saveDocument()
 
   stream << "<Qucs Schematic " << PACKAGE_VERSION << ">\n";
 
+  // Special case of saving a file when we want to save *only*
+  // the symbol defintion (i.e. to create a "symbol file")
+  if (DocName.endsWith(".sym")) {
+      stream << "<Symbol>\n";
+      for(auto* pp : SymbolPaints) {
+          stream << "  <" << pp->save() << ">\n";
+      }
+      stream << "</Symbol>\n";
+      file.close();
+      return 0;
+  }
+
   stream << "<Properties>\n";
   if(symbolMode) {
     stream << "  <View=" << tmpViewX1<<","<<tmpViewY1<<","
