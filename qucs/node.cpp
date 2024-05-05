@@ -59,6 +59,39 @@ void Node::paint(ViewPainter *p)
   }
 }
 
+void Node::paint(QPainter* painter) const {
+  painter->save();
+
+  switch(Connections.count()) {
+    case 1:
+      if (Label) {
+        painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
+      } else {
+        painter->setPen(QPen(Qt::red,1));  // node is open
+        painter->drawEllipse(cx-4, cy-4, 8, 8);
+      }
+      painter->restore();
+      return;
+
+    case 2:
+      if (Connections.getFirst()->Type == isWire) {
+        if (Connections.getLast()->Type == isWire) {
+          painter->restore();
+          return;
+        }
+        painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
+      }
+      break;
+
+    default:
+        painter->setBrush(Qt::darkBlue);  // more than 2 connections
+	      painter->setPen(QPen(Qt::darkBlue,1));
+	      painter->drawEllipse(cx-3, cy-3, 6, 6);
+	      painter->setBrush(Qt::NoBrush);
+  }
+  painter->restore();
+}
+
 // ----------------------------------------------------------------
 bool Node::getSelected(int x_, int y_)
 {
