@@ -54,6 +54,7 @@ public:
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
   void    paint(ViewPainter*);
+  void    paint(QPainter* painter) const;
   void    paintScheme(Schematic*);
   void    print(ViewPainter*, float);
   void    setCenter(int, int, bool relative=false);
@@ -123,6 +124,10 @@ protected:
   void copyComponent(Component*);
   Property * getProperty(const QString&);
   Schematic* containingSchematic;
+
+private:
+  void drawSimulator(QPainter* p) const;
+  void drawUsual(QPainter* p) const;
 };
 
 
