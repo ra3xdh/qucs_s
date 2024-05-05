@@ -27,6 +27,7 @@
 #include <QPalette>
 #include <QIcon>
 #include <QFileInfo>
+#include <QPainter>
 #include <QPushButton>
 
 #include <stdint.h>
@@ -100,6 +101,8 @@ namespace misc {
 
   bool simulatorExists(const QString &exe_file);
   QString unwrapExePath(const QString &exe_file);
+
+  void draw_richtext(QPainter* painter, int x, int y, const QString& text, QRect* br = nullptr);
 }
 
 /*! handle the application version string
