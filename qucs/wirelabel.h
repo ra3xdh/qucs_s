@@ -45,6 +45,7 @@ public:
   QString Name, initValue;
 
   void    paint(ViewPainter*);
+  void    paint(QPainter* painter) const;
   void    rotate();
   QString save();
   bool    load(const QString& s);

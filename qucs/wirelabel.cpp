@@ -19,6 +19,7 @@
 #include "wire.h"
 #include "main.h"
 
+#include <QMargins>
 #include <QString>
 #include <QPainter>
 
@@ -191,6 +192,67 @@ void WireLabel::paint(ViewPainter *p)
     p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRoundRect(x1-2, y1-2, x2+6, y2+5);
   }
+}
+
+void WireLabel::paint(QPainter *p) const {
+  p->save();
+
+  QFont newFont{ p->font() };
+  newFont.setWeight(isHighlighted ? QFont::Bold : QFont::Normal);
+  p->setFont(newFont);
+
+  p->setPen(QPen{
+    isHighlighted ? Qt::darkBlue : Qt::black,
+    isHighlighted ? 3.0 : 1.0
+  });
+
+  QRect text_br;
+  p->drawText(x1, y1, 0, 0, Qt::TextDontClip, Name, &text_br);
+
+  bool right = text_br.right() < cx;
+  bool bottom = text_br.bottom() < cy;
+
+  p->setPen(QPen{initValue.isEmpty() ? Qt::darkMagenta : Qt::red,0});
+
+  text_br = text_br.marginsAdded(QMargins{3, 3, 3, 3});
+  p->drawLine(cx, cy, right ? text_br.right() : text_br.left(), bottom ? text_br.bottom() : text_br.top());
+  p->drawLine(
+    right ? text_br.right() : text_br.left(),
+    bottom ? text_br.bottom() : text_br.top(),
+    right ? text_br.right() : text_br.left(),
+    bottom ? text_br.top() : text_br.bottom()
+  );
+
+  p->drawLine(
+    right ? text_br.right() : text_br.left(),
+    bottom ? text_br.bottom() : text_br.top(),
+    right ? text_br.left() : text_br.right(),
+    bottom ? text_br.bottom() : text_br.top()
+  );
+
+  if (Type != isNodeLabel) {
+    int start_angle = 0;
+    switch (Type) {
+    case isHWireLabel:
+      start_angle = 16 * (right ? 45 : 225);
+      break;
+    case isVWireLabel:
+      start_angle = 16 * (bottom ? -45 : 135);
+      break;
+    default:
+      assert(false);  // shouln't get there
+    }
+
+    constexpr int span_angle = 16 * 270;
+    p->drawArc(cx-4, cy-4, 8, 8, start_angle, span_angle);
+  }
+
+  if(isSelected)
+  {
+    p->setPen(QPen(Qt::darkGray,3));
+    p->drawRoundedRect(x1-2, y1-2, x2+6, y2+5, 4, 4);
+  }
+  p->restore();
 }
 
 // ----------------------------------------------------------------
