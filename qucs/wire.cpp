@@ -120,6 +120,21 @@ void Wire::paint(ViewPainter *p)
   }
 }
 
+void Wire::paint(QPainter *painter) const {
+  painter->save();
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,6));
+    painter->drawLine(x1, y1, x2, y2);
+    painter->setPen(QPen(Qt::lightGray,2));
+    painter->drawLine(x1, y1, x2, y2);
+  }
+  else {
+    painter->setPen(QPen(Qt::darkBlue,2));
+    painter->drawLine(x1, y1, x2, y2);
+  }
+  painter->restore();
+}
+
 void Wire::paintScheme(Schematic *p)
 {
     p->PostPaintEvent(_Line, cx + x1, cy + y1, cx + x2, cy + y2);

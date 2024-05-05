@@ -34,6 +34,7 @@ public:
  ~Wire();
 
   void paint(ViewPainter*);
+  void paint(QPainter* painter) const;
   void paintScheme(QPainter*) override;
   void paintScheme(Schematic*) override;
   void setCenter(int, int, bool relative=false);
