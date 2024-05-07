@@ -19,6 +19,7 @@
 #include "schematic.h"
 
 #include <QInputDialog>
+#include <QMargins>
 #include <QPainter>
 
 PortSymbol::PortSymbol(int cx_, int cy_, const QString& numberStr_,
@@ -110,6 +111,74 @@ void PortSymbol::paint(ViewPainter *p)
     p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRoundRect(cx+x1-4, cy+y1-4, x2+8, y2+8);
   }
+}
+
+void PortSymbol::paint(QPainter *painter) {
+  painter->save();
+
+  QRect circle_br{cx - 4, cy - 4, 8, 8};
+  painter->setPen(QPen(Qt::red,1));  // like open node
+  painter->drawEllipse(circle_br);
+
+  QSize name_size = painter->fontMetrics().size(0b0, nameStr);
+  const int half_nameheight = static_cast<int>(std::round(name_size.height() / 2.0));
+
+  constexpr int offset = 8;
+
+  int tx, ty;
+  switch(Angel) {
+  case 90:
+    tx = cx - half_nameheight;
+    ty = cy + offset + name_size.width();
+    break;
+  case 180:
+    tx = cx + offset;
+    ty = cy - half_nameheight;
+    break;
+  case 270:
+    tx = cx - half_nameheight;
+    ty = cy - offset;
+    break;
+  default:
+    tx = cx - offset - name_size.width();
+    ty = cy - half_nameheight;
+  }
+
+  const bool is_vertical = Angel == 90 || Angel == 270;
+
+  painter->save();
+  {
+    painter->translate(tx, ty);
+    if (is_vertical) {
+        painter->rotate(-90.0);
+        name_size.transpose();
+    }
+
+    painter->setPen(Qt::black);
+    painter->drawText(0, 0, 0, 0, Qt::TextDontClip, nameStr);
+  }
+  painter->restore();
+
+  QRect name_br{
+    tx, ty, name_size.width(), name_size.height() * (is_vertical ? -1 : 1)};
+
+  QRect total_br = circle_br
+    .united(name_br.normalized())
+    .marginsAdded(QMargins{2, 2, 2, 2});
+
+  x1 = total_br.left() - cx;
+  y1 = total_br.top() - cy;
+  x2 = total_br.width();
+  y2 = total_br.height();
+
+  painter->setPen(Qt::lightGray);
+  painter->drawRect(total_br);
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,3));
+    painter->drawRoundedRect(total_br.marginsAdded(QMargins{3, 3, 3, 3}), 4, 4);
+  }
+  painter->restore();
 }
 
 // --------------------------------------------------------------------------
