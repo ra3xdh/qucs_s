@@ -59,6 +59,23 @@ void GraphicLine::paint(ViewPainter *p)
   p->drawLine(cx, cy, cx+x2, cy+y2);
 }
 
+void GraphicLine::paint(QPainter *painter) {
+  painter->save();
+  painter->setPen(Pen);
+  painter->drawLine(cx, cy, cx+x2, cy+y2);
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
+    painter->drawLine(cx, cy, cx+x2, cy+y2);
+    painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
+    painter->drawLine(cx, cy, cx+x2, cy+y2);
+
+    misc::draw_resize_handle(painter, QPoint{cx, cy});
+    misc::draw_resize_handle(painter, QPoint{cx + x2, cy + y2});
+  }
+  painter->restore();
+}
+
 // --------------------------------------------------------------------------
 void GraphicLine::paintScheme(Schematic *p)
 {
