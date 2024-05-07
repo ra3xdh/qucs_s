@@ -89,6 +89,28 @@ void GraphicText::paint(ViewPainter *p)
     p->Painter->setFont(f);
 }
 
+void GraphicText::paint(QPainter* painter) {
+    painter->save();
+
+    painter->translate(cx, cy);
+    painter->rotate(-Angle);
+    painter->setPen(Color);
+
+    QFont f = Font;
+    f.setPixelSize(QFontInfo{Font}.pixelSize());
+    painter->setFont(f);
+
+    QRect br;
+    misc::draw_richtext(painter, 0, 0, Text, &br);
+
+    if (isSelected) {
+        painter->setPen(QPen(Qt::darkGray, 3));
+        painter->drawRect(br);
+    }
+
+    painter->restore();
+}
+
 // -----------------------------------------------------------------------
 void GraphicText::paintScheme(Schematic *p)
 {
