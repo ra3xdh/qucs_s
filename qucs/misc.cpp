@@ -866,3 +866,26 @@ void misc::draw_richtext(QPainter* painter, int x, int y, const QString &text, Q
     *br = all_bounding_rect;
   }
 }
+
+// Some elements on schematics may be resized and have "resize handles"
+// for this. The handles are little squares which are drawn in the same
+// size despite of schematic's zoom factor.
+// This function draws a handle with center at given point.
+void misc::draw_resize_handle(QPainter* painter, const QPointF& center) {
+  // The received central point has some "real" coordinates which are tied
+  // to an element for which the handle belongs.
+  // Painter almost certainly has the "scale" transformation, but the handle
+  // must be drawn in the same size, without any scaling.
+  // Given all above, this is the way to draw a resize handle:
+  // 1. Find out where on canvas lies the central point and remember these
+  //    coordinates
+  // 2. Remove all transformations and draw the handle in its natural size
+  QRectF resize_handle{0, 0, 10, 10};  // nothing special, just a size
+  resize_handle.moveCenter(painter->transform().map(center));
+
+  painter->save();
+  painter->setTransform(QTransform{});
+  painter->setPen(QPen{Qt::darkRed, 2});
+  painter->drawRect(resize_handle);
+  painter->restore();
+}
