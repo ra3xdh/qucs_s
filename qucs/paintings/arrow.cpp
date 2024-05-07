@@ -107,6 +107,30 @@ void Arrow::paint(ViewPainter *p)
   }
 }
 
+void Arrow::paint(QPainter* painter) {
+  painter->save();
+
+  painter->setPen(isSelected ? QPen(Qt::darkGray,Pen.width()+5) : Pen);
+  painter->drawLine(cx, cy, cx+x2, cy+y2);  // stem
+
+  if (Style == 0) {  // two-lines head, no fill
+    painter->drawLine(cx+x2, cy+y2, cx+xp1, cy+yp1);
+    painter->drawLine(cx+x2, cy+y2, cx+xp2, cy+yp2);
+  } else {
+    painter->setBrush(isSelected ? Qt::white : Pen.brush());
+    QPolygon head;
+    head.setPoints(3, cx+xp1, cy+yp1, cx+x2, cy+y2, cx+xp2, cy+yp2);
+    painter->drawConvexPolygon(head);
+  }
+
+  if (isSelected) {
+    misc::draw_resize_handle(painter, QPoint{cx, cy});
+    misc::draw_resize_handle(painter, QPoint{cx + x2, cy + y2});
+  }
+
+  painter->restore();
+}
+
 // --------------------------------------------------------------------------
 void Arrow::paintScheme(Schematic *p)
 {

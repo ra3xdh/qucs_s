@@ -29,6 +29,7 @@ public:
  ~Arrow();
 
   void paint(ViewPainter*);
+  void paint(QPainter* painter);
   void paintScheme(Schematic*);
   void getCenter(int&, int&);
   void setCenter(int, int, bool relative=false);
