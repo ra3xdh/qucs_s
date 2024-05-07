@@ -60,6 +60,26 @@ void EllipseArc::paint(ViewPainter *p)
   p->drawArc(cx, cy, x2, y2, Angle, ArcLen);
 }
 
+void EllipseArc::paint(QPainter *painter) {
+  painter->save();
+
+  painter->setPen(Pen);
+  painter->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
+    painter->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+    painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
+    painter->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+
+    misc::draw_resize_handle(painter, QPoint{cx, cy});
+    misc::draw_resize_handle(painter, QPoint{cx, y2});
+    misc::draw_resize_handle(painter, QPoint{x2, cy});
+    misc::draw_resize_handle(painter, QPoint{x2, y2});
+  }
+  painter->restore();
+}
+
 // --------------------------------------------------------------------------
 void EllipseArc::paintScheme(Schematic *p)
 {
