@@ -66,6 +66,29 @@ void qucs::Rectangle::paint(ViewPainter *p)
   p->Painter->setBrush(Qt::NoBrush); // no filling for the next paintings
 }
 
+void qucs::Rectangle::paint(QPainter *painter) {
+  painter->save();
+
+  painter->setPen(Pen);
+  if (filled) {
+    painter->setBrush(Brush);
+  }
+  painter->drawRect(cx, cy, x2, y2);
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
+    painter->drawRect(cx, cy, x2, y2);
+    painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
+    painter->drawRect(cx, cy, x2, y2);
+
+    misc::draw_resize_handle(painter, QPoint{cx, cy});
+    misc::draw_resize_handle(painter, QPoint{cx, cy + y2});
+    misc::draw_resize_handle(painter, QPoint{cx + x2, cy});
+    misc::draw_resize_handle(painter, QPoint{cx + x2, cy + y2});
+  }
+  painter->restore();
+}
+
 // --------------------------------------------------------------------------
 void qucs::Rectangle::paintScheme(Schematic *p)
 {
