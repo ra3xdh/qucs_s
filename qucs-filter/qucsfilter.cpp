@@ -406,7 +406,7 @@ QString * QucsFilter::calculateFilter(struct tFilter * Filter)
         s = LC_Filter::createSchematic(Filter, false);
     }
     else  {
-      qf_cauer * F = NULL;
+      qf::cauer * F = NULL;
       double amin, amax, fc, fs, bw, r;
       fc = Filter->Frequency;
       amin = Filter->Ripple;
@@ -415,24 +415,25 @@ QString * QucsFilter::calculateFilter(struct tFilter * Filter)
       amax = Filter->Attenuation;
       bw = Filter->Frequency2 - fc;
 
+      bool is_tee = ComboRealize->currentIndex() == 1;
       switch (Filter->Class) {
       case CLASS_LOWPASS:
-        F = new qf_cauer (amin, amax, fc, fs, r, 0, LOWPASS);
+        F = new qf::cauer (amin, amax, fc, fs, r, 0, qf::LOWPASS, is_tee);
         break;
       case CLASS_HIGHPASS:
-        F = new qf_cauer (amin, amax, fc, fs, r, 0, HIGHPASS);
-        break;
+        F = new qf::cauer (amin, amax, fc, fs, r, 0, qf::HIGHPASS, is_tee);
+        break;  
       case CLASS_BANDPASS:
-        F = new qf_cauer (amin, amax, fc + bw / 2, fs, r, bw, BANDPASS);
+        F = new qf::cauer (amin, amax, fc + bw / 2, fs, r, bw, qf::BANDPASS, is_tee);
         break;
       case CLASS_BANDSTOP:
-        F = new qf_cauer (amin, amax, fc + bw / 2, fs, r, bw, BANDSTOP);
+        F = new qf::cauer (amin, amax, fc + bw / 2, fs, r, bw, qf::BANDSTOP, is_tee);
         break;
       }
       if (F) {
         //F->dump();
         EditOrder->setText(QString::number(F->order()));
-        s = new QString(F->to_qucs().c_str());
+        s = new QString(F->to_qucs());
         delete F;
       }
       else {

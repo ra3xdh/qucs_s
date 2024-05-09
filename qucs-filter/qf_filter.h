@@ -1,5 +1,5 @@
 /***************************************************************************
-                               qf_filter.h
+                               filter.h
                              ----------------
     begin                : Mon Jan 02 2006
     copyright            : (C) 2006 by Vincent Habchi, F5RCS
@@ -19,100 +19,70 @@
 #define _QF_FILTER_H
 
 // Header for filter
+#include "qf_poly.h"
+#include "qf_subsection.h"
+#include <QString>
+#include <vector>
 
-enum qf_filter_type
-{
-  LOWPASS,
-  HIGHPASS,
-  BANDPASS,
-  BANDSTOP
-};
+namespace qf {
+enum filter_type { LOWPASS, HIGHPASS, BANDPASS, BANDSTOP };
 
-typedef enum qf_filter_type qft;
+typedef enum filter_type qft;
 
-enum qf_filter_kind
-{
-  BUTT,
-  CHEB,
-  ICHEB,
-  BESS,
-  CAUER,
-  UNDEF
-};
+enum filter_kind { BUTT, CHEB, ICHEB, BESS, CAUER, UNDEF };
 
-typedef enum qf_filter_kind qfk;
+typedef enum filter_kind qfk;
 
-enum qf_ctype
-{
-  CAP,
-  IND,
-  RES
-};
+enum ctype { CAP, IND, RES };
 
-typedef enum qf_ctype qfct;
+typedef enum ctype qfct;
 
-struct qf_comp
-{
+struct comp {
   qfct comp;
-  qf_double_t val;
-  unsigned node1;
-  unsigned node2;
+  qf_float val;
 };
 
-typedef struct qf_comp qfc;
+typedef struct comp qfc;
 
 // Generic filter class
 
-class qf_filter
-{
- protected:
-  const qft type;		// Lowpass, highpass...
-  const qfk kind;		// Butterworth, Chebichev...
-  unsigned ord;			// Order of filter
+class filter {
+protected:
+  const qft type_; // Lowpass, highpass...
+  const qfk kind_; // Butterworth, Chebichev...
+  unsigned ord_;   // Order of filter
+  bool is_tee_;    // Tee or Pi
 
-  const qf_double_t fc;		// Cutoff / Center
-  qf_double_t bw;	        // Bandwidth
-  const qf_double_t imp;	// Terminating impedance
-  qf_double_t fstart;           // Start frequency
-  qf_double_t fstop;            // Stop frequency
+  const qf_float fc_;  // Cutoff for lp or hp / Center for bp and bs
+  qf_float bw_;        // Bandwidth
+  const qf_float imp_; // Terminating impedance
+  std::vector<subsection> proto_subsecs_;
+  std::vector<subsection> subsecs_;
 
   // Polynomial description
 
-  qf_poly E;			// H(w) = E(w)/P(w)
-  qf_poly F;			// D(w) = F(w)/P(w)
-  qf_poly P;
+  poly E_; // H(w) = E(w)/P(w)
+  poly F_; // D(w) = F(w)/P(w)
+  poly P_;
 
-  qf_poly BN;			// B(w) susceptance of filter
-  qf_poly BD;			// B(w) susceptance of filter
+  poly BN_; // B(w) susceptance of filter
+  poly BD_; // B(w) susceptance of filter
 
-  unsigned ncomp;		// Number of components
-  qfc * Comp;			// Table of components
+  unsigned n_comp_; // Number of components
 
 public:
-  qf_filter (void);		// Default init
-  qf_filter (int);		// Init
-  qf_filter (qfk, qft);
-  qf_filter (int, qfk, qft);
-  qf_filter (qfk, qft, qf_double_t, qf_double_t, qf_double_t);
-  virtual ~qf_filter (void);	// Exit
+  filter(qfk, qft, qf_float, qf_float, qf_float, bool);
+  virtual ~filter(); // Exit
 
   // Common routines to perform extraction of poles and zeros
-
   // This one extracts a finite pole of transmission
-  void extract_pole_pCsLC (qf_double_t, qfc *, qf_double_t);
-
-  int order (void) { return ord; }
-
-  virtual void synth (qft) = 0;	// Synthesize filter
-
-  std::string to_qucs (void);	// Outputs Qucs
-  std::string to_spice (void);	// Outputs SPICE
-  void dump_qucs (void);        // Outputs Qucs to std::cout
-  void dump_spice (void);	// Outputs SPICE to std::cout
-  void dump_cout (void);	// Outputs to std::cout
+  void extract_pole_pCsLC(qf_float, qf_float);
+  int order() { return ord_; }
+  virtual void synth() = 0; // Synthesize filter
+  QString to_qucs();
 
 private:
-  std::string num2str (qf_double_t);
+  QString num2str(qf_float);
 };
-
+} // namespace qf
 #endif // _QF_FILTER_H

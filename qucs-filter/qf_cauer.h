@@ -1,5 +1,5 @@
 /***************************************************************************
-                               qf_cauer.h
+                               cauer.h
                              --------------
     begin                : Mon Jan 02 2006
     copyright            : (C) 2006 by Vincent Habchi, F5RCS
@@ -18,47 +18,30 @@
 #ifndef _QF_CAUER_H
 #define _QF_CAUER_H
 
-const qf_double_t SN_ACC = 1e-5;	// Accuracy of sn(x) is SN_ACC^2
-const qf_double_t K_ERR1 = 1e-8;	// Accuracy of K(k)
-const qf_double_t K_ERR2 = 1e-20;	// Accuracy of K(k)
-const qf_double_t K_ERR3 = 1e-6;	// Accuracy of K(k)
-const qf_double_t K_ERR =  4e-16;                // Accuracy of K (k)
-const qf_double_t SK_ERR = sqrt (K_ERR);         // Accuracy of sn (u, k)
+#include "qf_filter.h"
 
-class qf_cauer : public qf_filter
-{
- private:
-
+namespace qf {
+class cauer : public filter {
+private:
   // Standard parameters
-  qf_double_t rho;			// Reflection coeff.
-  qf_double_t th;			// Modular angle
+  qf_float rho_; // Reflection coeff.
+  qf_float th_;  // Modular angle
 
   // Zeros of transmission
-  qf_double_t * a;
+  qf_float* a_;
 
 public:
-  qf_cauer (unsigned, qf_double_t, qf_double_t);
-  qf_cauer (qf_double_t, qf_double_t, qf_double_t, qf_double_t, qf_double_t,
-	    qf_double_t, qft);
-  virtual ~qf_cauer (void);
-
-  // Elliptic functions
-  static qf_double_t K (qf_double_t);
-  static qf_double_t Kp (qf_double_t);
-  static qf_double_t sn (qf_double_t, qf_double_t);
-  static qf_double_t ellip_RF (qf_double_t, qf_double_t, qf_double_t);
-  static qf_double_t ellip_K (qf_double_t);
-  static qf_double_t ellip_sncndn (qf_double_t, qf_double_t,
-				   qf_double_t&, qf_double_t&, qf_double_t&);
-  static qf_double_t ellip_sn (qf_double_t, qf_double_t);
+  cauer(qf_float, qf_float, qf_float, qf_float, qf_float, qf_float, qft,
+        bool is_tee);
+  virtual ~cauer(void);
 
   // Computes standard form
-  void normalize (qf_double_t, qf_double_t, qf_double_t, qft);
+  void normalize(qf_float, qf_float, qf_float);
 
-  void xfer (void);		// Computes xfer fctn
-  void values (void);		// Computes norm values
-  virtual void synth (qft);	// Standard -> Actual form
-  void dump (void);		// Dumps to cout
+  void xfer(void);      // Computes xfer fctn
+  void values(void);    // Computes norm values
+  virtual void synth(); // Standard -> Actual form
 };
+} // namespace qf
 
 #endif // _QF_CAUER_H
