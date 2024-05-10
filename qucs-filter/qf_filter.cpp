@@ -128,7 +128,7 @@ QString filter::num2str(qf_float num) {
       num /= pow(10.0, (qf_float)(3 * expo));
     }
   }
-  QString str = QString::number(num);
+  QString str = QString::number((double)num);
   if (c) {
     str.append(c);
   }
@@ -145,7 +145,7 @@ QString filter::to_qucs() {
   compos += QString("<Pac P1 1 %1 290 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 "
                     "dBm\" 0 \"1 GHz\" 0>\n")
                 .arg(x)
-                .arg(imp_);
+                .arg((double)imp_);
   compos += QString("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
   wires += QString("<0 200 %1 200 \"\" 0 0 0>\n").arg(space / 2);
   wires += QString("<%1 200 %1 260 \"\" 0 0 0>\n").arg(x);
@@ -264,7 +264,7 @@ QString filter::to_qucs() {
   compos += QString("<Pac P2 1 %1 290 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 "
                     "dBm\" 0 \"1 GHz\" 0>\n")
                 .arg(x)
-                .arg(imp_);
+                .arg((double)imp_);
   compos += QString("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
   wires += QString("<%1 200 %1 260 \"\" 0 0 0>\n").arg(x);
 
