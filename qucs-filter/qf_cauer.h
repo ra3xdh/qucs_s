@@ -1,5 +1,5 @@
 /***************************************************************************
-                               cauer.h
+                               qf_cauer.h
                              --------------
     begin                : Mon Jan 02 2006
     copyright            : (C) 2006 by Vincent Habchi, F5RCS
