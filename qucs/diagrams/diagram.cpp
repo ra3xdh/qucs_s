@@ -1850,97 +1850,51 @@ bool Diagram::calcAxisScale(Axis *Axis, double &GridNum, double &zD,
  \param[out]  z      - screen coordinate where the first grid is placed
  \param[out]  zD     - number where the first grid is placed
  \param[out]  zDstep - number increment from one grid to the next
- \param[out]  coor   - scale factor for calculate screen coordinate
+ \param[out]  corr   - scale factor for calculate screen coordinate
 
  \todo use this as example to document other methods
 */
 bool Diagram::calcAxisLogScale(Axis *Axis, int &z, double &zD,
                                double &zDstep, double &corr, int len) {
-    if (fabs(Axis->max - Axis->min) < 1e-200) { // if max = min, double difference
-        Axis->max *= 10.0;
-        Axis->min /= 10.0;
-    }
-    Axis->low = Axis->min;
-    Axis->up = Axis->max;
+    bool mirror = false;
 
-    if (!Axis->autoScale) {
-        Axis->low = Axis->limit_min;
-        Axis->up = Axis->limit_max;
-    }
-
-
-    bool mirror = false, mirror2 = false;
-    double tmp;
-    if (Axis->up < 0.0) {   // for negative values
-        tmp = Axis->low;
-        Axis->low = -Axis->up;
-        Axis->up = -tmp;
-        mirror = true;
-    }
-
-    double Base, Expo;
     if (Axis->autoScale) {
-        if (mirror) {   // set back values ?
-            tmp = Axis->min;
-            Axis->min = -Axis->max;
-            Axis->max = -tmp;
-        }
-
-        Expo = floor(log10(Axis->max));
-        Base = Axis->max / pow(10.0, Expo);
-        if (Base > 3.0001) Axis->up = pow(10.0, Expo + 1.0);
-        else if (Base < 1.0001) Axis->up = pow(10.0, Expo);
-        else Axis->up = 3.0 * pow(10.0, Expo);
-
-        Expo = floor(log10(Axis->min));
-        Base = Axis->min / pow(10.0, Expo);
-        if (Base < 2.999) Axis->low = pow(10.0, Expo);
-        else if (Base > 9.999) Axis->low = pow(10.0, Expo + 1.0);
-        else Axis->low = 3.0 * pow(10.0, Expo);
-
-        corr = double(len) / log10(Axis->up / Axis->low);
-
-        z = 0;
-        zD = Axis->low;
-        zDstep = pow(10.0, Expo);
-
-        if (mirror) {   // set back values ?
-            tmp = Axis->min;
-            Axis->min = -Axis->max;
-            Axis->max = -tmp;
-        }
-    } else {   // user defined limits
-        if (Axis->up < Axis->low) {
-            tmp = Axis->low;
-            Axis->low = Axis->up;
-            Axis->up = tmp;
-            mirror2 = true;
-        }
-
-        Expo = floor(log10(Axis->low));
-        Base = ceil(Axis->low / pow(10.0, Expo));
-        zD = Base * pow(10.0, Expo);
-        zDstep = pow(10.0, Expo);
-        if (zD > 9.5 * zDstep) zDstep *= 10.0;
-
-        corr = double(len) / log10(Axis->up / Axis->low);
-        z = lround(corr * log10(zD / Axis->low)); // int(..) implies floor(..)
-
-        if (mirror2) {   // set back values ?
-            tmp = Axis->low;
-            Axis->low = Axis->up;
-            Axis->up = tmp;
-        }
+	double minExp = floor(log10(Axis->min));
+	double maxExp = ceil(log10(Axis->max));
+	if ( minExp == maxExp ) {
+	    minExp -= 1;
+	    maxExp += 1;
+	}
+	Axis->low = pow(10.0, minExp);
+	Axis->up = pow(10.0, maxExp);
+    } else {
+	Axis->low = Axis->limit_min;
+	Axis->up = Axis->limit_max;
     }
+
+    if (Axis->up < Axis->low) {
+	double tmp = Axis->low;
+	Axis->low = Axis->up;
+	Axis->up = tmp;
+	mirror = true;
+    }
+
+    double Expo = floor(log10(Axis->low));
+    double Base = ceil(Axis->low / pow(10.0, Expo));
+    zD = Base * pow(10.0, Expo);
+    zDstep = pow(10.0, Expo);
+    if (zD > 9.5 * zDstep) zDstep *= 10.0;
+
+    corr = double(len) / log10(Axis->up / Axis->low);
+    z = lround(corr * log10(zD / Axis->low)); // int(..) implies floor(..)
 
     if (mirror) {   // set back values ?
-        tmp = Axis->low;
-        Axis->low = -Axis->up;
-        Axis->up = -tmp;
+	double tmp = Axis->low;
+	Axis->low = Axis->up;
+	Axis->up = tmp;
     }
 
-    if (mirror == mirror2) return false;
-    else return true;
+    return mirror;
 }
 
 // --------------------------------------------------------------
