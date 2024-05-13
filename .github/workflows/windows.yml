@@ -1,0 +1,67 @@
+name: windows
+
+on:
+  push:
+    branches: [ "master", "current", "release/*" ]
+  pull_request:
+    branches: [ "master", "current", "release/*" ]
+
+env:
+  APP_NAME: "Qucs-S Simulator"
+  EXECUTABLE_NAME: "qucs-s"
+  VERSION: "24.2.1"
+  PUBLISH_NAME: "The Qucs Team"
+  BUILD_TYPE: Release
+  
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sys:
+          - mingw64
+          - clang64
+          - ucrt64
+    defaults:
+      run:
+         shell: msys2 {0}
+    steps:
+    - name: Disable autocrlf
+      shell: pwsh
+      run: |
+        git config --global core.autocrlf false
+        git config --global core.eol lf
+        
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+       submodules: 'recursive'
+       
+    - name: Set up MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{ matrix.sys }}
+        cache: true
+        update: true
+        install: >-
+          bison 
+          flex
+          dos2unix 
+        pacboy: >-
+          cmake:p 
+          gcc:p 
+          qt6-base:p 
+          qt6-tools:p 
+          qt6-svg:p 
+          make:p 
+          ninja:p
+          python:p 
+          gperf:p
+          
+    - name: Build with cmake
+      run: |
+        cmake.exe -B build/ -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=ON
+        cmake.exe --build build/ -j`nproc` --config ${{env.BUILD_TYPE}}
+        
+      
