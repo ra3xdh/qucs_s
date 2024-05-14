@@ -1,0 +1,58 @@
+name: macos
+
+on:
+  push:
+    branches: [ "master", "current", "release/*" ]
+  pull_request:
+    branches: [ "master", "current", "release/*" ]
+
+env:
+  APP_NAME: "Qucs-S Simulator"
+  EXECUTABLE_NAME: "qucs-s"
+  VERSION: "24.2.1"
+  PUBLISH_NAME: "The Qucs Team"
+  BUILD_TYPE: Release
+
+jobs:
+          
+  build:
+    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
+    # You can convert this to a matrix build if you need cross-platform coverage.
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: macos-latest
+    
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest
+    
+    - uses: actions/checkout@v4
+      with:
+       submodules: 'recursive'
+       
+    - name: InstallDependencies
+      shell: bash
+      run: |
+          brew install gperf dos2unix bison flex qt
+          echo 'export PATH="/opt/homebrew/opt/bison/bin:$PATH"' >> /Users/runner/.bashrc
+          export LDFLAGS="-L/opt/homebrew/opt/bison/lib"
+          source ~/.bashrc
+          brew link bison --force
+
+          
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -B ${{github.workspace}}/build  -G 'Unix Makefiles' \
+                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=ON -DCMAKE_PREFIX_PATH=$HOMEBREW_PREFIX
+
+    - name: Build
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build -j$(getconf _NPROCESSORS_ONLN) --config ${{env.BUILD_TYPE}}
+
+    #- name: Test
+    #  working-directory: ${{github.workspace}}/build
+      # Execute tests defined by the CMake configuration.  
+      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+      # run: ctest -C ${{env.BUILD_TYPE}}
+      
