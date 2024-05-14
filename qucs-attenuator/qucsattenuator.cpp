@@ -89,7 +89,8 @@ QucsAttenuator::QucsAttenuator()
   ComboTopology->insertItem(4, "Reflection attenuator");
   ComboTopology->insertItem(5, "Quarter-wave series");
   ComboTopology->insertItem(6, "Quarter-wave shunt");
-  ComboTopology->insertItem(6, "L-pad 1st series");
+  ComboTopology->insertItem(7, "L-pad 1st series");
+  ComboTopology->insertItem(8, "L-pad 1st shunt");
   connect(ComboTopology, SIGNAL(activated(int)), SLOT(slotTopologyChanged()));
   topoGrid->addWidget(ComboTopology, 1,0,1,2);
 
@@ -584,7 +585,9 @@ void QucsAttenuator::slotTopologyChanged()
       Combo_FreqUnits->show();
       break;
     case L_PAD_1ST_SERIES:
-      pixTopology->setPixmap(QPixmap((":/bitmaps/L_pad_1st_series.png")));
+    case L_PAD_1ST_SHUNT:
+      (ComboTopology->currentIndex() == L_PAD_1ST_SERIES) ? pixTopology->setPixmap(QPixmap((":/bitmaps/L_pad_1st_series.png")))
+                                                          : pixTopology->setPixmap(QPixmap((":/bitmaps/L_pad_1st_shunt.png")));
       LabelImp1->setText("Z0:");
       LabelImp2->hide();
       QSpinBox_Zout->hide();

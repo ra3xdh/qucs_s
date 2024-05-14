@@ -10,5 +10,6 @@
         <file>bitmaps/qw_shunt_CLC.png</file>
         <file>bitmaps/qw_series_CLC.png</file>
         <file>bitmaps/L_pad_1st_series.png</file>
+        <file>bitmaps/L_pad_1st_shunt.png</file>
     </qresource>
 </RCC>
