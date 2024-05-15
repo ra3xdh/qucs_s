@@ -91,6 +91,7 @@ QucsAttenuator::QucsAttenuator()
   ComboTopology->insertItem(6, "Quarter-wave shunt");
   ComboTopology->insertItem(7, "L-pad 1st series");
   ComboTopology->insertItem(8, "L-pad 1st shunt");
+  ComboTopology->insertItem(9, "Rseries");
   connect(ComboTopology, SIGNAL(activated(int)), SLOT(slotTopologyChanged()));
   topoGrid->addWidget(ComboTopology, 1,0,1,2);
 
@@ -457,6 +458,8 @@ void QucsAttenuator::slotTopologyChanged()
       Label_Freq->hide();
       QSpinBox_Freq->hide();
       Combo_FreqUnits->hide();
+      lineEdit_R2_Pdiss->show();
+      ComboR2_PowerUnits->show();
       break;
     case TEE_TYPE:
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_tee.png")));
@@ -481,6 +484,8 @@ void QucsAttenuator::slotTopologyChanged()
       Label_Freq->hide();
       QSpinBox_Freq->hide();
       Combo_FreqUnits->hide();
+      lineEdit_R2_Pdiss->show();
+      ComboR2_PowerUnits->show();
       break;
     case BRIDGE_TYPE:
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_bridge.png")));
@@ -507,6 +512,8 @@ void QucsAttenuator::slotTopologyChanged()
       Label_Freq->hide();
       QSpinBox_Freq->hide();
       Combo_FreqUnits->hide();
+      lineEdit_R2_Pdiss->show();
+      ComboR2_PowerUnits->show();
       break;
     case REFLECTION_TYPE:
       pixTopology->setPixmap(QPixmap((":/bitmaps/att_reflection.png")));
@@ -531,6 +538,8 @@ void QucsAttenuator::slotTopologyChanged()
       Label_Freq->hide();
       QSpinBox_Freq->hide();
       Combo_FreqUnits->hide();
+      lineEdit_R2_Pdiss->show();
+      ComboR2_PowerUnits->show();
       break;
     case QW_SERIES_TYPE:
       if (Check_QW_CLC->isChecked()) pixTopology->setPixmap(QPixmap((":/bitmaps/qw_series_CLC.png")));
@@ -557,6 +566,8 @@ void QucsAttenuator::slotTopologyChanged()
       Label_Freq->show();
       QSpinBox_Freq->show();
       Combo_FreqUnits->show();
+      lineEdit_R2_Pdiss->show();
+      ComboR2_PowerUnits->show();
       break;
     case QW_SHUNT_TYPE:
       if (Check_QW_CLC->isChecked()) pixTopology->setPixmap(QPixmap((":/bitmaps/qw_shunt_CLC.png")));
@@ -583,6 +594,8 @@ void QucsAttenuator::slotTopologyChanged()
       Label_Freq->show();
       QSpinBox_Freq->show();
       Combo_FreqUnits->show();
+      lineEdit_R2_Pdiss->show();
+      ComboR2_PowerUnits->show();
       break;
     case L_PAD_1ST_SERIES:
     case L_PAD_1ST_SHUNT:
@@ -609,7 +622,35 @@ void QucsAttenuator::slotTopologyChanged()
       Label_Freq->hide();
       QSpinBox_Freq->hide();
       Combo_FreqUnits->hide();
+      lineEdit_R2_Pdiss->show();
+      ComboR2_PowerUnits->show();
       break;
+      case R_SERIES:
+        pixTopology->setPixmap(QPixmap((":/bitmaps/Rseries.png")));
+        LabelImp1->setText("Zin:");
+        LabelImp2->show();
+        QSpinBox_Zout->show();
+        LabelImp2_Ohm->show();
+        LabelR2->setText("Zin:");
+        LabelR3->show();
+        LabelR3->setText("Zout:");
+        LabelR4->hide();
+        lineEdit_R3->show();
+        lineEdit_R4->hide();
+        LabelR4_Ohm->hide();
+        LabelR3_Ohm->show();
+        lineEdit_R2_Pdiss->hide();
+        ComboR2_PowerUnits->hide();
+        lineEdit_R3_Pdiss->hide();
+        ComboR3_PowerUnits->hide();
+        lineEdit_R4_Pdiss->hide();
+        ComboR4_PowerUnits->hide();
+        R_Check->hide();
+        Check_QW_CLC->hide();
+        Label_Freq->hide();
+        QSpinBox_Freq->hide();
+        Combo_FreqUnits->hide();
+        break;
 
     }
     adjustSize();
