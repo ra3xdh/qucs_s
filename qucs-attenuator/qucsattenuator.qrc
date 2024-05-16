@@ -12,5 +12,6 @@
         <file>bitmaps/L_pad_1st_series.png</file>
         <file>bitmaps/L_pad_1st_shunt.png</file>
         <file>bitmaps/Rseries.png</file>
+        <file>bitmaps/Rshunt.png</file>
     </qresource>
 </RCC>

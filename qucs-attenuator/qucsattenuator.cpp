@@ -92,6 +92,7 @@ QucsAttenuator::QucsAttenuator()
   ComboTopology->insertItem(7, "L-pad 1st series");
   ComboTopology->insertItem(8, "L-pad 1st shunt");
   ComboTopology->insertItem(9, "Rseries");
+  ComboTopology->insertItem(10, "Rshunt");
   connect(ComboTopology, SIGNAL(activated(int)), SLOT(slotTopologyChanged()));
   topoGrid->addWidget(ComboTopology, 1,0,1,2);
 
@@ -625,15 +626,18 @@ void QucsAttenuator::slotTopologyChanged()
       lineEdit_R2_Pdiss->show();
       ComboR2_PowerUnits->show();
       break;
+
       case R_SERIES:
-        pixTopology->setPixmap(QPixmap((":/bitmaps/Rseries.png")));
+      case R_SHUNT:
+       (ComboTopology->currentIndex() == R_SERIES) ? pixTopology->setPixmap(QPixmap((":/bitmaps/Rseries.png")))
+                                                          : pixTopology->setPixmap(QPixmap((":/bitmaps/Rshunt.png")));
         LabelImp1->setText("Zin:");
         LabelImp2->show();
         QSpinBox_Zout->show();
         LabelImp2_Ohm->show();
-        LabelR2->setText("Zin:");
+        LabelR2->setText("Z1:");
         LabelR3->show();
-        LabelR3->setText("Zout:");
+        LabelR3->setText("Z2:");
         LabelR4->hide();
         lineEdit_R3->show();
         lineEdit_R4->hide();
