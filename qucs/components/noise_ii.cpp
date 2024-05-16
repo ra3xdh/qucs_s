@@ -69,11 +69,11 @@ Noise_ii::Noise_ii()
   Model = "IInoise";
   Name  = "SRC";
 
-  Props.append(new Property("i1", "1e-6", true,
+  Props.append(new Property("i1", "1e-6", false,
 		QObject::tr("current power spectral density of source 1")));
-  Props.append(new Property("i2", "1e-6", true,
+  Props.append(new Property("i2", "1e-6", false,
 		QObject::tr("current power spectral density of source 2")));
-  Props.append(new Property("C", "0.5", true,
+  Props.append(new Property("C", "0.5", false,
 		QObject::tr("normalized correlation coefficient")));
   Props.append(new Property("e", "0", false,
 		QObject::tr("frequency exponent")));

@@ -48,11 +48,11 @@ RectLine::RectLine()
   Model = "RECTLINE";
   Name  = "Line";
 
-  Props.append(new Property("a", "2.95 mm", true,
+  Props.append(new Property("a", "2.95 mm", false,
 		QObject::tr("widest side")));
-  Props.append(new Property("b", "0.9 mm", true,
+  Props.append(new Property("b", "0.9 mm", false,
 		QObject::tr("shortest side")));
-  Props.append(new Property("L", "1500 mm", true,
+  Props.append(new Property("L", "1500 mm", false,
 		QObject::tr("mechanical length of the line")));
   Props.append(new Property("er", "1", false,
 		QObject::tr("relative permittivity of dielectric")));

@@ -50,7 +50,7 @@ PM_Modulator::PM_Modulator()
   Model = "PM_Mod";
   Name  = "V";
 
-  Props.append(new Property("U", "1 V", true,
+  Props.append(new Property("U", "1 V", false,
 		QObject::tr("peak voltage in Volts")));
   Props.append(new Property("f", "1 GHz", false,
 		QObject::tr("frequency in Hertz")));

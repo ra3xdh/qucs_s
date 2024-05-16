@@ -60,13 +60,13 @@ iExp::iExp()
   SpiceModel = "I";
   Name  = "I";
 
-  Props.append(new Property("I1", "0", true,
+  Props.append(new Property("I1", "0", false,
 		QObject::tr("current before rising edge")));
-  Props.append(new Property("I2", "1 A", true,
+  Props.append(new Property("I2", "1 A", false,
 		QObject::tr("maximum current of the pulse")));
-  Props.append(new Property("T1", "0", true,
+  Props.append(new Property("T1", "0", false,
 		QObject::tr("start time of the exponentially rising edge")));
-  Props.append(new Property("T2", "1 ms", true,
+  Props.append(new Property("T2", "1 ms", false,
 		QObject::tr("start of exponential decay")));
   Props.append(new Property("Tr", "1 ns", false,
 		QObject::tr("time constant of the rising edge")));

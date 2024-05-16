@@ -42,7 +42,7 @@ Amplifier::Amplifier()
   Model = "Amp";
   Name  = "X";
 
-  Props.append(new Property("G", "10", true,
+  Props.append(new Property("G", "10", false,
 		QObject::tr("voltage gain")));
   Props.append(new Property("Z1", "50 Ohm", false,
 		QObject::tr("reference impedance of input port")));

@@ -45,7 +45,7 @@ Diac::Diac()
   Model = "Diac";
   Name  = "D";
 
-  Props.append(new Property("Vbo", "30 V", true,
+  Props.append(new Property("Vbo", "30 V", false,
 	QObject::tr("(bidirectional) breakover voltage")));
   Props.append(new Property("Ibo", "50 uA", false,
 	QObject::tr("(bidirectional) breakover current")));

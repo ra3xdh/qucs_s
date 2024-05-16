@@ -23,11 +23,11 @@
 Basic_BJT::Basic_BJT()
 {
   // this must be the first property in the list  !!!
-  Props.append(new Property("Type", "npn", true,
+  Props.append(new Property("Type", "npn", false,
 	QObject::tr("polarity")+" [npn, pnp]"));
-  Props.append(new Property("Is", "1e-16", true,
+  Props.append(new Property("Is", "1e-16", false,
 	QObject::tr("saturation current")));
-  Props.append(new Property("Nf", "1", true,
+  Props.append(new Property("Nf", "1", false,
 	QObject::tr("forward emission coefficient")));
   Props.append(new Property("Nr", "1", false,
 	QObject::tr("reverse emission coefficient")));
@@ -35,7 +35,7 @@ Basic_BJT::Basic_BJT()
 	QObject::tr("high current corner for forward beta")));
   Props.append(new Property("Ikr", "0", false,
 	QObject::tr("high current corner for reverse beta")));
-  Props.append(new Property("Vaf", "0", true,
+  Props.append(new Property("Vaf", "0", false,
 	QObject::tr("forward early voltage")));
   Props.append(new Property("Var", "0", false,
 	QObject::tr("reverse early voltage")));
@@ -47,7 +47,7 @@ Basic_BJT::Basic_BJT()
 	QObject::tr("base-collector leakage saturation current")));
   Props.append(new Property("Nc", "2", false,
 	QObject::tr("base-collector leakage emission coefficient")));
-  Props.append(new Property("Bf", "100", true,
+  Props.append(new Property("Bf", "100", false,
 	QObject::tr("forward beta")));
   Props.append(new Property("Br", "1", false,
 	QObject::tr("reverse beta")));

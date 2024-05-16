@@ -63,7 +63,7 @@ ecvs::ecvs()
   Model = "ECVS";
   Name  = "ECVS";
 
-  Props.append(new Property("U", "0 V", true,
+  Props.append(new Property("U", "0 V", false,
 		QObject::tr("voltage in Volts")));
 //  Props.append(new Property("Interpolator", "linear", false,
 //		QObject::tr("interpolation type")+" [hold, linear, cubic]"));

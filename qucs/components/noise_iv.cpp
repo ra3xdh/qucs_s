@@ -64,11 +64,11 @@ Noise_iv::Noise_iv()
   Model = "IVnoise";
   Name  = "SRC";
 
-  Props.append(new Property("i1", "1e-6", true,
+  Props.append(new Property("i1", "1e-6", false,
 		QObject::tr("current power spectral density of source 1")));
-  Props.append(new Property("v2", "1e-6", true,
+  Props.append(new Property("v2", "1e-6", false,
 		QObject::tr("voltage power spectral density of source 2")));
-  Props.append(new Property("C", "0.5", true,
+  Props.append(new Property("C", "0.5", false,
 		QObject::tr("normalized correlation coefficient")));
   Props.append(new Property("e", "0", false,
 		QObject::tr("frequency exponent")));

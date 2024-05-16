@@ -64,13 +64,13 @@ CPWstep::CPWstep()
   Model = "CSTEP";
   Name  = "CL";
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 		QObject::tr("name of substrate definition")));
-  Props.append(new Property("W1", "1 mm", true,
+  Props.append(new Property("W1", "1 mm", false,
 		QObject::tr("width of line 1")));
-  Props.append(new Property("W2", "2 mm", true,
+  Props.append(new Property("W2", "2 mm", false,
 		QObject::tr("width of line 2")));
-  Props.append(new Property("S", "3 mm", true,
+  Props.append(new Property("S", "3 mm", false,
 		QObject::tr("distance between ground planes")));
   Props.append(new Property("Backside", "Air", false,
 		QObject::tr("material at the backside of the substrate")+

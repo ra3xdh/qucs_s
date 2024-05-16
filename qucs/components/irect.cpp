@@ -57,11 +57,11 @@ iRect::iRect()
   Name  = "I";
   SpiceModel = "I";
 
-  Props.append(new Property("U", "1 mA", true,
+  Props.append(new Property("U", "1 mA", false,
 		QObject::tr("current at high pulse")));
-  Props.append(new Property("TH", "1 ms", true,
+  Props.append(new Property("TH", "1 ms", false,
 		QObject::tr("duration of high pulses")));
-  Props.append(new Property("TL", "1 ms", true,
+  Props.append(new Property("TL", "1 ms", false,
 		QObject::tr("duration of low pulses")));
   Props.append(new Property("Tr", "1 ns", false,
 		QObject::tr("rise time of the leading edge")));

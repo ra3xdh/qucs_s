@@ -52,11 +52,11 @@ vRect::vRect()
   Name  = "V";
   SpiceModel = "V";
 
-  Props.append(new Property("U", "1 V", true,
+  Props.append(new Property("U", "1 V", false,
 		QObject::tr("voltage of high signal")));
-  Props.append(new Property("TH", "1 ms", true,
+  Props.append(new Property("TH", "1 ms", false,
 		QObject::tr("duration of high pulses")));
-  Props.append(new Property("TL", "1 ms", true,
+  Props.append(new Property("TL", "1 ms", false,
 		QObject::tr("duration of low pulses")));
   Props.append(new Property("Tr", "1 ns", false,
 		QObject::tr("rise time of the leading edge")));
@@ -64,7 +64,7 @@ vRect::vRect()
 		QObject::tr("fall time of the trailing edge")));
   Props.append(new Property("Td", "0 ns", false,
 		QObject::tr("initial delay time")));
-  Props.append(new Property("U0", "0 V", true,
+  Props.append(new Property("U0", "0 V", false,
         QObject::tr("voltage of low signal (SPICE only)")));
 
   rotate();  // fix historical flaw

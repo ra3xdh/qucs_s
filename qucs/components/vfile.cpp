@@ -54,7 +54,7 @@ vFile::vFile()
   Name  = "V";
   SpiceModel = "A";
 
-  Props.append(new Property("File", "vfile.dat", true,
+  Props.append(new Property("File", "vfile.dat", false,
 		QObject::tr("name of the sample file")));
   Props.append(new Property("Interpolator", "linear", false,
         QObject::tr("interpolation type")+" [hold, linear]"));

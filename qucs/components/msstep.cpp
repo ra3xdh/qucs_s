@@ -48,11 +48,11 @@ MSstep::MSstep()
   Model = "MSTEP";
   Name  = "MS";
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 	QObject::tr("substrate")));
-  Props.append(new Property("W1", "2 mm", true,
+  Props.append(new Property("W1", "2 mm", false,
 	QObject::tr("width 1 of the line")));
-  Props.append(new Property("W2", "1 mm", true,
+  Props.append(new Property("W2", "1 mm", false,
 	QObject::tr("width 2 of the line")));
   Props.append(new Property("MSModel", "Hammerstad", false,
 	QObject::tr("quasi-static microstrip model")+

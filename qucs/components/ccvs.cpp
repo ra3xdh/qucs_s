@@ -62,7 +62,7 @@ CCVS::CCVS()
   Name  = "SRC";
   SpiceModel = "H";
 
-  Props.append(new Property("G", "1 Ohm", true,
+  Props.append(new Property("G", "1 Ohm", false,
 		QObject::tr("forward transfer factor")));
   Props.append(new Property("T", "0", false, QObject::tr("delay time (Qucsator only)")));
 }

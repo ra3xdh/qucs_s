@@ -61,13 +61,13 @@ CPWopen::CPWopen()
   Model = "COPEN";
   Name  = "CL";
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 		QObject::tr("name of substrate definition")));
-  Props.append(new Property("W", "1 mm", true,
+  Props.append(new Property("W", "1 mm", false,
 		QObject::tr("width of the line")));
-  Props.append(new Property("S", "1 mm", true,
+  Props.append(new Property("S", "1 mm", false,
 		QObject::tr("width of a gap")));
-  Props.append(new Property("G", "5 mm", true,
+  Props.append(new Property("G", "5 mm", false,
 		QObject::tr("width of gap at end of line")));
   Props.append(new Property("Backside", "Air", false,
 		QObject::tr("material at the backside of the substrate")+

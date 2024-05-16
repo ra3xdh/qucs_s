@@ -50,7 +50,7 @@ Attenuator::Attenuator()
   Model = "Attenuator";
   Name  = "X";
 
-  Props.append(new Property("L", "10 dB", true,
+  Props.append(new Property("L", "10 dB", false,
 		QObject::tr("power attenuation")));
   Props.append(new Property("Zref", "50 Ohm", false,
 		QObject::tr("reference impedance")));

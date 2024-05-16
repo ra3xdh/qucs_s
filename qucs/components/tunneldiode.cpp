@@ -20,11 +20,11 @@ TunnelDiode::TunnelDiode()
   Description = QObject::tr("resonance tunnel diode");
   Simulator = spicecompat::simQucsator;
 
-  Props.append(new Property("Ip", "4 mA", true,
+  Props.append(new Property("Ip", "4 mA", false,
 	QObject::tr("peak current")));
-  Props.append(new Property("Iv", "0.6 mA", true,
+  Props.append(new Property("Iv", "0.6 mA", false,
 	QObject::tr("valley current")));
-  Props.append(new Property("Vv", "0.8 V", true,
+  Props.append(new Property("Vv", "0.8 V", false,
 	QObject::tr("valley voltage")));
   Props.append(new Property("Wr", "2.7e-20", false,
 	QObject::tr("resonance energy in Ws")));

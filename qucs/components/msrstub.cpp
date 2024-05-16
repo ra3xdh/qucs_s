@@ -40,15 +40,15 @@ MSrstub::MSrstub()
   Model = "MRSTUB";
   Name  = "MS";
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 	QObject::tr("name of substrate definition")));
   Props.append(new Property("ri", "1 mm", false,
 	QObject::tr("inner radius")));
-  Props.append(new Property("ro", "10 mm", true,
+  Props.append(new Property("ro", "10 mm", false,
 	QObject::tr("outer radius")));
-  Props.append(new Property("Wf", "1 mm", true,
+  Props.append(new Property("Wf", "1 mm", false,
     QObject::tr("feeding line width")));
-  Props.append(new Property("alpha", "90", true,
+  Props.append(new Property("alpha", "90", false,
 	QObject::tr("stub angle")+" ("+QObject::tr ("degrees")+")"));
   Props.append(new Property("EffDimens", "OldQucsNoCorrection", false,
     QObject::tr("Effective dimension")+" [Chew_Kong,Giannini,OldQucsNoCorrection]"));

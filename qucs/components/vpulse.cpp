@@ -53,13 +53,13 @@ vPulse::vPulse()
   Name  = "V";
   SpiceModel = "V";
 
-  Props.append(new Property("U1", "0 V", true,
+  Props.append(new Property("U1", "0 V", false,
 		QObject::tr("voltage before and after the pulse")));
-  Props.append(new Property("U2", "1 V", true,
+  Props.append(new Property("U2", "1 V", false,
 		QObject::tr("voltage of the pulse")));
-  Props.append(new Property("T1", "0", true,
+  Props.append(new Property("T1", "0", false,
 		QObject::tr("start time of the pulse")));
-  Props.append(new Property("T2", "1 ms", true,
+  Props.append(new Property("T2", "1 ms", false,
 		QObject::tr("ending time of the pulse")));
   Props.append(new Property("Tr", "1 ns", false,
 		QObject::tr("rise time of the leading edge")));

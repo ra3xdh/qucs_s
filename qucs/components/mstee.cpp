@@ -35,13 +35,13 @@ MStee::MStee()
   Model = "MTEE";
   Name  = "MS";
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 		QObject::tr("substrate")));
-  Props.append(new Property("W1", "1 mm", true,
+  Props.append(new Property("W1", "1 mm", false,
 		QObject::tr("width of line 1")));
-  Props.append(new Property("W2", "1 mm", true,
+  Props.append(new Property("W2", "1 mm", false,
 		QObject::tr("width of line 2")));
-  Props.append(new Property("W3", "2 mm", true,
+  Props.append(new Property("W3", "2 mm", false,
 		QObject::tr("width of line 3")));
   Props.append(new Property("MSModel", "Hammerstad", false,
 	QObject::tr("quasi-static microstrip model")+

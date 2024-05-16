@@ -54,7 +54,7 @@ Hybrid::Hybrid()
   Model = "Hybrid";
   Name  = "X";
 
-  Props.append(new Property("phi", "90", true,
+  Props.append(new Property("phi", "90", false,
 		QObject::tr("phase shift in degree")));
   Props.append(new Property("Zref", "50 Ohm", false,
 		QObject::tr("reference impedance")));

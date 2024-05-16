@@ -46,7 +46,7 @@ HB_Sim::HB_Sim()
 
   Props.append(new Property("f", "1 GHz", false,
 		QObject::tr("frequency in Hertz")));
-  Props.append(new Property("n", "4", true,
+  Props.append(new Property("n", "4", false,
 		QObject::tr("number of harmonics")));
   Props.append(new Property("iabstol", "1 pA", false,
 		QObject::tr("absolute tolerance for currents")));

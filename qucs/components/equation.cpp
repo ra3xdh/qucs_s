@@ -48,7 +48,7 @@ Equation::Equation()
   Model = "Eqn";
   Name  = "Eqn";
 
-  Props.append(new Property("y", "1", true));
+  Props.append(new Property("y", "1", false));
   Props.append(new Property("Export", "yes", false,
   		QObject::tr("put result into dataset")+" [yes, no]"));
 }

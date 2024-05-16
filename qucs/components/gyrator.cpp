@@ -55,7 +55,7 @@ Gyrator::Gyrator()
   Name  = "X";
   SpiceModel = "*";
 
-  Props.append(new Property("R", "50 Ohm", true,
+  Props.append(new Property("R", "50 Ohm", false,
 		QObject::tr("gyrator ratio")));
   Props.append(new Property("Zref", "50 Ohm", false,
 		QObject::tr("reference impedance")));

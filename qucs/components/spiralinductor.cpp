@@ -51,9 +51,9 @@ spiralinductor::spiralinductor()
   Name  = "SPIRALIND";
   Simulator = spicecompat::simQucsator;
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 		QObject::tr("Substrate")));
-  Props.append(new Property("Geometry", "Circular", true,
+  Props.append(new Property("Geometry", "Circular", false,
 		QObject::tr("Spiral type")+
 +		"[Circular, Square, Hexagonal, Octogonal]"));
   Props.append(new Property("W", "25 um", false,

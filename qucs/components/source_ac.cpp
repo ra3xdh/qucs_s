@@ -59,9 +59,9 @@ Source_ac::Source_ac()
   Name  = "P";
 
   // This property must be the first one !
-  Props.append(new Property("Num", "1", true,
+  Props.append(new Property("Num", "1", false,
 		QObject::tr("number of the port")));
-  Props.append(new Property("Z", "50 Ohm", true,
+  Props.append(new Property("Z", "50 Ohm", false,
 		QObject::tr("port impedance")));
   Props.append(new Property("P", "0 dBm", false,
 		QObject::tr("(available) ac power in Watts")));

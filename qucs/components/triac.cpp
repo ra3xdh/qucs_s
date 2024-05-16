@@ -51,7 +51,7 @@ Triac::Triac()
 
   Props.append(new Property("Vbo", "400 V", false,
 	QObject::tr("(bidirectional) breakover voltage")));
-  Props.append(new Property("Igt", "50 uA", true,
+  Props.append(new Property("Igt", "50 uA", false,
 	QObject::tr("(bidirectional) gate trigger current")));
   Props.append(new Property("Cj0", "10 pF", false,
 	QObject::tr("parasitic capacitance")));

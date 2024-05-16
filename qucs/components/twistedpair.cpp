@@ -55,11 +55,11 @@ TwistedPair::TwistedPair()
   Model = "TWIST";
   Name  = "Line";
 
-  Props.append(new Property("d", "0.5 mm", true,
+  Props.append(new Property("d", "0.5 mm", false,
 		QObject::tr("diameter of conductor")));
-  Props.append(new Property("D", "0.8 mm", true,
+  Props.append(new Property("D", "0.8 mm", false,
 		QObject::tr("diameter of wire (conductor and insulator)")));
-  Props.append(new Property("L", "1.5", true,
+  Props.append(new Property("L", "1.5", false,
 		QObject::tr("physical length of the line")));
   Props.append(new Property("T", "100", false,
 		QObject::tr("twists per length in 1/m")));

@@ -1057,7 +1057,7 @@ bool Component::load(const QString &_s) {
     else tmp = counts + 1;    // "+1" because "counts" could be zero
 
     for (; tmp <= (int) counts / 2; tmp++)
-        Props.append(new Property("p", "", true, " "));
+        Props.append(new Property("p", "", false, " "));
 
     // load all properties
     Property *p1;
@@ -1127,7 +1127,7 @@ bool Component::load(const QString &_s) {
                 n = n.section('=', 1);
                 // allocate memory for a new property (e.g. for equations)
                 if (Props.count() < (counts >> 1)) {
-                    Props.insert(z >> 1, new Property("y", "1", true));
+                    Props.insert(z >> 1, new Property("y", "1", false));
                     Props.prev();
                 }
             }

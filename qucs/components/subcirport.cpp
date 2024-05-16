@@ -25,7 +25,7 @@ SubCirPort::SubCirPort()
   Description = QObject::tr("port of a subcircuit");
 
   // This property must be the first one !
-  Props.append(new Property("Num", "1", true,
+  Props.append(new Property("Num", "1", false,
 		QObject::tr("number of the port within the subcircuit")));
   // This property must be the second one !
   Props.append(new Property("Type", "analog", false,

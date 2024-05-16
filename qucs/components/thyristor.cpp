@@ -47,7 +47,7 @@ Thyristor::Thyristor()
 
   Props.append(new Property("Vbo", "400 V", false,
 	QObject::tr("breakover voltage")));
-  Props.append(new Property("Igt", "50 uA", true,
+  Props.append(new Property("Igt", "50 uA", false,
 	QObject::tr("gate trigger current")));
   Props.append(new Property("Cj0", "10 pF", false,
 	QObject::tr("parasitic capacitance")));

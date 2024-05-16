@@ -62,9 +62,9 @@ Coupler::Coupler()
   Model = "Coupler";
   Name  = "X";
 
-  Props.append(new Property("k", "0.7071", true,
+  Props.append(new Property("k", "0.7071", false,
 		QObject::tr("coupling factor")));
-  Props.append(new Property("phi", "180", true,
+  Props.append(new Property("phi", "180", false,
 		QObject::tr("phase shift of coupling path in degree")));
   Props.append(new Property("Z", "50 Ohm", false,
 		QObject::tr("reference impedance")));

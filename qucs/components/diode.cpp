@@ -25,11 +25,11 @@ Diode::Diode()
 {
   Description = QObject::tr("diode");
 
-  Props.append(new Property("Is", "1e-15 A", true,
+  Props.append(new Property("Is", "1e-15 A", false,
 	QObject::tr("saturation current")));
-  Props.append(new Property("N", "1", true,
+  Props.append(new Property("N", "1", false,
 	QObject::tr("emission coefficient")));
-  Props.append(new Property("Cj0", "10 fF", true,
+  Props.append(new Property("Cj0", "10 fF", false,
 	QObject::tr("zero-bias junction capacitance")));
   Props.append(new Property("M", "0.5", false,
 	QObject::tr("grading coefficient")));

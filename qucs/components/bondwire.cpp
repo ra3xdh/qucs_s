@@ -42,11 +42,11 @@ BondWire::BondWire()
   Model = "BOND";
   Name  = "Line";
 
-  Props.append(new Property("L", "3 mm", true,
+  Props.append(new Property("L", "3 mm", false,
 		QObject::tr("length of the wire")));
-  Props.append(new Property("D", "50 um", true,
+  Props.append(new Property("D", "50 um", false,
 		QObject::tr("diameter of the wire")));
-  Props.append(new Property("H", "2 mm", true,
+  Props.append(new Property("H", "2 mm", false,
 		QObject::tr("height above ground plane")));
   Props.append(new Property("rho", "0.022e-6", false,
 		QObject::tr("specific resistance of the metal")));
@@ -54,7 +54,7 @@ BondWire::BondWire()
 		QObject::tr("relative permeability of the metal")));
   Props.append(new Property("Model", "FREESPACE", false,
 	QObject::tr("bond wire model")+" [FREESPACE, MIRROR, DESCHARLES]"));
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 		QObject::tr("substrate")));
   Props.append(new Property("Temp", "26.85", false,
 		QObject::tr("simulation temperature in degree Celsius")));

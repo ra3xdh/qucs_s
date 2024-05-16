@@ -50,9 +50,9 @@ CircLine::CircLine()
   Model = "CIRCLINE";
   Name  = "Line";
 
-  Props.append(new Property("a", "2.95 mm", true,
+  Props.append(new Property("a", "2.95 mm", false,
 		QObject::tr("Radius")));
-  Props.append(new Property("L", "1500 mm", true,
+  Props.append(new Property("L", "1500 mm", false,
 		QObject::tr("Mechanical length of the line")));
   Props.append(new Property("er", "1", false,
 		QObject::tr("Relative permittivity of dielectric")));

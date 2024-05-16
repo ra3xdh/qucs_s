@@ -53,13 +53,13 @@ iPulse::iPulse()
   Name  = "I";
   SpiceModel = "I";
 
-  Props.append(new Property("I1", "0", true,
+  Props.append(new Property("I1", "0", false,
 		QObject::tr("current before and after the pulse")));
-  Props.append(new Property("I2", "1 A", true,
+  Props.append(new Property("I2", "1 A", false,
 		QObject::tr("current of the pulse")));
-  Props.append(new Property("T1", "0", true,
+  Props.append(new Property("T1", "0", false,
 		QObject::tr("start time of the pulse")));
-  Props.append(new Property("T2", "1 ms", true,
+  Props.append(new Property("T2", "1 ms", false,
 		QObject::tr("ending time of the pulse")));
   Props.append(new Property("Tr", "1 ns", false,
 		QObject::tr("rise time of the leading edge")));

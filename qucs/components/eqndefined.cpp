@@ -43,7 +43,7 @@ EqnDefined::EqnDefined()
 		QObject::tr("number of branches")));
 
   // last properties
-  Props.append(new Property("I1", "0", true,
+  Props.append(new Property("I1", "0", false,
 		QObject::tr("current equation") + " 1"));
   Props.append(new Property("Q1", "0", false,
 		QObject::tr("charge equation") + " 1"));

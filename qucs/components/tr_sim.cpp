@@ -43,11 +43,11 @@ TR_Sim::TR_Sim()
   SpiceModel = ".TRAN";
 
   // The index of the first 4 properties must not changed. Used in recreate().
-  Props.append(new Property("Type", "lin", true,
+  Props.append(new Property("Type", "lin", false,
 	QObject::tr("sweep type")+" [lin, log, list, const]"));
-  Props.append(new Property("Start", "0", true,
+  Props.append(new Property("Start", "0", false,
 	QObject::tr("start time in seconds")));
-  Props.append(new Property("Stop", "1 ms", true,
+  Props.append(new Property("Stop", "1 ms", false,
 	QObject::tr("stop time in seconds")));
   Props.append(new Property("Points", "200", false,
 	QObject::tr("number of simulation time steps")));

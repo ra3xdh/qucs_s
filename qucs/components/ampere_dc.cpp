@@ -44,7 +44,7 @@ Ampere_dc::Ampere_dc()
   Name  = "I";
   SpiceModel = "I";
 
-  Props.append(new Property("I", "1 mA", true,
+  Props.append(new Property("I", "1 mA", false,
 		QObject::tr("current in Ampere")));
 
   rotate();  // fix historical flaw

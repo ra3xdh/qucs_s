@@ -32,7 +32,7 @@ SParamFile::SParamFile()
   SpiceModel = "X";
 
   // must be the first property !!!
-  Props.append(new Property("File", "test.s1p", true,
+  Props.append(new Property("File", "test.s1p", false,
 		QObject::tr("name of the s parameter file")));
   Props.append(new Property("Data", "rectangular", false,
 		QObject::tr("data type")+" [rectangular, polar]"));

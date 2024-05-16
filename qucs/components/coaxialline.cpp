@@ -43,7 +43,7 @@ CoaxialLine::CoaxialLine()
   Model = "COAX";
   Name  = "Line";
 
-  Props.append(new Property("er", "2.29", true,
+  Props.append(new Property("er", "2.29", false,
 		QObject::tr("relative permittivity of dielectric")));
   Props.append(new Property("rho", "0.022e-6", false,
 		QObject::tr("specific resistance of conductor")));
@@ -53,7 +53,7 @@ CoaxialLine::CoaxialLine()
 		QObject::tr("inner diameter of shield")));
   Props.append(new Property("d", "0.9 mm", false,
 		QObject::tr("diameter of inner conductor")));
-  Props.append(new Property("L", "1500 mm", true,
+  Props.append(new Property("L", "1500 mm", false,
 		QObject::tr("mechanical length of the line")));
   Props.append(new Property("tand", "4e-4", false,
 		QObject::tr("loss tangent")));

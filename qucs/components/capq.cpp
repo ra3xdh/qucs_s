@@ -61,9 +61,9 @@ CapQ::CapQ()
   SpiceModel = "C";
   Name  = "CQ";
 
-  Props.append(new Property("C", "1 pF", true,
+  Props.append(new Property("C", "1 pF", false,
 		QObject::tr("Capacitance")));
-  Props.append(new Property("Q", "100", true,
+  Props.append(new Property("Q", "100", false,
 		QObject::tr("Quality factor")));
   Props.append(new Property("f", "100 MHz", false,
 		QObject::tr("Frequency at which Q is measured")));

@@ -47,7 +47,7 @@ circularloop::circularloop()
   Name  = "CIRCULARLOOP";
   Simulator = spicecompat::simQucsator;
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 		QObject::tr("Substrate")));
   Props.append(new Property("W", "25 um", false,
 		QObject::tr("Width of line")));

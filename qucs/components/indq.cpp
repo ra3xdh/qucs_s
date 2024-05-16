@@ -62,9 +62,9 @@ IndQ::IndQ()
   SpiceModel = "L";
   Name  = "LQ";
 
-  Props.append(new Property("L", "1 nH", true,
+  Props.append(new Property("L", "1 nH", false,
 		QObject::tr("Inductance")));
-  Props.append(new Property("Q", "100", true,
+  Props.append(new Property("Q", "100", false,
 		QObject::tr("Quality factor")));
   Props.append(new Property("f", "100 MHz", false,
 		QObject::tr("Frequency at which Q is measured")));

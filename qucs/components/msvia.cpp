@@ -43,9 +43,9 @@ MSvia::MSvia()
   Model = "MVIA";
   Name  = "MS";
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 		QObject::tr("substrate")));
-  Props.append(new Property("D", "1 mm", true,
+  Props.append(new Property("D", "1 mm", false,
 		QObject::tr("diameter of round via conductor")));
   Props.append(new Property("Temp", "26.85", false,
 	QObject::tr("simulation temperature in degree Celsius")));

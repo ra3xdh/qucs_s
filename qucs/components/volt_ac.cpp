@@ -46,7 +46,7 @@ Volt_ac::Volt_ac()
   SpiceModel = "V";
   Name  = "V";
 
-  Props.append(new Property("U", "1 V", true,
+  Props.append(new Property("U", "1 V", false,
 		QObject::tr("peak voltage in Volts")));
   Props.append(new Property("f", "1 kHz", false,
 		QObject::tr("frequency in Hertz")));

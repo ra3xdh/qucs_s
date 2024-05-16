@@ -24,13 +24,13 @@ JFET::JFET() {
     Description = QObject::tr("junction field-effect transistor");
 
     // this must be the first property in the list !!!
-    Props.append(new Property("Type", "nfet", true,
+    Props.append(new Property("Type", "nfet", false,
                               QObject::tr("polarity") + " [nfet, pfet]"));
-    Props.append(new Property("Vt0", "-2.0 V", true,
+    Props.append(new Property("Vt0", "-2.0 V", false,
                               QObject::tr("threshold voltage")));
-    Props.append(new Property("Beta", "1e-4", true,
+    Props.append(new Property("Beta", "1e-4", false,
                               QObject::tr("transconductance parameter")));
-    Props.append(new Property("Lambda", "0.0", true,
+    Props.append(new Property("Lambda", "0.0", false,
                               QObject::tr("channel-length modulation parameter")));
     Props.append(new Property("Rd", "0.0", false,
                               QObject::tr("parasitic drain resistance")));

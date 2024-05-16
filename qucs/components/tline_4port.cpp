@@ -51,9 +51,9 @@ TLine_4Port::TLine_4Port()
   Model = "TLIN4P";
   Name  = "Line";
 
-  Props.append(new Property("Z", "50 Ohm", true,
+  Props.append(new Property("Z", "50 Ohm", false,
 		QObject::tr("characteristic impedance")));
-  Props.append(new Property("L", "1 mm", true,
+  Props.append(new Property("L", "1 mm", false,
 		QObject::tr("electrical length of the line")));
   Props.append(new Property("Alpha", "0 dB", false,
 		QObject::tr("attenuation factor per length in 1/m")));

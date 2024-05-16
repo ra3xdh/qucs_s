@@ -40,7 +40,7 @@ Digi_Sim::Digi_Sim()
   Name  = "Digi";
 
   // Property list must keeps its order !
-  Props.append(new Property("Type", "TruthTable", true,
+  Props.append(new Property("Type", "TruthTable", false,
 	QObject::tr("type of simulation")+" [TruthTable, TimeList]"));
   Props.append(new Property("time", "10 ns", false,
 	QObject::tr("duration of TimeList simulation")));

@@ -62,7 +62,7 @@ CCCS::CCCS()
   Name  = "SRC";
   SpiceModel = "F";
 
-  Props.append(new Property("G", "1", true,
+  Props.append(new Property("G", "1", false,
 		QObject::tr("forward transfer factor")));
   Props.append(new Property("T", "0", false, QObject::tr("delay time (Qucsator only)")));
 }

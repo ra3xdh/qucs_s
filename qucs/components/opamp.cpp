@@ -50,7 +50,7 @@ OpAmp::OpAmp()
   Name  = "OP";
   SpiceModel = "B";
 
-  Props.append(new Property("G", "1e6", true,
+  Props.append(new Property("G", "1e6", false,
 		QObject::tr("voltage gain")));
   Props.append(new Property("Umax", "15 V", false,
 	QObject::tr("absolute value of maximum and minimum output voltage")));

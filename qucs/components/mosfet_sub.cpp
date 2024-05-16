@@ -25,16 +25,16 @@ Basic_MOSFET::Basic_MOSFET()
   // these must be the first properties in the list !!!
   Props.append(new Property("Type", "nfet", false,
 	QObject::tr("polarity")+" [nfet, pfet]"));
-  Props.append(new Property("Vt0", "1.0 V", true,
+  Props.append(new Property("Vt0", "1.0 V", false,
 	QObject::tr("zero-bias threshold voltage")));
 
-  Props.append(new Property("Kp", "2e-5", true,
+  Props.append(new Property("Kp", "2e-5", false,
 	QObject::tr("transconductance coefficient in A/V^2")));
   Props.append(new Property("Gamma", "0.0", false,
 	QObject::tr("bulk threshold in sqrt(V)")));
   Props.append(new Property("Phi", "0.6 V", false,
 	QObject::tr("surface potential")));
-  Props.append(new Property("Lambda", "0.0", true,
+  Props.append(new Property("Lambda", "0.0", false,
 	QObject::tr("channel-length modulation parameter in 1/V")));
   Props.append(new Property("Rd", "0.0 Ohm", false,
 	QObject::tr("drain ohmic resistance")));

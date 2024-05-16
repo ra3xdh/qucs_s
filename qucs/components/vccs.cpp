@@ -63,7 +63,7 @@ VCCS::VCCS()
   SpiceModel = "G";
   Name  = "SRC";
 
-  Props.append(new Property("G", "1 S", true,
+  Props.append(new Property("G", "1 S", false,
 		QObject::tr("forward transconductance")));
   Props.append(new Property("T", "0", false, QObject::tr("delay time (Qucsator only)")));
 }

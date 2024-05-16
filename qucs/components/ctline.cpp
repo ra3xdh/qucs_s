@@ -53,11 +53,11 @@ CoupledTLine::CoupledTLine()
   Model = "CTLIN";
   Name  = "Line";
 
-  Props.append(new Property("Ze", "50 Ohm", true,
+  Props.append(new Property("Ze", "50 Ohm", false,
 		QObject::tr("characteristic impedance of even mode")));
-  Props.append(new Property("Zo", "50 Ohm", true,
+  Props.append(new Property("Zo", "50 Ohm", false,
 		QObject::tr("characteristic impedance of odd mode")));
-  Props.append(new Property("L", "1 mm", true,
+  Props.append(new Property("L", "1 mm", false,
 		QObject::tr("electrical length of the line")));
   Props.append(new Property("Ere", "1", false,
 		QObject::tr("relative dielectric constant of even mode")));

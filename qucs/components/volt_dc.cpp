@@ -45,7 +45,7 @@ Volt_dc::Volt_dc()
   Name  = "V";
   SpiceModel = "V";
 
-  Props.append(new Property("U", "1 V", true,
+  Props.append(new Property("U", "1 V", false,
 		QObject::tr("voltage in Volts")));
 
   rotate();  // fix historical flaw

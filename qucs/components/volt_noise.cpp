@@ -44,7 +44,7 @@ Volt_noise::Volt_noise()
   Model = "Vnoise";
   Name  = "V";
 
-  Props.append(new Property("u", "1e-6", true,
+  Props.append(new Property("u", "1e-6", false,
 		QObject::tr("voltage power spectral density in V^2/Hz")));
   Props.append(new Property("e", "0", false,
 		QObject::tr("frequency exponent")));

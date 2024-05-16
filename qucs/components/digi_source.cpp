@@ -52,7 +52,7 @@ Digi_Source::Digi_Source()
   icon_dx = 6;
 
   // This property must stay in this order !
-  Props.append(new Property("Num", "1", true,
+  Props.append(new Property("Num", "1", false,
 		QObject::tr("number of the port")));
   Props.append(new Property("init", "low", false,
 		QObject::tr("initial output value")+" [low, high]"));

@@ -47,13 +47,13 @@ SP_Sim::SP_Sim()
   SpiceModel = ".SP";
 
   // The index of the first 4 properties must not changed. Used in recreate().
-  Props.append(new Property("Type", "lin", true,
+  Props.append(new Property("Type", "lin", false,
 	QObject::tr("sweep type")+" [lin, log, list, const]"));
-  Props.append(new Property("Start", "1 MHz", true,
+  Props.append(new Property("Start", "1 MHz", false,
 	QObject::tr("start frequency in Hertz")));
-  Props.append(new Property("Stop", "100 MHz", true,
+  Props.append(new Property("Stop", "100 MHz", false,
 	QObject::tr("stop frequency in Hertz")));
-  Props.append(new Property("Points", "200", true,
+  Props.append(new Property("Points", "200", false,
 	QObject::tr("number of simulation steps")));
   Props.append(new Property("Noise", "no", false,
 	QObject::tr("calculate noise parameters")+

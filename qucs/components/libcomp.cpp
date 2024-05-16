@@ -41,9 +41,9 @@ LibComp::LibComp()
   Name  = "X";
   SpiceModel = "X";
 
-  Props.append(new Property("Lib", "", true,
+  Props.append(new Property("Lib", "", false,
 		QObject::tr("name of qucs library file")));
-  Props.append(new Property("Comp", "", true,
+  Props.append(new Property("Comp", "", false,
 		QObject::tr("name of component in library")));
 }
 

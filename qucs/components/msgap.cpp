@@ -49,13 +49,13 @@ MSgap::MSgap()
   Model = "MGAP";
   Name  = "MS";
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 	QObject::tr("name of substrate definition")));
-  Props.append(new Property("W1", "1 mm", true,
+  Props.append(new Property("W1", "1 mm", false,
 	QObject::tr("width of the line 1")));
-  Props.append(new Property("W2", "1 mm", true,
+  Props.append(new Property("W2", "1 mm", false,
 	QObject::tr("width of the line 2")));
-  Props.append(new Property("S", "1 mm", true,
+  Props.append(new Property("S", "1 mm", false,
 	QObject::tr("spacing between the microstrip ends")));
   Props.append(new Property("MSModel", "Hammerstad", false,
 	QObject::tr("quasi-static microstrip model")+

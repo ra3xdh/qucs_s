@@ -46,9 +46,9 @@ MScorner::MScorner()
   Model = "MCORN";
   Name  = "MS";
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 		QObject::tr("substrate")));
-  Props.append(new Property("W", "1 mm", true,
+  Props.append(new Property("W", "1 mm", false,
 		QObject::tr("width of line")));
 }
 

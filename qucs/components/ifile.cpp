@@ -52,7 +52,7 @@ iFile::iFile()
   Name  = "I";
   SpiceModel = "A";
 
-  Props.append(new Property("File", "ifile.dat", true,
+  Props.append(new Property("File", "ifile.dat", false,
 		QObject::tr("name of the sample file")));
   Props.append(new Property("Interpolator", "linear", false,
         QObject::tr("interpolation type")+" [hold, linear]"));

@@ -68,7 +68,7 @@ vcresistor::vcresistor()
   Model = "vcresistor";
   Name  = "VCR";
 
-  Props.append(new Property("gain", "1", true,
+  Props.append(new Property("gain", "1", false,
 		QObject::tr("resistance gain")));
 }
 

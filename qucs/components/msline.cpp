@@ -42,11 +42,11 @@ MSline::MSline()
   Model = "MLIN";
   Name  = "MS";
 
-  Props.append(new Property("Subst", "Subst1", true,
+  Props.append(new Property("Subst", "Subst1", false,
 	QObject::tr("name of substrate definition")));
-  Props.append(new Property("W", "1 mm", true,
+  Props.append(new Property("W", "1 mm", false,
 	QObject::tr("width of the line")));
-  Props.append(new Property("L", "10 mm", true,
+  Props.append(new Property("L", "10 mm", false,
 	QObject::tr("length of the line")));
   Props.append(new Property("Model", "Hammerstad", false,
 	QObject::tr("quasi-static microstrip model")+

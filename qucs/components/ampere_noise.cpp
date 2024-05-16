@@ -51,7 +51,7 @@ Ampere_noise::Ampere_noise()
   Model = "Inoise";
   Name  = "I";
 
-  Props.append(new Property("i", "1e-6", true,
+  Props.append(new Property("i", "1e-6", false,
 		QObject::tr("current power spectral density in A^2/Hz")));
   Props.append(new Property("e", "0", false,
 		QObject::tr("frequency exponent")));

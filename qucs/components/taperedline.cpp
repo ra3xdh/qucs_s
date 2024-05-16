@@ -50,13 +50,13 @@ taperedline::taperedline()
   Model = "TAPEREDLINE";
   Name  = "Line";
 
-  Props.append(new Property("Z1", "50 Ohm", true,
+  Props.append(new Property("Z1", "50 Ohm", false,
 		QObject::tr("Characteristic impedance at port 1")));
-  Props.append(new Property("Z2", "100 Ohm", true,
+  Props.append(new Property("Z2", "100 Ohm", false,
 		QObject::tr("Characteristic impedance at port 2")));
-  Props.append(new Property("L", "75 mm", true,
+  Props.append(new Property("L", "75 mm", false,
 		QObject::tr("Line length")));
-  Props.append(new Property("Weighting", "Exponential", true,
+  Props.append(new Property("Weighting", "Exponential", false,
 		QObject::tr("Taper weighting")+
 		" [Exponential, Linear, Triangular, Klopfenstein]"));
   Props.append(new Property("Gamma_max", "0.1", false,
