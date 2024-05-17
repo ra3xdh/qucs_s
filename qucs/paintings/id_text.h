@@ -49,6 +49,7 @@ public:
   QString saveCpp();
   QString saveJSON();
   void paint(ViewPainter*);
+  void paint(QPainter* painter) override;
   bool getSelected(float, float, float);
 
   void rotate(int, int);

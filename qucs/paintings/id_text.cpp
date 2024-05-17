@@ -69,6 +69,36 @@ void ID_Text::paint(ViewPainter *p)
   y2 = int(float(y2) / p->Scale);
 }
 
+void ID_Text::paint(QPainter* painter) {
+  painter->save();
+  painter->translate(cx, cy);
+
+  painter->setPen(QPen(Qt::black,1));
+
+  QRect r;
+  painter->drawText(QRect(0, 0, 0, 0), Qt::TextDontClip, Prefix, &r);
+  x2 = r.width();
+  y2 = r.height();
+
+  painter->drawText(QRect(0, y2, 0, 0), Qt::TextDontClip, "File=name", &r);
+  x2 = std::max(x2, r.width());
+  y2 += r.height();
+
+  QList<SubParameter *>::const_iterator it;
+  for(it = Parameter.constBegin(); it != Parameter.constEnd(); it++) {
+    if((*it)->display) {
+      painter->drawText(QRect(0, y2, 0, 0), Qt::TextDontClip, (*it)->Name, &r);
+      x2 = std::max(x2, r.width());
+      y2 += r.height();
+    }
+  }
+
+  if(isSelected) {
+    painter->setPen(QPen(Qt::darkGray,3));
+    painter->drawRoundedRect(-4, -4, x2+8, y2+8, 4.0, 4.0);
+  }
+}
+
 // --------------------------------------------------------------------------
 void ID_Text::paintScheme(Schematic *p)
 {
