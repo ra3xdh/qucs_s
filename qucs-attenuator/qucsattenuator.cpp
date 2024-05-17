@@ -394,6 +394,8 @@ void QucsAttenuator::slotHelpAbout()
     tr("Copyright (C) 2006 by")+" Toyoyuki Ishikawa"
     "\n"+
     tr("Copyright (C) 2006 by")+" Stefan Jahn"
+    "\n"+
+    tr("Copyright (C) 2024 by")+" Andrés Martínez Mera"
     "\n"
     "\nThis is free software; see the source for copying conditions."
     "\nThere is NO warranty; not even for MERCHANTABILITY or "

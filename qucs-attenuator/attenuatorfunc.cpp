@@ -3,7 +3,7 @@
 **     attenuatorfunc.cpp
 **
 **     since 2006/6/14
-**
+**     updated on 2024/05/17
 **
 **
 **
