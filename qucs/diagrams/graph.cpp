@@ -96,6 +96,22 @@ void Graph::paintLines(ViewPainter *p, int x0, int y0)
   }
 }
 
+void Graph::paintLines(QPainter* painter) {
+  switch(Style) {
+    case GRAPHSTYLE_STAR:
+      drawStarSymbols(painter);
+      break;
+    case GRAPHSTYLE_CIRCLE:
+      drawCircleSymbols(painter);
+      break;
+    case GRAPHSTYLE_ARROW:
+      drawArrowSymbols(painter);
+      break;
+    default:
+      drawLines(painter);
+  }
+}
+
 // ---------------------------------------------------------------------
 QString Graph::save()
 {

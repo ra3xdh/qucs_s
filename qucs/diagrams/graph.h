@@ -127,6 +127,7 @@ public:
 
   void    paint(ViewPainter*, int, int);
   void    paintLines(ViewPainter*, int, int);
+  void    paintLines(QPainter* painter);
   QString save();
   bool    load(const QString&);
   int     getSelected(int, int);
