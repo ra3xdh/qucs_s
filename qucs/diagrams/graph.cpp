@@ -411,4 +411,20 @@ void Graph::drawArrowSymbols(QPainter* painter) const {
   }
 }
 
+void Graph::drawStarSymbols(QPainter* painter) const {
+  for (auto point : *this) {
+    if (!point.isPt()) {
+      continue;
+    }
+    painter->save();
+    painter->translate(point.getScrX(), point.getScrY());
+    painter->drawLine(-5, 0, 5, 0); // horizontal line
+    painter->rotate(60);
+    painter->drawLine(-5, 0, 5, 0); // upper left to lower right
+    painter->rotate(-120);
+    painter->drawLine(-5, 0, 5, 0); // upper right to lower left
+    painter->restore();
+  }
+}
+
 // vim:ts=8:sw=2:et
