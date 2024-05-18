@@ -536,6 +536,112 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
     PostedPaintEvents.clear();
 }
 
+void Schematic::drawElements(QPainter* painter) {
+    for (auto* component : *Components) {
+        component->paint(painter);
+    }
+
+    for (auto* wire : *Wires) {
+        wire->paint(painter);
+        if (wire->Label) {
+            wire->Label->paint(painter); // separate because of paintSelected
+        }
+    }
+
+    for (auto* node : *Nodes) {
+        node->paint(painter);
+        if (node->Label) {
+            node->Label->paint(painter); // separate because of paintSelected
+        }
+    }
+
+    for (auto* diagram : *Diagrams) {
+        diagram->paint(painter);
+    }
+
+    for (auto* painting : *Paintings) {
+        painting->paint(painter);
+    }
+}
+
+void Schematic::drawDcBiasPoints(QPainter* painter) {
+    painter->save();
+    int x, y, z;
+    for (auto* pn : *Nodes) {
+        if (pn->Name.isEmpty())
+            continue;
+        x = pn->cx;
+        y = pn->cy + 4;
+        z = pn->x1;
+        if (z & 1)
+            x -= painter->fontMetrics().boundingRect(pn->Name).width();
+        if (!(z & 2)) {
+            y -= (painter->fontMetrics().lineSpacing() >> 1) + 4;
+            if (z & 1)
+                x -= 4;
+            else
+                x += 4;
+        }
+        if (z & 0x10)
+            painter->setPen(Qt::darkGreen); // green for currents
+        else
+            painter->setPen(Qt::blue); // blue for voltages
+        painter->drawText(x, y, pn->Name);
+    }
+    painter->restore();
+}
+
+void Schematic::drawPostPaintEvents(QPainter* painter) {
+    painter->save();
+    /*
+   * The following events used to be drawn from mouseactions.cpp, but since Qt4
+   * Paint actions can only be called from within the paint event, so they
+   * are put into a QList (PostedPaintEvents) and processed here
+   */
+    for (auto p : PostedPaintEvents) {
+        // QPainter painter2(viewport()); for if(p.PaintOnViewport)
+        QPen pen(Qt::black);
+        painter->setPen(Qt::black);
+        switch (p.pe) {
+        case _NotRop:
+            painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+            break;
+        case _Rect:
+            painter->drawRect(p.x1, p.y1, p.x2, p.y2);
+            break;
+        case _SelectionRect:
+            pen.setStyle(Qt::DashLine);
+            pen.setColor(QColor(50, 50, 50, 100));
+            painter->setPen(pen);
+            painter->fillRect(p.x1, p.y1, p.x2, p.y2, QColor(200, 220, 240, 100));
+            painter->drawRect(p.x1, p.y1, p.x2, p.y2);
+            break;
+        case _Line:
+            painter->drawLine(p.x1, p.y1, p.x2, p.y2);
+            break;
+        case _Ellipse:
+            painter->drawEllipse(p.x1, p.y1, p.x2, p.y2);
+            break;
+        case _Arc:
+            painter->drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
+            break;
+        case _DotLine:
+            painter->setPen(Qt::DotLine);
+            painter->drawLine(p.x1, p.y1, p.x2, p.y2);
+            break;
+        case _DotRect:
+            painter->setPen(Qt::DotLine);
+            painter->drawRect(p.x1, p.y1, p.x2, p.y2);
+            break;
+        case _Translate:; //painter2.translate(p.x1, p.y1);
+        case _Scale:; //painter2.scale(p.x1,p.y1);
+            break;
+        }
+    }
+    PostedPaintEvents.clear();
+    painter->restore();
+}
+
 void Schematic::PostPaintEvent(
     PE pe, int x1, int y1, int x2, int y2, int a, int b, bool PaintOnViewport)
 {

@@ -366,6 +366,9 @@ private:
     @return new scale value
   */
   double renderModel(double scale, QRect newModelBounds, QPoint modelPlaneCoords, QPoint viewportCoords);
+  void drawElements(QPainter* painter);
+  void drawDcBiasPoints(QPainter* painter);
+  void drawPostPaintEvents(QPainter* painter);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
