@@ -168,6 +168,7 @@ private: // painting
   void drawStarSymbols(int, int, ViewPainter*) const;
   void drawCircleSymbols(int, int, ViewPainter*) const;
   void drawArrowSymbols(int, int, ViewPainter*) const;
+  void drawCircleSymbols(QPainter* painter) const;
 public: // marker related
   void createMarkerText() const;
   std::pair<double,double> findSample(std::vector<double>&) const;

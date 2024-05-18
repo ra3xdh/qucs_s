@@ -377,4 +377,15 @@ double Graph::ScrPt::getDep() const
   return dep;
 }
 
+void Graph::drawCircleSymbols(QPainter* painter) const {
+  constexpr double radius = 4.0;
+
+  for (auto point : *this) {
+    if (!point.isPt()) {
+      continue;
+    }
+    painter->drawEllipse({point.getScrX(), point.getScrY()}, radius, radius);
+  }
+}
+
 // vim:ts=8:sw=2:et
