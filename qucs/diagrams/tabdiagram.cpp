@@ -51,6 +51,10 @@ void TabDiagram::paint(ViewPainter *p)
     paintDiagram(p);
 }
 
+void TabDiagram::paint(QPainter* painter) {
+    paintDiagram(painter);
+}
+
 // ------------------------------------------------------------
 void TabDiagram::paintDiagram(ViewPainter *p)
 {
@@ -122,6 +126,81 @@ void TabDiagram::paintDiagram(ViewPainter *p)
     p->drawResizeRect(cx+x2, cy-y2);
     p->drawResizeRect(cx+x2, cy);
   }
+}
+
+void TabDiagram::paintDiagram(QPainter *painter) {
+  painter->save();
+  painter->translate(cx, cy);
+
+  for (qucs::Line *pl : Lines) {
+    painter->setPen(pl->style);
+    painter->drawLine(pl->x1, -pl->y1, pl->x2, -pl->y2);
+  }
+
+  if(x1 > 0) {  // paint scroll bar ?
+    QPolygon Points;
+    int y = y2 - 20;
+    // draw scroll bar
+    int by = -y + yAxis.numGraphs;
+    painter->fillRect(-14, by+1, 12, zAxis.numGraphs-1, QColor(192, 192, 192));
+
+    // draw frame for scroll bar
+    painter->setPen(QPen(Qt::black,0));
+    painter->drawLine(-17, -y2, -17, 0);
+    painter->drawLine(-17, -y2, 0, -y2);
+    painter->drawLine(-17, 0, 0, 0);
+    y += 2;
+    painter->drawLine(-17, -y, 0, -y);
+    y -= y2;
+    painter->drawLine(-17, +y, 0, +y);
+
+    // draw the arrows above and below the scroll bar
+    painter->setBrush(QColor(192, 192, 192));
+    painter->setPen(QColor(152, 152, 152));
+    painter->drawLine(-2, by, -2, by + zAxis.numGraphs);
+    painter->drawLine(-15, by + zAxis.numGraphs, -2, by + zAxis.numGraphs);
+
+    int x = -14;
+    y = -y2 + 3;
+    int dx = -3;
+    int dy = -y2 + 14;
+    Points.setPoints(3, x, dy, (x+dx)>>1, y, dx, dy);
+    painter->drawConvexPolygon(Points);
+    painter->setPen(QColor(224, 224, 224));
+    painter->drawLine(x, dy, (x+dx)>>1, y);
+    painter->drawLine(-15, by, -2, by);
+    painter->drawLine(-15, by, -15, by + zAxis.numGraphs);
+
+    painter->setPen(QColor(152, 152, 152));
+    dy -= y;
+    x = -14;
+    y = -3;
+    Points.setPoints(3, x, y-dy, (x+dx)>>1, y, dx, y-dy);
+    painter->drawConvexPolygon(Points);
+    painter->setPen(QColor(208, 208, 208));
+    painter->drawLine(x, y-dy, (x+dx)>>1, y);
+    painter->setPen(QColor(224, 224, 224));
+    painter->drawLine(x, y-dy, dx, y-dy);
+
+    painter->setBrush(QBrush(Qt::NoBrush));
+  }
+
+
+  painter->setPen(Qt::black);
+  for (Text *pt : Texts) {
+    painter->drawText(pt->x, -pt->y, 0, 0, Qt::TextDontClip, pt->s);
+  }
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,3));
+    painter->drawRect(-5, -y2-5, x2+10, y2+10);
+    painter->setPen(QPen(Qt::darkRed,2));
+    misc::draw_resize_handle(painter, {0, -y2});
+    misc::draw_resize_handle(painter, {0, 0});
+    misc::draw_resize_handle(painter, {x2, -y2});
+    misc::draw_resize_handle(painter, {x2, 0});
+  }
+  painter->restore();
 }
 
 // ------------------------------------------------------------
