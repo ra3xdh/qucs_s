@@ -17,7 +17,6 @@
 #include "ellipse.h"
 #include "filldialog.h"
 #include "schematic.h"
-#include "viewpainter.h"
 
 #include <QPainter>
 #include <QPushButton>
@@ -41,30 +40,6 @@ qucs::Ellipse::Ellipse(bool _filled)
 
 qucs::Ellipse::~Ellipse()
 {
-}
-
-// --------------------------------------------------------------------------
-void qucs::Ellipse::paint(ViewPainter *p)
-{
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
-    if(filled)  p->Painter->setBrush(Brush);
-    p->drawEllipse(cx, cy, x2, y2);
-    p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
-    p->Painter->setBrush(Qt::NoBrush);
-    p->drawEllipse(cx, cy, x2, y2);
-
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy+y2);  // markers for changing the size
-    p->drawResizeRect(cx, cy);
-    p->drawResizeRect(cx+x2, cy+y2);
-    p->drawResizeRect(cx+x2, cy);
-    return;
-  }
-  p->Painter->setPen(Pen);
-  if(filled)  p->Painter->setBrush(Brush);
-  p->drawEllipse(cx, cy, x2, y2);
-  p->Painter->setBrush(Qt::NoBrush); // no filling for the next paintings
 }
 
 void qucs::Ellipse::paint(QPainter *painter) {

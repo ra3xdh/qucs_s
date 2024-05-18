@@ -19,7 +19,6 @@
 #define WIRELABEL_H
 
 #include "element.h"
-#include "viewpainter.h"
 
 #include <QString>
 
@@ -44,7 +43,6 @@ public:
   Conductor *pOwner;  // Wire or Node where label belongs to
   QString Name, initValue;
 
-  void    paint(ViewPainter*);
   void    paint(QPainter* painter) const;
   void    rotate();
   QString save();

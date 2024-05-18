@@ -46,86 +46,8 @@ TabDiagram::~TabDiagram()
 {
 }
 
-void TabDiagram::paint(ViewPainter *p)
-{
-    paintDiagram(p);
-}
-
 void TabDiagram::paint(QPainter* painter) {
     paintDiagram(painter);
-}
-
-// ------------------------------------------------------------
-void TabDiagram::paintDiagram(ViewPainter *p)
-{
-  // paint all lines
-  for (qucs::Line *pl : Lines) {
-    p->Painter->setPen(pl->style);
-    p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
-  }
-
-  if(x1 > 0) {  // paint scroll bar ?
-    int   x, y, dx, dy;
-    QPolygon Points;
-    y = y2 - 20;
-    // draw scroll bar
-    int by = cy-y + yAxis.numGraphs;
-    p->fillRect(cx-14, by+1, 12, zAxis.numGraphs-1, QColor(192, 192, 192));
-
-    // draw frame for scroll bar
-    p->Painter->setPen(QPen(Qt::black,0));
-    p->drawLine(cx-17, cy-y2, cx-17, cy);
-    p->drawLine(cx-17, cy-y2, cx, cy-y2);
-    p->drawLine(cx-17, cy, cx, cy);
-    y += 2;
-    p->drawLine(cx-17, cy-y, cx, cy-y);
-    y -= y2;
-    p->drawLine(cx-17, cy+y, cx, cy+y);
-
-    // draw the arrows above and below the scroll bar
-    p->Painter->setBrush(QColor(192, 192, 192));
-    p->Painter->setPen(QColor(152, 152, 152));
-    p->drawLine(cx-2, by, cx-2, by + zAxis.numGraphs);
-    p->drawLine(cx-15, by + zAxis.numGraphs, cx-2, by + zAxis.numGraphs);
-
-    p->map(cx-14, cy-y2+3, x, y);
-    p->map(cx-3,  cy-y2+14, dx, dy);
-    Points.setPoints(3, x, dy, (x+dx)>>1, y, dx, dy);
-    p->Painter->drawConvexPolygon(Points);
-    p->Painter->setPen(QColor(224, 224, 224));
-    p->Painter->drawLine(x, dy, (x+dx)>>1, y);
-    p->drawLine(cx-15, by, cx-2, by);
-    p->drawLine(cx-15, by, cx-15, by + zAxis.numGraphs);
-
-    p->Painter->setPen(QColor(152, 152, 152));
-    dy -= y;
-    p->map(cx-14,  cy-3, x, y);
-    Points.setPoints(3, x, y-dy, (x+dx)>>1, y, dx, y-dy);
-    p->Painter->drawConvexPolygon(Points);
-    p->Painter->setPen(QColor(208, 208, 208));
-    p->Painter->drawLine(x, y-dy, (x+dx)>>1, y);
-    p->Painter->setPen(QColor(224, 224, 224));
-    p->Painter->drawLine(x, y-dy, dx, y-dy);
-
-    p->Painter->setBrush(QBrush(Qt::NoBrush));
-  }
-
-
-  p->Painter->setPen(Qt::black);
-  // write whole text
-  for (Text *pt : Texts)
-    p->drawText(pt->s, cx+pt->x, cy-pt->y);
-
-
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->drawRect(cx-5, cy-y2-5, x2+10, y2+10);
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy-y2);  // markers for changing the size
-    p->drawResizeRect(cx, cy);
-    p->drawResizeRect(cx+x2, cy-y2);
-    p->drawResizeRect(cx+x2, cy);
-  }
 }
 
 void TabDiagram::paintDiagram(QPainter *painter) {

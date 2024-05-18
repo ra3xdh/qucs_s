@@ -40,7 +40,6 @@ public:
   QString save();
   QString saveCpp();
   QString saveJSON();
-  void paint(ViewPainter*);
   void paint(QPainter* painter);
   bool getSelected(float, float, float);
   void Bounding(int&, int&, int&, int&);

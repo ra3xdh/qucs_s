@@ -45,83 +45,8 @@ TimingDiagram::~TimingDiagram()
 {
 }
 
-void TimingDiagram::paint(ViewPainter *p)
-{
-    paintDiagram(p);
-}
-
 void TimingDiagram::paint(QPainter *painter) {
     paintDiagram(painter);
-}
-
-// ------------------------------------------------------------
-void TimingDiagram::paintDiagram(ViewPainter *p)
-{
-  // paint all lines
-  for(qucs::Line *pl : Lines) {
-    p->Painter->setPen(pl->style);
-    p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
-  }
-
-  p->Painter->setPen(Qt::black);
-  // write whole text
-  for(Text *pt : Texts)
-    p->drawText(pt->s, cx+pt->x, cy-pt->y);
-
-
-  if(y1 > 0) {  // paint scroll bar ?
-    int   x, y, dx, dy;
-    QPolygon Points;
-    // draw scroll bar
-    p->fillRect(cx+yAxis.numGraphs, cy+2, zAxis.numGraphs, 14, QColor(192, 192, 192));
-
-    int bx = cx+yAxis.numGraphs+zAxis.numGraphs;
-    // draw frame for scroll bar
-    p->Painter->setPen(QPen(Qt::black,0));
-    p->drawLine(cx+xAxis.numGraphs, cy, cx+xAxis.numGraphs, cy+17);
-    p->drawLine(cx+xAxis.numGraphs+17, cy, cx+xAxis.numGraphs+17, cy+17);
-    p->drawLine(cx+xAxis.numGraphs, cy+17, cx+x2, cy+17);
-    p->drawLine(cx+x2, cy, cx+x2, cy+17);
-    p->drawLine(cx+x2-17, cy, cx+x2-17, cy+17);
-
-    // draw the arrows above and below the scroll bar
-    p->Painter->setBrush(QColor(192, 192, 192));
-    p->Painter->setPen(QColor(152, 152, 152));
-    p->drawLine(cx+yAxis.numGraphs, cy+15, bx, cy+15);
-    p->drawLine(bx, cy+2, bx, cy+15);
-
-    p->map(cx+xAxis.numGraphs+3,  cy+3, x, y);
-    p->map(cx+xAxis.numGraphs+14, cy+14, dx, dy);
-    Points.setPoints(3, x, (y+dy)>>1, dx, y, dx, dy);
-    p->Painter->drawConvexPolygon(Points);
-    p->Painter->setPen(QColor(224, 224, 224));
-    p->Painter->drawLine(x, (y+dy)>>1, dx, y);
-    p->drawLine(cx+yAxis.numGraphs, cy+2, bx, cy+2);
-    p->drawLine(cx+yAxis.numGraphs, cy+2, cx+yAxis.numGraphs, cy+15);
-
-    p->Painter->setPen(QColor(152, 152, 152));
-    dx -= x;
-    p->map(cx+x2-3,  cy+3, x, y);
-    Points.setPoints(3, x, (y+dy)>>1, x-dx, y, x-dx, dy);
-    p->Painter->drawConvexPolygon(Points);
-    p->Painter->setPen(QColor(208, 208, 208));
-    p->Painter->drawLine(x-dx, y, x, (y+dy)>>1);
-    p->Painter->setPen(QColor(224, 224, 224));
-    p->Painter->drawLine(x-dx, y, x-dx, dy);
-
-    p->Painter->setBrush(QBrush(Qt::NoBrush));
-  }
-
-
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->drawRect(cx-5, cy-y2-5, x2+10, y2+10);
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy-y2);  // markers for changing the size
-    p->drawResizeRect(cx, cy);
-    p->drawResizeRect(cx+x2, cy-y2);
-    p->drawResizeRect(cx+x2, cy);
-  }
 }
 
 void TimingDiagram::paintDiagram(QPainter *painter) {

@@ -21,7 +21,6 @@
 #include "main.h"
 #include "qucs.h"
 #include "schematic.h"
-#include "viewpainter.h"
 #include "module.h"
 #include "misc.h"
 
@@ -186,165 +185,6 @@ bool Component::getSelected(int x_, int y_) {
                     return true;
 
     return false;
-}
-
-// -------------------------------------------------------
-void Component::paint(ViewPainter *p) {
-    int x, y, a, b, xb, yb;
-    QFont f = p->Painter->font();   // save current font
-    QFont newFont = f;
-    if (Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
-        newFont.setPointSizeF(p->Scale * Texts.first()->Size);
-        newFont.setWeight(QFont::DemiBold);
-        p->Painter->setFont(newFont);
-        p->map(cx, cy, x, y);
-
-        if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-            if ((Model == ".CUSTOMSIM") || (Model == ".DISTO")
-                || (Model == ".NOISE") || (Model == ".PZ") ||
-                (Model == ".SENS") || (Model == ".SENS_AC") ||
-                (Model == ".FFT"))
-                p->Painter->setPen(QPen(Qt::blue, 2));
-            else if ((Model == ".XYCESCR") || (Model == ".SENS_XYCE")
-                     || (Model == ".SENS_TR_XYCE"))
-                p->Painter->setPen(QPen(Qt::darkGreen, 2));
-            else if (Model == ".FOURIER") p->Painter->setPen(QPen(Qt::darkRed, 2));
-            else p->Painter->setPen(QPen(Qt::darkBlue, 2));
-        } else {
-            p->Painter->setPen(WrongSimulatorPen);
-        }
-
-        a = b = 0;
-        QRect r, t;
-        for (Text *pt: Texts) {
-            t.setRect(x, y + b, 0, 0);
-            p->Painter->drawText(t, Qt::AlignLeft | Qt::TextDontClip, pt->s, &r);
-            b += r.height();
-            if (a < r.width()) a = r.width();
-        }
-        xb = a + int(12.0 * p->Scale);
-        yb = b + int(10.0 * p->Scale);
-        x2 = x1 + 25 + int(float(a) / p->Scale);
-        y2 = y1 + 23 + int(float(b) / p->Scale);
-        if (ty < y2 + 1) if (ty > y1 - r.height()) ty = y2 + 1;
-
-        p->map(cx - 1, cy, x, y);
-        p->map(cx - 6, cy - 5, a, b);
-        p->Painter->drawRect(a, b, xb, yb);
-        p->Painter->drawLine(x, y + yb, a, b + yb);
-        p->Painter->drawLine(x + xb - 1, y + yb, x, y + yb);
-        p->Painter->drawLine(x + xb - 1, y + yb, a + xb, b + yb);
-        p->Painter->drawLine(x + xb - 1, y + yb, x + xb - 1, y);
-        p->Painter->drawLine(x + xb - 1, y, a + xb, b);
-    } else {    // normal components go here
-
-        // paint all lines
-        for (qucs::Line *p1: Lines) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(p1->style);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            p->drawLine(cx + p1->x1, cy + p1->y1, cx + p1->x2, cy + p1->y2);
-        }
-
-        // paint all arcs
-        for (qucs::Arc *p3: Arcs) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(p3->style);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            p->drawArc(cx + p3->x, cy + p3->y, p3->w, p3->h, p3->angle, p3->arclen);
-        }
-
-        // paint all rectangles
-        for (qucs::Rect *pa: Rects) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(pa->Pen);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            p->Painter->setBrush(pa->Brush);
-            p->drawRect(cx + pa->x, cy + pa->y, pa->w, pa->h);
-        }
-
-        // paint all ellipses
-        for (qucs::Ellips *pa: Ellipses) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(pa->Pen);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            p->Painter->setBrush(pa->Brush);
-            p->drawEllipse(cx + pa->x, cy + pa->y, pa->w, pa->h);
-        }
-        p->Painter->setBrush(Qt::NoBrush);
-
-        newFont.setWeight(QFont::Light);
-
-        // keep track of painter state
-        p->Painter->save();
-
-        QTransform wm = p->Painter->worldTransform();
-        // write all text
-        for (Text *pt: Texts) {
-            p->Painter->setWorldTransform(
-                    QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
-                               p->DX + float(cx + pt->x) * p->Scale,
-                               p->DY + float(cy + pt->y) * p->Scale));
-            newFont.setPointSizeF(p->Scale * pt->Size);
-            newFont.setOverline(pt->over);
-            newFont.setUnderline(pt->under);
-            p->Painter->setFont(newFont);
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(pt->Color);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            int w, h;
-            w = p->drawTextMapped(pt->s, 0, 0, &h);
-            Q_UNUSED(w)
-            Q_UNUSED(h)
-        }
-        p->Painter->setWorldTransform(wm);
-        p->Painter->setWorldMatrixEnabled(false);
-
-        // restore painter state
-        p->Painter->restore();
-    }
-
-    // restore old font
-    p->Painter->setFont(f);
-
-    p->Painter->setPen(QPen(Qt::black, 1));
-    p->map(cx + tx, cy + ty, x, y);
-    if (showName) {
-        p->Painter->drawText(x, y, 0, 0, Qt::TextDontClip, Name);
-        y += p->LineSpacing;
-    }
-    // write all properties
-    for (Property *p4 = Props.first(); p4 != 0; p4 = Props.next())
-        if (p4->display) {
-            p->Painter->drawText(x, y, 0, 0, Qt::TextDontClip, p4->Name + "=" + p4->Value);
-            y += p->LineSpacing;
-        }
-
-    if (isActive == COMP_IS_OPEN)
-        p->Painter->setPen(QPen(Qt::red, 0));
-    else if (isActive & COMP_IS_SHORTEN)
-        p->Painter->setPen(QPen(Qt::darkGreen, 0));
-    if (isActive != COMP_IS_ACTIVE) {
-        p->drawRect(cx + x1, cy + y1, x2 - x1 + 1, y2 - y1 + 1);
-        p->drawLine(cx + x1, cy + y1, cx + x2, cy + y2);
-        p->drawLine(cx + x1, cy + y2, cx + x2, cy + y1);
-    }
-
-    // draw component bounding box
-    if (isSelected) {
-        p->Painter->setPen(QPen(Qt::darkGray, 3));
-        p->drawRoundRect(cx + x1, cy + y1, x2 - x1, y2 - y1);
-    }
 }
 
 void Component::paint(QPainter *p) const {
@@ -611,18 +451,6 @@ void Component::paintScheme(Schematic *p) {
 
     for (qucs::Ellips *pa: Ellipses) // paint all ellipses
         p->PostPaintEvent(_Ellipse, cx + pa->x, cy + pa->y, pa->w, pa->h);
-}
-
-// -------------------------------------------------------
-// For output on a printer device.
-void Component::print(ViewPainter *p, float FontScale) {
-    for (Text *pt: Texts)
-        pt->Size *= FontScale;
-
-    paint(p);
-
-    for (Text *pt: Texts)
-        pt->Size /= FontScale;
 }
 
 // -------------------------------------------------------

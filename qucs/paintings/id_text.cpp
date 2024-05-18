@@ -35,40 +35,6 @@ ID_Text::~ID_Text()
 {
 }
 
-// --------------------------------------------------------------------------
-void ID_Text::paint(ViewPainter *p)
-{
-  int x, y;
-  p->Painter->setPen(QPen(Qt::black,1));
-  p->map(cx, cy, x, y);
-
-  QRect r;
-  p->Painter->drawText(QRect(x, y, 0, 0), Qt::TextDontClip, Prefix, &r);
-  x2 = r.width();
-  y2 = p->LineSpacing;
-
-  p->Painter->drawText(QRect(x, y+y2, 0, 0), Qt::TextDontClip, "File=name", &r);
-  if(x2 < r.width())  x2 = r.width();
-  y2 += p->LineSpacing;
-
-  QList<SubParameter *>::const_iterator it;
-  for(it = Parameter.constBegin(); it != Parameter.constEnd(); it++) {
-    if((*it)->display) {
-      p->Painter->drawText(QRect(x, y+y2, 0, 0), Qt::TextDontClip, (*it)->Name, &r);
-      if(x2 < r.width())  x2 = r.width();
-      y2 += p->LineSpacing;
-    }
-  }
-
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->Painter->drawRoundedRect(x-4, y-4, x2+8, y2+8, 4.0, 4.0);
-  }
-
-  x2 = int(float(x2) / p->Scale);
-  y2 = int(float(y2) / p->Scale);
-}
-
 void ID_Text::paint(QPainter* painter) {
   painter->save();
   painter->translate(cx, cy);

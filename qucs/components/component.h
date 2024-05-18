@@ -26,7 +26,6 @@
 
 
 class Schematic;
-class ViewPainter;
 class QString;
 class QPen;
 
@@ -53,10 +52,8 @@ public:
   virtual void getExtraVANodes(QStringList& ) {};
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
-  void    paint(ViewPainter*);
   void    paint(QPainter* painter) const;
   void    paintScheme(Schematic*);
-  void    print(ViewPainter*, float);
   void    setCenter(int, int, bool relative=false);
   void    getCenter(int&, int&);
   int     textSize(int&, int&);

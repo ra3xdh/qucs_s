@@ -52,61 +52,6 @@ Arrow::~Arrow()
 {
 }
 
-// --------------------------------------------------------------------------
-void Arrow::paint(ViewPainter *p)
-{
-  QPolygon Points;
-  int x1_, y1_, x2_, y2_, x3_, y3_;
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
-    p->drawLine(cx, cy, cx+x2, cy+y2);
-    p->drawLine(cx+x2, cy+y2, cx+xp1, cy+yp1);
-    p->drawLine(cx+x2, cy+y2, cx+xp2, cy+yp2);
-    if(Style == 0) {   // arrow head with two lines ?
-      p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
-      p->drawLine(cx, cy, cx+x2, cy+y2);
-      p->Painter->setPen(QPen(Qt::white, Pen.width(), Qt::SolidLine));
-      p->drawLine(cx+x2, cy+y2, cx+xp1, cy+yp1);
-      p->drawLine(cx+x2, cy+y2, cx+xp2, cy+yp2);
-    }
-    else {   // filled arrow head
-      p->drawLine(cx+xp1, cy+yp1, cx+xp2, cy+yp2);
-      p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
-      p->drawLine(cx, cy, cx+x2, cy+y2);
-
-      p->Painter->setPen(QPen(Qt::white, Pen.width(), Qt::SolidLine));
-      p->Painter->setBrush(Qt::white);
-      p->map(cx+xp1, cy+yp1, x1_, y1_);
-      p->map(cx+x2, cy+y2, x2_, y2_);
-      p->map(cx+xp2, cy+yp2, x3_, y3_);
-      Points.setPoints(3, x1_, y1_, x2_, y2_, x3_, y3_);
-      p->Painter->drawConvexPolygon(Points);
-      p->Painter->setBrush(Qt::NoBrush); // no filling for next paintings
-    }
-
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy);  // markers for changing the size
-    p->drawResizeRect(cx+x2, cy+y2);
-    return;
-  }
-  p->Painter->setPen(Pen);
-  p->drawLine(cx, cy, cx+x2, cy+y2);
-  p->Painter->setPen(QPen(Pen.color(), Pen.width(), Qt::SolidLine));
-  if(Style == 0) {   // arrow head with two lines ?
-    p->drawLine(cx+x2, cy+y2, cx+xp1, cy+yp1);
-    p->drawLine(cx+x2, cy+y2, cx+xp2, cy+yp2);
-  }
-  else {   // filled arrow head
-    p->Painter->setBrush(Pen.color());
-    p->map(cx+xp1, cy+yp1, x1_, y1_);
-    p->map(cx+x2, cy+y2, x2_, y2_);
-    p->map(cx+xp2, cy+yp2, x3_, y3_);
-    Points.setPoints(3, x1_, y1_, x2_, y2_, x3_, y3_);
-    p->Painter->drawConvexPolygon(Points);
-    p->Painter->setBrush(Qt::NoBrush); // no filling for next paintings
-  }
-}
-
 void Arrow::paint(QPainter* painter) {
   painter->save();
 

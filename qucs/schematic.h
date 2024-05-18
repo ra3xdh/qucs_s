@@ -30,7 +30,6 @@
 #include "wire.h"
 #include "node.h"
 #include "qucsdoc.h"
-#include "viewpainter.h"
 #include "diagrams/diagram.h"
 #include "paintings/painting.h"
 #include "components/component.h"
@@ -83,7 +82,6 @@ public:
 
   void setName(const QString&);
   void setChanged(bool, bool fillStack=false, char Op='*');
-  void drawGrid(const ViewPainter&);
   void print(QPrinter*, QPainter*, bool printAll, bool fitToPage, QMargins margins={});
 
   void paintSchToViewpainter(QPainter* painter, bool printAll);
@@ -245,8 +243,6 @@ signals:
   void signalComponentDeleted(Component *);
 
 protected:
-  void paintFrame(ViewPainter*);
-
   // overloaded function to get actions of user
   void drawContents(QPainter*, int, int, int, int);
   void contentsMouseMoveEvent(QMouseEvent*);

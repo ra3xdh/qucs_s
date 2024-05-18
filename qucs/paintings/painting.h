@@ -19,7 +19,6 @@
 #define PAINTING_H
 
 #include "element.h"
-#include "viewpainter.h"
 
 
 class Painting : public Element  {
@@ -35,7 +34,6 @@ public:
   virtual QString save();
   virtual QString saveCpp();
   virtual QString saveJSON();
-  virtual void paint(ViewPainter*) {};
   virtual void paint(QPainter*) {};
   virtual void MouseMoving(Schematic*, int, int, int, int,
                            Schematic*, int, int, bool) {};

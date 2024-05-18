@@ -58,26 +58,6 @@ void Graph::createMarkerText() const
   }
 }
 
-// ---------------------------------------------------------------------
-void Graph::paint(ViewPainter *p, int x0, int y0)
-{
-  if(!ScrPoints.size())
-    return;
-
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,Thick*p->PrintScale+4));
-    paintLines(p, x0, y0);
-
-    p->Painter->setPen(QPen(Qt::white, Thick*p->PrintScale, Qt::SolidLine));
-    paintLines(p, x0, y0);
-    return;
-  }
-
-  // **** not selected ****
-  p->Painter->setPen(QPen(QColor(Color), Thick*p->PrintScale, Qt::SolidLine));
-  paintLines(p, x0, y0);
-}
-
 void Graph::paint(QPainter* painter) {
   if (ScrPoints.empty()) {
     return;
@@ -98,24 +78,6 @@ void Graph::paint(QPainter* painter) {
   painter->setPen(QPen(QColor(Color), Thick, Qt::SolidLine));
   paintLines(painter);
   painter->restore();
-}
-
-// ---------------------------------------------------------------------
-void Graph::paintLines(ViewPainter *p, int x0, int y0)
-{
-  switch(Style) {
-    case GRAPHSTYLE_STAR:
-      drawStarSymbols(x0, y0, p);
-      break;
-    case GRAPHSTYLE_CIRCLE:
-      drawCircleSymbols(x0, y0, p);
-      break;
-    case GRAPHSTYLE_ARROW:
-      drawArrowSymbols(x0, y0, p);
-      break;
-    default:
-      drawLines(x0, y0, p);
-  }
 }
 
 void Graph::paintLines(QPainter* painter) {

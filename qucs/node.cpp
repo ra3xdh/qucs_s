@@ -16,7 +16,6 @@
  ***************************************************************************/
 #include "node.h"
 
-#include "viewpainter.h"
 #include "wirelabel.h"
 
 #include <QPainter>
@@ -34,29 +33,6 @@ Node::Node(int _x, int _y)
 
 Node::~Node()
 {
-}
-
-// -------------------------------------------------------------
-void Node::paint(ViewPainter *p)
-{
-  switch(Connections.count()) {
-    case 1:  if(Label)
-               p->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
-             else {
-               p->Painter->setPen(QPen(Qt::red,1));  // node is open
-               p->drawEllipse(cx-4, cy-4, 8, 8);
-             }
-             return;
-    case 2:  if(Connections.getFirst()->Type == isWire)
-               if(Connections.getLast()->Type == isWire) return;
-             p->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
-             break;
-    default: p->Painter->setBrush(Qt::darkBlue);  // more than 2 connections
-	     p->Painter->setPen(QPen(Qt::darkBlue,1));
-	     p->drawEllipse(cx-3, cy-3, 6, 6);
-	     p->Painter->setBrush(Qt::NoBrush);
-             break;
-  }
 }
 
 void Node::paint(QPainter* painter) const {

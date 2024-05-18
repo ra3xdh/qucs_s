@@ -98,69 +98,9 @@ Diagram::~Diagram() {
 /*!
    Paint function for most diagrams (cartesian, smith, polar, ...)
 */
-void Diagram::paint(ViewPainter *p) {
-    paintDiagram(p);
-    paintMarkers(p);
-}
-
 void Diagram::paint(QPainter *p) {
     paintDiagram(p);
     paintMarkers(p);
-}
-
-void Diagram::paintDiagram(ViewPainter *p) {
-    // paint all lines
-    for (qucs::Line *pl: Lines) {
-        p->Painter->setPen(pl->style);
-        p->drawLine(cx + pl->x1, cy - pl->y1, cx + pl->x2, cy - pl->y2);
-    }
-
-    // paint all arcs (1 pixel larger to compensate for strange circle method)
-    for (qucs::Arc *pa: Arcs) {
-        p->Painter->setPen(pa->style);
-        p->drawArc(cx + pa->x, cy - pa->y, pa->w, pa->h, pa->angle, pa->arclen);
-    }
-
-    // draw all graphs
-    for (Graph *pg: Graphs)
-        pg->paint(p, cx, cy);
-
-    // keep track of painter state
-    p->Painter->save();
-
-    // write whole text (axis label inclusively)
-    QTransform wm = p->Painter->worldTransform();
-    for (Text *pt: Texts) {
-        p->Painter->setWorldTransform(
-                QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
-                           p->DX + float(cx + pt->x) * p->Scale,
-                           p->DY + float(cy - pt->y) * p->Scale));
-
-        p->Painter->setPen(pt->Color);
-        p->Painter->drawText(0, 0, pt->s);
-    }
-    p->Painter->setWorldTransform(wm);
-    p->Painter->setWorldMatrixEnabled(false);
-
-    // restore painter state
-    p->Painter->restore();
-
-
-    if (isSelected) {
-        int x_, y_;
-        float fx_, fy_;
-        p->map(cx, cy - y2, x_, y_);
-        fx_ = float(x2) * p->Scale + 10;
-        fy_ = float(y2) * p->Scale + 10;
-
-        p->Painter->setPen(QPen(Qt::darkGray, 3));
-        p->Painter->drawRect(x_ - 5, y_ - 5, lround(fx_), lround(fy_));
-        p->Painter->setPen(QPen(Qt::darkRed, 2));
-        p->drawResizeRect(cx, cy - y2);  // markers for changing the size
-        p->drawResizeRect(cx, cy);
-        p->drawResizeRect(cx + x2, cy - y2);
-        p->drawResizeRect(cx + x2, cy);
-    }
 }
 
 void Diagram::paintDiagram(QPainter *painter) {
@@ -207,15 +147,6 @@ void Diagram::paintDiagram(QPainter *painter) {
         misc::draw_resize_handle(painter, bounds.topRight());
     }
     painter->restore();
-}
-
-void Diagram::paintMarkers(ViewPainter *p, bool paintAll) {
-    // draw markers last, so they are at the top of painting layers
-    for (Graph *pg: Graphs)
-        for (Marker *pm: pg->Markers)
-            if (paintAll || (pm->Type & 1)) {
-                pm->paint(p, cx, cy);
-            }
 }
 
 void Diagram::paintMarkers(QPainter *p, bool paintAll) {

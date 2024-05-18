@@ -52,7 +52,6 @@ inline graphstyle_t toGraphStyle(int x){
 }
 
 class Diagram;
-class ViewPainter;
 
 
 struct DataX {
@@ -125,9 +124,7 @@ public:
   int loadDatFile(const QString& filename);
   int loadIndepVarData(const QString&, char* datfilecontent, DataX* where);
 
-  void    paint(ViewPainter*, int, int);
   void    paint(QPainter* painter);
-  void    paintLines(ViewPainter*, int, int);
   void    paintLines(QPainter* painter);
   QString save();
   bool    load(const QString&);
@@ -166,10 +163,6 @@ public:
   int  numMode;     // real/imag or polar (deg/rad)
 
 private: // painting
-  void drawLines(int, int, ViewPainter*) const;
-  void drawStarSymbols(int, int, ViewPainter*) const;
-  void drawCircleSymbols(int, int, ViewPainter*) const;
-  void drawArrowSymbols(int, int, ViewPainter*) const;
   void drawStarSymbols(QPainter* painter) const;
   void drawLines(QPainter* painter) const;
   void drawCircleSymbols(QPainter* painter) const;

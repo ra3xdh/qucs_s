@@ -56,7 +56,6 @@
 #include "qucs.h"
 #include "schematic.h"
 #include "textdoc.h"
-#include "viewpainter.h"
 
 #include "misc.h"
 
@@ -356,74 +355,6 @@ bool Schematic::sizeOfFrame(int &xall, int &yall)
     }
 
     return true;
-}
-
-// -----------------------------------------------------------
-void Schematic::paintFrame(ViewPainter *p)
-{
-    // dimensions:  X cm / 2.54 * 144
-    int xall, yall;
-    if (!sizeOfFrame(xall, yall))
-        return;
-    p->Painter->setPen(QPen(Qt::darkGray, 1));
-    //p->Painter->setPen(QPen(Qt::black,0));
-    int d = p->LineSpacing + int(4.0 * p->Scale);
-    int x1_, y1_, x2_, y2_;
-    p->map(xall, yall, x1_, y1_);
-    x2_ = int(xall * p->Scale) + 1;
-    y2_ = int(yall * p->Scale) + 1;
-    p->Painter->drawRect(x1_, y1_, -x2_, -y2_);
-    p->Painter->drawRect(x1_ - d, y1_ - d, 2 * d - x2_, 2 * d - y2_);
-
-    int z;
-    int step = xall / ((xall + 127) / 255);
-    for (z = step; z <= xall - step; z += step) {
-        p->map(z, 0, x2_, y2_);
-        p->Painter->drawLine(x2_, y2_, x2_, y2_ + d);
-        p->Painter->drawLine(x2_, y1_ - d, x2_, y1_);
-    }
-    char Letter[2] = "1";
-    for (z = step / 2 + 5; z < xall; z += step) {
-        p->drawText(Letter, z, 3, 0);
-        p->map(z, yall + 3, x2_, y2_);
-        p->Painter->drawText(x2_, y2_ - d, 0, 0, Qt::TextDontClip, Letter);
-        Letter[0]++;
-    }
-
-    step = yall / ((yall + 127) / 255);
-    for (z = step; z <= yall - step; z += step) {
-        p->map(0, z, x2_, y2_);
-        p->Painter->drawLine(x2_, y2_, x2_ + d, y2_);
-        p->Painter->drawLine(x1_ - d, y2_, x1_, y2_);
-    }
-    Letter[0] = 'A';
-    for (z = step / 2 + 5; z < yall; z += step) {
-        p->drawText(Letter, 5, z, 0);
-        p->map(xall + 5, z, x2_, y2_);
-        p->Painter->drawText(x2_ - d, y2_, 0, 0, Qt::TextDontClip, Letter);
-        Letter[0]++;
-    }
-
-    // draw text box with text
-    p->map(xall - 340, yall - 3, x1_, y1_);
-    p->map(xall - 3, yall - 3, x2_, y2_);
-    x1_ -= d;
-    x2_ -= d;
-    y1_ -= d;
-    y2_ -= d;
-    d = int(6.0 * p->Scale);
-    z = int(200.0 * p->Scale);
-    y1_ -= p->LineSpacing + d;
-    p->Painter->drawLine(x1_, y1_, x2_, y1_);
-    p->Painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text2);
-    p->Painter->drawLine(x1_ + z, y1_, x1_ + z, y1_ + p->LineSpacing + d);
-    p->Painter->drawText(x1_ + d + z, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text3);
-    y1_ -= p->LineSpacing + d;
-    p->Painter->drawLine(x1_, y1_, x2_, y1_);
-    p->Painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text1);
-    y1_ -= (Frame_Text0.count('\n') + 1) * p->LineSpacing + d;
-    p->Painter->drawRect(x2_, y2_, x1_ - x2_ - 1, y1_ - y2_ - 1);
-    p->Painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text0);
 }
 
 void Schematic::paintFrame(QPainter* painter) {
@@ -1126,78 +1057,6 @@ void Schematic::setOnGrid(int &x, int &y)
     else
         y += GridY >> 1;
     y -= y % GridY;
-}
-
-void Schematic::drawGrid(const ViewPainter& p)
-{
-    if (!GridOn)
-        return;
-
-    // A grid drawn with pen of 1.0 width reportedly looks good both
-    // on standard and HiDPI displays.
-    // See here for details https://github.com/ra3xdh/qucs_s/pull/524
-    p.Painter->setPen(QPen{ Qt::black, 1.0 });
-
-    {
-        // Draw small cross at origin of coordinates
-        const QPoint origin = modelToViewport(QPoint{0, 0});
-        p.Painter->drawLine(origin.x() - 3, origin.y(), origin.x() + 4, origin.y());  // horizontal stick
-        p.Painter->drawLine(origin.x(), origin.y() - 3, origin.x(), origin.y() + 4);  // vertical stick
-    }
-
-    // Grid is drawn as a set of nodes, each node looks like a point and a node
-    // is located at every horizontal and vertical step:
-    // .  .  .  .  .
-    // .  .  .  .  .
-    // .  .  .  .  .
-    // .  .  .  .  .
-    //
-    // To find out where to start drawing grid nodes, we find a point
-    // which is currently shown at the top left corner of the viewport
-    // and then find a grid-node nearest to this point. We then convert these
-    // grid-node coordinates back to viewport-coordinates. This gives us
-    // coordinates of a point somewhere around the top-left corner of the
-    // viewport. This point corresponds to a grid-node. The same is done to a
-    // bottom-right corner. Two resulting points decsribe the area where
-    // grid-nodes should be drawn — where to start and where to finish drawing
-    // these nodes.
-
-    QPoint topLeft = viewportToModel(viewportRect().topLeft());
-    const QPoint gridTopLeft = modelToViewport(setOnGrid(topLeft));
-
-    QPoint bottomRight = viewportToModel(viewportRect().bottomRight());
-    const QPoint gridBottomRight = modelToViewport(setOnGrid(bottomRight));
-
-    // This is the minimal distance between drawn grid-nodes. No matter how
-    // a user scales the view, any two adjacent nodes must have at least this
-    // amount of "free space" between them.
-    constexpr double minimalVisibleGridStep = 8.0;
-
-    // In some scales drawing a point for every step may lead to a very dense
-    // grid without much space between nodes. But we want to have some minimal
-    // distance between them. In such cases nodes shouldn't be drawn for every
-    // grid-step, but instead for every two grid-steps, or every three, and so on.
-    //
-    // To find out how frequently grid nodes should be drawn, we start from single
-    // grid-step and grow it until its "size in scale" gets larger than the minimal
-    // distance between points.
-
-    double horizontalStep{ GridX * Scale };
-    for (int n = 2; horizontalStep < minimalVisibleGridStep; n++) {
-        horizontalStep = n * GridX * Scale;
-    }
-
-    double verticalStep{ GridY * Scale };
-    for (int n = 2; verticalStep < minimalVisibleGridStep; n++) {
-        verticalStep = n * GridY * Scale;
-    }
-
-    // Finally draw the grid-nodes
-    for (double x = gridTopLeft.x(); x <= gridBottomRight.x(); x += horizontalStep) {
-        for (double y = gridTopLeft.y(); y <= gridBottomRight.y(); y += verticalStep) {
-            p.Painter->drawPoint(std::round(x), std::round(y));
-        }
-    }
 }
 
 void Schematic::drawGrid(QPainter* painter) {
