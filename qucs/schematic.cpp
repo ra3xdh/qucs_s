@@ -506,110 +506,28 @@ void Schematic::paintFrame(QPainter* painter) {
 // Is called when the content (schematic or data display) has to be drawn.
 void Schematic::drawContents(QPainter *p, int, int, int, int)
 {
-    ViewPainter Painter;
+    QTransform trf{p->transform()};
+    trf
+        .scale(Scale, Scale)
+        .translate(-ViewX1, -ViewY1);
+    p->setTransform(trf);
 
-    Painter.init(p, Scale, -ViewX1, -ViewY1, contentsX(), contentsY());
+    auto renderHints = p->renderHints();
+    renderHints
+        .setFlag(QPainter::Antialiasing)
+        .setFlag(QPainter::TextAntialiasing)
+        .setFlag(QPainter::SmoothPixmapTransform);
+    p->setRenderHints(renderHints);
 
-    drawGrid(Painter);
+    p->setFont(QucsSettings.font);
+    drawGrid(p);
 
     if (!symbolMode)
-        paintFrame(&Painter);
+        paintFrame(p);
 
-    for (Component *pc = Components->first(); pc != 0; pc = Components->next())
-        pc->paint(&Painter);
-
-    for (Wire *pw = Wires->first(); pw != 0; pw = Wires->next()) {
-        pw->paint(&Painter);
-        if (pw->Label)
-            pw->Label->paint(&Painter); // separate because of paintSelected
-    }
-
-    Node *pn;
-    for (pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-        pn->paint(&Painter);
-        if (pn->Label)
-            pn->Label->paint(&Painter); // separate because of paintSelected
-    }
-
-    // FIXME disable here, issue with select box goes away
-    // also, instead of red, line turns blue
-    for (Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-        pd->paint(&Painter);
-
-    for (Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next())
-        pp->paint(&Painter);
-
-    if (showBias > 0) { // show DC bias points in schematic ?
-        int x, y, z;
-        for (pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-            if (pn->Name.isEmpty())
-                continue;
-            x = pn->cx;
-            y = pn->cy + 4;
-            z = pn->x1;
-            if (z & 1)
-                x -= Painter.Painter->fontMetrics().boundingRect(pn->Name).width();
-            if (!(z & 2)) {
-                y -= (Painter.LineSpacing >> 1) + 4;
-                if (z & 1)
-                    x -= 4;
-                else
-                    x += 4;
-            }
-            if (z & 0x10)
-                Painter.Painter->setPen(Qt::darkGreen); // green for currents
-            else
-                Painter.Painter->setPen(Qt::blue); // blue for voltages
-            Painter.drawText(pn->Name, x, y);
-        }
-    }
-
-    /*
-   * The following events used to be drawn from mouseactions.cpp, but since Qt4
-   * Paint actions can only be called from within the paint event, so they
-   * are put into a QList (PostedPaintEvents) and processed here
-   */
-    for (auto p : PostedPaintEvents) {
-        // QPainter painter2(viewport()); for if(p.PaintOnViewport)
-        QPen pen(Qt::black);
-        Painter.Painter->setPen(Qt::black);
-        switch (p.pe) {
-        case _NotRop:
-            Painter.Painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
-            break;
-        case _Rect:
-            Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
-            break;
-        case _SelectionRect:
-            pen.setStyle(Qt::DashLine);
-            pen.setColor(QColor(50, 50, 50, 100));
-            Painter.Painter->setPen(pen);
-            Painter.fillRect(p.x1, p.y1, p.x2, p.y2, QColor(200, 220, 240, 100));
-            Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
-            break;
-        case _Line:
-            Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
-            break;
-        case _Ellipse:
-            Painter.drawEllipse(p.x1, p.y1, p.x2, p.y2);
-            break;
-        case _Arc:
-            Painter.drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
-            break;
-        case _DotLine:
-            Painter.Painter->setPen(Qt::DotLine);
-            Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
-            break;
-        case _DotRect:
-            Painter.Painter->setPen(Qt::DotLine);
-            Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
-            break;
-        case _Translate:; //painter2.translate(p.x1, p.y1);
-        case _Scale:; //painter2.scale(p.x1,p.y1);
-            break;
-        }
-    }
-    PostedPaintEvents.clear();
+    drawElements(p);
+    drawDcBiasPoints(p);
+    drawPostPaintEvents(p);
 }
 
 void Schematic::drawElements(QPainter* painter) {
