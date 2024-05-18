@@ -426,6 +426,82 @@ void Schematic::paintFrame(ViewPainter *p)
     p->Painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text0);
 }
 
+void Schematic::paintFrame(QPainter* painter) {
+    // dimensions:  X cm / 2.54 * 144
+    int frame_width, frame_height;
+    if (!sizeOfFrame(frame_width, frame_height))
+        return;
+
+    painter->save();
+    painter->setPen(QPen(Qt::darkGray, 1));
+
+    // Width of stripe along frame border in column and row labels are placed
+    const int frame_margin = painter->fontMetrics().lineSpacing() + 4;
+
+    // Outer rect
+    painter->drawRect(0, 0, frame_width, frame_height);
+    // a bit smaller than outer rect
+    painter->drawRect(frame_margin, frame_margin, frame_width - 2 * frame_margin, frame_height - 2 * frame_margin);
+
+    // Column labels
+    {
+      const int h_step = frame_width / ((frame_width + 127) / 255);
+      uint column_number = 1;
+
+      for (int x = h_step; x <= frame_width; x += h_step) {
+        painter->drawLine(x, 0, x, frame_margin);
+        painter->drawLine(x, frame_height - frame_margin, x, frame_height);
+
+        auto cn = QString::number(column_number);
+        auto tx = x - h_step / 2 + 5;
+        painter->drawText(tx, 3, 0, 0, Qt::TextDontClip, cn);
+        painter->drawText(tx, frame_height - frame_margin + 3, 0, 0, Qt::TextDontClip, cn);
+
+	column_number++;
+      }
+    }
+
+    // Row labels
+    {
+      const int v_step = frame_height / ((frame_height + 127) / 255);
+      char row_letter = 'A';
+
+      for (int y = v_step; y <= frame_height; y += v_step) {
+        painter->drawLine(0, y, frame_margin, y);
+        painter->drawLine(frame_width - frame_margin, y, frame_width, y);
+
+        auto rl = QString::fromLatin1(&row_letter, 1);
+        auto ty = y - v_step/2 + 5;
+        painter->drawText(5, ty, rl);
+        painter->drawText(frame_width - frame_margin + 5, ty, rl);
+
+	    row_letter++;
+      }
+    }
+
+    // draw text box with text
+    int x1_ = frame_width - 340 - frame_margin;
+    int y1_ = frame_height - 3 - frame_margin;
+    int x2_ = frame_width - frame_margin - 3;
+    int y2_ = frame_height - frame_margin - 3;
+
+    const int d = 6;
+    const double z = 200.0;
+    y1_ -= painter->fontMetrics().lineSpacing() + d;
+    painter->drawLine(x1_, y1_, x2_, y1_);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text2);
+    painter->drawLine(x1_ + z, y1_, x1_ + z, y1_ + painter->fontMetrics().lineSpacing() + d);
+    painter->drawText(x1_ + d + z, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text3);
+    y1_ -= painter->fontMetrics().lineSpacing() + d;
+    painter->drawLine(x1_, y1_, x2_, y1_);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text1);
+    y1_ -= (Frame_Text0.count('\n') + 1) * painter->fontMetrics().lineSpacing() + d;
+    painter->drawRect(x2_, y2_, x1_ - x2_ - 1, y1_ - y2_ - 1);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text0);
+
+    painter->restore();
+}
+
 // -----------------------------------------------------------
 // Is called when the content (schematic or data display) has to be drawn.
 void Schematic::drawContents(QPainter *p, int, int, int, int)
