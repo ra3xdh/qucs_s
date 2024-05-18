@@ -1311,6 +1311,86 @@ void Schematic::drawGrid(const ViewPainter& p)
     }
 }
 
+void Schematic::drawGrid(QPainter* painter) {
+    if (!GridOn)
+        return;
+
+    painter->save();
+    // Painter might have been scaled somewhere upstream in call stack,
+    // and we don't grid points to change their size or thickness
+    // depending on zoom level. Thus we remove any transformations
+    // and draw on "raw" painter, controlling all offsets manually
+    painter->setTransform(QTransform{});
+
+    // A grid drawn with pen of 1.0 width reportedly looks good both
+    // on standard and HiDPI displays.
+    // See here for details https://github.com/ra3xdh/qucs_s/pull/524
+    painter->setPen(QPen{ Qt::black, 1.0 });
+
+    {
+        // Draw small cross at origin of coordinates
+        const QPoint origin = modelToViewport(QPoint{0, 0});
+        painter->drawLine(origin.x() - 3, origin.y(), origin.x() + 4, origin.y());  // horizontal stick
+        painter->drawLine(origin.x(), origin.y() - 3, origin.x(), origin.y() + 4);  // vertical stick
+    }
+
+    // Grid is drawn as a set of nodes, each node looks like a point and a node
+    // is located at every horizontal and vertical step:
+    // .  .  .  .  .
+    // .  .  .  .  .
+    // .  .  .  .  .
+    // .  .  .  .  .
+    //
+    // To find out where to start drawing grid nodes, we find a point
+    // which is currently shown at the top left corner of the viewport
+    // and then find a grid-node nearest to this point. We then convert these
+    // grid-node coordinates back to viewport-coordinates. This gives us
+    // coordinates of a point somewhere around the top-left corner of the
+    // viewport. This point corresponds to a grid-node. The same is done to a
+    // bottom-right corner. Two resulting points decsribe the area where
+    // grid-nodes should be drawn — where to start and where to finish drawing
+    // these nodes.
+
+    QPoint topLeft = viewportToModel(viewportRect().topLeft());
+    const QPoint gridTopLeft = modelToViewport(setOnGrid(topLeft));
+
+    QPoint bottomRight = viewportToModel(viewportRect().bottomRight());
+    const QPoint gridBottomRight = modelToViewport(setOnGrid(bottomRight));
+
+    // This is the minimal distance between drawn grid-nodes. No matter how
+    // a user scales the view, any two adjacent nodes must have at least this
+    // amount of "free space" between them.
+    constexpr double minimalVisibleGridStep = 8.0;
+
+    // In some scales drawing a point for every step may lead to a very dense
+    // grid without much space between nodes. But we want to have some minimal
+    // distance between them. In such cases nodes shouldn't be drawn for every
+    // grid-step, but instead for every two grid-steps, or every three, and so on.
+    //
+    // To find out how frequently grid nodes should be drawn, we start from single
+    // grid-step and grow it until its "size in scale" gets larger than the minimal
+    // distance between points.
+
+    double horizontalStep{ GridX * Scale };
+    for (int n = 2; horizontalStep < minimalVisibleGridStep; n++) {
+        horizontalStep = n * GridX * Scale;
+    }
+
+    double verticalStep{ GridY * Scale };
+    for (int n = 2; verticalStep < minimalVisibleGridStep; n++) {
+        verticalStep = n * GridY * Scale;
+    }
+
+    // Finally draw the grid-nodes
+    for (double x = gridTopLeft.x(); x <= gridBottomRight.x(); x += horizontalStep) {
+        for (double y = gridTopLeft.y(); y <= gridBottomRight.y(); y += verticalStep) {
+            painter->drawPoint(std::round(x), std::round(y));
+        }
+    }
+
+    painter->restore();
+}
+
 // ---------------------------------------------------
 // Correction factor for unproportional font scaling.
 float Schematic::textCorr()

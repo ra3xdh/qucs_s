@@ -370,6 +370,7 @@ private:
   void drawDcBiasPoints(QPainter* painter);
   void drawPostPaintEvents(QPainter* painter);
   void paintFrame(QPainter* painter);
+  void drawGrid(QPainter* painter);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
