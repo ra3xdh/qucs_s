@@ -169,6 +169,7 @@ private: // painting
   void drawCircleSymbols(int, int, ViewPainter*) const;
   void drawArrowSymbols(int, int, ViewPainter*) const;
   void drawStarSymbols(QPainter* painter) const;
+  void drawLines(QPainter* painter) const;
   void drawCircleSymbols(QPainter* painter) const;
   void drawArrowSymbols(QPainter* painter) const;
 public: // marker related

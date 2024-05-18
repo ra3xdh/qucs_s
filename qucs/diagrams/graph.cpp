@@ -427,4 +427,53 @@ void Graph::drawStarSymbols(QPainter* painter) const {
   }
 }
 
+void Graph::drawLines(QPainter* painter) const {
+  painter->save();
+
+  QPen pen = painter->pen();
+  pen.setJoinStyle(Qt::RoundJoin);
+  pen.setCapStyle(Qt::RoundCap);
+  switch(Style) {
+    case GRAPHSTYLE_DASH:
+      pen.setDashPattern({10.0, 6.0});  // stroke len, space len
+      break;
+    case GRAPHSTYLE_DOT:
+      pen.setDashPattern({2.0, 4.0});
+      break;
+    case GRAPHSTYLE_LONGDASH:
+      pen.setDashPattern({24.0, 8.0});
+      break;
+    default:
+      pen.setStyle(Qt::SolidLine);
+  }
+  painter->setPen(pen);
+
+  bool is_first = true;
+  double prev_point_x = 0;
+  double prev_point_y = 0;
+
+  for (auto point : *this) {
+    if (point.isGraphEnd()) {
+      break;
+    }
+
+    if (!point.isPt()) {
+      continue;
+    }
+
+    if (is_first) {
+      prev_point_x = point.getScrX();
+      prev_point_y = point.getScrY();
+      is_first = false;
+      continue;
+    }
+
+    painter->drawLine(QLineF{prev_point_x, prev_point_y, point.getScrX(), point.getScrY()});
+    prev_point_x = point.getScrX();
+    prev_point_y = point.getScrY();
+  }
+
+  painter->restore();
+}
+
 // vim:ts=8:sw=2:et
