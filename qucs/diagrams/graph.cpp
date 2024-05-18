@@ -388,4 +388,27 @@ void Graph::drawCircleSymbols(QPainter* painter) const {
   }
 }
 
+void Graph::drawArrowSymbols(QPainter* painter) const {
+  // Arrow head size constants
+  constexpr double head_height = 7.0;
+  constexpr double head_half_width = 4.0;
+  for (auto point : *this) {
+    if (point.isGraphEnd()) {
+      break;
+    }
+
+    if (!point.isPt()) {
+      continue;
+    }
+    // Given a graph point we draw a vertical arrow pointed to it
+
+    // Vertical arrow line (stem)
+    painter->drawLine(QLineF{point.getScrX(), point.getScrY(), point.getScrX(), static_cast<qreal>(cy)});
+    // left arrowhead part
+    painter->drawLine(QLineF{point.getScrX() - head_half_width, point.getScrY() - head_height, point.getScrX(), point.getScrY()});
+    // right arrowhead part
+    painter->drawLine(QLineF{point.getScrX() + head_half_width, point.getScrY() - head_height, point.getScrX(), point.getScrY()});
+  }
+}
+
 // vim:ts=8:sw=2:et
