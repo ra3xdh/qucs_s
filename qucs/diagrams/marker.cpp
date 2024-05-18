@@ -442,6 +442,94 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
   }
 }
 
+namespace { // Helpers to be used in Marker::paint
+
+// draws upside-down triangle with tip at given point
+void triangle_marker(QPainter* p, const QPointF& triangle_head) {
+  constexpr double cos60              = 0.866;
+  constexpr double triangle_alt       = IND_SIZE * cos60;
+  constexpr double triangle_half_edge = IND_SIZE / 2.0;
+
+  // This is the triangle that we draw here:
+  // a - - - b
+  //  \     /
+  //   \   /
+  //    \ /
+  //     h
+
+  QPointF a{triangle_head.x() - triangle_half_edge,
+            triangle_head.y() - triangle_alt};
+  QPointF b{triangle_head.x() + triangle_half_edge,
+            triangle_head.y() - triangle_alt};
+
+  p->drawLine(triangle_head, a);
+  p->drawLine(triangle_head, b);
+  p->drawLine(a, b);
+}
+
+// draws a square with center at given point
+void square_marker(QPainter* p, const QPointF& square_center) {
+  QRectF r{0, 0, IND_SIZE, IND_SIZE};
+  r.moveCenter(square_center);
+  p->drawRect(r);
+}
+} // namespace
+
+void Marker::paint(QPainter* painter) {
+  // Marker inherits from Element four member vars: cx, cy, x1, y1
+  // and uses them like this:
+  //   - Point (x1,y1) defines top left corner of a box containing marker's text
+  //   - Point (cx,cy) define a place on a graph to which the marker points,
+  //     i.e. the marker's root
+  // All these coordinates a relative to parent diagram's bottom left corner.
+
+  painter->save();
+  painter->translate(pGraph->parentDiagram()->cx, pGraph->parentDiagram()->cy);
+
+  const QSize text_size = painter->fontMetrics().size(0, Text);
+  const QRectF text_box{QPointF{static_cast<qreal>(x1), static_cast<qreal>(y1)},
+                        text_size};
+
+  if (!transparent) {
+    painter->eraseRect(text_box);
+  }
+
+  painter->setPen(QPen(Qt::black, 1));
+  painter->drawText(x1, y1, 0, 0, Qt::TextDontClip, Text);
+
+  painter->setPen(QPen(Qt::darkMagenta, 0));
+  painter->drawRect(text_box);
+
+  // `cy` is inverted because painter's Y-axis grows downwards but marker's `cy`
+  // coordinate is defined in traditional coordinate system where Y-axis growing
+  // upwards
+  const QPointF marker_root{static_cast<qreal>(cx), static_cast<qreal>(-cy)};
+
+  // Connect marker root and textbox
+  painter->drawLine(
+      marker_root,
+      {marker_root.x() > text_box.right() ? text_box.right() : text_box.left(),
+       marker_root.y() > text_box.bottom() ? text_box.bottom()
+                                           : text_box.top()});
+
+  switch (indicatorMode) {
+  case indicator_Square:
+    square_marker(painter, marker_root);
+    break;
+  case indicator_Triangle:
+    triangle_marker(painter, marker_root);
+    break;
+  default:;
+  }
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray, 3));
+    painter->drawRoundedRect(text_box.marginsAdded(QMargins{3, 3, 3, 3}), 4, 4);
+  }
+
+  painter->restore();
+}
+
 // ---------------------------------------------------------------------
 void Marker::paintScheme(QPainter *p)
 {
