@@ -103,6 +103,11 @@ void Diagram::paint(ViewPainter *p) {
     paintMarkers(p);
 }
 
+void Diagram::paint(QPainter *p) {
+    paintDiagram(p);
+    paintMarkers(p);
+}
+
 void Diagram::paintDiagram(ViewPainter *p) {
     // paint all lines
     for (qucs::Line *pl: Lines) {
@@ -158,12 +163,67 @@ void Diagram::paintDiagram(ViewPainter *p) {
     }
 }
 
+void Diagram::paintDiagram(QPainter *painter) {
+    painter->save();
+
+    painter->translate(cx, cy);
+    painter->save();
+
+    for (qucs::Line* line : Lines) {
+        painter->setPen(line->penHint());
+        painter->drawLine(line->x1, - line->y1, line->x2, - line->y2);
+    }
+
+    for (qucs::Arc* arc : Arcs) {
+        painter->setPen(arc->penHint());
+        painter->drawArc(arc->x, - arc->y, arc->w, arc->h, arc->angle, arc->arclen);
+    }
+
+    painter->scale(1.0, -1.0); // make Y-axis grow upwards
+    for (Graph *pg: Graphs) {
+        pg->paint(painter);
+    }
+    painter->restore();  // to translated(cx, cy) with no negative y-scale
+
+    for (Text *pt: Texts) {
+        painter->save();
+
+        painter->setPen(pt->Color);
+        painter->translate(pt->x, -pt->y);
+        painter->rotate(pt->angle());
+        painter->drawText(0, 0, pt->s);
+
+        painter->restore();
+    }
+
+    if (isSelected) {
+        QRectF bounds(0, -y2, x2, y2);
+        painter->setPen(QPen(Qt::darkGray, 3));
+        painter->drawRect(bounds.marginsAdded(QMargins{5, 5, 5, 5}));
+
+        misc::draw_resize_handle(painter, bounds.topLeft());
+        misc::draw_resize_handle(painter, bounds.bottomLeft());
+        misc::draw_resize_handle(painter, bounds.bottomRight());
+        misc::draw_resize_handle(painter, bounds.topRight());
+    }
+    painter->restore();
+}
+
 void Diagram::paintMarkers(ViewPainter *p, bool paintAll) {
     // draw markers last, so they are at the top of painting layers
     for (Graph *pg: Graphs)
         for (Marker *pm: pg->Markers)
             if (paintAll || (pm->Type & 1)) {
                 pm->paint(p, cx, cy);
+            }
+}
+
+void Diagram::paintMarkers(QPainter *p, bool paintAll) {
+    // draw markers last, so they are at the top of painting layers
+    for (Graph *pg: Graphs)
+        for (Marker *pm: pg->Markers)
+            if (paintAll || (pm->Type & 1)) {
+                pm->paint(p);
             }
 }
 
