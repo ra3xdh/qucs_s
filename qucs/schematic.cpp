@@ -768,195 +768,166 @@ void Schematic::contentsMouseDoubleClickEvent(QMouseEvent *Event)
         (App->view->*(App->MouseDoubleClickAction))(this, Event);
 }
 
-// -----------------------------------------------------------
-void Schematic::print(QPrinter *, QPainter *Painter, bool printAll, bool fitToPage)
-{
-    QPaintDevice *pdevice = Painter->device();
-    float printerDpiX = (float) pdevice->logicalDpiX();
-    float printerDpiY = (float) pdevice->logicalDpiY();
-    float printerW = (float) pdevice->width();
-    float printerH = (float) pdevice->height();
-    QPainter pa(viewport());
-    float screenDpiX = (float) pa.device()->logicalDpiX();
-    float screenDpiY = (float) pa.device()->logicalDpiY();
-    float PrintScale = 0.5;
-    updateAllBoundingRect();
-    int marginX = (int) (40 * printerDpiX / screenDpiX);
-    int marginY = (int) (40 * printerDpiY / screenDpiY);
+void Schematic::print(QPrinter*, QPainter* painter, bool printAll,
+                      bool fitToPage, QMargins margins) {
+    painter->save();
 
+    const QRectF pageSize{0, 0, static_cast<double>(painter->device()->width()),
+                          static_cast<double>(painter->device()->height())};
+
+    QRect printedArea = printAll ? allBoundingRect() : sizeOfSelection();
+
+    if (printAll && showFrame) {
+        int frame_width, frame_height;
+        sizeOfFrame(frame_width, frame_height);
+        printedArea |= QRect{0, 0, frame_width, frame_height};
+    }
+
+    printedArea = printedArea.marginsAdded(margins);
+
+    double scale = 1.0;
     if (fitToPage) {
-        float ScaleX = float((printerW - 2 * marginX) / float((UsedX2 - UsedX1) * printerDpiX))
-                       * screenDpiX;
-        float ScaleY = float((printerH - 2 * marginY) / float((UsedY2 - UsedY1) * printerDpiY))
-                       * screenDpiY;
+        scale = std::min(pageSize.width() / printedArea.width(),
+                         pageSize.height() / printedArea.height());
+    } else {
+        QFontInfo printerFontInfo{QFont{QucsSettings.font, painter->device()}};
+        QFontInfo schematicFontInfo{QucsSettings.font};
 
-        if (showFrame) {
-            int xall, yall;
-            sizeOfFrame(xall, yall);
-            ScaleX = ((float) (printerW - 2 * marginX) / (float) (xall * printerDpiX)) * screenDpiX;
-            ScaleY = ((float) (printerH - 2 * marginY) / (float) (yall * printerDpiY)) * screenDpiY;
+        scale = static_cast<double>(printerFontInfo.pixelSize()) /
+                static_cast<double>(schematicFontInfo.pixelSize());
+    }
+    painter->scale(scale, scale);
+
+    painter->translate(-printedArea.left(), -printedArea.top());
+
+    // put picture in center
+    {
+        auto w = pageSize.width() / scale;
+        if (printedArea.width() <= w) {
+            auto d = (w - printedArea.width()) / 2;
+            painter->translate(d, 0);
         }
 
-        if (ScaleX > ScaleY)
-            PrintScale = ScaleY;
-        else
-            PrintScale = ScaleX;
+        auto h = pageSize.height() / scale;
+        if (printedArea.height() <= h) {
+            auto d = (h - printedArea.height()) / 2;
+            painter->translate(0, d);
+        }
     }
 
-    //bool selected;
-    ViewPainter p;
-    int StartX = UsedX1;
-    int StartY = UsedY1;
-    if (showFrame) {
-        if (UsedX1 > 0)
-            StartX = 0;
-        if (UsedY1 > 0)
-            StartY = 0;
-    }
+    // User chose a font with size in points while looking at the font
+    // on screen. The same font size in *points* equals to different
+    // amount of pixels when shown on screen or printed on paper,
+    // because underlying painting devices have different resolutions.
+    // To preserve the ratio of text sizes and elements' sizes
+    // font size has to be set in pixels here. This makes lines, squares,
+    // circles, etc. and size of font be measured in same units and scale
+    // them equally.
+    auto f = QucsSettings.font;
+    QFontInfo fi{f};
+    f.setPixelSize(fi.pixelSize());
+    painter->setFont(f);
 
-    float PrintRatio = printerDpiX / screenDpiX;
-    QFont oldFont = Painter->font();
-    QFont printFont = Painter->font();
-#ifdef __MINGW32__
-    printFont.setPointSizeF(printFont.pointSizeF() / PrintRatio);
-    Painter->setFont(printFont);
-#endif
-    p.init(Painter,
-           PrintScale * PrintRatio,
-           -StartX,
-           -StartY,
-           -marginX,
-           -marginY,
-           PrintScale,
-           PrintRatio);
+    paintSchToViewpainter(painter, printAll);
 
-    if (!symbolMode)
-        paintFrame(&p);
-
-    paintSchToViewpainter(&p, printAll, false, screenDpiX, printerDpiX);
-
-    Painter->setFont(oldFont);
+    painter->restore();
 }
 
-void Schematic::paintSchToViewpainter(
-    ViewPainter *p, bool printAll, bool toImage, int screenDpiX, int printerDpiX)
-{
-    bool selected;
+namespace {
+// helper to be used in Schematic::paintSchToViewpainter
+template <typename T> void draw_preserve_selection(T* elem, QPainter* p) {
+    bool selected = elem->isSelected;
+    elem->isSelected = false;
+    elem->paint(p);
+    elem->isSelected = selected;
+}
+} // namespace
 
-    if (printAll) {
-        int x2, y2;
-        if (sizeOfFrame(x2, y2))
-            paintFrame(p);
+void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
+    if (printAll && showFrame && !symbolMode) {
+        paintFrame(painter);
     }
 
-    for (Component *pc = Components->first(); pc != 0; pc = Components->next())
-        if (pc->isSelected || printAll) {
-            selected = pc->isSelected;
-            pc->isSelected = false;
-            if (toImage) {
-                pc->paint(p);
-            } else {
-                pc->print(p, (float) screenDpiX / (float) printerDpiX);
-            }
-            pc->isSelected = selected;
-        }
+    const auto should_draw = [=](Element* drawable) {
+      return printAll || drawable->isSelected;
+    };
 
-    for (Wire *pw = Wires->first(); pw != 0; pw = Wires->next()) {
-        if (pw->isSelected || printAll) {
-            selected = pw->isSelected;
-            pw->isSelected = false;
-            pw->paint(p); // paint all selected wires
-            pw->isSelected = selected;
+    for (auto* component : *Components) {
+        if (should_draw(component)) {
+            draw_preserve_selection(component, painter);
         }
-        if (pw->Label)
-            if (pw->Label->isSelected || printAll) {
-                selected = pw->Label->isSelected;
-                pw->Label->isSelected = false;
-                pw->Label->paint(p);
-                pw->Label->isSelected = selected;
-            }
     }
 
-    Element *pe;
-    for (Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-        for (pe = pn->Connections.first(); pe != 0; pe = pn->Connections.next())
-            if (pe->isSelected || printAll) {
-                pn->paint(p); // paint all nodes with selected elements
+    for (auto* wire : *Wires) {
+        if (should_draw(wire)) {
+            draw_preserve_selection(wire, painter);
+        }
+
+        if (auto* label = wire->Label) {
+            if (should_draw(label)) {
+                draw_preserve_selection(label, painter);
+            }
+        }
+    }
+
+    for (auto* node : *Nodes) {
+        for (auto* connected : node->Connections) {
+            if (should_draw(connected)) {
+                draw_preserve_selection(node, painter);
                 break;
             }
-        if (pn->Label)
-            if (pn->Label->isSelected || printAll) {
-                selected = pn->Label->isSelected;
-                pn->Label->isSelected = false;
-                pn->Label->paint(p);
-                pn->Label->isSelected = selected;
+        }
+
+        if (auto* label = node->Label) {
+            if (should_draw(label)) {
+                draw_preserve_selection(label, painter);
             }
+        }
     }
 
-    for (Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next())
-        if (pp->isSelected || printAll) {
-            selected = pp->isSelected;
-            pp->isSelected = false;
-            pp->paint(p); // paint all selected paintings
-            pp->isSelected = selected;
+    for (auto* painting : *Paintings) {
+        if (should_draw(painting)) {
+            draw_preserve_selection(painting, painter);
+        }
+    }
+
+    for (auto* diagram : *Diagrams) {
+        if (!should_draw(diagram)) {
+            continue;
         }
 
-    for (Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-        if (pd->isSelected || printAll) {
-            // if graph or marker is selected, deselect during printing
-            for (Graph *pg : pd->Graphs) {
-                if (pg->isSelected)
-                    pg->Type |= 1; // remember selection
-                pg->isSelected = false;
-                for (Marker *pm : pg->Markers) {
-                    if (pm->isSelected)
-                        pm->Type |= 1; // remember selection
-                    pm->isSelected = false;
-                }
+        // if graph or marker is selected, deselect during printing
+        for (Graph* pg : diagram->Graphs) {
+            if (pg->isSelected) {
+                pg->Type |= 1; // remember selection
             }
-
-            selected = pd->isSelected;
-            pd->isSelected = false;
-            pd->paintDiagram(p); // paint all selected diagrams with graphs and markers
-            pd->paintMarkers(p, printAll);
-            pd->isSelected = selected;
-
-            // revert selection of graphs and markers
-            for (Graph *pg : pd->Graphs) {
-                if (pg->Type & 1)
-                    pg->isSelected = true;
-                pg->Type &= -2;
-                for (Marker *pm : pg->Markers) {
-                    if (pm->Type & 1)
-                        pm->isSelected = true;
-                    pm->Type &= -2;
+            pg->isSelected = false;
+            for (Marker* pm : pg->Markers) {
+                if (pm->isSelected) {
+                    pm->Type |= 1; // remember selection
                 }
+                pm->isSelected = false;
             }
         }
+        draw_preserve_selection(diagram, painter);
+
+        // revert selection of graphs and markers
+        for (Graph* pg : diagram->Graphs) {
+            if (pg->Type & 1) {
+                pg->isSelected = true;
+            }
+            pg->Type &= -2;
+            for (Marker* pm : pg->Markers) {
+                if (pm->Type & 1) {
+                    pm->isSelected = true;
+                }
+                pm->Type &= -2;
+            }
+        }
+    }
 
     if (showBias > 0) { // show DC bias points in schematic ?
-        int x, y, z;
-        for (Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-            if (pn->Name.isEmpty())
-                continue;
-            x = pn->cx;
-            y = pn->cy + 4;
-            z = pn->x1;
-            if (z & 1)
-                x -= p->Painter->fontMetrics().boundingRect(pn->Name).width();
-            if (!(z & 2)) {
-                y -= (p->LineSpacing >> 1) + 4;
-                if (z & 1)
-                    x -= 4;
-                else
-                    x += 4;
-            }
-            if (z & 0x10)
-                p->Painter->setPen(Qt::darkGreen); // green for currents
-            else
-                p->Painter->setPen(Qt::blue); // blue for voltages
-            p->drawText(pn->Name, x, y);
-        }
+        drawDcBiasPoints(painter);
     }
 }
 

@@ -84,9 +84,9 @@ public:
   void setName(const QString&);
   void setChanged(bool, bool fillStack=false, char Op='*');
   void drawGrid(const ViewPainter&);
-  void print(QPrinter*, QPainter*, bool, bool);
+  void print(QPrinter*, QPainter*, bool printAll, bool fitToPage, QMargins margins={});
 
-  void paintSchToViewpainter(ViewPainter* p, bool printAll, bool toImage, int screenDpiX=96, int printerDpiX=300);
+  void paintSchToViewpainter(QPainter* painter, bool printAll);
 
   void PostPaintEvent(PE pe, int x1=0, int y1=0, int x2=0, int y2=0, int a=0, int b=0,bool PaintOnViewport=false);
 
