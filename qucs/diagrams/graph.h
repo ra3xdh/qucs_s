@@ -126,6 +126,7 @@ public:
   int loadIndepVarData(const QString&, char* datfilecontent, DataX* where);
 
   void    paint(ViewPainter*, int, int);
+  void    paint(QPainter* painter);
   void    paintLines(ViewPainter*, int, int);
   void    paintLines(QPainter* painter);
   QString save();

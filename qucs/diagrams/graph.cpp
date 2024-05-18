@@ -78,6 +78,28 @@ void Graph::paint(ViewPainter *p, int x0, int y0)
   paintLines(p, x0, y0);
 }
 
+void Graph::paint(QPainter* painter) {
+  if (ScrPoints.empty()) {
+    return;
+  }
+  painter->save();
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,Thick + 4));
+    paintLines(painter);
+
+    painter->setPen(QPen(Qt::white, Thick, Qt::SolidLine));
+    paintLines(painter);
+    painter->restore();
+    return;
+  }
+
+  // **** not selected ****
+  painter->setPen(QPen(QColor(Color), Thick, Qt::SolidLine));
+  paintLines(painter);
+  painter->restore();
+}
+
 // ---------------------------------------------------------------------
 void Graph::paintLines(ViewPainter *p, int x0, int y0)
 {
