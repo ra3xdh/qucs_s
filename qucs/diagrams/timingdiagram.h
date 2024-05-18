@@ -29,7 +29,9 @@ public:
   Diagram* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   void paint(ViewPainter *p);
+  void paint(QPainter* painter) override;
   void paintDiagram(ViewPainter *p);
+  void paintDiagram(QPainter* painter) override;
   int calcDiagram();
   int scroll(int);
   bool scrollTo(int, int, int);
