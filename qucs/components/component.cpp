@@ -489,76 +489,59 @@ void Component::drawUsual(QPainter* p) const {
 }
 
 // paint device icon for left panel list
-void Component::paintIcon(QPixmap *pixmap)
-{
+void Component::paintIcon(QPixmap* pixmap) {
     pixmap->fill(Qt::transparent);
-    QPainter *painter = new QPainter(pixmap);
-    ViewPainter *p = new ViewPainter(painter);
-    int h = std::abs(x2 - x1) + 10;
-    int w = std::abs(y2 - y1) + 10;
-    int ph = pixmap->size().height();
-    p->Scale = (float) ph / std::max(w,h);
 
-    QFont f = p->Painter->font();   // save current font
-    QFont newFont = f;
-    int c_sc = ph / (2*p->Scale);
-    cx += c_sc + icon_dx*p->Scale;
-    cy += c_sc + icon_dy*p->Scale;
-    if (Model.at(0) != '.' && !isEquation) {    // normal components go here
-        // paint all lines
-        QPen portPen;
-        portPen.setWidth(3);
-        portPen.setColor(Qt::red);
-        p->Painter->setPen(portPen);
-        for (auto pp: Ports) {
-            p->drawEllipse(cx+pp->x-2,cy+pp->y-2,4,4);
-        }
+    QPainter painter{pixmap};
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::TextAntialiasing);
 
-        for (qucs::Line *p1: Lines) {
-            p1->style.setWidth(3);
-            p->Painter->setPen(p1->style);
-            p->drawLine(cx + p1->x1, cy + p1->y1, cx + p1->x2, cy + p1->y2);
-        }
+    const QRectF component_br{
+        QRect{x1, y1, x2 - x1, y2 - y1}.marginsAdded(QMargins{5, 5, 5, 5})};
+    const QRectF picture{pixmap->rect()};
 
-        // paint all arcs
-        for (qucs::Arc *p3: Arcs) {
-            p3->style.setWidth(3);
-            p->Painter->setPen(p3->style);
-            p->drawArc(cx + p3->x, cy + p3->y, p3->w, p3->h, p3->angle, p3->arclen);
-        }
+    const double scale = std::min(picture.height() / component_br.height(),
+                                  picture.width() / component_br.width());
 
-        // paint all rectangles
-        for (qucs::Rect *pa: Rects) {
-            pa->Pen.setWidth(3);
-            p->Painter->setPen(pa->Pen);
-            p->Painter->setBrush(pa->Brush);
-            p->drawRect(cx + pa->x, cy + pa->y, pa->w, pa->h);
-        }
+    painter.translate(picture.center().x() - component_br.center().x(),
+                      picture.center().y() - component_br.center().y());
+    painter.scale(scale, scale);
+    // These have to be applied after scaling. TBH I am not quite sure
+    // how it works, but it makes icons better aligned.
+    painter.translate(icon_dx, icon_dy);
 
-        // paint all ellipses
-        for (qucs::Ellips *pa: Ellipses) {
-            p->Painter->setPen(pa->Pen);
-            p->Painter->setBrush(pa->Brush);
-            p->drawEllipse(cx + pa->x, cy + pa->y, pa->w, pa->h);
-        }
-        p->Painter->setBrush(Qt::NoBrush);
+    painter.save();
 
-        newFont.setWeight(QFont::Light);
+    painter.setPen(QPen{Qt::red});
+    for (auto* port : Ports) {
+        painter.drawEllipse(port->x - 2, port->y - 2, 4, 4);
+    }
 
-        for (Text *pt: Texts) {
-            p->Painter->setWorldTransform(
-                    QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
-                               p->DX + float(cx + pt->x) * p->Scale,
-                               p->DY + float(cy + pt->y) * p->Scale));
-            newFont.setPointSizeF(p->Scale * pt->Size);
-            newFont.setOverline(pt->over);
-            newFont.setUnderline(pt->under);
-            p->Painter->setFont(newFont);
-            p->Painter->setPen(pt->Color);
-            w = p->drawTextMapped(pt->s, 0, 0, &h);
-            Q_UNUSED(w)
-            Q_UNUSED(h)
-        }
+    for (qucs::Line* line : Lines) {
+        painter.setPen(line->penHint());
+        line->draw(&painter);
+    }
+
+    for (qucs::Arc* arc : Arcs) {
+        painter.setPen(arc->penHint());
+        arc->draw(&painter);
+    }
+
+    for (qucs::Rect* rect : Rects) {
+        painter.setPen(rect->penHint());
+        painter.setBrush(rect->brushHint());
+        rect->draw(&painter);
+    }
+
+    for (qucs::Ellips* ellipse : Ellipses) {
+        painter.setPen(ellipse->penHint());
+        painter.setBrush(ellipse->brushHint());
+        ellipse->draw(&painter);
+    }
+    painter.restore();
+
+    for (Text* pt : Texts) {
+        pt->draw(&painter);
     }
 }
 
