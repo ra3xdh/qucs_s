@@ -114,10 +114,10 @@ void TimingDiagram::paintDiagram(QPainter *painter) {
   if (isSelected) {
     painter->setPen(QPen(Qt::darkGray,3));
     painter->drawRect(-5, -y2-5, x2+10, y2+10);
-    misc::draw_resize_handle(painter, {0, -y2});
-    misc::draw_resize_handle(painter, {0, 0});
-    misc::draw_resize_handle(painter, {x2, -y2});
-    misc::draw_resize_handle(painter, {x2, 0});
+    misc::draw_resize_handle(painter, QPoint{0, -y2});
+    misc::draw_resize_handle(painter, QPoint{0, 0});
+    misc::draw_resize_handle(painter, QPoint{x2, -y2});
+    misc::draw_resize_handle(painter, QPoint{x2, 0});
   }
   painter->restore();
 }
