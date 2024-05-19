@@ -16,7 +16,6 @@
  ***************************************************************************/
 #include "xyce_script.h"
 #include "main.h"
-#include "misc.h"
 
 
 XyceScript::XyceScript()

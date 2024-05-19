@@ -21,7 +21,6 @@
 
 #include "xspicegeneric.h"
 
-#include "misc.h"
 #include "node.h"
 #include "main.h"
 #include "extsimkernels/spicecompat.h"

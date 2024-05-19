@@ -17,7 +17,6 @@
 
 #include "volt_ac_SPICE.h"
 #include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
 

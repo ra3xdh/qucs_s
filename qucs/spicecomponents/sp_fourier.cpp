@@ -16,7 +16,6 @@
  ***************************************************************************/
 #include "sp_fourier.h"
 #include "main.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
 
