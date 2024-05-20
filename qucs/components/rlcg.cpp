@@ -18,7 +18,6 @@
 #include "rlcg.h"
 
 #include "extsimkernels/spicecompat.h"
-#include "node.h"
 
 #include <QFontMetrics>
 

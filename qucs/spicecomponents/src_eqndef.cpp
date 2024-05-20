@@ -1,5 +1,4 @@
 #include "src_eqndef.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 

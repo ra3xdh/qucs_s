@@ -19,7 +19,6 @@
 
 #include "spicegeneric.h"
 
-#include "node.h"
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
 

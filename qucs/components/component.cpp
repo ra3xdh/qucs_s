@@ -17,7 +17,6 @@
 #include <cmath>
 
 #include "components.h"
-#include "node.h"
 #include "main.h"
 #include "qucs.h"
 #include "schematic.h"

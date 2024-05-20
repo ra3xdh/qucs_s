@@ -16,7 +16,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "S4Q_Ieqndef.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 

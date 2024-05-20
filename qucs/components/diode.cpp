@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include "diode.h"
-#include "node.h"
 #include "main.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
