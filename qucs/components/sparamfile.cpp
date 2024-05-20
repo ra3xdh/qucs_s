@@ -17,6 +17,7 @@
 #include "sparamfile.h"
 #include "main.h"
 #include "misc.h"
+#include "node.h"
 
 #include <QFileInfo>
 

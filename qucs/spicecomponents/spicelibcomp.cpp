@@ -18,6 +18,7 @@
 #include "spicelibcomp.h"
 #include "main.h"
 #include "misc.h"
+#include "node.h"
 #include "extsimkernels/spicecompat.h"
 
 #include <QTextStream>

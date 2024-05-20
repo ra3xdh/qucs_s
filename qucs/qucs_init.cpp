@@ -22,6 +22,7 @@
 #include "main.h"
 #include "misc.h"
 #include "qucs.h"
+#include "extsimkernels/spicecompat.h"
 #include "octave_window.h"
 
 #include <QAction>

@@ -18,6 +18,7 @@
 #include "libcomp.h"
 #include "main.h"
 #include "misc.h"
+#include "node.h"
 #include "extsimkernels/qucs2spice.h"
 #include "extsimkernels/spicecompat.h"
 

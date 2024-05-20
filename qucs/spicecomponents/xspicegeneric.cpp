@@ -22,6 +22,7 @@
 #include "xspicegeneric.h"
 
 #include "main.h"
+#include "node.h"
 #include "extsimkernels/spicecompat.h"
 
 

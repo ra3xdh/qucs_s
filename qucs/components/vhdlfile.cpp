@@ -17,6 +17,7 @@
 #include "vhdlfile.h"
 #include "main.h"
 #include "misc.h"
+#include "node.h"
 
 #include <QTextStream>
 #include <QRegularExpression>

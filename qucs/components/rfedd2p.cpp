@@ -16,6 +16,7 @@
  ***************************************************************************/
 #include "rfedd2p.h"
 #include "main.h"
+#include "node.h"
 
 #include <QFileInfo>
 #include <QFontMetrics>
