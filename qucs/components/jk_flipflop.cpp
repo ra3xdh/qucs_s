@@ -14,8 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <stdlib.h>
-
 #include "jk_flipflop.h"
 #include "node.h"
 #include "misc.h"
