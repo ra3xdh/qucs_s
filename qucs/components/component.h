@@ -18,7 +18,6 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include <QtCore>
 #include "extsimkernels/spicecompat.h"
 #include "qt3_compat/qt_compat.h"
 
