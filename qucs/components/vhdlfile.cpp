@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "vhdlfile.h"
-#include "qucs.h"
 #include "main.h"
 #include "misc.h"
 

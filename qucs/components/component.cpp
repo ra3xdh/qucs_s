@@ -18,7 +18,6 @@
 
 #include "components.h"
 #include "main.h"
-#include "qucs.h"
 #include "schematic.h"
 #include "module.h"
 #include "misc.h"

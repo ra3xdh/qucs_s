@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include "libcomp.h"
-#include "qucs.h"
 #include "main.h"
 #include "misc.h"
 #include "extsimkernels/qucs2spice.h"
