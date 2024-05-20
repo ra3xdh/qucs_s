@@ -24,8 +24,6 @@
 #include <QFileInfo>
 #include <QMutex>
 
-#include <limits.h>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

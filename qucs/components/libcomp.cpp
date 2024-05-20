@@ -21,7 +21,6 @@
 #include "extsimkernels/qucs2spice.h"
 #include "extsimkernels/spicecompat.h"
 
-#include <limits.h>
 
 #include <QTextStream>
 #include <QDir>

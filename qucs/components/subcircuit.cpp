@@ -25,8 +25,6 @@
 #include <QFileInfo>
 #include <QMutex>
 
-#include <limits.h>
-
 
 
 Subcircuit::Subcircuit()
