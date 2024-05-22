@@ -10,44 +10,47 @@ env:
   APP_NAME: "Qucs-S Simulator"
   EXECUTABLE_NAME: "qucs-s"
   VERSION: "24.2.1"
-  PUBLISH_NAME: "The Qucs Team"
+  PUBLISHER_NAME: "The Qucs Team"
   BUILD_TYPE: Release
-  
+
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     strategy:
       fail-fast: false
       matrix:
-        sys:
+        environment:
           - mingw64
           - clang64
           - ucrt64
     defaults:
       run:
-         shell: msys2 {0}
+        shell: msys2 {0}
     steps:
-    - name: Disable autocrlf
+    - name: Disable autocrlf in Git
       shell: pwsh
       run: |
         git config --global core.autocrlf false
         git config --global core.eol lf
-        
+
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-       submodules: 'recursive'
-       
-    - name: Set up MSYS2
+        submodules: 'recursive'
+
+    - name: Set up MSYS2 environment
       uses: msys2/setup-msys2@v2
       with:
-        msystem: ${{ matrix.sys }}
+        msystem: ${{ matrix.environment }}
         cache: true
         update: true
         install: >-
           bison 
           flex
-          dos2unix 
+          dos2unix
+          curl
+          zip
+          unzip
         pacboy: >-
           cmake:p 
           gcc:p 
@@ -58,10 +61,78 @@ jobs:
           ninja:p
           python:p 
           gperf:p
-          
-    - name: Build with cmake
+          github-cli:p
+
+    - name: Build project with CMake
       run: |
         cmake.exe -B build/ -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=ON
-        cmake.exe --build build/ -j`nproc` --config ${{env.BUILD_TYPE}}
+        cmake.exe --build build/ -j$(nproc) --config ${{env.BUILD_TYPE}}
+
+    - name: Make install
+      run: |
+        cd build/ && mingw32-make.exe install DESTDIR=./ -j$(nproc)
+        cp -rf 'Program Files (x86)/qucs-suite' ./
+        cd ..
+
+    - name: Deploy Qt6 dependencies
+      run: |
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-s.exe  --svg --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sactivefilter.exe  --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sattenuator.exe  --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sfilter.exe  --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-spowercombining.exe  --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-strans.exe  --no-translations
+
+    - name: Copy non-Qt DLLs to bin directory
+      run: |
+        curl -L -o dxc.zip https://github.com/microsoft/DirectXShaderCompiler/releases/download/v1.8.2403.2/dxc_2024_03_29.zip
+        unzip -o dxc.zip -d dxc
+        cp -r dxc/bin/x64/* /${{ matrix.environment }}/bin/
+        shopt -s extglob
+        for file in /${{ matrix.environment }}/bin/*.dll; do
+          if [[ $(basename "$file") != Qt6* ]]; then
+            cp -r "$file" build/qucs-suite/bin
+          fi
+        done
+            
+    - name: Create zip archive for release
+      run: |
+        cd build/qucs-suite
+        zip -r ../qucs_s_${{ matrix.environment }}_snapshot.zip ./bin ./share
+        cd ../..
         
-      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: qucs_s_${{ matrix.environment }}
+        path: build/qucs_s_${{ matrix.environment }}_snapshot.zip
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ~/artifacts
+
+    - name: Check if continuous_build release exists
+      run: |
+        if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
+          gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Create GitHub Release
+      run: |
+        gh release create continuous_build \
+          ~/artifacts/**/*.zip -p\
+          --repo $GITHUB_REPOSITORY \
+          --title "Continuous build" \
+          --notes "Automated release for commit ${{ github.sha }}"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
