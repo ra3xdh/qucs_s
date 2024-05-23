@@ -457,7 +457,10 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
         paintFrame(p);
 
     drawElements(p);
-    drawDcBiasPoints(p);
+    if (showBias > 0) {
+        drawDcBiasPoints(p);
+    }
+
     drawPostPaintEvents(p);
 }
 
