@@ -109,6 +109,7 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     needs: build
     steps:
     - name: Checkout repository
@@ -120,7 +121,6 @@ jobs:
         path: ~/artifacts
 
     - name: Check if continuous_build release exists
-      if: github.event_name == 'push'
       run: |
         if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
           gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
