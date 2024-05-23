@@ -448,23 +448,60 @@ void Graph::drawLines(QPainter* painter) const {
   }
   painter->setPen(pen);
 
-  bool is_first = true;
+  // How graphs are drawn
+  //
+  // Graph object (this) contains a set of data points,
+  // each described by the ScrPt struct.
+  //
+  // Sometimes semantically sigle graph consists of
+  // multiple lines/curves — or "subgraphs": you draw
+  // one subgraph, then return back to the beginning
+  // and draw next, and so on.
+  //
+  // To describe such compound graphs the set of data
+  // points contains points for each of the subgraphs
+  // i.e. at first a subequence for one subgraph, then
+  // a subsequence for next one and so on, all within
+  // a single parent sequence:
+  //    aaaaaaabbbbbbbbcccccccdddddd
+  //
+  // Naturally, there has to be a mean to delimit such
+  // subsequences, so not all points in the data set are
+  // actually "data" points — some of them are "service"
+  // points describing boundaries between subsequences and
+  // the end of parent sequence:
+  //  - point.isStrokeEnd() returns true if point is the
+  //    boundary between subsequences.
+  //  - point.isGraphEnd() returns true when there is no
+  //    more graph data points
+
+  bool drawing_started = false;
   double prev_point_x = 0;
   double prev_point_y = 0;
 
   for (auto point : *this) {
+    // No more data points
     if (point.isGraphEnd()) {
       break;
     }
 
+    // Subgraph has ended, let's pretend like we're
+    // drawing a graph from the beginning
+    if (point.isStrokeEnd()) {
+      drawing_started = false;
+      continue;
+    }
+
+    // skip if not valid
     if (!point.isPt()) {
       continue;
     }
 
-    if (is_first) {
+    // First point in a subgraph. From here the drawing starts
+    if (!drawing_started) {
       prev_point_x = point.getScrX();
       prev_point_y = point.getScrY();
-      is_first = false;
+      drawing_started = true;
       continue;
     }
 
