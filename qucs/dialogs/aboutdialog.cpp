@@ -58,6 +58,10 @@ AboutDialog::AboutDialog(QWidget *parent)
      "Tom Hajjar - " + tr("Testing, examples"),
      "Sergey Krasilnikov - " + tr("Qt6 support, general improvements"),
      "Sergey Ryzhov - " + tr("Digital simulation, general improvements"),
+     "Andrey Kalmykov - " + tr("Schematic rendering engine, refactoring"),
+     "Andr&#xe9;s Mart&#xed;nez Mera - " + tr("RF design tools"),
+     "Muhammet Şükrü Demir - " + tr("CI setup, build system"),
+     "Iwbnwif Yiw - " + tr("Refactoring, general improvements"),
      "Maria Dubinina - " + tr("testing, general bugfixes")
   }};
   currAuths = {{
@@ -100,7 +104,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     tr("Swedish by") + " Markus Gothe, Peter Landgren",
     tr("Turkish by") + " Onur Cobanoglu, Ozgur Cobanoglu",
     tr("Hungarian by") + " Jozsef Bus",
-    tr("Russian by") + " Igor Gorbounov",
+    tr("Russian by") + " Igor Gorbounov and Anton Midyukov",
     tr("Czech by") + " Marek Straka,Martin Stejskal",
     tr("Catalan by") + " Antoni Subirats",
     tr("Ukrainian by") + " Dystryk",
