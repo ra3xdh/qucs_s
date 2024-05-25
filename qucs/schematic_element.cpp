@@ -1147,7 +1147,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
         }
         else
         {
-            n = pc->getTextSelected(x, y, Corr);
+            n = pc->getTextSelected(x, y);
             if(n >= 0)     // was property text clicked ?
             {
                 pc->Type = isComponentText;

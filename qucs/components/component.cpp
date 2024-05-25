@@ -142,37 +142,80 @@ void Component::getCenter(int &x, int &y) {
     y = cy;
 }
 
-// -------------------------------------------------------
-int Component::getTextSelected(int x_, int y_, float Corr) {
-    x_ -= cx;
-    y_ -= cy;
-    if (x_ < tx) return -1;
-    if (y_ < ty) return -1;
-
-    x_ -= tx;
-    y_ -= ty;
-    int w, dy = int(float(y_) * Corr);  // correction for font scaling
-    // use the screen-compatible metric
-    QFontMetrics metrics(QucsSettings.font, 0);
-    if (showName) {
-        w = metrics.boundingRect(Name).width();
-        if (dy < 1) {
-            if (x_ < w) return 0;
-            return -1;
-        }
-        dy--;
+// Given coordinates of a point (usually coming from a mouse click), finds
+// out whether this point is within boundaries of one of component's text
+// properties (i.e whether a text property is clicked) and returns the
+// index of that property. Returns -1 when point is not within bounds of
+// any of text properties — i.e. click has missed.
+//
+// To find out whether given coordinates are within one of text properties,
+// we iterate over all properties, computing their bounding rectangles and
+// testing if the coordinates lie whithin the rectangle.
+//
+// Simplified example of component texts and their bounding rectangles:
+//
+//   (tx,ty)
+//      o------+
+//      | Name |
+//      +------+-----+
+//      | prop = val |
+//      +------------+---+
+//      | prop = multi   |
+//      |  line property |
+//      +-----------+----+
+//      | prop = 10 |
+//      +-----------+
+//
+// (tx,ty) is the top left corner of the region containing all component's
+// properties
+int Component::getTextSelected(int point_x, int point_y) {
+    // cx and cy are subtracted from coordinates to make them
+    // component-local, i.e relative to component
+    point_x -= cx;
+    point_y -= cy;
+    if (point_x < tx || point_y < ty) {
+        return -1;
     }
 
-    Property *pp;
-    for (pp = Props.first(); pp != 0; pp = Props.next())
-        if (pp->display)
-            if ((dy--) < 1) break;
-    if (!pp) return -1;
+    const QPoint click{point_x, point_y};
 
-    // get width of text
-    w = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
-    if (x_ > w) return -1; // clicked past the property text end - selection invalid
-    return Props.at() + 1;  // number the property
+    // Tracks bottom coordinate of previous bounding rectangle to know
+    // where the next text's bounding rectangle's top should be placed
+    int bounding_rect_top = ty;
+
+    // Tracks the number of processed texts. We have to return the index of
+    // the text being "clicked"
+    int text_index = 0;
+
+    const QFontMetrics font_metrics(QucsSettings.font, 0);
+    const int flags = 0b00000000;
+
+    if (showName) {
+        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, Name)};
+        if (text_br.contains(click)) {
+            return text_index;
+        }
+
+        bounding_rect_top = text_br.bottom();
+        text_index += 1;
+    }
+
+    for (auto* prop : Props) {
+        if (!prop->display) {
+            text_index += 1;
+            continue;
+        }
+
+        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, prop->Name + "=" + prop->Value)};
+        if (text_br.contains(click)) {
+            return text_index;
+        }
+
+        bounding_rect_top = text_br.bottom();
+        text_index += 1;
+    }
+
+    return -1;
 }
 
 // -------------------------------------------------------
