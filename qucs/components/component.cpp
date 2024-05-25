@@ -202,6 +202,7 @@ int Component::getTextSelected(int point_x, int point_y) {
 
     for (auto* prop : Props) {
         if (!prop->display) {
+            text_index += 1;
             continue;
         }
 
