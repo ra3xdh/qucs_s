@@ -19,7 +19,7 @@
 
 #include <QWidget>
 #include "qucs.h"
-#include "components/components.h"
+#include "components/component.h"
 #include "misc.h"
 #include <cmath>
 #include "mouseactions.h"

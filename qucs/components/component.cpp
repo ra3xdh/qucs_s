@@ -16,7 +16,13 @@
  ***************************************************************************/
 #include <cmath>
 
-#include "components.h"
+#include "component.h"
+#include "libcomp.h"
+#include "resistor.h"
+#include "equation.h"
+#include "sparamfile.h"
+#include "spicefile.h"
+#include "subcircuit.h"
 #include "main.h"
 #include "schematic.h"
 #include "module.h"
