@@ -15,10 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 #include "wirelabel.h"
-#include "viewpainter.h"
 #include "wire.h"
 #include "main.h"
 
+#include <QMargins>
 #include <QString>
 #include <QPainter>
 
@@ -103,94 +103,65 @@ bool WireLabel::getSelected(int x, int y)
   return false;
 }
 
-// ----------------------------------------------------------------
-void WireLabel::paint(ViewPainter *p)
-{
-  QFont f = p->Painter->font(); // save current font
-  QFont newFont = f;
+void WireLabel::paint(QPainter *p) const {
+  p->save();
 
-  if (isHighlighted)
-  {
-//    QColor highlightfill (Qt::blue);
-//    highlightfill.setAlpha(50);
-//    p->fillRect(x1-1, y1-1, x2, y2, highlightfill);
-    p->Painter->setPen(QPen(Qt::darkBlue,3));
-    newFont.setWeight (QFont::Bold);
-  }
-  else
-  {
-    newFont.setWeight (QFont::Normal);
-    p->Painter->setPen(QPen(Qt::black,1));
-  }
-  p->Painter->setFont (newFont);
-  x2 = p->drawText(Name, x1, y1, &y2);
-  p->Painter->setFont(f); // restore old font
+  QFont newFont{ p->font() };
+  newFont.setWeight(isHighlighted ? QFont::Bold : QFont::Normal);
+  p->setFont(newFont);
 
-  int xpaint=0, ypaint=4, phi=0;
-  switch(Type) {
-    case isVWireLabel:  ypaint=0; xpaint=4; phi=16*140; break;
-    case isHWireLabel:  phi=16*50; break;
-    case isNodeLabel:   ypaint = 0;
-    default:            ;
-  }
+  p->setPen(QPen{
+    isHighlighted ? Qt::darkBlue : Qt::black,
+    isHighlighted ? 3.0 : 1.0
+  });
 
-  int c, d;
-  int a = int(double(x2) / p->Scale) >> 1;
-  int b = int(double(y2) / p->Scale) >> 1;
-  if(cx < x1+a) {    // where should frame be painted ?
-    if(cy < y1+b) {
-      if(phi == 16*50)  phi += 16*180;
-      p->map(x1-3, y1-2, a, b);    // low right
-      c = a + (x2>>1);
-      d = b + y2;
-      p->map(cx+xpaint, cy+ypaint, xpaint, ypaint);
+  QRect text_br;
+  p->drawText(x1, y1, 0, 0, Qt::TextDontClip, Name, &text_br);
+
+  bool right = text_br.right() < cx;
+  bool bottom = text_br.bottom() < cy;
+
+  p->setPen(QPen{initValue.isEmpty() ? Qt::darkMagenta : Qt::red,0});
+
+  text_br = text_br.marginsAdded(QMargins{3, 3, 3, 3});
+  p->drawLine(cx, cy, right ? text_br.right() : text_br.left(), bottom ? text_br.bottom() : text_br.top());
+  p->drawLine(
+    right ? text_br.right() : text_br.left(),
+    bottom ? text_br.bottom() : text_br.top(),
+    right ? text_br.right() : text_br.left(),
+    bottom ? text_br.top() : text_br.bottom()
+  );
+
+  p->drawLine(
+    right ? text_br.right() : text_br.left(),
+    bottom ? text_br.bottom() : text_br.top(),
+    right ? text_br.left() : text_br.right(),
+    bottom ? text_br.bottom() : text_br.top()
+  );
+
+  if (Type != isNodeLabel) {
+    int start_angle = 0;
+    switch (Type) {
+    case isHWireLabel:
+      start_angle = 16 * (right ? 45 : 225);
+      break;
+    case isVWireLabel:
+      start_angle = 16 * (bottom ? -45 : 135);
+      break;
+    default:
+      assert(false);  // shouln't get there
     }
-    else {
-      if(phi != 0)  phi += 16*180;
-      p->map(x1-3, y1+1, a, b);    // up right
-      b += y2;
-      c  = a + (x2>>1);
-      d  = b - y2;
-      p->map(cx+xpaint, cy-ypaint, xpaint, ypaint);
-    }
+
+    constexpr int span_angle = 16 * 270;
+    p->drawArc(cx-4, cy-4, 8, 8, start_angle, span_angle);
   }
-  else {
-    if(cy < y1+b) {
-      p->map(x1+3, y1-2, a, b);   // low left
-      a += x2;
-      c  = a - (x2>>1);
-      d  = b + y2;
-      p->map(cx-xpaint, cy+ypaint, xpaint, ypaint);
-    }
-    else {
-      if(phi > 16*90)  phi += 16*180;
-      p->map(x1+3, y1+1, a, b);    // up left
-      a += x2;
-      b += y2;
-      c  = a - (x2>>1);
-      d  = b - y2;
-      p->map(cx-xpaint, cy-ypaint, xpaint, ypaint);
-    }
-  }
-
-  if(initValue.isEmpty())
-    p->Painter->setPen(QPen(Qt::darkMagenta,0));
-  else
-    p->Painter->setPen(QPen(Qt::red,0));
-
-  if(phi)  p->drawArc(cx-4, cy-4, 8, 8, phi, 16*255);
-  p->Painter->drawLine(a, b, c, b);
-  p->Painter->drawLine(a, b, a, d);
-  p->Painter->drawLine(xpaint, ypaint, a, b);
-
-  x2 = int(double(x2) / p->Scale);
-  y2 = int(double(y2) / p->Scale);
 
   if(isSelected)
   {
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->drawRoundRect(x1-2, y1-2, x2+6, y2+5);
+    p->setPen(QPen(Qt::darkGray,3));
+    p->drawRoundedRect(x1-2, y1-2, x2+6, y2+5, 4, 4);
   }
+  p->restore();
 }
 
 // ----------------------------------------------------------------

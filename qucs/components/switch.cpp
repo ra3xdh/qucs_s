@@ -176,7 +176,7 @@ void Switch::createSymbol()
   Lines.append(new qucs::Line(-30,  0,-15,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 17,  0, 30,  0,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( 12, -3, 5, 5, 0, 16*360,QPen(Qt::darkBlue,2)));
-  Ellips.append(new qucs::Area(-18, -3, 6, 6, QPen(Qt::darkBlue,2),
+  Ellipses.append(new qucs::Ellips(-18, -3, 6, 6, QPen(Qt::darkBlue,2),
                 QBrush(Qt::darkBlue, Qt::SolidPattern)));
 
   Ports.append(new Port(-30,  0));

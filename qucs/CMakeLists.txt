@@ -123,7 +123,7 @@ ADD_SUBDIRECTORY( spicecomponents )
 SET(QUCS_SRCS
   element.cpp	octave_window.cpp	qucsdoc.cpp
   textdoc.cpp  main.cpp	schematic.cpp
-  mnemo.cpp	qucs.cpp	viewpainter.cpp
+  mnemo.cpp	qucs.cpp
   module.cpp	schematic_element.cpp	wire.cpp schematic_render.cpp
   mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
   wirelabel.cpp node.cpp qucs_init.cpp
@@ -150,7 +150,6 @@ settings.h
 syntax.h
 symbolwidget.h
 textdoc.h
-viewpainter.h
 wire.h
 wirelabel.h
 )

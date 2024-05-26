@@ -42,28 +42,27 @@ qucs::Rectangle::~Rectangle()
 {
 }
 
-// --------------------------------------------------------------------------
-void qucs::Rectangle::paint(ViewPainter *p)
-{
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
-    if(filled)  p->Painter->setBrush(Brush);
-    p->drawRect(cx, cy, x2, y2);
-    p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
-    p->Painter->setBrush(Qt::NoBrush);
-    p->drawRect(cx, cy, x2, y2);
+void qucs::Rectangle::paint(QPainter *painter) {
+  painter->save();
 
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy+y2);  // markers for changing the size
-    p->drawResizeRect(cx, cy);
-    p->drawResizeRect(cx+x2, cy+y2);
-    p->drawResizeRect(cx+x2, cy);
-    return;
+  painter->setPen(Pen);
+  if (filled) {
+    painter->setBrush(Brush);
   }
-  p->Painter->setPen(Pen);
-  if(filled)  p->Painter->setBrush(Brush);
-  p->drawRect(cx, cy, x2, y2);
-  p->Painter->setBrush(Qt::NoBrush); // no filling for the next paintings
+  painter->drawRect(cx, cy, x2, y2);
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
+    painter->drawRect(cx, cy, x2, y2);
+    painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
+    painter->drawRect(cx, cy, x2, y2);
+
+    misc::draw_resize_handle(painter, QPoint{cx, cy});
+    misc::draw_resize_handle(painter, QPoint{cx, cy + y2});
+    misc::draw_resize_handle(painter, QPoint{cx + x2, cy});
+    misc::draw_resize_handle(painter, QPoint{cx + x2, cy + y2});
+  }
+  painter->restore();
 }
 
 // --------------------------------------------------------------------------

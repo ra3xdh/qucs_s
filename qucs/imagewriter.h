@@ -41,10 +41,6 @@ public:
 private:
   bool onlyDiagram;
   QString lastExportFilename;
-
-  void getSchWidthAndHeight(Schematic *sch, int &w, int &h, int &xmin, int &ymin);
-  void getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int& hsel, int& xmin_sel_, int& ymin_sel_);
-  static void updateMinMax(int &xmin, int &xmax, int &ymin, int &ymax, int x1, int x2, int y1m, int y2);
 };
 
 #endif

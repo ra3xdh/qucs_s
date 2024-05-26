@@ -26,7 +26,6 @@
 
 
 class Schematic;
-class ViewPainter;
 class QString;
 class QPen;
 
@@ -53,9 +52,8 @@ public:
   virtual void getExtraVANodes(QStringList& ) {};
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
-  void    paint(ViewPainter*);
+  void    paint(QPainter* painter) const;
   void    paintScheme(Schematic*);
-  void    print(ViewPainter*, float);
   void    setCenter(int, int, bool relative=false);
   void    getCenter(int&, int&);
   int     textSize(int&, int&);
@@ -83,8 +81,8 @@ public:
 
   QList<qucs::Line *>     Lines;
   QList<struct qucs::Arc *>      Arcs;
-  QList<qucs::Area *>     Rects;
-  QList<qucs::Area *>     Ellips;
+  QList<qucs::Rect *>     Rects;
+  QList<qucs::Ellips *>     Ellipses;
   QList<Port *>     Ports;
   QList<Text *>     Texts;
   Q3PtrList<Property> Props;
@@ -123,6 +121,10 @@ protected:
   void copyComponent(Component*);
   Property * getProperty(const QString&);
   Schematic* containingSchematic;
+
+private:
+  void drawSimulator(QPainter* p) const;
+  void drawUsual(QPainter* p) const;
 };
 
 

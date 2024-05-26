@@ -40,24 +40,24 @@ EllipseArc::~EllipseArc()
 {
 }
 
-// --------------------------------------------------------------------------
-void EllipseArc::paint(ViewPainter *p)
-{
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
-    p->drawArc(cx, cy, x2, y2, Angle, ArcLen);
-    p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
-    p->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+void EllipseArc::paint(QPainter *painter) {
+  painter->save();
 
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy+y2);  // markers for changing the size
-    p->drawResizeRect(cx, cy);
-    p->drawResizeRect(cx+x2, cy+y2);
-    p->drawResizeRect(cx+x2, cy);
-    return;
+  painter->setPen(Pen);
+  painter->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
+    painter->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+    painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
+    painter->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+
+    misc::draw_resize_handle(painter, QPoint{cx, cy});
+    misc::draw_resize_handle(painter, QPoint{cx, y2});
+    misc::draw_resize_handle(painter, QPoint{x2, cy});
+    misc::draw_resize_handle(painter, QPoint{x2, y2});
   }
-  p->Painter->setPen(Pen);
-  p->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+  painter->restore();
 }
 
 // --------------------------------------------------------------------------

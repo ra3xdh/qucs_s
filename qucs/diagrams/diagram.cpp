@@ -98,72 +98,63 @@ Diagram::~Diagram() {
 /*!
    Paint function for most diagrams (cartesian, smith, polar, ...)
 */
-void Diagram::paint(ViewPainter *p) {
+void Diagram::paint(QPainter *p) {
     paintDiagram(p);
     paintMarkers(p);
 }
 
-void Diagram::paintDiagram(ViewPainter *p) {
-    // paint all lines
-    for (qucs::Line *pl: Lines) {
-        p->Painter->setPen(pl->style);
-        p->drawLine(cx + pl->x1, cy - pl->y1, cx + pl->x2, cy - pl->y2);
+void Diagram::paintDiagram(QPainter *painter) {
+    painter->save();
+
+    painter->translate(cx, cy);
+    painter->save();
+
+    for (qucs::Line* line : Lines) {
+        painter->setPen(line->penHint());
+        painter->drawLine(line->x1, - line->y1, line->x2, - line->y2);
     }
 
-    // paint all arcs (1 pixel larger to compensate for strange circle method)
-    for (qucs::Arc *pa: Arcs) {
-        p->Painter->setPen(pa->style);
-        p->drawArc(cx + pa->x, cy - pa->y, pa->w, pa->h, pa->angle, pa->arclen);
+    for (qucs::Arc* arc : Arcs) {
+        painter->setPen(arc->penHint());
+        painter->drawArc(arc->x, - arc->y, arc->w, arc->h, arc->angle, arc->arclen);
     }
 
-    // draw all graphs
-    for (Graph *pg: Graphs)
-        pg->paint(p, cx, cy);
+    painter->scale(1.0, -1.0); // make Y-axis grow upwards
+    for (Graph *pg: Graphs) {
+        pg->paint(painter);
+    }
+    painter->restore();  // to translated(cx, cy) with no negative y-scale
 
-    // keep track of painter state
-    p->Painter->save();
-
-    // write whole text (axis label inclusively)
-    QTransform wm = p->Painter->worldTransform();
     for (Text *pt: Texts) {
-        p->Painter->setWorldTransform(
-                QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
-                           p->DX + float(cx + pt->x) * p->Scale,
-                           p->DY + float(cy - pt->y) * p->Scale));
+        painter->save();
 
-        p->Painter->setPen(pt->Color);
-        p->Painter->drawText(0, 0, pt->s);
+        painter->setPen(pt->Color);
+        painter->translate(pt->x, -pt->y);
+        painter->rotate(pt->angle());
+        painter->drawText(0, 0, pt->s);
+
+        painter->restore();
     }
-    p->Painter->setWorldTransform(wm);
-    p->Painter->setWorldMatrixEnabled(false);
-
-    // restore painter state
-    p->Painter->restore();
-
 
     if (isSelected) {
-        int x_, y_;
-        float fx_, fy_;
-        p->map(cx, cy - y2, x_, y_);
-        fx_ = float(x2) * p->Scale + 10;
-        fy_ = float(y2) * p->Scale + 10;
+        QRectF bounds(0, -y2, x2, y2);
+        painter->setPen(QPen(Qt::darkGray, 3));
+        painter->drawRect(bounds.marginsAdded(QMargins{5, 5, 5, 5}));
 
-        p->Painter->setPen(QPen(Qt::darkGray, 3));
-        p->Painter->drawRect(x_ - 5, y_ - 5, lround(fx_), lround(fy_));
-        p->Painter->setPen(QPen(Qt::darkRed, 2));
-        p->drawResizeRect(cx, cy - y2);  // markers for changing the size
-        p->drawResizeRect(cx, cy);
-        p->drawResizeRect(cx + x2, cy - y2);
-        p->drawResizeRect(cx + x2, cy);
+        misc::draw_resize_handle(painter, bounds.topLeft());
+        misc::draw_resize_handle(painter, bounds.bottomLeft());
+        misc::draw_resize_handle(painter, bounds.bottomRight());
+        misc::draw_resize_handle(painter, bounds.topRight());
     }
+    painter->restore();
 }
 
-void Diagram::paintMarkers(ViewPainter *p, bool paintAll) {
+void Diagram::paintMarkers(QPainter *p, bool paintAll) {
     // draw markers last, so they are at the top of painting layers
     for (Graph *pg: Graphs)
         for (Marker *pm: pg->Markers)
             if (paintAll || (pm->Type & 1)) {
-                pm->paint(p, cx, cy);
+                pm->paint(p);
             }
 }
 

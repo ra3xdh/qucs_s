@@ -21,7 +21,6 @@
 #include "graph.h"
 #include "marker.h"
 #include "element.h"
-#include "viewpainter.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -123,9 +122,9 @@ public:
   virtual void calcLimits() {};
   virtual QString extraMarkerText(Marker const*) const {return "";}
   
-  virtual void paint(ViewPainter*);
-  virtual void paintDiagram(ViewPainter* p);
-  void paintMarkers(ViewPainter* p, bool paintAll = true);
+  virtual void paint(QPainter* p);
+  virtual void paintDiagram(QPainter* painter);
+  void paintMarkers(QPainter* p, bool paintAll = true);
   void    setCenter(int, int, bool relative=false);
   void    getCenter(int&, int&);
   void    paintScheme(Schematic*);

@@ -43,7 +43,7 @@ Relais::Relais()
   Lines.append(new qucs::Line( 30, 15, 30, 30,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30, 15, 45,-15,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( 27,-18, 5, 5, 0, 16*360,QPen(Qt::darkBlue,2)));
-  Ellips.append(new qucs::Area( 27, 12, 6, 6, QPen(Qt::darkBlue,2),
+  Ellipses.append(new qucs::Ellips( 27, 12, 6, 6, QPen(Qt::darkBlue,2),
                          QBrush(Qt::darkBlue, Qt::SolidPattern)));
 
   Ports.append(new Port(-30,-30));

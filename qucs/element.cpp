@@ -16,6 +16,78 @@
  ***************************************************************************/
 
 #include "element.h"
+#include "misc.h"
+
+namespace qucs {
+
+void Line::draw(QPainter* painter) const {
+    painter->drawLine(x1, y1, x2, y2);
+}
+
+void Arc::draw(QPainter* painter) const {
+    painter->drawArc(x, y, w, h, angle, arclen);
+}
+
+void Rect::draw(QPainter* painter) const {
+    painter->drawRect(x, y, w, h);
+}
+
+void Ellips::draw(QPainter* painter) const {
+    painter->drawEllipse(x, y, w, h);
+}
+
+} // namespace qucs
+
+void Text::draw(QPainter *painter) const {
+  draw(painter, nullptr);
+}
+
+void Text::draw(QPainter *painter, QRect* br) const {
+  painter->save();
+
+  painter->translate(x, y);
+  painter->rotate(angle());
+
+  QFont newFont = painter->font();
+  newFont.setWeight(QFont::Light);
+  newFont.setOverline(over);
+  newFont.setUnderline(under);
+  newFont.setPixelSize(Size);
+  painter->setFont(newFont);
+
+  misc::draw_richtext(painter, 0, 0, s, br);
+  if (br) {
+     br->moveTo(x, y);
+  }
+
+  painter->restore();
+}
+
+double Text::angle() const {
+  // Historically Text uses mSin and mCos values to store
+  // its rotation factor.
+  //
+  // The actual rotation was implemented as a clever
+  // tranformation for a painter, like:
+  //    QTransform(mCos, -mSin, mSin, mCos, …
+  //
+  // There were only four combinations of these values
+  // and here we convert them to their human-readable
+  // equivalents
+  if (mCos == 0.0) {
+    if (mSin == 1.0) {
+      return 270;
+    }
+    return 90;
+  }
+
+  if (mCos == -1.0 && mSin == 0.0) {
+    return 180;
+  }
+
+  return 0;
+}
+
 
 Element::Element()
 {

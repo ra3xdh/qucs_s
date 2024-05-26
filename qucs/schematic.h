@@ -30,7 +30,6 @@
 #include "wire.h"
 #include "node.h"
 #include "qucsdoc.h"
-#include "viewpainter.h"
 #include "diagrams/diagram.h"
 #include "paintings/painting.h"
 #include "components/component.h"
@@ -83,10 +82,9 @@ public:
 
   void setName(const QString&);
   void setChanged(bool, bool fillStack=false, char Op='*');
-  void drawGrid(const ViewPainter&);
-  void print(QPrinter*, QPainter*, bool, bool);
+  void print(QPrinter*, QPainter*, bool printAll, bool fitToPage, QMargins margins={});
 
-  void paintSchToViewpainter(ViewPainter* p, bool printAll, bool toImage, int screenDpiX=96, int printerDpiX=300);
+  void paintSchToViewpainter(QPainter* painter, bool printAll);
 
   void PostPaintEvent(PE pe, int x1=0, int y1=0, int x2=0, int y2=0, int a=0, int b=0,bool PaintOnViewport=false);
 
@@ -245,8 +243,6 @@ signals:
   void signalComponentDeleted(Component *);
 
 protected:
-  void paintFrame(ViewPainter*);
-
   // overloaded function to get actions of user
   void drawContents(QPainter*, int, int, int, int);
   void contentsMouseMoveEvent(QMouseEvent*);
@@ -366,6 +362,11 @@ private:
     @return new scale value
   */
   double renderModel(double scale, QRect newModelBounds, QPoint modelPlaneCoords, QPoint viewportCoords);
+  void drawElements(QPainter* painter);
+  void drawDcBiasPoints(QPainter* painter);
+  void drawPostPaintEvents(QPainter* painter);
+  void paintFrame(QPainter* painter);
+  void drawGrid(QPainter* painter);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
