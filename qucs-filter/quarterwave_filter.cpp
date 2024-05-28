@@ -42,16 +42,14 @@ QString QuarterWave_Filter::getLineString(bool isMicrostrip, double width_or_imp
 {
   if (isMicrostrip)
   {
-    if (rotate == 3)
-      return QString("<MLIN MS1 1 %1 %2 26 -30 0 %3 \"Sub1\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
-        .arg(x).arg(y).arg(rotate).arg(width_or_impedance*1000).arg(l*1000);
-
-    return QString("<MLIN MS1 1 %1 %2 -26 20 0 %3 \"Sub1\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
-      .arg(x).arg(y).arg(rotate).arg(width_or_impedance*1000).arg(l*1000);
+     return QString("<MLIN MS1 1 %1 %2 26 -30 0 %3 \"Sub1\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
+               .arg(x).arg(y).arg(rotate).arg(width_or_impedance*1000).arg(l*1000);
   }
   else
-      return QString("<TLIN Line1 1 %1 %2 -26 20 0 0 \"%3\" 1 \"%4\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
-        .arg(x).arg(y).arg(width_or_impedance).arg(l);
+  {
+     return QString("<TLIN Line1 1 %1 %2 -26 20 0 %3 \"%4\" 1 \"%5\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
+            .arg(x).arg(y).arg(rotate).arg(width_or_impedance).arg(l);
+  }
 }
 
 double QuarterWave_Filter::getZ(tFilter *Filter, int order, bool is_shunt)
@@ -125,10 +123,10 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
       double width1 = getMicrostripWidth(Filter, Substrate, i);
       double width2 = getMicrostripWidth(Filter, Substrate, i+1);
       double width3 = getMicrostripWidth(Filter, Substrate, i, true);
-      c_s += getLineString(isMicrostrip, width1, d_lamdba4 - width3 / 2 - previous_width3 / 2, x, 180);
+      c_s += getLineString(isMicrostrip, width1, d_lamdba4 - width3 / 2 - previous_width3 / 2, x, 180, 0); // Series line
       c_s += getTeeString(x+ 60 + x_space, 180, width1, width2, width3);
       double max_width = width1 >= width2 ? width1 : width2;
-      c_s += getLineString(isMicrostrip, width3, d_lamdba4 - max_width/2, x+60 + x_space, 60, 3);
+      c_s += getLineString(isMicrostrip, width3, d_lamdba4 - max_width/2, x+60 + x_space, 60, 3); // Shunt quarter-wavelength resonator
 
       w_s += getWireString(x+30, 180, x+30+x_space, 180);
       w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 150);
@@ -151,8 +149,8 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
             Z = (pi*Z0*bw)/(4*getNormValue(i, Filter)); // Bandpass
       else
             Z = (4*Z0)/(pi*bw*getNormValue(i, Filter)); // Bandstop
-      c_s += getLineString(isMicrostrip, Z0, d_lamdba4, x, 180);
-      c_s += getLineString(isMicrostrip, Z, d_lamdba4,  x+80, 60);
+      c_s += getLineString(isMicrostrip, Z0, d_lamdba4, x, 180, 0); // Series transmission line
+      c_s += getLineString(isMicrostrip, Z, d_lamdba4,  x+80, 60, 0); // Shunt quarter-wavelength resonator
       w_s += getWireString(x+30, 180, x+60, 180);
       w_s += getWireString(x+50, 60, x+50, 180);
       if (Filter->Class == CLASS_BANDPASS)
