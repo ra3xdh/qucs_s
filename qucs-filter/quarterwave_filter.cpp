@@ -45,7 +45,7 @@ QString QuarterWave_Filter::getLineString(bool isMicrostrip, double width_or_imp
     if (rotate == 3)
       return QString("<MLIN MS1 1 %1 %2 26 -30 0 %3 \"Sub1\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
         .arg(x).arg(y).arg(rotate).arg(width_or_impedance*1000).arg(l*1000);
-    
+
     return QString("<MLIN MS1 1 %1 %2 -26 20 0 %3 \"Sub1\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
       .arg(x).arg(y).arg(rotate).arg(width_or_impedance*1000).arg(l*1000);
   }
@@ -94,6 +94,10 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
                             QObject::tr("Quarter wave filters do not allow low-pass nor high-pass masks\n"));
       return NULL;
   }
+  // Auxiliary variables
+  double Z;
+  double Z0 = Filter->Impedance;
+
   // Set filter main params as static members
   fc = Filter->Frequency + 0.5 * (Filter->Frequency2 - Filter->Frequency);
   d_lamdba4 = 0.25 * LIGHTSPEED / fc / (isMicrostrip ? sqrt(Substrate->er) : 1);
@@ -143,9 +147,12 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
     for (int i = 0; i < Filter->Order; i++)
     {
       x += 90;
-      double impedance = Filter->Impedance;
-      c_s += getLineString(isMicrostrip, impedance, d_lamdba4, x, 180);
-      c_s += getLineString(isMicrostrip, impedance, d_lamdba4,  x+80, 60);
+      if (Filter->Class == CLASS_BANDPASS)
+            Z = (pi*Z0*bw)/(4*getNormValue(i, Filter)); // Bandpass
+      else
+            Z = (4*Z0)/(pi*bw*getNormValue(i, Filter)); // Bandstop
+      c_s += getLineString(isMicrostrip, Z0, d_lamdba4, x, 180);
+      c_s += getLineString(isMicrostrip, Z, d_lamdba4,  x+80, 60);
       w_s += getWireString(x+30, 180, x+60, 180);
       w_s += getWireString(x+50, 60, x+50, 180);
       if (Filter->Class == CLASS_BANDPASS)
