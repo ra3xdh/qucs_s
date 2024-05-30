@@ -38,8 +38,6 @@ public:
 
   static QString* createSchematic(tFilter*, tSubstrate*, bool);
   static QString getLineString(bool isMicrostrip, double width_or_impedance, double l, int x, int y, int rotate=0);
-  static double getZ(tFilter *Filter, int order, bool is_shunt);
-  static double getMicrostripWidth(tFilter *Filter, tSubstrate *Substrate, int order, bool is_shunt = false);
   static QString getTeeString(int x, int y, double width1, double width2, double width3);
   static QString getWireString(int x1, int x2, int x3, int x4);
 };
