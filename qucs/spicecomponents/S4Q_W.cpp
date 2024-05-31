@@ -35,9 +35,9 @@ S4Q_W::S4Q_W()
     Lines.append(new qucs::Line( 15, -15, -15, -15,QPen(Qt::darkRed,3)));
     Lines.append(new qucs::Line(-30,  0,  -15,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line(-15,  0,   -5,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line( 30,  0,   15,  0,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line( 30,  0,   15,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( 15,  0,    5,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line(  5,  0,    0,  8,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(  5,  0,    0,  8,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
 
     Ports.append(new Port(-30,  0)); // Ps+
     Ports.append(new Port( 30,  0)); // Ps-

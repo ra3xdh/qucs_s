@@ -37,7 +37,7 @@ S4Q_S::S4Q_S()
     Lines.append(new qucs::Line(-15,  0,   -5,  0,QPen(Qt::darkRed,3)));
     Lines.append(new qucs::Line( 30,  0,   15,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( 15,  0,    5,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line(  5,  0,    0,  8,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(  5,  0,    0,  8,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
     Lines.append(new qucs::Line(-10, -30, -10,  -15,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( 10, -30,  10,  -15,QPen(Qt::darkBlue,2)));
     
