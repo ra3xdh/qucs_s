@@ -1,10 +1,7 @@
 #ifndef SPICECOMPAT_H
 #define SPICECOMPAT_H
 
-#include <QString>
 #include <QStringList>
-#include <QRegularExpression>
-//#include "component.h"
 
 /*!
   \brief spicecompat namespace contains definitions responsible

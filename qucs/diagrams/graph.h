@@ -27,7 +27,6 @@
 #include "qt3_compat/qt_compat.h"
 #include <QDateTime>
 
-#include <assert.h>
 
 typedef enum{
   GRAPHSTYLE_INVALID = -1,

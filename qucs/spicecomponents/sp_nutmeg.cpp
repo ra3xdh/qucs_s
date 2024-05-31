@@ -18,6 +18,7 @@
 #include "main.h"
 
 #include <QFontMetrics>
+#include <QRegularExpression>
 
 NutmegEquation::NutmegEquation()
 {
