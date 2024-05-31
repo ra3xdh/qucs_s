@@ -38,31 +38,6 @@ QuarterWave_Filter::QuarterWave_Filter()
 {
 }
 
-QString QuarterWave_Filter::getLineString(bool isMicrostrip, double width_or_impedance, double l, int x, int y, int rotate)
-{
-  if (isMicrostrip)
-  {
-     return QString("<MLIN MS1 1 %1 %2 26 -30 0 %3 \"Sub1\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
-               .arg(x).arg(y).arg(rotate).arg(width_or_impedance*1000).arg(l*1000);
-  }
-  else
-  {
-     return QString("<TLIN Line1 1 %1 %2 -26 20 0 %3 \"%4\" 1 \"%5\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
-            .arg(x).arg(y).arg(rotate).arg(width_or_impedance).arg(l);
-  }
-}
-
-QString QuarterWave_Filter::getWireString(int x1, int y1, int x2, int y2)
-{
-  return QString("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x1).arg(y1).arg(x2).arg(y2);
-}
-
-QString QuarterWave_Filter::getTeeString(int x, int y, double width1, double width2, double width3)
-{
-  return QString("<MTEE MS1 1 %1 %2 -26 20 1 0 \"Sub1\" 1 \"%3mm\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
-    .arg(x).arg(y).arg(width1*1000).arg(width2*1000).arg(width3*1000);
-}
-
 // -----------------------------------------------------------------------
 QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substrate, bool isMicrostrip)
 {

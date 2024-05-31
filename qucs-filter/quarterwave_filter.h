@@ -23,7 +23,6 @@
 #ifndef QUARTERWAVE_FILTER_H
 #define QUARTERWAVE_FILTER_H
 
-
 #include "tl_filter.h"
 
 // Quarter wave transmission line filter
@@ -37,10 +36,6 @@ public:
   QuarterWave_Filter();
 
   static QString* createSchematic(tFilter*, tSubstrate*, bool);
-  static QString getLineString(bool isMicrostrip, double width_or_impedance, double l, int x, int y, int rotate=0);
-  static QString getTeeString(int x, int y, double width1, double width2, double width3);
-  static QString getWireString(int x1, int x2, int x3, int x4);
 };
-
 
 #endif
