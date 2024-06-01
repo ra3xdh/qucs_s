@@ -18,6 +18,10 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+// QObject is needed here to be transitively included
+// from component implementations. Some how non-Linux
+// builds fail without explicit QObject inclusion
+#include <QObject>
 #include "extsimkernels/spicecompat.h"
 #include "qt3_compat/qt_compat.h"
 
