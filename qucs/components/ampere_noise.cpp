@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include "ampere_noise.h"
-#include "node.h"
 #include "extsimkernels/verilogawriter.h"
 #include "extsimkernels/spicecompat.h"
 

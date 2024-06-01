@@ -16,8 +16,6 @@
  ***************************************************************************/
 
 #include "capacitor.h"
-#include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 

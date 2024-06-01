@@ -7,7 +7,6 @@
  * any later version.
  * 
  */
-#include <stdlib.h>
 #include "pad4bit.h"
 #include "node.h"
 

@@ -27,10 +27,6 @@
 #include <QStringList>
 #include <QDir>
 
-#include "wire.h"
-#include "node.h"
-#include "diagrams/diagram.h"
-#include "extsimkernels/spicecompat.h"
 
 class QucsApp;
 class Component;

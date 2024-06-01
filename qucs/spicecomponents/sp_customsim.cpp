@@ -16,7 +16,6 @@
  ***************************************************************************/
 #include "sp_customsim.h"
 #include "main.h"
-#include "misc.h"
 
 
 SpiceCustomSim::SpiceCustomSim()

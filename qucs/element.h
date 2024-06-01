@@ -37,9 +37,7 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
-#include <QPainter>
 #include <QPen>
-#include <QBrush>
 
 class Node;
 class WireLabel;

@@ -47,7 +47,6 @@
 #include "module.h"
 #include "misc.h"
 
-#include "components/components.h"
 
 #include "extsimkernels/ngspice.h"
 #include "extsimkernels/xyce.h"

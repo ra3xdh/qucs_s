@@ -16,17 +16,14 @@
  ***************************************************************************/
 
 #include "spicelibcomp.h"
-#include "qucs.h"
-#include "schematic.h"
 #include "main.h"
 #include "misc.h"
+#include "node.h"
 #include "extsimkernels/spicecompat.h"
 
 #include <QTextStream>
 #include <QFileInfo>
 #include <QMutex>
-
-#include <limits.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

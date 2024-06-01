@@ -3,6 +3,7 @@
 #include "misc.h"
 
 #include <QDebug>
+#include <QRegularExpression>
 
 /*!
  * \brief spicecompat::check_refdes If starting letters of the component name

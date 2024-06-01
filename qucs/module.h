@@ -21,6 +21,7 @@
 #include <QList>
 #include <QHash>
 #include <QMap>
+#include "component.h"
 
 class QPixmap;
 

@@ -32,8 +32,8 @@
 #include <QStatusBar>
 
 #include "spicefile.h"
-#include "schematic.h"
 #include "main.h"
+#include "node.h"
 #include "qucs.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"

@@ -22,16 +22,7 @@
  * \Declaration of some miscellaneous function
  */
 
-#include <QString>
-#include <QWidget>
-#include <QPalette>
-#include <QIcon>
-#include <QFileInfo>
-#include <QPainter>
 #include <QPushButton>
-
-#include <stdint.h>
-
 
 #define Q_UINT32 uint32_t
 

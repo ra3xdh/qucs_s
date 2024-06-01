@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include "subcircuit.h"
-#include "qucs.h"
 #include "schematic.h"
 #include "main.h"
 #include "misc.h"
@@ -25,8 +24,6 @@
 #include <QTextStream>
 #include <QFileInfo>
 #include <QMutex>
-
-#include <limits.h>
 
 
 

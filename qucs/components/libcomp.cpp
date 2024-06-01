@@ -16,14 +16,12 @@
  ***************************************************************************/
 
 #include "libcomp.h"
-#include "qucs.h"
 #include "main.h"
-#include "schematic.h"
 #include "misc.h"
+#include "node.h"
 #include "extsimkernels/qucs2spice.h"
 #include "extsimkernels/spicecompat.h"
 
-#include <limits.h>
 
 #include <QTextStream>
 #include <QDir>

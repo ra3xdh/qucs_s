@@ -16,7 +16,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "vfile.h"
-#include "schematic.h"
+#include "node.h"
 #include "misc.h"
 
 #include "extsimkernels/spicecompat.h"

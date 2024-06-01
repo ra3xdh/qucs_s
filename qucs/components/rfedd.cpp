@@ -16,10 +16,10 @@
  ***************************************************************************/
 #include "rfedd.h"
 #include "main.h"
-#include "schematic.h"
+#include "node.h"
 
 #include <QFileInfo>
-
+#include <QFontMetrics>
 
 RFedd::RFedd()
 {

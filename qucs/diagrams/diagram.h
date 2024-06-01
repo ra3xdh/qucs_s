@@ -19,10 +19,8 @@
 #define DIAGRAM_H
 
 #include "graph.h"
-#include "marker.h"
 #include "element.h"
 
-#include <QFile>
 #include <QTextStream>
 #include <QList>
 

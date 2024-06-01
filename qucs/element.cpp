@@ -18,6 +18,8 @@
 #include "element.h"
 #include "misc.h"
 
+#include <QPainter>
+
 namespace qucs {
 
 void Line::draw(QPainter* painter) const {
