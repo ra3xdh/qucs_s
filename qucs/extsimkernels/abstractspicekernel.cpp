@@ -49,6 +49,7 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_, QObject *parent) :
 {
     Sch = sch_;
     console = nullptr;
+    needsPrefix = false;
 
     if (Sch->showBias == 0) DC_OP_only = true;
     else DC_OP_only = false;
