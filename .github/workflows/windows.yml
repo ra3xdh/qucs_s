@@ -85,11 +85,9 @@ jobs:
 
     - name: Copy non-Qt DLLs to bin directory
       run: |
-        curl -L -o dxc.zip https://github.com/microsoft/DirectXShaderCompiler/releases/download/v1.8.2403.2/dxc_2024_03_29.zip
-        unzip -o dxc.zip -d dxc
-        cp -r dxc/bin/x64/* /${{ matrix.environment }}/bin/
         shopt -s extglob
-        for file in /${{ matrix.environment }}/bin/*.dll; do
+        FILES=$(ldd build/qucs-suite/bin/qucs-s.exe | awk '($3 ~ /\/${{ matrix.environment }}\/bin\//) {print $3}')
+        for file in $FILES; do
           if [[ $(basename "$file") != Qt6* ]]; then
             cp -r "$file" build/qucs-suite/bin
           fi
