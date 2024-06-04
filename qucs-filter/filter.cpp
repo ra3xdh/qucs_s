@@ -355,16 +355,40 @@ double Filter::quadraticChebyshevValues(int No, int Order, double Ripple, double
 
 QString Filter::getLineString(bool isMicrostrip, double width_or_impedance, double l, int x, int y, int rotate)
 {
+  QString code;
+  double text_x, text_y; // Coordinates for the text. They change with the rotation
   if (isMicrostrip)
   {
-     return QString("<MLIN MS1 1 %1 %2 26 -30 0 %3 \"Sub1\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
-               .arg(x).arg(y).arg(rotate).arg(width_or_impedance*1000).arg(l*1000);
+     if (rotate)
+     {
+         text_x = 20;
+         text_y = -25;
+     }
+     else
+     {
+         text_x = -30;
+         text_y = -70;
+     }
+     code = QString("<MLIN MS1 1 %1 %2 %3 %4 0 %5 \"Sub1\" 0 \"%6 mm\" 1 \"%7 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
+              .arg(x).arg(y).arg(text_x).arg(text_y).arg(rotate)
+              .arg(QString::number(width_or_impedance*1e3, 'f', 2)).arg(QString::number(l*1e3, 'f', 2));
   }
   else
   {
-     return QString("<TLIN Line1 1 %1 %2 -26 20 0 %3 \"%4\" 1 \"%5\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
-            .arg(x).arg(y).arg(rotate).arg(width_or_impedance).arg(l);
+      if (rotate)
+      {
+          text_x = 10;
+          text_y = -25;
+      }
+      else
+      {
+          text_x = -30;
+          text_y = -60;
+      }
+     code =  QString("<TLIN Line1 1 %1 %2 %3 %4 0 %5 \"%6 Ohm\" 1 \"%7 mm\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
+            .arg(x).arg(y).arg(text_x).arg(text_y).arg(rotate).arg(QString::number(width_or_impedance, 'f', 1)).arg(QString::number(l*1e3, 'f', 2));
   }
+  return code;
 }
 
 QString Filter::getWireString(int x1, int y1, int x2, int y2)
@@ -374,6 +398,6 @@ QString Filter::getWireString(int x1, int y1, int x2, int y2)
 
 QString Filter::getTeeString(int x, int y, double width1, double width2, double width3)
 {
-  return QString("<MTEE MS1 1 %1 %2 -26 20 1 0 \"Sub1\" 1 \"%3mm\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
-    .arg(x).arg(y).arg(width1*1000).arg(width2*1000).arg(width3*1000);
+  return QString("<MTEE MS1 1 %1 %2 -26 20 1 0 \"Sub1\" 0 \"%3mm\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
+        .arg(x).arg(y).arg(QString::number(width1*1e3, 'f', 2)).arg(QString::number(width2*1e3, 'f', 2)).arg(QString::number(width3*1e3, 'f', 2));
 }

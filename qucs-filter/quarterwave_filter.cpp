@@ -92,7 +92,7 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
 
           c_s += getLineString(isMicrostrip, W_line, L_line, x, 180, 0); // Series line
           c_s += getTeeString(x+ 60 + x_space, 180, W_line, W_line, W_res);
-          c_s += getLineString(isMicrostrip, W_res, L_res, x+60 + x_space, 60, 3); // Shunt quarter-wavelength resonator
+          c_s += getLineString(isMicrostrip, W_res, L_res, x+60 + x_space, 60, 1); // Shunt quarter-wavelength resonator
 
           w_s += getWireString(x+30, 180, x+30+x_space, 180);
           w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 150);
