@@ -788,8 +788,8 @@ QString VersionTriplet::toString() {
 //
 // The implementation is taken from ViewPainter::drawTextMapped and adapted
 // to work with QPainter and as standalone function outside of class.
-void misc::draw_richtext(QPainter* painter, int x, int y, const QString &text, QRect* br) {
-  QRect all_bounding_rect;
+void misc::draw_richtext(QPainter* painter, int x, int y, const QString &text, QRectF* br) {
+  QRectF all_bounding_rect;
   int current_text_x = x;
   int current_text_y = y;
   int i = 0;

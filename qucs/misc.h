@@ -93,7 +93,7 @@ namespace misc {
   bool simulatorExists(const QString &exe_file);
   QString unwrapExePath(const QString &exe_file);
 
-  void draw_richtext(QPainter* painter, int x, int y, const QString& text, QRect* br = nullptr);
+  void draw_richtext(QPainter* painter, int x, int y, const QString& text, QRectF* br = nullptr);
   void draw_resize_handle(QPainter* painter, const QPointF& center);
 }
 

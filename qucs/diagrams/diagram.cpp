@@ -111,12 +111,12 @@ void Diagram::paintDiagram(QPainter *painter) {
 
     for (qucs::Line* line : Lines) {
         painter->setPen(line->penHint());
-        painter->drawLine(line->x1, - line->y1, line->x2, - line->y2);
+        painter->drawLine(QLineF{line->x1, - line->y1, line->x2, - line->y2});
     }
 
     for (qucs::Arc* arc : Arcs) {
         painter->setPen(arc->penHint());
-        painter->drawArc(arc->x, - arc->y, arc->w, arc->h, arc->angle, arc->arclen);
+        painter->drawArc(QRectF{arc->x, - arc->y, arc->w, arc->h}, arc->angle, arc->arclen);
     }
 
     painter->scale(1.0, -1.0); // make Y-axis grow upwards

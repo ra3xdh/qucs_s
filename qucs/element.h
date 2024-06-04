@@ -54,29 +54,30 @@ public:
 };
 
 struct Line : DrawingPrimitive {
-  Line(int _x1, int _y1, int _x2, int _y2, QPen _style)
+  Line(double _x1, double _y1, double _x2, double _y2, QPen _style)
        : x1(_x1), y1(_y1), x2(_x2), y2(_y2), style(_style) {};
-  int   x1, y1, x2, y2;
+  double   x1, y1, x2, y2;
   QPen  style;
   void draw(QPainter* painter) const override;
   QPen penHint() const override { return style; }
 };
 
 struct Arc : DrawingPrimitive {
-  Arc(int _x, int _y, int _w, int _h, int _angle, int _arclen, QPen _style)
+  Arc(double _x, double _y, double _w, double _h, int _angle, int _arclen, QPen _style)
       : x(_x), y(_y), w(_w), h(_h), angle(_angle),
 	arclen(_arclen), style(_style) {};
-  int   x, y, w, h, angle, arclen;
+  double   x, y, w, h;
+  int angle, arclen;
   QPen  style;
   void draw(QPainter* painter) const override;
   QPen penHint() const override { return style; }
 };
 
 struct Rect : DrawingPrimitive {
-  Rect(int _x, int _y, int _w, int _h, QPen _Pen,
+  Rect(double _x, double _y, double _w, double _h, QPen _Pen,
 	QBrush _Brush = QBrush(Qt::NoBrush))
 	: x(_x), y(_y), w(_w), h(_h), Pen(_Pen), Brush(_Brush) {};
-  int    x, y, w, h;
+  double    x, y, w, h;
   QPen   Pen;
   QBrush Brush;    // filling style/color
   void draw(QPainter* painter) const override;
@@ -86,10 +87,10 @@ struct Rect : DrawingPrimitive {
 
 // 'ellipse' conflicts 'ellipse' defined in paintings.h in the same namespace
 struct Ellips : DrawingPrimitive {
-  Ellips(int _x, int _y, int _w, int _h, QPen _Pen,
+  Ellips(double _x, double _y, double _w, double _h, QPen _Pen,
 	QBrush _Brush = QBrush(Qt::NoBrush))
 	: x(_x), y(_y), w(_w), h(_h), Pen(_Pen), Brush(_Brush) {};
-  int    x, y, w, h;
+  double    x, y, w, h;
   QPen   Pen;
   QBrush Brush;    // filling style/color
   void draw(QPainter* painter) const override;
@@ -110,17 +111,17 @@ struct Port {
 };
 
 struct Text : qucs::DrawingPrimitive {
-  Text(int _x, int _y, const QString& _s, QColor _Color = QColor(0,0,0),
-	float _Size = 10.0, float _mCos=1.0, float _mSin=0.0)
+  Text(double _x, double _y, const QString& _s, QColor _Color = QColor(0,0,0),
+	double _Size = 10.0, double _mCos=1.0, double _mSin=0.0)
 	: x(_x), y(_y), s(_s), Color(_Color), Size(_Size),
 	  mSin(_mSin), mCos(_mCos) { over = under = false; };
-  int	  x, y;
+  double	  x, y;
   QString s;
   QColor  Color;
-  float	  Size, mSin, mCos; // font size and rotation coefficients
+  double	  Size, mSin, mCos; // font size and rotation coefficients
   bool	  over, under;      // text attributes
   void draw(QPainter *painter) const override;
-  void draw(QPainter* painter, QRect* br) const;
+  void draw(QPainter* painter, QRectF* br) const;
   QPen penHint() const override { return Color; }
   double angle() const;
 };
