@@ -23,10 +23,11 @@ VCCS::VCCS()
 {
   Description = QObject::tr("voltage controlled current source");
 
-  Arcs.append(new qucs::Arc(0,-11, 22, 22,  0, 16*360,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 11, -7, 11,  7,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line( 11,  6, 15,  1,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line( 11,  6,  7,  1,QPen(Qt::darkBlue,3)));
+  Ellipses.append(new qucs::Ellips(0,-11, 22, 22,QPen(Qt::darkBlue,2)));
+  // thick arrow in circle
+  Lines.append(new qucs::Line( 11, -7, 11,  6,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{15, 1},{11, 6}, {7, 1}}, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
   Lines.append(new qucs::Line(-30,-30,-12,-30,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30, 30,-12, 30,QPen(Qt::darkBlue,2)));
@@ -38,14 +39,12 @@ VCCS::VCCS()
   Lines.append(new qucs::Line( 11,-30, 11,-11,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 11, 30, 11, 11,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new qucs::Line(-12,-18,-12, 18,QPen(Qt::darkBlue,1)));
-  Lines.append(new qucs::Line(-12, 18,-17,  9,QPen(Qt::darkBlue,1)));
-  Lines.append(new qucs::Line(-12, 18, -7,  9,QPen(Qt::darkBlue,1)));
+  // thin arrow
+  Lines.append(new qucs::Line(-12,-18,-12, 18,QPen(Qt::darkBlue,1, Qt::SolidLine, Qt::FlatCap)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{-17, 9},{-12, 18}, {-7, 9}}, QPen(Qt::darkBlue, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
-  Lines.append(new qucs::Line(-25,-27, 25,-27,QPen(Qt::darkGray,1)));
-  Lines.append(new qucs::Line( 25,-27, 25, 27,QPen(Qt::darkGray,1)));
-  Lines.append(new qucs::Line( 25, 27,-25, 27,QPen(Qt::darkGray,1)));
-  Lines.append(new qucs::Line(-25, 27,-25,-27,QPen(Qt::darkGray,1)));
+  Rects.append(new qucs::Rect(-25, -27, 50, 54, QPen(Qt::darkGray,1)));
 
   Ports.append(new Port(-30,-30));
   Ports.append(new Port( 30,-30));

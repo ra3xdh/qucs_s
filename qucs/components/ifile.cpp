@@ -25,20 +25,20 @@ iFile::iFile()
 {
   Description = QObject::tr("file based current source");
 
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::darkBlue,2)));
+  // pins
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
+  // arrow
+  Lines.append(new qucs::Line( -7,  0,  6,  0,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
+  // small "list" pictogram
   Lines.append(new qucs::Line( -6,-17, -6,-21,QPen(Qt::darkBlue,1)));
   Lines.append(new qucs::Line( -8,-17, -8,-21,QPen(Qt::darkBlue,1)));
   Lines.append(new qucs::Line(-10,-17,-10,-21,QPen(Qt::darkBlue,1)));
-  Lines.append(new qucs::Line( -3,-15, -3,-23,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-13,-15,-13,-23,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -3,-23,-13,-23,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -3,-15,-13,-15,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-13, -23, 10, 8,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

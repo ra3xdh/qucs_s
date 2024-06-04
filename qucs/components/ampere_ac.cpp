@@ -27,11 +27,13 @@ Ampere_ac::Ampere_ac()
   Arcs.append(new qucs::Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
-  Arcs.append(new qucs::Arc( 12,  5,  6,  6,16*270, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc( 12, 11,  6,  6, 16*90, 16*180,QPen(Qt::darkBlue,2)));
+  // arrow stem
+  Lines.append(new qucs::Line( -8.5,  0,  6,  0,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  // arrow head
+  Polylines.append(new qucs::Polyline(std::vector<QPointF>{{0, -4}, {6, 0}, {0, 4}}, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+  // AC-wave
+  Arcs.append(new qucs::Arc( 12,  5,  6,  6,16*270, 16*180, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Arcs.append(new qucs::Arc( 12, 11,  6,  6, 16*90, 16*180, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

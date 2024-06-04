@@ -24,15 +24,19 @@ PM_Modulator::PM_Modulator()
   Description = QObject::tr("ac voltage source with phase modulator");
   Simulator = spicecompat::simQucsator;
 
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc( -7, -4,  7,  7,     0, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc(  0, -4,  7,  7,16*180, 16*180,QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::darkBlue,2)));
+  // wave
+  Arcs.append(new qucs::Arc( -7, -4,  7,  7,     0, 16*180,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Arcs.append(new qucs::Arc(  0, -4,  7,  7,16*180, 16*180,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  // pins
   Lines.append(new qucs::Line(  0, 30,  0, 12,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  0,-30,  0,-12,QPen(Qt::darkBlue,2)));
+  // plus sign
   Lines.append(new qucs::Line(  5,-18, 11,-18,QPen(Qt::red,1)));
   Lines.append(new qucs::Line(  8,-21,  8,-15,QPen(Qt::red,1)));
+  // minus sign
   Lines.append(new qucs::Line(  5, 18, 11, 18,QPen(Qt::black,1)));
-
+  // arrow
   Lines.append(new qucs::Line(-12,  0,-30,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-12,  0,-17,  5,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-12,  0,-17, -5,QPen(Qt::darkBlue,2)));

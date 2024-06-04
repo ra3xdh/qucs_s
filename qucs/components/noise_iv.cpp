@@ -25,31 +25,34 @@ Noise_iv::Noise_iv()
   Simulator = spicecompat::simQucsator;
 
   // left noise source
-  Arcs.append(new qucs::Arc(-42,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips(-42,-12, 24, 24, QPen(Qt::darkBlue,2)));
+  // pins
   Lines.append(new qucs::Line(-30, 30,-30, 12,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,-30,-30,-12,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  7,-30, -7,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(-30, -6,-34,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(-30, -6,-26,  0,QPen(Qt::darkBlue,3)));
-
-  Lines.append(new qucs::Line(-29, 12,-42, -1,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-24, 10,-27,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-37, -3,-40, -6,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-20,  7,-25,  2,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-34, -7,-37,-10,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-18,  1,-31,-12,QPen(Qt::darkBlue,2)));
+  // arrow
+  Lines.append(new qucs::Line( -30,  7,  -30,  -6,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{-34, 0},{-30, -6}, {-26, 0}}, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+  // diagonal strokes
+  Lines.append(new qucs::Line(-29, 12,-42, -1,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-24, 10,-27,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-37, -3,-40, -6,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-20,  7,-25,  2,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-34, -7,-37,-10,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-18,  1,-31,-12,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
 
   // right noise source
-  Arcs.append(new qucs::Arc( 18,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips( 18,-12, 24, 24, QPen(Qt::darkBlue,2)));
+  // pins
   Lines.append(new qucs::Line( 30, 30, 30, 12,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,-30, 30,-12,QPen(Qt::darkBlue,2)));
-
-  Lines.append(new qucs::Line( 31, 12, 18, -1,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 36, 10, 20, -6,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 40,  7, 23,-10,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 42,  2, 28,-12,QPen(Qt::darkBlue,2)));
-
-  Lines.append(new qucs::Line(-18,  0, 18,  0,QPen(Qt::darkBlue,3)));
+  // diagonal strokes
+  Lines.append(new qucs::Line( 31, 12, 18, -1,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( 36, 10, 20, -6,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( 40,  7, 23,-10,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( 42,  2, 28,-12,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  // horizontal connecting bar
+  Lines.append(new qucs::Line(-18,  0, 18,  0,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
 
   Ports.append(new Port(-30,-30));
   Ports.append(new Port( 30,-30));
