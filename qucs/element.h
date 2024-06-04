@@ -38,6 +38,7 @@
 #define ELEMENT_H
 
 #include <QPen>
+#include <vector>
 
 class Node;
 class WireLabel;
@@ -96,6 +97,19 @@ struct Ellips : DrawingPrimitive {
   void draw(QPainter* painter) const override;
   QPen penHint() const override { return Pen; }
   QBrush brushHint() const override { return Brush; }
+};
+
+struct Polyline : DrawingPrimitive {
+  std::vector<QPointF> points;
+  QPen pen;
+  QBrush brush;
+
+  Polyline(const std::vector<QPointF> &pts, QPen p = QPen{Qt::NoPen}, QBrush b = QBrush{Qt::NoBrush})
+    : points(pts), pen{p}, brush{b} {};
+
+  void draw(QPainter* painter) const override;
+  QPen penHint() const override { return pen; }
+  QBrush brushHint() const override { return brush; }
 };
 
 }

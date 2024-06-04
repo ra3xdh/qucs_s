@@ -358,6 +358,10 @@ void Component::drawUsual(QPainter* p) const {
         draw_primitive(line, p);
     }
 
+    for (qucs::DrawingPrimitive *pl: Polylines) {
+        draw_primitive(pl, p);
+    }
+
     for (qucs::DrawingPrimitive *arc: Arcs) {
         draw_primitive(arc, p);
     }
@@ -407,6 +411,11 @@ void Component::paintIcon(QPixmap* pixmap) {
     for (qucs::Line* line : Lines) {
         painter.setPen(line->penHint());
         line->draw(&painter);
+    }
+
+    for (qucs::Polyline* pl : Polylines) {
+        painter.setPen(pl->penHint());
+        pl->draw(&painter);
     }
 
     for (qucs::Arc* arc : Arcs) {
@@ -479,6 +488,14 @@ void Component::paintScheme(Schematic *p) {
     // paint all lines
     for (qucs::Line *p1: Lines)
         p->PostPaintEvent(_Line, cx + p1->x1, cy + p1->y1, cx + p1->x2, cy + p1->y2);
+
+    for (auto* pl : Polylines) {
+        for (size_t i = 1; i < pl->points.size(); i++) {
+            auto& prev = pl->points.at(i - 1);
+            auto& curr = pl->points.at(i);
+            p->PostPaintEvent(_Line, cx + prev.x(), cy + prev.y(), cx + curr.x(), cy + curr.y());
+        }
+    }
 
     // paint all ports
     for (Port *p2 : Ports)
@@ -570,6 +587,13 @@ void Component::rotate() {
         pt->mCos = ftmp;
     }
 
+    for (qucs::Polyline* pl : Polylines) {
+        for (auto& pt : pl->points) {
+            std::swap(pt.rx(), pt.ry());
+            pt.ry() *= -1;
+        };
+    }
+
     tmp = -x1;   // rotate boundings
     x1 = y1;
     y1 = -x2;
@@ -654,6 +678,12 @@ void Component::mirrorX() {
         pt->y = -pt->y - int(pt->mCos) * s.height() + int(pt->mSin) * s.width();
     }
 
+    for (qucs::Polyline* pl : Polylines) {
+        for (auto& pt : pl->points) {
+            pt.ry() *= -1;
+        }
+    }
+
     int tmp = y1;
     y1 = -y2;
     y2 = -tmp;   // mirror boundings
@@ -714,6 +744,12 @@ void Component::mirrorY() {
         QFontMetrics smallMetrics(f, 0);
         QSize s = smallMetrics.size(0, pt->s);   // use size for more lines
         pt->x = -pt->x - int(pt->mSin) * s.height() - int(pt->mCos) * s.width();
+    }
+
+    for (qucs::Polyline* pl : Polylines) {
+        for (auto& pt : pl->points) {
+            pt.rx() *= -1;
+        }
     }
 
     tmp = x1;

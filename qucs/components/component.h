@@ -83,6 +83,7 @@ public:
   virtual Schematic* getSchematic () {return containingSchematic; }
 
   QList<qucs::Line *>     Lines;
+  QList<qucs::Polyline *> Polylines;
   QList<struct qucs::Arc *>      Arcs;
   QList<qucs::Rect *>     Rects;
   QList<qucs::Ellips *>     Ellipses;

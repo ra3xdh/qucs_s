@@ -38,6 +38,10 @@ void Ellips::draw(QPainter* painter) const {
     painter->drawEllipse(QRectF{x, y, w, h});
 }
 
+void Polyline::draw(QPainter* painter) const {
+    painter->drawPolyline(points.data(), points.size());
+}
+
 } // namespace qucs
 
 void Text::draw(QPainter *painter) const {
