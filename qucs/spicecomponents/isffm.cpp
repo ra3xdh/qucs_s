@@ -36,10 +36,10 @@ iSffm::iSffm()
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   // arrow
-  Lines.append(new qucs::Line( -7,  0,  6,  0,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( -6,  0,  7,  0,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
   Polylines.append(new qucs::Polyline(
-    std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::darkRed, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
  
+    std::vector<QPointF>{{0, -4},{-6, 0}, {0, 4}}, QPen(Qt::darkRed, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
