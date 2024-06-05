@@ -29,18 +29,20 @@ vTRRANDOM::vTRRANDOM()
   Simulator = spicecompat::simSpice;
 
   // normal voltage source symbol
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24, 0, 16*360,QPen(Qt::blue,3)));
-   Texts.append(new Text(36, 4,"TRR",Qt::blue,10.0,0.0,-1.0)); 
+  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::blue,3)));
+  Texts.append(new Text(26, 6,"TRR",Qt::blue,12.0,0.0,-1.0));
+  // pins
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  
-  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(-10,  6,  6,-10,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line( -7, 10, 10, -7,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line( -2, 12, 12, -2,QPen(Qt::darkBlue,3)));
-  
+  // diagonal strokes
+  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-10,  6,  6,-10,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( -7, 10, 10, -7,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( -2, 12, 12, -2,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  // plus sign
   Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
   Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
+  // minus sign
   Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2))); 
 
 

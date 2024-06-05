@@ -28,13 +28,16 @@ vPWL::vPWL()
   Description = QObject::tr("SPICE V(PWL):\nMultiple line ngspice or Xyce V specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use. ");
   Simulator = spicecompat::simSpice;
 
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkRed,3)));
-  Texts.append(new Text(36, 4,"PWL",Qt::darkRed,10.0,0.0,-1.0));
-  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,3)));
-  Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,3)));
-  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,3)));
+  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::darkRed,3)));
+  Texts.append(new Text(26, 6,"PWL",Qt::darkRed,12.0,0.0,-1.0));
+  // pins
+  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  // plus
+  Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
+  Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
+  // minus
+  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

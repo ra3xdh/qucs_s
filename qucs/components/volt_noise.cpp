@@ -24,14 +24,15 @@ Volt_noise::Volt_noise()
   Description = QObject::tr("noise voltage source");
   Simulator = spicecompat::simQucsator;
 
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24,QPen(Qt::darkBlue,2)));
+  // pins
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-
-  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-10,  6,  6,-10,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -7, 10, 10, -7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -2, 12, 12, -2,QPen(Qt::darkBlue,2)));
+  // diagonal strokes
+  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-10,  6,  6,-10,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( -7, 10, 10, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( -2, 12, 12, -2,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

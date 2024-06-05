@@ -25,19 +25,21 @@ Ampere_noise::Ampere_noise()
   Description = QObject::tr("noise current source");
   Simulator = spicecompat::simQucsator;
 
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::darkBlue,2)));
+  // pins
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
-
-  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-10,  6, -7,  3,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  3, -7,  6,-10,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -7, 10, -2,  5,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  7, -4, 10, -7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -1, 12, 12, -1,QPen(Qt::darkBlue,2)));
+  // arrow
+  Lines.append(new qucs::Line( -8.5,  0,  6,  0,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+  // diagonal strokes
+  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-10,  6, -7,  3,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(  3, -7,  6,-10,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( -7, 10, -2,  5,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(  7, -4, 10, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( -1, 12, 12, -1,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

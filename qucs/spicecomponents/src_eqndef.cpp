@@ -8,12 +8,15 @@ Src_eqndef::Src_eqndef()
   Description = QObject::tr("SPICE B (V type):\nMultiple line ngspice or Xyce B specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
   Simulator = spicecompat::simSpice;
 
-  Arcs.append(new qucs::Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkRed,3)));
-  Texts.append(new Text(10,-12,"Eqn",Qt::darkRed,10.0,0.0,-1.0));
+  Ellipses.append(new qucs::Ellips(-14,-14, 28, 28, QPen(Qt::darkRed,3)));
+  Texts.append(new Text(8,-10,"Eqn",Qt::darkRed,12.0,0.0,-1.0));
+  // pins
   Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
+  // plus sign
   Lines.append(new qucs::Line( 18,  5, 18, 11,QPen(Qt::red,2)));
   Lines.append(new qucs::Line( 21,  8, 15,  8,QPen(Qt::red,2)));
+  // minus sign
   Lines.append(new qucs::Line(-18,  5,-18, 11,QPen(Qt::black,2)));
 
   Ports.append(new Port( 30,  0));

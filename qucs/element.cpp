@@ -23,19 +23,23 @@
 namespace qucs {
 
 void Line::draw(QPainter* painter) const {
-    painter->drawLine(x1, y1, x2, y2);
+    painter->drawLine(QPointF{x1, y1}, QPointF{x2, y2});
 }
 
 void Arc::draw(QPainter* painter) const {
-    painter->drawArc(x, y, w, h, angle, arclen);
+    painter->drawArc(QRectF{x, y, w, h}, angle, arclen);
 }
 
 void Rect::draw(QPainter* painter) const {
-    painter->drawRect(x, y, w, h);
+    painter->drawRect(QRectF{x, y, w, h});
 }
 
 void Ellips::draw(QPainter* painter) const {
-    painter->drawEllipse(x, y, w, h);
+    painter->drawEllipse(QRectF{x, y, w, h});
+}
+
+void Polyline::draw(QPainter* painter) const {
+    painter->drawPolyline(points.data(), points.size());
 }
 
 } // namespace qucs
@@ -44,7 +48,7 @@ void Text::draw(QPainter *painter) const {
   draw(painter, nullptr);
 }
 
-void Text::draw(QPainter *painter, QRect* br) const {
+void Text::draw(QPainter *painter, QRectF* br) const {
   painter->save();
 
   painter->translate(x, y);

@@ -53,7 +53,7 @@ void GraphicText::paint(QPainter* painter) {
     f.setPixelSize(QFontInfo{Font}.pixelSize());
     painter->setFont(f);
 
-    QRect br;
+    QRectF br;
     misc::draw_richtext(painter, 0, 0, Text, &br);
 
     if (isSelected) {

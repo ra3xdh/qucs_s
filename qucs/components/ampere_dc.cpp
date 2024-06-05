@@ -27,9 +27,12 @@ Ampere_dc::Ampere_dc()
   Arcs.append(new qucs::Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
+
+  // arrow stem
+  Lines.append(new qucs::Line( -8.5,  0,  6,  0,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
+  // arrow head
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
