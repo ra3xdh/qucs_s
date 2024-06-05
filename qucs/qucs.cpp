@@ -3016,6 +3016,11 @@ void QucsApp::slotSymbolEdit()
         QMessageBox::warning(this,tr("Error"),
                 tr("Symbol editing supported only for schematics and Verilog-A documents!"));
         return;
+    } else {
+      QMessageBox::warning(this,tr("Warning"),
+                tr("Attaching symbols to Verilog-A sources is deprecated and not recommended "
+                   "for new designs. Use SPICE generic device instead. See the documentation "
+                   "for more details."));
     }
     // set 'DataDisplay' document of text file to symbol file
     QFileInfo Info(TDoc->DocName);
