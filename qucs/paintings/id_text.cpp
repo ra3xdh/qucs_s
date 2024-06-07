@@ -63,6 +63,7 @@ void ID_Text::paint(QPainter* painter) {
     painter->setPen(QPen(Qt::darkGray,3));
     painter->drawRoundedRect(-4, -4, x2+8, y2+8, 4.0, 4.0);
   }
+  painter->restore();
 }
 
 // --------------------------------------------------------------------------
