@@ -538,6 +538,7 @@ void Schematic::drawPostPaintEvents(QPainter* painter) {
             painter->drawRect(p.x1, p.y1, p.x2, p.y2);
             break;
         case _SelectionRect:
+            pen.setCosmetic(true);
             pen.setStyle(Qt::DashLine);
             pen.setColor(QColor(50, 50, 50, 100));
             painter->setPen(pen);
