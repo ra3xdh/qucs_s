@@ -460,6 +460,61 @@ int SymbolWidget::setSymbol( QString& SymbolString,
   return z;      // return number of ports
 }
 
+
+int SymbolWidget::loadSymFile(const QString &file)
+{
+  QString FileString;
+  QFile symfile(file);
+  if (symfile.open(QIODevice::ReadOnly)) {
+    QTextStream ts(&symfile);
+    FileString = ts.readAll();
+    symfile.close();
+  } else return -1;
+
+  Arcs.clear();
+  Lines.clear();
+  Rects.clear();
+  Ellipses.clear();
+  Texts.clear();
+  x1 = y1 = INT_MAX;
+  x2 = y2 = INT_MIN;
+
+  QString Line;
+  QTextStream stream(&FileString, QIODevice::ReadOnly);
+
+
+         // read content *************************
+  while(!stream.atEnd()) {
+    Line = stream.readLine();
+    if(Line == "<Symbol>") break;
+  }
+
+  x1 = y1 = INT_MAX;
+  x2 = y2 = INT_MIN;
+
+  int z=0, Result;
+  while(!stream.atEnd()) {
+    Line = stream.readLine();
+    if(Line == "</Symbol>") {
+      x1 -= 4;   // enlarge component boundings a little
+      x2 += 4;
+      y1 -= 4;
+      y2 += 4;
+      return z;      // return number of ports
+    }
+
+    Line = Line.trimmed();
+    if(Line.at(0) != '<') return -5;
+    if(Line.at(Line.length()-1) != '>') return -6;
+    Line = Line.mid(1, Line.length()-2); // cut off start and end character
+    Result = analyseLine(Line);
+    if(Result < 0) return -7;   // line format error
+    z += Result;
+  }
+
+  return -8;   // field not closed
+}
+
 // ---------------------------------------------------------------------
 int SymbolWidget::analyseLine(const QString& Row)
 {

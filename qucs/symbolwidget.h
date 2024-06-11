@@ -47,6 +47,7 @@ public:
 
   QString theModel();
   int setSymbol( QString&, const QString&, const QString&);
+  int loadSymFile(const QString &file);
   void enableDragNDrop();
   void disableDragNDrop();
   bool dragNDropEnabled() { return dragNDrop; }
