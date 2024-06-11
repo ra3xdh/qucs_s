@@ -31,6 +31,7 @@
 #include "dialogs/textboxdialog.h"
 #include "dialogs/tuner.h"
 #include "extsimkernels/customsimdialog.h"
+#include "extsimkernels/spicelibcompdialog.h"
 #include "main.h"
 #include "module.h"
 #include "node.h"
@@ -2149,7 +2150,12 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
         if (c->Model == "GND")
             return;
 
-        if ((c->Model == ".CUSTOMSIM") || (c->Model == ".XYCESCR") || (c->Model == "INCLSCR")) {
+        if (c->Model == "SpLib") {
+          SpiceLibCompDialog *sld = new SpiceLibCompDialog(c, Doc);
+          if (sld->exec() != -1) {
+            break;
+          }
+        } else if ((c->Model == ".CUSTOMSIM") || (c->Model == ".XYCESCR") || (c->Model == "INCLSCR")) {
             CustomSimDialog *sd = new CustomSimDialog((SpiceCustomSim *) c, Doc);
             if (sd->exec() != 1)
                 break; // dialog is WDestructiveClose
