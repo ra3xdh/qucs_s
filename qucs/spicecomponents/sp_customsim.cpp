@@ -39,6 +39,7 @@ SpiceCustomSim::SpiceCustomSim()
   Props.append(new Property("SpiceCode", "\n"
                             "AC DEC 100 1K 10MEG\n"
                             "let K=V(out)/V(in)\n\n"
+                            "* Use mouse double click on device to edit code\n\n"
                             "* Extra output\n"
                             "* A custom prefix could be placed between # #\n"
                             "* It will be prepended to all dataset variables\n"

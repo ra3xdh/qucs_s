@@ -172,6 +172,9 @@ void Component::getCenter(int &x, int &y) {
 // (tx,ty) is the top left corner of the region containing all component's
 // properties
 int Component::getTextSelected(int point_x, int point_y) {
+    if (Model == ".CUSTOMSIM") { // block multiline text editing
+      return -1;                 // for Nutmeg script
+    }
     // cx and cy are subtracted from coordinates to make them
     // component-local, i.e relative to component
     point_x -= cx;
