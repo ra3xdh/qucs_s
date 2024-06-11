@@ -37,7 +37,7 @@ SpiceLibComp::SpiceLibComp()
   Simulator = spicecompat::simSpice;
 
   QStringList patterns;
-  getSymbolPatternsList(patterns);
+  misc::getSymbolPatternsList(patterns);
   QString p_str = "[auto";
   if (!patterns.isEmpty()) p_str += "," + patterns.join(",");
   p_str += "]";
@@ -226,17 +226,4 @@ QString SpiceLibComp::getSpiceModel()
     QString f = misc::properAbsFileName(Props.at(0)->Value, containingSchematic);
     QString s = QString(".INCLUDE \"%1\"\n").arg(f);
     return s;
-}
-
-
-
-void SpiceLibComp::getSymbolPatternsList(QStringList &symbols)
-{
-    QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
-    QDir sym_dir(dir_name);
-    QStringList sym_files = sym_dir.entryList(QDir::Files);
-    for (const QString& file : sym_files) {
-        QFileInfo inf(file);
-        symbols.append(inf.baseName());
-    }
 }
