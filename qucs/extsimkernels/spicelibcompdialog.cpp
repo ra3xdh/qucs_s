@@ -25,6 +25,8 @@
 SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog{parent}
 {
   comp = pc;
+  symbolPinsCount = 0;
+
   QString file = comp->Props.at(0)->Value;
   if (!file.isEmpty()) {
     file = misc::properAbsFileName(file);
@@ -52,6 +54,7 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog
 
   symbol = new SymbolWidget;
   symbol->disableDragNDrop();
+  symbol->enableShowPinNumbers();
 
   tbwPinsTable = new QTableWidget;
   tbwPinsTable->setColumnCount(2);
@@ -170,7 +173,7 @@ void SpiceLibCompDialog::slotSetSymbol()
 {
   QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
   QString file = dir_name + cbxSymPattern->currentText() + ".sym";
-  symbol->loadSymFile(file);
+  symbolPinsCount = symbol->loadSymFile(file);
 }
 
 void SpiceLibCompDialog::slotBtnOpenLib()

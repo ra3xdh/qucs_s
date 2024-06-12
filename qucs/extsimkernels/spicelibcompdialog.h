@@ -20,6 +20,7 @@ private:
 
   SymbolWidget *symbol;
   QLineEdit *edtLibPath;
+  int symbolPinsCount;
 
   QPushButton *btnOpenLib, *btnOK, *btnApply, *btnCancel;
   QTableWidget *tbwPinsTable;

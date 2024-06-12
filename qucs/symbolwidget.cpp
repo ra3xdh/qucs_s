@@ -48,6 +48,7 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
   y1 = 0;
   y2 = 0;
   dragNDrop = true;
+  showPinNumbers = false;
   PaintText = tr("Symbol:");
   setFont(QucsSettings.font);
   QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
@@ -542,6 +543,9 @@ int SymbolWidget::analyseLine(const QString& Row)
     if(!getCompLineIntegers(Row, &i1, &i2, &i3))  return -1;
     Arcs.append(new struct qucs::Arc(i1-4, i2-4, 8, 8, 0, 16*360,
                                QPen(Qt::red,1)));
+    if (showPinNumbers) {
+      Texts.append(new struct Text(i1+2,i2,QString::number(i3)));
+    }
 
     if((i1-4) < x1)  x1 = i1-4;  // keep track of component boundings
     if((i1+4) > x2)  x2 = i1+4;

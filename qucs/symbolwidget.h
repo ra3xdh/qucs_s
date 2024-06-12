@@ -51,6 +51,9 @@ public:
   void enableDragNDrop();
   void disableDragNDrop();
   bool dragNDropEnabled() { return dragNDrop; }
+  void enableShowPinNumbers() { showPinNumbers = true; }
+  void disableShowPinNumbers() { showPinNumbers = false; }
+  bool showPinNumbersEnabled() { return showPinNumbers; }
   // component properties
   int Text_x, Text_y;
   QString Prefix, LibraryPath, ComponentName;
@@ -71,6 +74,7 @@ private:
   bool getBrush(const QString&, QBrush&, int);
 
   bool dragNDrop;
+  bool showPinNumbers;
   QString PaintText;
   QString DragNDropText;
   QString Warning;
