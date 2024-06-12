@@ -3,6 +3,7 @@
 #endif
 
 #include "misc.h"
+#include "main.h"
 #include "component.h"
 
 #include <QLabel>
@@ -14,6 +15,8 @@
 #include <QHBoxLayout>
 #include <QFile>
 #include <QFileInfo>
+#include <QMessageBox>
+#include <QFileDialog>
 
 #include "symbolwidget.h"
 #include "spicelibcompdialog.h"
@@ -32,23 +35,29 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog
   QLabel *lblLibfile = new QLabel("SPICE library:");
   edtLibPath = new QLineEdit;
   edtLibPath->setText(file);
+  connect(edtLibPath,SIGNAL(textChanged(QString)),this,SLOT(slotFillSubcirComboBox()));
   btnOpenLib = new QPushButton(tr("Open"));
   connect(btnOpenLib,SIGNAL(clicked(bool)),this,SLOT(slotBtnOpenLib()));
 
   QLabel *lblDevice = new QLabel("Subcircuit:");
   cbxSelectSubcir = new QComboBox;
+  connect(cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotFillPinsTable()));
 
   QLabel *lblPattern = new QLabel("Symbol pattern");
   cbxSymPattern = new QComboBox;
+  QStringList lst_patterns;
+  misc::getSymbolPatternsList(lst_patterns);
+  cbxSymPattern->addItems(lst_patterns);
+  connect(cbxSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSymbol()));
 
   symbol = new SymbolWidget;
-  symbol->setAcceptDrops(false);
+  symbol->disableDragNDrop();
 
   tbwPinsTable = new QTableWidget;
   tbwPinsTable->setColumnCount(2);
   tbwPinsTable->setRowCount(100);
   QStringList lbl_cols;
-  lbl_cols<<"Symbol pin"<<"Subcircuit pin";
+  lbl_cols<<"Subcircuit pin"<<"Symbol pin";
   tbwPinsTable->setHorizontalHeaderLabels(lbl_cols);
 
   btnOK = new QPushButton(tr("OK"));
@@ -83,18 +92,93 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog
   l4->addStretch();
   top->addLayout(l4);
 
+  this->slotSetSymbol();
   this->setLayout(top);
 
 }
 
-void SpiceLibCompDialog::fillSubcirComboBox()
+void SpiceLibCompDialog::slotFillSubcirComboBox()
 {
-  if (!QFileInfo::exists(edtLibPath->text())) return;
+  if (!parseLibFile(edtLibPath->text())) {
+    QMessageBox::critical(this,tr("Error"),tr("SPICE library parse error"));
+    return;
+  }
+
+  cbxSelectSubcir->blockSignals(true);
+  cbxSelectSubcir->clear();
+  for(const auto &key: subcirPins.keys()) {
+    cbxSelectSubcir->addItem(key);
+  }
+  cbxSelectSubcir->blockSignals(false);
+  slotFillPinsTable();
+}
+
+void SpiceLibCompDialog::slotFillPinsTable()
+{
+  QString subcir_name = cbxSelectSubcir->currentText();
+  if (subcirPins.find(subcir_name) == subcirPins.end()) return;
+  QStringList pins = subcirPins[subcir_name];
+  tbwPinsTable->clearContents();
+  for (int i = 0; i < pins.count(); i++) {
+    QTableWidgetItem *itm = new QTableWidgetItem(pins.at(i));
+    tbwPinsTable->setItem(i,0,itm);
+  }
+}
+
+bool SpiceLibCompDialog::parseLibFile(const QString &filename)
+{
+  if (!QFileInfo::exists(filename)) return false;
+  QFile f(filename);
+  if (!f.open(QIODevice::ReadOnly)) {
+    return false;
+  }
+
+  subcirPins.clear();
+  QTextStream ts(&f);
+
+  while (!ts.atEnd()) {
+    QString line = ts.readLine();
+    line = line.trimmed();
+    line = line.toUpper();
+    if (line.startsWith(".SUBCKT")) {
+      QStringList pin_names;
+      QString subname;
+      QStringList tokens = line.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
+      if (tokens.count() > 3) {
+        subname = tokens.at(1);
+      } else continue;
+      tokens.removeFirst();
+      tokens.removeFirst();
+      for (const auto &s1: tokens) {
+        if (!s1.contains('=') && (s1 != "PARAMS:")) {
+          pin_names.append(s1);
+        }
+      }
+      subcirPins[subname] = pin_names;
+    }
+  }
+
+  f.close();
+  if (subcirPins.isEmpty()) {
+    return false;
+  }
+  return true;
+
+}
+
+void SpiceLibCompDialog::slotSetSymbol()
+{
+  QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
+  QString file = dir_name + cbxSymPattern->currentText() + ".sym";
+  symbol->loadSymFile(file);
 }
 
 void SpiceLibCompDialog::slotBtnOpenLib()
 {
-
+  QString s = QFileDialog::getOpenFileName(this, tr("Open SPICE library"),
+                                           QDir::homePath(),
+                                           tr("SPICE files (*.cir +.ckt *.sp *.lib)"));
+  edtLibPath->setText(s);
 }
 
 void SpiceLibCompDialog::slotBtnApply()

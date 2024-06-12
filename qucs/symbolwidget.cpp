@@ -26,6 +26,7 @@
 #include "main.h"
 #include "qucslib_common.h"
 #include "misc.h"
+#include "main.h"
 
 /*!
  * \file symbolwidget.cpp
@@ -500,6 +501,18 @@ int SymbolWidget::loadSymFile(const QString &file)
       x2 += 4;
       y1 -= 4;
       y2 += 4;
+      cx  = -x1 + TextWidth;
+      cy  = -y1;
+
+      int dx = x2-x1 + TextWidth;
+      if((x2-x1) < DragNDropWidth)
+        dx = (x2-x1 + DragNDropWidth)/2 + TextWidth;
+      if(dx < DragNDropWidth)
+        dx = DragNDropWidth;
+      setMinimumSize(dx, y2-y1 + TextHeight+4);
+      if(width() > dx)  dx = width();
+      resize(dx, y2-y1 + TextHeight+4);
+      update();
       return z;      // return number of ports
     }
 

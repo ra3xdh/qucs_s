@@ -25,10 +25,15 @@ private:
   QTableWidget *tbwPinsTable;
   QComboBox *cbxSelectSubcir, *cbxSymPattern;
 
-  void fillSubcirComboBox();
+  QMap<QString,QStringList> subcirPins;
+
+  bool parseLibFile(const QString &filename);
 
 private slots:
   void slotBtnOpenLib();
+  void slotSetSymbol();
+  void slotFillSubcirComboBox();
+  void slotFillPinsTable();
 
 public:
   explicit SpiceLibCompDialog(Component *pc, QWidget* parent = nullptr);
