@@ -56,27 +56,24 @@ Element * ha1b::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void ha1b::createSymbol()
 {
-  Lines.append(new qucs::Line(-30, -40, 30,-40,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30, -40, 30, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  30,-30, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  30,-30,-40,QPen(Qt::darkBlue,2)));
+  // Body
+  Rects.append((new qucs::Rect(-30, -40, 60, 70, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin))));
+  Texts.append(new Text(-9.5, -40, "Σ", Qt::darkBlue, 29.0));
 
-  Lines.append(new qucs::Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // A
-  Lines.append(new qucs::Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));  // B
-  Lines.append(new qucs::Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));  // CO
-  Lines.append(new qucs::Line( 30,-10, 50,-10,QPen(Qt::darkBlue,2)));  // S
-
-  Texts.append(new Text(0, -3, "CO", Qt::darkBlue, 12.0));
-
-  Lines.append(new qucs::Line(-10,-35, 10, -35, QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-10,-35,  5, -25, QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  5,-25,-10, -15, QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-10,-15, 10, -15, QPen(Qt::darkBlue,2)));
- 
-  Ports.append(new Port(-50,-10));  // A
-  Ports.append(new Port(-50, 10));  // B
-  Ports.append(new Port( 50, 10));  // CO
-  Ports.append(new Port( 50,-10));  // S
+  // Pins
+  // A
+  Ports.append(new Port(-50,-10));
+  Lines.append(new qucs::Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));
+  // B
+  Ports.append(new Port(-50, 10));
+  Lines.append(new qucs::Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));
+  // CO
+  Ports.append(new Port( 50, 10));
+  Lines.append(new qucs::Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(7, 2, "CO", Qt::darkBlue, 12.0));
+  // S
+  Ports.append(new Port( 50,-10));
+  Lines.append(new qucs::Line( 30,-10, 50,-10,QPen(Qt::darkBlue,2)));
 
   x1 = -50; y1 = -44;
   x2 =  50; y2 =  34;

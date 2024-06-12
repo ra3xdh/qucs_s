@@ -33,7 +33,6 @@ mux4to1::mux4to1()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
-  icon_dy = -10;
   Model = "mux4to1";
   Name  = "Y";
 }
@@ -57,10 +56,7 @@ Element * mux4to1::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void mux4to1::createSymbol()
 {
-  Lines.append(new qucs::Line(-30, -80, 30,-80,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30, -80, 30, 100,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  100,-30, 100,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30, 100,-30, -80,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-30, -80, 60, 180, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
   Lines.append(new qucs::Line(-50,-40,-40,-40,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-50,-20,-30, -20,QPen(Qt::darkBlue,2)));
@@ -72,23 +68,23 @@ void mux4to1::createSymbol()
 
   Lines.append(new qucs::Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new qucs::Arc( -40, -45, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips( -40, -45, 10, 10, QPen(Qt::darkBlue,2)));
  
-  Texts.append(new Text(-17,-75, "MUX", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-14,-75, "MUX", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-25,-53, "En", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-14,-23, "G", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-1, -28, "}", Qt::darkBlue, 16.0));
-  Texts.append(new Text( 12,-30, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 12,-10, "3", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,-48, "En", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-14,-16, "G", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-1, -22, "}", Qt::darkBlue, 20.0));
+  Texts.append(new Text( 12,-26, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 12, -6, "3", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-25,-31, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25,-11, "1", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,-28, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, -8, "1", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-25, 17, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25, 37, "1", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25, 57, "2", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25, 77, "3", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 22, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 42, "1", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 62, "2", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 82, "3", Qt::darkBlue, 12.0));
 
   Lines.append(new qucs::Line(11, -8, 23, -8, QPen(Qt::darkBlue,2)));
 

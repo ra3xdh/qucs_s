@@ -26,10 +26,8 @@ Digi_Source::Digi_Source()
   Description = QObject::tr("digital source");
 
   Lines.append(new qucs::Line(-10,  0,  0,  0,QPen(Qt::darkGreen,2)));
-  Lines.append(new qucs::Line(-20,-10,-10,  0,QPen(Qt::darkGreen,2)));
-  Lines.append(new qucs::Line(-20, 10,-10,  0,QPen(Qt::darkGreen,2)));
-  Lines.append(new qucs::Line(-35,-10,-20,-10,QPen(Qt::darkGreen,2)));
-  Lines.append(new qucs::Line(-35, 10,-20, 10,QPen(Qt::darkGreen,2)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{-35, 10}, {-20, 10}, {-10, 0}, {-20, -10}, {-35, -10}}, QPen(Qt::darkGreen,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
   Lines.append(new qucs::Line(-35,-10,-35, 10,QPen(Qt::darkGreen,2)));
 
   Lines.append(new qucs::Line(-32, 5,-28, 5,QPen(Qt::darkGreen,2)));

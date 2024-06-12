@@ -61,31 +61,29 @@ Element * dff_SR::info(QString& Name, char * &BitmapFile, bool getNewOne)
 void dff_SR::createSymbol()
 {
   // put in here symbol drawing code and terminal definitions
-  Lines.append(new qucs::Line(-30,-40, 30,-40,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,-40, 30, 40,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30, 40,-30, 40,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30, 40,-30,-40,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-30, -40, 60, 80, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
   Lines.append(new qucs::Line(-50,-20,-30,-20,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-50, 20,-30, 20,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30, 20, 50, 20,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,-20, 50,-20,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new qucs::Line( -30, 10,-20, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -30, 30,-20, 20,QPen(Qt::darkBlue,2)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{-30, 10}, {-20, 20}, {-30, 30}}, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin)
+  ));
 
   Lines.append(new qucs::Line(  0, -50,  0, -60,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  0,  50,  0,  60,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new qucs::Arc( -5,-50, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc( -5, 40, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips( -5,-50, 10, 10, QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips( -5, 40, 10, 10, QPen(Qt::darkBlue,2)));
 
-  Texts.append(new Text(-25,-32,  "D", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 11,-32,  "Q", Qt::darkBlue, 12.0));
-  Texts.append(new Text( -5,-39,  "S", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 11,  7,  "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,-28,  "D", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 15.5,-28,  "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -4,-39,  "S", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 15.5,  12,  "Q", Qt::darkBlue, 12.0));
   Texts.last()->over=true;
-  Texts.append(new Text( -5, 17,  "R", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -4, 24,  "R", Qt::darkBlue, 12.0));
  
   Ports.append(new Port(0,  -60));  // S
   Ports.append(new Port(-50,-20));  // D

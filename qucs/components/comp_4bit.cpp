@@ -56,52 +56,65 @@ Element * comp_4bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void comp_4bit::createSymbol()
 {
-  Lines.append(new qucs::Line(-40, -90, 40,-90,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 40, -90, 40,100,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 40, 100,-40,100,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-40, 100,-40,-90,QPen(Qt::darkBlue,2)));
+  // Body
+  Rects.append(new qucs::Rect(-40, -90, 80, 190, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+  Texts.append(new Text(-18,-85, "COMP", Qt::darkBlue, 12.0));
 
-  Lines.append(new qucs::Line(-60,-50,-40,-50,QPen(Qt::darkBlue,2)));  // X0
-  Lines.append(new qucs::Line(-60,-30,-40,-30,QPen(Qt::darkBlue,2)));  // X1
-  Lines.append(new qucs::Line(-60,-10,-40,-10,QPen(Qt::darkBlue,2)));  // X2
-  Lines.append(new qucs::Line(-60, 10,-40, 10,QPen(Qt::darkBlue,2)));  // X3
-  Lines.append(new qucs::Line(-60, 30,-40, 30,QPen(Qt::darkBlue,2)));  // Y0
-  Lines.append(new qucs::Line(-60, 50,-40, 50,QPen(Qt::darkBlue,2)));  // Y1
-  Lines.append(new qucs::Line(-60, 70,-40, 70,QPen(Qt::darkBlue,2)));  // Y2
-  Lines.append(new qucs::Line(-60, 90,-40, 90,QPen(Qt::darkBlue,2)));  // Y3
+  // Left side pins and their labels
+  // X0
+  Ports.append(new Port(-60,-50));
+  Lines.append(new qucs::Line(-60,-50,-40,-50,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35,-58,   "0",  Qt::darkBlue, 12.0));
+  // X1
+  Ports.append(new Port(-60,-30));
+  Lines.append(new qucs::Line(-60,-30,-40,-30,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35,-38,   "1",  Qt::darkBlue, 12.0));
+  // X2
+  Ports.append(new Port(-60,-10));
+  Lines.append(new qucs::Line(-60,-10,-40,-10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35,-18,   "2",  Qt::darkBlue, 12.0));
+  // X3
+  Ports.append(new Port(-60, 10));
+  Lines.append(new qucs::Line(-60, 10,-40, 10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 2,   "3",  Qt::darkBlue, 12.0));
+
+  Texts.append(new Text(-25,-31.5,   "{",  Qt::darkBlue, 16.0));
+  Texts.append(new Text(-18,-28,   "X",  Qt::darkBlue, 12.0));
+
+  // Y0
+  Ports.append(new Port(-60, 30));
+  Lines.append(new qucs::Line(-60, 30,-40, 30,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 22,   "0",  Qt::darkBlue, 12.0));
+  // Y1
+  Ports.append(new Port(-60, 50));
+  Lines.append(new qucs::Line(-60, 50,-40, 50,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 42,   "1",  Qt::darkBlue, 12.0));
+  // Y2
+  Ports.append(new Port(-60, 70));
+  Lines.append(new qucs::Line(-60, 70,-40, 70,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 62,   "2",  Qt::darkBlue, 12.0));
+  // Y3
+  Ports.append(new Port(-60, 90));
+  Lines.append(new qucs::Line(-60, 90,-40, 90,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 82,   "3",  Qt::darkBlue, 12.0));
+
+  Texts.append(new Text(-25, 48.5,   "{",  Qt::darkBlue, 16.0));
+  Texts.append(new Text(-18, 52,   "Y",  Qt::darkBlue, 12.0));
+
+
+  // Right side pins and their labels
+  // L
+  Ports.append(new Port( 60, 30));
   Lines.append(new qucs::Line( 40, 30, 60, 30,QPen(Qt::darkBlue,2)));  // L
+  Texts.append(new Text(  12, 22, "X<Y",  Qt::darkBlue, 12.0));
+  // G
+  Ports.append(new Port( 60, 10));
   Lines.append(new qucs::Line( 40, 10, 60, 10,QPen(Qt::darkBlue,2)));  // G
+  Texts.append(new Text(  12, 2, "X>Y",  Qt::darkBlue, 12.0));
+  // E
+  Ports.append(new Port( 60,-10));
   Lines.append(new qucs::Line( 40,-10, 60,-10,QPen(Qt::darkBlue,2)));  // E
-
-  Texts.append(new Text(-25,-85, "COMP", Qt::darkBlue, 12.0));
-
-  Texts.append(new Text(-25,-40,   "{",  Qt::darkBlue, 16.0));
-  Texts.append(new Text(-15,-35,   "X",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35,-63,   "0",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35,-43,   "1",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35,-23,   "2",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, -3,   "3",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25, 42,   "{",  Qt::darkBlue, 16.0));
-  Texts.append(new Text(-15, 47,   "Y",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, 17,   "0",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, 37,   "1",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, 57,   "2",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, 77,   "3",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(  5, 17, "X<Y",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(  5, -3, "X>Y",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(  5,-23, "X=Y",  Qt::darkBlue, 12.0));
-
-  Ports.append(new Port(-60,-50));  // X0
-  Ports.append(new Port(-60,-30));  // X1
-  Ports.append(new Port(-60,-10));  // X2
-  Ports.append(new Port(-60, 10));  // X3
-  Ports.append(new Port(-60, 30));  // Y0
-  Ports.append(new Port(-60, 50));  // Y1
-  Ports.append(new Port(-60, 70));  // Y2
-  Ports.append(new Port(-60, 90));  // Y3
-  Ports.append(new Port( 60, 30));  // L
-  Ports.append(new Port( 60, 10));  // G
-  Ports.append(new Port( 60,-10));  // E
+  Texts.append(new Text(  12,-18, "X=Y",  Qt::darkBlue, 12.0));
 
   x1 = -60; y1 = -94;
   x2 =  60; y2 =  104;
