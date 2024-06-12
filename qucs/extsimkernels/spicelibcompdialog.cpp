@@ -48,6 +48,7 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog
   QLabel *lblPattern = new QLabel("Symbol pattern");
   cbxSymPattern = new QComboBox;
   QStringList lst_patterns;
+  lst_patterns.append("auto");
   misc::getSymbolPatternsList(lst_patterns);
   cbxSymPattern->addItems(lst_patterns);
   connect(cbxSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSymbol()));
@@ -171,9 +172,18 @@ bool SpiceLibCompDialog::parseLibFile(const QString &filename)
 
 void SpiceLibCompDialog::slotSetSymbol()
 {
-  QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
-  QString file = dir_name + cbxSymPattern->currentText() + ".sym";
-  symbolPinsCount = symbol->loadSymFile(file);
+  if (cbxSymPattern->currentText() == "auto") {
+    tbwPinsTable->setEnabled(false);
+    QString s1 = "";
+    QString s2 = "SpLib";
+    symbol->setSymbol(s1, s1, s2);
+    symbolPinsCount = 0;
+  } else {
+    tbwPinsTable->setEnabled(true);
+    QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
+    QString file = dir_name + cbxSymPattern->currentText() + ".sym";
+    symbolPinsCount = symbol->loadSymFile(file);
+  }
 }
 
 void SpiceLibCompDialog::slotBtnOpenLib()

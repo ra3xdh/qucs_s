@@ -478,6 +478,7 @@ int SymbolWidget::loadSymFile(const QString &file)
   Rects.clear();
   Ellipses.clear();
   Texts.clear();
+  Warning.clear();
   x1 = y1 = INT_MAX;
   x2 = y2 = INT_MIN;
 
