@@ -56,37 +56,41 @@ Element * hpribin4bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void hpribin4bit::createSymbol()
 {
-  Lines.append(new qucs::Line(-40, -50, 40,-50,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 40, -50, 40, 60,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 40,  60,-40, 60,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-40,  60,-40, -50,QPen(Qt::darkBlue,2)));
+  // Body
+  Rects.append(new qucs::Rect(-40, -50, 80, 110, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+  Texts.append(new Text(-25,-45, "HPRI/BIN", Qt::darkBlue, 12.0));
 
-  Lines.append(new qucs::Line(-60,-10,-40,-10,QPen(Qt::darkBlue,2)));  // A
-  Lines.append(new qucs::Line(-60, 10,-40, 10,QPen(Qt::darkBlue,2)));  // B
-  Lines.append(new qucs::Line(-60, 30,-40, 30,QPen(Qt::darkBlue,2)));  // C
-  Lines.append(new qucs::Line(-60, 50,-40, 50,QPen(Qt::darkBlue,2)));  // D
+  // Left-side pins and their labels
+  // A
+  Ports.append(new Port(-60,-10));
+  Lines.append(new qucs::Line(-60,-10,-40,-10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35,-18,  "0",  Qt::darkBlue, 12.0));
+  // B
+  Ports.append(new Port(-60, 10));
+  Lines.append(new qucs::Line(-60, 10,-40, 10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-34, 2,  "1",  Qt::darkBlue, 12.0));
+  // C
+  Ports.append(new Port(-60, 30));
+  Lines.append(new qucs::Line(-60, 30,-40, 30,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 22,  "2",  Qt::darkBlue, 12.0));
+  // D
+  Ports.append(new Port(-60, 50));
+  Lines.append(new qucs::Line(-60, 50,-40, 50,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 42,  "3",  Qt::darkBlue, 12.0));
+
+  // Right side pins and their labels
+  // V
+  Ports.append(new Port( 60, 30));
   Lines.append(new qucs::Line( 40, 30, 60, 30,QPen(Qt::darkBlue,2)));  // V
+  Texts.append(new Text( 25, 22,  "V",  Qt::darkBlue, 12.0));
+  // Y
+  Ports.append(new Port( 60, 10));
   Lines.append(new qucs::Line( 40, 10, 60, 10,QPen(Qt::darkBlue,2)));  // Y
+  Texts.append(new Text( 25, 2,  "Y",  Qt::darkBlue, 12.0));
+  // X
+  Ports.append(new Port( 60,-10));
   Lines.append(new qucs::Line( 40,-10, 60,-10,QPen(Qt::darkBlue,2)));  // X
-
-  Texts.append(new Text(-35,-45, "HPRI/BIN", Qt::darkBlue, 12.0));
-
-  Texts.append(new Text(-35,-23,  "0",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, -3,  "1",  Qt::darkBlue, 12.0)); 
-  Texts.append(new Text(-35, 17,  "2",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, 37,  "3",  Qt::darkBlue, 12.0));
-
-  Texts.append(new Text( 25, 17,  "V",  Qt::darkBlue, 12.0)); 
-  Texts.append(new Text( 25, -3,  "Y",  Qt::darkBlue, 12.0));
-  Texts.append(new Text( 25,-23,  "X",  Qt::darkBlue, 12.0));
-
-  Ports.append(new Port(-60,-10));  // A
-  Ports.append(new Port(-60, 10));  // B
-  Ports.append(new Port(-60, 30));  // C
-  Ports.append(new Port(-60, 50));  // D
-  Ports.append(new Port( 60, 30));  // V
-  Ports.append(new Port( 60, 10));  // Y
-  Ports.append(new Port( 60,-10));  // X
+  Texts.append(new Text( 25,-18,  "X",  Qt::darkBlue, 12.0));
 
   x1 = -60; y1 = -54;
   x2 =  60; y2 =  64;

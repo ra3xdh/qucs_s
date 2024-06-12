@@ -56,10 +56,7 @@ Element * dmux4to16::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void dmux4to16::createSymbol()
 {
-  Lines.append(new qucs::Line(-30, -90, 30,-90,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30, -90, 30, 110,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  110,-30, 110,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  110,-30, -90,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-30, -90, 60, 200, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
   Lines.append(new qucs::Line(-50,-50,-40,-50,QPen(Qt::darkBlue,2)));  // EN
   Lines.append(new qucs::Line(-50,-30,-30,-30,QPen(Qt::darkBlue,2)));  // A
@@ -84,35 +81,35 @@ void dmux4to16::createSymbol()
   Lines.append(new qucs::Line( 30, -40, 50,-40,QPen(Qt::darkBlue,2)));  // Y1
   Lines.append(new qucs::Line( 30, -50, 50,-50,QPen(Qt::darkBlue,2)));  // Y0
 
-  Arcs.append(new qucs::Arc( -40, -55, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips( -40, -55, 10, 10, QPen(Qt::darkBlue,2)));
  
-  Texts.append(new Text(-25,-85, "DMUX", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-18.5,-85, "DMUX", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-25,-63, "En", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-26,-15, "G", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-13,-20, "}", Qt::darkBlue, 16.0));
-  Texts.append(new Text( -5,-20, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text( -8,  0, "15", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,-58, "En", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-26, -8, "G", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-15,-12, "}", Qt::darkBlue, 20.0));
+  Texts.append(new Text( -5,-15, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -8,  5, "15", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-25,-43, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25, 17, "3", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,-38, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 22, "3", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text( 15,-59, "0", Qt::darkBlue, 9.0));
-  Texts.append(new Text( 15,-49, "1", Qt::darkBlue, 9.0));
-  Texts.append(new Text( 15,-39, "2", Qt::darkBlue, 9.0));
-  Texts.append(new Text( 15,-29, "3", Qt::darkBlue, 9.0));
-  Texts.append(new Text( 15,-19, "4", Qt::darkBlue, 9.0));
-  Texts.append(new Text( 15, -9, "5", Qt::darkBlue, 9.0));
-  Texts.append(new Text( 15,  1, "6", Qt::darkBlue, 9.0));
-  Texts.append(new Text( 15, 11, "7", Qt::darkBlue, 9.0));
-  Texts.append(new Text( 15, 21, "8", Qt::darkBlue, 9.0));
-  Texts.append(new Text( 15, 31, "9", Qt::darkBlue, 9.0));
-  Texts.append(new Text(  8, 41, "10", Qt::darkBlue, 9.0));
-  Texts.append(new Text(  8, 51, "11", Qt::darkBlue, 9.0));
-  Texts.append(new Text(  8, 61, "12", Qt::darkBlue, 9.0));
-  Texts.append(new Text(  8, 71, "13", Qt::darkBlue, 9.0));
-  Texts.append(new Text(  8, 81, "14", Qt::darkBlue, 9.0));
-  Texts.append(new Text(  8, 91, "15", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15,-56, "0", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15,-46, "1", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15,-36, "2", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15,-26, "3", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15,-16, "4", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15, -6, "5", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15,  4, "6", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15, 14, "7", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15, 24, "8", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 15, 34, "9", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 11, 44, "10", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 11, 54, "11", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 11, 64, "12", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 11, 74, "13", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 11, 84, "14", Qt::darkBlue, 9.0));
+  Texts.append(new Text( 11, 94, "15", Qt::darkBlue, 9.0));
 
   Lines.append(new qucs::Line(-6,  2, 9,  2, QPen(Qt::darkBlue,2)));
 

@@ -56,10 +56,7 @@ Element * andor4x2::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void andor4x2::createSymbol()
 {
-  Lines.append(new qucs::Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30, -60, 30, 60,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  60,-30, 60,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  60,-30,-60,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-30, -60, 60, 120, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin)));
 
   Lines.append(new qucs::Line(-30, -30,  0,-30,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,   0,  0,  0,QPen(Qt::darkBlue,2)));
@@ -82,10 +79,10 @@ void andor4x2::createSymbol()
   Texts.append(new Text( -20,   0, "&", Qt::darkBlue, 12.0));
   Texts.append(new Text( -20,  30, "&", Qt::darkBlue, 12.0));
  
-  Lines.append(new qucs::Line(  7, -45, 17, -40,QPen(Qt::darkBlue,2))); 
-  Lines.append(new qucs::Line(  7, -35, 17, -40,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  7, -30, 17, -35,QPen(Qt::darkBlue,2))); 
-  Lines.append(new qucs::Line( 22, -30, 22, -45,QPen(Qt::darkBlue,2)));  
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{7, -45}, {17, -40}, {7, -35}}, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin)));
+  Lines.append(new qucs::Line(  7, -30, 17, -35,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line( 22, -30, 22, -45,QPen(Qt::darkBlue,2)));
 
 
   Ports.append(new Port(-50,-50));  // A11

@@ -1795,7 +1795,7 @@ void GateComponent::createSymbol() {
         Ports.append(new Port(-30, y));
         if (xl == 10)
             if ((z == 0) || (z == Num - 1)) {
-                Lines.append(new qucs::Line(-30, y, 9, y, QPen(Qt::darkBlue, 2)));
+                Lines.append(new qucs::Line(-30, y, 8, y, QPen(Qt::darkBlue, 2)));
                 continue;
             }
         Lines.append(new qucs::Line(-30, y, xl, y, QPen(Qt::darkBlue, 2)));

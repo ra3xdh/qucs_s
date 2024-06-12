@@ -57,10 +57,7 @@ Element * mux2to1::info(QString& Name, char * &BitmapFile, bool getNewOne)
 void mux2to1::createSymbol()
 {
   // put in here symbol drawing code and terminal definitions
-  Lines.append(new qucs::Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30, -60, 30, 50,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  50,-30, 50,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  50,-30,-60,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-30, -60, 60, 110, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
   Lines.append(new qucs::Line(-50,-20,-40,-20,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-50,  0,-30,  0,QPen(Qt::darkBlue,2)));
@@ -69,22 +66,22 @@ void mux2to1::createSymbol()
 
   Lines.append(new qucs::Line( 30, 0, 50, 0,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new qucs::Arc(-40, -25, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips(-40, -25, 10, 10, QPen(Qt::darkBlue,2)));
  
-  Texts.append(new Text(-17,-55, "MUX", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-14,-55, "MUX", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-25,-33, "En", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25,-13, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,-28, "En", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, -8, "0", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-15,-15, "G", Qt::darkBlue, 12.0));
-  Texts.append(new Text( -1,-21, "}", Qt::darkBlue, 16.0));
-  Texts.append(new Text( 12,-22, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 12, -2, "1", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-15,-8, "G", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -1,-14, "}", Qt::darkBlue, 20.0));
+  Texts.append(new Text( 12,-18, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 12,  2, "1", Qt::darkBlue, 12.0));
 
   Lines.append(new qucs::Line(11, 0, 23, 0, QPen(Qt::darkBlue,2)));
 
-  Texts.append(new Text(-25,  7, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25, 27, "1", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 12, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 32, "1", Qt::darkBlue, 12.0));
 
   Ports.append(new Port(-50,-20));  // En
   Ports.append(new Port(-50,  0));  // A

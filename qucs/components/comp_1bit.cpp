@@ -57,30 +57,33 @@ Element * comp_1bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void comp_1bit::createSymbol()
 {
-  Lines.append(new qucs::Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30, -60, 30, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  30,-30, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  30,-30, -60,QPen(Qt::darkBlue,2)));
+  // Body
+  Rects.append(new qucs::Rect(-30, -60, 60, 90, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+  Texts.append(new Text(-18,-55, "COMP", Qt::darkBlue, 12.0));
 
-  Lines.append(new qucs::Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // X
-  Lines.append(new qucs::Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));  // Y
-  Lines.append(new qucs::Line( 30, 20, 50, 20,QPen(Qt::darkBlue,2)));  // L
-  Lines.append(new qucs::Line( 30,  0, 50,  0,QPen(Qt::darkBlue,2)));  // G
-  Lines.append(new qucs::Line( 30,-20, 50,-20,QPen(Qt::darkBlue,2)));  // E
+  // Left-side pins and their labels
+  // X
+  Ports.append(new Port(-50,-10));
+  Lines.append(new qucs::Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-25,-18,   "X",  Qt::darkBlue, 12.0));
+  // Y
+  Ports.append(new Port(-50, 10));
+  Lines.append(new qucs::Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-25, 2,   "Y",  Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-25,-55, "COMP", Qt::darkBlue, 12.0));
-
-  Texts.append(new Text(-25,-23,   "X",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25, -3,   "Y",  Qt::darkBlue, 12.0));
-  Texts.append(new Text( -5,  7, "X<Y",  Qt::darkBlue, 12.0));
-  Texts.append(new Text( -5,-13, "X>Y", Qt::darkBlue, 12.0));
-  Texts.append(new Text( -5,-33, "X=Y", Qt::darkBlue, 12.0));
-
-  Ports.append(new Port(-50,-10));  // X
-  Ports.append(new Port(-50, 10));  // Y
-  Ports.append(new Port( 50, 20));  // L
-  Ports.append(new Port( 50,  0));  // G
-  Ports.append(new Port( 50,-20));  // E
+  // Right-side pins and their labels
+  // L
+  Ports.append(new Port( 50, 20));
+  Lines.append(new qucs::Line( 30, 20, 50, 20,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text( 0,  12, "X<Y",  Qt::darkBlue, 12.0));
+  // G
+  Ports.append(new Port( 50,  0));
+  Lines.append(new qucs::Line( 30,  0, 50,  0,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text( 0,-8, "X>Y", Qt::darkBlue, 12.0));
+  // E
+  Ports.append(new Port( 50,-20));
+  Lines.append(new qucs::Line( 30,-20, 50,-20,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text( 0,-28, "X=Y", Qt::darkBlue, 12.0));
 
   x1 = -50; y1 = -64;
   x2 =  50; y2 =  34;
