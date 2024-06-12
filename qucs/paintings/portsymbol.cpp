@@ -158,6 +158,11 @@ bool PortSymbol::load(const QString& s)
   Angel = n.toInt(&ok);
   if(!ok) return false;
 
+  // name string
+  n = s.section(' ', 5);
+  if (n.isEmpty()) return true;
+  nameStr = n;
+
   return true;
 }
 
@@ -165,7 +170,7 @@ bool PortSymbol::load(const QString& s)
 QString PortSymbol::save()
 {
   QString s = Name+QString::number(cx)+" "+QString::number(cy)+" ";
-  s += numberStr+" "+QString::number(Angel);
+  s += numberStr+" "+QString::number(Angel) + " " + nameStr;
   return s;
 }
 
