@@ -35,6 +35,8 @@ private slots:
   void slotSetSymbol();
   void slotFillSubcirComboBox();
   void slotFillPinsTable();
+  void slotTableCellDoubleClick();
+  void slotSelectPin();
 
 public:
   explicit SpiceLibCompDialog(Component *pc, QWidget* parent = nullptr);

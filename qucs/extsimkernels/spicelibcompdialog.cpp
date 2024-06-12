@@ -63,6 +63,7 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog
   QStringList lbl_cols;
   lbl_cols<<"Subcircuit pin"<<"Symbol pin";
   tbwPinsTable->setHorizontalHeaderLabels(lbl_cols);
+  connect(tbwPinsTable,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(slotTableCellDoubleClick()));
 
   btnOK = new QPushButton(tr("OK"));
   connect(btnOK,SIGNAL(clicked(bool)),this,SLOT(slotBtnOK()));
@@ -123,9 +124,12 @@ void SpiceLibCompDialog::slotFillPinsTable()
   if (subcirPins.find(subcir_name) == subcirPins.end()) return;
   QStringList pins = subcirPins[subcir_name];
   tbwPinsTable->clearContents();
+  tbwPinsTable->setRowCount(pins.count());
   for (int i = 0; i < pins.count(); i++) {
-    QTableWidgetItem *itm = new QTableWidgetItem(pins.at(i));
-    tbwPinsTable->setItem(i,0,itm);
+    QTableWidgetItem *itm1 = new QTableWidgetItem(pins.at(i));
+    tbwPinsTable->setItem(i,0,itm1);
+    QTableWidgetItem *itm2 = new QTableWidgetItem("NC");
+    tbwPinsTable->setItem(i,1,itm2);
   }
 }
 
@@ -182,8 +186,53 @@ void SpiceLibCompDialog::slotSetSymbol()
     tbwPinsTable->setEnabled(true);
     QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
     QString file = dir_name + cbxSymPattern->currentText() + ".sym";
-    symbolPinsCount = symbol->loadSymFile(file);
+    symbol->loadSymFile(file);
+    symbolPinsCount = symbol->getPortsNumber();
   }
+  for (int i = 0; i < tbwPinsTable->rowCount(); i++) {
+    QTableWidgetItem *itm = new QTableWidgetItem("NC");
+    tbwPinsTable->setItem(i,1,itm);
+  }
+}
+
+void SpiceLibCompDialog::slotTableCellDoubleClick()
+{
+  int r = tbwPinsTable->currentRow();
+  int c = tbwPinsTable->currentColumn();
+  if (c == 0) return; // do not edit the forst column
+  QComboBox *cbxSelectPin = new QComboBox;
+  cbxSelectPin->addItem("NC");
+  for (int i = 1; i <= symbolPinsCount; i++) {
+    bool pinAssigned = false;
+    for(int j = 0; j < tbwPinsTable->rowCount(); j++) {
+      if (j == r) continue;
+      auto itm = tbwPinsTable->item(j,1);
+      if (itm == nullptr) continue;
+      QString s = itm->text();
+      if (s.isEmpty()) continue;
+      int pin_num = s.toInt();
+      if (pin_num == i) {
+        pinAssigned = true;
+        break;
+      }
+    }
+    if (!pinAssigned) {
+      cbxSelectPin->addItem(QString::number(i));
+    }
+  }
+  tbwPinsTable->setCellWidget(r,c,cbxSelectPin);
+  connect(cbxSelectPin,SIGNAL(activated(int)),this,SLOT(slotSelectPin()));
+}
+
+void SpiceLibCompDialog::slotSelectPin()
+{
+  QComboBox *cbxSelectPin = qobject_cast<QComboBox*>(sender());
+  QString pin = cbxSelectPin->currentText();
+  int r = tbwPinsTable->currentRow();
+  int c = tbwPinsTable->currentColumn();
+  QTableWidgetItem *itm = new QTableWidgetItem(pin);
+  tbwPinsTable->removeCellWidget(r,c);
+  tbwPinsTable->setItem(r,c,itm);
 }
 
 void SpiceLibCompDialog::slotBtnOpenLib()

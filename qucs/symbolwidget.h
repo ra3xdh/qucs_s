@@ -54,6 +54,7 @@ public:
   void enableShowPinNumbers() { showPinNumbers = true; }
   void disableShowPinNumbers() { showPinNumbers = false; }
   bool showPinNumbersEnabled() { return showPinNumbers; }
+  int getPortsNumber() { return portsNumber; }
   // component properties
   int Text_x, Text_y;
   QString Prefix, LibraryPath, ComponentName;
@@ -75,6 +76,7 @@ private:
 
   bool dragNDrop;
   bool showPinNumbers;
+  int portsNumber;
   QString PaintText;
   QString DragNDropText;
   QString Warning;

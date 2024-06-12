@@ -49,6 +49,7 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
   y2 = 0;
   dragNDrop = true;
   showPinNumbers = false;
+  portsNumber = 0;
   PaintText = tr("Symbol:");
   setFont(QucsSettings.font);
   QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
@@ -421,6 +422,7 @@ int SymbolWidget::setSymbol( QString& SymbolString,
   Texts.clear();
   LibraryPath = Lib_;
   ComponentName = Comp_;
+  portsNumber = 0;
 
   QString Line;
   ///QString foo = SymbolString;
@@ -479,6 +481,7 @@ int SymbolWidget::loadSymFile(const QString &file)
   Ellipses.clear();
   Texts.clear();
   Warning.clear();
+  portsNumber = 0;
   x1 = y1 = INT_MAX;
   x2 = y2 = INT_MIN;
 
@@ -552,6 +555,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     if((i1+4) > x2)  x2 = i1+4;
     if((i2-4) < y1)  y1 = i2-4;
     if((i2+4) > y2)  y2 = i2+4;
+    portsNumber++;
     return 0;   // do not count Ports
   }
   else if(s == "Line") {
