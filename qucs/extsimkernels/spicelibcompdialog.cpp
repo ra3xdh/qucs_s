@@ -18,13 +18,15 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
+#include "schematic.h"
 #include "symbolwidget.h"
 #include "spicelibcompdialog.h"
 
 
-SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog{parent}
+SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{sch}
 {
   comp = pc;
+  Doc = sch;
   symbolPinsCount = 0;
 
   QString file = comp->Props.at(0)->Value;
@@ -33,6 +35,8 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog
   }
   QString device = comp->Props.at(1)->Value;
   QString sym = comp->Props.at(2)->Value;
+  QString par = comp->Props.at(3)->Value;
+  QString pin_list = comp->Props.at(4)->Value;
 
   QLabel *lblLibfile = new QLabel("SPICE library:");
   edtLibPath = new QLineEdit;
@@ -40,6 +44,10 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog
   connect(edtLibPath,SIGNAL(textChanged(QString)),this,SLOT(slotFillSubcirComboBox()));
   btnOpenLib = new QPushButton(tr("Open"));
   connect(btnOpenLib,SIGNAL(clicked(bool)),this,SLOT(slotBtnOpenLib()));
+
+  QLabel *lbl_par = new QLabel("Component parameters");
+  edtParams = new QLineEdit;
+  edtParams->setText(par);
 
   QLabel *lblDevice = new QLabel("Subcircuit:");
   cbxSelectSubcir = new QComboBox;
@@ -85,6 +93,9 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog
   QHBoxLayout *l6 = new QHBoxLayout;
   l6->addWidget(lblPattern);
   l6->addWidget(cbxSymPattern);
+  QHBoxLayout *l7 = new QHBoxLayout;
+  l7->addWidget(lbl_par);
+  l7->addWidget(edtParams);
   top->addLayout(l6);
   QHBoxLayout *l3 = new QHBoxLayout;
   l3->addWidget(tbwPinsTable);
@@ -99,12 +110,29 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, QWidget* parent) : QDialog
 
   this->slotSetSymbol();
   this->setLayout(top);
+  this->setWindowTitle(tr("Edit SPICE library device"));
+  slotFillSubcirComboBox();
+
+  cbxSelectSubcir->setCurrentText(device);
+  cbxSymPattern->setCurrentText(sym);
+
+  if (!pin_list.isEmpty()) {
+    QStringList pins = pin_list.split(";");
+    for(int i = 0; i < pins.count(); i++) {
+      QTableWidgetItem *itm = tbwPinsTable->item(i,1);
+      if (itm != nullptr) {
+        itm->setText(pins.at(i));
+      }
+    }
+  }
 
 }
 
 void SpiceLibCompDialog::slotFillSubcirComboBox()
 {
-  if (!parseLibFile(edtLibPath->text())) {
+  QString libfile = edtLibPath->text();
+  if (!QFile::exists(libfile)) return;
+  if (!parseLibFile(libfile)) {
     QMessageBox::critical(this,tr("Error"),tr("SPICE library parse error"));
     return;
   }
@@ -245,13 +273,40 @@ void SpiceLibCompDialog::slotBtnOpenLib()
 
 void SpiceLibCompDialog::slotBtnApply()
 {
+  setCompProps();
+}
 
+bool SpiceLibCompDialog::setCompProps()
+{
+  QStringList pins;
+  for (int i = 0; i < tbwPinsTable->rowCount(); i++) {
+    QTableWidgetItem *itm = tbwPinsTable->item(i,1);
+    if (itm == nullptr) continue;
+    QString s = itm->text();
+    if (s == "NC") {
+      QMessageBox::warning(this,tr("Warning"),tr("All pins must be assigned"));
+      return false;
+    }
+    pins.append(s);
+  }
+  Property *pp = comp->Props.first();
+  pp->Value = edtLibPath->text();
+  pp = comp->Props.next();
+  pp->Value = cbxSelectSubcir->currentText();
+  pp = comp->Props.next();
+  pp->Value = cbxSymPattern->currentText();
+  pp = comp->Props.next();
+  pp->Value = edtParams->text();
+  pp = comp->Props.next();
+  pp->Value = QString(pins.join(";"));
+  Doc->recreateComponent(comp);
+  Doc->viewport()->repaint();
+  return true;
 }
 
 void SpiceLibCompDialog::slotBtnOK()
 {
-  slotBtnApply();
-  accept();
+  if (setCompProps()) accept();
 }
 
 void SpiceLibCompDialog::slotBtnCancel()

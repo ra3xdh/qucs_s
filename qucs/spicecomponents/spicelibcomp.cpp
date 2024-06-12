@@ -45,6 +45,7 @@ SpiceLibComp::SpiceLibComp()
   Props.append(new Property("Device", "", false, QObject::tr("Subcircuit entry (.SUBCKT) name")));
   Props.append(new Property("SymPattern", "auto", false, p_str));
   Props.append(new Property("Params", "", false, QObject::tr("Extra parameters list")));
+  Props.append(new Property("PinAssign", "", false, QObject::tr("Pins assignment")));
 
   Model = "SpLib";
   Name  = "X";
@@ -202,6 +203,7 @@ int SpiceLibComp::loadSymbol(const QString& DocName)
     if(Line.at(0) != '<') return -5;
     if(Line.at(Line.length()-1) != '>') return -6;
     Line = Line.mid(1, Line.length()-2); // cut off start and end character
+    if (Line.startsWith(".ID")) continue; // Do not adjust properties for SpiceLibComp
     Result = analyseLine(Line, 4);
     if(Result < 0) return -7;   // line format error
     z += Result;
@@ -212,12 +214,23 @@ int SpiceLibComp::loadSymbol(const QString& DocName)
 
 QString SpiceLibComp::spice_netlist(bool)
 {
-    QString s = QString("X%1 ").arg(Name);
+  QString s = QString("X%1 ").arg(Name);
+  QString pins = getProperty("PinAssign")->Value;
+  QString sym = getProperty("SymPattern")->Value;
+  if (sym == "auto" || pins.isEmpty()) {
     for (Port *p1 : Ports) {
-        s += " " + spicecompat::normalize_node_name(p1->Connection->Name);
+      s += " " + spicecompat::normalize_node_name(p1->Connection->Name);
     }
-    s += QString(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);
-    return s;
+  } else {
+    QStringList pin_nums = pins.split(";");
+    for (int i = 0; i < pin_nums.count(); i++) {
+      int pn = pin_nums.at(i).toInt();
+      Port *pp = Ports.at(pn-1);
+      s += " " + spicecompat::normalize_node_name(pp->Connection->Name);
+    }
+  }
+  s += QString(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);
+  return s;
 }
 
 QString SpiceLibComp::getSpiceModel()

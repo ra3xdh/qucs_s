@@ -10,6 +10,7 @@ class QTableWidget;
 class QComboBox;
 class QLineEdit;
 class Component;
+class Schematic;
 class SymbolWidget;
 
 class SpiceLibCompDialog : public QDialog {
@@ -17,9 +18,10 @@ class SpiceLibCompDialog : public QDialog {
 
 private:
   Component *comp;
+  Schematic *Doc;
 
   SymbolWidget *symbol;
-  QLineEdit *edtLibPath;
+  QLineEdit *edtLibPath, *edtParams;
   int symbolPinsCount;
 
   QPushButton *btnOpenLib, *btnOK, *btnApply, *btnCancel;
@@ -29,6 +31,7 @@ private:
   QMap<QString,QStringList> subcirPins;
 
   bool parseLibFile(const QString &filename);
+  bool setCompProps();
 
 private slots:
   void slotBtnOpenLib();
@@ -39,7 +42,7 @@ private slots:
   void slotSelectPin();
 
 public:
-  explicit SpiceLibCompDialog(Component *pc, QWidget* parent = nullptr);
+  explicit SpiceLibCompDialog(Component *pc, Schematic *sch);
 
 public slots:
 
