@@ -88,7 +88,6 @@ void MouseActions::setPainter(Schematic *Doc)
     Doc->PostPaintEvent(_Translate, -Doc->contentsX(), -Doc->contentsY());
     Doc->PostPaintEvent(_Scale, Doc->Scale, Doc->Scale);
     Doc->PostPaintEvent(_Translate, -Doc->ViewX1, -Doc->ViewY1);
-    Doc->PostPaintEvent(_DotLine);
     Doc->PostPaintEvent(_NotRop);
 }
 
