@@ -53,7 +53,7 @@ void PortSymbol::paint(QPainter *painter) {
   painter->setPen(QPen(Qt::red,1));  // like open node
   painter->drawEllipse(circle_br);
 
-  QSize name_size = painter->fontMetrics().size(0b0, nameStr);
+  QSize name_size = painter->fontMetrics().size(0b0, nameStr.isEmpty() ? numberStr : nameStr);
   const int half_nameheight = static_cast<int>(std::round(name_size.height() / 2.0));
 
   constexpr int offset = 8;
@@ -88,7 +88,7 @@ void PortSymbol::paint(QPainter *painter) {
     }
 
     painter->setPen(Qt::black);
-    painter->drawText(0, 0, 0, 0, Qt::TextDontClip, nameStr);
+    painter->drawText(0, 0, 0, 0, Qt::TextDontClip, nameStr.isEmpty() ? numberStr : nameStr);
   }
   painter->restore();
 
