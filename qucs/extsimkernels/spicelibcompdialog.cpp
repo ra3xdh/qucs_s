@@ -17,6 +17,8 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QPlainTextEdit>
+#include <QGroupBox>
 
 #include "schematic.h"
 #include "symbolwidget.h"
@@ -71,7 +73,13 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   QStringList lbl_cols;
   lbl_cols<<"Subcircuit pin"<<"Symbol pin";
   tbwPinsTable->setHorizontalHeaderLabels(lbl_cols);
+  tbwPinsTable->setMinimumWidth(2.2*tbwPinsTable->columnWidth(0));
+  tbwPinsTable->setMinimumHeight(5*tbwPinsTable->rowHeight(0));
   connect(tbwPinsTable,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(slotTableCellDoubleClick()));
+
+  edtSPICE = new QPlainTextEdit;
+  edtSPICE->setReadOnly(true);
+  edtSPICE->setMinimumSize(tbwPinsTable->minimumSize());
 
   btnOK = new QPushButton(tr("OK"));
   connect(btnOK,SIGNAL(clicked(bool)),this,SLOT(slotBtnOK()));
@@ -100,6 +108,11 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   QHBoxLayout *l3 = new QHBoxLayout;
   l3->addWidget(tbwPinsTable);
   l3->addWidget(symbol);
+  QGroupBox *gpb1 = new QGroupBox(tr("SPICE model"));
+  QHBoxLayout *l8 = new QHBoxLayout;
+  l8->addWidget(edtSPICE);
+  gpb1->setLayout(l8);
+  l3->addWidget(gpb1);
   top->addLayout(l3,3);
   QHBoxLayout *l4 = new QHBoxLayout;
   l4->addWidget(btnOK);
@@ -159,6 +172,9 @@ void SpiceLibCompDialog::slotFillPinsTable()
     QTableWidgetItem *itm2 = new QTableWidgetItem("NC");
     tbwPinsTable->setItem(i,1,itm2);
   }
+
+  edtSPICE->clear();
+  edtSPICE->setPlainText(subcirSPICE[subcir_name]);
 }
 
 bool SpiceLibCompDialog::parseLibFile(const QString &filename)
@@ -170,15 +186,20 @@ bool SpiceLibCompDialog::parseLibFile(const QString &filename)
   }
 
   subcirPins.clear();
+  subcirSPICE.clear();
   QTextStream ts(&f);
 
+  bool subcir_start = false;
+  QString subname;
+  QString subcir_body;
   while (!ts.atEnd()) {
     QString line = ts.readLine();
     line = line.trimmed();
     line = line.toUpper();
     if (line.startsWith(".SUBCKT")) {
+      subcir_start = true;
+      subcir_body.clear();
       QStringList pin_names;
-      QString subname;
       QStringList tokens = line.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
       if (tokens.count() > 3) {
         subname = tokens.at(1);
@@ -191,6 +212,13 @@ bool SpiceLibCompDialog::parseLibFile(const QString &filename)
         }
       }
       subcirPins[subname] = pin_names;
+    }
+    if (subcir_start) {
+      subcir_body += line + "\n";
+    }
+    if (line == ".ENDS") {
+      subcir_start = false;
+      subcirSPICE[subname] = subcir_body;
     }
   }
 

@@ -12,6 +12,7 @@ class QLineEdit;
 class Component;
 class Schematic;
 class SymbolWidget;
+class QPlainTextEdit;
 
 class SpiceLibCompDialog : public QDialog {
   Q_OBJECT
@@ -22,6 +23,8 @@ private:
 
   SymbolWidget *symbol;
   QLineEdit *edtLibPath, *edtParams;
+  QPlainTextEdit *edtSPICE;
+
   int symbolPinsCount;
 
   QPushButton *btnOpenLib, *btnOK, *btnApply, *btnCancel;
@@ -29,6 +32,7 @@ private:
   QComboBox *cbxSelectSubcir, *cbxSymPattern;
 
   QMap<QString,QStringList> subcirPins;
+  QMap<QString,QString> subcirSPICE;
 
   bool parseLibFile(const QString &filename);
   bool setCompProps();
