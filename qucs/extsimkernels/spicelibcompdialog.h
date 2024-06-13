@@ -27,6 +27,7 @@ private:
   QPlainTextEdit *edtSPICE;
 
   int symbolPinsCount;
+  bool isChanged;
 
   QPushButton *btnOpenLib, *btnOK, *btnApply, *btnCancel;
   QTableWidget *tbwPinsTable;
@@ -45,6 +46,7 @@ private slots:
   void slotFillPinsTable();
   void slotTableCellDoubleClick();
   void slotSelectPin();
+  void slotChanged();
 
 public:
   explicit SpiceLibCompDialog(Component *pc, Schematic *sch);

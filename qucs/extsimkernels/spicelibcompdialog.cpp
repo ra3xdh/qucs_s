@@ -30,6 +30,7 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   comp = pc;
   Doc = sch;
   symbolPinsCount = 0;
+  isChanged = false;
 
   QString file = comp->Props.at(0)->Value;
   if (!file.isEmpty()) {
@@ -138,6 +139,12 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
       }
     }
   }
+
+  connect(edtLibPath,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
+  connect(edtParams,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
+  connect(tbwPinsTable,SIGNAL(cellChanged(int,int)),this,SLOT(slotChanged()));
+  connect(cbxSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
+  connect(cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
 
 }
 
@@ -301,21 +308,30 @@ void SpiceLibCompDialog::slotBtnOpenLib()
 
 void SpiceLibCompDialog::slotBtnApply()
 {
-  setCompProps();
+  if (isChanged) {
+    setCompProps();
+    isChanged = false;
+  }
 }
 
 bool SpiceLibCompDialog::setCompProps()
 {
   QStringList pins;
-  for (int i = 0; i < tbwPinsTable->rowCount(); i++) {
-    QTableWidgetItem *itm = tbwPinsTable->item(i,1);
-    if (itm == nullptr) continue;
+  QString pin_string;
+  if (cbxSymPattern->currentText() == "auto") {
+    pin_string = "";
+  } else {
+    for (int i = 0; i < tbwPinsTable->rowCount(); i++) {
+      QTableWidgetItem *itm = tbwPinsTable->item(i,1);
+      if (itm == nullptr) continue;
     QString s = itm->text();
-    if (s == "NC") {
-      QMessageBox::warning(this,tr("Warning"),tr("All pins must be assigned"));
-      return false;
+      if (s == "NC") {
+        QMessageBox::warning(this,tr("Warning"),tr("All pins must be assigned"));
+        return false;
+      }
+      pins.append(s);
     }
-    pins.append(s);
+    pin_string = pins.join(";");
   }
   Property *pp = comp->Props.first();
   pp->Value = edtLibPath->text();
@@ -326,18 +342,28 @@ bool SpiceLibCompDialog::setCompProps()
   pp = comp->Props.next();
   pp->Value = edtParams->text();
   pp = comp->Props.next();
-  pp->Value = QString(pins.join(";"));
+  pp->Value = QString(pin_string);
   Doc->recreateComponent(comp);
   Doc->viewport()->repaint();
+  Doc->setChanged(true,true);
   return true;
 }
 
 void SpiceLibCompDialog::slotBtnOK()
 {
-  if (setCompProps()) accept();
+  if (isChanged) {
+    if (setCompProps()) accept();
+  } else {
+    accept();
+  }
 }
 
 void SpiceLibCompDialog::slotBtnCancel()
 {
   reject();
+}
+
+void SpiceLibCompDialog::slotChanged()
+{
+  isChanged = true;
 }
