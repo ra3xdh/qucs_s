@@ -20,7 +20,7 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
 
   QString file = comp->Props.at(0)->Value;
   if (!file.isEmpty()) {
-    file = misc::properAbsFileName(file);
+    file = misc::properAbsFileName(file, Doc);
     QFileInfo inf(file);
     lastLibDir = inf.absoluteDir().path();
   } else {
@@ -76,10 +76,10 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   connect(chbShowModel,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
   connect(chbShowParams,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
 
-  if (QFileInfo::exists(misc::properAbsFileName(sym))) {
-    edtSymFile->setText(sym);
+  if (QFileInfo::exists(misc::properAbsFileName(sym, Doc))) {
+    edtSymFile->setText(misc::properAbsFileName(sym, Doc));
     rbUserSym->setChecked(true);
-    QFileInfo inf(misc::properAbsFileName(sym));
+    QFileInfo inf(misc::properAbsFileName(sym, Doc));
     lastSymbolDir = inf.absoluteDir().path();
   } else {
     QFileInfo inf = Doc->getFileInfo();
@@ -407,8 +407,18 @@ bool SpiceLibCompDialog::setCompProps()
     return false;
   }
 
+  QString  sch_dir = Doc->getFileInfo().absoluteDir().path();
+  QString libpath = edtLibPath->text();
+  QString sympath = edtSymFile->text();
+  if (libpath.startsWith(sch_dir)) {
+    libpath = QDir(sch_dir).relativeFilePath(libpath);
+  }
+  if (sympath.startsWith(sch_dir)) {
+    sympath = QDir(sch_dir).relativeFilePath(sympath);
+  }
+
   Property *pp = comp->Props.first();
-  pp->Value = edtLibPath->text();
+  pp->Value = libpath;
   pp->display = chbShowLib->isChecked();
   pp = comp->Props.next();
   pp->Value = cbxSelectSubcir->currentText();
@@ -419,7 +429,7 @@ bool SpiceLibCompDialog::setCompProps()
   } else if (rbSymFromTemplate->isChecked()) {
     pp->Value = cbxSymPattern->currentText();
   } else if (rbUserSym->isChecked()) {
-    pp->Value = edtSymFile->text();
+    pp->Value = sympath;
   }
   pp = comp->Props.next();
   pp->Value = edtParams->text();
