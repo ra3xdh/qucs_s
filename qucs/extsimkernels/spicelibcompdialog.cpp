@@ -6,22 +6,6 @@
 #include "main.h"
 #include "component.h"
 
-#include <QLabel>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QTableWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QFile>
-#include <QFileInfo>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QPlainTextEdit>
-#include <QGroupBox>
-#include <QRadioButton>
-
 #include "schematic.h"
 #include "symbolwidget.h"
 #include "spicelibcompdialog.h"
@@ -38,9 +22,12 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   if (!file.isEmpty()) {
     file = misc::properAbsFileName(file);
   }
+  bool show_lib = comp->Props.at(0)->display;
   QString device = comp->Props.at(1)->Value;
+  bool show_model = comp->Props.at(1)->display;
   QString sym = comp->Props.at(2)->Value;
   QString par = comp->Props.at(3)->Value;
+  bool show_par = comp->Props.at(3)->display;
   QString pin_list = comp->Props.at(4)->Value;
 
   QLabel *lblLibfile = new QLabel("SPICE library:");
@@ -73,6 +60,16 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   connect(btnOpenSym,SIGNAL(clicked(bool)),this,SLOT(slotBtnOpenSym()));
   connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotSetSymbol()));
   connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
+
+  chbShowLib = new QCheckBox(tr("Show"));
+  chbShowLib->setChecked(show_lib);
+  chbShowModel = new QCheckBox(tr("Show"));
+  chbShowModel->setChecked(show_model);
+  chbShowParams = new QCheckBox(tr("Show"));
+  chbShowParams->setChecked(show_par);
+  connect(chbShowLib,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
+  connect(chbShowModel,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
+  connect(chbShowParams,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
 
   if (QFileInfo::exists(misc::properAbsFileName(sym))) {
     edtSymFile->setText(sym);
@@ -115,11 +112,13 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   l2->addWidget(lblLibfile);
   l2->addWidget(edtLibPath,4);
   l2->addWidget(btnOpenLib,1);
+  l2->addWidget(chbShowLib);
   top->addLayout(l2);
 
   QHBoxLayout *l7 = new QHBoxLayout;
   l7->addWidget(lbl_par);
   l7->addWidget(edtParams);
+  l7->addWidget(chbShowParams);
   top->addLayout(l7);
 
   QGridLayout *gl1 = new QGridLayout;
@@ -139,6 +138,7 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   QHBoxLayout *l5 = new QHBoxLayout;
   l5->addWidget(lblDevice);
   l5->addWidget(cbxSelectSubcir);
+  l5->addWidget(chbShowModel);
   l8->addLayout(l5);
   l8->addWidget(edtSPICE);
   gpb1->setLayout(l8);
@@ -364,16 +364,6 @@ void SpiceLibCompDialog::slotBtnOpenSym()
   if (!s.isEmpty()) edtSymFile->setText(s);
 }
 
-void SpiceLibCompDialog::slotBtnApply()
-{
-  if (isChanged) {
-    if (setCompProps()) {
-      isChanged = false;
-      btnApply->setEnabled(false);
-    }
-  }
-}
-
 bool SpiceLibCompDialog::setCompProps()
 {
   QStringList pins;
@@ -402,24 +392,37 @@ bool SpiceLibCompDialog::setCompProps()
 
   Property *pp = comp->Props.first();
   pp->Value = edtLibPath->text();
+  pp->display = chbShowLib->isChecked();
   pp = comp->Props.next();
   pp->Value = cbxSelectSubcir->currentText();
+  pp->display = chbShowModel->isChecked();
   pp = comp->Props.next();
   if (rbAutoSymbol->isChecked()) {
-    pp->Value = cbxSymPattern->currentText();
-  } else if (rbSymFromTemplate->isChecked()) {
     pp->Value = "auto";
+  } else if (rbSymFromTemplate->isChecked()) {
+    pp->Value = cbxSymPattern->currentText();
   } else if (rbUserSym->isChecked()) {
     pp->Value = edtSymFile->text();
   }
   pp = comp->Props.next();
   pp->Value = edtParams->text();
+  pp->display = chbShowParams->isChecked();
   pp = comp->Props.next();
   pp->Value = QString(pin_string);
   Doc->recreateComponent(comp);
   Doc->viewport()->repaint();
   Doc->setChanged(true,true);
   return true;
+}
+
+void SpiceLibCompDialog::slotBtnApply()
+{
+  if (isChanged) {
+    if (setCompProps()) {
+      isChanged = false;
+      btnApply->setEnabled(false);
+    }
+  }
 }
 
 void SpiceLibCompDialog::slotBtnOK()

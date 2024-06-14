@@ -5,16 +5,12 @@
 #include <QWidget>
 #include <QDialog>
 #include <QMap>
+#include <QtWidgets>
 
-class QPushButton;
-class QTableWidget;
-class QComboBox;
-class QLineEdit;
 class Component;
 class Schematic;
 class SymbolWidget;
-class QPlainTextEdit;
-class QRadioButton;
+
 
 class SpiceLibCompDialog : public QDialog {
   Q_OBJECT
@@ -35,6 +31,7 @@ private:
   QComboBox *cbxSelectSubcir, *cbxSymPattern;
 
   QRadioButton *rbSymFromTemplate, *rbAutoSymbol, *rbUserSym;
+  QCheckBox *chbShowLib, *chbShowModel, *chbShowParams;
 
   QMap<QString,QStringList> subcirPins;
   QMap<QString,QString> subcirSPICE;
