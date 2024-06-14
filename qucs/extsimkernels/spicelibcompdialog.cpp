@@ -21,6 +21,11 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   QString file = comp->Props.at(0)->Value;
   if (!file.isEmpty()) {
     file = misc::properAbsFileName(file);
+    QFileInfo inf(file);
+    lastLibDir = inf.absoluteDir().path();
+  } else {
+    QFileInfo inf = Doc->getFileInfo();
+    lastLibDir = inf.absoluteDir().path();
   }
   bool show_lib = comp->Props.at(0)->display;
   QString device = comp->Props.at(1)->Value;
@@ -74,7 +79,11 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   if (QFileInfo::exists(misc::properAbsFileName(sym))) {
     edtSymFile->setText(sym);
     rbUserSym->setChecked(true);
+    QFileInfo inf(misc::properAbsFileName(sym));
+    lastSymbolDir = inf.absoluteDir().path();
   } else {
+    QFileInfo inf = Doc->getFileInfo();
+    lastSymbolDir = inf.absoluteDir().path();
     if (sym == "auto") {
       rbAutoSymbol->setChecked(true);
     } else {
@@ -351,17 +360,25 @@ void SpiceLibCompDialog::slotSelectPin()
 void SpiceLibCompDialog::slotBtnOpenLib()
 {
   QString s = QFileDialog::getOpenFileName(this, tr("Open SPICE library"),
-                                           QDir::homePath(),
+                                           lastLibDir,
                                            tr("SPICE files (*.cir +.ckt *.sp *.lib)"));
-  if (!s.isEmpty()) edtLibPath->setText(s);
+  if (!s.isEmpty()) {
+    QFileInfo inf(s);
+    lastLibDir = inf.absoluteDir().path();
+    edtLibPath->setText(s);
+  }
 }
 
 void SpiceLibCompDialog::slotBtnOpenSym()
 {
   QString s = QFileDialog::getOpenFileName(this, tr("Open symbol file"),
-                                           QDir::homePath(),
+                                           lastSymbolDir,
                                            tr("Schematic symbol (*.sym)"));
-  if (!s.isEmpty()) edtSymFile->setText(s);
+  if (!s.isEmpty()) {
+    QFileInfo inf(s);
+    lastSymbolDir = inf.absoluteDir().path();
+    edtSymFile->setText(s);
+  }
 }
 
 bool SpiceLibCompDialog::setCompProps()

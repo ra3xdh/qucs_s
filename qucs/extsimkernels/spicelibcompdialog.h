@@ -16,15 +16,17 @@ class SpiceLibCompDialog : public QDialog {
   Q_OBJECT
 
 private:
+  int symbolPinsCount;
+  bool isChanged;
+  QString lastSymbolDir;
+  QString lastLibDir;
+
   Component *comp;
   Schematic *Doc;
 
   SymbolWidget *symbol;
   QLineEdit *edtLibPath, *edtParams, *edtSymFile;
   QPlainTextEdit *edtSPICE;
-
-  int symbolPinsCount;
-  bool isChanged;
 
   QPushButton *btnOpenLib, *btnOK, *btnApply, *btnCancel, *btnOpenSym;
   QTableWidget *tbwPinsTable;
