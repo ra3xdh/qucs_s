@@ -13,12 +13,14 @@
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QGridLayout>
 #include <QFile>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QPlainTextEdit>
 #include <QGroupBox>
+#include <QRadioButton>
 
 #include "schematic.h"
 #include "symbolwidget.h"
@@ -56,13 +58,32 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   cbxSelectSubcir = new QComboBox;
   connect(cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotFillPinsTable()));
 
-  QLabel *lblPattern = new QLabel("Symbol pattern");
   cbxSymPattern = new QComboBox;
   QStringList lst_patterns;
   lst_patterns.append("auto");
   misc::getSymbolPatternsList(lst_patterns);
   cbxSymPattern->addItems(lst_patterns);
   connect(cbxSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSymbol()));
+
+  rbAutoSymbol = new QRadioButton(tr("Automatic symbol"));
+  rbSymFromTemplate = new QRadioButton(tr("Symbol from template"));
+  rbUserSym = new QRadioButton(tr("Symbol from file"));
+  btnOpenSym = new QPushButton(tr("Open"));
+  edtSymFile = new QLineEdit();
+  connect(btnOpenSym,SIGNAL(clicked(bool)),this,SLOT(slotBtnOpenSym()));
+  connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotSetSymbol()));
+  connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
+
+  if (QFileInfo::exists(misc::properAbsFileName(sym))) {
+    edtSymFile->setText(sym);
+    rbUserSym->setChecked(true);
+  } else {
+    if (sym == "auto") {
+      rbAutoSymbol->setChecked(true);
+    } else {
+      rbSymFromTemplate->setChecked(true);
+    }
+  }
 
   symbol = new SymbolWidget;
   symbol->disableDragNDrop();
@@ -95,26 +116,36 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   l2->addWidget(edtLibPath,4);
   l2->addWidget(btnOpenLib,1);
   top->addLayout(l2);
-  QHBoxLayout *l5 = new QHBoxLayout;
-  l5->addWidget(lblDevice);
-  l5->addWidget(cbxSelectSubcir);
-  top->addLayout(l5);
-  QHBoxLayout *l6 = new QHBoxLayout;
-  l6->addWidget(lblPattern);
-  l6->addWidget(cbxSymPattern);
+
   QHBoxLayout *l7 = new QHBoxLayout;
   l7->addWidget(lbl_par);
   l7->addWidget(edtParams);
-  top->addLayout(l6);
+  top->addLayout(l7);
+
+  QGridLayout *gl1 = new QGridLayout;
+  gl1->addWidget(rbAutoSymbol,0,0);
+  gl1->addWidget(rbSymFromTemplate,1,0);
+  gl1->addWidget(rbUserSym,2,0);
+  gl1->addWidget(cbxSymPattern,1,1);
+  gl1->addWidget(edtSymFile,2,1);
+  gl1->addWidget(btnOpenSym,2,2);
+  gl1->addWidget(symbol,0,3,3,2);
+  top->addLayout(gl1);
+
   QHBoxLayout *l3 = new QHBoxLayout;
   l3->addWidget(tbwPinsTable);
-  l3->addWidget(symbol);
   QGroupBox *gpb1 = new QGroupBox(tr("SPICE model"));
-  QHBoxLayout *l8 = new QHBoxLayout;
+  QVBoxLayout *l8 = new QVBoxLayout;
+  QHBoxLayout *l5 = new QHBoxLayout;
+  l5->addWidget(lblDevice);
+  l5->addWidget(cbxSelectSubcir);
+  l8->addLayout(l5);
   l8->addWidget(edtSPICE);
   gpb1->setLayout(l8);
   l3->addWidget(gpb1);
   top->addLayout(l3,3);
+
+
   QHBoxLayout *l4 = new QHBoxLayout;
   l4->addWidget(btnOK);
   l4->addWidget(btnApply);
@@ -140,6 +171,10 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
     }
   }
 
+  btnApply->setEnabled(false);
+  connect(rbAutoSymbol,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
+  connect(rbSymFromTemplate,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
+  connect(rbUserSym,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
   connect(edtLibPath,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
   connect(edtParams,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
   connect(tbwPinsTable,SIGNAL(cellChanged(int,int)),this,SLOT(slotChanged()));
@@ -239,23 +274,38 @@ bool SpiceLibCompDialog::parseLibFile(const QString &filename)
 
 void SpiceLibCompDialog::slotSetSymbol()
 {
-  if (cbxSymPattern->currentText() == "auto") {
+  if (rbAutoSymbol->isChecked()) {
     tbwPinsTable->setEnabled(false);
+    cbxSymPattern->setEnabled(false);
+    edtSymFile->setEnabled(false);
+    btnOpenSym->setEnabled(false);
     QString s1 = "";
     QString s2 = "SpLib";
     symbol->setSymbol(s1, s1, s2);
     symbolPinsCount = 0;
-  } else {
+  } else if (rbSymFromTemplate->isChecked()) {
     tbwPinsTable->setEnabled(true);
+    cbxSymPattern->setEnabled(true);
+    edtSymFile->setEnabled(false);
+    btnOpenSym->setEnabled(false);
     QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
     QString file = dir_name + cbxSymPattern->currentText() + ".sym";
     symbol->loadSymFile(file);
+    symbolPinsCount = symbol->getPortsNumber();
+  } else if (rbUserSym->isChecked()) {
+    tbwPinsTable->setEnabled(true);
+    cbxSymPattern->setEnabled(false);
+    edtSymFile->setEnabled(true);
+    btnOpenSym->setEnabled(true);
+    symbol->loadSymFile(edtSymFile->text());
     symbolPinsCount = symbol->getPortsNumber();
   }
   for (int i = 0; i < tbwPinsTable->rowCount(); i++) {
     QTableWidgetItem *itm = new QTableWidgetItem("NC");
     tbwPinsTable->setItem(i,1,itm);
   }
+  isChanged = true;
+  btnApply->setEnabled(true);
 }
 
 void SpiceLibCompDialog::slotTableCellDoubleClick()
@@ -303,14 +353,24 @@ void SpiceLibCompDialog::slotBtnOpenLib()
   QString s = QFileDialog::getOpenFileName(this, tr("Open SPICE library"),
                                            QDir::homePath(),
                                            tr("SPICE files (*.cir +.ckt *.sp *.lib)"));
-  edtLibPath->setText(s);
+  if (!s.isEmpty()) edtLibPath->setText(s);
+}
+
+void SpiceLibCompDialog::slotBtnOpenSym()
+{
+  QString s = QFileDialog::getOpenFileName(this, tr("Open symbol file"),
+                                           QDir::homePath(),
+                                           tr("Schematic symbol (*.sym)"));
+  if (!s.isEmpty()) edtSymFile->setText(s);
 }
 
 void SpiceLibCompDialog::slotBtnApply()
 {
   if (isChanged) {
-    setCompProps();
-    isChanged = false;
+    if (setCompProps()) {
+      isChanged = false;
+      btnApply->setEnabled(false);
+    }
   }
 }
 
@@ -318,7 +378,7 @@ bool SpiceLibCompDialog::setCompProps()
 {
   QStringList pins;
   QString pin_string;
-  if (cbxSymPattern->currentText() == "auto") {
+  if (rbAutoSymbol->isChecked()) {
     pin_string = "";
   } else {
     for (int i = 0; i < tbwPinsTable->rowCount(); i++) {
@@ -333,12 +393,25 @@ bool SpiceLibCompDialog::setCompProps()
     }
     pin_string = pins.join(";");
   }
+
+  if (rbUserSym->isChecked() &&
+      !QFileInfo::exists(edtSymFile->text())) {
+    QMessageBox::warning(this,tr("Warning"),tr("Set a valid symbol file name"));
+    return false;
+  }
+
   Property *pp = comp->Props.first();
   pp->Value = edtLibPath->text();
   pp = comp->Props.next();
   pp->Value = cbxSelectSubcir->currentText();
   pp = comp->Props.next();
-  pp->Value = cbxSymPattern->currentText();
+  if (rbAutoSymbol->isChecked()) {
+    pp->Value = cbxSymPattern->currentText();
+  } else if (rbSymFromTemplate->isChecked()) {
+    pp->Value = "auto";
+  } else if (rbUserSym->isChecked()) {
+    pp->Value = edtSymFile->text();
+  }
   pp = comp->Props.next();
   pp->Value = edtParams->text();
   pp = comp->Props.next();
@@ -366,4 +439,5 @@ void SpiceLibCompDialog::slotBtnCancel()
 void SpiceLibCompDialog::slotChanged()
 {
   isChanged = true;
+  btnApply->setEnabled(true);
 }

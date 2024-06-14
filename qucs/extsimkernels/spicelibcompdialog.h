@@ -14,6 +14,7 @@ class Component;
 class Schematic;
 class SymbolWidget;
 class QPlainTextEdit;
+class QRadioButton;
 
 class SpiceLibCompDialog : public QDialog {
   Q_OBJECT
@@ -23,15 +24,17 @@ private:
   Schematic *Doc;
 
   SymbolWidget *symbol;
-  QLineEdit *edtLibPath, *edtParams;
+  QLineEdit *edtLibPath, *edtParams, *edtSymFile;
   QPlainTextEdit *edtSPICE;
 
   int symbolPinsCount;
   bool isChanged;
 
-  QPushButton *btnOpenLib, *btnOK, *btnApply, *btnCancel;
+  QPushButton *btnOpenLib, *btnOK, *btnApply, *btnCancel, *btnOpenSym;
   QTableWidget *tbwPinsTable;
   QComboBox *cbxSelectSubcir, *cbxSymPattern;
+
+  QRadioButton *rbSymFromTemplate, *rbAutoSymbol, *rbUserSym;
 
   QMap<QString,QStringList> subcirPins;
   QMap<QString,QString> subcirSPICE;
@@ -41,6 +44,7 @@ private:
 
 private slots:
   void slotBtnOpenLib();
+  void slotBtnOpenSym();
   void slotSetSymbol();
   void slotFillSubcirComboBox();
   void slotFillPinsTable();

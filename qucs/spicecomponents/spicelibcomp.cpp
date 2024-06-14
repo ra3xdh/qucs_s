@@ -84,8 +84,14 @@ Element* SpiceLibComp::info(QString& Name, char* &BitmapFile, bool getNewOne)
 void SpiceLibComp::createSymbol()
 {
   int No;
-  QString FileName = QucsSettings.BinDir;
-  FileName += QString("/../share/" QUCS_NAME "/symbols/%1.sym").arg(Props.at(2)->Value);
+  QString FileName;
+  QString symname = Props.at(2)->Value;
+  if (QFileInfo::exists(symname)) {
+    FileName = symname;
+  } else {
+    FileName  = QucsSettings.BinDir;
+    FileName += QString("/../share/" QUCS_NAME "/symbols/%1.sym").arg(Props.at(2)->Value);
+  }
 
   // Default symbol: LM358 in opamps.lib ---> opamps/LM358.sym
   QString LibName = misc::properAbsFileName(Props.at(0)->Value, containingSchematic);
