@@ -203,6 +203,7 @@ public:
 
   QList<PostedPaintEvent>   PostedPaintEvents;
   bool symbolMode;  // true if in symbol painting mode
+  bool isSymbolOnly;
 
   // Horizontal and vertical grid step
   int GridX, GridY;

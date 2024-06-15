@@ -82,6 +82,7 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_)
     : QucsDoc(App_, Name_)
 {
     symbolMode = false;
+    isSymbolOnly = false;
 
     setFont(QucsSettings.font);
     // ...........................................................

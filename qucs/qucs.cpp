@@ -1567,6 +1567,7 @@ void QucsApp::slotSymbolNew()
   int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
   slotSymbolEdit();
+  d->isSymbolOnly = true;
   statusBar()->showMessage(tr("Ready."));
 }
 
@@ -1631,7 +1632,9 @@ bool QucsApp::gotoPage(const QString& Name)
     // We dealing with a file containing *only* a symbol definition.
     // Because of that we want to switch straight to symbol editing mode
     // and skip any actions performed with a usual schematic.
+    Schematic *sch = (Schematic *)d;
     slotSymbolEdit();
+    sch->isSymbolOnly = true;
   } else if (is_sch) {
       Schematic *sch = (Schematic *)d;
       if (sch->checkDplAndDatNames()) sch->setChanged(true,true);
@@ -1738,7 +1741,7 @@ bool QucsApp::saveAs()
     QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct;net;qnet;ckt;cir;sp;txt;sym";
     QStringList extlist = ext.split (';');
 
-    if(isTextDocument (w))
+    if(isTextDocument (w)) {
       Filter = tr("VHDL Sources")+" (*.vhdl *.vhd);;" +
 	       tr("Verilog Sources")+" (*.v);;"+
 	       tr("Verilog-A Sources")+" (*.va);;"+
@@ -1747,8 +1750,14 @@ bool QucsApp::saveAs()
            tr("SPICE Netlist")+" (*.ckt *.cir *.sp);;"+
 	       tr("Plain Text")+" (*.txt);;"+
 	       tr("Any File")+" (*)";
-    else
-      Filter = QucsFileFilter;
+    } else {
+      Schematic *sch = (Schematic *) Doc;
+      if (sch->isSymbolOnly) {
+        Filter = tr("Subcircuit symbol") + "(*.sym)";
+      } else {
+        Filter = QucsFileFilter;
+      }
+    }
 
     s = QFileDialog::getSaveFileName(this, tr("Enter a Document Name"),
                                      s, Filter);
@@ -3063,12 +3072,14 @@ void QucsApp::slotSymbolEdit()
   // in a normal schematic, symbol file
   else {
     Schematic *SDoc = (Schematic*)w;
-    slotHideEdit(); // disable text edit of component property
-    SDoc->switchPaintMode();   // twist the view coordinates
-    changeSchematicSymbolMode(SDoc);
-    SDoc->becomeCurrent(true);
-    SDoc->viewport()->update();
-    view->drawn = false;
+    if (!SDoc->isSymbolOnly) {
+      slotHideEdit(); // disable text edit of component property
+      SDoc->switchPaintMode();   // twist the view coordinates
+      changeSchematicSymbolMode(SDoc);
+      SDoc->becomeCurrent(true);
+      SDoc->viewport()->update();
+      view->drawn = false;
+    }
   }
 }
 
