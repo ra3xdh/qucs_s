@@ -95,6 +95,8 @@ namespace misc {
 
   void draw_richtext(QPainter* painter, int x, int y, const QString& text, QRectF* br = nullptr);
   void draw_resize_handle(QPainter* painter, const QPointF& center);
+
+  void getSymbolPatternsList(QStringList &symbols);
 }
 
 /*! handle the application version string

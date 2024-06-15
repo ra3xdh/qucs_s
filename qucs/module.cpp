@@ -504,21 +504,12 @@ void Module::registerModules (void) {
   REGISTER_DIGITAL_1 (Verilog_File);
 
   // file components
-  REGISTER_FILE_1 (SpiceFile);
-  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_FILE_3 (SParamFile, info1, info2, info);
-  //}
   REGISTER_FILE_1 (Subcircuit);
-  //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
-      REGISTER_FILE_1 (SpiceGeneric);
-      REGISTER_FILE_1 (SpiceLibComp);
-  //}
-
-  //if ((QucsSettings.DefaultSimulator == spicecompat::simNgspice)|| (QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus)) {
-      REGISTER_FILE_1 (XspiceGeneric);
-      //REGISTER_FILE_1 (XSP_CMlib);
-      //REGISTER_FILE_1 (XSP_CodeModel);
-  //}
+  REGISTER_FILE_1 (SpiceLibComp);
+  REGISTER_FILE_1 (SpiceFile);
+  REGISTER_FILE_3 (SParamFile, info1, info2, info);
+  REGISTER_FILE_1 (SpiceGeneric);
+  REGISTER_FILE_1 (XspiceGeneric);
 
   // simulations
   REGISTER_SIMULATION_1 (DC_Sim);

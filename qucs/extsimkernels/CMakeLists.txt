@@ -17,6 +17,7 @@ customsimdialog.h
 simsettingsdialog.h
 verilogawriter.h
 s2spice.h
+spicelibcompdialog.h
 #xspice_cmbuilder.h
 #codemodelgen.h
 )
@@ -32,6 +33,7 @@ customsimdialog.cpp
 simsettingsdialog.cpp
 verilogawriter.cpp
 s2spice.cpp
+spicelibcompdialog.cpp
 #xspice_cmbuilder.cpp
 #codemodelgen.cpp
 )
@@ -43,6 +45,7 @@ ngspice.h
 xyce.h
 customsimdialog.h
 simsettingsdialog.h
+spicelibcompdialog.h
 )
 
 

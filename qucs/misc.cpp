@@ -717,6 +717,16 @@ QString misc::unwrapExePath(const QString &exe_file)
     return abs_exe_path;
 }
 
+void misc::getSymbolPatternsList(QStringList &symbols)
+{
+  QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
+  QDir sym_dir(dir_name);
+  QStringList sym_files = sym_dir.entryList(QDir::Files);
+  for (const QString& file : sym_files) {
+    QFileInfo inf(file);
+    symbols.append(inf.baseName());
+  }
+}
 
 VersionTriplet::VersionTriplet(){
   major = minor = patch = 0;
