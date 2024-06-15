@@ -17,6 +17,7 @@
 #include "sp_options.h"
 #include "main.h"
 
+#include <QFontInfo>
 #include <QFontMetrics>
 
 SpiceOptions::SpiceOptions()
@@ -37,7 +38,7 @@ SpiceOptions::SpiceOptions()
   Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
   Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
   Texts.append(new Text(-xb+4,  -yb-3, QObject::tr(".OPTIONS"),
-			QColor(0,0,0), 12.0));
+			QColor(0,0,0), QFontInfo(f).pixelSize()));
 
   x1 = -xb-3;  y1 = -yb-5;
   x2 =  xb+9; y2 =  yb+3;
