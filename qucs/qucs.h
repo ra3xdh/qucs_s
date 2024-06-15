@@ -118,6 +118,7 @@ protected:
 public slots:
   void slotFileNew();     // generate a new schematic in the view TabBar
   void slotTextNew();     // generate a new text editor in the view TabBar
+  void slotSymbolNew();      // create new symbol
   void slotFileOpen();    // open a document
   void slotFileSave();    // save a document
   void slotFileSaveAs();  // save a document under a different filename
@@ -218,7 +219,7 @@ public:
   // corresponding actions
   QAction *ActionCMenuOpen, *ActionCMenuCopy, *ActionCMenuRename, *ActionCMenuDelete, *ActionCMenuInsert;
 
-  QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
+  QAction *fileNew, *textNew, *symNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
           *editCut, *editCopy, *magAll, *magSel, *magOne, *magMinus, *filePrintFit, *tune,

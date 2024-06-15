@@ -1558,6 +1558,18 @@ void QucsApp::slotFileNew()
   statusBar()->showMessage(tr("Ready."));
 }
 
+void QucsApp::slotSymbolNew()
+{
+  statusBar()->showMessage(tr("Creating new schematic..."));
+  slotHideEdit(); // disable text edit of component property
+
+  Schematic *d = new Schematic(this, "");
+  int i = addDocumentTab(d);
+  DocumentTab->setCurrentIndex(i);
+  slotSymbolEdit();
+  statusBar()->showMessage(tr("Ready."));
+}
+
 // --------------------------------------------------------------
 void QucsApp::slotTextNew()
 {
