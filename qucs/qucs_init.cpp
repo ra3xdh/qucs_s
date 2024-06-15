@@ -59,7 +59,7 @@ void QucsApp::initActions()
   textNew->setWhatsThis(tr("New Text\n\nCreates a new text document"));
   connect(textNew, SIGNAL(triggered()), SLOT(slotTextNew()));
 
-  symNew = new QAction(QIcon((":/bitmaps/svg/filenew.svg")), tr("New symbol"), this);
+  symNew = new QAction(QIcon((":/bitmaps/svg/symnew.svg")), tr("New symbol"), this);
   symNew->setStatusTip(tr("Creates a new symbol"));
   symNew->setWhatsThis(tr("New\n\nCreates a new schematic symbol document"));
   connect(symNew, SIGNAL(triggered()), SLOT(slotSymbolNew()));
