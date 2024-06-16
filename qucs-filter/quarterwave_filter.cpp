@@ -107,7 +107,13 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
           w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 180); // Join middle point with the stub
       }
       if (Filter->Class == CLASS_BANDPASS) // If bandpass, shunt resonators
-          c_s += QString("<GND * 1 %1 30 0 0 1 0>\n").arg(x + 60 + x_space);
+          if (isMicrostrip){
+              c_s += getMS_Via(0.5, x+40 + x_space, 30, 2); // MS via diameter = 0.5 mm
+          }
+          else{
+              c_s += QString("<GND * 1 %1 30 0 0 1 0>\n").arg(x + 60 + x_space);
+          }
+
 
     x += 120 + 2 * x_space;
   }

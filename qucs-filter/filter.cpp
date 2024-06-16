@@ -391,11 +391,34 @@ QString Filter::getLineString(bool isMicrostrip, double width_or_impedance, doub
   return code;
 }
 
+QString Filter::getMS_Via(double height, int x, int y, int rotate)
+{
+    QString code;
+    switch (rotate)
+    {
+        case 0: // No rotation
+            code = QString("<MVIA MS31 1 %1 %2 20 -10 0 0 \"Sub1\" 0 \"%3 mm\" 1 \"26.85\" 0>\n").arg(x).arg(y).arg(height);
+            break;
+
+        case 1: // CTRL+R
+            code = QString("<MVIA MS31 1 %1 %2 40 -20 0 1 \"Sub1\" 0 \"%3 mm\" 1 \"26.85\" 0>\n").arg(x).arg(y).arg(height);
+            break;
+
+        case 2: // 2 x (CTRL+R)
+            code = QString("<MVIA MS31 1 %1 %2 -85 -40 0 2 \"Sub1\" 0 \"%3 mm\" 1 \"26.85\" 0>\n").arg(x).arg(y).arg(height);
+            break;
+
+        case 3: // 3 x (CTRL+R)
+            code = QString("<MVIA MS31 1 %1 %2 -90 -20 0 3 \"Sub1\" 0 \"%3 mm\" 1 \"26.85\" 0>\n").arg(x).arg(y).arg(height);
+            break;
+    }
+    return code;
+}
+
 QString Filter::getWireString(int x1, int y1, int x2, int y2)
 {
   return QString("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x1).arg(y1).arg(x2).arg(y2);
 }
-
 QString Filter::getTeeString(int x, int y, double width1, double width2, double width3)
 {
   return QString("<MTEE MS1 1 %1 %2 -26 20 1 0 \"Sub1\" 0 \"%3mm\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
