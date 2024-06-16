@@ -1695,8 +1695,10 @@ int Schematic::save()
     //
     // In other cases we want to delete any dangling ports from symbol
     // and invoke "adjustPortNumbers" for it.
-    if (!DocName.endsWith("sym")) {
+    if (!isSymbolOnly) {
         result = adjustPortNumbers(); // same port number for schematic and symbol
+    } else {
+        orderSymbolPorts();
     }
     if (saveDocument() < 0)
         return -1;
@@ -1958,6 +1960,47 @@ int Schematic::adjustPortNumbers()
     }
 
     return countPort;
+}
+
+int Schematic::orderSymbolPorts()
+{
+  Painting *pp;
+  int countPorts = 0;
+  QSet<int> port_numbers, existing_numbers, free_numbers;
+  int max_port_number = 0;
+  for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next()) {
+    if (pp->Name == ".PortSym ") {
+      countPorts++;
+      QString numstr = ((PortSymbol *) pp)->numberStr;
+      if (numstr != "0") {
+        if (numstr.toInt() > max_port_number) {
+          max_port_number = numstr.toInt();
+        }
+        existing_numbers.insert(numstr.toInt());
+      }
+    }
+  }
+
+  max_port_number = std::max(countPorts,max_port_number);
+  for (int i = 1; i <= max_port_number; i++) {
+    port_numbers.insert(i);
+  }
+
+  free_numbers = port_numbers - existing_numbers;
+
+  // Assign new numbers only if port number is empty; Preserve ports order.
+  for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next()) {
+    if (pp->Name == ".PortSym ") {
+      QString numstr = ((PortSymbol *) pp)->numberStr;
+      if (numstr == "0") {
+        int free_num = *free_numbers.constBegin();
+        free_numbers.remove(free_num);
+        ((PortSymbol *) pp)->numberStr = QString::number(free_num);
+      }
+    }
+  }
+
+  return countPorts;
 }
 
 // ---------------------------------------------------

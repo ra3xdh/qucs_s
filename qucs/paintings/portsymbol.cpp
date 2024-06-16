@@ -234,11 +234,15 @@ void PortSymbol::mirrorY()
   else  if(Angel == 180)  Angel = 0;
 }
 
-bool PortSymbol::MousePressing(Schematic *) {
+bool PortSymbol::MousePressing(Schematic *sch) {
+  if (!sch->isSymbolOnly) {
+    return false;
+  }
   QString text = QInputDialog::getText(nullptr, QObject::tr("Port name"),
                                         QObject::tr("Input port name:"));
   if (!text.isNull() && !text.isEmpty()) {
-    numberStr = text;
+    nameStr = text;
+    numberStr = "0"; // 0 indicates no number assigned
     return true;
   }
 
@@ -258,11 +262,11 @@ Painting* PortSymbol::newOne() {
 // This function is called from double click handler, see mouseactions.cpp
 // Returned bool signal whether the object has changed as a result of
 // the invocation.
-bool PortSymbol::Dialog(QWidget* /*parent*/) {
-  // nameStr is not empty only in case when it got its value from a
-  // corresponding port in schematic. Forbid manual editing, change
-  // port name on schematic to change it in the symbol
-  if (!nameStr.isEmpty()) {
+bool PortSymbol::Dialog(QWidget* /*parent*/Doc) {
+  // Forbid manual editing, change port name on schematic to change it in the symbol
+  // Allow to edit ports only for SymbolOnly documents (*.sym).
+  Schematic *sch = (Schematic *) Doc;
+  if (!sch->isSymbolOnly) {
     return false;
   }
 
@@ -272,13 +276,13 @@ bool PortSymbol::Dialog(QWidget* /*parent*/) {
   QString text = QInputDialog::getText(nullptr, QObject::tr("Port name"),
                                         QObject::tr("Input port name:"),
                                         QLineEdit::Normal,
-                                        numberStr);
+                                        nameStr);
   if (text.isNull() || text.isEmpty()) {
     return false;
   }
 
   // nameStr is auto derived from corresponding port in schematic.
   // When there is no such port, fallback value is used.
-  numberStr = text;
+  nameStr = text;
   return true;
 }

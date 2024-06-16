@@ -139,6 +139,7 @@ public:
   void  enlargeView(int, int, int, int);
   void  switchPaintMode();
   int   adjustPortNumbers();
+  int   orderSymbolPorts();
   void  reloadGraphs();
   bool  createSubcircuitSymbol();
 

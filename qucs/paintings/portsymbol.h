@@ -32,9 +32,9 @@ public:
   void getCenter(int&, int&);
   void setCenter(int, int, bool relative=false);
   void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int, bool) override;
-  bool MousePressing(Schematic*) override;
+  bool MousePressing(Schematic*sch) override;
   Painting* newOne() override;
-  bool Dialog(QWidget *parent) override;
+  bool Dialog(QWidget *Doc) override;
 
   bool load(const QString&);
   QString save();
