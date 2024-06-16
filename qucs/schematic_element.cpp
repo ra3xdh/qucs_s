@@ -2083,7 +2083,7 @@ bool Schematic::deleteElements()
             // have a corresponding port in schematic, its nameStr is empty.
             // If it's not empty, then invocation of Schematic::adjustPortNumbers
             // must have found a pairing port in schematic.
-            if (pp->Name.trimmed() == ".PortSym" && ((PortSymbol*)pp)->nameStr.isEmpty()) {
+            if (pp->Name.trimmed() == ".PortSym" && isSymbolOnly) {
                 sel = true;
                 Paintings->remove();
                 pp = Paintings->current();
