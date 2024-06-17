@@ -139,6 +139,7 @@ public:
   void  enlargeView(int, int, int, int);
   void  switchPaintMode();
   int   adjustPortNumbers();
+  int   orderSymbolPorts();
   void  reloadGraphs();
   bool  createSubcircuitSymbol();
 
@@ -203,6 +204,7 @@ public:
 
   QList<PostedPaintEvent>   PostedPaintEvents;
   bool symbolMode;  // true if in symbol painting mode
+  bool isSymbolOnly;
 
   // Horizontal and vertical grid step
   int GridX, GridY;
