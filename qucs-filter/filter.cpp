@@ -415,6 +415,30 @@ QString Filter::getMS_Via(double height, int x, int y, int rotate)
     return code;
 }
 
+QString Filter::getMS_Open(double width, int x, int y, int rotate)
+{
+    QString code;
+    switch (rotate)
+    {
+        case 0: // No rotation
+            code = QString("<MOPEN MS93 1 %1 %2 -20 -50 0 0 \"Sub1\" 0 \"%3 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x).arg(y).arg(QString::number(width*1e3, 'f', 2));
+            break;
+
+        case 1: // CTRL+R
+            code = QString("<MOPEN MS93 1 %1 %2 15 -12 0 1 \"Sub1\" 0 \"%3 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x).arg(y).arg(QString::number(width*1e3, 'f', 2));
+            break;
+
+        case 2: // 2 x (CTRL+R)
+            code = QString("<MOPEN MS93 1 %1 %2 -20 -50 0 2 \"Sub1\" 0 \"%3 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x).arg(y).arg(QString::number(width*1e3, 'f', 2));
+            break;
+
+        case 3: // 3 x (CTRL+R)
+            code = QString("<MOPEN MS93 1 %1 %2 15 -20 0 3 \"Sub1\" 0 \"%3 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x).arg(y).arg(QString::number(width*1e3, 'f', 2));
+            break;
+    }
+    return code;
+}
+
 QString Filter::getWireString(int x1, int y1, int x2, int y2)
 {
   return QString("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x1).arg(y1).arg(x2).arg(y2);

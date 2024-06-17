@@ -70,6 +70,8 @@ public:
   static QString getTeeString(int x, int y, double width1, double width2, double width3);
   static QString getWireString(int x1, int x2, int x3, int x4);
   static QString getMS_Via(double height, int x, int y, int rotate);
+  static QString getMS_Open(double width, int x, int y, int rotate);
+
 
 protected:
   static QString num2str(double);

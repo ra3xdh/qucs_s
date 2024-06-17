@@ -92,7 +92,11 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
 
           c_s += getLineString(isMicrostrip, W_line, L_line, x, 180, 0); // Series line
           c_s += getTeeString(x+ 60 + x_space, 180, W_line, W_line, W_res);
-          c_s += getLineString(isMicrostrip, W_res, L_res, x+60 + x_space, 60, 1); // Shunt quarter-wavelength resonator
+          c_s += getLineString(isMicrostrip, W_res, L_res, x + 60 + x_space, 60, 1); // Shunt quarter-wavelength resonator
+
+          if (Filter->Class == CLASS_BANDSTOP){// If MS bandstop, add MOPEN
+              c_s += getMS_Open(W_res, x + 60 + x_space, 0, 1); // MS open
+          }
 
           w_s += getWireString(x+30, 180, x+30+x_space, 180);
           w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 150);
@@ -106,14 +110,15 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
           w_s += getWireString(x+30, 180, x+90+2*x_space, 180);// Join series lines
           w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 180); // Join middle point with the stub
       }
-      if (Filter->Class == CLASS_BANDPASS) // If bandpass, shunt resonators
+      if (Filter->Class == CLASS_BANDPASS){
+          // If bandpass, shunt resonators
           if (isMicrostrip){
               c_s += getMS_Via(0.5, x+40 + x_space, 30, 2); // MS via diameter = 0.5 mm
           }
           else{
               c_s += QString("<GND * 1 %1 30 0 0 1 0>\n").arg(x + 60 + x_space);
           }
-
+      }
 
     x += 120 + 2 * x_space;
   }
