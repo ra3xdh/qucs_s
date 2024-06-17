@@ -1,7 +1,7 @@
 /*
  * quarterwave_filter.cpp - Quarter wavelength filter implementation
  *
- * copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
+ * copyright (C) 2015, 2024 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
