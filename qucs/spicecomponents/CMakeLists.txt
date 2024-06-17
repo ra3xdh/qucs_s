@@ -194,7 +194,6 @@ spicelibcomp.h
 
 ADD_LIBRARY(spicecomponents STATIC ${COMPONENTS_HDRS} ${COMPONENTS_SRCS} ${COMPONENTS_MOC_SRCS} )
 
-ADD_SUBDIRECTORY( symbols )
 
 
 
