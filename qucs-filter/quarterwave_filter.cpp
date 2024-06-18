@@ -1,7 +1,7 @@
 /*
  * quarterwave_filter.cpp - Quarter wavelength filter implementation
  *
- * copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
+ * copyright (C) 2015, 2024 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,53 +38,6 @@ QuarterWave_Filter::QuarterWave_Filter()
 {
 }
 
-QString QuarterWave_Filter::getLineString(bool isMicrostrip, double width_or_impedance, double l, int x, int y, int rotate)
-{
-  if (isMicrostrip)
-  {
-    if (rotate == 3)
-      return QString("<MLIN MS1 1 %1 %2 26 -30 0 %3 \"Sub1\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
-        .arg(x).arg(y).arg(rotate).arg(width_or_impedance*1000).arg(l*1000);
-    
-    return QString("<MLIN MS1 1 %1 %2 -26 20 0 %3 \"Sub1\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
-      .arg(x).arg(y).arg(rotate).arg(width_or_impedance*1000).arg(l*1000);
-  }
-  else
-      return QString("<TLIN Line1 1 %1 %2 -26 20 0 0 \"%3\" 1 \"%4\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
-        .arg(x).arg(y).arg(width_or_impedance).arg(l);
-}
-
-double QuarterWave_Filter::getZ(tFilter *Filter, int order, bool is_shunt)
-{
-  double Z = Filter->Impedance;
-  if (is_shunt)
-  {
-    Z *= Filter->Class == CLASS_BANDPASS ? (pi * QuarterWave_Filter::bw) / 4 : 4 / (pi * QuarterWave_Filter::bw);
-    Z /= getNormValue(order, Filter);
-  }
-  return Z;
-}
-
-double QuarterWave_Filter::getMicrostripWidth(tFilter *Filter, tSubstrate *Substrate, int order, bool is_shunt)
-{
-  double width = 1;
-  double err_eff = 1;
-  double Z = getZ(Filter, order, is_shunt);
-  TL_Filter::getMicrostrip(Z, fc, Substrate, width, err_eff);
-  return width;
-}
-
-QString QuarterWave_Filter::getWireString(int x1, int y1, int x2, int y2)
-{
-  return QString("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x1).arg(y1).arg(x2).arg(y2);
-}
-
-QString QuarterWave_Filter::getTeeString(int x, int y, double width1, double width2, double width3)
-{
-  return QString("<MTEE MS1 1 %1 %2 -26 20 1 0 \"Sub1\" 1 \"%3mm\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
-    .arg(x).arg(y).arg(width1*1000).arg(width2*1000).arg(width3*1000);
-}
-
 // -----------------------------------------------------------------------
 QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substrate, bool isMicrostrip)
 {
@@ -94,66 +47,92 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
                             QObject::tr("Quarter wave filters do not allow low-pass nor high-pass masks\n"));
       return NULL;
   }
+  // Auxiliary variables
+  double Zres;
+  double W_line, W_res, er_eff_line, er_eff_res, L_line, L_res;
+  double Z0 = Filter->Impedance; // System impedance
+
   // Set filter main params as static members
   fc = Filter->Frequency + 0.5 * (Filter->Frequency2 - Filter->Frequency);
-  d_lamdba4 = 0.25 * LIGHTSPEED / fc / (isMicrostrip ? sqrt(Substrate->er) : 1);
+  d_lamdba4 = 0.25 * LIGHTSPEED / fc;
   QuarterWave_Filter::bw = (Filter->Frequency2 - Filter->Frequency) / (fc);
   // create the Qucs schematic
   QString *s = new QString("<Qucs Schematic " PACKAGE_VERSION ">\n");
   QString c_s = "<Components>\n";
   QString w_s = "<Wires>\n";
   int x = 60;
+  int x_space = 50;
+
   // First power and ground
   c_s += QString("<Pac P1 1 %1 330 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
   c_s += QString("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
   w_s += getWireString(60, 180, 60, 300);
   w_s += getWireString(60, 180, 90, 180);
-  // Add filter components
+  x += 60;
+
+  // If the microstrip implementation is selected, calculate the width of the Z0 lines.
+  if (isMicrostrip)
+      TL_Filter::getMicrostrip(Z0, fc, Substrate, W_line, er_eff_line); // Series line
+
+  for (int i = 0; i < Filter->Order; i++)
+  {
+      // Calculate the impedance of the resonator
+      if (Filter->Class == CLASS_BANDPASS)
+            Zres = (pi*Z0*bw)/(4*getNormValue(i, Filter)); // Bandpass
+      else
+            Zres = (4*Z0)/(pi*bw*getNormValue(i, Filter)); // Bandstop
+
+      if (isMicrostrip)
+      {
+          // Calculate width of the resonator according to its Z
+          TL_Filter::getMicrostrip(Zres, fc, Substrate, W_res, er_eff_res); // Shunt QW resonator
+
+          L_line = d_lamdba4/sqrt(er_eff_line); // Length of the line
+          L_res = d_lamdba4/sqrt(er_eff_res); // Length of the resonator
+
+          c_s += getLineString(isMicrostrip, W_line, L_line, x, 180, 0); // Series line
+          c_s += getTeeString(x+ 60 + x_space, 180, W_line, W_line, W_res);
+          c_s += getLineString(isMicrostrip, W_res, L_res, x + 60 + x_space, 60, 1); // Shunt quarter-wavelength resonator
+
+          if (Filter->Class == CLASS_BANDSTOP){// If MS bandstop, add MOPEN
+              c_s += getMS_Open(W_res, x + 60 + x_space, 0, 1); // MS open
+          }
+
+          w_s += getWireString(x+30, 180, x+30+x_space, 180);
+          w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 150);
+          w_s += getWireString(x+60 + x_space + 30, 180, x+60 + x_space + 30 + x_space, 180);
+      }
+      else
+      {// Ideal transmission lines
+          c_s += getLineString(isMicrostrip, Z0, d_lamdba4, x, 180, 0); // Series transmission line
+          c_s += getLineString(isMicrostrip, Zres, d_lamdba4,  x+60+x_space, 60, 3); // Shunt quarter-wavelength resonator
+
+          w_s += getWireString(x+30, 180, x+90+2*x_space, 180);// Join series lines
+          w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 180); // Join middle point with the stub
+      }
+      if (Filter->Class == CLASS_BANDPASS){
+          // If bandpass, shunt resonators
+          if (isMicrostrip){
+              c_s += getMS_Via(0.5, x+40 + x_space, 30, 2); // MS via diameter = 0.5 mm
+          }
+          else{
+              c_s += QString("<GND * 1 %1 30 0 0 1 0>\n").arg(x + 60 + x_space);
+          }
+      }
+
+    x += 120 + 2 * x_space;
+  }
+
+  // Last Z0 line
   if (isMicrostrip)
   {
-    int x_space = 70;
-    x -= (120 + 2 * x_space);
-    x += 60;
-    double previous_width3 = 0;
-    for (int i = 0; i < Filter->Order; i++)
-    {
-      x += 120 + 2 * x_space;
-      double width1 = getMicrostripWidth(Filter, Substrate, i);
-      double width2 = getMicrostripWidth(Filter, Substrate, i+1);
-      double width3 = getMicrostripWidth(Filter, Substrate, i, true);
-      c_s += getLineString(isMicrostrip, width1, d_lamdba4 - width3 / 2 - previous_width3 / 2, x, 180);
-      c_s += getTeeString(x+ 60 + x_space, 180, width1, width2, width3);
-      double max_width = width1 >= width2 ? width1 : width2;
-      c_s += getLineString(isMicrostrip, width3, d_lamdba4 - max_width/2, x+60 + x_space, 60, 3);
-
-      w_s += getWireString(x+30, 180, x+30+x_space, 180);
-      w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 150);
-      w_s += getWireString(x+60 + x_space + 30, 180, x+60 + x_space + 30 + x_space, 180);
-      if (Filter->Class == CLASS_BANDPASS)
-        c_s += QString("<GND * 1 %1 30 0 0 1 0>\n").arg(x + 60 + x_space);
-      previous_width3 = width3;
-    }
-    x += 120 + 2 * x_space;
-    double width = getMicrostripWidth(Filter, Substrate, Filter->Order);
-    c_s += getLineString(isMicrostrip, width, d_lamdba4 - previous_width3 / 2, x, 180);
+      c_s += getLineString(isMicrostrip, W_line, d_lamdba4/sqrt(er_eff_line), x, 180);
   }
   else
-  {
-    x -= 30;
-    for (int i = 0; i < Filter->Order; i++)
-    {
-      x += 90;
-      double impedance = Filter->Impedance;
-      c_s += getLineString(isMicrostrip, impedance, d_lamdba4, x, 180);
-      c_s += getLineString(isMicrostrip, impedance, d_lamdba4,  x+80, 60);
-      w_s += getWireString(x+30, 180, x+60, 180);
-      w_s += getWireString(x+50, 60, x+50, 180);
-      if (Filter->Class == CLASS_BANDPASS)
-          c_s += QString("<GND * 1 %1 60 0 0 0 0>\n").arg(x + 110);
-    }
-    x += 90;
-    c_s += getLineString(isMicrostrip, Filter->Impedance, d_lamdba4, x, 180);
+  {// Ideal transmission line
+      c_s += getLineString(isMicrostrip, Filter->Impedance, d_lamdba4, x, 180);
   }
+
   // Last power and ground
   x += 80;
   c_s += QString("<Pac P2 1 %1 330 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);

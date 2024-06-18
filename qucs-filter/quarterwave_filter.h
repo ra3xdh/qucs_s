@@ -1,7 +1,7 @@
 /*
  * quarterwave_filter.h - Quarter wavelength filter definition
  *
- * copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
+ * copyright (C) 2015, 2024 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 #ifndef QUARTERWAVE_FILTER_H
 #define QUARTERWAVE_FILTER_H
 
-
 #include "tl_filter.h"
 
 // Quarter wave transmission line filter
@@ -37,12 +36,6 @@ public:
   QuarterWave_Filter();
 
   static QString* createSchematic(tFilter*, tSubstrate*, bool);
-  static QString getLineString(bool isMicrostrip, double width_or_impedance, double l, int x, int y, int rotate=0);
-  static double getZ(tFilter *Filter, int order, bool is_shunt);
-  static double getMicrostripWidth(tFilter *Filter, tSubstrate *Substrate, int order, bool is_shunt = false);
-  static QString getTeeString(int x, int y, double width1, double width2, double width3);
-  static QString getWireString(int x1, int x2, int x3, int x4);
 };
-
 
 #endif
