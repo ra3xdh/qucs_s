@@ -1,0 +1,365 @@
+<Qucs Library 24.2.1 "Varactor_RF">
+
+<Component BB439>
+  <Description>
+Infineon BB439 Varactor
+Ct=43pF @ Vr=1Volt
+SOD323 Package
+  </Description>
+  <Model>
+.Def:Varactor_RF_BB439 _net4 _net0
+L:LAI _net1 _net2 L="0.55nH" I=""
+L:LAO _net0 _net1 L="0.67nH" I=""
+L:LCO _net3 _net4 L="0.55nH" I=""
+C:CAC _net1 _net3 C="110fF" V=""
+Diode:BB439_1 _net3 _net2 Is="2.9f" N="1.0462" Cj0="56p" M="1.267" Vj="3.826" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="113m" Tt="120n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="40.6" Ibv="0.3n" Temp="26.85" Xti="4" Eg="1.16" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  Varactor_RF_BB439.sch
+
+.SUBCKT Varactor_RF_BB439  gnd _net4 _net0 
+LAI _net1 _net2  0.55N 
+LAO _net0 _net1  0.67N 
+LCO _net3 _net4  0.55N 
+CAC _net1 _net3  110F 
+DBB439_1 _net2 _net3 DMOD_BB439_1 AREA=1 Temp=26.85
+.MODEL DMOD_BB439_1 D(IS=2.9f N=1.0462 RS=113.0m XTI=4.0 EG=1.16 CJO=56.0p M=1.267 VJ=3.826 FC=0.5 TT=120.0n BV=40.6 IBV=0.3n)
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 10 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.ID -8 15 D>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <Line 20 0 -10 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+    <.PortSym -30 0 2 0 ANODE>
+    <.PortSym 30 0 1 180 CATHODE>
+  </Symbol>
+</Component>
+
+<Component BB535>
+  <Description>
+Infineon BB535 Varactor
+Ct=19pF @ Vr=1Volt
+SOD323 Package
+  </Description>
+  <Model>
+.Def:Varactor_RF_BB535 _net4 _net0
+L:LAI _net1 _net2 L="0.55nH" I=""
+L:LAO _net0 _net1 L="0.67nH" I=""
+L:LCO _net3 _net4 L="0.55nH" I=""
+C:CD _net2 _net3 C="1.61pF" V=""
+C:CAC _net1 _net3 C="110fF" V=""
+Diode:BB535_1 _net3 _net2 Is="1.46f" N="1.048" Cj0="19.75p" M="6.867" Vj="36.52" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="0.27" Tt="120n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="32" Ibv="5u" Temp="26.85" Xti="4" Eg="1.16" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  Varactor_RF_BB535.sch
+
+.SUBCKT Varactor_RF_BB535  gnd _net4 _net0 
+LAI _net1 _net2  0.55N 
+LAO _net0 _net1  0.67N 
+LCO _net3 _net4  0.55N 
+CD _net2 _net3  1.61P 
+CAC _net1 _net3  110F 
+DBB535_1 _net2 _net3 DMOD_BB535_1 AREA=1 Temp=26.85
+.MODEL DMOD_BB535_1 D(IS=1.46f N=1.048 RS=0.27 XTI=4.0 EG=1.16 CJO=19.75p M=6.867 VJ=36.52 FC=0.5 TT=120.0n BV=32 IBV=5u)
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 10 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.ID -8 15 D>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <Line 20 0 -10 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+    <.PortSym -30 0 2 0 ANODE>
+    <.PortSym 30 0 1 180 CATHODE>
+  </Symbol>
+</Component>
+
+<Component BB639>
+  <Description>
+Infineon BB639 Varactor
+Ct=38pF @ Vr=1Volt
+SOD323 Package
+  </Description>
+  <Model>
+.Def:Varactor_RF_BB639 _net4 _net0
+L:LAI _net1 _net2 L="0.55nH" I=""
+L:LAO _net0 _net1 L="0.67nH" I=""
+L:LCO _net3 _net4 L="0.55nH" I=""
+C:CAC _net1 _net3 C="110fF" V=""
+R:RD _net2 _net3 R="150e9" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Diode:BB639_1 _net3 _net2 Is="2.5f" N="1.0327" Cj0="55.24p" M="1.608" Vj="4.525" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="120.9m" Tt="160n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="32" Ibv="1n" Temp="26.85" Xti="4" Eg="1.16" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  Varactor_RF_BB639.sch
+
+.SUBCKT Varactor_RF_BB639  gnd _net4 _net0 
+LAI _net1 _net2  0.55N 
+LAO _net0 _net1  0.67N 
+LCO _net3 _net4  0.55N 
+CAC _net1 _net3  110F 
+RD _net2 _net3  150E9 tc1=0.0 tc2=0.0 
+DBB639_1 _net2 _net3 DMOD_BB639_1 AREA=1 Temp=26.85
+.MODEL DMOD_BB639_1 D(IS=2.5f N=1.0327 RS=120.9m XTI=4.0 EG=1.16 CJO=55.24p M=1.608 VJ=4.525 FC=0.5 TT=160.0n BV=32 IBV=1n)
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 10 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.ID -8 15 D>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <Line 20 0 -10 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+    <.PortSym -30 0 2 0 ANODE>
+    <.PortSym 30 0 1 180 CATHODE>
+  </Symbol>
+</Component>
+
+<Component BB814>
+  <Description>
+Infineon BB814 Dual Varactor
+Ct=45pF @ Vr=2Volt
+SOT-23 Package
+  </Description>
+  <Model>
+.Def:Varactor_RF_BB814 _net3 _net7 _net6
+C:C12 _net0 _net1 C="73fF" V=""
+C:C13 _net2 _net0 C="120fF" V=""
+L:L10 _net3 _net0 L="0.56nH" I=""
+L:L1I _net0 _net4 L="0.77nH" I=""
+L:L2I _net5 _net1 L="0.77nH" I=""
+C:C23 _net2 _net1 C="120fF" V=""
+L:L30 _net6 _net2 L="0.49nH" I=""
+L:L20 _net1 _net7 L="0.56nH" I=""
+Diode:BB814_2 _net2 _net5 Is="7f" N="1.012" Cj0="83.9p" M="0.775" Vj="1.6" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="0.18" Tt="137n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="20" Ibv="100n" Temp="26.85" Xti="3" Eg="1.11" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+Diode:BB814_1 _net2 _net4 Is="7f" N="1.012" Cj0="83.9p" M="0.775" Vj="1.6" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="0.18" Tt="137n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="20" Ibv="100n" Temp="26.85" Xti="3" Eg="1.11" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  Varactor_RF_BB814.sch
+
+.SUBCKT Varactor_RF_BB814  gnd _net3 _net7 _net6 
+C12 _net0 _net1  73F 
+C13 _net2 _net0  120F 
+L10 _net3 _net0  0.56N 
+L1I _net0 _net4  0.77N 
+L2I _net5 _net1  0.77N 
+C23 _net2 _net1  120F 
+L30 _net6 _net2  0.49N 
+L20 _net1 _net7  0.56N 
+DBB814_2 _net5 _net2 DMOD_BB814_2 AREA=1 Temp=26.85
+.MODEL DMOD_BB814_2 D(IS=7f N=1.012 RS=0.18 XTI=3 EG=1.11 CJO=83.9p M=0.775 VJ=1.6 FC=0.5 BV=20 IBV=100n TT=137n)
+DBB814_1 _net4 _net2 DMOD_BB814_1 AREA=1 Temp=26.85
+.MODEL DMOD_BB814_1 D(IS=7f N=1.012 RS=0.18 XTI=3 EG=1.11 CJO=83.9p M=0.775 VJ=1.6 FC=0.5 BV=20 IBV=100n TT=137n)
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -9 -14 18 0 #000080 2 1>
+    <Line -9 -10 18 0 #000080 2 1>
+    <Line 0 -14 9 -12 #000080 2 1>
+    <Line 0 -14 -9 -12 #000080 2 1>
+    <Line 9 14 -18 0 #000080 2 1>
+    <Line 9 26 -18 0 #000080 2 1>
+    <Line 9 10 -18 0 #000080 2 1>
+    <Line 0 14 -9 12 #000080 2 1>
+    <Line 0 14 9 12 #000080 2 1>
+    <.PortSym 0 -40 1 0 ANODE1>
+    <.PortSym 0 0 3 0 CATHODE>
+    <.PortSym 0 40 2 0 ANODE2>
+    <Line 0 26 0 9 #000080 2 1>
+    <Line 0 40 0 -5 #000000 2 1>
+    <Line 0 -5 0 -5 #000080 2 1>
+    <Line 0 10 0 -5 #000080 2 1>
+    <Line -9 -26 18 0 #000080 2 1>
+    <Line 0 -26 0 -9 #000080 2 1>
+    <Line 0 -40 0 5 #000000 2 1>
+    <Line 0 0 0 5 #000000 2 1>
+    <Line 0 -5 0 5 #000000 2 1>
+    <.ID 22 -10 D>
+  </Symbol>
+</Component>
+
+<Component BB833>
+  <Description>
+Infineon BB833 Varactor
+Ct=9pF @ Vr=1Volt
+SOD323 Package
+  </Description>
+  <Model>
+.Def:Varactor_RF_BB833 _net4 _net0
+L:LAI _net1 _net2 L="0.55nH" I=""
+L:LAO _net0 _net1 L="0.67nH" I=""
+L:LCO _net3 _net4 L="0.55nH" I=""
+C:CAC _net1 _net3 C="110fF" V=""
+R:RD _net2 _net3 R="500e9" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:CD _net2 _net3 C="0.62pF" V=""
+Diode:BB833_1 _net3 _net2 Is="2.82p" N="1.407" Cj0="12.19p" M="12.6" Vj="38.53" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="0.096m" Tt="120n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="32" Ibv="5u" Temp="26.85" Xti="3" Eg="1.16" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  Varactor_RF_BB833.sch
+
+.SUBCKT Varactor_RF_BB833  gnd _net4 _net0 
+LAI _net1 _net2  0.55N 
+LAO _net0 _net1  0.67N 
+LCO _net3 _net4  0.55N 
+CAC _net1 _net3  110F 
+RD _net2 _net3  500E9 tc1=0.0 tc2=0.0 
+CD _net2 _net3  0.62P 
+DBB833_1 _net2 _net3 DMOD_BB833_1 AREA=1 Temp=26.85
+.MODEL DMOD_BB833_1 D(IS=2.82p N=1.407 RS=0.096m XTI=3.0 EG=1.16 CJO=12.19p M=12.6 VJ=38.53 FC=0.5 TT=120.0n BV=32.0 IBV=5.0u)
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 10 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.ID -8 15 D>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <Line 20 0 -10 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+    <.PortSym -30 0 2 0 ANODE>
+    <.PortSym 30 0 1 180 CATHODE>
+  </Symbol>
+</Component>
+
+<Component BBY53>
+  <Description>
+Infineon BB53-02V Varactor
+Ct=5pF @ Vr=1Volt
+SC79 Package
+  </Description>
+  <Model>
+.Def:Varactor_RF_BBY53 _net1 _net0
+L:LAI _net2 _net3 L="0.45nH" I=""
+C:CAC _net2 _net4 C="90fF" V=""
+L:LAO _net0 _net2 L="0.15nH" I=""
+L:LCO _net4 _net1 L="0.1nH" I=""
+Diode:BBY53_1 _net4 _net3 Is="0.6f" N="1.065" Cj0="8.65p" M="0.838" Vj="1.025" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="470m" Tt="290n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="16.5" Ibv="10n" Temp="26.85" Xti="3" Eg="1.16" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  Varactor_RF_BBY53.sch
+
+.SUBCKT Varactor_RF_BBY53  gnd _net1 _net0 
+LAI _net2 _net3  0.45N 
+CAC _net2 _net4  90F 
+LAO _net0 _net2  0.15N 
+LCO _net4 _net1  0.1N 
+DBBY53_1 _net3 _net4 DMOD_BBY53_1 AREA=1 Temp=26.85
+.MODEL DMOD_BBY53_1 D(IS=0.6f N=1.065 RS=470m XTI=3.0 EG=1.16 CJO=8.65p M=0.838 VJ=1.025 FC=0.5 TT=290.0n BV=16.5 IBV=10.0n)
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 10 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.ID -8 15 D>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <Line 20 0 -10 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+    <.PortSym -30 0 2 0 ANODE>
+    <.PortSym 30 0 1 180 CATHODE>
+  </Symbol>
+</Component>
+
+<Component BBY66>
+  <Description>
+Infineon BB66-02V Varactor
+Ct=69pF @ Vr=1Volt
+SC79 Package
+  </Description>
+  <Model>
+.Def:Varactor_RF_BBY66 _net1 _net0
+L:LAI _net2 _net3 L="0.45nH" I=""
+C:CAC _net2 _net4 C="90fF" V=""
+L:LAO _net0 _net2 L="0.15nH" I=""
+L:LCO _net4 _net1 L="0.1nH" I=""
+Diode:BBY66_1 _net4 _net3 Is="6.7148e-15" N="1.1" Cj0="146.2p" M="3.1" Vj="3.5V" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="0.25" Tt="88n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="15V" Ibv="5u" Temp="26.85" Xti="3" Eg="1.11" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  Varactor_RF_BBY66.sch
+
+.SUBCKT Varactor_RF_BBY66  gnd _net1 _net0 
+LAI _net2 _net3  0.45N 
+CAC _net2 _net4  90F 
+LAO _net0 _net2  0.15N 
+LCO _net4 _net1  0.1N 
+DBBY66_1 _net3 _net4 DMOD_BBY66_1 AREA=1 Temp=26.85
+.MODEL DMOD_BBY66_1 D(Is=67.148E-16 N=1.1 Rs=0.25 Xti=3 Eg=1.11 Cjo=146.2p M=3.1 Vj=3.5V Fc=0.5 Bv=15V Ibv=5u Tt=88n)
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 10 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.ID -8 15 D>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <Line 20 0 -10 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+    <.PortSym -30 0 2 0 ANODE>
+    <.PortSym 30 0 1 180 CATHODE>
+  </Symbol>
+</Component>
+
+<Component SMV1405>
+  <Description>
+Skyworks SMV1405-079 Varactor
+Ct=1.8pF @ Vr=1Volt
+SC79 Package
+  </Description>
+  <Model>
+.Def:Varactor_RF_SMV1405 _net0 _net2
+L:LS _net0 _net1 L="0.7nH" I=""
+C:CP _net1 _net2 C="0.29pF" V=""
+R:RS _net1 _net3 R="0.8" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Diode:SMV1405_1 _net2 _net3 Is="1e-14" N="1" Cj0="2.37p" M="0.5" Vj="0.77" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="0" Tt="0" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="30" Ibv="0.001" Temp="26.85" Xti="3" Eg="1.11" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="27" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  Varactor_RF_SMV1405.sch
+
+.SUBCKT Varactor_RF_SMV1405  gnd _net0 _net2 
+LS _net0 _net1  0.7N 
+CP _net1 _net2  0.29P 
+RS _net1 _net3  0.8 tc1=0.0 tc2=0.0 
+DSMV1405_1 _net3 _net2 DMOD_SMV1405_1 AREA=1 Temp=26.85
+.MODEL DMOD_SMV1405_1 D(IS=1e-14 RS=0 N=1 TT=0 CJO=2.37p M=0.5 VJ=0.77 EG=1.11 KF=0 AF=1 FC=0.5 BV=30 IBV=1e-3 ISR=0 NR=2 NBV=1 TNOM=27)
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 10 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.ID -8 15 D>
+    <.PortSym -30 0 1 0 ANODE>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <.PortSym 30 0 2 180 CATHODE>
+    <Line 20 0 -10 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+  </Symbol>
+</Component>
+

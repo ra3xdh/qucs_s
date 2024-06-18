@@ -33,6 +33,7 @@ Xyce_Digital_TTL_Technology.lib
 BF998.lib
 Tubes.lib
 Varactor.lib
+Varactor_RF.lib
 VoltageComparators.lib
 VoltageReferences.lib
 VoltageRegulators.lib
