@@ -107,8 +107,9 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     QString type = getProperty("Type")->Value;
     QString step_var = parameter_list.begin()->toLower();// use first element name as variable name
     step_var.remove(QRegularExpression("[\\.\\[\\]@:]"));
-	
-    s = QString("let number_%1 = 0\n").arg(step_var);
+
+    s = "option interp\n";
+    s += QString("let number_%1 = 0\n").arg(step_var);
     if (lvl==0) s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
     else s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res%4\n").arg(sim).arg(step_var).arg(sim).arg(lvl);
 
