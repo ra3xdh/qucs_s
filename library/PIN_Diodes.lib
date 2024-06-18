@@ -1,0 +1,189 @@
+<Qucs Library 24.2.1 "PIN_Diodes">
+
+<Component BAR6303W>
+  <Description>
+Infineon BAR63-03W PIN Diode
+Rf=1 Ohm @ 10mA
+Vbr=50 Volts
+SOD323 Package
+  </Description>
+  <Model>
+.Def:PIN_Diodes_BAR6303W _net1 _net0
+L:LAI _net2 _net3 L="0.76nH" I=""
+C:CAC _net2 _net4 C="120fF" V=""
+L:LAO _net0 _net2 L="0.65nH" I=""
+L:LCO _net4 _net1 L="0.60nH" I=""
+Diode:BAR63_1 _net4 _net3 Is="6e-17" N="1.02" Cj0="0.19p" M="0.15" Vj="0.25" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="0.45" Tt="75n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="50" Ibv="5u" Temp="26.85" Xti="3" Eg="1.11" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  PIN_Diodes_BAR6303W.sch
+
+.SUBCKT PIN_Diodes_BAR6303W  gnd _net1 _net0 
+LAI _net2 _net3  0.76N 
+CAC _net2 _net4  120F 
+LAO _net0 _net2  0.65N 
+LCO _net4 _net1  0.60N 
+DBAR63_1 _net3 _net4 DMOD_BAR63_1 AREA=1 Temp=26.85
+.MODEL DMOD_BAR63_1 D(Is=60E-18 N=1.02 Rs=.45 Xti=3 Eg=1.11 Cjo=.19p M=.15 Vj=.25 Fc=.5 Bv=50 Ibv=5u Tt=75n)
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -8 15 D>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <Line 20 0 -13 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.PortSym -30 0 2 0 ANODE>
+    <.PortSym 30 0 1 180 CATHODE>
+  </Symbol>
+</Component>
+
+<Component BAR6403W>
+  <Description>
+Infineon BAR64-03W PIN Diode
+Rf=3.1 Ohm @ 10mA
+Vbr=150 Volts
+SOD323 Package
+  </Description>
+  <Model>
+.Def:PIN_Diodes_BAR6403W _net1 _net0
+L:LAI _net2 _net3 L="0.76nH" I=""
+C:CAC _net2 _net4 C="120fF" V=""
+L:LAO _net0 _net2 L="0.65nH" I=""
+L:LCO _net4 _net1 L="0.60nH" I=""
+Diode:BAR64_1 _net4 _net3 Is="463p" N="1.8627" Cj0="0.4597p" M="0.23417" Vj="0.39" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="0.1866" Tt="1.6u" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="150" Ibv="5e-06" Temp="26.85" Xti="3" Eg="1.11" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  PIN_Diodes_BAR6403W.sch
+
+.SUBCKT PIN_Diodes_BAR6403W  gnd _net1 _net0 
+LAI _net2 _net3  0.76N 
+CAC _net2 _net4  120F 
+LAO _net0 _net2  0.65N 
+LCO _net4 _net1  0.60N 
+DBAR64_1 _net3 _net4 DMOD_BAR64_1 AREA=1 Temp=26.85
+.MODEL DMOD_BAR64_1 D(IS=463p N=1.8627  XTI=3  EG=1.11 Cj0=0.4597p M=0.23417 Vj=0.39  FC=0.5  BV=150.0 IBV=5.0e-6 TT=1.6u Rs=0.1866)
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -8 15 D>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <Line 20 0 -13 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.PortSym -30 0 2 0 ANODE>
+    <.PortSym 30 0 1 180 CATHODE>
+  </Symbol>
+</Component>
+
+<Component BAR6503W>
+  <Description>
+Infineon BAR65-03W PIN Diode
+Rf=0.56 Ohm @ 10mA
+Vbr=30 Volts
+SOD323 Package
+  </Description>
+  <Model>
+.Def:PIN_Diodes_BAR6503W _net3 _net0
+L:LAI _net1 _net2 L="0.76nH" I=""
+L:LAO _net0 _net1 L="0.65nH" I=""
+L:LCO _net4 _net3 L="0.60nH" I=""
+R:R1 _net2 _net4 R="600e9" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:CAC _net1 _net4 C="120fF" V=""
+Diode:BAR65_D1_1 _net4 _net2 Is="4.49e-16" N="1.0856" Cj0="451.35f" M="0.103494" Vj="0.224" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="180m" Tt="45n" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="0" Ibv="0.001" Temp="26.85" Xti="2.5" Eg="1.16" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+Diode:BAR65_D2_1 _net4 _net2 Is="57.3327f" N="1.5375" Cj0="1e-14" M="0.5" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="100m" Tt="2.4u" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="74" Ibv="2e-10" Temp="26.85" Xti="3" Eg="1.05" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  PIN_Diodes_BAR6503W.sch
+
+.SUBCKT PIN_Diodes_BAR6503W  gnd _net3 _net0 
+LAI _net1 _net2  0.76N 
+LAO _net0 _net1  0.65N 
+LCO _net4 _net3  0.60N 
+R1 _net2 _net4  600E9 tc1=0.0 tc2=0.0 
+CAC _net1 _net4  120F 
+DBAR65_D1_1 _net2 _net4 DMOD_BAR65_D1_1 AREA=1 Temp=26.85
+.MODEL DMOD_BAR65_D1_1 D(IS=4.490e-16 N=1.0856 RS=180.0m XTI=2.5 EG=1.16 CJO=451.35f M=0.103494 VJ=0.224 FC=0.5 TT=45.0n)
+DBAR65_D2_1 _net2 _net4 DMOD_BAR65_D2_1 AREA=1 Temp=26.85
+.MODEL DMOD_BAR65_D2_1 D(IS=57.3327f N=1.5375 RS=100m XTI=3.0 EG=1.05 BV=74.0 IBV=0.2e-9 TT=2.4u)
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -8 15 D>
+    <Line -6 0 -14 0 #000080 2 1>
+    <Line -20 0 -10 0 #000000 2 1>
+    <Line 20 0 -13 0 #000080 2 1>
+    <Line 30 0 -10 0 #000000 2 1>
+    <Line 6 9 0 -18 #000080 2 1>
+    <Line -6 9 0 -18 #000080 2 1>
+    <Line 6 0 -12 -9 #000080 2 1>
+    <Line 6 0 -12 9 #000080 2 1>
+    <.PortSym -30 0 2 0 ANODE>
+    <.PortSym 30 0 1 180 CATHODE>
+  </Symbol>
+</Component>
+
+<Component BAR81>
+  <Description>
+Infineon BAR81 Shunt PIN Diode
+Rf=0.7 Ohm @ 5mA
+Vbr=30 Volts
+SOT343 Package
+  </Description>
+  <Model>
+.Def:PIN_Diodes_BAR81 _net0 _net1 _net2
+L:L20 _net0 _net3 L="0.53nH" I=""
+L:L40 _net4 _net1 L="0.58nH" I=""
+L:LI1 _net5 _net6 L="0.23nH" I=""
+L:L30 _net2 _net5 L="0.05nH" I=""
+C:C14 _net5 _net4 C="136fF" V=""
+C:C12 _net5 _net3 C="134fF" V=""
+L:L2I _net3 _net7 L="0.45nH" I=""
+L:L4I _net7 _net4 L="0.5nH" I=""
+C:C24 _net3 _net4 C="6.9fF" V=""
+Diode:BAR81_1 _net6 _net7 Is="3.7137p" N="1.0371" Cj0="1e-14" M="0.5" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="0" Tt="1.6u" Ikf="0" Kf="0" Af="1" Ffe="1" Bv="200" Ibv="2e-06" Temp="26.85" Xti="2.5" Eg="1.16" Tbv="0" Trs="0" Ttt1="0" Ttt2="0" Tm1="0" Tm2="0" Tnom="26.85" Area="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 24.2.1  PIN_Diodes_BAR81.sch
+
+.SUBCKT PIN_Diodes_BAR81  gnd _net0 _net1 _net2 
+L20 _net0 _net3  0.53N 
+L40 _net4 _net1  0.58N 
+LI1 _net5 _net6  0.23N 
+L30 _net2 _net5  0.05N 
+C14 _net5 _net4  136F 
+C12 _net5 _net3  134F 
+L2I _net3 _net7  0.45N 
+L4I _net7 _net4  0.5N 
+C24 _net3 _net4  6.9F 
+DBAR81_1 _net7 _net6 DMOD_BAR81_1 AREA=1 Temp=26.85
+.MODEL DMOD_BAR81_1 D(IS=3.7137p N=1.0371 TT=1.6u XTI=2.5 FC=0.5 EG=1.16 BV=200.0 IBV=2.0e-6)
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 0 -6 0 -14 #000080 2 1>
+    <Line 0 -20 0 -10 #000000 2 1>
+    <Line 0 20 0 -13 #000080 2 1>
+    <Line 0 30 0 -10 #000000 2 1>
+    <Line -9 6 18 0 #000080 2 1>
+    <Line -9 -6 18 0 #000080 2 1>
+    <Line 0 6 9 -12 #000080 2 1>
+    <Line 0 6 -9 -12 #000080 2 1>
+    <.PortSym 0 30 3 0 CATHODE>
+    <Ellipse -4 -34 8 8 #000000 1 1 #000000 1 1>
+    <.PortSym -30 -30 1 0 ANODE1>
+    <Line 0 -30 -30 0 #000000 2 1>
+    <Line 30 -30 -30 0 #000000 2 1>
+    <.PortSym 30 -30 2 180 ANODE2>
+    <.ID 17 -15 D>
+  </Symbol>
+</Component>
+
