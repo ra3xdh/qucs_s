@@ -566,6 +566,9 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
     MAy1 = MAy2;
     QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseMoving;
+    QucsMain->editRotate->blockSignals(true);
+    QucsMain->insLabel->blockSignals(true);
+    QucsMain->setMarker->blockSignals(true);
 }
 
 // -----------------------------------------------------------
@@ -1808,6 +1811,10 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent *)
     QucsMain->MousePressAction = &MouseActions::MPressSelect;
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
     QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
+    QucsMain->editRotate->setChecked(false);
+    QucsMain->editRotate->blockSignals(false);
+    QucsMain->insLabel->blockSignals(false);
+    QucsMain->setMarker->blockSignals(false);
 }
 
 // -----------------------------------------------------------
