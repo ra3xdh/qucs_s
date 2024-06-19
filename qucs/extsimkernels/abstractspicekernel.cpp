@@ -198,21 +198,6 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
             }
         }
 
-        QStringList incls;
-        // Include Directives
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-            if ((pc->SpiceModel==".INCLUDE")||
-                (pc->SpiceModel==".LIB")||
-                (pc->Model=="SpLib")) {
-                s = pc->getSpiceModel();
-                if (!incls.contains(s)) {
-                    // prevent multiple libraries inclusion
-                    incls.append(s);
-                    stream<<s;
-                }
-            }
-        }
-
         // create .IC from wire labels
         QStringList wire_labels;
         for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
@@ -1545,10 +1530,16 @@ QString AbstractSpiceKernel::collectSpiceLibs(Schematic* sch)
         delete sub;
         continue;
       }
-      collected_spicelib += collectSpiceLibs(sub);
+      QString libstr = collectSpiceLibs(sub);
+      if (!collected_spicelib.contains(libstr)) {
+        collected_spicelib.append(libstr);
+      }
       delete sub;
     } else {
-      collected_spicelib += pc->getSpiceLibrary();
+      QString libstr = pc->getSpiceLibrary();
+      if (!collected_spicelib.contains(libstr)) {
+        collected_spicelib.append(libstr);
+      }
     }
   }
   return collected_spicelib.join("");
