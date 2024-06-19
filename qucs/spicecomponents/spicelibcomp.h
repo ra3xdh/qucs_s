@@ -27,7 +27,7 @@ public:
  ~SpiceLibComp() {};
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getSpiceModel();
+  QString getSpiceLibrary();
 
 protected:
   QString spice_netlist(bool isXyce);

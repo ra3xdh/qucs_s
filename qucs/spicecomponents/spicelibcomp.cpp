@@ -239,7 +239,7 @@ QString SpiceLibComp::spice_netlist(bool)
   return s;
 }
 
-QString SpiceLibComp::getSpiceModel()
+QString SpiceLibComp::getSpiceLibrary()
 {
     if (isActive != COMP_IS_ACTIVE) return QString("");
     QString f = misc::properAbsFileName(Props.at(0)->Value, containingSchematic);

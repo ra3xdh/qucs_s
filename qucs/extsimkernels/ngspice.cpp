@@ -28,6 +28,7 @@
 #include "main.h"
 #include "misc.h"
 #include "qucs.h"
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -70,7 +71,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 {
     Q_UNUSED(simulations);
 
-    if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
+    stream << "* Qucs " << PACKAGE_VERSION << "  " << Sch->DocName << "\n";
 
     // include math. functions for inter-simulator compat.
     QString mathf_inc;
@@ -79,6 +80,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     if (found && QucsSettings.DefaultSimulator != spicecompat::simSpiceOpus)
         stream<<QString(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
+    stream<<collectSpiceLibs(Sch); // collect libraries on the top of netlist
+    if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
     startNetlist(stream); // output .PARAM and components
 
     if (DC_OP_only) {

@@ -27,6 +27,7 @@
 #include "main.h"
 #include "../paintings/id_text.h"
 #include "dialogs/sweepdialog.h"
+#include "components/subcircuit.h"
 
 
 #include <QPlainTextEdit>
@@ -1531,5 +1532,25 @@ void AbstractSpiceKernel::SaveNetlist(QString)
 bool AbstractSpiceKernel::waitEndOfSimulation()
 {
     return SimProcess->waitForFinished(10000);
+}
+
+QString AbstractSpiceKernel::collectSpiceLibs(Schematic* sch)
+{
+  QStringList collected_spicelib;
+  for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+    if (pc->Model == "Sub") {
+      Schematic *sub = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
+      if(!sub->loadDocument())      // load document if possible
+      {
+        delete sub;
+        continue;
+      }
+      collected_spicelib += collectSpiceLibs(sub);
+      delete sub;
+    } else {
+      collected_spicelib += pc->getSpiceLibrary();
+    }
+  }
+  return collected_spicelib.join("");
 }
 

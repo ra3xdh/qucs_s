@@ -2146,15 +2146,21 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
   }
 
   // first line is documentation
+  bool has_header = true;
   if(allTypes & isAnalogComponent) {
-    if (QucsSettings.DefaultSimulator != spicecompat::simQucsator)
-        stream << "*";
-    else stream << '#';
-  } else if (isVerilog)
+    if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+      has_header = false;
+    } else {
+      stream << '#';
+    }
+  } else if (isVerilog) {
     stream << "//";
-  else
+  } else {
     stream << "--";
-  stream << " Qucs " << PACKAGE_VERSION << "  " << DocName << "\n";
+  }
+  if (has_header) {
+    stream << " Qucs " << PACKAGE_VERSION << "  " << DocName << "\n";
+  }
 
   // set timescale property for verilog schematics
   if (isVerilog) {
