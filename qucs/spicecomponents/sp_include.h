@@ -28,7 +28,7 @@ public:
   ~S4Q_Include();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getSpiceModel();
+  QString getSpiceLibrary();
 
 protected:
   QString vhdlCode(int) { return QString(""); }

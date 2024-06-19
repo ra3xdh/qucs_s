@@ -21,6 +21,9 @@
 #include "main.h"
 #include "misc.h"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /*!
   \file xyce.cpp
@@ -81,7 +84,11 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     QString s;
     bool hasParSweep = false;
 
+    stream << "* Qucs " << PACKAGE_VERSION << "  " << Sch->DocName << "\n";
+    stream<<collectSpiceLibs(Sch); // collect libraries on the top of netlist
+
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
+
     startNetlist(stream,true);
 
     // set variable names for named nodes and wires

@@ -27,6 +27,7 @@
 #include "main.h"
 #include "../paintings/id_text.h"
 #include "dialogs/sweepdialog.h"
+#include "components/subcircuit.h"
 
 
 #include <QPlainTextEdit>
@@ -194,21 +195,6 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
                 (pc->SpiceModel=="INCLSCR")) {
                 s = pc->getExpression();
                 stream<<s;
-            }
-        }
-
-        QStringList incls;
-        // Include Directives
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-            if ((pc->SpiceModel==".INCLUDE")||
-                (pc->SpiceModel==".LIB")||
-                (pc->Model=="SpLib")) {
-                s = pc->getSpiceModel();
-                if (!incls.contains(s)) {
-                    // prevent multiple libraries inclusion
-                    incls.append(s);
-                    stream<<s;
-                }
             }
         }
 
@@ -1531,5 +1517,31 @@ void AbstractSpiceKernel::SaveNetlist(QString)
 bool AbstractSpiceKernel::waitEndOfSimulation()
 {
     return SimProcess->waitForFinished(10000);
+}
+
+QString AbstractSpiceKernel::collectSpiceLibs(Schematic* sch)
+{
+  QStringList collected_spicelib;
+  for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+    if (pc->Model == "Sub") {
+      Schematic *sub = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
+      if(!sub->loadDocument())      // load document if possible
+      {
+        delete sub;
+        continue;
+      }
+      QString libstr = collectSpiceLibs(sub);
+      if (!collected_spicelib.contains(libstr)) {
+        collected_spicelib.append(libstr);
+      }
+      delete sub;
+    } else {
+      QString libstr = pc->getSpiceLibrary();
+      if (!collected_spicelib.contains(libstr)) {
+        collected_spicelib.append(libstr);
+      }
+    }
+  }
+  return collected_spicelib.join("");
 }
 

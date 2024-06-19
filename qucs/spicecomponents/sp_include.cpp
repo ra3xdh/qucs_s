@@ -75,7 +75,7 @@ Element* S4Q_Include::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString S4Q_Include::getSpiceModel()
+QString S4Q_Include::getSpiceLibrary()
 {
     if (isActive != COMP_IS_ACTIVE) return QString("");
     QString s;
