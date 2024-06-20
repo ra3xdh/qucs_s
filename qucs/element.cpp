@@ -18,6 +18,7 @@
 #include "element.h"
 #include "misc.h"
 
+#include <cmath>
 #include <QPainter>
 
 namespace qucs {
