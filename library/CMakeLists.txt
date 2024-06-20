@@ -47,7 +47,7 @@ xyce.blacklist
 )
 
 INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/${QUCS_NAME}/library )
+INSTALL( DIRECTORY "symbols" DESTINATION share/${QUCS_NAME}/ )
 
 ADD_SUBDIRECTORY( XyceDigital)
-ADD_SUBDIRECTORY( symbols )
 
