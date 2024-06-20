@@ -70,28 +70,37 @@ void Text::draw(QPainter *painter, QRectF* br) const {
 }
 
 double Text::angle() const {
-  // Historically Text uses mSin and mCos values to store
-  // its rotation factor.
+  // Historically Text uses mSin and mCos values to describe
+  // at what angle the text is rotated.
   //
-  // The actual rotation was implemented as a clever
-  // tranformation for a painter, like:
-  //    QTransform(mCos, -mSin, mSin, mCos, …
+  // It employed some clever technique to draw the text rotated
+  // by applying "skew" transformations to QPainter and using mCos
+  // and mSin as skew factors, but later the whole drawing routine
+  // was refactored and it switched to using QPainter::rotate() and
+  // degrees to describe the rotation angle.
   //
-  // There were only four combinations of these values
-  // and here we convert them to their human-readable
-  // equivalents
-  if (mCos == 0.0) {
-    if (mSin == 1.0) {
-      return 270;
-    }
-    return 90;
-  }
+  // Many other parts of the codebase still depend on mCos and mSin,
+  // for example rotating and mirroring of a component and more than
+  // 200 component constructors. It is a piece of work to get rid
+  // of mCos and mSin completely, so they're kept as is and their
+  // "degrees" equivalent is calculated when the text needs to be drawn.
 
-  if (mCos == -1.0 && mSin == 0.0) {
-    return 180;
-  }
+  const double radians = std::acos(mCos);
+  // convert from radians to degrees and normalize
+  const double degrees = std::remainder(
+    (radians * 180.0) / 3.14159265 /* Pi */, 360.0 /* Full circle */);
 
-  return 0;
+  // Above we've found the angle in degrees from a cosinus value.
+  // A single cosinus value corresponds to two angles. If sinus is positive
+  // the angle is in upper half of a circle. If sinus in negative, then
+  // in lower half.
+  //
+  // At the same time QPainter::rotate() rotates *clockwise*, so if you
+  // want a text to have rotation angle of 45° (towards up-right direction),
+  // then the -45° has to be passed to QPainter::rotate().
+  //
+  // QPainter::rotate() is called in Text::draw
+  return mSin < 0 ? degrees : -degrees;
 }
 
 
