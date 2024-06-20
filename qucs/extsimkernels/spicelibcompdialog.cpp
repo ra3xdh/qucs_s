@@ -52,7 +52,6 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
 
   cbxSymPattern = new QComboBox;
   QStringList lst_patterns;
-  lst_patterns.append("auto");
   misc::getSymbolPatternsList(lst_patterns);
   cbxSymPattern->addItems(lst_patterns);
   connect(cbxSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSymbol()));
