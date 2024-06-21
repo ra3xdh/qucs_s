@@ -93,6 +93,7 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   symbol = new SymbolWidget;
   symbol->disableDragNDrop();
   symbol->enableShowPinNumbers();
+  symbol->setPaintText("");
 
   tbwPinsTable = new QTableWidget;
   tbwPinsTable->setColumnCount(2);
@@ -290,6 +291,7 @@ void SpiceLibCompDialog::slotSetSymbol()
     QString s1 = "";
     QString s2 = "SpLib";
     symbol->setSymbol(s1, s1, s2);
+    symbol->setWarning(tr("No symbol loaded"));
     symbolPinsCount = 0;
   } else if (rbSymFromTemplate->isChecked()) {
     tbwPinsTable->setEnabled(true);

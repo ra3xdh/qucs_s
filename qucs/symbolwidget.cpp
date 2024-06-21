@@ -744,3 +744,10 @@ bool SymbolWidget::getBrush(const QString& s, QBrush& Brush, int i)
 
   return true;
 }
+
+void SymbolWidget::setPaintText(const QString &txt)
+{
+  PaintText = txt;
+  QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
+  TextWidth = metrics.size(0,PaintText).width() + 4;    // get size of text
+}
