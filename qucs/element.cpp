@@ -86,22 +86,15 @@ double Text::angle() const {
   // of mCos and mSin completely, so they're kept as is and their
   // "degrees" equivalent is calculated when the text needs to be drawn.
 
-  const double radians = std::acos(mCos);
-  // convert from radians to degrees and normalize
-  const double degrees = std::remainder(
-    (radians * 180.0) / 3.14159265 /* Pi */, 360.0 /* Full circle */);
+  const double radians = std::atan2(mSin, mCos);
+  const double degrees = (radians * 180.0) / 3.14159265 /* Pi */;
 
-  // Above we've found the angle in degrees from a cosinus value.
-  // A single cosinus value corresponds to two angles. If sinus is positive
-  // the angle is in upper half of a circle. If sinus in negative, then
-  // in lower half.
-  //
-  // At the same time QPainter::rotate() rotates *clockwise*, so if you
-  // want a text to have rotation angle of 45° (towards up-right direction),
+  // QPainter::rotate() rotates *clockwise*, so if you want a text
+  // to have rotation angle of 45° (towards up-right direction),
   // then the -45° has to be passed to QPainter::rotate().
   //
   // QPainter::rotate() is called in Text::draw
-  return mSin < 0 ? degrees : -degrees;
+  return -degrees;
 }
 
 
