@@ -18,10 +18,10 @@
 #ifndef DC_SIM_H
 #define DC_SIM_H
 
-#include "component.h"
+#include "simulation.h"
 
 
-class DC_Sim : public Component  {
+class DC_Sim : public qucs::component::SimulationComponent  {
 public:
   DC_Sim();
   ~DC_Sim();
