@@ -30,7 +30,8 @@ private:
 
   QPushButton *btnOpenLib, *btnOK, *btnApply, *btnCancel, *btnOpenSym;
   QTableWidget *tbwPinsTable;
-  QComboBox *cbxSelectSubcir, *cbxSymPattern;
+  QComboBox *cbxSelectSubcir;
+  QListWidget *listSymPattern;
 
   QRadioButton *rbSymFromTemplate, *rbAutoSymbol, *rbUserSym;
   QCheckBox *chbShowLib, *chbShowModel, *chbShowParams;

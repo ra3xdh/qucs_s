@@ -50,11 +50,13 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   cbxSelectSubcir = new QComboBox;
   connect(cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotFillPinsTable()));
 
-  cbxSymPattern = new QComboBox;
+  listSymPattern = new QListWidget;
   QStringList lst_patterns;
   misc::getSymbolPatternsList(lst_patterns);
-  cbxSymPattern->addItems(lst_patterns);
-  connect(cbxSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSymbol()));
+  listSymPattern->addItems(lst_patterns);
+  listSymPattern->setCurrentRow(0);
+  listSymPattern->setSelectionMode(QAbstractItemView::SingleSelection);
+  connect(listSymPattern,SIGNAL(currentRowChanged(int)),this,SLOT(slotSetSymbol()));
 
   rbAutoSymbol = new QRadioButton(tr("Automatic symbol"));
   rbSymFromTemplate = new QRadioButton(tr("Symbol from template"));
@@ -134,10 +136,10 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   gl1->addWidget(rbAutoSymbol,0,0);
   gl1->addWidget(rbSymFromTemplate,1,0);
   gl1->addWidget(rbUserSym,2,0);
-  gl1->addWidget(cbxSymPattern,1,1);
   gl1->addWidget(edtSymFile,2,1);
   gl1->addWidget(btnOpenSym,2,2);
   gl1->addWidget(symbol,0,3,3,2);
+  gl1->addWidget(listSymPattern,0,5,3,2);
   top->addLayout(gl1);
 
   QHBoxLayout *l3 = new QHBoxLayout;
@@ -168,7 +170,9 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   slotFillSubcirComboBox();
 
   cbxSelectSubcir->setCurrentText(device);
-  cbxSymPattern->setCurrentText(sym);
+  auto items = listSymPattern->findItems(sym,Qt::MatchExactly);
+  if (!items.isEmpty()) listSymPattern->setCurrentItem(items.at(0));
+  //listSymPattern->setCurrentText(sym);
 
   if (!pin_list.isEmpty()) {
     QStringList pins = pin_list.split(";");
@@ -180,6 +184,9 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
     }
   }
 
+  listSymPattern->setMinimumWidth(0.75*tbwPinsTable->minimumWidth());
+  symbol->setMinimumWidth(0.75*tbwPinsTable->minimumWidth());
+
   btnApply->setEnabled(false);
   connect(rbAutoSymbol,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
   connect(rbSymFromTemplate,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
@@ -187,7 +194,7 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   connect(edtLibPath,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
   connect(edtParams,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
   connect(tbwPinsTable,SIGNAL(cellChanged(int,int)),this,SLOT(slotChanged()));
-  connect(cbxSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
+  connect(listSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
   connect(cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
 
 }
@@ -285,7 +292,7 @@ void SpiceLibCompDialog::slotSetSymbol()
 {
   if (rbAutoSymbol->isChecked()) {
     tbwPinsTable->setEnabled(false);
-    cbxSymPattern->setEnabled(false);
+    listSymPattern->setEnabled(false);
     edtSymFile->setEnabled(false);
     btnOpenSym->setEnabled(false);
     QString s1 = "";
@@ -295,16 +302,16 @@ void SpiceLibCompDialog::slotSetSymbol()
     symbolPinsCount = 0;
   } else if (rbSymFromTemplate->isChecked()) {
     tbwPinsTable->setEnabled(true);
-    cbxSymPattern->setEnabled(true);
+    listSymPattern->setEnabled(true);
     edtSymFile->setEnabled(false);
     btnOpenSym->setEnabled(false);
     QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
-    QString file = dir_name + cbxSymPattern->currentText() + ".sym";
+    QString file = dir_name + listSymPattern->currentItem()->text() + ".sym";
     symbol->loadSymFile(file);
     symbolPinsCount = symbol->getPortsNumber();
   } else if (rbUserSym->isChecked()) {
     tbwPinsTable->setEnabled(true);
-    cbxSymPattern->setEnabled(false);
+    listSymPattern->setEnabled(false);
     edtSymFile->setEnabled(true);
     btnOpenSym->setEnabled(true);
     symbol->loadSymFile(edtSymFile->text());
@@ -428,7 +435,7 @@ bool SpiceLibCompDialog::setCompProps()
   if (rbAutoSymbol->isChecked()) {
     pp->Value = "auto";
   } else if (rbSymFromTemplate->isChecked()) {
-    pp->Value = cbxSymPattern->currentText();
+    pp->Value = listSymPattern->currentItem()->text();
   } else if (rbUserSym->isChecked()) {
     pp->Value = sympath;
   }
