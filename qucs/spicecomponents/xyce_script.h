@@ -18,10 +18,10 @@
 #ifndef SP_XYCESCRIPT_H
 #define SP_XYCESCRIPT_H
 
-#include "components/component.h"
+#include "components/simulation.h"
 
 
-class XyceScript : public Component  {
+class XyceScript : public qucs::component::SimulationComponent  {
 public:
   XyceScript();
   ~XyceScript();
@@ -30,6 +30,7 @@ public:
 
 protected:
   QString spice_netlist(bool isXyce = false);
+  Qt::GlobalColor color() const override { return Qt::darkGreen; }
 };
 
 #endif
