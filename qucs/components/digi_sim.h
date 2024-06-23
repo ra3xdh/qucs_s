@@ -18,10 +18,10 @@
 #ifndef DIGI_SIM_H
 #define DIGI_SIM_H
 
-#include "component.h"
+#include "simulation.h"
 
 
-class Digi_Sim : public Component  {
+class Digi_Sim : public qucs::component::SimulationComponent  {
 public:
   Digi_Sim();
  ~Digi_Sim();
