@@ -18,10 +18,10 @@
 #ifndef SP_PZ_H
 #define SP_PZ_H
 
-#include "components/component.h"
+#include "components/simulation.h"
 
 
-class SpicePZ : public Component  {
+class SpicePZ : public qucs::component::SimulationComponent {
 public:
   SpicePZ();
   ~SpicePZ();
