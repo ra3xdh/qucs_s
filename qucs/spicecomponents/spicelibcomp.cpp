@@ -67,7 +67,7 @@ Component* SpiceLibComp::newOne()
 // -------------------------------------------------------
 Element* SpiceLibComp::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("SpiceLibComp");
+  Name = QObject::tr("SPICE library device");
   BitmapFile = (char *) "spicelibcomp";
 
   if(getNewOne) {
