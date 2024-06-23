@@ -18,10 +18,10 @@
 #ifndef TR_SIM_H
 #define TR_SIM_H
 
-#include "component.h"
+#include "simulation.h"
 
 
-class TR_Sim : public Component  {
+class TR_Sim : public qucs::component::SimulationComponent {
 public:
   TR_Sim();
   ~TR_Sim();
