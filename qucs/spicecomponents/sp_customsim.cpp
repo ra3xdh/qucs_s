@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "sp_customsim.h"
-#include "main.h"
 
 
 SpiceCustomSim::SpiceCustomSim()
@@ -23,14 +22,7 @@ SpiceCustomSim::SpiceCustomSim()
   isSimulation = true;
   Description = QObject::tr("Nutmeg script");
   Simulator = spicecompat::simNgspice | spicecompat::simSpiceOpus;
-
-  Texts.append(new Text(0, 0, Description, Qt::darkRed, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".CUSTOMSIM";
   Name  = "CUSTOM";
   SpiceModel = "CUSTOM";
