@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "param_sweep.h"
-#include "main.h"
 #include "schematic.h"
 #include "misc.h"
 
@@ -24,18 +23,7 @@ Param_Sweep::Param_Sweep()
   Description = QObject::tr("Parameter sweep");
 
   QString  s = Description;
-  int a = s.lastIndexOf(" ");
-  if (a != -1) s[a] = '\n';    // break line
-
-  Texts.append(new Text(0, 0, s.left(a), Qt::darkBlue, QucsSettings.largeFontSize));
-  if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkBlue, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".SW";
   Name  = "SW";
   SpiceModel = "*";
