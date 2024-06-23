@@ -18,10 +18,10 @@
 #ifndef SP_SIM_H
 #define SP_SIM_H
 
-#include "component.h"
+#include "simulation.h"
 
 
-class SP_Sim : public Component  {
+class SP_Sim : public qucs::component::SimulationComponent  {
 private:
     QString xyce_netlist();
     QString ngspice_netlist();
