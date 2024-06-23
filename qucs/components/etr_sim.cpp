@@ -15,27 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 #include "etr_sim.h"
-#include "main.h"
 
 
 ETR_Sim::ETR_Sim()
 {
   Description = QObject::tr("externally driven transient simulation");
   Simulator = spicecompat::simQucsator;
-
-  QString s = Description;
-  int a = 17;
-  s[a] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(a), Qt::darkBlue, QucsSettings.largeFontSize));
-  if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkBlue, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+130; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".ETR";
   Name  = "ETR";
 
