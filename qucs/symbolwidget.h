@@ -55,6 +55,8 @@ public:
   void disableShowPinNumbers() { showPinNumbers = false; }
   bool showPinNumbersEnabled() { return showPinNumbers; }
   int getPortsNumber() { return portsNumber; }
+  void setPaintText(const QString &txt);
+  void setWarning(const QString &warn) { Warning = warn; }
   // component properties
   int Text_x, Text_y;
   QString Prefix, LibraryPath, ComponentName;
