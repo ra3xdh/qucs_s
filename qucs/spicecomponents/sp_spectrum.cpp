@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "sp_spectrum.h"
-#include "main.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
@@ -25,20 +24,7 @@ SpiceFFT::SpiceFFT()
   isSimulation = true;
   Description = QObject::tr("Spectrum analysis");
   Simulator = spicecompat::simNgspice | spicecompat::simSpiceOpus;
-
-  QString  s = Description;
-  int a = s.indexOf(" ");
-  if (a != -1) s[a] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(a), Qt::darkBlue, QucsSettings.largeFontSize));
-  if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkBlue, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".FFT";
   Name  = "FFT";
   SpiceModel = ".FFT";
