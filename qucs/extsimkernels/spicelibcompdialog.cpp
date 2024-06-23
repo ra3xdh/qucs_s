@@ -17,6 +17,7 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   Doc = sch;
   symbolPinsCount = 0;
   isChanged = false;
+  libError = false;
 
   QString file = comp->Props.at(0)->Value;
   if (!file.isEmpty()) {
@@ -203,8 +204,23 @@ void SpiceLibCompDialog::slotFillSubcirComboBox()
 {
   QString libfile = edtLibPath->text();
   if (!QFile::exists(libfile)) return;
-  if (!parseLibFile(libfile)) {
-    QMessageBox::critical(this,tr("Error"),tr("SPICE library parse error"));
+  int  r = parseLibFile(libfile);
+  libError = false;
+  if (r != noError) {
+    libError = true;
+    QString msg;
+    switch (r) {
+    case failedOpenFile:
+      msg = tr("Failed open file: ") + libfile;
+      break;
+    case noSUBCKT:
+      msg = tr("SPICE library parse error.\n"
+               "No SUBCKT directive found in library ") + libfile;
+      break;
+    default:
+      msg = tr("SPICE library parse error");
+    }
+    QMessageBox::critical(this,tr("Error"),msg);
     return;
   }
 
@@ -235,12 +251,13 @@ void SpiceLibCompDialog::slotFillPinsTable()
   edtSPICE->setPlainText(subcirSPICE[subcir_name]);
 }
 
-bool SpiceLibCompDialog::parseLibFile(const QString &filename)
+int SpiceLibCompDialog::parseLibFile(const QString &filename)
 {
   if (!QFileInfo::exists(filename)) return false;
   QFile f(filename);
   if (!f.open(QIODevice::ReadOnly)) {
-    return false;
+    QMessageBox::critical(this,tr("Error"),tr("Failed to open file: ") + filename);
+    return failedOpenFile;
   }
 
   subcirPins.clear();
@@ -282,9 +299,9 @@ bool SpiceLibCompDialog::parseLibFile(const QString &filename)
 
   f.close();
   if (subcirPins.isEmpty()) {
-    return false;
+    return noSUBCKT;
   }
-  return true;
+  return noError;
 
 }
 
@@ -453,6 +470,11 @@ bool SpiceLibCompDialog::setCompProps()
 void SpiceLibCompDialog::slotBtnApply()
 {
   if (isChanged) {
+    if (libError) {
+      QMessageBox::critical(this,tr("Error"),
+                            tr("There were library file parse error! Cannot apply changes."));
+      return;
+    }
     if (setCompProps()) {
       isChanged = false;
       btnApply->setEnabled(false);
@@ -463,6 +485,12 @@ void SpiceLibCompDialog::slotBtnApply()
 void SpiceLibCompDialog::slotBtnOK()
 {
   if (isChanged) {
+    if (libError) {
+      QMessageBox::critical(this,tr("Error"),
+                            tr("There were library file parse error! Cannot apply changes."));
+      reject();
+      return;
+    }
     if (setCompProps()) accept();
   } else {
     accept();

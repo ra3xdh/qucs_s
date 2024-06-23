@@ -18,6 +18,8 @@ class SpiceLibCompDialog : public QDialog {
 private:
   int symbolPinsCount;
   bool isChanged;
+  bool libError;
+
   QString lastSymbolDir;
   QString lastLibDir;
 
@@ -39,7 +41,9 @@ private:
   QMap<QString,QStringList> subcirPins;
   QMap<QString,QString> subcirSPICE;
 
-  bool parseLibFile(const QString &filename);
+  enum SPICEparseError { noError=0, failedOpenFile = -1, noSUBCKT = -2 };
+
+  int parseLibFile(const QString &filename);
   bool setCompProps();
 
 private slots:
