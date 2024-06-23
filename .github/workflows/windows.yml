@@ -20,8 +20,6 @@ jobs:
       fail-fast: false
       matrix:
         environment:
-          - mingw64
-          - clang64
           - ucrt64
     defaults:
       run:
@@ -73,6 +71,7 @@ jobs:
         cd build/ && mingw32-make.exe install DESTDIR=./ -j$(nproc)
         cp -rf 'Program Files (x86)/qucs-suite' ./
         cd ..
+        strip build/qucs-suite/bin/*.exe 
 
     - name: Deploy Qt6 dependencies
       run: |
