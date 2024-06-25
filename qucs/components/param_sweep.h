@@ -18,10 +18,10 @@
 #ifndef PARAM_SWEEP_H
 #define PARAM_SWEEP_H
 
-#include "component.h"
+#include "simulation.h"
 
 
-class Param_Sweep : public Component  {
+class Param_Sweep : public qucs::component::SimulationComponent  {
 public:
   Param_Sweep();
   ~Param_Sweep();

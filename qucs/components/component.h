@@ -56,7 +56,7 @@ public:
   virtual void getExtraVANodes(QStringList& ) {};
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
-  void    paint(QPainter* painter) const;
+  void    paint(QPainter* painter);
   void    paintScheme(Schematic*);
   void    setCenter(int, int, bool relative=false);
   void    getCenter(int&, int&);
@@ -127,9 +127,7 @@ protected:
   Property * getProperty(const QString&);
   Schematic* containingSchematic;
 
-private:
-  void drawSimulator(QPainter* p) const;
-  void drawUsual(QPainter* p) const;
+  virtual void drawSymbol(QPainter* p);
 };
 
 

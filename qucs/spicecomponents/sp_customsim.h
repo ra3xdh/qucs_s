@@ -18,10 +18,10 @@
 #ifndef SP_CUSTOMSIM_H
 #define SP_CUSTOMSIM_H
 
-#include "components/component.h"
+#include "components/simulation.h"
 
 
-class SpiceCustomSim : public Component  {
+class SpiceCustomSim : public qucs::component::SimulationComponent {
 public:
   SpiceCustomSim();
   ~SpiceCustomSim();

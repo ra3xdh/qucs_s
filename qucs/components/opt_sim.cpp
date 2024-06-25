@@ -29,14 +29,7 @@ Optimize_Sim::Optimize_Sim()
 {
   Description = QObject::tr("Optimization");
   Simulator = spicecompat::simQucsator;
-
-  Texts.append(new Text(0, 0, Description, Qt::darkBlue, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+128; y2 = y1+41;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".Opt";
   Name  = "Opt";
 

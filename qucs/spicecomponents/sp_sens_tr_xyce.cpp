@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "sp_sens_tr_xyce.h"
-#include "main.h"
 #include "extsimkernels/spicecompat.h"
 
 
@@ -24,20 +23,7 @@ SpiceSENS_TR_Xyce::SpiceSENS_TR_Xyce()
   isSimulation = true;
   Description = QObject::tr("Transient .SENS analysis with Xyce");
   Simulator = spicecompat::simXyce;
-
-  QString  s = Description;
-  int a = s.indexOf(" ");
-  if (a != -1) s[a] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(a), Qt::darkRed, QucsSettings.largeFontSize));
-  if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkRed, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".SENS_TR_XYCE";
   Name  = "TSENS";
   SpiceModel = ".SENS";

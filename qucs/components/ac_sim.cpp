@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "ac_sim.h"
-#include "main.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
@@ -26,25 +25,7 @@ AC_Sim::AC_Sim()
 {
   isSimulation = true;
   Description = QObject::tr("ac simulation");
-
-  QString s = Description;
-  int a = s.indexOf(" ");
-  int b = s.lastIndexOf(" ");
-  if (a != -1 && b != -1) {
-    if (a > (int) s.length() - b)  b = a;
-  }
-  if (a < 8 || s.length() - b < 8) b = -1;
-  if (b != -1) s[b] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(b), Qt::darkBlue, QucsSettings.largeFontSize));
-  if (b != -1)
-    Texts.append(new Text(0, 0, s.mid(b+1), Qt::darkBlue, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+128; y2 = y1+41;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".AC";
   SpiceModel = ".AC";
   Name  = "AC";

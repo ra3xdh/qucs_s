@@ -18,10 +18,10 @@
 #ifndef SP_FOURIER_H
 #define SP_FOURIER_H
 
-#include "components/component.h"
+#include "components/simulation.h"
 
 
-class SpiceFourier : public Component  {
+class SpiceFourier : public qucs::component::SimulationComponent {
 public:
   SpiceFourier();
   ~SpiceFourier();
@@ -30,6 +30,7 @@ public:
 
 protected:
   QString spice_netlist(bool isXyce = false);
+  Qt::GlobalColor color() const override { return Qt::darkRed; }
 };
 
 #endif

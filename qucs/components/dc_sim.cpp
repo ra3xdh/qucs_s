@@ -15,36 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 #include "dc_sim.h"
-#include "main.h"
-
 
 DC_Sim::DC_Sim()
 {
   isSimulation = true;
   Description = QObject::tr("dc simulation");
-
-  QString s = Description;
-  int a = s.indexOf(" ");
-  int b = s.lastIndexOf(" ");
-  if (a != -1 && b != -1) {
-    if (a > (int) s.length() - b)  b = a;
-  }
-  if (a < 8 || s.length() - b < 8) b = -1;
-  if (b != -1) s[b] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(b), Qt::darkBlue, QucsSettings.largeFontSize));
-  if (b != -1)
-    Texts.append(new Text(0, 0, s.mid(b+1), Qt::darkBlue, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+128; y2 = y1+41;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".DC";
   Name  = "DC";
   SpiceModel = ".OP";
-  isSimulation = true;
 
   Props.append(new Property("Temp", "26.85", false,
 		QObject::tr("simulation temperature in degree Celsius")));

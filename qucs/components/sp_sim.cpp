@@ -15,33 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 #include "sp_sim.h"
-#include "main.h"
 #include "misc.h"
 #include "schematic.h"
+#include "settings.h"
 
 
 SP_Sim::SP_Sim()
 {
   isSimulation = true;
   Description = QObject::tr("S parameter simulation");
-
-  QString s = Description;
-  int a = s.indexOf(" ");
-  int b = s.lastIndexOf(" ");
-  if (a != -1 && b != -1) {
-    if (a > (int) s.length() - b)  b = a;
-  }
-  if (b != -1) s[b] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(b), Qt::darkBlue, QucsSettings.largeFontSize));
-  if (b != -1)
-    Texts.append(new Text(0, 0, s.mid(b+1), Qt::darkBlue, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+121; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".SP";
   Name  = "SP";
   SpiceModel = ".SP";
@@ -124,7 +107,7 @@ int SP_Sim::getSPortsNumber()
 
 QStringList SP_Sim::getExtraVariables()
 {
-    switch (QucsSettings.DefaultSimulator) {
+    switch (_settings::Get().item<int>("DefaultSimulator")) {
         case spicecompat::simNgspice:
             return getNgspiceExtraVariables();
         case spicecompat::simXyce:

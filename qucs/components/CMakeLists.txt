@@ -61,6 +61,7 @@ circline.cpp
 taperedline.cpp
 circularloop.cpp
 spiralinductor.cpp
+simulation.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -194,6 +195,7 @@ rfedd.h
 rfedd2p.h
 rlcg.h
 rs_flipflop.h
+simulation.h
 source_ac.h
 sp_sim.h
 sparamfile.h

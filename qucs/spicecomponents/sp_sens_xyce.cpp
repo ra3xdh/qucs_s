@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "sp_sens_xyce.h"
-#include "main.h"
 #include "extsimkernels/spicecompat.h"
 
 
@@ -24,20 +23,7 @@ SpiceSENS_Xyce::SpiceSENS_Xyce()
   isSimulation = true;
   Description = QObject::tr("DC .SENS simulation with Xyce");
   Simulator = spicecompat::simXyce;
-
-  QString  s = Description;
-  int a = s.indexOf(" ");
-  if (a != -1) s[a] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(a), Qt::darkRed, QucsSettings.largeFontSize));
-  if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkRed, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".SENS_XYCE";
   Name  = "SENS";
   SpiceModel = ".SENS";

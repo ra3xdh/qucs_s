@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "sp_fourier.h"
-#include "main.h"
 #include "extsimkernels/spicecompat.h"
 
 
@@ -24,20 +23,7 @@ SpiceFourier::SpiceFourier()
   isSimulation = true;
   Description = QObject::tr("Fourier simulation");
   Simulator = spicecompat::simSpice;
-
-  QString  s = Description;
-  int a = s.indexOf(" ");
-  if (a != -1) s[a] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(a), Qt::darkRed, QucsSettings.largeFontSize));
-  if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkRed, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".FOURIER";
   Name  = "FOUR";
   SpiceModel = ".FOURIER";

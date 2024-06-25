@@ -237,15 +237,11 @@ bool Component::getSelected(int x_, int y_) {
     return false;
 }
 
-void Component::paint(QPainter *p) const {
+void Component::paint(QPainter *p) {
     p->save();
     p->translate(cx, cy);
 
-    if (Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
-        drawSimulator(p);
-    } else {    // normal components go here
-        drawUsual(p);
-    }
+    drawSymbol(p);
 
     p->setPen(QPen(Qt::black, 1));
     QRect text_br{tx, ty, 0, 0};
@@ -279,74 +275,7 @@ void Component::paint(QPainter *p) const {
     p->restore();
 }
 
-void Component::drawSimulator(QPainter* p) const {
-    const bool correctSimulator = (Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator;
-    p->save();
-    if (correctSimulator) {
-        if ((Model == ".CUSTOMSIM") || (Model == ".DISTO")
-            || (Model == ".NOISE") || (Model == ".PZ") ||
-            (Model == ".SENS") || (Model == ".SENS_AC") ||
-            (Model == ".FFT"))
-            p->setPen(QPen(Qt::blue, 2));
-        else if ((Model == ".XYCESCR") || (Model == ".SENS_XYCE")
-                    || (Model == ".SENS_TR_XYCE"))
-            p->setPen(QPen(Qt::darkGreen, 2));
-        else if (Model == ".FOURIER") p->setPen(QPen(Qt::darkRed, 2));
-        else p->setPen(QPen(Qt::darkBlue, 2));
-    } else {
-        p->setPen(WrongSimulatorPen);
-    }
-
-    QFont title_font{ p->font() };
-    title_font.setWeight(QFont::DemiBold);
-    p->setFont(title_font);
-
-    QRect all_text_br;
-    QRect br;
-    for (Text *t: Texts) {
-        p->drawText(br.left(), br.bottom(), 0, 0, Qt::TextDontClip, t->s, &br);
-        all_text_br |= br;
-    }
-
-    // Simulation components look like an isometric box
-    // or a brick, with a title on its top side, being
-    // observed from some strange angle, like this:
-    //
-    //  +-----------+
-    //  |           |`.
-    //  | T I T L E | |
-    //  |           | |
-    //  +-----------+ |
-    //   `___________`!
-
-    // It's drawn below step by step. Remember that
-    // in painter's coordinate system Y-axis grows downwards
-
-    // Top side
-    QRect plate = all_text_br.marginsAdded(QMargins{5,5,5,5});
-    p->drawRect(plate);
-
-    // Box "depth"
-    QPoint offset{5, 5};
-
-    // Three short edges of the box which define its "depth"
-    auto topRight_ = plate.topRight() + offset;
-    p->drawLine(plate.topRight(), topRight_);
-
-    auto bottomRight_ = plate.bottomRight() + offset;
-    p->drawLine(plate.bottomRight(), bottomRight_);
-
-    auto bottomLeft_ = plate.bottomLeft() + offset;
-    p->drawLine(plate.bottomLeft(), bottomLeft_);
-
-    // Finally two visble edges of bottom side of the box
-    p->drawLine(bottomLeft_, bottomRight_);
-    p->drawLine(bottomRight_, topRight_);
-
-    p->restore();
-}
-
-void Component::drawUsual(QPainter* p) const {
+void Component::drawSymbol(QPainter* p) {
     const bool correctSimulator = (Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator;
 
     auto draw_primitive = [&](qucs::DrawingPrimitive* prim, QPainter* p) {
