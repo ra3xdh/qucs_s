@@ -46,7 +46,7 @@ int fillFromSpiceDialog::parseModelcard()
   for (auto &line : lstModelCard) { // assemble model in one line
     if (line.startsWith("*")) continue; // comment
     if (line.trimmed().isEmpty()) continue;
-    if (line.startsWith("+")) line.remove(0,1); // line continuation
+    if (line.at(0) == '+') line[0] = ' '; // line continuation
     ModelCard += line;
   }
   ModelCard = ModelCard.trimmed();
@@ -80,6 +80,8 @@ int fillFromSpiceDialog::parseModelcard()
       continue;
     }
   }
+  if (!tok.isEmpty())
+    tokens.append(tok);
 
   if (tokens.count() <= 3) {
     return wrongModel;
@@ -87,6 +89,10 @@ int fillFromSpiceDialog::parseModelcard()
 
   ModelName = tokens.at(1);
   ModelType = tokens.at(2);
+
+  if (!Comp->SpiceModelcards.contains(ModelType.toUpper())) {
+    return modelMismatch;
+  }
 
   int cnt = tokens.count();
   // fill propperties list
@@ -155,6 +161,11 @@ void fillFromSpiceDialog::showErrorMsg(int code)
   switch (code) {
   case noModel:
     msg = tr("No .MODEL directive found");
+    break;
+  case modelMismatch:
+    msg = tr("Device type doesn't match the model type. \n");
+    msg += tr("Model found: ") + ModelType.toUpper() + "\n";
+    msg += tr("Models expected: ") + Comp->SpiceModelcards.join(" ") + "\n";
     break;
   case wrongModel:
     msg = tr("SPICE model parse error");
