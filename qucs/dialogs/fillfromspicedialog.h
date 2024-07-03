@@ -2,6 +2,7 @@
 #define FILLFROMSPICEDIALOG_H
 
 #include <QDialog>
+#include <QMap>
 
 class Component;
 class Schematic;
