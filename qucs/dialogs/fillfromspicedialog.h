@@ -20,7 +20,8 @@ private:
   QString ModelName;
   QString ModelType;
 
-  enum errorCode { noError = 0, noModel = 1, modelMismatch = 2, wrongModel = 3 };
+  enum errorCode { noError = 0, noModel = 1, modelMismatch = 2, wrongModel = 3, subcirFound = 4,
+                   numberError = 5 };
 
   QPlainTextEdit *edtModel;
   QPushButton *btnOK, *btnCancel;

@@ -33,8 +33,10 @@ fillFromSpiceDialog::fillFromSpiceDialog(Component *pc, QWidget *w)
   l1->addWidget(btnCancel);
   l1->addStretch();
   top->addLayout(l1);
+
   this->setLayout(top);
   this->setMinimumWidth(400);
+  this->setWindowTitle(tr("Import SPICE model"));
 
 }
 
@@ -51,6 +53,10 @@ int fillFromSpiceDialog::parseModelcard()
   }
   ModelCard = ModelCard.trimmed();
   ModelCard = ModelCard.toLower();
+
+  if (ModelCard.contains(".subckt")) {
+    return subcirFound;
+  }
 
   if (!ModelCard.startsWith(".model")) {
     return noModel;
@@ -169,6 +175,11 @@ void fillFromSpiceDialog::showErrorMsg(int code)
     break;
   case wrongModel:
     msg = tr("SPICE model parse error");
+    break;
+  case subcirFound:
+    msg = tr("Subcircuit model (.SUBCKT) found\n"
+             "Modelcard (.MODEL) expected");
+    break;
   default:
     break;
   }
