@@ -20,6 +20,7 @@
 #include "schematic.h"
 #include "settings.h"
 #include "misc.h"
+#include "fillfromspicedialog.h"
 
 #include <cmath>
 
@@ -408,6 +409,9 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   connect(ButtUp,   SIGNAL(clicked()), SLOT(slotButtUp()));
   connect(ButtDown, SIGNAL(clicked()), SLOT(slotButtDown()));
 
+  ButtFillFromSpice = new QPushButton(tr("Fill from SPICE .MODEL"));
+  bg->addWidget(ButtFillFromSpice,2,0,1,2);
+  connect(ButtFillFromSpice, SIGNAL(clicked(bool)), this, SLOT(slotFillFromSpice()));
 
   // ...........................................................
   QHBoxLayout *h2 = new QHBoxLayout;
@@ -1561,4 +1565,12 @@ QStringList ComponentDialog::getSimulationList()
         }
     }
     return sim_lst;
+}
+
+
+void ComponentDialog::slotFillFromSpice()
+{
+  fillFromSpiceDialog *dlg = new fillFromSpiceDialog(Comp, this);
+  dlg->exec();
+  delete dlg;
 }
