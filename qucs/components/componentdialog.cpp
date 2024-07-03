@@ -409,7 +409,12 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   connect(ButtUp,   SIGNAL(clicked()), SLOT(slotButtUp()));
   connect(ButtDown, SIGNAL(clicked()), SLOT(slotButtDown()));
 
+  QStringList allowedFillFromSPICE;
+  allowedFillFromSPICE<<"_BJT"<<"JFET"<<"MOSFET"<<"_MOSFET"<<"Diode";
   ButtFillFromSpice = new QPushButton(tr("Fill from SPICE .MODEL"));
+  if (!allowedFillFromSPICE.contains(Comp->Model)) {
+    ButtFillFromSpice->setEnabled(false);
+  }
   bg->addWidget(ButtFillFromSpice,2,0,1,2);
   connect(ButtFillFromSpice, SIGNAL(clicked(bool)), this, SLOT(slotFillFromSpice()));
 
@@ -1571,6 +1576,9 @@ QStringList ComponentDialog::getSimulationList()
 void ComponentDialog::slotFillFromSpice()
 {
   fillFromSpiceDialog *dlg = new fillFromSpiceDialog(Comp, this);
-  dlg->exec();
+  auto r = dlg->exec();
+  if (r == QDialog::Accepted) {
+    updateCompPropsList();
+  }
   delete dlg;
 }

@@ -27,6 +27,8 @@ private:
 
   int parseModelcard();
   void fillCompProps();
+  void showErrorMsg(int code);
+  QString convertNumNotation(const QString &value);
 
 private slots:
   void slotOK();
