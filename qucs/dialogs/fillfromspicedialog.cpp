@@ -111,10 +111,10 @@ int fillFromSpiceDialog::parseModelcard()
         if (name == "cjo") name = "cj0";
       }
       if (ModelType == "nmos" || ModelType == "pmos") {
-        if (name == "vto") name == "vt0";
+        if (name == "vto") name = "vt0";
       }
       if (ModelType == "njf" || ModelType == "pjf") {
-        if (name == "vto") name == "vt0";
+        if (name == "vto") name = "vt0";
       }
       if (value.endsWith("meg")) {
         value.chop(3);
