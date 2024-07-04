@@ -65,8 +65,6 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   btnOpenSym = new QPushButton(tr("Open"));
   edtSymFile = new QLineEdit();
   connect(btnOpenSym,SIGNAL(clicked(bool)),this,SLOT(slotBtnOpenSym()));
-  connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotSetSymbol()));
-  connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
 
   chbShowLib = new QCheckBox(tr("Show"));
   chbShowLib->setChecked(show_lib);
@@ -197,6 +195,8 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   connect(tbwPinsTable,SIGNAL(cellChanged(int,int)),this,SLOT(slotChanged()));
   connect(listSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
   connect(cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
+  connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotSetSymbol()));
+  connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
 
 }
 
@@ -307,6 +307,7 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
 
 void SpiceLibCompDialog::slotSetSymbol()
 {
+  int result = -1;
   if (rbAutoSymbol->isChecked()) {
     tbwPinsTable->setEnabled(false);
     listSymPattern->setEnabled(false);
@@ -315,6 +316,7 @@ void SpiceLibCompDialog::slotSetSymbol()
     QString s1 = "";
     QString s2 = "SpLib";
     symbol->setSymbol(s1, s1, s2);
+    result = 0;
     symbol->setWarning(tr("No symbol loaded"));
     symbolPinsCount = 0;
   } else if (rbSymFromTemplate->isChecked()) {
@@ -324,16 +326,22 @@ void SpiceLibCompDialog::slotSetSymbol()
     btnOpenSym->setEnabled(false);
     QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
     QString file = dir_name + listSymPattern->currentItem()->text() + ".sym";
-    symbol->loadSymFile(file);
+    result = symbol->loadSymFile(file);
     symbolPinsCount = symbol->getPortsNumber();
   } else if (rbUserSym->isChecked()) {
     tbwPinsTable->setEnabled(true);
     listSymPattern->setEnabled(false);
     edtSymFile->setEnabled(true);
     btnOpenSym->setEnabled(true);
-    symbol->loadSymFile(edtSymFile->text());
+    result = symbol->loadSymFile(edtSymFile->text());
     symbolPinsCount = symbol->getPortsNumber();
   }
+
+  if (result < 0) {
+    QMessageBox::critical(this,tr("Error"),tr("Failed to load symbol file!"));
+    return;
+  }
+
   for (int i = 0; i < tbwPinsTable->rowCount(); i++) {
     QTableWidgetItem *itm = new QTableWidgetItem("NC");
     tbwPinsTable->setItem(i,1,itm);
