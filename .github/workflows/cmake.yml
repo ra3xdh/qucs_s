@@ -1,4 +1,4 @@
-name: CMake
+name: CMake Linux Qt5
 
 on:
   push:
