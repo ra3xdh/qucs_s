@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-22.04
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
           submodules: recursive
 
@@ -59,9 +59,9 @@ jobs:
              mv *.AppImage Qucs-S-x86_64-Linux.AppImage
 
     - name: 'Upload artifact: AppImage'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-          name: Qucs-S-x86_64-Linux.AppImage
+          name: Qucs-S-x86_64-Linux
           path: Qucs-S-x86_64-Linux.AppImage
                 
  
