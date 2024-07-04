@@ -356,6 +356,7 @@ jobs:
           gh release create continuous_build \
             $zip_files \
             $dmg_files \
+            $appimage_files \
             -p \
             --repo $GITHUB_REPOSITORY \
             --title "Continuous build" \
