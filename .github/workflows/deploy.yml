@@ -14,8 +14,7 @@ env:
   BUILD_TYPE: Release
   QT_VERSION: 6.7.2
   QUCS_MACOS_BIN: ./build/qucs/qucs-s.app/Contents/MacOS/bin
-  QUCS_MACOS_RESOURCES: ./build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s/
-  GITHUB_SHA: ${{ github.sha }}::7
+  QUCS_MACOS_RESOURCES: ./build/qucs/qucs-s.app/Contents/MacOS/re/qucs-s/
   
 jobs:
   build-mac-intel:
@@ -91,7 +90,7 @@ jobs:
         codesign --force --deep --sign - ./build/qucs/qucs-s.app
         npm install --global create-dmg
         create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_x86_64_${{ env.GITHUB_SHA }}.dmg
+        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_x86_64.dmg
 
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
@@ -173,7 +172,7 @@ jobs:
         codesign --force --deep --sign - ./build/qucs/qucs-s.app
         npm install --global create-dmg
         create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_arm64_${{ env.GITHUB_SHA }}.dmg
+        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_arm64.dmg
     
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
@@ -262,7 +261,7 @@ jobs:
     - name: Create zip archive for release
       run: |
         cd build/qucs-suite
-        zip -r ../qucs_s_${{ matrix.environment }}_snapshot.zip ./bin ./share
+        zip -r ../qucs_s_${{ matrix.environment }}_snapshot.zip ./bin ./re
         cd ../..
         
     - name: Upload build artifacts
