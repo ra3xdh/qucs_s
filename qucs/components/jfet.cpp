@@ -79,6 +79,8 @@ JFET::JFET() {
     Model = "JFET";
     Name = "T";
     SpiceModel = "J";
+    SpiceModelcards.append("NJF");
+    SpiceModelcards.append("PJF");
 }
 
 // -------------------------------------------------------

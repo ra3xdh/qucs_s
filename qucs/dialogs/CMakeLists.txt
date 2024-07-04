@@ -27,6 +27,7 @@ vasettingsdialog.h
 textboxdialog.h
 displaydialog.h
 tuner.h
+fillfromspicedialog.h
 )
 
 
@@ -41,6 +42,7 @@ sweepdialog.cpp			exportdialog.cpp loaddialog.cpp
 aboutdialog.cpp
 displaydialog.cpp
 tuner.cpp
+fillfromspicedialog.cpp
 )
 
 SET(DIALOGS_MOC_HDRS
@@ -66,6 +68,7 @@ vasettingsdialog.h
 textboxdialog.h
 displaydialog.h
 tuner.h
+fillfromspicedialog.h
 )
 
 SET(DIALOGS_UIC_HDRS

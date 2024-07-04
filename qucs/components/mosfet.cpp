@@ -29,6 +29,9 @@ MOSFET::MOSFET()
   tx = x2+4;
   ty = y1+4;
   Model = "_MOSFET";
+  SpiceModelcards.append("NMOS");
+  SpiceModelcards.append("PMOS");
+  SpiceModelcards.append("VDMOS");
 }
 
 // -------------------------------------------------------
