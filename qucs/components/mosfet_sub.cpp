@@ -134,6 +134,8 @@ MOSFET_sub::MOSFET_sub()
   tx = x2+4;
   ty = y1+4;
   Model = "MOSFET";
+  SpiceModelcards.append("NMOS");
+  SpiceModelcards.append("PMOS");
 }
 
 // -------------------------------------------------------

@@ -105,6 +105,7 @@ public:
   QString  Model, Name;
   QString  Description;
   QString  SpiceModel;
+  QStringList SpiceModelcards; // one device may have two modelcards like NPN,PNP
   QPen WrongSimulatorPen;
 
   void paintIcon(QPixmap *pixmap);

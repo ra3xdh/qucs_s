@@ -29,6 +29,8 @@ BJT::BJT()
   ty = y1+4;
   Model = "_BJT";
   SpiceModel="Q";
+  SpiceModelcards.append("NPN");
+  SpiceModelcards.append("PNP");
 }
 
 // -------------------------------------------------------

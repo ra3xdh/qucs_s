@@ -89,6 +89,7 @@ Diode::Diode()
   Model = "Diode";
   Name  = "D";
   SpiceModel = "D";
+  SpiceModelcards.append("D");
 }
 
 Component* Diode::newOne()

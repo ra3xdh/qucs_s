@@ -75,6 +75,7 @@ private slots:
   void slotStepEntered();
   void slotNumberEntered();
   void slotHHeaderClicked(int headerIdx);
+  void slotFillFromSpice();
 
 protected slots:
     void reject();
@@ -91,6 +92,7 @@ private:
   QLabel      *Name, *Description;
   QPushButton *BrowseButt, *EditButt, *ButtAdd, *ButtRem;
   QPushButton *ButtUp, *ButtDown;
+  QPushButton *ButtFillFromSpice;
   QCheckBox   *disp;
   Component   *Comp;
   Schematic   *Doc;
