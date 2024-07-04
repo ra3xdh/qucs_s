@@ -15,7 +15,7 @@ env:
   QT_VERSION: 6.7.2
   QUCS_MACOS_BIN: ./build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: ./build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s/
-  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_SHA: ${{ github.sha }}::7
   
 jobs:
   build-mac-intel:
@@ -91,8 +91,7 @@ jobs:
         codesign --force --deep --sign - ./build/qucs/qucs-s.app
         npm install --global create-dmg
         create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        echo "SHORT_SHA=${GITHUB_SHA::7}" >> $env:GITHUB_ENV
-        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_x86_64_${{ env.SHORT_SHA }}.dmg
+        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_x86_64_${{ env.GITHUB_SHA }}.dmg
 
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
@@ -174,8 +173,7 @@ jobs:
         codesign --force --deep --sign - ./build/qucs/qucs-s.app
         npm install --global create-dmg
         create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        echo "SHORT_SHA=${GITHUB_SHA::7}" >> $env:GITHUB_ENV
-        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_arm64_${{ env.SHORT_SHA }}.dmg
+        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_arm64_${{ env.GITHUB_SHA }}.dmg
     
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
@@ -184,7 +182,6 @@ jobs:
         path: 'build/*.dmg'
       
   build-windows:
-    if: false
     runs-on: windows-2022
     strategy:
       fail-fast: false
@@ -279,9 +276,9 @@ jobs:
     if: github.event_name == 'push'
     needs:
      #- build-linux
-     #- build-mac-intel
+     - build-mac-intel
      - build-mac-arm
-     #- build-windows
+     - build-windows
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
