@@ -159,7 +159,7 @@ void XSPICE_CMbuilder::createCModelTree(QString &output)
     QFile mkfile(cmdir+"/Makefile");
     if (mkfile.open(QIODevice::WriteOnly)) {
         QTextStream stream(&mkfile);
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
         QString rules_file = QucsSettings.BinDir+"../share/" QUCS_NAME "/xspice_cmlib/cmlib.mingw32.rules.mk";
 #else
         QString rules_file = QucsSettings.BinDir+"../share/" QUCS_NAME "/xspice_cmlib/cmlib.linux.rules.mk";
@@ -341,7 +341,7 @@ void XSPICE_CMbuilder::compileCMlib(QString &output)
     QProcess *make = new QProcess();
     make->setProcessChannelMode(QProcess::MergedChannels);
     make->setWorkingDirectory(cmdir);
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
     make->start("mingw32-make.exe",QStringList()); // For Unix
 #else
     make->start("make",QStringList()); // For Unix

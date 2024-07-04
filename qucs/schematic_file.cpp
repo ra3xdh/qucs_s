@@ -666,7 +666,7 @@ int Schematic::saveDocument()
           //pick admsXml from settings
           QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
 
-    #ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
           admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
     #else
           admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");

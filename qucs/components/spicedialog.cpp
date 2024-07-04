@@ -359,7 +359,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
     qDebug() << "Run spice preprocessor (perl)";
     bool piping = true;
     QString script;
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
     QString interpreter = "tinyperl.exe";
 #else
     QString interpreter = "perl";
