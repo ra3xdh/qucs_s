@@ -14,7 +14,7 @@ env:
   BUILD_TYPE: Release
   QT_VERSION: 6.7.2
   QUCS_MACOS_BIN: ./build/qucs/qucs-s.app/Contents/MacOS/bin
-  QUCS_MACOS_RESOURCES: ./build/qucs/qucs-s.app/Contents/MacOS/re/qucs-s/
+  QUCS_MACOS_RESOURCES: ./build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s/
   
 jobs:
   build-linux-appimage-qt6:
