@@ -47,7 +47,7 @@
 #include "components/vhdlfile.h"
 #include "misc.h"
 
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
 #define executableSuffix ".exe"
 #else
 #define executableSuffix ""
@@ -324,7 +324,7 @@ void SimMessage::slotFinishSpiceNetlist(int status )
 }
 
 // ------------------------------------------------------------------------
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
 #include <windows.h>
 static QString pathName(QString longpath) {
   const char * lpath = QDir::toNativeSeparators(longpath).toLatin1().data();
@@ -352,7 +352,7 @@ void SimMessage::startSimulator()
   QString SimTime;
   QStringList Arguments;
   QString SimPath = QDir::toNativeSeparators(QucsSettings.tempFilesDir.absolutePath());
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
   QString QucsDigiLib = "qucs_mkdigilib.bat";
   QString QucsDigi = "qucs_run_hdl.bat";
   QString QucsVeri = "qucs_run_verilog.bat";
@@ -380,7 +380,7 @@ void SimMessage::startSimulator()
       SimTime = Doc->SimTime;
       QString libs = Doc->Libraries.toLower();
       /// \todo \bug error: unrecognized command line option '-Wl'
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
       if(libs.isEmpty()) {
         libs = "";
       }
@@ -565,7 +565,7 @@ void SimMessage::startSimulator()
                     << "-c";
       } else {
 /// \todo \bug error: unrecognized command line option '-Wl'
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
     Program = QDir::toNativeSeparators(pathName(QucsSettings.BinDir + QucsDigi));
     Arguments << QDir::toNativeSeparators(QucsSettings.tempFilesDir.filePath("netlist.txt"))
               << DataSet
@@ -598,7 +598,7 @@ void SimMessage::startSimulator()
 
   ProgressText = "";
 
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
   QString sep(";"); // path separator
 #else
   QString sep(":");
@@ -758,10 +758,10 @@ void SimMessage::slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus )
   int stat = exitCode;
 
   if ((exitStatus != QProcess::NormalExit) &&
-#ifdef _WIN32
-// due to a bug in Qt, negative error codes are erroneously interpreted
-//   as "program crashed", see https://bugreports.qt.io/browse/QTBUG-28735
-// When we will switch to Qt5(.1) this code can be removed...
+#if defined(_WIN32) || defined(__MINGW32__)
+/*! \todo:  due to a bug in Qt, negative error codes are erroneously interpreted
+            as "program crashed", see https://bugreports.qt.io/browse/QTBUG-28735
+            When we will switch to Qt5(.1) this code can be removed...*/
       (uint)stat >= 0x80000000U && (uint)stat < 0xD0000000U &&
 #endif
       !simKilled) { // as when killed by user exitStatus will be QProcess::CrashExit

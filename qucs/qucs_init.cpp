@@ -660,12 +660,12 @@ void QucsApp::initActions()
   helpGetStart->setWhatsThis(tr("Getting Started\n\nShort introduction into Qucs"));
   connect(helpGetStart, SIGNAL(triggered()), SLOT(slotGettingStarted()));
 
-  helpAboutApp = new QAction(tr("&About Qucs-S..."), this);
+  helpAboutApp = new QAction(tr("&About qucs-s"), this);
   helpAboutApp->setStatusTip(tr("About the application"));
   helpAboutApp->setWhatsThis(tr("About\n\nAbout the application"));
-  connect(helpAboutApp, SIGNAL(triggered()), SLOT(slotHelpAbout()));
+  connect(helpAboutApp, SIGNAL(triggered()),this, SLOT(slotHelpAbout()));
 
-  helpAboutQt = new QAction(tr("About Qt..."), this);
+  helpAboutQt = new QAction(tr("&About Qt"), this);
   helpAboutQt->setStatusTip(tr("About Qt"));
   helpAboutQt->setWhatsThis(tr("About Qt\n\nAbout Qt by Trolltech"));
   connect(helpAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));

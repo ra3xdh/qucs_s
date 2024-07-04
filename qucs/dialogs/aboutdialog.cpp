@@ -225,19 +225,19 @@ void AboutDialog::setAuthorsText() {
   QString authorsText;
   authorsText = tr("Qucs-S project team:");
   authorsText += "<ul>";
-  for(QString& tStr : qucs_sDevs) {
+  for(const auto& tStr : qucs_sDevs) {
     authorsText += ("<li>" + tStr + "</li>");
   }
   authorsText += "</ul>";
 
   authorsText += tr("Based on Qucs project developed by:") + "<ul>";
 
-  for(QString& tStr : currAuths) {
+  for(const auto& tStr : currAuths) {
     authorsText += ("<li>" + tStr + "</li>");
   }
   authorsText += "</ul>";
   authorsText += tr("Previous Developers") + "<ul>";
-  for(QString& tStr : prevDevs) {
+  for(const auto& tStr : prevDevs) {
     authorsText += ("<li>" + tStr + "</li>");
   }
   authorsText += "</ul>";
@@ -248,7 +248,7 @@ void AboutDialog::setAuthorsText() {
 void AboutDialog::setTrText() {
   QString trText;
   trText = tr("GUI translations :") + "<ul>";
-  for(QString& tStr : trAuths) {
+  for(const auto& tStr : trAuths) {
     trText += ("<li>" + tStr + "</li>");
   }
   trText += "</ul>";

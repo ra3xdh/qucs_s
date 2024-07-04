@@ -264,7 +264,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   if (preprocessor != "none") {
     bool piping = true;
     QStringList script;
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
     QString interpreter = "tinyperl.exe";
 #else
     QString interpreter = "perl";

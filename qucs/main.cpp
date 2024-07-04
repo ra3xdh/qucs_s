@@ -51,11 +51,11 @@
 #include "extsimkernels/ngspice.h"
 #include "extsimkernels/xyce.h"
 
-#ifdef _WIN32
+#if defined(_WIN32) ||defined(__MINGW32__)
 #include <windows.h>  //for OutputDebugString
 #endif
 
-#ifdef __MINGW32__
+#if defined(_WIN32) ||defined(__MINGW32__)
 #define executableSuffix ".exe"
 #else
 #define executableSuffix ""
@@ -842,7 +842,7 @@ int main(int argc, char *argv[])
   else {
       // default admsXml bindir same as Qucs
       QString admsExec;
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
       admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml.exe");
 #else
       admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml");
@@ -859,7 +859,7 @@ int main(int argc, char *argv[])
   else  {
       // default ASCO bindir same as Qucs
       QString ascoExec;
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
       ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco.exe");
 #else
       ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco");

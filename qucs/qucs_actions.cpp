@@ -742,7 +742,7 @@ void QucsApp::editFile(const QString& File)
 
       if (QucsSettings.Editor.toLower().contains("qucsedit")) {
 
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
   prog = QUCS_NAME"edit.exe";
 #elif __APPLE__
   prog = "qucsedit.app/Contents/MacOS/qucsedit";
@@ -905,7 +905,7 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
   QString tooldir;
   if (qucs_tool) tooldir = QucsSettings.QucsatorDir;
   else tooldir = QucsSettings.BinDir;
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
   QString cmd = QDir::toNativeSeparators("\""+tooldir + prog + ".exe\"");
 #elif __APPLE__
   QString cmd = QDir::toNativeSeparators(tooldir + prog + ".app/Contents/MacOS/" + prog);
@@ -1630,7 +1630,7 @@ void QucsApp::slotBuildModule()
 
     QString make;
 
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
     make = "mingw32-make.exe";    // must be on the path!
 #else
     make = "make";                // must be on the path!
@@ -1656,7 +1656,7 @@ void QucsApp::slotBuildModule()
 
     QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
 
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
     admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
 #else
     admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");
