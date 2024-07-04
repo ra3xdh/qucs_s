@@ -333,6 +333,10 @@ void SpiceLibCompDialog::slotSetSymbol()
     listSymPattern->setEnabled(false);
     edtSymFile->setEnabled(true);
     btnOpenSym->setEnabled(true);
+    if (edtSymFile->text().isEmpty()) {
+      symbolPinsCount = 0;
+      return;
+    }
     result = symbol->loadSymFile(edtSymFile->text());
     symbolPinsCount = symbol->getPortsNumber();
   }
