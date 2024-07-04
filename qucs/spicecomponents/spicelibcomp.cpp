@@ -85,7 +85,7 @@ void SpiceLibComp::createSymbol()
 {
   int No;
   QString FileName;
-  QString symname = Props.at(2)->Value;
+  QString symname = misc::properAbsFileName(Props.at(2)->Value, containingSchematic);
   if (QFileInfo::exists(symname)) {
     FileName = symname;
   } else {
