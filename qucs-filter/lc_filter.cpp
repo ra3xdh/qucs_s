@@ -172,7 +172,7 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
       eqn_string = QString("<Eqn Eqn1 1 290 %1 -28 15 0 0 \"dBS21=dB(S[2,1])\" 1 \"dBS11=dB(S[1,1])\" 1 \"yes\" 0>\n").arg(yc+10);
       break;
   case spicecompat::simNgspice :
-      eqn_string = QString("<NutmegEq NutmegEq1 1 290 %1 -28 15 0 0 \"sp\" 1 \"dBS21=dB(S_2_1)\" 1 \"dBS11=dB(S_1_1)\" 1>\n").arg(yc+10);
+      eqn_string = QString("<NutmegEq NutmegEq1 1 290 %1 -28 15 0 0 \"SP1\" 1 \"dBS21=dB(S_2_1)\" 1 \"dBS11=dB(S_1_1)\" 1>\n").arg(yc+10);
       break;
   case spicecompat::simSpiceOpus:
   case spicecompat::simXyce:

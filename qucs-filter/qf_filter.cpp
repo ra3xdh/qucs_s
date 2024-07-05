@@ -19,7 +19,9 @@
 #include <sstream>
 #include <stdlib.h>
 
+#include "qucsfilter.h"
 #include "qf_filter.h"
+#include "../qucs/extsimkernels/spicecompat.h"
 
 namespace qf {
 
@@ -278,9 +280,23 @@ QString filter::to_qucs() {
   s += "<.SP SP1 1 70 " + QString::number(400)+ " 0 50 0 0 \"log\" 1 \"";
   s += num2str(Value) + "Hz\" 1 \"" + num2str(Value2);
   s += "Hz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
-  s += "<Eqn Eqn1 1 260 " + QString::number(410);
-  s += " -28 15 0 0 \"dBS21=dB(S[2,1])\" 1 ";
-  s += "\"dBS11=dB(S[1,1])\" 1 \"yes\" 0>\n";
+
+  QString eqn_string;
+  switch (QucsSettings.DefaultSimulator) {
+  case spicecompat::simQucsator:
+    eqn_string += "<Eqn Eqn1 1 260 " + QString::number(410);
+    eqn_string += " -28 15 0 0 \"dBS21=dB(S[2,1])\" 1 ";
+    eqn_string += "\"dBS11=dB(S[1,1])\" 1 \"yes\" 0>\n";
+    break;
+  case spicecompat::simNgspice :
+    eqn_string = QString("<NutmegEq NutmegEq1 1 260 410 -28 15 0 0 \"SP1\" 1 \"dBS21=dB(S_2_1)\" 1 \"dBS11=dB(S_1_1)\" 1>\n");
+    break;
+  case spicecompat::simSpiceOpus:
+  case spicecompat::simXyce:
+  default: break;
+  }
+
+  s+= eqn_string;
   
   s += "</Components>\n";
   s += "<Wires>\n";
