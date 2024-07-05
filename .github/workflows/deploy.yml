@@ -7,10 +7,10 @@ on:
     branches: [ "master", "current", "release/*" ]
 
 env:
-  APP_NAME: "Qucs-S Simulator"
+  APP_NAME: "Qucs-S"
   EXECUTABLE_NAME: "qucs-s"
   VERSION: "24.2.1"
-  PUBLISHER_NAME: "The Qucs Team"
+  PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
   QT_VERSION: 6.7.2
   QUCS_MACOS_BIN: ./build/qucs/qucs-s.app/Contents/MacOS/bin
@@ -56,13 +56,13 @@ jobs:
              ./linuxdeploy-x86_64.AppImage --appdir ${{github.workspace}}/AppDir --desktop-file=${{github.workspace}}/AppDir/usr/share/applications/qucs-s.desktop --icon-file=${{github.workspace}}/AppDir/usr/share/icons/hicolor/256x256/apps/qucs-s.png --plugin=qt --output appimage
              rm linuxdeploy-x86_64.AppImage
              rm linuxdeploy-plugin-qt-x86_64.AppImage
-             mv *.AppImage Qucs-S-x86_64-Linux.AppImage
+             mv *.AppImage ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
 
     - name: 'Upload artifact: AppImage'
       uses: actions/upload-artifact@v4
       with:
-          name: Qucs-S-x86_64-Linux
-          path: Qucs-S-x86_64-Linux.AppImage
+          name: ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64
+          path: ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
                 
  
   build-mac-intel:
@@ -138,13 +138,13 @@ jobs:
         codesign --force --deep --sign - ./build/qucs/qucs-s.app
         npm install --global create-dmg
         create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_x86_64.dmg
+        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOS-x86_64.dmg
 
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
       with:
-        name: qucs_s_macos_x86_64
-        path: 'build/*.dmg'
+        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-x86_64
+        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-x86_64.dmg
 
       
   build-mac-arm:
@@ -220,13 +220,13 @@ jobs:
         codesign --force --deep --sign - ./build/qucs/qucs-s.app
         npm install --global create-dmg
         create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        cp -pR ./build/qucs/qucs-*.dmg ./build/qucs_s_${{env.VERSION}}_arm64.dmg
+        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOS-arm64.dmg
     
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
       with:
-        name: qucs_s_macos_arm64
-        path: 'build/*.dmg'
+        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-arm64
+        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-arm64.dmg
       
   build-windows:
     runs-on: windows-2022
@@ -309,14 +309,14 @@ jobs:
     - name: Create zip archive for release
       run: |
         cd build/qucs-suite
-        zip -r ../qucs_s_${{ matrix.environment }}_snapshot.zip ./bin ./re
+        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip ./bin ./re
         cd ../..
         
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: qucs_s_${{ matrix.environment }}
-        path: build/qucs_s_${{ matrix.environment }}_snapshot.zip
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}-win64
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip
 
   create-release:
     runs-on: ubuntu-latest
