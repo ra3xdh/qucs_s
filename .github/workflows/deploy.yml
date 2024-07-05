@@ -5,7 +5,8 @@ on:
     branches: [ "master", "current", "release/*" ]
   pull_request:
     branches: [ "master", "current", "release/*" ]
-
+  workflow_dispatch:
+  
 env:
   APP_NAME: "Qucs-S"
   EXECUTABLE_NAME: "qucs-s"
@@ -335,6 +336,16 @@ jobs:
       with:
         path: ~/artifacts
 
+    - name: Calculate SHA-256 checksums
+      run: |
+        cd ~/artifacts
+        > hashes.sha256
+        for file in $(find . -type f \( -name "*.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
+          filename=$(basename "$file")
+          sha256sum "$file" | awk -v fname="$filename" '{print $1 " *" fname}' >> hashes.sha256
+        done
+        cd ..
+
     - name: Check if continuous_build release exists
       run: |
         if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
@@ -357,6 +368,7 @@ jobs:
             $zip_files \
             $dmg_files \
             $appimage_files \
+            ~/artifacts/hashes.sha256 \
             -p \
             --repo $GITHUB_REPOSITORY \
             --title "Continuous build" \
