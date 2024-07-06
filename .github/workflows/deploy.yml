@@ -310,7 +310,7 @@ jobs:
     - name: Create zip archive for release
       run: |
         cd build/qucs-suite
-        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip ./bin ./re
+        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip ./bin ./share
         cd ../..
         
     - name: Upload build artifacts
