@@ -50,13 +50,11 @@ void Node::paint(QPainter* painter) const {
       return;
 
     case 2:
-      if (Connections.getFirst()->Type == isWire) {
-        if (Connections.getLast()->Type == isWire) {
+      if (Connections.getFirst()->Type == isWire && Connections.getLast()->Type == isWire) {
           painter->restore();
           return;
-        }
-        painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
       }
+      painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
       break;
 
     default:
