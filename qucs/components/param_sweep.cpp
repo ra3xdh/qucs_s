@@ -150,6 +150,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 
         bool modelsweep = false; // Find component and its modelstring
         bool compfound = false;
+        bool temper_sweep = false;
         QString mod,mod_par;
 
         if (!par.contains('@')) {
@@ -172,14 +173,21 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         if (pc != NULL) compfound = true;
         else compfound = false;
 
+        if (step_var == "temp" || step_var == "temper") temper_sweep = true;
+
         if (modelsweep) { // Model parameter sweep
             s += QString("altermod %1 %2 = $%3_act%4").arg(mod).arg(mod_par).arg(step_var).arg(nline_char);
         } else {
             QString mswp = getProperty("SweepModel")->Value;
-            if (mswp == "true")
-                s += QString("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
-            else if (compfound) s += QString("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
-            else s += QString("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
+            if (mswp == "true") {
+              s += QString("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+            } else if (temper_sweep) {
+              s += QString("option temp = $%1_act%2").arg(step_var).arg(nline_char);
+            } else if (compfound) {
+              s += QString("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+            } else {
+              s += QString("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
+            }
         }
     }
     return s;

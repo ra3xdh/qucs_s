@@ -69,6 +69,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   Validator2 = new QRegularExpressionValidator(Expr, this);
   Expr.setPattern("[\\w_.,\\(\\) @:\\[\\]]+");  // valid expression for property 'NameEdit'. Space to enable Spice-style par sweep
   ValRestrict = new QRegularExpressionValidator(Expr, this);
+  Expr.setPattern("[A-Za-z][A-Za-z0-9_]+");
+  ValName = new QRegularExpressionValidator(Expr,this);
 
   checkSim  = 0;  comboSim  = 0;  comboType  = 0;  checkParam = 0;
   editStart = 0;  editStop = 0;  editNumber = 0;
@@ -286,7 +288,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   CompNameEdit = new QLineEdit;
   h5->addWidget(CompNameEdit);
 
-  CompNameEdit->setValidator(ValRestrict);
+  CompNameEdit->setValidator(ValName);
   connect(CompNameEdit, SIGNAL(returnPressed()), SLOT(slotButtOK()));
 
   showName = new QCheckBox(tr("display in schematic"));

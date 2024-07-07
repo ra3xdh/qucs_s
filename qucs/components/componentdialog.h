@@ -83,7 +83,8 @@ protected slots:
 
 private:
   QVBoxLayout *all;   // the mother of all widgets
-  QValidator  *Validator, *ValRestrict, *Validator2;
+  QValidator  *Validator, *ValRestrict, *Validator2,
+              *ValName;
   QRegularExpression     Expr;
   QIntValidator *ValInteger;
   QTableWidget  *prop;
