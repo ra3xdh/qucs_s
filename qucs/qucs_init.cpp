@@ -247,7 +247,11 @@ void QucsApp::initActions()
   connect(editPaste, SIGNAL(toggled(bool)), SLOT(slotEditPaste(bool)));
 
   editDelete = new QAction(QIcon((":/bitmaps/svg/editdelete.svg")), tr("&Delete"), this);
+#ifdef __APPLE__
+  editDelete->setShortcut(QKeySequence::Backspace);
+#else
   editDelete->setShortcut(QKeySequence::Delete);
+#endif  
   editDelete->setStatusTip(tr("Deletes the selected components"));
   editDelete->setWhatsThis(tr("Delete\n\nDeletes the selected components"));
   editDelete->setCheckable(true);
