@@ -18,6 +18,8 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   symbolPinsCount = 0;
   isChanged = false;
   libError = false;
+  prev_col = -1;
+  prev_row = -1;
 
   QString file = comp->Props.at(0)->Value;
   if (!file.isEmpty()) {
@@ -358,7 +360,14 @@ void SpiceLibCompDialog::slotTableCellDoubleClick()
 {
   int r = tbwPinsTable->currentRow();
   int c = tbwPinsTable->currentColumn();
-  if (c == 0) return; // do not edit the forst column
+  if (c == 0) return; // do not edit the first column
+
+  if (prev_col >= 0 && prev_row >= 0) { // remove combo box from previous cell
+    QTableWidgetItem *itm = new QTableWidgetItem("NC");
+    tbwPinsTable->removeCellWidget(prev_row, prev_col);
+    tbwPinsTable->setItem(prev_row, prev_col, itm);
+  }
+
   QComboBox *cbxSelectPin = new QComboBox;
   cbxSelectPin->addItem("NC");
   for (int i = 1; i <= symbolPinsCount; i++) {
@@ -381,6 +390,9 @@ void SpiceLibCompDialog::slotTableCellDoubleClick()
   }
   tbwPinsTable->setCellWidget(r,c,cbxSelectPin);
   connect(cbxSelectPin,SIGNAL(activated(int)),this,SLOT(slotSelectPin()));
+
+  prev_col = c; // remebmebr cell with combo box
+  prev_row = r;
 }
 
 void SpiceLibCompDialog::slotSelectPin()
@@ -392,6 +404,9 @@ void SpiceLibCompDialog::slotSelectPin()
   QTableWidgetItem *itm = new QTableWidgetItem(pin);
   tbwPinsTable->removeCellWidget(r,c);
   tbwPinsTable->setItem(r,c,itm);
+
+  prev_col = -1; // clear cell index with combo box
+  prev_row = -1;
 }
 
 void SpiceLibCompDialog::slotBtnOpenLib()

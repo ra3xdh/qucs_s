@@ -20,6 +20,8 @@ private:
   bool isChanged;
   bool libError;
 
+  int prev_row, prev_col;
+
   QString lastSymbolDir;
   QString lastLibDir;
 
