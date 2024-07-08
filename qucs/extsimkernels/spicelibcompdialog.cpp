@@ -388,6 +388,7 @@ void SpiceLibCompDialog::slotTableCellDoubleClick()
       cbxSelectPin->addItem(QString::number(i));
     }
   }
+  tbwPinsTable->item(r,c)->setText("");
   tbwPinsTable->setCellWidget(r,c,cbxSelectPin);
   connect(cbxSelectPin,SIGNAL(activated(int)),this,SLOT(slotSelectPin()));
 
