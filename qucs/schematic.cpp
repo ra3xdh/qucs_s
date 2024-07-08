@@ -2626,6 +2626,15 @@ void Schematic::contentsDragLeaveEvent(QDragLeaveEvent *)
         formerAction->setChecked(true); // restore old action
 }
 
+void Schematic::contentsNativeGestureZoomEvent( QNativeGestureEvent* Event) {
+  App->editText->setHidden(true); // disable edit of component property
+
+  const auto factor = 1.0 + Event->value();
+
+  const auto pointer = mapFromGlobal(Event->globalPosition().toPoint());
+  zoomAroundPoint(factor,pointer);
+}
+
 // ---------------------------------------------------
 void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
 {
