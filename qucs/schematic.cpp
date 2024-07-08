@@ -2630,8 +2630,11 @@ void Schematic::contentsNativeGestureZoomEvent( QNativeGestureEvent* Event) {
   App->editText->setHidden(true); // disable edit of component property
 
   const auto factor = 1.0 + Event->value();
-
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
   const auto pointer = mapFromGlobal(Event->globalPosition().toPoint());
+#else
+  const auto pointer = mapFromGlobal(Event->globalPos());
+#endif
   zoomAroundPoint(factor,pointer);
 }
 
