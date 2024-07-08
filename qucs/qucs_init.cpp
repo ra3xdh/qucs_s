@@ -382,14 +382,14 @@ void QucsApp::initActions()
   connect(magOne, SIGNAL(triggered()), SLOT(slotShowOne()));
 
   magPlus = new QAction(QIcon((":/bitmaps/svg/viewmag+.svg")),	tr("Zoom in"), this);
-  magPlus->setShortcut(Qt::Key_Plus);
+  magPlus->setShortcut(QKeySequence::ZoomIn);
   magPlus->setStatusTip(tr("Zooms into the current view"));
   magPlus->setWhatsThis(tr("Zoom in\n\nZooms the current view"));
   magPlus->setCheckable(true);
   connect(magPlus, SIGNAL(toggled(bool)), SLOT(slotZoomIn(bool)));
 
   magMinus = new QAction(QIcon((":/bitmaps/svg/viewmag-.svg")), tr("Zoom out"), this);
-  magMinus->setShortcut(Qt::Key_Minus);
+  magMinus->setShortcut(QKeySequence::ZoomOut);
   magMinus->setStatusTip(tr("Zooms out the current view"));
   magMinus->setWhatsThis(tr("Zoom out\n\nZooms out the current view"));
   connect(magMinus, SIGNAL(triggered()), SLOT(slotZoomOut()));
