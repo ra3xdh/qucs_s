@@ -192,7 +192,7 @@ void CustomSimDialog::slotFindVars()
 
 
     QStringList strings = edtCode->toPlainText().split('\n');
-    QRegularExpression let_pattern("^\\s*let\\s+[A-Za-z].*=.+");
+    const static QRegularExpression let_pattern("^\\s*let\\s+[A-Za-z].*=.+");
 
     for (const QString& line : strings) {
         if (let_pattern.match(line).hasMatch()) {
@@ -212,8 +212,8 @@ void CustomSimDialog::slotFindOutputs()
     QString outp;
     QStringList strings = edtCode->toPlainText().split('\n');
     if (isXyceScr) {
-        QRegularExpression print_ex("^\\s*\\.print\\s.*", QRegularExpression::CaseInsensitiveOption);
-        QRegularExpression file_ex("\\s*file\\s*=\\s*", QRegularExpression::CaseInsensitiveOption);
+        const static QRegularExpression print_ex("^\\s*\\.print\\s.*", QRegularExpression::CaseInsensitiveOption);
+        const static  QRegularExpression file_ex("\\s*file\\s*=\\s*", QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
             if (print_ex.match(line).hasMatch()) {
                 //file_ex.setCaseSensitivity(Qt::CaseInsensitive);
@@ -226,13 +226,14 @@ void CustomSimDialog::slotFindOutputs()
             }
         }
     } else {
-        QRegularExpression write_ex("^\\s*write\\s.*");
+        static QRegularExpression write_ex("^\\s*write\\s.*");
         write_ex.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
-        QRegularExpression print_rx("^\\s*print\\s.*>.+");
+        static QRegularExpression print_rx("^\\s*print\\s.*>.+");
         print_rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
             if (write_ex.match(line).hasMatch()) {
-                outp = line.section(QRegularExpression("\\s"),1,1,QString::SectionSkipEmpty);
+            static QRegularExpression exp("\\s");
+                outp = line.section(exp,1,1,QString::SectionSkipEmpty);
                 if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
             }
             else if ( print_rx.match(line).hasMatch() ) {

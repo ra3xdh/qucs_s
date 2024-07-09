@@ -140,7 +140,7 @@ bool loadSettings()
     QucsSettings.RFLayoutExecutable = _settings::Get().item<QString>("RFLayoutExecutable");
 
     QucsSettings.qucsWorkspaceDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
-    QucsSettings.QucsWorkDir = QucsSettings.qucsWorkspaceDir;
+    QucsSettings.QucsWorkDir.setPath( QucsSettings.qucsWorkspaceDir.path());
     QucsSettings.tempFilesDir.setPath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
 
     QucsSettings.IgnoreFutureVersion = _settings::Get().item<bool>("IgnoreVersion");
@@ -806,7 +806,7 @@ int main(int argc, char *argv[])
 #ifdef __APPLE__
   QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
 #else
-  QucsDir = QDir(QucsApplicationPath);
+  QucsDir.setPath(QucsApplicationPath);
   QucsDir.cdUp();
 #endif
 

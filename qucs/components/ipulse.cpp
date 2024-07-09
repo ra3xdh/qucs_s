@@ -102,10 +102,10 @@ QString iPulse::spice_netlist(bool)
     double T1,T2, TrVal, TfVal, Pw,fac,Per;
     QString unit;
 
-    QString VL = spicecompat::normalize_value(Props.at(0)->Value); // VL
-    QString VH = spicecompat::normalize_value(Props.at(1)->Value); // VH
-   QString Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr 
-    QString Tf = spicecompat::normalize_value(Props.at(5)->Value); // Tf
+    const auto VL = spicecompat::normalize_value(Props.at(0)->Value); // VL
+    const auto VH = spicecompat::normalize_value(Props.at(1)->Value); // VH
+    const auto Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr
+    const auto Tf = spicecompat::normalize_value(Props.at(5)->Value); // Tf
 
     misc::str2num(Props.at(2)->Value,T1,unit,fac); // Td
     T1 *= fac;

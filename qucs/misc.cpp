@@ -235,7 +235,7 @@ void misc::str2num(const QString& s_, double& Number, QString& Unit, double& Fac
     }
   }*/
 
-  QRegularExpression Expr( QRegularExpression("[^0-9\\x2E\\x2D\\x2B]") );
+  const static QRegularExpression Expr( QRegularExpression("[^0-9\\x2E\\x2D\\x2B]") );
   auto i = str.indexOf( Expr );
   if(i >= 0)
     if((str.at(i).toLatin1() | 0x20) == 'e') {

@@ -766,7 +766,7 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
     int NumVars=0; // Number of dep. and indep.variables
     int NumPoints=0; // Number of simulation points
     while (!ngsp_data.atEnd()) {
-        QRegularExpression sep("[ \t,]");
+        const static QRegularExpression sep("[ \t,]");
         QString lin = ngsp_data.readLine();
         if (lin.isEmpty()) continue;
         if (lin.contains("Plotname:")&&  // skip operating point

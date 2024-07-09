@@ -92,8 +92,8 @@ public:
  ~QucsApp();
   bool closeAllFiles();
   bool gotoPage(const QString&);   // to load a document
-  QucsDoc *getDoc(int No=-1);
-  QucsDoc* findDoc (QString, int * Pos = 0);
+  QucsDoc *  getDoc(int No=-1);
+  QucsDoc *  findDoc (QString, int * Pos = 0);
   QString fileType (const QString&);
   static bool isTextDocument(QWidget *);
 

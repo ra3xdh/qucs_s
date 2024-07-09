@@ -347,7 +347,7 @@ void ImportDialog::slotValidateInput()
     QFileInfo inf(in_file);
     QString Suffix = inf.suffix().toLower();
     int idx = 3;
-    QRegularExpression snp_expr("s[1-9]p");
+    const static QRegularExpression snp_expr("s[1-9]p");
 
     if((Suffix == "citi") || (Suffix == "cit"))
       idx = 4;

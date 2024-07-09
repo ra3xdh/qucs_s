@@ -612,20 +612,20 @@ bool QucsApp::populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidge
                 break;
         }
 
-        for (int i = 0; i < parsedlibrary.components.count (); i++)
+        for (auto& comp :parsedlibrary.components)
         {
             QStringList compNameAndDefinition;
 
-            compNameAndDefinition.append (parsedlibrary.components[i].name);
+            compNameAndDefinition.append (comp.name);
 
             QString s = "<Qucs Schematic " PACKAGE_VERSION ">\n";
 
             s +=  "<Components>\n  " +
-                  parsedlibrary.components[i].modelString + "\n" +
+                  comp.modelString + "\n" +
                   "</Components>\n";
 
             compNameAndDefinition.append (s);
-            compNameAndDefinition.append(parsedlibrary.components[i].definition);
+            compNameAndDefinition.append(comp.definition);
             compNameAndDefinition.append(libPath);
 
             QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
@@ -651,29 +651,31 @@ QucsDoc* QucsApp::getDoc(int No)
   else
     w = DocumentTab->widget(No);
 
-  if(w) {
+  if(w != nullptr) {
     if(isTextDocument (w))
       return (QucsDoc*) ((TextDoc*)w);
     else
       return (QucsDoc*) ((Schematic*)w);
   }
 
-  return 0;
+  return nullptr;
 }
 
 // ---------------------------------------------------------------
 // Returns a pointer to the QucsDoc object whose file name is "Name".
-QucsDoc * QucsApp::findDoc (QString File, int * Pos)
+QucsDoc *  QucsApp::findDoc (QString File, int * Pos)
 {
-  QucsDoc * d;
+  QucsDoc* d;
   int No = 0;
   File = QDir::toNativeSeparators (File);
-  while ((d = getDoc (No++)) != 0)
+  while ((d = getDoc (No++)) != nullptr){
     if (QDir::toNativeSeparators (d->DocName) == File) {
       if (Pos) *Pos = No - 1;
       return d;
     }
-  return 0;
+  }
+
+  return nullptr;
 }
 
 // ---------------------------------------------------------------
@@ -865,18 +867,17 @@ void QucsApp::slotSetCompView (int index)
     char * File;
     // Populate list of component bitmaps
     compIdx = 0;
-    QList<Module *>::const_iterator it;
-    for (it = Comps.constBegin(); it != Comps.constEnd(); it++) {
-      Infos = (*it)->info;
+    for (const auto& it:Comps) {
+      Infos = it->info;
       if (Infos) {
         /// \todo warning: expression result unused, can we rewrite this?
-        (void) *((*it)->info) (Name, File, false);
+        (void) *(it->info) (Name, File, false);
         QString icon_path = misc::getIconPath(QString (File), qucs::compIcons);
         QListWidgetItem *icon = new QListWidgetItem(Name);
         if (QFileInfo::exists(icon_path)) {
             icon->setIcon(QPixmap(icon_path));
         } else {
-            icon->setIcon(*(*it)->icon);
+            icon->setIcon(*it->icon);
         }
         icon->setToolTip(Name);
         iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
@@ -920,16 +921,15 @@ void QucsApp::slotSearchComponent(const QString &searchText)
 
     QStringList cats = Category::getCategories ();
     int catIdx = 0;
-    for (const QString& it : cats) {
+    for (const auto& it : cats) {
       // this will go also over the "verilog-a user devices" category, if present
       //   but since modules there have no 'info' function it won't handle them
       Comps = Category::getModules(it);
-      QList<Module *>::const_iterator modit;
       int compIdx = 0;
-      for (modit = Comps.constBegin(); modit != Comps.constEnd(); modit++) {
-        if ((*modit)->info) {
+      for (const auto& modit : Comps) {
+        if (modit->info) {
           /// \todo warning: expression result unused, can we rewrite this?
-          (void) *((*modit)->info) (Name, File, false);
+          (void) *(modit->info) (Name, File, false);
 
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
             //match
@@ -938,7 +938,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
             if (QFileInfo::exists(icon_path)) {
                 icon->setIcon(QPixmap(icon_path));
             } else {
-                icon->setIcon(*(*modit)->icon);
+                icon->setIcon(*modit->icon);
             }
             icon->setToolTip(it + ": " + Name);
             // add component category and module indexes to the icon
@@ -1172,8 +1172,8 @@ void QucsApp::slotCMenuCopy()
 
   //check changed file save
   int z = 0; //search if the doc is loaded
-  QucsDoc *d = findDoc(file, &z);
-  if (d != NULL && d->DocChanged) {
+  const auto d = findDoc(file, &z);
+  if (d!=nullptr && d->DocChanged) {
     DocumentTab->setCurrentIndex(z);
     int ret = QMessageBox::question(this, tr("Copying Qucs document"),
         tr("The document contains unsaved changes!\n") + 

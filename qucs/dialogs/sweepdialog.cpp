@@ -140,19 +140,17 @@ void SweepDialog::slotNewValue(int)
   DataX const*pD = pGraph->axis(0);
 
   int Factor = 1, Index = 0;
-  QList<mySpinBox *>::const_iterator it;
-  for(it = BoxList.constBegin(); it != BoxList.constEnd(); it++) {
-    Index  += (*it)->value() * Factor;
+  for(const auto &it : BoxList) {
+    Index  += it->value() * Factor;
     Factor *= pD->count;
   }
   Index *= 2;  // because of complex values
 
-  QList<Node *>::iterator node_it;
   QList<double *>::const_iterator value_it = ValueList.begin();
-  for(node_it = NodeList.begin(); node_it != NodeList.end(); node_it++) {
-    qDebug() << "SweepDialog::slotNewValue:(*node_it)->Name:" << (*node_it)->Name;
-    (*node_it)->Name = misc::num2str(*((*value_it)+Index));
-    (*node_it)->Name += ((*node_it)->x1 & 0x10)? "A" : "V";
+  for(const auto & node_it  : NodeList) {
+    qDebug() << "SweepDialog::slotNewValue: node_it->Name:" << node_it->Name;
+    node_it->Name = misc::num2str(*((*value_it)+Index));
+    node_it->Name += (node_it->x1 & 0x10)? "A" : "V";
     value_it++;
   }
 

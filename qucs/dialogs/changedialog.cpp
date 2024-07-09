@@ -178,7 +178,7 @@ void ChangeDialog::slotButtReplace()
   // search through all components
   for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next()) {
     if(matches(pc->Model)) {
-      QRegularExpressionMatch match = Expr.match(pc->Name);
+      QRegularExpressionMatch match ( Expr.match(pc->Name) );
       if(match.hasMatch())
         for(Property *pp = pc->Props.first(); pp!=0; pp = pc->Props.next())
           if(pp->Name == PropNameEdit->currentText()) {
@@ -192,7 +192,8 @@ void ChangeDialog::slotButtReplace()
             i2 = pp->Description.lastIndexOf(']');
             if(i2-i1 < 2)  break;
             str = pp->Description.mid(i1+1, i2-i1-1);
-            str.replace( QRegularExpression("[^a-zA-Z0-9_,]"), "" );
+            const static QRegularExpression exp("[^a-zA-Z0-9_,]");
+            str.replace( exp, "" );
             List = str.split(',');
             if(List.lastIndexOf(NewValueEdit->text()) >= 0)
               break;    // property value is okay
