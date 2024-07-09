@@ -16,7 +16,6 @@ librarydialog.h
 loaddialog.h
 matchdialog.h
 newprojdialog.h
-packagedialog.h
 qucssettingsdialog.h
 savedialog.h
 searchdialog.h
@@ -33,7 +32,7 @@ fillfromspicedialog.h
 
 
 SET(DIALOGS_SRCS
-changedialog.cpp		packagedialog.cpp vasettingsdialog.cpp textboxdialog.cpp
+changedialog.cpp vasettingsdialog.cpp textboxdialog.cpp
 digisettingsdialog.cpp		qucssettingsdialog.cpp
 importdialog.cpp		savedialog.cpp labeldialog.cpp
 searchdialog.cpp     librarydialog.cpp settingsdialog.cpp
@@ -56,7 +55,6 @@ librarydialog.h
 loaddialog.h
 matchdialog.h
 newprojdialog.h
-packagedialog.h
 qucssettingsdialog.h
 savedialog.h
 searchdialog.h

@@ -356,7 +356,7 @@ public:
           *showMsg, *showNet, *alignTop, *alignBottom, *alignLeft, *alignRight,
           *distrHor, *distrVert, *selectAll, *callMatch, *changeProps,
           *addToProj, *editFind, *insEntity, *selectMarker,
-          *createLib, *callConverter, *graph2csv, *createPkg, *extractPkg,
+          *createLib, *callConverter, *graph2csv,
           *callAtt, *centerHor, *centerVert, *loadModule, *buildModule, *callPwrComb, *callRFLayout;
 
   QAction *helpQucsIndex;
@@ -428,8 +428,6 @@ private slots:
   void slotCreateLib();
   void slotImportData();
   void slotExportGraphAsCsv();
-  void slotCreatePackage();
-  void slotExtractPackage();
   void slotUpdateRecentFiles();
   void slotClearRecentFiles();
   void slotLoadModule();
