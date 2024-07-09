@@ -161,7 +161,7 @@ protected:
     virtual void contentsDropEvent( QDropEvent * );
     virtual void contentsWheelEvent( QWheelEvent * );
     virtual void contentsContextMenuEvent( QContextMenuEvent * );
-
+    virtual void contentsNativeGestureZoomEvent( QNativeGestureEvent* );
 
     virtual void viewportPaintEvent( QPaintEvent* );
     virtual void viewportResizeEvent( QResizeEvent* );
@@ -175,6 +175,7 @@ protected:
     virtual void viewportDropEvent( QDropEvent * );
     virtual void viewportWheelEvent( QWheelEvent * );
     virtual void viewportContextMenuEvent( QContextMenuEvent * );
+    virtual void viewportNativeGestureZoomEvent( QNativeGestureEvent* );
 
     void	frameChanged();
 
@@ -191,14 +192,14 @@ protected:
     virtual void setHBarGeometry(QScrollBar& hbar, int x, int y, int w, int h);
     virtual void setVBarGeometry(QScrollBar& vbar, int x, int y, int w, int h);
 
-    void resizeEvent(QResizeEvent*);
-    void  mousePressEvent( QMouseEvent * );
-    void  mouseReleaseEvent( QMouseEvent * );
-    void  mouseDoubleClickEvent( QMouseEvent * );
-    void  mouseMoveEvent( QMouseEvent * );
-    void  wheelEvent( QWheelEvent * );
-    void contextMenuEvent( QContextMenuEvent * );
-    bool eventFilter( QObject *, QEvent *e );
+    void resizeEvent(QResizeEvent*)override;
+    void  mousePressEvent( QMouseEvent * )override;
+    void  mouseReleaseEvent( QMouseEvent * )override;
+    void  mouseDoubleClickEvent( QMouseEvent * )override;
+    void  mouseMoveEvent( QMouseEvent * )override;
+    void  wheelEvent( QWheelEvent * )override;
+    void contextMenuEvent( QContextMenuEvent * )override;
+    bool eventFilter(QObject*, QEvent* e) override;
 
     void setCachedSizeHint( const QSize &sh ) const;
     QSize cachedSizeHint() const;

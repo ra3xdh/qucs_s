@@ -246,16 +246,17 @@ signals:
 
 protected:
   // overloaded function to get actions of user
-  void drawContents(QPainter*, int, int, int, int);
-  void contentsMouseMoveEvent(QMouseEvent*);
-  void contentsMousePressEvent(QMouseEvent*);
-  void contentsMouseDoubleClickEvent(QMouseEvent*);
-  void contentsMouseReleaseEvent(QMouseEvent*);
-  void contentsWheelEvent(QWheelEvent*);
-  void contentsDropEvent(QDropEvent*);
-  void contentsDragEnterEvent(QDragEnterEvent*);
-  void contentsDragLeaveEvent(QDragLeaveEvent*);
-  void contentsDragMoveEvent(QDragMoveEvent*);
+  void drawContents(QPainter*, int, int, int, int)override;
+  void contentsMouseMoveEvent(QMouseEvent*)override;
+  void contentsMousePressEvent(QMouseEvent*)override;
+  void contentsMouseDoubleClickEvent(QMouseEvent*)override;
+  void contentsMouseReleaseEvent(QMouseEvent*)override;
+  void contentsWheelEvent(QWheelEvent*)override;
+  void contentsDropEvent(QDropEvent*)override;
+  void contentsDragEnterEvent(QDragEnterEvent*)override;
+  void contentsDragLeaveEvent(QDragLeaveEvent*)override;
+  void contentsDragMoveEvent(QDragMoveEvent*)override;
+  void contentsNativeGestureZoomEvent( QNativeGestureEvent* ) override;
 
 protected slots:
   void slotScrollUp();
