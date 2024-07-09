@@ -335,18 +335,6 @@ void QucsApp::initActions()
 	tr("Create Library\n\nCreate Library from Subcircuits"));
   connect(createLib, SIGNAL(triggered()), SLOT(slotCreateLib()));
 
-  createPkg = new QAction(tr("Create &Package..."), this);
-  createPkg->setShortcut(tr("Ctrl+Shift+Y"));
-  createPkg->setStatusTip(tr("Create compressed Package from Projects"));
-  createPkg->setWhatsThis(tr("Create Package\n\nCreate compressed Package from complete Projects"));
-  connect(createPkg, SIGNAL(triggered()), SLOT(slotCreatePackage()));
-
-  extractPkg = new QAction(tr("E&xtract Package..."),  this);
-  extractPkg->setShortcut(tr("Ctrl+Shift+X"));
-  extractPkg->setStatusTip(tr("Install Content of a Package"));
-  extractPkg->setWhatsThis(tr("Extract Package\n\nInstall Content of a Package"));
-  connect(extractPkg, SIGNAL(triggered()), SLOT(slotExtractPackage()));
-
   graph2csv = new QAction(tr("Export to &CSV..."), this);
   graph2csv->setShortcut(tr("Ctrl+Shift+C"));
   graph2csv->setStatusTip(tr("Convert graph data to CSV file"));
@@ -770,8 +758,6 @@ void QucsApp::initMenuBar()
   projMenu->addAction(projDel);
   projMenu->addSeparator();
   projMenu->addAction(createLib);
-  projMenu->addAction(createPkg);
-  projMenu->addAction(extractPkg);
   projMenu->addSeparator();
   projMenu->addAction(graph2csv);
   // TODO only enable if document is VA file

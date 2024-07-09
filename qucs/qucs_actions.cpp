@@ -59,7 +59,6 @@
 #include "dialogs/librarydialog.h"
 #include "dialogs/loaddialog.h"
 #include "dialogs/importdialog.h"
-#include "dialogs/packagedialog.h"
 #include "dialogs/aboutdialog.h"
 #include "module.h"
 
@@ -1452,24 +1451,6 @@ void QucsApp::slotExportGraphAsCsv()
   File.close();
 }
 
-// ----------------------------------------------------------
-void QucsApp::slotCreatePackage()
-{
-  slotHideEdit(); // disable text edit of component property
-
-  PackageDialog *d = new PackageDialog(this, true);
-  d->exec();
-}
-
-// ----------------------------------------------------------
-void QucsApp::slotExtractPackage()
-{
-  slotHideEdit(); // disable text edit of component property
-  PackageDialog *d = new PackageDialog(this, false);
-  d->show();
-  d->extractPackage();
-  readProjects();
-}
 
 void QucsApp::slotOpenRecent()
 {
