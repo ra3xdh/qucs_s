@@ -1319,7 +1319,7 @@ void QucsApp::slotApplyCompText()
   z = editText->fontMetrics().lineSpacing();
   view->MAy2 += n*z;
   editText->setText(s);
-  misc::setWidgetBackgroundColor(editText,QucsSettings.BGColor);
+  editText->setStyleSheet("color: black; background-color: " + QucsSettings.BGColor.name());
   editText->setFocus();
   editText->selectAll();
   editText->setParent(Doc->viewport());
