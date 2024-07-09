@@ -122,9 +122,9 @@ bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool isSubckt
 bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 {
     incompat.clear();
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if ((!pc->isEquation)&&!(pc->isProbe)) {
-            if (pc->SpiceModel.isEmpty() && pc->isActive) incompat.append(pc->Name);
+    for(const auto&pc : Sch->DocComps) {
+      if ((!pc.get()->isEquation)&&!(pc.get()->isProbe)) {
+            if (pc.get()->SpiceModel.isEmpty() && pc.get()->isActive) incompat.append(pc.get()->Name);
         }
     }
 
@@ -138,8 +138,8 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 bool AbstractSpiceKernel::checkGround()
 {
     bool r = false;
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->Model=="GND") {
+    for(const auto& pc : Sch->DocComps) {
+        if (pc.get()->Model=="GND") {
             r = true;
             break;
         }
@@ -151,8 +151,8 @@ bool AbstractSpiceKernel::checkSimulations()
 {
     if (DC_OP_only) return true;
     bool r = false;
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->isSimulation) {
+    for(const auto&pc : Sch->DocComps) {
+        if (pc.get()->isSimulation) {
             r = true;
             break;
         }
@@ -190,7 +190,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         QString s;
 
         // User-defined functions
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        for( auto&pc : Sch->DocComps) {
             if ((pc->SpiceModel==".FUNC")||
                 (pc->SpiceModel=="INCLSCR")) {
                 s = pc->getExpression();
@@ -200,7 +200,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
 
         // create .IC from wire labels
         QStringList wire_labels;
-        for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+        for(const auto &pw : Sch->DocWires) {
             if (pw->Label != nullptr) {
                 QString label = pw->Label->Name;
                 if (!wire_labels.contains(label)) wire_labels.append(label);
@@ -212,8 +212,8 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
                 }
             }
         }
-        for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
-            Conductor *pw = (Conductor*) pn;
+        for(const auto& pn : Sch->DocNodes) {
+          auto pw = std::dynamic_pointer_cast<Conductor>(pn);
             if (pw->Label != nullptr) {
                 QString label = pw->Label->Name;
                 if (!wire_labels.contains(label)) wire_labels.append(label);
@@ -227,7 +227,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         }
 
         // Parameters, Initial conditions, Options
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        for(const auto &pc : Sch->DocComps) {
             if (pc->isEquation) {
                 s = pc->getExpression(xyce);
                 stream<<s;
@@ -235,7 +235,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         }
 
         // Components
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        for(const auto &pc : Sch->DocComps) {
           if(Sch->isAnalog &&
              !(pc->isSimulation) &&
              !(pc->isEquation)) {
@@ -245,7 +245,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         }
 
         // Modelcards
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        for(const auto &pc : Sch->DocComps) {
             if (pc->SpiceModel==".MODEL") {
                 s = pc->getSpiceModel();
                 stream<<s;
@@ -282,10 +282,10 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
         emit errors(QProcess::FailedToStart);
         return;
     } // Unable to perform spice simulation
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+    for(const auto &pc : Sch->DocComps) {
         if (pc->Model=="Port") {
-            ports.append(qMakePair(pc->Props.first()->Value.toInt(),
-                                   pc->Ports.first()->Connection->Name));
+            ports.append(qMakePair(pc->Props.front().Value.toInt(),
+                                   pc->Ports.front().getConnection()->Name));
         }
     }
     std::sort(ports.begin(), ports.end());
@@ -294,13 +294,12 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
         header += pp.second + " ";
     }
 
-    Painting *pai;
-    for(pai = Sch->SymbolPaints.first(); pai != 0; pai = Sch->SymbolPaints.next())
+
+    for(const auto &pai : Sch->SymbolPaints)
       if(pai->Name == ".ID ") {
-        ID_Text *pid = (ID_Text*)pai;
-        QList<SubParameter *>::const_iterator it;
-        for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-            header += (*it)->Name + " "; // keep 'Name' unchanged
+        auto pid = std::dynamic_pointer_cast<ID_Text>(pai);
+        for(const auto& it : pid->Parameter) {
+            header += it->Name + " "; // keep 'Name' unchanged
           //(*tstream) << " " << s.replace("=", "=\"") << '"';
         }
         break;
@@ -1522,9 +1521,9 @@ bool AbstractSpiceKernel::waitEndOfSimulation()
 QString AbstractSpiceKernel::collectSpiceLibs(Schematic* sch)
 {
   QStringList collected_spicelib;
-  for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+  for(const auto& pc : sch->DocComps) {
     if (pc->Model == "Sub") {
-      Schematic *sub = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
+      Schematic *sub = new Schematic(0, (std::dynamic_pointer_cast<Subcircuit>( pc))->getSubcircuitFile());
       if(!sub->loadDocument())      // load document if possible
       {
         delete sub;

@@ -8,19 +8,19 @@ Src_eqndef::Src_eqndef()
   Description = QObject::tr("SPICE B (V type):\nMultiple line ngspice or Xyce B specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
   Simulator = spicecompat::simSpice;
 
-  Ellipses.append(new qucs::Ellips(-14,-14, 28, 28, QPen(Qt::darkRed,3)));
-  Texts.append(new Text(8,-10,"Eqn",Qt::darkRed,12.0,0.0,-1.0));
+  Ellipses.emplace_back( qucs::Ellips(-14,-14, 28, 28, QPen(Qt::darkRed,3)));
+  Texts.emplace_back( Text(8,-10,"Eqn",Qt::darkRed,12.0,0.0,-1.0));
   // pins
-  Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
+  Lines.emplace_back( qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+  Lines.emplace_back( qucs::Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
   // plus sign
-  Lines.append(new qucs::Line( 18,  5, 18, 11,QPen(Qt::red,2)));
-  Lines.append(new qucs::Line( 21,  8, 15,  8,QPen(Qt::red,2)));
+  Lines.emplace_back( qucs::Line( 18,  5, 18, 11,QPen(Qt::red,2)));
+  Lines.emplace_back( qucs::Line( 21,  8, 15,  8,QPen(Qt::red,2)));
   // minus sign
-  Lines.append(new qucs::Line(-18,  5,-18, 11,QPen(Qt::black,2)));
+  Lines.emplace_back( qucs::Line(-18,  5,-18, 11,QPen(Qt::black,2)));
 
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+  Ports.emplace_back( Port( 30,  0));
+  Ports.emplace_back( Port(-30,  0));
 
   x1 = -30; y1 = -14;
   x2 =  30; y2 =  14;
@@ -31,11 +31,11 @@ Src_eqndef::Src_eqndef()
   SpiceModel = "B";
   Name  = "B";
   
-  Props.append(new Property("V", "", true,"B(V) specification"));
-  Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
-  Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
-  Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
-  Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
+  Props.emplace_back( Property("V", "", true,"B(V) specification"));
+  Props.emplace_back( Property("Line_2", "", false,"+ continuation line 1"));
+  Props.emplace_back( Property("Line_3", "", false,"+ continuation line 2"));
+  Props.emplace_back( Property("Line_4", "", false,"+ continuation line 3"));
+  Props.emplace_back( Property("Line_5", "", false,"+ continuation line 4"));
 
 
 
@@ -70,18 +70,18 @@ QString Src_eqndef::netlist()
 QString Src_eqndef::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
-        QString nam = p1->Connection->Name;
+    for (auto &p1 : Ports) {
+        QString nam = p1.getConnection()->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam   + " ";   // node names
     }
     
-    QString VI  = Props.at(0)-> Name;
-    QString VI2 = Props.at(0)->Value;
-    QString Line_2 = Props.at(1)->Value;
-    QString Line_3 = Props.at(2)->Value;
-    QString Line_4 = Props.at(3)->Value;
-    QString Line_5 = Props.at(4)->Value;
+    QString VI  = prop(0).Name;
+    QString VI2 = prop(0).Value;
+    QString Line_2 = prop(1).Value;
+    QString Line_3 = prop(2).Value;
+    QString Line_4 = prop(3).Value;
+    QString Line_5 = prop(4).Value;
 
     s += QString(" %1 = %2 ").arg(VI).arg(VI2);
     if(  Line_2.length() > 0 )   s += QString("\n%1").arg(Line_2);
@@ -96,13 +96,13 @@ QString Src_eqndef::spice_netlist(bool)
 QString Src_eqndef::va_code()
 {
     QString s;
-    QString plus = Ports.at(0)->Connection->Name;
-    QString minus = Ports.at(1)->Connection->Name;
+  QString plus = port(0).getConnection()->Name;
+    QString minus = port(1).getConnection()->Name;
     QString Src;
-    if (Props.at(0)->Name=="I") Src = vacompat::normalize_current(plus,minus,true);
+    if (prop(0).Name=="I") Src = vacompat::normalize_current(plus,minus,true);
     else Src = vacompat::normalize_voltage(plus,minus); // Voltage contribution is reserved for future
     // B-source may be polar
-    if (plus=="gnd") s = QString(" %1 <+ -(%2); // %3 source\n").arg(Src).arg(Props.at(0)->Value).arg(Name);
-    else s = QString(" %1 <+ %2; // %3 source\n").arg(Src).arg(Props.at(0)->Value).arg(Name);
+    if (plus=="gnd") s = QString(" %1 <+ -(%2); // %3 source\n").arg(Src).arg(prop(0).Value).arg(Name);
+    else s = QString(" %1 <+ %2; // %3 source\n").arg(Src).arg(prop(0).Value).arg(Name);
     return s;
 }

@@ -23,11 +23,9 @@
 // builds fail without explicit QObject inclusion
 #include <QObject>
 #include "extsimkernels/spicecompat.h"
-#include "qt3_compat/qt_compat.h"
 
 #include "element.h"
-
-
+#include <list>
 class Schematic;
 class QString;
 class QPen;
@@ -83,14 +81,22 @@ public:
   virtual void setSchematic (Schematic* p) { containingSchematic = p; }
   virtual Schematic* getSchematic () {return containingSchematic; }
 
-  QList<qucs::Line *>     Lines;
-  QList<qucs::Polyline *> Polylines;
-  QList<struct qucs::Arc *>      Arcs;
-  QList<qucs::Rect *>     Rects;
-  QList<qucs::Ellips *>     Ellipses;
-  QList<Port *>     Ports;
-  QList<Text *>     Texts;
-  Q3PtrList<Property> Props;
+  //  gets property by index
+  Property &prop(int n);
+  const Property &prop(int n) const;
+
+         //  gets port by index
+  Port &port(int n);
+  const Port &port(int n) const;
+
+  std::list<qucs::Line >     Lines;
+  std::list<qucs::Polyline > Polylines;
+  std::list<struct qucs::Arc>      Arcs;
+  std::list<qucs::Rect >     Rects;
+  std::list<qucs::Ellips >     Ellipses;
+  std::list<Port >     Ports;
+  std::list<Text >     Texts;
+  std::list<Property> Props;
 
   #define COMP_IS_OPEN    0
   #define COMP_IS_ACTIVE  1

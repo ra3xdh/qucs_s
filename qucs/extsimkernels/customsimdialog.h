@@ -45,7 +45,7 @@ private:
     bool isXyceScr;
     bool isChanged = false;
 
-    SpiceCustomSim* comp;
+    std::shared_ptr<SpiceCustomSim> comp;
     Schematic *Sch;
 
     QTextEdit* edtCode;

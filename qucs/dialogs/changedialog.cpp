@@ -171,27 +171,26 @@ void ChangeDialog::slotButtReplace()
 
   QList<QCheckBox *> pList;
   QCheckBox *pb;
-  Component *pc;
   QStringList List;
   QString str;
   int i1, i2;
   // search through all components
-  for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next()) {
+  for(auto &pc : *Doc->Components) {
     if(matches(pc->Model)) {
-      QRegularExpressionMatch match ( Expr.match(pc->Name) );
+      QRegularExpressionMatch match ( Expr.match(pc.get()->Name) );
       if(match.hasMatch())
-        for(Property *pp = pc->Props.first(); pp!=0; pp = pc->Props.next())
-          if(pp->Name == PropNameEdit->currentText()) {
-            pb = new QCheckBox(pc->Name);
+        for(auto & pp : pc.get()->Props)
+          if(pp.Name == PropNameEdit->currentText()) {
+            pb = new QCheckBox(pc.get()->Name);
             Dia_Box->addWidget(pb);   
             pList.append(pb);
             pb->setChecked(true);
-            i1 = pp->Description.indexOf('[');
+            i1 = pp.Description.indexOf('[');
             if(i1 < 0)  break;  // no multiple-choice property
 
-            i2 = pp->Description.lastIndexOf(']');
+            i2 = pp.Description.lastIndexOf(']');
             if(i2-i1 < 2)  break;
-            str = pp->Description.mid(i1+1, i2-i1-1);
+            str = pp.Description.mid(i1+1, i2-i1-1);
             const static QRegularExpression exp("[^a-zA-Z0-9_,]");
             str.replace( exp, "" );
             List = str.split(',');
@@ -230,29 +229,29 @@ void ChangeDialog::slotButtReplace()
     pb = i.next();
     if(!pb->isChecked())  continue;
 
-    for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next()) {
-      if(pb->text() != pc->Name)  continue;
+    for(auto& pc : *Doc->Components) {
+      if(pb->text() != pc.get()->Name)  continue;
 
-      for(Property *pp = pc->Props.first(); pp!=0; pp = pc->Props.next()) {
-        if(pp->Name != PropNameEdit->currentText())  continue;
+      for(auto& pp: pc.get()->Props) {
+        if(pp.Name != PropNameEdit->currentText())  continue;
 
         int tx_Dist, ty_Dist, tmp;
-        pc->textSize(tx_Dist, ty_Dist);
-        tmp = pc->tx+tx_Dist - pc->x1;
+        pc.get()->textSize(tx_Dist, ty_Dist);
+        tmp = pc.get()->tx+tx_Dist - pc.get()->x1;
         if((tmp > 0) || (tmp < -6))  tx_Dist = 0; // remember text position
-        tmp = pc->ty+ty_Dist - pc->y1;
+        tmp = pc.get()->ty+ty_Dist - pc.get()->y1;
         if((tmp > 0) || (tmp < -6))  ty_Dist = 0;
 
-        pp->Value = NewValueEdit->text();
+        pp.Value = NewValueEdit->text();
 
         int dx, dy;
-        pc->textSize(dx, dy);   // correct text position
+        pc.get()->textSize(dx, dy);   // correct text position
         if(tx_Dist != 0) {
-          pc->tx += tx_Dist-dx;
+          pc.get()->tx += tx_Dist-dx;
           tx_Dist = dx;
         }
         if(ty_Dist != 0) {
-          pc->ty += ty_Dist-dy;
+          pc.get()->ty += ty_Dist-dy;
           ty_Dist = dy;
         }
 

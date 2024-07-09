@@ -35,9 +35,9 @@ SpiceOptions::SpiceOptions()
   int xb = r.width()  >> 1;
   int yb = r.height() >> 1;
 
-  Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
-  Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
-  Texts.append(new Text(-xb+4,  -yb-3, QObject::tr(".OPTIONS"),
+  Lines.emplace_back( qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
+  Lines.emplace_back( qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
+  Texts.emplace_back( Text(-xb+4,  -yb-3, QObject::tr(".OPTIONS"),
 			QColor(0,0,0), QFontInfo(f).pixelSize()));
 
   x1 = -xb-3;  y1 = -yb-5;
@@ -48,9 +48,9 @@ SpiceOptions::SpiceOptions()
   Model = "SpiceOptions";
   Name  = "SpiceOptions";
 
-  Props.append(new Property("XyceOptionPackage", "DEVICE", false,
+  Props.emplace_back( Property("XyceOptionPackage", "DEVICE", false,
         QObject::tr("Xyce option package name")));
-  Props.append(new Property("GMIN", "1e-12", true));
+  Props.emplace_back( Property("GMIN", "1e-12", true));
 }
 
 SpiceOptions::~SpiceOptions()
@@ -78,14 +78,14 @@ QString SpiceOptions::getExpression(bool isXyce)
     QString s;
     s.clear();
     if (isXyce) {
-        s += QString(".OPTIONS %1 ").arg(Props.at(0)->Value);
-        for (unsigned int i=1;i<Props.count();i++) {
-            s += QString(" %1 = %2 ").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
+        s += QString(".OPTIONS %1 ").arg(prop(0).Value);
+        for (unsigned int i=1;i<Props.size();i++) {
+            s += QString(" %1 = %2 ").arg(prop(i).Name).arg(prop(i).Value);
         }
         s += "\n";
     } else {
-        for (unsigned int i=1;i<Props.count();i++) {
-            s += QString(".OPTION %1 = %2\n").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
+        for (unsigned int i=1;i<Props.size();i++) {
+            s += QString(".OPTION %1 = %2\n").arg(prop(i).Name).arg(prop(i).Value);
         }
     }
     return s;

@@ -26,11 +26,11 @@ Digi_Sim::Digi_Sim()
   Name  = "Digi";
 
   // Property list must keeps its order !
-  Props.append(new Property("Type", "TruthTable", true,
+  Props.emplace_back( Property("Type", "TruthTable", true,
 	QObject::tr("type of simulation")+" [TruthTable, TimeList]"));
-  Props.append(new Property("time", "10 ns", false,
+  Props.emplace_back( Property("time", "10 ns", false,
 	QObject::tr("duration of TimeList simulation")));
-  Props.append(new Property("Model", "VHDL", false,
+  Props.emplace_back( Property("Model", "VHDL", false,
 	QObject::tr("netlist format")+" [VHDL, Verilog]"));
 }
 

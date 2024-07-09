@@ -26,15 +26,15 @@ Logical_Buf::Logical_Buf()
   Description = QObject::tr("logical buffer");
 
   // the list order must be preserved !!!
-  Props.append(new Property("V", "1 V", false,
+  Props.emplace_back( Property("V", "1 V", false,
 		QObject::tr("voltage of high level")));
-  Props.append(new Property("t", "1 ns", false,
+  Props.emplace_back( Property("t", "1 ns", false,
 		QObject::tr("delay time")));
-  Props.append(new Property("TR", "10", false,
+  Props.emplace_back( Property("TR", "10", false,
 		QObject::tr("transfer function scaling factor")));
 
   // this must be the last property in the list !!!
-  Props.append(new Property("Symbol", "old", false,
+  Props.emplace_back( Property("Symbol", "old", false,
 		QObject::tr("schematic symbol")+" [old, DIN40900]"));
 
   createSymbol();
@@ -48,11 +48,11 @@ Logical_Buf::Logical_Buf()
 // -------------------------------------------------------
 QString Logical_Buf::vhdlCode(int NumPorts)
 {
-  QString s = "  " + Ports.first()->Connection->Name + " <= " +
-              Ports.last()->Connection->Name;
+  QString s = "  " + Ports.front().getConnection()->Name + " <= " +
+              Ports.back().getConnection()->Name;
 
   if(NumPorts <= 0) { // no truth table simulation ?
-    QString td = Props.at(1)->Value;
+    QString td = prop(1).Value;
     if(!misc::VHDL_Delay(td, Name)) return td;
     s += td;
   }
@@ -65,21 +65,21 @@ QString Logical_Buf::vhdlCode(int NumPorts)
 QString Logical_Buf::verilogCode(int NumPorts)
 {
   bool synthesize = true;
-  Port *pp = Ports.at(0);
+  Port &pp = port(0);
   QString s ("");
 
   if (synthesize) {
     s = "  assign";
 
     if(NumPorts <= 0) { // no truth table simulation ?
-      QString td = Props.at(1)->Value;
+      QString td = prop(1).Value;
       if(!misc::Verilog_Delay(td, Name)) return td;
       s += td;
     }
     s += " ";
-    s += pp->Connection->Name + " = ";  // output port
-    pp = Ports.at(1);
-    s += pp->Connection->Name;          // input port
+    s += pp.getConnection()->Name + " = ";  // output port
+    pp = port(1);
+    s += pp.getConnection()->Name;          // input port
     s += ";\n";
   }
   return s;
@@ -90,27 +90,27 @@ void Logical_Buf::createSymbol()
 {
   int xr;
 
-  if(Props.getLast()->Value.at(0) == 'D') {  // DIN symbol
-    Lines.append(new qucs::Line( 15,-20, 15, 20,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-15,-20, 15,-20,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-15, 20, 15, 20,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-15,-20,-15, 20,QPen(Qt::darkBlue,2)));
+  if(Props.back().Value.at(0) == 'D') {  // DIN symbol
+    Lines.emplace_back( qucs::Line( 15,-20, 15, 20,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line(-15,-20, 15,-20,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line(-15, 20, 15, 20,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line(-15,-20,-15, 20,QPen(Qt::darkBlue,2)));
 
-    Texts.append(new Text(-11,-17, "1", Qt::darkBlue, 15.0));
+    Texts.emplace_back( Text(-11,-17, "1", Qt::darkBlue, 15.0));
     xr =  15;
   }
   else {   // old symbol
-    Lines.append(new qucs::Line(-10,-20,-10,20, QPen(Qt::darkBlue,2)));
-    Arcs.append(new qucs::Arc(-30,-20, 40, 30,  0, 16*90,QPen(Qt::darkBlue,2)));
-    Arcs.append(new qucs::Arc(-30,-10, 40, 30,  0,-16*90,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line( 10,-5, 10, 5,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line(-10,-20,-10,20, QPen(Qt::darkBlue,2)));
+    Arcs.emplace_back( qucs::Arc(-30,-20, 40, 30,  0, 16*90,QPen(Qt::darkBlue,2)));
+    Arcs.emplace_back( qucs::Arc(-30,-10, 40, 30,  0,-16*90,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line( 10,-5, 10, 5,QPen(Qt::darkBlue,2)));
     xr =  10;
   }
 
-  Lines.append(new qucs::Line( xr, 0, 30, 0, QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30, 0,-xr, 0, QPen(Qt::darkBlue,2)));
-  Ports.append(new Port( 30, 0));
-  Ports.append(new Port(-30, 0));
+  Lines.emplace_back( qucs::Line( xr, 0, 30, 0, QPen(Qt::darkBlue,2)));
+  Lines.emplace_back( qucs::Line(-30, 0,-xr, 0, QPen(Qt::darkBlue,2)));
+  Ports.emplace_back( Port( 30, 0));
+  Ports.emplace_back( Port(-30, 0));
 
   x1 = -30; y1 = -23;
   x2 =  30; y2 =  23;
@@ -120,7 +120,7 @@ void Logical_Buf::createSymbol()
 Component* Logical_Buf::newOne()
 {
   Logical_Buf* p = new Logical_Buf();
-  p->Props.getLast()->Value = Props.getLast()->Value;
+  p->Props.back().Value = Props.back().Value;
   p->recreate(0);
   return p;
 }
@@ -142,8 +142,8 @@ QString Logical_Buf::spice_netlist(bool isXyce)
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;
     QString td = spicecompat::normalize_value(getProperty("t")->Value);
-    s += " " + Ports.at(1)->Connection->Name;
-    s += " " + Ports.at(0)->Connection->Name;
+    s += " " + port(1).getConnection()->Name;
+    s += " " + port(0).getConnection()->Name;
     s += " " + tmp_model + "\n";
     s += QString(".model %1 d_buffer(rise_delay=%2 fall_delay=%2 input_load=5e-13)\n")
             .arg(tmp_model).arg(td);

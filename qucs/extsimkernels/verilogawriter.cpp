@@ -159,13 +159,13 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
     ports.clear();
     nodes.clear();
 
-    for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+    for(const auto &pc : sch->DocComps) {
         if (pc->Model=="Port") { // Find module ports
-            QString s = pc->Ports.first()->Connection->Name;
+            QString s = pc->Ports.front().getConnection()->Name;
             if (!ports.contains(s)) ports.append(s);
         } else {
-            for (Port *pp : pc->Ports) { // Find all signals
-                QString s = pp->Connection->Name;
+            for (const auto& pp : pc->Ports) { // Find all signals
+                QString s = pp.getConnection()->Name;
                 if (!nodes.contains(s)) nodes.append(s);
             }
             pc->getExtraVANodes(nodes);
@@ -183,13 +183,13 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
     stream<<QString("inout %1;\n").arg(ports.join(", "));
     stream<<QString("electrical %1;\n").arg(nodes.join(", "));
 
-    Painting *pi; // Find module parameters
-    for(pi = sch->SymbolPaints.first(); pi != 0; pi = sch->SymbolPaints.next())
+    for(auto &pi : sch->SymbolPaints)
       if(pi->Name == ".ID ") {
-        ID_Text *pid = (ID_Text*)pi;
-        QList<SubParameter *>::const_iterator it;
-        for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-            QString s = "parameter real " + (*it)->Name + ";\n";
+        auto pid = std::dynamic_pointer_cast<ID_Text>(pi);
+        /*!
+         * TODO: pid->Parameter or pid.get()->Parameter ?*/
+        for(const auto& it : pid->Parameter) {
+            QString s = "parameter real " + it->Name + ";\n";
             stream<<s;
         }
         break;
@@ -197,7 +197,7 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
 
 
     // List all variables
-    for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+    for(const auto& pc : sch->DocComps) {
         if (pc->isEquation && pc->isActive) {
             stream<<pc->getVAvariables();
         }
@@ -207,7 +207,7 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
             "@(initial_model)\n"
             "begin \n";
     // Output expressions
-    for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+    for(const auto& pc : sch->DocComps) {
         if (pc->isEquation && pc->isActive) {
             stream<<pc->getVAExpressions();
         }
@@ -216,7 +216,7 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
     stream<<"end\n";
 
     // Convert components to current equations.
-    for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+    for(const auto& pc : sch->DocComps) {
          stream<<pc->getVerilogACode();
     }
 

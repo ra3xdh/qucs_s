@@ -45,19 +45,19 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
     edtCode = new QTextEdit(this);
     edtCode->document()->setDefaultFont(QucsSettings.textFont);
     edtCode->setWordWrapMode(QTextOption::NoWrap);
-    edtCode->insertPlainText(comp->Props.at(0)->Value);
+    edtCode->insertPlainText(comp->prop(0).Value);
     connect(edtCode, SIGNAL(textChanged()), this, SLOT(slotChanged()));
 
     checkCode = new QCheckBox(tr("display in schematic"), this);
-    checkCode->setChecked(comp->Props.at(0)->display);
+    checkCode->setChecked(comp->prop(0).display);
     connect(checkCode, SIGNAL(stateChanged(int)), this, SLOT(slotChanged()));
 
     QLabel* lblVars = new QLabel(tr("Variables to plot (semicolon separated)"));
-    edtVars = new QLineEdit(comp->Props.at(1)->Value);
+    edtVars = new QLineEdit(comp->prop(1).Value);
     connect(edtVars, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
 
     QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw-SPICE or XYCE-STD or scalars print format)"));
-    edtOutputs = new QLineEdit(comp->Props.at(2)->Value);
+    edtOutputs = new QLineEdit(comp->prop(2).Value);
     connect(edtOutputs, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
 
     btnApply = new QPushButton(tr("Apply"));
@@ -126,10 +126,10 @@ void CustomSimDialog::slotApply()
         edtVars->setText(edtVars->text().remove(' '));
         edtOutputs->setText(edtOutputs->text().remove(' '));
 
-        comp->Props.at(0)->Value = edtCode->document()->toPlainText();
-        comp->Props.at(0)->display = checkCode->isChecked();
-        comp->Props.at(1)->Value = edtVars->text();
-        comp->Props.at(2)->Value = edtOutputs->text();
+        comp.get()->prop(0).Value = edtCode->document()->toPlainText();
+        comp.get()->prop(0).display = checkCode->isChecked();
+        comp.get()->prop(1).Value = edtVars->text();
+        comp.get()->prop(2).Value = edtOutputs->text();
 
         Sch->recreateComponent(comp);
         Sch->viewport()->repaint();
@@ -162,14 +162,14 @@ void CustomSimDialog::slotCancel()
 void CustomSimDialog::slotFindVars()
 {
     QStringList vars;
-    for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
+    for(const auto &pn : Sch->DocNodes) {
       if(pn->Label != 0) {
           if (!vars.contains(pn->Label->Name)) {
               vars.append(pn->Label->Name);
           }
       }
     }
-    for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+    for(const auto &pw  :Sch->DocWires) {
       if(pw->Label != 0) {
           if (!vars.contains(pw->Label->Name)) {
               vars.append(pw->Label->Name);
@@ -177,7 +177,7 @@ void CustomSimDialog::slotFindVars()
       }
     }
 
-    for(Component *pc=Sch->DocComps.first();pc!=0;pc=Sch->DocComps.next()) {
+    for(const auto &pc:Sch->DocComps) {
         if(pc->isProbe) {
             if (!vars.contains(pc->getProbeVariable())) {
                 vars.append(pc->getProbeVariable());
@@ -185,8 +185,8 @@ void CustomSimDialog::slotFindVars()
         }
     }
 
-    for(QStringList::iterator it = vars.begin();it != vars.end(); it++) {
-        if (!(it->endsWith("#branch"))) *it=QString("V(%1)").arg(*it);
+    for(auto& it : vars) {
+        if (!(it.endsWith("#branch"))) it=QString("V(%1)").arg(it);
     }
 
 

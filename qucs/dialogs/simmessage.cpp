@@ -616,12 +616,11 @@ void SimMessage::startSimulator()
 
 // ------------------------------------------------------------------------
 Component * SimMessage::findOptimization(Schematic *Doc) {
-  Component *pc;
-  for(pc=Doc->Components->first(); pc!=0; pc=Doc->Components->next())
-    if(pc->isActive)
-      if(pc->Model == ".Opt")
-	return pc;
-  return NULL;
+  for(auto &pc: *Doc->Components)
+    if(pc.get()->isActive)
+      if(pc.get()->Model == ".Opt")
+        return pc.get();
+  return nullptr;
 }
 
 

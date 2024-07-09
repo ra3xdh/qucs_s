@@ -83,6 +83,44 @@ void Component::Bounding(int &_x1, int &_y1, int &_x2, int &_y2) {
 }
 
 // -------------------------------------------------------
+
+Property &Component::prop(int n)
+{
+  auto p = Props.begin();
+  while (n-- > 0 && p != Props.end())
+    ++p;
+  assert(p != Props.end());
+  return *p;
+}
+
+const Property &Component::prop(int n) const
+{
+  auto p = Props.begin();
+  while (n-- > 0 && p != Props.end())
+    ++p;
+  assert(p != Props.end());
+  return *p;
+}
+
+Port &Component::port(int n)
+{
+  auto p = Ports.begin();
+  while (n-- > 0 && p != Ports.end())
+    ++p;
+  assert(p != Ports.end());
+  return *p;
+}
+
+const Port &Component::port(int n) const
+{
+  auto p = Ports.begin();
+  while (n-- > 0 && p != Ports.end())
+    ++p;
+  assert(p != Ports.end());
+  return *p;
+}
+
+// -------------------------------------------------------
 // Size of component text.
 int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeight) {
     // get size of text using the screen-compatible metric

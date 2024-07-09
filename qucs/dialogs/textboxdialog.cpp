@@ -35,7 +35,7 @@ TextBoxDialog::TextBoxDialog(const char* window_title, Component *pc, QWidget *p
     setWindowTitle(tr(window_title));
     QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
     edtCode = new QTextEdit(this);
-    edtCode->insertPlainText(comp->Props.at(0)->Value);
+    edtCode->insertPlainText(comp->Props.front().Value);
 
     btnApply = new QPushButton(tr("Apply"));
     connect(btnApply,SIGNAL(clicked()),this,SLOT(slotApply()));
@@ -68,7 +68,7 @@ TextBoxDialog::TextBoxDialog(const char* window_title, Component *pc, QWidget *p
  */
 void TextBoxDialog::slotApply()
 {
-    comp->Props.at(0)->Value = edtCode->document()->toPlainText();
+    comp->Props.front().Value = edtCode->document()->toPlainText();
 }
 
 /*!

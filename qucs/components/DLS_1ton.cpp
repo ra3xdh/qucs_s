@@ -14,9 +14,9 @@ DLS_1ton::DLS_1ton()
 {
   Description = QObject::tr ("data voltage level shifter (digital to analogue) verilog device");
 
-  Props.append (new Property ("LEVEL", "5 V", false,
+  Props.emplace_back ( Property ("LEVEL", "5 V", false,
     QObject::tr ("voltage level")));
-  Props.append (new Property ("Delay", "1 ns", false,
+  Props.emplace_back ( Property ("Delay", "1 ns", false,
     QObject::tr ("time delay")
     +" ("+QObject::tr ("s")+")"));
 
@@ -30,7 +30,7 @@ DLS_1ton::DLS_1ton()
 Component * DLS_1ton::newOne()
 {
   DLS_1ton * p = new DLS_1ton();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front().Value = Props.front().Value;
   p->recreate(0); 
   return p;
 }
@@ -46,24 +46,24 @@ Element * DLS_1ton::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void DLS_1ton::createSymbol()
 {
-  Lines.append(new qucs::Line(-30, -30, 30,-30,QPen(Qt::darkRed,2)));
-  Lines.append(new qucs::Line( 30, -30, 30, 30,QPen(Qt::darkRed,2)));
-  Lines.append(new qucs::Line( 30, 30,-30, 30,QPen(Qt::darkRed,2)));
-  Lines.append(new qucs::Line(-30, 30, -30, -30,QPen(Qt::darkRed,2)));
+  Lines.emplace_back( qucs::Line(-30, -30, 30,-30,QPen(Qt::darkRed,2)));
+  Lines.emplace_back( qucs::Line( 30, -30, 30, 30,QPen(Qt::darkRed,2)));
+  Lines.emplace_back( qucs::Line( 30, 30,-30, 30,QPen(Qt::darkRed,2)));
+  Lines.emplace_back( qucs::Line(-30, 30, -30, -30,QPen(Qt::darkRed,2)));
  
-  Lines.append(new qucs::Line(-30, 30, 30, -30,QPen(Qt::darkRed,2)));
+  Lines.emplace_back( qucs::Line(-30, 30, 30, -30,QPen(Qt::darkRed,2)));
 
-  Lines.append(new qucs::Line(-40,  0,-30,  0,QPen(Qt::darkRed,2))); // Lin
-  Lines.append(new qucs::Line( 30,  0, 40,  0,QPen(Qt::darkRed,2))); // Lout
+  Lines.emplace_back( qucs::Line(-40,  0,-30,  0,QPen(Qt::darkRed,2))); // Lin
+  Lines.emplace_back( qucs::Line( 30,  0, 40,  0,QPen(Qt::darkRed,2))); // Lout
   
-  Lines.append(new qucs::Line(-25, -20,-15, -20,QPen(Qt::darkRed,2)));
-  Lines.append(new qucs::Line( 25,  20, 15,  20,QPen(Qt::darkRed,2)));
+  Lines.emplace_back( qucs::Line(-25, -20,-15, -20,QPen(Qt::darkRed,2)));
+  Lines.emplace_back( qucs::Line( 25,  20, 15,  20,QPen(Qt::darkRed,2)));
   
-  Texts.append(new Text(-10,-32, "1", Qt::darkRed, 12.0));
-  Texts.append(new Text(  0,  8, "n", Qt::darkRed, 12.0));
+  Texts.emplace_back( Text(-10,-32, "1", Qt::darkRed, 12.0));
+  Texts.emplace_back( Text(  0,  8, "n", Qt::darkRed, 12.0));
  
-  Ports.append(new Port(-40, 0));  // Lin
-  Ports.append(new Port( 40, 0));  // Lout
+  Ports.emplace_back( Port(-40, 0));  // Lin
+  Ports.emplace_back( Port( 40, 0));  // Lout
 
   x1 = -40; y1 = -34;
   x2 =  40; y2 =  34;

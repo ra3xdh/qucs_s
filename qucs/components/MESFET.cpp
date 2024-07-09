@@ -162,7 +162,7 @@ MESFET::MESFET()
 Component * MESFET::newOne()
 {
   MESFET * p = new MESFET();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.first()->Value = Props.constFirst()->Value;
   p->recreate(0); 
   return p;
 }

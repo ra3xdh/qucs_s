@@ -23,21 +23,21 @@ Resistor::Resistor(bool european)
 {
   Description = QObject::tr("resistor");
 
-  Props.append(new Property("R", "1 kOhm", true,
+  Props.emplace_back( Property("R", "1 kOhm", true,
     QObject::tr("ohmic resistance in Ohms")));
-  Props.append(new Property("Temp", "26.85", false,
+  Props.emplace_back( Property("Temp", "26.85", false,
     QObject::tr("simulation temperature in degree Celsius (Qucsator only)")));
-  Props.append(new Property("Tc1", "0.0", false,
+  Props.emplace_back( Property("Tc1", "0.0", false,
     QObject::tr("first order temperature coefficient")));
-  Props.append(new Property("Tc2", "0.0", false,
+  Props.emplace_back( Property("Tc2", "0.0", false,
     QObject::tr("second order temperature coefficient")));
-  Props.append(new Property("Tnom", "26.85", false,
+  Props.emplace_back( Property("Tnom", "26.85", false,
     QObject::tr("temperature at which parameters were extracted (Qucsator only)")));
 
   // this must be the last property in the list !!!
-  Props.append(new Property("Symbol", "european", false,
+  Props.emplace_back( Property("Symbol", "european", false,
         QObject::tr("schematic symbol")+" [european, US]"));
-  if(!european)  Props.getLast()->Value = "US";
+  if(!european)  Props.back().Value = "US";
 
   createSymbol();
   tx = x1+4;
@@ -50,21 +50,21 @@ Resistor::Resistor(bool european)
 // -------------------------------------------------------
 Component* Resistor::newOne()
 {
-  return new Resistor(Props.getLast()->Value != "US");
+  return new Resistor(Props.back().Value != "US");
 }
 
 QString Resistor::spice_netlist(bool )
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    s += QString(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
-            .arg(Ports.at(1)->Connection->Name); // output 2 nodes
+    s += QString(" %1 %2 ").arg(port(0).getConnection()->Name)
+            .arg(port(1).getConnection()->Name); // output 2 nodes
     s.replace(" gnd ", " 0 ");
 
     QString Tc1 = getProperty("Tc1")->Value;
     QString Tc2 = getProperty("Tc2")->Value;
 
-    s += QString(" %1").arg(spicecompat::normalize_value(Props.at(0)->Value));
+    s += QString(" %1").arg(spicecompat::normalize_value(prop(0).Value));
 
     if (!Tc1.isEmpty()) {
         s += " tc1=" + Tc1;
@@ -81,10 +81,10 @@ QString Resistor::spice_netlist(bool )
 
 QString Resistor::va_code()
 {
-    QString val = vacompat::normalize_value(Props.at(0)->Value);
-    QString valTemp = vacompat::normalize_value(Props.at(1)->Value);
-    QString plus =  Ports.at(0)->Connection->Name;
-    QString minus = Ports.at(1)->Connection->Name;
+    QString val = vacompat::normalize_value(prop(0).Value);
+    QString valTemp = vacompat::normalize_value(prop(1).Value);
+    QString plus = port(0).getConnection()->Name;
+    QString minus = port(1).getConnection()->Name;
     QString s = "";
     QString Vpm = vacompat::normalize_voltage(plus,minus);
     QString Ipm = vacompat::normalize_current(plus,minus,true);
@@ -100,28 +100,28 @@ QString Resistor::va_code()
 // -------------------------------------------------------
 void Resistor::createSymbol()
 {
-  if(Props.getLast()->Value != "US") {
-    Lines.append(new qucs::Line(-18, -9, 18, -9,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line( 18, -9, 18,  9,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line( 18,  9,-18,  9,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-18,  9,-18, -9,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  if(Props.back().Value != "US") {
+    Lines.emplace_back( qucs::Line(-18, -9, 18, -9,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line( 18, -9, 18,  9,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line( 18,  9,-18,  9,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line(-18,  9,-18, -9,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
   }
   else {
-    Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-18,  0,-15, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
-    Lines.append(new qucs::Line(-15, -7, -9,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
-    Lines.append(new qucs::Line( -9,  7, -3, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
-    Lines.append(new qucs::Line( -3, -7,  3,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
-    Lines.append(new qucs::Line(  3,  7,  9, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
-    Lines.append(new qucs::Line(  9, -7, 15,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
-    Lines.append(new qucs::Line( 15,  7, 18,  0,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
-    Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+    Lines.emplace_back( qucs::Line(-18,  0,-15, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.emplace_back( qucs::Line(-15, -7, -9,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.emplace_back( qucs::Line( -9,  7, -3, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.emplace_back( qucs::Line( -3, -7,  3,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.emplace_back( qucs::Line(  3,  7,  9, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.emplace_back( qucs::Line(  9, -7, 15,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.emplace_back( qucs::Line( 15,  7, 18,  0,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.emplace_back( qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
   }
 
-  Ports.append(new Port(-30,  0));
-  Ports.append(new Port( 30,  0));
+  Ports.emplace_back( Port(-30,  0));
+  Ports.emplace_back( Port( 30,  0));
 
   x1 = -30; y1 = -11;
   x2 =  30; y2 =  11;

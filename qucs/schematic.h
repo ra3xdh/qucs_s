@@ -194,15 +194,15 @@ public:
 
   // The pointers points to the current lists, either to the schematic
   // elements "Doc..." or to the symbol elements "SymbolPaints".
-  Q3PtrList<Wire>      *Wires, DocWires;
-  Q3PtrList<Node>      *Nodes, DocNodes;
-  Q3PtrList<Diagram>   *Diagrams, DocDiags;
-  Q3PtrList<Painting>  *Paintings, DocPaints;
-  Q3PtrList<Component> *Components, DocComps;
+  std::list<std::shared_ptr<Wire>>      *Wires, DocWires;
+  std::list<std::shared_ptr<Node>>      *Nodes, DocNodes;
+  std::list<std::shared_ptr<Diagram>>   *Diagrams, DocDiags;
+  std::list<std::shared_ptr<Painting>>  *Paintings, DocPaints;
+  std::list<std::shared_ptr<Component>> *Components, DocComps;
 
-  Q3PtrList<Painting>  SymbolPaints;  // symbol definition for subcircuit
+  std::list<std::shared_ptr<Painting>>  SymbolPaints;  // symbol definition for subcircuit
 
-  QList<PostedPaintEvent>   PostedPaintEvents;
+  std::list<std::shared_ptr<PostedPaintEvent>>  PostedPaintEvents;
   bool symbolMode;  // true if in symbol painting mode
   bool isSymbolOnly;
 
@@ -412,7 +412,7 @@ public:
 
   void       setComponentNumber(Component*);
   void       insertRawComponent(Component*, bool noOptimize=true);
-  void       recreateComponent(Component*);
+  void       recreateComponent(const std::shared_ptr<Component> &);
   void       insertComponent(Component*);
   void       activateCompsWithinRect(int, int, int, int);
   bool       activateSpecifiedComponent(int, int);

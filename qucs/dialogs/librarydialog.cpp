@@ -589,9 +589,8 @@ void LibraryDialog::slotSave()
 
       Stream << "  <Symbol>\n";
       Doc->createSubcircuitSymbol();
-      Painting *pp;
-      for(pp = Doc->SymbolPaints.first(); pp != 0; pp = Doc->SymbolPaints.next())
-        Stream << "    <" << pp->save() << ">\n";
+      for(const auto& pp : Doc->SymbolPaints)
+        Stream << "    <" << pp.get()->save() << ">\n";
 
       Stream << "  </Symbol>\n"
              << "</Component>\n\n";

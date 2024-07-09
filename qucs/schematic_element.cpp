@@ -2571,7 +2571,7 @@ void Schematic::insertRawComponent(Component *c, bool noOptimize)
 }
 
 // ---------------------------------------------------
-void Schematic::recreateComponent(Component *Comp)
+void Schematic::recreateComponent(const std::shared_ptr<Component> &Comp)
 {
 
     WireLabel **plMem=0, **pl;

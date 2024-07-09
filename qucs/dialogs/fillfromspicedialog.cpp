@@ -152,11 +152,11 @@ QString fillFromSpiceDialog::convertNumNotation(const QString &value)
 
 void fillFromSpiceDialog::fillCompProps()
 {
-  for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
-    QString name = p->Name;
+  for(auto& p : Comp->Props) {
+    QString name = p.Name;
     name = name.toLower();
     if (parsedProps.contains(name)) {
-      p->Value = parsedProps[name];
+      p.Value = parsedProps[name];
     }
   }
 }

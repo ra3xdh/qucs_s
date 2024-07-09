@@ -62,7 +62,7 @@ private:
 
   Graph *pGraph;
   Schematic *Doc;
-  QList<Node *> NodeList;
+  std::list<std::shared_ptr<Node> > NodeList;
   QList<double *> ValueList;
   bool isSpice;
 };

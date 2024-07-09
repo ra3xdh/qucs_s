@@ -143,7 +143,8 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
 
     //UI setup
     setAttribute(Qt::WA_DeleteOnClose);//This attribute forces the widget to be destroyed after closing
-    prop = component->Props.at(selectedPropertyId);
+
+    prop = &component->prop(selectedPropertyId);
     QGridLayout *gbox = new QGridLayout();
     setLayout(gbox);
     QLabel *tunerName = new QLabel(component->Name + ":" + prop->Name);
