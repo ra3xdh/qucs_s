@@ -127,6 +127,13 @@ int fillFromSpiceDialog::parseModelcard()
         value += "M";
       }
 
+      if (value.size() >=2) {
+        // Ngspice doesn't accept numbers without leading zero
+        if (value.at(0) == '.' && value.at(1).isDigit()) {
+          value.insert(0,'0');
+        }
+      }
+
       if (chbNumNotation->isChecked()) {
         QString vv = convertNumNotation(value);
         if (!vv.isEmpty()) value = vv;
