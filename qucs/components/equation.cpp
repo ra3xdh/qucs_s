@@ -87,7 +87,7 @@ Component* Equation::newOne()
 
 Element* Equation::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Qucs legacy equation");
+  Name = QObject::tr("Qucsator equation");
   BitmapFile = (char *) "equation";
 
   if(getNewOne)  return new Equation();
