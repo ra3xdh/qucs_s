@@ -35,7 +35,6 @@ public:
 
 protected:
   QString spice_netlist(bool isXyce);
-  QString netlist();
   QString param_split_str=";";
 };
 
