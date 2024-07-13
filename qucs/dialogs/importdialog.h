@@ -55,6 +55,7 @@ private slots:
 
 private:
   void startSimulator();
+  bool getDataVarsFromDatafile(const QString &filename);
 
 private:
   QGridLayout *all;
@@ -62,9 +63,9 @@ private:
   QLabel *OutputLabel, *LibLabel;
   QProcess Process;
   QPlainTextEdit *MsgText;
-  QLineEdit *ImportEdit, *OutputEdit, *OutputData, *LibName;
+  QLineEdit *ImportEdit, *OutputEdit, *LibName;
   QPushButton *ImportButt, *CancelButt, *AbortButt;
-  QComboBox *OutType, *InType;
+  QComboBox *OutType, *InType, *OutputData;
 
 public:
   void setImportDir(const QString &dir) { lastImportDir = dir; };
