@@ -1144,6 +1144,15 @@ void Schematic::drawGrid(QPainter* painter) {
     painter->restore();
 }
 
+void Schematic::relativeRotation(int &newX, int &newY, int comX, int comY, int oldX, int oldY)
+{
+    // Shift coordinate system to center of mass
+    // Rotate
+    // Shift coordinate system back to origin
+    newX = (oldY-comY)+comX;
+    newY = -(oldX-comX)+comY;
+}
+
 // ---------------------------------------------------
 // Correction factor for unproportional font scaling.
 float Schematic::textCorr()
@@ -1378,6 +1387,7 @@ bool Schematic::rotateElements()
     Wires->setAutoDelete(false);
     Components->setAutoDelete(false);
 
+    // To rotate a selected area its necessary to work with half steps
     int x1 = INT_MAX, y1 = INT_MAX;
     int x2 = INT_MIN, y2 = INT_MIN;
     QList<Element *> ElementCache;
@@ -1386,14 +1396,17 @@ bool Schematic::rotateElements()
     copyWires(x1, y1, x2, y2, &ElementCache);
     copyPaintings(x1, y1, x2, y2, &ElementCache);
     if (y1 == INT_MAX)
+    {
         return false; // no element selected
+    }
+    int comX = (x1 + ((x2-x1) / 2)); // center of mass
+    int comY = (y1 + ((y2-y1) / 2)); 
+    int newPosX = INT_MIN; 
+    int newPosY = INT_MIN;
 
     Wires->setAutoDelete(true);
     Components->setAutoDelete(true);
-
-    x1 = (x1 + x2) >> 1; // center for rotation
-    y1 = (y1 + y2) >> 1;
-    //setOnGrid(x1, y1);
+    setOnGrid(comX, comY);
 
     Wire *pw;
     Painting *pp;
@@ -1407,23 +1420,26 @@ bool Schematic::rotateElements()
         case isDigitalComponent:
             pc = (Component *) pe;
             pc->rotate(); //rotate component !before! rotating its center
-            pc->setCenter(pc->cy - y1 + x1, x1 - pc->cx + y1);
+            relativeRotation(newPosX, newPosY, comX, comY, pc->cx, pc->cy);
+            pc->setCenter(newPosX, newPosY);
             insertRawComponent(pc);
             break;
 
         case isWire:
             pw = (Wire *) pe;
-            x2 = pw->x1;
-            pw->x1 = pw->y1 - y1 + x1;
-            pw->y1 = x1 - x2 + y1;
-            x2 = pw->x2;
-            pw->x2 = pw->y2 - y1 + x1;
-            pw->y2 = x1 - x2 + y1;
+            relativeRotation(newPosX, newPosY, comX, comY, pw->x1, pw->y1);
+            pw->x1 = newPosX;
+            pw->y1 = newPosY;
+            relativeRotation(newPosX, newPosY, comX, comY, pw->x2, pw->y2);
+            pw->x2 = newPosX;
+            pw->y2 = newPosY;
+
             pl = pw->Label;
             if (pl) {
                 x2 = pl->cx;
-                pl->cx = pl->cy - y1 + x1;
-                pl->cy = x1 - x2 + y1;
+                relativeRotation(newPosX, newPosY, comX, comY, pl->cx, pl->cy);
+                pl->cx = newPosX;
+                pl->cy = newPosY;
                 if (pl->Type == isHWireLabel)
                     pl->Type = isVWireLabel;
                 else
@@ -1435,20 +1451,20 @@ bool Schematic::rotateElements()
         case isHWireLabel:
         case isVWireLabel:
             pl = (WireLabel *) pe;
-            x2 = pl->x1;
-            pl->x1 = pl->y1 - y1 + x1;
-            pl->y1 = x1 - x2 + y1;
+            relativeRotation(newPosX, newPosY, comX, comY, pl->x1, pl->y1);
+            pl->x1 = newPosX;
+            pl->y1 = newPosY;
             break;
         case isNodeLabel:
             pl = (WireLabel *) pe;
             if (pl->pOwner == 0) {
-                x2 = pl->x1;
-                pl->x1 = pl->y1 - y1 + x1;
-                pl->y1 = x1 - x2 + y1;
+                relativeRotation(newPosX, newPosY, comX, comY, pl->x1, pl->y1);
+                pl->x1 = newPosX;
+                pl->y1 = newPosY;
             }
-            x2 = pl->cx;
-            pl->cx = pl->cy - y1 + x1;
-            pl->cy = x1 - x2 + y1;
+            relativeRotation(newPosX, newPosY, comX, comY, pl->cx, pl->cy);
+            pl->cx = newPosX;
+            pl->cy = newPosY;
             insertNodeLabel(pl);
             break;
 

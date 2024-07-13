@@ -370,6 +370,7 @@ private:
   void drawPostPaintEvents(QPainter* painter);
   void paintFrame(QPainter* painter);
   void drawGrid(QPainter* painter);
+  void relativeRotation(int &x, int &y, int comX, int comY, int posX, int posY);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
