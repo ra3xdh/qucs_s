@@ -213,6 +213,7 @@ void Diagram::createAxisLabels() {
 
     QStringList used_kernels, used_simulations;
     for (const auto pg: Graphs) {
+      if (!pg->Var.contains("/")) continue; // Qucsator data
         QString kernel_name = pg->Var.section('/', 0, 0);
         QString var_name = pg->Var;
         auto p = var_name.indexOf('/');
