@@ -89,6 +89,11 @@ ImportDialog::ImportDialog(QWidget *parent)
   OutputData->setEnabled(false);
   file->addWidget(OutputData, 4, 1);
 
+  LibLabel = new QLabel(tr("Library Name:"));
+  file->addWidget(LibLabel,5,0);
+  LibName = new QLineEdit;
+  file->addWidget(LibName,5,1);
+
   Group2->setLayout(file);
   all->addWidget(Group2, 0,0,1,1);
   
@@ -151,6 +156,10 @@ void ImportDialog::slotBrowse()
     QFileInfo Info(s);
     lastImportDir = Info.absolutePath();  // remember last directory
     ImportEdit->setText(s);
+
+    if (OutType->currentIndex() == 3) {
+      LibName->setText(Info.baseName());
+    }
   }
 }
 
@@ -243,6 +252,9 @@ void ImportDialog::slotImport()
     break;
   case 3:
     CommandLine << "qucslib";
+    if (!LibName->text().isEmpty()) {
+      CommandLine << "-ln" << LibName->text().trimmed();
+    }
     break;
   case 4:
     CommandLine << "qucs";
@@ -278,8 +290,9 @@ void ImportDialog::slotImport()
 }
 
 // ------------------------------------------------------------------------
-void ImportDialog::slotType(int index)
+void ImportDialog::slotType()
 {
+  auto index = OutType->currentIndex();
   switch(index) {
   case 0:
   case 3:
@@ -297,6 +310,14 @@ void ImportDialog::slotType(int index)
     OutputData->setEnabled(false);
     OutputLabel->setEnabled(false);
     break;
+  }
+
+  if (index == 3) {
+    LibLabel->setEnabled(true);
+    LibName->setEnabled(true);
+  } else {
+    LibLabel->setEnabled(false);
+    LibName->setEnabled(false);
   }
 }
 
@@ -417,4 +438,5 @@ void ImportDialog::slotValidateOutput()
     default:
         break;
     }
+    slotType();
 }

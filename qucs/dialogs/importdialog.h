@@ -49,7 +49,7 @@ private slots:
   void slotAbort();
   void slotBrowse();
   void slotSaveBrowse();
-  void slotType(int);
+  void slotType();
   void slotValidateInput();
   void slotValidateOutput();
 
@@ -59,10 +59,10 @@ private:
 private:
   QGridLayout *all;
 
-  QLabel *OutputLabel;
+  QLabel *OutputLabel, *LibLabel;
   QProcess Process;
   QPlainTextEdit *MsgText;
-  QLineEdit *ImportEdit, *OutputEdit, *OutputData;
+  QLineEdit *ImportEdit, *OutputEdit, *OutputData, *LibName;
   QPushButton *ImportButt, *CancelButt, *AbortButt;
   QComboBox *OutType, *InType;
 
