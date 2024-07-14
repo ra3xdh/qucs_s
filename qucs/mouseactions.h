@@ -44,7 +44,6 @@ public:
   void editElement(Schematic*, QMouseEvent*);
   void editLabel(Schematic*, WireLabel*);
 
-  bool drawn;  // indicates whether the scheme element was drawn last time
   Element *selElem;  // component/diagram/painting selected in IconView
   Element *focusElement;
   QMouseEvent *focusMEvent;

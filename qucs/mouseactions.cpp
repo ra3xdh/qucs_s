@@ -178,7 +178,6 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
 
     Doc->updateAllBoundingRect();
     Doc->viewport()->update();
-    drawn = false;
     Doc->setChanged(true, true);
 }
 
@@ -239,7 +238,6 @@ void MouseActions::endElementMoving(Schematic *Doc,
   Doc->enlargeView(totalBounds.left(), totalBounds.top(), totalBounds.right(), totalBounds.bottom());
 
   Doc->viewport()->update();
-  drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -322,16 +320,10 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 
     if (selElem->Type == isPainting) {
         Doc->PostPaintEvent(_NotRop, 0, 0, 0, 0);
-        ((Painting *) selElem)->MouseMoving(Doc, x, y, gx, gy, Doc, fx, fy, drawn);
-        drawn = true;
+        ((Painting *) selElem)->MouseMoving(Doc, x, y, gx, gy, Doc, fx, fy);
         Doc->viewport()->update();
         return;
     } // of "if(isPainting)"
-
-    // ********** it is a component or diagram
-    if (drawn)
-        selElem->paintScheme(Doc); // erase old scheme
-    drawn = true;
 
     //  Component *comp = (Component*)selElem;
     //qDebug() << "desc" << comp->Description << "gx" << gx << "gy" << gy;
@@ -561,7 +553,6 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
         pe->paintScheme(Doc);
     }
 
-    drawn = true;
     MAx1 = MAx2;
     MAy1 = MAy2;
     QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
@@ -582,11 +573,7 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
   MAy2 = inModel.y();
 
   Element *pe;
-  if (drawn) // erase old scheme
-    for (pe = movingElements.first(); pe != nullptr; pe = movingElements.next())
-      pe->paintScheme(Doc);
 
-  drawn = true;
   if ((Event->modifiers().testFlag(Qt::ControlModifier)) == 0)
     Doc->setOnGrid(MAx2, MAy2); // use grid only if CTRL key not pressed
   MAx1 = MAx2 - MAx1;
@@ -620,7 +607,6 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
     moveElements(Doc, MAx1, MAy1);
     paintElementsScheme(Doc);
 
-    drawn = true;
     QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
     QucsMain->MouseReleaseAction = &MouseActions::MReleasePaste;
 }
@@ -1008,7 +994,6 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
     ComponentMenu->popup(Event->globalPos());
 #endif
     Doc->viewport()->update();
-    drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -1082,7 +1067,6 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
 
     Doc->updateAllBoundingRect();
     Doc->viewport()->update();
-    drawn = false;
     Doc->setChanged(true, true);
 }
 
@@ -1180,7 +1164,6 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
             // Update matching wire label highlighting
             Doc->highlightWireLabels();
             Doc->viewport()->update();
-            drawn = false;
             return;
 
         case isComponentText: // property text of component ?
@@ -1222,7 +1205,6 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
     QucsMain->MouseDoubleClickAction = 0;
     Doc->grabKeyboard(); // no keyboard inputs during move actions
     Doc->viewport()->update();
-    drawn = false;
 
     if (focusElement == 0) {
         MAx2 = 0; // if not clicking on an element => open a rectangle
@@ -1253,7 +1235,6 @@ void MouseActions::MPressDelete(Schematic *Doc, QMouseEvent *, float fX, float f
 
         Doc->updateAllBoundingRect();
         Doc->viewport()->update();
-        drawn = false;
     }
 }
 
@@ -1271,7 +1252,6 @@ void MouseActions::MPressActivate(Schematic *Doc, QMouseEvent *, float fX, float
         QucsMain->MouseMoveAction = &MouseActions::MMoveSelect;
     }
     Doc->viewport()->update();
-    drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -1292,7 +1272,6 @@ void MouseActions::MPressMirrorX(Schematic *Doc, QMouseEvent *, float fX, float 
     }
 
     Doc->viewport()->update();
-    drawn = false;
     Doc->setChanged(true, true);
 }
 
@@ -1314,7 +1293,6 @@ void MouseActions::MPressMirrorY(Schematic *Doc, QMouseEvent *, float fX, float 
     }
 
     Doc->viewport()->update();
-    drawn = false;
     Doc->setChanged(true, true);
 }
 
@@ -1370,7 +1348,6 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
         return;
     }
     Doc->viewport()->update();
-    drawn = false;
     Doc->setChanged(true, true);
 }
 
@@ -1409,7 +1386,6 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             Doc->enlargeView(x1, y1, x2, y2);
             //Doc->setOnGrid(Comp->cx,Comp->cy);
 
-            drawn = false;
             Doc->viewport()->update();
             Doc->setChanged(true, true);
             rot = Comp->rotated;
@@ -1458,7 +1434,6 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
         DiagramDialog *dia = new DiagramDialog(Diag, Doc);
         if (dia->exec() == QDialog::Rejected) { // don't insert if dialog canceled
             Doc->viewport()->update();
-            drawn = false;
             return;
         }
 
@@ -1484,7 +1459,6 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
         Doc->setChanged(true, true);
 
         MMoveElement(Doc, Event); // needed before next mouse pressing
-        drawn = false;
     }
 }
 
@@ -1567,7 +1541,6 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
         //ALYS: excessive update. end of function does it.
         //Doc->viewport()->update();
 
-        drawn = false;
         if (set1 | set2)
             Doc->setChanged(true, true);
         MAx3 = MAx2;
@@ -1627,7 +1600,6 @@ void MouseActions::MPressMarker(Schematic *Doc, QMouseEvent *, float fX, float f
         Doc->enlargeView(x0 + pm->x1, y0 - pm->y1 - pm->y2, x0 + pm->x1 + pm->x2, y0 - pm->y1);
     }
     Doc->viewport()->update();
-    drawn = false;
 }
 
 /**
@@ -1665,7 +1637,6 @@ void MouseActions::MPressSetLimits(Schematic *Doc, QMouseEvent*, float fX, float
     }
 
     Doc->viewport()->update();
-    drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -1683,7 +1654,6 @@ void MouseActions::MPressOnGrid(Schematic *Doc, QMouseEvent *, float fX, float f
         // Update matching wire label highlighting
         Doc->highlightWireLabels();
         Doc->viewport()->update();
-        drawn = false;
     }
 }
 
@@ -1700,7 +1670,6 @@ void MouseActions::MPressMoveText(Schematic *Doc, QMouseEvent *, float fX, float
         MAx1 = ((Component *) focusElement)->cx + ((Component *) focusElement)->tx;
         MAy1 = ((Component *) focusElement)->cy + ((Component *) focusElement)->ty;
         Doc->viewport()->update();
-        drawn = false;
         QucsMain->MouseMoveAction = &MouseActions::MMoveMoveText;
         QucsMain->MouseReleaseAction = &MouseActions::MReleaseMoveText;
         Doc->grabKeyboard(); // no keyboard inputs during move actions
@@ -1720,7 +1689,6 @@ void MouseActions::MPressZoomIn(Schematic *Doc, QMouseEvent *, float fX, float f
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseZoomIn;
     Doc->grabKeyboard(); // no keyboard inputs during move actions
     Doc->viewport()->update();
-    drawn = false;
 }
 
 // ***********************************************************************
@@ -1753,7 +1721,6 @@ void MouseActions::MReleaseSelect(Schematic *Doc, QMouseEvent *Event)
     QucsMain->MouseMoveAction = 0; // no element moving
     Doc->highlightWireLabels();
     Doc->viewport()->update();
-    drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -1777,7 +1744,6 @@ void MouseActions::MReleaseSelect2(Schematic *Doc, QMouseEvent *Event)
     Doc->highlightWireLabels();
     Doc->PostedPaintEvents.clear();
     Doc->viewport()->update();
-    drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -1795,7 +1761,6 @@ void MouseActions::MReleaseActivate(Schematic *Doc, QMouseEvent *Event)
     QucsMain->MouseDoubleClickAction = 0;
     Doc->highlightWireLabels();
     Doc->viewport()->update();
-    drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -1869,7 +1834,6 @@ void MouseActions::MReleaseResizeDiagram(Schematic *Doc, QMouseEvent *Event)
     Doc->releaseKeyboard(); // allow keyboard inputs again
 
     Doc->viewport()->update();
-    drawn = false;
     Doc->setChanged(true, true);
 }
 
@@ -1886,7 +1850,6 @@ void MouseActions::MReleaseResizePainting(Schematic *Doc, QMouseEvent *Event)
     Doc->releaseKeyboard(); // allow keyboard inputs again
 
     Doc->viewport()->update();
-    drawn = false;
     Doc->setChanged(true, true);
 }
 
@@ -2058,7 +2021,6 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
         QucsMain->MouseReleaseAction = 0;
         QucsMain->MouseDoubleClickAction = 0;
 
-        drawn = false;
         Doc->viewport()->update();
         Doc->setChanged(true, true);
         break;
@@ -2066,10 +2028,6 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
     // ............................................................
     case Qt::RightButton: {// right button rotates the elements
         //setPainter(Doc, &painter);
-
-        if (drawn) // erase old scheme
-            paintElementsScheme(Doc);
-        drawn = true;
 
         auto inModel = Doc->contentsToModel(Event->pos());
         x1 = inModel.x();
@@ -2099,7 +2057,6 @@ void MouseActions::MReleaseMoveText(Schematic *Doc, QMouseEvent *Event)
     ((Component *) focusElement)->tx = MAx1 - ((Component *) focusElement)->cx;
     ((Component *) focusElement)->ty = MAy1 - ((Component *) focusElement)->cy;
     Doc->viewport()->update();
-    drawn = false;
     Doc->setChanged(true, true);
 }
 
@@ -2265,7 +2222,6 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     Doc->setFocus();
 
     Doc->viewport()->update();
-    drawn = false;
 }
 
 // -----------------------------------------------------------

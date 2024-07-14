@@ -31,7 +31,7 @@ public:
   void paintScheme(Schematic*);
   void getCenter(int&, int&);
   void setCenter(int, int, bool relative=false);
-  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int, bool) override;
+  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int) override;
   bool MousePressing(Schematic*sch) override;
   Painting* newOne() override;
   bool Dialog(QWidget *Doc) override;

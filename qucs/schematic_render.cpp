@@ -189,7 +189,6 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
     setContentsPos(contentTopLeft.x(), contentTopLeft.y());
 
     viewport()->update();
-    App->view->drawn = false;
 
     return Scale;
 }
