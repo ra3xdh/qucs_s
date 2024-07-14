@@ -148,8 +148,14 @@ void Component::getCenter(int &x, int &y) {
 // Given coordinates of a point (usually coming from a mouse click), finds
 // out whether this point is within boundaries of one of component's text
 // properties (i.e whether a text property is clicked) and returns the
-// index of that property. Returns -1 when point is not within bounds of
-// any of text properties — i.e. click has missed.
+// index of that property.
+//
+// Returns:
+//     -1 when point is not within bounds of any of component's texts, i.e.
+//        click has missed
+//      0 when click is within bounds of component name
+//  n + 1 when click is within bounds of one of component's properties, `n`
+//        is the index of that property
 //
 // To find out whether given coordinates are within one of text properties,
 // we iterate over all properties, computing their bounding rectangles and
@@ -203,8 +209,8 @@ int Component::getTextSelected(int point_x, int point_y) {
         }
 
         bounding_rect_top = text_br.bottom();
-        text_index += 1;
     }
+    text_index += 1;
 
     for (auto* prop : Props) {
         if (!prop->display) {
@@ -252,7 +258,8 @@ void Component::paint(QPainter *p) {
 
     for (auto *prop : Props) {
         if (!prop->display) continue;
-        p->drawText(text_br.left(), text_br.bottom(), 0, 0, Qt::TextDontClip, prop->Name + "=" + prop->Value, &text_br);
+        prop->paint(text_br.left(), text_br.bottom(), p);
+        text_br = prop->boundingRect();
     }
 
     if (isActive == COMP_IS_OPEN)
