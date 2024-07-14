@@ -41,7 +41,6 @@
 #include <vector>
 
 class Node;
-class WireLabel;
 class Schematic;
 
 namespace qucs { // otherwise conflict with <windows.h>
@@ -205,16 +204,6 @@ public:
   bool isSelected;
   int  Type;    // whether it is Component, Wire, ...
   int  cx, cy, x1, y1, x2, y2;  // center and relative boundings
-};
-
-
-/** \class Conductor
-  * \brief label for Node and Wire classes
-  *
-  */
-class Conductor : public Element {
-public:
-  WireLabel *Label;
 };
 
 #endif

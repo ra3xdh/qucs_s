@@ -24,6 +24,7 @@
 #include <qt3_compat/qt_compat.h>
 
 class Wire;
+class WireLabel;
 class Schematic;
 class Diagram;
 class QPainter;

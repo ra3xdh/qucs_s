@@ -18,13 +18,11 @@
 #ifndef WIRELABEL_H
 #define WIRELABEL_H
 
-#include "element.h"
+#include "conductor.h"
 
 #include <QString>
 
 class QPainter;
-class Wire;
-class Node;
 
 
 class WireLabel : public Element {

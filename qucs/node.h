@@ -18,7 +18,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include "element.h"
+#include "conductor.h"
 
 #include "qt3_compat/qt_compat.h"
 
