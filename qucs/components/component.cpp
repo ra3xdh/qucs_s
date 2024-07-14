@@ -252,7 +252,8 @@ void Component::paint(QPainter *p) {
 
     for (auto *prop : Props) {
         if (!prop->display) continue;
-        p->drawText(text_br.left(), text_br.bottom(), 0, 0, Qt::TextDontClip, prop->Name + "=" + prop->Value, &text_br);
+        prop->paint(text_br.left(), text_br.bottom(), p);
+        text_br = prop->boundingRect();
     }
 
     if (isActive == COMP_IS_OPEN)
