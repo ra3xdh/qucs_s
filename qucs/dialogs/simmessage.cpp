@@ -610,6 +610,7 @@ void SimMessage::startSimulator()
   // insert Qucs bin dir, so ASCO can find qucsator
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   if (Program.endsWith(QString("asco") + executableSuffix)) {
+#ifdef Q_OS_UNIX
     auto tmpdir = std::filesystem::temp_directory_path();
     tmpdir /= "qucs_ascodir"; // ASCO doesn't accept qucsator_rf name;
     std::filesystem::create_directory(tmpdir); // qucsator is hardcoded inside ASCO
@@ -620,6 +621,12 @@ void SimMessage::startSimulator()
     }
     //env.insert("ASCO_SIM_PATH",QucsSettings.Qucsator);
     env.insert("PATH", env.value("PATH") + sep + QString::fromStdString(tmpdir.string()));
+#endif
+// Only patched version of ASCO works on Windows,
+// because qucsator name is hardcoded inside ASCO sources
+#ifdef Q_OS_WIN
+    env.insert("ASCO_SIM_PATH",QucsSettings.Qucsator);
+#endif
   }
   SimProcess.setProcessEnvironment(env);
 
