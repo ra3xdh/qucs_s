@@ -42,13 +42,8 @@ include_directories(
       )
 
 
-IF(QT_VERSION_MAJOR EQUAL 6)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-ELSE()
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-ENDIF()
 
 if (MSVC)
   add_compile_options(/Zc:__cplusplus /permissive- /MP /Zc:preprocessor)
