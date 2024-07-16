@@ -17,7 +17,6 @@
 
 
 #include "ngspice.h"
-#include "xspice_cmbuilder.h"
 #include "components/iprobe.h"
 #include "components/vprobe.h"
 #include "components/equation.h"

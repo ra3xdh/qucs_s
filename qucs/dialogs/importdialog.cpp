@@ -85,9 +85,14 @@ ImportDialog::ImportDialog(QWidget *parent)
   OutputLabel = new QLabel(tr("Output Data:"));
   OutputLabel->setEnabled(false);
   file->addWidget(OutputLabel, 4, 0);
-  OutputData = new QLineEdit();
+  OutputData = new QComboBox;
   OutputData->setEnabled(false);
   file->addWidget(OutputData, 4, 1);
+
+  LibLabel = new QLabel(tr("Library Name:"));
+  file->addWidget(LibLabel,5,0);
+  LibName = new QLineEdit;
+  file->addWidget(LibName,5,1);
 
   Group2->setLayout(file);
   all->addWidget(Group2, 0,0,1,1);
@@ -136,14 +141,14 @@ void ImportDialog::slotBrowse()
      this, tr("Enter a Data File Name"),
      lastImportDir.isEmpty() ? QString(".") : lastImportDir,
      tr("All known")+
-     " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir);;"+
+     " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir *.dat.ngspice *.dat.xyce *.dat.spopus);;"+
      tr("Touchstone files")+" (*.s?p);;"+
      tr("CSV files")+" (*.csv);;"+
      tr("CITI files")+" (*.citi *.cit);;"+
      tr("ZVR ASCII files")+" (*.asc);;"+
      tr("IC-CAP model files")+" (*.mdl);;"+
      tr("VCD files")+" (*.vcd);;"+
-     tr("Qucs dataset files")+" (*.dat);;"+
+     tr("Qucs dataset files")+" (*.dat *.dat.ngspice *.dat.xyce *.dat.spopus);;"+
      tr("SPICE files")+" (*.cir);;"+
      tr("Any file")+" (*)");
 
@@ -151,6 +156,10 @@ void ImportDialog::slotBrowse()
     QFileInfo Info(s);
     lastImportDir = Info.absolutePath();  // remember last directory
     ImportEdit->setText(s);
+
+    if (OutType->currentIndex() == 3) {
+      LibName->setText(Info.baseName());
+    }
   }
 }
 
@@ -233,16 +242,19 @@ void ImportDialog::slotImport()
     break;
   case 1:
     CommandLine << "touchstone";
-    if (!OutputData->text().isEmpty())
-      CommandLine << "-d" << OutputData->text();
+    if (!OutputData->currentText().isEmpty())
+      CommandLine << "-d" << OutputData->currentText();
     break;
   case 2:
     CommandLine << "csv";
-    if (!OutputData->text().isEmpty())
-      CommandLine << "-d" << OutputData->text();
+    if (!OutputData->currentText().isEmpty())
+      CommandLine << "-d" << OutputData->currentText();
     break;
   case 3:
     CommandLine << "qucslib";
+    if (!LibName->text().isEmpty()) {
+      CommandLine << "-ln" << LibName->text().trimmed();
+    }
     break;
   case 4:
     CommandLine << "qucs";
@@ -278,8 +290,9 @@ void ImportDialog::slotImport()
 }
 
 // ------------------------------------------------------------------------
-void ImportDialog::slotType(int index)
+void ImportDialog::slotType()
 {
+  auto index = OutType->currentIndex();
   switch(index) {
   case 0:
   case 3:
@@ -297,6 +310,14 @@ void ImportDialog::slotType(int index)
     OutputData->setEnabled(false);
     OutputLabel->setEnabled(false);
     break;
+  }
+
+  if (index == 3) {
+    LibLabel->setEnabled(true);
+    LibName->setEnabled(true);
+  } else {
+    LibLabel->setEnabled(false);
+    LibName->setEnabled(false);
   }
 }
 
@@ -346,28 +367,31 @@ void ImportDialog::slotValidateInput()
 
     QFileInfo inf(in_file);
     QString Suffix = inf.suffix().toLower();
+    QString FullSuffix = inf.completeSuffix().toLower();
     int idx = 3;
     const static QRegularExpression snp_expr("s[1-9]p");
 
-    if((Suffix == "citi") || (Suffix == "cit"))
+    if((Suffix == "citi") || (Suffix == "cit")) {
       idx = 4;
-    else if(Suffix == "vcd")
+    } else if(Suffix == "vcd") {
       idx = 1;
-    else if(Suffix == "asc")
+    } else if(Suffix == "asc") {
       idx = 5;
-    else if(Suffix == "mdl")
+    } else if(Suffix == "mdl") {
       idx = 6;
-    else if(Suffix == "csv")
+    } else if(Suffix == "csv") {
       idx = 2;
-    else if(Suffix == "dat")
+    } else if(Suffix == "dat" || FullSuffix == "dat.ngspice" ||
+            FullSuffix == "dat.xyce" || FullSuffix == "dat.spopus") {
       idx = 3;
-    else if(Suffix == "cir" || Suffix == "ckt" || Suffix == "sp")
+      getDataVarsFromDatafile(in_file);
+    } else if(Suffix == "cir" || Suffix == "ckt" || Suffix == "sp") {
       idx = 0;
-    else if (snp_expr.match(Suffix).hasMatch())
+    } else if (snp_expr.match(Suffix).hasMatch()) {
       idx = 7;
+    }
 
     InType->setCurrentIndex(idx);
-
 }
 
 
@@ -417,4 +441,33 @@ void ImportDialog::slotValidateOutput()
     default:
         break;
     }
+    slotType();
+}
+
+
+bool ImportDialog::getDataVarsFromDatafile(const QString &filename)
+{
+  OutputData->clear();
+  QFile f(filename);
+  if (!f.open(QIODevice::ReadOnly)) {
+    QMessageBox::critical(this,tr("Error"),tr("Cannot open file: ") + filename);
+    return false;
+  }
+
+  QTextStream ts(&f);
+  QStringList vars;
+  while(!ts.atEnd()) {
+    QString line = ts.readLine();
+    line = line.trimmed();
+    if (line.startsWith("<dep")) {
+      QString var = line.section(' ',1,1);
+      if (!var.isEmpty()) vars.append(var);
+    }
+  }
+
+  f.close();
+
+  OutputData->addItems(vars);
+
+  return true;
 }
