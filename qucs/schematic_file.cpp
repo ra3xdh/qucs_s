@@ -851,7 +851,7 @@ void Schematic::simpleInsertComponent(Component *c)
       pn = new Node(x, y);
       DocNodes.append(pn);
     }
-    pn->Connections.append(c);  // connect schematic node to component node
+    pn->connect(c);  // connect schematic node to component node
     if (!pp->Type.isEmpty()) {
       pn->DType = pp->Type;
     }
@@ -915,7 +915,7 @@ void Schematic::simpleInsertWire(Wire *pw)
     delete pw;           // delete wire because this is not a wire
     return;
   }
-  pn->Connections.append(pw);  // connect schematic node to component node
+  pn->connect(pw);  // connect schematic node to component node
   pw->Port1 = pn;
 
   // check if second wire node lies upon existing node
@@ -926,7 +926,7 @@ void Schematic::simpleInsertWire(Wire *pw)
     pn = new Node(pw->x2, pw->y2);
     DocNodes.append(pn);
   }
-  pn->Connections.append(pw);  // connect schematic node to component node
+  pn->connect(pw);  // connect schematic node to component node
   pw->Port2 = pn;
 
   DocWires.append(pw);
@@ -1400,7 +1400,7 @@ void Schematic::propagateNode(QStringList& Collect,
 
   Cons.append(pn);
   for(p2 = Cons.first(); p2 != 0; p2 = Cons.next())
-    for(pe = p2->Connections.first(); pe != 0; pe = p2->Connections.next())
+    for(auto* pe : *p2)
       if(pe->Type == isWire) {
 	pw = (Wire*)pe;
 	if(p2 != pw->Port1) {
