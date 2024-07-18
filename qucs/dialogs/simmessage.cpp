@@ -611,14 +611,15 @@ void SimMessage::startSimulator()
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   if (Program.endsWith(QString("asco") + executableSuffix)) {
 #ifdef Q_OS_UNIX
-    auto tmpdir = std::filesystem::temp_directory_path();
+    auto tmpdir = std::filesystem::path(QucsSettings.tempFilesDir.absolutePath().toStdString());
     tmpdir /= "qucs_ascodir"; // ASCO doesn't accept qucsator_rf name;
     std::filesystem::create_directory(tmpdir); // qucsator is hardcoded inside ASCO
     auto tmp_qucsator = tmpdir / "qucsator";
     auto target = QFileInfo(QucsSettings.Qucsator).absoluteFilePath().toStdString();
-    if (!std::filesystem::exists(tmp_qucsator)){
-      std::filesystem::create_symlink(std::filesystem::path(target), tmp_qucsator);
+    if (std::filesystem::exists(tmp_qucsator)){
+      std::filesystem::remove(tmp_qucsator);
     }
+    std::filesystem::create_symlink(std::filesystem::path(target), tmp_qucsator);
     //env.insert("ASCO_SIM_PATH",QucsSettings.Qucsator);
     env.insert("PATH", env.value("PATH") + sep + QString::fromStdString(tmpdir.string()));
 #endif

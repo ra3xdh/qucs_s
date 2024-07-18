@@ -15,6 +15,7 @@ fillFromSpiceDialog::fillFromSpiceDialog(Component *pc, QWidget *w)
     : QDialog(w)
 {
   Comp = pc;
+  ModelLevel = 1;
 
   edtModel = new QPlainTextEdit;
   QLabel *lblModel = new QLabel(tr("Insert .MODEL text here"));
@@ -127,6 +128,17 @@ int fillFromSpiceDialog::parseModelcard()
         value += "M";
       }
 
+      if (ModelType == "nmos" || ModelType == "pmos") { // check MOS level
+        if (name == "level") {
+          ModelLevel = value.toInt();
+          QList<int> allowed_levels;
+          allowed_levels<<1<<2<<3<<4<<5<<6<<7<<9;
+          if (!allowed_levels.contains(ModelLevel)) {
+            return wrongLevel;
+          }
+        }
+      }
+
       if (value.size() >=2) {
         // Ngspice doesn't accept numbers without leading zero
         if (value.at(0) == '.' && value.at(1).isDigit()) {
@@ -186,6 +198,11 @@ void fillFromSpiceDialog::showErrorMsg(int code)
   case subcirFound:
     msg = tr("Subcircuit model (.SUBCKT) found\n"
              "Modelcard (.MODEL) expected");
+    break;
+  case wrongLevel:
+    msg = QString(tr("Model LEVEL=%1 is not allowed for unified MOS device\n"
+                     "Use red SPICE device from Microelectronics group\n"
+                     "Allowed LEVELS are: 1,2,3,4,5,6,9")).arg(ModelLevel);
     break;
   default:
     break;
