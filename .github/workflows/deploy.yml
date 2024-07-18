@@ -10,7 +10,6 @@ on:
 env:
   APP_NAME: "Qucs-S"
   EXECUTABLE_NAME: "qucs-s"
-  VERSION: "24.2.1"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
   QT_VERSION: 6.7.2
@@ -18,13 +17,37 @@ env:
   QUCS_MACOS_RESOURCES: build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
   
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.read_version.outputs.version }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Read version from file
+      id: read_version
+      run: |
+        VERSION=$(cat VERSION)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Print version 
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+
   build-linux-appimage-qt6:
     runs-on: ubuntu-22.04
-    
+    needs: setup
     steps:
     - uses: actions/checkout@v4
       with:
-          submodules: recursive
+        submodules: recursive
+
+    - name: Set version environment variable
+      run: echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
+
+    - name: Print version
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
 
     - name: Install Dependencies
       run: |
@@ -68,17 +91,24 @@ jobs:
  
   build-mac-intel:
     runs-on: macos-12
+    needs: setup
     strategy:
       fail-fast: false
     steps:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: latest-stable
-    
+        
+    - name: Set version environment variable
+      run: echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
+
+    - name: Print version
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+      
     - uses: actions/checkout@v4
       with:
-       submodules: 'recursive'
-
+        submodules: recursive
+      
     - name: 'Install Qt6'
       uses: jurplel/install-qt-action@v4
       with:
@@ -153,6 +183,7 @@ jobs:
       
   build-mac-arm:
     runs-on: macos-latest
+    needs: setup
     strategy:
       fail-fast: false
     steps:
@@ -160,9 +191,15 @@ jobs:
       with:
         xcode-version: latest-stable
     
+    - name: Set version environment variable
+      run: echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
+
+    - name: Print version
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+          
     - uses: actions/checkout@v4
       with:
-       submodules: 'recursive'
+        submodules: recursive
 
     - name: 'Install Qt6'
       uses: jurplel/install-qt-action@v4
@@ -237,6 +274,7 @@ jobs:
       
   build-windows:
     runs-on: windows-2022
+    needs: setup
     strategy:
       fail-fast: false
       matrix:
@@ -245,17 +283,26 @@ jobs:
     defaults:
       run:
         shell: msys2 {0}
-    steps:
+    steps:  
     - name: Disable autocrlf in Git
       shell: pwsh
       run: |
         git config --global core.autocrlf false
         git config --global core.eol lf
 
+    - name: Set version environment variable
+      shell: pwsh
+      run: |
+        echo "VERSION=${{ needs.setup.outputs.version }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+    - name: Print version
+      shell: pwsh
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        submodules: 'recursive'
+        submodules: recursive
 
     - name: Set up MSYS2 environment
       uses: msys2/setup-msys2@v2
@@ -329,6 +376,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     needs:
+     - setup
      - build-linux-appimage-qt6
      - build-mac-intel
      - build-mac-arm
