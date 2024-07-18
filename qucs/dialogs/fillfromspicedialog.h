@@ -19,9 +19,10 @@ private:
   QMap<QString,QString> parsedProps;
   QString ModelName;
   QString ModelType;
+  int ModelLevel;
 
   enum errorCode { noError = 0, noModel = 1, modelMismatch = 2, wrongModel = 3, subcirFound = 4,
-                   numberError = 5 };
+                   numberError = 5, wrongLevel = 6 };
 
   QPlainTextEdit *edtModel;
   QPushButton *btnOK, *btnCancel;
