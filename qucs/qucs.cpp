@@ -1460,7 +1460,7 @@ void QucsApp::slotMenuProjClose()
 
   slotResetWarnings();
   setWindowTitle(windowTitle);
-  QucsSettings.QucsWorkDir.setPath(QDir::homePath()+QDir::toNativeSeparators ("/.qucs"));
+  QucsSettings.QucsWorkDir.setPath(QucsSettings.qucsWorkspaceDir.absolutePath());
   octave->adjustDirectory();
 
   Content->setProjPath("");
