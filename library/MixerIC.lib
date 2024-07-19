@@ -1,0 +1,108 @@
+<Qucs Library 24.3.0 "MixerIC">
+
+<Component SA612>
+  <Description>
+SA612A Double-balanced mixer and oscillator Macro Model
+Author : Zabb Csaba
+https://fotoelektronika.com/spice-models/
+  </Description>
+  <Model>
+.Def:MixerIC_SA612 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="SA612_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "SA612.cir.lst">
+  <Spice>
+* SA612A Double-balanced mixer and oscillator Macro Model
+* Author : Zabb Csaba
+* Date   : 25/9/2020
+.SUBCKT SA612A INA INB GND OUTA OUTB OSCB OSCE VCC
+D1  OSCB VCC  CBVCC
+D2  OSCE VCC  CBVCC
+D3  GND  OSCB CBSUB
+D4  GND  OSCE CBSUB
+R1  VCC  OSCB 18k
+Q1  VCC  OSCB OSCE TN6
+E2  10   23   OSCB GND  350m
+V2  23   GND  1 
+Q3  VCC  10   21   TN6
+R2  OSCE GND  25k
+R3  21   GND  15k
+R4  VCC  20   32k
+R5  20   19   600
+V1  19   GND  1.33
+E1  18   GND  20   GND  1
+R13 18   INA  5.6k
+Q4  15   INA  17   TN6
+I1  17   GND  1.27m
+R6  17   GND  1.8k
+Q5  16   INB  17   TN6
+R7  INB  18   5.6k
+Q6  OUTA 10   15   TN6
+Q7  OUTB 11   15   TN6
+R8  22   GND  15k
+E3  11   24   12   GND  350m
+V3  24   GND  1
+R9  13   GND  25k
+Q8  OUTA 11   16   TN6
+Q9  OUTB 10   16   TN6
+R10 VCC  OUTB 1.45k
+R11 VCC  OUTA 1.45k
+Q10 VCC  11   22   TN6
+Q12 VCC  12   13   TN6
+R12 VCC  12   18k
+D5  OUTA VCC  CBVCC
+D6  GND  OUTA CBSUB
+D7  OUTB VCC  CBVCC
+D8  GND  OUTB CBSUB
+D9  INA  VCC  CBVCC
+D10 GND  INA  CBSUB
+D11 INB  VCC  CBVCC
+D12 GND  INB  CBSUB
+.ENDS
+.MODEL CBVCC D(IS=1E-15 CJO=527E-15 Vj=0.545 M=0.32 BV=14.5 IBV=0.1E-6 XTI=5 TT=1E-9)
+.MODEL CBSUB D(IS=1E-15 CJO=453E-15 TT=1E-9)
+.MODEL TN6 NPN(IS=8.56E-18 BF=120 NF=1 VAF=30 IKF=10.5E-3 ISE=4.48E-16 BR=10 NE=2
++ VAR=5 IKR=922E-6 IRB=13.2E-6 RB=291.4 RBM=95.0 RE=13.3 RC=62.7 CJE=29.9E-15 VJE=0.9
++ MJE=0.4 XTB=0.73 CJC=31.2E-15 VJC=0.67 MJC=0.32 XCJC=0.3 CJS=60.9E-15 VJS=0.6
++ MJS=0.4 FC=0.9 TF=8E-12 TR=1E-9 XTF=10 VTF=1.4 ITF=27.6E-3 ISC=0 EG=1.11 XTI=4.0
++ PTF=0 KF=0 AF=1 NR=1 NC=2)
+*
+
+.SUBCKT MixerIC_SA612  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 SA612A
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 -90 120 0 #000080 2 1>
+    <Line 0 100 0 20 #000080 2 1>
+    <Line 0 -90 0 -20 #000080 2 1>
+    <Line 60 -90 0 190 #000080 2 1>
+    <Line -60 100 120 0 #000080 2 1>
+    <Text -20 80 12 #000000 0 "GND">
+    <Line -60 -90 0 190 #000080 2 1>
+    <.ID 30 104 X>
+    <.PortSym 0 -110 8 0 P8>
+    <.PortSym 0 120 3 0 P3>
+    <Line 60 70 20 0 #000080 2 1>
+    <Line 80 40 -20 0 #000080 2 1>
+    <Text 10 30 12 #000000 0 "OSCB">
+    <Text 10 60 12 #000000 0 "OSCE">
+    <.PortSym 80 40 6 180 P6>
+    <.PortSym 80 70 7 180 P7>
+    <Line 60 -60 20 0 #000080 2 1>
+    <Line 60 -20 20 0 #000080 2 1>
+    <Line -80 -20 20 0 #000080 2 1>
+    <Line -80 -60 20 0 #000080 2 1>
+    <Text -50 -70 12 #000000 0 "INA">
+    <Text -50 -30 12 #000000 0 "INB">
+    <Text 10 -70 12 #000000 0 "OUTA">
+    <Text 10 -30 12 #000000 0 "OUTB">
+    <.PortSym -80 -60 1 0 P1>
+    <.PortSym -80 -20 2 0 P2>
+    <.PortSym 80 -60 4 180 P4>
+    <.PortSym 80 -20 5 180 P5>
+    <Text -10 -90 12 #000000 0 "VCC">
+  </Symbol>
+</Component>
+
