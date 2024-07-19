@@ -293,7 +293,7 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
     if (subcir_start) {
       subcir_body += line + "\n";
     }
-    if (line == ".ENDS") {
+    if (line.startsWith(".ENDS")) {
       subcir_start = false;
       subcirSPICE[subname] = subcir_body;
     }
