@@ -28,7 +28,11 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
     lastLibDir = inf.absoluteDir().path();
   } else {
     QFileInfo inf = Doc->getFileInfo();
-    lastLibDir = inf.absoluteDir().path();
+    if (inf.absoluteFilePath().isEmpty()) { // untitled document
+      lastLibDir = QucsSettings.QucsWorkDir.absolutePath();
+    } else { // saved schematic
+      lastLibDir = inf.absoluteDir().path();
+    }
   }
   bool show_lib = comp->Props.at(0)->display;
   QString device = comp->Props.at(1)->Value;
