@@ -8,6 +8,8 @@ Cores.lib
 Crystal.lib
 Diodes.lib
 DiodesSchottky.lib
+Diodes_Extended.lib
+GeDiodes.lib
 Ideal.lib
 JFETs.lib
 LEDs.lib
