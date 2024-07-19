@@ -19,8 +19,9 @@
 
 ## Packaging
 
+* Windows package switched to Qt6
 * Introduced continous release of Linux, Windows, and Mac packages #719 
-* Added MacOS package build #797
+* Added MacOS package build #797 and homebrew support #804
 
 ## General improvements
 
@@ -36,6 +37,9 @@
 
 ## Component library
 
+* Added Germanium diodes library #846
+* Added Mixer IC library containing SA612 model #846
+* Added Diodes extended library containing different USSR diodes models
 * Added new Varactor library #759
 * Added new PIN diode library #764
 
