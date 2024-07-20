@@ -34,8 +34,9 @@ private:
     //QLabel *lblNprocs;
     QLabel *lblQucsator;
     //QLabel *lblSimulator;
-    QLabel *lblSimParam;
+    QLabel *lblSimParam, *lblCompatMode;
 
+    QComboBox *cbxCompatMode;
     //QComboBox *cbxSimulator;
 
     QLineEdit *edtNgspice;
