@@ -22,6 +22,7 @@
 
 #include "simsettingsdialog.h"
 #include "main.h"
+#include "settings.h"
 
 SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     QDialog(parent)
@@ -76,6 +77,14 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     btnSetQucsator = new QPushButton(tr("Select ..."));
     connect(btnSetQucsator,SIGNAL(clicked()),this,SLOT(slotSetQucsator()));
 
+    lblCompatMode = new QLabel(tr("Ngspice compatibility mode"));
+    cbxCompatMode = new QComboBox;
+    QStringList lst_modes;
+    lst_modes<<"Default"<<"LTspice"<<"HSPICE"<<"Spice3";
+    cbxCompatMode->addItems(lst_modes);
+    auto compat_mode = _settings::Get().item<int>("NgspiceCompatMode");
+    cbxCompatMode->setCurrentIndex(compat_mode);
+
     QVBoxLayout *top = new QVBoxLayout;
 
 //    QHBoxLayout *h8 = new QHBoxLayout;
@@ -91,6 +100,11 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h1->addWidget(edtNgspice,3);
     h1->addWidget(btnSetNgspice,1);
     top2->addLayout(h1);
+
+    QHBoxLayout *h4 = new QHBoxLayout;
+    h4->addWidget(lblCompatMode);
+    h4->addWidget(cbxCompatMode);
+    top2->addLayout(h4);
 
     top2->addWidget(lblXyce);
     QHBoxLayout *h2 = new QHBoxLayout;
@@ -172,6 +186,8 @@ void SimSettingsDialog::slotApply()
 //                                                              "Please restart Qucs to affect changes!"));
 //    }
 //    QucsSettings.DefaultSimulator = cbxSimulator->currentIndex();
+    settingsManager& qs = _settings::Get();
+    qs.setItem<int>("NgspiceCompatMode", cbxCompatMode->currentIndex());
     accept();
     saveApplSettings();
   }

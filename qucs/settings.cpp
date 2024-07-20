@@ -70,6 +70,7 @@ void settingsManager::initDefaults()
     m_Defaults["GraphAntiAliasing"] = false;
     m_Defaults["TextAntiAliasing"] = false;
     m_Defaults["fullTraceName"] = false;
+    m_Defaults["NgspiceCompatMode"] = spicecompat::NgspDefault;
 }
 
 void settingsManager::initAliases()

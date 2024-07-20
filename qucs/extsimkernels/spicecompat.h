@@ -34,6 +34,8 @@ namespace spicecompat {
          simSpice        = 0b00000111,
          simAll          = 0b11111111};
      enum CMgen_mode {cmgenSUBifs = 0, cmgenEDDifs = 1, cmgenSUBmod = 2, cmgenEDDmod = 3};
+
+     enum NgspiceCompatMode  { NgspDefault = 0, NgspLTspice = 1, NgspHSPICE = 2, NgspS3 = 3  };
 }
 
 #endif // SPICECOMPAT_H
