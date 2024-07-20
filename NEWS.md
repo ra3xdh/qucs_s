@@ -9,6 +9,7 @@
 * Redesign of schematic rendering engine. Improve rendering quality on HiDPI displays #723
 * Improved Qucsconv GUI to reflect new converter features #826
 * Improved libraries portability, relative path support for libraries, show libraries from project directory #567
+* Added a global setting for Ngspice compatibility mode (LTspice, HSPICE, etc.) #851
 * QucsatorRF updated to version 1.0.1
 
 ## Deprecated features
