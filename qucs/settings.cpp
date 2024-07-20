@@ -52,6 +52,7 @@ void settingsManager::initDefaults()
     m_Defaults["maxUndo"] = 20;
     m_Defaults["panelIconsTheme"] = qucs::autoIcons;
     m_Defaults["compIconsTheme"] = qucs::autoIcons;
+    m_Defaults["QucsHomeDir"] = QDir::homePath() + QDir::toNativeSeparators("/QucsWorkspace");
 
 #ifdef Q_OS_WIN
     m_Defaults["NgspiceExecutable"] = "ngspice_con.exe";
