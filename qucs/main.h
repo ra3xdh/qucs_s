@@ -113,12 +113,6 @@ struct tQucsSettings {
   bool hasDarkTheme;
   bool fullTraceName;
 
-  bool FileToolbar;
-  bool EditToolbar;
-  bool ViewToolbar;
-  bool WorkToolbar;
-  bool SimulateToolbar;
-
   bool firstRun;
 };
 

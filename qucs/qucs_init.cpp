@@ -611,19 +611,6 @@ void QucsApp::initActions()
   //buildIFS = new QAction(tr("Build XSPICE IFS file from subcircuit"),this);
   //connect(buildIFS,SIGNAL(triggered()),SLOT(slotBuildXSPICEIfs()));
 
-
-  viewToolBar = new QAction(tr("Tool&bar"), this);
-  viewToolBar->setCheckable(true);
-  viewToolBar->setStatusTip(tr("Enables/disables the toolbar"));
-  viewToolBar->setWhatsThis(tr("Toolbar\n\nEnables/disables the toolbar"));
-  connect(viewToolBar, SIGNAL(toggled(bool)), SLOT(slotViewToolBar(bool)));
-
-  viewStatusBar = new QAction(tr("&Statusbar"), this);
-  viewStatusBar->setCheckable(true);
-  viewStatusBar->setStatusTip(tr("Enables/disables the statusbar"));
-  viewStatusBar->setWhatsThis(tr("Statusbar\n\nEnables/disables the statusbar"));
-  connect(viewStatusBar, SIGNAL(toggled(bool)), SLOT(slotViewStatusBar(bool)));
-
   viewBrowseDock = new QAction(tr("&Dock Window"), this);
   viewBrowseDock->setCheckable(true);
   viewBrowseDock->setStatusTip(tr("Enables/disables the browse dock window"));
@@ -808,8 +795,6 @@ void QucsApp::initMenuBar()
   viewMenu->addAction(setDiagramLimits);
   viewMenu->addSeparator();
   //viewMenu->setCheckable(true);
-  viewMenu->addAction(viewToolBar);
-  viewMenu->addAction(viewStatusBar);
   viewMenu->addAction(viewBrowseDock);
   viewMenu->addAction(viewOctaveDock);
 
@@ -1039,24 +1024,6 @@ void QucsApp::slotUpdateUndo(bool isEnabled)
 void QucsApp::slotUpdateRedo(bool isEnabled)
 {
   redo->setEnabled(isEnabled);
-}
-
-// ----------------------------------------------------------
-// turn Toolbar on or off
-void QucsApp::slotViewToolBar(bool toggle)
-{
-  fileToolbar->setVisible(toggle);
-  editToolbar->setVisible(toggle);
-  viewToolbar->setVisible(toggle);
-  workToolbar->setVisible(toggle);
-  simulateToolbar->setVisible(toggle);
-}
-
-// ----------------------------------------------------------
-// turn Statusbar on or off
-void QucsApp::slotViewStatusBar(bool toggle)
-{
-  statusBar()->setVisible(toggle);
 }
 
 // ----------------------------------------------------------

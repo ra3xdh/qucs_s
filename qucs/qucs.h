@@ -302,8 +302,6 @@ public slots:
   void slotUpdateRedo(bool);  // update redo available state
 
 private slots:
-  void slotViewToolBar(bool toggle);    // toggle the toolbar
-  void slotViewStatusBar(bool toggle);  // toggle the statusbar
   void slotViewBrowseDock(bool toggle); // toggle the dock window
   void slotViewOctaveDock(bool); // toggle the dock window
   void slotToggleOctave(bool);
@@ -316,7 +314,7 @@ private:
   void initToolBar();    // creates the toolbars
   void initStatusBar();  // setup the statusbar
 
-  QAction *helpAboutApp, *helpAboutQt, *viewToolBar, *viewStatusBar,
+  QAction *helpAboutApp, *helpAboutQt,
           *viewBrowseDock, *viewOctaveDock;
 
   // menus contain the items of their menubar

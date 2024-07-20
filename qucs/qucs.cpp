@@ -148,19 +148,11 @@ QucsApp::QucsApp()
   fillSimulatorsComboBox();
   initToolBar();
   initStatusBar();
-  viewToolBar->setChecked(true);
-  viewStatusBar->setChecked(true);
   viewBrowseDock->setChecked(true);
   slotViewOctaveDock(false);
   slotUpdateRecentFiles();
   initCursorMenu();
   //Module::registerModules ();
-
-  fileToolbar->setVisible(QucsSettings.FileToolbar);
-  editToolbar->setVisible(QucsSettings.EditToolbar);
-  viewToolbar->setVisible(QucsSettings.ViewToolbar);
-  workToolbar->setVisible(QucsSettings.WorkToolbar);
-  simulateToolbar->setVisible(QucsSettings.SimulateToolbar);
 
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
@@ -2235,11 +2227,6 @@ void QucsApp::closeEvent(QCloseEvent* Event)
 // Saves settings
 void QucsApp::saveSettings()
 {
-  QucsSettings.FileToolbar = fileToolbar->isVisible();
-  QucsSettings.EditToolbar = editToolbar->isVisible();
-  QucsSettings.ViewToolbar = viewToolbar->isVisible();
-  QucsSettings.WorkToolbar = workToolbar->isVisible();
-  QucsSettings.SimulateToolbar = simulateToolbar->isVisible();
   saveApplSettings();
 }
 
