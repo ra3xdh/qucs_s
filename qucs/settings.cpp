@@ -50,8 +50,6 @@ void settingsManager::initDefaults()
     m_Defaults["appFont"] = QApplication::font();
     m_Defaults["LargeFontSize"] = static_cast<double>(16.0);
     m_Defaults["maxUndo"] = 20;
-    m_Defaults["panelIconsTheme"] = qucs::autoIcons;
-    m_Defaults["compIconsTheme"] = qucs::autoIcons;
     m_Defaults["QucsHomeDir"] = QDir::homePath() + QDir::toNativeSeparators("/QucsWorkspace");
 
 #ifdef Q_OS_WIN

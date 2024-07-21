@@ -100,9 +100,6 @@ bool loadSettings()
     QucsSettings.Directive = _settings::Get().item<QString>("Directive");
     QucsSettings.Task = _settings::Get().item<QString>("Task");
 
-    QucsSettings.panelIconsTheme = _settings::Get().item<int>("panelIconsTheme");
-    QucsSettings.compIconsTheme = _settings::Get().item<int>("compIconsTheme");
-
     // TODO: Convert this to the new settings model.
     if(settings.contains("Qucsator")) {
         QucsSettings.Qucsator = settings.value("Qucsator").toString();
@@ -219,8 +216,6 @@ bool saveApplSettings()
     qs.setItem<bool>("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
     qs.setItem<bool>("TextAntiAliasing", QucsSettings.TextAntiAliasing);
     qs.setItem<bool>("fullTraceName",QucsSettings.fullTraceName);
-    qs.setItem<int>("panelIconsTheme",QucsSettings.panelIconsTheme);
-    qs.setItem<int>("compIconsTheme",QucsSettings.compIconsTheme);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList
