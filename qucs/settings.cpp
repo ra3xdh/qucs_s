@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QStandardPaths>
 
 #include "main.h"
 #include "settings.h"
@@ -44,13 +45,12 @@ void settingsManager::resetDefaults(const QString &group)
 void settingsManager::initDefaults()
 {
     m_Defaults["DefaultSimulator"] = spicecompat::simNotSpecified;
-    m_Defaults["FirstRun"] = true;
+    m_Defaults["firstRun"] = true;
     m_Defaults["font"] = QApplication::font();
     m_Defaults["appFont"] = QApplication::font();
     m_Defaults["LargeFontSize"] = static_cast<double>(16.0);
     m_Defaults["maxUndo"] = 20;
-    m_Defaults["panelIconsTheme"] = qucs::autoIcons;
-    m_Defaults["compIconsTheme"] = qucs::autoIcons;
+    m_Defaults["QucsHomeDir"] = QDir::homePath() + QDir::toNativeSeparators("/QucsWorkspace");
 
 #ifdef Q_OS_WIN
     m_Defaults["NgspiceExecutable"] = "ngspice_con.exe";
@@ -63,7 +63,7 @@ void settingsManager::initDefaults()
 #endif
 
     m_Defaults["XyceParExecutable"] = "mpirun -np %p /usr/local/Xyce-Release-6.8.0-OPENMPI-OPENSOURCE/bin/Xyce";
-    m_Defaults["S4Q_workdir"] = "";
+    m_Defaults["S4Q_workdir"] = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     m_Defaults["Nprocs"] = 4;
     m_Defaults["SpiceOpusExecutable"] = "spiceopus";
     m_Defaults["SimParameters"] = "";

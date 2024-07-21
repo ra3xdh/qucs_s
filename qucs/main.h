@@ -34,16 +34,8 @@ class VersionTriplet;
 
 static const double pi = 3.1415926535897932384626433832795029;  /* pi   */
 
-namespace qucs {
-enum iconType { panelIcons = 0, compIcons = 1 };
-enum iconTheme { autoIcons = 0, lightIcons = 1, darkIcons = 2 };
-}
-
 struct tQucsSettings {
   int DefaultSimulator;
-
-  int panelIconsTheme;
-  int compIconsTheme;
 
   QFont font;
   QFont appFont;
@@ -112,12 +104,6 @@ struct tQucsSettings {
 
   bool hasDarkTheme;
   bool fullTraceName;
-
-  bool FileToolbar;
-  bool EditToolbar;
-  bool ViewToolbar;
-  bool WorkToolbar;
-  bool SimulateToolbar;
 
   bool firstRun;
 };

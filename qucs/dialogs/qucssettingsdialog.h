@@ -88,7 +88,6 @@ public:
               *checkAntiAliasing, *checkTextAntiAliasing,
               *checkFullTraceNames;
     QComboBox *LanguageCombo;
-    QComboBox *PanelIconsCombo, *CompIconsCombo;
     QPushButton *FontButton, *AppFontButton, *TextFontButton, *BGColorButton;
     QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
               *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit,

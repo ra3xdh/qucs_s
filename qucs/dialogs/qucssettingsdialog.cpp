@@ -166,19 +166,6 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     appSettingsGrid->addWidget(checkFullTraceNames,12,1);
     checkFullTraceNames->setChecked(QucsSettings.fullTraceName);
 
-    QStringList lst_icons;
-    lst_icons<<"Automatic"<<"Light"<<"Dark";
-    PanelIconsCombo = new QComboBox;
-    PanelIconsCombo->addItems(lst_icons);
-    PanelIconsCombo->setCurrentIndex(QucsSettings.panelIconsTheme);
-    appSettingsGrid->addWidget(new QLabel(tr("Panel icons theme (set after reload):"),appSettingsTab),13,0);
-    appSettingsGrid->addWidget(PanelIconsCombo,13,1);
-    CompIconsCombo = new QComboBox;
-    CompIconsCombo->addItems(lst_icons);
-    CompIconsCombo->setCurrentIndex(QucsSettings.compIconsTheme);
-    appSettingsGrid->addWidget(new QLabel(tr("Components icons theme (set after reload):"),appSettingsTab),14,0);
-    appSettingsGrid->addWidget(CompIconsCombo,14,1);
-
     t->addTab(appSettingsTab, tr("Settings"));
 
     // ...........................................................
@@ -594,9 +581,6 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.appFont = AppFont;
     QucsSettings.textFont = TextFont;
 
-    QucsSettings.panelIconsTheme = PanelIconsCombo->currentIndex();
-    QucsSettings.compIconsTheme = CompIconsCombo->currentIndex();
-
     QucsSettings.Language =
         LanguageCombo->currentText().section('(',1,1).remove(')');
 
@@ -795,9 +779,6 @@ void QucsSettingsDialog::slotDefaultValues()
     LargeFontSizeEdit->setText(QString::number(16.0));
 
     LanguageCombo->setCurrentIndex(0);
-
-    PanelIconsCombo->setCurrentIndex(0);
-    CompIconsCombo->setCurrentIndex(0);
     
     p = BGColorButton->palette();
     p.setColor(BGColorButton->backgroundRole(), QColor(255,250,225));

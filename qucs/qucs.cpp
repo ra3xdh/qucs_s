@@ -148,19 +148,11 @@ QucsApp::QucsApp()
   fillSimulatorsComboBox();
   initToolBar();
   initStatusBar();
-  viewToolBar->setChecked(true);
-  viewStatusBar->setChecked(true);
   viewBrowseDock->setChecked(true);
   slotViewOctaveDock(false);
   slotUpdateRecentFiles();
   initCursorMenu();
   //Module::registerModules ();
-
-  fileToolbar->setVisible(QucsSettings.FileToolbar);
-  editToolbar->setVisible(QucsSettings.EditToolbar);
-  viewToolbar->setVisible(QucsSettings.ViewToolbar);
-  workToolbar->setVisible(QucsSettings.WorkToolbar);
-  simulateToolbar->setVisible(QucsSettings.SimulateToolbar);
 
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
@@ -871,7 +863,7 @@ void QucsApp::slotSetCompView (int index)
       if (Infos) {
         /// \todo warning: expression result unused, can we rewrite this?
         (void) *((*it)->info) (Name, File, false);
-        QString icon_path = misc::getIconPath(QString (File), qucs::compIcons);
+        QString icon_path = misc::getIconPath(QString (File));
         QListWidgetItem *icon = new QListWidgetItem(Name);
         if (QFileInfo::exists(icon_path)) {
             icon->setIcon(QPixmap(icon_path));
@@ -933,7 +925,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
 
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
             //match
-            QString icon_path = misc::getIconPath(QString (File), qucs::compIcons);
+            QString icon_path = misc::getIconPath(QString (File));
             QListWidgetItem *icon = new QListWidgetItem(Name);
             if (QFileInfo::exists(icon_path)) {
                 icon->setIcon(QPixmap(icon_path));
@@ -2235,11 +2227,6 @@ void QucsApp::closeEvent(QCloseEvent* Event)
 // Saves settings
 void QucsApp::saveSettings()
 {
-  QucsSettings.FileToolbar = fileToolbar->isVisible();
-  QucsSettings.EditToolbar = editToolbar->isVisible();
-  QucsSettings.ViewToolbar = viewToolbar->isVisible();
-  QucsSettings.WorkToolbar = workToolbar->isVisible();
-  QucsSettings.SimulateToolbar = simulateToolbar->isVisible();
   saveApplSettings();
 }
 

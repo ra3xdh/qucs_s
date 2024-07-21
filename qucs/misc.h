@@ -85,7 +85,7 @@ namespace misc {
     }
 
   QStringList parseCmdArgs(const QString &program);
-  QString getIconPath(const QString &file, int icon_type);
+  QString getIconPath(const QString &file);
   bool isDarkTheme();
   QString getWindowTitle();
   QString wildcardToRegularExpression(const QString &wc_str, const bool enableEscaping);

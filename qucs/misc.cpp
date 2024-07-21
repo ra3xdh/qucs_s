@@ -65,48 +65,14 @@ bool misc::isDarkTheme()
     return is_dark_theme;
 }
 
-QString misc::getIconPath(const QString &file, int icon_type)
+QString misc::getIconPath(const QString &file)
 {
-    auto icons_theme = QucsSettings.panelIconsTheme;
-    switch (icon_type) {
-    case qucs::panelIcons:
-        icons_theme = QucsSettings.panelIconsTheme;
-        break;
-    case qucs::compIcons:
-        icons_theme = QucsSettings.compIconsTheme;
-        break;
-    }
-
-    bool loadDark = false;
-    switch (icons_theme) {
-    case qucs::autoIcons:
-        loadDark = QucsSettings.hasDarkTheme;
-        break;
-    case qucs::darkIcons:
-        loadDark = true;
-        break;
-    case qucs::lightIcons:
-        loadDark = false;
-        break;
-    }
-
     QString icon_path =":bitmaps/svg/"; // look for svg version first
-    if (loadDark) {
-        QString icon_path_dark = ":bitmaps/svg/dark/";
-        if (QFileInfo::exists(icon_path_dark + file + ".svg"))
-            icon_path = icon_path_dark;
-    }
     icon_path += file + ".svg";
     if (QFile::exists(icon_path)) {
         return icon_path;
     }
-
     icon_path =":bitmaps/";
-    if (loadDark) {
-        QString icon_path_dark = ":bitmaps/dark/";
-        if (QFileInfo::exists(icon_path_dark + file + ".png"))
-            icon_path = icon_path_dark;
-    }
     icon_path += file + ".png";
     return icon_path;
 }
