@@ -53,7 +53,7 @@ SParamFile::SParamFile()
 Component* SParamFile::newOne()
 {
   SParamFile* p = new SParamFile();
-  p->Props.getLast()->Value = Props.getLast()->Value;
+  p->Props.back()->Value = Props.back()->Value;
   p->recreate(0);
   return p;
 }
@@ -66,8 +66,8 @@ Element* SParamFile::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     SParamFile* p = new SParamFile();
-    p->Props.getFirst()->Value = "test.s3p";
-    p->Props.getLast()->Value = "3";
+    p->Props.front()->Value = "test.s3p";
+    p->Props.back()->Value = "3";
     p->recreate(0);
     return p;
   }
@@ -92,8 +92,8 @@ Element* SParamFile::info2(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     SParamFile* p = new SParamFile();
-    p->Props.getFirst()->Value = "test.s2p";
-    p->Props.getLast()->Value = "2";
+    p->Props.front()->Value = "test.s2p";
+    p->Props.back()->Value = "2";
     p->recreate(0);
     return p;
   }
@@ -103,10 +103,10 @@ Element* SParamFile::info2(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 QString SParamFile::getSubcircuitFile()
 {
-  return misc::properAbsFileName(Props.getFirst()->Value, containingSchematic);
+  return misc::properAbsFileName(Props.front()->Value, containingSchematic);
 
   // construct full filename
-  QString FileName = Props.getFirst()->Value;
+  QString FileName = Props.front()->Value;
   return misc::properAbsFileName(FileName);
 }
 
@@ -150,7 +150,7 @@ void SParamFile::createSymbol()
   QString stmp;
 
   int w, PortDistance = 60;
-  int Num = Props.getLast()->Value.toInt();
+  int Num = Props.back()->Value.toInt();
 
   // adjust number of ports
   if(Num < 1) Num = 1;
@@ -158,7 +158,7 @@ void SParamFile::createSymbol()
     PortDistance = 20;
     if(Num > 40) Num = 40;
   }
-  Props.getLast()->Value = QString::number(Num);
+  Props.back()->Value = QString::number(Num);
 
   // draw symbol outline
   int h = (PortDistance/2)*((Num-1)/2) + 15;

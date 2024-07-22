@@ -37,7 +37,7 @@ logic_1::logic_1()
 Component * logic_1::newOne()
 {
   logic_1 * p = new logic_1();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 

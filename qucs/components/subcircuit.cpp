@@ -47,7 +47,7 @@ Subcircuit::Subcircuit()
 Component* Subcircuit::newOne()
 {
   Subcircuit *p = new Subcircuit();
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0);
   return p;
 }
@@ -72,7 +72,7 @@ Element* Subcircuit::info(QString& Name, char* &BitmapFile, bool getNewOne)
 void Subcircuit::createSymbol()
 {
   int No;
-  QString FileName(Props.getFirst()->Value);
+  QString FileName(Props.front()->Value);
   FileName = getSubcircuitFile();
 
   tx = INT_MIN;
@@ -302,5 +302,5 @@ QString Subcircuit::verilogCode(int)
 // -------------------------------------------------------
 QString Subcircuit::getSubcircuitFile()
 {
-  return misc::properAbsFileName(Props.getFirst()->Value, containingSchematic);
+  return misc::properAbsFileName(Props.front()->Value, containingSchematic);
 }

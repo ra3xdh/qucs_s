@@ -2504,7 +2504,7 @@ bool Schematic::distributeVertical()
 // digital sources and sets them accordingly.
 void Schematic::setComponentNumber(Component *c)
 {
-    Property *pp = c->Props.getFirst();
+    Property *pp = c->Props.front();
     if(!pp) return;
     if(pp->Name != "Num") return;
 
@@ -2515,7 +2515,7 @@ void Schematic::setComponentNumber(Component *c)
     // First look, if the port number already exists.
     for(pc = Components->first(); pc != 0; pc = Components->next())
         if(pc->Model == cSign)
-            if(pc->Props.getFirst()->Value == s) break;
+            if(pc->Props.front()->Value == s) break;
     if(!pc) return;   // was port number not yet in use ?
 
     // Find the first free number.
@@ -2525,7 +2525,7 @@ void Schematic::setComponentNumber(Component *c)
         // look for existing ports and their numbers
         for(pc = Components->first(); pc != 0; pc = Components->next())
             if(pc->Model == cSign)
-                if(pc->Props.getFirst()->Value == s) break;
+                if(pc->Props.front()->Value == s) break;
 
         n++;
     }

@@ -51,7 +51,7 @@ Switch::Switch()
 Component* Switch::newOne()
 {
   Switch *p = new Switch();
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0);
   return p;
 }
@@ -163,7 +163,7 @@ QString Switch::spice_netlist(bool)
 // -------------------------------------------------------
 void Switch::createSymbol()
 {
-  if(Props.getFirst()->Value != "on") {
+  if(Props.front()->Value != "on") {
     Lines.append(new qucs::Line(-15,  0, 15,-15,QPen(Qt::darkBlue,2)));
     y1 = -17;
   }

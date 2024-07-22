@@ -43,7 +43,7 @@ VHDL_File::VHDL_File()
 Component* VHDL_File::newOne()
 {
   VHDL_File *p = new VHDL_File();
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0);
   return p;
 }
@@ -98,7 +98,7 @@ QString VHDL_File::vhdlCode(int)
 // entity in this file.
 QString VHDL_File::loadFile()
 {
-  QString File(Props.getFirst()->Value);
+  QString File(Props.front()->Value);
   QFileInfo Info(File);
   if(Info.isRelative())
     File = QucsSettings.QucsWorkDir.filePath(File);
@@ -205,7 +205,7 @@ void VHDL_File::createSymbol()
 QString VHDL_File::getSubcircuitFile()
 {
   // construct full filename
-  QString FileName = Props.getFirst()->Value;
+  QString FileName = Props.front()->Value;
   return misc::properAbsFileName(FileName);
 }
 
@@ -215,7 +215,7 @@ bool VHDL_File::createSubNetlist(QTextStream *stream)
   ErrText = "";
 
   // check filename
-  QString FileName = Props.getFirst()->Value;
+  QString FileName = Props.front()->Value;
   if(FileName.isEmpty()) {
     ErrText += QObject::tr("ERROR: No file name in %1 component \"%2\".").
       arg(Model).arg(Name);

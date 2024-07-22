@@ -35,8 +35,8 @@ Logical_NOR::~Logical_NOR()
 Component* Logical_NOR::newOne()
 {
   Logical_NOR* p = new Logical_NOR();
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
-  p->Props.getLast()->Value = Props.getLast()->Value;
+  p->Props.front()->Value = Props.front()->Value;
+  p->Props.back()->Value = Props.back()->Value;
   p->recreate(0);
   return p;
 }

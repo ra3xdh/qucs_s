@@ -1106,7 +1106,7 @@ bool Component::load(const QString &_s) {
         if (z == 6)
             if (counts == 6)     // backward compatible
                 if (Model == "R") {
-                    Props.getLast()->Value = n;
+                    Props.back()->Value = n;
                     return true;
                 }
         p1->Value = n;
@@ -1653,10 +1653,10 @@ QString GateComponent::verilogCode(int NumPorts) {
 
 // -------------------------------------------------------
 void GateComponent::createSymbol() {
-    int Num = Props.getFirst()->Value.toInt();
+    int Num = Props.front()->Value.toInt();
     if (Num < 2) Num = 2;
     else if (Num > 8) Num = 8;
-    Props.getFirst()->Value = QString::number(Num);
+    Props.front()->Value = QString::number(Num);
 
     int xl, xr, y = 10 * Num, z;
     x1 = -30;
@@ -1670,7 +1670,7 @@ void GateComponent::createSymbol() {
     z = 0;
     if (Model.at(0) == 'N') z = 1;
 
-    if (Props.getLast()->Value.at(0) == 'D') {  // DIN symbol
+    if (Props.back()->Value.at(0) == 'D') {  // DIN symbol
         xl = -15;
         xr = 15;
         Lines.append(new qucs::Line(15, -y, 15, y, QPen(Qt::darkBlue, 2)));
@@ -1764,7 +1764,7 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
     else if (cstr.left(6) == "SPfile" && cstr != "SPfile") {
         // backward compatible
         c = new SParamFile();
-        c->Props.getLast()->Value = cstr.mid(6);
+        c->Props.back()->Value = cstr.mid(6);
     } else
         c = Module::getComponent(cstr);
 

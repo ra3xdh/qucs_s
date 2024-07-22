@@ -102,7 +102,7 @@ phototransistor::phototransistor()
 Component * phototransistor::newOne()
 {
   phototransistor * p = new phototransistor();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

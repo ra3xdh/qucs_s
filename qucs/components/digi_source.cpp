@@ -177,7 +177,7 @@ QString Digi_Source::verilogCode(int NumPorts)
     }
   }
   else {  // truth table simulation
-    int Num = Props.getFirst()->Value.toInt() - 1;    
+    int Num = Props.front()->Value.toInt() - 1;    
     s += "  always begin\n";
     s += "    " + r + " = 0;\n";
     s += "    #"+ QString::number(1 << Num) + ";\n";

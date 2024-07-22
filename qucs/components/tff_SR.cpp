@@ -44,7 +44,7 @@ tff_SR::tff_SR()
 Component * tff_SR::newOne()
 {
   tff_SR * p = new tff_SR();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

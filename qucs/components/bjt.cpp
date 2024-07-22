@@ -37,7 +37,7 @@ BJT::BJT()
 Component* BJT::newOne()
 {
   BJT* p = new BJT();
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0);
   return p;
 }
@@ -85,7 +85,7 @@ Element* BJT::info_pnp(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     BJT* p = new BJT();
-    p->Props.getFirst()->Value = "pnp";
+    p->Props.front()->Value = "pnp";
     p->recreate(0);
     return p;
   }
@@ -102,7 +102,7 @@ void BJT::createSymbol()
   Lines.append(new qucs::Line(-10,  5,  0, 15,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  0, 15,  0, 30,QPen(Qt::darkBlue,2)));
 
-  if(Props.getFirst()->Value == "npn") {
+  if(Props.front()->Value == "npn") {
     Lines.append(new qucs::Line( -6, 15,  0, 15,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line(  0,  9,  0, 15,QPen(Qt::darkBlue,2)));
   }

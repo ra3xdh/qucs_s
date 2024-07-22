@@ -40,7 +40,7 @@ ha1b::ha1b()
 Component * ha1b::newOne()
 {
   ha1b * p = new ha1b();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

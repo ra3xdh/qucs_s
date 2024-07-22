@@ -89,7 +89,7 @@ Element* vFile::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString vFile::getSubcircuitFile()
 {
   // construct full filename
-  QString FileName = Props.getFirst()->Value;
+  QString FileName = Props.front()->Value;
   return misc::properAbsFileName(FileName);
 }
 

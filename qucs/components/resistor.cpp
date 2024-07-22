@@ -37,7 +37,7 @@ Resistor::Resistor(bool european)
   // this must be the last property in the list !!!
   Props.append(new Property("Symbol", "european", false,
         QObject::tr("schematic symbol")+" [european, US]"));
-  if(!european)  Props.getLast()->Value = "US";
+  if(!european)  Props.back()->Value = "US";
 
   createSymbol();
   tx = x1+4;
@@ -50,7 +50,7 @@ Resistor::Resistor(bool european)
 // -------------------------------------------------------
 Component* Resistor::newOne()
 {
-  return new Resistor(Props.getLast()->Value != "US");
+  return new Resistor(Props.back()->Value != "US");
 }
 
 QString Resistor::spice_netlist(bool )
@@ -100,7 +100,7 @@ QString Resistor::va_code()
 // -------------------------------------------------------
 void Resistor::createSymbol()
 {
-  if(Props.getLast()->Value != "US") {
+  if(Props.back()->Value != "US") {
     Lines.append(new qucs::Line(-18, -9, 18, -9,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( 18, -9, 18,  9,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( 18,  9,-18,  9,QPen(Qt::darkBlue,2)));

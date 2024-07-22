@@ -1914,7 +1914,7 @@ int Schematic::adjustPortNumbers()
             if (pc->Model == "Port") {
                 countPort++;
 
-                Str = pc->Props.getFirst()->Value;
+                Str = pc->Props.front()->Value;
                 // search for matching port symbol
                 for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next()) {
                     if (pp->Name == ".PortSym ") {

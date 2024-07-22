@@ -40,7 +40,7 @@ mux2to1::mux2to1()
 Component * mux2to1::newOne()
 {
   mux2to1 * p = new mux2to1();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }
