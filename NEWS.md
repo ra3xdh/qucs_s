@@ -10,13 +10,17 @@
 * Improved Qucsconv GUI to reflect new converter features #826
 * Improved libraries portability, relative path support for libraries, show libraries from project directory #567
 * Added a global setting for Ngspice compatibility mode (LTspice, HSPICE, etc.) #851
+* Add global Ngspice compatibility mode (LTspice/HSPICE/S3) setting #851
 * QucsatorRF updated to version 1.0.1
 
 ## Deprecated features
 
 * The `*.qucs` binary archives are not supported anymore. Use system archivers to pack the projects instead #811
 * The `SweepModel` property of *Parameter Sweep* simulaiton has been deprecated. It is not needed anymore after Ngspice
-  has added variable sweep feature. Use variable sweep instead #839 
+  has added variable sweep feature. Use variable sweep instead #839
+* Toolbars and status bar made always visible #852
+* Icons theme settings removed from settings dialog. These settings have no effect since v2.1.0
+  when unified and auto-generated icons were introduced.
 
 ## Packaging
 
@@ -38,6 +42,7 @@
 
 ## Component library
 
+* Added PWM controllers (TL494, UC384x, etc.) library #846
 * Added Germanium diodes library #846
 * Added Mixer IC library containing SA612 model #846
 * Added Diodes extended library containing different USSR diodes models

@@ -1,0 +1,845 @@
+<Qucs Library 24.3.0 "PWM_Controller">
+
+<Component MC34063>
+  <Description>
+Buck-boost type Adjustable 1.25V~40V 1.3A 3V~40V
+Model adapted for Ngspice by Holger Vogt; 
+GND node must be connected to schematic ground;
+  </Description>
+  <Model>
+.Def:PWM_Controller_MC34063 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="MC34063_cir"
+.Def:End
+  </Model>
+  <Spice>
+* fast and accurate using ngspice
+* This model is part of a ICAP/4 demo circuit from the ONsemi webpage.
+* The ground pin must be always at net 0 in the schematic!
+.SUBCKT mc34063a_sub 1 2 3 4 5 6 7 8
+*exempt 20030227 20395 -30736294
+*BY KEHINDE OMOLAYO 2-20-03
+*TERMINAL ID
+*SWITCH COLLECTOR=1 SWITCH EMITTER=2 TIMING CAPACITOR=3 GND=4
+*COMPARATOR INVERTING INPUT=5 VCC=6 IPK SENSE=7 DRIVER COLLECTOR=8
+.MODEL DMC34063 D (CJO=2P N=0.05)
+.MODEL QSWITCH NPN BF=75 CJC=2P IS=3E-9 RB=1 RC=0.45 RE=0
++ VJC=.75 VJE=.75 VJS=.75
+E1 10 0 5 4 1
+R1 4 5 10MEG
+V1 20 0 PULSE 0 2
+E2 11 0 3 4 1
+B1 13 0 V=1M/(ABS((27.475-195M*V(12))+(36.002+244M*V(12))*V(9)-(302.302+651M*V(12))*V(9)^2)+1F)
+*B1 13 0 V=1M/(ABS((27.475-195M*V(12))+(36.002+244M*V(12))*V(9)-(302.302+651M*V(12))*V(9)**2)+1F)
+E3 12 0 6 4 1
+E4 9 0 6 7 1
+R2 6 7 10MEG
+B2 14 0 V=1M*((-10.765-151M*V(12))+(45.344+864M*V(12))*V(9)-+(35.99+1.378*V(12))*V(9)^2+(8.341+839M*V(12))*V(9)^3)
+*B2 14 0 V=1M*((-10.765-151M*V(12))+(45.344+864M*V(12))*V(9)-+(35.99+1.378*V(12))*V(9)**2+(8.341+839M*V(12))*V(9)**3)
+B4 15 0 V=V(9)>0.32 ? V(14) : V(13)
+*B4 15 0 V=IF( V(9)>0.32, V(14), V(13) )
+C1 19 0 10P
+B5 16 0 V= V(20)<1 ? 2 :  V(24)>1 ? 2 : V(19)>1 ? 0 : 2
+*B5 16 0 V= IF( V(20)<1, 2, IF(V(24)>1, 2, IF( V(19)>1, 0, 2 ) ) )
+R3 16 17 150
+C2 17 0 10P
+B6 18 0 V=V(20)<1 ? 0 : V(24)>1 ? 0 : V(11)<(1.083-1.239*V(29)) ? 2 : V(17)>1 ? 0 : 2
+*B6 18 0 V= IF( V(20)<1, 0, IF( V(24)>1, 0, IF( V(11)<(1.083-1.239*V(29)), 2, IF(V(17)>1, 0, 2 ) ) ) )
+R4 18 19 150
+D1 4 3 DMC34063
+D2 3 6 DMC34063
+C3 11 31 1N
+B7 4 36 I=V(17)>1 ? -(224.4U+2.359U*V(12))*0.77 : V(15)*0.77
+*B7 4 36 I=IF( V(17)>1, -(224.4U+2.359U*V(12))*0.77, V(15)*0.77 )
+C5 23 0 10P
+B9 21 0 V= V(20)<1 ? 2 : V(17)>1 ? 2 : V(26)>1 ? 0 : 2
+*B9 21 0 V= IF( V(20)<1, 2, IF( V(17)>1, 2, IF( V(26)>1, 0, 2 ) ) )
+R5 27 26 150
+C6 26 0 10P
+B10 27 0 V=V(20)<1 ? 0 : V(17)>1 ? 0 : V(10)<1.25 ? 2 : V(23)>1 ? 0 : 2
+*B10 27 0 V=IF( V(20)<1, 0, IF(V(17)>1, 0, IF(V(10)<1.25, 2, IF(V(23)>1, 0, 2 ) ) ) )
+R6 21 23 150
+B12 33 0 V=V(11)>(1.148+184.6M*V(29)) ? 2 : 0
+*B12 33 0 V=IF( V(11)>(1.148+184.6M*V(29)), 2, 0 )
+R13 33 24 10K
+C8 24 0 10P
+Q1 8 30 25 QSWITCH
+Q2 1 25 2 QSWITCH
+R15 25 2 100
+D5 2 30 DMC34063
+G1 2 30 26 23 5M
+R16 2 4 10MEG
+R23 31 28 1M
+*V6 28 0 
+V6 28 0 0
+*V7 36 3 
+V7 36 3 0
+B13 29 0 V=I(V6)/(I(V7)+866.8M*I(V6))
+.ENDS
+
+.SUBCKT PWM_Controller_MC34063  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 mc34063a_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 -80 0 160 #000080 2 1>
+    <Line 60 -80 0 160 #000080 2 1>
+    <Line -60 -80 120 0 #000080 2 1>
+    <.PortSym -70 -10 3 0 P3>
+    <Line -70 -70 10 0 #000080 2 1>
+    <Line -70 -10 10 0 #000080 2 1>
+    <Text -50 -20 12 #000000 0 "CT">
+    <Text -50 -80 12 #000000 0 "VIN">
+    <.PortSym -70 -70 6 0 P6>
+    <Line 60 -70 10 0 #000080 2 1>
+    <Line 60 -10 10 0 #000080 2 1>
+    <Line 60 -40 10 0 #000080 2 1>
+    <Text 20 -20 12 #000000 0 "SWC">
+    <Text 30 -50 12 #000000 0 "DC">
+    <Text 30 -80 12 #000000 0 "IPK">
+    <.PortSym 70 -10 1 180 P1>
+    <.PortSym 70 -40 8 180 P8>
+    <.PortSym 70 -70 7 180 P7>
+    <.ID -50 -126 X>
+    <Line 60 70 10 0 #000080 2 1>
+    <Line -60 80 120 0 #000080 2 1>
+    <Line 60 40 10 0 #000080 2 1>
+    <Line -70 70 10 0 #000080 2 1>
+    <.PortSym -70 70 4 0 P4>
+    <.PortSym 70 70 5 180 P5>
+    <Text -50 60 12 #000000 0 "GND">
+    <Text 20 60 12 #000000 0 "VFB">
+    <Text 20 30 12 #000000 0 "SWE">
+    <.PortSym 70 40 2 180 P2>
+  </Symbol>
+</Component>
+
+<Component TL494>
+  <Description>
+TL494 PWM Controller Macro Model
+Author: Zabb Csaba
+  </Description>
+  <Model>
+.Def:PWM_Controller_TL494 _net0 _net4 _net1 _net5 _net2 _net6 _net3 _net7 _net8 _net9 _net10 _net11 _net13 _net12 _net15 _net14
+Sub:X1 _net0 _net4 _net1 _net5 _net2 _net6 _net3 _net7 _net8 _net9 _net10 _net11 _net13 _net12 _net15 _net14 gnd Type="TL494_CIR"
+.Def:End
+  </Model>
+  <Spice>
+* TL494 PWM Controller Macro Model
+* Author: Zabb Csaba
+* Date:   14/04/2023
+.SUBCKT TL494_sub 1INP 1INN FEEDB DTC CT RT GND C1 E1 E2 C2 VCC OCTRL REF 2INN 2INP
+X1  C1    E1    IN1 VCC OUT494
+X2  C2    E2    IN2 VCC OUT494
+X3  20    21    22  GND REF NOR2
+X4  23    21    24  GND REF NOR2
+E1  IN1   E1    22  GND 1
+E2  IN2   E2    24  GND 1
+R1  E1    GND   1G
+R2  E2    GND   1G
+X5  25    OCTRL 20  GND REF AND2
+X6  26    OCTRL 23  GND REF AND2
+R3  GND   OCTRL 6.5k
+X7  21    CK    GND REF DELAY PARAMS:DELAY=70n
+X8  CK    26    26  25 GND REF DFFX
+X9  VCC   REF   GND REF5V
+X10 27    28    21  GND REF OR2
+X11 29    28    GND REF DELAY PARAMS:DELAY=250n
+X12 30    27    GND REF DELAY PARAMS:DELAY=250n
+X13 31    CT    30  REF GND COMP1
+V1  31    DTC   300m
+V2  32    CT    700m
+X14 FEEDB 32    29  REF GND COMP1
+X15 CLK   RT    CT  REF GND OSC494
+X16 1INP  1INN  VCC GND FEEDB REF OP494
+X17 2INP  2INN  VCC GND FEEDB REF OP494
+X18 REF   31    IG  PARAMS:I1=2u
+X19 VCC   GND   IG  PARAMS:I1=6.7m
+.ENDS TL494
+*
+.SUBCKT OP494 INP INN VDD GND OUT VCC
+Q1  GND INN 1   PNPIC
+Q2  4   1   2   PNPIC
+Q3  5   3   2   PNPIC
+Q4  GND INP 3   PNPIC
+X1  VDD 2   IG  PARAMS:I1=6u
+X2  VDD 1   IG  PARAMS:I1=3u
+X3  VDD 3   IG  PARAMS:I1=3u
+Q5  5   4   GND NPNIC
+Q6  4   4   GND NPNIC
+Q7  GND 5   6   PNPIC
+X4  VDD 6   IG  PARAMS:I1=3u
+Q8  VDD 6   7   NPNIC
+Q9  6   7   8   NPNIC
+Q10 8   7   GND NPNIC
+R1  7   GND 100k
+C1  8   5   25p
+X5  VCC 8   IG  PARAMS:I1=50u
+Q12 VCC 8   OUT NPNIC
+X6  OUT GND IG  PARAMS:I1=300u
+C2  5   GND 25p
+.MODEL NPNIC NPN(Is=10f Xti=3 Eg=1.11 Vaf=100
++ Bf=450 Ise=0 Ne=1.5 Ikf=0 Nk=.5 Xtb=1.5 Var=100
++ Br=1 Isc=0 Nc=2 Ikr=0 Rc=0 Cjc=0.5p Mjc=.3333
++ Vjc=.75 Fc=.5 Cje=1p Mje=.3333 Vje=.75 Tr=10n
++ Tf=1n Itf=1 Xtf=0 Vtf=10)
+.MODEL PNPIC PNP(Is=10f Xti=3 Eg=1.11 Vaf=100
++ Bf=160 Ise=0 Ne=1.5 Ikf=0 Nk=.5 Xtb=1.5 Var=100
++ Br=1 Isc=0 Nc=2 Ikr=0 Rc=0 Cjc=0.5p Mjc=.3333
++ Vjc=.75 Fc=.5 Cje=1p Mje=.3333 Vje=.75 Tr=10n
++ Tf=1n Itf=1 Xtf=0 Vtf=10)
+.ENDS OP494
+*
+.SUBCKT IG 1 2 PARAMS: I1=100u
+G1 1 2 VALUE {LIMIT(V(1,2)*2*{I1},0,{I1})}
+.ENDS IG
+*
+.SUBCKT OSC494 CLK RT CT VREF GND 
+S1 CLK  GND  CT GND SWOSC 
+V1 3    GND  3.7
+V2 3    RT   0
+F1 VREF CT   V2 1
+G1 1    GND  VALUE {IF(V(CLK,GND)<2.5&&V(VREF,GND)>2.5,I(V2)*100,0)}
+X1 GND  CT   DID
+L1 1    CT   15n
+R1 1    CT   100
+R2 CLK  VREF 10k
+C1 CLK  GND  30p 
+.MODEL SWOSC VSWITCH(RON=1 ROFF=10MEG VT=1.5 VH=1.5)
+.ENDS OSC494
+*
+.SUBCKT COMP1 INP INM Y VCC GND
+E1 Y1  GND   VALUE {IF(V(INP,GND)>V(INM,GND),V(VCC,GND),0)}
+R2 INP GND 1G
+R3 INM GND 1G
+R1 Y1  Y   1
+C1 Y   GND 1p
+.ENDS  COMP1
+*
+.SUBCKT OR2 A B Y GND VCC 
+E1 Y1 GND VALUE {IF(V(A,GND)>{V(VCC,GND)/2}||V(B,GND)>{V(VCC,GND)/2},{V(VCC,GND)},0)}
+R1 Y1 Y   1
+L1 Y1 Y   1n
+R2 A  GND 1G
+R3 B  GND 1G
+.ENDS OR2
+*REF5V
+.SUBCKT REF5V  IN  OUT GND  
+R1  1    2   10  
+C1  GND  3   1n 
+E1  4    GND VALUE {V(5,GND)*(ABS(V(OUT,GND))+1e-6)/(ABS(V(16,GND))+1e-6)}
+C2  GND  5   1n 
+R2  GND  5   1G 
+V2  6    GND {REF}
+E3  7    GND VALUE {MIN(V(3,GND),MAX(V(IN,GND)-V(8,GND),0))}
+E4  8    GND TABLE {V(LOAD,GND)}((1m,1.5)(40m,1.7)(70m,1.9)(100m,2.1))
+R3  7    12  10 
+R4  6    5   333.3 
+C3  GND  12  1n  
+R5  GND  3   1G  
+R6  4    3   10  
+R7  GND  IN  1E6
+F1  IN   2   V1 1   
+V1  14   15  0
+C4  GND  2   1n 
+R8  14   2   {ROUT}  
+E5  1    GND VALUE {{MIN(V(13,GND),(V(15,GND)+(ILIM*ROUT)))}}
+E6  LOAD GND VALUE {I(V3)}
+R9  12   13  1k 
+R10 GND  16  30k  
+C5  13   IN  12.2p 
+R11 16   OUT 270k 
+C6  13   12  31.8p
+V3  15   OUT 0Vdc
+.PARAM  ILIM=25m ROUT=50m REF=0.4996
+.ENDS REF5V
+*
+.SUBCKT DFFX CLK D QB Q GND VCC
+X1  CLK  CLKD GND VCC INVDEL PARAMS:DELAY=20n
+X2  CLK  CLKD CLKI GND VCC AND2 
+GQ  GND  QINT VALUE {IF(V(CLKI,GND)>{V(VCC,GND)/2},IF(V(D,GND)>{V(VCC,GND)/2},{V(VCC,GND)},-5),0)}
+CQ  QINT GND  1n
+RQ  QINT GND  1G
+D1  QINT MY5  DLIM
+V1  MY5  GND  5
+D2  MY0  QINT DLIM
+V2  MY0  GND  0 
+EQ  Qqq  GND  QINT GND 1
+X3  Qqq  Qqd  GND VCC DELAY PARAMS:DELAY=30n
+RQq Qqd  Q    1
+L1  Qqd  Q    1n
+EQb Qbr  GND  VALUE {IF(V(Q,GND)>{V(VCC,GND)/2},0,{V(VCC,GND)})}
+RQb Qbr  Qb   1 
+L2  Qbr  Qb   1n
+R1  CLK  GND  1G
+R2  D    GND  1G
+*.IC V(GND)=0
+.IC V(QINT)=0
+.MODEL DLIM D(IS=1E-16)
+.ENDS DFFX
+*
+.SUBCKT INVDEL A Y GND VCC PARAMS:DELAY=10n 
+E1 Y1 GND  VALUE {IF(V(A,GND)>{V(VCC,GND)/2},{V(VCC,GND)},0)}
+R1 Y1 Y2   1
+R3 A  GND  1G
+C1 Y2 GND  {DELAY*1.3}
+E2 Y3 GND  VALUE {IF(V(Y2,GND)>{V(VCC,GND)/2},0,{V(VCC,GND)})}
+R2 Y3 Y    1
+L1 Y3 Y    1n
+.ENDS INVDEL
+*
+.SUBCKT AND2 A B Y GND VCC
+E1 Y1 GND VALUE {IF(V(A,GND)>{V(VCC,GND)/2}&&V(B,GND)>{V(VCC,GND)/2},{V(VCC,GND)},0)}
+R1 A  GND 1G
+R2 B  GND 1G
+R3 Y1 Y   1
+L1 Y1 Y   1n
+.ENDS AND2
+*
+.SUBCKT DELAY A Y GND VCC PARAMS:DELAY=10n 
+E1 Y1 GND VALUE {IF(V(A,GND)>{V(VCC,GND)/2},{V(VCC,GND)},0)}
+R1 Y1 Y2 1
+C1 Y2 GND {DELAY*1.3}
+E2 Y3 GND VALUE {IF(V(Y2,GND)>{V(VCC,GND)/2},{V(VCC,GND)},0)}
+R2 A  GND 1G
+R3 Y3 Y 1
+L1 Y3 Y 1n
+.ENDS DELAY
+*
+.SUBCKT NOR2 A B Y GND VCC 
+E1 Y1 GND VALUE {IF(V(A,GND)>{V(VCC,GND)/2}|V(B,GND)>{V(VCC,GND)/2},0,{V(VCC,GND)})}
+R1 Y1 Y   1
+L1 Y1 Y   1n
+R2 A  GND 1G
+R3 B  GND 1G
+.ENDS NOR2
+*
+.SUBCKT OUT494 C E IN VCC
+Q1 C  2   E   QMO
+Q2 C  1   2   QMO
+Q3 1  3   E   QMO
+R2 3  E   1k
+R3 3  2   228.7
+X1 1  VCC DID
+R4 IN 1   5k
+.MODEL QMO NPN(Is=10f Xti=3 Eg=1.11 Vaf=100
++ Bf=450 Ise=0 Ne=1.5 Ikf=0 Nk=.5 Xtb=1.5 Var=100
++ Br=1 Isc=0 Nc=2 Ikr=0 Rc=5 Cjc=0.5p Mjc=.3333
++ Vjc=.75 Fc=.5 Cje=1p Mje=.3333 Vje=.75 Tr=10n
++ Tf=0.3n Itf=1 Xtf=0 Vtf=10)
+.ENDS OUT494
+* 
+.SUBCKT DID A K
+Ba A K I=(URAMP(V(A,K))^1.5)*3.5E6
+.ENDS DID
+*
+
+
+.SUBCKT PWM_Controller_TL494  gnd _net0 _net4 _net1 _net5 _net2 _net6 _net3 _net7 _net8 _net9 _net10 _net11 _net13 _net12 _net15 _net14 
+X1 _net0 _net4 _net1 _net5 _net2 _net6 _net3 _net7 _net8 _net9 _net10 _net11 _net13 _net12 _net15 _net14 TL494_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 60 -90 10 0 #000080 2 1>
+    <Line 60 -30 10 0 #000080 2 1>
+    <Line 60 -60 10 0 #000080 2 1>
+    <Line 60 -110 0 270 #000080 2 1>
+    <Line 60 140 10 0 #000080 2 1>
+    <Text 20 130 12 #000000 0 "GND">
+    <Line 60 80 10 0 #000080 2 1>
+    <Line 60 110 10 0 #000080 2 1>
+    <Line 60 10 10 0 #000080 2 1>
+    <Line -60 -110 120 0 #000080 2 1>
+    <Line -60 160 120 0 #000080 2 1>
+    <.ID -40 -156 X>
+    <Text 35 70 12 #000000 0 "C2">
+    <Text 35 100 12 #000000 0 "E2">
+    <Text 25 -100 12 #000000 0 "VCC">
+    <Text 10 -40 12 #000000 0 "OUTC">
+    <Line 60 40 10 0 #000080 2 1>
+    <Text 35 30 12 #000000 0 "E1">
+    <Text 15 -70 12 #000000 0 "VREF">
+    <Text 35 0 12 #000000 0 "C1">
+    <Line -60 -110 0 270 #000080 2 1>
+    <Line -70 -90 10 0 #000080 2 1>
+    <Text -55 -100 12 #000000 0 "DTC">
+    <Text -55 -40 12 #000000 0 "CT">
+    <Text -55 -70 12 #000000 0 "RT">
+    <Line -70 -60 10 0 #000080 2 1>
+    <Line -70 -30 10 0 #000080 2 1>
+    <Line -70 10 10 0 #000080 2 1>
+    <Line -70 40 10 0 #000080 2 1>
+    <Text -55 30 12 #000000 0 "I1+">
+    <Text -55 0 12 #000000 0 "I1-">
+    <Line -70 80 10 0 #000080 2 1>
+    <Text -55 70 12 #000000 0 "I2-">
+    <Line -70 110 10 0 #000080 2 1>
+    <Text -55 100 12 #000000 0 "I2+">
+    <.PortSym -70 40 1 0 P1>
+    <.PortSym -70 10 2 0 P2>
+    <Line -70 140 10 0 #000080 2 1>
+    <Text -55 130 12 #000000 0 "CMP">
+    <.PortSym -70 140 3 0 P3>
+    <.PortSym -70 -90 4 0 P4>
+    <.PortSym -70 -30 5 0 P5>
+    <.PortSym -70 -60 6 0 P6>
+    <.PortSym 70 -90 12 180 P12>
+    <.PortSym 70 -60 14 180 P14>
+    <.PortSym 70 -30 13 180 P13>
+    <.PortSym 70 10 8 180 P8>
+    <.PortSym 70 40 9 180 P9>
+    <.PortSym 70 80 11 180 P11>
+    <.PortSym 70 110 10 180 P10>
+    <.PortSym 70 140 7 180 P7>
+    <.PortSym -70 80 15 0 P15>
+    <.PortSym -70 110 16 0 P16>
+  </Symbol>
+</Component>
+
+<Component UC3843A>
+  <Description>
+UC3843A Current-Mode PWM Controller Macro Model
+Author: Zabb Csaba
+  </Description>
+  <Model>
+.Def:PWM_Controller_UC3843A _net0 _net2 _net4 _net6 _net1 _net3 _net5 _net7
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="UC3843A_CIR"
+.Def:End
+  </Model>
+  <Spice>
+* UC3843A Current-Mode PWM Controller Macro Model
+* Author: Zabb Csaba
+* Date:   29/04/2023
+.SUBCKT UC3843A_sub  COMP   FB   CS   RTCT    GND    OUT   VCC   VREF
+X1 VCC  GND  VREF SVCC UVLO
+X2 CLK  RTCT VREF GND OSC3845
+X3 VREF FB   COMP GND SVCC AMP3845
+X4 5    VCC  GND  OUT OUT3845
+E1 1    GND  VALUE {IF(V(CS,GND)>V(8,GND),5,0)}
+E2 13   GND  VALUE {V(VREF,GND)/4}
+R1 CS   13   1MEG
+X5 1    2    GND DELAY5 PARAMS:DELAY=150n
+R2 3    4    30k
+R3 4    GND  15k
+E3 8    GND  VALUE {IF(V(4,GND)>1,1,V(4,GND))}
+V1 COMP 9    1
+D1 9    3    DX
+X6 CLK1 VREF 2   GND 6 7 GND DFFSR5
+X7 CLK  CLK1 GND DELAY5 PARAMS:DELAY=70n
+E5 5    GND  VALUE {IF(V(VREF,GND)>2.5&&V(7,GND)>2.5&&V(CLK,GND)>2.5,5,0)}
+.MODEL DX D(IS=1E-16 BV=100)
+.ENDS UC3843A
+*
+.SUBCKT DFFSR5 CLK D R S QB Q GND
+X1  CLK  CLKD GND INV_DELAY5 PARAMS:DELAY=20n
+X2  CLK  CLKD CLKI GND AND25 
+GQ  GND  QINT VALUE {IF(V(S,GND)>2.5,5,IF(V(R,GND)>2.5,-5,IF(V(CLKI,GND)>2.5,IF(V(D,GND)>2.5,5,-5),0)))}
+CQ  QINT GND  1n
+RQ  QINT GND  1G
+D1  QINT MY5  DLIM
+V1  MY5  GND  5
+D2  MY0  QINT DLIM
+V2  MY0  GND  0 
+EQ  Qqq  GND  QINT GND 1
+X3  Qqq  Qqd  GND DELAY5 PARAMS:DELAY=30n
+RQq Qqd  Q    1
+L1  Qqd  Q    1n
+EQb Qbr  GND  VALUE {IF(V(Q,GND)>2.5,0,5)}
+RQb Qbr  Qb   1 
+L2  Qbr  Qb   1n
+R1  CLK  GND  1G
+R2  D    GND  1G
+R3  R    GND  1G
+R4  S    GND  1G
+.IC V(QINT)=0
+*.IC V(GND)=0
+.MODEL DLIM D(IS=1E-16)
+.ENDS DFFSR5
+*
+.SUBCKT INV_DELAY5 A Y GND PARAMS: DELAY=10n 
+E1 Y1 GND  VALUE {IF(V(A,GND)>2.5,5,0)}
+R1 Y1 Y2 1
+R3 A  GND  1G
+C1 Y2 GND  {DELAY*1.3}
+E2 Y3 GND  VALUE {IF(V(Y2,GND)>2.5,0,5)}
+R2 Y3 Y  1
+L1 Y3 Y  1n
+.ENDS INV_DELAY5
+*
+.SUBCKT AND25 A B Y GND
+E1 Y1 GND VALUE {IF(V(A,GND)>2.5&&V(B,GND)>2.5,5,0)}
+R1 A  GND 1G
+R2 B  GND 1G
+R3 Y1 Y 1
+L1 Y1 Y 1n
+.ENDS AND25
+*
+.SUBCKT DELAY5 A Y GND PARAMS: DELAY = 10n 
+E1 Y1 GND VALUE {IF(V(A,GND)>2.5,5,0)}
+R1 Y1 Y2 1
+C1 Y2 GND {DELAY*1.3}
+E2 Y3 GND VALUE {IF(V(Y2,GND)>2.5,5,0)}
+R2 A  GND 1G
+R3 Y3 Y 1
+L1 Y3 Y 1n
+.ENDS DELAY5
+*
+.SUBCKT OUT3845  IN VCC GND OUT 
+X1 VCC 8   IG   PARAMS:I1=100u
+D1 8   VCC DMOD
+D2 OUT 8   DMOD
+Q1 8   1   9    QIN
+Q2 OUT 9   GND  QMOD 
+Q3 VCC 8   6    QMOD 
+I1 GND 1   0.9m
+R1 IN  2   10k
+Q4 1   2   GND  QIN
+Q5 VCC 6   OUT  QMOD2
+C1 OUT GND 150p 
+.MODEL QMOD NPN(RC=1.5 RE=.5 RB=100 IKF=0.5 CJC=0.4p)
+.MODEL QMOD2 NPN(TF=400p TR=400p)
+.MODEL QIN NPN(BF=100 BR=2 IS=1E-16 VAF=50 CJE=1.5p CJC=.15p TR=1n TF=4n)
+.MODEL DMOD D(RS=1 IS=0.4u)
+.ENDS OUT3845
+*
+.SUBCKT AMP3845  VREF VFB COMP GND VCC
+R1 1    VREF 100k
+R2 1    GND  100k
+R3 6    GND  300MEG
+C1 6    GND  12p 
+E1 5    GND  6   GND   1
+E2 7    GND  1   GND   1
+R4 VFB  7    10MEG 
+X1 VCC  COMP IG PARAMS:I1=800u
+R6 GND  3    300
+Q1 GND  4    COMP PNP
+X2 4    GND  IG PARAMS:I1=68u 
+D1 3    4    DX
+D2 GND  6    DZ
+L1 2    3    10u
+C2 3    GND  200p
+R9 5    2    5
+C5 2    GND  20n
+G1 GND  6    1   VFB  100u
+.MODEL  PNP  PNP(IS=1E-14 BF=126)
+.MODEL  DZ   D(RS=10 BV=7.5 IBV=.01) 
+.MODEL  DX   D
+.ENDS AMP3845
+*
+.SUBCKT OSC3845 CLK RTCT VREF GND
+S1 CLK GND RTCT GND SWOSC
+G1 1 GND VALUE {IF(V(CLK,GND)<2.5 && V(VREF,GND)>2.5,8.3m,0)}
+L1 1 RTCT 1n
+R1 1 RTCT 1k
+R2 CLK VREF 100k
+.MODEL SWOSC VSWITCH(RON=1 ROFF=10MEG VT=1.85 VH=0.85)
+.ENDS OSC3845
+*
+.SUBCKT  UVLO VCC GND VREF SVCC 
+S1 VCC  SVCC VCC GND SWUVLO
+R1 SVCC GND  1MEG
+X1 VCC  GND  IG PARAMS:I1=200u  
+R2 VREF GND  534 
+X2 SVCC VREF GND REF5
+D1 VREF VCC  DSUB
+.MODEL DSUB D(IS=1E-16 RS=10m)
+.MODEL SWUVLO VSWITCH (RON=10m ROFF=5MEG VT=8.0 VH=0.4)
+.ENDS UVLO
+*REF5
+.SUBCKT REF5  IN  OUT GND  
+R1  1    2   10  
+C1  0    3   1n 
+E1  4    GND VALUE {V(5,GND)*(ABS(V(OUT,GND))+1e-6)/(ABS(V(16,GND))+1e-6)}
+C2  0    5   1n 
+R2  GND  5   1G 
+V2  6    GND {REF}
+E3  7    0   VALUE {MIN(V(3),MAX(V(IN)-V(8),0))}
+E4  8    0   TABLE {V(LOAD,0)}((1m,1.5)(40m,1.7)(70m,1.9)(100m,2.1))
+R3  7    12  10 
+R4  6    5   333.3 
+C3  0    12  1n  
+R5  GND  3   1G  
+R6  4    3   10  
+R7  GND  IN  1E6
+F1  IN   2   V1 1   
+V1  14   15  0
+C4  0    2   1n 
+R8  14   2   {ROUT}  
+E5  1    0   VALUE {{MIN(V(13),(V(15)+(ILIM*ROUT)))}}
+E6  LOAD 0   VALUE {I(V3)}
+R9  12   13  1k 
+R10 GND  16  30k  
+C5  13   IN  12.2p 
+R11 16   OUT 270k 
+C6  13   12  31.8p
+V3  15   OUT 0
+.PARAM  ILIM=150m ROUT=50m REF=0.4996
+.ENDS REF5
+*
+.SUBCKT IG 1 2 PARAMS: I1=100u
+G1 1 2 Value {LIMIT(V(1,2)*2*{I1},0,{I1})}
+.ENDS IG
+*
+
+
+.SUBCKT PWM_Controller_UC3843A  gnd _net0 _net2 _net4 _net6 _net1 _net3 _net5 _net7 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 UC3843A_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -100 30 30 0 #000080 2 1>
+    <Line 70 -50 30 0 #000080 2 1>
+    <Line 70 -20 30 0 #000080 2 1>
+    <Line -70 -70 0 150 #000080 2 1>
+    <Line 70 -70 0 150 #000080 2 1>
+    <Line 0 -100 0 30 #000080 2 1>
+    <Text -60 -30 12 #000000 0 "VREF">
+    <Line -100 -20 30 0 #000080 2 1>
+    <Text -60 20 12 #000000 0 "RTCT">
+    <Text 30 -60 12 #000000 0 "OUT">
+    <Text 40 -30 12 #000000 0 "CS">
+    <.PortSym 100 -20 2 180 P2>
+    <.PortSym 100 -50 7 180 P7>
+    <Line -70 -70 140 0 #000080 2 1>
+    <Line -70 80 140 0 #000080 2 1>
+    <Line 0 80 0 30 #000080 2 1>
+    <.PortSym -100 30 6 0 P6>
+    <.PortSym -100 -20 8 0 P8>
+    <Text -20 -70 12 #000000 0 "VCC">
+    <.PortSym 0 -100 4 0 P4>
+    <.PortSym 0 110 3 0 P3>
+    <Text -20 60 12 #000000 0 "GND">
+    <Line 70 50 30 0 #000080 2 1>
+    <Line 70 20 30 0 #000080 2 1>
+    <Text 40 10 12 #000000 0 "FB">
+    <.PortSym 100 20 5 180 P5>
+    <Text 20 40 12 #000000 0 "COMP">
+    <.PortSym 100 50 1 180 P1>
+    <.ID 20 -116 X>
+  </Symbol>
+</Component>
+
+<Component UC3845A>
+  <Description>
+UC3845A Current-Mode PWM Controller Macro Model
+Author: Zabb Csaba
+  </Description>
+  <Model>
+.Def:PWM_Controller_UC3845A _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7
+Sub:X1 _net0 _net4 _net1 _net5 _net2 _net6 _net3 _net7 gnd Type="UC3845A_CIR"
+.Def:End
+  </Model>
+  <Spice>
+* UC3845A Current-Mode PWM Controller Macro Model
+* Author: Zabb Csaba
+* Date:   29/04/2023
+.SUBCKT UC3845A_sub  COMP   FB   CS   RTCT    GND    OUT   VCC   VREF
+X1 VCC  GND  VREF SVCC UVLO
+X2 CLK  RTCT VREF GND OSC3845
+X3 VREF FB   COMP GND SVCC AMP3845
+X4 5    VCC  GND  OUT OUT3845
+E1 1    GND  VALUE {IF(V(CS,GND)>V(8,GND),5,0)}
+E2 13   GND  VALUE {V(VREF,GND)/4}
+R1 CS   13   1MEG
+X5 1    2    GND DELAY5 PARAMS:DELAY=150n
+R2 3    4    30k
+R3 4    GND  15k
+E3 8    GND  VALUE {IF(V(4,GND)>1,1,V(4,GND))}
+V1 COMP 9    1
+D1 9    3    DX
+X6 CLK1 VREF 2   GND 6 7 GND DFFSR5
+X7 CLK1 10   GND GND 11 12 GND DFFSR5
+X8 CLK  CLK1 GND DELAY5 PARAMS:DELAY=70n
+E4 10   GND  VALUE {IF(V(VREF,GND)>2.5&V(11,GND)>2.5,5,0)}
+E5 5    GND  VALUE {IF(V(VREF,GND)>2.5&V(7,GND)>2.5&V(11,GND)>2.5,5,0)}
+.MODEL  DX   D(Is=1e-16 BV=100)
+.ENDS UC3845A
+*
+.SUBCKT DFFSR5 CLK D R S QB Q GND
+X1  CLK  CLKD GND INV_DELAY5 PARAMS:DELAY=20n
+X2  CLK  CLKD CLKI GND AND25 
+GQ  GND  QINT VALUE {IF(V(S,GND)>2.5,5,IF(V(R,GND)>2.5,-5,IF(V(CLKI,GND)>2.5,IF(V(D,GND)>2.5,5,-5),0)))}
+CQ  QINT GND  1n
+RQ  QINT GND  1G
+D1  QINT MY5  DLIM
+V1  MY5  GND  5
+D2  MY0  QINT DLIM
+V2  MY0  GND  0 
+EQ  Qqq  GND  QINT GND 1
+X3  Qqq  Qqd  GND DELAY5 PARAMS:DELAY=30n
+RQq Qqd  Q    1
+L1  Qqd  Q    1n
+EQb Qbr  GND  VALUE {IF(V(Q,GND)>2.5,0,5)}
+RQb Qbr  Qb   1 
+L2  Qbr  Qb   1n
+R1  CLK  GND  1G
+R2  D    GND  1G
+R3  R    GND  1G
+R4  S    GND  1G
+*.IC V(QINT,GND) 0
+.IC V(QINT)=0
+.MODEL DLIM D(IS=1E-16)
+.ENDS DFFSR5
+*
+.SUBCKT INV_DELAY5 A Y GND PARAMS: DELAY=10n 
+E1 Y1 GND  VALUE {IF(V(A,GND)>2.5,5,0)}
+R1 Y1 Y2 1
+R3 A  GND  1G
+C1 Y2 GND  {DELAY*1.3}
+E2 Y3 GND  VALUE {IF(V(Y2,GND)>2.5,0,5)}
+R2 Y3 Y  1
+L1 Y3 Y  1n
+.ENDS INV_DELAY5
+*
+.SUBCKT AND25 A B Y GND
+E1 Y1 GND VALUE {IF(V(A,GND)>2.5&V(B,GND)>2.5,5,0)}
+R1 A  GND 1G
+R2 B  GND 1G
+R3 Y1 Y 1
+L1 Y1 Y 1n
+.ENDS AND25
+*
+.SUBCKT DELAY5 A Y GND PARAMS: DELAY = 10n 
+E1 Y1 GND VALUE {IF(V(A,GND)>2.5,5,0)}
+R1 Y1 Y2 1
+C1 Y2 GND {DELAY*1.3}
+E2 Y3 GND VALUE {IF(V(Y2,GND)>2.5,5,0)}
+R2 A  GND 1G
+R3 Y3 Y 1
+L1 Y3 Y 1n
+.ENDS DELAY5
+*
+.SUBCKT OUT3845  IN VCC GND OUT 
+X1 VCC 8   IG   PARAMS:I1=100u
+D1 8   VCC DMOD
+D2 OUT 8   DMOD
+Q1 8   1   9    QIN
+Q2 OUT 9   GND  QMOD 
+Q3 VCC 8   6    QMOD 
+I1 GND 1   0.9m
+R1 IN  2   10k
+Q4 1   2   GND  QIN
+Q5 VCC 6   OUT  QMOD2
+C1 OUT GND 150p 
+.MODEL QMOD NPN(RC=1.5 RE=.5 RB=100 IKF=0.5 CJC=0.4p)
+.MODEL QMOD2 NPN(TF=400p TR=400p)
+.MODEL QIN NPN(BF=100 BR=2 IS=1E-16 VAF=50 CJE=1.5p CJC=.15p TR=1n TF=4n)
+.MODEL DMOD D(RS=1 IS=0.4u)
+.ENDS OUT3845
+*
+.SUBCKT AMP3845  VREF VFB COMP GND VCC
+R1 1    VREF 100k
+R2 1    GND  100k
+R3 6    GND  300MEG
+C1 6    GND  12p 
+E1 5    GND  6   GND   1
+E2 7    GND  1   GND   1
+R4 VFB  7    10MEG 
+X1 VCC  COMP IG PARAMS:I1=800u
+R6 GND  3    300
+Q1 GND  4    COMP PNP
+X2 4    GND  IG PARAMS:I1=68u 
+D1 3    4    DX
+D2 GND  6    DZ
+L1 2    3    10u
+C2 3    GND  200p
+R9 5    2    5
+C5 2    GND  20n
+G1 GND  6    1   VFB  100u
+.MODEL  PNP  PNP(IS=1E-14 BF=126)
+.MODEL  DZ   D(RS=10 BV=7.5 IBV=.01) 
+.MODEL  DX   D
+.ENDS AMP3845
+*
+.SUBCKT OSC3845 CLK RTCT VREF GND
+S1 CLK GND RTCT GND SWOSC
+G1 1 GND VALUE {IF(V(CLK,GND)<2.5 & V(VREF,GND)>2.5,8.3m,0)}
+L1 1 RTCT 1n
+R1 1 RTCT 1k
+R2 CLK VREF 100k
+.MODEL SWOSC VSWITCH(RON=1 ROFF=10MEG VT=1.85 VH=0.85)
+.ENDS OSC3845
+*
+.SUBCKT  UVLO VCC GND VREF SVCC 
+S1 VCC  SVCC VCC GND SWUVLO
+R1 SVCC GND  1MEG
+X1 VCC  GND  IG PARAMS:I1=200u  
+R2 VREF GND  534 
+X2 SVCC VREF GND REF5
+D1 VREF VCC  DSUB
+.MODEL DSUB D(IS=1E-16 RS=10m)
+.MODEL SWUVLO VSWITCH (RON=10m ROFF=5MEG VT=8.0 VH=0.4)
+.ENDS UVLO
+*REF5
+.SUBCKT REF5  IN  OUT GND  
+R1  1    2   10  
+C1  0    3   1n 
+E1  4    GND VALUE {V(5,GND)*(ABS(V(OUT,GND))+1e-6)/(ABS(V(16,GND))+1e-6)}
+C2  0    5   1n 
+R2  GND  5   1G 
+V2  6    GND {REF}
+E3  7    0   VALUE {MIN(V(3),MAX(V(IN)-V(8),0))}
+E4  8    0   TABLE {V(LOAD,0)}((1m,1.5)(40m,1.7)(70m,1.9)(100m,2.1))
+R3  7    12  10 
+R4  6    5   333.3 
+C3  0    12  1n  
+R5  GND  3   1G  
+R6  4    3   10  
+R7  GND  IN  1E6
+F1  IN   2   V1 1   
+V1  14   15  0
+C4  0    2   1n 
+R8  14   2   {ROUT}  
+E5  1    0   VALUE {{MIN(V(13),(V(15)+(ILIM*ROUT)))}}
+E6  LOAD 0   VALUE {I(V3)}
+R9  12   13  1k 
+R10 GND  16  30k  
+C5  13   IN  12.2p 
+R11 16   OUT 270k 
+C6  13   12  31.8p
+V3  15   OUT 0Vdc
+.PARAM  ILIM=150m ROUT=50m REF=0.4996
+.ENDS REF5
+*
+.SUBCKT IG 1 2 PARAMS: I1=100u
+G1 1 2 Value {LIMIT(V(1,2)*2*{I1},0,{I1})}
+.ENDS IG
+*
+
+
+.SUBCKT PWM_Controller_UC3845A  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 
+X1 _net0 _net4 _net1 _net5 _net2 _net6 _net3 _net7 UC3845A_sub
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -100 30 30 0 #000080 2 1>
+    <Line 70 -50 30 0 #000080 2 1>
+    <Line 70 -20 30 0 #000080 2 1>
+    <Line -70 -70 0 150 #000080 2 1>
+    <Line 70 -70 0 150 #000080 2 1>
+    <Line 0 -100 0 30 #000080 2 1>
+    <Text -60 -30 12 #000000 0 "VREF">
+    <Line -100 -20 30 0 #000080 2 1>
+    <Text -60 20 12 #000000 0 "RTCT">
+    <Text 30 -60 12 #000000 0 "OUT">
+    <Text 40 -30 12 #000000 0 "CS">
+    <.PortSym 100 -20 2 180 P2>
+    <.PortSym 100 -50 7 180 P7>
+    <Line -70 -70 140 0 #000080 2 1>
+    <Line -70 80 140 0 #000080 2 1>
+    <Line 0 80 0 30 #000080 2 1>
+    <.PortSym -100 30 6 0 P6>
+    <.PortSym -100 -20 8 0 P8>
+    <Text -20 -70 12 #000000 0 "VCC">
+    <.PortSym 0 -100 4 0 P4>
+    <.PortSym 0 110 3 0 P3>
+    <Text -20 60 12 #000000 0 "GND">
+    <Line 70 50 30 0 #000080 2 1>
+    <Line 70 20 30 0 #000080 2 1>
+    <Text 40 10 12 #000000 0 "FB">
+    <.PortSym 100 20 5 180 P5>
+    <Text 20 40 12 #000000 0 "COMP">
+    <.PortSym 100 50 1 180 P1>
+    <.ID 20 -116 X>
+  </Symbol>
+</Component>
+
