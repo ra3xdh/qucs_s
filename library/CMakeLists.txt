@@ -21,6 +21,7 @@ OpAmps.lib
 Optocoupler.lib
 PhotovoltaicRelay.lib
 PMOSFETs.lib
+PWM_Controller.lib
 Regulators.lib
 Substrates.lib
 Transistors.lib
