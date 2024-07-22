@@ -1031,7 +1031,6 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     Element *pe_1st = 0;
     Element *pe_sel = 0;
     WireLabel *pl = 0;
-    float Corr = textCorr(); // for selecting text
 
     // test all nodes and their labels
     for(Node *pn = Nodes->last(); pn != 0; pn = Nodes->prev())
@@ -1178,7 +1177,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
         }
     }
 
-    Corr = 5.0 / Scale;  // size of line select and area for resizing
+    const double Corr = 5.0 / Scale;  // size of line select and area for resizing
     // test all diagrams
     for(Diagram *pd = Diagrams->last(); pd != 0; pd = Diagrams->prev())
     {
