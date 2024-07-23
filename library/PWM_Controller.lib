@@ -377,7 +377,7 @@ X1 _net0 _net4 _net1 _net5 _net2 _net6 _net3 _net7 _net8 _net9 _net10 _net11 _ne
     <.PortSym -70 40 1 0 P1>
     <.PortSym -70 10 2 0 P2>
     <Line -70 140 10 0 #000080 2 1>
-    <Text -55 130 12 #000000 0 "CMP">
+    <Text -55 130 12 #000000 0 "FBK">
     <.PortSym -70 140 3 0 P3>
     <.PortSym -70 -90 4 0 P4>
     <.PortSym -70 -30 5 0 P5>
