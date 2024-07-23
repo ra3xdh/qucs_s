@@ -1051,7 +1051,7 @@ bool Component::load(const QString &_s) {
                     p1 = Props.begin();
                     for(int i = 0; i < int(counts)-1 && p1 != Props.end(); ++i)
                       ++p1;
-                    for (; p1 != 0; p1 = Props.begin()) {
+                    for (; p1 != Props.end(); p1 = Props.begin()) {
                         if (counts-- < 19)
                             break;
                         auto p1prev = p1;

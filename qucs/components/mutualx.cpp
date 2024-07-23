@@ -153,15 +153,17 @@ void MutualX::createSymbol()
     int dCoils = abs(oldCoils - Num);          // how many coils were added/removed?
 
     if (oldCoils>Num) { // reduce coils number
-      for(int i = 0; i < dCoils; i++)
-        Props.remove(Num+1); // remove excess coils
+      for(int i = 0; i < dCoils; i++){
+        Props.removeAt(Num+1); // remove excess coils
+      }
+
       // remove only the no longer valid coupling coefficients, leave the
       //   ones related to existing coils untouched
       for(int i = 1,state=1; i < oldCoils; i++)
         for(int j = i+1; j <= oldCoils; j++,state++) {
             if ((i>Num)||(j>Num)) {
-                Props.remove(Num + state);
-                state--;
+              Props.removeAt(Num + state);
+              state--;
             }
         }
 
