@@ -76,12 +76,10 @@ QString Switch::netlist()
   s += " "+Ports.at(1)->Connection->Name;
 
   // output all properties
-  Property *p2 = Props.first();
-  s += " "+p2->Name+"=\""+p2->Value+"\"";
-  p2 = Props.next();
-  s += " "+p2->Name+"=\"["+p2->Value+"]\"";
-  for(p2 = Props.next(); p2 != 0; p2 = Props.next())
-    s += " "+p2->Name+"=\""+p2->Value+"\"";
+  s += " "+Props.at(0)->Name+"=\""+Props.at(0)->Value+"\"";
+  s += " "+Props.at(1)->Name+"=\"["+Props.at(1)->Value+"]\"";
+  for(int i=2;i<Props.size();i++)
+    s += " "+Props.at(i)->Name+"=\""+Props.at(i)->Value+"\"";
 
   return s + '\n';
 }

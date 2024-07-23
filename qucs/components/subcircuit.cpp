@@ -214,7 +214,7 @@ QString Subcircuit::netlist()
   s += " Type=\""+misc::properName(f)+"\"";
 
   // output all user defined properties
-  for(Property *pp = Props.next(); pp != 0; pp = Props.next())
+  for(Property *pp : Props)
     s += " "+pp->Name+"=\""+pp->Value+"\"";
   return s + '\n';
 }
@@ -230,7 +230,7 @@ QString Subcircuit::spice_netlist(bool)
         s += " "+nam;   // node names
     }
     s += " " + misc::properName(f);
-    for(Property *pp = Props.next(); pp != 0; pp = Props.next()) {
+    for(Property *pp : Props) {
         s += QString(" %1=%2").arg(pp->Name).arg(spicecompat::normalize_value(pp->Value));
     }
     s += "\n";
@@ -244,12 +244,12 @@ QString Subcircuit::vhdlCode(int)
   QString s = "  " + Name + ": entity Sub_" + misc::properName(f);
 
   // output all user defined properties
-  Property *pr = Props.next();
-  if (pr) {
+  if (Props.at(1) != nullptr) {
     s += " generic map (";
-    s += pr->Value;
-    for(pr = Props.next(); pr != 0; pr = Props.next())
-      s += ", " + pr->Value;
+    s += Props.at(1)->Value;
+    for(int i = 2; i < Props.size(); i++){
+      s += ", " + Props.at(i)->Value;
+    }
     s += ")";
   }
 
@@ -275,12 +275,11 @@ QString Subcircuit::verilogCode(int)
   QString s = "  Sub_" + misc::properName(f);
 
   // output all user defined properties
-  Property *pr = Props.next();
-  if (pr) {
+  if (Props.at(1) != nullptr) {
     s += " #(";
-    s += misc::Verilog_Param(pr->Value);
-    for(pr = Props.next(); pr != 0; pr = Props.next())
-      s += ", " + misc::Verilog_Param(pr->Value);
+    s += misc::Verilog_Param(Props.at(1)->Value);
+    for(int i = 2; i < Props.size(); i++)
+      s += ", " + misc::Verilog_Param(Props.at(i)->Value);
     s += ")";
   }
 

@@ -64,7 +64,6 @@ Component::Component() {
     tx = 0;
     ty = 0;
 
-    Props.setAutoDelete(true);
 
     containingSchematic = NULL;
 }
@@ -549,7 +548,7 @@ void Component::rotate() {
         dx = metrics.boundingRect(Name).width();
         dy = metrics.lineSpacing();
     }
-    for (Property *pp = Props.first(); pp != 0; pp = Props.next())
+    for (Property *pp : Props)
         if (pp->display) {
             // get width of text
             tmp = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
@@ -631,7 +630,7 @@ void Component::mirrorX() {
     int dy = 0;
     if (showName)
         dy = metrics.lineSpacing();   // for "Name"
-    for (Property *pp = Props.first(); pp != nullptr; pp = Props.next())
+    for (Property *pp : Props)
         if (pp->display) dy += metrics.lineSpacing();
     if ((tx > x1) && (tx < x2)) ty = -ty - dy;     // mirror text position
     else ty = y1 + ty + y2;
@@ -699,7 +698,7 @@ void Component::mirrorY() {
     int dx = 0;
     if (showName)
         dx = metrics.boundingRect(Name).width();
-    for (Property *pp = Props.first(); pp != 0; pp = Props.next())
+    for (Property *pp : Props)
         if (pp->display) {
             // get width of text
             tmp = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
@@ -723,7 +722,7 @@ QString Component::netlist() {
         s += " " + p1->Connection->Name;   // node names
 
     // output all properties
-    for (Property *p2 = Props.first(); p2 != nullptr; p2 = Props.next())
+    for (Property *p2 : Props)
         if (p2->Name != "Symbol")
             s += " " + p2->Name + "=\"" + p2->Value + "\"";
 
@@ -941,7 +940,7 @@ QString Component::save() {
     s += " " + QString::number(rotated);
 
     // write all properties
-    for (Property *p1 = Props.first(); p1 != 0; p1 = Props.next()) {
+    for (Property *p1 : Props) {
         QString val = p1->Value; // enable newline in properties
         val.replace("\n", "\\n");
         val.replace("\"", "''");
@@ -1013,7 +1012,7 @@ bool Component::load(const QString &_s) {
     tx = ttx;
     ty = tty; // restore text position (was changed by rotate/mirror)
 
-    unsigned int z = 0, counts = s.count('"');
+    unsigned int counts = s.count('"');
     if (Model == "Sub")
         tmp = 2;   // first property (File) already exists
     else if (Model == "Lib")
@@ -1032,8 +1031,8 @@ bool Component::load(const QString &_s) {
         Props.append(new Property("p", "", true, " "));
 
     // load all properties
-    Property *p1;
-    for (p1 = Props.first(); p1 != 0; p1 = Props.next()) {
+    unsigned int z = 0;
+    for (auto p1 = Props.begin(); p1 != Props.end(); ++p1) {
         z++;
         n = s.section('"', z, z);    // property value
         n.replace("\\n", "\n");
@@ -1043,49 +1042,58 @@ bool Component::load(const QString &_s) {
 
         // not all properties have to be mentioned (backward compatible)
         if (z > counts) {
-            if (p1->Description.isEmpty())
-                Props.remove();    // remove if allocated in vain
+          if ((*p1)->Description.isEmpty())
+                Props.clear();    // remove if allocated in vain
 
             if (Model == "Diode") {
                 if (counts < 56) {  // backward compatible
                     counts >>= 1;
-                    p1 = Props.at(counts - 1);
-                    for (; p1 != 0; p1 = Props.current()) {
+                    p1 = Props.begin();
+                    for(int i = 0; i < int(counts)-1 && p1 != Props.end(); ++i)
+                      ++p1;
+                    for (; p1 != 0; p1 = Props.begin()) {
                         if (counts-- < 19)
                             break;
-
-                        n = Props.prev()->Value;
-                        p1->Value = n;
+                        auto p1prev = p1;
+                        --p1prev;
+                        (*p1)->Value = n;
+                        --p1;
                     }
 
-                    p1 = Props.at(17);
-                    p1->Value = Props.at(11)->Value;
-                    Props.current()->Value = "0";
+                    Props.at(17)->Value = Props.at(11)->Value;
+                    (*p1)->Value = "0";
                 }
             } else if (Model == "AND" || Model == "NAND" || Model == "NOR" ||
                        Model == "OR" || Model == "XNOR" || Model == "XOR") {
                 if (counts < 10) {   // backward compatible
                     counts >>= 1;
-                    p1 = Props.at(counts);
-                    for (; p1 != 0; p1 = Props.current()) {
+                    p1 = Props.begin();
+                    for(int i = 0; i < int(counts) && p1 != Props.end(); ++i)
+                      ++p1;
+                    for (; p1 != Props.begin();) {
                         if (counts-- < 4)
                             break;
-                        n = Props.prev()->Value;
-                        p1->Value = n;
+                        auto p1prev = p1;
+                        --p1prev;
+                        (*p1)->Value = (*p1prev)->Value;
+                        --p1;
                     }
-                    Props.current()->Value = "10";
+                    (*p1)->Value = "10";
                 }
             } else if (Model == "Buf" || Model == "Inv") {
                 if (counts < 8) {   // backward compatible
                     counts >>= 1;
-                    p1 = Props.at(counts);
-                    for (; p1 != 0; p1 = Props.current()) {
+                  for(int i = 0; i < int(counts) && p1 != Props.end(); ++i)
+                    ++p1;
+                  for(; p1 != Props.begin(); ) {
                         if (counts-- < 3)
                             break;
-                        n = Props.prev()->Value;
-                        p1->Value = n;
+                        auto p1prev = p1;
+                        --p1prev;
+                        (*p1)->Value = (*p1prev)->Value;
+                        --p1;
                     }
-                    Props.current()->Value = "10";
+                    (*p1)->Value = "10";
                 }
             }
 
@@ -1094,13 +1102,14 @@ bool Component::load(const QString &_s) {
 
         // for equations
         if (Model != "EDD" && Model != "RFEDD" && Model != "RFEDD2P")
-            if (p1->Description.isEmpty() || p1->Description == "Expression") {  // unknown number of properties ?
-                p1->Name = n.section('=', 0, 0);
+            if ((*p1)->Description.isEmpty() || (*p1)->Description == "Expression") {  // unknown number of properties ?
+                (*p1)->Name = n.section('=', 0, 0);
                 n = n.section('=', 1);
                 // allocate memory for a new property (e.g. for equations)
-                if (Props.count() < (counts >> 1)) {
-                    Props.insert(z >> 1, new Property("y", "1", true));
-                    Props.prev();
+                if (Props.size() < (counts >> 1)) {
+                    auto p1next = p1;
+                    ++p1next;
+                    Props.insert(p1next, new Property("y", "1", true));
                 }
             }
         if (z == 6)
@@ -1109,10 +1118,10 @@ bool Component::load(const QString &_s) {
                     Props.back()->Value = n;
                     return true;
                 }
-        p1->Value = n;
+        (*p1)->Value = n;
 
         n = s.section('"', z, z);    // display
-        p1->display = (n.at(1) == '1');
+        (*p1)->display = (n.at(1) == '1');
     }
 
     return true;
@@ -1181,30 +1190,30 @@ int Component::analyseLine(const QString &Row, int numProps) {
         if (Name.isEmpty()) Name = "SUB";
 
         i1 = 1;
-        Property *pp = Props.at(numProps - 1);
+        auto pp = Props.begin();
+        for(int i = 0; i < (numProps) && pp != Props.end(); ++i)
+          ++pp;
         for (;;) {
             s = Row.section('"', i1, i1);
             if (s.isEmpty()) break;
 
-            pp = Props.next();
-            if (pp == 0) {
-                pp = new Property();
-                Props.append(pp);
-
-                pp->display = (s.at(0) == '1');
-                pp->Value = s.section('=', 2, 2);
+            pp++;
+            if (pp == Props.end()) {
+                Props.append(new Property());
+                pp = --Props.end();
+                (*pp)->display = (s.at(0) == '1');
+                (*pp)->Value = s.section('=', 2, 2);
             }
 
-            pp->Name = s.section('=', 1, 1);
-            pp->Description = s.section('=', 3, 3);
-            if (pp->Description.isEmpty())
-                pp->Description = " ";
+            (*pp)->Name = s.section('=', 1, 1);
+            (*pp)->Description = s.section('=', 3, 3);
+            if ((*pp)->Description.isEmpty())
+                (*pp)->Description = " ";
 
             i1 += 2;
         }
 
-        while (pp != Props.last())
-            Props.remove();
+        Props.erase(pp, Props.end());
         return 0;   // do not count IDs
     } else if (s == "Arrow") {
         if (!getIntegers(Row, &i1, &i2, &i3, &i4, &i5, &i6)) return -1;
@@ -1402,11 +1411,14 @@ bool Component::getBrush(const QString &s, QBrush &Brush, int i) {
 
 // ---------------------------------------------------------------------
 Property *Component::getProperty(const QString &name) {
-    for (Property *pp = Props.first(); pp != 0; pp = Props.next())
-        if (pp->Name == name) {
-            return pp;
-        }
-    return NULL;
+    for(auto pp = Props.begin(); pp != Props.end(); ++pp) {
+      if((*pp)->Name == name) {
+        return *pp;
+      }
+    }
+    Props.append( new Property());
+    Props.back()->Name = name;
+    return Props.back();
 }
 
 // ---------------------------------------------------------------------
@@ -1511,12 +1523,9 @@ QString GateComponent::netlist() {
         s += " " + pp->Connection->Name;   // node names
 
     // output all properties
-    Property *p = Props.at(1);
-    s += " " + p->Name + "=\"" + p->Value + "\"";
-    p = Props.next();
-    s += " " + p->Name + "=\"" + p->Value + "\"";
-    p = Props.next();
-    s += " " + p->Name + "=\"" + p->Value + "\"\n";
+    s += " " + Props.at(1)->Name + "=\"" + Props.at(1)->Value + "\"";
+    s += " " + Props.at(2)->Name + "=\"" + Props.at(2)->Value + "\"";
+    s += " " + Props.at(3)->Name + "=\"" + Props.at(3)->Value + "\"\n";
     return s;
 }
 

@@ -186,11 +186,12 @@ void MutualX::createSymbol()
   // in any case rewrite properties Name and Description
   // (when loading a component, added properties have a default name)
   // adjust coils names
-  Property * p1 = Props.at(1);
+  auto p1 = Props.begin();
+  ++p1;
   for(int i = 1; i <= Num; i++) {
-    p1->Name = "L"+QString::number(i);
-    p1->Description = QObject::tr("inductance of coil") + " " + QString::number(i);
-    p1 = Props.next();
+    (*p1)->Name = "L"+QString::number(i);
+    (*p1)->Description = QObject::tr("inductance of coil") + " " + QString::number(i);
+    p1++;
   }
   // adjust coupling coeffs names
   for(int i = 1,state=1; i < Num; i++) 

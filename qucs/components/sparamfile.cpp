@@ -120,20 +120,16 @@ QString SParamFile::netlist()
     s += " "+p1->Connection->Name;   // node names
 
   // output all properties
-  Property *p2 = Props.first();
-  s += " "+p2->Name+"=\"{"+getSubcircuitFile()+"}\"";
+  s += " "+Props.at(0)->Name+"=\"{"+getSubcircuitFile()+"}\"";
 
   // data type
-  p2 = Props.next();
-  s += " "+p2->Name+"=\""+p2->Value+"\"";
+  s += " "+Props.at(1)->Name+"=\""+Props.at(1)->Value+"\"";
 
   // interpolator type
-  p2 = Props.next();
-  s += " "+p2->Name+"=\""+p2->Value+"\"";
+  s += " "+Props.at(2)->Name+"=\""+Props.at(2)->Value+"\"";
 
   // DC property
-  p2 = Props.next();
-  s += " "+p2->Name+"=\""+p2->Value+"\"\n";
+  s += " "+Props.at(3)->Name+"=\""+Props.at(3)->Value+"\"\n";
 
   return s;
 }

@@ -31,7 +31,7 @@ DLS_nto1::DLS_nto1()
 Component * DLS_nto1::newOne()
 {
   DLS_nto1 * p = new DLS_nto1();
-  p->Props.front()->Value = Props.front()->Value; 
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0); 
   return p;
 }

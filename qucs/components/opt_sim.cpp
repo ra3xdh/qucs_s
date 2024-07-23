@@ -72,7 +72,7 @@ QString Optimize_Sim::netlist()
 // -----------------------------------------------------------
 bool Optimize_Sim::createASCOFiles()
 {
-  Property* pp;
+
   QFile afile(QucsSettings.tempFilesDir.filePath("asco_netlist.cfg"));
   if(afile.open(QIODevice::WriteOnly)) {
     QTextStream stream(&afile);
@@ -88,62 +88,62 @@ bool Optimize_Sim::createASCOFiles()
     stream << "#\n\n";
 
     stream << "#DE#\n";
-    pp = Props.at(1);
+
     QString val;
-    val = pp->Value.section('|',0,0);
+    val = Props.at(1)->Value.section('|',0,0);
     stream << "choice of method:" << val << "\n";
-    val = pp->Value.section('|',1,1);
+    val = Props.at(1)->Value.section('|',1,1);
     stream << "maximum no. of iterations:" << val << "\n";
-    val = pp->Value.section('|',2,2);
+    val = Props.at(1)->Value.section('|',2,2);
     stream << "Output refresh cycle:" << val << "\n";
-    val = pp->Value.section('|',3,3);
+    val = Props.at(1)->Value.section('|',3,3);
     stream << "No. of parents NP:" << val << "\n";
-    val= pp->Value.section('|',4,4);
+    val= Props.at(1)->Value.section('|',4,4);
     stream << "Constant F:" << val << "\n";
-    val = pp->Value.section('|',5,5);
+    val = Props.at(1)->Value.section('|',5,5);
     stream << "Crossing Over factor CR:" << val << "\n";
-    val = pp->Value.section('|',6,6);
+    val = Props.at(1)->Value.section('|',6,6);
     stream << "Seed for pseudo random number generator:" << val << "\n";
-    val = pp->Value.section('|',7,7);
+    val = Props.at(1)->Value.section('|',7,7);
     stream << "Minimum Cost Variance:" << val << "\n";
-    val = pp->Value.section('|',8,8);
+    val = Props.at(1)->Value.section('|',8,8);
     stream << "Cost objectives:" << val << "\n";
-    val = pp->Value.section('|',9,9);
+    val = Props.at(1)->Value.section('|',9,9);
     stream << "Cost constraints:" << val << "\n";
     stream << "#\n\n";
 
     stream << "# Parameters #\n";
-    int i=1;
-    for(pp = Props.at(2); pp != 0; pp = Props.next(), i++) {
-      if(pp->Name == "Var") {
-	stream << "Parameter " << i << ":";
-	val = pp->Value.section('|',0,0);
+
+    for(int i= 2; i < Props.size();i++) {
+      if(Props.at(i)->Name == "Var") {
+        stream << "Parameter " << i-1 << ":";
+        val = Props.at(i)->Value.section('|',0,0);
 	stream << "#" << val << "#" << ":";
-	val = pp->Value.section('|',2,2);
+        val = Props.at(i)->Value.section('|',2,2);
 	stream << val << ":";
-	val = pp->Value.section('|',3,3);
+        val = Props.at(i)->Value.section('|',3,3);
 	stream << val << ":";
-	val = pp->Value.section('|',4,4);
+        val = Props.at(i)->Value.section('|',4,4);
 	stream << val << ":";
-	val = pp->Value.section('|',5,5);
+        val = Props.at(i)->Value.section('|',5,5);
 	stream << val << ":";
-	val = pp->Value.section('|',1,1);
+        val = Props.at(i)->Value.section('|',1,1);
 	stream << ((val == "yes") ? "OPT" : "---") << "\n";
       }
     }
     stream << "#\n\n";
 
     stream << "# Measurements #\n";
-    for(pp = Props.at(2); pp != 0; pp = Props.next(), i++) {
-      if(pp->Name == "Goal") {
-	val = pp->Value.section('|',1,1);
+    for(int i= 2; i < Props.size();i++) {
+      if(Props.at(i)->Name == "Goal") {
+        val = Props.at(i)->Value.section('|',1,1);
 	QString Type, Value;
-	Value = pp->Value.section('|',2,2);
+        Value = Props.at(i)->Value.section('|',2,2);
 	if (val == "MIN" || val == "MAX" || val == "MON") {
 	  Value = "---";
 	}
 	Type = val;
-	val = pp->Value.section('|',0,0);
+        val = Props.at(i)->Value.section('|',0,0);
 	stream << val <<  ":"
 	       << "---" << ":"
 	       << Type << ":" << Value << "\n";
@@ -165,9 +165,9 @@ bool Optimize_Sim::createASCOFiles()
       return false;
   }      
 
-  for(pp = Props.at(2); pp != 0; pp = Props.next()) {
-    if(pp->Name == "Goal") {
-      QString VarName = pp->Value.section('|',0,0);
+  for(int i= 2; i < Props.size();i++) {
+    if(Props.at(i)->Name == "Goal") {
+      QString VarName = Props.at(i)->Value.section('|',0,0);
       QFile efile(ExtractDir.filePath(VarName));
       if(efile.open(QIODevice::WriteOnly)) {
     QTextStream stream(&efile);
@@ -195,11 +195,10 @@ bool Optimize_Sim::createASCOFiles()
  */
 bool Optimize_Sim::createASCOnetlist()
 {
-  Property* pp;
   QStringList vars;
-  for(pp = Props.at(2); pp != 0; pp = Props.next()) {
-    if(pp->Name == "Var") {
-      vars += pp->Value.section('|',0,0);
+  for(int i= 2; i < Props.size();i++) {
+    if(Props.at(i)->Name == "Var") {
+      vars += Props.at(i)->Value.section('|',0,0);
     }
   }
 
@@ -245,11 +244,10 @@ bool Optimize_Sim::createASCOnetlist()
 bool Optimize_Sim::loadASCOout()
 {
   bool changed = false;
-  Property* pp;
   QStringList vars;
-  for(pp = Props.at(2); pp != 0; pp = Props.next()) {
-    if(pp->Name == "Var") {
-      vars += pp->Value.section('|',0,0);
+  for(int i= 2; i < Props.size();i++) {
+    if(Props.at(i)->Name == "Var") {
+      vars += Props.at(i)->Value.section('|',0,0);
     }
   }
 
@@ -267,21 +265,21 @@ bool Optimize_Sim::loadASCOout()
     QString Name = *it;
     Name = Name.trimmed();
     if(vars.contains(Name)) {
-      for(pp = Props.at(2); pp != 0; pp = Props.next()) {
-	if(pp->Name == "Var") {
+      for(int i= 2; i < Props.size();i++) {
+        if(Props.at(i)->Name == "Var") {
 	  QString val[6];
-	  val[0] = pp->Value.section('|',0,0); // variable name
+          val[0] = Props.at(i)->Value.section('|',0,0); // variable name
 	  if(val[0]==Name) {
-	    val[1] = pp->Value.section('|',1,1);
-	    val[2] = pp->Value.section('|',2,2);
-	    val[3] = pp->Value.section('|',3,3);
-	    val[4] = pp->Value.section('|',4,4);
-	    val[5] = pp->Value.section('|',5,5);
+            val[1] = Props.at(i)->Value.section('|',1,1);
+            val[2] = Props.at(i)->Value.section('|',2,2);
+            val[3] = Props.at(i)->Value.section('|',3,3);
+            val[4] = Props.at(i)->Value.section('|',4,4);
+            val[5] = Props.at(i)->Value.section('|',5,5);
 	    ++it; // field after variable name is its value
 	    QString Value = *it;
 	    Value = Value.trimmed();
 	    val[2] = Value;
-	    pp->Value = val[0] + "|" + val[1] + "|" + val[2] + "|" +
+            Props.at(i)->Value = val[0] + "|" + val[1] + "|" + val[2] + "|" +
 	      val[3] + "|" + val[4] + "|" + val[5];
 	    changed = true;
 	    break;

@@ -474,25 +474,25 @@ bool SpiceLibCompDialog::setCompProps()
     sympath = QDir(sch_dir).relativeFilePath(sympath);
   }
 
-  Property *pp = comp->Props.first();
-  pp->Value = libpath;
-  pp->display = chbShowLib->isChecked();
-  pp = comp->Props.next();
-  pp->Value = cbxSelectSubcir->currentText();
-  pp->display = chbShowModel->isChecked();
-  pp = comp->Props.next();
+  auto pp = comp->Props.begin();
+  (*pp)->Value = libpath;
+  (*pp)->display = chbShowLib->isChecked();
+  pp++;
+  (*pp)->Value = cbxSelectSubcir->currentText();
+  (*pp)->display = chbShowModel->isChecked();
+  pp++;
   if (rbAutoSymbol->isChecked()) {
-    pp->Value = "auto";
+    (*pp)->Value = "auto";
   } else if (rbSymFromTemplate->isChecked()) {
-    pp->Value = listSymPattern->currentItem()->text();
+    (*pp)->Value = listSymPattern->currentItem()->text();
   } else if (rbUserSym->isChecked()) {
-    pp->Value = sympath;
+    (*pp)->Value = sympath;
   }
-  pp = comp->Props.next();
-  pp->Value = edtParams->text();
-  pp->display = chbShowParams->isChecked();
-  pp = comp->Props.next();
-  pp->Value = QString(pin_string);
+  pp++;
+  (*pp)->Value = edtParams->text();
+  (*pp)->display = chbShowParams->isChecked();
+  pp++;
+  (*pp)->Value = QString(pin_string);
   Doc->recreateComponent(comp);
   Doc->viewport()->repaint();
   Doc->setChanged(true,true);

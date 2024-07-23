@@ -59,7 +59,7 @@ potentiometer::potentiometer()
 Component * potentiometer::newOne()
 {
   potentiometer * p = new potentiometer();
-  p->Props.front()->Value = Props.front()->Value; 
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0); 
   return p;
 }

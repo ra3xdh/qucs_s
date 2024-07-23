@@ -85,7 +85,7 @@ Element* BJT::info_pnp(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     BJT* p = new BJT();
-    p->Props.front()->Value = "pnp";
+    p->Props.at(0)->Value = "pnp";
     p->recreate(0);
     return p;
   }
@@ -130,7 +130,7 @@ QString BJT::netlist()
   s += " "+Ports.at(1)->Connection->Name;  // connect substrate to collector
 
   // output all properties
-  for(Property *p2 = Props.first(); p2 != nullptr; p2 = Props.next())
+  for(const auto& p2 : Props)
     s += " "+p2->Name+"=\""+p2->Value+"\"";
 
   return s + '\n';

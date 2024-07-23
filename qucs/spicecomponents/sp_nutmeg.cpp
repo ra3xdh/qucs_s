@@ -85,11 +85,11 @@ QString NutmegEquation::getEquations(QString sim, QStringList &dep_vars)
     else
         match = sim.startsWith(used_sim);
     if ( match || used_sim == "all" ) {
-        Property *pp = Props.first();
-        pp = Props.next();
-        for (;pp!=0;pp=Props.next()) {
-            s += QString("let %1 = %2\n").arg(pp->Name).arg(pp->Value);
-            dep_vars.append(pp->Name);
+        auto pp = Props.begin();
+        pp++;
+        for ( ; pp != Props.end() ; ++pp) {
+            s += QString("let %1 = %2\n").arg((*pp)->Name).arg((*pp)->Value);
+          dep_vars.append((*pp)->Name);
         }
     }
     return s;
