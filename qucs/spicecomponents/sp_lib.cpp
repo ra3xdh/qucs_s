@@ -16,7 +16,8 @@
  ***************************************************************************/
 #include "sp_lib.h"
 #include "main.h"
-
+#include "misc.h"
+#include <QFontInfo>
 #include <QFontMetrics>
 
 S4Q_Lib::S4Q_Lib()
@@ -37,7 +38,7 @@ S4Q_Lib::S4Q_Lib()
   Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
   Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
   Texts.append(new Text(-xb+4,  -yb-3, QObject::tr(".LIB"),
-			QColor(0,0,0), 12.0));
+			QColor(0,0,0), QFontInfo(f).pixelSize()));
 
   x1 = -xb-3;  y1 = -yb-5;
   x2 =  xb+9; y2 =  yb+3;
@@ -70,16 +71,19 @@ Element* S4Q_Lib::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString S4Q_Lib::getSpiceModel()
+QString S4Q_Lib::getSpiceLibrary()
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
-    QString s;
-    s.clear();
+  if (isActive != COMP_IS_ACTIVE) return QString("");
+  QString s;
+  s.clear();
 
-    QString file = getProperty("File")->Value;
+  QString file = getProperty("File")->Value;
+  if ( !file.isEmpty() ){
+    file = misc::properAbsFileName(file, containingSchematic);
     QString sec = getProperty("Section")->Value;
     s += QString("%1 \"%2\" %3\n").arg(SpiceModel).arg(file).arg(sec);
+  }
 
-    return s;
+  return s;
 }
 

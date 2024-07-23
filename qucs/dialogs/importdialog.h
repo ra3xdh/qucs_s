@@ -49,22 +49,23 @@ private slots:
   void slotAbort();
   void slotBrowse();
   void slotSaveBrowse();
-  void slotType(int);
+  void slotType();
   void slotValidateInput();
   void slotValidateOutput();
 
 private:
   void startSimulator();
+  bool getDataVarsFromDatafile(const QString &filename);
 
 private:
   QGridLayout *all;
 
-  QLabel *OutputLabel;
+  QLabel *OutputLabel, *LibLabel;
   QProcess Process;
   QPlainTextEdit *MsgText;
-  QLineEdit *ImportEdit, *OutputEdit, *OutputData;
+  QLineEdit *ImportEdit, *OutputEdit, *LibName;
   QPushButton *ImportButt, *CancelButt, *AbortButt;
-  QComboBox *OutType, *InType;
+  QComboBox *OutType, *InType, *OutputData;
 
 public:
   void setImportDir(const QString &dir) { lastImportDir = dir; };

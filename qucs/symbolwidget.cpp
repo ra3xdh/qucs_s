@@ -26,6 +26,7 @@
 #include "main.h"
 #include "qucslib_common.h"
 #include "misc.h"
+#include "main.h"
 
 /*!
  * \file symbolwidget.cpp
@@ -47,6 +48,8 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
   y1 = 0;
   y2 = 0;
   dragNDrop = true;
+  showPinNumbers = false;
+  portsNumber = 0;
   PaintText = tr("Symbol:");
   setFont(QucsSettings.font);
   QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
@@ -145,15 +148,15 @@ void SymbolWidget::paintEvent(QPaintEvent*)
 
   // paint all rectangles
   for(int i=0; i<Rects.size(); i++) {
-    qucs::Area *pa = Rects.at(i);
+    qucs::Rect *pa = Rects.at(i);
     Painter.setPen(pa->Pen);
     Painter.setBrush(pa->Brush);
     Painter.drawRect(cx+pa->x, cy+pa->y, pa->w, pa->h);
   }
 
   // paint all ellipses
-  for(int i=0; i<Ellips.size(); i++) {
-    qucs::Area *pa = Ellips.at(i);
+  for(int i=0; i<Ellipses.size(); i++) {
+    qucs::Ellips *pa = Ellipses.at(i);
     Painter.setPen(pa->Pen);
     Painter.setBrush(pa->Brush);
     Painter.drawEllipse(cx+pa->x, cy+pa->y, pa->w, pa->h);
@@ -183,7 +186,7 @@ int SymbolWidget::createStandardSymbol(const QString& Lib_, const QString& Comp_
   Arcs.clear();
   Lines.clear();
   Rects.clear();
-  Ellips.clear();
+  Ellipses.clear();
   Texts.clear();
   LibraryPath = Lib_;
   ComponentName = Comp_;
@@ -415,10 +418,11 @@ int SymbolWidget::setSymbol( QString& SymbolString,
   Arcs.clear();
   Lines.clear();
   Rects.clear();
-  Ellips.clear();
+  Ellipses.clear();
   Texts.clear();
   LibraryPath = Lib_;
   ComponentName = Comp_;
+  portsNumber = 0;
 
   QString Line;
   ///QString foo = SymbolString;
@@ -460,6 +464,75 @@ int SymbolWidget::setSymbol( QString& SymbolString,
   return z;      // return number of ports
 }
 
+
+int SymbolWidget::loadSymFile(const QString &file)
+{
+  QString FileString;
+  QFile symfile(file);
+  if (symfile.open(QIODevice::ReadOnly)) {
+    QTextStream ts(&symfile);
+    FileString = ts.readAll();
+    symfile.close();
+  } else return -1;
+
+  Arcs.clear();
+  Lines.clear();
+  Rects.clear();
+  Ellipses.clear();
+  Texts.clear();
+  Warning.clear();
+  portsNumber = 0;
+  x1 = y1 = INT_MAX;
+  x2 = y2 = INT_MIN;
+
+  QString Line;
+  QTextStream stream(&FileString, QIODevice::ReadOnly);
+
+
+         // read content *************************
+  while(!stream.atEnd()) {
+    Line = stream.readLine();
+    if(Line == "<Symbol>") break;
+  }
+
+  x1 = y1 = INT_MAX;
+  x2 = y2 = INT_MIN;
+
+  int z=0, Result;
+  while(!stream.atEnd()) {
+    Line = stream.readLine();
+    if(Line == "</Symbol>") {
+      x1 -= 4;   // enlarge component boundings a little
+      x2 += 4;
+      y1 -= 4;
+      y2 += 4;
+      cx  = -x1 + TextWidth;
+      cy  = -y1;
+
+      int dx = x2-x1 + TextWidth;
+      if((x2-x1) < DragNDropWidth)
+        dx = (x2-x1 + DragNDropWidth)/2 + TextWidth;
+      if(dx < DragNDropWidth)
+        dx = DragNDropWidth;
+      setMinimumSize(dx, y2-y1 + TextHeight+4);
+      if(width() > dx)  dx = width();
+      resize(dx, y2-y1 + TextHeight+4);
+      update();
+      return z;      // return number of ports
+    }
+
+    Line = Line.trimmed();
+    if(Line.at(0) != '<') return -5;
+    if(Line.at(Line.length()-1) != '>') return -6;
+    Line = Line.mid(1, Line.length()-2); // cut off start and end character
+    Result = analyseLine(Line);
+    if(Result < 0) return -7;   // line format error
+    z += Result;
+  }
+
+  return -8;   // field not closed
+}
+
 // ---------------------------------------------------------------------
 int SymbolWidget::analyseLine(const QString& Row)
 {
@@ -474,11 +547,15 @@ int SymbolWidget::analyseLine(const QString& Row)
     if(!getCompLineIntegers(Row, &i1, &i2, &i3))  return -1;
     Arcs.append(new struct qucs::Arc(i1-4, i2-4, 8, 8, 0, 16*360,
                                QPen(Qt::red,1)));
+    if (showPinNumbers) {
+      Texts.append(new struct Text(i1+2,i2,QString::number(i3)));
+    }
 
     if((i1-4) < x1)  x1 = i1-4;  // keep track of component boundings
     if((i1+4) > x2)  x2 = i1+4;
     if((i2-4) < y1)  y1 = i2-4;
     if((i2+4) > y2)  y2 = i2+4;
+    portsNumber++;
     return 0;   // do not count Ports
   }
   else if(s == "Line") {
@@ -562,7 +639,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     if(!getCompLineIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
     if(!getPen(Row, Pen, 5))  return -1;
     if(!getBrush(Row, Brush, 8))  return -1;
-    Ellips.append(new qucs::Area(i1, i2, i3, i4, Pen, Brush));
+    Ellipses.append(new qucs::Ellips(i1, i2, i3, i4, Pen, Brush));
 
     if(i1 < x1)  x1 = i1;  // keep track of component boundings
     if(i1 > x2)  x2 = i1;
@@ -578,7 +655,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     if(!getCompLineIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
     if(!getPen(Row, Pen, 5))  return -1;
     if(!getBrush(Row, Brush, 8))  return -1;
-    Rects.append(new qucs::Area(i1, i2, i3, i4, Pen, Brush));
+    Rects.append(new qucs::Rect(i1, i2, i3, i4, Pen, Brush));
 
     if(i1 < x1)  x1 = i1;  // keep track of component boundings
     if(i1 > x2)  x2 = i1;
@@ -666,4 +743,11 @@ bool SymbolWidget::getBrush(const QString& s, QBrush& Brush, int i)
   if(!ok) return false;
 
   return true;
+}
+
+void SymbolWidget::setPaintText(const QString &txt)
+{
+  PaintText = txt;
+  QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
+  TextWidth = metrics.size(0,PaintText).width() + 4;    // get size of text
 }

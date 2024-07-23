@@ -17,6 +17,7 @@
 #include "labeldialog.h"
 #include "../wirelabel.h"
 #include "main.h"
+#include "extsimkernels/spicecompat.h"
 
 #include <QLabel>
 #include <QLineEdit>

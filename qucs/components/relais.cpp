@@ -25,17 +25,21 @@ Relais::Relais()
 {
   Description = QObject::tr("relay");
 
+  // driver contacts
   Lines.append(new qucs::Line(-30,-30,-30, -8,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,  8,-30, 30,QPen(Qt::darkBlue,2)));
+  // driver rect
   Lines.append(new qucs::Line(-45, -8,-15, -8,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-45,  8,-15,  8,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-45, -8,-45,  8,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-15, -8,-15,  8,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-45,  8,-15, -8,QPen(Qt::darkBlue,2)));
-
+  // diagonal
+  Lines.append(new qucs::Line(-45,  8,-15, -8,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  // plus
   Lines.append(new qucs::Line(-43, -3,-37, -3,QPen(Qt::red,1)));
   Lines.append(new qucs::Line(-40, -6,-40,  0,QPen(Qt::red,1)));
-  Lines.append(new qucs::Line(-23,  3,-17,  3,QPen(Qt::black,1)));  
+  // minus
+  Lines.append(new qucs::Line(-23,  3,-17,  3,QPen(Qt::black,1)));
 
   Lines.append(new qucs::Line(-15,  0, 35,  0,QPen(Qt::darkBlue,1,Qt::DotLine)));
 
@@ -43,7 +47,7 @@ Relais::Relais()
   Lines.append(new qucs::Line( 30, 15, 30, 30,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30, 15, 45,-15,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( 27,-18, 5, 5, 0, 16*360,QPen(Qt::darkBlue,2)));
-  Ellips.append(new qucs::Area( 27, 12, 6, 6, QPen(Qt::darkBlue,2),
+  Ellipses.append(new qucs::Ellips( 27, 12, 6, 6, QPen(Qt::darkBlue,2),
                          QBrush(Qt::darkBlue, Qt::SolidPattern)));
 
   Ports.append(new Port(-30,-30));

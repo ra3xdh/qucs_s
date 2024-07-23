@@ -78,6 +78,7 @@ protected:
     bool checkGround();
     bool checkSimulations();
     bool checkDCSimulation();
+    QString collectSpiceLibs(Schematic* sch);
 
 public:
 

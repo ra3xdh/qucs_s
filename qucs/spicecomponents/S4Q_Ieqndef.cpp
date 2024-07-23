@@ -16,7 +16,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "S4Q_Ieqndef.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 
@@ -26,17 +25,17 @@ S4Q_Ieqndef::S4Q_Ieqndef()
   Description = QObject::tr("SPICE B (I type):\nMultiple line ngspice or Xyce B specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
   Simulator = spicecompat::simSpice;
 
-  Arcs.append(new qucs::Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkRed,3)));
- 
+  Ellipses.append(new qucs::Ellips(-14,-14, 28, 28,QPen(Qt::darkRed,3)));
+  // pins
   Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
  
-  
-  Lines.append(new qucs::Line( -8,  0, 8, 0,QPen(Qt::darkRed,3)));
+  // arrow
+  Lines.append(new qucs::Line( -8,  0, 8, 0,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
   Lines.append(new qucs::Line( -8,  0, -4,  -4,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line( -8,  0, -4,   4,QPen(Qt::darkRed,3)));
   
-  Texts.append(new Text(30,-30,"Eqn",Qt::darkRed,10.0,0.0,-1.0));
+  Texts.append(new Text(25,-30,"Eqn",Qt::darkRed,12.0,0.0,-1.0));
   
 
   Ports.append(new Port( 30,  0));

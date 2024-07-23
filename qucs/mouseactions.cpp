@@ -31,6 +31,7 @@
 #include "dialogs/textboxdialog.h"
 #include "dialogs/tuner.h"
 #include "extsimkernels/customsimdialog.h"
+#include "extsimkernels/spicelibcompdialog.h"
 #include "main.h"
 #include "module.h"
 #include "node.h"
@@ -88,7 +89,6 @@ void MouseActions::setPainter(Schematic *Doc)
     Doc->PostPaintEvent(_Translate, -Doc->contentsX(), -Doc->contentsY());
     Doc->PostPaintEvent(_Scale, Doc->Scale, Doc->Scale);
     Doc->PostPaintEvent(_Translate, -Doc->ViewX1, -Doc->ViewY1);
-    Doc->PostPaintEvent(_DotLine);
     Doc->PostPaintEvent(_NotRop);
 }
 
@@ -176,7 +176,7 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
             pl->x1 -= pl->x2 - old_x2; // don't change position due to text width
     }
 
-    Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+    Doc->updateAllBoundingRect();
     Doc->viewport()->update();
     drawn = false;
     Doc->setChanged(true, true);
@@ -232,9 +232,11 @@ void MouseActions::endElementMoving(Schematic *Doc,
   if ((MAx3 != 0) || (MAy3 != 0)) // moved or put at the same place ?
     Doc->setChanged(true, true);
 
-  // enlarge viewarea if components lie outside the view
-  Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
-  Doc->enlargeView(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+  // Position of some elements of schematic has changed. This change
+  // is "external" to schematic and its state must be updated to
+  // take the changes into account
+  auto totalBounds = Doc->allBoundingRect();
+  Doc->enlargeView(totalBounds.left(), totalBounds.top(), totalBounds.right(), totalBounds.bottom());
 
   Doc->viewport()->update();
   drawn = false;
@@ -564,6 +566,9 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
     MAy1 = MAy2;
     QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseMoving;
+    QucsMain->editRotate->blockSignals(true);
+    QucsMain->insLabel->blockSignals(true);
+    QucsMain->setMarker->blockSignals(true);
 }
 
 // -----------------------------------------------------------
@@ -1075,7 +1080,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
             pn->setName(Name, Value, xl, yl);
     }
 
-    Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+    Doc->updateAllBoundingRect();
     Doc->viewport()->update();
     drawn = false;
     Doc->setChanged(true, true);
@@ -1246,7 +1251,7 @@ void MouseActions::MPressDelete(Schematic *Doc, QMouseEvent *, float fX, float f
         pe->isSelected = true;
         Doc->deleteElements();
 
-        Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+        Doc->updateAllBoundingRect();
         Doc->viewport()->update();
         drawn = false;
     }
@@ -1674,7 +1679,7 @@ void MouseActions::MPressOnGrid(Schematic *Doc, QMouseEvent *, float fX, float f
         pe->isSelected = true;
         Doc->elementsOnGrid();
 
-        Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+        Doc->updateAllBoundingRect();
         // Update matching wire label highlighting
         Doc->highlightWireLabels();
         Doc->viewport()->update();
@@ -1806,6 +1811,10 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent *)
     QucsMain->MousePressAction = &MouseActions::MPressSelect;
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
     QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
+    QucsMain->editRotate->setChecked(false);
+    QucsMain->editRotate->blockSignals(false);
+    QucsMain->insLabel->blockSignals(false);
+    QucsMain->setMarker->blockSignals(false);
 }
 
 // -----------------------------------------------------------
@@ -2148,7 +2157,12 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
         if (c->Model == "GND")
             return;
 
-        if ((c->Model == ".CUSTOMSIM") || (c->Model == ".XYCESCR") || (c->Model == "INCLSCR")) {
+        if (c->Model == "SpLib") {
+          SpiceLibCompDialog *sld = new SpiceLibCompDialog(c, Doc);
+          if (sld->exec() != -1) {
+            break;
+          }
+        } else if ((c->Model == ".CUSTOMSIM") || (c->Model == ".XYCESCR") || (c->Model == "INCLSCR")) {
             CustomSimDialog *sd = new CustomSimDialog((SpiceCustomSim *) c, Doc);
             if (sd->exec() != 1)
                 break; // dialog is WDestructiveClose

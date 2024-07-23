@@ -8,16 +8,20 @@ Cores.lib
 Crystal.lib
 Diodes.lib
 DiodesSchottky.lib
+Diodes_Extended.lib
+GeDiodes.lib
 Ideal.lib
 JFETs.lib
 LEDs.lib
 Loudspeaker.lib
+MixerIC.lib
 MOSFETs.lib
 NMOSFETs.lib
 OpAmps.lib
 Optocoupler.lib
 PhotovoltaicRelay.lib
 PMOSFETs.lib
+PWM_Controller.lib
 Regulators.lib
 Substrates.lib
 Transistors.lib
@@ -32,6 +36,9 @@ XyceDigital.lib
 Xyce_Digital_TTL_Technology.lib
 BF998.lib
 Tubes.lib
+Varactor.lib
+Varactor_RF.lib
+PIN_Diodes.lib
 VoltageComparators.lib
 VoltageReferences.lib
 VoltageRegulators.lib
@@ -44,5 +51,7 @@ xyce.blacklist
 )
 
 INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/${QUCS_NAME}/library )
+INSTALL( DIRECTORY "symbols" DESTINATION share/${QUCS_NAME}/ )
 
 ADD_SUBDIRECTORY( XyceDigital)
+

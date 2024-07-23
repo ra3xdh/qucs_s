@@ -58,6 +58,10 @@ AboutDialog::AboutDialog(QWidget *parent)
      "Tom Hajjar - " + tr("Testing, examples"),
      "Sergey Krasilnikov - " + tr("Qt6 support, general improvements"),
      "Sergey Ryzhov - " + tr("Digital simulation, general improvements"),
+     "Andrey Kalmykov - " + tr("Schematic rendering engine, refactoring"),
+     "Andr&#xe9;s Mart&#xed;nez Mera - " + tr("RF design tools"),
+     "Muhammet Şükrü Demir - " + tr("CI setup, build system"),
+     "Iwbnwif Yiw - " + tr("Refactoring, general improvements"),
      "Maria Dubinina - " + tr("testing, general bugfixes")
   }};
   currAuths = {{
@@ -100,7 +104,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     tr("Swedish by") + " Markus Gothe, Peter Landgren",
     tr("Turkish by") + " Onur Cobanoglu, Ozgur Cobanoglu",
     tr("Hungarian by") + " Jozsef Bus",
-    tr("Russian by") + " Igor Gorbounov",
+    tr("Russian by") + " Igor Gorbounov and Anton Midyukov",
     tr("Czech by") + " Marek Straka,Martin Stejskal",
     tr("Catalan by") + " Antoni Subirats",
     tr("Ukrainian by") + " Dystryk",
@@ -221,19 +225,19 @@ void AboutDialog::setAuthorsText() {
   QString authorsText;
   authorsText = tr("Qucs-S project team:");
   authorsText += "<ul>";
-  for(QString& tStr : qucs_sDevs) {
+  for(const auto& tStr : qucs_sDevs) {
     authorsText += ("<li>" + tStr + "</li>");
   }
   authorsText += "</ul>";
 
   authorsText += tr("Based on Qucs project developed by:") + "<ul>";
 
-  for(QString& tStr : currAuths) {
+  for(const auto& tStr : currAuths) {
     authorsText += ("<li>" + tStr + "</li>");
   }
   authorsText += "</ul>";
   authorsText += tr("Previous Developers") + "<ul>";
-  for(QString& tStr : prevDevs) {
+  for(const auto& tStr : prevDevs) {
     authorsText += ("<li>" + tStr + "</li>");
   }
   authorsText += "</ul>";
@@ -244,7 +248,7 @@ void AboutDialog::setAuthorsText() {
 void AboutDialog::setTrText() {
   QString trText;
   trText = tr("GUI translations :") + "<ul>";
-  for(QString& tStr : trAuths) {
+  for(const auto& tStr : trAuths) {
     trText += ("<li>" + tStr + "</li>");
   }
   trText += "</ul>";

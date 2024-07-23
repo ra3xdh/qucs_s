@@ -37,7 +37,8 @@
 #include "loaddialog.h"
 #include "qucs.h"
 #include "qucsdoc.h"
-#include "components/components.h"
+#include "components/component.h"
+#include "components/vacomponent.h"
 
 LoadDialog::LoadDialog( QWidget* parent )
    : QDialog( parent )

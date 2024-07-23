@@ -34,6 +34,7 @@
 #include "main.h"
 #include "textdoc.h"
 #include "schematic.h"
+#include "settings.h"
 
 #include <QWidget>
 #include <QLabel>
@@ -164,19 +165,6 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     checkFullTraceNames->setToolTip(tr("Show prefixes for trace names on diagrams like \"ngspice/\""));
     appSettingsGrid->addWidget(checkFullTraceNames,12,1);
     checkFullTraceNames->setChecked(QucsSettings.fullTraceName);
-
-    QStringList lst_icons;
-    lst_icons<<"Automatic"<<"Light"<<"Dark";
-    PanelIconsCombo = new QComboBox;
-    PanelIconsCombo->addItems(lst_icons);
-    PanelIconsCombo->setCurrentIndex(QucsSettings.panelIconsTheme);
-    appSettingsGrid->addWidget(new QLabel(tr("Panel icons theme (set after reload):"),appSettingsTab),13,0);
-    appSettingsGrid->addWidget(PanelIconsCombo,13,1);
-    CompIconsCombo = new QComboBox;
-    CompIconsCombo->addItems(lst_icons);
-    CompIconsCombo->setCurrentIndex(QucsSettings.compIconsTheme);
-    appSettingsGrid->addWidget(new QLabel(tr("Components icons theme (set after reload):"),appSettingsTab),14,0);
-    appSettingsGrid->addWidget(CompIconsCombo,14,1);
 
     t->addTab(appSettingsTab, tr("Settings"));
 
@@ -470,7 +458,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
             LanguageCombo->setCurrentIndex(z);
 
     /*! Load paths from settings */
-    homeEdit->setText(QucsSettings.QucsHomeDir.canonicalPath());
+    homeEdit->setText(QucsSettings.qucsWorkspaceDir.canonicalPath());
     admsXmlEdit->setText(QucsSettings.AdmsXmlBinDir.canonicalPath());
     ascoEdit->setText(QucsSettings.AscoBinDir.canonicalPath());
     octaveEdit->setText(QucsSettings.OctaveExecutable);
@@ -558,12 +546,12 @@ void QucsSettingsDialog::slotApply()
     bool homeDirChanged = false;
 
     // check QucsHome is changed, will require to close all files and refresh tree
-    if (homeEdit->text() != QucsSettings.QucsHomeDir.path()) {
+    if (homeEdit->text() != QucsSettings.qucsWorkspaceDir.path()) {
       // close all open files, asking the user whether to save the modified ones
       // if user aborts closing, just return
       if(!App->closeAllFiles()) return;
 
-      QucsSettings.QucsHomeDir.setPath(homeEdit->text());
+      QucsSettings.qucsWorkspaceDir.setPath(homeEdit->text());
       homeDirChanged = true;
       // later below the file tree will be refreshed
     }
@@ -592,9 +580,6 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.font=Font;
     QucsSettings.appFont = AppFont;
     QucsSettings.textFont = TextFont;
-
-    QucsSettings.panelIconsTheme = PanelIconsCombo->currentIndex();
-    QucsSettings.compIconsTheme = CompIconsCombo->currentIndex();
 
     QucsSettings.Language =
         LanguageCombo->currentText().section('(',1,1).remove(')');
@@ -728,8 +713,8 @@ void QucsSettingsDialog::slotApply()
 
     // update the schenatic filelist hash
     QucsMain->updatePathList(currentPaths);
-    QucsMain->updateSchNameHash();
-    QucsMain->updateSpiceNameHash();
+    //QucsMain->updateSchNameHash();
+    //QucsMain->updateSpiceNameHash();
 
 }
 
@@ -794,9 +779,6 @@ void QucsSettingsDialog::slotDefaultValues()
     LargeFontSizeEdit->setText(QString::number(16.0));
 
     LanguageCombo->setCurrentIndex(0);
-
-    PanelIconsCombo->setCurrentIndex(0);
-    CompIconsCombo->setCurrentIndex(0);
     
     p = BGColorButton->palette();
     p.setColor(BGColorButton->backgroundRole(), QColor(255,250,225));

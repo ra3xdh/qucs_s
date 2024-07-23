@@ -1,7 +1,7 @@
 /*
  * quarterwave_filter.h - Quarter wavelength filter definition
  *
- * copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
+ * copyright (C) 2015, 2024 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,16 @@
 #ifndef QUARTERWAVE_FILTER_H
 #define QUARTERWAVE_FILTER_H
 
-
 #include "tl_filter.h"
 
 // Quarter wave transmission line filter
 class QuarterWave_Filter : public TL_Filter {
+
 public:
+  static double bw;
+  static double fc;
+  static double d_lamdba4;
+
   QuarterWave_Filter();
 
   static QString* createSchematic(tFilter*, tSubstrate*, bool);

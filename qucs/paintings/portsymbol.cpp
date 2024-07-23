@@ -18,6 +18,8 @@
 #include "portsymbol.h"
 #include "schematic.h"
 
+#include <QInputDialog>
+#include <QMargins>
 #include <QPainter>
 
 PortSymbol::PortSymbol(int cx_, int cy_, const QString& numberStr_,
@@ -44,71 +46,72 @@ PortSymbol::~PortSymbol()
 {
 }
 
-// --------------------------------------------------------------------------
-void PortSymbol::paint(ViewPainter *p)
-{
-  // keep track of painter state
-  p->Painter->save();
+void PortSymbol::paint(QPainter *painter) {
+  painter->save();
 
-  p->Painter->setPen(QPen(Qt::red,1));  // like open node
-  p->drawEllipse(cx-4, cy-4, 8, 8);
+  QRect circle_br{cx - 4, cy - 4, 8, 8};
+  painter->setPen(QPen(Qt::red,1));  // like open node
+  painter->drawEllipse(circle_br);
 
-  QSize r = p->Painter->fontMetrics().size(0, nameStr);
-  int Unit = int(8.0 * p->Scale);
-  x1 = -r.width() - Unit;
-  y1 = -((r.height() + Unit) >> 1);
-  x2 = Unit - x1;
-  y2 = r.height() + Unit;
+  QSize name_size = painter->fontMetrics().size(0b0, nameStr.isEmpty() ? numberStr : nameStr);
+  const int half_nameheight = static_cast<int>(std::round(name_size.height() / 2.0));
 
-  QTransform wm = p->Painter->worldTransform();
-  QTransform Mat(1.0, 0.0, 0.0, 1.0, p->DX + float(cx) * p->Scale,
-				   p->DY + float(cy) * p->Scale);
-  p->Painter->setWorldTransform(Mat);
+  constexpr int offset = 8;
 
-  int tmp, tx, ty;
-  tx = x1 + (Unit >> 1);
-  ty = y1 + (Unit >> 1);
+  int tx, ty;
   switch(Angel) {
-    case 90:
-      x1 = y1;
-      y1 = -Unit;
-      tmp = x2;  x2 = y2;  y2 = tmp;
-      p->Painter->rotate(-90.0); // automatically enables transformation
-      break;
-    case 180:
-      x1 = -Unit;
-      tx = Unit >> 1;
-      break;
-    case 270:
-      tx = Unit >> 1;
-      tmp = x1;  x1 = y1;  y1 = tmp;
-      tmp = x2;  x2 = y2;  y2 = tmp;
-      p->Painter->rotate(-90.0); // automatically enables transformation
-      break;
+  case 90:
+    tx = cx - half_nameheight;
+    ty = cy + offset + name_size.width();
+    break;
+  case 180:
+    tx = cx + offset;
+    ty = cy - half_nameheight;
+    break;
+  case 270:
+    tx = cx - half_nameheight;
+    ty = cy - offset;
+    break;
+  default:
+    tx = cx - offset - name_size.width();
+    ty = cy - half_nameheight;
   }
 
-  p->Painter->setPen(Qt::black);
-  p->Painter->drawText(tx, ty, 0, 0, Qt::TextDontClip, nameStr);
+  const bool is_vertical = Angel == 90 || Angel == 270;
 
+  painter->save();
+  {
+    painter->translate(tx, ty);
+    if (is_vertical) {
+        painter->rotate(-90.0);
+        name_size.transpose();
+    }
 
-  p->Painter->setWorldTransform(wm);
-  p->Painter->setWorldMatrixEnabled(false);
-
-  // restore painter state
-  p->Painter->restore();
-
-  x1 = int(float(x1) / p->Scale);
-  x2 = int(float(x2) / p->Scale);
-  y1 = int(float(y1) / p->Scale);
-  y2 = int(float(y2) / p->Scale);
-
-  p->Painter->setPen(Qt::lightGray);
-  p->drawRect(cx+x1, cy+y1, x2, y2);
-
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->drawRoundRect(cx+x1-4, cy+y1-4, x2+8, y2+8);
+    painter->setPen(Qt::black);
+    painter->drawText(0, 0, 0, 0, Qt::TextDontClip, nameStr.isEmpty() ? numberStr : nameStr);
   }
+  painter->restore();
+
+  QRect name_br{
+    tx, ty, name_size.width(), name_size.height() * (is_vertical ? -1 : 1)};
+
+  QRect total_br = circle_br
+    .united(name_br.normalized())
+    .marginsAdded(QMargins{2, 2, 2, 2});
+
+  x1 = total_br.left() - cx;
+  y1 = total_br.top() - cy;
+  x2 = total_br.width();
+  y2 = total_br.height();
+
+  painter->setPen(Qt::lightGray);
+  painter->drawRect(total_br);
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,3));
+    painter->drawRoundedRect(total_br.marginsAdded(QMargins{3, 3, 3, 3}), 4, 4);
+  }
+  painter->restore();
 }
 
 // --------------------------------------------------------------------------
@@ -155,6 +158,11 @@ bool PortSymbol::load(const QString& s)
   Angel = n.toInt(&ok);
   if(!ok) return false;
 
+  // name string
+  n = s.section(' ', 5);
+  if (n.isEmpty()) return true;
+  nameStr = n;
+
   return true;
 }
 
@@ -162,7 +170,7 @@ bool PortSymbol::load(const QString& s)
 QString PortSymbol::save()
 {
   QString s = Name+QString::number(cx)+" "+QString::number(cy)+" ";
-  s += numberStr+" "+QString::number(Angel);
+  s += numberStr+" "+QString::number(Angel) + " " + nameStr;
   return s;
 }
 
@@ -224,4 +232,57 @@ void PortSymbol::mirrorY()
 {
   if(Angel == 0)  Angel = 180;
   else  if(Angel == 180)  Angel = 0;
+}
+
+bool PortSymbol::MousePressing(Schematic *sch) {
+  if (!sch->isSymbolOnly) {
+    return false;
+  }
+  QString text = QInputDialog::getText(nullptr, QObject::tr("Port name"),
+                                        QObject::tr("Input port name:"));
+  if (!text.isNull() && !text.isEmpty()) {
+    nameStr = text;
+    numberStr = "0"; // 0 indicates no number assigned
+    return true;
+  }
+
+  return false;
+}
+
+void PortSymbol::MouseMoving(Schematic* doc, int, int, int gx, int gy, Schematic *, int, int, bool) {
+  cx = gx;
+  cy = gy;
+  paintScheme(doc);
+}
+
+Painting* PortSymbol::newOne() {
+  return new PortSymbol();
+}
+
+// This function is called from double click handler, see mouseactions.cpp
+// Returned bool signal whether the object has changed as a result of
+// the invocation.
+bool PortSymbol::Dialog(QWidget* /*parent*/Doc) {
+  // Forbid manual editing, change port name on schematic to change it in the symbol
+  // Allow to edit ports only for SymbolOnly documents (*.sym).
+  Schematic *sch = (Schematic *) Doc;
+  if (!sch->isSymbolOnly) {
+    return false;
+  }
+
+  // When nameStr is empty, we're dealing with just a symbol without
+  // a corresponding schematic. In that case allow to user to input
+  // port name
+  QString text = QInputDialog::getText(nullptr, QObject::tr("Port name"),
+                                        QObject::tr("Input port name:"),
+                                        QLineEdit::Normal,
+                                        nameStr);
+  if (text.isNull() || text.isEmpty()) {
+    return false;
+  }
+
+  // nameStr is auto derived from corresponding port in schematic.
+  // When there is no such port, fallback value is used.
+  nameStr = text;
+  return true;
 }

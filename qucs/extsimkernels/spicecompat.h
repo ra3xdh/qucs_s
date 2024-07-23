@@ -1,10 +1,7 @@
 #ifndef SPICECOMPAT_H
 #define SPICECOMPAT_H
 
-#include <QString>
 #include <QStringList>
-#include <QRegularExpression>
-//#include "component.h"
 
 /*!
   \brief spicecompat namespace contains definitions responsible
@@ -21,7 +18,7 @@ namespace spicecompat {
      bool containNodes(QStringList &tokens, QStringList &vars);
      void convertNodeNames(QStringList &tokens, QString &sim);
      QString normalize_node_name(QString nod);
-     QString convert_relative_filename(QString filename);
+     //QString convert_relative_filename(QString filename);
      int getPins(const QString &file, const QString &compname, QStringList &pin_names);
      QString getSubcktName(const QString& subfilename);
      QString convert_sweep_type(const QString& sweep);
@@ -37,6 +34,8 @@ namespace spicecompat {
          simSpice        = 0b00000111,
          simAll          = 0b11111111};
      enum CMgen_mode {cmgenSUBifs = 0, cmgenEDDifs = 1, cmgenSUBmod = 2, cmgenEDDmod = 3};
+
+     enum NgspiceCompatMode  { NgspDefault = 0, NgspLTspice = 1, NgspHSPICE = 2, NgspS3 = 3  };
 }
 
 #endif // SPICECOMPAT_H

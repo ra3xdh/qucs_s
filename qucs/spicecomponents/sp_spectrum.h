@@ -18,10 +18,10 @@
 #ifndef SP_SPECTRUM_H
 #define SP_SPECTRUM_H
 
-#include "components/component.h"
+#include "components/simulation.h"
 
 
-class SpiceFFT : public Component  {
+class SpiceFFT : public qucs::component::SimulationComponent  {
 public:
   SpiceFFT();
   ~SpiceFFT();

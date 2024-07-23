@@ -1,0 +1,331 @@
+<Qucs Library 1.0.0 "Varactor">
+
+<Component BB112>
+  <Description>
+Siemens BB112 Varactor
+Ct=470pF @ Vr=1Volt
+TO-92 Package
+  </Description>
+  <Model>
+    <Diode BB112_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "2.324n" 0 "0.9" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "1.4" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB212>
+  <Description>
+Philips BB212 Dual Varactor
+Ct=450pF @ Vr=1Volt
+TO-92 Package
+  </Description>
+  <Model>
+    <Diode BB212_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "7.202e-10" 0 "0.9" 0 "0.1" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "2.5" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB119>
+  <Description>
+Philips BB119 Varactor
+Ct=22pF @ Vr=4Volt
+DO-35 Package
+  </Description>
+  <Model>
+    <Diode BB119_ 1 0 0 -26 13 0 0 "1.122e-17" 0 "1" 0 "4.163e-11" 0 "0.3333" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "1" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB130>
+  <Description>
+Philips BB130 Varactor
+Ct=500pF @ Vr=1Volt
+TO-92 Package
+  </Description>
+  <Model>
+    <Diode BB130_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "5.563e-11" 0 "0.3333" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "2" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB204B>
+  <Description>
+Philips BB204B Dual Varactor
+Ct=40pF @ Vr=3Volt
+TO-92 Package
+  </Description>
+  <Model>
+    <Diode BB204B_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "7.783e-11" 0 "0.4705" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.25" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB204G>
+  <Description>
+Philips BB204B Dual Varactor
+Ct=36pF @ Vr=3Volt
+TO-92 Package
+  </Description>
+  <Model>
+    <Diode BB204G_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "8.431e-11" 0 "0.4711" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.25" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB215>
+  <Description>
+Philips BB215 Varactor
+Ct=17pF @ Vr=1Volt
+SOD-80 Package
+  </Description>
+  <Model>
+    <Diode BB215_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "3.249e-11" 0 "0.7646" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.75" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB219>
+  <Description>
+Philips BB219 Varactor
+Ct=31pF @ Vr=1Volt
+SOD-80 Package
+  </Description>
+  <Model>
+    <Diode BB219_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "6.351e-11" 0 "0.8465" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.7" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB240>
+  <Description>
+Philips BB240 Varactor
+Ct=xxpF @ Vr=1Volt
+SOD-80 Package
+  </Description>
+  <Model>
+    <Diode BB240_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "2.479e-08" 0 "0.77" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.5" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB241>
+  <Description>
+Philips BB241 Varactor
+Ct=xxpF @ Vr=1Volt
+SOD-80 Package
+  </Description>
+  <Model>
+    <Diode BB241_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "1.049e-10" 0 "0.9987" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.5" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB249>
+  <Description>
+Philips BB249 Varactor
+Ct=40pF @ Vr=1Volt
+SOD-80 Package
+  </Description>
+  <Model>
+    <Diode BB249_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "8.387e-11" 0 "0.8022" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.6" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB405B>
+  <Description>
+Philips BB405B Varactor
+Ct=18pF @ Vr=1Volt
+DO-34 Package
+  </Description>
+  <Model>
+    <Diode BB405B_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "2.673e-11" 0 "0.9446" 0 "1.922" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.75" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB417>
+  <Description>
+Philips BB417 Varactor
+Ct=10pF @ Vr=4Volt
+DO-34 Package
+  </Description>
+  <Model>
+    <Diode BB417_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "5.329e-11" 0 "0.9343" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.75" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB515>
+  <Description>
+Siemens BB515 Varactor
+Ct=19pF @ Vr=1Volt
+SOD-123 Package
+  </Description>
+  <Model>
+    <Diode BB515_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "3.412e-11" 0 "0.7712" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.5" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "30.36" 0 "10" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB619>
+  <Description>
+Siemens BB619 Varactor
+Ct=38pF @ Vr=1Volt
+SOD-123 Package
+  </Description>
+  <Model>
+    <Diode BB619_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "8.244e-11" 0 "0.9376" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.6" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "30.36" 0 "10" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB620>
+  <Description>
+Siemens BB620 Varactor
+Ct=65pF @ Vr=1Volt
+SOD-123 Package
+  </Description>
+  <Model>
+    <Diode BB620_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "1.756e-10" 0 "0.9" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "1.3" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "30.36" 0 "10" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB804>
+  <Description>
+Infineon BB804 Dual Varactor
+Ct=45pF @ Vr=2Volt
+SOT-23 Package
+  </Description>
+  <Model>
+    <Diode BB804_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "6.9e-11" 0 "0.3333" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.18" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "30.36" 0 "10" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB809>
+  <Description>
+Philips BB809 Varactor
+Ct=42pF @ Vr=1Volt
+DO-34 Package
+  </Description>
+  <Model>
+    <Diode BB809_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "8.387e-11" 0 "0.8022" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.6" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "30.36" 0 "10" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB811>
+  <Description>
+Siemens BB811 Varactor
+Ct=9pF @ Vr=1Volt
+SOD-123 Package
+  </Description>
+  <Model>
+    <Diode BB811_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "1.687e-11" 0 "0.7681" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "1" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "30.36" 0 "10" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB909A>
+  <Description>
+Philips BB909A Varactor
+Ct=31pF @ Vr=1Volt
+DO-34 Package
+  </Description>
+  <Model>
+    <Diode BB909A_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "3.725e-11" 0 "0.9" 0 "10" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.9" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB909B>
+  <Description>
+Philips BB909B Varactor
+Ct=33.5pF @ Vr=1Volt
+DO-34 Package
+  </Description>
+  <Model>
+    <Diode BB909B_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "4.028e-11" 0 "0.9" 0 "10" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.9" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB910>
+  <Description>
+Philips BB910 Varactor
+Ct=38pF @ Vr=1Volt
+DO-34 Package
+  </Description>
+  <Model>
+    <Diode BB910_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "5.92e-11" 0 "0.8679" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "1" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB911>
+  <Description>
+Philips BB911 Varactor
+Ct=65pF @ Vr=0.5Volt
+DO-34 Package
+  </Description>
+  <Model>
+    <Diode BB911_ 1 0 0 -26 13 0 0 "1e-14" 0 "1" 0 "1.049e-10" 0 "0.9987" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "2" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "100" 0 "0.0001" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "27" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB535>
+  <Description>
+Infineon BB535 Varactor
+Ct=19pF @ Vr=1Volt
+SOD323 Package
+  </Description>
+  <Model>
+    <Diode BB535_SIE_ 1 0 0 -26 13 0 0 "1.75e-15" 0 "1.043" 0 "2.531e-11" 0 "1.064" 0 "3.022" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.58" 0 "1.2e-07" 0 "0" 0 "0" 0 "1" 0 "1" 0 "32" 0 "1e-07" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB545>
+  <Description>
+Infineon BB535 Varactor
+Ct=20pF @ Vr=1Volt
+SOD323 Package
+  </Description>
+  <Model>
+    <Diode BB545_ 1 0 0 -26 13 0 0 "1.1011e-13" 0 "1.2034" 0 "38.264p" 0 "0.87698" 0 "0.91294" 0 "0" 0 "0" 0 "0" 0 "2" 0 "0.6" 0 "80n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "30" 0 "5e-06" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB639>
+  <Description>
+Infineon BB639 Varactor
+Ct=38pF @ Vr=1Volt
+SOD323 Package
+  </Description>
+  <Model>
+    <Diode BB639_ 1 0 0 -26 13 0 0 "4e-15" 0 "1.035" 0 "5.588e-11" 0 "1.286" 0 "2.922" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.12" 0 "1.6e-07" 0 "0" 0 "0" 0 "1" 0 "1" 0 "32" 0 "1e-07" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB804>
+  <Description>
+Infineon BB804 Dual Varactor
+Ct=45pF @ Vr=2Volt
+SOT-23 Package
+  </Description>
+  <Model>
+    <Diode BB804_ 1 0 0 -26 13 0 0 "48f" 0 "1.13" 0 "80.6p" 0 "0.47" 0 "0.8" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.18" 0 "137n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "20" 0 "0.1u" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB814>
+  <Description>
+Infineon BB814 Dual Varactor
+Ct=45pF @ Vr=2Volt
+SOT-23 Package
+  </Description>
+  <Model>
+    <Diode BB814_ 1 0 0 -26 13 0 0 "7f" 0 "1.012" 0 "83.9p" 0 "0.775" 0 "1.6" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.18" 0 "137n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "20" 0 "100n" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB833>
+  <Description>
+Infineon BB833 Varactor
+Ct=9pF @ Vr=1Volt
+SOD323 Package
+  </Description>
+  <Model>
+    <Diode BB833_ 1 0 0 -26 13 0 0 "4.2156e-14" 0 "1.1718" 0 "2.9033e-11" 0 "0.90022" 0 "0.39089" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "1.8" 0 "1.2e-07" 0 "0" 0 "0" 0 "1" 0 "1" 0 "32" 0 "5e-06" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component BB914>
+  <Description>
+Infineon BB914 Dual Varactor
+Ct=44pF @ Vr=2Volt
+SOT-23 Package
+  </Description>
+  <Model>
+    <Diode BB914_ 1 0 0 -26 13 0 0 "1e-14" 0 "1.02" 0 "7.554e-11" 0 "1.161" 0 "3.445" 0 "0.5" 0 "0" 0 "1e-10" 0 "2" 0 "0.28" 0 "1.37e-07" 0 "0" 0 "0" 0 "1" 0 "1" 0 "20" 0 "1e-07" 0 "26.85" 0 "3" 0 "1.11" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>

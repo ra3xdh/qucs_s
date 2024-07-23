@@ -7,7 +7,6 @@
  * any later version.
  * 
  */
-#include <stdlib.h>
 #include "pad3bit.h"
 #include "node.h"
 
@@ -46,21 +45,30 @@ Element * pad3bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void pad3bit::createSymbol()
 {
-  Lines.append(new qucs::Line(-60, -50, 30,-50,QPen(Qt::darkGreen,2)));
-  Lines.append(new qucs::Line( 30, -50, 30, 30,QPen(Qt::darkGreen,2)));
-  Lines.append(new qucs::Line( 30,  30,-60, 30,QPen(Qt::darkGreen,2)));
-  Lines.append(new qucs::Line(-60,  30,-60,-50,QPen(Qt::darkGreen,2)));
+  // Body
+  Rects.append(new qucs::Rect(-60, -50, 90, 80, QPen(Qt::darkGreen,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
-  Lines.append(new qucs::Line( 40,-30, 30,-30,QPen(Qt::darkGreen,2)));  // A
-  Lines.append(new qucs::Line( 40,-10, 30,-10,QPen(Qt::darkGreen,2)));  // B
-  Lines.append(new qucs::Line( 40, 10, 30, 10,QPen(Qt::darkGreen,2))); // C
+  // Pins
+  // A
+  Ports.append(new Port(40,-30));
+  Lines.append(new qucs::Line( 40,-30, 30,-30,QPen(Qt::darkGreen,2)));
+  // B
+  Ports.append(new Port(40,-10));
+  Lines.append(new qucs::Line( 40,-10, 30,-10,QPen(Qt::darkGreen,2)));
+  // C
+  Ports.append(new Port(40, 10));
+  Lines.append(new qucs::Line( 40, 10, 30, 10,QPen(Qt::darkGreen,2)));
 
-  Texts.append(new Text(-58,-33, " 0   1   2    3", Qt::darkGreen, 12.0));
-  Texts.append(new Text(-58, -8, " 4   5   6    7", Qt::darkGreen, 12.0));
-
-  Ports.append(new Port(40, 10));  // C
-  Ports.append(new Port(40,-10));  // B
-  Ports.append(new Port(40,-30));  // A
+  // 1st row
+  Texts.append(new Text(-50,-38, "0", Qt::darkGreen, 12.0));
+  Texts.append(new Text(-30,-38, "1", Qt::darkGreen, 12.0));
+  Texts.append(new Text(-10,-38, "2", Qt::darkGreen, 12.0));
+  Texts.append(new Text(10,-38, "3", Qt::darkGreen, 12.0));
+  // 2nd row
+  Texts.append(new Text(-50,-18, "4", Qt::darkGreen, 12.0));
+  Texts.append(new Text(-30,-18, "5", Qt::darkGreen, 12.0));
+  Texts.append(new Text(-10,-18, "6", Qt::darkGreen, 12.0));
+  Texts.append(new Text( 10,-18, "7", Qt::darkGreen, 12.0));
 
   x1 = -64; y1 = -54;
   x2 =  40; y2 =  34;

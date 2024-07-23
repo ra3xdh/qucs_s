@@ -25,20 +25,17 @@ RS_FlipFlop::RS_FlipFlop()
 
   Props.append(new Property("t", "0", false, QObject::tr("delay time")));
 
-  Lines.append(new qucs::Line(-20,-20, 20,-20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-20, 20, 20, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-20,-20,-20, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 20,-20, 20, 20,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-20, -20, 40, 40, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
   Lines.append(new qucs::Line(-30,-10,-20,-10,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30, 10,-20, 10,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,-10, 20,-10,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30, 10, 20, 10,QPen(Qt::darkBlue,2)));
 
-  Texts.append(new Text(-18,-21, "R", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-18, -1, "S", Qt::darkBlue, 12.0));
-  Texts.append(new Text(  6,-21, "Q", Qt::darkBlue, 12.0));
-  Texts.append(new Text(  6, -1, "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-18,-18, "R", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-18,  2, "S", Qt::darkBlue, 12.0));
+  Texts.append(new Text(  6,-18, "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text(  6,  2, "Q", Qt::darkBlue, 12.0));
   Texts.last()->over=true;
 
   Ports.append(new Port(-30,-10));  // R

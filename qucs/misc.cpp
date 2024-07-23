@@ -26,6 +26,8 @@
 #include <cmath>
 #include "misc.h"
 #include "main.h"
+#include "qucs.h"
+#include "schematic.h"
 
 #include <cstdio>
 #include <QString>
@@ -63,48 +65,14 @@ bool misc::isDarkTheme()
     return is_dark_theme;
 }
 
-QString misc::getIconPath(const QString &file, int icon_type)
+QString misc::getIconPath(const QString &file)
 {
-    auto icons_theme = QucsSettings.panelIconsTheme;
-    switch (icon_type) {
-    case qucs::panelIcons:
-        icons_theme = QucsSettings.panelIconsTheme;
-        break;
-    case qucs::compIcons:
-        icons_theme = QucsSettings.compIconsTheme;
-        break;
-    }
-
-    bool loadDark = false;
-    switch (icons_theme) {
-    case qucs::autoIcons:
-        loadDark = QucsSettings.hasDarkTheme;
-        break;
-    case qucs::darkIcons:
-        loadDark = true;
-        break;
-    case qucs::lightIcons:
-        loadDark = false;
-        break;
-    }
-
     QString icon_path =":bitmaps/svg/"; // look for svg version first
-    if (loadDark) {
-        QString icon_path_dark = ":bitmaps/svg/dark/";
-        if (QFileInfo::exists(icon_path_dark + file + ".svg"))
-            icon_path = icon_path_dark;
-    }
     icon_path += file + ".svg";
     if (QFile::exists(icon_path)) {
         return icon_path;
     }
-
     icon_path =":bitmaps/";
-    if (loadDark) {
-        QString icon_path_dark = ":bitmaps/dark/";
-        if (QFileInfo::exists(icon_path_dark + file + ".png"))
-            icon_path = icon_path_dark;
-    }
     icon_path += file + ".png";
     return icon_path;
 }
@@ -355,21 +323,33 @@ void misc::convert2ASCII(QString& Text)
 }
 
 // #########################################################################
-// Converts a path to an absolute path and resolves paths relative to the
-// Qucs home directory
-QString misc::properAbsFileName(const QString& Name)
+// Converts a path to an absolute path
+QString misc::properAbsFileName(const QString& filename, Schematic* sch)
 {
-  QString s = Name;
-  QFileInfo Info(s);
+  QString fName = filename;
+  QFileInfo fileInfo(fName);
 
-  if(Info.isRelative())
-  {
-      // if it's a relative file, look for it relative to the
-      // working directory (the qucs home directory)
-      s = QucsSettings.QucsWorkDir.filePath(s);
+  if ( fileInfo.isAbsolute() ) {
+    if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
+    fName = fileInfo.fileName();
   }
-  // return the clean path
-  return QDir::cleanPath(s);
+
+  if ( sch != nullptr ) {
+    fileInfo.setFile(sch->getFileInfo().dir().filePath(fName));
+    if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
+  }
+
+  fName = fileInfo.fileName();
+
+  fileInfo.setFile(QucsSettings.QucsWorkDir.filePath(fName));
+  if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
+
+  for (const QString& path : qucsPathList) {
+    fileInfo.setFile(QDir(path).filePath(fName));
+    if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
+  }
+
+  return filename;
 }
 
 // #########################################################################
@@ -703,6 +683,16 @@ QString misc::unwrapExePath(const QString &exe_file)
     return abs_exe_path;
 }
 
+void misc::getSymbolPatternsList(QStringList &symbols)
+{
+  QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
+  QDir sym_dir(dir_name);
+  QStringList sym_files = sym_dir.entryList(QDir::Files);
+  for (const QString& file : sym_files) {
+    QFileInfo inf(file);
+    symbols.append(inf.baseName());
+  }
+}
 
 VersionTriplet::VersionTriplet(){
   major = minor = patch = 0;
@@ -766,4 +756,112 @@ bool VersionTriplet::operator<=(const VersionTriplet& v2) {
 
 QString VersionTriplet::toString() {
   return QString("%1.%2.%3").arg(major).arg(minor).arg(patch);
+}
+
+// This function can parse TeX sequences _{…} and ^{…} in given string and
+// render them as subscripts and superscripts respectively. It does it
+// by manipulating text position and font size.
+//
+// The implementation is taken from ViewPainter::drawTextMapped and adapted
+// to work with QPainter and as standalone function outside of class.
+void misc::draw_richtext(QPainter* painter, int x, int y, const QString &text, QRectF* br) {
+  QRectF all_bounding_rect;
+  int current_text_x = x;
+  int current_text_y = y;
+  int i = 0;
+
+  const bool font_size_in_pixels = painter->font().pixelSize() != -1;
+
+  QFont smaller_font{ painter->font() };
+
+  if (font_size_in_pixels) {
+    smaller_font.setPixelSize(static_cast<int>(smaller_font.pixelSize() * 0.8));
+  } else {
+    smaller_font.setPointSizeF(smaller_font.pointSizeF() * 0.8);
+  }
+
+  const double font_size = font_size_in_pixels ? smaller_font.pixelSize() : smaller_font.pointSizeF();
+  const int subscript_offset = static_cast<int>(std::round(0.6 * font_size));
+  const int superscript_offset = static_cast<int>(std::round(-0.3 * font_size));
+
+  while (text.length()>i) {
+    if ((text[i].toLatin1() == '_' || text[i].toLatin1() == '^')) {
+      if ((i+1) >= text.length()) break;
+      bool is_sub = text[i++].toLatin1() == '_';
+      int len = 0;
+
+      if (text[i] == '{') {
+        i++;
+        while (!text[i+len].isNull() && text[i+len].toLatin1() != '}') len++;
+      }
+
+      painter->save();
+      painter->setFont(smaller_font);
+
+      QRect fragment_br;
+      painter->drawText(
+        current_text_x, current_text_y + (is_sub ? subscript_offset : superscript_offset),
+        0, 0,
+        Qt::TextDontClip,
+        text.mid(i, len ? len : 1),
+        &fragment_br);
+      painter->restore();
+      all_bounding_rect |= fragment_br;
+
+      current_text_x += fragment_br.width();
+      i += len ? len + 1 : 1;
+    }
+    else
+    {
+      int len = 0;
+      while (text.length()>(i+len)
+             /*!Text[i+len].isNull()*/ && text[i+len].toLatin1() != '_' &&
+	     text[i+len].toLatin1() != '^' && text[i+len].toLatin1() != '\n')
+			len++;
+
+      QRect fragment_br;
+      painter->drawText(
+        current_text_x, current_text_y, 0, 0,
+        Qt::TextDontClip,
+        text.mid(i, len),
+        &fragment_br);
+
+      all_bounding_rect |= fragment_br;
+      current_text_x += fragment_br.width();
+
+      if (text.length()>(i+len)&&text[i+len].toLatin1() == '\n') {
+		    current_text_x = x;
+		    current_text_y = all_bounding_rect.bottom();
+		    i++;
+      }
+      i += len;
+    }
+  }
+
+  if (br) {
+    *br = all_bounding_rect;
+  }
+}
+
+// Some elements on schematics may be resized and have "resize handles"
+// for this. The handles are little squares which are drawn in the same
+// size despite of schematic's zoom factor.
+// This function draws a handle with center at given point.
+void misc::draw_resize_handle(QPainter* painter, const QPointF& center) {
+  // The received central point has some "real" coordinates which are tied
+  // to an element for which the handle belongs.
+  // Painter almost certainly has the "scale" transformation, but the handle
+  // must be drawn in the same size, without any scaling.
+  // Given all above, this is the way to draw a resize handle:
+  // 1. Find out where on canvas lies the central point and remember these
+  //    coordinates
+  // 2. Remove all transformations and draw the handle in its natural size
+  QRectF resize_handle{0, 0, 10, 10};  // nothing special, just a size
+  resize_handle.moveCenter(painter->transform().map(center));
+
+  painter->save();
+  painter->setTransform(QTransform{});
+  painter->setPen(QPen{Qt::darkRed, 2});
+  painter->drawRect(resize_handle);
+  painter->restore();
 }

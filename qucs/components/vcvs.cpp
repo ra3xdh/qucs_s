@@ -16,8 +16,6 @@
  ***************************************************************************/
 
 #include "vcvs.h"
-#include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 
@@ -26,7 +24,7 @@ VCVS::VCVS()
 {
   Description = QObject::tr("voltage controlled voltage source");
 
-  Arcs.append(new qucs::Arc(0,-11, 22, 22,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips(0,-11, 22, 22,QPen(Qt::darkBlue,2)));
 
   Lines.append(new qucs::Line(-30,-30,-12,-30,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30, 30,-12, 30,QPen(Qt::darkBlue,2)));
@@ -38,18 +36,18 @@ VCVS::VCVS()
   Lines.append(new qucs::Line( 11,-30, 11,-11,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 11, 30, 11, 11,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new qucs::Line(-12,-18,-12, 18,QPen(Qt::darkBlue,1)));
-  Lines.append(new qucs::Line(-12, 18,-17,  9,QPen(Qt::darkBlue,1)));
-  Lines.append(new qucs::Line(-12, 18, -7,  9,QPen(Qt::darkBlue,1)));
+  // arrow
+  Lines.append(new qucs::Line(-12,-18,-12, 18,QPen(Qt::darkBlue,1, Qt::SolidLine, Qt::FlatCap)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{-17, 9},{-12, 18}, {-7, 9}}, QPen(Qt::darkBlue, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
+  // plus sign
   Lines.append(new qucs::Line( 19,-21, 19,-15,QPen(Qt::red,1)));
   Lines.append(new qucs::Line( 16,-18, 22,-18,QPen(Qt::red,1)));
+  // minus sign
   Lines.append(new qucs::Line( 16, 18, 22, 18,QPen(Qt::black,1)));
 
-  Lines.append(new qucs::Line(-25,-27, 25,-27,QPen(Qt::darkGray,1)));
-  Lines.append(new qucs::Line( 25,-27, 25, 27,QPen(Qt::darkGray,1)));
-  Lines.append(new qucs::Line( 25, 27,-25, 27,QPen(Qt::darkGray,1)));
-  Lines.append(new qucs::Line(-25, 27,-25,-27,QPen(Qt::darkGray,1)));
+  Rects.append(new qucs::Rect(-25, -27, 50, 54, QPen(Qt::darkGray,1)));
 
   Ports.append(new Port(-30,-30));
   Ports.append(new Port( 30,-30));

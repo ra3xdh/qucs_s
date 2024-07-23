@@ -18,10 +18,10 @@
 #ifndef AC_SIM_H
 #define AC_SIM_H
 
-#include "component.h"
+#include "simulation.h"
 
 
-class AC_Sim : public Component  {
+class AC_Sim : public qucs::component::SimulationComponent  {
 public:
   AC_Sim();
  ~AC_Sim();

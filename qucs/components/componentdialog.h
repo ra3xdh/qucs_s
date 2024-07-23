@@ -75,6 +75,7 @@ private slots:
   void slotStepEntered();
   void slotNumberEntered();
   void slotHHeaderClicked(int headerIdx);
+  void slotFillFromSpice();
 
 protected slots:
     void reject();
@@ -82,7 +83,8 @@ protected slots:
 
 private:
   QVBoxLayout *all;   // the mother of all widgets
-  QValidator  *Validator, *ValRestrict, *Validator2;
+  QValidator  *Validator, *ValRestrict, *Validator2,
+              *ValName;
   QRegularExpression     Expr;
   QIntValidator *ValInteger;
   QTableWidget  *prop;
@@ -91,6 +93,7 @@ private:
   QLabel      *Name, *Description;
   QPushButton *BrowseButt, *EditButt, *ButtAdd, *ButtRem;
   QPushButton *ButtUp, *ButtDown;
+  QPushButton *ButtFillFromSpice;
   QCheckBox   *disp;
   Component   *Comp;
   Schematic   *Doc;

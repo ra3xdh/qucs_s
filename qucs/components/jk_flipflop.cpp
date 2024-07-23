@@ -14,8 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <stdlib.h>
-
 #include "jk_flipflop.h"
 #include "node.h"
 #include "misc.h"
@@ -27,36 +25,38 @@ JK_FlipFlop::JK_FlipFlop()
 
   Props.append(new Property("t", "0", false, QObject::tr("delay time")));
 
-  Lines.append(new qucs::Line(-20,-30, 20,-30,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-20, 30, 20, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-20,-30,-20, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 20,-30, 20, 30,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-20, -30, 40, 60, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
+  // J
+  Ports.append(new Port(-30,-20));
   Lines.append(new qucs::Line(-30,-20,-20,-20,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-17,-27.5, "J", Qt::darkBlue, 12.0));
+  // K
+  Ports.append(new Port(-30, 20));
   Lines.append(new qucs::Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-17,  12.5, "K", Qt::darkBlue, 12.0));
+  // Q
+  Ports.append(new Port( 30,-20));
   Lines.append(new qucs::Line( 30,-20, 20,-20,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(  6,-27.5, "Q", Qt::darkBlue, 12.0));
+  // nQ
+  Ports.append(new Port( 30, 20));
   Lines.append(new qucs::Line( 30, 20, 20, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  0,-30,  0,-40,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  0, 30,  0, 40,QPen(Qt::darkBlue,2)));
-
-  Texts.append(new Text( -4,-29, "S", Qt::darkBlue,  9.0));
-  Texts.append(new Text( -4, 14, "R", Qt::darkBlue,  9.0));
-  Texts.append(new Text(-18,-31, "J", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-18,  8, "K", Qt::darkBlue, 12.0));
-  Texts.append(new Text(  6,-31, "Q", Qt::darkBlue, 12.0));
-  Texts.append(new Text(  6,  8, "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text(  6, 12.5, "Q", Qt::darkBlue, 12.0));
   Texts.last()->over=true;
-  Lines.append(new qucs::Line(-20, -4,-12,  0,QPen(Qt::darkBlue,0)));
-  Lines.append(new qucs::Line(-20,  4,-12,  0,QPen(Qt::darkBlue,0)));
-
-  Ports.append(new Port(-30,-20));  // J
-  Ports.append(new Port(-30, 20));  // K
-  Ports.append(new Port( 30,-20));  // Q
-  Ports.append(new Port( 30, 20));  // nQ
-  Ports.append(new Port(-30,  0));  // Clock
-  Ports.append(new Port(  0,-40));  // set
-  Ports.append(new Port(  0, 40));  // reset
+  // Clock
+  Ports.append(new Port(-30,  0));
+  Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{-20, 4}, {-12, 0}, {-20, -4}}, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin)));
+  // set
+  Ports.append(new Port(  0,-40));
+  Lines.append(new qucs::Line(  0,-30,  0,-40,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text( -3.5,-29, "S", Qt::darkBlue,  9.0));
+  // reset
+  Ports.append(new Port(  0, 40));
+  Lines.append(new qucs::Line(  0, 30,  0, 40,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text( -3.5, 18, "R", Qt::darkBlue,  9.0));
 
   x1 = -30; y1 = -40;
   x2 =  30; y2 =  40;

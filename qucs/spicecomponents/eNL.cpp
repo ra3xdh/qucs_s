@@ -18,7 +18,6 @@
 
 #include "eNL.h"
 #include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
 
@@ -28,12 +27,15 @@ eNL::eNL()
   Simulator = spicecompat::simSpice;
   // Value, Table and POLY forms are allowed.
 
-  Arcs.append(new qucs::Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::blue,3)));
-  Texts.append(new Text(36,4,"ENL",Qt::blue,10.0,0.0,-1.0));
+  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::blue,3)));
+  Texts.append(new Text(26,6,"ENL",Qt::blue,12.0,0.0,-1.0));
+  // pins
   Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
+  // plus sign
   Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
   Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
+  // minus sign
   Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2))); 
 
   Ports.append(new Port( 30,  0));

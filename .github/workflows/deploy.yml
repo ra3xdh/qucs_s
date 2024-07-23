@@ -1,0 +1,435 @@
+name: deploy
+
+on:
+  push:
+    branches: [ "master", "current", "release/*" ]
+  pull_request:
+    branches: [ "master", "current", "release/*" ]
+  workflow_dispatch:
+  
+env:
+  APP_NAME: "Qucs-S"
+  EXECUTABLE_NAME: "qucs-s"
+  PUBLISHER_NAME: "The Qucs-S Team"
+  BUILD_TYPE: Release
+  QT_VERSION: 6.7.2
+  QUCS_MACOS_BIN: build/qucs/qucs-s.app/Contents/MacOS/bin
+  QUCS_MACOS_RESOURCES: build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
+  
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.read_version.outputs.version }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Read version from file
+      id: read_version
+      run: |
+        VERSION=$(cat VERSION)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Print version 
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+
+  build-linux-appimage-qt6:
+    runs-on: ubuntu-22.04
+    needs: setup
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Set version environment variable
+      run: echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
+
+    - name: Print version
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+
+    - name: Install Dependencies
+      run: |
+          sudo apt-get update
+          sudo apt-get install -y qt6-base-dev qt6-tools-dev qt6-tools-dev-tools libglx-dev linguist-qt6 qt6-l10n-tools libqt6svg6-dev libgl1-mesa-dev
+          sudo apt-get install -y flex bison gperf dos2unix
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_INSTALL_PREFIX=/usr -DWITH_QT6=ON
+
+    - name: Build
+      # Build your program with the given configuration
+      run: |
+          cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
+          make -C ${{github.workspace}}/build install DESTDIR=${{github.workspace}}/AppDir
+
+      
+    - name: Install linuxdeploy
+      run: |
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          sudo apt-get install fuse libfuse2
+          chmod +x linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
+    
+    - name: 'Create AppImage'
+      run: |
+             export QMAKE=/usr/bin/qmake6
+             ./linuxdeploy-x86_64.AppImage --appdir ${{github.workspace}}/AppDir --desktop-file=${{github.workspace}}/AppDir/usr/share/applications/qucs-s.desktop --icon-file=${{github.workspace}}/AppDir/usr/share/icons/hicolor/256x256/apps/qucs-s.png --plugin=qt --output appimage
+             rm linuxdeploy-x86_64.AppImage
+             rm linuxdeploy-plugin-qt-x86_64.AppImage
+             mv *.AppImage ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
+
+    - name: 'Upload artifact: AppImage'
+      uses: actions/upload-artifact@v4
+      with:
+          name: ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64
+          path: ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
+                
+ 
+  build-mac-intel:
+    runs-on: macos-12
+    needs: setup
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+        
+    - name: Set version environment variable
+      run: echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
+
+    - name: Print version
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+      
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+      
+    - name: 'Install Qt6'
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{env.QT_VERSION}}
+        host: 'mac'
+        target: 'desktop'
+        cache: true
+        arch: 'clang_64'
+        install-deps: 'true'
+       
+    - name: 'Install Dependencies'
+      shell: bash
+      run: |
+          brew install gperf dos2unix bison flex ninja graphicsmagick
+          echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
+          export LDFLAGS="-L$(brew --prefix bison)/lib"
+          source ~/.bashrc
+          brew link bison --force
+
+          
+    - name: 'Configure CMake'
+      run: |
+        qt-cmake -B ${{github.workspace}}/build  -G 'Ninja' \
+                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1
+
+    - name: 'Build Qucs-s'
+      run: |
+        cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
+    
+    #- name: Install
+    #  run: | 
+    #    cd build
+    #    make install DESTDIR=./deploy
+    #    cd ..
+        
+    - name: 'Package App Bundle'
+      run: |
+        mkdir -p ${{env.QUCS_MACOS_BIN}}
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        cp -pR ./build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-powercombining/qucs-spowercombining.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-transcalc/qucs-strans.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucsator_rf/src/qucsator_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucsator_rf/src/converter/qucsconv_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./examples/* ${{env.QUCS_MACOS_RESOURCES}}/examples
+        cp -pR ./library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ./library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ./library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        macdeployqt ./build/qucs/qucs-s.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sfilter.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-spowercombining.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-strans.app
+        strip ${{env.QUCS_MACOS_BIN}}/qucsator_rf
+        strip ${{env.QUCS_MACOS_BIN}}/qucsconv_rf 
+        codesign --force --deep --sign - ./build/qucs/qucs-s.app
+        npm install --global create-dmg
+        create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
+        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOS-x86_64.dmg
+
+    - name: 'Upload build artifacts'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-x86_64
+        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-x86_64.dmg
+
+      
+  build-mac-arm:
+    runs-on: macos-latest
+    needs: setup
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    
+    - name: Set version environment variable
+      run: echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
+
+    - name: Print version
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+          
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: 'Install Qt6'
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{env.QT_VERSION}}
+        host: 'mac'
+        target: 'desktop'
+        cache: true
+        arch: 'clang_64'
+        install-deps: 'true'
+       
+    - name: 'Install Dependencies'
+      shell: bash
+      run: |
+          brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick
+          echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
+          export LDFLAGS="-L$(brew --prefix bison)/lib"
+          source ~/.bashrc
+          brew link bison --force
+
+          
+    - name: 'Configure CMake'
+      run: |
+        qt-cmake -B ${{github.workspace}}/build  -G 'Ninja' \
+                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1
+
+    - name: 'Build Qucs-s'
+      run: |
+        cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
+    
+    #- name: Install
+    #  run: | 
+    #    cd build
+    #    make install DESTDIR=./deploy
+    #    cd ..
+        
+    - name: 'Package App Bundle'
+      run: |
+        mkdir -p ${{env.QUCS_MACOS_BIN}}
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        cp -pR ./build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-powercombining/qucs-spowercombining.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-transcalc/qucs-strans.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucsator_rf/src/qucsator_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucsator_rf/src/converter/qucsconv_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./examples/* ${{env.QUCS_MACOS_RESOURCES}}/examples
+        cp -pR ./library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ./library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ./library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        macdeployqt ./build/qucs/qucs-s.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sfilter.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-spowercombining.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-strans.app
+        strip ${{env.QUCS_MACOS_BIN}}/qucsator_rf
+        strip ${{env.QUCS_MACOS_BIN}}/qucsconv_rf
+        codesign --force --deep --sign - ./build/qucs/qucs-s.app
+        npm install --global create-dmg
+        create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
+        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOS-arm64.dmg
+    
+    - name: 'Upload build artifacts'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-arm64
+        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-arm64.dmg
+      
+  build-windows:
+    runs-on: windows-2022
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        environment:
+          - ucrt64
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:  
+    - name: Disable autocrlf in Git
+      shell: pwsh
+      run: |
+        git config --global core.autocrlf false
+        git config --global core.eol lf
+
+    - name: Set version environment variable
+      shell: pwsh
+      run: |
+        echo "VERSION=${{ needs.setup.outputs.version }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+    - name: Print version
+      shell: pwsh
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Set up MSYS2 environment
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{ matrix.environment }}
+        cache: true
+        update: true
+        install: >-
+          bison 
+          flex
+          dos2unix
+          curl
+          zip
+          unzip
+        pacboy: >-
+          cmake:p 
+          gcc:p 
+          qt6-base:p 
+          qt6-tools:p 
+          qt6-svg:p 
+          make:p 
+          ninja:p
+          python:p 
+          gperf:p
+          github-cli:p
+
+    - name: Build project with CMake
+      run: |
+        cmake.exe -B build/ -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=ON
+        cmake.exe --build build/ -j$(nproc) --config ${{env.BUILD_TYPE}}
+
+    - name: Make install
+      run: |
+        cd build/ && mingw32-make.exe install DESTDIR=./ -j$(nproc)
+        cp -rf 'Program Files (x86)/qucs-suite' ./
+        cd ..
+        strip build/qucs-suite/bin/*.exe 
+
+    - name: Deploy Qt6 dependencies
+      run: |
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-s.exe  --svg --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sactivefilter.exe  --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sattenuator.exe  --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sfilter.exe  --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-spowercombining.exe  --no-translations 
+        windeployqt-qt6.exe build/qucs-suite/bin/qucs-strans.exe  --no-translations
+
+    - name: Copy non-Qt DLLs to bin directory
+      run: |
+        shopt -s extglob
+        FILES=$(ldd build/qucs-suite/bin/qucs-s.exe | awk '($3 ~ /\/${{ matrix.environment }}\/bin\//) {print $3}')
+        for file in $FILES; do
+          if [[ $(basename "$file") != Qt6* ]]; then
+            cp -r "$file" build/qucs-suite/bin
+          fi
+        done
+            
+    - name: Create zip archive for release
+      run: |
+        cd build/qucs-suite
+        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip ./bin ./share
+        cd ../..
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}-win64
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip
+
+  create-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs:
+     - setup
+     - build-linux-appimage-qt6
+     - build-mac-intel
+     - build-mac-arm
+     - build-windows
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ~/artifacts
+
+    - name: Calculate SHA-256 checksums
+      run: |
+        cd ~/artifacts
+        > hashes.sha256
+        for file in $(find . -type f \( -name "*.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
+          filename=$(basename "$file")
+          sha256sum "$file" | awk -v fname="$filename" '{print $1 " *" fname}' >> hashes.sha256
+        done
+        cd ..
+
+    - name: Check if continuous_build release exists
+      run: |
+        if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
+          gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Create GitHub Release
+      continue-on-error: true
+      run: |
+        # Find existing zip and dmg files
+        zip_files=$(find ~/artifacts -name "*.zip" -print0 | xargs -0 echo)
+        dmg_files=$(find ~/artifacts -name "*.dmg" -print0 | xargs -0 echo)
+        appimage_files=$(find ~/artifacts -name "*.AppImage" -print0 | xargs -0 echo)
+        
+        # Create release only if there are files to upload
+        if [ -n "$zip_files" ] || [ -n "$dmg_files" ] || [ -n "$appimage_files" ]; then
+          gh release create continuous_build \
+            $zip_files \
+            $dmg_files \
+            $appimage_files \
+            ~/artifacts/hashes.sha256 \
+            -p \
+            --repo $GITHUB_REPOSITORY \
+            --title "Continuous build" \
+            --notes "Automated release for commit ${{ github.sha }}"
+        else
+          echo "No artifacts to upload."
+        fi
+
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

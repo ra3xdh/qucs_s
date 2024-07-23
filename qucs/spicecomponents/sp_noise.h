@@ -18,10 +18,10 @@
 #ifndef SP_NOISE_H
 #define SP_NOISE_H
 
-#include "components/component.h"
+#include "components/simulation.h"
 
 
-class SpiceNoise : public Component  {
+class SpiceNoise : public qucs::component::SimulationComponent {
 public:
   SpiceNoise();
   ~SpiceNoise();

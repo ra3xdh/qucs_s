@@ -224,7 +224,10 @@ void Marker::createText()
     }
   }
 
-  Text += pGraph->Var.section('/', 1) + ": ";
+  if ( pGraph->Var.contains('/') )
+    Text += pGraph->Var.section('/', 1) + ": ";
+  else
+    Text += pGraph->Var + ": ";
   const Axis *ax = &(diag()->yAxis);
   if (pGraph->yAxisNo > 0) ax = &(diag()->zAxis);
   int units = ax->Units;
@@ -369,74 +372,92 @@ bool Marker::moveUpDown(bool up)
   return true;
 }
 
-// ---------------------------------------------------------------------
-void Marker::paint(ViewPainter *p, int x0, int y0)
-{
-  // keep track of painter state
-  p->Painter->save();
+namespace { // Helpers to be used in Marker::paint
 
-  // Workaround for bug in Qt: If WorldMatrix is turned off, \n in the
-  // text creates a terrible mess.
-  p->Painter->setWorldMatrixEnabled(true);
-  QTransform wm = p->Painter->worldTransform();
-  p->Painter->setWorldTransform(QTransform());
+// draws upside-down triangle with tip at given point
+void triangle_marker(QPainter* p, const QPointF& triangle_head) {
+  constexpr double cos60              = 0.866;
+  constexpr double triangle_alt       = IND_SIZE * cos60;
+  constexpr double triangle_half_edge = IND_SIZE / 2.0;
 
-  int x2_, y2_;
-  p->Painter->setPen(QPen(Qt::black,1));
-  x2_ = p->drawText(Text, x0+x1+3, y0+y1+3, &y2_);
-  x2_ += int(6.0*p->Scale);
-  y2_ += int(6.0*p->Scale);
-  if(!transparent) {
-    p->eraseRect(x0+x1, y0+y1, x2_, y2_);
-    p->drawText(Text, x0+x1+3, y0+y1+3);
-  }
-  p->Painter->setWorldTransform(wm);
-  p->Painter->setWorldMatrixEnabled(false);
+  // This is the triangle that we draw here:
+  // a - - - b
+  //  \     /
+  //   \   /
+  //    \ /
+  //     h
 
-  // restore painter state
-  p->Painter->restore();
+  QPointF a{triangle_head.x() - triangle_half_edge,
+            triangle_head.y() - triangle_alt};
+  QPointF b{triangle_head.x() + triangle_half_edge,
+            triangle_head.y() - triangle_alt};
 
-  p->Painter->setPen(QPen(Qt::darkMagenta,0));
-  p->drawRectD(x0+x1, y0+y1, x2_, y2_);
+  p->drawLine(triangle_head, a);
+  p->drawLine(triangle_head, b);
+  p->drawLine(a, b);
+}
 
-  x2 = int(float(x2_) / p->Scale);
-  y2 = int(float(y2_) / p->Scale);
+// draws a square with center at given point
+void square_marker(QPainter* p, const QPointF& square_center) {
+  QRectF r{0, 0, IND_SIZE, IND_SIZE};
+  r.moveCenter(square_center);
+  p->drawRect(r);
+}
+} // namespace
 
-  int x1_, y1_;
-  p->map(x0+x1, y0+y1, x1_, y1_);
-  // which corner of rectangle should be connected to line ?
-  if(cx < x1+(x2>>1)) {
-    if(-cy >= y1+(y2>>1))
-      y1_ += y2_ - 1;
-  }
-  else {
-    x1_ += x2_ - 1;
-    if(-cy >= y1+(y2>>1))
-      y1_ += y2_ - 1;
-  }
-  float fx2, fy2;
-  fx2 = (float(x0)+fCX)*p->Scale + p->DX;
-  fy2 = (float(y0)-fCY)*p->Scale + p->DY;
-  p->Painter->drawLine(x1_, y1_, lround(fx2), lround(fy2));
+void Marker::paint(QPainter* painter) {
+  // Marker inherits from Element four member vars: cx, cy, x1, y1
+  // and uses them like this:
+  //   - Point (x1,y1) defines top left corner of a box containing marker's text
+  //   - Point (cx,cy) define a place on a graph to which the marker points,
+  //     i.e. the marker's root
+  // All these coordinates a relative to parent diagram's bottom left corner.
 
-  if (indicatorMode == indicator_Square) {
-    p->Painter->drawRect(fx2 - (IND_SIZE / 2 * p->Scale), fy2 - (IND_SIZE / 2 * p->Scale), 
-                            IND_SIZE * p->Scale, IND_SIZE * p->Scale);
-  }
-  else if (indicatorMode == indicator_Triangle) {
-    // Creating a path in case a filled triangle is needed.
-    QPainterPath path;
-    path.moveTo(fx2, fy2);
-    path.lineTo(fx2 - (IND_SIZE / 2 * p->Scale), fy2 - (IND_SIZE * p->Scale));
-    path.lineTo(fx2 + (IND_SIZE / 2 * p->Scale), fy2 - (IND_SIZE * p->Scale));
-    path.lineTo(fx2, fy2);
-    p->Painter->drawPath(path);
+  painter->save();
+  painter->translate(pGraph->parentDiagram()->cx, pGraph->parentDiagram()->cy);
+
+  const QSize text_size = painter->fontMetrics().size(0, Text);
+  const QRectF text_box{QPointF{static_cast<qreal>(x1), static_cast<qreal>(y1)},
+                        text_size};
+
+  if (!transparent) {
+    painter->eraseRect(text_box);
   }
 
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->drawRoundRect(x0+x1-3, y0+y1-3, x2+6, y2+6);
+  painter->setPen(QPen(Qt::black, 1));
+  painter->drawText(x1, y1, 0, 0, Qt::TextDontClip, Text);
+
+  painter->setPen(QPen(Qt::darkMagenta, 0));
+  painter->drawRect(text_box);
+
+  // `cy` is inverted because painter's Y-axis grows downwards but marker's `cy`
+  // coordinate is defined in traditional coordinate system where Y-axis growing
+  // upwards
+  const QPointF marker_root{static_cast<qreal>(cx), static_cast<qreal>(-cy)};
+
+  // Connect marker root and textbox
+  painter->drawLine(
+      marker_root,
+      {marker_root.x() > text_box.right() ? text_box.right() : text_box.left(),
+       marker_root.y() > text_box.bottom() ? text_box.bottom()
+                                           : text_box.top()});
+
+  switch (indicatorMode) {
+  case indicator_Square:
+    square_marker(painter, marker_root);
+    break;
+  case indicator_Triangle:
+    triangle_marker(painter, marker_root);
+    break;
+  default:;
   }
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray, 3));
+    painter->drawRoundedRect(text_box.marginsAdded(QMargins{3, 3, 3, 3}), 4, 4);
+  }
+
+  painter->restore();
 }
 
 // ---------------------------------------------------------------------

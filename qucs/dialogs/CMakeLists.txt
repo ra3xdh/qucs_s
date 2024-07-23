@@ -16,7 +16,6 @@ librarydialog.h
 loaddialog.h
 matchdialog.h
 newprojdialog.h
-packagedialog.h
 qucssettingsdialog.h
 savedialog.h
 searchdialog.h
@@ -27,12 +26,13 @@ vasettingsdialog.h
 textboxdialog.h
 displaydialog.h
 tuner.h
+fillfromspicedialog.h
 )
 
 
 
 SET(DIALOGS_SRCS
-changedialog.cpp		packagedialog.cpp vasettingsdialog.cpp textboxdialog.cpp
+changedialog.cpp vasettingsdialog.cpp textboxdialog.cpp
 digisettingsdialog.cpp		qucssettingsdialog.cpp
 importdialog.cpp		savedialog.cpp labeldialog.cpp
 searchdialog.cpp     librarydialog.cpp settingsdialog.cpp
@@ -41,6 +41,7 @@ sweepdialog.cpp			exportdialog.cpp loaddialog.cpp
 aboutdialog.cpp
 displaydialog.cpp
 tuner.cpp
+fillfromspicedialog.cpp
 )
 
 SET(DIALOGS_MOC_HDRS
@@ -54,7 +55,6 @@ librarydialog.h
 loaddialog.h
 matchdialog.h
 newprojdialog.h
-packagedialog.h
 qucssettingsdialog.h
 savedialog.h
 searchdialog.h
@@ -66,6 +66,7 @@ vasettingsdialog.h
 textboxdialog.h
 displaydialog.h
 tuner.h
+fillfromspicedialog.h
 )
 
 SET(DIALOGS_UIC_HDRS

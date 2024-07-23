@@ -16,9 +16,9 @@
  ***************************************************************************/
 #include "main.h"
 #include "rlcg.h"
+#include "node.h"
 
 #include "extsimkernels/spicecompat.h"
-#include "node.h"
 
 #include <QFontMetrics>
 

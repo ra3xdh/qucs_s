@@ -18,7 +18,10 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include <QtCore>
+// QObject is needed here to be transitively included
+// from component implementations. Some how non-Linux
+// builds fail without explicit QObject inclusion
+#include <QObject>
 #include "extsimkernels/spicecompat.h"
 #include "qt3_compat/qt_compat.h"
 
@@ -26,7 +29,6 @@
 
 
 class Schematic;
-class ViewPainter;
 class QString;
 class QPen;
 
@@ -46,6 +48,7 @@ public:
   virtual QStringList getExtraVariables();
   virtual QString getProbeVariable(bool isXyce = false);
   virtual QString getSpiceModel();
+  virtual QString getSpiceLibrary() { return QString(""); }
   virtual QString getNgspiceBeforeSim(QString sim, int lvl=0);
   virtual QString getNgspiceAfterSim(QString sim, int lvl=0);
   virtual QString getVAvariables() {return QString("");};
@@ -53,16 +56,15 @@ public:
   virtual void getExtraVANodes(QStringList& ) {};
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
-  void    paint(ViewPainter*);
+  void    paint(QPainter* painter);
   void    paintScheme(Schematic*);
-  void    print(ViewPainter*, float);
   void    setCenter(int, int, bool relative=false);
   void    getCenter(int&, int&);
   int     textSize(int&, int&);
   void    Bounding(int&, int&, int&, int&);
   void    entireBounds(int&, int&, int&, int&);
   bool    getSelected(int, int);
-  int     getTextSelected(int, int, float);
+  int     getTextSelected(int, int);
   void    rotate();
   void    mirrorX();  // mirror about X axis
   void    mirrorY();  // mirror about Y axis
@@ -82,9 +84,10 @@ public:
   virtual Schematic* getSchematic () {return containingSchematic; }
 
   QList<qucs::Line *>     Lines;
+  QList<qucs::Polyline *> Polylines;
   QList<struct qucs::Arc *>      Arcs;
-  QList<qucs::Area *>     Rects;
-  QList<qucs::Area *>     Ellips;
+  QList<qucs::Rect *>     Rects;
+  QList<qucs::Ellips *>     Ellipses;
   QList<Port *>     Ports;
   QList<Text *>     Texts;
   Q3PtrList<Property> Props;
@@ -102,6 +105,7 @@ public:
   QString  Model, Name;
   QString  Description;
   QString  SpiceModel;
+  QStringList SpiceModelcards; // one device may have two modelcards like NPN,PNP
   QPen WrongSimulatorPen;
 
   void paintIcon(QPixmap *pixmap);
@@ -123,6 +127,8 @@ protected:
   void copyComponent(Component*);
   Property * getProperty(const QString&);
   Schematic* containingSchematic;
+
+  virtual void drawSymbol(QPainter* p);
 };
 
 

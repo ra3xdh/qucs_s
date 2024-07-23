@@ -1,6 +1,5 @@
-PROJECT(qucs-suite CXX)
 cmake_minimum_required(VERSION 3.10)
-cmake_policy(VERSION 3.10)
+PROJECT(qucs-suite CXX)
 
 set(QUCS_NAME "qucs-s")
 
@@ -23,7 +22,7 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/.git )
   find_package(Git)
   # Get the latest abbreviated commit hash of the working branch
   execute_process(
-    COMMAND ${GIT_EXECUTABLE} log --pretty=format:%h -n 1u
+    COMMAND ${GIT_EXECUTABLE} log --pretty=format:%h -n 1
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE GIT_COMMIT_HASH
   )

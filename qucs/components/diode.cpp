@@ -17,7 +17,6 @@
 
 #include "diode.h"
 #include "node.h"
-#include "main.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
@@ -90,6 +89,7 @@ Diode::Diode()
   Model = "Diode";
   Name  = "D";
   SpiceModel = "D";
+  SpiceModelcards.append("D");
 }
 
 Component* Diode::newOne()

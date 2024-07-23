@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#include "portsymbol.h"
 #include "schematic.h"
 #include <qt3_compat/qt_compat.h>
 #include <QDebug>
@@ -1146,7 +1147,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
         }
         else
         {
-            n = pc->getTextSelected(x, y, Corr);
+            n = pc->getTextSelected(x, y);
             if(n >= 0)     // was property text clicked ?
             {
                 pc->Type = isComponentText;
@@ -2076,7 +2077,19 @@ bool Schematic::deleteElements()
     Painting *pp = Paintings->first();
     while(pp != 0)      // test all paintings
     {
-        if(pp->isSelected)
+        if(pp->isSelected) {
+            // Allow removing of manually inserted port symbols when in symbol
+            // editing mode. If port symbol is inserted manually i.e. doesn't
+            // have a corresponding port in schematic, its nameStr is empty.
+            // If it's not empty, then invocation of Schematic::adjustPortNumbers
+            // must have found a pairing port in schematic.
+            if (pp->Name.trimmed() == ".PortSym" && isSymbolOnly) {
+                sel = true;
+                Paintings->remove();
+                pp = Paintings->current();
+                continue;
+            }
+
             if(pp->Name.at(0) != '.')    // do not delete "PortSym", "ID_text"
             {
                 sel = true;
@@ -2084,12 +2097,13 @@ bool Schematic::deleteElements()
                 pp = Paintings->current();
                 continue;
             }
+        }
         pp = Paintings->next();
     }
 
     if(sel)
     {
-        sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);   // set new document size
+        updateAllBoundingRect();   // set new document size
         setChanged(sel, true);
     }
     return sel;

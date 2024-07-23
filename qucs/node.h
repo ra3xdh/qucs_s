@@ -22,15 +22,13 @@
 
 #include "qt3_compat/qt_compat.h"
 
-class ViewPainter;
-
 
 class Node : public Conductor {
 public:
   Node(int, int);
  ~Node();
 
-  void  paint(ViewPainter*);
+  void  paint(QPainter* painter) const;
   bool  getSelected(int, int);
   void  setName(const QString&, const QString&, int x_=0, int y_=0);
 

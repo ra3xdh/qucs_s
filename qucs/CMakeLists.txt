@@ -84,12 +84,9 @@ IF(QT_VERSION_MAJOR EQUAL 6)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+ENDIF()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-ELSE()
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-ENDIF()
 
 if (MSVC)
     add_compile_options(/Zc:__cplusplus /permissive- /MP /Zc:preprocessor)
@@ -123,11 +120,12 @@ ADD_SUBDIRECTORY( spicecomponents )
 SET(QUCS_SRCS
   element.cpp	octave_window.cpp	qucsdoc.cpp
   textdoc.cpp  main.cpp	schematic.cpp
-  mnemo.cpp	qucs.cpp	viewpainter.cpp
+  mnemo.cpp	qucs.cpp
   module.cpp	schematic_element.cpp	wire.cpp schematic_render.cpp
   mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
   wirelabel.cpp node.cpp qucs_init.cpp
   syntax.cpp misc.cpp messagedock.cpp
+  settings.cpp
   imagewriter.cpp printerwriter.cpp projectView.cpp
   symbolwidget.cpp
 )
@@ -145,10 +143,10 @@ octave_window.h
 qucs.h
 qucsdoc.h
 schematic.h
+settings.h
 syntax.h
 symbolwidget.h
 textdoc.h
-viewpainter.h
 wire.h
 wirelabel.h
 )

@@ -16,14 +16,12 @@
  ***************************************************************************/
 
 #include "libcomp.h"
-#include "qucs.h"
 #include "main.h"
-#include "schematic.h"
 #include "misc.h"
+#include "node.h"
 #include "extsimkernels/qucs2spice.h"
 #include "extsimkernels/spicecompat.h"
 
-#include <limits.h>
 
 #include <QTextStream>
 #include <QDir>
@@ -89,7 +87,7 @@ int LibComp::loadSection(const QString& Name, QString& Section,
              QStringList *Includes, QStringList *Attach)
 {
   QDir Directory(QucsSettings.LibDir);
-  QFile file(Directory.absoluteFilePath(Props.first()->Value + ".lib"));
+  QFile file(misc::properAbsFileName(Directory.absoluteFilePath(Props.first()->Value + ".lib"), containingSchematic));
   if(!file.open(QIODevice::ReadOnly))
     return -1;
 
@@ -247,8 +245,9 @@ int LibComp::loadSymbol()
 QString LibComp::getSubcircuitFile()
 {
   QDir Directory(QucsSettings.LibDir);
-  QString FileName = Directory.absoluteFilePath(Props.first()->Value);
-  return misc::properAbsFileName(FileName);
+  QString FileName = misc::properAbsFileName(Directory.absoluteFilePath(Props.first()->Value) + ".lib");
+  FileName.chop(4);
+  return FileName;
 }
 
 // -------------------------------------------------------

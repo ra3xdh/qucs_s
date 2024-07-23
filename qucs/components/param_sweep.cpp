@@ -15,8 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "param_sweep.h"
-#include "main.h"
-#include "qucs.h"
 #include "schematic.h"
 #include "misc.h"
 
@@ -25,18 +23,7 @@ Param_Sweep::Param_Sweep()
   Description = QObject::tr("Parameter sweep");
 
   QString  s = Description;
-  int a = s.lastIndexOf(" ");
-  if (a != -1) s[a] = '\n';    // break line
-
-  Texts.append(new Text(0, 0, s.left(a), Qt::darkBlue, QucsSettings.largeFontSize));
-  if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkBlue, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".SW";
   Name  = "SW";
   SpiceModel = "*";
@@ -55,8 +42,6 @@ Param_Sweep::Param_Sweep()
 		QObject::tr("stop value for sweep")));
   Props.append(new Property("Points", "20", true,
 		QObject::tr("number of simulation steps")));
-  Props.append(new Property("SweepModel","false",false,
-                            "[true,false]"));
 }
 
 Param_Sweep::~Param_Sweep()
@@ -108,8 +93,9 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     QString type = getProperty("Type")->Value;
     QString step_var = parameter_list.begin()->toLower();// use first element name as variable name
     step_var.remove(QRegularExpression("[\\.\\[\\]@:]"));
-	
-    s = QString("let number_%1 = 0\n").arg(step_var);
+
+    s = "option interp\n";
+    s += QString("let number_%1 = 0\n").arg(step_var);
     if (lvl==0) s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
     else s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res%4\n").arg(sim).arg(step_var).arg(sim).arg(lvl);
 
@@ -159,39 +145,22 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     for(constListIterator=parameter_list.begin(); constListIterator!=parameter_list.end();++constListIterator)
     {
         QString par = *constListIterator;
-
-        bool modelsweep = false; // Find component and its modelstring
         bool compfound = false;
-        QString mod,mod_par;
-
-        if (!par.contains('@')) {
-            QStringList par_lst = par.split('.',qucs::SkipEmptyParts);
-            if (par_lst.count()>1) {
-                mod_par = par_lst.at(1);
-                // Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
-                Schematic *sch = getSchematic();
-                Component *pc = sch->getComponentByName(par_lst.at(0));
-                if (pc != NULL) {
-                    mod = pc->getSpiceNetlist().section('\n',1,1,QString::SectionSkipEmpty)
-                                            .section(' ',1,1,QString::SectionSkipEmpty);
-                    if (!mod.isEmpty()) modelsweep = true;
-                }
-            }
-        }
+        bool temper_sweep = false;
 
         Schematic *sch = getSchematic();
         Component *pc = sch->getComponentByName(getProperty("Param")->Value);
         if (pc != NULL) compfound = true;
         else compfound = false;
 
-        if (modelsweep) { // Model parameter sweep
-            s += QString("altermod %1 %2 = $%3_act%4").arg(mod).arg(mod_par).arg(step_var).arg(nline_char);
+        if (step_var == "temp" || step_var == "temper") temper_sweep = true;
+
+        if (temper_sweep) {
+          s += QString("option temp = $%1_act%2").arg(step_var).arg(nline_char);
+        } else if (compfound) {
+          s += QString("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
         } else {
-            QString mswp = getProperty("SweepModel")->Value;
-            if (mswp == "true")
-                s += QString("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
-            else if (compfound) s += QString("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
-            else s += QString("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
+          s += QString("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
         }
     }
     return s;
@@ -265,19 +234,3 @@ QString Param_Sweep::spice_netlist(bool isXyce)
     return s.toLower();
 }
 
-// -------------------------------------------------------
-QString Param_Sweep::netlist()
-{
-  QString s = Model+":"+Name;
-
-  // output all node names
-  for (Port *p1 : Ports)
-    s += " "+p1->Connection->Name;   // node names
-
-  // output all properties
-  for(unsigned int i=0; i <= Props.count()-2; i++)
-    if(Props.at(i)->Name != "Symbol")
-      s += " "+Props.at(i)->Name+"=\""+Props.at(i)->Value+"\"";
-
-  return s + '\n';
-}

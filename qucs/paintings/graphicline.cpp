@@ -41,22 +41,21 @@ GraphicLine::~GraphicLine()
 {
 }
 
-// --------------------------------------------------------------------------
-void GraphicLine::paint(ViewPainter *p)
-{
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
-    p->drawLine(cx, cy, cx+x2, cy+y2);
-    p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
-    p->drawLine(cx, cy, cx+x2, cy+y2);
+void GraphicLine::paint(QPainter *painter) {
+  painter->save();
+  painter->setPen(Pen);
+  painter->drawLine(cx, cy, cx+x2, cy+y2);
 
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy);  // markers for changing the size
-    p->drawResizeRect(cx+x2, cy+y2);
-    return;
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
+    painter->drawLine(cx, cy, cx+x2, cy+y2);
+    painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
+    painter->drawLine(cx, cy, cx+x2, cy+y2);
+
+    misc::draw_resize_handle(painter, QPoint{cx, cy});
+    misc::draw_resize_handle(painter, QPoint{cx + x2, cy + y2});
   }
-  p->Painter->setPen(Pen);
-  p->drawLine(cx, cy, cx+x2, cy+y2);
+  painter->restore();
 }
 
 // --------------------------------------------------------------------------

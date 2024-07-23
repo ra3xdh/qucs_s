@@ -18,10 +18,10 @@
 #ifndef SP_DISTO_H
 #define SP_DISTO_H
 
-#include "components/component.h"
+#include "components/simulation.h"
 
 
-class SpiceDisto : public Component  {
+class SpiceDisto : public qucs::component::SimulationComponent {
 public:
   SpiceDisto();
   ~SpiceDisto();

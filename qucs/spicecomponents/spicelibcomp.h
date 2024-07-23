@@ -27,7 +27,7 @@ public:
  ~SpiceLibComp() {};
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getSpiceModel();
+  QString getSpiceLibrary();
 
 protected:
   QString spice_netlist(bool isXyce);
@@ -35,7 +35,6 @@ protected:
   void remakeSymbol(int No, QStringList &pin_names);
   int  loadSymbol(const QString&);
 private:
-  void getSymbolPatternsList(QStringList &symbols);
   void removeUnusedPorts();
 };
 

@@ -350,3 +350,101 @@ double Filter::quadraticChebyshevValues(int No, int Order, double Ripple, double
   a *= 2.0 * b * sinh(c);
   return a;
 }
+
+// SCHEMATIC DRAWING FUNCTIONS
+
+QString Filter::getLineString(bool isMicrostrip, double width_or_impedance, double l, int x, int y, int rotate)
+{
+  QString code;
+  double text_x, text_y; // Coordinates for the text. They change with the rotation
+  if (isMicrostrip)
+  {
+     if (rotate)
+     {
+         text_x = 20;
+         text_y = -25;
+     }
+     else
+     {
+         text_x = -30;
+         text_y = -70;
+     }
+     code = QString("<MLIN MS1 1 %1 %2 %3 %4 0 %5 \"Sub1\" 0 \"%6 mm\" 1 \"%7 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
+              .arg(x).arg(y).arg(text_x).arg(text_y).arg(rotate)
+              .arg(QString::number(width_or_impedance*1e3, 'f', 2)).arg(QString::number(l*1e3, 'f', 2));
+  }
+  else
+  {
+      if (rotate)
+      {
+          text_x = 10;
+          text_y = -25;
+      }
+      else
+      {
+          text_x = -30;
+          text_y = -60;
+      }
+     code =  QString("<TLIN Line1 1 %1 %2 %3 %4 0 %5 \"%6 Ohm\" 1 \"%7 mm\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
+            .arg(x).arg(y).arg(text_x).arg(text_y).arg(rotate).arg(QString::number(width_or_impedance, 'f', 1)).arg(QString::number(l*1e3, 'f', 2));
+  }
+  return code;
+}
+
+QString Filter::getMS_Via(double height, int x, int y, int rotate)
+{
+    QString code;
+    switch (rotate)
+    {
+        case 0: // No rotation
+            code = QString("<MVIA MS31 1 %1 %2 20 -10 0 0 \"Sub1\" 0 \"%3 mm\" 1 \"26.85\" 0>\n").arg(x).arg(y).arg(height);
+            break;
+
+        case 1: // CTRL+R
+            code = QString("<MVIA MS31 1 %1 %2 40 -20 0 1 \"Sub1\" 0 \"%3 mm\" 1 \"26.85\" 0>\n").arg(x).arg(y).arg(height);
+            break;
+
+        case 2: // 2 x (CTRL+R)
+            code = QString("<MVIA MS31 1 %1 %2 -85 -40 0 2 \"Sub1\" 0 \"%3 mm\" 1 \"26.85\" 0>\n").arg(x).arg(y).arg(height);
+            break;
+
+        case 3: // 3 x (CTRL+R)
+            code = QString("<MVIA MS31 1 %1 %2 -90 -20 0 3 \"Sub1\" 0 \"%3 mm\" 1 \"26.85\" 0>\n").arg(x).arg(y).arg(height);
+            break;
+    }
+    return code;
+}
+
+QString Filter::getMS_Open(double width, int x, int y, int rotate)
+{
+    QString code;
+    switch (rotate)
+    {
+        case 0: // No rotation
+            code = QString("<MOPEN MS93 1 %1 %2 -20 -50 0 0 \"Sub1\" 0 \"%3 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x).arg(y).arg(QString::number(width*1e3, 'f', 2));
+            break;
+
+        case 1: // CTRL+R
+            code = QString("<MOPEN MS93 1 %1 %2 15 -12 0 1 \"Sub1\" 0 \"%3 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x).arg(y).arg(QString::number(width*1e3, 'f', 2));
+            break;
+
+        case 2: // 2 x (CTRL+R)
+            code = QString("<MOPEN MS93 1 %1 %2 -20 -50 0 2 \"Sub1\" 0 \"%3 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x).arg(y).arg(QString::number(width*1e3, 'f', 2));
+            break;
+
+        case 3: // 3 x (CTRL+R)
+            code = QString("<MOPEN MS93 1 %1 %2 15 -20 0 3 \"Sub1\" 0 \"%3 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x).arg(y).arg(QString::number(width*1e3, 'f', 2));
+            break;
+    }
+    return code;
+}
+
+QString Filter::getWireString(int x1, int y1, int x2, int y2)
+{
+  return QString("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x1).arg(y1).arg(x2).arg(y2);
+}
+QString Filter::getTeeString(int x, int y, double width1, double width2, double width3)
+{
+  return QString("<MTEE MS1 1 %1 %2 -26 20 1 0 \"Sub1\" 0 \"%3mm\" 1 \"%4mm\" 1 \"%5mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
+        .arg(x).arg(y).arg(QString::number(width1*1e3, 'f', 2)).arg(QString::number(width2*1e3, 'f', 2)).arg(QString::number(width3*1e3, 'f', 2));
+}

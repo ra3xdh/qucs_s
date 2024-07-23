@@ -567,6 +567,18 @@ int Schematic::saveDocument()
 
   stream << "<Qucs Schematic " << PACKAGE_VERSION << ">\n";
 
+  // Special case of saving a file when we want to save *only*
+  // the symbol defintion (i.e. to create a "symbol file")
+  if (DocName.endsWith(".sym")) {
+      stream << "<Symbol>\n";
+      for(auto* pp : SymbolPaints) {
+          stream << "  <" << pp->save() << ">\n";
+      }
+      stream << "</Symbol>\n";
+      file.close();
+      return 0;
+  }
+
   stream << "<Properties>\n";
   if(symbolMode) {
     stream << "  <View=" << tmpViewX1<<","<<tmpViewY1<<","
@@ -654,7 +666,7 @@ int Schematic::saveDocument()
           //pick admsXml from settings
           QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
 
-    #ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
           admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
     #else
           admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");
@@ -664,7 +676,7 @@ int Schematic::saveDocument()
 
           qDebug() << "App path : " << qApp->applicationDirPath();
           qDebug() << "workdir"  << workDir;
-          qDebug() << "homedir"  << QucsSettings.QucsHomeDir.absolutePath();
+          qDebug() << "workspacedir"  << QucsSettings.qucsWorkspaceDir.absolutePath();
 
           vaFile = QucsSettings.QucsWorkDir.filePath(fileBase()+".va");
 
@@ -2134,15 +2146,21 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
   }
 
   // first line is documentation
+  bool has_header = true;
   if(allTypes & isAnalogComponent) {
-    if (QucsSettings.DefaultSimulator != spicecompat::simQucsator)
-        stream << "*";
-    else stream << '#';
-  } else if (isVerilog)
+    if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+      has_header = false;
+    } else {
+      stream << '#';
+    }
+  } else if (isVerilog) {
     stream << "//";
-  else
+  } else {
     stream << "--";
-  stream << " Qucs " << PACKAGE_VERSION << "  " << DocName << "\n";
+  }
+  if (has_header) {
+    stream << " Qucs " << PACKAGE_VERSION << "  " << DocName << "\n";
+  }
 
   // set timescale property for verilog schematics
   if (isVerilog) {

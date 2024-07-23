@@ -1459,6 +1459,13 @@ bool Q3ScrollView::eventFilter(QObject *obj, QEvent *e)
         case QEvent::Paint:
             viewportPaintEvent((QPaintEvent*)e);
             break;
+        case QEvent::NativeGesture: {
+            if (auto* nge = dynamic_cast<QNativeGestureEvent*>(e);
+              nge->gestureType() == Qt::ZoomNativeGesture) {
+              viewportNativeGestureZoomEvent(nge);
+            }
+          }
+          break;
         case QEvent::Resize:
             if (!d->clipped_viewport)
                 viewportResizeEvent((QResizeEvent *)e);
@@ -1655,6 +1662,11 @@ void Q3ScrollView::contentsDropEvent(QDropEvent * /* event */)
 }
 
 #endif // QT_NO_DRAGANDDROP
+
+void Q3ScrollView::contentsNativeGestureZoomEvent( QNativeGestureEvent* e) {
+  e->ignore();
+}
+
 
 /*!
     This event handler is called whenever the Q3ScrollView receives a
@@ -1912,6 +1924,11 @@ void Q3ScrollView::viewportDropEvent(QDropEvent* e)
 }
 
 #endif // QT_NO_DRAGANDDROP
+
+void Q3ScrollView::viewportNativeGestureZoomEvent( QNativeGestureEvent* e) {
+  contentsNativeGestureZoomEvent(e);
+}
+
 
 /*!\internal
 

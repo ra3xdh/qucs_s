@@ -16,17 +16,14 @@
  ***************************************************************************/
 
 #include "spicelibcomp.h"
-#include "qucs.h"
-#include "schematic.h"
 #include "main.h"
 #include "misc.h"
+#include "node.h"
 #include "extsimkernels/spicecompat.h"
 
 #include <QTextStream>
 #include <QFileInfo>
 #include <QMutex>
-
-#include <limits.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -40,7 +37,7 @@ SpiceLibComp::SpiceLibComp()
   Simulator = spicecompat::simSpice;
 
   QStringList patterns;
-  getSymbolPatternsList(patterns);
+  misc::getSymbolPatternsList(patterns);
   QString p_str = "[auto";
   if (!patterns.isEmpty()) p_str += "," + patterns.join(",");
   p_str += "]";
@@ -48,6 +45,7 @@ SpiceLibComp::SpiceLibComp()
   Props.append(new Property("Device", "", false, QObject::tr("Subcircuit entry (.SUBCKT) name")));
   Props.append(new Property("SymPattern", "auto", false, p_str));
   Props.append(new Property("Params", "", false, QObject::tr("Extra parameters list")));
+  Props.append(new Property("PinAssign", "", false, QObject::tr("Pins assignment")));
 
   Model = "SpLib";
   Name  = "X";
@@ -69,7 +67,7 @@ Component* SpiceLibComp::newOne()
 // -------------------------------------------------------
 Element* SpiceLibComp::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("SpiceLibComp");
+  Name = QObject::tr("SPICE library device");
   BitmapFile = (char *) "spicelibcomp";
 
   if(getNewOne) {
@@ -86,11 +84,17 @@ Element* SpiceLibComp::info(QString& Name, char* &BitmapFile, bool getNewOne)
 void SpiceLibComp::createSymbol()
 {
   int No;
-  QString FileName = QucsSettings.BinDir;
-  FileName += QString("/../share/" QUCS_NAME "/symbols/%1.sym").arg(Props.at(2)->Value);
+  QString FileName;
+  QString symname = misc::properAbsFileName(Props.at(2)->Value, containingSchematic);
+  if (QFileInfo::exists(symname)) {
+    FileName = symname;
+  } else {
+    FileName  = QucsSettings.BinDir;
+    FileName += QString("/../share/" QUCS_NAME "/symbols/%1.sym").arg(Props.at(2)->Value);
+  }
 
   // Default symbol: LM358 in opamps.lib ---> opamps/LM358.sym
-  QString LibName = spicecompat::convert_relative_filename(Props.at(0)->Value);
+  QString LibName = misc::properAbsFileName(Props.at(0)->Value, containingSchematic);
   QString DefSym = LibName;
   QFileInfo inf(LibName); // Remove extension
   int l = inf.suffix().size();
@@ -108,7 +112,7 @@ void SpiceLibComp::createSymbol()
       removeUnusedPorts();
   } else {
     QStringList pins;
-    No = spicecompat::getPins(Props.at(0)->Value,Props.at(1)->Value,pins);
+    No = spicecompat::getPins(LibName,Props.at(1)->Value,pins);
     Ports.clear();
     remakeSymbol(No,pins);  // no symbol was found -> create standard symbol
   }
@@ -205,6 +209,7 @@ int SpiceLibComp::loadSymbol(const QString& DocName)
     if(Line.at(0) != '<') return -5;
     if(Line.at(Line.length()-1) != '>') return -6;
     Line = Line.mid(1, Line.length()-2); // cut off start and end character
+    if (Line.startsWith(".ID")) continue; // Do not adjust properties for SpiceLibComp
     Result = analyseLine(Line, 4);
     if(Result < 0) return -7;   // line format error
     z += Result;
@@ -215,30 +220,29 @@ int SpiceLibComp::loadSymbol(const QString& DocName)
 
 QString SpiceLibComp::spice_netlist(bool)
 {
-    QString s = QString("X%1 ").arg(Name);
+  QString s = QString("X%1 ").arg(Name);
+  QString pins = getProperty("PinAssign")->Value;
+  QString sym = getProperty("SymPattern")->Value;
+  if (sym == "auto" || pins.isEmpty()) {
     for (Port *p1 : Ports) {
-        s += " " + spicecompat::normalize_node_name(p1->Connection->Name);
+      s += " " + spicecompat::normalize_node_name(p1->Connection->Name);
     }
-    s += QString(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);
-    return s;
+  } else {
+    QStringList pin_nums = pins.split(";");
+    for (int i = 0; i < pin_nums.count(); i++) {
+      int pn = pin_nums.at(i).toInt();
+      Port *pp = Ports.at(pn-1);
+      s += " " + spicecompat::normalize_node_name(pp->Connection->Name);
+    }
+  }
+  s += QString(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);
+  return s;
 }
 
-QString SpiceLibComp::getSpiceModel()
+QString SpiceLibComp::getSpiceLibrary()
 {
-    QString f = spicecompat::convert_relative_filename(Props.at(0)->Value);
+    if (isActive != COMP_IS_ACTIVE) return QString("");
+    QString f = misc::properAbsFileName(Props.at(0)->Value, containingSchematic);
     QString s = QString(".INCLUDE \"%1\"\n").arg(f);
     return s;
-}
-
-
-
-void SpiceLibComp::getSymbolPatternsList(QStringList &symbols)
-{
-    QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
-    QDir sym_dir(dir_name);
-    QStringList sym_files = sym_dir.entryList(QDir::Files);
-    for (const QString& file : sym_files) {
-        QFileInfo inf(file);
-        symbols.append(inf.baseName());
-    }
 }

@@ -15,8 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "resistor.h"
-#include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 
@@ -112,13 +110,13 @@ void Resistor::createSymbol()
   }
   else {
     Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-18,  0,-15, -7,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-15, -7, -9,  7,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line( -9,  7, -3, -7,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line( -3, -7,  3,  7,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(  3,  7,  9, -7,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(  9, -7, 15,  7,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line( 15,  7, 18,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-18,  0,-15, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.append(new qucs::Line(-15, -7, -9,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.append(new qucs::Line( -9,  7, -3, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.append(new qucs::Line( -3, -7,  3,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.append(new qucs::Line(  3,  7,  9, -7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.append(new qucs::Line(  9, -7, 15,  7,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+    Lines.append(new qucs::Line( 15,  7, 18,  0,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
     Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
   }
 

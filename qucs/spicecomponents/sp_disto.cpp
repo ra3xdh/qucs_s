@@ -15,30 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 #include "sp_disto.h"
-#include "main.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
-
+#include <cmath>
 
 SpiceDisto::SpiceDisto()
 {
   isSimulation = true;
   Description = QObject::tr("Distortion simulation");
   Simulator = spicecompat::simNgspice | spicecompat::simSpiceOpus;
-
-  QString  s = Description;
-  int a = s.indexOf(" ");
-  if (a != -1) s[a] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(a), Qt::darkRed, QucsSettings.largeFontSize));
-  if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkRed, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".DISTO";
   Name  = "DISTO";
   SpiceModel = ".DISTO";
@@ -93,8 +79,8 @@ QString SpiceDisto::spice_netlist(bool isXyce)
             Fstart *= fac;
             misc::str2num(Props.at(2)->Value,Fstop,unit,fac);
             Fstop *= fac;
-            double Nd = ceil(log10(Fstop/Fstart)); // number of decades
-            double Npd = ceil((Np - 1)/Nd); // points per decade
+            double Nd = std::ceil(std::log10(Fstop/Fstart)); // number of decades
+            double Npd = std::ceil((Np - 1)/Nd); // points per decade
             points = QString::number(Npd);
         } else {
             points = Props.at(3)->Value;

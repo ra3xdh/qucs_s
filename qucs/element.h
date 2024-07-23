@@ -38,38 +38,78 @@
 #define ELEMENT_H
 
 #include <QPen>
-#include <QBrush>
+#include <vector>
 
 class Node;
-class QPainter;
 class WireLabel;
 class Schematic;
 
 namespace qucs { // otherwise conflict with <windows.h>
                  // coming from Qt5 headers
 
-struct Line {
-  Line(int _x1, int _y1, int _x2, int _y2, QPen _style)
-       : x1(_x1), y1(_y1), x2(_x2), y2(_y2), style(_style) {};
-  int   x1, y1, x2, y2;
-  QPen  style;
+class DrawingPrimitive {
+public:
+  virtual void draw([[maybe_unused]] QPainter* painter) const {};
+  virtual QBrush brushHint() const { return Qt::NoBrush; }
+  virtual QPen penHint() const { return Qt::NoPen; }
 };
 
-struct Arc {
-  Arc(int _x, int _y, int _w, int _h, int _angle, int _arclen, QPen _style)
+struct Line : DrawingPrimitive {
+  Line(double _x1, double _y1, double _x2, double _y2, QPen _style)
+       : x1(_x1), y1(_y1), x2(_x2), y2(_y2), style(_style) {};
+  double   x1, y1, x2, y2;
+  QPen  style;
+  void draw(QPainter* painter) const override;
+  QPen penHint() const override { return style; }
+};
+
+struct Arc : DrawingPrimitive {
+  Arc(double _x, double _y, double _w, double _h, int _angle, int _arclen, QPen _style)
       : x(_x), y(_y), w(_w), h(_h), angle(_angle),
 	arclen(_arclen), style(_style) {};
-  int   x, y, w, h, angle, arclen;
+  double   x, y, w, h;
+  int angle, arclen;
   QPen  style;
+  void draw(QPainter* painter) const override;
+  QPen penHint() const override { return style; }
 };
 
-struct Area {
-  Area(int _x, int _y, int _w, int _h, QPen _Pen,
+struct Rect : DrawingPrimitive {
+  Rect(double _x, double _y, double _w, double _h, QPen _Pen,
 	QBrush _Brush = QBrush(Qt::NoBrush))
 	: x(_x), y(_y), w(_w), h(_h), Pen(_Pen), Brush(_Brush) {};
-  int    x, y, w, h;
+  double    x, y, w, h;
   QPen   Pen;
   QBrush Brush;    // filling style/color
+  void draw(QPainter* painter) const override;
+  QPen penHint() const override { return Pen; }
+  QBrush brushHint() const override { return Brush; }
+};
+
+// 'ellipse' conflicts 'ellipse' defined in paintings.h in the same namespace
+struct Ellips : DrawingPrimitive {
+  Ellips(double _x, double _y, double _w, double _h, QPen _Pen,
+	QBrush _Brush = QBrush(Qt::NoBrush))
+	: x(_x), y(_y), w(_w), h(_h), Pen(_Pen), Brush(_Brush) {};
+  double    x, y, w, h;
+  QPen   Pen;
+  QBrush Brush;    // filling style/color
+  void draw(QPainter* painter) const override;
+  QPen penHint() const override { return Pen; }
+  QBrush brushHint() const override { return Brush; }
+};
+
+struct Polyline : DrawingPrimitive {
+  std::vector<QPointF> points;
+  QPen pen;
+  QBrush brush;
+
+  Polyline(const std::vector<QPointF> &pts, QPen p = QPen{Qt::NoPen}, QBrush b = QBrush{Qt::NoBrush})
+    : points(pts), pen{p}, brush{b} {};
+
+  void draw(QPainter* painter) const override;
+  QPen penHint() const override { return pen; }
+  QBrush brushHint() const override { return brush; }
 };
 
 }
@@ -84,16 +124,20 @@ struct Port {
   Node *Connection;
 };
 
-struct Text {
-  Text(int _x, int _y, const QString& _s, QColor _Color = QColor(0,0,0),
-	float _Size = 10.0, float _mCos=1.0, float _mSin=0.0)
+struct Text : qucs::DrawingPrimitive {
+  Text(double _x, double _y, const QString& _s, QColor _Color = QColor(0,0,0),
+	double _Size = 10.0, double _mCos=1.0, double _mSin=0.0)
 	: x(_x), y(_y), s(_s), Color(_Color), Size(_Size),
 	  mSin(_mSin), mCos(_mCos) { over = under = false; };
-  int	  x, y;
+  double	  x, y;
   QString s;
   QColor  Color;
-  float	  Size, mSin, mCos; // font size and rotation coefficients
+  double	  Size, mSin, mCos; // font size and rotation coefficients
   bool	  over, under;      // text attributes
+  void draw(QPainter *painter) const override;
+  void draw(QPainter* painter, QRectF* br) const;
+  QPen penHint() const override { return Color; }
+  double angle() const;
 };
 
 struct Property {
@@ -103,6 +147,10 @@ struct Property {
   QString Name, Value;
   bool    display;   // show on schematic or not ?
   QString Description;
+  QRect boundingRect() const { return br; };
+  void paint(int x, int y, QPainter* p);
+private:
+  QRect br;
 };
 
 

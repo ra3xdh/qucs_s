@@ -20,6 +20,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
 #endif
 #include <QAction>
 #include <QMessageBox>
+#include <QTextStream>
 
 #include "main.h"
 #include "misc.h"

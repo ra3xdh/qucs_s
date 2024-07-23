@@ -16,7 +16,6 @@
  ***************************************************************************/
 #include "eqndefined.h"
 #include "main.h"
-#include "schematic.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 

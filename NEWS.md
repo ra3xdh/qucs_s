@@ -1,3 +1,60 @@
+# Qucs-S 24.3.0
+
+## New features
+
+* SpiceLibComp redesign. This device is renamed to *Spice Library Device* and provides an easy way 
+  to add SPICE model to schematic and assign symbol to it. See #679
+* Added possibity to import SPICE model for Diode, BJT, MOSFET, and JFET unified devices (blue) #795
+* Implemeted symbol files (`*.sym`)  editing mode. These files are needed to attach symbol to SPICE devices #700
+* Redesign of schematic rendering engine. Improve rendering quality on HiDPI displays #723
+* Improved Qucsconv GUI to reflect new converter features #826
+* Improved libraries portability, relative path support for libraries, show libraries from project directory #567
+* Added a global setting for Ngspice compatibility mode (LTspice, HSPICE, etc.) #851
+* Add global Ngspice compatibility mode (LTspice/HSPICE/S3) setting #851
+* QucsatorRF updated to version 1.0.1
+
+## Deprecated features
+
+* The `*.qucs` binary archives are not supported anymore. Use system archivers to pack the projects instead #811
+* The `SweepModel` property of *Parameter Sweep* simulaiton has been deprecated. It is not needed anymore after Ngspice
+  has added variable sweep feature. Use variable sweep instead #839
+* Toolbars and status bar made always visible #852
+* Icons theme settings removed from settings dialog. These settings have no effect since v2.1.0
+  when unified and auto-generated icons were introduced.
+
+## Packaging
+
+* Linux DEB and RPM packages switched to Qt6
+* Windows package switched to Qt6
+* Introduced continous release of Linux, Windows, and Mac packages #719 
+* Added MacOS package build #797 and homebrew support #804
+
+## General improvements
+
+* The TEMP and TEMPER variables are recognized by parameter sweep to apply temperature sweep #816
+* Fixed ASCO optimization with QucsatorRF #830
+* Enabled variables as parameters for unified nonlinear devices and pulsed source #838 and #808
+* Fixed issues with XYCE simulation #701
+* Improved attenuator synthesis tool #722
+* Improved filter synthesis tool #715 #673
+* Redesign *File->Open examples* menu. Show open dialog instead of file manager #672
+* Qucs-S now follows XDG standard for cached data location #145
+* Apply .OPTION INTERP when simulating transient with parameter sweep; prevent broken par. sweep data  #766
+* Implemented relative paths support for library devices #567
+
+## Component library
+
+* Added PWM controllers (TL494, UC384x, etc.) library #846
+* Added Germanium diodes library #846
+* Added Mixer IC library containing SA612 model #846
+* Added Diodes extended library containing different USSR diodes models
+* Added new Varactor library #759
+* Added new PIN diode library #764
+
+## Localization
+
+* Russian translation update
+
 # Qucs-S 24.2.1
 
 This release contains no new features except the fixing of the critical bugs.

@@ -15,8 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "xyce_script.h"
-#include "main.h"
-#include "misc.h"
 
 
 XyceScript::XyceScript()
@@ -24,14 +22,7 @@ XyceScript::XyceScript()
   isSimulation = true;
   Description = QObject::tr("XYCE script");
   Simulator = spicecompat::simXyce;
-
-  Texts.append(new Text(0, 0, Description, Qt::darkRed, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".XYCESCR";
   Name  = "XYCESCR";
   SpiceModel = "XYCESCR";

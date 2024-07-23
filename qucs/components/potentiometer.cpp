@@ -82,8 +82,8 @@ void potentiometer::createSymbol()
   Lines.append(new qucs::Line( 30,-13,-30,-13,QPen(Qt::darkBlue,2)));
 
   // resistor
-  Lines.append(new qucs::Line(-40,  0, -25, 0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-25,  0, -20,-5,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-40,  0, -25, 0,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-25,  0, -20,-5,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
   Lines.append(new qucs::Line(-20, -5, -15, 0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-15,  0, -10,-5,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-10, -5, -5,  0,QPen(Qt::darkBlue,2)));
@@ -92,8 +92,8 @@ void potentiometer::createSymbol()
   Lines.append(new qucs::Line(  5,  0, 10, -5,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 10, -5, 15,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 15,  0, 20, -5,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 20, -5, 25,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 25,  0, 40,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 20, -5, 25,  0,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::RoundCap)));
+  Lines.append(new qucs::Line( 25,  0, 40,  0,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
 
   // arrow
   Lines.append(new qucs::Line( -4, -9,  0, -5,QPen(Qt::darkBlue,2)));

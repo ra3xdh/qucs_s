@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include "logical_nand.h"
-#include "node.h"
 
 Logical_NAND::Logical_NAND()
 {

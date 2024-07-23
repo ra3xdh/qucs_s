@@ -58,10 +58,7 @@ Element * gatedDlatch::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void gatedDlatch::createSymbol()
 {
-  Lines.append(new qucs::Line(-30, -40, 30,-40,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30, -40, 30, 40,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  40,-30, 40,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30, 40,-30, -40,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-30, -40, 60, 80,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
   Lines.append(new qucs::Line(-50,-20,-30,-20,QPen(Qt::darkBlue,2))); // D
   Lines.append(new qucs::Line(-50, 20,-30, 20,QPen(Qt::darkBlue,2))); // C
@@ -70,10 +67,10 @@ void gatedDlatch::createSymbol()
 
   Arcs.append(new qucs::Arc( 30, 15, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
 
-  Texts.append(new Text(-25,-32, "D", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25,  7, "C", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 11,-32, "Q", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 11,  7, "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,-28, "D", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 12, "C", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 13,-28, "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 13, 12, "Q", Qt::darkBlue, 12.0));
   Texts.last()->over=true;
 
   Ports.append(new Port(-50,-20));  // D

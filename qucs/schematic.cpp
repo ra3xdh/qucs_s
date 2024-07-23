@@ -56,7 +56,6 @@
 #include "qucs.h"
 #include "schematic.h"
 #include "textdoc.h"
-#include "viewpainter.h"
 
 #include "misc.h"
 
@@ -83,6 +82,7 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_)
     : QucsDoc(App_, Name_)
 {
     symbolMode = false;
+    isSymbolOnly = false;
 
     setFont(QucsSettings.font);
     // ...........................................................
@@ -189,15 +189,9 @@ void Schematic::becomeCurrent(bool update)
 
     // update appropriate menu entry
     if (symbolMode) {
-        if (DocName.right(4) == ".sym") {
-            App->symEdit->setText(tr("Edit Text"));
-            App->symEdit->setStatusTip(tr("Edits the Text"));
-            App->symEdit->setWhatsThis(tr("Edit Text\n\nEdits the text file"));
-        } else {
-            App->symEdit->setText(tr("Edit Schematic"));
-            App->symEdit->setStatusTip(tr("Edits the schematic"));
-            App->symEdit->setWhatsThis(tr("Edit Schematic\n\nEdits the schematic"));
-        }
+        App->symEdit->setText(tr("Edit Schematic"));
+        App->symEdit->setStatusTip(tr("Edits the schematic"));
+        App->symEdit->setWhatsThis(tr("Edit Schematic\n\nEdits the schematic"));
     } else {
         App->symEdit->setText(tr("Edit Circuit Symbol"));
         App->symEdit->setStatusTip(tr("Edits the symbol for this schematic"));
@@ -212,9 +206,13 @@ void Schematic::becomeCurrent(bool update)
         Paintings = &SymbolPaints;
         Components = &SymbolComps;
 
-        // if no symbol yet exists -> create one
-        if (createSubcircuitSymbol()) {
-            sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+        // "Schematic" is used to edit usual schematic files (containing
+        // a schematic and a subcircuit symbol) and *.sym files (which
+        // contain *only* a symbol definition). If we're dealing with
+        // symbol file, then there is no need to create a subcircuit
+        // symbol, a symbol is already there.
+        if (!DocName.endsWith(".sym") && createSubcircuitSymbol()) {
+            updateAllBoundingRect();
             setChanged(true, true);
         }
 
@@ -360,136 +358,170 @@ bool Schematic::sizeOfFrame(int &xall, int &yall)
     return true;
 }
 
-// -----------------------------------------------------------
-void Schematic::paintFrame(ViewPainter *p)
-{
+void Schematic::paintFrame(QPainter* painter) {
     // dimensions:  X cm / 2.54 * 144
-    int xall, yall;
-    if (!sizeOfFrame(xall, yall))
+    int frame_width, frame_height;
+    if (!sizeOfFrame(frame_width, frame_height))
         return;
-    p->Painter->setPen(QPen(Qt::darkGray, 1));
-    //p->Painter->setPen(QPen(Qt::black,0));
-    int d = p->LineSpacing + int(4.0 * p->Scale);
-    int x1_, y1_, x2_, y2_;
-    p->map(xall, yall, x1_, y1_);
-    x2_ = int(xall * p->Scale) + 1;
-    y2_ = int(yall * p->Scale) + 1;
-    p->Painter->drawRect(x1_, y1_, -x2_, -y2_);
-    p->Painter->drawRect(x1_ - d, y1_ - d, 2 * d - x2_, 2 * d - y2_);
 
-    int z;
-    int step = xall / ((xall + 127) / 255);
-    for (z = step; z <= xall - step; z += step) {
-        p->map(z, 0, x2_, y2_);
-        p->Painter->drawLine(x2_, y2_, x2_, y2_ + d);
-        p->Painter->drawLine(x2_, y1_ - d, x2_, y1_);
-    }
-    char Letter[2] = "1";
-    for (z = step / 2 + 5; z < xall; z += step) {
-        p->drawText(Letter, z, 3, 0);
-        p->map(z, yall + 3, x2_, y2_);
-        p->Painter->drawText(x2_, y2_ - d, 0, 0, Qt::TextDontClip, Letter);
-        Letter[0]++;
+    painter->save();
+    painter->setPen(QPen(Qt::darkGray, 1));
+
+    // Width of stripe along frame border in column and row labels are placed
+    const int frame_margin = painter->fontMetrics().lineSpacing() + 4;
+
+    // Outer rect
+    painter->drawRect(0, 0, frame_width, frame_height);
+    // a bit smaller than outer rect
+    painter->drawRect(frame_margin, frame_margin, frame_width - 2 * frame_margin, frame_height - 2 * frame_margin);
+
+    // Column labels
+    {
+      const int h_step = frame_width / ((frame_width + 127) / 255);
+      uint column_number = 1;
+
+      for (int x = h_step; x <= frame_width; x += h_step) {
+        painter->drawLine(x, 0, x, frame_margin);
+        painter->drawLine(x, frame_height - frame_margin, x, frame_height);
+
+        auto cn = QString::number(column_number);
+        auto tx = x - h_step / 2 + 5;
+        painter->drawText(tx, 3, 0, 0, Qt::TextDontClip, cn);
+        painter->drawText(tx, frame_height - frame_margin + 3, 0, 0, Qt::TextDontClip, cn);
+
+	column_number++;
+      }
     }
 
-    step = yall / ((yall + 127) / 255);
-    for (z = step; z <= yall - step; z += step) {
-        p->map(0, z, x2_, y2_);
-        p->Painter->drawLine(x2_, y2_, x2_ + d, y2_);
-        p->Painter->drawLine(x1_ - d, y2_, x1_, y2_);
-    }
-    Letter[0] = 'A';
-    for (z = step / 2 + 5; z < yall; z += step) {
-        p->drawText(Letter, 5, z, 0);
-        p->map(xall + 5, z, x2_, y2_);
-        p->Painter->drawText(x2_ - d, y2_, 0, 0, Qt::TextDontClip, Letter);
-        Letter[0]++;
+    // Row labels
+    {
+      const int v_step = frame_height / ((frame_height + 127) / 255);
+      char row_letter = 'A';
+
+      for (int y = v_step; y <= frame_height; y += v_step) {
+        painter->drawLine(0, y, frame_margin, y);
+        painter->drawLine(frame_width - frame_margin, y, frame_width, y);
+
+        auto rl = QString::fromLatin1(&row_letter, 1);
+        auto ty = y - v_step/2 + 5;
+        painter->drawText(5, ty, rl);
+        painter->drawText(frame_width - frame_margin + 5, ty, rl);
+
+	    row_letter++;
+      }
     }
 
     // draw text box with text
-    p->map(xall - 340, yall - 3, x1_, y1_);
-    p->map(xall - 3, yall - 3, x2_, y2_);
-    x1_ -= d;
-    x2_ -= d;
-    y1_ -= d;
-    y2_ -= d;
-    d = int(6.0 * p->Scale);
-    z = int(200.0 * p->Scale);
-    y1_ -= p->LineSpacing + d;
-    p->Painter->drawLine(x1_, y1_, x2_, y1_);
-    p->Painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text2);
-    p->Painter->drawLine(x1_ + z, y1_, x1_ + z, y1_ + p->LineSpacing + d);
-    p->Painter->drawText(x1_ + d + z, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text3);
-    y1_ -= p->LineSpacing + d;
-    p->Painter->drawLine(x1_, y1_, x2_, y1_);
-    p->Painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text1);
-    y1_ -= (Frame_Text0.count('\n') + 1) * p->LineSpacing + d;
-    p->Painter->drawRect(x2_, y2_, x1_ - x2_ - 1, y1_ - y2_ - 1);
-    p->Painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text0);
+    int x1_ = frame_width - 340 - frame_margin;
+    int y1_ = frame_height - 3 - frame_margin;
+    int x2_ = frame_width - frame_margin - 3;
+    int y2_ = frame_height - frame_margin - 3;
+
+    const int d = 6;
+    const double z = 200.0;
+    y1_ -= painter->fontMetrics().lineSpacing() + d;
+    painter->drawLine(x1_, y1_, x2_, y1_);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text2);
+    painter->drawLine(x1_ + z, y1_, x1_ + z, y1_ + painter->fontMetrics().lineSpacing() + d);
+    painter->drawText(x1_ + d + z, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text3);
+    y1_ -= painter->fontMetrics().lineSpacing() + d;
+    painter->drawLine(x1_, y1_, x2_, y1_);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text1);
+    y1_ -= (Frame_Text0.count('\n') + 1) * painter->fontMetrics().lineSpacing() + d;
+    painter->drawRect(x2_, y2_, x1_ - x2_ - 1, y1_ - y2_ - 1);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text0);
+
+    painter->restore();
 }
 
 // -----------------------------------------------------------
 // Is called when the content (schematic or data display) has to be drawn.
 void Schematic::drawContents(QPainter *p, int, int, int, int)
 {
-    ViewPainter Painter;
+    QTransform trf{p->transform()};
+    trf
+        .scale(Scale, Scale)
+        .translate(-ViewX1, -ViewY1);
+    p->setTransform(trf);
 
-    Painter.init(p, Scale, -ViewX1, -ViewY1, contentsX(), contentsY());
+    auto renderHints = p->renderHints();
+    renderHints
+        .setFlag(QPainter::Antialiasing)
+        .setFlag(QPainter::TextAntialiasing)
+        .setFlag(QPainter::SmoothPixmapTransform);
+    p->setRenderHints(renderHints);
 
-    drawGrid(Painter);
+    p->setFont(QucsSettings.font);
+    drawGrid(p);
 
     if (!symbolMode)
-        paintFrame(&Painter);
+        paintFrame(p);
 
-    for (Component *pc = Components->first(); pc != 0; pc = Components->next())
-        pc->paint(&Painter);
-
-    for (Wire *pw = Wires->first(); pw != 0; pw = Wires->next()) {
-        pw->paint(&Painter);
-        if (pw->Label)
-            pw->Label->paint(&Painter); // separate because of paintSelected
+    drawElements(p);
+    if (showBias > 0) {
+        drawDcBiasPoints(p);
     }
 
-    Node *pn;
-    for (pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-        pn->paint(&Painter);
-        if (pn->Label)
-            pn->Label->paint(&Painter); // separate because of paintSelected
+    drawPostPaintEvents(p);
+}
+
+void Schematic::drawElements(QPainter* painter) {
+    for (auto* component : *Components) {
+        component->paint(painter);
     }
 
-    // FIXME disable here, issue with select box goes away
-    // also, instead of red, line turns blue
-    for (Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-        pd->paint(&Painter);
-
-    for (Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next())
-        pp->paint(&Painter);
-
-    if (showBias > 0) { // show DC bias points in schematic ?
-        int x, y, z;
-        for (pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-            if (pn->Name.isEmpty())
-                continue;
-            x = pn->cx;
-            y = pn->cy + 4;
-            z = pn->x1;
-            if (z & 1)
-                x -= Painter.Painter->fontMetrics().boundingRect(pn->Name).width();
-            if (!(z & 2)) {
-                y -= (Painter.LineSpacing >> 1) + 4;
-                if (z & 1)
-                    x -= 4;
-                else
-                    x += 4;
-            }
-            if (z & 0x10)
-                Painter.Painter->setPen(Qt::darkGreen); // green for currents
-            else
-                Painter.Painter->setPen(Qt::blue); // blue for voltages
-            Painter.drawText(pn->Name, x, y);
+    for (auto* wire : *Wires) {
+        wire->paint(painter);
+        if (wire->Label) {
+            wire->Label->paint(painter); // separate because of paintSelected
         }
     }
 
+    for (auto* node : *Nodes) {
+        node->paint(painter);
+        if (node->Label) {
+            node->Label->paint(painter); // separate because of paintSelected
+        }
+    }
+
+    for (auto* diagram : *Diagrams) {
+        diagram->paint(painter);
+    }
+
+    for (auto* painting : *Paintings) {
+        painting->paint(painter);
+    }
+}
+
+void Schematic::drawDcBiasPoints(QPainter* painter) {
+    painter->save();
+    int x, y, z;
+    for (auto* pn : *Nodes) {
+        if (pn->Name.isEmpty())
+            continue;
+        x = pn->cx;
+        y = pn->cy + 4;
+        z = pn->x1;
+        if (z & 1)
+            x -= painter->fontMetrics().boundingRect(pn->Name).width();
+        if (!(z & 2)) {
+            y -= (painter->fontMetrics().lineSpacing() >> 1) + 4;
+            if (z & 1)
+                x -= 4;
+            else
+                x += 4;
+        }
+        if (z & 0x10)
+            painter->setPen(Qt::darkGreen); // green for currents
+        else
+            painter->setPen(Qt::blue); // blue for voltages
+        painter->drawText(x, y, pn->Name);
+    }
+    painter->restore();
+}
+
+void Schematic::drawPostPaintEvents(QPainter* painter) {
+    painter->save();
     /*
    * The following events used to be drawn from mouseactions.cpp, but since Qt4
    * Paint actions can only be called from within the paint event, so they
@@ -498,37 +530,38 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
     for (auto p : PostedPaintEvents) {
         // QPainter painter2(viewport()); for if(p.PaintOnViewport)
         QPen pen(Qt::black);
-        Painter.Painter->setPen(Qt::black);
+        painter->setPen(Qt::black);
         switch (p.pe) {
         case _NotRop:
-            Painter.Painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+            painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
             break;
         case _Rect:
-            Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
+            painter->drawRect(p.x1, p.y1, p.x2, p.y2);
             break;
         case _SelectionRect:
+            pen.setCosmetic(true);
             pen.setStyle(Qt::DashLine);
             pen.setColor(QColor(50, 50, 50, 100));
-            Painter.Painter->setPen(pen);
-            Painter.fillRect(p.x1, p.y1, p.x2, p.y2, QColor(200, 220, 240, 100));
-            Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
+            painter->setPen(pen);
+            painter->fillRect(p.x1, p.y1, p.x2, p.y2, QColor(200, 220, 240, 100));
+            painter->drawRect(p.x1, p.y1, p.x2, p.y2);
             break;
         case _Line:
-            Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
+            painter->drawLine(p.x1, p.y1, p.x2, p.y2);
             break;
         case _Ellipse:
-            Painter.drawEllipse(p.x1, p.y1, p.x2, p.y2);
+            painter->drawEllipse(p.x1, p.y1, p.x2, p.y2);
             break;
         case _Arc:
-            Painter.drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
+            painter->drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
             break;
         case _DotLine:
-            Painter.Painter->setPen(Qt::DotLine);
-            Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
+            painter->setPen(Qt::DotLine);
+            painter->drawLine(p.x1, p.y1, p.x2, p.y2);
             break;
         case _DotRect:
-            Painter.Painter->setPen(Qt::DotLine);
-            Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
+            painter->setPen(Qt::DotLine);
+            painter->drawRect(p.x1, p.y1, p.x2, p.y2);
             break;
         case _Translate:; //painter2.translate(p.x1, p.y1);
         case _Scale:; //painter2.scale(p.x1,p.y1);
@@ -536,6 +569,7 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
         }
     }
     PostedPaintEvents.clear();
+    painter->restore();
 }
 
 void Schematic::PostPaintEvent(
@@ -670,195 +704,166 @@ void Schematic::contentsMouseDoubleClickEvent(QMouseEvent *Event)
         (App->view->*(App->MouseDoubleClickAction))(this, Event);
 }
 
-// -----------------------------------------------------------
-void Schematic::print(QPrinter *, QPainter *Painter, bool printAll, bool fitToPage)
-{
-    QPaintDevice *pdevice = Painter->device();
-    float printerDpiX = (float) pdevice->logicalDpiX();
-    float printerDpiY = (float) pdevice->logicalDpiY();
-    float printerW = (float) pdevice->width();
-    float printerH = (float) pdevice->height();
-    QPainter pa(viewport());
-    float screenDpiX = (float) pa.device()->logicalDpiX();
-    float screenDpiY = (float) pa.device()->logicalDpiY();
-    float PrintScale = 0.5;
-    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
-    int marginX = (int) (40 * printerDpiX / screenDpiX);
-    int marginY = (int) (40 * printerDpiY / screenDpiY);
+void Schematic::print(QPrinter*, QPainter* painter, bool printAll,
+                      bool fitToPage, QMargins margins) {
+    painter->save();
 
+    const QRectF pageSize{0, 0, static_cast<double>(painter->device()->width()),
+                          static_cast<double>(painter->device()->height())};
+
+    QRect printedArea = printAll ? allBoundingRect() : sizeOfSelection();
+
+    if (printAll && showFrame) {
+        int frame_width, frame_height;
+        sizeOfFrame(frame_width, frame_height);
+        printedArea |= QRect{0, 0, frame_width, frame_height};
+    }
+
+    printedArea = printedArea.marginsAdded(margins);
+
+    double scale = 1.0;
     if (fitToPage) {
-        float ScaleX = float((printerW - 2 * marginX) / float((UsedX2 - UsedX1) * printerDpiX))
-                       * screenDpiX;
-        float ScaleY = float((printerH - 2 * marginY) / float((UsedY2 - UsedY1) * printerDpiY))
-                       * screenDpiY;
+        scale = std::min(pageSize.width() / printedArea.width(),
+                         pageSize.height() / printedArea.height());
+    } else {
+        QFontInfo printerFontInfo{QFont{QucsSettings.font, painter->device()}};
+        QFontInfo schematicFontInfo{QucsSettings.font};
 
-        if (showFrame) {
-            int xall, yall;
-            sizeOfFrame(xall, yall);
-            ScaleX = ((float) (printerW - 2 * marginX) / (float) (xall * printerDpiX)) * screenDpiX;
-            ScaleY = ((float) (printerH - 2 * marginY) / (float) (yall * printerDpiY)) * screenDpiY;
+        scale = static_cast<double>(printerFontInfo.pixelSize()) /
+                static_cast<double>(schematicFontInfo.pixelSize());
+    }
+    painter->scale(scale, scale);
+
+    painter->translate(-printedArea.left(), -printedArea.top());
+
+    // put picture in center
+    {
+        auto w = pageSize.width() / scale;
+        if (printedArea.width() <= w) {
+            auto d = (w - printedArea.width()) / 2;
+            painter->translate(d, 0);
         }
 
-        if (ScaleX > ScaleY)
-            PrintScale = ScaleY;
-        else
-            PrintScale = ScaleX;
+        auto h = pageSize.height() / scale;
+        if (printedArea.height() <= h) {
+            auto d = (h - printedArea.height()) / 2;
+            painter->translate(0, d);
+        }
     }
 
-    //bool selected;
-    ViewPainter p;
-    int StartX = UsedX1;
-    int StartY = UsedY1;
-    if (showFrame) {
-        if (UsedX1 > 0)
-            StartX = 0;
-        if (UsedY1 > 0)
-            StartY = 0;
-    }
+    // User chose a font with size in points while looking at the font
+    // on screen. The same font size in *points* equals to different
+    // amount of pixels when shown on screen or printed on paper,
+    // because underlying painting devices have different resolutions.
+    // To preserve the ratio of text sizes and elements' sizes
+    // font size has to be set in pixels here. This makes lines, squares,
+    // circles, etc. and size of font be measured in same units and scale
+    // them equally.
+    auto f = QucsSettings.font;
+    QFontInfo fi{f};
+    f.setPixelSize(fi.pixelSize());
+    painter->setFont(f);
 
-    float PrintRatio = printerDpiX / screenDpiX;
-    QFont oldFont = Painter->font();
-    QFont printFont = Painter->font();
-#ifdef __MINGW32__
-    printFont.setPointSizeF(printFont.pointSizeF() / PrintRatio);
-    Painter->setFont(printFont);
-#endif
-    p.init(Painter,
-           PrintScale * PrintRatio,
-           -StartX,
-           -StartY,
-           -marginX,
-           -marginY,
-           PrintScale,
-           PrintRatio);
+    paintSchToViewpainter(painter, printAll);
 
-    if (!symbolMode)
-        paintFrame(&p);
-
-    paintSchToViewpainter(&p, printAll, false, screenDpiX, printerDpiX);
-
-    Painter->setFont(oldFont);
+    painter->restore();
 }
 
-void Schematic::paintSchToViewpainter(
-    ViewPainter *p, bool printAll, bool toImage, int screenDpiX, int printerDpiX)
-{
-    bool selected;
+namespace {
+// helper to be used in Schematic::paintSchToViewpainter
+template <typename T> void draw_preserve_selection(T* elem, QPainter* p) {
+    bool selected = elem->isSelected;
+    elem->isSelected = false;
+    elem->paint(p);
+    elem->isSelected = selected;
+}
+} // namespace
 
-    if (printAll) {
-        int x2, y2;
-        if (sizeOfFrame(x2, y2))
-            paintFrame(p);
+void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
+    if (printAll && showFrame && !symbolMode) {
+        paintFrame(painter);
     }
 
-    for (Component *pc = Components->first(); pc != 0; pc = Components->next())
-        if (pc->isSelected || printAll) {
-            selected = pc->isSelected;
-            pc->isSelected = false;
-            if (toImage) {
-                pc->paint(p);
-            } else {
-                pc->print(p, (float) screenDpiX / (float) printerDpiX);
-            }
-            pc->isSelected = selected;
-        }
+    const auto should_draw = [=](Element* drawable) {
+      return printAll || drawable->isSelected;
+    };
 
-    for (Wire *pw = Wires->first(); pw != 0; pw = Wires->next()) {
-        if (pw->isSelected || printAll) {
-            selected = pw->isSelected;
-            pw->isSelected = false;
-            pw->paint(p); // paint all selected wires
-            pw->isSelected = selected;
+    for (auto* component : *Components) {
+        if (should_draw(component)) {
+            draw_preserve_selection(component, painter);
         }
-        if (pw->Label)
-            if (pw->Label->isSelected || printAll) {
-                selected = pw->Label->isSelected;
-                pw->Label->isSelected = false;
-                pw->Label->paint(p);
-                pw->Label->isSelected = selected;
-            }
     }
 
-    Element *pe;
-    for (Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-        for (pe = pn->Connections.first(); pe != 0; pe = pn->Connections.next())
-            if (pe->isSelected || printAll) {
-                pn->paint(p); // paint all nodes with selected elements
+    for (auto* wire : *Wires) {
+        if (should_draw(wire)) {
+            draw_preserve_selection(wire, painter);
+        }
+
+        if (auto* label = wire->Label) {
+            if (should_draw(label)) {
+                draw_preserve_selection(label, painter);
+            }
+        }
+    }
+
+    for (auto* node : *Nodes) {
+        for (auto* connected : node->Connections) {
+            if (should_draw(connected)) {
+                draw_preserve_selection(node, painter);
                 break;
             }
-        if (pn->Label)
-            if (pn->Label->isSelected || printAll) {
-                selected = pn->Label->isSelected;
-                pn->Label->isSelected = false;
-                pn->Label->paint(p);
-                pn->Label->isSelected = selected;
+        }
+
+        if (auto* label = node->Label) {
+            if (should_draw(label)) {
+                draw_preserve_selection(label, painter);
             }
+        }
     }
 
-    for (Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next())
-        if (pp->isSelected || printAll) {
-            selected = pp->isSelected;
-            pp->isSelected = false;
-            pp->paint(p); // paint all selected paintings
-            pp->isSelected = selected;
+    for (auto* painting : *Paintings) {
+        if (should_draw(painting)) {
+            draw_preserve_selection(painting, painter);
+        }
+    }
+
+    for (auto* diagram : *Diagrams) {
+        if (!should_draw(diagram)) {
+            continue;
         }
 
-    for (Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-        if (pd->isSelected || printAll) {
-            // if graph or marker is selected, deselect during printing
-            for (Graph *pg : pd->Graphs) {
-                if (pg->isSelected)
-                    pg->Type |= 1; // remember selection
-                pg->isSelected = false;
-                for (Marker *pm : pg->Markers) {
-                    if (pm->isSelected)
-                        pm->Type |= 1; // remember selection
-                    pm->isSelected = false;
-                }
+        // if graph or marker is selected, deselect during printing
+        for (Graph* pg : diagram->Graphs) {
+            if (pg->isSelected) {
+                pg->Type |= 1; // remember selection
             }
-
-            selected = pd->isSelected;
-            pd->isSelected = false;
-            pd->paintDiagram(p); // paint all selected diagrams with graphs and markers
-            pd->paintMarkers(p, printAll);
-            pd->isSelected = selected;
-
-            // revert selection of graphs and markers
-            for (Graph *pg : pd->Graphs) {
-                if (pg->Type & 1)
-                    pg->isSelected = true;
-                pg->Type &= -2;
-                for (Marker *pm : pg->Markers) {
-                    if (pm->Type & 1)
-                        pm->isSelected = true;
-                    pm->Type &= -2;
+            pg->isSelected = false;
+            for (Marker* pm : pg->Markers) {
+                if (pm->isSelected) {
+                    pm->Type |= 1; // remember selection
                 }
+                pm->isSelected = false;
             }
         }
+        draw_preserve_selection(diagram, painter);
+
+        // revert selection of graphs and markers
+        for (Graph* pg : diagram->Graphs) {
+            if (pg->Type & 1) {
+                pg->isSelected = true;
+            }
+            pg->Type &= -2;
+            for (Marker* pm : pg->Markers) {
+                if (pm->Type & 1) {
+                    pm->isSelected = true;
+                }
+                pm->Type &= -2;
+            }
+        }
+    }
 
     if (showBias > 0) { // show DC bias points in schematic ?
-        int x, y, z;
-        for (Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-            if (pn->Name.isEmpty())
-                continue;
-            x = pn->cx;
-            y = pn->cy + 4;
-            z = pn->x1;
-            if (z & 1)
-                x -= p->Painter->fontMetrics().boundingRect(pn->Name).width();
-            if (!(z & 2)) {
-                y -= (p->LineSpacing >> 1) + 4;
-                if (z & 1)
-                    x -= 4;
-                else
-                    x += 4;
-            }
-            if (z & 0x10)
-                p->Painter->setPen(Qt::darkGreen); // green for currents
-            else
-                p->Painter->setPen(Qt::blue); // blue for voltages
-            p->drawText(pn->Name, x, y);
-        }
+        drawDcBiasPoints(painter);
     }
 }
 
@@ -1059,21 +1064,27 @@ void Schematic::setOnGrid(int &x, int &y)
     y -= y % GridY;
 }
 
-void Schematic::drawGrid(const ViewPainter& p)
-{
+void Schematic::drawGrid(QPainter* painter) {
     if (!GridOn)
         return;
+
+    painter->save();
+    // Painter might have been scaled somewhere upstream in call stack,
+    // and we don't grid points to change their size or thickness
+    // depending on zoom level. Thus we remove any transformations
+    // and draw on "raw" painter, controlling all offsets manually
+    painter->setTransform(QTransform{});
 
     // A grid drawn with pen of 1.0 width reportedly looks good both
     // on standard and HiDPI displays.
     // See here for details https://github.com/ra3xdh/qucs_s/pull/524
-    p.Painter->setPen(QPen{ Qt::black, 1.0 });
+    painter->setPen(QPen{ Qt::black, 1.0 });
 
     {
         // Draw small cross at origin of coordinates
         const QPoint origin = modelToViewport(QPoint{0, 0});
-        p.Painter->drawLine(origin.x() - 3, origin.y(), origin.x() + 4, origin.y());  // horizontal stick
-        p.Painter->drawLine(origin.x(), origin.y() - 3, origin.x(), origin.y() + 4);  // vertical stick
+        painter->drawLine(origin.x() - 3, origin.y(), origin.x() + 4, origin.y());  // horizontal stick
+        painter->drawLine(origin.x(), origin.y() - 3, origin.x(), origin.y() + 4);  // vertical stick
     }
 
     // Grid is drawn as a set of nodes, each node looks like a point and a node
@@ -1126,9 +1137,20 @@ void Schematic::drawGrid(const ViewPainter& p)
     // Finally draw the grid-nodes
     for (double x = gridTopLeft.x(); x <= gridBottomRight.x(); x += horizontalStep) {
         for (double y = gridTopLeft.y(); y <= gridBottomRight.y(); y += verticalStep) {
-            p.Painter->drawPoint(std::round(x), std::round(y));
+            painter->drawPoint(std::round(x), std::round(y));
         }
     }
+
+    painter->restore();
+}
+
+void Schematic::relativeRotation(int &newX, int &newY, int comX, int comY, int oldX, int oldY)
+{
+    // Shift coordinate system to center of mass
+    // Rotate
+    // Shift coordinate system back to origin
+    newX = (oldY-comY)+comX;
+    newY = -(oldX-comX)+comY;
 }
 
 // ---------------------------------------------------
@@ -1160,6 +1182,15 @@ float Schematic::textCorr()
     //   —————————————————————————————————
     //   QucsSettings.font.pointSize() * k
     return (Scale / float(metrics.lineSpacing()));
+}
+
+void Schematic::updateAllBoundingRect() {
+    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+}
+
+QRect Schematic::allBoundingRect() {
+    updateAllBoundingRect();
+    return QRect{UsedX1, UsedY1, (UsedX2 - UsedX1), (UsedY2 - UsedY1)};
 }
 
 // ---------------------------------------------------
@@ -1356,6 +1387,7 @@ bool Schematic::rotateElements()
     Wires->setAutoDelete(false);
     Components->setAutoDelete(false);
 
+    // To rotate a selected area its necessary to work with half steps
     int x1 = INT_MAX, y1 = INT_MAX;
     int x2 = INT_MIN, y2 = INT_MIN;
     QList<Element *> ElementCache;
@@ -1364,14 +1396,17 @@ bool Schematic::rotateElements()
     copyWires(x1, y1, x2, y2, &ElementCache);
     copyPaintings(x1, y1, x2, y2, &ElementCache);
     if (y1 == INT_MAX)
+    {
         return false; // no element selected
+    }
+    int comX = (x1 + ((x2-x1) / 2)); // center of mass
+    int comY = (y1 + ((y2-y1) / 2)); 
+    int newPosX = INT_MIN; 
+    int newPosY = INT_MIN;
 
     Wires->setAutoDelete(true);
     Components->setAutoDelete(true);
-
-    x1 = (x1 + x2) >> 1; // center for rotation
-    y1 = (y1 + y2) >> 1;
-    //setOnGrid(x1, y1);
+    setOnGrid(comX, comY);
 
     Wire *pw;
     Painting *pp;
@@ -1385,23 +1420,26 @@ bool Schematic::rotateElements()
         case isDigitalComponent:
             pc = (Component *) pe;
             pc->rotate(); //rotate component !before! rotating its center
-            pc->setCenter(pc->cy - y1 + x1, x1 - pc->cx + y1);
+            relativeRotation(newPosX, newPosY, comX, comY, pc->cx, pc->cy);
+            pc->setCenter(newPosX, newPosY);
             insertRawComponent(pc);
             break;
 
         case isWire:
             pw = (Wire *) pe;
-            x2 = pw->x1;
-            pw->x1 = pw->y1 - y1 + x1;
-            pw->y1 = x1 - x2 + y1;
-            x2 = pw->x2;
-            pw->x2 = pw->y2 - y1 + x1;
-            pw->y2 = x1 - x2 + y1;
+            relativeRotation(newPosX, newPosY, comX, comY, pw->x1, pw->y1);
+            pw->x1 = newPosX;
+            pw->y1 = newPosY;
+            relativeRotation(newPosX, newPosY, comX, comY, pw->x2, pw->y2);
+            pw->x2 = newPosX;
+            pw->y2 = newPosY;
+
             pl = pw->Label;
             if (pl) {
                 x2 = pl->cx;
-                pl->cx = pl->cy - y1 + x1;
-                pl->cy = x1 - x2 + y1;
+                relativeRotation(newPosX, newPosY, comX, comY, pl->cx, pl->cy);
+                pl->cx = newPosX;
+                pl->cy = newPosY;
                 if (pl->Type == isHWireLabel)
                     pl->Type = isVWireLabel;
                 else
@@ -1413,20 +1451,20 @@ bool Schematic::rotateElements()
         case isHWireLabel:
         case isVWireLabel:
             pl = (WireLabel *) pe;
-            x2 = pl->x1;
-            pl->x1 = pl->y1 - y1 + x1;
-            pl->y1 = x1 - x2 + y1;
+            relativeRotation(newPosX, newPosY, comX, comY, pl->x1, pl->y1);
+            pl->x1 = newPosX;
+            pl->y1 = newPosY;
             break;
         case isNodeLabel:
             pl = (WireLabel *) pe;
             if (pl->pOwner == 0) {
-                x2 = pl->x1;
-                pl->x1 = pl->y1 - y1 + x1;
-                pl->y1 = x1 - x2 + y1;
+                relativeRotation(newPosX, newPosY, comX, comY, pl->x1, pl->y1);
+                pl->x1 = newPosX;
+                pl->y1 = newPosY;
             }
-            x2 = pl->cx;
-            pl->cx = pl->cy - y1 + x1;
-            pl->cy = x1 - x2 + y1;
+            relativeRotation(newPosX, newPosY, comX, comY, pl->cx, pl->cy);
+            pl->cx = newPosX;
+            pl->cy = newPosY;
             insertNodeLabel(pl);
             break;
 
@@ -1666,7 +1704,18 @@ bool Schematic::load()
 // Saves this Qucs document. Returns the number of subcircuit ports.
 int Schematic::save()
 {
-    int result = adjustPortNumbers(); // same port number for schematic and symbol
+    int result = 0;
+    // When saving *only* a symbol, there is no corresponding schematic:
+    // and thus ports in symbol don't have corresponding ports in schematic.
+    // There is just nothing to adjust.
+    //
+    // In other cases we want to delete any dangling ports from symbol
+    // and invoke "adjustPortNumbers" for it.
+    if (!isSymbolOnly) {
+        result = adjustPortNumbers(); // same port number for schematic and symbol
+    } else {
+        orderSymbolPorts();
+    }
     if (saveDocument() < 0)
         return -1;
 
@@ -1690,8 +1739,8 @@ int Schematic::save()
         undoSymbol.at(undoSymbolIdx)->replace(1, 1, 'i');
     }
     // update the subcircuit file lookup hashes
-    QucsMain->updateSchNameHash();
-    QucsMain->updateSpiceNameHash();
+    //QucsMain->updateSchNameHash();
+    //QucsMain->updateSpiceNameHash();
 
     return result;
 }
@@ -1929,6 +1978,47 @@ int Schematic::adjustPortNumbers()
     return countPort;
 }
 
+int Schematic::orderSymbolPorts()
+{
+  Painting *pp;
+  int countPorts = 0;
+  QSet<int> port_numbers, existing_numbers, free_numbers;
+  int max_port_number = 0;
+  for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next()) {
+    if (pp->Name == ".PortSym ") {
+      countPorts++;
+      QString numstr = ((PortSymbol *) pp)->numberStr;
+      if (numstr != "0") {
+        if (numstr.toInt() > max_port_number) {
+          max_port_number = numstr.toInt();
+        }
+        existing_numbers.insert(numstr.toInt());
+      }
+    }
+  }
+
+  max_port_number = std::max(countPorts,max_port_number);
+  for (int i = 1; i <= max_port_number; i++) {
+    port_numbers.insert(i);
+  }
+
+  free_numbers = port_numbers - existing_numbers;
+
+  // Assign new numbers only if port number is empty; Preserve ports order.
+  for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next()) {
+    if (pp->Name == ".PortSym ") {
+      QString numstr = ((PortSymbol *) pp)->numberStr;
+      if (numstr == "0") {
+        int free_num = *free_numbers.constBegin();
+        free_numbers.remove(free_num);
+        ((PortSymbol *) pp)->numberStr = QString::number(free_num);
+      }
+    }
+  }
+
+  return countPorts;
+}
+
 // ---------------------------------------------------
 bool Schematic::undo()
 {
@@ -1938,7 +2028,6 @@ bool Schematic::undo()
         }
 
         rebuildSymbol(undoSymbol.at(--undoSymbolIdx));
-        adjustPortNumbers(); // set port names
 
         emit signalUndoState(undoSymbolIdx != 0);
         emit signalRedoState(undoSymbolIdx != undoSymbol.size() - 1);
@@ -2551,6 +2640,18 @@ void Schematic::contentsDragLeaveEvent(QDragLeaveEvent *)
 
     if (formerAction)
         formerAction->setChecked(true); // restore old action
+}
+
+void Schematic::contentsNativeGestureZoomEvent( QNativeGestureEvent* Event) {
+  App->editText->setHidden(true); // disable edit of component property
+
+  const auto factor = 1.0 + Event->value();
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+  const auto pointer = mapFromGlobal(Event->globalPosition().toPoint());
+#else
+  const auto pointer = mapFromGlobal(Event->globalPos());
+#endif
+  zoomAroundPoint(factor,pointer);
 }
 
 // ---------------------------------------------------

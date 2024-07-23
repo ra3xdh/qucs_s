@@ -58,41 +58,41 @@ void Graph::createMarkerText() const
   }
 }
 
-// ---------------------------------------------------------------------
-void Graph::paint(ViewPainter *p, int x0, int y0)
-{
-  if(!ScrPoints.size())
+void Graph::paint(QPainter* painter) {
+  if (ScrPoints.empty()) {
     return;
+  }
+  painter->save();
 
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,Thick*p->PrintScale+4));
-    paintLines(p, x0, y0);
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,Thick + 4));
+    paintLines(painter);
 
-    p->Painter->setPen(QPen(Qt::white, Thick*p->PrintScale, Qt::SolidLine));
-    paintLines(p, x0, y0);
+    painter->setPen(QPen(Qt::white, Thick, Qt::SolidLine));
+    paintLines(painter);
+    painter->restore();
     return;
   }
 
   // **** not selected ****
-  p->Painter->setPen(QPen(QColor(Color), Thick*p->PrintScale, Qt::SolidLine));
-  paintLines(p, x0, y0);
+  painter->setPen(QPen(QColor(Color), Thick, Qt::SolidLine));
+  paintLines(painter);
+  painter->restore();
 }
 
-// ---------------------------------------------------------------------
-void Graph::paintLines(ViewPainter *p, int x0, int y0)
-{
+void Graph::paintLines(QPainter* painter) {
   switch(Style) {
     case GRAPHSTYLE_STAR:
-      drawStarSymbols(x0, y0, p);
+      drawStarSymbols(painter);
       break;
     case GRAPHSTYLE_CIRCLE:
-      drawCircleSymbols(x0, y0, p);
+      drawCircleSymbols(painter);
       break;
     case GRAPHSTYLE_ARROW:
-      drawArrowSymbols(x0, y0, p);
+      drawArrowSymbols(painter);
       break;
     default:
-      drawLines(x0, y0, p);
+      drawLines(painter);
   }
 }
 
@@ -375,6 +375,142 @@ double Graph::ScrPt::getDep() const
 {
   assert(ScrX>=0);
   return dep;
+}
+
+void Graph::drawCircleSymbols(QPainter* painter) const {
+  constexpr double radius = 4.0;
+
+  for (auto point : *this) {
+    if (!point.isPt()) {
+      continue;
+    }
+    painter->drawEllipse({point.getScrX(), point.getScrY()}, radius, radius);
+  }
+}
+
+void Graph::drawArrowSymbols(QPainter* painter) const {
+  // Arrow head size constants
+  constexpr double head_height = 7.0;
+  constexpr double head_half_width = 4.0;
+  for (auto point : *this) {
+    if (point.isGraphEnd()) {
+      break;
+    }
+
+    if (!point.isPt()) {
+      continue;
+    }
+    // Given a graph point we draw a vertical arrow pointed to it
+
+    // Vertical arrow line (stem)
+    painter->drawLine(QLineF{point.getScrX(), point.getScrY(), point.getScrX(), static_cast<qreal>(cy)});
+    // left arrowhead part
+    painter->drawLine(QLineF{point.getScrX() - head_half_width, point.getScrY() - head_height, point.getScrX(), point.getScrY()});
+    // right arrowhead part
+    painter->drawLine(QLineF{point.getScrX() + head_half_width, point.getScrY() - head_height, point.getScrX(), point.getScrY()});
+  }
+}
+
+void Graph::drawStarSymbols(QPainter* painter) const {
+  for (auto point : *this) {
+    if (!point.isPt()) {
+      continue;
+    }
+    painter->save();
+    painter->translate(point.getScrX(), point.getScrY());
+    painter->drawLine(-5, 0, 5, 0); // horizontal line
+    painter->rotate(60);
+    painter->drawLine(-5, 0, 5, 0); // upper left to lower right
+    painter->rotate(-120);
+    painter->drawLine(-5, 0, 5, 0); // upper right to lower left
+    painter->restore();
+  }
+}
+
+void Graph::drawLines(QPainter* painter) const {
+  painter->save();
+
+  QPen pen = painter->pen();
+  pen.setJoinStyle(Qt::RoundJoin);
+  pen.setCapStyle(Qt::RoundCap);
+  switch(Style) {
+    case GRAPHSTYLE_DASH:
+      pen.setDashPattern({10.0, 6.0});  // stroke len, space len
+      break;
+    case GRAPHSTYLE_DOT:
+      pen.setDashPattern({2.0, 4.0});
+      break;
+    case GRAPHSTYLE_LONGDASH:
+      pen.setDashPattern({24.0, 8.0});
+      break;
+    default:
+      pen.setStyle(Qt::SolidLine);
+  }
+  painter->setPen(pen);
+
+  // How graphs are drawn
+  //
+  // Graph object (this) contains a set of data points,
+  // each described by the ScrPt struct.
+  //
+  // Sometimes semantically sigle graph consists of
+  // multiple lines/curves — or "subgraphs": you draw
+  // one subgraph, then return back to the beginning
+  // and draw next, and so on.
+  //
+  // To describe such compound graphs the set of data
+  // points contains points for each of the subgraphs
+  // i.e. at first a subequence for one subgraph, then
+  // a subsequence for next one and so on, all within
+  // a single parent sequence:
+  //    aaaaaaabbbbbbbbcccccccdddddd
+  //
+  // Naturally, there has to be a mean to delimit such
+  // subsequences, so not all points in the data set are
+  // actually "data" points — some of them are "service"
+  // points describing boundaries between subsequences and
+  // the end of parent sequence:
+  //  - point.isStrokeEnd() returns true if point is the
+  //    boundary between subsequences.
+  //  - point.isGraphEnd() returns true when there is no
+  //    more graph data points
+
+  bool drawing_started = false;
+  double prev_point_x = 0;
+  double prev_point_y = 0;
+
+  for (auto point : *this) {
+    // No more data points
+    if (point.isGraphEnd()) {
+      break;
+    }
+
+    // Subgraph has ended, let's pretend like we're
+    // drawing a graph from the beginning
+    if (point.isStrokeEnd()) {
+      drawing_started = false;
+      continue;
+    }
+
+    // skip if not valid
+    if (!point.isPt()) {
+      continue;
+    }
+
+    // First point in a subgraph. From here the drawing starts
+    if (!drawing_started) {
+      prev_point_x = point.getScrX();
+      prev_point_y = point.getScrY();
+      drawing_started = true;
+      continue;
+    }
+
+    painter->drawLine(QLineF{prev_point_x, prev_point_y, point.getScrX(), point.getScrY()});
+    prev_point_x = point.getScrX();
+    prev_point_y = point.getScrY();
+  }
+
+  painter->restore();
 }
 
 // vim:ts=8:sw=2:et

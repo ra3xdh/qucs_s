@@ -27,10 +27,6 @@
 #include <QStringList>
 #include <QDir>
 
-#include "wire.h"
-#include "node.h"
-#include "diagrams/diagram.h"
-#include "extsimkernels/spicecompat.h"
 
 class QucsApp;
 class Component;
@@ -38,18 +34,9 @@ class VersionTriplet;
 
 static const double pi = 3.1415926535897932384626433832795029;  /* pi   */
 
-namespace qucs {
-enum iconType { panelIcons = 0, compIcons = 1 };
-enum iconTheme { autoIcons = 0, lightIcons = 1, darkIcons = 2 };
-}
-
 struct tQucsSettings {
   int DefaultSimulator;
 
-  int panelIconsTheme;
-  int compIconsTheme;
-
-  int x, y, dx, dy;    // position and size of main window
   QFont font;
   QFont appFont;
   QFont textFont;
@@ -77,7 +64,16 @@ struct tQucsSettings {
 
   unsigned int NodeWiring;
   QDir QucsWorkDir;
-  QDir QucsHomeDir;
+
+  // A dir for user projects and libraries. See also https://github.com/ra3xdh/qucs_s/issues/145
+  QDir qucsWorkspaceDir;
+
+  // This is the dir where all temporary or intermediate data should be stored.
+  // Consider a data "temporary" if its used only once or it makes sense only
+  // through out a single app run or a shorter period of time.
+  // Don't make any assumptions about the lifetime of contents in this dir,
+  // think that everything placed in here is deleted when app is terminated.
+  QDir tempFilesDir;
   QDir projsDir; // current user projects subdirectory
   QDir AdmsXmlBinDir;  // dir of admsXml executable
   QDir AscoBinDir;     // dir of asco executable
@@ -108,12 +104,6 @@ struct tQucsSettings {
 
   bool hasDarkTheme;
   bool fullTraceName;
-
-  bool FileToolbar;
-  bool EditToolbar;
-  bool ViewToolbar;
-  bool WorkToolbar;
-  bool SimulateToolbar;
 
   bool firstRun;
 };

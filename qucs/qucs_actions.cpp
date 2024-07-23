@@ -41,6 +41,7 @@
 #include <QListWidget>
 #include <QDesktopServices>
 
+#include "portsymbol.h"
 #include "projectView.h"
 #include "main.h"
 #include "qucs.h"
@@ -58,7 +59,6 @@
 #include "dialogs/librarydialog.h"
 #include "dialogs/loaddialog.h"
 #include "dialogs/importdialog.h"
-#include "dialogs/packagedialog.h"
 #include "dialogs/aboutdialog.h"
 #include "module.h"
 
@@ -513,9 +513,13 @@ void QucsApp::slotInsertPort(bool on)
   if(view->selElem)
     delete view->selElem;  // delete previously selected component
 
-  view->selElem = new SubCirPort();
-
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
+  if (Doc->symbolMode) {
+    view->selElem = new PortSymbol();
+  } else {
+     view->selElem = new SubCirPort();
+  }
+
   if(view->drawn) Doc->viewport()->update();
   view->drawn = false;
   MouseMoveAction = &MouseActions::MMoveElement;
@@ -679,13 +683,8 @@ void QucsApp::slotSelectAll()
     ((TextDoc*)Doc)->selectAll();
   }
   else {
-    int xmin, ymin, xmax, ymax;
-    ((Schematic*)Doc)->sizeOfAll(xmin, ymin, xmax, ymax);
-    xmin--;
-    ymin--;
-    xmax++;
-    ymax++;
-    ((Schematic*)Doc)->selectElements(xmin, ymin, xmax, ymax, true, false);
+    auto selectionRect = ((Schematic*)Doc)->allBoundingRect().marginsAdded(QMargins{1, 1, 1, 1});
+    ((Schematic*)Doc)->selectElements(selectionRect.left(), selectionRect.top(), selectionRect.right(), selectionRect.bottom(), true, false);
     ((Schematic*)Doc)->viewport()->update();
     view->drawn = false;
   }
@@ -742,7 +741,7 @@ void QucsApp::editFile(const QString& File)
 
       if (QucsSettings.Editor.toLower().contains("qucsedit")) {
 
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
   prog = QUCS_NAME"edit.exe";
 #elif __APPLE__
   prog = "qucsedit.app/Contents/MacOS/qucsedit";
@@ -787,7 +786,7 @@ void QucsApp::editFile(const QString& File)
 // Is called to show the output messages of the last simulation.
 void QucsApp::slotShowLastMsg()
 {
-  editFile(QucsSettings.QucsHomeDir.filePath("log.txt"));
+  editFile(QucsSettings.tempFilesDir.filePath("log.txt"));
 }
 
 // ------------------------------------------------------------------------
@@ -814,7 +813,7 @@ void QucsApp::slotShowLastNetlist()
 
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simQucsator :
-        netlists.append(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+        netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
         break;
     case spicecompat::simNgspice :
     case spicecompat::simSpiceOpus :
@@ -835,7 +834,7 @@ void QucsApp::slotShowLastNetlist()
         Schematic *sch = (Schematic *) w;
         if (sch->isDigitalCircuit()) {
             netlists.clear();
-            netlists.append(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+            netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
         }
     }
 
@@ -905,7 +904,7 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
   QString tooldir;
   if (qucs_tool) tooldir = QucsSettings.QucsatorDir;
   else tooldir = QucsSettings.BinDir;
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
   QString cmd = QDir::toNativeSeparators("\""+tooldir + prog + ".exe\"");
 #elif __APPLE__
   QString cmd = QDir::toNativeSeparators(tooldir + prog + ".app/Contents/MacOS/" + prog);
@@ -1220,110 +1219,94 @@ void QucsApp::slotCursorUp(bool up)
 // In "view->MAx3" is the number of the current property.
 void QucsApp::slotApplyCompText()
 {
-  QString s;
   QFont f = QucsSettings.font;
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   f.setPointSizeF( Doc->Scale * float(f.pointSize()) );
   editText->setFont(f);
 
-  Property  *pp = 0;
-  Component *pc = (Component*)view->focusElement;
-  if(!pc) return;  // should never happen
-  view->MAx1 = pc->cx + pc->tx;
-  view->MAy1 = pc->cy + pc->ty;
+  Component *const component = dynamic_cast<Component*>(view->focusElement);
+  if(!component) return;  // should never happen
+  view->MAx1 = component->cx + component->tx;
+  view->MAy1 = component->cy + component->ty;
 
-  int z, n=0;  // "n" is number of property on screen
-  pp = pc->Props.first();
-  for(z=view->MAx3; z>0; z--) {  // calculate "n"
-    if(!pp) {  // should never happen
-      slotHideEdit();
-      return;
-    }
-    if(pp->display) n++;   // is visible ?
-    pp = pc->Props.next();
-  }
+  // Here is a bit of *magic* and implicit coupling: the value of view->MAx3
+  // comes from Component::getTextSelected, and it's equal 0 when component
+  // name is clicked, N + 1 when Nth component property is clicked.
+  const int component_text_index = view->MAx3;
+  const bool is_name = component_text_index == 0;
 
-  pp = 0;
-  if(view->MAx3 > 0)  pp = pc->Props.at(view->MAx3-1); // current property
-  else s = pc->Name;
+  Property *const component_property = !is_name
+                                     ? component->Props.at(component_text_index - 1)
+                                     : nullptr;
 
-  if(!editText->isHidden()) {   // is called the first time ?
-    // no -> apply value to current property
-    if(view->MAx3 == 0) {   // component name ?
-      Component *pc2;
-      if(!editText->text().isEmpty())
-        if(pc->Name != editText->text()) {
-          for(pc2 = Doc->Components->first(); pc2!=0; pc2 = Doc->Components->next())
-            if(pc2->Name == editText->text())
-              break;  // found component with the same name ?
-          if(!pc2) {
-            pc->Name = editText->text();
-            Doc->setChanged(true, true);  // only one undo state
+  if (editText->isVisible()) {   // is called the first time ?
+    if (is_name) {
+      const auto new_name{editText->text()};
+
+      if (!new_name.isEmpty() && component->Name != new_name) {
+        // TODO: rewrite with std::none_of after replacing Q3PtrList
+        //       with modern container
+        bool is_unique = true;
+        for (auto* other : *Doc->Components) {
+          if (other->Name == new_name) {
+            is_unique = false;
+            break;
           }
         }
+
+        if (is_unique) {
+          component->Name = new_name;
+          Doc->setChanged(true, true);  // only one undo state
+        }
+      }
+
     }
-    else if(pp) {  // property was applied
-      if(pp->Value != editText->text()) {
-        pp->Value = editText->text();
-        Doc->recreateComponent(pc);  // because of "Num" and schematic symbol
+    else if (component_property) {  // property was applied
+      if (component_property->Value != editText->text()) {
+        component_property->Value = editText->text();
+        Doc->recreateComponent(component);  // because of "Num" and schematic symbol
         Doc->setChanged(true, true); // only one undo state
       }
     }
-
-    n++;     // next row on screen
-    (view->MAx3)++;  // next property
-    pp = pc->Props.at(view->MAx3-1);  // search for next property
-
-    Doc->viewport()->update();
-    view->drawn = false;
-
-    if(!pp) {     // was already last property ?
-      slotHideEdit();
-      return;
-    }
-
-
-    while(!pp->display) {  // search for next visible property
-      (view->MAx3)++;  // next property
-      pp = pc->Props.next();
-      if(!pp) {     // was already last property ?
-        slotHideEdit();
-        return;
-      }
-    }
   }
 
-  // avoid seeing the property text behind the line edit
-  if(pp)  // Is it first property or component name ?
-    s = pp->Value;
-  editText->setMinimumWidth(editText->fontMetrics().boundingRect(s).width()+4);
+  const QString s = is_name
+                ? component->Name
+                : component_property->Value;
 
-
-  Doc->contentsToViewport(int(Doc->Scale * float(view->MAx1 - Doc->ViewX1)),
-			 int(Doc->Scale * float(view->MAy1 - Doc->ViewY1)),
-			 view->MAx2, view->MAy2);
   editText->setReadOnly(false);
-  if(pp) {  // is it a property ?
-    s = pp->Value;
-    view->MAx2 += editText->fontMetrics().boundingRect(pp->Name+"=").width();
-    if(pp->Description.indexOf('[') >= 0)  // is selection list ?
+  QPoint editTextTopLeft;
+  if (component_property) {  // is it a property ?
+    editTextTopLeft = Doc->modelToViewport(QPoint{component->cx, component->cy} + component_property->boundingRect().topLeft());
+    editTextTopLeft.rx() += editText->fontMetrics().boundingRect(component_property->Name + "=" + '\u0020').width();
+
+    if(component_property->Description.indexOf('[') >= 0)  // is selection list ?
       editText->setReadOnly(true);
     Expr_CompProp.setPattern("[^\"]*");
-    if(!pc->showName) n--;
   }
-  else   // it is the component name
+  else { // it is the component name
     Expr_CompProp.setPattern("[\\w_]+");
+    editTextTopLeft = Doc->modelToViewport(QPoint{component->cx + component->tx, component->cy + component->ty});
+  }
+
+  {
+    auto size = editText->fontMetrics().boundingRect(s ).size();
+    size.rwidth() += editText->fontMetrics().averageCharWidth();
+    editText->setFixedSize(size);
+  }
+
+  view->MAx2 = editTextTopLeft.x();
+  view->MAy2 = editTextTopLeft.y();
+
   Val_CompProp.setRegularExpression(Expr_CompProp);
   editText->setValidator(&Val_CompProp);
 
-  z = editText->fontMetrics().lineSpacing();
-  view->MAy2 += n*z;
   editText->setText(s);
-  misc::setWidgetBackgroundColor(editText,QucsSettings.BGColor);
+  editText->setStyleSheet("color: black; background-color: " + QucsSettings.BGColor.name());
   editText->setFocus();
   editText->selectAll();
   editText->setParent(Doc->viewport());
-  editText->move(QPoint(view->MAx2, view->MAy2));
+  editText->move(view->MAx2, view->MAy2);
   editText->show();
   //editText->reparent(Doc->viewport(), 0, QPoint(view->MAx2, view->MAy2), true);
 }
@@ -1452,24 +1435,6 @@ void QucsApp::slotExportGraphAsCsv()
   File.close();
 }
 
-// ----------------------------------------------------------
-void QucsApp::slotCreatePackage()
-{
-  slotHideEdit(); // disable text edit of component property
-
-  PackageDialog *d = new PackageDialog(this, true);
-  d->exec();
-}
-
-// ----------------------------------------------------------
-void QucsApp::slotExtractPackage()
-{
-  slotHideEdit(); // disable text edit of component property
-  PackageDialog *d = new PackageDialog(this, false);
-  d->show();
-  d->extractPackage();
-  readProjects();
-}
 
 void QucsApp::slotOpenRecent()
 {
@@ -1630,7 +1595,7 @@ void QucsApp::slotBuildModule()
 
     QString make;
 
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
     make = "mingw32-make.exe";    // must be on the path!
 #else
     make = "make";                // must be on the path!
@@ -1656,7 +1621,7 @@ void QucsApp::slotBuildModule()
 
     QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
 
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
     admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
 #else
     admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");

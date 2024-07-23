@@ -17,7 +17,6 @@
 
 
 #include "ngspice.h"
-#include "xspice_cmbuilder.h"
 #include "components/iprobe.h"
 #include "components/vprobe.h"
 #include "components/equation.h"
@@ -28,6 +27,8 @@
 #include "main.h"
 #include "misc.h"
 #include "qucs.h"
+#include "settings.h"
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -70,7 +71,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 {
     Q_UNUSED(simulations);
 
-    if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
+    stream << "* Qucs " << PACKAGE_VERSION << "  " << Sch->DocName << "\n";
 
     // include math. functions for inter-simulator compat.
     QString mathf_inc;
@@ -79,6 +80,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     if (found && QucsSettings.DefaultSimulator != spicecompat::simSpiceOpus)
         stream<<QString(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
+    stream<<collectSpiceLibs(Sch); // collect libraries on the top of netlist
+    if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
     startNetlist(stream); // output .PARAM and components
 
     if (DC_OP_only) {
@@ -423,12 +426,16 @@ void Ngspice::slotSimulate()
     }
 
     if (!checkGround()) {
-        output.append("No Ground found. Please add at least one ground!\n");
+        output.append("No Ground found. Please add at least one ground!\n"
+                      "Press Insert->Ground in the main menu and connect ground to one "
+                      "of the schematic nodes.\n");
         checker_error = true;
     }
 
     if (!checkSimulations()) {
-        output.append("No simulation found. Please add at least one simulation!\n");
+        output.append("No simulation found. Please add at least one simulation!\n"
+                      "Navigate to the \"simulations\" group in the components panel (left)"
+                      " and drag simulation to the schematic sheet. Then define its parameters.\n");
         checker_error = true;
     }
 
@@ -625,13 +632,29 @@ void Ngspice::cleanSpiceinit()
 
 void Ngspice::createSpiceinit(const QString &initial_spiceinit)
 {
-    if (initial_spiceinit.isEmpty()) return;
-    QFile spinit(spinit_name);
-    if (spinit.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&spinit);
-        if (!initial_spiceinit.isEmpty()) {
-          stream << initial_spiceinit << '\n';
-        }
-        spinit.close();
-    }
+  auto compat_mode = _settings::Get().item<int>("NgspiceCompatMode");
+  QString compat_str;
+  switch(compat_mode) {
+  case spicecompat::NgspLTspice:
+    compat_str = "set ngbehavior=ltpsa\n";
+    break;
+  case spicecompat::NgspHSPICE:
+    compat_str = "set ngbehavior=hsa\n";
+    break;
+  case spicecompat::NgspS3:
+    compat_str = "set ngbehavior=s3\n";
+    break;
+  default: break;
+  }
+  if (initial_spiceinit.isEmpty() &&
+      compat_str.isEmpty()) {
+    return;
+  }
+  QFile spinit(spinit_name);
+  if (spinit.open(QIODevice::WriteOnly)) {
+    QTextStream stream(&spinit);
+    stream << compat_str << '\n';
+    stream << initial_spiceinit << '\n';
+    spinit.close();
+  }
 }

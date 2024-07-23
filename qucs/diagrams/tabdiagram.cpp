@@ -46,82 +46,83 @@ TabDiagram::~TabDiagram()
 {
 }
 
-void TabDiagram::paint(ViewPainter *p)
-{
-    paintDiagram(p);
+void TabDiagram::paint(QPainter* painter) {
+    paintDiagram(painter);
 }
 
-// ------------------------------------------------------------
-void TabDiagram::paintDiagram(ViewPainter *p)
-{
-  // paint all lines
+void TabDiagram::paintDiagram(QPainter *painter) {
+  painter->save();
+  painter->translate(cx, cy);
+
   for (qucs::Line *pl : Lines) {
-    p->Painter->setPen(pl->style);
-    p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
+    painter->setPen(pl->style);
+    painter->drawLine(pl->x1, -pl->y1, pl->x2, -pl->y2);
   }
 
   if(x1 > 0) {  // paint scroll bar ?
-    int   x, y, dx, dy;
     QPolygon Points;
-    y = y2 - 20;
+    int y = y2 - 20;
     // draw scroll bar
-    int by = cy-y + yAxis.numGraphs;
-    p->fillRect(cx-14, by+1, 12, zAxis.numGraphs-1, QColor(192, 192, 192));
+    int by = -y + yAxis.numGraphs;
+    painter->fillRect(-14, by+1, 12, zAxis.numGraphs-1, QColor(192, 192, 192));
 
     // draw frame for scroll bar
-    p->Painter->setPen(QPen(Qt::black,0));
-    p->drawLine(cx-17, cy-y2, cx-17, cy);
-    p->drawLine(cx-17, cy-y2, cx, cy-y2);
-    p->drawLine(cx-17, cy, cx, cy);
+    painter->setPen(QPen(Qt::black,0));
+    painter->drawLine(-17, -y2, -17, 0);
+    painter->drawLine(-17, -y2, 0, -y2);
+    painter->drawLine(-17, 0, 0, 0);
     y += 2;
-    p->drawLine(cx-17, cy-y, cx, cy-y);
+    painter->drawLine(-17, -y, 0, -y);
     y -= y2;
-    p->drawLine(cx-17, cy+y, cx, cy+y);
+    painter->drawLine(-17, +y, 0, +y);
 
     // draw the arrows above and below the scroll bar
-    p->Painter->setBrush(QColor(192, 192, 192));
-    p->Painter->setPen(QColor(152, 152, 152));
-    p->drawLine(cx-2, by, cx-2, by + zAxis.numGraphs);
-    p->drawLine(cx-15, by + zAxis.numGraphs, cx-2, by + zAxis.numGraphs);
+    painter->setBrush(QColor(192, 192, 192));
+    painter->setPen(QColor(152, 152, 152));
+    painter->drawLine(-2, by, -2, by + zAxis.numGraphs);
+    painter->drawLine(-15, by + zAxis.numGraphs, -2, by + zAxis.numGraphs);
 
-    p->map(cx-14, cy-y2+3, x, y);
-    p->map(cx-3,  cy-y2+14, dx, dy);
+    int x = -14;
+    y = -y2 + 3;
+    int dx = -3;
+    int dy = -y2 + 14;
     Points.setPoints(3, x, dy, (x+dx)>>1, y, dx, dy);
-    p->Painter->drawConvexPolygon(Points);
-    p->Painter->setPen(QColor(224, 224, 224));
-    p->Painter->drawLine(x, dy, (x+dx)>>1, y);
-    p->drawLine(cx-15, by, cx-2, by);
-    p->drawLine(cx-15, by, cx-15, by + zAxis.numGraphs);
+    painter->drawConvexPolygon(Points);
+    painter->setPen(QColor(224, 224, 224));
+    painter->drawLine(x, dy, (x+dx)>>1, y);
+    painter->drawLine(-15, by, -2, by);
+    painter->drawLine(-15, by, -15, by + zAxis.numGraphs);
 
-    p->Painter->setPen(QColor(152, 152, 152));
+    painter->setPen(QColor(152, 152, 152));
     dy -= y;
-    p->map(cx-14,  cy-3, x, y);
+    x = -14;
+    y = -3;
     Points.setPoints(3, x, y-dy, (x+dx)>>1, y, dx, y-dy);
-    p->Painter->drawConvexPolygon(Points);
-    p->Painter->setPen(QColor(208, 208, 208));
-    p->Painter->drawLine(x, y-dy, (x+dx)>>1, y);
-    p->Painter->setPen(QColor(224, 224, 224));
-    p->Painter->drawLine(x, y-dy, dx, y-dy);
+    painter->drawConvexPolygon(Points);
+    painter->setPen(QColor(208, 208, 208));
+    painter->drawLine(x, y-dy, (x+dx)>>1, y);
+    painter->setPen(QColor(224, 224, 224));
+    painter->drawLine(x, y-dy, dx, y-dy);
 
-    p->Painter->setBrush(QBrush(Qt::NoBrush));
+    painter->setBrush(QBrush(Qt::NoBrush));
   }
 
 
-  p->Painter->setPen(Qt::black);
-  // write whole text
-  for (Text *pt : Texts)
-    p->drawText(pt->s, cx+pt->x, cy-pt->y);
-
-
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->drawRect(cx-5, cy-y2-5, x2+10, y2+10);
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy-y2);  // markers for changing the size
-    p->drawResizeRect(cx, cy);
-    p->drawResizeRect(cx+x2, cy-y2);
-    p->drawResizeRect(cx+x2, cy);
+  painter->setPen(Qt::black);
+  for (Text *pt : Texts) {
+    painter->drawText(pt->x, -pt->y, 0, 0, Qt::TextDontClip, pt->s);
   }
+
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,3));
+    painter->drawRect(-5, -y2-5, x2+10, y2+10);
+    painter->setPen(QPen(Qt::darkRed,2));
+    misc::draw_resize_handle(painter, QPoint{0, -y2});
+    misc::draw_resize_handle(painter, QPoint{0, 0});
+    misc::draw_resize_handle(painter, QPoint{x2, -y2});
+    misc::draw_resize_handle(painter, QPoint{x2, 0});
+  }
+  painter->restore();
 }
 
 // ------------------------------------------------------------
@@ -247,7 +248,9 @@ int TabDiagram::calcDiagram()
     y = y2-tHeight-5;
     colWidth = 0;
 
-    Str = g->Var.section('/', 1);
+    Str = g->Var;
+    if (Str.contains('/')) Str = g->Var.section('/', 1);
+
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
     if(colWidth < 0)  goto funcEnd;
     Texts.append(new Text(x, y2-2, Str));  // dependent variable

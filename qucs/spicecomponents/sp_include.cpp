@@ -16,7 +16,9 @@
  ***************************************************************************/
 #include "sp_include.h"
 #include "main.h"
+#include "misc.h"
 
+#include <QFontInfo>
 #include <QFontMetrics>
 
 S4Q_Include::S4Q_Include()
@@ -37,7 +39,7 @@ S4Q_Include::S4Q_Include()
   Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
   Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
   Texts.append(new Text(-xb+4,  -yb-3, QObject::tr(".INCLUDE"),
-			QColor(0,0,0), 12.0));
+			QColor(0,0,0), QFontInfo(f).pixelSize()));
 
   x1 = -xb-3;  y1 = -yb-5;
   x2 =  xb+9; y2 =  yb+3;
@@ -73,7 +75,7 @@ Element* S4Q_Include::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString S4Q_Include::getSpiceModel()
+QString S4Q_Include::getSpiceLibrary()
 {
     if (isActive != COMP_IS_ACTIVE) return QString("");
     QString s;
@@ -82,7 +84,7 @@ QString S4Q_Include::getSpiceModel()
     for (Property *pp : Props) {
         QString val = pp->Value;
         if (!val.isEmpty()) {
-            val = spicecompat::convert_relative_filename(val);
+            val = misc::properAbsFileName(val, containingSchematic);
             switch (QucsSettings.DefaultSimulator) {
             case spicecompat::simSpiceOpus: // Spice Opus doesn't support quotes
                 s += QString("%1 %2\n").arg(SpiceModel).arg(val);

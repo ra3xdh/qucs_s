@@ -47,9 +47,16 @@ public:
 
   QString theModel();
   int setSymbol( QString&, const QString&, const QString&);
+  int loadSymFile(const QString &file);
   void enableDragNDrop();
   void disableDragNDrop();
   bool dragNDropEnabled() { return dragNDrop; }
+  void enableShowPinNumbers() { showPinNumbers = true; }
+  void disableShowPinNumbers() { showPinNumbers = false; }
+  bool showPinNumbersEnabled() { return showPinNumbers; }
+  int getPortsNumber() { return portsNumber; }
+  void setPaintText(const QString &txt);
+  void setWarning(const QString &warn) { Warning = warn; }
   // component properties
   int Text_x, Text_y;
   QString Prefix, LibraryPath, ComponentName;
@@ -70,6 +77,8 @@ private:
   bool getBrush(const QString&, QBrush&, int);
 
   bool dragNDrop;
+  bool showPinNumbers;
+  int portsNumber;
   QString PaintText;
   QString DragNDropText;
   QString Warning;
@@ -77,7 +86,8 @@ private:
   int cx, cy, x1, x2, y1, y2;
   QList<qucs::Line *> Lines;
   QList<qucs::Arc *> Arcs;
-  QList<qucs::Area *> Rects, Ellips;
+  QList<qucs::Rect *> Rects;
+  QList<qucs::Ellips *> Ellipses;
   QList<Text *>  Texts;
 };
 

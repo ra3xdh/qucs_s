@@ -19,7 +19,7 @@
 #include "misc.h"
 
 
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
 #define executableSuffix ".exe"
 #else
 #define executableSuffix ""
@@ -102,7 +102,7 @@ bool OctaveWindow::startOctave()
   connect(&octProcess, SIGNAL(readyReadStandardError()), SLOT(slotDisplayErr()));
   connect(&octProcess, SIGNAL(readyReadStandardOutput()), SLOT(slotDisplayMsg()));
   connect(&octProcess, SIGNAL(finished(int)), SLOT(slotOctaveEnded(int)));
-#ifdef __MINGW32__
+#if defined(_WIN32) || defined(__MINGW32__)
   QString sep(";"); // path separator
 #else
   QString sep(":");

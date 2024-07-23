@@ -22,15 +22,7 @@
  * \Declaration of some miscellaneous function
  */
 
-#include <QString>
-#include <QWidget>
-#include <QPalette>
-#include <QIcon>
-#include <QFileInfo>
 #include <QPushButton>
-
-#include <stdint.h>
-
 
 #define Q_UINT32 uint32_t
 
@@ -44,6 +36,8 @@ namespace qucs {
 }
 
 
+class Schematic;
+
 namespace misc {
   QString complexRect(double, double, int Precision=3);
   QString complexDeg (double, double, int Precision=3);
@@ -56,7 +50,7 @@ namespace misc {
   void    convert2Unicode(QString&);
   void    convert2ASCII(QString&);
   QString properName(const QString&);
-  QString properAbsFileName(const QString&);
+  QString properAbsFileName(const QString&, Schematic* sch = nullptr);
   QString properFileName(const QString&);
   bool    VHDL_Time(QString&, const QString&);
   bool    VHDL_Delay(QString&, const QString&);
@@ -91,13 +85,18 @@ namespace misc {
     }
 
   QStringList parseCmdArgs(const QString &program);
-  QString getIconPath(const QString &file, int icon_type);
+  QString getIconPath(const QString &file);
   bool isDarkTheme();
   QString getWindowTitle();
   QString wildcardToRegularExpression(const QString &wc_str, const bool enableEscaping);
 
   bool simulatorExists(const QString &exe_file);
   QString unwrapExePath(const QString &exe_file);
+
+  void draw_richtext(QPainter* painter, int x, int y, const QString& text, QRectF* br = nullptr);
+  void draw_resize_handle(QPainter* painter, const QPointF& center);
+
+  void getSymbolPatternsList(QStringList &symbols);
 }
 
 /*! handle the application version string

@@ -1,0 +1,45 @@
+<Qucs Library 1.0.1 "GeDiodes">
+
+<Component OA1154Q>
+  <Description>
+  Tungsram Point Contact Germanium Diode 
+  50V/30mA
+  Author: Zabb Csaba
+  </Description>
+  <Model>
+    <Diode OA1154Q_ 1 0 0 -26 13 0 0 "15u" 0 "2.7" 0 "1.3p" 0 "0.333" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "66" 0 "15n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "50" 0 "300u" 0 "26.85" 0 "3" 0 "0.67" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component OA1160>
+  <Description>
+  Tungsram Point Contact Germanium Diode
+  15V/5mA (Ip=25ma)
+  Author: Zabb Csaba
+  </Description>
+  <Model>
+    <Diode OA1160_ 1 0 0 -26 13 0 0 "2.5u" 0 "1.5" 0 "0.8pF" 0 "0.333" 0 "0.4" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "68" 0 "5n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "15" 0 "100u" 0 "26.85" 0 "3" 0 "0.67" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component OA1172>
+  <Description>
+  Tungsram Point Contact Germanium Diode
+  30V/10mA
+  Author: Zabb Csaba
+  </Description>
+  <Model>
+    <Diode OA1172_ 1 0 0 -26 13 0 0 "9.3u" 0 "2.35" 0 "1.3p" 0 "0.333" 0 "0.75" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "45" 0 "12n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "30" 0 "100u" 0 "26.85" 0 "3" 0 "0.67" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>
+
+<Component OA1180A>
+  <Description>
+  Tungsram Gold Bond Germanium Diode
+  30V/120ma (Ip=400mA)
+  Author: Zabb Csabai
+  </Description>
+  <Model>
+    <Diode OA1180A_ 1 0 0 -26 13 0 0 "4.7u" 0 "1.75" 0 "8p" 0 "0.333" 0 "0.8" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "0.9" 0 "70n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "30" 0 "100u" 0 "26.85" 0 "3" 0 "0.67" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "0" 0 "26.85" 0 "1" 0>
+  </Model>
+</Component>

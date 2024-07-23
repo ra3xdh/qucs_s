@@ -16,8 +16,8 @@
  ***************************************************************************/
 #include "sparamfile.h"
 #include "main.h"
-#include "schematic.h"
 #include "misc.h"
+#include "node.h"
 
 #include <QFileInfo>
 
@@ -103,6 +103,8 @@ Element* SParamFile::info2(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 QString SParamFile::getSubcircuitFile()
 {
+  return misc::properAbsFileName(Props.getFirst()->Value, containingSchematic);
+
   // construct full filename
   QString FileName = Props.getFirst()->Value;
   return misc::properAbsFileName(FileName);

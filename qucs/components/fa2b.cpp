@@ -33,7 +33,7 @@ fa2b::fa2b()
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
-  icon_dy = -16;
+  icon_dy = 0;
   Model = "fa2b";
   Name  = "Y";
 }
@@ -57,49 +57,56 @@ Element * fa2b::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void fa2b::createSymbol()
 {
-  Lines.append(new qucs::Line(-40, -60, 40,-60,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 40, -60, 40, 90,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 40,  90,-40, 90,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-40,  90,-40, -60,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-40, -60, 80, 150, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+  Texts.append(new Text(-9.5, -60, "Σ", Qt::darkBlue, 29.0));
 
-  Lines.append(new qucs::Line(-60,-10,-40,-10,QPen(Qt::darkBlue,2)));  // X0
-  Lines.append(new qucs::Line(-60, 10,-40, 10,QPen(Qt::darkBlue,2)));  // X1
-  Lines.append(new qucs::Line(-60, 30,-40, 30,QPen(Qt::darkBlue,2)));  // Y0
-  Lines.append(new qucs::Line(-60, 50,-40, 50,QPen(Qt::darkBlue,2)));  // Y1
-  Lines.append(new qucs::Line(-60, 70,-40, 70,QPen(Qt::darkBlue,2)));  // CI
-
-  Lines.append(new qucs::Line( 40, 30, 60, 30,QPen(Qt::darkBlue,2)));  // C0
-  Lines.append(new qucs::Line( 40, 10, 60, 10,QPen(Qt::darkBlue,2)));  // S1
-  Lines.append(new qucs::Line( 40,-10, 60,-10,QPen(Qt::darkBlue,2)));  // S0
-
-  Lines.append(new qucs::Line( -10, -55, 10, -55, QPen(Qt::darkBlue,2)));  
-  Lines.append(new qucs::Line( -10, -55,  0, -45, QPen(Qt::darkBlue,2)));  
-  Lines.append(new qucs::Line(  0,  -45,-10, -35, QPen(Qt::darkBlue,2)));  
-  Lines.append(new qucs::Line( -10, -35, 10, -35, QPen(Qt::darkBlue,2)));  
-
-  Texts.append(new Text(-25,-20,   "{",  Qt::darkBlue, 16.0));
-  Texts.append(new Text(-15,-13,   "X",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35,-23,   "0",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, -3,   "1",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25, 22,   "{",  Qt::darkBlue, 16.0));
-  Texts.append(new Text(-15, 29,   "Y",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, 17,   "0",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, 37,   "1",  Qt::darkBlue, 12.0));
-  Texts.append(new Text(-35, 57,  "CI",  Qt::darkBlue, 12.0));
-  Texts.append(new Text( 17,-20,   "}",  Qt::darkBlue, 16.0));
-  Texts.append(new Text( 3, -13,   "S",  Qt::darkBlue, 12.0));
-  Texts.append(new Text( 28,-23,   "0",  Qt::darkBlue, 12.0));
-  Texts.append(new Text( 28, -3,   "1",  Qt::darkBlue, 12.0));
-  Texts.append(new Text( 10, 17,  "CO",  Qt::darkBlue, 12.0));
-
+  // left-side pins
+  // X0
   Ports.append(new Port(-60,-10));  // X0 -> D
+  Lines.append(new qucs::Line(-60,-10,-40,-10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35,-18,   "0",  Qt::darkBlue, 12.0));
+  // X1
   Ports.append(new Port(-60, 10));  // X1 -> C
+  Lines.append(new qucs::Line(-60, 10,-40, 10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 2,   "1",  Qt::darkBlue, 12.0));
+
+  Texts.append(new Text(-25,-11,   "{",  Qt::darkBlue, 16.0));
+  Texts.append(new Text(-15,-8,   "X",  Qt::darkBlue, 12.0));
+
+  // Y0
   Ports.append(new Port(-60, 30));  // Y0 -> B
+  Lines.append(new qucs::Line(-60, 30,-40, 30,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 22,   "0",  Qt::darkBlue, 12.0));
+  // Y1
   Ports.append(new Port(-60, 50));  // Y1 -> A
+  Lines.append(new qucs::Line(-60, 50,-40, 50,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 42,   "1",  Qt::darkBlue, 12.0));
+
+  Texts.append(new Text(-25, 29,   "{",  Qt::darkBlue, 16.0));
+  Texts.append(new Text(-15, 32,   "Y",  Qt::darkBlue, 12.0));
+
+  // CI
   Ports.append(new Port(-60, 70));  // CI -> E
+  Lines.append(new qucs::Line(-60, 70,-40, 70,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(-35, 62,  "CI",  Qt::darkBlue, 12.0));
+
+
+  // right-side pins
+  // C0
   Ports.append(new Port( 60, 30));  // CO
+  Lines.append(new qucs::Line( 40, 30, 60, 30,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text( 15, 22,  "CO",  Qt::darkBlue, 12.0));
+  // S1
   Ports.append(new Port( 60, 10));  // S1
+  Lines.append(new qucs::Line( 40, 10, 60, 10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text( 28, 2,   "1",  Qt::darkBlue, 12.0));
+  // S0
   Ports.append(new Port( 60,-10));  // S0
+  Lines.append(new qucs::Line( 40,-10, 60,-10,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text( 28,-18,   "0",  Qt::darkBlue, 12.0));
+
+  Texts.append(new Text( 17,-11,   "}",  Qt::darkBlue, 16.0));
+  Texts.append(new Text( 3, -8,   "S",  Qt::darkBlue, 12.0));
 
   x1 = -60; y1 = -64;
   x2 =  60; y2 =  94;

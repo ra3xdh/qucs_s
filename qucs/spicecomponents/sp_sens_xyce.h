@@ -18,10 +18,10 @@
 #ifndef SP_SENS_XYCE_H
 #define SP_SENS_XYCE_H
 
-#include "components/component.h"
+#include "components/simulation.h"
 
 
-class SpiceSENS_Xyce : public Component  {
+class SpiceSENS_Xyce : public qucs::component::SimulationComponent  {
 public:
   SpiceSENS_Xyce();
   ~SpiceSENS_Xyce();
@@ -30,6 +30,7 @@ public:
 
 protected:
   QString spice_netlist(bool isXyce = false);
+  Qt::GlobalColor color() const override { return Qt::darkGreen; }
 };
 
 #endif

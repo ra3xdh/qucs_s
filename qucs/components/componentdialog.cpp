@@ -17,9 +17,10 @@
 
 #include "componentdialog.h"
 #include "main.h"
-#include "qucs.h"
 #include "schematic.h"
+#include "settings.h"
 #include "misc.h"
+#include "fillfromspicedialog.h"
 
 #include <cmath>
 
@@ -41,8 +42,13 @@
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 			: QDialog(d)
 {
-  QSettings settings("qucs","qucs_s");
-  restoreGeometry(settings.value("ComponentDialog/geometry").toByteArray());
+  // qDebug() << "Restore: " << _settings::Get().value("ComponentDialog/geometry").toByteArray();
+  // qDebug() << "Settings: " << _settings::Get().organizationName() << " " << _settings::Get().applicationName();
+  // qDebug() << "Default test (found)" << _settings::Get().item<int>("Foo");
+  // qDebug() << "Default test (not found int type)" << _settings::Get().item<int>("Bar");
+  // qDebug() << "Default test (found wrong type)" << _settings::Get().item<QString>("Foo");
+  // qDebug() << "Default test (not found string type)" << _settings::Get().item<QString>("Bar");
+  restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
 
   setWindowTitle(tr("Edit Component Properties"));
   Comp  = c;
@@ -63,6 +69,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   Validator2 = new QRegularExpressionValidator(Expr, this);
   Expr.setPattern("[\\w_.,\\(\\) @:\\[\\]]+");  // valid expression for property 'NameEdit'. Space to enable Spice-style par sweep
   ValRestrict = new QRegularExpressionValidator(Expr, this);
+  Expr.setPattern("[A-Za-z][A-Za-z0-9_]+");
+  ValName = new QRegularExpressionValidator(Expr,this);
 
   checkSim  = 0;  comboSim  = 0;  comboType  = 0;  checkParam = 0;
   editStart = 0;  editStop = 0;  editNumber = 0;
@@ -280,7 +288,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   CompNameEdit = new QLineEdit;
   h5->addWidget(CompNameEdit);
 
-  CompNameEdit->setValidator(ValRestrict);
+  CompNameEdit->setValidator(ValName);
   connect(CompNameEdit, SIGNAL(returnPressed()), SLOT(slotButtOK()));
 
   showName = new QCheckBox(tr("display in schematic"));
@@ -403,6 +411,14 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   connect(ButtUp,   SIGNAL(clicked()), SLOT(slotButtUp()));
   connect(ButtDown, SIGNAL(clicked()), SLOT(slotButtDown()));
 
+  QStringList allowedFillFromSPICE;
+  allowedFillFromSPICE<<"_BJT"<<"JFET"<<"MOSFET"<<"_MOSFET"<<"Diode";
+  ButtFillFromSpice = new QPushButton(tr("Fill from SPICE .MODEL"));
+  if (!allowedFillFromSPICE.contains(Comp->Model)) {
+    ButtFillFromSpice->setEnabled(false);
+  }
+  bg->addWidget(ButtFillFromSpice,2,0,1,2);
+  connect(ButtFillFromSpice, SIGNAL(clicked(bool)), this, SLOT(slotFillFromSpice()));
 
   // ...........................................................
   QHBoxLayout *h2 = new QHBoxLayout;
@@ -1111,28 +1127,18 @@ void ComponentDialog::slotBrowseFile()
 
   if (!currFileName.isEmpty()) { // a file name is already defined
     if (currFileInfo.isRelative()) { // but has no absolute path
-      if (!schematicFileName.isEmpty()) { // if schematic has a filename
-	// build the an absolute file name using the schematic path
-	currDir = schematicFileInfo.absolutePath() + 
-	          QDir::separator() +
-                  currFileInfo.fileName();
-      } else { // no absolute paths around
-	// use the WorkDir path
-	currDir = QucsSettings.QucsWorkDir.path() + 
-	          QDir::separator() +
-	  currFileInfo.fileName();
-      }
-    } else { // current file name is absolute
-      // use it
-      currDir = currFileName;
+      if (!schematicFileName.isEmpty()) // if schematic has a filename
+        currDir = schematicFileInfo.absolutePath();
+      else    // use the WorkDir path
+        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+    } else {  // current file name is absolute
+      currDir = currFileInfo.exists() ? currFileInfo.absolutePath() : QucsSettings.QucsWorkDir.absolutePath();
     }
-  } else { // a file name is not defined
+  } else {    // a file name is not defined
     if (!schematicFileName.isEmpty()) { // if schematic has a filename
-      // use the schematic absolute path
       currDir = schematicFileInfo.absolutePath();
-    } else { // no absolute paths around
-      // use the WorkDir path
-      currDir = QucsSettings.QucsWorkDir.path();
+    } else {  // use the WorkDir path
+      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
     }
   }
   
@@ -1150,8 +1156,14 @@ void ComponentDialog::slotBrowseFile()
   if(!s.isEmpty()) {
     // snip path if file in current directory
     QFileInfo file(s);
-    if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
-       QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) s = file.fileName();
+    lastDir = file.absolutePath();
+    currDir = schematicFileInfo.canonicalPath();
+    if ( file.canonicalFilePath().startsWith(currDir) ) {
+      s = QDir(currDir).relativeFilePath(s);
+    } else if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
+        QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) {
+      s = file.fileName();
+    }
     edit->setText(s);
   }
   /* FIX
@@ -1161,7 +1173,7 @@ void ComponentDialog::slotBrowseFile()
 // -------------------------------------------------------------------------
 void ComponentDialog::slotEditFile()
 {
-  Doc->App->editFile(QucsSettings.QucsWorkDir.filePath(edit->text()));
+  Doc->App->editFile(misc::properAbsFileName(edit->text(), Doc));
 }
 
 /*!
@@ -1560,4 +1572,15 @@ QStringList ComponentDialog::getSimulationList()
         }
     }
     return sim_lst;
+}
+
+
+void ComponentDialog::slotFillFromSpice()
+{
+  fillFromSpiceDialog *dlg = new fillFromSpiceDialog(Comp, this);
+  auto r = dlg->exec();
+  if (r == QDialog::Accepted) {
+    updateCompPropsList();
+  }
+  delete dlg;
 }

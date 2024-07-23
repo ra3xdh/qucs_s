@@ -15,8 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "sp_customsim.h"
-#include "main.h"
-#include "misc.h"
 
 
 SpiceCustomSim::SpiceCustomSim()
@@ -24,14 +22,7 @@ SpiceCustomSim::SpiceCustomSim()
   isSimulation = true;
   Description = QObject::tr("Nutmeg script");
   Simulator = spicecompat::simNgspice | spicecompat::simSpiceOpus;
-
-  Texts.append(new Text(0, 0, Description, Qt::darkRed, QucsSettings.largeFontSize));
-
-  x1 = -10; y1 = -9;
-  x2 = x1+104; y2 = y1+59;
-
-  tx = 0;
-  ty = y2+1;
+  initSymbol(Description);
   Model = ".CUSTOMSIM";
   Name  = "CUSTOM";
   SpiceModel = "CUSTOM";
@@ -40,6 +31,7 @@ SpiceCustomSim::SpiceCustomSim()
   Props.append(new Property("SpiceCode", "\n"
                             "AC DEC 100 1K 10MEG\n"
                             "let K=V(out)/V(in)\n\n"
+                            "* Use mouse double click on device to edit code\n\n"
                             "* Extra output\n"
                             "* A custom prefix could be placed between # #\n"
                             "* It will be prepended to all dataset variables\n"

@@ -307,7 +307,7 @@ void ExternSimDialog::slotSaveNetlist()
 
 void ExternSimDialog::saveLog()
 {
-    QString filename = QucsSettings.QucsHomeDir.filePath("log.txt");
+    QString filename = QucsSettings.tempFilesDir.filePath("log.txt");
     QFile log(filename);
     if (log.open(QIODevice::WriteOnly)) {
         QTextStream ts_log(&log);

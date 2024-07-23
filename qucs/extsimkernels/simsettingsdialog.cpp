@@ -22,6 +22,7 @@
 
 #include "simsettingsdialog.h"
 #include "main.h"
+#include "settings.h"
 
 SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     QDialog(parent)
@@ -33,7 +34,6 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     lblSpiceOpus = new QLabel(tr("SpiceOpus executable location"));
     lblQucsator = new QLabel(tr("Qucsator executable location"));
     //lblNprocs = new QLabel(tr("Number of processors in a system:"));
-    lblWorkdir = new QLabel(tr("Directory to store netlist and simulator output"));
     lblSimParam = new QLabel(tr("Extra simulator parameters"));
 
 //    cbxSimulator = new QComboBox(this);
@@ -59,7 +59,6 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
 //    spbNprocs->setMaximum(256);
 //    spbNprocs->setValue(1);
 //    spbNprocs->setValue(QucsSettings.NProcs);
-    edtWorkdir = new QLineEdit(QucsSettings.S4Qworkdir);
     edtSimParam = new QLineEdit(QucsSettings.SimParameters);
 
     btnOK = new QPushButton(tr("Apply changes"));
@@ -77,8 +76,14 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     connect(btnSetSpOpus,SIGNAL(clicked()),this,SLOT(slotSetSpiceOpus()));
     btnSetQucsator = new QPushButton(tr("Select ..."));
     connect(btnSetQucsator,SIGNAL(clicked()),this,SLOT(slotSetQucsator()));
-    btnSetWorkdir = new QPushButton(tr("Select ..."));
-    connect(btnSetWorkdir,SIGNAL(clicked()),this,SLOT(slotSetWorkdir()));
+
+    lblCompatMode = new QLabel(tr("Ngspice compatibility mode"));
+    cbxCompatMode = new QComboBox;
+    QStringList lst_modes;
+    lst_modes<<"Default"<<"LTspice"<<"HSPICE"<<"Spice3";
+    cbxCompatMode->addItems(lst_modes);
+    auto compat_mode = _settings::Get().item<int>("NgspiceCompatMode");
+    cbxCompatMode->setCurrentIndex(compat_mode);
 
     QVBoxLayout *top = new QVBoxLayout;
 
@@ -95,6 +100,11 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h1->addWidget(edtNgspice,3);
     h1->addWidget(btnSetNgspice,1);
     top2->addLayout(h1);
+
+    QHBoxLayout *h4 = new QHBoxLayout;
+    h4->addWidget(lblCompatMode);
+    h4->addWidget(cbxCompatMode);
+    top2->addLayout(h4);
 
     top2->addWidget(lblXyce);
     QHBoxLayout *h2 = new QHBoxLayout;
@@ -119,12 +129,6 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h7->addWidget(btnSetSpOpus,1);
     top2->addLayout(h7);
 
-
-    top2->addWidget(lblWorkdir);
-    QHBoxLayout *h6 = new QHBoxLayout;
-    h6->addWidget(edtWorkdir,3);
-    h6->addWidget(btnSetWorkdir,1);
-    top2->addLayout(h6);
 
     top2->addWidget(lblSimParam);
     QHBoxLayout *h10 = new QHBoxLayout;
@@ -175,7 +179,6 @@ void SimSettingsDialog::slotApply()
     QucsSettings.SpiceOpusExecutable = edtSpiceOpus->text();
     QucsSettings.Qucsator = edtQucsator->text();
     //QucsSettings.NProcs = spbNprocs->value();
-    QucsSettings.S4Qworkdir = edtWorkdir->text();
     QucsSettings.SimParameters = edtSimParam->text();
 //    if ((QucsSettings.DefaultSimulator != cbxSimulator->currentIndex())&&
 //        (QucsSettings.DefaultSimulator != spicecompat::simNotSpecified)) {
@@ -183,6 +186,8 @@ void SimSettingsDialog::slotApply()
 //                                                              "Please restart Qucs to affect changes!"));
 //    }
 //    QucsSettings.DefaultSimulator = cbxSimulator->currentIndex();
+    settingsManager& qs = _settings::Get();
+    qs.setItem<int>("NgspiceCompatMode", cbxCompatMode->currentIndex());
     accept();
     saveApplSettings();
   }
@@ -232,16 +237,5 @@ void SimSettingsDialog::slotSetQucsator()
     QString s = QFileDialog::getOpenFileName(this,tr("Select Qucsator executable location"),edtQucsator->text(),"All files (*)");
     if (!s.isEmpty()) {
         edtQucsator->setText(s);
-    }
-}
-
-void SimSettingsDialog::slotSetWorkdir()
-{
-    QFileDialog dlg( this, tr("Select directory to store netlist and simulator output"), edtWorkdir->text() );
-    dlg.setAcceptMode(QFileDialog::AcceptOpen);
-    dlg.setFileMode(QFileDialog::Directory);
-    if (dlg.exec()) {
-        QString s = dlg.selectedFiles().first();
-        if (!s.isEmpty()) edtWorkdir->setText(s);
     }
 }

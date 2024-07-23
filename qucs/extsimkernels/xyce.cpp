@@ -21,6 +21,9 @@
 #include "main.h"
 #include "misc.h"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /*!
   \file xyce.cpp
@@ -81,7 +84,11 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     QString s;
     bool hasParSweep = false;
 
+    stream << "* Qucs " << PACKAGE_VERSION << "  " << Sch->DocName << "\n";
+    stream<<collectSpiceLibs(Sch); // collect libraries on the top of netlist
+
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
+
     startNetlist(stream,true);
 
     // set variable names for named nodes and wires
@@ -423,7 +430,9 @@ void Xyce::nextSimulation()
         cmd_args.removeAt(0);
         SimProcess->start(xyce_cmd,cmd_args);
     } else {
-        output += "No simulations!\n"
+        output += "No simulation found. Please add at least one simulation!\n"
+                  "Navigate to the \"simulations\" group in the components panel (left)"
+                  " and drag simulation to the schematic sheet. Then define its parameters.\n"
                   "Exiting...\n";
         emit progress(100);
         emit finished(); // nothing to simulate

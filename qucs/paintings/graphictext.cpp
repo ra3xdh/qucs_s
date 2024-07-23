@@ -20,7 +20,6 @@
 #include "misc.h"
 #include "mnemo.h"
 #include "schematic.h"
-#include "viewpainter.h"
 
 #include <QLineEdit>
 #include <QPainter>
@@ -43,50 +42,26 @@ GraphicText::GraphicText()
 
 GraphicText::~GraphicText() {}
 
-// -----------------------------------------------------------------------
-void GraphicText::paint(ViewPainter *p)
-{
-    // keep track of painter state
-    p->Painter->save();
+void GraphicText::paint(QPainter* painter) {
+    painter->save();
 
-    QTransform wm = p->Painter->worldTransform();
-    QTransform Mat(1.0, 0.0, 0.0, 1.0, p->DX + qreal(cx) * p->Scale, p->DY + qreal(cy) * p->Scale);
-    p->Painter->setWorldTransform(Mat);
-    p->Painter->rotate(-Angle); // automatically enables transformation
+    painter->translate(cx, cy);
+    painter->rotate(-Angle);
+    painter->setPen(Color);
 
-    int Size = Font.pointSize();
-#ifdef __MINGW32__
-    Font.setPointSizeF((p->FontScale / p->PrintScale) * float(Size));
-#else
-    Font.setPointSizeF(p->FontScale * float(Size));
-#endif
+    QFont f = Font;
+    f.setPixelSize(QFontInfo{Font}.pixelSize());
+    painter->setFont(f);
 
-    QFont f = p->Painter->font();
-    p->Painter->setPen(Color);
-    p->Painter->setFont(Font);
-
-    // Because of a bug in Qt 3.1, drawing this text is dangerous, if it
-    // contains linefeeds. Qt has problems with linefeeds. It remembers the
-    // last font metrics (within the font ???) and does not calculate it again.
-    // The error often appears at a very different drawText function !!!
-    int w, h;
-    w = p->drawTextMapped(Text, 0, 0, &h);
+    QRectF br;
+    misc::draw_richtext(painter, 0, 0, Text, &br);
 
     if (isSelected) {
-        p->Painter->setPen(QPen(Qt::darkGray, 3));
-        p->Painter->drawRect(-3, -2, w + 6, h + 5);
+        painter->setPen(QPen(Qt::darkGray, 3));
+        painter->drawRect(br);
     }
 
-    Font.setPointSize(Size); // restore real font size
-    p->Painter->setWorldTransform(wm);
-    p->Painter->setWorldMatrixEnabled(false);
-
-    // restore painter state
-    p->Painter->restore();
-
-    x2 = int(float(w) / p->Scale);
-    y2 = int(float(h) / p->Scale);
-    p->Painter->setFont(f);
+    painter->restore();
 }
 
 // -----------------------------------------------------------------------

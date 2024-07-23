@@ -20,7 +20,6 @@
  ***************************************************************************/
 #include "iAmpMod.h"
 #include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
 
@@ -30,13 +29,16 @@ iAmpMod::iAmpMod()
   Simulator = spicecompat::simSpice;
 
   // normal current source symbol
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));
-  Texts.append(new Text(36, 4,"AM",Qt::blue,10.0,0.0,-1.0)); 
+  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::blue,3)));
+  Texts.append(new Text(26, 6,"AM",Qt::blue,12.0,0.0,-1.0)); 
+  // pins
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -7,  0,  7,  0,QPen(Qt::blue,3)));
-  Lines.append(new qucs::Line(  -6,  0,  0, -4,QPen(Qt::blue,3)));
-  Lines.append(new qucs::Line(  -6,  0,  0,  4,QPen(Qt::blue,3)));
+  // arrow 
+  Lines.append(new qucs::Line( -6,  0,  7,  0,QPen(Qt::blue,3, Qt::SolidLine, Qt::FlatCap)));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{0, -4},{-6, 0}, {0, 4}}, QPen(Qt::blue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+
   
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

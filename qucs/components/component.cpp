@@ -16,12 +16,15 @@
  ***************************************************************************/
 #include <cmath>
 
-#include "components.h"
-#include "node.h"
+#include "component.h"
+#include "libcomp.h"
+#include "resistor.h"
+#include "equation.h"
+#include "sparamfile.h"
+#include "spicefile.h"
+#include "subcircuit.h"
 #include "main.h"
-#include "qucs.h"
 #include "schematic.h"
-#include "viewpainter.h"
 #include "module.h"
 #include "misc.h"
 
@@ -142,37 +145,89 @@ void Component::getCenter(int &x, int &y) {
     y = cy;
 }
 
-// -------------------------------------------------------
-int Component::getTextSelected(int x_, int y_, float Corr) {
-    x_ -= cx;
-    y_ -= cy;
-    if (x_ < tx) return -1;
-    if (y_ < ty) return -1;
-
-    x_ -= tx;
-    y_ -= ty;
-    int w, dy = int(float(y_) * Corr);  // correction for font scaling
-    // use the screen-compatible metric
-    QFontMetrics metrics(QucsSettings.font, 0);
-    if (showName) {
-        w = metrics.boundingRect(Name).width();
-        if (dy < 1) {
-            if (x_ < w) return 0;
-            return -1;
-        }
-        dy--;
+// Given coordinates of a point (usually coming from a mouse click), finds
+// out whether this point is within boundaries of one of component's text
+// properties (i.e whether a text property is clicked) and returns the
+// index of that property.
+//
+// Returns:
+//     -1 when point is not within bounds of any of component's texts, i.e.
+//        click has missed
+//      0 when click is within bounds of component name
+//  n + 1 when click is within bounds of one of component's properties, `n`
+//        is the index of that property
+//
+// To find out whether given coordinates are within one of text properties,
+// we iterate over all properties, computing their bounding rectangles and
+// testing if the coordinates lie whithin the rectangle.
+//
+// Simplified example of component texts and their bounding rectangles:
+//
+//   (tx,ty)
+//      o------+
+//      | Name |
+//      +------+-----+
+//      | prop = val |
+//      +------------+---+
+//      | prop = multi   |
+//      |  line property |
+//      +-----------+----+
+//      | prop = 10 |
+//      +-----------+
+//
+// (tx,ty) is the top left corner of the region containing all component's
+// properties
+int Component::getTextSelected(int point_x, int point_y) {
+    if (Model == ".CUSTOMSIM") { // block multiline text editing
+      return -1;                 // for Nutmeg script
+    }
+    // cx and cy are subtracted from coordinates to make them
+    // component-local, i.e relative to component
+    point_x -= cx;
+    point_y -= cy;
+    if (point_x < tx || point_y < ty) {
+        return -1;
     }
 
-    Property *pp;
-    for (pp = Props.first(); pp != 0; pp = Props.next())
-        if (pp->display)
-            if ((dy--) < 1) break;
-    if (!pp) return -1;
+    const QPoint click{point_x, point_y};
 
-    // get width of text
-    w = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
-    if (x_ > w) return -1; // clicked past the property text end - selection invalid
-    return Props.at() + 1;  // number the property
+    // Tracks bottom coordinate of previous bounding rectangle to know
+    // where the next text's bounding rectangle's top should be placed
+    int bounding_rect_top = ty;
+
+    // Tracks the number of processed texts. We have to return the index of
+    // the text being "clicked"
+    int text_index = 0;
+
+    const QFontMetrics font_metrics(QucsSettings.font, 0);
+    const int flags = 0b00000000;
+
+    if (showName) {
+        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, Name)};
+        if (text_br.contains(click)) {
+            return text_index;
+        }
+
+        bounding_rect_top = text_br.bottom();
+    }
+    text_index += 1;
+
+    for (auto* prop : Props) {
+        if (!prop->display) {
+            text_index += 1;
+            continue;
+        }
+
+        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, prop->Name + "=" + prop->Value)};
+        if (text_br.contains(click)) {
+            return text_index;
+        }
+
+        bounding_rect_top = text_br.bottom();
+        text_index += 1;
+    }
+
+    return -1;
 }
 
 // -------------------------------------------------------
@@ -188,236 +243,140 @@ bool Component::getSelected(int x_, int y_) {
     return false;
 }
 
-// -------------------------------------------------------
-void Component::paint(ViewPainter *p) {
-    int x, y, a, b, xb, yb;
-    QFont f = p->Painter->font();   // save current font
-    QFont newFont = f;
-    if (Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
-        newFont.setPointSizeF(p->Scale * Texts.first()->Size);
-        newFont.setWeight(QFont::DemiBold);
-        p->Painter->setFont(newFont);
-        p->map(cx, cy, x, y);
+void Component::paint(QPainter *p) {
+    p->save();
+    p->translate(cx, cy);
 
-        if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-            if ((Model == ".CUSTOMSIM") || (Model == ".DISTO")
-                || (Model == ".NOISE") || (Model == ".PZ") ||
-                (Model == ".SENS") || (Model == ".SENS_AC") ||
-                (Model == ".FFT"))
-                p->Painter->setPen(QPen(Qt::blue, 2));
-            else if ((Model == ".XYCESCR") || (Model == ".SENS_XYCE")
-                     || (Model == ".SENS_TR_XYCE"))
-                p->Painter->setPen(QPen(Qt::darkGreen, 2));
-            else if (Model == ".FOURIER") p->Painter->setPen(QPen(Qt::darkRed, 2));
-            else p->Painter->setPen(QPen(Qt::darkBlue, 2));
-        } else {
-            p->Painter->setPen(WrongSimulatorPen);
-        }
+    drawSymbol(p);
 
-        a = b = 0;
-        QRect r, t;
-        for (Text *pt: Texts) {
-            t.setRect(x, y + b, 0, 0);
-            p->Painter->drawText(t, Qt::AlignLeft | Qt::TextDontClip, pt->s, &r);
-            b += r.height();
-            if (a < r.width()) a = r.width();
-        }
-        xb = a + int(12.0 * p->Scale);
-        yb = b + int(10.0 * p->Scale);
-        x2 = x1 + 25 + int(float(a) / p->Scale);
-        y2 = y1 + 23 + int(float(b) / p->Scale);
-        if (ty < y2 + 1) if (ty > y1 - r.height()) ty = y2 + 1;
+    p->setPen(QPen(Qt::black, 1));
+    QRect text_br{tx, ty, 0, 0};
 
-        p->map(cx - 1, cy, x, y);
-        p->map(cx - 6, cy - 5, a, b);
-        p->Painter->drawRect(a, b, xb, yb);
-        p->Painter->drawLine(x, y + yb, a, b + yb);
-        p->Painter->drawLine(x + xb - 1, y + yb, x, y + yb);
-        p->Painter->drawLine(x + xb - 1, y + yb, a + xb, b + yb);
-        p->Painter->drawLine(x + xb - 1, y + yb, x + xb - 1, y);
-        p->Painter->drawLine(x + xb - 1, y, a + xb, b);
-    } else {    // normal components go here
-
-        // paint all lines
-        for (qucs::Line *p1: Lines) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(p1->style);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            p->drawLine(cx + p1->x1, cy + p1->y1, cx + p1->x2, cy + p1->y2);
-        }
-
-        // paint all arcs
-        for (qucs::Arc *p3: Arcs) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(p3->style);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            p->drawArc(cx + p3->x, cy + p3->y, p3->w, p3->h, p3->angle, p3->arclen);
-        }
-
-        // paint all rectangles
-        for (qucs::Area *pa: Rects) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(pa->Pen);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            p->Painter->setBrush(pa->Brush);
-            p->drawRect(cx + pa->x, cy + pa->y, pa->w, pa->h);
-        }
-
-        // paint all ellipses
-        for (qucs::Area *pa: Ellips) {
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(pa->Pen);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            p->Painter->setBrush(pa->Brush);
-            p->drawEllipse(cx + pa->x, cy + pa->y, pa->w, pa->h);
-        }
-        p->Painter->setBrush(Qt::NoBrush);
-
-        newFont.setWeight(QFont::Light);
-
-        // keep track of painter state
-        p->Painter->save();
-
-        QTransform wm = p->Painter->worldTransform();
-        // write all text
-        for (Text *pt: Texts) {
-            p->Painter->setWorldTransform(
-                    QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
-                               p->DX + float(cx + pt->x) * p->Scale,
-                               p->DY + float(cy + pt->y) * p->Scale));
-            newFont.setPointSizeF(p->Scale * pt->Size);
-            newFont.setOverline(pt->over);
-            newFont.setUnderline(pt->under);
-            p->Painter->setFont(newFont);
-            if ((Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-                p->Painter->setPen(pt->Color);
-            } else {
-                p->Painter->setPen(WrongSimulatorPen);
-            }
-            int w, h;
-            w = p->drawTextMapped(pt->s, 0, 0, &h);
-            Q_UNUSED(w)
-            Q_UNUSED(h)
-        }
-        p->Painter->setWorldTransform(wm);
-        p->Painter->setWorldMatrixEnabled(false);
-
-        // restore painter state
-        p->Painter->restore();
-    }
-
-    // restore old font
-    p->Painter->setFont(f);
-
-    p->Painter->setPen(QPen(Qt::black, 1));
-    p->map(cx + tx, cy + ty, x, y);
     if (showName) {
-        p->Painter->drawText(x, y, 0, 0, Qt::TextDontClip, Name);
-        y += p->LineSpacing;
+        p->drawText(tx, ty, 0, 0, Qt::TextDontClip, Name, &text_br);
     }
-    // write all properties
-    for (Property *p4 = Props.first(); p4 != 0; p4 = Props.next())
-        if (p4->display) {
-            p->Painter->drawText(x, y, 0, 0, Qt::TextDontClip, p4->Name + "=" + p4->Value);
-            y += p->LineSpacing;
-        }
+
+    for (auto *prop : Props) {
+        if (!prop->display) continue;
+        prop->paint(text_br.left(), text_br.bottom(), p);
+        text_br = prop->boundingRect();
+    }
 
     if (isActive == COMP_IS_OPEN)
-        p->Painter->setPen(QPen(Qt::red, 0));
+        p->setPen(QPen(Qt::red, 0));
     else if (isActive & COMP_IS_SHORTEN)
-        p->Painter->setPen(QPen(Qt::darkGreen, 0));
+        p->setPen(QPen(Qt::darkGreen, 0));
+
     if (isActive != COMP_IS_ACTIVE) {
-        p->drawRect(cx + x1, cy + y1, x2 - x1 + 1, y2 - y1 + 1);
-        p->drawLine(cx + x1, cy + y1, cx + x2, cy + y2);
-        p->drawLine(cx + x1, cy + y2, cx + x2, cy + y1);
+        p->drawRect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+        p->drawLine(x1, y1, x2, y2);
+        p->drawLine(x1, y2, x2, y1);
     }
 
     // draw component bounding box
     if (isSelected) {
-        p->Painter->setPen(QPen(Qt::darkGray, 3));
-        p->drawRoundRect(cx + x1, cy + y1, x2 - x1, y2 - y1);
+        p->setPen(QPen(Qt::darkGray, 3));
+        p->drawRoundedRect(x1, y1, x2 - x1, y2 - y1, 4, 4);
+    }
+
+    p->restore();
+}
+
+void Component::drawSymbol(QPainter* p) {
+    const bool correctSimulator = (Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator;
+
+    auto draw_primitive = [&](qucs::DrawingPrimitive* prim, QPainter* p) {
+        p->save();
+        p->setPen(correctSimulator ? prim->penHint() : WrongSimulatorPen);
+        p->setBrush(prim->brushHint());
+        prim->draw(p);
+        p->restore();
+    };
+
+    for (qucs::DrawingPrimitive *line: Lines) {
+        draw_primitive(line, p);
+    }
+
+    for (qucs::DrawingPrimitive *pl: Polylines) {
+        draw_primitive(pl, p);
+    }
+
+    for (qucs::DrawingPrimitive *arc: Arcs) {
+        draw_primitive(arc, p);
+    }
+
+    for (qucs::DrawingPrimitive *rect: Rects) {
+        draw_primitive(rect, p);
+    }
+
+    for (qucs::DrawingPrimitive *ellips: Ellipses) {
+        draw_primitive(ellips, p);
+    }
+
+    for (qucs::DrawingPrimitive *text: Texts) {
+        draw_primitive(text, p);
     }
 }
 
 // paint device icon for left panel list
-void Component::paintIcon(QPixmap *pixmap)
-{
+void Component::paintIcon(QPixmap* pixmap) {
     pixmap->fill(Qt::transparent);
-    QPainter *painter = new QPainter(pixmap);
-    ViewPainter *p = new ViewPainter(painter);
-    int h = std::abs(x2 - x1) + 10;
-    int w = std::abs(y2 - y1) + 10;
-    int ph = pixmap->size().height();
-    p->Scale = (float) ph / std::max(w,h);
 
-    QFont f = p->Painter->font();   // save current font
-    QFont newFont = f;
-    int c_sc = ph / (2*p->Scale);
-    cx += c_sc + icon_dx*p->Scale;
-    cy += c_sc + icon_dy*p->Scale;
-    if (Model.at(0) != '.' && !isEquation) {    // normal components go here
-        // paint all lines
-        QPen portPen;
-        portPen.setWidth(3);
-        portPen.setColor(Qt::red);
-        p->Painter->setPen(portPen);
-        for (auto pp: Ports) {
-            p->drawEllipse(cx+pp->x-2,cy+pp->y-2,4,4);
-        }
+    QPainter painter{pixmap};
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::TextAntialiasing);
 
-        for (qucs::Line *p1: Lines) {
-            p1->style.setWidth(3);
-            p->Painter->setPen(p1->style);
-            p->drawLine(cx + p1->x1, cy + p1->y1, cx + p1->x2, cy + p1->y2);
-        }
+    const QRectF component_br{
+        QRect{x1, y1, x2 - x1, y2 - y1}.marginsAdded(QMargins{5, 5, 5, 5})};
+    const QRectF picture{pixmap->rect()};
 
-        // paint all arcs
-        for (qucs::Arc *p3: Arcs) {
-            p3->style.setWidth(3);
-            p->Painter->setPen(p3->style);
-            p->drawArc(cx + p3->x, cy + p3->y, p3->w, p3->h, p3->angle, p3->arclen);
-        }
+    const double scale = std::min(picture.height() / component_br.height(),
+                                  picture.width() / component_br.width());
 
-        // paint all rectangles
-        for (qucs::Area *pa: Rects) {
-            pa->Pen.setWidth(3);
-            p->Painter->setPen(pa->Pen);
-            p->Painter->setBrush(pa->Brush);
-            p->drawRect(cx + pa->x, cy + pa->y, pa->w, pa->h);
-        }
+    painter.translate(picture.center().x() - component_br.center().x(),
+                      picture.center().y() - component_br.center().y());
+    painter.scale(scale, scale);
+    // These have to be applied after scaling. TBH I am not quite sure
+    // how it works, but it makes icons better aligned.
+    painter.translate(icon_dx, icon_dy);
 
-        // paint all ellipses
-        for (qucs::Area *pa: Ellips) {
-            p->Painter->setPen(pa->Pen);
-            p->Painter->setBrush(pa->Brush);
-            p->drawEllipse(cx + pa->x, cy + pa->y, pa->w, pa->h);
-        }
-        p->Painter->setBrush(Qt::NoBrush);
+    painter.save();
 
-        newFont.setWeight(QFont::Light);
+    painter.setPen(QPen{Qt::red});
+    for (auto* port : Ports) {
+        painter.drawEllipse(port->x - 2, port->y - 2, 4, 4);
+    }
 
-        for (Text *pt: Texts) {
-            p->Painter->setWorldTransform(
-                    QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
-                               p->DX + float(cx + pt->x) * p->Scale,
-                               p->DY + float(cy + pt->y) * p->Scale));
-            newFont.setPointSizeF(p->Scale * pt->Size);
-            newFont.setOverline(pt->over);
-            newFont.setUnderline(pt->under);
-            p->Painter->setFont(newFont);
-            p->Painter->setPen(pt->Color);
-            w = p->drawTextMapped(pt->s, 0, 0, &h);
-            Q_UNUSED(w)
-            Q_UNUSED(h)
-        }
+    for (qucs::Line* line : Lines) {
+        painter.setPen(line->penHint());
+        line->draw(&painter);
+    }
+
+    for (qucs::Polyline* pl : Polylines) {
+        painter.setPen(pl->penHint());
+        pl->draw(&painter);
+    }
+
+    for (qucs::Arc* arc : Arcs) {
+        painter.setPen(arc->penHint());
+        arc->draw(&painter);
+    }
+
+    for (qucs::Rect* rect : Rects) {
+        painter.setPen(rect->penHint());
+        painter.setBrush(rect->brushHint());
+        rect->draw(&painter);
+    }
+
+    for (qucs::Ellips* ellipse : Ellipses) {
+        painter.setPen(ellipse->penHint());
+        painter.setBrush(ellipse->brushHint());
+        ellipse->draw(&painter);
+    }
+    painter.restore();
+
+    for (Text* pt : Texts) {
+        pt->draw(&painter);
     }
 }
 
@@ -469,6 +428,14 @@ void Component::paintScheme(Schematic *p) {
     for (qucs::Line *p1: Lines)
         p->PostPaintEvent(_Line, cx + p1->x1, cy + p1->y1, cx + p1->x2, cy + p1->y2);
 
+    for (auto* pl : Polylines) {
+        for (size_t i = 1; i < pl->points.size(); i++) {
+            auto& prev = pl->points.at(i - 1);
+            auto& curr = pl->points.at(i);
+            p->PostPaintEvent(_Line, cx + prev.x(), cy + prev.y(), cx + curr.x(), cy + curr.y());
+        }
+    }
+
     // paint all ports
     for (Port *p2 : Ports)
       if (p2->avail) {
@@ -482,23 +449,11 @@ void Component::paintScheme(Schematic *p) {
         p->PostPaintEvent(_Arc, cx + p3->x, cy + p3->y, p3->w, p3->h, p3->angle, p3->arclen);
 
 
-    for (qucs::Area *pa: Rects) // paint all rectangles
+    for (qucs::Rect *pa: Rects) // paint all rectangles
         p->PostPaintEvent(_Rect, cx + pa->x, cy + pa->y, pa->w, pa->h);
 
-    for (qucs::Area *pa: Ellips) // paint all ellipses
+    for (qucs::Ellips *pa: Ellipses) // paint all ellipses
         p->PostPaintEvent(_Ellipse, cx + pa->x, cy + pa->y, pa->w, pa->h);
-}
-
-// -------------------------------------------------------
-// For output on a printer device.
-void Component::print(ViewPainter *p, float FontScale) {
-    for (Text *pt: Texts)
-        pt->Size *= FontScale;
-
-    paint(p);
-
-    for (Text *pt: Texts)
-        pt->Size /= FontScale;
 }
 
 // -------------------------------------------------------
@@ -540,7 +495,7 @@ void Component::rotate() {
     }
 
     // rotate all rectangles
-    for (qucs::Area *pa: Rects) {
+    for (qucs::Rect *pa: Rects) {
         tmp = -pa->x;
         pa->x = pa->y;
         pa->y = tmp - pa->w;
@@ -550,7 +505,7 @@ void Component::rotate() {
     }
 
     // rotate all ellipses
-    for (qucs::Area *pa: Ellips) {
+    for (qucs::Ellips *pa: Ellipses) {
         tmp = -pa->x;
         pa->x = pa->y;
         pa->y = tmp - pa->w;
@@ -569,6 +524,13 @@ void Component::rotate() {
         ftmp = -pt->mSin;
         pt->mSin = pt->mCos;
         pt->mCos = ftmp;
+    }
+
+    for (qucs::Polyline* pl : Polylines) {
+        for (auto& pt : pl->points) {
+            std::swap(pt.rx(), pt.ry());
+            pt.ry() *= -1;
+        };
     }
 
     tmp = -x1;   // rotate boundings
@@ -638,11 +600,11 @@ void Component::mirrorX() {
     }
 
     // mirror all rectangles
-    for (qucs::Area *pa: Rects)
+    for (qucs::Rect *pa: Rects)
         pa->y = -pa->y - pa->h;
 
     // mirror all ellipses
-    for (qucs::Area *pa: Ellips)
+    for (qucs::Ellips *pa: Ellipses)
         pa->y = -pa->y - pa->h;
 
     QFont f = QucsSettings.font;
@@ -653,6 +615,12 @@ void Component::mirrorX() {
         QFontMetrics smallMetrics(f, 0);
         QSize s = smallMetrics.size(0, pt->s);   // use size for more lines
         pt->y = -pt->y - int(pt->mCos) * s.height() + int(pt->mSin) * s.width();
+    }
+
+    for (qucs::Polyline* pl : Polylines) {
+        for (auto& pt : pl->points) {
+            pt.ry() *= -1;
+        }
     }
 
     int tmp = y1;
@@ -699,11 +667,11 @@ void Component::mirrorY() {
     }
 
     // mirror all rectangles
-    for (qucs::Area *pa: Rects)
+    for (qucs::Rect *pa: Rects)
         pa->x = -pa->x - pa->w;
 
     // mirror all ellipses
-    for (qucs::Area *pa: Ellips)
+    for (qucs::Ellips *pa: Ellipses)
         pa->x = -pa->x - pa->w;
 
     int tmp;
@@ -715,6 +683,12 @@ void Component::mirrorY() {
         QFontMetrics smallMetrics(f, 0);
         QSize s = smallMetrics.size(0, pt->s);   // use size for more lines
         pt->x = -pt->x - int(pt->mSin) * s.height() - int(pt->mCos) * s.width();
+    }
+
+    for (qucs::Polyline* pl : Polylines) {
+        for (auto& pt : pl->points) {
+            pt.rx() *= -1;
+        }
     }
 
     tmp = x1;
@@ -772,9 +746,7 @@ QString Component::form_spice_param_list(QStringList &ignore_list, QStringList &
             } else {
                 nam = Props.at(i)->Name;
             }
-            double val, fac;
-            misc::str2num(Props.at(i)->Value, val, unit, fac);
-            val *= fac;
+            QString val = spicecompat::normalize_value(Props.at(i)->Value);
             par_str += QString("%1=%2 ").arg(nam).arg(val);
         }
 
@@ -1278,7 +1250,7 @@ int Component::analyseLine(const QString &Row, int numProps) {
         if (!getIntegers(Row, &i1, &i2, &i3, &i4)) return -1;
         if (!getPen(Row, Pen, 5)) return -1;
         if (!getBrush(Row, Brush, 8)) return -1;
-        Ellips.append(new qucs::Area(i1, i2, i3, i4, Pen, Brush));
+        Ellipses.append(new qucs::Ellips(i1, i2, i3, i4, Pen, Brush));
 
         if (i1 < x1) x1 = i1;  // keep track of component boundings
         if (i1 > x2) x2 = i1;
@@ -1293,7 +1265,7 @@ int Component::analyseLine(const QString &Row, int numProps) {
         if (!getIntegers(Row, &i1, &i2, &i3, &i4)) return -1;
         if (!getPen(Row, Pen, 5)) return -1;
         if (!getBrush(Row, Brush, 8)) return -1;
-        Rects.append(new qucs::Area(i1, i2, i3, i4, Pen, Brush));
+        Rects.append(new qucs::Rect(i1, i2, i3, i4, Pen, Brush));
 
         if (i1 < x1) x1 = i1;  // keep track of component boundings
         if (i1 > x2) x2 = i1;
@@ -1461,7 +1433,7 @@ void Component::copyComponent(Component *pc) {
     Lines = pc->Lines;
     Arcs = pc->Arcs;
     Rects = pc->Rects;
-    Ellips = pc->Ellips;
+    Ellipses = pc->Ellipses;
     Texts = pc->Texts;
 }
 
@@ -1477,7 +1449,7 @@ void MultiViewComponent::recreate(Schematic *Doc) {
         Doc->deleteComp(this);
     }
 
-    Ellips.clear();
+    Ellipses.clear();
     Texts.clear();
     Ports.clear();
     Lines.clear();
@@ -1717,7 +1689,7 @@ void GateComponent::createSymbol() {
             Texts.append(new Text(-10, 3 - y, "&", Qt::darkBlue, 15.0));
         else if (Model.at(0) == 'X') {
             if (Model.at(1) == 'N') {
-                Ellips.append(new qucs::Area(xr, -4, 8, 8,
+                Ellipses.append(new qucs::Ellips(xr, -4, 8, 8,
                                              QPen(Qt::darkBlue, 0), QBrush(Qt::darkBlue)));
                 Texts.append(new Text(-11, 3 - y, "=1", Qt::darkBlue, 15.0));
             } else
@@ -1747,7 +1719,7 @@ void GateComponent::createSymbol() {
     }
 
     if (Model.at(0) == 'N')
-        Ellips.append(new qucs::Area(xr, -4, 8, 8,
+        Ellipses.append(new qucs::Ellips(xr, -4, 8, 8,
                                      QPen(Qt::darkBlue, 0), QBrush(Qt::darkBlue)));
 
     Ports.append(new Port(30, 0));
@@ -1757,7 +1729,7 @@ void GateComponent::createSymbol() {
         Ports.append(new Port(-30, y));
         if (xl == 10)
             if ((z == 0) || (z == Num - 1)) {
-                Lines.append(new qucs::Line(-30, y, 9, y, QPen(Qt::darkBlue, 2)));
+                Lines.append(new qucs::Line(-30, y, 8, y, QPen(Qt::darkBlue, 2)));
                 continue;
             }
         Lines.append(new qucs::Line(-30, y, xl, y, QPen(Qt::darkBlue, 2)));

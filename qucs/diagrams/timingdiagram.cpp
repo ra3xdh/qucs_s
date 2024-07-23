@@ -45,79 +45,81 @@ TimingDiagram::~TimingDiagram()
 {
 }
 
-void TimingDiagram::paint(ViewPainter *p)
-{
-    paintDiagram(p);
+void TimingDiagram::paint(QPainter *painter) {
+    paintDiagram(painter);
 }
 
-// ------------------------------------------------------------
-void TimingDiagram::paintDiagram(ViewPainter *p)
-{
-  // paint all lines
-  for(qucs::Line *pl : Lines) {
-    p->Painter->setPen(pl->style);
-    p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
+void TimingDiagram::paintDiagram(QPainter *painter) {
+  painter->save();
+
+  painter->translate(cx, cy);
+
+  for (qucs::Line* line : Lines) {
+    painter->setPen(line->style);
+    painter->drawLine(line->x1, -line->y1, line->x2, -line->y2);
   }
 
-  p->Painter->setPen(Qt::black);
-  // write whole text
-  for(Text *pt : Texts)
-    p->drawText(pt->s, cx+pt->x, cy-pt->y);
+  painter->setPen(Qt::black);
 
+  for (Text *pt : Texts) {
+    painter->drawText(pt->x, -pt->y, 0, 0, Qt::TextDontClip, pt->s);
+  }
 
-  if(y1 > 0) {  // paint scroll bar ?
-    int   x, y, dx, dy;
-    QPolygon Points;
+  if (y1 > 0) {  // paint scroll bar ?
     // draw scroll bar
-    p->fillRect(cx+yAxis.numGraphs, cy+2, zAxis.numGraphs, 14, QColor(192, 192, 192));
+    painter->fillRect(yAxis.numGraphs, 2, zAxis.numGraphs, 14, QColor(192, 192, 192));
 
-    int bx = cx+yAxis.numGraphs+zAxis.numGraphs;
+    int bx = yAxis.numGraphs+zAxis.numGraphs;
     // draw frame for scroll bar
-    p->Painter->setPen(QPen(Qt::black,0));
-    p->drawLine(cx+xAxis.numGraphs, cy, cx+xAxis.numGraphs, cy+17);
-    p->drawLine(cx+xAxis.numGraphs+17, cy, cx+xAxis.numGraphs+17, cy+17);
-    p->drawLine(cx+xAxis.numGraphs, cy+17, cx+x2, cy+17);
-    p->drawLine(cx+x2, cy, cx+x2, cy+17);
-    p->drawLine(cx+x2-17, cy, cx+x2-17, cy+17);
+    painter->setPen(QPen(Qt::black,0));
+    painter->drawLine(xAxis.numGraphs, 0, xAxis.numGraphs, 17);
+    painter->drawLine(xAxis.numGraphs+17, 0, xAxis.numGraphs+17, 17);
+    painter->drawLine(xAxis.numGraphs, 17, x2, 17);
+    painter->drawLine(x2, 0, x2, 17);
+    painter->drawLine(x2-17, 0, x2-17, 17);
 
     // draw the arrows above and below the scroll bar
-    p->Painter->setBrush(QColor(192, 192, 192));
-    p->Painter->setPen(QColor(152, 152, 152));
-    p->drawLine(cx+yAxis.numGraphs, cy+15, bx, cy+15);
-    p->drawLine(bx, cy+2, bx, cy+15);
+    painter->setBrush(QColor(192, 192, 192));
+    painter->setPen(QColor(152, 152, 152));
+    painter->drawLine(yAxis.numGraphs, 15, bx, 15);
+    painter->drawLine(bx, 2, bx, 15);
 
-    p->map(cx+xAxis.numGraphs+3,  cy+3, x, y);
-    p->map(cx+xAxis.numGraphs+14, cy+14, dx, dy);
+    int x = xAxis.numGraphs+3;
+    int y = 3;
+    int dx = xAxis.numGraphs+14;
+    int dy = 14;
+    QPolygon Points;
     Points.setPoints(3, x, (y+dy)>>1, dx, y, dx, dy);
-    p->Painter->drawConvexPolygon(Points);
-    p->Painter->setPen(QColor(224, 224, 224));
-    p->Painter->drawLine(x, (y+dy)>>1, dx, y);
-    p->drawLine(cx+yAxis.numGraphs, cy+2, bx, cy+2);
-    p->drawLine(cx+yAxis.numGraphs, cy+2, cx+yAxis.numGraphs, cy+15);
+    painter->drawConvexPolygon(Points);
+    painter->setPen(QColor(224, 224, 224));
+    painter->drawLine(x, (y+dy)>>1, dx, y);
+    painter->drawLine(yAxis.numGraphs, 2, bx, 2);
+    painter->drawLine(yAxis.numGraphs, 2, yAxis.numGraphs, 15);
 
-    p->Painter->setPen(QColor(152, 152, 152));
+    painter->setPen(QColor(152, 152, 152));
     dx -= x;
-    p->map(cx+x2-3,  cy+3, x, y);
+    x = x2 - 3;
+    y = 3;
     Points.setPoints(3, x, (y+dy)>>1, x-dx, y, x-dx, dy);
-    p->Painter->drawConvexPolygon(Points);
-    p->Painter->setPen(QColor(208, 208, 208));
-    p->Painter->drawLine(x-dx, y, x, (y+dy)>>1);
-    p->Painter->setPen(QColor(224, 224, 224));
-    p->Painter->drawLine(x-dx, y, x-dx, dy);
+    painter->drawConvexPolygon(Points);
+    painter->setPen(QColor(208, 208, 208));
+    painter->drawLine(x-dx, y, x, (y+dy)>>1);
+    painter->setPen(QColor(224, 224, 224));
+    painter->drawLine(x-dx, y, x-dx, dy);
 
-    p->Painter->setBrush(QBrush(Qt::NoBrush));
+    painter->setBrush(QBrush(Qt::NoBrush));
   }
 
 
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->drawRect(cx-5, cy-y2-5, x2+10, y2+10);
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy-y2);  // markers for changing the size
-    p->drawResizeRect(cx, cy);
-    p->drawResizeRect(cx+x2, cy-y2);
-    p->drawResizeRect(cx+x2, cy);
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,3));
+    painter->drawRect(-5, -y2-5, x2+10, y2+10);
+    misc::draw_resize_handle(painter, QPoint{0, -y2});
+    misc::draw_resize_handle(painter, QPoint{0, 0});
+    misc::draw_resize_handle(painter, QPoint{x2, -y2});
+    misc::draw_resize_handle(painter, QPoint{x2, 0});
   }
+  painter->restore();
 }
 
 // ------------------------------------------------------------

@@ -82,26 +82,18 @@ QString vRect::spice_netlist(bool)
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
-    }   
-
-    double T, TL, TH, Trval, Tfval, fac;
-    QString unit;
+    }
 
     QString U = spicecompat::normalize_value(Props.at(0)->Value); //VH
     QString Td = spicecompat::normalize_value(Props.at(5)->Value); // Td
     QString Tr = spicecompat::normalize_value(Props.at(3)->Value); // Tr
     QString Tf = spicecompat::normalize_value(Props.at(4)->Value); //Tf
     QString U0 = spicecompat::normalize_value(getProperty("U0")->Value); //VL
-    misc::str2num(Props.at(1)->Value,TH,unit,fac); //TH
-    TH *= fac;    // TH = pw
-    misc::str2num(Props.at(2)->Value,TL,unit,fac);
-    T = TL*fac+TH;
-   misc::str2num(Props.at(3)->Value,Trval,unit,fac); 
-     T = Trval*fac+T;    
-   misc::str2num(Props.at(4)->Value,Tfval,unit,fac); 
-     T = Tfval*fac+T;    
-     
-    s += QString(" DC 0 PULSE( %1 %2 %3 %4 %5 %6 %7 )  AC 0\n").arg(U0).arg(U).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T);
+    QString TH = spicecompat::normalize_value(getProperty("TH")->Value);
+    QString TL = spicecompat::normalize_value(getProperty("TL")->Value);
+
+    s += QString(" DC 0 PULSE( %1 %2 %3 %4 %5 %6 {(%7)+(%8)+(%9)+(%10)} )  AC 0\n")
+             .arg(U0).arg(U).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(TH).arg(TL).arg(Tr).arg(Tf);
 
     return s;
 }

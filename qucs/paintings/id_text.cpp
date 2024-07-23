@@ -35,38 +35,35 @@ ID_Text::~ID_Text()
 {
 }
 
-// --------------------------------------------------------------------------
-void ID_Text::paint(ViewPainter *p)
-{
-  int x, y;
-  p->Painter->setPen(QPen(Qt::black,1));
-  p->map(cx, cy, x, y);
+void ID_Text::paint(QPainter* painter) {
+  painter->save();
+  painter->translate(cx, cy);
+
+  painter->setPen(QPen(Qt::black,1));
 
   QRect r;
-  p->Painter->drawText(QRect(x, y, 0, 0), Qt::TextDontClip, Prefix, &r);
+  painter->drawText(QRect(0, 0, 0, 0), Qt::TextDontClip, Prefix, &r);
   x2 = r.width();
-  y2 = p->LineSpacing;
+  y2 = r.height();
 
-  p->Painter->drawText(QRect(x, y+y2, 0, 0), Qt::TextDontClip, "File=name", &r);
-  if(x2 < r.width())  x2 = r.width();
-  y2 += p->LineSpacing;
+  painter->drawText(QRect(0, y2, 0, 0), Qt::TextDontClip, "File=name", &r);
+  x2 = std::max(x2, r.width());
+  y2 += r.height();
 
   QList<SubParameter *>::const_iterator it;
   for(it = Parameter.constBegin(); it != Parameter.constEnd(); it++) {
     if((*it)->display) {
-      p->Painter->drawText(QRect(x, y+y2, 0, 0), Qt::TextDontClip, (*it)->Name, &r);
-      if(x2 < r.width())  x2 = r.width();
-      y2 += p->LineSpacing;
+      painter->drawText(QRect(0, y2, 0, 0), Qt::TextDontClip, (*it)->Name, &r);
+      x2 = std::max(x2, r.width());
+      y2 += r.height();
     }
   }
 
   if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->Painter->drawRoundedRect(x-4, y-4, x2+8, y2+8, 4.0, 4.0);
+    painter->setPen(QPen(Qt::darkGray,3));
+    painter->drawRoundedRect(-4, -4, x2+8, y2+8, 4.0, 4.0);
   }
-
-  x2 = int(float(x2) / p->Scale);
-  y2 = int(float(y2) / p->Scale);
+  painter->restore();
 }
 
 // --------------------------------------------------------------------------

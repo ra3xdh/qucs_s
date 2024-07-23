@@ -16,8 +16,6 @@
  ***************************************************************************/
 
 #include "ccvs.h"
-#include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 
@@ -25,7 +23,7 @@ CCVS::CCVS()
 {
   Description = QObject::tr("current controlled voltage source");
 
-  Arcs.append(new qucs::Arc(0,-11, 22, 22,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Ellipses.append(new qucs::Ellips(0,-11, 22, 22, QPen(Qt::darkBlue,2)));
 
   Lines.append(new qucs::Line(-30,-30,-12,-30,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30, 30,-12, 30,QPen(Qt::darkBlue,2)));
@@ -35,18 +33,16 @@ CCVS::CCVS()
   Lines.append(new qucs::Line(-12,-30,-12, 30,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 11,-30, 11,-11,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 11, 30, 11, 11,QPen(Qt::darkBlue,2)));
-
-  Lines.append(new qucs::Line(-12, 20,-17, 11,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-12, 20, -8, 11,QPen(Qt::darkBlue,2)));
-
+  // arrow "wings"
+  Lines.append(new qucs::Line(-12, 20,-17, 11,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  Lines.append(new qucs::Line(-12, 20, -7, 11,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap)));
+  // plus sign
   Lines.append(new qucs::Line( 19,-21, 19,-15,QPen(Qt::red,1)));
   Lines.append(new qucs::Line( 16,-18, 22,-18,QPen(Qt::red,1)));
+  // minus sign
   Lines.append(new qucs::Line( 16, 18, 22, 18,QPen(Qt::black,1)));
 
-  Lines.append(new qucs::Line(-25,-27, 25,-27,QPen(Qt::darkGray,1)));
-  Lines.append(new qucs::Line( 25,-27, 25, 27,QPen(Qt::darkGray,1)));
-  Lines.append(new qucs::Line( 25, 27,-25, 27,QPen(Qt::darkGray,1)));
-  Lines.append(new qucs::Line(-25, 27,-25,-27,QPen(Qt::darkGray,1)));
+  Rects.append(new qucs::Rect(-25, -27, 50, 54, QPen(Qt::darkGray,1)));
 
   Ports.append(new Port(-30,-30));
   Ports.append(new Port( 30,-30));

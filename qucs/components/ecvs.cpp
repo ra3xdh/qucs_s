@@ -14,7 +14,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ecvs.h"
-#include "schematic.h"
+#include "node.h"
 #include "extsimkernels/spicecompat.h"
 
 ecvs::ecvs()

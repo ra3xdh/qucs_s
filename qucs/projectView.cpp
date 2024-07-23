@@ -84,6 +84,7 @@ ProjectView::refresh()
   APPEND_ROW(m_model, tr("VHDL")         );
   APPEND_ROW(m_model, tr("Octave")       );
   APPEND_ROW(m_model, tr("Schematics")   );
+  APPEND_ROW(m_model, tr("Symbols")      );
   APPEND_ROW(m_model, tr("SPICE")       );
   APPEND_ROW(m_model, tr("Others")       );
 
@@ -139,13 +140,14 @@ ProjectView::refresh()
         }
         APPEND_CHILD(6, columnData);
       }
-    }
-    else if ((extName == "cir") || (extName=="ckt") ||
-             (extName=="sp")) {
+    } else if (extName == "sym") {
         APPEND_CHILD(7,columnData);
+    } else if ((extName == "cir") || (extName=="ckt") ||
+             (extName=="sp")) {
+        APPEND_CHILD(8,columnData);
     }
     else {
-      APPEND_CHILD(8, columnData);
+      APPEND_CHILD(9, columnData);
     }
   }
 

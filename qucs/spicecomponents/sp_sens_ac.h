@@ -18,10 +18,10 @@
 #ifndef SP_SENS_AC_H
 #define SP_SENS_AC_H
 
-#include "components/component.h"
+#include "components/simulation.h"
 
 
-class SpiceSENS_AC : public Component  {
+class SpiceSENS_AC : public qucs::component::SimulationComponent  {
 public:
   SpiceSENS_AC();
   ~SpiceSENS_AC();

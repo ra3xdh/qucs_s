@@ -22,6 +22,7 @@
 #include "main.h"
 #include "misc.h"
 #include "qucs.h"
+#include "extsimkernels/spicecompat.h"
 #include "octave_window.h"
 
 #include <QAction>
@@ -57,6 +58,12 @@ void QucsApp::initActions()
   textNew->setStatusTip(tr("Creates a new text document"));
   textNew->setWhatsThis(tr("New Text\n\nCreates a new text document"));
   connect(textNew, SIGNAL(triggered()), SLOT(slotTextNew()));
+
+  symNew = new QAction(QIcon((":/bitmaps/svg/symnew.svg")), tr("New symbol"), this);
+  symNew->setStatusTip(tr("Creates a new symbol"));
+  symNew->setWhatsThis(tr("New\n\nCreates a new schematic symbol document"));
+  connect(symNew, SIGNAL(triggered()), SLOT(slotSymbolNew()));
+
 
   fileOpen = new QAction(QIcon((":/bitmaps/fileopen.png")),	tr("&Open..."), this);
   fileOpen->setShortcut(QKeySequence::Open);
@@ -98,9 +105,9 @@ void QucsApp::initActions()
   connect(fileClearRecent, SIGNAL(triggered()), SLOT(slotClearRecentFiles()));
 
   fileExamples = new QAction(tr("&Examples"), this);
-  fileExamples->setStatusTip(tr("Opens a file explorer with example documents"));
+  fileExamples->setStatusTip(tr("Starts file chooser dialog to open one of example schematics"));
   fileExamples->setWhatsThis(
-	        tr("Examples\n\nOpens a file explorer with example documents"));
+	        tr("Examples\n\nStart file chooser dialog and open one of example schematics"));
   connect(fileExamples, SIGNAL(triggered()), SLOT(slotFileExamples()));
 
 
@@ -240,7 +247,11 @@ void QucsApp::initActions()
   connect(editPaste, SIGNAL(toggled(bool)), SLOT(slotEditPaste(bool)));
 
   editDelete = new QAction(QIcon((":/bitmaps/svg/editdelete.svg")), tr("&Delete"), this);
+#ifdef __APPLE__
+  editDelete->setShortcut(QKeySequence::Backspace);
+#else
   editDelete->setShortcut(QKeySequence::Delete);
+#endif  
   editDelete->setStatusTip(tr("Deletes the selected components"));
   editDelete->setWhatsThis(tr("Delete\n\nDeletes the selected components"));
   editDelete->setCheckable(true);
@@ -324,18 +335,6 @@ void QucsApp::initActions()
 	tr("Create Library\n\nCreate Library from Subcircuits"));
   connect(createLib, SIGNAL(triggered()), SLOT(slotCreateLib()));
 
-  createPkg = new QAction(tr("Create &Package..."), this);
-  createPkg->setShortcut(tr("Ctrl+Shift+Y"));
-  createPkg->setStatusTip(tr("Create compressed Package from Projects"));
-  createPkg->setWhatsThis(tr("Create Package\n\nCreate compressed Package from complete Projects"));
-  connect(createPkg, SIGNAL(triggered()), SLOT(slotCreatePackage()));
-
-  extractPkg = new QAction(tr("E&xtract Package..."),  this);
-  extractPkg->setShortcut(tr("Ctrl+Shift+X"));
-  extractPkg->setStatusTip(tr("Install Content of a Package"));
-  extractPkg->setWhatsThis(tr("Extract Package\n\nInstall Content of a Package"));
-  connect(extractPkg, SIGNAL(triggered()), SLOT(slotExtractPackage()));
-
   graph2csv = new QAction(tr("Export to &CSV..."), this);
   graph2csv->setShortcut(tr("Ctrl+Shift+C"));
   graph2csv->setStatusTip(tr("Convert graph data to CSV file"));
@@ -371,14 +370,14 @@ void QucsApp::initActions()
   connect(magOne, SIGNAL(triggered()), SLOT(slotShowOne()));
 
   magPlus = new QAction(QIcon((":/bitmaps/svg/viewmag+.svg")),	tr("Zoom in"), this);
-  magPlus->setShortcut(Qt::Key_Plus);
+  magPlus->setShortcut(QKeySequence::ZoomIn);
   magPlus->setStatusTip(tr("Zooms into the current view"));
   magPlus->setWhatsThis(tr("Zoom in\n\nZooms the current view"));
   magPlus->setCheckable(true);
   connect(magPlus, SIGNAL(toggled(bool)), SLOT(slotZoomIn(bool)));
 
   magMinus = new QAction(QIcon((":/bitmaps/svg/viewmag-.svg")), tr("Zoom out"), this);
-  magMinus->setShortcut(Qt::Key_Minus);
+  magMinus->setShortcut(QKeySequence::ZoomOut);
   magMinus->setStatusTip(tr("Zooms out the current view"));
   magMinus->setWhatsThis(tr("Zoom out\n\nZooms out the current view"));
   connect(magMinus, SIGNAL(triggered()), SLOT(slotZoomOut()));
@@ -612,19 +611,6 @@ void QucsApp::initActions()
   //buildIFS = new QAction(tr("Build XSPICE IFS file from subcircuit"),this);
   //connect(buildIFS,SIGNAL(triggered()),SLOT(slotBuildXSPICEIfs()));
 
-
-  viewToolBar = new QAction(tr("Tool&bar"), this);
-  viewToolBar->setCheckable(true);
-  viewToolBar->setStatusTip(tr("Enables/disables the toolbar"));
-  viewToolBar->setWhatsThis(tr("Toolbar\n\nEnables/disables the toolbar"));
-  connect(viewToolBar, SIGNAL(toggled(bool)), SLOT(slotViewToolBar(bool)));
-
-  viewStatusBar = new QAction(tr("&Statusbar"), this);
-  viewStatusBar->setCheckable(true);
-  viewStatusBar->setStatusTip(tr("Enables/disables the statusbar"));
-  viewStatusBar->setWhatsThis(tr("Statusbar\n\nEnables/disables the statusbar"));
-  connect(viewStatusBar, SIGNAL(toggled(bool)), SLOT(slotViewStatusBar(bool)));
-
   viewBrowseDock = new QAction(tr("&Dock Window"), this);
   viewBrowseDock->setCheckable(true);
   viewBrowseDock->setStatusTip(tr("Enables/disables the browse dock window"));
@@ -653,12 +639,12 @@ void QucsApp::initActions()
   helpGetStart->setWhatsThis(tr("Getting Started\n\nShort introduction into Qucs"));
   connect(helpGetStart, SIGNAL(triggered()), SLOT(slotGettingStarted()));
 
-  helpAboutApp = new QAction(tr("&About Qucs-S..."), this);
+  helpAboutApp = new QAction(tr("&About Qucs-S"), this);
   helpAboutApp->setStatusTip(tr("About the application"));
   helpAboutApp->setWhatsThis(tr("About\n\nAbout the application"));
-  connect(helpAboutApp, SIGNAL(triggered()), SLOT(slotHelpAbout()));
+  connect(helpAboutApp, SIGNAL(triggered()),this, SLOT(slotHelpAbout()));
 
-  helpAboutQt = new QAction(tr("About Qt..."), this);
+  helpAboutQt = new QAction(tr("&About Qt"), this);
   helpAboutQt->setStatusTip(tr("About Qt"));
   helpAboutQt->setWhatsThis(tr("About Qt\n\nAbout Qt by Trolltech"));
   connect(helpAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -670,6 +656,7 @@ void QucsApp::initMenuBar()
   fileMenu = new QMenu(tr("&File"));  // menuBar entry fileMenu
   fileMenu->addAction(fileNew);
   fileMenu->addAction(textNew);
+  fileMenu->addAction(symNew);
   fileMenu->addAction(fileOpen);
   fileMenu->addAction(fileClose);
 
@@ -758,8 +745,6 @@ void QucsApp::initMenuBar()
   projMenu->addAction(projDel);
   projMenu->addSeparator();
   projMenu->addAction(createLib);
-  projMenu->addAction(createPkg);
-  projMenu->addAction(extractPkg);
   projMenu->addSeparator();
   projMenu->addAction(graph2csv);
   // TODO only enable if document is VA file
@@ -810,8 +795,6 @@ void QucsApp::initMenuBar()
   viewMenu->addAction(setDiagramLimits);
   viewMenu->addSeparator();
   //viewMenu->setCheckable(true);
-  viewMenu->addAction(viewToolBar);
-  viewMenu->addAction(viewStatusBar);
   viewMenu->addAction(viewBrowseDock);
   viewMenu->addAction(viewOctaveDock);
 
@@ -909,6 +892,7 @@ void QucsApp::initToolBar()
   this->addToolBar(fileToolbar);
   fileToolbar->addAction(fileNew);
   fileToolbar->addAction(textNew);
+  fileToolbar->addAction(symNew);
   fileToolbar->addAction(fileOpen);
   fileToolbar->addAction(fileSave);
   fileToolbar->addAction(fileSaveAll);
@@ -1040,24 +1024,6 @@ void QucsApp::slotUpdateUndo(bool isEnabled)
 void QucsApp::slotUpdateRedo(bool isEnabled)
 {
   redo->setEnabled(isEnabled);
-}
-
-// ----------------------------------------------------------
-// turn Toolbar on or off
-void QucsApp::slotViewToolBar(bool toggle)
-{
-  fileToolbar->setVisible(toggle);
-  editToolbar->setVisible(toggle);
-  viewToolbar->setVisible(toggle);
-  workToolbar->setVisible(toggle);
-  simulateToolbar->setVisible(toggle);
-}
-
-// ----------------------------------------------------------
-// turn Statusbar on or off
-void QucsApp::slotViewStatusBar(bool toggle)
-{
-  statusBar()->setVisible(toggle);
 }
 
 // ----------------------------------------------------------

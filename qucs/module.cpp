@@ -410,14 +410,6 @@ void Module::registerModules (void) {
       REGISTER_NONLINEAR_3 (MOSFET, info, info_p, info_depl);
       REGISTER_NONLINEAR_3 (MOSFET_sub, info, info_p, info_depl);
   //} else {
-      REGISTER_NONLINEAR_1 (DIODE_SPICE);
-      REGISTER_NONLINEAR_1 (NPN_SPICE);
-      REGISTER_NONLINEAR_1 (PNP_SPICE);
-      REGISTER_NONLINEAR_2 (MOS_SPICE,info_NM3pin,info_PM3pin);
-      REGISTER_NONLINEAR_1 (NJF_SPICE);
-      REGISTER_NONLINEAR_1 (PJF_SPICE);
-      REGISTER_NONLINEAR_1 (NMOS_SPICE);
-      REGISTER_NONLINEAR_1 (PMOS_SPICE);
       REGISTER_NONLINEAR_1 (MESFET_SPICE);
       REGISTER_NONLINEAR_1 (PMF_MESFET_SPICE);
       REGISTER_NONLINEAR_1 (S4Q_Ieqndef);
@@ -437,12 +429,17 @@ void Module::registerModules (void) {
 // PDK devices
       REGISTER_MICROEL_1 (R_SPICE, info_R3);
       REGISTER_MICROEL_1 (C_SPICE, info_C3);
+      REGISTER_MICROEL_1 (DIODE_SPICE, info);
       REGISTER_MICROEL_1 (DIODE_SPICE, info_DIODE3);
       REGISTER_MICROEL_1 (NMOS_SPICE, info);
       REGISTER_MICROEL_1 (PMOS_SPICE, info);
       REGISTER_MICROEL_2 (MOS_SPICE,info_NM3pin,info_PM3pin);
       REGISTER_MICROEL_2 (MOS_SPICE,info_NX3pin,info_PX3pin);
       REGISTER_MICROEL_2 (MOS_SPICE,info_NX4pin,info_PX4pin);
+      REGISTER_MICROEL_1 (NJF_SPICE, info);
+      REGISTER_MICROEL_1 (PJF_SPICE, info);
+      REGISTER_MICROEL_1 (NPN_SPICE, info);
+      REGISTER_MICROEL_1 (PNP_SPICE, info);
       REGISTER_MICROEL_2 (BJT_SPICE,infoNPN4,infoPNP4);
       REGISTER_MICROEL_2 (BJT_SPICE,infoNPN5,infoPNP5);
 
@@ -504,21 +501,12 @@ void Module::registerModules (void) {
   REGISTER_DIGITAL_1 (Verilog_File);
 
   // file components
-  REGISTER_FILE_1 (SpiceFile);
-  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_FILE_3 (SParamFile, info1, info2, info);
-  //}
   REGISTER_FILE_1 (Subcircuit);
-  //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
-      REGISTER_FILE_1 (SpiceGeneric);
-      REGISTER_FILE_1 (SpiceLibComp);
-  //}
-
-  //if ((QucsSettings.DefaultSimulator == spicecompat::simNgspice)|| (QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus)) {
-      REGISTER_FILE_1 (XspiceGeneric);
-      //REGISTER_FILE_1 (XSP_CMlib);
-      //REGISTER_FILE_1 (XSP_CodeModel);
-  //}
+  REGISTER_FILE_1 (SpiceLibComp);
+  REGISTER_FILE_1 (SpiceFile);
+  REGISTER_FILE_3 (SParamFile, info1, info2, info);
+  REGISTER_FILE_1 (SpiceGeneric);
+  REGISTER_FILE_1 (XspiceGeneric);
 
   // simulations
   REGISTER_SIMULATION_1 (DC_Sim);

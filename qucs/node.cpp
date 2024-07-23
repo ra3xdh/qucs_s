@@ -16,7 +16,6 @@
  ***************************************************************************/
 #include "node.h"
 
-#include "viewpainter.h"
 #include "wirelabel.h"
 
 #include <QPainter>
@@ -36,27 +35,35 @@ Node::~Node()
 {
 }
 
-// -------------------------------------------------------------
-void Node::paint(ViewPainter *p)
-{
+void Node::paint(QPainter* painter) const {
+  painter->save();
+
   switch(Connections.count()) {
-    case 1:  if(Label)
-               p->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
-             else {
-               p->Painter->setPen(QPen(Qt::red,1));  // node is open
-               p->drawEllipse(cx-4, cy-4, 8, 8);
-             }
-             return;
-    case 2:  if(Connections.getFirst()->Type == isWire)
-               if(Connections.getLast()->Type == isWire) return;
-             p->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
-             break;
-    default: p->Painter->setBrush(Qt::darkBlue);  // more than 2 connections
-	     p->Painter->setPen(QPen(Qt::darkBlue,1));
-	     p->drawEllipse(cx-3, cy-3, 6, 6);
-	     p->Painter->setBrush(Qt::NoBrush);
-             break;
+    case 1:
+      if (Label) {
+        painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
+      } else {
+        painter->setPen(QPen(Qt::red,1));  // node is open
+        painter->drawEllipse(cx-4, cy-4, 8, 8);
+      }
+      painter->restore();
+      return;
+
+    case 2:
+      if (Connections.getFirst()->Type == isWire && Connections.getLast()->Type == isWire) {
+          painter->restore();
+          return;
+      }
+      painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
+      break;
+
+    default:
+        painter->setBrush(Qt::darkBlue);  // more than 2 connections
+	      painter->setPen(QPen(Qt::darkBlue,1));
+	      painter->drawEllipse(cx-3, cy-3, 6, 6);
+	      painter->setBrush(Qt::NoBrush);
   }
+  painter->restore();
 }
 
 // ----------------------------------------------------------------

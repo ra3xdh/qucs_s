@@ -98,8 +98,8 @@ public:
   static bool isTextDocument(QWidget *);
 
   QString ProjName;   // name of the project, that is open
-  QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
-  QHash<QString,QString> spiceNameHash; // QHash for the spice files lookup
+  //QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
+  //QHash<QString,QString> spiceNameHash; // QHash for the spice files lookup
 
   QLineEdit *editText;  // for edit component properties on schematic
   SearchDialog *SearchDia;  // global in order to keep values
@@ -118,6 +118,7 @@ protected:
 public slots:
   void slotFileNew();     // generate a new schematic in the view TabBar
   void slotTextNew();     // generate a new text editor in the view TabBar
+  void slotSymbolNew();      // create new symbol
   void slotFileOpen();    // open a document
   void slotFileSave();    // save a document
   void slotFileSaveAs();  // save a document under a different filename
@@ -218,7 +219,7 @@ public:
   // corresponding actions
   QAction *ActionCMenuOpen, *ActionCMenuCopy, *ActionCMenuRename, *ActionCMenuDelete, *ActionCMenuInsert;
 
-  QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
+  QAction *fileNew, *textNew, *symNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
           *editCut, *editCopy, *magAll, *magSel, *magOne, *magMinus, *filePrintFit, *tune,
@@ -276,6 +277,7 @@ private:
   void updateRecentFilesList(QString s);
   void successExportMessages(bool ok);
   void fillLibrariesTreeView (void);
+  bool populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidgetItem *> &topitems);
   void saveSettings();
   QWidget *getSchematicWidget(QucsDoc *Doc);
 
@@ -284,8 +286,8 @@ public:
   void readProjects();
   void updatePathList(void); // update the list of paths, pruning non-existing paths
   void updatePathList(QStringList);
-  void updateSchNameHash(void); // maps all schematic files in the path list
-  void updateSpiceNameHash(void); // maps all spice files in the path list
+  //void updateSchNameHash(void); // maps all schematic files in the path list
+  //void updateSpiceNameHash(void); // maps all spice files in the path list
 
 /* **************************************************
    *****  The following methods are located in  *****
@@ -300,8 +302,6 @@ public slots:
   void slotUpdateRedo(bool);  // update redo available state
 
 private slots:
-  void slotViewToolBar(bool toggle);    // toggle the toolbar
-  void slotViewStatusBar(bool toggle);  // toggle the statusbar
   void slotViewBrowseDock(bool toggle); // toggle the dock window
   void slotViewOctaveDock(bool); // toggle the dock window
   void slotToggleOctave(bool);
@@ -314,7 +314,7 @@ private:
   void initToolBar();    // creates the toolbars
   void initStatusBar();  // setup the statusbar
 
-  QAction *helpAboutApp, *helpAboutQt, *viewToolBar, *viewStatusBar,
+  QAction *helpAboutApp, *helpAboutQt,
           *viewBrowseDock, *viewOctaveDock;
 
   // menus contain the items of their menubar
@@ -354,7 +354,7 @@ public:
           *showMsg, *showNet, *alignTop, *alignBottom, *alignLeft, *alignRight,
           *distrHor, *distrVert, *selectAll, *callMatch, *changeProps,
           *addToProj, *editFind, *insEntity, *selectMarker,
-          *createLib, *callConverter, *graph2csv, *createPkg, *extractPkg,
+          *createLib, *callConverter, *graph2csv,
           *callAtt, *centerHor, *centerVert, *loadModule, *buildModule, *callPwrComb, *callRFLayout;
 
   QAction *helpQucsIndex;
@@ -426,8 +426,6 @@ private slots:
   void slotCreateLib();
   void slotImportData();
   void slotExportGraphAsCsv();
-  void slotCreatePackage();
-  void slotExtractPackage();
   void slotUpdateRecentFiles();
   void slotClearRecentFiles();
   void slotLoadModule();
@@ -440,6 +438,35 @@ private:
                   const QStringList& = QStringList(),bool qucs_tool = false); // tool, description and args
   friend class SaveDialog;
   QString lastExportFilename;
+};
+
+/** \brief Provide a template to declare singleton classes.
+  *
+  * Classes implemented using this template will be singletons (i.e., only
+  * one instance of the class will exist per invokation). Primarily this
+  * is used to support static / access to an application-wide function, e.g.
+  * settings.
+  *
+  */
+template < typename T >
+class QucsSingleton final
+{
+public:
+  static T& Get()
+  {
+    static T instance;
+    return instance;
+  }
+
+// Prevent overriding default ctor, dtor, copying, or multiple instances.
+private:
+  QucsSingleton() = default;
+  ~QucsSingleton() = default;
+
+  QucsSingleton(const QucsSingleton&) = delete;
+  QucsSingleton& operator=(const QucsSingleton&) = delete;
+  QucsSingleton(QucsSingleton&&) = delete;
+  QucsSingleton& operator=(QucsSingleton&&) = delete;
 };
 
 #endif /* QUCS_H */

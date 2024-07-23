@@ -19,6 +19,7 @@
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 
+#include <QFontInfo>
 #include <QFontMetrics>
 
 Equation::Equation()
@@ -38,7 +39,7 @@ Equation::Equation()
   Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkBlue,2)));
   Texts.append(new Text(-xb+4,  -yb-3, QObject::tr("Equation"),
-			QColor(0,0,0), 12.0));
+			QColor(0,0,0), QFontInfo(f).pixelSize()));
 
   x1 = -xb-3;  y1 = -yb-5;
   x2 =  xb+9; y2 =  yb+3;
@@ -86,7 +87,7 @@ Component* Equation::newOne()
 
 Element* Equation::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Qucs legacy equation");
+  Name = QObject::tr("Qucsator equation");
   BitmapFile = (char *) "equation";
 
   if(getNewOne)  return new Equation();

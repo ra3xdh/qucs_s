@@ -16,10 +16,9 @@
  ***************************************************************************/
 
 #include "verilogfile.h"
-#include "qucs.h"
 #include "main.h"
-#include "schematic.h"
 #include "misc.h"
+#include "node.h"
 
 #include <QTextStream>
 #include <QRegularExpression>

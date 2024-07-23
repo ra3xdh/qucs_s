@@ -20,7 +20,6 @@
  ***************************************************************************/
 #include "vAmpMod.h"
 #include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
 
@@ -30,14 +29,16 @@ vAmpMod::vAmpMod()
   Simulator = spicecompat::simSpice;
 
   // normal voltage source symbol
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));
-   Texts.append(new Text(36, 4,"AM",Qt::blue,10.0,0.0,-1.0)); 
+  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::blue,3)));
+  Texts.append(new Text(26, 6,"AM",Qt::blue,12.0,0.0,-1.0));
+  // pins
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  
-  Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,1)));
-  Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,1)));
-  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,1)));
+  // plus sign
+  Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
+  Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
+  // minus sign
+  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2)));
 
  
 

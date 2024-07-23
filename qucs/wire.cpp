@@ -105,19 +105,19 @@ void Wire::paintScheme(QPainter *p)
 //      Label->paintScheme(p);
 }
 
-// ----------------------------------------------------------------
-void Wire::paint(ViewPainter *p)
-{
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,6));
-    p->drawLine(x1, y1, x2, y2);
-    p->Painter->setPen(QPen(Qt::lightGray,2));
-    p->drawLine(x1, y1, x2, y2);
+void Wire::paint(QPainter *painter) const {
+  painter->save();
+  if (isSelected) {
+    painter->setPen(QPen(Qt::darkGray,6));
+    painter->drawLine(x1, y1, x2, y2);
+    painter->setPen(QPen(Qt::lightGray,2));
+    painter->drawLine(x1, y1, x2, y2);
   }
   else {
-    p->Painter->setPen(QPen(Qt::darkBlue,2));
-    p->drawLine(x1, y1, x2, y2);
+    painter->setPen(QPen(Qt::darkBlue,2));
+    painter->drawLine(x1, y1, x2, y2);
   }
+  painter->restore();
 }
 
 void Wire::paintScheme(Schematic *p)

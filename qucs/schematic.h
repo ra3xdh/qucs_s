@@ -30,7 +30,6 @@
 #include "wire.h"
 #include "node.h"
 #include "qucsdoc.h"
-#include "viewpainter.h"
 #include "diagrams/diagram.h"
 #include "paintings/painting.h"
 #include "components/component.h"
@@ -83,16 +82,27 @@ public:
 
   void setName(const QString&);
   void setChanged(bool, bool fillStack=false, char Op='*');
-  void drawGrid(const ViewPainter&);
-  void print(QPrinter*, QPainter*, bool, bool);
+  void print(QPrinter*, QPainter*, bool printAll, bool fitToPage, QMargins margins={});
 
-  void paintSchToViewpainter(ViewPainter* p, bool printAll, bool toImage, int screenDpiX=96, int printerDpiX=300);
+  void paintSchToViewpainter(QPainter* painter, bool printAll);
 
   void PostPaintEvent(PE pe, int x1=0, int y1=0, int x2=0, int y2=0, int a=0, int b=0,bool PaintOnViewport=false);
 
   float textCorr();
   bool sizeOfFrame(int&, int&);
-  void  sizeOfAll(int&, int&, int&, int&);
+
+  /**
+    Iterates over all elements of schematic to find the size of the smallest
+    rectangle able to fit all elements. The bounds are then stored in members
+    @c UsedX1, @c UsedY1, @c UsedX2, @c UsedY2 , i.e. the internal state
+    of schematic is updated.
+  */
+  void updateAllBoundingRect();
+
+  /**
+    Returns the smallest rectangle enclosing all elements of schematic
+  */
+  QRect allBoundingRect();
   QRect  sizeOfSelection() const;
   bool  rotateElements();
   bool  mirrorXComponents();
@@ -129,6 +139,7 @@ public:
   void  enlargeView(int, int, int, int);
   void  switchPaintMode();
   int   adjustPortNumbers();
+  int   orderSymbolPorts();
   void  reloadGraphs();
   bool  createSubcircuitSymbol();
 
@@ -136,13 +147,13 @@ public:
     @brief Given cordinates of a model point returns coordinates of this point
            relative to viewport. It's a reverse of @ref Schematic::viewportToModel
   */
-  QPoint modelToViewport(QPoint modelCoordinates);
+  QPoint modelToViewport(const QPoint& modelCoordinates);
 
   /**
     Given a coordinates of viewport point returns coordinates of the model plane point
     displayed at given location of the viewport.
   */
-  QPoint viewportToModel(QPoint viewportCoordinates);
+  QPoint viewportToModel(const QPoint& viewportCoordinates);
 
   /**
     Given coordinates of a point on the view plane (schematic's canvas), this method
@@ -193,6 +204,7 @@ public:
 
   QList<PostedPaintEvent>   PostedPaintEvents;
   bool symbolMode;  // true if in symbol painting mode
+  bool isSymbolOnly;
 
   // Horizontal and vertical grid step
   int GridX, GridY;
@@ -205,11 +217,6 @@ public:
   // of the schematic. The comment in "renderModel" method describes how
   // these variables ("model") is used to draw the scematic.
   int ViewX1, ViewY1, ViewX2, ViewY2;
-
-  // Variables Used* hold the coordinates of top-left and bottom-right corners
-  // of a smallest rectangle which can fit all elements of the schematic.
-  // This rectangle exists in the same coordinate system as View*-rectangle
-  int UsedX1, UsedY1, UsedX2, UsedY2;
 
   int showFrame;
   QString Frame_Text0, Frame_Text1, Frame_Text2, Frame_Text3;
@@ -238,19 +245,18 @@ signals:
   void signalComponentDeleted(Component *);
 
 protected:
-  void paintFrame(ViewPainter*);
-
   // overloaded function to get actions of user
-  void drawContents(QPainter*, int, int, int, int);
-  void contentsMouseMoveEvent(QMouseEvent*);
-  void contentsMousePressEvent(QMouseEvent*);
-  void contentsMouseDoubleClickEvent(QMouseEvent*);
-  void contentsMouseReleaseEvent(QMouseEvent*);
-  void contentsWheelEvent(QWheelEvent*);
-  void contentsDropEvent(QDropEvent*);
-  void contentsDragEnterEvent(QDragEnterEvent*);
-  void contentsDragLeaveEvent(QDragLeaveEvent*);
-  void contentsDragMoveEvent(QDragMoveEvent*);
+  void drawContents(QPainter*, int, int, int, int)override;
+  void contentsMouseMoveEvent(QMouseEvent*)override;
+  void contentsMousePressEvent(QMouseEvent*)override;
+  void contentsMouseDoubleClickEvent(QMouseEvent*)override;
+  void contentsMouseReleaseEvent(QMouseEvent*)override;
+  void contentsWheelEvent(QWheelEvent*)override;
+  void contentsDropEvent(QDropEvent*)override;
+  void contentsDragEnterEvent(QDragEnterEvent*)override;
+  void contentsDragLeaveEvent(QDragLeaveEvent*)override;
+  void contentsDragMoveEvent(QDragMoveEvent*)override;
+  void contentsNativeGestureZoomEvent( QNativeGestureEvent* ) override;
 
 protected slots:
   void slotScrollUp();
@@ -259,6 +265,13 @@ protected slots:
   void slotScrollRight();
 
 private:
+  // Variables Used* hold the coordinates of top-left and bottom-right corners
+  // of a smallest rectangle which can fit all elements of the schematic.
+  // This rectangle exists in the same coordinate system as View*-rectangle
+  int UsedX1, UsedY1, UsedX2, UsedY2;
+
+  void  sizeOfAll(int&, int&, int&, int&);
+
   // Viewport-realative coordinates of the cursor between mouse movements.
   // Used in "pan with mouse" feature.
   QPoint previousCursorPosition;
@@ -352,6 +365,12 @@ private:
     @return new scale value
   */
   double renderModel(double scale, QRect newModelBounds, QPoint modelPlaneCoords, QPoint viewportCoords);
+  void drawElements(QPainter* painter);
+  void drawDcBiasPoints(QPainter* painter);
+  void drawPostPaintEvents(QPainter* painter);
+  void paintFrame(QPainter* painter);
+  void drawGrid(QPainter* painter);
+  void relativeRotation(int &x, int &y, int comX, int comY, int posX, int posY);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****

@@ -26,21 +26,19 @@ D_FlipFlop::D_FlipFlop()
 
   Props.append(new Property("t", "0", false, QObject::tr("delay time")));
 
-  Lines.append(new qucs::Line(-20,-20, 20,-20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-20, 20, 20, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-20,-20,-20, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 20,-20, 20, 20,QPen(Qt::darkBlue,2)));
+  Rects.append(new qucs::Rect(-20, -20, 40, 40, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
   Lines.append(new qucs::Line(-30,-10,-20,-10,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30, 10,-20, 10,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,-10, 20,-10,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,2)));
 
-  Texts.append(new Text(-18,-21, "D", Qt::darkBlue, 12.0));
-  Texts.append(new Text(  6,-21, "Q", Qt::darkBlue, 12.0));
-  Texts.append(new Text( -4,  4, "R", Qt::darkBlue, 9.0));
-  Lines.append(new qucs::Line(-20,  6,-12, 10,QPen(Qt::darkBlue,0)));
-  Lines.append(new qucs::Line(-20, 14,-12, 10,QPen(Qt::darkBlue,0)));
+  Texts.append(new Text(-18,-18, "D", Qt::darkBlue, 12.0));
+  Texts.append(new Text(  8,-18, "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -3.5,  8, "R", Qt::darkBlue, 9.0));
+  Polylines.append(new qucs::Polyline(
+    std::vector<QPointF>{{-20, 6}, {-12, 10}, {-20, 14}}, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin)
+  ));
 
   Ports.append(new Port(-30,-10));  // D
   Ports.append(new Port(-30, 10));  // Clock

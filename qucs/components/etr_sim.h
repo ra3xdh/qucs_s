@@ -18,10 +18,10 @@
 #ifndef ETR_SIM_H
 #define ETR_SIM_H
 
-#include "component.h"
+#include "simulation.h"
 
 
-class ETR_Sim : public Component  {
+class ETR_Sim : public qucs::component::SimulationComponent  {
 public:
   ETR_Sim();
   ~ETR_Sim();
