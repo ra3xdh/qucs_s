@@ -24,6 +24,7 @@
 
 ## Packaging
 
+* Linux DEB and RPM packages switched to Qt6
 * Windows package switched to Qt6
 * Introduced continous release of Linux, Windows, and Mac packages #719 
 * Added MacOS package build #797 and homebrew support #804
@@ -39,6 +40,7 @@
 * Redesign *File->Open examples* menu. Show open dialog instead of file manager #672
 * Qucs-S now follows XDG standard for cached data location #145
 * Apply .OPTION INTERP when simulating transient with parameter sweep; prevent broken par. sweep data  #766
+* Implemented relative paths support for library devices #567
 
 ## Component library
 
