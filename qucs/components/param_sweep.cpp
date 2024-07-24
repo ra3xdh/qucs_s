@@ -66,16 +66,16 @@ void Param_Sweep::recreate(Schematic*)
 {
   if((Props.at(1)->Value == "list") || (Props.at(1)->Value == "const")) {
     // Call them "Symbol" to omit them in the netlist.
-    Props.at(2)->Name = "Symbol";
-    Props.at(2)->display = false;
     Props.at(3)->Name = "Symbol";
     Props.at(3)->display = false;
-    Props.at(4)->Name = "Values";
+    Props.at(4)->Name = "Symbol";
+    Props.at(4)->display = false;
+    Props.at(5)->Name = "Values";
   }
   else {
-    Props.at(2)->Name = "Start";
-    Props.at(3)->Name = "Stop";
-    Props.at(4)->Name = "Points";
+    Props.at(3)->Name = "Start";
+    Props.at(4)->Name = "Stop";
+    Props.at(5)->Name = "Points";
   }
 }
 

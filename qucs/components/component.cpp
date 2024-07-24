@@ -1028,7 +1028,7 @@ bool Component::load(const QString &_s) {
     else tmp = counts + 1;    // "+1" because "counts" could be zero
 
     for (; tmp <= (int) counts / 2; tmp++){
-      Props.emplace_back(new Property("p", "", true, " "));
+      Props.append(new Property("p", "", true, " "));
     }
 
 
@@ -1413,15 +1413,14 @@ bool Component::getBrush(const QString &s, QBrush &Brush, int i) {
 }
 
 // ---------------------------------------------------------------------
-Property *Component::getProperty(const QString &name) {
+Property *Component::getProperty(const QString &name) {      
     for(auto pp = Props.begin(); pp != Props.end(); ++pp) {
       if((*pp)->Name == name) {
         return *pp;
       }
     }
-    Props.append( new Property());
-    Props.back()->Name = name;
-    return Props.back();
+
+    return nullptr;
 }
 
 // ---------------------------------------------------------------------
