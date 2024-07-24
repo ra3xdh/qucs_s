@@ -1194,8 +1194,7 @@ int Component::analyseLine(const QString &Row, int numProps) {
 
         i1 = 1;
         auto pp = Props.begin();
-        for(int i = 0; i < (numProps) && pp != Props.end(); ++i)
-          ++pp;
+        std::advance(pp,std::min<int>( (numProps-1), std::distance(pp, Props.end())));
         for (;;) {
             s = Row.section('"', i1, i1);
             if (s.isEmpty()) break;
@@ -1216,7 +1215,9 @@ int Component::analyseLine(const QString &Row, int numProps) {
             i1 += 2;
         }
 
-        Props.erase(pp, Props.end());
+        if(pp != Props.end()-1){
+            Props.erase(pp, Props.end());
+        }
         return 0;   // do not count IDs
     } else if (s == "Arrow") {
         if (!getIntegers(Row, &i1, &i2, &i3, &i4, &i5, &i6)) return -1;
