@@ -1027,8 +1027,10 @@ bool Component::load(const QString &_s) {
         tmp = 5; // number of properties for the default MUTX (2 inductors)
     else tmp = counts + 1;    // "+1" because "counts" could be zero
 
-    for (; tmp <= (int) counts / 2; tmp++)
-        Props.append(new Property("p", "", true, " "));
+    for (; tmp <= (int) counts / 2; tmp++){
+      Props.emplace_back(new Property("p", "", true, " "));
+    }
+
 
     // load all properties
     unsigned int z = 0;
@@ -1042,20 +1044,21 @@ bool Component::load(const QString &_s) {
 
         // not all properties have to be mentioned (backward compatible)
         if (z > counts) {
-          if ((*p1)->Description.isEmpty())
-                Props.clear();    // remove if allocated in vain
+            if ((*p1)->Description.isEmpty()){
+              Props.erase(p1++);   // remove if allocated in vain
+            }
 
             if (Model == "Diode") {
                 if (counts < 56) {  // backward compatible
                     counts >>= 1;
                     p1 = Props.begin();
-                    for(int i = 0; i < int(counts)-1 && p1 != Props.end(); ++i)
-                      ++p1;
-                    for (; p1 != Props.end(); p1 = Props.begin()) {
-                        if (counts-- < 19)
-                            break;
+                    std::advance(p1,std::min<int>(counts-1, std::distance(p1, Props.end())));
+                    for (; p1 != Props.begin();) {
+                        if (counts-- < 19){break;}
+
                         auto p1prev = p1;
                         --p1prev;
+                        n = (*p1prev)->Value;
                         (*p1)->Value = n;
                         --p1;
                     }
@@ -1068,14 +1071,13 @@ bool Component::load(const QString &_s) {
                 if (counts < 10) {   // backward compatible
                     counts >>= 1;
                     p1 = Props.begin();
-                    for(int i = 0; i < int(counts) && p1 != Props.end(); ++i)
-                      ++p1;
+                    std::advance(p1,std::min<int>(counts, std::distance(p1, Props.end())));
                     for (; p1 != Props.begin();) {
-                        if (counts-- < 4)
-                            break;
+                      if (counts-- < 4){break;}
                         auto p1prev = p1;
                         --p1prev;
-                        (*p1)->Value = (*p1prev)->Value;
+                        n = (*p1prev)->Value;
+                        (*p1)->Value = n;
                         --p1;
                     }
                     (*p1)->Value = "10";
@@ -1083,41 +1085,42 @@ bool Component::load(const QString &_s) {
             } else if (Model == "Buf" || Model == "Inv") {
                 if (counts < 8) {   // backward compatible
                     counts >>= 1;
-                  for(int i = 0; i < int(counts) && p1 != Props.end(); ++i)
-                    ++p1;
-                  for(; p1 != Props.begin(); ) {
-                        if (counts-- < 3)
-                            break;
+                    p1 = Props.begin();
+                    std::advance(p1,std::min<int>(counts, std::distance(p1, Props.end())));
+                    for(; p1 != Props.begin(); ) {
+                        if (counts-- < 3) {break;}
+
                         auto p1prev = p1;
                         --p1prev;
-                        (*p1)->Value = (*p1prev)->Value;
+                        n = (*p1prev)->Value;
+                        (*p1)->Value = n;
                         --p1;
                     }
                     (*p1)->Value = "10";
-                }
+                  }
             }
-
             return true;
         }
 
         // for equations
-        if (Model != "EDD" && Model != "RFEDD" && Model != "RFEDD2P")
-            if ((*p1)->Description.isEmpty() || (*p1)->Description == "Expression") {  // unknown number of properties ?
-                (*p1)->Name = n.section('=', 0, 0);
-                n = n.section('=', 1);
-                // allocate memory for a new property (e.g. for equations)
-                if (Props.size() < (counts >> 1)) {
-                    auto p1next = p1;
-                    ++p1next;
-                    Props.insert(p1next, new Property("y", "1", true));
-                }
+        if (Model != "EDD" && Model != "RFEDD" && Model != "RFEDD2P"){
+          if ((*p1)->Description.isEmpty() || (*p1)->Description == "Expression") {  // unknown number of properties ?
+            (*p1)->Name = n.section('=', 0, 0);
+            n = n.section('=', 1);
+            // allocate memory for a new property (e.g. for equations)
+            if (Props.size() < (counts >> 1)) {
+              int index = std::distance(Props.begin(), p1);
+              Props.insert(index + 1, new Property("y", "1", true));
+              p1 = Props.begin() + index;
             }
-        if (z == 6)
-            if (counts == 6)     // backward compatible
-                if (Model == "R") {
-                    Props.back()->Value = n;
-                    return true;
-                }
+          }
+        }
+
+
+        if (z == 6 && counts == 6 && Model == "R"){ // backward compatible
+            Props.back()->Value = n;
+            return true;
+        }
         (*p1)->Value = n;
 
         n = s.section('"', z, z);    // display
