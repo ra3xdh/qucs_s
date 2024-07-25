@@ -117,19 +117,17 @@ QucsAttenuator::QucsAttenuator()
   QGridLayout * inGrid = new QGridLayout();
   inGrid->setSpacing(1);
 
-  DoubleVal = new QDoubleValidator(this);
-  DoubleVal->setLocale(QLocale::C);
-  DoubleVal->setBottom(0);
-
   DoubleValPower = new QDoubleValidator(this);
+  DoubleValPower->setLocale(QLocale::C);
+  DoubleValPower->setNotation(QDoubleValidator::StandardNotation);
   DoubleValPower->setBottom(-1e9);//The default power unit is dBm, so Pin < 0 is expected
 
   LabelAtten = new QLabel(tr("Attenuation:"), InputGroup);
   inGrid ->addWidget(LabelAtten, 1,0);
-  QSpinBox_Attvalue = new QDoubleSpinBox();
+  QSpinBox_Attvalue = new QDoubleSpinBox_Comma_Dot_Decimal_Separator();
   QSpinBox_Attvalue->setValue(1);
-  QSpinBox_Attvalue->setMinimum(0.1);
   QSpinBox_Attvalue->setMaximum(1e6);
+
   connect(QSpinBox_Attvalue, SIGNAL(valueChanged(double)), this,
        SLOT(slotCalculate()) );
   inGrid->addWidget(QSpinBox_Attvalue, 1,1);
@@ -139,9 +137,8 @@ QucsAttenuator::QucsAttenuator()
   LabelImp1 = new QLabel(tr("Zin:"), InputGroup);
   LabelImp1->setWhatsThis("Input impedance");
   inGrid->addWidget(LabelImp1, 2,0);
-  QSpinBox_Zin = new QDoubleSpinBox();
+  QSpinBox_Zin = new QDoubleSpinBox_Comma_Dot_Decimal_Separator();
   QSpinBox_Zin->setValue(50);
-  QSpinBox_Zin->setMinimum(0);
   QSpinBox_Zin->setMaximum(1e6);
   connect(QSpinBox_Zin, SIGNAL(valueChanged(double)), this,
       SLOT(slotSetText_Zin(double)) );
@@ -153,9 +150,8 @@ QucsAttenuator::QucsAttenuator()
   LabelImp2 = new QLabel(tr("Zout:"), InputGroup);
   LabelImp2->setWhatsThis("Output impedance");
   inGrid->addWidget(LabelImp2, 3,0);
-  QSpinBox_Zout = new QDoubleSpinBox();
+  QSpinBox_Zout = new QDoubleSpinBox_Comma_Dot_Decimal_Separator();
   QSpinBox_Zout->setValue(50);
-  QSpinBox_Zout->setMinimum(0);
   QSpinBox_Zout->setMaximum(1e6);
   connect(QSpinBox_Zout, SIGNAL(valueChanged(double)), this,
       SLOT(slotSetText_Zout(double)) );
@@ -166,7 +162,7 @@ QucsAttenuator::QucsAttenuator()
   Label_Pin = new  QLabel(tr("Pin:"), InputGroup);
   Label_Pin->setWhatsThis("Input power");
   inGrid->addWidget(Label_Pin, 4,0);
-  QSpinBox_InputPower = new QDoubleSpinBox(0);
+  QSpinBox_InputPower = new QDoubleSpinBox_Comma_Dot_Decimal_Separator(0);
   QSpinBox_InputPower->setMinimum(-1e3);
   QSpinBox_InputPower->setMaximum(1e5);
   connect(QSpinBox_InputPower, SIGNAL(valueChanged(double)), this, SLOT(slotCalculate()));
@@ -363,7 +359,7 @@ QucsAttenuator::QucsAttenuator()
 
 QucsAttenuator::~QucsAttenuator()
 {
-  delete DoubleVal;
+
 }
 
 void QucsAttenuator::slotHelpIntro()
@@ -732,7 +728,7 @@ void QucsAttenuator::slot_ComboInputPowerUnits_Changed(const QString& new_units)
 
    //Change lineedit input policy
    if ((new_units == "W") || (new_units == "mW"))
-      QSpinBox_InputPower->setMinimum(0);
+      QSpinBox_InputPower->setMinimum(0.1);
    else//dB units
       QSpinBox_InputPower->setMinimum(-1e3);
 }

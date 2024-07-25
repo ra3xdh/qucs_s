@@ -18,6 +18,8 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QDoubleSpinBox>
+#include <QLocale>
+#include <QKeyEvent>
 
 #include "attenuatorfunc.h"
 
@@ -37,6 +39,44 @@ struct tQucsSettings
 };
 
 extern struct tQucsSettings QucsSettings;
+
+// Special QDoubleSpinBox for accepting comma and dot as decimal separators
+class QDoubleSpinBox_Comma_Dot_Decimal_Separator : public QDoubleSpinBox {
+public:
+    QDoubleSpinBox_Comma_Dot_Decimal_Separator(QWidget *parent = nullptr) : QDoubleSpinBox(parent) {
+        setMinimum(0.1); // Set minimum value
+        setMaximum(1000.0); // Set maximum value
+        setDecimals(1); // Allow two decimal places
+        setSingleStep(0.1); // Set step size
+    }
+
+protected:
+    QString textFromValue(double value) const override {
+        // Format the output text to use the current locale's decimal point
+        return QLocale().toString(value, 'f', decimals());
+    }
+
+    double valueFromText(const QString &text) const override {
+        // Create a QLocale with C locale to ensure consistent parsing
+        QLocale locale(QLocale::C);
+
+        // Replace the decimal separator with the one used by the current locale
+        QString modifiedText = text;
+        modifiedText.replace('.', locale.decimalPoint());
+        modifiedText.replace(',', locale.decimalPoint());
+
+        // Parse the modified text using the C locale
+        bool ok;
+        double value = locale.toDouble(modifiedText, &ok);
+
+        // If parsing fails, return the base class implementation
+        if (!ok) {
+            return QDoubleSpinBox::valueFromText(text);
+        }
+
+        return value;
+    }
+};
 
 class QucsAttenuator : public QMainWindow
 {
@@ -70,9 +110,9 @@ class QucsAttenuator : public QMainWindow
   QLabel *PdissLabel, *Label_Pin;
   QLineEdit *lineEdit_R1, *lineEdit_R2, *lineEdit_R3, *lineEdit_R4, *lineEdit_Results;
   QLineEdit *lineEdit_R1_Pdiss, *lineEdit_R2_Pdiss, *lineEdit_R3_Pdiss, *lineEdit_R4_Pdiss;
-  QDoubleSpinBox *QSpinBox_InputPower, *QSpinBox_Attvalue, *QSpinBox_Zin, *QSpinBox_Zout;
+  QDoubleSpinBox_Comma_Dot_Decimal_Separator *QSpinBox_InputPower, *QSpinBox_Attvalue, *QSpinBox_Zin, *QSpinBox_Zout;
   QPushButton *Calculate;
-  QDoubleValidator *DoubleVal, *DoubleValPower;
+  QDoubleValidator *DoubleValPower;
   QCheckBox *SparBoxCheckbox, *R_Check;
   QStringList LastUnits;
 
