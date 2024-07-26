@@ -20,15 +20,15 @@
 
 #include <QPainter>
 
-Node::Node(int _x, int _y)
+Node::Node(int x, int y)
 {
   Label = 0;
   Type  = isNode;
   State = 0;
   DType = "";
 
-  cx = _x;
-  cy = _y;
+  cx = x;
+  cy = y;
 }
 
 Node::~Node()
@@ -38,7 +38,7 @@ Node::~Node()
 void Node::paint(QPainter* painter) const {
   painter->save();
 
-  switch(Connections.count()) {
+  switch(connections.size()) {
     case 1:
       if (Label) {
         painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
@@ -50,7 +50,7 @@ void Node::paint(QPainter* painter) const {
       return;
 
     case 2:
-      if (Connections.getFirst()->Type == isWire && Connections.getLast()->Type == isWire) {
+      if (connections.front()->Type == isWire && connections.back()->Type == isWire) {
           painter->restore();
           return;
       }
@@ -61,31 +61,39 @@ void Node::paint(QPainter* painter) const {
         painter->setBrush(Qt::darkBlue);  // more than 2 connections
 	      painter->setPen(QPen(Qt::darkBlue,1));
 	      painter->drawEllipse(cx-3, cy-3, 6, 6);
-	      painter->setBrush(Qt::NoBrush);
   }
   painter->restore();
 }
 
-// ----------------------------------------------------------------
-bool Node::getSelected(int x_, int y_)
+bool Node::getSelected(int x, int y)
 {
-  if(cx-5 <= x_) if(cx+5 >= x_) if(cy-5 <= y_) if(cy+5 >= y_)
-    return true;
-
-  return false;
+  return cx - 5 <= x && x <= cx + 5 && cy - 5 <= y && y <= cy + 5;
 }
 
-// ----------------------------------------------------------------
-void Node::setName(const QString& Name_, const QString& Value_, int x_, int y_)
+void Node::setName(const QString& name, const QString& value, int x, int y)
 {
-  if(Name_.isEmpty() && Value_.isEmpty()) {
-    if(Label) delete Label;
-    Label = 0;
+  if (name.isEmpty() && value.isEmpty()) {
+    if (Label) {
+      delete Label;
+      Label = nullptr;
+    }
     return;
   }
 
-  if(!Label) Label = new WireLabel(Name_, cx, cy, x_, y_, isNodeLabel);
-  else Label->setName(Name_);
+  if (!Label) {
+    Label = new WireLabel(name, cx, cy, x, y, isNodeLabel);
+  }
+  else {
+    Label->setName(name);
+  }
   Label->pOwner = this;
-  Label->initValue = Value_;
+  Label->initValue = value;
+}
+
+Element* Node::other_than(Element* elem) const
+{
+  auto other = std::find_if_not(connections.begin(), connections.end(), [elem](auto o){return o == elem;}
+  );
+
+  return other == connections.end() ? nullptr : *other;
 }

@@ -188,13 +188,13 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
     if(pn->Name.isEmpty()) continue;
 
     pn->x1 = 0;
-    if(pn->Connections.count() < 2) {
+    if(pn->conn_count() < 2) {
       pn->Name = "";  // no text at open nodes
       continue;
     }
     else {
       hasNoComp = true;
-      for(pe = pn->Connections.first(); pe!=0; pe = pn->Connections.next())
+      for(auto *pe : *pn)
         if(pe->Type == isWire) {
           if( ((Wire*)pe)->isHorizontal() )  pn->x1 |= 2;
         }
@@ -232,7 +232,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
     }
 
 
-    for(pe = pn->Connections.first(); pe!=0; pe = pn->Connections.next())
+    for(auto pe : *pn)
       if(pe->Type == isWire) {
         if( ((Wire*)pe)->Port1 != pn )  // no text at next node
           ((Wire*)pe)->Port1->Name = "";
@@ -269,7 +269,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
       }
 
 
-      for(pe = pn->Connections.first(); pe!=0; pe = pn->Connections.next())
+      for(auto pe : *pn)
         if(pe->Type == isWire) {
           if( ((Wire*)pe)->isHorizontal() )  pn->x1 |= 2;
         }
@@ -288,7 +288,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
                 pn->Name = misc::num2str(NodeVals->value(src_nam))+"A";
             } else pn->Name = "0A";
 
-            for(pe = pn->Connections.first(); pe!=0; pe = pn->Connections.next())
+            for(auto pe : *pn)
               if(pe->Type == isWire) {
                 if( ((Wire*)pe)->isHorizontal() )  pn->x1 |= 2;
             }

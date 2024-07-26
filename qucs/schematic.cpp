@@ -807,7 +807,7 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
     }
 
     for (auto* node : *Nodes) {
-        for (auto* connected : node->Connections) {
+        for (auto* connected : *node) {
             if (should_draw(connected)) {
                 draw_preserve_selection(node, painter);
                 break;
@@ -2133,7 +2133,7 @@ bool Schematic::elementsOnGrid()
             // rescue non-selected node labels
             for (Port *pp : pc->Ports)
                 if (pp->Connection->Label)
-                    if (pp->Connection->Connections.count() < 2) {
+                    if (pp->Connection->conn_count() < 2) {
                         LabelCache.append(pp->Connection->Label);
                         pp->Connection->Label->pOwner = 0;
                         pp->Connection->Label = 0;
@@ -2170,12 +2170,12 @@ bool Schematic::elementsOnGrid()
             // rescue non-selected node label
             pLabel = nullptr;
             if (pw->Port1->Label) {
-                if (pw->Port1->Connections.count() < 2) {
+                if (pw->Port1->conn_count() < 2) {
                     pLabel = pw->Port1->Label;
                     pw->Port1->Label = nullptr;
                 }
             } else if (pw->Port2->Label) {
-                if (pw->Port2->Connections.count() < 2) {
+                if (pw->Port2->conn_count() < 2) {
                     pLabel = pw->Port2->Label;
                     pw->Port2->Label = nullptr;
                 }

@@ -132,6 +132,7 @@ SET(QUCS_SRCS
 
 SET(QUCS_HDRS
 element.h
+conductor.h
 main.h
 messagedock.h
 misc.h
