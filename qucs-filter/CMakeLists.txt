@@ -42,7 +42,13 @@ include_directories(
       )
 
 
-set(CMAKE_CXX_STANDARD 20)
+set(QT_VERSION ${Qt${QT_VERSION_MAJOR}Core_VERSION})
+
+if (${QT_VERSION} VERSION_LESS "6.7.0")
+    set(CMAKE_CXX_STANDARD 17)
+else()
+    set(CMAKE_CXX_STANDARD 20)
+endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 

@@ -38,7 +38,9 @@ else()
     set(QT_VERSION_MAJOR 5)
 endif()
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets LinguistTools)
-message(STATUS "QT Major Version: " ${QT_VERSION_MAJOR})
+set(QT_VERSION ${Qt${QT_VERSION_MAJOR}Core_VERSION})
+
+message(STATUS "Qt Version: " ${QT_VERSION})
 
 add_definitions(${QT_DEFINITIONS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
