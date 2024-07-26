@@ -794,7 +794,7 @@ QString QucsPowerCombiningTool::calcChebyLines(double RL, double Z0, double gamm
     //double sec_theta_m = cosh((1/(1.*N))*acosh(fabs(log(RL/Z0)/(2*gamma))) );
     (fabs(log(RL/Z0)/(2*gamma)) < 1) ? sec_theta_m = 0 : sec_theta_m = cosh((1/(1.*N))*acosh(fabs(log(RL/Z0)/(2*gamma))) );
 
-    double w[7]; // for msvc predefined size.
+    std::vector<double> w(N,0.0);
 
     switch(N)//The weights are calculated by equating the reflection coeffient formula to the N-th Chebyshev polinomial
     {

@@ -1398,7 +1398,7 @@ QString MatchDialog::calcBinomialLines(double r_real, double r_imag, double Z0,
 // Sons. 4th Edition. Pg 256-261
 QString MatchDialog::calcChebyLines(double r_real, double r_imag, double Z0,
                                     double gamma, int order, double Freq) {
-  int N = order - 1; // Number of sections
+  const int N = order - 1; // Number of sections
   if (N > 7)         // So far, it is only available Chebyshev weighting up to 7
              // sections. Probably, it makes no sense to use a higher number of
              // sections because of the losses
@@ -1408,20 +1408,21 @@ QString MatchDialog::calcChebyLines(double r_real, double r_imag, double Z0,
         QObject::tr("Chebyshev weighting for N>7 is not available"));
     return QString("");
   }
+
   QString laddercode;
   double RL = r_real, XL = r_imag;
-  r2z(RL, XL,
-      Z0); // Calculation of the load impedance given the reflection coeffient
-  double sec_theta_m; // =
-                      // cosh((1/(1.*N))*acosh((1/gamma)*fabs((RL-Z0)/(Z0+RL)))
-                      // );
-  // double sec_theta_m = cosh((1/(1.*N))*acosh(fabs(log(RL/Z0)/(2*gamma))) );
-  (fabs(log(RL / Z0) / (2 * gamma)) < 1)
-      ? sec_theta_m = 0
-      : sec_theta_m =
-            cosh((1 / (1. * N)) * acosh(fabs(log(RL / Z0) / (2 * gamma))));
+  r2z(RL, XL, Z0); // Calculation of the load impedance given the reflection coefficient
 
-  double w[N];
+  double sec_theta_m = 0.0;
+  double log_ratio = log(RL / Z0) / (2 * gamma);
+
+  if (fabs(log_ratio) < 1) {
+      sec_theta_m = 0.0;
+  } else {
+      sec_theta_m = cosh((1.0 / N) * acosh(fabs(log_ratio)));
+  }
+
+  std::vector<double> w(N,0.0);
 
   switch (N) // The weights are calculated by equating the reflection coeffient
              // formula to the N-th Chebyshev polinomial
