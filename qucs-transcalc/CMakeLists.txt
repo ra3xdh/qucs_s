@@ -41,14 +41,27 @@ include_directories(
       )
 
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-if (MSVC)
-  add_compile_options(/Zc:__cplusplus /permissive- /MP /Zc:preprocessor)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    add_compile_options(/Zc:__cplusplus  /MP /Zc:preprocessor /Od)
 else()
-  # additional warnings
-  add_compile_options(-Wall -Wextra)
+    add_compile_options(-Wall -Wextra -O0 -g)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        add_compile_options(-Wno-ignored-attributes)
+    endif()
+endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    add_compile_options(/Zc:__cplusplus  /MP /Zc:preprocessor /Od /W0)
+else()
+    add_compile_options(-w)
+endif()
 endif()
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
