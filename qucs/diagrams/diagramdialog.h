@@ -18,7 +18,6 @@
 #ifndef DIAGRAMDIALOG_H
 #define DIAGRAMDIALOG_H
 #include "diagram.h"
-#include "node.h"
 
 /*#ifndef pi
 #define pi 3.1415926535897932384626433832795029
@@ -27,7 +26,7 @@
 #include <QDialog>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
-#include "qt3_compat/qt_compat.h"
+#include <vector>
 
 class QVBoxLayout;
 class Cross3D;
@@ -130,7 +129,7 @@ private:
   QSlider     *SliderRotX, *SliderRotY, *SliderRotZ;
   Cross3D     *DiagCross;
   bool changed, transfer, toTake;
-  Q3PtrList<Graph>  Graphs;
+  std::vector<std::unique_ptr<Graph>>  Graphs;
 };
 
 #endif

@@ -24,7 +24,6 @@
 
 #include <cmath>
 #include <QColor>
-#include "qt3_compat/qt_compat.h"
 #include <QDateTime>
 
 
