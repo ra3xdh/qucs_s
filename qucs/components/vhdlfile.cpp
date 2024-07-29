@@ -185,6 +185,7 @@ void VHDL_File::createSymbol()
 			QObject::tr("generic variable")+
 			" "+QString::number(i+1));
       Props.append(newProp);
+      pr = Props.end()-1;
     }
     else {
 

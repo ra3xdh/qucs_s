@@ -1070,7 +1070,6 @@ void ComponentDialog::slotApplyInput()
            changed = true;
          }
          (*pp)->Description = desc;
-         pp++;
        }else {
          // if properties where added in the dialog
          // -> create new on the Comp
@@ -1078,9 +1077,11 @@ void ComponentDialog::slotApplyInput()
          if ( (int) Comp->Props.count() < prop->rowCount() +1) {
              qDebug() << "adding to Comp ";
              Comp->Props.append(new Property(name, value, display, desc));
+             pp = Comp->Props.end()-1;
              changed = true;
          }
        }
+       pp++;
     }
 
     // original Comp still has properties? (removed some in the dialog?)

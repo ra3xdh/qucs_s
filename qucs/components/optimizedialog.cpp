@@ -808,6 +808,7 @@ void OptimizeDialog::slotApply()
     }
     else {
       Comp->Props.append(new Property("Var", Prop, false, ""));
+      pp = Comp->Props.end()-1;
       changed = true;
     }
     pp++;
@@ -845,6 +846,7 @@ void OptimizeDialog::slotApply()
     }
     else {
       Comp->Props.append(new Property("Goal", Prop, false, ""));
+      pp = Comp->Props.end()-1;
       changed = true;
     }
     pp++;
