@@ -173,7 +173,6 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
   QString DataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
 
   Node *pn;
-  Element *pe;
 
   // Note 1:
   // Invalidate it so that "Graph::loadDatFile()" does not check for the previously loaded time.

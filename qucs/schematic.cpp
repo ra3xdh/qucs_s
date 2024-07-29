@@ -2530,8 +2530,9 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
     auto ev_pos = Event->pos();
     QPoint inModel = contentsToModel(ev_pos);
 #endif
-    QMouseEvent e(QEvent::MouseButtonPress, ev_pos, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    //QMouseEvent e(QEvent::MouseButtonPress, ev_pos, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 
+    QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 
     App->view->MPressElement(this, &e, inModel.x(), inModel.y());
 
@@ -2633,11 +2634,14 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
         }
 
 #if QT_VERSION >= 0x060000
-        QMouseEvent e(QEvent::MouseMove,
+        auto ev_pos = Event->position();
+        /*QMouseEvent e(QEvent::MouseMove,
                       Event->position(),
                       Qt::NoButton,
                       Qt::NoButton,
-                      Qt::NoModifier);
+                      Qt::NoModifier);*/
+        QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+
 #else
         QMouseEvent e(QEvent::MouseMove, Event->pos(), Qt::NoButton, Qt::NoButton, Qt::NoModifier);
 #endif

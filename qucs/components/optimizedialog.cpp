@@ -919,7 +919,6 @@ void OptimizeDialog::slotSetPrecision(const QPoint& pos)
     numPrec = i;
     // update the shown values according to the new precision
     int row = 0;
-    Property *pp;
     QTableWidgetItem *item;
     for(int i = 2; i< Comp->Props.size(); i++) {
       if(Comp->Props.at(i)->Name == "Var") {
