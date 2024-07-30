@@ -1530,8 +1530,8 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
     // test all components
     for (Component *component : *Components) {
         component->Bounding(left, top, right, bottom);
-        QRect componentRect(left, top, right - left, bottom - top);
-        if (shouldBeSelected(componentRect, selection_rect, entirely)) {
+
+        if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
             component->isSelected = true;
             selected_count++;
             continue;
@@ -1542,8 +1542,7 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
 
     for (Wire* wire : *Wires)   // test all wires
     {
-        QRect componentRect(wire->x1, wire->y1, wire->x2 - wire->x1, wire->y2 - wire->y1);
-        if (shouldBeSelected(componentRect, selection_rect, entirely)) {
+        if (shouldBeSelected(QRect{wire->x1, wire->y1, wire->x2 - wire->x1, wire->y2 - wire->y1}, selection_rect, entirely)) {
             wire->isSelected = true;
             selected_count++;
             continue;
@@ -1558,8 +1557,8 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
         if (wire->Label) {
             label = wire->Label;
             label->getLabelBounding(left,top,right,bottom);
-            QRect componentRect(left, top, right - left, bottom - top);
-            if (shouldBeSelected(componentRect, selection_rect, entirely)) {
+
+            if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
                 label->isSelected = true;
                 selected_count++;
                 continue;
@@ -1574,8 +1573,8 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
         label = node->Label;
         if (label) {
             label->getLabelBounding(left,top,right,bottom);
-            QRect componentRect(left, top, right - left, bottom - top);
-            if (shouldBeSelected(componentRect, selection_rect, entirely)) {
+
+            if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
                 label->isSelected = true;
                 selected_count++;
                 continue;
@@ -1594,8 +1593,8 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             // test markers of graph
             for (Marker *marker: graph->Markers) {
                 marker->Bounding(left, top, right, bottom);
-                QRect componentRect(left, top, right - left, bottom - top);
-                if (shouldBeSelected(componentRect, selection_rect, entirely)) {
+
+                if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
                     marker->isSelected = true;
                     selected_count++;
                     continue;
@@ -1606,8 +1605,8 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
 
         // test diagram itself
         diagram->Bounding(left, top, right, bottom);
-        QRect componentRect(left, top, right - left, bottom - top);
-        if (shouldBeSelected(componentRect, selection_rect, entirely)) {
+
+        if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
             diagram->isSelected = true;
             selected_count++;
             continue;
@@ -1618,8 +1617,8 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
     // test all paintings *******************************************
     for (Painting *painting : *Paintings) {
         painting->Bounding(left, top, right, bottom);
-        QRect componentRect(left, top, right - left, bottom - top);
-        if (shouldBeSelected(componentRect, selection_rect, entirely)) {
+
+        if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
             painting->isSelected = true;
             selected_count++;
             continue;
