@@ -1524,10 +1524,9 @@ void Schematic::deselectElements(Element *e) const
 
 // Selects elements that lie within or intersect with the rectangle selectionRect
 int Schematic::selectElements(const QRect& selection_rect, bool append, bool entirely) const {
-    int selected_count = 0;   // counts selected elements
+    int selected_count = 0;
     int left, top, right, bottom;
 
-    // test all components
     for (Component *component : *Components) {
         component->Bounding(left, top, right, bottom);
 
@@ -1540,7 +1539,7 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
     }
 
 
-    for (Wire* wire : *Wires)   // test all wires
+    for (Wire* wire : *Wires)
     {
         if (shouldBeSelected(QRect{wire->x1, wire->y1, wire->x2 - wire->x1, wire->y2 - wire->y1}, selection_rect, entirely)) {
             wire->isSelected = true;
@@ -1550,8 +1549,6 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
         if (wire->isSelected &= append) selected_count++;
     }
 
-
-    // test all wire labels *********************************
     WireLabel *label = nullptr;
     for (Wire* wire : *Wires) {
         if (wire->Label) {
@@ -1567,8 +1564,6 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
         }
     }
 
-
-    // test all node labels *************************************
     for (Node *node : *Nodes) {
         label = node->Label;
         if (label) {
@@ -1583,14 +1578,10 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
         }
     }
 
-
-    // test all diagrams *******************************************
     for (Diagram *diagram : *Diagrams) {
-        // test graphs of diagram
         for (Graph *graph: diagram->Graphs) {
             if (graph->isSelected &= append) selected_count++;
 
-            // test markers of graph
             for (Marker *marker: graph->Markers) {
                 marker->Bounding(left, top, right, bottom);
 
@@ -1603,7 +1594,6 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             }
         }
 
-        // test diagram itself
         diagram->Bounding(left, top, right, bottom);
 
         if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
@@ -1614,7 +1604,6 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
         if (diagram->isSelected &= append) selected_count++;
     }
 
-    // test all paintings *******************************************
     for (Painting *painting : *Paintings) {
         painting->Bounding(left, top, right, bottom);
 
