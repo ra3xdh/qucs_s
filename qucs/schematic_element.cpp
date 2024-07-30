@@ -1535,7 +1535,9 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             selected_count++;
             continue;
         }
-        if (component->isSelected &= append) selected_count++;
+        if (component->isSelected &= append) {
+            selected_count++;
+        }
     }
 
 
@@ -1546,7 +1548,9 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             selected_count++;
             continue;
         }
-        if (wire->isSelected &= append) selected_count++;
+        if (wire->isSelected &= append) {
+            selected_count++;
+        }
     }
 
     WireLabel *label = nullptr;
@@ -1560,7 +1564,9 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
                 selected_count++;
                 continue;
             }
-            if (label->isSelected &= append) selected_count++;
+            if (label->isSelected &= append) {
+                selected_count++;
+            }
         }
     }
 
@@ -1574,13 +1580,17 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
                 selected_count++;
                 continue;
             }
-            if (label->isSelected &= append) selected_count++;
+            if (label->isSelected &= append) {
+                selected_count++;
+            }
         }
     }
 
     for (Diagram *diagram : *Diagrams) {
         for (Graph *graph: diagram->Graphs) {
-            if (graph->isSelected &= append) selected_count++;
+            if (graph->isSelected &= append) {
+                selected_count++;
+            }
 
             for (Marker *marker: graph->Markers) {
                 marker->Bounding(left, top, right, bottom);
@@ -1590,7 +1600,9 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
                     selected_count++;
                     continue;
                 }
-                if (marker->isSelected &= append) selected_count++;
+                if (marker->isSelected &= append) {
+                    selected_count++;
+                }
             }
         }
 
@@ -1601,7 +1613,9 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             selected_count++;
             continue;
         }
-        if (diagram->isSelected &= append) selected_count++;
+        if (diagram->isSelected &= append) {
+            selected_count++;
+        }
     }
 
     for (Painting *painting : *Paintings) {
@@ -1612,7 +1626,9 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             selected_count++;
             continue;
         }
-        if (painting->isSelected &= append) selected_count++;
+        if (painting->isSelected &= append) {
+            selected_count++;
+        }
     }
 
     return selected_count;
