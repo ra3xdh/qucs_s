@@ -1522,23 +1522,10 @@ void Schematic::deselectElements(Element *e) const
         if(e != pp)  pp->isSelected = false;
 }
 
-// ---------------------------------------------------
-// Selects elements that lie within the rectangle x1/y1, x2/y2.
-int Schematic::selectElements(int x1, int y1, int x2, int y2, bool append, bool entirely) const {
+// Selects elements that lie within or intersect with the rectangle selectionRect
+int Schematic::selectElements(const QRect& selectionRect, bool append, bool entirely) const {
     int z = 0;   // counts selected elements
     int cx1, cy1, cx2, cy2;
-
-    // exchange rectangle coordinates to obtain x1 < x2 and y1 < y2
-    cx1 = (x1 < x2) ? x1 : x2;
-    cx2 = (x1 >= x2) ? x1 : x2;
-    cy1 = (y1 < y2) ? y1 : y2;
-    cy2 = (y1 >= y2) ? y1 : y2;
-    x1 = cx1;
-    x2 = cx2;
-    y1 = cy1;
-    y2 = cy2;
-
-    QRect selectionRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
 
     // test all components
     for (Component *pc = Components->first(); pc != nullptr; pc = Components->next()) {
