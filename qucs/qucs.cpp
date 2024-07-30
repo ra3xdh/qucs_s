@@ -382,7 +382,68 @@ void QucsApp::initView()
   CompComps->setResizeMode(QListView::Adjust);
   CompComps->setIconSize(QSize(64,64));
   CompComps->setAcceptDrops(false);
-  CompComps->setStyleSheet("QListWidget{background: white; color: black;}");
+
+  const QString itemStyle = R"(
+      QListWidget {
+          background: white;
+          color: black;
+          outline: none;
+          padding: 0px;
+          margin: 0px;
+      }
+
+      QListWidget::item {
+          position: relative;
+          margin-top: 0px;
+          margin-left: 3px;
+          margin-right: 3px;
+          margin-bottom: 0px;
+          border: none;
+          border-radius: 2px;
+          outline: none;
+          background-color: transparent;
+      }
+
+      QListWidget::item:hover {
+          background-color: rgba(220, 242, 255, 0.75);
+      }
+
+      QListWidget::item:selected {
+          position: relative;
+          background-color: rgba(181, 227, 255, 0.75);
+          border: none;
+          color: black;
+          margin: 0px;
+      }
+
+      QListWidget::item:selected:focus {
+          position: relative;
+          background-color: rgba(181, 227, 255, 0.75);
+          border: none;
+          color: black;
+          margin: 0px;
+      }
+
+      QListWidget::item:selected:!focus {
+          position: relative;
+          background-color: rgba(222, 222, 223, 0.75);
+          border: none;
+          color: black;
+          margin: 0px;
+      }
+
+      QListWidget::item:selected:hover {
+          position: relative;
+          border: 1px solid black; /* Black border when selected and hovered */
+          padding-top:-1px;
+      }
+
+      QListWidget::item:focus {
+          outline: none; /* Remove the default focus outline */
+      }
+  )";
+
+  CompComps->setStyleSheet(itemStyle);
   
   #ifdef _MSC_VER
     CompComps->setDragEnabled(false);
