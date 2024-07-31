@@ -1527,35 +1527,34 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
     int selected_count = 0;
     int left, top, right, bottom;
 
+    auto select_element = [=](Element* e, const QRect& ebr) {
+        // If an element lies within selection rect, it must be selected regardless of any
+        // conditions
+        if (shouldBeSelected(ebr, selection_rect, entirely)) {
+            e->isSelected = true;
+        }
+        // If an element is not within selection rectangle, but it is already selected and we're
+        // not appending to a list of selected items, then the element must be deselected.
+        else if (e->isSelected && !append) {
+            e->isSelected = false;
+        }
+
+        return e->isSelected;
+    };
+
     for (Component *component : *Components) {
         component->Bounding(left, top, right, bottom);
 
-        if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
-            component->isSelected = true;
+        if (select_element(component, QRect{left, top, right - left, bottom - top})) {
             selected_count++;
-            continue;
-        }
-
-        if (component->isSelected && append) {
-            selected_count++;
-        } else {
-            component->isSelected = false;
         }
     }
 
 
     for (Wire* wire : *Wires)
     {
-        if (shouldBeSelected(QRect{wire->x1, wire->y1, wire->x2 - wire->x1, wire->y2 - wire->y1}, selection_rect, entirely)) {
-            wire->isSelected = true;
+        if (select_element(wire, QRect{wire->x1, wire->y1, wire->x2 - wire->x1, wire->y2 - wire->y1})) {
             selected_count++;
-            continue;
-        }
-
-        if (wire->isSelected && append) {
-            selected_count++;
-        } else {
-            wire->isSelected = false;
         }
     }
 
@@ -1565,16 +1564,8 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             label = wire->Label;
             label->getLabelBounding(left,top,right,bottom);
 
-            if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
-                label->isSelected = true;
+            if (select_element(label, QRect{left, top, right - left, bottom - top})) {
                 selected_count++;
-                continue;
-            }
-
-            if (label->isSelected && append) {
-                selected_count++;
-            } else {
-                label->isSelected = false;
             }
         }
     }
@@ -1584,12 +1575,7 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
         if (label) {
             label->getLabelBounding(left,top,right,bottom);
 
-            if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
-                label->isSelected = true;
-                selected_count++;
-                continue;
-            }
-            if (label->isSelected &= append) {
+            if (select_element(label, QRect{left, top, right - left, bottom - top})) {
                 selected_count++;
             }
         }
@@ -1604,48 +1590,24 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             for (Marker *marker: graph->Markers) {
                 marker->Bounding(left, top, right, bottom);
 
-                if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
-                    marker->isSelected = true;
+                if (select_element(marker, QRect{left, top, right - left, bottom - top})) {
                     selected_count++;
-                    continue;
-                }
-
-                if (marker->isSelected && append) {
-                    selected_count++;
-                } else {
-                    marker->isSelected = false;
                 }
             }
         }
 
         diagram->Bounding(left, top, right, bottom);
 
-        if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
-            diagram->isSelected = true;
+        if (select_element(diagram, QRect{left, top, right - left, bottom - top})) {
             selected_count++;
-            continue;
-        }
-
-        if (diagram->isSelected && append) {
-            selected_count++;
-        } else {
-            diagram->isSelected = false;
         }
     }
 
     for (Painting *painting : *Paintings) {
         painting->Bounding(left, top, right, bottom);
 
-        if (shouldBeSelected(QRect{left, top, right - left, bottom - top}, selection_rect, entirely)) {
-            painting->isSelected = true;
+        if (select_element(painting, QRect{left, top, right - left, bottom - top})) {
             selected_count++;
-            continue;
-        }
-
-        if (painting->isSelected && append) {
-            selected_count++;
-        } else {
-            painting->isSelected = false;
         }
     }
 
