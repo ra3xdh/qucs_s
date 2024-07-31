@@ -110,6 +110,7 @@ public:
   QPen WrongSimulatorPen;
 
   void paintIcon(QPixmap *pixmap);
+  Property * getProperty(const QString&);
 
 protected:
   virtual QString netlist();
@@ -126,7 +127,6 @@ protected:
   bool getBrush(const QString&, QBrush&, int);
 
   void copyComponent(Component*);
-  Property * getProperty(const QString&);
   Schematic* containingSchematic;
 
   virtual void drawSymbol(QPainter* p);
