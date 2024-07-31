@@ -88,7 +88,6 @@ public:
 
   void PostPaintEvent(PE pe, int x1=0, int y1=0, int x2=0, int y2=0, int a=0, int b=0,bool PaintOnViewport=false);
 
-  float textCorr();
   bool sizeOfFrame(int&, int&);
 
   /**
