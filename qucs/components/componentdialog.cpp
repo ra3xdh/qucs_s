@@ -56,6 +56,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   QString s;
   setAllVisible = true; // state when toggling properties visibility
 
+  compIsSimulation = false;
+
   all = new QVBoxLayout; // to provide necessary size
   this->setLayout(all);
   all->setContentsMargins(1,1,1,1);
@@ -72,8 +74,10 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   Expr.setPattern("[A-Za-z][A-Za-z0-9_]+");
   ValName = new QRegularExpressionValidator(Expr,this);
 
-  checkSim  = 0;  comboSim  = 0;  comboType  = 0;  checkParam = 0;
-  editStart = 0;  editStop = 0;  editNumber = 0;
+  checkSim  = nullptr;  comboSim  = nullptr;
+  comboType  = nullptr;  checkParam = nullptr;
+  editStart = nullptr;  editStop = nullptr;
+  editNumber = nullptr;
   
   // last property shown elsewhere outside the properties table, not to put in TableView
   auto pp = Comp->Props.begin();
@@ -87,6 +91,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
      (Comp->Model != ".PZ") && (Comp->Model != ".SENS") &&
      (Comp->Model != ".SENS_AC") && (Comp->Model != ".SENS_XYCE") &&
      (Comp->Model != ".SENS_TR_XYCE")) {
+    compIsSimulation = true;
     QTabWidget *t = new QTabWidget(this);
     all->addWidget(t);
 
@@ -248,6 +253,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
       editNumber->setText("2");
     }
     slotNumberChanged(0);
+    ++pp;
 
 /*    connect(editValues, SIGNAL(textChanged(const QString&)),
 	    SLOT(slotTextChanged(const QString&)));*/
@@ -883,14 +889,13 @@ void ComponentDialog::slotApplyInput()
 
   QString tmp;
   Component *pc;
-  if(CompNameEdit->text().isEmpty())  CompNameEdit->setText(Comp->Name);
-  else
-  if(CompNameEdit->text() != Comp->Name) {
-    for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next())
-      if(pc->Name == CompNameEdit->text())
-        break;  // found component with the same name ?
-    if(pc)  CompNameEdit->setText(Comp->Name);
-    else {
+  if (CompNameEdit->text().isEmpty()) {
+    CompNameEdit->setText(Comp->Name);
+  } else if(CompNameEdit->text() != Comp->Name) {
+    pc = Doc->getComponentByName(CompNameEdit->text());
+    if (pc != nullptr) {
+      CompNameEdit->setText(Comp->Name);
+    } else {
       Comp->Name = CompNameEdit->text();
       changed = true;
     }
@@ -901,196 +906,121 @@ void ComponentDialog::slotApplyInput()
    *  The pointers to the combo, edits,... are set to 0.
    *  Only check if the widgets were created (pointers checks are 'true')
    */
-  bool display;
-  auto pp = Comp->Props.begin();
+  //auto pp = Comp->Props.begin();
   // apply all the new property values
-
-  if(comboSim) {
-    display = checkSim->isChecked();
-    if((*pp)->display != display) {
-      (*pp)->display = display;
-      changed = true;
-    }
-    if((*pp)->Value != comboSim->currentText()) {
-      (*pp)->Value = comboSim->currentText();
-      changed = true;
-    }
-    pp++;
+  int idxStart = 1;
+  if (Comp->Model == ".SW") {
+    idxStart = 3;
   }
-  if(comboType) {
-    display = checkType->isChecked();
-    if((*pp)->display != display) {
-      (*pp)->display = display;
-      changed = true;
-    }
+
+  if(comboSim != nullptr) {
+    auto pp = Comp->getProperty("Sim");
+    bool display = checkSim->isChecked();
+    QString value = comboSim->currentText();
+    updateProperty(pp,value,display);
+  }
+  if(comboType != nullptr) {
+    bool display = checkType->isChecked();
+    auto pp = Comp->getProperty("Type");
     switch(comboType->currentIndex()) {
       case 1:  tmp = "log";   break;
       case 2:  tmp = "list";  break;
       case 3:  tmp = "const"; break;
       default: tmp = "lin";   break;
     }
-    if((*pp)->Value != tmp) {
-      (*pp)->Value = tmp;
-      changed = true;
-    }
-    pp++;
+    updateProperty(pp,tmp,display);
   }
-  if(checkParam) if(checkParam->isEnabled()) {
-    display = checkParam->isChecked();
-    if((*pp)->display != display) {
-      (*pp)->display = display;
-      changed = true;
+  if(checkParam != nullptr) {
+    if(checkParam->isEnabled()) {
+      auto pp = Comp->getProperty("Param");
+      bool display = checkParam->isChecked();
+      QString value = editParam->text();
+      updateProperty(pp,value,display);
     }
-    if((*pp)->Value != editParam->text()) {
-      (*pp)->Value = editParam->text();
-      changed = true;
-    }
-    pp++;
   }
-  if(editStart) {
-    if(comboType->currentIndex() < 2) {
-      display = checkStart->isChecked();
-      if((*pp)->display != display) {
-        (*pp)->display = display;
-        changed = true;
-      }
-      (*pp)->Name  = "Start";
-      if((*pp)->Value != editStart->text()) {
-        (*pp)->Value = editStart->text();
-        changed = true;
-      }
-      pp++;
+  if(editStart != nullptr) {
+    if(comboType->currentIndex() < 2 ) {
+      Property *pp = Comp->Props.at(idxStart); // Start
+      bool display = checkStart->isChecked();
+      QString value = editStart->text();
+      updateProperty(pp,value,display);
+      pp->Name = "Start";
 
+      pp = Comp->Props.at(idxStart+1); // Stop
       display = checkStop->isChecked();
-      if((*pp)->display != display) {
-        (*pp)->display = display;
-        changed = true;
-      }
-      (*pp)->Name  = "Stop";
-      if((*pp)->Value != editStop->text()) {
-        (*pp)->Value = editStop->text();
-        changed = true;
-      }
-      pp++;
+      value = editStop->text();
+      updateProperty(pp,value,display);
+      pp->Name = "Stop";
 
-      display = checkNumber->isChecked();
-      if((*pp)->display != display) {
-        (*pp)->display = display;
-        changed = true;
+      pp = Comp->Props.at(idxStart+2);
+      if (pp != nullptr) { // Points/Values
+        display = checkNumber->isChecked();
+        value = editNumber->text();
+        updateProperty(pp,value,display);
+        if (changed) pp->Name = "Points";
       }
-      if(((*pp)->Value != editNumber->text()) || ((*pp)->Name != "Points")) {
-        (*pp)->Value = editNumber->text();
-        (*pp)->Name  = "Points";
-        changed = true;
-      }
-      qDebug() << "====> before ad"
-               << (*pp)->Description;
-
-      pp++;
-    }
-    else {
+      qDebug() << "====> before ad";
+    } else {
       // If a value list is used, the properties "Start" and "Stop" are not
       // used. -> Call them "Symbol" to omit them in the netlist.
-      (*pp)->Name = "Symbol";
-      (*pp)->display = false;
-      pp++;
-      (*pp)->Name = "Symbol";
-      (*pp)->display = false;
-      pp++;
+      Property *pp = Comp->Props.at(idxStart);
+      pp->Name = "Symbol";
+      pp->display = false;
+      pp = Comp->Props.at(idxStart+1);
+      pp->Name = "Symbol";
+      pp->display = false;
 
-      display = checkValues->isChecked();
-      if((*pp)->display != display) {
-        (*pp)->display = display;
+      pp = Comp->Props.at(idxStart+2);
+      bool display = checkValues->isChecked();
+      QString value = "["+editValues->text()+"]";
+
+      if(pp->display != display) {
+        pp->display = display;
         changed = true;
       }
-      tmp = "["+editValues->text()+"]";
-      if(((*pp)->Value != tmp) || ((*pp)->Name != "Values")) {
-        (*pp)->Value = tmp;
-        (*pp)->Name  = "Values";
+      if(pp->Value != value || pp->Name != "Values") {
+        pp->Value = value;
+        pp->Name  = "Values";
         changed = true;
       }
-      qDebug() << "====> before ad"
-               << pp.operator->();
-
-      pp++;
     }
   }
 
 
   // pick selected row
-  QTableWidgetItem *item = 0;
+  QTableWidgetItem *item = nullptr;
 
   //  make sure we have one item, take selected
-  if (prop->selectedItems().size()) {
+  if (prop->selectedItems().size() != 0) {
     item = prop->selectedItems()[0];
   }
 
   /*! Walk the dialog list of 'prop'
    */
-   if(item != 0) {
-     int row = item->row();
-     QString name  = prop->item(row, 0)->text();
-     QString value = prop->item(row, 1)->text();
+  if(item != nullptr) {
+    int row = item->row();
+    QString name  = prop->item(row, 0)->text();
+    QString value = prop->item(row, 1)->text();
 
-     // apply edit line
-     if(value != edit->text())
-       prop->item(row, 1)->setText(edit->text());
-
-     // apply property name
-     if (!NameEdit->isHidden())
-       if (name != NameEdit->text())
-         prop->item(row, 0)->setText(NameEdit->text());
-
-    // apply all the new property values in the ListView
-    for( int row = 0; row < prop->rowCount(); row++ ) {
-
-       QString name  = prop->item(row, 0)->text();
-       QString value = prop->item(row, 1)->text();
-       QString disp = prop->item(row, 2)->text();
-       QString desc = prop->item(row, 3)->text();
-
-       qDebug() << "====>" <<name << value
-                << Comp->Props.count()
-                << prop->rowCount() +1
-                << pp.operator->();
-
-       display = (disp == tr("yes"));
-       if( pp != Comp->Props.end() ) {
-
-         if((*pp)->display != display) {
-             (*pp)->display = display;
-             changed = true;
-         }
-         if((*pp)->Value != value) {
-            (*pp)->Value = value;
-            changed = true;
-         }
-         if((*pp)->Name != name) {
-           (*pp)->Name = name;   // override if previous one was removed
-           changed = true;
-         }
-         (*pp)->Description = desc;
-       }else {
-         // if properties where added in the dialog
-         // -> create new on the Comp
-         Q_ASSERT(prop->rowCount() >= 0);
-         if ( (int) Comp->Props.count() < prop->rowCount() +1) {
-             qDebug() << "adding to Comp ";
-             Comp->Props.append(new Property(name, value, display, desc));
-             pp = Comp->Props.end()-1;
-             changed = true;
-         }
-       }
-       pp++;
+           // apply edit line
+    if(value != edit->text()) {
+      prop->item(row, 1)->setText(edit->text());
     }
 
-    // original Comp still has properties? (removed some in the dialog?)
-    // if more properties than in ListView -> delete the rest
-    if (pp != Comp->Props.end()) {
-      Comp->Props.erase(pp, Comp->Props.end());
-      changed = true;
+    // apply property name
+    if (!NameEdit->isHidden()) {
+      if (name != NameEdit->text()) {
+        prop->item(row, 0)->setText(NameEdit->text());
+      }
     }
-  } // end if (item !=0)
+  }
+
+  // apply all the new property values in the ListView
+  if (Comp->isEquation) {
+    recreatePropsFromTable();
+  } else {
+    fillPropsFromTable();
+  }
 
   if(changed) {
     int dx, dy;
@@ -1584,4 +1514,81 @@ void ComponentDialog::slotFillFromSpice()
     updateCompPropsList();
   }
   delete dlg;
+}
+
+
+void ComponentDialog::fillPropsFromTable()
+{
+  for( int row = 0; row < prop->rowCount(); row++ ) {
+    QString name  = prop->item(row, 0)->text();
+    QString value = prop->item(row, 1)->text();
+    QString disp = prop->item(row, 2)->text();
+    QString desc = prop->item(row, 3)->text();
+    bool display = (disp == tr("yes"));
+    auto pp = Comp->getProperty(name);
+    updateProperty(pp,value,display);
+  }
+}
+
+void ComponentDialog::recreatePropsFromTable()
+{
+  if (!Comp->isEquation) return; // add / remove properties allowed only for equations
+
+  if (Comp->Props.size() != prop->rowCount()) {
+    changed = true; // Added or removed properties
+  } else {
+    for( int row = 0; row < prop->rowCount(); row++ ) {
+      QString name  = prop->item(row, 0)->text();
+      QString value = prop->item(row, 1)->text();
+      QString disp = prop->item(row, 2)->text();
+      bool display = (disp == tr("yes"));
+      auto pp = Comp->Props.at(row);
+      if ((pp->Name != name) || (pp->Value != value) ||
+          (pp->display != display)) {
+        changed = true; // reordered or edited properties
+        break;
+      }
+    }
+  }
+
+  if (!changed) {
+    return;
+  }
+
+  for (auto pp: Comp->Props) {
+    delete pp;
+    pp = nullptr;
+  }
+  Comp->Props.clear();
+  for( int row = 0; row < prop->rowCount(); row++ ) {
+    QString name  = prop->item(row, 0)->text();
+    QString value = prop->item(row, 1)->text();
+    QString disp = prop->item(row, 2)->text();
+    QString desc = prop->item(row, 3)->text();
+    bool display = (disp == tr("yes"));
+
+    Property *pp = new Property;
+    pp->Name = name;
+    pp->Value = value;
+    pp->display = display;
+    pp->Description = desc;
+    Comp->Props.append(pp);
+  }
+}
+
+
+bool ComponentDialog::propChanged(Property *pp, const QString &value, const bool display)
+{
+  if (pp->Value != value) return true;
+  if (pp->display != display) return true;
+  return false;
+}
+
+void ComponentDialog::updateProperty(Property *pp, const QString &value, const bool display)
+{
+  if (propChanged(pp,value,display)) {
+    pp->Value = value;
+    pp->display = display;
+    changed = true;
+  }
 }

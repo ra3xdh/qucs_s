@@ -100,6 +100,7 @@ private:
   bool        changed;
   int         tx_Dist, ty_Dist;   // remember the text position
   bool        setAllVisible; // used for toggling visibility of properties
+  bool compIsSimulation;
  
   QLabel    *textType;
   QLabel    *textSim, *textParam, *textValues, *textStart, *textStop,
@@ -112,6 +113,11 @@ private:
 
   void updateCompPropsList(void);
   QStringList getSimulationList();
+
+  void fillPropsFromTable();
+  void recreatePropsFromTable();
+  bool propChanged(Property *pp, const QString &value, const bool display);
+  void updateProperty(Property *pp, const QString &value, const bool display);
 };
 
 #endif
