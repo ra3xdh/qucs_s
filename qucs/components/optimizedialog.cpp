@@ -352,38 +352,39 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       if(pc->Model[0] == '.' && pc->Model != ".Opt")
         SimEdit->insertItem(SimEdit->count(), pc->Name);
 
-  Property *pp;
-  pp = Comp->Props.at(0);
-  if(!pp->Value.isEmpty()) {
+  auto p0 = Comp->Props.at(0);
+  if(!p0->Value.isEmpty()) {
     // set selected simulation in combo box to the currently used one
-    int i = SimEdit->findText(pp->Value);
+    int i = SimEdit->findText(p0->Value);
     if (i != -1) // current simulation is in the available simulations list (normal case)
       SimEdit->setCurrentIndex(i);
     else  // current simulation not in the available simulations list
-      SimEdit->setEditText(pp->Value);
+      SimEdit->setEditText(p0->Value);
   }
 
-  pp = Comp->Props.at(1);
-  if(!pp->Value.isEmpty()) {
-    MethodCombo->setCurrentIndex(pp->Value.section('|',0,0).toInt()-1);
-    IterEdit->setText(pp->Value.section('|',1,1));
-    RefreshEdit->setText(pp->Value.section('|',2,2));
-    ParentsEdit->setText(pp->Value.section('|',3,3));
-    ConstEdit->setText(pp->Value.section('|',4,4));
-    CrossEdit->setText(pp->Value.section('|',5,5));
-    SeedEdit->setText(pp->Value.section('|',6,6));
-    CostVarEdit->setText(pp->Value.section('|',7,7));
-    CostObjEdit->setText(pp->Value.section('|',8,8));
-    CostConEdit->setText(pp->Value.section('|',9,9));
+  auto p1 = Comp->Props.at(1);
+  if(!p1->Value.isEmpty()) {
+    MethodCombo->setCurrentIndex(p1->Value.section('|',0,0).toInt()-1);
+    IterEdit->setText(p1->Value.section('|',1,1));
+    RefreshEdit->setText(p1->Value.section('|',2,2));
+    ParentsEdit->setText(p1->Value.section('|',3,3));
+    ConstEdit->setText(p1->Value.section('|',4,4));
+    CrossEdit->setText(p1->Value.section('|',5,5));
+    SeedEdit->setText(p1->Value.section('|',6,6));
+    CostVarEdit->setText(p1->Value.section('|',7,7));
+    CostObjEdit->setText(p1->Value.section('|',8,8));
+    CostConEdit->setText(p1->Value.section('|',9,9));
   }
 
   NameEdit->setText(Comp->Name);
 
   QTableWidgetItem *item;
-
-  for(int i = 2;i< Comp->Props.size();i++) {
-    if(Comp->Props.at(i)->Name == "Var") {
-      QStringList ValueSplit = pp->Value.split("|");
+  auto pp = Comp->Props.begin();
+  ++pp;
+  ++pp;
+  for(;pp!=Comp->Props.end();++pp) {
+    if((*pp)->Name == "Var") {
+      QStringList ValueSplit = (*pp)->Value.split("|");
       int row = VarTable->rowCount();
       VarTable->insertRow(row);
       // Name
@@ -435,8 +436,8 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 5, item);
     }
-    if(pp->Name == "Goal") {
-      QStringList GoalSplit = pp->Value.split("|");
+    if((*pp)->Name == "Goal") {
+      QStringList GoalSplit = (*pp)->Value.split("|");
       int row = GoalTable->rowCount();
       GoalTable->insertRow(row);
 
