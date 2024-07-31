@@ -1535,8 +1535,11 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             selected_count++;
             continue;
         }
-        if (component->isSelected &= append) {
+
+        if (component->isSelected && append) {
             selected_count++;
+        } else {
+            component->isSelected = false;
         }
     }
 
@@ -1548,8 +1551,11 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             selected_count++;
             continue;
         }
-        if (wire->isSelected &= append) {
+
+        if (wire->isSelected && append) {
             selected_count++;
+        } else {
+            wire->isSelected = false;
         }
     }
 
@@ -1564,8 +1570,11 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
                 selected_count++;
                 continue;
             }
-            if (label->isSelected &= append) {
+
+            if (label->isSelected && append) {
                 selected_count++;
+            } else {
+                label->isSelected = false;
             }
         }
     }
@@ -1600,8 +1609,11 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
                     selected_count++;
                     continue;
                 }
-                if (marker->isSelected &= append) {
+
+                if (marker->isSelected && append) {
                     selected_count++;
+                } else {
+                    marker->isSelected = false;
                 }
             }
         }
@@ -1613,8 +1625,11 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             selected_count++;
             continue;
         }
-        if (diagram->isSelected &= append) {
+
+        if (diagram->isSelected && append) {
             selected_count++;
+        } else {
+            diagram->isSelected = false;
         }
     }
 
@@ -1626,8 +1641,11 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             selected_count++;
             continue;
         }
-        if (painting->isSelected &= append) {
+
+        if (painting->isSelected && append) {
             selected_count++;
+        } else {
+            painting->isSelected = false;
         }
     }
 
