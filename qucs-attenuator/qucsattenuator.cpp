@@ -412,7 +412,12 @@ void QucsAttenuator::slotQuit()
 
 void QucsAttenuator::slotSetText_Zin( double val )
 {
-  if((ComboTopology->currentIndex() == BRIDGE_TYPE) || (ComboTopology->currentIndex() == REFLECTION_TYPE)) {
+  if((ComboTopology->currentIndex() == BRIDGE_TYPE) ||
+     (ComboTopology->currentIndex() == REFLECTION_TYPE) ||
+     (ComboTopology->currentIndex() == L_PAD_1ST_SERIES) ||
+     (ComboTopology->currentIndex() == L_PAD_1ST_SHUNT) ||
+     (ComboTopology->currentIndex() == QW_SERIES_TYPE) ||
+     (ComboTopology->currentIndex() == QW_SHUNT_TYPE)) {
       QSpinBox_Zout->blockSignals(true);
       QSpinBox_Zout->setValue(val);
       QSpinBox_Zout->blockSignals(false);
