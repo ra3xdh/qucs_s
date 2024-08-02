@@ -74,6 +74,8 @@ private:
   std::list<Element*> connections;
 };
 
+// Calling this while iterating over the node's connections via Node::begin() and
+// Node::end() will cause segfault because of iterator invalidation
 inline void Node::connect(Element* connectable)
 {
   if (is_connected(connectable)) {
@@ -82,6 +84,8 @@ inline void Node::connect(Element* connectable)
   connections.push_front(connectable);
 }
 
+// Calling this while iterating over the node's connections via Node::begin() and
+// Node::end() will cause segfault because of iterator invalidation
 inline void Node::disconnect(Element* connectable)
 {
   connections.remove(connectable);
