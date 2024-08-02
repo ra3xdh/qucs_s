@@ -2540,45 +2540,50 @@ void Schematic::setComponentNumber(Component *c)
     }
 }
 
-// ---------------------------------------------------
-void Schematic::insertComponentNodes(Component *c, bool noOptimize)
+void Schematic::insertComponentNodes(Component *component, bool noOptimize)
 {
     // simulation components do not have ports
-    if (c->Ports.empty()) return;
+    if (component->Ports.empty()) return;
 
     // connect every node of the component to corresponding schematic node
-    for (Port *pp : c->Ports)
-        pp->Connection = insertNode(pp->x+c->cx, pp->y+c->cy, c);
+    for (Port *pp : component->Ports)
+        pp->Connection = insertNode(pp->x+component->cx, pp->y+component->cy, component);
 
     if(noOptimize)  return;
 
-    Node    *pn;
-    Node* pL;
     // if component over wire then delete this wire
-    QListIterator<Port *> iport(c->Ports);
+    QListIterator<Port *> iport(component->Ports);
     // omit the first element
-    Port *pp = iport.next();
-    while (iport.hasNext())
-    {
-        pp = iport.next();
-        pn = pp->Connection;
-        for(auto* pe : *pn)
-            if(pe->Type == isWire)
-            {
-                if (((Wire*)pe)->Port1 == pn) {
-                    pL = ((Wire*)pe)->Port2;
-                }
-                else {
-                    pL = ((Wire*)pe)->Port1;
-                }
+    Port *component_port = iport.next();
+    std::vector<Wire*> dead_wires;
+    while (iport.hasNext()) {
+        component_port = iport.next();
 
-                for(auto* pe1 : *pL)
-                    if(pe1 == c)
-                    {
-                        deleteWire((Wire*)pe);
-                        break;
-                    }
+        // At first iterate over all port's connections to find wires
+        // connecting this port to another port of the same component.
+        for (auto* connected : *component_port->Connection) {
+            if (connected->Type != isWire) {
+                continue;
             }
+
+            auto wire = static_cast<Wire*>(connected);
+
+            if (wire->Port1->is_connected(component) && wire->Port2->is_connected(component)) {
+                dead_wires.push_back(wire);
+            }
+        }
+
+        // Disconnect and remove the wires that have been found earlier.
+        //
+        // It must be done while not iterating over the node's connections
+        // because invocation of disconnect() invalidates the iterator over
+        // node's connections. In short: calling disconnect() while iterating
+        // over connections leads to segmentation fault.
+        for (auto w : dead_wires) {
+            deleteWire(w);
+        }
+
+        dead_wires.clear();
     }
 }
 
