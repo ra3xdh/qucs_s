@@ -2554,19 +2554,21 @@ void Schematic::insertComponentNodes(Component *component, bool noOptimize)
         component_port = iport.next();
         node = component_port->Connection;
         for (auto* connected : *node) {
-            if (connected->Type == isWire) {
-                if (((Wire*)connected)->Port1 == node) {
-                    other_node = ((Wire*)connected)->Port2;
-                }
-                else {
-                    other_node = ((Wire*)connected)->Port1;
-                }
+            if (connected->Type != isWire) {
+                continue;
+            }
 
-                for(auto* other_connection : *other_node) {
-                    if (other_connection == component) {
-                        deleteWire((Wire*)connected);
-                        break;
-                    }
+            if (((Wire*)connected)->Port1 == node) {
+                other_node = ((Wire*)connected)->Port2;
+            }
+            else {
+                other_node = ((Wire*)connected)->Port1;
+            }
+
+            for(auto* other_connection : *other_node) {
+                if (other_connection == component) {
+                    deleteWire((Wire*)connected);
+                    break;
                 }
             }
         }
