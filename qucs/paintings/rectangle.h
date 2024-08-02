@@ -41,7 +41,7 @@ public:
   QString saveCpp();
   QString saveJSON();
   void paint(QPainter* painter);
-  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int, bool);
+  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int);
   bool MousePressing(Schematic *sch = 0);
   bool getSelected(float, float, float);
   bool resizeTouched(float, float, float);

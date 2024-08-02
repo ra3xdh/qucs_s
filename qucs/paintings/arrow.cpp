@@ -257,7 +257,7 @@ void Arrow::calcArrowHead()
 // x/y are coordinates without scaling.
 void Arrow::MouseMoving(
 	Schematic *paintScale, int, int, int gx, int gy,
-	Schematic *p, int x, int y, bool drawn)
+	Schematic *p, int x, int y)
 {
   if(State > 0) {
     if(State > 1) {
@@ -272,13 +272,6 @@ void Arrow::MouseMoving(
   }
   else { cx = gx; cy = gy; }
 
-
-// FIXME #warning  p->setPen(Qt::SolidLine);
-  if(drawn) {
-    p->PostPaintEvent(_Line, x1+25, y1, x1+13, y1+12,0,0,true);  // erase old cursor symbol
-    p->PostPaintEvent(_Line, x1+18, y1+2, x1+25, y1,0,0,true);
-    p->PostPaintEvent(_Line, x1+23, y1+7, x1+25, y1,0,0,true);
-  }
   x1 = x;
   y1 = y;
   p->PostPaintEvent(_Line, x1+25, y1, x1+13, y1+12,0,0,true);  // paint new cursor symbol

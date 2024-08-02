@@ -227,7 +227,7 @@ void EllipseArc::MouseResizeMoving(int x, int y, Schematic *p)
 // x/y are coordinates without scaling.
 void EllipseArc::MouseMoving(
 	Schematic *paintScale, int fx, int fy, int gx, int gy,
-	Schematic *p, int x, int y, bool drawn)
+	Schematic *p, int x, int y)
 {
   switch(State) {
     case 0 :
@@ -286,11 +286,6 @@ void EllipseArc::MouseMoving(
       paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);// paint new painting
       break;
   }
-
-
-  // FIXME #warning p->setPen(Qt::SolidLine);
-  if(drawn)
-    p->PostPaintEvent(_Arc, x1+13, y1, 18, 12, 16*45, 16*200,true); // erase old cursor symbol
 
   x1 = x;
   y1 = y;

@@ -1076,9 +1076,9 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
     return;
   }
 
-  if(view->drawn)
-    ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
-  view->drawn = false;
+  //if(view->drawn)
+  //  ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
+  //view->drawn = false;
 
   // toggle last toolbar button off
   if(activeAction) {
@@ -1435,8 +1435,6 @@ void QucsApp::openProject(const QString& Path)
   int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
 
-  view->drawn = false;
-
   slotResetWarnings();
 
   QucsSettings.QucsWorkDir.setPath(ProjDir.path());
@@ -1508,8 +1506,6 @@ void QucsApp::slotMenuProjClose()
   Schematic *d = new Schematic(this, "");
   int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
-
-  view->drawn = false;
 
   slotResetWarnings();
   setWindowTitle(windowTitle);
@@ -1677,7 +1673,6 @@ bool QucsApp::gotoPage(const QString& Name)
   if(!d->load()) {    // load document if possible
     delete d;
     DocumentTab->setCurrentIndex(No);
-    view->drawn = false;
     return false;
   }
   slotChangeView();
@@ -1698,7 +1693,6 @@ bool QucsApp::gotoPage(const QString& Name)
     if(!getDoc(0)->DocChanged)
       delete DocumentTab->widget(0);
 
-  view->drawn = false;
   return true;
 }
 
@@ -1918,7 +1912,6 @@ void QucsApp::slotFileSaveAll()
   if (tabType == "Schematic") {
     ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
   }
-  view->drawn = false;
   statusBar()->showMessage(tr("Ready."));
 
   // refresh the schematic file path
@@ -2095,8 +2088,6 @@ void QucsApp::slotChangeView()
 //    setWindowTitle(Info.fileName() + " (" + Info.filePath() +") - " + windowTitle);
 //  }
 
-  view->drawn = false;
-
   HierarchyHistory.clear();
   popH->setEnabled(false);
 }
@@ -2129,7 +2120,6 @@ void QucsApp::slotFileSettings ()
     SettingsDialog * d = new SettingsDialog ((Schematic *) w);
     d->exec ();
   }
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -2139,7 +2129,6 @@ void QucsApp::slotApplSettings()
 
   QucsSettingsDialog *d = new QucsSettingsDialog(this);
   d->exec();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -2704,7 +2693,6 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
       file.close();
       if(!d->load()) {
         delete d;
-        view->drawn = false;
         return;
       }
     }
@@ -2889,9 +2877,6 @@ void QucsApp::slotSelectSubcircuit(const QModelIndex &idx)
   Comp->recreate(0);
   view->selElem = Comp;
 
-  if(view->drawn)
-    ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
-  view->drawn = false;
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
   MouseReleaseAction = 0;
@@ -3115,7 +3100,6 @@ void QucsApp::slotSymbolEdit()
     changeSchematicSymbolMode(SDoc);
     SDoc->becomeCurrent(true);
     SDoc->viewport()->update();
-    view->drawn = false;
   }
   // in a normal schematic, symbol file
   else {
@@ -3126,7 +3110,6 @@ void QucsApp::slotSymbolEdit()
       changeSchematicSymbolMode(SDoc);
       SDoc->becomeCurrent(true);
       SDoc->viewport()->update();
-      view->drawn = false;
     }
   }
 }

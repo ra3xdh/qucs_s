@@ -2464,7 +2464,6 @@ void Schematic::slotScrollUp()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollUp(verticalScrollBar()->singleStep());
-    App->view->drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -2473,7 +2472,6 @@ void Schematic::slotScrollDown()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollDown(verticalScrollBar()->singleStep());
-    App->view->drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -2482,7 +2480,6 @@ void Schematic::slotScrollLeft()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollLeft(horizontalScrollBar()->singleStep());
-    App->view->drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -2491,7 +2488,6 @@ void Schematic::slotScrollRight()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollRight(horizontalScrollBar()->singleStep());
-    App->view->drawn = false;
 }
 
 // *********************************************************************
@@ -2599,15 +2595,6 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 // ---------------------------------------------------
 void Schematic::contentsDragLeaveEvent(QDragLeaveEvent *)
 {
-    if (App->view->selElem)
-        if (App->view->selElem->Type & isComponent)
-            if (App->view->drawn) {
-                QPainter painter(viewport());
-                App->view->setPainter(this);
-                ((Component *) App->view->selElem)->paintScheme(this);
-                App->view->drawn = false;
-            }
-
     if (formerAction)
         formerAction->setChecked(true); // restore old action
 }

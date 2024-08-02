@@ -249,7 +249,7 @@ bool PortSymbol::MousePressing(Schematic *sch) {
   return false;
 }
 
-void PortSymbol::MouseMoving(Schematic* doc, int, int, int gx, int gy, Schematic *, int, int, bool) {
+void PortSymbol::MouseMoving(Schematic* doc, int, int, int gx, int gy, Schematic *, int, int) {
   cx = gx;
   cy = gy;
   paintScheme(doc);

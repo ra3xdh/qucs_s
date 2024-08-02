@@ -214,14 +214,8 @@ QString GraphicText::saveJSON()
 // fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
 // x/y are coordinates without scaling.
 void GraphicText::MouseMoving(
-    Schematic *, int, int, int gx, int gy, Schematic *p, int x, int y, bool drawn)
+    Schematic *, int, int, int gx, int gy, Schematic *p, int x, int y)
 {
-    // FIXME #warning p->setPen(Qt::SolidLine);
-    if (drawn) {
-        p->PostPaintEvent(_Line, x1 + 15, y1 + 15, x1 + 20, y1, 0, 0, true); // erase old cursor symbol
-        p->PostPaintEvent(_Line, x1 + 26, y1 + 15, x1 + 21, y1, 0, 0, true);
-        p->PostPaintEvent(_Line, x1 + 17, y1 + 8, x1 + 23, y1 + 8, 0, 0, true);
-    }
     x1 = x;
     y1 = y;
     p->PostPaintEvent(_Line, x1 + 15, y1 + 15, x1 + 20, y1, 0, 0, true); // paint new cursor symbol
