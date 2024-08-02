@@ -2544,34 +2544,39 @@ void Schematic::insertComponentNodes(Component *component, bool noOptimize)
 
     if(noOptimize)  return;
 
-    Node    *node;
-    Node* other_node;
     // if component over wire then delete this wire
     QListIterator<Port *> iport(component->Ports);
     // omit the first element
     Port *component_port = iport.next();
+    std::vector<Wire*> dead_wires;
     while (iport.hasNext()) {
         component_port = iport.next();
-        node = component_port->Connection;
-        for (auto* connected : *node) {
+
+        // At first iterate over all port's connections to find wires
+        // connecting this port to another port of the same component.
+        for (auto* connected : *component_port->Connection) {
             if (connected->Type != isWire) {
                 continue;
             }
 
-            if (((Wire*)connected)->Port1 == node) {
-                other_node = ((Wire*)connected)->Port2;
-            }
-            else {
-                other_node = ((Wire*)connected)->Port1;
-            }
+            auto wire = static_cast<Wire*>(connected);
 
-            for(auto* other_connection : *other_node) {
-                if (other_connection == component) {
-                    deleteWire((Wire*)connected);
-                    break;
-                }
+            if (wire->Port1->is_connected(component) && wire->Port2->is_connected(component)) {
+                dead_wires.push_back(wire);
             }
         }
+
+        // Disconnect and remove the wires that have been found earlier.
+        //
+        // It must be done while not iterating over the node's connections
+        // because invocation of disconnect() invalidates the iterator over
+        // node's connections. In short: calling disconnect() while iterating
+        // over connections leads to segmentation fault.
+        for (auto w : dead_wires) {
+            deleteWire(w);
+        }
+
+        dead_wires.clear();
     }
 }
 
