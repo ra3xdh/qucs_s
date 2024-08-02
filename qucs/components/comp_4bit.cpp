@@ -40,7 +40,7 @@ comp_4bit::comp_4bit()
 Component * comp_4bit::newOne()
 {
   comp_4bit * p = new comp_4bit();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

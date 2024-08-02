@@ -1629,7 +1629,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 	continue;
       if(!isVerilog && pc->Model == "Verilog")
 	continue;
-      s = pc->Props.getFirst()->Value;
+      s = pc->Props.front()->Value;
       if(s.isEmpty()) {
         ErrText->appendPlainText(QObject::tr("ERROR: No file name in %1 component \"%2\".").
 			arg(pc->Model).
@@ -2105,9 +2105,9 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
              QObject::tr("ERROR: Only one digital simulation allowed."));
           return -10;
         }
-        if(pc->Props.getFirst()->Value != "TimeList")
+        if(pc->Props.front()->Value != "TimeList")
           isTruthTable = true;
-	      if(pc->Props.getLast()->Value != "VHDL")
+	      if(pc->Props.back()->Value != "VHDL")
 	        isVerilog = true;
         allTypes |= isDigitalComponent;
 	      isAnalog = false;

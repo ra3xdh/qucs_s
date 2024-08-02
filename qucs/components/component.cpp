@@ -64,7 +64,6 @@ Component::Component() {
     tx = 0;
     ty = 0;
 
-    Props.setAutoDelete(true);
 
     containingSchematic = NULL;
 }
@@ -549,7 +548,7 @@ void Component::rotate() {
         dx = metrics.boundingRect(Name).width();
         dy = metrics.lineSpacing();
     }
-    for (Property *pp = Props.first(); pp != 0; pp = Props.next())
+    for (Property *pp : Props)
         if (pp->display) {
             // get width of text
             tmp = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
@@ -631,7 +630,7 @@ void Component::mirrorX() {
     int dy = 0;
     if (showName)
         dy = metrics.lineSpacing();   // for "Name"
-    for (Property *pp = Props.first(); pp != nullptr; pp = Props.next())
+    for (Property *pp : Props)
         if (pp->display) dy += metrics.lineSpacing();
     if ((tx > x1) && (tx < x2)) ty = -ty - dy;     // mirror text position
     else ty = y1 + ty + y2;
@@ -699,7 +698,7 @@ void Component::mirrorY() {
     int dx = 0;
     if (showName)
         dx = metrics.boundingRect(Name).width();
-    for (Property *pp = Props.first(); pp != 0; pp = Props.next())
+    for (Property *pp : Props)
         if (pp->display) {
             // get width of text
             tmp = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
@@ -723,7 +722,7 @@ QString Component::netlist() {
         s += " " + p1->Connection->Name;   // node names
 
     // output all properties
-    for (Property *p2 = Props.first(); p2 != nullptr; p2 = Props.next())
+    for (Property *p2 : Props)
         if (p2->Name != "Symbol")
             s += " " + p2->Name + "=\"" + p2->Value + "\"";
 
@@ -941,7 +940,7 @@ QString Component::save() {
     s += " " + QString::number(rotated);
 
     // write all properties
-    for (Property *p1 = Props.first(); p1 != 0; p1 = Props.next()) {
+    for (Property *p1 : Props) {
         QString val = p1->Value; // enable newline in properties
         val.replace("\n", "\\n");
         val.replace("\"", "''");
@@ -1013,7 +1012,7 @@ bool Component::load(const QString &_s) {
     tx = ttx;
     ty = tty; // restore text position (was changed by rotate/mirror)
 
-    unsigned int z = 0, counts = s.count('"');
+    unsigned int counts = s.count('"');
     if (Model == "Sub")
         tmp = 2;   // first property (File) already exists
     else if (Model == "Lib")
@@ -1028,12 +1027,14 @@ bool Component::load(const QString &_s) {
         tmp = 5; // number of properties for the default MUTX (2 inductors)
     else tmp = counts + 1;    // "+1" because "counts" could be zero
 
-    for (; tmp <= (int) counts / 2; tmp++)
-        Props.append(new Property("p", "", true, " "));
+    for (; tmp <= (int) counts / 2; tmp++){
+      Props.append(new Property("p", "", true, " "));
+    }
+
 
     // load all properties
-    Property *p1;
-    for (p1 = Props.first(); p1 != 0; p1 = Props.next()) {
+    unsigned int z = 0;
+    for (auto p1 = Props.begin(); p1 != Props.end(); ++p1) {
         z++;
         n = s.section('"', z, z);    // property value
         n.replace("\\n", "\n");
@@ -1043,76 +1044,87 @@ bool Component::load(const QString &_s) {
 
         // not all properties have to be mentioned (backward compatible)
         if (z > counts) {
-            if (p1->Description.isEmpty())
-                Props.remove();    // remove if allocated in vain
+            if ((*p1)->Description.isEmpty()){
+              Props.erase(p1++);   // remove if allocated in vain
+            }
 
             if (Model == "Diode") {
                 if (counts < 56) {  // backward compatible
                     counts >>= 1;
-                    p1 = Props.at(counts - 1);
-                    for (; p1 != 0; p1 = Props.current()) {
-                        if (counts-- < 19)
-                            break;
+                    p1 = Props.begin();
+                    std::advance(p1,std::min<int>(counts-1, std::distance(p1, Props.end())));
+                    for (; p1 != Props.begin();) {
+                        if (counts-- < 19){break;}
 
-                        n = Props.prev()->Value;
-                        p1->Value = n;
+                        auto p1prev = p1;
+                        --p1prev;
+                        n = (*p1prev)->Value;
+                        (*p1)->Value = n;
+                        --p1;
                     }
 
-                    p1 = Props.at(17);
-                    p1->Value = Props.at(11)->Value;
-                    Props.current()->Value = "0";
+                    Props.at(17)->Value = Props.at(11)->Value;
+                    (*p1)->Value = "0";
                 }
             } else if (Model == "AND" || Model == "NAND" || Model == "NOR" ||
                        Model == "OR" || Model == "XNOR" || Model == "XOR") {
                 if (counts < 10) {   // backward compatible
                     counts >>= 1;
-                    p1 = Props.at(counts);
-                    for (; p1 != 0; p1 = Props.current()) {
-                        if (counts-- < 4)
-                            break;
-                        n = Props.prev()->Value;
-                        p1->Value = n;
+                    p1 = Props.begin();
+                    std::advance(p1,std::min<int>(counts, std::distance(p1, Props.end())));
+                    for (; p1 != Props.begin();) {
+                      if (counts-- < 4){break;}
+                        auto p1prev = p1;
+                        --p1prev;
+                        n = (*p1prev)->Value;
+                        (*p1)->Value = n;
+                        --p1;
                     }
-                    Props.current()->Value = "10";
+                    (*p1)->Value = "10";
                 }
             } else if (Model == "Buf" || Model == "Inv") {
                 if (counts < 8) {   // backward compatible
                     counts >>= 1;
-                    p1 = Props.at(counts);
-                    for (; p1 != 0; p1 = Props.current()) {
-                        if (counts-- < 3)
-                            break;
-                        n = Props.prev()->Value;
-                        p1->Value = n;
-                    }
-                    Props.current()->Value = "10";
-                }
-            }
+                    p1 = Props.begin();
+                    std::advance(p1,std::min<int>(counts, std::distance(p1, Props.end())));
+                    for(; p1 != Props.begin(); ) {
+                        if (counts-- < 3) {break;}
 
+                        auto p1prev = p1;
+                        --p1prev;
+                        n = (*p1prev)->Value;
+                        (*p1)->Value = n;
+                        --p1;
+                    }
+                    (*p1)->Value = "10";
+                  }
+            }
             return true;
         }
 
         // for equations
-        if (Model != "EDD" && Model != "RFEDD" && Model != "RFEDD2P")
-            if (p1->Description.isEmpty() || p1->Description == "Expression") {  // unknown number of properties ?
-                p1->Name = n.section('=', 0, 0);
-                n = n.section('=', 1);
-                // allocate memory for a new property (e.g. for equations)
-                if (Props.count() < (counts >> 1)) {
-                    Props.insert(z >> 1, new Property("y", "1", true));
-                    Props.prev();
-                }
+        if (Model != "EDD" && Model != "RFEDD" && Model != "RFEDD2P"){
+          if ((*p1)->Description.isEmpty() || (*p1)->Description == "Expression") {  // unknown number of properties ?
+            (*p1)->Name = n.section('=', 0, 0);
+            n = n.section('=', 1);
+            // allocate memory for a new property (e.g. for equations)
+            if (Props.size() < (counts >> 1)) {
+              int index = std::distance(Props.begin(), p1);
+              Props.insert(index + 1, new Property("y", "1", true));
+              p1 = Props.begin() + index;
             }
-        if (z == 6)
-            if (counts == 6)     // backward compatible
-                if (Model == "R") {
-                    Props.getLast()->Value = n;
-                    return true;
-                }
-        p1->Value = n;
+          }
+        }
+
+
+        if (z == 6 && counts == 6 && Model == "R"){ // backward compatible
+            Props.back()->Value = n;
+            return true;
+        }
+        (*p1)->Value = n;
 
         n = s.section('"', z, z);    // display
-        p1->display = (n.at(1) == '1');
+        (*p1)->display = (n.at(1) == '1');
     }
 
     return true;
@@ -1181,30 +1193,31 @@ int Component::analyseLine(const QString &Row, int numProps) {
         if (Name.isEmpty()) Name = "SUB";
 
         i1 = 1;
-        Property *pp = Props.at(numProps - 1);
+        auto pp = Props.begin();
+        std::advance(pp,std::min<int>( (numProps-1), std::distance(pp, Props.end())));
         for (;;) {
             s = Row.section('"', i1, i1);
             if (s.isEmpty()) break;
 
-            pp = Props.next();
-            if (pp == 0) {
-                pp = new Property();
-                Props.append(pp);
-
-                pp->display = (s.at(0) == '1');
-                pp->Value = s.section('=', 2, 2);
+            pp++;
+            if (pp == Props.end()) {
+                Props.append(new Property());
+                pp = --Props.end();
+                (*pp)->display = (s.at(0) == '1');
+                (*pp)->Value = s.section('=', 2, 2);
             }
 
-            pp->Name = s.section('=', 1, 1);
-            pp->Description = s.section('=', 3, 3);
-            if (pp->Description.isEmpty())
-                pp->Description = " ";
+            (*pp)->Name = s.section('=', 1, 1);
+            (*pp)->Description = s.section('=', 3, 3);
+            if ((*pp)->Description.isEmpty())
+                (*pp)->Description = " ";
 
             i1 += 2;
         }
 
-        while (pp != Props.last())
-            Props.remove();
+        if(pp != Props.end()-1){
+            Props.erase(pp, Props.end());
+        }
         return 0;   // do not count IDs
     } else if (s == "Arrow") {
         if (!getIntegers(Row, &i1, &i2, &i3, &i4, &i5, &i6)) return -1;
@@ -1401,12 +1414,14 @@ bool Component::getBrush(const QString &s, QBrush &Brush, int i) {
 }
 
 // ---------------------------------------------------------------------
-Property *Component::getProperty(const QString &name) {
-    for (Property *pp = Props.first(); pp != 0; pp = Props.next())
-        if (pp->Name == name) {
-            return pp;
-        }
-    return NULL;
+Property *Component::getProperty(const QString &name) {      
+    for(auto pp = Props.begin(); pp != Props.end(); ++pp) {
+      if((*pp)->Name == name) {
+        return *pp;
+      }
+    }
+
+    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -1511,12 +1526,9 @@ QString GateComponent::netlist() {
         s += " " + pp->Connection->Name;   // node names
 
     // output all properties
-    Property *p = Props.at(1);
-    s += " " + p->Name + "=\"" + p->Value + "\"";
-    p = Props.next();
-    s += " " + p->Name + "=\"" + p->Value + "\"";
-    p = Props.next();
-    s += " " + p->Name + "=\"" + p->Value + "\"\n";
+    s += " " + Props.at(1)->Name + "=\"" + Props.at(1)->Value + "\"";
+    s += " " + Props.at(2)->Name + "=\"" + Props.at(2)->Value + "\"";
+    s += " " + Props.at(3)->Name + "=\"" + Props.at(3)->Value + "\"\n";
     return s;
 }
 
@@ -1653,10 +1665,10 @@ QString GateComponent::verilogCode(int NumPorts) {
 
 // -------------------------------------------------------
 void GateComponent::createSymbol() {
-    int Num = Props.getFirst()->Value.toInt();
+    int Num = Props.front()->Value.toInt();
     if (Num < 2) Num = 2;
     else if (Num > 8) Num = 8;
-    Props.getFirst()->Value = QString::number(Num);
+    Props.front()->Value = QString::number(Num);
 
     int xl, xr, y = 10 * Num, z;
     x1 = -30;
@@ -1670,7 +1682,7 @@ void GateComponent::createSymbol() {
     z = 0;
     if (Model.at(0) == 'N') z = 1;
 
-    if (Props.getLast()->Value.at(0) == 'D') {  // DIN symbol
+    if (Props.back()->Value.at(0) == 'D') {  // DIN symbol
         xl = -15;
         xr = 15;
         Lines.append(new qucs::Line(15, -y, 15, y, QPen(Qt::darkBlue, 2)));
@@ -1764,7 +1776,7 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
     else if (cstr.left(6) == "SPfile" && cstr != "SPfile") {
         // backward compatible
         c = new SParamFile();
-        c->Props.getLast()->Value = cstr.mid(6);
+        c->Props.back()->Value = cstr.mid(6);
     } else
         c = Module::getComponent(cstr);
 

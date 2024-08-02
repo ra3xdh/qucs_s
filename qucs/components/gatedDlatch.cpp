@@ -42,7 +42,7 @@ gatedDlatch::gatedDlatch()
 Component * gatedDlatch::newOne()
 {
   gatedDlatch * p = new gatedDlatch();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

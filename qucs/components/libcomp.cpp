@@ -49,8 +49,8 @@ LibComp::LibComp()
 Component* LibComp::newOne()
 {
   LibComp *p = new LibComp();
-  p->Props.first()->Value = Props.first()->Value;
-  p->Props.next()->Value = Props.next()->Value;
+  p->Props.at(0)->Value = Props.at(0)->Value;
+  p->Props.at(1)->Value = Props.at(1)->Value;
   p->recreate(0);
   return p;
 }
@@ -87,7 +87,7 @@ int LibComp::loadSection(const QString& Name, QString& Section,
              QStringList *Includes, QStringList *Attach)
 {
   QDir Directory(QucsSettings.LibDir);
-  QFile file(misc::properAbsFileName(Directory.absoluteFilePath(Props.first()->Value + ".lib"), containingSchematic));
+  QFile file(misc::properAbsFileName(Directory.absoluteFilePath(Props.at(0)->Value + ".lib"), containingSchematic));
   if(!file.open(QIODevice::ReadOnly))
     return -1;
 
@@ -123,7 +123,7 @@ int LibComp::loadSection(const QString& Name, QString& Section,
   }
 
   // search component
-  Line = "\n<Component " + Props.next()->Value + ">";
+  Line = "\n<Component " + Props.at(1)->Value + ">";
   Start = Section.indexOf(Line);
   if(Start < 0)  return -4;  // component not found
   Start = Section.indexOf('\n', Start);
@@ -207,13 +207,9 @@ int LibComp::loadSymbol()
     z = loadSection("Model", Line);
     if(z < 0)  return z;
 
-    Component *pc = getComponentFromName(Line);
-    if(pc == 0)  return -20;
-
-    copyComponent(pc);
-
-    pc->Props.setAutoDelete(false);
-    delete pc;
+    std::shared_ptr<Component> pc(getComponentFromName(Line));
+    if(!pc)  return -20;
+    copyComponent(pc.get());
 
     return 1;
   }
@@ -306,8 +302,8 @@ bool LibComp::createSubNetlist(QTextStream *stream, QStringList &FileList,
 // -------------------------------------------------------
 QString LibComp::createType()
 {
-  QString Type = misc::properFileName(Props.first()->Value);
-  return misc::properName(Type + "_" + Props.next()->Value);
+  QString Type = misc::properFileName(Props.at(0)->Value);
+  return misc::properName(Type + "_" + Props.at(1)->Value);
 }
 
 // -------------------------------------------------------
@@ -323,8 +319,8 @@ QString LibComp::netlist()
   s += " Type=\""+createType()+"\"";   // type for subcircuit
 
   // output user defined parameters
-  for(Property *pp = Props.at(2); pp != 0; pp = Props.next())
-    s += " "+pp->Name+"=\""+pp->Value+"\"";
+  for(int i = 2;i<Props.size();i++)
+    s += " "+Props.at(i)->Name+"=\""+Props.at(i)->Value+"\"";
 
   return s + '\n';
 }
@@ -373,9 +369,9 @@ QString LibComp::spice_netlist(bool)
     s += " " + createType();
 
     // output user defined parameters
-    for(Property *pp = Props.at(2); pp != 0; pp = Props.next()) {
-      QString val = spicecompat::normalize_value(pp->Value);
-      s += " "+pp->Name+"="+val;
+    for(int i = 2;i<Props.size();i++) {
+      QString val = spicecompat::normalize_value(Props.at(i)->Value);
+      s += " "+Props.at(i)->Name+"="+val;
     }
     s +="\n";
 

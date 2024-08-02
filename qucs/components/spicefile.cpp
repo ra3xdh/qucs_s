@@ -168,7 +168,7 @@ QString SpiceFile::netlist()
 // -------------------------------------------------------
 QString SpiceFile::getSubcircuitFile()
 {
-  return misc::properAbsFileName(Props.getFirst()->Value, containingSchematic);
+  return misc::properAbsFileName(Props.front()->Value, containingSchematic);
 }
 
 // -------------------------------------------------------------------------

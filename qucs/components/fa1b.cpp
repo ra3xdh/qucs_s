@@ -40,7 +40,7 @@ fa1b::fa1b()
 Component * fa1b::newOne()
 {
   fa1b * p = new fa1b();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

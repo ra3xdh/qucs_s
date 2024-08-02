@@ -2504,33 +2504,40 @@ bool Schematic::distributeVertical()
 // digital sources and sets them accordingly.
 void Schematic::setComponentNumber(Component *c)
 {
-    Property *pp = c->Props.getFirst();
-    if(!pp) return;
-    if(pp->Name != "Num") return;
+    if(!c->Props.isEmpty()){
+        auto pp = c->Props.front();
+        if(pp != nullptr){
+            if(pp->Name != "Num") return;
 
-    int n=1;
-    QString s = pp->Value;
-    QString cSign = c->Model;
-    Component *pc;
-    // First look, if the port number already exists.
-    for(pc = Components->first(); pc != 0; pc = Components->next())
-        if(pc->Model == cSign)
-            if(pc->Props.getFirst()->Value == s) break;
-    if(!pc) return;   // was port number not yet in use ?
+            int n = 1;
+            QString s = pp->Value;
+            QString cSign = c->Model;
+            Component *pc =Components->first();
+            // First look, if the port number already exists.
+            for(; pc != 0; pc = Components->next()){
+                if(pc->Model == cSign){
+                    if(pc->Props.front()->Value == s) {break;}
+                }
+            }
+            if(!pc) return;   // was port number not yet in use ?
 
-    // Find the first free number.
-    do
-    {
-        s  = QString::number(n);
-        // look for existing ports and their numbers
-        for(pc = Components->first(); pc != 0; pc = Components->next())
-            if(pc->Model == cSign)
-                if(pc->Props.getFirst()->Value == s) break;
-
-        n++;
+            // Find the first free number.
+            do
+            {
+                s  = QString::number(n);
+                // look for existing ports and their numbers
+                pc = Components->first();
+                for(; pc != 0; pc = Components->next()){
+                    if(pc->Model == cSign){
+                        if(pc->Props.front()->Value == s) {break;}
+                    }
+                }
+                n++;
+            }
+            while(pc);     // found not used component number
+            pp->Value = s; // set new number
+        }
     }
-    while(pc);     // found not used component number
-    pp->Value = s; // set new number
 }
 
 // ---------------------------------------------------

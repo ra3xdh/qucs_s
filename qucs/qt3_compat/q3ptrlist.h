@@ -109,8 +109,8 @@ public:
     int	  at() const			{ return Q3GList::at(); }
     type *current()  const		{ return (type *)Q3GList::get(); }
     Q3LNode *currentNode()  const	{ return Q3GList::currentNode(); }
-    type *getFirst() const		{ return (type *)Q3GList::cfirst(); }
-    type *getLast()  const		{ return (type *)Q3GList::clast(); }
+    type *front() const		        { return (type *)Q3GList::cfirst(); }
+    type *back()  const		        { return (type *)Q3GList::clast(); }
     type *first()			{ return (type *)Q3GList::first(); }
     type *last()			{ return (type *)Q3GList::last(); }
     type *next()			{ return (type *)Q3GList::next(); }

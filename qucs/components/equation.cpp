@@ -63,7 +63,7 @@ QString Equation::verilogCode(int)
 {
   QString s;
   // output all equations
-  for(Property *pr = Props.first(); pr != 0; pr = Props.next())
+  for(Property *pr : Props)
     if(pr->Name != "Export")
       s += "  real "+pr->Name+"; initial "+pr->Name+" = "+pr->Value+";\n";
   return s;
@@ -74,7 +74,7 @@ QString Equation::vhdlCode(int)
 {
   QString s;
   // output all equations
-  for(Property *pr = Props.first(); pr != 0; pr = Props.next())
+  for(Property *pr : Props)
     if(pr->Name != "Export")
       s += "  constant "+pr->Name+" : time := "+pr->Value+";\n";
   return s;

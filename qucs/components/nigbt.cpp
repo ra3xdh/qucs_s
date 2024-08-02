@@ -81,7 +81,7 @@ nigbt::nigbt()
 Component * nigbt::newOne()
 {
   nigbt * p = new nigbt();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

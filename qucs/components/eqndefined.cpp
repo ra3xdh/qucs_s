@@ -87,12 +87,10 @@ QString EqnDefined::netlist()
     s += " "+p1->Connection->Name;   // node names
 
   // output all properties
-  Property *p2 = Props.at(2);
-  while(p2) {
-    s += " "+p2->Name+"=\""+Name+"."+p2->Name+"\"";
-    e += "  Eqn:Eqn"+Name+p2->Name+" "+
-      Name+"."+p2->Name+"=\""+p2->Value+"\" Export=\"no\"\n";
-    p2 = Props.next();
+  for(int i = 2;i<Props.size();i++) {
+    s += " "+Props.at(i)->Name+"=\""+Name+"."+Props.at(i)->Name+"\"";
+    e += "  Eqn:Eqn"+Name+Props.at(i)->Name+" "+
+      Name+"."+Props.at(i)->Name+"=\""+Props.at(i)->Value+"\" Export=\"no\"\n";
   }
 
   return s+e;
@@ -291,12 +289,13 @@ void EqnDefined::createSymbol()
   }
 
   // adjust property names
-  Property * p1 = Props.at(2);
+  auto  p1 = Props.begin();
+  std::advance(p1, 2);
   for(i = 1; i <= Num; i++) {
-    p1->Name = "I"+QString::number(i);
-    p1 = Props.next();
-    p1->Name = "Q"+QString::number(i);
-    p1 = Props.next();
+    (*p1)->Name = "I"+QString::number(i);
+    p1++;
+    (*p1)->Name = "Q"+QString::number(i);
+    p1++;
   }
 
   // draw symbol

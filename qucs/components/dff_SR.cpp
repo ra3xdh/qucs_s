@@ -44,7 +44,8 @@ dff_SR::dff_SR()
 Component * dff_SR::newOne()
 {
   dff_SR * p = new dff_SR();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0); 
   return p;
 }

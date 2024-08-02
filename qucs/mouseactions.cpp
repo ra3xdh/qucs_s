@@ -61,7 +61,9 @@ QAction *formerAction; // remember action before drag n'drop etc.
 MouseActions::MouseActions(QucsApp *App_)
 {
     App = App_;          // pointer to main app
-    selElem = nullptr;         // no component/diagram is selected
+    if(selElem != nullptr){
+      selElem = nullptr;         // no component/diagram is selected
+    }
     isMoveEqual = false; // mouse cursor move x and y the same way
     focusElement = 0;    //element being interacted with mouse
 
@@ -69,7 +71,8 @@ MouseActions::MouseActions(QucsApp *App_)
     // initialize menu appearing by right mouse button click on component
     ComponentMenu = new QMenu(QucsMain);
     focusMEvent = new QMouseEvent(QEvent::MouseButtonPress,
-                                  QPoint(0, 0),
+                                  QPointF(0, 0),
+                                  QPointF(0, 0),
                                   Qt::NoButton,
                                   Qt::NoButton,
                                   Qt::NoModifier);

@@ -2182,7 +2182,7 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
     Schematic *Doc = (Schematic*)w;
     for(Component *pc=Doc->Components->last(); pc!=0; ) {
       if(pc->Model == Model) {
-        File = pc->Props.getFirst()->Value;
+        File = pc->Props.front()->Value;
         if((File == pathName) || (File == Name)) {
           pc_tmp = Doc->Components->prev();
           Doc->recreateComponent(pc);  // delete and re-append component

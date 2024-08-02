@@ -30,7 +30,7 @@ DLS_1ton::DLS_1ton()
 Component * DLS_1ton::newOne()
 {
   DLS_1ton * p = new DLS_1ton();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

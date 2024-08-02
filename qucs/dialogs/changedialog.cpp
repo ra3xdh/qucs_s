@@ -180,7 +180,7 @@ void ChangeDialog::slotButtReplace()
     if(matches(pc->Model)) {
       QRegularExpressionMatch match = Expr.match(pc->Name);
       if(match.hasMatch())
-        for(Property *pp = pc->Props.first(); pp!=0; pp = pc->Props.next())
+        for(const auto& pp : pc->Props)
           if(pp->Name == PropNameEdit->currentText()) {
             pb = new QCheckBox(pc->Name);
             Dia_Box->addWidget(pb);   
@@ -232,7 +232,7 @@ void ChangeDialog::slotButtReplace()
     for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next()) {
       if(pb->text() != pc->Name)  continue;
 
-      for(Property *pp = pc->Props.first(); pp!=0; pp = pc->Props.next()) {
+      for(auto pp : pc->Props) {
         if(pp->Name != PropNameEdit->currentText())  continue;
 
         int tx_Dist, ty_Dist, tmp;
