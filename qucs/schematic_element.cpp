@@ -2551,13 +2551,11 @@ void Schematic::insertComponentNodes(Component *c, bool noOptimize)
     QListIterator<Port *> iport(c->Ports);
     // omit the first element
     Port *pp = iport.next();
-    while (iport.hasNext())
-    {
+    while (iport.hasNext()) {
         pp = iport.next();
         pn = pp->Connection;
-        for(auto* pe : *pn)
-            if(pe->Type == isWire)
-            {
+        for (auto* pe : *pn) {
+            if (pe->Type == isWire) {
                 if (((Wire*)pe)->Port1 == pn) {
                     pL = ((Wire*)pe)->Port2;
                 }
@@ -2565,13 +2563,14 @@ void Schematic::insertComponentNodes(Component *c, bool noOptimize)
                     pL = ((Wire*)pe)->Port1;
                 }
 
-                for(auto* pe1 : *pL)
-                    if(pe1 == c)
-                    {
+                for(auto* pe1 : *pL) {
+                    if (pe1 == c) {
                         deleteWire((Wire*)pe);
                         break;
                     }
+                }
             }
+        }
     }
 }
 
