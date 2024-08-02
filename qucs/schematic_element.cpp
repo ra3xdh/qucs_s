@@ -2533,39 +2533,38 @@ void Schematic::setComponentNumber(Component *c)
     pp->Value = s; // set new number
 }
 
-// ---------------------------------------------------
-void Schematic::insertComponentNodes(Component *c, bool noOptimize)
+void Schematic::insertComponentNodes(Component *component, bool noOptimize)
 {
     // simulation components do not have ports
-    if (c->Ports.empty()) return;
+    if (component->Ports.empty()) return;
 
     // connect every node of the component to corresponding schematic node
-    for (Port *pp : c->Ports)
-        pp->Connection = insertNode(pp->x+c->cx, pp->y+c->cy, c);
+    for (Port *pp : component->Ports)
+        pp->Connection = insertNode(pp->x+component->cx, pp->y+component->cy, component);
 
     if(noOptimize)  return;
 
-    Node    *pn;
-    Node* pL;
+    Node    *node;
+    Node* other_node;
     // if component over wire then delete this wire
-    QListIterator<Port *> iport(c->Ports);
+    QListIterator<Port *> iport(component->Ports);
     // omit the first element
-    Port *pp = iport.next();
+    Port *component_port = iport.next();
     while (iport.hasNext()) {
-        pp = iport.next();
-        pn = pp->Connection;
-        for (auto* pe : *pn) {
-            if (pe->Type == isWire) {
-                if (((Wire*)pe)->Port1 == pn) {
-                    pL = ((Wire*)pe)->Port2;
+        component_port = iport.next();
+        node = component_port->Connection;
+        for (auto* connected : *node) {
+            if (connected->Type == isWire) {
+                if (((Wire*)connected)->Port1 == node) {
+                    other_node = ((Wire*)connected)->Port2;
                 }
                 else {
-                    pL = ((Wire*)pe)->Port1;
+                    other_node = ((Wire*)connected)->Port1;
                 }
 
-                for(auto* pe1 : *pL) {
-                    if (pe1 == c) {
-                        deleteWire((Wire*)pe);
+                for(auto* other_connection : *other_node) {
+                    if (other_connection == component) {
+                        deleteWire((Wire*)connected);
                         break;
                     }
                 }
