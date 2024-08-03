@@ -664,7 +664,7 @@ void QucsApp::slotSelectAll()
   }
   else {
     auto selectionRect = ((Schematic*)Doc)->allBoundingRect().marginsAdded(QMargins{1, 1, 1, 1});
-    ((Schematic*)Doc)->selectElements(selectionRect.left(), selectionRect.top(), selectionRect.right(), selectionRect.bottom(), true, false);
+    ((Schematic*)Doc)->selectElements(selectionRect, true, false);
     ((Schematic*)Doc)->viewport()->update();
   }
 }

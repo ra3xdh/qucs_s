@@ -1521,126 +1521,96 @@ void Schematic::deselectElements(Element *e) const
         if(e != pp)  pp->isSelected = false;
 }
 
-// ---------------------------------------------------
-// Selects elements that lie within the rectangle x1/y1, x2/y2.
-int Schematic::selectElements(int x1, int y1, int x2, int y2, bool append, bool entirely) const {
-    int z = 0;   // counts selected elements
-    int cx1, cy1, cx2, cy2;
+// Selects elements that lie within or intersect with the rectangle selectionRect
+int Schematic::selectElements(const QRect& selection_rect, bool append, bool entirely) const {
+    int selected_count = 0;
+    int left, top, right, bottom;
 
-    // exchange rectangle coordinates to obtain x1 < x2 and y1 < y2
-    cx1 = (x1 < x2) ? x1 : x2;
-    cx2 = (x1 >= x2) ? x1 : x2;
-    cy1 = (y1 < y2) ? y1 : y2;
-    cy2 = (y1 >= y2) ? y1 : y2;
-    x1 = cx1;
-    x2 = cx2;
-    y1 = cy1;
-    y2 = cy2;
-
-    QRect selectionRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
-
-    // test all components
-    for (Component *pc = Components->first(); pc != nullptr; pc = Components->next()) {
-        pc->Bounding(cx1, cy1, cx2, cy2);
-        QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
-        if (shouldBeSelected(componentRect, selectionRect, entirely)) {
-            pc->isSelected = true;
-            z++;
-            continue;
+    auto select_element = [=](Element* e, const QRect& ebr) {
+        // If an element lies within selection rect, it must be selected regardless of any
+        // conditions
+        if (shouldBeSelected(ebr, selection_rect, entirely)) {
+            e->isSelected = true;
         }
-        if (pc->isSelected &= append) z++;
+        // If an element is not within selection rectangle, but it is already selected and we're
+        // not appending to a list of selected items, then the element must be deselected.
+        else if (e->isSelected && !append) {
+            e->isSelected = false;
+        }
+
+        return e->isSelected;
+    };
+
+    for (Component *component : *Components) {
+        component->Bounding(left, top, right, bottom);
+
+        if (select_element(component, QRect{left, top, right - left, bottom - top})) {
+            selected_count++;
+        }
     }
 
 
-    Wire *pw;
-    for (pw = Wires->first(); pw != nullptr; pw = Wires->next())   // test all wires
+    for (Wire* wire : *Wires)
     {
-        QRect componentRect(pw->x1, pw->y1, pw->x2 - pw->x1, pw->y2 - pw->y1);
-        if (shouldBeSelected(componentRect, selectionRect, entirely)) {
-            pw->isSelected = true;
-            z++;
-            continue;
+        if (select_element(wire, QRect{wire->x1, wire->y1, wire->x2 - wire->x1, wire->y2 - wire->y1})) {
+            selected_count++;
         }
-        if (pw->isSelected &= append) z++;
     }
 
+    WireLabel *label = nullptr;
+    for (Wire* wire : *Wires) {
+        if (wire->Label) {
+            label = wire->Label;
+            label->getLabelBounding(left,top,right,bottom);
 
-    // test all wire labels *********************************
-    WireLabel *pl = nullptr;
-    for (pw = Wires->first(); pw != nullptr; pw = Wires->next()) {
-        if (pw->Label) {
-            pl = pw->Label;
-            pl->getLabelBounding(cx1,cy1,cx2,cy2);
-            QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
-            if (shouldBeSelected(componentRect, selectionRect, entirely)) {
-                pl->isSelected = true;
-                z++;
-                continue;
+            if (select_element(label, QRect{left, top, right - left, bottom - top})) {
+                selected_count++;
             }
-            if (pl->isSelected &= append) z++;
         }
     }
 
+    for (Node *node : *Nodes) {
+        label = node->Label;
+        if (label) {
+            label->getLabelBounding(left,top,right,bottom);
 
-    // test all node labels *************************************
-    for (Node *pn = Nodes->first(); pn != nullptr; pn = Nodes->next()) {
-        pl = pn->Label;
-        if (pl) {
-            pl->getLabelBounding(cx1,cy1,cx2,cy2);
-            QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
-            if (shouldBeSelected(componentRect, selectionRect, entirely)) {
-                pl->isSelected = true;
-                z++;
-                continue;
+            if (select_element(label, QRect{left, top, right - left, bottom - top})) {
+                selected_count++;
             }
-            if (pl->isSelected &= append) z++;
         }
     }
 
+    for (Diagram *diagram : *Diagrams) {
+        for (Graph *graph: diagram->Graphs) {
+            if (graph->isSelected &= append) {
+                selected_count++;
+            }
 
-    // test all diagrams *******************************************
-    for (Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
-        // test graphs of diagram
-        for (Graph *pg: pd->Graphs) {
-            if (pg->isSelected &= append) z++;
+            for (Marker *marker: graph->Markers) {
+                marker->Bounding(left, top, right, bottom);
 
-            // test markers of graph
-            for (Marker *pm: pg->Markers) {
-                pm->Bounding(cx1, cy1, cx2, cy2);
-                QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
-                if (shouldBeSelected(componentRect, selectionRect, entirely)) {
-                    pm->isSelected = true;
-                    z++;
-                    continue;
+                if (select_element(marker, QRect{left, top, right - left, bottom - top})) {
+                    selected_count++;
                 }
-                if (pm->isSelected &= append) z++;
             }
         }
 
-        // test diagram itself
-        pd->Bounding(cx1, cy1, cx2, cy2);
-        QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
-        if (shouldBeSelected(componentRect, selectionRect, entirely)) {
-            pd->isSelected = true;
-            z++;
-            continue;
+        diagram->Bounding(left, top, right, bottom);
+
+        if (select_element(diagram, QRect{left, top, right - left, bottom - top})) {
+            selected_count++;
         }
-        if (pd->isSelected &= append) z++;
     }
 
-    // test all paintings *******************************************
-    for (Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next()) {
-        pp->Bounding(cx1, cy1, cx2, cy2);
-        QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
-        if (shouldBeSelected(componentRect, selectionRect, entirely)) {
-            pp->isSelected = true;
-            z++;
-            continue;
+    for (Painting *painting : *Paintings) {
+        painting->Bounding(left, top, right, bottom);
+
+        if (select_element(painting, QRect{left, top, right - left, bottom - top})) {
+            selected_count++;
         }
-        if (pp->isSelected &= append) z++;
     }
 
-    return z;
+    return selected_count;
 }
 
 // ---------------------------------------------------

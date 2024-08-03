@@ -1737,7 +1737,8 @@ void MouseActions::MReleaseSelect2(Schematic *Doc, QMouseEvent *Event)
     bool IsShift = Event->modifiers().testFlag(Qt::ShiftModifier);
 
     // selects all elements within the rectangle
-    Doc->selectElements(MAx1, MAy1, MAx1 + MAx2, MAy1 + MAy2, IsCtrl, !IsShift);
+    Doc->selectElements(
+        QRect{MAx1, MAy1, MAx2, MAy2}.normalized(), IsCtrl, !IsShift);
 
     Doc->releaseKeyboard(); // allow keyboard inputs again
     QucsMain->MouseMoveAction = 0;
