@@ -104,17 +104,17 @@
     <message>
         <location line="-15"/>
         <source>Schematic rendering engine, refactoring</source>
-        <translation type="unfinished"></translation>
+        <translation>Движок схематической визуализации, рефакторинг</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>CI setup, build system</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка CI, система сборки</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Refactoring, general improvements</source>
-        <translation type="unfinished"></translation>
+        <translation>Рефакторинг, общие улучшения</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -726,7 +726,7 @@
     <message>
         <location line="+7"/>
         <source>Fill from SPICE .MODEL</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать данные .MODEL SPICE</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2107,37 +2107,37 @@ Filter synthesis program
     <message>
         <location line="-26"/>
         <source>Input Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат ввода:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SPICE netlist</source>
-        <translation type="unfinished">схема SPICE</translation>
+        <translation>список цепей SPICE</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>VCD dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>набор данных VCD</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Citi</source>
-        <translation type="unfinished"></translation>
+        <translation>Citi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>ZVR</source>
-        <translation type="unfinished"></translation>
+        <translation>ZVR</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>MDL</source>
-        <translation type="unfinished"></translation>
+        <translation>MDL</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Output Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат вывода:</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2158,7 +2158,7 @@ Filter synthesis program
     <message>
         <location line="+11"/>
         <source>Library Name:</source>
-        <translation type="unfinished">Имя библиотеки:</translation>
+        <translation>Имя библиотеки:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2239,12 +2239,12 @@ Filter synthesis program
     <message>
         <location line="+274"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Cannot open file: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удаётся открыть файл: </translation>
     </message>
     <message>
         <location line="-312"/>
@@ -2255,7 +2255,7 @@ Filter synthesis program
     <message>
         <location line="+8"/>
         <source>Qucsator netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Схема Qucsator</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -2818,132 +2818,132 @@ Node name will not be changed.</source>
     <message>
         <location line="-201"/>
         <source>Implementation</source>
-        <translation type="unfinished"></translation>
+        <translation>Реализация</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Microstrip Substrate</source>
-        <translation type="unfinished">Подложка микрополосковой линии</translation>
+        <translation>Подложка микрополосковой линии</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Relative Permitivity</source>
-        <translation type="unfinished"></translation>
+        <translation>Относительная диэлектрическая проницаемость</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Substrate height</source>
-        <translation type="unfinished">Высота подложки</translation>
+        <translation>Высота подложки</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Metal thickness</source>
-        <translation type="unfinished"></translation>
+        <translation>Толщина металла</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Minimum width</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальная ширина</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Maximum width</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная ширина</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>tanD</source>
-        <translation type="unfinished"></translation>
+        <translation>тангенс</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Resistivity</source>
-        <translation type="unfinished"></translation>
+        <translation>Удельное электрическое сопротивление</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Метод</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>L-section</source>
-        <translation type="unfinished"></translation>
+        <translation>L-секция</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Single stub</source>
-        <translation type="unfinished"></translation>
+        <translation>Одиношлейфовый</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Double stub</source>
-        <translation type="unfinished"></translation>
+        <translation>Двухшлейфовый</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Multistage </source>
-        <translation type="unfinished"></translation>
+        <translation>Многоступенчатый </translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Open stub</source>
-        <translation type="unfinished"></translation>
+        <translation>Открытый шлейф</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Short circuit stub</source>
-        <translation type="unfinished"></translation>
+        <translation>Короткозамкнутый шлейф</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Number of sections</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество разделов</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Weighting</source>
-        <translation type="unfinished"></translation>
+        <translation>Взвешивание</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Binomial</source>
-        <translation type="unfinished"></translation>
+        <translation>Биномиальное</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Chebyshev</source>
-        <translation type="unfinished">Чебышев</translation>
+        <translation>Чебышев</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Maximum ripple</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная пульсация</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Use balanced stubs</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать сбалансированные шлейфы</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Calculate two-port matching</source>
-        <translation type="unfinished"></translation>
+        <translation>Расчёт согласованного четырёхполюсника</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Add S-Parameter simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить моделирование S-параметров</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Synthesize microstrip lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Синтезировать микрополосковые линии</translation>
     </message>
     <message>
         <location line="+53"/>
         <source>Real/Imag</source>
-        <translation type="unfinished"></translation>
+        <translation>Действительная/мнимая часть</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2995,12 +2995,12 @@ Node name will not be changed.</source>
     <message>
         <location line="+1"/>
         <source>Impedance (Ohms)</source>
-        <translation type="unfinished"></translation>
+        <translation>Полное сопротивление (Ом)</translation>
     </message>
     <message>
         <location line="+790"/>
         <source>It is not possible to match this load using the double stub method</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно согласовать эту нагрузку с помощью двухшлейфового метода</translation>
     </message>
     <message>
         <source>Impedance (ohms)</source>
@@ -3735,7 +3735,7 @@ Resistor color code computation program
     <message>
         <location line="+1"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Символы</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -6472,7 +6472,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+36"/>
         <source>Qucsator equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Уравнение Qucsator</translation>
     </message>
     <message>
         <source>Qucs legacy equation</source>
@@ -7999,7 +7999,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>feeding line width</source>
-        <translation type="unfinished"></translation>
+        <translation>ширина линии подачи</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8009,12 +8009,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>Effective dimension</source>
-        <translation type="unfinished"></translation>
+        <translation>Эффективные размеры</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Model</source>
-        <translation type="unfinished">Модель</translation>
+        <translation>Модель</translation>
     </message>
     <message>
         <location filename="../qucs/components/potentiometer.cpp" line="-9"/>
@@ -8959,7 +8959,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/sp_sim.cpp" line="-14"/>
         <source>S parameter simulation</source>
-        <translation>Моделирование S параметров</translation>
+        <translation>Моделирование S-параметров</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -9029,12 +9029,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/spicefile.cpp" line="+44"/>
         <source>SPICE netlist file</source>
-        <translation>файл схемы SPICE</translation>
+        <translation>файл списка цепей SPICE</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>SPICE netlist</source>
-        <translation>схема SPICE</translation>
+        <translation>список цепей SPICE</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -9044,7 +9044,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+4"/>
         <source>spice</source>
-        <translation>Spice</translation>
+        <translation>spice</translation>
     </message>
     <message>
         <location filename="../qucs/schematic_file.cpp" line="+433"/>
@@ -9911,7 +9911,7 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location line="+2"/>
         <source>RF components</source>
-        <translation type="unfinished"></translation>
+        <translation>РЧ-компоненты</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9966,7 +9966,7 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location line="+2"/>
         <source>SPICE netlist sections</source>
-        <translation>Разделы списка соединений SPICE</translation>
+        <translation>Разделы списка цепей SPICE</translation>
     </message>
     <message>
         <source>SPICE specific sections</source>
@@ -10162,7 +10162,7 @@ Unknown field!</source>
     <message>
         <location line="-83"/>
         <source>No valid osdi file. Re-compile verilog-a file first!</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет корректного файла osdi. Сначала перекомпилируйте файл verilog-a!</translation>
     </message>
     <message>
         <location line="+129"/>
@@ -10709,12 +10709,12 @@ Leave continuation lines blank when NOT in use.  </source>
     <message>
         <location line="+1"/>
         <source>Pins assignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Назначение выводов</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>SPICE library device</source>
-        <translation type="unfinished"></translation>
+        <translation>Устройство библиотеки SPICE</translation>
     </message>
     <message>
         <source>SpiceLibComp</source>
@@ -11684,13 +11684,13 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location filename="../qucs/dialogs/matchdialog.cpp" line="-135"/>
         <source>The load has not resistive part. It cannot be matched using the quarter wavelength method</source>
-        <translation type="unfinished"></translation>
+        <translation>У нагрузки нет резистивной части. Её нельзя согласовать с помощью четвертьволнового метода</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+130"/>
         <source>Reactive loads cannot be matched. Only the real part will be matched</source>
-        <translation type="unfinished"></translation>
+        <translation>Реактивные нагрузки нельзя согласовать. Будет согласована только действительная часть</translation>
     </message>
     <message>
         <location line="-102"/>
@@ -11701,7 +11701,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+96"/>
         <source>The load is reactive. It cannot be matched using the quarter wavelength method</source>
-        <translation type="unfinished"></translation>
+        <translation>Нагрузка является реактивной. Её нельзя согласовать с помощью четвертьволнового метода</translation>
     </message>
     <message>
         <location filename="../qucs/components/taperedline.cpp" line="-37"/>
@@ -11726,7 +11726,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+2"/>
         <source>Taper weighting</source>
-        <translation type="unfinished"></translation>
+        <translation>Коническое взвешивание</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -11747,7 +11747,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location filename="../qucs/components/circularloop.cpp" line="-21"/>
         <source>Printed loop inductor</source>
-        <translation type="unfinished"></translation>
+        <translation>Печатный одновитковый индуктор</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -11758,7 +11758,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+17"/>
         <source>Circular loop</source>
-        <translation type="unfinished"></translation>
+        <translation>Круглая рамка</translation>
     </message>
     <message>
         <location filename="../qucs/components/circline.cpp" line="+2"/>
@@ -11799,49 +11799,49 @@ Leave continuation lines blank when NOT in use.</source>
         <location filename="../qucs/paintings/portsymbol.cpp" line="+241"/>
         <location line="+35"/>
         <source>Port name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя порта</translation>
     </message>
     <message>
         <location line="-34"/>
         <location line="+35"/>
         <source>Input port name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя входного порта:</translation>
     </message>
     <message>
         <location filename="../qucs/components/spiralinductor.cpp" line="-25"/>
         <source>Planar spiral inductor</source>
-        <translation type="unfinished"></translation>
+        <translation>Плоский спиральный индуктор</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Spiral type</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип спирали</translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../qucs/components/circularloop.cpp" line="-19"/>
         <source>Width of line</source>
-        <translation type="unfinished"></translation>
+        <translation>Ширина линии</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Inner diameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренний диаметр</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Spacing between turns</source>
-        <translation type="unfinished"></translation>
+        <translation>Расстояние между витками</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Number of turns</source>
-        <translation type="unfinished"></translation>
+        <translation>Число витков</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Spiral inductor</source>
-        <translation type="unfinished"></translation>
+        <translation>Спиральный индуктор</translation>
     </message>
 </context>
 <context>
@@ -12174,7 +12174,7 @@ Active Filter synthesis program
     <message>
         <location line="+1"/>
         <source>Symbol only</source>
-        <translation type="unfinished"></translation>
+        <translation>Только символ</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12241,25 +12241,28 @@ Active Filter synthesis program
         <location line="-2576"/>
         <location line="+25"/>
         <source>QucsatorRF found at: </source>
-        <translation type="unfinished"></translation>
+        <translation>QucsatorRF найден в: </translation>
     </message>
     <message>
         <location line="-23"/>
         <source>
 You can specify another location later using Simulation-&gt;Simulators Setings
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+Вы можете указать другое местоположение позже, используя «Моделирование» -&gt; «Настройки симуляторов»
+</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>
 NOTE: Only QucsatorRF found. This simulator is not recommended for general purpose schematics.  Please install Ngspice.</source>
-        <translation type="unfinished"></translation>
+        <translation>
+ПРИМЕЧАНИЕ: Обнаружен только движок QucsatorRF. Этот симулятор не рекомендуется использовать для схем общего назначения. Установите Ngspice.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>No simulators found automatically. Please specify simulators in the next dialog window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Симуляторы не найдены автоматически. Пожалуйста, укажите симуляторы в следующем диалоговом окне.</translation>
     </message>
     <message>
         <location line="+1377"/>
@@ -12274,17 +12277,17 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
     <message>
         <location line="+338"/>
         <source>Open example…</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть пример…</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Select example schematic</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите схему-пример</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Open example canceled</source>
-        <translation type="unfinished"></translation>
+        <translation>Открытие примера отменено</translation>
     </message>
     <message>
         <location line="+490"/>
@@ -12850,7 +12853,7 @@ and simple press Apply button</source>
     <message>
         <location line="+5"/>
         <source>Subcircuit symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Символ подсхемы</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -12954,7 +12957,7 @@ and simple press Apply button</source>
     <message>
         <location line="+4"/>
         <source>Attaching symbols to Verilog-A sources is deprecated and not recommended for new designs. Use SPICE generic device instead. See the documentation for more details.</source>
-        <translation type="unfinished"></translation>
+        <translation>Функция добавления символов к исходным текстам Verilog-A устарела и не рекомендуется к использованию в новых проектах. Воспользуйтесь типовым устройством SPICE. Подробные сведения доступны в документации.</translation>
     </message>
     <message>
         <location line="+364"/>
@@ -13110,28 +13113,29 @@ Use subcircuit to crete Verilog-A module!</source>
     <message>
         <location line="+17"/>
         <source>Layouting of display pages is not supported!</source>
-        <translation type="unfinished"></translation>
+        <translation>Макетирование страниц просмотра не поддерживается!</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Cannot write netlist!</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно записать список цепей!</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Digital schematic not supported!</source>
-        <translation type="unfinished"></translation>
+        <translation>Цифровая схема не поддерживается!</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Layouting of text documents is not supported!</source>
-        <translation type="unfinished"></translation>
+        <translation>Макетирование текстовых документов не поддерживается!</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Cannot start Qucs-RFLayout: 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удаётся запустить Qucs-RFLayout: 
+%1</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -14090,12 +14094,12 @@ Create Library from Subcircuits</source>
     <message>
         <location line="+307"/>
         <source>&amp;About Qucs-S</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;О программе Qucs-S</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>&amp;About Qt</source>
-        <translation type="unfinished">&amp;О Qt</translation>
+        <translation>&amp;О Qt</translation>
     </message>
     <message>
         <source>Create &amp;Package...</source>
@@ -14167,31 +14171,35 @@ Convert data file to various file formats</source>
     <message>
         <location line="-276"/>
         <source>New symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Новый символ</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a new symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Создаёт новый символ</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>New
 
 Creates a new schematic symbol document</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать
+
+Создаёт новый документ схемного обозначения</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Starts file chooser dialog to open one of example schematics</source>
-        <translation type="unfinished"></translation>
+        <translation>Запускает диалог выбора файла для открытия одной из схем-примеров</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Examples
 
 Start file chooser dialog and open one of example schematics</source>
-        <translation type="unfinished"></translation>
+        <translation>Примеры
+
+Запустить диалог выбора файла и открыть одну из схем-примеров</translation>
     </message>
     <message>
         <location line="+229"/>
@@ -14470,27 +14478,27 @@ Starts power combining calculation program</source>
     <message>
         <location line="-9"/>
         <source>Data files converter</source>
-        <translation type="unfinished"></translation>
+        <translation>Конвертер файлов данных</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ctrl+8</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+8</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>RF Layout</source>
-        <translation type="unfinished"></translation>
+        <translation>РЧ-макет</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ctrl+9</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+9</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Starts Qucs-RFLayout</source>
-        <translation type="unfinished"></translation>
+        <translation>Запускает Qucs-RFLayout</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -15445,27 +15453,27 @@ Open </source>
     <message>
         <location line="+39"/>
         <source>Pin:</source>
-        <translation type="unfinished"></translation>
+        <translation>Вывод:</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Freq:</source>
-        <translation type="unfinished"></translation>
+        <translation>Частота:</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Put into Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Поместить в буфер обмена</translation>
     </message>
     <message>
         <location line="+76"/>
         <source>R4:</source>
-        <translation type="unfinished"></translation>
+        <translation>R4:</translation>
     </message>
     <message>
         <location line="+92"/>
         <source>Copyright (C) 2024 by</source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright (C) 2024</translation>
     </message>
     <message>
         <source>1</source>
@@ -16462,7 +16470,7 @@ open files with an appropriate program.</source>
     <message>
         <location line="+7"/>
         <source>RF Layout Path:</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь к РЧ-макету:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -16532,7 +16540,7 @@ open files with an appropriate program.</source>
     <message>
         <location line="+9"/>
         <source>Select the Qucs-RFLayout executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать исполняемый файл Qucs-RFLayout</translation>
     </message>
     <message>
         <source>Select the octave bin directory</source>
@@ -17672,7 +17680,7 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location line="+3"/>
         <source>Ngspice compatibility mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим совместимости Ngspice</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -17813,7 +17821,7 @@ Please restart Qucs to affect changes!</source>
     <message>
         <location line="+2"/>
         <source>SPICE netlist</source>
-        <translation>схема SPICE</translation>
+        <translation>список цепей SPICE</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -17879,70 +17887,71 @@ Please restart Qucs to affect changes!</source>
         <location filename="../qucs/extsimkernels/spicelibcompdialog.cpp" line="+49"/>
         <location line="+22"/>
         <source>Open</source>
-        <translation type="unfinished">Открыть</translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location line="-3"/>
         <source>Automatic symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматический символ</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Symbol from template</source>
-        <translation type="unfinished"></translation>
+        <translation>Символ из шаблона</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Symbol from file</source>
-        <translation type="unfinished"></translation>
+        <translation>Символ из файла</translation>
     </message>
     <message>
         <location line="+5"/>
         <location line="+2"/>
         <location line="+2"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Apply</source>
-        <translation type="unfinished">Применить</translation>
+        <translation>Применить</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>SPICE model</source>
-        <translation type="unfinished"></translation>
+        <translation>Модель SPICE</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Edit SPICE library device</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить устройство библиотеки SPICE</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Failed open file: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удаётся открыть файл: </translation>
     </message>
     <message>
         <location line="+3"/>
         <source>SPICE library parse error.
 No SUBCKT directive found in library </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка анализа библиотеки SPICE.
+В библиотеке не найдена директива SUBCKT </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>SPICE library parse error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка анализа библиотеки SPICE</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -17951,64 +17960,64 @@ No SUBCKT directive found in library </source>
         <location line="+155"/>
         <location line="+15"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location line="-256"/>
         <source>Failed to open file: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удаётся открыть файл: </translation>
     </message>
     <message>
         <location line="+61"/>
         <source>No symbol loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Символ не загружен</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Failed to load symbol file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удаётся загрузить символьный файл!</translation>
     </message>
     <message>
         <location line="+68"/>
         <source>Open SPICE library</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть библиотеку SPICE</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SPICE files (*.cir +.ckt *.sp *.lib)</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы SPICE (*.cir +.ckt *.sp *.lib)</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Open symbol file</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть символьный файл</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Schematic symbol (*.sym)</source>
-        <translation type="unfinished"></translation>
+        <translation>Схемное обозначение (*.sym)</translation>
     </message>
     <message>
         <location line="+20"/>
         <location line="+10"/>
         <source>Warning</source>
-        <translation type="unfinished">Предупреждение</translation>
+        <translation>Предупреждение</translation>
     </message>
     <message>
         <location line="-10"/>
         <source>All pins must be assigned</source>
-        <translation type="unfinished"></translation>
+        <translation>Необходимо назначить все выводы</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Set a valid symbol file name</source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите корректное имя символьного файла</translation>
     </message>
     <message>
         <location line="+44"/>
         <location line="+15"/>
         <source>There were library file parse error! Cannot apply changes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка анализа файла библиотеки! Невозможно применить изменения.</translation>
     </message>
 </context>
 <context>
@@ -18339,71 +18348,75 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location filename="../qucs/dialogs/fillfromspicedialog.cpp" line="+21"/>
         <source>Insert .MODEL text here</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить сюда текст .MODEL</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert number notation</source>
-        <translation type="unfinished"></translation>
+        <translation>Преобразовать представление чисел</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Import SPICE model</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортировать модель SPICE</translation>
     </message>
     <message>
         <location line="+148"/>
         <source>No .MODEL directive found</source>
-        <translation type="unfinished"></translation>
+        <translation>Директива .MODEL не найдена</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Device type doesn&apos;t match the model type. 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Тип устройства не соответствует типу модели. 
+</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Model found: </source>
-        <translation type="unfinished"></translation>
+        <translation>Обнаруженная модель: </translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Models expected: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидаемые модели: </translation>
     </message>
     <message>
         <location line="+3"/>
         <source>SPICE model parse error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка анализа модели SPICE</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Subcircuit model (.SUBCKT) found
 Modelcard (.MODEL) expected</source>
-        <translation type="unfinished"></translation>
+        <translation>Обнаружена модель-подсхема (.SUBCKT)
+Ожидалась карточка модели (.MODEL)</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Model LEVEL=%1 is not allowed for unified MOS device
 Use red SPICE device from Microelectronics group
 Allowed LEVELS are: 1,2,3,4,5,6,9</source>
-        <translation type="unfinished"></translation>
+        <translation>Модель со значением LEVEL=%1 нельзя использовать для единого МОП-устройства
+Используйте красное SPICE-устройство из группы &quot;Микроэлектроника&quot;
+Допустимые значения LEVEL: 1,2,3,4,5,6,9</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
 </context>
 <context>
