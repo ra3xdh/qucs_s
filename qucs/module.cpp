@@ -349,6 +349,8 @@ void Module::registerModules (void) {
   REGISTER_PROBE_1 (vProbe);
 
   // RF devices except transmission line
+  REGISTER_RF_COMP_1 (IndQ);
+  REGISTER_RF_COMP_1 (CapQ);
   REGISTER_RF_COMP_1 (dcBlock);
   REGISTER_RF_COMP_1 (dcFeed);
   REGISTER_RF_COMP_1 (circularloop);
