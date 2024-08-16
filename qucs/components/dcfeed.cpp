@@ -17,11 +17,12 @@
 
 #include "dcfeed.h"
 #include "extsimkernels/spicecompat.h"
+#include "node.h"
 
 dcFeed::dcFeed()
 {
   Description = QObject::tr("dc feed");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Arcs.append(new qucs::Arc(-17, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
@@ -44,6 +45,7 @@ dcFeed::dcFeed()
   ty = y2+4;
   Model = "DCFeed";
   Name  = "L";
+  SpiceModel = "L";
 
   Props.append(new Property("L", "1 uH", false,
 	QObject::tr("for transient simulation: inductance in Henry")));
@@ -65,4 +67,16 @@ Element* dcFeed::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new dcFeed();
   return 0;
+}
+
+QString dcFeed::spice_netlist(bool isXyce)
+{
+  Q_UNUSED(isXyce);
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+  QString val = spicecompat::normalize_value(getProperty("L")->Value);
+  QString s;
+  QString name = spicecompat::check_refdes(Name, SpiceModel);
+  s = QString("%1 %2 %3 %4\n").arg(name, p1, p2, val);
+  return s;
 }
