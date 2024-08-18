@@ -88,6 +88,99 @@ jobs:
           name: ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64
           path: ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
                 
+  build-mac-intel-qt5:
+    runs-on: macos-12
+    needs: setup
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+        
+    - name: Set version environment variable
+      run: echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
+
+    - name: Print version
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
+      
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+      
+    #- name: 'Install Qt5'
+    #  uses: jurplel/install-qt-action@v4
+    #  with:
+    #    version: '5.15.2'
+    #    host: 'mac'
+    #    target: 'desktop'
+    #    cache: true
+    #    arch: 'clang_64'
+    #    install-deps: 'true'
+    #    tools: 'tools_cmake'
+       
+    - name: 'Install Dependencies'
+      shell: bash
+      run: |
+          brew install qt@5 gperf dos2unix bison flex ninja graphicsmagick
+          echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
+          export LDFLAGS="-L$(brew --prefix bison)/lib"
+          source ~/.bashrc
+          brew link bison --force
+
+          
+    - name: 'Configure CMake'
+      run: |
+        cmake -B ${{github.workspace}}/build  -G 'Ninja' \
+                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                  -DCMAKE_PREFIX_PATH=$(brew --prefix qt@5)
+
+    - name: 'Build Qucs-s'
+      run: |
+        cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
+    
+    #- name: Install
+    #  run: | 
+    #    cd build
+    #    make install DESTDIR=./deploy
+    #    cd ..
+        
+    - name: 'Package App Bundle'
+      run: |
+        mkdir -p ${{env.QUCS_MACOS_BIN}}
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        cp -pR ./build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-powercombining/qucs-spowercombining.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucs-transcalc/qucs-strans.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucsator_rf/src/qucsator_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./build/qucsator_rf/src/converter/qucsconv_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ./examples/* ${{env.QUCS_MACOS_RESOURCES}}/examples
+        cp -pR ./library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ./library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ./library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        $(brew --prefix qt@5)/bin/macdeployqt ./build/qucs/qucs-s.app
+        $(brew --prefix qt@5)/bin/macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
+        $(brew --prefix qt@5)/bin/macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
+        $(brew --prefix qt@5)/bin/macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sfilter.app
+        $(brew --prefix qt@5)/bin/macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-spowercombining.app
+        $(brew --prefix qt@5)/bin/macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-strans.app
+        strip ${{env.QUCS_MACOS_BIN}}/qucsator_rf
+        strip ${{env.QUCS_MACOS_BIN}}/qucsconv_rf 
+        codesign --force --deep --sign - ./build/qucs/qucs-s.app
+        npm install --global create-dmg
+        create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
+        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOS-qt5-x86_64.dmg
+
+    - name: 'Upload build artifacts'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-qt5-x86_64
+        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-qt5-x86_64.dmg
+
  
   build-mac-intel:
     runs-on: macos-12
@@ -378,6 +471,7 @@ jobs:
     needs:
      - setup
      - build-linux-appimage-qt6
+     - build-mac-intel-qt5
      - build-mac-intel
      - build-mac-arm
      - build-windows
