@@ -34,7 +34,6 @@ else()
     set(QT_VERSION_MAJOR 5)
 endif()
 
-
 if(QT_VERSION_MAJOR EQUAL 6)
   find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core  Widgets Svg SvgWidgets)
   include_directories(
