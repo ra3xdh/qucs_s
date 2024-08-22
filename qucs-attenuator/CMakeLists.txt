@@ -32,6 +32,7 @@ if(WITH_QT6)
 else()
     set(QT_VERSION_MAJOR 5)
 endif()
+
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets)
 include_directories(
       ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
