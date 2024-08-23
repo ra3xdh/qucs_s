@@ -44,6 +44,7 @@ Compression=lzma
 SolidCompression=yes
 ChangesEnvironment=yes
 UsePreviousAppDir=yes
+WizardStyle=modern
 
 ; [Registry]
 ; Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: QUCSDIR; ValueData: "{app}"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
