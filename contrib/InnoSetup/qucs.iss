@@ -26,7 +26,7 @@
 #define APPNAME "Qucs-S"
 #define APPVERNAME "Quite Universal Circuit Simulator 24.3.0"
 #define URL "https://ra3xdh.github.io/"
-#define TREE "c:\msys64\home\vvk\qucs_s_win64\"
+
 
 [Setup]
 AppName={# APPNAME}
@@ -38,12 +38,13 @@ AppUpdatesURL={# URL}
 DefaultDirName={pf}\Qucs-S
 DefaultGroupName=Qucs-S
 AllowNoIcons=yes
-LicenseFile={# TREE}\misc\gpl.rtf
+LicenseFile=.\misc\gpl.rtf
 OutputBaseFilename={# BASENAME}-{# RELEASE}-setup
 Compression=lzma
 SolidCompression=yes
 ChangesEnvironment=yes
 UsePreviousAppDir=yes
+WizardStyle=modern
 
 ; [Registry]
 ; Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: QUCSDIR; ValueData: "{app}"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
@@ -52,12 +53,12 @@ UsePreviousAppDir=yes
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "{# TREE}\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\build\qucs-suite\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; Source: "{# TREE}\include\*"; DestDir: "{app}\include"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; Source: "{# TREE}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{# TREE}\misc\*"; DestDir: "{app}\misc"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{# TREE}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{# TREE}\share\*"; DestDir: "{app}\share"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\misc\*"; DestDir: "{app}\misc"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\build\qucs-suite\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\build\qucs-suite\share\*"; DestDir: "{app}\share"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\Qucs-S Simulator"; Filename: "{app}\bin\qucs-s.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"

@@ -15,6 +15,7 @@ env:
   QT_VERSION: 6.7.2
   QUCS_MACOS_BIN: build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
+  NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/43/ngspice-43_64.7z
   
 jobs:
   setup:
@@ -52,35 +53,45 @@ jobs:
     - name: Install Dependencies
       run: |
           sudo apt-get update
-          sudo apt-get install -y qt6-base-dev qt6-tools-dev qt6-tools-dev-tools libglx-dev linguist-qt6 qt6-l10n-tools libqt6svg6-dev libgl1-mesa-dev
-          sudo apt-get install -y flex bison gperf dos2unix
-    - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_INSTALL_PREFIX=/usr -DWITH_QT6=ON
+          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
 
-    - name: Build
+    - name: 'Install Qt6'
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.7.2'
+        host: 'linux'
+        target: 'desktop'
+        cache: true
+        arch: 'linux_gcc_64'
+        install-deps: 'true'
+
+        
+    - name: 'Configure CMake'
+      run: |
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_INSTALL_PREFIX=/usr -DWITH_QT6=ON
+
+    - name: 'Build'
       # Build your program with the given configuration
       run: |
           cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
           make -C ${{github.workspace}}/build install DESTDIR=${{github.workspace}}/AppDir
 
       
-    - name: Install linuxdeploy
+    - name: 'Install linuxdeploy'
       run: |
-          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-          wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          wget -q --tries=3 --wait=5 https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          wget -q --tries=3 --wait=5 https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
           sudo apt-get install fuse libfuse2
           chmod +x linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
     
     - name: 'Create AppImage'
       run: |
-             export QMAKE=/usr/bin/qmake6
-             ./linuxdeploy-x86_64.AppImage --appdir ${{github.workspace}}/AppDir --desktop-file=${{github.workspace}}/AppDir/usr/share/applications/qucs-s.desktop --icon-file=${{github.workspace}}/AppDir/usr/share/icons/hicolor/256x256/apps/qucs-s.png --plugin=qt --output appimage
-             rm linuxdeploy-x86_64.AppImage
-             rm linuxdeploy-plugin-qt-x86_64.AppImage
-             mv *.AppImage ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
+          ./linuxdeploy-x86_64.AppImage --appdir ${{github.workspace}}/AppDir --desktop-file=${{github.workspace}}/AppDir/usr/share/applications/qucs-s.desktop --icon-file=${{github.workspace}}/AppDir/usr/share/icons/hicolor/256x256/apps/qucs-s.png --plugin=qt --output appimage
+          rm linuxdeploy-x86_64.AppImage
+          rm linuxdeploy-plugin-qt-x86_64.AppImage
+          mv *.AppImage ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
 
     - name: 'Upload artifact: AppImage'
       uses: actions/upload-artifact@v4
@@ -131,7 +142,7 @@ jobs:
           
     - name: 'Configure CMake'
       run: |
-        qt-cmake -B ${{github.workspace}}/build  -G 'Ninja' \
+            cmake -B ${{github.workspace}}/build  -G 'Ninja' \
                   -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
                   -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 \
                   -DCMAKE_OSX_ARCHITECTURES="x86_64"
@@ -281,9 +292,7 @@ jobs:
     needs: setup
     strategy:
       fail-fast: false
-      matrix:
-        environment:
-          - ucrt64
+      
     defaults:
       run:
         shell: msys2 {0}
@@ -311,7 +320,7 @@ jobs:
     - name: Set up MSYS2 environment
       uses: msys2/setup-msys2@v2
       with:
-        msystem: ${{ matrix.environment }}
+        msystem: ucrt64
         cache: true
         update: true
         install: >-
@@ -320,7 +329,7 @@ jobs:
           dos2unix
           curl
           zip
-          unzip
+          p7zip
         pacboy: >-
           cmake:p 
           gcc:p 
@@ -353,28 +362,49 @@ jobs:
         windeployqt-qt6.exe build/qucs-suite/bin/qucs-sfilter.exe  --no-translations 
         windeployqt-qt6.exe build/qucs-suite/bin/qucs-spowercombining.exe  --no-translations 
         windeployqt-qt6.exe build/qucs-suite/bin/qucs-strans.exe  --no-translations
-
+        
     - name: Copy non-Qt DLLs to bin directory
       run: |
         shopt -s extglob
-        FILES=$(ldd build/qucs-suite/bin/qucs-s.exe | awk '($3 ~ /\/${{ matrix.environment }}\/bin\//) {print $3}')
+        FILES=$(ldd build/qucs-suite/bin/qucs-s.exe | awk '($3 ~ /\/ucrt64\/bin\//) {print $3}')
         for file in $FILES; do
           if [[ $(basename "$file") != Qt6* ]]; then
             cp -r "$file" build/qucs-suite/bin
           fi
         done
+        
+    - name: Add ngspice to release
+      run: |
+        curl -sL --retry 3 --retry-delay 5 -o ngspice.7z ${{ env.NGSPICE_URL }}
+        7z x ngspice.7z -ongspice
+        mkdir -p build/qucs-suite/lib/ngspice
+        cp -rf ngspice/Spice64/bin/ build/qucs-suite
+        cp -rf ngspice/Spice64/lib/ build/qucs-suite
             
     - name: Create zip archive for release
       run: |
+        mkdir -p build/qucs-suite/misc
+        cp -rf contrib/InnoSetup/misc build/qucs-suite/
         cd build/qucs-suite
-        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip ./bin ./share
+        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip ./bin ./share ./lib ./misc
         cd ../..
+
+    - name: Compile .ISS to .EXE Installer
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.4
+      with:
+        path: contrib/InnoSetup/qucs.iss
         
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.APP_NAME }}-${{ env.VERSION }}-win64
         path: ${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip
+
+    - name: Upload exe artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: qucs-s-24.3.0-setup
+        path: contrib\InnoSetup\Output\qucs-s-24.3.0-setup.exe
 
   create-release:
     runs-on: ubuntu-latest
@@ -416,13 +446,15 @@ jobs:
       continue-on-error: true
       run: |
         # Find existing zip and dmg files
+        exe_files=$(find ~/artifacts -name "*.exe" -print0 | xargs -0 echo)
         zip_files=$(find ~/artifacts -name "*.zip" -print0 | xargs -0 echo)
         dmg_files=$(find ~/artifacts -name "*.dmg" -print0 | xargs -0 echo)
         appimage_files=$(find ~/artifacts -name "*.AppImage" -print0 | xargs -0 echo)
         
         # Create release only if there are files to upload
-        if [ -n "$zip_files" ] || [ -n "$dmg_files" ] || [ -n "$appimage_files" ]; then
+        if [ -n "$exe_files" ] || [ -n "$zip_files" ] || [ -n "$dmg_files" ] || [ -n "$appimage_files" ]; then
           gh release create continuous_build \
+            $exe_files \
             $zip_files \
             $dmg_files \
             $appimage_files \
