@@ -732,10 +732,32 @@ void MatchDialog::slotButtCreate() {
                      S12imag * S21imag;
     double DetImag = S11real * S22imag + S11imag * S22real - S12real * S21imag -
                      S12imag * S21real;
-    success =
-        calc2PortMatch(S11real, S11imag, S22real, S22imag, DetReal, DetImag, Z1,
-                       Z2, Freq, micro_syn, SP_block, open_short, Substrate,
-                       order, gamma_MAX, BalancedStubs);
+
+    // Check unconditional stability. If the device is not unconditionally stable, it cannot be conjugately matched
+    std::complex<double> s11 (S11real, S11imag);
+    std::complex<double> s12 (S12real, S12imag);
+    std::complex<double> s21 (S21real, S21imag);
+    std::complex<double> s22 (S22real, S22imag);
+
+    double delta = abs(s11*s22 - s12*s21); // Determinant of the S matrix
+    double K = (1 - abs(s11)*abs(s11) - abs(s22)*abs(s22) + delta*delta) / (2*abs(s12*s21)); // Rollet factor.
+
+    if ((K > 1) && (delta < 1)){
+        // The device is unconditionally stable. It can be conjugately matched
+        success =
+            calc2PortMatch(S11real, S11imag, S22real, S22imag, DetReal, DetImag, Z1,
+                           Z2, Freq, micro_syn, SP_block, open_short, Substrate,
+                           order, gamma_MAX, BalancedStubs);
+    }else{
+        // The device is not unconditionally stable. Show a message and stop
+        success = false;
+        QMessageBox::critical(
+            0, tr("Error"),
+            tr("The device is not unconditionally stable:\n\nK = %1\n|%2| = %3\n\nIt is not possible to synthesize a matching network.\n\nConsider adding resistive losses and/or feedback to reach unconditional stability (K > 1 and |%2| < 1)")
+                .arg(QString::number(K, 'f', 2)).arg(QChar(0x0394)).arg(QString::number(delta, 'f', 2)));
+    }
+
+
   } else {
     success = calcMatchingCircuit(S11real, S11imag, Z1, Freq, micro_syn,
                                   SP_block, open_short, Substrate, order,
