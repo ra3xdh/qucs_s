@@ -764,6 +764,10 @@ void MatchDialog::slotButtCreate() {
                                   gamma_MAX, BalancedStubs);
   }
 
+  if (!success) {
+      // Something went wrong. Return to the main window without closing the dialog
+      return;
+  }
   QucsMain->slotEditPaste(success);
   accept();
 }
