@@ -438,15 +438,15 @@ jobs:
 
     - name: Check if continuous_build release exists
       run: |
-          if [ "${{github.ref_type}}" == "tag" ]; then
-            if gh release view ${{ github.ref_name }} --repo $GITHUB_REPOSITORY &> /dev/null; then
-              gh release delete ${{ github.ref_name }} --repo $GITHUB_REPOSITORY
-            fi
-          elif if [ "${{github.ref_type}}" == "branch" ]; then
-            if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
-              gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
-            fi
+        if [ "${{github.ref_type}}" == "tag" ]; then
+          if gh release view ${{ github.ref_name }} --repo $GITHUB_REPOSITORY &> /dev/null; then
+            gh release delete ${{ github.ref_name }} --repo $GITHUB_REPOSITORY
           fi
+        elif [ "${{github.ref_type}}" == "branch" ]; then
+          if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
+            gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
+          fi
+        fi
 
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -461,7 +461,7 @@ jobs:
         appimage_files=$(find ~/artifacts -name "*.AppImage" -print0 | xargs -0 echo)
 
         # Create release only if there are files to upload
-        if [ -n "$exe_files" ] || [ -n "$zip_files" ] || [ -n "$dmg_files" ] || [ -n "$appimage_files" ]; then
+        if [ -n "$exe_files" ] && [ -n "$zip_files" ] && [ -n "$dmg_files" ] && [ -n "$appimage_files" ]; then
           if [ "${{github.ref_type}}" != "tag" ]; then
             gh release create continuous_build \
               $exe_files \
@@ -474,15 +474,14 @@ jobs:
               --title "Continuous build" \
               --notes "Automated release for commit ${{ github.sha }}"
           else
-              TAG_NAME=${GITHUB_REF#refs/tags/}
-              gh release create ${TAG_NAME} \
+              gh release create ${{ github.ref_name }} \
               $exe_files \
               $zip_files \
               $dmg_files \
               $appimage_files \
               ~/artifacts/hashes.sha256 \
               --repo $GITHUB_REPOSITORY \
-              --title "Qucs-S ${TAG_NAME}" \
+              --title "Qucs-S ${{ github.ref_name }}" \
               --generate-notes\
               --verify-tag
           fi
