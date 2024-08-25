@@ -437,11 +437,17 @@ jobs:
         cd ..
 
     - name: Check if continuous_build release exists
-      if: github.ref_type != 'tag'
       run: |
-        if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
-          gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
-        fi
+          if [ "${{github.ref_type}}" == "tag" ]; then
+            if gh release view ${{ github.ref_name }} --repo $GITHUB_REPOSITORY &> /dev/null; then
+              gh release delete ${{ github.ref_name }} --repo $GITHUB_REPOSITORY
+            fi
+          elif if [ "${{github.ref_type}}" == "branch" ]; then
+            if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
+              gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
+            fi
+          fi
+
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
