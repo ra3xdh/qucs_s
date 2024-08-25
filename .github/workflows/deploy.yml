@@ -3,6 +3,8 @@ name: deploy
 on:
   push:
     branches: [ "master", "current", "release/*" ]
+    tags:
+        - '[0-9]+.[0-9]+.[0-9]+*'
   pull_request:
     branches: [ "master", "current", "release/*" ]
   workflow_dispatch:
@@ -428,7 +430,7 @@ jobs:
       run: |
         cd ~/artifacts
         > hashes.sha256
-        for file in $(find . -type f \( -name "*.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
+        for file in $(find . -type f \( -name "*.exe" -o -name "*.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
           filename=$(basename "$file")
           sha256sum "$file" | awk -v fname="$filename" '{print $1 " *" fname}' >> hashes.sha256
         done
@@ -436,36 +438,56 @@ jobs:
 
     - name: Check if continuous_build release exists
       run: |
-        if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
-          gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
+        if [ "${{github.ref_type}}" == "tag" ]; then
+          if gh release view ${{ github.ref_name }} --repo $GITHUB_REPOSITORY &> /dev/null; then
+            gh release delete ${{ github.ref_name }} --repo $GITHUB_REPOSITORY
+          fi
+        elif [ "${{github.ref_type}}" == "branch" ]; then
+          if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
+            gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
+          fi
         fi
+
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Create GitHub Release
-      continue-on-error: true
+      continue-on-error: false
       run: |
         # Find existing zip and dmg files
         exe_files=$(find ~/artifacts -name "*.exe" -print0 | xargs -0 echo)
         zip_files=$(find ~/artifacts -name "*.zip" -print0 | xargs -0 echo)
         dmg_files=$(find ~/artifacts -name "*.dmg" -print0 | xargs -0 echo)
         appimage_files=$(find ~/artifacts -name "*.AppImage" -print0 | xargs -0 echo)
-        
+
         # Create release only if there are files to upload
-        if [ -n "$exe_files" ] || [ -n "$zip_files" ] || [ -n "$dmg_files" ] || [ -n "$appimage_files" ]; then
-          gh release create continuous_build \
-            $exe_files \
-            $zip_files \
-            $dmg_files \
-            $appimage_files \
-            ~/artifacts/hashes.sha256 \
-            -p \
-            --repo $GITHUB_REPOSITORY \
-            --title "Continuous build" \
-            --notes "Automated release for commit ${{ github.sha }}"
+        if [ -n "$exe_files" ] && [ -n "$zip_files" ] && [ -n "$dmg_files" ] && [ -n "$appimage_files" ]; then
+          if [ "${{github.ref_type}}" != "tag" ]; then
+            gh release create continuous_build \
+              $exe_files \
+              $zip_files \
+              $dmg_files \
+              $appimage_files \
+              ~/artifacts/hashes.sha256 \
+              -p \
+              --repo $GITHUB_REPOSITORY \
+              --title "Continuous build" \
+              --notes "Automated release for commit ${{ github.sha }}"
+          else
+              gh release create ${{ github.ref_name }} \
+              $exe_files \
+              $zip_files \
+              $dmg_files \
+              $appimage_files \
+              ~/artifacts/hashes.sha256 \
+              --repo $GITHUB_REPOSITORY \
+              --title "Qucs-S ${{ github.ref_name }}" \
+              --generate-notes\
+              --verify-tag
+          fi
         else
           echo "No artifacts to upload."
         fi
-
+        
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
