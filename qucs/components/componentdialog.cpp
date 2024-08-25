@@ -1586,6 +1586,10 @@ bool ComponentDialog::propChanged(Property *pp, const QString &value, const bool
 
 void ComponentDialog::updateProperty(Property *pp, const QString &value, const bool display)
 {
+  if (pp == nullptr) {
+    qDebug()<<__func__<<" Warning! Trying to update NULLPTR property";
+    return;
+  }
   if (propChanged(pp,value,display)) {
     pp->Value = value;
     pp->display = display;
