@@ -1299,12 +1299,13 @@ int Component::analyseLine(const QString &Row, int numProps) {
         if (s.isEmpty()) return -1;
         misc::convert2Unicode(s);
 
-        Texts.append(new Text(i1, i2, s, Color, float(i3),
+        QFont Font(QucsSettings.font);
+        Font.setPointSizeF(float(i3));
+
+        Texts.append(new Text(i1, i2, s, Color, static_cast<double>(QFontInfo{Font}.pixelSize()),
                               float(cos(float(i4) * pi / 180.0)),
                               float(sin(float(i4) * pi / 180.0))));
 
-        QFont Font(QucsSettings.font);
-        Font.setPointSizeF(float(i3));
         QFontMetrics metrics(Font, 0); // use the screen-compatible metric
         QSize r = metrics.size(0, s);    // get size of text
         i3 = i1 + int(float(r.width()) * Texts.last()->mCos)
