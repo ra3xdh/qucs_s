@@ -49,7 +49,7 @@ private slots:
   void slotAbort();
   void slotBrowse();
   void slotSaveBrowse();
-  void slotType();
+  void slotType(int index);
   void slotValidateInput();
   void slotValidateOutput();
 
