@@ -242,8 +242,6 @@ void ImportDialog::slotImport()
     break;
   case 1:
     CommandLine << "touchstone";
-    if (!OutputData->currentText().isEmpty())
-      CommandLine << "-d" << OutputData->currentText();
     break;
   case 2:
     CommandLine << "csv";
