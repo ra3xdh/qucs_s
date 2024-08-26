@@ -33,11 +33,11 @@ jobs:
       id: read_version
       run: |
         if [ "${{github.ref_type}}" == "tag" ]; then
-          VERSION=$(cat VERSION)
+          VERSION=${{ github.ref_name }}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
         else
-          VERSION=${{env.CI_VERSION}}
+          VERSION=${{ env.CI_VERSION }}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
         fi
