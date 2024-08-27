@@ -19,28 +19,30 @@
 ; the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 ; Boston, MA 02110-1301, USA.
 ;
+#ifndef RELEASE
+  #define RELEASE "24.3.0"
+#endif
 
+#ifndef APPNAME
+  #define APPNAME "Qucs-S"
+#endif
 
-#define RELEASE "24.3.0"
-#define BASENAME "qucs-s"
-#define APPNAME "Qucs-S"
-#define APPVERNAME "Quite Universal Circuit Simulator 24.3.0"
 #define URL "https://ra3xdh.github.io/"
-
+#define TREE "..\..\build\qucs-suite\"
 
 [Setup]
 AppName={# APPNAME}
-AppVerName={# APPVERNAME}
-AppPublisher=The Qucs Team
+AppVersion={# RELEASE}
+AppPublisher=The Qucs-S Team
 AppPublisherURL={# URL}
 AppSupportURL={# URL}
 AppUpdatesURL={# URL}
 DefaultDirName={pf}\Qucs-S
 DefaultGroupName=Qucs-S
 AllowNoIcons=yes
-LicenseFile=.\misc\gpl.rtf
-OutputBaseFilename={# BASENAME}-{# RELEASE}-setup
-Compression=lzma
+LicenseFile={# TREE}\misc\gpl.rtf
+OutputBaseFilename={# APPNAME}-{# RELEASE}-setup
+Compression=lzma2/max
 SolidCompression=yes
 ChangesEnvironment=yes
 UsePreviousAppDir=yes
@@ -53,12 +55,12 @@ WizardStyle=modern
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\..\build\qucs-suite\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{# TREE}\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; Source: "{# TREE}\include\*"; DestDir: "{app}\include"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; Source: "{# TREE}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: ".\misc\*"; DestDir: "{app}\misc"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\..\build\qucs-suite\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\..\build\qucs-suite\share\*"; DestDir: "{app}\share"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{# TREE}\misc\*"; DestDir: "{app}\misc"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{# TREE}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{# TREE}\share\*"; DestDir: "{app}\share"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\Qucs-S Simulator"; Filename: "{app}\bin\qucs-s.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"
@@ -66,7 +68,4 @@ Name: "{group}\Visit the Qucs Web Site"; Filename: "{app}\misc\website.url"
 Name: "{group}\Technical Online Documentation"; Filename: "{app}\misc\docsite.url"
 Name: "{group}\{cm:UninstallProgram,Qucs}"; Filename: "{uninstallexe}"
 Name: "{userdesktop}\Qucs-S"; Filename: "{app}\bin\qucs-s.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"; Tasks: desktopicon
-
-
-
 

@@ -11,6 +11,7 @@ on:
   
 env:
   APP_NAME: "Qucs-S"
+  CI_VERSION: 24.3.99
   EXECUTABLE_NAME: "qucs-s"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
@@ -31,9 +32,15 @@ jobs:
     - name: Read version from file
       id: read_version
       run: |
-        VERSION=$(cat VERSION)
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        if [ "${{github.ref_type}}" == "tag" ]; then
+          VERSION=${{ github.ref_name }}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        else
+          VERSION=${{ env.CI_VERSION }}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        fi
         
     - name: Print version 
       run: echo "Qucs-S version is ${{ env.VERSION }}"
@@ -68,10 +75,13 @@ jobs:
         arch: 'linux_gcc_64'
         install-deps: 'true'
 
-        
     - name: 'Configure CMake'
       run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_INSTALL_PREFIX=/usr -DWITH_QT6=ON
+          cmake -B ${{github.workspace}}/build \
+                -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                -DCMAKE_INSTALL_PREFIX=/usr \
+                -DWITH_QT6=ON \
+                -DCI_VERSION="${{env.VERSION}}"
 
     - name: 'Build'
       # Build your program with the given configuration
@@ -144,10 +154,11 @@ jobs:
           
     - name: 'Configure CMake'
       run: |
-            cmake -B ${{github.workspace}}/build  -G 'Ninja' \
-                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
-                  -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 \
-                  -DCMAKE_OSX_ARCHITECTURES="x86_64"
+        cmake -B ${{github.workspace}}/build  -G 'Ninja' \
+              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
+              -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 \
+              -DCMAKE_OSX_ARCHITECTURES="x86_64" \
+              -DCI_VERSION="${{env.VERSION}}"
 
     - name: 'Build Qucs-s'
       run: |
@@ -238,14 +249,15 @@ jobs:
           
     - name: 'Configure CMake'
       run: |
-        qt-cmake -B ${{github.workspace}}/build  -G 'Ninja' \
-                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
-                  -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
-                  -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+          cmake -B ${{github.workspace}}/build  -G 'Ninja' \
+                -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
+                -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
+                -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+                -DCI_VERSION="${{env.VERSION}}"
 
     - name: 'Build Qucs-s'
       run: |
-        cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
+          cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
     
     #- name: Install
     #  run: | 
@@ -346,7 +358,10 @@ jobs:
 
     - name: Build project with CMake
       run: |
-        cmake.exe -B build/ -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=ON
+        cmake.exe -B build/ -G "MinGW Makefiles" \
+                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                  -DWITH_QT6=ON \
+                  -DCI_VERSION="${{env.VERSION}}"
         cmake.exe --build build/ -j$(nproc) --config ${{env.BUILD_TYPE}}
 
     - name: Make install
@@ -395,6 +410,7 @@ jobs:
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.4
       with:
         path: contrib/InnoSetup/qucs.iss
+        options: /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}"
         
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -405,12 +421,12 @@ jobs:
     - name: Upload exe artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: qucs-s-24.3.0-setup
-        path: contrib\InnoSetup\Output\qucs-s-24.3.0-setup.exe
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}-setup
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}-setup.exe
 
   create-release:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name != 'pull_request'
     needs:
      - setup
      - build-linux-appimage-qt6

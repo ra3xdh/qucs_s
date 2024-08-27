@@ -15,7 +15,14 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file (STRINGS "${qucs-suite_SOURCE_DIR}/VERSION" QUCS_VERSION)
-message(STATUS "Configuring Qucs: VERSION ${QUCS_VERSION}")
+
+if(DEFINED CI_VERSION)
+    set(PROJECT_VERSION "${CI_VERSION}")
+else()
+    set(PROJECT_VERSION "${QUCS_VERSION}")
+endif()
+
+message(STATUS "Configuring Qucs: VERSION ${PROJECT_VERSION}")
 
 set(GIT "")
 if(EXISTS ${CMAKE_SOURCE_DIR}/.git )
