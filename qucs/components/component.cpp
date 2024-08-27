@@ -1027,8 +1027,8 @@ bool Component::load(const QString &_s) {
         tmp = 5; // number of properties for the default MUTX (2 inductors)
     else tmp = counts + 1;    // "+1" because "counts" could be zero
 
-    for (; tmp <= (int) counts / 2; tmp++){
-      Props.append(new Property("p", "", true, " "));
+    for (int k=1; tmp <= (int) counts / 2; tmp++, k++){
+      Props.append(new Property("p" + QString::number(k), "", true, " "));
     }
 
 
