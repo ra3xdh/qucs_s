@@ -603,7 +603,7 @@ void QucsApp::fillLibrariesTreeView ()
 //    newitem->setBackground
     topitems.append (newitem);
 
-    populateLibTreeFromDir(QucsSettings.LibDir, topitems);
+    populateLibTreeFromDir(QucsSettings.LibDir, topitems, true);
 
     // make the user libraries section header
     newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("User Libraries"));
@@ -620,14 +620,14 @@ void QucsApp::fillLibrariesTreeView ()
     newitem->setFont (0, sectionFont);
     topitems.append (newitem);
     if (!ProjName.isEmpty()) {
-        populateLibTreeFromDir(QucsSettings.QucsWorkDir.absolutePath(), topitems);
+        populateLibTreeFromDir(QucsSettings.QucsWorkDir.absolutePath(), topitems, true);
     }
 
     libTreeWidget->insertTopLevelItems(0, topitems);
 }
 
 
-bool QucsApp::populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidgetItem *> &topitems)
+bool QucsApp::populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidgetItem *> &topitems, bool relpath)
 {
     QDir LibDir(LibDirPath);
     QStringList LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
@@ -643,7 +643,7 @@ bool QucsApp::populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidge
 
         ComponentLibrary parsedlibrary;
 
-        int result = parseComponentLibrary (libPath , parsedlibrary);
+        int result = parseComponentLibrary (libPath , parsedlibrary, QUCS_COMP_LIB_FULL, relpath);
         QStringList nameAndFileName;
         nameAndFileName.append (parsedlibrary.name);
         nameAndFileName.append (LibDirPath + *it);
