@@ -219,11 +219,14 @@ inline int makeModelString (QString libPath, QString compname, QString compstrin
 }
 
 
-inline int parseQucsComponentLibrary (QString libPath, ComponentLibrary &library, LIB_PARSE_WHAT what = QUCS_COMP_LIB_FULL)
+inline int parseQucsComponentLibrary (QString libPath, ComponentLibrary &library,
+                                     LIB_PARSE_WHAT what = QUCS_COMP_LIB_FULL, bool relpath = false)
 {
     int Start, End, NameStart, NameEnd;
 
     QString filename = getLibAbsPath(libPath);
+    QFileInfo inf(filename);
+    QString relName = inf.baseName();
 
     QFile file (filename);
 
@@ -309,7 +312,11 @@ inline int parseQucsComponentLibrary (QString libPath, ComponentLibrary &library
         component.definition = LibraryString.mid(Start, End-Start);
 
         // construct model string
-        int result = makeModelString (libPath, component.name, component.definition, component.modelString, library.defaultSymbol);
+        QString libName = libPath;
+        if (relpath) {
+          libName = relName;
+        }
+        int result = makeModelString (libName, component.name, component.definition, component.modelString, library.defaultSymbol);
         if (result != QUCS_COMP_LIB_OK) return result;
 
         library.components.append (component);
@@ -486,9 +493,10 @@ inline int parseSPICEComponentLibrary (QString libPath, ComponentLibrary &librar
     return QUCS_COMP_LIB_OK;
 }
 
-inline int parseComponentLibrary (QString filename, ComponentLibrary &library,  LIB_PARSE_WHAT what = QUCS_COMP_LIB_FULL)
+inline int parseComponentLibrary (QString filename, ComponentLibrary &library,
+                                 LIB_PARSE_WHAT what = QUCS_COMP_LIB_FULL, bool relpath = false)
 {
-    int r = parseQucsComponentLibrary(filename,library,what);
+    int r = parseQucsComponentLibrary(filename,library,what,relpath);
     if (r!=QUCS_COMP_LIB_OK) {
         r = parseSPICEComponentLibrary(filename,library);
     }
