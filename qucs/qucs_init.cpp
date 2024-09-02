@@ -248,7 +248,7 @@ void QucsApp::initActions()
 
   editDelete = new QAction(QIcon((":/bitmaps/svg/editdelete.svg")), tr("&Delete"), this);
 #ifdef __APPLE__
-  editDelete->setShortcut(QKeySequence::Backspace);
+  editDelete->setShortcuts({QKeySequence(Qt::Key_Backspace), QKeySequence(Qt::Key_Delete)});
 #else
   editDelete->setShortcut(QKeySequence::Delete);
 #endif  
