@@ -722,9 +722,13 @@ QString Component::netlist() {
         s += " " + p1->Connection->Name;   // node names
 
     // output all properties
-    for (Property *p2 : Props)
-        if (p2->Name != "Symbol")
-            s += " " + p2->Name + "=\"" + p2->Value + "\"";
+    QStringList no_sim_props;
+    no_sim_props<<"Symbol"<<"UseGlobTemp";
+    for (const auto &p2 : Props) {
+      if (!no_sim_props.contains(p2->Name)) {
+        s += " " + p2->Name + "=\"" + p2->Value + "\"";
+      }
+    }
 
     return s + '\n';
 }
