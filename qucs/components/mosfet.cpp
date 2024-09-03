@@ -154,7 +154,7 @@ QString MOSFET::spice_netlist(bool isXyce)
 
     QStringList spice_incompat,spice_tr;
     spice_incompat<<"Type"<<"Temp"<<"L"<<"W"<<"Ad"<<"As"<<"Pd"<<"Ps"
-                 <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe";
+                 <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe"<<"UseGlobTemp";
                               // spice-incompatible parameters
     if (isXyce) {
         spice_tr<<"Vt0"<<"VtO"; // parameters that need conversion of names
@@ -192,8 +192,13 @@ QString MOSFET::spice_netlist(bool isXyce)
     misc::str2num(getProperty("Ps")->Value,ps,unit,fac);
     ps *= fac;
 
-    s += QString(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7 Temp=%8\n")
-            .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps).arg(getProperty("Temp")->Value);
+    if (getProperty("UseGlobTemp")->Value == "yes") {
+      s += QString(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7\n")
+      .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps);
+    } else {
+      s += QString(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7 Temp=%8\n")
+      .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps).arg(getProperty("Temp")->Value);
+    }
     s += QString(".MODEL MMOD_%1 %2MOS (%3)\n").arg(Name).arg(mosfet_type).arg(par_str);
 
     return s;

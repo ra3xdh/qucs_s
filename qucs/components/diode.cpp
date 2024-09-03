@@ -82,6 +82,8 @@ Diode::Diode()
 	QObject::tr("default area for diode")));
   Props.append(new Property("Symbol", "normal", false,
 	QObject::tr("schematic symbol")+" [normal, US, Schottky, Zener, Varactor]"));
+  Props.append(new Property("UseGlobTemp", "yes", false,
+        QObject::tr("Use global SPICE temperature")+" [yes,no]"));
 
   createSymbol();
   tx = x1+4;
@@ -114,10 +116,10 @@ QString Diode::spice_netlist(bool isXyce)
     if (isXyce) {
         spice_tr<<"Tbv"<<"Tbv1"<<"Trs"<<"Trs1"; // parameters that need conversion of names
         spice_incompat<<"Ttt1"<<"Ttt2"<<"Tm1"<<"Tm2"<<"Cp"<<"Isr"
-                     <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"; // spice-incompatible parameters
+                     <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGlobTemp"; // spice-incompatible parameters
     } else {
         spice_tr<<"Tbv"<<"Tcv";
-        spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol";
+        spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGLobTemp";
     }
 
     QString par_str;
@@ -142,8 +144,13 @@ QString Diode::spice_netlist(bool isXyce)
 
     }
 
-    s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(getProperty("Area")->Value)
-            .arg(getProperty("Temp")->Value);
+    if (getProperty("UseGlobTemp")->Value == "yes") {
+      s += QString(" DMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
+    } else {
+      s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(getProperty("Area")->Value)
+      .arg(getProperty("Temp")->Value);
+    }
+
     if (isXyce) {
         s += QString(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
     } else {

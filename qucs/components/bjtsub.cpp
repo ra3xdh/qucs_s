@@ -119,6 +119,8 @@ Basic_BJT::Basic_BJT()
 	QObject::tr("temperature at which parameters were extracted")));
   Props.append(new Property("Area", "1.0", false,
 	QObject::tr("default area for bipolar transistor")));
+  Props.append(new Property("UseGlobTemp", "yes", false,
+                            QObject::tr("Use global SPICE temperature")+" [yes,no]"));
 
   Name  = "T";
 }
@@ -212,13 +214,18 @@ QString BJTsub::spice_netlist(bool)
     }
 
     QStringList spice_incompat,spice_tr;
-    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"; // spice-incompatible parameters
+    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"<<"UseGlobTemp"; // spice-incompatible parameters
     spice_tr.clear(); // parameters that need convertion of names
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
-    s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
-            .arg(getProperty("Temp")->Value);
+    if (getProperty("UseGlobTemp")->Value == "yes") {
+      s += QString(" QMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
+    } else {
+      s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+      .arg(getProperty("Temp")->Value);
+    }
+
     s += QString(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
 
     return s;
