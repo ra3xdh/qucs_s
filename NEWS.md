@@ -18,6 +18,10 @@
 * Fixed wires selection issue #875
 * Fixed decimal separators processing in attenuator tool #864
 
+## Libraries
+
+* Update Optocoupler.lib #846
+
 ## Localization
 
 * Updated Russian translation #885
