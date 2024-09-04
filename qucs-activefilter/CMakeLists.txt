@@ -6,13 +6,14 @@ SET(QUCS_NAME "qucs-s")
 
 # use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
-message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${QUCS_VERSION}")
 
 if(DEFINED CI_VERSION)
     set(PROJECT_VERSION "${CI_VERSION}")
 else()
     set(PROJECT_VERSION "${QUCS_VERSION}")
 endif()
+
+message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${PROJECT_VERSION}")
 
 set(PROJECT_VENDOR "Qucs team. This program is licensed under the GNU GPL")
 set(PROJECT_COPYRIGHT_YEAR "2014")

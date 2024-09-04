@@ -45,7 +45,7 @@ QString misc::getWindowTitle()
     if (title.endsWith(".0")) {
         title.chop(2);
     }
-#if defined(GIT) && defined(CI_VERSION)
+#if defined(GIT)
     if (title.endsWith(".99")) {
         QString hash = GIT;
         if (!hash.isEmpty()) {
