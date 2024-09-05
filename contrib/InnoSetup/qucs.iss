@@ -47,6 +47,7 @@ SolidCompression=yes
 ChangesEnvironment=yes
 UsePreviousAppDir=yes
 WizardStyle=modern
+SetupIconFile={# TREE}\misc\qucs.ico
 
 ; [Registry]
 ; Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: QUCSDIR; ValueData: "{app}"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
@@ -63,9 +64,9 @@ Source: "{# TREE}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubd
 Source: "{# TREE}\share\*"; DestDir: "{app}\share"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\Qucs-S Simulator"; Filename: "{app}\bin\qucs-s.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"
+Name: "{group}\Qucs-S Simulator"; Filename: "{app}\bin\qucs-s.exe"; IconFilename: "{app}\misc\qucs.ico"; WorkingDir: "{app}\bin"
 Name: "{group}\Visit the Qucs Web Site"; Filename: "{app}\misc\website.url"
 Name: "{group}\Technical Online Documentation"; Filename: "{app}\misc\docsite.url"
 Name: "{group}\{cm:UninstallProgram,Qucs}"; Filename: "{uninstallexe}"
-Name: "{userdesktop}\Qucs-S"; Filename: "{app}\bin\qucs-s.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"; Tasks: desktopicon
+Name: "{userdesktop}\Qucs-S"; Filename: "{app}\bin\qucs-s.exe"; IconFilename: "{app}\misc\qucs.ico"; WorkingDir: "{app}\bin"; Tasks: desktopicon
 
