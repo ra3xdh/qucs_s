@@ -17,6 +17,8 @@
 * Fixed right scroll issue #884
 * Fixed wires selection issue #875
 * Fixed decimal separators processing in attenuator tool #864
+* Fixed shortcut conflict #930
+* Schematic version check checks only major version #931
 
 ## Libraries
 
