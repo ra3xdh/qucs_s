@@ -705,8 +705,6 @@ bool VersionTriplet::operator==(const VersionTriplet& v2) {
     return false;
   if (this->minor != v2.minor)
     return false;
-  if (this->patch != v2.patch)
-    return false;
   return true;
 }
 
@@ -721,11 +719,6 @@ bool VersionTriplet::operator>(const VersionTriplet& v2) {
   if (this->minor > v2.minor)
     return true;
 
-  if (this->patch < v2.patch)
-    return false;
-  if (this->patch > v2.patch)
-    return true;
-
   return false;
 }
 
@@ -738,11 +731,6 @@ bool VersionTriplet::operator<(const VersionTriplet& v2) {
   if (this->minor > v2.minor)
     return false;
   if (this->minor < v2.minor)
-    return true;
-
-  if (this->patch > v2.patch)
-    return false;
-  if (this->patch < v2.patch)
     return true;
 
   return false;
