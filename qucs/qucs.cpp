@@ -265,7 +265,7 @@ void QucsApp::initView()
   // set application icon
   // APPLE sets the QApplication icon with Info.plist
 #ifndef __APPLE__
-  setWindowIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
+  //setWindowIcon (QPixmap(QString(":/bitmaps/hicolor/scalable/apps/qucs.svg")));
 #else
   // setUnifiedTitleAndToolBarOnMac(true);
   setStyleSheet("QToolButton { padding: 0px; }");

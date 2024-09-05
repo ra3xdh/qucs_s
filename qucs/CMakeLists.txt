@@ -257,7 +257,7 @@ IF(APPLE)
     #SET(RESOURCES_SRCS ${RESOURCES_SRCS} ${LANG_SRCS})
 ENDIF(APPLE)
 
-
+set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/qucs_icon.rc")
 #
 #  CMake's way of creating an executable
 #
@@ -265,7 +265,9 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
   ${QUCS_HDRS}
   ${QUCS_SRCS}
   ${QUCS_MOC_SRCS}
-  ${RESOURCES_SRCS} )
+  ${RESOURCES_SRCS}
+  ${app_icon_resource_windows}
+ )
 
 #
 # Tell CMake which libraries we need to link our executable against.
