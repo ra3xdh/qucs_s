@@ -530,6 +530,11 @@ void QucsApp::initActions()
   callPwrComb->setWhatsThis(tr("Power combining\n\nStarts power combining calculation program"));
   connect(callPwrComb, SIGNAL(triggered()), SLOT(slotCallPwrComb()));
 
+  callSPAR_Viewer = new QAction(tr("S-parameter Viewer"), this);
+  callSPAR_Viewer->setStatusTip(tr("Starts S-parameter viewer"));
+  callSPAR_Viewer->setWhatsThis(tr("S-parameter Viewer\n\nStarts S-parameter viewer"));
+  connect(callSPAR_Viewer, SIGNAL(triggered()), SLOT(slotCallSPAR_Viewer()));
+
   callConverter = new QAction(tr("Data files converter"), this);
   callConverter->setShortcut(tr("Ctrl+8"));
   callConverter->setStatusTip(tr("Convert data file"));
@@ -766,6 +771,7 @@ void QucsApp::initMenuBar()
   toolMenu->addAction(callPwrComb);
   toolMenu->addAction(callConverter);
   toolMenu->addAction(callRFLayout);
+  toolMenu->addAction(callSPAR_Viewer);
   toolMenu->addSeparator();
 
   cmMenu = new QMenu(tr("Compact modelling"));

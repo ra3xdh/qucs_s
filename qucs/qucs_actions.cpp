@@ -867,6 +867,12 @@ void QucsApp::slotCallPwrComb()
   launchTool(QUCS_NAME "powercombining", "power combining calculation",QStringList());
 }
 
+void QucsApp::slotCallSPAR_Viewer()
+{
+  launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer",QStringList());
+}
+
+
 /*!
  * \brief launch an external application passing arguments
  *
