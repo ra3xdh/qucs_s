@@ -121,6 +121,8 @@ Basic_MOSFET::Basic_MOSFET()
 	QObject::tr("simulation temperature in degree Celsius")));
   Props.append(new Property("Tnom", "26.85", false,
 	QObject::tr("parameter measurement temperature")));
+  Props.append(new Property("UseGlobTemp", "yes", false,
+        QObject::tr("Use global SPICE temperature")+" [yes,no]"));
 
   Name  = "T";
   SpiceModel = "M";
@@ -142,8 +144,8 @@ MOSFET_sub::MOSFET_sub()
 Component* MOSFET_sub::newOne()
 {
   MOSFET_sub* p = new MOSFET_sub();
-  p->Props.first()->Value = Props.first()->Value;
-  p->Props.next()->Value = Props.next()->Value;
+  p->Props.at(0)->Value = Props.at(0)->Value;
+  p->Props.at(1)->Value = Props.at(1)->Value;
   p->recreate(0);
   return p;
 }
@@ -162,7 +164,7 @@ QString MOSFET_sub::spice_netlist(bool isXyce)
 
     QStringList spice_incompat,spice_tr;
     spice_incompat<<"Type"<<"Temp"<<"L"<<"W"<<"Ad"<<"As"<<"Pd"<<"Ps"
-                 <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe";
+                 <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe"<<"UseGlobTemp";
                               // spice-incompatible parameters
     if (isXyce) {
         spice_tr<<"Vt0"<<"VtO"; // parameters that need conversion of names
@@ -199,8 +201,13 @@ QString MOSFET_sub::spice_netlist(bool isXyce)
     misc::str2num(getProperty("Ps")->Value,ps,unit,fac);
     ps *= fac;
 
-    s += QString(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7 Temp=%8\n")
-            .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps).arg(getProperty("Temp")->Value);
+    if (getProperty("UseGlobTemp")->Value == "yes") {
+      s += QString(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7\n")
+      .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps);
+    } else {
+      s += QString(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7 Temp=%8\n")
+      .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps).arg(getProperty("Temp")->Value);
+    }
     s += QString(".MODEL MMOD_%1 %2MOS (%3)\n").arg(Name).arg(mosfet_type).arg(par_str);
 
     return s;
@@ -225,8 +232,8 @@ Element* MOSFET_sub::info_p(QString& Name,
 
   if(getNewOne) {
     MOSFET_sub* p = new MOSFET_sub();
-    p->Props.first()->Value = "pfet";
-    p->Props.next()->Value = "-1.0 V";
+    p->Props.at(0)->Value = "pfet";
+    p->Props.at(1)->Value = "-1.0 V";
     p->recreate(0);
     return p;
   }
@@ -242,8 +249,7 @@ Element* MOSFET_sub::info_depl(QString& Name,
 
   if(getNewOne) {
     MOSFET_sub* p = new MOSFET_sub();
-    p->Props.first();
-    p->Props.next()->Value = "-1.0 V";
+    p->Props.at(1)->Value = "-1.0 V";
     p->recreate(0);
     return p;
   }
@@ -267,7 +273,7 @@ void MOSFET_sub::createSymbol()
 
   Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkBlue,2)));
 
-  if(Props.first()->Value == "nfet") {
+  if(Props.at(0)->Value == "nfet") {
     Lines.append(new qucs::Line( -9,  0, -4, -5,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( -9,  0, -4,  5,QPen(Qt::darkBlue,2)));
   }
@@ -276,7 +282,7 @@ void MOSFET_sub::createSymbol()
     Lines.append(new qucs::Line( -1,  0, -6,  5,QPen(Qt::darkBlue,2)));
   }
 
-  if((Props.next()->Value.trimmed().at(0) == '-') ==
+  if((Props.at(1)->Value.trimmed().at(0) == '-') ==
      (Props.first()->Value == "nfet"))
     Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkBlue,2)));
   else

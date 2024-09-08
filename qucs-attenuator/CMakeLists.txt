@@ -6,9 +6,14 @@ SET(QUCS_NAME "qucs-s")
 
 # use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
-message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${QUCS_VERSION}")
 
-set(PROJECT_VERSION "${QUCS_VERSION}")
+if(DEFINED CI_VERSION)
+    set(PROJECT_VERSION "${CI_VERSION}")
+else()
+    set(PROJECT_VERSION "${QUCS_VERSION}")
+endif()
+
+message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${PROJECT_VERSION}")
 
 set(PROJECT_VENDOR "Qucs team. This program is licensed under the GNU GPL")
 set(PROJECT_COPYRIGHT_YEAR "2014")
@@ -32,6 +37,7 @@ if(WITH_QT6)
 else()
     set(QT_VERSION_MAJOR 5)
 endif()
+
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets)
 include_directories(
       ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
@@ -39,16 +45,37 @@ include_directories(
       ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
       )
 
+set(QT_VERSION ${Qt${QT_VERSION_MAJOR}Core_VERSION})
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-if (MSVC)
-  add_compile_options(/Zc:__cplusplus /permissive- /MP /Zc:preprocessor)
+if (${QT_VERSION} VERSION_LESS "6.7.0")
+    set(CMAKE_CXX_STANDARD 17)
 else()
-  # additional warnings
-  add_compile_options(-Wall -Wextra)
+    set(CMAKE_CXX_STANDARD 20)
 endif()
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+        add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /Od /vmg)
+        add_compile_options(/wd4244 /wd4267 /wd4312)
+    else()
+        add_compile_options(-Wall -Wextra -O0 -g)
+        if (CMAKE_CXX_COMPILER_ID MATCHES "^AppleClang$|^Clang$")
+            add_compile_options(-Wno-ignored-attributes)
+        endif()
+    endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+        string(REGEX REPLACE "/W3" "/w" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+        add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /vmg)
+    else()
+        add_compile_options(-w)
+    endif()
+endif()
+
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources

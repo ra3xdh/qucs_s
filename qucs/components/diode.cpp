@@ -82,6 +82,8 @@ Diode::Diode()
 	QObject::tr("default area for diode")));
   Props.append(new Property("Symbol", "normal", false,
 	QObject::tr("schematic symbol")+" [normal, US, Schottky, Zener, Varactor]"));
+  Props.append(new Property("UseGlobTemp", "yes", false,
+        QObject::tr("Use global SPICE temperature")+" [yes,no]"));
 
   createSymbol();
   tx = x1+4;
@@ -114,10 +116,10 @@ QString Diode::spice_netlist(bool isXyce)
     if (isXyce) {
         spice_tr<<"Tbv"<<"Tbv1"<<"Trs"<<"Trs1"; // parameters that need conversion of names
         spice_incompat<<"Ttt1"<<"Ttt2"<<"Tm1"<<"Tm2"<<"Cp"<<"Isr"
-                     <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"; // spice-incompatible parameters
+                     <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGlobTemp"; // spice-incompatible parameters
     } else {
         spice_tr<<"Tbv"<<"Tcv";
-        spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol";
+        spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGLobTemp";
     }
 
     QString par_str;
@@ -142,8 +144,13 @@ QString Diode::spice_netlist(bool isXyce)
 
     }
 
-    s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(getProperty("Area")->Value)
-            .arg(getProperty("Temp")->Value);
+    if (getProperty("UseGlobTemp")->Value == "yes") {
+      s += QString(" DMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
+    } else {
+      s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(getProperty("Area")->Value)
+      .arg(getProperty("Temp")->Value);
+    }
+
     if (isXyce) {
         s += QString(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
     } else {
@@ -167,12 +174,12 @@ Element* Diode::info(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 void Diode::createSymbol()
 {
-  if(Props.getLast()->Value.at(0) == 'V') {
+  if(Props.back()->Value.at(0) == 'V') {
     Lines.append(new qucs::Line(-30,  0, -9,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( -6,  0, 30,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( -9, -9, -9,  9,QPen(Qt::darkBlue,2)));
   }
-  else if(Props.getLast()->Value.at(0) == 'U') {
+  else if(Props.back()->Value.at(0) == 'U') {
     Lines.append(new qucs::Line(-30,  0, -6,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line(  6,  0, 30,  0,QPen(Qt::darkBlue,2)));
   }
@@ -184,11 +191,11 @@ void Diode::createSymbol()
   Lines.append(new qucs::Line( -6,  0,  6, -9,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( -6,  0,  6,  9,QPen(Qt::darkBlue,2)));
 
-  if(Props.getLast()->Value.at(0) == 'S') {
+  if(Props.back()->Value.at(0) == 'S') {
     Lines.append(new qucs::Line( -6, -9,-12,-12,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( -6,  9,  0, 12,QPen(Qt::darkBlue,2)));
   }
-  else if(Props.getLast()->Value.at(0) == 'Z') {
+  else if(Props.back()->Value.at(0) == 'Z') {
     Lines.append(new qucs::Line( -6, 9, -1, 9,QPen(Qt::darkBlue,2)));
   }
 

@@ -1,3 +1,38 @@
+# Qucs-S 24.3.1
+
+## Packaging
+
+* Stable release packages are now generated autmatically using Github CI #871
+
+## QucsatorRF
+
+* QucsatorRF updated to v1.0.2; See the release notes
+
+## Bugfixes and general improvements
+
+* Improved temperature sweep using unified devices #925
+* Fixed library manger always substitute absoute path #923
+* Fixed stars/circles/arrows plots rendering #892
+* Fixed library devices symbol text rendering #873
+* Fixed touchstones files export from GUI #910
+* Fixed mathicng circuit tool issues #905
+* Implemented SPICE entry for DC block and DC feed #889
+* Fixed Octave start #883
+* Fixed right scroll issue #884
+* Fixed wires selection issue #875
+* Fixed decimal separators processing in attenuator tool #864
+* Fixed shortcut conflict #930
+* Schematic version check checks only major version #931
+
+## Libraries
+
+* Update Optocoupler.lib #846
+
+## Localization
+
+* Updated Russian translation #885
+
+
 # Qucs-S 24.3.0
 
 ## New features

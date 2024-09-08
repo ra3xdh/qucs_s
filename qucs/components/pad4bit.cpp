@@ -29,7 +29,7 @@ pad4bit::pad4bit()
 Component * pad4bit::newOne()
 {
   pad4bit * p = new pad4bit();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

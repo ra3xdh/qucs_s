@@ -88,7 +88,6 @@ public:
 
   void PostPaintEvent(PE pe, int x1=0, int y1=0, int x2=0, int y2=0, int a=0, int b=0,bool PaintOnViewport=false);
 
-  float textCorr();
   bool sizeOfFrame(int&, int&);
 
   /**
@@ -402,7 +401,7 @@ public:
 
   Element* selectElement(float, float, bool, int *index=0);
   void     deselectElements(Element*) const;
-  int      selectElements(int, int, int, int, bool, bool) const;
+  int      selectElements(const QRect&, bool, bool) const;
   void     selectMarkers() const;
   void     newMovingWires(Q3PtrList<Element>*, Node*, int) const;
   int      copySelectedElements(Q3PtrList<Element>*);

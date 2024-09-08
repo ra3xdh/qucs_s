@@ -1,17 +1,15 @@
-<Qucs Library 2.1.0 "Optocoupler">
+<Qucs Library 24.3.0 "Optocoupler">
 
 <Component 4N25>
   <Description>
-4N25 BJT optocoupler 
+4N25 BJT optocoupler
   </Description>
   <Model>
 .Def:Optocoupler_4N25 _net0 _net1 _net2 _net3
 Sub:X1 _net0 _net1 _net2 _net3 gnd Type="n4N25_cir"
 .Def:End
   </Model>
-  <ModelIncludes "4N25.cir.lst">
-  <Spice>* Qucs 2.1.0  Optocoupler_4N25.sch
-
+  <Spice>
 * OPTO-ISO from User Library in TURBO SPICE
 * Orig 8/17/99
 * Modified TMH 2/15/23
@@ -57,26 +55,24 @@ X1 _net0 _net1 _net2 _net3 4N25
     <Line -30 -6 0 -24 #000080 2 1>
     <Line 30 -15 0 -15 #000080 2 1>
     <Line -50 20 100 0 #808080 2 1>
-    <.PortSym -30 -30 1 0>
-    <.PortSym -30 30 2 0>
-    <.PortSym 30 -30 3 180>
-    <.PortSym 30 30 4 180>
+    <.PortSym -30 -30 1 0 P1>
+    <.PortSym -30 30 2 0 P2>
+    <.PortSym 30 -30 3 180 P3>
+    <.PortSym 30 30 4 180 P4>
     <.ID 70 -16 X>
   </Symbol>
 </Component>
 
 <Component 4N33>
   <Description>
-4N33 Darlington optocoupler
+4N33 Dralington optocoupler
   </Description>
   <Model>
 .Def:Optocoupler_4N33 _net3 _net4 _net2 _net0 _net1
 Sub:X2 _net0 _net1 _net2 _net3 _net4 gnd Type="n4n33_cir"
 .Def:End
   </Model>
-  <ModelIncludes "4n33.cir.lst">
-  <Spice>* Qucs 2.1.0  Optocoupler_4N33.sch
-
+  <Spice>
 .subckt 4n33_MC 4 5 3 1 2
 * 4 -> LED ANODE   5 -> LED CATHODE
 * 3 -> EMITTER     1 -> COLLECTOR   2 -> BASE
@@ -168,26 +164,150 @@ X2 _net0 _net1 _net2 _net3 _net4 4n33_MC
     <Line 65 20 0 -40 #000080 2 1>
     <Line -45 20 110 0 #000080 2 1>
     <Line -45 -20 110 0 #000080 2 1>
-    <.PortSym -30 -30 4 180>
-    <.PortSym -30 30 5 0>
-    <.PortSym 50 30 3 180>
-    <.PortSym 50 -30 1 0>
-    <.PortSym 20 -30 2 0>
+    <.PortSym -30 -30 4 180 P4>
+    <.PortSym -30 30 5 0 P5>
+    <.PortSym 50 30 3 180 P3>
+    <.PortSym 50 -30 1 0 P1>
+    <.PortSym 20 -30 2 0 P2>
+  </Symbol>
+</Component>
+
+<Component ACPLK30T>
+  <Description>
+Automotive MOSFET driver photovoltaic optocoupler
+  </Description>
+  <Model>
+.Def:Optocoupler_ACPLK30T _net0 _net1 _net2 _net3
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="ACPLK30T_cir"
+.Def:End
+  </Model>
+  <Spice>
+* Copyright 2014 Avago Technologies
+* ACPL-K30T Spice Macromodel
+* Modified 2/22/23
+* ACPL-K30T.cir changed to ACPLK30T.cir to remove need for LTspice compat
+* Dietmar Warning, add NR=2 to .model PDC 
+* https://sourceforge.net/p/ngspice/discussion/120973/thread/8c874eb3ec/
+*
+.subckt ACPLK30T AN CA VOUT+ VOUT-
+*E1 N002 CA N014 N016 {CTR} ; removed need for LTspice compat
+E1 N002 CA N014 N016 0.083
+XX1 AN CA N016 N014 vbu
+XX2 N002 CA N017 N015 pdnoc
+XX3 N002 CA N008 N017 pdnoc
+XX4 N002 CA N015 N013 pdnoc
+XX5 N002 CA N013 N012 pdnoc
+XX6 N002 CA N012 N010 pdnoc
+XX7 N002 CA N010 N007 pdnoc
+XX8 N002 CA N007 N004 pdnoc
+XX9 N002 CA N004 N003 pdnoc
+XX10 N002 CA N003 P001 pdnoc
+XX11 N002 CA P002 P003 pdnoc
+XX12 N002 CA P003 N001 pdnoc
+XX13 N002 CA P001 P002 pdnoc
+E2 N011 VOUT- N008 N001 1
+R2 N009 N011 1k
+D1 VOUT- N001 D
+D2 N008 VOUT+ D
+E3 N009 N006 N008 VOUT- 1
+Q1 VOUT+ N006 N005 0 NPN
+R3 VOUT- N005 3k
+C1 VOUT- N009 37n
+C2 VOUT- VOUT+ 100p
+*.param CTR=0.083 ; removed need for LTspice compat
+.ends ACPLK30T
+
+.subckt vbu AN CA LOPN LOPP
+RSERIES AN 5 5
+DELECT 5 CA VBUNOR
+ELED 6 LOPN 5 CA 1
+DOPTIC 6 8 VBUNORC
+FPHOTO LOPN 3 VSENSE 1
+VSENSE 8 LOPN 0
+RL 3 LOPN 0.1
+EOUT LOPP LOPN 3 LOPN 60
+VSIM LOPN CA 0
+Rnl 6 N001 5k
+Vnl N002 LOPN 0
+Fnl LOPN LOPN Vnl 1
+Dsw N001 N002 DSW
+.model DSW D Is=1e-4
+.model VBUNOR D IS=330E-21 N=1.5 XTI=3 EG=1.52 BV=10.38 IBV=100u CJO=60p VJ=.75 M=.3333 FC=.5 TT=20n
+.model VBUNORC D IS=330E-21 N=1.5 XTI=3 EG=1.52 BV=10.38 IBV=100u CJO=0 VJ=.75 M=.3333 FC=.5 TT=0
+.ends vbu
+
+.subckt pdnoc LOPP LOPN AN CA
+D1 AN CA PDC
+G1 CA AN LOPP LOPN 0.0010
+.model PDC D IS=1E-14 N=1.5 CJO=10p M=0.95 VJ=0.75 ISR=100.0E-12 BV=100 TT=5E-9 NR=2; NR=2 added for ngspice
+.ends pdnoc
+
+.model D D
+
+.model NPN NPN
+.model PNP PNP
+
+
+
+
+
+.SUBCKT Optocoupler_ACPLK30T  gnd _net0 _net1 _net2 _net3 
+X1 _net0 _net1 _net2 _net3 ACPLK30T
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -40 -96 U>
+    <.PortSym -60 -30 1 0 AN>
+    <.PortSym -60 30 2 0 CA>
+    <.PortSym 80 -30 3 180 VOUT_P>
+    <.PortSym 80 30 4 180 VOUT_N>
+    <Line -30 -30 -30 0 #000080 2 1>
+    <Line -60 30 30 0 #000080 2 1>
+    <Line -40 -10 20 0 #000080 2 1>
+    <Line -40 -10 10 20 #000080 2 1>
+    <Line -40 10 20 0 #000080 2 1>
+    <Line -30 30 0 -20 #000080 2 1>
+    <Line -30 -30 0 20 #000080 2 1>
+    <Line -30 10 10 -20 #000080 2 1>
+    <Line 0 0 0 0 #000080 0 1>
+    <Line 5 -5 -5 10 #000080 2 1>
+    <Line -5 -5 10 0 #000080 2 1>
+    <Line -15 5 20 -10 #000080 2 1>
+    <Rectangle -50 -50 120 100 #000080 2 1 #c0c0c0 1 0>
+    <Line 20 -30 60 0 #000080 2 1>
+    <Line 20 -25 0 -5 #000080 2 1>
+    <Line 20 30 0 -10 #000080 2 1>
+    <Line 10 -25 20 0 #000080 2 1>
+    <Line 10 -15 20 0 #000080 2 1>
+    <Line 15 -10 10 0 #000080 2 1>
+    <Line 10 -5 20 0 #000080 2 1>
+    <Line 15 0 10 0 #000080 2 1>
+    <Line 10 5 20 0 #000080 2 1>
+    <Line 15 10 10 0 #000080 2 1>
+    <Line 10 15 20 0 #000080 2 1>
+    <Line 15 20 10 0 #000080 2 1>
+    <Line 15 -20 10 0 #000080 2 1>
+    <Line 80 30 -60 0 #000080 2 1>
+    <Rectangle 40 -20 20 40 #000080 2 1 #c0c0c0 1 0>
+    <Line 50 -20 0 -10 #000080 2 1>
+    <Line 50 30 0 -10 #000080 2 1>
+    <Text 46 16 5 #000080 90 "TURN OFF">
+    <Line 50 -35 0 -10 #000080 2 1>
+    <Line 45 -40 10 0 #000080 2 1>
+    <Line 45 40 10 0 #000080 2 1>
   </Symbol>
 </Component>
 
 <Component MOC223>
   <Description>
-MOC223 Darlington optocoupler
+MOC223 Dralington optocoupler
   </Description>
   <Model>
 .Def:Optocoupler_MOC223 _net0 _net2 _net1 _net3 _net4
 Sub:X2 _net3 _net4 _net1 _net0 _net2 gnd Type="moc223_cir"
 .Def:End
   </Model>
-  <ModelIncludes "moc223.cir.lst">
-  <Spice>* Qucs 2.1.0  Optocoupler_MOC223.sch
-
+  <Spice>
 .subckt moc223_MC 4 5 3 1 2
 
 
@@ -286,11 +406,11 @@ X2 _net3 _net4 _net1 _net0 _net2 moc223_MC
     <Line 65 20 0 -40 #000080 2 1>
     <Line -45 20 110 0 #000080 2 1>
     <Line -45 -20 110 0 #000080 2 1>
-    <.PortSym -30 -30 4 180>
-    <.PortSym -30 30 5 0>
-    <.PortSym 50 30 3 180>
-    <.PortSym 50 -30 1 0>
-    <.PortSym 20 -30 2 0>
+    <.PortSym -30 -30 4 180 P4>
+    <.PortSym -30 30 5 0 P5>
+    <.PortSym 50 30 3 180 P3>
+    <.PortSym 50 -30 1 0 P1>
+    <.PortSym 20 -30 2 0 P2>
   </Symbol>
 </Component>
 
@@ -304,9 +424,7 @@ model provided by Helmut Sennewald  11/23/2008
 Sub:X1 _net0 _net3 _net1 _net2 gnd Type="MOC3082_sub_cir"
 .Def:End
   </Model>
-  <ModelIncludes "MOC3082_sub.cir.lst">
-  <Spice>* Qucs 2.1.0  Optocoupler_MOC3082.sch
-
+  <Spice>
 * OPTO TRIAC With Zero Crossing Switching
 * Helmut Sennewald  11/23/2008
 * 04/12/2009, change in B-sources: V(ctrl10) -> V(ctrl10,4)
@@ -358,10 +476,10 @@ X1 _net0 _net3 _net1 _net2 moc3082_sub
   </Spice>
   <Symbol>
     <.ID -40 -96 X>
-    <.PortSym -60 -30 1 0>
-    <.PortSym -60 30 2 0>
-    <.PortSym 80 -30 3 180>
-    <.PortSym 80 30 4 180>
+    <.PortSym -60 -30 1 0 P1>
+    <.PortSym -60 30 2 0 P2>
+    <.PortSym 80 -30 3 180 P3>
+    <.PortSym 80 30 4 180 P4>
     <Line -30 -30 -30 0 #000080 2 1>
     <Line -60 30 30 0 #000080 2 1>
     <Line -40 -10 20 0 #000080 2 1>

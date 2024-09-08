@@ -60,7 +60,7 @@ AboutDialog::AboutDialog(QWidget *parent)
      "Sergey Ryzhov - " + tr("Digital simulation, general improvements"),
      "Andrey Kalmykov - " + tr("Schematic rendering engine, refactoring"),
      "Andr&#xe9;s Mart&#xed;nez Mera - " + tr("RF design tools"),
-     "Muhammet Şükrü Demir - " + tr("CI setup, build system"),
+     "Muhammet Şükrü Demir - " + tr("CI setup, build system, MacOS support"),
      "Iwbnwif Yiw - " + tr("Refactoring, general improvements"),
      "Maria Dubinina - " + tr("testing, general bugfixes")
   }};
@@ -124,7 +124,7 @@ AboutDialog::AboutDialog(QWidget *parent)
   //all->setSpacing(0);
 
   QLabel *iconLabel = new QLabel();
-  iconLabel->setPixmap(QPixmap(QString(":/bitmaps/hicolor/128x128/apps/qucs.png")));
+  iconLabel->setPixmap(QPixmap(QString(":/bitmaps/hicolor/scalable/apps/qucs.svg")));
 
   QWidget *hbox = new QWidget();
   QHBoxLayout *hl = new QHBoxLayout(hbox);

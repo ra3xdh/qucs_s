@@ -153,15 +153,17 @@ void MutualX::createSymbol()
     int dCoils = abs(oldCoils - Num);          // how many coils were added/removed?
 
     if (oldCoils>Num) { // reduce coils number
-      for(int i = 0; i < dCoils; i++)
-        Props.remove(Num+1); // remove excess coils
+      for(int i = 0; i < dCoils; i++){
+        Props.removeAt(Num+1); // remove excess coils
+      }
+
       // remove only the no longer valid coupling coefficients, leave the
       //   ones related to existing coils untouched
       for(int i = 1,state=1; i < oldCoils; i++)
         for(int j = i+1; j <= oldCoils; j++,state++) {
             if ((i>Num)||(j>Num)) {
-                Props.remove(Num + state);
-                state--;
+              Props.removeAt(Num + state);
+              state--;
             }
         }
 
@@ -186,11 +188,12 @@ void MutualX::createSymbol()
   // in any case rewrite properties Name and Description
   // (when loading a component, added properties have a default name)
   // adjust coils names
-  Property * p1 = Props.at(1);
+  auto p1 = Props.begin();
+  ++p1;
   for(int i = 1; i <= Num; i++) {
-    p1->Name = "L"+QString::number(i);
-    p1->Description = QObject::tr("inductance of coil") + " " + QString::number(i);
-    p1 = Props.next();
+    (*p1)->Name = "L"+QString::number(i);
+    (*p1)->Description = QObject::tr("inductance of coil") + " " + QString::number(i);
+    p1++;
   }
   // adjust coupling coeffs names
   for(int i = 1,state=1; i < Num; i++) 

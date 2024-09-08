@@ -293,27 +293,27 @@ std::pair<double,double> Graph::findSample(std::vector<double>& VarPos) const
 
 // -----------------------------------------------------------------------
 // meaning of the values in a graph "Points" list
-#define STROKEEND   -2
-#define BRANCHEND   -10
-#define GRAPHEND    -100
+//#define STROKEEND   -2
+//#define BRANCHEND   -10
+//#define GRAPHEND    -100
 // -----------------------------------------------------------------------
 // screen points pseudo iterator implementation.
 void Graph::ScrPt::setStrokeEnd()
 {
-  ScrX = STROKEEND;
+  type = STROKEEND;
 }
 void Graph::ScrPt::setBranchEnd()
 {
-  ScrX = BRANCHEND;
+  type = BRANCHEND;
 }
 void Graph::ScrPt::setGraphEnd()
 {
-  ScrX = GRAPHEND;
+  type = GRAPHEND;
 }
-bool Graph::ScrPt::isPt() const{return ScrX>=0.;}
-bool Graph::ScrPt::isStrokeEnd() const{return ScrX<=STROKEEND;}
-bool Graph::ScrPt::isBranchEnd() const{return ScrX<=BRANCHEND;}
-bool Graph::ScrPt::isGraphEnd() const{return ScrX<=GRAPHEND;}
+bool Graph::ScrPt::isPt() const{return (ScrX >= 0. && type == DataPt);}
+bool Graph::ScrPt::isStrokeEnd() const{return (type >= STROKEEND);}
+bool Graph::ScrPt::isBranchEnd() const{return (type >= BRANCHEND);}
+bool Graph::ScrPt::isGraphEnd() const{return (type >= GRAPHEND);}
 
 /*!
  * set screen coordinate for graph sampling point
@@ -324,6 +324,8 @@ bool Graph::ScrPt::isGraphEnd() const{return ScrX<=GRAPHEND;}
 void Graph::ScrPt::setScrX(float x) {
     if (x < 0) {
         qDebug() << "dangerous: negative screen coordinate" << x;
+    } else {
+      type = DataPt;
     }
     if (ScrX < 0) {
         qDebug() << "dangerous: (maybe) overwriting control token" << x;
@@ -334,6 +336,8 @@ void Graph::ScrPt::setScrX(float x) {
 void Graph::ScrPt::setScrY(float y) {
     if (y < 0) { // need to investigate...
         qDebug() << "setting negative screen coordinate" << y << "at" << ScrY;
+    } else {
+      type = DataPt;
     }
     ScrY = y;
 }

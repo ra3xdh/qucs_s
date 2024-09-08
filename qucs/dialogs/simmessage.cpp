@@ -611,17 +611,25 @@ void SimMessage::startSimulator()
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   if (Program.endsWith(QString("asco") + executableSuffix)) {
 #ifdef Q_OS_UNIX
-    auto tmpdir = std::filesystem::path(QucsSettings.tempFilesDir.absolutePath().toStdString());
-    tmpdir /= "qucs_ascodir"; // ASCO doesn't accept qucsator_rf name;
-    std::filesystem::create_directory(tmpdir); // qucsator is hardcoded inside ASCO
-    auto tmp_qucsator = tmpdir / "qucsator";
-    auto target = QFileInfo(QucsSettings.Qucsator).absoluteFilePath().toStdString();
-    if (std::filesystem::exists(tmp_qucsator)){
-      std::filesystem::remove(tmp_qucsator);
+    QDir tempDir(QucsSettings.tempFilesDir.absolutePath());
+    QString tmpdir = tempDir.filePath("qucs_ascodir"); // ASCO doesn't accept qucsator_rf name
+    if (!QDir(tmpdir).exists()) {
+        QDir().mkdir(tmpdir);
     }
-    std::filesystem::create_symlink(std::filesystem::path(target), tmp_qucsator);
-    //env.insert("ASCO_SIM_PATH",QucsSettings.Qucsator);
-    env.insert("PATH", env.value("PATH") + sep + QString::fromStdString(tmpdir.string()));
+
+    // Creating symlink
+    QString tmp_qucsator = QDir(tmpdir).filePath("qucsator");
+    QString target = QFileInfo(QucsSettings.Qucsator).absoluteFilePath();
+
+    if (QFile::exists(tmp_qucsator)) {
+        QFile::remove(tmp_qucsator);
+    }
+    QFile::link(target, tmp_qucsator);
+
+    // Modify environment variable
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    QString sep = ":";
+    env.insert("PATH", env.value("PATH") + sep + tmpdir);
 #endif
 // Only patched version of ASCO works on Windows,
 // because qucsator name is hardcoded inside ASCO sources

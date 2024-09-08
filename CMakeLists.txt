@@ -15,7 +15,14 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file (STRINGS "${qucs-suite_SOURCE_DIR}/VERSION" QUCS_VERSION)
-message(STATUS "Configuring Qucs: VERSION ${QUCS_VERSION}")
+
+if(DEFINED CI_VERSION)
+    set(PROJECT_VERSION "${CI_VERSION}")
+else()
+    set(PROJECT_VERSION "${QUCS_VERSION}")
+endif()
+
+message(STATUS "Configuring Qucs: VERSION ${PROJECT_VERSION}")
 
 set(GIT "")
 if(EXISTS ${CMAKE_SOURCE_DIR}/.git )
@@ -37,8 +44,11 @@ if(WITH_QT6)
 else()
     set(QT_VERSION_MAJOR 5)
 endif()
+
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets LinguistTools)
-message(STATUS "QT Major Version: " ${QT_VERSION_MAJOR})
+set(QT_VERSION ${Qt${QT_VERSION_MAJOR}Core_VERSION})
+
+message(STATUS "Qt Version: " ${QT_VERSION})
 
 add_definitions(${QT_DEFINITIONS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)

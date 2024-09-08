@@ -37,7 +37,7 @@ BJT::BJT()
 Component* BJT::newOne()
 {
   BJT* p = new BJT();
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0);
   return p;
 }
@@ -55,13 +55,17 @@ QString BJT::spice_netlist(bool)
     }
 
     QStringList spice_incompat,spice_tr;
-    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"; // spice-incompatible parameters
+    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"<<"UseGlobTemp"; // spice-incompatible parameters
     spice_tr.clear(); // parameters that need conversion of names
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
-    s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
-            .arg(getProperty("Temp")->Value);
+    if (getProperty("UseGlobTemp")->Value == "yes") {
+      s += QString(" QMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
+    } else {
+      s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+      .arg(getProperty("Temp")->Value);
+    }
     s += QString(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
 
     return s;
@@ -85,7 +89,7 @@ Element* BJT::info_pnp(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     BJT* p = new BJT();
-    p->Props.getFirst()->Value = "pnp";
+    p->Props.at(0)->Value = "pnp";
     p->recreate(0);
     return p;
   }
@@ -102,7 +106,7 @@ void BJT::createSymbol()
   Lines.append(new qucs::Line(-10,  5,  0, 15,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  0, 15,  0, 30,QPen(Qt::darkBlue,2)));
 
-  if(Props.getFirst()->Value == "npn") {
+  if(Props.front()->Value == "npn") {
     Lines.append(new qucs::Line( -6, 15,  0, 15,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line(  0,  9,  0, 15,QPen(Qt::darkBlue,2)));
   }
@@ -130,7 +134,7 @@ QString BJT::netlist()
   s += " "+Ports.at(1)->Connection->Name;  // connect substrate to collector
 
   // output all properties
-  for(Property *p2 = Props.first(); p2 != nullptr; p2 = Props.next())
+  for(const auto& p2 : Props)
     s += " "+p2->Name+"=\""+p2->Value+"\"";
 
   return s + '\n';

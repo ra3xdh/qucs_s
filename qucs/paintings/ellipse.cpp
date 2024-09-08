@@ -260,7 +260,7 @@ void qucs::Ellipse::MouseResizeMoving(int x, int y, Schematic *p)
 // x/y are coordinates without scaling.
 void qucs::Ellipse::MouseMoving(
 	Schematic *paintScale, int, int, int gx, int gy,
-	Schematic *p, int x, int y, bool drawn)
+	Schematic *p, int x, int y)
 {
   if(State > 0) {
     if(State > 1)
@@ -273,14 +273,6 @@ void qucs::Ellipse::MouseMoving(
   }
   else { x2 = gx; y2 = gy; }
 
-  if(drawn) {
-    p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12,0,0,true);  // erase old cursor symbol
-    if(filled) {
-      p->PostPaintEvent(_Line, cx+14, cy+7, cx+20, cy+1,0,0,true);
-      p->PostPaintEvent(_Line, cx+25, cy+2, cx+18, cy+9,0,0,true);
-      p->PostPaintEvent(_Line, cx+29, cy+4, cx+23, cy+10,0,0,true);
-    }
-  }
   cx = x;
   cy = y;
   p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12,0,0,true);  // paint new cursor symbol

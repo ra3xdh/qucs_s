@@ -732,16 +732,42 @@ void MatchDialog::slotButtCreate() {
                      S12imag * S21imag;
     double DetImag = S11real * S22imag + S11imag * S22real - S12real * S21imag -
                      S12imag * S21real;
-    success =
-        calc2PortMatch(S11real, S11imag, S22real, S22imag, DetReal, DetImag, Z1,
-                       Z2, Freq, micro_syn, SP_block, open_short, Substrate,
-                       order, gamma_MAX, BalancedStubs);
+
+    // Check unconditional stability. If the device is not unconditionally stable, it cannot be conjugately matched
+    std::complex<double> s11 (S11real, S11imag);
+    std::complex<double> s12 (S12real, S12imag);
+    std::complex<double> s21 (S21real, S21imag);
+    std::complex<double> s22 (S22real, S22imag);
+
+    double delta = abs(s11*s22 - s12*s21); // Determinant of the S matrix
+    double K = (1 - abs(s11)*abs(s11) - abs(s22)*abs(s22) + delta*delta) / (2*abs(s12*s21)); // Rollet factor.
+
+    if ((K > 1) && (delta < 1)){
+        // The device is unconditionally stable. It can be conjugately matched
+        success =
+            calc2PortMatch(S11real, S11imag, S22real, S22imag, DetReal, DetImag, Z1,
+                           Z2, Freq, micro_syn, SP_block, open_short, Substrate,
+                           order, gamma_MAX, BalancedStubs);
+    }else{
+        // The device is not unconditionally stable. Show a message and stop
+        success = false;
+        QMessageBox::critical(
+            0, tr("Error"),
+            tr("The device is not unconditionally stable:\n\nK = %1\n|%2| = %3\n\nIt is not possible to synthesize a matching network.\n\nConsider adding resistive losses and/or feedback to reach unconditional stability (K > 1 and |%2| < 1)")
+                .arg(QString::number(K, 'f', 2)).arg(QChar(0x0394)).arg(QString::number(delta, 'f', 2)));
+    }
+
+
   } else {
     success = calcMatchingCircuit(S11real, S11imag, Z1, Freq, micro_syn,
                                   SP_block, open_short, Substrate, order,
                                   gamma_MAX, BalancedStubs);
   }
 
+  if (!success) {
+      // Something went wrong. Return to the main window without closing the dialog
+      return;
+  }
   QucsMain->slotEditPaste(success);
   accept();
 }
@@ -1398,7 +1424,7 @@ QString MatchDialog::calcBinomialLines(double r_real, double r_imag, double Z0,
 // Sons. 4th Edition. Pg 256-261
 QString MatchDialog::calcChebyLines(double r_real, double r_imag, double Z0,
                                     double gamma, int order, double Freq) {
-  int N = order - 1; // Number of sections
+  const int N = order - 1; // Number of sections
   if (N > 7)         // So far, it is only available Chebyshev weighting up to 7
              // sections. Probably, it makes no sense to use a higher number of
              // sections because of the losses
@@ -1408,20 +1434,21 @@ QString MatchDialog::calcChebyLines(double r_real, double r_imag, double Z0,
         QObject::tr("Chebyshev weighting for N>7 is not available"));
     return QString("");
   }
+
   QString laddercode;
   double RL = r_real, XL = r_imag;
-  r2z(RL, XL,
-      Z0); // Calculation of the load impedance given the reflection coeffient
-  double sec_theta_m; // =
-                      // cosh((1/(1.*N))*acosh((1/gamma)*fabs((RL-Z0)/(Z0+RL)))
-                      // );
-  // double sec_theta_m = cosh((1/(1.*N))*acosh(fabs(log(RL/Z0)/(2*gamma))) );
-  (fabs(log(RL / Z0) / (2 * gamma)) < 1)
-      ? sec_theta_m = 0
-      : sec_theta_m =
-            cosh((1 / (1. * N)) * acosh(fabs(log(RL / Z0) / (2 * gamma))));
+  r2z(RL, XL, Z0); // Calculation of the load impedance given the reflection coefficient
 
-  double w[N];
+  double sec_theta_m = 0.0;
+  double log_ratio = log(RL / Z0) / (2 * gamma);
+
+  if (fabs(log_ratio) < 1) {
+      sec_theta_m = 0.0;
+  } else {
+      sec_theta_m = cosh((1.0 / N) * acosh(fabs(log_ratio)));
+  }
+
+  std::vector<double> w(N,0.0);
 
   switch (N) // The weights are calculated by equating the reflection coeffient
              // formula to the N-th Chebyshev polinomial

@@ -35,8 +35,8 @@ Logical_AND::~Logical_AND()
 Component* Logical_AND::newOne()
 {
   Logical_AND* p = new Logical_AND();
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
-  p->Props.getLast()->Value = Props.getLast()->Value;
+  p->Props.front()->Value = Props.front()->Value;
+  p->Props.back()->Value = Props.back()->Value;
   p->recreate(0);
   return p;
 }

@@ -117,7 +117,6 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
   } while(false);   // to perform "break"
 
   Doc->viewport()->update();
-  view->drawn = false;
   return true;
 }
 
@@ -299,7 +298,6 @@ void QucsApp::slotSelect(bool on)
     MouseMoveAction = &MouseActions::MMoveWire1;
     MousePressAction = &MouseActions::MPressWire1;
     Doc->viewport()->update();
-    view->drawn = false;
 
     select->blockSignals(true);
     select->setChecked(false);
@@ -373,9 +371,6 @@ void QucsApp::slotEditPaste(bool on)
       MouseReleaseAction = 0;
       MouseDoubleClickAction = 0;
       activeAction = 0;   // no action active
-      if(view->drawn) {
-        ((Schematic *)Doc)->viewport()->update();
-      }
       return;
     }
 
@@ -395,7 +390,6 @@ void QucsApp::slotEditPaste(bool on)
     }
     activeAction = editPaste;
 
-    view->drawn = false;
     MouseMoveAction = &MouseActions::MMovePaste;
     view->movingRotated = 0;
     MousePressAction = 0;
@@ -450,8 +444,7 @@ void QucsApp::slotInsertEquation(bool on)
   }
 
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(view->drawn) Doc->viewport()->update();
-  view->drawn = false;
+
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
 }
@@ -483,8 +476,7 @@ void QucsApp::slotInsertGround(bool on)
   view->selElem = new Ground();
 
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(view->drawn) Doc->viewport()->update();
-  view->drawn = false;
+
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
 }
@@ -520,8 +512,6 @@ void QucsApp::slotInsertPort(bool on)
      view->selElem = new SubCirPort();
   }
 
-  if(view->drawn) Doc->viewport()->update();
-  view->drawn = false;
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
 }
@@ -541,7 +531,6 @@ void QucsApp::slotEditUndo()
 
   Doc->undo();
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -559,7 +548,6 @@ void QucsApp::slotEditRedo()
 
   Doc->redo();
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -573,7 +561,6 @@ void QucsApp::slotAlignTop()
     QMessageBox::information(this, tr("Info"),
 		      tr("At least two elements must be selected !"));
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -587,7 +574,6 @@ void QucsApp::slotAlignBottom()
     QMessageBox::information(this, tr("Info"),
 		      tr("At least two elements must be selected !"));
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -601,7 +587,6 @@ void QucsApp::slotAlignLeft()
     QMessageBox::information(this, tr("Info"),
 		      tr("At least two elements must be selected !"));
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -615,7 +600,6 @@ void QucsApp::slotAlignRight()
     QMessageBox::information(this, tr("Info"),
 		      tr("At least two elements must be selected !"));
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -627,7 +611,6 @@ void QucsApp::slotDistribHoriz()
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   Doc->distributeHorizontal();
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -639,7 +622,6 @@ void QucsApp::slotDistribVert()
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   Doc->distributeVertical();
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -653,7 +635,6 @@ void QucsApp::slotCenterHorizontal()
     QMessageBox::information(this, tr("Info"),
 		      tr("At least two elements must be selected !"));
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -667,7 +648,6 @@ void QucsApp::slotCenterVertical()
     QMessageBox::information(this, tr("Info"),
 		      tr("At least two elements must be selected !"));
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 // ---------------------------------------------------------------------
@@ -684,9 +664,8 @@ void QucsApp::slotSelectAll()
   }
   else {
     auto selectionRect = ((Schematic*)Doc)->allBoundingRect().marginsAdded(QMargins{1, 1, 1, 1});
-    ((Schematic*)Doc)->selectElements(selectionRect.left(), selectionRect.top(), selectionRect.right(), selectionRect.bottom(), true, false);
+    ((Schematic*)Doc)->selectElements(selectionRect, true, false);
     ((Schematic*)Doc)->viewport()->update();
-    view->drawn = false;
   }
 }
 
@@ -699,7 +678,6 @@ void QucsApp::slotSelectMarker()
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   Doc->selectMarkers();
   Doc->viewport()->update();
-  view->drawn = false;
 }
 
 
@@ -1133,11 +1111,10 @@ void QucsApp::slotCursorLeft(bool left)
     } else if(left) {
       Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep());
     }else{ // right
-      Doc->scrollRight(-Doc->horizontalScrollBar()->singleStep());
+      Doc->scrollRight(Doc->horizontalScrollBar()->singleStep());
     }
 
     Doc->viewport()->update();
-    view->drawn = false;
     return;
   } else { // random selection. move all of them
     view->moveElements(&movingElements, sign*Doc->GridX, 0);
@@ -1204,7 +1181,6 @@ void QucsApp::slotCursorUp(bool up)
     }
 
     Doc->viewport()->update();
-    view->drawn = false;
     return;
   }else{ // some random selection, put it back
     view->moveElements(&movingElements, 0, ((up)?-1:1) * Doc->GridY);

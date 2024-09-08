@@ -157,7 +157,7 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
   changed = false;
 
   // insert all properties into the ListBox
-  Property *pp = Comp->Props.first();
+  auto pp = Comp->Props.at(0);
   FileEdit->setText(pp->Value);
   FileCheck->setChecked(pp->display);
   SimCheck->setChecked(Comp->Props.at(2)->Value == "yes");
@@ -226,15 +226,15 @@ void SpiceDialog::slotButtApply()
   }
 
   // apply all the new property values
-  Property *pp = Comp->Props.first();
-  if(pp->Value != FileEdit->text())
+  auto pp = Comp->Props.begin();
+  if((*pp)->Value != FileEdit->text())
   {
-    pp->Value = FileEdit->text();
+    (*pp)->Value = FileEdit->text();
     changed = true;
   }
-  if(pp->display != FileCheck->isChecked())
+  if((*pp)->display != FileCheck->isChecked())
   {
-    pp->display = FileCheck->isChecked();
+    (*pp)->display = FileCheck->isChecked();
     changed = true;
   }
 
@@ -246,26 +246,26 @@ void SpiceDialog::slotButtApply()
     }
     tmp += "_net" + PortsList->item(i)->text();   // chosen ports
   }
-  pp = Comp->Props.next();
-  if(pp->Value != tmp)
+  pp++;
+  if((*pp)->Value != tmp)
   {
-    pp->Value = tmp;
+    (*pp)->Value = tmp;
     changed = true;
   }
-  pp = Comp->Props.next();
-  if((pp->Value=="yes") != SimCheck->isChecked())
+  pp++;
+  if(((*pp)->Value=="yes") != SimCheck->isChecked())
   {
-    pp->Value = ((SimCheck->isChecked())? "yes" : "no");
+    (*pp)->Value = ((SimCheck->isChecked())? "yes" : "no");
     changed = true;
   }
-  if(pp->Value != "yes") {
+  if((*pp)->Value != "yes") {
     Comp->withSim = false;
   }
 
-  pp = Comp->Props.next();
-  if(pp->Value != PrepCombo->currentText())
+  pp++;
+  if((*pp)->Value != PrepCombo->currentText())
   {
-    pp->Value = PrepCombo->currentText();
+    (*pp)->Value = PrepCombo->currentText();
     changed = true;
   }
 

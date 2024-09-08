@@ -90,7 +90,7 @@ void QucsApp::initActions()
   connect(fileSaveAll, SIGNAL(triggered()), SLOT(slotFileSaveAll()));
 
   fileClose = new QAction(QIcon((":/bitmaps/svg/fileclose.svg")), tr("&Close"), this);
-  fileClose->setShortcut(QKeySequence::Close);
+  fileClose->setShortcut(Qt::CTRL|Qt::Key_E);
   fileClose->setStatusTip(tr("Closes the current document"));
   fileClose->setWhatsThis(tr("Close File\n\nCloses the current document"));
   connect(fileClose, SIGNAL(triggered()), SLOT(slotFileClose()));
@@ -248,7 +248,7 @@ void QucsApp::initActions()
 
   editDelete = new QAction(QIcon((":/bitmaps/svg/editdelete.svg")), tr("&Delete"), this);
 #ifdef __APPLE__
-  editDelete->setShortcut(QKeySequence::Backspace);
+  editDelete->setShortcuts({QKeySequence(Qt::Key_Backspace), QKeySequence(Qt::Key_Delete)});
 #else
   editDelete->setShortcut(QKeySequence::Delete);
 #endif  
@@ -580,7 +580,7 @@ void QucsApp::initActions()
   connect(setMarker, SIGNAL(toggled(bool)), SLOT(slotSetMarker(bool)));
 
   setDiagramLimits = new QAction(QIcon((":/bitmaps/svg/viewwave.svg")),	tr("Set Diagram Limits"), this);
-  setDiagramLimits->setShortcut(tr("Ctrl+E"));
+  //setDiagramLimits->setShortcut(tr("Ctrl+E"));
   setDiagramLimits->setStatusTip(tr("Pick the diagram limits using the mouse. Right click for default."));
   setDiagramLimits->setWhatsThis(tr("Set Diagram Limits\n\nPick the diagram limits using the mouse. Right click for default."));
   setDiagramLimits->setCheckable(true);

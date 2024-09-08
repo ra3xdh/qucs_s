@@ -851,7 +851,7 @@ void Schematic::simpleInsertComponent(Component *c)
       pn = new Node(x, y);
       DocNodes.append(pn);
     }
-    pn->Connections.append(c);  // connect schematic node to component node
+    pn->connect(c);  // connect schematic node to component node
     if (!pp->Type.isEmpty()) {
       pn->DType = pp->Type;
     }
@@ -915,7 +915,7 @@ void Schematic::simpleInsertWire(Wire *pw)
     delete pw;           // delete wire because this is not a wire
     return;
   }
-  pn->Connections.append(pw);  // connect schematic node to component node
+  pn->connect(pw);  // connect schematic node to component node
   pw->Port1 = pn;
 
   // check if second wire node lies upon existing node
@@ -926,7 +926,7 @@ void Schematic::simpleInsertWire(Wire *pw)
     pn = new Node(pw->x2, pw->y2);
     DocNodes.append(pn);
   }
-  pn->Connections.append(pw);  // connect schematic node to component node
+  pn->connect(pw);  // connect schematic node to component node
   pw->Port2 = pn;
 
   DocWires.append(pw);
@@ -1400,7 +1400,7 @@ void Schematic::propagateNode(QStringList& Collect,
 
   Cons.append(pn);
   for(p2 = Cons.first(); p2 != 0; p2 = Cons.next())
-    for(pe = p2->Connections.first(); pe != 0; pe = p2->Connections.next())
+    for(auto* pe : *p2)
       if(pe->Type == isWire) {
 	pw = (Wire*)pe;
 	if(p2 != pw->Port1) {
@@ -1629,7 +1629,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 	continue;
       if(!isVerilog && pc->Model == "Verilog")
 	continue;
-      s = pc->Props.getFirst()->Value;
+      s = pc->Props.front()->Value;
       if(s.isEmpty()) {
         ErrText->appendPlainText(QObject::tr("ERROR: No file name in %1 component \"%2\".").
 			arg(pc->Model).
@@ -2105,9 +2105,9 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
              QObject::tr("ERROR: Only one digital simulation allowed."));
           return -10;
         }
-        if(pc->Props.getFirst()->Value != "TimeList")
+        if(pc->Props.front()->Value != "TimeList")
           isTruthTable = true;
-	      if(pc->Props.getLast()->Value != "VHDL")
+	      if(pc->Props.back()->Value != "VHDL")
 	        isVerilog = true;
         allTypes |= isDigitalComponent;
 	      isAnalog = false;

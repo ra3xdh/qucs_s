@@ -17,9 +17,14 @@ SET(QUCS_NAME "${PROJECT_NAME}")
 
 # use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
-message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${QUCS_VERSION}")
 
-set(PROJECT_VERSION "${QUCS_VERSION}")
+if(DEFINED CI_VERSION)
+    set(PROJECT_VERSION "${CI_VERSION}")
+else()
+    set(PROJECT_VERSION "${QUCS_VERSION}")
+endif()
+
+message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${PROJECT_VERSION}")
 
 set(PROJECT_VENDOR "Qucs team. This program is licensed under the GNU GPL")
 set(PROJECT_COPYRIGHT_YEAR "2014")
@@ -81,18 +86,40 @@ CONFIGURE_FILE (
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
 IF(QT_VERSION_MAJOR EQUAL 6)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+    set(CMAKE_AUTOUIC ON)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTORCC ON)
 ENDIF()
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if (MSVC)
-    add_compile_options(/Zc:__cplusplus /permissive- /MP /Zc:preprocessor)
+set(QT_VERSION ${Qt${QT_VERSION_MAJOR}Core_VERSION})
+
+if (${QT_VERSION} VERSION_LESS "6.7.0")
+    set(CMAKE_CXX_STANDARD 17)
 else()
-    # additional warnings
-    add_compile_options(-Wall -Wextra)
+    set(CMAKE_CXX_STANDARD 20)
+endif()
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+        add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /Od /vmg)
+        add_compile_options(/wd4244 /wd4267 /wd4312)
+    else()
+        add_compile_options(-Wall -Wextra -O0 -g)
+        if (CMAKE_CXX_COMPILER_ID MATCHES "^AppleClang$|^Clang$")
+            add_compile_options(-Wno-ignored-attributes)
+        endif()
+    endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+        string(REGEX REPLACE "/W3" "/w" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+        add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /vmg)
+    else()
+        add_compile_options(-w)
+    endif()
 endif()
 
 INCLUDE_DIRECTORIES(
@@ -132,6 +159,7 @@ SET(QUCS_SRCS
 
 SET(QUCS_HDRS
 element.h
+conductor.h
 main.h
 messagedock.h
 misc.h
@@ -208,28 +236,28 @@ endif()
 # configure Apple bundle information
 #
 IF(APPLE)
-  # set information on Info.plist file
-	SET(MACOSX_BUNDLE_INFO_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
-  SET(MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_NAME} ${PROJECT_VERSION}")
-  SET(MACOSX_BUNDLE_LONG_VERSION_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
-  SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
-  SET(MACOSX_BUNDLE_COPYRIGHT "${PROJECT_COPYRIGHT_YEAR} ${PROJECT_VENDOR}")
-  SET(MACOSX_BUNDLE_GUI_IDENTIFIER "${PROJECT_DOMAIN_SECOND}.${PROJECT_DOMAIN_FIRST}")
-  SET(MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}")
-  SET(MACOSX_BUNDLE_ICON_FILE qucs.icns)
+    # set information on Info.plist file
+    SET(MACOSX_BUNDLE_INFO_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
+    SET(MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_NAME} ${PROJECT_VERSION}")
+    SET(MACOSX_BUNDLE_LONG_VERSION_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
+    SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
+    SET(MACOSX_BUNDLE_COPYRIGHT "${PROJECT_COPYRIGHT_YEAR} ${PROJECT_VENDOR}")
+    SET(MACOSX_BUNDLE_GUI_IDENTIFIER "${PROJECT_DOMAIN_SECOND}.${PROJECT_DOMAIN_FIRST}")
+    SET(MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}")
+    SET(MACOSX_BUNDLE_ICON_FILE qucs.icns)
 
-  # set where in the bundle to put the icns file
-  SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-  # include the icns file in the target
-  SET(QUCS_SRCS ${QUCS_SRCS} ${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns)
+    # set where in the bundle to put the icns file
+    SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    # include the icns file in the target
+    SET(QUCS_SRCS ${QUCS_SRCS} ${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns)
 
-  # This tells cmake where to place the translations inside the bundle
-  #SET_SOURCE_FILES_PROPERTIES( ${LANG_SRCS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/lang )
-  # include the translation files in the target
-  #SET(RESOURCES_SRCS ${RESOURCES_SRCS} ${LANG_SRCS})
+    # This tells cmake where to place the translations inside the bundle
+    #SET_SOURCE_FILES_PROPERTIES( ${LANG_SRCS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/lang )
+    # include the translation files in the target
+    #SET(RESOURCES_SRCS ${RESOURCES_SRCS} ${LANG_SRCS})
 ENDIF(APPLE)
 
-
+set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/qucs_icon.rc")
 #
 #  CMake's way of creating an executable
 #
@@ -237,7 +265,9 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
   ${QUCS_HDRS}
   ${QUCS_SRCS}
   ${QUCS_MOC_SRCS}
-  ${RESOURCES_SRCS} )
+  ${RESOURCES_SRCS}
+  ${app_icon_resource_windows}
+ )
 
 #
 # Tell CMake which libraries we need to link our executable against.

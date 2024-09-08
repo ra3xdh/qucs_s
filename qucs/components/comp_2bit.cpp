@@ -40,7 +40,7 @@ comp_2bit::comp_2bit()
 Component * comp_2bit::newOne()
 {
   comp_2bit * p = new comp_2bit();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

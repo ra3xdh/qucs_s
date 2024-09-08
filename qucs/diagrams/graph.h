@@ -24,7 +24,6 @@
 
 #include <cmath>
 #include <QColor>
-#include "qt3_compat/qt_compat.h"
 #include <QDateTime>
 
 
@@ -86,14 +85,20 @@ public:
   Graph(const Diagram*, const QString& _Line="");
  ~Graph();
 
+  enum PtType { NotDrawn = 0, DataPt = 1, STROKEEND = 2, BRANCHEND = 3, GRAPHEND = 4};
+
   class ScrPt{
+  private:
     float ScrX;
     float ScrY;
+    PtType type;
 
     double indep; // top level indep value (sweep)
     double dep; // top level dep value // FIXME: type?!
   public:
-    ScrPt() : ScrX(0){}
+    ScrPt() { ScrX = 0; ScrY = 0;
+              type = NotDrawn;
+              dep = 0.0; indep = 0.0; }
     ~ScrPt(){}
 
     void setStrokeEnd();

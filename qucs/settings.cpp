@@ -56,10 +56,12 @@ void settingsManager::initDefaults()
     m_Defaults["NgspiceExecutable"] = "ngspice_con.exe";
     m_Defaults["XyceExecutable"] = "Xyce.exe";
     m_Defaults["RFLayoutExecutable"] = "qucsrflayout.exe";
+    m_Defaults["OctaveExecutable"] = "octave.exe";
 #else
     m_Defaults["NgspiceExecutable"] = "ngspice";
     m_Defaults["XyceExecutable"] = "/usr/local/Xyce-Release-6.8.0-OPENSOURCE/bin/Xyce";
     m_Defaults["RFLayoutExecutable"] = "qucsrflayout";
+    m_Defaults["OctaveExecutable"] = "octave";
 #endif
 
     m_Defaults["XyceParExecutable"] = "mpirun -np %p /usr/local/Xyce-Release-6.8.0-OPENMPI-OPENSOURCE/bin/Xyce";

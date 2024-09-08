@@ -119,6 +119,8 @@ Basic_BJT::Basic_BJT()
 	QObject::tr("temperature at which parameters were extracted")));
   Props.append(new Property("Area", "1.0", false,
 	QObject::tr("default area for bipolar transistor")));
+  Props.append(new Property("UseGlobTemp", "yes", false,
+                            QObject::tr("Use global SPICE temperature")+" [yes,no]"));
 
   Name  = "T";
 }
@@ -138,7 +140,7 @@ BJTsub::BJTsub()
 Component* BJTsub::newOne()
 {
   BJTsub* p = new BJTsub();
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0);
   return p;
 }
@@ -161,7 +163,7 @@ Element* BJTsub::info_pnp(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     BJTsub* p = new BJTsub();
-    p->Props.getFirst()->Value = "pnp";
+    p->Props.front()->Value = "pnp";
     p->recreate(0);
     return p;
   }
@@ -181,7 +183,7 @@ void BJTsub::createSymbol()
   Lines.append(new qucs::Line(  9,  0, 30,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  9, -7,  9,  7,QPen(Qt::darkBlue,3)));
 
-  if(Props.getFirst()->Value == "npn") {
+  if(Props.front()->Value == "npn") {
     Lines.append(new qucs::Line( -6, 15,  0, 15,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line(  0,  9,  0, 15,QPen(Qt::darkBlue,2)));
   }
@@ -212,13 +214,18 @@ QString BJTsub::spice_netlist(bool)
     }
 
     QStringList spice_incompat,spice_tr;
-    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"; // spice-incompatible parameters
+    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"<<"UseGlobTemp"; // spice-incompatible parameters
     spice_tr.clear(); // parameters that need convertion of names
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
-    s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
-            .arg(getProperty("Temp")->Value);
+    if (getProperty("UseGlobTemp")->Value == "yes") {
+      s += QString(" QMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
+    } else {
+      s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+      .arg(getProperty("Temp")->Value);
+    }
+
     s += QString(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
 
     return s;

@@ -110,7 +110,6 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
 {
     setAttribute(Qt::WA_DeleteOnClose);
   Diag = d;
-  Graphs.setAutoDelete(true);
   copyDiagramGraphs();   // make a copy of all graphs
   if(parent){
 	  const Schematic* s = dynamic_cast<const Schematic*>(parent);
@@ -1012,7 +1011,7 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
       g->numMode   = PropertyBox->currentIndex();
     }
 
-    Graphs.append(g);
+    Graphs.emplace_back(g);
     changed = true;
     toTake  = true;
   //}
@@ -1037,7 +1036,7 @@ void DiagramDialog::slotSelectGraph(QListWidgetItem *item)
     return;
   }
 
-  SelectGraph (Graphs.at (GraphList->currentRow()));
+  SelectGraph (Graphs.at(GraphList->currentRow()).get());
 }
 
 /*!
@@ -1090,7 +1089,7 @@ void DiagramDialog::slotDeleteGraph()
   if(i < 0) return;   // return, if no item selected
 
   GraphList->takeItem(i);
-  Graphs.remove(i);
+  Graphs.erase(std::next(Graphs.begin(), i));
 
   int k=0;
   if (GraphList->count()!=0) {
@@ -1159,7 +1158,7 @@ void DiagramDialog::slotNewGraph()
     g->Precision = Property2->text().toInt();
     g->numMode   = PropertyBox->currentIndex();
   }
-  Graphs.append(g);
+  Graphs.emplace_back(g);
   changed = true;
   toTake  = false;
 }
@@ -1350,11 +1349,11 @@ void DiagramDialog::slotApply()
   }   // of "if(Diag->Name != "Tab")"
 
   Diag->Graphs.clear();   // delete the graphs
-  Graphs.setAutoDelete(false);
-  for(Graph *pg = Graphs.first(); pg != 0; pg = Graphs.next())
-    Diag->Graphs.append(pg);  // transfer the new graphs to diagram
+
+  for (std::unique_ptr<Graph>& graph : Graphs) {
+    Diag->Graphs.append(graph.release());  // transfer the new graphs to diagram
+  }
   Graphs.clear();
-  Graphs.setAutoDelete(true);
 
   Diag->loadGraphData(defaultDataSet);
   ((Schematic*)parent())->viewport()->repaint();
@@ -1392,8 +1391,7 @@ void DiagramDialog::slotSetColor()
   int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
-  Graph *g = Graphs.at(i);
-  g->Color = c;
+  Graphs.at(i)->Color = c;
   changed = true;
   toTake  = false;
 }
@@ -1416,8 +1414,7 @@ void DiagramDialog::slotResetToTake(const QString& s)
   int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
-  Graph *g = Graphs.at(i);
-  g->Var = s;
+  Graphs.at(i)->Var = s;
   // \todo GraphList->changeItem(s, i);   // must done after the graph settings !!!
   changed = true;
   toTake  = false;
@@ -1432,7 +1429,7 @@ void DiagramDialog::slotSetProp2(const QString& s)
   int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
-  Graph *g = Graphs.at(i);
+  Graph *g = Graphs.at(i).get();
   if(Diag->Name == "Tab") g->Precision = s.toInt();
   else  g->Thick = s.toInt();
   changed = true;
@@ -1447,8 +1444,7 @@ void DiagramDialog::slotSetNumMode(int Mode)
   int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
-  Graph *g = Graphs.at(i);
-  g->numMode = Mode;
+  Graphs.at(i)->numMode = Mode;
   changed = true;
   toTake  = false;
 }
@@ -1480,7 +1476,7 @@ void DiagramDialog::slotSetGraphStyle(int style)
   int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
-  Graph *g = Graphs.at(i);
+  Graph *g = Graphs.at(i).get();
   g->Style = toGraphStyle(style);
   assert(g->Style!=GRAPHSTYLE_INVALID);
   changed = true;
@@ -1493,7 +1489,7 @@ void DiagramDialog::slotSetGraphStyle(int style)
 void DiagramDialog::copyDiagramGraphs()
 {
   for (Graph *pg : Diag->Graphs)
-    Graphs.append(pg->sameNewOne());
+    Graphs.emplace_back(pg->sameNewOne());
 }
 
 /*!
@@ -1504,8 +1500,7 @@ void DiagramDialog::slotSetYAxis(int axis)
   int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
-  Graph *g = Graphs.at(i);
-  g->yAxisNo = axis;
+  Graphs.at(i)->yAxisNo = axis;
   changed = true;
   toTake  = false;
 }

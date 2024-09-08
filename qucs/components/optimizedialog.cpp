@@ -352,37 +352,39 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       if(pc->Model[0] == '.' && pc->Model != ".Opt")
         SimEdit->insertItem(SimEdit->count(), pc->Name);
 
-  Property *pp;
-  pp = Comp->Props.at(0);
-  if(!pp->Value.isEmpty()) {
+  auto p0 = Comp->Props.at(0);
+  if(!p0->Value.isEmpty()) {
     // set selected simulation in combo box to the currently used one
-    int i = SimEdit->findText(pp->Value);
+    int i = SimEdit->findText(p0->Value);
     if (i != -1) // current simulation is in the available simulations list (normal case)
       SimEdit->setCurrentIndex(i);
     else  // current simulation not in the available simulations list
-      SimEdit->setEditText(pp->Value);
+      SimEdit->setEditText(p0->Value);
   }
 
-  pp = Comp->Props.at(1);
-  if(!pp->Value.isEmpty()) {
-    MethodCombo->setCurrentIndex(pp->Value.section('|',0,0).toInt()-1);
-    IterEdit->setText(pp->Value.section('|',1,1));
-    RefreshEdit->setText(pp->Value.section('|',2,2));
-    ParentsEdit->setText(pp->Value.section('|',3,3));
-    ConstEdit->setText(pp->Value.section('|',4,4));
-    CrossEdit->setText(pp->Value.section('|',5,5));
-    SeedEdit->setText(pp->Value.section('|',6,6));
-    CostVarEdit->setText(pp->Value.section('|',7,7));
-    CostObjEdit->setText(pp->Value.section('|',8,8));
-    CostConEdit->setText(pp->Value.section('|',9,9));
+  auto p1 = Comp->Props.at(1);
+  if(!p1->Value.isEmpty()) {
+    MethodCombo->setCurrentIndex(p1->Value.section('|',0,0).toInt()-1);
+    IterEdit->setText(p1->Value.section('|',1,1));
+    RefreshEdit->setText(p1->Value.section('|',2,2));
+    ParentsEdit->setText(p1->Value.section('|',3,3));
+    ConstEdit->setText(p1->Value.section('|',4,4));
+    CrossEdit->setText(p1->Value.section('|',5,5));
+    SeedEdit->setText(p1->Value.section('|',6,6));
+    CostVarEdit->setText(p1->Value.section('|',7,7));
+    CostObjEdit->setText(p1->Value.section('|',8,8));
+    CostConEdit->setText(p1->Value.section('|',9,9));
   }
 
   NameEdit->setText(Comp->Name);
 
   QTableWidgetItem *item;
-  for(pp = Comp->Props.at(2); pp != 0; pp = Comp->Props.next()) {
-    if(pp->Name == "Var") {
-      QStringList ValueSplit = pp->Value.split("|");
+  auto pp = Comp->Props.begin();
+  ++pp;
+  ++pp;
+  for(;pp!=Comp->Props.end();++pp) {
+    if((*pp)->Name == "Var") {
+      QStringList ValueSplit = (*pp)->Value.split("|");
       int row = VarTable->rowCount();
       VarTable->insertRow(row);
       // Name
@@ -434,8 +436,8 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 5, item);
     }
-    if(pp->Name == "Goal") {
-      QStringList GoalSplit = pp->Value.split("|");
+    if((*pp)->Name == "Goal") {
+      QStringList GoalSplit = (*pp)->Value.split("|");
       int row = GoalTable->rowCount();
       GoalTable->insertRow(row);
 
@@ -757,7 +759,9 @@ void OptimizeDialog::slotApply()
     changed = true;
   }
 
-  Property *pp = Comp->Props.at(2);
+  auto pp = Comp->Props.begin();
+  ++pp;
+  ++pp;
   int row;
   // apply all the new property values in the TableWidget
   for (row = 0; row < VarTable->rowCount(); ++row) {
@@ -793,21 +797,22 @@ void OptimizeDialog::slotApply()
     }
     Prop = propList.join("|");
 
-    if(pp) {
-      if(pp->Name != "Var") {
-        pp->Name = "Var";
+    if(pp != Comp->Props.end()) {
+      if((*pp)->Name != "Var") {
+        (*pp)->Name = "Var";
         changed = true;
       }
-      if(pp->Value != Prop) {
-        pp->Value = Prop;
+      if((*pp)->Value != Prop) {
+        (*pp)->Value = Prop;
         changed = true;
       }
     }
     else {
       Comp->Props.append(new Property("Var", Prop, false, ""));
+      pp = Comp->Props.end()-1;
       changed = true;
     }
-    pp = Comp->Props.next();
+    pp++;
   }
 
   for (row = 0; row < GoalTable->rowCount(); ++row) {
@@ -830,29 +835,27 @@ void OptimizeDialog::slotApply()
     propList << GoalTable->item(row, 2)->text();
     Prop = propList.join("|");
 
-    if(pp) {
-      if(pp->Name != "Goal") {
-        pp->Name = "Goal";
+    if(pp != Comp->Props.end()) {
+      if((*pp)->Name != "Goal") {
+        (*pp)->Name = "Goal";
         changed = true;
       }
-      if(pp->Value != Prop) {
-        pp->Value = Prop;
+      if((*pp)->Value != Prop) {
+        (*pp)->Value = Prop;
         changed = true;
       }
     }
     else {
       Comp->Props.append(new Property("Goal", Prop, false, ""));
+      pp = Comp->Props.end()-1;
       changed = true;
     }
-    pp = Comp->Props.next();
+    pp++;
   }
 
   // if more properties than in ListView -> delete the rest
-  if(pp) {
-    pp = Comp->Props.prev();
-    Comp->Props.last();
-    while(pp != Comp->Props.current())
-      Comp->Props.remove();
+  if(pp != Comp->Props.end()) {
+    Comp->Props.erase(pp, Comp->Props.end());
     changed = true;
   }
 
@@ -876,10 +879,9 @@ void OptimizeDialog::slotCreateEqn()
               //<Model Name ShowName cx cy tx ty mirroredX rotate
               "<Eqn OptValues 1 0 0 -28 15 0 0 ";
 
- Property *pp;
- for(pp = Comp->Props.at(2); pp != 0; pp = Comp->Props.next()) {
-   if(pp->Name == "Var") { // property is an optimization variable
-      QStringList ValueSplit = pp->Value.split("|");
+  for(int i = 2;i<Comp->Props.size();i++) {
+    if(Comp->Props.at(i)->Name == "Var") { // property is an optimization variable
+      QStringList ValueSplit = Comp->Props.at(i)->Value.split("|");
       // "Name" = "initial (current) value"
       s += "\"" + ValueSplit.at(0) + "=" + ValueSplit.at(2) + "\" 1 ";
    }
@@ -920,11 +922,10 @@ void OptimizeDialog::slotSetPrecision(const QPoint& pos)
     numPrec = i;
     // update the shown values according to the new precision
     int row = 0;
-    Property *pp;
     QTableWidgetItem *item;
-    for(pp = Comp->Props.at(2); pp != 0; pp = Comp->Props.next()) {
-      if(pp->Name == "Var") {
-	QStringList ValueSplit = pp->Value.split("|");
+    for(int i = 2; i< Comp->Props.size(); i++) {
+      if(Comp->Props.at(i)->Name == "Var") {
+        QStringList ValueSplit = Comp->Props.at(i)->Value.split("|");
 	// 'initial' column
 	item = VarTable->item(row++, 2);
 	item->setText(QString::number(ValueSplit.at(2).toDouble(), 'g', numPrec));

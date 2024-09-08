@@ -100,7 +100,7 @@ QString ecvs::netlist()
     s += " "+p1->Connection->Name;   // node names
 
   // output all properties
-  for(Property *p2 = Props.first(); p2 != 0; p2 = Props.next())
+  for(Property *p2 : Props)
     s += " "+p2->Name+"=\""+p2->Value+"\"";
 
   return s + "\n";

@@ -41,7 +41,7 @@ binarytogrey4bit::binarytogrey4bit()
 Component * binarytogrey4bit::newOne()
 {
   binarytogrey4bit * p = new binarytogrey4bit();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

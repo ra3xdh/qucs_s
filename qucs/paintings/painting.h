@@ -36,7 +36,7 @@ public:
   virtual QString saveJSON();
   virtual void paint(QPainter*) {};
   virtual void MouseMoving(Schematic*, int, int, int, int,
-                           Schematic*, int, int, bool) {};
+                           Schematic*, int, int) {};
   virtual bool MousePressing(Schematic *sch = 0) { Q_UNUSED(sch) return false; };
   virtual void Bounding(int&, int&, int&, int&);
   virtual bool resizeTouched(float, float, float) { return false; };

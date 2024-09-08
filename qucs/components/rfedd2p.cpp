@@ -87,19 +87,15 @@ QString RFedd2P::netlist()
     s += " "+p1->Connection->Name;   // node names
 
   // output all properties
-  Property *p2;
-  p2 = Props.at(0);
-  s += " "+p2->Name+"=\""+p2->Value+"\"";
-  p = p2->Value;
-  p2 = Props.at(1);
-  s += " "+p2->Name+"=\""+p2->Value+"\"";
-  p2 = Props.at(2);
-  while(p2) {
-    n = p2->Name.mid(1);
-    s += " "+p2->Name+"=\""+Name+"."+p+n+"\"";
-    e += "  Eqn:Eqn"+Name+p2->Name+" "+
-      Name+"."+p+n+"=\""+p2->Value+"\" Export=\"no\"\n";
-    p2 = Props.next();
+  // output all properties
+  s += " "+Props.at(0)->Name+"=\""+Props.at(0)->Value+"\"";
+  p = Props.at(0)->Value;
+  s += " "+Props.at(1)->Name+"=\""+Props.at(1)->Value+"\"";
+  for (int i = 2; i < int(Props.size()); ++i) {
+    n = Props.at(i)->Name.mid(1);
+    s += " "+Props.at(i)->Name+"=\""+Name+"."+p+n+"\"";
+    e += "  Eqn:Eqn"+Name+Props.at(i)->Name+" "+
+         Name+"."+p+n+"=\""+Props.at(i)->Value+"\" Export=\"no\"\n";
   }
 
   return s+e;

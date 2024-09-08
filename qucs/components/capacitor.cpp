@@ -87,7 +87,7 @@ QString Capacitor::va_code()
 
 void Capacitor::createSymbol()
 {
-  if(Props.getLast()->Value.at(0) == 'n') {
+  if(Props.back()->Value.at(0) == 'n') {
     Lines.append(new qucs::Line( -4,-11, -4, 11,QPen(Qt::darkBlue,4)));
     Lines.append(new qucs::Line(  4,-11,  4, 11,QPen(Qt::darkBlue,4)));
   }

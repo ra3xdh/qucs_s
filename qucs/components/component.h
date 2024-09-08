@@ -23,7 +23,8 @@
 // builds fail without explicit QObject inclusion
 #include <QObject>
 #include "extsimkernels/spicecompat.h"
-#include "qt3_compat/qt_compat.h"
+
+#include <QList>
 
 #include "element.h"
 
@@ -90,7 +91,7 @@ public:
   QList<qucs::Ellips *>     Ellipses;
   QList<Port *>     Ports;
   QList<Text *>     Texts;
-  Q3PtrList<Property> Props;
+  QList<Property*> Props;
 
   #define COMP_IS_OPEN    0
   #define COMP_IS_ACTIVE  1
@@ -109,6 +110,7 @@ public:
   QPen WrongSimulatorPen;
 
   void paintIcon(QPixmap *pixmap);
+  Property * getProperty(const QString&);
 
 protected:
   virtual QString netlist();
@@ -125,7 +127,6 @@ protected:
   bool getBrush(const QString&, QBrush&, int);
 
   void copyComponent(Component*);
-  Property * getProperty(const QString&);
   Schematic* containingSchematic;
 
   virtual void drawSymbol(QPainter* p);

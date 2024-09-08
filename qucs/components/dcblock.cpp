@@ -17,11 +17,12 @@
 
 #include "dcblock.h"
 #include "extsimkernels/spicecompat.h"
+#include "node.h"
 
 dcBlock::dcBlock()
 {
   Description = QObject::tr("dc block");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Lines.append(new qucs::Line(- 4,-11, -4, 11,QPen(Qt::darkBlue,4)));
   Lines.append(new qucs::Line(  4,-11,  4, 11,QPen(Qt::darkBlue,4)));
@@ -43,6 +44,7 @@ dcBlock::dcBlock()
   ty = y2+4;
   Model = "DCBlock";
   Name  = "C";
+  SpiceModel = "C";
 
   Props.append(new Property("C", "1 uF", false,
 	QObject::tr("for transient simulation: capacitance in Farad")));
@@ -64,4 +66,16 @@ Element* dcBlock::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new dcBlock();
   return 0;
+}
+
+QString dcBlock::spice_netlist(bool isXyce)
+{
+  Q_UNUSED(isXyce);
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+  QString val = spicecompat::normalize_value(getProperty("C")->Value);
+  QString s;
+  QString name = spicecompat::check_refdes(Name, SpiceModel);
+  s = QString("%1 %2 %3 %4\n").arg(name, p1, p2, val);
+  return s;
 }

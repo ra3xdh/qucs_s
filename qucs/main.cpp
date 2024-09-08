@@ -131,7 +131,6 @@ bool loadSettings()
 
     QucsSettings.SimParameters = _settings::Get().item<QString>("SimParameters");
     QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveExecutable");
-    QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveBinDir");
     QucsSettings.OpenVAFExecutable = _settings::Get().item<QString>("OpenVAFExecutable");
 
     QucsSettings.RFLayoutExecutable = _settings::Get().item<QString>("RFLayoutExecutable");

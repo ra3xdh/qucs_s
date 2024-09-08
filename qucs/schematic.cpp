@@ -807,7 +807,7 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
     }
 
     for (auto* node : *Nodes) {
-        for (auto* connected : node->Connections) {
+        for (auto* connected : *node) {
             if (should_draw(connected)) {
                 draw_preserve_selection(node, painter);
                 break;
@@ -1151,37 +1151,6 @@ void Schematic::relativeRotation(int &newX, int &newY, int comX, int comY, int o
     // Shift coordinate system back to origin
     newX = (oldY-comY)+comX;
     newY = -(oldX-comX)+comY;
-}
-
-// ---------------------------------------------------
-// Correction factor for unproportional font scaling.
-float Schematic::textCorr()
-{
-    QFont Font = QucsSettings.font;
-    Font.setPointSizeF(Scale * float(Font.pointSize()));
-    // use the screen-compatible metric
-    QFontMetrics metrics(Font, 0);
-    // Line spacing is the distance from one base line to the next
-    // and I think it's obvious that line spacing value somehow depends on
-    // font size.
-    // For simplicity let's say that this dependency has the form of
-    // a coefficient <k>, i.e. line spacing is equal to
-    //   fontSize * k.
-    //
-    // Then:
-    //   metrics.lineSpacing = (Scale * QucsSettings.font.pointSize()) * k
-    //
-    // And then the value returned here is a fraction:
-    //                   Scale
-    //   ———————————————————————————————————————————
-    //   (Scale * QucsSettings.font.pointSize()) * k
-    //
-    // Which is equal to one divided by original, n o t - s c a l e d
-    // lines spacing:
-    //                 1
-    //   —————————————————————————————————
-    //   QucsSettings.font.pointSize() * k
-    return (Scale / float(metrics.lineSpacing()));
 }
 
 void Schematic::updateAllBoundingRect() {
@@ -1945,7 +1914,7 @@ int Schematic::adjustPortNumbers()
             if (pc->Model == "Port") {
                 countPort++;
 
-                Str = pc->Props.getFirst()->Value;
+                Str = pc->Props.front()->Value;
                 // search for matching port symbol
                 for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next()) {
                     if (pp->Name == ".PortSym ") {
@@ -2133,7 +2102,7 @@ bool Schematic::elementsOnGrid()
             // rescue non-selected node labels
             for (Port *pp : pc->Ports)
                 if (pp->Connection->Label)
-                    if (pp->Connection->Connections.count() < 2) {
+                    if (pp->Connection->conn_count() < 2) {
                         LabelCache.append(pp->Connection->Label);
                         pp->Connection->Label->pOwner = 0;
                         pp->Connection->Label = 0;
@@ -2170,12 +2139,12 @@ bool Schematic::elementsOnGrid()
             // rescue non-selected node label
             pLabel = nullptr;
             if (pw->Port1->Label) {
-                if (pw->Port1->Connections.count() < 2) {
+                if (pw->Port1->conn_count() < 2) {
                     pLabel = pw->Port1->Label;
                     pw->Port1->Label = nullptr;
                 }
             } else if (pw->Port2->Label) {
-                if (pw->Port2->Connections.count() < 2) {
+                if (pw->Port2->conn_count() < 2) {
                     pLabel = pw->Port2->Label;
                     pw->Port2->Label = nullptr;
                 }
@@ -2495,7 +2464,6 @@ void Schematic::slotScrollUp()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollUp(verticalScrollBar()->singleStep());
-    App->view->drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -2504,7 +2472,6 @@ void Schematic::slotScrollDown()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollDown(verticalScrollBar()->singleStep());
-    App->view->drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -2513,7 +2480,6 @@ void Schematic::slotScrollLeft()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollLeft(horizontalScrollBar()->singleStep());
-    App->view->drawn = false;
 }
 
 // -----------------------------------------------------------
@@ -2522,7 +2488,6 @@ void Schematic::slotScrollRight()
 {
     App->editText->setHidden(true); // disable edit of component property
     scrollRight(horizontalScrollBar()->singleStep());
-    App->view->drawn = false;
 }
 
 // *********************************************************************
@@ -2561,8 +2526,9 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
     auto ev_pos = Event->pos();
     QPoint inModel = contentsToModel(ev_pos);
 #endif
-    QMouseEvent e(QEvent::MouseButtonPress, ev_pos, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    //QMouseEvent e(QEvent::MouseButtonPress, ev_pos, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 
+    QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 
     App->view->MPressElement(this, &e, inModel.x(), inModel.y());
 
@@ -2629,15 +2595,6 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 // ---------------------------------------------------
 void Schematic::contentsDragLeaveEvent(QDragLeaveEvent *)
 {
-    if (App->view->selElem)
-        if (App->view->selElem->Type & isComponent)
-            if (App->view->drawn) {
-                QPainter painter(viewport());
-                App->view->setPainter(this);
-                ((Component *) App->view->selElem)->paintScheme(this);
-                App->view->drawn = false;
-            }
-
     if (formerAction)
         formerAction->setChecked(true); // restore old action
 }
@@ -2664,11 +2621,14 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
         }
 
 #if QT_VERSION >= 0x060000
-        QMouseEvent e(QEvent::MouseMove,
+        auto ev_pos = Event->position();
+        /*QMouseEvent e(QEvent::MouseMove,
                       Event->position(),
                       Qt::NoButton,
                       Qt::NoButton,
-                      Qt::NoModifier);
+                      Qt::NoModifier);*/
+        QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+
 #else
         QMouseEvent e(QEvent::MouseMove, Event->pos(), Qt::NoButton, Qt::NoButton, Qt::NoModifier);
 #endif

@@ -41,14 +41,16 @@
 
 QString misc::getWindowTitle()
 {
-    QString title = QUCS_NAME " " PACKAGE_VERSION;
+    QString title = QString("%1 %2").arg(QUCS_NAME,PACKAGE_VERSION);
     if (title.endsWith(".0")) {
         title.chop(2);
     }
 #if defined(GIT)
-    QString hash = GIT;
-    if (!hash.isEmpty()) {
-        title = title + "-" + hash;
+    if (title.endsWith(".99")) {
+        QString hash = GIT;
+        if (!hash.isEmpty()) {
+            title.append("-").append(hash);
+        }
     }
 #endif
 
@@ -703,8 +705,6 @@ bool VersionTriplet::operator==(const VersionTriplet& v2) {
     return false;
   if (this->minor != v2.minor)
     return false;
-  if (this->patch != v2.patch)
-    return false;
   return true;
 }
 
@@ -719,11 +719,6 @@ bool VersionTriplet::operator>(const VersionTriplet& v2) {
   if (this->minor > v2.minor)
     return true;
 
-  if (this->patch < v2.patch)
-    return false;
-  if (this->patch > v2.patch)
-    return true;
-
   return false;
 }
 
@@ -736,11 +731,6 @@ bool VersionTriplet::operator<(const VersionTriplet& v2) {
   if (this->minor > v2.minor)
     return false;
   if (this->minor < v2.minor)
-    return true;
-
-  if (this->patch > v2.patch)
-    return false;
-  if (this->patch < v2.patch)
     return true;
 
   return false;

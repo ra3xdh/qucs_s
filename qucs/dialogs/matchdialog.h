@@ -33,6 +33,8 @@
 #include <QDialog>
 #include <cmath>
 
+#include <complex>
+
 class Element;
 class QLabel;
 class QLineEdit;

@@ -72,6 +72,8 @@ JFET::JFET() {
                               QObject::tr("temperature at which parameters were extracted")));
     Props.append(new Property("Area", "1.0", false,
                               QObject::tr("default area for JFET")));
+    Props.append(new Property("UseGlobTemp", "yes", false,
+                              QObject::tr("Use global SPICE temperature")+" [yes,no]"));
 
     createSymbol();
     tx = x2 + 4;
@@ -87,7 +89,7 @@ JFET::JFET() {
 Component* JFET::newOne()
 {
   JFET* p = new JFET();
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate(0);
   return p;
 }
@@ -108,11 +110,11 @@ QString JFET::spice_netlist(bool isXyce)
     QStringList spice_incompat,spice_tr;
     if (isXyce) {
         spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"
-                     <<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"<<"Vt0tc";
+                     <<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"<<"Vt0tc"<<"UseGLobTemp";
                                   // spice-incompatible parameters
         spice_tr<<"Vt0"<<"VtO"; // parameters that need conversion of names
     } else {
-        spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce";
+        spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"<<"UseGlobTemp";
                                   // spice-incompatible parameters
         spice_tr<<"Vt0tc"<<"Tcv"; // parameters that need conversion of names
     }
@@ -122,8 +124,13 @@ QString JFET::spice_netlist(bool isXyce)
 
     QString jfet_type = getProperty("Type")->Value.at(0).toUpper();
 
-    s += QString(" JMOD_%1 %2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
-            .arg(getProperty("Temp")->Value);
+    if (getProperty("UseGlobTemp")->Value == "yes") {
+      s += QString(" JMOD_%1 %2\n").arg(Name).arg(getProperty("Area")->Value);
+    } else {
+      s += QString(" JMOD_%1 %2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+      .arg(getProperty("Temp")->Value);
+    }
+
     s += QString(".MODEL JMOD_%1 %2JF (%3)\n").arg(Name).arg(jfet_type).arg(par_str);
 
     return s;
@@ -147,7 +154,7 @@ Element* JFET::info_p(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     JFET* p = new JFET();
-    p->Props.getFirst()->Value = "pfet";
+    p->Props.front()->Value = "pfet";
     p->recreate(0);
     return p;
   }
@@ -166,7 +173,7 @@ void JFET::createSymbol()
 
   Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkBlue,2)));
 
-  if(Props.getFirst()->Value == "nfet") {
+  if(Props.front()->Value == "nfet") {
     Lines.append(new qucs::Line(-16, -5,-11,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line(-16,  5,-11,  0,QPen(Qt::darkBlue,2)));
   }

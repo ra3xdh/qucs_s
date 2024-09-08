@@ -41,7 +41,7 @@ dmux3to8::dmux3to8()
 Component * dmux3to8::newOne()
 {
   dmux3to8 * p = new dmux3to8();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

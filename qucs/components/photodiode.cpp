@@ -86,7 +86,7 @@ photodiode::photodiode()
 Component * photodiode::newOne()
 {
   photodiode * p = new photodiode();
-  p->Props.getFirst()->Value = Props.getFirst()->Value; 
+  p->Props.front()->Value = Props.front()->Value; 
   p->recreate(0); 
   return p;
 }

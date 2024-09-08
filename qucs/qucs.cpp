@@ -265,7 +265,7 @@ void QucsApp::initView()
   // set application icon
   // APPLE sets the QApplication icon with Info.plist
 #ifndef __APPLE__
-  setWindowIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
+  setWindowIcon (QPixmap(QString(":/bitmaps/hicolor/scalable/apps/qucs.svg")));
 #else
   // setUnifiedTitleAndToolBarOnMac(true);
   setStyleSheet("QToolButton { padding: 0px; }");
@@ -382,7 +382,68 @@ void QucsApp::initView()
   CompComps->setResizeMode(QListView::Adjust);
   CompComps->setIconSize(QSize(64,64));
   CompComps->setAcceptDrops(false);
-  CompComps->setStyleSheet("QListWidget{background: white; color: black;}");
+
+  const QString itemStyle = R"(
+      QListWidget {
+          background: white;
+          color: black;
+          outline: none;
+          padding: 0px;
+          margin: 0px;
+      }
+
+      QListWidget::item {
+          position: relative;
+          margin-top: 0px;
+          margin-left: 3px;
+          margin-right: 3px;
+          margin-bottom: 0px;
+          border: none;
+          border-radius: 2px;
+          outline: none;
+          background-color: transparent;
+      }
+
+      QListWidget::item:hover {
+          background-color: rgba(220, 242, 255, 0.75);
+      }
+
+      QListWidget::item:selected {
+          position: relative;
+          background-color: rgba(181, 227, 255, 0.75);
+          border: none;
+          color: black;
+          margin: 0px;
+      }
+
+      QListWidget::item:selected:focus {
+          position: relative;
+          background-color: rgba(181, 227, 255, 0.75);
+          border: none;
+          color: black;
+          margin: 0px;
+      }
+
+      QListWidget::item:selected:!focus {
+          position: relative;
+          background-color: rgba(222, 222, 223, 0.75);
+          border: none;
+          color: black;
+          margin: 0px;
+      }
+
+      QListWidget::item:selected:hover {
+          position: relative;
+          border: 1px solid black; /* Black border when selected and hovered */
+          padding-top:-1px;
+      }
+
+      QListWidget::item:focus {
+          outline: none; /* Remove the default focus outline */
+      }
+  )";
+
+  CompComps->setStyleSheet(itemStyle);
   
   #ifdef _MSC_VER
     CompComps->setDragEnabled(false);
@@ -542,7 +603,7 @@ void QucsApp::fillLibrariesTreeView ()
 //    newitem->setBackground
     topitems.append (newitem);
 
-    populateLibTreeFromDir(QucsSettings.LibDir, topitems);
+    populateLibTreeFromDir(QucsSettings.LibDir, topitems, true);
 
     // make the user libraries section header
     newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("User Libraries"));
@@ -559,14 +620,14 @@ void QucsApp::fillLibrariesTreeView ()
     newitem->setFont (0, sectionFont);
     topitems.append (newitem);
     if (!ProjName.isEmpty()) {
-        populateLibTreeFromDir(QucsSettings.QucsWorkDir.absolutePath(), topitems);
+        populateLibTreeFromDir(QucsSettings.QucsWorkDir.absolutePath(), topitems, true);
     }
 
     libTreeWidget->insertTopLevelItems(0, topitems);
 }
 
 
-bool QucsApp::populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidgetItem *> &topitems)
+bool QucsApp::populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidgetItem *> &topitems, bool relpath)
 {
     QDir LibDir(LibDirPath);
     QStringList LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
@@ -582,7 +643,7 @@ bool QucsApp::populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidge
 
         ComponentLibrary parsedlibrary;
 
-        int result = parseComponentLibrary (libPath , parsedlibrary);
+        int result = parseComponentLibrary (libPath , parsedlibrary, QUCS_COMP_LIB_FULL, relpath);
         QStringList nameAndFileName;
         nameAndFileName.append (parsedlibrary.name);
         nameAndFileName.append (LibDirPath + *it);
@@ -1015,9 +1076,9 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
     return;
   }
 
-  if(view->drawn)
-    ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
-  view->drawn = false;
+  //if(view->drawn)
+  //  ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
+  //view->drawn = false;
 
   // toggle last toolbar button off
   if(activeAction) {
@@ -1374,8 +1435,6 @@ void QucsApp::openProject(const QString& Path)
   int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
 
-  view->drawn = false;
-
   slotResetWarnings();
 
   QucsSettings.QucsWorkDir.setPath(ProjDir.path());
@@ -1447,8 +1506,6 @@ void QucsApp::slotMenuProjClose()
   Schematic *d = new Schematic(this, "");
   int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
-
-  view->drawn = false;
 
   slotResetWarnings();
   setWindowTitle(windowTitle);
@@ -1616,7 +1673,6 @@ bool QucsApp::gotoPage(const QString& Name)
   if(!d->load()) {    // load document if possible
     delete d;
     DocumentTab->setCurrentIndex(No);
-    view->drawn = false;
     return false;
   }
   slotChangeView();
@@ -1637,7 +1693,6 @@ bool QucsApp::gotoPage(const QString& Name)
     if(!getDoc(0)->DocChanged)
       delete DocumentTab->widget(0);
 
-  view->drawn = false;
   return true;
 }
 
@@ -1857,7 +1912,6 @@ void QucsApp::slotFileSaveAll()
   if (tabType == "Schematic") {
     ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
   }
-  view->drawn = false;
   statusBar()->showMessage(tr("Ready."));
 
   // refresh the schematic file path
@@ -2034,8 +2088,6 @@ void QucsApp::slotChangeView()
 //    setWindowTitle(Info.fileName() + " (" + Info.filePath() +") - " + windowTitle);
 //  }
 
-  view->drawn = false;
-
   HierarchyHistory.clear();
   popH->setEnabled(false);
 }
@@ -2068,7 +2120,6 @@ void QucsApp::slotFileSettings ()
     SettingsDialog * d = new SettingsDialog ((Schematic *) w);
     d->exec ();
   }
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -2078,7 +2129,6 @@ void QucsApp::slotApplSettings()
 
   QucsSettingsDialog *d = new QucsSettingsDialog(this);
   d->exec();
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------
@@ -2121,7 +2171,7 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
     Schematic *Doc = (Schematic*)w;
     for(Component *pc=Doc->Components->last(); pc!=0; ) {
       if(pc->Model == Model) {
-        File = pc->Props.getFirst()->Value;
+        File = pc->Props.front()->Value;
         if((File == pathName) || (File == Name)) {
           pc_tmp = Doc->Components->prev();
           Doc->recreateComponent(pc);  // delete and re-append component
@@ -2643,7 +2693,6 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
       file.close();
       if(!d->load()) {
         delete d;
-        view->drawn = false;
         return;
       }
     }
@@ -2828,9 +2877,6 @@ void QucsApp::slotSelectSubcircuit(const QModelIndex &idx)
   Comp->recreate(0);
   view->selElem = Comp;
 
-  if(view->drawn)
-    ((Q3ScrollView*)DocumentTab->currentWidget())->viewport()->update();
-  view->drawn = false;
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
   MouseReleaseAction = 0;
@@ -3054,7 +3100,6 @@ void QucsApp::slotSymbolEdit()
     changeSchematicSymbolMode(SDoc);
     SDoc->becomeCurrent(true);
     SDoc->viewport()->update();
-    view->drawn = false;
   }
   // in a normal schematic, symbol file
   else {
@@ -3065,7 +3110,6 @@ void QucsApp::slotSymbolEdit()
       changeSchematicSymbolMode(SDoc);
       SDoc->becomeCurrent(true);
       SDoc->viewport()->update();
-      view->drawn = false;
     }
   }
 }

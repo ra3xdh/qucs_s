@@ -24,6 +24,7 @@
 #include <qt3_compat/qt_compat.h>
 
 class Wire;
+class WireLabel;
 class Schematic;
 class Diagram;
 class QPainter;
@@ -44,7 +45,6 @@ public:
   void editElement(Schematic*, QMouseEvent*);
   void editLabel(Schematic*, WireLabel*);
 
-  bool drawn;  // indicates whether the scheme element was drawn last time
   Element *selElem;  // component/diagram/painting selected in IconView
   Element *focusElement;
   QMouseEvent *focusMEvent;

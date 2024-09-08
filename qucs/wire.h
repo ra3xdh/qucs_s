@@ -18,8 +18,7 @@
 #ifndef WIRE_H
 #define WIRE_H
 
-#include "element.h"
-#include "components/component.h"    // because of struct Port
+#include "conductor.h"
 #include "wirelabel.h"
 
 class Schematic;

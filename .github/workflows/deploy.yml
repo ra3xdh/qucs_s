@@ -3,18 +3,22 @@ name: deploy
 on:
   push:
     branches: [ "master", "current", "release/*" ]
+    tags:
+        - '[0-9]+.[0-9]+.[0-9]+*'
   pull_request:
     branches: [ "master", "current", "release/*" ]
   workflow_dispatch:
   
 env:
   APP_NAME: "Qucs-S"
+  CI_VERSION: 24.3.99
   EXECUTABLE_NAME: "qucs-s"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
   QT_VERSION: 6.7.2
   QUCS_MACOS_BIN: build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
+  NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/43/ngspice-43_64.7z
   
 jobs:
   setup:
@@ -28,9 +32,15 @@ jobs:
     - name: Read version from file
       id: read_version
       run: |
-        VERSION=$(cat VERSION)
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        if [ "${{github.ref_type}}" == "tag" ]; then
+          VERSION=${{ github.ref_name }}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        else
+          VERSION=${{ env.CI_VERSION }}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        fi
         
     - name: Print version 
       run: echo "Qucs-S version is ${{ env.VERSION }}"
@@ -52,42 +62,60 @@ jobs:
     - name: Install Dependencies
       run: |
           sudo apt-get update
-          sudo apt-get install -y qt6-base-dev qt6-tools-dev qt6-tools-dev-tools libglx-dev linguist-qt6 qt6-l10n-tools libqt6svg6-dev libgl1-mesa-dev
-          sudo apt-get install -y flex bison gperf dos2unix
-    - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_INSTALL_PREFIX=/usr -DWITH_QT6=ON
+          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
 
-    - name: Build
+    - name: 'Install Qt6'
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.7.2'
+        host: 'linux'
+        target: 'desktop'
+        cache: true
+        arch: 'linux_gcc_64'
+        install-deps: 'true'
+
+    - name: 'Configure CMake'
+      run: |
+          cmake -B ${{github.workspace}}/build \
+                -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                -DCMAKE_INSTALL_PREFIX=/usr \
+                -DWITH_QT6=ON \
+                -DCI_VERSION="${{env.VERSION}}"
+
+    - name: 'Build'
       # Build your program with the given configuration
       run: |
           cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
           make -C ${{github.workspace}}/build install DESTDIR=${{github.workspace}}/AppDir
 
       
-    - name: Install linuxdeploy
+    - name: 'Install linuxdeploy'
       run: |
-          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-          wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          wget -q --tries=3 --wait=5 \
+                https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          wget -q --tries=3 --wait=5 \
+                https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
           sudo apt-get install fuse libfuse2
           chmod +x linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
     
     - name: 'Create AppImage'
       run: |
-             export QMAKE=/usr/bin/qmake6
-             ./linuxdeploy-x86_64.AppImage --appdir ${{github.workspace}}/AppDir --desktop-file=${{github.workspace}}/AppDir/usr/share/applications/qucs-s.desktop --icon-file=${{github.workspace}}/AppDir/usr/share/icons/hicolor/256x256/apps/qucs-s.png --plugin=qt --output appimage
-             rm linuxdeploy-x86_64.AppImage
-             rm linuxdeploy-plugin-qt-x86_64.AppImage
-             mv *.AppImage ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
+          ./linuxdeploy-x86_64.AppImage --appdir ${{github.workspace}}/AppDir \
+                                        --desktop-file=${{github.workspace}}/AppDir/usr/share/applications/qucs-s.desktop \
+                                        --icon-file=${{github.workspace}}/AppDir/usr/share/icons/hicolor/256x256/apps/qucs-s.png \
+                                        --plugin=qt --output appimage
+          rm linuxdeploy-x86_64.AppImage
+          rm linuxdeploy-plugin-qt-x86_64.AppImage
+          mv *.AppImage ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
 
     - name: 'Upload artifact: AppImage'
       uses: actions/upload-artifact@v4
       with:
           name: ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64
           path: ${{ env.APP_NAME }}-${{env.VERSION}}-linux-x86_64.AppImage
-                
+              
  
   build-mac-intel:
     runs-on: macos-12
@@ -112,7 +140,7 @@ jobs:
     - name: 'Install Qt6'
       uses: jurplel/install-qt-action@v4
       with:
-        version: ${{env.QT_VERSION}}
+        version: '6.2.4'
         host: 'mac'
         target: 'desktop'
         cache: true
@@ -131,18 +159,15 @@ jobs:
           
     - name: 'Configure CMake'
       run: |
-        qt-cmake -B ${{github.workspace}}/build  -G 'Ninja' \
-                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1
+        cmake -B ${{github.workspace}}/build  -G 'Ninja' \
+              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
+              -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 \
+              -DCMAKE_OSX_ARCHITECTURES="x86_64" \
+              -DCI_VERSION="${{env.VERSION}}"
 
     - name: 'Build Qucs-s'
       run: |
         cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
-    
-    #- name: Install
-    #  run: | 
-    #    cd build
-    #    make install DESTDIR=./deploy
-    #    cd ..
         
     - name: 'Package App Bundle'
       run: |
@@ -172,16 +197,16 @@ jobs:
         codesign --force --deep --sign - ./build/qucs/qucs-s.app
         npm install --global create-dmg
         create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOS-x86_64.dmg
+        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOSX-x86_64.dmg
 
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-x86_64
-        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-x86_64.dmg
+        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOSX-x86_64
+        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOSX-x86_64.dmg
+        
 
-      
-  build-mac-arm:
+  build-mac-universal:
     runs-on: macos-latest
     needs: setup
     strategy:
@@ -210,7 +235,7 @@ jobs:
         cache: true
         arch: 'clang_64'
         install-deps: 'true'
-       
+        
     - name: 'Install Dependencies'
       shell: bash
       run: |
@@ -223,18 +248,15 @@ jobs:
           
     - name: 'Configure CMake'
       run: |
-        qt-cmake -B ${{github.workspace}}/build  -G 'Ninja' \
-                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1
+          cmake -B ${{github.workspace}}/build  -G 'Ninja' \
+                -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
+                -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
+                -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+                -DCI_VERSION="${{env.VERSION}}"
 
     - name: 'Build Qucs-s'
       run: |
-        cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
-    
-    #- name: Install
-    #  run: | 
-    #    cd build
-    #    make install DESTDIR=./deploy
-    #    cd ..
+          cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
         
     - name: 'Package App Bundle'
       run: |
@@ -264,22 +286,19 @@ jobs:
         codesign --force --deep --sign - ./build/qucs/qucs-s.app
         npm install --global create-dmg
         create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOS-arm64.dmg
+        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOS.dmg
     
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-arm64
-        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS-arm64.dmg
+        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS
+        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS.dmg
       
   build-windows:
     runs-on: windows-2022
     needs: setup
     strategy:
       fail-fast: false
-      matrix:
-        environment:
-          - ucrt64
     defaults:
       run:
         shell: msys2 {0}
@@ -307,7 +326,7 @@ jobs:
     - name: Set up MSYS2 environment
       uses: msys2/setup-msys2@v2
       with:
-        msystem: ${{ matrix.environment }}
+        msystem: ucrt64
         cache: true
         update: true
         install: >-
@@ -316,7 +335,7 @@ jobs:
           dos2unix
           curl
           zip
-          unzip
+          p7zip
         pacboy: >-
           cmake:p 
           gcc:p 
@@ -331,7 +350,10 @@ jobs:
 
     - name: Build project with CMake
       run: |
-        cmake.exe -B build/ -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=ON
+        cmake.exe -B build/ -G "MinGW Makefiles" \
+                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                  -DWITH_QT6=ON \
+                  -DCI_VERSION="${{env.VERSION}}"
         cmake.exe --build build/ -j$(nproc) --config ${{env.BUILD_TYPE}}
 
     - name: Make install
@@ -349,22 +371,38 @@ jobs:
         windeployqt-qt6.exe build/qucs-suite/bin/qucs-sfilter.exe  --no-translations 
         windeployqt-qt6.exe build/qucs-suite/bin/qucs-spowercombining.exe  --no-translations 
         windeployqt-qt6.exe build/qucs-suite/bin/qucs-strans.exe  --no-translations
-
+        
     - name: Copy non-Qt DLLs to bin directory
       run: |
         shopt -s extglob
-        FILES=$(ldd build/qucs-suite/bin/qucs-s.exe | awk '($3 ~ /\/${{ matrix.environment }}\/bin\//) {print $3}')
+        FILES=$(ldd build/qucs-suite/bin/qucs-s.exe | awk '($3 ~ /\/ucrt64\/bin\//) {print $3}')
         for file in $FILES; do
           if [[ $(basename "$file") != Qt6* ]]; then
             cp -r "$file" build/qucs-suite/bin
           fi
         done
+        
+    - name: Add ngspice to release
+      run: |
+        curl -sL --retry 3 --retry-delay 5 -o ngspice.7z ${{ env.NGSPICE_URL }}
+        7z x ngspice.7z -ongspice
+        mkdir -p build/qucs-suite/lib/ngspice
+        cp -rf ngspice/Spice64/bin/ build/qucs-suite
+        cp -rf ngspice/Spice64/lib/ build/qucs-suite
             
     - name: Create zip archive for release
       run: |
+        mkdir -p build/qucs-suite/misc
+        cp -rf contrib/InnoSetup/misc build/qucs-suite/
         cd build/qucs-suite
-        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip ./bin ./share
+        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip ./bin ./share ./lib ./misc
         cd ../..
+
+    - name: Compile .ISS to .EXE Installer
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.4
+      with:
+        path: contrib/InnoSetup/qucs.iss
+        options: /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}"
         
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -372,64 +410,94 @@ jobs:
         name: ${{ env.APP_NAME }}-${{ env.VERSION }}-win64
         path: ${{ env.APP_NAME }}-${{ env.VERSION }}-win64.zip
 
+    - name: Upload exe artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}-setup
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}-setup.exe
+
   create-release:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    needs:
-     - setup
-     - build-linux-appimage-qt6
-     - build-mac-intel
-     - build-mac-arm
-     - build-windows
+    if: github.event_name != 'pull_request'
+    needs: [setup, build-linux-appimage-qt6, build-mac-intel, build-mac-universal, build-windows]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Set version environment variable
+      run: echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
+
+    - name: Print version
+      run: echo "Qucs-S version is ${{ env.VERSION }}"
 
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
         path: ~/artifacts
+        merge-multiple: true
 
     - name: Calculate SHA-256 checksums
       run: |
         cd ~/artifacts
         > hashes.sha256
-        for file in $(find . -type f \( -name "*.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
+        for file in $(find . -type f \( -name "*.exe" -o -name "*.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
           filename=$(basename "$file")
           sha256sum "$file" | awk -v fname="$filename" '{print $1 " *" fname}' >> hashes.sha256
         done
         cd ..
+        tree ~/artifacts
 
-    - name: Check if continuous_build release exists
+    - name: Setup Release Information
       run: |
-        if gh release view continuous_build --repo $GITHUB_REPOSITORY &> /dev/null; then
-          gh release delete continuous_build --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
+        if [ "${{github.ref_type}}" == "tag" ]; then
+          echo "PRERELEASE=" >> $GITHUB_ENV
+          echo "RELEASE_NAME=Qucs-S ${{ github.ref_name }}" >> $GITHUB_ENV
+          echo "TAG_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
+          echo "RELEASE_NOTES=--generate-notes" >> $GITHUB_ENV
+        else
+          echo "PRERELEASE=-p" >> $GITHUB_ENV
+          echo "RELEASE_NAME=Continuous Build" >> $GITHUB_ENV
+          echo "TAG_NAME=continuous_build" >> $GITHUB_ENV
+          echo "RELEASE_NOTES=--notes \"Automated release for commit ${{ github.sha }}\"" >> $GITHUB_ENV
         fi
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
+          
     - name: Create GitHub Release
-      continue-on-error: true
+      continue-on-error: false
       run: |
-        # Find existing zip and dmg files
+        # Find existing artifact files
+        hash_files=$(find ~/artifacts -name "*.sha256" -print0 | xargs -0 echo)
+        exe_files=$(find ~/artifacts -name "*.exe" -print0 | xargs -0 echo)
         zip_files=$(find ~/artifacts -name "*.zip" -print0 | xargs -0 echo)
         dmg_files=$(find ~/artifacts -name "*.dmg" -print0 | xargs -0 echo)
         appimage_files=$(find ~/artifacts -name "*.AppImage" -print0 | xargs -0 echo)
+
+        # Check existing release and delete if it's exist
+        if gh release view ${{ env.TAG_NAME }} --repo $GITHUB_REPOSITORY &> /dev/null; then
+          if [ "${{ env.TAG_NAME }}" == "continuous_build" ]; then
+            gh release delete ${{ env.TAG_NAME }} --repo $GITHUB_REPOSITORY --cleanup-tag  --yes
+          else
+            gh release delete ${{ env.TAG_NAME }} --repo $GITHUB_REPOSITORY
+          fi
+          echo "${{ env.TAG_NAME }} deleted!"
+        fi
         
-        # Create release only if there are files to upload
-        if [ -n "$zip_files" ] || [ -n "$dmg_files" ] || [ -n "$appimage_files" ]; then
-          gh release create continuous_build \
-            $zip_files \
-            $dmg_files \
-            $appimage_files \
-            ~/artifacts/hashes.sha256 \
-            -p \
-            --repo $GITHUB_REPOSITORY \
-            --title "Continuous build" \
-            --notes "Automated release for commit ${{ github.sha }}"
+        if [ -n "$exe_files" ] && [ -n "$zip_files" ] && [ -n "$dmg_files" ] && [ -n "$appimage_files" ]; then
+          gh release create ${{ env.TAG_NAME }} \
+                            $exe_files \
+                            $zip_files \
+                            $dmg_files \
+                            $appimage_files \
+                            $hash_files \
+                            ${{ env.PRERELEASE }} \
+                            --repo $GITHUB_REPOSITORY \
+                            --title "${{ env.RELEASE_NAME }}" \
+                            ${{ env.RELEASE_NOTES }}
+
+            echo "${{ env.TAG_NAME }} release created!"
         else
           echo "No artifacts to upload."
+          exit 1
         fi
-
+        
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

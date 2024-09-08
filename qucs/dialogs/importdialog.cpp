@@ -242,8 +242,6 @@ void ImportDialog::slotImport()
     break;
   case 1:
     CommandLine << "touchstone";
-    if (!OutputData->currentText().isEmpty())
-      CommandLine << "-d" << OutputData->currentText();
     break;
   case 2:
     CommandLine << "csv";
@@ -290,26 +288,15 @@ void ImportDialog::slotImport()
 }
 
 // ------------------------------------------------------------------------
-void ImportDialog::slotType()
+void ImportDialog::slotType(int index)
 {
-  auto index = OutType->currentIndex();
-  switch(index) {
-  case 0:
-  case 3:
-  case 4:
-  case 5:
-    OutputData->setEnabled(false);
-    OutputLabel->setEnabled(false);
-    break;
-  case 1:
-  case 2:
+  //auto index = OutType->currentIndex();
+  if (index == 2) {
     OutputData->setEnabled(true);
     OutputLabel->setEnabled(true);
-    break;
-  default:
+  } else {
     OutputData->setEnabled(false);
     OutputLabel->setEnabled(false);
-    break;
   }
 
   if (index == 3) {
@@ -441,7 +428,7 @@ void ImportDialog::slotValidateOutput()
     default:
         break;
     }
-    slotType();
+    slotType(OutType->currentIndex());
 }
 
 

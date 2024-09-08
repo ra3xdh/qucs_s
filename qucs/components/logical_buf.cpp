@@ -90,7 +90,7 @@ void Logical_Buf::createSymbol()
 {
   int xr;
 
-  if(Props.getLast()->Value.at(0) == 'D') {  // DIN symbol
+  if(Props.back()->Value.at(0) == 'D') {  // DIN symbol
     Lines.append(new qucs::Line( 15,-20, 15, 20,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line(-15,-20, 15,-20,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line(-15, 20, 15, 20,QPen(Qt::darkBlue,2)));
@@ -120,7 +120,7 @@ void Logical_Buf::createSymbol()
 Component* Logical_Buf::newOne()
 {
   Logical_Buf* p = new Logical_Buf();
-  p->Props.getLast()->Value = Props.getLast()->Value;
+  p->Props.back()->Value = Props.back()->Value;
   p->recreate(0);
   return p;
 }
