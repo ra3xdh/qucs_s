@@ -4,6 +4,10 @@
 
 * Stable release packages are now generated autmatically using Github CI #871
 
+## QucsatorRF
+
+* QucsatorRF updated to v1.0.2; See the release notes
+
 ## Bugfixes and general improvements
 
 * Improved temperature sweep using unified devices #925
