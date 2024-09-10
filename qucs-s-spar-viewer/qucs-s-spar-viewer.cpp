@@ -2067,7 +2067,7 @@ void Qucs_S_SPAR_Viewer::adjust_x_axis_div()
     double x_max = QSpinBox_x_axis_max->value();
     double x_div = QComboBox_x_axis_div->currentText().toDouble();
 
-    if ((x_div > x_max-x_min) || ((x_max-x_min)/x_div > 15)){
+    if ((x_div > x_max-x_min) || ((x_max-x_min)/x_div > 15) || ((x_max-x_min)/x_div < 5) ){
         // No ticks or excesive ticks
         int new_index = findClosestIndex(available_x_axis_div, (x_max-x_min)/5);
         disconnect(QComboBox_x_axis_div, SIGNAL(currentIndexChanged(int)), this, SLOT(updatePlot()));
