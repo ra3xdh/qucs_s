@@ -533,7 +533,6 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
 
         // Read the Touchstone file.
         // Please see https://ibis.org/touchstone_ver2.0/touchstone_ver2_0.pdf
-        QList<double> frequency;
         QMap<QString, QList<double>> file_data; // Data structure to store the file data
         QString frequency_unit, parameter, format;
         double freq_scale = 1; // Hz
@@ -1038,7 +1037,7 @@ double Qucs_S_SPAR_Viewer::getFreqScale(QString frequency_unit)
 
 void Qucs_S_SPAR_Viewer::addTrace()
 {
-    QString selected_dataset, selected_trace, trace_name;
+    QString selected_dataset, selected_trace;
     selected_dataset = this->QCombobox_datasets->currentText();
     selected_trace = this->QCombobox_traces->currentText();
 
@@ -1672,7 +1671,7 @@ void Qucs_S_SPAR_Viewer::adjust_y_axis_to_trace(QString filename, QString tracen
     //Adjust the y-axis div depending on the limits
     double y_div = QComboBox_y_axis_div->currentText().toDouble();
 
-    if ((y_div > y_max-y_min) || ((y_max-y_min)/y_div > 10)){
+    if ((y_div > y_max-y_min) || ((y_max-y_min)/y_div > 10) || ((y_max-y_min)/y_div < 5)){
         // No ticks or excesive ticks
         int new_index = findClosestIndex(available_y_axis_div, (y_max-y_min)/10);
         disconnect(QComboBox_y_axis_div, SIGNAL(currentIndexChanged(int)), this, SLOT(updatePlot()));
