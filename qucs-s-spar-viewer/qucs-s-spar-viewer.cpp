@@ -536,7 +536,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
         QMap<QString, QList<double>> file_data; // Data structure to store the file data
         QString frequency_unit, parameter, format;
         double freq_scale = 1; // Hz
-        double Z0;
+        double Z0=50; // System impedance. Typically 50 Ohm
 
         // Get the number of ports
         QString suffix = QFileInfo(filename).suffix();
@@ -693,8 +693,8 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
                double MAG = MSG * (K - std::sqrt(K * K - 1));
 
                // Calculate Zin and Zout
-               std::complex<double> Zin = Z0 * (1.0 + s11) / (1.0 - s11);
-               std::complex<double> Zout = Z0 * (1.0 + s22) / (1.0 - s22);
+               std::complex<double> Zin = std::complex<double>(Z0) * (1.0 + s11) / (1.0 - s11);
+               std::complex<double> Zout = std::complex<double>(Z0) * (1.0 + s22) / (1.0 - s22);
 
                // Convert MSG and MAG to dB scale
                MSG = 10*log10(MSG);
@@ -1904,7 +1904,7 @@ QPointF Qucs_S_SPAR_Viewer::findClosestPoint(QAbstractSeries* series, qreal targ
         return QPointF(); // Return invalid point if cast fails
     }
 
-    QVector<QPointF> points = xySeries->pointsVector();
+    QVector<QPointF> points = xySeries->points().toVector();
     if (points.isEmpty()) {
         return QPointF(); // Return invalid point if series is empty
     }
