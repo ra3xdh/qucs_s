@@ -65,7 +65,7 @@ SET( spar_viewer_moc_headers qucs-s-spar-viewer.h)
 SET(RESOURCES qucs-s-spar-viewer.qrc)
 
 if(QT_VERSION_MAJOR EQUAL 6)
-QT6_WRAP_CPP( spar_viewer_moc_sources ${spar_viewer_moc_headers}spar_viewerf )
+QT6_WRAP_CPP( spar_viewer_moc_sources ${spar_viewer_moc_headers} )
 QT6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 else()
 QT5_WRAP_CPP( spar_viewer_moc_sources ${spar_viewer_moc_headers} )

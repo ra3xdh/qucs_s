@@ -560,7 +560,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
           //qDebug() << line;
 
            if (line.isEmpty()) continue;
-           if ((line.at(0).isNumber() == false) && (line.at(0) != "#")) {
+           if ((line.at(0).isNumber() == false) && (line.at(0) != '#')) {
                if (file_data["frequency"].size() == 0){
                    // There's still no data
                    continue;
@@ -572,7 +572,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
 
            }
            // Check for the option line
-           if (line.at(0) == "#"){
+           if (line.at(0) == '#'){
 
                QStringList info = line.split(" ");
                frequency_unit = info.at(1); // Specifies the unit of frequency.
@@ -1443,7 +1443,7 @@ void Qucs_S_SPAR_Viewer::updateTraces()
         QString data_file = trace_name_parts[0];
         QString trace_file = trace_name_parts[1];
 
-        if (trace_file.at(0) == "S"){
+        if (trace_file.at(0) == 'S'){
             trace_file = trace_file + QString("_dB");
         }
         if (trace_file == QString("|%1|").arg(QChar(0x0394))){
@@ -1643,7 +1643,7 @@ void Qucs_S_SPAR_Viewer::checkFreqSettingsLimits(QString filename, double& fmin,
 void Qucs_S_SPAR_Viewer::adjust_y_axis_to_trace(QString filename, QString tracename){
     qreal minX, maxX, minY, maxY;
 
-    if (tracename.at(0) == "S"){
+    if (tracename.at(0) == 'S'){
         tracename = tracename + QString("_dB");
     }
     if (tracename == QString("|%1|").arg(QChar(0x0394))){

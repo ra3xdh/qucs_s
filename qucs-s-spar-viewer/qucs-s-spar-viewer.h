@@ -13,7 +13,9 @@
 #include <QtGlobal>
 #include <complex>
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 using namespace QtCharts;
+#endif
 
 class QComboBox;
 class QTableWidget;

@@ -25,7 +25,6 @@
 #include <QDir>
 #include <QFont>
 #include <QSettings>
-#include <QDesktopWidget>
 #include <QScreen>
 #include <QStyle>
 
