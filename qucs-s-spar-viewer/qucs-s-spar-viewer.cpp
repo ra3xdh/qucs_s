@@ -508,9 +508,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
     QStringList files_dataset = datasets.keys();
 
     for (int i = 0; i < fileNames.length(); i++){
-
       filename = QFileInfo(fileNames.at(i)).fileName();
-
       // Check if this file already exists
       QString new_filename = filename.left(filename.indexOf('.'));
       if (files_dataset.contains(new_filename)){
@@ -524,7 +522,6 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
             tr("This file is already in the dataset.") );
 
       }
-
     }
 
     // Read files
@@ -1116,13 +1113,11 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
     QPushButton * new_trace_color = new QPushButton();
     new_trace_color->setObjectName(QString("Trace_Color_") + QString::number(n_trace));
     connect(new_trace_color, SIGNAL(clicked()), SLOT(changeTraceColor()));
+    QString styleSheet = QString("QPushButton { background-color: %1; }").arg(trace_color.name());
+    new_trace_color->setStyleSheet(styleSheet);
+    new_trace_color->setAttribute(Qt::WA_TranslucentBackground); // Needed for Windows buttons to behave as they should
     List_Trace_Color.append(new_trace_color);
     this->TracesGrid->addWidget(new_trace_color, n_trace, 1);
-    // Set the button color according to the trace color
-    QPalette palette = new_trace_color->palette();
-    palette.setColor(QPalette::Button, trace_color);
-    new_trace_color->setPalette(palette);
-    new_trace_color->update();
 
     // Line Style
     QComboBox * new_trace_linestyle = new QComboBox();
@@ -1227,10 +1222,8 @@ void Qucs_S_SPAR_Viewer::changeTraceColor()
                 // For example, set the background color of the button
                 QPushButton *button = qobject_cast<QPushButton*>(sender());
                 if (button) {
-                    QPalette palette = button->palette();
-                    palette.setColor(QPalette::Button, color);
-                    button->setPalette(palette);
-                    button->update();
+                  QString styleSheet = QString("QPushButton { background-color: %1; }").arg(color.name());
+                  button->setStyleSheet(styleSheet);
 
                     QString ID = button->objectName();
 
