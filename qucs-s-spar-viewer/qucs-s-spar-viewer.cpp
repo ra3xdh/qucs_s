@@ -503,10 +503,36 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
         this->y_max = -1e30;
     }
 
+
+    // Remove from the list of files those that already exist in the database
+    QStringList files_dataset = datasets.keys();
+
+    for (int i = 0; i < fileNames.length(); i++){
+
+      filename = QFileInfo(fileNames.at(i)).fileName();
+
+      // Check if this file already exists
+      QString new_filename = filename.left(filename.indexOf('.'));
+      if (files_dataset.contains(new_filename)){
+        // Remove it from the list of new files to load
+        fileNames.removeAt(i);
+
+        // Pop up a warning
+        QMessageBox::information(
+            this,
+            tr("Warning"),
+            tr("This file is already in the dataset.") );
+
+      }
+
+    }
+
+    // Read files
     for (int i = existing_files; i < existing_files+fileNames.length(); i++)
     {
         // Create the file name label
         filename = QFileInfo(fileNames.at(i-existing_files)).fileName();
+
         QLabel * Filename_Label = new QLabel(filename.left(filename.indexOf('.')));
         Filename_Label->setObjectName(QString("File_") + QString::number(i));
         List_FileNames.append(Filename_Label);
@@ -549,6 +575,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
         QFile file(fileNames.at(i-existing_files));
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "Cannot open the file";
+            break;
         }
 
         // 2) Read data
