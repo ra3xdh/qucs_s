@@ -192,8 +192,8 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   available_x_axis_div.clear();
   available_x_axis_div << 2000 << 1000 << 500 << 400 << 200 << 100 << 50 << 25 << 20 << 10 << 5 << 1 << 0.5 << 0.2 << 0.1;
 
-  for (const double &value : available_x_axis_div) {
-      QComboBox_x_axis_div->addItem(QString::number(value));
+  for (const double &value : qAsConst(available_x_axis_div)) {
+    QComboBox_x_axis_div->addItem(QString::number(value));
   }
 
   connect(QComboBox_x_axis_div, SIGNAL(currentIndexChanged(int)), SLOT(updatePlot()));
@@ -462,13 +462,6 @@ void Qucs_S_SPAR_Viewer::slotHelpAbout()
 
 void Qucs_S_SPAR_Viewer::slotQuit()
 {
-  int tmp;
-  tmp = x();
-  tmp = y();
-  tmp = width();
-  tmp = height();
-  Q_UNUSED(tmp);
-
   qApp->quit();
 }
 
@@ -743,7 +736,6 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
 
         // 4) Add new dataset to the trace selection combobox
         QCombobox_datasets->addItem(filename);
-        QString current_dataset = QCombobox_datasets->currentText();
         // Update traces
         updateTracesCombo();
     }
@@ -1415,9 +1407,10 @@ void Qucs_S_SPAR_Viewer::updateTraces()
     QList<QAbstractSeries *> seriesList = chart->series();
 
     // Remove series from the chart
-    for (QAbstractSeries *series : seriesList) {
-            chart->removeSeries(series);
-        }
+    for (QAbstractSeries *series : qAsConst(seriesList)) {
+      chart->removeSeries(series);
+    }
+
 
     double freq_scale = getFreqScale();
 
@@ -1431,7 +1424,7 @@ void Qucs_S_SPAR_Viewer::updateTraces()
     // Remove marker traces
     // Iterate through the series list
     QList<QAbstractSeries *> seriesToRemove;
-    for (QAbstractSeries *series : seriesList) {
+    for (QAbstractSeries *series : qAsConst(seriesList)) {
         //qDebug() << series->name();
         if (series->name().startsWith("Mkr", Qt::CaseInsensitive)) {
             seriesToRemove.append(series);
@@ -1934,7 +1927,7 @@ QPointF Qucs_S_SPAR_Viewer::findClosestPoint(QAbstractSeries* series, qreal targ
     qreal minDistance = qAbs(targetX - closestPoint.x());
 
     // Iterate through all points to find the closest one
-    for (const QPointF& point : points) {
+    for (const QPointF& point : qAsConst(points)) {
         qreal distance = qAbs(targetX - point.x());
         if (distance < minDistance) {
             minDistance = distance;
@@ -2168,7 +2161,7 @@ void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event)
     QList<QUrl> urls = event->mimeData()->urls();
     QStringList fileList;
 
-    for (const QUrl &url : urls) {
+    for (const QUrl &url : qAsConst(urls)) {
         if (url.isLocalFile()) {
             fileList << url.toLocalFile();
         }
