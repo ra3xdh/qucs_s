@@ -57,3 +57,5 @@ __pycache__
 .vscode/settings.json
 .vscode/tasks.json
 /cmake-build-debug/
+
+build-qucs-s-spar-viewer-Desktop-Debug/
