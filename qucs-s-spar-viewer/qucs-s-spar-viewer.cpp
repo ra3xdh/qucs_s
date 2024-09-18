@@ -484,7 +484,6 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
     int existing_files = this->datasets.size(); // Get the number of entries in the map
 
     // Variables for reading the Touchstone data
-    QString line;
     QStringList values;
     QString filename;
 
@@ -1866,7 +1865,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable(){
     QStringList headers;
     headers.clear();
     headers.append("freq");
-    for (QAbstractSeries *series : seriesList) {
+    for (QAbstractSeries *series : qAsConst(seriesList)) {
         QString series_name = series->name();
         if (series_name.startsWith("Mkr", Qt::CaseSensitive)){
             //Markers are traces in the QChart, but they cannot be added as markers again!
@@ -1896,9 +1895,16 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable(){
                 continue;
             }
             targetX = getFreqFromText(freq_marker);
-            //Normalize with respect to the scale of the x-axis
-            targetX = targetX*getFreqScale();
-            P = findClosestPoint(seriesList[c-1], targetX);
+            // Look into dataset, traces may be clipped.
+            // It is important to grab the data from the dataset, not from the displayed trace.
+            QString trace_name = seriesList[c-1]->name();
+            QStringList parts = trace_name.split(".");
+            QString file = parts[0];
+            QString trace = parts[1];
+            if (trace.at(0) == "S"){
+              trace.append("_dB");
+            }
+            P = findClosestPoint(datasets[file]["frequency"], datasets[file][trace], targetX);
             new_val = QString("%1").arg(QString::number(P.y(), 'f', 2));
             QTableWidgetItem *new_item = new QTableWidgetItem(new_val);
             tableMarkers->setItem(r, c, new_item);
@@ -1909,33 +1915,26 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable(){
 }
 
 // Find the closest x-axis value in a series given a x value (not necesarily in the grid)
-QPointF Qucs_S_SPAR_Viewer::findClosestPoint(QAbstractSeries* series, qreal targetX)
+QPointF Qucs_S_SPAR_Viewer::findClosestPoint(const QList<double>& xValues, const QList<double>& yValues, double targetX)
 {
-    // Cast to QXYSeries since we need access to points
-    QXYSeries* xySeries = qobject_cast<QXYSeries*>(series);
-    if (!xySeries) {
-        return QPointF(); // Return invalid point if cast fails
+  if (xValues.isEmpty() || yValues.isEmpty() || xValues.size() != yValues.size()) {
+    return QPointF(); // Return invalid point if lists are empty or have different sizes
+  }
+
+         // Initialize with the first point
+  QPointF closestPoint(xValues.first(), yValues.first());
+  double minDistance = qAbs(targetX - closestPoint.x());
+
+         // Iterate through all points to find the closest one
+  for (int i = 0; i < xValues.size(); ++i) {
+    double distance = qAbs(targetX - xValues[i]);
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestPoint = QPointF(xValues[i], yValues[i]);
     }
+  }
 
-    QVector<QPointF> points = xySeries->points().toVector();
-    if (points.isEmpty()) {
-        return QPointF(); // Return invalid point if series is empty
-    }
-
-    // Initialize with the first point
-    QPointF closestPoint = points.first();
-    qreal minDistance = qAbs(targetX - closestPoint.x());
-
-    // Iterate through all points to find the closest one
-    for (const QPointF& point : qAsConst(points)) {
-        qreal distance = qAbs(targetX - point.x());
-        if (distance < minDistance) {
-            minDistance = distance;
-            closestPoint = point;
-        }
-    }
-
-    return closestPoint;
+  return closestPoint;
 }
 
 

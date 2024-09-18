@@ -172,7 +172,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void adjust_x_axis_to_file(QString);
   void adjust_y_axis_to_trace(QString, QString);
   void adjust_x_axis_div();
-  QPointF findClosestPoint(QAbstractSeries*, qreal);
+  QPointF findClosestPoint(const QList<double>&, const QList<double>&, qreal);
   double getFreqFromText(QString);
 };
 
