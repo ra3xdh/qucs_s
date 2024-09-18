@@ -230,7 +230,7 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   QComboBox_y_axis_div = new QComboBox();
   available_y_axis_div.clear();
   available_y_axis_div << 50 << 25 << 20 << 10 << 5 << 2 << 1 << 0.5 << 0.2 << 0.1;
-  for (const double &value : available_y_axis_div) {
+  for (const double &value : qAsConst(available_y_axis_div)) {
       QComboBox_y_axis_div->addItem(QString::number(value));
   }
   connect(QComboBox_y_axis_div, SIGNAL(currentIndexChanged(int)), SLOT(updatePlot()));
@@ -265,6 +265,14 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   QSpinBox_y2_axis_max->hide();
   QSpinBox_y2_axis_div->hide();
  // QCombobox_y2_axis_units->hide();
+
+  // Lock axis settings button
+  Lock_axis_settings_Button =  new QPushButton("Lock Axes");
+  Lock_axis_settings_Button->setCheckable(true);
+  connect(Lock_axis_settings_Button, SIGNAL(clicked(bool)), SLOT(lock_unlock_axis_settings()));
+  lock_axis = false;
+
+  SettingsGrid->addWidget(Lock_axis_settings_Button, 0, 4);
 
   QWidget * TracesGroup = new QWidget();
   QVBoxLayout *Traces_VBox = new QVBoxLayout(TracesGroup);
@@ -1322,9 +1330,11 @@ void Qucs_S_SPAR_Viewer::changeTraceWidth()
 
 void Qucs_S_SPAR_Viewer::updatePlot()
 {
+  if (lock_axis == false){
     // Update axes
     update_X_axis();
     update_Y_axis();
+  }
 
     // Trim the traces according to the new settings
     updateTraces();
@@ -2169,4 +2179,33 @@ void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event)
     if (!fileList.isEmpty()) {
         addFiles(fileList);
     }
+}
+
+
+void Qucs_S_SPAR_Viewer::lock_unlock_axis_settings()
+{
+  if (lock_axis == true){
+    lock_axis = false;
+    Lock_axis_settings_Button->setText("Lock Axes");
+    //Frozen axes inputs
+    QSpinBox_x_axis_min->setEnabled(true);
+    QSpinBox_x_axis_max->setEnabled(true);
+    QComboBox_x_axis_div->setEnabled(true);
+    QCombobox_x_axis_units->setEnabled(true);
+    QSpinBox_y_axis_min->setEnabled(true);
+    QSpinBox_y_axis_max->setEnabled(true);
+    QComboBox_y_axis_div->setEnabled(true);
+  }
+  else{
+    lock_axis = true;
+    Lock_axis_settings_Button->setText("Unlock Axes");
+    //Unfrozen axes inputs
+    QSpinBox_x_axis_min->setDisabled(true);
+    QSpinBox_x_axis_max->setDisabled(true);
+    QComboBox_x_axis_div->setDisabled(true);
+    QCombobox_x_axis_units->setDisabled(true);
+    QSpinBox_y_axis_min->setDisabled(true);
+    QSpinBox_y_axis_max->setDisabled(true);
+    QComboBox_y_axis_div->setDisabled(true);
+  }
 }

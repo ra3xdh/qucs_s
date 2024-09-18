@@ -73,6 +73,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
   void update_X_axis();
   void update_Y_axis();
+  void lock_unlock_axis_settings();
 
   void addMarker();
   void removeMarker();
@@ -120,6 +121,8 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QList<double> available_y_axis_div;
   QComboBox *QComboBox_y_axis_div;
   QDoubleSpinBox *QSpinBox_y2_axis_min, *QSpinBox_y2_axis_max, *QSpinBox_y2_axis_div;
+  QPushButton *Lock_axis_settings_Button;
+  bool lock_axis;
 
   // Trace management widgets
   QComboBox *QCombobox_datasets, *QCombobox_traces;
