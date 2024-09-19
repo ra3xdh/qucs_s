@@ -62,6 +62,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void removeTrace(QList<int>);
 
   void updatePlot();
+  void updateTraces();
   void updateTracesCombo();
 
   void changeTraceColor();
@@ -80,6 +81,14 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void removeMarker(int);
   void removeAllMarkers();
   void updateMarkerTable();
+
+  void addLimit();
+  void removeLimit();
+  void removeLimit(int);
+  void removeAllLimits();
+  void updateLimits();
+
+  void coupleSpinBoxes();
 
  protected:
   void dragEnterEvent(QDragEnterEvent *event) override;
@@ -150,7 +159,6 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   double f_min, f_max, y_min, y_max; // Minimum (maximum) values of the display
   QList<QColor> default_colors;
   bool removeSeriesByName(QChart*, const QString&);
-  void updateTraces();
 
   // Markers
   QDockWidget *dockMarkers;
@@ -164,6 +172,18 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QList<QComboBox *> List_MarkerScale;
   QList<QToolButton*> List_Button_DeleteMarker;
 
+  // Limits
+  QDockWidget *dockLimits;
+  QWidget *Limits_Widget;
+  QGridLayout * LimitsGrid;
+  QPushButton *Button_add_Limit, *Button_Remove_All_Limits;
+  QList<QLabel *> List_LimitNames;
+  QList<QDoubleSpinBox *> List_Limit_Start_Freq, List_Limit_Stop_Freq;
+  QList<QDoubleSpinBox *> List_Limit_Start_Value, List_Limit_Stop_Value;
+  QList<QComboBox *> List_Limit_Start_Freq_Scale, List_Limit_Stop_Freq_Scale;
+  QList<QToolButton*> List_Button_Delete_Limit;
+  QList<QFrame*> List_Separators;
+  QList<QPushButton*> List_Couple_Value;
 
   // Utilities
   void convert_MA_RI_to_dB(double *, double *, double *, double *, QString);
