@@ -2095,6 +2095,11 @@ void Qucs_S_SPAR_Viewer::adjust_x_axis_div()
         disconnect(QComboBox_x_axis_div, SIGNAL(currentIndexChanged(int)), this, SLOT(updatePlot()));
         QComboBox_x_axis_div->setCurrentIndex(new_index);
         connect(QComboBox_x_axis_div, SIGNAL(currentIndexChanged(int)), SLOT(updatePlot()));
+
+        //Update the step of the spinboxes
+        double step = QComboBox_x_axis_div->currentText().toDouble()/10;
+        QSpinBox_x_axis_min->setSingleStep(step);
+        QSpinBox_x_axis_max->setSingleStep(step);
     }
 }
 
