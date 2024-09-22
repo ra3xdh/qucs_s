@@ -51,6 +51,16 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   fileQuit->setShortcut(QKeySequence::Quit);
   connect(fileQuit, SIGNAL(triggered(bool)), SLOT(slotQuit()));
 
+  QAction *fileSaveAsSession = new QAction(tr("&Save session as ..."), this);
+  fileSaveAsSession->setShortcut(QKeySequence::SaveAs);
+  connect(fileSaveAsSession, SIGNAL(triggered(bool)), SLOT(slotSaveAs()));
+
+  QAction *fileSaveSession = new QAction(tr("&Save session"), this);
+  fileSaveSession->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+  connect(fileSaveSession, SIGNAL(triggered(bool)), SLOT(slotSave()));
+
+  fileMenu->addAction(fileSaveSession);
+  fileMenu->addAction(fileSaveAsSession);
   fileMenu->addAction(fileQuit);
 
   QMenu *helpMenu = new QMenu(tr("&Help"));
@@ -1989,8 +1999,8 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable(){
     headers.append("freq");
     for (QAbstractSeries *series : qAsConst(seriesList)) {
         QString series_name = series->name();
-        if (series_name.startsWith("Mkr", Qt::CaseSensitive)){
-            //Markers are traces in the QChart, but they cannot be added as markers again!
+        if (series_name.startsWith("Mkr", Qt::CaseSensitive) || series_name.startsWith("Limit", Qt::CaseSensitive)){
+            //Markers and limits are traces in the QChart, but they cannot be added as markers again!
             continue;
         }
         headers.append(series_name);
@@ -2377,6 +2387,7 @@ void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event)
 
     if (!fileList.isEmpty()) {
         addFiles(fileList);
+      this->activateWindow();
     }
 }
 
@@ -2588,4 +2599,185 @@ void Qucs_S_SPAR_Viewer::updateLimits()
     }
   }
   updateTraces();
+}
+
+
+void Qucs_S_SPAR_Viewer::slotSave()
+{
+  if (savepath.isEmpty()){
+    slotSaveAs();
+    return;
+  }
+  save();
+}
+
+void Qucs_S_SPAR_Viewer::slotSaveAs()
+{
+  // Get the path to save
+  savepath = QFileDialog::getSaveFileName(this,
+                                              tr("Save session"),
+                                              "ViewerSession.spar",
+                                              tr("Qucs-S snp viewer session (*.spar);"));
+
+  // If the user decides not to enter a path, then return.
+  if (savepath.isEmpty()){
+    return;
+  }
+  save();
+}
+
+bool Qucs_S_SPAR_Viewer::save()
+{
+  QFile file(savepath);
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+  {
+    return false;
+  }
+
+  QXmlStreamWriter xmlWriter(&file);
+  xmlWriter.setAutoFormatting(true);
+  xmlWriter.writeStartDocument();
+
+  // ----------------------------------------------------------------
+  // Save the markers
+  xmlWriter.writeStartElement("MARKERS");
+  double freq, value;
+  for (int i = 0; i < List_MarkerFreq.size(); i++)
+  {
+    freq = List_MarkerFreq[i]->value();
+    QString scale = List_MarkerScale[i]->currentText();
+    freq /= getFreqScale(scale);
+    xmlWriter.writeTextElement("Mkr", QString::number(freq));
+  }
+  xmlWriter.writeEndElement(); // Markers
+  // ----------------------------------------------------------------
+  // Save the limits
+  xmlWriter.writeStartElement("LIMITS");
+  for (int i = 0; i < List_Limit_Start_Freq.size(); i++)
+  {
+    xmlWriter.writeStartElement("Limit");
+
+    // fstart
+    freq = List_Limit_Start_Freq[i]->value();
+    QString scale = List_Limit_Start_Freq_Scale[i]->currentText();
+    freq /= getFreqScale(scale);
+    xmlWriter.writeTextElement("fstart", QString::number(freq));
+
+    // Start value
+    value = List_Limit_Start_Value[i]->value();
+    xmlWriter.writeTextElement("val_start", QString::number(value));
+
+    // fstop
+    freq = List_Limit_Stop_Freq[i]->value();
+    scale = List_Limit_Stop_Freq_Scale[i]->currentText();
+    freq /= getFreqScale(scale);
+    xmlWriter.writeTextElement("fstop", QString::number(freq));
+
+    // Stop value
+    value = List_Limit_Stop_Value[i]->value();
+    xmlWriter.writeTextElement("val_stop", QString::number(value));
+
+    xmlWriter.writeEndElement(); // Limit
+  }
+  xmlWriter.writeEndElement(); // Limits
+  // ----------------------------------------------------------------
+  // Save the traces displayed and their properties
+  xmlWriter.writeStartElement("DISPLAYED_TRACES");
+  QString trace_name, color, style;
+  int width;
+  for (int i = 0; i < List_TraceNames.size(); i++){
+    xmlWriter.writeStartElement("trace");
+    // Trace name
+    trace_name = List_TraceNames[i]->text();
+    xmlWriter.writeTextElement("trace_name", trace_name);
+
+    // Trace width
+    width = List_TraceWidth[i]->value();
+    xmlWriter.writeTextElement("trace_width", QString::number(width));
+
+    // Trace color
+    color = List_Trace_Color[i]->text();
+    xmlWriter.writeTextElement("trace_color", color);
+
+    // Trace style
+    style = List_Trace_LineStyle[i]->currentText();
+    xmlWriter.writeTextElement("trace_style", style);
+    xmlWriter.writeEndElement(); // Trace
+
+  }
+  xmlWriter.writeEndElement(); // Displayed traces
+  // ----------------------------------------------------------------
+  // Save the axes settings
+  xmlWriter.writeStartElement("AXES");
+
+  xmlWriter.writeStartElement("x-axis-min");
+  xmlWriter.writeTextElement("value", QString::number(QSpinBox_x_axis_min->value()));
+  xmlWriter.writeEndElement();
+
+  xmlWriter.writeStartElement("x-axis-max");
+  xmlWriter.writeTextElement("value", QString::number(QSpinBox_x_axis_max->value()));
+  xmlWriter.writeEndElement();
+
+  xmlWriter.writeStartElement("x-axis-div");
+  xmlWriter.writeTextElement("value", QComboBox_x_axis_div->currentText());
+  xmlWriter.writeEndElement();
+
+  xmlWriter.writeStartElement("x-axis-scale");
+  xmlWriter.writeTextElement("value", QCombobox_x_axis_units->currentText());
+  xmlWriter.writeEndElement();
+
+  xmlWriter.writeStartElement("y-axis-min");
+  xmlWriter.writeTextElement("value", QString::number(QSpinBox_y_axis_min->value()));
+  xmlWriter.writeEndElement();
+
+  xmlWriter.writeStartElement("y-axis-max");
+  xmlWriter.writeTextElement("value", QString::number(QSpinBox_y_axis_max->value()));
+  xmlWriter.writeEndElement();
+
+  xmlWriter.writeStartElement("y-axis-div");
+  xmlWriter.writeTextElement("value", QComboBox_y_axis_div->currentText());
+  xmlWriter.writeEndElement();
+
+  xmlWriter.writeStartElement("lock_status");
+  xmlWriter.writeTextElement("value", QString::number(lock_axis));
+  xmlWriter.writeEndElement();
+
+
+
+
+  xmlWriter.writeEndElement(); // Axes
+  // ----------------------------------------------------------------
+  // Save the datasets
+  xmlWriter.writeStartElement("DATASETS");
+  for (auto outerIt = datasets.constBegin(); outerIt != datasets.constEnd(); ++outerIt)
+  {
+    xmlWriter.writeStartElement("file");
+    xmlWriter.writeAttribute("file_name", outerIt.key());
+
+    const QMap<QString, QList<double>>& innerMap = outerIt.value();
+    for (auto innerIt = innerMap.constBegin(); innerIt != innerMap.constEnd(); ++innerIt)
+    {
+      xmlWriter.writeStartElement("trace");
+      xmlWriter.writeAttribute("trace_name", innerIt.key());
+
+      const QList<double>& values = innerIt.value();
+      for (const double& value : values)
+      {
+        xmlWriter.writeTextElement("value", QString::number(value));
+      }
+
+      xmlWriter.writeEndElement(); // inner-item
+    }
+
+    xmlWriter.writeEndElement(); // outer-item
+  }
+
+  xmlWriter.writeEndElement(); // Datasets
+  // ----------------------------------------------------------------
+
+
+  xmlWriter.writeEndDocument();
+
+  file.close();
+  return true;
 }
