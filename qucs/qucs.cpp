@@ -744,6 +744,7 @@ int QucsApp::fillComboBox(bool setAll) {
     CompChoose->clear();
     CompSearch->clear(); // clear the search box, in case search was active...
 
+    Module::unregisterModules();
     Module::registerModules();
     Module::registerDynamicComponents();
     int idx = 0;
@@ -819,6 +820,10 @@ void QucsApp::slotChangeSimulator(int index) {
             break;
     }
 
+    if (QucsSettings.DefaultSimulator == simu) {
+      return;
+    }
+
     QucsSettings.DefaultSimulator = simu;
     saveApplSettings();
 
@@ -854,6 +859,13 @@ void QucsApp::slotSetCompView (int index)
     CompChoose->removeItem(0);
     CompSearch->clear(); // clear the search box
     --index; // adjust requested index since item 0 was removed
+  }
+
+  while (CompComps->count() > 0) {
+    QListWidgetItem * item = CompComps->takeItem(0);
+    if (item != nullptr) {
+      delete item;
+    }
   }
   CompComps->clear ();   // clear the IconView
 
@@ -923,7 +935,9 @@ void QucsApp::slotSetCompView (int index)
       Infos = (*it)->info;
       if (Infos) {
         /// \todo warning: expression result unused, can we rewrite this?
-        (void) *((*it)->info) (Name, File, false);
+        //(void) *((*it)->info) (Name, File, false);
+        Component* c = (Component*)Infos(Name, File, true);
+        if (c) delete c;
         QString icon_path = misc::getIconPath(QString (File));
         QListWidgetItem *icon = new QListWidgetItem(Name);
         if (QFileInfo::exists(icon_path)) {
