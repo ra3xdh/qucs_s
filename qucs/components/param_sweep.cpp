@@ -151,11 +151,13 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 
         if (step_var == "temp" || step_var == "temper") temper_sweep = true;
 
-        if (temper_sweep) {
+        if (temper_sweep) { // Sweep temperature
           s += QString("option temp = $%1_act%2").arg(step_var).arg(nline_char);
-        } else if (compfound) {
+        } else if (compfound) { // Sweep device
           s += QString("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
-        } else {
+        } else if (par.startsWith("@")) { // Sweep model
+          s += QString("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+        } else { // Sweep .PARAM variable
           s += QString("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
         }
     }

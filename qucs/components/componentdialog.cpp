@@ -1096,9 +1096,9 @@ void ComponentDialog::slotBrowseFile()
       s = file.fileName();
     }
     edit->setText(s);
+    int row = prop->currentRow();
+    prop->item(row,1)->setText(s);
   }
-  /* FIX
-  prop->currentItem()->setText(1, s); */
 }
 
 // -------------------------------------------------------------------------
@@ -1525,8 +1525,12 @@ void ComponentDialog::fillPropsFromTable()
     QString disp = prop->item(row, 2)->text();
     QString desc = prop->item(row, 3)->text();
     bool display = (disp == tr("yes"));
-    auto pp = Comp->getProperty(name);
-    updateProperty(pp,value,display);
+    if (row < Comp->Props.count()) {
+      auto pp = Comp->Props[row];
+      if (pp->Name == name) {
+        updateProperty(pp,value,display);
+      }
+    }
   }
 }
 

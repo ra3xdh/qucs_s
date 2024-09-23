@@ -1,3 +1,10 @@
+# Qucs-S 24.3.2
+
+## Bugfixes
+
+* Fixed editing of File-type properties #948
+* Implemented @model[param] syntax recognition for Parameter sweep #948
+
 # Qucs-S 24.3.1
 
 ## Packaging
