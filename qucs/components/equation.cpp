@@ -97,7 +97,7 @@ Element* Equation::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString Equation::getVAvariables()
 {
     QStringList vars;
-    for (unsigned int i=0;i<Props.count()-1;i++) {
+    for (int i=0;i<Props.count()-1;i++) {
         vars.append(Props.at(i)->Name);
     }
 
@@ -107,7 +107,7 @@ QString Equation::getVAvariables()
 QString Equation::getVAExpressions()
 {
     QString s;
-    for (unsigned int i=0;i<Props.count()-1;i++) {
+    for (int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         spicecompat::splitEqn(Props.at(i)->Value,tokens);
         vacompat::convert_functions(tokens);
@@ -138,7 +138,7 @@ QString Equation::getExpression(bool isXyce)
     QRegularExpression spicefp_pattern("^[\\+\\-]*\\d*\\.\\d+[A-Za-z]{,3}$"); // float and scaling suffix
     QRegularExpression spicedec_pattern("^[\\+\\-]*\\d+[A-Za-z]{,3}$"); // decimal and scaling suffix
 
-    for (unsigned int i=0;i<Props.count()-1;i++) {
+    for (int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
         spicecompat::splitEqn(eqn,tokens);
@@ -179,7 +179,7 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
 
     QString s;
     dep_vars.clear();
-    for (unsigned int i=0;i<Props.count()-1;i++) {
+    for (int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
         spicecompat::splitEqn(eqn,tokens);
@@ -216,7 +216,7 @@ QString Equation::getNgspiceScript()
     s.clear();
     if (isActive != COMP_IS_ACTIVE) return QString("");
 
-    for (unsigned int i=0;i<Props.count()-1;i++) {
+    for (int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
         spicecompat::splitEqn(eqn,tokens);
@@ -240,7 +240,7 @@ void Equation::getNgnutmegVars(QStringList &vars, QStringList &sims)
 {
     vars.clear();
     sims.clear();
-    for (unsigned int i=0;i<Props.count()-1;i++) {
+    for (int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
         spicecompat::splitEqn(eqn,tokens);

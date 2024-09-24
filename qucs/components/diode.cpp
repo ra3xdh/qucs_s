@@ -125,7 +125,7 @@ QString Diode::spice_netlist(bool isXyce)
     QString par_str;
     //= form_spice_param_list(spice_incompat,spice_tr);
 
-    for (unsigned int i=0;i<Props.count();i++) {
+    for (int i=0;i<Props.count();i++) {
         if (!spice_incompat.contains(Props.at(i)->Name)) {
             if (Props.at(i)->Name == "Ikf") { // Bug Ngspice37
                 if (Props.at(i)->Value == "0") continue; // convergence error if Ikf=0

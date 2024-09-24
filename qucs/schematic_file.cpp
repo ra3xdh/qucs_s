@@ -1396,7 +1396,6 @@ void Schematic::propagateNode(QStringList& Collect,
   Q3PtrList<Node> Cons;
   Node *p2;
   Wire *pw;
-  Element *pe;
 
   Cons.append(pn);
   for(p2 = Cons.first(); p2 != 0; p2 = Cons.next())

@@ -79,12 +79,12 @@ QString SpiceOptions::getExpression(bool isXyce)
     s.clear();
     if (isXyce) {
         s += QString(".OPTIONS %1 ").arg(Props.at(0)->Value);
-        for (unsigned int i=1;i<Props.count();i++) {
+        for (int i=1;i<Props.count();i++) {
             s += QString(" %1 = %2 ").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
         }
         s += "\n";
     } else {
-        for (unsigned int i=1;i<Props.count();i++) {
+        for (int i=1;i<Props.count();i++) {
             s += QString(".OPTION %1 = %2\n").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
         }
     }
