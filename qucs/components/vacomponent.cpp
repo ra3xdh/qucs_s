@@ -307,7 +307,7 @@ QString vacomponent::spice_netlist(bool isXyce)
     QString tmp_model = QString("mod_%1_%2").arg(Model).arg(Name);
     s += tmp_model + "\n";
     QString par_str;
-    for(unsigned int i = 0; i < Props.count(); i++) {
+    for(int i = 0; i < Props.count(); i++) {
         par_str += QString("%1=%2 ")
                 .arg(Props.at(i)->Name)
                 .arg(Props.at(i)->Value);

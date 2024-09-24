@@ -443,8 +443,6 @@ void QucsApp::slotInsertEquation(bool on)
       view->selElem = new Equation();
   }
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
 }
@@ -474,8 +472,6 @@ void QucsApp::slotInsertGround(bool on)
     delete view->selElem;  // delete previously selected component
 
   view->selElem = new Ground();
-
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
 
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
