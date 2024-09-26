@@ -741,7 +741,7 @@ QString Component::netlist() {
 QString Component::form_spice_param_list(QStringList &ignore_list, QStringList &convert_list) {
     QString par_str = "";
 
-    for (unsigned int i = 0; i < Props.count(); i++) {
+    for (int i = 0; i < Props.count(); i++) {
         if (!ignore_list.contains(Props.at(i)->Name)) {
             QString unit, nam;
             if (convert_list.contains(Props.at(i)->Name)) {
@@ -1112,7 +1112,7 @@ bool Component::load(const QString &_s) {
             (*p1)->Name = n.section('=', 0, 0);
             n = n.section('=', 1);
             // allocate memory for a new property (e.g. for equations)
-            if (Props.size() < (counts >> 1)) {
+            if (static_cast<unsigned int>(Props.size()) < (counts >> 1)) {
               int index = std::distance(Props.begin(), p1);
               Props.insert(index + 1, new Property("y", "1", true));
               p1 = Props.begin() + index;
