@@ -60,27 +60,29 @@ void Module::registerModule (QString category, pInfoFunc info) {
 // Component registration using a category name and the appropriate
 // function returning a components instance object.
 void Module::registerComponent(QString category, pInfoFunc info) {
-    Module *m = new Module();
-    m->info = info;
-    m->category = category;
 
-    // instantiation of the component once in order to obtain "Model"
-    // property of the component
-    QString Name, Model;
-    char *File;
-    Component *c = (Component *) info(Name, File, true);
-    Model = c->Model;
+  // instantiation of the component once in order to obtain "Model"
+  // property of the component
+  QString Name;
+  char* File;
+  Component* c = (Component*)info(Name, File, true);
 
-    m->icon = new QPixmap(128,128);
+  // put into category and the component hash
+  if ((c->Simulator & QucsSettings.DefaultSimulator) ==
+      QucsSettings.DefaultSimulator) {
+    Module* m     = new Module();
+    m->info       = info;
+    m->category   = category;
+
+    m->icon = new QPixmap(128, 128);
     c->paintIcon(m->icon);
 
-    // put into category and the component hash
-    if ((c->Simulator & QucsSettings.DefaultSimulator) == QucsSettings.DefaultSimulator) {
-        intoCategory(m);
+    intoCategory(m);
+    if (!Modules.contains(c->Model)) {
+      Modules.insert(c->Model, m);
     }
-    delete c;
-    if (!Modules.contains(Model))
-        Modules.insert(Model, m);
+  }
+  delete c;
 }
 
 // Returns instantiated component based on the given "Model" name.  If
@@ -615,27 +617,21 @@ void Module::registerModules (void) {
 
 // This function has to be called once at application end.  It removes
 // all categories and registered modules from memory.
-void Module::unregisterModules (void) {
-  while(!Category::Categories.isEmpty()) {
+void Module::unregisterModules(void) {
+  while (!Category::Categories.isEmpty()) {
     delete Category::Categories.takeFirst();
   }
 
-    QHash<QString, Module *>::iterator i = Modules.begin();
-    while (i != Modules.end()) {
-        if (i.value() == 0) {         // test here
-            i = Modules.erase(i);
-        } else {
-            ++i;
-        }
+  QHash<QString, Module*>::iterator i = Modules.begin();
+  while (i != Modules.end()) {
+    if (i.value() == 0) { // test here
+      delete i.value();
+      i = Modules.erase(i);
+    } else {
+      ++i;
     }
-
-//remove all modules by iterator, require in qhash
-//  QHashIterator<QString, Module *> it( Modules );
-//  while(it.hasNext()) {
-//    it.next();
-//    delete it.value();
-//  }
-  Modules.clear ();
+  }
+  Modules.clear();
 }
 
 // Constructor creates instance of module object.
