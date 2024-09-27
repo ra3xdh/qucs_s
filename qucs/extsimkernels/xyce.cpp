@@ -51,7 +51,7 @@ void Xyce::determineUsedSimulations(QStringList *sim_lst)
 {
 
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-       if(pc->isSimulation) {
+       if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {
            QString sim_typ = pc->Model;
            if (sim_typ==".AC") simulationsQueue.append("ac");
            if (sim_typ==".NOISE") simulationsQueue.append("noise");
@@ -165,7 +165,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     QString sim = simulations.first();
     QStringList spar_vars;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) { // Xyce can run
-       if(pc->isSimulation) {                        // only one simulations per time.
+       if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {                        // only one simulations per time.
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
            QString s = pc->getSpiceNetlist(true);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
