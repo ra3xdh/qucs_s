@@ -1525,10 +1525,19 @@ void ComponentDialog::fillPropsFromTable()
     QString disp = prop->item(row, 2)->text();
     QString desc = prop->item(row, 3)->text();
     bool display = (disp == tr("yes"));
-    if (row < Comp->Props.count()) {
-      auto pp = Comp->Props[row];
-      if (pp->Name == name) {
+    if (compIsSimulation) {
+      // Get property by name
+      auto pp = Comp->getProperty(name);
+      if (pp != nullptr) {
         updateProperty(pp,value,display);
+      }
+    } else {
+      // Other components may have properties with duplicate names
+      if (row < Comp->Props.count()) {
+        auto pp = Comp->Props[row];
+        if (pp->Name == name) {
+          updateProperty(pp,value,display);
+        }
       }
     }
   }
