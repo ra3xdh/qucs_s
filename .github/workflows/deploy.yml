@@ -69,7 +69,7 @@ jobs:
     - name: 'Install Qt6'
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.7.2'
+        version: ${{env.QT_VERSION}}
         host: 'linux'
         target: 'desktop'
         cache: true
@@ -120,7 +120,7 @@ jobs:
               
  
   build-mac-intel:
-    runs-on: macos-12
+    runs-on: macos-13
     needs: setup
     strategy:
       fail-fast: false
@@ -153,7 +153,7 @@ jobs:
     - name: 'Install Dependencies'
       shell: bash
       run: |
-          brew install gperf dos2unix bison flex ninja graphicsmagick
+          brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick
           echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
           export LDFLAGS="-L$(brew --prefix bison)/lib"
           source ~/.bashrc
