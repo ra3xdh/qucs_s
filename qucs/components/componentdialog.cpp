@@ -422,7 +422,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   connect(ButtDown, SIGNAL(clicked()), SLOT(slotButtDown()));
 
   QStringList allowedFillFromSPICE;
-  allowedFillFromSPICE<<"_BJT"<<"JFET"<<"MOSFET"<<"_MOSFET"<<"Diode";
+  allowedFillFromSPICE<<"_BJT"<<"JFET"<<"MOSFET"<<"_MOSFET"<<"Diode"<<"BJT";
   ButtFillFromSpice = new QPushButton(tr("Fill from SPICE .MODEL"));
   if (!allowedFillFromSPICE.contains(Comp->Model)) {
     ButtFillFromSpice->setEnabled(false);
