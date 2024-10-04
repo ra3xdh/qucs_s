@@ -119,7 +119,7 @@ QString Diode::spice_netlist(bool isXyce)
                      <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGlobTemp"; // spice-incompatible parameters
     } else {
         spice_tr<<"Tbv"<<"Tcv";
-        spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGLobTemp";
+        spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGlobTemp";
     }
 
     QString par_str;
