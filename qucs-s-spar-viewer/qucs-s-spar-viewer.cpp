@@ -51,14 +51,19 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   fileQuit->setShortcut(QKeySequence::Quit);
   connect(fileQuit, SIGNAL(triggered(bool)), SLOT(slotQuit()));
 
+  QAction *fileOpenSession = new QAction(tr("&Open session file"), this);
+  fileOpenSession->setShortcut(QKeySequence::Open);
+  connect(fileOpenSession, SIGNAL(triggered(bool)), SLOT(slotLoadSession()));
+
   QAction *fileSaveAsSession = new QAction(tr("&Save session as ..."), this);
   fileSaveAsSession->setShortcut(QKeySequence::SaveAs);
   connect(fileSaveAsSession, SIGNAL(triggered(bool)), SLOT(slotSaveAs()));
 
   QAction *fileSaveSession = new QAction(tr("&Save session"), this);
-  fileSaveSession->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+  fileSaveSession->setShortcut(QKeySequence::Save);
   connect(fileSaveSession, SIGNAL(triggered(bool)), SLOT(slotSave()));
 
+  fileMenu->addAction(fileOpenSession);
   fileMenu->addAction(fileSaveSession);
   fileMenu->addAction(fileSaveAsSession);
   fileMenu->addAction(fileQuit);
@@ -74,7 +79,6 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   helpMenu->addAction(helpAbout);
   connect(helpAbout, SIGNAL(triggered(bool)), SLOT(slotHelpAbout()));
 
-
   helpMenu->addSeparator();
 
   QAction * helpAboutQt = new QAction(tr("About Qt..."), this);
@@ -84,6 +88,9 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   menuBar()->addMenu(fileMenu);
   menuBar()->addSeparator();
   menuBar()->addMenu(helpMenu);
+
+  // Set frequency units
+  frequency_units << "Hz" << "kHz" << "MHz" << "GHz";
 
   // Left panel
   QScrollArea *scrollArea_Files = new QScrollArea();
@@ -144,7 +151,6 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   dockChart->setWidget(chartView);
   dockChart->setAllowedAreas(Qt::AllDockWidgetAreas);
   addDockWidget(Qt::LeftDockWidgetArea, dockChart);
-
 
 
   // These are two maximum markers to find the lowest and the highest frequency in the data samples.
@@ -210,10 +216,7 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   SettingsGrid->addWidget(QComboBox_x_axis_div, 1, 3);
 
   QCombobox_x_axis_units = new QComboBox();
-  QCombobox_x_axis_units->addItem("Hz");
-  QCombobox_x_axis_units->addItem("kHz");
-  QCombobox_x_axis_units->addItem("MHz");
-  QCombobox_x_axis_units->addItem("GHz");
+  QCombobox_x_axis_units->addItems(frequency_units);
   QCombobox_x_axis_units->setCurrentIndex(2);
   connect(QCombobox_x_axis_units, SIGNAL(currentIndexChanged(int)), SLOT(changeFreqUnits()));
   SettingsGrid->addWidget(QCombobox_x_axis_units, 1, 4);
@@ -1159,7 +1162,7 @@ void Qucs_S_SPAR_Viewer::addTrace()
 
 
 // Read the dataset and trace Comboboxes and add a trace to the display list
-void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_trace, QColor trace_color)
+void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_trace, QColor trace_color, int trace_width, QString trace_style)
 {
     int n_trace = this->trace_list.size()+1; // Number of displayed traces;
     // Get the name of the selected dataset
@@ -1204,6 +1207,8 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
     new_trace_linestyle->addItem("·······");
     new_trace_linestyle->addItem("-·-·-·-");
     new_trace_linestyle->addItem("-··-··-");
+    int index = new_trace_linestyle->findText(trace_style);
+    new_trace_linestyle->setCurrentIndex(index);
     connect(new_trace_linestyle, SIGNAL(currentIndexChanged(int)), SLOT(changeTraceLineStyle()));
     List_Trace_LineStyle.append(new_trace_linestyle);
     this->TracesGrid->addWidget(new_trace_linestyle, n_trace, 2);
@@ -1211,7 +1216,7 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
     // Line width
     QSpinBox * new_trace_width = new QSpinBox();
     new_trace_width->setObjectName(QString("Trace_Width_") + QString::number(n_trace));
-    new_trace_width->setValue(1);
+    new_trace_width->setValue(trace_width);
     connect(new_trace_width, SIGNAL(valueChanged(int)), SLOT(changeTraceWidth()));
     List_TraceWidth.append(new_trace_width);
     this->TracesGrid->addWidget(new_trace_width, n_trace, 3);
@@ -1902,7 +1907,7 @@ void Qucs_S_SPAR_Viewer::adjust_x_axis_to_file(QString filename){
 }
 
 
-void Qucs_S_SPAR_Viewer::addMarker(){
+void Qucs_S_SPAR_Viewer::addMarker(double freq){
 
     // If there are no traces in the display, show a message and exit
     if (trace_list.size() == 0){
@@ -1913,10 +1918,16 @@ void Qucs_S_SPAR_Viewer::addMarker(){
       return;
     }
 
-    double f1 = QSpinBox_x_axis_min->value();
-    double f2 = QSpinBox_x_axis_max->value();
-    double f_marker = f1 + 0.5*(f2-f1);
-
+    double f_marker;
+    if (freq == -1) {
+      // There's no specific frequency argument, then pick the middle point
+      double f1 = QSpinBox_x_axis_min->value();
+      double f2 = QSpinBox_x_axis_max->value();
+      f_marker = f1 + 0.5*(f2-f1);
+    } else {
+      f_marker= freq;
+      f_marker *= getFreqScale();// Scale according to the x-axis units
+    }
     QString Freq_Marker_Scale = QCombobox_x_axis_units->currentText();
 
     int n_markers = List_MarkerNames.size();
@@ -1941,10 +1952,7 @@ void Qucs_S_SPAR_Viewer::addMarker(){
     QString Combobox_name = QString("Mkr_ComboBox%1").arg(n_markers);
     QComboBox * new_marker_Combo = new QComboBox();
     new_marker_Combo->setObjectName(Combobox_name);
-    new_marker_Combo->addItem("Hz");
-    new_marker_Combo->addItem("kHz");
-    new_marker_Combo->addItem("MHz");
-    new_marker_Combo->addItem("GHz");
+    new_marker_Combo->addItems(frequency_units);
     new_marker_Combo->setCurrentIndex(QCombobox_x_axis_units->currentIndex());
     connect(new_marker_Combo, SIGNAL(currentIndexChanged(int)), SLOT(changeMarkerLimits()));
     List_MarkerScale.append(new_marker_Combo);
@@ -2386,7 +2394,17 @@ void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event)
     }
 
     if (!fileList.isEmpty()) {
-        addFiles(fileList);
+      // Check if this is a session file
+      if (fileList.size() == 1){
+        if (fileList.first().endsWith(".spar", Qt::CaseInsensitive)) {
+          // Then open it as a session settings file.
+          loadSession(fileList.first());
+          this->activateWindow();
+          return;
+        }
+      }
+
+      addFiles(fileList);
       this->activateWindow();
     }
 }
@@ -2421,7 +2439,7 @@ void Qucs_S_SPAR_Viewer::lock_unlock_axis_settings()
 }
 
 
-void Qucs_S_SPAR_Viewer::addLimit()
+void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double f_limit2, QString f_limit2_unit, double y_limit1, double y_limit2, bool coupled)
 {
   // If there are no traces in the display, show a message and exit
   if (trace_list.size() == 0){
@@ -2432,14 +2450,20 @@ void Qucs_S_SPAR_Viewer::addLimit()
     return;
   }
 
-  double f1 = QSpinBox_x_axis_min->value();
-  double f2 = QSpinBox_x_axis_max->value();
-  double f_limit1 = f1 + 0.25*(f2-f1);
-  double f_limit2 = f1 + 0.75*(f2-f1);
+  if (f_limit1 == -1) {
+    // There's no specific data passed. Then get it from the widgets
+    double f1 = QSpinBox_x_axis_min->value();
+    double f2 = QSpinBox_x_axis_max->value();
+    f_limit1 = f1 + 0.25*(f2-f1);
+    f_limit2 = f1 + 0.75*(f2-f1);
 
-  double y1 = QSpinBox_y_axis_min->value();
-  double y2 = QSpinBox_y_axis_max->value();
-  double y_lim = y1 + (y2-y1)/2;
+    double y1 = QSpinBox_y_axis_min->value();
+    double y2 = QSpinBox_y_axis_max->value();
+
+    y_limit1 = y1 + (y2-y1)/2;
+    y_limit2 = y_limit1;
+
+  }
 
   int n_limits = List_LimitNames.size();
   n_limits++;
@@ -2466,11 +2490,13 @@ void Qucs_S_SPAR_Viewer::addLimit()
   QString Combobox_start_name = QString("Lmt_Start_ComboBox%1").arg(n_limits);
   QComboBox * new_start_limit_Combo = new QComboBox();
   new_start_limit_Combo->setObjectName(Combobox_start_name);
-  new_start_limit_Combo->addItem("Hz");
-  new_start_limit_Combo->addItem("kHz");
-  new_start_limit_Combo->addItem("MHz");
-  new_start_limit_Combo->addItem("GHz");
-  new_start_limit_Combo->setCurrentIndex(QCombobox_x_axis_units->currentIndex());
+  new_start_limit_Combo->addItems(frequency_units);
+  if (f_limit1_unit.isEmpty()){
+    new_start_limit_Combo->setCurrentIndex(QCombobox_x_axis_units->currentIndex());
+  } else {
+    int index = new_start_limit_Combo->findText(f_limit1_unit);
+    new_start_limit_Combo->setCurrentIndex(index);
+  }
   connect(new_start_limit_Combo, SIGNAL(currentIndexChanged(int)), SLOT(updateTraces()));
   List_Limit_Start_Freq_Scale.append(new_start_limit_Combo);
   this->LimitsGrid->addWidget(new_start_limit_Combo, limit_index, 2);
@@ -2488,11 +2514,14 @@ void Qucs_S_SPAR_Viewer::addLimit()
   QString Combobox_stop_name = QString("Lmt_Stop_ComboBox%1").arg(n_limits);
   QComboBox * new_stop_limit_Combo = new QComboBox();
   new_stop_limit_Combo->setObjectName(Combobox_stop_name);
-  new_stop_limit_Combo->addItem("Hz");
-  new_stop_limit_Combo->addItem("kHz");
-  new_stop_limit_Combo->addItem("MHz");
-  new_stop_limit_Combo->addItem("GHz");
-  new_stop_limit_Combo->setCurrentIndex(QCombobox_x_axis_units->currentIndex());
+  new_stop_limit_Combo->addItems(frequency_units);
+  if (f_limit2_unit.isEmpty()){
+    new_stop_limit_Combo->setCurrentIndex(QCombobox_x_axis_units->currentIndex());
+  } else {
+    int index = new_stop_limit_Combo->findText(f_limit2_unit);
+    new_stop_limit_Combo->setCurrentIndex(index);
+  }
+
   connect(new_stop_limit_Combo, SIGNAL(currentIndexChanged(int)), SLOT(updateTraces()));
   List_Limit_Stop_Freq_Scale.append(new_stop_limit_Combo);
   this->LimitsGrid->addWidget(new_stop_limit_Combo, limit_index, 4);
@@ -2502,7 +2531,7 @@ void Qucs_S_SPAR_Viewer::addLimit()
   new_limit_val_start_Spinbox->setObjectName(SpinBox_val_start_name);
   new_limit_val_start_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
   new_limit_val_start_Spinbox->setMaximum(QSpinBox_y_axis_max->maximum());
-  new_limit_val_start_Spinbox->setValue(y_lim);
+  new_limit_val_start_Spinbox->setValue(y_limit1);
   connect(new_limit_val_start_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
   List_Limit_Start_Value.append(new_limit_val_start_Spinbox);
   this->LimitsGrid->addWidget(new_limit_val_start_Spinbox, limit_index+1, 1);
@@ -2512,7 +2541,7 @@ void Qucs_S_SPAR_Viewer::addLimit()
   new_limit_val_stop_Spinbox->setObjectName(SpinBox_val_stop_name);
   new_limit_val_stop_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
   new_limit_val_stop_Spinbox->setMaximum(QSpinBox_y_axis_max->maximum());
-  new_limit_val_stop_Spinbox->setValue(y_lim);
+  new_limit_val_stop_Spinbox->setValue(y_limit2);
   connect(new_limit_val_stop_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
   List_Limit_Stop_Value.append(new_limit_val_stop_Spinbox);
   this->LimitsGrid->addWidget(new_limit_val_stop_Spinbox, limit_index+1, 3);
@@ -2541,12 +2570,12 @@ void Qucs_S_SPAR_Viewer::addLimit()
   QPushButton * new_limit_CoupleButton = new QPushButton("<--->");
   new_limit_CoupleButton->setObjectName(CoupleButton_name);
   new_limit_CoupleButton->setCheckable(true);// Toggle button. It lets coupled and uncouple the value spinboxes
+  new_limit_CoupleButton->setChecked(coupled);
   tooltip_message = QString("Couple start and stop values");
   new_limit_CoupleButton->setToolTip(tooltip_message);
   connect(new_limit_CoupleButton, SIGNAL(clicked(bool)), SLOT(coupleSpinBoxes()));
   List_Couple_Value.append(new_limit_CoupleButton);
   this->LimitsGrid->addWidget(new_limit_CoupleButton, limit_index+1, 2);
-
 
 
   QString Separator_name = QString("Lmt_Separator%1").arg(n_limits);
@@ -2613,10 +2642,19 @@ void Qucs_S_SPAR_Viewer::slotSave()
 
 void Qucs_S_SPAR_Viewer::slotSaveAs()
 {
+  if (datasets.isEmpty()){
+    // Nothing to save
+    QMessageBox::information(
+        this,
+        tr("Error"),
+        tr("Nothing to save: No data was loaded.") );
+    return;
+  }
+
   // Get the path to save
   savepath = QFileDialog::getSaveFileName(this,
                                               tr("Save session"),
-                                              "ViewerSession.spar",
+                                              QDir::homePath() + "/ViewerSession.spar",
                                               tr("Qucs-S snp viewer session (*.spar);"));
 
   // If the user decides not to enter a path, then return.
@@ -2628,6 +2666,14 @@ void Qucs_S_SPAR_Viewer::slotSaveAs()
 
 bool Qucs_S_SPAR_Viewer::save()
 {
+  if (datasets.isEmpty()){
+    // Nothing to save
+    QMessageBox::information(
+        this,
+        tr("Error"),
+        tr("Nothing to save: No data was loaded.") );
+    return false;
+  }
   QFile file(savepath);
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
   {
@@ -2637,113 +2683,103 @@ bool Qucs_S_SPAR_Viewer::save()
   QXmlStreamWriter xmlWriter(&file);
   xmlWriter.setAutoFormatting(true);
   xmlWriter.writeStartDocument();
+  xmlWriter.writeStartElement("DATA");//Top level
 
   // ----------------------------------------------------------------
   // Save the markers
-  xmlWriter.writeStartElement("MARKERS");
-  double freq, value;
-  for (int i = 0; i < List_MarkerFreq.size(); i++)
-  {
-    freq = List_MarkerFreq[i]->value();
-    QString scale = List_MarkerScale[i]->currentText();
-    freq /= getFreqScale(scale);
-    xmlWriter.writeTextElement("Mkr", QString::number(freq));
+  if (List_MarkerFreq.size() != 0){
+    xmlWriter.writeStartElement("MARKERS");
+    double freq;
+    for (int i = 0; i < List_MarkerFreq.size(); i++)
+    {
+      freq = List_MarkerFreq[i]->value();
+      QString scale = List_MarkerScale[i]->currentText();
+      freq /= getFreqScale(scale);
+      xmlWriter.writeTextElement("Mkr", QString::number(freq));
+    }
+    xmlWriter.writeEndElement(); // Markers
   }
-  xmlWriter.writeEndElement(); // Markers
   // ----------------------------------------------------------------
   // Save the limits
-  xmlWriter.writeStartElement("LIMITS");
-  for (int i = 0; i < List_Limit_Start_Freq.size(); i++)
-  {
-    xmlWriter.writeStartElement("Limit");
+  if (List_Limit_Start_Freq.size() != 0){
+      double freq, value;
+      bool Coupled_Limits;
+      xmlWriter.writeStartElement("LIMITS");
+      for (int i = 0; i < List_Limit_Start_Freq.size(); i++)
+      {
+        xmlWriter.writeStartElement("Limit");
 
-    // fstart
-    freq = List_Limit_Start_Freq[i]->value();
-    QString scale = List_Limit_Start_Freq_Scale[i]->currentText();
-    freq /= getFreqScale(scale);
-    xmlWriter.writeTextElement("fstart", QString::number(freq));
+        // fstart
+        freq = List_Limit_Start_Freq[i]->value();
+        xmlWriter.writeTextElement("fstart", QString::number(freq));
 
-    // Start value
-    value = List_Limit_Start_Value[i]->value();
-    xmlWriter.writeTextElement("val_start", QString::number(value));
+        // fstart unit
+        QString fstart_unit = List_Limit_Start_Freq_Scale[i]->currentText();
+        xmlWriter.writeTextElement("fstart_unit", fstart_unit);
 
-    // fstop
-    freq = List_Limit_Stop_Freq[i]->value();
-    scale = List_Limit_Stop_Freq_Scale[i]->currentText();
-    freq /= getFreqScale(scale);
-    xmlWriter.writeTextElement("fstop", QString::number(freq));
+        // Start value
+        value = List_Limit_Start_Value[i]->value();
+        xmlWriter.writeTextElement("val_start", QString::number(value));
 
-    // Stop value
-    value = List_Limit_Stop_Value[i]->value();
-    xmlWriter.writeTextElement("val_stop", QString::number(value));
+        // fstop
+        freq = List_Limit_Stop_Freq[i]->value();
+        xmlWriter.writeTextElement("fstop", QString::number(freq));
 
-    xmlWriter.writeEndElement(); // Limit
+        // fstop unit
+        QString fstop_unit = List_Limit_Stop_Freq_Scale[i]->currentText();
+        xmlWriter.writeTextElement("fstop_unit", fstop_unit);
+
+        // Stop value
+        value = List_Limit_Stop_Value[i]->value();
+        xmlWriter.writeTextElement("val_stop", QString::number(value));
+
+        // Couple values
+        Coupled_Limits = List_Couple_Value[i]->isChecked();
+        xmlWriter.writeTextElement("couple_values", QString::number(Coupled_Limits));
+
+        xmlWriter.writeEndElement(); // Limit
+      }
+      xmlWriter.writeEndElement(); // Limits
   }
-  xmlWriter.writeEndElement(); // Limits
   // ----------------------------------------------------------------
   // Save the traces displayed and their properties
-  xmlWriter.writeStartElement("DISPLAYED_TRACES");
-  QString trace_name, color, style;
-  int width;
-  for (int i = 0; i < List_TraceNames.size(); i++){
-    xmlWriter.writeStartElement("trace");
-    // Trace name
-    trace_name = List_TraceNames[i]->text();
-    xmlWriter.writeTextElement("trace_name", trace_name);
+  if (List_TraceNames.size() != 0){
+    xmlWriter.writeStartElement("DISPLAYED_TRACES");
+    QString trace_name, color, style;
+    int width;
+    for (int i = 0; i < List_TraceNames.size(); i++){
+      xmlWriter.writeStartElement("trace");
+      // Trace name
+      trace_name = List_TraceNames[i]->text();
+      xmlWriter.writeTextElement("trace_name", trace_name);
 
-    // Trace width
-    width = List_TraceWidth[i]->value();
-    xmlWriter.writeTextElement("trace_width", QString::number(width));
+      // Trace width
+      width = List_TraceWidth[i]->value();
+      xmlWriter.writeTextElement("trace_width", QString::number(width));
 
-    // Trace color
-    color = List_Trace_Color[i]->text();
-    xmlWriter.writeTextElement("trace_color", color);
+      // Trace color
+      color = List_Trace_Color[i]->palette().color(QPalette::Button).name();
+      xmlWriter.writeTextElement("trace_color", color);
 
-    // Trace style
-    style = List_Trace_LineStyle[i]->currentText();
-    xmlWriter.writeTextElement("trace_style", style);
-    xmlWriter.writeEndElement(); // Trace
+      // Trace style
+      style = List_Trace_LineStyle[i]->currentText();
+      xmlWriter.writeTextElement("trace_style", style);
+      xmlWriter.writeEndElement(); // Trace
 
+    }
+    xmlWriter.writeEndElement(); // Displayed traces
   }
-  xmlWriter.writeEndElement(); // Displayed traces
   // ----------------------------------------------------------------
   // Save the axes settings
   xmlWriter.writeStartElement("AXES");
-
-  xmlWriter.writeStartElement("x-axis-min");
-  xmlWriter.writeTextElement("value", QString::number(QSpinBox_x_axis_min->value()));
-  xmlWriter.writeEndElement();
-
-  xmlWriter.writeStartElement("x-axis-max");
-  xmlWriter.writeTextElement("value", QString::number(QSpinBox_x_axis_max->value()));
-  xmlWriter.writeEndElement();
-
-  xmlWriter.writeStartElement("x-axis-div");
-  xmlWriter.writeTextElement("value", QComboBox_x_axis_div->currentText());
-  xmlWriter.writeEndElement();
-
-  xmlWriter.writeStartElement("x-axis-scale");
-  xmlWriter.writeTextElement("value", QCombobox_x_axis_units->currentText());
-  xmlWriter.writeEndElement();
-
-  xmlWriter.writeStartElement("y-axis-min");
-  xmlWriter.writeTextElement("value", QString::number(QSpinBox_y_axis_min->value()));
-  xmlWriter.writeEndElement();
-
-  xmlWriter.writeStartElement("y-axis-max");
-  xmlWriter.writeTextElement("value", QString::number(QSpinBox_y_axis_max->value()));
-  xmlWriter.writeEndElement();
-
-  xmlWriter.writeStartElement("y-axis-div");
-  xmlWriter.writeTextElement("value", QComboBox_y_axis_div->currentText());
-  xmlWriter.writeEndElement();
-
-  xmlWriter.writeStartElement("lock_status");
-  xmlWriter.writeTextElement("value", QString::number(lock_axis));
-  xmlWriter.writeEndElement();
-
-
-
+  xmlWriter.writeTextElement("x-axis-min", QString::number(QSpinBox_x_axis_min->value()));
+  xmlWriter.writeTextElement("x-axis-max", QString::number(QSpinBox_x_axis_max->value()));
+  xmlWriter.writeTextElement("x-axis-div", QComboBox_x_axis_div->currentText());
+  xmlWriter.writeTextElement("x-axis-scale", QCombobox_x_axis_units->currentText());
+  xmlWriter.writeTextElement("y-axis-min", QString::number(QSpinBox_y_axis_min->value()));
+  xmlWriter.writeTextElement("y-axis-max", QString::number(QSpinBox_y_axis_max->value()));
+  xmlWriter.writeTextElement("y-axis-div", QComboBox_y_axis_div->currentText());
+  xmlWriter.writeTextElement("lock_status", QString::number(lock_axis));
 
   xmlWriter.writeEndElement(); // Axes
   // ----------------------------------------------------------------
@@ -2776,8 +2812,215 @@ bool Qucs_S_SPAR_Viewer::save()
   // ----------------------------------------------------------------
 
 
+  xmlWriter.writeEndElement(); // Top level
   xmlWriter.writeEndDocument();
 
   file.close();
   return true;
+}
+
+
+void Qucs_S_SPAR_Viewer::slotLoadSession()
+{
+  QString fileName = QFileDialog::getOpenFileName(this,
+                                                  tr("Open S-parameter Viewer Session"),
+                                                  QDir::homePath(),
+                                                  tr("Qucs-S snp viewer session (*.spar);"));
+
+  loadSession(fileName);
+}
+
+
+void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
+{
+  QFile file(session_file);
+
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    qDebug() << "Error opening file:" << file.errorString();
+    return;
+  }
+
+  QXmlStreamReader xml(&file);
+
+  // Trace properties
+  QList<int> trace_width;
+  QList<QString> trace_name, trace_color, trace_style;
+
+  // Limit data
+  QList<double> Limit_Start_Freq, Limit_Start_Val, Limit_Stop_Freq, Limit_Stop_Val;
+  QList<int> Limit_Couple_Values;
+  QList<QString> Limit_Start_Freq_Unit, Limit_Stop_Freq_Unit;
+
+  // Markers
+  QList<double> Markers;
+
+  // Clear current dataset
+  datasets.clear();
+
+  while (!xml.atEnd() && !xml.hasError()) {
+    // Read next element
+    QXmlStreamReader::TokenType token = xml.readNext();
+
+           // If token is StartElement, check element name
+    if (token == QXmlStreamReader::StartElement) {
+      if (xml.name() == "trace") {
+        while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "trace")) {
+          xml.readNext();
+          if (xml.tokenType() == QXmlStreamReader::StartElement) {
+            if (xml.name() == "trace_name") {
+              trace_name.append(xml.readElementText());
+            } else if (xml.name() == "trace_width") {
+              trace_width.append(xml.readElementText().toInt());
+            } else if (xml.name() == "trace_color") {
+              trace_color.append(xml.readElementText());
+            } else if (xml.name() == "trace_style") {
+              trace_style.append(xml.readElementText());
+            }
+          }
+        }
+      } else if (xml.name().toString().contains("x-axis-min")) {
+        int x_axis_min = xml.readElementText().toInt();
+        QSpinBox_x_axis_min->setValue(x_axis_min);
+      } else if (xml.name().toString().contains("x-axis-max")) {
+        int x_axis_max = xml.readElementText().toInt();
+        QSpinBox_x_axis_min->setValue(x_axis_max);
+      } else if (xml.name().toString().contains("x-axis-div")) {
+        int x_axis_div = xml.readElementText().toInt();
+        int index = available_x_axis_div.indexOf(x_axis_div);
+        QComboBox_x_axis_div->setCurrentIndex(index);
+      } else if (xml.name().toString().contains("x-axis-scale")) {
+        QString x_axis_scale = xml.readElementText();
+        int index = frequency_units.indexOf(x_axis_scale);
+        QCombobox_x_axis_units->setCurrentIndex(index);
+      } else if (xml.name().toString().contains("y-axis-min")) {
+        int y_axis_min = xml.readElementText().toInt();
+        QSpinBox_y_axis_min->setValue(y_axis_min);
+      } else if (xml.name().toString().contains("y-axis-max")) {
+        int y_axis_max = xml.readElementText().toInt();
+        QSpinBox_y_axis_min->setValue(y_axis_max);
+      } else if (xml.name().toString().contains("y-axis-div")) {
+        int y_axis_div = xml.readElementText().toInt();
+        int index = available_y_axis_div.indexOf(y_axis_div);
+        QComboBox_y_axis_div->setCurrentIndex(index);
+      } else if (xml.name().toString().contains("lock_status")) {
+        lock_axis = xml.readElementText().toInt();
+        lock_unlock_axis_settings();
+      } else if (xml.name() == "Limit") {
+        while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "Limit")) {
+          xml.readNext();
+          if (xml.tokenType() == QXmlStreamReader::StartElement) {
+            if (xml.name() == "fstart") {
+              Limit_Start_Freq.append(xml.readElementText().toDouble());
+            } else if (xml.name() == "val_start") {
+              Limit_Start_Val.append(xml.readElementText().toDouble());
+            } else if (xml.name() == "fstop") {
+              Limit_Stop_Freq.append(xml.readElementText().toDouble());
+            } else if (xml.name() == "val_stop") {
+              Limit_Stop_Val.append(xml.readElementText().toDouble());
+            } else if (xml.name() == "fstart_unit") {
+              Limit_Start_Freq_Unit.append(xml.readElementText());
+            } else if (xml.name() == "fstop_unit") {
+              Limit_Stop_Freq_Unit.append(xml.readElementText());
+            } else if (xml.name() == "couple_values") {
+              Limit_Couple_Values.append(xml.readElementText().toInt());
+            }
+          }
+        }
+      } else if (xml.name() == "MARKERS"){
+        while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "MARKERS")) {
+          xml.readNext();
+          if (xml.tokenType() == QXmlStreamReader::StartElement) {
+            double value = xml.readElementText().toDouble();
+            Markers.append(value);
+          }
+        }
+      } else if (xml.name() == "file") {
+        // Load datasets
+        QString fileName, traceName;
+        while (!xml.atEnd() && !xml.hasError())
+        {
+          if (xml.tokenType() == QXmlStreamReader::StartElement)
+          {
+            if (xml.name() == "file")
+            {
+              fileName = xml.attributes().value("file_name").toString();
+              qDebug() << "File name:" << fileName;
+            }
+            else if (xml.name() == "trace")
+            {
+              traceName = xml.attributes().value("trace_name").toString();
+              qDebug() << "Trace name:" << traceName;
+            }
+            else if (xml.name() == "value")
+            {
+              QString value = xml.readElementText();
+              qDebug() << "Value:" << value;
+              datasets[fileName][traceName].append(value.toDouble());
+            }
+          }
+          xml.readNext();
+        }
+      }
+    }
+  }
+
+
+  if (xml.hasError()) {
+    qDebug() << "Error parsing XML: " << xml.errorString();
+  }
+
+  // Close the file
+  file.close();
+
+  // Apply the settings and display traces
+  lock_unlock_axis_settings(); // Apply lock/unlock settings
+
+  // Update dataset and trace selection comboboxes
+  QStringList files = datasets.keys();
+  for (int i = 0; i < files.size(); i++){
+    QString file = files.at(i);
+    QCombobox_datasets->addItem(file);
+
+    // Add file management widgets
+    // Label
+    QLabel * Filename_Label = new QLabel(file);
+    Filename_Label->setObjectName(QString("File_") + QString::number(i));
+    List_FileNames.append(Filename_Label);
+    this->FilesGrid->addWidget(List_FileNames.last(), i, 0, 1, 1);
+
+    // Create the "Remove" button
+    QToolButton * RemoveButton = new QToolButton();
+    RemoveButton->setObjectName(QString("Remove_") + QString::number(i));
+    QIcon icon(":/bitmaps/trash.png"); // Use a resource path or a relative path
+    RemoveButton->setIcon(icon);
+
+    RemoveButton->setStyleSheet("QToolButton {background-color: red;\
+                                    border-width: 2px;\
+                                    border-radius: 10px;\
+                                    border-color: beige;\
+                                    font: bold 14px;\
+                                }");
+    List_RemoveButton.append(RemoveButton);
+    this->FilesGrid->addWidget(List_RemoveButton.last(), i, 1, 1, 1);
+    connect(RemoveButton, SIGNAL(clicked()), SLOT(removeFile())); // Connect button with the handler to remove the entry.
+
+  }
+  updateTracesCombo();// Update traces
+
+  // Add traces to the display
+  for (int i = 0; i < trace_name.size(); i++){
+    QStringList parts = trace_name.at(i).split(".");
+    addTrace(parts[0], parts[1], trace_color.at(i), trace_width.at(i), trace_style.at(i));
+  }
+
+  // Add markers
+  for (int i = 0; i < Markers.size(); i++){
+    addMarker(Markers.at(i));
+  }
+
+  // Add limits
+  for (int i = 0; i < Limit_Start_Freq.size(); i++){
+    addLimit(Limit_Start_Freq.at(i), Limit_Start_Freq_Unit.at(i), Limit_Stop_Freq.at(i), Limit_Stop_Freq_Unit.at(i), Limit_Start_Val.at(i), Limit_Stop_Val.at(i), Limit_Couple_Values.at(i));
+  }
+  return;
 }

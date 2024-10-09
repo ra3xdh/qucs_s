@@ -50,6 +50,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void slotQuit();
   void slotSave();
   void slotSaveAs();
+  void slotLoadSession();
 
   void addFile();
   void addFiles(QStringList);
@@ -58,7 +59,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void removeAllFiles();
 
   void addTrace();
-  void addTrace(QString, QString, QColor);
+  void addTrace(QString, QString, QColor, int trace_width = 1, QString trace_style = "Solid");
   void removeTrace();
   void removeTrace(int);
   void removeTrace(QList<int>);
@@ -78,13 +79,13 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void update_Y_axis();
   void lock_unlock_axis_settings();
 
-  void addMarker();
+  void addMarker(double freq = -1);
   void removeMarker();
   void removeMarker(int);
   void removeAllMarkers();
   void updateMarkerTable();
 
-  void addLimit();
+  void addLimit(double f_limit1=-1, QString f_limit1_unit = "", double f_limit2=-1, QString f_limit2_unit = "", double y_limit1=-1, double y_limit2=-1, bool coupled=false);
   void removeLimit();
   void removeLimit(int);
   void removeAllLimits();
@@ -134,6 +135,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QDoubleSpinBox *QSpinBox_y2_axis_min, *QSpinBox_y2_axis_max, *QSpinBox_y2_axis_div;
   QPushButton *Lock_axis_settings_Button;
   bool lock_axis;
+  QStringList frequency_units;
 
   // Trace management widgets
   QComboBox *QCombobox_datasets, *QCombobox_traces;
@@ -190,6 +192,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   // Save
   QString savepath;
   bool save();
+  void loadSession(QString);
 
   // Utilities
   void convert_MA_RI_to_dB(double *, double *, double *, double *, QString);
