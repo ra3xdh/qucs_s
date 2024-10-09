@@ -2588,6 +2588,13 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Couple_Value.append(new_limit_CoupleButton);
   this->LimitsGrid->addWidget(new_limit_CoupleButton, limit_index+1, 2);
 
+  if (coupled){
+    new_limit_CoupleButton->setText("<--->");
+  } else {
+    new_limit_CoupleButton->setText("<-X->");
+  }
+  new_limit_CoupleButton->click();
+
 
   QString Separator_name = QString("Lmt_Separator%1").arg(n_limits);
   QFrame * new_Separator = new QFrame();
@@ -2745,7 +2752,7 @@ bool Qucs_S_SPAR_Viewer::save()
         xmlWriter.writeTextElement("val_stop", QString::number(value));
 
         // Couple values
-        Coupled_Limits = List_Couple_Value[i]->isChecked();
+        Coupled_Limits = (List_Couple_Value[i]->text() == "<-X->");
         xmlWriter.writeTextElement("couple_values", QString::number(Coupled_Limits));
 
         xmlWriter.writeEndElement(); // Limit
