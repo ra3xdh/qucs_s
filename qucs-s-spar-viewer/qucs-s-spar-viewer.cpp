@@ -2858,6 +2858,8 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
     return;
   }
 
+  savepath = session_file;
+
   QXmlStreamReader xml(&file);
 
   // Trace properties
