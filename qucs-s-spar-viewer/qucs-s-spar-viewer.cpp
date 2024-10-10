@@ -2061,7 +2061,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable(){
             };
             QString file = parts[0];
             QString trace = parts[1];
-            if (trace.at(0) == "S"){
+            if (trace.at(0) == 'S'){
               trace.append("_dB");
             }
             P = findClosestPoint(datasets[file]["frequency"], datasets[file][trace], targetX);
@@ -2896,17 +2896,17 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
 
            // If token is StartElement, check element name
     if (token == QXmlStreamReader::StartElement) {
-      if (xml.name() == "trace") {
-        while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "trace")) {
+      if (xml.name() == QStringLiteral("trace")) {
+        while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == QStringLiteral("trace"))) {
           xml.readNext();
           if (xml.tokenType() == QXmlStreamReader::StartElement) {
-            if (xml.name() == "trace_name") {
+            if (xml.name() == QStringLiteral("trace_name")) {
               trace_name.append(xml.readElementText());
-            } else if (xml.name() == "trace_width") {
+            } else if (xml.name() == QStringLiteral("trace_width")) {
               trace_width.append(xml.readElementText().toInt());
-            } else if (xml.name() == "trace_color") {
+            } else if (xml.name() == QStringLiteral("trace_color")) {
               trace_color.append(xml.readElementText());
-            } else if (xml.name() == "trace_style") {
+            } else if (xml.name() == QStringLiteral("trace_style")) {
               trace_style.append(xml.readElementText());
             }
           }
@@ -2938,53 +2938,53 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
       } else if (xml.name().toString().contains("lock_status")) {
         lock_axis = xml.readElementText().toInt();
         lock_unlock_axis_settings();
-      } else if (xml.name() == "Limit") {
-        while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "Limit")) {
+      } else if (xml.name() == QStringLiteral("Limit")) {
+        while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == QStringLiteral("Limit"))) {
           xml.readNext();
           if (xml.tokenType() == QXmlStreamReader::StartElement) {
-            if (xml.name() == "fstart") {
+            if (xml.name() == QStringLiteral("fstart")) {
               Limit_Start_Freq.append(xml.readElementText().toDouble());
-            } else if (xml.name() == "val_start") {
+            } else if (xml.name() == QStringLiteral("val_start")) {
               Limit_Start_Val.append(xml.readElementText().toDouble());
-            } else if (xml.name() == "fstop") {
+            } else if (xml.name() == QStringLiteral("fstop")) {
               Limit_Stop_Freq.append(xml.readElementText().toDouble());
-            } else if (xml.name() == "val_stop") {
+            } else if (xml.name() == QStringLiteral("val_stop")) {
               Limit_Stop_Val.append(xml.readElementText().toDouble());
-            } else if (xml.name() == "fstart_unit") {
+            } else if (xml.name() == QStringLiteral("fstart_unit")) {
               Limit_Start_Freq_Unit.append(xml.readElementText());
-            } else if (xml.name() == "fstop_unit") {
+            } else if (xml.name() == QStringLiteral("fstop_unit")) {
               Limit_Stop_Freq_Unit.append(xml.readElementText());
-            } else if (xml.name() == "couple_values") {
+            } else if (xml.name() == QStringLiteral("couple_values")) {
               Limit_Couple_Values.append(xml.readElementText().toInt());
             }
           }
         }
-      } else if (xml.name() == "MARKERS"){
-        while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "MARKERS")) {
+      } else if (xml.name() == QStringLiteral("MARKERS")){
+        while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == QStringLiteral("MARKERS"))) {
           xml.readNext();
           if (xml.tokenType() == QXmlStreamReader::StartElement) {
             double value = xml.readElementText().toDouble();
             Markers.append(value);
           }
         }
-      } else if (xml.name() == "file") {
+      } else if (xml.name() == QStringLiteral("file")) {
         // Load datasets
         QString fileName, traceName;
         while (!xml.atEnd() && !xml.hasError())
         {
           if (xml.tokenType() == QXmlStreamReader::StartElement)
           {
-            if (xml.name() == "file")
+            if (xml.name() == QStringLiteral("file"))
             {
               fileName = xml.attributes().value("file_name").toString();
               //qDebug() << "File name:" << fileName;
             }
-            else if (xml.name() == "trace")
+            else if (xml.name() == QStringLiteral("trace"))
             {
               traceName = xml.attributes().value("trace_name").toString();
               //qDebug() << "Trace name:" << traceName;
             }
-            else if (xml.name() == "value")
+            else if (xml.name() == QStringLiteral("value"))
             {
               QString value = xml.readElementText();
               //qDebug() << "Value:" << value;
