@@ -601,7 +601,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
     for (int i = 0; i < fileNames.length(); i++){
       filename = QFileInfo(fileNames.at(i)).fileName();
       // Check if this file already exists
-      QString new_filename = filename.left(filename.indexOf('.'));
+      QString new_filename = filename.left(filename.lastIndexOf('.'));
       if (files_dataset.contains(new_filename)){
         // Remove it from the list of new files to load
         fileNames.removeAt(i);
@@ -621,7 +621,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
         // Create the file name label
         filename = QFileInfo(fileNames.at(i-existing_files)).fileName();
 
-        QLabel * Filename_Label = new QLabel(filename.left(filename.indexOf('.')));
+        QLabel * Filename_Label = new QLabel(filename.left(filename.lastIndexOf('.')));
         Filename_Label->setObjectName(QString("File_") + QString::number(i));
         List_FileNames.append(Filename_Label);
         this->FilesGrid->addWidget(List_FileNames.last(), i,0,1,1);
@@ -828,7 +828,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
            }
         }
         // 3) Add data to the dataset
-        filename = filename.left(filename.indexOf('.')); // Remove file extension
+        filename = filename.left(filename.lastIndexOf('.')); // Remove file extension
         datasets[filename] = file_data;
         file.close();
 
@@ -870,7 +870,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
             QString filename;
             for (int i = 0; i < fileNames.length(); i++){
                 filename = QFileInfo(fileNames.at(i)).fileName();
-                filename = filename.left(filename.indexOf('.'));
+                filename = filename.left(filename.lastIndexOf('.'));
                 // Pick a random color
                 QColor trace_color = QColor(QRandomGenerator::global()->bounded(256), QRandomGenerator::global()->bounded(256), QRandomGenerator::global()->bounded(256));
                 this->addTrace(filename, QString("S21"), trace_color);
@@ -926,7 +926,10 @@ void Qucs_S_SPAR_Viewer::removeFile(int index_to_delete)
     QList<int> indices_to_remove;
     for (int i = 0; i < List_TraceNames.size(); i++){
         QString trace_name = List_TraceNames.at(i)->text();
-        QStringList parts = trace_name.split(".");//Trace name = dataset + trace
+        QStringList parts = {
+            trace_name.section('.', 0, -2),
+            trace_name.section('.', -1)
+        };
         QString dataset_trace = parts[0];
         if (dataset_trace == dataset_to_remove ){
             QString Label_Object_Name = List_TraceNames.at(i)->objectName();
@@ -1557,7 +1560,10 @@ void Qucs_S_SPAR_Viewer::updateTraces()
         QString trace_name = series->name();
         qreal minX_trace, maxX_trace, minY_trace, maxY_trace;
 
-        QStringList trace_name_parts = trace_name.split('.');
+        QStringList trace_name_parts = {
+            trace_name.section('.', 0, -2),
+            trace_name.section('.', -1)
+        };
         QString data_file = trace_name_parts[0];
         QString trace_file = trace_name_parts[1];
 
@@ -2049,7 +2055,10 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable(){
             // Look into dataset, traces may be clipped.
             // It is important to grab the data from the dataset, not from the displayed trace.
             QString trace_name = seriesList[c-1]->name();
-            QStringList parts = trace_name.split(".");
+            QStringList parts = {
+                trace_name.section('.', 0, -2),
+                trace_name.section('.', -1)
+            };
             QString file = parts[0];
             QString trace = parts[1];
             if (trace.at(0) == "S"){
@@ -3029,7 +3038,10 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
 
   // Add traces to the display
   for (int i = 0; i < trace_name.size(); i++){
-    QStringList parts = trace_name.at(i).split(".");
+    QStringList parts = {
+        trace_name[i].section('.', 0, -2),
+        trace_name[i].section('.', -1)
+    };
     addTrace(parts[0], parts[1], trace_color.at(i), trace_width.at(i), trace_style.at(i));
   }
 
