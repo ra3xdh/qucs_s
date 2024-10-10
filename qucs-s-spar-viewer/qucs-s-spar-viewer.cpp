@@ -2502,6 +2502,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   new_limit_fstart_Spinbox->setObjectName(SpinBox_fstart_name);
   new_limit_fstart_Spinbox->setMaximum(QSpinBox_x_axis_max->minimum());
   new_limit_fstart_Spinbox->setMaximum(QSpinBox_x_axis_max->maximum());
+  new_limit_fstart_Spinbox->setSingleStep(QComboBox_x_axis_div->currentText().toDouble()/5);
   new_limit_fstart_Spinbox->setValue(f_limit1);
   connect(new_limit_fstart_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateTraces()));
   List_Limit_Start_Freq.append(new_limit_fstart_Spinbox);
@@ -2526,6 +2527,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   new_limit_fstop_Spinbox->setObjectName(SpinBox_fstop_name);
   new_limit_fstop_Spinbox->setMaximum(QSpinBox_x_axis_max->minimum());
   new_limit_fstop_Spinbox->setMaximum(QSpinBox_x_axis_max->maximum());
+  new_limit_fstop_Spinbox->setSingleStep(QComboBox_x_axis_div->currentText().toDouble()/5);
   new_limit_fstop_Spinbox->setValue(f_limit2);
   connect(new_limit_fstop_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateTraces()));
   List_Limit_Stop_Freq.append(new_limit_fstop_Spinbox);
@@ -2552,6 +2554,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   new_limit_val_start_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
   new_limit_val_start_Spinbox->setMaximum(QSpinBox_y_axis_max->maximum());
   new_limit_val_start_Spinbox->setValue(y_limit1);
+  new_limit_val_start_Spinbox->setSingleStep(QComboBox_y_axis_div->currentText().toDouble()/5);
   connect(new_limit_val_start_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
   List_Limit_Start_Value.append(new_limit_val_start_Spinbox);
   this->LimitsGrid->addWidget(new_limit_val_start_Spinbox, limit_index+1, 1);
@@ -2562,6 +2565,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   new_limit_val_stop_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
   new_limit_val_stop_Spinbox->setMaximum(QSpinBox_y_axis_max->maximum());
   new_limit_val_stop_Spinbox->setValue(y_limit2);
+  new_limit_val_stop_Spinbox->setSingleStep(QComboBox_y_axis_div->currentText().toDouble()/5);
   connect(new_limit_val_stop_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
   List_Limit_Stop_Value.append(new_limit_val_stop_Spinbox);
   this->LimitsGrid->addWidget(new_limit_val_stop_Spinbox, limit_index+1, 3);
@@ -2973,17 +2977,17 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
             if (xml.name() == "file")
             {
               fileName = xml.attributes().value("file_name").toString();
-              qDebug() << "File name:" << fileName;
+              //qDebug() << "File name:" << fileName;
             }
             else if (xml.name() == "trace")
             {
               traceName = xml.attributes().value("trace_name").toString();
-              qDebug() << "Trace name:" << traceName;
+              //qDebug() << "Trace name:" << traceName;
             }
             else if (xml.name() == "value")
             {
               QString value = xml.readElementText();
-              qDebug() << "Value:" << value;
+              //qDebug() << "Value:" << value;
               datasets[fileName][traceName].append(value.toDouble());
             }
           }
