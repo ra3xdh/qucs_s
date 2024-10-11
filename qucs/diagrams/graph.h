@@ -125,6 +125,8 @@ public:
   typedef container::iterator iterator;
   typedef container::const_iterator const_iterator;
 
+  QList<QLineF> linesCache;
+
   int loadDatFile(const QString& filename);
   int loadIndepVarData(const QString&, char* datfilecontent, DataX* where);
 
@@ -145,8 +147,8 @@ public:
   bool isEmpty() const { return !cPointsX.size(); }
   QVector<DataX*>& mutable_axes(){return cPointsX;} // HACK
 
-  void clear(){ScrPoints.resize(0);}
-  void resizeScrPoints(size_t s){assert(s>=ScrPoints.size()); ScrPoints.resize(s);}
+  void clear(){ScrPoints.resize(0);linesCache.clear();}
+  void resizeScrPoints(size_t s){assert(s>=ScrPoints.size()); ScrPoints.resize(s);linesCache.clear();}
   iterator begin(){return ScrPoints.begin();}
   iterator end(){return ScrPoints.end();}
   const_iterator begin() const{return ScrPoints.begin();}
@@ -168,7 +170,7 @@ public:
 
 private: // painting
   void drawStarSymbols(QPainter* painter) const;
-  void drawLines(QPainter* painter) const;
+  void drawLines(QPainter* painter);
   void drawCircleSymbols(QPainter* painter) const;
   void drawArrowSymbols(QPainter* painter) const;
 public: // marker related
@@ -177,6 +179,7 @@ public: // marker related
   Diagram const* parentDiagram() const{return diagram;}
 private:
   QVector<DataX*>  cPointsX;
+
   std::vector<ScrPt> ScrPoints; // data in screen coordinates
   Diagram const* diagram;
 };

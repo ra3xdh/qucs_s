@@ -431,7 +431,7 @@ void Graph::drawStarSymbols(QPainter* painter) const {
   }
 }
 
-void Graph::drawLines(QPainter* painter) const {
+void Graph::drawLines(QPainter* painter) {
   painter->save();
 
   QPen pen = painter->pen();
@@ -479,41 +479,48 @@ void Graph::drawLines(QPainter* painter) const {
   //  - point.isGraphEnd() returns true when there is no
   //    more graph data points
 
-  bool drawing_started = false;
-  double prev_point_x = 0;
-  double prev_point_y = 0;
+  if (linesCache.isEmpty()) {
 
-  for (auto point : *this) {
-    // No more data points
-    if (point.isGraphEnd()) {
-      break;
-    }
+    bool drawing_started = false;
+    double prev_point_x  = 0;
+    double prev_point_y  = 0;
 
-    // Subgraph has ended, let's pretend like we're
-    // drawing a graph from the beginning
-    if (point.isStrokeEnd()) {
-      drawing_started = false;
-      continue;
-    }
+    for (auto point : *this) {
+      // No more data points
+      if (point.isGraphEnd()) {
+        break;
+      }
 
-    // skip if not valid
-    if (!point.isPt()) {
-      continue;
-    }
+      // Subgraph has ended, let's pretend like we're
+      // drawing a graph from the beginning
+      if (point.isStrokeEnd()) {
+        drawing_started = false;
+        continue;
+      }
 
-    // First point in a subgraph. From here the drawing starts
-    if (!drawing_started) {
+      // skip if not valid
+      if (!point.isPt()) {
+        continue;
+      }
+
+      // First point in a subgraph. From here the drawing starts
+      if (!drawing_started) {
+        prev_point_x    = point.getScrX();
+        prev_point_y    = point.getScrY();
+        drawing_started = true;
+        continue;
+      }
+
+      linesCache.append(
+          QLineF{prev_point_x, prev_point_y, point.getScrX(), point.getScrY()});
+
+      // painter->drawLine(QLineF{prev_point_x, prev_point_y, point.getScrX(), point.getScrY()});
       prev_point_x = point.getScrX();
       prev_point_y = point.getScrY();
-      drawing_started = true;
-      continue;
     }
-
-    painter->drawLine(QLineF{prev_point_x, prev_point_y, point.getScrX(), point.getScrY()});
-    prev_point_x = point.getScrX();
-    prev_point_y = point.getScrY();
   }
 
+  painter->drawLines(linesCache);
   painter->restore();
 }
 
