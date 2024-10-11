@@ -48,6 +48,9 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void slotHelpAbout();
   void slotHelpAboutQt();
   void slotQuit();
+  void slotSave();
+  void slotSaveAs();
+  void slotLoadSession();
 
   void addFile();
   void addFiles(QStringList);
@@ -56,12 +59,13 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void removeAllFiles();
 
   void addTrace();
-  void addTrace(QString, QString, QColor);
+  void addTrace(QString, QString, QColor, int trace_width = 1, QString trace_style = "Solid");
   void removeTrace();
   void removeTrace(int);
   void removeTrace(QList<int>);
 
   void updatePlot();
+  void updateTraces();
   void updateTracesCombo();
 
   void changeTraceColor();
@@ -73,12 +77,21 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
   void update_X_axis();
   void update_Y_axis();
+  void lock_unlock_axis_settings();
 
-  void addMarker();
+  void addMarker(double freq = -1);
   void removeMarker();
   void removeMarker(int);
   void removeAllMarkers();
   void updateMarkerTable();
+
+  void addLimit(double f_limit1=-1, QString f_limit1_unit = "", double f_limit2=-1, QString f_limit2_unit = "", double y_limit1=-1, double y_limit2=-1, bool coupled=false);
+  void removeLimit();
+  void removeLimit(int);
+  void removeAllLimits();
+  void updateLimits();
+
+  void coupleSpinBoxes();
 
  protected:
   void dragEnterEvent(QDragEnterEvent *event) override;
@@ -120,6 +133,9 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QList<double> available_y_axis_div;
   QComboBox *QComboBox_y_axis_div;
   QDoubleSpinBox *QSpinBox_y2_axis_min, *QSpinBox_y2_axis_max, *QSpinBox_y2_axis_div;
+  QPushButton *Lock_axis_settings_Button;
+  bool lock_axis;
+  QStringList frequency_units;
 
   // Trace management widgets
   QComboBox *QCombobox_datasets, *QCombobox_traces;
@@ -147,7 +163,6 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   double f_min, f_max, y_min, y_max; // Minimum (maximum) values of the display
   QList<QColor> default_colors;
   bool removeSeriesByName(QChart*, const QString&);
-  void updateTraces();
 
   // Markers
   QDockWidget *dockMarkers;
@@ -161,6 +176,23 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QList<QComboBox *> List_MarkerScale;
   QList<QToolButton*> List_Button_DeleteMarker;
 
+  // Limits
+  QDockWidget *dockLimits;
+  QWidget *Limits_Widget;
+  QGridLayout * LimitsGrid;
+  QPushButton *Button_add_Limit, *Button_Remove_All_Limits;
+  QList<QLabel *> List_LimitNames;
+  QList<QDoubleSpinBox *> List_Limit_Start_Freq, List_Limit_Stop_Freq;
+  QList<QDoubleSpinBox *> List_Limit_Start_Value, List_Limit_Stop_Value;
+  QList<QComboBox *> List_Limit_Start_Freq_Scale, List_Limit_Stop_Freq_Scale;
+  QList<QToolButton*> List_Button_Delete_Limit;
+  QList<QFrame*> List_Separators;
+  QList<QPushButton*> List_Couple_Value;
+
+  // Save
+  QString savepath;
+  bool save();
+  void loadSession(QString);
 
   // Utilities
   void convert_MA_RI_to_dB(double *, double *, double *, double *, QString);
@@ -172,7 +204,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void adjust_x_axis_to_file(QString);
   void adjust_y_axis_to_trace(QString, QString);
   void adjust_x_axis_div();
-  QPointF findClosestPoint(QAbstractSeries*, qreal);
+  QPointF findClosestPoint(const QList<double>&, const QList<double>&, qreal);
   double getFreqFromText(QString);
 };
 

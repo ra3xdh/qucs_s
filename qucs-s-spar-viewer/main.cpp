@@ -108,7 +108,7 @@ int main( int argc, char ** argv )
   qucs->move(QucsSettings.x, QucsSettings.y);  // position before "show" !!!
   qucs->show();
 
-  QScreen* primaryScreen = QGuiApplication::screens().first();
+  QScreen* primaryScreen = QGuiApplication::screens().constFirst();
 
   qucs->resize(primaryScreen->availableGeometry().size() * 0.9);
   qucs->setGeometry(
