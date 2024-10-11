@@ -388,7 +388,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   (*filstream) << NetText;
 
   // only interact with the GUI if it was launched
-  if (QucsMain) {
+  if (QucsMain != nullptr) {
     QucsMain->statusBar()->showMessage(tr("Converting SPICE file \"%1\".").arg(*SpiceFile), 2000);
   }
   else

@@ -1070,7 +1070,7 @@ bool Schematic::loadDocument()
   QFile file(DocName);
   if(!file.open(QIODevice::ReadOnly)) {
     /// \todo implement unified error/warning handling GUI and CLI
-    if (QucsMain)
+    if (QucsMain != nullptr)
       QMessageBox::critical(0, QObject::tr("Error"),
                  QObject::tr("Cannot load document: ")+DocName);
     else
@@ -1509,7 +1509,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
           delete d;
           /// \todo implement error/warning message dispatcher for GUI and CLI modes.
           QString message = QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s);
-          if (QucsMain) // GUI is running
+          if (QucsMain != nullptr) // GUI is running
             ErrText->appendPlainText(message);
           else // command line
             qCritical() << "Schematic::throughAllComps" << message;

@@ -63,7 +63,7 @@
 
 tQucsSettings QucsSettings;
 
-QucsApp *QucsMain = 0;  // the Qucs application itself
+QucsApp *QucsMain = nullptr;  // the Qucs application itself
 QString lastDir;    // to remember last directory for several dialogs
 QStringList qucsPathList;
 VersionTriplet QucsVersion; // Qucs version string
@@ -179,7 +179,9 @@ bool saveApplSettings()
     qs.setItem<QString>("font", QucsSettings.font.toString());
     qs.setItem<QString>("appFont", QucsSettings.appFont.toString());
     qs.setItem<QString>("textFont", QucsSettings.textFont.toString());
-    qs.setItem<QByteArray>("MainWindowGeometry", QucsMain->saveGeometry());
+    if (QucsMain != nullptr) {
+      qs.setItem<QByteArray>("MainWindowGeometry", QucsMain->saveGeometry());
+    }
     
     // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
     qs.setItem<QString>("LargeFontSize", QString::number(QucsSettings.largeFontSize));

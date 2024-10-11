@@ -1787,7 +1787,7 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
 
     if (!c) {
         /// \todo enable user to load partial schematic, skip unknown components
-        if (QucsMain != 0) {
+        if (QucsMain != nullptr) {
             QMessageBox *msg = new QMessageBox(QMessageBox::Warning, QObject::tr("Warning"),
                                                QObject::tr("Format Error:\nUnknown component!\n"
                                                            "%1\n\n"
