@@ -846,11 +846,12 @@ void misc::draw_resize_handle(QPainter* painter, const QPointF& center) {
   // 1. Find out where on canvas lies the central point and remember these
   //    coordinates
   // 2. Remove all transformations and draw the handle in its natural size
-  QRectF resize_handle{0, 0, 10, 10};  // nothing special, just a size
+  static QRectF resize_handle{0, 0, 10, 10};  // nothing special, just a size
   resize_handle.moveCenter(painter->transform().map(center));
 
+  static QTransform transform{}; // reset transformation
   painter->save();
-  painter->setTransform(QTransform{});
+  painter->setTransform(transform);
   painter->setPen(QPen{Qt::darkRed, 2});
   painter->drawRect(resize_handle);
   painter->restore();

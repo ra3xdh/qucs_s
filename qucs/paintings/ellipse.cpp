@@ -57,8 +57,6 @@ void qucs::Ellipse::paint(QPainter *painter) {
     painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
     painter->drawEllipse(cx, cy, x2, y2);
 
-    painter->setPen(QPen(Qt::darkRed,2));
-
     misc::draw_resize_handle(painter, QPoint{cx, cy});
     misc::draw_resize_handle(painter, QPoint{cx, cy + y2});
     misc::draw_resize_handle(painter, QPoint{cx + x2, cy});
