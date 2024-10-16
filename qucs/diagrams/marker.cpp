@@ -425,7 +425,7 @@ void Marker::paint(QPainter* painter) {
   }
 
   painter->setPen(QPen(Qt::black, 1));
-  painter->drawText(x1, y1, 0, 0, Qt::TextDontClip, Text);
+  painter->drawText(x1, y1, 1, 1, Qt::TextDontClip, Text);
 
   painter->setPen(QPen(Qt::darkMagenta, 0));
   painter->drawRect(text_box);

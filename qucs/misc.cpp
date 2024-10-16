@@ -791,7 +791,7 @@ void misc::draw_richtext(QPainter* painter, int x, int y, const QString &text, Q
       QRect fragment_br;
       painter->drawText(
         current_text_x, current_text_y + (is_sub ? subscript_offset : superscript_offset),
-        0, 0,
+        1, 1,
         Qt::TextDontClip,
         text.mid(i, len ? len : 1),
         &fragment_br);
@@ -811,7 +811,7 @@ void misc::draw_richtext(QPainter* painter, int x, int y, const QString &text, Q
 
       QRect fragment_br;
       painter->drawText(
-        current_text_x, current_text_y, 0, 0,
+        current_text_x, current_text_y, 1, 1,
         Qt::TextDontClip,
         text.mid(i, len),
         &fragment_br);
