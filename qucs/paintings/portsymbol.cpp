@@ -88,7 +88,7 @@ void PortSymbol::paint(QPainter *painter) {
     }
 
     painter->setPen(Qt::black);
-    painter->drawText(0, 0, 0, 0, Qt::TextDontClip, nameStr.isEmpty() ? numberStr : nameStr);
+    painter->drawText(0, 0, 1, 1, Qt::TextDontClip, nameStr.isEmpty() ? numberStr : nameStr);
   }
   painter->restore();
 

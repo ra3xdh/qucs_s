@@ -252,7 +252,7 @@ void Component::paint(QPainter *p) {
     QRect text_br{tx, ty, 0, 0};
 
     if (showName) {
-        p->drawText(tx, ty, 0, 0, Qt::TextDontClip, Name, &text_br);
+        p->drawText(tx, ty, 1, 1, Qt::TextDontClip, Name, &text_br);
     }
 
     for (auto *prop : Props) {

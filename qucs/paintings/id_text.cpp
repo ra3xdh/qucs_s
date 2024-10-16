@@ -42,18 +42,18 @@ void ID_Text::paint(QPainter* painter) {
   painter->setPen(QPen(Qt::black,1));
 
   QRect r;
-  painter->drawText(QRect(0, 0, 0, 0), Qt::TextDontClip, Prefix, &r);
+  painter->drawText(QRect(0, 0, 1, 1), Qt::TextDontClip, Prefix, &r);
   x2 = r.width();
   y2 = r.height();
 
-  painter->drawText(QRect(0, y2, 0, 0), Qt::TextDontClip, "File=name", &r);
+  painter->drawText(QRect(0, y2, 1, 1), Qt::TextDontClip, "File=name", &r);
   x2 = std::max(x2, r.width());
   y2 += r.height();
 
   QList<SubParameter *>::const_iterator it;
   for(it = Parameter.constBegin(); it != Parameter.constEnd(); it++) {
     if((*it)->display) {
-      painter->drawText(QRect(0, y2, 0, 0), Qt::TextDontClip, (*it)->Name, &r);
+      painter->drawText(QRect(0, y2, 1, 1), Qt::TextDontClip, (*it)->Name, &r);
       x2 = std::max(x2, r.width());
       y2 += r.height();
     }
