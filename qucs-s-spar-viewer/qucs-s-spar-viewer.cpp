@@ -292,7 +292,6 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
 
   // Lock axis settings button
   Lock_axis_settings_Button =  new QPushButton("Lock Axes");
-  Lock_axis_settings_Button->setCheckable(true);
   connect(Lock_axis_settings_Button, SIGNAL(clicked(bool)), SLOT(lock_unlock_axis_settings()));
   lock_axis = false;
 
