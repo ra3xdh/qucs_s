@@ -64,7 +64,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
-          sudo apt install libqt5charts5-dev
 
     - name: 'Install Qt6'
       uses: jurplel/install-qt-action@v4
@@ -212,7 +211,7 @@ jobs:
         
 
   build-mac-universal:
-    runs-on: macos-latest
+    runs-on: macos-15
     needs: setup
     strategy:
       fail-fast: false
