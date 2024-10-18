@@ -119,7 +119,7 @@ void SimulationComponent::drawSymbol(QPainter *p)
     p->setPen(pen());
     p->setFont(label_font);
     QRect label_bounds;
-    p->drawText(0, 0, 0, 0, Qt::TextDontClip, label_text, &label_bounds);
+    p->drawText(0, 0, 1, 1, Qt::TextDontClip, label_text, &label_bounds);
 
     // Simulation component look like an isometric box
     // or a brick, with a label on its top side, being

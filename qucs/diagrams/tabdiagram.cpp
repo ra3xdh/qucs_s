@@ -110,7 +110,7 @@ void TabDiagram::paintDiagram(QPainter *painter) {
 
   painter->setPen(Qt::black);
   for (Text *pt : Texts) {
-    painter->drawText(pt->x, -pt->y, 0, 0, Qt::TextDontClip, pt->s);
+    painter->drawText(pt->x, -pt->y, 1, 1, Qt::TextDontClip, pt->s);
   }
 
   if (isSelected) {
