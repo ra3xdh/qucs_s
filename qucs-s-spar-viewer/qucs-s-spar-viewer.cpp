@@ -2415,8 +2415,9 @@ void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event)
     if (!fileList.isEmpty()) {
       // Check if this is a session file
       if (fileList.size() == 1){
-        if (fileList.first().endsWith(".spar", Qt::CaseInsensitive)) {
-          // Then open it as a session settings file.
+        if (fileList.first().endsWith(".spar", Qt::CaseInsensitive)) {// Then open it as a session settings file.
+          // Remove traces and the dataset from the current session before loading the session file
+          removeAllFiles();
           loadSession(fileList.first());
           this->activateWindow();
           return;
