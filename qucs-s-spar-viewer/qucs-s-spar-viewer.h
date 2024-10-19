@@ -192,6 +192,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QList<QToolButton*> List_Button_Delete_Limit;
   QList<QFrame*> List_Separators;
   QList<QPushButton*> List_Couple_Value;
+  QDoubleSpinBox * Limits_Offset;
 
   // Save
   QString savepath;

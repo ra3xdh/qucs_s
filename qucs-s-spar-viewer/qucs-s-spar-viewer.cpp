@@ -46,10 +46,8 @@
 #include <QLineSeries>
 
 
-
 Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
 {
-
   QWidget *centralWidget = new QWidget(this);  
   setCentralWidget(centralWidget);
 
@@ -140,7 +138,6 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
                                   padding: 6px;\
                               }");
   connect(Delete_All_Files, SIGNAL(clicked()), SLOT(removeAllFiles()));
-
 
   hLayout_Files_Buttons->addWidget(Button_Add_File);
   hLayout_Files_Buttons->addWidget(Delete_All_Files);
@@ -427,7 +424,6 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   Markers_VBox->addWidget(tableMarkers);
 
   // Limits dock
-
   QWidget * LimitsGroup = new QWidget();
   QVBoxLayout *Limits_VBox = new QVBoxLayout(LimitsGroup);
 
@@ -465,6 +461,18 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   connect(Button_Remove_All_Limits, SIGNAL(clicked()), SLOT(removeAllLimits())); // Connect button with the handler
   LimitsGrid->addWidget(Button_Remove_All_Limits, 0, 1);
 
+  QGroupBox * LimitSettings = new QGroupBox("Settings");
+  QGridLayout * LimitsSettingLayout = new QGridLayout(LimitSettings);
+  QLabel * LimitsOffsetLabel = new QLabel("<b>Limits Offset</>");
+  Limits_Offset = new QDoubleSpinBox();
+  Limits_Offset->setValue(0);
+  Limits_Offset->setSingleStep(0.1);
+  Limits_Offset->setMaximum(1e4);
+  Limits_Offset->setMinimum(-1e4);
+  connect(Limits_Offset, SIGNAL(valueChanged(double)), SLOT(updateTraces()));
+  LimitsSettingLayout->addWidget(LimitsOffsetLabel, 0, 0);
+  LimitsSettingLayout->addWidget(Limits_Offset, 0, 1);
+
   // Limit management
   QWidget * LimitList_Widget = new QWidget(); // Panel with the trace settings
 
@@ -484,6 +492,7 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   scrollArea_Limits->setWidgetResizable(true);
 
   Limits_VBox->addWidget(AddLimit_Widget);
+  Limits_VBox->addWidget(LimitSettings);
   Limits_VBox->addWidget(scrollArea_Limits);
 
 
@@ -1666,6 +1675,7 @@ void Qucs_S_SPAR_Viewer::updateTraces()
     }
 
     // Add limits
+    double limits_offset = Limits_Offset->value();
     for (int i = 0; i < List_LimitNames.size(); i++){
       // Start frequency
       double fstart = List_Limit_Start_Freq[i]->value();
@@ -1680,10 +1690,10 @@ void Qucs_S_SPAR_Viewer::updateTraces()
       fstop *= getFreqScale();// Normalize x with respect to the axis scale
 
       // Start value
-      double val_start = List_Limit_Start_Value[i]->value();
+      double val_start = List_Limit_Start_Value[i]->value()+limits_offset;
 
       // Stop value
-      double val_stop = List_Limit_Stop_Value[i]->value();
+      double val_stop = List_Limit_Stop_Value[i]->value()+limits_offset;
 
       QLineSeries *limitLine = new QLineSeries();
       limitLine->append(fstart, val_start);
@@ -2774,11 +2784,16 @@ bool Qucs_S_SPAR_Viewer::save()
     xmlWriter.writeEndElement(); // Markers
   }
   // ----------------------------------------------------------------
-  // Save the limits
+  // Save the limits 
   if (List_Limit_Start_Freq.size() != 0){
       double freq, value;
       bool Coupled_Limits;
       xmlWriter.writeStartElement("LIMITS");
+
+      // Offset
+      value = Limits_Offset->value();
+      xmlWriter.writeTextElement("offset", QString::number(value));
+
       for (int i = 0; i < List_Limit_Start_Freq.size(); i++)
       {
         xmlWriter.writeStartElement("Limit");
@@ -2997,6 +3012,8 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
               Limit_Stop_Freq_Unit.append(xml.readElementText());
             } else if (xml.name() == QStringLiteral("couple_values")) {
               Limit_Couple_Values.append(xml.readElementText().toInt());
+            }else if (xml.name() == QStringLiteral("offset")) {
+              Limits_Offset->setValue(xml.readElementText().toDouble());
             }
           }
         }
@@ -3129,43 +3146,12 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
   for (int i = 0; i < Limit_Start_Freq.size(); i++){
     addLimit(Limit_Start_Freq.at(i), Limit_Start_Freq_Unit.at(i), Limit_Stop_Freq.at(i), Limit_Stop_Freq_Unit.at(i), Limit_Start_Val.at(i), Limit_Stop_Val.at(i), Limit_Couple_Values.at(i));
   }
+
+  // Show the trace settings widget
+  dockTracesList->raise();
+
   return;
 }
-/*
-void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout* layout)
-{
-  if (layout->isEmpty()) {
-    return;
-  }
-  // Collect remaining widgets and their positions
-  QList<QPair<QWidget*, QPair<int, int>>> widgets;
-  for (int i = 0; i < layout->rowCount(); ++i) {
-    for (int j = 0; j < layout->columnCount(); ++j) {
-      QLayoutItem* item = layout->itemAtPosition(i, j);
-      if (item && item->widget()) {
-        widgets.append(qMakePair(item->widget(), qMakePair(i, j)));
-      }
-    }
-  }
-
-         // Clear the layout
-  while (layout->count() > 0) {
-    QLayoutItem* item = layout->takeAt(0);
-    delete item;
-  }
-
-         // Re-add widgets to the layout
-  int row = 0, col = 0;
-  for (const auto& widgetPair : widgets) {
-    layout->addWidget(widgetPair.first, row, col);
-    col++;
-    if (col >= layout->columnCount()) {
-      col = 0;
-      row++;
-    }
-  }
-}*/
-
 
 void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout* layout)
 {
@@ -3182,7 +3168,6 @@ void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout* layout)
     QLayoutItem* item = layout->itemAt(i);
     QWidget* widget = item->widget();
     if (widget) {
-      qDebug() << widget->objectName();
       int row, column, rowSpan, columnSpan;
       layout->getItemPosition(i, &row, &column, &rowSpan, &columnSpan);
       widgetInfos.push_back({widget, row, column, rowSpan, columnSpan, item->alignment()});
