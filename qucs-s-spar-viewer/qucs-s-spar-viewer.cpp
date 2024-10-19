@@ -3072,6 +3072,10 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
   lock_axis = lock_axis_setting;
   lock_unlock_axis_settings(false);//false means "don't change the state" inside the function
 
+  // Update chart frequency limits
+  this->f_min = x_axis_min*getFreqScale(QCombobox_x_axis_units->currentText());
+  this->f_max = x_axis_max*getFreqScale(QCombobox_x_axis_units->currentText());
+
   // Add markers
   for (int i = 0; i < Markers.size(); i++){
     addMarker(Markers.at(i));
