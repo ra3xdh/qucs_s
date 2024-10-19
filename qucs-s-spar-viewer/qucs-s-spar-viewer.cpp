@@ -1251,9 +1251,6 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
     List_Button_DeleteTrace.append(new_trace_removebutton);
     this->TracesGrid->addWidget(new_trace_removebutton, n_trace, 4, Qt::AlignCenter);
 
-    adjust_x_axis_to_file(selected_dataset);
-    adjust_y_axis_to_trace(selected_dataset, selected_trace);
-
     QLineSeries* series = new QLineSeries();
     series->setName(trace_name);
     trace_list.append(trace_name);
@@ -2430,10 +2427,13 @@ void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event)
 }
 
 
-void Qucs_S_SPAR_Viewer::lock_unlock_axis_settings()
+void Qucs_S_SPAR_Viewer::lock_unlock_axis_settings(bool toogle)
 {
-  if (lock_axis == true){
-    lock_axis = false;
+  if (toogle == true) {
+    lock_axis = !lock_axis;
+  }
+
+  if (lock_axis == false){
     Lock_axis_settings_Button->setText("Lock Axes");
     //Frozen axes inputs
     QSpinBox_x_axis_min->setEnabled(true);
@@ -2445,7 +2445,6 @@ void Qucs_S_SPAR_Viewer::lock_unlock_axis_settings()
     QComboBox_y_axis_div->setEnabled(true);
   }
   else{
-    lock_axis = true;
     Lock_axis_settings_Button->setText("Unlock Axes");
     //Unfrozen axes inputs
     QSpinBox_x_axis_min->setDisabled(true);
@@ -2883,12 +2882,18 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
   QList<double> Limit_Start_Freq, Limit_Start_Val, Limit_Stop_Freq, Limit_Stop_Val;
   QList<int> Limit_Couple_Values;
   QList<QString> Limit_Start_Freq_Unit, Limit_Stop_Freq_Unit;
-
+  double x_axis_min, x_axis_max, y_axis_min, y_axis_max;
+  int index_x_axis_units, index_x_axis_div, index_y_axis_div;
+  bool lock_axis_setting;
   // Markers
   QList<double> Markers;
 
   // Clear current dataset
   datasets.clear();
+
+  // Ensure that the axes settings are unlocked
+  lock_axis = true;
+  lock_unlock_axis_settings();
 
   while (!xml.atEnd() && !xml.hasError()) {
     // Read next element
@@ -2912,32 +2917,24 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
           }
         }
       } else if (xml.name().toString().contains("x-axis-min")) {
-        int x_axis_min = xml.readElementText().toInt();
-        QSpinBox_x_axis_min->setValue(x_axis_min);
+        x_axis_min = xml.readElementText().toDouble();
       } else if (xml.name().toString().contains("x-axis-max")) {
-        int x_axis_max = xml.readElementText().toInt();
-        QSpinBox_x_axis_min->setValue(x_axis_max);
+        x_axis_max = xml.readElementText().toDouble();
       } else if (xml.name().toString().contains("x-axis-div")) {
         int x_axis_div = xml.readElementText().toInt();
-        int index = available_x_axis_div.indexOf(x_axis_div);
-        QComboBox_x_axis_div->setCurrentIndex(index);
+        index_x_axis_div = available_x_axis_div.indexOf(x_axis_div);
       } else if (xml.name().toString().contains("x-axis-scale")) {
         QString x_axis_scale = xml.readElementText();
-        int index = frequency_units.indexOf(x_axis_scale);
-        QCombobox_x_axis_units->setCurrentIndex(index);
+        index_x_axis_units = frequency_units.indexOf(x_axis_scale);
       } else if (xml.name().toString().contains("y-axis-min")) {
-        int y_axis_min = xml.readElementText().toInt();
-        QSpinBox_y_axis_min->setValue(y_axis_min);
+        y_axis_min = xml.readElementText().toDouble();
       } else if (xml.name().toString().contains("y-axis-max")) {
-        int y_axis_max = xml.readElementText().toInt();
-        QSpinBox_y_axis_min->setValue(y_axis_max);
+        y_axis_max = xml.readElementText().toDouble();
       } else if (xml.name().toString().contains("y-axis-div")) {
         int y_axis_div = xml.readElementText().toInt();
-        int index = available_y_axis_div.indexOf(y_axis_div);
-        QComboBox_y_axis_div->setCurrentIndex(index);
+        index_y_axis_div = available_y_axis_div.indexOf(y_axis_div);
       } else if (xml.name().toString().contains("lock_status")) {
-        lock_axis = xml.readElementText().toInt();
-        lock_unlock_axis_settings();
+        lock_axis_setting = xml.readElementText().toInt();
       } else if (xml.name() == QStringLiteral("Limit")) {
         while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == QStringLiteral("Limit"))) {
           xml.readNext();
@@ -3005,8 +3002,6 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
   // Close the file
   file.close();
 
-  // Apply the settings and display traces
-  lock_unlock_axis_settings(); // Apply lock/unlock settings
 
   // Update dataset and trace selection comboboxes
   QStringList files = datasets.keys();
@@ -3048,6 +3043,34 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
     };
     addTrace(parts[0], parts[1], trace_color.at(i), trace_width.at(i), trace_style.at(i));
   }
+
+  // Apply axis settings
+  // It's needed to disconnect the signals first in order to avoid unneeded calls to the slots
+  disconnect(QSpinBox_x_axis_min, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+  disconnect(QSpinBox_x_axis_max, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+  disconnect(QComboBox_x_axis_div, SIGNAL(currentIndexChanged(int)), this, SLOT(updatePlot()));
+  disconnect(QCombobox_x_axis_units, SIGNAL(currentIndexChanged(int)), this, SLOT(changeFreqUnits()));
+  disconnect(QSpinBox_y_axis_min, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+  disconnect(QSpinBox_y_axis_max, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+
+  QSpinBox_x_axis_min->setValue(x_axis_min);
+  QSpinBox_x_axis_max->setValue(x_axis_max);
+  QComboBox_x_axis_div->setCurrentIndex(index_x_axis_div);
+  QCombobox_x_axis_units->setCurrentIndex(index_x_axis_units);
+  QSpinBox_y_axis_min->setValue(y_axis_min);
+  QSpinBox_y_axis_max->setValue(y_axis_max);
+  QComboBox_y_axis_div->setCurrentIndex(index_y_axis_div);
+
+  connect(QSpinBox_x_axis_min, SIGNAL(valueChanged(double)), SLOT(updatePlot()));
+  connect(QSpinBox_x_axis_max, SIGNAL(valueChanged(double)), SLOT(updatePlot()));
+  connect(QComboBox_x_axis_div, SIGNAL(currentIndexChanged(int)), SLOT(updatePlot()));
+  connect(QCombobox_x_axis_units, SIGNAL(currentIndexChanged(int)), SLOT(changeFreqUnits()));
+  connect(QSpinBox_y_axis_min, SIGNAL(valueChanged(double)), SLOT(updatePlot()));
+  connect(QSpinBox_y_axis_max, SIGNAL(valueChanged(double)), SLOT(updatePlot()));
+
+  // Apply lock axes status
+  lock_axis = lock_axis_setting;
+  lock_unlock_axis_settings(false);//false means "don't change the state" inside the function
 
   // Add markers
   for (int i = 0; i < Markers.size(); i++){

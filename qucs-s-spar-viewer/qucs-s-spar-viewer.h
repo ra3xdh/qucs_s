@@ -77,7 +77,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
   void update_X_axis();
   void update_Y_axis();
-  void lock_unlock_axis_settings();
+  void lock_unlock_axis_settings(bool toogle = true);
 
   void addMarker(double freq = -1);
   void removeMarker();
