@@ -1902,8 +1902,8 @@ bool Diagram::calcYAxis(Axis *Axis, int x0) {
     bool back = false;
     if (Axis->log) {
         if (Axis->autoScale) {
-            if (Axis->max * Axis->min <= 0.0) return false;  // invalid
-        } else if (Axis->limit_min * Axis->limit_max <= 0.0) return false;  // invalid
+            if (Axis->max <= 0.0 or Axis->min <= 0.0) return false;  // invalid
+        } else if (Axis->limit_min <= 0.0 or Axis->limit_max <= 0.0) return false;  // invalid
 
         back = calcAxisLogScale(Axis, z, zD, zDstep, corr, y2);
 
