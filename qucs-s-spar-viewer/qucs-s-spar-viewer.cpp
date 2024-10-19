@@ -1462,7 +1462,7 @@ void Qucs_S_SPAR_Viewer::update_X_axis()
     xAxis->setRange(x_min, x_max);  // Set the range of the axis
     xAxis->setTickInterval(x_div);  // Set the interval between ticks
     xAxis->setTickCount(floor((x_max-x_min)/x_div)+1);
-    xAxis->setTitleText("frequency " + QCombobox_x_axis_units->currentText());
+    xAxis->setTitleText("frequency (" + QCombobox_x_axis_units->currentText() + ")");
 
     // Add the axis to the chart
     chart->addAxis(xAxis, Qt::AlignBottom);
