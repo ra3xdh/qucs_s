@@ -85,7 +85,7 @@ Element* LTL_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString LTL_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString LTL_SPICE::spice_netlist(bool)

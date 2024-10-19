@@ -73,7 +73,7 @@ Element* SpiceOptions::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString SpiceOptions::getExpression(bool isXyce)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s;
     s.clear();

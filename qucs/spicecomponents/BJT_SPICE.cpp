@@ -183,7 +183,7 @@ Element* BJT_SPICE::infoPNP5(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString BJT_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString BJT_SPICE::spice_netlist(bool)

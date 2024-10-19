@@ -74,7 +74,7 @@ Element* NutmegEquation::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString NutmegEquation::getEquations(QString sim, QStringList &dep_vars)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s;
     QRegularExpression sim_rx("^\\w+\\d+");

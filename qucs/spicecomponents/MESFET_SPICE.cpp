@@ -83,7 +83,7 @@ Element* MESFET_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString MESFET_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString MESFET_SPICE::spice_netlist(bool)

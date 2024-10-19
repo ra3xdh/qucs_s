@@ -63,10 +63,10 @@ Element* Ground::info(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 QString Ground::netlist()
 {
-  return QString("");
+  return QString();
 }
 
 QString Ground::spice_netlist(bool)
 {
-    return QString("");
+    return QString();
 }

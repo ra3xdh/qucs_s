@@ -93,7 +93,7 @@ Element* vTRRANDOM::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString vTRRANDOM::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString vTRRANDOM::spice_netlist(bool)

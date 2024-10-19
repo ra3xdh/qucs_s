@@ -104,20 +104,20 @@ Element* SubCirPort::info(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 QString SubCirPort::netlist()
 {
-  return QString("");
+  return QString();
 }
 
 // -------------------------------------------------------
 QString SubCirPort::spice_netlist(bool)
 {
-    return QString("");
+    return QString();
 }
 
 // -------------------------------------------------------
 QString SubCirPort::vhdlCode(int)
 {
   if(Props.at(1)->Value != "out")
-    return QString("");
+    return QString();
 
   // Insert dummy buffer to avoid reading from an output port.
   QString s = "  net_out";
@@ -130,5 +130,5 @@ QString SubCirPort::vhdlCode(int)
 // -------------------------------------------------------
 QString SubCirPort::verilogCode(int)
 {
-  return QString("");
+  return QString();
 }

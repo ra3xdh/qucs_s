@@ -64,7 +64,7 @@ Element* Src_eqndef::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString Src_eqndef::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString Src_eqndef::spice_netlist(bool)

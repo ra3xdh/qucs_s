@@ -106,7 +106,7 @@ Element* C_SPICE::info_C3(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString C_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString C_SPICE::spice_netlist(bool)

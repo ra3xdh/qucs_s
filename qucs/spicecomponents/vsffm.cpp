@@ -86,7 +86,7 @@ Element* vSffm::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString vSffm::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString vSffm::spice_netlist(bool)

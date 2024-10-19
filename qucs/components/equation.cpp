@@ -124,7 +124,7 @@ QString Equation::getVAExpressions()
  */
 QString Equation::getExpression(bool isXyce)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
 
     QStringList ng_vars,ngsims;
     getNgnutmegVars(ng_vars,ngsims);
@@ -172,7 +172,7 @@ QString Equation::getExpression(bool isXyce)
  */
 QString Equation::getEquations(QString sim, QStringList &dep_vars)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
 
     QStringList ng_vars,ngsims;
     getNgnutmegVars(ng_vars,ngsims);
@@ -214,7 +214,7 @@ QString Equation::getNgspiceScript()
 
     QString s;
     s.clear();
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
 
     for (int i=0;i<Props.count()-1;i++) {
         QStringList tokens;

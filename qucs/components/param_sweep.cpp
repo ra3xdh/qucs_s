@@ -81,7 +81,7 @@ void Param_Sweep::recreate(Schematic*)
 
 QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s,unit;
     QStringList parameter_list = getProperty("Param")->Value.split( this->param_split_str );
@@ -166,7 +166,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 
 QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s;
     QStringList parameter_list = getProperty("Param")->Value.split( this->param_split_str );

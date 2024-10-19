@@ -344,7 +344,7 @@ QString spicecompat::convert_sweep_type(const QString& sweep)
 {
     if (sweep=="lin") return QString("lin");
     if (sweep=="log") return QString("dec");
-    return QString("");
+    return QString();
 }
 
 /*!

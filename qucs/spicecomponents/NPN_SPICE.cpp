@@ -91,7 +91,7 @@ Element* NPN_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString NPN_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString NPN_SPICE::spice_netlist(bool)

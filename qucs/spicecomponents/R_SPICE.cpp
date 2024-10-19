@@ -110,7 +110,7 @@ Element* R_SPICE::info_R3(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString R_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString R_SPICE::spice_netlist(bool)

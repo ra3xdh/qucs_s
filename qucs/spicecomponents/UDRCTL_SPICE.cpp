@@ -89,7 +89,7 @@ Element* UDRCTL_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString UDRCTL_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString UDRCTL_SPICE::spice_netlist(bool)

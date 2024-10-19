@@ -176,7 +176,7 @@ Element* MOS_SPICE::info_PX4pin(QString& Name, char* &BitmapFile, bool getNewOne
 
 QString MOS_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 void MOS_SPICE::createSymbol()

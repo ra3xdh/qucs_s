@@ -88,7 +88,7 @@ QString XSP_CMlib::getSpiceInit()
 
 QString XSP_CMlib::spice_netlist()
 {
-    return QString("");
+    return QString();
 }
 
 

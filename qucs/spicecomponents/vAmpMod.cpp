@@ -88,7 +88,7 @@ Element* vAmpMod::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString vAmpMod::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString vAmpMod::spice_netlist(bool)

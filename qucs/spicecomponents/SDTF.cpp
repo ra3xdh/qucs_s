@@ -80,7 +80,7 @@ Element* SDTF::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString SDTF::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString SDTF::spice_netlist(bool)

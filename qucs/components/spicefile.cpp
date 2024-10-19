@@ -154,7 +154,7 @@ void SpiceFile::createSymbol()
 QString SpiceFile::netlist()
 {
   if(Props.at(1)->Value.isEmpty())
-    return QString("");  // no ports, no subcircuit instance
+    return QString();  // no ports, no subcircuit instance
 
   QString s = "Sub:"+Name;   // SPICE netlist is subcircuit
   for (Port *pp : Ports)

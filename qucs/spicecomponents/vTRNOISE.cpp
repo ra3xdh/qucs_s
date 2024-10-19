@@ -91,7 +91,7 @@ Element* vTRNOISE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString vTRNOISE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString vTRNOISE::spice_netlist(bool)

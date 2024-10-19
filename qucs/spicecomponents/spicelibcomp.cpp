@@ -241,7 +241,7 @@ QString SpiceLibComp::spice_netlist(bool)
 
 QString SpiceLibComp::getSpiceLibrary()
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
     QString f = misc::properAbsFileName(Props.at(0)->Value, containingSchematic);
     QString s = QString(".INCLUDE \"%1\"\n").arg(f);
     return s;

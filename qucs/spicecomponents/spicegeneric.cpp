@@ -131,7 +131,7 @@ void SpiceGeneric::createSymbol()
 // ---------------------------------------------------
 QString SpiceGeneric::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString SpiceGeneric::spice_netlist(bool)

@@ -80,6 +80,6 @@ Element* InclScript::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString InclScript::getExpression(bool)
 {
     if (isActive != COMP_IS_ACTIVE)
-        return QString("");
+        return QString();
     return Props.at(0)->Value+"\n";
 }

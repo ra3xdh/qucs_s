@@ -787,7 +787,7 @@ QString QucsPowerCombiningTool::calcChebyLines(double RL, double Z0, double gamm
     {
         QMessageBox::warning(0, QObject::tr("Error"),
                              QObject::tr("Chebyshev weighting for N>7 is not available"));
-        return QString("");
+        return QString();
     }
     QString s;
     double sec_theta_m;// = cosh((1/(1.*N))*acosh((1/gamma)*fabs((RL-Z0)/(Z0+RL))) );
@@ -2065,7 +2065,7 @@ QString QucsPowerCombiningTool::ConvertLengthFromM(double len)
           return QString("%1 mm").arg(RoundVariablePrecision(conv));
   }
   }while(true);
-  return QString("");
+  return QString();
 }
 
 // Copied from Qucs misc class

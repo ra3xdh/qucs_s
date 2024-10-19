@@ -71,7 +71,7 @@ Element* SpiceParam::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString SpiceParam::getExpression(bool)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s;
     s.clear();

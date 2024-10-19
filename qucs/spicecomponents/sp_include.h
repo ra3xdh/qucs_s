@@ -31,9 +31,9 @@ public:
   QString getSpiceLibrary();
 
 protected:
-  QString vhdlCode(int) { return QString(""); }
-  QString verilogCode(int) { return QString(""); }
-  QString netlist() { return QString(""); }
+  QString vhdlCode(int) { return QString(); }
+  QString verilogCode(int) { return QString(); }
+  QString netlist() { return QString(); }
 };
 
 #endif

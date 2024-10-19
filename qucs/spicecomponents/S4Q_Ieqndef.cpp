@@ -83,7 +83,7 @@ Element* S4Q_Ieqndef::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString S4Q_Ieqndef::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString S4Q_Ieqndef::spice_netlist(bool)
