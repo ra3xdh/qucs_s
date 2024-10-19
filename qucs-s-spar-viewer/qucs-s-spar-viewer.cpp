@@ -636,6 +636,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
                                         border-radius: 10px;\
                                         border-color: beige;\
                                         font: bold 14px;\
+                                        margin: auto;\
                                     }");
 
         List_RemoveButton.append(RemoveButton);
@@ -1068,6 +1069,8 @@ void Qucs_S_SPAR_Viewer::removeTrace(int index_to_delete)
     for (int i = 0; i < files.size(); i++){
         adjust_x_axis_to_file(files[i]);
     }
+
+    updateGridLayout(TracesGrid);
 }
 
 
@@ -1198,13 +1201,13 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
 
     // Label
     QLabel * new_trace_label = new QLabel(trace_name);
-    new_trace_label->setObjectName(QString("Trace_Name_") + QString::number(n_trace));
+    new_trace_label->setObjectName(QString("Trace_Name_") + trace_name);
     List_TraceNames.append(new_trace_label);
     this->TracesGrid->addWidget(new_trace_label, n_trace, 0);
 
     // Color picker
     QPushButton * new_trace_color = new QPushButton();
-    new_trace_color->setObjectName(QString("Trace_Color_") + QString::number(n_trace));
+    new_trace_color->setObjectName(QString("Trace_Color_") + trace_name);
     connect(new_trace_color, SIGNAL(clicked()), SLOT(changeTraceColor()));
     QString styleSheet = QString("QPushButton { background-color: %1; }").arg(trace_color.name());
     new_trace_color->setStyleSheet(styleSheet);
@@ -1214,7 +1217,7 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
 
     // Line Style
     QComboBox * new_trace_linestyle = new QComboBox();
-    new_trace_linestyle->setObjectName(QString("Trace_LineStyle_") + QString::number(n_trace));
+    new_trace_linestyle->setObjectName(QString("Trace_LineStyle_") + trace_name);
     new_trace_linestyle->addItem("Solid");
     new_trace_linestyle->addItem("- - - -");
     new_trace_linestyle->addItem("·······");
@@ -1228,7 +1231,7 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
 
     // Line width
     QSpinBox * new_trace_width = new QSpinBox();
-    new_trace_width->setObjectName(QString("Trace_Width_") + QString::number(n_trace));
+    new_trace_width->setObjectName(QString("Trace_Width_") + trace_name);
     new_trace_width->setValue(trace_width);
     connect(new_trace_width, SIGNAL(valueChanged(int)), SLOT(changeTraceWidth()));
     List_TraceWidth.append(new_trace_width);
@@ -1237,7 +1240,7 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
 
     // Remove button
     QToolButton * new_trace_removebutton = new QToolButton();
-    new_trace_removebutton->setObjectName(QString("Trace_RemoveButton_") + QString::number(n_trace));
+    new_trace_removebutton->setObjectName(QString("Trace_RemoveButton_") + trace_name);
     QIcon icon(":/bitmaps/trash.png"); // Use a resource path or a relative path
     new_trace_removebutton->setIcon(icon);
     new_trace_removebutton->setStyleSheet(R"(
@@ -1245,11 +1248,12 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
                 background-color: #FF0000;
                 color: white;
                 border-radius: 20px;
+                margin: auto;
             }
         )");
     connect(new_trace_removebutton, SIGNAL(clicked()), SLOT(removeTrace()));
     List_Button_DeleteTrace.append(new_trace_removebutton);
-    this->TracesGrid->addWidget(new_trace_removebutton, n_trace, 4, Qt::AlignCenter);
+    this->TracesGrid->addWidget(new_trace_removebutton, n_trace, 4);
 
     QLineSeries* series = new QLineSeries();
     series->setName(trace_name);
@@ -2171,6 +2175,8 @@ void Qucs_S_SPAR_Viewer::removeMarker(int index_to_delete)
     delete ButtonToRemove;
 
     updateMarkerTable();
+    updateMarkerNames();
+    updateGridLayout(MarkersGrid);
 }
 
 void Qucs_S_SPAR_Viewer::removeAllMarkers()
@@ -2179,6 +2185,26 @@ void Qucs_S_SPAR_Viewer::removeAllMarkers()
     for (int i = 0; i < n_markers; i++) {
         removeMarker(n_markers-i-1);
     }
+}
+
+// After removing a marker, the names of the other markers must be updated
+void Qucs_S_SPAR_Viewer::updateMarkerNames()
+{
+  int n_markers = List_MarkerNames.size();
+  for (int i = 0; i < n_markers; i++) {
+    QLabel * MarkerLabel = List_MarkerNames[i];
+    MarkerLabel->setText(QString("Mkr%1").arg(i+1));
+  }
+}
+
+// After removing a marker, the names of the other markers must be updated
+void Qucs_S_SPAR_Viewer::updateLimitNames()
+{
+  int n_limits = List_LimitNames.size();
+  for (int i = 0; i < n_limits; i++) {
+    QLabel * LimitLabel = List_LimitNames[i];
+    LimitLabel->setText(QString("Limit %1").arg(i+1));
+  }
 }
 
 // This function is called when the user wants to remove a limit from the plot
@@ -2261,6 +2287,9 @@ void Qucs_S_SPAR_Viewer::removeLimit(int index_to_delete)
   delete SeparatorToRemove;
 
   updateTraces();
+
+  updateGridLayout(LimitsGrid);
+  updateLimitNames();
 }
 
 void Qucs_S_SPAR_Viewer::removeAllLimits()
@@ -2502,7 +2531,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_LimitNames.append(new_limit_label);
   this->LimitsGrid->addWidget(new_limit_label, limit_index, 0);
 
-  QString SpinBox_fstart_name = QString("Lmt_Freq_Start_SpinBox%1").arg(n_limits);
+  QString SpinBox_fstart_name = QString("Lmt_Freq_Start_SpinBox_%1").arg(new_limit_name);
   QDoubleSpinBox * new_limit_fstart_Spinbox = new QDoubleSpinBox();
   new_limit_fstart_Spinbox->setObjectName(SpinBox_fstart_name);
   new_limit_fstart_Spinbox->setMaximum(QSpinBox_x_axis_max->minimum());
@@ -2513,7 +2542,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Limit_Start_Freq.append(new_limit_fstart_Spinbox);
   this->LimitsGrid->addWidget(new_limit_fstart_Spinbox, limit_index, 1);
 
-  QString Combobox_start_name = QString("Lmt_Start_ComboBox%1").arg(n_limits);
+  QString Combobox_start_name = QString("Lmt_Start_ComboBox_%1").arg(new_limit_name);
   QComboBox * new_start_limit_Combo = new QComboBox();
   new_start_limit_Combo->setObjectName(Combobox_start_name);
   new_start_limit_Combo->addItems(frequency_units);
@@ -2527,7 +2556,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Limit_Start_Freq_Scale.append(new_start_limit_Combo);
   this->LimitsGrid->addWidget(new_start_limit_Combo, limit_index, 2);
 
-  QString SpinBox_fstop_name = QString("Lmt_Freq_Stop_SpinBox%1").arg(n_limits);
+  QString SpinBox_fstop_name = QString("Lmt_Freq_Stop_SpinBox_%1").arg(new_limit_name);
   QDoubleSpinBox * new_limit_fstop_Spinbox = new QDoubleSpinBox();
   new_limit_fstop_Spinbox->setObjectName(SpinBox_fstop_name);
   new_limit_fstop_Spinbox->setMaximum(QSpinBox_x_axis_max->minimum());
@@ -2538,7 +2567,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Limit_Stop_Freq.append(new_limit_fstop_Spinbox);
   this->LimitsGrid->addWidget(new_limit_fstop_Spinbox, limit_index, 3);
 
-  QString Combobox_stop_name = QString("Lmt_Stop_ComboBox%1").arg(n_limits);
+  QString Combobox_stop_name = QString("Lmt_Stop_ComboBox_%1").arg(new_limit_name);
   QComboBox * new_stop_limit_Combo = new QComboBox();
   new_stop_limit_Combo->setObjectName(Combobox_stop_name);
   new_stop_limit_Combo->addItems(frequency_units);
@@ -2553,35 +2582,13 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Limit_Stop_Freq_Scale.append(new_stop_limit_Combo);
   this->LimitsGrid->addWidget(new_stop_limit_Combo, limit_index, 4);
 
-  QString SpinBox_val_start_name = QString("Lmt_Val_Start_SpinBox%1").arg(n_limits);
-  QDoubleSpinBox * new_limit_val_start_Spinbox = new QDoubleSpinBox();
-  new_limit_val_start_Spinbox->setObjectName(SpinBox_val_start_name);
-  new_limit_val_start_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
-  new_limit_val_start_Spinbox->setMaximum(QSpinBox_y_axis_max->maximum());
-  new_limit_val_start_Spinbox->setValue(y_limit1);
-  new_limit_val_start_Spinbox->setSingleStep(QComboBox_y_axis_div->currentText().toDouble()/5);
-  connect(new_limit_val_start_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
-  List_Limit_Start_Value.append(new_limit_val_start_Spinbox);
-  this->LimitsGrid->addWidget(new_limit_val_start_Spinbox, limit_index+1, 1);
-
-  QString SpinBox_val_stop_name = QString("Lmt_Val_Stop_SpinBox%1").arg(n_limits);
-  QDoubleSpinBox * new_limit_val_stop_Spinbox = new QDoubleSpinBox();
-  new_limit_val_stop_Spinbox->setObjectName(SpinBox_val_stop_name);
-  new_limit_val_stop_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
-  new_limit_val_stop_Spinbox->setMaximum(QSpinBox_y_axis_max->maximum());
-  new_limit_val_stop_Spinbox->setValue(y_limit2);
-  new_limit_val_stop_Spinbox->setSingleStep(QComboBox_y_axis_div->currentText().toDouble()/5);
-  connect(new_limit_val_stop_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
-  List_Limit_Stop_Value.append(new_limit_val_stop_Spinbox);
-  this->LimitsGrid->addWidget(new_limit_val_stop_Spinbox, limit_index+1, 3);
-
   // Remove button
-  QString DeleteButton_name = QString("Lmt_Delete_Btn%1").arg(n_limits);
+  QString DeleteButton_name = QString("Lmt_Delete_Btn_%1").arg(new_limit_name);
   QToolButton * new_limit_removebutton = new QToolButton();
   new_limit_removebutton->setObjectName(DeleteButton_name);
   tooltip_message = QString("Remove this limit");
   new_limit_removebutton->setToolTip(tooltip_message);
-  QIcon icon(":/bitmaps/trash.png"); // Use a resource path or a relative path
+  QIcon icon(":/bitmaps/trash.png");
   new_limit_removebutton->setIcon(icon);
   new_limit_removebutton->setStyleSheet(R"(
             QToolButton {
@@ -2594,17 +2601,38 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Button_Delete_Limit.append(new_limit_removebutton);
   this->LimitsGrid->addWidget(new_limit_removebutton, limit_index, 5, Qt::AlignCenter);
 
+  QString SpinBox_val_start_name = QString("Lmt_Val_Start_SpinBox_%1").arg(new_limit_name);
+  QDoubleSpinBox * new_limit_val_start_Spinbox = new QDoubleSpinBox();
+  new_limit_val_start_Spinbox->setObjectName(SpinBox_val_start_name);
+  new_limit_val_start_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
+  new_limit_val_start_Spinbox->setMaximum(QSpinBox_y_axis_max->maximum());
+  new_limit_val_start_Spinbox->setValue(y_limit1);
+  new_limit_val_start_Spinbox->setSingleStep(QComboBox_y_axis_div->currentText().toDouble()/5);
+  connect(new_limit_val_start_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
+  List_Limit_Start_Value.append(new_limit_val_start_Spinbox);
+  this->LimitsGrid->addWidget(new_limit_val_start_Spinbox, limit_index+1, 1);
+
   // Coupled spinbox value
-  QString CoupleButton_name = QString("Lmt_Couple_Btn%1").arg(n_limits);
+  QString CoupleButton_name = QString("Lmt_Couple_Btn_%1").arg(new_limit_name);
   QPushButton * new_limit_CoupleButton = new QPushButton("<--->");
   new_limit_CoupleButton->setObjectName(CoupleButton_name);
-  new_limit_CoupleButton->setCheckable(true);// Toggle button. It lets coupled and uncouple the value spinboxes
   new_limit_CoupleButton->setChecked(coupled);
   tooltip_message = QString("Couple start and stop values");
   new_limit_CoupleButton->setToolTip(tooltip_message);
   connect(new_limit_CoupleButton, SIGNAL(clicked(bool)), SLOT(coupleSpinBoxes()));
   List_Couple_Value.append(new_limit_CoupleButton);
   this->LimitsGrid->addWidget(new_limit_CoupleButton, limit_index+1, 2);
+
+  QString SpinBox_val_stop_name = QString("Lmt_Val_Stop_SpinBox_%1").arg(new_limit_name);
+  QDoubleSpinBox * new_limit_val_stop_Spinbox = new QDoubleSpinBox();
+  new_limit_val_stop_Spinbox->setObjectName(SpinBox_val_stop_name);
+  new_limit_val_stop_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
+  new_limit_val_stop_Spinbox->setMaximum(QSpinBox_y_axis_max->maximum());
+  new_limit_val_stop_Spinbox->setValue(y_limit2);
+  new_limit_val_stop_Spinbox->setSingleStep(QComboBox_y_axis_div->currentText().toDouble()/5);
+  connect(new_limit_val_stop_Spinbox, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
+  List_Limit_Stop_Value.append(new_limit_val_stop_Spinbox);
+  this->LimitsGrid->addWidget(new_limit_val_stop_Spinbox, limit_index+1, 3);
 
   if (coupled){
     new_limit_CoupleButton->setText("<--->");
@@ -2613,8 +2641,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   }
   new_limit_CoupleButton->click();
 
-
-  QString Separator_name = QString("Lmt_Separator%1").arg(n_limits);
+  QString Separator_name = QString("Lmt_Separator_%1").arg(new_limit_name);
   QFrame * new_Separator = new QFrame();
   new_Separator->setObjectName(Separator_name);
   new_Separator->setFrameShape(QFrame::HLine);
@@ -2631,14 +2658,25 @@ void Qucs_S_SPAR_Viewer::coupleSpinBoxes(){
   QPushButton* button = qobject_cast<QPushButton*>(sender());
   // Get the button ID, from it we can get the index and then lock the upper limit spinbox
   QString name_button = button->objectName();
-  int index = name_button.remove("Lmt_Couple_Btn").toInt();
-  QDoubleSpinBox * upper_limit_spinbox = List_Limit_Stop_Value.at(index-1);
+  // Get the limit name
+  int lastUnderscoreIndex = name_button.lastIndexOf('_');
+  QString limit_name = name_button.mid(lastUnderscoreIndex + 1);
+
+  // Get a list with the limit names
+  QList<QString> labelNames;
+  for (const QLabel *label : qAsConst(List_LimitNames)) {
+    labelNames.append(label->text());
+  }
+
+  int index = labelNames.indexOf(limit_name);
+
+  QDoubleSpinBox * upper_limit_spinbox = List_Limit_Stop_Value.at(index);
 
   if (button->text() == "<--->"){
     button->setText("<-X->");
     QString tooltip_message = QString("Uncouple start and stop values");
     button->setToolTip(tooltip_message);
-    QDoubleSpinBox * lower_limit_spinbox = List_Limit_Start_Value.at(index-1);
+    QDoubleSpinBox * lower_limit_spinbox = List_Limit_Start_Value.at(index);
     upper_limit_spinbox->setValue(lower_limit_spinbox->value());
     upper_limit_spinbox->setDisabled(true);
   }else{
@@ -3092,4 +3130,89 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
     addLimit(Limit_Start_Freq.at(i), Limit_Start_Freq_Unit.at(i), Limit_Stop_Freq.at(i), Limit_Stop_Freq_Unit.at(i), Limit_Start_Val.at(i), Limit_Stop_Val.at(i), Limit_Couple_Values.at(i));
   }
   return;
+}
+/*
+void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout* layout)
+{
+  if (layout->isEmpty()) {
+    return;
+  }
+  // Collect remaining widgets and their positions
+  QList<QPair<QWidget*, QPair<int, int>>> widgets;
+  for (int i = 0; i < layout->rowCount(); ++i) {
+    for (int j = 0; j < layout->columnCount(); ++j) {
+      QLayoutItem* item = layout->itemAtPosition(i, j);
+      if (item && item->widget()) {
+        widgets.append(qMakePair(item->widget(), qMakePair(i, j)));
+      }
+    }
+  }
+
+         // Clear the layout
+  while (layout->count() > 0) {
+    QLayoutItem* item = layout->takeAt(0);
+    delete item;
+  }
+
+         // Re-add widgets to the layout
+  int row = 0, col = 0;
+  for (const auto& widgetPair : widgets) {
+    layout->addWidget(widgetPair.first, row, col);
+    col++;
+    if (col >= layout->columnCount()) {
+      col = 0;
+      row++;
+    }
+  }
+}*/
+
+
+void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout* layout)
+{
+  // Store widget information
+  struct WidgetInfo {
+    QWidget* widget;
+    int row, column, rowSpan, columnSpan;
+    Qt::Alignment alignment;
+  };
+  QVector<WidgetInfo> widgetInfos;
+
+  // Collect information about remaining widgets
+  for (int i = 0; i < layout->count(); ++i) {
+    QLayoutItem* item = layout->itemAt(i);
+    QWidget* widget = item->widget();
+    if (widget) {
+      qDebug() << widget->objectName();
+      int row, column, rowSpan, columnSpan;
+      layout->getItemPosition(i, &row, &column, &rowSpan, &columnSpan);
+      widgetInfos.push_back({widget, row, column, rowSpan, columnSpan, item->alignment()});
+    }
+  }
+
+  // Clear the layout
+  while (layout->count() > 0) {
+    QLayoutItem* item = layout->takeAt(0);
+    delete item;
+  }
+
+  // Re-add widgets with updated positions
+  int row = 0;
+  for (const auto& info : widgetInfos) {
+    int newColumn = info.column;
+
+    if (info.columnSpan == layout->columnCount()){// Separator widget
+      row++;
+    }
+
+    layout->addWidget(info.widget, row, newColumn, info.rowSpan, info.columnSpan, info.alignment);
+
+    if (info.columnSpan == layout->columnCount()){
+      row++;
+    }
+
+    if (newColumn == layout->columnCount()-1) {
+      row++;
+    }
+  }
+
 }

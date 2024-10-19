@@ -84,14 +84,18 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void removeMarker(int);
   void removeAllMarkers();
   void updateMarkerTable();
+  void updateMarkerNames();
 
   void addLimit(double f_limit1=-1, QString f_limit1_unit = "", double f_limit2=-1, QString f_limit2_unit = "", double y_limit1=-1, double y_limit2=-1, bool coupled=false);
   void removeLimit();
   void removeLimit(int);
   void removeAllLimits();
   void updateLimits();
+  void updateLimitNames();
 
   void coupleSpinBoxes();
+
+  void updateGridLayout(QGridLayout*);
 
  protected:
   void dragEnterEvent(QDragEnterEvent *event) override;
