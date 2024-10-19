@@ -2254,6 +2254,12 @@ void Qucs_S_SPAR_Viewer::removeLimit(int index_to_delete)
   List_Couple_Value.removeAt(index_to_delete);
   delete ButtonCoupledToRemove;
 
+  // Delete the separator
+  QFrame* SeparatorToRemove = List_Separators.at(index_to_delete);
+  LimitsGrid->removeWidget(SeparatorToRemove);
+  List_Separators.removeAt(index_to_delete);
+  delete SeparatorToRemove;
+
   updateTraces();
 }
 
