@@ -386,8 +386,8 @@ void Schematic::paintFrame(QPainter* painter) {
 
         auto cn = QString::number(column_number);
         auto tx = x - h_step / 2 + 5;
-        painter->drawText(tx, 3, 0, 0, Qt::TextDontClip, cn);
-        painter->drawText(tx, frame_height - frame_margin + 3, 0, 0, Qt::TextDontClip, cn);
+        painter->drawText(tx, 3, 1, 1, Qt::TextDontClip, cn);
+        painter->drawText(tx, frame_height - frame_margin + 3, 1, 1, Qt::TextDontClip, cn);
 
 	column_number++;
       }
@@ -421,15 +421,15 @@ void Schematic::paintFrame(QPainter* painter) {
     const double z = 200.0;
     y1_ -= painter->fontMetrics().lineSpacing() + d;
     painter->drawLine(x1_, y1_, x2_, y1_);
-    painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text2);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, Frame_Text2);
     painter->drawLine(x1_ + z, y1_, x1_ + z, y1_ + painter->fontMetrics().lineSpacing() + d);
-    painter->drawText(x1_ + d + z, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text3);
+    painter->drawText(x1_ + d + z, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, Frame_Text3);
     y1_ -= painter->fontMetrics().lineSpacing() + d;
     painter->drawLine(x1_, y1_, x2_, y1_);
-    painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text1);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, Frame_Text1);
     y1_ -= (Frame_Text0.count('\n') + 1) * painter->fontMetrics().lineSpacing() + d;
     painter->drawRect(x2_, y2_, x1_ - x2_ - 1, y1_ - y2_ - 1);
-    painter->drawText(x1_ + d, y1_ + (d >> 1), 0, 0, Qt::TextDontClip, Frame_Text0);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, Frame_Text0);
 
     painter->restore();
 }

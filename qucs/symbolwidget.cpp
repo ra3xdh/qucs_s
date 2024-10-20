@@ -123,14 +123,14 @@ void SymbolWidget::mouseMoveEvent(QMouseEvent* event)
 void SymbolWidget::paintEvent(QPaintEvent*)
 {
   QPainter Painter(this);
-  Painter.drawText(2, 2, 0, 0, Qt::AlignLeft | Qt::TextDontClip, PaintText);
+  Painter.drawText(2, 2, 1, 1, Qt::AlignLeft | Qt::TextDontClip, PaintText);
 
   QFontMetrics metrics(QucsSettings.font, 0);
-  Painter.drawText(2, metrics.height(), 0, 0, Qt::AlignLeft | Qt::TextDontClip, Warning);
+  Painter.drawText(2, metrics.height(), 1, 1, Qt::AlignLeft | Qt::TextDontClip, Warning);
 
   int dx = (x2-x1)/2 + TextWidth - DragNDropWidth/2;
   if(dx < 2)  dx = 2;
-  Painter.drawText(dx, y2-y1+2, 0, 0, Qt::AlignLeft | Qt::TextDontClip, DragNDropText);
+  Painter.drawText(dx, y2-y1+2, 1, 1, Qt::AlignLeft | Qt::TextDontClip, DragNDropText);
 
   // paint all lines
   for(int i=0; i<Lines.size(); i++) {
@@ -171,7 +171,7 @@ void SymbolWidget::paintEvent(QPaintEvent*)
     Font.setPointSizeF(pt->Size);
     Painter.setFont(Font);
     Painter.setPen(pt->Color);
-    Painter.drawText(cx+pt->x, cy+pt->y, 0, 0, Qt::TextDontClip, pt->s);
+    Painter.drawText(cx+pt->x, cy+pt->y, 1, 1, Qt::TextDontClip, pt->s);
   }
 }
 

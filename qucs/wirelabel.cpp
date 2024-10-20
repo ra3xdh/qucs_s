@@ -116,7 +116,7 @@ void WireLabel::paint(QPainter *p) const {
   });
 
   QRect text_br;
-  p->drawText(x1, y1, 0, 0, Qt::TextDontClip, Name, &text_br);
+  p->drawText(x1, y1, 1, 1, Qt::TextDontClip, Name, &text_br);
 
   bool right = text_br.right() < cx;
   bool bottom = text_br.bottom() < cy;
