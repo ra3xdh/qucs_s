@@ -115,9 +115,9 @@ QString potentiometer::spice_netlist(bool isXyce)
 {
     Q_UNUSED(isXyce);
     QString s;
-    QString R = getProperty("R_pot")->Value;
-    QString rot = getProperty("Rotation")->Value;
-    QString max_rot = getProperty("Max_Rotation")->Value;
+    QString R = spicecompat::normalize_value(getProperty("R_pot")->Value);
+    QString rot = spicecompat::normalize_value(getProperty("Rotation")->Value);
+    QString max_rot = spicecompat::normalize_value(getProperty("Max_Rotation")->Value);
     QString pin1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
     QString pin2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
     QString pin3 = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
