@@ -400,7 +400,7 @@ QString Ngspice::getParentSWPscript(Component *pc_swp, QString sim, bool before,
             }
         }
     }
-    return QString("");
+    return QString();
 }
 
 /*!

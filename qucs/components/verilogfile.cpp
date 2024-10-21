@@ -97,7 +97,7 @@ QString Verilog_File::loadFile()
 
   QFile f(File);
   if(!f.open(QIODevice::ReadOnly))
-    return QString("");
+    return QString();
 
   QTextStream stream(&f);
   File = stream.readAll();   // QString is better for "find" function

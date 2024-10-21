@@ -87,7 +87,7 @@ Element* core::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString core::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString core::spice_netlist(bool)

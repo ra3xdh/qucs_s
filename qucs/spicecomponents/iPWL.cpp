@@ -87,7 +87,7 @@ Element* iPWL::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString iPWL::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString iPWL::spice_netlist(bool)
@@ -111,7 +111,7 @@ QString Line_8= Props.at(7)->Value;
 QString Line_9= Props.at(8)->Value;
 QString Line_10= Props.at(9)->Value;
 
-    s += QString("");
+    s += QString();
  
     if(  PWL.length()    > 0)    s += QString("%1").arg(PWL);
     if(  Line_2.length() > 0 )   s += QString("\n%1").arg(Line_2);

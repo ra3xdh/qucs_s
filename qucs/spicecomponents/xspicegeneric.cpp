@@ -142,7 +142,7 @@ void XspiceGeneric::createSymbol()
 // ---------------------------------------------------
 QString XspiceGeneric::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString XspiceGeneric::spice_netlist(bool)

@@ -80,7 +80,7 @@ Element* XAPWL::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString XAPWL::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString XAPWL::spice_netlist(bool)

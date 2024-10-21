@@ -111,7 +111,7 @@ Element* DIODE_SPICE::info_DIODE3(QString& Name, char* &BitmapFile, bool getNewO
 
 QString DIODE_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString DIODE_SPICE::spice_netlist(bool)

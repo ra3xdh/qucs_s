@@ -90,7 +90,7 @@ Element* S4Q_S::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 //QString S4Q_S::netlist()
 //{
- //   return QString("");
+ //   return QString();
 //}
 
 QString S4Q_S::spice_netlist(bool)

@@ -72,7 +72,7 @@ Element* K_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString K_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString K_SPICE::spice_netlist(bool)

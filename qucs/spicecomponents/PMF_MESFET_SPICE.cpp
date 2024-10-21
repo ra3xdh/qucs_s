@@ -83,7 +83,7 @@ Element* PMF_MESFET_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne
 
 QString PMF_MESFET_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString PMF_MESFET_SPICE::spice_netlist(bool)

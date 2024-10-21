@@ -99,7 +99,7 @@ Element* PMOS_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString PMOS_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString PMOS_SPICE::spice_netlist(bool)

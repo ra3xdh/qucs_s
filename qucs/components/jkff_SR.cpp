@@ -186,7 +186,7 @@ QString jkff_SR::verilogCode( int )
 
 QString jkff_SR::spice_netlist(bool isXyce)
 {
-    if (isXyce) return QString("");
+    if (isXyce) return QString();
 
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;

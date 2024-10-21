@@ -97,7 +97,7 @@ Element* Icouple::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString Icouple::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString Icouple::spice_netlist(bool)

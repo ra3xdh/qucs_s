@@ -104,7 +104,7 @@ QString VHDL_File::loadFile()
 
   QFile f(File);
   if(!f.open(QIODevice::ReadOnly))
-    return QString("");
+    return QString();
 
   QTextStream stream(&f);
   File = stream.readAll();   // QString is better for "find" function
@@ -332,11 +332,11 @@ QString VHDL_File_Info::parsePorts(QString s, int j)
   Expr.setPattern("\\bport\\b");  // start of interface definition
   i = s.indexOf(Expr, j+1);
   if(i < 0)
-    return QString("");
+    return QString();
   // find opening (
   i = s.indexOf('(', i+4) + 1;
   if(i <= 0)
-    return QString("");
+    return QString();
 
   // find closing (
   p = i;
@@ -344,7 +344,7 @@ QString VHDL_File_Info::parsePorts(QString s, int j)
   do {
     j = s.indexOf(')', j+1);
     if(j < 0)
-      return QString("");
+      return QString();
     p = s.indexOf('(', p+1);
     if(p >= 0 && p > j) p = -1;
   } while (p >= 0);
@@ -395,11 +395,11 @@ QString VHDL_File_Info::parseGenerics(QString s, int j)
   Expr.setPattern("\\bgeneric\\b");
   i = s.indexOf(Expr, j+1);
   if(i < 0)
-    return QString("");
+    return QString();
   // find opening (
   i = s.indexOf('(', i+4) + 1;
   if(i <= 0)
-    return QString("");
+    return QString();
 
   // find closing (
   p = i;
@@ -407,7 +407,7 @@ QString VHDL_File_Info::parseGenerics(QString s, int j)
   do {
     j = s.indexOf(')', j+1);
     if(j < 0)
-      return QString("");
+      return QString();
     p = s.indexOf('(', p+1);
     if(p >= 0 && p > j) p = -1;
   } while (p >= 0);

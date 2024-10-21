@@ -122,7 +122,7 @@ Element* D_FlipFlop::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString D_FlipFlop::spice_netlist(bool isXyce)
 {
-    if (isXyce) return QString("");
+    if (isXyce) return QString();
 
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;

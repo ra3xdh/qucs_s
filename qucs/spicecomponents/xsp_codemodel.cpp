@@ -71,7 +71,7 @@ Element* XSP_CodeModel::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString XSP_CodeModel::spice_netlist()
 {
-    return QString("");
+    return QString();
 }
 
 

@@ -78,7 +78,7 @@ Element* gNL::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString gNL::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString gNL::spice_netlist(bool)

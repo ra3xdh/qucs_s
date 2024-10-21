@@ -137,7 +137,7 @@ Element* Logical_Buf::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString Logical_Buf::spice_netlist(bool isXyce)
 {
-    if (isXyce) return QString("");
+    if (isXyce) return QString();
 
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;

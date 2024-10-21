@@ -78,7 +78,7 @@ Element* S4Q_Model::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString S4Q_Model::getSpiceModel()
 {
-    if (isActive != COMP_IS_ACTIVE) return QString("");
+    if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s;
     s.clear();

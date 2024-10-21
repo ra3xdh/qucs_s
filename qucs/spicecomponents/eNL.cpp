@@ -79,7 +79,7 @@ Element* eNL::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString eNL::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString eNL::spice_netlist(bool)

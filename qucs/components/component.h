@@ -49,11 +49,11 @@ public:
   virtual QStringList getExtraVariables();
   virtual QString getProbeVariable(bool isXyce = false);
   virtual QString getSpiceModel();
-  virtual QString getSpiceLibrary() { return QString(""); }
+  virtual QString getSpiceLibrary() { return QString(); }
   virtual QString getNgspiceBeforeSim(QString sim, int lvl=0);
   virtual QString getNgspiceAfterSim(QString sim, int lvl=0);
-  virtual QString getVAvariables() {return QString("");};
-  virtual QString getVAExpressions() {return QString("");};
+  virtual QString getVAvariables() {return QString();};
+  virtual QString getVAExpressions() {return QString();};
   virtual void getExtraVANodes(QStringList& ) {};
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);

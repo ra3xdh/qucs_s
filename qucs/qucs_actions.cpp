@@ -821,7 +821,7 @@ void QucsApp::slotShowLastNetlist()
 // Is called to start the text editor.
 void QucsApp::slotCallEditor()
 {
-  editFile(QString(""));
+  editFile(QString());
 }
 
 // ------------------------------------------------------------------------

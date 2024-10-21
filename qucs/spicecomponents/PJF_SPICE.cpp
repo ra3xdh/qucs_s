@@ -90,7 +90,7 @@ Element* PJF_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString PJF_SPICE::netlist()
 {
-    return QString("");
+    return QString();
 }
 
 QString PJF_SPICE::spice_netlist(bool)

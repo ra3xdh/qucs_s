@@ -817,7 +817,7 @@ QString MatchDialog::calcMatchingLC(double r_real, double r_imag, double Z0,
           0, tr("Error"),
           tr("Real part of impedance must be greater zero,\nbut is %1 !")
               .arg(Zreal));
-      return QString(""); // matching not possible
+      return QString(); // matching not possible
     }
 
     // In high-Q circuits, Zreal often becomes somewhat about -1e-16
@@ -1303,7 +1303,7 @@ QString MatchDialog::calcDoubleStub(double r_real, double r_imag, double Z0,
   {
     QMessageBox::warning(0, tr("Error"),
                 tr("It is not possible to match this load using the double stub method"));
-    return QString("");
+    return QString();
   }
 
   // Stubs susceptance
@@ -1432,7 +1432,7 @@ QString MatchDialog::calcChebyLines(double r_real, double r_imag, double Z0,
     QMessageBox::warning(
         0, QObject::tr("Error"),
         QObject::tr("Chebyshev weighting for N>7 is not available"));
-    return QString("");
+    return QString();
   }
 
   QString laddercode;
