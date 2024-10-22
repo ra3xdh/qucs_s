@@ -43,6 +43,12 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   Qucs_S_SPAR_Viewer();
   ~Qucs_S_SPAR_Viewer();
 
+protected:
+  void resizeEvent(QResizeEvent *event) override {
+    QMainWindow::resizeEvent(event);
+    updateTraces();
+  }
+
  private slots:
   void slotHelpIntro();
   void slotHelpAbout();
@@ -166,6 +172,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QValueAxis *xAxis, *yAxis;
   double f_min, f_max, y_min, y_max; // Minimum (maximum) values of the display
   QList<QColor> default_colors;
+  QList<QGraphicsItem*> textLabels;
   bool removeSeriesByName(QChart*, const QString&);
 
   // Markers

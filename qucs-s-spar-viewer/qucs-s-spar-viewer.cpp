@@ -1527,6 +1527,13 @@ void Qucs_S_SPAR_Viewer::updateTraces()
     }
 
 
+    // Remove all custom labels
+    for (QGraphicsItem* label : textLabels) {
+      chart->scene()->removeItem(label);
+      delete label;
+    }
+    textLabels.clear();
+
     double freq_scale = getFreqScale();
 
     // User settings
@@ -1671,6 +1678,31 @@ void Qucs_S_SPAR_Viewer::updateTraces()
             verticalLine->setName(verticalLine_name);
 
             seriesList.append(verticalLine);
+
+            QGraphicsTextItem *textItem = new QGraphicsTextItem(chart);
+            QString freq_marker = tableMarkers->item(r,0)->text();
+            textItem->setPlainText(QString("%1").arg(freq_marker));
+            textItem->setFont(QFont("Arial", 8));
+
+            // Get the axes
+            auto axes = chart->axes(Qt::Horizontal);
+            QValueAxis *xAxis = qobject_cast<QValueAxis*>(axes.first());
+            qreal xRatio = (x - xAxis->min()) / (xAxis->max() - xAxis->min());
+
+            // Calculate the position
+            QRectF plotArea = chart->plotArea();
+            qreal xPixel = plotArea.left() + xRatio * plotArea.width();
+
+            // Center the text horizontally
+            QFontMetrics fm(textItem->font());
+            int textWidth = fm.horizontalAdvance(textItem->toPlainText());
+            qreal textX = xPixel - textWidth / 2;
+
+            // Position above the chart area
+            qreal textY = plotArea.top() - fm.height() - 5; // 5 pixels above the plot area
+
+            textItem->setPos(textX, textY);
+            textLabels.append(textItem);
         }
     }
 
