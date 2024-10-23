@@ -422,6 +422,7 @@ void Module::registerModules (void) {
 
   REGISTER_NONLINEAR_1 (OpAmp);
   REGISTER_NONLINEAR_1 (EqnDefined);
+  REGISTER_NONLINEAR_1 (vcresistor);
 
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_NONLINEAR_1 (Diac);
@@ -455,7 +456,6 @@ void Module::registerModules (void) {
       REGISTER_VERILOGA_1 (photodiode);
       REGISTER_VERILOGA_1 (phototransistor);
       REGISTER_VERILOGA_1 (nigbt);
-      REGISTER_VERILOGA_1 (vcresistor);
   //}
 
   // digital components
