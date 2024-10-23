@@ -43,6 +43,12 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   Qucs_S_SPAR_Viewer();
   ~Qucs_S_SPAR_Viewer();
 
+protected:
+  void resizeEvent(QResizeEvent *event) override {
+    QMainWindow::resizeEvent(event);
+    updateTraces();
+  }
+
  private slots:
   void slotHelpIntro();
   void slotHelpAbout();
@@ -77,21 +83,25 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
   void update_X_axis();
   void update_Y_axis();
-  void lock_unlock_axis_settings();
+  void lock_unlock_axis_settings(bool toogle = true);
 
   void addMarker(double freq = -1);
   void removeMarker();
   void removeMarker(int);
   void removeAllMarkers();
   void updateMarkerTable();
+  void updateMarkerNames();
 
   void addLimit(double f_limit1=-1, QString f_limit1_unit = "", double f_limit2=-1, QString f_limit2_unit = "", double y_limit1=-1, double y_limit2=-1, bool coupled=false);
   void removeLimit();
   void removeLimit(int);
   void removeAllLimits();
   void updateLimits();
+  void updateLimitNames();
 
   void coupleSpinBoxes();
+
+  void updateGridLayout(QGridLayout*);
 
  protected:
   void dragEnterEvent(QDragEnterEvent *event) override;
@@ -162,6 +172,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QValueAxis *xAxis, *yAxis;
   double f_min, f_max, y_min, y_max; // Minimum (maximum) values of the display
   QList<QColor> default_colors;
+  QList<QGraphicsItem*> textLabels;
   bool removeSeriesByName(QChart*, const QString&);
 
   // Markers
@@ -188,6 +199,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QList<QToolButton*> List_Button_Delete_Limit;
   QList<QFrame*> List_Separators;
   QList<QPushButton*> List_Couple_Value;
+  QDoubleSpinBox * Limits_Offset;
 
   // Save
   QString savepath;
