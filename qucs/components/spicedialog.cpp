@@ -316,13 +316,23 @@ void SpiceDialog::slotButtBrowse()
     // snip path if file in current directory
     QFileInfo file(s);
     lastDir = file.absolutePath();
-    currDir = schematicFileInfo.canonicalPath();
-    if ( file.canonicalFilePath().startsWith(currDir) ) {
-      s = QDir(currDir).relativeFilePath(s);
-    } else if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
-        QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) {
-      s = file.fileName();
+
+    if (!schematicFileName.isEmpty()) {
+      currDir = schematicFileInfo.canonicalPath();
     }
+
+    if (!(schematicFileName.isEmpty() &&
+          QucsMain->ProjName.isEmpty())) {
+      // unsaved schematic outside project; only absolute file name
+      // the schematic could be saved elsewhere and working directory may be changed
+      if ( file.canonicalFilePath().startsWith(currDir) ) {
+        s = QDir(currDir).relativeFilePath(s);
+      } else if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
+                 QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) {
+        s = file.fileName();
+      }
+    }
+
     FileEdit->setText(s);
     Comp->Props.at(1)->Value = "";
     loadSpiceNetList(s);
