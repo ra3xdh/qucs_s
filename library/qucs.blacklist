@@ -8,3 +8,4 @@ VoltageRegulators.lib
 VoltageReferences.lib
 PWM_Controller.lib
 MixerIC.lib
+SPICE_TLine.lib

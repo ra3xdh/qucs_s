@@ -28,6 +28,7 @@ Transistors.lib
 Varistors.lib
 Z-Diodes.lib
 SpiceOpamp.lib
+SPICE_TLine.lib
 Thermistor.lib
 Thyristor.lib
 Transformers.lib
