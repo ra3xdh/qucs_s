@@ -1,0 +1,205 @@
+<Qucs Library 24.3.2 "SPICE_TLine">
+
+<Component DirectionalCoupler>
+  <Description>
+SPICE ideal directional coupler
+  </Description>
+  <Model>
+.Def:SPICE_TLine_DirectionalCoupler _net0 _net1 _net2 _net3
+Sub:X2 _net0 _net1 _net2 _net3 gnd Type="TLCoupler_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "TLCoupler.cir.lst">
+  <Spice>
+* Ideal Lossless Directional Coupler Model
+* Intusoft
+* NOMINAL IMPEDANCE IS 50 OHMS
+* SCALE RESISTORS R2 THRU R19 LINEARLY FOR ANY OTHER DESIRED IMPEDANCE
+* ANY IMPEDANCE CONNECTED TO THE OUT PORT WILL BE REFLECTED EXACTLY AND APPEAR AT THE IN PORT
+* FWD PORT WILL OUTPUT THE FOWARD TRAVELING VOLTAGE
+* REV PORT WILL OUTPUT THE REVERSE TRAVELING VOLTAGE
+* THIS MODEL FUNCTIONS IN BOTH THE TIME AND FREQUENCY DOMAINS
+*
+* PINOUT ORDER    IN OUT FWD REV
+.SUBCKT ICOUPLER  1  2   3   4
+R02 1 12 100
+R03 12 8 323.6
+R04 8 0 100
+R05 1 7 100
+R06 7 9 323.6
+R07 2 9 100
+R08 9 11 323.6
+R09 11 0 100
+R10 2 10 100
+R11 10 12 323.6
+R12 12 13 100
+R13 12 15 323.6
+R14 15 0 100
+R15 13 14 100
+R16 14 16 323.6
+R17 13 0 50
+R18 4 0 1E6
+R19 3 0 1E6
+* VCVS
+E1 9 0 8 7 100E3
+E2 12 0 11 10 100E3
+E3 16 0 15 14 100E3
+E4 4 0 13 0 -1
+E5 3 0 2 4 1
+.ENDS ICOUPLER
+
+.SUBCKT SPICE_TLine_DirectionalCoupler  gnd _net0 _net1 _net2 _net3 
+X2 _net0 _net1 _net2 _net3 ICOUPLER
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -30 40 0 #000080 2 1>
+    <Line -20 30 40 0 #000080 2 1>
+    <Line 9 14 5 0 #800000 2 1>
+    <Line -14 14 5 0 #800000 2 1>
+    <Line -14 14 0 -5 #800000 2 1>
+    <Line 14 14 0 -5 #800000 2 1>
+    <Line 12 -12 -24 24 #800000 2 1>
+    <Line -12 -12 24 24 #800000 2 1>
+    <Line -20 -30 0 60 #000080 2 1>
+    <Line -30 20 10 0 #000080 2 1>
+    <Line -30 -20 10 0 #000080 2 1>
+    <Line 30 20 -10 0 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <Line -14 -14 5 0 #800000 2 1>
+    <Line 9 -14 5 0 #800000 2 1>
+    <Line -14 -9 0 -5 #800000 2 1>
+    <Line 14 -9 0 -5 #800000 2 1>
+    <Text -16 15 6 #000000 0 "R">
+    <Text 11 -26 6 #000000 0 "O">
+    <Text -15 -26 6 #000000 0 "I">
+    <Line 30 -20 -10 0 #000080 2 1>
+    <.PortSym -30 -20 1 0 IN>
+    <.PortSym -30 20 4 0 REV>
+    <.PortSym 30 20 3 180 FWD>
+    <.PortSym 30 -20 2 180 OUT>
+    <Text 10 15 6 #000000 0 "F">
+    <.ID -15 32 DC>
+    <Text -16 -41 6 #000000 0 "LOSSLESS">
+  </Symbol>
+</Component>
+
+<Component TL_Hybrid_90>
+  <Description>
+SPICE hybrid quadrature coupler
+  </Description>
+  <Model>
+.Def:SPICE_TLine_TL_Hybrid_90 _net0 _net1 _net2 _net3 F="1 GHz"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT SPICE_TLine_TL_Hybrid_90  gnd _net0 _net1 _net2 _net3 F=1 GHz 
+T3 _net0 0 _net2 0 Z0=35.4 F={F} NL=0.25 IC=0, 0, 0, 0 
+T2 _net2 0 _net3 0 Z0=50 F={F} NL=0.25 IC=0, 0, 0, 0 
+T1 _net1 0 _net0 0 Z0=50 F={F} NL=0.25 IC=0, 0, 0, 0 
+T4 _net3 0 _net1 0 Z0=35.4 F={F} NL=0.25 IC=0, 0, 0, 0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 20 2 0 ISO>
+    <.PortSym 30 20 4 180 O_90>
+    <.PortSym -30 -20 1 0 IN>
+    <.PortSym 30 -20 3 180 O_0>
+    <Line -20 -30 40 0 #000080 2 1>
+    <Line -20 30 40 0 #000080 2 1>
+    <Line 9 14 5 0 #800000 2 1>
+    <Line -14 14 5 0 #800000 2 1>
+    <Line -14 14 0 -5 #800000 2 1>
+    <Line 14 14 0 -5 #800000 2 1>
+    <Line 12 -12 -24 24 #800000 2 1>
+    <Line -12 -12 24 24 #800000 2 1>
+    <Line -20 -30 0 60 #000080 2 1>
+    <Line -30 20 10 0 #000080 2 1>
+    <Line -30 -20 10 0 #000080 2 1>
+    <Line 30 -20 -10 0 #000080 2 1>
+    <Line 30 20 -10 0 #000080 2 1>
+    <Line 20 -30 0 60 #000080 2 1>
+    <Line -14 -14 5 0 #800000 2 1>
+    <Line 9 -14 5 0 #800000 2 1>
+    <Line -14 -9 0 -5 #800000 2 1>
+    <Line 14 -9 0 -5 #800000 2 1>
+    <Text -16 15 6 #000000 0 "ISO">
+    <Text 8 15 6 #000000 0 "90">
+    <Text 11 -26 6 #000000 0 "0">
+    <Text -15 -26 6 #000000 0 "I">
+    <.ID -15 34 HYB "1=F=1 GHz=Center Frequency=">
+  </Symbol>
+</Component>
+
+<Component TLine_NL>
+  <Description>
+Transmission line defined using Z0, frequency, and length (in wavelength)
+  </Description>
+  <Model>
+.Def:SPICE_TLine_TLine_NL _net0 _net2 _net1 _net3 Z0="50" F="1e9" NL="0.25"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT SPICE_TLine_TLine_NL  gnd _net0 _net2 _net1 _net3 Z0=50 F=1e9 NL=0.25 
+T1 _net0 _net2 _net1 _net3 Z0={Z0} F={F} NL={NL} IC=0, 0, 0, 0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -10 24 TL "1=Z0=50=Z0=" "1=F=1e9=Frequency=" "1=NL=0.25=Nominal Length=">
+    <Ellipse 5 -10 10 20 #800000 2 1 #c0c0c0 1 0>
+    <Line 20 0 -10 0 #800000 2 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <Line 10 20 0 -10 #800000 2 1>
+    <Line 20 20 -10 0 #800000 2 1>
+    <Line 30 20 -10 0 #000080 2 1>
+    <.PortSym 30 0 4 180 P4>
+    <.PortSym 30 20 3 180 P3>
+    <Ellipse -15 -10 10 20 #800000 2 1 #c0c0c0 1 0>
+    <Line -20 0 10 0 #800000 2 1>
+    <Line -30 0 10 0 #000080 2 1>
+    <Line -10 20 0 -10 #800000 2 1>
+    <Line -30 20 10 0 #000080 2 1>
+    <Line -10 20 -10 0 #800000 2 1>
+    <.PortSym -30 20 2 0 P2>
+    <.PortSym -30 0 1 0 P1>
+    <Line -10 -10 20 0 #800000 2 1>
+    <Line -10 10 20 0 #800000 2 1>
+  </Symbol>
+</Component>
+
+<Component TLine_TD>
+  <Description>
+Transmission line defined using Z0 and time delay
+  </Description>
+  <Model>
+.Def:SPICE_TLine_TLine_TD _net0 _net2 _net1 _net3 Z0="50" Td="0"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT SPICE_TLine_TLine_TD  gnd _net0 _net2 _net1 _net3 Z0=50 Td=0 
+T1 _net0 _net2 _net1 _net3 Z0={Z0} Td={TD} F=0 NL=0 IC=0, 0, 0, 0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -10 24 TL "1=Z0=50=Z0=" "1=Td=0=Time Delay=">
+    <.PortSym 30 0 4 180 P4>
+    <.PortSym 30 20 3 180 P3>
+    <.PortSym -30 20 2 0 P2>
+    <.PortSym -30 0 1 0 P1>
+    <Ellipse 5 -10 10 20 #800000 2 1 #c0c0c0 1 0>
+    <Line 20 0 -10 0 #800000 2 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <Line 10 20 0 -10 #800000 2 1>
+    <Line 20 20 -10 0 #800000 2 1>
+    <Line 30 20 -10 0 #000080 2 1>
+    <Ellipse -15 -10 10 20 #800000 2 1 #c0c0c0 1 0>
+    <Line -20 0 10 0 #800000 2 1>
+    <Line -30 0 10 0 #000080 2 1>
+    <Line -10 20 0 -10 #800000 2 1>
+    <Line -30 20 10 0 #000080 2 1>
+    <Line -10 20 -10 0 #800000 2 1>
+    <Line -10 -10 20 0 #800000 2 1>
+    <Line -10 10 20 0 #800000 2 1>
+  </Symbol>
+</Component>
+
