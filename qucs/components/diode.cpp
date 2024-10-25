@@ -130,16 +130,14 @@ QString Diode::spice_netlist(bool isXyce)
             if (Props.at(i)->Name == "Ikf") { // Bug Ngspice37
                 if (Props.at(i)->Value == "0") continue; // convergence error if Ikf=0
             }
-            QString unit,nam;
+            QString nam;
             if (spice_tr.contains(Props.at(i)->Name)) {
                 nam = spice_tr.at(spice_tr.indexOf(Props.at(i)->Name)+1);
             } else {
                 nam = Props.at(i)->Name;
             }
-            double val,fac;
-            misc::str2num(Props.at(i)->Value,val,unit,fac);
-            val *= fac;
-            par_str += QString("%1=%2 ").arg(nam).arg(val);
+            par_str += QString("%1=%2 ")
+                           .arg(nam, spicecompat::normalize_value(Props.at(i)->Value));
         }
 
     }
