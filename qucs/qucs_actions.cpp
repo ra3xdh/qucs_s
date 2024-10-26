@@ -1310,7 +1310,10 @@ void QucsApp::slotCreateLib()
 
   LibraryDialog *d = new LibraryDialog(this);
   d->fillSchematicList(Content->exportSchematic());
-  d->exec();
+  auto r = d->exec();
+  if (r != QDialog::Accepted) {
+    fillLibrariesTreeView();
+  }
 }
 
 // -----------------------------------------------------------
