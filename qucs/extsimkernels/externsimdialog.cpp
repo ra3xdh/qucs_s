@@ -31,6 +31,12 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
     wasSimulated = false;
     hasError = false;
 
+    QSettings settings("qucs", "qucs_s");
+    restoreGeometry(settings.value("ExternSimDialog/geometry").toByteArray());
+
+    setWindowTitle(tr("Simulate with external simulator"));
+    setMinimumWidth(500);
+
     workdir = QucsSettings.S4Qworkdir;
     QFileInfo inf(workdir);
     if (!inf.exists()) {
@@ -50,7 +56,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
     connect(buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
 
     buttonExit = new QPushButton(tr("Exit"),this);
-    connect(buttonExit,SIGNAL(clicked()),this,SLOT(reject()));
+    connect(buttonExit,SIGNAL(clicked()),this,SLOT(slotExit()));
     connect(buttonExit,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
     connect(buttonExit,SIGNAL(clicked()),xyce,SLOT(killThemAll()));
 
@@ -83,9 +89,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
     hl1->addWidget(buttonSaveNetlist);
     hl1->addWidget(buttonExit);
     vl_top->addLayout(hl1);
-    this->setLayout(vl_top);
-    this->setWindowTitle(tr("Simulate with external simulator"));
-    this->setMinimumWidth(500);
+    setLayout(vl_top);
 
     slotSetSimulator();
     if (!netlist_mode && !QucsMain->TuningMode && Sch->showBias != 0)
@@ -303,6 +307,15 @@ void ExternSimDialog::slotSaveNetlist()
       QMessageBox::critical(0, QObject::tr("Save netlist"),
           QObject::tr("Disk write error!"), QMessageBox::Ok);
     }
+}
+
+void ExternSimDialog::slotExit()
+{
+    // Save window size / position and close this dialog.
+    QSettings settings("qucs","qucs_s");
+    settings.setValue("ExternSimDialog/geometry", saveGeometry());  
+
+    accept();
 }
 
 void ExternSimDialog::saveLog()
