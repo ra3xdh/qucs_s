@@ -212,6 +212,15 @@ protected:
   QDockWidget *dockNotes;
   CodeEditor *Notes_Widget;
 
+  // Recent files
+  std::vector<QString> recentFiles;
+  QMenu* recentFilesMenu;
+  void updateRecentFilesMenu();
+  void loadRecentFiles();
+  void addRecentFile(const QString&);
+  void clearRecentFiles();
+  void saveRecentFiles();
+
   // Utilities
   void convert_MA_RI_to_dB(double *, double *, double *, double *, QString);
   double getFreqScale();

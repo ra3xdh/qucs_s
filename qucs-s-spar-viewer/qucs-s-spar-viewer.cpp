@@ -74,6 +74,10 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   fileMenu->addAction(fileOpenSession);
   fileMenu->addAction(fileSaveSession);
   fileMenu->addAction(fileSaveAsSession);
+
+  recentFilesMenu = fileMenu->addMenu("Recent Files");
+  connect(recentFilesMenu, &QMenu::aboutToShow, this, &Qucs_S_SPAR_Viewer::updateRecentFilesMenu);
+
   fileMenu->addAction(fileQuit);
 
   QMenu *helpMenu = new QMenu(tr("&Help"));
@@ -542,10 +546,13 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   dockAxisSettings->setFixedHeight(minHeight);
 
   setAcceptDrops(true);//Enable drag and drop feature to open files
+  loadRecentFiles();// Load "Recent Files" list
 }
 
 Qucs_S_SPAR_Viewer::~Qucs_S_SPAR_Viewer()
 {
+  QSettings settings;
+  settings.setValue("recentFiles", QVariant::fromValue(recentFiles));
 }
 
 void Qucs_S_SPAR_Viewer::slotHelpIntro()
@@ -2976,6 +2983,8 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
 
   savepath = session_file;
 
+  addRecentFile(session_file);// Add it to the "Recent Files" list
+
   QXmlStreamReader xml(&file);
 
   // Trace properties
@@ -3248,4 +3257,42 @@ void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout* layout)
     }
   }
 
+}
+
+// Add session file to the recent files list
+void Qucs_S_SPAR_Viewer::addRecentFile(const QString& filePath) {
+  recentFiles.insert(recentFiles.begin(), filePath);
+  recentFiles.erase(std::unique(recentFiles.begin(), recentFiles.end()), recentFiles.end());
+  if (recentFiles.size() > 10) {
+    recentFiles.resize(10);
+  }
+}
+
+// This function updates teh "Recent Files" list whenever the user hovers the mouse over the menu
+void Qucs_S_SPAR_Viewer::updateRecentFilesMenu() {
+  recentFilesMenu->clear();
+  for (const auto& filePath : recentFiles) {
+    QAction* action = recentFilesMenu->addAction(filePath);
+    connect(action, &QAction::triggered, this, [this, filePath]() {
+      loadSession(filePath);
+    });
+  }
+  recentFilesMenu->addSeparator();
+  recentFilesMenu->addAction("Clear Recent Files", this, &Qucs_S_SPAR_Viewer::clearRecentFiles);
+}
+
+void Qucs_S_SPAR_Viewer::clearRecentFiles() {
+  recentFiles.clear();
+}
+
+// Save "Recent Files" list. This is called when the program is about to close
+void Qucs_S_SPAR_Viewer::saveRecentFiles() {
+  QSettings settings;
+  settings.setValue("recentFiles", QVariant::fromValue(recentFiles));
+}
+
+// Load "Recent Files" list. This is called when the program starts up
+void Qucs_S_SPAR_Viewer::loadRecentFiles() {
+  QSettings settings;
+  recentFiles = settings.value("recentFiles").value<std::vector<QString>>();
 }
