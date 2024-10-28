@@ -27,7 +27,6 @@
 
 #include "qucs-s-spar-viewer.h"
 
-
 #include <QPixmap>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -495,6 +494,9 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   Limits_VBox->addWidget(LimitSettings);
   Limits_VBox->addWidget(scrollArea_Limits);
 
+  // Notes
+  Notes_Widget = new CodeEditor();
+
 
 
   dockFiles = new QDockWidget("S-parameter files", this);
@@ -502,6 +504,7 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   dockTracesList = new QDockWidget("Traces List", this);
   dockMarkers = new QDockWidget("Markers", this);
   dockLimits = new QDockWidget("Limits", this);
+  dockNotes = new QDockWidget("Notes", this);
 
   // Disable dock closing
   dockChart->setFeatures(dockChart->features() & ~QDockWidget::DockWidgetClosable);
@@ -510,23 +513,27 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   dockTracesList->setFeatures(dockTracesList->features() & ~QDockWidget::DockWidgetClosable);
   dockMarkers->setFeatures(dockMarkers->features() & ~QDockWidget::DockWidgetClosable);
   dockLimits->setFeatures(dockLimits->features() & ~QDockWidget::DockWidgetClosable);
+  dockNotes->setFeatures(dockLimits->features() & ~QDockWidget::DockWidgetClosable);
 
   dockAxisSettings->setWidget(SettingsGroup);
   dockTracesList->setWidget(TracesGroup);
   dockFiles->setWidget(FilesGroup);
   dockMarkers->setWidget(MarkersGroup);
   dockLimits->setWidget(LimitsGroup);
+  dockNotes->setWidget(Notes_Widget);
 
   addDockWidget(Qt::RightDockWidgetArea, dockAxisSettings);
   addDockWidget(Qt::RightDockWidgetArea, dockTracesList);
   addDockWidget(Qt::RightDockWidgetArea, dockFiles);
   addDockWidget(Qt::RightDockWidgetArea, dockMarkers);
   addDockWidget(Qt::RightDockWidgetArea, dockLimits);
+  addDockWidget(Qt::RightDockWidgetArea, dockNotes);
 
   splitDockWidget(dockTracesList, dockAxisSettings, Qt::Vertical);
   tabifyDockWidget(dockFiles, dockTracesList);
   tabifyDockWidget(dockTracesList, dockMarkers);
   tabifyDockWidget(dockMarkers, dockLimits);
+  tabifyDockWidget(dockMarkers, dockNotes);
   dockFiles->raise();
   setDockNestingEnabled(true);
 
@@ -2903,6 +2910,13 @@ bool Qucs_S_SPAR_Viewer::save()
   xmlWriter.writeTextElement("lock_status", QString::number(lock_axis));
 
   xmlWriter.writeEndElement(); // Axes
+
+  // ----------------------------------------------------------------
+  // Save notes
+  xmlWriter.writeStartElement("NOTES");
+  xmlWriter.writeTextElement("note", Notes_Widget->getText());
+  xmlWriter.writeEndElement();
+
   // ----------------------------------------------------------------
   // Save the datasets
   xmlWriter.writeStartElement("DATASETS");
@@ -2931,7 +2945,6 @@ bool Qucs_S_SPAR_Viewer::save()
 
   xmlWriter.writeEndElement(); // Datasets
   // ----------------------------------------------------------------
-
 
   xmlWriter.writeEndElement(); // Top level
   xmlWriter.writeEndDocument();
@@ -2990,7 +3003,7 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
     // Read next element
     QXmlStreamReader::TokenType token = xml.readNext();
 
-           // If token is StartElement, check element name
+    //qDebug() << xml.name().toString();
     if (token == QXmlStreamReader::StartElement) {
       if (xml.name() == QStringLiteral("trace")) {
         while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == QStringLiteral("trace"))) {
@@ -3083,6 +3096,9 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
           }
           xml.readNext();
         }
+      } else if (xml.name().toString().contains("note")){
+          QString note = xml.readElementText();
+          Notes_Widget->loadText(note);
       }
     }
   }

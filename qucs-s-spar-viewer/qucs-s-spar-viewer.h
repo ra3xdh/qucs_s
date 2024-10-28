@@ -1,6 +1,8 @@
 #ifndef QUCSSPARVIEWER_H
 #define QUCSSPARVIEWER_H
 
+#include "codeeditor.h"
+
 #include <QMainWindow>
 #include <QLabel>
 #include <QCheckBox>
@@ -205,6 +207,10 @@ protected:
   QString savepath;
   bool save();
   void loadSession(QString);
+
+  // Notes
+  QDockWidget *dockNotes;
+  CodeEditor *Notes_Widget;
 
   // Utilities
   void convert_MA_RI_to_dB(double *, double *, double *, double *, QString);
