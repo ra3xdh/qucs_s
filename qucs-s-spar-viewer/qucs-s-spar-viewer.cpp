@@ -1285,6 +1285,7 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
     // Color settings
     QPen pen;
     pen.setColor(trace_color);
+    pen.setWidth(trace_width);
     series->setPen(pen);// Apply the pen to the series
 
     chart->addSeries(series);
