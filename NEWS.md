@@ -1,3 +1,32 @@
+# Qucs-S 24.4.0
+
+## New features
+
+* Implemnted touchstone (S2P) files viewer tool #936
+* VC resistor made available for SPICE and ADMS-independent #959
+
+## Library update
+
+* Added SPICE_Tline library containing transmission lines for Ngspice #896
+
+## Bugfixes
+
+* Don't resolve paths to relaive if document is not saved and not belong to project #951
+* Allow variables for potentiometer and diode device properties #1021 #1013
+* Fixed simulation properties editing #968
+* Fixed disbale simulation for XYCE #965
+* Fixed running simulation in CLI mode #962
+* Fixed memory leaks #960
+* Fixed BJTsub and diode devices #983
+* Fixed Schottky diode symbol appearence #1027
+* Fixed crash if no simulator found on the first start #979
+* Fixed artifacts when selecting elliptic arc #987
+* Fixed text rendiering for Qt6.8.0 #1002
+
+## QucsatorRF
+
+* QucsatorRF updated to v1.0.3. See the release notes. 
+
 # Qucs-S 24.3.2
 
 ## Bugfixes
