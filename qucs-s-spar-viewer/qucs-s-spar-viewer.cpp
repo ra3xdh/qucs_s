@@ -798,56 +798,37 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
                double s11_im = file_data["S11_im"].last();
                std::complex<double> s11 (s11_re, s11_im);
 
-               // Calculate Zin and Zout
-               std::complex<double> Zin = Z0 * (1.0 + s11) / (1.0 - s11);
-
-               file_data["Re{Zin}"].append(Zin.real()); // Re{Zin}
-               file_data["Im{Zin}"].append(Zin.imag()); // Im{Zin}
+               // Optional traces. They are not computed now, but only if the user wants to display them
+               QStringList optional_traces;
+               optional_traces.append("Re{Zin}");
+               optional_traces.append("Im{Zin}");
+               for (int i = 0; i < optional_traces.size(); i++) {
+                 if (!file_data.contains(optional_traces[i])) {
+                   // If not, create an empty list
+                   file_data[optional_traces[i]] = QList<double>();
+                 }
+               }
 
            }
            if (number_of_ports == 2){
-               // Compute delta, K, mus, mup, MAG and MSG
-               double s11_re = file_data["S11_re"].last();
-               double s11_im = file_data["S11_im"].last();
-               double s12_re = file_data["S12_re"].last();
-               double s12_im = file_data["S12_im"].last();
-               double s21_re = file_data["S21_re"].last();
-               double s21_im = file_data["S21_im"].last();
-               double s22_re = file_data["S22_re"].last();
-               double s22_im = file_data["S22_im"].last();
-
-               std::complex<double> s11 (s11_re, s11_im);
-               std::complex<double> s11_conj (s11_re, -s11_im);
-               std::complex<double> s12 (s12_re, s12_im);
-               std::complex<double> s21 (s21_re, s21_im);
-               std::complex<double> s22 (s22_re, s22_im);
-               std::complex<double> s22_conj (s22_re, -s22_im);
-
-               double delta = abs(s11*s22 - s12*s21); // Determinant of the S matrix
-               double K = (1 - abs(s11)*abs(s11) - abs(s22)*abs(s22) + delta*delta) / (2*abs(s12*s21)); // Rollet factor.
-               double mu = (1 - abs(s11)*abs(s11)) / (abs(s22-delta*s11_conj) + abs(s12*s21));
-               double mu_p = (1 - abs(s22)*abs(s22)) / (abs(s11-delta*s22_conj) + abs(s12*s21));
-               double MSG = abs(s21) / abs(s12);
-               double MAG = MSG * (K - std::sqrt(K * K - 1));
-
-               // Calculate Zin and Zout
-               std::complex<double> Zin = std::complex<double>(Z0) * (1.0 + s11) / (1.0 - s11);
-               std::complex<double> Zout = std::complex<double>(Z0) * (1.0 + s22) / (1.0 - s22);
-
-               // Convert MSG and MAG to dB scale
-               MSG = 10*log10(MSG);
-               MAG = 10*log10(abs(MAG));
-
-               file_data["delta"].append(delta); //delta
-               file_data["K"].append(delta); //K
-               file_data["mu"].append(mu); //mu
-               file_data["mu_p"].append(mu_p); //mu_p
-               file_data["MSG"].append(MSG); //MSG
-               file_data["MAG"].append(MAG); //MAG
-               file_data["Re{Zin}"].append(Zin.real()); // Re{Zin}
-               file_data["Im{Zin}"].append(Zin.imag()); // Im{Zin}
-               file_data["Re{Zout}"].append(Zout.real()); // Re{Zout}
-               file_data["Im{Zout}"].append(Zout.imag()); // Im{Zout}
+               // Optional traces. They are not computed now, but only if the user wants to display them
+               QStringList optional_traces;
+               optional_traces.append("delta");
+               optional_traces.append("K");
+               optional_traces.append("mu");
+               optional_traces.append("mu_p");
+               optional_traces.append("MSG");
+               optional_traces.append("MAG");
+               optional_traces.append("Re{Zin}");
+               optional_traces.append("Im{Zin}");
+               optional_traces.append("Re{Zout}");
+               optional_traces.append("Im{Zout}");
+               for (int i = 0; i < optional_traces.size(); i++) {
+                 if (!file_data.contains(optional_traces[i])) {
+                   // If not, create an empty list
+                   file_data[optional_traces[i]] = QList<double>();
+                 }
+               }
            }
         }
         // 3) Add data to the dataset
@@ -1290,7 +1271,6 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
 
     chart->addSeries(series);
 
-
     updatePlot();
 }
 
@@ -1609,6 +1589,12 @@ void Qucs_S_SPAR_Viewer::updateTraces()
         }
         if (trace_file == QString("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209A))){
             trace_file = "mu_p";
+        }
+
+        // Check if the trace is empty or not. If empty, it is because the user wants to see K, mu, mu_p, etc. and
+        // these traces are not calculated at the file load.
+        if (datasets[data_file][trace_file].isEmpty()){
+          calculate_Sparameter_trace(data_file, trace_file);
         }
 
         // Check the limits of the data in the dataset in order to see if the new settings given by the user
@@ -2927,6 +2913,7 @@ bool Qucs_S_SPAR_Viewer::save()
 
   // ----------------------------------------------------------------
   // Save the datasets
+  // Only S-parameter data is saved. This is done to minimize the size of the session file.
   xmlWriter.writeStartElement("DATASETS");
   for (auto outerIt = datasets.constBegin(); outerIt != datasets.constEnd(); ++outerIt)
   {
@@ -2936,8 +2923,27 @@ bool Qucs_S_SPAR_Viewer::save()
     const QMap<QString, QList<double>>& innerMap = outerIt.value();
     for (auto innerIt = innerMap.constBegin(); innerIt != innerMap.constEnd(); ++innerIt)
     {
+      QString trace_name = innerIt.key();
+      QStringList blacklist;
+      blacklist.append("K");
+      blacklist.append("mu");
+      blacklist.append("mu_p");
+      blacklist.append("delta");
+      blacklist.append("MAG");
+      blacklist.append("MSG");
+      blacklist.append("Re{Zin}");
+      blacklist.append("Im{Zin}");
+      blacklist.append("Re{Zout}");
+      blacklist.append("Im{Zout}");
+
+      if (blacklist.contains(trace_name)){
+        // Zin, Zout, K, mu, etc. traces are discarded
+        continue;
+      }
+
+      // Only S (Re/Im ang dB/ang) traces here
       xmlWriter.writeStartElement("trace");
-      xmlWriter.writeAttribute("trace_name", innerIt.key());
+      xmlWriter.writeAttribute("trace_name", trace_name);
 
       const QList<double>& values = innerIt.value();
       for (const double& value : values)
@@ -3296,4 +3302,80 @@ void Qucs_S_SPAR_Viewer::saveRecentFiles() {
 void Qucs_S_SPAR_Viewer::loadRecentFiles() {
   QSettings settings;
   recentFiles = settings.value("recentFiles").value<std::vector<QString>>();
+}
+
+// This function is called when the user wants to see a trace which can be calculated from the S-parameters
+void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file, QString metric){
+
+
+  std::complex<double> s11, s12, s21, s22, s11_conj, s22_conj;
+  double Z0 = datasets[file]["Rn"].last();
+
+  for (int i = 0; i < datasets[file]["S11_re"].size(); i++) {
+    // S-parameter data (n.u.)
+    double s11_re =  datasets[file]["S11_re"][i];
+    double s11_im =  datasets[file]["S11_im"][i];
+    s11 = std::complex<double>(s11_re, s11_im);
+    s11_conj = std::complex<double>(s11_re, -s11_im);
+
+    if ( datasets[file]["n_ports"].last() == 2) {
+      double s12_re =  datasets[file]["S12_re"][i];
+      double s12_im =  datasets[file]["S12_im"][i];
+      double s21_re =  datasets[file]["S21_re"][i];
+      double s21_im =  datasets[file]["S21_im"][i];
+      double s22_re =  datasets[file]["S22_re"][i];
+      double s22_im =  datasets[file]["S22_im"][i];
+      s12 = std::complex<double> (s12_re, s12_im);
+      s21 = std::complex<double> (s21_re, s21_im);
+      s22 = std::complex<double> (s22_re, s22_im);
+      s22_conj = std::complex<double> (s22_re, -s22_im);
+    }
+
+    double delta = abs(s11*s22 - s12*s21); // Determinant of the S matrix
+
+    if (!metric.compare("delta")) {
+      datasets[file]["delta"].append(delta);
+    } else {
+      if (!metric.compare("K")) {
+        double K = (1 - abs(s11)*abs(s11) - abs(s22)*abs(s22) + delta*delta) / (2*abs(s12*s21)); // Rollet factor.
+        datasets[file]["K"].append(K);
+      } else {
+        if (!metric.compare("mu")) {
+          double mu = (1 - abs(s11)*abs(s11)) / (abs(s22-delta*s11_conj) + abs(s12*s21));
+          datasets[file]["mu"].append(mu);
+        } else {
+          if (!metric.compare("mu_p")) {
+            double mu_p = (1 - abs(s22)*abs(s22)) / (abs(s11-delta*s22_conj) + abs(s12*s21));
+            datasets[file]["mu_p"].append(mu_p);
+          } else {
+            if (!metric.compare("MSG")) {
+              double MSG = abs(s21) / abs(s12);
+              MSG = 10*log10(MSG);
+              datasets[file]["MSG"].append(MSG);
+            } else {
+              if (!metric.compare("MSG")) {
+                double K = (1 - abs(s11)*abs(s11) - abs(s22)*abs(s22) + delta*delta) / (2*abs(s12*s21)); // Rollet factor.
+                double MSG = abs(s21) / abs(s12);
+                double MAG = MSG * (K - std::sqrt(K * K - 1));
+                MAG = 10*log10(abs(MAG));
+                datasets[file]["MAG"].append(MAG);
+              } else {
+                if (metric.contains("Zin")) {
+                  std::complex<double> Zin = std::complex<double>(Z0) * (1.0 + s11) / (1.0 - s11);
+                  datasets[file]["Re{Zin}"].append(Zin.real());
+                  datasets[file]["Im{Zin}"].append(Zin.imag());
+                } else {
+                  if (metric.contains("Zout")) {
+                    std::complex<double> Zout = std::complex<double>(Z0) * (1.0 + s22) / (1.0 - s22);
+                    datasets[file]["Re{Zout}"].append(Zout.real());
+                    datasets[file]["Im{Zout}"].append(Zout.imag());
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

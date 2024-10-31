@@ -105,6 +105,8 @@ protected:
 
   void updateGridLayout(QGridLayout*);
 
+  void calculate_Sparameter_trace(QString, QString);
+
  protected:
   void dragEnterEvent(QDragEnterEvent *event) override;
   void dropEvent(QDropEvent *event) override;
