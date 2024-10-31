@@ -1233,6 +1233,28 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
     List_Trace_LineStyle.append(new_trace_linestyle);
     this->TracesGrid->addWidget(new_trace_linestyle, n_trace, 2);
 
+    // Capture the pen style to correctly render the trace
+    Qt::PenStyle pen_style;
+    if (!trace_style.compare("Solid")) {
+      pen_style = Qt::SolidLine;
+    } else {
+      if (!trace_style.compare("- - - -")) {
+        pen_style = Qt::DashLine;
+      } else {
+        if (!trace_style.compare("·······")) {
+          pen_style = Qt::DotLine;
+        } else {
+          if (!trace_style.compare("-·-·-·-")) {
+            pen_style = Qt::DashDotLine;
+          } else {
+            if (!trace_style.compare("-··-··-")) {
+              pen_style = Qt::DashDotDotLine;
+            }
+          }
+        }
+      }
+    }
+
     // Line width
     QSpinBox * new_trace_width = new QSpinBox();
     new_trace_width->setObjectName(QString("Trace_Width_") + trace_name);
@@ -1266,6 +1288,7 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
     // Color settings
     QPen pen;
     pen.setColor(trace_color);
+    pen.setStyle(pen_style);
     pen.setWidth(trace_width);
     series->setPen(pen);// Apply the pen to the series
 
