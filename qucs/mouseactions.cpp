@@ -2157,7 +2157,8 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
 
     case isDiagram:
         dia = (Diagram *) focusElement;
-        if (dia->Name.at(0) == 'T') { // don't open dialog on scrollbar
+        if (dia->Name.at(0) == 'T' // check only on double click
+            && Event->type() == QMouseEvent::MouseButtonDblClick) { // don't open dialog on scrollbar
             if (dia->Name == "Time") {
                 if (dia->cy < int(fY)) {
                     if (((TimingDiagram *) focusElement)->scroll(MAx1))
