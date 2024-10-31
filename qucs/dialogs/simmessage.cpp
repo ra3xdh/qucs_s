@@ -627,7 +627,6 @@ void SimMessage::startSimulator()
     QFile::link(target, tmp_qucsator);
 
     // Modify environment variable
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     QString sep = ":";
     env.insert("PATH", env.value("PATH") + sep + tmpdir);
 #endif
