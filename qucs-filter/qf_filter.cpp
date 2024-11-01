@@ -14,6 +14,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
 #include <cmath>
 #include <iostream>
 #include <sstream>
@@ -271,7 +275,7 @@ QString filter::to_qucs() {
   wires += QString("<%1 200 %1 260 \"\" 0 0 0>\n").arg(x);
 
   QString s = "";
-  s += "<Qucs Schematic 24.2.1>\n";
+  s += QString("<Qucs Schematic " PACKAGE_VERSION ">\n");
   s += "<Components>\n";
   s += compos;
 
