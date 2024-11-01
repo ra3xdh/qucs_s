@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru" sourcelanguage="en">
+<TS version="2.1" language="ru_RU" sourcelanguage="en_US">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -58,7 +58,7 @@
     <message>
         <location line="+3"/>
         <source>CI setup, build system, MacOS support</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка CI, система сборки, поддержка MacOS</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1081,7 +1081,7 @@
     <message>
         <location line="+8"/>
         <source>Grid Style: </source>
-        <translation>Стиль сетки:</translation>
+        <translation>Стиль сетки: </translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2624,7 +2624,7 @@ Node name will not be changed.</source>
     <message>
         <location filename="../qucs/dialogs/loaddialog.cpp" line="+46"/>
         <source>Load Verilog-A symbols</source>
-        <translation>Загрузить обозначения Verilog-A...</translation>
+        <translation>Загрузить обозначения Verilog-A</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -3013,7 +3013,14 @@ K = %1
 It is not possible to synthesize a matching network.
 
 Consider adding resistive losses and/or feedback to reach unconditional stability (K &gt; 1 and |%2| &lt; 1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Устройство не является безусловно устойчивым:
+
+K = %1
+|%2| = %3
+
+Невозможно синтезировать соответствующую сеть.
+
+Рассмотрите возможность добавления резистивных потерь и/или обратной связи для достижения безусловной устойчивости (K &gt; 1 и |%2| &lt; 1)</translation>
     </message>
     <message>
         <location line="+549"/>
@@ -7844,7 +7851,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/diode.cpp" line="-79"/>
         <location filename="../qucs/components/bjtsub.cpp" line="-7"/>
         <source>Use global SPICE temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать глобальную температуру SPICE</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -14121,19 +14128,21 @@ Create Library from Subcircuits</source>
     <message>
         <location line="+198"/>
         <source>S-parameter Viewer</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмотрщик S-параметров</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Starts S-parameter viewer</source>
-        <translation type="unfinished"></translation>
+        <translation>Запускает просмотрщик S-параметров</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>S-parameter Viewer
 
 Starts S-parameter viewer</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмотрщик S-параметров
+
+Запускает просмотрщик S-параметров</translation>
     </message>
     <message>
         <location line="+112"/>
@@ -15658,7 +15667,7 @@ Attenuator synthesis program
         <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+1"/>
         <location line="+2"/>
         <source>Copyright (C) 2006 by</source>
-        <translation>Copyright (C) 2006 </translation>
+        <translation>Copyright (C) 2006</translation>
     </message>
     <message>
         <source>Success!</source>
@@ -15916,7 +15925,7 @@ Filter synthesis program
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2005, 2006 by</source>
-        <translation>Copyright (C) 2005, 2006 </translation>
+        <translation>Copyright (C) 2005, 2006</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -17116,7 +17125,6 @@ open files with an appropriate program.</source>
         <source>Copyright (C) 2008 by Michael Margraf
 </source>
         <translation>Copyright (C) 2008 Michael Margraf
-
 </translation>
     </message>
     <message>
@@ -17199,75 +17207,77 @@ open files with an appropriate program.</source>
     <message>
         <location filename="../qucs-s-spar-viewer/qucs-s-spar-viewer.cpp" line="+57"/>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Файл</translation>
+        <translation>&amp;Файл</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished">&amp;Выход</translation>
+        <translation>&amp;Выход</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;Open session file</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Открыть файл сеанса</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;Save session as ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cохранить сеанс как...</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;Save session</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cохранить сеанс</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+2"/>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Справка</translation>
+        <translation>&amp;Справка</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>&amp;About</source>
-        <translation type="unfinished">&amp;О программе</translation>
+        <translation>&amp;О программе</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>About Qt...</source>
-        <translation type="unfinished">О Qt...</translation>
+        <translation>О Qt...</translation>
     </message>
     <message>
         <location line="+453"/>
         <source>Qucs-S S-parameter Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Помощь по S-параметрам Qucs-S</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a simple viewer for S-parameter data.
 It can show several .snp files at a time in the same diagram. Trace markers can also be added so that the user can read the trace value at at an specific frequency.</source>
-        <translation type="unfinished"></translation>
+        <translation>Это простой просмотрщик данных S-параметров.
+Он может отображать несколько файлов .snp одновременно на одной диаграмме. Также можно добавлять маркеры трассировки, чтобы пользователь мог считывать значение трассировки на определенной частоте.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>About Qt</source>
-        <translation type="unfinished">О Qt</translation>
+        <translation>О Qt</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>About...</source>
-        <translation type="unfinished">О...</translation>
+        <translation>О...</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>
 Copyright (C) 2024 by</source>
-        <translation type="unfinished"></translation>
+        <translation>
+Copyright (C) 2024</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>S-Parameter Files (*.s1p *.s2p *.s3p *.s4p);;All Files (*.*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы S-параметров (*.s1p *.s2p *.s3p *.s4p);;Все файлы (*.*)</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -17275,51 +17285,51 @@ Copyright (C) 2024 by</source>
         <location line="+771"/>
         <location line="+569"/>
         <source>Warning</source>
-        <translation type="unfinished">Предупреждение</translation>
+        <translation>Предупреждение</translation>
     </message>
     <message>
         <location line="-1923"/>
         <source>This file is already in the dataset.</source>
-        <translation type="unfinished"></translation>
+        <translation>Этот файл уже есть в наборе данных.</translation>
     </message>
     <message>
         <location line="+584"/>
         <source>This trace is already shown</source>
-        <translation type="unfinished"></translation>
+        <translation>Эта трассировка уже показана</translation>
     </message>
     <message>
         <location line="+771"/>
         <location line="+569"/>
         <source>The display contains no traces.</source>
-        <translation type="unfinished"></translation>
+        <translation>Экран не содержит трассировок.</translation>
     </message>
     <message>
         <location line="+220"/>
         <location line="+24"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location line="-23"/>
         <location line="+24"/>
         <source>Nothing to save: No data was loaded.</source>
-        <translation type="unfinished"></translation>
+        <translation>Нечего сохранять: данные не загружены.</translation>
     </message>
     <message>
         <location line="-18"/>
         <source>Save session</source>
-        <translation type="unfinished"></translation>
+        <translation>Cохранить сеанс</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+175"/>
         <source>Qucs-S snp viewer session (*.spar);</source>
-        <translation type="unfinished"></translation>
+        <translation>Сеанс просмотра Qucs-S snp (*.spar);</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Open S-parameter Viewer Session</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть сеанс просмотра S-параметров</translation>
     </message>
 </context>
 <context>
