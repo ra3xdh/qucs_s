@@ -11,7 +11,7 @@ on:
   
 env:
   APP_NAME: "Qucs-S"
-  CI_VERSION: 24.3.99
+  CI_VERSION: 24.4.99
   EXECUTABLE_NAME: "qucs-s"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
