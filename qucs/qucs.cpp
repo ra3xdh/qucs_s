@@ -3494,11 +3494,11 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
                this,SLOT(slotAfterSpiceSimulation(ExternSimDialog *)));
     disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
     disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-    if (TuningMode && SimDlg->hasError) {
+    if (TuningMode && SimDlg->hasError()) {
         SimDlg->show();
         return;
     }
-    if (SimDlg->wasSimulated) {
+    if (SimDlg->wasSimulated()) {
         if(sch->SimOpenDpl) {
             if (sch->showBias < 1) {
                 if (!TuningMode) {

@@ -32,42 +32,43 @@
 
 /*!
  * \brief Xyce::Xyce Class constructor
- * \param sch_ Schematic that need to be simulated with Ngspice.
+ * \param schematic Schematic that need to be simulated with Ngspice.
  * \param parent Parent object
  */
-Xyce::Xyce(Schematic *sch_, QObject *parent) :
-    AbstractSpiceKernel(sch_, parent)
+Xyce::Xyce(Schematic *schematic, QObject *parent) :
+    AbstractSpiceKernel(schematic, parent),
+    a_Noisesim(false),
+    a_simulationsQueue(),
+    a_netlistQueue()
 {
-    simulator_cmd = QucsSettings.XyceExecutable;
-    Nprocs = QucsSettings.NProcs;
-    Noisesim = false;
+    a_simulator_cmd = QucsSettings.XyceExecutable;
 }
 
 /*!
  * \brief Xyce::determineUsedSimulations Determine simulation used
- *        in schematic and add them into simulationsQueue list
+ *        in schematic and add them into a_simulationsQueue list
  */
 void Xyce::determineUsedSimulations(QStringList *sim_lst)
 {
 
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
        if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {
            QString sim_typ = pc->Model;
-           if (sim_typ==".AC") simulationsQueue.append("ac");
-           if (sim_typ==".NOISE") simulationsQueue.append("noise");
-           if (sim_typ==".TR") simulationsQueue.append("tran");
-           if (sim_typ==".HB") simulationsQueue.append("hb");
-           if (sim_typ==".SP") simulationsQueue.append("sp");
-           if (sim_typ==".SENS_XYCE") simulationsQueue.append("sens");
-           if (sim_typ==".SENS_TR_XYCE") simulationsQueue.append("sens_tr");
-           if (sim_typ==".XYCESCR") simulationsQueue.append(pc->Name); // May be >= XYCE scripts
+           if (sim_typ==".AC") a_simulationsQueue.append("ac");
+           if (sim_typ==".NOISE") a_simulationsQueue.append("noise");
+           if (sim_typ==".TR") a_simulationsQueue.append("tran");
+           if (sim_typ==".HB") a_simulationsQueue.append("hb");
+           if (sim_typ==".SP") a_simulationsQueue.append("sp");
+           if (sim_typ==".SENS_XYCE") a_simulationsQueue.append("sens");
+           if (sim_typ==".SENS_TR_XYCE") a_simulationsQueue.append("sens_tr");
+           if (sim_typ==".XYCESCR") a_simulationsQueue.append(pc->Name); // May be >= XYCE scripts
            if ((sim_typ==".SW")&&
-               (pc->Props.at(0)->Value.startsWith("DC"))) simulationsQueue.append("dc");
+               (pc->Props.at(0)->Value.startsWith("DC"))) a_simulationsQueue.append("dc");
        }
     }
 
     if (sim_lst != NULL) {
-        *sim_lst = simulationsQueue;
+        *sim_lst = a_simulationsQueue;
     }
 }
 
@@ -84,8 +85,8 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     QString s;
     bool hasParSweep = false;
 
-    stream << "* Qucs " << PACKAGE_VERSION << "  " << Sch->DocName << "\n";
-    stream<<collectSpiceLibs(Sch); // collect libraries on the top of netlist
+    stream << "* Qucs " << PACKAGE_VERSION << "  " << a_schematic->DocName << "\n";
+    stream<<collectSpiceLibs(a_schematic); // collect libraries on the top of netlist
 
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
 
@@ -93,21 +94,21 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     // set variable names for named nodes and wires
     vars.clear();
-    for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
+    for(Node *pn = a_schematic->DocNodes.first(); pn != 0; pn = a_schematic->DocNodes.next()) {
       if(pn->Label != 0) {
           if (!vars.contains(pn->Label->Name)) {
               vars.append(pn->Label->Name);
           }
       }
     }
-    for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+    for(Wire *pw = a_schematic->DocWires.first(); pw != 0; pw = a_schematic->DocWires.next()) {
       if(pw->Label != 0) {
           if (!vars.contains(pw->Label->Name)) {
               vars.append(pw->Label->Name);
           }
       }
     }
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
         if (pc->isProbe) {
             QString var_pr = pc->getProbeVariable(true);
             if (!vars.contains(var_pr)) {
@@ -122,15 +123,15 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         }*/
     }
 
-    if (DC_OP_only) {
+    if (a_DC_OP_only) {
         // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
-        for(Node* pn = Sch->Nodes->first(); pn != 0; pn = Sch->Nodes->next()) {
+        for(Node* pn = a_schematic->Nodes->first(); pn != 0; pn = a_schematic->Nodes->next()) {
             if ((!vars.contains(pn->Name))&&(pn->Name!="gnd")) {
                 vars.append(pn->Name);
             }
         }
         // Add DC sources
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
              if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
                  vars.append("I("+pc->Name+")");
              }
@@ -141,7 +142,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     //execute simulations
 
-    //QFileInfo inf(Sch->DocName);
+    //QFileInfo inf(a_schematic->DocName);
     //QString basenam = inf.baseName();
     QString basenam = "spice4qucs";
 
@@ -155,7 +156,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         }
     }
 
-    if (DC_OP_only) {
+    if (a_DC_OP_only) {
         stream<<".OP\n";
         stream<<QStringLiteral(".PRINT dc format=noindex file=spice4qucs.cir.dc_op_xyce %1\n").arg(nods);
         outputs.append("spice4qucs.cir.dc_op_xyce");
@@ -164,7 +165,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     QString sim = simulations.first();
     QStringList spar_vars;
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) { // Xyce can run
+    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) { // Xyce can run
        if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {                        // only one simulations per time.
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
            QString s = pc->getSpiceNetlist(true);
@@ -179,7 +180,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            if (sim==pc->Name) stream<<s; // Xyce scripts
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
-               Q3PtrList<Component> comps(Sch->DocComps); // find Fourier tran
+               Q3PtrList<Component> comps(a_schematic->DocComps); // find Fourier tran
                for(Component *pc1 = comps.first(); pc1 != 0; pc1 = comps.next()) {
                    if (pc1->Model==".FOURIER") {
                        if (pc1->Props.at(0)->Value==pc->Name) {
@@ -213,7 +214,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                    stream<<s;
                    hasParSweep = true;
                } else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
-                   for(Component *pc1 = Sch->DocComps.first(); pc1 != 0; pc1 = Sch->DocComps.next()) {
+                   for(Component *pc1 = a_schematic->DocComps.first(); pc1 != 0; pc1 = a_schematic->DocComps.next()) {
                        if ((pc1->Name==SwpSim)&&(pc1->Props.at(0)->Value.startsWith("DC"))) {
                            stream<<s;
                            hasParSweep = true;
@@ -226,7 +227,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     }
 
     if (sim.startsWith("XYCESCR")) {
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
             if (pc->isSimulation)
                 if (sim == pc->Name)
                     outputs.append(pc->Props.at(2)->Value.split(';'));
@@ -287,56 +288,56 @@ void Xyce::slotSimulate()
     bool checker_error = false;
     if (!checkSchematic(incompat)) {
         QString s = incompat.join("; ");
-        output.append("There were SPICE-incompatible components. Simulator cannot proceed.");
-        output.append("Incompatible components are: " + s + "\n");
+        a_output.append("There were SPICE-incompatible components. Simulator cannot proceed.");
+        a_output.append("Incompatible components are: " + s + "\n");
         checker_error = true;
     }
 
     if (!checkGround()) {
-        output.append("No Ground found. Please add at least one ground!\n");
+        a_output.append("No Ground found. Please add at least one ground!\n");
         checker_error = true;
     }
 
     if (!checkDCSimulation()) {
-        output.append("Only DC simulation found in the schematic. It has no effect!"
+        a_output.append("Only DC simulation found in the schematic. It has no effect!"
                       " Add TRAN, AC, or Sweep simulation to proceed.\n");
         checker_error = true;
     }
 
     if (checker_error) {
-        if (console != nullptr)
-            console->insertPlainText(output);
+        if (a_console != nullptr)
+            a_console->insertPlainText(a_output);
         //emit finished();
         emit errors(QProcess::FailedToStart);
         return;
     }
 
     int num=0;
-    netlistQueue.clear();
-    output_files.clear();
+    a_netlistQueue.clear();
+    a_output_files.clear();
 
-    if (DC_OP_only) {
-        simulationsQueue.append("dc");
+    if (a_DC_OP_only) {
+        a_simulationsQueue.append("dc");
     } else  determineUsedSimulations();
 
-    QFile::remove(workdir+"spice4qucs.sens_tr.cir.SENS.prn");
-    QFile::remove(workdir+"spice4qucs.sens_tr.cir.TRADJ.prn");
+    QFile::remove(a_workdir+"spice4qucs.sens_tr.cir.SENS.prn");
+    QFile::remove(a_workdir+"spice4qucs.sens_tr.cir.TRADJ.prn");
 
-    for (const QString& sim : simulationsQueue) {
+    for (const QString& sim : a_simulationsQueue) {
         QStringList sim_lst;
         sim_lst.clear();
         sim_lst.append(sim);
-        QString tmp_path = QDir::toNativeSeparators(workdir+"/spice4qucs."+sim+".cir");
-        netlistQueue.append(tmp_path);
+        QString tmp_path = QDir::toNativeSeparators(a_workdir+"/spice4qucs."+sim+".cir");
+        a_netlistQueue.append(tmp_path);
         QFile spice_file(tmp_path);
         if (spice_file.open(QFile::WriteOnly)) {
             QTextStream stream(&spice_file);
-            createNetlist(stream,num,sim_lst,vars,output_files);
+            createNetlist(stream,num,sim_lst,a_vars,a_output_files);
             spice_file.close();
         }
     }
 
-    output.clear();
+    a_output.clear();
     emit started();
     nextSimulation();
 
@@ -354,7 +355,7 @@ void Xyce::SaveNetlist(QString filename)
     QFile spice_file(filename);
     if (spice_file.open(QFile::WriteOnly)) {
         QTextStream stream(&spice_file);
-        createNetlist(stream,num,simulationsQueue,vars,output_files);
+        createNetlist(stream,num,a_simulationsQueue,a_vars,a_output_files);
         spice_file.close();
     }
 }
@@ -364,21 +365,21 @@ void Xyce::SaveNetlist(QString filename)
  *        execute the next simulation from queue.
  */
 void Xyce::slotFinished()
-{ 
-    output += SimProcess->readAllStandardOutput();;
+{
+    a_output += a_simProcess->readAllStandardOutput();;
 
-    if (Noisesim) {
-        QFile logfile(workdir + QDir::separator() + "spice4qucs.noise_log");
+    if (a_Noisesim) {
+        QFile logfile(a_workdir + QDir::separator() + "spice4qucs.noise_log");
         if (logfile.open(QIODevice::WriteOnly)) {
             QTextStream ts(&logfile);
-            ts<<output;
+            ts<<a_output;
             logfile.close();
         }
-        Noisesim = false;
-        output_files.append("spice4qucs.noise_log");
+        a_Noisesim = false;
+        a_output_files.append("spice4qucs.noise_log");
     }
 
-    if (netlistQueue.isEmpty()) {
+    if (a_netlistQueue.isEmpty()) {
         emit finished();
         emit progress(100);
         return;
@@ -390,10 +391,10 @@ void Xyce::slotFinished()
 bool Xyce::waitEndOfSimulation()
 {
     bool ok = false;
-    while (!netlistQueue.isEmpty()) {
-        ok = SimProcess->waitForFinished(10000);
+    while (!a_netlistQueue.isEmpty()) {
+        ok = a_simProcess->waitForFinished(10000);
     }
-    ok = SimProcess->waitForFinished(10000);
+    ok = a_simProcess->waitForFinished(10000);
     return ok;
 }
 
@@ -403,15 +404,15 @@ bool Xyce::waitEndOfSimulation()
 void Xyce::slotProcessOutput()
 {
     //***** Percent complete: 85.4987 %
-    QString s = SimProcess->readAllStandardOutput();
+    QString s = a_simProcess->readAllStandardOutput();
     if (s.contains("Percent complete:")) {
         int percent = round(s.section(' ',3,3,QString::SectionSkipEmpty).toFloat());
         emit progress(percent);
     }
-    output += s;
-    if (console != nullptr) {
-        console->insertPlainText(s);
-        console->moveCursor(QTextCursor::End);
+    a_output += s;
+    if (a_console != nullptr) {
+        a_console->insertPlainText(s);
+        a_console->moveCursor(QTextCursor::End);
     }
 }
 
@@ -420,17 +421,17 @@ void Xyce::slotProcessOutput()
  */
 void Xyce::nextSimulation()
 {
-    if (!netlistQueue.isEmpty()) {
-        QString file = netlistQueue.takeFirst();
-        if (file.endsWith(".noise.cir")) Noisesim = true;
-        SimProcess->setWorkingDirectory(workdir);
-        QString cmd = QStringLiteral("%1 %2 \"%3\"").arg(simulator_cmd,simulator_parameters,file);
+    if (!a_netlistQueue.isEmpty()) {
+        QString file = a_netlistQueue.takeFirst();
+        if (file.endsWith(".noise.cir")) a_Noisesim = true;
+        a_simProcess->setWorkingDirectory(a_workdir);
+        QString cmd = QStringLiteral("%1 %2 \"%3\"").arg(a_simulator_cmd,a_simulator_parameters,file);
         QStringList cmd_args = misc::parseCmdArgs(cmd);
         QString xyce_cmd = cmd_args.at(0);
         cmd_args.removeAt(0);
-        SimProcess->start(xyce_cmd,cmd_args);
+        a_simProcess->start(xyce_cmd,cmd_args);
     } else {
-        output += "No simulation found. Please add at least one simulation!\n"
+        a_output += "No simulation found. Please add at least one simulation!\n"
                   "Navigate to the \"simulations\" group in the components panel (left)"
                   " and drag simulation to the schematic sheet. Then define its parameters.\n"
                   "Exiting...\n";
@@ -444,10 +445,10 @@ void Xyce::setParallel(bool par)
     if (par) {
         QString xyce_par = QucsSettings.XyceParExecutable;
         xyce_par.replace("%p",QString::number(QucsSettings.NProcs));
-        simulator_cmd = xyce_par;
-        simulator_parameters = simulator_parameters + QStringLiteral(" -a ");
+        a_simulator_cmd = xyce_par;
+        a_simulator_parameters = a_simulator_parameters + QStringLiteral(" -a ");
     } else {
-        simulator_cmd = "\"" + QucsSettings.XyceExecutable + "\"";
-        simulator_parameters = simulator_parameters + " -a ";
+        a_simulator_cmd = "\"" + QucsSettings.XyceExecutable + "\"";
+        a_simulator_parameters = a_simulator_parameters + " -a ";
     }
 }

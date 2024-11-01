@@ -42,26 +42,26 @@ class CustomSimDialog : public QDialog
 
 private:
 
-    bool isXyceScr;
-    bool isChanged = false;
+    bool a_isXyceScr;
+    bool a_isChanged = false;
 
-    SpiceCustomSim* comp;
-    Schematic *Sch;
+    SpiceCustomSim* a_comp;
+    Schematic *a_schematic;
 
-    QTextEdit* edtCode;
-    QCheckBox *checkCode;
-    QPushButton *btnOK;
-    QPushButton *btnApply;
-    QPushButton *btnCancel;
-    QPushButton *btnPlotAll;
-    QPushButton *btnFindOutputs;
+    QTextEdit* a_edtCode;
+    QCheckBox *a_checkCode;
+    QPushButton *a_btnOK;
+    QPushButton *a_btnApply;
+    QPushButton *a_btnCancel;
+    QPushButton *a_btnPlotAll;
+    QPushButton *a_btnFindOutputs;
 
-    QLineEdit *edtVars;
-    QLineEdit *edtOutputs;
+    QLineEdit *a_edtVars;
+    QLineEdit *a_edtOutputs;
 
 public:
     explicit CustomSimDialog(SpiceCustomSim *pc, Schematic *sch);
-    
+
 signals:
 
 private slots:
@@ -71,9 +71,9 @@ private slots:
     void slotFindVars();
     void slotFindOutputs();
     void slotChanged();
-    
+
 public slots:
-    
+
 };
 
 #endif // CUSTOMSIMDIALOG_H
