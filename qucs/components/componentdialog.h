@@ -36,7 +36,8 @@ class QCheckBox;
 class QRegExp;
 class QComboBox;
 class QPushButton;
-class QVBoxLayout;
+
+class BoundLineEdit;
 
 
 class ComponentDialog : public QDialog {
@@ -82,12 +83,18 @@ protected slots:
     bool eventFilter(QObject *obj, QEvent *event);
 
 private:
-  QVBoxLayout *all;   // the mother of all widgets
   QValidator  *Validator, *ValRestrict, *Validator2,
               *ValName;
   QRegularExpression     Expr;
   QIntValidator *ValInteger;
-  QTableWidget  *prop;
+  
+  QTableWidget  *m_pPropertyTable;
+  Component   *m_pComponent;
+  Schematic   *m_pDocument;
+  Component   localComponent;
+
+  BoundLineEdit* mpNameLineEdit;
+
   QLineEdit   *edit, *NameEdit, *CompNameEdit;
   QComboBox   *ComboEdit;
   QLabel      *Name, *Description;
@@ -95,8 +102,7 @@ private:
   QPushButton *ButtUp, *ButtDown;
   QPushButton *ButtFillFromSpice;
   QCheckBox   *disp;
-  Component   *Comp;
-  Schematic   *Doc;
+
   bool        changed;
   int         tx_Dist, ty_Dist;   // remember the text position
   bool        setAllVisible; // used for toggling visibility of properties

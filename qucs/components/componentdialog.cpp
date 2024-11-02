@@ -39,32 +39,89 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-ComponentDialog::ComponentDialog(Component *c, Schematic *d)
-			: QDialog(d)
+
+// Convenience base class to add a label, name, checkbox and bind them to a variable.
+class BoundControl
 {
-  // qDebug() << "Restore: " << _settings::Get().value("ComponentDialog/geometry").toByteArray();
-  // qDebug() << "Settings: " << _settings::Get().organizationName() << " " << _settings::Get().applicationName();
-  // qDebug() << "Default test (found)" << _settings::Get().item<int>("Foo");
-  // qDebug() << "Default test (not found int type)" << _settings::Get().item<int>("Bar");
-  // qDebug() << "Default test (found wrong type)" << _settings::Get().item<QString>("Foo");
-  // qDebug() << "Default test (not found string type)" << _settings::Get().item<QString>("Bar");
+  public:
+    BoundControl(const QString& label, bool& boundCheck, QValidator* validator, QVBoxLayout* layout) 
+    {
+      mpValidator = validator;
+      mpParentLayout = layout;
+
+      mpShowNameCheck = new QCheckBox("display in schematic");
+
+      // qDebug() << layout->metaObject()->className();
+      
+      // Either add widgets to a new QHBoxLayout or to an existing QGridLayout.
+      if (layout->metaObject()->className() != QString("QGridLayout"))
+      {
+        mpBoundLayout = new QHBoxLayout;
+        mpBoundLayout->setSpacing(5);
+        mpParentLayout->addLayout(mpBoundLayout);
+
+        // Add a label if a string is provided.
+        if (!label.isEmpty())
+          mpBoundLayout->addWidget(new QLabel(label));
+
+        // Add the show parameter checkbox.
+        mpShowNameCheck->setCheckState(boundCheck ? Qt::Checked : Qt::Unchecked);
+        mpBoundLayout->addWidget(mpShowNameCheck);
+      }
+    }
+
+  protected:
+    QValidator* mpValidator;
+    QVBoxLayout* mpParentLayout;
+    QHBoxLayout* mpBoundLayout = nullptr;
+    QCheckBox* mpShowNameCheck;
+};
+
+// Line edit version of bound control. Has label | line | checkbox.
+class BoundLineEdit : public QLineEdit, BoundControl
+{
+  public:
+    BoundLineEdit(const QString& label, QString& boundValue, bool& boundCheck, 
+                              QVBoxLayout* layout, QValidator* validator = nullptr) 
+    : BoundControl(label, boundCheck, validator, layout)
+    {
+      if (validator)
+        setValidator(validator);
+
+      if (mpBoundLayout)
+        mpBoundLayout->insertWidget(1, this);
+
+      else
+        mpParentLayout->addWidget(this);
+
+      setText(boundValue);
+
+      // Update the bound values whenever the user makes a change.
+      connect(this, &QLineEdit::textChanged, [&boundValue](const QString& text) { boundValue = text; });
+      connect(mpShowNameCheck, &QCheckBox::stateChanged, [&boundCheck](int state) mutable { boundCheck = state; });
+    }
+};
+
+ComponentDialog::ComponentDialog(Component* component, Schematic* document)
+			: QDialog(document), localComponent(*component)
+{
+  m_pComponent  = component;
+  m_pDocument   = document;
+
+
   restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
+  setWindowTitle(tr("Edit Component Properties") + " - " + m_pComponent->Description.toUpper());
 
-  setWindowTitle(tr("Edit Component Properties"));
-  Comp  = c;
-  Doc   = d;
-  QString s;
+  // TODO: Get rid of these
   setAllVisible = true; // state when toggling properties visibility
-
   compIsSimulation = false;
 
-  all = new QVBoxLayout; // to provide necessary size
-  this->setLayout(all);
-  all->setContentsMargins(1,1,1,1);
-  QGridLayout *gp1;
+  // Setup dialog layout.
+  QVBoxLayout* mainLayout = new QVBoxLayout(this);
+  QGridLayout* propertiesPageLayout;
 
+  // Setup validators.
   ValInteger = new QIntValidator(1, 1000000, this);
-
   Expr.setPattern("[^\"=]*");  // valid expression for property 'edit'
   Validator = new QRegularExpressionValidator(Expr, this);
   Expr.setPattern("[^\"]*");   // valid expression for property 'edit'
@@ -74,141 +131,157 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   Expr.setPattern("[A-Za-z][A-Za-z0-9_]+");
   ValName = new QRegularExpressionValidator(Expr,this);
 
+  mpNameLineEdit = new BoundLineEdit("Name:", localComponent.Name, localComponent.showName, mainLayout, Validator);
+
+  changed = false;
+
+  // TODO: Get rid of these
   checkSim  = nullptr;  comboSim  = nullptr;
   comboType  = nullptr;  checkParam = nullptr;
   editStart = nullptr;  editStop = nullptr;
   editNumber = nullptr;
   
-  // last property shown elsewhere outside the properties table, not to put in TableView
-  auto pp = Comp->Props.begin();
+  // last property shown elsewhere outside the properties table, not to put in TableView ?
+  auto pp = m_pComponent->Props.begin();
 
   // ...........................................................
   // if simulation component: .TR, .AC, .SW, (.SP ?)
-  if((Comp->Model[0] == '.') &&
-     (Comp->Model != ".DC") && (Comp->Model != ".HB") &&
-     (Comp->Model != ".Digi") && (Comp->Model != ".ETR") &&
-     (Comp->Model != ".FOURIER") && (Comp->Model != ".FFT") &&
-     (Comp->Model != ".PZ") && (Comp->Model != ".SENS") &&
-     (Comp->Model != ".SENS_AC") && (Comp->Model != ".SENS_XYCE") &&
-     (Comp->Model != ".SENS_TR_XYCE")) {
+  // if((m_pComponent->Model[0] == '.') &&
+  //    (m_pComponent->Model != ".DC") && (m_pComponent->Model != ".HB") &&
+  //    (m_pComponent->Model != ".Digi") && (m_pComponent->Model != ".ETR") &&
+  //    (m_pComponent->Model != ".FOURIER") && (m_pComponent->Model != ".FFT") &&
+  //    (m_pComponent->Model != ".PZ") && (m_pComponent->Model != ".SENS") &&
+  //    (m_pComponent->Model != ".SENS_AC") && (m_pComponent->Model != ".SENS_XYCE") &&
+  //    (m_pComponent->Model != ".SENS_TR_XYCE")) 
+    
+  //   {
+
+  if (m_pComponent->isSimulation && 
+      (m_pComponent->Model == ".SW" ||
+       m_pComponent->Model == ".SW" ||
+       m_pComponent->Model == ".AC"))
+  {
+    // TODO: Get rid of this
     compIsSimulation = true;
-    QTabWidget *t = new QTabWidget(this);
-    all->addWidget(t);
 
-    QWidget *Tab1 = new QWidget(t);
-    t->addTab(Tab1, tr("Sweep"));
-    QGridLayout *gp = new QGridLayout;
-    Tab1->setLayout(gp);
+    // Create tab widget to hold both sweep and parameter pages.
+    QTabWidget* pageTabs = new QTabWidget(this);
+    layout()->addWidget(pageTabs);
 
-    gp->addWidget(new QLabel(Comp->Description, Tab1), 0,0,1,2);
+    // Simulations have a separate sweep page.
+    QWidget* sweepPage = new QWidget(pageTabs);
+    pageTabs->addTab(sweepPage, tr("Sweep"));
+    QGridLayout* sweepPageLayout = new QGridLayout;
+    sweepPage->setLayout(sweepPageLayout);
 
     int row=1;
-    editParam = new QLineEdit(Tab1);
-    if (Comp->Model != ".SW") editParam->setValidator(ValRestrict);
+    editParam = new QLineEdit(sweepPage);
+    if (m_pComponent->Model != ".SW") editParam->setValidator(ValRestrict);
     connect(editParam, SIGNAL(returnPressed()), SLOT(slotParamEntered()));
-    checkParam = new QCheckBox(tr("display in schematic"), Tab1);
+    checkParam = new QCheckBox(tr("display in schematic"), sweepPage);
 
-    if(Comp->Model == ".SW") {   // parameter sweep
-      textSim = new QLabel(tr("Simulation:"), Tab1);
-      gp->addWidget(textSim, row,0);
-      comboSim = new QComboBox(Tab1);
+    if(m_pComponent->Model == ".SW") {   // parameter sweep
+      textSim = new QLabel(tr("Simulation:"), sweepPage);
+      sweepPageLayout->addWidget(textSim, row,0);
+      comboSim = new QComboBox(sweepPage);
       comboSim->setEditable(true);
       connect(comboSim, SIGNAL(activated(int)), SLOT(slotSimEntered(int)));
-      gp->addWidget(comboSim, row,1);
-      checkSim = new QCheckBox(tr("display in schematic"), Tab1);
-      gp->addWidget(checkSim, row++,2);
+      sweepPageLayout->addWidget(comboSim, row,1);
+      checkSim = new QCheckBox(tr("display in schematic"), sweepPage);
+      sweepPageLayout->addWidget(checkSim, row++,2);
     }
     else {
       editParam->setReadOnly(true);
       checkParam->setDisabled(true);
 
-      if(Comp->Model == ".TR")    // transient simulation ?
+      if(m_pComponent->Model == ".TR")    // transient simulation ?
         editParam->setText("time");
       else {
-        if(Comp->Model == ".AC")    // AC simulation ?
+        if(m_pComponent->Model == ".AC")    // AC simulation ?
           editParam->setText("acfrequency");
         else
           editParam->setText("frequency");
       }
     }
 
-    gp->addWidget(new QLabel(tr("Sweep Parameter:"), Tab1), row,0);
-    gp->addWidget(editParam, row,1);
-    gp->addWidget(checkParam, row++,2);
+    sweepPageLayout->addWidget(new QLabel(tr("Sweep Parameter:"), sweepPage), row,0);
+    sweepPageLayout->addWidget(editParam, row,1);
+    sweepPageLayout->addWidget(checkParam, row++,2);
 
-    textType = new QLabel(tr("Type:"), Tab1);
-    gp->addWidget(textType, row,0);
-    comboType = new QComboBox(Tab1);
-
-    QStringList sweeptypes;
-    sweeptypes << tr("linear") 
-	       << tr("logarithmic") 
-	       << tr("list") 
-	       << tr("constant");
-    comboType->insertItems(0, sweeptypes);
+    textType = new QLabel(tr("Type:"), sweepPage);
+    sweepPageLayout->addWidget(textType, row,0);
+    
+    comboType = new QComboBox(sweepPage);
+    comboType->insertItems(0, QStringList({"linear", "logarithmic", "list", "constant"}));
 			   
-    gp->addWidget(comboType, row,1);
+    sweepPageLayout->addWidget(comboType, row,1);
     connect(comboType, SIGNAL(activated(int)), SLOT(slotSimTypeChange(int)));
-    checkType = new QCheckBox(tr("display in schematic"), Tab1);
-    gp->addWidget(checkType, row++,2);
+    checkType = new QCheckBox(tr("display in schematic"), sweepPage);
+    sweepPageLayout->addWidget(checkType, row++,2);
 
-    textValues = new QLabel(tr("Values:"), Tab1);
-    gp->addWidget(textValues, row,0);
-    editValues = new QLineEdit(Tab1);
+    textValues = new QLabel(tr("Values:"), sweepPage);
+    sweepPageLayout->addWidget(textValues, row,0);
+    editValues = new QLineEdit(sweepPage);
     editValues->setValidator(Validator);
     connect(editValues, SIGNAL(returnPressed()), SLOT(slotValuesEntered()));
-    gp->addWidget(editValues, row,1);
-    checkValues = new QCheckBox(tr("display in schematic"), Tab1);
-    gp->addWidget(checkValues, row++,2);
+    sweepPageLayout->addWidget(editValues, row,1);
+    checkValues = new QCheckBox(tr("display in schematic"), sweepPage);
+    sweepPageLayout->addWidget(checkValues, row++,2);
 
-    textStart  = new QLabel(tr("Start:"), Tab1);
-    gp->addWidget(textStart, row,0);
-    editStart  = new QLineEdit(Tab1);
+    textStart  = new QLabel(tr("Start:"), sweepPage);
+    sweepPageLayout->addWidget(textStart, row,0);
+    editStart  = new QLineEdit(sweepPage);
     editStart->setValidator(Validator);
     connect(editStart, SIGNAL(returnPressed()), SLOT(slotStartEntered()));
-    gp->addWidget(editStart, row,1);
-    checkStart = new QCheckBox(tr("display in schematic"), Tab1);
-    gp->addWidget(checkStart, row++,2);
+    sweepPageLayout->addWidget(editStart, row,1);
+    checkStart = new QCheckBox(tr("display in schematic"), sweepPage);
+    sweepPageLayout->addWidget(checkStart, row++,2);
 
-    textStop   = new QLabel(tr("Stop:"), Tab1);
-    gp->addWidget(textStop, row,0);
-    editStop   = new QLineEdit(Tab1);
+    textStop   = new QLabel(tr("Stop:"), sweepPage);
+    sweepPageLayout->addWidget(textStop, row,0);
+    editStop   = new QLineEdit(sweepPage);
     editStop->setValidator(Validator);
     connect(editStop, SIGNAL(returnPressed()), SLOT(slotStopEntered()));
-    gp->addWidget(editStop, row,1);
-    checkStop = new QCheckBox(tr("display in schematic"), Tab1);
-    gp->addWidget(checkStop, row++,2);
+    sweepPageLayout->addWidget(editStop, row,1);
+    checkStop = new QCheckBox(tr("display in schematic"), sweepPage);
+    sweepPageLayout->addWidget(checkStop, row++,2);
 
-    textStep   = new QLabel(tr("Step:"), Tab1);
-    gp->addWidget(textStep, row,0);
-    editStep   = new QLineEdit(Tab1);
+    textStep   = new QLabel(tr("Step:"), sweepPage);
+    sweepPageLayout->addWidget(textStep, row,0);
+    editStep   = new QLineEdit(sweepPage);
     editStep->setValidator(Validator);
     connect(editStep, SIGNAL(returnPressed()), SLOT(slotStepEntered()));
-    gp->addWidget(editStep, row++,1);
+    sweepPageLayout->addWidget(editStep, row++,1);
 
-    textNumber = new QLabel(tr("Number:"), Tab1);
-    gp->addWidget(textNumber, row,0);
-    editNumber = new QLineEdit(Tab1);
+    textNumber = new QLabel(tr("Number:"), sweepPage);
+    sweepPageLayout->addWidget(textNumber, row,0);
+    editNumber = new QLineEdit(sweepPage);
     editNumber->setValidator(ValInteger);
     connect(editNumber, SIGNAL(returnPressed()), SLOT(slotNumberEntered()));
-    gp->addWidget(editNumber, row,1);
-    checkNumber = new QCheckBox(tr("display in schematic"), Tab1);
-    gp->addWidget(checkNumber, row++,2);
+    sweepPageLayout->addWidget(editNumber, row,1);
+    checkNumber = new QCheckBox(tr("display in schematic"), sweepPage);
+    sweepPageLayout->addWidget(checkNumber, row++,2);
 
 
-    if(Comp->Model == ".SW") {   // parameter sweep
-      Component *pc;
-      for(pc=Doc->Components->first(); pc!=0; pc=Doc->Components->next()) {
-	// insert all schematic available simulations in the Simulation combo box
-        if(pc != Comp)
-          if(pc->Model[0] == '.')
-            comboSim->insertItem(comboSim->count(), pc->Name);
+    // TODO: Get rid of this.
+    QString s;
+
+    // Parameter sweep.
+    if(m_pComponent->Model == ".SW")
+    { 
+      // Add all sweep components (starting with a .) to the combo box.
+      Component* component;
+      for (component = m_pDocument->Components->first(); component != 0; m_pDocument->Components->next()) 
+      {
+        if (component != m_pComponent && component->Model[0] == '.')
+            comboSim->insertItem(comboSim->count(), component->Name);
       }
+      
       qDebug() << "[]" << (*pp)->Value;
       // set selected simulations in combo box to the currently used one
       int i = comboSim->findText((*pp)->Value);
       if (i != -1) // current simulation is in the available simulations list (normal case)
-	comboSim->setCurrentIndex(i);
+	      comboSim->setCurrentIndex(i);
       else  // current simulation not in the available simulations list
         comboSim->setEditText((*pp)->Value);
 
@@ -274,43 +347,25 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     connect(checkStop, SIGNAL(stateChanged(int)), SLOT(slotSetChanged(int)));
     connect(checkNumber, SIGNAL(stateChanged(int)), SLOT(slotSetChanged(int)));*/
 
-
-    QWidget *tabProperties = new QWidget(t);
-    t->addTab(tabProperties, tr("Properties"));
-    //gp1 = new QGridLayout(tabProperties, 9,2,5,5);
-    gp1 = new QGridLayout(tabProperties);
+    // Create the properties page and add it to the tab widget.
+    QWidget* propertiesPage = new QWidget(pageTabs);
+    pageTabs->addTab(propertiesPage, tr("Properties"));
+    propertiesPageLayout = new QGridLayout(propertiesPage);
   }
-  else {   // no simulation component
-    //gp1 = new QGridLayout(0, 9,2,5,5);
-    gp1 = new QGridLayout();
-    all->addLayout(gp1);
+  
+  else 
+  { 
+    // If this component does not have sweep settings, add properties directly to the dialog itself.
+    propertiesPageLayout = new QGridLayout(this);
+    static_cast<QVBoxLayout*>(layout())->addLayout(propertiesPageLayout);
   }
 
 
-  // ...........................................................
-  gp1->addWidget(new QLabel(Comp->Description), 0,0,1,2);
+  // Create the properties matrix (table).
 
-  QHBoxLayout *h5 = new QHBoxLayout;
-  h5->setSpacing(5);
-
-  h5->addWidget(new QLabel(tr("Name:")) );
-
-  CompNameEdit = new QLineEdit;
-  h5->addWidget(CompNameEdit);
-
-  CompNameEdit->setValidator(ValName);
-  connect(CompNameEdit, SIGNAL(returnPressed()), SLOT(slotButtOK()));
-
-  showName = new QCheckBox(tr("display in schematic"));
-  h5->addWidget(showName);
-
-  QWidget *hTop = new QWidget;
-  hTop->setLayout(h5);
-
-  gp1->addWidget(hTop,1,0);
 
   QGroupBox *PropertyBox = new QGroupBox(tr("Properties"));
-  gp1->addWidget(PropertyBox,2,0);
+  propertiesPageLayout->addWidget(PropertyBox,2,0);
 
   // H layout inside the GroupBox
   QHBoxLayout *hProps = new QHBoxLayout;
@@ -322,19 +377,19 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   vboxPropsL->setLayout(vL);
 
   /// \todo column min width
-  prop = new QTableWidget(0,4); //initialize
-  vL->addWidget(prop);
-  prop->verticalHeader()->setVisible(false);
-  prop->setSelectionBehavior(QAbstractItemView::SelectRows);
-  prop->setSelectionMode(QAbstractItemView::SingleSelection);
-  prop->setMinimumSize(200, 150);
-  prop->horizontalHeader()->setStretchLastSection(true);
+  m_pPropertyTable = new QTableWidget(0,4); //initialize
+  vL->addWidget(m_pPropertyTable);
+  m_pPropertyTable->verticalHeader()->setVisible(false);
+  m_pPropertyTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+  m_pPropertyTable->setSelectionMode(QAbstractItemView::SingleSelection);
+  m_pPropertyTable->setMinimumSize(200, 150);
+  m_pPropertyTable->horizontalHeader()->setStretchLastSection(true);
   // set automatic resize so all content will be visible, 
   //  horizontal scrollbar will appear if table becomes too large
-  prop->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-  prop->horizontalHeader()->setSectionsClickable(false); // no action when clicking on the header
+  m_pPropertyTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  m_pPropertyTable->horizontalHeader()->setSectionsClickable(false); // no action when clicking on the header
 
-  connect(prop->horizontalHeader(),SIGNAL(sectionDoubleClicked(int)),
+  connect(m_pPropertyTable->horizontalHeader(),SIGNAL(sectionDoubleClicked(int)),
               this, SLOT(slotHHeaderClicked(int)));
 
   QStringList headers;
@@ -342,7 +397,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
           << tr("Value")
           << tr("display")
           << tr("Description");
-  prop->setHorizontalHeaderLabels(headers);
+  m_pPropertyTable->setHorizontalHeaderLabels(headers);
 
   // right pane
   QWidget *vboxPropsR = new QWidget;
@@ -424,7 +479,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   QStringList allowedFillFromSPICE;
   allowedFillFromSPICE<<"_BJT"<<"JFET"<<"MOSFET"<<"_MOSFET"<<"Diode"<<"BJT";
   ButtFillFromSpice = new QPushButton(tr("Fill from SPICE .MODEL"));
-  if (!allowedFillFromSPICE.contains(Comp->Model)) {
+  if (!allowedFillFromSPICE.contains(m_pComponent->Model)) {
     ButtFillFromSpice->setEnabled(false);
   }
   bg->addWidget(ButtFillFromSpice,2,0,1,2);
@@ -435,7 +490,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   QWidget * hbox2 = new QWidget;
   hbox2->setLayout(h2);
   h2->setSpacing(5);
-  all->addWidget(hbox2);
+  layout()->addWidget(hbox2);
   QPushButton *ok = new QPushButton(tr("OK"));
   QPushButton *apply = new QPushButton(tr("Apply"));
   QPushButton *cancel = new QPushButton(tr("Cancel"));
@@ -447,66 +502,78 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   connect(cancel, SIGNAL(clicked()), SLOT(slotButtCancel()));
 
   // ------------------------------------------------------------
-  CompNameEdit->setText(Comp->Name);
-  showName->setChecked(Comp->showName);
-  changed = false;
 
-  Comp->textSize(tx_Dist, ty_Dist);
-  int tmp = Comp->tx+tx_Dist - Comp->x1;
+
+  m_pComponent->textSize(tx_Dist, ty_Dist);
+  int tmp = m_pComponent->tx+tx_Dist - m_pComponent->x1;
   if((tmp > 0) || (tmp < -6))  tx_Dist = 0;  // remember the text position
-  tmp = Comp->ty+ty_Dist - Comp->y1;
+  tmp = m_pComponent->ty+ty_Dist - m_pComponent->y1;
   if((tmp > 0) || (tmp < -6))  ty_Dist = 0;
 
-  /*! Insert all \a Comp properties into the dialog \a prop list */
+  /*! Insert all \a m_pComponent properties into the dialog \a m_pPropertyTable list */
   int row=0; // row counter
-  for(auto p = pp; p != Comp->Props.end(); ++p) {
+  for(auto p = pp; p != m_pComponent->Props.end(); ++p) {
 
       // do not insert if already on first tab
       // this is the reason it was originally from back to front...
       // the 'pp' is the lasted property stepped over while filling the Swep tab
   //    if(p == pp)
   //      break;
+
+      QString yesno;
       if((*p)->display)
-        s = tr("yes");
+        yesno = tr("yes");
       else
-        s = tr("no");
+        yesno = tr("no");
 
       // add Props into TableWidget
-      qDebug() << " Loading Comp->Props :" << (*p)->Name << (*p)->Value << (*p)->display << (*p)->Description ;
+      qDebug() << " Loading m_pComponent->Props :" << (*p)->Name << (*p)->Value << (*p)->display << (*p)->Description ;
 
-      prop->setRowCount(prop->rowCount()+1);
+      m_pPropertyTable->setRowCount(m_pPropertyTable->rowCount()+1);
+
+      /*
+      m_pPropertyTable->setCellWidget(row, 0, new QLineEdit);
+
+      QStringList lines;
+      lines << "First" << "Second" << "Third";
+
+      QComboBox* options = new QComboBox();
+      options->addItems(lines);
+
+      m_pPropertyTable->setCellWidget(row, 1, options);
+      */
 
       QTableWidgetItem *cell;
       cell = new QTableWidgetItem((*p)->Name);
       cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-      prop->setItem(row, 0, cell);
+      m_pPropertyTable->setItem(row, 0, cell);
       cell = new QTableWidgetItem((*p)->Value);
+      cell->setCheckState(Qt::Checked);
+      // cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      m_pPropertyTable->setItem(row, 1, cell);
+      cell = new QTableWidgetItem(yesno);
       cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-      prop->setItem(row, 1, cell);
-      cell = new QTableWidgetItem(s);
-      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-      prop->setItem(row, 2, cell);
+      m_pPropertyTable->setItem(row, 2, cell);
       cell = new QTableWidgetItem((*p)->Description);
       cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-      prop->setItem(row, 3, cell);
+      m_pPropertyTable->setItem(row, 3, cell);
 
       row++;
     }
 
-    if(prop->rowCount() > 0) {
-        prop->setCurrentItem(prop->item(0,0));
-        slotSelectProperty(prop->item(0,0));
+    if(m_pPropertyTable->rowCount() > 0) {
+        m_pPropertyTable->setCurrentItem(m_pPropertyTable->item(0,0));
+        slotSelectProperty(m_pPropertyTable->item(0,0));
     }
  
 
-  /// \todo add key up/down browse and select prop
-  connect(prop, SIGNAL(itemClicked(QTableWidgetItem*)),
+  /// \todo add key up/down browse and select m_pPropertyTable
+  connect(m_pPropertyTable, SIGNAL(itemClicked(QTableWidgetItem*)),
                 SLOT(slotSelectProperty(QTableWidgetItem*)));
 }
 
 ComponentDialog::~ComponentDialog()
 {
-  delete all;
   delete Validator;
   delete Validator2;
   delete ValRestrict;
@@ -537,10 +604,10 @@ void ComponentDialog::updateCompPropsList()
     int last_prop=0; // last property not to put in ListView
         // ...........................................................
         // if simulation component: .TR, .AC, .SW, (.SP ?)
-    if((Comp->Model[0] == '.') &&
-       (Comp->Model != ".DC") && (Comp->Model != ".HB") &&
-       (Comp->Model != ".Digi") && (Comp->Model != ".ETR")) {
-        if(Comp->Model == ".SW") {   // parameter sweep
+    if((m_pComponent->Model[0] == '.') &&
+       (m_pComponent->Model != ".DC") && (m_pComponent->Model != ".HB") &&
+       (m_pComponent->Model != ".Digi") && (m_pComponent->Model != ".ETR")) {
+        if(m_pComponent->Model == ".SW") {   // parameter sweep
            last_prop = 2;
         } else {
             last_prop = 0;
@@ -550,8 +617,8 @@ void ComponentDialog::updateCompPropsList()
 
     QString s;
     int row=0; // row counter
-    //for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
-    auto &p = Comp->Props;
+    //for(Property *p = m_pComponent->Props.first(); p != 0; p = m_pComponent->Props.next()) {
+    auto &p = m_pComponent->Props;
     for(int i = last_prop; i< p.size();i++) {
 
       // do not insert if already on first tab
@@ -565,36 +632,36 @@ void ComponentDialog::updateCompPropsList()
         s = tr("no");
 
       // add Props into TableWidget
-      qDebug() << " Loading Comp->Props :" << p.at(i)->Name << p.at(i)->Value << p.at(i)->display << p.at(i)->Description ;
+      qDebug() << " Loading m_pComponent->Props :" << p.at(i)->Name << p.at(i)->Value << p.at(i)->display << p.at(i)->Description ;
 
-      if (row > prop->rowCount()-1) { // Add new rows
-          prop->setRowCount(prop->rowCount()+1);
+      if (row > m_pPropertyTable->rowCount()-1) { // Add new rows
+          m_pPropertyTable->setRowCount(m_pPropertyTable->rowCount()+1);
       }
 
       QTableWidgetItem *cell;
       cell = new QTableWidgetItem(p.at(i)->Name);
       cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-      prop->setItem(row, 0, cell);
+      m_pPropertyTable->setItem(row, 0, cell);
       cell = new QTableWidgetItem(p.at(i)->Value);
       cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-      prop->setItem(row, 1, cell);
+      m_pPropertyTable->setItem(row, 1, cell);
       cell = new QTableWidgetItem(s);
       cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-      prop->setItem(row, 2, cell);
+      m_pPropertyTable->setItem(row, 2, cell);
       cell = new QTableWidgetItem(p.at(i)->Description);
       cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-      prop->setItem(row, 3, cell);
+      m_pPropertyTable->setItem(row, 3, cell);
 
       row++;
     }
 
-    if(prop->rowCount() > 0) {
-        prop->setCurrentItem(prop->item(0,0));
-        slotSelectProperty(prop->item(0,0));
+    if(m_pPropertyTable->rowCount() > 0) {
+        m_pPropertyTable->setCurrentItem(m_pPropertyTable->item(0,0));
+        slotSelectProperty(m_pPropertyTable->item(0,0));
     }
 
-    if (row < prop->rowCount()-1) {
-        prop->setRowCount(row);
+    if (row < m_pPropertyTable->rowCount()-1) {
+        m_pPropertyTable->setRowCount(row);
     }
 }
 
@@ -609,10 +676,10 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 
   qDebug() << "row " << item->row(); //<< item->text()
 
-  QString name  = prop->item(item->row(),0)->text();
-  QString value = prop->item(item->row(),1)->text();
-  QString show  = prop->item(item->row(),2)->text();
-  QString desc  = prop->item(item->row(),3)->text();
+  QString name  = m_pPropertyTable->item(item->row(),0)->text();
+  QString value = m_pPropertyTable->item(item->row(),1)->text();
+  QString show  = m_pPropertyTable->item(item->row(),2)->text();
+  QString desc  = m_pPropertyTable->item(item->row(),3)->text();
 
   if(show == tr("yes"))
     disp->setChecked(true);
@@ -639,7 +706,7 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     eqns_mods<<"Eqn"<<"SpicePar"<<"SpGlobPar"
              <<"SpiceIC"<<"SpiceNodeset"<<"NutmegEq";
     // enable Up/Down buttons only for the Equation component
-    if (eqns_mods.contains(Comp->Model)) {
+    if (eqns_mods.contains(m_pComponent->Model)) {
       ButtUp->setEnabled(true);
       ButtDown->setEnabled(true);
     }
@@ -706,7 +773,7 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
         desc = desc.left(desc.length()-5) + "....";
     }
 
-    if (Comp->SpiceModel == "NutmegEq" && name == "Simulation") { // simulation selection required
+    if (m_pComponent->SpiceModel == "NutmegEq" && name == "Simulation") { // simulation selection required
         List = getSimulationList();
     }
 
@@ -738,7 +805,7 @@ void ComponentDialog::slotApplyChange(int idx)
 {
   /// \bug what if the table have no items?
   // pick selected row
-  QList<QTableWidgetItem *> items = prop->selectedItems();
+  QList<QTableWidgetItem *> items = m_pPropertyTable->selectedItems();
   Q_ASSERT(!items.isEmpty());
   QTableWidgetItem *item = items.first();
   
@@ -747,14 +814,14 @@ void ComponentDialog::slotApplyChange(int idx)
   auto Text = ComboEdit->itemText(idx);
   edit->setText(Text);
   // apply edit line
-  prop->item(row, 1)->setText(Text);
+  m_pPropertyTable->item(row, 1)->setText(Text);
 
   ComboEdit->setFocus();
 
   // step to next item if not at the last line
-  if ( row < (prop->rowCount() - 1)) {
-    prop->setCurrentItem(prop->item(row+1,0));
-    slotSelectProperty(prop->item(row+1,0));
+  if ( row < (m_pPropertyTable->rowCount() - 1)) {
+    m_pPropertyTable->setCurrentItem(m_pPropertyTable->item(row+1,0));
+    slotSelectProperty(m_pPropertyTable->item(row+1,0));
   }
 }
 
@@ -766,15 +833,15 @@ void ComponentDialog::slotApplyChange(int idx)
 void ComponentDialog::slotApplyProperty()
 {
   // pick selected row
-  QTableWidgetItem *item = prop->currentItem();
+  QTableWidgetItem *item = m_pPropertyTable->currentItem();
   
   if(!item)
     return;
   
   int row = item->row();
 
-  QString name  = prop->item(row, 0)->text();
-  QString value = prop->item(row, 1)->text();
+  QString name  = m_pPropertyTable->item(row, 0)->text();
+  QString value = m_pPropertyTable->item(row, 1)->text();
 
  
 
@@ -783,7 +850,7 @@ void ComponentDialog::slotApplyProperty()
 
   // apply edit line
   if(value != edit->text()) {
-       prop->item(row, 1)->setText(edit->text());
+       m_pPropertyTable->item(row, 1)->setText(edit->text());
     }
 
   if (!NameEdit->isHidden())	// also apply property name ?
@@ -792,13 +859,13 @@ void ComponentDialog::slotApplyProperty()
 //        item->setText(0, "Export_");   // name must not be "Export" !!!
 //      else
 //      item->setText(0, NameEdit->text());  // apply property name
-      prop->item(row, 0)->setText(NameEdit->text());
+      m_pPropertyTable->item(row, 0)->setText(NameEdit->text());
     }
 
   // step to next item
-  if ( row < prop->rowCount()-1) {
-    prop->setCurrentItem(prop->item(row+1,0));
-    slotSelectProperty(prop->item(row+1,0));
+  if ( row < m_pPropertyTable->rowCount()-1) {
+    m_pPropertyTable->setCurrentItem(m_pPropertyTable->item(row+1,0));
+    slotSelectProperty(m_pPropertyTable->item(row+1,0));
   }
   else {
     slotButtOK();   // close dialog, if it was the last property
@@ -811,10 +878,10 @@ void ComponentDialog::slotApplyProperty()
 void ComponentDialog::slotApplyPropName()
 {
   // pick selected row
-  QTableWidgetItem *item = prop->selectedItems()[0];
+  QTableWidgetItem *item = m_pPropertyTable->selectedItems()[0];
   int row = item->row();
 
-  QString name  = prop->item(row, 0)->text();
+  QString name  = m_pPropertyTable->item(row, 0)->text();
 
   if(name != NameEdit->text()) {
 //    if(NameEdit->text() == "Export") {
@@ -822,7 +889,7 @@ void ComponentDialog::slotApplyPropName()
 //	NameEdit->setText("Export_");
 //    }
 //      else
-    prop->item(row, 0)->setText(NameEdit->text());
+    m_pPropertyTable->item(row, 0)->setText(NameEdit->text());
   }
   edit->setFocus();   // cursor into "edit" widget
 }
@@ -832,11 +899,11 @@ void ComponentDialog::slotApplyPropName()
 void ComponentDialog::slotApplyState(int State)
 {
   // pick selected row
-  if (prop->rowCount() == 0) return;
-  QTableWidgetItem *item = prop->selectedItems()[0];
+  if (m_pPropertyTable->rowCount() == 0) return;
+  QTableWidgetItem *item = m_pPropertyTable->selectedItems()[0];
   int row = item->row();
 
-  QString disp  = prop->item(row, 2)->text();
+  QString disp  = m_pPropertyTable->item(row, 2)->text();
 
   if(item == 0) return;
 
@@ -847,7 +914,7 @@ void ComponentDialog::slotApplyState(int State)
     ButtonState = tr("no");
 
   if(disp != ButtonState) {
-    prop->item(row, 2)->setText(ButtonState);
+    m_pPropertyTable->item(row, 2)->setText(ButtonState);
   }
 }
 
@@ -881,47 +948,44 @@ void ComponentDialog::reject()
 // Is called, if the "Apply"-button is pressed.
 void ComponentDialog::slotApplyInput()
 {
-  qDebug() << " \n == Apply ";
-  if(Comp->showName != showName->isChecked()) {
-    Comp->showName = showName->isChecked();
-    changed = true;
+
+  // Check the new name is not empty and not a duplicate.
+  if (localComponent.Name.isEmpty() ||
+      m_pDocument->getComponentByName(localComponent.Name) != nullptr)
+  {
+    // Reset to the current name if a conflict is found.
+    localComponent.Name = m_pComponent->Name;
+    mpNameLineEdit->setText(localComponent.Name);
   }
 
-  QString tmp;
-  Component *pc;
-  if (CompNameEdit->text().isEmpty()) {
-    CompNameEdit->setText(Comp->Name);
-  } else if(CompNameEdit->text() != Comp->Name) {
-    pc = Doc->getComponentByName(CompNameEdit->text());
-    if (pc != nullptr) {
-      CompNameEdit->setText(Comp->Name);
-    } else {
-      Comp->Name = CompNameEdit->text();
-      changed = true;
-    }
-  }
+  m_pComponent->Name = localComponent.Name;
+  m_pComponent->showName = localComponent.showName;
+  changed = true;
 
-  /*! Walk the original Comp->Props and compare with the
+  /*! Walk the original m_pComponent->Props and compare with the
    *  data in the dialog.
    *  The pointers to the combo, edits,... are set to 0.
    *  Only check if the widgets were created (pointers checks are 'true')
    */
-  //auto pp = Comp->Props.begin();
+  //auto pp = m_pComponent->Props.begin();
   // apply all the new property values
+  QString tmp;
+  Component *pc;
+
   int idxStart = 1;
-  if (Comp->Model == ".SW") {
+  if (m_pComponent->Model == ".SW") {
     idxStart = 3;
   }
 
   if(comboSim != nullptr) {
-    auto pp = Comp->getProperty("Sim");
+    auto pp = m_pComponent->getProperty("Sim");
     bool display = checkSim->isChecked();
     QString value = comboSim->currentText();
     updateProperty(pp,value,display);
   }
   if(comboType != nullptr) {
     bool display = checkType->isChecked();
-    auto pp = Comp->getProperty("Type");
+    auto pp = m_pComponent->getProperty("Type");
     switch(comboType->currentIndex()) {
       case 1:  tmp = "log";   break;
       case 2:  tmp = "list";  break;
@@ -932,7 +996,7 @@ void ComponentDialog::slotApplyInput()
   }
   if(checkParam != nullptr) {
     if(checkParam->isEnabled()) {
-      auto pp = Comp->getProperty("Param");
+      auto pp = m_pComponent->getProperty("Param");
       bool display = checkParam->isChecked();
       QString value = editParam->text();
       updateProperty(pp,value,display);
@@ -940,19 +1004,19 @@ void ComponentDialog::slotApplyInput()
   }
   if(editStart != nullptr) {
     if(comboType->currentIndex() < 2 ) {
-      Property *pp = Comp->Props.at(idxStart); // Start
+      Property *pp = m_pComponent->Props.at(idxStart); // Start
       bool display = checkStart->isChecked();
       QString value = editStart->text();
       updateProperty(pp,value,display);
       pp->Name = "Start";
 
-      pp = Comp->Props.at(idxStart+1); // Stop
+      pp = m_pComponent->Props.at(idxStart+1); // Stop
       display = checkStop->isChecked();
       value = editStop->text();
       updateProperty(pp,value,display);
       pp->Name = "Stop";
 
-      pp = Comp->Props.at(idxStart+2);
+      pp = m_pComponent->Props.at(idxStart+2);
       if (pp != nullptr) { // Points/Values
         display = checkNumber->isChecked();
         value = editNumber->text();
@@ -963,14 +1027,14 @@ void ComponentDialog::slotApplyInput()
     } else {
       // If a value list is used, the properties "Start" and "Stop" are not
       // used. -> Call them "Symbol" to omit them in the netlist.
-      Property *pp = Comp->Props.at(idxStart);
+      Property *pp = m_pComponent->Props.at(idxStart);
       pp->Name = "Symbol";
       pp->display = false;
-      pp = Comp->Props.at(idxStart+1);
+      pp = m_pComponent->Props.at(idxStart+1);
       pp->Name = "Symbol";
       pp->display = false;
 
-      pp = Comp->Props.at(idxStart+2);
+      pp = m_pComponent->Props.at(idxStart+2);
       bool display = checkValues->isChecked();
       QString value = "["+editValues->text()+"]";
 
@@ -991,32 +1055,32 @@ void ComponentDialog::slotApplyInput()
   QTableWidgetItem *item = nullptr;
 
   //  make sure we have one item, take selected
-  if (prop->selectedItems().size() != 0) {
-    item = prop->selectedItems()[0];
+  if (m_pPropertyTable->selectedItems().size() != 0) {
+    item = m_pPropertyTable->selectedItems()[0];
   }
 
-  /*! Walk the dialog list of 'prop'
+  /*! Walk the dialog list of 'm_pPropertyTable'
    */
   if(item != nullptr) {
     int row = item->row();
-    QString name  = prop->item(row, 0)->text();
-    QString value = prop->item(row, 1)->text();
+    QString name  = m_pPropertyTable->item(row, 0)->text();
+    QString value = m_pPropertyTable->item(row, 1)->text();
 
            // apply edit line
     if(value != edit->text()) {
-      prop->item(row, 1)->setText(edit->text());
+      m_pPropertyTable->item(row, 1)->setText(edit->text());
     }
 
     // apply property name
     if (!NameEdit->isHidden()) {
       if (name != NameEdit->text()) {
-        prop->item(row, 0)->setText(NameEdit->text());
+        m_pPropertyTable->item(row, 0)->setText(NameEdit->text());
       }
     }
   }
 
   // apply all the new property values in the ListView
-  if (Comp->isEquation) {
+  if (m_pComponent->isEquation) {
     recreatePropsFromTable();
   } else {
     fillPropsFromTable();
@@ -1024,20 +1088,20 @@ void ComponentDialog::slotApplyInput()
 
   if(changed) {
     int dx, dy;
-    Comp->textSize(dx, dy);
+    m_pComponent->textSize(dx, dy);
     if(tx_Dist != 0) {
-      Comp->tx += tx_Dist-dx;
+      m_pComponent->tx += tx_Dist-dx;
       tx_Dist = dx;
     }
     if(ty_Dist != 0) {
-      Comp->ty += ty_Dist-dy;
+      m_pComponent->ty += ty_Dist-dy;
       ty_Dist = dy;
     }
 
-    Doc->recreateComponent(Comp);
-    Doc->viewport()->repaint();
-    if ( (int) Comp->Props.count() != prop->rowCount()) { // If props count was changed after recreation
-      Q_ASSERT(prop->rowCount() >= 0);
+    m_pDocument->recreateComponent(m_pComponent);
+    m_pDocument->viewport()->repaint();
+    if ( (int) m_pComponent->Props.count() != m_pPropertyTable->rowCount()) { // If props count was changed after recreation
+      Q_ASSERT(m_pPropertyTable->rowCount() >= 0);
       updateCompPropsList(); // of component we need to update properties
     }
   }
@@ -1048,10 +1112,10 @@ void ComponentDialog::slotApplyInput()
 void ComponentDialog::slotBrowseFile()
 {
   // current file name from the component properties
-  QString currFileName = prop->item(prop->currentRow(), 1)->text();
+  QString currFileName = m_pPropertyTable->item(m_pPropertyTable->currentRow(), 1)->text();
   QFileInfo currFileInfo(currFileName);
   // name of the schematic where component is instantiated (may be empty)
-  QFileInfo schematicFileInfo = Comp->getSchematic()->getFileInfo();
+  QFileInfo schematicFileInfo = m_pComponent->getSchematic()->getFileInfo();
   QString schematicFileName = schematicFileInfo.fileName();
   // directory to use for the file open dialog
   QString currDir;
@@ -1104,15 +1168,15 @@ void ComponentDialog::slotBrowseFile()
       }
     }
     edit->setText(s);
-    int row = prop->currentRow();
-    prop->item(row,1)->setText(s);
+    int row = m_pPropertyTable->currentRow();
+    m_pPropertyTable->item(row,1)->setText(s);
   }
 }
 
 // -------------------------------------------------------------------------
 void ComponentDialog::slotEditFile()
 {
-  Doc->App->editFile(misc::properAbsFileName(edit->text(), Doc));
+  m_pDocument->App->editFile(misc::properAbsFileName(edit->text(), m_pDocument));
 }
 
 /*!
@@ -1139,11 +1203,11 @@ void ComponentDialog::slotEditFile()
 void ComponentDialog::slotButtAdd()
 {
   // Set existing equation into focus, return
-  for(int row=0; row < prop->rowCount(); row++) {
-    QString name  = prop->item(row, 0)->text();
+  for(int row=0; row < m_pPropertyTable->rowCount(); row++) {
+    QString name  = m_pPropertyTable->item(row, 0)->text();
     if( name == NameEdit->text()) {
-      prop->setCurrentItem(prop->item(row,0));
-      slotSelectProperty(prop->item(row,0));
+      m_pPropertyTable->setCurrentItem(m_pPropertyTable->item(row,0));
+      slotSelectProperty(m_pPropertyTable->item(row,0));
       return;
     }
   }
@@ -1154,30 +1218,30 @@ void ComponentDialog::slotButtAdd()
     s = tr("yes");
 
   // get number for selected row
-  int curRow = prop->currentRow();
+  int curRow = m_pPropertyTable->currentRow();
 
   // insert new row under current
   int insRow = curRow+1;
-  prop->insertRow(insRow);
+  m_pPropertyTable->insertRow(insRow);
 
   // append new row
   QTableWidgetItem *cell;
   cell = new QTableWidgetItem(NameEdit->text());
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-  prop->setItem(insRow, 0, cell);
+  m_pPropertyTable->setItem(insRow, 0, cell);
   cell = new QTableWidgetItem(edit->text());
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-  prop->setItem(insRow, 1, cell);
+  m_pPropertyTable->setItem(insRow, 1, cell);
   cell = new QTableWidgetItem(s);
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-  prop->setItem(insRow, 2, cell);
+  m_pPropertyTable->setItem(insRow, 2, cell);
   // no description? add empty cell
   cell = new QTableWidgetItem("");
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-  prop->setItem(insRow, 3, cell);
+  m_pPropertyTable->setItem(insRow, 3, cell);
 
   // select new row
-  prop->selectRow(insRow);
+  m_pPropertyTable->selectRow(insRow);
 }
 
 /*!
@@ -1188,27 +1252,27 @@ void ComponentDialog::slotButtAdd()
 */
 void ComponentDialog::slotButtRem()
 {
-  if ((prop->rowCount() < 3)&&
-          (Comp->Model=="Eqn"||Comp->Model=="NutmegEq"))
+  if ((m_pPropertyTable->rowCount() < 3)&&
+          (m_pComponent->Model=="Eqn"||m_pComponent->Model=="NutmegEq"))
      return;  // the last property cannot be removed
-  if (prop->rowCount() < 2)
+  if (m_pPropertyTable->rowCount() < 2)
      return;  // the last property cannot be removed
 
 
-  QTableWidgetItem *item = prop->selectedItems()[0];
+  QTableWidgetItem *item = m_pPropertyTable->selectedItems()[0];
   int row = item->row();
 
   if(item == 0)
     return;
 
   // peek next, delete current, set next current
-  if ( row < prop->rowCount()) {
-      prop->setCurrentItem(prop->item(row-1,0)); // Shift selection up
-      slotSelectProperty(prop->item(row-1,0));
-      prop->removeRow(row);
-      if (!prop->selectedItems().size()) { // The first item was removed
-          prop->setCurrentItem(prop->item(0,0)); // Select the first item
-          slotSelectProperty(prop->item(0,0));
+  if ( row < m_pPropertyTable->rowCount()) {
+      m_pPropertyTable->setCurrentItem(m_pPropertyTable->item(row-1,0)); // Shift selection up
+      slotSelectProperty(m_pPropertyTable->item(row-1,0));
+      m_pPropertyTable->removeRow(row);
+      if (!m_pPropertyTable->selectedItems().size()) { // The first item was removed
+          m_pPropertyTable->setCurrentItem(m_pPropertyTable->item(0,0)); // Select the first item
+          slotSelectProperty(m_pPropertyTable->item(0,0));
       }
   }
 }
@@ -1219,27 +1283,27 @@ void ComponentDialog::slotButtRem()
  */
 void ComponentDialog::slotButtUp()
 {
-  qDebug() << "slotButtUp" << prop->currentRow() << prop->rowCount();
+  qDebug() << "slotButtUp" << m_pPropertyTable->currentRow() << m_pPropertyTable->rowCount();
 
-  int curRow = prop->currentRow();
+  int curRow = m_pPropertyTable->currentRow();
   if (curRow == 0)
     return;
-  if ((curRow == 1)&&(Comp->Model=="NutmegEq"))
+  if ((curRow == 1)&&(m_pComponent->Model=="NutmegEq"))
     return;
 
   // swap current and row above it
-  QTableWidgetItem *source = prop->takeItem(curRow  ,0);
-  QTableWidgetItem *target = prop->takeItem(curRow-1,0);
-  prop->setItem(curRow-1, 0, source);
-  prop->setItem(curRow, 0, target);
-  source = prop->takeItem(curRow  ,1);
-  target = prop->takeItem(curRow-1,1);
-  prop->setItem(curRow-1, 1, source);
-  prop->setItem(curRow, 1, target);
+  QTableWidgetItem *source = m_pPropertyTable->takeItem(curRow  ,0);
+  QTableWidgetItem *target = m_pPropertyTable->takeItem(curRow-1,0);
+  m_pPropertyTable->setItem(curRow-1, 0, source);
+  m_pPropertyTable->setItem(curRow, 0, target);
+  source = m_pPropertyTable->takeItem(curRow  ,1);
+  target = m_pPropertyTable->takeItem(curRow-1,1);
+  m_pPropertyTable->setItem(curRow-1, 1, source);
+  m_pPropertyTable->setItem(curRow, 1, target);
 
 
   // select moved row
-  prop->selectRow(curRow-1);
+  m_pPropertyTable->selectRow(curRow-1);
 }
 
 /*!
@@ -1248,29 +1312,29 @@ void ComponentDialog::slotButtUp()
  */
 void ComponentDialog::slotButtDown()
 {
-  qDebug() << "slotButtDown" << prop->currentRow() << prop->rowCount();
+  qDebug() << "slotButtDown" << m_pPropertyTable->currentRow() << m_pPropertyTable->rowCount();
 
-  int curRow = prop->currentRow();
+  int curRow = m_pPropertyTable->currentRow();
   // Leave Export as last
-  if ((curRow == prop->rowCount()-2)&&(Comp->Model=="Eqn"))
+  if ((curRow == m_pPropertyTable->rowCount()-2)&&(m_pComponent->Model=="Eqn"))
     return;
-  if ((curRow == 0)&&(Comp->Model=="NutmegEq")) // Don't let to shift the first property "Simulation="
+  if ((curRow == 0)&&(m_pComponent->Model=="NutmegEq")) // Don't let to shift the first property "Simulation="
     return;
-  if ((curRow ==  prop->rowCount()-1)) // Last property
+  if ((curRow ==  m_pPropertyTable->rowCount()-1)) // Last property
     return;
 
   // swap current and row below it
-  QTableWidgetItem *source = prop->takeItem(curRow,0);
-  QTableWidgetItem *target = prop->takeItem(curRow+1,0);
-  prop->setItem(curRow+1, 0, source);
-  prop->setItem(curRow, 0, target);
-  source = prop->takeItem(curRow,1);
-  target = prop->takeItem(curRow+1,1);
-  prop->setItem(curRow+1, 1, source);
-  prop->setItem(curRow, 1, target);
+  QTableWidgetItem *source = m_pPropertyTable->takeItem(curRow,0);
+  QTableWidgetItem *target = m_pPropertyTable->takeItem(curRow+1,0);
+  m_pPropertyTable->setItem(curRow+1, 0, source);
+  m_pPropertyTable->setItem(curRow, 0, target);
+  source = m_pPropertyTable->takeItem(curRow,1);
+  target = m_pPropertyTable->takeItem(curRow+1,1);
+  m_pPropertyTable->setItem(curRow+1, 1, source);
+  m_pPropertyTable->setItem(curRow, 1, target);
 
   // select moved row
-  prop->selectRow(curRow+1);
+  m_pPropertyTable->selectRow(curRow+1);
 }
 
 // -------------------------------------------------------------------------
@@ -1474,8 +1538,8 @@ void ComponentDialog::slotHHeaderClicked(int headerIdx)
   }
 
   // go through all the properties table and set the visibility cell
-  for (int row = 0; row < prop->rowCount(); row++) {
-    cell = prop->item(row, 2);
+  for (int row = 0; row < m_pPropertyTable->rowCount(); row++) {
+    cell = m_pPropertyTable->item(row, 2);
     cell->setText(s);
   }
   setAllVisible = not setAllVisible; // toggle visibility for the next double-click
@@ -1485,7 +1549,7 @@ void ComponentDialog::slotHHeaderClicked(int headerIdx)
 QStringList ComponentDialog::getSimulationList()
 {
     QStringList sim_lst;
-    Schematic *sch = Comp->getSchematic();
+    Schematic *sch = m_pComponent->getSchematic();
     if (sch == nullptr) {
         return sim_lst;
     }
@@ -1516,7 +1580,7 @@ QStringList ComponentDialog::getSimulationList()
 
 void ComponentDialog::slotFillFromSpice()
 {
-  fillFromSpiceDialog *dlg = new fillFromSpiceDialog(Comp, this);
+  fillFromSpiceDialog *dlg = new fillFromSpiceDialog(m_pComponent, this);
   auto r = dlg->exec();
   if (r == QDialog::Accepted) {
     updateCompPropsList();
@@ -1527,22 +1591,22 @@ void ComponentDialog::slotFillFromSpice()
 
 void ComponentDialog::fillPropsFromTable()
 {
-  for( int row = 0; row < prop->rowCount(); row++ ) {
-    QString name  = prop->item(row, 0)->text();
-    QString value = prop->item(row, 1)->text();
-    QString disp = prop->item(row, 2)->text();
-    QString desc = prop->item(row, 3)->text();
+  for( int row = 0; row < m_pPropertyTable->rowCount(); row++ ) {
+    QString name  = m_pPropertyTable->item(row, 0)->text();
+    QString value = m_pPropertyTable->item(row, 1)->text();
+    QString disp = m_pPropertyTable->item(row, 2)->text();
+    QString desc = m_pPropertyTable->item(row, 3)->text();
     bool display = (disp == tr("yes"));
     if (compIsSimulation) {
       // Get property by name
-      auto pp = Comp->getProperty(name);
+      auto pp = m_pComponent->getProperty(name);
       if (pp != nullptr) {
         updateProperty(pp,value,display);
       }
     } else {
       // Other components may have properties with duplicate names
-      if (row < Comp->Props.count()) {
-        auto pp = Comp->Props[row];
+      if (row < m_pComponent->Props.count()) {
+        auto pp = m_pComponent->Props[row];
         if (pp->Name == name) {
           updateProperty(pp,value,display);
         }
@@ -1553,17 +1617,17 @@ void ComponentDialog::fillPropsFromTable()
 
 void ComponentDialog::recreatePropsFromTable()
 {
-  if (!Comp->isEquation) return; // add / remove properties allowed only for equations
+  if (!m_pComponent->isEquation) return; // add / remove properties allowed only for equations
 
-  if (Comp->Props.size() != prop->rowCount()) {
+  if (m_pComponent->Props.size() != m_pPropertyTable->rowCount()) {
     changed = true; // Added or removed properties
   } else {
-    for( int row = 0; row < prop->rowCount(); row++ ) {
-      QString name  = prop->item(row, 0)->text();
-      QString value = prop->item(row, 1)->text();
-      QString disp = prop->item(row, 2)->text();
+    for( int row = 0; row < m_pPropertyTable->rowCount(); row++ ) {
+      QString name  = m_pPropertyTable->item(row, 0)->text();
+      QString value = m_pPropertyTable->item(row, 1)->text();
+      QString disp = m_pPropertyTable->item(row, 2)->text();
       bool display = (disp == tr("yes"));
-      auto pp = Comp->Props.at(row);
+      auto pp = m_pComponent->Props.at(row);
       if ((pp->Name != name) || (pp->Value != value) ||
           (pp->display != display)) {
         changed = true; // reordered or edited properties
@@ -1576,16 +1640,16 @@ void ComponentDialog::recreatePropsFromTable()
     return;
   }
 
-  for (auto pp: Comp->Props) {
+  for (auto pp: m_pComponent->Props) {
     delete pp;
     pp = nullptr;
   }
-  Comp->Props.clear();
-  for( int row = 0; row < prop->rowCount(); row++ ) {
-    QString name  = prop->item(row, 0)->text();
-    QString value = prop->item(row, 1)->text();
-    QString disp = prop->item(row, 2)->text();
-    QString desc = prop->item(row, 3)->text();
+  m_pComponent->Props.clear();
+  for( int row = 0; row < m_pPropertyTable->rowCount(); row++ ) {
+    QString name  = m_pPropertyTable->item(row, 0)->text();
+    QString value = m_pPropertyTable->item(row, 1)->text();
+    QString disp = m_pPropertyTable->item(row, 2)->text();
+    QString desc = m_pPropertyTable->item(row, 3)->text();
     bool display = (disp == tr("yes"));
 
     Property *pp = new Property;
@@ -1593,7 +1657,7 @@ void ComponentDialog::recreatePropsFromTable()
     pp->Value = value;
     pp->display = display;
     pp->Description = desc;
-    Comp->Props.append(pp);
+    m_pComponent->Props.append(pp);
   }
 }
 
