@@ -44,9 +44,8 @@
 class BoundControl
 {
   public:
-    BoundControl(const QString& label, bool& boundCheck, QValidator* validator, QVBoxLayout* layout) 
+    BoundControl(const QString& label, bool& boundCheck, QLayout* layout) 
     {
-      mpValidator = validator;
       mpParentLayout = layout;
 
       mpShowNameCheck = new QCheckBox("display in schematic");
@@ -54,25 +53,32 @@ class BoundControl
       // qDebug() << layout->metaObject()->className();
       
       // Either add widgets to a new QHBoxLayout or to an existing QGridLayout.
-      if (layout->metaObject()->className() != QString("QGridLayout"))
+      if (layout->metaObject()->className() == QString("QVBoxLayout"))
       {
         mpBoundLayout = new QHBoxLayout;
         mpBoundLayout->setSpacing(5);
-        mpParentLayout->addLayout(mpBoundLayout);
+        static_cast<QVBoxLayout*>(mpParentLayout)->addLayout(mpBoundLayout);
 
-        // Add a label if a string is provided.
         if (!label.isEmpty())
           mpBoundLayout->addWidget(new QLabel(label));
 
-        // Add the show parameter checkbox.
         mpShowNameCheck->setCheckState(boundCheck ? Qt::Checked : Qt::Unchecked);
         mpBoundLayout->addWidget(mpShowNameCheck);
+      }
+      
+      else
+      {
+        QGridLayout* grid = static_cast<QGridLayout*>(mpParentLayout);
+        int row = grid->rowCount();
+        grid->addWidget(new QLabel("MR: " + label + ":"), row, 0);
+
+        mpShowNameCheck->setCheckState(boundCheck ? Qt::Checked : Qt::Unchecked);
+        grid->addWidget(mpShowNameCheck, row, 2);
       }
     }
 
   protected:
-    QValidator* mpValidator;
-    QVBoxLayout* mpParentLayout;
+    QLayout* mpParentLayout;
     QHBoxLayout* mpBoundLayout = nullptr;
     QCheckBox* mpShowNameCheck;
 };
@@ -81,16 +87,16 @@ class BoundControl
 class BoundLineEdit : public QLineEdit, BoundControl
 {
   public:
+    // Direct QString editing.
     BoundLineEdit(const QString& label, QString& boundValue, bool& boundCheck, 
-                              QVBoxLayout* layout, QValidator* validator = nullptr) 
-    : BoundControl(label, boundCheck, validator, layout)
+                              QLayout* layout, QValidator* validator = nullptr) 
+    : BoundControl(label, boundCheck, layout)
     {
       if (validator)
         setValidator(validator);
 
       if (mpBoundLayout)
         mpBoundLayout->insertWidget(1, this);
-
       else
         mpParentLayout->addWidget(this);
 
@@ -100,14 +106,52 @@ class BoundLineEdit : public QLineEdit, BoundControl
       connect(this, &QLineEdit::textChanged, [&boundValue](const QString& text) { boundValue = text; });
       connect(mpShowNameCheck, &QCheckBox::stateChanged, [&boundCheck](int state) mutable { boundCheck = state; });
     }
+
+    // Parameter property editing.
+    BoundLineEdit(Property* property, QLayout* layout, QValidator* validator = nullptr) 
+    : BoundControl(property->Name, property->display, layout)
+    {
+      if (validator)
+        setValidator(validator);
+
+      QGridLayout* grid = static_cast<QGridLayout*>(mpParentLayout);
+      grid->addWidget(this, grid->rowCount() - 1, 1);
+      setText(property->Value);
+
+      // Update the bound values whenever the user makes a change.
+      // connect(this, &QLineEdit::textChanged, [&boundValue](const QString& text) { boundValue = text; });
+      // connect(mpShowNameCheck, &QCheckBox::stateChanged, [&boundCheck](int state) mutable { boundCheck = state; });
+    }    
 };
+
+// Combo box version of bound control. Has label | combo box | checkbox.
+class BoundComboBox : public QComboBox, BoundControl
+{
+  public:
+    // Parameter property editing.
+    BoundComboBox(Property* property, const QStringList& options, QLayout* layout) 
+    : BoundControl(property->Name, property->display, layout)
+    {
+      addItems(options);
+      setCurrentIndex(findText(property->Value));
+
+      QGridLayout* grid = static_cast<QGridLayout*>(mpParentLayout);
+      grid->addWidget(this, grid->rowCount() - 1, 1);
+
+      QString& temp(property->Value);
+
+      // Update the bound values whenever the user makes a change.
+      connect(this, &QComboBox::currentTextChanged, [&temp](const QString& text) { temp = text; qDebug() << temp; });
+      // connect(mpShowNameCheck, &QCheckBox::stateChanged, [&boundCheck](int state) mutable { boundCheck = state; });
+    }    
+};
+
 
 ComponentDialog::ComponentDialog(Component* component, Schematic* document)
 			: QDialog(document), localComponent(*component)
 {
   m_pComponent  = component;
   m_pDocument   = document;
-
 
   restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
   setWindowTitle(tr("Edit Component Properties") + " - " + m_pComponent->Description.toUpper());
@@ -156,10 +200,13 @@ ComponentDialog::ComponentDialog(Component* component, Schematic* document)
     
   //   {
 
+  qDebug() << m_pComponent->Model;
+
   if (m_pComponent->isSimulation && 
       (m_pComponent->Model == ".SW" ||
-       m_pComponent->Model == ".SW" ||
-       m_pComponent->Model == ".AC"))
+       m_pComponent->Model == ".SP" ||
+       m_pComponent->Model == ".AC" ||
+       m_pComponent->Model == ".NOISE"))
   {
     // TODO: Get rid of this
     compIsSimulation = true;
@@ -174,7 +221,36 @@ ComponentDialog::ComponentDialog(Component* component, Schematic* document)
     QGridLayout* sweepPageLayout = new QGridLayout;
     sweepPage->setLayout(sweepPageLayout);
 
-    int row=1;
+
+    int row=10;
+
+    for (Property* property : localComponent.Props)
+    {
+      qDebug() << "Prop: " << property->Name;
+
+      // Special case where a simulation is assigned (e.g., parameter sweep).
+      if (property->Name == "Sim")
+      {
+        // Search components for simulations (model name begins with a '.').
+        Q3PtrListIterator<Component> it(*m_pDocument->Components); 
+        Component* component;
+        QStringList simulations;
+        while((component = it.current()) != 0)
+        {
+          if (component->Model[0] == '.' && component->Model != ".SW")
+              simulations << component->Name;
+          ++it;
+        }
+
+        new BoundComboBox(property, simulations, sweepPageLayout);
+      }
+
+      // new BoundLineEdit(property, sweepPageLayout, Validator);
+    }
+
+
+    /*
+    
     editParam = new QLineEdit(sweepPage);
     if (m_pComponent->Model != ".SW") editParam->setValidator(ValRestrict);
     connect(editParam, SIGNAL(returnPressed()), SLOT(slotParamEntered()));
@@ -207,6 +283,9 @@ ComponentDialog::ComponentDialog(Component* component, Schematic* document)
     sweepPageLayout->addWidget(new QLabel(tr("Sweep Parameter:"), sweepPage), row,0);
     sweepPageLayout->addWidget(editParam, row,1);
     sweepPageLayout->addWidget(checkParam, row++,2);
+
+*/
+
 
     textType = new QLabel(tr("Type:"), sweepPage);
     sweepPageLayout->addWidget(textType, row,0);
@@ -261,15 +340,17 @@ ComponentDialog::ComponentDialog(Component* component, Schematic* document)
     sweepPageLayout->addWidget(editNumber, row,1);
     checkNumber = new QCheckBox(tr("display in schematic"), sweepPage);
     sweepPageLayout->addWidget(checkNumber, row++,2);
+  
 
 
     // TODO: Get rid of this.
     QString s;
 
     // Parameter sweep.
-    if(m_pComponent->Model == ".SW")
+    if(false) // m_pComponent->Model == ".SW")
     { 
       // Add all sweep components (starting with a .) to the combo box.
+
       Component* component;
       for (component = m_pDocument->Components->first(); component != 0; m_pDocument->Components->next()) 
       {
@@ -958,6 +1039,11 @@ void ComponentDialog::slotApplyInput()
     mpNameLineEdit->setText(localComponent.Name);
   }
 
+  for (auto& property : localComponent.Props)
+  {
+    qDebug() << property->Name << " : " << property->Value;
+  }
+
   m_pComponent->Name = localComponent.Name;
   m_pComponent->showName = localComponent.showName;
   changed = true;
@@ -977,12 +1063,15 @@ void ComponentDialog::slotApplyInput()
     idxStart = 3;
   }
 
+  /*
   if(comboSim != nullptr) {
     auto pp = m_pComponent->getProperty("Sim");
     bool display = checkSim->isChecked();
     QString value = comboSim->currentText();
     updateProperty(pp,value,display);
   }
+  */
+
   if(comboType != nullptr) {
     bool display = checkType->isChecked();
     auto pp = m_pComponent->getProperty("Type");
