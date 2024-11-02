@@ -22,6 +22,7 @@
 
 #include <QDialog>
 #include <QRegularExpression>
+#include <QTextEdit>
 
 class Schematic;
 
@@ -36,88 +37,87 @@ class QCheckBox;
 class QRegExp;
 class QComboBox;
 class QPushButton;
-class QVBoxLayout;
+class QGridLayout;
 
+class BoundLineEdit;
+class ParamWidget;
 
-class ComponentDialog : public QDialog {
-   Q_OBJECT
+// struct SweepUISettingType;
+struct QStringPair;
+
+class ComponentDialog : public QDialog 
+{
+Q_OBJECT
 public:
   ComponentDialog(Component*, Schematic*);
  ~ComponentDialog();
 
 private slots:
-  void slotButtOK();
-  void slotButtCancel();
-  void slotSelectProperty(QTableWidgetItem *item);
-  void slotApplyInput();
-  void slotApplyState(int State);
+  void slotOKButton();
+  void slotApplyButton();
+
   void slotBrowseFile();
   void slotEditFile();
-  void slotApplyChange(int idx);
-  void slotApplyProperty();
-  void slotApplyPropName();
 
-  void slotButtAdd();
-  void slotButtRem();
-
-  void slotButtUp();
-  void slotButtDown();
-
-  void slotSimTypeChange(int);
-  void slotNumberChanged(const QString&);
-  void slotStepChanged(const QString&);
-
-  void slotParamEntered();
-  void slotSimEntered(int);
-  void slotValuesEntered();
-  void slotStartEntered();
-  void slotStopEntered();
-  void slotStepEntered();
-  void slotNumberEntered();
-  void slotHHeaderClicked(int headerIdx);
   void slotFillFromSpice();
 
-protected slots:
-    void reject();
-    bool eventFilter(QObject *obj, QEvent *event);
-
 private:
-  QVBoxLayout *all;   // the mother of all widgets
-  QValidator  *Validator, *ValRestrict, *Validator2,
-              *ValName;
-  QRegularExpression     Expr;
+  QValidator *Validator, *ValRestrict, *Validator2, *ValName;
+  QRegularExpression Expr;
   QIntValidator *ValInteger;
-  QTableWidget  *prop;
-  QLineEdit   *edit, *NameEdit, *CompNameEdit;
-  QComboBox   *ComboEdit;
-  QLabel      *Name, *Description;
-  QPushButton *BrowseButt, *EditButt, *ButtAdd, *ButtRem;
-  QPushButton *ButtUp, *ButtDown;
-  QPushButton *ButtFillFromSpice;
-  QCheckBox   *disp;
-  Component   *Comp;
-  Schematic   *Doc;
+  
+  QTableWidget* propertyTable;
+  QTextEdit* eqnEditor;
+  QComboBox* eqnSimCombo;
+
+  Component* originalComponent;
+  Schematic* document;
+  Component editComponent;
+  
+  // Maps to contain specialisations for different sweep types. Note: the arrangement
+  // has been chosen to have the smallest number of map elements.
+  // TODO: Make these constant once settled, see https://stackoverflow.com/questions/2636303/how-to-initialize-a-private-static-const-map-in-c
+  QHash<QString, QList<QStringPair> > sweepTypeSpecialLabels;
+  QHash<QString, QStringList> sweepTypeEnabledParams;
+  QHash<QString, QStringList> paramsHiddenBySim;
+  
+  // TODO: It would be better for simulations with sweeps to have a flag saying so.
+  bool isEquation;
+  bool hasSweep;
+  QStringList sweepProperties;
+  
+  // Maps to store references to edit widgets.
+  QMap<QString, ParamWidget*> sweepParamWidget;
+
+  BoundLineEdit* mpNameLineEdit;
+
   bool        changed;
   int         tx_Dist, ty_Dist;   // remember the text position
   bool        setAllVisible; // used for toggling visibility of properties
-  bool compIsSimulation;
  
-  QLabel    *textType;
-  QLabel    *textSim, *textParam, *textValues, *textStart, *textStop,
-            *textStep, *textNumber;
-  QLineEdit *editParam, *editValues, *editStart, *editStop,
-            *editStep, *editNumber;
-  QCheckBox *checkSim, *checkParam, *checkValues, *checkStart, *checkStop,
-            *checkNumber, *checkType, *showName;
-  QComboBox *comboSim, *comboType;
-
-  void updateCompPropsList(void);
   QStringList getSimulationList();
 
-  void fillPropsFromTable();
-  void recreatePropsFromTable();
-  bool propChanged(Property *pp, const QString &value, const bool display);
-  void updateProperty(Property *pp, const QString &value, const bool display);
+  void updateSweepProperty(const QString& propertyWidget, const QString& value);
+  void updateSweepWidgets(const QString& simType);
+  void updatePropertyTable();
+  void updateEqnEditor();
+  void updateEqnSimulation(const QString& propertyWidget, const QString& value) { (void)propertyWidget; (void)value; };
+
+  void writeSweepProperties();
+  void writePropertyTable();
+  void writeEquation();
+
+  enum CELL_TYPE { LabelCell = 1000, TextEditCell, ComboBoxCell, CheckBoxCell};
 };
+
+struct QStringPair
+{
+  QStringPair(const QString& b, const QString& a)
+  : first(a), second(b) {}
+
+  QString first;
+  QString second;
+};
+
 
 #endif
