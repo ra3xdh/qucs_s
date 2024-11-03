@@ -23,6 +23,7 @@
 
 #include <QPainter>
 #include <QDebug>
+#include <QPainterPath>
 
 class Diagram;
 
@@ -479,11 +480,41 @@ void Graph::drawLines(QPainter* painter) const {
   //  - point.isGraphEnd() returns true when there is no
   //    more graph data points
 
-  bool drawing_started = false;
-  double prev_point_x = 0;
-  double prev_point_y = 0;
+  // In order to do a bit of optimization, we want a datapoint to be skipped
+  // if it is too close to the previous one and graph segment between them
+  // cannot be rendered distinctively.
+  //
+  // These are formulas from QTransform documentation (https://doc.qt.io/qt-6/qtransform.html)
+  // explaining how QTransform transforms the coordinates:
+  //    x' = m11*x + m21*y + dx
+  //    y' = m22*y + m12*x + dy
+  //
+  // We don't care about the second (skew) and third parts (tranlsation). This leaves us:
+  //    x' = m11*x
+  //    y' = m22*y
+  //
+  // So, for example, a horizontal segment of length 10 will be of size 10*m11 after transformation.
+  // But this works in the opposite direction too: 10/m11 gives us the length a horizontal segment
+  // should have to be of length 10 *after* transformation.
+  //
+  // With this knowledge we can now calculate thresholds for our dataset.
 
-  for (auto point : *this) {
+  constexpr double min_pixels = 1.0;  // I can be wrong here, but I believe these are pixels…
+  const double x_threshold = std::abs(min_pixels / painter->transform().m11());
+  const double y_threshold = std::abs(min_pixels / painter->transform().m22());
+
+  // Helper to quickly calculate whether two points are distant enough to be worth of drawing
+  // a graph segment between them
+  const auto is_too_short = [x_threshold, y_threshold](const QPointF& a, const QPointF& b) {
+    return std::abs(a.x() - b.x()) < x_threshold && std::abs(a.y() - b.y()) < y_threshold;
+  };
+
+  bool drawing_started = false;
+  QPointF segment_start;
+  QPointF segment_end;
+  QPainterPath path;
+
+  for (const auto& point : *this) {
     // No more data points
     if (point.isGraphEnd()) {
       break;
@@ -492,6 +523,8 @@ void Graph::drawLines(QPainter* painter) const {
     // Subgraph has ended, let's pretend like we're
     // drawing a graph from the beginning
     if (point.isStrokeEnd()) {
+      painter->drawPath(path);
+      path.clear();
       drawing_started = false;
       continue;
     }
@@ -503,15 +536,22 @@ void Graph::drawLines(QPainter* painter) const {
 
     // First point in a subgraph. From here the drawing starts
     if (!drawing_started) {
-      prev_point_x = point.getScrX();
-      prev_point_y = point.getScrY();
+      segment_start.setX(point.getScrX());
+      segment_start.setY(point.getScrY());
+      path.moveTo(segment_start);
       drawing_started = true;
       continue;
     }
 
-    painter->drawLine(QLineF{prev_point_x, prev_point_y, point.getScrX(), point.getScrY()});
-    prev_point_x = point.getScrX();
-    prev_point_y = point.getScrY();
+    segment_end.setX(point.getScrX());
+    segment_end.setY(point.getScrY());
+
+    if (is_too_short(segment_start, segment_end)) {
+      continue;
+    }
+
+    path.lineTo(segment_end);
+    segment_start = segment_end;
   }
 
   painter->restore();
