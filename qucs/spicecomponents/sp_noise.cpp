@@ -88,11 +88,11 @@ QString SpiceNoise::spice_netlist(bool isXyce)
         points = Props.at(3)->Value;
     }
 
-    s = QString("noise %1 %2 %3 %4 %5 %6\n").arg(Props.at(4)->Value).arg(Props.at(5)->Value)
+    s = QStringLiteral("noise %1 %2 %3 %4 %5 %6\n").arg(Props.at(4)->Value).arg(Props.at(5)->Value)
             .arg(swp).arg(points).arg(fstart).arg(fstop);
     QString out = "spice4qucs." + Name.toLower() + ".cir.noise";
     if (!isXyce) {
-        s += QString("print inoise_total onoise_total >> %1\n").arg(out);
+        s += QStringLiteral("print inoise_total onoise_total >> %1\n").arg(out);
     } else {
         s.insert(0,'.');
     }

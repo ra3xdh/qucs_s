@@ -186,7 +186,7 @@ void CustomSimDialog::slotFindVars()
     }
 
     for(QStringList::iterator it = vars.begin();it != vars.end(); it++) {
-        if (!(it->endsWith("#branch"))) *it=QString("V(%1)").arg(*it);
+        if (!(it->endsWith("#branch"))) *it=QStringLiteral("V(%1)").arg(*it);
     }
 
 

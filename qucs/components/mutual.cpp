@@ -92,15 +92,15 @@ QString Mutual::spice_netlist(bool isXyce)
     QString k1 = "K" + Name;
     QString ind1 = spicecompat::normalize_value(getProperty("L1")->Value);
     QString ind2 = spicecompat::normalize_value(getProperty("L2")->Value);
-    QString s = QString("%1 %2 %3 %4\n").arg(l1)
+    QString s = QStringLiteral("%1 %2 %3 %4\n").arg(l1)
             .arg(spicecompat::normalize_node_name(Ports.at(0)->Connection->Name))
             .arg(spicecompat::normalize_node_name(Ports.at(3)->Connection->Name))
             .arg(ind1);
-    s += QString("%1 %2 %3 %4\n").arg(l2)
+    s += QStringLiteral("%1 %2 %3 %4\n").arg(l2)
             .arg(spicecompat::normalize_node_name(Ports.at(1)->Connection->Name))
             .arg(spicecompat::normalize_node_name(Ports.at(2)->Connection->Name))
             .arg(ind2);
-    s += QString("%1 %2 %3 %4\n").arg(k1).arg(l1).arg(l2)
+    s += QStringLiteral("%1 %2 %3 %4\n").arg(k1).arg(l1).arg(l2)
             .arg(spicecompat::normalize_value(getProperty("k")->Value));
     return s;
 }

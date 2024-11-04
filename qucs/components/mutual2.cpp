@@ -127,23 +127,23 @@ QString Mutual2::spice_netlist(bool isXyce)
     QString ind1 = spicecompat::normalize_value(getProperty("L1")->Value);
     QString ind2 = spicecompat::normalize_value(getProperty("L2")->Value);
     QString ind3 = spicecompat::normalize_value(getProperty("L3")->Value);
-    QString s = QString("%1 %2 %3 %4\n").arg(l1)
+    QString s = QStringLiteral("%1 %2 %3 %4\n").arg(l1)
             .arg(spicecompat::normalize_node_name(Ports.at(0)->Connection->Name))
             .arg(spicecompat::normalize_node_name(Ports.at(5)->Connection->Name))
             .arg(ind1);
-    s += QString("%1 %2 %3 %4\n").arg(l2)
+    s += QStringLiteral("%1 %2 %3 %4\n").arg(l2)
             .arg(spicecompat::normalize_node_name(Ports.at(4)->Connection->Name))
             .arg(spicecompat::normalize_node_name(Ports.at(3)->Connection->Name))
             .arg(ind2);
-    s += QString("%1 %2 %3 %4\n").arg(l3)
+    s += QStringLiteral("%1 %2 %3 %4\n").arg(l3)
             .arg(spicecompat::normalize_node_name(Ports.at(1)->Connection->Name))
             .arg(spicecompat::normalize_node_name(Ports.at(2)->Connection->Name))
             .arg(ind3);
-    s += QString("%1 %2 %3 %4\n").arg(k12).arg(l1).arg(l2)
+    s += QStringLiteral("%1 %2 %3 %4\n").arg(k12).arg(l1).arg(l2)
             .arg(spicecompat::normalize_value(getProperty("k12")->Value));
-    s += QString("%1 %2 %3 %4\n").arg(k13).arg(l1).arg(l3)
+    s += QStringLiteral("%1 %2 %3 %4\n").arg(k13).arg(l1).arg(l3)
             .arg(spicecompat::normalize_value(getProperty("k12")->Value));
-    s += QString("%1 %2 %3 %4\n").arg(k23).arg(l2).arg(l3)
+    s += QStringLiteral("%1 %2 %3 %4\n").arg(k23).arg(l2).arg(l3)
             .arg(spicecompat::normalize_value(getProperty("k23")->Value));
     return s;
 }

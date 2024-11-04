@@ -657,9 +657,9 @@ void createDocData() {
         compData << "Category; "          + category;
 
         // 001_data.csv - CSV file with component data
-        QString ID = QString("%1").arg(num,3,'d',0,'0');
+        QString ID = QStringLiteral("%1").arg(num,3,'d',0,'0');
         QString objDataFile;
-        objDataFile = QString("%1_data.csv").arg( ID  ) ;
+        objDataFile = QStringLiteral("%1_data.csv").arg( ID  ) ;
 
         QFile file(curDir + objDataFile);
         if (!file.open(QFile::WriteOnly | QFile::Text)) return;
@@ -670,9 +670,9 @@ void createDocData() {
 
         QStringList compProps;
         compProps << "# Note: auto-generated file (changes will be lost on update)";
-        compProps << QString("# %1; %2; %3; %4").arg(  "Name", "Value", "Display", "Description");
+        compProps << QStringLiteral("# %1; %2; %3; %4").arg(  "Name", "Value", "Display", "Description");
         for (Property *prop : c->Props) {
-          compProps << QString("%1; \"%2\"; %3; \"%4\"").arg(
+          compProps << QStringLiteral("%1; \"%2\"; %3; \"%4\"").arg(
                          prop->Name,
                          prop->Value,
                          prop->display?"yes":"no",
@@ -680,7 +680,7 @@ void createDocData() {
         }
 
         // 001_props.csv - CSV file with component properties
-        QString objPropFile = QString("%1_prop.csv").arg( ID ) ;
+        QString objPropFile = QStringLiteral("%1_prop.csv").arg( ID ) ;
 
         QFile fileProps(curDir + objPropFile );
         if (!fileProps.open(QFile::WriteOnly | QFile::Text)) return;
@@ -898,7 +898,7 @@ int main(int argc, char *argv[])
       lang = loc.name();
 //    lang = QTextCodec::locale();
   }
-  tor.load( QString("qucs_") + lang, QucsSettings.LangDir);
+  tor.load( QStringLiteral("qucs_") + lang, QucsSettings.LangDir);
   QApplication::installTranslator( &tor );
 
   // This seems to be necessary on a few system to make strtod()

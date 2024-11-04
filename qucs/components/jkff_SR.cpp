@@ -203,7 +203,7 @@ QString jkff_SR::spice_netlist(bool isXyce)
     s += " " + J + " " + K + " " + CLK + " " + SET + " " + RESET + " " + Q + " " + QB;
 
     s += " " + tmp_model + "\n";
-    s += QString(".model %1 d_jkff(clk_delay=%2 set_delay=%2 reset_delay=%2 rise_delay=%2 fall_delay=%2)\n")
+    s += QStringLiteral(".model %1 d_jkff(clk_delay=%2 set_delay=%2 reset_delay=%2 rise_delay=%2 fall_delay=%2)\n")
             .arg(tmp_model).arg(td);
     return s;
 }

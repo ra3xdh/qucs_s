@@ -60,10 +60,10 @@ QString SpiceFourier::spice_netlist(bool isXyce)
     QString f0 = spicecompat::normalize_value(Props.at(2)->Value);
     QString out = "spice4qucs." + Name.toLower() + ".four";
     if (!isXyce) {
-        s = QString("set nfreqs=%1\n").arg(Props.at(1)->Value);
-        s += QString("fourier %1 %2 > %3\n").arg(f0).arg(Props.at(3)->Value).arg(out);
+        s = QStringLiteral("set nfreqs=%1\n").arg(Props.at(1)->Value);
+        s += QStringLiteral("fourier %1 %2 > %3\n").arg(f0).arg(Props.at(3)->Value).arg(out);
     } else {
-        s = QString(".FOUR %1 %2\n").arg(f0).arg(Props.at(3)->Value);
+        s = QStringLiteral(".FOUR %1 %2\n").arg(f0).arg(Props.at(3)->Value);
     }
 
     return s;

@@ -43,10 +43,10 @@ SpiceFile::SpiceFile()
 {
   Description = QObject::tr("SPICE netlist file");
   // Property descriptions not needed, but must not be empty !
-  Props.append(new Property("File", "", true, QString("x")));
-  Props.append(new Property("Ports", "", false, QString("x")));
-  Props.append(new Property("Sim", "yes", false, QString("x")));
-  Props.append(new Property("Preprocessor", "none", false, QString("x")));
+  Props.append(new Property("File", "", true, QStringLiteral("x")));
+  Props.append(new Property("Ports", "", false, QStringLiteral("x")));
+  Props.append(new Property("Sim", "yes", false, QStringLiteral("x")));
+  Props.append(new Property("Preprocessor", "none", false, QStringLiteral("x")));
   withSim = false;
 
   Model = "SPICE";

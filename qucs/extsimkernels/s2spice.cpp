@@ -69,7 +69,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     /* build first line of output file */
     (*stream) << ".SUBCKT " + device_name;
     for (int i = 0; i <= ports; i++) {
-        (*stream) << QString(" %1").arg(i+1);
+        (*stream) << QStringLiteral(" %1").arg(i+1);
     }
     (*stream) << "\n";
 
@@ -120,8 +120,8 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     /* define resistances for Spice model */
 
     for ( int i = 0; i < ports; i++ ) {
-        (*stream) << QString("R%1N %2 %3 %4\n").arg(i+1).arg(i+1).arg(10*(i+1)).arg(-z[i]);
-        (*stream) << QString("R%1P %2 %3 %4\n").arg(i+1).arg(10*(i+1)).arg(10*(i+1)+1).arg(2*z[i]);
+        (*stream) << QStringLiteral("R%1N %2 %3 %4\n").arg(i+1).arg(i+1).arg(10*(i+1)).arg(-z[i]);
+        (*stream) << QStringLiteral("R%1P %2 %3 %4\n").arg(i+1).arg(10*(i+1)).arg(10*(i+1)+1).arg(2*z[i]);
     }
     (*stream) << "\n";
 
@@ -190,15 +190,15 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
             //fprintf( out, "*S%d%d FREQ " FORM  PHASE "\n", i + 1, j + 1 );
             model_cnt++;
             if ( j + 1 == ports ) {
-                (*stream) << QString("A%1%2 %vd(%6 %7) %vd(%3%4, %5) xfer%8\n")
+                (*stream) << QStringLiteral("A%1%2 %vd(%6 %7) %vd(%3%4, %5) xfer%8\n")
                         .arg(i+1).arg(j+1).arg(i+1).arg(j+1).arg(ports + 1).arg(10 * (j + 1))
                          .arg(ports + 1).arg(model_cnt);
             } else {
-                (*stream) << QString("A%1%2 %vd(%7 %8) %vd(%3%4, %5%6) xfer%9\n")
+                (*stream) << QStringLiteral("A%1%2 %vd(%7 %8) %vd(%3%4, %5%6) xfer%9\n")
                         .arg(i + 1).arg(j + 1).arg(i + 1).arg(j + 1).arg(i + 1)
                         .arg(j + 2).arg(10 * (j + 1)).arg(ports + 1).arg(model_cnt);
             }
-            (*stream) << QString(".model xfer%1 xfer R_I=true table=[\n").arg(model_cnt);
+            (*stream) << QStringLiteral(".model xfer%1 xfer R_I=true table=[\n").arg(model_cnt);
 
             offset = 0;
             for ( f = 0; f < numf; f++ )
@@ -214,7 +214,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
                     ph = a * sin(b * pi / 180);
                     mag = a * cos(b * pi / 180);
                 }
-                (*stream) << QString("+ %1Hz %2 %3\n").arg(freqs[f] * funits).arg(mag).arg(ph + offset);
+                (*stream) << QStringLiteral("+ %1Hz %2 %3\n").arg(freqs[f] * funits).arg(mag).arg(ph + offset);
             }
             (*stream) << "+ ]\n\n";
         }

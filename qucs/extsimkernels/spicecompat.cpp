@@ -241,8 +241,8 @@ void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
                 auto cnt = it->size();
                 it->chop(cnt-idx);
                 if (suffix.toUpper().startsWith("I"))
-                    *it = QString("V%1#branch").arg(*it);
-                else *it = QString("V(%2)").arg(*it);
+                    *it = QStringLiteral("V%1#branch").arg(*it);
+                else *it = QStringLiteral("V(%2)").arg(*it);
             }
         } else if ((*it=="frequency")||(*it=="acfrequency")) {
             sim = "ac";
@@ -253,7 +253,7 @@ void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
 }
 
 QString spicecompat::normalize_node_name(QString nod) {
-    return (nod == "gnd") ? QString("0") : nod;
+    return (nod == "gnd") ? QStringLiteral("0") : nod;
 }
 
 /*
@@ -342,8 +342,8 @@ QString spicecompat::getSubcktName(const QString& subfilename)
  */
 QString spicecompat::convert_sweep_type(const QString& sweep)
 {
-    if (sweep=="lin") return QString("lin");
-    if (sweep=="log") return QString("dec");
+    if (sweep=="lin") return QStringLiteral("lin");
+    if (sweep=="log") return QStringLiteral("dec");
     return QString();
 }
 

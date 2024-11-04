@@ -63,11 +63,11 @@ QString SpicePZ::spice_netlist(bool isXyce)
     QString s;
     QString out = "spice4qucs." + Name.toLower() + ".cir.pz";
     if (!isXyce) {
-        s = QString("pz %1 %2 %3 %4\n").arg(Props.at(0)->Value).arg(Props.at(1)->Value)
+        s = QStringLiteral("pz %1 %2 %3 %4\n").arg(Props.at(0)->Value).arg(Props.at(1)->Value)
                 .arg(Props.at(2)->Value).arg(Props.at(3)->Value);
-        s += QString("echo \"PZ analysis\" >> %1\n").arg(out);
+        s += QStringLiteral("echo \"PZ analysis\" >> %1\n").arg(out);
         s += "let dummy_var = 0.0\n"; // To overcome featurebug of Ngspice when printing single variable
-        s += QString("print all >> %1\n").arg(out);
+        s += QStringLiteral("print all >> %1\n").arg(out);
     } else {
         s.clear();
     }

@@ -86,7 +86,7 @@ QString SpiceDisto::spice_netlist(bool isXyce)
             points = Props.at(3)->Value;
         }
 
-        s = QString("disto %1 %2 %3 %4 %5\n").arg(swp).arg(points).arg(fstart).arg(fstop)
+        s = QStringLiteral("disto %1 %2 %3 %4 %5\n").arg(swp).arg(points).arg(fstart).arg(fstop)
                                              .arg(Props.at(4)->Value.simplified());
     } else {
         s.clear();

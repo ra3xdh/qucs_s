@@ -100,7 +100,7 @@ QString IndQ::spice_netlist(bool isXyce)
     pin1 = spicecompat::normalize_node_name(pin1);
     QString pin2 = Ports.at(1)->Connection->Name;
     pin2 = spicecompat::normalize_node_name(pin2);
-    QString pin_int = QString("_net_%1").arg(Name);
+    QString pin_int = QStringLiteral("_net_%1").arg(Name);
     QString Lname = spicecompat::check_refdes(Name, SpiceModel);
     QString Rname = "R" + Name;
 
@@ -114,15 +114,15 @@ QString IndQ::spice_netlist(bool isXyce)
     QString double_pi = "8*atan(1)";
     QString mode = getProperty("Mode")->Value;
     if (mode == "Constant") {
-        res_eq = QString("%1*(%2)*hertz/(%3)").arg(double_pi).arg(L).arg(Q);
+        res_eq = QStringLiteral("%1*(%2)*hertz/(%3)").arg(double_pi).arg(L).arg(Q);
     } else if (mode == "Linear") {
-        res_eq = QString("%1*(%2)*(%3)/(%4)").arg(double_pi).arg(L).arg(f0).arg(Q);
+        res_eq = QStringLiteral("%1*(%2)*(%3)/(%4)").arg(double_pi).arg(L).arg(f0).arg(Q);
     } else if (mode == "SquareRoot") {
-        res_eq = QString("%1*(%2)*sqrt(hertz*(%3))/(%4)").arg(double_pi).arg(L).arg(f0).arg(Q);
+        res_eq = QStringLiteral("%1*(%2)*sqrt(hertz*(%3))/(%4)").arg(double_pi).arg(L).arg(f0).arg(Q);
     }
 
-    s = QString("%1 %2 %3 L='%4'\n").arg(Lname).arg(pin1).arg(pin_int).arg(L);
-    s += QString("%1 %2 %3 R='%4'\n").arg(Rname).arg(pin_int).arg(pin2).arg(res_eq);
+    s = QStringLiteral("%1 %2 %3 L='%4'\n").arg(Lname).arg(pin1).arg(pin_int).arg(L);
+    s += QStringLiteral("%1 %2 %3 R='%4'\n").arg(Rname).arg(pin_int).arg(pin2).arg(res_eq);
 
     return s;
 }

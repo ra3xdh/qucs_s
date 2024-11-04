@@ -119,13 +119,13 @@ QString vFile::spice_netlist(bool isXyce)
     QString modname = "mod_" + Model + Name;
     QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
     QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-    s += QString(" %vd([%1 %2]) %3\n").arg(p1).arg(p2).arg(modname);
+    s += QStringLiteral(" %vd([%1 %2]) %3\n").arg(p1).arg(p2).arg(modname);
     QString file = getSubcircuitFile();
     QString sc = getProperty("G")->Value;
     QString step = "false";
     QString delay = getProperty("T")->Value;
     if (getProperty("Interpolator")->Value != "linear") step = "true";
-    s += QString(".MODEL %1 filesource (file=\"%2\" amplscale=[%3] amplstep=%4 "
+    s += QStringLiteral(".MODEL %1 filesource (file=\"%2\" amplscale=[%3] amplstep=%4 "
                  "amploffset=[0] timeoffset=%5 timescale=1)\n")
             .arg(modname).arg(file).arg(sc).arg(step).arg(delay);
 

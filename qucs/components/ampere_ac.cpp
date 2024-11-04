@@ -84,7 +84,7 @@ QString Ampere_ac::spice_netlist(bool)
 
     QString plus = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
     QString minus = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-    s += QString(" %1 %2 ").arg(plus).arg(minus);
+    s += QStringLiteral(" %1 %2 ").arg(plus).arg(minus);
 
     QString amperes = spicecompat::normalize_value(Props.at(0)->Value);
     QString freq = spicecompat::normalize_value(Props.at(1)->Value);
@@ -96,6 +96,6 @@ QString Ampere_ac::spice_netlist(bool)
     QString theta = Props.at(3)->Value;
     theta.remove(' ');
     if (theta.isEmpty()) theta="0";
-    s += QString(" DC 0 SIN(0 %1 %2 0 %3 %4) AC %5 ACPHASE %6\n").arg(amperes).arg(freq).arg(theta).arg(phase).arg(amperes).arg(phase);
+    s += QStringLiteral(" DC 0 SIN(0 %1 %2 0 %3 %4) AC %5 ACPHASE %6\n").arg(amperes).arg(freq).arg(theta).arg(phase).arg(amperes).arg(phase);
     return s;
 }

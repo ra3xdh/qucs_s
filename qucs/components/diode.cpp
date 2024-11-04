@@ -136,23 +136,23 @@ QString Diode::spice_netlist(bool isXyce)
             } else {
                 nam = Props.at(i)->Name;
             }
-            par_str += QString("%1=%2 ")
+            par_str += QStringLiteral("%1=%2 ")
                            .arg(nam, spicecompat::normalize_value(Props.at(i)->Value));
         }
 
     }
 
     if (getProperty("UseGlobTemp")->Value == "yes") {
-      s += QString(" DMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
+      s += QStringLiteral(" DMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
     } else {
-      s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(getProperty("Area")->Value)
+      s += QStringLiteral(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(getProperty("Area")->Value)
       .arg(getProperty("Temp")->Value);
     }
 
     if (isXyce) {
-        s += QString(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
+        s += QStringLiteral(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
     } else {
-        s += QString(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
+        s += QStringLiteral(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
     }
 
 
