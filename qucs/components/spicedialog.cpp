@@ -309,7 +309,7 @@ void SpiceDialog::slotButtBrowse()
       this,
       tr("Select a file"),
       currDir,
-      tr("SPICE netlist") + QString(" (") + QucsSettings.spiceExtensions.join(" ") + QString(");;")
+      tr("SPICE netlist") + QStringLiteral(" (") + QucsSettings.spiceExtensions.join(" ") + QStringLiteral(");;")
       + tr("All Files") + " (*.*)");
 
   if(!s.isEmpty()) {

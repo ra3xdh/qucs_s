@@ -76,7 +76,7 @@ QString SpiceNodeset::getExpression(bool)
     QString s;
     s.clear();
     for (Property *pp : Props) {
-        s += QString(".NODESET %1 = %2\n").arg(pp->Name).arg(pp->Value);
+        s += QStringLiteral(".NODESET %1 = %2\n").arg(pp->Name).arg(pp->Value);
     }
     return s;
 }

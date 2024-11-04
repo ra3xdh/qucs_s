@@ -77,6 +77,6 @@ QString dcFeed::spice_netlist(bool isXyce)
   QString val = spicecompat::normalize_value(getProperty("L")->Value);
   QString s;
   QString name = spicecompat::check_refdes(Name, SpiceModel);
-  s = QString("%1 %2 %3 %4\n").arg(name, p1, p2, val);
+  s = QStringLiteral("%1 %2 %3 %4\n").arg(name, p1, p2, val);
   return s;
 }

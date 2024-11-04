@@ -149,7 +149,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     nods.clear();
     for (auto& nod :vars) {
         if (!nod.startsWith("I(")) {
-            nods += QString("v(%1) ").arg(nod);
+            nods += QStringLiteral("v(%1) ").arg(nod);
         } else {
             nods += nod + " ";
         }
@@ -157,7 +157,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     if (DC_OP_only) {
         stream<<".OP\n";
-        stream<<QString(".PRINT dc format=noindex file=spice4qucs.cir.dc_op_xyce %1\n").arg(nods);
+        stream<<QStringLiteral(".PRINT dc format=noindex file=spice4qucs.cir.dc_op_xyce %1\n").arg(nods);
         outputs.append("spice4qucs.cir.dc_op_xyce");
         return;
     }
@@ -236,17 +236,17 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     }
 
     QString filename;
-    if (hasParSweep) filename = QString("%1.%2._swp.plot").arg(basenam).arg(sim);
-    else filename = QString("%1.%2.plot").arg(basenam).arg(sim);
+    if (hasParSweep) filename = QStringLiteral("%1.%2._swp.plot").arg(basenam).arg(sim);
+    else filename = QStringLiteral("%1.%2.plot").arg(basenam).arg(sim);
     filename.remove(QRegularExpression("\\s")); // XYCE don't support spaces and quotes
     QString write_str;
     if (sim=="hb") {
-        // write_str = QString(".PRINT  %1 file=%2 %3\n").arg(sim).arg(filename).arg(nods);
-        write_str = QString(".PRINT  %1 %2\n").arg(sim).arg(nods);
+        // write_str = QStringLiteral(".PRINT  %1 file=%2 %3\n").arg(sim).arg(filename).arg(nods);
+        write_str = QStringLiteral(".PRINT  %1 %2\n").arg(sim).arg(nods);
         outputs.append("spice4qucs.hb.cir.HB.FD.prn");
     } else if (sim=="noise") {
         filename += "_std";
-        write_str = QString(".PRINT noise file=%1 inoise onoise\n").arg(filename);
+        write_str = QStringLiteral(".PRINT noise file=%1 inoise onoise\n").arg(filename);
         outputs.append(filename);
     } else if (sim=="sens") {
         write_str.clear();
@@ -260,7 +260,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         if (hasParSweep) {
             for (const auto &v: spar_vars) { // Bug in Xyce; cannot print Z-par if
                  // .STEP is activated; otherwise simulation error
-                if ( !v.startsWith("z(")) write_str += QString("%1 ").arg(v);
+                if ( !v.startsWith("z(")) write_str += QStringLiteral("%1 ").arg(v);
             }
         } else {
             write_str += spar_vars.join(" ");
@@ -268,7 +268,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         write_str += "\n";
         outputs.append("spice4qucs_sparam.prn");
     } else {
-        write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
+        write_str = QStringLiteral(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
         outputs.append(filename);
     }
     stream<<write_str;
@@ -424,7 +424,7 @@ void Xyce::nextSimulation()
         QString file = netlistQueue.takeFirst();
         if (file.endsWith(".noise.cir")) Noisesim = true;
         SimProcess->setWorkingDirectory(workdir);
-        QString cmd = QString("%1 %2 \"%3\"").arg(simulator_cmd,simulator_parameters,file);
+        QString cmd = QStringLiteral("%1 %2 \"%3\"").arg(simulator_cmd,simulator_parameters,file);
         QStringList cmd_args = misc::parseCmdArgs(cmd);
         QString xyce_cmd = cmd_args.at(0);
         cmd_args.removeAt(0);
@@ -445,7 +445,7 @@ void Xyce::setParallel(bool par)
         QString xyce_par = QucsSettings.XyceParExecutable;
         xyce_par.replace("%p",QString::number(QucsSettings.NProcs));
         simulator_cmd = xyce_par;
-        simulator_parameters = simulator_parameters + QString(" -a ");
+        simulator_parameters = simulator_parameters + QStringLiteral(" -a ");
     } else {
         simulator_cmd = "\"" + QucsSettings.XyceExecutable + "\"";
         simulator_parameters = simulator_parameters + " -a ";

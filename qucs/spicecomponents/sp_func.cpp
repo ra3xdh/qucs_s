@@ -78,8 +78,8 @@ QString SpiceFunc::getExpression(bool)
     s.clear();
     for (Property *pp : Props) {
         if (QucsSettings.DefaultSimulator==spicecompat::simXyce)
-            s += QString(".FUNC %1 %2\n").arg(pp->Name).arg(pp->Value);
-        else s += QString(".FUNC %1 = %2\n").arg(pp->Name).arg(pp->Value);
+            s += QStringLiteral(".FUNC %1 %2\n").arg(pp->Name).arg(pp->Value);
+        else s += QStringLiteral(".FUNC %1 = %2\n").arg(pp->Name).arg(pp->Value);
     }
     return s;
 }

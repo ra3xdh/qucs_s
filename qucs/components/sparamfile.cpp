@@ -206,10 +206,10 @@ QString SParamFile::spice_netlist(bool isXyce)
         for(int i = 0; i < Np; i++) {
             QString p_in = spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
             QString p_com = spicecompat::normalize_node_name(Ports.at(Np)->Connection->Name);
-            s += QString(" %1 %2").arg(p_in).arg(p_com);
+            s += QStringLiteral(" %1 %2").arg(p_in).arg(p_com);
         }
-        s += QString(" %1\n").arg(s_mod);
-        s += QString(".MODEL %1 LIN TSTONEFILE=%2\n").arg(s_mod)
+        s += QStringLiteral(" %1\n").arg(s_mod);
+        s += QStringLiteral(".MODEL %1 LIN TSTONEFILE=%2\n").arg(s_mod)
                 .arg(getSubcircuitFile());
     } else {
         s += SpiceModel+Name;

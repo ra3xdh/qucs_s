@@ -575,7 +575,7 @@ void Qucs_S_SPAR_Viewer::slotQuit()
 
 void Qucs_S_SPAR_Viewer::addFile()
 {
-    QFileDialog dialog(this, QString("Select S-parameter data files (.snp)"), QDir::homePath(),
+    QFileDialog dialog(this, QStringLiteral("Select S-parameter data files (.snp)"), QDir::homePath(),
                        tr("S-Parameter Files (*.s1p *.s2p *.s3p *.s4p);;All Files (*.*)"));
     dialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -630,13 +630,13 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
         filename = QFileInfo(fileNames.at(i-existing_files)).fileName();
 
         QLabel * Filename_Label = new QLabel(filename.left(filename.lastIndexOf('.')));
-        Filename_Label->setObjectName(QString("File_") + QString::number(i));
+        Filename_Label->setObjectName(QStringLiteral("File_") + QString::number(i));
         List_FileNames.append(Filename_Label);
         this->FilesGrid->addWidget(List_FileNames.last(), i,0,1,1);
 
         // Create the "Remove" button
         QToolButton * RemoveButton = new QToolButton();
-        RemoveButton->setObjectName(QString("Remove_") + QString::number(i));
+        RemoveButton->setObjectName(QStringLiteral("Remove_") + QString::number(i));
         QIcon icon(":/bitmaps/trash.png"); // Use a resource path or a relative path
         RemoveButton->setIcon(icon);
 
@@ -753,7 +753,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
 
            for (int i = 1; i<=number_of_ports; i++){
                for (int j = 1; j<=number_of_ports; j++){
-                   s1 = QString("S") + QString::number(j) + QString::number(i) + QString("_dB");
+                   s1 = QStringLiteral("S") + QString::number(j) + QString::number(i) + QStringLiteral("_dB");
                    s2 = s1.mid(0, s1.length() - 2).append("ang");
                    s3 = s1.mid(0, s1.length() - 2).append("re");
                    s4 = s1.mid(0, s1.length() - 2).append("im");
@@ -849,7 +849,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
 
     // Default behavior: If there's no more data loaded and a single S1P file is selected, then automatically plot S11
     if ((fileNames.length() == 1) && (fileNames.first().toLower().endsWith(".s1p")) && (datasets.size() == 1)){
-        this->addTrace(filename, QString("S11"), Qt::red);
+        this->addTrace(filename, QStringLiteral("S11"), Qt::red);
 
         adjust_x_axis_to_file(filename);
         adjust_y_axis_to_trace(filename, "S11");
@@ -857,9 +857,9 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
 
     // Default behavior: If there's no more data loaded and a single S2P file is selected, then automatically plot S21, S11 and S22
     if ((fileNames.length() == 1) && (fileNames.first().toLower().endsWith(".s2p")) && (datasets.size() == 1)){
-        this->addTrace(filename, QString("S21"), Qt::red);
-        this->addTrace(filename, QString("S11"), Qt::blue);
-        this->addTrace(filename, QString("S22"), Qt::darkGreen);
+        this->addTrace(filename, QStringLiteral("S21"), Qt::red);
+        this->addTrace(filename, QStringLiteral("S11"), Qt::blue);
+        this->addTrace(filename, QStringLiteral("S22"), Qt::darkGreen);
 
         adjust_x_axis_to_file(filename);
         adjust_y_axis_to_trace(filename, "S11");
@@ -882,7 +882,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)
                 filename = filename.left(filename.lastIndexOf('.'));
                 // Pick a random color
                 QColor trace_color = QColor(QRandomGenerator::global()->bounded(256), QRandomGenerator::global()->bounded(256), QRandomGenerator::global()->bounded(256));
-                this->addTrace(filename, QString("S21"), trace_color);
+                this->addTrace(filename, QStringLiteral("S21"), trace_color);
                 adjust_y_axis_to_trace(filename, "S21");
             }
             // Update the frequency setting to fit the last s2p file
@@ -1210,15 +1210,15 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
 
     // Label
     QLabel * new_trace_label = new QLabel(trace_name);
-    new_trace_label->setObjectName(QString("Trace_Name_") + trace_name);
+    new_trace_label->setObjectName(QStringLiteral("Trace_Name_") + trace_name);
     List_TraceNames.append(new_trace_label);
     this->TracesGrid->addWidget(new_trace_label, n_trace, 0);
 
     // Color picker
     QPushButton * new_trace_color = new QPushButton();
-    new_trace_color->setObjectName(QString("Trace_Color_") + trace_name);
+    new_trace_color->setObjectName(QStringLiteral("Trace_Color_") + trace_name);
     connect(new_trace_color, SIGNAL(clicked()), SLOT(changeTraceColor()));
-    QString styleSheet = QString("QPushButton { background-color: %1; }").arg(trace_color.name());
+    QString styleSheet = QStringLiteral("QPushButton { background-color: %1; }").arg(trace_color.name());
     new_trace_color->setStyleSheet(styleSheet);
     new_trace_color->setAttribute(Qt::WA_TranslucentBackground); // Needed for Windows buttons to behave as they should
     List_Trace_Color.append(new_trace_color);
@@ -1226,7 +1226,7 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
 
     // Line Style
     QComboBox * new_trace_linestyle = new QComboBox();
-    new_trace_linestyle->setObjectName(QString("Trace_LineStyle_") + trace_name);
+    new_trace_linestyle->setObjectName(QStringLiteral("Trace_LineStyle_") + trace_name);
     new_trace_linestyle->addItem("Solid");
     new_trace_linestyle->addItem("- - - -");
     new_trace_linestyle->addItem("·······");
@@ -1240,7 +1240,7 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
 
     // Line width
     QSpinBox * new_trace_width = new QSpinBox();
-    new_trace_width->setObjectName(QString("Trace_Width_") + trace_name);
+    new_trace_width->setObjectName(QStringLiteral("Trace_Width_") + trace_name);
     new_trace_width->setValue(trace_width);
     connect(new_trace_width, SIGNAL(valueChanged(int)), SLOT(changeTraceWidth()));
     List_TraceWidth.append(new_trace_width);
@@ -1249,7 +1249,7 @@ void Qucs_S_SPAR_Viewer::addTrace(QString selected_dataset, QString selected_tra
 
     // Remove button
     QToolButton * new_trace_removebutton = new QToolButton();
-    new_trace_removebutton->setObjectName(QString("Trace_RemoveButton_") + trace_name);
+    new_trace_removebutton->setObjectName(QStringLiteral("Trace_RemoveButton_") + trace_name);
     QIcon icon(":/bitmaps/trash.png"); // Use a resource path or a relative path
     new_trace_removebutton->setIcon(icon);
     new_trace_removebutton->setStyleSheet(R"(
@@ -1291,7 +1291,7 @@ void Qucs_S_SPAR_Viewer::updateTracesCombo()
 
     for (int i=1; i<=n_ports; i++){
         for (int j=1; j<=n_ports; j++){
-            traces.append(QString("S") + QString::number(i) + QString::number(j));
+            traces.append(QStringLiteral("S") + QString::number(i) + QString::number(j));
         }
     }
 
@@ -1303,10 +1303,10 @@ void Qucs_S_SPAR_Viewer::updateTracesCombo()
 
     if(n_ports == 2){
         // Additional traces
-        traces.append(QString("|%1|").arg(QChar(0x0394)));
+        traces.append(QStringLiteral("|%1|").arg(QChar(0x0394)));
         traces.append("K");
-        traces.append(QString("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209B)));
-        traces.append(QString("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209A)));
+        traces.append(QStringLiteral("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209B)));
+        traces.append(QStringLiteral("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209A)));
         traces.append("MAG");
         traces.append("MSG");
         traces.append("Re{Zin}");
@@ -1327,7 +1327,7 @@ void Qucs_S_SPAR_Viewer::changeTraceColor()
                 // For example, set the background color of the button
                 QPushButton *button = qobject_cast<QPushButton*>(sender());
                 if (button) {
-                  QString styleSheet = QString("QPushButton { background-color: %1; }").arg(color.name());
+                  QString styleSheet = QStringLiteral("QPushButton { background-color: %1; }").arg(color.name());
                   button->setStyleSheet(styleSheet);
 
                     QString ID = button->objectName();
@@ -1584,15 +1584,15 @@ void Qucs_S_SPAR_Viewer::updateTraces()
         QString trace_file = trace_name_parts[1];
 
         if (trace_file.at(0) == 'S'){
-            trace_file = trace_file + QString("_dB");
+            trace_file = trace_file + QStringLiteral("_dB");
         }
-        if (trace_file == QString("|%1|").arg(QChar(0x0394))){
+        if (trace_file == QStringLiteral("|%1|").arg(QChar(0x0394))){
             trace_file = "delta";
         }
-        if (trace_file == QString("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209B))){
+        if (trace_file == QStringLiteral("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209B))){
             trace_file = "mu";
         }
-        if (trace_file == QString("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209A))){
+        if (trace_file == QStringLiteral("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209A))){
             trace_file = "mu_p";
         }
 
@@ -1653,7 +1653,7 @@ void Qucs_S_SPAR_Viewer::updateTraces()
             marker_series->append(x, y);
         }
         QString trace_name = tableMarkers->horizontalHeaderItem(c)->text();
-        QString marker_series_name = QString("Mkr_%1").arg(trace_name);
+        QString marker_series_name = QStringLiteral("Mkr_%1").arg(trace_name);
         marker_series->setName(marker_series_name);
         seriesList.append(marker_series);
     }
@@ -1674,14 +1674,14 @@ void Qucs_S_SPAR_Viewer::updateTraces()
             verticalLine->append(x, y_axis_max);
             verticalLine->setPen(QPen(Qt::black, 1, Qt::DashLine));
 
-            QString verticalLine_name = QString("Mkr_%1").arg(r);
+            QString verticalLine_name = QStringLiteral("Mkr_%1").arg(r);
             verticalLine->setName(verticalLine_name);
 
             seriesList.append(verticalLine);
 
             QGraphicsTextItem *textItem = new QGraphicsTextItem(chart);
             QString freq_marker = tableMarkers->item(r,0)->text();
-            textItem->setPlainText(QString("%1").arg(freq_marker));
+            textItem->setPlainText(QStringLiteral("%1").arg(freq_marker));
             textItem->setFont(QFont("Arial", 8));
 
             // Get the axes
@@ -1732,7 +1732,7 @@ void Qucs_S_SPAR_Viewer::updateTraces()
       limitLine->append(fstop, val_stop);
       limitLine->setPen(QPen(Qt::black, 2));
 
-      QString limitLine_name = QString("Limit_%1").arg(i);
+      QString limitLine_name = QStringLiteral("Limit_%1").arg(i);
       limitLine->setName(limitLine_name);
 
       seriesList.append(limitLine);
@@ -1841,15 +1841,15 @@ void Qucs_S_SPAR_Viewer::adjust_y_axis_to_trace(QString filename, QString tracen
     qreal minX, maxX, minY, maxY;
 
     if (tracename.at(0) == 'S'){
-        tracename = tracename + QString("_dB");
+        tracename = tracename + QStringLiteral("_dB");
     }
-    if (tracename == QString("|%1|").arg(QChar(0x0394))){
+    if (tracename == QStringLiteral("|%1|").arg(QChar(0x0394))){
         tracename = "delta";
     }
-    if (tracename == QString("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209B))){
+    if (tracename == QStringLiteral("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209B))){
         tracename = "mu";
     }
-    if (tracename == QString("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209A))){
+    if (tracename == QStringLiteral("%1%2").arg(QChar(0x03BC)).arg(QChar(0x209A))){
         tracename = "mu_p";
     }
 
@@ -1992,13 +1992,13 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq){
     int n_markers = List_MarkerNames.size();
     n_markers++;
 
-    QString new_marker_name = QString("Mkr%1").arg(n_markers);
+    QString new_marker_name = QStringLiteral("Mkr%1").arg(n_markers);
     QLabel * new_marker_label = new QLabel(new_marker_name);
     new_marker_label->setObjectName(new_marker_name);
     List_MarkerNames.append(new_marker_label);
     this->MarkersGrid->addWidget(new_marker_label, n_markers, 0);
 
-    QString SpinBox_name = QString("Mkr_SpinBox%1").arg(n_markers);
+    QString SpinBox_name = QStringLiteral("Mkr_SpinBox%1").arg(n_markers);
     QDoubleSpinBox * new_marker_Spinbox = new QDoubleSpinBox();
     new_marker_Spinbox->setObjectName(SpinBox_name);
     new_marker_Spinbox->setMaximum(QSpinBox_x_axis_max->minimum());
@@ -2008,7 +2008,7 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq){
     List_MarkerFreq.append(new_marker_Spinbox);
     this->MarkersGrid->addWidget(new_marker_Spinbox, n_markers, 1);
 
-    QString Combobox_name = QString("Mkr_ComboBox%1").arg(n_markers);
+    QString Combobox_name = QStringLiteral("Mkr_ComboBox%1").arg(n_markers);
     QComboBox * new_marker_Combo = new QComboBox();
     new_marker_Combo->setObjectName(Combobox_name);
     new_marker_Combo->addItems(frequency_units);
@@ -2018,7 +2018,7 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq){
     this->MarkersGrid->addWidget(new_marker_Combo, n_markers, 2);
 
     // Remove button
-    QString DeleteButton_name = QString("Mkr_Delete_Btn%1").arg(n_markers);
+    QString DeleteButton_name = QStringLiteral("Mkr_Delete_Btn%1").arg(n_markers);
     QToolButton * new_marker_removebutton = new QToolButton();
     new_marker_removebutton->setObjectName(DeleteButton_name);
     QIcon icon(":/bitmaps/trash.png"); // Use a resource path or a relative path
@@ -2036,7 +2036,7 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq){
 
     // Add new entry to the table
     tableMarkers->setRowCount(n_markers);
-    QString new_freq = QString("%1 ").arg(QString::number(f_marker, 'f', 2)) + Freq_Marker_Scale;
+    QString new_freq = QStringLiteral("%1 ").arg(QString::number(f_marker, 'f', 2)) + Freq_Marker_Scale;
     QTableWidgetItem *newfreq = new QTableWidgetItem(new_freq);
     tableMarkers->setItem(n_markers-1, 0, newfreq);
 
@@ -2085,7 +2085,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable(){
     // Columns are traces. Rows are markers
     for (int c = 0; c<tableMarkers->columnCount(); c++){//Traces
         for (int r = 0; r<tableMarkers->rowCount(); r++){//Marker
-            freq_marker = QString("%1 ").arg(QString::number(List_MarkerFreq[r]->value(), 'f', 1)) + List_MarkerScale[r]->currentText();
+            freq_marker = QStringLiteral("%1 ").arg(QString::number(List_MarkerFreq[r]->value(), 'f', 1)) + List_MarkerScale[r]->currentText();
 
             if (c==0){
                 // First column
@@ -2107,7 +2107,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable(){
               trace.append("_dB");
             }
             P = findClosestPoint(datasets[file]["frequency"], datasets[file][trace], targetX);
-            new_val = QString("%1").arg(QString::number(P.y(), 'f', 2));
+            new_val = QStringLiteral("%1").arg(QString::number(P.y(), 'f', 2));
             QTableWidgetItem *new_item = new QTableWidgetItem(new_val);
             tableMarkers->setItem(r, c, new_item);
         }
@@ -2235,7 +2235,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerNames()
   int n_markers = List_MarkerNames.size();
   for (int i = 0; i < n_markers; i++) {
     QLabel * MarkerLabel = List_MarkerNames[i];
-    MarkerLabel->setText(QString("Mkr%1").arg(i+1));
+    MarkerLabel->setText(QStringLiteral("Mkr%1").arg(i+1));
   }
 }
 
@@ -2245,7 +2245,7 @@ void Qucs_S_SPAR_Viewer::updateLimitNames()
   int n_limits = List_LimitNames.size();
   for (int i = 0; i < n_limits; i++) {
     QLabel * LimitLabel = List_LimitNames[i];
-    LimitLabel->setText(QString("Limit %1").arg(i+1));
+    LimitLabel->setText(QStringLiteral("Limit %1").arg(i+1));
   }
 }
 
@@ -2567,13 +2567,13 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
 
   QString tooltip_message;
 
-  QString new_limit_name = QString("Limit %1").arg(n_limits);
+  QString new_limit_name = QStringLiteral("Limit %1").arg(n_limits);
   QLabel * new_limit_label = new QLabel(new_limit_name);
   new_limit_label->setObjectName(new_limit_name);
   List_LimitNames.append(new_limit_label);
   this->LimitsGrid->addWidget(new_limit_label, limit_index, 0);
 
-  QString SpinBox_fstart_name = QString("Lmt_Freq_Start_SpinBox_%1").arg(new_limit_name);
+  QString SpinBox_fstart_name = QStringLiteral("Lmt_Freq_Start_SpinBox_%1").arg(new_limit_name);
   QDoubleSpinBox * new_limit_fstart_Spinbox = new QDoubleSpinBox();
   new_limit_fstart_Spinbox->setObjectName(SpinBox_fstart_name);
   new_limit_fstart_Spinbox->setMaximum(QSpinBox_x_axis_max->minimum());
@@ -2584,7 +2584,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Limit_Start_Freq.append(new_limit_fstart_Spinbox);
   this->LimitsGrid->addWidget(new_limit_fstart_Spinbox, limit_index, 1);
 
-  QString Combobox_start_name = QString("Lmt_Start_ComboBox_%1").arg(new_limit_name);
+  QString Combobox_start_name = QStringLiteral("Lmt_Start_ComboBox_%1").arg(new_limit_name);
   QComboBox * new_start_limit_Combo = new QComboBox();
   new_start_limit_Combo->setObjectName(Combobox_start_name);
   new_start_limit_Combo->addItems(frequency_units);
@@ -2598,7 +2598,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Limit_Start_Freq_Scale.append(new_start_limit_Combo);
   this->LimitsGrid->addWidget(new_start_limit_Combo, limit_index, 2);
 
-  QString SpinBox_fstop_name = QString("Lmt_Freq_Stop_SpinBox_%1").arg(new_limit_name);
+  QString SpinBox_fstop_name = QStringLiteral("Lmt_Freq_Stop_SpinBox_%1").arg(new_limit_name);
   QDoubleSpinBox * new_limit_fstop_Spinbox = new QDoubleSpinBox();
   new_limit_fstop_Spinbox->setObjectName(SpinBox_fstop_name);
   new_limit_fstop_Spinbox->setMaximum(QSpinBox_x_axis_max->minimum());
@@ -2609,7 +2609,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Limit_Stop_Freq.append(new_limit_fstop_Spinbox);
   this->LimitsGrid->addWidget(new_limit_fstop_Spinbox, limit_index, 3);
 
-  QString Combobox_stop_name = QString("Lmt_Stop_ComboBox_%1").arg(new_limit_name);
+  QString Combobox_stop_name = QStringLiteral("Lmt_Stop_ComboBox_%1").arg(new_limit_name);
   QComboBox * new_stop_limit_Combo = new QComboBox();
   new_stop_limit_Combo->setObjectName(Combobox_stop_name);
   new_stop_limit_Combo->addItems(frequency_units);
@@ -2625,10 +2625,10 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   this->LimitsGrid->addWidget(new_stop_limit_Combo, limit_index, 4);
 
   // Remove button
-  QString DeleteButton_name = QString("Lmt_Delete_Btn_%1").arg(new_limit_name);
+  QString DeleteButton_name = QStringLiteral("Lmt_Delete_Btn_%1").arg(new_limit_name);
   QToolButton * new_limit_removebutton = new QToolButton();
   new_limit_removebutton->setObjectName(DeleteButton_name);
-  tooltip_message = QString("Remove this limit");
+  tooltip_message = QStringLiteral("Remove this limit");
   new_limit_removebutton->setToolTip(tooltip_message);
   QIcon icon(":/bitmaps/trash.png");
   new_limit_removebutton->setIcon(icon);
@@ -2643,7 +2643,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   List_Button_Delete_Limit.append(new_limit_removebutton);
   this->LimitsGrid->addWidget(new_limit_removebutton, limit_index, 5, Qt::AlignCenter);
 
-  QString SpinBox_val_start_name = QString("Lmt_Val_Start_SpinBox_%1").arg(new_limit_name);
+  QString SpinBox_val_start_name = QStringLiteral("Lmt_Val_Start_SpinBox_%1").arg(new_limit_name);
   QDoubleSpinBox * new_limit_val_start_Spinbox = new QDoubleSpinBox();
   new_limit_val_start_Spinbox->setObjectName(SpinBox_val_start_name);
   new_limit_val_start_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
@@ -2655,17 +2655,17 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   this->LimitsGrid->addWidget(new_limit_val_start_Spinbox, limit_index+1, 1);
 
   // Coupled spinbox value
-  QString CoupleButton_name = QString("Lmt_Couple_Btn_%1").arg(new_limit_name);
+  QString CoupleButton_name = QStringLiteral("Lmt_Couple_Btn_%1").arg(new_limit_name);
   QPushButton * new_limit_CoupleButton = new QPushButton("<--->");
   new_limit_CoupleButton->setObjectName(CoupleButton_name);
   new_limit_CoupleButton->setChecked(coupled);
-  tooltip_message = QString("Couple start and stop values");
+  tooltip_message = QStringLiteral("Couple start and stop values");
   new_limit_CoupleButton->setToolTip(tooltip_message);
   connect(new_limit_CoupleButton, SIGNAL(clicked(bool)), SLOT(coupleSpinBoxes()));
   List_Couple_Value.append(new_limit_CoupleButton);
   this->LimitsGrid->addWidget(new_limit_CoupleButton, limit_index+1, 2);
 
-  QString SpinBox_val_stop_name = QString("Lmt_Val_Stop_SpinBox_%1").arg(new_limit_name);
+  QString SpinBox_val_stop_name = QStringLiteral("Lmt_Val_Stop_SpinBox_%1").arg(new_limit_name);
   QDoubleSpinBox * new_limit_val_stop_Spinbox = new QDoubleSpinBox();
   new_limit_val_stop_Spinbox->setObjectName(SpinBox_val_stop_name);
   new_limit_val_stop_Spinbox->setMaximum(QSpinBox_y_axis_max->minimum());
@@ -2683,7 +2683,7 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit, double
   }
   new_limit_CoupleButton->click();
 
-  QString Separator_name = QString("Lmt_Separator_%1").arg(new_limit_name);
+  QString Separator_name = QStringLiteral("Lmt_Separator_%1").arg(new_limit_name);
   QFrame * new_Separator = new QFrame();
   new_Separator->setObjectName(Separator_name);
   new_Separator->setFrameShape(QFrame::HLine);
@@ -2716,7 +2716,7 @@ void Qucs_S_SPAR_Viewer::coupleSpinBoxes(){
 
   if (button->text() == "<--->"){
     button->setText("<-X->");
-    QString tooltip_message = QString("Uncouple start and stop values");
+    QString tooltip_message = QStringLiteral("Uncouple start and stop values");
     button->setToolTip(tooltip_message);
     QDoubleSpinBox * lower_limit_spinbox = List_Limit_Start_Value.at(index);
     upper_limit_spinbox->setValue(lower_limit_spinbox->value());
@@ -3105,13 +3105,13 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file)
     // Add file management widgets
     // Label
     QLabel * Filename_Label = new QLabel(file);
-    Filename_Label->setObjectName(QString("File_") + QString::number(i));
+    Filename_Label->setObjectName(QStringLiteral("File_") + QString::number(i));
     List_FileNames.append(Filename_Label);
     this->FilesGrid->addWidget(List_FileNames.last(), i, 0, 1, 1);
 
     // Create the "Remove" button
     QToolButton * RemoveButton = new QToolButton();
-    RemoveButton->setObjectName(QString("Remove_") + QString::number(i));
+    RemoveButton->setObjectName(QStringLiteral("Remove_") + QString::number(i));
     QIcon icon(":/bitmaps/trash.png"); // Use a resource path or a relative path
     RemoveButton->setIcon(icon);
 

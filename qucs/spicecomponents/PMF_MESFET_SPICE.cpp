@@ -101,11 +101,11 @@ QString PMF_MESFET_SPICE::spice_netlist(bool)
     QString Z_Line_4= Props.at(3)->Value;
     QString Z_Line_5= Props.at(4)->Value;
 
-    if(  Z.length()  > 0)          s += QString("%1").arg(Z);
-    if(  Z_Line_2.length() > 0 )   s += QString("\n%1").arg(Z_Line_2);
-    if(  Z_Line_3.length() > 0 )   s += QString("\n%1").arg(Z_Line_3);
-    if(  Z_Line_4.length() > 0 )   s += QString("\n%1").arg(Z_Line_4);
-    if(  Z_Line_5.length() >  0 )  s += QString("\n%1").arg(Z_Line_5);
+    if(  Z.length()  > 0)          s += QStringLiteral("%1").arg(Z);
+    if(  Z_Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(Z_Line_2);
+    if(  Z_Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(Z_Line_3);
+    if(  Z_Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(Z_Line_4);
+    if(  Z_Line_5.length() >  0 )  s += QStringLiteral("\n%1").arg(Z_Line_5);
     s += "\n";
 
     return s;

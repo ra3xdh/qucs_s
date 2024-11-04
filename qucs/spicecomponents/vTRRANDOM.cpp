@@ -111,6 +111,6 @@ QString vTRRANDOM::spice_netlist(bool)
    QString Param1 = spicecompat::normalize_value(Props.at(3)->Value);
    QString Param2 = spicecompat::normalize_value(Props.at(4)->Value);
 
-    s += QString(" DC 0 AC 0 TRRANDOM(%1 %2 %3 %4 %5 ) \n").arg(Type).arg(Ts).arg(Td).arg(Param1).arg(Param2);
+    s += QStringLiteral(" DC 0 AC 0 TRRANDOM(%1 %2 %3 %4 %5 ) \n").arg(Type).arg(Ts).arg(Td).arg(Param1).arg(Param2);
     return s;
 }

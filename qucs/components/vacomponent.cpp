@@ -304,15 +304,15 @@ QString vacomponent::spice_netlist(bool isXyce)
     for(const auto pp: Ports) {
         s += pp->Connection->Name + " ";
     }
-    QString tmp_model = QString("mod_%1_%2").arg(Model).arg(Name);
+    QString tmp_model = QStringLiteral("mod_%1_%2").arg(Model).arg(Name);
     s += tmp_model + "\n";
     QString par_str;
     for(int i = 0; i < Props.count(); i++) {
-        par_str += QString("%1=%2 ")
+        par_str += QStringLiteral("%1=%2 ")
                 .arg(Props.at(i)->Name)
                 .arg(Props.at(i)->Value);
     }
-    s += QString(".MODEL %1 %2 %3\n").arg(tmp_model)
+    s += QStringLiteral(".MODEL %1 %2 %3\n").arg(tmp_model)
                                       .arg(Model)
                                       .arg(par_str);
     return s;

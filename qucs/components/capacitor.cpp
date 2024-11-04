@@ -57,7 +57,7 @@ QString Capacitor::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    s += QString(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
+    s += QStringLiteral(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
             .arg(Ports.at(1)->Connection->Name); // output  nodes
     s.replace(" gnd ", " 0 ");
 
@@ -80,7 +80,7 @@ QString Capacitor::va_code()
     QString Vpm = vacompat::normalize_voltage(plus,minus);
     if (Vpm.startsWith("(-")) Vpm.remove(1,1); // Make capacitor unipolar, remove starting minus
     QString Ipm = vacompat::normalize_current(plus,minus,true); 
-    s  += QString("%1  <+ ddt( %2 *  %3  );\n").arg(Ipm).arg(Vpm).arg(val);
+    s  += QStringLiteral("%1  <+ ddt( %2 *  %3  );\n").arg(Ipm).arg(Vpm).arg(val);
             
     return s;
 }

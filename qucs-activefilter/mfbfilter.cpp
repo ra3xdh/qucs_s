@@ -59,24 +59,24 @@ void MFBfilter::createLowPassSchematic(QString &s)
     s += PACKAGE_VERSION;
     s += ">\n";
     s += "<Components>\n";
-    s += QString("<.AC AC1 1 300 440 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"501\" 1 \"no\" 0>\n").arg((10.0*Fc)/1000.0);
+    s += QStringLiteral("<.AC AC1 1 300 440 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"501\" 1 \"no\" 0>\n").arg((10.0*Fc)/1000.0);
     s += "<.DC DC1 1 60 440 0 61 0 0 \"26.85\" 0 \"0.001\" 0 \"1 pA\" 0 \"1 uV\" 0 \"no\" 0 \"150\" 0 \"no\" 0 \"none\" 0 \"CroutLU\" 0>\n";
     s += "<Eqn Eqn1 1 610 450 -30 14 0 0 \"K=dB(out.v/in.v)\" 1 \"yes\" 0>\n";
-    s += QString("<Vac V1 1 %1 330 18 -26 0 1 \"1 V\" 1 \"1 kHz\" 0 \"0\" 0 \"0\" 0>\n").arg(70+dx);
-    s += QString("<GND * 1 %1 360 0 0 0 0>\n").arg(70+dx);
+    s += QStringLiteral("<Vac V1 1 %1 330 18 -26 0 1 \"1 V\" 1 \"1 kHz\" 0 \"0\" 0 \"0\" 0>\n").arg(70+dx);
+    s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(70+dx);
     for (int i=1; i<=N2ord; i++) {
         stage = Sections.at(i-1);
         QString suffix1, suffix2;
         double  C1 = autoscaleCapacitor(stage.C1,suffix1);
         double  C2 = autoscaleCapacitor(stage.C2,suffix2);
-        s += QString("<GND * 1 %1 380 0 0 0 0>\n").arg(200+dx);
-        s += QString("<GND * 1 %1 350 0 0 0 0>\n").arg(360+dx);
-        s += QString("<OpAmp OP%1 1 %2 270 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(390+dx);
-        s += QString("<C C%1 1 %2 350 17 -26 0 1 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(2+(i-1)*Nc1).arg(200+dx).arg(C2,0,'f',3).arg(suffix2);
-        s += QString("<C C%1 1 %2 180 17 -26 0 1 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(1+(i-1)*Nc1).arg(320+dx).arg(C1,0,'f',3).arg(suffix1);
-        s += QString("<R R%1 1 %2 180 15 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(1+(i-1)*Nr1).arg(200+dx).arg(stage.R1,0,'f',3);
-        s += QString("<R R%1 1 %2 250 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(2+(i-1)*Nr1).arg(150+dx).arg(stage.R2,0,'f',3);
-        s += QString("<R R%1 1 %2 250 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(3+(i-1)*Nr1).arg(250+dx).arg(stage.R3,0,'f',3);
+        s += QStringLiteral("<GND * 1 %1 380 0 0 0 0>\n").arg(200+dx);
+        s += QStringLiteral("<GND * 1 %1 350 0 0 0 0>\n").arg(360+dx);
+        s += QStringLiteral("<OpAmp OP%1 1 %2 270 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(390+dx);
+        s += QStringLiteral("<C C%1 1 %2 350 17 -26 0 1 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(2+(i-1)*Nc1).arg(200+dx).arg(C2,0,'f',3).arg(suffix2);
+        s += QStringLiteral("<C C%1 1 %2 180 17 -26 0 1 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(1+(i-1)*Nc1).arg(320+dx).arg(C1,0,'f',3).arg(suffix1);
+        s += QStringLiteral("<R R%1 1 %2 180 15 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(1+(i-1)*Nr1).arg(200+dx).arg(stage.R1,0,'f',3);
+        s += QStringLiteral("<R R%1 1 %2 250 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(2+(i-1)*Nr1).arg(150+dx).arg(stage.R2,0,'f',3);
+        s += QStringLiteral("<R R%1 1 %2 250 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(3+(i-1)*Nr1).arg(250+dx).arg(stage.R3,0,'f',3);
         dx += 510;
     }
 
@@ -91,26 +91,26 @@ void MFBfilter::createLowPassSchematic(QString &s)
     s += "<70 250 70 300 \"\" 0 0 0 \"\">\n";
     for (int i=1; i<=N2ord; i++) {
         if (i!=1) {
-            s += QString("<%1 250 %2 270 \"\" 0 0 0 \"\">\n").arg(120+dx).arg(120+dx);
-            s += QString("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(dx-40).arg(120+dx);
+            s += QStringLiteral("<%1 250 %2 270 \"\" 0 0 0 \"\">\n").arg(120+dx).arg(120+dx);
+            s += QStringLiteral("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(dx-40).arg(120+dx);
         }
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(180+dx).arg(200+dx);
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(220+dx);
-        s += QString("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
-        s += QString("<%1 250 %2 320 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
-        s += QString("<%1 290 %2 350 \"\" 0 0 0 \"\">\n").arg(360+dx).arg(360+dx);
-        s += QString("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
-        s += QString("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(320+dx);
-        s += QString("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(280+dx).arg(320+dx);
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(360+dx);
-        s += QString("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
-        s += QString("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(470+dx);
-        s += QString("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(430+dx).arg(470+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(180+dx).arg(200+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(220+dx);
+        s += QStringLiteral("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QStringLiteral("<%1 250 %2 320 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QStringLiteral("<%1 290 %2 350 \"\" 0 0 0 \"\">\n").arg(360+dx).arg(360+dx);
+        s += QStringLiteral("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QStringLiteral("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(320+dx);
+        s += QStringLiteral("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(280+dx).arg(320+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(360+dx);
+        s += QStringLiteral("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
+        s += QStringLiteral("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(470+dx);
+        s += QStringLiteral("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(430+dx).arg(470+dx);
         if ((2*i)==order) {
-            s += QString("<%1 130 %2 270 \"out\" %3 170 70 \"\">\n").arg(470+dx).arg(470+dx).arg(500+dx);
+            s += QStringLiteral("<%1 130 %2 270 \"out\" %3 170 70 \"\">\n").arg(470+dx).arg(470+dx).arg(500+dx);
         } else {
-            s += QString("<%1 130 %2 270 \"\" 0 0 0 \"\">\n").arg(470+dx).arg(470+dx);
+            s += QStringLiteral("<%1 130 %2 270 \"\" 0 0 0 \"\">\n").arg(470+dx).arg(470+dx);
         }
         dx += 510;
     }
@@ -133,24 +133,24 @@ void MFBfilter::createHighPassSchematic(QString &s)
     s += PACKAGE_VERSION;
     s += ">\n";
     s += "<Components>\n";
-    s += QString("<.AC AC1 1 300 440 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"501\" 1 \"no\" 0>\n").arg((10.0*Fc)/1000.0);
+    s += QStringLiteral("<.AC AC1 1 300 440 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"501\" 1 \"no\" 0>\n").arg((10.0*Fc)/1000.0);
     s += "<.DC DC1 1 60 440 0 61 0 0 \"26.85\" 0 \"0.001\" 0 \"1 pA\" 0 \"1 uV\" 0 \"no\" 0 \"150\" 0 \"no\" 0 \"none\" 0 \"CroutLU\" 0>\n";
     s += "<Eqn Eqn1 1 610 450 -30 14 0 0 \"K=dB(out.v/in.v)\" 1 \"yes\" 0>\n";
-    s += QString("<Vac V1 1 %1 330 18 -26 0 1 \"1 V\" 1 \"1 kHz\" 0 \"0\" 0 \"0\" 0>\n").arg(70+dx);
-    s += QString("<GND * 1 %1 360 0 0 0 0>\n").arg(70+dx);
+    s += QStringLiteral("<Vac V1 1 %1 330 18 -26 0 1 \"1 V\" 1 \"1 kHz\" 0 \"0\" 0 \"0\" 0>\n").arg(70+dx);
+    s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(70+dx);
     for (int i=1; i<=N2ord; i++) {
         stage = Sections.at(i-1);
         QString suffix1, suffix2;
         double  C1 = autoscaleCapacitor(stage.C1,suffix1);
         double  C2 = autoscaleCapacitor(stage.C2,suffix2);
-        s += QString("<GND * 1 %1 380 0 0 0 0>\n").arg(200+dx);
-        s += QString("<GND * 1 %1 350 0 0 0 0>\n").arg(360+dx);
-        s += QString("<OpAmp OP%1 1 %2 270 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(390+dx);
-        s += QString("<R R%1 1 %2 350 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(1+(i-1)*Nr1).arg(200+dx).arg(stage.R1,0,'f',3);
-        s += QString("<R R%1 1 %2 180 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(2+(i-1)*Nr1).arg(320+dx).arg(stage.R2,0,'f',3);
-        s += QString("<C C%1 1 %2 180 15 -26 0 1 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(1+(i-1)*Nc1).arg(200+dx).arg(C1,0,'f',3).arg(suffix1);
-        s += QString("<C C%1 1 %2 250 -26 15 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(2+(i-1)*Nc1).arg(150+dx).arg(C2,0,'f',3).arg(suffix2);
-        s += QString("<C C%1 1 %2 250 -26 15 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(3+(i-1)*Nc1).arg(250+dx).arg(C1,0,'f',3).arg(suffix1);
+        s += QStringLiteral("<GND * 1 %1 380 0 0 0 0>\n").arg(200+dx);
+        s += QStringLiteral("<GND * 1 %1 350 0 0 0 0>\n").arg(360+dx);
+        s += QStringLiteral("<OpAmp OP%1 1 %2 270 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(390+dx);
+        s += QStringLiteral("<R R%1 1 %2 350 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(1+(i-1)*Nr1).arg(200+dx).arg(stage.R1,0,'f',3);
+        s += QStringLiteral("<R R%1 1 %2 180 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(2+(i-1)*Nr1).arg(320+dx).arg(stage.R2,0,'f',3);
+        s += QStringLiteral("<C C%1 1 %2 180 15 -26 0 1 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(1+(i-1)*Nc1).arg(200+dx).arg(C1,0,'f',3).arg(suffix1);
+        s += QStringLiteral("<C C%1 1 %2 250 -26 15 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(2+(i-1)*Nc1).arg(150+dx).arg(C2,0,'f',3).arg(suffix2);
+        s += QStringLiteral("<C C%1 1 %2 250 -26 15 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(3+(i-1)*Nc1).arg(250+dx).arg(C1,0,'f',3).arg(suffix1);
         dx += 510;
     }
 
@@ -165,26 +165,26 @@ void MFBfilter::createHighPassSchematic(QString &s)
     s += "<70 250 70 300 \"\" 0 0 0 \"\">\n";
     for (int i=1; i<=N2ord; i++) {
         if (i!=1) {
-            s += QString("<%1 250 %2 270 \"\" 0 0 0 \"\">\n").arg(120+dx).arg(120+dx);
-            s += QString("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(dx-40).arg(120+dx);
+            s += QStringLiteral("<%1 250 %2 270 \"\" 0 0 0 \"\">\n").arg(120+dx).arg(120+dx);
+            s += QStringLiteral("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(dx-40).arg(120+dx);
         }
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(180+dx).arg(200+dx);
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(220+dx);
-        s += QString("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
-        s += QString("<%1 250 %2 320 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
-        s += QString("<%1 290 %2 350 \"\" 0 0 0 \"\">\n").arg(360+dx).arg(360+dx);
-        s += QString("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
-        s += QString("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(320+dx);
-        s += QString("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(280+dx).arg(320+dx);
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(360+dx);
-        s += QString("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
-        s += QString("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(470+dx);
-        s += QString("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(430+dx).arg(470+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(180+dx).arg(200+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(220+dx);
+        s += QStringLiteral("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QStringLiteral("<%1 250 %2 320 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QStringLiteral("<%1 290 %2 350 \"\" 0 0 0 \"\">\n").arg(360+dx).arg(360+dx);
+        s += QStringLiteral("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QStringLiteral("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(320+dx);
+        s += QStringLiteral("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(280+dx).arg(320+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(360+dx);
+        s += QStringLiteral("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
+        s += QStringLiteral("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(470+dx);
+        s += QStringLiteral("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(430+dx).arg(470+dx);
         if ((2*i)==order) {
-            s += QString("<%1 130 %2 270 \"out\" %3 170 70 \"\">\n").arg(470+dx).arg(470+dx).arg(500+dx);
+            s += QStringLiteral("<%1 130 %2 270 \"out\" %3 170 70 \"\">\n").arg(470+dx).arg(470+dx).arg(500+dx);
         } else {
-            s += QString("<%1 130 %2 270 \"\" 0 0 0 \"\">\n").arg(470+dx).arg(470+dx);
+            s += QStringLiteral("<%1 130 %2 270 \"\" 0 0 0 \"\">\n").arg(470+dx).arg(470+dx);
         }
         dx += 510;
     }
@@ -205,24 +205,24 @@ void MFBfilter::createBandPassSchematic(QString &s)
     s += PACKAGE_VERSION;
     s += ">\n";
     s += "<Components>\n";
-    s += QString("<.AC AC1 1 300 440 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"501\" 1 \"no\" 0>\n").arg((Fu+1000)/1000.0);
+    s += QStringLiteral("<.AC AC1 1 300 440 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"501\" 1 \"no\" 0>\n").arg((Fu+1000)/1000.0);
     s += "<.DC DC1 1 60 440 0 61 0 0 \"26.85\" 0 \"0.001\" 0 \"1 pA\" 0 \"1 uV\" 0 \"no\" 0 \"150\" 0 \"no\" 0 \"none\" 0 \"CroutLU\" 0>\n";
     s += "<Eqn Eqn1 1 610 450 -30 14 0 0 \"K=dB(out.v/in.v)\" 1 \"yes\" 0>\n";
-    s += QString("<Vac V1 1 %1 330 18 -26 0 1 \"1 V\" 1 \"1 kHz\" 0 \"0\" 0 \"0\" 0>\n").arg(70+dx);
-    s += QString("<GND * 1 %1 360 0 0 0 0>\n").arg(70+dx);
+    s += QStringLiteral("<Vac V1 1 %1 330 18 -26 0 1 \"1 V\" 1 \"1 kHz\" 0 \"0\" 0 \"0\" 0>\n").arg(70+dx);
+    s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(70+dx);
     for (int i=1; i<=Sections.count(); i++) {
         stage = Sections.at(i-1);
         QString suffix1, suffix2;
         double  C1 = autoscaleCapacitor(stage.C1,suffix1);
         double  C2 = autoscaleCapacitor(stage.C2,suffix2);
-        s += QString("<GND * 1 %1 380 0 0 0 0>\n").arg(200+dx);
-        s += QString("<GND * 1 %1 350 0 0 0 0>\n").arg(360+dx);
-        s += QString("<OpAmp OP%1 1 %2 270 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(390+dx);
-        s += QString("<C C%1 1 %2 180 15 -26 0 1 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(1+(i-1)*Nc1).arg(200+dx).arg(C1,0,'f',3).arg(suffix1);
-        s += QString("<C C%1 1 %2 250 -26 15 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(2+(i-1)*Nc1).arg(250+dx).arg(C2,0,'f',3).arg(suffix2);
-        s += QString("<R R%1 1 %2 250 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(1+(i-1)*Nr1).arg(150+dx).arg(stage.R1,0,'f',3);
-        s += QString("<R R%1 1 %2 350 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(2+(i-1)*Nr1).arg(200+dx).arg(stage.R2,0,'f',3);
-        s += QString("<R R%1 1 %2 180 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(3+(i-1)*Nr1).arg(320+dx).arg(stage.R3,0,'f',3);
+        s += QStringLiteral("<GND * 1 %1 380 0 0 0 0>\n").arg(200+dx);
+        s += QStringLiteral("<GND * 1 %1 350 0 0 0 0>\n").arg(360+dx);
+        s += QStringLiteral("<OpAmp OP%1 1 %2 270 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(390+dx);
+        s += QStringLiteral("<C C%1 1 %2 180 15 -26 0 1 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(1+(i-1)*Nc1).arg(200+dx).arg(C1,0,'f',3).arg(suffix1);
+        s += QStringLiteral("<C C%1 1 %2 250 -26 15 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(2+(i-1)*Nc1).arg(250+dx).arg(C2,0,'f',3).arg(suffix2);
+        s += QStringLiteral("<R R%1 1 %2 250 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(1+(i-1)*Nr1).arg(150+dx).arg(stage.R1,0,'f',3);
+        s += QStringLiteral("<R R%1 1 %2 350 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(2+(i-1)*Nr1).arg(200+dx).arg(stage.R2,0,'f',3);
+        s += QStringLiteral("<R R%1 1 %2 180 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(3+(i-1)*Nr1).arg(320+dx).arg(stage.R3,0,'f',3);
         dx += 400;
     }
 
@@ -234,26 +234,26 @@ void MFBfilter::createBandPassSchematic(QString &s)
     s += "<70 250 70 300 \"\" 0 0 0 \"\">\n";
     for (int i=1; i<=Sections.count(); i++) {
         if (i!=1) {
-            s += QString("<%1 250 %2 270 \"\" 0 0 0 \"\">\n").arg(120+dx).arg(120+dx);
-            s += QString("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(dx+70).arg(120+dx);
+            s += QStringLiteral("<%1 250 %2 270 \"\" 0 0 0 \"\">\n").arg(120+dx).arg(120+dx);
+            s += QStringLiteral("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(dx+70).arg(120+dx);
         }
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(180+dx).arg(200+dx);
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(220+dx);
-        s += QString("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
-        s += QString("<%1 250 %2 320 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
-        s += QString("<%1 290 %2 350 \"\" 0 0 0 \"\">\n").arg(360+dx).arg(360+dx);
-        s += QString("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
-        s += QString("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(320+dx);
-        s += QString("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(280+dx).arg(320+dx);
-        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(360+dx);
-        s += QString("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
-        s += QString("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(470+dx);
-        s += QString("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(430+dx).arg(470+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(180+dx).arg(200+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(220+dx);
+        s += QStringLiteral("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QStringLiteral("<%1 250 %2 320 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QStringLiteral("<%1 290 %2 350 \"\" 0 0 0 \"\">\n").arg(360+dx).arg(360+dx);
+        s += QStringLiteral("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QStringLiteral("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(320+dx);
+        s += QStringLiteral("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(280+dx).arg(320+dx);
+        s += QStringLiteral("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(360+dx);
+        s += QStringLiteral("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
+        s += QStringLiteral("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(470+dx);
+        s += QStringLiteral("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(430+dx).arg(470+dx);
         if (i==order) {
-            s += QString("<%1 130 %2 270 \"out\" %3 170 70 \"\">\n").arg(470+dx).arg(470+dx).arg(500+dx);
+            s += QStringLiteral("<%1 130 %2 270 \"out\" %3 170 70 \"\">\n").arg(470+dx).arg(470+dx).arg(500+dx);
         } else {
-            s += QString("<%1 130 %2 270 \"\" 0 0 0 \"\">\n").arg(470+dx).arg(470+dx);
+            s += QStringLiteral("<%1 130 %2 270 \"\" 0 0 0 \"\">\n").arg(470+dx).arg(470+dx);
         }
         dx += 400;
     }

@@ -197,7 +197,7 @@ QString Arrow::saveJSON()
 {
   // arrow not allowed in symbols, thus we use line here
   QString s =
-    QString("{\"type\" : \"arrow\", "
+    QStringLiteral("{\"type\" : \"arrow\", "
        "\"x1\" : %1, \"y1\" : %2, \"x2\" : %3, \"y2\" : %4, "
        "\"color\" : \"%5\", \"thick\" : %6, \"style\" : \"%7\"},").
        arg(cx+x1).arg(cy+y1).arg(cx+x2).arg(cy+y2).

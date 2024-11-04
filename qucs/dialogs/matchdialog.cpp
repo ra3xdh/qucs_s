@@ -856,15 +856,15 @@ QString MatchDialog::calcMatchingLC(double r_real, double r_imag, double Z0,
   QString laddercode = "", series_element, shunt_element;
   // serial component
   if (X1 < 0.0) // capacitance ?
-    series_element = QString("CS:%1;").arg(-1.0 / Omega / X1);
+    series_element = QStringLiteral("CS:%1;").arg(-1.0 / Omega / X1);
   else // inductance
-    series_element = QString("LS:%1;").arg(X1 / Omega);
+    series_element = QStringLiteral("LS:%1;").arg(X1 / Omega);
 
   // parallel component
   if (X2 < 0.0) // inductance ?
-    shunt_element = QString("LP:%1;").arg(-1.0 / Omega / X2);
+    shunt_element = QStringLiteral("LP:%1;").arg(-1.0 / Omega / X2);
   else // capacitance
-    shunt_element = QString("CP:%1;").arg(X2 / Omega);
+    shunt_element = QStringLiteral("CP:%1;").arg(X2 / Omega);
 
   (r_real < 0) ? laddercode = shunt_element + series_element
                : laddercode = series_element + shunt_element;
@@ -924,8 +924,8 @@ bool MatchDialog::calcMatchingCircuit(double S11real, double S11imag, double Z0,
 
   if (SP_Block) {
     laddercode.append("S2P:Freq;");
-    laddercode.prepend(QString("P1:%1;").arg(Z0));
-    laddercode.append(QString("ZL:%1#%2;").arg(RL).arg(XL));
+    laddercode.prepend(QStringLiteral("P1:%1;").arg(Z0));
+    laddercode.append(QStringLiteral("ZL:%1#%2;").arg(RL).arg(XL));
   } else // Add tags instead of a S-param simulation
   {
     laddercode.prepend("LBL:Port 1;");
@@ -1023,15 +1023,15 @@ bool MatchDialog::calc2PortMatch(double S11real, double S11imag, double S22real,
     OutputLadderCode = flipLadderCode(OutputLadderCode);
 
   if (SP_Block) {
-    InputLadderCode.prepend(QString("S2P:%1;").arg(
+    InputLadderCode.prepend(QStringLiteral("S2P:%1;").arg(
         Freq)); // Add the s-param simulation to the circuit code
-    InputLadderCode.prepend(QString("P1:%1;").arg(Z1)); // Port 1
-    OutputLadderCode.append(QString("P2:%1;").arg(Z2)); // Port 2
+    InputLadderCode.prepend(QStringLiteral("P1:%1;").arg(Z1)); // Port 1
+    OutputLadderCode.append(QStringLiteral("P2:%1;").arg(Z2)); // Port 2
   } else { // Use labels instead of the S-param simulation
-    InputLadderCode.prepend(QString("LBL:Port 1;")); // Port 1
-    OutputLadderCode.append(QString("LBL:Port 2;")); // Port 2
+    InputLadderCode.prepend(QStringLiteral("LBL:Port 1;")); // Port 1
+    OutputLadderCode.append(QStringLiteral("LBL:Port 2;")); // Port 2
   }
-  QString laddercode = InputLadderCode + QString("DEV:0") + OutputLadderCode;
+  QString laddercode = InputLadderCode + QStringLiteral("DEV:0") + OutputLadderCode;
   int x_pos = 0;
   SchematicParser(laddercode, x_pos, Freq, Substrate, microsyn);
 
@@ -1256,22 +1256,22 @@ QString MatchDialog::calcSingleStub(double r_real, double r_imag, double Z0,
   // String code
   QString laddercode;
   if ((open_short) && (!BalancedStubs))
-    laddercode = QString("OL:%1#%2;TL:%1#%3;")
+    laddercode = QStringLiteral("OL:%1#%2;TL:%1#%3;")
                      .arg(Z0)
                      .arg(lstub)
                      .arg(d); // Line + Open stub
   if ((open_short) && (BalancedStubs))
-    laddercode = QString("OU:%1#%2;OL:%1#%2;TL:%1#%3;")
+    laddercode = QStringLiteral("OU:%1#%2;OL:%1#%2;TL:%1#%3;")
                      .arg(Z0)
                      .arg(lstub)
                      .arg(d); // Open circuit balanced stubs
   if ((!open_short) && (!BalancedStubs))
-    laddercode = QString("SL:%1#%2;TL:%1#%3;")
+    laddercode = QStringLiteral("SL:%1#%2;TL:%1#%3;")
                      .arg(Z0)
                      .arg(lstub)
                      .arg(d); // Line + Short circuited stub
   if ((!open_short) && (BalancedStubs))
-    laddercode = QString("SU:%1#%2;SL:%1#%2;TL:%1#%3;")
+    laddercode = QStringLiteral("SU:%1#%2;SL:%1#%2;TL:%1#%3;")
                      .arg(Z0)
                      .arg(lstub)
                      .arg(d); // Short circuited balanced stubs
@@ -1348,25 +1348,25 @@ QString MatchDialog::calcDoubleStub(double r_real, double r_imag, double Z0,
 
   QString laddercode;
   if ((open_short) && (BalancedStubs))
-    laddercode = QString("OU:%1#%2;OL:%1#%2;TL:%1#%3;OU:%1#%4;OL:%1#%4;")
+    laddercode = QStringLiteral("OU:%1#%2;OL:%1#%2;TL:%1#%3;OU:%1#%4;OL:%1#%4;")
                      .arg(Z0)
                      .arg(lstub2)
                      .arg(d)
                      .arg(lstub1);
   if ((open_short) && (!BalancedStubs))
-    laddercode = QString("OL:%1#%2;TL:%1#%3;OL:%1#%4;")
+    laddercode = QStringLiteral("OL:%1#%2;TL:%1#%3;OL:%1#%4;")
                      .arg(Z0)
                      .arg(lstub2)
                      .arg(d)
                      .arg(lstub1);
   if ((!open_short) && (BalancedStubs))
-    laddercode = QString("SU:%1#%2;SL:%1#%2;TL:%1#%3;SU:%1#%4;SL:%1#%4;")
+    laddercode = QStringLiteral("SU:%1#%2;SL:%1#%2;TL:%1#%3;SU:%1#%4;SL:%1#%4;")
                      .arg(Z0)
                      .arg(lstub2)
                      .arg(d)
                      .arg(lstub1);
   if ((!open_short) && (!BalancedStubs))
-    laddercode = QString("SL:%1#%2;TL:%1#%3;SL:%1#%4;")
+    laddercode = QStringLiteral("SL:%1#%2;TL:%1#%3;SL:%1#%4;")
                      .arg(Z0)
                      .arg(lstub2)
                      .arg(d)
@@ -1413,7 +1413,7 @@ QString MatchDialog::calcBinomialLines(double r_real, double r_imag, double Z0,
     Ci = BinomialCoeffs(order - 1, i - 1);
     Zi = exp(log(Zaux) + (Ci / pow(2, order - 1)) * log(RL / Z0));
     Zaux = Zi;
-    laddercode += QString("TL:%1#%2;").arg(Zi).arg(l4);
+    laddercode += QStringLiteral("TL:%1#%2;").arg(Zi).arg(l4);
   }
   return laddercode;
 }
@@ -1507,7 +1507,7 @@ QString MatchDialog::calcChebyLines(double r_real, double r_imag, double Z0,
     (RL < Z0) ? Zi = exp(log(Zaux) - gamma * w[i])
               : Zi = exp(log(Zaux) + gamma * w[i]); // When RL<Z0, Z_{i}<Z_{i-1}
     Zaux = Zi;
-    laddercode += QString("TL:%1#%2;").arg(Zi).arg(l4);
+    laddercode += QStringLiteral("TL:%1#%2;").arg(Zi).arg(l4);
   }
   return laddercode;
 }
@@ -1549,14 +1549,14 @@ QString MatchDialog::calcMatchingCascadedLCSections(double r_real,
     Q = sqrt(Raux / R - 1);
     C = Q / (w * Raux);
     L = Q * R / w;
-    s += QString("CP:%1;LS:%2;").arg(C).arg(L);
+    s += QStringLiteral("CP:%1;LS:%2;").arg(C).arg(L);
     Raux = R;
   }
 
   Q = sqrt(R / R2 - 1);
   C = Q / (w * R);
   L = Q * R2 / w;
-  s += QString("CP:%1;LS:%2;").arg(C).arg(L);
+  s += QStringLiteral("CP:%1;LS:%2;").arg(C).arg(L);
 
   if (RL > RS) // Flip string
   {
@@ -1581,7 +1581,7 @@ QString MatchDialog::calcMatchingLambda8Lambda4(double r_real, double r_imag,
   r2z(RL, XL, Z0);
   double Zmm = sqrt(RL * RL + XL * XL);
   double Zm = sqrt((Z0 * RL * Zmm) / (Zmm - XL));
-  return QString("TL:%1#%2;TL:%3#%4;").arg(Zm).arg(l4).arg(Zmm).arg(l8);
+  return QStringLiteral("TL:%1#%2;TL:%3#%4;").arg(Zm).arg(l4).arg(Zmm).arg(l8);
 }
 
 // Given a string code of inductors, capacitors and transmission lines, it
@@ -1653,17 +1653,17 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
     // components, wires and paintings in the schematic
     if (!tag.compare("P1")) // Port 1 component
     {
-      componentstr += QString("<Pac P1 1 %2 -30 18 -26 0 1 \"1\" 1 \"%1\" 1 "
+      componentstr += QStringLiteral("<Pac P1 1 %2 -30 18 -26 0 1 \"1\" 1 \"%1\" 1 "
                               "\"0 dBm\" 0 \"1 GHz\" 0>\n")
                           .arg(misc::num2str(value, 3, "Ohm")) // reference impedance
                           .arg(x_pos);
-      componentstr += QString("<GND * 1 %1 0 0 0 0 0>\n").arg(x_pos);
-      wirestr += QString("<%1 -60 %1 -120>\n").arg(x_pos);
-      wirestr += QString("<%1 -120 %2 -120>\n").arg(x_pos).arg(x_pos + 120);
+      componentstr += QStringLiteral("<GND * 1 %1 0 0 0 0 0>\n").arg(x_pos);
+      wirestr += QStringLiteral("<%1 -60 %1 -120>\n").arg(x_pos);
+      wirestr += QStringLiteral("<%1 -120 %2 -120>\n").arg(x_pos).arg(x_pos + 120);
       x_pos += 120;
     } else if (!tag.compare("LBL")) // Label
     {
-      paintingstr += QString("<Text %1 -150 12 #000000 0 \"%2\">\n")
+      paintingstr += QStringLiteral("<Text %1 -150 12 #000000 0 \"%2\">\n")
                          .arg(x_pos)
                          .arg(component); // Add 'Port 1' or 'Port 2' label
       x_pos += 50;
@@ -1671,36 +1671,36 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
                                    // from P1 because of the wiring)
     {
       x_pos += 100;
-      componentstr += QString("<Pac P2 1 %2 -30 18 -26 0 1 \"1\" 1 \"%1\" 1 "
+      componentstr += QStringLiteral("<Pac P2 1 %2 -30 18 -26 0 1 \"1\" 1 \"%1\" 1 "
                               "\"0 dBm\" 0 \"1 GHz\" 0>\n")
                           .arg(misc::num2str(value, 3, "Ohm")) // reference impedance
                           .arg(x_pos);
-      componentstr += QString("<GND * 1 %1 0 0 0 0 0>\n").arg(x_pos);
-      wirestr += QString("<%1 -60 %1 -120>\n").arg(x_pos); // Vertical wire
-      wirestr += QString("<%1 -120 %2 -120>\n")
+      componentstr += QStringLiteral("<GND * 1 %1 0 0 0 0 0>\n").arg(x_pos);
+      wirestr += QStringLiteral("<%1 -60 %1 -120>\n").arg(x_pos); // Vertical wire
+      wirestr += QStringLiteral("<%1 -120 %2 -120>\n")
                      .arg(x_pos - 100)
                      .arg(x_pos);   // Horizontal wire
     } else if (!tag.compare("DEV")) // Device painting
     {
-      paintingstr += QString("<Text %1 -150 12 #000000 0 \"Device\">\n")
+      paintingstr += QStringLiteral("<Text %1 -150 12 #000000 0 \"Device\">\n")
                          .arg(x_pos + 70); // Add 'Device' label
       paintingstr +=
-          QString("<Rectangle %1 -160 90 50 #000000 0 1 #c0c0c0 1 0>\n")
+          QStringLiteral("<Rectangle %1 -160 90 50 #000000 0 1 #c0c0c0 1 0>\n")
               .arg(x_pos + 50); // Box surrounding the 'Device' label
       x_pos += 200;
     } else if (!tag.compare("LS")) // Series inductor
     {
       QString val = misc::num2str(value, 3, "H"); // Add prefix, unit - 3 significant digits
-      componentstr += QString("<L L1 1 %1 -120 -26 10 0 0 \"%2\" 1 "
+      componentstr += QStringLiteral("<L L1 1 %1 -120 -26 10 0 0 \"%2\" 1 "
                               " 0>\n")
                           .arg(x_pos + 60)
                           .arg(val);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos)
                      .arg(x_pos + 30);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos + 90)
@@ -1709,16 +1709,16 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
     } else if (!tag.compare("CS")) // Series capacitor
     {
       QString val = misc::num2str(value, 3, "F"); // Add prefix, unit - 3 significant digits
-      componentstr += QString("<C C1 1 %1 -120 -26 17 0 0 \"%2\" 1 "
+      componentstr += QStringLiteral("<C C1 1 %1 -120 -26 17 0 0 \"%2\" 1 "
                               " 0>\n")
                           .arg(x_pos + 60)
                           .arg(val);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos)
                      .arg(x_pos + 30);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos + 90)
@@ -1727,16 +1727,16 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
     } else if (!tag.compare("LP")) // Shunt inductor
     {
       QString val = misc::num2str(value, 3, "H"); // Add prefix, unit - 3 significant digits
-      componentstr += QString("<GND * 1 %1 0 0 0 0 0>\n").arg(x_pos);
-      componentstr += QString("<L L1 1 %1 -30 5 -20 0 1 \"%2\" 1 "
+      componentstr += QStringLiteral("<GND * 1 %1 0 0 0 0 0>\n").arg(x_pos);
+      componentstr += QStringLiteral("<L L1 1 %1 -30 5 -20 0 1 \"%2\" 1 "
                               " 0>\n")
                           .arg(x_pos)
                           .arg(val);
-      wirestr += QString("<%1 -60 %1 -120 "
+      wirestr += QStringLiteral("<%1 -60 %1 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos - 20)
@@ -1745,16 +1745,16 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
     } else if (!tag.compare("CP")) // Shunt capacitor
     {
       QString val = misc::num2str(value, 3, "F"); // Add prefix, unit - 3 significant digits
-      componentstr += QString("<GND * 1 %1 0 0 0 0 0>\n").arg(x_pos);
-      componentstr += QString("<C C1 1 %1 -30 15 -20 0 1 \"%2\" 1 "
+      componentstr += QStringLiteral("<GND * 1 %1 0 0 0 0 0>\n").arg(x_pos);
+      componentstr += QStringLiteral("<C C1 1 %1 -30 15 -20 0 1 \"%2\" 1 "
                               " 0>\n")
                           .arg(x_pos)
                           .arg(val);
-      wirestr += QString("<%1 -60 %1 -120 "
+      wirestr += QStringLiteral("<%1 -60 %1 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos - 20)
@@ -1771,7 +1771,7 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
         QString val_length =
           misc::num2str(value2 / sqrt(er), 3, "m"); // Add prefix, unit - 3 significant digits
         componentstr +=
-            QString("<MLIN MS1 1 %3 -120 -26 20 0 0 \"Sub1\" 1 \"%1\" 1 \"%2\" "
+            QStringLiteral("<MLIN MS1 1 %3 -120 -26 20 0 0 \"Sub1\" 1 \"%1\" 1 \"%2\" "
                     "1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
                 .arg(val_width)
                 .arg(val_length)
@@ -1781,18 +1781,18 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
         QString val_impedance = misc::num2str(value, 3, "Ohm");
         // Add prefix, unit - 3 significant digits
         QString val_length = misc::num2str(value2, 3, "m");
-        componentstr += QString("<TLIN Line1 1 %3 -120 -26 20 0 0 \"%1\" 1 "
+        componentstr += QStringLiteral("<TLIN Line1 1 %3 -120 -26 20 0 0 \"%1\" 1 "
                                 "\"%2\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
                             .arg(val_impedance)
                             .arg(val_length)
                             .arg(x_pos + 60);
       }
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos)
                      .arg(x_pos + 30);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos + 90)
@@ -1809,7 +1809,7 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
         // Add prefix, unit - 3 significant digits
         QString val_length = misc::num2str(value2 / sqrt(er), 3, "m");
         componentstr +=
-            QString("<MLIN MS1 1 %3 -180 30 -30 0 1 \"Sub1\" 1 \"%1\" 1 \"%2\" "
+            QStringLiteral("<MLIN MS1 1 %3 -180 30 -30 0 1 \"Sub1\" 1 \"%1\" 1 \"%2\" "
                     "1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
                 .arg(val_width)
                 .arg(val_length)
@@ -1819,17 +1819,17 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
         QString val_impedance = misc::num2str(value, 3, "Ohm");
         // Add prefix, unit - 3 significant digits
         QString val_length = misc::num2str(value2, 3, "m");
-        componentstr += QString("<TLIN Line1 1 %3 -180 30 -30 0 1 \"%1\" 1 "
+        componentstr += QStringLiteral("<TLIN Line1 1 %3 -180 30 -30 0 1 \"%1\" 1 "
                                 "\"%2\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
                             .arg(val_impedance)
                             .arg(val_length)
                             .arg(x_pos);
       }
-      wirestr += QString("<%1 -150 %1 -120 "
+      wirestr += QStringLiteral("<%1 -150 %1 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos)
@@ -1847,7 +1847,7 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
         // Add suffix mm, cm - 3 significant digits
         QString val_length = misc::num2str(value2 / sqrt(er), 3, "m");
         componentstr +=
-            QString("<MLIN MS1 1 %3 -60 -26 30 0 1 \"Sub1\" 1 \"%1\" 1 \"%2\" "
+            QStringLiteral("<MLIN MS1 1 %3 -60 -26 30 0 1 \"Sub1\" 1 \"%1\" 1 \"%2\" "
                     "1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
                 .arg(val_width)
                 .arg(val_length)
@@ -1857,17 +1857,17 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
         QString val_impedance = misc::num2str(value, 3, "Ohm");
         // Add suffix mm, cm - 3 significant digits
         QString val_length = misc::num2str(value2, 3, "m");
-        componentstr += QString("<TLIN Line1 1 %3 -60 -26 30 0 1 \"%1\" 1 "
+        componentstr += QStringLiteral("<TLIN Line1 1 %3 -60 -26 30 0 1 \"%1\" 1 "
                                 "\"%2\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
                             .arg(val_impedance)
                             .arg(val_length)
                             .arg(x_pos);
       }
-      wirestr += QString("<%1 -90 %1 -120 "
+      wirestr += QStringLiteral("<%1 -90 %1 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos - 20)
@@ -1882,7 +1882,7 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
         QString val_width = misc::num2str(width, 3, "m");
         QString val_length = misc::num2str(value2 / sqrt(er), 3, "m");
         componentstr +=
-            QString("<MLIN MS1 1 %3 -180 30 -30 0 1 \"Sub1\" 1 \"%1\" 1 \"%2\" "
+            QStringLiteral("<MLIN MS1 1 %3 -180 30 -30 0 1 \"Sub1\" 1 \"%1\" 1 \"%2\" "
                     "1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
                 .arg(val_width)
                 .arg(val_length)
@@ -1890,18 +1890,18 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
       } else {
         QString val_impedance = misc::num2str(value, 3, "Ohm");
         QString val_length = misc::num2str(value2, 3, "m");
-        componentstr += QString("<TLIN Line1 1 %3 -180 30 -30 0 1 \"%1\" 1 "
+        componentstr += QStringLiteral("<TLIN Line1 1 %3 -180 30 -30 0 1 \"%1\" 1 "
                                 "\"%2\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
                             .arg(val_impedance)
                             .arg(val_length)
                             .arg(x_pos);
       }
-      componentstr += QString("<GND * 1 %1 -210 0 0 0 2>\n").arg(x_pos);
-      wirestr += QString("<%1 -150 %1 -120 "
+      componentstr += QStringLiteral("<GND * 1 %1 -210 0 0 0 2>\n").arg(x_pos);
+      wirestr += QStringLiteral("<%1 -150 %1 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos)
@@ -1917,7 +1917,7 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
         QString val_width = misc::num2str(width, 3, "m");
         QString val_length = misc::num2str(value2 / sqrt(er), 3, "m");
         componentstr +=
-            QString("<MLIN MS1 1 %3 -60 30 -30 0 1 \"Sub1\" 1 \"%1\" 1 \"%2\" "
+            QStringLiteral("<MLIN MS1 1 %3 -60 30 -30 0 1 \"Sub1\" 1 \"%1\" 1 \"%2\" "
                     "1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n")
                 .arg(val_width)
                 .arg(val_length)
@@ -1925,18 +1925,18 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
       } else {
         QString val_impedance = misc::num2str(value, 3, "Ohm");
         QString val_length = misc::num2str(value2, 3, "m");
-        componentstr += QString("<TLIN Line1 1 %3 -60 20 30 0 1 \"%1\" 1 "
+        componentstr += QStringLiteral("<TLIN Line1 1 %3 -60 20 30 0 1 \"%1\" 1 "
                                 "\"%2\" 1 \"0 dB\" 0 \"26.85\" 0>\n")
                             .arg(val_impedance)
                             .arg(val_length)
                             .arg(x_pos);
       }
-      componentstr += QString("<GND * 1 %1 -30 0 0 0 0>\n").arg(x_pos);
-      wirestr += QString("<%1 -90 %1 -120 "
+      componentstr += QStringLiteral("<GND * 1 %1 -30 0 0 0 0>\n").arg(x_pos);
+      wirestr += QStringLiteral("<%1 -90 %1 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos);
-      wirestr += QString("<%1 -120 %2 -120 "
+      wirestr += QStringLiteral("<%1 -120 %2 -120 "
                          " 0 0 0 "
                          ">\n")
                      .arg(x_pos - 20)
@@ -1952,16 +1952,16 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
       QString val_freq_stop = misc::num2str(freq_stop, 3, "Hz");
 
       componentstr +=
-          QString("<.SP SP1 1 0 100 0 67 0 0 \"lin\" 1 \"%1\" 1 \"%2\" 1 "
+          QStringLiteral("<.SP SP1 1 0 100 0 67 0 0 \"lin\" 1 \"%1\" 1 \"%2\" 1 "
                   "\"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n")
               .arg((val_freq_start))
               .arg((val_freq_stop));
 
       if (laddercode.indexOf("P2") == -1) // One port simulation
-        componentstr += QString("<Eqn Eqn1 1 200 100 -28 15 0 0 "
+        componentstr += QStringLiteral("<Eqn Eqn1 1 200 100 -28 15 0 0 "
                                 "\"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
       else // Two ports simulation
-        componentstr += QString("<Eqn Eqn1 1 200 100 -28 15 0 0 "
+        componentstr += QStringLiteral("<Eqn Eqn1 1 200 100 -28 15 0 0 "
                                 "\"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" "
                                 "1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n");
     } else if (!tag.compare("ZL")) // Complex load
@@ -1979,11 +1979,11 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
                 "<R R1 1 %1 -30 15 -26 0 -1 \"%2\" 1 \"26.85\" 0 \"US\" 0>\n")
                 .arg(x_pos)
                 .arg(val_Res);
-        componentstr += QString("<C C1 1 %1 -90 15 -26 0 -1 \"%2\" 1 0>\n")
+        componentstr += QStringLiteral("<C C1 1 %1 -90 15 -26 0 -1 \"%2\" 1 0>\n")
                             .arg(x_pos)
                             .arg(val_Cap);
         paintingstr +=
-            QString("<Text %1 50 12 #000000 0 \"%4-j%5 %2 @ %3\">\n")
+            QStringLiteral("<Text %1 50 12 #000000 0 \"%4-j%5 %2 @ %3\">\n")
                 .arg(x_pos)
                 .arg(QChar(0x2126))
                 .arg(misc::num2str(Freq, 3, "Hz"))
@@ -1998,11 +1998,11 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
                 "<R R1 1 %1 -30 15 -26 0 -1 \"%2\" 1 \"26.85\" 0 \"US\" 0>\n")
                 .arg(x_pos)
                 .arg(val_Res);
-        componentstr += QString("<L L1 1 %1 -90 15 -26 0 -1 \"%2\" 1 0>\n")
+        componentstr += QStringLiteral("<L L1 1 %1 -90 15 -26 0 -1 \"%2\" 1 0>\n")
                             .arg(x_pos)
                             .arg(val_Ind);
         paintingstr +=
-            QString("<Text %1 50 12 #000000 0 \"%4+j%5 %2 @ %3\">\n")
+            QStringLiteral("<Text %1 50 12 #000000 0 \"%4+j%5 %2 @ %3\">\n")
                 .arg(x_pos)
                 .arg(QChar(0x2126))
                 .arg(misc::num2str(Freq, 3, "Hz"))
@@ -2016,8 +2016,8 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
                 "<R R1 1 %1 -30 15 -26 0 -1 \"%2\" 1 \"26.85\" 0 \"US\" 0>\n")
                 .arg(x_pos)
                 .arg(val_Res);
-        wirestr += QString("<%1 -60 %1 -120>\n").arg(x_pos); // Vertical wire
-        paintingstr += QString("<Text %1 50 12 #000000 0 \"%4 %2 @ %3\">\n")
+        wirestr += QStringLiteral("<%1 -60 %1 -120>\n").arg(x_pos); // Vertical wire
+        paintingstr += QStringLiteral("<Text %1 50 12 #000000 0 \"%4 %2 @ %3\">\n")
                            .arg(x_pos)
                            .arg(QChar(0x2126))
                            .arg(misc::num2str(Freq, 3, "Hz"))
@@ -2030,9 +2030,9 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
                 "<L L1 1 %1 -30 15 -26 0 -1 \"%2\" 1 \"26.85\" 0 \"US\" 0>\n")
                 .arg(x_pos)
                 .arg(val_Ind);
-        wirestr += QString("<%1 -60 %1 -120>\n").arg(x_pos); // Vertical wire
+        wirestr += QStringLiteral("<%1 -60 %1 -120>\n").arg(x_pos); // Vertical wire
         paintingstr +=
-            QString("<Text %1 50 12 #000000 0 \"j%4 %2 @ %3\">\n")
+            QStringLiteral("<Text %1 50 12 #000000 0 \"j%4 %2 @ %3\">\n")
                 .arg(x_pos)
                 .arg(QChar(0x2126))
                 .arg(misc::num2str(Freq, 3, "Hz"))
@@ -2046,22 +2046,22 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
                 "<C C1 1 %1 -30 15 -26 0 -1 \"%2\" 1 \"26.85\" 0 \"US\" 0>\n")
                 .arg(x_pos)
                 .arg(val_Cap);
-        wirestr += QString("<%1 -60 %1 -120>\n").arg(x_pos); // Vertical wire
+        wirestr += QStringLiteral("<%1 -60 %1 -120>\n").arg(x_pos); // Vertical wire
         paintingstr +=
-            QString("<Text %1 50 12 #000000 0 \"-j%4 %2 @ %3\">\n")
+            QStringLiteral("<Text %1 50 12 #000000 0 \"-j%4 %2 @ %3\">\n")
                 .arg(x_pos)
                 .arg(QChar(0x2126))
                 .arg(misc::num2str(Freq, 3, "Hz"))
                 .arg(fabs(XL));
       }
-      wirestr += QString("<%1 -120 %2 -120>\n")
+      wirestr += QStringLiteral("<%1 -120 %2 -120>\n")
                      .arg(x_pos - 100)
                      .arg(x_pos); // Horizontal wire
-      componentstr += QString("<GND * 1 %1 0 0 -1 0 0>\n").arg(x_pos);
+      componentstr += QStringLiteral("<GND * 1 %1 0 0 -1 0 0>\n").arg(x_pos);
 
       // Box surrounding the load
       paintingstr +=
-          QString("<Rectangle %1 -150 200 200 #000000 0 1 #c0c0c0 1 0>\n")
+          QStringLiteral("<Rectangle %1 -150 200 200 #000000 0 1 #c0c0c0 1 0>\n")
               .arg(x_pos - 30);
     }
   }
@@ -2069,7 +2069,7 @@ void MatchDialog::SchematicParser(QString laddercode, int &x_pos, double Freq,
   // Substrate
   if (microsyn)
     componentstr +=
-        QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" "
+        QStringLiteral("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" "
                 "1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n")
             .arg(Substrate.er)
             .arg(Substrate.height * 1e3)

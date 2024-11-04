@@ -96,7 +96,7 @@ Element* Source_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString Source_ac::ngspice_netlist()
 {
-    QString s = QString("V%1").arg(Name);
+    QString s = QStringLiteral("V%1").arg(Name);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
@@ -116,12 +116,12 @@ QString Source_ac::ngspice_netlist()
         en_tran = false;
     }
 
-    s += QString(" dc 0 ac %1").arg(vamp);
+    s += QStringLiteral(" dc 0 ac %1").arg(vamp);
     if (en_tran) {
-        s += QString(" SIN(0 %1 %2)").arg(vamp).arg(f);
+        s += QStringLiteral(" SIN(0 %1 %2)").arg(vamp).arg(f);
     }
-    s += QString(" portnum %1").arg(getProperty("Num")->Value);
-    s += QString(" z0 %1").arg(z0);
+    s += QStringLiteral(" portnum %1").arg(getProperty("Num")->Value);
+    s += QStringLiteral(" z0 %1").arg(z0);
     s += "\n";
     return s;
 }
@@ -134,7 +134,7 @@ QString Source_ac::xyce_netlist()
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
-    s += QString(" port=%1 ").arg(getProperty("Num")->Value);
+    s += QStringLiteral(" port=%1 ").arg(getProperty("Num")->Value);
     QString s_z0 = spicecompat::normalize_value(getProperty("Z")->Value);
     double z0 = s_z0.toDouble();
     QString s_p = spicecompat::normalize_value(getProperty("P")->Value);
@@ -149,11 +149,11 @@ QString Source_ac::xyce_netlist()
         en_tran = false;
     }
 
-    s += QString(" z0=%1 ").arg(s_z0);
+    s += QStringLiteral(" z0=%1 ").arg(s_z0);
     QString f = spicecompat::normalize_value(getProperty("f")->Value);
-    s += QString(" AC %1 ").arg(vamp);
+    s += QStringLiteral(" AC %1 ").arg(vamp);
     if (en_tran) {
-        s += QString(" SIN 0 %1 %2").arg(vamp).arg(f);
+        s += QStringLiteral(" SIN 0 %1 %2").arg(vamp).arg(f);
     }
     s += "\n";
     return s;

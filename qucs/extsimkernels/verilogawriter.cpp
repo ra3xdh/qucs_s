@@ -56,10 +56,10 @@ QString vacompat::normalize_voltage(QString &plus, QString &minus, bool left_sid
 {
     QString s;
     if (plus=="gnd") {
-        if (left_side) s = QString("V(%1)").arg(minus);
-        else s = QString("(-V(%1))").arg(minus);
-    } else if (minus=="gnd") s = QString("V(%1)").arg(plus);
-    else s = QString("V(%1,%2)").arg(plus).arg(minus);
+        if (left_side) s = QStringLiteral("V(%1)").arg(minus);
+        else s = QStringLiteral("(-V(%1))").arg(minus);
+    } else if (minus=="gnd") s = QStringLiteral("V(%1)").arg(plus);
+    else s = QStringLiteral("V(%1,%2)").arg(plus).arg(minus);
     return s;
 }
 
@@ -67,10 +67,10 @@ QString vacompat::normalize_current(QString &plus, QString &minus, bool left_sid
 {
     QString s;
     if (plus=="gnd") {
-        if (left_side) s = QString("I(%1)").arg(minus);
-       else s = QString("(-I(%1))").arg(minus);
-    } else if (minus=="gnd") s = QString("I(%1)").arg(plus);
-    else s = QString("I(%1,%2)").arg(plus).arg(minus);
+        if (left_side) s = QStringLiteral("I(%1)").arg(minus);
+       else s = QStringLiteral("(-I(%1))").arg(minus);
+    } else if (minus=="gnd") s = QStringLiteral("I(%1)").arg(plus);
+    else s = QStringLiteral("I(%1,%2)").arg(plus).arg(minus);
     return s;
 }
 
@@ -179,9 +179,9 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
     base.remove('-').remove(' ');
     nodes.removeAll("gnd"); // Exclude ground node
 
-    stream<<QString("module %1(%2);\n").arg(base).arg(ports.join(", "));
-    stream<<QString("inout %1;\n").arg(ports.join(", "));
-    stream<<QString("electrical %1;\n").arg(nodes.join(", "));
+    stream<<QStringLiteral("module %1(%2);\n").arg(base).arg(ports.join(", "));
+    stream<<QStringLiteral("inout %1;\n").arg(ports.join(", "));
+    stream<<QStringLiteral("electrical %1;\n").arg(nodes.join(", "));
 
     Painting *pi; // Find module parameters
     for(pi = sch->SymbolPaints.first(); pi != 0; pi = sch->SymbolPaints.next())

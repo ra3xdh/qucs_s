@@ -90,7 +90,7 @@ QString Switch::spice_netlist(bool)
   QString port1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
   QString port2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
 
-  s += QString(" %1 %2 control_net%3 0 switch_model%3\n").arg(port1).arg(port2).arg(Name);
+  s += QStringLiteral(" %1 %2 control_net%3 0 switch_model%3\n").arg(port1).arg(port2).arg(Name);
 
   QString init = spicecompat::normalize_value(getProperty("init")->Value);
   QString times = spicecompat::normalize_value(getProperty("time")->Value);
@@ -123,7 +123,7 @@ QString Switch::spice_netlist(bool)
     evenValue = "0";
   }
 
-  s += QString("V%1 control_net%1 0 DC %2 PWL(0 %2").arg(Name).arg(oddValue);
+  s += QStringLiteral("V%1 control_net%1 0 DC %2 PWL(0 %2").arg(Name).arg(oddValue);
 
   for (int i = 0; i < timesList.size(); i++) {
     QString timeStep = timesList[i].toLower();
@@ -132,29 +132,29 @@ QString Switch::spice_netlist(bool)
 
     if (i == 0) {
         time += timeValue - changingTime;
-        s += QString(" %1 %2").arg(time).arg(oddValue);
+        s += QStringLiteral(" %1 %2").arg(time).arg(oddValue);
         time += changingTime;
-        s += QString(" %1 %2").arg(time).arg(evenValue);
+        s += QStringLiteral(" %1 %2").arg(time).arg(evenValue);
 
     } else {
         if (i % 2 == 1) {
             time += timeValue- changingTime;
-            s += QString(" %1 %2").arg(time).arg(evenValue);
+            s += QStringLiteral(" %1 %2").arg(time).arg(evenValue);
             time += changingTime;
-            s += QString(" %1 %2").arg(time).arg(oddValue);
+            s += QStringLiteral(" %1 %2").arg(time).arg(oddValue);
         }
         else{
             time += timeValue- changingTime;
-            s += QString(" %1 %2").arg(time).arg(oddValue);
+            s += QStringLiteral(" %1 %2").arg(time).arg(oddValue);
             time += changingTime;
-            s += QString(" %1 %2").arg(time).arg(evenValue);
+            s += QStringLiteral(" %1 %2").arg(time).arg(evenValue);
         }
     }
   }
 
   s += ")\n";
 
-  s += QString(".model switch_model%1 sw vt =0.5 ron =%2 roff =%3\n").arg(Name).arg(Ron).arg(Roff);
+  s += QStringLiteral(".model switch_model%1 sw vt =0.5 ron =%2 roff =%3\n").arg(Name).arg(Ron).arg(Roff);
   return s;
 }
 

@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     QString Lang = QucsSettings.Language;
     if(Lang.isEmpty())
       Lang = QString(QLocale::system().name());
-    tor.load( QString("qucs_") + Lang, LangDir);
+    tor.load( QStringLiteral("qucs_") + Lang, LangDir);
     a.installTranslator( &tor );
 
     QucsActiveFilter *w = new QucsActiveFilter();

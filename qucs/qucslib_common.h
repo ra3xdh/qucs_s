@@ -406,11 +406,11 @@ inline int parseSPICEComponentLibrary (QString libPath, ComponentLibrary &librar
             ComponentLibraryItem comp;
             comp.name = lin.section(" ",1,1,QString::SectionSkipEmpty);
             // Form fake component definition
-            comp.modelString = QString("<SpLib X1 1 280 260 -29 -164 0 0 \"%1\" 0 \"%2\" 1 \"auto\" 1 \"%3\" 1>")
+            comp.modelString = QStringLiteral("<SpLib X1 1 280 260 -29 -164 0 0 \"%1\" 0 \"%2\" 1 \"auto\" 1 \"%3\" 1>")
                     .arg(filename).arg(comp.name).arg(pars);
-            comp.definition += QString("<Component %1>\n").arg(comp.name);
+            comp.definition += QStringLiteral("<Component %1>\n").arg(comp.name);
             comp.definition += "<Description>\n";
-            comp.definition += QString("%1 device from %2 library").arg(comp.name).arg(library.name);
+            comp.definition += QStringLiteral("%1 device from %2 library").arg(comp.name).arg(library.name);
             comp.definition += "</Description>\n";
             comp.definition += "<Spice>\n";
             comp.definition += lin + "\n.ends\n";
@@ -448,22 +448,22 @@ inline int parseSPICEComponentLibrary (QString libPath, ComponentLibrary &librar
             ComponentLibraryItem comp;
             comp.name = lin.section(" ",1,1,QString::SectionSkipEmpty);
             // Form fake component definition
-            QString m_str = QString("M_%1_1").arg(comp.name);
-            comp.modelString = QString("<SpiceModel %1 1 250 290 -29 17 0 0").arg(m_str); // .MODEL start
+            QString m_str = QStringLiteral("M_%1_1").arg(comp.name);
+            comp.modelString = QStringLiteral("<SpiceModel %1 1 250 290 -29 17 0 0").arg(m_str); // .MODEL start
             int lin_cnt = 0;
             QString visible = "1";
             for (const auto &p: mod_lines) {
-                if (lin_cnt>3) comp.modelString += QString(" \"Line_%1=%2\" %3")
+                if (lin_cnt>3) comp.modelString += QStringLiteral(" \"Line_%1=%2\" %3")
                         .arg(lin_cnt+1).arg(p).arg(visible);
-                else comp.modelString += QString(" \"%1\" %2").arg(p).arg(visible);
+                else comp.modelString += QStringLiteral(" \"%1\" %2").arg(p).arg(visible);
                 lin_cnt++;
                 visible = "0";
             }
             comp.modelString += ">";
 
-            comp.definition += QString("<Component %1>\n").arg(comp.name);
+            comp.definition += QStringLiteral("<Component %1>\n").arg(comp.name);
             comp.definition += "<Description>\n";
-            comp.definition += QString("%1 model from %2 library\n"
+            comp.definition += QStringLiteral("%1 model from %2 library\n"
                                        "This component is model-only (.MODEL).\n"
                                        "No subcircuit definition!\n"
                                        "Use appropriate device to attach this model.").arg(comp.name).arg(library.name);

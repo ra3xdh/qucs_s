@@ -171,10 +171,10 @@ QucsAttenuator::QucsAttenuator()
   powerunits.append("mW");
   powerunits.append("W");
   powerunits.append("dBm");
-  powerunits.append(QString("dB%1V [75%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)));
-  powerunits.append(QString("dB%1V [50%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)));
-  powerunits.append(QString("dBmV [75%1]").arg(QChar(0xa9, 0x03)));
-  powerunits.append(QString("dBmV [50%1]").arg(QChar(0xa9, 0x03)));
+  powerunits.append(QStringLiteral("dB%1V [75%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)));
+  powerunits.append(QStringLiteral("dB%1V [50%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)));
+  powerunits.append(QStringLiteral("dBmV [75%1]").arg(QChar(0xa9, 0x03)));
+  powerunits.append(QStringLiteral("dBmV [50%1]").arg(QChar(0xa9, 0x03)));
   Combo_InputPowerUnits = new QComboBox();
   Combo_InputPowerUnits->addItems(powerunits);
   Combo_InputPowerUnits->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -696,7 +696,7 @@ void QucsAttenuator::slotCalculate()
       lineEdit_R3->setText(QString::number(Values.R3, 'f', 1));
       lineEdit_R4->setText(QString::number(Values.R4, 'f', 1));
 
-      lineEdit_R1_Pdiss->setText(QString::number(ConvertPowerUnits(Values.PR1, QString("W"), ComboR1_PowerUnits->currentText()), 'f', 5));
+      lineEdit_R1_Pdiss->setText(QString::number(ConvertPowerUnits(Values.PR1, QStringLiteral("W"), ComboR1_PowerUnits->currentText()), 'f', 5));
       lineEdit_R2_Pdiss->setText(QString::number(ConvertPowerUnits(Values.PR2, "W", ComboR2_PowerUnits->currentText()), 'f', 5));
       lineEdit_R3_Pdiss->setText(QString::number(ConvertPowerUnits(Values.PR3, "W", ComboR3_PowerUnits->currentText()), 'f', 5));
       lineEdit_R4_Pdiss->setText(QString::number(ConvertPowerUnits(Values.PR4, "W", ComboR4_PowerUnits->currentText()), 'f', 5));
@@ -744,7 +744,7 @@ void QucsAttenuator::slot_ComboR1PowerUnits_Changed(const QString& new_units)
    //Convert power
    double P = lineEdit_R1_Pdiss->text().toDouble();
    P =ConvertPowerUnits(P, LastUnits[1], new_units);
-   lineEdit_R1_Pdiss->setText(QString("%1").arg(P));
+   lineEdit_R1_Pdiss->setText(QStringLiteral("%1").arg(P));
    LastUnits[1] = new_units;
 
    //Change lineedit input policy
@@ -761,7 +761,7 @@ void QucsAttenuator::slot_ComboR2PowerUnits_Changed(const QString& new_units)
    //Convert power
    double P = lineEdit_R2_Pdiss->text().toDouble();
    P =ConvertPowerUnits(P, LastUnits[2], new_units);
-   lineEdit_R2_Pdiss->setText(QString("%1").arg(P));
+   lineEdit_R2_Pdiss->setText(QStringLiteral("%1").arg(P));
    LastUnits[2] = new_units;
 
    //Change lineedit input policy
@@ -778,7 +778,7 @@ void QucsAttenuator::slot_ComboR3PowerUnits_Changed(const QString& new_units)
    //Convert power
    double P = lineEdit_R3_Pdiss->text().toDouble();
       P =ConvertPowerUnits(P, LastUnits[3], new_units);
-   lineEdit_R3_Pdiss->setText(QString("%1").arg(P));
+   lineEdit_R3_Pdiss->setText(QStringLiteral("%1").arg(P));
    LastUnits[3] = new_units;
 
    //Change lineedit input policy
@@ -795,7 +795,7 @@ void QucsAttenuator::slot_ComboR4PowerUnits_Changed(const QString& new_units)
    //Convert power
    double P = lineEdit_R4_Pdiss->text().toDouble();
    P =ConvertPowerUnits(P, LastUnits[4], new_units);
-   lineEdit_R4_Pdiss->setText(QString("%1").arg(P));
+   lineEdit_R4_Pdiss->setText(QStringLiteral("%1").arg(P));
    LastUnits[4] = new_units;
 
    //Change lineedit input policy
@@ -817,16 +817,16 @@ double QucsAttenuator::ConvertPowerUnits(double Pin, QString from_units, QString
       if (from_units == "dBm")
           Pin = pow(10, 0.1*(Pin-30));//dBm -> W
       else
-          if (from_units == QString("dB%1V [75%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)))
+          if (from_units == QStringLiteral("dB%1V [75%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)))
               Pin = pow(10, (0.1*Pin-12))/75;//dBuV [75Ohm] -> W
          else
-             if (from_units == QString("dB%1V [50%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)))
+             if (from_units == QStringLiteral("dB%1V [50%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)))
                  Pin = pow(10, (0.1*Pin-12))/50;//dBuV [50Ohm] -> W
              else
-                 if (from_units == QString("dBmV [75%2]").arg(QChar(0xa9, 0x03)))
+                 if (from_units == QStringLiteral("dBmV [75%2]").arg(QChar(0xa9, 0x03)))
                      Pin = pow(10, (0.1*Pin-6))/75;//dBmV [75Ohm] -> W
                  else
-                     if (from_units == QString("dBmV [50%2]").arg(QChar(0xa9, 0x03)))
+                     if (from_units == QStringLiteral("dBmV [50%2]").arg(QChar(0xa9, 0x03)))
                          Pin = pow(10, (0.1*Pin-6))/50;//dBmV [50Ohm] -> W
                      else
                          if (from_units == "mW")
@@ -842,16 +842,16 @@ double QucsAttenuator::ConvertPowerUnits(double Pin, QString from_units, QString
   if (to_units == "dBm")
       return Pin;//Already done
   else
-      if (to_units == QString("dB%1V [75%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)))
+      if (to_units == QStringLiteral("dB%1V [75%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)))
           Pin += 108.7506126339170004686755011380612925566374910126647878220;//W -> dBuV [75Ohm]
       else
-          if (to_units == QString("dB%1V [50%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)))
+          if (to_units == QStringLiteral("dB%1V [50%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03)))
               Pin += 106.9897000433601880478626110527550697323181011853789145868;//W -> dBuV [50Ohm]
           else
-              if (to_units == QString("dBmV [75%2]").arg(QChar(0xa9, 0x03)))
+              if (to_units == QStringLiteral("dBmV [75%2]").arg(QChar(0xa9, 0x03)))
                   Pin += 48.7506126339170004686755011380612925566374910126647878220;//W -> dBmV [75Ohm]
               else
-                  if (to_units == QString("dBmV [50%2]").arg(QChar(0xa9, 0x03)))
+                  if (to_units == QStringLiteral("dBmV [50%2]").arg(QChar(0xa9, 0x03)))
                       Pin += 46.9897000433601880478626110527550697323181011853789145868;//W -> dBmV [50Ohm]
 
   return Pin;

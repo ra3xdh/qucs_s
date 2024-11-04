@@ -107,6 +107,6 @@ QString vAmpMod::spice_netlist(bool)
    QString Td = spicecompat::normalize_value(Props.at(4)->Value);
 
 
-    s += QString(" DC 0 AM(%1 %2 %3 %4 %5 ) AC 0\n").arg(Va).arg(Vo).arg(Mf).arg(Fc).arg(Td);
+    s += QStringLiteral(" DC 0 AM(%1 %2 %3 %4 %5 ) AC 0\n").arg(Va).arg(Vo).arg(Mf).arg(Fc).arg(Td);
     return s;
 }
