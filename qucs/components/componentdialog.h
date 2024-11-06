@@ -36,9 +36,13 @@ class QCheckBox;
 class QRegExp;
 class QComboBox;
 class QPushButton;
+class QGridLayout;
 
 class BoundLineEdit;
+class ParamWidget;
 
+// struct SweepUISettingType;
+struct QStringPair;
 
 class ComponentDialog : public QDialog {
    Q_OBJECT
@@ -47,10 +51,11 @@ public:
  ~ComponentDialog();
 
 private slots:
-  void slotButtOK();
-  void slotButtCancel();
+  void slotOKButton();
+  void slotApplyButton();
+  // void slotCancelButton();
+
   void slotSelectProperty(QTableWidgetItem *item);
-  void slotApplyInput();
   void slotApplyState(int State);
   void slotBrowseFile();
   void slotEditFile();
@@ -78,8 +83,10 @@ private slots:
   void slotHHeaderClicked(int headerIdx);
   void slotFillFromSpice();
 
+  void slotUpdateSweepWidgets(const QString& sweepType, QGridLayout* sweepPageLayout);
+
 protected slots:
-    void reject();
+    // void reject();
     bool eventFilter(QObject *obj, QEvent *event);
 
 private:
@@ -88,10 +95,20 @@ private:
   QRegularExpression     Expr;
   QIntValidator *ValInteger;
   
-  QTableWidget  *m_pPropertyTable;
-  Component   *m_pComponent;
-  Schematic   *m_pDocument;
-  Component   localComponent;
+  QTableWidget  *propertyTable;
+  Component   *originalComponent;
+  Schematic   *document;
+  Component   editComponent;
+  
+  // Maps to contain specialisations for different sweep types. Note: the arrangement
+  // has been chosen to have the smallest number of map elements.
+  // TODO: Make these constant once settled, see https://stackoverflow.com/questions/2636303/how-to-initialize-a-private-static-const-map-in-c
+  QMap<QString, QList<QStringPair> > sweepTypeSpecialLabels;
+  QMap<QString, QStringList> sweepTypeEnabledParams;
+  QMap<QString, QStringList> sweepTypeHiddenParams;
+  
+  // Maps to store references to edit widgets.
+  QMap<QString, ParamWidget*> sweepParam;
 
   BoundLineEdit* mpNameLineEdit;
 
@@ -106,7 +123,6 @@ private:
   bool        changed;
   int         tx_Dist, ty_Dist;   // remember the text position
   bool        setAllVisible; // used for toggling visibility of properties
-  bool compIsSimulation;
  
   QLabel    *textType;
   QLabel    *textSim, *textParam, *textValues, *textStart, *textStop,
@@ -117,13 +133,53 @@ private:
             *checkNumber, *checkType, *showName;
   QComboBox *comboSim, *comboType;
 
-  void updateCompPropsList(void);
   QStringList getSimulationList();
+
+  void updateCompPropsList(void);
+  void updateSimProperty(const QString& propertyWidget, const QString& value);
+  void updateSimWidgets(const QString& simType);
 
   void fillPropsFromTable();
   void recreatePropsFromTable();
   bool propChanged(Property *pp, const QString &value, const bool display);
   void updateProperty(Property *pp, const QString &value, const bool display);
+
+  enum CELL_TYPE { LabelCell = 1000, TextEditCell, ComboBoxCell, CheckBoxCell};
 };
+
+// Helper structures to manage specialisation of sweep UI presentation.
+// enum RELATION { StepToNumber, NumberToStep };
+
+// struct RelatedParameterType
+// {
+//   RelatedParameterType(const QString& a, RELATION b)
+//   : relatedParameter(a), relation(b) {}
+
+//   QString relatedParameter;
+//   RELATION relation; 
+// };
+
+// struct SweepUISettingType
+// {
+//   SweepUISettingType(const QString& a, const QString& b, const QStringList& c, bool d, bool e, QList<RelatedParameterType> f = {}) 
+//   : label(a), value(b), options(c), enabled(d), visible(e), relatedParameters(f) {}
+//   QString label;
+//   QString value;
+//   QStringList options;
+//   bool enabled;
+//   bool visible;
+//   QList<RelatedParameterType> relatedParameters;
+// };
+// typedef QList<SweepUISettingType> SweepSettingUIList;
+
+struct QStringPair
+{
+  QStringPair(const QString& b, const QString& a)
+  : first(a), second(b) {}
+
+  QString first;
+  QString second;
+};
+
 
 #endif
