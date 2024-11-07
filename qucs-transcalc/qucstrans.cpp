@@ -1282,7 +1282,7 @@ void QucsTranscalc::slotCopyToClipBoard()
     s +="  <Pac P2 1 270 150 18 -26 0 1 \"2\" 1 \"50 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n";
     s += "  <GND * 1 90 180 0 0 0 0>\n";
     s += "  <GND * 1 270 180 0 0 0 0>\n";
-    s += QString("  <SUBST SubstTC1 1 390 140 -30 24 0 0 \"%1\" 1 \"%2 mm\" 1 \"%3 um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").
+    s += QStringLiteral("  <SUBST SubstTC1 1 390 140 -30 24 0 0 \"%1\" 1 \"%2 mm\" 1 \"%3 um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").
       arg(l->getProperty("Er")).
       arg(l->getProperty("H", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("T", UNIT_LENGTH, LENGTH_UM)).
@@ -1292,12 +1292,12 @@ void QucsTranscalc::slotCopyToClipBoard()
     s += "  <.SP SPTC1 1 90 240 0 51 0 0 ";
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
-      s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
+      s += QStringLiteral("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
     arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
-    s += QString("  <MLIN MSTC1 1 180 100 -26 15 0 0 \"SubstTC1\" 1 \"%1 mm\" 1 \"%2 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").
+    s += QStringLiteral("  <MLIN MSTC1 1 180 100 -26 15 0 0 \"SubstTC1\" 1 \"%1 mm\" 1 \"%2 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").
       arg(l->getProperty("W", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("L", UNIT_LENGTH, LENGTH_MM));
     s += "  <Eqn EqnTC1 1 240 260 -23 12 0 0 \"A=twoport(S,'S','A')\" 1 \"ZL=real(sqrt(A[1,2]/A[2,1]))\" 1 \"yes\" 0>\n";
@@ -1323,7 +1323,7 @@ void QucsTranscalc::slotCopyToClipBoard()
     s += "  <GND * 1 140 230 0 0 0 0>\n";
     s += "  <GND * 1 320 160 0 0 0 0>\n";
     s += "  <GND * 1 280 250 0 0 0 0>\n";
-    s += QString("  <SUBST SubstTC1 1 410 220 -30 24 0 0 \"%1\" 1 \"%2 mm\" 1 \"%3 um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").
+    s += QStringLiteral("  <SUBST SubstTC1 1 410 220 -30 24 0 0 \"%1\" 1 \"%2 mm\" 1 \"%3 um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").
       arg(l->getProperty("Er")).
       arg(l->getProperty("H", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("T", UNIT_LENGTH, LENGTH_UM)).
@@ -1333,12 +1333,12 @@ void QucsTranscalc::slotCopyToClipBoard()
     s += "  <.SP SPTC1 1 100 290 0 51 0 0 ";
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
-      s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
+      s += QStringLiteral("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
     arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
-    s += QString("  <MCOUPLED MSTC1 1 190 110 -26 37 0 0 \"SubstTC1\" 1 \"%1 mm\" 1 \"%2 mm\" 1 \"%3 mm\" 1 \"Kirschning\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").
+    s += QStringLiteral("  <MCOUPLED MSTC1 1 190 110 -26 37 0 0 \"SubstTC1\" 1 \"%1 mm\" 1 \"%2 mm\" 1 \"%3 mm\" 1 \"Kirschning\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").
       arg(l->getProperty("W", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("L", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("S", UNIT_LENGTH, LENGTH_MM));
@@ -1367,12 +1367,12 @@ void QucsTranscalc::slotCopyToClipBoard()
     s += "  <.SP SPTC1 1 90 240 0 51 0 0 ";
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
-      s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
+      s += QStringLiteral("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
     arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
-    s += QString("  <COAX CXTC1 1 180 100 -26 15 0 0 \"%1\" 1 \"%2\" 0 \"%3\" 0 \"%4 mm\" 1 \"%5 mm\" 1  \"%6 mm\" 1  \"%7\" 0 \"26.85\" 0>\n").
+    s += QStringLiteral("  <COAX CXTC1 1 180 100 -26 15 0 0 \"%1\" 1 \"%2\" 0 \"%3\" 0 \"%4 mm\" 1 \"%5 mm\" 1  \"%6 mm\" 1  \"%7\" 0 \"26.85\" 0>\n").
       arg(l->getProperty("Er")).
       arg(1 / l->getProperty("Sigma")).
       arg(l->getProperty("Mur")).
@@ -1398,7 +1398,7 @@ void QucsTranscalc::slotCopyToClipBoard()
     s +="  <Pac P2 1 270 150 18 -26 0 1 \"2\" 1 \"50 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n";
     s += "  <GND * 1 90 180 0 0 0 0>\n";
     s += "  <GND * 1 270 180 0 0 0 0>\n";
-    s += QString("  <SUBST SubstTC1 1 390 140 -30 24 0 0 \"%1\" 1 \"%2 mm\" 1 \"%3 um\" 1 \"%4\" 1 \"%5\" 1 \"0\" 1>\n").
+    s += QStringLiteral("  <SUBST SubstTC1 1 390 140 -30 24 0 0 \"%1\" 1 \"%2 mm\" 1 \"%3 um\" 1 \"%4\" 1 \"%5\" 1 \"0\" 1>\n").
       arg(l->getProperty("Er")).
       arg(l->getProperty("H", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("T", UNIT_LENGTH, LENGTH_UM)).
@@ -1407,12 +1407,12 @@ void QucsTranscalc::slotCopyToClipBoard()
     s += "  <.SP SPTC1 1 90 240 0 51 0 0 ";
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
-      s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
+      s += QStringLiteral("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
     arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
-    s += QString("  <CLIN CLTC1 1 180 100 -26 25 0 0 \"SubstTC1\" 1 \"%1 mm\" 1 \"%2 mm\" 1 \"%3 mm\" 1 \"Air\" 1 \"yes\" 0>\n").
+    s += QStringLiteral("  <CLIN CLTC1 1 180 100 -26 25 0 0 \"SubstTC1\" 1 \"%1 mm\" 1 \"%2 mm\" 1 \"%3 mm\" 1 \"Air\" 1 \"yes\" 0>\n").
       arg(l->getProperty("W", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("S", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("L", UNIT_LENGTH, LENGTH_MM));
@@ -1435,7 +1435,7 @@ void QucsTranscalc::slotCopyToClipBoard()
     s +="  <Pac P2 1 270 150 18 -26 0 1 \"2\" 1 \"50 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n";
     s += "  <GND * 1 90 180 0 0 0 0>\n";
     s += "  <GND * 1 270 180 0 0 0 0>\n";
-    s += QString("  <SUBST SubstTC1 1 390 140 -30 24 0 0 \"%1\" 1 \"%2 mm\" 1 \"%3 um\" 1 \"%4\" 1 \"%5\" 1 \"0\" 1>\n").
+    s += QStringLiteral("  <SUBST SubstTC1 1 390 140 -30 24 0 0 \"%1\" 1 \"%2 mm\" 1 \"%3 um\" 1 \"%4\" 1 \"%5\" 1 \"0\" 1>\n").
       arg(l->getProperty("Er")).
       arg(l->getProperty("H", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("T", UNIT_LENGTH, LENGTH_UM)).
@@ -1444,12 +1444,12 @@ void QucsTranscalc::slotCopyToClipBoard()
     s += "  <.SP SPTC1 1 90 240 0 51 0 0 ";
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
-      s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
+      s += QStringLiteral("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
     arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
-    s += QString("  <CLIN CLTC1 1 180 100 -26 25 0 0 \"SubstTC1\" 1 \"%1 mm\" 1 \"%2 mm\" 1 \"%3 mm\" 1 \"Metal\" 1 \"yes\" 0>\n").
+    s += QStringLiteral("  <CLIN CLTC1 1 180 100 -26 25 0 0 \"SubstTC1\" 1 \"%1 mm\" 1 \"%2 mm\" 1 \"%3 mm\" 1 \"Metal\" 1 \"yes\" 0>\n").
       arg(l->getProperty("W", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("S", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("L", UNIT_LENGTH, LENGTH_MM));
@@ -1475,12 +1475,12 @@ void QucsTranscalc::slotCopyToClipBoard()
     s += "  <.SP SPTC1 1 90 240 0 51 0 0 ";
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
-      s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
+      s += QStringLiteral("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
     arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
-    s += QString("  <RECTLINE RLTC1 1 180 100 -26 25 0 0 \"%1 mm\" 1 \"%2 mm\" 1 \"%3 mm\" 1 \"%4\" 0 \"%5\" 0 \"%6\" 0 \"%7\" 0 \"26.85\" 0>\n").
+    s += QStringLiteral("  <RECTLINE RLTC1 1 180 100 -26 25 0 0 \"%1 mm\" 1 \"%2 mm\" 1 \"%3 mm\" 1 \"%4\" 0 \"%5\" 0 \"%6\" 0 \"%7\" 0 \"26.85\" 0>\n").
       arg(l->getProperty("a", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("b", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("L", UNIT_LENGTH, LENGTH_MM)).

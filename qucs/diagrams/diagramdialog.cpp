@@ -804,7 +804,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   if(ColorButt) {
     if(!currentGraph) {
       QColor selectedColor(DefaultColors[GraphList->count()%NumDefaultColors]);
-      QString stylesheet = QString("QPushButton {background-color: %1};").arg(selectedColor.name());
+      QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(selectedColor.name());
       ColorButt->setStyleSheet(stylesheet);
       misc::setPickerColor(ColorButt, selectedColor);
     }
@@ -987,7 +987,7 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
         g->Color = misc::getWidgetBackgroundColor(ColorButt);
         g->Thick = Property2->text().toInt();
         QColor selectedColor(DefaultColors[GraphList->count()%NumDefaultColors]);
-        QString stylesheet = QString("QPushButton {background-color: %1};").arg(selectedColor.name());
+        QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(selectedColor.name());
         ColorButt->setStyleSheet(stylesheet);
         misc::setPickerColor(ColorButt, selectedColor);
         if(g->Var.right(3) == ".Vb")   // harmonic balance output ?
@@ -1052,7 +1052,7 @@ void DiagramDialog::SelectGraph(Graph *g)
   if(Diag->Name != "Tab") {
     if(Diag->Name != "Truth") {
       Property2->setText(QString::number(g->Thick));
-      QString stylesheet = QString("QPushButton {background-color: %1};").arg(g->Color.name());
+      QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(g->Color.name());
       ColorButt->setStyleSheet(stylesheet);
       misc::setPickerColor(ColorButt,g->Color);
       PropertyBox->setCurrentIndex(g->Style);
@@ -1106,7 +1106,7 @@ void DiagramDialog::slotDeleteGraph()
   if(Diag->Name != "Tab") {
     if(Diag->Name != "Truth") {
       QColor selectedColor(DefaultColors[GraphList->count()%NumDefaultColors]);
-      QString stylesheet = QString("QPushButton {background-color: %1};").arg(selectedColor.name());
+      QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(selectedColor.name());
       ColorButt->setStyleSheet(stylesheet);
       misc::setPickerColor(ColorButt,selectedColor);
       Property2->setText("0");
@@ -1384,7 +1384,7 @@ void DiagramDialog::slotSetColor()
 {
   QColor c = QColorDialog::getColor(misc::getWidgetBackgroundColor(ColorButt),this);
   if(!c.isValid()) return;
-  QString stylesheet = QString("QPushButton {background-color: %1};").arg(c.name());
+  QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(c.name());
   ColorButt->setStyleSheet(stylesheet);
   misc::setPickerColor(ColorButt,c);
 

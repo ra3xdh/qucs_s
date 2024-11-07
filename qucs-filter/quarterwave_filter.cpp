@@ -64,8 +64,8 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
   int x_space = 50;
 
   // First power and ground
-  c_s += QString("<Pac P1 1 %1 330 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
-  c_s += QString("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
+  c_s += QStringLiteral("<Pac P1 1 %1 330 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
+  c_s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
   w_s += getWireString(60, 180, 60, 300);
   w_s += getWireString(60, 180, 90, 180);
   x += 60;
@@ -116,7 +116,7 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
               c_s += getMS_Via(0.5, x+40 + x_space, 30, 2); // MS via diameter = 0.5 mm
           }
           else{
-              c_s += QString("<GND * 1 %1 30 0 0 1 0>\n").arg(x + 60 + x_space);
+              c_s += QStringLiteral("<GND * 1 %1 30 0 0 1 0>\n").arg(x + 60 + x_space);
           }
       }
 
@@ -135,30 +135,30 @@ QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
 
   // Last power and ground
   x += 80;
-  c_s += QString("<Pac P2 1 %1 330 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
-  c_s += QString("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
+  c_s += QStringLiteral("<Pac P2 1 %1 330 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
+  c_s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
   w_s += getWireString(x, 180, x, 300);
   w_s += getWireString(x-50, 180, x, 180);
   // Components footer
-  c_s += QString("<.SP SP1 1 70 460 0 67 0 0 \"lin\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(0.1 * Filter->Frequency)).arg(num2str(10.0 * Filter->Frequency));
+  c_s += QStringLiteral("<.SP SP1 1 70 460 0 67 0 0 \"lin\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(0.1 * Filter->Frequency)).arg(num2str(10.0 * Filter->Frequency));
   if (isMicrostrip)
-    c_s += QString("<SUBST Sub1 1 300 500 -30 24 0 0 \"%1\" 1 \"%2m\" 1 \"%3m\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate->er).arg(num2str(Substrate->height)).arg(num2str(Substrate->thickness)).arg(Substrate->tand).arg(Substrate->resistivity).arg(Substrate->roughness);
-  c_s += QString("<Eqn Eqn1 1 450 560 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
+    c_s += QStringLiteral("<SUBST Sub1 1 300 500 -30 24 0 0 \"%1\" 1 \"%2m\" 1 \"%3m\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate->er).arg(num2str(Substrate->height)).arg(num2str(Substrate->thickness)).arg(Substrate->tand).arg(Substrate->resistivity).arg(Substrate->roughness);
+  c_s += QStringLiteral("<Eqn Eqn1 1 450 560 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
   *s += c_s + "</Components>\n";
   *s += w_s + "</Wires>\n";
   // Footer
   *s += "<Diagrams>\n";
   *s += "</Diagrams>\n";
   *s += "<Paintings>\n";
-  *s += QString("<Text 420 460 12 #000000 0 \"Quarter wave bandpass filter \\n ");
+  *s += QStringLiteral("<Text 420 460 12 #000000 0 \"Quarter wave bandpass filter \\n ");
   switch (Filter->Type)
   {
-    case TYPE_BESSEL: *s += QString("Bessel"); break;
-    case TYPE_BUTTERWORTH: *s += QString("Butterworth"); break;
-    case TYPE_CHEBYSHEV: *s += QString("Chebyshev"); break;
+    case TYPE_BESSEL: *s += QStringLiteral("Bessel"); break;
+    case TYPE_BUTTERWORTH: *s += QStringLiteral("Butterworth"); break;
+    case TYPE_CHEBYSHEV: *s += QStringLiteral("Chebyshev"); break;
   }
-  *s += QString(" %1Hz...%2Hz \\n ").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
-  *s += QString("Impedance matching %3 Ohm\">\n").arg(Filter->Impedance);
+  *s += QStringLiteral(" %1Hz...%2Hz \\n ").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
+  *s += QStringLiteral("Impedance matching %3 Ohm\">\n").arg(Filter->Impedance);
   *s += "</Paintings>\n";
   return s;
 }

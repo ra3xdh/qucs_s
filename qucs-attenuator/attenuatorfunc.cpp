@@ -199,9 +199,9 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
   switch(ATT->Topology)
     {
     case PI_TYPE:
-      *s += QString("<R R1 1 180 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
-      *s += QString("<R R2 1 255 130 -35 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
-      *s += QString("<R R3 1 330 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R3, 'f', 1));
+      *s += QStringLiteral("<R R1 1 180 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+      *s += QStringLiteral("<R R2 1 255 130 -35 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
+      *s += QStringLiteral("<R R3 1 330 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R3, 'f', 1));
       *s += "<GND * 1 180 230 0 0 0 0>\n";
       *s += "<GND * 1 330 230 0 0 0 0>\n";
       if (SP_box)
@@ -216,11 +216,11 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
          *s += "<Eqn Eqn1 1 360 350 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
          // Input term
-         *s += QString("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+         *s += QStringLiteral("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
          *s += "<GND * 1 50 230 0 0 0 0>\n";
 
          // Output term
-         *s += QString("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+         *s += QStringLiteral("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
          *s += "<GND * 1 460 230 0 0 0 0>\n";
        }
       *s += "</Components>\n";
@@ -244,20 +244,20 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
       *s += "<Diagrams>\n";
       *s += "</Diagrams>\n";
       *s += "<Paintings>\n";
-      *s += QString("<Text 160 60 12 #000000 0 \"%1 dB Pi-Type Attenuator\">\n").arg(ATT->Attenuation);
+      *s += QStringLiteral("<Text 160 60 12 #000000 0 \"%1 dB Pi-Type Attenuator\">\n").arg(ATT->Attenuation);
       if (!SP_box)
          {// If the SP simulation box option is activated, then the input and output ports are attached.
           // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-            *s += QString("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
-            *s += QString("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
+            *s += QStringLiteral("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+            *s += QStringLiteral("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
          }
       *s += "</Paintings>\n";
       break;
 
     case TEE_TYPE:
-      *s += QString("<R R1 1 180 130 -40 20 0 2 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
-      *s += QString("<R R2 1 270 200 -20 60 0 3 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
-      *s += QString("<R R3 1 350 130 -40 20 0 2 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R3, 'f', 1));
+      *s += QStringLiteral("<R R1 1 180 130 -40 20 0 2 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+      *s += QStringLiteral("<R R2 1 270 200 -20 60 0 3 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
+      *s += QStringLiteral("<R R3 1 350 130 -40 20 0 2 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R3, 'f', 1));
       *s += "<GND * 1 270 230 0 0 0 0>\n";
       if (SP_box)
       {
@@ -271,11 +271,11 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
         *s += "<Eqn Eqn1 1 360 350 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
         // Input term
-        *s += QString("<Pac P1 1 70 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+        *s += QStringLiteral("<Pac P1 1 70 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
         *s += "<GND * 1 70 230 0 0 0 0>\n";
 
         // Output term
-        *s += QString("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+        *s += QStringLiteral("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
         *s += "<GND * 1 460 230 0 0 0 0>\n";
       }
       *s +="</Components>\n";
@@ -298,21 +298,21 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
       *s += "<Diagrams>\n";
       *s += "</Diagrams>\n";
       *s += "<Paintings>\n";
-      *s += QString("<Text 170 60 12 #000000 0 \"%1 dB Tee-Type Attenuator\">\n").arg(ATT->Attenuation);
+      *s += QStringLiteral("<Text 170 60 12 #000000 0 \"%1 dB Tee-Type Attenuator\">\n").arg(ATT->Attenuation);
       if (!SP_box)
       {// If the SP simulation box option is activated, then the input and output ports are attached.
        // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-          *s += QString("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
-          *s += QString("<Text 390 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
+          *s += QStringLiteral("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+          *s += QStringLiteral("<Text 390 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
       }
       *s += "</Paintings>\n";
       break;
 
     case BRIDGE_TYPE:
-      *s += QString("<R R1 1 260 130 -30 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
-      *s += QString("<R R2 1 180 200 -90 -30 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zin);
-      *s += QString("<R R3 1 340 200 11 -30 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zout);
-      *s += QString("<R R4 1 260 260 11 -14 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
+      *s += QStringLiteral("<R R1 1 260 130 -30 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+      *s += QStringLiteral("<R R2 1 180 200 -90 -30 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zin);
+      *s += QStringLiteral("<R R3 1 340 200 11 -30 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zout);
+      *s += QStringLiteral("<R R4 1 260 260 11 -14 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
       *s += "<GND * 1 260 290 0 0 0 0>\n";
       if (SP_box)
       {
@@ -326,11 +326,11 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
         *s += "<Eqn Eqn1 1 360 350 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
         // Input term
-        *s += QString("<Pac P1 1 50 200 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+        *s += QStringLiteral("<Pac P1 1 50 200 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
         *s += "<GND * 1 50 230 0 0 0 0>\n";
 
         // Output term
-        *s += QString("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+        *s += QStringLiteral("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
         *s += "<GND * 1 460 230 0 0 0 0>\n";
       }
       *s += "</Components>\n";
@@ -355,21 +355,21 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
       *s += "<Diagrams>\n";
       *s += "</Diagrams>\n";
       *s += "<Paintings>\n";
-      *s += QString("<Text 140 60 12 #000000 0 \"%1 dB Bridged-Tee-Type Attenuator\">\n").arg(ATT->Attenuation);
+      *s += QStringLiteral("<Text 140 60 12 #000000 0 \"%1 dB Bridged-Tee-Type Attenuator\">\n").arg(ATT->Attenuation);
       if (!SP_box)
       {// If the SP simulation box option is activated, then the input and output ports are attached.
        // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-          *s += QString("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
-          *s += QString("<Text 400 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
+          *s += QStringLiteral("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+          *s += QStringLiteral("<Text 400 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
       }
       *s += "</Paintings>\n";
       break;
 
       case REFLECTION_TYPE:
-        *s += QString("<R R1 1 130 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += QStringLiteral("<R R1 1 130 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
         *s += "<GND * 1 130 330 0 0 0 0>\n";
-        *s += QString("<Coupler X1 5 200 200 29 -26 0 1 \"0.7071\" 0 \"90\" 0 \"%1\" 0>\n").arg(ATT->Zin);
-        *s += QString("<R R1 1 270 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += QStringLiteral("<Coupler X1 5 200 200 29 -26 0 1 \"0.7071\" 0 \"90\" 0 \"%1\" 0>\n").arg(ATT->Zin);
+        *s += QStringLiteral("<R R1 1 270 300 15 -26 0 1 \"%1\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
         *s += "<GND * 1 270 330 0 0 0 0>\n";
 
         if (SP_box)
@@ -378,17 +378,17 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
           //-----------------------------
           // Resistor attenuators are broadband ckts, so it's pointless to ask the user to input the analysis freq sweep. Let's do a wideband
           // sweep and then the user can modify that in the schematic
-          *s += QString("<.SP SP1 1 80 400 0 83 0 0 \"lin\" 1 \"50 MHz\" 1 \"3 GHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n");
+          *s += QStringLiteral("<.SP SP1 1 80 400 0 83 0 0 \"lin\" 1 \"50 MHz\" 1 \"3 GHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n");
 
           // Equations
           *s += "<Eqn Eqn1 1 300 400 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
           // Input term
-          *s += QString("<Pac P1 1 50 200 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+          *s += QStringLiteral("<Pac P1 1 50 200 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
           *s += "<GND * 1 50 230 0 0 0 0>\n";
 
           // Output term
-          *s += QString("<Pac P1 1 350 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+          *s += QStringLiteral("<Pac P1 1 350 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
           *s += "<GND * 1 350 230 0 0 0 0>\n";
         }
         *s += "</Components>\n";
@@ -421,12 +421,12 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
         *s += "<Diagrams>\n";
         *s += "</Diagrams>\n";
         *s += "<Paintings>\n";
-        *s += QString("<Text 100 100 12 #000000 0 \"%1 dB Reflection Attenuator\">\n").arg(ATT->Attenuation);
+        *s += QStringLiteral("<Text 100 100 12 #000000 0 \"%1 dB Reflection Attenuator\">\n").arg(ATT->Attenuation);
         if (!SP_box)
         {// If the SP simulation box option is activated, then the input and output ports are attached.
          // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-            *s += QString("<Text 70 135 10 #000000 0 \"Z0: %1 Ohm\">\n").arg(ATT->Zin);
-            *s += QString("<Text 270 135 10 #000000 0 \"Z0: %1 Ohm\">\n").arg(ATT->Zout);
+            *s += QStringLiteral("<Text 70 135 10 #000000 0 \"Z0: %1 Ohm\">\n").arg(ATT->Zin);
+            *s += QStringLiteral("<Text 270 135 10 #000000 0 \"Z0: %1 Ohm\">\n").arg(ATT->Zout);
         }
         *s += "</Paintings>\n";
 
@@ -436,20 +436,20 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
         if (ATT->useLumped)
         {
           double w = 2*PI*ATT->freq;
-          *s += QString("<L L1 1 250 0 -40 -60 0 0 \"%1H\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(num2str(ATT->Zin/w));
-          *s += QString("<C C1 1 180 -60 -90 -20 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
+          *s += QStringLiteral("<L L1 1 250 0 -40 -60 0 0 \"%1H\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(num2str(ATT->Zin/w));
+          *s += QStringLiteral("<C C1 1 180 -60 -90 -20 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
           *s += "<GND * 1 180 -90 0 0 1 0>\n";
-          *s += QString("<C C1 1 320 -60 20 -20 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
+          *s += QStringLiteral("<C C1 1 320 -60 20 -20 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
           *s += "<GND * 1 320 -90 0 0 1 0>\n";
         }
         else
         {
-            *s += QString("<TLIN Line1 1 250 0 -38 -75 0 0 \"%1 Ohm\" 1 \"%2 mm\" 1 \"0 dB\" 0 \"26.85\" 0>\n").arg(ATT->Zin).arg(QString::number(ATT->L*1e3, 'f', 1));
+            *s += QStringLiteral("<TLIN Line1 1 250 0 -38 -75 0 0 \"%1 Ohm\" 1 \"%2 mm\" 1 \"0 dB\" 0 \"26.85\" 0>\n").arg(ATT->Zin).arg(QString::number(ATT->L*1e3, 'f', 1));
         }
-        *s += QString("<R R1 1 100 50 15 -26 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
-        *s += QString("<R R1 1 100 150 15 -26 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zin);
+        *s += QStringLiteral("<R R1 1 100 50 15 -26 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += QStringLiteral("<R R1 1 100 150 15 -26 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zin);
         *s += "<GND * 1 100 180 0 0 0 0>\n";
-        *s += QString("<R R1 1 400 150 -100 -15 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += QStringLiteral("<R R1 1 400 150 -100 -15 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
         *s += "<GND * 1 400 180 0 0 0 0>\n";
 
         if (SP_box)
@@ -457,19 +457,19 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
           // S-parameter simulation block
           //-----------------------------
           // The quarter-wave line is a narrowband device... so let's set the SP sweep from f0/2 to 3*f0/2
-          QString freq_start = QString("%1").arg(0.5*ATT->freq*1e-6);//MHz
-          QString freq_stop = QString("%1").arg(1.5*ATT->freq*1e-6);//MHz
-          *s += QString("<.SP SP1 1 100 270 0 83 0 0 \"lin\" 1 \"%1 MHz\" 1 \"%2 MHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n").arg(freq_start).arg(freq_stop);
+          QString freq_start = QStringLiteral("%1").arg(0.5*ATT->freq*1e-6);//MHz
+          QString freq_stop = QStringLiteral("%1").arg(1.5*ATT->freq*1e-6);//MHz
+          *s += QStringLiteral("<.SP SP1 1 100 270 0 83 0 0 \"lin\" 1 \"%1 MHz\" 1 \"%2 MHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n").arg(freq_start).arg(freq_stop);
 
           // Equations
           *s += "<Eqn Eqn1 1 320 270 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
           // Input term
-          *s += QString("<Pac P1 1 0 150 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+          *s += QStringLiteral("<Pac P1 1 0 150 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
           *s += "<GND * 1 0 180 0 0 0 0>\n";
 
           // Output term
-          *s += QString("<Pac P1 1 500 150 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+          *s += QStringLiteral("<Pac P1 1 500 150 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
           *s += "<GND * 1 500 180 0 0 0 0>\n";
         }
         *s += "</Components>\n";
@@ -502,14 +502,14 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
         *s += "<Paintings>\n";
 
         //In the case of the Pi-equivalent of the quarter wavelength line it is needed to put the title slighly higher.
-        if (ATT->useLumped) *s += QString("<Text 80 -140 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave series attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
-        else *s += QString("<Text 80 -120 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave series attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
+        if (ATT->useLumped) *s += QStringLiteral("<Text 80 -140 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave series attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
+        else *s += QStringLiteral("<Text 80 -120 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave series attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
 
         if (!SP_box)
         {// If the SP simulation box option is activated, then the input and output ports are attached.
          // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-            *s += QString("<Text 50 -30 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
-            *s += QString("<Text 390 -30 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
+            *s += QStringLiteral("<Text 50 -30 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+            *s += QStringLiteral("<Text 390 -30 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
         }
         *s += "</Paintings>\n";
         break;
@@ -517,40 +517,40 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
         if (ATT->useLumped)
         {
            double w = 2*PI*ATT->freq;
-           *s += QString("<L L1 1 200 60 20 -35 0 1 \"%1H\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(num2str(ATT->Zin/w));
-           *s += QString("<C C1 1 200 -60 -90 -20 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
+           *s += QStringLiteral("<L L1 1 200 60 20 -35 0 1 \"%1H\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(num2str(ATT->Zin/w));
+           *s += QStringLiteral("<C C1 1 200 -60 -90 -20 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
            *s += "<GND * 1 200 -90 0 0 1 0>\n";
-           *s += QString("<C C1 1 320 150 0 60 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
+           *s += QStringLiteral("<C C1 1 320 150 0 60 0 1 \"%1F\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(1/(ATT->Zin*w)));
            *s += "<GND * 1 320 180 0 0 0 0>\n";
         }
         else
         {
-           *s += QString("<TLIN Line1 1 200 60 20 -35 0 1 \"%1 Ohm\" 1 \"%2 mm\" 1 \"0 dB\" 0 \"26.85\" 0>\n").arg(ATT->Zin).arg(QString::number(ATT->L*1e3, 'f', 1));
+           *s += QStringLiteral("<TLIN Line1 1 200 60 20 -35 0 1 \"%1 Ohm\" 1 \"%2 mm\" 1 \"0 dB\" 0 \"26.85\" 0>\n").arg(ATT->Zin).arg(QString::number(ATT->L*1e3, 'f', 1));
         }
-        *s += QString("<R R1 1 160 150 -40 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += QStringLiteral("<R R1 1 160 150 -40 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
         *s += "<GND * 1 160 180 0 0 0 0>\n";
-        *s += QString("<R R1 1 240 150 -20 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zin);
+        *s += QStringLiteral("<R R1 1 240 150 -20 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(ATT->Zin);
         *s += "<GND * 1 240 180 0 0 0 0>\n";
-        *s += QString("<R R1 1 300 0 -30 -60 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += QStringLiteral("<R R1 1 300 0 -30 -60 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
 
         if (SP_box)
         {
            // S-parameter simulation block
            //-----------------------------
            // The quarter-wave line is a narrowband device... so let's set the SP sweep from f0/2 to 3*f0/2
-           QString freq_start = QString("%1").arg(0.5*ATT->freq*1e-6);//MHz
-           QString freq_stop = QString("%1").arg(1.5*ATT->freq*1e-6);//MHz
-           *s += QString("<.SP SP1 1 100 270 0 83 0 0 \"lin\" 1 \"%1 MHz\" 1 \"%2 MHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n").arg(freq_start).arg(freq_stop);
+           QString freq_start = QStringLiteral("%1").arg(0.5*ATT->freq*1e-6);//MHz
+           QString freq_stop = QStringLiteral("%1").arg(1.5*ATT->freq*1e-6);//MHz
+           *s += QStringLiteral("<.SP SP1 1 100 270 0 83 0 0 \"lin\" 1 \"%1 MHz\" 1 \"%2 MHz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n").arg(freq_start).arg(freq_stop);
 
            // Equations
            *s += "<Eqn Eqn1 1 320 270 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
            // Input term
-           *s += QString("<Pac P1 1 0 150 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+           *s += QStringLiteral("<Pac P1 1 0 150 -100 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
            *s += "<GND * 1 0 180 0 0 0 0>\n";
 
            // Output term
-           *s += QString("<Pac P1 1 500 150 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+           *s += QStringLiteral("<Pac P1 1 500 150 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
            *s += "<GND * 1 500 180 0 0 0 0>\n";
         }
         *s += "</Components>\n";
@@ -594,20 +594,20 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
         *s += "<Paintings>\n";
 
         //Put the title a little bit higher because of the shunt cpa
-        if (ATT->useLumped) *s += QString("<Text 80 -140 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave shunt attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
-        else *s += QString("<Text 80 -120 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave shunt attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
+        if (ATT->useLumped) *s += QStringLiteral("<Text 80 -140 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave shunt attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
+        else *s += QStringLiteral("<Text 80 -120 12 #000000 0 \"%1 dB @ %2Hz Quarter-Wave shunt attenuator\">\n").arg(ATT->Attenuation).arg(num2str(ATT->freq));
 
         if (!SP_box)
         {// If the SP simulation box option is activated, then the input and output ports are attached.
          // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-            *s += QString("<Text 50 -30 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
-            *s += QString("<Text 390 -30 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
+            *s += QStringLiteral("<Text 50 -30 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+            *s += QStringLiteral("<Text 390 -30 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
         }
         *s += "</Paintings>\n";
         break;
       case L_PAD_1ST_SERIES:
-          *s += QString("<R R1 1 255 130 -35 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
-          *s += QString("<R R2 1 330 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
+          *s += QStringLiteral("<R R1 1 255 130 -35 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+          *s += QStringLiteral("<R R2 1 330 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
           *s += "<GND * 1 330 230 0 0 0 0>\n";
           if (SP_box)
            {
@@ -621,11 +621,11 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
              *s += "<Eqn Eqn1 1 360 350 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
              // Input term
-             *s += QString("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+             *s += QStringLiteral("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
              *s += "<GND * 1 50 230 0 0 0 0>\n";
 
              // Output term
-             *s += QString("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+             *s += QStringLiteral("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
              *s += "<GND * 1 460 230 0 0 0 0>\n";
            }
           *s += "</Components>\n";
@@ -648,19 +648,19 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
           *s += "<Diagrams>\n";
           *s += "</Diagrams>\n";
           *s += "<Paintings>\n";
-          *s += QString("<Text 160 60 12 #000000 0 \"%1 dB L-pad 1st Series Attenuator\">\n").arg(ATT->Attenuation);
+          *s += QStringLiteral("<Text 160 60 12 #000000 0 \"%1 dB L-pad 1st Series Attenuator\">\n").arg(ATT->Attenuation);
           if (!SP_box)
              {// If the SP simulation box option is activated, then the input and output ports are attached.
               // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-                *s += QString("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
-                *s += QString("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(QString::number(ATT->R3, 'f', 1));
+                *s += QStringLiteral("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+                *s += QStringLiteral("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(QString::number(ATT->R3, 'f', 1));
              }
           *s += "</Paintings>\n";
           break;
 
       case L_PAD_1ST_SHUNT:
-          *s += QString("<R R1 1 180 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
-          *s += QString("<R R2 1 255 130 -35 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
+          *s += QStringLiteral("<R R1 1 180 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+          *s += QStringLiteral("<R R2 1 255 130 -35 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R2, 'f', 1));
           *s += "<GND * 1 180 230 0 0 0 0>\n";
 
           if (SP_box)
@@ -675,11 +675,11 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
              *s += "<Eqn Eqn1 1 360 350 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
              // Input term
-             *s += QString("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+             *s += QStringLiteral("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
              *s += "<GND * 1 50 230 0 0 0 0>\n";
 
              // Output term
-             *s += QString("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+             *s += QStringLiteral("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
              *s += "<GND * 1 460 230 0 0 0 0>\n";
            }
           *s += "</Components>\n";
@@ -702,17 +702,17 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
           *s += "<Diagrams>\n";
           *s += "</Diagrams>\n";
           *s += "<Paintings>\n";
-          *s += QString("<Text 160 60 12 #000000 0 \"%1 dB L-pad 1st Shunt Attenuator\">\n").arg(ATT->Attenuation);
+          *s += QStringLiteral("<Text 160 60 12 #000000 0 \"%1 dB L-pad 1st Shunt Attenuator\">\n").arg(ATT->Attenuation);
           if (!SP_box)
              {// If the SP simulation box option is activated, then the input and output ports are attached.
               // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-                *s += QString("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
-                *s += QString("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(QString::number(ATT->R3, 'f', 1));
+                *s += QStringLiteral("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+                *s += QStringLiteral("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(QString::number(ATT->R3, 'f', 1));
              }
           *s += "</Paintings>\n";
       break;
      case R_SERIES:
-      *s += QString("<R R1 1 255 130 -35 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+      *s += QStringLiteral("<R R1 1 255 130 -35 -45 0 0 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
       if (SP_box)
        {
          // S-parameter simulation block
@@ -725,11 +725,11 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
          *s += "<Eqn Eqn1 1 360 350 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
          // Input term
-         *s += QString("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+         *s += QStringLiteral("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
          *s += "<GND * 1 50 230 0 0 0 0>\n";
 
          // Output term
-         *s += QString("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+         *s += QStringLiteral("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
          *s += "<GND * 1 460 230 0 0 0 0>\n";
        }
       *s += "</Components>\n";
@@ -752,19 +752,19 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
       *s += "<Diagrams>\n";
       *s += "</Diagrams>\n";
       *s += "<Paintings>\n";
-      *s += QString("<Text 160 60 12 #000000 0 \"%1 dB R Series Attenuator\">\n").arg(ATT->Attenuation);
+      *s += QStringLiteral("<Text 160 60 12 #000000 0 \"%1 dB R Series Attenuator\">\n").arg(ATT->Attenuation);
       if (!SP_box)
          {// If the SP simulation box option is activated, then the input and output ports are attached.
           // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-            *s += QString("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
-            *s += QString("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
+            *s += QStringLiteral("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+            *s += QStringLiteral("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
          }
       *s += "</Paintings>\n";
       break;
 
       case R_SHUNT:
 
-        *s += QString("<R R1 1 250 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
+        *s += QStringLiteral("<R R1 1 250 200 -15 60 0 1 \"%1 Ohm\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"US\" 0>\n").arg(QString::number(ATT->R1, 'f', 1));
         *s += "<GND * 1 250 230 0 0 0 0>\n";
         if (SP_box)
          {
@@ -778,11 +778,11 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
            *s += "<Eqn Eqn1 1 360 350 -32 19 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"yes\" 0>\n";
 
            // Input term
-           *s += QString("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
+           *s += QStringLiteral("<Pac P1 1 50 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zin);
            *s += "<GND * 1 50 230 0 0 0 0>\n";
 
            // Output term
-           *s += QString("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
+           *s += QStringLiteral("<Pac P1 1 460 200 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0 \"26.85\" 0>\n").arg(ATT->Zout);
            *s += "<GND * 1 460 230 0 0 0 0>\n";
          }
         *s += "</Components>\n";
@@ -804,12 +804,12 @@ QString* QUCS_Att::createSchematic(tagATT *ATT, bool SP_box)
         *s += "<Diagrams>\n";
         *s += "</Diagrams>\n";
         *s += "<Paintings>\n";
-        *s += QString("<Text 160 60 12 #000000 0 \"%1 dB Shunt R Attenuator\">\n").arg(ATT->Attenuation);
+        *s += QStringLiteral("<Text 160 60 12 #000000 0 \"%1 dB Shunt R Attenuator\">\n").arg(ATT->Attenuation);
         if (!SP_box)
            {// If the SP simulation box option is activated, then the input and output ports are attached.
             // Thus, it doesn't make sense to have a text field indicating the input/output impedance
-              *s += QString("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
-              *s += QString("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
+              *s += QStringLiteral("<Text 50 122 10 #000000 0 \"Z1: %1 Ohm\">\n").arg(ATT->Zin);
+              *s += QStringLiteral("<Text 360 122 10 #000000 0 \"Z2: %1 Ohm\">\n").arg(ATT->Zout);
            }
         *s += "</Paintings>\n";
         break;

@@ -172,12 +172,12 @@ void ExportDialog::setFileName()
 
   if (fileName.isEmpty()) return;
 
-  if (selectedFilter.contains("*.png", Qt::CaseInsensitive)) filterExtension = QString(".png");
-  if (selectedFilter.contains("*.jpg", Qt::CaseInsensitive)) filterExtension = QString(".jpg");
-  if (selectedFilter.contains("*.svg", Qt::CaseInsensitive)) filterExtension = QString(".svg");
-  if (selectedFilter.contains("*.pdf", Qt::CaseInsensitive)) filterExtension = QString(".pdf");
-  if (selectedFilter.contains("*.pdf_tex", Qt::CaseInsensitive)) filterExtension = QString(".pdf_tex");
-  if (selectedFilter.contains("*.eps", Qt::CaseInsensitive)) filterExtension = QString(".eps");
+  if (selectedFilter.contains("*.png", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".png");
+  if (selectedFilter.contains("*.jpg", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".jpg");
+  if (selectedFilter.contains("*.svg", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".svg");
+  if (selectedFilter.contains("*.pdf", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".pdf");
+  if (selectedFilter.contains("*.pdf_tex", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".pdf_tex");
+  if (selectedFilter.contains("*.eps", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".eps");
 
   QFileInfo fileInfo(fileName);
 

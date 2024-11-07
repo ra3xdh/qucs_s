@@ -125,11 +125,11 @@ QString C_SPICE::spice_netlist(bool)
     QString C_Line_4= Props.at(3)->Value;
     QString C_Line_5= Props.at(4)->Value;
 
-    if(  C.length()  > 0)          s += QString("%1").arg(C);
-    if(  C_Line_2.length() > 0 )   s += QString("\n%1").arg(C_Line_2);
-    if(  C_Line_3.length() > 0 )   s += QString("\n%1").arg(C_Line_3);
-    if(  C_Line_4.length() > 0 )   s += QString("\n%1").arg(C_Line_4);
-    if(  C_Line_5.length() > 0 )   s += QString("\n%1").arg(C_Line_5);
+    if(  C.length()  > 0)          s += QStringLiteral("%1").arg(C);
+    if(  C_Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(C_Line_2);
+    if(  C_Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(C_Line_3);
+    if(  C_Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(C_Line_4);
+    if(  C_Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(C_Line_5);
     s += "\n";
     return s;
 }

@@ -162,7 +162,7 @@ QString Logical_Inv::spice_netlist(bool isXyce)
     s += " " + Ports.at(1)->Connection->Name;
     s += " " + Ports.at(0)->Connection->Name;
     s += " " + tmp_model + "\n";
-    s += QString(".model %1 d_inverter(rise_delay=%2 fall_delay=%2 input_load=5e-13)\n")
+    s += QStringLiteral(".model %1 d_inverter(rise_delay=%2 fall_delay=%2 input_load=5e-13)\n")
             .arg(tmp_model).arg(td);
     return s;
 }

@@ -106,7 +106,7 @@ QString iRect::spice_netlist(bool)
    misc::str2num(Props.at(4)->Value,Tfval,unit,fac); 
      T = Tfval*fac+T;    
      
-    s += QString(" DC 0 PULSE( 0  -%1 %2 %3 %4 %5 %6)  AC 0\n").arg(U).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T);
+    s += QStringLiteral(" DC 0 PULSE( 0  -%1 %2 %3 %4 %5 %6)  AC 0\n").arg(U).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T);
 
     return s;
 }

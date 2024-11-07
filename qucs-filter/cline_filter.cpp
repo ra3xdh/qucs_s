@@ -39,8 +39,8 @@ QString* CoupledLine_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
 
   x = 60;
   *s += "<Components>\n";
-  *s += QString("<Pac P1 1 %1 380 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
-  *s += QString("<GND * 1 %1 410 0 0 0 0>\n").arg(x);
+  *s += QStringLiteral("<Pac P1 1 %1 380 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
+  *s += QStringLiteral("<GND * 1 %1 410 0 0 0 0>\n").arg(x);
 
   x -= 30;
   y  = 170;
@@ -79,15 +79,15 @@ QString* CoupledLine_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
     if(isMicrostrip) {
       y += 40;
       len -= dl * Substrate->height;
-      *s += QString("<MCOUPLED MS1 1 %1 %2 -26 37 0 0 \"Sub1\" 1 \"%3\" 1 \"%4\" 1 \"%5\" 1 \"Kirschning\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(x).arg(y).arg(num2str(width)).arg(num2str(len)).arg(num2str(gap));
-      *s += QString("<MOPEN MS1 1 %1 %2 -12 15 1 2 \"Sub1\" 1 \"%3\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x-60).arg(y+30).arg(num2str(width));
-      *s += QString("<MOPEN MS1 1 %1 %2 -26 -81 1 0 \"Sub1\" 1 \"%3\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x+60).arg(y-30).arg(num2str(width));
+      *s += QStringLiteral("<MCOUPLED MS1 1 %1 %2 -26 37 0 0 \"Sub1\" 1 \"%3\" 1 \"%4\" 1 \"%5\" 1 \"Kirschning\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(x).arg(y).arg(num2str(width)).arg(num2str(len)).arg(num2str(gap));
+      *s += QStringLiteral("<MOPEN MS1 1 %1 %2 -12 15 1 2 \"Sub1\" 1 \"%3\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x-60).arg(y+30).arg(num2str(width));
+      *s += QStringLiteral("<MOPEN MS1 1 %1 %2 -26 -81 1 0 \"Sub1\" 1 \"%3\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n").arg(x+60).arg(y-30).arg(num2str(width));
       y += 20;
       x += 60;
     }
     else {
       y += 20;
-      *s += QString("<CTLIN Line1 1 %1 %2 -26 16 0 0 \"%3\" 1 \"%4\" 1 \"%5\" 1 \"1\" 0 \"1\" 0 \"0 dB\" 0 \"0 dB\" 0 \"26.85\" 0>\n").arg(x).arg(y).arg(Z0e).arg(Z0o).arg(num2str(len));
+      *s += QStringLiteral("<CTLIN Line1 1 %1 %2 -26 16 0 0 \"%3\" 1 \"%4\" 1 \"%5\" 1 \"1\" 0 \"1\" 0 \"0 dB\" 0 \"0 dB\" 0 \"26.85\" 0>\n").arg(x).arg(y).arg(Z0e).arg(Z0o).arg(num2str(len));
     }
   }
 
@@ -96,25 +96,25 @@ QString* CoupledLine_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
     x += 20;
   else
     x += 80;
-  *s += QString("<Pac P2 1 %1 %2 18 -26 0 1 \"2\" 1 \"%3 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(y+70).arg(Filter->Impedance);
-  *s += QString("<GND * 1 %1 %2 0 0 0 0>\n").arg(x).arg(y+100);
+  *s += QStringLiteral("<Pac P2 1 %1 %2 18 -26 0 1 \"2\" 1 \"%3 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(y+70).arg(Filter->Impedance);
+  *s += QStringLiteral("<GND * 1 %1 %2 0 0 0 0>\n").arg(x).arg(y+100);
 
-  *s += QString("<.SP SP1 1 70 460 0 67 0 0 \"lin\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(2.0 * Filter->Frequency  - Filter->Frequency2)).arg(num2str(2.0 * Filter->Frequency2 - Filter->Frequency));
+  *s += QStringLiteral("<.SP SP1 1 70 460 0 67 0 0 \"lin\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(2.0 * Filter->Frequency  - Filter->Frequency2)).arg(num2str(2.0 * Filter->Frequency2 - Filter->Frequency));
   if(isMicrostrip)
-    *s += QString("<SUBST Sub1 1 310 500 -30 24 0 0 \"%1\" 1 \"%2m\" 1 \"%3m\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate->er).arg(num2str(Substrate->height)).arg(num2str(Substrate->thickness)).arg(Substrate->tand).arg(Substrate->resistivity).arg(Substrate->roughness);
-  *s += QString("<Eqn Eqn1 1 450 560 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
+    *s += QStringLiteral("<SUBST Sub1 1 310 500 -30 24 0 0 \"%1\" 1 \"%2m\" 1 \"%3m\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate->er).arg(num2str(Substrate->height)).arg(num2str(Substrate->thickness)).arg(Substrate->tand).arg(Substrate->resistivity).arg(Substrate->roughness);
+  *s += QStringLiteral("<Eqn Eqn1 1 450 560 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
   *s += "</Components>\n";
 
   *s += "<Wires>\n";
 
   // connect left source
-  *s += QString("<60 180 60 350 \"\" 0 0 0>\n");
-  *s += QString("<60 180 90 180 \"\" 0 0 0>\n");
+  *s += QStringLiteral("<60 180 60 350 \"\" 0 0 0>\n");
+  *s += QStringLiteral("<60 180 90 180 \"\" 0 0 0>\n");
 
   // connect right source
   y += 10;
-  *s += QString("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x).arg(y).arg(x).arg(y+30);
-  *s += QString("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x-50).arg(y).arg(x).arg(y);
+  *s += QStringLiteral("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x).arg(y).arg(x).arg(y+30);
+  *s += QStringLiteral("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x-50).arg(y).arg(x).arg(y);
 
   // wires between components
   x = 150;
@@ -125,7 +125,7 @@ QString* CoupledLine_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
     y += 40;
   }
   for(i = 0; i < Filter->Order; i++) {
-    *s += QString("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x).arg(y).arg(x+dx).arg(y);
+    *s += QStringLiteral("<%1 %2 %3 %4 \"\" 0 0 0>\n").arg(x).arg(y).arg(x+dx).arg(y);
     if(isMicrostrip) {
       x += 150;
       y += 60;
@@ -143,15 +143,15 @@ QString* CoupledLine_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
 
   *s += "<Paintings>\n";
 
-  *s += QString("<Text 70 650 12 #000000 0 \"Coupled-line bandpass filter \\n ");
+  *s += QStringLiteral("<Text 70 650 12 #000000 0 \"Coupled-line bandpass filter \\n ");
   switch(Filter->Type) {
-    case TYPE_BESSEL:      *s += QString("Bessel"); break;
-    case TYPE_BUTTERWORTH: *s += QString("Butterworth"); break;
-    case TYPE_CHEBYSHEV:   *s += QString("Chebyshev"); break;
+    case TYPE_BESSEL:      *s += QStringLiteral("Bessel"); break;
+    case TYPE_BUTTERWORTH: *s += QStringLiteral("Butterworth"); break;
+    case TYPE_CHEBYSHEV:   *s += QStringLiteral("Chebyshev"); break;
   }
 
-  *s += QString(" %1Hz...%2Hz \\n ").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
-  *s += QString("Impedance matching %3 Ohm\">\n").arg(Filter->Impedance);
+  *s += QStringLiteral(" %1Hz...%2Hz \\n ").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
+  *s += QStringLiteral("Impedance matching %3 Ohm\">\n").arg(Filter->Impedance);
   *s += "</Paintings>\n";
 
   return s;

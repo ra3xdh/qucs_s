@@ -87,14 +87,14 @@ QString OpAmp::spice_netlist(bool isXyce)
     QString Vmax = spicecompat::normalize_value(Props.at(1)->Value);
 
     QString s;
-    s = QString("B_%1 %2 0 V = ").arg(Name).arg(out);
+    s = QStringLiteral("B_%1 %2 0 V = ").arg(Name).arg(out);
 
     if (isXyce) {
-        s += QString("%1*V(%2,%3)*stp(%4-%1*V(%2,%3))*stp(%1*V(%2,%3)-(-%4))"
+        s += QStringLiteral("%1*V(%2,%3)*stp(%4-%1*V(%2,%3))*stp(%1*V(%2,%3)-(-%4))"
                     "+%4*stp(%1*V(%2,%3)-%4)"
                     "+(-%4)*stp((-%4)-%1*V(%2,%3))\n").arg(G).arg(in_p).arg(in_m).arg(Vmax);
     } else {
-        s += QString("%1*V(%2,%3)*u(%4-%1*V(%2,%3))*u(%1*V(%2,%3)-(-%4))"
+        s += QStringLiteral("%1*V(%2,%3)*u(%4-%1*V(%2,%3))*u(%1*V(%2,%3)-(-%4))"
                     "+%4*u(%1*V(%2,%3)-%4)"
                     "+(-%4)*u((-%4)-%1*V(%2,%3))\n").arg(G).arg(in_p).arg(in_m).arg(Vmax);
     }

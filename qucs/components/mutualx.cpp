@@ -128,7 +128,7 @@ QString MutualX::netlist()
     delete [] k_matrix;
 
 
-    s += QString(" L=\"[%1]\" k=\"[%2]\"\n").arg(L,k);
+    s += QStringLiteral(" L=\"[%1]\" k=\"[%2]\"\n").arg(L,k);
 
     return s;
 }
@@ -239,7 +239,7 @@ QString MutualX::spice_netlist(bool isXyce)
         QString li = "L" + Name + "_L" + QString::number(i+1);
         QString prop_l = "L" + QString::number(i+1);
         QString ind = spicecompat::normalize_value(getProperty(prop_l)->Value);
-        s += QString("%1 %2 %3 %4\n").arg(li)
+        s += QStringLiteral("%1 %2 %3 %4\n").arg(li)
                 .arg(spicecompat::normalize_node_name(Ports.at(2*i)->Connection->Name))
                 .arg(spicecompat::normalize_node_name(Ports.at(2*i+1)->Connection->Name))
                 .arg(ind);
@@ -254,7 +254,7 @@ QString MutualX::spice_netlist(bool isXyce)
             auto pp = getProperty("k" + QString::number(i+1) + QString::number(j+1));
             if (pp == nullptr) continue;
             QString val_k = spicecompat::normalize_value(pp->Value);
-            s += QString("%1 %2 %3 %4\n").arg(kij).arg(li).arg(lj).arg(val_k);
+            s += QStringLiteral("%1 %2 %3 %4\n").arg(kij).arg(li).arg(lj).arg(val_k);
         }
     }
     return s;

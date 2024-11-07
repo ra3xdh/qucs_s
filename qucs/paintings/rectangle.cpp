@@ -201,7 +201,7 @@ QString qucs::Rectangle::saveJSON()
     arg(Brush.color().name()).arg(toBrushString(Brush.style())) : "";
 
   QString s =
-    QString("{\"type\" : \"rectangle\", "
+    QStringLiteral("{\"type\" : \"rectangle\", "
       "\"x\" : %1, \"y\" : %2, \"w\" : %3, \"h\" : %4, "
       "\"color\" : \"%5\", \"thick\" : %6, \"style\" : \"%7\", %8},").
       arg(cx).arg(cy).arg(x2).arg(y2).

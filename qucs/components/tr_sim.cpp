@@ -104,7 +104,7 @@ QString TR_Sim::spice_netlist(bool isXyce)
     Npoints = Props.at(3)->Value.toDouble();
     Tstep = (Tstop-Tstart)/(Npoints-1);
 
-    s += QString(" %1 %2 %3 ").arg(Tstep).arg(Tstop).arg(Tstart);
+    s += QStringLiteral(" %1 %2 %3 ").arg(Tstep).arg(Tstop).arg(Tstart);
 
     QString max_step = spicecompat::normalize_value(getProperty("MaxStep")->Value);
     if (max_step!="0") s+= max_step;

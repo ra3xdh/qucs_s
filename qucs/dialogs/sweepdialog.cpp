@@ -261,7 +261,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
           else
             pn->Name = "0A";
       } else {
-          QString src_nam = QString("V"+pc->Name+"#branch").toLower();
+          QString src_nam = QStringLiteral("V%1#branch").arg(pc->Name).toLower();
           if (NodeVals->contains(src_nam)) {
               pn->Name = misc::num2str(NodeVals->value(src_nam))+"A";
           } else pn->Name = "0A";

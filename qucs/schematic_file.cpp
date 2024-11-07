@@ -323,21 +323,21 @@ int Schematic::savePropsJSON()
 
     stream << "{\n";
 
-    stream << QString("  \"description\" : \"%1 verilog device\",\n").arg(module);
+    stream << QStringLiteral("  \"description\" : \"%1 verilog device\",\n").arg(module);
     stream << "  \"property\" : [\n";
     auto name = prop_name.begin();
     auto val = prop_val.begin();
     for(; name != prop_name.end(); name++,val++) {
-      stream << QString("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"false\", \"desc\" : \"-\"},\n")
+      stream << QStringLiteral("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"false\", \"desc\" : \"-\"},\n")
                     .arg(*name,*val);
     }
     stream << "  ],\n\n";
     stream << "  \"tx\" : 4,\n";
     stream << "  \"ty\" : 4,\n";
-    stream << QString("  \"Model\" : \"%1\",\n").arg(module);
+    stream << QStringLiteral("  \"Model\" : \"%1\",\n").arg(module);
     stream << "  \"NetName\" : \"T\",\n\n\n";
-    stream << QString("  \"SymName\" : \"%1\",\n").arg(module);
-    stream << QString("  \"BitmapFile\" : \"%1\",\n").arg(module);
+    stream << QStringLiteral("  \"SymName\" : \"%1\",\n").arg(module);
+    stream << QStringLiteral("  \"BitmapFile\" : \"%1\",\n").arg(module);
 
     stream << "}";
 
@@ -443,23 +443,23 @@ int Schematic::savePropsJSON()
 
     stream << "{\n";
 
-    stream << QString("  \"description\" : \"%1 verilog device\",\n").arg(module);
+    stream << QStringLiteral("  \"description\" : \"%1 verilog device\",\n").arg(module);
     stream << "  \"property\" : [\n";
     auto name = prop_name.begin();
     auto val = prop_val.begin();
     auto disp = prop_disp.begin();
     auto desc = prop_desc.begin();
     for(; name != prop_name.end(); name++,val++,disp++,desc++) {
-      stream << QString("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"%3\", \"desc\" : \"%4\"},\n")
+      stream << QStringLiteral("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"%3\", \"desc\" : \"%4\"},\n")
                     .arg(*name,*val,*disp,*desc);
     }
     stream << "  ],\n\n";
     stream << "  \"tx\" : 4,\n";
     stream << "  \"ty\" : 4,\n";
-    stream << QString("  \"Model\" : \"%1\",\n").arg(module);
+    stream << QStringLiteral("  \"Model\" : \"%1\",\n").arg(module);
     stream << "  \"NetName\" : \"T\",\n\n\n";
-    stream << QString("  \"SymName\" : \"%1\",\n").arg(module);
-    stream << QString("  \"BitmapFile\" : \"%1\",\n").arg(module);
+    stream << QStringLiteral("  \"SymName\" : \"%1\",\n").arg(module);
+    stream << QStringLiteral("  \"BitmapFile\" : \"%1\",\n").arg(module);
 
     stream << "}";
 
@@ -711,12 +711,12 @@ int Schematic::saveDocument()
           // how to capture [warning]? need to modify admsXml?
           // TODO put stdout, stderr into a dock window, not messagebox
           if (!builder.waitForFinished()) {
-            QString cmdString = QString("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
+            QString cmdString = QStringLiteral("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
             cmdString = cmdString + builder.errorString();
             QMessageBox::critical(this, tr("Error"), cmdString);
           }
           else {
-            QString cmdString = QString("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
+            QString cmdString = QStringLiteral("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
             cmdString = cmdString + builder.readAll();
             QMessageBox::information(this, tr("Status"), cmdString);
           }
@@ -2053,7 +2053,7 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
       AbstractSpiceKernel *kern = new AbstractSpiceKernel(this);
       QStringList err_lst;
       if (!kern->checkSchematic(err_lst)) {
-          QString s = QString("Subcircuit %1 contains SPICE-incompatible components.\n"
+          QString s = QStringLiteral("Subcircuit %1 contains SPICE-incompatible components.\n"
                               "Check these components: %2 \n")
                   .arg(this->DocName).arg(err_lst.join("; "));
           ErrText->insertPlainText(s);

@@ -609,7 +609,7 @@ void SimMessage::startSimulator()
   // append process PATH
   // insert Qucs bin dir, so ASCO can find qucsator
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
-  if (Program.endsWith(QString("asco") + executableSuffix)) {
+  if (Program.endsWith(QStringLiteral("asco") + executableSuffix)) {
 #ifdef Q_OS_UNIX
     QDir tempDir(QucsSettings.tempFilesDir.absolutePath());
     QString tmpdir = tempDir.filePath("qucs_ascodir"); // ASCO doesn't accept qucsator_rf name

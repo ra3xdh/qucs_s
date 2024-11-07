@@ -511,7 +511,7 @@ void QucsFilter::slotShowResult()
   ResultState++;
   if(ResultState & 1)  c = 0xFF;
   else c = 0x80;
-  QString s = QString("<font color=\"#00%1000\"><b>  ").arg(c, 2, 16);
+  QString s = QStringLiteral("<font color=\"#00%1000\"><b>  ").arg(c, 2, 16);
   LabelResult->setText(tr("Result:") + s + tr("Successful") + "</b></font>");
 
   c = 500;

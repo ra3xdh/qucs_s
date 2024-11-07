@@ -122,12 +122,12 @@ QStringList SP_Sim::getNgspiceExtraVariables()
     int port_number = getSPortsNumber();
     for (int i = 0; i < port_number; i++) {
         for (int j = 0; j < port_number; j++) {
-            QString tail = QString("_%1_%2").arg(i+1).arg(j+1);
-            vars.append(QString("S%1").arg(tail));
-            vars.append(QString("Y%1").arg(tail));
-            vars.append(QString("Z%1").arg(tail));
+            QString tail = QStringLiteral("_%1_%2").arg(i+1).arg(j+1);
+            vars.append(QStringLiteral("S%1").arg(tail));
+            vars.append(QStringLiteral("Y%1").arg(tail));
+            vars.append(QStringLiteral("Z%1").arg(tail));
             if (donoise) {
-                vars.append(QString("Cy%1").arg(tail));
+                vars.append(QStringLiteral("Cy%1").arg(tail));
             }
         }
     }
@@ -146,12 +146,12 @@ QStringList SP_Sim::getXyceExtraVariables()
     int ports_num = getSPortsNumber();
     for (int i = 0; i < ports_num; i++) {
         for (int j = 0; j < ports_num; j++) {
-            QString tail = QString("(%1,%2)").arg(i+1).arg(j+1);
-            vars.append(QString("sdb%1").arg(tail));
-            vars.append(QString("s%1").arg(tail));
-            vars.append(QString("sp%1").arg(tail));
-            vars.append(QString("y%1").arg(tail));
-            vars.append(QString("z%1").arg(tail));
+            QString tail = QStringLiteral("(%1,%2)").arg(i+1).arg(j+1);
+            vars.append(QStringLiteral("sdb%1").arg(tail));
+            vars.append(QStringLiteral("s%1").arg(tail));
+            vars.append(QStringLiteral("sp%1").arg(tail));
+            vars.append(QStringLiteral("y%1").arg(tail));
+            vars.append(QStringLiteral("z%1").arg(tail));
         }
     }
     return vars;
@@ -171,13 +171,13 @@ QString SP_Sim::getSweepString()
         Fstop *= fac;
         double Nd = ceil(log10(Fstop/Fstart)); // number of decades
         double Npd = ceil((Np - 1)/Nd); // points per decade
-        s += QString("DEC %1 ").arg(Npd);
+        s += QStringLiteral("DEC %1 ").arg(Npd);
     } else {  // no need conversion
-        s += QString("LIN %1 ").arg(Props.at(3)->Value);
+        s += QStringLiteral("LIN %1 ").arg(Props.at(3)->Value);
     }
     QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
     QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
-    s += QString("%1 %2").arg(fstart).arg(fstop); 
+    s += QStringLiteral("%1 %2").arg(fstart).arg(fstop);
     return s;
 }
 
@@ -199,7 +199,7 @@ QString SP_Sim::xyce_netlist()
     s += ".PRINT ac format=std file=spice4qucs_sparam.prn ";
     for (int i = 0; i < ports_num; i++) {
         for (int j = 0; j < ports_num; j++) {
-            s += QString(" sdb(%1,%2) s(%1,%2) sp(%1,%2) y(%1,%2) z(%1,%2) ").arg(i+1).arg(j+1);
+            s += QStringLiteral(" sdb(%1,%2) s(%1,%2) sp(%1,%2) y(%1,%2) z(%1,%2) ").arg(i+1).arg(j+1);
         }
     }
     s += "\n";*/

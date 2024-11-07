@@ -66,8 +66,8 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
   x = 20;
   if(Filter->Class != CLASS_BANDPASS)  x += 40;
   *s += "<Components>\n";
-  *s += QString("<Pac P1 1 %1 320 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
-  *s += QString("<GND * 1 %1 350 0 0 0 0>\n").arg(x);
+  *s += QStringLiteral("<Pac P1 1 %1 320 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
+  *s += QStringLiteral("<GND * 1 %1 350 0 0 0 0>\n").arg(x);
 
   for(i = 0; i < Filter->Order; i++) {
     x = 100 +((i+1) * 70);
@@ -93,18 +93,18 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
 
       case CLASS_LOWPASS:
         if(i & 1)
-          *s += QString("<L L1 1 %1 %2 -26 10 0 0 \"%3H\" 1>\n").arg(x).arg(yl).arg(num2str(Value));
+          *s += QStringLiteral("<L L1 1 %1 %2 -26 10 0 0 \"%3H\" 1>\n").arg(x).arg(yl).arg(num2str(Value));
         else
-          *s += QString("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n").arg(x).arg(yc).arg(num2str(Value));
+          *s += QStringLiteral("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n").arg(x).arg(yc).arg(num2str(Value));
         break;
 
 
       case CLASS_HIGHPASS:
         Value = 1.0 / Omega / Omega / Value;  // transform to highpass
         if(i & 1)
-          *s += QString("<C C1 1 %1 %2 -27 10 0 0 \"%3F\" 1>\n").arg(x).arg(yl).arg(num2str(Value));
+          *s += QStringLiteral("<C C1 1 %1 %2 -27 10 0 0 \"%3F\" 1>\n").arg(x).arg(yl).arg(num2str(Value));
         else
-          *s += QString("<L L1 1 %1 %2 17 -26 0 1 \"%3H\" 1>\n").arg(x).arg(yc).arg(num2str(Value));
+          *s += QStringLiteral("<L L1 1 %1 %2 17 -26 0 1 \"%3H\" 1>\n").arg(x).arg(yc).arg(num2str(Value));
         break;
 
 
@@ -112,12 +112,12 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
         Value /= Bandwidth;    // transform to bandpass
         Value2 = 0.25 / Filter->Frequency / Filter->Frequency2 / pi / pi / Value;
         if(i & 1) {
-          *s += QString("<L L1 1 %1 %2 -26 -44 0 0 \"%3H\" 1>\n").arg(x+40).arg(yl).arg(num2str(Value));
-          *s += QString("<C C1 1 %1 %2 -26 10 0 0 \"%3F\" 1>\n").arg(x-20).arg(yl).arg(num2str(Value2));
+          *s += QStringLiteral("<L L1 1 %1 %2 -26 -44 0 0 \"%3H\" 1>\n").arg(x+40).arg(yl).arg(num2str(Value));
+          *s += QStringLiteral("<C C1 1 %1 %2 -26 10 0 0 \"%3F\" 1>\n").arg(x-20).arg(yl).arg(num2str(Value2));
         }
         else {
-          *s += QString("<L L1 1 %1 %2 8 -26 0 1 \"%3H\" 1>\n").arg(x).arg(yc).arg(num2str(Value2));
-          *s += QString("<C C1 1 %1 %2 -8 46 0 1 \"%3F\" 1>\n").arg(x-30).arg(yc).arg(num2str(Value));
+          *s += QStringLiteral("<L L1 1 %1 %2 8 -26 0 1 \"%3H\" 1>\n").arg(x).arg(yc).arg(num2str(Value2));
+          *s += QStringLiteral("<C C1 1 %1 %2 -8 46 0 1 \"%3F\" 1>\n").arg(x-30).arg(yc).arg(num2str(Value));
         }
         break;
 
@@ -126,12 +126,12 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
         Value2 = 1.0 / Omega / Omega / Bandwidth / Value; // transform to bandstop
         Value *= 0.5 * fabs(Filter->Frequency2/Filter->Frequency - Filter->Frequency/Filter->Frequency2);
         if(i & 1) {
-          *s += QString("<L L1 1 %1 %2 -26 -44 0 0 \"%3H\" 1>\n").arg(x).arg(yl-35).arg(num2str(Value));
-          *s += QString("<C C1 1 %1 %2 -26 10 0 0 \"%3F\" 1>\n").arg(x).arg(yl).arg(num2str(Value2));
+          *s += QStringLiteral("<L L1 1 %1 %2 -26 -44 0 0 \"%3H\" 1>\n").arg(x).arg(yl-35).arg(num2str(Value));
+          *s += QStringLiteral("<C C1 1 %1 %2 -26 10 0 0 \"%3F\" 1>\n").arg(x).arg(yl).arg(num2str(Value2));
         }
         else {
-          *s += QString("<L L1 1 %1 %2 17 -26 0 1 \"%3H\" 1>\n").arg(x).arg(yc).arg(num2str(Value2));
-          *s += QString("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n").arg(x).arg(yc+60).arg(num2str(Value));
+          *s += QStringLiteral("<L L1 1 %1 %2 17 -26 0 1 \"%3H\" 1>\n").arg(x).arg(yc).arg(num2str(Value2));
+          *s += QStringLiteral("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n").arg(x).arg(yc+60).arg(num2str(Value));
         }
         yc += 60;
         break;
@@ -139,7 +139,7 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
     }
 
     if((i & 1) == 0)
-      *s += QString("<GND * 1 %1 %2 0 0 0 0>\n").arg(x).arg(yc + 30);
+      *s += QStringLiteral("<GND * 1 %1 %2 0 0 0 0>\n").arg(x).arg(yc + 30);
 
     if(!piType)
       i--;
@@ -155,8 +155,8 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
     if((Filter->Order & 1) == 0)
       x += 70;
   }
-  *s += QString("<Pac P2 1 %1 320 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
-  *s += QString("<GND * 1 %1 350 0 0 0 0>\n").arg(x);
+  *s += QStringLiteral("<Pac P2 1 %1 320 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
+  *s += QStringLiteral("<GND * 1 %1 350 0 0 0 0>\n").arg(x);
 
   yc += 100;
   Value = Filter->Frequency / 10.0;
@@ -164,15 +164,15 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
     Value2 = 10.0 * Filter->Frequency2;
   else
     Value2 = 10.0 * Filter->Frequency;
-  *s += QString("<.SP SP1 1 70 %1 0 67 0 0 \"log\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"201\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(yc).arg(num2str(Value)).arg(num2str(Value2));
+  *s += QStringLiteral("<.SP SP1 1 70 %1 0 67 0 0 \"log\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"201\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(yc).arg(num2str(Value)).arg(num2str(Value2));
 
   QString eqn_string;
   switch (QucsSettings.DefaultSimulator) {
   case spicecompat::simQucsator:
-      eqn_string = QString("<Eqn Eqn1 1 290 %1 -28 15 0 0 \"dBS21=dB(S[2,1])\" 1 \"dBS11=dB(S[1,1])\" 1 \"yes\" 0>\n").arg(yc+10);
+      eqn_string = QStringLiteral("<Eqn Eqn1 1 290 %1 -28 15 0 0 \"dBS21=dB(S[2,1])\" 1 \"dBS11=dB(S[1,1])\" 1 \"yes\" 0>\n").arg(yc+10);
       break;
   case spicecompat::simNgspice :
-      eqn_string = QString("<NutmegEq NutmegEq1 1 290 %1 -28 15 0 0 \"SP1\" 1 \"dBS21=dB(S_2_1)\" 1 \"dBS11=dB(S_1_1)\" 1>\n").arg(yc+10);
+      eqn_string = QStringLiteral("<NutmegEq NutmegEq1 1 290 %1 -28 15 0 0 \"SP1\" 1 \"dBS21=dB(S_2_1)\" 1 \"dBS11=dB(S_1_1)\" 1>\n").arg(yc+10);
       break;
   case spicecompat::simSpiceOpus:
   case spicecompat::simXyce:
@@ -188,13 +188,13 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
   x = 20;
   if(Filter->Class != CLASS_BANDPASS)
     x += 40;
-  *s += QString("<%1 240 %2 290 \"\" 0 0 0>\n").arg(x).arg(x);
+  *s += QStringLiteral("<%1 240 %2 290 \"\" 0 0 0>\n").arg(x).arg(x);
   if(piType)
-    *s += QString("<%1 240 170 240 \"\" 0 0 0>\n").arg(x);
+    *s += QStringLiteral("<%1 240 170 240 \"\" 0 0 0>\n").arg(x);
   else if(Filter->Class == CLASS_BANDPASS)
-    *s += QString("<%1 240 120 240 \"\" 0 0 0>\n").arg(x);
+    *s += QStringLiteral("<%1 240 120 240 \"\" 0 0 0>\n").arg(x);
   else
-    *s += QString("<%1 240 140 240 \"\" 0 0 0>\n").arg(x);
+    *s += QStringLiteral("<%1 240 140 240 \"\" 0 0 0>\n").arg(x);
 
   // wires down to shunt components
   x = 30;
@@ -202,7 +202,7 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
     x += 70;
   for(i = 0; i < (Filter->Order / 2) + 1; i++) {
     x += 140;
-    *s += QString("<%1 240 %2 290 \"\" 0 0 0>\n").arg(x).arg(x);
+    *s += QStringLiteral("<%1 240 %2 290 \"\" 0 0 0>\n").arg(x).arg(x);
   }
 
   // horizontal wires for series components
@@ -210,32 +210,32 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
     if(piType) {
       for(i = 0; i < (Filter->Order / 2); i++) {
         x = 170 + (i * 140);
-        *s += QString("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x).arg(x+20);
-        *s += QString("<%1 290 %2 290 \"\" 0 0 0>\n").arg(x-30).arg(x);
-        *s += QString("<%1 350 %2 350 \"\" 0 0 0>\n").arg(x-30).arg(x);
+        *s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x).arg(x+20);
+        *s += QStringLiteral("<%1 290 %2 290 \"\" 0 0 0>\n").arg(x-30).arg(x);
+        *s += QStringLiteral("<%1 350 %2 350 \"\" 0 0 0>\n").arg(x-30).arg(x);
       }
       if(Filter->Order & 1) {
-        *s += QString("<%1 290 %2 290 \"\" 0 0 0>\n").arg(x+110).arg(x+140);
-        *s += QString("<%1 350 %2 350 \"\" 0 0 0>\n").arg(x+110).arg(x+140);
+        *s += QStringLiteral("<%1 290 %2 290 \"\" 0 0 0>\n").arg(x+110).arg(x+140);
+        *s += QStringLiteral("<%1 350 %2 350 \"\" 0 0 0>\n").arg(x+110).arg(x+140);
       }
     }
     else
       for(i = 0; i < (Filter->Order / 2); i++) {
         x = 240 + (i * 140);
-        *s += QString("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x).arg(x+20);
-        *s += QString("<%1 290 %2 290 \"\" 0 0 0>\n").arg(x-30).arg(x);
-        *s += QString("<%1 350 %2 350 \"\" 0 0 0>\n").arg(x-30).arg(x);
+        *s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x).arg(x+20);
+        *s += QStringLiteral("<%1 290 %2 290 \"\" 0 0 0>\n").arg(x-30).arg(x);
+        *s += QStringLiteral("<%1 350 %2 350 \"\" 0 0 0>\n").arg(x-30).arg(x);
       }
   }
   else
     for(i = 0; i < (Filter->Order / 2); i++) {
       x = 170 + (i * 140);
       if(piType) {
-        *s += QString("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x).arg(x+40);
-        *s += QString("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+100).arg(x+140);
+        *s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x).arg(x+40);
+        *s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+100).arg(x+140);
       }
       else
-        *s += QString("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+30).arg(x+110);
+        *s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+30).arg(x+110);
     }
 
   // vertical wires for connecting the second series component
@@ -249,8 +249,8 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
       i = (Filter->Order+1) / 2 - 1;
     for(; i>=0; i--) {
       x += 140;
-      *s += QString("<%1 240 %2 205 \"\" 0 0 0>\n").arg(x).arg(x);
-      *s += QString("<%1 240 %2 205 \"\" 0 0 0>\n").arg(x+60).arg(x+60);
+      *s += QStringLiteral("<%1 240 %2 205 \"\" 0 0 0>\n").arg(x).arg(x);
+      *s += QStringLiteral("<%1 240 %2 205 \"\" 0 0 0>\n").arg(x+60).arg(x+60);
     }
     if(piType)
       x -= 40;
@@ -262,20 +262,20 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
   if(piType) {
     if(Filter->Order & 1) {
       x  += 140 + 110;
-      *s += QString("<%1 240 %2 290 \"\" 0 0 0>\n").arg(x).arg(x);
-      *s += QString("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x-110).arg(x);
+      *s += QStringLiteral("<%1 240 %2 290 \"\" 0 0 0>\n").arg(x).arg(x);
+      *s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x-110).arg(x);
     }
   }
   else {
     if(Filter->Class == CLASS_BANDPASS) {
       if((Filter->Order & 1) == 0)
-        *s += QString("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+20).arg(x+140);
+        *s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+20).arg(x+140);
     }
     else {
       if(Filter->Order & 1)
-        *s += QString("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+170).arg(x+210);
+        *s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+170).arg(x+210);
       else
-        *s += QString("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+110).arg(x+210);
+        *s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0>\n").arg(x+110).arg(x+210);
     }
   }
   *s += "</Wires>\n";
@@ -285,27 +285,27 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
 
   *s += "<Paintings>\n";
 
-  *s += QString("<Text 400 %1 12 #000000 0 \"").arg(yc);
+  *s += QStringLiteral("<Text 400 %1 12 #000000 0 \"").arg(yc);
   switch(Filter->Type) {
-    case TYPE_BESSEL:      *s += QString("Bessel "); break;
-    case TYPE_BUTTERWORTH: *s += QString("Butterworth "); break;
-    case TYPE_CHEBYSHEV:   *s += QString("Chebyshev "); break;
+    case TYPE_BESSEL:      *s += QStringLiteral("Bessel "); break;
+    case TYPE_BUTTERWORTH: *s += QStringLiteral("Butterworth "); break;
+    case TYPE_CHEBYSHEV:   *s += QStringLiteral("Chebyshev "); break;
   }
 
   switch(Filter->Class) {
     case CLASS_LOWPASS:
-      *s += QString("low-pass filter \\n %1Hz cutoff").arg(num2str(Filter->Frequency)); break;
+      *s += QStringLiteral("low-pass filter \\n %1Hz cutoff").arg(num2str(Filter->Frequency)); break;
     case CLASS_HIGHPASS:
-      *s += QString("high-pass filter \\n %1Hz cutoff").arg(num2str(Filter->Frequency)); break;
+      *s += QStringLiteral("high-pass filter \\n %1Hz cutoff").arg(num2str(Filter->Frequency)); break;
     case CLASS_BANDPASS:
-      *s += QString("band-pass filter \\n %1Hz...%2Hz").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2)); break;
+      *s += QStringLiteral("band-pass filter \\n %1Hz...%2Hz").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2)); break;
     case CLASS_BANDSTOP:
-      *s += QString("band-stop filter \\n %1Hz...%2Hz").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2)); break;
+      *s += QStringLiteral("band-stop filter \\n %1Hz...%2Hz").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2)); break;
   }
   if (piType == true)
-    *s += QString(", pi-type, \\n impedance matching %1 Ohm\">\n").arg(Filter->Impedance);
+    *s += QStringLiteral(", pi-type, \\n impedance matching %1 Ohm\">\n").arg(Filter->Impedance);
   else
-    *s += QString(", tee-type, \\n impedance matching %1 Ohm\">\n").arg(Filter->Impedance);
+    *s += QStringLiteral(", tee-type, \\n impedance matching %1 Ohm\">\n").arg(Filter->Impedance);
   *s += "</Paintings>\n";
 
   return s;

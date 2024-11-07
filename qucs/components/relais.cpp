@@ -115,9 +115,9 @@ QString Relais::spice_netlist(bool isXyce)
     QString Roff = spicecompat::normalize_value(Props.at(3)->Value);
 
     if (isXyce) {
-        s += QString(".MODEL %1 vswitch von=%2 voff=%3 ron=%4 roff=%5 \n").arg(model).arg(Vt).arg(Vt-Vh).arg(Ron).arg(Roff);
+        s += QStringLiteral(".MODEL %1 vswitch von=%2 voff=%3 ron=%4 roff=%5 \n").arg(model).arg(Vt).arg(Vt-Vh).arg(Ron).arg(Roff);
     } else {
-        s += QString(".MODEL %1 sw vt=%2 vh=%3 ron=%4 roff=%5 \n").arg(model).arg(Vt).arg(Vh).arg(Ron).arg(Roff);
+        s += QStringLiteral(".MODEL %1 sw vt=%2 vh=%3 ron=%4 roff=%5 \n").arg(model).arg(Vt).arg(Vh).arg(Ron).arg(Roff);
     }
 
     return s;

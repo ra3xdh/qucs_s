@@ -68,7 +68,7 @@ QString Volt_dc::spice_netlist(bool)
         s += " "+ nam;   // node names
     }
 
-    s += QString(" DC %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
+    s += QStringLiteral(" DC %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
     return s;
 }
 

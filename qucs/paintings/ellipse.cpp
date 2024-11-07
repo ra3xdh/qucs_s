@@ -201,7 +201,7 @@ QString qucs::Ellipse::saveJSON()
     QString ("\"colorfill\" : \"%1\", \"stylefill\" : \"%2\"").
     arg(Brush.color().name()).arg(toBrushString(Brush.style())) : "";
   QString s =
-    QString("{\"type\" : \"ellipse\", "
+    QStringLiteral("{\"type\" : \"ellipse\", "
     "\"x\" : %1, \"y\" : %2, \"w\" : %3, \"h\" : %4,"
     "\"color\" : \"%5\", \"thick\" : %6, \"style\" : \"%7\", %8},").
     arg(cx).arg(cy).arg(x2).arg(y2).
