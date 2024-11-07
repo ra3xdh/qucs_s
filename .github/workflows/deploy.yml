@@ -15,7 +15,7 @@ env:
   EXECUTABLE_NAME: "qucs-s"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
-  QT_VERSION: 6.7.2
+  QT_VERSION: 6.8.0
   QUCS_MACOS_BIN: build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
   NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/43/ngspice-43_64.7z
@@ -62,7 +62,7 @@ jobs:
     - name: Install Dependencies
       run: |
           sudo apt-get update
-          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix
+          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix cups libcups2-dev
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
 
     - name: 'Install Qt6'
@@ -255,7 +255,7 @@ jobs:
       run: |
           cmake -B ${{github.workspace}}/build  -G 'Ninja' \
                 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
-                -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
+                -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0 \
                 -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
                 -DCI_VERSION="${{env.VERSION}}"
 
