@@ -78,7 +78,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     bool found = findMathFuncInc(mathf_inc);
     // Let to simulate schematic without mathfunc.inc file
     if (found && QucsSettings.DefaultSimulator != spicecompat::simSpiceOpus)
-        stream<<QString(".INCLUDE \"%1\"\n").arg(mathf_inc);
+        stream<<QStringLiteral(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
     stream<<collectSpiceLibs(Sch); // collect libraries on the top of netlist
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
@@ -135,7 +135,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             for(const auto &file : osdi_files) {
                 QString abs_file = QucsSettings.QucsWorkDir.absolutePath() +
                         QDir::separator() + file;
-                stream<<QString("pre_osdi '%1'\n").arg(abs_file);
+                stream<<QStringLiteral("pre_osdi '%1'\n").arg(abs_file);
             }
         }
     }
@@ -173,9 +173,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         QString nods;
         for (const QString& nod : vars) {
             if ( nod.endsWith("#branch") )
-                nods.append(QString("i(%1) ").arg(nod.section('#', 0, 0)));
+                nods.append(QStringLiteral("i(%1) ").arg(nod.section('#', 0, 0)));
             else
-                nods.append(QString("v(%1) ").arg(nod));
+                nods.append(QStringLiteral("v(%1) ").arg(nod));
         }
 
         for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
@@ -260,8 +260,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             outputs.append("spice4qucs." + sim_name + ".cir.noise");
             if ( hasParSWP ) {  // Set necessary plot number to output Noise spectrum
                 // each step of parameter sweep creates new couple of noise plots
-                spiceNetlist.append(QString("let noise_%1 = 2*%1+1\n").arg(cnt_var));
-                spiceNetlist.append(QString("setplot noise$&noise_%1\n").arg(cnt_var));
+                spiceNetlist.append(QStringLiteral("let noise_%1 = 2*%1+1\n").arg(cnt_var));
+                spiceNetlist.append(QStringLiteral("setplot noise$&noise_%1\n").arg(cnt_var));
             } else {  // Set Noise1 plot to output noise spectrum
                 spiceNetlist.append("setplot noise1\n");
             }
@@ -289,8 +289,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         } else if ( sim_typ == ".FFT" ) {
             freqSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
-            spiceNetlist.append(QString("linearize %1\n").arg(nods));
-            spiceNetlist.append(QString("fft %1\n").arg(nods));
+            spiceNetlist.append(QStringLiteral("linearize %1\n").arg(nods));
+            spiceNetlist.append(QStringLiteral("fft %1\n").arg(nods));
         } else if ( sim_typ == ".DC" ) {
             dcSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
@@ -317,7 +317,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
         if ( sim_typ == ".DC" ) {
             QString out = "spice4qucs." + sim_name + ".ngspice.dc.print";
-            spiceNetlist.append(QString("print %1 > %2\n").arg(nods).arg(out));
+            spiceNetlist.append(QStringLiteral("print %1 > %2\n").arg(nods).arg(out));
             outputs.append(out);
         } else if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
             nods = nods.simplified();
@@ -325,13 +325,13 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 QString basenam = "spice4qucs";
                 QString filename;
                 if ( hasParSWP && hasDblSWP )
-                    filename = QString("%1.%2._swp_swp.plot").arg(basenam).arg(sim_name);
+                    filename = QStringLiteral("%1.%2._swp_swp.plot").arg(basenam).arg(sim_name);
                 else if ( hasParSWP )
-                    filename = QString("%1.%2._swp.plot").arg(basenam).arg(sim_name);
+                    filename = QStringLiteral("%1.%2._swp.plot").arg(basenam).arg(sim_name);
                 else
-                    filename = QString("%1.%2.plot").arg(basenam).arg(sim_name);
+                    filename = QStringLiteral("%1.%2.plot").arg(basenam).arg(sim_name);
                 filename.replace(' ', '_'); // Ngspice cannot understand spaces in filename
-                spiceNetlist.append(QString("write %1 %2\n").arg(filename).arg(nods));
+                spiceNetlist.append(QStringLiteral("write %1 %2\n").arg(filename).arg(nods));
                 outputs.append(filename);
             }
         }
@@ -481,7 +481,7 @@ void Ngspice::slotSimulate()
     //startNgSpice(tmp_path);
     SimProcess->setWorkingDirectory(workdir);
     qDebug()<<workdir;
-    QString cmd = QString("\"%1\" %2 %3").arg(simulator_cmd,simulator_parameters,netfile);
+    QString cmd = QStringLiteral("\"%1\" %2 %3").arg(simulator_cmd,simulator_parameters,netfile);
     QStringList cmd_args = misc::parseCmdArgs(cmd);
     QString ngsp_cmd = cmd_args.at(0);
     cmd_args.removeAt(0);
@@ -553,7 +553,7 @@ bool Ngspice::findMathFuncInc(QString &mathf_inc)
 {
     QDir qucs_root(QucsSettings.BinDir);
     qucs_root.cdUp();
-    mathf_inc = QString("%1/share/" QUCS_NAME "/xspice_cmlib/include/ngspice_mathfunc.inc")
+    mathf_inc = QStringLiteral("%1/share/" QUCS_NAME "/xspice_cmlib/include/ngspice_mathfunc.inc")
             .arg(qucs_root.absolutePath());
     return QFile::exists(mathf_inc);
 }
@@ -596,8 +596,8 @@ void Ngspice::SaveNetlist(QString filename)
     }
     else
     {
-        QString msg=QString("Tried to save netlist \nin %1\n(could not open for writing!)").arg(filename);
-        QString final_msg=QString("%1\n This could be an error in the QSettings settings file\n(usually in ~/.config/qucs/qucs_s.conf)\nThe value for S4Q_workdir (default:/spice4qucs) needs to be writeable!\nFor a Simulation Simulation will raise error! (most likely S4Q_workdir does not exists)").arg(msg);
+        QString msg=QStringLiteral("Tried to save netlist \nin %1\n(could not open for writing!)").arg(filename);
+        QString final_msg=QStringLiteral("%1\n This could be an error in the QSettings settings file\n(usually in ~/.config/qucs/qucs_s.conf)\nThe value for S4Q_workdir (default:/spice4qucs) needs to be writeable!\nFor a Simulation Simulation will raise error! (most likely S4Q_workdir does not exists)").arg(msg);
         QMessageBox::critical(nullptr,tr("Problem with SaveNetlist"),final_msg,QMessageBox::Ok);
     }
 }

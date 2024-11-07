@@ -88,7 +88,7 @@ QString NutmegEquation::getEquations(QString sim, QStringList &dep_vars)
         auto pp = Props.begin();
         pp++;
         for ( ; pp != Props.end() ; ++pp) {
-            s += QString("let %1 = %2\n").arg((*pp)->Name).arg((*pp)->Value);
+            s += QStringLiteral("let %1 = %2\n").arg((*pp)->Name).arg((*pp)->Value);
           dep_vars.append((*pp)->Name);
         }
     }

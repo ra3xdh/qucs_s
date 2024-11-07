@@ -180,7 +180,7 @@ QString GraphicText::saveCpp()
     QString t = Text;
     misc::convert2ASCII(t);
 
-    QString s = QString("new Text (%1, %2, \"%3\", QColor (\"%4\"), %5, %6, %7)")
+    QString s = QStringLiteral("new Text (%1, %2, \"%3\", QColor (\"%4\"), %5, %6, %7)")
                     .arg(cx)
                     .arg(cy)
                     .arg(t)
@@ -197,7 +197,7 @@ QString GraphicText::saveJSON()
     QString t = Text;
     misc::convert2ASCII(t);
 
-    QString s = QString("{\"type\" : \"graphictext\", "
+    QString s = QStringLiteral("{\"type\" : \"graphictext\", "
                         "\"x\" : %1, \"y\" : %2, \"s\" : \"%3\", "
                         "\"color\" : \"%4\", \"size\" : %5, \"cos\" : %6, \"sin\" : %7},")
                     .arg(cx)

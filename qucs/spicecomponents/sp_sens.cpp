@@ -71,21 +71,21 @@ QString SpiceSENS::spice_netlist(bool isXyce)
         QString stop = spicecompat::normalize_value(Props.at(3)->Value);
         QString step = spicecompat::normalize_value(Props.at(4)->Value);
         QString output = "spice4qucs." + Name.toLower() + ".ngspice.sens.dc.prn";
-        s += QString("echo \"Start\">%1\n").arg(output);
-        s += QString("let %1_start=%2\n").arg(sweepvar).arg(start);
-        s += QString("let %1_sweep=%1_start\n").arg(sweepvar);
-        s += QString("let %1_step=%2\n").arg(sweepvar).arg(step);
-        s += QString("let %1_stop=%2\n").arg(sweepvar).arg(stop);
-        s += QString("while %1_sweep le %1_stop\n").arg(sweepvar);
+        s += QStringLiteral("echo \"Start\">%1\n").arg(output);
+        s += QStringLiteral("let %1_start=%2\n").arg(sweepvar).arg(start);
+        s += QStringLiteral("let %1_sweep=%1_start\n").arg(sweepvar);
+        s += QStringLiteral("let %1_step=%2\n").arg(sweepvar).arg(step);
+        s += QStringLiteral("let %1_stop=%2\n").arg(sweepvar).arg(stop);
+        s += QStringLiteral("while %1_sweep le %1_stop\n").arg(sweepvar);
         if (sweepvar.compare("temp",Qt::CaseInsensitive)) {
-            s += QString("alter %1 = %2_sweep\n").arg(par).arg(sweepvar);
+            s += QStringLiteral("alter %1 = %2_sweep\n").arg(par).arg(sweepvar);
         } else {
-            s += QString("set %1 = $&%2_sweep\n").arg(par).arg(sweepvar);
+            s += QStringLiteral("set %1 = $&%2_sweep\n").arg(par).arg(sweepvar);
         }
-        s += QString("sens %1\n").arg(Props.at(0)->Value);
-        s += QString("echo \"Sens analysis\">>%1\n").arg(output);
-        s += QString("print %1_sweep>>%2\nprint all>>%2\n").arg(sweepvar).arg(output);
-        s += QString("let %1_sweep = %1_sweep + %1_step\nend\n").arg(sweepvar);
+        s += QStringLiteral("sens %1\n").arg(Props.at(0)->Value);
+        s += QStringLiteral("echo \"Sens analysis\">>%1\n").arg(output);
+        s += QStringLiteral("print %1_sweep>>%2\nprint all>>%2\n").arg(sweepvar).arg(output);
+        s += QStringLiteral("let %1_sweep = %1_sweep + %1_step\nend\n").arg(sweepvar);
 
     }
 

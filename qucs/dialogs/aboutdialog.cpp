@@ -124,7 +124,7 @@ AboutDialog::AboutDialog(QWidget *parent)
   //all->setSpacing(0);
 
   QLabel *iconLabel = new QLabel();
-  iconLabel->setPixmap(QPixmap(QString(":/bitmaps/hicolor/scalable/apps/qucs.svg")));
+  iconLabel->setPixmap(QPixmap(QStringLiteral(":/bitmaps/hicolor/scalable/apps/qucs.svg")));
 
   QWidget *hbox = new QWidget();
   QHBoxLayout *hl = new QHBoxLayout(hbox);

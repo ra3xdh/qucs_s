@@ -750,7 +750,7 @@ QString Component::form_spice_param_list(QStringList &ignore_list, QStringList &
                 nam = Props.at(i)->Name;
             }
             QString val = spicecompat::normalize_value(Props.at(i)->Value);
-            par_str += QString("%1=%2 ").arg(nam).arg(val);
+            par_str += QStringLiteral("%1=%2 ").arg(nam).arg(val);
         }
 
     }
@@ -759,7 +759,7 @@ QString Component::form_spice_param_list(QStringList &ignore_list, QStringList &
 }
 
 QString Component::spice_netlist(bool) {
-    return QString("\n"); // ignore if not implemented
+    return QStringLiteral("\n"); // ignore if not implemented
 }
 
 QString Component::va_code() {
@@ -1551,7 +1551,7 @@ QString GateComponent::spice_netlist(bool isXyce) {
     }
     s += "] " + Ports.at(0)->Connection->Name;
     s += " " + tmp_model + "\n";
-    s += QString(".model %1 %2(rise_delay=%3 fall_delay=%3 input_load=5e-13)\n")
+    s += QStringLiteral(".model %1 %2(rise_delay=%3 fall_delay=%3 input_load=5e-13)\n")
             .arg(tmp_model).arg(type).arg(td);
     return s;
 }
@@ -1801,11 +1801,11 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
                 c = new Subcircuit();
                 // Hack: insert dummy File property before the first property
                 int pos1 = Line.indexOf('"');
-                QString filestr = QString("\"%1.sch\" 1 ").arg(cstr);
+                QString filestr = QStringLiteral("\"%1.sch\" 1 ").arg(cstr);
                 Line.insert(pos1, filestr);
             } else return 0;
         } else {
-            QString err_msg = QString("Schematic loading error! Unknown device %1").arg(cstr);
+            QString err_msg = QStringLiteral("Schematic loading error! Unknown device %1").arg(cstr);
             qCritical() << err_msg;
             return 0;
         }

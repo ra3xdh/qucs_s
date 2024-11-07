@@ -41,7 +41,7 @@
 
 QString misc::getWindowTitle()
 {
-    QString title = QString("%1 %2").arg(QUCS_NAME,PACKAGE_VERSION);
+    QString title = QStringLiteral("%1 %2").arg(QUCS_NAME,PACKAGE_VERSION);
     if (title.endsWith(".0")) {
         title.chop(2);
     }
@@ -152,7 +152,7 @@ QString misc::StringNum(double num, char form, int Precision)
 QString misc::StringNiceNum(double num)
 {
   char Format[6] = "%.8e";
-  if(fabs(num) < 1e-250)  return QString("0");  // avoid many problems
+  if(fabs(num) < 1e-250)  return QStringLiteral("0");  // avoid many problems
   if(fabs(log10(fabs(num))) < 3.0)  Format[3] = 'g';
 
   int a = 0;
@@ -745,7 +745,7 @@ bool VersionTriplet::operator<=(const VersionTriplet& v2) {
 }
 
 QString VersionTriplet::toString() {
-  return QString("%1.%2.%3").arg(major).arg(minor).arg(patch);
+  return QStringLiteral("%1.%2.%3").arg(major).arg(minor).arg(patch);
 }
 
 // This function can parse TeX sequences _{…} and ^{…} in given string and

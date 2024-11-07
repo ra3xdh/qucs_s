@@ -14,6 +14,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
 #include <cmath>
 #include <iostream>
 #include <sstream>
@@ -144,134 +148,134 @@ QString filter::to_qucs() {
   int x          = 0;
   // Draw left power source
 
-  compos += QString("<Pac P1 1 %1 290 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 "
+  compos += QStringLiteral("<Pac P1 1 %1 290 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 "
                     "dBm\" 0 \"1 GHz\" 0>\n")
                 .arg(x)
                 .arg((double)imp_);
-  compos += QString("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
-  wires += QString("<0 200 %1 200 \"\" 0 0 0>\n").arg(space / 2);
-  wires += QString("<%1 200 %1 260 \"\" 0 0 0>\n").arg(x);
+  compos += QStringLiteral("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
+  wires += QStringLiteral("<0 200 %1 200 \"\" 0 0 0>\n").arg(space / 2);
+  wires += QStringLiteral("<%1 200 %1 260 \"\" 0 0 0>\n").arg(x);
   // Draw filter sections
   for (auto& subsec : subsecs_) {
     x += space;
     if (subsec.wiring == SERIES) {
       if (subsec.content == INDUC) {
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
-        compos += QString("<L L1 1 %1 %2 -26 -50 0 0 \"%3H\" 1>\n")
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
+        compos += QStringLiteral("<L L1 1 %1 %2 -26 -50 0 0 \"%3H\" 1>\n")
                       .arg(x)
                       .arg(200)
                       .arg(num2str(subsec.indc_v));
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
       } else if (subsec.content == CAPA) {
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
-        compos += QString("<C C1 1 %1 %2 -26 -50 0 0 \"%3F\" 1>\n")
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
+        compos += QStringLiteral("<C C1 1 %1 %2 -26 -50 0 0 \"%3F\" 1>\n")
                       .arg(x)
                       .arg(200)
                       .arg(num2str(subsec.capa_v));
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
       } else if (subsec.content == PARA_CAPA_INDUC) {
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
-        compos += QString("<C C1 1 %1 %2 -26 -80 0 0 \"%3F\" 1>\n")
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
+        compos += QStringLiteral("<C C1 1 %1 %2 -26 -80 0 0 \"%3F\" 1>\n")
                       .arg(x)
                       .arg(200)
                       .arg(num2str(subsec.capa_v));
-        wires += QString("<%1 %2 %1 %3 0 0 0>\n").arg(x - 30).arg(200).arg(170);
-        wires += QString("<%1 %2 %1 %3 0 0 0>\n").arg(x + 30).arg(200).arg(170);
-        compos += QString("<L L1 1 %1 %2 -26 -90 0 0 \"%3H\" 1>\n")
+        wires += QStringLiteral("<%1 %2 %1 %3 0 0 0>\n").arg(x - 30).arg(200).arg(170);
+        wires += QStringLiteral("<%1 %2 %1 %3 0 0 0>\n").arg(x + 30).arg(200).arg(170);
+        compos += QStringLiteral("<L L1 1 %1 %2 -26 -90 0 0 \"%3H\" 1>\n")
                       .arg(x)
                       .arg(170)
                       .arg(num2str(subsec.indc_v));
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
       } else if (subsec.content == SERIES_CAPA_INDUC) {
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
-        compos += QString("<C C1 1 %1 %2 -26 -50 0 0 \"%3F\" 1>\n")
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
+        compos += QStringLiteral("<C C1 1 %1 %2 -26 -50 0 0 \"%3F\" 1>\n")
                       .arg(x)
                       .arg(200)
                       .arg(num2str(subsec.capa_v));
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
         x += space;
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
-        compos += QString("<L L1 1 %1 %2 -26 -50 0 0 \"%3H\" 1>\n")
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x - 30);
+        compos += QStringLiteral("<L L1 1 %1 %2 -26 -50 0 0 \"%3H\" 1>\n")
                       .arg(x)
                       .arg(200)
                       .arg(num2str(subsec.indc_v));
         wires +=
-            QString("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
+            QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x + 30).arg(x + space / 2);
       }
     } else if (subsec.wiring == SHUNT) {
       if (subsec.content == INDUC) {
-        wires += QString("<%1 200 %2 200 0 0 0>\n")
+        wires += QStringLiteral("<%1 200 %2 200 0 0 0>\n")
                      .arg(x - space / 2)
                      .arg(x + space / 2);
-        wires += QString("<%1 %2 %1 %3 0 0 0>\n").arg(x).arg(200).arg(260);
-        compos += QString("<L L1 1 %1 %2 17 -26 0 1 \"%3H\" 1>\n")
+        wires += QStringLiteral("<%1 %2 %1 %3 0 0 0>\n").arg(x).arg(200).arg(260);
+        compos += QStringLiteral("<L L1 1 %1 %2 17 -26 0 1 \"%3H\" 1>\n")
                       .arg(x)
                       .arg(290)
                       .arg(num2str(subsec.indc_v));
-        compos += QString("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
+        compos += QStringLiteral("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
       } else if (subsec.content == CAPA) {
-        wires += QString("<%1 200 %2 200 0 0 0>\n")
+        wires += QStringLiteral("<%1 200 %2 200 0 0 0>\n")
                      .arg(x - space / 2)
                      .arg(x + space / 2);
-        wires += QString("<%1 %2 %1 %3 0 0 0>\n").arg(x).arg(200).arg(260);
-        compos += QString("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n")
+        wires += QStringLiteral("<%1 %2 %1 %3 0 0 0>\n").arg(x).arg(200).arg(260);
+        compos += QStringLiteral("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n")
                       .arg(x)
                       .arg(290)
                       .arg(num2str(subsec.capa_v));
-        compos += QString("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
+        compos += QStringLiteral("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
       } else if (subsec.content == SERIES_CAPA_INDUC) {
-        wires += QString("<%1 200 %2 200 0 0 0>\n")
+        wires += QStringLiteral("<%1 200 %2 200 0 0 0>\n")
                      .arg(x - space / 2)
                      .arg(x + space / 2);
-        compos += QString("<L L1 1 %1 %2 17 -26 0 1 \"%3H\" 1>\n")
+        compos += QStringLiteral("<L L1 1 %1 %2 17 -26 0 1 \"%3H\" 1>\n")
                       .arg(x)
                       .arg(230)
                       .arg(num2str(subsec.indc_v));
-        compos += QString("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n")
+        compos += QStringLiteral("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n")
                       .arg(x)
                       .arg(290)
                       .arg(num2str(subsec.capa_v));
-        compos += QString("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
+        compos += QStringLiteral("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
       } else if (subsec.content == PARA_CAPA_INDUC) {
-        wires += QString("<%1 200 %2 200 0 0 0>\n")
+        wires += QStringLiteral("<%1 200 %2 200 0 0 0>\n")
                      .arg(x - space / 2)
                      .arg(x + space / 2);
-        wires += QString("<%1 %2 %1 %3 0 0 0>\n").arg(x).arg(200).arg(260);
-        compos += QString("<L L1 1 %1 %2 47 16 0 1 \"%3H\" 1>\n")
+        wires += QStringLiteral("<%1 %2 %1 %3 0 0 0>\n").arg(x).arg(200).arg(260);
+        compos += QStringLiteral("<L L1 1 %1 %2 47 16 0 1 \"%3H\" 1>\n")
                       .arg(x)
                       .arg(290)
                       .arg(num2str(subsec.indc_v));
-        wires += QString("<%1 260 %2 260 0 0 0>\n").arg(x).arg(x + 30);
-        compos += QString("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n")
+        wires += QStringLiteral("<%1 260 %2 260 0 0 0>\n").arg(x).arg(x + 30);
+        compos += QStringLiteral("<C C1 1 %1 %2 17 -26 0 1 \"%3F\" 1>\n")
                       .arg(x + 30)
                       .arg(290)
                       .arg(num2str(subsec.capa_v));
-        wires += QString("<%1 320 %2 320 0 0 0>\n").arg(x).arg(x + 30);
-        compos += QString("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
+        wires += QStringLiteral("<%1 320 %2 320 0 0 0>\n").arg(x).arg(x + 30);
+        compos += QStringLiteral("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
       }
     }
   }
   // Draw right power source
   x += space;
-  wires += QString("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x);
-  compos += QString("<Pac P2 1 %1 290 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 "
+  wires += QStringLiteral("<%1 200 %2 200 0 0 0>\n").arg(x - space / 2).arg(x);
+  compos += QStringLiteral("<Pac P2 1 %1 290 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 "
                     "dBm\" 0 \"1 GHz\" 0>\n")
                 .arg(x)
                 .arg((double)imp_);
-  compos += QString("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
-  wires += QString("<%1 200 %1 260 \"\" 0 0 0>\n").arg(x);
+  compos += QStringLiteral("<GND * 1 %1 320 0 0 0 0>\n").arg(x);
+  wires += QStringLiteral("<%1 200 %1 260 \"\" 0 0 0>\n").arg(x);
 
   QString s = "";
-  s += "<Qucs Schematic 24.2.1>\n";
+  s += QStringLiteral("<Qucs Schematic " PACKAGE_VERSION ">\n");
   s += "<Components>\n";
   s += compos;
 
@@ -289,7 +293,7 @@ QString filter::to_qucs() {
     eqn_string += "\"dBS11=dB(S[1,1])\" 1 \"yes\" 0>\n";
     break;
   case spicecompat::simNgspice :
-    eqn_string = QString("<NutmegEq NutmegEq1 1 260 410 -28 15 0 0 \"SP1\" 1 \"dBS21=dB(S_2_1)\" 1 \"dBS11=dB(S_1_1)\" 1>\n");
+    eqn_string = QStringLiteral("<NutmegEq NutmegEq1 1 260 410 -28 15 0 0 \"SP1\" 1 \"dBS21=dB(S_2_1)\" 1 \"dBS11=dB(S_1_1)\" 1>\n");
     break;
   case spicecompat::simSpiceOpus:
   case spicecompat::simXyce:

@@ -222,7 +222,7 @@ QString Digi_Source::spice_netlist(bool)
     evenValue = V;
   }
 
-  s += QString("DC %1 PWL(0 ").arg(evenValue);
+  s += QStringLiteral("DC %1 PWL(0 ").arg(evenValue);
   s += evenValue;
 
   for (int i = 0; i < timesList.size(); i++) {
@@ -232,7 +232,7 @@ QString Digi_Source::spice_netlist(bool)
 
     if (i == 0) {
       // first time step
-      s += QString(" %1 %2").arg(timeValue).arg(evenValue);
+      s += QStringLiteral(" %1 %2").arg(timeValue).arg(evenValue);
       time += timeValue;
 
     } else {
@@ -241,7 +241,7 @@ QString Digi_Source::spice_netlist(bool)
         risingTime = time + changingTime;
         time += timeValue;
 
-        s += QString(" %1 %2 %3 %2")
+        s += QStringLiteral(" %1 %2 %3 %2")
                       .arg(risingTime)
                       .arg(oddValue)
                       .arg(time)
@@ -249,7 +249,7 @@ QString Digi_Source::spice_netlist(bool)
         // last time step
         if (timeStep == timesList.last().toLower()) {
             fallingTime = time + changingTime;
-            s += QString(" %1 0 %2 0")
+            s += QStringLiteral(" %1 0 %2 0")
                           .arg(fallingTime)
                           .arg(fallingTime + changingTime)
                           .toUpper();
@@ -258,7 +258,7 @@ QString Digi_Source::spice_netlist(bool)
         // times of even time step
         fallingTime = time + changingTime;
         time += timeValue;
-        s += QString(" %1 %2 %3 %2")
+        s += QStringLiteral(" %1 %2 %3 %2")
                       .arg(fallingTime)
                       .arg(evenValue)
                       .arg(time)
@@ -266,7 +266,7 @@ QString Digi_Source::spice_netlist(bool)
         // last time step
         if (timeStep == timesList.last().toLower()) {
             fallingTime = time + changingTime;
-            s += QString(" %1 0 %2 0")
+            s += QStringLiteral(" %1 0 %2 0")
                      .arg(fallingTime)
                      .arg(fallingTime + changingTime)
                      .toUpper();

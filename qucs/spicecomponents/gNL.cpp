@@ -96,11 +96,11 @@ QString gNL::spice_netlist(bool)
     QString Line_5 = Props.at(4)->Value;
  
     
-    if(  G.length()      > 0 )   s += QString("%1").arg(G);
-    if(  Line_2.length() > 0 )   s += QString("\n%1").arg(Line_2);
-    if(  Line_3.length() > 0 )   s += QString("\n%1").arg(Line_3);
-    if(  Line_4.length() > 0 )   s += QString("\n%1").arg(Line_4);
-    if(  Line_5.length() > 0 )   s += QString("\n%1").arg(Line_5);
+    if(  G.length()      > 0 )   s += QStringLiteral("%1").arg(G);
+    if(  Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_2);
+    if(  Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_3);
+    if(  Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_4);
+    if(  Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_5);
     s += "\n";
 
      return s;

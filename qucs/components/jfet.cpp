@@ -125,13 +125,13 @@ QString JFET::spice_netlist(bool isXyce)
     QString jfet_type = getProperty("Type")->Value.at(0).toUpper();
 
     if (getProperty("UseGlobTemp")->Value == "yes") {
-      s += QString(" JMOD_%1 %2\n").arg(Name).arg(getProperty("Area")->Value);
+      s += QStringLiteral(" JMOD_%1 %2\n").arg(Name).arg(getProperty("Area")->Value);
     } else {
-      s += QString(" JMOD_%1 %2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+      s += QStringLiteral(" JMOD_%1 %2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
       .arg(getProperty("Temp")->Value);
     }
 
-    s += QString(".MODEL JMOD_%1 %2JF (%3)\n").arg(Name).arg(jfet_type).arg(par_str);
+    s += QStringLiteral(".MODEL JMOD_%1 %2JF (%3)\n").arg(Name).arg(jfet_type).arg(par_str);
 
     return s;
 }

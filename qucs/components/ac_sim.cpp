@@ -93,13 +93,13 @@ QString AC_Sim::spice_netlist(bool isXyce)
         Fstop *= fac;
         double Nd = ceil(log10(Fstop/Fstart)); // number of decades
         double Npd = ceil((Np - 1)/Nd); // points per decade
-        s += QString("DEC %1 ").arg(Npd);
+        s += QStringLiteral("DEC %1 ").arg(Npd);
     } else {  // no need conversion
-        s += QString("LIN %1 ").arg(Props.at(3)->Value);
+        s += QStringLiteral("LIN %1 ").arg(Props.at(3)->Value);
     }
     QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
     QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
-    s += QString("%1 %2 \n").arg(fstart).arg(fstop);
+    s += QStringLiteral("%1 %2 \n").arg(fstart).arg(fstop);
     if (!isXyce) s.remove(0,1);
     return s.toLower();
 

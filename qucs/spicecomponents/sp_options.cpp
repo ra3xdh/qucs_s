@@ -78,14 +78,14 @@ QString SpiceOptions::getExpression(bool isXyce)
     QString s;
     s.clear();
     if (isXyce) {
-        s += QString(".OPTIONS %1 ").arg(Props.at(0)->Value);
+        s += QStringLiteral(".OPTIONS %1 ").arg(Props.at(0)->Value);
         for (int i=1;i<Props.count();i++) {
-            s += QString(" %1 = %2 ").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
+            s += QStringLiteral(" %1 = %2 ").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
         }
         s += "\n";
     } else {
         for (int i=1;i<Props.count();i++) {
-            s += QString(".OPTION %1 = %2\n").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
+            s += QStringLiteral(".OPTION %1 = %2\n").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
         }
     }
     return s;

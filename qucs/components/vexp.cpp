@@ -102,6 +102,6 @@ QString vExp::spice_netlist(bool)
    QString Tr = spicecompat::normalize_value(Props.at(4)->Value);
    QString Tf = spicecompat::normalize_value(Props.at(5)->Value);
 
-    s += QString(" DC 0 EXP(%1 %2 %3 %4 %5 %6) AC 0\n").arg(U1).arg(U2).arg(T1).arg(Tr).arg(T2).arg(Tf);
+    s += QStringLiteral(" DC 0 EXP(%1 %2 %3 %4 %5 %6) AC 0\n").arg(U1).arg(U2).arg(T1).arg(Tr).arg(T2).arg(Tf);
     return s;
 }

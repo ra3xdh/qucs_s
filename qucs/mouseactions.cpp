@@ -1091,7 +1091,7 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
     if (focusElement)
         // print define value in hex, see element.h
         qDebug() << "MPressSelect: focusElement->Type"
-                 << QString("0x%1").arg(focusElement->Type, 0, 16);
+                 << QStringLiteral("0x%1").arg(focusElement->Type, 0, 16);
     else
         qDebug() << "MPressSelect";
 
@@ -2157,7 +2157,8 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
 
     case isDiagram:
         dia = (Diagram *) focusElement;
-        if (dia->Name.at(0) == 'T') { // don't open dialog on scrollbar
+        if (dia->Name.at(0) == 'T' // check only on double click
+            && Event->type() == QMouseEvent::MouseButtonDblClick) { // don't open dialog on scrollbar
             if (dia->Name == "Time") {
                 if (dia->cy < int(fY)) {
                     if (((TimingDiagram *) focusElement)->scroll(MAx1))
@@ -2267,7 +2268,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
     if (focusElement)
         // print define value in hex, see element.h
         qDebug() << "MPressTune: focusElement->Type"
-                 << QString("0x%1").arg(focusElement->Type, 0, 16);
+                 << QStringLiteral("0x%1").arg(focusElement->Type, 0, 16);
     else
         qDebug() << "MPressTune";
 
