@@ -56,7 +56,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
+        <source>CI setup, build system, MacOS support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>testing, general bugfixes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -107,12 +112,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>CI setup, build system</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Refactoring, general improvements</source>
         <translation type="unfinished"></translation>
     </message>
@@ -550,7 +550,7 @@
         <translation>部品プロパティー編集</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+46"/>
         <source>Sweep</source>
         <translation>スイープ</translation>
     </message>
@@ -562,13 +562,13 @@
         <location line="+9"/>
         <location line="+9"/>
         <location line="+16"/>
-        <location line="+106"/>
+        <location line="+109"/>
         <location line="+95"/>
         <source>display in schematic</source>
         <translation>回路図に表示</translation>
     </message>
     <message>
-        <location line="-284"/>
+        <location line="-287"/>
         <source>Simulation:</source>
         <translation>シミュレーション:</translation>
     </message>
@@ -619,18 +619,18 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+1195"/>
+        <location line="+1127"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>ステップ:</translation>
     </message>
     <message>
-        <location line="-1210"/>
+        <location line="-1142"/>
         <source>Number:</source>
         <translation>ステップ数:</translation>
     </message>
     <message>
-        <location line="+87"/>
+        <location line="+90"/>
         <location line="+33"/>
         <source>Properties</source>
         <translation>プロパティー</translation>
@@ -712,26 +712,28 @@
     </message>
     <message>
         <location line="+29"/>
-        <location line="+92"/>
+        <location line="+93"/>
         <location line="+54"/>
         <location line="+228"/>
-        <location line="+218"/>
-        <location line="+163"/>
+        <location line="+309"/>
         <location line="+315"/>
+        <location line="+66"/>
+        <location line="+30"/>
+        <location line="+24"/>
         <source>yes</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location line="-1068"/>
-        <location line="+92"/>
+        <location line="-1117"/>
+        <location line="+93"/>
         <location line="+282"/>
-        <location line="+377"/>
+        <location line="+305"/>
         <location line="+320"/>
         <source>no</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location line="-386"/>
+        <location line="-394"/>
         <source>Select a file</source>
         <translation>選択されたファイル</translation>
     </message>
@@ -766,7 +768,7 @@
         <translation>Verilog ファイル</translation>
     </message>
     <message>
-        <location line="+214"/>
+        <location line="+222"/>
         <source>Points per decade:</source>
         <translation>ポイント数:</translation>
     </message>
@@ -833,7 +835,7 @@
 <context>
     <name>DiagramDialog</name>
     <message>
-        <location filename="../qucs/diagrams/diagramdialog.cpp" line="+123"/>
+        <location filename="../qucs/diagrams/diagramdialog.cpp" line="+122"/>
         <source>Edit Diagram Properties</source>
         <translation>グラフプロパティー編集</translation>
     </message>
@@ -1356,18 +1358,18 @@
         <translation type="obsolete">シミュレート</translation>
     </message>
     <message>
-        <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="+44"/>
+        <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="+50"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
-        <location line="+235"/>
+        <location line="+233"/>
         <source>Save netlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-232"/>
+        <location line="-230"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1377,12 +1379,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="-26"/>
         <source>Simulate with external simulator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+154"/>
         <source>There were simulation errors. Please check log.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2028,7 +2030,7 @@ Filter synthesis program
         <translation>その他ファイル</translation>
     </message>
     <message>
-        <location line="+274"/>
+        <location line="+261"/>
         <source>Error</source>
         <translation type="unfinished">エラー</translation>
     </message>
@@ -2038,7 +2040,7 @@ Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-312"/>
+        <location line="-299"/>
         <location line="+28"/>
         <source>Enter a Data File Name</source>
         <translation>データファイル名を入力</translation>
@@ -2076,7 +2078,7 @@ Filter synthesis program
         <translation type="vanished">エラー; 未知のファイルフォーマットです！拡張子を確認してください!</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+82"/>
         <source>Running command line:</source>
         <translation>コマンドライン実行中:</translation>
     </message>
@@ -2086,7 +2088,7 @@ Filter synthesis program
         <translation>エラー;&#x3000;コンバータを開始出来ません!</translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+54"/>
         <source>Successfully converted file!</source>
         <translation>ファイル変換成功!</translation>
     </message>
@@ -2780,7 +2782,19 @@ Node name will not be changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+790"/>
+        <location line="+267"/>
+        <source>The device is not unconditionally stable:
+
+K = %1
+|%2| = %3
+
+It is not possible to synthesize a matching network.
+
+Consider adding resistive losses and/or feedback to reach unconditional stability (K &gt; 1 and |%2| &lt; 1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+549"/>
         <source>It is not possible to match this load using the double stub method</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2789,7 +2803,8 @@ Node name will not be changed.</source>
         <translation type="vanished">インピーダンス(オーム)</translation>
     </message>
     <message>
-        <location line="-488"/>
+        <location line="-550"/>
+        <location line="+62"/>
         <location line="+487"/>
         <source>Error</source>
         <translation>エラー</translation>
@@ -3020,82 +3035,82 @@ but is %1 !</source>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+182"/>
-        <location line="+360"/>
+        <location line="+184"/>
+        <location line="+362"/>
         <source>linear double</source>
         <translation>リニア&#x3000;DOUBLE</translation>
     </message>
     <message>
-        <location line="-541"/>
-        <location line="+183"/>
-        <location line="+360"/>
+        <location line="-545"/>
+        <location line="+185"/>
+        <location line="+362"/>
         <source>logarithmic double</source>
         <translation>対数 Double</translation>
     </message>
     <message>
-        <location line="-542"/>
-        <location line="+184"/>
-        <location line="+360"/>
+        <location line="-546"/>
+        <location line="+186"/>
+        <location line="+362"/>
         <source>linear integer</source>
         <translation>リニア整数</translation>
     </message>
     <message>
-        <location line="-543"/>
-        <location line="+199"/>
+        <location line="-547"/>
+        <location line="+201"/>
         <source>logarithmic integer</source>
         <translation>ログ整数</translation>
     </message>
     <message>
-        <location line="-198"/>
-        <location line="+184"/>
-        <location line="+360"/>
+        <location line="-200"/>
+        <location line="+186"/>
+        <location line="+362"/>
         <source>E3 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-543"/>
-        <location line="+185"/>
-        <location line="+360"/>
+        <location line="-547"/>
+        <location line="+187"/>
+        <location line="+362"/>
         <source>E6 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-544"/>
-        <location line="+186"/>
-        <location line="+360"/>
+        <location line="-548"/>
+        <location line="+188"/>
+        <location line="+362"/>
         <source>E12 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-545"/>
-        <location line="+187"/>
-        <location line="+360"/>
+        <location line="-549"/>
+        <location line="+189"/>
+        <location line="+362"/>
         <source>E24 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-546"/>
-        <location line="+188"/>
-        <location line="+360"/>
+        <location line="-550"/>
+        <location line="+190"/>
+        <location line="+362"/>
         <source>E48 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-547"/>
-        <location line="+189"/>
-        <location line="+360"/>
+        <location line="-551"/>
+        <location line="+191"/>
+        <location line="+362"/>
         <source>E96 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-548"/>
-        <location line="+190"/>
-        <location line="+360"/>
+        <location line="-552"/>
+        <location line="+192"/>
+        <location line="+362"/>
         <source>E192 series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-546"/>
+        <location line="-550"/>
         <location line="+69"/>
         <source>Add</source>
         <translation>追加</translation>
@@ -3133,47 +3148,47 @@ but is %1 !</source>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+145"/>
-        <location line="+370"/>
+        <location line="+147"/>
+        <location line="+373"/>
         <source>minimize</source>
         <translation>最小化</translation>
     </message>
     <message>
-        <location line="-514"/>
-        <location line="+146"/>
-        <location line="+370"/>
+        <location line="-519"/>
+        <location line="+148"/>
+        <location line="+373"/>
         <source>maximize</source>
         <translation>最大化</translation>
     </message>
     <message>
-        <location line="-515"/>
-        <location line="+147"/>
-        <location line="+370"/>
+        <location line="-520"/>
+        <location line="+149"/>
+        <location line="+373"/>
         <source>less</source>
         <translation>以下</translation>
     </message>
     <message>
-        <location line="-516"/>
-        <location line="+148"/>
-        <location line="+370"/>
+        <location line="-521"/>
+        <location line="+150"/>
+        <location line="+373"/>
         <source>greater</source>
         <translation>以上</translation>
     </message>
     <message>
-        <location line="-517"/>
-        <location line="+149"/>
-        <location line="+370"/>
+        <location line="-522"/>
+        <location line="+151"/>
+        <location line="+373"/>
         <source>equal</source>
         <translation>等しい</translation>
     </message>
     <message>
-        <location line="-518"/>
-        <location line="+150"/>
+        <location line="-523"/>
+        <location line="+152"/>
         <source>monitor</source>
         <translation>モニタ</translation>
     </message>
     <message>
-        <location line="-133"/>
+        <location line="-135"/>
         <source>Goals</source>
         <translation>ゴール値</translation>
     </message>
@@ -3193,16 +3208,16 @@ but is %1 !</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+59"/>
         <location line="+105"/>
         <location line="+34"/>
         <location line="+37"/>
-        <location line="+197"/>
+        <location line="+199"/>
         <source>yes</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location line="-373"/>
+        <location line="-375"/>
         <location line="+139"/>
         <location line="+37"/>
         <source>no</source>
@@ -3917,13 +3932,13 @@ but is %1 !</source>
         <translation>バイアスティー</translation>
     </message>
     <message>
-        <location filename="../qucs/components/dcfeed.cpp" line="+49"/>
+        <location filename="../qucs/components/dcfeed.cpp" line="+51"/>
         <location filename="../qucs/components/biast.cpp" line="+35"/>
         <source>for transient simulation: inductance in Henry</source>
         <translation>トランジェントシミュレーション:インダクタンス(H)</translation>
     </message>
     <message>
-        <location filename="../qucs/components/dcblock.cpp" line="+48"/>
+        <location filename="../qucs/components/dcblock.cpp" line="+50"/>
         <location filename="../qucs/components/biast.cpp" line="+2"/>
         <source>for transient simulation: capacitance in Farad</source>
         <translation>トランジェントシミュレーション:容量(F)</translation>
@@ -3943,7 +3958,7 @@ but is %1 !</source>
         <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
         <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
         <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
-        <location filename="../qucs/components/component.cpp" line="+1498"/>
+        <location filename="../qucs/components/component.cpp" line="+1518"/>
         <location filename="../qucs/components/binarytogrey4bit.cpp" line="+3"/>
         <source>transfer function scaling factor</source>
         <translation type="unfinished"></translation>
@@ -3959,8 +3974,8 @@ but is %1 !</source>
         <translation>バイポーラジャンクショントランジスタ</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+52"/>
-        <location filename="../qucs/components/bjt.cpp" line="+47"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+54"/>
+        <location filename="../qucs/components/bjt.cpp" line="+51"/>
         <source>npn transistor</source>
         <translation>NPNトランジスタ</translation>
     </message>
@@ -3973,7 +3988,7 @@ but is %1 !</source>
     <message>
         <location filename="../qucs/components/mosfet_sub.cpp" line="-94"/>
         <location filename="../qucs/components/jfet.cpp" line="-36"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="-132"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="-134"/>
         <source>polarity</source>
         <translation>極性</translation>
     </message>
@@ -4254,7 +4269,7 @@ but is %1 !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+9"/>
         <source>bipolar junction transistor with substrate</source>
         <translation>BJT(基板情報含む)</translation>
     </message>
@@ -4552,13 +4567,13 @@ but is %1 !</source>
         <location line="+15"/>
         <location line="+26"/>
         <location line="+54"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1405"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1386"/>
         <location filename="../qucs/dialogs/matchdialog.cpp" line="+581"/>
         <location line="+34"/>
-        <location line="+96"/>
+        <location line="+97"/>
         <location filename="../qucs/components/vacomponent.cpp" line="+334"/>
         <location line="+24"/>
-        <location filename="../qucs/components/component.cpp" line="+259"/>
+        <location filename="../qucs/components/component.cpp" line="+256"/>
         <location line="+46"/>
         <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="+788"/>
         <location filename="../qucs-filter/quarterwave_filter.cpp" line="+46"/>
@@ -4868,22 +4883,22 @@ Wrong &apos;component&apos; line format!</source>
         <translation>回路行列を解くための方式</translation>
     </message>
     <message>
-        <location filename="../qucs/components/dcblock.cpp" line="-25"/>
+        <location filename="../qucs/components/dcblock.cpp" line="-26"/>
         <source>dc block</source>
         <translation>DCブロック</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+40"/>
         <source>dc Block</source>
         <translation>DCブロック</translation>
     </message>
     <message>
-        <location filename="../qucs/components/dcfeed.cpp" line="-26"/>
+        <location filename="../qucs/components/dcfeed.cpp" line="-27"/>
         <source>dc feed</source>
         <translation>電圧付加</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+41"/>
         <source>dc Feed</source>
         <translation>電圧付加</translation>
     </message>
@@ -4917,7 +4932,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/dff_SR.cpp" line="+21"/>
+        <location filename="../qucs/components/dff_SR.cpp" line="+22"/>
         <source>D-FlipFlop w/ SR</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5113,7 +5128,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+78"/>
+        <location filename="../qucs/components/diode.cpp" line="+83"/>
         <source>Diode</source>
         <translation>ダイオード</translation>
     </message>
@@ -5992,18 +6007,18 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+236"/>
+        <location line="+234"/>
         <source>current equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-234"/>
-        <location line="+236"/>
+        <location line="-232"/>
+        <location line="+234"/>
         <source>charge equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-218"/>
+        <location line="-216"/>
         <source>Equation Defined Device</source>
         <translation>方程式定義済デバイス</translation>
     </message>
@@ -6498,7 +6513,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+68"/>
         <source>n-JFET</source>
         <translation>n-JFET</translation>
     </message>
@@ -7158,7 +7173,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>MOS-FET</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+89"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+96"/>
         <location filename="../qucs/components/mosfet.cpp" line="+23"/>
         <source>n-MOSFET</source>
         <translation type="unfinished"></translation>
@@ -7176,7 +7191,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-211"/>
+        <location line="-218"/>
         <source>zero-bias threshold voltage</source>
         <translation>ゼロバイアス スレッショルド電圧</translation>
     </message>
@@ -7366,7 +7381,15 @@ Wrong &apos;component&apos; line format!</source>
         <translation>ソース接合周囲長</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+12"/>
+        <location filename="../qucs/components/jfet.cpp" line="-76"/>
+        <location filename="../qucs/components/diode.cpp" line="-79"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="-7"/>
+        <source>Use global SPICE temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>MOS field-effect transistor with substrate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7689,19 +7712,19 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+131"/>
-        <location line="+19"/>
+        <location line="+133"/>
+        <location line="+20"/>
         <source>inductance of coil</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-144"/>
-        <location line="+152"/>
+        <location line="-147"/>
+        <location line="+155"/>
         <source>coupling factor between coil %1 and coil %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-142"/>
+        <location line="-145"/>
         <source>N Mutual Inductors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8391,19 +8414,19 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+2"/>
-        <location line="+85"/>
+        <location line="+83"/>
         <location line="+5"/>
         <location line="+9"/>
         <source>parameter equation</source>
         <translation>パラメータ方程式</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rfedd.cpp" line="-81"/>
+        <location filename="../qucs/components/rfedd.cpp" line="-79"/>
         <source>Equation Defined RF Device</source>
         <translation>方程式の定義されたRFデバイス</translation>
     </message>
     <message>
-        <location line="+94"/>
+        <location line="+92"/>
         <source>RF</source>
         <translation>RF</translation>
     </message>
@@ -8568,7 +8591,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>2-ポート Sパラメータファイル</translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+75"/>
         <source>file</source>
         <translation>ファイル</translation>
     </message>
@@ -8593,7 +8616,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>spice</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+433"/>
+        <location filename="../qucs/schematic_file.cpp" line="+432"/>
         <location filename="../qucs/components/spicefile.cpp" line="+68"/>
         <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
         <translation>エラー:SPICE部品&quot;%1&quot;というファイル名がありません.</translation>
@@ -8614,7 +8637,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>エラー;&#x3000;変換済みスパイスファイル&quot;%1&quot;を開けません.</translation>
     </message>
     <message>
-        <location filename="../qucs/mouseactions.cpp" line="+1037"/>
+        <location filename="../qucs/mouseactions.cpp" line="+1025"/>
         <location filename="../qucs/components/spicefile.cpp" line="+81"/>
         <source>Info</source>
         <translation>情報</translation>
@@ -8645,7 +8668,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>スパイスファイル&quot;%1&quot;を変換しています.</translation>
     </message>
     <message>
-        <location filename="../qucs/components/subcircuit.cpp" line="+33"/>
+        <location filename="../qucs/components/subcircuit.cpp" line="+30"/>
         <source>subcircuit</source>
         <translation>サブサーキット</translation>
     </message>
@@ -8655,7 +8678,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Qucs回路図ファイル名</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+20"/>
         <source>Subcircuit</source>
         <translation>サブサーキット</translation>
     </message>
@@ -9066,12 +9089,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>電圧制御電圧源</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vcresistor.cpp" line="+24"/>
+        <location filename="../qucs/components/vcresistor.cpp" line="+25"/>
         <source>voltage controlled resistor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+49"/>
         <source>resistance gain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9103,7 +9126,7 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location filename="../qucs/schematic_file.cpp" line="+47"/>
-        <location filename="../qucs/components/vhdlfile.cpp" line="+220"/>
+        <location filename="../qucs/components/vhdlfile.cpp" line="+221"/>
         <location filename="../qucs/components/verilogfile.cpp" line="+45"/>
         <source>ERROR: No file name in %1 component &quot;%2&quot;.</source>
         <translation>エラー:%1に部品¨%2¨というファイル名がありません.</translation>
@@ -9155,7 +9178,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>ファイルによる電圧源</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vhdlfile.cpp" line="-201"/>
+        <location filename="../qucs/components/vhdlfile.cpp" line="-202"/>
         <location line="+24"/>
         <source>VHDL file</source>
         <translation>VHDLファイル</translation>
@@ -9166,13 +9189,13 @@ Wrong &apos;component&apos; line format!</source>
         <translation>VHDLファイル名</translation>
     </message>
     <message>
-        <location line="+111"/>
+        <location line="+110"/>
         <source>vhdl</source>
         <translation>vhdl</translation>
     </message>
     <message>
-        <location line="+41"/>
-        <location line="+7"/>
+        <location line="+42"/>
+        <location line="+8"/>
         <source>generic variable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9399,7 +9422,7 @@ Overwrite ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+3362"/>
+        <location filename="../qucs/qucs.cpp" line="+3420"/>
         <source>Successfully exported</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9416,7 +9439,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/misc.cpp" line="+418"/>
+        <location filename="../qucs/misc.cpp" line="+420"/>
         <location line="+64"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation>エラー:&quot;%1&quot;中の時間フォーマットが間違っています。正の数を使ってください</translation>
@@ -9424,8 +9447,8 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location filename="../qucs/qucs_actions.cpp" line="+128"/>
         <location line="+20"/>
-        <location filename="../qucs/qucs.cpp" line="-2549"/>
-        <location filename="../qucs/module.cpp" line="+126"/>
+        <location filename="../qucs/qucs.cpp" line="-2534"/>
+        <location filename="../qucs/module.cpp" line="+128"/>
         <source>verilog-a user devices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9523,16 +9546,16 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+1767"/>
-        <location line="+92"/>
-        <location line="+782"/>
+        <location filename="../qucs/qucs.cpp" line="+1758"/>
+        <location line="+91"/>
+        <location line="+777"/>
         <location filename="../qucs/module.cpp" line="-24"/>
         <location line="+4"/>
         <source>diagrams</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-2764"/>
+        <location line="-2760"/>
         <location filename="../qucs/module.cpp" line="+2"/>
         <location line="+2"/>
         <source>paintings</source>
@@ -9544,7 +9567,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/mouseactions.cpp" line="-154"/>
+        <location filename="../qucs/mouseactions.cpp" line="-153"/>
         <source>Edit Properties</source>
         <translation>プロパティ編集</translation>
     </message>
@@ -9569,7 +9592,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>2-portマッチング</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+75"/>
         <source>The ground potential cannot be labeled!</source>
         <translation>グラウンドにはラベルを付けられません !</translation>
     </message>
@@ -9579,7 +9602,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>矢印</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/ellipse.cpp" line="+101"/>
+        <location filename="../qucs/paintings/ellipse.cpp" line="+99"/>
         <source>Ellipse</source>
         <translation>楕円</translation>
     </message>
@@ -9589,7 +9612,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>塗りつぶし楕円</translation>
     </message>
     <message>
-        <location line="+277"/>
+        <location line="+269"/>
         <source>Edit Ellipse Properties</source>
         <translation>楕円プロパティー編集</translation>
     </message>
@@ -9599,7 +9622,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>弧</translation>
     </message>
     <message>
-        <location line="+309"/>
+        <location line="+304"/>
         <source>Edit Arc Properties</source>
         <translation>弧プロパティー編集</translation>
     </message>
@@ -9609,7 +9632,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>線</translation>
     </message>
     <message>
-        <location line="+247"/>
+        <location line="+240"/>
         <source>Edit Line Properties</source>
         <translation>線プロパティー編集</translation>
     </message>
@@ -9629,7 +9652,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>塗りつぶし長方形</translation>
     </message>
     <message>
-        <location line="+279"/>
+        <location line="+269"/>
         <source>Edit Rectangle Properties</source>
         <translation>長方形プロパティー編集</translation>
     </message>
@@ -9648,7 +9671,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="vanished">タイトル無し</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1506"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1505"/>
         <location line="+932"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
@@ -9804,8 +9827,8 @@ Wrong &apos;painting&apos; line format!</source>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../qucs/dialogs/matchdialog.cpp" line="-124"/>
-        <location line="+130"/>
+        <location filename="../qucs/dialogs/matchdialog.cpp" line="-125"/>
+        <location line="+131"/>
         <location filename="../qucs/components/component.cpp" line="-26"/>
         <location filename="../qucs-transcalc/qucstrans.cpp" line="+1134"/>
         <location filename="../qucs-filter/stepz_filter.cpp" line="+45"/>
@@ -9831,7 +9854,7 @@ Unknown field!</source>
 未知のフィールドです!</translation>
     </message>
     <message>
-        <location line="+305"/>
+        <location line="+304"/>
         <source>ERROR: Component &quot;%1&quot; has no analog model.</source>
         <translation>エラー:部品&quot;%1&quot;はアナログモデルがありません.</translation>
     </message>
@@ -10996,7 +11019,7 @@ Leave continuation lines blank when NOT in use.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+2691"/>
+        <location filename="../qucs/schematic.cpp" line="+2651"/>
         <source>The schematic name and dataset/display file name is not matching! This may happen if schematic was copied using the file manager instead of using File-&gt;SaveAs. Correct dataset and display names automatically?
 
 </source>
@@ -11102,24 +11125,24 @@ Leave continuation lines blank when NOT in use.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/dialogs/matchdialog.cpp" line="-135"/>
+        <location filename="../qucs/dialogs/matchdialog.cpp" line="-136"/>
         <source>The load has not resistive part. It cannot be matched using the quarter wavelength method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+130"/>
+        <location line="+131"/>
         <source>Reactive loads cannot be matched. Only the real part will be matched</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-102"/>
+        <location line="-103"/>
         <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="+1"/>
         <source>Chebyshev weighting for N&gt;7 is not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+96"/>
+        <location line="+97"/>
         <source>The load is reactive. It cannot be matched using the quarter wavelength method</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11582,7 +11605,7 @@ Active Filter synthesis program
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-564"/>
+        <location filename="../qucs/qucs.cpp" line="-626"/>
         <source>Schematic</source>
         <translation>回路図</translation>
     </message>
@@ -11598,47 +11621,47 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1607"/>
+        <location line="+1676"/>
         <source>VHDL Sources</source>
         <translation>VHDLソース</translation>
     </message>
     <message>
-        <location line="-1606"/>
-        <location line="+1607"/>
+        <location line="-1675"/>
+        <location line="+1676"/>
         <source>Verilog Sources</source>
         <translation>Verilogソース</translation>
     </message>
     <message>
-        <location line="-1606"/>
-        <location line="+1607"/>
+        <location line="-1675"/>
+        <location line="+1676"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1606"/>
-        <location line="+1607"/>
+        <location line="-1675"/>
+        <location line="+1676"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1606"/>
+        <location line="-1675"/>
         <source>Spice Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/qucs_actions.cpp" line="-19"/>
         <location filename="../qucs/qucs.cpp" line="+1"/>
-        <location line="+1609"/>
+        <location line="+1678"/>
         <source>Any File</source>
         <translation>いずれかのファイル</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+346"/>
+        <location filename="../qucs/qucs.cpp" line="+341"/>
         <source>The schematic search path has been refreshed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+706"/>
+        <location line="+705"/>
         <source>Verilog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11648,7 +11671,7 @@ Active Filter synthesis program
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-1185"/>
+        <location line="-1177"/>
         <source>Open file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11658,7 +11681,7 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+338"/>
+        <location line="+335"/>
         <source>Open example…</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11673,24 +11696,24 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+490"/>
-        <location line="+947"/>
+        <location line="+486"/>
+        <location line="+941"/>
         <location line="+20"/>
         <source>Simulate schematic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-966"/>
+        <location line="-960"/>
         <source>DC bias simulation mode is not supported for digital schematic!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+344"/>
+        <location line="+343"/>
         <source>Schematics</source>
         <translation>回路図</translation>
     </message>
     <message>
-        <location line="-2468"/>
+        <location line="-2531"/>
         <source>New</source>
         <translation>新規</translation>
     </message>
@@ -11764,7 +11787,7 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation>現在のプロジェクトの内容</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+92"/>
         <source>Search Components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11801,8 +11824,8 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-613"/>
-        <location line="+146"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-620"/>
+        <location line="+152"/>
         <location line="+17"/>
         <location line="+11"/>
         <location line="+8"/>
@@ -11813,29 +11836,29 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <location line="+16"/>
         <location line="+10"/>
         <location line="+5"/>
-        <location line="+227"/>
-        <location line="+48"/>
+        <location line="+225"/>
+        <location line="+51"/>
         <location line="+120"/>
         <location filename="../qucs/qucs.cpp" line="+106"/>
         <location line="+4"/>
-        <location line="+607"/>
+        <location line="+621"/>
         <location line="+25"/>
         <location line="+20"/>
         <location line="+19"/>
         <location line="+10"/>
         <location line="+79"/>
         <location line="+6"/>
-        <location line="+115"/>
-        <location line="+853"/>
+        <location line="+111"/>
+        <location line="+846"/>
         <location line="+5"/>
         <location line="+4"/>
-        <location line="+312"/>
+        <location line="+311"/>
         <location line="+28"/>
         <location line="+75"/>
-        <location line="+112"/>
+        <location line="+109"/>
         <location line="+23"/>
         <location line="+130"/>
-        <location line="+103"/>
+        <location line="+101"/>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+7"/>
@@ -11844,43 +11867,43 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-2557"/>
+        <location filename="../qucs/qucs.cpp" line="-2554"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation>開けません&quot;%1&quot;.</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+2270"/>
+        <location line="+2269"/>
         <location line="+23"/>
         <source>Library is corrupt.</source>
         <translation>ライブラリが壊れています.</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-924"/>
-        <location line="+14"/>
-        <location line="+14"/>
-        <location line="+14"/>
-        <location line="+38"/>
-        <location line="+14"/>
-        <location line="+732"/>
-        <location filename="../qucs/qucs.cpp" line="-2052"/>
-        <location line="+501"/>
-        <location line="+75"/>
-        <location line="+72"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-921"/>
+        <location line="+13"/>
+        <location line="+13"/>
+        <location line="+13"/>
+        <location line="+35"/>
+        <location line="+13"/>
+        <location line="+736"/>
+        <location filename="../qucs/qucs.cpp" line="-2039"/>
+        <location line="+503"/>
+        <location line="+73"/>
+        <location line="+70"/>
         <location line="+11"/>
         <location line="+26"/>
-        <location line="+256"/>
+        <location line="+254"/>
         <source>Info</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-940"/>
+        <location filename="../qucs/qucs.cpp" line="-936"/>
         <source>Default icon not found:
  %1.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+274"/>
+        <location line="+276"/>
         <source>-port</source>
         <translation>-port</translation>
     </message>
@@ -11891,13 +11914,13 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
     </message>
     <message>
         <location line="+1"/>
-        <location line="+728"/>
+        <location line="+721"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>ドキュメントに保存されていない変更があります!</translation>
     </message>
     <message>
-        <location line="-727"/>
+        <location line="-720"/>
         <source>Do you want to save the changes before copying?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11937,17 +11960,17 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation>ファイルを削除できません!</translation>
     </message>
     <message>
-        <location line="-754"/>
-        <location line="+759"/>
-        <location line="+219"/>
-        <location line="+276"/>
-        <location line="+708"/>
-        <location line="+548"/>
+        <location line="-768"/>
+        <location line="+773"/>
+        <location line="+215"/>
+        <location line="+274"/>
+        <location line="+703"/>
+        <location line="+544"/>
         <source>Warning</source>
         <translation>注意</translation>
     </message>
     <message>
-        <location line="-1750"/>
+        <location line="-1735"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>完全にファイルを削除します!  続けますか?</translation>
     </message>
@@ -12010,12 +12033,12 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-625"/>
+        <location line="-639"/>
         <source>Cannot create work directory !</source>
         <translation>ワークディレクトリを作成できません !</translation>
     </message>
     <message>
-        <location line="+825"/>
+        <location line="+839"/>
         <source>Cannot create project directory !</source>
         <translation>プロジェクトディレクトリを作成できません !</translation>
     </message>
@@ -12028,7 +12051,7 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation type="vanished">-Project:</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+56"/>
         <source>Choose Project Directory for Opening</source>
         <translation>開始時のプロジェクトディレクトリを選択</translation>
     </message>
@@ -12038,13 +12061,13 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation>プロジェクトが選択されていません!</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-134"/>
         <source>Cannot delete file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-493"/>
-        <location line="+103"/>
+        <location line="-502"/>
+        <location line="+112"/>
         <location line="+3"/>
         <location line="+98"/>
         <location line="+79"/>
@@ -12052,12 +12075,12 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-648"/>
+        <location line="-662"/>
         <source>Search Lib Components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-196"/>
+        <location line="-257"/>
         <source>Set simulator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12067,12 +12090,12 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="+297"/>
         <source>Show model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+527"/>
+        <location line="+541"/>
         <source>verilog-a user devices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12107,12 +12130,12 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+23"/>
         <source>Project: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+90"/>
+        <location line="+88"/>
         <source>Project directory name does not end in &apos;_prj&apos; (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12156,35 +12179,35 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation>新しい回路図を作成しています...</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="+895"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-1070"/>
+        <location filename="../qucs/qucs_init.cpp" line="+901"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-1053"/>
         <location line="+15"/>
+        <location line="+364"/>
         <location line="+388"/>
-        <location line="+382"/>
         <location filename="../qucs/qucs.cpp" line="-5"/>
         <location line="+13"/>
         <location line="+12"/>
-        <location line="+89"/>
+        <location line="+87"/>
         <location line="+37"/>
         <location line="+5"/>
         <location line="+114"/>
         <location line="+5"/>
-        <location line="+36"/>
+        <location line="+35"/>
         <location line="+57"/>
         <location line="+42"/>
-        <location line="+219"/>
+        <location line="+215"/>
         <location line="+30"/>
         <source>Ready.</source>
         <translation>準備完了.</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-640"/>
+        <location filename="../qucs/qucs.cpp" line="-633"/>
         <source>Creating new text editor...</source>
         <translation>新しいテキストエディタを作成しています...</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-391"/>
-        <location filename="../qucs/qucs.cpp" line="+82"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-397"/>
+        <location filename="../qucs/qucs.cpp" line="+80"/>
         <source>Opening file...</source>
         <translation>ファイルを開いています...</translation>
     </message>
@@ -12270,7 +12293,7 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation>全てのファイルを保存しています...</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+53"/>
         <source>Closing file...</source>
         <translation>ファイルを閉じています...</translation>
     </message>
@@ -12289,7 +12312,7 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation type="vanished">破棄(&amp;D)</translation>
     </message>
     <message>
-        <location line="+242"/>
+        <location line="+238"/>
         <source>untitled</source>
         <translation type="unfinished">タイトル無し</translation>
     </message>
@@ -12319,7 +12342,7 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+681"/>
+        <location line="+677"/>
         <source>Symbol editing supported only for schematics and Verilog-A documents!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12329,7 +12352,7 @@ NOTE: Only QucsatorRF found. This simulator is not recommended for general purpo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+364"/>
+        <location line="+362"/>
         <source>Schematic not saved! Simulation of unsaved schematic not possible. Save schematic first!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12368,7 +12391,7 @@ Use subcircuit to crete Verilog-A module!</source>
         <translation type="vanished">本当に終了しますか?</translation>
     </message>
     <message>
-        <location line="-1010"/>
+        <location line="-1004"/>
         <source>The document was modified by another program !</source>
         <translation>このドキュメントは他のプログラムによって変更されています!</translation>
     </message>
@@ -12386,7 +12409,7 @@ Use subcircuit to crete Verilog-A module!</source>
         <translation type="vanished">そのまま</translation>
     </message>
     <message>
-        <location line="+174"/>
+        <location line="+173"/>
         <source>Cannot create </source>
         <translation>作成できません</translation>
     </message>
@@ -12401,7 +12424,7 @@ Use subcircuit to crete Verilog-A module!</source>
         <translation>&quot;%1&quot; を開始できません!</translation>
     </message>
     <message>
-        <location line="+367"/>
+        <location line="+362"/>
         <source>Could not load S[1,1].</source>
         <translation>S[1,1]がロードできません.</translation>
     </message>
@@ -12426,7 +12449,7 @@ Use subcircuit to crete Verilog-A module!</source>
         <translation>誤った属性です!</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-404"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-380"/>
         <source>Cutting selection...</source>
         <translation>選択を切り取っています...</translation>
     </message>
@@ -12436,17 +12459,17 @@ Use subcircuit to crete Verilog-A module!</source>
         <translation>選択をクリップボードにコピーしています...</translation>
     </message>
     <message>
-        <location line="+239"/>
-        <location line="+14"/>
-        <location line="+14"/>
-        <location line="+14"/>
-        <location line="+38"/>
-        <location line="+14"/>
+        <location line="+225"/>
+        <location line="+13"/>
+        <location line="+13"/>
+        <location line="+13"/>
+        <location line="+35"/>
+        <location line="+13"/>
         <source>At least two elements must be selected !</source>
         <translation>少なくとも二つ以上の要素を選択してください!</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+57"/>
         <source>Opening aborted, file not found.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12468,7 +12491,7 @@ Use subcircuit to crete Verilog-A module!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+117"/>
+        <location line="+123"/>
         <source>Cannot start %1 program! 
 
 (%2)</source>
@@ -12548,7 +12571,7 @@ Overwrite ?</source>
         <translation>&quot;%1&quot;を書き込みできません!</translation>
     </message>
     <message>
-        <location line="+227"/>
+        <location line="+225"/>
         <source>Please open project with subcircuits!</source>
         <translation>サブサーキットと共にプロジェクトを開いてください!</translation>
     </message>
@@ -12557,7 +12580,7 @@ Overwrite ?</source>
         <translation type="vanished">プロジェクトファイルを先に開いてください!</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+51"/>
         <source>Please select a diagram graph!</source>
         <translation>表を先に選択してください!</translation>
     </message>
@@ -12615,7 +12638,7 @@ Have you saved the Verilog-A symbols?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="-920"/>
+        <location filename="../qucs/qucs_init.cpp" line="-926"/>
         <source>&amp;New</source>
         <translation>新規(&amp;N)</translation>
     </message>
@@ -13437,7 +13460,24 @@ Create Library from Subcircuits</source>
 サブサーキットよりライブラリ作成</translation>
     </message>
     <message>
-        <location line="+307"/>
+        <location line="+198"/>
+        <source>S-parameter Viewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Starts S-parameter viewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>S-parameter Viewer
+
+Starts S-parameter viewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+112"/>
         <source>&amp;About Qucs-S</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13499,7 +13539,7 @@ Convert data file to various file formats</source>
 データファイルをいろいろなファイルにインポート/エクスポート</translation>
     </message>
     <message>
-        <location line="-198"/>
+        <location line="-203"/>
         <source>Export to &amp;CSV...</source>
         <translation>CSVファイルに変換(&amp;C)...</translation>
     </message>
@@ -13794,7 +13834,7 @@ Rotates the selected component by 90� counter-clockwise</source>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+12"/>
+        <location line="+17"/>
         <source>Power combining
 
 Starts power combining calculation program</source>
@@ -13889,7 +13929,7 @@ Rotates the selected component by 90° counter-clockwise</source>
 選択された部品を時計周りに90°回転</translation>
     </message>
     <message>
-        <location line="-192"/>
+        <location line="-197"/>
         <source>Mirror about X Axis</source>
         <translation>X軸で反転</translation>
     </message>
@@ -14081,12 +14121,7 @@ Inserts a port symbol</source>
         <translation>ワイア</translation>
     </message>
     <message>
-        <location line="+113"/>
-        <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-111"/>
+        <location line="+2"/>
         <source>Inserts a wire</source>
         <translation>ワイアを挿入</translation>
     </message>
@@ -14304,13 +14339,13 @@ Starts attenuator calculation program</source>
 アッテネータ計算プログラムを開始</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <location line="+395"/>
+        <location line="+26"/>
+        <location line="+396"/>
         <source>Simulate</source>
         <translation>シミュレート</translation>
     </message>
     <message>
-        <location line="-393"/>
+        <location line="-394"/>
         <source>Simulates the current schematic</source>
         <translation>現在の回路図をシミュレートする</translation>
     </message>
@@ -14611,7 +14646,7 @@ TrolltechによるQtについて</translation>
         <translation>ツール(&amp;T)</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Compact modelling</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14696,83 +14731,100 @@ Open </source>
 <context>
     <name>QucsAttenuator</name>
     <message>
+        <location filename="../qucs-s-spar-viewer/qucsattenuator.cpp" line="+48"/>
         <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+48"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+2"/>
         <source>&amp;Quit</source>
         <translation>閉じる(&amp;Q)</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+2"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+6"/>
+        <location line="+2"/>
         <source>&amp;Help</source>
         <translation>ヘルプ(&amp;H)</translation>
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+5"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+7"/>
         <source>About Qt...</source>
         <translation>Qtについて...</translation>
     </message>
     <message>
         <location line="+12"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+12"/>
         <source>Topology</source>
         <translation>型</translation>
     </message>
     <message>
         <location line="+34"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+34"/>
         <source>Input</source>
         <translation>入力</translation>
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+9"/>
         <source>Attenuation:</source>
         <translation>減衰値:</translation>
     </message>
     <message>
         <location line="+39"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+37"/>
         <source>Pin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+25"/>
         <source>Freq:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+39"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+39"/>
         <source>Put into Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+76"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+76"/>
         <source>R4:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+92"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+92"/>
         <source>Copyright (C) 2024 by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-262"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="-260"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+3"/>
         <source>Zin:</source>
         <translation>Zin:</translation>
     </message>
     <message>
         <location line="+14"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+13"/>
         <source>Zout:</source>
         <translation>Zout:</translation>
     </message>
@@ -14782,11 +14834,13 @@ Open </source>
     </message>
     <message>
         <location line="+82"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+81"/>
         <source>Output</source>
         <translation>出力</translation>
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+11"/>
         <source>R1:</source>
         <translation>R1:</translation>
     </message>
@@ -14799,16 +14853,26 @@ Open </source>
         <location line="+7"/>
         <location line="+13"/>
         <location line="+7"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+2"/>
+        <location line="+7"/>
+        <location line="+13"/>
+        <location line="+7"/>
+        <location line="+13"/>
+        <location line="+7"/>
+        <location line="+13"/>
+        <location line="+7"/>
         <source>--</source>
         <translation>--</translation>
     </message>
     <message>
         <location line="-49"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="-49"/>
         <source>R2:</source>
         <translation>R2:</translation>
     </message>
     <message>
         <location line="+20"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+20"/>
         <source>R3:</source>
         <translation>R3:</translation>
     </message>
@@ -14818,26 +14882,31 @@ Open </source>
     </message>
     <message>
         <location line="+85"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+85"/>
         <source>Qucs Attenuator Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+1"/>
         <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediately, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+14"/>
         <source>About Qt</source>
         <translation>Qtについて</translation>
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+5"/>
         <source>About...</source>
         <translation>About...</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+2"/>
         <source>
 Attenuator synthesis program
 </source>
@@ -14848,6 +14917,8 @@ Attenuator synthesis program
     <message>
         <location line="+1"/>
         <location line="+2"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+1"/>
+        <location line="+2"/>
         <source>Copyright (C) 2006 by</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14857,6 +14928,7 @@ Attenuator synthesis program
     </message>
     <message>
         <location line="+316"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+321"/>
         <source>Error: Set Attenuation less than %1 dB</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16317,6 +16389,134 @@ open files with an appropriate program.</source>
     </message>
 </context>
 <context>
+    <name>Qucs_S_SPAR_Viewer</name>
+    <message>
+        <location filename="../qucs-s-spar-viewer/qucs-s-spar-viewer.cpp" line="+57"/>
+        <source>&amp;File</source>
+        <translation type="unfinished">ファイル(&amp;F)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>&amp;Quit</source>
+        <translation type="unfinished">閉じる(&amp;Q)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;Open session file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;Save session as ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;Save session</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location line="+2"/>
+        <source>&amp;Help</source>
+        <translation type="unfinished">ヘルプ(&amp;H)</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>&amp;About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>About Qt...</source>
+        <translation type="unfinished">Qtについて...</translation>
+    </message>
+    <message>
+        <location line="+453"/>
+        <source>Qucs-S S-parameter Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This is a simple viewer for S-parameter data.
+It can show several .snp files at a time in the same diagram. Trace markers can also be added so that the user can read the trace value at at an specific frequency.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>About Qt</source>
+        <translation type="unfinished">Qtについて</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>About...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>
+Copyright (C) 2024 by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>S-Parameter Files (*.s1p *.s2p *.s3p *.s4p);;All Files (*.*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <location line="+584"/>
+        <location line="+771"/>
+        <location line="+569"/>
+        <source>Warning</source>
+        <translation type="unfinished">注意</translation>
+    </message>
+    <message>
+        <location line="-1923"/>
+        <source>This file is already in the dataset.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+584"/>
+        <source>This trace is already shown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+771"/>
+        <location line="+569"/>
+        <source>The display contains no traces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+220"/>
+        <location line="+24"/>
+        <source>Error</source>
+        <translation type="unfinished">エラー</translation>
+    </message>
+    <message>
+        <location line="-23"/>
+        <location line="+24"/>
+        <source>Nothing to save: No data was loaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-18"/>
+        <source>Save session</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+175"/>
+        <source>Qucs-S snp viewer session (*.spar);</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Open S-parameter Viewer Session</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SaveDialog</name>
     <message>
         <location filename="../qucs/dialogs/savedialog.cpp" line="+39"/>
@@ -16357,7 +16557,7 @@ open files with an appropriate program.</source>
 <context>
     <name>Schematic</name>
     <message>
-        <location filename="../qucs/schematic.cpp" line="-2576"/>
+        <location filename="../qucs/schematic.cpp" line="-2536"/>
         <source>Title</source>
         <translation>タイトル</translation>
     </message>
@@ -16413,12 +16613,12 @@ Edits the symbol for this schematic</source>
 この回路図の為のシンボルを編集</translation>
     </message>
     <message>
-        <location line="+1625"/>
+        <location line="+1594"/>
         <source>generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1443"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1442"/>
         <location line="+22"/>
         <source>Error</source>
         <translation>エラー</translation>
@@ -16436,7 +16636,7 @@ Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+897"/>
+        <location line="+896"/>
         <source>Netlist error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16734,7 +16934,7 @@ Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+300"/>
+        <location line="+307"/>
         <source>ERROR: Cannot start </source>
         <translation type="unfinished"></translation>
     </message>
@@ -16975,7 +17175,7 @@ Set the admsXml location on the application settings.</source>
         <translation>全てのファイル</translation>
     </message>
     <message>
-        <location line="+91"/>
+        <location line="+101"/>
         <location line="+67"/>
         <source>Info</source>
         <translation>情報</translation>

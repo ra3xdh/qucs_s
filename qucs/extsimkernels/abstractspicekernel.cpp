@@ -207,7 +207,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
                 else continue;
                 QString ic = pw->Label->initValue;
                 if (!ic.isEmpty()) {
-                    QString ic_str = QString(".IC v(%1)=%2\n").arg(label).arg(ic);
+                    QString ic_str = QStringLiteral(".IC v(%1)=%2\n").arg(label).arg(ic);
                     stream<<ic_str;
                 }
             }
@@ -220,7 +220,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
                 else continue;
                 QString ic = pw->Label->initValue;
                 if (!ic.isEmpty()) {
-                    QString ic_str = QString(".IC v(%1)=%2\n").arg(label).arg(ic);
+                    QString ic_str = QStringLiteral(".IC v(%1)=%2\n").arg(label).arg(ic);
                     stream<<ic_str;
                 }
             }
@@ -274,7 +274,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
 {
     QString header;
     QString f = misc::properFileName(Sch->DocName);
-    header = QString(".SUBCKT %1 ").arg(misc::properName(f));
+    header = QStringLiteral(".SUBCKT %1 ").arg(misc::properName(f));
 
     QList< QPair<int,QString> > ports;
     if(!prepareSpiceNetlist(stream,true)) {
@@ -1277,14 +1277,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             if (hasDblParSweep) indep_cnt =  sim_points.count()/(swp_var_val.count()*swp_var2_val.count());
             else indep_cnt = sim_points.count()/swp_var_val.count();
             if (!indep.isEmpty()) {
-                ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(indep_cnt); // output indep var: TODO: parameter sweep
+                ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(indep).arg(indep_cnt); // output indep var: TODO: parameter sweep
                 for (int i=0;i<indep_cnt;i++) {
                     ds_stream<<QString::number(sim_points.at(i).at(0),'e',12)<<"\n";
                 }
                 ds_stream<<"</indep>\n";
             }
 
-            ds_stream<<QString("<indep %1 %2>\n").arg(swp_var).arg(swp_var_val.count());
+            ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(swp_var).arg(swp_var_val.count());
             for (const QString& val : swp_var_val) {
                 ds_stream<<val<<"\n";
             }
@@ -1292,7 +1292,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             if (indep.isEmpty()) indep = swp_var;
             else indep += " " + swp_var;
             if (hasDblParSweep) {
-                ds_stream<<QString("<indep %1 %2>\n").arg(swp_var2).arg(swp_var2_val.count());
+                ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(swp_var2).arg(swp_var2_val.count());
                 for (const QString& val : swp_var2_val) {
                     ds_stream<<val<<"\n";
                 }
@@ -1300,7 +1300,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 indep += " " + swp_var2;
             }
         } else if (!indep.isEmpty()) {
-            ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
+            ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
             for (auto& sim_point : sim_points) {
                 ds_stream<<QString::number(sim_point.at(0),'e',12)<<"\n";
             }
@@ -1308,8 +1308,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         }
 
         for(int i=1;i<var_list.count();i++) { // output dep var
-            if (indep.isEmpty()) ds_stream<<QString("<indep %1 %2>\n").arg(var_list.at(i)).arg(sim_points.count());
-            else ds_stream<<QString("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
+            if (indep.isEmpty()) ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var_list.at(i)).arg(sim_points.count());
+            else ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
             for (auto& sim_point : sim_points) {
                 if (isComplex) {
                     double re=sim_point.at(2*(i-1)+1);

@@ -91,11 +91,11 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     step_var.remove(QRegularExpression("[\\.\\[\\]@:]"));
 
     s = "option interp\n";
-    s += QString("let number_%1 = 0\n").arg(step_var);
-    if (lvl==0) s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
-    else s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res%4\n").arg(sim).arg(step_var).arg(sim).arg(lvl);
+    s += QStringLiteral("let number_%1 = 0\n").arg(step_var);
+    if (lvl==0) s += QStringLiteral("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
+    else s += QStringLiteral("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res%4\n").arg(sim).arg(step_var).arg(sim).arg(lvl);
 
-    s += QString("foreach  %1_act ").arg(step_var);
+    s += QStringLiteral("foreach  %1_act ").arg(step_var);
 
     if((type == "list") || (type == "const")) {
         QString list_str = getProperty("Values")->Value;
@@ -103,7 +103,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         list_str.chop(1);
         QStringList List = list_str.split(";");
         for(int i = 0; i < List.length(); i++) {
-            s += QString("%1 ").arg(List[i]);
+            s += QStringLiteral("%1 ").arg(List[i]);
         }
     } else {
         double start,stop,step,fac,points,ostart,ostop;
@@ -120,7 +120,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         if(type == "lin") {
             step = (stop-start)/(points-1);
             while ( points > 0 ) {
-                s += QString("%1 ").arg(start);
+                s += QStringLiteral("%1 ").arg(start);
                 start += step;
                 points -= 1;
             }
@@ -130,7 +130,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
             step = (stop - start)/(points - 1);
 
             while ( points > 0 ) {
-                s += QString("%1 ").arg(pow(10, start));
+                s += QStringLiteral("%1 ").arg(pow(10, start));
                 start += step;
                 points -= 1;
             }
@@ -152,13 +152,13 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         if (step_var == "temp" || step_var == "temper") temper_sweep = true;
 
         if (temper_sweep) { // Sweep temperature
-          s += QString("option temp = $%1_act%2").arg(step_var).arg(nline_char);
+          s += QStringLiteral("option temp = $%1_act%2").arg(step_var).arg(nline_char);
         } else if (compfound) { // Sweep device
-          s += QString("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+          s += QStringLiteral("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
         } else if (par.startsWith("@")) { // Sweep model
-          s += QString("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+          s += QStringLiteral("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
         } else { // Sweep .PARAM variable
-          s += QString("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
+          s += QStringLiteral("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
         }
     }
     return s;
@@ -176,9 +176,9 @@ QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
 
     s = "set appendwrite\n";
 
-    if (lvl==0) s += QString("echo \"$&number_%1  $%2_act\" >> spice4qucs.%3.cir.res\n").arg(par).arg(par).arg(sim);
-    else s += QString("echo \"$&number_%1\" $%1_act >> spice4qucs.%2.cir.res%3\n").arg(par).arg(sim).arg(lvl);
-    s += QString("let number_%1 = number_%1 + 1\n").arg(par);
+    if (lvl==0) s += QStringLiteral("echo \"$&number_%1  $%2_act\" >> spice4qucs.%3.cir.res\n").arg(par).arg(par).arg(sim);
+    else s += QStringLiteral("echo \"$&number_%1\" $%1_act >> spice4qucs.%2.cir.res%3\n").arg(par).arg(sim).arg(lvl);
+    s += QStringLiteral("let number_%1 = number_%1 + 1\n").arg(par);
 
     s += "end\n";
     s += "unset appendwrite\n";
@@ -189,7 +189,7 @@ QString Param_Sweep::getCounterVar()
 {
     QString par = getProperty("Param")->Value;
     par.remove(QRegularExpression("[\\.\\[\\]@:]"));
-    QString s = QString("number_%1").arg(par);
+    QString s = QStringLiteral("number_%1").arg(par);
     return s;
 }
 
@@ -205,7 +205,7 @@ QString Param_Sweep::spice_netlist(bool isXyce)
             QString list = getProperty("Values")->Value;
             list.remove('[').remove(']');
             list = list.split(';').join(" ");
-            s = QString(".STEP %1 LIST %2\n").arg(var).arg(list);
+            s = QStringLiteral(".STEP %1 LIST %2\n").arg(var).arg(list);
             return s.toLower();
         }
     }
@@ -221,11 +221,11 @@ QString Param_Sweep::spice_netlist(bool isXyce)
 
     if (Props.at(0)->Value.toLower().startsWith("dc")) {
         QString src = getProperty("Param")->Value;
-        s = QString("DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
+        s = QStringLiteral("DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
         if (isXyce) s.prepend('.');
     } else if (isXyce) {
         QString var = getProperty("Param")->Value;
-        s = QString(".STEP %1 %2 %3 %4\n").arg(var).arg(start).arg(stop).arg(step);
+        s = QStringLiteral(".STEP %1 %2 %3 %4\n").arg(var).arg(start).arg(stop).arg(step);
     } else {
         s = "";
     }

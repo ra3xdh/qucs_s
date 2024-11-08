@@ -131,7 +131,7 @@ QucsApp::QucsApp()
     tr("Verilog Sources") + " (*.v);;" +
     tr("Verilog-A Sources") + " (*.va);;" +
     tr("Octave Scripts") + " (*.m *.oct);;" +
-    tr("Spice Files") + QString(" (") + QucsSettings.spiceExtensions.join(" ") + QString(");;") +
+    tr("Spice Files") + QStringLiteral(" (") + QucsSettings.spiceExtensions.join(" ") + QStringLiteral(");;") +
     tr("Any File")+" (*)";
 
   //updateSchNameHash();
@@ -265,7 +265,7 @@ void QucsApp::initView()
   // set application icon
   // APPLE sets the QApplication icon with Info.plist
 #ifndef __APPLE__
-  setWindowIcon (QPixmap(QString(":/bitmaps/hicolor/scalable/apps/qucs.svg")));
+  setWindowIcon (QPixmap(QStringLiteral(":/bitmaps/hicolor/scalable/apps/qucs.svg")));
 #else
   // setUnifiedTitleAndToolBarOnMac(true);
   setStyleSheet("QToolButton { padding: 0px; }");
@@ -1271,7 +1271,7 @@ void QucsApp::slotCMenuCopy()
 
   if(ok && !s.isEmpty()) {
     if (!s.endsWith(suffix)) {
-      s += QString(".") + suffix;
+      s += QStringLiteral(".") + suffix;
     }
 
     if (QFile::exists(dir.filePath(s))) {  //check New Name exists
@@ -1321,7 +1321,7 @@ void QucsApp::slotCMenuRename()
 
   if(ok && !s.isEmpty()) { 
     if (!s.endsWith(suffix)) {
-      s += QString(".") + suffix;
+      s += QStringLiteral(".") + suffix;
     }
     QDir dir(QucsSettings.QucsWorkDir.path());
     if(!dir.rename(filename, s)) {
@@ -3621,7 +3621,7 @@ void QucsApp::slotBuildVAModule()
             messageDock->builderTabs->setTabText(0,tr("XSPICE"));
             messageDock->builderTabs->setTabIcon(1,QPixmap());
             messageDock->admsOutput->
-                    insertPlainText(QString("Creating XSPICE source file: %1\n").arg(filename));
+                    insertPlainText(QStringLiteral("Creating XSPICE source file: %1\n").arg(filename));
             errs += cmgen->getLog();
             if (errs.isEmpty()) {
                 messageDock->admsOutput->insertPlainText(tr("Success!\n"));

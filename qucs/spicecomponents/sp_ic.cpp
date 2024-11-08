@@ -76,7 +76,7 @@ QString SpiceIC::getExpression(bool)
     QString s;
     s.clear();
     for (Property *pp : Props) {
-        s += QString(".IC %1 = %2\n").arg(pp->Name).arg(pp->Value);
+        s += QStringLiteral(".IC %1 = %2\n").arg(pp->Name).arg(pp->Value);
     }
     return s;
 }

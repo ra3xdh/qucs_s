@@ -106,7 +106,7 @@ QString Volt_ac::spice_netlist(bool)
     QString VO = spicecompat::normalize_value(getProperty("VO")->Value);
     QString TD = spicecompat::normalize_value(getProperty("TD")->Value);
 
-    s += QString(" DC %1 SIN(%1 %2 %3 %4 %5 %6) AC %7 ACPHASE %8\n")
+    s += QStringLiteral(" DC %1 SIN(%1 %2 %3 %4 %5 %6) AC %7 ACPHASE %8\n")
             .arg(VO).arg(volts).arg(freq).arg(TD).arg(theta).arg(phase).arg(volts).arg(phase);
     return s;
 }

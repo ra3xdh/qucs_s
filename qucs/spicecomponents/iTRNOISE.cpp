@@ -116,7 +116,7 @@ QString iTRNOISE::spice_netlist(bool)
    QString Rtsemt = spicecompat::normalize_value(Props.at(4)->Value);
 
 
-    s += QString(" DC 0 AC 0 TRNOISE(%1 %2 %3 %4 %5  %6 %7) \n").arg(Na).arg(Nt).arg(Nalpha).arg(Namp).
+    s += QStringLiteral(" DC 0 AC 0 TRNOISE(%1 %2 %3 %4 %5  %6 %7) \n").arg(Na).arg(Nt).arg(Nalpha).arg(Namp).
                                 arg(Rtsam).arg(Rtscapt).arg(Rtsemt);
     return s;
 }

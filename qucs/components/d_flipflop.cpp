@@ -138,9 +138,9 @@ QString D_FlipFlop::spice_netlist(bool isXyce)
     s += " " + D + " " + CLK + " " + SET + " " + RESET + " " + Q + " " + QB;
 
     s += " " + tmp_model + "\n";
-    s += QString(".model %1 d_dff(clk_delay=%2 set_delay=%2 reset_delay=%2 rise_delay=%2 fall_delay=%2)\n")
+    s += QStringLiteral(".model %1 d_dff(clk_delay=%2 set_delay=%2 reset_delay=%2 rise_delay=%2 fall_delay=%2)\n")
             .arg(tmp_model).arg(td);
-    s += QString("C%1 QB_%1 0 1e-9 \n").arg(Name); // capacitor load for unused QB pin
+    s += QStringLiteral("C%1 QB_%1 0 1e-9 \n").arg(Name); // capacitor load for unused QB pin
 
     return s;
 }

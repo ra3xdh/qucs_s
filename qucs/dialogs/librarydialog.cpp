@@ -502,7 +502,7 @@ void LibraryDialog::slotSave()
         AbstractSpiceKernel *kern = new AbstractSpiceKernel(Doc);
         QStringList err_lst;
         if (!kern->checkSchematic(err_lst)) {
-             ErrText->insertPlainText(QString("Component %1 contains SPICE-incompatible components.\n"
+             ErrText->insertPlainText(QStringLiteral("Component %1 contains SPICE-incompatible components.\n"
                                 "Check these components: %2 \n")
                     .arg(Doc->DocName).arg(err_lst.join("; ")));
         }

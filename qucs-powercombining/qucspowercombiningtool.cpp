@@ -355,54 +355,54 @@ void QucsPowerCombiningTool::UpdateImage()
        case 0: //Wilkinson
                if (lumpedImplementation)
                {
-                  imgWidget->load(QString(":/bitmaps/WilkinsonLC.svg"));
+                  imgWidget->load(QStringLiteral(":/bitmaps/WilkinsonLC.svg"));
                }
                else
                { 
-                (microstripImplementation) ? imgWidget->load(QString(":/bitmaps/Wilkinson_microstrip.svg"))
-                                           : imgWidget->load(QString(":/bitmaps/Wilkinson_idealTL.svg"));
+                (microstripImplementation) ? imgWidget->load(QStringLiteral(":/bitmaps/Wilkinson_microstrip.svg"))
+                                           : imgWidget->load(QStringLiteral(":/bitmaps/Wilkinson_idealTL.svg"));
                }
                break;
        case 1: //Mutistage Wilkinson
                if (lumpedImplementation)
                {
-                  imgWidget->load(QString(":/bitmaps/MultistageWilkinsonLC.svg"));
+                  imgWidget->load(QStringLiteral(":/bitmaps/MultistageWilkinsonLC.svg"));
                }
                else
                {
-                (microstripImplementation) ? imgWidget->load(QString(":/bitmaps/MultistageWilkinson_microstrip.svg"))
-                                           : imgWidget->load(QString(":/bitmaps/MultistageWilkinson_idealTL.svg"));
+                (microstripImplementation) ? imgWidget->load(QStringLiteral(":/bitmaps/MultistageWilkinson_microstrip.svg"))
+                                           : imgWidget->load(QStringLiteral(":/bitmaps/MultistageWilkinson_idealTL.svg"));
                }
                                        
                break;
        case 2: //Tee
-               (microstripImplementation) ? imgWidget->load(QString(":/bitmaps/Tee_microstrip.svg"))
-                                          : imgWidget->load(QString(":/bitmaps/Tee_idealTL.svg")); 
+               (microstripImplementation) ? imgWidget->load(QStringLiteral(":/bitmaps/Tee_microstrip.svg"))
+                                          : imgWidget->load(QStringLiteral(":/bitmaps/Tee_idealTL.svg"));
                break;
        case 3: //Branch-line
-               (microstripImplementation) ? imgWidget->load(QString(":/bitmaps/Branchline_microstrip.svg"))
-                                          : imgWidget->load(QString(":/bitmaps/Branchline_idealTL.svg"));
+               (microstripImplementation) ? imgWidget->load(QStringLiteral(":/bitmaps/Branchline_microstrip.svg"))
+                                          : imgWidget->load(QStringLiteral(":/bitmaps/Branchline_idealTL.svg"));
                break;
        case 4: //Double-box branch-line
-               (microstripImplementation) ? imgWidget->load(QString(":/bitmaps/DoubleBoxBranchline_microstrip.svg"))
-                                          : imgWidget->load(QString(":/bitmaps/DoubleBoxBranchline_idealTL.svg"));
+               (microstripImplementation) ? imgWidget->load(QStringLiteral(":/bitmaps/DoubleBoxBranchline_microstrip.svg"))
+                                          : imgWidget->load(QStringLiteral(":/bitmaps/DoubleBoxBranchline_idealTL.svg"));
                break;
        case 5: //Bagley power combiner
-               (microstripImplementation) ? imgWidget->load(QString(":/bitmaps/Bagley_microstrip.svg"))
-                                          : imgWidget->load(QString(":/bitmaps/Bagley_idealTL.svg"));
+               (microstripImplementation) ? imgWidget->load(QStringLiteral(":/bitmaps/Bagley_microstrip.svg"))
+                                          : imgWidget->load(QStringLiteral(":/bitmaps/Bagley_idealTL.svg"));
                break;
        case 6: //Gysel power combiner
-               (microstripImplementation) ? imgWidget->load(QString(":/bitmaps/Gysel_microstrip.svg"))
-                                          : imgWidget->load(QString(":/bitmaps/Gysel_idealTL.svg")); 
+               (microstripImplementation) ? imgWidget->load(QStringLiteral(":/bitmaps/Gysel_microstrip.svg"))
+                                          : imgWidget->load(QStringLiteral(":/bitmaps/Gysel_idealTL.svg"));
                break;
        // -------------  CORPORATE COMBINERS  -----------------
        case 7: //Travelling wave
-               (microstripImplementation) ? imgWidget->load(QString(":/bitmaps/TravellingWave_microstrip.svg"))
-                                          : imgWidget->load(QString(":/bitmaps/TravellingWave_idealTL.svg"));
+               (microstripImplementation) ? imgWidget->load(QStringLiteral(":/bitmaps/TravellingWave_microstrip.svg"))
+                                          : imgWidget->load(QStringLiteral(":/bitmaps/TravellingWave_idealTL.svg"));
                break;
        case 8: //Tree
-               (microstripImplementation) ? imgWidget->load(QString(":/bitmaps/Tree_microstrip.svg"))
-                                          : imgWidget->load(QString(":/bitmaps/Tree_idealTL.svg")); 
+               (microstripImplementation) ? imgWidget->load(QStringLiteral(":/bitmaps/Tree_microstrip.svg"))
+                                          : imgWidget->load(QStringLiteral(":/bitmaps/Tree_idealTL.svg"));
                break;   
     }
 }
@@ -589,7 +589,7 @@ QString QucsPowerCombiningTool::CalculateWilkinson(double Z0, double K)
     double R=Z0*((K2+1)/K);
     double R2 = Z0*K;
     double R3 = Z0/K;
-    return QString("%1;%2;%3;%4;%5").arg(Z2).arg(Z3).arg(R).arg(R2).arg(R3);
+    return QStringLiteral("%1;%2;%3;%4;%5").arg(Z2).arg(Z3).arg(R).arg(R2).arg(R3);
 }
 
 //-----------------------------------------------------
@@ -636,70 +636,70 @@ int QucsPowerCombiningTool::Wilkinson(double Z0, double Freq, double K, bool SP_
     if (SP_block)
     {
         //Source
-        s += QString("<Pac P1 1 0 0 18 -26 0 1 \"1\" 0 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 0 30 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 0 0 18 -26 0 1 \"1\" 0 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 0 30 0 0 0 0>\n");
         //Output port 1
-        s += QString("<Pac P1 1 500 -60 18 -26 0 1 \"1\" 0 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 500 -30 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 500 -60 18 -26 0 1 \"1\" 0 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 500 -30 0 0 0 0>\n");
         //Output port 2
-        s += QString("<Pac P1 1 500 60 18 -26 0 1 \"1\" 0 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 500 90 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 500 60 18 -26 0 1 \"1\" 0 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 500 90 0 0 0 0>\n");
         
         //S-parameter analysis component
-        QString freq_start = QString("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        QString freq_stop = QString("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        s += QString("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg((freq_start)).arg((freq_stop));
+        QString freq_start = QStringLiteral("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        QString freq_stop = QStringLiteral("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        s += QStringLiteral("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg((freq_start)).arg((freq_stop));
         s += getSPEquationString(50,200);
-        if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
+        if (microcheck)s += QStringLiteral("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
     }
 
     if (microcheck)//Microstrip implementation
     {
         er = Substrate.er;
         getMicrostrip(Z0, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 130 -30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 130 -30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(Z2, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 260 -90 -26 -71 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 260 -90 -26 -71 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(Z3, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 260 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 260 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
     }
     else
     {
         if (LumpedElements)// CLC equivalent
         {
         //First capacitor
-        s += QString("<C C1 1 110 0 13 4 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(CC));
-        s += QString("<GND * 1 110 30 0 1 0 0>\n");
+        s += QStringLiteral("<C C1 1 110 0 13 4 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(CC));
+        s += QStringLiteral("<GND * 1 110 30 0 1 0 0>\n");
 
         //Upper branch
-        s += QString("<C C1 1 310 -140 -89 -28 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C2));
-        s += QString("<GND * 1 310 -170 0 0 0 2>\n");
-        s += QString("<L L1 1 260 -90 -25 8 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L2));
+        s += QStringLiteral("<C C1 1 310 -140 -89 -28 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C2));
+        s += QStringLiteral("<GND * 1 310 -170 0 0 0 2>\n");
+        s += QStringLiteral("<L L1 1 260 -90 -25 8 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L2));
         //Lower branch
-        s += QString("<C C1 1 310 80 -77 10 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C3));
-        s += QString("<GND * 1 310 110 0 0 0 0>\n");
-        s += QString("<L L2 1 260 30 -28 12 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L3));
+        s += QStringLiteral("<C C1 1 310 80 -77 10 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C3));
+        s += QStringLiteral("<GND * 1 310 110 0 0 0 0>\n");
+        s += QStringLiteral("<L L2 1 260 30 -28 12 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L3));
         }
         else
         {
-        s += QString("<TLIN Line1 1 130 -30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
-        s += QString("<TLIN Line1 1 260 -90 -26 -71 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z2)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 1
-        s += QString("<TLIN Line1 1 260 30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z3)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
+        s += QStringLiteral("<TLIN Line1 1 130 -30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
+        s += QStringLiteral("<TLIN Line1 1 260 -90 -26 -71 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z2)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 1
+        s += QStringLiteral("<TLIN Line1 1 260 30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z3)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
         }
     }
-    s += QString("<R R1 1 340 -20 20 -26 0 -1 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(R);//Isolation resistor
+    s += QStringLiteral("<R R1 1 340 -20 20 -26 0 -1 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(R);//Isolation resistor
     if (K!=1)
     {// An unequal power ratio implies that the load impedance != 50, so it requires matching
         if (microcheck)//Microstrip
         {
             er = Substrate.er;
             getMicrostrip(sqrt(Z0*R2), Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 410 -90 -26 -71 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+            s += QStringLiteral("<MLIN MS1 1 410 -90 -26 -71 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
             er = Substrate.er;
             getMicrostrip(sqrt(Z0*R3), Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 410 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+            s += QStringLiteral("<MLIN MS1 1 410 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
 
         }
         else
@@ -707,19 +707,19 @@ int QucsPowerCombiningTool::Wilkinson(double Z0, double Freq, double K, bool SP_
            if (LumpedElements)//CLC equivalent
            {
              // Upper branch
-             s += QString("<L L2 1 410 -90 -22 5 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L2_));
-             s += QString("<C C1 1 450 -140 -80 -30 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C2_));
-             s += QString("<GND * 1 450 -170 0 0 0 2>\n");
+             s += QStringLiteral("<L L2 1 410 -90 -22 5 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L2_));
+             s += QStringLiteral("<C C1 1 450 -140 -80 -30 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C2_));
+             s += QStringLiteral("<GND * 1 450 -170 0 0 0 2>\n");
 
              // Lower branch
-             s += QString("<L L2 1 410 30 -41 7 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L3_));
-             s += QString("<C C1 1 450 90 -79 -7 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C3_));
-             s += QString("<GND * 1 450 120 0 0 0 0>\n");
+             s += QStringLiteral("<L L2 1 410 30 -41 7 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L3_));
+             s += QStringLiteral("<C C1 1 450 90 -79 -7 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C3_));
+             s += QStringLiteral("<GND * 1 450 120 0 0 0 0>\n");
            }
            else
            {
-               s += QString("<TLIN Line1 1 410 -90 -26 -71 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(Z0*R2))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 1
-               s += QString("<TLIN Line1 1 410 30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(Z0*R3))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 2
+               s += QStringLiteral("<TLIN Line1 1 410 -90 -26 -71 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(Z0*R2))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 1
+               s += QStringLiteral("<TLIN Line1 1 410 30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(Z0*R3))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 2
            }
            }
     }
@@ -727,47 +727,47 @@ int QucsPowerCombiningTool::Wilkinson(double Z0, double Freq, double K, bool SP_
 
     //Wiring
     s += "<Wires>\n";
-    s += QString("<0 -30 100 -30 \"\" 0 0 0>\n");//Source to Z0 line
-    s += QString("<160 -30 190 -30 \"\" 0 0 0 \"\">\n");//Z0 line to branches
-    s += QString("<190 -90 190 -30 \"\" 0 0 0 \"\">\n");//Z0 line to upper branch
-    s += QString("<190 -90 230 -90 \"\" 0 0 0 \"\">\n");//Z0 line (corner) to upper branch
-    s += QString("<290 -90 340 -90 \"\" 0 0 0 \"\">\n");//Upper branch to isolation resistor
-    s += QString("<340 -90 340 -50 \"\" 0 0 0 \"\">\n");//Upper branch (corner) to isolation resistor
-    s += QString("<190 -30 190 30 \"\" 0 0 0 \"\">\n");//Z0 line to lower branch
-    s += QString("<190 30 230 30 \"\" 0 0 0 \"\">\n");//Z0 line (corner) to lower branch
-    s += QString("<290 30 340 30 \"\" 0 0 0 \"\">\n");//Lower branch to isolation resistor
-    s += QString("<340 10 340 30 \"\" 0 0 0 \"\">\n");//Lower branch (corner) to isolation resistor
+    s += QStringLiteral("<0 -30 100 -30 \"\" 0 0 0>\n");//Source to Z0 line
+    s += QStringLiteral("<160 -30 190 -30 \"\" 0 0 0 \"\">\n");//Z0 line to branches
+    s += QStringLiteral("<190 -90 190 -30 \"\" 0 0 0 \"\">\n");//Z0 line to upper branch
+    s += QStringLiteral("<190 -90 230 -90 \"\" 0 0 0 \"\">\n");//Z0 line (corner) to upper branch
+    s += QStringLiteral("<290 -90 340 -90 \"\" 0 0 0 \"\">\n");//Upper branch to isolation resistor
+    s += QStringLiteral("<340 -90 340 -50 \"\" 0 0 0 \"\">\n");//Upper branch (corner) to isolation resistor
+    s += QStringLiteral("<190 -30 190 30 \"\" 0 0 0 \"\">\n");//Z0 line to lower branch
+    s += QStringLiteral("<190 30 230 30 \"\" 0 0 0 \"\">\n");//Z0 line (corner) to lower branch
+    s += QStringLiteral("<290 30 340 30 \"\" 0 0 0 \"\">\n");//Lower branch to isolation resistor
+    s += QStringLiteral("<340 10 340 30 \"\" 0 0 0 \"\">\n");//Lower branch (corner) to isolation resistor
 
     if (LumpedElements)
     {
-       s += QString("<90 -30 180 -30 \"\" 0 0 0>\n");
-       s += QString("<310 -110 310 -90 \"\" 0 0 0>\n");//Upper branch
-       s += QString("<310 30 310 50 \"\" 0 0 0>\n");//Lower branch
+       s += QStringLiteral("<90 -30 180 -30 \"\" 0 0 0>\n");
+       s += QStringLiteral("<310 -110 310 -90 \"\" 0 0 0>\n");//Upper branch
+       s += QStringLiteral("<310 30 310 50 \"\" 0 0 0>\n");//Lower branch
     }
 
     if (K!=1)//Unequal power split ratio => need additional matching
     {
         if (LumpedElements)
         {
-         s += QString("<340 -90 380 -90 \"\" 0 0 0 \"\">\n");//Upper branch, R to L
-         s += QString("<440 -90 500 -90 \"\" 0 0 0 \"\">\n");//Upper branch, L to port
-         s += QString("<450 -110 450 -90 \"\" 0 0 0 \"\">\n");//Upper branch, L to C
-         s += QString("<340 30 380 30 \"\" 0 0 0 \"\">\n");//Lower branch, R to L
-         s += QString("<440 30 500 30 \"\" 0 0 0 \"\">\n");//Lower branch, L to port
-         s += QString("<450 30 450 60 \"\" 0 0 0 \"\">\n");//Lower branch, L to C
+         s += QStringLiteral("<340 -90 380 -90 \"\" 0 0 0 \"\">\n");//Upper branch, R to L
+         s += QStringLiteral("<440 -90 500 -90 \"\" 0 0 0 \"\">\n");//Upper branch, L to port
+         s += QStringLiteral("<450 -110 450 -90 \"\" 0 0 0 \"\">\n");//Upper branch, L to C
+         s += QStringLiteral("<340 30 380 30 \"\" 0 0 0 \"\">\n");//Lower branch, R to L
+         s += QStringLiteral("<440 30 500 30 \"\" 0 0 0 \"\">\n");//Lower branch, L to port
+         s += QStringLiteral("<450 30 450 60 \"\" 0 0 0 \"\">\n");//Lower branch, L to C
         }
         else//Transmission lines
         {
-         s += QString("<340 -90 380 -90 \"\" 0 0 0 \"\">\n");//Isolation resistor to matching line. Upper branch
-         s += QString("<440 -90 500 -90 \"\" 0 0 0 \"\">\n");//Matching line to port 2. Upper branch
-         s += QString("<340 30 380 30 \"\" 0 0 0 \"\">\n");//Isolation resistor to matching line. Lowe branch
-         s += QString("<440 30 500 30 \"\" 0 0 0 \"\">\n");//Matching line to port 2. Lower branch
+         s += QStringLiteral("<340 -90 380 -90 \"\" 0 0 0 \"\">\n");//Isolation resistor to matching line. Upper branch
+         s += QStringLiteral("<440 -90 500 -90 \"\" 0 0 0 \"\">\n");//Matching line to port 2. Upper branch
+         s += QStringLiteral("<340 30 380 30 \"\" 0 0 0 \"\">\n");//Isolation resistor to matching line. Lowe branch
+         s += QStringLiteral("<440 30 500 30 \"\" 0 0 0 \"\">\n");//Matching line to port 2. Lower branch
         }
     }
     else//Equal power split ratio
     {
-        s += QString("<340 -90 500 -90 \"\" 0 0 0 \"\">\n");//Branch 2 to Port 2
-        s += QString("<340 30 500 30 \"\" 0 0 0 \"\">\n");//Branch 2 to Port 3
+        s += QStringLiteral("<340 -90 500 -90 \"\" 0 0 0 \"\">\n");//Branch 2 to Port 2
+        s += QStringLiteral("<340 30 500 30 \"\" 0 0 0 \"\">\n");//Branch 2 to Port 3
     }
 
     s += "</Wires>\n";
@@ -847,7 +847,7 @@ QString QucsPowerCombiningTool::calcChebyLines(double RL, double Z0, double gamm
     {
         (RL<Z0) ? Zi = exp(log(Zaux) - gamma*w[i]):Zi = exp(log(Zaux) + gamma*w[i]); // When RL<Z0, Z_{i}<Z_{i-1}
         Zaux=Zi;
-        s+=QString("%1;").arg(Zi);
+        s+=QStringLiteral("%1;").arg(Zi);
 
     }
     return s;
@@ -865,7 +865,7 @@ QString QucsPowerCombiningTool::calcMultistageWilkinsonIsolators(QString Zlines,
     Zaux  = Zlines.section(';', i-1, i-1).toDouble();
     R = Z0*Z_/(Z_ - Z0);
     Zi = Z0;
-    s +=QString("%1;").arg(2*R);
+    s +=QStringLiteral("%1;").arg(2*R);
   }
   return s;
 }
@@ -922,21 +922,21 @@ int QucsPowerCombiningTool::MultistageWilkinson(double Z0, double Freq, int NSta
     if (SP_block)//Add S-param simulation
     {
         //Source
-        s += QString("<Pac P1 1 0 30 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 0 60 0 0 0 0>\n");
-        wirestr +=QString("<0 0 0 -30 \"\" 0 0 0>\n");//Vertical wire
-        wirestr +=QString("<0 -30 70 -30 \"\" 0 0 0>\n");//Horizontal wire
+        s += QStringLiteral("<Pac P1 1 0 30 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 0 60 0 0 0 0>\n");
+        wirestr +=QStringLiteral("<0 0 0 -30 \"\" 0 0 0>\n");//Vertical wire
+        wirestr +=QStringLiteral("<0 -30 70 -30 \"\" 0 0 0>\n");//Horizontal wire
         //S-parameter analysis component
-        QString freq_start = QString("%1%2").arg((1/NStages)*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        QString freq_stop = QString("%1%2").arg((2+1/NStages)*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        s += QString("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
-        str += QString("\"S11_dB=dB(S[1,1])\" 1 ");
-        str += QString("\"S22_dB=dB(S[2,2])\" 1 ");
-        str += QString("\"S33_dB=dB(S[3,3])\" 1 ");
-        str += QString("\"S21_dB=dB(S[2,1])\" 1 ");
-        str +=QString("\"S31_dB=dB(S[3,1])\" 1 ");
+        QString freq_start = QStringLiteral("%1%2").arg((1/NStages)*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        QString freq_stop = QStringLiteral("%1%2").arg((2+1/NStages)*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        s += QStringLiteral("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
+        str += QStringLiteral("\"S11_dB=dB(S[1,1])\" 1 ");
+        str += QStringLiteral("\"S22_dB=dB(S[2,2])\" 1 ");
+        str += QStringLiteral("\"S33_dB=dB(S[3,3])\" 1 ");
+        str += QStringLiteral("\"S21_dB=dB(S[2,1])\" 1 ");
+        str +=QStringLiteral("\"S31_dB=dB(S[3,1])\" 1 ");
         s += getSPEquationString(50,200);
-        if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
+        if (microcheck)s += QStringLiteral("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
 
     }
 
@@ -947,28 +947,28 @@ int QucsPowerCombiningTool::MultistageWilkinson(double Z0, double Freq, int NSta
     {
         er = Substrate.er;
         getMicrostrip(Z0, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 %3 -30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x);
+        s += QStringLiteral("<MLIN MS1 1 %3 -30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x);
     }
     else
     {
        if (LumpedElements)//LC elements. Pi CLC equivalent of a lambda/4 line
        {
         //First capacitor
-        s += QString("<C C1 1 %2 0 -35 -80 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(2*C[0])).arg(x);
-        s += QString("<GND * 1 %2 30 0 1 0 0>\n").arg(x);
-        wirestr +=QString("<%1 -30 %2 -30 \"\" 0 0 0>\n").arg(x-30).arg(x+30);
+        s += QStringLiteral("<C C1 1 %2 0 -35 -80 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(2*C[0])).arg(x);
+        s += QStringLiteral("<GND * 1 %2 30 0 1 0 0>\n").arg(x);
+        wirestr +=QStringLiteral("<%1 -30 %2 -30 \"\" 0 0 0>\n").arg(x-30).arg(x+30);
        }
        else//Ideal transmission lines
        {
-       s += QString("<TLIN Line1 1 %1 -30 -26 20 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x).arg(RoundVariablePrecision(Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
+       s += QStringLiteral("<TLIN Line1 1 %1 -30 -26 20 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x).arg(RoundVariablePrecision(Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
        }
 
     }
     
     
     x+=50;//Separation between the source transmission line and the beginning of the output branches
-    wirestr +=QString("<%1 -30 %2 -30 \"\" 0 0 0>\n").arg(x-20).arg(x+30);//Vertical line joining the output branches
-    wirestr +=QString("<%1 -90 %1 30 \"\" 0 0 0>\n").arg(x+30);//Vertical line joining the output branches
+    wirestr +=QStringLiteral("<%1 -30 %2 -30 \"\" 0 0 0>\n").arg(x-20).arg(x+30);//Vertical line joining the output branches
+    wirestr +=QStringLiteral("<%1 -90 %1 30 \"\" 0 0 0>\n").arg(x+30);//Vertical line joining the output branches
     
 
 
@@ -978,24 +978,24 @@ int QucsPowerCombiningTool::MultistageWilkinson(double Z0, double Freq, int NSta
         Zi = Zlines.section(';', i, i).toDouble();
         Ri = Risol.section(';', (NStages-1)-i, (NStages-1)-i).toDouble();
 
-        wirestr +=QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+30).arg(x+70);
-        wirestr +=QString("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+30).arg(x+70);
+        wirestr +=QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+30).arg(x+70);
+        wirestr +=QStringLiteral("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+30).arg(x+70);
 
-        wirestr +=QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+130).arg(x+180);
-        wirestr +=QString("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+130).arg(x+180);
+        wirestr +=QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+130).arg(x+180);
+        wirestr +=QStringLiteral("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+130).arg(x+180);
 
         //Wiring the isolation resistor
-        wirestr +=QString("<%1 30 %1 10 \"\" 0 0 0>\n").arg(x+160);
-        wirestr +=QString("<%1 -90 %1 -50 \"\" 0 0 0>\n").arg(x+160);
+        wirestr +=QStringLiteral("<%1 30 %1 10 \"\" 0 0 0>\n").arg(x+160);
+        wirestr +=QStringLiteral("<%1 -90 %1 -50 \"\" 0 0 0>\n").arg(x+160);
 
         if (microcheck)
         {
             er = Substrate.er;
             getMicrostrip(Zi, Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 %3 -90 -30 -73 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+100);
+            s += QStringLiteral("<MLIN MS1 1 %3 -90 -30 -73 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+100);
             er = Substrate.er;
             getMicrostrip(Zi, Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 %3 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+100);
+            s += QStringLiteral("<MLIN MS1 1 %3 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+100);
         }
         else
         {
@@ -1004,50 +1004,50 @@ int QucsPowerCombiningTool::MultistageWilkinson(double Z0, double Freq, int NSta
                if (i == 0)//Last element
                {
                  // Upper branch
-                 s += QString("<L L2 1 %2 -90 -31 9 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L[aux-1])).arg(x+100);
-                 s += QString("<C C1 1 %2 -150 14 -21 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C[aux-1])).arg(x+160);
-                 wirestr +=QString("<%1 -90 %1 -120 \"\" 0 0 0>\n").arg(x+160);
-                 s += QString("<GND * 1 %2 -180 0 0 0 2>\n").arg(x+160);
+                 s += QStringLiteral("<L L2 1 %2 -90 -31 9 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L[aux-1])).arg(x+100);
+                 s += QStringLiteral("<C C1 1 %2 -150 14 -21 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C[aux-1])).arg(x+160);
+                 wirestr +=QStringLiteral("<%1 -90 %1 -120 \"\" 0 0 0>\n").arg(x+160);
+                 s += QStringLiteral("<GND * 1 %2 -180 0 0 0 2>\n").arg(x+160);
 
                  // Lower branch
-                 s += QString("<L L2 1 %2 30 -31 9 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L[aux-1])).arg(x+100);
-                 s += QString("<C C1 1 %2 90 14 -23 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C[aux-1])).arg(x+160);
-                 wirestr +=QString("<%1 30 %1 60 \"\" 0 0 0>\n").arg(x+160);
-                 s += QString("<GND * 1 %2 120 0 0 0 0>\n").arg(x+160);
+                 s += QStringLiteral("<L L2 1 %2 30 -31 9 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L[aux-1])).arg(x+100);
+                 s += QStringLiteral("<C C1 1 %2 90 14 -23 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C[aux-1])).arg(x+160);
+                 wirestr +=QStringLiteral("<%1 30 %1 60 \"\" 0 0 0>\n").arg(x+160);
+                 s += QStringLiteral("<GND * 1 %2 120 0 0 0 0>\n").arg(x+160);
                          
                 }
                 else
                 {
                  // Upper branch
-                 s += QString("<L L2 1 %2 -90 -31 9 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L[aux-1])).arg(x+100);
-                 s += QString("<C C1 1 %2 -150 14 -21 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C[aux]+C[aux-1])).arg(x+160);
-                 wirestr +=QString("<%1 -90 %1 -120 \"\" 0 0 0>\n").arg(x+160);
-                 s += QString("<GND * 1 %2 -180 0 0 0 2>\n").arg(x+160);
+                 s += QStringLiteral("<L L2 1 %2 -90 -31 9 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L[aux-1])).arg(x+100);
+                 s += QStringLiteral("<C C1 1 %2 -150 14 -21 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C[aux]+C[aux-1])).arg(x+160);
+                 wirestr +=QStringLiteral("<%1 -90 %1 -120 \"\" 0 0 0>\n").arg(x+160);
+                 s += QStringLiteral("<GND * 1 %2 -180 0 0 0 2>\n").arg(x+160);
 
                  // Lower branch
-                 s += QString("<L L2 1 %2 30 -31 9 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L[aux-1])).arg(x+100);
-                 s += QString("<C C1 1 %2 90 14 -23 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C[aux]+C[aux-1])).arg(x+160);
-                 wirestr +=QString("<%1 30 %1 60 \"\" 0 0 0>\n").arg(x+160);
-                 s += QString("<GND * 1 %2 120 0 0 0 0>\n").arg(x+160);
+                 s += QStringLiteral("<L L2 1 %2 30 -31 9 0 0 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(L[aux-1])).arg(x+100);
+                 s += QStringLiteral("<C C1 1 %2 90 14 -23 0 3 \"%1\" 1 \"\" 0 \"neutral\" 0>\n").arg(num2str(C[aux]+C[aux-1])).arg(x+160);
+                 wirestr +=QStringLiteral("<%1 30 %1 60 \"\" 0 0 0>\n").arg(x+160);
+                 s += QStringLiteral("<GND * 1 %2 120 0 0 0 0>\n").arg(x+160);
                }
             }
             else//Ideal transmission lines
             {
-            s += QString("<TLIN Line1 1 %1 -90 -30 -73 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+100).arg(RoundVariablePrecision(Zi)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Upper branch
-            s += QString("<TLIN Line1 1 %1 30 -26 20 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+100).arg(RoundVariablePrecision(Zi)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Lower branch
+            s += QStringLiteral("<TLIN Line1 1 %1 -90 -30 -73 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+100).arg(RoundVariablePrecision(Zi)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Upper branch
+            s += QStringLiteral("<TLIN Line1 1 %1 30 -26 20 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+100).arg(RoundVariablePrecision(Zi)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Lower branch
             }
         }
-        s += QString("<R R1 1 %1 -20 11 -25 0 3 \"%2 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(x+160).arg(RoundVariablePrecision(Ri));//Isolation resistor
+        s += QStringLiteral("<R R1 1 %1 -20 11 -25 0 3 \"%2 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(x+160).arg(RoundVariablePrecision(Ri));//Isolation resistor
         x+=spacing;
 
         if(SP_block && (i==1))//Add output ports at the last stage
         {
-                s += QString("<Pac P1 1 %1 60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x+300).arg(Z0);
-                s += QString("<GND * 1 %1 90 0 0 0 0>\n").arg(x+300);
-                wirestr +=QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+150).arg(x+300);
-                s += QString("<Pac P1 1 %1 -60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x+300).arg(Z0);
-                s += QString("<GND * 1 %1 -30 0 0 0 0>\n").arg(x+300);
-                wirestr +=QString("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+150).arg(x+300);
+                s += QStringLiteral("<Pac P1 1 %1 60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x+300).arg(Z0);
+                s += QStringLiteral("<GND * 1 %1 90 0 0 0 0>\n").arg(x+300);
+                wirestr +=QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+150).arg(x+300);
+                s += QStringLiteral("<Pac P1 1 %1 -60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x+300).arg(Z0);
+                s += QStringLiteral("<GND * 1 %1 -30 0 0 0 0>\n").arg(x+300);
+                wirestr +=QStringLiteral("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+150).arg(x+300);
         }
       }
       s += "</Components>\n";
@@ -1069,20 +1069,20 @@ int QucsPowerCombiningTool::Tee(double Z0, double Freq, double K, bool SP_block,
     if (SP_block)
     {
         //Source
-        s += QString("<Pac P1 1 0 0 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 0 30 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 0 0 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 0 30 0 0 0 0>\n");
         //Output port 1
-        s += QString("<Pac P1 1 450 -60 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(2*Z0);
-        s += QString("<GND * 1 450 -30 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 450 -60 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(2*Z0);
+        s += QStringLiteral("<GND * 1 450 -30 0 0 0 0>\n");
         //Output port 2
-        s += QString("<Pac P1 1 450 60 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(2*Z0);
-        s += QString("<GND * 1 450 90 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 450 60 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(2*Z0);
+        s += QStringLiteral("<GND * 1 450 90 0 0 0 0>\n");
         //S-parameter analysis component
-        QString freq_start = QString("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        QString freq_stop = QString("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        s += QString("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
-        s += QString("<Eqn Eqn1 1 50 200 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n");
-        if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
+        QString freq_start = QStringLiteral("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        QString freq_stop = QStringLiteral("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        s += QStringLiteral("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
+        s += QStringLiteral("<Eqn Eqn1 1 50 200 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n");
+        if (microcheck)s += QStringLiteral("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
 
     }
 
@@ -1090,19 +1090,19 @@ int QucsPowerCombiningTool::Tee(double Z0, double Freq, double K, bool SP_block,
     {
         er = Substrate.er;
         getMicrostrip(Z0, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 120 -30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 120 -30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(Z0*(K+1), Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 270 -90 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 270 -90 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(Z0*(K+1)/K, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 270 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 270 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
     }
     else
     {
-        s += QString("<TLIN Line1 1 120 -30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
-        s += QString("<TLIN Line1 1 270 -90 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0*(K+1))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 1
-        s += QString("<TLIN Line1 1 270 30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0*(K+1)/K)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
+        s += QStringLiteral("<TLIN Line1 1 120 -30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
+        s += QStringLiteral("<TLIN Line1 1 270 -90 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0*(K+1))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 1
+        s += QStringLiteral("<TLIN Line1 1 270 30 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0*(K+1)/K)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
     }
     if (K!=1)
     {// An unequal power ratio implies that the load impedance != 50, so it requires matching
@@ -1110,39 +1110,39 @@ int QucsPowerCombiningTool::Tee(double Z0, double Freq, double K, bool SP_block,
         {
             er = Substrate.er;
             getMicrostrip(sqrt(2*Z0*Z0*(K+1)), Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 370 -90 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(width).arg(lambda4/sqrt(er));
+            s += QStringLiteral("<MLIN MS1 1 370 -90 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(width).arg(lambda4/sqrt(er));
             er = Substrate.er;
             getMicrostrip(sqrt(Z0*Z0*(K+1)/K), Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 370 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(width).arg(lambda4/sqrt(er));
+            s += QStringLiteral("<MLIN MS1 1 370 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(width).arg(lambda4/sqrt(er));
 
         }
         else
         {
-            s += QString("<TLIN Line1 1 370 -90 -26 20 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(2*Z0*Z0*(K+1)))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 1
-            s += QString("<TLIN Line1 1 370 30 -26 20 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(2*Z0*Z0*(K+1)/K))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 2
+            s += QStringLiteral("<TLIN Line1 1 370 -90 -26 20 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(2*Z0*Z0*(K+1)))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 1
+            s += QStringLiteral("<TLIN Line1 1 370 30 -26 20 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(2*Z0*Z0*(K+1)/K))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 2
         }
     }
     s += "</Components>\n";
 
     //Wiring
     s += "<Wires>\n";
-    s += QString("<0 -30 90 -30 \"\" 0 0 0>\n");//Source to Z0 line
-    s += QString("<150 -30 200 -30 \"\" 0 0 0>\n");//Source to Z0 line
-    s += QString("<200 30 200 -90 \"\" 0 0 0>\n");//Z0 line to branches
-    s += QString("<200 30 240 30 \"\" 0 0 0>\n");//Z0 line to branch 1
-    s += QString("<200 -90 240 -90 \"\" 0 0 0>\n");//Z0 line to branch 2
+    s += QStringLiteral("<0 -30 90 -30 \"\" 0 0 0>\n");//Source to Z0 line
+    s += QStringLiteral("<150 -30 200 -30 \"\" 0 0 0>\n");//Source to Z0 line
+    s += QStringLiteral("<200 30 200 -90 \"\" 0 0 0>\n");//Z0 line to branches
+    s += QStringLiteral("<200 30 240 30 \"\" 0 0 0>\n");//Z0 line to branch 1
+    s += QStringLiteral("<200 -90 240 -90 \"\" 0 0 0>\n");//Z0 line to branch 2
 
-    s += QString("<300 30 340 30 \"\" 0 0 0>\n");//Branch 2to R
-    s += QString("<300 -90 340 -90 \"\" 0 0 0>\n");//Branch 1 to R
+    s += QStringLiteral("<300 30 340 30 \"\" 0 0 0>\n");//Branch 2to R
+    s += QStringLiteral("<300 -90 340 -90 \"\" 0 0 0>\n");//Branch 1 to R
     if (K!=1)
     {
-        s += QString("<400 30 450 30 \"\" 0 0 0>\n");//Branch 2 to Port 2
-        s += QString("<400 -90 450 -90 \"\" 0 0 0>\n");//Branch 2 to Port 3
+        s += QStringLiteral("<400 30 450 30 \"\" 0 0 0>\n");//Branch 2 to Port 2
+        s += QStringLiteral("<400 -90 450 -90 \"\" 0 0 0>\n");//Branch 2 to Port 3
     }
     else
     {
-        s += QString("<340 30 450 30 \"\" 0 0 0>\n");//Branch 2 to Port 2
-        s += QString("<340 -90 450 -90 \"\" 0 0 0>\n");//Branch 2 to Port 3
+        s += QStringLiteral("<340 30 450 30 \"\" 0 0 0>\n");//Branch 2 to Port 2
+        s += QStringLiteral("<340 -90 450 -90 \"\" 0 0 0>\n");//Branch 2 to Port 3
     }
 
     s += "</Wires>\n";
@@ -1164,20 +1164,20 @@ int QucsPowerCombiningTool::Branchline(double Z0, double Freq, double K, bool SP
     if (SP_block)
     {
         //Source
-        s += QString("<Pac P1 1 50 -120 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 50 -90 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 50 -120 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 50 -90 0 0 0 0>\n");
         //Output port 1
-        s += QString("<Pac P1 1 400 -120 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 400 -90 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 400 -120 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 400 -90 0 0 0 0>\n");
         //Output port 2
-        s += QString("<Pac P1 1 400 90 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 400 120 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 400 90 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 400 120 0 0 0 0>\n");
         //S-parameter analysis component
-        QString freq_start = QString("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        QString freq_stop = QString("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        s += QString("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
-        s += QString("<Eqn Eqn1 1 50 200 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n");
-        if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
+        QString freq_start = QStringLiteral("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        QString freq_stop = QStringLiteral("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        s += QStringLiteral("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
+        s += QStringLiteral("<Eqn Eqn1 1 50 200 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n");
+        if (microcheck)s += QStringLiteral("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
 
     }
 
@@ -1186,47 +1186,47 @@ int QucsPowerCombiningTool::Branchline(double Z0, double Freq, double K, bool SP
     {
         er = Substrate.er;
         getMicrostrip(ZA, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 220 30 -42 19 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 220 30 -42 19 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(ZA, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 220 -90 -41 -71 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 220 -90 -41 -71 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(ZB, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 150 -20 -60 -30 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 150 -20 -60 -30 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(ZB, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 290 -20 22 -31 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 290 -20 22 -31 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
     }
     else
     {
-        s += QString("<TLIN Line1 1 220 30 -42 19 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZA)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
-        s += QString("<TLIN Line1 1 220 -90 -41 -71 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZA)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 1
-        s += QString("<TLIN Line1 1 150 -20 -94 -29 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
-        s += QString("<TLIN Line1 1 290 -20 22 -31 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
+        s += QStringLiteral("<TLIN Line1 1 220 30 -42 19 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZA)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
+        s += QStringLiteral("<TLIN Line1 1 220 -90 -41 -71 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZA)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 1
+        s += QStringLiteral("<TLIN Line1 1 150 -20 -94 -29 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
+        s += QStringLiteral("<TLIN Line1 1 290 -20 22 -31 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
     }
-    s += QString("<R R1 1 50 90 14 -19 0 3 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(Z0);//Isolated port
-    s += QString("<GND * 1 50 120 0 0 0 0>\n");
+    s += QStringLiteral("<R R1 1 50 90 14 -19 0 3 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(Z0);//Isolated port
+    s += QStringLiteral("<GND * 1 50 120 0 0 0 0>\n");
     s += "</Components>\n";
 
     //Wiring
     s += "<Wires>\n";
-    s += QString("<150 -90 190 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 -90 150 -50 \"\" 0 0 0 \"\">\n");
-    s += QString("<290 -90 290 -50 \"\" 0 0 0 \"\">\n");
-    s += QString("<250 -90 290 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<250 30 290 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<290 10 290 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 30 190 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 10 150 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<290 -150 290 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<290 -150 400 -150 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 -150 150 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<50 -150 150 -150 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 30 150 60 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 30 150 60 \"\" 0 0 0 \"\">\n");
-    s += QString("<50 60 150 60 \"\" 0 0 0 \"\">\n");
-    s += QString("<290 30 290 60 \"\" 0 0 0 \"\">\n");
-    s += QString("<290 60 400 60 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 -90 190 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 -90 150 -50 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 -90 290 -50 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<250 -90 290 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<250 30 290 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 10 290 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 30 190 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 10 150 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 -150 290 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 -150 400 -150 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 -150 150 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<50 -150 150 -150 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 30 150 60 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 30 150 60 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<50 60 150 60 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 30 290 60 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 60 400 60 \"\" 0 0 0 \"\">\n");
     s += "</Wires>\n";
 
 
@@ -1253,20 +1253,20 @@ int QucsPowerCombiningTool::DoubleBoxBranchline(double Z0, double Freq, double K
     if (SP_block)
     {
         //Source
-        s += QString("<Pac P1 1 40 -100 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 40 -70 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 40 -100 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 40 -70 0 0 0 0>\n");
         //Output port 1
-        s += QString("<Pac P1 1 500 -100 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 500 -70 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 500 -100 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 500 -70 0 0 0 0>\n");
         //Output port 2
-        s += QString("<Pac P1 1 500 90 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 500 120 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 500 90 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 500 120 0 0 0 0>\n");
         //S-parameter analysis component
-        QString freq_start = QString("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        QString freq_stop = QString("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        s += QString("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
-        s += QString("<Eqn Eqn1 1 50 200 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n");
-        if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
+        QString freq_start = QStringLiteral("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        QString freq_stop = QStringLiteral("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        s += QStringLiteral("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
+        s += QStringLiteral("<Eqn Eqn1 1 50 200 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n");
+        if (microcheck)s += QStringLiteral("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
 
     }
 
@@ -1275,71 +1275,71 @@ int QucsPowerCombiningTool::DoubleBoxBranchline(double Z0, double Freq, double K
     {
         er = Substrate.er;
         getMicrostrip(ZB, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 220 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 220 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(ZB, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 220 -90 -29 -72 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 220 -90 -29 -72 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(ZB, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 290 -20 19 -33 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 290 -20 19 -33 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(ZB, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 350 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 350 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(ZB, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 350 -90 -35 -71 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 350 -90 -35 -71 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(ZA, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 150 -20 -82 -31 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 150 -20 -82 -31 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(ZD, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 420 -20 21 -33 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 420 -20 21 -33 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
 
     }
     else
     {
-        s += QString("<TLIN Line1 1 220 30 -26 20 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
-        s += QString("<TLIN Line1 1 220 -90 -29 -72 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 220 30 -26 20 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 220 -90 -29 -72 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
 
-        s += QString("<TLIN Line1 1 290 -20 19 -33 0 1 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 290 -20 19 -33 0 1 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
 
 
-        s += QString("<TLIN Line1 1 350 30 -26 20 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
-        s += QString("<TLIN Line1 1 350 -90 -35 -71 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 350 30 -26 20 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 350 -90 -35 -71 0 0 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZB)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
 
-        s += QString("<TLIN Line1 1 150 -20 -82 -31 0 1 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZA)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
-        s += QString("<TLIN Line1 1 420 -20 21 -33 0 1 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZD)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 150 -20 -82 -31 0 1 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZA)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 420 -20 21 -33 0 1 \"%1\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(ZD)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
     }
-    s += QString("<R R1 1 40 90 30 -26 0 -1 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(Z0);//Isolated port
-    s += QString("<GND * 1 40 120 0 0 0 0>\n");
+    s += QStringLiteral("<R R1 1 40 90 30 -26 0 -1 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(Z0);//Isolated port
+    s += QStringLiteral("<GND * 1 40 120 0 0 0 0>\n");
     s += "</Components>\n";
 
     //Wiring
     s += "<Wires>\n";
-    s += QString("<290 -90 290 -50 \"\" 0 0 0 \"\">\n");
-    s += QString("<290 10 290 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<290 -90 320 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<250 -90 290 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<290 30 320 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<250 30 290 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<380 -90 420 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<420 -90 420 -50 \"\" 0 0 0 \"\">\n");
-    s += QString("<380 30 420 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<420 10 420 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<40 30 40 60 \"\" 0 0 0 \"\">\n");
-    s += QString("<40 30 150 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 30 190 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 10 150 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 -90 150 -50 \"\" 0 0 0 \"\">\n");
-    s += QString("<150 -90 190 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<420 -160 420 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<420 -160 500 -160 \"\" 0 0 0 \"\">\n");
-    s += QString("<500 -160 500 -130 \"\" 0 0 0 \"\">\n");
-    s += QString("<500 30 500 60 \"\" 0 0 0 \"\">\n");
-    s += QString("<420 30 500 30 \"\" 0 0 0 \"\">\n");
-    s += QString("<130 -160 150 -90 \"\" 0 0 0 \"\">\n");
-    s += QString("<40 -160 150 -160 \"\" 0 0 0 \"\">\n");
-    s += QString("<40 -160 40 -130 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 -90 290 -50 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 10 290 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 -90 320 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<250 -90 290 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<290 30 320 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<250 30 290 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<380 -90 420 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<420 -90 420 -50 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<380 30 420 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<420 10 420 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<40 30 40 60 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<40 30 150 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 30 190 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 10 150 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 -90 150 -50 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<150 -90 190 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<420 -160 420 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<420 -160 500 -160 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<500 -160 500 -130 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<500 30 500 60 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<420 30 500 30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<130 -160 150 -90 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<40 -160 150 -160 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<40 -160 40 -130 \"\" 0 0 0 \"\">\n");
     s += "</Wires>\n";
 
 
@@ -1356,7 +1356,7 @@ int QucsPowerCombiningTool::Bagley(double Z0, double Freq, int N, bool SP_block,
     if (N % 2 == 0)
     {
         N++;
-        QString str = QString("The number of outputs must be an odd number. N=%1 will be used instead").arg(N);
+        QString str = QStringLiteral("The number of outputs must be an odd number. N=%1 will be used instead").arg(N);
         QMessageBox::warning(this, tr("Bagley"), str, QMessageBox::Close);
     }
     double er, width;
@@ -1369,20 +1369,20 @@ int QucsPowerCombiningTool::Bagley(double Z0, double Freq, int N, bool SP_block,
     if (SP_block)
     {
         //Source
-        s += QString("<Pac P1 1 0 -60 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 0 -30 0 0 0 0>\n");
-        QString freq_start = QString("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        QString freq_stop = QString("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        s += QString("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
+        s += QStringLiteral("<Pac P1 1 0 -60 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 0 -30 0 0 0 0>\n");
+        QString freq_start = QStringLiteral("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        QString freq_stop = QStringLiteral("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        s += QStringLiteral("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
         //Equations
-        QString str = QString(" \"S11_dB=dB(S[1,1])\" 1 ");
+        QString str = QStringLiteral(" \"S11_dB=dB(S[1,1])\" 1 ");
         for (int i=2;i<=N+1; i++) 
         {
-          str += QString("\"S%1%2_dB=dB(S[%1,1])\" 1 ").arg(i).arg(1);
-          str += QString("\"S%1%1_dB=dB(S[%1,%1])\" 1 ").arg(i);
+          str += QStringLiteral("\"S%1%2_dB=dB(S[%1,1])\" 1 ").arg(i).arg(1);
+          str += QStringLiteral("\"S%1%1_dB=dB(S[%1,%1])\" 1 ").arg(i);
         }
-        s += QString("<Eqn Eqn1 1 50 200 -28 15 0 0") + str + QString("\"yes\" 0>\n");
-        if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
+        s += QStringLiteral("<Eqn Eqn1 1 50 200 -28 15 0 0") + str + QStringLiteral("\"yes\" 0>\n");
+        if (microcheck)s += QStringLiteral("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
     }
 
     //Input section
@@ -1390,39 +1390,39 @@ int QucsPowerCombiningTool::Bagley(double Z0, double Freq, int N, bool SP_block,
     {
         er = Substrate.er;
         getMicrostrip(Zbranch, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 100 -140 21 -28 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 100 -140 21 -28 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(Zbranch, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 100 -30 19 -60 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 100 -30 19 -60 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
 
     }
     else
     {
-        s += QString("<TLIN Line1 1 100 -140 21 -28 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Zbranch)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
-        s += QString("<TLIN Line1 1 100 -30 19 -60 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Zbranch)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 100 -140 21 -28 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Zbranch)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 100 -30 19 -60 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Zbranch)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
     }
     //Output branches
     int x = 240;
-    s += QString("<Pac P1 1 %1 60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x-100).arg(Z0);
-    s += QString("<GND * 1 %1 90 0 0 0 0>\n").arg(x-100);
+    s += QStringLiteral("<Pac P1 1 %1 60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x-100).arg(Z0);
+    s += QStringLiteral("<GND * 1 %1 90 0 0 0 0>\n").arg(x-100);
     for (int i=1;i<N; i++)
     {
         if (microcheck)
         {
             er = Substrate.er;
             getMicrostrip(Zbranch, Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 %1 30 -34 -73 0 0 \"Sub1\" 0 \"%2\" 1 \"%3\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(x).arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda2/sqrt(er)));
+            s += QStringLiteral("<MLIN MS1 1 %1 30 -34 -73 0 0 \"Sub1\" 0 \"%2\" 1 \"%3\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(x).arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda2/sqrt(er)));
         }
         else
         {
-            s += QString("<TLIN Line1 1 %1 30 -34 -73 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x).arg(RoundVariablePrecision(Zbranch)).arg(ConvertLengthFromM(lambda2)).arg(Alpha);
+            s += QStringLiteral("<TLIN Line1 1 %1 30 -34 -73 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x).arg(RoundVariablePrecision(Zbranch)).arg(ConvertLengthFromM(lambda2)).arg(Alpha);
         }
         x+=100;
         if (SP_block)
         {
             //i-th output port
-            s += QString("<Pac P1 1 %1 60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Z0);
-            s += QString("<GND * 1 %1 90 0 0 0 0>\n").arg(x);
+            s += QStringLiteral("<Pac P1 1 %1 60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Z0);
+            s += QStringLiteral("<GND * 1 %1 90 0 0 0 0>\n").arg(x);
         }
         x+=100;
     }
@@ -1432,24 +1432,24 @@ int QucsPowerCombiningTool::Bagley(double Z0, double Freq, int N, bool SP_block,
 
     //Wiring
     s += "<Wires>\n";
-    s += QString("<0 -90 100 -90 \"\" 0 0 0>\n");//Source to lambda/4 lines
-    s += QString("<100 -110 100 -60 \"\" 0 0 0>\n");//lambda/4 lines
-    s += QString("<100 30 140 30 \"\" 0 0 0>\n");//Lower lambda/4 line to the first lambda/2 section
-    s += QString("<100 30 100 0 \"\" 0 0 0>\n");//Lower lambda/4 line to the first lambda/2 section
+    s += QStringLiteral("<0 -90 100 -90 \"\" 0 0 0>\n");//Source to lambda/4 lines
+    s += QStringLiteral("<100 -110 100 -60 \"\" 0 0 0>\n");//lambda/4 lines
+    s += QStringLiteral("<100 30 140 30 \"\" 0 0 0>\n");//Lower lambda/4 line to the first lambda/2 section
+    s += QStringLiteral("<100 30 100 0 \"\" 0 0 0>\n");//Lower lambda/4 line to the first lambda/2 section
 
     //Wiring the rest of the lambda/2 sections
     x=140;
     for (int i=1;i<N;i++)
     {
-        s += QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x).arg(x+70);
-        s += QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+130).arg(x+200);
+        s += QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x).arg(x+70);
+        s += QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+130).arg(x+200);
         x+=200;
     }
     
-    s += QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x).arg(x+30);
-    s += QString("<%1 30 %1 -200 \"\" 0 0 0>\n").arg(x+30);//Final lambda/2 section to the upper lambda/4 section. Vertical line
-    s += QString("<100 -200 %1 -200 \"\" 0 0 0>\n").arg(x+30);//Final lambda/2 section to the upper lambda/4 section. Horizontal line
-    s += QString("<100 -170 100 -200 \"\" 0 0 0>\n");
+    s += QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x).arg(x+30);
+    s += QStringLiteral("<%1 30 %1 -200 \"\" 0 0 0>\n").arg(x+30);//Final lambda/2 section to the upper lambda/4 section. Vertical line
+    s += QStringLiteral("<100 -200 %1 -200 \"\" 0 0 0>\n").arg(x+30);//Final lambda/2 section to the upper lambda/4 section. Horizontal line
+    s += QStringLiteral("<100 -170 100 -200 \"\" 0 0 0>\n");
     s += "</Wires>\n";
 
 
@@ -1470,22 +1470,22 @@ int QucsPowerCombiningTool::Gysel(double Z0, double Freq, bool SP_block, bool mi
     if (SP_block)
     {
         //Source
-        s += QString("<Pac P1 1 0 0 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 0 30 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 0 0 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 0 30 0 0 0 0>\n");
         //Output port 1
-        s += QString("<Pac P1 1 30 140 -96 -27 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 30 170 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 30 140 -96 -27 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 30 170 0 0 0 0>\n");
         //Output port 2
-        s += QString("<Pac P1 1 30 -160 -96 -27 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 30 -130 0 0 0 0>\n");
+        s += QStringLiteral("<Pac P1 1 30 -160 -96 -27 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 30 -130 0 0 0 0>\n");
 
         //S-parameter analysis component
-        QString freq_start = QString("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        QString freq_stop = QString("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        s += QString("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
-        s += QString("<Eqn Eqn1 1 50 250 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n");
+        QString freq_start = QStringLiteral("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        QString freq_stop = QStringLiteral("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        s += QStringLiteral("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
+        s += QStringLiteral("<Eqn Eqn1 1 50 250 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n");
 
-        if (microcheck)s += QString("<SUBST Sub1 1 400 250 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
+        if (microcheck)s += QStringLiteral("<SUBST Sub1 1 400 250 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
 
 
     }
@@ -1494,58 +1494,58 @@ int QucsPowerCombiningTool::Gysel(double Z0, double Freq, bool SP_block, bool mi
     {
         er = Substrate.er;
         getMicrostrip(sqrt(2)*Z0, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 120 -70 21 -30 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 120 -70 21 -30 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(sqrt(2)*Z0, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 120 40 18 -27 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 120 40 18 -27 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(Z0, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 220 -130 -42 -68 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 220 -130 -42 -68 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(Z0, Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 220 100 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 220 100 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er)));
         er = Substrate.er;
         getMicrostrip(Z0/sqrt(2), Freq, &Substrate, width, er);
-        s += QString("<MLIN MS1 1 320 -20 18 -32 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(2*lambda4/sqrt(er)));
+        s += QStringLiteral("<MLIN MS1 1 320 -20 18 -32 0 1 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(2*lambda4/sqrt(er)));
 
     }
     else
     {
-        s += QString("<TLIN Line1 1 120 -70 21 -30 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(2)*Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
-        s += QString("<TLIN Line1 1 120 40 18 -27 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(2)*Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
-        s += QString("<TLIN Line1 1 220 -130 -42 -68 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(Z0).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
-        s += QString("<TLIN Line1 1 220 100 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(Z0).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
-        s += QString("<TLIN Line1 1 320 -20 18 -32 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0/sqrt(2))).arg(ConvertLengthFromM(2*lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 120 -70 21 -30 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(2)*Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 120 40 18 -27 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(sqrt(2)*Z0)).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 220 -130 -42 -68 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(Z0).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 220 100 -26 20 0 0 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(Z0).arg(ConvertLengthFromM(lambda4)).arg(Alpha);
+        s += QStringLiteral("<TLIN Line1 1 320 -20 18 -32 0 1 \"%1 Ohm\" 1 \"%2\" 1 \"%3 dB\" 0 \"26.85\" 0>\n").arg(RoundVariablePrecision(Z0/sqrt(2))).arg(ConvertLengthFromM(2*lambda4)).arg(Alpha);
     }
     //Resistors
-    s += QString("<R R1 1 400 -160 19 -16 0 3 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(Z0);//Isolation resistor
-    s += QString("<GND * 1 400 -130 0 0 0 0>\n");
-    s += QString("<R R1 1 400 130 19 -16 0 3 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(Z0);//Isolation resistor
-    s += QString("<GND * 1 400 160 0 0 0 0>\n");
+    s += QStringLiteral("<R R1 1 400 -160 19 -16 0 3 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(Z0);//Isolation resistor
+    s += QStringLiteral("<GND * 1 400 -130 0 0 0 0>\n");
+    s += QStringLiteral("<R R1 1 400 130 19 -16 0 3 \"%1 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(Z0);//Isolation resistor
+    s += QStringLiteral("<GND * 1 400 160 0 0 0 0>\n");
 
     s += "</Components>\n";
 
     s += "<Wires>\n";
-    s += QString("<120 70 120 100 \"\" 0 0 0 \"\">\n");//Source to the lines at the input
-    s += QString("<120 -130 120 -100 \"\" 0 0 0 \"\">\n");//Line between the two lines at the input
-    s += QString("<120 -130 190 -130 \"\" 0 0 0 \"\">\n");
-    s += QString("<120 -200 120 -130 \"\" 0 0 0 \"\">\n");
-    s += QString("<250 -130 320 -130 \"\" 0 0 0 \"\">\n");
-    s += QString("<320 -130 320 -50 \"\" 0 0 0 \"\">\n");
-    s += QString("<120 100 190 100 \"\" 0 0 0 \"\">\n");//Line between the line on the top to the upper resistor
-    s += QString("<250 100 320 100 \"\" 0 0 0 \"\">\n");//Line between the line on the top to the lower resistor
-    s += QString("<320 10 320 100 \"\" 0 0 0 \"\">\n");
-    s += QString("<30 -200 120 -200 \"\" 0 0 0 \"\">\n");
-    s += QString("<30 -200 30 -190 \"\" 0 0 0 \"\">\n");
-    s += QString("<400 -200 400 -190 \"\" 0 0 0 \"\">\n");
-    s += QString("<320 -200 320 -130 \"\" 0 0 0 \"\">\n");
-    s += QString("<320 -200 400 -200 \"\" 0 0 0 \"\">\n");
-    s += QString("<320 100 400 100 \"\" 0 0 0 \"\">\n");
-    s += QString("<30 100 120 100 \"\" 0 0 0 \"\">\n");
-    s += QString("<30 100 30 110 \"\" 0 0 0 \"\">\n");
-    s += QString("<120 -40 120 -30 \"\" 0 0 0 \"\">\n");
-    s += QString("<120 -30 120 10 \"\" 0 0 0 \"\">\n");
-    s += QString("<0 -30 120 -30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<120 70 120 100 \"\" 0 0 0 \"\">\n");//Source to the lines at the input
+    s += QStringLiteral("<120 -130 120 -100 \"\" 0 0 0 \"\">\n");//Line between the two lines at the input
+    s += QStringLiteral("<120 -130 190 -130 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<120 -200 120 -130 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<250 -130 320 -130 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<320 -130 320 -50 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<120 100 190 100 \"\" 0 0 0 \"\">\n");//Line between the line on the top to the upper resistor
+    s += QStringLiteral("<250 100 320 100 \"\" 0 0 0 \"\">\n");//Line between the line on the top to the lower resistor
+    s += QStringLiteral("<320 10 320 100 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<30 -200 120 -200 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<30 -200 30 -190 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<400 -200 400 -190 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<320 -200 320 -130 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<320 -200 400 -200 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<320 100 400 100 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<30 100 120 100 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<30 100 30 110 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<120 -40 120 -30 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<120 -30 120 10 \"\" 0 0 0 \"\">\n");
+    s += QStringLiteral("<0 -30 120 -30 \"\" 0 0 0 \"\">\n");
     s += "</Wires>\n";
 
     QApplication::clipboard()->setText(s, QClipboard::Clipboard);
@@ -1563,23 +1563,23 @@ int QucsPowerCombiningTool::TravellingWave(double Z0, double Freq, int N, bool S
     if (SP_block)
     {
         //Source
-        s += QString("<Pac P1 1 0 30 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
-        s += QString("<GND * 1 0 60 0 0 0 0>\n");
-        wirestr +=QString("<0 0 0 -30 \"\" 0 0 0>\n");//Vertical wire
-        wirestr +=QString("<0 -30 40 -30 \"\" 0 0 0>\n");//Horizontal wire
+        s += QStringLiteral("<Pac P1 1 0 30 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0);
+        s += QStringLiteral("<GND * 1 0 60 0 0 0 0>\n");
+        wirestr +=QStringLiteral("<0 0 0 -30 \"\" 0 0 0>\n");//Vertical wire
+        wirestr +=QStringLiteral("<0 -30 40 -30 \"\" 0 0 0>\n");//Horizontal wire
         //S-parameter analysis component
-        QString freq_start = QString("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        QString freq_stop = QString("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-        s += QString("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
+        QString freq_start = QStringLiteral("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        QString freq_stop = QStringLiteral("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+        s += QStringLiteral("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop);
         // Equations
-        str = QString("\"S11_dB=dB(S[1,1])\" 1 ");
+        str = QStringLiteral("\"S11_dB=dB(S[1,1])\" 1 ");
         for (int i=2;i<=N+1; i++) 
         {
-          str += QString("\"S%1%2_dB=dB(S[%1,1])\" 1 ").arg(i).arg(1);
-          str += QString("\"S%1%1_dB=dB(S[%1,%1])\" 1 ").arg(i);
+          str += QStringLiteral("\"S%1%2_dB=dB(S[%1,1])\" 1 ").arg(i).arg(1);
+          str += QStringLiteral("\"S%1%1_dB=dB(S[%1,%1])\" 1 ").arg(i);
         }
-        s += QString("<Eqn Eqn1 1 50 200 -28 15 0 0 ") + str + QString("\"yes\" 0>\n");
-        if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
+        s += QStringLiteral("<Eqn Eqn1 1 50 200 -28 15 0 0 ") + str + QStringLiteral("\"yes\" 0>\n");
+        if (microcheck)s += QStringLiteral("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
 
     }
 
@@ -1596,48 +1596,48 @@ int QucsPowerCombiningTool::TravellingWave(double Z0, double Freq, int N, bool S
         R2 =  wilkstr.section(';', 3, 3).toDouble();
         R3 =  wilkstr.section(';', 4, 4).toDouble();
 
-        wirestr +=QString("<%1 -30 %2 -30 \"\" 0 0 0>\n").arg(x-60).arg(x-30);
-        wirestr +=QString("<%1 -30 %2 -30 \"\" 0 0 0>\n").arg(x+30).arg(x+60);
+        wirestr +=QStringLiteral("<%1 -30 %2 -30 \"\" 0 0 0>\n").arg(x-60).arg(x-30);
+        wirestr +=QStringLiteral("<%1 -30 %2 -30 \"\" 0 0 0>\n").arg(x+30).arg(x+60);
 
-        wirestr +=QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+60).arg(x+100);
-        wirestr +=QString("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+60).arg(x+100);
+        wirestr +=QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+60).arg(x+100);
+        wirestr +=QStringLiteral("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+60).arg(x+100);
 
-        wirestr +=QString("<%1 -90 %1 30 \"\" 0 0 0>\n").arg(x+60);
+        wirestr +=QStringLiteral("<%1 -90 %1 30 \"\" 0 0 0>\n").arg(x+60);
 
-        wirestr +=QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+160).arg(x+200);
-        wirestr +=QString("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+160).arg(x+200);
+        wirestr +=QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+160).arg(x+200);
+        wirestr +=QStringLiteral("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+160).arg(x+200);
 
-        wirestr +=QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+260).arg(x+350);
-        wirestr +=QString("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+260).arg(x+290);
-        wirestr +=QString("<%1 30 %1 60 \"\" 0 0 0>\n").arg(x+350);
+        wirestr +=QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+260).arg(x+350);
+        wirestr +=QStringLiteral("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+260).arg(x+290);
+        wirestr +=QStringLiteral("<%1 30 %1 60 \"\" 0 0 0>\n").arg(x+350);
 
         //Wiring the isolation resistor
-        wirestr +=QString("<%1 30 %1 10 \"\" 0 0 0>\n").arg(x+190);
-        wirestr +=QString("<%1 -90 %1 -50 \"\" 0 0 0>\n").arg(x+190);
+        wirestr +=QStringLiteral("<%1 30 %1 10 \"\" 0 0 0>\n").arg(x+190);
+        wirestr +=QStringLiteral("<%1 -90 %1 -50 \"\" 0 0 0>\n").arg(x+190);
 
-        if(n>1)wirestr +=QString("<%1 -90 %1 -30 \"\" 0 0 0>\n").arg(x+290);
-        if(n==1)wirestr +=QString("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+290).arg(x+350);//Last power combiner
+        if(n>1)wirestr +=QStringLiteral("<%1 -90 %1 -30 \"\" 0 0 0>\n").arg(x+290);
+        if(n==1)wirestr +=QStringLiteral("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+290).arg(x+350);//Last power combiner
 
         if (microcheck)
         {
             er = Substrate.er;
             getMicrostrip(Z0, Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 %3 -30 -38 -80 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x);
+            s += QStringLiteral("<MLIN MS1 1 %3 -30 -38 -80 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x);
             er = Substrate.er;
             getMicrostrip(Z3, Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 %3 -90 -40 -80 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+130);
+            s += QStringLiteral("<MLIN MS1 1 %3 -90 -40 -80 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+130);
             er = Substrate.er;
             getMicrostrip(Z2, Freq, &Substrate, width, er);
-            s += QString("<MLIN MS1 1 %3 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+130);
+            s += QStringLiteral("<MLIN MS1 1 %3 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+130);
         }
         else
         {
             aux_str = ConvertLengthFromM(lambda4);
-            s += QString("<TLIN Line1 1 %1 -30 -38 -68 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x).arg(Z0).arg(aux_str).arg(Alpha);//Z0 line
-            s += QString("<TLIN Line1 1 %1 -90 -40 -70 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+130).arg(RoundVariablePrecision(Z3)).arg(aux_str).arg(Alpha);//Output branch 1
-            s += QString("<TLIN Line1 1 %1 30 -26 20 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+130).arg(RoundVariablePrecision(Z2)).arg(aux_str).arg(Alpha);//Output branch 2
+            s += QStringLiteral("<TLIN Line1 1 %1 -30 -38 -68 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x).arg(Z0).arg(aux_str).arg(Alpha);//Z0 line
+            s += QStringLiteral("<TLIN Line1 1 %1 -90 -40 -70 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+130).arg(RoundVariablePrecision(Z3)).arg(aux_str).arg(Alpha);//Output branch 1
+            s += QStringLiteral("<TLIN Line1 1 %1 30 -26 20 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+130).arg(RoundVariablePrecision(Z2)).arg(aux_str).arg(Alpha);//Output branch 2
         }
-        s += QString("<R R1 1 %1 -20 30 -26 0 -1 \"%2 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(x+190).arg(RoundVariablePrecision(R));//Isolation resistor
+        s += QStringLiteral("<R R1 1 %1 -20 30 -26 0 -1 \"%2 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(x+190).arg(RoundVariablePrecision(R));//Isolation resistor
 
         if ((R2!=50)||(R3 != 50))
         {// An unequal power ratio implies that the load impedance != 50, so it requires matching.
@@ -1647,37 +1647,37 @@ int QucsPowerCombiningTool::TravellingWave(double Z0, double Freq, int N, bool S
                 getMicrostrip(sqrt(Z0*R3), Freq, &Substrate, width, er);
                 aux_str = ConvertLengthFromM(lambda4/sqrt(er));
                 aux_str_2 = ConvertLengthFromM(width);
-                s += QString("<MLIN MS1 1 %3 -90 -40 -80 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(aux_str_2).arg(aux_str).arg(x+230);
+                s += QStringLiteral("<MLIN MS1 1 %3 -90 -40 -80 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(aux_str_2).arg(aux_str).arg(x+230);
 
                 er = Substrate.er;
                 getMicrostrip(sqrt(Z0*R2), Freq, &Substrate, width, er);
                 aux_str = ConvertLengthFromM(lambda4/sqrt(er));
                 aux_str_2 = ConvertLengthFromM(width);
-                s += QString("<MLIN MS1 1 %3 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(aux_str_2).arg(aux_str).arg(x+230);
+                s += QStringLiteral("<MLIN MS1 1 %3 30 -26 20 0 0 \"Sub1\" 0 \"%1\" 1 \"%2\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(aux_str_2).arg(aux_str).arg(x+230);
 
             }
             else
             {
-                s += QString("<TLIN Line1 1 %1 -90 -40 -70 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+230).arg(RoundVariablePrecision(sqrt(Z0*R3))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 1
-                s += QString("<TLIN Line1 1 %1 30 -26 20 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+230).arg(RoundVariablePrecision(sqrt(Z0*R2))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 2
+                s += QStringLiteral("<TLIN Line1 1 %1 -90 -40 -70 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+230).arg(RoundVariablePrecision(sqrt(Z0*R3))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 1
+                s += QStringLiteral("<TLIN Line1 1 %1 30 -26 20 0 0 \"%2 Ohm\" 1 \"%3\" 1 \"%4 dB\" 0 \"26.85\" 0>\n").arg(x+230).arg(RoundVariablePrecision(sqrt(Z0*R2))).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Quarter wave matching output branch 2
             }
         }
         else
         {
-            wirestr +=QString("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+200).arg(x+260);
-            wirestr +=QString("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+200).arg(x+260);
+            wirestr +=QStringLiteral("<%1 30 %2 30 \"\" 0 0 0>\n").arg(x+200).arg(x+260);
+            wirestr +=QStringLiteral("<%1 -90 %2 -90 \"\" 0 0 0>\n").arg(x+200).arg(x+260);
         }
         x+=spacing;
 
         if(SP_block)//Add output terms
         {
-            s += QString("<Pac P1 1 %1 90 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Z0);
-            s += QString("<GND * 1 %1 120 0 0 0 0>\n").arg(x);
+            s += QStringLiteral("<Pac P1 1 %1 90 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Z0);
+            s += QStringLiteral("<GND * 1 %1 120 0 0 0 0>\n").arg(x);
 
             if(n==1)//The last Wilkinson divider
             {
-                s += QString("<Pac P1 1 %1 -60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Z0);
-                s += QString("<GND * 1 %1 -30 0 0 0 0>\n").arg(x);
+                s += QStringLiteral("<Pac P1 1 %1 -60 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Z0);
+                s += QStringLiteral("<GND * 1 %1 -30 0 0 0 0>\n").arg(x);
             }
         }
 
@@ -1696,7 +1696,7 @@ int QucsPowerCombiningTool::Tree(double Z0, double Freq, int N, bool SP_block, b
     if ((N & (N - 1)) != 0)//Checking if the number of outputs is power of 2
     {
         N = pow(2, ceil(log(N)/log(2)));//Rounding to the next power of 2
-        QString str = QString("The number of outputs must be a power of 2. A %1-way combiner will be designed").arg(N);
+        QString str = QStringLiteral("The number of outputs must be a power of 2. A %1-way combiner will be designed").arg(N);
         QMessageBox::warning(this, tr("Tree combiner"), str, QMessageBox::Close);
     }
     double er, width;
@@ -1724,69 +1724,69 @@ int QucsPowerCombiningTool::Tree(double Z0, double Freq, int N, bool SP_block, b
             {
                 er = Substrate.er;
                 getMicrostrip(Z0, Freq, &Substrate, width, er);
-                s += QString("<MLIN MS1 1 %3 %4 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x).arg(offset);
+                s += QStringLiteral("<MLIN MS1 1 %3 %4 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x).arg(offset);
 
                 er = Substrate.er;
                 getMicrostrip(Zbranch, Freq, &Substrate, width, er);
-                s += QString("<MLIN MS1 1 %3 %4 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+100).arg(y+offset);
+                s += QStringLiteral("<MLIN MS1 1 %3 %4 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+100).arg(y+offset);
 
                 er = Substrate.er;
                 getMicrostrip(Zbranch, Freq, &Substrate, width, er);
-                s += QString("<MLIN MS1 1 %3 %4 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+100).arg(-y+offset);
+                s += QStringLiteral("<MLIN MS1 1 %3 %4 -26 20 0 0 \"Sub1\" 0 \"%1\" 0 \"%2\" 0 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(ConvertLengthFromM(width)).arg(ConvertLengthFromM(lambda4/sqrt(er))).arg(x+100).arg(-y+offset);
 
             }
             else
             {
-                s += QString("<TLIN Line1 1 %1 %2 -26 20 0 0 \"%3\" 0 \"%4\" 0 \"%5 dB\" 0 \"26.85\" 0>\n").arg(x).arg(offset).arg(Z0).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
-                s += QString("<TLIN Line1 1 %1 %2 -26 20 0 0 \"%3\" 0 \"%4\" 0 \"%5 dB\" 0 \"26.85\" 0>\n").arg(x+100).arg(y+offset).arg(Zbranch).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 1
-                s += QString("<TLIN Line1 1 %1 %2 -26 20 0 0 \"%3\" 0 \"%4\" 0 \"%5 dB\" 0 \"26.85\" 0>\n").arg(x+100).arg(-y+offset).arg(Zbranch).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
+                s += QStringLiteral("<TLIN Line1 1 %1 %2 -26 20 0 0 \"%3\" 0 \"%4\" 0 \"%5 dB\" 0 \"26.85\" 0>\n").arg(x).arg(offset).arg(Z0).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Z0 line
+                s += QStringLiteral("<TLIN Line1 1 %1 %2 -26 20 0 0 \"%3\" 0 \"%4\" 0 \"%5 dB\" 0 \"26.85\" 0>\n").arg(x+100).arg(y+offset).arg(Zbranch).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 1
+                s += QStringLiteral("<TLIN Line1 1 %1 %2 -26 20 0 0 \"%3\" 0 \"%4\" 0 \"%5 dB\" 0 \"26.85\" 0>\n").arg(x+100).arg(-y+offset).arg(Zbranch).arg(ConvertLengthFromM(lambda4)).arg(Alpha);//Output branch 2
             }
-            s += QString("<R R1 1 %1 %2 15 -26 0 -1 \"%3 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(x+160).arg(offset).arg(2*Z0);//Isolation resistor
+            s += QStringLiteral("<R R1 1 %1 %2 15 -26 0 -1 \"%3 Ohm\" 1 \"26.85\" 0 \"US\" 0>\n").arg(x+160).arg(offset).arg(2*Z0);//Isolation resistor
 
-            wirestr +=QString("<%1 %3 %2 %3 \"\" 0 0 0>\n").arg(x+30).arg(x+70).arg(y+offset);
-            wirestr +=QString("<%1 %3 %2 %3 \"\" 0 0 0>\n").arg(x+30).arg(x+70).arg(-y+offset);
+            wirestr +=QStringLiteral("<%1 %3 %2 %3 \"\" 0 0 0>\n").arg(x+30).arg(x+70).arg(y+offset);
+            wirestr +=QStringLiteral("<%1 %3 %2 %3 \"\" 0 0 0>\n").arg(x+30).arg(x+70).arg(-y+offset);
 
-            wirestr +=QString("<%1 %2 %1 %3 \"\" 0 0 0>\n").arg(x+30).arg(y+offset).arg(-y+offset);
+            wirestr +=QStringLiteral("<%1 %2 %1 %3 \"\" 0 0 0>\n").arg(x+30).arg(y+offset).arg(-y+offset);
 
-            wirestr +=QString("<%1 %3 %2 %3 \"\" 0 0 0>\n").arg(x+130).arg(x+170).arg(y+offset);
-            wirestr +=QString("<%1 %3 %2 %3 \"\" 0 0 0>\n").arg(x+130).arg(x+170).arg(-y+offset);
+            wirestr +=QStringLiteral("<%1 %3 %2 %3 \"\" 0 0 0>\n").arg(x+130).arg(x+170).arg(y+offset);
+            wirestr +=QStringLiteral("<%1 %3 %2 %3 \"\" 0 0 0>\n").arg(x+130).arg(x+170).arg(-y+offset);
 
             //Wiring the isolation resistor
-            wirestr +=QString("<%1 %2 %1 %3 \"\" 0 0 0>\n").arg(x+160).arg(y+offset).arg(offset+30);
-            wirestr +=QString("<%1 %2 %1 %3 \"\" 0 0 0>\n").arg(x+160).arg(-y+offset).arg(offset-30);
+            wirestr +=QStringLiteral("<%1 %2 %1 %3 \"\" 0 0 0>\n").arg(x+160).arg(y+offset).arg(offset+30);
+            wirestr +=QStringLiteral("<%1 %2 %1 %3 \"\" 0 0 0>\n").arg(x+160).arg(-y+offset).arg(offset-30);
 
             if (SP_block)
             {
                 if (n==1)//Source
                 {
                     int sindex=s.indexOf("<Components>\n");
-                    s.insert(sindex+13, QString("<Pac P1 1 %2 %3 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0).arg(x-100).arg(offset+50));
-                    s += QString("<GND * 1 %1 %2 0 0 0 0>\n").arg(x-100).arg(offset+80);
-                    wirestr +=QString("<%1 %2 %1 %3 \"\" 0 0 0>\n").arg(x-100).arg(offset+20).arg(offset);//Vertical wire
-                    wirestr +=QString("<%2 %1 %3 %1 \"\" 0 0 0>\n").arg(offset).arg(x-100).arg(x-30);//Horizontal wire
+                    s.insert(sindex+13, QStringLiteral("<Pac P1 1 %2 %3 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0).arg(x-100).arg(offset+50));
+                    s += QStringLiteral("<GND * 1 %1 %2 0 0 0 0>\n").arg(x-100).arg(offset+80);
+                    wirestr +=QStringLiteral("<%1 %2 %1 %3 \"\" 0 0 0>\n").arg(x-100).arg(offset+20).arg(offset);//Vertical wire
+                    wirestr +=QStringLiteral("<%2 %1 %3 %1 \"\" 0 0 0>\n").arg(offset).arg(x-100).arg(x-30);//Horizontal wire
 
                     //S-parameter analysis component
-                    QString freq_start = QString("%1%2").arg((1/N)*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-                    QString freq_stop = QString("%1%2").arg((2+1/N)*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
-                    s += QString("<.SP SP1 1 %3 %4 0 67 0 0 \"lin\" 1 \"%1\" 1 \"%2\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop).arg(x-200).arg(offset+200);
+                    QString freq_start = QStringLiteral("%1%2").arg((1/N)*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+                    QString freq_stop = QStringLiteral("%1%2").arg((2+1/N)*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
+                    s += QStringLiteral("<.SP SP1 1 %3 %4 0 67 0 0 \"lin\" 1 \"%1\" 1 \"%2\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(freq_start).arg(freq_stop).arg(x-200).arg(offset+200);
                 
                     // Equations
-                    str = QString("\"S11_dB=dB(S[1,1])\" 1 ");
+                    str = QStringLiteral("\"S11_dB=dB(S[1,1])\" 1 ");
                     for (int i=2;i<=N+1; i++) 
                     {
-                      str += QString("\"S%1%2_dB=dB(S[%1,1])\" 1 ").arg(i).arg(1);
-                      str += QString("\"S%1%1_dB=dB(S[%1,%1])\" 1 ").arg(i);
+                      str += QStringLiteral("\"S%1%2_dB=dB(S[%1,1])\" 1 ").arg(i).arg(1);
+                      str += QStringLiteral("\"S%1%1_dB=dB(S[%1,%1])\" 1 ").arg(i);
                     }
-                    s += QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 ").arg(x-400).arg(offset+200) + str + QString("\"yes\" 0>\n");
-                    if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
+                    s += QStringLiteral("<Eqn Eqn1 1 %1 %2 -28 15 0 0 ").arg(x-400).arg(offset+200) + str + QStringLiteral("\"yes\" 0>\n");
+                    if (microcheck)s += QStringLiteral("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
 
                 }
                 if(n==N/2)//Loads
                 {
-                    s += QString("<Pac P1 1 %2 %3 45 -29 0 0 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0).arg(x+200).arg(offset+y);
-                    s += QString("<GND * 1 %1 %2 0 0 0 0>\n").arg(x+230).arg(offset+y);
-                    s += QString("<Pac P1 1 %2 %3 45 -29 0 0 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0).arg(x+200).arg(offset-y);
-                    s += QString("<GND * 1 %1 %2 0 0 0 0>\n").arg(x+230).arg(offset-y);
+                    s += QStringLiteral("<Pac P1 1 %2 %3 45 -29 0 0 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0).arg(x+200).arg(offset+y);
+                    s += QStringLiteral("<GND * 1 %1 %2 0 0 0 0>\n").arg(x+230).arg(offset+y);
+                    s += QStringLiteral("<Pac P1 1 %2 %3 45 -29 0 0 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Z0).arg(x+200).arg(offset-y);
+                    s += QStringLiteral("<GND * 1 %1 %2 0 0 0 0>\n").arg(x+230).arg(offset-y);
                 }
             }
 
@@ -1995,7 +1995,7 @@ QString QucsPowerCombiningTool::ConvertLengthFromM(double len)
             index = 2;//microns
             break;
           }
-          return QString("%1 mil").arg(RoundVariablePrecision(conv));
+          return QStringLiteral("%1 mil").arg(RoundVariablePrecision(conv));
     case 2: //microns
           conv *= 1e6;
           if (conv > 999.99)
@@ -2008,7 +2008,7 @@ QString QucsPowerCombiningTool::ConvertLengthFromM(double len)
             index = 3;//nanometers
             break;
           }
-          return QString("%1 um").arg(RoundVariablePrecision(conv));
+          return QStringLiteral("%1 um").arg(RoundVariablePrecision(conv));
     case 3: //nanometers
           conv *= 1e9;
           if (conv > 999.99)
@@ -2016,7 +2016,7 @@ QString QucsPowerCombiningTool::ConvertLengthFromM(double len)
             index = 2;//microns
             break;
           }
-          return QString("%1 nm").arg(RoundVariablePrecision(conv));
+          return QStringLiteral("%1 nm").arg(RoundVariablePrecision(conv));
     case 4: //inch
           conv *= 39.3701;
           if (conv > 999.99)
@@ -2029,7 +2029,7 @@ QString QucsPowerCombiningTool::ConvertLengthFromM(double len)
             index = 1;//mils
             break;
           }
-          return QString("%1 in").arg(RoundVariablePrecision(conv));
+          return QStringLiteral("%1 in").arg(RoundVariablePrecision(conv));
     case 5: //ft
           conv *= 3.280841666667; 
           if (conv > 999.99)
@@ -2042,14 +2042,14 @@ QString QucsPowerCombiningTool::ConvertLengthFromM(double len)
             index = 4;//inches
             break;
           }
-          return QString("%1 ft").arg(RoundVariablePrecision(conv));
+          return QStringLiteral("%1 ft").arg(RoundVariablePrecision(conv));
     case 6: //m
           if(conv < 1) 
           {
             index = 0;//mm
             break;
           }
-          return QString("%1").arg(RoundVariablePrecision(len));
+          return QStringLiteral("%1").arg(RoundVariablePrecision(len));
     default: //milimeters
           conv *=1e3;
           if (conv > 999.99)
@@ -2062,7 +2062,7 @@ QString QucsPowerCombiningTool::ConvertLengthFromM(double len)
             index = 2;//microns
             break;
           }
-          return QString("%1 mm").arg(RoundVariablePrecision(conv));
+          return QStringLiteral("%1 mm").arg(RoundVariablePrecision(conv));
   }
   }while(true);
   return QString();
@@ -2106,10 +2106,10 @@ QString QucsPowerCombiningTool::getSPEquationString(int x, int y)
 {
     QString s;
     if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-        s = QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1"
+        s = QStringLiteral("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1"
                      "  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n").arg(x).arg(y);
     } else if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
-        s = QString("<NutmegEq NutmegEq1 1 %1 %2 -28 15 0 0 \"sp\" 1 \"S11_dB=dB(S_1_1)\" 1 \"S21_dB=dB(S_2_1)\" 1"
+        s = QStringLiteral("<NutmegEq NutmegEq1 1 %1 %2 -28 15 0 0 \"sp\" 1 \"S11_dB=dB(S_1_1)\" 1 \"S21_dB=dB(S_2_1)\" 1"
                      "  \"S31_dB=dB(S_3_1)\" 1 \"S22_dB=dB(S_2_2)\" 1 \"S33_dB=dB(S_3_3)\" 1>\n").arg(x).arg(y);
     }
     return s;

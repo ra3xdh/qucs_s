@@ -231,7 +231,7 @@ QString Subcircuit::spice_netlist(bool) {
   }
   s += " " + misc::properName(f);
   for (qsizetype i = 1; i < Props.size(); i++) {
-    s += QString(" %1=%2").arg(
+    s += QStringLiteral(" %1=%2").arg(
         Props.at(i)->Name, spicecompat::normalize_value(Props.at(i)->Value));
   }
   s += "\n";

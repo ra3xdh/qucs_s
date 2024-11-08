@@ -220,13 +220,13 @@ QString BJTsub::spice_netlist(bool)
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
     if (getProperty("UseGlobTemp")->Value == "yes") {
-      s += QString(" QMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
+      s += QStringLiteral(" QMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
     } else {
-      s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+      s += QStringLiteral(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
       .arg(getProperty("Temp")->Value);
     }
 
-    s += QString(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
+    s += QStringLiteral(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
 
     return s;
 }

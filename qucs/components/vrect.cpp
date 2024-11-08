@@ -92,7 +92,7 @@ QString vRect::spice_netlist(bool)
     QString TH = spicecompat::normalize_value(getProperty("TH")->Value);
     QString TL = spicecompat::normalize_value(getProperty("TL")->Value);
 
-    s += QString(" DC 0 PULSE( %1 %2 %3 %4 %5 %6 {(%7)+(%8)+(%9)+(%10)} )  AC 0\n")
+    s += QStringLiteral(" DC 0 PULSE( %1 %2 %3 %4 %5 %6 {(%7)+(%8)+(%9)+(%10)} )  AC 0\n")
              .arg(U0).arg(U).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(TH).arg(TL).arg(Tr).arg(Tf);
 
     return s;

@@ -109,17 +109,17 @@ QString LTL_SPICE::spice_netlist(bool)
 
 
    if( Z0.trimmed().length() > 0) {
-       s += QString(" Z0=%1").arg(Z0);
+       s += QStringLiteral(" Z0=%1").arg(Z0);
    }
    if( Td.trimmed().length() > 0 )  {
-       s += QString(" Td=%1").arg(Td);
+       s += QStringLiteral(" Td=%1").arg(Td);
    }
    if( Freq.trimmed().length() > 0 ) {
-       s += QString(" F=%1").arg(Freq);
+       s += QStringLiteral(" F=%1").arg(Freq);
    }
    if( Nl.trimmed().length() > 0 ) {
-       s += QString(" NL=%1").arg(Nl);
+       s += QStringLiteral(" NL=%1").arg(Nl);
    }
-   s += QString(" IC=%5, %6, %7, %8 \n").arg(V1).arg(I1).arg(V2).arg(I2);
+   s += QStringLiteral(" IC=%5, %6, %7, %8 \n").arg(V1).arg(I1).arg(V2).arg(I2);
     return s;
 }

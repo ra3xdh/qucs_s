@@ -193,13 +193,13 @@ QString MOSFET::spice_netlist(bool isXyce)
     ps *= fac;
 
     if (getProperty("UseGlobTemp")->Value == "yes") {
-      s += QString(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7\n")
+      s += QStringLiteral(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7\n")
       .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps);
     } else {
-      s += QString(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7 Temp=%8\n")
+      s += QStringLiteral(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7 Temp=%8\n")
       .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps).arg(getProperty("Temp")->Value);
     }
-    s += QString(".MODEL MMOD_%1 %2MOS (%3)\n").arg(Name).arg(mosfet_type).arg(par_str);
+    s += QStringLiteral(".MODEL MMOD_%1 %2MOS (%3)\n").arg(Name).arg(mosfet_type).arg(par_str);
 
     return s;
 }

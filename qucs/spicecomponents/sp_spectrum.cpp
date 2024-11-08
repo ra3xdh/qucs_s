@@ -73,10 +73,10 @@ QString SpiceFFT::spice_netlist(bool isXyce)
     double tstop = 1.0/df + tstart;
     double tstep = 1.0/(2*bw);
     QString win = getProperty("Window")->Value;
-    s =  QString("tran %1 %2 %3\n").arg(tstep).arg(tstop).arg(tstart);
-    s += QString("set specwindow=%1\n").arg(win);
+    s =  QStringLiteral("tran %1 %2 %3\n").arg(tstep).arg(tstop).arg(tstart);
+    s += QStringLiteral("set specwindow=%1\n").arg(win);
     if (win == "gaussian") {
-        s += QString("set specwindoworder=%1\n")
+        s += QStringLiteral("set specwindoworder=%1\n")
                 .arg(getProperty("Order")->Value);
     }
 

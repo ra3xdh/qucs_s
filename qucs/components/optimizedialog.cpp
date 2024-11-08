@@ -91,7 +91,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   Tab2->setLayout(gp2);
 
   MethodCombo = new QComboBox();
-  MethodCombo->insertItems(-1, QString("DE/best/1/exp;"
+  MethodCombo->insertItems(-1, QStringLiteral("DE/best/1/exp;"
 				       "DE/rand/1/exp;"
 				       "DE/rand-to-best/1/exp;"
 				       "DE/best/2/exp;"
@@ -887,7 +887,7 @@ void OptimizeDialog::slotCreateEqn()
    }
  }
 
- s += QString("\"yes\" 0>\n" // Export yes, no display
+ s += QStringLiteral("\"yes\" 0>\n" // Export yes, no display
               "</Components>\n"
 	      "<Wires>\n"
 	      "</Wires>\n"

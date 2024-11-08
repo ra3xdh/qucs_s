@@ -57,14 +57,14 @@ QString Resistor::spice_netlist(bool )
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    s += QString(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
+    s += QStringLiteral(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
             .arg(Ports.at(1)->Connection->Name); // output 2 nodes
     s.replace(" gnd ", " 0 ");
 
     QString Tc1 = getProperty("Tc1")->Value;
     QString Tc2 = getProperty("Tc2")->Value;
 
-    s += QString(" %1").arg(spicecompat::normalize_value(Props.at(0)->Value));
+    s += QStringLiteral(" %1").arg(spicecompat::normalize_value(Props.at(0)->Value));
 
     if (!Tc1.isEmpty()) {
         s += " tc1=" + Tc1;
@@ -74,7 +74,7 @@ QString Resistor::spice_netlist(bool )
         s += " tc2=" + Tc2;
     }
 
-    s += QString(" \n");
+    s += QStringLiteral(" \n");
 
     return s;
 }
@@ -89,9 +89,9 @@ QString Resistor::va_code()
     QString Vpm = vacompat::normalize_voltage(plus,minus);
     QString Ipm = vacompat::normalize_current(plus,minus,true);
     
-    if (plus=="gnd") s += QString("%1 <+ -(%2/( %3 ));\n").arg(Ipm).arg(Vpm).arg(val);
-    else s+= QString("%1 <+ %2/( %3 );\n").arg(Ipm).arg(Vpm).arg(val);
-    s += QString("%1 <+ white_noise( 4.0*`P_K*( %2 + 273.15) / ( %3 ), \"thermal\" );\n")
+    if (plus=="gnd") s += QStringLiteral("%1 <+ -(%2/( %3 ));\n").arg(Ipm).arg(Vpm).arg(val);
+    else s+= QStringLiteral("%1 <+ %2/( %3 );\n").arg(Ipm).arg(Vpm).arg(val);
+    s += QStringLiteral("%1 <+ white_noise( 4.0*`P_K*( %2 + 273.15) / ( %3 ), \"thermal\" );\n")
                  .arg(Ipm).arg(valTemp).arg(val);
                   
     return s;

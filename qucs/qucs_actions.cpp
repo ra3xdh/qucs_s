@@ -1022,7 +1022,7 @@ void QucsApp::slotAddToProject()
 
 
   QStringList List = QFileDialog::getOpenFileNames(this, tr("Select files to copy"),
-    lastDir.isEmpty() ? QString(".") : lastDir, QucsFileFilter);
+    lastDir.isEmpty() ? QStringLiteral(".") : lastDir, QucsFileFilter);
 
   if(List.isEmpty()) {
     statusBar()->showMessage(tr("No files copied."), 2000);
@@ -1360,12 +1360,12 @@ void QucsApp::slotExportGraphAsCsv()
   }
 
   /*QString s = Q3FileDialog::getSaveFileName(
-     lastDir.isEmpty() ? QString(".") : lastDir,
+     lastDir.isEmpty() ? QStringLiteral(".") : lastDir,
      tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)",
      this, 0, tr("Enter an Output File Name"));
      */
   QString s = QFileDialog::getSaveFileName(this, tr("Enter an Output File Name"),
-    lastDir.isEmpty() ? QString(".") : lastDir, tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)");
+    lastDir.isEmpty() ? QStringLiteral(".") : lastDir, tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)");
 
   if(s.isEmpty())
     return;
@@ -1611,16 +1611,16 @@ void QucsApp::slotBuildModule()
     // admsXml emits C++
     QStringList Arguments;
     Arguments << "-f" <<  QDir::toNativeSeparators(include.absoluteFilePath("va2cpp.makefile"))
-              << QString("ADMSXML=%1").arg(admsXml)
-              << QString("PREFIX=%1").arg(QDir::toNativeSeparators(prefix.absolutePath()))
-              << QString("MODEL=%1").arg(vaModule);
+              << QStringLiteral("ADMSXML=%1").arg(admsXml)
+              << QStringLiteral("PREFIX=%1").arg(QDir::toNativeSeparators(prefix.absolutePath()))
+              << QStringLiteral("MODEL=%1").arg(vaModule);
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert("PATH", env.value("PATH") );
     builder->setProcessEnvironment(env);
 
     // prepend command to log
-    QString cmdString = QString("%1 %2\n").arg(make, Arguments.join(" "));
+    QString cmdString = QStringLiteral("%1 %2\n").arg(make, Arguments.join(" "));
     messageDock->admsOutput->appendPlainText(cmdString);
 
     qDebug() << "Command :" << make << Arguments.join(" ");
@@ -1643,12 +1643,12 @@ void QucsApp::slotBuildModule()
     Arguments.clear();
 
     Arguments << "-f" <<  QDir::toNativeSeparators(include.absoluteFilePath("cpp2lib.makefile"))
-              << QString("PREFIX=\"%1\"").arg(QDir::toNativeSeparators(prefix.absolutePath()))
-              << QString("PROJDIR=\"%1\"").arg(QDir::toNativeSeparators(workDir))
-              << QString("MODEL=%1").arg(vaModule);
+              << QStringLiteral("PREFIX=\"%1\"").arg(QDir::toNativeSeparators(prefix.absolutePath()))
+              << QStringLiteral("PROJDIR=\"%1\"").arg(QDir::toNativeSeparators(workDir))
+              << QStringLiteral("MODEL=%1").arg(vaModule);
 
     // prepend command to log
-    cmdString = QString("%1 %2\n").arg(make, Arguments.join(" "));
+    cmdString = QStringLiteral("%1 %2\n").arg(make, Arguments.join(" "));
     messageDock->cppOutput->appendPlainText(cmdString);
 
     builder->start(make, Arguments);
@@ -1702,7 +1702,7 @@ void QucsApp::buildWithOpenVAF()
     builder->setProcessEnvironment(env);
 
     // prepend command to log
-    QString cmdString = QString("%1 %2\n").arg(openVAF, Arguments.join(" "));
+    QString cmdString = QStringLiteral("%1 %2\n").arg(openVAF, Arguments.join(" "));
     messageDock->admsOutput->appendPlainText(cmdString);
 
     qDebug() << "Command :" << openVAF << Arguments.join(" ");

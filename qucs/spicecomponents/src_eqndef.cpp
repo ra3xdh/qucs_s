@@ -83,11 +83,11 @@ QString Src_eqndef::spice_netlist(bool)
     QString Line_4 = Props.at(3)->Value;
     QString Line_5 = Props.at(4)->Value;
 
-    s += QString(" %1 = %2 ").arg(VI).arg(VI2);
-    if(  Line_2.length() > 0 )   s += QString("\n%1").arg(Line_2);
-    if(  Line_3.length() > 0 )   s += QString("\n%1").arg(Line_3);
-    if(  Line_4.length() > 0 )   s += QString("\n%1").arg(Line_4);
-    if(  Line_5.length() > 0 )   s += QString("\n%1").arg(Line_5);
+    s += QStringLiteral(" %1 = %2 ").arg(VI).arg(VI2);
+    if(  Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_2);
+    if(  Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_3);
+    if(  Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_4);
+    if(  Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_5);
     s += "\n";
 
     return s;
@@ -102,7 +102,7 @@ QString Src_eqndef::va_code()
     if (Props.at(0)->Name=="I") Src = vacompat::normalize_current(plus,minus,true);
     else Src = vacompat::normalize_voltage(plus,minus); // Voltage contribution is reserved for future
     // B-source may be polar
-    if (plus=="gnd") s = QString(" %1 <+ -(%2); // %3 source\n").arg(Src).arg(Props.at(0)->Value).arg(Name);
-    else s = QString(" %1 <+ %2; // %3 source\n").arg(Src).arg(Props.at(0)->Value).arg(Name);
+    if (plus=="gnd") s = QStringLiteral(" %1 <+ -(%2); // %3 source\n").arg(Src).arg(Props.at(0)->Value).arg(Name);
+    else s = QStringLiteral(" %1 <+ %2; // %3 source\n").arg(Src).arg(Props.at(0)->Value).arg(Name);
     return s;
 }

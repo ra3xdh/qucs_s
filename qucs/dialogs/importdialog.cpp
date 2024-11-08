@@ -139,7 +139,7 @@ void ImportDialog::slotBrowse()
 {
   QString s = QFileDialog::getOpenFileName(
      this, tr("Enter a Data File Name"),
-     lastImportDir.isEmpty() ? QString(".") : lastImportDir,
+     lastImportDir.isEmpty() ? QStringLiteral(".") : lastImportDir,
      tr("All known")+
      " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir *.dat.ngspice *.dat.xyce *.dat.spopus);;"+
      tr("Touchstone files")+" (*.s?p);;"+
@@ -167,7 +167,7 @@ void ImportDialog::slotSaveBrowse()
 {
     QString s = QFileDialog::getSaveFileName(
        this, tr("Enter a Data File Name"),
-       lastImportDir.isEmpty() ? QString(".") : lastImportDir,
+       lastImportDir.isEmpty() ? QStringLiteral(".") : lastImportDir,
        tr("All known")+
        " (*.s?p *.csv *.dat *.cir *.net *.lib);;"+
        tr("Touchstone files")+" (*.s?p);;"+

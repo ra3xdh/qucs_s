@@ -318,7 +318,7 @@ void SchCauer::createGenericSchematic(QString &s)
     s += "<Vac V1 1 80 290 18 -26 0 1 \"1 V\" 0 \"1 kHz\" 0 \"0\" 0 \"0\" 0>\n";
     s += "<.DC DC1 1 40 510 0 61 0 0 \"26.85\" 0 \"0.001\" 0 \"1 pA\" 0 \"1 uV\" 0 \"no\" 0 \"150\" 0 \"no\" 0 \"none\" 0 \"CroutLU\" 0>\n";
     s += "<Eqn Eqn1 1 640 520 -30 14 0 0 \"K=dB(out.v/in.v)\" 1 \"yes\" 0>\n";
-    s += QString("<.AC AC1 1 320 510 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"1001\" 1 \"no\" 0>\n").arg(Fac);
+    s += QStringLiteral("<.AC AC1 1 320 510 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"1001\" 1 \"no\" 0>\n").arg(Fac);
     s += "<GND * 1 80 320 0 0 0 0>\n";
 
     for (int i=1; i<=N2ord; i++) {
@@ -326,23 +326,23 @@ void SchCauer::createGenericSchematic(QString &s)
         QString suffix1, suffix2;
         double  C1 = autoscaleCapacitor(stage.C1,suffix1);
         double  C2 = autoscaleCapacitor(stage.C2,suffix2);
-        s += QString("<OpAmp OP%1 1 %2 240 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(270+dx);
-        s += QString("<OpAmp OP%1 1 %2 400 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(2+(i-1)*Nop1).arg(300+dx);
-        s += QString("<OpAmp OP%1 1 %2 260 -26 42 0 0 \"1e6\" 1 \"15 V\" 0>\n").arg(3+(i-1)*Nop1).arg(560+dx);
-        s += QString("<C C%1 1 %2 150 -26 17 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(1+(i-1)*Nc1).arg(330+dx).arg(C1,0,'f',3).arg(suffix1);
-        s += QString("<C C%1 1 %2 400 -26 17 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(2+(i-1)*Nc1).arg(450+dx).arg(C2,0,'f',3).arg(suffix2);
-        s += QString("<R R%1 1 %2 220 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(1+(i-1)*Nr1).arg(180+dx).arg(stage.R1,0,'f',3);
-        s += QString("<R R%1 1 %2 240 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(2+(i-1)*Nr1).arg(410+dx).arg(stage.R2,0,'f',3);
-        s += QString("<R R%1 1 %2 110 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(3+(i-1)*Nr1).arg(440+dx).arg(stage.R3,0,'f',3);
-        s += QString("<R R%1 1 %2 320 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(4+(i-1)*Nr1).arg(360+dx).arg(stage.R4,0,'f',3);
-        s += QString("<R R%1 1 %2 380 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(5+(i-1)*Nr1).arg(190+dx).arg(stage.R5,0,'f',3);
-        s += QString("<GND * 1 %1 290 0 0 0 0>\n").arg(240+dx);
-        s += QString("<GND * 1 %1 440 0 0 0 0>\n").arg(250+dx);
+        s += QStringLiteral("<OpAmp OP%1 1 %2 240 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(270+dx);
+        s += QStringLiteral("<OpAmp OP%1 1 %2 400 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(2+(i-1)*Nop1).arg(300+dx);
+        s += QStringLiteral("<OpAmp OP%1 1 %2 260 -26 42 0 0 \"1e6\" 1 \"15 V\" 0>\n").arg(3+(i-1)*Nop1).arg(560+dx);
+        s += QStringLiteral("<C C%1 1 %2 150 -26 17 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(1+(i-1)*Nc1).arg(330+dx).arg(C1,0,'f',3).arg(suffix1);
+        s += QStringLiteral("<C C%1 1 %2 400 -26 17 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(2+(i-1)*Nc1).arg(450+dx).arg(C2,0,'f',3).arg(suffix2);
+        s += QStringLiteral("<R R%1 1 %2 220 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(1+(i-1)*Nr1).arg(180+dx).arg(stage.R1,0,'f',3);
+        s += QStringLiteral("<R R%1 1 %2 240 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(2+(i-1)*Nr1).arg(410+dx).arg(stage.R2,0,'f',3);
+        s += QStringLiteral("<R R%1 1 %2 110 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(3+(i-1)*Nr1).arg(440+dx).arg(stage.R3,0,'f',3);
+        s += QStringLiteral("<R R%1 1 %2 320 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(4+(i-1)*Nr1).arg(360+dx).arg(stage.R4,0,'f',3);
+        s += QStringLiteral("<R R%1 1 %2 380 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(5+(i-1)*Nr1).arg(190+dx).arg(stage.R5,0,'f',3);
+        s += QStringLiteral("<GND * 1 %1 290 0 0 0 0>\n").arg(240+dx);
+        s += QStringLiteral("<GND * 1 %1 440 0 0 0 0>\n").arg(250+dx);
 
         if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
-            s += QString("<GND * 1 %1 470 0 0 0 0>\n").arg(500+dx);
-            s += QString("<R R%1 1 %2 370 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(6+(i-1)*Nr1).arg(570+dx).arg(stage.R6,0,'f',3);
-            s += QString("<R R%1 1 %2 440 15 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(7+(i+1)*Nr1).arg(500+dx).arg(stage.R6,0,'f',3);
+            s += QStringLiteral("<GND * 1 %1 470 0 0 0 0>\n").arg(500+dx);
+            s += QStringLiteral("<R R%1 1 %2 370 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(6+(i-1)*Nr1).arg(570+dx).arg(stage.R6,0,'f',3);
+            s += QStringLiteral("<R R%1 1 %2 440 15 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(7+(i+1)*Nr1).arg(500+dx).arg(stage.R6,0,'f',3);
         }
 
         dx += 580;
@@ -369,32 +369,32 @@ void SchCauer::createGenericSchematic(QString &s)
 
     for (int i=1; i<=N2ord; i++) {
         if (i!=1) {
-            s += QString("<%1 260 %2 260 \"\" 0 0 0 \"\">\n").arg(dx+30).arg(140+dx);
+            s += QStringLiteral("<%1 260 %2 260 \"\" 0 0 0 \"\">\n").arg(dx+30).arg(140+dx);
         }
 
-        s += QString("<%1 220 %2 220 \"\" 0 0 0 \"\">\n").arg(210+dx).arg(220+dx);
-        s += QString("<%1 280 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(500+dx);
-        s += QString("<%1 280 %2 280 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(530+dx);
-        s += QString("<%1 260 %2 260 \"\" 0 0 0 \"\">\n").arg(600+dx).arg(610+dx);
-        s += QString("<%1 260 %2 370 \"\" 0 0 0 \"\">\n").arg(610+dx).arg(610+dx);
+        s += QStringLiteral("<%1 220 %2 220 \"\" 0 0 0 \"\">\n").arg(210+dx).arg(220+dx);
+        s += QStringLiteral("<%1 280 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(500+dx);
+        s += QStringLiteral("<%1 280 %2 280 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(530+dx);
+        s += QStringLiteral("<%1 260 %2 260 \"\" 0 0 0 \"\">\n").arg(600+dx).arg(610+dx);
+        s += QStringLiteral("<%1 260 %2 370 \"\" 0 0 0 \"\">\n").arg(610+dx).arg(610+dx);
         if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
-            s += QString("<%1 370 %2 410 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(500+dx);
-            s += QString("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(600+dx).arg(610+dx);
-            s += QString("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(540+dx);
+            s += QStringLiteral("<%1 370 %2 410 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(500+dx);
+            s += QStringLiteral("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(600+dx).arg(610+dx);
+            s += QStringLiteral("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(540+dx);
         } else {
-            s += QString("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(610+dx);
+            s += QStringLiteral("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(610+dx);
         }
-        s += QString("<%1 240 %2 240 \"\" 0 0 0 \"\">\n").arg(440+dx).arg(480+dx);
-        s += QString("<%1 400 %2 400 \"\" 0 0 0 \"\">\n").arg(340+dx).arg(420+dx);
-        s += QString("<%1 380 %2 380 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(260+dx);
-        s += QString("<%1 380 %2 380 \"\" 0 0 0 \"\">\n").arg(260+dx).arg(270+dx);
-        s += QString("<%1 150 %2 220 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(220+dx);
-        s += QString("<%1 150 %2 150 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(300+dx);
-        s += QString("<%1 240 %2 240 \"\" 0 0 0 \"\">\n").arg(310+dx).arg(380+dx);
-        s += QString("<%1 260 %2 290 \"\" 0 0 0 \"\">\n").arg(240+dx).arg(240+dx);
-        s += QString("<%1 220 %2 220 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(240+dx);
-        s += QString("<%1 420 %2 420 \"\" 0 0 0 \"\">\n").arg(250+dx).arg(270+dx);
-        s += QString("<%1 420 %2 440 \"\" 0 0 0 \"\">\n").arg(250+dx).arg(250+dx);
+        s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0 \"\">\n").arg(440+dx).arg(480+dx);
+        s += QStringLiteral("<%1 400 %2 400 \"\" 0 0 0 \"\">\n").arg(340+dx).arg(420+dx);
+        s += QStringLiteral("<%1 380 %2 380 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(260+dx);
+        s += QStringLiteral("<%1 380 %2 380 \"\" 0 0 0 \"\">\n").arg(260+dx).arg(270+dx);
+        s += QStringLiteral("<%1 150 %2 220 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(220+dx);
+        s += QStringLiteral("<%1 150 %2 150 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(300+dx);
+        s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0 \"\">\n").arg(310+dx).arg(380+dx);
+        s += QStringLiteral("<%1 260 %2 290 \"\" 0 0 0 \"\">\n").arg(240+dx).arg(240+dx);
+        s += QStringLiteral("<%1 220 %2 220 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(240+dx);
+        s += QStringLiteral("<%1 420 %2 420 \"\" 0 0 0 \"\">\n").arg(250+dx).arg(270+dx);
+        s += QStringLiteral("<%1 420 %2 440 \"\" 0 0 0 \"\">\n").arg(250+dx).arg(250+dx);
 
         int n;
         if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
@@ -403,25 +403,25 @@ void SchCauer::createGenericSchematic(QString &s)
             n = 2*i;
         }
         if (n==order) {
-            s += QString("<%1 110 %2 260 \"out\" %3 160 101 \"\">\n").arg(610+dx).arg(610+dx).arg(540+dx);
+            s += QStringLiteral("<%1 110 %2 260 \"out\" %3 160 101 \"\">\n").arg(610+dx).arg(610+dx).arg(540+dx);
         } else {
-            s += QString("<%1 110 %2 260 \"\" 0 0 0 \"\">\n").arg(610+dx).arg(610+dx);
+            s += QStringLiteral("<%1 110 %2 260 \"\" 0 0 0 \"\">\n").arg(610+dx).arg(610+dx);
         }
-        s += QString("<%1 110 %2 110 \"\" 0 0 0 \"\">\n").arg(470+dx).arg(610+dx);
-        s += QString("<%1 110 %2 150 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(220+dx);
-        s += QString("<%1 110 %2 110 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(410+dx);
-        s += QString("<%1 220 %2 220 \"\" 0 0 0 \"\">\n").arg(140+dx).arg(150+dx);
-        s += QString("<%1 220 %2 260 \"\" 0 0 0 \"\">\n").arg(140+dx).arg(140+dx);
-        s += QString("<%1 260 %2 380 \"\" 0 0 0 \"\">\n").arg(140+dx).arg(140+dx);
-        s += QString("<%1 380 %2 380 \"\" 0 0 0 \"\">\n").arg(140+dx).arg(160+dx);
-        s += QString("<%1 240 %2 240 \"\" 0 0 0 \"\">\n").arg(480+dx).arg(530+dx);
-        s += QString("<%1 240 %2 400 \"\" 0 0 0 \"\">\n").arg(480+dx).arg(480+dx);
-        s += QString("<%1 320 %2 400 \"\" 0 0 0 \"\">\n").arg(420+dx).arg(420+dx);
-        s += QString("<%1 320 %2 320 \"\" 0 0 0 \"\">\n").arg(390+dx).arg(420+dx);
-        s += QString("<%1 320 %2 380 \"\" 0 0 0 \"\">\n").arg(260+dx).arg(260+dx);
-        s += QString("<%1 320 %2 320 \"\" 0 0 0 \"\">\n").arg(260+dx).arg(330+dx);
-        s += QString("<%1 150 %2 150 \"\" 0 0 0 \"\">\n").arg(360+dx).arg(380+dx);
-        s += QString("<%1 150 %2 240 \"\" 0 0 0 \"\">\n").arg(380+dx).arg(380+dx);
+        s += QStringLiteral("<%1 110 %2 110 \"\" 0 0 0 \"\">\n").arg(470+dx).arg(610+dx);
+        s += QStringLiteral("<%1 110 %2 150 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(220+dx);
+        s += QStringLiteral("<%1 110 %2 110 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(410+dx);
+        s += QStringLiteral("<%1 220 %2 220 \"\" 0 0 0 \"\">\n").arg(140+dx).arg(150+dx);
+        s += QStringLiteral("<%1 220 %2 260 \"\" 0 0 0 \"\">\n").arg(140+dx).arg(140+dx);
+        s += QStringLiteral("<%1 260 %2 380 \"\" 0 0 0 \"\">\n").arg(140+dx).arg(140+dx);
+        s += QStringLiteral("<%1 380 %2 380 \"\" 0 0 0 \"\">\n").arg(140+dx).arg(160+dx);
+        s += QStringLiteral("<%1 240 %2 240 \"\" 0 0 0 \"\">\n").arg(480+dx).arg(530+dx);
+        s += QStringLiteral("<%1 240 %2 400 \"\" 0 0 0 \"\">\n").arg(480+dx).arg(480+dx);
+        s += QStringLiteral("<%1 320 %2 400 \"\" 0 0 0 \"\">\n").arg(420+dx).arg(420+dx);
+        s += QStringLiteral("<%1 320 %2 320 \"\" 0 0 0 \"\">\n").arg(390+dx).arg(420+dx);
+        s += QStringLiteral("<%1 320 %2 380 \"\" 0 0 0 \"\">\n").arg(260+dx).arg(260+dx);
+        s += QStringLiteral("<%1 320 %2 320 \"\" 0 0 0 \"\">\n").arg(260+dx).arg(330+dx);
+        s += QStringLiteral("<%1 150 %2 150 \"\" 0 0 0 \"\">\n").arg(360+dx).arg(380+dx);
+        s += QStringLiteral("<%1 150 %2 240 \"\" 0 0 0 \"\">\n").arg(380+dx).arg(380+dx);
 
         dx +=580;
     }

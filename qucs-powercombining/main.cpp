@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     QString lang = QucsSettings.Language;
     if(lang.isEmpty())
       lang = QString(QLocale::system().name());
-    tor.load( QString("qucs_") + lang, QucsSettings.LangDir);
+    tor.load( QStringLiteral("qucs_") + lang, QucsSettings.LangDir);
     app.installTranslator( &tor );
 
     QucsPowerCombiningTool *PowerCombiningTool = new QucsPowerCombiningTool();

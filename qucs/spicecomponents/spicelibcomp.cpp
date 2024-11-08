@@ -90,7 +90,7 @@ void SpiceLibComp::createSymbol()
     FileName = symname;
   } else {
     FileName  = QucsSettings.BinDir;
-    FileName += QString("/../share/" QUCS_NAME "/symbols/%1.sym").arg(Props.at(2)->Value);
+    FileName += QStringLiteral("/../share/" QUCS_NAME "/symbols/%1.sym").arg(Props.at(2)->Value);
   }
 
   // Default symbol: LM358 in opamps.lib ---> opamps/LM358.sym
@@ -220,7 +220,7 @@ int SpiceLibComp::loadSymbol(const QString& DocName)
 
 QString SpiceLibComp::spice_netlist(bool)
 {
-  QString s = QString("X%1 ").arg(Name);
+  QString s = QStringLiteral("X%1 ").arg(Name);
   QString pins = getProperty("PinAssign")->Value;
   QString sym = getProperty("SymPattern")->Value;
   if (sym == "auto" || pins.isEmpty()) {
@@ -235,7 +235,7 @@ QString SpiceLibComp::spice_netlist(bool)
       s += " " + spicecompat::normalize_node_name(pp->Connection->Name);
     }
   }
-  s += QString(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);
+  s += QStringLiteral(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);
   return s;
 }
 
@@ -243,6 +243,6 @@ QString SpiceLibComp::getSpiceLibrary()
 {
     if (isActive != COMP_IS_ACTIVE) return QString();
     QString f = misc::properAbsFileName(Props.at(0)->Value, containingSchematic);
-    QString s = QString(".INCLUDE \"%1\"\n").arg(f);
+    QString s = QStringLiteral(".INCLUDE \"%1\"\n").arg(f);
     return s;
 }

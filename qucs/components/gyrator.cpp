@@ -91,7 +91,7 @@ QString Gyrator::spice_netlist(bool)
     if (n3=="gnd") n3="0";
     QString n4 = Ports.at(3)->Connection->Name;
     if (n4=="gnd") n4="0";
-    s +=  QString("B%1_1 %2 %3 I=(1/(%4))*(V(%5)-V(%6))\n").arg(Name).arg(n1).arg(n4).arg(R).arg(n2).arg(n3);
-    s +=  QString("B%1_2 %2 %3 I=-1.0*(1/(%4))*(V(%5)-V(%6))\n").arg(Name).arg(n2).arg(n3).arg(R).arg(n1).arg(n4);
+    s +=  QStringLiteral("B%1_1 %2 %3 I=(1/(%4))*(V(%5)-V(%6))\n").arg(Name).arg(n1).arg(n4).arg(R).arg(n2).arg(n3);
+    s +=  QStringLiteral("B%1_2 %2 %3 I=-1.0*(1/(%4))*(V(%5)-V(%6))\n").arg(Name).arg(n2).arg(n3).arg(R).arg(n1).arg(n4);
     return s;
 }
