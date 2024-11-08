@@ -235,7 +235,7 @@ void PortSymbol::mirrorY()
 }
 
 bool PortSymbol::MousePressing(Schematic *sch) {
-  if (!sch->isSymbolOnly) {
+  if (!sch->getIsSymbolOnly()) {
     return false;
   }
   QString text = QInputDialog::getText(nullptr, QObject::tr("Port name"),
@@ -266,7 +266,7 @@ bool PortSymbol::Dialog(QWidget* /*parent*/Doc) {
   // Forbid manual editing, change port name on schematic to change it in the symbol
   // Allow to edit ports only for SymbolOnly documents (*.sym).
   Schematic *sch = (Schematic *) Doc;
-  if (!sch->isSymbolOnly) {
+  if (!sch->getIsSymbolOnly()) {
     return false;
   }
 

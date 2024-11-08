@@ -36,7 +36,7 @@
 
 
 ChangeDialog::ChangeDialog(Schematic *Doc_)
-			: QDialog(Doc_) 
+      : QDialog(Doc_)
 {
   Doc = Doc_;
   setWindowTitle(tr("Change Component Properties"));
@@ -137,7 +137,7 @@ void ChangeDialog::slotButtReplace()
 #endif
   if(!Expr.isValid()) {
     QMessageBox::critical(this, tr("Error"),
-	  tr("Regular expression for component name is invalid."));
+      tr("Regular expression for component name is invalid."));
     return;
   }
 
@@ -147,17 +147,17 @@ void ChangeDialog::slotButtReplace()
   QVBoxLayout *Dia_All = new QVBoxLayout(Dia);
   Dia_All->setSpacing(3);
   Dia_All->setContentsMargins(5, 5, 5, 5);
-  
+
   QScrollArea *Dia_Scroll = new QScrollArea(Dia);
   //Dia_Scroll->setMargin(5);
   Dia_All->addWidget(Dia_Scroll);
-  
+
   QVBoxLayout *Dia_Box = new QVBoxLayout(Dia_Scroll->viewport());
   Dia_Box->setParent(Dia_Scroll);
   QLabel *Dia_Label = new QLabel(tr("Change properties of\n")
                                + tr("these components ?"), Dia);
   Dia_All->addWidget(Dia_Label);
-  
+
   QHBoxLayout *Dia_h = new QHBoxLayout(Dia);
   Dia_h->setSpacing(5);
   QPushButton *YesButton = new QPushButton(tr("Yes"));
@@ -166,7 +166,7 @@ void ChangeDialog::slotButtReplace()
   Dia_h->addWidget(CancelButton);
   connect(YesButton, SIGNAL(clicked()), Dia, SLOT(accept()));
   connect(CancelButton, SIGNAL(clicked()), Dia, SLOT(reject()));
-  
+
   Dia_All->addLayout(Dia_h);
 
   QList<QCheckBox *> pList;
@@ -176,14 +176,14 @@ void ChangeDialog::slotButtReplace()
   QString str;
   int i1, i2;
   // search through all components
-  for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next()) {
+  for(pc = Doc->a_Components->first(); pc!=0; pc = Doc->a_Components->next()) {
     if(matches(pc->Model)) {
       QRegularExpressionMatch match = Expr.match(pc->Name);
       if(match.hasMatch())
         for(const auto& pp : pc->Props)
           if(pp->Name == PropNameEdit->currentText()) {
             pb = new QCheckBox(pc->Name);
-            Dia_Box->addWidget(pb);   
+            Dia_Box->addWidget(pb);
             pList.append(pb);
             pb->setChecked(true);
             i1 = pp->Description.indexOf('[');
@@ -223,13 +223,13 @@ void ChangeDialog::slotButtReplace()
 
   bool changed = false;
   // change property values
-  
+
   QListIterator<QCheckBox *> i(pList);
   while(i.hasNext()){
     pb = i.next();
     if(!pb->isChecked())  continue;
 
-    for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next()) {
+    for(pc = Doc->a_Components->first(); pc!=0; pc = Doc->a_Components->next()) {
       if(pb->text() != pc->Name)  continue;
 
       for(auto pp : pc->Props) {

@@ -47,7 +47,7 @@
 
 
 OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
-			: QDialog(d_)
+        : QDialog(d_)
 {
   Comp = c_;
   Doc  = d_;
@@ -92,15 +92,15 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
 
   MethodCombo = new QComboBox();
   MethodCombo->insertItems(-1, QStringLiteral("DE/best/1/exp;"
-				       "DE/rand/1/exp;"
-				       "DE/rand-to-best/1/exp;"
-				       "DE/best/2/exp;"
-				       "DE/rand/1/exp;"
-				       "DE/best/1/bin;"
-				       "DE/rand/1/bin;"
-				       "DE/rand-to-best/1/bin;"
-				       "DE/best/2/bin;"
-				       "DE/rand/2/bin").split(";"));
+               "DE/rand/1/exp;"
+               "DE/rand-to-best/1/exp;"
+               "DE/best/2/exp;"
+               "DE/rand/1/exp;"
+               "DE/best/1/bin;"
+               "DE/rand/1/bin;"
+               "DE/rand-to-best/1/bin;"
+               "DE/best/2/bin;"
+               "DE/rand/2/bin").split(";"));
 
   gp2->addWidget(new QLabel(tr("Method:")), 0,0);
   gp2->addWidget(MethodCombo,0,1);
@@ -257,7 +257,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   // add horizontal line
   QFrame *line = new QFrame(this);
   line->setFrameShape(QFrame::HLine);
-  line->setFrameShadow(QFrame::Sunken); 
+  line->setFrameShadow(QFrame::Sunken);
   gp3->addWidget(line, 5, 0, 1, -1); // fill the entire width
   QPushButton *CreateEqn_Butt = new QPushButton(tr("Copy current values to equation"));
   connect(CreateEqn_Butt, SIGNAL(clicked()), SLOT(slotCreateEqn()));
@@ -347,7 +347,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   // ...........................................................
 
   Component *pc;
-  for(pc=Doc->Components->first(); pc!=0; pc=Doc->Components->next())
+  for(pc=Doc->a_Components->first(); pc!=0; pc=Doc->a_Components->next())
     if(pc != Comp)
       if(pc->Model[0] == '.' && pc->Model != ".Opt")
         SimEdit->insertItem(SimEdit->count(), pc->Name);
@@ -519,7 +519,7 @@ void OptimizeDialog::slotAddVariable()
   int row;
   for (row = 0; row < VarTable->rowCount(); ++row) {
     if (VarNameEdit->text() == VarTable->item(row, 0)->text()) {
-      QMessageBox::critical(this, tr("Error"), 
+      QMessageBox::critical(this, tr("Error"),
           tr("Variable \"%1\" aleardy in list!").arg(VarNameEdit->text()));
       return;
     }
@@ -728,7 +728,7 @@ void OptimizeDialog::slotApply()
     NameEdit->setText(Comp->Name);
   else
   if(NameEdit->text() != Comp->Name) {
-    for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next())
+    for(pc = Doc->a_Components->first(); pc!=0; pc = Doc->a_Components->next())
       if(pc->Name == NameEdit->text())
         break;  // found component with the same name ?
     if(pc)
@@ -790,7 +790,7 @@ void OptimizeDialog::slotApply()
       propList << "E48";
     } else if (typeStr == tr("E96 series")) {
       propList << "E96";
-    } else if (typeStr == tr("E192 series")) {      
+    } else if (typeStr == tr("E192 series")) {
       propList << "E192";
     } else {
       propList << "LOG_INT";
@@ -889,12 +889,12 @@ void OptimizeDialog::slotCreateEqn()
 
  s += QStringLiteral("\"yes\" 0>\n" // Export yes, no display
               "</Components>\n"
-	      "<Wires>\n"
-	      "</Wires>\n"
-	      "<Diagrams>\n"
-	      "</Diagrams>\n"
-	      "<Paintings>\n"
-	      "</Paintings>\n");
+              "<Wires>\n"
+              "</Wires>\n"
+              "<Diagrams>\n"
+              "</Diagrams>\n"
+              "<Paintings>\n"
+              "</Paintings>\n");
 
  QApplication::clipboard()->setText(s, QClipboard::Clipboard);
  // uncomment to have the dialog close and the Equation pasted...
@@ -926,9 +926,9 @@ void OptimizeDialog::slotSetPrecision(const QPoint& pos)
     for(int i = 2; i< Comp->Props.size(); i++) {
       if(Comp->Props.at(i)->Name == "Var") {
         QStringList ValueSplit = Comp->Props.at(i)->Value.split("|");
-	// 'initial' column
-	item = VarTable->item(row++, 2);
-	item->setText(QString::number(ValueSplit.at(2).toDouble(), 'g', numPrec));
+        // 'initial' column
+        item = VarTable->item(row++, 2);
+        item->setText(QString::number(ValueSplit.at(2).toDouble(), 'g', numPrec));
       }
     }
   }

@@ -62,7 +62,7 @@
  *  simulator output messages
  */
 SimMessage::SimMessage(QWidget *w, QWidget *parent)
-		: QDialog(parent) 
+      : QDialog(parent)
 {
   setWindowTitle(tr("Qucs Simulation Messages"));
   QucsDoc *Doc;
@@ -72,15 +72,15 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
   else
     Doc = (QucsDoc*) ((Schematic*)DocWidget);
 
-  DocName = Doc->DocName;
-  DataDisplay = Doc->DataDisplay;
-  Script = Doc->Script;
+  DocName = Doc->getDocName();
+  DataDisplay = Doc->getDataDisplay();
+  Script = Doc->getScript();
   QFileInfo Info(DocName);
   DataSet = QDir::toNativeSeparators(Info.path()) +
-    QDir::separator() + Doc->DataSet;
-  showBias = Doc->showBias;     // save some settings as the document...
-  SimOpenDpl = Doc->SimOpenDpl; // ...could be closed during the simulation.
-  SimRunScript = Doc->SimRunScript;
+    QDir::separator() + Doc->getDataSet();
+  showBias = Doc->getShowBias();     // save some settings as the document...
+  SimOpenDpl = Doc->getSimOpenDpl(); // ...could be closed during the simulation.
+  SimRunScript = Doc->getSimRunScript();
 
   all = new QVBoxLayout(this);
   all->setSpacing(5);
@@ -379,7 +379,7 @@ void SimMessage::startSimulator()
 
     // Simulation.
     if (Doc->simulation) {
-      SimTime = Doc->SimTime;
+      SimTime = Doc->getSimTime();
       QString libs = Doc->Libraries.toLower();
       /// \todo \bug error: unrecognized command line option '-Wl'
 #if defined(_WIN32) || defined(__MINGW32__)
@@ -417,25 +417,25 @@ void SimMessage::startSimulator()
       QString dir = QDir::toNativeSeparators(QucsSettings.tempFilesDir.absolutePath());
       QDir vhdlDir(dir);
       if(!vhdlDir.exists("vhdl"))
-	if(!vhdlDir.mkdir("vhdl")) {
-	  ErrText->appendPlainText(tr("ERROR: Cannot create VHDL directory \"%1\"!")
-			  .arg(vhdlDir.path()+"/vhdl"));
-	  return;
-	}
+        if(!vhdlDir.mkdir("vhdl")) {
+          ErrText->appendPlainText(tr("ERROR: Cannot create VHDL directory \"%1\"!")
+            .arg(vhdlDir.path()+"/vhdl"));
+          return;
+      }
       vhdlDir.setPath(vhdlDir.path()+"/vhdl");
       if(!vhdlDir.exists(lib))
-	if(!vhdlDir.mkdir(lib)) {
-	  ErrText->appendPlainText(tr("ERROR: Cannot create VHDL directory \"%1\"!")
-			  .arg(vhdlDir.path()+"/"+lib));
-	  return;
-	}
+        if(!vhdlDir.mkdir(lib)) {
+          ErrText->appendPlainText(tr("ERROR: Cannot create VHDL directory \"%1\"!")
+            .arg(vhdlDir.path()+"/"+lib));
+          return;
+        }
       vhdlDir.setPath(vhdlDir.path()+"/"+lib);
       QFile destFile;
       destFile.setFileName(vhdlDir.filePath(entity+".vhdl"));
       if(!destFile.open(QIODevice::WriteOnly)) {
-	ErrText->appendPlainText(tr("ERROR: Cannot create \"%1\"!")
-			.arg(destFile.fileName()));
-	return;
+        ErrText->appendPlainText(tr("ERROR: Cannot create \"%1\"!")
+          .arg(destFile.fileName()));
+        return;
       }
       destFile.write(text.toLatin1(), text.length());
       destFile.close();
@@ -449,19 +449,18 @@ void SimMessage::startSimulator()
   // Simulate schematic window.
   else {
     // output NodeSets, SPICE simulations etc.
-    for(QStringList::Iterator it = Collect.begin();
-	it != Collect.end(); ++it) {
+    for(QStringList::Iterator it = Collect.begin(); it != Collect.end(); ++it) {
       // don't put library includes into netlist...
       if ((*it).right(4) != ".lst" &&
-	  (*it).right(5) != ".vhdl" &&
-	  (*it).right(4) != ".vhd" &&
-	  (*it).right(2) != ".v") {
-	Stream << *it << '\n';
+        (*it).right(5) != ".vhdl" &&
+        (*it).right(4) != ".vhd" &&
+        (*it).right(2) != ".v") {
+        Stream << *it << '\n';
       }
     }
     Stream << '\n';
 
-    isVerilog = ((Schematic*)DocWidget)->isVerilog;
+    isVerilog = ((Schematic*)DocWidget)->getIsVerilog();
     SimTime = ((Schematic*)DocWidget)->createNetlist(Stream, SimPorts);
     if(SimTime.length()>0&&SimTime.at(0) == '\xA7') {
       NetlistFile.close();
@@ -471,12 +470,12 @@ void SimMessage::startSimulator()
     }
     if (isVerilog) {
       Stream << "\n"
-	     << "  initial begin\n"
-	     << "    $dumpfile(\"digi.vcd\");\n"
-	     << "    $dumpvars();\n"
-	     << "    #" << SimTime << " $finish;\n"
-	     << "  end\n\n"
-	     << "endmodule // TestBench\n";
+       << "  initial begin\n"
+       << "    $dumpfile(\"digi.vcd\");\n"
+       << "    $dumpvars();\n"
+       << "    #" << SimTime << " $finish;\n"
+       << "  end\n\n"
+       << "endmodule // TestBench\n";
     }
     NetlistFile.close();
     ProgText->insertPlainText(tr("done.\n"));  // of "creating netlist...
@@ -536,7 +535,7 @@ void SimMessage::startSimulator()
       } // vaComponents not empty
 
       if((SimOpt = findOptimization((Schematic*)DocWidget))) {
-	    ((Optimize_Sim*)SimOpt)->createASCOnetlist();
+      ((Optimize_Sim*)SimOpt)->createASCOnetlist();
 
         Program = QucsSettings.AscoBinDir.canonicalPath();
         Program = QDir::toNativeSeparators(Program+"/"+"asco"+QString(executableSuffix));
@@ -578,7 +577,7 @@ void SimMessage::startSimulator()
     Program = QDir::toNativeSeparators(pathName(QucsSettings.BinDir + QucsDigi));
     Arguments << QucsSettings.tempFilesDir.filePath("netlist.txt")
               << DataSet << SimTime.remove(" ") << pathName(SimPath)
-		      << pathName(QucsSettings.BinDir) << "-Wall" << "-c";
+              << pathName(QucsSettings.BinDir) << "-Wall" << "-c";
 
 #endif
       }
@@ -646,7 +645,7 @@ void SimMessage::startSimulator()
 // ------------------------------------------------------------------------
 Component * SimMessage::findOptimization(Schematic *Doc) {
   Component *pc;
-  for(pc=Doc->Components->first(); pc!=0; pc=Doc->Components->next())
+  for(pc=Doc->a_Components->first(); pc!=0; pc=Doc->a_Components->next())
     if(pc->isActive)
       if(pc->Model == ".Opt")
 	return pc;
@@ -690,7 +689,7 @@ void SimMessage::slotDisplayMsg()
       wasLF = true;
       QString tmps = ProgressText.left(i).trimmed();
       if (!tmps.isEmpty()) // avoid adding a newline if no text to show
-	ProgText->appendPlainText(tmps);
+        ProgText->appendPlainText(tmps);
       ProgressText.remove(0, i+1);
       return;
     }
@@ -712,7 +711,7 @@ void SimMessage::slotUpdateProgressBar()
 }
 #endif
 
-/*! 
+/*!
  * \brief Insert process stderr output in the Error Message output window.
  *
  *  Called when the process sends an output to stderr.
@@ -731,7 +730,7 @@ void SimMessage::slotDisplayErr()
 void SimMessage::slotStateChanged(QProcess::ProcessState newState)
 {
   static QProcess::ProcessState oldState;
-  qDebug() << "SimMessage::slotStateChanged() : newState = " << newState 
+  qDebug() << "SimMessage::slotStateChanged() : newState = " << newState
            << " " << SimProcess.error();
   switch(newState){
     case QProcess::NotRunning:
@@ -804,7 +803,7 @@ void SimMessage::slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus )
 /*!
  * \brief Add end-of-simulation messages and save the relevant data.
  *
- *  Called when the simulation ended with errors before starting the 
+ *  Called when the simulation ended with errors before starting the
  *  simulator process.
  *  \param[in] Status exit status of the process (0 = normal, !=0 = error)
  */
@@ -836,7 +835,7 @@ void SimMessage::FinishSimulation(int Status)
     stream << tr("Output:\n-------") << "\n\n";
     for(int z=0; z<ProgText->document()->blockCount(); z++)
       stream << ProgText->document()->findBlockByNumber(z).text() << "\n";
-    stream << "\n\n\n" << 
+    stream << "\n\n\n" <<
       tr("Errors and Warnings:\n--------------------") << "\n\n";
     for(int z=0; z<ErrText->document()->blockCount(); z++)
       stream << ErrText->document()->findBlockByNumber(z).text() << "\n";
@@ -848,15 +847,15 @@ void SimMessage::FinishSimulation(int Status)
       QFile ifile(QucsSettings.tempFilesDir.filePath("asco_out.dat"));
       QFile ofile(DataSet);
       if(ifile.open(QIODevice::ReadOnly)) {
-	if(ofile.open(QIODevice::WriteOnly)) {
-	  QByteArray data = ifile.readAll();
-	  ofile.write(data);
-	  ofile.close();
-	}
-	ifile.close();
+        if(ofile.open(QIODevice::WriteOnly)) {
+          QByteArray data = ifile.readAll();
+          ofile.write(data);
+          ofile.close();
+        }
+        ifile.close();
       }
       if(((Optimize_Sim*)SimOpt)->loadASCOout())
-	((Schematic*)DocWidget)->setChanged(true,true);
+        ((Schematic*)DocWidget)->setChanged(true,true);
     }
   }
 
@@ -903,15 +902,14 @@ void SimMessage::setDocWidget(QWidget *w)
     else
       Doc = (QucsDoc*) ((Schematic*)DocWidget);
 
-    DocName = Doc->DocName;
-    DataDisplay = Doc->DataDisplay;
-    Script = Doc->Script;
+    DocName = Doc->getDocName();
+    DataDisplay = Doc->getDataDisplay();
+    Script = Doc->getScript();
     QFileInfo Info(DocName);
     DataSet = QDir::toNativeSeparators(Info.path()) +
-      QDir::separator() + Doc->DataSet;
-    showBias = Doc->showBias;     // save some settings as the document...
-    SimOpenDpl = Doc->SimOpenDpl; // ...could be closed during the simulation.
-    SimRunScript = Doc->SimRunScript;
+      QDir::separator() + Doc->getDataSet();
+    showBias = Doc->getShowBias();     // save some settings as the document...
+    SimOpenDpl = Doc->getSimOpenDpl(); // ...could be closed during the simulation.
+    SimRunScript = Doc->getSimRunScript();
 }
 
-// vim:ts=8:sw=2:et

@@ -56,7 +56,7 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *schematic, QObject *parent) 
     a_sims(),
     a_vars(),
     a_output_files(),
-    a_DC_OP_only(schematic->showBias == 0 ? true : false),
+    a_DC_OP_only(schematic->getShowBias() == 0 ? true : false),
     a_needsPrefix(false),
     a_schematic(schematic),
     a_parseFourTHD(false),
@@ -64,7 +64,7 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *schematic, QObject *parent) 
 {
     if (!checkDCSimulation()) { // Run Show bias mode automatically
         a_DC_OP_only = true;      // If schematic contains DC simulation only
-        a_schematic->showBias = 0;
+        a_schematic->setShowBias(0);
     }
 
     a_workdir = QucsSettings.S4Qworkdir;
@@ -128,7 +128,7 @@ bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool isSubckt
 bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 {
     incompat.clear();
-    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if ((!pc->isEquation)&&!(pc->isProbe)) {
             if (pc->SpiceModel.isEmpty() && pc->isActive) incompat.append(pc->Name);
         }
@@ -144,7 +144,7 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 bool AbstractSpiceKernel::checkGround()
 {
     bool r = false;
-    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if (pc->Model=="GND") {
             r = true;
             break;
@@ -157,7 +157,7 @@ bool AbstractSpiceKernel::checkSimulations()
 {
     if (a_DC_OP_only) return true;
     bool r = false;
-    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if (pc->isSimulation) {
             r = true;
             break;
@@ -172,7 +172,7 @@ bool AbstractSpiceKernel::checkDCSimulation()
 
     //if (a_DC_OP_only) return true;
     //bool r = false;
-    //for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+    //for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
     //    if (!pc->isActive) continue;
     //    if (pc->isSimulation && pc->Model != ".DC") {
     //        r = true;
@@ -196,7 +196,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         QString s;
 
         // User-defined functions
-        for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
             if ((pc->SpiceModel==".FUNC")||
                 (pc->SpiceModel=="INCLSCR")) {
                 s = pc->getExpression();
@@ -206,7 +206,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
 
         // create .IC from wire labels
         QStringList wire_labels;
-        for(Wire *pw = a_schematic->DocWires.first(); pw != 0; pw = a_schematic->DocWires.next()) {
+        for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
             if (pw->Label != nullptr) {
                 QString label = pw->Label->Name;
                 if (!wire_labels.contains(label)) wire_labels.append(label);
@@ -218,7 +218,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
                 }
             }
         }
-        for(Node *pn = a_schematic->DocNodes.first(); pn != 0; pn = a_schematic->DocNodes.next()) {
+        for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
             Conductor *pw = (Conductor*) pn;
             if (pw->Label != nullptr) {
                 QString label = pw->Label->Name;
@@ -233,7 +233,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         }
 
         // Parameters, Initial conditions, Options
-        for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
             if (pc->isEquation) {
                 s = pc->getExpression(xyce);
                 stream<<s;
@@ -241,8 +241,8 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         }
 
         // Components
-        for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
-          if(a_schematic->isAnalog &&
+        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+          if(a_schematic->getIsAnalog() &&
              !(pc->isSimulation) &&
              !(pc->isEquation)) {
             s = pc->getSpiceNetlist(xyce);
@@ -251,7 +251,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         }
 
         // Modelcards
-        for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
             if (pc->SpiceModel==".MODEL") {
                 s = pc->getSpiceModel();
                 stream<<s;
@@ -279,7 +279,7 @@ void AbstractSpiceKernel::createNetlist(QTextStream&, int ,QStringList&,
 void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
 {
     QString header;
-    QString f = misc::properFileName(a_schematic->DocName);
+    QString f = misc::properFileName(a_schematic->getDocName());
     header = QStringLiteral(".SUBCKT %1 ").arg(misc::properName(f));
 
     QList< QPair<int,QString> > ports;
@@ -288,7 +288,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
         emit errors(QProcess::FailedToStart);
         return;
     } // Unable to perform spice simulation
-    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if (pc->Model=="Port") {
             ports.append(qMakePair(pc->Props.first()->Value.toInt(),
                                    pc->Ports.first()->Connection->Name));
@@ -301,7 +301,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
     }
 
     Painting *pai;
-    for(pai = a_schematic->SymbolPaints.first(); pai != 0; pai = a_schematic->SymbolPaints.next())
+    for(pai = a_schematic->a_SymbolPaints.first(); pai != 0; pai = a_schematic->a_SymbolPaints.next())
       if(pai->Name == ".ID ") {
         ID_Text *pid = (ID_Text*)pai;
         QList<SubParameter *>::const_iterator it;
@@ -701,7 +701,7 @@ void AbstractSpiceKernel::parseDC_OPoutput(QString ngspice_file)
     SweepDialog *swpdlg = new SweepDialog(a_schematic,&NodeVals);
     delete swpdlg;
 
-    a_schematic->showBias = 1;
+    a_schematic->setShowBias(1);
 }
 
 /*!
@@ -735,7 +735,7 @@ void AbstractSpiceKernel::parseDC_OPoutputXY(QString xyce_file)
     SweepDialog *swpdlg = new SweepDialog(a_schematic,&NodeVals);
     delete swpdlg;
 
-    a_schematic->showBias = 1;
+    a_schematic->setShowBias(1);
 }
 
 /*!
@@ -1528,7 +1528,7 @@ bool AbstractSpiceKernel::waitEndOfSimulation()
 QString AbstractSpiceKernel::collectSpiceLibs(Schematic* sch)
 {
   QStringList collected_spicelib;
-  for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+  for(Component *pc = sch->a_DocComps.first(); pc != 0; pc = sch->a_DocComps.next()) {
     if (pc->Model == "Sub") {
       Schematic *sub = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
       if(!sub->loadDocument())      // load document if possible

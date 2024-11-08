@@ -72,7 +72,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 {
     Q_UNUSED(simulations);
 
-    stream << "* Qucs " << PACKAGE_VERSION << "  " << a_schematic->DocName << "\n";
+    stream << "* Qucs " << PACKAGE_VERSION << "  " << a_schematic->getDocName() << "\n";
 
     // include math. functions for inter-simulator compat.
     QString mathf_inc;
@@ -101,14 +101,14 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
     // set variable names for named nodes and wires
     vars.clear();
-    for(Node *pn = a_schematic->DocNodes.first(); pn != 0; pn = a_schematic->DocNodes.next()) {
+    for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
       if(pn->Label != 0) {
           if (!vars.contains(pn->Label->Name)) {
               vars.append(pn->Label->Name);
           }
       }
     }
-    for(Wire *pw = a_schematic->DocWires.first(); pw != 0; pw = a_schematic->DocWires.next()) {
+    for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
       if(pw->Label != 0) {
           if (!vars.contains(pw->Label->Name)) {
               vars.append(pw->Label->Name);
@@ -116,7 +116,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
       }
     }
 
-    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if (pc->isProbe) {
             QString var_pr = pc->getProbeVariable();
             if (!vars.contains(var_pr)) {
@@ -150,8 +150,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     unsigned int pzSims = 0;
 
     outputs.clear();
-    for ( unsigned int i = 0 ; i < a_schematic->DocComps.count() ; i++ ) {
-        Component *pc = a_schematic->DocComps.at(i);
+    for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+        Component *pc = a_schematic->a_DocComps.at(i);
         if ( !pc->isSimulation ) continue;
         if ( pc->isActive != COMP_IS_ACTIVE ) continue;
 
@@ -164,8 +164,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         QString cnt_var;
 
         // Duplicate .PARAM in .control section. They may be used in euqations
-        for ( unsigned int i = 0 ; i < a_schematic->DocComps.count() ; i++ ) {
-            Component *pc1 = a_schematic->DocComps.at(i);
+        for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+            Component *pc1 = a_schematic->a_DocComps.at(i);
             if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
             if ( pc1->Model == "Eqn" ) {
                 spiceNetlist.append((reinterpret_cast<Equation *>(pc1))->getNgspiceScript());
@@ -180,8 +180,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 nods.append(QStringLiteral("v(%1) ").arg(nod));
         }
 
-        for ( unsigned int i = 0 ; i < a_schematic->DocComps.count() ; i++ ) {
-            Component *pc1 = a_schematic->DocComps.at(i);
+        for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+            Component *pc1 = a_schematic->a_DocComps.at(i);
             if ( !pc1->isSimulation ) continue;
             if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
             QString sim_typ = pc1->Model;
@@ -204,8 +204,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         } else if ( sim_typ == ".TR" ) {
             timeSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
-            for ( unsigned int i = 0 ; i < a_schematic->DocComps.count() ; i++ ) {
-                Component *pc1 = a_schematic->DocComps.at(i);
+            for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+                Component *pc1 = a_schematic->a_DocComps.at(i);
                 if ( !pc1->isSimulation ) continue;
                 if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
                 if ( pc1->Model == ".FOURIER" ) {
@@ -308,8 +308,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
         if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
             QStringList dep_vars;
-            for ( unsigned int i = 0 ; i < a_schematic->DocComps.count() ; i++ ) {
-                Component *pc1 = a_schematic->DocComps.at(i);
+            for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+                Component *pc1 = a_schematic->a_DocComps.at(i);
                 if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
                 if ( pc1->Model == "Eqn" || pc1->Model == "NutmegEq" )
                     spiceNetlist.append(pc1->getEquations(sim_name, dep_vars));
@@ -338,8 +338,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             }
         }
 
-        for ( unsigned int i = 0 ; i < a_schematic->DocComps.count() ; i++ ) {
-            Component *pc1 = a_schematic->DocComps.at(i);
+        for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+            Component *pc1 = a_schematic->a_DocComps.at(i);
             if ( !pc1->isSimulation ) continue;
             if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
             QString sim_typ = pc1->Model;
@@ -386,8 +386,8 @@ QString Ngspice::getParentSWPscript(Component *pc_swp, QString sim, bool before,
 {
     hasDblSwp = false;
     QString swp = pc_swp->Name.toLower();
-    for ( unsigned int i = 0 ; i < a_schematic->DocComps.count() ; i++ ) {
-        Component *pc = a_schematic->DocComps.at(i);
+    for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+        Component *pc = a_schematic->a_DocComps.at(i);
         if ( !pc->isSimulation ) continue;
         if ( pc->isActive != COMP_IS_ACTIVE ) continue;
         if ( pc->Model == ".SW" ) {
@@ -500,7 +500,7 @@ void Ngspice::slotSimulate()
 bool Ngspice::checkNodeNames(QStringList &incompat)
 {
     bool result = true;
-    for(Node *pn = a_schematic->DocNodes.first(); pn != 0; pn = a_schematic->DocNodes.next()) {
+    for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
       if(pn->Label != 0) {
           if (!spicecompat::check_nodename(pn->Label->Name)) {
               incompat.append(pn->Label->Name);
@@ -508,7 +508,7 @@ bool Ngspice::checkNodeNames(QStringList &incompat)
           }
       }
     }
-    for(Wire *pw = a_schematic->DocWires.first(); pw != 0; pw = a_schematic->DocWires.next()) {
+    for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
       if(pw->Label != 0) {
           if (!spicecompat::check_nodename(pw->Label->Name)) {
               incompat.append(pw->Label->Name);
@@ -527,7 +527,7 @@ bool Ngspice::checkNodeNames(QStringList &incompat)
 QString Ngspice::collectSpiceinit(Schematic* sch)
 {
     QStringList collected_spiceinit;
-    for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+    for(Component *pc = sch->a_DocComps.first(); pc != 0; pc = sch->a_DocComps.next()) {
         if (pc->Model == "SPICEINIT") {
             collected_spiceinit += ((SpiceSpiceinit*)pc)->getSpiceinit();
         } else if (pc->Model == "Sub") {

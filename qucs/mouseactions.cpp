@@ -90,8 +90,8 @@ void MouseActions::setPainter(Schematic *Doc)
     // contents to viewport transformation
 
     Doc->PostPaintEvent(_Translate, -Doc->contentsX(), -Doc->contentsY());
-    Doc->PostPaintEvent(_Scale, Doc->Scale, Doc->Scale);
-    Doc->PostPaintEvent(_Translate, -Doc->ViewX1, -Doc->ViewY1);
+    Doc->PostPaintEvent(_Scale, Doc->getScale(), Doc->getScale());
+    Doc->PostPaintEvent(_Translate, -Doc->getViewX1(), -Doc->getViewY1());
     Doc->PostPaintEvent(_NotRop);
 }
 
@@ -208,10 +208,10 @@ void MouseActions::endElementMoving(Schematic *Doc,
       Doc->insertWire((Wire *)pe);
       break;
     case isDiagram:
-      Doc->Diagrams->append((Diagram *)pe);
+      Doc->a_Diagrams->append((Diagram *)pe);
       break;
     case isPainting:
-      Doc->Paintings->append((Painting *)pe);
+      Doc->a_Paintings->append((Painting *)pe);
       break;
     case isComponent:
     case isAnalogComponent:
@@ -628,7 +628,7 @@ void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
 
         // FIXME #warning QPainter p(Doc->viewport());
         // FIXME #warning ViewPainter Painter;
-        // FIXME #warning Painter.init(&p, Doc->Scale, -Doc->ViewX1, -Doc->ViewY1,
+        // FIXME #warning Painter.init(&p, Doc->a_Scale, -Doc->getViewX1(), -Doc->getViewY1(),
         // FIXME #warning                  Doc->contentsX(), Doc->contentsY());
         // FIXME #warning     Painter.fillRect(d->cx-d->x1, d->cy-d->y2, d->x2+d->x1, d->y2+d->y1,
         // FIXME #warning                      QucsSettings.BGColor);
@@ -905,7 +905,7 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
                 Diagram* diagram = static_cast<Diagram*>(focusElement);
 
                 // Only show reset limits action if one or more axis is not autoscaled.
-                if (diagram->Name == "Rect" && 
+                if (diagram->Name == "Rect" &&
                     (!diagram->xAxis.autoScale || !diagram->yAxis.autoScale || !diagram->zAxis.autoScale)) {
                     ComponentMenu->addAction(QucsMain->resetDiagramLimits);
                 }
@@ -1326,7 +1326,7 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
     case isWire:
         pl = ((Wire *) e)->Label;
         ((Wire *) e)->Label = 0; // prevent label to be deleted
-        Doc->Wires->setAutoDelete(false);
+        Doc->a_Wires->setAutoDelete(false);
         Doc->deleteWire((Wire *) e);
         ((Wire *) e)->Label = pl;
         ((Wire *) e)->rotate();
@@ -1335,8 +1335,8 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
         if (pl)
             Doc->setOnGrid(pl->cx, pl->cy);
         Doc->insertWire((Wire *) e);
-        Doc->Wires->setAutoDelete(true);
-        if (Doc->Wires->containsRef((Wire *) e))
+        Doc->a_Wires->setAutoDelete(true);
+        if (Doc->a_Wires->containsRef((Wire *) e))
             Doc->enlargeView(e->x1, e->y1, e->x2, e->y2);
         break;
 
@@ -1432,7 +1432,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             return;
 
         Diagram *Diag = (Diagram *) selElem;
-        QFileInfo Info(Doc->DocName);
+        QFileInfo Info(Doc->getDocName());
         // dialog is Qt::WDestructiveClose !!!
         DiagramDialog *dia = new DiagramDialog(Diag, Doc);
         if (dia->exec() == QDialog::Rejected) { // don't insert if dialog canceled
@@ -1440,7 +1440,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             return;
         }
 
-        Doc->Diagrams->append(Diag);
+        Doc->a_Diagrams->append(Diag);
         Doc->enlargeView(Diag->cx, Diag->cy - Diag->y2, Diag->cx + Diag->x2, Diag->cy);
         Doc->setChanged(true, true); // document has been changed
 
@@ -1453,7 +1453,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 
     // ***********  it is a painting !!!
     if (((Painting *) selElem)->MousePressing(Doc)) {
-        Doc->Paintings->append((Painting *) selElem);
+        Doc->a_Paintings->append((Painting *) selElem);
         ((Painting *) selElem)->Bounding(x1, y1, x2, y2);
         //Doc->enlargeView(x1, y1, x2, y2);
         selElem = ((Painting *) selElem)->newOne();
@@ -1477,7 +1477,7 @@ void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent *, float fX, float fY
     //Doc->PostPaintEvent (PPENotRop);
     //if(drawn) {
 #if 0 //ALYS - it draws some garbage, not deleted because of possible questions
-	Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3); // erase old mouse cross
+    Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3); // erase old mouse cross
     Doc->PostPaintEvent (_Line, MAx3, 0, MAx3, MAy2);
 #endif
     //}
@@ -1554,10 +1554,10 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
     case Qt::RightButton:
 
 #if 0
-	//ALYS - old code preserved because isn't clear - what it was???
-	//looks like deletion via painting.
-	//i'll delete it after possible clarification from team
-	if(MAx1 == 0) {
+    //ALYS - old code preserved because isn't clear - what it was???
+    //looks like deletion via painting.
+    //i'll delete it after possible clarification from team
+    if(MAx1 == 0) {
       Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // erase old
       Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // erase old
     }
@@ -1620,7 +1620,7 @@ void MouseActions::MPressSetLimits(Schematic *Doc, QMouseEvent*, float fX, float
     // TODO: Diagrams is currently a Q3PtrList, but it would be better to refactor
     // this (and many other collections) to be std::vector.
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
-    for (Diagram* diagram = Doc->Diagrams->last(); diagram != 0; diagram = Doc->Diagrams->prev()) {
+    for (Diagram* diagram = Doc->a_Diagrams->last(); diagram != 0; diagram = Doc->a_Diagrams->prev()) {
         // BUG: Obtaining the diagram type by name is marked as a bug elsewhere (to be solved separately).
         // TODO: Currently only rectangular diagrams are supported.
         if (diagram->getSelected(fX, fY) && diagram->Name == "Rect") {
@@ -1633,7 +1633,7 @@ void MouseActions::MPressSetLimits(Schematic *Doc, QMouseEvent*, float fX, float
             QucsMain->MouseMoveAction = &MouseActions::MMoveSelect;
             QucsMain->MouseReleaseAction = &MouseActions::MReleaseSetLimits;
             Doc->grabKeyboard(); // no keyboard inputs during move actions
-            
+
             // No need to continue searching;
             break;
         }
@@ -1746,7 +1746,7 @@ void MouseActions::MReleaseSelect2(Schematic *Doc, QMouseEvent *Event)
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
     QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
     Doc->highlightWireLabels();
-    Doc->PostedPaintEvents.clear();
+    Doc->clearPostedPaintEvents();
     Doc->viewport()->update();
 }
 
@@ -1869,16 +1869,16 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
 
     qDebug() << "Mouse released after setting limits.";
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
-    for (Diagram* diagram = Doc->Diagrams->last(); diagram != 0; diagram = Doc->Diagrams->prev()) {
-        
+    for (Diagram* diagram = Doc->a_Diagrams->last(); diagram != 0; diagram = Doc->a_Diagrams->prev()) {
+
         // Only process the selection if it ends in a diagram, and is the same diagram as start.
         if (diagram->getSelected(MAx2, MAy2) && diagram == pActiveDiagram) {
             qDebug() << "In the same diagram, setting limits";
-            
+
             mouseUpPoint = QPointF(MAx2 - diagram->cx, diagram->cy - MAy2);
 
             // Normalise the selection in case user starts at bottom and/or right.
-            QRectF select = QRectF(mouseDownPoint, mouseUpPoint).normalized();      
+            QRectF select = QRectF(mouseDownPoint, mouseUpPoint).normalized();
 
             // Only process if there is a valid selection box.
             if (select.width() < MIN_SELECT_SIZE || select.height() < MIN_SELECT_SIZE)
@@ -1887,8 +1887,8 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
             diagram->setLimitsBySelectionRect(select);
 
             // TODO: Consider refactoring loadGraphData to reload the current dataset if an empty string is passed.
-            QFileInfo Info(Doc->DocName);
-            QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
+            QFileInfo Info(Doc->getDocName());
+            QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->getDataSet();
             diagram->loadGraphData(defaultDataSet);
 
             Doc->setChanged(true, true);
@@ -1968,7 +1968,7 @@ void MouseActions::rotateElements(Schematic *Doc, int &x1, int &y1)
 void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 {
     int x1, y1, x2, y2, rot;
-    QFileInfo Info(Doc->DocName);
+    QFileInfo Info(Doc->getDocName());
     //QPainter painter(Doc->viewport());
 
     Element *pe;
@@ -1983,19 +1983,19 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
                     if (pe->y1 == pe->y2)
                         break;
                 Doc->insertWire((Wire *) pe);
-                if (Doc->Wires->containsRef((Wire *) pe))
+                if (Doc->a_Wires->containsRef((Wire *) pe))
                     Doc->enlargeView(pe->x1, pe->y1, pe->x2, pe->y2);
                 else
                     pe = NULL;
                 break;
             case isDiagram:
-                Doc->Diagrams->append((Diagram *) pe);
+                Doc->a_Diagrams->append((Diagram *) pe);
                 ((Diagram *) pe)
-                    ->loadGraphData(Info.absolutePath() + QDir::separator() + Doc->DataSet);
+                    ->loadGraphData(Info.absolutePath() + QDir::separator() + Doc->getDataSet());
                 Doc->enlargeView(pe->cx, pe->cy - pe->y2, pe->cx + pe->x2, pe->cy);
                 break;
             case isPainting:
-                Doc->Paintings->append((Painting *) pe);
+                Doc->a_Paintings->append((Painting *) pe);
                 ((Painting *) pe)->Bounding(x1, y1, x2, y2);
                 Doc->enlargeView(x1, y1, x2, y2);
                 break;
@@ -2104,7 +2104,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     MarkerDialog *mdia;
     int x1, y1, x2, y2;
 
-    QFileInfo Info(Doc->DocName);
+    QFileInfo Info(Doc->getDocName());
     auto inModel = Doc->contentsToModel(Event->pos());
     float fX = static_cast<float>(inModel.x());
     float fY = static_cast<float>(inModel.y());
@@ -2144,10 +2144,10 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
             if (cd->exec() != 1)
                 break; // dialog is WDestructiveClose
 
-            Doc->Components->findRef(c);
-            Doc->Components->take();
+            Doc->a_Components->findRef(c);
+            Doc->a_Components->take();
             Doc->setComponentNumber(c); // for ports/power sources
-            Doc->Components->append(c);
+            Doc->a_Components->append(c);
         }
 
         Doc->setChanged(true, true);
@@ -2185,7 +2185,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     case isGraph:
         pg = (Graph *) focusElement;
         // searching diagram for this graph
-        for (dia = Doc->Diagrams->last(); dia != 0; dia = Doc->Diagrams->prev())
+        for (dia = Doc->a_Diagrams->last(); dia != 0; dia = Doc->a_Diagrams->prev())
             if (dia->Graphs.indexOf(pg) >= 0)
                 break;
         if (!dia)
@@ -2308,7 +2308,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
         if (!App->tunerDia->containsProperty(pp)) {
             if (isPropertyTunable(pc, pp)) {
                 tunerElement *tune = new tunerElement(App->tunerDia, pc, pp, No);
-                tune->schematicName = Doc->DocName;
+                tune->schematicName = Doc->getDocName();
                 if (tune != NULL)
                     App->tunerDia->addTunerElement(tune); //Tunable property
             } else {

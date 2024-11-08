@@ -61,11 +61,11 @@ void SaveDialog::initDialog()
    QGroupBox *group = new QGroupBox( tr( "Modified Files" ) );
    QVBoxLayout *checkBoxLayout = new QVBoxLayout();
    group->setLayout(checkBoxLayout);
-   
+
    fileView = new QListWidget(this);
    checkBoxLayout->addWidget(fileView);
    SaveDialogLayout->addWidget(group);
-   
+
    buttonsLayout = new QHBoxLayout();
 
    abortClosingButton = new QPushButton( tr( "Abort Closing" ) );
@@ -92,12 +92,12 @@ void SaveDialog::initDialog()
 
 void SaveDialog::addUnsavedDoc(QucsDoc *doc)
 {
-   QString text = (doc->DocName).isEmpty() ? tr("Untitled") : doc->DocName;
+   QString text = (doc->getDocName()).isEmpty() ? tr("Untitled") : doc->getDocName();
 
    QListWidgetItem *item = new QListWidgetItem(text, fileView);
    item->setFlags( item->flags() | Qt::ItemIsUserCheckable );
    item->setCheckState(Qt::Checked);
-   
+
    unsavedDocs.insert(doc, item);
 }
 
@@ -107,7 +107,7 @@ void SaveDialog::dontSaveClicked()
 }
 
 void SaveDialog::saveSelectedClicked()
-{   
+{
    QList<QucsDoc*> unsavable;
    QMap<QucsDoc*,QListWidgetItem*>::iterator it(unsavedDocs.begin());
    for ( ; it != unsavedDocs.end(); ++it)

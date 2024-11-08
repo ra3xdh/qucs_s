@@ -121,7 +121,7 @@ QucsApp::QucsApp()
     int h = size.height();
     setGeometry (w * 0.25, h * 0.25, w * 0.5, h * 0.5);
   }
-  
+
   QucsFileFilter =
     tr("Schematic") + " (*.sch);;" +
     tr("Symbol only") + " (*.sym);;" +
@@ -360,7 +360,7 @@ void QucsApp::initView()
   TabView->addTab(Content, tr("Content"));
   TabView->setTabToolTip(TabView->indexOf(Content), tr("content of current project"));
 
-  connect(Content, SIGNAL(clicked(const QModelIndex &)), 
+  connect(Content, SIGNAL(clicked(const QModelIndex &)),
           SLOT(slotSelectSubcircuit(const QModelIndex &)));
 
   connect(Content, SIGNAL(doubleClicked(const QModelIndex &)),
@@ -444,7 +444,7 @@ void QucsApp::initView()
   )";
 
   CompComps->setStyleSheet(itemStyle);
-  
+
   #ifdef _MSC_VER
     CompComps->setDragEnabled(false);
   #endif
@@ -722,7 +722,7 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
   int No = 0;
   File = QDir::toNativeSeparators (File);
   while ((d = getDoc (No++)) != 0)
-    if (QDir::toNativeSeparators (d->DocName) == File) {
+    if (QDir::toNativeSeparators (d->getDocName()) == File) {
       if (Pos) *Pos = No - 1;
       return d;
     }
@@ -1171,7 +1171,7 @@ void QucsApp::initCursorMenu()
   connect(action, SIGNAL(triggered()), SLOT(slot())); \
   ContentMenu->addAction(action); \
   }
-  
+
   APPEND_MENU(ActionCMenuOpen, slotCMenuOpen, "Open")
   APPEND_MENU(ActionCMenuCopy, slotCMenuCopy, "Duplicate")
   APPEND_MENU(ActionCMenuRename, slotCMenuRename, "Rename")
@@ -1184,7 +1184,7 @@ void QucsApp::initCursorMenu()
 
 // ----------------------------------------------------------
 // Shows the menu.
-void QucsApp::slotShowContentMenu(const QPoint& pos) 
+void QucsApp::slotShowContentMenu(const QPoint& pos)
 {
   QModelIndex idx = Content->indexAt(pos);
   if (idx.isValid() && idx.parent().isValid()) {
@@ -1192,7 +1192,7 @@ void QucsApp::slotShowContentMenu(const QPoint& pos)
         idx.sibling(idx.row(), 1).data().toString().contains(tr("-port"))
     );
     ContentMenu->popup(Content->mapToGlobal(pos));
-  }    
+  }
 }
 
 // ----------------------------------------------------------
@@ -1240,10 +1240,10 @@ void QucsApp::slotCMenuCopy()
   //check changed file save
   int z = 0; //search if the doc is loaded
   QucsDoc *d = findDoc(file, &z);
-  if (d != NULL && d->DocChanged) {
+  if (d != NULL && d->getDocChanged()) {
     DocumentTab->setCurrentIndex(z);
     int ret = QMessageBox::question(this, tr("Copying Qucs document"),
-        tr("The document contains unsaved changes!\n") + 
+        tr("The document contains unsaved changes!\n") +
         tr("Do you want to save the changes before copying?"),
         QMessageBox::Ignore|QMessageBox::Save);
     if (ret == QMessageBox::Save) {
@@ -1319,7 +1319,7 @@ void QucsApp::slotCMenuRename()
   bool ok;
   QString s = QInputDialog::getText(this, tr("Rename file"), tr("Enter new filename:"), QLineEdit::Normal, base, &ok);
 
-  if(ok && !s.isEmpty()) { 
+  if(ok && !s.isEmpty()) {
     if (!s.endsWith(suffix)) {
       s += QStringLiteral(".") + suffix;
     }
@@ -1489,7 +1489,7 @@ void QucsApp::slotButtonProjOpen()
   QModelIndex idx = Projects->currentIndex();
   if (!idx.isValid()) {
     QMessageBox::information(this, tr("Info"),
-				tr("No project is selected !"));
+      tr("No project is selected !"));
   } else {
     slotListProjOpen(idx);
   }
@@ -1630,7 +1630,7 @@ void QucsApp::slotSymbolNew()
   int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
   slotSymbolEdit();
-  d->isSymbolOnly = true;
+  d->setIsSymbolOnly(true);
   statusBar()->showMessage(tr("Ready."));
 }
 
@@ -1696,15 +1696,15 @@ bool QucsApp::gotoPage(const QString& Name)
     // and skip any actions performed with a usual schematic.
     Schematic *sch = (Schematic *)d;
     slotSymbolEdit();
-    sch->isSymbolOnly = true;
+    sch->setIsSymbolOnly(true);
   } else if (is_sch) {
       Schematic *sch = (Schematic *)d;
       if (sch->checkDplAndDatNames()) sch->setChanged(true,true);
   }
 
   // if only an untitled document was open -> close it
-  if(getDoc(0)->DocName.isEmpty())
-    if(!getDoc(0)->DocChanged)
+  if(getDoc(0)->getDocName().isEmpty())
+    if(!getDoc(0)->getDocChanged())
       delete DocumentTab->widget(0);
 
   return true;
@@ -1740,7 +1740,7 @@ bool QucsApp::saveFile(QucsDoc *Doc)
   if(!Doc)
     Doc = getDoc();
 
-  if(Doc->DocName.isEmpty())
+  if(Doc->getDocName().isEmpty())
     return saveAs();
 
   int Result = Doc->save();
@@ -1750,7 +1750,7 @@ bool QucsApp::saveFile(QucsDoc *Doc)
   // definition. We don't want these files to be subject
   // of any activities or "optimizations" which may change
   // the symbol.
-  if (!Doc->DocName.endsWith(".sym")) {
+  if (!Doc->getDocName().endsWith(".sym")) {
     updatePortNumber(Doc, Result);
   }
   slotUpdateTreeview();
@@ -1788,7 +1788,7 @@ bool QucsApp::saveAs()
   QString s, Filter;
   QFileInfo Info;
   while(true) {
-    s = Doc->DocName;
+    s = Doc->getDocName();
     Info.setFile(s);
     if(s.isEmpty()) {   // which is default directory ?
       if(ProjName.isEmpty()) {
@@ -1804,16 +1804,16 @@ bool QucsApp::saveAs()
 
     if(isTextDocument (w)) {
       Filter = tr("VHDL Sources")+" (*.vhdl *.vhd);;" +
-	       tr("Verilog Sources")+" (*.v);;"+
-	       tr("Verilog-A Sources")+" (*.va);;"+
-	       tr("Octave Scripts")+" (*.m *.oct);;"+
-	       tr("Qucs Netlist")+" (*.net *.qnet);;"+
-           tr("SPICE Netlist")+" (*.ckt *.cir *.sp);;"+
-	       tr("Plain Text")+" (*.txt);;"+
-	       tr("Any File")+" (*)";
+        tr("Verilog Sources")+" (*.v);;"+
+        tr("Verilog-A Sources")+" (*.va);;"+
+        tr("Octave Scripts")+" (*.m *.oct);;"+
+        tr("Qucs Netlist")+" (*.net *.qnet);;"+
+        tr("SPICE Netlist")+" (*.ckt *.cir *.sp);;"+
+        tr("Plain Text")+" (*.txt);;"+
+        tr("Any File")+" (*)";
     } else {
       Schematic *sch = (Schematic *) Doc;
-      if (sch->isSymbolOnly) {
+      if (sch->getIsSymbolOnly()) {
         Filter = tr("Subcircuit symbol") + "(*.sym)";
       } else {
         Filter = QucsFileFilter;
@@ -1839,8 +1839,8 @@ bool QucsApp::saveAs()
     Info.setFile(s);
     if(QFile::exists(s)) {
       n = QMessageBox::warning(this, tr("Warning"),
-		tr("The file '")+Info.fileName()+tr("' already exists!\n")+
-		tr("Saving will overwrite the old one! Continue?"),
+      tr("The file '")+Info.fileName()+tr("' already exists!\n")+
+      tr("Saving will overwrite the old one! Continue?"),
         QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel,QMessageBox::Cancel);
       if(n == QMessageBox::Cancel) return false;    // cancel
       if(n == QMessageBox::No) continue;
@@ -1850,7 +1850,7 @@ bool QucsApp::saveAs()
     QucsDoc * d = findDoc (s);
     if(d) {
       QMessageBox::information(this, tr("Info"),
-		tr("Cannot overwrite an open document"));
+      tr("Cannot overwrite an open document"));
       return false;
     }
 
@@ -1867,7 +1867,7 @@ bool QucsApp::saveAs()
   // definition. We don't want these files to be subject
   // of any activities or "optimizations" which may change
   // the symbol.
-  if (!Doc->DocName.endsWith(".sym")) {
+  if (!Doc->getDocName().endsWith(".sym")) {
     updatePortNumber(Doc, n);
   }
 
@@ -1911,7 +1911,7 @@ void QucsApp::slotFileSaveAll()
   int No=0;
   QucsDoc *Doc;  // search, if page is already loaded
   while((Doc=getDoc(No++)) != 0) {
-    if(Doc->DocName.isEmpty())  // make document the current ?
+    if(Doc->getDocName().isEmpty())  // make document the current ?
       DocumentTab->setCurrentIndex(No-1);
     if (saveFile(Doc)) { // Hack! TODO: Maybe it's better to let slotFileChanged()
       setDocumentTabChanged(No-1, false); // know about Tab number?
@@ -1962,7 +1962,7 @@ void QucsApp::closeFile(int index)
     slotHideEdit(); // disable text edit of component property
 
     QucsDoc *Doc = getDoc(index);
-    if(Doc->DocChanged) {
+    if(Doc->getDocChanged()) {
       switch(QMessageBox::warning(this,tr("Closing Qucs document"),
         tr("The document contains unsaved changes!\n")+
         tr("Do you want to save the changes before closing?"),
@@ -1979,7 +1979,7 @@ void QucsApp::closeFile(int index)
 
     if(DocumentTab->count() < 1) { // if no document left, create an untitled
       Schematic *d = new Schematic(this, "");
-      addDocumentTab(d); 
+      addDocumentTab(d);
       DocumentTab->setCurrentIndex(0);
     }
 
@@ -1994,7 +1994,7 @@ bool QucsApp::closeAllFiles()
   sd->setApp(this);
   for(int i=0; i < DocumentTab->count(); ++i) {
     QucsDoc *doc = getDoc(i);
-    if(doc->DocChanged)
+    if(doc->getDocChanged())
       sd->addUnsavedDoc(doc);
   }
   int Result = SaveDialog::DontSave;
@@ -2005,7 +2005,7 @@ bool QucsApp::closeAllFiles()
     return false;
   QucsDoc *doc = 0;
   while((doc = getDoc()) != 0)
-	delete doc;
+  delete doc;
 
 
   //switchEditMode(true);   // set schematic edit mode
@@ -2079,7 +2079,7 @@ void QucsApp::slotChangeView()
     // already in schematic?
     if(cursorLeft->isEnabled()) {
       // which mode: schematic or symbol editor ?
-      if((CompChoose->count() > 1) == d->symbolMode)
+      if((CompChoose->count() > 1) == d->getSymbolMode())
         changeSchematicSymbolMode (d);
     }
     else {
@@ -2091,7 +2091,7 @@ void QucsApp::slotChangeView()
   Doc->becomeCurrent(true);
 
 //  TODO proper window title
-//  QFileInfo Info (Doc-> DocName);
+//  QFileInfo Info (Doc-> getDocName());
 //
 //  if (!ProjName.isEmpty()) {
 //    QDir parentDir = QucsSettings.QucsWorkDir;
@@ -2159,7 +2159,7 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
 {
   if(No<0) return;
 
-  QString pathName = currDoc->DocName;
+  QString pathName = currDoc->getDocName();
   QString ext = currDoc->fileSuffix ();
   QFileInfo Info (pathName);
   QString Model, File, Name = Info.fileName();
@@ -2183,19 +2183,19 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
 
     // start from the last to omit re-appended components
     Schematic *Doc = (Schematic*)w;
-    for(Component *pc=Doc->Components->last(); pc!=0; ) {
+    for(Component *pc=Doc->a_Components->last(); pc!=0; ) {
       if(pc->Model == Model) {
         File = pc->Props.front()->Value;
         if((File == pathName) || (File == Name)) {
-          pc_tmp = Doc->Components->prev();
+          pc_tmp = Doc->a_Components->prev();
           Doc->recreateComponent(pc);  // delete and re-append component
           if(!pc_tmp)  break;
-          Doc->Components->findRef(pc_tmp);
-          pc = Doc->Components->current();
+          Doc->a_Components->findRef(pc_tmp);
+          pc = Doc->a_Components->current();
           continue;
         }
       }
-      pc = Doc->Components->prev();
+      pc = Doc->a_Components->prev();
     }
   }
 }
@@ -2307,7 +2307,7 @@ void QucsApp::slotIntoHierarchy()
   QString s = pc->getSubcircuitFile();
   if(!gotoPage(s)) { return; }
 
-  HierarchyHistory.push(Doc->DocName); //remember for the way back
+  HierarchyHistory.push(Doc->getDocName()); //remember for the way back
   popH->setEnabled(true);
 }
 
@@ -2386,7 +2386,7 @@ void QucsApp::slotTune(bool checked)
         bool found = false;
         bool digi_found = false;
         bool exit = false;
-        for(Component *pc = d->DocComps.first(); pc != 0; pc = d->DocComps.next()) {
+        for(Component *pc = d->a_DocComps.first(); pc != 0; pc = d->a_DocComps.next()) {
             if (pc->isSimulation) {
                 found = true;
             }
@@ -2404,7 +2404,7 @@ void QucsApp::slotTune(bool checked)
             QMessageBox::warning(this,tr("Error"),tr("Tuning not possible for digital simulation. "
                                                      "Only analog simulation supported."));
         }
-        if (d->Diagrams->isEmpty() && !d->SimOpenDpl) {
+        if (d->a_Diagrams->isEmpty() && !d->getSimOpenDpl()) {
             QMessageBox::warning(this,tr("Error"),tr("Tuning has no effect without diagrams. "
                                                      "Add at least one diagram on schematic."));
             exit = true;
@@ -2448,10 +2448,10 @@ void QucsApp::slotTune(bool checked)
 QWidget *QucsApp::getSchematicWidget(QucsDoc *Doc)
 {
     QWidget *w = nullptr;
-    QFileInfo Info(QucsSettings.QucsWorkDir.filePath(Doc->DataDisplay));
+    QFileInfo Info(QucsSettings.QucsWorkDir.filePath(Doc->getDataDisplay()));
     int z = 0;
-    QFileInfo sch_inf(Doc->DocName);
-    QString sch_name = sch_inf.absolutePath() + QDir::separator() + Doc->DataDisplay;
+    QFileInfo sch_inf(Doc->getDocName());
+    QString sch_name = sch_inf.absolutePath() + QDir::separator() + Doc->getDataDisplay();
     QucsDoc *d = findDoc(sch_name, &z);  // check if schematic is already open in a Tab
 
     if (d)
@@ -2505,7 +2505,7 @@ void QucsApp::slotSimulate(QWidget *w)
       Schematic* schematicPtr = (Schematic*)w;
       isDigital = schematicPtr->isDigitalCircuit();
 
-      if (isDigital && schematicPtr->showBias == 0) {
+      if (isDigital && schematicPtr->getShowBias() == 0) {
           QMessageBox::warning(this,tr("Simulate schematic"),
                                     tr("DC bias simulation mode is not supported "
                                        "for digital schematic!"));
@@ -2524,23 +2524,23 @@ void QucsApp::slotSimulate(QWidget *w)
 
   if(isTextDocument (w)) {
     Doc = (QucsDoc*)((TextDoc*)w);
-    if(Doc->SimTime.isEmpty() && ((TextDoc*)Doc)->simulation) {
+    if(Doc->getSimTime().isEmpty() && ((TextDoc*)Doc)->simulation) {
       DigiSettingsDialog *d = new DigiSettingsDialog((TextDoc*)Doc);
       if(d->exec() == QDialog::Rejected)
-	return;
+        return;
     }
   }
   else
     Doc = (QucsDoc*)((Schematic*)w);
 
-  if(Doc->DocName.isEmpty()) // if document 'untitled' ...
+  if(Doc->getDocName().isEmpty()) // if document 'untitled' ...
     if(!saveAs()) return;    // ... save schematic before
 
   // Perhaps the document was modified from another program ?
-  QFileInfo Info(Doc->DocName);
+  QFileInfo Info(Doc->getDocName());
   QString ext = Info.suffix();
-  if(Doc->lastSaved.isValid()) {
-    if(Doc->lastSaved < Info.lastModified()) {
+  if(Doc->getLastSaved().isValid()) {
+    if(Doc->getLastSaved() < Info.lastModified()) {
       int No = QMessageBox::warning(this, tr("Warning"),
                tr("The document was modified by another program !") + '\n' +
                tr("Do you want to reload or keep this version ?"),
@@ -2554,10 +2554,10 @@ void QucsApp::slotSimulate(QWidget *w)
 
   if(Info.suffix() == "m" || Info.suffix() == "oct") {
     // It is an Octave script.
-    if(Doc->DocChanged)
+    if(Doc->getDocChanged())
       Doc->save();
     slotViewOctaveDock(true);
-    octave->runOctaveScript(Doc->DocName);
+    octave->runOctaveScript(Doc->getDocName());
     return;
   }
 
@@ -2571,9 +2571,9 @@ void QucsApp::slotSimulate(QWidget *w)
   // disconnect is automatically performed, if one of the involved objects
   // is destroyed !
   connect(sim, SIGNAL(SimulationEnded(int, SimMessage*)), this,
-		SLOT(slotAfterSimulation(int, SimMessage*)));
+    SLOT(slotAfterSimulation(int, SimMessage*)));
   connect(sim, SIGNAL(displayDataPage(QString&, QString&)),
-		this, SLOT(slotChangePage(QString&, QString&)));
+    this, SLOT(slotChangePage(QString&, QString&)));
 
   if (TuningMode == true) {
       connect(sim, SIGNAL(progressBarChanged(int)), tunerDia, SLOT(slotUpdateProgressBar(int)));
@@ -2630,12 +2630,12 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
     if(sim->SimOpenDpl) {
       // switch to data display
       if(sim->DataDisplay.right(2) == ".m" ||
-	 sim->DataDisplay.right(4) == ".oct") {  // Is it an Octave script?
-	octave->startOctave();
-	octave->runOctaveScript(sim->DataDisplay);
+        sim->DataDisplay.right(4) == ".oct") {  // Is it an Octave script?
+        octave->startOctave();
+        octave->runOctaveScript(sim->DataDisplay);
       }
       else
-	slotChangePage(sim->DocName, sim->DataDisplay);
+        slotChangePage(sim->DocName, sim->DataDisplay);
       //sim->slotClose();   // close and delete simulation window
     }
     else {
@@ -2667,13 +2667,13 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 // ------------------------------------------------------------------------
 void QucsApp::slotDCbias()
 {
-  getDoc()->showBias = 0;
+  getDoc()->setShowBias(0);
   slotSimulate();
 }
 
 // ------------------------------------------------------------------------
 // Changes to the corresponding data display page or vice versa.
-void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
+void QucsApp::slotChangePage(const QString& DocName, const QString& DataDisplay)
 {
   if(DataDisplay.isEmpty())  return;
 
@@ -2692,7 +2692,7 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
 
     int i = 0;
     if (ext != "vhd" && ext != "vhdl" && ext != "v" && ext != "va" &&
-	ext != "oct" && ext != "m") {
+      ext != "oct" && ext != "m") {
       d = new Schematic(this, Name);
       i = addDocumentTab((Schematic *)d, DataDisplay);
     }
@@ -2712,7 +2712,7 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
     }
     else {
       if(file.open(QIODevice::ReadWrite)) {  // if document doesn't exist, create
-        d->DataDisplay = Info.fileName();
+        d->setDataDisplay(Info.fileName());
         slotUpdateTreeview();
       }
       else {
@@ -2743,16 +2743,16 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
 void QucsApp::slotToPage()
 {
   QucsDoc *d = getDoc();
-  if(d->DataDisplay.isEmpty()) {
+  if(d->getDataDisplay().isEmpty()) {
     QMessageBox::critical(this, tr("Error"), tr("No page set !"));
     return;
   }
 
-  if(d->DocName.right(2) == ".m" ||
-     d->DocName.right(4) == ".oct")
+  if(d->getDocName().right(2) == ".m" ||
+     d->getDocName().right(4) == ".oct")
     slotViewOctaveDock(true);
   else
-    slotChangePage(d->DocName, d->DataDisplay);
+    slotChangePage(d->getDocName(), d->getDataDisplay());
 }
 
 // -------------------------------------------------------------------
@@ -3054,7 +3054,7 @@ void QucsApp::switchEditMode(bool SchematicMode)
 // ---------------------------------------------------------
 void QucsApp::changeSchematicSymbolMode(Schematic *Doc)
 {
-  if(Doc->symbolMode) {
+  if(Doc->getSymbolMode()) {
     // go into select modus to avoid placing a forbidden element
     select->setChecked(true);
 
@@ -3080,7 +3080,7 @@ void QucsApp::slotSymbolEdit()
   // in a text document (e.g. VHDL)
   if (isTextDocument (w)) {
     TextDoc *TDoc = (TextDoc*)w;
-    if (!TDoc->DocName.endsWith(".va")) {
+    if (!TDoc->getDocName().endsWith(".va")) {
         QMessageBox::warning(this,tr("Error"),
                 tr("Symbol editing supported only for schematics and Verilog-A documents!"));
         return;
@@ -3091,9 +3091,9 @@ void QucsApp::slotSymbolEdit()
                    "for more details."));
     }
     // set 'DataDisplay' document of text file to symbol file
-    QFileInfo Info(TDoc->DocName);
+    QFileInfo Info(TDoc->getDocName());
     QString sym = Info.completeBaseName()+".sym";
-    TDoc->DataDisplay = sym;
+    TDoc->setDataDisplay(sym);
 
     // symbol file already loaded?
     int paint_mode = 0;
@@ -3101,16 +3101,16 @@ void QucsApp::slotSymbolEdit()
       paint_mode = 1;
 
     // change current page to appropriate symbol file
-    slotChangePage(TDoc->DocName,TDoc->DataDisplay);
+    slotChangePage(TDoc->getDocName(),TDoc->getDataDisplay());
 
     // set 'DataDisplay' document of symbol file to original text file
     Schematic *SDoc = (Schematic*)DocumentTab->currentWidget();
-    SDoc->DataDisplay = Info.fileName();
+    SDoc->setDataDisplay(Info.fileName());
 
     // change into symbol mode
     if (paint_mode) // but only switch coordinates if newly loaded
       SDoc->switchPaintMode();
-    SDoc->symbolMode = true;
+    SDoc->setSymbolMode(true);
     changeSchematicSymbolMode(SDoc);
     SDoc->becomeCurrent(true);
     SDoc->viewport()->update();
@@ -3118,7 +3118,7 @@ void QucsApp::slotSymbolEdit()
   // in a normal schematic, symbol file
   else {
     Schematic *SDoc = (Schematic*)w;
-    if (!SDoc->isSymbolOnly) {
+    if (!SDoc->getIsSymbolOnly()) {
       slotHideEdit(); // disable text edit of component property
       SDoc->switchPaintMode();   // twist the view coordinates
       changeSchematicSymbolMode(SDoc);
@@ -3150,7 +3150,7 @@ void QucsApp::slotPowerMatching()
   Dia->setTwoPortMatch(false); // will also cause the corresponding impedance LineEdit to be updated
 
   Schematic *sch = dynamic_cast<Schematic*>(w);
-  if (sch->SimOpenDpl || sch->DocName.endsWith(".dpl")) {
+  if (sch->getSimOpenDpl() || sch->getDocName().endsWith(".dpl")) {
       slotToPage();
   }
   if(Dia->exec() != QDialog::Accepted)
@@ -3169,11 +3169,11 @@ void QucsApp::slot2PortMatching()
   QString DataSet;
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   int z = pm->pGraph->Var.indexOf(':');
-  if(z <= 0)  DataSet = Doc->DataSet;
+  if(z <= 0)  DataSet = Doc->getDataSet();
   else  DataSet = pm->pGraph->Var.mid(z+1);
   double Freq = pm->powFreq();
 
-  QFileInfo Info(Doc->DocName);
+  QFileInfo Info(Doc->getDocName());
   DataSet = Info.path()+QDir::separator()+DataSet;
 
   Diagram *Diag = new Diagram();
@@ -3238,7 +3238,7 @@ void QucsApp::slot2PortMatching()
   Dia->setS22LineEdits(S22real, S22imag);
 
   Schematic *sch = dynamic_cast<Schematic*>(w);
-  if (sch->SimOpenDpl || sch->DocName.endsWith(".dpl")) {
+  if (sch->getSimOpenDpl() || sch->getDocName().endsWith(".dpl")) {
       slotToPage();
   }
   if(Dia->exec() != QDialog::Accepted)
@@ -3436,7 +3436,7 @@ void QucsApp::slotSimulateWithSpice()
     if (!isTextDocument(DocumentTab->currentWidget())) {
         Schematic *sch = (Schematic*)DocumentTab->currentWidget();
         if (TuningMode) {
-            QFileInfo Info(sch->DocName);
+            QFileInfo Info(sch->getDocName());
             QString ext = Info.suffix();
             if (ext == "dpl") {
                 QucsDoc *Doc = (QucsDoc *)sch;
@@ -3445,26 +3445,26 @@ void QucsApp::slotSimulateWithSpice()
             }
         }
 
-        if (sch->DocName.isEmpty()) {
-            auto biasState = sch->showBias;
+        if (sch->getDocName().isEmpty()) {
+            auto biasState = sch->getShowBias();
             QMessageBox::warning(this,tr("Simulate schematic"),
                     tr("Schematic not saved! Simulation of unsaved schematic "
                        "not possible. Save schematic first!"));
             slotFileSaveAs();
-            sch->showBias = biasState;
+            sch->setShowBias(biasState);
         }
         ExternSimDialog *SimDlg = new ExternSimDialog(sch);
         connect(SimDlg,SIGNAL(simulated(ExternSimDialog*)),
                 this,SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         connect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-        if (TuningMode || sch->showBias == 0) SimDlg->slotStart();
+        if (TuningMode || sch->getShowBias() == 0) SimDlg->slotStart();
         else SimDlg->exec();
         /*disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));*/
-        /*if (SimDlg->wasSimulated && sch->SimOpenDpl)
-            if (sch->showBias < 1) slotChangePage(sch->DocName,sch->DataDisplay);
+        /*if (SimDlg->wasSimulated && sch->getSimOpenDpl())
+            if (sch->getShowBias() < 1) slotChangePage(sch->getDocName(),sch->getDataDisplay());
         delete SimDlg;*/
     } else {
         QMessageBox::warning(this,tr("Simulate schematic"),
@@ -3499,16 +3499,16 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
         return;
     }
     if (SimDlg->wasSimulated()) {
-        if(sch->SimOpenDpl) {
-            if (sch->showBias < 1) {
+        if(sch->getSimOpenDpl()) {
+            if (sch->getShowBias() < 1) {
                 if (!TuningMode) {
-                    slotChangePage(sch->DocName,sch->DataDisplay);
-                } else if (!sch->DocName.endsWith(".dpl")) {
-                    slotChangePage(sch->DocName,sch->DataDisplay);
+                    slotChangePage(sch->getDocName(),sch->getDataDisplay());
+                } else if (!sch->getDocName().endsWith(".dpl")) {
+                    slotChangePage(sch->getDocName(),sch->getDataDisplay());
                 }
             }
         } else {
-            if (sch->showBias < 1  && !TuningMode) {
+            if (sch->getShowBias() < 1  && !TuningMode) {
                 int idx = Category::getModulesNr (QObject::tr("diagrams"));
                 CompChoose->setCurrentIndex(idx);   // switch to diagrams
                 slotSetCompView (idx);
@@ -3518,15 +3518,15 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
 
     sch->reloadGraphs();
     sch->viewport()->update();
-    if(sch->SimRunScript) {
+    if(sch->getSimRunScript()) {
       // run script
       octave->startOctave();
-      octave->runOctaveScript(sch->Script);
+      octave->runOctaveScript(sch->getScript());
     }
     if (TuningMode) {
         tunerDia->SimulationEnded();
     }
-    if (sch->showBias>0 || QucsMain->TuningMode) SimDlg->close();
+    if (sch->getShowBias()>0 || QucsMain->TuningMode) SimDlg->close();
 }
 
 void QucsApp::slotBuildVAModule()
@@ -3534,7 +3534,7 @@ void QucsApp::slotBuildVAModule()
     if (!isTextDocument(DocumentTab->currentWidget())) {
         Schematic *Sch = (Schematic*)DocumentTab->currentWidget();
 
-        QFileInfo inf(Sch->DocName);
+        QFileInfo inf(Sch->getDocName());
         QString filename = QFileDialog::getSaveFileName(this,tr("Save Verilog-A module"),
                                                         inf.path()+QDir::separator()+"testmodule.va",
                                                         "Verilog-A (*.va)");
@@ -3564,7 +3564,7 @@ void QucsApp::slotBuildVAModule()
     if (!isTextDocument(DocumentTab->currentWidget())) {
         Schematic *Sch = (Schematic*)DocumentTab->currentWidget();
 
-        QFileInfo inf(Sch->DocName);
+        QFileInfo inf(Sch->getDocName());
 
         QString msg,ext;
         switch(mode) {
@@ -3590,7 +3590,7 @@ void QucsApp::slotBuildVAModule()
             switch(mode) {
             case spicecompat::cmgenSUBifs: r = cmgen->createIFS(stream,Sch);
             case spicecompat::cmgenEDDifs: {
-                for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+                for(Component *pc = Sch->a_DocComps.first(); pc != 0; pc = Sch->a_DocComps.next()) {
                     if (pc->isSelected) {
                         r = cmgen->createIFSfromEDD(stream,Sch,pc);
                         break;
@@ -3599,7 +3599,7 @@ void QucsApp::slotBuildVAModule()
             }
                 break;
             case spicecompat::cmgenEDDmod : {
-                for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+                for(Component *pc = Sch->a_DocComps.first(); pc != 0; pc = Sch->a_DocComps.next()) {
                     if (pc->isSelected) {
                         r = cmgen->createMODfromEDD(stream,Sch,pc);
                         break;

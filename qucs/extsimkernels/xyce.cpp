@@ -51,7 +51,7 @@ Xyce::Xyce(Schematic *schematic, QObject *parent) :
 void Xyce::determineUsedSimulations(QStringList *sim_lst)
 {
 
-    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
        if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {
            QString sim_typ = pc->Model;
            if (sim_typ==".AC") a_simulationsQueue.append("ac");
@@ -85,7 +85,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     QString s;
     bool hasParSweep = false;
 
-    stream << "* Qucs " << PACKAGE_VERSION << "  " << a_schematic->DocName << "\n";
+    stream << "* Qucs " << PACKAGE_VERSION << "  " << a_schematic->getDocName() << "\n";
     stream<<collectSpiceLibs(a_schematic); // collect libraries on the top of netlist
 
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
@@ -94,21 +94,21 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     // set variable names for named nodes and wires
     vars.clear();
-    for(Node *pn = a_schematic->DocNodes.first(); pn != 0; pn = a_schematic->DocNodes.next()) {
+    for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
       if(pn->Label != 0) {
           if (!vars.contains(pn->Label->Name)) {
               vars.append(pn->Label->Name);
           }
       }
     }
-    for(Wire *pw = a_schematic->DocWires.first(); pw != 0; pw = a_schematic->DocWires.next()) {
+    for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
       if(pw->Label != 0) {
           if (!vars.contains(pw->Label->Name)) {
               vars.append(pw->Label->Name);
           }
       }
     }
-    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if (pc->isProbe) {
             QString var_pr = pc->getProbeVariable(true);
             if (!vars.contains(var_pr)) {
@@ -125,13 +125,13 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     if (a_DC_OP_only) {
         // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
-        for(Node* pn = a_schematic->Nodes->first(); pn != 0; pn = a_schematic->Nodes->next()) {
+        for(Node* pn = a_schematic->a_Nodes->first(); pn != 0; pn = a_schematic->a_Nodes->next()) {
             if ((!vars.contains(pn->Name))&&(pn->Name!="gnd")) {
                 vars.append(pn->Name);
             }
         }
         // Add DC sources
-        for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
              if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
                  vars.append("I("+pc->Name+")");
              }
@@ -142,7 +142,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     //execute simulations
 
-    //QFileInfo inf(a_schematic->DocName);
+    //QFileInfo inf(a_schematic->getDocName());
     //QString basenam = inf.baseName();
     QString basenam = "spice4qucs";
 
@@ -165,7 +165,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     QString sim = simulations.first();
     QStringList spar_vars;
-    for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) { // Xyce can run
+    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) { // Xyce can run
        if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {                        // only one simulations per time.
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
            QString s = pc->getSpiceNetlist(true);
@@ -180,7 +180,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            if (sim==pc->Name) stream<<s; // Xyce scripts
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
-               Q3PtrList<Component> comps(a_schematic->DocComps); // find Fourier tran
+               Q3PtrList<Component> comps(a_schematic->a_DocComps); // find Fourier tran
                for(Component *pc1 = comps.first(); pc1 != 0; pc1 = comps.next()) {
                    if (pc1->Model==".FOURIER") {
                        if (pc1->Props.at(0)->Value==pc->Name) {
@@ -214,7 +214,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                    stream<<s;
                    hasParSweep = true;
                } else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
-                   for(Component *pc1 = a_schematic->DocComps.first(); pc1 != 0; pc1 = a_schematic->DocComps.next()) {
+                   for(Component *pc1 = a_schematic->a_DocComps.first(); pc1 != 0; pc1 = a_schematic->a_DocComps.next()) {
                        if ((pc1->Name==SwpSim)&&(pc1->Props.at(0)->Value.startsWith("DC"))) {
                            stream<<s;
                            hasParSweep = true;
@@ -227,7 +227,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     }
 
     if (sim.startsWith("XYCESCR")) {
-        for(Component *pc = a_schematic->DocComps.first(); pc != 0; pc = a_schematic->DocComps.next()) {
+        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
             if (pc->isSimulation)
                 if (sim == pc->Name)
                     outputs.append(pc->Props.at(2)->Value.split(';'));

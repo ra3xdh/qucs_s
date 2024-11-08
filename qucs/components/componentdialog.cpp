@@ -40,7 +40,7 @@
 #include <QDebug>
 
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
-			: QDialog(d)
+      : QDialog(d)
 {
   // qDebug() << "Restore: " << _settings::Get().value("ComponentDialog/geometry").toByteArray();
   // qDebug() << "Settings: " << _settings::Get().organizationName() << " " << _settings::Get().applicationName();
@@ -78,7 +78,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   comboType  = nullptr;  checkParam = nullptr;
   editStart = nullptr;  editStop = nullptr;
   editNumber = nullptr;
-  
+
   // last property shown elsewhere outside the properties table, not to put in TableView
   auto pp = Comp->Props.begin();
 
@@ -141,12 +141,12 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     comboType = new QComboBox(Tab1);
 
     QStringList sweeptypes;
-    sweeptypes << tr("linear") 
-	       << tr("logarithmic") 
-	       << tr("list") 
-	       << tr("constant");
+    sweeptypes << tr("linear")
+       << tr("logarithmic")
+       << tr("list")
+       << tr("constant");
     comboType->insertItems(0, sweeptypes);
-			   
+
     gp->addWidget(comboType, row,1);
     connect(comboType, SIGNAL(activated(int)), SLOT(slotSimTypeChange(int)));
     checkType = new QCheckBox(tr("display in schematic"), Tab1);
@@ -198,8 +198,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
     if(Comp->Model == ".SW") {   // parameter sweep
       Component *pc;
-      for(pc=Doc->Components->first(); pc!=0; pc=Doc->Components->next()) {
-	// insert all schematic available simulations in the Simulation combo box
+      for(pc=Doc->a_Components->first(); pc!=0; pc=Doc->a_Components->next()) {
+        // insert all schematic available simulations in the Simulation combo box
         if(pc != Comp)
           if(pc->Model[0] == '.')
             comboSim->insertItem(comboSim->count(), pc->Name);
@@ -208,7 +208,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
       // set selected simulations in combo box to the currently used one
       int i = comboSim->findText((*pp)->Value);
       if (i != -1) // current simulation is in the available simulations list (normal case)
-	comboSim->setCurrentIndex(i);
+        comboSim->setCurrentIndex(i);
       else  // current simulation not in the available simulations list
         comboSim->setEditText((*pp)->Value);
 
@@ -237,8 +237,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     int tNum = 0;
     if(s[0] == 'l') {
       if(s[1] == 'i') {
-	if(s[2] != 'n')
-	  tNum = 2;
+        if(s[2] != 'n')
+          tNum = 2;
       }
       else  tNum = 1;
     }
@@ -248,7 +248,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     slotSimTypeChange(tNum);   // not automatically ?!?
     if(tNum > 1) {
       editValues->setText(
-		editNumber->text().mid(1, editNumber->text().length()-2));
+      editNumber->text().mid(1, editNumber->text().length()-2));
       checkValues->setChecked((*pp)->display);
       editNumber->setText("2");
     }
@@ -256,15 +256,15 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     ++pp;
 
 /*    connect(editValues, SIGNAL(textChanged(const QString&)),
-	    SLOT(slotTextChanged(const QString&)));*/
+      SLOT(slotTextChanged(const QString&)));*/
     connect(editStart, SIGNAL(textChanged(const QString&)),
-	    SLOT(slotNumberChanged(const QString&)));
+      SLOT(slotNumberChanged(const QString&)));
     connect(editStop, SIGNAL(textChanged(const QString&)),
-	    SLOT(slotNumberChanged(const QString&)));
+      SLOT(slotNumberChanged(const QString&)));
     connect(editStep, SIGNAL(textChanged(const QString&)),
-	    SLOT(slotStepChanged(const QString&)));
+      SLOT(slotStepChanged(const QString&)));
     connect(editNumber, SIGNAL(textChanged(const QString&)),
-	    SLOT(slotNumberChanged(const QString&)));
+      SLOT(slotNumberChanged(const QString&)));
 
 /*    if(checkSim)
       connect(checkSim, SIGNAL(stateChanged(int)), SLOT(slotSetChanged(int)));
@@ -329,7 +329,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   prop->setSelectionMode(QAbstractItemView::SingleSelection);
   prop->setMinimumSize(200, 150);
   prop->horizontalHeader()->setStretchLastSection(true);
-  // set automatic resize so all content will be visible, 
+  // set automatic resize so all content will be visible,
   //  horizontal scrollbar will appear if table becomes too large
   prop->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
   prop->horizontalHeader()->setSectionsClickable(false); // no action when clicking on the header
@@ -497,7 +497,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
         prop->setCurrentItem(prop->item(0,0));
         slotSelectProperty(prop->item(0,0));
     }
- 
+
 
   /// \todo add key up/down browse and select prop
   connect(prop, SIGNAL(itemClicked(QTableWidgetItem*)),
@@ -699,7 +699,7 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     QFontMetrics metrics(QucsSettings.font, 0);   // get size of text
     qDebug() << "desc = " << desc << metrics.boundingRect(desc).width();
     while(metrics.boundingRect(desc).width() > 270) {  // if description too long, cut it nicely
-      // so 270 above will be the maximum size of the name label and associated edit line widget 
+      // so 270 above will be the maximum size of the name label and associated edit line widget
       if (desc.lastIndexOf(' ') != -1)
         desc = desc.left(desc.lastIndexOf(' ')) + "....";
       else
@@ -719,7 +719,7 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
       for(int i=ComboEdit->count()-1; i>=0; i--)
        if(value == ComboEdit->itemText(i)) {
          ComboEdit->setCurrentIndex(i);
-	 break;
+         break;
        }
       edit->setVisible(false);
       ComboEdit->setVisible(true);
@@ -741,9 +741,9 @@ void ComponentDialog::slotApplyChange(int idx)
   QList<QTableWidgetItem *> items = prop->selectedItems();
   Q_ASSERT(!items.isEmpty());
   QTableWidgetItem *item = items.first();
-  
+
   int row = item->row();
-  
+
   auto Text = ComboEdit->itemText(idx);
   edit->setText(Text);
   // apply edit line
@@ -767,16 +767,16 @@ void ComponentDialog::slotApplyProperty()
 {
   // pick selected row
   QTableWidgetItem *item = prop->currentItem();
-  
+
   if(!item)
     return;
-  
+
   int row = item->row();
 
   QString name  = prop->item(row, 0)->text();
   QString value = prop->item(row, 1)->text();
 
- 
+
 
   if (!ComboEdit->isHidden())   // take text from ComboBox ?
     edit->setText(ComboEdit->currentText());
@@ -1061,7 +1061,7 @@ void ComponentDialog::slotBrowseFile()
       if (!schematicFileName.isEmpty()) // if schematic has a filename
         currDir = schematicFileInfo.absolutePath();
       else    // use the WorkDir path
-        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir;
     } else {  // current file name is absolute
       currDir = currFileInfo.exists() ? currFileInfo.absolutePath() : QucsSettings.QucsWorkDir.absolutePath();
     }
@@ -1069,10 +1069,10 @@ void ComponentDialog::slotBrowseFile()
     if (!schematicFileName.isEmpty()) { // if schematic has a filename
       currDir = schematicFileInfo.absolutePath();
     } else {  // use the WorkDir path
-      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir;
     }
   }
-  
+
   QString s = QFileDialog::getOpenFileName (
           this,
           tr("Select a file"),
@@ -1112,7 +1112,7 @@ void ComponentDialog::slotBrowseFile()
 // -------------------------------------------------------------------------
 void ComponentDialog::slotEditFile()
 {
-  Doc->App->editFile(misc::properAbsFileName(edit->text(), Doc));
+  Doc->getApp()->editFile(misc::properAbsFileName(edit->text(), Doc));
 }
 
 /*!
@@ -1280,9 +1280,9 @@ void ComponentDialog::slotSimTypeChange(int Type)
     if(!editNumber->isEnabled()) {  // was the other mode before ?
       // this text change, did not emit the textChange signal !??!
       editStart->setText(
-	editValues->text().section(';', 0, 0).trimmed());
+      editValues->text().section(';', 0, 0).trimmed());
       editStop->setText(
-	editValues->text().section(';', -1, -1).trimmed());
+      editValues->text().section(';', -1, -1).trimmed());
       editNumber->setText("2");
       slotNumberChanged(0);
 
@@ -1490,8 +1490,8 @@ QStringList ComponentDialog::getSimulationList()
         return sim_lst;
     }
     sim_lst.append("ALL");
-    for (size_t i = 0; i < sch->DocComps.count(); i++) {
-        Component *c = sch->DocComps.at(i);
+    for (size_t i = 0; i < sch->a_DocComps.count(); i++) {
+        Component *c = sch->a_DocComps.at(i);
         if (!c->isSimulation) continue;
         if (c->Model == ".FOUR") continue;
         if (c->Model == ".PZ") continue;

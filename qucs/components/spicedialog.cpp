@@ -70,7 +70,7 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
   topGrid->addWidget(new QLabel(tr("Name:")), 0, 0);
   topGrid->addWidget(CompNameEdit, 0, 1);
 
-  
+
   FileEdit = new QLineEdit;
   FileEdit->setValidator(ValRestrict);
   connect(FileEdit, SIGNAL(returnPressed()), SLOT(slotButtOK()));
@@ -212,7 +212,7 @@ void SpiceDialog::slotButtApply()
   if(CompNameEdit->text().isEmpty())  CompNameEdit->setText(Comp->Name);
   else if(CompNameEdit->text() != Comp->Name)
   {
-    for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next())
+    for(pc = Doc->a_Components->first(); pc!=0; pc = Doc->a_Components->next())
       if(pc->Name == CompNameEdit->text()) {
         break;  // found component with the same name ?
       }
@@ -293,7 +293,7 @@ void SpiceDialog::slotButtBrowse()
       if (!schematicFileName.isEmpty()) // if schematic has a filename
         currDir = schematicFileInfo.absolutePath();
       else    // use the WorkDir path
-        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir;
     } else {  // current file name is absolute
       currDir = currFileInfo.exists() ? currFileInfo.absolutePath() : QucsSettings.QucsWorkDir.absolutePath();
     }
@@ -301,7 +301,7 @@ void SpiceDialog::slotButtBrowse()
     if (!schematicFileName.isEmpty()) { // if schematic has a filename
       currDir = schematicFileInfo.absolutePath();
     } else {  // use the WorkDir path
-      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir;
     }
   }
 
@@ -644,7 +644,7 @@ void SpiceDialog::slotGetNetlist()
 // -------------------------------------------------------------------------
 void SpiceDialog::slotButtEdit()
 {
-  Doc->App->editFile(misc::properAbsFileName(FileEdit->text(), Doc));
+  Doc->getApp()->editFile(misc::properAbsFileName(FileEdit->text(), Doc));
 }
 
 // -------------------------------------------------------------------------

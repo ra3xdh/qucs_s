@@ -90,7 +90,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
     setLayout(vl_top);
 
     slotSetSimulator();
-    if (!netlist_mode && !QucsMain->TuningMode && a_schematic->showBias != 0)
+    if (!netlist_mode && !QucsMain->TuningMode && a_schematic->getShowBias() != 0)
         slotStart(); // Start simulation
 
 }
@@ -211,7 +211,7 @@ void ExternSimDialog::slotProcessOutput()
     a_editSimConsole->insertPlainText("Simulation finished\n");
 
     if ( !a_hasError ) {
-        QFileInfo inf(a_schematic->DocName);
+        QFileInfo inf(a_schematic->getDocName());
         //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
         QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.completeBaseName()+ext;
         switch (QucsSettings.DefaultSimulator) {
@@ -230,7 +230,7 @@ void ExternSimDialog::slotProcessOutput()
     //if (out.contains("error",Qt::CaseInsensitive))
     //    a_hasError = true;
     emit simulated(this);
-    //if (a_schematic->showBias>0 || QucsMain->TuningMode) this->close();
+    //if (a_schematic->getShowBias()>0 || QucsMain->TuningMode) this->close();
 }
 
 
@@ -294,7 +294,7 @@ void ExternSimDialog::slotStop()
 
 void ExternSimDialog::slotSaveNetlist()
 {
-    QFileInfo inf(a_schematic->DocName);
+    QFileInfo inf(a_schematic->getDocName());
     QString filename = QFileDialog::getSaveFileName(this,tr("Save netlist"),inf.path()+QDir::separator()+"netlist.cir",
                        "All files (*)");
     if (filename.isEmpty()) return;
