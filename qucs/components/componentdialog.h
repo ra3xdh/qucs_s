@@ -22,6 +22,7 @@
 
 #include <QDialog>
 #include <QRegularExpression>
+#include <QSyntaxHighlighter>
 #include <QTextEdit>
 
 class Schematic;
@@ -39,8 +40,8 @@ class QComboBox;
 class QPushButton;
 class QGridLayout;
 
-class BoundLineEdit;
 class ParamWidget;
+class ParamLineEdit;
 
 // struct SweepUISettingType;
 struct QStringPair;
@@ -62,17 +63,17 @@ private slots:
   void slotFillFromSpice();
 
 private:
-  QValidator *Validator, *ValRestrict, *Validator2, *ValName;
-  QRegularExpression Expr;
-  QIntValidator *ValInteger;
+  QIntValidator* intVal;
+  QValidator* compNameVal;
+  QValidator* nameVal;
+  QValidator* paramVal;
   
   QTableWidget* propertyTable;
   QTextEdit* eqnEditor;
   QComboBox* eqnSimCombo;
 
-  Component* originalComponent;
+  Component* component;
   Schematic* document;
-  Component editComponent;
   
   // Maps to contain specialisations for different sweep types. Note: the arrangement
   // has been chosen to have the smallest number of map elements.
@@ -84,16 +85,14 @@ private:
   // TODO: It would be better for simulations with sweeps to have a flag saying so.
   bool isEquation;
   bool hasSweep;
+  bool hasFile = false;
   QStringList sweepProperties;
   
   // Maps to store references to edit widgets.
   QMap<QString, ParamWidget*> sweepParamWidget;
 
-  BoundLineEdit* mpNameLineEdit;
-
-  bool        changed;
-  int         tx_Dist, ty_Dist;   // remember the text position
-  bool        setAllVisible; // used for toggling visibility of properties
+  ParamLineEdit* componentNameWidget;
+  int tx_Dist, ty_Dist;   // remember the text position
  
   QStringList getSimulationList();
 
@@ -108,6 +107,29 @@ private:
   void writeEquation();
 
   enum CELL_TYPE { LabelCell = 1000, TextEditCell, ComboBoxCell, CheckBoxCell};
+};
+
+class EqnHighlighter : public QSyntaxHighlighter
+{
+Q_OBJECT
+
+public:
+  EqnHighlighter(const QString& keywordSet, QTextDocument* parent);
+
+protected:
+  void highlightBlock(const QString &text) override;
+
+private:
+  struct HighlightingRule
+  {
+    QRegularExpression pattern;
+    QTextCharFormat format;
+  };
+  QList<HighlightingRule> highlightingRules;
+
+  QTextCharFormat keywordFormat;
+  QTextCharFormat quotationFormat;
+  QTextCharFormat functionFormat;
 };
 
 struct QStringPair
