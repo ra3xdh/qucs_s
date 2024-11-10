@@ -257,8 +257,6 @@ EqnHighlighter::EqnHighlighter(const QString& keywordSet, QTextDocument* parent)
 
 void EqnHighlighter::highlightBlock(const QString& text)
 {
-  qDebug() << "Highlight block called";
-
   for (const HighlightingRule &rule : std::as_const(highlightingRules))
   {
     QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
@@ -356,8 +354,8 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       sweepTypeEnabledParams["list"] = QStringList{"Type", "Values"};
       sweepTypeEnabledParams["value"] = QStringList{"Type", "Values"};
       sweepTypeSpecialLabels["log"] = {{"Step:", "Points per decade"}};
-      paramsHiddenBySim["Sim"] = QStringList{".AC", ".SP"};
-      paramsHiddenBySim["Param"] = QStringList{".AC", ".SP"};
+      paramsHiddenBySim["Sim"] = QStringList{".AC", ".SP", ".TR"};
+      paramsHiddenBySim["Param"] = QStringList{".AC", ".SP", ".TR"};
 
       // Setup the widgets as per the stored type.
       sweepParamWidget["Sim"]->setOptions(getSimulationList());
@@ -524,8 +522,9 @@ void ComponentDialog::updatePropertyTable()
       // Add text edit if no options found.
       else
       {
-        propertyTable->setItem(row, 1, new QTableWidgetItem(property->Value, TextEditCell));
+        propertyTable->setItem(row, 1, new QTableWidgetItem("", TextEditCell));
         propertyTable->openPersistentEditor(propertyTable->item(row, 1));
+        propertyTable->item(row, 1)->setText(property->Value);
       }    
 
       // Set check box and description.
