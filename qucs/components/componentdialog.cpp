@@ -726,7 +726,7 @@ void ComponentDialog::slotBrowseFile()
 void ComponentDialog::slotEditFile()
 {
   qDebug() << "editing file " << component->Props.at(0)->Value << " or " << propertyTable->item(0, 1)->text();
-  document->getApp()->editFile(misc::properAbsFileName(component->Props.at(0)->Value, document));
+  document->App()->editFile(misc::properAbsFileName(component->Props.at(0)->Value, document));
 }
 
 // -------------------------------------------------------------------------
