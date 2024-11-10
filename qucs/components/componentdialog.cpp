@@ -299,12 +299,12 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   componentNameWidget->setCheck(component->showName);
 
   // Try to work out what kind of component this is.
-  isEquation = QStringList({"Eqn", "NutmegEq"}).contains(component->Model);
+  isEquation = QStringList({"Eqn", "NutmegEq", "SpicePar", "SpGlobPar"}).contains(component->Model);
   hasSweep = QStringList({".AC", ".NOISE", ".SW", ".SP", ".TR"}).contains(component->Model);
   sweepProperties = QStringList({"Sim", "Param", "Type", "Values", "Start", "Stop", "Points"});
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
 
-  paramsHiddenBySim["Sim"] = QStringList{".AC", ".SP", ".TR", "Eqn"};
+  paramsHiddenBySim["Sim"] = QStringList{".AC", ".SP", ".TR", "Eqn", "SpicePar", "SpGlobPar"};
   paramsHiddenBySim["Param"] = QStringList{".AC", ".SP", ".TR"};
 
   // Setup the dialog according to the component kind.
