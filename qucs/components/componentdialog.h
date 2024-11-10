@@ -70,7 +70,7 @@ private:
   
   QTableWidget* propertyTable;
   QTextEdit* eqnEditor;
-  QComboBox* eqnSimCombo;
+  QComboBox* eqnSimCombo = nullptr;
 
   Component* component;
   Schematic* document;

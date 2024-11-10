@@ -278,6 +278,8 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
   setWindowTitle(tr("Edit Component Properties") + " - " + component->Description.toUpper());
 
+  qDebug() << "Component name is: " << component->Model << " " << component->Name;
+
   // Setup dialog layout.
   QVBoxLayout* mainLayout = new QVBoxLayout(this);
   QGridLayout* propertiesPageLayout;
@@ -302,6 +304,9 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   sweepProperties = QStringList({"Sim", "Param", "Type", "Values", "Start", "Stop", "Points"});
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
 
+  paramsHiddenBySim["Sim"] = QStringList{".AC", ".SP", ".TR", "Eqn"};
+  paramsHiddenBySim["Param"] = QStringList{".AC", ".SP", ".TR"};
+
   // Setup the dialog according to the component kind.
   if (isEquation)
   {
@@ -310,9 +315,12 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     static_cast<QVBoxLayout*>(layout())->addWidget(editorGroup, 2);
     QVBoxLayout *editorLayout = new QVBoxLayout(editorGroup);
 
-    eqnSimCombo = new QComboBox();
-    eqnSimCombo->addItems(getSimulationList());
-    editorLayout->addWidget(eqnSimCombo, 2);
+    if (!paramsHiddenBySim["Sim"].contains(component->Model))
+    {
+      eqnSimCombo = new QComboBox();
+      eqnSimCombo->addItems(getSimulationList());
+      editorLayout->addWidget(eqnSimCombo, 2);
+    }
     
     QFont font("Courier", 10);   
     eqnEditor = new QTextEdit();
@@ -354,8 +362,6 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       sweepTypeEnabledParams["list"] = QStringList{"Type", "Values"};
       sweepTypeEnabledParams["value"] = QStringList{"Type", "Values"};
       sweepTypeSpecialLabels["log"] = {{"Step:", "Points per decade"}};
-      paramsHiddenBySim["Sim"] = QStringList{".AC", ".SP", ".TR"};
-      paramsHiddenBySim["Param"] = QStringList{".AC", ".SP", ".TR"};
 
       // Setup the widgets as per the stored type.
       sweepParamWidget["Sim"]->setOptions(getSimulationList());
@@ -545,7 +551,7 @@ void ComponentDialog::updateEqnEditor()
 
   for (auto property : component->Props)
   {
-    if (property->Name == "Simulation")
+    if (eqnSimCombo && property->Name == "Simulation")
       eqnSimCombo->setCurrentText(property->Value);
     else
       eqnList.append(property->Name + " = " + property->Value + "\n");
@@ -563,7 +569,8 @@ void ComponentDialog::writeEquation()
   component->Props.clear();
   
   // Note: the description needs to be written as "Simulation name" because this is used when saving the file.
-  component->Props.append(new Property("Simulation", eqnSimCombo->currentText(), true, "Simulation name"));
+  if (eqnSimCombo)
+    component->Props.append(new Property("Simulation", eqnSimCombo->currentText(), true, "Simulation name"));
 
   QString text = eqnEditor->document()->toPlainText();
   QStringList lines = text.split('\n', Qt::SkipEmptyParts);
@@ -726,7 +733,7 @@ void ComponentDialog::slotBrowseFile()
 void ComponentDialog::slotEditFile()
 {
   qDebug() << "editing file " << component->Props.at(0)->Value << " or " << propertyTable->item(0, 1)->text();
-  document->App()->editFile(misc::properAbsFileName(component->Props.at(0)->Value, document));
+  document->App->editFile(misc::properAbsFileName(component->Props.at(0)->Value, document));
 }
 
 // -------------------------------------------------------------------------
