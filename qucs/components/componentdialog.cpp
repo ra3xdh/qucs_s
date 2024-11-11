@@ -19,10 +19,12 @@
   TODO:
   1. Auto update sweep step / sweep points for log sweeps
   2. Translated text?
-  3. Add special property names - i.e., for log sweeps (per decade instead of step)
-  4. Update components from SPICE file.
-  5. Implement highlighting.
+  3. DONE: Add special property names - i.e., for log sweeps (per decade instead of step)
+  4. DONE: Update components from SPICE file.
+  5. DONE: Implement highlighting.
   6. Have "Export" as a check box, or option list for equations.
+  7. .INCLUDE components have multiple files
+  8. Should 'Lib' parameters also be able to open a file?
 */
 
 #include "componentdialog.h"
@@ -361,7 +363,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       sweepTypeEnabledParams["log"] = QStringList{"Sim", "Param", "Type", "Start", "Stop", "Step", "Points"};
       sweepTypeEnabledParams["list"] = QStringList{"Type", "Values"};
       sweepTypeEnabledParams["value"] = QStringList{"Type", "Values"};
-      sweepTypeSpecialLabels["log"] = {{"Step:", "Points per decade"}};
+      sweepTypeSpecialLabels[qMakePair("log","Step")] = {"Points per decade"};
 
       // Setup the widgets as per the stored type.
       sweepParamWidget["Sim"]->setOptions(getSimulationList());
@@ -443,6 +445,8 @@ void ComponentDialog::updateSweepWidgets(const QString& type)
 {
   for (auto it = sweepParamWidget.keyValueBegin(); it != sweepParamWidget.keyValueEnd(); ++it) 
   {
+    it->second->setLabel(sweepTypeSpecialLabels.contains(qMakePair(type,it->first)) ? 
+                          sweepTypeSpecialLabels[qMakePair(type,it->first)] : it->first);
     it->second->setHidden(paramsHiddenBySim.contains(it->first) &&
                             paramsHiddenBySim[it->first].contains(component->Model));
     it->second->setEnabled(sweepTypeEnabledParams.contains(type) && 

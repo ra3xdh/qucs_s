@@ -43,9 +43,6 @@ class QGridLayout;
 class ParamWidget;
 class ParamLineEdit;
 
-// struct SweepUISettingType;
-struct QStringPair;
-
 class ComponentDialog : public QDialog 
 {
 Q_OBJECT
@@ -78,7 +75,7 @@ private:
   // Maps to contain specialisations for different sweep types. Note: the arrangement
   // has been chosen to have the smallest number of map elements.
   // TODO: Make these constant once settled, see https://stackoverflow.com/questions/2636303/how-to-initialize-a-private-static-const-map-in-c
-  QHash<QString, QList<QStringPair> > sweepTypeSpecialLabels;
+  QHash<QPair<QString, QString>, QString> sweepTypeSpecialLabels;
   QHash<QString, QStringList> sweepTypeEnabledParams;
   QHash<QString, QStringList> paramsHiddenBySim;
   
@@ -131,15 +128,5 @@ private:
   QTextCharFormat quotationFormat;
   QTextCharFormat functionFormat;
 };
-
-struct QStringPair
-{
-  QStringPair(const QString& b, const QString& a)
-  : first(a), second(b) {}
-
-  QString first;
-  QString second;
-};
-
 
 #endif
