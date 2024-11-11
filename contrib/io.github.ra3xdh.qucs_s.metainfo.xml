@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.ra3xdh.qucs_s</id>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+
+  <name>Qucs-S</name>
+  <summary>Quite universal circuit simulator with SPICE</summary>
+
+  <developer id="io.github.ra3xdh">
+    <name>Vadim Kuznetsov</name>
+  </developer>
+
+  <description>
+    <p>
+      Qucs-S provides a fancy graphical user interface for a number of popular circuit simulation engines. Qucs-S contains instruments for schematic capture, visualization and provides differents passive and active components including device library.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">qucs-s.desktop</launchable>
+
+  <content_rating type="oars-1.1" />
+
+  <url type="bugtracker">https://github.com/ra3xdh/qucs_s/issues</url>
+  <url type="homepage">https://ra3xdh.github.io</url>
+  <url type="donation">https://boosty.to/qucs_s</url>
+  <url type="vcs-browser">https://github.com/ra3xdh/qucs_s</url>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://ra3xdh.github.io/ne5532.png</image>
+      <caption>NE5532 amplifier using SPICE model</caption>
+    </screenshot>
+  </screenshots>
+
+  <releases>
+    <release version="24.4.0" date="2024-10-31">
+      <url type="details">https://github.com/ra3xdh/qucs_s/releases/tag/24.4.0</url>
+    </release>
+  </releases>
+</component>
