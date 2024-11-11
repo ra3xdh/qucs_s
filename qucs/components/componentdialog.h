@@ -42,6 +42,7 @@ class QGridLayout;
 
 class ParamWidget;
 class ParamLineEdit;
+class CompoundWidget;
 
 class ComponentDialog : public QDialog 
 {
@@ -54,8 +55,8 @@ private slots:
   void slotOKButton();
   void slotApplyButton();
 
-  void slotBrowseFile();
-  void slotEditFile();
+  void slotBrowseFile(QLineEdit* lineEdit);
+  // void slotEditFile();
 
   void slotFillFromSpice();
 
@@ -103,7 +104,9 @@ private:
   void writePropertyTable();
   void writeEquation();
 
-  enum CELL_TYPE { LabelCell = 1000, TextEditCell, ComboBoxCell, CheckBoxCell};
+  void simpleEditEqn(QLineEdit* lineEdit);
+
+  enum CELL_TYPE { LabelCell = 1000, TextEditCell, ComboBoxCell, CompoundCell, CheckBoxCell };
 };
 
 class EqnHighlighter : public QSyntaxHighlighter
@@ -127,6 +130,21 @@ private:
   QTextCharFormat keywordFormat;
   QTextCharFormat quotationFormat;
   QTextCharFormat functionFormat;
+};
+
+class SimpleEqnDialog : public QDialog
+{
+Q_OBJECT
+
+public:
+  SimpleEqnDialog(QString& string, QWidget* parent);
+
+private slots:
+  void slotOkButton();
+
+private:
+  QString& mText;
+  QTextEdit* mEditor; 
 };
 
 #endif

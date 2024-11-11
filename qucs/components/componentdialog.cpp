@@ -69,6 +69,45 @@ double str2num(const QString& string)
 }
 
 // -------------------------------------------------------------------------
+// Table cell widget to hold both text and a button that allows editing
+// or searching to fill in the text.
+class CompoundWidget : public QWidget
+{
+public:
+  CompoundWidget(const QString& text, ComponentDialog* dialog, void (ComponentDialog::* func)(QLineEdit*) = nullptr)
+  : QWidget(dialog)
+  {
+    mButton = new QPushButton("...", this);
+    mButton->setMinimumWidth(20);
+    mButton->setMaximumWidth(20);
+    mEdit = new QLineEdit(text, this);
+    QLayout* layout = new QHBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(mEdit);
+    layout->addWidget(mButton);
+    setLayout(layout);
+
+    if (func)
+      connect(mButton, &QPushButton::released, [=]() { if (dialog) (dialog->*func)(mEdit); });    
+  }
+  ~CompoundWidget()
+  {
+    qDebug() << "CompoundWidget dtor called";
+    delete mButton;
+    delete mEdit;
+  }
+
+  QString text()
+  {
+    return mEdit->text();
+  }
+
+private:
+  QPushButton* mButton;
+  QLineEdit* mEdit;
+};
+
+// -------------------------------------------------------------------------
 // Convenience base class to add a label, and checkbox.
 class ParamWidget
 {
@@ -406,19 +445,6 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     // Try to move the cursor to the editable cell if any cell is clicked.
     connect(propertyTable, &QTableWidget::cellClicked, 
                 [=](int row, int column) { (void)column; propertyTable->setCurrentCell(row, 1); } );
-
-    // Add the file control buttons if applicable.
-    if (hasFile)
-    {
-      QHBoxLayout* fileButtonLayout = new QHBoxLayout;
-      mainLayout->addLayout(fileButtonLayout);
-      QPushButton* fileBrowseButton = new QPushButton("&Open File", this);
-      QPushButton* fileEditButton = new QPushButton("&Edit File", this);
-      fileButtonLayout->addWidget(fileBrowseButton);
-      connect(fileBrowseButton, &QPushButton::released, this, &ComponentDialog::slotBrowseFile);
-      fileButtonLayout->addWidget(fileEditButton);
-      connect(fileEditButton, &QPushButton::released, this, &ComponentDialog::slotEditFile);
-    }
   }
 
   // Add the dialog button widgets.
@@ -529,6 +555,22 @@ void ComponentDialog::updatePropertyTable()
         propertyTable->setItem(row, 1, new QTableWidgetItem(ComboBoxCell));
       }
 
+      // Create a compound widget that selects a file.
+      else if (property->Name == "File")
+      {
+        CompoundWidget* compound = new CompoundWidget(property->Value, this, &ComponentDialog::slotBrowseFile);
+        propertyTable->setCellWidget(row, 1, compound);
+        propertyTable->setItem(row, 1, new QTableWidgetItem(CompoundCell));
+      }
+
+      // Create a compound widget that provides a simple equation editor.
+      else if (property->Name.startsWith('I'))
+      {
+        CompoundWidget* compound = new CompoundWidget(property->Value, this, &ComponentDialog::simpleEditEqn);
+        propertyTable->setCellWidget(row, 1, compound);
+        propertyTable->setItem(row, 1, new QTableWidgetItem(CompoundCell));
+      }
+
       // Add text edit if no options found.
       else
       {
@@ -629,12 +671,22 @@ void ComponentDialog::slotApplyButton()
       else 
       {
         QTableWidgetItem* item = propertyTable->item(row, 1);
-        Q_ASSERT(item);
+        // TODO: If the number of items has changed because of an earlier edit, then
+        // the property list needs to be updated. An example is when the number of ports
+        // of an EDD is increased.
+        if (!item)
+          continue;
 
         if (item->type() == ComboBoxCell)
         {
           QComboBox* cellCombo = static_cast<QComboBox*>(propertyTable->cellWidget(row, 1));
           property->Value = cellCombo->currentText();
+        }
+
+        else if (item->type() == CompoundCell)
+        {
+          CompoundWidget* cellCompound = static_cast<CompoundWidget*>(propertyTable->cellWidget(row, 1));
+          property->Value = cellCompound->text();
         }
 
         else
@@ -671,10 +723,12 @@ void ComponentDialog::slotApplyButton()
 }
 
 // -------------------------------------------------------------------------
-void ComponentDialog::slotBrowseFile()
+void ComponentDialog::slotBrowseFile(QLineEdit* lineEdit)
 {
+  Q_ASSERT(lineEdit);
+
   // current file name from the component properties
-  QString currFileName = component->Props.at(0)->Value;
+  QString currFileName = lineEdit->text();
   QFileInfo currFileInfo(currFileName);
   // name of the schematic where component is instantiated (may be empty)
   QFileInfo schematicFileInfo = component->getSchematic()->getFileInfo();
@@ -729,16 +783,72 @@ void ComponentDialog::slotBrowseFile()
         s = file.fileName();
       }
     }
-    propertyTable->item(0, 1)->setText(s);
+
+    lineEdit->setText(s);
   }
 }
 
+// -------------------------------------------------------------------------
+// Open a simple dialog to edit the line equation. Note, unlike the full
+// equation editor used within the component dialog, this simple editor does
+// not allow the parameter name to change and no = sign is needed.
+void ComponentDialog::simpleEditEqn(QLineEdit* lineEdit)
+{
+  // Pass a local copy of the current eqn to the simple eqn editor.
+  QString eqn = lineEdit->text();
+
+  SimpleEqnDialog dialog(eqn, this);
+  if (dialog.exec() == QDialog::Accepted)
+    lineEdit->setText(eqn);
+}
+
+// -------------------------------------------------------------------------
+// Simple text editor dialog with equation formating.
+SimpleEqnDialog::SimpleEqnDialog(QString& string, QWidget* parent)
+: QDialog(parent), mText(string)
+{
+  qDebug() << "Showing an equation editor.... " << string;
+  setMinimumSize(300, 300);
+  
+  // Setup dialog layout.
+  QVBoxLayout* layout = new QVBoxLayout(this);
+
+  // Add the equation text editor.
+  QFont font("Courier", 10);   
+  mEditor = new QTextEdit(mText, this);
+  mEditor->setFont(font);
+  new EqnHighlighter("ngspice", mEditor->document());
+  layout->addWidget(mEditor, 2);
+
+  // Add the dialog button widgets.
+  QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | 
+                                                      QDialogButtonBox::Cancel);
+
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &SimpleEqnDialog::slotOkButton);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+  layout->addWidget(buttonBox);  
+}
+
+// -------------------------------------------------------------------------
+// Close the simple eqn editor dialog and copy the edited text back to the parent.
+void SimpleEqnDialog::slotOkButton()
+{
+  mText = mEditor->toPlainText();
+  
+  done(QDialog::Accepted);
+}
+
+/* Removed as it doesn't make much sense to change the currently edited file
+   whilst the properties dialog is open. There is already a UI to edit a 
+   subcircuit file from the schematic view.
 // -------------------------------------------------------------------------
 void ComponentDialog::slotEditFile()
 {
   qDebug() << "editing file " << component->Props.at(0)->Value << " or " << propertyTable->item(0, 1)->text();
   document->App->editFile(misc::properAbsFileName(component->Props.at(0)->Value, document));
 }
+*/
 
 // -------------------------------------------------------------------------
 /* TODO: Need to implement mechanism to update POINTS when START, STOP, STEP is changed
