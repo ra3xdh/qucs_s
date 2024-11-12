@@ -67,7 +67,6 @@ add_subdirectory( library )
 add_subdirectory( qucs-transcalc )
 add_subdirectory( qucs-powercombining )
 add_subdirectory( qucs-s-spar-viewer )
-add_subdirectory( contrib )
 #add_subdirectory( examples )
 if(EXISTS ${CMAKE_SOURCE_DIR}/qucsator_rf/CMakeLists.txt)
     add_subdirectory(qucsator_rf)
@@ -81,6 +80,8 @@ ENDIF (UPDATE_TRANSLATIONS)
 add_subdirectory( translations )
 
 install(DIRECTORY "examples" DESTINATION "share/${QUCS_NAME}")
+
+install(FILES contrib/io.github.ra3xdh.qucs_s.metainfo.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/metainfo)
 
 #
 # Custom uninstall target
