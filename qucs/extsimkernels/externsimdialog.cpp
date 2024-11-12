@@ -28,7 +28,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
     QDialog(sch)
 {
     Sch = sch;
-    wasSimulated = false;
+    wasSimulated = true;
     hasError = false;
 
     QSettings settings("qucs", "qucs_s");
@@ -190,6 +190,8 @@ void ExternSimDialog::slotProcessOutput()
     if (logContainsError(out)) {
         addLogEntry(tr("There were simulation errors. Please check log."),
                     this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
+        hasError = true;
+        wasSimulated = false;
         emit warnings();
     } else if (logContainsWarning(out)) {
         addLogEntry(tr("There were simulation warnings. Please check log."),
@@ -198,9 +200,11 @@ void ExternSimDialog::slotProcessOutput()
                     QIcon(":/bitmaps/svg/ok_apply.svg"));
         emit warnings();
     } else  {
-        addLogEntry(tr("Simulation successful. Now place diagram on schematic to plot the result."),
+        if ( !hasError ) {
+            addLogEntry(tr("Simulation successful. Now place diagram on schematic to plot the result."),
                     QIcon(":/bitmaps/svg/ok_apply.svg"));
-        emit success();
+            emit success();
+        }
     }
     //editSimConsole->clear();
     /*editSimConsole->insertPlainText(out);
@@ -208,23 +212,25 @@ void ExternSimDialog::slotProcessOutput()
     saveLog();
     editSimConsole->insertPlainText("Simulation finished\n");
 
-    QFileInfo inf(Sch->DocName);
-    //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
-    QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.completeBaseName()+ext;
-    switch (QucsSettings.DefaultSimulator) {
-        case spicecompat::simNgspice:
-        case spicecompat::simSpiceOpus:
-            ngspice->convertToQucsData(qucs_dataset);
-            break;
-        case spicecompat::simXyce:
-            xyce->convertToQucsData(qucs_dataset);
-            break;
-        default:
-            break;
+    if ( !hasError ) {
+        QFileInfo inf(Sch->DocName);
+        //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
+        QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.completeBaseName()+ext;
+        switch (QucsSettings.DefaultSimulator) {
+            case spicecompat::simNgspice:
+            case spicecompat::simSpiceOpus:
+                ngspice->convertToQucsData(qucs_dataset);
+                break;
+            case spicecompat::simXyce:
+                xyce->convertToQucsData(qucs_dataset);
+                break;
+            default:
+                break;
+        }
     }
-    wasSimulated = true;
-    if (out.contains("error",Qt::CaseInsensitive))
-        hasError = true;
+    //wasSimulated = true;
+    //if (out.contains("error",Qt::CaseInsensitive))
+    //    hasError = true;
     emit simulated(this);
     //if (Sch->showBias>0 || QucsMain->TuningMode) this->close();
 }
@@ -243,11 +249,14 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
 {
     QString msg;
     switch (err) {
-    case QProcess::FailedToStart : msg = tr("Failed to start simulator!");
+    case QProcess::FailedToStart:
+        msg = tr("Failed to start simulator!");
         break;
-    case QProcess::Crashed : msg = tr("Simulator crashed!");
+    case QProcess::Crashed:
+        msg = tr("Simulator crashed!");
         break;
-    default : msg = tr("Simulator error!");
+    default:
+        msg = tr("Simulator error!");
     }
 
     //QMessageBox::critical(this,tr("Simulate with SPICE"),msg,QMessageBox::Ok);
@@ -255,6 +264,9 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
 
     QString sim = spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator);
     editSimConsole->insertPlainText(sim + tr(" error..."));
+
+    wasSimulated = false;
+    hasError = true;
 }
 
 void ExternSimDialog::slotStart()
