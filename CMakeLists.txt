@@ -81,6 +81,8 @@ add_subdirectory( translations )
 
 install(DIRECTORY "examples" DESTINATION "share/${QUCS_NAME}")
 
+install(FILES contrib/io.github.ra3xdh.qucs_s.metainfo.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/metainfo)
+
 #
 # Custom uninstall target
 #
