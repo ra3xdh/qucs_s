@@ -20,11 +20,12 @@
   1. DONE: Auto update sweep step / sweep points for log sweeps
   2. DONE: Translated text?
   3. DONE: Add special property names - i.e., for log sweeps (per decade instead of step)
-  4. Update components from SPICE file.
+  4. DONE: Update components from SPICE file.
   5. DONE: Implement highlighting.
   6. Have "Export" as a check box, or option list for equations.
   7. DONE: .INCLUDE components have multiple files
   8. Should 'Lib' parameters also be able to open a file?
+  9. Check for memory leaks.
 */
 
 #include "componentdialog.h"
@@ -434,7 +435,18 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     // Create the properties table.
     QGroupBox *propertyGroup = new QGroupBox(tr("Properties"));
     propertiesPageLayout->addWidget(propertyGroup, 2, 0);
-    QHBoxLayout *propertyTableLayout = new QHBoxLayout(propertyGroup);
+    QVBoxLayout *propertyTableLayout = new QVBoxLayout(propertyGroup);
+
+    // Allow populating from a spice file if appropriate.
+    if (QStringList({"Diode", "_BJT", "JFET", "MOSFET"}).contains(component->Model))
+    {
+      QHBoxLayout *spiceButtonLayout = new QHBoxLayout(this);
+      propertyTableLayout->addLayout(spiceButtonLayout);
+      QPushButton* spiceButton = new QPushButton(tr("Populate parameters from SPICE file..."), this);
+      connect(spiceButton, &QPushButton::released, this, &ComponentDialog::slotFillFromSpice);
+      spiceButtonLayout->addWidget(spiceButton);
+      spiceButtonLayout->addStretch();
+    }
 
     /// \todo column min width + make widths persistent
     propertyTable = new QTableWidget(0, 4);
@@ -912,7 +924,8 @@ QStringList ComponentDialog::getSimulationList()
 }
 
 // -------------------------------------------------------------------------
-// Fill from SPICE - what does this do?
+// Fill the parameters of certain components (diode, BJT, JFET, MOSFET) 
+// from a SPICE file (see #795)
 void ComponentDialog::slotFillFromSpice()
 {
   fillFromSpiceDialog *dlg = new fillFromSpiceDialog(component, this);
