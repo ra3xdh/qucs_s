@@ -60,7 +60,7 @@ iRect::iRect()
   Name  = "I";
   SpiceModel = "I";
 
-  Props.append(new Property("U", "1 mA", true,
+  Props.append(new Property("I", "1 mA", true,
 		QObject::tr("current at high pulse")));
   Props.append(new Property("TH", "1 ms", true,
 		QObject::tr("duration of high pulses")));
