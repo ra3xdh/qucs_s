@@ -412,7 +412,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       sweepTypeEnabledParams["log"] = QStringList{"Sim", "Param", "Type", "Start", "Stop", "Step", "Points"};
       sweepTypeEnabledParams["list"] = QStringList{"Type", "Values"};
       sweepTypeEnabledParams["value"] = QStringList{"Type", "Values"};
-      sweepTypeSpecialLabels[qMakePair("log","Step")] = {"Points per decade"};
+      sweepTypeSpecialLabels[qMakePair(QString("log"),QString("Step"))] = {"Points per decade"};
 
       // Setup the widgets as per the stored type.
       sweepParamWidget["Sim"]->setOptions(getSimulationList());
