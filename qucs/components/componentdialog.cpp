@@ -18,7 +18,7 @@
 /*
   TODO:
   1. Auto update sweep step / sweep points for log sweeps
-  2. Translated text?
+  2. DONE: Translated text?
   3. DONE: Add special property names - i.e., for log sweeps (per decade instead of step)
   4. DONE: Update components from SPICE file.
   5. DONE: Implement highlighting.
@@ -112,22 +112,27 @@ private:
 class ParamWidget
 {
   public:
-    ParamWidget(const QString& label, bool displayCheck, QGridLayout* layout)
-    : mParam(label), mHasCheck(displayCheck)
+    ParamWidget(const QString& param, const QString& label, bool displayCheck, QGridLayout* layout)
+    : mParam(param), mHasCheck(displayCheck)
     {
       int row = layout->rowCount();
 
+      mDefaultLabel = label;
       mLabel = new QLabel(label + ":");
       layout->addWidget(mLabel, row, 0);
 
       mCheckBox = new QCheckBox("display in schematic");
-      // mCheckBox->setEnabled(false);
       layout->addWidget(mCheckBox, row, 2);  
     }
 
     void setLabel(const QString& label)
     {
-      mLabel->setText(label);
+      mLabel->setText(label + ":");
+    }
+
+    QString defaultLabel()
+    {
+      return mDefaultLabel;
     }
 
     void setCheck(bool checked)
@@ -158,6 +163,7 @@ class ParamWidget
 
   protected:
     QString mParam;
+    QString mDefaultLabel;
 
   private:
     QLabel* mLabel;
@@ -170,15 +176,15 @@ class ParamWidget
 class ParamLineEdit : public QLineEdit, public ParamWidget
 {
   public:
-    ParamLineEdit(const QString& param, QValidator* validator, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog, 
+    ParamLineEdit(const QString& param, const QString& label, QValidator* validator, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog, 
                   void (ComponentDialog::* func)(const QString&, const QString&) = nullptr)
-    : ParamWidget(param, displayCheck, layout)
+    : ParamWidget(param, label, displayCheck, layout)
     {
       layout->addWidget(this, layout->rowCount() - 1, 1);
       setValidator(validator);
-      // Note: need to be careful about life of dialog and param here.
+      
       if (func)
-        connect(this, &QLineEdit::textEdited, [=](const QString& value) { if (dialog) (dialog->*func)(param, value); });
+        connect(this, &QLineEdit::textEdited, [=](const QString& value) { if (dialog) (dialog->*func)(mParam, value); });
     }
 
     void setEnabled(bool enabled) override
@@ -211,13 +217,14 @@ class ParamLineEdit : public QLineEdit, public ParamWidget
 class ParamCombo : public QComboBox, public ParamWidget
 {
   public:
-    ParamCombo(const QString& param, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog, 
+    ParamCombo(const QString& param, const QString& label, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog, 
                 void (ComponentDialog::* func)(const QString&, const QString&))
-    : ParamWidget(param, displayCheck, layout)
+    : ParamWidget(param, label, displayCheck, layout)
     {
       layout->addWidget(this, layout->rowCount() - 1, 1);
-      // Note: need to be careful about life of dialog and param here.
-      connect(this, &QComboBox::currentTextChanged, [=](const QString& value) { if (dialog) (dialog->*func)(param, value); });
+      
+      if (func)
+        connect(this, &QComboBox::currentTextChanged, [=](const QString& value) { if (dialog) (dialog->*func)(mParam, value); });
     }
 
     void setEnabled(bool enabled) override
@@ -251,7 +258,6 @@ class ParamCombo : public QComboBox, public ParamWidget
   private:
     void (ComponentDialog::* function)(const QString&, const QString&);
     ComponentDialog* mDialog;
-
 };
 
 // -------------------------------------------------------------------------
@@ -296,6 +302,8 @@ EqnHighlighter::EqnHighlighter(const QString& keywordSet, QTextDocument* parent)
   highlightingRules.append(rule);
 }
 
+// -------------------------------------------------------------------------
+// Sets up the syntax highlighter for the equation editor.
 void EqnHighlighter::highlightBlock(const QString& text)
 {
   for (const HighlightingRule &rule : std::as_const(highlightingRules))
@@ -310,6 +318,8 @@ void EqnHighlighter::highlightBlock(const QString& text)
   }
 }
 
+// -------------------------------------------------------------------------
+// Dialog to show parameters for most components.
 ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schematic)
 			: QDialog(schematic)
 {
@@ -335,7 +345,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   // Add the component name.
   QGridLayout* nameLayout = new QGridLayout;
   mainLayout->addLayout(nameLayout);
-  componentNameWidget = new ParamLineEdit("Name", compNameVal, true, nameLayout, this, nullptr);
+  componentNameWidget = new ParamLineEdit("Name", tr("Name:"), compNameVal, true, nameLayout, this, nullptr);
   componentNameWidget->setValue(component->Name);
   componentNameWidget->setCheck(component->showName);
 
@@ -383,19 +393,18 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       // Simulations have a separate sweep page.
       QWidget* sweepPage = new QWidget(pageTabs);
       pageTabs->addTab(sweepPage, tr("Sweep"));
-      QGridLayout* sweepPageLayout = new QGridLayout;
-      sweepPage->setLayout(sweepPageLayout);
+      QGridLayout* sweepPageLayout = new QGridLayout(sweepPage);
 
       // Sweep page setup - add widgets for each possible sweep property.
-      // void (ComponentDialog::* func)(const QString&, const QString&) = &ComponentDialog::updateSweepProperty;
-      sweepParamWidget["Sim"] = new ParamCombo("Sim", true, sweepPageLayout, this, &ComponentDialog::updateSweepProperty);
-      sweepParamWidget["Param"] = new ParamLineEdit("Param", compNameVal, true, sweepPageLayout, this, &ComponentDialog::updateSweepProperty);
-      sweepParamWidget["Type"] = new ParamCombo("Type", true, sweepPageLayout, this, &ComponentDialog::updateSweepProperty);
-      sweepParamWidget["Values"] = new ParamLineEdit("Values", paramVal, true, sweepPageLayout, this, &ComponentDialog::updateSweepProperty);
-      sweepParamWidget["Start"] = new ParamLineEdit("Start", paramVal, true, sweepPageLayout, this, &ComponentDialog::updateSweepProperty);
-      sweepParamWidget["Stop"] = new ParamLineEdit("Stop", paramVal, true, sweepPageLayout, this, &ComponentDialog::updateSweepProperty);
-      sweepParamWidget["Step"] = new ParamLineEdit("Step", paramVal, false, sweepPageLayout, this, &ComponentDialog::updateSweepProperty);
-      sweepParamWidget["Points"] = new ParamLineEdit("Points", intVal, true, sweepPageLayout, this, &ComponentDialog::updateSweepProperty);
+      void (ComponentDialog::* func)(const QString&, const QString&) = &ComponentDialog::updateSweepProperty;
+      sweepParamWidget["Sim"] = new ParamCombo("Sim", tr("Simulation"), true, sweepPageLayout, this, func);
+      sweepParamWidget["Param"] = new ParamLineEdit("Param", tr("Sweep Parameter"), compNameVal, true, sweepPageLayout, this, func);
+      sweepParamWidget["Type"] = new ParamCombo("Type", tr("Type"), true, sweepPageLayout, this, func);
+      sweepParamWidget["Values"] = new ParamLineEdit("Values", tr("Values"), paramVal, true, sweepPageLayout, this, func);
+      sweepParamWidget["Start"] = new ParamLineEdit("Start", tr("Start"), paramVal, true, sweepPageLayout, this, func);
+      sweepParamWidget["Stop"] = new ParamLineEdit("Stop", tr("Stop"), paramVal, true, sweepPageLayout, this, func);
+      sweepParamWidget["Step"] = new ParamLineEdit("Step", tr("Step"), paramVal, false, sweepPageLayout, this, func);
+      sweepParamWidget["Points"] = new ParamLineEdit("Points", tr("Number"), intVal, true, sweepPageLayout, this, func);
 
       // Setup the widget specialisations for each simulation type.    
       sweepTypeEnabledParams["lin"] = QStringList{"Sim", "Param", "Type", "Start", "Stop", "Step", "Points"};    
@@ -418,7 +427,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     // This component does not have sweep settings, so add properties directly to the dialog itself.
     else 
     { 
-      propertiesPageLayout = new QGridLayout(this);
+      propertiesPageLayout = new QGridLayout;
       static_cast<QVBoxLayout*>(layout())->addLayout(propertiesPageLayout);
     }
 
@@ -472,7 +481,7 @@ void ComponentDialog::updateSweepWidgets(const QString& type)
   for (auto it = sweepParamWidget.keyValueBegin(); it != sweepParamWidget.keyValueEnd(); ++it) 
   {
     it->second->setLabel(sweepTypeSpecialLabels.contains(qMakePair(type,it->first)) ? 
-                          sweepTypeSpecialLabels[qMakePair(type,it->first)] : it->first);
+                          sweepTypeSpecialLabels[qMakePair(type,it->first)] : it->second->defaultLabel());
     it->second->setHidden(paramsHiddenBySim.contains(it->first) &&
                             paramsHiddenBySim[it->first].contains(component->Model));
     it->second->setEnabled(sweepTypeEnabledParams.contains(type) && 
