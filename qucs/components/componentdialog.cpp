@@ -17,13 +17,13 @@
 
 /*
   TODO:
-  1. Auto update sweep step / sweep points for log sweeps
+  1. DONE: Auto update sweep step / sweep points for log sweeps
   2. DONE: Translated text?
   3. DONE: Add special property names - i.e., for log sweeps (per decade instead of step)
-  4. DONE: Update components from SPICE file.
+  4. Update components from SPICE file.
   5. DONE: Implement highlighting.
   6. Have "Export" as a check box, or option list for equations.
-  7. .INCLUDE components have multiple files
+  7. DONE: .INCLUDE components have multiple files
   8. Should 'Lib' parameters also be able to open a file?
 */
 
@@ -522,17 +522,35 @@ void ComponentDialog::updateSweepProperty(const QString& property, const QString
     double start = str2num(sweepParamWidget["Start"]->value());
     double stop = str2num(sweepParamWidget["Stop"]->value());
 
-    if (property == "Start" || property == "Stop" || property == "Points" || property == "All")
+    if (sweepParamWidget["Type"]->value() == "log")
     {
-      double points = str2num(sweepParamWidget["Points"]->value());
-      double step = (stop - start) / (points - 1.0);
-      sweepParamWidget["Step"]->setValue(misc::num2str(step));
+      if (property == "Start" || property == "Stop" || property == "Points" || property == "All")
+      {
+        double points = str2num(sweepParamWidget["Points"]->value());
+        double step = (points - 1) / log10(fabs((stop < 1 ? 1 : stop) / (start < 1 ? 1 : start)));
+        sweepParamWidget["Step"]->setValue(misc::num2str(step));
+      }
+      else if (property == "Step")
+      {
+        double step = str2num(sweepParamWidget["Step"]->value());
+        double points = log10(fabs((stop < 1 ? 1 : stop) / (start < 1 ? 1 : start))) * step;
+        sweepParamWidget["Points"]->setValue(misc::num2str(points));
+      }     
     }
-    else if (property == "Step")
+    else
     {
-      double step = str2num(sweepParamWidget["Step"]->value());
-      double points = (stop - start) / step + 1;
-      sweepParamWidget["Points"]->setValue(misc::num2str(points));
+      if (property == "Start" || property == "Stop" || property == "Points" || property == "All")
+      {
+        double points = str2num(sweepParamWidget["Points"]->value());
+        double step = (stop - start) / (points - 1.0);
+        sweepParamWidget["Step"]->setValue(misc::num2str(step));
+      }
+      else if (property == "Step")
+      {
+        double step = str2num(sweepParamWidget["Step"]->value());
+        double points = (stop - start) / step + 1;
+        sweepParamWidget["Points"]->setValue(misc::num2str(points));
+      }     
     }
   }
 }
@@ -573,7 +591,8 @@ void ComponentDialog::updatePropertyTable()
       }
 
       // Create a compound widget that provides a simple equation editor.
-      else if (property->Name.startsWith('I'))
+      // TODO: This for when parameters have a parameter type flag (see #974)
+      else if (false)
       {
         CompoundWidget* compound = new CompoundWidget(property->Value, this, &ComponentDialog::simpleEditEqn);
         propertyTable->setCellWidget(row, 1, compound);
@@ -856,83 +875,6 @@ void ComponentDialog::slotEditFile()
 {
   qDebug() << "editing file " << component->Props.at(0)->Value << " or " << propertyTable->item(0, 1)->text();
   document->App->editFile(misc::properAbsFileName(component->Props.at(0)->Value, document));
-}
-*/
-
-// -------------------------------------------------------------------------
-/* TODO: Need to implement mechanism to update POINTS when START, STOP, STEP is changed
-   DONE: Implemented for linear sweeps, TODO: for log sweeps.
-void ComponentDialog::slotNumberChanged(const QString&)
-{
-  QString Unit, tmp;
-  double x, y, Factor;
-  if(comboType->currentIndex() == 1) {   // logarithmic ?
-    misc::str2num(editStop->text(), x, Unit, Factor);
-    x *= Factor;
-    misc::str2num(editStart->text(), y, Unit, Factor);
-    y *= Factor;
-    if(y == 0.0)  y = x / 10.0;
-    if(x == 0.0)  x = y * 10.0;
-    if(y == 0.0) { y = 1.0;  x = 10.0; }
-    x = (editNumber->text().toDouble() - 1) / log10(fabs(x / y));
-    Unit = QString::number(x);
-  }
-  else {
-    misc::str2num(editStop->text(), x, Unit, Factor);
-    x *= Factor;
-    misc::str2num(editStart->text(), y, Unit, Factor);
-    y *= Factor;
-    x = (x - y) / (editNumber->text().toDouble() - 1.0);
-
-    QString step = misc::num2str(x);
-
-    misc::str2num(step, x, Unit, Factor);
-    if(Factor == 1.0)
-        Unit = "";
-
-    Unit = QString::number(x) + " " + Unit;
-  }
-
-  editStep->blockSignals(true);  // do not calculate step again
-  editStep->setText(Unit);
-  editStep->blockSignals(false);
-}
-*/
-
-// -------------------------------------------------------------------------
-/* TODO: Need to implement mechanism to update STEP when POINTS is changed
-void ComponentDialog::slotStepChanged(const QString& Step)
-{
-  QString Unit;
-  double x, y, Factor;
-  if(comboType->currentIndex() == 1) {   // logarithmic ?
-    misc::str2num(editStop->text(), x, Unit, Factor);
-    x *= Factor;
-    misc::str2num(editStart->text(), y, Unit, Factor);
-    y *= Factor;
-
-    x /= y;
-    misc::str2num(Step, y, Unit, Factor);
-    y *= Factor;
-
-    x = log10(fabs(x)) * y;
-  }
-  else {
-    misc::str2num(editStop->text(), x, Unit, Factor);
-    x *= Factor;
-    misc::str2num(editStart->text(), y, Unit, Factor);
-    y *= Factor;
-
-    x -= y;
-    misc::str2num(Step, y, Unit, Factor);
-    y *= Factor;
-
-    x /= y;
-  }
-
-  editNumber->blockSignals(true);  // do not calculate number again
-  editNumber->setText(QString::number(round(x + 1.0), 'g', 16));
-  editNumber->blockSignals(false);
 }
 */
 
