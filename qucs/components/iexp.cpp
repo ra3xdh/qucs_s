@@ -88,11 +88,9 @@ Element* iExp::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString iExp::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
-        QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
-    }
+
+   s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+   s += " " + spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
 
    QString U1= spicecompat::normalize_value(Props.at(0)->Value);
    QString U2 = spicecompat::normalize_value(Props.at(1)->Value);

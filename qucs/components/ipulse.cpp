@@ -93,11 +93,8 @@ QString iPulse::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    for (Port *p1 : Ports) {
-        QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
-    }
+    s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    s += " " + spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
 
     double T1,T2, TrVal, TfVal, Pw,fac,Per;
     QString unit;
