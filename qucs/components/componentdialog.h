@@ -95,7 +95,7 @@ private:
  
   QStringList getSimulationList();
 
-  void updateSweepProperty(const QString& propertyWidget, const QString& value);
+  void updateSweepProperty(const QString& propertyWidget);
   void updateSweepWidgets(const QString& simType);
   void updatePropertyTable();
   void updateEqnEditor();
@@ -116,6 +116,7 @@ Q_OBJECT
 
 public:
   EqnHighlighter(const QString& keywordSet, QTextDocument* parent);
+  ~EqnHighlighter();
 
 protected:
   void highlightBlock(const QString &text) override;

@@ -25,7 +25,7 @@
   6. DONE: Have "Export" as a check box, or option list for Qucsator equations.
   7. DONE: .INCLUDE components have multiple files
   8. Should 'Lib' parameters also be able to open a file?
-  9. Check for memory leaks.
+  9. DONE: Check for memory leaks.
 */
 
 #include "componentdialog.h"
@@ -52,7 +52,7 @@ QStringList getOptionsFromString(const QString& description)
   {
     list = description.mid(start + 1, end - start - 1).split(',');
     for(auto entry : list)
-      options << entry.trimmed();
+      options << entry.trimmed(); // QString::trimmed flagged by valgrind leak check
   }
 
   return options;
@@ -126,6 +126,11 @@ class ParamWidget
       layout->addWidget(mCheckBox, row, 2);  
     }
 
+    virtual ~ParamWidget()
+    {
+      // qDebug() << "ParamWidget dtor called";
+    }
+
     void setLabel(const QString& label)
     {
       mLabel->setText(label + ":");
@@ -178,14 +183,14 @@ class ParamLineEdit : public QLineEdit, public ParamWidget
 {
   public:
     ParamLineEdit(const QString& param, const QString& label, QValidator* validator, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog, 
-                  void (ComponentDialog::* func)(const QString&, const QString&) = nullptr)
+                  void (ComponentDialog::* func)(const QString&) = nullptr)
     : ParamWidget(param, label, displayCheck, layout)
     {
       layout->addWidget(this, layout->rowCount() - 1, 1);
       setValidator(validator);
       
       if (func)
-        connect(this, &QLineEdit::textEdited, [=](const QString& value) { if (dialog) (dialog->*func)(mParam, value); });
+        connect(this, &QLineEdit::textEdited, [=]() { if (dialog) (dialog->*func)(mParam); });
     }
 
     void setEnabled(bool enabled) override
@@ -219,13 +224,13 @@ class ParamCombo : public QComboBox, public ParamWidget
 {
   public:
     ParamCombo(const QString& param, const QString& label, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog, 
-                void (ComponentDialog::* func)(const QString&, const QString&) = nullptr)
+                void (ComponentDialog::* func)(const QString&) = nullptr)
     : ParamWidget(param, label, displayCheck, layout)
     {
       layout->addWidget(this, layout->rowCount() - 1, 1);
       
       if (func)
-        connect(this, &QComboBox::currentTextChanged, [=](const QString& value) { if (dialog) (dialog->*func)(mParam, value); });
+        connect(this, &QComboBox::currentTextChanged, [=]() { if (dialog) (dialog->*func)(mParam); });
     }
 
     void setEnabled(bool enabled) override
@@ -255,10 +260,6 @@ class ParamCombo : public QComboBox, public ParamWidget
     {
       return currentText();
     }
-
-  private:
-    void (ComponentDialog::* function)(const QString&, const QString&);
-    ComponentDialog* mDialog;
 };
 
 // -------------------------------------------------------------------------
@@ -301,6 +302,11 @@ EqnHighlighter::EqnHighlighter(const QString& keywordSet, QTextDocument* parent)
   rule.pattern = QRegularExpression(QStringLiteral("\\b[A-Za-z0-9_]+(?=\\()"));
   rule.format = functionFormat;
   highlightingRules.append(rule);
+}
+
+EqnHighlighter::~EqnHighlighter()
+{
+  // qDebug() << "EqnHighlighter dtor called";
 }
 
 // -------------------------------------------------------------------------
@@ -409,7 +415,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       QGridLayout* sweepPageLayout = new QGridLayout(sweepPage);
 
       // Sweep page setup - add widgets for each possible sweep property.
-      void (ComponentDialog::* func)(const QString&, const QString&) = &ComponentDialog::updateSweepProperty;
+      void (ComponentDialog::* func)(const QString&) = &ComponentDialog::updateSweepProperty;
       sweepParamWidget["Sim"] = new ParamCombo("Sim", tr("Simulation"), true, sweepPageLayout, this, func);
       sweepParamWidget["Param"] = new ParamLineEdit("Param", tr("Sweep Parameter"), compNameVal, true, sweepPageLayout, this, func);
       sweepParamWidget["Type"] = new ParamCombo("Type", tr("Type"), true, sweepPageLayout, this, func);
@@ -429,7 +435,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       // Setup the widgets as per the stored type.
       sweepParamWidget["Sim"]->setOptions(getSimulationList());
       sweepParamWidget["Type"]->setOptions({"lin", "log", "list", "value"});
-      updateSweepProperty("All", "");
+      updateSweepProperty("All");
 
       // Create the properties page and add it to the tab widget.
       QWidget* propertiesPage = new QWidget(pageTabs);
@@ -452,7 +458,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     // Allow populating from a spice file if appropriate.
     if (QStringList({"Diode", "_BJT", "JFET", "MOSFET"}).contains(component->Model))
     {
-      QHBoxLayout *spiceButtonLayout = new QHBoxLayout(this);
+      QHBoxLayout *spiceButtonLayout = new QHBoxLayout;
       propertyTableLayout->addLayout(spiceButtonLayout);
       QPushButton* spiceButton = new QPushButton(tr("Populate parameters from SPICE file..."), this);
       connect(spiceButton, &QPushButton::released, this, &ComponentDialog::slotFillFromSpice);
@@ -496,6 +502,14 @@ ComponentDialog::~ComponentDialog()
   delete intVal;
   delete nameVal;
   delete paramVal;
+
+  // Clean up the sweep parameter multi-widget containers. The widgets are deleted by
+  // the system because they are reparented to the dialog or the dialog's subwidgets.
+  for (auto it = sweepParamWidget.keyValueBegin(); it != sweepParamWidget.keyValueEnd(); ++it) 
+  {
+    if (it->second)
+      delete it->second;
+  }
 }
 
 // -------------------------------------------------------------------------
@@ -515,7 +529,7 @@ void ComponentDialog::updateSweepWidgets(const QString& type)
 
 // -------------------------------------------------------------------------
 // Updates all the sweep params on the sweep page according the component value.
-void ComponentDialog::updateSweepProperty(const QString& property, const QString& value)
+void ComponentDialog::updateSweepProperty(const QString& property)
 {
   // Type has changed so update the widget presentation.
   if (property == "Type")
