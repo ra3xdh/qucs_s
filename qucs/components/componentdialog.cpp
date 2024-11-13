@@ -22,7 +22,7 @@
   3. DONE: Add special property names - i.e., for log sweeps (per decade instead of step)
   4. DONE: Update components from SPICE file.
   5. DONE: Implement highlighting.
-  6. Have "Export" as a check box, or option list for equations.
+  6. DONE: Have "Export" as a check box, or option list for Qucsator equations.
   7. DONE: .INCLUDE components have multiple files
   8. Should 'Lib' parameters also be able to open a file?
   9. Check for memory leaks.
@@ -93,7 +93,7 @@ public:
   }
   ~CompoundWidget()
   {
-    qDebug() << "CompoundWidget dtor called";
+    // qDebug() << "CompoundWidget dtor called";
     delete mButton;
     delete mEdit;
   }
@@ -219,7 +219,7 @@ class ParamCombo : public QComboBox, public ParamWidget
 {
   public:
     ParamCombo(const QString& param, const QString& label, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog, 
-                void (ComponentDialog::* func)(const QString&, const QString&))
+                void (ComponentDialog::* func)(const QString&, const QString&) = nullptr)
     : ParamWidget(param, label, displayCheck, layout)
     {
       layout->addWidget(this, layout->rowCount() - 1, 1);
@@ -330,7 +330,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
   setWindowTitle(tr("Edit Component Properties") + " - " + component->Description.toUpper());
 
-  qDebug() << "Component name is: " << component->Model << " " << component->Name;
+  // qDebug() << "Component name is: " << component->Model << " " << component->Name;
 
   // Setup dialog layout.
   QVBoxLayout* mainLayout = new QVBoxLayout(this);
@@ -356,6 +356,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   sweepProperties = QStringList({"Sim", "Param", "Type", "Values", "Start", "Stop", "Points"});
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
 
+  paramsHiddenBySim["Export"] = QStringList{"NutmegEq"};
   paramsHiddenBySim["Sim"] = QStringList{".AC", ".SP", ".TR", "Eqn", "SpicePar", "SpGlobPar"};
   paramsHiddenBySim["Param"] = QStringList{".AC", ".SP", ".TR"};
 
@@ -363,10 +364,11 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   if (isEquation)
   {
     // Create the equation editor.
-    QGroupBox *editorGroup = new QGroupBox(tr("Equation Editor"));
+    QGroupBox* editorGroup = new QGroupBox(tr("Equation Editor"));
     static_cast<QVBoxLayout*>(layout())->addWidget(editorGroup, 2);
-    QVBoxLayout *editorLayout = new QVBoxLayout(editorGroup);
+    QVBoxLayout* editorLayout = new QVBoxLayout(editorGroup);
 
+    // Ngspice equations can be referenced to a simulation.
     if (!paramsHiddenBySim["Sim"].contains(component->Model))
     {
       eqnSimCombo = new QComboBox();
@@ -379,6 +381,16 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     eqnEditor->setFont(font);
     new EqnHighlighter("ngspice", eqnEditor->document());
     editorLayout->addWidget(eqnEditor, 2);
+
+    // Qucsator equations can choose whether to export values.
+    if (!paramsHiddenBySim["Export"].contains(component->Model))
+    {
+      QHBoxLayout* exportLayout = new QHBoxLayout;
+      eqnExportCheck = new QCheckBox(tr("Put result in dataset"), this);
+      exportLayout->addWidget(eqnExportCheck);
+      exportLayout->addStretch();
+      editorLayout->addLayout(exportLayout);
+    }
 
     updateEqnEditor();
   }
@@ -505,8 +517,6 @@ void ComponentDialog::updateSweepWidgets(const QString& type)
 // Updates all the sweep params on the sweep page according the component value.
 void ComponentDialog::updateSweepProperty(const QString& property, const QString& value)
 {
-  qDebug() << "updateSweepProperty " << property << " = " << value;
-
   // Type has changed so update the widget presentation.
   if (property == "Type")
     updateSweepWidgets(sweepParamWidget["Type"]->value());
@@ -575,6 +585,7 @@ void ComponentDialog::updatePropertyTable()
     int row = 0;
     for (Property* property : component->Props)
     {
+      // qDebug() << "Adding / updating property " << property->Name << " " << property->Value << " " << (property->display ? "Show" : "Hide");
       // Check this is a sweep property (as there not added to property table).
       if (hasSweep && sweepProperties.contains(property->Name))
         continue;
@@ -637,12 +648,18 @@ void ComponentDialog::updateEqnEditor()
 
   for (auto property : component->Props)
   {
+    // qDebug() << "Adding / updating eqn property " << property->Name << " " << property->Value << " " 
+    //               << property->Description << " " << (property->display ? "Show" : "Hide");    
     if (eqnSimCombo && property->Name == "Simulation")
       eqnSimCombo->setCurrentText(property->Value);
+
+    else if (eqnExportCheck && property->Name == "Export")
+      eqnExportCheck->setCheckState(property->Value == "yes" ? Qt::Checked : Qt::Unchecked);
+
     else
       eqnList.append(property->Name + " = " + property->Value + "\n");
   }
-
+  
   eqnEditor->setPlainText(eqnList);
 }
 
@@ -667,6 +684,9 @@ void ComponentDialog::writeEquation()
     if (parts.count() == 2)
       component->Props.append(new Property(parts[0].trimmed(), parts[1].trimmed(), true));
   }
+
+  if (eqnExportCheck)
+    component->Props.append(new Property("Export", eqnExportCheck->checkState() == Qt::Checked ? "yes" : "no", false));
 }
 
 // -------------------------------------------------------------------------
@@ -847,7 +867,7 @@ void ComponentDialog::simpleEditEqn(QLineEdit* lineEdit)
 SimpleEqnDialog::SimpleEqnDialog(QString& string, QWidget* parent)
 : QDialog(parent), mText(string)
 {
-  qDebug() << "Showing an equation editor.... " << string;
+  // qDebug() << "Showing an equation editor.... " << string;
   setMinimumSize(300, 300);
   
   // Setup dialog layout.

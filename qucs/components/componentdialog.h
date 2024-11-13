@@ -42,7 +42,7 @@ class QGridLayout;
 
 class ParamWidget;
 class ParamLineEdit;
-class CompoundWidget;
+class ParamCombo;
 
 class ComponentDialog : public QDialog 
 {
@@ -69,6 +69,7 @@ private:
   QTableWidget* propertyTable;
   QTextEdit* eqnEditor;
   QComboBox* eqnSimCombo = nullptr;
+  QCheckBox* eqnExportCheck = nullptr;
 
   Component* component;
   Schematic* document;
