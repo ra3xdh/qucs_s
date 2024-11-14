@@ -1,3 +1,20 @@
+# Qucs-S 24.4.1
+
+## Bugfixes
+
+* Improved diagrams rendering speed #1042
+* Fixed hardcoded version in LC Cauer filter #1039
+* Fixed pulsed current source issues #1059
+* Fixed show exit status if Ngspice crashes #1001
+
+## Localization
+
+* Russian translation update #1038
+
+## Packaging
+
+* Prepare for Flatpak package #51
+
 # Qucs-S 24.4.0
 
 ## New features
