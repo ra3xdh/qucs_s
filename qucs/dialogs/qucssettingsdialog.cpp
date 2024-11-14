@@ -597,6 +597,17 @@ void QucsSettingsDialog::slotApply()
     if (_settings::Get().item<QColor>("GridColor") != GridColorButton->palette().color(GridColorButton->backgroundRole()))
     {
         _settings::Get().setItem<QColor>("GridColor", GridColorButton->palette().color(GridColorButton->backgroundRole()));
+
+        for (int tab = 0; tab < App->DocumentTab->count(); tab++)
+        {
+            QWidget* widget = App->DocumentTab->widget(tab);
+            if (!QucsApp::isTextDocument(widget))
+            {
+                static_cast<Schematic*>(widget)->setChanged(true);
+                static_cast<Schematic*>(widget)->repaint();
+            }
+        }
+
         changed = true;
     }
 
