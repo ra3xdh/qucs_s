@@ -51,6 +51,7 @@ private slots:
     void slotAppFontDialog();
     void slotTextFontDialog();
     void slotBGColorDialog();
+    void slotGridColorDialog();
     void slotDefaultValues();
     void slotAddFileType();
     void slotRemoveFileType();
@@ -88,7 +89,7 @@ public:
               *checkAntiAliasing, *checkTextAntiAliasing,
               *checkFullTraceNames;
     QComboBox *LanguageCombo;
-    QPushButton *FontButton, *AppFontButton, *TextFontButton, *BGColorButton;
+    QPushButton *FontButton, *AppFontButton, *TextFontButton, *BGColorButton, *GridColorButton;
     QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
               *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit,
               *OpenVAFEdit, *RFLayoutEdit;

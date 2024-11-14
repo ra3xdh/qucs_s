@@ -205,8 +205,9 @@ public:
   bool symbolMode;  // true if in symbol painting mode
   bool isSymbolOnly;
 
-  // Horizontal and vertical grid step
+  // Horizontal and vertical grid step, grid color.
   int GridX, GridY;
+  QColor GridColor;
 
   // Variables View* are the coordinates of top-level and bottom-right corners
   // of a rectangle representing the schematic "model". This

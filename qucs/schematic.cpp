@@ -55,6 +55,7 @@
 #include "paintings/paintings.h"
 #include "qucs.h"
 #include "schematic.h"
+#include "settings.h"
 #include "textdoc.h"
 
 #include "misc.h"
@@ -87,6 +88,8 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_)
     setFont(QucsSettings.font);
     // ...........................................................
     GridX = GridY = 10;
+    GridColor = _settings::Get().item<QString>("GridColor");
+   
     ViewX1 = ViewY1 = 0;
     ViewX2 = ViewY2 = 1;
     UsedX1 = UsedY1 = INT_MAX;
@@ -1078,7 +1081,7 @@ void Schematic::drawGrid(QPainter* painter) {
     // A grid drawn with pen of 1.0 width reportedly looks good both
     // on standard and HiDPI displays.
     // See here for details https://github.com/ra3xdh/qucs_s/pull/524
-    painter->setPen(QPen{ Qt::black, 1.0 });
+    painter->setPen(QPen{ GridColor, 1.0 });
 
     {
         // Draw small cross at origin of coordinates
