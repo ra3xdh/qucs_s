@@ -594,17 +594,13 @@ void QucsSettingsDialog::slotApply()
     }
 
     // Update all open schematics with the new grid color.
-    if (_settings::Get().item<QColor>("GridColor") != GridColorButton->palette().color(GridColorButton->backgroundRole()))
-    {
+    if (_settings::Get().item<QColor>("GridColor") != GridColorButton->palette().color(GridColorButton->backgroundRole())) {
         _settings::Get().setItem<QColor>("GridColor", GridColorButton->palette().color(GridColorButton->backgroundRole()));
 
-        for (int tab = 0; tab < App->DocumentTab->count(); tab++)
-        {
+        for (int tab = 0; tab < App->DocumentTab->count(); tab++) {
             QWidget* widget = App->DocumentTab->widget(tab);
-            if (!QucsApp::isTextDocument(widget))
-            {
-                static_cast<Schematic*>(widget)->setChanged(true);
-                static_cast<Schematic*>(widget)->repaint();
+            if (!QucsApp::isTextDocument(widget)) {
+                static_cast<Schematic*>(widget)->GridColor = _settings::Get().item<QColor>("GridColor");
             }
         }
 
