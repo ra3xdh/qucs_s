@@ -21,36 +21,41 @@
 #include "qucs.h"
 
 
-QucsDoc::QucsDoc(QucsApp *App_, const QString& Name_)
+QucsDoc::QucsDoc(QucsApp *App_, const QString& Name_) :
+  a_DocName(Name_),
+  a_DataSet(),
+  a_DataDisplay(),
+  a_Script(),
+  a_SimTime(),
+  a_lastSaved(),
+  a_Scale(1.0),
+  a_App(App_),
+  a_DocChanged(false),
+  a_SimOpenDpl(false),
+  a_SimRunScript(false),
+  a_showBias(-1),   // don't show DC bias (currently for "Schematic" only)
+  a_GridOn(true),
+  a_tmpPosX(0),
+  a_tmpPosY(0)
 {
-  App = App_;
-
-  GridOn = true;
-  DocName = Name_;
-  QFileInfo Info(DocName);
-  if(!DocName.isEmpty()) {
-    DocName = Info.absoluteFilePath();
+  QFileInfo Info(a_DocName);
+  if(!a_DocName.isEmpty()) {
+    a_DocName = Info.absoluteFilePath();
     QString base = Info.completeBaseName();
     QString ext = Info.suffix();
 
     if(ext == "m" || ext == "oct")
-      SimTime = "1";
+      a_SimTime = "1";
 
-    DataSet = base + ".dat";       // name of the default dataset
-    Script = base + ".m";          // name of the default script
+    a_DataSet = base + ".dat";       // name of the default dataset
+    a_Script = base + ".m";          // name of the default script
     if(ext != "dpl")
-      DataDisplay = base + ".dpl"; // name of default data display
+      a_DataDisplay = base + ".dpl"; // name of default data display
     else {
-      DataDisplay = base + ".sch"; // name of default schematic
-      GridOn = false;              // data display without grid (per default)
+      a_DataDisplay = base + ".sch"; // name of default schematic
+      a_GridOn = false;              // data display without grid (per default)
     }
   }
-  SimOpenDpl = false;
-  SimRunScript = false;
-
-  DocChanged = false;
-  showBias = -1;  // don't show DC bias (currently for "Schematic" only)
-  Scale = 1.0;
 }
 
 QString QucsDoc::fileSuffix (const QString& Name) {
@@ -59,7 +64,7 @@ QString QucsDoc::fileSuffix (const QString& Name) {
 }
 
 QString QucsDoc::fileSuffix (void) {
-  return fileSuffix (DocName);
+  return fileSuffix (a_DocName);
 }
 
 QString QucsDoc::fileBase (const QString& Name) {
@@ -68,6 +73,6 @@ QString QucsDoc::fileBase (const QString& Name) {
 }
 
 QString QucsDoc::fileBase (void) {
-  return fileBase (DocName);
+  return fileBase (a_DocName);
 }
 

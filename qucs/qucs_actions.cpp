@@ -75,7 +75,7 @@ QRegularExpressionValidator Val_CompProp(Expr_CompProp, 0);
 // -----------------------------------------------------------------------
 // This function is called from all toggle actions.
 bool QucsApp::performToggleAction(bool on, QAction *Action,
-	pToggleFunc Function, pMouseFunc MouseMove, pMouseFunc2 MousePress)
+      pToggleFunc Function, pMouseFunc MouseMove, pMouseFunc2 MousePress)
 {
   slotHideEdit(); // disable text edit of component property
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
@@ -125,7 +125,7 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
 void QucsApp::slotOnGrid(bool on)
 {
   performToggleAction(on, onGrid, &Schematic::elementsOnGrid,
-		&MouseActions::MMoveOnGrid, &MouseActions::MPressOnGrid);
+    &MouseActions::MMoveOnGrid, &MouseActions::MPressOnGrid);
 }
 
 // -----------------------------------------------------------------------
@@ -133,7 +133,7 @@ void QucsApp::slotOnGrid(bool on)
 void QucsApp::slotEditRotate(bool on)
 {
   performToggleAction(on, editRotate, &Schematic::rotateElements,
-		&MouseActions::MMoveRotate, &MouseActions::MPressRotate);
+    &MouseActions::MMoveRotate, &MouseActions::MPressRotate);
 }
 
 // -----------------------------------------------------------------------
@@ -141,7 +141,7 @@ void QucsApp::slotEditRotate(bool on)
 void QucsApp::slotEditMirrorX(bool on)
 {
   performToggleAction(on, editMirror, &Schematic::mirrorXComponents,
-		&MouseActions::MMoveMirrorX, &MouseActions::MPressMirrorX);
+    &MouseActions::MMoveMirrorX, &MouseActions::MPressMirrorX);
 }
 
 // -----------------------------------------------------------------------
@@ -149,7 +149,7 @@ void QucsApp::slotEditMirrorX(bool on)
 void QucsApp::slotEditMirrorY(bool on)
 {
   performToggleAction(on, editMirrorY, &Schematic::mirrorYComponents,
-		&MouseActions::MMoveMirrorY, &MouseActions::MPressMirrorY);
+    &MouseActions::MMoveMirrorY, &MouseActions::MPressMirrorY);
 }
 
 // -----------------------------------------------------------------------
@@ -197,21 +197,21 @@ void QucsApp::slotEditDelete(bool on)
 void QucsApp::slotSetWire(bool on)
 {
   performToggleAction(on, insWire, 0,
-		&MouseActions::MMoveWire1, &MouseActions::MPressWire1);
+    &MouseActions::MMoveWire1, &MouseActions::MPressWire1);
 }
 
 // -----------------------------------------------------------------------
 void QucsApp::slotInsertLabel(bool on)
 {
   performToggleAction(on, insLabel, 0,
-		&MouseActions::MMoveLabel, &MouseActions::MPressLabel);
+    &MouseActions::MMoveLabel, &MouseActions::MPressLabel);
 }
 
 // -----------------------------------------------------------------------
 void QucsApp::slotSetMarker(bool on)
 {
   performToggleAction(on, setMarker, 0,
-		&MouseActions::MMoveMarker, &MouseActions::MPressMarker);
+    &MouseActions::MMoveMarker, &MouseActions::MPressMarker);
 }
 
 // -----------------------------------------------------------------------
@@ -219,7 +219,7 @@ void QucsApp::slotSetMarker(bool on)
 void QucsApp::slotSetDiagramLimits(bool on)
 {
   performToggleAction(on, setDiagramLimits, 0,
-	                    &MouseActions::MMoveSetLimits, &MouseActions::MPressSetLimits);
+                    &MouseActions::MMoveSetLimits, &MouseActions::MPressSetLimits);
 }
 
 // -----------------------------------------------------------------------
@@ -227,17 +227,17 @@ void QucsApp::slotSetDiagramLimits(bool on)
 void QucsApp::slotResetDiagramLimits()
 {
   if (view->focusElement && view->focusElement->Type == isDiagram)
-  {   
+  {
     Diagram* diagram = (Diagram*)(view->focusElement);
-    
+
     diagram->xAxis.autoScale = true;
     diagram->yAxis.autoScale = true;
     diagram->zAxis.autoScale = true;
 
     // Now read in the data.
     auto* Doc = (Schematic*)DocumentTab->currentWidget();
-    QFileInfo Info(Doc->DocName);
-    QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
+    QFileInfo Info(Doc->getDocName());
+    QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->getDataSet();
     diagram->loadGraphData(defaultDataSet);
 
     Doc->setChanged(true, true);
@@ -253,7 +253,7 @@ void QucsApp::slotResetDiagramLimits()
 void QucsApp::slotMoveText(bool on)
 {
   performToggleAction(on, moveText, 0,
-		&MouseActions::MMoveMoveTextB, &MouseActions::MPressMoveText);
+    &MouseActions::MMoveMoveTextB, &MouseActions::MPressMoveText);
 }
 
 // -----------------------------------------------------------------------
@@ -269,7 +269,7 @@ void QucsApp::slotZoomIn(bool on)
   }
   else
     performToggleAction(on, magPlus, 0,
-		&MouseActions::MMoveZoomIn, &MouseActions::MPressZoomIn);
+      &MouseActions::MMoveZoomIn, &MouseActions::MPressZoomIn);
 }
 
 
@@ -502,7 +502,7 @@ void QucsApp::slotInsertPort(bool on)
     delete view->selElem;  // delete previously selected component
 
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if (Doc->symbolMode) {
+  if (Doc->getSymbolMode()) {
     view->selElem = new PortSymbol();
   } else {
      view->selElem = new SubCirPort();
@@ -555,7 +555,7 @@ void QucsApp::slotAlignTop()
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   if(!Doc->aligning(0))
     QMessageBox::information(this, tr("Info"),
-		      tr("At least two elements must be selected !"));
+          tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
@@ -568,7 +568,7 @@ void QucsApp::slotAlignBottom()
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   if(!Doc->aligning(1))
     QMessageBox::information(this, tr("Info"),
-		      tr("At least two elements must be selected !"));
+          tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
@@ -581,7 +581,7 @@ void QucsApp::slotAlignLeft()
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   if(!Doc->aligning(2))
     QMessageBox::information(this, tr("Info"),
-		      tr("At least two elements must be selected !"));
+          tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
@@ -594,7 +594,7 @@ void QucsApp::slotAlignRight()
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   if(!Doc->aligning(3))
     QMessageBox::information(this, tr("Info"),
-		      tr("At least two elements must be selected !"));
+          tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
@@ -629,7 +629,7 @@ void QucsApp::slotCenterHorizontal()
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   if(!Doc->aligning(4))
     QMessageBox::information(this, tr("Info"),
-		      tr("At least two elements must be selected !"));
+          tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
@@ -642,7 +642,7 @@ void QucsApp::slotCenterVertical()
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   if(!Doc->aligning(5))
     QMessageBox::information(this, tr("Info"),
-		      tr("At least two elements must be selected !"));
+          tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
@@ -918,8 +918,8 @@ void QucsApp::slotCallRFLayout()
                                   tr("Layouting of display pages is not supported!"));
             return;
         }
-        input_file = sch->DocName;
-        QFileInfo inf(sch->DocName);
+        input_file = sch->getDocName();
+        QFileInfo inf(sch->getDocName());
         odir = inf.absolutePath();
         netlist_file = inf.absolutePath() + QDir::separator()
                 + inf.baseName() + ".net";
@@ -932,7 +932,7 @@ void QucsApp::slotCallRFLayout()
         QStringList Collect;
         QPlainTextEdit *ErrText = new QPlainTextEdit();  //dummy
         int pNum = sch->prepareNetlist(stream, Collect, ErrText);
-        if (!sch->isAnalog) {
+        if (!sch->getIsAnalog()) {
             QMessageBox::critical(this, tr("Error"), tr("Digital schematic not supported!"));
             return;
         }
@@ -1119,7 +1119,7 @@ void QucsApp::slotCursorLeft(bool left)
     Doc->viewport()->update();
     return;
   } else { // random selection. move all of them
-    view->moveElements(&movingElements, sign*Doc->GridX, 0);
+    view->moveElements(&movingElements, sign*Doc->getGridX(), 0);
     view->MAx3 = 1;  // sign for moved elements
     view->endElementMoving(Doc, &movingElements);
   }
@@ -1185,7 +1185,7 @@ void QucsApp::slotCursorUp(bool up)
     Doc->viewport()->update();
     return;
   }else{ // some random selection, put it back
-    view->moveElements(&movingElements, 0, ((up)?-1:1) * Doc->GridY);
+    view->moveElements(&movingElements, 0, ((up)?-1:1) * Doc->getGridY());
     view->MAx3 = 1;  // sign for moved elements
     view->endElementMoving(Doc, &movingElements);
   }
@@ -1199,7 +1199,7 @@ void QucsApp::slotApplyCompText()
 {
   QFont f = QucsSettings.font;
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  f.setPointSizeF( Doc->Scale * float(f.pointSize()) );
+  f.setPointSizeF( Doc->getScale() * float(f.pointSize()) );
   editText->setFont(f);
 
   Component *const component = dynamic_cast<Component*>(view->focusElement);
@@ -1225,7 +1225,7 @@ void QucsApp::slotApplyCompText()
         // TODO: rewrite with std::none_of after replacing Q3PtrList
         //       with modern container
         bool is_unique = true;
-        for (auto* other : *Doc->Components) {
+        for (auto* other : *Doc->a_Components) {
           if (other->Name == new_name) {
             is_unique = false;
             break;
@@ -1328,10 +1328,10 @@ void QucsApp::slotImportData()
       QString dname;
       if (isTextDocument(DocumentTab->currentWidget())) {
           TextDoc *doc = (TextDoc *)DocumentTab->currentWidget();
-          dname = doc->DocName;
+          dname = doc->getDocName();
       } else {
           Schematic *doc = (Schematic *)DocumentTab->currentWidget();
-          dname = doc->DocName;
+          dname = doc->getDocName();
       }
       QFileInfo inf(dname);
       if (inf.exists()) {
@@ -1404,7 +1404,7 @@ void QucsApp::slotExportGraphAsCsv()
   int Count = g->countY * g->axis(0)->count;
   for(n = 0; n < Count; n++) {
     m = n;
-	 for(unsigned ii=0; (pD=g->axis(ii)); ++ii) {
+    for(unsigned ii=0; (pD=g->axis(ii)); ++ii) {
       Stream << *(pD->Points + m%pD->count) << ';';
       m /= pD->count;
     }
@@ -1598,7 +1598,7 @@ void QucsApp::slotBuildModule()
     builder->setProcessChannelMode(QProcess::MergedChannels);
     // get current va document
     QucsDoc *Doc = getDoc();
-    QString vaModule = Doc->fileBase(Doc->DocName);
+    QString vaModule = Doc->fileBase(Doc->getDocName());
 
     QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
 
@@ -1689,7 +1689,7 @@ void QucsApp::buildWithOpenVAF()
     builder->setProcessChannelMode(QProcess::MergedChannels);
     // get current va document
     QucsDoc *Doc = getDoc();
-    QString vaModule = Doc->DocName;
+    QString vaModule = Doc->getDocName();
 
     QString openVAF = QucsSettings.OpenVAFExecutable;
 

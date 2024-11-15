@@ -35,11 +35,11 @@ mySpinBox::mySpinBox(int Min, int Max, int Step, double *Val, QWidget *Parent)
 {
   setMinimum(Min);
   setMaximum(Max);
-  setSingleStep(Step); 
+  setSingleStep(Step);
   Values = Val;
   ValueSize = Max;
   //editor()->
-	//	setReadOnly(true);
+  //  setReadOnly(true);
 }
 
 
@@ -55,7 +55,7 @@ QString mySpinBox::textFromValue(int Val) const
 
 QValidator::State mySpinBox::validate ( QString & text, int & pos ) const
 {
-  if(pos>ValueSize)return QValidator::Invalid; 
+  if(pos>ValueSize)return QValidator::Invalid;
   if(QString::number(*(Values+pos))==text)
   return QValidator::Acceptable;
   else return QValidator::Invalid;
@@ -63,7 +63,7 @@ QValidator::State mySpinBox::validate ( QString & text, int & pos ) const
 
 
 SweepDialog::SweepDialog(Schematic *Doc_,QHash<QString,double> *NodeVals)
-			: QDialog(Doc_)
+    : QDialog(Doc_)
 {
   qDebug() << "SweepDialog::SweepDialog()";
 
@@ -100,7 +100,7 @@ SweepDialog::SweepDialog(Schematic *Doc_,QHash<QString,double> *NodeVals)
 
   DataX const *pD;
   mySpinBox *Box;
-  
+
   for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
     all->addWidget(new QLabel(pD->Var, this), i,0);
     //cout<<"count: "<<pD->count-1<<", points: "<<*pD->Points<<endl;
@@ -111,7 +111,7 @@ SweepDialog::SweepDialog(Schematic *Doc_,QHash<QString,double> *NodeVals)
     cout<<"Min: "<<Min<<", Max: "<<Max<<", Step: "<<Step<<endl;
     Box = new mySpinBox(Min, Max, Step, pD->Points, this);*/
     Box = new mySpinBox(0, pD->count-1, 1, pD->Points, this);
-    Box->setValue(0);  
+    Box->setValue(0);
     all->addWidget(Box, i++,1);
     connect(Box, SIGNAL(valueChanged(int)), SLOT(slotNewValue(int)));
     BoxList.append(Box);
@@ -169,8 +169,8 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
 
   bool hasNoComp;
   Graph *pg = new Graph(NULL, ""); // HACK!
-  QFileInfo Info(Doc->DocName);
-  QString DataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
+  QFileInfo Info(Doc->getDocName());
+  QString DataSet = Info.absolutePath() + QDir::separator() + Doc->getDataSet();
 
   Node *pn;
 
@@ -183,7 +183,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
   ValueList.clear();
 
   // create DC voltage for all nodes
-  for(pn = Doc->Nodes->first(); pn != 0; pn = Doc->Nodes->next()) {
+  for(pn = Doc->a_Nodes->first(); pn != 0; pn = Doc->a_Nodes->next()) {
     if(pn->Name.isEmpty()) continue;
 
     pn->x1 = 0;
@@ -242,7 +242,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
 
   // create DC current through each probe
   Component *pc;
-  for(pc = Doc->Components->first(); pc != 0; pc = Doc->Components->next())
+  for(pc = Doc->a_Components->first(); pc != 0; pc = Doc->a_Components->next())
     if(pc->Model == "IProbe") {
       pn = pc->Ports.first()->Connection;
       if(!pn->Name.isEmpty())   // preserve node voltage ?
@@ -298,7 +298,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
     }
 
 
-  Doc->showBias = 1;
+  Doc->setShowBias(1);
 
   return pg;
 }

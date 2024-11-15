@@ -51,7 +51,7 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
   SetChanged = false;
   devtype = DEV_DEF;
 
-  tmpPosX = tmpPosY = 1;  // set to 1 to trigger line highlighting
+  a_tmpPosX = a_tmpPosY = 1;  // set to 1 to trigger line highlighting
   setLanguage (Name_);
 
   viewport()->setFocus();
@@ -125,22 +125,22 @@ void TextDoc::setLanguage (int lang)
  */
 bool TextDoc::saveSettings (void)
 {
-  QFile file (DocName + ".cfg");
+  QFile file (a_DocName + ".cfg");
   if (!file.open (QIODevice::WriteOnly))
     return false;
 
   QTextStream stream (&file);
   stream << "Textfile settings file, Qucs " PACKAGE_VERSION "\n"
-	 << "Simulation=" << simulation << "\n"
-	 << "Duration=" << SimTime << "\n"
-	 << "Module=" << (!simulation) << "\n"
-	 << "Library=" << Library << "\n"
-	 << "Libraries=" << Libraries << "\n"
-	 << "ShortDesc=" << ShortDesc << "\n"
-	 << "LongDesc=" << LongDesc << "\n"
-	 << "Icon=" << Icon << "\n"
-	 << "Recreate=" << recreate << "\n"
-	 << "DeviceType=" << devtype << "\n";
+    << "Simulation=" << simulation << "\n"
+    << "Duration=" << a_SimTime << "\n"
+    << "Module=" << (!simulation) << "\n"
+    << "Library=" << Library << "\n"
+    << "Libraries=" << Libraries << "\n"
+    << "ShortDesc=" << ShortDesc << "\n"
+    << "LongDesc=" << LongDesc << "\n"
+    << "Icon=" << Icon << "\n"
+    << "Recreate=" << recreate << "\n"
+    << "DeviceType=" << devtype << "\n";
 
   file.close ();
   SetChanged = false;
@@ -153,7 +153,7 @@ bool TextDoc::saveSettings (void)
  */
 bool TextDoc::loadSettings (void)
 {
-  QFile file (DocName + ".cfg");
+  QFile file (a_DocName + ".cfg");
   if (!file.open (QIODevice::ReadOnly))
     return false;
 
@@ -168,7 +168,7 @@ bool TextDoc::loadSettings (void)
     if (Setting == "Simulation") {
       simulation = Line.toInt (&ok);
     } else if (Setting == "Duration") {
-      SimTime = Line;
+      a_SimTime = Line;
     } else if (Setting == "Module") {
     } else if (Setting == "Library") {
       Library = Line;
@@ -197,15 +197,15 @@ bool TextDoc::loadSettings (void)
  */
 void TextDoc::setName (const QString& Name_)
 {
-  DocName = Name_;
-  setLanguage (DocName);
+  a_DocName = Name_;
+  setLanguage (a_DocName);
 
-  QFileInfo Info (DocName);
+  QFileInfo Info (a_DocName);
 
-  DataSet = Info.baseName () + ".dat";
-  DataDisplay = Info.baseName () + ".dpl";
+  a_DataSet = Info.baseName () + ".dat";
+  a_DataDisplay = Info.baseName () + ".dpl";
   if(Info.suffix() == "m" || Info.suffix() == "oct")
-    SimTime = "1";
+    a_SimTime = "1";
 }
 
 /*!
@@ -222,32 +222,32 @@ void TextDoc::becomeCurrent (bool)
   emit signalRedoState(document()->isRedoAvailable());
 
   // update appropriate menu entries
-  App->symEdit->setText (tr("Edit Text Symbol"));
-  App->symEdit->setStatusTip (tr("Edits the symbol for this text document"));
-  App->symEdit->setWhatsThis (
-	tr("Edit Text Symbol\n\nEdits the symbol for this text document"));
+  a_App->symEdit->setText (tr("Edit Text Symbol"));
+  a_App->symEdit->setStatusTip (tr("Edits the symbol for this text document"));
+  a_App->symEdit->setWhatsThis (
+    tr("Edit Text Symbol\n\nEdits the symbol for this text document"));
 
   if (language == LANG_VHDL) {
-    App->insEntity->setText (tr("VHDL entity"));
-    App->insEntity->setStatusTip (tr("Inserts skeleton of VHDL entity"));
-    App->insEntity->setWhatsThis (
-	tr("VHDL entity\n\nInserts the skeleton of a VHDL entity"));
+    a_App->insEntity->setText (tr("VHDL entity"));
+    a_App->insEntity->setStatusTip (tr("Inserts skeleton of VHDL entity"));
+    a_App->insEntity->setWhatsThis (
+      tr("VHDL entity\n\nInserts the skeleton of a VHDL entity"));
   }
   else if (language == LANG_VERILOG || language == LANG_VERILOGA) {
-    App->insEntity->setText (tr("Verilog module"));
-    App->insEntity->setStatusTip (tr("Inserts skeleton of Verilog module"));
-    App->insEntity->setWhatsThis (
-	tr("Verilog module\n\nInserts the skeleton of a Verilog module"));
-    App->buildModule->setEnabled(true);
+    a_App->insEntity->setText (tr("Verilog module"));
+    a_App->insEntity->setStatusTip (tr("Inserts skeleton of Verilog module"));
+    a_App->insEntity->setWhatsThis (
+      tr("Verilog module\n\nInserts the skeleton of a Verilog module"));
+    a_App->buildModule->setEnabled(true);
   }
   else if (language == LANG_OCTAVE) {
-    App->insEntity->setText (tr("Octave function"));
-    App->insEntity->setStatusTip (tr("Inserts skeleton of Octave function"));
-    App->insEntity->setWhatsThis (
-	tr("Octave function\n\nInserts the skeleton of a Octave function"));
+    a_App->insEntity->setText (tr("Octave function"));
+    a_App->insEntity->setStatusTip (tr("Inserts skeleton of Octave function"));
+    a_App->insEntity->setWhatsThis (
+      tr("Octave function\n\nInserts the skeleton of a Octave function"));
   }
-  App->simulate->setEnabled (true);
-  App->editActivate->setEnabled (true);
+  a_App->simulate->setEnabled (true);
+  a_App->editActivate->setEnabled (true);
 }
 
 bool TextDoc::baseSearch(const QString &str, bool CaseSensitive, bool wordOnly, bool backward)
@@ -320,8 +320,8 @@ void TextDoc::slotCursorPosChanged()
   int x = pos.blockNumber();
   int y = pos.columnNumber();
   emit signalCursorPosChanged(x+1, y+1, "");
-  tmpPosX = x;
-  tmpPosY = y;
+  a_tmpPosX = x;
+  a_tmpPosY = y;
 }
 
 /*!
@@ -329,13 +329,13 @@ void TextDoc::slotCursorPosChanged()
  */
 void TextDoc::slotSetChanged()
 {
-  if((document()->isModified() && !DocChanged) || SetChanged) {
-    DocChanged = true;
+  if((document()->isModified() && !a_DocChanged) || SetChanged) {
+    a_DocChanged = true;
   }
-  else if((!document()->isModified() && DocChanged)) {
-    DocChanged = false;
+  else if((!document()->isModified() && a_DocChanged)) {
+    a_DocChanged = false;
   }
-  emit signalFileChanged(DocChanged);
+  emit signalFileChanged(a_DocChanged);
   emit signalUndoState(document()->isUndoAvailable());
   emit signalRedoState(document()->isRedoAvailable());
 }
@@ -352,7 +352,7 @@ QMenu *TextDoc::createStandardContextMenu()
   QMenu *popup = QPlainTextEdit::createStandardContextMenu();
 
    if (language != LANG_OCTAVE) {
-       ((QWidget *) popup)->addAction(App->fileSettings);
+       ((QWidget *) popup)->addAction(a_App->fileSettings);
    }
    return popup;
 }
@@ -363,19 +363,19 @@ QMenu *TextDoc::createStandardContextMenu()
  */
 bool TextDoc::load ()
 {
-  QFile file (DocName);
+  QFile file (a_DocName);
   if (!file.open (QIODevice::ReadOnly))
     return false;
-  setLanguage (DocName);
+  setLanguage (a_DocName);
 
   QTextStream stream (&file);
   insertPlainText(stream.readAll());
   document()->setModified(false);
   slotSetChanged ();
   file.close ();
-  lastSaved = QDateTime::currentDateTime ();
+  a_lastSaved = QDateTime::currentDateTime ();
   loadSettings ();
-  SimOpenDpl = simulation ? true : false;
+  a_SimOpenDpl = simulation ? true : false;
   refreshLanguage();
   return true;
 }
@@ -389,10 +389,10 @@ int TextDoc::save ()
 {
   saveSettings ();
 
-  QFile file (DocName);
+  QFile file (a_DocName);
   if (!file.open (QIODevice::WriteOnly))
     return -1;
-  setLanguage (DocName);
+  setLanguage (a_DocName);
 
   QTextStream stream (&file);
   stream << toPlainText();
@@ -400,8 +400,8 @@ int TextDoc::save ()
   slotSetChanged ();
   file.close ();
 
-  QFileInfo Info (DocName);
-  lastSaved = Info.lastModified ();
+  QFileInfo Info (a_DocName);
+  a_lastSaved = Info.lastModified ();
 
   /// clear highlighted lines on save \see MessageDock::slotCursor()
   QList<QTextEdit::ExtraSelection> extraSelections;
@@ -412,7 +412,7 @@ int TextDoc::save ()
 }
 
 /*!
- * \brief Zooms the document in and out. Note, the zoom amount is fixed by Qt and the 
+ * \brief Zooms the document in and out. Note, the zoom amount is fixed by Qt and the
  *        amount passed is ignored.
  */
 float TextDoc::zoomBy(float zoom)
@@ -441,14 +441,14 @@ void TextDoc::showNoZoom()
 }
 
 /*!
- * \brief TextDoc::loadSimulationTime set SimTime member variable
+ * \brief TextDoc::loadSimulationTime set a_SimTime member variable
  * \param Time string  with simulation time
- * \return true if SimTime is set
+ * \return true if a_SimTime is set
  */
 bool TextDoc::loadSimulationTime(QString& Time)
 {
-  if(!SimTime.isEmpty()) {
-    Time = SimTime;
+  if(!a_SimTime.isEmpty()) {
+    Time = a_SimTime;
     return true;
   }
   return false;
@@ -517,13 +517,13 @@ void TextDoc::insertSkeleton ()
 {
   if (language == LANG_VHDL)
     appendPlainText("entity  is\n  port ( : in bit);\nend;\n"
-	    "architecture  of  is\n  signal : bit;\nbegin\n\nend;\n\n");
+      "architecture  of  is\n  signal : bit;\nbegin\n\nend;\n\n");
   else if (language == LANG_VERILOG)
     appendPlainText ("module  ( );\ninput ;\noutput ;\nbegin\n\nend\n"
-	    "endmodule\n\n");
+      "endmodule\n\n");
   else if (language == LANG_OCTAVE)
     appendPlainText ("function  =  ( )\n"
-	    "endfunction\n\n");
+      "endfunction\n\n");
 }
 
 /*!
@@ -550,7 +550,7 @@ QString TextDoc::getModuleName (void)
     }
   case LANG_OCTAVE:
     {
-      QFileInfo Info (DocName);
+      QFileInfo Info (a_DocName);
       return Info.baseName ();
     }
   default:
@@ -568,7 +568,7 @@ void TextDoc::wheelEvent(QWheelEvent* event)
     if (event->angleDelta().y() > 0) {
       zoomIn();
     }
-    
+
     else {
       zoomOut();
     }
@@ -603,7 +603,7 @@ void TextDoc::highlightCurrentLine()
 
 void TextDoc::refreshLanguage()
 {
-    this->setLanguage(DocName);
+    this->setLanguage(a_DocName);
     syntaxHighlight->setLanguage(language);
     syntaxHighlight->setDocument(document());
 }

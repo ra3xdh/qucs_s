@@ -30,9 +30,12 @@
 #define MAXPORTS 8
 #define MAXNAME 128
 
-S2Spice::S2Spice()
+S2Spice::S2Spice():
+    a_z0(-1),
+    a_file(),
+    a_device_name(),
+    a_err_text()
 {
-    z0 = -1;
 }
 
 bool S2Spice::convertTouchstone(QTextStream *stream)
@@ -50,24 +53,24 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     double ph, offset, mag;
 
 
-    QFile ff(file);
+    QFile ff(a_file);
     if (!ff.open(QIODevice::ReadOnly)) {
-        err_text = "Failed to open file: " + file + "\n";
+        a_err_text = "Failed to open file: " + a_file + "\n";
         return false;
     }
     QTextStream in_stream(&ff);
 
     /* Find number of ports */
-    QFileInfo inf(file);
+    QFileInfo inf(a_file);
     ports = inf.suffix().mid(1,1).toInt();
     if ( (ports < 1) || (ports > MAXPORTS) ) {
-        err_text = "Invalid port number in file: " + file + "\n";
+        a_err_text = "Invalid port number in file: " + a_file + "\n";
         return false;
     }
 
 
     /* build first line of output file */
-    (*stream) << ".SUBCKT " + device_name;
+    (*stream) << ".SUBCKT " + a_device_name;
     for (int i = 0; i <= ports; i++) {
         (*stream) << QStringLiteral(" %1").arg(i+1);
     }
@@ -101,7 +104,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     }
 
     if (!next_line.contains(" S " )) {
-        err_text = "Wrong data in file: " + file + "\n";
+        a_err_text = "Wrong data in file: " + a_file + "\n";
         return false;
     }
     /* input impedances */
@@ -109,10 +112,10 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     QStringList tmp_lst = next_line.split(" ",qucs::SkipEmptyParts);
     z[0] = tmp_lst.at(tmp_lst.count()-1).toDouble();
     for (int i = 0; i < ports; i++ ) {
-        if ( z0 < 0 ) {  /* takes the Z value from the input file */
+        if ( a_z0 < 0 ) {  /* takes the Z value from the input file */
             z[i] = z[0];
         } else {        /* takes the Z value from the command line */
-            z[i] = z0;
+            z[i] = a_z0;
         }
     }
 
@@ -132,7 +135,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
         if(next_line.isEmpty()) continue;
         if(next_line.at(0)=='#') continue;
         if(next_line.startsWith("!noise parameters")) {
-            err_text = "Noise simulation in S2P files is not supported!\n"
+            a_err_text = "Noise simulation in S2P files is not supported!\n"
                        "Noise data ignored";
             break;
         }
@@ -146,7 +149,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
             }
         }
         if (tmp_lst.count() < 2*(ports*ports)+1) {
-            err_text = "Touchstone file parse error!\n";
+            a_err_text = "Touchstone file parse error!\n";
             return false;
         }
         numf = f + 1;

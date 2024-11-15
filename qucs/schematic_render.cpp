@@ -57,7 +57,7 @@
 
 QRect Schematic::modelRect()
 {
-    return QRect{ViewX1, ViewY1, ViewX2 - ViewX1, ViewY2 - ViewY1};
+    return QRect{a_ViewX1, a_ViewY1, a_ViewX2 - a_ViewX1, a_ViewY2 - a_ViewY1};
 }
 
 QRect Schematic::viewportRect() {
@@ -91,17 +91,17 @@ QPoint Schematic::contentsToModel(const QPoint& coordinates)
     //    in model plane
 
     // QPoint overrides operator /. It divides both coordinates on given value
-    QPoint modelCoords = coordinates / Scale;
+    QPoint modelCoords = coordinates / a_Scale;
 
-    modelCoords.setX(ViewX1 + modelCoords.x());
-    modelCoords.setY(ViewY1 + modelCoords.y());
+    modelCoords.setX(a_ViewX1 + modelCoords.x());
+    modelCoords.setY(a_ViewY1 + modelCoords.y());
     return modelCoords;
 }
 
 QPoint Schematic::modelToContents(const QPoint& coordinates)
 {
     // Model and contents sizes are interconnected and obey the rule:
-    //     <size on model plane> * <Scale> = <size on contents>
+    //     <size on model plane> * <a_Scale> = <size on contents>
     //
     // Contents is a rectangle with (0, 0) at its top-left corner. Model plane
     // is rectangular area of abstract infinite plane, so model plane's top-left
@@ -114,17 +114,17 @@ QPoint Schematic::modelToContents(const QPoint& coordinates)
     // 2. Adjust resulting coordinates so thay they become having the same scale
     //    as contents
 
-    QPoint contentsCoords{coordinates.x() - ViewX1, coordinates.y() - ViewY1};
-    contentsCoords *= Scale;
+    QPoint contentsCoords{coordinates.x() - a_ViewX1, coordinates.y() - a_ViewY1};
+    contentsCoords *= a_Scale;
     return contentsCoords;
 }
 
 double Schematic::clipScale(double offeredScale)
 {
-    if (offeredScale > maxScale) {
-        return maxScale;
-    } else if (offeredScale < minScale) {
-        return minScale;
+    if (offeredScale > a_maxScale) {
+        return a_maxScale;
+    } else if (offeredScale < a_minScale) {
+        return a_minScale;
     } else {
        return offeredScale;
     }
@@ -134,7 +134,7 @@ bool Schematic::shouldRender(const double& newScale, const QRect& newModelBounds
     const QRect currentModelBounds = modelRect();
     // This point currently displayed at "viewportCoords" of the viewport
     const QPoint currenlyDisplayed = viewportToModel(viewportCoords);
-    return Scale != newScale || toBeDisplayed != currenlyDisplayed || currentModelBounds != newModelBounds;
+    return a_Scale != newScale || toBeDisplayed != currenlyDisplayed || currentModelBounds != newModelBounds;
 }
 
 double Schematic::renderModel(const double offeredScale, QRect newModel, const QPoint modelPoint, const QPoint viewportPoint)
@@ -151,7 +151,7 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
     // Maybe there is no need to do anything
     const double newScale = clipScale(offeredScale);
     if (!shouldRender(newScale, newModel, modelPoint, viewportPoint)) {
-       return Scale;
+       return a_Scale;
     }
 
     // The part below is quite tricky: while working at the model plane scale,
@@ -176,19 +176,19 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
     // At this point everything is ready for rendering and positioning
 
     // Set new model size
-    ViewX1 = newModel.left();
-    ViewY1 = newModel.top();
-    ViewX2 = newModel.left() + newModel.width();
-    ViewY2 = newModel.top() + newModel.height();
+    a_ViewX1 = newModel.left();
+    a_ViewY1 = newModel.top();
+    a_ViewX2 = newModel.left() + newModel.width();
+    a_ViewY2 = newModel.top() + newModel.height();
 
-    Scale = newScale;
-    resizeContents(static_cast<int>(std::round(newModel.width() * Scale)),
-                   static_cast<int>(std::round(newModel.height() * Scale)));
+    a_Scale = newScale;
+    resizeContents(static_cast<int>(std::round(newModel.width() * a_Scale)),
+                   static_cast<int>(std::round(newModel.height() * a_Scale)));
 
     auto contentTopLeft = modelToContents(vpTopLeftOnModelPlane);
     setContentsPos(contentTopLeft.x(), contentTopLeft.y());
 
     viewport()->update();
 
-    return Scale;
+    return a_Scale;
 }

@@ -40,22 +40,23 @@
 
 /*!
  * \brief Ngspice::Ngspice Class constructor
- * \param sch_ Schematic that need to be simulated with Ngspice.
+ * \param schematic Schematic that need to be simulated with Ngspice.
  * \param parent Parent object
  */
-Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
-    AbstractSpiceKernel(sch_, parent)
+Ngspice::Ngspice(Schematic *schematic, QObject *parent) :
+    AbstractSpiceKernel(schematic, parent),
+    a_spinit_name()
 {
     if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) { // this check is related to MacOS
-        simulator_cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
+        a_simulator_cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
     } else {
-        simulator_cmd = QFileInfo(QucsSettings.NgspiceExecutable).absoluteFilePath();
+        a_simulator_cmd = QFileInfo(QucsSettings.NgspiceExecutable).absoluteFilePath();
     }
-    if (!QFileInfo::exists(simulator_cmd)) {
-        simulator_cmd = QucsSettings.NgspiceExecutable; //rely on $PATH
+    if (!QFileInfo::exists(a_simulator_cmd)) {
+        a_simulator_cmd = QucsSettings.NgspiceExecutable; //rely on $PATH
     }
-    simulator_parameters = "";
-    spinit_name = QDir::toNativeSeparators(QucsSettings.S4Qworkdir+"/.spiceinit");
+    a_simulator_parameters = "";
+    a_spinit_name = QDir::toNativeSeparators(QucsSettings.S4Qworkdir+"/.spiceinit");
 }
 
 /*!
@@ -71,7 +72,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 {
     Q_UNUSED(simulations);
 
-    stream << "* Qucs " << PACKAGE_VERSION << "  " << Sch->DocName << "\n";
+    stream << "* Qucs " << PACKAGE_VERSION << "  " << a_schematic->getDocName() << "\n";
 
     // include math. functions for inter-simulator compat.
     QString mathf_inc;
@@ -80,11 +81,11 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     if (found && QucsSettings.DefaultSimulator != spicecompat::simSpiceOpus)
         stream<<QStringLiteral(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
-    stream<<collectSpiceLibs(Sch); // collect libraries on the top of netlist
+    stream<<collectSpiceLibs(a_schematic); // collect libraries on the top of netlist
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
     startNetlist(stream); // output .PARAM and components
 
-    if (DC_OP_only) {
+    if (a_DC_OP_only) {
         stream<<".control\n"  // Execute only DC OP analysis
               <<"set filetype=ascii\n" // Ignore all other simulations
               <<"op\n"
@@ -100,21 +101,22 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
     // set variable names for named nodes and wires
     vars.clear();
-    for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
+    for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
       if(pn->Label != 0) {
           if (!vars.contains(pn->Label->Name)) {
               vars.append(pn->Label->Name);
           }
       }
     }
-    for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+    for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
       if(pw->Label != 0) {
           if (!vars.contains(pw->Label->Name)) {
               vars.append(pw->Label->Name);
           }
       }
     }
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+
+    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if (pc->isProbe) {
             QString var_pr = pc->getProbeVariable();
             if (!vars.contains(var_pr)) {
@@ -148,8 +150,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     unsigned int pzSims = 0;
 
     outputs.clear();
-    for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
-        Component *pc = Sch->DocComps.at(i);
+    for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+        Component *pc = a_schematic->a_DocComps.at(i);
         if ( !pc->isSimulation ) continue;
         if ( pc->isActive != COMP_IS_ACTIVE ) continue;
 
@@ -162,8 +164,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         QString cnt_var;
 
         // Duplicate .PARAM in .control section. They may be used in euqations
-        for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
-            Component *pc1 = Sch->DocComps.at(i);
+        for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+            Component *pc1 = a_schematic->a_DocComps.at(i);
             if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
             if ( pc1->Model == "Eqn" ) {
                 spiceNetlist.append((reinterpret_cast<Equation *>(pc1))->getNgspiceScript());
@@ -178,8 +180,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 nods.append(QStringLiteral("v(%1) ").arg(nod));
         }
 
-        for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
-            Component *pc1 = Sch->DocComps.at(i);
+        for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+            Component *pc1 = a_schematic->a_DocComps.at(i);
             if ( !pc1->isSimulation ) continue;
             if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
             QString sim_typ = pc1->Model;
@@ -202,8 +204,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         } else if ( sim_typ == ".TR" ) {
             timeSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
-            for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
-                Component *pc1 = Sch->DocComps.at(i);
+            for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+                Component *pc1 = a_schematic->a_DocComps.at(i);
                 if ( !pc1->isSimulation ) continue;
                 if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
                 if ( pc1->Model == ".FOURIER" ) {
@@ -306,8 +308,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
         if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
             QStringList dep_vars;
-            for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
-                Component *pc1 = Sch->DocComps.at(i);
+            for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+                Component *pc1 = a_schematic->a_DocComps.at(i);
                 if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
                 if ( pc1->Model == "Eqn" || pc1->Model == "NutmegEq" )
                     spiceNetlist.append(pc1->getEquations(sim_name, dep_vars));
@@ -336,8 +338,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             }
         }
 
-        for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
-            Component *pc1 = Sch->DocComps.at(i);
+        for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+            Component *pc1 = a_schematic->a_DocComps.at(i);
             if ( !pc1->isSimulation ) continue;
             if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
             QString sim_typ = pc1->Model;
@@ -361,7 +363,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
            << ".endc\n";
     stream << ".END\n";
 
-    needsPrefix = ( (dcSims | freqSims | timeSims | fourSims | pzSims) > 1 );
+    a_needsPrefix = ( (dcSims | freqSims | timeSims | fourSims | pzSims) > 1 );
 
     qDebug() << '\n'
              << "Simulations:\n"
@@ -384,8 +386,8 @@ QString Ngspice::getParentSWPscript(Component *pc_swp, QString sim, bool before,
 {
     hasDblSwp = false;
     QString swp = pc_swp->Name.toLower();
-    for ( unsigned int i = 0 ; i < Sch->DocComps.count() ; i++ ) {
-        Component *pc = Sch->DocComps.at(i);
+    for ( unsigned int i = 0 ; i < a_schematic->a_DocComps.count() ; i++ ) {
+        Component *pc = a_schematic->a_DocComps.at(i);
         if ( !pc->isSimulation ) continue;
         if ( pc->isActive != COMP_IS_ACTIVE ) continue;
         if ( pc->Model == ".SW" ) {
@@ -409,83 +411,83 @@ QString Ngspice::getParentSWPscript(Component *pc_swp, QString sim, bool before,
  */
 void Ngspice::slotSimulate()
 {
-    output.clear();
+    a_output.clear();
 
     QString mathf_inc; // drain
     if (!findMathFuncInc(mathf_inc)) {
-        output.append("[Warning!] " + mathf_inc + " file not found!\n");
+        a_output.append("[Warning!] " + mathf_inc + " file not found!\n");
     }
 
     bool checker_error = false;
     QStringList incompat;
     if (!checkSchematic(incompat)) {
         QString s = incompat.join("; ");
-        output.append("There were SPICE-incompatible components. Simulator cannot proceed.");
-        output.append("Incompatible components are: " + s + "\n");
+        a_output.append("There were SPICE-incompatible components. Simulator cannot proceed.");
+        a_output.append("Incompatible components are: " + s + "\n");
         checker_error = true;
     }
 
     if (!checkGround()) {
-        output.append("No Ground found. Please add at least one ground!\n"
+        a_output.append("No Ground found. Please add at least one ground!\n"
                       "Press Insert->Ground in the main menu and connect ground to one "
                       "of the schematic nodes.\n");
         checker_error = true;
     }
 
     if (!checkSimulations()) {
-        output.append("No simulation found. Please add at least one simulation!\n"
+        a_output.append("No simulation found. Please add at least one simulation!\n"
                       "Navigate to the \"simulations\" group in the components panel (left)"
                       " and drag simulation to the schematic sheet. Then define its parameters.\n");
         checker_error = true;
     }
 
     if (!checkDCSimulation()) {
-        output.append("Only DC simulation found in the schematic. It has no effect!"
+        a_output.append("Only DC simulation found in the schematic. It has no effect!"
                       " Add TRAN, AC, or Sweep simulation to proceed.\n");
         checker_error = true;
     }
 
     if (!checkNodeNames(incompat)) {
         QString s = incompat.join("; ");
-        output.append("There were Nutmeg-incompatible node names. Simulator cannot proceed.\n");
-        output.append("Incompatible node names are: " + s + "\n");
+        a_output.append("There were Nutmeg-incompatible node names. Simulator cannot proceed.\n");
+        a_output.append("Incompatible node names are: " + s + "\n");
         checker_error = true;
     }
 
     if (checker_error) {
-        if (console != nullptr)
-            console->insertPlainText(output);
+        if (a_console != nullptr)
+            a_console->insertPlainText(a_output);
         //emit finished();
         emit errors(QProcess::FailedToStart);
         return;
     }
 
     QString netfile = "spice4qucs.cir";
-    QString tmp_path = QDir::toNativeSeparators(workdir+QDir::separator()+netfile);
+    QString tmp_path = QDir::toNativeSeparators(a_workdir+QDir::separator()+netfile);
     SaveNetlist(tmp_path);
 
     removeAllSimulatorOutputs();
 
-    /*XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
+    /*XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(a_schematic);
     CMbuilder->cleanSpiceinit();
-    CMbuilder->createSpiceinit(collectSpiceinit(Sch));
+    CMbuilder->createSpiceinit(collectSpiceinit(a_schematic));
     if (CMbuilder->needCompile()) {
         CMbuilder->cleanCModelTree();
-        CMbuilder->createCModelTree(output);
-        CMbuilder->compileCMlib(output);
+        CMbuilder->createCModelTree(a_output);
+        CMbuilder->compileCMlib(a_output);
     }
     delete CMbuilder;*/
     cleanSpiceinit();
-    createSpiceinit(/*initial_spiceinit=*/collectSpiceinit(Sch));
+    createSpiceinit(/*initial_spiceinit=*/collectSpiceinit(a_schematic));
 
     //startNgSpice(tmp_path);
-    SimProcess->setWorkingDirectory(workdir);
-    qDebug()<<workdir;
-    QString cmd = QStringLiteral("\"%1\" %2 %3").arg(simulator_cmd,simulator_parameters,netfile);
+    a_simProcess->setWorkingDirectory(a_workdir);
+    qDebug()<<a_workdir;
+    QString cmd = QStringLiteral("\"%1\" %2 %3").arg(a_simulator_cmd,a_simulator_parameters,netfile);
     QStringList cmd_args = misc::parseCmdArgs(cmd);
     QString ngsp_cmd = cmd_args.at(0);
     cmd_args.removeAt(0);
-    SimProcess->start(ngsp_cmd,cmd_args);
+    a_simProcess->start(ngsp_cmd,cmd_args);
     if (QucsMain != nullptr)
     emit started();
 }
@@ -498,7 +500,7 @@ void Ngspice::slotSimulate()
 bool Ngspice::checkNodeNames(QStringList &incompat)
 {
     bool result = true;
-    for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
+    for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
       if(pn->Label != 0) {
           if (!spicecompat::check_nodename(pn->Label->Name)) {
               incompat.append(pn->Label->Name);
@@ -506,7 +508,7 @@ bool Ngspice::checkNodeNames(QStringList &incompat)
           }
       }
     }
-    for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+    for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
       if(pw->Label != 0) {
           if (!spicecompat::check_nodename(pw->Label->Name)) {
               incompat.append(pw->Label->Name);
@@ -525,7 +527,7 @@ bool Ngspice::checkNodeNames(QStringList &incompat)
 QString Ngspice::collectSpiceinit(Schematic* sch)
 {
     QStringList collected_spiceinit;
-    for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+    for(Component *pc = sch->a_DocComps.first(); pc != 0; pc = sch->a_DocComps.next()) {
         if (pc->Model == "SPICEINIT") {
             collected_spiceinit += ((SpiceSpiceinit*)pc)->getSpiceinit();
         } else if (pc->Model == "Sub") {
@@ -537,7 +539,7 @@ QString Ngspice::collectSpiceinit(Schematic* sch)
             }
             collected_spiceinit += collectSpiceinit(sub);
             delete sub;
-	}
+        }
     }
     return collected_spiceinit.join("");
 }
@@ -564,16 +566,16 @@ bool Ngspice::findMathFuncInc(QString &mathf_inc)
  */
 void Ngspice::slotProcessOutput()
 {
-    QString s = SimProcess->readAllStandardOutput();
+    QString s = a_simProcess->readAllStandardOutput();
     QRegularExpression percentage_pattern("^%\\d\\d*\\.\\d\\d.*$");
     if (percentage_pattern.match(s).hasMatch()) {
         int percent = round(s.mid(1,5).toFloat());
         emit progress(percent);
     }
-    output += s;
-    if (console != nullptr) {
-        console->insertPlainText(s);
-        console->moveCursor(QTextCursor::End);
+    a_output += s;
+    if (a_console != nullptr) {
+        a_console->insertPlainText(s);
+        a_console->moveCursor(QTextCursor::End);
     }
 }
 
@@ -585,13 +587,13 @@ void Ngspice::slotProcessOutput()
 void Ngspice::SaveNetlist(QString filename)
 {
     int num=0;
-    sims.clear();
-    vars.clear();
+    a_sims.clear();
+    a_vars.clear();
 
     QFile spice_file(filename);
     if (spice_file.open(QFile::WriteOnly)) {
         QTextStream stream(&spice_file);
-        createNetlist(stream,num,sims,vars,output_files);
+        createNetlist(stream,num,a_sims,a_vars,a_output_files);
         spice_file.close();
     }
     else
@@ -609,25 +611,25 @@ void Ngspice::setSimulatorCmd(QString cmd)
         QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
         env.remove("LANG");
         env.insert("LANG","en_US");
-        SimProcess->setProcessEnvironment(env);
-        simulator_parameters = simulator_parameters + "-c";
+        a_simProcess->setProcessEnvironment(env);
+        a_simulator_parameters = a_simulator_parameters + "-c";
     } else { // restore system environment
         QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-        SimProcess->setProcessEnvironment(env);
+        a_simProcess->setProcessEnvironment(env);
     }
 
-    simulator_cmd = cmd;
+    a_simulator_cmd = cmd;
 }
 
 void Ngspice::setSimulatorParameters(QString parameters)
 {
-    simulator_parameters = parameters;
+    a_simulator_parameters = parameters;
 }
 
 void Ngspice::cleanSpiceinit()
 {
-    QFileInfo inf(spinit_name);
-    if (inf.exists()) QFile::remove(spinit_name);
+    QFileInfo inf(a_spinit_name);
+    if (inf.exists()) QFile::remove(a_spinit_name);
 }
 
 void Ngspice::createSpiceinit(const QString &initial_spiceinit)
@@ -650,7 +652,7 @@ void Ngspice::createSpiceinit(const QString &initial_spiceinit)
       compat_str.isEmpty()) {
     return;
   }
-  QFile spinit(spinit_name);
+  QFile spinit(a_spinit_name);
   if (spinit.open(QIODevice::WriteOnly)) {
     QTextStream stream(&spinit);
     stream << compat_str << '\n';

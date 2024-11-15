@@ -121,8 +121,8 @@ bool loadSettings()
     QucsSettings.XyceParExecutable = _settings::Get().item<QString>("XyceParExecutable");
     QucsSettings.SpiceOpusExecutable = _settings::Get().item<QString>("SpiceOpusExecutable");
     QucsSettings.NProcs = _settings::Get().item<int>("Nprocs");
-   
-    // TODO: Currently the default settings cannot include other settings during initialisation. This is a 
+
+    // TODO: Currently the default settings cannot include other settings during initialisation. This is a
     // problem for this setting as it needs to include the QucsWorkDir setting. Therefore, set the default to an
     // empty string and populate it here by brute force.
     QucsSettings.S4Qworkdir = _settings::Get().item<QString>("S4Q_workdir");
@@ -169,10 +169,10 @@ bool saveApplSettings()
 {
     QSettings settings ("qucs","qucs_s");
 
-    // Note: It is not really necessary to take the following reference, but it 
+    // Note: It is not really necessary to take the following reference, but it
     // arguably makes the code slightly cleaner - thoughts? To be clear:
     // qs.item<int>() is identical to _settings::get().item<int>()
-    settingsManager& qs = _settings::Get();    
+    settingsManager& qs = _settings::Get();
 
     qs.setItem<int>("DefaultSimulator", QucsSettings.DefaultSimulator);
     qs.setItem<bool>("firstRun", false);
@@ -182,7 +182,7 @@ bool saveApplSettings()
     if (QucsMain != nullptr) {
       qs.setItem<QByteArray>("MainWindowGeometry", QucsMain->saveGeometry());
     }
-    
+
     // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
     qs.setItem<QString>("LargeFontSize", QString::number(QucsSettings.largeFontSize));
     qs.setItem<unsigned int>("maxUndo", QucsSettings.maxUndo);
@@ -201,7 +201,7 @@ bool saveApplSettings()
     qs.setItem<QString>("Directive", QucsSettings.Directive.name());
     qs.setItem<QString>("Task", QucsSettings.Task.name());
     qs.setItem<QString>("AdmsXmlBinDir", QucsSettings.AdmsXmlBinDir.canonicalPath());
-    qs.setItem<QString>("AscoBinDir", QucsSettings.AscoBinDir.canonicalPath());    
+    qs.setItem<QString>("AscoBinDir", QucsSettings.AscoBinDir.canonicalPath());
     qs.setItem<QString>("NgspiceExecutable",QucsSettings.NgspiceExecutable);
     qs.setItem<QString>("XyceExecutable",QucsSettings.XyceExecutable);
     qs.setItem<QString>("XyceParExecutable",QucsSettings.XyceParExecutable);
@@ -209,7 +209,7 @@ bool saveApplSettings()
     qs.setItem<QString>("Qucsator",QucsSettings.Qucsator);
     qs.setItem<int>("Nprocs",QucsSettings.NProcs);
     qs.setItem<QString>("S4Q_workdir",QucsSettings.S4Qworkdir);
-    qs.setItem<QString>("SimParameters",QucsSettings.SimParameters);    
+    qs.setItem<QString>("SimParameters",QucsSettings.SimParameters);
     qs.setItem<QString>("OctaveExecutable",QucsSettings.OctaveExecutable);
     qs.setItem<QString>("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
     qs.setItem<QString>("QucsHomeDir", QucsSettings.qucsWorkspaceDir.canonicalPath());
@@ -446,11 +446,11 @@ int doPrint(QString schematic, QString printFile,
     return 1;
   }
 
-  sch->Nodes = &(sch->DocNodes);
-  sch->Wires = &(sch->DocWires);
-  sch->Diagrams = &(sch->DocDiags);
-  sch->Paintings = &(sch->DocPaints);
-  sch->Components = &(sch->DocComps);
+  sch->a_Nodes = &(sch->a_DocNodes);
+  sch->a_Wires = &(sch->a_DocWires);
+  sch->a_Diagrams = &(sch->a_DocDiags);
+  sch->a_Paintings = &(sch->a_DocPaints);
+  sch->a_Components = &(sch->a_DocComps);
   sch->reloadGraphs();
 
   qDebug() << "*** try to print file  :" << printFile;

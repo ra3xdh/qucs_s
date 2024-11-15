@@ -45,6 +45,7 @@ class QPlainTextEdit;
 class AbstractSpiceKernel : public QObject
 {
     Q_OBJECT
+
 private:
     enum outType {xyceSTD, spiceRaw, spiceRawSwp, xyceSTDswp, spicePrn, Unknown};
 
@@ -56,19 +57,23 @@ private:
                              int NumVars, bool isComplex);
 
 protected:
-    QString netlist,workdir, simulator_cmd,
-            simulator_parameters, output;
-    QProcess *SimProcess;
+    QString a_workdir;
+    QString a_simulator_cmd;
+    QString a_simulator_parameters;
+    QString a_output;
+    QProcess *a_simProcess;
 
-    QPlainTextEdit *console;
-    QStringList sims,vars,output_files;
+    QPlainTextEdit *a_console;
+    QStringList a_sims;
+    QStringList a_vars;
+    QStringList a_output_files;
 
-    bool DC_OP_only; // only calculate operating point to show DC bias
-    bool needsPrefix;
-    Schematic *Sch;
+    bool a_DC_OP_only; // only calculate operating point to show DC bias
+    bool a_needsPrefix;
+    Schematic *a_schematic;
 
-    bool parseFourTHD = false;  // Fourier output is parsed twice, first freqencies, then THD
-    bool parsePZzeros = false;  // PZ output is parsed twice, first poles, then zeros
+    bool a_parseFourTHD;  // Fourier output is parsed twice, first freqencies, then THD
+    bool a_parsePZzeros;  // PZ output is parsed twice, first poles, then zeros
 
     bool prepareSpiceNetlist(QTextStream &stream, bool isSubckt = false);
     virtual void startNetlist(QTextStream& stream, bool xyce = false);
@@ -82,7 +87,7 @@ protected:
 
 public:
 
-    explicit AbstractSpiceKernel(Schematic *sch_, QObject *parent = 0);
+    explicit AbstractSpiceKernel(Schematic *schematic, QObject *parent = 0);
     ~AbstractSpiceKernel();
 
     bool checkSchematic(QStringList &incompat);
@@ -124,8 +129,8 @@ public:
     void setWorkdir(QString path);
     virtual void SaveNetlist(QString filename);
     virtual bool waitEndOfSimulation();
-    void setConsole(QPlainTextEdit *console_) { console = console_; }
-    
+    void setConsole(QPlainTextEdit *console) { a_console = console; }
+
 signals:
     void started();
     void finished();
@@ -140,7 +145,7 @@ public slots:
     virtual void slotSimulate();
     void killThemAll();
     void slotErrors(QProcess::ProcessError err);
-    
+
 };
 
 #endif // ABSTRACTSPICEKERNEL_H
