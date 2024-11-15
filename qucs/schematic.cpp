@@ -1098,7 +1098,7 @@ void Schematic::drawGrid(QPainter* painter) {
     // A grid drawn with pen of 1.0 width reportedly looks good both
     // on standard and HiDPI displays.
     // See here for details https://github.com/ra3xdh/qucs_s/pull/524
-    painter->setPen(QPen{ GridColor, 1.0 });
+    painter->setPen(QPen{ a_GridColor, 1.0 });
 
     {
         // Draw small cross at origin of coordinates

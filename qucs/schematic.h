@@ -213,6 +213,8 @@ public:
   void setGridX(int value) { a_GridX = value; }
   int getGridY() const { return a_GridY; }
   void setGridY(int value) { a_GridY = value; }
+  void setGridColor(const QColor& color) { a_GridColor = color; }
+  QColor getGridColor() const { return a_GridColor; }
   bool getSymbolMode() const { return a_symbolMode; }
   void setSymbolMode(bool value) { a_symbolMode = value; }
   bool getIsSymbolOnly() const { return a_isSymbolOnly; }
