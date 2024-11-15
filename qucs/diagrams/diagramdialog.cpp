@@ -82,16 +82,16 @@ private:
 
     Painter.setPen(QPen(Qt::red,2));
     Painter.drawLine(CROSS3D_SIZE, CROSS3D_SIZE,
-		     int(CROSS3D_SIZE * (1.0+cxx)),
-		     int(CROSS3D_SIZE * (1.0-cyx)));
+         int(CROSS3D_SIZE * (1.0+cxx)),
+         int(CROSS3D_SIZE * (1.0-cyx)));
     Painter.setPen(QPen(Qt::green,2));
     Painter.drawLine(CROSS3D_SIZE, CROSS3D_SIZE,
-		     int(CROSS3D_SIZE * (1.0-cxy)),
-		     int(CROSS3D_SIZE * (1.0-cyy)));
+         int(CROSS3D_SIZE * (1.0-cxy)),
+         int(CROSS3D_SIZE * (1.0-cyy)));
     Painter.setPen(QPen(Qt::blue,2));
     Painter.drawLine(CROSS3D_SIZE, CROSS3D_SIZE,
-		     int(CROSS3D_SIZE * (1.0+cxz)),
-		     int(CROSS3D_SIZE * (1.0+cyz)));
+         int(CROSS3D_SIZE * (1.0+cxz)),
+         int(CROSS3D_SIZE * (1.0+cyz)));
   };
 };
 
@@ -112,12 +112,12 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   Diag = d;
   copyDiagramGraphs();   // make a copy of all graphs
   if(parent){
-	  const Schematic* s = dynamic_cast<const Schematic*>(parent);
-	  assert(s);
-	  QFileInfo Info(s->DocName);
-      defaultDataSet = Info.absolutePath() + QDir::separator() + s->DataSet;
+    const Schematic* s = dynamic_cast<const Schematic*>(parent);
+    assert(s);
+    QFileInfo Info(s->getDocName());
+      defaultDataSet = Info.absolutePath() + QDir::separator() + s->getDataSet();
   }else{
-	  defaultDataSet = "unknown";
+    defaultDataSet = "unknown";
   }
   setWindowTitle(tr("Edit Diagram Properties"));
   changed = false;
@@ -154,7 +154,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     NameZ = tr("z-Axis");
   }
 
-  
+
   all = new QVBoxLayout(this); // to provide necessary size
   QTabWidget *t = new QTabWidget();
   all->addWidget(t);
@@ -240,7 +240,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       PropertyBox->addItem(tr("arrows"));
     }
     connect(PropertyBox, SIGNAL(activated(int)),
-			 SLOT(slotSetGraphStyle(int)));
+      SLOT(slotSetGraphStyle(int)));
     Box2Layout->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
 
     Label2 = new QLabel(tr("Thickness:"));
@@ -266,7 +266,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   }
   if(Property2) {
     connect(Property2, SIGNAL(textChanged(const QString&)),
-			SLOT(slotSetProp2(const QString&)));
+      SLOT(slotSetProp2(const QString&)));
 
     Label1->setEnabled(false);
     PropertyBox->setEnabled(false);
@@ -388,7 +388,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       GridColorButt = new QPushButton("        ",Tab2);
       connect(GridColorButt, SIGNAL(clicked()), SLOT(slotSetGridColor()));
       gp->addWidget(GridColorButt, Row,1);
-      Row++;    
+      Row++;
       misc::setPickerColor(GridColorButt, Diag->GridPen.color());
 
       GridLabel2 = new QLabel(tr("Grid Style: "), Tab2);
@@ -488,7 +488,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
         rotationX->setMaximumWidth(40);
         gp->addWidget(rotationX, Row,2);
         connect(rotationX, SIGNAL(textChanged(const QString&)),
-			   SLOT(slotEditRotX(const QString&)));
+          SLOT(slotEditRotX(const QString&)));
         Row++;
 
         QLabel *LabelRotY = new QLabel(tr("Rotation around y-Axis:"), Tab2);
@@ -510,7 +510,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
         rotationY->setMaximumWidth(40);
         gp->addWidget(rotationY, Row,2);
         connect(rotationY, SIGNAL(textChanged(const QString&)),
-			   SLOT(slotEditRotY(const QString&)));
+          SLOT(slotEditRotY(const QString&)));
         Row++;
 
         QLabel *LabelRotZ = new QLabel(tr("Rotation around z-Axis:"), Tab2);
@@ -532,13 +532,13 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
         rotationZ->setMaximumWidth(40);
         gp->addWidget(rotationZ, Row,2);
         connect(rotationZ, SIGNAL(textChanged(const QString&)),
-			   SLOT(slotEditRotZ(const QString&)));
+          SLOT(slotEditRotZ(const QString&)));
         Row++;
 
         gp->addWidget(new QLabel(tr("2D-projection:"), Tab2), Row,0);
         DiagCross = new Cross3D(((Rect3DDiagram*)Diag)->rotX,
-				((Rect3DDiagram*)Diag)->rotY,
-				((Rect3DDiagram*)Diag)->rotZ, Tab2);
+          ((Rect3DDiagram*)Diag)->rotY,
+          ((Rect3DDiagram*)Diag)->rotZ, Tab2);
         gp->addWidget(DiagCross, Row,1);
 
         // transfer the diagram properties to the dialog
@@ -1219,7 +1219,7 @@ void DiagramDialog::slotApply()
             changed = true;
         }
     }
-    
+
     if(GridOn) if(Diag->xAxis.GridOn != GridOn->isChecked()) {
       Diag->xAxis.GridOn = GridOn->isChecked();
       Diag->yAxis.GridOn = GridOn->isChecked();
@@ -1261,7 +1261,7 @@ void DiagramDialog::slotApply()
     }
 
     if((Diag->Name == "Smith") || (Diag->Name == "ySmith") ||
-				  (Diag->Name == "PS"))
+          (Diag->Name == "PS"))
       if(stopY->text().toDouble() < 1.0)
         stopY->setText("1");
 

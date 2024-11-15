@@ -78,53 +78,71 @@ static QRect includePoint(QRect rect, QPoint point) {
   }
 }
 
-Schematic::Schematic(QucsApp *App_, const QString &Name_)
-    : QucsDoc(App_, Name_)
-{
-    symbolMode = false;
-    isSymbolOnly = false;
-
-    setFont(QucsSettings.font);
-    // ...........................................................
-    GridX = GridY = 10;
-    ViewX1 = ViewY1 = 0;
-    ViewX2 = ViewY2 = 1;
-    UsedX1 = UsedY1 = INT_MAX;
-    UsedX2 = UsedY2 = INT_MIN;
-
-
-    tmpPosX = tmpPosY = -100;
-    tmpUsedX1 = tmpUsedY1 = tmpViewX1 = tmpViewY1 = -200;
-    tmpUsedX2 = tmpUsedY2 = tmpViewX2 = tmpViewY2 = 200;
-    tmpScale = 1.0;
-
-    DocComps.setAutoDelete(true);
-    DocWires.setAutoDelete(true);
-    DocNodes.setAutoDelete(true);
-    DocDiags.setAutoDelete(true);
-    DocPaints.setAutoDelete(true);
-    SymbolPaints.setAutoDelete(true);
-
-    Nodes = &DocNodes;
-    Wires = &DocWires;
-    Diagrams = &DocDiags;
-    Paintings = &DocPaints;
-    Components = &DocComps;
-
+Schematic::Schematic(QucsApp *App_, const QString &Name_) :
+    QucsDoc(App_, Name_),
+    a_Wires(&a_DocWires),
+    a_DocWires(),
+    a_Nodes(&a_DocNodes),
+    a_DocNodes(),
+    a_Diagrams(&a_DocDiags),
+    a_DocDiags(),
+    a_Paintings(&a_DocPaints),
+    a_DocPaints(),
+    a_Components(&a_DocComps),
+    a_DocComps(),
+    a_SymbolPaints(),
+    a_PostedPaintEvents(),
+    a_symbolMode(false),
+    a_isSymbolOnly(false),
+    a_GridX(10),
+    a_GridY(10),
+    a_ViewX1(0),
+    a_ViewY1(0),
+    a_ViewX2(1),
+    a_ViewY2(1),
+    a_showFrame(0), // don't show
+    a_Frame_Text0(tr("Title")),
+    a_Frame_Text1(tr("Drawn By:")),
+    a_Frame_Text2(tr("Date:")),
+    a_Frame_Text3(tr("Revision:")),
+    a_tmpScale(1.0),
+    a_tmpViewX1(-200),
+    a_tmpViewY1(-200),
+    a_tmpViewX2(200),
+    a_tmpViewY2(200),
+    a_tmpUsedX1(-200),
+    a_tmpUsedY1(-200),
+    a_tmpUsedX2(200),
+    a_tmpUsedY2(200),
+    a_undoActionIdx(0),
     // The 'i' means state for being unchanged.
-    undoActionIdx = 0;
-    undoAction.append(new QString(" i\n</>\n</>\n</>\n</>\n"));
-    undoSymbolIdx = 0;
-    undoSymbol.append(new QString(" i\n</>\n</>\n</>\n</>\n"));
+    a_undoAction((QVector<QString*>() << new QString(" i\n</>\n</>\n</>\n</>\n"))),
+    a_undoSymbolIdx(0),
+    // The 'i' means state for being unchanged.
+    a_undoSymbol((QVector<QString*>() << new QString(" i\n</>\n</>\n</>\n</>\n"))),
+    a_UsedX1(INT_MAX),
+    a_UsedY1(INT_MAX),
+    a_UsedX2(INT_MAX),
+    a_UsedY2(INT_MAX),
+    a_previousCursorPosition(),
+    a_dragIsOkay(false),
+    a_FileInfo(),
+    a_Signals(),
+    a_PortTypes(),
+    a_isAnalog(false),
+    a_isVerilog(false),
+    a_creatingLib(false)
+{
+    setFont(QucsSettings.font);
 
-    isVerilog = false;
-    creatingLib = false;
+    a_tmpPosX = a_tmpPosY = -100;
 
-    showFrame = 0; // don't show
-    Frame_Text0 = tr("Title");
-    Frame_Text1 = tr("Drawn By:");
-    Frame_Text2 = tr("Date:");
-    Frame_Text3 = tr("Revision:");
+    a_DocComps.setAutoDelete(true);
+    a_DocWires.setAutoDelete(true);
+    a_DocNodes.setAutoDelete(true);
+    a_DocDiags.setAutoDelete(true);
+    a_DocPaints.setAutoDelete(true);
+    a_SymbolPaints.setAutoDelete(true);
 
     setVScrollBarMode(Q3ScrollView::AlwaysOn);
     setHScrollBarMode(Q3ScrollView::AlwaysOn);
@@ -155,28 +173,28 @@ bool Schematic::createSubcircuitSymbol()
     unsigned int countPort = adjustPortNumbers();
 
     // If a symbol does not yet exist, create one.
-    if (SymbolPaints.count() != countPort)
+    if (a_SymbolPaints.count() != countPort)
         return false;
 
     int h = 30 * ((countPort - 1) / 2) + 10;
-    SymbolPaints.prepend(new ID_Text(-20, h + 4));
+    a_SymbolPaints.prepend(new ID_Text(-20, h + 4));
 
-    SymbolPaints.append(new GraphicLine(-20, -h, 40, 0, QPen(Qt::darkBlue, 2)));
-    SymbolPaints.append(new GraphicLine(20, -h, 0, 2 * h, QPen(Qt::darkBlue, 2)));
-    SymbolPaints.append(new GraphicLine(-20, h, 40, 0, QPen(Qt::darkBlue, 2)));
-    SymbolPaints.append(new GraphicLine(-20, -h, 0, 2 * h, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.append(new GraphicLine(-20, -h, 40, 0, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.append(new GraphicLine(20, -h, 0, 2 * h, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.append(new GraphicLine(-20, h, 40, 0, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.append(new GraphicLine(-20, -h, 0, 2 * h, QPen(Qt::darkBlue, 2)));
 
     unsigned int i = 0, y = 10 - h;
     while (i < countPort) {
         i++;
-        SymbolPaints.append(new GraphicLine(-30, y, 10, 0, QPen(Qt::darkBlue, 2)));
-        SymbolPaints.at(i)->setCenter(-30, y);
+        a_SymbolPaints.append(new GraphicLine(-30, y, 10, 0, QPen(Qt::darkBlue, 2)));
+        a_SymbolPaints.at(i)->setCenter(-30, y);
 
         if (i == countPort)
             break;
         i++;
-        SymbolPaints.append(new GraphicLine(20, y, 10, 0, QPen(Qt::darkBlue, 2)));
-        SymbolPaints.at(i)->setCenter(30, y);
+        a_SymbolPaints.append(new GraphicLine(20, y, 10, 0, QPen(Qt::darkBlue, 2)));
+        a_SymbolPaints.at(i)->setCenter(30, y);
         y += 60;
     }
     return true;
@@ -188,45 +206,45 @@ void Schematic::becomeCurrent(bool update)
     emit signalCursorPosChanged(0, 0, "");
 
     // update appropriate menu entry
-    if (symbolMode) {
-        App->symEdit->setText(tr("Edit Schematic"));
-        App->symEdit->setStatusTip(tr("Edits the schematic"));
-        App->symEdit->setWhatsThis(tr("Edit Schematic\n\nEdits the schematic"));
+    if (a_symbolMode) {
+        a_App->symEdit->setText(tr("Edit Schematic"));
+        a_App->symEdit->setStatusTip(tr("Edits the schematic"));
+        a_App->symEdit->setWhatsThis(tr("Edit Schematic\n\nEdits the schematic"));
     } else {
-        App->symEdit->setText(tr("Edit Circuit Symbol"));
-        App->symEdit->setStatusTip(tr("Edits the symbol for this schematic"));
-        App->symEdit->setWhatsThis(
+        a_App->symEdit->setText(tr("Edit Circuit Symbol"));
+        a_App->symEdit->setStatusTip(tr("Edits the symbol for this schematic"));
+        a_App->symEdit->setWhatsThis(
             tr("Edit Circuit Symbol\n\nEdits the symbol for this schematic"));
     }
 
-    if (symbolMode) {
-        Nodes = &SymbolNodes;
-        Wires = &SymbolWires;
-        Diagrams = &SymbolDiags;
-        Paintings = &SymbolPaints;
-        Components = &SymbolComps;
+    if (a_symbolMode) {
+        a_Nodes = &SymbolNodes;
+        a_Wires = &SymbolWires;
+        a_Diagrams = &SymbolDiags;
+        a_Paintings = &a_SymbolPaints;
+        a_Components = &SymbolComps;
 
         // "Schematic" is used to edit usual schematic files (containing
         // a schematic and a subcircuit symbol) and *.sym files (which
         // contain *only* a symbol definition). If we're dealing with
         // symbol file, then there is no need to create a subcircuit
         // symbol, a symbol is already there.
-        if (!DocName.endsWith(".sym") && createSubcircuitSymbol()) {
+        if (!a_DocName.endsWith(".sym") && createSubcircuitSymbol()) {
             updateAllBoundingRect();
             setChanged(true, true);
         }
 
-        emit signalUndoState(undoSymbolIdx != 0);
-        emit signalRedoState(undoSymbolIdx != undoSymbol.size() - 1);
+        emit signalUndoState(a_undoSymbolIdx != 0);
+        emit signalRedoState(a_undoSymbolIdx != a_undoSymbol.size() - 1);
     } else {
-        Nodes = &DocNodes;
-        Wires = &DocWires;
-        Diagrams = &DocDiags;
-        Paintings = &DocPaints;
-        Components = &DocComps;
+        a_Nodes = &a_DocNodes;
+        a_Wires = &a_DocWires;
+        a_Diagrams = &a_DocDiags;
+        a_Paintings = &a_DocPaints;
+        a_Components = &a_DocComps;
 
-        emit signalUndoState(undoActionIdx != 0);
-        emit signalRedoState(undoActionIdx != undoAction.size() - 1);
+        emit signalUndoState(a_undoActionIdx != 0);
+        emit signalRedoState(a_undoActionIdx != a_undoAction.size() - 1);
         if (update)
             reloadGraphs(); // load recent simulation data
     }
@@ -235,81 +253,81 @@ void Schematic::becomeCurrent(bool update)
 // ---------------------------------------------------
 void Schematic::setName(const QString &Name_)
 {
-    DocName = Name_;
-    QFileInfo Info(DocName);
+    a_DocName = Name_;
+    QFileInfo Info(a_DocName);
     QString base = Info.completeBaseName();
     QString ext = Info.suffix();
-    DataSet = base + ".dat";
-    Script = base + ".m";
+    a_DataSet = base + ".dat";
+    a_Script = base + ".m";
     if (ext != "dpl")
-        DataDisplay = base + ".dpl";
+        a_DataDisplay = base + ".dpl";
     else
-        DataDisplay = base + ".sch";
+        a_DataDisplay = base + ".sch";
 }
 
 // ---------------------------------------------------
 // Sets the document to be changed or not to be changed.
 void Schematic::setChanged(bool c, bool fillStack, char Op)
 {
-    if ((!DocChanged) && c)
+    if ((!a_DocChanged) && c)
         emit signalFileChanged(true);
-    else if (DocChanged && (!c))
+    else if (a_DocChanged && (!c))
         emit signalFileChanged(false);
-    DocChanged = c;
+    a_DocChanged = c;
 
-    showBias = -1; // schematic changed => bias points may be invalid
+    a_showBias = -1; // schematic changed => bias points may be invalid
 
     if (!fillStack)
         return;
 
     // ................................................
-    if (symbolMode) { // for symbol edit mode
-        while (undoSymbol.size() > undoSymbolIdx + 1) {
-            delete undoSymbol.last();
-            undoSymbol.pop_back();
+    if (a_symbolMode) { // for symbol edit mode
+        while (a_undoSymbol.size() > a_undoSymbolIdx + 1) {
+            delete a_undoSymbol.last();
+            a_undoSymbol.pop_back();
         }
 
-        undoSymbol.append(new QString(createSymbolUndoString(Op)));
-        undoSymbolIdx++;
+        a_undoSymbol.append(new QString(createSymbolUndoString(Op)));
+        a_undoSymbolIdx++;
 
         emit signalUndoState(true);
         emit signalRedoState(false);
 
-        while (static_cast<unsigned int>(undoSymbol.size())
+        while (static_cast<unsigned int>(a_undoSymbol.size())
                > QucsSettings.maxUndo) { // "while..." because
-            delete undoSymbol.first();
-            undoSymbol.pop_front();
-            undoSymbolIdx--;
+            delete a_undoSymbol.first();
+            a_undoSymbol.pop_front();
+            a_undoSymbolIdx--;
         }
         return;
     }
 
     // ................................................
     // for schematic edit mode
-    while (undoAction.size() > undoActionIdx + 1) {
-        delete undoAction.last();
-        undoAction.pop_back();
+    while (a_undoAction.size() > a_undoActionIdx + 1) {
+        delete a_undoAction.last();
+        a_undoAction.pop_back();
     }
 
     if (Op == 'm') { // only one for move marker
-        if (undoAction.at(undoActionIdx)->at(0) == Op) {
-            delete undoAction.last();
-            undoAction.pop_back();
-            undoActionIdx--;
+        if (a_undoAction.at(a_undoActionIdx)->at(0) == Op) {
+            delete a_undoAction.last();
+            a_undoAction.pop_back();
+            a_undoActionIdx--;
         }
     }
 
-    undoAction.append(new QString(createUndoString(Op)));
-    undoActionIdx++;
+    a_undoAction.append(new QString(createUndoString(Op)));
+    a_undoActionIdx++;
 
     emit signalUndoState(true);
     emit signalRedoState(false);
 
-    while (static_cast<unsigned int>(undoAction.size())
+    while (static_cast<unsigned int>(a_undoAction.size())
            > QucsSettings.maxUndo) { // "while..." because
-        delete undoAction.first();   // "maxUndo" could be decreased meanwhile
-        undoAction.pop_front();
-        undoActionIdx--;
+        delete a_undoAction.first();   // "maxUndo" could be decreased meanwhile
+        a_undoAction.pop_front();
+        a_undoActionIdx--;
     }
     return;
 }
@@ -318,7 +336,7 @@ void Schematic::setChanged(bool c, bool fillStack, char Op)
 bool Schematic::sizeOfFrame(int &xall, int &yall)
 {
     // Values exclude border of 1.5cm at each side.
-    switch (showFrame) {
+    switch (a_showFrame) {
     case 1:
         xall = 1020;
         yall = 765;
@@ -389,7 +407,7 @@ void Schematic::paintFrame(QPainter* painter) {
         painter->drawText(tx, 3, 1, 1, Qt::TextDontClip, cn);
         painter->drawText(tx, frame_height - frame_margin + 3, 1, 1, Qt::TextDontClip, cn);
 
-	column_number++;
+        column_number++;
       }
     }
 
@@ -407,7 +425,7 @@ void Schematic::paintFrame(QPainter* painter) {
         painter->drawText(5, ty, rl);
         painter->drawText(frame_width - frame_margin + 5, ty, rl);
 
-	    row_letter++;
+        row_letter++;
       }
     }
 
@@ -421,15 +439,15 @@ void Schematic::paintFrame(QPainter* painter) {
     const double z = 200.0;
     y1_ -= painter->fontMetrics().lineSpacing() + d;
     painter->drawLine(x1_, y1_, x2_, y1_);
-    painter->drawText(x1_ + d, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, Frame_Text2);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, a_Frame_Text2);
     painter->drawLine(x1_ + z, y1_, x1_ + z, y1_ + painter->fontMetrics().lineSpacing() + d);
-    painter->drawText(x1_ + d + z, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, Frame_Text3);
+    painter->drawText(x1_ + d + z, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, a_Frame_Text3);
     y1_ -= painter->fontMetrics().lineSpacing() + d;
     painter->drawLine(x1_, y1_, x2_, y1_);
-    painter->drawText(x1_ + d, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, Frame_Text1);
-    y1_ -= (Frame_Text0.count('\n') + 1) * painter->fontMetrics().lineSpacing() + d;
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, a_Frame_Text1);
+    y1_ -= (a_Frame_Text0.count('\n') + 1) * painter->fontMetrics().lineSpacing() + d;
     painter->drawRect(x2_, y2_, x1_ - x2_ - 1, y1_ - y2_ - 1);
-    painter->drawText(x1_ + d, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, Frame_Text0);
+    painter->drawText(x1_ + d, y1_ + (d >> 1), 1, 1, Qt::TextDontClip, a_Frame_Text0);
 
     painter->restore();
 }
@@ -440,8 +458,8 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
 {
     QTransform trf{p->transform()};
     trf
-        .scale(Scale, Scale)
-        .translate(-ViewX1, -ViewY1);
+        .scale(a_Scale, a_Scale)
+        .translate(-a_ViewX1, -a_ViewY1);
     p->setTransform(trf);
 
     auto renderHints = p->renderHints();
@@ -454,11 +472,11 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
     p->setFont(QucsSettings.font);
     drawGrid(p);
 
-    if (!symbolMode)
+    if (!a_symbolMode)
         paintFrame(p);
 
     drawElements(p);
-    if (showBias > 0) {
+    if (a_showBias > 0) {
         drawDcBiasPoints(p);
     }
 
@@ -466,29 +484,29 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
 }
 
 void Schematic::drawElements(QPainter* painter) {
-    for (auto* component : *Components) {
+    for (auto* component : *a_Components) {
         component->paint(painter);
     }
 
-    for (auto* wire : *Wires) {
+    for (auto* wire : *a_Wires) {
         wire->paint(painter);
         if (wire->Label) {
             wire->Label->paint(painter); // separate because of paintSelected
         }
     }
 
-    for (auto* node : *Nodes) {
+    for (auto* node : *a_Nodes) {
         node->paint(painter);
         if (node->Label) {
             node->Label->paint(painter); // separate because of paintSelected
         }
     }
 
-    for (auto* diagram : *Diagrams) {
+    for (auto* diagram : *a_Diagrams) {
         diagram->paint(painter);
     }
 
-    for (auto* painting : *Paintings) {
+    for (auto* painting : *a_Paintings) {
         painting->paint(painter);
     }
 }
@@ -496,7 +514,7 @@ void Schematic::drawElements(QPainter* painter) {
 void Schematic::drawDcBiasPoints(QPainter* painter) {
     painter->save();
     int x, y, z;
-    for (auto* pn : *Nodes) {
+    for (auto* pn : *a_Nodes) {
         if (pn->Name.isEmpty())
             continue;
         x = pn->cx;
@@ -527,7 +545,7 @@ void Schematic::drawPostPaintEvents(QPainter* painter) {
    * Paint actions can only be called from within the paint event, so they
    * are put into a QList (PostedPaintEvents) and processed here
    */
-    for (auto p : PostedPaintEvents) {
+    for (auto p : a_PostedPaintEvents) {
         // QPainter painter2(viewport()); for if(p.PaintOnViewport)
         QPen pen(Qt::black);
         painter->setPen(Qt::black);
@@ -568,7 +586,7 @@ void Schematic::drawPostPaintEvents(QPainter* painter) {
             break;
         }
     }
-    PostedPaintEvents.clear();
+    a_PostedPaintEvents.clear();
     painter->restore();
 }
 
@@ -576,7 +594,7 @@ void Schematic::PostPaintEvent(
     PE pe, int x1, int y1, int x2, int y2, int a, int b, bool PaintOnViewport)
 {
     PostedPaintEvent p = {pe, x1, y1, x2, y2, a, b, PaintOnViewport};
-    PostedPaintEvents.push_back(p);
+    a_PostedPaintEvents.push_back(p);
     viewport()->update();
     update();
 }
@@ -593,9 +611,9 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
       return condition ? misc::num2str(number) : misc::StringNiceNum(number);
     };
 
-    if (Diagrams == nullptr) return; // fix for crash on document closing; appears time to time
+    if (a_Diagrams == nullptr) return; // fix for crash on document closing; appears time to time
 
-    for (Diagram* diagram = Diagrams->last(); diagram != nullptr; diagram = Diagrams->prev()) {
+    for (Diagram* diagram = a_Diagrams->last(); diagram != nullptr; diagram = a_Diagrams->prev()) {
         // BUG: Obtaining the diagram type by name is marked as a bug elsewhere (to be solved separately).
         // TODO: Currently only rectangular diagrams are supported.
         if (diagram->getSelected(xpos, ypos) && diagram->Name == "Rect") {
@@ -630,58 +648,58 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
     if (Event->buttons() & Qt::MiddleButton) {
         const QPoint currentCursorPosition = contentsToViewport(Event->pos());
 
-        const int dx = currentCursorPosition.x() - previousCursorPosition.x();
+        const int dx = currentCursorPosition.x() - a_previousCursorPosition.x();
         if (dx < 0) {
             scrollRight(std::abs(dx));
         } else if (dx > 0) {
             scrollLeft(dx);
         }
 
-        const int dy = currentCursorPosition.y() - previousCursorPosition.y();
+        const int dy = currentCursorPosition.y() - a_previousCursorPosition.y();
         if (dy < 0) {
             scrollDown(std::abs(dy));
         } else if (dy > 0) {
             scrollUp(dy);
         }
 
-        previousCursorPosition = currentCursorPosition;
+        a_previousCursorPosition = currentCursorPosition;
     }
 
-    if (App->MouseMoveAction)
-        (App->view->*(App->MouseMoveAction))(this, Event);
+    if (a_App->MouseMoveAction)
+        (a_App->view->*(a_App->MouseMoveAction))(this, Event);
 }
 
 // -----------------------------------------------------------
 void Schematic::contentsMousePressEvent(QMouseEvent *Event)
 {
-    App->editText->setHidden(true); // disable text edit of component property
+    a_App->editText->setHidden(true); // disable text edit of component property
     this->setFocus();
-    if (App->MouseReleaseAction == &MouseActions::MReleasePaste)
+    if (a_App->MouseReleaseAction == &MouseActions::MReleasePaste)
         return;
 
     const QPoint inModel = contentsToModel(Event->pos());
 
     if (Event->button() == Qt::RightButton)
-        if (App->MousePressAction != &MouseActions::MPressElement)
-            if (App->MousePressAction != &MouseActions::MPressWire2) {
+        if (a_App->MousePressAction != &MouseActions::MPressElement)
+            if (a_App->MousePressAction != &MouseActions::MPressWire2) {
                 // show menu on right mouse button
-                App->view->rightPressMenu(this, Event, inModel.x(), inModel.y());
-                if (App->MouseReleaseAction)
+                a_App->view->rightPressMenu(this, Event, inModel.x(), inModel.y());
+                if (a_App->MouseReleaseAction)
                     // Is not called automatically because menu has focus.
-                    (App->view->*(App->MouseReleaseAction))(this, Event);
+                    (a_App->view->*(a_App->MouseReleaseAction))(this, Event);
                 return;
             }
 
     // Begin "pan with mouse" action. Panning starts if *only*
     // the middle button is pressed.
     if (Event->button() == Qt::MiddleButton) {
-        previousCursorPosition = contentsToViewport(Event->pos());
+        a_previousCursorPosition = contentsToViewport(Event->pos());
         setCursor(Qt::ClosedHandCursor);
         return;
     }
 
-    if (App->MousePressAction)
-        (App->view->*(App->MousePressAction))(this, Event, inModel.x(), inModel.y());
+    if (a_App->MousePressAction)
+        (a_App->view->*(a_App->MousePressAction))(this, Event, inModel.x(), inModel.y());
 }
 
 // -----------------------------------------------------------
@@ -693,15 +711,15 @@ void Schematic::contentsMouseReleaseEvent(QMouseEvent *Event)
         return;
     }
 
-    if (App->MouseReleaseAction)
-        (App->view->*(App->MouseReleaseAction))(this, Event);
+    if (a_App->MouseReleaseAction)
+        (a_App->view->*(a_App->MouseReleaseAction))(this, Event);
 }
 
 // -----------------------------------------------------------
 void Schematic::contentsMouseDoubleClickEvent(QMouseEvent *Event)
 {
-    if (App->MouseDoubleClickAction)
-        (App->view->*(App->MouseDoubleClickAction))(this, Event);
+    if (a_App->MouseDoubleClickAction)
+        (a_App->view->*(a_App->MouseDoubleClickAction))(this, Event);
 }
 
 void Schematic::print(QPrinter*, QPainter* painter, bool printAll,
@@ -713,7 +731,7 @@ void Schematic::print(QPrinter*, QPainter* painter, bool printAll,
 
     QRect printedArea = printAll ? allBoundingRect() : sizeOfSelection();
 
-    if (printAll && showFrame) {
+    if (printAll && a_showFrame) {
         int frame_width, frame_height;
         sizeOfFrame(frame_width, frame_height);
         printedArea |= QRect{0, 0, frame_width, frame_height};
@@ -780,7 +798,7 @@ template <typename T> void draw_preserve_selection(T* elem, QPainter* p) {
 } // namespace
 
 void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
-    if (printAll && showFrame && !symbolMode) {
+    if (printAll && a_showFrame && !a_symbolMode) {
         paintFrame(painter);
     }
 
@@ -788,13 +806,13 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
       return printAll || drawable->isSelected;
     };
 
-    for (auto* component : *Components) {
+    for (auto* component : *a_Components) {
         if (should_draw(component)) {
             draw_preserve_selection(component, painter);
         }
     }
 
-    for (auto* wire : *Wires) {
+    for (auto* wire : *a_Wires) {
         if (should_draw(wire)) {
             draw_preserve_selection(wire, painter);
         }
@@ -806,7 +824,7 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
         }
     }
 
-    for (auto* node : *Nodes) {
+    for (auto* node : *a_Nodes) {
         for (auto* connected : *node) {
             if (should_draw(connected)) {
                 draw_preserve_selection(node, painter);
@@ -821,13 +839,13 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
         }
     }
 
-    for (auto* painting : *Paintings) {
+    for (auto* painting : *a_Paintings) {
         if (should_draw(painting)) {
             draw_preserve_selection(painting, painter);
         }
     }
 
-    for (auto* diagram : *Diagrams) {
+    for (auto* diagram : *a_Diagrams) {
         if (!should_draw(diagram)) {
             continue;
         }
@@ -862,14 +880,14 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
         }
     }
 
-    if (showBias > 0) { // show DC bias points in schematic ?
+    if (a_showBias > 0) { // show DC bias points in schematic ?
         drawDcBiasPoints(painter);
     }
 }
 
 void Schematic::zoomAroundPoint(double offeredScaleChange, QPoint coords, bool viewportRelative=true)
 {
-    const double desiredScale = Scale * offeredScaleChange;
+    const double desiredScale = a_Scale * offeredScaleChange;
     const auto viewportCoords =
         viewportRelative ? coords : coords - QPoint{contentsX(), contentsY()};
     const auto focusPoint = viewportToModel(viewportCoords);
@@ -884,7 +902,7 @@ float Schematic::zoomBy(float s)
     // Change scale and keep the point displayed in the center
     // of the viewport at same place after scaling.
 
-    const double newScale = Scale * s;
+    const double newScale = a_Scale * s;
     const auto vpCenter = viewportRect().center();
     const auto centerPoint = viewportToModel(vpCenter);
     const auto model = includePoint(modelRect(), centerPoint);
@@ -895,23 +913,23 @@ float Schematic::zoomBy(float s)
 // ---------------------------------------------------
 void Schematic::showAll()
 {
-    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
-    if (UsedX1 == 0)
-        if (UsedX2 == 0)
-            if (UsedY1 == 0)
-                if (UsedY2 == 0) {
-                    UsedX1 = UsedY1 = INT_MAX;
-                    UsedX2 = UsedY2 = INT_MIN;
+    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
+    if (a_UsedX1 == 0)
+        if (a_UsedX2 == 0)
+            if (a_UsedY1 == 0)
+                if (a_UsedY2 == 0) {
+                    a_UsedX1 = a_UsedY1 = INT_MAX;
+                    a_UsedX2 = a_UsedY2 = INT_MIN;
                     return;
                 }
 
     // Reshape model plane to cut off unused parts
     constexpr int margin = 40;
     QRect newModelBounds = modelRect();
-    newModelBounds.setLeft(UsedX1 - margin);
-    newModelBounds.setTop(UsedY1 - margin);
-    newModelBounds.setRight(UsedX2 + margin);
-    newModelBounds.setBottom(UsedY2 + margin);
+    newModelBounds.setLeft(a_UsedX1 - margin);
+    newModelBounds.setTop(a_UsedY1 - margin);
+    newModelBounds.setRight(a_UsedX2 + margin);
+    newModelBounds.setBottom(a_UsedY2 + margin);
 
     // The shape of the model plane may not fit the shape of the viewport,
     // so we looking for a scale value which enables to fit the whole model
@@ -927,13 +945,13 @@ void Schematic::showAll()
 
 // ------------------------------------------------------
 void Schematic::zoomToSelection() {
-    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
-    if (UsedX1 == 0)
-        if (UsedX2 == 0)
-            if (UsedY1 == 0)
-                if (UsedY2 == 0) {
-                    UsedX1 = UsedY1 = INT_MAX;
-                    UsedX2 = UsedY2 = INT_MIN;
+    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
+    if (a_UsedX1 == 0)
+        if (a_UsedX2 == 0)
+            if (a_UsedY1 == 0)
+                if (a_UsedY2 == 0) {
+                    a_UsedX1 = a_UsedY1 = INT_MAX;
+                    a_UsedX2 = a_UsedY2 = INT_MIN;
 
                     // No elements present – nothing can be selected; quit
                     return;
@@ -942,7 +960,7 @@ void Schematic::zoomToSelection() {
     const QRect selectedBoundingRect{ sizeOfSelection() };
 
     // Working with raw coordinates is clumsy, abstract them out
-    const QRect usedBoundingRect{UsedX1, UsedY1, UsedX2 - UsedX1, UsedY2 - UsedY1};
+    const QRect usedBoundingRect{a_UsedX1, a_UsedY1, a_UsedX2 - a_UsedX1, a_UsedY2 - a_UsedY1};
 
     if (selectedBoundingRect.width() == 0 || selectedBoundingRect.height() == 0) {
         // If nothing is selected, then what should be shown? Probably it's best
@@ -976,13 +994,13 @@ void Schematic::showNoZoom()
     const QPoint vpCenter = viewportRect().center();
     const QPoint displayedInCenter = viewportToModel(vpCenter);
 
-    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
-    if (UsedX1 == 0)
-        if (UsedX2 == 0)
-            if (UsedY1 == 0)
-                if (UsedY2 == 0) {
-                    UsedX1 = UsedY1 = INT_MAX;
-                    UsedX2 = UsedY2 = INT_MIN;
+    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
+    if (a_UsedX1 == 0)
+        if (a_UsedX2 == 0)
+            if (a_UsedY1 == 0)
+                if (a_UsedY2 == 0) {
+                    a_UsedX1 = a_UsedY1 = INT_MAX;
+                    a_UsedX2 = a_UsedY2 = INT_MIN;
                     // If there is no elements in schematic, then just set scale 1.0
                     // at the place we currently in.
                     renderModel(noScale, includePoint(modelRect(), displayedInCenter), displayedInCenter, vpCenter);
@@ -990,7 +1008,7 @@ void Schematic::showNoZoom()
                 }
 
     // Working with raw coordinates is clumsy. Wrap them in useful abstraction.
-    const QRect usedBoundingRect{UsedX1, UsedY1, UsedX2 - UsedX1, UsedY2 - UsedY1};
+    const QRect usedBoundingRect{a_UsedX1, a_UsedY1, a_UsedX2 - a_UsedX1, a_UsedY2 - a_UsedY1};
 
     // Trim unused model space
     constexpr int margin = 40;
@@ -1014,31 +1032,31 @@ void Schematic::showNoZoom()
  // and (x2, y2) than extend the model plane size.
  void Schematic::enlargeView(int x1, int y1, int x2, int y2) {
     // Set 'Used' area size to the of the given rectangle
-    if (x1 < UsedX1)
-        UsedX1 = x1;
-    if (y1 < UsedY1)
-        UsedY1 = y1;
-    if (x2 > UsedX2)
-        UsedX2 = x2;
-    if (y2 > UsedY2)
-        UsedY2 = y2;
+    if (x1 < a_UsedX1)
+        a_UsedX1 = x1;
+    if (y1 < a_UsedY1)
+        a_UsedY1 = y1;
+    if (x2 > a_UsedX2)
+        a_UsedX2 = x2;
+    if (y2 > a_UsedY2)
+        a_UsedY2 = y2;
 
     // Construct the desired model plane
     constexpr int margin = 40;
     QRect newModel = modelRect();
-    if (x1 < ViewX1)
+    if (x1 < a_ViewX1)
         newModel.setLeft(x1 - margin);
-    if (y1 < ViewY1)
+    if (y1 < a_ViewY1)
         newModel.setTop(y1 - margin);
-    if (x2 > ViewX2)
+    if (x2 > a_ViewX2)
         newModel.setRight(x2 + margin);
-    if (y2 > ViewY2)
+    if (y2 > a_ViewY2)
         newModel.setBottom(y2 + margin);
 
     const auto vpCenter = viewportRect().center();
     const auto displayedInCenter = viewportToModel(vpCenter);
     newModel = includePoint(newModel, displayedInCenter);
-    renderModel(Scale, newModel, displayedInCenter, vpCenter);
+    renderModel(a_Scale, newModel, displayedInCenter, vpCenter);
  }
 
  QPoint Schematic::setOnGrid(const QPoint& p) {
@@ -1052,20 +1070,20 @@ void Schematic::showNoZoom()
 void Schematic::setOnGrid(int &x, int &y)
 {
     if (x < 0)
-        x -= (GridX >> 1) - 1;
+        x -= (a_GridX >> 1) - 1;
     else
-        x += GridX >> 1;
-    x -= x % GridX;
+        x += a_GridX >> 1;
+    x -= x % a_GridX;
 
     if (y < 0)
-        y -= (GridY >> 1) - 1;
+        y -= (a_GridY >> 1) - 1;
     else
-        y += GridY >> 1;
-    y -= y % GridY;
+        y += a_GridY >> 1;
+    y -= y % a_GridY;
 }
 
 void Schematic::drawGrid(QPainter* painter) {
-    if (!GridOn)
+    if (!a_GridOn)
         return;
 
     painter->save();
@@ -1124,14 +1142,14 @@ void Schematic::drawGrid(QPainter* painter) {
     // grid-step and grow it until its "size in scale" gets larger than the minimal
     // distance between points.
 
-    double horizontalStep{ GridX * Scale };
+    double horizontalStep{ a_GridX * a_Scale };
     for (int n = 2; horizontalStep < minimalVisibleGridStep; n++) {
-        horizontalStep = n * GridX * Scale;
+        horizontalStep = n * a_GridX * a_Scale;
     }
 
-    double verticalStep{ GridY * Scale };
+    double verticalStep{ a_GridY * a_Scale };
     for (int n = 2; verticalStep < minimalVisibleGridStep; n++) {
-        verticalStep = n * GridY * Scale;
+        verticalStep = n * a_GridY * a_Scale;
     }
 
     // Finally draw the grid-nodes
@@ -1154,12 +1172,12 @@ void Schematic::relativeRotation(int &newX, int &newY, int comX, int comY, int o
 }
 
 void Schematic::updateAllBoundingRect() {
-    sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
+    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
 }
 
 QRect Schematic::allBoundingRect() {
     updateAllBoundingRect();
-    return QRect{UsedX1, UsedY1, (UsedX2 - UsedX1), (UsedY2 - UsedY1)};
+    return QRect{a_UsedX1, a_UsedY1, (a_UsedX2 - a_UsedX1), (a_UsedY2 - a_UsedY1)};
 }
 
 // ---------------------------------------------------
@@ -1170,7 +1188,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     xmax = INT_MIN;
     ymax = INT_MIN;
 
-    if (Components->isEmpty() && Wires->isEmpty() && Diagrams->isEmpty() && Paintings->isEmpty()) {
+    if (a_Components->isEmpty() && a_Wires->isEmpty() && a_Diagrams->isEmpty() && a_Paintings->isEmpty()) {
         xmin = xmax = 0;
         ymin = ymax = 0;
         return;
@@ -1178,7 +1196,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
 
     int x1, y1, x2, y2;
     // find boundings of all components
-    for (auto* pc : *Components) {
+    for (auto* pc : *a_Components) {
         pc->entireBounds(x1, y1, x2, y2);
         xmin = std::min(x1, xmin);
         xmax = std::max(x2, xmax);
@@ -1187,7 +1205,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all wires
-    for (auto* pw : *Wires) {
+    for (auto* pw : *a_Wires) {
         xmin = std::min(pw->x1, xmin);
         xmax = std::max(pw->x2, xmax);
         ymin = std::min(pw->y1, ymin);
@@ -1203,7 +1221,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all node labels
-    for (auto* pn : *Nodes) {
+    for (auto* pn : *a_Nodes) {
         if (auto* pl = pn->Label; pl) { // check position of node label
             pl->getLabelBounding(x1, y1, x2, y2);
             xmin = std::min(x1, xmin);
@@ -1214,7 +1232,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all diagrams
-    for (auto* pd : *Diagrams) {
+    for (auto* pd : *a_Diagrams) {
         pd->Bounding(x1, y1, x2, y2);
         xmin = std::min(x1, xmin);
         xmax = std::max(x2, xmax);
@@ -1233,7 +1251,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     // find boundings of all Paintings
-    for (auto* pp : *Paintings) {
+    for (auto* pp : *a_Paintings) {
         pp->Bounding(x1, y1, x2, y2);
         xmin = std::min(x1, xmin);
         xmax = std::max(x2, xmax);
@@ -1250,14 +1268,14 @@ QRect Schematic::sizeOfSelection() const {
 
     bool isAnySelected = false;
 
-    if (Components->isEmpty() && Wires->isEmpty() && Diagrams->isEmpty() &&
-        Paintings->isEmpty()) {
+    if (a_Components->isEmpty() && a_Wires->isEmpty() && a_Diagrams->isEmpty() &&
+        a_Paintings->isEmpty()) {
         return QRect{};
     }
 
     int x1, y1, x2, y2;
     // find boundings of all components
-    for (auto* pc : *Components) {
+    for (auto* pc : *a_Components) {
         if (!pc->isSelected) {
             continue;
         }
@@ -1270,7 +1288,7 @@ QRect Schematic::sizeOfSelection() const {
     }
 
     // find boundings of all wires
-    for (auto* pw : *Wires) {
+    for (auto* pw : *a_Wires) {
         if (!pw->isSelected) {
             continue;
         }
@@ -1290,7 +1308,7 @@ QRect Schematic::sizeOfSelection() const {
     }
 
     // find boundings of all node labels
-    for (auto* pn : *Nodes) {
+    for (auto* pn : *a_Nodes) {
         if (!pn->isSelected) {
             continue;
         }
@@ -1306,7 +1324,7 @@ QRect Schematic::sizeOfSelection() const {
     }
 
     // find boundings of all diagrams
-    for (auto* pd : *Diagrams) {
+    for (auto* pd : *a_Diagrams) {
         if (!pd->isSelected) {
             continue;
         }
@@ -1330,7 +1348,7 @@ QRect Schematic::sizeOfSelection() const {
     }
 
     // find boundings of all Paintings
-    for (auto* pp : *Paintings) {
+    for (auto* pp : *a_Paintings) {
         if (!pp->isSelected) {
             continue;
         }
@@ -1353,8 +1371,8 @@ QRect Schematic::sizeOfSelection() const {
 // Rotates all selected components around their midpoint.
 bool Schematic::rotateElements()
 {
-    Wires->setAutoDelete(false);
-    Components->setAutoDelete(false);
+    a_Wires->setAutoDelete(false);
+    a_Components->setAutoDelete(false);
 
     // To rotate a selected area its necessary to work with half steps
     int x1 = INT_MAX, y1 = INT_MAX;
@@ -1373,8 +1391,8 @@ bool Schematic::rotateElements()
     int newPosX = INT_MIN; 
     int newPosY = INT_MIN;
 
-    Wires->setAutoDelete(true);
-    Components->setAutoDelete(true);
+    a_Wires->setAutoDelete(true);
+    a_Components->setAutoDelete(true);
     setOnGrid(comX, comY);
 
     Wire *pw;
@@ -1440,7 +1458,7 @@ bool Schematic::rotateElements()
         case isPainting:
             pp = (Painting *) pe;
             pp->rotate(x1, y1); // rotate around the center x1 y1
-            Paintings->append(pp);
+            a_Paintings->append(pp);
             break;
         default:;
         }
@@ -1456,15 +1474,15 @@ bool Schematic::rotateElements()
 // First copy them to 'ElementCache', then mirror and insert again.
 bool Schematic::mirrorXComponents()
 {
-    Wires->setAutoDelete(false);
-    Components->setAutoDelete(false);
+    a_Wires->setAutoDelete(false);
+    a_Components->setAutoDelete(false);
 
     int x1, y1, x2, y2;
     QList<Element *> ElementCache;
     if (!copyComps2WiresPaints(x1, y1, x2, y2, &ElementCache))
         return false;
-    Wires->setAutoDelete(true);
-    Components->setAutoDelete(true);
+    a_Wires->setAutoDelete(true);
+    a_Components->setAutoDelete(true);
 
     y1 = (y1 + y2) >> 1; // axis for mirroring
     setOnGrid(y2, y1);
@@ -1511,7 +1529,7 @@ bool Schematic::mirrorXComponents()
             pp->getCenter(x2, y2);
             pp->mirrorX(); // mirror painting !before! mirroring its center
             pp->setCenter(x2, y1 - y2);
-            Paintings->append(pp);
+            a_Paintings->append(pp);
             break;
         default:;
         }
@@ -1525,15 +1543,15 @@ bool Schematic::mirrorXComponents()
 // Mirrors all selected components. First copy them to 'ElementCache', then mirror and insert again.
 bool Schematic::mirrorYComponents()
 {
-    Wires->setAutoDelete(false);
-    Components->setAutoDelete(false);
+    a_Wires->setAutoDelete(false);
+    a_Components->setAutoDelete(false);
 
     int x1, y1, x2, y2;
     QList<Element *> ElementCache;
     if (!copyComps2WiresPaints(x1, y1, x2, y2, &ElementCache))
         return false;
-    Wires->setAutoDelete(true);
-    Components->setAutoDelete(true);
+    a_Wires->setAutoDelete(true);
+    a_Components->setAutoDelete(true);
 
     x1 = (x1 + x2) >> 1; // axis for mirroring
     setOnGrid(x1, x2);
@@ -1580,7 +1598,7 @@ bool Schematic::mirrorYComponents()
             pp->getCenter(x2, y2);
             pp->mirrorY(); // mirror painting !before! mirroring its center
             pp->setCenter(x1 - x2, y2);
-            Paintings->append(pp);
+            a_Paintings->append(pp);
             break;
         default:;
         }
@@ -1594,9 +1612,9 @@ bool Schematic::mirrorYComponents()
 // Updates the graph data of all diagrams (load from data files).
 void Schematic::reloadGraphs()
 {
-    QFileInfo Info(DocName);
-    for (Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-        pd->loadGraphData(Info.path() + QDir::separator() + DataSet);
+    QFileInfo Info(a_DocName);
+    for (Diagram *pd = a_Diagrams->first(); pd != 0; pd = a_Diagrams->next())
+        pd->loadGraphData(Info.path() + QDir::separator() + a_DataSet);
 }
 
 // Copy function,
@@ -1629,34 +1647,34 @@ bool Schematic::paste(QTextStream *stream, Q3PtrList<Element> *pe)
 // Loads this Qucs document.
 bool Schematic::load()
 {
-    DocComps.clear();
-    DocWires.clear();
-    DocNodes.clear();
-    DocDiags.clear();
-    DocPaints.clear();
-    SymbolPaints.clear();
+    a_DocComps.clear();
+    a_DocWires.clear();
+    a_DocNodes.clear();
+    a_DocDiags.clear();
+    a_DocPaints.clear();
+    a_SymbolPaints.clear();
 
     if (!loadDocument())
         return false;
-    lastSaved = QDateTime::currentDateTime();
+    a_lastSaved = QDateTime::currentDateTime();
 
-    while (!undoAction.isEmpty()) {
-        delete undoAction.last();
-        undoAction.pop_back();
+    while (!a_undoAction.isEmpty()) {
+        delete a_undoAction.last();
+        a_undoAction.pop_back();
     }
-    undoActionIdx = 0;
-    while (!undoSymbol.isEmpty()) {
-        delete undoSymbol.last();
-        undoSymbol.pop_back();
+    a_undoActionIdx = 0;
+    while (!a_undoSymbol.isEmpty()) {
+        delete a_undoSymbol.last();
+        a_undoSymbol.pop_back();
     }
-    symbolMode = true;
+    a_symbolMode = true;
     setChanged(false, true); // "not changed" state, but put on undo stack
-    undoSymbolIdx = 0;
-    undoSymbol.at(undoSymbolIdx)->replace(1, 1, 'i');
-    symbolMode = false;
+    a_undoSymbolIdx = 0;
+    a_undoSymbol.at(a_undoSymbolIdx)->replace(1, 1, 'i');
+    a_symbolMode = false;
     setChanged(false, true); // "not changed" state, but put on undo stack
-    undoActionIdx = 0;
-    undoAction.at(undoActionIdx)->replace(1, 1, 'i');
+    a_undoActionIdx = 0;
+    a_undoAction.at(a_undoActionIdx)->replace(1, 1, 'i');
 
     // The undo stack of the circuit symbol is initialized when first
     // entering its edit mode.
@@ -1665,7 +1683,7 @@ bool Schematic::load()
     becomeCurrent(false);
 
     showAll();
-    tmpViewX1 = tmpViewY1 = -200; // was used as temporary cache
+    a_tmpViewX1 = a_tmpViewY1 = -200; // was used as temporary cache
     return true;
 }
 
@@ -1680,7 +1698,7 @@ int Schematic::save()
     //
     // In other cases we want to delete any dangling ports from symbol
     // and invoke "adjustPortNumbers" for it.
-    if (!isSymbolOnly) {
+    if (!a_isSymbolOnly) {
         result = adjustPortNumbers(); // same port number for schematic and symbol
     } else {
         orderSymbolPorts();
@@ -1688,24 +1706,24 @@ int Schematic::save()
     if (saveDocument() < 0)
         return -1;
 
-    QFileInfo Info(DocName);
-    lastSaved = Info.lastModified();
+    QFileInfo Info(a_DocName);
+    a_lastSaved = Info.lastModified();
 
     if (result >= 0) {
         setChanged(false);
 
         QVector<QString *>::iterator it;
-        for (it = undoAction.begin(); it != undoAction.end(); it++) {
+        for (it = a_undoAction.begin(); it != a_undoAction.end(); it++) {
             (*it)->replace(1, 1, ' '); //at(1) = ' '; state of being changed
         }
         //(1) = 'i';   // state of being unchanged
-        undoAction.at(undoActionIdx)->replace(1, 1, 'i');
+        a_undoAction.at(a_undoActionIdx)->replace(1, 1, 'i');
 
-        for (it = undoSymbol.begin(); it != undoSymbol.end(); it++) {
+        for (it = a_undoSymbol.begin(); it != a_undoSymbol.end(); it++) {
             (*it)->replace(1, 1, ' '); //at(1) = ' '; state of being changed
         }
         //at(1) = 'i';   // state of being unchanged
-        undoSymbol.at(undoSymbolIdx)->replace(1, 1, 'i');
+        a_undoSymbol.at(a_undoSymbolIdx)->replace(1, 1, 'i');
     }
     // update the subcircuit file lookup hashes
     //QucsMain->updateSchNameHash();
@@ -1721,20 +1739,20 @@ int Schematic::adjustPortNumbers()
 {
     int x1, x2, y1, y2;
     // get size of whole symbol to know where to place new ports
-    if (symbolMode)
+    if (a_symbolMode)
         sizeOfAll(x1, y1, x2, y2);
     else {
-        Components = &SymbolComps;
-        Wires = &SymbolWires;
-        Nodes = &SymbolNodes;
-        Diagrams = &SymbolDiags;
-        Paintings = &SymbolPaints;
+        a_Components = &SymbolComps;
+        a_Wires = &SymbolWires;
+        a_Nodes = &SymbolNodes;
+        a_Diagrams = &SymbolDiags;
+        a_Paintings = &a_SymbolPaints;
         sizeOfAll(x1, y1, x2, y2);
-        Components = &DocComps;
-        Wires = &DocWires;
-        Nodes = &DocNodes;
-        Diagrams = &DocDiags;
-        Paintings = &DocPaints;
+        a_Components = &a_DocComps;
+        a_Wires = &a_DocWires;
+        a_Nodes = &a_DocNodes;
+        a_Diagrams = &a_DocDiags;
+        a_Paintings = &a_DocPaints;
     }
     x1 += 40;
     y2 += 20;
@@ -1742,14 +1760,14 @@ int Schematic::adjustPortNumbers()
 
     Painting *pp;
     // delete all port names in symbol
-    for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next())
+    for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
         if (pp->Name == ".PortSym ")
             ((PortSymbol *) pp)->nameStr = "";
 
     QString Str;
     int countPort = 0;
 
-    QFileInfo Info(DataDisplay);
+    QFileInfo Info(a_DataDisplay);
     QString Suffix = Info.suffix();
 
     // handle VHDL file symbol
@@ -1759,13 +1777,13 @@ int Schematic::adjustPortNumbers()
         int Number;
 
         // get ports from VHDL file
-        QFileInfo Info(DocName);
-        QString Name = Info.path() + QDir::separator() + DataDisplay;
+        QFileInfo Info(a_DocName);
+        QString Name = Info.path() + QDir::separator() + a_DataDisplay;
 
         // obtain VHDL information either from open text document or the
         // file directly
         VHDL_File_Info VInfo;
-        TextDoc *d = (TextDoc *) App->findDoc(Name);
+        TextDoc *d = (TextDoc *) a_App->findDoc(Name);
         if (d)
             VInfo = VHDL_File_Info(d->document()->toPlainText());
         else
@@ -1774,7 +1792,7 @@ int Schematic::adjustPortNumbers()
         if (!VInfo.PortNames.isEmpty())
             Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
 
-        for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next())
+        for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
                 ID_Text *id = (ID_Text *) pp;
                 id->Prefix = VInfo.EntityName.toUpper();
@@ -1801,7 +1819,7 @@ int Schematic::adjustPortNumbers()
 
             Str = QString::number(Number);
             // search for matching port symbol
-            for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next())
+            for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
                 if (pp->Name == ".PortSym ")
                     if (((PortSymbol *) pp)->numberStr == Str)
                         break;
@@ -1809,7 +1827,7 @@ int Schematic::adjustPortNumbers()
             if (pp)
                 ((PortSymbol *) pp)->nameStr = *it;
             else {
-                SymbolPaints.append(new PortSymbol(x1, y2, Str, *it));
+                a_SymbolPaints.append(new PortSymbol(x1, y2, Str, *it));
                 y2 += 40;
             }
         }
@@ -1821,13 +1839,13 @@ int Schematic::adjustPortNumbers()
         int Number;
 
         // get ports from Verilog-HDL file
-        QFileInfo Info(DocName);
-        QString Name = Info.path() + QDir::separator() + DataDisplay;
+        QFileInfo Info(a_DocName);
+        QString Name = Info.path() + QDir::separator() + a_DataDisplay;
 
         // obtain Verilog-HDL information either from open text document or the
         // file directly
         Verilog_File_Info VInfo;
-        TextDoc *d = (TextDoc *) App->findDoc(Name);
+        TextDoc *d = (TextDoc *) a_App->findDoc(Name);
         if (d)
             VInfo = Verilog_File_Info(d->document()->toPlainText());
         else
@@ -1835,7 +1853,7 @@ int Schematic::adjustPortNumbers()
         if (!VInfo.PortNames.isEmpty())
             Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
 
-        for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next())
+        for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
                 ID_Text *id = (ID_Text *) pp;
                 id->Prefix = VInfo.ModuleName.toUpper();
@@ -1847,7 +1865,7 @@ int Schematic::adjustPortNumbers()
 
             Str = QString::number(Number);
             // search for matching port symbol
-            for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next())
+            for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
                 if (pp->Name == ".PortSym ")
                     if (((PortSymbol *) pp)->numberStr == Str)
                         break;
@@ -1855,7 +1873,7 @@ int Schematic::adjustPortNumbers()
             if (pp)
                 ((PortSymbol *) pp)->nameStr = *it;
             else {
-                SymbolPaints.append(new PortSymbol(x1, y2, Str, *it));
+                a_SymbolPaints.append(new PortSymbol(x1, y2, Str, *it));
                 y2 += 40;
             }
         }
@@ -1867,13 +1885,13 @@ int Schematic::adjustPortNumbers()
         int Number;
 
         // get ports from Verilog-A file
-        QFileInfo Info(DocName);
-        QString Name = Info.path() + QDir::separator() + DataDisplay;
+        QFileInfo Info(a_DocName);
+        QString Name = Info.path() + QDir::separator() + a_DataDisplay;
 
         // obtain Verilog-A information either from open text document or the
         // file directly
         VerilogA_File_Info VInfo;
-        TextDoc *d = (TextDoc *) App->findDoc(Name);
+        TextDoc *d = (TextDoc *) a_App->findDoc(Name);
         if (d)
             VInfo = VerilogA_File_Info(d->toPlainText());
         else
@@ -1882,7 +1900,7 @@ int Schematic::adjustPortNumbers()
         if (!VInfo.PortNames.isEmpty())
             Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
 
-        for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next())
+        for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
                 ID_Text *id = (ID_Text *) pp;
                 id->Prefix = VInfo.ModuleName.toUpper();
@@ -1894,7 +1912,7 @@ int Schematic::adjustPortNumbers()
 
             Str = QString::number(Number);
             // search for matching port symbol
-            for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next())
+            for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
                 if (pp->Name == ".PortSym ")
                     if (((PortSymbol *) pp)->numberStr == Str)
                         break;
@@ -1902,7 +1920,7 @@ int Schematic::adjustPortNumbers()
             if (pp)
                 ((PortSymbol *) pp)->nameStr = *it;
             else {
-                SymbolPaints.append(new PortSymbol(x1, y2, Str, *it));
+                a_SymbolPaints.append(new PortSymbol(x1, y2, Str, *it));
                 y2 += 40;
             }
         }
@@ -1910,13 +1928,13 @@ int Schematic::adjustPortNumbers()
     // handle schematic symbol
     else {
         // go through all components in a schematic
-        for (Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+        for (Component *pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
             if (pc->Model == "Port") {
                 countPort++;
 
                 Str = pc->Props.front()->Value;
                 // search for matching port symbol
-                for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next()) {
+                for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next()) {
                     if (pp->Name == ".PortSym ") {
                         if (((PortSymbol *) pp)->numberStr == Str)
                             break;
@@ -1926,7 +1944,7 @@ int Schematic::adjustPortNumbers()
                 if (pp) {
                     ((PortSymbol *) pp)->nameStr = pc->Name;
                 } else {
-                    SymbolPaints.append(new PortSymbol(x1, y2, Str, pc->Name));
+                    a_SymbolPaints.append(new PortSymbol(x1, y2, Str, pc->Name));
                     y2 += 40;
                 }
             }
@@ -1934,14 +1952,14 @@ int Schematic::adjustPortNumbers()
     }
 
     // delete not accounted port symbols
-    for (pp = SymbolPaints.first(); pp != 0;) {
+    for (pp = a_SymbolPaints.first(); pp != 0;) {
         if (pp->Name == ".PortSym ")
             if (((PortSymbol *) pp)->nameStr.isEmpty()) {
-                SymbolPaints.remove();
-                pp = SymbolPaints.current();
+                a_SymbolPaints.remove();
+                pp = a_SymbolPaints.current();
                 continue;
             }
-        pp = SymbolPaints.next();
+        pp = a_SymbolPaints.next();
     }
 
     return countPort;
@@ -1953,7 +1971,7 @@ int Schematic::orderSymbolPorts()
   int countPorts = 0;
   QSet<int> port_numbers, existing_numbers, free_numbers;
   int max_port_number = 0;
-  for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next()) {
+  for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next()) {
     if (pp->Name == ".PortSym ") {
       countPorts++;
       QString numstr = ((PortSymbol *) pp)->numberStr;
@@ -1974,7 +1992,7 @@ int Schematic::orderSymbolPorts()
   free_numbers = port_numbers - existing_numbers;
 
   // Assign new numbers only if port number is empty; Preserve ports order.
-  for (pp = SymbolPaints.first(); pp != 0; pp = SymbolPaints.next()) {
+  for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next()) {
     if (pp->Name == ".PortSym ") {
       QString numstr = ((PortSymbol *) pp)->numberStr;
       if (numstr == "0") {
@@ -1991,18 +2009,18 @@ int Schematic::orderSymbolPorts()
 // ---------------------------------------------------
 bool Schematic::undo()
 {
-    if (symbolMode) {
-        if (undoSymbolIdx == 0) {
+    if (a_symbolMode) {
+        if (a_undoSymbolIdx == 0) {
             return false;
         }
 
-        rebuildSymbol(undoSymbol.at(--undoSymbolIdx));
+        rebuildSymbol(a_undoSymbol.at(--a_undoSymbolIdx));
 
-        emit signalUndoState(undoSymbolIdx != 0);
-        emit signalRedoState(undoSymbolIdx != undoSymbol.size() - 1);
+        emit signalUndoState(a_undoSymbolIdx != 0);
+        emit signalRedoState(a_undoSymbolIdx != a_undoSymbol.size() - 1);
 
-        if (undoSymbol.at(undoSymbolIdx)->at(1) == 'i'
-            && undoAction.at(undoActionIdx)->at(1) == 'i') {
+        if (a_undoSymbol.at(a_undoSymbolIdx)->at(1) == 'i'
+            && a_undoAction.at(a_undoActionIdx)->at(1) == 'i') {
             setChanged(false, false);
             return true;
         }
@@ -2012,21 +2030,21 @@ bool Schematic::undo()
     }
 
     // ...... for schematic edit mode .......
-    if (undoActionIdx == 0) {
+    if (a_undoActionIdx == 0) {
         return false;
     }
 
-    rebuild(undoAction.at(--undoActionIdx));
+    rebuild(a_undoAction.at(--a_undoActionIdx));
     reloadGraphs(); // load recent simulation data
 
-    emit signalUndoState(undoActionIdx != 0);
-    emit signalRedoState(undoActionIdx != undoAction.size() - 1);
+    emit signalUndoState(a_undoActionIdx != 0);
+    emit signalRedoState(a_undoActionIdx != a_undoAction.size() - 1);
 
-    if (undoAction.at(undoActionIdx)->at(1) == 'i') {
-        if (undoSymbol.isEmpty()) {
+    if (a_undoAction.at(a_undoActionIdx)->at(1) == 'i') {
+        if (a_undoSymbol.isEmpty()) {
             setChanged(false, false);
             return true;
-        } else if (undoSymbol.at(undoSymbolIdx)->at(1) == 'i') {
+        } else if (a_undoSymbol.at(a_undoSymbolIdx)->at(1) == 'i') {
             setChanged(false, false);
             return true;
         }
@@ -2039,19 +2057,19 @@ bool Schematic::undo()
 // ---------------------------------------------------
 bool Schematic::redo()
 {
-    if (symbolMode) {
-        if (undoSymbolIdx == undoSymbol.size() - 1) {
+    if (a_symbolMode) {
+        if (a_undoSymbolIdx == a_undoSymbol.size() - 1) {
             return false;
         }
 
-        rebuildSymbol(undoSymbol.at(++undoSymbolIdx));
+        rebuildSymbol(a_undoSymbol.at(++a_undoSymbolIdx));
         adjustPortNumbers(); // set port names
 
-        emit signalUndoState(undoSymbolIdx != 0);
-        emit signalRedoState(undoSymbolIdx != undoSymbol.size() - 1);
+        emit signalUndoState(a_undoSymbolIdx != 0);
+        emit signalRedoState(a_undoSymbolIdx != a_undoSymbol.size() - 1);
 
-        if (undoSymbol.at(undoSymbolIdx)->at(1) == 'i'
-            && undoAction.at(undoActionIdx)->at(1) == 'i') {
+        if (a_undoSymbol.at(a_undoSymbolIdx)->at(1) == 'i'
+            && a_undoAction.at(a_undoActionIdx)->at(1) == 'i') {
             setChanged(false, false);
             return true;
         }
@@ -2062,21 +2080,21 @@ bool Schematic::redo()
 
     //
     // ...... for schematic edit mode .......
-    if (undoActionIdx == undoAction.size() - 1) {
+    if (a_undoActionIdx == a_undoAction.size() - 1) {
         return false;
     }
 
-    rebuild(undoAction.at(++undoActionIdx));
+    rebuild(a_undoAction.at(++a_undoActionIdx));
     reloadGraphs(); // load recent simulation data
 
-    emit signalUndoState(undoActionIdx != 0);
-    emit signalRedoState(undoActionIdx != undoAction.size() - 1);
+    emit signalUndoState(a_undoActionIdx != 0);
+    emit signalRedoState(a_undoActionIdx != a_undoAction.size() - 1);
 
-    if (undoAction.at(undoActionIdx)->at(1) == 'i') {
-        if (undoSymbol.isEmpty()) {
+    if (a_undoAction.at(a_undoActionIdx)->at(1) == 'i') {
+        if (a_undoSymbol.isEmpty()) {
             setChanged(false, false);
             return true;
-        } else if (undoSymbol.at(undoSymbolIdx)->at(1) == 'i') {
+        } else if (a_undoSymbol.at(a_undoSymbolIdx)->at(1) == 'i') {
             setChanged(false, false);
             return true;
         }
@@ -2096,8 +2114,8 @@ bool Schematic::elementsOnGrid()
     Q3PtrList<WireLabel> LabelCache;
 
     // test all components
-    Components->setAutoDelete(false);
-    for (Component *pc = Components->last(); pc != nullptr; pc = Components->prev())
+    a_Components->setAutoDelete(false);
+    for (Component *pc = a_Components->last(); pc != nullptr; pc = a_Components->prev())
         if (pc->isSelected) {
             // rescue non-selected node labels
             for (Port *pp : pc->Ports)
@@ -2110,11 +2128,11 @@ bool Schematic::elementsOnGrid()
 
             x = pc->cx;
             y = pc->cy;
-            No = Components->at();
+            No = a_Components->at();
             deleteComp(pc);
             setOnGrid(pc->cx, pc->cy);
             insertRawComponent(pc);
-            Components->at(No); // restore current list position
+            a_Components->at(No); // restore current list position
             pc->isSelected = false;
             count = true;
 
@@ -2127,11 +2145,11 @@ bool Schematic::elementsOnGrid()
             }
             LabelCache.clear();
         }
-    Components->setAutoDelete(true);
+    a_Components->setAutoDelete(true);
 
-    Wires->setAutoDelete(false);
+    a_Wires->setAutoDelete(false);
     // test all wires and wire labels
-    for (Wire *pw = Wires->last(); pw != 0; pw = Wires->prev()) {
+    for (Wire *pw = a_Wires->last(); pw != 0; pw = a_Wires->prev()) {
         pl = pw->Label;
         pw->Label = nullptr;
 
@@ -2150,12 +2168,12 @@ bool Schematic::elementsOnGrid()
                 }
             }
 
-            No = Wires->at();
+            No = a_Wires->at();
             deleteWire(pw);
             setOnGrid(pw->x1, pw->y1);
             setOnGrid(pw->x2, pw->y2);
             insertWire(pw);
-            Wires->at(No); // restore current list position
+            a_Wires->at(No); // restore current list position
             pw->isSelected = false;
             count = true;
             if (pl)
@@ -2176,10 +2194,10 @@ bool Schematic::elementsOnGrid()
             }
         }
     }
-    Wires->setAutoDelete(true);
+    a_Wires->setAutoDelete(true);
 
     // test all node labels
-    for (Node *pn = Nodes->first(); pn != 0; pn = Nodes->next())
+    for (Node *pn = a_Nodes->first(); pn != 0; pn = a_Nodes->next())
         if (pn->Label)
             if (pn->Label->isSelected) {
                 setOnGrid(pn->Label->x1, pn->Label->y1);
@@ -2188,7 +2206,7 @@ bool Schematic::elementsOnGrid()
             }
 
     // test all diagrams
-    for (Diagram *pd = Diagrams->last(); pd != 0; pd = Diagrams->prev()) {
+    for (Diagram *pd = a_Diagrams->last(); pd != 0; pd = a_Diagrams->prev()) {
         if (pd->isSelected) {
             setOnGrid(pd->cx, pd->cy);
             pd->isSelected = false;
@@ -2210,7 +2228,7 @@ bool Schematic::elementsOnGrid()
     }
 
     // test all paintings
-    for (Painting *pa = Paintings->last(); pa != 0; pa = Paintings->prev())
+    for (Painting *pa = a_Paintings->last(); pa != 0; pa = a_Paintings->prev())
         if (pa->isSelected) {
             setOnGrid(pa->cx, pa->cy);
             pa->isSelected = false;
@@ -2225,42 +2243,42 @@ bool Schematic::elementsOnGrid()
 // ---------------------------------------------------
 void Schematic::switchPaintMode()
 {
-    symbolMode = !symbolMode; // change mode
+    a_symbolMode = !a_symbolMode; // change mode
 
     int tmp, t2;
     float temp;
-    temp = Scale;
-    Scale = tmpScale;
-    tmpScale = temp;
+    temp = a_Scale;
+    a_Scale = a_tmpScale;
+    a_tmpScale = temp;
     tmp = contentsX();
     t2 = contentsY();
-    setContentsPos(tmpPosX, tmpPosY);
-    tmpPosX = tmp;
-    tmpPosY = t2;
-    tmp = ViewX1;
-    ViewX1 = tmpViewX1;
-    tmpViewX1 = tmp;
-    tmp = ViewY1;
-    ViewY1 = tmpViewY1;
-    tmpViewY1 = tmp;
-    tmp = ViewX2;
-    ViewX2 = tmpViewX2;
-    tmpViewX2 = tmp;
-    tmp = ViewY2;
-    ViewY2 = tmpViewY2;
-    tmpViewY2 = tmp;
-    tmp = UsedX1;
-    UsedX1 = tmpUsedX1;
-    tmpUsedX1 = tmp;
-    tmp = UsedY1;
-    UsedY1 = tmpUsedY1;
-    tmpUsedY1 = tmp;
-    tmp = UsedX2;
-    UsedX2 = tmpUsedX2;
-    tmpUsedX2 = tmp;
-    tmp = UsedY2;
-    UsedY2 = tmpUsedY2;
-    tmpUsedY2 = tmp;
+    setContentsPos(a_tmpPosX, a_tmpPosY);
+    a_tmpPosX = tmp;
+    a_tmpPosY = t2;
+    tmp = a_ViewX1;
+    a_ViewX1 = a_tmpViewX1;
+    a_tmpViewX1 = tmp;
+    tmp = a_ViewY1;
+    a_ViewY1 = a_tmpViewY1;
+    a_tmpViewY1 = tmp;
+    tmp = a_ViewX2;
+    a_ViewX2 = a_tmpViewX2;
+    a_tmpViewX2 = tmp;
+    tmp = a_ViewY2;
+    a_ViewY2 = a_tmpViewY2;
+    a_tmpViewY2 = tmp;
+    tmp = a_UsedX1;
+    a_UsedX1 = a_tmpUsedX1;
+    a_tmpUsedX1 = tmp;
+    tmp = a_UsedY1;
+    a_UsedY1 = a_tmpUsedY1;
+    a_tmpUsedY1 = tmp;
+    tmp = a_UsedX2;
+    a_UsedX2 = a_tmpUsedX2;
+    a_tmpUsedX2 = tmp;
+    tmp = a_UsedY2;
+    a_UsedY2 = a_tmpUsedY2;
+    a_tmpUsedY2 = tmp;
 }
 
 // *********************************************************************
@@ -2270,7 +2288,7 @@ void Schematic::switchPaintMode()
 // *********************************************************************
 void Schematic::contentsWheelEvent(QWheelEvent *Event)
 {
-    App->editText->setHidden(true); // disable edit of component property
+    a_App->editText->setHidden(true); // disable edit of component property
 
     // A mouse wheel angle delta of a single step is typically 120,
     // but other devices may produce various values. For example,
@@ -2335,7 +2353,7 @@ void Schematic::scrollUp(int step)
     // located, the smaller its y-coordinate and vice versa. Keep this in mind
     // while reading the code below.
 
-    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const int stepInModel = static_cast<int>(std::round(step/a_Scale));
     const QPoint viewportTopLeft = viewportRect().topLeft();
 
     // A point currently displayed in top left corner
@@ -2351,11 +2369,11 @@ void Schematic::scrollUp(int step)
 
     // Cut off a bit of unused model space from its bottom side.
     const auto b = modelBounds.bottom() - stepInModel;
-    if (b > UsedY2) {
+    if (b > a_UsedY2) {
         modelBounds.setBottom(b);
     }
 
-    renderModel(Scale, modelBounds, mtl, viewportTopLeft);
+    renderModel(a_Scale, modelBounds, mtl, viewportTopLeft);
 }
 
 // Scrolls the visible area downwards and enlarges or reduces the view
@@ -2368,7 +2386,7 @@ void Schematic::scrollDown(int step)
     // located, the bigger its y-coordinate and vice versa. Keep this in mind
     // while reading the code below.
 
-    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const int stepInModel = static_cast<int>(std::round(step/a_Scale));
     const QPoint viewportBottomLeft = viewportRect().bottomLeft();
 
     // A point currently displayed in bottom left corner
@@ -2384,12 +2402,12 @@ void Schematic::scrollDown(int step)
 
     // Cut off a bit of unused model space from its top side.
     const auto t = modelBounds.top() + stepInModel;
-    if (t < UsedY1) {
+    if (t < a_UsedY1) {
         modelBounds.setTop(t);
     }
 
     // Render model in its new size and position point in the top left corner of viewport
-    renderModel(Scale, modelBounds, mbl, viewportBottomLeft);
+    renderModel(a_Scale, modelBounds, mbl, viewportBottomLeft);
 }
 
 // Scrolls the visible area to the left and enlarges or reduces the view
@@ -2402,7 +2420,7 @@ void Schematic::scrollLeft(int step)
     // located, the smaller its x-coordinate and vice versa. Keep this in mind
     // while reading the code below.
 
-    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const int stepInModel = static_cast<int>(std::round(step/a_Scale));
     const QPoint viewportTopLeft = viewportRect().topLeft();
 
     // A point currently displayed in top left corner
@@ -2418,11 +2436,11 @@ void Schematic::scrollLeft(int step)
 
     // Cut off a bit of unused model space from its right side.
     const auto r = modelBounds.right() - stepInModel;
-    if (r > UsedX2) {
+    if (r > a_UsedX2) {
         modelBounds.setRight(r);
     }
 
-    renderModel(Scale, modelBounds, mtl, viewportTopLeft);
+    renderModel(a_Scale, modelBounds, mtl, viewportTopLeft);
 }
 
 // Scrolls the visible area to the right and enlarges or reduces the
@@ -2435,7 +2453,7 @@ void Schematic::scrollRight(int step)
     // located, the bigger its x-coordinate and vice versa. Keep this in mind
     // while reading the code below.
 
-    const int stepInModel = static_cast<int>(std::round(step/Scale));
+    const int stepInModel = static_cast<int>(std::round(step/a_Scale));
     const QPoint viewportTopRight = viewportRect().topRight();
 
     // A point currently displayed in top right corner
@@ -2451,18 +2469,18 @@ void Schematic::scrollRight(int step)
 
     // Cut off a bit of unused model space from its left side.
     const auto l = modelBounds.left() + stepInModel;
-    if (l < UsedX1) {
+    if (l < a_UsedX1) {
         modelBounds.setLeft(l);
     }
 
-    renderModel(Scale, modelBounds, mtr, viewportTopRight);
+    renderModel(a_Scale, modelBounds, mtr, viewportTopRight);
 }
 
 // -----------------------------------------------------------
 // Is called if the scroll arrow of the ScrollBar is pressed.
 void Schematic::slotScrollUp()
 {
-    App->editText->setHidden(true); // disable edit of component property
+    a_App->editText->setHidden(true); // disable edit of component property
     scrollUp(verticalScrollBar()->singleStep());
 }
 
@@ -2470,7 +2488,7 @@ void Schematic::slotScrollUp()
 // Is called if the scroll arrow of the ScrollBar is pressed.
 void Schematic::slotScrollDown()
 {
-    App->editText->setHidden(true); // disable edit of component property
+    a_App->editText->setHidden(true); // disable edit of component property
     scrollDown(verticalScrollBar()->singleStep());
 }
 
@@ -2478,7 +2496,7 @@ void Schematic::slotScrollDown()
 // Is called if the scroll arrow of the ScrollBar is pressed.
 void Schematic::slotScrollLeft()
 {
-    App->editText->setHidden(true); // disable edit of component property
+    a_App->editText->setHidden(true); // disable edit of component property
     scrollLeft(horizontalScrollBar()->singleStep());
 }
 
@@ -2486,7 +2504,7 @@ void Schematic::slotScrollLeft()
 // Is called if the scroll arrow of the ScrollBar is pressed.
 void Schematic::slotScrollRight()
 {
-    App->editText->setHidden(true); // disable edit of component property
+    a_App->editText->setHidden(true); // disable edit of component property
     scrollRight(horizontalScrollBar()->singleStep());
 }
 
@@ -2499,7 +2517,7 @@ void Schematic::slotScrollRight()
 // Is called if an object is dropped (after drag'n drop).
 void Schematic::contentsDropEvent(QDropEvent *Event)
 {
-    if (dragIsOkay) {
+    if (a_dragIsOkay) {
         QList<QUrl> urls = Event->mimeData()->urls();
         if (urls.isEmpty()) {
             return;
@@ -2507,15 +2525,15 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 
         // do not close untitled document to avoid segfault
         QucsDoc *d = QucsMain->getDoc(0);
-        bool changed = d->DocChanged;
-        d->DocChanged = true;
+        bool changed = d->getDocChanged();
+        d->setDocChanged(true);
 
         // URI:  file:/home/linuxuser/Desktop/example.sch
         for (QUrl url : urls) {
-            App->gotoPage(QDir::toNativeSeparators(url.toLocalFile()));
+            a_App->gotoPage(QDir::toNativeSeparators(url.toLocalFile()));
         }
 
-        d->DocChanged = changed;
+        d->setDocChanged(changed);
         return;
     }
 
@@ -2530,10 +2548,10 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 
     QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 
-    App->view->MPressElement(this, &e, inModel.x(), inModel.y());
+    a_App->view->MPressElement(this, &e, inModel.x(), inModel.y());
 
-    delete App->view->selElem;
-    App->view->selElem = nullptr; // no component selected
+    delete a_App->view->selElem;
+    a_App->view->selElem = nullptr; // no component selected
 
     if (formerAction) {
         formerAction->setChecked(true);
@@ -2547,11 +2565,11 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 {
     //FIXME: the function of drag library component seems not working?
     formerAction = nullptr;
-    dragIsOkay = false;
+    a_dragIsOkay = false;
 
     // file dragged in ?
     if (Event->mimeData()->hasUrls()) {
-        dragIsOkay = true;
+        a_dragIsOkay = true;
         Event->accept();
         return;
     }
@@ -2561,8 +2579,8 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
         QString s = Event->mimeData()->text();
         if (s.left(15) == "QucsComponent:<") {
             s = s.mid(14);
-            App->view->selElem = getComponentFromName(s);
-            if (App->view->selElem) {
+            a_App->view->selElem = getComponentFromName(s);
+            if (a_App->view->selElem) {
                 Event->accept();
                 return;
             }
@@ -2576,12 +2594,12 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
     // drag component from listview
     //if(Event->provides("application/x-qabstractitemmodeldatalist")) {
     if (Event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
-        QListWidgetItem *Item = App->CompComps->currentItem();
+        QListWidgetItem *Item = a_App->CompComps->currentItem();
         if (Item) {
-            formerAction = App->activeAction;
-            App->slotSelectComponent(Item); // also sets drawn=false
-            App->MouseMoveAction = 0;
-            App->MousePressAction = 0;
+            formerAction = a_App->activeAction;
+            a_App->slotSelectComponent(Item); // also sets drawn=false
+            a_App->MouseMoveAction = 0;
+            a_App->MousePressAction = 0;
 
             Event->accept();
             return;
@@ -2600,7 +2618,7 @@ void Schematic::contentsDragLeaveEvent(QDragLeaveEvent *)
 }
 
 void Schematic::contentsNativeGestureZoomEvent( QNativeGestureEvent* Event) {
-  App->editText->setHidden(true); // disable edit of component property
+  a_App->editText->setHidden(true); // disable edit of component property
 
   const auto factor = 1.0 + Event->value();
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
@@ -2614,8 +2632,8 @@ void Schematic::contentsNativeGestureZoomEvent( QNativeGestureEvent* Event) {
 // ---------------------------------------------------
 void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
 {
-    if (!dragIsOkay) {
-        if (App->view->selElem == 0) {
+    if (!a_dragIsOkay) {
+        if (a_App->view->selElem == 0) {
             Event->ignore();
             return;
         }
@@ -2632,7 +2650,7 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
 #else
         QMouseEvent e(QEvent::MouseMove, Event->pos(), Qt::NoButton, Qt::NoButton, Qt::NoModifier);
 #endif
-        App->view->MMoveElement(this, &e);
+        a_App->view->MMoveElement(this, &e);
     }
 
     Event->accept();
@@ -2640,12 +2658,12 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
 
 bool Schematic::checkDplAndDatNames()
 {
-    QFileInfo Info(DocName);
-    if (!DocName.isEmpty() && DataSet.size() > 4 && DataDisplay.size() > 4) {
+    QFileInfo Info(a_DocName);
+    if (!a_DocName.isEmpty() && a_DataSet.size() > 4 && a_DataDisplay.size() > 4) {
         QString base = Info.completeBaseName();
-        QString base_dat = DataSet;
+        QString base_dat = a_DataSet;
         base_dat.chop(4);
-        QString base_dpl = DataDisplay;
+        QString base_dpl = a_DataDisplay;
         base_dpl.chop(4);
         if (base != base_dat || base != base_dpl) {
             QString msg = QObject::tr(
@@ -2654,16 +2672,16 @@ bool Schematic::checkDplAndDatNames()
                 "instead of using File->SaveAs. Correct dataset and display names "
                 "automatically?\n\n");
             msg += QString(QObject::tr("Schematic file: ")) + base + ".sch\n";
-            msg += QString(QObject::tr("Dataset file: ")) + DataSet + "\n";
-            msg += QString(QObject::tr("Display file: ")) + DataDisplay + "\n";
+            msg += QString(QObject::tr("Dataset file: ")) + a_DataSet + "\n";
+            msg += QString(QObject::tr("Display file: ")) + a_DataDisplay + "\n";
             auto r = QMessageBox::information(this,
                                               QObject::tr("Open document"),
                                               msg,
                                               QMessageBox::Yes,
                                               QMessageBox::No);
             if (r == QMessageBox::Yes) {
-                DataSet = base + ".dat";
-                DataDisplay = base + ".dpl";
+                a_DataSet = base + ".dat";
+                a_DataDisplay = base + ".dpl";
                 return true;
             }
         }

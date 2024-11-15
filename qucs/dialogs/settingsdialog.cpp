@@ -45,7 +45,7 @@
 #include <QDebug>
 
 SettingsDialog::SettingsDialog(Schematic *Doc_)
-    : QDialog(Doc_) 
+    : QDialog(Doc_)
 {
     Doc = Doc_;
     setWindowTitle(tr("Edit File Properties"));
@@ -165,24 +165,24 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     // ...........................................................
     // fill the fields with the QucsDoc-Properties
 
-    Input_DataSet->setText(Doc->DataSet);
-    Input_DataDisplay->setText(Doc->DataDisplay);
-    Input_Script->setText(Doc->Script);
-    Check_OpenDpl->setChecked(Doc->SimOpenDpl);
-    Check_RunScript->setChecked(Doc->SimRunScript);
-    Check_GridOn->setChecked(Doc->GridOn);
-    Input_GridX->setText(QString::number(Doc->GridX));
-    Input_GridY->setText(QString::number(Doc->GridY));
-    Combo_Frame->setCurrentIndex(Doc->showFrame);
+    Input_DataSet->setText(Doc->getDataSet());
+    Input_DataDisplay->setText(Doc->getDataDisplay());
+    Input_Script->setText(Doc->getScript());
+    Check_OpenDpl->setChecked(Doc->getSimOpenDpl());
+    Check_RunScript->setChecked(Doc->getSimRunScript());
+    Check_GridOn->setChecked(Doc->getGridOn());
+    Input_GridX->setText(QString::number(Doc->getGridX()));
+    Input_GridY->setText(QString::number(Doc->getGridY()));
+    Combo_Frame->setCurrentIndex(Doc->getShowFrame());
 
     QString Text_;
-    decode_String(Text_ = Doc->Frame_Text0);
+    decode_String(Text_ = Doc->getFrame_Text0());
     Input_Frame0->setText(Text_);
-    decode_String(Text_ = Doc->Frame_Text1);
+    decode_String(Text_ = Doc->getFrame_Text1());
     Input_Frame1->setText(Text_);
-    decode_String(Text_ = Doc->Frame_Text2);
+    decode_String(Text_ = Doc->getFrame_Text2());
     Input_Frame2->setText(Text_);
-    decode_String(Text_ = Doc->Frame_Text3);
+    decode_String(Text_ = Doc->getFrame_Text3());
     Input_Frame3->setText(Text_);
 
     resize(250, 200);
@@ -229,86 +229,86 @@ void SettingsDialog::slotApply()
 {
     bool changed = false;
 
-    if(Doc->DataSet != Input_DataSet->text())
+    if(Doc->getDataSet() != Input_DataSet->text())
     {
-        Doc->DataSet = Input_DataSet->text();
+        Doc->setDataSet(Input_DataSet->text());
         changed = true;
     }
 
-    if(Doc->DataDisplay != Input_DataDisplay->text())
+    if(Doc->getDataDisplay() != Input_DataDisplay->text())
     {
-        Doc->DataDisplay = Input_DataDisplay->text();
+        Doc->setDataDisplay(Input_DataDisplay->text());
         changed = true;
     }
 
-    if(Doc->Script != Input_Script->text())
+    if(Doc->getScript() != Input_Script->text())
     {
-        Doc->Script = Input_Script->text();
+        Doc->setScript(Input_Script->text());
         changed = true;
     }
 
-    if(Doc->SimOpenDpl != Check_OpenDpl->isChecked())
+    if(Doc->getSimOpenDpl() != Check_OpenDpl->isChecked())
     {
-        Doc->SimOpenDpl = Check_OpenDpl->isChecked();
+        Doc->setSimOpenDpl(Check_OpenDpl->isChecked());
         changed = true;
     }
 
-    if(Doc->SimRunScript != Check_RunScript->isChecked())
+    if(Doc->getSimRunScript() != Check_RunScript->isChecked())
     {
-        Doc->SimRunScript = Check_RunScript->isChecked();
+        Doc->setSimRunScript(Check_RunScript->isChecked());
         changed = true;
     }
 
-    if(Doc->GridOn != Check_GridOn->isChecked())
+    if(Doc->getGridOn() != Check_GridOn->isChecked())
     {
-        Doc->GridOn = Check_GridOn->isChecked();
+        Doc->setGridOn(Check_GridOn->isChecked());
         changed = true;
     }
 
-    if(Doc->GridX != Input_GridX->text().toInt())
+    if(Doc->getGridX() != Input_GridX->text().toInt())
     {
-        Doc->GridX = Input_GridX->text().toInt();
+        Doc->setGridX(Input_GridX->text().toInt());
         changed = true;
     }
 
-    if(Doc->GridY != Input_GridY->text().toInt())
+    if(Doc->getGridY() != Input_GridY->text().toInt())
     {
-        Doc->GridY = Input_GridY->text().toInt();
+        Doc->setGridY(Input_GridY->text().toInt());
         changed = true;
     }
 
-    if(Doc->showFrame != Combo_Frame->currentIndex())
+    if(Doc->getShowFrame() != Combo_Frame->currentIndex())
     {
-        Doc->showFrame = Combo_Frame->currentIndex();
+        Doc->setShowFrame(Combo_Frame->currentIndex());
         changed = true;
     }
 
     QString t;
     encode_String(Input_Frame0->toPlainText(), t);
-    if(Doc->Frame_Text0 != t)
+    if(Doc->getFrame_Text0() != t)
     {
-        Doc->Frame_Text0 = t;
+        Doc->setFrame_Text0(t);
         changed = true;
     }
 
     encode_String(Input_Frame1->text(), t);
-    if(Doc->Frame_Text1 != t)
+    if(Doc->getFrame_Text1() != t)
     {
-        Doc->Frame_Text1 = t;
+        Doc->setFrame_Text1(t);
         changed = true;
     }
 
     encode_String(Input_Frame2->text(), t);
-    if(Doc->Frame_Text2 != t)
+    if(Doc->getFrame_Text2() != t)
     {
-        Doc->Frame_Text2 = t;
+        Doc->setFrame_Text2(t);
         changed = true;
     }
 
     encode_String(Input_Frame3->text(), t);
-    if(Doc->Frame_Text3 != t)
+    if(Doc->getFrame_Text3() != t)
     {
-        Doc->Frame_Text3 = t;
+        Doc->setFrame_Text3(t);
         changed = true;
     }
 
@@ -345,7 +345,7 @@ AuxFilesDialog::AuxFilesDialog(QWidget *parent, const QString &filter) :QDialog(
   //tree->header()->setStretchLastSection(false);
   //tree->resizeColumnToContents(0);
   tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
-  //tree->header()->setResizeMode(0, QHeaderView::Stretch); 
+  //tree->header()->setResizeMode(0, QHeaderView::Stretch);
   connect(tree, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(slotDoubleClick(const QModelIndex &)));
 
   setWindowTitle("Choose a file");
@@ -355,7 +355,7 @@ AuxFilesDialog::AuxFilesDialog(QWidget *parent, const QString &filter) :QDialog(
   Btns->setSpacing(5);
   Btns->setContentsMargins(5,5,5,5);
   layout->addLayout(Btns);
-  
+
   Btns->addStretch();
   QPushButton *OkButt = new QPushButton(tr("Select"));
   Btns->addWidget(OkButt);
@@ -363,7 +363,7 @@ AuxFilesDialog::AuxFilesDialog(QWidget *parent, const QString &filter) :QDialog(
   QPushButton *CancelButt = new QPushButton(tr("Cancel"));
   Btns->addWidget(CancelButt);
   connect(CancelButt, SIGNAL(clicked()), SLOT(reject()));
-  
+
   OkButt->setDefault(true);
 
   resize(600, 300);

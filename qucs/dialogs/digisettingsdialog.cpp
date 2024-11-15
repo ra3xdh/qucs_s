@@ -33,7 +33,7 @@
 
 
 DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
-                  : QDialog(Doc_) 
+                  : QDialog(Doc_)
 {
   Doc = Doc_;
   setWindowTitle(tr("Document Settings"));
@@ -46,10 +46,10 @@ DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
 
   QGroupBox *setGroup = new QGroupBox(tr("Digital Simulation Settings"));
   all->addWidget(setGroup);
- 
+
   QVBoxLayout *group = new QVBoxLayout();
   setGroup->setLayout(group);
-   
+
   QButtonGroup *toggleGroup = new QButtonGroup();
   simRadio = new QRadioButton(tr("Simulation"));
   group->addWidget(simRadio);
@@ -82,7 +82,7 @@ DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
   group->addLayout(hb3);
 
   group->addSpacing(15);
-  
+
   QHBoxLayout *hb2 = new QHBoxLayout();
   hb2->setSpacing(5);
   LibLabel = new QLabel(tr("Libraries:"));
@@ -104,7 +104,7 @@ DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
   all->addLayout(Buttons);
 
   simRadio->setChecked(Doc->simulation);
-  Doc->SimOpenDpl = Doc->simulation ? true : false;
+  Doc->setSimOpenDpl(Doc->simulation ? true : false);
   comRadio->setChecked(!Doc->simulation);
   slotChangeMode(!Doc->simulation);
 
@@ -131,12 +131,12 @@ void DigiSettingsDialog::slotOk()
     if(simRadio->isChecked()) {
       QString s = TimeEdit->text();
       if(!misc::VHDL_Time(s, tr("Document Settings"))) {
-	QMessageBox::critical(this, tr("Error"), s.mid(1));
-	reject();
-	return;
+        QMessageBox::critical(this, tr("Error"), s.mid(1));
+        reject();
+        return;
       } else {
-	Doc->SimTime = s;
-	changed = true;
+        Doc->setSimTime(s);
+        changed = true;
       }
     }
   }
@@ -147,7 +147,7 @@ void DigiSettingsDialog::slotOk()
   }
   if(Doc->simulation != simRadio->isChecked()) {
     Doc->simulation = simRadio->isChecked();
-    Doc->SimOpenDpl = Doc->simulation ? true : false;
+    Doc->setSimOpenDpl(Doc->simulation ? true : false);
     changed = true;
   }
   if(Doc->Library != NameEdit->text()) {

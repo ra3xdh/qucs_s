@@ -53,7 +53,7 @@
 extern SubMap FileList;
 
 LibraryDialog::LibraryDialog(QWidget *parent)
-			: QDialog(parent)
+      : QDialog(parent)
 {
   setWindowTitle(tr("Create Library"));
 
@@ -300,7 +300,7 @@ void LibraryDialog::slotCreateNext()
 
 // ---------------------------------------------------------------
 void LibraryDialog::intoStream(QTextStream &Stream, QString &tmp,
-			       const char *sec)
+             const char *sec)
 {
   int i = tmp.indexOf("TOP LEVEL MARK");
   if(i >= 0) {
@@ -319,7 +319,7 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
   QFile ifile(ifn);
   if(!ifile.open(QIODevice::ReadOnly)) {
     ErrText->insertPlainText(QObject::tr("ERROR: Cannot open file \"%1\".\n").
-		    arg(ifn));
+        arg(ifn));
     error++;
   }
   else {
@@ -330,9 +330,9 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
     QDir LibDirSub(LibDir);
     if(!LibDirSub.cd(NameEdit->text())) {
       if(!LibDirSub.mkdir(NameEdit->text())) {
-	ErrText->insertPlainText(
-          QObject::tr("ERROR: Cannot create user library subdirectory !\n"));
-	error++;
+        ErrText->insertPlainText(
+        QObject::tr("ERROR: Cannot create user library subdirectory !\n"));
+        error++;
       }
       LibDirSub.cd(NameEdit->text());
     }
@@ -421,7 +421,7 @@ void LibraryDialog::slotSave()
   QTextStream Stream;
   Stream.setDevice(&LibFile);
   Stream << "<Qucs Library " PACKAGE_VERSION " \""
-	 << NameEdit->text() << "\">\n\n";
+    << NameEdit->text() << "\">\n\n";
 
   bool Success = true, ret;
 
@@ -445,15 +445,15 @@ void LibraryDialog::slotSave()
     if(!Doc->loadDocument()) {  // load document if possible
         delete Doc;
         ErrText->appendPlainText(tr("Error: Cannot load subcircuit \"%1\".").
-			arg(SelectedNames[i]));
+          arg(SelectedNames[i]));
         break;
     }
-    Doc->DocName = NameEdit->text() + "_" + SelectedNames[i];
+    Doc->setDocName(NameEdit->text() + "_" + SelectedNames[i]);
     Success = false;
 
     // save analog model
     tmp.truncate(0);
-    Doc->isAnalog = true;
+    Doc->setIsAnalog(true);
 
     ErrText->insertPlainText("\n");
     ErrText->insertPlainText(tr("Creating Qucs netlist.\n"));
@@ -504,7 +504,7 @@ void LibraryDialog::slotSave()
         if (!kern->checkSchematic(err_lst)) {
              ErrText->insertPlainText(QStringLiteral("Component %1 contains SPICE-incompatible components.\n"
                                 "Check these components: %2 \n")
-                    .arg(Doc->DocName).arg(err_lst.join("; ")));
+                    .arg(Doc->getDocName()).arg(err_lst.join("; ")));
         }
         kern->createSubNetlsit(ts,true);
         intoStream(Stream, tmp, "Spice");
@@ -514,8 +514,8 @@ void LibraryDialog::slotSave()
 
     // save verilog model
     tmp.truncate(0);
-    Doc->isVerilog = true;
-    Doc->isAnalog = false;
+    Doc->setIsVerilog(true);
+    Doc->setIsAnalog(false);
 
     ErrText->insertPlainText("\n");
     ErrText->insertPlainText(tr("Creating Verilog netlist.\n"));
@@ -552,8 +552,8 @@ void LibraryDialog::slotSave()
 
     // save vhdl model
     tmp.truncate(0);
-    Doc->isVerilog = false;
-    Doc->isAnalog = false;
+    Doc->setIsVerilog(false);
+    Doc->setIsAnalog(false);
 
     ErrText->insertPlainText(tr("Creating VHDL netlist.\n"));
     ret = Doc->createLibNetlist(&ts, ErrText, 0);
@@ -590,7 +590,7 @@ void LibraryDialog::slotSave()
       Stream << "  <Symbol>\n";
       Doc->createSubcircuitSymbol();
       Painting *pp;
-      for(pp = Doc->SymbolPaints.first(); pp != 0; pp = Doc->SymbolPaints.next())
+      for(pp = Doc->a_SymbolPaints.first(); pp != 0; pp = Doc->a_SymbolPaints.next())
         Stream << "    <" << pp->save() << ">\n";
 
       Stream << "  </Symbol>\n"

@@ -815,7 +815,7 @@ void ComponentDialog::slotBrowseFile(QLineEdit* lineEdit)
       if (!schematicFileName.isEmpty()) // if schematic has a filename
         currDir = schematicFileInfo.absolutePath();
       else    // use the WorkDir path
-        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+        currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir;
     } else {  // current file name is absolute
       currDir = currFileInfo.exists() ? currFileInfo.absolutePath() : QucsSettings.QucsWorkDir.absolutePath();
     }
@@ -823,10 +823,10 @@ void ComponentDialog::slotBrowseFile(QLineEdit* lineEdit)
     if (!schematicFileName.isEmpty()) { // if schematic has a filename
       currDir = schematicFileInfo.absolutePath();
     } else {  // use the WorkDir path
-      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir; 
+      currDir = lastDir.isEmpty() ? QucsSettings.QucsWorkDir.absolutePath() : lastDir;
     }
   }
-  
+
   QString s = QFileDialog::getOpenFileName (
           this,
           tr("Select a file"),
@@ -934,8 +934,8 @@ QStringList ComponentDialog::getSimulationList()
         return sim_lst;
     }
     sim_lst.append("ALL");
-    for (size_t i = 0; i < sch->DocComps.count(); i++) {
-        Component *c = sch->DocComps.at(i);
+    for (size_t i = 0; i < sch->a_DocComps.count(); i++) {
+        Component *c = sch->a_DocComps.at(i);
         if (!c->isSimulation) continue;
         if (c->Model == ".FOUR") continue;
         if (c->Model == ".PZ") continue;

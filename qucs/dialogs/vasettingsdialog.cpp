@@ -48,15 +48,15 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   Validator = new QRegularExpressionValidator (Expr, this);
 
   vLayout = new QVBoxLayout(this);
-  
+
   QGroupBox * codeGroup = new QGroupBox (tr("Code Creation Settings"));
   vLayout->addWidget(codeGroup);
   QVBoxLayout *vbox = new QVBoxLayout();
   codeGroup->setLayout(vbox);
-  
+
   QGridLayout * all = new QGridLayout ();
   vbox->addLayout(all);
-  
+
   if (Doc->Icon.isEmpty ())
     Doc->Icon = Module + ".png";
 
@@ -69,7 +69,7 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   IconEdit->setText (Doc->Icon);
   IconEdit->setCursorPosition (0);
   all->addWidget (IconEdit, 0, 1, 1, 3);
-  
+
   BrowseButt = new QPushButton (tr("Browse"));
   connect (BrowseButt, SIGNAL (clicked()), SLOT (slotBrowse()));
   all->addWidget (BrowseButt, 0, 4, 1, 1);
@@ -94,7 +94,7 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   ShortDescEdit = new QLineEdit ();
   ShortDescEdit->setText (Doc->ShortDesc);
   all->addWidget (ShortDescEdit, 2, 1, 1, 3);
-  
+
   if (Doc->LongDesc.isEmpty ())
     Doc->LongDesc = Module + " verilog device";
 
@@ -108,7 +108,7 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   toggleGroupDev = new QButtonGroup ();
   QRadioButton * nonRadio =
     new QRadioButton (tr("unspecified device"));
-  QRadioButton * bjtRadio = 
+  QRadioButton * bjtRadio =
     new QRadioButton (tr("NPN/PNP polarity"));
   QRadioButton * mosRadio =
     new QRadioButton (tr("NMOS/PMOS polarity"));
@@ -126,7 +126,7 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   all->addWidget (mosRadio, 4, 4, 3, 4);
 
   toggleGroupTyp = new QButtonGroup ();
-  QRadioButton * anaRadio = 
+  QRadioButton * anaRadio =
     new QRadioButton (tr("analog only"));
   QRadioButton * digRadio =
     new QRadioButton (tr("digital only"));
@@ -154,7 +154,7 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   connect (ButtonOk, SIGNAL(clicked()), SLOT(slotOk()));
   connect (ButtonCancel, SIGNAL(clicked()), SLOT(reject()));
   ButtonOk->setDefault(true);
-  
+
 }
 
 VASettingsDialog::~VASettingsDialog ()
@@ -178,8 +178,8 @@ void VASettingsDialog::slotOk ()
     Doc->LongDesc = LongDescEdit->text ();
     changed = true;
   }
-  if (Doc->DataSet != OutputEdit->text ()) {
-    Doc->DataSet = OutputEdit->text ();
+  if (Doc->getDataSet() != OutputEdit->text ()) {
+    Doc->setDataSet(OutputEdit->text ());
     changed = true;
   }
   if (Doc->recreate != RecreateCheck->isChecked ()) {
