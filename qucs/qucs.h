@@ -186,7 +186,7 @@ private slots:
   void slotChangeView();
   void slotAfterSimulation(int, SimMessage*);
   void slotDCbias();
-  void slotChangePage(QString&, QString&);
+  void slotChangePage(const QString&, const QString&);
   void slotHideEdit();
   void slotFileChanged(bool);
   void slotSimSettings();

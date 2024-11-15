@@ -29,47 +29,48 @@
 /*!
  * \brief CustomSimDialog::CustomSimDialog class constructor
  * \param pc[in] Component that need to be edit.
- * \param sch[in] Schematic on which component presents.
+ * \param sch[in] Schematic on which a_component presents.
  */
 CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
-    QDialog(sch)
+    QDialog(sch),
+    a_isXyceScr(false),
+    a_isChanged(false),
+    a_comp(pc),
+    a_schematic(sch),
+    a_edtCode(new QTextEdit(this)),
+    a_checkCode(new QCheckBox(tr("display in schematic"), this)),
+    a_btnOK(new QPushButton(tr("OK"))),
+    a_btnApply(new QPushButton(tr("Apply"))),
+    a_btnCancel(new QPushButton(tr("Cancel"))),
+    a_btnPlotAll(new QPushButton(tr("Find all variables"))),
+    a_btnFindOutputs(new QPushButton(tr("Find all outputs"))),
+    a_edtVars(new QLineEdit(a_comp->Props.at(1)->Value)),
+    a_edtOutputs(new QLineEdit(a_comp->Props.at(2)->Value))
 {
-    comp = pc;
-    Sch = sch;
-
     resize(640, 480);
 
     setWindowTitle(tr("Edit SPICE code"));
-    QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
+    QLabel* lblName = new QLabel(tr("Component: ")+a_comp->Description);
 
-    edtCode = new QTextEdit(this);
-    edtCode->document()->setDefaultFont(QucsSettings.textFont);
-    edtCode->setWordWrapMode(QTextOption::NoWrap);
-    edtCode->insertPlainText(comp->Props.at(0)->Value);
-    connect(edtCode, SIGNAL(textChanged()), this, SLOT(slotChanged()));
+    a_edtCode->document()->setDefaultFont(QucsSettings.textFont);
+    a_edtCode->setWordWrapMode(QTextOption::NoWrap);
+    a_edtCode->insertPlainText(a_comp->Props.at(0)->Value);
+    connect(a_edtCode, SIGNAL(textChanged()), this, SLOT(slotChanged()));
 
-    checkCode = new QCheckBox(tr("display in schematic"), this);
-    checkCode->setChecked(comp->Props.at(0)->display);
-    connect(checkCode, SIGNAL(stateChanged(int)), this, SLOT(slotChanged()));
+    a_checkCode->setChecked(a_comp->Props.at(0)->display);
+    connect(a_checkCode, SIGNAL(stateChanged(int)), this, SLOT(slotChanged()));
 
     QLabel* lblVars = new QLabel(tr("Variables to plot (semicolon separated)"));
-    edtVars = new QLineEdit(comp->Props.at(1)->Value);
-    connect(edtVars, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
+    connect(a_edtVars, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
 
     QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw-SPICE or XYCE-STD or scalars print format)"));
-    edtOutputs = new QLineEdit(comp->Props.at(2)->Value);
-    connect(edtOutputs, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
+    connect(a_edtOutputs, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
 
-    btnApply = new QPushButton(tr("Apply"));
-    connect(btnApply,SIGNAL(clicked()),this,SLOT(slotApply()));
-    btnCancel = new QPushButton(tr("Cancel"));
-    connect(btnCancel,SIGNAL(clicked()),this,SLOT(slotCancel()));
-    btnOK = new QPushButton(tr("OK"));
-    connect(btnOK,SIGNAL(clicked()),this,SLOT(slotOK()));
-    btnPlotAll = new QPushButton(tr("Find all variables"));
-    connect(btnPlotAll,SIGNAL(clicked()),this,SLOT(slotFindVars()));
-    btnFindOutputs = new QPushButton(tr("Find all outputs"));
-    connect(btnFindOutputs,SIGNAL(clicked()),this,SLOT(slotFindOutputs()));
+    connect(a_btnApply,SIGNAL(clicked()),this,SLOT(slotApply()));
+    connect(a_btnCancel,SIGNAL(clicked()),this,SLOT(slotCancel()));
+    connect(a_btnOK,SIGNAL(clicked()),this,SLOT(slotOK()));
+    connect(a_btnPlotAll,SIGNAL(clicked()),this,SLOT(slotFindVars()));
+    connect(a_btnFindOutputs,SIGNAL(clicked()),this,SLOT(slotFindOutputs()));
 
     QVBoxLayout *vl1 = new QVBoxLayout;
     QVBoxLayout *vl2 = new QVBoxLayout;
@@ -77,64 +78,64 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
 
     vl1->addWidget(lblName);
     QGroupBox *gpb1 = new QGroupBox(tr("SPICE code editor"));
-    vl2->addWidget(edtCode);
-    vl2->addWidget(checkCode);
+    vl2->addWidget(a_edtCode);
+    vl2->addWidget(a_checkCode);
     gpb1->setLayout(vl2);
     vl1->addWidget(gpb1);
     vl1->addWidget(lblVars);
-    vl1->addWidget(edtVars);
-    vl1->addWidget(btnPlotAll);
+    vl1->addWidget(a_edtVars);
+    vl1->addWidget(a_btnPlotAll);
     vl1->addWidget(lblOut);
-    vl1->addWidget(edtOutputs);
-    vl1->addWidget(btnFindOutputs);
+    vl1->addWidget(a_edtOutputs);
+    vl1->addWidget(a_btnFindOutputs);
 
-    hl1->addWidget(btnOK);
-    hl1->addWidget(btnApply);
-    hl1->addWidget(btnCancel);
+    hl1->addWidget(a_btnOK);
+    hl1->addWidget(a_btnApply);
+    hl1->addWidget(a_btnCancel);
     vl1->addLayout(hl1);
 
     this->setLayout(vl1);
     this->setWindowTitle(tr("Edit SPICE code"));
 
-    if (comp->Model == ".XYCESCR") {
+    if (a_comp->Model == ".XYCESCR") {
         lblVars->setEnabled(false);
-        edtVars->setEnabled(false);
-        btnPlotAll->setEnabled(false);
-        isXyceScr = true;
-    } else if (comp->Model == "INCLSCR") {
+        a_edtVars->setEnabled(false);
+        a_btnPlotAll->setEnabled(false);
+        a_isXyceScr = true;
+    } else if (a_comp->Model == "INCLSCR") {
         lblVars->setEnabled(false);
-        edtVars->setEnabled(false);
-        btnPlotAll->setEnabled(false);
-        btnFindOutputs->setEnabled(false);
+        a_edtVars->setEnabled(false);
+        a_btnPlotAll->setEnabled(false);
+        a_btnFindOutputs->setEnabled(false);
         lblOut->setEnabled(false);
-    } else isXyceScr = false;
+    } else a_isXyceScr = false;
 }
 
 /*!
- * \brief CustomSimDialog::slotChanged Set isChanged state.
+ * \brief CustomSimDialog::slotChanged Set a_isChanged state.
  */
 void CustomSimDialog::slotChanged()
 {
-    isChanged = true;
+    a_isChanged = true;
 }
 /*!
- * \brief CustomSimDialog::slotApply Apply changes of component properties.
+ * \brief CustomSimDialog::slotApply Apply changes of a_component properties.
  */
 void CustomSimDialog::slotApply()
 {
-    if ( isChanged ) {
-        edtVars->setText(edtVars->text().remove(' '));
-        edtOutputs->setText(edtOutputs->text().remove(' '));
+    if ( a_isChanged ) {
+        a_edtVars->setText(a_edtVars->text().remove(' '));
+        a_edtOutputs->setText(a_edtOutputs->text().remove(' '));
 
-        comp->Props.at(0)->Value = edtCode->document()->toPlainText();
-        comp->Props.at(0)->display = checkCode->isChecked();
-        comp->Props.at(1)->Value = edtVars->text();
-        comp->Props.at(2)->Value = edtOutputs->text();
+        a_comp->Props.at(0)->Value = a_edtCode->document()->toPlainText();
+        a_comp->Props.at(0)->display = a_checkCode->isChecked();
+        a_comp->Props.at(1)->Value = a_edtVars->text();
+        a_comp->Props.at(2)->Value = a_edtOutputs->text();
 
-        Sch->recreateComponent(comp);
-        Sch->viewport()->repaint();
+        a_schematic->recreateComponent(a_comp);
+        a_schematic->viewport()->repaint();
 
-        isChanged = false;
+        a_isChanged = false;
     }
 }
 
@@ -157,19 +158,19 @@ void CustomSimDialog::slotCancel()
 
 /*!
  * \brief CustomSimDialog::slotFindVars Auto-find used variables and nodes
- *        in simulation script and place them into edtVars line edit.
+ *        in simulation script and place them into a_edtVars line edit.
  */
 void CustomSimDialog::slotFindVars()
 {
     QStringList vars;
-    for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
+    for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
       if(pn->Label != 0) {
           if (!vars.contains(pn->Label->Name)) {
               vars.append(pn->Label->Name);
           }
       }
     }
-    for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+    for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
       if(pw->Label != 0) {
           if (!vars.contains(pw->Label->Name)) {
               vars.append(pw->Label->Name);
@@ -177,7 +178,7 @@ void CustomSimDialog::slotFindVars()
       }
     }
 
-    for(Component *pc=Sch->DocComps.first();pc!=0;pc=Sch->DocComps.next()) {
+    for(Component *pc=a_schematic->a_DocComps.first();pc!=0;pc=a_schematic->a_DocComps.next()) {
         if(pc->isProbe) {
             if (!vars.contains(pc->getProbeVariable())) {
                 vars.append(pc->getProbeVariable());
@@ -191,7 +192,7 @@ void CustomSimDialog::slotFindVars()
 
 
 
-    QStringList strings = edtCode->toPlainText().split('\n');
+    QStringList strings = a_edtCode->toPlainText().split('\n');
     QRegularExpression let_pattern("^\\s*let\\s+[A-Za-z].*=.+");
 
     for (const QString& line : strings) {
@@ -203,15 +204,15 @@ void CustomSimDialog::slotFindVars()
         }
     }
 
-    edtVars->setText(vars.join(";"));
+    a_edtVars->setText(vars.join(";"));
 }
 
 void CustomSimDialog::slotFindOutputs()
 {
     QStringList outps;
     QString outp;
-    QStringList strings = edtCode->toPlainText().split('\n');
-    if (isXyceScr) {
+    QStringList strings = a_edtCode->toPlainText().split('\n');
+    if (a_isXyceScr) {
         QRegularExpression print_ex("^\\s*\\.print\\s.*", QRegularExpression::CaseInsensitiveOption);
         QRegularExpression file_ex("\\s*file\\s*=\\s*", QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
@@ -242,5 +243,5 @@ void CustomSimDialog::slotFindOutputs()
         }
     }
 
-    edtOutputs->setText(outps.join(";"));
+    a_edtOutputs->setText(outps.join(";"));
 }

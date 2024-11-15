@@ -27,39 +27,40 @@ class SimSettingsDialog : public QDialog
     Q_OBJECT
 
 private:
-    QLabel *lblXyce;
-    QLabel *lblNgspice;
-    QLabel *lblSpiceOpus;
-    //QLabel *lblXycePar;
-    //QLabel *lblNprocs;
-    QLabel *lblQucsator;
-    //QLabel *lblSimulator;
-    QLabel *lblSimParam, *lblCompatMode;
+    QLabel *a_lblXyce;
+    QLabel *a_lblNgspice;
+    QLabel *a_lblSpiceOpus;
+    //QLabel *a_lblXycePar;
+    //QLabel *a_lblNprocs;
+    QLabel *a_lblQucsator;
+    //QLabel *a_lblSimulator;
+    QLabel *a_lblSimParam;
+    QLabel *a_lblCompatMode;
 
-    QComboBox *cbxCompatMode;
-    //QComboBox *cbxSimulator;
+    QComboBox *a_cbxCompatMode;
+    //QComboBox *a_cbxSimulator;
 
-    QLineEdit *edtNgspice;
-    QLineEdit *edtSpiceOpus;
-    QLineEdit *edtXyce;
-    //QLineEdit *edtXycePar;
-    QLineEdit *edtQucsator;
-    //QSpinBox  *spbNprocs;
-    QLineEdit *edtSimParam;
+    QLineEdit *a_edtNgspice;
+    QLineEdit *a_edtSpiceOpus;
+    QLineEdit *a_edtXyce;
+    //QLineEdit *a_edtXycePar;
+    QLineEdit *a_edtQucsator;
+    //QSpinBox  *a_spbNprocs;
+    QLineEdit *a_edtSimParam;
 
-    QPushButton *btnOK;
-    QPushButton *btnCancel;
+    QPushButton *a_btnOK;
+    QPushButton *a_btnCancel;
 
-    QPushButton *btnSetNgspice;
-    QPushButton *btnSetSpOpus;
-    QPushButton *btnSetXyce;
-    //QPushButton *btnSetXycePar;
-    QPushButton *btnSetQucsator;
+    QPushButton *a_btnSetNgspice;
+    QPushButton *a_btnSetSpOpus;
+    QPushButton *a_btnSetXyce;
+    //QPushButton *a_btnSetXycePar;
+    QPushButton *a_btnSetQucsator;
 
 public:
     explicit SimSettingsDialog(QWidget *parent = 0);
-    
-    
+
+
 private slots:
     void slotApply();
     void slotCancel();
@@ -68,7 +69,7 @@ private slots:
     void slotSetXycePar();
     void slotSetSpiceOpus();
     void slotSetQucsator();
-    
+
 };
 
 #endif // SIMSETTINGSDIALOG_H

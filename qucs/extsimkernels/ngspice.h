@@ -36,9 +36,9 @@
 class Ngspice : public AbstractSpiceKernel
 {
     Q_OBJECT
-private:
 
-    QString spinit_name;
+private:
+    QString a_spinit_name;
 
     bool checkNodeNames(QStringList &incompat);
     static QString collectSpiceinit(Schematic *sch);
@@ -49,11 +49,11 @@ private:
     void createSpiceinit(const QString &initial_spiceinit);
 
 public:
-    explicit Ngspice(Schematic *sch_, QObject *parent = 0);
+    explicit Ngspice(Schematic *schematic, QObject *parent = 0);
     void SaveNetlist(QString filename);
     void setSimulatorCmd(QString cmd);
     void setSimulatorParameters(QString parameters);
-    
+
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
                        QStringList &vars, QStringList &outputs);

@@ -51,7 +51,7 @@ protected:
     bool prepareToVerilogA(Schematic *sch);
 public:
     bool createVA_module(QTextStream &stream, Schematic *sch);
-    
+
 };
 
 #endif // VERILOGAWRITER_H

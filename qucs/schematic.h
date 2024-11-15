@@ -76,6 +76,7 @@ typedef QMap<QString, SubFile> SubMap;
 
 class Schematic : public Q3ScrollView, public QucsDoc {
   Q_OBJECT
+
 public:
   Schematic(QucsApp*, const QString&);
  ~Schematic();
@@ -191,23 +192,58 @@ public:
 
   bool checkDplAndDatNames();
 
+  /*! \brief Get (schematic) file reference */
+  QFileInfo getFileInfo (void) { return a_FileInfo; }
+  /*! \brief Set reference to file (schematic) */
+  void setFileInfo(QString FileName) { a_FileInfo = QFileInfo(FileName); }
+
+  QString getFrame_Text0() const { return a_Frame_Text0; }
+  void setFrame_Text0(const QString value) { a_Frame_Text0 = value; }
+  QString getFrame_Text1() const { return a_Frame_Text1; }
+  void setFrame_Text1(const QString value) { a_Frame_Text1 = value; }
+  QString getFrame_Text2() const { return a_Frame_Text2; }
+  void setFrame_Text2(const QString value) { a_Frame_Text2 = value; }
+  QString getFrame_Text3() const { return a_Frame_Text3; }
+  void setFrame_Text3(const QString value) { a_Frame_Text3 = value; }
+  int getShowFrame() const { return a_showFrame; }
+  void setShowFrame(int value) { a_showFrame = value; }
+  int getViewX1() const { return a_ViewX1; }
+  int getViewY1() const { return a_ViewY1; }
+  int getGridX() const { return a_GridX; }
+  void setGridX(int value) { a_GridX = value; }
+  int getGridY() const { return a_GridY; }
+  void setGridY(int value) { a_GridY = value; }
+  bool getSymbolMode() const { return a_symbolMode; }
+  void setSymbolMode(bool value) { a_symbolMode = value; }
+  bool getIsSymbolOnly() const { return a_isSymbolOnly; }
+  void setIsSymbolOnly(bool value) { a_isSymbolOnly = value; }
+  void clearPostedPaintEvents() { a_PostedPaintEvents.clear(); }
+
   // The pointers points to the current lists, either to the schematic
   // elements "Doc..." or to the symbol elements "SymbolPaints".
-  Q3PtrList<Wire>      *Wires, DocWires;
-  Q3PtrList<Node>      *Nodes, DocNodes;
-  Q3PtrList<Diagram>   *Diagrams, DocDiags;
-  Q3PtrList<Painting>  *Paintings, DocPaints;
-  Q3PtrList<Component> *Components, DocComps;
+  Q3PtrList<Wire> *a_Wires;
+  Q3PtrList<Wire> a_DocWires;
+  Q3PtrList<Node>* a_Nodes;
+  Q3PtrList<Node> a_DocNodes;
+  Q3PtrList<Diagram>* a_Diagrams;
+  Q3PtrList<Diagram> a_DocDiags;
+  Q3PtrList<Painting>* a_Paintings;
+  Q3PtrList<Painting> a_DocPaints;
+  Q3PtrList<Component>* a_Components;
+  Q3PtrList<Component> a_DocComps;
 
-  Q3PtrList<Painting>  SymbolPaints;  // symbol definition for subcircuit
+  Q3PtrList<Painting> a_SymbolPaints;  // symbol definition for subcircuit
 
-  QList<PostedPaintEvent>   PostedPaintEvents;
-  bool symbolMode;  // true if in symbol painting mode
-  bool isSymbolOnly;
+private:
+  QList<PostedPaintEvent> a_PostedPaintEvents;
+
+  bool a_symbolMode;  // true if in symbol painting mode
+  bool a_isSymbolOnly;
 
   // Horizontal and vertical grid step, grid color.
-  int GridX, GridY;
-  QColor GridColor;
+  int a_GridX;
+  int a_GridY;
+  QColor a_GridColor;
 
   // Variables View* are the coordinates of top-level and bottom-right corners
   // of a rectangle representing the schematic "model". This
@@ -216,26 +252,33 @@ public:
   // inside this rectangle. The size of this rectangle is the "logical" size
   // of the schematic. The comment in "renderModel" method describes how
   // these variables ("model") is used to draw the scematic.
-  int ViewX1, ViewY1, ViewX2, ViewY2;
+  int a_ViewX1;
+  int a_ViewY1;
+  int a_ViewX2;
+  int a_ViewY2;
 
-  int showFrame;
-  QString Frame_Text0, Frame_Text1, Frame_Text2, Frame_Text3;
+  int a_showFrame;
+  QString a_Frame_Text0;
+  QString a_Frame_Text1;
+  QString a_Frame_Text2;
+  QString a_Frame_Text3;
 
   // Two of those data sets are needed for Schematic and for symbol.
   // Which one is in "tmp..." depends on "symbolMode".
-  float tmpScale;
-  int tmpViewX1, tmpViewY1, tmpViewX2, tmpViewY2;
-  int tmpUsedX1, tmpUsedY1, tmpUsedX2, tmpUsedY2;
+  float a_tmpScale;
+  int a_tmpViewX1;
+  int a_tmpViewY1;
+  int a_tmpViewX2;
+  int a_tmpViewY2;
+  int a_tmpUsedX1;
+  int a_tmpUsedY1;
+  int a_tmpUsedX2;
+  int a_tmpUsedY2;
 
-  int undoActionIdx;
-  QVector<QString *> undoAction;
-  int undoSymbolIdx;
-  QVector<QString *> undoSymbol;    // undo stack for circuit symbol
-
-  /*! \brief Get (schematic) file reference */
-  QFileInfo getFileInfo (void) { return FileInfo; }
-  /*! \brief Set reference to file (schematic) */
-  void setFileInfo(QString FileName) { FileInfo = QFileInfo(FileName); }
+  int a_undoActionIdx;
+  QVector<QString *> a_undoAction;
+  int a_undoSymbolIdx;
+  QVector<QString *> a_undoSymbol;    // undo stack for circuit symbol
 
 signals:
   void signalCursorPosChanged(int, int, QString);
@@ -268,27 +311,30 @@ private:
   // Variables Used* hold the coordinates of top-left and bottom-right corners
   // of a smallest rectangle which can fit all elements of the schematic.
   // This rectangle exists in the same coordinate system as View*-rectangle
-  int UsedX1, UsedY1, UsedX2, UsedY2;
+  int a_UsedX1;
+  int a_UsedY1;
+  int a_UsedX2;
+  int a_UsedY2;
 
-  void  sizeOfAll(int&, int&, int&, int&);
+  void sizeOfAll(int&, int&, int&, int&);
 
   // Viewport-realative coordinates of the cursor between mouse movements.
   // Used in "pan with mouse" feature.
-  QPoint previousCursorPosition;
+  QPoint a_previousCursorPosition;
 
-  bool dragIsOkay;
+  bool a_dragIsOkay;
   /*! \brief hold system-independent information about a schematic file */
-  QFileInfo FileInfo;
+  QFileInfo a_FileInfo;
 
   /**
     Minimum scale at which schematic could be drawn.
   */
-  static constexpr double minScale = 0.1;
+  static constexpr double a_minScale = 0.1;
 
   /**
     Maximum scale at which schematic could be drawn.
   */
-  static constexpr double maxScale = 10.0;
+  static constexpr double a_maxScale = 10.0;
 
   /**
     Returns a rectangle which describes the model plane of the schematic.
@@ -463,6 +509,11 @@ public:
   void clearSignalsAndFileList();
   void clearSignals();
 
+  void setIsAnalog(bool value) { a_isAnalog = value; }
+  bool getIsAnalog() const { return a_isAnalog; }
+  void setIsVerilog(bool value) { a_isVerilog = value; }
+  bool getIsVerilog() const { return a_isVerilog; }
+
 private:
   int  saveDocument();
 
@@ -492,14 +543,12 @@ private:
   void endNetlistDigital(QTextStream &);
   bool throughAllComps(QTextStream *, int&, QStringList&, QPlainTextEdit *, int);
 
-  DigMap Signals; // collecting node names for VHDL signal declarations
-  QStringList PortTypes;
+  DigMap a_Signals; // collecting node names for VHDL signal declarations
+  QStringList a_PortTypes;
 
-public:
-  bool isAnalog;
-  bool isVerilog;
-  bool creatingLib;
-
+  bool a_isAnalog;
+  bool a_isVerilog;
+  bool a_creatingLib;
 };
 
 #endif

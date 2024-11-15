@@ -28,43 +28,44 @@
 class ExternSimDialog : public QDialog
 {
     Q_OBJECT
+
 private:
+    Schematic *a_schematic;
 
-    Schematic *Sch;
+    QPushButton *a_buttonStopSim;
+    QPushButton *a_buttonSaveNetlist;
+    QPushButton *a_buttonExit;
 
-    QPushButton *buttonStopSim;
-    QPushButton *buttonSaveNetlist;
-    QPushButton *buttonExit;
+    QPlainTextEdit *a_editSimConsole;
+    QListWidget *a_simStatusLog;
 
-    QPlainTextEdit *editSimConsole;
-    QListWidget *simStatusLog;
+    QProgressBar *a_simProgress;
 
-    QProgressBar *simProgress;
+    Ngspice *a_ngspice;
+    Xyce *a_xyce;
 
-    QString workdir;
-
-    Ngspice *ngspice;
-    Xyce *xyce;
+    bool a_wasSimulated;
+    bool a_hasError;
 
 public:
     explicit ExternSimDialog(Schematic *sch,
                              bool netlist_mode = false);
     ~ExternSimDialog();
 
-    bool wasSimulated;
-    bool hasError;
+    bool wasSimulated() const { return a_wasSimulated; }
+    bool hasError() const { return a_hasError; }
 
 private:
     void saveLog();
     void addLogEntry(const QString&text, const QIcon &icon);
     bool logContainsError(const QString &out);
     bool logContainsWarning(const QString &out);
-    
+
 signals:
     void simulated(ExternSimDialog *);
     void warnings();
     void success();
-    
+
 public slots:
     void slotSaveNetlist();
     void slotStart();
@@ -77,7 +78,6 @@ private slots:
     void slotStop();
     void slotSetSimulator();
     void slotExit();
-    
 };
 
 #endif // EXTERNSIMDIALOG_H

@@ -35,22 +35,23 @@
 class Xyce : public AbstractSpiceKernel
 {
     Q_OBJECT
-private:
-    bool Noisesim;
 
-    unsigned int Nprocs;
-    QStringList simulationsQueue;
-    QStringList netlistQueue;
+private:
+    bool a_Noisesim;
+
+    QStringList a_simulationsQueue;
+    QStringList a_netlistQueue;
+
     void nextSimulation();
 
 public:
     void determineUsedSimulations(QStringList *sim_lst = NULL);
-    explicit Xyce(Schematic *sch_, QObject *parent = 0);
+    explicit Xyce(Schematic *schematic, QObject *parent = 0);
 
     void SaveNetlist(QString filename);
     void setParallel(bool par);
     bool waitEndOfSimulation();
-    
+
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
                   QStringList &vars, QStringList &outputs);
@@ -60,7 +61,7 @@ protected slots:
 
 public slots:
     void slotSimulate();
-    
+
 };
 
 #endif // XYCE_H
