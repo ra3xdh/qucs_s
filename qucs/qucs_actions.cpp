@@ -249,6 +249,19 @@ void QucsApp::slotResetDiagramLimits()
 }
 
 // -----------------------------------------------------------------------
+// Is called, when "show grid" action is triggered.
+void QucsApp::slotShowGrid()
+{
+  qDebug() << "slotShowGrid";
+  Schematic* schematic = static_cast<Schematic*>(DocumentTab->currentWidget());
+  if(!isTextDocument(schematic)) {
+    schematic->setGridOn(!schematic->getGridOn());
+    schematic->setChanged(true);
+    schematic->viewport()->repaint();
+  }
+}
+
+// -----------------------------------------------------------------------
 // Is called, when "move component text" action is triggered.
 void QucsApp::slotMoveText(bool on)
 {

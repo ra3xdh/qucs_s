@@ -349,7 +349,7 @@ public:
 
   QAction *insWire, *insLabel, *insGround, *insPort, *insEquation, *magPlus,
           *editRotate, *editMirror, *editMirrorY, *editPaste, *select,
-          *editActivate, *wire, *editDelete, *setMarker, *setDiagramLimits, *resetDiagramLimits, *onGrid, *moveText,
+          *editActivate, *wire, *editDelete, *setMarker, *setDiagramLimits, *resetDiagramLimits, *showGrid, *onGrid, *moveText,
           *helpIndex, *helpGetStart, *callEditor, *callFilter, *callLine, *callActiveFilter,
           *showMsg, *showNet, *alignTop, *alignBottom, *alignLeft, *alignRight,
           *distrHor, *distrVert, *selectAll, *callMatch, *changeProps,
@@ -381,6 +381,7 @@ public slots:
   void slotSetMarker(bool);
   void slotSetDiagramLimits(bool);
   void slotResetDiagramLimits();
+  void slotShowGrid();        // turn the grid on or off
   void slotOnGrid(bool);      // set selected elements on grid
   void slotMoveText(bool);    // move property text of components
   void slotZoomIn(bool);
