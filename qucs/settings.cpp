@@ -49,6 +49,7 @@ void settingsManager::initDefaults()
     m_Defaults["font"] = QApplication::font();
     m_Defaults["appFont"] = QApplication::font();
     m_Defaults["LargeFontSize"] = static_cast<double>(16.0);
+    m_Defaults["GridColor"] = QColor(qRgb(25, 25, 25));
     m_Defaults["maxUndo"] = 20;
     m_Defaults["QucsHomeDir"] = QDir::homePath() + QDir::toNativeSeparators("/QucsWorkspace");
 

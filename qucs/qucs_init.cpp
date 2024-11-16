@@ -597,6 +597,13 @@ void QucsApp::initActions()
   resetDiagramLimits->setWhatsThis(tr("Reset Diagram Limits\n\nResets the limits for all axis to auto."));
   connect(resetDiagramLimits, SIGNAL(triggered()), SLOT(slotResetDiagramLimits()));
 
+  showGrid = new QAction(tr("Show Grid (current document)"), this);
+  showGrid->setCheckable(true);
+  showGrid->setShortcut(tr("Alt+G"));
+  showGrid->setStatusTip(tr("Show or hide the grid for the current document."));
+  showGrid->setWhatsThis(tr("Show / Hide Grid\n\nShow or hide the grid for the current document."));
+  connect(showGrid, SIGNAL(triggered()), SLOT(slotShowGrid()));
+
   showMsg = new QAction(tr("Show Last Messages"), this);
   showMsg->setShortcut(Qt::Key_F5);
   showMsg->setStatusTip(tr("Shows last simulation messages"));
@@ -800,7 +807,9 @@ void QucsApp::initMenuBar()
   viewMenu->addAction(magMinus);
   viewMenu->addAction(setDiagramLimits);
   viewMenu->addSeparator();
-  //viewMenu->setCheckable(true);
+  viewMenu->addAction(showGrid);
+  viewMenu->addSeparator();
+    //viewMenu->setCheckable(true);
   viewMenu->addAction(viewBrowseDock);
   viewMenu->addAction(viewOctaveDock);
 

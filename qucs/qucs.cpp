@@ -449,16 +449,18 @@ void QucsApp::initView()
     CompComps->setDragEnabled(false);
   #endif
 
+  // Setup component search box and button.
   CompSearch = new QLineEdit(this);
   CompSearch->setPlaceholderText(tr("Search Components"));
   CompSearchClear = new QPushButton(tr("Clear"));
-
-  CompGroupLayout->setSpacing(5);
-  CompGroupLayout->addWidget(CompChoose);
-  CompGroupLayout->addWidget(CompComps);
-  CompGroupLayout->addLayout(CompSearchLayout);
   CompSearchLayout->addWidget(CompSearch);
   CompSearchLayout->addWidget(CompSearchClear);
+
+  // Setup the component chooser widgets.
+  CompGroupLayout->setSpacing(5);
+  CompGroupLayout->addLayout(CompSearchLayout);
+  CompGroupLayout->addWidget(CompChoose);
+  CompGroupLayout->addWidget(CompComps);
   CompGroup->setLayout(CompGroupLayout);
 
 #if __APPLE__
@@ -961,7 +963,7 @@ void QucsApp::slotSetCompView (int index)
 // search result
 void QucsApp::slotSearchComponent(const QString &searchText)
 {
-  qDebug() << "User search: " << searchText;
+  // qDebug() << "User search: " << searchText;
   CompComps->clear ();   // clear the IconView
 
   // not already in "search mode"
@@ -2055,7 +2057,6 @@ void QucsApp::slotHelpReport()
 // Is called when another document is selected via the TabBar.
 void QucsApp::slotChangeView()
 {
-
   QWidget *w = DocumentTab->currentWidget();
   editText->setHidden (true); // disable text edit of component property
   QucsDoc * Doc;
@@ -2086,6 +2087,8 @@ void QucsApp::slotChangeView()
       switchSchematicDoc(true);
       changeSchematicSymbolMode(d);
     }
+
+    showGrid->setChecked(d->getGridOn());
   }
 
   Doc->becomeCurrent(true);
@@ -2133,6 +2136,10 @@ void QucsApp::slotFileSettings ()
   else {
     SettingsDialog * d = new SettingsDialog ((Schematic *) w);
     d->exec ();
+
+    // TODO: It would be better to emit a signal to notify all subscribers
+    // that the diagram settings have changed.
+    showGrid->setChecked(static_cast<Schematic*>(w)->getGridOn());
   }
 }
 

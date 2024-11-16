@@ -75,33 +75,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     QWidget *appSettingsTab = new QWidget(t);
     QGridLayout *appSettingsGrid = new QGridLayout(appSettingsTab);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Schematic font (set after reload):"), appSettingsTab), 0,0);
-    FontButton = new QPushButton(appSettingsTab);
-    connect(FontButton, SIGNAL(clicked()), SLOT(slotFontDialog()));
-    appSettingsGrid->addWidget(FontButton,0,1);
-
-    appSettingsGrid->addWidget(new QLabel(tr("Application font (set after reload):"), appSettingsTab), 1,0);
-    AppFontButton = new QPushButton(appSettingsTab);
-    connect(AppFontButton, SIGNAL(clicked()), SLOT(slotAppFontDialog()));
-    appSettingsGrid->addWidget(AppFontButton,1,1);
-
-    appSettingsGrid->addWidget(new QLabel(tr("Text document font (set after reload):"), appSettingsTab), 2,0);
-    TextFontButton = new QPushButton(appSettingsTab);
-    connect(TextFontButton, SIGNAL(clicked()), SLOT(slotTextFontDialog()));
-    appSettingsGrid->addWidget(TextFontButton,2,1);
-
-    val50 = new QIntValidator(1, 50, this);
-    appSettingsGrid->addWidget(new QLabel(tr("Large font size:"), appSettingsTab), 3,0);
-    LargeFontSizeEdit = new QLineEdit(appSettingsTab);
-    LargeFontSizeEdit->setValidator(val50);
-    appSettingsGrid->addWidget(LargeFontSizeEdit,3,1);
-
-    appSettingsGrid->addWidget(new QLabel(tr("Document Background Color:"), appSettingsTab) ,4,0);
-    BGColorButton = new QPushButton("      ", appSettingsTab);
-    connect(BGColorButton, SIGNAL(clicked()), SLOT(slotBGColorDialog()));
-    appSettingsGrid->addWidget(BGColorButton,4,1);
-
-    appSettingsGrid->addWidget(new QLabel(tr("Language (set after reload):"), appSettingsTab) ,5,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Language (set after reload):"), appSettingsTab) ,1, 0);
     LanguageCombo = new QComboBox(appSettingsTab);
     LanguageCombo->insertItem(-1, tr("Ukrainian")+" (uk)");
     LanguageCombo->insertItem(-1, tr("Turkish")+" (tr)");
@@ -125,48 +99,86 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     LanguageCombo->insertItem(-1, tr("Arabic")+" (ar)");
     LanguageCombo->insertItem(-1, tr("English")+" (en)");
     LanguageCombo->insertItem(-1, tr("system language"));
-    appSettingsGrid->addWidget(LanguageCombo,5,1);
+    appSettingsGrid->addWidget(LanguageCombo, 1, 1);
 
     val200 = new QIntValidator(0, 200, this);
-    appSettingsGrid->addWidget(new QLabel(tr("Maximum undo operations:"), appSettingsTab) ,6,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Maximum undo operations:"), appSettingsTab) ,2, 0);
     undoNumEdit = new QLineEdit(appSettingsTab);
     undoNumEdit->setValidator(val200);
-    appSettingsGrid->addWidget(undoNumEdit,6,1);
+    appSettingsGrid->addWidget(undoNumEdit, 2, 1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Text editor:"), appSettingsTab) ,7,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Text editor:"), appSettingsTab), 3, 0);
     editorEdit = new QLineEdit(appSettingsTab);
     editorEdit->setToolTip(tr("Set to qucs, qucsedit or the path to your favorite text editor."));
-    appSettingsGrid->addWidget(editorEdit,7,1);
+    appSettingsGrid->addWidget(editorEdit, 3, 1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Start wiring when clicking open node:"), appSettingsTab) ,8,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Start wiring when clicking open node:"), appSettingsTab), 4, 0);
     checkWiring = new QCheckBox(appSettingsTab);
-    appSettingsGrid->addWidget(checkWiring,8,1);
+    appSettingsGrid->addWidget(checkWiring, 4, 1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Load documents from future versions:")));
+    appSettingsGrid->addWidget(new QLabel(tr("Load documents from future versions:")), 5, 0);
     checkLoadFromFutureVersions = new QCheckBox(appSettingsTab);
     checkLoadFromFutureVersions->setToolTip(tr("Try to load also documents created with newer versions of Qucs."));
-    appSettingsGrid->addWidget(checkLoadFromFutureVersions,9,1);
+    appSettingsGrid->addWidget(checkLoadFromFutureVersions, 5, 1);
     checkLoadFromFutureVersions->setChecked(QucsSettings.IgnoreFutureVersion);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Draw diagrams with anti-aliasing feature:")));
-    checkAntiAliasing = new QCheckBox(appSettingsTab);
-    checkAntiAliasing->setToolTip(tr("Use anti-aliasing for graphs for a smoother appearance."));
-    appSettingsGrid->addWidget(checkAntiAliasing,10,1);
-    checkAntiAliasing->setChecked(QucsSettings.GraphAntiAliasing);
-
-    appSettingsGrid->addWidget(new QLabel(tr("Draw text with anti-aliasing feature:")));
-    checkTextAntiAliasing = new QCheckBox(appSettingsTab);
-    checkTextAntiAliasing->setToolTip(tr("Use anti-aliasing for text for a smoother appearance."));
-    appSettingsGrid->addWidget(checkTextAntiAliasing,11,1);
-    checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);
-
-    appSettingsGrid->addWidget(new QLabel(tr("Show trace name prefix on diagrams:")));
+    appSettingsGrid->addWidget(new QLabel(tr("Show trace name prefix on diagrams:")), 6, 0);
     checkFullTraceNames = new QCheckBox(appSettingsTab);
     checkFullTraceNames->setToolTip(tr("Show prefixes for trace names on diagrams like \"ngspice/\""));
-    appSettingsGrid->addWidget(checkFullTraceNames,12,1);
+    appSettingsGrid->addWidget(checkFullTraceNames, 6, 1);
     checkFullTraceNames->setChecked(QucsSettings.fullTraceName);
 
     t->addTab(appSettingsTab, tr("Settings"));
+
+    // ...........................................................
+    // The appearance settings tab
+    QWidget *appAppearanceTab = new QWidget(t);
+    QGridLayout *appAppearanceGrid = new QGridLayout(appAppearanceTab);
+
+    appAppearanceGrid->addWidget(new QLabel(tr("Schematic font (set after reload):"), appSettingsTab), 0, 0);
+    FontButton = new QPushButton(appSettingsTab);
+    connect(FontButton, SIGNAL(clicked()), SLOT(slotFontDialog()));
+    appAppearanceGrid->addWidget(FontButton, 0, 1);
+
+    appAppearanceGrid->addWidget(new QLabel(tr("Application font (set after reload):"), appSettingsTab), 1, 0);
+    AppFontButton = new QPushButton(appSettingsTab);
+    connect(AppFontButton, SIGNAL(clicked()), SLOT(slotAppFontDialog()));
+    appAppearanceGrid->addWidget(AppFontButton, 1, 1);
+
+    appAppearanceGrid->addWidget(new QLabel(tr("Text document font (set after reload):"), appSettingsTab), 2, 0);
+    TextFontButton = new QPushButton(appSettingsTab);
+    connect(TextFontButton, SIGNAL(clicked()), SLOT(slotTextFontDialog()));
+    appAppearanceGrid->addWidget(TextFontButton, 2, 1);
+
+    val50 = new QIntValidator(1, 50, this);
+    appAppearanceGrid->addWidget(new QLabel(tr("Large font size:"), appSettingsTab), 3, 0);
+    LargeFontSizeEdit = new QLineEdit(appSettingsTab);
+    LargeFontSizeEdit->setValidator(val50);
+    appAppearanceGrid->addWidget(LargeFontSizeEdit, 3, 1);
+
+    appAppearanceGrid->addWidget(new QLabel(tr("Document Background Color:"), appSettingsTab) ,4, 0);
+    BGColorButton = new QPushButton("      ", appSettingsTab);
+    connect(BGColorButton, SIGNAL(clicked()), SLOT(slotBGColorDialog()));
+    appAppearanceGrid->addWidget(BGColorButton, 4, 1);
+
+    appAppearanceGrid->addWidget(new QLabel(tr("Grid Color (set after reload):"), appSettingsTab) ,5, 0);
+    GridColorButton = new QPushButton("      ", appSettingsTab);
+    connect(GridColorButton, SIGNAL(clicked()), SLOT(slotGridColorDialog()));
+    appAppearanceGrid->addWidget(GridColorButton, 5, 1);
+
+    appAppearanceGrid->addWidget(new QLabel(tr("Draw diagrams with anti-aliasing feature:")), 6, 0);
+    checkAntiAliasing = new QCheckBox(appSettingsTab);
+    checkAntiAliasing->setToolTip(tr("Use anti-aliasing for graphs for a smoother appearance."));
+    appAppearanceGrid->addWidget(checkAntiAliasing, 6, 1);
+    checkAntiAliasing->setChecked(QucsSettings.GraphAntiAliasing);
+
+    appAppearanceGrid->addWidget(new QLabel(tr("Draw text with anti-aliasing feature:")), 7, 0);
+    checkTextAntiAliasing = new QCheckBox(appSettingsTab);
+    checkTextAntiAliasing->setToolTip(tr("Use anti-aliasing for text for a smoother appearance."));
+    appAppearanceGrid->addWidget(checkTextAntiAliasing, 7, 1);
+    checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);    
+
+    t->addTab(appAppearanceTab, tr("Appearance"));
 
     // ...........................................................
     // The source code editor settings tab
@@ -449,6 +461,10 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     p.setColor(BGColorButton->backgroundRole(), QucsSettings.BGColor);
     BGColorButton->setPalette(p);
 
+    p = GridColorButton->palette();
+    p.setColor(GridColorButton->backgroundRole(), _settings::Get().item<QColor>("GridColor"));
+    GridColorButton->setPalette(p);
+
     undoNumEdit->setText(QString::number(QucsSettings.maxUndo));
     editorEdit->setText(QucsSettings.Editor);
     checkWiring->setChecked(QucsSettings.NodeWiring);
@@ -574,6 +590,20 @@ void QucsSettingsDialog::slotApply()
           p.setColor(vp->backgroundRole(), QucsSettings.BGColor);
           vp->setPalette(p);
         }
+        changed = true;
+    }
+
+    // Update all open schematics with the new grid color.
+    if (_settings::Get().item<QColor>("GridColor") != GridColorButton->palette().color(GridColorButton->backgroundRole())) {
+        _settings::Get().setItem<QColor>("GridColor", GridColorButton->palette().color(GridColorButton->backgroundRole()));
+
+        for (int tab = 0; tab < App->DocumentTab->count(); tab++) {
+            QWidget* widget = App->DocumentTab->widget(tab);
+            if (!QucsApp::isTextDocument(widget)) {
+                static_cast<Schematic*>(widget)->setGridColor(_settings::Get().item<QColor>("GridColor"));
+            }
+        }
+
         changed = true;
     }
 
@@ -763,6 +793,19 @@ void QucsSettingsDialog::slotBGColorDialog()
         QPalette p = BGColorButton->palette();
         p.setColor(BGColorButton->backgroundRole(), c);
         BGColorButton->setPalette(p);
+    }
+}
+
+// -----------------------------------------------------------
+void QucsSettingsDialog::slotGridColorDialog()
+{
+    QColor c = QColorDialog::getColor(
+                   GridColorButton->palette().color(GridColorButton->foregroundRole()),
+                   this);
+    if(c.isValid()) {
+        QPalette p = GridColorButton->palette();
+        p.setColor(GridColorButton->backgroundRole(), c);
+        GridColorButton->setPalette(p);
     }
 }
 
