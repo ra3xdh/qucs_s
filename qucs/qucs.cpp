@@ -449,16 +449,18 @@ void QucsApp::initView()
     CompComps->setDragEnabled(false);
   #endif
 
+  // Setup component search box and button.
   CompSearch = new QLineEdit(this);
   CompSearch->setPlaceholderText(tr("Search Components"));
   CompSearchClear = new QPushButton(tr("Clear"));
-
-  CompGroupLayout->setSpacing(5);
-  CompGroupLayout->addWidget(CompChoose);
-  CompGroupLayout->addWidget(CompComps);
-  CompGroupLayout->addLayout(CompSearchLayout);
   CompSearchLayout->addWidget(CompSearch);
   CompSearchLayout->addWidget(CompSearchClear);
+
+  // Setup the component chooser widgets.
+  CompGroupLayout->setSpacing(5);
+  CompGroupLayout->addLayout(CompSearchLayout);
+  CompGroupLayout->addWidget(CompChoose);
+  CompGroupLayout->addWidget(CompComps);
   CompGroup->setLayout(CompGroupLayout);
 
 #if __APPLE__
@@ -961,7 +963,7 @@ void QucsApp::slotSetCompView (int index)
 // search result
 void QucsApp::slotSearchComponent(const QString &searchText)
 {
-  qDebug() << "User search: " << searchText;
+  // qDebug() << "User search: " << searchText;
   CompComps->clear ();   // clear the IconView
 
   // not already in "search mode"
