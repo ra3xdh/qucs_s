@@ -51,6 +51,9 @@ public:
   ComponentDialog(Component*, Schematic*);
  ~ComponentDialog();
 
+protected:
+  void keyPressEvent(QKeyEvent* e) override;
+
 private slots:
   void slotOKButton();
   void slotApplyButton();

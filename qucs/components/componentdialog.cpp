@@ -491,7 +491,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
                                       QDialogButtonBox::Apply | QDialogButtonBox::Cancel);
 
   connect(buttonBox, &QDialogButtonBox::accepted, this, &ComponentDialog::slotOKButton);
-  connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+  connect(buttonBox, &QDialogButtonBox::rejected, [=]() { qDebug() << "Rejected signal"; QDialog::reject(); } );
   connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &ComponentDialog::slotApplyButton);
   mainLayout->addWidget(buttonBox);
 }
@@ -510,6 +510,13 @@ ComponentDialog::~ComponentDialog()
     if (it->second)
       delete it->second;
   }
+}
+
+void ComponentDialog::keyPressEvent(QKeyEvent* e)
+{
+  qDebug() << "Dialog key event" << e->key();
+
+  QDialog::keyPressEvent(e);
 }
 
 // -------------------------------------------------------------------------
@@ -707,6 +714,7 @@ void ComponentDialog::writeEquation()
 // Applies all changes and closes the dialog.
 void ComponentDialog::slotOKButton()
 {
+  qDebug() << "OK button";
   QSettings settings("qucs","qucs_s");
   settings.setValue("ComponentDialog/geometry", saveGeometry());
 
@@ -719,6 +727,7 @@ void ComponentDialog::slotOKButton()
 // result of the applied changes.
 void ComponentDialog::slotApplyButton()
 {
+  qDebug() << "Apply button";
   // Update component name if valid.
   component->showName = componentNameWidget->check();
   QString name = componentNameWidget->value();
