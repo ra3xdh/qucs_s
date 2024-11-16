@@ -2057,7 +2057,6 @@ void QucsApp::slotHelpReport()
 // Is called when another document is selected via the TabBar.
 void QucsApp::slotChangeView()
 {
-
   QWidget *w = DocumentTab->currentWidget();
   editText->setHidden (true); // disable text edit of component property
   QucsDoc * Doc;
@@ -2088,6 +2087,8 @@ void QucsApp::slotChangeView()
       switchSchematicDoc(true);
       changeSchematicSymbolMode(d);
     }
+
+    showGrid->setChecked(d->getGridOn());
   }
 
   Doc->becomeCurrent(true);
@@ -2135,6 +2136,10 @@ void QucsApp::slotFileSettings ()
   else {
     SettingsDialog * d = new SettingsDialog ((Schematic *) w);
     d->exec ();
+
+    // TODO: It would be better to emit a signal to notify all subscribers
+    // that the diagram settings have changed.
+    showGrid->setChecked(static_cast<Schematic*>(w)->getGridOn());
   }
 }
 
