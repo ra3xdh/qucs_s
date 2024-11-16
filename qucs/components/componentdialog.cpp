@@ -512,11 +512,22 @@ ComponentDialog::~ComponentDialog()
   }
 }
 
+// -------------------------------------------------------------------------
+// Intercept key presses and move to next row if user presses enter in the
+// property table.
 void ComponentDialog::keyPressEvent(QKeyEvent* e)
 {
   qDebug() << "Dialog key event" << e->key();
 
-  QDialog::keyPressEvent(e);
+  if (e->key() == Qt::Key_Return && propertyTable->hasFocus()) {
+    int row = propertyTable->currentRow();
+    if (row < propertyTable->rowCount())
+      propertyTable->setCurrentCell(row + 1, 1);
+    else
+      slotOKButton();
+  }
+  else
+    QDialog::keyPressEvent(e);
 }
 
 // -------------------------------------------------------------------------
