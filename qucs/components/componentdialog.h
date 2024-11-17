@@ -119,7 +119,6 @@ Q_OBJECT
 
 public:
   EqnHighlighter(const QString& keywordSet, QTextDocument* parent);
-  ~EqnHighlighter();
 
 protected:
   void highlightBlock(const QString &text) override;

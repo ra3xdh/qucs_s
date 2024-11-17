@@ -93,7 +93,6 @@ public:
   }
   ~CompoundWidget()
   {
-    // qDebug() << "CompoundWidget dtor called";
     delete mButton;
     delete mEdit;
   }
@@ -126,10 +125,7 @@ class ParamWidget
       layout->addWidget(mCheckBox, row, 2);  
     }
 
-    virtual ~ParamWidget()
-    {
-      // qDebug() << "ParamWidget dtor called";
-    }
+    virtual ~ParamWidget() {}
 
     void setLabel(const QString& label)
     {
@@ -304,11 +300,6 @@ EqnHighlighter::EqnHighlighter(const QString& keywordSet, QTextDocument* parent)
   highlightingRules.append(rule);
 }
 
-EqnHighlighter::~EqnHighlighter()
-{
-  // qDebug() << "EqnHighlighter dtor called";
-}
-
 // -------------------------------------------------------------------------
 // Sets up the syntax highlighter for the equation editor.
 void EqnHighlighter::highlightBlock(const QString& text)
@@ -336,8 +327,6 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
   setWindowTitle(tr("Edit Component Properties") + " - " + component->Description.toUpper());
 
-  // qDebug() << "Component name is: " << component->Model << " " << component->Name;
-
   // Setup dialog layout.
   QVBoxLayout* mainLayout = new QVBoxLayout(this);
   QGridLayout* propertiesPageLayout;
@@ -352,7 +341,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   // Add the component name.
   QGridLayout* nameLayout = new QGridLayout;
   mainLayout->addLayout(nameLayout);
-  componentNameWidget = new ParamLineEdit("Name", tr("Name:"), compNameVal, true, nameLayout, this, nullptr);
+  componentNameWidget = new ParamLineEdit("Name", tr("Name"), compNameVal, true, nameLayout, this, nullptr);
   componentNameWidget->setValue(component->Name);
   componentNameWidget->setCheck(component->showName);
 
@@ -491,9 +480,13 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
                                       QDialogButtonBox::Apply | QDialogButtonBox::Cancel);
 
   connect(buttonBox, &QDialogButtonBox::accepted, this, &ComponentDialog::slotOKButton);
-  connect(buttonBox, &QDialogButtonBox::rejected, [=]() { qDebug() << "Rejected signal"; QDialog::reject(); } );
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
   connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &ComponentDialog::slotApplyButton);
   mainLayout->addWidget(buttonBox);
+
+  setTabOrder(componentNameWidget, buttonBox);
+  buttonBox->setFocus();
+  // componentNameWidget->setFocus();
 }
 
 ComponentDialog::~ComponentDialog()
@@ -517,18 +510,16 @@ ComponentDialog::~ComponentDialog()
 // property table.
 void ComponentDialog::keyPressEvent(QKeyEvent* e)
 {
-  qDebug() << "Dialog key event" << e->key();
-  /*
-  if (e->key() == Qt::Key_Return && propertyTable->hasFocus()) {
-    int row = propertyTable->currentRow();
-    if (row < propertyTable->rowCount())
-      propertyTable->setCurrentCell(row + 1, 1);
-    else
-      slotOKButton();
-  }
-  else
-  */
+  // Workaround for Qt+Wayland bug. Otherwise Qt::Key_Return invokes slotOKButton()
+  // before registering propertyTable changes meaning the old value is retained.
+  if (e->key() != Qt::Key_Return) {
     QDialog::keyPressEvent(e);
+  }
+  else {
+    qDebug() << "Return key trapped";
+  }
+    
+
 }
 
 // -------------------------------------------------------------------------
@@ -618,8 +609,6 @@ void ComponentDialog::updatePropertyTable()
     int row = 0;
     for (Property* property : component->Props)
     {
-      // qDebug() << "Adding / updating property " << property->Name << " " << property->Value << " " << (property->display ? "Show" : "Hide");
-      // Check this is a sweep property (as there not added to property table).
       if (hasSweep && sweepProperties.contains(property->Name))
         continue;
 
@@ -666,6 +655,7 @@ void ComponentDialog::updatePropertyTable()
       // Set check box and description.
       propertyTable->setItem(row, 2, new QTableWidgetItem(CheckBoxCell));
       propertyTable->item(row, 2)->setCheckState(property->display ? Qt::Checked : Qt::Unchecked);
+      propertyTable->item(row, 2)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
       propertyTable->setItem(row, 3, new QTableWidgetItem(property->Description, LabelCell));
       propertyTable->item(row, 3)->setFlags(Qt::ItemIsEnabled);
 
@@ -681,8 +671,6 @@ void ComponentDialog::updateEqnEditor()
 
   for (auto property : component->Props)
   {
-    // qDebug() << "Adding / updating eqn property " << property->Name << " " << property->Value << " " 
-    //               << property->Description << " " << (property->display ? "Show" : "Hide");    
     if (eqnSimCombo && property->Name == "Simulation")
       eqnSimCombo->setCurrentText(property->Value);
 
@@ -726,18 +714,8 @@ void ComponentDialog::writeEquation()
 // Applies all changes and closes the dialog.
 void ComponentDialog::slotOKButton()
 {
-  qDebug() << "OK button";
   QSettings settings("qucs","qucs_s");
   settings.setValue("ComponentDialog/geometry", saveGeometry());
-
-  // Make sure that all propertyTable edits are accepted before closing.
-  for (int row = 0; row < propertyTable->rowCount(); row++) {
-    QTableWidgetItem* item = propertyTable->item(row, 1);
-    if (item && item->type() == TextEditCell && propertyTable->isPersistentEditorOpen(item)) {
-      qDebug() << "Closing property table item at row " << row;
-      propertyTable->closePersistentEditor(item);
-    }
-  }
 
   slotApplyButton();
   done(QDialog::Accepted);
@@ -748,7 +726,6 @@ void ComponentDialog::slotOKButton()
 // result of the applied changes.
 void ComponentDialog::slotApplyButton()
 {
-  qDebug() << "Apply button";
   // Update component name if valid.
   component->showName = componentNameWidget->check();
   QString name = componentNameWidget->value();
@@ -911,7 +888,6 @@ void ComponentDialog::simpleEditEqn(QLineEdit* lineEdit)
 SimpleEqnDialog::SimpleEqnDialog(QString& string, QWidget* parent)
 : QDialog(parent), mText(string)
 {
-  // qDebug() << "Showing an equation editor.... " << string;
   setMinimumSize(300, 300);
   
   // Setup dialog layout.
