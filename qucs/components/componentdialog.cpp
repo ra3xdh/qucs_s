@@ -518,7 +518,7 @@ ComponentDialog::~ComponentDialog()
 void ComponentDialog::keyPressEvent(QKeyEvent* e)
 {
   qDebug() << "Dialog key event" << e->key();
-
+  /*
   if (e->key() == Qt::Key_Return && propertyTable->hasFocus()) {
     int row = propertyTable->currentRow();
     if (row < propertyTable->rowCount())
@@ -527,6 +527,7 @@ void ComponentDialog::keyPressEvent(QKeyEvent* e)
       slotOKButton();
   }
   else
+  */
     QDialog::keyPressEvent(e);
 }
 
@@ -728,6 +729,15 @@ void ComponentDialog::slotOKButton()
   qDebug() << "OK button";
   QSettings settings("qucs","qucs_s");
   settings.setValue("ComponentDialog/geometry", saveGeometry());
+
+  // Make sure that all propertyTable edits are accepted before closing.
+  for (int row = 0; row < propertyTable->rowCount(); row++) {
+    QTableWidgetItem* item = propertyTable->item(row, 1);
+    if (item && item->type() == TextEditCell && propertyTable->isPersistentEditorOpen(item)) {
+      qDebug() << "Closing property table item at row " << row;
+      propertyTable->closePersistentEditor(item);
+    }
+  }
 
   slotApplyButton();
   done(QDialog::Accepted);
