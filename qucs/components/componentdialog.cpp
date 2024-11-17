@@ -378,7 +378,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     if (!paramsHiddenBySim["Sim"].contains(component->Model))
     {
       eqnSimCombo = new QComboBox();
-      eqnSimCombo->addItems(getSimulationList());
+      eqnSimCombo->addItems(getSimulationList(true));
       editorLayout->addWidget(eqnSimCombo, 2);
     }
     
@@ -433,7 +433,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       sweepTypeSpecialLabels[qMakePair(QString("log"),QString("Step"))] = {"Points per decade"};
 
       // Setup the widgets as per the stored type.
-      sweepParamWidget["Sim"]->setOptions(getSimulationList());
+      sweepParamWidget["Sim"]->setOptions(getSimulationList(false));
       sweepParamWidget["Type"]->setOptions({"lin", "log", "list", "value"});
       updateSweepProperty("All");
 
@@ -956,14 +956,14 @@ void ComponentDialog::slotEditFile()
 
 // -------------------------------------------------------------------------
 // Get a list of simulations in the schematic.
-QStringList ComponentDialog::getSimulationList()
+QStringList ComponentDialog::getSimulationList(bool includeGeneric)
 {
     QStringList sim_lst;
     Schematic *sch = component->getSchematic();
     if (sch == nullptr) {
         return sim_lst;
     }
-    sim_lst.append("ALL");
+    
     for (size_t i = 0; i < sch->a_DocComps.count(); i++) {
         Component *c = sch->a_DocComps.at(i);
         if (!c->isSimulation) continue;
@@ -974,16 +974,24 @@ QStringList ComponentDialog::getSimulationList()
         if (c->Model == ".SW" && !c->Props.at(0)->Value.toUpper().startsWith("DC") ) continue;
         sim_lst.append(c->Name);
     }
-    QStringList sim_wo_numbers = sim_lst;
-    for(auto &s: sim_wo_numbers) {
-        s.remove(QRegularExpression("[0-9]+$"));
+
+    if (includeGeneric) {
+      QStringList sim_wo_numbers = sim_lst;
+      
+      for(auto &s: sim_wo_numbers) {
+          s.remove(QRegularExpression("[0-9]+$"));
+      }
+      
+      for(const auto &s: sim_wo_numbers) {
+          int cnt = sim_wo_numbers.count(s);
+          if (cnt > 1 && ! sim_lst.contains(s)) {
+              sim_lst.append(s);
+          }
+      }
+
+      sim_lst.prepend("ALL");
     }
-    for(const auto &s: sim_wo_numbers) {
-        int cnt = sim_wo_numbers.count(s);
-        if (cnt > 1 && ! sim_lst.contains(s)) {
-            sim_lst.append(s);
-        }
-    }
+
     return sim_lst;
 }
 

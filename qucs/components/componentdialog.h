@@ -96,7 +96,7 @@ private:
   ParamLineEdit* componentNameWidget;
   int tx_Dist, ty_Dist;   // remember the text position
  
-  QStringList getSimulationList();
+  QStringList getSimulationList(bool includeGeneric);
 
   void updateSweepProperty(const QString& propertyWidget);
   void updateSweepWidgets(const QString& simType);
