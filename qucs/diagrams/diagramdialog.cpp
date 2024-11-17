@@ -25,6 +25,7 @@
 #include "rect3ddiagram.h"
 #include "main.h"
 #include "misc.h"
+#include "settings.h"
 
 #include <cmath>
 #include <assert.h>
@@ -250,7 +251,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     Property2->setValidator(ValInteger);
     Property2->setMaximumWidth(25);
     Property2->setMaxLength(2);
-    Property2->setText("0");
+    Property2->setText(_settings::Get().item<QString>("DefaultGraphLineWidth"));
 
     if((Diag->Name=="Rect") || (Diag->Name=="PS") || (Diag->Name=="SP") || (Diag->Name=="Curve")) {
       Label4 = new QLabel(tr("y-Axis:"));

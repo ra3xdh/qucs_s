@@ -92,7 +92,7 @@ public:
     QPushButton *FontButton, *AppFontButton, *TextFontButton, *BGColorButton, *GridColorButton;
     QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
               *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit,
-              *OpenVAFEdit, *RFLayoutEdit;
+              *OpenVAFEdit, *RFLayoutEdit, *graphLineWidthEdit;
     QTableWidget *fileTypesTableWidget, *pathsTableWidget;
     QStandardItemModel *model;
     QPushButton *ColorComment, *ColorString, *ColorInteger,

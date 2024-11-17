@@ -176,7 +176,12 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     checkTextAntiAliasing = new QCheckBox(appSettingsTab);
     checkTextAntiAliasing->setToolTip(tr("Use anti-aliasing for text for a smoother appearance."));
     appAppearanceGrid->addWidget(checkTextAntiAliasing, 7, 1);
-    checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);    
+    checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);
+
+    appAppearanceGrid->addWidget(new QLabel(tr("Default graph line thickness:"), appSettingsTab), 8, 0);
+    graphLineWidthEdit = new QLineEdit(appSettingsTab);
+    graphLineWidthEdit->setValidator(val50);
+    appAppearanceGrid->addWidget(graphLineWidthEdit, 8, 1);      
 
     t->addTab(appAppearanceTab, tr("Appearance"));
 
@@ -456,6 +461,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     TextFontButton->setText(TextFont.toString());
     QString s = QString::number(QucsSettings.largeFontSize, 'f', 1);
     LargeFontSizeEdit->setText(s);
+    graphLineWidthEdit->setText(_settings::Get().item<QString>("DefaultGraphLineWidth"));
 
     p = BGColorButton->palette();
     p.setColor(BGColorButton->backgroundRole(), QucsSettings.BGColor);
@@ -720,6 +726,12 @@ void QucsSettingsDialog::slotApply()
     if (QucsSettings.largeFontSize != LargeFontSizeEdit->text().toDouble(&ok))
     {
         QucsSettings.largeFontSize = LargeFontSizeEdit->text().toDouble(&ok);
+        changed = true;
+    }
+
+    if (_settings::Get().item<QString>("DefaultGraphLineWidth") != graphLineWidthEdit->text())
+    {
+        _settings::Get().setItem<QString>("DefaultGraphLineWidth", graphLineWidthEdit->text());
         changed = true;
     }
 
