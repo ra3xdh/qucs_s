@@ -271,6 +271,8 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
   QTextStream ts(&f);
 
   bool subcir_start = false;
+  bool header_start = false;
+  QString last_subcir;
   QString subname;
   QString subcir_body;
   while (!ts.atEnd()) {
@@ -282,17 +284,33 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
     if (start_comment != -1) {
       line = line.left(start_comment);
     }
+
+    if (header_start) {
+      // line continuation
+      if (line.startsWith("+")) {
+        line.remove(0,1);
+        QStringList pins = line.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
+        subcirPins[last_subcir].append(pins);
+      } else {
+        // end of header
+        header_start = false;
+      }
+    }
+
     if (line.startsWith(".SUBCKT")) {
       subcir_start = true;
+      header_start = true;
       subcir_body.clear();
       QStringList pin_names;
       QStringList tokens = line.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
       if (tokens.count() > 3) {
         subname = tokens.at(1);
+        last_subcir = subname;
       } else continue;
       tokens.removeFirst();
       tokens.removeFirst();
       for (const auto &s1: tokens) {
+        if (s1 == "PARAMS:") header_start = false;
         if (!s1.contains('=') && (s1 != "PARAMS:")) {
           pin_names.append(s1);
         }
