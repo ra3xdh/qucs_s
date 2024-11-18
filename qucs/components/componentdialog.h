@@ -100,7 +100,7 @@ private:
 
   void updateSweepProperty(const QString& propertyWidget);
   void updateSweepWidgets(const QString& simType);
-  void updatePropertyTable();
+  void updatePropertyTable(const Component* updateComponent);
   void updateEqnEditor();
   void updateEqnSimulation(const QString& propertyWidget, const QString& value) { (void)propertyWidget; (void)value; };
 

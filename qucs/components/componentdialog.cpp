@@ -468,7 +468,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     propertyTable->setSelectionMode(QAbstractItemView::SingleSelection);
     propertyTableLayout->addWidget(propertyTable, 2);
 
-    updatePropertyTable();
+    updatePropertyTable(component);
 
     // Try to move the cursor to the editable cell if any cell is clicked.
     connect(propertyTable, &QTableWidget::cellClicked, 
@@ -515,11 +515,6 @@ void ComponentDialog::keyPressEvent(QKeyEvent* e)
   if (e->key() != Qt::Key_Return) {
     QDialog::keyPressEvent(e);
   }
-  else {
-    qDebug() << "Return key trapped";
-  }
-    
-
 }
 
 // -------------------------------------------------------------------------
@@ -603,11 +598,11 @@ void ComponentDialog::updateSweepProperty(const QString& property)
 
 // -------------------------------------------------------------------------
 // Updates the property table with the current values stored in the component.
-void ComponentDialog::updatePropertyTable()
+void ComponentDialog::updatePropertyTable(const Component* updateComponent)
 {
     // Add component properties to the properties table with the exception of the sweep properties.
     int row = 0;
-    for (Property* property : component->Props)
+    for (const Property* property : updateComponent->Props)
     {
       if (hasSweep && sweepProperties.contains(property->Name))
         continue;
@@ -976,10 +971,24 @@ QStringList ComponentDialog::getSimulationList(bool includeGeneric)
 // from a SPICE file (see #795)
 void ComponentDialog::slotFillFromSpice()
 {
-  fillFromSpiceDialog *dlg = new fillFromSpiceDialog(component, this);
+  // Make a copy of the componenty type and properties.
+  Component tempComponent;
+  tempComponent.SpiceModelcards = component->SpiceModelcards;
+  for (auto property : component->Props)
+    tempComponent.Props.append(new Property(property->Name, property->Value, property->display, property->Description));
+
+  // Populate the temporary component from the spice model.
+  fillFromSpiceDialog *dlg = new fillFromSpiceDialog(&tempComponent, this);
   auto r = dlg->exec();
+
+  // Update the property table with the newly populated temporary component.
   if (r == QDialog::Accepted) {
-    // updateCompPropsList();
+    updatePropertyTable(&tempComponent);
   }
+
+  // Cleanup.
+  for (auto property : tempComponent.Props)
+    delete property; 
+
   delete dlg;
 }
