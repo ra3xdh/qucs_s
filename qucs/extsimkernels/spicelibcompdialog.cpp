@@ -11,165 +11,161 @@
 #include "spicelibcompdialog.h"
 
 
-SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) :
-    QDialog(sch),
-    a_symbolPinsCount(0),
-    a_isChanged(false),
-    a_libError(false),
-    a_prev_row(-1),
-    a_prev_col(-1),
-    a_lastSymbolDir(),
-    a_lastLibDir(),
-    a_comp(pc),
-    a_schematic(sch),
-    a_symbol(new SymbolWidget),
-    a_edtLibPath(new QLineEdit),
-    a_edtParams(new QLineEdit),
-    a_edtSymFile(new QLineEdit()),
-    a_edtSPICE(new QPlainTextEdit),
-    a_btnOpenLib(new QPushButton(tr("Open"))),
-    a_btnOK(new QPushButton(tr("OK"))),
-    a_btnApply(new QPushButton(tr("Apply"))),
-    a_btnCancel(new QPushButton(tr("Cancel"))),
-    a_tbwPinsTable(new QTableWidget),
-    a_cbxSelectSubcir(new QComboBox),
-    a_listSymPattern(new QListWidget),
-    a_rbSymFromTemplate(new QRadioButton(tr("Symbol from template"))),
-    a_rbAutoSymbol(new QRadioButton(tr("Automatic symbol"))),
-    a_rbUserSym(new QRadioButton(tr("Symbol from file"))),
-    a_chbShowLib(new QCheckBox(tr("Show"))),
-    a_chbShowModel(new QCheckBox(tr("Show"))),
-    a_chbShowParams(new QCheckBox(tr("Show"))),
-    a_subcirPins(),
-    a_subcirSPICE()
+SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{sch}
 {
-  QString file = a_comp->Props.at(0)->Value;
+  comp = pc;
+  Doc = sch;
+  symbolPinsCount = 0;
+  isChanged = false;
+  libError = false;
+  prev_col = -1;
+  prev_row = -1;
+
+  QString file = comp->Props.at(0)->Value;
   if (!file.isEmpty()) {
-    file = misc::properAbsFileName(file, a_schematic);
+    file = misc::properAbsFileName(file, Doc);
     QFileInfo inf(file);
-    a_lastLibDir = inf.absoluteDir().path();
+    lastLibDir = inf.absoluteDir().path();
   } else {
-    QFileInfo inf = a_schematic->getFileInfo();
+    QFileInfo inf = Doc->getFileInfo();
     if (inf.absoluteFilePath().isEmpty()) { // untitled document
-      a_lastLibDir = QucsSettings.QucsWorkDir.absolutePath();
+      lastLibDir = QucsSettings.QucsWorkDir.absolutePath();
     } else { // saved schematic
-      a_lastLibDir = inf.absoluteDir().path();
+      lastLibDir = inf.absoluteDir().path();
     }
   }
-  bool show_lib = a_comp->Props.at(0)->display;
-  QString device = a_comp->Props.at(1)->Value;
-  bool show_model = a_comp->Props.at(1)->display;
-  QString sym = a_comp->Props.at(2)->Value;
-  QString par = a_comp->Props.at(3)->Value;
-  bool show_par = a_comp->Props.at(3)->display;
-  QString pin_list = a_comp->Props.at(4)->Value;
+  bool show_lib = comp->Props.at(0)->display;
+  QString device = comp->Props.at(1)->Value;
+  bool show_model = comp->Props.at(1)->display;
+  QString sym = comp->Props.at(2)->Value;
+  QString par = comp->Props.at(3)->Value;
+  bool show_par = comp->Props.at(3)->display;
+  QString pin_list = comp->Props.at(4)->Value;
 
   QLabel *lblLibfile = new QLabel("SPICE library:");
-  a_edtLibPath->setText(file);
-  connect(a_edtLibPath,SIGNAL(textChanged(QString)),this,SLOT(slotFillSubcirComboBox()));
-  connect(a_btnOpenLib,SIGNAL(clicked(bool)),this,SLOT(slotBtnOpenLib()));
+  edtLibPath = new QLineEdit;
+  edtLibPath->setText(file);
+  connect(edtLibPath,SIGNAL(textChanged(QString)),this,SLOT(slotFillSubcirComboBox()));
+  btnOpenLib = new QPushButton(tr("Open"));
+  connect(btnOpenLib,SIGNAL(clicked(bool)),this,SLOT(slotBtnOpenLib()));
 
   QLabel *lbl_par = new QLabel("Component parameters");
-  a_edtParams->setText(par);
+  edtParams = new QLineEdit;
+  edtParams->setText(par);
 
   QLabel *lblDevice = new QLabel("Subcircuit:");
-  connect(a_cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotFillPinsTable()));
+  cbxSelectSubcir = new QComboBox;
+  connect(cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotFillPinsTable()));
 
+  listSymPattern = new QListWidget;
   QStringList lst_patterns;
   misc::getSymbolPatternsList(lst_patterns);
-  a_listSymPattern->addItems(lst_patterns);
-  a_listSymPattern->setCurrentRow(0);
-  a_listSymPattern->setSelectionMode(QAbstractItemView::SingleSelection);
-  connect(a_listSymPattern,SIGNAL(currentRowChanged(int)),this,SLOT(slotSetSymbol()));
+  listSymPattern->addItems(lst_patterns);
+  listSymPattern->setCurrentRow(0);
+  listSymPattern->setSelectionMode(QAbstractItemView::SingleSelection);
+  connect(listSymPattern,SIGNAL(currentRowChanged(int)),this,SLOT(slotSetSymbol()));
 
-  a_btnOpenLib = new QPushButton(tr("Open"));
-  connect(a_btnOpenLib,SIGNAL(clicked(bool)),this,SLOT(slotBtnOpenSym()));
+  rbAutoSymbol = new QRadioButton(tr("Automatic symbol"));
+  rbSymFromTemplate = new QRadioButton(tr("Symbol from template"));
+  rbUserSym = new QRadioButton(tr("Symbol from file"));
+  btnOpenSym = new QPushButton(tr("Open"));
+  edtSymFile = new QLineEdit();
+  connect(btnOpenSym,SIGNAL(clicked(bool)),this,SLOT(slotBtnOpenSym()));
 
-  a_chbShowLib->setChecked(show_lib);
-  a_chbShowModel->setChecked(show_model);
-  a_chbShowParams->setChecked(show_par);
-  connect(a_chbShowLib,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
-  connect(a_chbShowModel,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
-  connect(a_chbShowParams,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
+  chbShowLib = new QCheckBox(tr("Show"));
+  chbShowLib->setChecked(show_lib);
+  chbShowModel = new QCheckBox(tr("Show"));
+  chbShowModel->setChecked(show_model);
+  chbShowParams = new QCheckBox(tr("Show"));
+  chbShowParams->setChecked(show_par);
+  connect(chbShowLib,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
+  connect(chbShowModel,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
+  connect(chbShowParams,SIGNAL(toggled(bool)),this,SLOT(slotChanged()));
 
-  if (QFileInfo::exists(misc::properAbsFileName(sym, a_schematic))) {
-    a_edtSymFile->setText(misc::properAbsFileName(sym, a_schematic));
-    a_rbUserSym->setChecked(true);
-    QFileInfo inf(misc::properAbsFileName(sym, a_schematic));
-    a_lastSymbolDir = inf.absoluteDir().path();
+  if (QFileInfo::exists(misc::properAbsFileName(sym, Doc))) {
+    edtSymFile->setText(misc::properAbsFileName(sym, Doc));
+    rbUserSym->setChecked(true);
+    QFileInfo inf(misc::properAbsFileName(sym, Doc));
+    lastSymbolDir = inf.absoluteDir().path();
   } else {
-    QFileInfo inf = a_schematic->getFileInfo();
-    a_lastSymbolDir = inf.absoluteDir().path();
+    QFileInfo inf = Doc->getFileInfo();
+    lastSymbolDir = inf.absoluteDir().path();
     if (sym == "auto") {
-      a_rbAutoSymbol->setChecked(true);
+      rbAutoSymbol->setChecked(true);
     } else {
-      a_rbSymFromTemplate->setChecked(true);
+      rbSymFromTemplate->setChecked(true);
     }
   }
 
-  a_symbol->disableDragNDrop();
-  a_symbol->enableShowPinNumbers();
-  a_symbol->setPaintText("");
+  symbol = new SymbolWidget;
+  symbol->disableDragNDrop();
+  symbol->enableShowPinNumbers();
+  symbol->setPaintText("");
 
-  a_tbwPinsTable->setColumnCount(2);
-  a_tbwPinsTable->setRowCount(100);
+  tbwPinsTable = new QTableWidget;
+  tbwPinsTable->setColumnCount(2);
+  tbwPinsTable->setRowCount(100);
   QStringList lbl_cols;
   lbl_cols<<"Subcircuit pin"<<"Symbol pin";
-  a_tbwPinsTable->setHorizontalHeaderLabels(lbl_cols);
-  a_tbwPinsTable->setMinimumWidth(2.2*a_tbwPinsTable->columnWidth(0));
-  a_tbwPinsTable->setMinimumHeight(5*a_tbwPinsTable->rowHeight(0));
-  connect(a_tbwPinsTable,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(slotTableCellDoubleClick()));
+  tbwPinsTable->setHorizontalHeaderLabels(lbl_cols);
+  tbwPinsTable->setMinimumWidth(2.2*tbwPinsTable->columnWidth(0));
+  tbwPinsTable->setMinimumHeight(5*tbwPinsTable->rowHeight(0));
+  connect(tbwPinsTable,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(slotTableCellDoubleClick()));
 
-  a_edtSPICE->setReadOnly(true);
-  a_edtSPICE->setMinimumSize(a_tbwPinsTable->minimumSize());
+  edtSPICE = new QPlainTextEdit;
+  edtSPICE->setReadOnly(true);
+  edtSPICE->setMinimumSize(tbwPinsTable->minimumSize());
 
-  connect(a_btnOK,SIGNAL(clicked(bool)),this,SLOT(slotBtnOK()));
-  connect(a_btnApply,SIGNAL(clicked(bool)),this,SLOT(slotBtnApply()));
-  connect(a_btnCancel,SIGNAL(clicked(bool)),this,SLOT(slotBtnCancel()));
+  btnOK = new QPushButton(tr("OK"));
+  connect(btnOK,SIGNAL(clicked(bool)),this,SLOT(slotBtnOK()));
+  btnApply = new QPushButton(tr("Apply"));
+  connect(btnApply,SIGNAL(clicked(bool)),this,SLOT(slotBtnApply()));
+  btnCancel = new QPushButton(tr("Cancel"));
+  connect(btnCancel,SIGNAL(clicked(bool)),this,SLOT(slotBtnCancel()));
 
   QVBoxLayout *top = new QVBoxLayout;
   QHBoxLayout *l2 = new QHBoxLayout;
   l2->addWidget(lblLibfile);
-  l2->addWidget(a_edtLibPath,4);
-  l2->addWidget(a_btnOpenLib,1);
-  l2->addWidget(a_chbShowLib);
+  l2->addWidget(edtLibPath,4);
+  l2->addWidget(btnOpenLib,1);
+  l2->addWidget(chbShowLib);
   top->addLayout(l2);
 
   QHBoxLayout *l7 = new QHBoxLayout;
   l7->addWidget(lbl_par);
-  l7->addWidget(a_edtParams);
-  l7->addWidget(a_chbShowParams);
+  l7->addWidget(edtParams);
+  l7->addWidget(chbShowParams);
   top->addLayout(l7);
 
   QGridLayout *gl1 = new QGridLayout;
-  gl1->addWidget(a_rbAutoSymbol,0,0);
-  gl1->addWidget(a_rbSymFromTemplate,1,0);
-  gl1->addWidget(a_rbUserSym,2,0);
-  gl1->addWidget(a_edtSymFile,2,1);
-  gl1->addWidget(a_btnOpenLib,2,2);
-  gl1->addWidget(a_symbol,0,3,3,2);
-  gl1->addWidget(a_listSymPattern,0,5,3,2);
+  gl1->addWidget(rbAutoSymbol,0,0);
+  gl1->addWidget(rbSymFromTemplate,1,0);
+  gl1->addWidget(rbUserSym,2,0);
+  gl1->addWidget(edtSymFile,2,1);
+  gl1->addWidget(btnOpenSym,2,2);
+  gl1->addWidget(symbol,0,3,3,2);
+  gl1->addWidget(listSymPattern,0,5,3,2);
   top->addLayout(gl1);
 
   QHBoxLayout *l3 = new QHBoxLayout;
-  l3->addWidget(a_tbwPinsTable);
+  l3->addWidget(tbwPinsTable);
   QGroupBox *gpb1 = new QGroupBox(tr("SPICE model"));
   QVBoxLayout *l8 = new QVBoxLayout;
   QHBoxLayout *l5 = new QHBoxLayout;
   l5->addWidget(lblDevice);
-  l5->addWidget(a_cbxSelectSubcir);
-  l5->addWidget(a_chbShowModel);
+  l5->addWidget(cbxSelectSubcir);
+  l5->addWidget(chbShowModel);
   l8->addLayout(l5);
-  l8->addWidget(a_edtSPICE);
+  l8->addWidget(edtSPICE);
   gpb1->setLayout(l8);
   l3->addWidget(gpb1);
   top->addLayout(l3,3);
 
 
   QHBoxLayout *l4 = new QHBoxLayout;
-  l4->addWidget(a_btnOK);
-  l4->addWidget(a_btnApply);
-  l4->addWidget(a_btnCancel);
+  l4->addWidget(btnOK);
+  l4->addWidget(btnApply);
+  l4->addWidget(btnCancel);
   l4->addStretch();
   top->addLayout(l4);
 
@@ -178,46 +174,46 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) :
   this->setWindowTitle(tr("Edit SPICE library device"));
   slotFillSubcirComboBox();
 
-  a_cbxSelectSubcir->setCurrentText(device);
-  auto items = a_listSymPattern->findItems(sym,Qt::MatchExactly);
-  if (!items.isEmpty()) a_listSymPattern->setCurrentItem(items.at(0));
-  //a_listSymPattern->setCurrentText(sym);
+  cbxSelectSubcir->setCurrentText(device);
+  auto items = listSymPattern->findItems(sym,Qt::MatchExactly);
+  if (!items.isEmpty()) listSymPattern->setCurrentItem(items.at(0));
+  //listSymPattern->setCurrentText(sym);
 
   if (!pin_list.isEmpty()) {
     QStringList pins = pin_list.split(";");
     for(int i = 0; i < pins.count(); i++) {
-      QTableWidgetItem *itm = a_tbwPinsTable->item(i,1);
+      QTableWidgetItem *itm = tbwPinsTable->item(i,1);
       if (itm != nullptr) {
         itm->setText(pins.at(i));
       }
     }
   }
 
-  a_listSymPattern->setMinimumWidth(0.75*a_tbwPinsTable->minimumWidth());
-  a_symbol->setMinimumWidth(0.75*a_tbwPinsTable->minimumWidth());
+  listSymPattern->setMinimumWidth(0.75*tbwPinsTable->minimumWidth());
+  symbol->setMinimumWidth(0.75*tbwPinsTable->minimumWidth());
 
-  a_btnApply->setEnabled(false);
-  connect(a_rbAutoSymbol,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
-  connect(a_rbSymFromTemplate,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
-  connect(a_rbUserSym,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
-  connect(a_edtLibPath,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
-  connect(a_edtParams,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
-  connect(a_tbwPinsTable,SIGNAL(cellChanged(int,int)),this,SLOT(slotChanged()));
-  connect(a_listSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
-  connect(a_cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
-  connect(a_edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotSetSymbol()));
-  connect(a_edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
+  btnApply->setEnabled(false);
+  connect(rbAutoSymbol,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
+  connect(rbSymFromTemplate,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
+  connect(rbUserSym,SIGNAL(toggled(bool)),this,SLOT(slotSetSymbol()));
+  connect(edtLibPath,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
+  connect(edtParams,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
+  connect(tbwPinsTable,SIGNAL(cellChanged(int,int)),this,SLOT(slotChanged()));
+  connect(listSymPattern,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
+  connect(cbxSelectSubcir,SIGNAL(currentIndexChanged(int)),this,SLOT(slotChanged()));
+  connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotSetSymbol()));
+  connect(edtSymFile,SIGNAL(textChanged(QString)),this,SLOT(slotChanged()));
 
 }
 
 void SpiceLibCompDialog::slotFillSubcirComboBox()
 {
-  QString libfile = a_edtLibPath->text();
+  QString libfile = edtLibPath->text();
   if (!QFile::exists(libfile)) return;
   int  r = parseLibFile(libfile);
-  a_libError = false;
+  libError = false;
   if (r != noError) {
-    a_libError = true;
+    libError = true;
     QString msg;
     switch (r) {
     case failedOpenFile:
@@ -234,31 +230,31 @@ void SpiceLibCompDialog::slotFillSubcirComboBox()
     return;
   }
 
-  a_cbxSelectSubcir->blockSignals(true);
-  a_cbxSelectSubcir->clear();
-  for(const auto &key: a_subcirPins.keys()) {
-    a_cbxSelectSubcir->addItem(key);
+  cbxSelectSubcir->blockSignals(true);
+  cbxSelectSubcir->clear();
+  for(const auto &key: subcirPins.keys()) {
+    cbxSelectSubcir->addItem(key);
   }
-  a_cbxSelectSubcir->blockSignals(false);
+  cbxSelectSubcir->blockSignals(false);
   slotFillPinsTable();
 }
 
 void SpiceLibCompDialog::slotFillPinsTable()
 {
-  QString subcir_name = a_cbxSelectSubcir->currentText();
-  if (a_subcirPins.find(subcir_name) == a_subcirPins.end()) return;
-  QStringList pins = a_subcirPins[subcir_name];
-  a_tbwPinsTable->clearContents();
-  a_tbwPinsTable->setRowCount(pins.count());
+  QString subcir_name = cbxSelectSubcir->currentText();
+  if (subcirPins.find(subcir_name) == subcirPins.end()) return;
+  QStringList pins = subcirPins[subcir_name];
+  tbwPinsTable->clearContents();
+  tbwPinsTable->setRowCount(pins.count());
   for (int i = 0; i < pins.count(); i++) {
     QTableWidgetItem *itm1 = new QTableWidgetItem(pins.at(i));
-    a_tbwPinsTable->setItem(i,0,itm1);
+    tbwPinsTable->setItem(i,0,itm1);
     QTableWidgetItem *itm2 = new QTableWidgetItem("NC");
-    a_tbwPinsTable->setItem(i,1,itm2);
+    tbwPinsTable->setItem(i,1,itm2);
   }
 
-  a_edtSPICE->clear();
-  a_edtSPICE->setPlainText(a_subcirSPICE[subcir_name]);
+  edtSPICE->clear();
+  edtSPICE->setPlainText(subcirSPICE[subcir_name]);
 }
 
 int SpiceLibCompDialog::parseLibFile(const QString &filename)
@@ -270,8 +266,8 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
     return failedOpenFile;
   }
 
-  a_subcirPins.clear();
-  a_subcirSPICE.clear();
+  subcirPins.clear();
+  subcirSPICE.clear();
   QTextStream ts(&f);
 
   bool subcir_start = false;
@@ -296,19 +292,19 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
           pin_names.append(s1);
         }
       }
-      a_subcirPins[subname] = pin_names;
+      subcirPins[subname] = pin_names;
     }
     if (subcir_start) {
       subcir_body += line + "\n";
     }
     if (line.startsWith(".ENDS")) {
       subcir_start = false;
-      a_subcirSPICE[subname] = subcir_body;
+      subcirSPICE[subname] = subcir_body;
     }
   }
 
   f.close();
-  if (a_subcirPins.isEmpty()) {
+  if (subcirPins.isEmpty()) {
     return noSUBCKT;
   }
   return noError;
@@ -318,37 +314,37 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
 void SpiceLibCompDialog::slotSetSymbol()
 {
   int result = -1;
-  if (a_rbAutoSymbol->isChecked()) {
-    a_tbwPinsTable->setEnabled(false);
-    a_listSymPattern->setEnabled(false);
-    a_edtSymFile->setEnabled(false);
-    a_btnOpenLib->setEnabled(false);
+  if (rbAutoSymbol->isChecked()) {
+    tbwPinsTable->setEnabled(false);
+    listSymPattern->setEnabled(false);
+    edtSymFile->setEnabled(false);
+    btnOpenSym->setEnabled(false);
     QString s1 = "";
     QString s2 = "SpLib";
-    a_symbol->setSymbol(s1, s1, s2);
+    symbol->setSymbol(s1, s1, s2);
     result = 0;
-    a_symbol->setWarning(tr("No symbol loaded"));
-    a_symbolPinsCount = 0;
-  } else if (a_rbSymFromTemplate->isChecked()) {
-    a_tbwPinsTable->setEnabled(true);
-    a_listSymPattern->setEnabled(true);
-    a_edtSymFile->setEnabled(false);
-    a_btnOpenLib->setEnabled(false);
+    symbol->setWarning(tr("No symbol loaded"));
+    symbolPinsCount = 0;
+  } else if (rbSymFromTemplate->isChecked()) {
+    tbwPinsTable->setEnabled(true);
+    listSymPattern->setEnabled(true);
+    edtSymFile->setEnabled(false);
+    btnOpenSym->setEnabled(false);
     QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
-    QString file = dir_name + a_listSymPattern->currentItem()->text() + ".sym";
-    result = a_symbol->loadSymFile(file);
-    a_symbolPinsCount = a_symbol->getPortsNumber();
-  } else if (a_rbUserSym->isChecked()) {
-    a_tbwPinsTable->setEnabled(true);
-    a_listSymPattern->setEnabled(false);
-    a_edtSymFile->setEnabled(true);
-    a_btnOpenLib->setEnabled(true);
-    if (a_edtSymFile->text().isEmpty()) {
-      a_symbolPinsCount = 0;
+    QString file = dir_name + listSymPattern->currentItem()->text() + ".sym";
+    result = symbol->loadSymFile(file);
+    symbolPinsCount = symbol->getPortsNumber();
+  } else if (rbUserSym->isChecked()) {
+    tbwPinsTable->setEnabled(true);
+    listSymPattern->setEnabled(false);
+    edtSymFile->setEnabled(true);
+    btnOpenSym->setEnabled(true);
+    if (edtSymFile->text().isEmpty()) {
+      symbolPinsCount = 0;
       return;
     }
-    result = a_symbol->loadSymFile(a_edtSymFile->text());
-    a_symbolPinsCount = a_symbol->getPortsNumber();
+    result = symbol->loadSymFile(edtSymFile->text());
+    symbolPinsCount = symbol->getPortsNumber();
   }
 
   if (result < 0) {
@@ -356,33 +352,33 @@ void SpiceLibCompDialog::slotSetSymbol()
     return;
   }
 
-  for (int i = 0; i < a_tbwPinsTable->rowCount(); i++) {
+  for (int i = 0; i < tbwPinsTable->rowCount(); i++) {
     QTableWidgetItem *itm = new QTableWidgetItem("NC");
-    a_tbwPinsTable->setItem(i,1,itm);
+    tbwPinsTable->setItem(i,1,itm);
   }
-  a_isChanged = true;
-  a_btnApply->setEnabled(true);
+  isChanged = true;
+  btnApply->setEnabled(true);
 }
 
 void SpiceLibCompDialog::slotTableCellDoubleClick()
 {
-  int r = a_tbwPinsTable->currentRow();
-  int c = a_tbwPinsTable->currentColumn();
+  int r = tbwPinsTable->currentRow();
+  int c = tbwPinsTable->currentColumn();
   if (c == 0) return; // do not edit the first column
 
-  if (a_prev_col >= 0 && a_prev_row >= 0) { // remove combo box from previous cell
+  if (prev_col >= 0 && prev_row >= 0) { // remove combo box from previous cell
     QTableWidgetItem *itm = new QTableWidgetItem("NC");
-    a_tbwPinsTable->removeCellWidget(a_prev_row, a_prev_col);
-    a_tbwPinsTable->setItem(a_prev_row, a_prev_col, itm);
+    tbwPinsTable->removeCellWidget(prev_row, prev_col);
+    tbwPinsTable->setItem(prev_row, prev_col, itm);
   }
 
   QComboBox *cbxSelectPin = new QComboBox;
   cbxSelectPin->addItem("NC");
-  for (int i = 1; i <= a_symbolPinsCount; i++) {
+  for (int i = 1; i <= symbolPinsCount; i++) {
     bool pinAssigned = false;
-    for(int j = 0; j < a_tbwPinsTable->rowCount(); j++) {
+    for(int j = 0; j < tbwPinsTable->rowCount(); j++) {
       if (j == r) continue;
-      auto itm = a_tbwPinsTable->item(j,1);
+      auto itm = tbwPinsTable->item(j,1);
       if (itm == nullptr) continue;
       QString s = itm->text();
       if (s.isEmpty()) continue;
@@ -396,49 +392,49 @@ void SpiceLibCompDialog::slotTableCellDoubleClick()
       cbxSelectPin->addItem(QString::number(i));
     }
   }
-  a_tbwPinsTable->item(r,c)->setText("");
-  a_tbwPinsTable->setCellWidget(r,c,cbxSelectPin);
+  tbwPinsTable->item(r,c)->setText("");
+  tbwPinsTable->setCellWidget(r,c,cbxSelectPin);
   connect(cbxSelectPin,SIGNAL(activated(int)),this,SLOT(slotSelectPin()));
 
-  a_prev_col = c; // remebmebr cell with combo box
-  a_prev_row = r;
+  prev_col = c; // remebmebr cell with combo box
+  prev_row = r;
 }
 
 void SpiceLibCompDialog::slotSelectPin()
 {
   QComboBox *cbxSelectPin = qobject_cast<QComboBox*>(sender());
   QString pin = cbxSelectPin->currentText();
-  int r = a_tbwPinsTable->currentRow();
-  int c = a_tbwPinsTable->currentColumn();
+  int r = tbwPinsTable->currentRow();
+  int c = tbwPinsTable->currentColumn();
   QTableWidgetItem *itm = new QTableWidgetItem(pin);
-  a_tbwPinsTable->removeCellWidget(r,c);
-  a_tbwPinsTable->setItem(r,c,itm);
+  tbwPinsTable->removeCellWidget(r,c);
+  tbwPinsTable->setItem(r,c,itm);
 
-  a_prev_col = -1; // clear cell index with combo box
-  a_prev_row = -1;
+  prev_col = -1; // clear cell index with combo box
+  prev_row = -1;
 }
 
 void SpiceLibCompDialog::slotBtnOpenLib()
 {
   QString s = QFileDialog::getOpenFileName(this, tr("Open SPICE library"),
-                                           a_lastLibDir,
+                                           lastLibDir,
                                            tr("SPICE files (*.cir +.ckt *.sp *.lib)"));
   if (!s.isEmpty()) {
     QFileInfo inf(s);
-    a_lastLibDir = inf.absoluteDir().path();
-    a_edtLibPath->setText(s);
+    lastLibDir = inf.absoluteDir().path();
+    edtLibPath->setText(s);
   }
 }
 
 void SpiceLibCompDialog::slotBtnOpenSym()
 {
   QString s = QFileDialog::getOpenFileName(this, tr("Open symbol file"),
-                                           a_lastSymbolDir,
+                                           lastSymbolDir,
                                            tr("Schematic symbol (*.sym)"));
   if (!s.isEmpty()) {
     QFileInfo inf(s);
-    a_lastSymbolDir = inf.absoluteDir().path();
-    a_edtSymFile->setText(s);
+    lastSymbolDir = inf.absoluteDir().path();
+    edtSymFile->setText(s);
   }
 }
 
@@ -446,11 +442,11 @@ bool SpiceLibCompDialog::setCompProps()
 {
   QStringList pins;
   QString pin_string;
-  if (a_rbAutoSymbol->isChecked()) {
+  if (rbAutoSymbol->isChecked()) {
     pin_string = "";
   } else {
-    for (int i = 0; i < a_tbwPinsTable->rowCount(); i++) {
-      QTableWidgetItem *itm = a_tbwPinsTable->item(i,1);
+    for (int i = 0; i < tbwPinsTable->rowCount(); i++) {
+      QTableWidgetItem *itm = tbwPinsTable->item(i,1);
       if (itm == nullptr) continue;
     QString s = itm->text();
       if (s == "NC") {
@@ -462,15 +458,15 @@ bool SpiceLibCompDialog::setCompProps()
     pin_string = pins.join(";");
   }
 
-  if (a_rbUserSym->isChecked() &&
-      !QFileInfo::exists(a_edtSymFile->text())) {
+  if (rbUserSym->isChecked() &&
+      !QFileInfo::exists(edtSymFile->text())) {
     QMessageBox::warning(this,tr("Warning"),tr("Set a valid symbol file name"));
     return false;
   }
 
-  QString  sch_dir = a_schematic->getFileInfo().absoluteDir().path();
-  QString libpath = a_edtLibPath->text();
-  QString sympath = a_edtSymFile->text();
+  QString  sch_dir = Doc->getFileInfo().absoluteDir().path();
+  QString libpath = edtLibPath->text();
+  QString sympath = edtSymFile->text();
   if (libpath.startsWith(sch_dir)) {
     libpath = QDir(sch_dir).relativeFilePath(libpath);
   }
@@ -478,50 +474,50 @@ bool SpiceLibCompDialog::setCompProps()
     sympath = QDir(sch_dir).relativeFilePath(sympath);
   }
 
-  auto pp = a_comp->Props.begin();
+  auto pp = comp->Props.begin();
   (*pp)->Value = libpath;
-  (*pp)->display = a_chbShowLib->isChecked();
+  (*pp)->display = chbShowLib->isChecked();
   pp++;
-  (*pp)->Value = a_cbxSelectSubcir->currentText();
-  (*pp)->display = a_chbShowModel->isChecked();
+  (*pp)->Value = cbxSelectSubcir->currentText();
+  (*pp)->display = chbShowModel->isChecked();
   pp++;
-  if (a_rbAutoSymbol->isChecked()) {
+  if (rbAutoSymbol->isChecked()) {
     (*pp)->Value = "auto";
-  } else if (a_rbSymFromTemplate->isChecked()) {
-    (*pp)->Value = a_listSymPattern->currentItem()->text();
-  } else if (a_rbUserSym->isChecked()) {
+  } else if (rbSymFromTemplate->isChecked()) {
+    (*pp)->Value = listSymPattern->currentItem()->text();
+  } else if (rbUserSym->isChecked()) {
     (*pp)->Value = sympath;
   }
   pp++;
-  (*pp)->Value = a_edtParams->text();
-  (*pp)->display = a_chbShowParams->isChecked();
+  (*pp)->Value = edtParams->text();
+  (*pp)->display = chbShowParams->isChecked();
   pp++;
   (*pp)->Value = QString(pin_string);
-  a_schematic->recreateComponent(a_comp);
-  a_schematic->viewport()->repaint();
-  a_schematic->setChanged(true,true);
+  Doc->recreateComponent(comp);
+  Doc->viewport()->repaint();
+  Doc->setChanged(true,true);
   return true;
 }
 
 void SpiceLibCompDialog::slotBtnApply()
 {
-  if (a_isChanged) {
-    if (a_libError) {
+  if (isChanged) {
+    if (libError) {
       QMessageBox::critical(this,tr("Error"),
                             tr("There were library file parse error! Cannot apply changes."));
       return;
     }
     if (setCompProps()) {
-      a_isChanged = false;
-      a_btnApply->setEnabled(false);
+      isChanged = false;
+      btnApply->setEnabled(false);
     }
   }
 }
 
 void SpiceLibCompDialog::slotBtnOK()
 {
-  if (a_isChanged) {
-    if (a_libError) {
+  if (isChanged) {
+    if (libError) {
       QMessageBox::critical(this,tr("Error"),
                             tr("There were library file parse error! Cannot apply changes."));
       reject();
@@ -540,6 +536,6 @@ void SpiceLibCompDialog::slotBtnCancel()
 
 void SpiceLibCompDialog::slotChanged()
 {
-  a_isChanged = true;
-  a_btnApply->setEnabled(true);
+  isChanged = true;
+  btnApply->setEnabled(true);
 }

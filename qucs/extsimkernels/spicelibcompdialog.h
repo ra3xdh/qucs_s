@@ -16,42 +16,32 @@ class SpiceLibCompDialog : public QDialog {
   Q_OBJECT
 
 private:
-  int a_symbolPinsCount;
-  bool a_isChanged;
-  bool a_libError;
+  int symbolPinsCount;
+  bool isChanged;
+  bool libError;
 
-  int a_prev_row;
-  int a_prev_col;
+  int prev_row, prev_col;
 
-  QString a_lastSymbolDir;
-  QString a_lastLibDir;
+  QString lastSymbolDir;
+  QString lastLibDir;
 
-  Component *a_comp;
-  Schematic *a_schematic;
+  Component *comp;
+  Schematic *Doc;
 
-  SymbolWidget *a_symbol;
-  QLineEdit *a_edtLibPath;
-  QLineEdit *a_edtParams;
-  QLineEdit *a_edtSymFile;
-  QPlainTextEdit *a_edtSPICE;
+  SymbolWidget *symbol;
+  QLineEdit *edtLibPath, *edtParams, *edtSymFile;
+  QPlainTextEdit *edtSPICE;
 
-  QPushButton *a_btnOpenLib;
-  QPushButton *a_btnOK;
-  QPushButton *a_btnApply;
-  QPushButton *a_btnCancel;
-  QTableWidget *a_tbwPinsTable;
-  QComboBox *a_cbxSelectSubcir;
-  QListWidget *a_listSymPattern;
+  QPushButton *btnOpenLib, *btnOK, *btnApply, *btnCancel, *btnOpenSym;
+  QTableWidget *tbwPinsTable;
+  QComboBox *cbxSelectSubcir;
+  QListWidget *listSymPattern;
 
-  QRadioButton *a_rbSymFromTemplate;
-  QRadioButton *a_rbAutoSymbol;
-  QRadioButton *a_rbUserSym;
-  QCheckBox *a_chbShowLib;
-  QCheckBox *a_chbShowModel;
-  QCheckBox *a_chbShowParams;
+  QRadioButton *rbSymFromTemplate, *rbAutoSymbol, *rbUserSym;
+  QCheckBox *chbShowLib, *chbShowModel, *chbShowParams;
 
-  QMap<QString,QStringList> a_subcirPins;
-  QMap<QString,QString> a_subcirSPICE;
+  QMap<QString,QStringList> subcirPins;
+  QMap<QString,QString> subcirSPICE;
 
   enum SPICEparseError { noError=0, failedOpenFile = -1, noSUBCKT = -2 };
 
