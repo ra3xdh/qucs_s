@@ -283,11 +283,29 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
     const QRegularExpression sep("\\s");
 
     QTextStream stream(&content,QIODevice::ReadOnly);
+    bool header_start = false;
     while (!stream.atEnd()) {
         QString lin = stream.readLine();
+        auto start_comment = lin.indexOf(';');
+        if (start_comment != -1) {
+          lin = lin.left(start_comment);
+        }
+
+        if (header_start) {
+          // line continuation
+          if (lin.startsWith("+")) {
+            lin.remove(0,1);
+            QStringList pins = lin.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
+            pin_names.append(pins);
+          } else {
+            // end of header
+            header_start = false;
+            break;
+          }
+        }
 
         if (subckt_header.match(lin).hasMatch()) {
-
+            header_start = true;
             QStringList lst2 = lin.split(sep,qucs::SkipEmptyParts);
             QString name = lin.section(sep,1,1,QString::SectionSkipEmpty).toLower();
             QString refname = compname.toLower();
@@ -296,13 +314,14 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
             lst2.removeFirst();
             for (const auto &s1: lst2) {
                 QString pp = s1;
+                if (pp.toLower() == "params:") header_start = false;
                 if (!s1.contains('=') &&
                    (pp.toLower() != "params:")) {
                     pin_names.append(s1);
                 }
             }
             r = pin_names.count();
-            break;
+            //break;
         }
     }
 
@@ -323,7 +342,7 @@ QString spicecompat::getSubcktName(const QString& subfilename)
         const QRegularExpression subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
         const QRegularExpression sep("\\s");
         QStringList lst = QString(sub_file.readAll()).split("\n");
-        for (const QString& str : lst) {            
+        for (const QString& str : lst) {
             if (subckt_header.match(str).hasMatch()) {
                 s = str.section(sep,1,1,QString::SectionSkipEmpty);
                 break;
