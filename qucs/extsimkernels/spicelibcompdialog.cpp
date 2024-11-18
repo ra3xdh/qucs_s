@@ -277,6 +277,11 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
     QString line = ts.readLine();
     line = line.trimmed();
     line = line.toUpper();
+    // semicolon may be comment start
+    auto start_comment = line.indexOf(';');
+    if (start_comment != -1) {
+      line = line.left(start_comment);
+    }
     if (line.startsWith(".SUBCKT")) {
       subcir_start = true;
       subcir_body.clear();
