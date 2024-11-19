@@ -568,14 +568,14 @@ void ComponentDialog::updateSweepProperty(const QString& property)
       if (property == "Start" || property == "Stop" || property == "Points" || property == "All")
       {
         double points = str2num(sweepParamWidget["Points"]->value());
-        double step = (points - 1) / log10(fabs((stop < 1 ? 1 : stop) / (start < 1 ? 1 : start)));
+        double step = (points - 1.0) / log10(fabs((stop < 1.0 ? 1.0 : stop) / (start < 1.0 ? 1.0 : start)));
         sweepParamWidget["Step"]->setValue(misc::num2str(step));
       }
       else if (property == "Step")
       {
         double step = str2num(sweepParamWidget["Step"]->value());
-        double points = log10(fabs((stop < 1 ? 1 : stop) / (start < 1 ? 1 : start))) * step;
-        sweepParamWidget["Points"]->setValue(misc::num2str(points));
+        double points = log10(fabs((stop < 1.0 ? 1.0 : stop) / (start < 1.0 ? 1.0 : start))) * step + 1.0;
+        sweepParamWidget["Points"]->setValue(QString::number(round(points), 'g', 16));
       }     
     }
     else
@@ -589,8 +589,8 @@ void ComponentDialog::updateSweepProperty(const QString& property)
       else if (property == "Step")
       {
         double step = str2num(sweepParamWidget["Step"]->value());
-        double points = (stop - start) / step + 1;
-        sweepParamWidget["Points"]->setValue(misc::num2str(points));
+        double points = (stop - start) / step + 1.0;
+        sweepParamWidget["Points"]->setValue(QString::number(round(points), 'g', 16));
       }     
     }
   }
