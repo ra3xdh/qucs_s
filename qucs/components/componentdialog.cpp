@@ -324,6 +324,8 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   component = schematicComponent;
   document = schematic;
 
+  qDebug() << component->Model;
+
   restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
   setWindowTitle(tr("Edit Component Properties") + " - " + component->Description.toUpper());
 
@@ -347,13 +349,13 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
 
   // Try to work out what kind of component this is.
   isEquation = QStringList({"Eqn", "NutmegEq", "SpicePar", "SpGlobPar"}).contains(component->Model);
-  hasSweep = QStringList({".AC", ".NOISE", ".SW", ".SP", ".TR"}).contains(component->Model);
+  hasSweep = QStringList({".AC", ".DISTO", ".NOISE", ".SW", ".SP", ".TR"}).contains(component->Model);
   sweepProperties = QStringList({"Sim", "Type", "Param", "Start", "Stop", "Points"});
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
 
   paramsHiddenBySim["Export"] = QStringList{"NutmegEq"};
-  paramsHiddenBySim["Sim"] = QStringList{".AC", ".SP", ".TR", "Eqn", "SpicePar", "SpGlobPar"};
-  paramsHiddenBySim["Param"] = QStringList{".AC", ".SP", ".TR"};
+  paramsHiddenBySim["Sim"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR", "Eqn", "SpicePar", "SpGlobPar"};
+  paramsHiddenBySim["Param"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR"};
 
   // Setup the dialog according to the component kind.
   if (isEquation)
