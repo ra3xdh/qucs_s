@@ -324,6 +324,8 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   component = schematicComponent;
   document = schematic;
 
+  qDebug() << component->Model;
+
   restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
   setWindowTitle(tr("Edit Component Properties") + " - " + component->Description.toUpper());
 
@@ -347,13 +349,13 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
 
   // Try to work out what kind of component this is.
   isEquation = QStringList({"Eqn", "NutmegEq", "SpicePar", "SpGlobPar"}).contains(component->Model);
-  hasSweep = QStringList({".AC", ".NOISE", ".SW", ".SP", ".TR"}).contains(component->Model);
-  sweepProperties = QStringList({"Sim", "Param", "Type", "Values", "Start", "Stop", "Points"});
+  hasSweep = QStringList({".AC", ".DISTO", ".NOISE", ".SW", ".SP", ".TR"}).contains(component->Model);
+  sweepProperties = QStringList({"Sim", "Type", "Param", "Start", "Stop", "Points"});
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
 
   paramsHiddenBySim["Export"] = QStringList{"NutmegEq"};
-  paramsHiddenBySim["Sim"] = QStringList{".AC", ".SP", ".TR", "Eqn", "SpicePar", "SpGlobPar"};
-  paramsHiddenBySim["Param"] = QStringList{".AC", ".SP", ".TR"};
+  paramsHiddenBySim["Sim"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR", "Eqn", "SpicePar", "SpGlobPar"};
+  paramsHiddenBySim["Param"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR"};
 
   // Setup the dialog according to the component kind.
   if (isEquation)
@@ -415,11 +417,12 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       sweepParamWidget["Points"] = new ParamLineEdit("Points", tr("Number"), intVal, true, sweepPageLayout, this, func);
 
       // Setup the widget specialisations for each simulation type.    
-      sweepTypeEnabledParams["lin"] = QStringList{"Sim", "Param", "Type", "Start", "Stop", "Step", "Points"};    
-      sweepTypeEnabledParams["log"] = QStringList{"Sim", "Param", "Type", "Start", "Stop", "Step", "Points"};
-      sweepTypeEnabledParams["list"] = QStringList{"Type", "Values"};
-      sweepTypeEnabledParams["value"] = QStringList{"Type", "Values"};
+      sweepTypeEnabledParams["lin"] = QStringList{"Sim", "Type", "Param", "Start", "Stop", "Step", "Points"};    
+      sweepTypeEnabledParams["log"] = QStringList{"Sim", "Type", "Param", "Start", "Stop", "Step", "Points"};
+      sweepTypeEnabledParams["list"] = QStringList{"Sim", "Type", "Param", "Values"};
+      sweepTypeEnabledParams["value"] = QStringList{"Sim", "Type", "Param", "Values"};
       sweepTypeSpecialLabels[qMakePair(QString("log"),QString("Step"))] = {"Points per decade"};
+      // sweepTypeSpecialLabels[qMakePair(QString("list"),QString("Points"))] = {"Values"};
 
       // Setup the widgets as per the stored type.
       sweepParamWidget["Sim"]->setOptions(getSimulationList(false));
@@ -536,6 +539,11 @@ void ComponentDialog::updateSweepWidgets(const QString& type)
 // Updates all the sweep params on the sweep page according the component value.
 void ComponentDialog::updateSweepProperty(const QString& property)
 {
+  // Cache some pointers for convenience.
+  ParamWidget* startEdit = sweepParamWidget["Start"];
+  ParamWidget* stopEdit = sweepParamWidget["Stop"];
+  ParamWidget* pointsEdit = sweepParamWidget["Points"];
+
   // Type has changed so update the widget presentation.
   if (property == "Type")
     updateSweepWidgets(sweepParamWidget["Type"]->value());
@@ -548,7 +556,12 @@ void ComponentDialog::updateSweepProperty(const QString& property)
       {
         sweepParamWidget[property->Name]->setValue(property->Value);
         sweepParamWidget[property->Name]->setCheck(property->display);
-      }        
+      }
+
+      // Make sure text edits have sensible values.
+      startEdit->setValue(startEdit->value() == "" ? "1" : startEdit->value());
+      stopEdit->setValue(stopEdit->value() == "" ? "100" : stopEdit->value());
+      pointsEdit->setValue(pointsEdit->value() == "" ? "100" : pointsEdit->value());
     }
   }
 
@@ -560,37 +573,37 @@ void ComponentDialog::updateSweepProperty(const QString& property)
   // Specialisations for updating start, stop, step, and points values.
   else 
   {
-    double start = str2num(sweepParamWidget["Start"]->value());
-    double stop = str2num(sweepParamWidget["Stop"]->value());
+    double start = str2num(startEdit->value());
+    double stop = str2num(stopEdit->value());
 
     if (sweepParamWidget["Type"]->value() == "log")
     {
       if (property == "Start" || property == "Stop" || property == "Points" || property == "All")
       {
-        double points = str2num(sweepParamWidget["Points"]->value());
-        double step = (points - 1) / log10(fabs((stop < 1 ? 1 : stop) / (start < 1 ? 1 : start)));
+        double points = str2num(pointsEdit->value());
+        double step = (points - 1.0) / log10(fabs((stop < 1.0 ? 1.0 : stop) / (start < 1.0 ? 1.0 : start)));
         sweepParamWidget["Step"]->setValue(misc::num2str(step));
       }
       else if (property == "Step")
       {
         double step = str2num(sweepParamWidget["Step"]->value());
-        double points = log10(fabs((stop < 1 ? 1 : stop) / (start < 1 ? 1 : start))) * step;
-        sweepParamWidget["Points"]->setValue(misc::num2str(points));
+        double points = log10(fabs((stop < 1.0 ? 1.0 : stop) / (start < 1.0 ? 1.0 : start))) * step + 1.0;
+        pointsEdit->setValue(QString::number(round(points), 'g', 16));
       }     
     }
     else
     {
       if (property == "Start" || property == "Stop" || property == "Points" || property == "All")
       {
-        double points = str2num(sweepParamWidget["Points"]->value());
+        double points = str2num(pointsEdit->value());
         double step = (stop - start) / (points - 1.0);
         sweepParamWidget["Step"]->setValue(misc::num2str(step));
       }
       else if (property == "Step")
       {
         double step = str2num(sweepParamWidget["Step"]->value());
-        double points = (stop - start) / step + 1;
-        sweepParamWidget["Points"]->setValue(misc::num2str(points));
+        double points = (stop - start) / step + 1.0;
+        pointsEdit->setValue(QString::number(round(points), 'g', 16));
       }     
     }
   }
@@ -605,6 +618,10 @@ void ComponentDialog::updatePropertyTable(const Component* updateComponent)
     for (const Property* property : updateComponent->Props)
     {
       if (hasSweep && sweepProperties.contains(property->Name))
+        continue;
+
+      /* TODO: ***HACK*** to be fixed */
+      if (property->Name == "Symbol" || property->Name == "Values")
         continue;
 
       propertyTable->setRowCount(propertyTable->rowCount() + 1);
@@ -734,15 +751,35 @@ void ComponentDialog::slotApplyButton()
 
   else
   {
-    // Walk through the Props list and update component.
     int row = 0;
+
+    // Update the components sweep properties if it has them.
+    if (hasSweep)
+    {
+      // Note: Order is very important here. The component expects parameters in a 
+      // specific order depending on which sweep parameters are valid for the component
+      // type.
+      for (auto param : sweepProperties) 
+      {
+        /* TODO: ***HACK*** to be fixed */
+        QString temp = param;
+        if (param == "Points" && sweepParamWidget["Type"]->value() == "list")
+          temp = "Values";
+
+        if (!(paramsHiddenBySim[param].contains(component->Model)))
+        {
+          component->Props.at(row)->Value = sweepParamWidget[temp]->value();
+          component->Props.at(row)->display = sweepParamWidget[temp]->check();
+          row++;
+        }
+      }
+    }
+
+    row = 0;
     for (Property* property : component->Props)
     {
       if (hasSweep && sweepParamWidget.contains(property->Name))
-      {
-        property->Value = sweepParamWidget[property->Name]->value();
-        property->display = sweepParamWidget[property->Name]->check();
-      }
+        continue;
 
       else 
       {
@@ -773,7 +810,6 @@ void ComponentDialog::slotApplyButton()
       }
     }
   }
-
   document->recreateComponent(component);
   document->viewport()->repaint();
 
