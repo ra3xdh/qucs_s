@@ -87,15 +87,6 @@
 //#include "extsimkernels/codemodelgen.h"
 #include "symbolwidget.h"
 
-
-struct iconCompInfoStruct
-{
-  int catIdx; // index of the component Category
-  int compIdx; // index of the component itself in the Category
-};
-
-Q_DECLARE_METATYPE(iconCompInfoStruct)
-
 QucsApp::QucsApp()
 {
 #if QT_VERSION_MAJOR == 5
@@ -444,10 +435,6 @@ void QucsApp::initView()
   )";
 
   CompComps->setStyleSheet(itemStyle);
-
-  #ifdef _MSC_VER
-    CompComps->setDragEnabled(false);
-  #endif
 
   // Setup component search box and button.
   CompSearch = new QLineEdit(this);
@@ -875,8 +862,6 @@ void QucsApp::slotSetCompView (int index)
   //  (might have been called by a cleared search and not by user action)
   CompChoose->setCurrentIndex(index);
   int compIdx;
-  iconCompInfoStruct iconCompInfo;
-  QVariant v;
   QString item = CompChoose->itemText (index);
   int catIdx = Category::getModulesNr(item);
 
@@ -921,9 +906,8 @@ void QucsApp::slotSetCompView (int index)
       }
       QListWidgetItem *icon = new QListWidgetItem(vaIcon, Name);
       icon->setToolTip(Name);
-      iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
-      v.setValue(iconCompInfo);
-      icon->setData(Qt::UserRole, v);
+      icon->setData(Qt::UserRole + 1, catIdx);
+      icon->setData(Qt::UserRole + 2, compIdx);
       CompComps->addItem(icon);
       compIdx++;
     }
@@ -948,9 +932,8 @@ void QucsApp::slotSetCompView (int index)
             icon->setIcon(*(*it)->icon);
         }
         icon->setToolTip(Name);
-        iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
-        v.setValue(iconCompInfo);
-        icon->setData(Qt::UserRole, v);
+        icon->setData(Qt::UserRole + 1, catIdx);
+        icon->setData(Qt::UserRole + 2, compIdx);
         CompComps->addItem(icon);
       }
       compIdx++;
@@ -984,8 +967,6 @@ void QucsApp::slotSearchComponent(const QString &searchText)
     QString Name;
     char * File;
     QList<Module *> Comps;
-    iconCompInfoStruct iconCompInfo{};
-    QVariant v;
 
     QStringList cats = Category::getCategories ();
     int catIdx = 0;
@@ -1011,9 +992,8 @@ void QucsApp::slotSearchComponent(const QString &searchText)
             }
             icon->setToolTip(it + ": " + Name);
             // add component category and module indexes to the icon
-            iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
-            v.setValue(iconCompInfo);
-            icon->setData(Qt::UserRole, v);
+            icon->setData(Qt::UserRole + 1, catIdx);
+            icon->setData(Qt::UserRole + 2, compIdx);
             CompComps->addItem(icon);
           }
         }
@@ -1054,9 +1034,8 @@ void QucsApp::slotSearchComponent(const QString &searchText)
         QListWidgetItem *icon = new QListWidgetItem(vaIcon, vaName);
         icon->setToolTip(tr("verilog-a user devices") + ": " + vaName);
         // Verilog-A is the last category
-        iconCompInfo = iconCompInfoStruct{catIdx-1, compIdx};
-        v.setValue(iconCompInfo);
-        icon->setData(Qt::UserRole, v);
+        icon->setData(Qt::UserRole + 1, catIdx-1);
+        icon->setData(Qt::UserRole + 2, compIdx);
         CompComps->addItem(icon);
       }
       compIdx++;
@@ -1124,12 +1103,12 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   char *CompFile_cptr;
 
   qDebug() << "pressed CompComps id" << i << name;
-  QVariant v = CompComps->item(i)->data(Qt::UserRole);
-  iconCompInfoStruct iconCompInfo = v.value<iconCompInfoStruct>();
-  qDebug() << "slotSelectComponent()" << iconCompInfo.catIdx << iconCompInfo.compIdx;
+  int catIdx =  CompComps->item(i)->data(Qt::UserRole + 1).toInt();
+  int compIdx =  CompComps->item(i)->data(Qt::UserRole + 2).toInt();
+  qDebug() << "slotSelectComponent()" << catIdx << compIdx;
 
-  Category* cat = Category::Categories.at(iconCompInfo.catIdx);
-  Module *mod = cat->Content.at(iconCompInfo.compIdx);
+  Category* cat = Category::Categories.at(catIdx);
+  Module *mod = cat->Content.at(compIdx);
   qDebug() << "mod->info" << mod->info;
   qDebug() << "mod->infoVA" << mod->infoVA;
   Infos = mod->info;
@@ -1151,8 +1130,8 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
     if (Infos || InfosVA) {
       // change currently selected category, so the user will
       //   see where the component comes from
-      CompChoose->setCurrentIndex(iconCompInfo.catIdx+1); // +1 due to the added "Search Results" item
-      ccCurIdx = iconCompInfo.catIdx; // remember the category to select when exiting search
+      CompChoose->setCurrentIndex(catIdx+1); // +1 due to the added "Search Results" item
+      ccCurIdx = catIdx; // remember the category to select when exiting search
       //!! comment out the above two lines if you would like that the search
       //!!   returns back to the last selected category instead
     }
