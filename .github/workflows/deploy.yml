@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.read_version.outputs.version }}
+      short_hash: ${{ steps.read_version.outputs.short_hash }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -41,8 +42,16 @@ jobs:
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         
-    - name: Print version 
-      run: echo "Qucs-S version is ${{ env.VERSION }}"
+        # Get the short hash of the current commit
+        SHORT_HASH=$(git rev-parse --short=8 HEAD)
+        
+        echo "SHORT_HASH=$SHORT_HASH" >> $GITHUB_ENV
+        echo "short_hash=$SHORT_HASH" >> $GITHUB_OUTPUT
+        
+    - name: Print version and hash
+      run: |
+        echo "Qucs-S version is ${{ env.VERSION }}"
+        echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
       
   build-linux-qt5:
     runs-on: ubuntu-22.04
