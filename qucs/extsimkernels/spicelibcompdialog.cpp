@@ -61,12 +61,22 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) : QDialog{
   QStringList lst_patterns;
   misc::getSymbolPatternsList(lst_patterns);
   listSymPattern->addItems(lst_patterns);
+  if (lst_patterns.isEmpty()) {
+    QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
+    QString msg = tr("No symbol files found at the following path:\n");
+    msg += dir_name;
+    msg += tr("\nCheck you installation!\n");
+    QMessageBox::warning(this,tr("Warning"),msg);
+  }
   listSymPattern->setCurrentRow(0);
   listSymPattern->setSelectionMode(QAbstractItemView::SingleSelection);
   connect(listSymPattern,SIGNAL(currentRowChanged(int)),this,SLOT(slotSetSymbol()));
 
   rbAutoSymbol = new QRadioButton(tr("Automatic symbol"));
   rbSymFromTemplate = new QRadioButton(tr("Symbol from template"));
+  if (lst_patterns.isEmpty()) {
+    rbSymFromTemplate->setEnabled(false);
+  }
   rbUserSym = new QRadioButton(tr("Symbol from file"));
   btnOpenSym = new QPushButton(tr("Open"));
   edtSymFile = new QLineEdit();
@@ -349,6 +359,9 @@ void SpiceLibCompDialog::slotSetSymbol()
     symbol->setWarning(tr("No symbol loaded"));
     symbolPinsCount = 0;
   } else if (rbSymFromTemplate->isChecked()) {
+    if (listSymPattern->currentItem() == nullptr) {
+      return; // empty list
+    }
     tbwPinsTable->setEnabled(true);
     listSymPattern->setEnabled(true);
     edtSymFile->setEnabled(false);
