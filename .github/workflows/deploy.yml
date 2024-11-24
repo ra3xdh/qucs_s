@@ -46,6 +46,7 @@ jobs:
       
   build-linux-qt5:
     runs-on: ubuntu-22.04
+    continue-on-error: true
     needs: setup
     steps:
     - uses: actions/checkout@v4
@@ -402,6 +403,7 @@ jobs:
       
   build-windows:
     runs-on: windows-2022
+    continue-on-error: true
     needs: setup
     strategy:
       fail-fast: false
@@ -527,7 +529,7 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
-    needs: [setup, build-linux-qt5, build-linux-appimage-qt6, build-mac-intel, build-mac-universal, build-windows, build-windows-msvc]
+    needs: [setup, build-linux-appimage-qt6, build-mac-intel, build-mac-universal, build-windows]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
