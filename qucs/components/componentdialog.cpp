@@ -324,7 +324,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   component = schematicComponent;
   document = schematic;
 
-  qDebug() << component->Model;
+  // qDebug() << component->Model;
 
   restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
   setWindowTitle(tr("Edit Component Properties") + " - " + component->Description.toUpper());
@@ -350,8 +350,13 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   // Try to work out what kind of component this is.
   isEquation = QStringList({"Eqn", "NutmegEq", "SpicePar", "SpGlobPar"}).contains(component->Model);
   hasSweep = QStringList({".AC", ".DISTO", ".NOISE", ".SW", ".SP", ".TR"}).contains(component->Model);
-  sweepProperties = QStringList({"Sim", "Type", "Param", "Start", "Stop", "Points"});
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
+
+  sweepProperties = QStringList({"Sim", "Type", "Param", "Start", "Stop", "Points"});
+  
+  // TODO: Consider creating a sweepParams hash which contains the valid sweep parameters
+  // for a given simulation type. Then only create the valid widgets fo
+  // sweepParams[".AC"] = QStringList({"Type", "Start", "Stop", "Points"});
 
   paramsHiddenBySim["Export"] = QStringList{"NutmegEq"};
   paramsHiddenBySim["Sim"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR", "Eqn", "SpicePar", "SpGlobPar"};
@@ -420,13 +425,11 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       sweepTypeEnabledParams["lin"] = QStringList{"Sim", "Type", "Param", "Start", "Stop", "Step", "Points"};    
       sweepTypeEnabledParams["log"] = QStringList{"Sim", "Type", "Param", "Start", "Stop", "Step", "Points"};
       sweepTypeEnabledParams["list"] = QStringList{"Sim", "Type", "Param", "Values"};
-      sweepTypeEnabledParams["value"] = QStringList{"Sim", "Type", "Param", "Values"};
       sweepTypeSpecialLabels[qMakePair(QString("log"),QString("Step"))] = {"Points per decade"};
-      // sweepTypeSpecialLabels[qMakePair(QString("list"),QString("Points"))] = {"Values"};
 
       // Setup the widgets as per the stored type.
       sweepParamWidget["Sim"]->setOptions(getSimulationList(false));
-      sweepParamWidget["Type"]->setOptions({"lin", "log", "list", "value"});
+      sweepParamWidget["Type"]->setOptions({"lin", "log", "list"});
       updateSweepProperty("All");
 
       // Create the properties page and add it to the tab widget.
@@ -552,8 +555,10 @@ void ComponentDialog::updateSweepProperty(const QString& property)
   {
     for (auto property : component->Props)
     {
+      // qDebug() << "Property name " << property->Name;
       if (sweepParamWidget.contains(property->Name))
       {
+        // qDebug() << "Is a sweep param";
         sweepParamWidget[property->Name]->setValue(property->Value);
         sweepParamWidget[property->Name]->setCheck(property->display);
       }
@@ -565,9 +570,16 @@ void ComponentDialog::updateSweepProperty(const QString& property)
     }
   }
 
-  if (property == "Values")
+  // Update start and stop values if there is a valid values list.
+  if (property == "Values" || sweepParamWidget["Type"]->value() == "list")
   {
-    // Do nothing.
+    QStringList values = sweepParamWidget["Values"]->value().remove('[').remove(']').split(';');
+    // qDebug() << "values " << values;
+    if (values.size() > 1)
+    {
+      sweepParamWidget["Start"]->setValue(values.first());
+      sweepParamWidget["Stop"]->setValue(values.last());
+    }
   }
 
   // Specialisations for updating start, stop, step, and points values.
@@ -604,7 +616,9 @@ void ComponentDialog::updateSweepProperty(const QString& property)
         double step = str2num(sweepParamWidget["Step"]->value());
         double points = (stop - start) / step + 1.0;
         pointsEdit->setValue(QString::number(round(points), 'g', 16));
-      }     
+      }
+
+      sweepParamWidget["Values"]->setValue("[" + startEdit->value() + ";" + stopEdit->value() + "]");
     }
   }
 }
@@ -778,7 +792,12 @@ void ComponentDialog::slotApplyButton()
     row = 0;
     for (Property* property : component->Props)
     {
+      // Ignore sweep parameters here.
       if (hasSweep && sweepParamWidget.contains(property->Name))
+        continue;
+
+      /* TODO: ***HACK*** to be fixed */
+      if (property->Name == "Symbol")
         continue;
 
       else 
@@ -805,6 +824,7 @@ void ComponentDialog::slotApplyButton()
         else
           property->Value = propertyTable->item(row, 1)->text();
 
+        // qDebug() << "Writing property " << property->Name << " " << property->Value;
         property->display = (propertyTable->item(row, 2)->checkState() == Qt::Checked);
         row++;
       }
