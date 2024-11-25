@@ -175,97 +175,97 @@
     <message>
         <location line="+5" />
         <source>German by</source>
-        <translation>Almanca tarafından</translation>
+        <translation>Almanca&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Polish by</source>
-        <translation>Lehçe tarafından</translation>
+        <translation>Lehçe&apos;ye çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Romanian by</source>
-        <translation>Romence tarafından</translation>
+        <translation>Romence&apos;ye çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>French by</source>
-        <translation>Fransızca çeviren</translation>
+        <translation>Fransızca&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Portuguese by</source>
-        <translation>Portekizce çeviren</translation>
+        <translation>Portekizce&apos;ye çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Spanish by</source>
-        <translation>İspanyolca çeviren</translation>
+        <translation>İspanyolca&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Japanese by</source>
-        <translation>Japonca çeviren</translation>
+        <translation>Japonca&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Italian by</source>
-        <translation>İtalyanca çeviren</translation>
+        <translation>İtalyanca&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Hebrew by</source>
-        <translation>İbranice çeviren</translation>
+        <translation>İbranice&apos;ye çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Swedish by</source>
-        <translation>İsveçli çeviren</translation>
+        <translation>İsveçce&apos;ye çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Turkish by</source>
-        <translation>Türkçe çeviren</translation>
+        <translation>Türkçe&apos;ye çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Hungarian by</source>
-        <translation>Macarca çeviren</translation>
+        <translation>Macarca&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Russian by</source>
-        <translation>Rusça çeviren</translation>
+        <translation>Rusça&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Czech by</source>
-        <translation>Çek çeviren</translation>
+        <translation>Çekçe&apos;ye çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Catalan by</source>
-        <translation>Katalan çeviren</translation>
+        <translation>Katalanca&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Ukrainian by</source>
-        <translation>Ukrayna çeviren</translation>
+        <translation>Ukraynaca&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Arabic by</source>
-        <translation>Arapça çeviren</translation>
+        <translation>Arapça&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Kazakh by</source>
-        <translation>Kazakça çeviren</translation>
+        <translation>Kazakça&apos;ya çeviren</translation>
     </message>
     <message>
         <location line="+1" />
         <source>Chinese by</source>
-        <translation>Çince çeviren</translation>
+        <translation>Çince&apos;ye çeviren</translation>
     </message>
     <message>
         <location line="+57" />
@@ -4385,12 +4385,12 @@ olmalı fakat şu anda %1 !</translation>
     <message>
         <location filename="../qucs/components/capacitor.cpp" line="+25" />
         <source>capacitor</source>
-        <translation>sığa</translation>
+        <translation>kapasitör</translation>
     </message>
     <message>
         <location line="+3" />
         <source>capacitance in Farad</source>
-        <translation>Farad cinsinden sığa</translation>
+        <translation>Farad cinsinden kapasitans</translation>
     </message>
     <message>
         <location line="+2" />
@@ -4410,7 +4410,7 @@ olmalı fakat şu anda %1 !</translation>
     <message>
         <location filename="../qucs/components/capacitor.cpp" line="+17" />
         <source>Capacitor</source>
-        <translation>Sığa</translation>
+        <translation>Kapasitör</translation>
     </message>
     <message>
         <location filename="../qucs/components/cccs.cpp" line="+25" />
@@ -4487,27 +4487,27 @@ olmalı fakat şu anda %1 !</translation>
     <message>
         <location filename="../qucs/components/coaxialline.cpp" line="-37" />
         <source>coaxial transmission line</source>
-        <translation>eşeksenli iletim hattı</translation>
+        <translation>koaksiyel iletim hattı</translation>
     </message>
     <message>
         <location filename="../qucs/components/rectline.cpp" line="-8" />
         <location filename="../qucs/components/coaxialline.cpp" line="+23" />
         <source>relative permittivity of dielectric</source>
-        <translation>dielektriğin göreceli geçirgenliği</translation>
+        <translation>dielektriğin bağıl geçirgenliği</translation>
     </message>
     <message>
         <location filename="../qucs/components/twistedpair.cpp" line="-4" />
         <location filename="../qucs/components/rectline.cpp" line="+6" />
         <location filename="../qucs/components/coaxialline.cpp" line="+2" />
         <source>specific resistance of conductor</source>
-        <translation>sığanın özdirenci</translation>
+        <translation>iletkenin özgül direnci</translation>
     </message>
     <message>
         <location line="-2" />
         <location filename="../qucs/components/rectline.cpp" line="-4" />
         <location filename="../qucs/components/coaxialline.cpp" line="+2" />
         <source>relative permeability of conductor</source>
-        <translation>sığanın göreceli geçirgenliği</translation>
+        <translation>iletkenin bağıl geçirgenliği</translation>
     </message>
     <message>
         <location filename="../qucs/components/coaxialline.cpp" line="+2" />
