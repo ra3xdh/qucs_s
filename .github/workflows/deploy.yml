@@ -39,7 +39,8 @@ jobs:
           MAJOR_MINOR=$(cut -d. -f1-2 VERSION)
           VERSION="${MAJOR_MINOR}.99"
           # Get the short hash of the current commit
-          SHORT_HASH=$(echo ${{ github.sha }} | cut -c1-7)
+          COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)
+          SHORT_HASH="-$COMMIT_HASH"
         fi
         
         echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -169,13 +170,13 @@ jobs:
                                         --plugin=qt --output appimage
           rm linuxdeploy-x86_64.AppImage
           rm linuxdeploy-plugin-qt-x86_64.AppImage
-          mv *.AppImage ${{ env.APP_NAME }}-${{env.VERSION}}-${{env.SHORT_HASH}}-linux-x86_64.AppImage
+          mv *.AppImage ${{ env.APP_NAME }}-${{env.VERSION}}${{env.SHORT_HASH}}-linux-x86_64.AppImage
 
     - name: 'Upload artifact: AppImage'
       uses: actions/upload-artifact@v4
       with:
-          name: ${{ env.APP_NAME }}-${{env.VERSION}}-${{env.SHORT_HASH}}-linux-x86_64
-          path: ${{ env.APP_NAME }}-${{env.VERSION}}-${{env.SHORT_HASH}}-linux-x86_64.AppImage
+          name: ${{ env.APP_NAME }}-${{env.VERSION}}${{env.SHORT_HASH}}-linux-x86_64
+          path: ${{ env.APP_NAME }}-${{env.VERSION}}${{env.SHORT_HASH}}-linux-x86_64.AppImage
               
  
   build-mac-intel:
@@ -542,19 +543,19 @@ jobs:
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
       with:
         path: contrib/InnoSetup/qucs.iss
-        options: /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}-${{ env.SHORT_HASH }}"
+        options: /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}${{ env.SHORT_HASH }}"
         
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.APP_NAME }}-${{ env.VERSION }}-${{ env.SHORT_HASH }}-win64
-        path: ${{ env.APP_NAME }}-${{ env.VERSION }}-${{ env.SHORT_HASH }}-win64.zip
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-win64
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-win64.zip
 
     - name: Upload exe artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.APP_NAME }}-${{ env.VERSION }}-${{ env.SHORT_HASH }}-setup
-        path: ${{ env.APP_NAME }}-${{ env.VERSION }}-${{ env.SHORT_HASH }}-setup.exe
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-setup
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-setup.exe
 
   create-release:
     runs-on: ubuntu-latest
