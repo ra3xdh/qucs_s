@@ -536,7 +536,7 @@ jobs:
         mkdir -p build/qucs-suite/misc
         cp -rf contrib/InnoSetup/misc build/qucs-suite/
         cd build/qucs-suite
-        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}-${{ env.SHORT_HASH }}-win64.zip ./bin ./share ./lib ./misc
+        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-win64.zip ./bin ./share ./lib ./misc
         cd ../..
 
     - name: Compile .ISS to .EXE Installer
