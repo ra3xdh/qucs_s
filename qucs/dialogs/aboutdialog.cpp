@@ -102,7 +102,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     tr("Italian by") + " Giorgio Luparia, Claudio Girardi",
     tr("Hebrew by") + " Dotan Nahum",
     tr("Swedish by") + " Markus Gothe, Peter Landgren",
-    tr("Turkish by") + " Onur Cobanoglu, Ozgur Cobanoglu",
+    tr("Turkish by") + " Muhammet Şükrü Demir",
     tr("Hungarian by") + " Jozsef Bus",
     tr("Russian by") + " Igor Gorbounov and Anton Midyukov",
     tr("Czech by") + " Marek Straka,Martin Stejskal",
