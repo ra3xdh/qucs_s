@@ -137,11 +137,15 @@ jobs:
         install-deps: 'true'
         modules: 'qtcharts'
 
+
+    - name: '⚙️ Install CMake'
+      uses: lukka/get-cmake@latest
+
     - name: 'Configure CMake'
       run: |
-          cmake -B ${{github.workspace}}/build \
+          cmake -B ${{github.workspace}}/build -G 'Ninja' \
                 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-                -DCMAKE_INSTALL_PREFIX=/usr \
+                -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/AppDir/usr \
                 -DWITH_QT6=ON \
                 -DCI_VERSION="${{env.VERSION}}"
 
@@ -149,7 +153,7 @@ jobs:
       # Build your program with the given configuration
       run: |
           cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
-          make -C ${{github.workspace}}/build install DESTDIR=${{github.workspace}}/AppDir
+          cmake --build ${{github.workspace}}/build --target install
 
       
     - name: 'Install linuxdeploy'
