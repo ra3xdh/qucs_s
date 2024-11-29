@@ -15,8 +15,8 @@ env:
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
   QT_VERSION: 6.8.0
-  QUCS_MACOS_BIN: build/qucs/qucs-s.app/Contents/MacOS/bin
-  QUCS_MACOS_RESOURCES: build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
+  QUCS_MACOS_BIN: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/bin
+  QUCS_MACOS_RESOURCES: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
   NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/43/ngspice-43_64.7z
   
 jobs:
@@ -137,11 +137,15 @@ jobs:
         install-deps: 'true'
         modules: 'qtcharts'
 
+
+    - name: '⚙️ Install CMake'
+      uses: lukka/get-cmake@latest
+
     - name: 'Configure CMake'
       run: |
-          cmake -B ${{github.workspace}}/build \
+          cmake -B ${{github.workspace}}/build -G 'Ninja' \
                 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-                -DCMAKE_INSTALL_PREFIX=/usr \
+                -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/AppDir/usr \
                 -DWITH_QT6=ON \
                 -DCI_VERSION="${{env.VERSION}}"
 
@@ -149,7 +153,7 @@ jobs:
       # Build your program with the given configuration
       run: |
           cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
-          make -C ${{github.workspace}}/build install DESTDIR=${{github.workspace}}/AppDir
+          cmake --build ${{github.workspace}}/build --target install
 
       
     - name: 'Install linuxdeploy'
@@ -222,8 +226,7 @@ jobs:
           export LDFLAGS="-L$(brew --prefix bison)/lib"
           source ~/.bashrc
           brew link bison --force
-
-          
+         
     - name: 'Configure CMake'
       run: |
         cmake -B ${{github.workspace}}/build  -G 'Ninja' \
@@ -242,19 +245,19 @@ jobs:
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
-        cp -pR ./build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-powercombining/qucs-spowercombining.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-s-spar-viewer/qucs-sspar-viewer.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-transcalc/qucs-strans.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucsator_rf/src/qucsator_rf ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucsator_rf/src/converter/qucsconv_rf ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./examples/* ${{env.QUCS_MACOS_RESOURCES}}/examples
-        cp -pR ./library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
-        cp -pR ./library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
-        cp -pR ./library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
-        macdeployqt ./build/qucs/qucs-s.app
+        cp -pR ${{github.workspace}}/build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-powercombining/qucs-spowercombining.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-s-spar-viewer/qucs-sspar-viewer.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-transcalc/qucs-strans.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucsator_rf/src/qucsator_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucsator_rf/src/converter/qucsconv_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/examples/* ${{env.QUCS_MACOS_RESOURCES}}/examples
+        cp -pR ${{github.workspace}}/library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ${{github.workspace}}/library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ${{github.workspace}}/library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        macdeployqt ${{github.workspace}}/build/qucs/qucs-s.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sfilter.app
@@ -263,10 +266,10 @@ jobs:
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-strans.app
         strip ${{env.QUCS_MACOS_BIN}}/qucsator_rf
         strip ${{env.QUCS_MACOS_BIN}}/qucsconv_rf 
-        codesign --force --deep --sign - ./build/qucs/qucs-s.app
+        codesign --force --deep --sign - ${{github.workspace}}/build/qucs/qucs-s.app
         npm install --global create-dmg
-        create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOSX-x86_64.dmg
+        create-dmg ${{github.workspace}}/build/qucs/qucs-s.app ${{github.workspace}}/build/qucs/ || true
+        cp -pR ${{github.workspace}}/build/qucs/qucs-*.dmg ${{github.workspace}}/${{ env.APP_NAME }}-${{env.VERSION}}-macOSX-x86_64.dmg
 
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
@@ -313,24 +316,24 @@ jobs:
     - name: 'Install Dependencies'
       shell: bash
       run: |
-          brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick
-          echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
-          export LDFLAGS="-L$(brew --prefix bison)/lib"
-          source ~/.bashrc
-          brew link bison --force
+        brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick
+        echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
+        export LDFLAGS="-L$(brew --prefix bison)/lib"
+        source ~/.bashrc
+        brew link bison --force
 
           
     - name: 'Configure CMake'
       run: |
-          cmake -B ${{github.workspace}}/build  -G 'Ninja' \
-                -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
-                -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0 \
-                -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
-                -DCI_VERSION="${{env.VERSION}}"
+        cmake -B ${{github.workspace}}/build  -G 'Ninja' \
+              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_QT6=1 \
+              -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0 \
+              -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+              -DCI_VERSION="${{env.VERSION}}"
 
     - name: 'Build Qucs-s'
       run: |
-          cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
+        cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
         
     - name: 'Package App Bundle'
       run: |
@@ -338,31 +341,31 @@ jobs:
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
-        cp -pR ./build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-powercombining/qucs-spowercombining.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-s-spar-viewer/qucs-sspar-viewer.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucs-transcalc/qucs-strans.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucsator_rf/src/qucsator_rf ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./build/qucsator_rf/src/converter/qucsconv_rf ${{env.QUCS_MACOS_BIN}}
-        cp -pR ./examples/* ${{env.QUCS_MACOS_RESOURCES}}/examples
-        cp -pR ./library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
-        cp -pR ./library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
-        cp -pR ./library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
-        macdeployqt ./build/qucs/qucs-s.app
+        cp -pR ${{github.workspace}}/build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-powercombining/qucs-spowercombining.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-s-spar-viewer/qucs-sspar-viewer.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucs-transcalc/qucs-strans.app ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucsator_rf/src/qucsator_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/build/qucsator_rf/src/converter/qucsconv_rf ${{env.QUCS_MACOS_BIN}}
+        cp -pR ${{github.workspace}}/examples/* ${{env.QUCS_MACOS_RESOURCES}}/examples
+        cp -pR ${{github.workspace}}/library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ${{github.workspace}}/library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
+        cp -pR ${{github.workspace}}/library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        macdeployqt ${{github.workspace}}/build/qucs/qucs-s.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sfilter.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-spowercombining.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-strans.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sspar-viewer.app
+        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-strans.app
         strip ${{env.QUCS_MACOS_BIN}}/qucsator_rf
-        strip ${{env.QUCS_MACOS_BIN}}/qucsconv_rf
-        codesign --force --deep --sign - ./build/qucs/qucs-s.app
+        strip ${{env.QUCS_MACOS_BIN}}/qucsconv_rf 
+        codesign --force --deep --sign - ${{github.workspace}}/build/qucs/qucs-s.app
         npm install --global create-dmg
-        create-dmg ./build/qucs/qucs-s.app ./build/qucs/ || true
-        cp -pR ./build/qucs/qucs-*.dmg ./${{ env.APP_NAME }}-${{env.VERSION}}-macOS.dmg
+        create-dmg ${{github.workspace}}/build/qucs/qucs-s.app ${{github.workspace}}/build/qucs/ || true
+        cp -pR ${{github.workspace}}/build/qucs/qucs-*.dmg ${{github.workspace}}/${{ env.APP_NAME }}-${{env.VERSION}}-macOS.dmg
     
     - name: 'Upload build artifacts'
       uses: actions/upload-artifact@v4
@@ -410,24 +413,75 @@ jobs:
 
     - name: '⚙️ Install CMake'
       uses: lukka/get-cmake@latest
-      with:
-        useLocalCache: true
 
     - name: '🛠 Setup MSVC Development Environment'
       uses: TheMrMilchmann/setup-msvc-dev@v3
       with:
         arch: x64
-
+      
     - name: 'Configure CMake'
       run: |
-          cmake -B ${{github.workspace}}/build -DWITH_QT6=1  `
-                -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl  `
-                -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}   `
-                -DCI_VERSION="${{env.VERSION}}"
+        cmake -B ${{github.workspace}}\build -G 'Ninja' -DWITH_QT6=1  `
+              -DCMAKE_INSTALL_PREFIX=${{github.workspace}}\build\qucs-suite  `
+              -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl  `
+              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}   `
+              -DCI_VERSION="${{env.VERSION}}"
 
     - name: 'Build Qucs-s'
       run: |
-          cmake --build ${{github.workspace}}/build -j 16 --config=${{env.BUILD_TYPE}}
+        cmake --build ${{github.workspace}}\build --parallel --config=${{env.BUILD_TYPE}}
+          
+    - name: 'Cmake install'
+      run: |
+        cmake --build ${{github.workspace}}\build --target install
+    
+    - name: 'Deploy Qt6 dependencies'
+      run: |
+        $qucs_bin_dir = "${{github.workspace}}\build\qucs-suite\bin"
+        $executables = @(
+          "qucs-s.exe", "qucs-sactivefilter.exe", "qucs-sattenuator.exe",
+          "qucs-sfilter.exe", "qucs-spowercombining.exe", "qucs-strans.exe",
+          "qucs-sspar-viewer.exe"
+        )
+
+        $executables | ForEach-Object { windeployqt "$qucs_bin_dir\$_"  --no-translations --no-opengl-sw --no-system-d3d-compiler --no-network --no-compiler-runtime }
+
+    - name: 'Add ngspice to release'
+      run: |
+        $qucs_dir = "${{github.workspace}}\build\qucs-suite"
+        curl -sL --retry 3 --retry-delay 5 -o ngspice.7z ${{ env.NGSPICE_URL }}
+        7z.exe x ngspice.7z -ongspice
+        New-Item -ItemType Directory -Path "$qucs_dir\lib\ngspice" -Force
+        Copy-Item -Recurse -Force ngspice\Spice64\bin\ $qucs_dir
+        Copy-Item -Recurse -Force ngspice\Spice64\lib\ $qucs_dir
+            
+    - name: 'Create zip archive for release'
+      run: |
+        $qucs_dir = "${{github.workspace}}\build\qucs-suite"
+        New-Item -ItemType Directory -Path "$qucs_dir\misc" -Force
+        Copy-Item -Recurse -Force "contrib\InnoSetup\misc" "$qucs_dir"
+        cd $qucs_dir
+        $zipName = "${env:APP_NAME}-${env:VERSION}${env:SHORT_HASH}-MSVC-x64.zip"
+        Compress-Archive -Path ./bin, ./share, ./lib, ./misc -DestinationPath "${{github.workspace}}\$zipName"
+        cd ${{github.workspace}}
+    
+    - name: Compile .ISS to .EXE Installer
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+      with:
+        path: contrib/InnoSetup/qucs.iss
+        options: /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-x64
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-x64.zip
+    
+    - name: Upload exe artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-setup
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-setup.exe
       
   build-windows:
     runs-on: windows-2022
@@ -468,51 +522,40 @@ jobs:
         msystem: ucrt64
         cache: true
         update: true
-        install: >-
-          bison 
-          flex
-          dos2unix
-          curl
-          zip
-          p7zip
-        pacboy: >-
-          cmake:p 
-          gcc:p 
-          qt6-base:p 
-          qt6-tools:p 
-          qt6-svg:p 
-          make:p 
-          ninja:p
-          python:p 
-          gperf:p
-          github-cli:p
-          qt6-charts:p
+        install: bison flex dos2unix curl zip p7zip
+        pacboy: cmake:p gcc:p qt6-base:p qt6-tools:p qt6-svg:p make:p ninja:p python:p gperf:p github-cli:p qt6-charts:p
+
 
     - name: Build project with CMake
       run: |
-        cmake.exe -B build/ -G "MinGW Makefiles" \
+        cmake.exe -B build/ -G 'Ninja' \
                   -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                  -DCMAKE_INSTALL_PREFIX=build/qucs-suite  \
                   -DWITH_QT6=ON \
                   -DCI_VERSION="${{env.VERSION}}"
-        cmake.exe --build build/ -j$(nproc) --config ${{env.BUILD_TYPE}}
+        cmake.exe --build build/ --parallel --config ${{env.BUILD_TYPE}}
 
     - name: Make install
       run: |
-        cd build/ && mingw32-make.exe install DESTDIR=./ -j$(nproc)
-        cp -rf 'Program Files (x86)/qucs-suite' ./
-        cd ..
+        cmake --build build/ --target install
         strip build/qucs-suite/bin/*.exe 
 
     - name: Deploy Qt6 dependencies
       run: |
-        windeployqt-qt6.exe build/qucs-suite/bin/qucs-s.exe  --svg --no-translations 
-        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sactivefilter.exe  --no-translations 
-        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sattenuator.exe  --no-translations 
-        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sfilter.exe  --no-translations 
-        windeployqt-qt6.exe build/qucs-suite/bin/qucs-spowercombining.exe  --no-translations 
-        windeployqt-qt6.exe build/qucs-suite/bin/qucs-strans.exe  --no-translations
-        windeployqt-qt6.exe build/qucs-suite/bin/qucs-sspar-viewer.exe  --no-translations
+        deploy_tool="windeployqt-qt6.exe"
+        bin_dir="build/qucs-suite/bin"
+        options="--svg --no-translations --no-system-d3d-compiler --no-network"
         
+        executables=(
+          "qucs-s.exe" "qucs-sactivefilter.exe" "qucs-sattenuator.exe"
+          "qucs-sfilter.exe" "qucs-spowercombining.exe" "qucs-strans.exe"
+          "qucs-sspar-viewer.exe"
+        )
+
+        for exe in "${executables[@]}"; do
+          $deploy_tool "$bin_dir/$exe" $options
+        done
+          
     - name: Copy non-Qt DLLs to bin directory
       run: |
         shopt -s extglob
@@ -585,7 +628,7 @@ jobs:
       run: |
         cd ~/artifacts
         > hashes.sha256
-        for file in $(find . -type f \( -name "*.exe" -o -name "*.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
+        for file in $(find . -type f \( -name "*-setup.exe" ! -name "*-MSVC-setup.exe" -o -name "*-win64.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
           filename=$(basename "$file")
           sha256sum "$file" | awk -v fname="$filename" '{print $1 " *" fname}' >> hashes.sha256
         done
@@ -611,8 +654,8 @@ jobs:
       run: |
         # Find existing artifact files
         hash_files=$(find ~/artifacts -name "*.sha256" -print0 | xargs -0 echo)
-        exe_files=$(find ~/artifacts -name "*.exe" -print0 | xargs -0 echo)
-        zip_files=$(find ~/artifacts -name "*.zip" -print0 | xargs -0 echo)
+        exe_files=$(find ~/artifacts -name "*-setup.exe" ! -name "*-MSVC-setup.exe" -print0 | xargs -0 echo)
+        zip_files=$(find ~/artifacts -name "*-win64.zip" -print0 | xargs -0 echo)
         dmg_files=$(find ~/artifacts -name "*.dmg" -print0 | xargs -0 echo)
         appimage_files=$(find ~/artifacts -name "*.AppImage" -print0 | xargs -0 echo)
 
