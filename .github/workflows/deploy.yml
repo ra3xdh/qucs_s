@@ -544,7 +544,7 @@ jobs:
       run: |
         deploy_tool="windeployqt-qt6.exe"
         bin_dir="build/qucs-suite/bin"
-        options="--svg --no-translations"
+        options="--svg --no-translations --no-system-d3d-compiler --no-network"
         
         executables=(
           "qucs-s.exe" "qucs-sactivefilter.exe" "qucs-sattenuator.exe"
