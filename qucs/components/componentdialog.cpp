@@ -358,7 +358,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   // for a given simulation type. Then only create the valid widgets fo
   // sweepParams[".AC"] = QStringList({"Type", "Start", "Stop", "Points"});
 
-  paramsHiddenBySim["Export"] = QStringList{"NutmegEq"};
+  paramsHiddenBySim["Export"] = QStringList{"NutmegEq", "SpicePar", "SpGlobPar"};
   paramsHiddenBySim["Sim"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR", "Eqn", "SpicePar", "SpGlobPar"};
   paramsHiddenBySim["Param"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR"};
 
