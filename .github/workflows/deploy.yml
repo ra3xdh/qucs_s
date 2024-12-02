@@ -14,7 +14,7 @@ env:
   EXECUTABLE_NAME: "qucs-s"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
-  QT_VERSION: 6.8.0
+  QT_VERSION: 6.8.1
   QUCS_MACOS_BIN: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
   NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/43/ngspice-43_64.7z
