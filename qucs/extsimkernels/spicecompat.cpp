@@ -305,11 +305,11 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
         }
 
         if (subckt_header.match(lin).hasMatch()) {
-            header_start = true;
             QStringList lst2 = lin.split(sep,qucs::SkipEmptyParts);
             QString name = lin.section(sep,1,1,QString::SectionSkipEmpty).toLower();
             QString refname = compname.toLower();
             if (name != refname) continue;
+            header_start = true;
             lst2.removeFirst();
             lst2.removeFirst();
             for (const auto &s1: lst2) {
