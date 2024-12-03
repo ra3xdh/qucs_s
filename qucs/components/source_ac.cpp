@@ -64,7 +64,7 @@ Source_ac::Source_ac()
   Props.append(new Property("Z", "50 Ohm", true,
 		QObject::tr("port impedance")));
   Props.append(new Property("P", "0 dBm", false,
-		QObject::tr("(available) ac power in Watts")));
+		QObject::tr("(available) ac power in dBm")));
   Props.append(new Property("f", "1 MHz", false,
 		QObject::tr("frequency in Hertz")));
   Props.append(new Property("Temp", "26.85", false,
@@ -106,7 +106,7 @@ QString Source_ac::ngspice_netlist()
     double z0 = spicecompat::normalize_value(getProperty("Z")->Value).toDouble();
     double p = spicecompat::normalize_value(getProperty("P")->Value).toDouble();
     double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
-    double vamp = 2.0*vrms*sqrt(2.0);
+    double vamp = vrms*sqrt(2.0);
     QString f = spicecompat::normalize_value(getProperty("f")->Value);
 
     bool en_tran = true;
@@ -140,7 +140,7 @@ QString Source_ac::xyce_netlist()
     QString s_p = spicecompat::normalize_value(getProperty("P")->Value);
     double p = s_p.toDouble();
     double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
-    double vamp = 2.0*vrms*sqrt(2.0);
+    double vamp = vrms*sqrt(2.0);
 
     bool en_tran = true;
     if (getProperty("EnableTran")->Value == "true") {
