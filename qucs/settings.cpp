@@ -61,7 +61,11 @@ void settingsManager::initDefaults()
     m_Defaults["OctaveExecutable"] = "octave.exe";
 #else
     m_Defaults["NgspiceExecutable"] = "ngspice";
-    m_Defaults["XyceExecutable"] = "/usr/local/Xyce-Release-6.8.0-OPENSOURCE/bin/Xyce";
+    #ifndef Q_OS_MACOS
+        m_Defaults["XyceExecutable"] = "/usr/local/Xyce-Release-6.8.0-OPENSOURCE/bin/Xyce";
+    #else
+        m_Defaults["XyceExecutable"] = "Xyce";
+    #endif
     m_Defaults["RFLayoutExecutable"] = "qucsrflayout";
     m_Defaults["OctaveExecutable"] = "octave";
 #endif
