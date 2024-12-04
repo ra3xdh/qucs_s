@@ -841,19 +841,22 @@ void QucsApp::slotCallEditor()
 // Is called to start the filter synthesis program.
 void QucsApp::slotCallFilter()
 {
-  launchTool(QUCS_NAME "filter", "filter synthesis");
+  auto currentStyle = QApplication::style()->objectName();
+  launchTool(QUCS_NAME "filter", "filter synthesis",(QStringList() << "-style" << currentStyle));
 }
 
 void QucsApp::slotCallActiveFilter()
 {
-  launchTool(QUCS_NAME "activefilter", "active filter synthesis");
+  auto currentStyle = QApplication::style()->objectName();
+  launchTool(QUCS_NAME "activefilter", "active filter synthesis",(QStringList() << "-style" << currentStyle));
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  launchTool(QUCS_NAME "trans", "line calculation",QStringList());
+  auto currentStyle = QApplication::style()->objectName();
+  launchTool(QUCS_NAME "trans", "line calculation",(QStringList() << "-style" << currentStyle));
 }
 
 // --------------------------------------------------------------
@@ -868,17 +871,20 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  launchTool(QUCS_NAME "attenuator", "attenuator calculation",QStringList());
+  auto currentStyle = QApplication::style()->objectName();
+  launchTool(QUCS_NAME "attenuator", "attenuator calculation",(QStringList() << "-style" << currentStyle));
 }
 
 void QucsApp::slotCallPwrComb()
 {
-  launchTool(QUCS_NAME "powercombining", "power combining calculation",QStringList());
+  auto currentStyle = QApplication::style()->objectName();
+  launchTool(QUCS_NAME "powercombining", "power combining calculation",(QStringList() << "-style" << currentStyle));
 }
 
 void QucsApp::slotCallSPAR_Viewer()
 {
-  launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer",QStringList());
+  auto currentStyle = QApplication::style()->objectName();
+  launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer",(QStringList() << "-style" << currentStyle));
 }
 
 
