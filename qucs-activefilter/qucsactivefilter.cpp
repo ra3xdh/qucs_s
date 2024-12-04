@@ -222,8 +222,9 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     QSize sz;
     QString s1 = ":/images/bitmaps/AFR.svg";
     imgAFR = new QSvgWidget(s1);
+    imgAFR->setStyleSheet("background-color: white;");
     sz = gpbPar->size(); // take left box size as reference size
-    sz *= 0.6;
+    sz *= 0.75;
     imgAFR->setFixedSize(sz);
     vl1->addWidget(imgAFR);
     vl1->setAlignment(imgAFR, Qt::AlignHCenter);
@@ -234,6 +235,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     gpbSCH->setLayout(vl2);
     s1 = ":/images/bitmaps/cauer.svg";
     sch_pic = new QSvgWidget(s1);
+    sch_pic->setStyleSheet("background-color: white;");
     sz = gpbFunc->size(); // take lefbox size as reference size
     sz *= 0.95;
     sch_pic->setFixedSize(sz);
