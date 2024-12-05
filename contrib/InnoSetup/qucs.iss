@@ -49,6 +49,7 @@ UsePreviousAppDir=yes
 WizardStyle=modern
 SetupIconFile={#TREE}\misc\qucs.ico
 Uninstallable=yes
+ArchitecturesInstallIn64BitMode=x64compatible
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
