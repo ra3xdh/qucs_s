@@ -364,6 +364,7 @@ void QucsApp::initView()
   QHBoxLayout *CompSearchLayout = new QHBoxLayout();
 
   simulatorsCombobox = new QComboBox(this);
+  simulatorsCombobox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
   connect(simulatorsCombobox, SIGNAL(activated(int)), SLOT(slotChangeSimulator(int)));
 
   CompChoose = new QComboBox(this);

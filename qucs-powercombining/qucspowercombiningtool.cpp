@@ -280,6 +280,7 @@ QucsPowerCombiningTool::QucsPowerCombiningTool()
    QString s1 = ":/bitmaps/Wilkinson_idealTL.svg";
    QGridLayout * imgLayout = new QGridLayout();
    imgWidget = new QSvgWidget(s1);
+   imgWidget->setStyleSheet("background-color: white;");
    sz = imgWidget->size();
    imgWidget->setFixedSize(.6*sz);
    imgLayout->addWidget(imgWidget);

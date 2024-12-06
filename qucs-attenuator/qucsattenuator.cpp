@@ -97,6 +97,7 @@ QucsAttenuator::QucsAttenuator()
   topoGrid->addWidget(ComboTopology, 1,0,1,2);
 
   pixTopology = new QLabel(TopoGroup);//====================Pixmap for Topology
+  pixTopology->setStyleSheet("background-color: white;");
   pixTopology->setPixmap(QPixmap((":/bitmaps/att_pi.png")));
   topoGrid->addWidget(pixTopology,2,0,3,2);
 

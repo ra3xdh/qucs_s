@@ -54,8 +54,23 @@
 #include <QFileDialog>
 #include <QDirIterator>
 #include <QDebug>
+#include <QObject>
+#include <QString>
+#include <QList>
 
 using namespace std;
+
+auto getFontDescription = [](const auto& Font) -> QString {
+    const QChar comma(u',');
+    QString fontDescription = Font.family() + comma +
+        QString::number(Font.pointSize());
+
+    QString fontStyle = Font.styleName();
+    if (!fontStyle.isEmpty())
+        fontDescription += comma + fontStyle;
+
+    return fontDescription;
+};
 
 QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     : QDialog(parent)
@@ -75,30 +90,34 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     QWidget *appSettingsTab = new QWidget(t);
     QGridLayout *appSettingsGrid = new QGridLayout(appSettingsTab);
 
+    const QStringList appLanguages = {
+        tr("system language"),
+        tr("English") + " (en)",
+        tr("Arabic") + " (ar)",
+        tr("Catalan") + " (ca)",
+        tr("Chinese") + " (zh_CN)",
+        tr("Czech") + " (cs)",
+        tr("French") + " (fr)",
+        tr("German") + " (de)",
+        tr("Hebrew") + " (he)",
+        tr("Hungarian") + " (hu)",
+        tr("Italian") + " (it)",
+        tr("Japanese") + " (jp)",
+        tr("Kazakh") + " (kk)",
+        tr("Polish") + " (pl)",
+        tr("Portuguese-BR") + " (pt_BR)",
+        tr("Portuguese-PT") + " (pt_PT)",
+        tr("Romanian") + " (ro)",
+        tr("Russian") + " (ru)",
+        tr("Spanish") + " (es)",
+        tr("Swedish") + " (sv)",
+        tr("Turkish") + " (tr)",
+        tr("Ukrainian") + " (uk)"
+    };
+
     appSettingsGrid->addWidget(new QLabel(tr("Language (set after reload):"), appSettingsTab) ,1, 0);
     LanguageCombo = new QComboBox(appSettingsTab);
-    LanguageCombo->insertItem(-1, tr("Ukrainian")+" (uk)");
-    LanguageCombo->insertItem(-1, tr("Turkish")+" (tr)");
-    LanguageCombo->insertItem(-1, tr("Swedish")+" (sv)");
-    LanguageCombo->insertItem(-1, tr("Spanish")+" (es)");
-    LanguageCombo->insertItem(-1, tr("Russian")+" (ru)");
-    LanguageCombo->insertItem(-1, tr("Romanian")+" (ro)");
-    LanguageCombo->insertItem(-1, tr("Portuguese-PT")+" (pt_PT)");
-    LanguageCombo->insertItem(-1, tr("Portuguese-BR")+" (pt_BR)");
-    LanguageCombo->insertItem(-1, tr("Polish")+" (pl)");
-    LanguageCombo->insertItem(-1, tr("Kazakh")+" (kk)");
-    LanguageCombo->insertItem(-1, tr("Japanese")+" (jp)");
-    LanguageCombo->insertItem(-1, tr("Italian")+" (it)");
-    LanguageCombo->insertItem(-1, tr("Hungarian")+" (hu)");
-    LanguageCombo->insertItem(-1, tr("Hebrew")+" (he)");
-    LanguageCombo->insertItem(-1, tr("German")+" (de)");
-    LanguageCombo->insertItem(-1, tr("French")+" (fr)");
-    LanguageCombo->insertItem(-1, tr("Chinese")+" (zh_CN)");
-    LanguageCombo->insertItem(-1, tr("Czech")+" (cs)");
-    LanguageCombo->insertItem(-1, tr("Catalan")+" (ca)");
-    LanguageCombo->insertItem(-1, tr("Arabic")+" (ar)");
-    LanguageCombo->insertItem(-1, tr("English")+" (en)");
-    LanguageCombo->insertItem(-1, tr("system language"));
+    LanguageCombo->addItems(appLanguages);
     appSettingsGrid->addWidget(LanguageCombo, 1, 1);
 
     val200 = new QIntValidator(0, 200, this);
@@ -181,7 +200,21 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     appAppearanceGrid->addWidget(new QLabel(tr("Default graph line thickness:"), appSettingsTab), 8, 0);
     graphLineWidthEdit = new QLineEdit(appSettingsTab);
     graphLineWidthEdit->setValidator(val50);
-    appAppearanceGrid->addWidget(graphLineWidthEdit, 8, 1);      
+    appAppearanceGrid->addWidget(graphLineWidthEdit, 8, 1);
+
+    appAppearanceGrid->addWidget(new QLabel(tr("App Style:"), appSettingsTab), 9, 0);
+    QStringList styles = QStyleFactory::keys(); // Get available styles
+    StyleCombo = new QComboBox(appSettingsTab);
+    StyleCombo->addItems(styles);
+    appAppearanceGrid->addWidget(StyleCombo,9,1);
+
+
+    // Retrieve the current style and set it as selected
+    QString currentStyle = QApplication::style()->objectName();
+    int index = StyleCombo->findText(currentStyle, Qt::MatchFixedString);
+    if (index != -1) {
+        StyleCombo->setCurrentIndex(index);
+    }      
 
     t->addTab(appAppearanceTab, tr("Appearance"));
 
@@ -456,9 +489,12 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     Font  = QucsSettings.font;
     AppFont = QucsSettings.appFont;
     TextFont = QucsSettings.textFont;
-    FontButton->setText(Font.toString());
-    AppFontButton->setText(AppFont.toString());
-    TextFontButton->setText(TextFont.toString());
+
+
+
+    FontButton->setText(getFontDescription(Font));
+    AppFontButton->setText(getFontDescription(AppFont));
+    TextFontButton->setText(getFontDescription(TextFont));
     QString s = QString::number(QucsSettings.largeFontSize, 'f', 1);
     LargeFontSizeEdit->setText(s);
     graphLineWidthEdit->setText(_settings::Get().item<QString>("DefaultGraphLineWidth"));
@@ -595,8 +631,20 @@ void QucsSettingsDialog::slotApply()
           QPalette p = vp->palette();
           p.setColor(vp->backgroundRole(), QucsSettings.BGColor);
           vp->setPalette(p);
+
         }
         changed = true;
+    }
+
+    QString selectedStyle = StyleCombo->currentText();
+    if (_settings::Get().item<QString>("AppStyle") != selectedStyle )
+    {
+        QStyle* style = QStyleFactory::create(selectedStyle);
+        if (style) {
+          QApplication::setStyle(style);
+          _settings::Get().setItem<QString>("AppStyle",  selectedStyle);
+          changed = true;  
+        } 
     }
 
     // Update all open schematics with the new grid color.
@@ -769,7 +817,7 @@ void QucsSettingsDialog::slotFontDialog()
     if(ok)
     {
         Font = tmpFont;
-        FontButton->setText(Font.toString());
+        FontButton->setText(getFontDescription(Font));
     }
 }
 
@@ -780,7 +828,7 @@ void QucsSettingsDialog::slotAppFontDialog()
     if(ok)
     {
         AppFont = tmpFont;
-        AppFontButton->setText(AppFont.toString());
+        AppFontButton->setText(getFontDescription(AppFont));
     }
 }
 
@@ -791,7 +839,7 @@ void QucsSettingsDialog::slotTextFontDialog()
     if(ok)
     {
         TextFont = tmpFont;
-        TextFontButton->setText(TextFont.toString());
+        TextFontButton->setText(getFontDescription(TextFont));
     }
 }
 
@@ -828,13 +876,13 @@ void QucsSettingsDialog::slotDefaultValues()
     Font = QApplication::font();
     AppFont = QucsSettings.sysDefaultFont;
     TextFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-    FontButton->setText(Font.toString());
-    AppFontButton->setText(AppFont.toString());
-    TextFontButton->setText(TextFont.toString());
+    FontButton->setText(getFontDescription(Font));
+    AppFontButton->setText(getFontDescription(AppFont));
+    TextFontButton->setText(getFontDescription(TextFont));
     LargeFontSizeEdit->setText(QString::number(16.0));
 
     LanguageCombo->setCurrentIndex(0);
-    
+
     p = BGColorButton->palette();
     p.setColor(BGColorButton->backgroundRole(), QColor(255,250,225));
     BGColorButton->setPalette(p);

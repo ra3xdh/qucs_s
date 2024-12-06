@@ -88,7 +88,8 @@ public:
     QCheckBox *checkWiring, *checkLoadFromFutureVersions,
               *checkAntiAliasing, *checkTextAntiAliasing,
               *checkFullTraceNames;
-    QComboBox *LanguageCombo;
+    QComboBox *LanguageCombo,
+              *StyleCombo;
     QPushButton *FontButton, *AppFontButton, *TextFontButton, *BGColorButton, *GridColorButton;
     QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
               *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit,
@@ -108,7 +109,7 @@ public:
 
 private:
     QStringList currentPaths;
-    
+
 
 private:
     void makePathTable();

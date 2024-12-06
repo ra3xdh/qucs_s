@@ -783,6 +783,14 @@ int main(int argc, char *argv[])
   // load existing settings (if any)
   loadSettings();
 
+  /* restore saved style */
+  QString savedStyle = _settings::Get().item<QString>("AppStyle");
+  QStyle* style = QStyleFactory::create(savedStyle);
+  if (style) {
+      QApplication::setStyle(style);
+  }
+  /* restore saved style */
+
   QDir().mkpath(QucsSettings.qucsWorkspaceDir.absolutePath());
   QDir().mkpath(QucsSettings.tempFilesDir.absolutePath());
 
