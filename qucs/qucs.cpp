@@ -156,8 +156,8 @@ QucsApp::QucsApp()
 
   select->setChecked(true);  // switch on the 'select' action
   switchSchematicDoc(true);  // "untitled" document is schematic
-
-  lastExportFilename = QDir::homePath() + QDir::separator() + "export.png";
+  QDir homeDir       = QDir::homePath();
+  lastExportFilename = homeDir.absoluteFilePath("export.png");
 
   // load documents given as command line arguments
   for(int z=1; z<qApp->arguments().size(); z++) {
@@ -172,42 +172,54 @@ QucsApp::QucsApp()
     }
   }
 
+  QDir QucsBinDir(QucsSettings.BinDir);
   if (QucsSettings.firstRun) { // try to find Ngspice
+      QString ngspice_exe_name = "ngspice";
 #ifdef Q_OS_WIN
-      QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice_con.exe";
-      QString ngspice_exe2 = "C:\\Spice64\\bin\\ngspice_con.exe";
-      QString qucsator_exe = QucsSettings.BinDir + QDir::separator() + "qucsator_rf.exe";
-#else
-      QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice";
-      QString qucsator_exe = QucsSettings.BinDir + QDir::separator() + "qucsator_rf";
+      ngspice_exe_name+="_con";
 #endif
+      /* search own path */
+      QString ngspice_exe1 = QStandardPaths::findExecutable(ngspice_exe_name,{QucsBinDir.absolutePath()});
+      /* search system path */
+      QString ngspice_exe2 = QStandardPaths::findExecutable(ngspice_exe_name);
+
+      /* search own path */
+      QString qucsator_exe1 = QStandardPaths::findExecutable("qucsator_rf",{QucsBinDir.absolutePath()});
+      /* search system path */
+      QString qucsator_exe2 = QStandardPaths::findExecutable("qucsator_rf");
+
       QString ngspice_exe;
       bool ngspice_found = false;
-      if (QFile::exists(ngspice_exe1)) {
+      if(!ngspice_exe1.isEmpty()){
           ngspice_found = true;
           ngspice_exe = ngspice_exe1;
-      }
-      bool qucsator_found = false;
-      if (QFile::exists(qucsator_exe)) {
-          qucsator_found = true;
-          QucsSettings.Qucsator = qucsator_exe;
-      }
-#ifdef Q_OS_WIN
-      if (!ngspice_found && QFile::exists(ngspice_exe2)) {
+      }else if(!ngspice_exe2.isEmpty()){
           ngspice_found = true;
           ngspice_exe = ngspice_exe2;
       }
-#endif
-      ngspice_exe = QDir::toNativeSeparators(ngspice_exe);
+
+      QString qucsator_exe;
+      bool qucsator_found = false;
+      if(!qucsator_exe1.isEmpty()){
+          qucsator_found = true;
+          qucsator_exe = qucsator_exe1;
+      }else if(!qucsator_exe2.isEmpty()){
+          qucsator_found = true;
+          qucsator_exe = qucsator_exe2;
+      }
+
       QString info_string;
       if (ngspice_found) {
-          QucsSettings.DefaultSimulator = spicecompat::simNgspice;
+          QucsSettings.DefaultSimulator  = spicecompat::simNgspice;
           QucsSettings.NgspiceExecutable = ngspice_exe;
           info_string += tr("Ngspice found at: ") + ngspice_exe + "\n";
       }
-      if (qucsator_found) {
+
+      if(qucsator_found){
+          QucsSettings.Qucsator = qucsator_exe;
           info_string += tr("QucsatorRF found at: ") + qucsator_exe + "\n";
       }
+
       info_string += tr("\nYou can specify another location later"
                         " using Simulation->Simulators Setings\n");
       if (!ngspice_found && qucsator_found) {
@@ -220,18 +232,27 @@ QucsApp::QucsApp()
           QMessageBox::information(nullptr,tr("Set simulator"), info_string);
           fillSimulatorsComboBox();
       } else {
+#ifdef Q_OS_WIN
+          QucsSettings.NgspiceExecutable = "ngspice_con.exe";
+          QucsSettings.Qucsator = "qucsator_rf.exe";
+#else
+          QucsSettings.NgspiceExecutable = "ngspice";
+          QucsSettings.Qucsator = "qucsator_rf";
+#endif
           QMessageBox::information(this,tr("Qucs"),tr("No simulators found automatically. Please specify simulators"
                                                       " in the next dialog window."));
           slotSimSettings();
       }
       QucsSettings.firstRun = false;
-  } else if (!QFile::exists(QucsSettings.Qucsator)) {
-      QucsSettings.Qucsator = QucsSettings.BinDir + QDir::separator() + "qucsator_rf";
-#ifdef Q_OS_WIN
-      QucsSettings.Qucsator += ".exe";
-#endif
-      QMessageBox::information(this, "Qucs",
-                tr("QucsatorRF found at: ") + QucsSettings.Qucsator + "\n");
+  } else {
+      if (!QucsSettings.Qucsator.contains("qucsator_rf")) {
+          QucsSettings.Qucsator = QStandardPaths::findExecutable("qucsator_rf",{QucsBinDir.absolutePath()});
+
+          if(!QucsSettings.Qucsator.isEmpty()){
+            QMessageBox::information(this, "Qucs",
+                    tr("QucsatorRF found at: ") + QucsSettings.Qucsator + "\n");
+          }
+      }
   }
 
 //  fillLibrariesTreeView();

@@ -106,12 +106,12 @@ bool loadSettings()
         QFileInfo inf(QucsSettings.Qucsator);
         QucsSettings.QucsatorDir = inf.canonicalPath() + QDir::separator();
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QucsSettings.QucsatorDir + QDir::separator() + "qucsconv_rf" + executableSuffix;
+            QucsSettings.Qucsconv = QStandardPaths::findExecutable("qucsconv_rf",{QucsSettings.QucsatorDir});
     } else {
-        QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator_rf" + executableSuffix;
+        QucsSettings.Qucsator = QStandardPaths::findExecutable("qucsator_rf",{QucsSettings.BinDir});
         QucsSettings.QucsatorDir = QucsSettings.BinDir;
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv_rf" + executableSuffix;
+            QucsSettings.Qucsconv = QStandardPaths::findExecutable("qucsconv_rf",{QucsSettings.BinDir});
     }
 
     QucsSettings.AdmsXmlBinDir.setPath(_settings::Get().item<QString>("AdmsXmlBinDir"));
@@ -798,7 +798,7 @@ int main(int argc, char *argv[])
   QucsDir.cdUp();
 #endif
 
-  QucsSettings.BinDir =      QucsDir.absolutePath() + "/bin/";
+  QucsSettings.BinDir =      QucsApplicationPath.contains("bin") ? QucsApplicationPath : QucsDir.absoluteFilePath("bin");
   QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
 
   QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
