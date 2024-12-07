@@ -179,7 +179,12 @@ QucsApp::QucsApp()
       ngspice_exe_name+="_con";
 #endif
       /* search own path */
+#ifdef Q_OS_MACOS
+      QString ngspice_exe1 = QStandardPaths::findExecutable(ngspice_exe_name,{"/opt/homebrew/bin"});
+#else
       QString ngspice_exe1 = QStandardPaths::findExecutable(ngspice_exe_name,{QucsBinDir.absolutePath()});
+#endif
+
       /* search system path */
       QString ngspice_exe2 = QStandardPaths::findExecutable(ngspice_exe_name);
 
