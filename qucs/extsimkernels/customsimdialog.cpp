@@ -29,7 +29,7 @@
 /*!
  * \brief CustomSimDialog::CustomSimDialog class constructor
  * \param pc[in] Component that need to be edit.
- * \param sch[in] Schematic on which a_component presents.
+ * \param sch[in] Schematic on which component presents.
  */
 CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
     QDialog(sch),
@@ -119,7 +119,7 @@ void CustomSimDialog::slotChanged()
     a_isChanged = true;
 }
 /*!
- * \brief CustomSimDialog::slotApply Apply changes of a_component properties.
+ * \brief CustomSimDialog::slotApply Apply changes of component properties.
  */
 void CustomSimDialog::slotApply()
 {
