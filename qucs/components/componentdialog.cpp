@@ -348,7 +348,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   componentNameWidget->setCheck(component->showName);
 
   // Try to work out what kind of component this is.
-  isEquation = QStringList({"Eqn", "NutmegEq", "SpicePar", "SpGlobPar"}).contains(component->Model);
+  isEquation = QStringList({"Eqn", "NutmegEq", "SpiceIC", "SpicePar", "SpGlobPar"}).contains(component->Model);
   hasSweep = QStringList({".AC", ".DISTO", ".NOISE", ".SW", ".SP", ".TR"}).contains(component->Model);
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
 
@@ -358,8 +358,8 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   // for a given simulation type. Then only create the valid widgets fo
   // sweepParams[".AC"] = QStringList({"Type", "Start", "Stop", "Points"});
 
-  paramsHiddenBySim["Export"] = QStringList{"NutmegEq", "SpicePar", "SpGlobPar"};
-  paramsHiddenBySim["Sim"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR", "Eqn", "SpicePar", "SpGlobPar"};
+  paramsHiddenBySim["Export"] = QStringList{"NutmegEq", "SpiceIC", "SpicePar", "SpGlobPar"};
+  paramsHiddenBySim["Sim"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR", "Eqn", "SpiceIC", "SpicePar", "SpGlobPar"};
   paramsHiddenBySim["Param"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR"};
 
   // Setup the dialog according to the component kind.
