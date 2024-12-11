@@ -97,6 +97,8 @@ namespace misc {
   void draw_resize_handle(QPainter* painter, const QPointF& center);
 
   void getSymbolPatternsList(QStringList &symbols);
+  QString formatValue(const QString& input, int precision);
+
 }
 
 /*! handle the application version string

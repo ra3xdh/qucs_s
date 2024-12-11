@@ -856,3 +856,22 @@ void misc::draw_resize_handle(QPainter* painter, const QPointF& center) {
   painter->drawRect(resize_handle);
   painter->restore();
 }
+
+QString misc::formatValue(const QString& input, int precision) {
+    QRegularExpression regex(R"(([+-]?\d*\.?\d+)([a-zA-Z%]+)?)");
+    QRegularExpressionMatch match = regex.match(input);
+
+    if (match.hasMatch()) {
+        QString numberPart = match.captured(1);
+        QString unitPart = match.captured(2);
+
+        double value = numberPart.toDouble();
+        QString formattedNumber = QString::number(value, 'f', precision);
+
+        formattedNumber = formattedNumber.remove(QRegularExpression(R"(0+$)"));
+        formattedNumber = formattedNumber.remove(QRegularExpression(R"(\.$)"));
+
+        return formattedNumber + unitPart;
+    }
+    return input;
+}
