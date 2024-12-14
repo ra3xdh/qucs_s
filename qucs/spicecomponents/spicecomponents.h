@@ -64,6 +64,7 @@
 #include "XAPWL.h"
 
 // Spice netlist sections
+#include "sp_csparameter.h"
 #include "sp_parameter.h"
 #include "sp_globalpar.h"
 #include "sp_options.h"
