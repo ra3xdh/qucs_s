@@ -10,6 +10,7 @@ src_eqndef.cpp
 #SPICE sections
 
 sp_parameter.cpp
+sp_csparameter.cpp
 sp_globalpar.cpp
 sp_options.cpp
 sp_nutmeg.cpp
@@ -104,6 +105,7 @@ src_eqndef.h
 #SPICE sections
 
 sp_parameter.h
+sp_csparameter.h
 sp_globalpar.h
 sp_options.h
 sp_nutmeg.h

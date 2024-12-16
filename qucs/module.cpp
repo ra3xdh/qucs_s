@@ -557,6 +557,7 @@ void Module::registerModules (void) {
   // equations
   REGISTER_EQUATION_1 (NutmegEquation);
   REGISTER_EQUATION_1 (SpiceParam);
+  REGISTER_EQUATION_1 (SpiceCSParam);
   REGISTER_EQUATION_1 (SpiceGlobalParam);
   REGISTER_EQUATION_1 (Equation);
 
@@ -580,6 +581,7 @@ void Module::registerModules (void) {
 
       // specific sections of spice netlists
       REGISTER_SPICE_SEC_1 (SpiceParam);
+      REGISTER_SPICE_SEC_1 (SpiceCSParam);
       REGISTER_SPICE_SEC_1 (SpiceGlobalParam);
       REGISTER_SPICE_SEC_1 (SpiceOptions);
       REGISTER_SPICE_SEC_1 (SpiceIC);
