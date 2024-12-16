@@ -454,6 +454,7 @@ jobs:
         New-Item -ItemType Directory -Path "$qucs_dir\lib\ngspice" -Force
         Copy-Item -Recurse -Force ngspice\Spice64\bin\ $qucs_dir
         Copy-Item -Recurse -Force ngspice\Spice64\lib\ $qucs_dir
+        Copy-Item -Recurse -Force ngspice\Spice64\share\ $qucs_dir
             
     - name: 'Create zip archive for release'
       run: |
@@ -573,6 +574,7 @@ jobs:
         mkdir -p build/qucs-suite/lib/ngspice
         cp -rf ngspice/Spice64/bin/ build/qucs-suite
         cp -rf ngspice/Spice64/lib/ build/qucs-suite
+        cp -rf ngspice/Spice64/share/ build/qucs-suite
             
     - name: Create zip archive for release
       run: |
