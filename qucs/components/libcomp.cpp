@@ -361,7 +361,7 @@ QString LibComp::vhdlCode(int)
   return s;
 }
 
-QString LibComp::spice_netlist(bool)
+QString LibComp::spice_netlist(bool, bool)
 {
     QString s = SpiceModel + Name + " 0 "; // connect ground of subckt to circuit ground
     for (Port *p1 : Ports)

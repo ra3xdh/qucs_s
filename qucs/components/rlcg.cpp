@@ -93,7 +93,7 @@ Element* RLCG::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString RLCG::spice_netlist(bool isXyce)
+QString RLCG::spice_netlist(bool isXyce, bool)
 {
     Q_UNUSED(isXyce);
     QString s;

@@ -79,7 +79,7 @@ void AC_Sim::recreate(Schematic*)
   }
 }
 
-QString AC_Sim::spice_netlist(bool isXyce)
+QString AC_Sim::spice_netlist(bool isXyce, bool)
 {
     QString s = SpiceModel + " ";
     QString unit;

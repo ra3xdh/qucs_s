@@ -58,7 +58,7 @@ Component* Inductor::newOne()
 }
 
 
-QString Inductor::spice_netlist(bool)
+QString Inductor::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

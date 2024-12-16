@@ -152,7 +152,7 @@ Element* Logical_Inv::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Logical_Inv::spice_netlist(bool isXyce)
+QString Logical_Inv::spice_netlist(bool isXyce, bool)
 {
     if (isXyce) return QString();
 

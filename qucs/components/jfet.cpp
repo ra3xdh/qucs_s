@@ -94,7 +94,7 @@ Component* JFET::newOne()
   return p;
 }
 
-QString JFET::spice_netlist(bool isXyce)
+QString JFET::spice_netlist(bool isXyce, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;

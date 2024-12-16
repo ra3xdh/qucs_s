@@ -184,7 +184,7 @@ QString jkff_SR::verilogCode( int )
   return l;
 }
 
-QString jkff_SR::spice_netlist(bool isXyce)
+QString jkff_SR::spice_netlist(bool isXyce, bool)
 {
     if (isXyce) return QString();
 

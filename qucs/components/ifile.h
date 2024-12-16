@@ -32,7 +32,7 @@ public:
 
 protected:
   QString netlist();
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(bool isXyce, bool isCdl = false);
 };
 
 #endif

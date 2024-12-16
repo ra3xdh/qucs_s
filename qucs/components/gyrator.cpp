@@ -79,7 +79,7 @@ Element* Gyrator::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Gyrator::spice_netlist(bool)
+QString Gyrator::spice_netlist(bool, bool)
 {
     QString s;
     QString R = spicecompat::normalize_value(Props.at(0)->Value);

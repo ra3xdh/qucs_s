@@ -201,7 +201,7 @@ void BJTsub::createSymbol()
   x2 =  30; y2 =  30;
 }
 
-QString BJTsub::spice_netlist(bool)
+QString BJTsub::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;

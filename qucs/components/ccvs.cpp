@@ -102,7 +102,7 @@ QString CCVS::va_code()
 }
 
 // -------------------------------------------------------
-QString CCVS::spice_netlist(bool)
+QString CCVS::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel); // spice CCVS consists two sources: output source
                         // and zero value controlling source

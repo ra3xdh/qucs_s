@@ -758,7 +758,7 @@ QString Component::form_spice_param_list(QStringList &ignore_list, QStringList &
     return par_str;
 }
 
-QString Component::spice_netlist(bool) {
+QString Component::spice_netlist(bool, bool) {
     return QStringLiteral("\n"); // ignore if not implemented
 }
 
@@ -1537,7 +1537,7 @@ QString GateComponent::netlist() {
     return s;
 }
 
-QString GateComponent::spice_netlist(bool isXyce) {
+QString GateComponent::spice_netlist(bool isXyce, bool) {
     if (isXyce) return {""};
 
     QString s = SpiceModel + Name;

@@ -68,7 +68,7 @@ Element* dcBlock::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString dcBlock::spice_netlist(bool isXyce)
+QString dcBlock::spice_netlist(bool isXyce, bool)
 {
   Q_UNUSED(isXyce);
   QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);

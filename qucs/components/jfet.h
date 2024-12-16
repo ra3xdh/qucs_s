@@ -31,7 +31,7 @@ public:
 
 protected:
   void createSymbol();
-  QString spice_netlist(bool isXyce = false);
+  QString spice_netlist(bool isXyce = false, bool isCdl = false);
 };
 
 #endif

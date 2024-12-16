@@ -22,7 +22,7 @@ class potentiometer : public Component
     static Element* info(QString&, char* &, bool getNewOne=false);
   protected:
     void createSymbol();
-    QString spice_netlist(bool isXyce);
+    QString spice_netlist(bool isXyce, bool isCdl = false);
 };
 
 #endif /* potentiometer_H */

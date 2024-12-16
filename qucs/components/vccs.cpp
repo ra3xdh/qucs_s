@@ -105,7 +105,7 @@ QString VCCS::va_code()
 
 }
 
-QString VCCS::spice_netlist(bool)
+QString VCCS::spice_netlist(bool, bool)
 {
    QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> seq; // nodes sequence

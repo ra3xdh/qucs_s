@@ -150,7 +150,7 @@ Component* MOSFET_sub::newOne()
   return p;
 }
 
-QString MOSFET_sub::spice_netlist(bool isXyce)
+QString MOSFET_sub::spice_netlist(bool isXyce, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;

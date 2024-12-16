@@ -114,7 +114,7 @@ public:
 
 protected:
   virtual QString netlist();
-  virtual QString spice_netlist(bool isXyce = false);
+  virtual QString spice_netlist(bool isXyce = false, bool isCdl = false);
   virtual QString va_code();
   virtual QString vhdlCode(int);
   virtual QString verilogCode(int);
@@ -149,7 +149,7 @@ class GateComponent : public MultiViewComponent {
 public:
   GateComponent();
   QString netlist();
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(bool isXyce, bool isCdl = false);
   QString vhdlCode(int);
   QString verilogCode(int);
 

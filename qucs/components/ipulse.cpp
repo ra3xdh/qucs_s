@@ -89,7 +89,7 @@ Element* iPulse::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString iPulse::spice_netlist(bool)
+QString iPulse::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

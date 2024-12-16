@@ -30,7 +30,7 @@ public:
   QString getExpression(bool) { return "";}
   QString getProbeVariable(bool isXyce = false);
 protected:
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(bool isXyce, bool isCdl = false);
 };
 
 #endif

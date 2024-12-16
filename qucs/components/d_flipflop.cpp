@@ -120,7 +120,7 @@ Element* D_FlipFlop::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString D_FlipFlop::spice_netlist(bool isXyce)
+QString D_FlipFlop::spice_netlist(bool isXyce, bool)
 {
     if (isXyce) return QString();
 

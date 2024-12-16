@@ -74,7 +74,7 @@ vRect::~vRect()
 {
 }
 
-QString vRect::spice_netlist(bool)
+QString vRect::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

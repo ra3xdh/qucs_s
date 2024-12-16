@@ -101,7 +101,7 @@ QString CCCS::va_code()
     
     return s;
 }
-QString CCCS::spice_netlist(bool)
+QString CCCS::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel); // spice CCCS consists two sources: output source
                         // and zero value controlling source

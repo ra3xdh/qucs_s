@@ -84,7 +84,7 @@ QString Switch::netlist()
   return s + '\n';
 }
 
-QString Switch::spice_netlist(bool)
+QString Switch::spice_netlist(bool, bool)
 {
   QString s = spicecompat::check_refdes(Name,SpiceModel);
   QString port1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);

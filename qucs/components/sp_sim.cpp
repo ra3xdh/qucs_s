@@ -206,7 +206,7 @@ QString SP_Sim::xyce_netlist()
     return s;
 }
 
-QString SP_Sim::spice_netlist(bool isXyce)
+QString SP_Sim::spice_netlist(bool isXyce, bool)
 {
     if (isXyce) {
         return xyce_netlist();

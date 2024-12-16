@@ -73,7 +73,7 @@ vPulse::~vPulse()
 {
 }
 
-QString vPulse::spice_netlist(bool)
+QString vPulse::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

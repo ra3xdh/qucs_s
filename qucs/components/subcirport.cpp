@@ -108,7 +108,7 @@ QString SubCirPort::netlist()
 }
 
 // -------------------------------------------------------
-QString SubCirPort::spice_netlist(bool)
+QString SubCirPort::spice_netlist(bool, bool)
 {
     return QString();
 }

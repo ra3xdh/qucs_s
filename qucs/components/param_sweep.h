@@ -34,7 +34,7 @@ public:
   QString getCounterVar();
 
 protected:
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(bool isXyce, bool isCdl = false);
   QString param_split_str=";";
 };
 

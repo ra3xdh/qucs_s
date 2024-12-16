@@ -78,7 +78,7 @@ Element* Ampere_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 }
 
 
-QString Ampere_ac::spice_netlist(bool)
+QString Ampere_ac::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

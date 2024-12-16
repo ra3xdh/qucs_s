@@ -193,7 +193,7 @@ QString Param_Sweep::getCounterVar()
     return s;
 }
 
-QString Param_Sweep::spice_netlist(bool isXyce)
+QString Param_Sweep::spice_netlist(bool isXyce, bool)
 {
     double start,stop,step,fac,points;
     QString unit;

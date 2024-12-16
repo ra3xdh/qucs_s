@@ -219,7 +219,7 @@ QString Subcircuit::netlist() {
   return s + '\n';
 }
 
-QString Subcircuit::spice_netlist(bool) {
+QString Subcircuit::spice_netlist(bool, bool) {
   QString s;
   QString f = misc::properFileName(Props.at(0)->Value);
   s += spicecompat::check_refdes(Name, SpiceModel);

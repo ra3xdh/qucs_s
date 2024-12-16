@@ -27,7 +27,7 @@ public:
   ~TR_Sim();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString spice_netlist(bool isXyce = false);
+  QString spice_netlist(bool isXyce = false, bool isCdl = false);
   void recreate(Schematic*);
 };
 

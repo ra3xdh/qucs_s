@@ -80,7 +80,7 @@ iRect::~iRect()
 {
 }
 
-QString iRect::spice_netlist(bool)
+QString iRect::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

@@ -30,7 +30,7 @@ public:
   static Element* info_us(QString&, char* &, bool getNewOne=false);
 
 protected:
-  QString spice_netlist(bool isXyce = false);
+  QString spice_netlist(bool isXyce = false, bool isCdl = false);
   QString va_code();
   void createSymbol();
 };

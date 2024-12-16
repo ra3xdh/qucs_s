@@ -479,7 +479,7 @@ void SpiceFile::slotExited()
   }
 }
 
-QString SpiceFile::spice_netlist(bool)
+QString SpiceFile::spice_netlist(bool, bool)
 {
     QStringList ports_lst = Props.at(1)->Value.split(",");
     for (auto & it : ports_lst) {

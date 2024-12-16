@@ -83,7 +83,7 @@ Element* Volt_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Volt_ac::spice_netlist(bool)
+QString Volt_ac::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

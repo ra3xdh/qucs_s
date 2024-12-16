@@ -31,7 +31,7 @@ public:
 protected:
   QString vhdlCode(int);
   QString verilogCode(int);
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(bool isXyce, bool isCdl = false);
   void createSymbol();
 };
 

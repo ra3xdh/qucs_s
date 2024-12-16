@@ -114,7 +114,7 @@ Element* Mutual2::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Mutual2::spice_netlist(bool isXyce)
+QString Mutual2::spice_netlist(bool isXyce, bool)
 {
     Q_UNUSED(isXyce);
     Q_UNUSED(isXyce);

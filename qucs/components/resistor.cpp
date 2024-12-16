@@ -53,7 +53,7 @@ Component* Resistor::newOne()
   return new Resistor(Props.back()->Value != "US");
 }
 
-QString Resistor::spice_netlist(bool )
+QString Resistor::spice_netlist(bool , bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

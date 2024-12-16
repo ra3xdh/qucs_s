@@ -140,7 +140,7 @@ QString MOSFET::netlist()
   return s + '\n';
 }
 
-QString MOSFET::spice_netlist(bool isXyce)
+QString MOSFET::spice_netlist(bool isXyce, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;

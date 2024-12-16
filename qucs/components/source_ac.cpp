@@ -159,7 +159,7 @@ QString Source_ac::xyce_netlist()
     return s;
 }
 
-QString Source_ac::spice_netlist(bool isXyce)
+QString Source_ac::spice_netlist(bool isXyce, bool)
 {
     if (isXyce) {
         return xyce_netlist();

@@ -42,7 +42,7 @@ Component* BJT::newOne()
   return p;
 }
 
-QString BJT::spice_netlist(bool)
+QString BJT::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;

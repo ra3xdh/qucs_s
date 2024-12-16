@@ -111,7 +111,7 @@ void potentiometer::createSymbol()
   x2 =  40; y2 =  15;
 }
 
-QString potentiometer::spice_netlist(bool isXyce)
+QString potentiometer::spice_netlist(bool isXyce, bool)
 {
     Q_UNUSED(isXyce);
     QString s;

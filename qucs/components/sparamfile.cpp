@@ -196,7 +196,7 @@ void SParamFile::createSymbol()
   ty = y1 - 2*metrics.lineSpacing() - 4;
 }
 
-QString SParamFile::spice_netlist(bool isXyce)
+QString SParamFile::spice_netlist(bool isXyce, bool)
 {
     QString s;
     if (isXyce) {

@@ -191,7 +191,7 @@ QString Digi_Source::verilogCode(int NumPorts)
   return s;
 }
 
-QString Digi_Source::spice_netlist(bool)
+QString Digi_Source::spice_netlist(bool, bool)
 {
   QString s    = SpiceModel + Name;
   QString port = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);

@@ -66,7 +66,7 @@ QString Ground::netlist()
   return QString();
 }
 
-QString Ground::spice_netlist(bool)
+QString Ground::spice_netlist(bool, bool)
 {
     return QString();
 }

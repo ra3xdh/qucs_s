@@ -74,7 +74,7 @@ Element* OpAmp::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString OpAmp::spice_netlist(bool isXyce)
+QString OpAmp::spice_netlist(bool isXyce, bool)
 {
     QString in_m = Ports.at(0)->Connection->Name;
     if (in_m=="gnd") in_m="0";

@@ -96,7 +96,7 @@ QString EqnDefined::netlist()
   return s+e;
 }
 
-QString EqnDefined::spice_netlist(bool isXyce)
+QString EqnDefined::spice_netlist(bool isXyce, bool)
 {    
     QString s;
 

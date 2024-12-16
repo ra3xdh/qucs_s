@@ -92,7 +92,7 @@ Element* IndQ::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString IndQ::spice_netlist(bool isXyce)
+QString IndQ::spice_netlist(bool isXyce, bool)
 {
     Q_UNUSED(isXyce);
     QString s;

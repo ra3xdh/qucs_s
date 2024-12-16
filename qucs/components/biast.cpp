@@ -80,7 +80,7 @@ Element* BiasT::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString BiasT::spice_netlist(bool isXyce)
+QString BiasT::spice_netlist(bool isXyce, bool)
 {
     Q_UNUSED(isXyce);
     QString s;

@@ -63,7 +63,7 @@ Element* HB_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString HB_Sim::spice_netlist(bool isXyce)
+QString HB_Sim::spice_netlist(bool isXyce, bool)
 {
     QString s="";
     if (isXyce) {  // Only in Xyce

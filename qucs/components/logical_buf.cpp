@@ -135,7 +135,7 @@ Element* Logical_Buf::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Logical_Buf::spice_netlist(bool isXyce)
+QString Logical_Buf::spice_netlist(bool isXyce, bool)
 {
     if (isXyce) return QString();
 

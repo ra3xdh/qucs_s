@@ -69,7 +69,7 @@ Element* dcFeed::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString dcFeed::spice_netlist(bool isXyce)
+QString dcFeed::spice_netlist(bool isXyce, bool)
 {
   Q_UNUSED(isXyce);
   QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);

@@ -296,7 +296,7 @@ void vacomponent::createSymbol(QJsonObject json)
 }
 
 
-QString vacomponent::spice_netlist(bool isXyce)
+QString vacomponent::spice_netlist(bool isXyce, bool)
 {
     if (isXyce) return QString();
 

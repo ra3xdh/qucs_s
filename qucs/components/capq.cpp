@@ -91,7 +91,7 @@ Element* CapQ::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString CapQ::spice_netlist(bool isXyce)
+QString CapQ::spice_netlist(bool isXyce, bool)
 {
     Q_UNUSED(isXyce);
     QString s;

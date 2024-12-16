@@ -99,7 +99,7 @@ Component* Diode::newOne()
   return new Diode();
 }
 
-QString Diode::spice_netlist(bool isXyce)
+QString Diode::spice_netlist(bool isXyce, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     // output all node names

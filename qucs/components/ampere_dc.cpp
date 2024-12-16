@@ -56,7 +56,7 @@ Ampere_dc::~Ampere_dc()
 {
 }
 
-QString Ampere_dc::spice_netlist(bool)
+QString Ampere_dc::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

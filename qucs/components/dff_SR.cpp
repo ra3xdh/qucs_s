@@ -175,7 +175,7 @@ QString dff_SR::verilogCode( int )
   return l;
 }
 
-QString dff_SR::spice_netlist(bool isXyce)
+QString dff_SR::spice_netlist(bool isXyce, bool)
 {
     if (isXyce) return QString();
 

@@ -109,7 +109,7 @@ QString iFile::netlist()
   return s + "\n";
 }
 
-QString iFile::spice_netlist(bool isXyce)
+QString iFile::spice_netlist(bool isXyce, bool)
 {
     Q_UNUSED(isXyce);
     QString s = SpiceModel + Name;

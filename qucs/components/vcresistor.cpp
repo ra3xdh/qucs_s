@@ -109,7 +109,7 @@ QString vcresistor::netlist()
   return s;
 }
 
-QString vcresistor::spice_netlist(bool isXyce)
+QString vcresistor::spice_netlist(bool isXyce, bool)
 {
   Q_UNUSED(isXyce);
   QString s;

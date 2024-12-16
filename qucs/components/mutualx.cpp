@@ -229,7 +229,7 @@ void MutualX::createSymbol()
   }
 }
 
-QString MutualX::spice_netlist(bool isXyce)
+QString MutualX::spice_netlist(bool isXyce, bool)
 {
     Q_UNUSED(isXyce);
     int coils = getProperty("coils")->Value.toInt();
