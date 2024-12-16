@@ -79,9 +79,9 @@ ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
 
-SET( spar_viewer_sources main.cpp qucs-s-spar-viewer.cpp)
+SET( spar_viewer_sources main.cpp qucs-s-spar-viewer.cpp codeeditor.cpp)
 
-SET( spar_viewer_moc_headers qucs-s-spar-viewer.h)
+SET( spar_viewer_moc_headers qucs-s-spar-viewer.h codeeditor.h)
 
 SET(RESOURCES qucs-s-spar-viewer.qrc)
 
@@ -114,7 +114,9 @@ ENDIF(APPLE)
 ADD_EXECUTABLE( ${QUCS_NAME}spar-viewer MACOSX_BUNDLE WIN32
   ${spar_viewer_sources}
   ${spar_viewer_moc_sources}
-  ${RESOURCES_SRCS} )
+  ${RESOURCES_SRCS}
+  codeeditor.cpp
+  codeeditor.h )
 
 TARGET_LINK_LIBRARIES( ${QUCS_NAME}spar-viewer Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts )
 SET_TARGET_PROPERTIES(${QUCS_NAME}spar-viewer PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
