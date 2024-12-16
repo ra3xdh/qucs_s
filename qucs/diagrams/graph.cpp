@@ -24,6 +24,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QPainterPath>
+#include <QtAlgorithms>
 
 class Diagram;
 
@@ -47,8 +48,8 @@ Graph::Graph(Diagram const* d, const QString& _Line) :
 
 Graph::~Graph()
 {
-  if(cPointsY != 0)
     delete[] cPointsY;
+    qDeleteAll(cPointsX);
 }
 
 // ---------------------------------------------------------------------

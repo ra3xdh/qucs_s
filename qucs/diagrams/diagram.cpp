@@ -54,6 +54,7 @@
 #include <QDateTime>
 #include <QPainter>
 #include <QDebug>
+#include <QtAlgorithms>
 
 Diagram::Diagram(int _cx, int _cy) {
     cx = _cx;
@@ -93,6 +94,10 @@ Diagram::Diagram(int _cx, int _cy) {
 }
 
 Diagram::~Diagram() {
+    qDeleteAll(Graphs);
+    qDeleteAll(Arcs);
+    qDeleteAll(Lines);
+    qDeleteAll(Texts);
 }
 
 /*!
@@ -846,16 +851,15 @@ int Graph::loadDatFile(const QString &fileName) {
 
     Info.setFile(file);
     if (g->lastLoaded.isValid())
-        if (g->lastLoaded.currentMSecsSinceEpoch() >
-            Info.lastModified().currentMSecsSinceEpoch()) //Millisecond resulution is needed for tuning
+        if (g->lastLoaded.toMSecsSinceEpoch() >=
+            Info.lastModified().toMSecsSinceEpoch()) //Millisecond resulution is needed for tuning
             return 1;    // dataset unchanged -> no update necessary
+    qDebug() << "Loading data from " << Info.canonicalFilePath();
 
+    qDeleteAll(g->mutable_axes());
+    g->mutable_axes().clear();
     g->countY = 0;
-    g->mutable_axes().clear(); // HACK
-    if (g->cPointsY) {
-        delete[] g->cPointsY;
-        g->cPointsY = 0;
-    }
+    delete[] g->cPointsY;
     if (Variable.isEmpty()) return 0;
 
 #if 0 // FIXME encapsulation. implement digital waves later.
