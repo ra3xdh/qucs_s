@@ -69,7 +69,7 @@ Element* XSP_CodeModel::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString XSP_CodeModel::spice_netlist()
+QString XSP_CodeModel::spice_netlist(, bool)
 {
     return QString();
 }

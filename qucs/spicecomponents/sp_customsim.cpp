@@ -66,7 +66,7 @@ Element* SpiceCustomSim::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceCustomSim::spice_netlist(bool isXyce)
+QString SpiceCustomSim::spice_netlist(bool isXyce, bool)
 {
     QString s = "";
     if (isXyce) return s;

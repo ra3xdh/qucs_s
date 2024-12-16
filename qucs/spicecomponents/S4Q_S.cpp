@@ -93,7 +93,7 @@ Element* S4Q_S::info(QString& Name, char* &BitmapFile, bool getNewOne)
  //   return QString();
 //}
 
-QString S4Q_S::spice_netlist(bool)
+QString S4Q_S::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

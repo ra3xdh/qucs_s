@@ -83,7 +83,7 @@ QString XAPWL::netlist()
     return QString();
 }
 
-QString XAPWL::spice_netlist(bool)
+QString XAPWL::spice_netlist(bool, bool)
 {
   
     QString s = spicecompat::check_refdes(Name,SpiceModel);

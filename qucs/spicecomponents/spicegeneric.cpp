@@ -134,7 +134,7 @@ QString SpiceGeneric::netlist()
     return QString();
 }
 
-QString SpiceGeneric::spice_netlist(bool)
+QString SpiceGeneric::spice_netlist(bool, bool)
 {
     // form RefDes from unique device letter and device name
     QString s = Props.at(1)->Value + Name;

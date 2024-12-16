@@ -61,7 +61,7 @@ Element* SpiceDisto::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceDisto::spice_netlist(bool isXyce)
+QString SpiceDisto::spice_netlist(bool isXyce, bool)
 {
     QString s;
     if (!isXyce) {

@@ -90,7 +90,7 @@ QString iPWL::netlist()
     return QString();
 }
 
-QString iPWL::spice_netlist(bool)
+QString iPWL::spice_netlist(bool, bool)
 {
   QString s = spicecompat::check_refdes(Name,SpiceModel);
 

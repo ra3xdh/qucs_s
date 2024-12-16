@@ -114,7 +114,7 @@ QString DIODE_SPICE::netlist()
     return QString();
 }
 
-QString DIODE_SPICE::spice_netlist(bool)
+QString DIODE_SPICE::spice_netlist(bool, bool)
 {
     QString ltr = getProperty("Letter")->Value;
     QString s = spicecompat::check_refdes(Name,ltr);

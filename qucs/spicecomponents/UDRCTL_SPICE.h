@@ -22,7 +22,7 @@ class UDRCTL_SPICE : public Component {
   protected:
 //    void createSymbol();
     QString netlist();
-    QString spice_netlist(bool isXyce = false);
+    QString spice_netlist(bool isXyce = false, bool isCdl = false);
 };
 
 #endif /* UDRCTL_SPICE_H */

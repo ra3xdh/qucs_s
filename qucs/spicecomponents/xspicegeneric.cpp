@@ -145,7 +145,7 @@ QString XspiceGeneric::netlist()
     return QString();
 }
 
-QString XspiceGeneric::spice_netlist(bool)
+QString XspiceGeneric::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

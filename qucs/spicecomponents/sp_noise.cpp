@@ -64,7 +64,7 @@ Element* SpiceNoise::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceNoise::spice_netlist(bool isXyce)
+QString SpiceNoise::spice_netlist(bool isXyce, bool)
 {
     QString s;
     QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.

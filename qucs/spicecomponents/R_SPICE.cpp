@@ -113,7 +113,7 @@ QString R_SPICE::netlist()
     return QString();
 }
 
-QString R_SPICE::spice_netlist(bool)
+QString R_SPICE::spice_netlist(bool, bool)
 {
     QString ltr = getProperty("Letter")->Value;
     QString s = spicecompat::check_refdes(Name,ltr);

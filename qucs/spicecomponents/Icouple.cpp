@@ -100,7 +100,7 @@ QString Icouple::netlist()
     return QString();
 }
 
-QString Icouple::spice_netlist(bool)
+QString Icouple::spice_netlist(bool, bool)
 {
   
     QString s = spicecompat::check_refdes(Name,SpiceModel);

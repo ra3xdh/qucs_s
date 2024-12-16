@@ -57,7 +57,7 @@ Element* SpiceFFT::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceFFT::spice_netlist(bool isXyce)
+QString SpiceFFT::spice_netlist(bool isXyce, bool)
 {
     Q_UNUSED(isXyce);
 

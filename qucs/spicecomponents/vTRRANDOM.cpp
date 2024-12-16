@@ -96,7 +96,7 @@ QString vTRRANDOM::netlist()
     return QString();
 }
 
-QString vTRRANDOM::spice_netlist(bool)
+QString vTRRANDOM::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

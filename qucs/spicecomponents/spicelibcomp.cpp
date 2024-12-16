@@ -218,7 +218,7 @@ int SpiceLibComp::loadSymbol(const QString& DocName)
   return -8;   // field not closed
 }
 
-QString SpiceLibComp::spice_netlist(bool)
+QString SpiceLibComp::spice_netlist(bool, bool)
 {
   QString s = QStringLiteral("X%1 ").arg(Name);
   QString pins = getProperty("PinAssign")->Value;

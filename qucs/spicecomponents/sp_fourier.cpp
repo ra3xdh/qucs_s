@@ -54,7 +54,7 @@ Element* SpiceFourier::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceFourier::spice_netlist(bool isXyce)
+QString SpiceFourier::spice_netlist(bool isXyce, bool)
 {
     QString s;
     QString f0 = spicecompat::normalize_value(Props.at(2)->Value);

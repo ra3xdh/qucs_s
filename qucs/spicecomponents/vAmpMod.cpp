@@ -91,7 +91,7 @@ QString vAmpMod::netlist()
     return QString();
 }
 
-QString vAmpMod::spice_netlist(bool)
+QString vAmpMod::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

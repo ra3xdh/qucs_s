@@ -77,7 +77,7 @@ Element* S4Q_V::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString S4Q_V::spice_netlist(bool)
+QString S4Q_V::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

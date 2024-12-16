@@ -55,7 +55,7 @@ Element* XyceScript::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString XyceScript::spice_netlist(bool isXyce)
+QString XyceScript::spice_netlist(bool isXyce, bool)
 {
     QString s = "";
     if (!isXyce) return s;

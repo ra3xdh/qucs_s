@@ -89,7 +89,7 @@ QString iSffm::netlist()
     return QString();
 }
 
-QString iSffm::spice_netlist(bool)
+QString iSffm::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

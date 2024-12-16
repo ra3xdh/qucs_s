@@ -94,7 +94,7 @@ QString LTRA_SPICE::netlist()
     return QString();
 }
 
-QString LTRA_SPICE::spice_netlist(bool)
+QString LTRA_SPICE::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

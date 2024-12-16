@@ -72,7 +72,7 @@ Element* Vac_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Vac_SPICE::spice_netlist(bool)
+QString Vac_SPICE::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

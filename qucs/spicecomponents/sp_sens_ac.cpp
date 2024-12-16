@@ -59,7 +59,7 @@ Element* SpiceSENS_AC::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceSENS_AC::spice_netlist(bool isXyce)
+QString SpiceSENS_AC::spice_netlist(bool isXyce, bool)
 {
     QString s;
     s.clear();

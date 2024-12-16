@@ -86,7 +86,7 @@ QString S4Q_Ieqndef::netlist()
     return QString();
 }
 
-QString S4Q_Ieqndef::spice_netlist(bool)
+QString S4Q_Ieqndef::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

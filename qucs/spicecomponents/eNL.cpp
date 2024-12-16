@@ -82,7 +82,7 @@ QString eNL::netlist()
     return QString();
 }
 
-QString eNL::spice_netlist(bool)
+QString eNL::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {

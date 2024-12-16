@@ -90,7 +90,7 @@ QString core::netlist()
     return QString();
 }
 
-QString core::spice_netlist(bool)
+QString core::spice_netlist(bool, bool)
 {
   
     QString s = spicecompat::check_refdes(Name,SpiceModel);

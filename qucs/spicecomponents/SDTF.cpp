@@ -83,7 +83,7 @@ QString SDTF::netlist()
     return QString();
 }
 
-QString SDTF::spice_netlist(bool)
+QString SDTF::spice_netlist(bool, bool)
 {
   
     QString s = spicecompat::check_refdes(Name,SpiceModel);

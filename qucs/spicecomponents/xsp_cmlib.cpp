@@ -86,7 +86,7 @@ QString XSP_CMlib::getSpiceInit()
     return s;
 }
 
-QString XSP_CMlib::spice_netlist()
+QString XSP_CMlib::spice_netlist(, bool)
 {
     return QString();
 }

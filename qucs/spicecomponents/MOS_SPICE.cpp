@@ -225,7 +225,7 @@ void MOS_SPICE::createSymbol()
     x2 =   4; y2 =  30;
 }
 
-QString MOS_SPICE::spice_netlist(bool)
+QString MOS_SPICE::spice_netlist(bool, bool)
 {
     QString s = spicecompat::check_refdes(Name,Props.at(0)->Value);
     for (Port *p1 : Ports) {

@@ -30,7 +30,7 @@ public:
   QString getSpiceLibrary();
 
 protected:
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(bool isXyce, bool isCdl = false);
   void createSymbol();
   void remakeSymbol(int No, QStringList &pin_names);
   int  loadSymbol(const QString&);

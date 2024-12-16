@@ -58,7 +58,7 @@ Element* SpicePZ::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpicePZ::spice_netlist(bool isXyce)
+QString SpicePZ::spice_netlist(bool isXyce, bool)
 {
     QString s;
     QString out = "spice4qucs." + Name.toLower() + ".cir.pz";
