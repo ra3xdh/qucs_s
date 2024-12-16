@@ -48,6 +48,7 @@
 #include <QHeaderView>
 #include <QDir>
 #include <QDebug>
+#include <QtAlgorithms>
 
 #define CROSS3D_SIZE   30
 #define WIDGET3D_SIZE  2*CROSS3D_SIZE
@@ -1349,6 +1350,7 @@ void DiagramDialog::slotApply()
 
   }   // of "if(Diag->Name != "Tab")"
 
+  qDeleteAll(Diag->Graphs);
   Diag->Graphs.clear();   // delete the graphs
 
   for (std::unique_ptr<Graph>& graph : Graphs) {
