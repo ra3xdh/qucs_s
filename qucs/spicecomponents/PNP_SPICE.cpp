@@ -29,27 +29,27 @@ PNP_SPICE::PNP_SPICE()
     Simulator = spicecompat::simSpice;
 
   Lines.append(new qucs::Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
-  
+
   Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,3)));
   Lines.append(new qucs::Line(-20,  0,-10,  0,QPen(Qt::darkRed,3)));
-  
+
   Lines.append(new qucs::Line(-10, -5,  0,-15,QPen(Qt::darkRed,3)));
-  
+
   Lines.append(new qucs::Line(  0,-15,  0,-20,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
-    
+
   Lines.append(new qucs::Line(-10,  5,  0, 15,QPen(Qt::darkRed,3)));
-  
+
   Lines.append(new qucs::Line(  0, 15,  0, 20,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
 
-  
+
   Lines.append(new qucs::Line( -5, 10, -5, 16,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line( -5, 10,  1, 10,QPen(Qt::darkRed,3)));
-  
+
   Texts.append(new Text(30,12,"PNP",Qt::darkRed,10.0,0.0,-1.0));
 
- 
+
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(-30,  0));
   Ports.append(new Port(  0, 30));
@@ -103,7 +103,7 @@ QString PNP_SPICE::spice_netlist(bool, bool)
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString Q= Props.at(0)->Value;
     QString Q_Line_2= Props.at(1)->Value;
     QString Q_Line_3= Props.at(2)->Value;
@@ -118,4 +118,9 @@ QString PNP_SPICE::spice_netlist(bool, bool)
     s += "\n";
 
     return s;
+}
+
+QString PNP_SPICE::cdl_netlist()
+{
+    return spice_netlist(false, true);
 }

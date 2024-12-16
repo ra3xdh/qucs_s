@@ -133,3 +133,13 @@ QString C_SPICE::spice_netlist(bool, bool)
     s += "\n";
     return s;
 }
+
+QString C_SPICE::cdl_netlist()
+{
+    if (Ports.size() == 2)
+    {
+        return spice_netlist(false, true);
+    }
+
+    return QString();
+}

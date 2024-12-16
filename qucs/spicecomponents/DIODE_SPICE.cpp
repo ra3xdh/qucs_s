@@ -123,7 +123,7 @@ QString DIODE_SPICE::spice_netlist(bool, bool)
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString D= Props.at(0)->Value;
     QString D_Line_2= Props.at(1)->Value;
     QString D_Line_3= Props.at(2)->Value;
@@ -137,4 +137,14 @@ QString DIODE_SPICE::spice_netlist(bool, bool)
     if(  D_Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(D_Line_5);
     s += "\n";
     return s;
+}
+
+QString DIODE_SPICE::cdl_netlist()
+{
+    if (Ports.size() == 2)
+    {
+        return spice_netlist(false, true);
+    }
+
+    return QString();
 }

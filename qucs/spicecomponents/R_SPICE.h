@@ -30,10 +30,12 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   static Element* info_R3(QString&, char* &, bool getNewOne=false);
+
 protected:
   void createSymbol();
   QString netlist();
   QString spice_netlist(bool isXyce = false, bool isCdl = false);
+  virtual QString cdl_netlist();
 };
 
 #endif // R_SPICE_H

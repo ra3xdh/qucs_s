@@ -249,3 +249,13 @@ QString MOS_SPICE::spice_netlist(bool, bool)
 
     return s;
 }
+
+QString MOS_SPICE::cdl_netlist()
+{
+    if (Ports.size() == 4)
+    {
+        return spice_netlist(false, true);
+    }
+
+    return QString();
+}

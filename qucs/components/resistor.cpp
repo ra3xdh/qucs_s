@@ -53,7 +53,7 @@ Component* Resistor::newOne()
   return new Resistor(Props.back()->Value != "US");
 }
 
-QString Resistor::spice_netlist(bool , bool)
+QString Resistor::spice_netlist(bool, bool isCdl /* = false */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
@@ -66,17 +66,25 @@ QString Resistor::spice_netlist(bool , bool)
 
     s += QStringLiteral(" %1").arg(spicecompat::normalize_value(Props.at(0)->Value));
 
-    if (!Tc1.isEmpty()) {
-        s += " tc1=" + Tc1;
-    }
+    if (!isCdl)
+    {
+        if (!Tc1.isEmpty()) {
+            s += " tc1=" + Tc1;
+        }
 
-    if (!Tc2.isEmpty()) {
-        s += " tc2=" + Tc2;
+        if (!Tc2.isEmpty()) {
+            s += " tc2=" + Tc2;
+        }
     }
 
     s += QStringLiteral(" \n");
 
     return s;
+}
+
+QString Resistor::cdl_netlist()
+{
+  return spice_netlist(false, true);
 }
 
 QString Resistor::va_code()
@@ -88,12 +96,12 @@ QString Resistor::va_code()
     QString s = "";
     QString Vpm = vacompat::normalize_voltage(plus,minus);
     QString Ipm = vacompat::normalize_current(plus,minus,true);
-    
+
     if (plus=="gnd") s += QStringLiteral("%1 <+ -(%2/( %3 ));\n").arg(Ipm).arg(Vpm).arg(val);
     else s+= QStringLiteral("%1 <+ %2/( %3 );\n").arg(Ipm).arg(Vpm).arg(val);
     s += QStringLiteral("%1 <+ white_noise( 4.0*`P_K*( %2 + 273.15) / ( %3 ), \"thermal\" );\n")
                  .arg(Ipm).arg(valTemp).arg(val);
-                  
+
     return s;
 }
 

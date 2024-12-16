@@ -94,7 +94,7 @@ Component* JFET::newOne()
   return p;
 }
 
-QString JFET::spice_netlist(bool isXyce, bool)
+QString JFET::spice_netlist(bool isXyce, bool isCdl /* = false */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
@@ -131,9 +131,17 @@ QString JFET::spice_netlist(bool isXyce, bool)
       .arg(getProperty("Temp")->Value);
     }
 
-    s += QStringLiteral(".MODEL JMOD_%1 %2JF (%3)\n").arg(Name).arg(jfet_type).arg(par_str);
+    if (!isCdl)
+    {
+        s += QStringLiteral(".MODEL JMOD_%1 %2JF (%3)\n").arg(Name).arg(jfet_type).arg(par_str);
+    }
 
     return s;
+}
+
+QString JFET::cdl_netlist()
+{
+    return spice_netlist(false, true);
 }
 
 // -------------------------------------------------------

@@ -47,7 +47,7 @@ Ampere_dc::Ampere_dc()
   SpiceModel = "I";
 
   Props.append(new Property("I", "1 mA", true,
-		QObject::tr("current in Ampere")));
+    QObject::tr("current in Ampere")));
 
   rotate();  // fix historical flaw
 }
@@ -68,6 +68,12 @@ QString Ampere_dc::spice_netlist(bool, bool)
             .arg(spicecompat::normalize_value(Props.at(0)->Value));
     return s;
 }
+
+QString Ampere_dc::cdl_netlist()
+{
+    return spice_netlist(false, true);
+}
+
 Component* Ampere_dc::newOne()
 {
   return new Ampere_dc();

@@ -147,3 +147,8 @@ QString SpiceGeneric::spice_netlist(bool, bool)
 
     return s;
 }
+
+QString SpiceGeneric::cdl_netlist()
+{
+    return spice_netlist(false, true);
+}

@@ -124,3 +124,4 @@ QString CapQ::spice_netlist(bool isXyce, bool)
 
     return s;
 }
+

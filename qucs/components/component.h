@@ -42,7 +42,7 @@ public:
   virtual Component* newOne();
   virtual void recreate(Schematic*) {};
   QString getNetlist();
-  QString getSpiceNetlist(bool isXyce = false);
+  QString getSpiceNetlist(bool isXyce = false, bool isCdl = false);
   QString getVerilogACode();
   virtual QString getExpression(bool isXyce = false);
   virtual QString getEquations(QString sim, QStringList &dep_vars);
@@ -115,6 +115,7 @@ public:
 protected:
   virtual QString netlist();
   virtual QString spice_netlist(bool isXyce = false, bool isCdl = false);
+  virtual QString cdl_netlist();
   virtual QString va_code();
   virtual QString vhdlCode(int);
   virtual QString verilogCode(int);

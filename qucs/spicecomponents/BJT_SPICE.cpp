@@ -195,7 +195,7 @@ QString BJT_SPICE::spice_netlist(bool, bool)
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString Q= Props.at(3)->Value;
     QString Q_Line_2= Props.at(4)->Value;
     QString Q_Line_3= Props.at(5)->Value;
@@ -211,3 +211,9 @@ QString BJT_SPICE::spice_netlist(bool, bool)
 
     return s;
 }
+
+QString BJT_SPICE::cdl_netlist()
+{
+    return spice_netlist(false, true);
+}
+

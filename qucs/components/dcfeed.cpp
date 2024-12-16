@@ -80,3 +80,9 @@ QString dcFeed::spice_netlist(bool isXyce, bool)
   s = QStringLiteral("%1 %2 %3 %4\n").arg(name, p1, p2, val);
   return s;
 }
+
+
+QString dcFeed::cdl_netlist()
+{
+    return spice_netlist(false, true);
+}

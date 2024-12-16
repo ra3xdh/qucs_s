@@ -29,9 +29,11 @@ public:
   ~PMOS_SPICE();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+
 protected:
   QString netlist();
   QString spice_netlist(bool isXyce = false, bool isCdl = false);
+  virtual QString cdl_netlist();
 };
 
 #endif // PMOS_SPICE_H

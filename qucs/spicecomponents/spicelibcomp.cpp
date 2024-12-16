@@ -239,6 +239,11 @@ QString SpiceLibComp::spice_netlist(bool, bool)
   return s;
 }
 
+QString SpiceLibComp::cdl_netlist()
+{
+    return spice_netlist(false, true);
+}
+
 QString SpiceLibComp::getSpiceLibrary()
 {
     if (isActive != COMP_IS_ACTIVE) return QString();

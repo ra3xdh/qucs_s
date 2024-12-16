@@ -59,11 +59,11 @@ Mutual::Mutual()
   SpiceModel = "K";
 
   Props.append(new Property("L1", "1 mH", false,
-		QObject::tr("inductance of coil 1")));
+    QObject::tr("inductance of coil 1")));
   Props.append(new Property("L2", "1 mH", false,
-		QObject::tr("inductance of coil 2")));
+    QObject::tr("inductance of coil 2")));
   Props.append(new Property("k", "0.9", false,
-		QObject::tr("coupling factor between coil 1 and 2")));
+    QObject::tr("coupling factor between coil 1 and 2")));
 }
 
 Mutual::~Mutual()

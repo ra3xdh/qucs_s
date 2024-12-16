@@ -36,7 +36,7 @@ public:
 protected:
   QString netlist();
   void createSymbol();
-  QString spice_netlist(bool isXyce, bool isCdl = false);
+  QString spice_netlist(bool isXyce = false, bool isCdl = false);
   QString va_code();
 };
 

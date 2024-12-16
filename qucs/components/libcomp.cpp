@@ -378,6 +378,11 @@ QString LibComp::spice_netlist(bool, bool)
     return s;
 }
 
+QString LibComp::cdl_netlist()
+{
+    return spice_netlist(false, true);
+}
+
 QStringList LibComp::getAttachedIFS()
 {
     QString content;

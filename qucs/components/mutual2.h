@@ -27,8 +27,9 @@ public:
  ~Mutual2();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+
 protected:
-  QString spice_netlist(bool isXyce, bool isCdl = false);
+  QString spice_netlist(bool isXyce = false, bool isCdl = false);
 };
 
 #endif

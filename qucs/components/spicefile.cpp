@@ -506,3 +506,8 @@ QString SpiceFile::spice_netlist(bool, bool)
     s += " " + spicecompat::getSubcktName(getSubcircuitFile()) + "\n";
     return s;
 }
+
+QString SpiceFile::cdl_netlist()
+{
+    return spice_netlist(false);
+}

@@ -147,4 +147,3 @@ QString Mutual2::spice_netlist(bool isXyce, bool)
             .arg(spicecompat::normalize_value(getProperty("k23")->Value));
     return s;
 }
-

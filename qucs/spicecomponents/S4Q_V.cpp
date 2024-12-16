@@ -4,7 +4,6 @@
     begin                : Thu May 21 2015
     copyright            : (C) 2015 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
-             
     SPICE Version         : Friday Sept 11 2015
     copyright            : (C) 2015 Mike Brinson
     email                : mbrin72043@yahoo.co.uk
@@ -33,7 +32,7 @@ S4Q_V::S4Q_V()
 
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
- 
+
   Lines.append(new qucs::Line( 18,  5, 18, 11,QPen(Qt::red,2)));
   Lines.append(new qucs::Line( 21,  8, 15,  8,QPen(Qt::red,2)));
   Lines.append(new qucs::Line(-18,  5,-18, 11,QPen(Qt::black,2)));
@@ -100,4 +99,9 @@ QString S4Q_V::spice_netlist(bool, bool)
     s += "\n";
 
     return s;
+}
+
+QString S4Q_V::cdl_netlist()
+{
+    return spice_netlist(false, true);
 }

@@ -99,7 +99,7 @@ Component* Diode::newOne()
   return new Diode();
 }
 
-QString Diode::spice_netlist(bool isXyce, bool)
+QString Diode::spice_netlist(bool isXyce, bool cdl /* = false */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     // output all node names
@@ -149,15 +149,21 @@ QString Diode::spice_netlist(bool isXyce, bool)
       .arg(getProperty("Temp")->Value);
     }
 
-    if (isXyce) {
-        s += QStringLiteral(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
-    } else {
-        s += QStringLiteral(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
+    if (!cdl)
+    {
+        if (isXyce) {
+            s += QStringLiteral(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
+        } else {
+            s += QStringLiteral(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
+        }
     }
 
-
     return s;
+}
 
+QString Diode::cdl_netlist()
+{
+    return spice_netlist(false, true);
 }
 
 Element* Diode::info(QString& Name, char* &BitmapFile, bool getNewOne)

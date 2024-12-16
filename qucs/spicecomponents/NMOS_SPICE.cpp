@@ -32,7 +32,7 @@ NMOS_SPICE::NMOS_SPICE()
 
   Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-20,  0,-14,  0,QPen(Qt::darkRed,2)));
-  
+
   Lines.append(new qucs::Line(-10,-11,  0,-11,QPen(Qt::darkRed,2)));
 
   Lines.append(new qucs::Line(  0,-11,  0,-20,QPen(Qt::darkRed,2)));
@@ -41,21 +41,21 @@ NMOS_SPICE::NMOS_SPICE()
   Lines.append(new qucs::Line(-10, 11,  0, 11,QPen(Qt::darkRed,2)));
   Lines.append(new qucs::Line(  0, 11,  0, 20,QPen(Qt::darkRed,2)));
   Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,2)));
-  
+
   Lines.append(new qucs::Line(-10,  0, 10,  0,QPen(Qt::darkRed,2)));
   Lines.append(new qucs::Line( 10,  0, 20,  0,QPen(Qt::darkBlue,2)));
-  
+
   Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::darkRed,2)));
   Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::darkRed,2)));
 
   Lines.append(new qucs::Line( -9,  0, -4, -5,QPen(Qt::darkRed,2)));
   Lines.append(new qucs::Line( -9,  0, -4,  5,QPen(Qt::darkRed,2)));
-  
+
   Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkRed,2)));
   Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
-    
+
   //Texts.append(new Text(30,12,"NMOS",Qt::darkRed,10.0,0.0,-1.0));
- 
+
   Ports.append(new Port(  0,-30)); //D
   Ports.append(new Port(-30,  0)); //G
   Ports.append(new Port(  0, 30)); //S
@@ -110,7 +110,7 @@ QString NMOS_SPICE::spice_netlist(bool, bool)
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString M= Props.at(0)->Value;
     QString M_Line_2= Props.at(1)->Value;
     QString M_Line_3= Props.at(2)->Value;
@@ -125,4 +125,9 @@ QString NMOS_SPICE::spice_netlist(bool, bool)
     s += "\n";
 
     return s;
+}
+
+QString NMOS_SPICE::cdl_netlist()
+{
+    return spice_netlist(false, true);
 }

@@ -238,6 +238,11 @@ QString Subcircuit::spice_netlist(bool, bool) {
   return s;
 }
 
+QString Subcircuit::cdl_netlist()
+{
+    return spice_netlist(false, true);
+}
+
 // -------------------------------------------------------
 QString Subcircuit::vhdlCode(int) {
   QString f = misc::properFileName(Props.at(0)->Value);

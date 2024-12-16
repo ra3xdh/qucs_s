@@ -45,7 +45,7 @@ Volt_dc::Volt_dc()
   SpiceModel = "V";
 
   Props.append(new Property("U", "1 V", true,
-		QObject::tr("voltage in Volts")));
+    QObject::tr("voltage in Volts")));
 
   rotate();  // fix historical flaw
 }
@@ -59,7 +59,7 @@ Component* Volt_dc::newOne()
   return new Volt_dc();
 }
 
-QString Volt_dc::spice_netlist(bool, bool)
+QString Volt_dc::spice_netlist(bool, bool isCdl /* = false */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
@@ -68,8 +68,14 @@ QString Volt_dc::spice_netlist(bool, bool)
         s += " "+ nam;   // node names
     }
 
-    s += QStringLiteral(" DC %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
+    s += QStringLiteral(" %1%2\n").arg(isCdl ? "" : "DC ").arg(spicecompat::normalize_value(Props.at(0)->Value));
+
     return s;
+}
+
+QString Volt_dc::cdl_netlist()
+{
+    return spice_netlist(false, true);
 }
 
 Element* Volt_dc::info(QString& Name, char* &BitmapFile, bool getNewOne)

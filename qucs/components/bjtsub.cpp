@@ -201,7 +201,7 @@ void BJTsub::createSymbol()
   x2 =  30; y2 =  30;
 }
 
-QString BJTsub::spice_netlist(bool, bool)
+QString BJTsub::spice_netlist(bool, bool isCdl /* = false */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
@@ -219,14 +219,22 @@ QString BJTsub::spice_netlist(bool, bool)
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
-    if (getProperty("UseGlobTemp")->Value == "yes") {
-      s += QStringLiteral(" QMOD_%1 AREA=%2\n").arg(Name).arg(getProperty("Area")->Value);
+    if (getProperty("UseGlobTemp")->Value == "yes" || isCdl) {
+        s += QStringLiteral(" QMOD_%1 %2=%3\n").arg(Name).arg(isCdl ? "$EA" : "AREA").arg(getProperty("Area")->Value);
     } else {
-      s += QStringLiteral(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
-      .arg(getProperty("Temp")->Value);
+        s += QStringLiteral(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+            .arg(getProperty("Temp")->Value);
     }
 
-    s += QStringLiteral(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
+    if (!isCdl)
+    {
+        s += QStringLiteral(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
+    }
 
     return s;
+}
+
+QString BJTsub::cdl_netlist()
+{
+    return spice_netlist(false, true);
 }

@@ -140,7 +140,7 @@ QString MOSFET::netlist()
   return s + '\n';
 }
 
-QString MOSFET::spice_netlist(bool isXyce, bool)
+QString MOSFET::spice_netlist(bool isXyce, bool isCdl /* = false */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
@@ -199,7 +199,17 @@ QString MOSFET::spice_netlist(bool isXyce, bool)
       s += QStringLiteral(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7 Temp=%8\n")
       .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps).arg(getProperty("Temp")->Value);
     }
-    s += QStringLiteral(".MODEL MMOD_%1 %2MOS (%3)\n").arg(Name).arg(mosfet_type).arg(par_str);
+
+    if (!isCdl)
+    {
+        s += QStringLiteral(".MODEL MMOD_%1 %2MOS (%3)\n").arg(Name).arg(mosfet_type).arg(par_str);
+    }
 
     return s;
 }
+
+QString MOSFET::cdl_netlist()
+{
+    return spice_netlist(false, true);
+}
+

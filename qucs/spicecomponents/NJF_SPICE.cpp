@@ -117,3 +117,8 @@ QString NJF_SPICE::spice_netlist(bool, bool)
 
     return s;
 }
+
+QString NJF_SPICE::cdl_netlist()
+{
+    return spice_netlist(false, true);
+}

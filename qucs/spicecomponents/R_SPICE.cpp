@@ -138,3 +138,13 @@ QString R_SPICE::spice_netlist(bool, bool)
 
     return s;
 }
+
+QString R_SPICE::cdl_netlist()
+{
+    if (Ports.size() == 2)
+    {
+        return spice_netlist(false, true);
+    }
+
+    return QString();
+}

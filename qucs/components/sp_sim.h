@@ -36,7 +36,7 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   void recreate(Schematic*);
-  QString spice_netlist(bool isXyce, bool isCdl = false);
+  QString spice_netlist(bool isXyce = false, bool isCdl = false);
   QStringList getExtraVariables();
 };
 
