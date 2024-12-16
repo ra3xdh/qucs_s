@@ -44,6 +44,7 @@
 #include <QUrl>
 #include <QWheelEvent>
 #include <qt3_compat/qt_compat.h>
+#include <QRegularExpression>
 
 #include "components/vafile.h"
 #include "components/verilogfile.h"
@@ -516,29 +517,46 @@ void Schematic::drawElements(QPainter* painter) {
 void Schematic::drawDcBiasPoints(QPainter* painter) {
     painter->save();
     int x, y, z;
+
+    const int xOffset = 10;
+    const int yOffset = 10;
+
     for (auto* pn : *a_Nodes) {
         if (pn->Name.isEmpty())
             continue;
+
+        QString value = misc::formatValue(pn->Name, 4);
+
         x = pn->cx;
         y = pn->cy + 4;
         z = pn->x1;
-        if (z & 1)
-            x -= painter->fontMetrics().boundingRect(pn->Name).width();
-        if (!(z & 2)) {
-            y -= (painter->fontMetrics().lineSpacing() >> 1) + 4;
-            if (z & 1)
-                x -= 4;
-            else
-                x += 4;
+
+        QRect textRect = painter->fontMetrics().boundingRect(value);
+        int rectWidth = textRect.width() + 6;
+        int rectHeight = textRect.height() + 4;
+
+        if (z & 0x10) {
+            x += xOffset;
+            y -= yOffset;
+        } else {
+            x -= xOffset;
+            y -= yOffset;
         }
-        if (z & 0x10)
-            painter->setPen(Qt::darkGreen); // green for currents
-        else
-            painter->setPen(Qt::blue); // blue for voltages
-        painter->drawText(x, y, pn->Name);
+
+        int rectX = x - rectWidth / 2;
+        int rectY = y - rectHeight / 2;
+
+        painter->setBrush(QBrush(QColor(230,230,230)));
+        painter->setPen(Qt::NoPen);
+        painter->drawRoundedRect( QRectF(rectX, rectY, rectWidth, rectHeight),15,15,Qt::RelativeSize);
+
+        painter->setPen(z & 0x10 ? Qt::darkGreen : Qt::blue);
+        painter->drawText(x - textRect.width() / 2, y + textRect.height() / 4, value);
     }
     painter->restore();
 }
+
+
 
 void Schematic::drawPostPaintEvents(QPainter* painter) {
     painter->save();
