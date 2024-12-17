@@ -83,7 +83,6 @@ protected:
     bool checkGround();
     bool checkSimulations();
     bool checkDCSimulation();
-    QString collectSpiceLibs(Schematic* sch);
 
 public:
 
@@ -130,6 +129,7 @@ public:
     virtual void SaveNetlist(QString filename);
     virtual bool waitEndOfSimulation();
     void setConsole(QPlainTextEdit *console) { a_console = console; }
+    static QString collectSpiceLibs(Schematic* sch);
 
 signals:
     void started();

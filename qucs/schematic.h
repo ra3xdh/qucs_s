@@ -515,6 +515,7 @@ public:
   bool getIsAnalog() const { return a_isAnalog; }
   void setIsVerilog(bool value) { a_isVerilog = value; }
   bool getIsVerilog() const { return a_isVerilog; }
+  bool giveNodeNames(QTextStream *, int&, QStringList&, QPlainTextEdit*, int);
 
 private:
   int  saveDocument();
@@ -540,7 +541,6 @@ private:
   void throughAllNodes(bool, QStringList&, int&);
   void propagateNode(QStringList&, int&, Node*);
   void collectDigitalSignals(void);
-  bool giveNodeNames(QTextStream *, int&, QStringList&, QPlainTextEdit*, int);
   void beginNetlistDigital(QTextStream &);
   void endNetlistDigital(QTextStream &);
   bool throughAllComps(QTextStream *, int&, QStringList&, QPlainTextEdit *, int);

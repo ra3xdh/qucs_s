@@ -32,6 +32,7 @@ spicecompat.cpp
 customsimdialog.cpp
 simsettingsdialog.cpp
 verilogawriter.cpp
+CdlNetlistWriter.cpp
 s2spice.cpp
 spicelibcompdialog.cpp
 #xspice_cmbuilder.cpp
