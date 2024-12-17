@@ -150,7 +150,7 @@ Component* MOSFET_sub::newOne()
   return p;
 }
 
-QString MOSFET_sub::spice_netlist(bool isXyce, bool netlistModel /* = true */)
+QString MOSFET_sub::spice_netlist(bool isXyce, bool isCdl /* = false */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
@@ -209,7 +209,7 @@ QString MOSFET_sub::spice_netlist(bool isXyce, bool netlistModel /* = true */)
       .arg(Name).arg(l).arg(w).arg(ad).arg(as).arg(pd).arg(ps).arg(getProperty("Temp")->Value);
     }
 
-    if (netlistModel)
+    if (!isCdl)
     {
         s += QStringLiteral(".MODEL MMOD_%1 %2MOS (%3)\n").arg(Name).arg(mosfet_type).arg(par_str);
     }
@@ -219,7 +219,7 @@ QString MOSFET_sub::spice_netlist(bool isXyce, bool netlistModel /* = true */)
 
 QString MOSFET_sub::cdl_netlist()
 {
-    return spice_netlist(false, false);
+    return spice_netlist(false, true);
 }
 
 // -------------------------------------------------------

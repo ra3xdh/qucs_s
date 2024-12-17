@@ -27,7 +27,7 @@ public:
   ~InclScript();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getExpression(bool isXyce);
+  QString getExpression(bool isXyce, bool isCdl = false);
 
 protected:
   QString vhdlCode(int) { return QString(); }

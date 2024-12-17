@@ -69,14 +69,21 @@ Element* SpiceParam::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceParam::getExpression(bool)
+QString SpiceParam::getExpression(bool, bool isCdl /* = false */)
 {
     if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s;
     s.clear();
     for (Property *pp : Props) {
-        s += QStringLiteral(".PARAM %1 = %2\n").arg(pp->Name).arg(pp->Value);
+        if (isCdl)
+        {
+            s += QStringLiteral(".PARAM %1=%2\n").arg(pp->Name).arg(pp->Value);
+        }
+        else
+        {
+            s += QStringLiteral(".PARAM %1 = %2\n").arg(pp->Name).arg(pp->Value);
+        }
     }
     return s;
 }

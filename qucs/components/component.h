@@ -44,7 +44,7 @@ public:
   QString getNetlist();
   QString getSpiceNetlist(bool isXyce = false, bool isCdl = false);
   QString getVerilogACode();
-  virtual QString getExpression(bool isXyce = false);
+  virtual QString getExpression(bool isXyce = false, bool isCdl = false);
   virtual QString getEquations(QString sim, QStringList &dep_vars);
   virtual QStringList getExtraVariables();
   virtual QString getProbeVariable(bool isXyce = false);

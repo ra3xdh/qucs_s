@@ -39,7 +39,7 @@ Equation::Equation()
   Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkBlue,2)));
   Texts.append(new Text(-xb+4,  -yb-3, QObject::tr("Equation"),
-			QColor(0,0,0), QFontInfo(f).pixelSize()));
+      QColor(0,0,0), QFontInfo(f).pixelSize()));
 
   x1 = -xb-3;  y1 = -yb-5;
   x2 =  xb+9; y2 =  yb+3;
@@ -51,7 +51,7 @@ Equation::Equation()
 
   Props.append(new Property("y", "1", true));
   Props.append(new Property("Export", "yes", false,
-  		QObject::tr("put result into dataset")+" [yes, no]"));
+      QObject::tr("put result into dataset")+" [yes, no]"));
 }
 
 Equation::~Equation()
@@ -120,10 +120,13 @@ QString Equation::getVAExpressions()
  * \brief Equation::getExpression Extract equations that don't contain simulation variables
  *        (voltages/cureents) in .PARAM section of spice netlist
  * \param isXyce True if Xyce is used.
+ * \param isCdl True if CDL is used.
  * \return .PARAM section of spice netlist as a single string.
  */
-QString Equation::getExpression(bool isXyce)
+QString Equation::getExpression(bool isXyce, bool isCdl /* = false */)
 {
+    Q_UNUSED(isCdl);
+
     if (isActive != COMP_IS_ACTIVE) return QString();
 
     QStringList ng_vars,ngsims;

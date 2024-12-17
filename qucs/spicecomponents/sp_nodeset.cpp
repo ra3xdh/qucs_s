@@ -69,9 +69,9 @@ Element* SpiceNodeset::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceNodeset::getExpression(bool)
+QString SpiceNodeset::getExpression(bool, bool isCdl /* = false */)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString();
+    if (isActive != COMP_IS_ACTIVE || isCdl) return QString();
 
     QString s;
     s.clear();

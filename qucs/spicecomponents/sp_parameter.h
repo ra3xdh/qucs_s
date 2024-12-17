@@ -29,7 +29,7 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   static void splitEqn(QString &eqn, QStringList &tokens);
-  QString getExpression(bool isXyce);
+  QString getExpression(bool isXyce, bool isCdl = false);
 
 protected:
   QString vhdlCode(int) { return QString(); }

@@ -828,7 +828,7 @@ QString Component::getVerilogACode() {
     }
 }
 
-QString Component::getExpression(bool) {
+QString Component::getExpression(bool, bool) {
     return QString();
 }
 

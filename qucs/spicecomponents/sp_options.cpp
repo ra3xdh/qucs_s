@@ -71,9 +71,9 @@ Element* SpiceOptions::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceOptions::getExpression(bool isXyce)
+QString SpiceOptions::getExpression(bool isXyce, bool isCdl /* = false */)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString();
+    if (isActive != COMP_IS_ACTIVE || isCdl) return QString();
 
     QString s;
     s.clear();
