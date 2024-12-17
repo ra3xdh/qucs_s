@@ -859,7 +859,10 @@ int Graph::loadDatFile(const QString &fileName) {
     qDeleteAll(g->mutable_axes());
     g->mutable_axes().clear();
     g->countY = 0;
-    delete[] g->cPointsY;
+    if (g->cPointsY != nullptr) {
+        delete[] g->cPointsY;
+        g->cPointsY = nullptr;
+    }
     if (Variable.isEmpty()) return 0;
 
 #if 0 // FIXME encapsulation. implement digital waves later.

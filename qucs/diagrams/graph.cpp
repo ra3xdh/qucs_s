@@ -48,8 +48,11 @@ Graph::Graph(Diagram const* d, const QString& _Line) :
 
 Graph::~Graph()
 {
+  if (cPointsY != nullptr) {
     delete[] cPointsY;
-    qDeleteAll(cPointsX);
+    cPointsY = nullptr;
+  }
+  qDeleteAll(cPointsX);
 }
 
 // ---------------------------------------------------------------------
