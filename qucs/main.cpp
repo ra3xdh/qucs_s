@@ -806,7 +806,8 @@ int main(int argc, char *argv[])
   QucsDir.cdUp();
 #endif
 
-  QucsSettings.BinDir =      QucsApplicationPath.contains("bin") ? QucsApplicationPath : QucsDir.absoluteFilePath("bin");
+  QucsSettings.BinDir =      QucsApplicationPath.contains("bin") ?
+                                    (QucsApplicationPath + QDir::separator()) : QucsDir.absoluteFilePath("bin/");
   QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
 
   QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
