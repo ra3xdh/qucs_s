@@ -580,7 +580,7 @@ void QucsApp::initActions()
   saveCdlNetlist = new QAction(tr("Save CDL netlist"), this);
   saveCdlNetlist->setStatusTip(tr("Save CDL netlist"));
   saveCdlNetlist->setWhatsThis(tr("Save CDL netlist to file"));
-  Q_ASSERT(connect(saveCdlNetlist, SIGNAL(triggered()), SLOT(slotSaveCdlNetlist())));
+  connect(saveCdlNetlist, SIGNAL(triggered()), SLOT(slotSaveCdlNetlist()));
 
   setMarker = new QAction(QIcon((":/bitmaps/svg/marker.svg")),	tr("Set Marker on Graph"), this);
   setMarker->setShortcut(Qt::CTRL|Qt::Key_B);
