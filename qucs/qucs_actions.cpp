@@ -898,32 +898,40 @@ void QucsApp::slotCallSPAR_Viewer()
 void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QStringList &args,
                          bool qucs_tool)
 {
-  QProcess *tool = new QProcess();
+    QString tooldir = qucs_tool ? QucsSettings.QucsatorDir : QucsSettings.BinDir;
 
-  QString tooldir;
-  if (qucs_tool) tooldir = QucsSettings.QucsatorDir;
-  else tooldir = QucsSettings.BinDir;
+    // Create command path based on the platform
+    QString cmd;
 #if defined(_WIN32) || defined(__MINGW32__)
-  QString cmd = QDir::toNativeSeparators("\""+tooldir + prog + ".exe\"");
+    cmd = QDir(tooldir).absoluteFilePath(prog + ".exe");
 #elif __APPLE__
-  QString cmd = QDir::toNativeSeparators(tooldir + prog + ".app/Contents/MacOS/" + prog);
+    cmd = QDir(tooldir).absoluteFilePath(prog + ".app/Contents/MacOS/" + prog);
 #else
-  QString cmd = QDir::toNativeSeparators(tooldir + prog);
+    cmd = QDir(tooldir).absoluteFilePath(prog);
 #endif
 
-  tool->setWorkingDirectory(tooldir);
-  qDebug() << "Command :" << cmd;
-  tool->start(cmd,args);
+    // Validate if the file exists before attempting to execute
+    if (!QFileInfo(cmd).exists()) {
+        QMessageBox::critical(this, tr("Error"),
+                            tr("Executable %1 not found! \n\n(%2)").arg(progDesc, cmd));
+        return;
+    }
 
-  if(!tool->waitForStarted(1000) ) {
-    QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start %1 program! \n\n(%2)").arg(progDesc, cmd));
-    delete tool;
-    return;
-  }
+    QProcess *tool = new QProcess();
 
-  // to kill the application first before qucs finishes exiting
-  connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
+    qDebug() << "Command :" << cmd;
+    tool->setWorkingDirectory(tooldir);
+    tool->start(cmd,args);
+
+    if(!tool->waitForStarted(1000) ) {
+        QMessageBox::critical(this, tr("Error"),
+                            tr("Cannot start %1 program! \n\n(%2)").arg(progDesc, cmd));
+        delete tool;
+        return;
+    }
+
+    // to kill the application first before qucs finishes exiting
+    connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
 }
 
 
