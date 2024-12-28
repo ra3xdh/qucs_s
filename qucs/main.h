@@ -26,6 +26,8 @@
 #include <QColor>
 #include <QStringList>
 #include <QDir>
+#include <QMap>
+#include <QPen>
 
 
 class QucsApp;
@@ -68,6 +70,8 @@ struct tQucsSettings {
   // A dir for user projects and libraries. See also https://github.com/ra3xdh/qucs_s/issues/145
   QDir qucsWorkspaceDir;
 
+  QDir SysLibDir; // Directory where the system components are stored
+
   // This is the dir where all temporary or intermediate data should be stored.
   // Consider a data "temporary" if its used only once or it makes sense only
   // through out a single app run or a shorter period of time.
@@ -106,6 +110,41 @@ struct tQucsSettings {
 
   bool firstRun;
 };
+
+// Structures for storing the XML-based devices info
+struct LineInfo {
+  double   x1, y1, x2, y2;
+  QPen style;
+};
+
+struct PortInfo {
+  double   x, y;
+  QPen style;
+};
+
+
+struct SymbolDescription{
+  QList<LineInfo>  Lines;
+  QList <PortInfo> Ports;
+};
+
+struct ParameterInfo{
+  double DefaultValue;
+  QString Unit;
+  QString Description;
+  bool Show;
+};
+
+struct ComponentInfo {
+  QString name;
+  QString Schematic_ID; // This is the name that the schematic shows once the component is placed
+  QString description;
+  QString Category;
+  QMap<QString, SymbolDescription> symbol;// Actually, there could be more than one
+  QMap<QString, ParameterInfo> parameters;
+  QMap<QString, QString> Models;
+};
+extern QMap<QString, QMap<QString, ComponentInfo>> LibraryComponents;
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used
 extern QucsApp *QucsMain;  // the Qucs application itself

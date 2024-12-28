@@ -325,6 +325,16 @@ void Component::paintIcon(QPixmap* pixmap) {
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setRenderHint(QPainter::TextAntialiasing);
 
+    if ((x1 == 0) && (x2 == 0))
+    {
+      // Default limits
+      // TO DO: Calculate this from the lines and port coordinates.
+      x1 = -30;
+      x2 = 30;
+      y1 = -40;
+      y2 = 40;
+    }
+
     const QRectF component_br{
         QRect{x1, y1, x2 - x1, y2 - y1}.marginsAdded(QMargins{5, 5, 5, 5})};
     const QRectF picture{pixmap->rect()};

@@ -259,6 +259,7 @@ QucsApp::QucsApp(bool netlist2Console) :
   }
 
 //  fillLibrariesTreeView();
+
 }
 
 QucsApp::~QucsApp()
@@ -266,6 +267,150 @@ QucsApp::~QucsApp()
   Module::unregisterModules ();
 }
 
+
+void QucsApp::readXML(QFile & library_file) {
+  if (!library_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    qDebug() << "Error opening file:" << library_file.errorString();
+    return;
+  }
+
+  QXmlStreamReader xmlReader(&library_file);
+  QString LibraryName, ComponentName;
+  QMap<QString, ComponentInfo> Component;
+
+  while (!xmlReader.atEnd() && !xmlReader.hasError()) {
+    if (xmlReader.readNextStartElement()) {
+      if (xmlReader.name() == "Library") {
+        QString libraryName = xmlReader.attributes().value("name").toString();
+        qDebug() << "Library:" << libraryName;
+        LibraryName = libraryName;
+
+        while (xmlReader.readNextStartElement()) {
+          if (xmlReader.name() == "Component") {
+            QString componentName = xmlReader.attributes().value("name").toString();
+            qDebug() << "  Component:" << componentName;
+            ComponentName = componentName;
+            Component[ComponentName].name = ComponentName;
+            Component[ComponentName].Category = libraryName;
+
+            QString Schematic_ID = xmlReader.attributes().value("schematic_id").toString();
+            Component[ComponentName].Schematic_ID = Schematic_ID;
+
+            while (xmlReader.readNextStartElement()) {
+              if (xmlReader.name() == "Description") {
+                QString Description = xmlReader.readElementText().trimmed();
+                // C.Description = Description;
+                qDebug() << "    Description:" << Description;
+                Component[ComponentName].description = Description;
+              } else if (xmlReader.name() == "Models") {
+                while (xmlReader.readNextStartElement()) {
+                  if (xmlReader.name() == "DefaultModel") {
+                    QString defaultModel = xmlReader.attributes().value("value").toString();
+                    Component[ComponentName].Models["Default"] = defaultModel;
+                    qDebug() << "    Default Model:" << defaultModel;
+                    xmlReader.skipCurrentElement();
+                  } else if (xmlReader.name() == "SpiceModel") {
+                    QString spiceModel = xmlReader.attributes().value("value").toString();
+                    Component[ComponentName].Models["SPICE"] = spiceModel;
+                    qDebug() << "    Spice Model:" << spiceModel;
+                    xmlReader.skipCurrentElement();
+                  } else {
+                    xmlReader.skipCurrentElement();
+                  }
+                }
+              } else if (xmlReader.name() == "Symbols") {
+                while (xmlReader.readNextStartElement()) {
+                  if (xmlReader.name() == "Symbol") {
+                    QString symbolName = xmlReader.attributes().value("id").toString();
+                    qDebug() << "    Symbol ID:" << symbolName;
+
+                    SymbolDescription SymbolData;
+
+                    while (xmlReader.readNextStartElement()) {
+                      if (xmlReader.name() == "PortSym") {
+                        PortInfo Port;
+                        Port.x = xmlReader.attributes().value("x").toInt();
+                        Port.y = xmlReader.attributes().value("y").toInt();
+                        /*Port.type = xmlReader.attributes().value("type").toInt();
+                        Port.angle = xmlReader.attributes().value("angle").toInt();*/
+                        SymbolData.Ports.append(Port);
+                        xmlReader.skipCurrentElement();
+                      } else if (xmlReader.name() == "Line") {
+                        LineInfo Line;
+                        Line.x1 = xmlReader.attributes().value("x1").toInt();
+                        Line.y1 = xmlReader.attributes().value("y1").toInt();
+                        Line.x2 = xmlReader.attributes().value("x2").toInt();
+                        Line.y2 = xmlReader.attributes().value("y2").toInt();
+                        QColor color(xmlReader.attributes().value("color").toString());
+                        int penWidth = xmlReader.attributes().value("width").toInt();
+                        int style = xmlReader.attributes().value("style").toInt();
+
+                        Qt::PenStyle penStyle = static_cast<Qt::PenStyle>(style);
+                        QPen pen(color, penWidth, penStyle);
+                        Line.style = pen;
+                        SymbolData.Lines.append(Line);
+                        xmlReader.skipCurrentElement();
+                      } else {
+                        xmlReader.skipCurrentElement();
+                      }
+                    }
+
+                    Component[ComponentName].symbol[symbolName] = SymbolData;
+                  } else {
+                    xmlReader.skipCurrentElement();
+                  }
+                }
+              } else if (xmlReader.name() == "Parameters") {
+                while (xmlReader.readNextStartElement()) {
+                  if (xmlReader.name() == "Parameter") {
+                    QString Name = xmlReader.attributes().value("name").toString();
+                    QString Unit = xmlReader.attributes().value("unit").toString();
+                    QString DefaultValue = xmlReader.attributes().value("default_value").toString();
+                    QString ShowParam = xmlReader.attributes().value("show").toString();
+                    bool Show = (ShowParam.toInt() != 0); // Convert Show parameter to bool
+                    qDebug() << "    Parameter:" << Name << Unit << DefaultValue;
+                    QString Value = DefaultValue + Unit;
+
+                           // Read parameter description
+                    QString Description;
+                    xmlReader.readNextStartElement();
+                    if (xmlReader.name() == "Description") {
+                      Description = xmlReader.readElementText().trimmed();
+                    }
+
+                    ParameterInfo parameter;
+                    parameter.DefaultValue = DefaultValue.toDouble();
+                    parameter.Unit = Unit;
+                    parameter.Description = Description;
+                    parameter.Show = Show;
+                    Component[ComponentName].parameters[Name] = parameter;
+
+                    xmlReader.skipCurrentElement();
+                  } else {
+                    xmlReader.skipCurrentElement();
+                  }
+                }
+              } else {
+                xmlReader.skipCurrentElement();
+              }
+            }
+            LibraryComponents[libraryName] = Component;
+          } else {
+            xmlReader.skipCurrentElement();
+          }
+        }
+      } else {
+        xmlReader.skipCurrentElement();
+      }
+    }
+  }
+
+  if (xmlReader.hasError()) {
+    qDebug() << "XML error:" << xmlReader.errorString();
+  }
+
+  library_file.close();
+}
 
 // #######################################################################
 // ##########                                                   ##########
@@ -513,6 +658,19 @@ void QucsApp::initView()
   LibCompSearchLayout->setContentsMargins(5, 0, 5, 0);
   LibCompSearchLayout->setSpacing(5);
 #endif
+
+  // Load component libraries
+  // Open each file in the directory where the system library is stored
+  // Read the XML and register each component
+  // The symbol is temporary loaded from a file as the code is not true XML.
+
+  QDir Library_Directory = QucsSettings.SysLibDir;
+  QStringList files = Library_Directory.entryList(QDir::Files);
+
+  for (const QString &filename : files) {
+    QFile library_file(Library_Directory.filePath(filename));
+    readXML(library_file);
+  }
 
   libTreeWidget = new QTreeWidget (this);
   libTreeWidget->setColumnCount (1);
@@ -771,6 +929,12 @@ int QucsApp::fillComboBox(bool setAll) {
         }
         idx = CompChoose->findText(currentText);
         //CompChoose->setCurrentIndex(idx == -1 ? 0 : idx);
+
+        // Add XML-based devices
+        QList<QString> StaticLibraries = LibraryComponents.keys();
+        for (const QString &it: StaticLibraries) {
+          CompChoose->insertItem(CompChoose->count(), it);
+        }
     }
     return idx == -1 ? 0 : idx;
 }
@@ -941,6 +1105,53 @@ void QucsApp::slotSetCompView (int index)
     char * File;
     // Populate list of component bitmaps
     compIdx = 0;
+
+
+     // New loading system
+     // Given the library name, fill the list with the components
+    QString Category = item; // e.g. "Lumped Components"
+    QMap<QString, ComponentInfo> Components = LibraryComponents[Category]; // This is a map containing the information of the components of the category.
+
+    QMapIterator<QString, ComponentInfo> map_it(Components);
+    while (map_it.hasNext()) {
+      map_it.next();
+      QString ComponentName = map_it.key();
+      qDebug() << "Component:" << ComponentName;
+
+      ComponentInfo componentInfo = map_it.value();
+
+
+             // Need to create the png file to display in the components palette.
+             // This is done by loading the symbol descrption into a Component object
+             // and then calling the paintIcon method to paint into a QPixMap.
+
+             // The symbol description is written in a file whose path comes in the component info.
+
+      Component C;
+      QList<qucs::Line *>  Lines;
+      QList<Port *>     Ports;
+      // By default, take the first symbol
+      QMap<QString, SymbolDescription>::const_iterator symbol_it = componentInfo.symbol.constBegin();
+      SymbolDescription SymbolInfo = symbol_it.value();
+      loadSymbol(SymbolInfo, Ports, Lines);
+      C.Ports = Ports;
+      C.Lines = Lines;
+
+      QPixmap *image = new QPixmap(128, 128);
+      C.paintIcon(image);
+      QIcon Icon(*image);
+
+      QListWidgetItem *icon = new QListWidgetItem(ComponentName);
+
+      icon->setIcon(Icon);
+      icon->setToolTip(ComponentName);
+      icon->setData(Qt::UserRole + 1, catIdx);
+      icon->setData(Qt::UserRole + 2, compIdx);
+      CompComps->addItem(icon);
+    }
+
+
+    // Old code below -> THIS LOADS SIMULATION BLOCKS
     QList<Module *>::const_iterator it;
     for (it = Comps.constBegin(); it != Comps.constEnd(); it++) {
       Infos = (*it)->info;
@@ -965,6 +1176,23 @@ void QucsApp::slotSetCompView (int index)
     }
   }
 }
+
+// This function is needed to convert the symbol description into actual symbol components (i.e. Lines, Ports, etc.)
+void QucsApp::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, QList<qucs::Line *>&Lines)
+{
+  // Populate Ports
+  for (const PortInfo& portInfo : SymbolInfo.Ports) {
+    Port* newPort = new Port(portInfo.x, portInfo.y);
+    Ports.append(newPort);
+  }
+
+         // Populate Lines
+  for (const LineInfo& lineInfo : SymbolInfo.Lines) {
+    qucs::Line* newLine = new qucs::Line(lineInfo.x1, lineInfo.y1, lineInfo.x2, lineInfo.y2, lineInfo.style);
+    Lines.append(newLine);
+  }
+}
+
 
 // ------------------------------------------------------------------
 // When CompSearch is being edited, create a temp page show the

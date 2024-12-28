@@ -24,6 +24,8 @@
 #include <QStack>
 #include <QFileSystemModel>
 #include <QSortFilterProxyModel>
+#include "main.h"
+#include "element.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -96,6 +98,7 @@ public:
   QucsDoc* findDoc (QString, int * Pos = 0);
   QString fileType (const QString&);
   static bool isTextDocument(QWidget *);
+  void readXML(QFile &);
 
   QString ProjName;   // name of the project, that is open
   //QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
@@ -288,6 +291,7 @@ public:
   void readProjects();
   void updatePathList(void); // update the list of paths, pruning non-existing paths
   void updatePathList(QStringList);
+  static void loadSymbol(SymbolDescription, QList<Port *>&, QList<qucs::Line *>&);
   //void updateSchNameHash(void); // maps all schematic files in the path list
   //void updateSpiceNameHash(void); // maps all spice files in the path list
 
