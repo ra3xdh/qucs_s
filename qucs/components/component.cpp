@@ -70,7 +70,12 @@ Component::Component() {
 
 // -------------------------------------------------------
 Component *Component::newOne() {
-    return new Component();
+  if (!Name.isEmpty() && Name.endsWith('1')) {
+    Name.chop(1);// Remove the last character. The name is modified after place. Being a constructor copy this would propagate misleading future component number assignations
+  }
+  PartCounter += 1;
+  Name = Schematic_ID + QString("%1").arg(PartCounter);
+  return new Component(*this);
 }
 
 // -------------------------------------------------------
@@ -1844,4 +1849,56 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
     c->tx = x;
     c->ty = y;
     return c;
+}
+
+
+// Used to "shape" this generic component according to the component the user wants to place.
+// The parameters and the symbol come in the "ComponentInfo" structure. This info is loaded
+// from a XML file at the beginning of the program.
+void Component::loadfromComponentInfo(ComponentInfo C)
+{
+  Name = C.name;
+  ComponentName = Name;
+  Schematic_ID = C.Schematic_ID;
+  Description = C.description;
+  Category = C.Category;
+
+  // Iterate over all the parameters defined in the "ComponentInfo" object and add them to the "Component" list of properties
+  for (auto it = C.parameters.constBegin(); it != C.parameters.constEnd(); ++it) {
+    QString parameter_name = it.key();
+    ParameterInfo parameter = it.value();
+
+    QString value = QString("%1%2").arg(parameter.DefaultValue).arg(parameter.Unit);
+    // Append to the component's QList of properties
+    Props.append(new Property(parameter_name, value, parameter.Show, parameter.Description));
+  }
+
+  // Now pick the symbol information from the "ComponentInfo" object and load it into the "Component" class properties
+  // By default, take the first symbol
+  QMap<QString, SymbolDescription>::const_iterator symbol_it = C.symbol.constBegin();
+  SymbolDescription SymbolInfo = symbol_it.value();
+  loadSymbol(SymbolInfo, Ports, Lines);
+
+  // Load models
+  Model = C.Models["Default"];
+  SpiceModel = C.Models["SPICE"];
+}
+
+
+// This function is needed to turn the symbol description structure into actual Qucs-S geometrical objects.
+
+// IT'S PENDING TO REMOVE THIS FROM QucsApp
+void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, QList<qucs::Line *>&Lines)
+{
+  // Populate Ports
+  for (const PortInfo& portInfo : SymbolInfo.Ports) {
+    Port* newPort = new Port(portInfo.x, portInfo.y);
+    Ports.append(newPort);
+  }
+
+         // Populate Lines
+  for (const LineInfo& lineInfo : SymbolInfo.Lines) {
+    qucs::Line* newLine = new qucs::Line(lineInfo.x1, lineInfo.y1, lineInfo.x2, lineInfo.y2, lineInfo.style);
+    Lines.append(newLine);
+  }
 }

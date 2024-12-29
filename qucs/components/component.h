@@ -27,6 +27,7 @@
 #include <QList>
 
 #include "element.h"
+#include "main.h"
 
 
 class Schematic;
@@ -72,6 +73,8 @@ public:
   void    mirrorY();  // mirror about Y axis
   QString save();
   bool    load(const QString&);
+  void loadfromComponentInfo(ComponentInfo);
+  static void loadSymbol(SymbolDescription, QList<Port *>&, QList<qucs::Line *>&);
 
   // to hold track of the component appearance for saving and copying
   bool mirroredX;   // is it mirrored about X axis or not
@@ -106,9 +109,14 @@ public:
   int Simulator = spicecompat::simAll;;
   QString  Model, Name;
   QString  Description;
+  QString Category;
   QString  SpiceModel;
   QStringList SpiceModelcards; // one device may have two modelcards like NPN,PNP
   QPen WrongSimulatorPen;
+
+  int PartCounter; // Counter. Used for schematic placing
+  QString ComponentName; // Convenitional name (e.g. "Capacitor"). It does not contain the part counter.
+  QString Schematic_ID; // This is the name it shows in the schematic (e.g. "C"). It does not contain the part counter.
 
   void paintIcon(QPixmap *pixmap);
   Property * getProperty(const QString&);

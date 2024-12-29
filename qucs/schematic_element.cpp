@@ -2608,14 +2608,15 @@ void Schematic::insertComponent(Component *c)
     {
         // determines the name by looking for names with the same
         // prefix and increment the number
-        for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
+        /*for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
             if(pc->Name.left(len) == c->Name)
             {
                 s = pc->Name.right(pc->Name.length()-len);
                 z = s.toInt(&ok);
                 if(ok) if(z >= max) max = z + 1;
             }
-        c->Name += QString::number(max);  // create name with new number
+        c->Name += QString::number(max);  // create name with new number*/
+        c->Name += QString("%1").arg(c->PartCounter+1);  // create name with new number
     }
 
     setComponentNumber(c); // important for power sources and subcircuit ports

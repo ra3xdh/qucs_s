@@ -1360,23 +1360,36 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   int compIdx =  CompComps->item(i)->data(Qt::UserRole + 2).toInt();
   qDebug() << "slotSelectComponent()" << catIdx << compIdx;
 
-  Category* cat = Category::Categories.at(catIdx);
-  Module *mod = cat->Content.at(compIdx);
-  qDebug() << "mod->info" << mod->info;
-  qDebug() << "mod->infoVA" << mod->infoVA;
-  Infos = mod->info;
-  if (Infos) {
-    // static component
-    view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
-  } else {
-    // Verilog-A component
-    InfosVA = mod->infoVA;
-    // get JSON file out of item name on widgetitem
-    QString filename = Module::vaComponents[name];
-    if (InfosVA) {
-      view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
+    if (catIdx > -1){
+      Category* cat = Category::Categories.at(catIdx);
+      Module *mod = cat->Content.at(compIdx);
+      qDebug() << "mod->info" << mod->info;
+      qDebug() << "mod->infoVA" << mod->infoVA;
+      Infos = mod->info;
+      if (Infos) {
+        // static component (LEGACY)
+        view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
+
+      } else {
+        // Verilog-A component
+        InfosVA = mod->infoVA;
+        // get JSON file out of item name on widgetitem
+        QString filename = Module::vaComponents[name];
+        if (InfosVA) {
+          view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
+        }
+      }
+    } else {
+      Component *C = new Component();
+      // Load component data from LibraryComponents
+      QString CategoryName = CompChoose->currentText();
+      QString ComponentName = CompComps->item(i)->text();
+      QMap<QString, ComponentInfo> Components = LibraryComponents[CategoryName];
+      ComponentInfo CI = Components[ComponentName];
+
+      C->loadfromComponentInfo(CI);
+      view->selElem = C;
     }
-  }
 
   // in "search mode" ?
   if (CompChoose->itemText(0) == tr("Search results")) {
