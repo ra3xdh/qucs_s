@@ -1,0 +1,56 @@
+<Library name="Lumped Components">
+    <Component name="Capacitor" schematic_id = "C">
+        <Description>
+            Ideal Capacitor
+        </Description>
+        <Models>
+                <DefaultModel value = "C">
+                </DefaultModel>
+                <SpiceModel value = "C">
+                </SpiceModel>
+        </Models>
+        <Symbols>
+            <Symbol id="Standard">
+                <PortSym x="-30" y="0" type="1" angle="0" />
+                <Line x1="-4" y1="-11" x2="-4" y2="11" color="#000080" width="2" style="1" />
+                <Line x1="4" y1="-11" x2="4" y2="11" color="#000080" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-4" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="4" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <PortSym x="30" y="0" type="2" angle="180"/>
+            </Symbol>
+        </Symbols>
+        <Parameters>
+            <Parameter name="C" unit="pF" default_value="1" show="1">
+                <Description>Capacitance</Description>
+            </Parameter>
+        </Parameters>
+    </Component>
+        <Component name="Resistor" schematic_id = "R">
+        <Description>
+            Ideal Resistor
+        </Description>
+        <Models>
+                <DefaultModel value = "R">
+                </DefaultModel>
+                <SpiceModel value = "R">
+                </SpiceModel>
+        </Models>
+        <Symbols>
+            <Symbol id="Standard">
+                <PortSym x="-30" y="0" type="1" angle="0" />
+                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <PortSym x="30" y="0" type="2" angle="180"/>
+            </Symbol>
+        </Symbols>
+        <Parameters>
+            <Parameter name="R" unit="Ohm" default_value="1000" show="1">
+                <Description>Resistance</Description>
+            </Parameter>
+        </Parameters>
+    </Component>
+</Library>

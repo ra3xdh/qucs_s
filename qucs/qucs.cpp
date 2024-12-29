@@ -664,11 +664,11 @@ void QucsApp::initView()
   // Read the XML and register each component
   // The symbol is temporary loaded from a file as the code is not true XML.
 
-  QDir Library_Directory = QucsSettings.SysLibDir;
-  QStringList files = Library_Directory.entryList(QDir::Files);
+  QDir LibraryDir(":/Libraries");
+  QStringList files = LibraryDir.entryList(QStringList() << "*.xml", QDir::Files);
 
   for (const QString &filename : files) {
-    QFile library_file(Library_Directory.filePath(filename));
+    QFile library_file(LibraryDir.filePath(filename));
     readXML(library_file);
   }
 

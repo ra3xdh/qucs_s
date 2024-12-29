@@ -142,7 +142,6 @@ bool loadSettings()
     QucsSettings.qucsWorkspaceDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
     QucsSettings.QucsWorkDir = QucsSettings.qucsWorkspaceDir;
     QucsSettings.tempFilesDir.setPath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
-    QucsSettings.SysLibDir.setPath(_settings::Get().item<QString>("QucsHomeDir") + "/.syslibrary/");
 
     QucsSettings.IgnoreFutureVersion = _settings::Get().item<bool>("IgnoreVersion");
     QucsSettings.GraphAntiAliasing = _settings::Get().item<bool>("GraphAntiAliasing");

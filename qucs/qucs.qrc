@@ -107,5 +107,6 @@
         <file>bitmaps/svg/SDTF.svg</file>
         <file>bitmaps/svg/XAPWL.svg</file>
         <file>bitmaps/svg/vhdlfile.svg</file>
+        <file>Libraries/Lumped_Components.xml</file>
     </qresource>
 </RCC>
