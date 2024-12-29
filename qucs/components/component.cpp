@@ -1886,8 +1886,6 @@ void Component::loadfromComponentInfo(ComponentInfo C)
 
 
 // This function is needed to turn the symbol description structure into actual Qucs-S geometrical objects.
-
-// IT'S PENDING TO REMOVE THIS FROM QucsApp
 void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, QList<qucs::Line *>&Lines, QList<struct qucs::Arc *>&Arcs)
 {
   // Populate Ports
@@ -1904,7 +1902,7 @@ void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, Q
 
   // Populate Arcs
   for (const ArcInfo& arcInfo : SymbolInfo.Arcs) {
-    struct qucs::Arc * newArc = new struct qucs::Arc(arcInfo.x, arcInfo.y, arcInfo.width, arcInfo.height, 0, arcInfo.arclen, arcInfo.Pen);
+    struct qucs::Arc * newArc = new struct qucs::Arc(arcInfo.x, arcInfo.y, arcInfo.width, arcInfo.height, arcInfo.angle, arcInfo.arclen, arcInfo.Pen);
     Arcs.append(newArc);
   }
 }

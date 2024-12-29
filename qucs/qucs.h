@@ -291,7 +291,7 @@ public:
   void readProjects();
   void updatePathList(void); // update the list of paths, pruning non-existing paths
   void updatePathList(QStringList);
-  static void loadSymbol(SymbolDescription, QList<Port *>&, QList<qucs::Line *>&);
+
   //void updateSchNameHash(void); // maps all schematic files in the path list
   //void updateSpiceNameHash(void); // maps all spice files in the path list
 

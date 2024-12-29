@@ -1248,12 +1248,14 @@ void QucsApp::slotSetCompView (int index)
       Component C;
       QList<qucs::Line *>  Lines;
       QList<Port *>     Ports;
+      QList<struct qucs::Arc *> Arcs;
       // By default, take the first symbol
       QMap<QString, SymbolDescription>::const_iterator symbol_it = componentInfo.symbol.constBegin();
       SymbolDescription SymbolInfo = symbol_it.value();
-      loadSymbol(SymbolInfo, Ports, Lines);
+      Component::loadSymbol(SymbolInfo, Ports, Lines, Arcs);
       C.Ports = Ports;
       C.Lines = Lines;
+      C.Arcs = Arcs;
 
       QPixmap *image = new QPixmap(128, 128);
       C.paintIcon(image);
@@ -1292,22 +1294,6 @@ void QucsApp::slotSetCompView (int index)
       }
       compIdx++;
     }
-  }
-}
-
-// This function is needed to convert the symbol description into actual symbol components (i.e. Lines, Ports, etc.)
-void QucsApp::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, QList<qucs::Line *>&Lines)
-{
-  // Populate Ports
-  for (const PortInfo& portInfo : SymbolInfo.Ports) {
-    Port* newPort = new Port(portInfo.x, portInfo.y);
-    Ports.append(newPort);
-  }
-
-         // Populate Lines
-  for (const LineInfo& lineInfo : SymbolInfo.Lines) {
-    qucs::Line* newLine = new qucs::Line(lineInfo.x1, lineInfo.y1, lineInfo.x2, lineInfo.y2, lineInfo.Pen);
-    Lines.append(newLine);
   }
 }
 
