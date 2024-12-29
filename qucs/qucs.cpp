@@ -282,13 +282,13 @@ void QucsApp::readXML(QFile & library_file) {
     if (xmlReader.readNextStartElement()) {
       if (xmlReader.name() == "Library") {
         QString libraryName = xmlReader.attributes().value("name").toString();
-        qDebug() << "Library:" << libraryName;
+        //qDebug() << "Library:" << libraryName;
         LibraryName = libraryName;
 
         while (xmlReader.readNextStartElement()) {
           if (xmlReader.name() == "Component") {
             QString componentName = xmlReader.attributes().value("name").toString();
-            qDebug() << "  Component:" << componentName;
+            //qDebug() << "  Component:" << componentName;
             ComponentName = componentName;
             Component[ComponentName].name = ComponentName;
             Component[ComponentName].Category = libraryName;
@@ -299,20 +299,19 @@ void QucsApp::readXML(QFile & library_file) {
             while (xmlReader.readNextStartElement()) {
               if (xmlReader.name() == "Description") {
                 QString Description = xmlReader.readElementText().trimmed();
-                // C.Description = Description;
-                qDebug() << "    Description:" << Description;
+                //qDebug() << "    Description:" << Description;
                 Component[ComponentName].description = Description;
               } else if (xmlReader.name() == "Models") {
                 while (xmlReader.readNextStartElement()) {
                   if (xmlReader.name() == "DefaultModel") {
                     QString defaultModel = xmlReader.attributes().value("value").toString();
                     Component[ComponentName].Models["Default"] = defaultModel;
-                    qDebug() << "    Default Model:" << defaultModel;
+                    //qDebug() << "    Default Model:" << defaultModel;
                     xmlReader.skipCurrentElement();
                   } else if (xmlReader.name() == "SpiceModel") {
                     QString spiceModel = xmlReader.attributes().value("value").toString();
                     Component[ComponentName].Models["SPICE"] = spiceModel;
-                    qDebug() << "    Spice Model:" << spiceModel;
+                    //qDebug() << "    Spice Model:" << spiceModel;
                     xmlReader.skipCurrentElement();
                   } else {
                     xmlReader.skipCurrentElement();
@@ -322,7 +321,7 @@ void QucsApp::readXML(QFile & library_file) {
                 while (xmlReader.readNextStartElement()) {
                   if (xmlReader.name() == "Symbol") {
                     QString symbolName = xmlReader.attributes().value("id").toString();
-                    qDebug() << "    Symbol ID:" << symbolName;
+                    //qDebug() << "    Symbol ID:" << symbolName;
 
                     SymbolDescription SymbolData;
 
@@ -331,10 +330,9 @@ void QucsApp::readXML(QFile & library_file) {
                         PortInfo Port;
                         Port.x = xmlReader.attributes().value("x").toInt();
                         Port.y = xmlReader.attributes().value("y").toInt();
-                        /*Port.type = xmlReader.attributes().value("type").toInt();
-                        Port.angle = xmlReader.attributes().value("angle").toInt();*/
                         SymbolData.Ports.append(Port);
                         xmlReader.skipCurrentElement();
+
                       } else if (xmlReader.name() == "Line") {
                         LineInfo Line;
                         Line.x1 = xmlReader.attributes().value("x1").toInt();
@@ -347,9 +345,129 @@ void QucsApp::readXML(QFile & library_file) {
 
                         Qt::PenStyle penStyle = static_cast<Qt::PenStyle>(style);
                         QPen pen(color, penWidth, penStyle);
-                        Line.style = pen;
+                        Line.Pen = pen;
                         SymbolData.Lines.append(Line);
                         xmlReader.skipCurrentElement();
+
+                      } else if (xmlReader.name() == "Arc") {
+                        ArcInfo Arc;
+                        Arc.x = xmlReader.attributes().value("x").toInt();
+                        Arc.y = xmlReader.attributes().value("y").toInt();
+                        Arc.width = xmlReader.attributes().value("width").toInt();
+                        Arc.height = xmlReader.attributes().value("height").toInt();
+                        Arc.angle = xmlReader.attributes().value("angle").toInt();
+                        Arc.arclen = xmlReader.attributes().value("arclen").toInt();
+
+                        QColor color(xmlReader.attributes().value("color").toString());
+                        int penWidth = xmlReader.attributes().value("width").toInt();
+
+                        QPen pen(color, penWidth, Qt::SolidLine);
+                        Arc.Pen = pen;
+
+                        SymbolData.Arcs.append(Arc);
+                        xmlReader.skipCurrentElement();
+
+                      } else if (xmlReader.name() == "Polyline") {
+                        PolylineInfo Polyline;
+
+                        // Read pen attributes
+                        QColor color(xmlReader.attributes().value("color").toString());
+                        int penWidth = xmlReader.attributes().value("width").toInt();
+                        int style = xmlReader.attributes().value("style").toInt();
+                        int capStyle = xmlReader.attributes().value("capStyle").toInt();
+                        int joinStyle = xmlReader.attributes().value("joinStyle").toInt();
+
+                        Qt::PenStyle penStyle = static_cast<Qt::PenStyle>(style);
+                        Qt::PenCapStyle penCapStyle = static_cast<Qt::PenCapStyle>(capStyle);
+                        Qt::PenJoinStyle penJoinStyle = static_cast<Qt::PenJoinStyle>(joinStyle);
+
+                        QPen pen(color, penWidth, penStyle, penCapStyle, penJoinStyle);
+                        Polyline.Pen = pen;
+
+                               // Read brush style
+                        int brushStyle = xmlReader.attributes().value("brushStyle").toInt();
+                        Polyline.Brush.setStyle(static_cast<Qt::BrushStyle>(brushStyle));
+
+                               // Read points
+                        while (xmlReader.readNextStartElement()) {
+                          if (xmlReader.name() == "point") {
+                            double x = xmlReader.attributes().value("x").toDouble();
+                            double y = xmlReader.attributes().value("y").toDouble();
+                            Polyline.Points.append(QPointF(x, y));
+                            xmlReader.skipCurrentElement();
+                          } else {
+                            xmlReader.skipCurrentElement();
+                          }
+                        }
+                        SymbolData.Polylines.append(Polyline);
+
+                      } else if (xmlReader.name() == "Ellipse") {
+                        EllipseInfo Ellips;
+
+                        // Read ellipse attributes
+                        Ellips.x = xmlReader.attributes().value("x").toDouble();
+                        Ellips.y = xmlReader.attributes().value("y").toDouble();
+                        Ellips.width = xmlReader.attributes().value("width").toDouble();
+                        Ellips.height = xmlReader.attributes().value("height").toDouble();
+
+                               // Read pen attributes
+                        QColor penColor(xmlReader.attributes().value("penColor").toString());
+                        int penWidth = xmlReader.attributes().value("penWidth").toInt();
+                        int penStyle = xmlReader.attributes().value("penStyle").toInt();
+
+                        Ellips.Pen = QPen(penColor, penWidth, static_cast<Qt::PenStyle>(penStyle));
+
+                               // Read brush attributes
+                        QColor brushColor(xmlReader.attributes().value("brushColor").toString());
+                        int brushStyle = xmlReader.attributes().value("brushStyle").toInt();
+
+                        Ellips.Brush = QBrush(brushColor, static_cast<Qt::BrushStyle>(brushStyle));
+
+                        SymbolData.Ellipses.append(Ellips);
+                        xmlReader.skipCurrentElement();
+
+                      } else if (xmlReader.name() == "Rect") {
+                        RectInfo Rect;
+
+                        // Read rectangle attributes
+                        Rect.x = xmlReader.attributes().value("x").toDouble();
+                        Rect.y = xmlReader.attributes().value("y").toDouble();
+                        Rect.width = xmlReader.attributes().value("width").toDouble();
+                        Rect.height = xmlReader.attributes().value("height").toDouble();
+
+                               // Read pen attributes
+                        QColor penColor(xmlReader.attributes().value("penColor").toString());
+                        int penWidth = xmlReader.attributes().value("penWidth").toInt();
+                        int penStyle = xmlReader.attributes().value("penStyle").toInt();
+
+                        Rect.Pen = QPen(penColor, penWidth, static_cast<Qt::PenStyle>(penStyle));
+
+                               // Read brush attributes
+                        QColor brushColor(xmlReader.attributes().value("brushColor").toString());
+                        int brushStyle = xmlReader.attributes().value("brushStyle").toInt();
+
+                        Rect.Brush = QBrush(brushColor, static_cast<Qt::BrushStyle>(brushStyle));
+
+                        SymbolData.Rects.append(Rect);
+                        xmlReader.skipCurrentElement();
+
+                      } else if (xmlReader.name() == "Text") {
+                        TextInfo Text;
+
+                        // Read text attributes
+                        Text.x = xmlReader.attributes().value("x").toDouble();
+                        Text.y = xmlReader.attributes().value("y").toDouble();
+                        Text.s = xmlReader.attributes().value("text").toString();
+                        Text.Color = QColor(xmlReader.attributes().value("color").toString());
+                        Text.Size = xmlReader.attributes().value("size").toDouble();
+                        Text.mCos = xmlReader.attributes().value("mCos").toDouble();
+                        Text.mSin = xmlReader.attributes().value("mSin").toDouble();
+                        Text.over = xmlReader.attributes().value("over").toInt() != 0;
+                        Text.under = xmlReader.attributes().value("under").toInt() != 0;
+
+                        SymbolData.Texts.append(Text);
+                        xmlReader.skipCurrentElement();
+
                       } else {
                         xmlReader.skipCurrentElement();
                       }
@@ -1188,7 +1306,7 @@ void QucsApp::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, QLi
 
          // Populate Lines
   for (const LineInfo& lineInfo : SymbolInfo.Lines) {
-    qucs::Line* newLine = new qucs::Line(lineInfo.x1, lineInfo.y1, lineInfo.x2, lineInfo.y2, lineInfo.style);
+    qucs::Line* newLine = new qucs::Line(lineInfo.x1, lineInfo.y1, lineInfo.x2, lineInfo.y2, lineInfo.Pen);
     Lines.append(newLine);
   }
 }

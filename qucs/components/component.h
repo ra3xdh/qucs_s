@@ -74,7 +74,7 @@ public:
   QString save();
   bool    load(const QString&);
   void loadfromComponentInfo(ComponentInfo);
-  static void loadSymbol(SymbolDescription, QList<Port *>&, QList<qucs::Line *>&);
+  static void loadSymbol(SymbolDescription, QList<Port *>&, QList<qucs::Line *>&, QList<struct qucs::Arc *>&);
 
   // to hold track of the component appearance for saving and copying
   bool mirroredX;   // is it mirrored about X axis or not

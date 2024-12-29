@@ -25,7 +25,7 @@
             </Parameter>
         </Parameters>
     </Component>
-        <Component name="Resistor" schematic_id = "R">
+    <Component name="Resistor" schematic_id = "R">
         <Description>
             Ideal Resistor
         </Description>
@@ -42,6 +42,33 @@
                 <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
                 <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
                 <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <PortSym x="30" y="0" type="2" angle="180"/>
+            </Symbol>
+        </Symbols>
+        <Parameters>
+            <Parameter name="R" unit="Ohm" default_value="1000" show="1">
+                <Description>Resistance</Description>
+            </Parameter>
+        </Parameters>
+    </Component>
+    <Component name="Inductor" schematic_id = "L">
+        <Description>
+            Ideal Inductor
+        </Description>
+        <Models>
+                <DefaultModel value = "L">
+                </DefaultModel>
+                <SpiceModel value = "L">
+                </SpiceModel>
+        </Models>
+        <Symbols>
+            <Symbol id="Standard">
+                <PortSym x="-30" y="0" type="1" angle="0" />
+                <Arc x="-18" y="-6" width="12" height="12" angle="0" arclen="2880" color="#000080" width="2"/>
+                <Arc x="-6" y="-6" width="12" height="12" angle="0" arclen="2880" color="#000080" width="2"/>
+                <Arc x="6" y="-6" width="12" height="12" angle="0" arclen="2880" color="#000080" width="2"/>
                 <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
                 <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
                 <PortSym x="30" y="0" type="2" angle="180"/>

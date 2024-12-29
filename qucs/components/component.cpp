@@ -1877,7 +1877,7 @@ void Component::loadfromComponentInfo(ComponentInfo C)
   // By default, take the first symbol
   QMap<QString, SymbolDescription>::const_iterator symbol_it = C.symbol.constBegin();
   SymbolDescription SymbolInfo = symbol_it.value();
-  loadSymbol(SymbolInfo, Ports, Lines);
+  loadSymbol(SymbolInfo, Ports, Lines, Arcs);
 
   // Load models
   Model = C.Models["Default"];
@@ -1888,7 +1888,7 @@ void Component::loadfromComponentInfo(ComponentInfo C)
 // This function is needed to turn the symbol description structure into actual Qucs-S geometrical objects.
 
 // IT'S PENDING TO REMOVE THIS FROM QucsApp
-void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, QList<qucs::Line *>&Lines)
+void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, QList<qucs::Line *>&Lines, QList<struct qucs::Arc *>&Arcs)
 {
   // Populate Ports
   for (const PortInfo& portInfo : SymbolInfo.Ports) {
@@ -1896,9 +1896,15 @@ void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, Q
     Ports.append(newPort);
   }
 
-         // Populate Lines
+  // Populate Lines
   for (const LineInfo& lineInfo : SymbolInfo.Lines) {
-    qucs::Line* newLine = new qucs::Line(lineInfo.x1, lineInfo.y1, lineInfo.x2, lineInfo.y2, lineInfo.style);
+    qucs::Line* newLine = new qucs::Line(lineInfo.x1, lineInfo.y1, lineInfo.x2, lineInfo.y2, lineInfo.Pen);
     Lines.append(newLine);
+  }
+
+  // Populate Arcs
+  for (const ArcInfo& arcInfo : SymbolInfo.Arcs) {
+    struct qucs::Arc * newArc = new struct qucs::Arc(arcInfo.x, arcInfo.y, arcInfo.width, arcInfo.height, 0, arcInfo.arclen, arcInfo.Pen);
+    Arcs.append(newArc);
   }
 }

@@ -110,20 +110,58 @@ struct tQucsSettings {
 };
 
 // Structures for storing the XML-based devices info
+
+
+struct PolylineInfo{
+  QList<QPointF> Points;
+  QPen Pen;
+  QBrush Brush;
+};
+
+struct EllipseInfo{
+  double x, y, width, height;
+  QPen Pen;
+  QBrush Brush;
+};
+
+struct RectInfo {
+  double x, y, width, height;
+  QPen Pen;
+  QBrush Brush;
+};
+
+
 struct LineInfo {
-  double   x1, y1, x2, y2;
-  QPen style;
+  double x1, y1, x2, y2;
+  QPen Pen;
 };
 
 struct PortInfo {
   double   x, y;
-  QPen style;
+  QPen Pen;
 };
 
+struct ArcInfo {
+  double   x, y, width, height, arclen, angle;
+  QPen Pen;
+};
+
+struct TextInfo {
+  double x, y;
+  QString s;
+  QColor Color;
+  double Size, mSin, mCos;
+  bool over, under;
+};
 
 struct SymbolDescription{
   QList<LineInfo>  Lines;
-  QList <PortInfo> Ports;
+  QList<PortInfo> Ports;
+  QList<ArcInfo> Arcs;
+  QList<PolylineInfo> Polylines;
+  QList<EllipseInfo> Ellipses;
+  QList<RectInfo> Rects;
+  QList<TextInfo> Texts;
 };
 
 struct ParameterInfo{
