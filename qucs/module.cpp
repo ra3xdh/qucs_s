@@ -259,7 +259,7 @@ REGISTER_COMP_2 (QObject::tr("microelectronics"),val,inf1,inf2)
 void Module::registerModules (void) {
   unregisterModules();
 
-  REGISTER_LUMPED_2 (Resistor, info, info_us);
+ /* REGISTER_LUMPED_2 (Resistor, info, info_us);
   REGISTER_LUMPED_1 (Capacitor);
   REGISTER_LUMPED_1 (Inductor);
   REGISTER_LUMPED_1 (IndQ);
@@ -510,7 +510,7 @@ void Module::registerModules (void) {
   REGISTER_FILE_1 (SpiceFile);
   REGISTER_FILE_3 (SParamFile, info1, info2, info);
   REGISTER_FILE_1 (SpiceGeneric);
-  REGISTER_FILE_1 (XspiceGeneric);
+  REGISTER_FILE_1 (XspiceGeneric)*/;
 
   // simulations
   REGISTER_SIMULATION_1 (DC_Sim);
