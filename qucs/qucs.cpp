@@ -326,6 +326,7 @@ void QucsApp::readXML(QFile & library_file) {
                     SymbolDescription SymbolData;
 
                     while (xmlReader.readNextStartElement()) {
+                      qDebug() << xmlReader.name();
                       if (xmlReader.name() == "PortSym") {
                         PortInfo Port;
                         Port.x = xmlReader.attributes().value("x").toInt();
@@ -353,13 +354,13 @@ void QucsApp::readXML(QFile & library_file) {
                         ArcInfo Arc;
                         Arc.x = xmlReader.attributes().value("x").toInt();
                         Arc.y = xmlReader.attributes().value("y").toInt();
-                        Arc.width = xmlReader.attributes().value("width").toInt();
-                        Arc.height = xmlReader.attributes().value("height").toInt();
+                        Arc.width = xmlReader.attributes().value("arc_width").toInt();
+                        Arc.height = xmlReader.attributes().value("arc_height").toInt();
                         Arc.angle = xmlReader.attributes().value("angle").toInt();
                         Arc.arclen = xmlReader.attributes().value("arclen").toInt();
 
                         QColor color(xmlReader.attributes().value("color").toString());
-                        int penWidth = xmlReader.attributes().value("width").toInt();
+                        int penWidth = xmlReader.attributes().value("pen_width").toInt();
 
                         QPen pen(color, penWidth, Qt::SolidLine);
                         Arc.Pen = pen;

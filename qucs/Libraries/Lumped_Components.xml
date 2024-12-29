@@ -66,16 +66,16 @@
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
-                <Arc x="-18" y="-6" width="12" height="12" angle="0" arclen="2880" color="#000080" width="2"/>
-                <Arc x="-6" y="-6" width="12" height="12" angle="0" arclen="2880" color="#000080" width="2"/>
-                <Arc x="6" y="-6" width="12" height="12" angle="0" arclen="2880" color="#000080" width="2"/>
                 <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
                 <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <Arc x="-18" y="-6" arc_width="12" arc_height="12" angle="0" arclen="2880" color="#000080" pen_width="2" />
+                <Arc x="-6" y="-6" arc_width="12" arc_height="12" angle="0" arclen="2880" color="#000080" pen_width="2" />
+                <Arc x="6" y="-6" arc_width="12" arc_height="12" angle="0" arclen="2880" color="#000080" pen_width="2" />
                 <PortSym x="30" y="0" type="2" angle="180"/>
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="R" unit="Ohm" default_value="1000" show="1">
+            <Parameter name="L" unit="nH" default_value="1" show="1">
                 <Description>Resistance</Description>
             </Parameter>
         </Parameters>
