@@ -317,7 +317,7 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
       subcir_body.clear();
       QStringList pin_names;
       QStringList tokens = line.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
-      if (tokens.count() > 3) {
+      if (tokens.count() >= 3) {
         subname = tokens.at(1);
         last_subcir = subname;
       } else continue;
