@@ -1869,7 +1869,8 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
 
 
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator ||
+      !a_isAnalog) {
 
         if(a_isAnalog) {
             // ..... analog subcircuit ...................................
@@ -2054,7 +2055,8 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
 
   // Emit subcircuit components
    createSubNetlistPlain(stream, ErrText, NumPorts);
-   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator &&
+       a_isAnalog) {
       AbstractSpiceKernel *kern = new AbstractSpiceKernel(this);
       QStringList err_lst;
       if (!kern->checkSchematic(err_lst)) {
