@@ -244,7 +244,7 @@ QString Subcircuit::vhdlCode(int) {
   QString s = "  " + Name + ": entity Sub_" + misc::properName(f);
 
   // output all user defined properties
-  if (Props.at(1) != nullptr) {
+  if (Props.count() > 1) {
     s += " generic map (";
     s += Props.at(1)->Value;
     for (qsizetype i = 2; i < Props.size(); i++) {
@@ -274,7 +274,7 @@ QString Subcircuit::verilogCode(int) {
   QString s = "  Sub_" + misc::properName(f);
 
   // output all user defined properties
-  if (Props.at(1) != nullptr) {
+  if (Props.count() > 1) {
     s += " #(";
     s += misc::Verilog_Param(Props.at(1)->Value);
     for (qsizetype i = 2; i < Props.size(); i++)
