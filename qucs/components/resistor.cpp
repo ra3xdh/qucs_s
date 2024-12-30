@@ -53,7 +53,7 @@ Component* Resistor::newOne()
   return new Resistor(Props.back()->Value != "US");
 }
 
-QString Resistor::spice_netlist(bool, bool isCdl /* = false */)
+QString Resistor::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
@@ -66,7 +66,7 @@ QString Resistor::spice_netlist(bool, bool isCdl /* = false */)
 
     s += QStringLiteral(" %1").arg(spicecompat::normalize_value(Props.at(0)->Value));
 
-    if (!isCdl)
+    if (dialect != spicecompat::CDL)
     {
         if (!Tc1.isEmpty()) {
             s += " tc1=" + Tc1;
@@ -84,7 +84,7 @@ QString Resistor::spice_netlist(bool, bool isCdl /* = false */)
 
 QString Resistor::cdl_netlist()
 {
-  return spice_netlist(false, true);
+  return spice_netlist(spicecompat::CDL);
 }
 
 QString Resistor::va_code()

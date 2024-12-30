@@ -85,7 +85,7 @@ Component* Relais::newOne()
   return new Relais();
 }
 
-QString Relais::spice_netlist(bool isXyce, bool)
+QString Relais::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = Name;
     QString unit;
@@ -114,7 +114,7 @@ QString Relais::spice_netlist(bool isXyce, bool)
     QString Ron = spicecompat::normalize_value(Props.at(2)->Value);
     QString Roff = spicecompat::normalize_value(Props.at(3)->Value);
 
-    if (isXyce) {
+    if (dialect == spicecompat::SPICEXyce) {
         s += QStringLiteral(".MODEL %1 vswitch von=%2 voff=%3 ron=%4 roff=%5 \n").arg(model).arg(Vt).arg(Vt-Vh).arg(Ron).arg(Roff);
     } else {
         s += QStringLiteral(".MODEL %1 sw vt=%2 vh=%3 ron=%4 roff=%5 \n").arg(model).arg(Vt).arg(Vh).arg(Ron).arg(Roff);

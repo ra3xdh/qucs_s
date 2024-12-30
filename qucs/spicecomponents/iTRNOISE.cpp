@@ -44,7 +44,6 @@ iTRNOISE::iTRNOISE()
   Polylines.append(new qucs::Polyline(
     std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::blue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
-  
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
@@ -98,8 +97,10 @@ QString iTRNOISE::netlist()
     return QString();
 }
 
-QString iTRNOISE::spice_netlist(bool, bool)
+QString iTRNOISE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -107,14 +108,13 @@ QString iTRNOISE::spice_netlist(bool, bool)
         s += " "+ nam;   // node names
     }
 
-   QString Na= spicecompat::normalize_value(Props.at(0)->Value);
-   QString Nt= spicecompat::normalize_value(Props.at(1)->Value);
-   QString Nalpha= spicecompat::normalize_value(Props.at(2)->Value);
-   QString Namp = spicecompat::normalize_value(Props.at(3)->Value);
-   QString Rtsam = spicecompat::normalize_value(Props.at(4)->Value);
-   QString Rtscapt = spicecompat::normalize_value(Props.at(4)->Value);
-   QString Rtsemt = spicecompat::normalize_value(Props.at(4)->Value);
-
+    QString Na= spicecompat::normalize_value(Props.at(0)->Value);
+    QString Nt= spicecompat::normalize_value(Props.at(1)->Value);
+    QString Nalpha= spicecompat::normalize_value(Props.at(2)->Value);
+    QString Namp = spicecompat::normalize_value(Props.at(3)->Value);
+    QString Rtsam = spicecompat::normalize_value(Props.at(4)->Value);
+    QString Rtscapt = spicecompat::normalize_value(Props.at(4)->Value);
+    QString Rtsemt = spicecompat::normalize_value(Props.at(4)->Value);
 
     s += QStringLiteral(" DC 0 AC 0 TRNOISE(%1 %2 %3 %4 %5  %6 %7) \n").arg(Na).arg(Nt).arg(Nalpha).arg(Namp).
                                 arg(Rtsam).arg(Rtscapt).arg(Rtsemt);

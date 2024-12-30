@@ -24,7 +24,7 @@ LTL_SPICE::LTL_SPICE()
 {
   Description = QObject::tr("SPICE T:");
   Simulator = spicecompat::simSpice;
-  
+
   Arcs.append(new qucs::Arc(-28,-40, 18, 38,16*232, 16*33,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc(-28,  2, 18, 38, 16*95, 16*33,QPen(Qt::darkBlue,2)));
 
@@ -42,8 +42,8 @@ LTL_SPICE::LTL_SPICE()
   Ports.append(new Port(-30,-10));
   Ports.append(new Port(-30, 10));
   Ports.append(new Port( 30,-10));
-  Ports.append(new Port( 30, 10)); 
-  
+  Ports.append(new Port( 30, 10));
+
   x1 = -30; y1 =-12;
   x2 =  30; y2 = 12;
 
@@ -61,7 +61,7 @@ LTL_SPICE::LTL_SPICE()
   Props.append(new Property("V1", "0", true,       QObject::tr("Initial voltage at end 1")));
   Props.append(new Property("I1", "0", true,       QObject::tr("Initial current at end 1")));
   Props.append(new Property("V2", "0", true,       QObject::tr("Initial voltage at end 2")));
-  Props.append(new Property("I2", "0", true,       QObject::tr("Initial current at end 2")));  
+  Props.append(new Property("I2", "0", true,       QObject::tr("Initial current at end 2")));
 
 }
 
@@ -88,8 +88,10 @@ QString LTL_SPICE::netlist()
     return QString();
 }
 
-QString LTL_SPICE::spice_netlist(bool, bool)
+QString LTL_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -97,29 +99,29 @@ QString LTL_SPICE::spice_netlist(bool, bool)
         s += " "+ nam;   // node names
     }
 
-   QString Z0 = spicecompat::normalize_value(Props.at(0)->Value);
-   QString Td = spicecompat::normalize_value(Props.at(1)->Value);
-   QString Freq = spicecompat::normalize_value(Props.at(2)->Value);
-   QString Nl = spicecompat::normalize_value(Props.at(3)->Value);
-   QString V1 = spicecompat::normalize_value(Props.at(4)->Value);
-   QString I1 = spicecompat::normalize_value(Props.at(5)->Value);
-   QString V2 = spicecompat::normalize_value(Props.at(6)->Value);
-   QString I2 = spicecompat::normalize_value(Props.at(7)->Value);
+    QString Z0 = spicecompat::normalize_value(Props.at(0)->Value);
+    QString Td = spicecompat::normalize_value(Props.at(1)->Value);
+    QString Freq = spicecompat::normalize_value(Props.at(2)->Value);
+    QString Nl = spicecompat::normalize_value(Props.at(3)->Value);
+    QString V1 = spicecompat::normalize_value(Props.at(4)->Value);
+    QString I1 = spicecompat::normalize_value(Props.at(5)->Value);
+    QString V2 = spicecompat::normalize_value(Props.at(6)->Value);
+    QString I2 = spicecompat::normalize_value(Props.at(7)->Value);
 
+    if( Z0.trimmed().length() > 0) {
+        s += QStringLiteral(" Z0=%1").arg(Z0);
+    }
+    if( Td.trimmed().length() > 0 )  {
+        s += QStringLiteral(" Td=%1").arg(Td);
+    }
+    if( Freq.trimmed().length() > 0 ) {
+        s += QStringLiteral(" F=%1").arg(Freq);
+    }
+    if( Nl.trimmed().length() > 0 ) {
+        s += QStringLiteral(" NL=%1").arg(Nl);
+    }
 
+    s += QStringLiteral(" IC=%5, %6, %7, %8 \n").arg(V1).arg(I1).arg(V2).arg(I2);
 
-   if( Z0.trimmed().length() > 0) {
-       s += QStringLiteral(" Z0=%1").arg(Z0);
-   }
-   if( Td.trimmed().length() > 0 )  {
-       s += QStringLiteral(" Td=%1").arg(Td);
-   }
-   if( Freq.trimmed().length() > 0 ) {
-       s += QStringLiteral(" F=%1").arg(Freq);
-   }
-   if( Nl.trimmed().length() > 0 ) {
-       s += QStringLiteral(" NL=%1").arg(Nl);
-   }
-   s += QStringLiteral(" IC=%5, %6, %7, %8 \n").arg(V1).arg(I1).arg(V2).arg(I2);
     return s;
 }

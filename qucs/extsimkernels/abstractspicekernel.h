@@ -76,7 +76,7 @@ protected:
     bool a_parsePZzeros;  // PZ output is parsed twice, first poles, then zeros
 
     bool prepareSpiceNetlist(QTextStream &stream, bool isSubckt = false);
-    virtual void startNetlist(QTextStream& stream, bool xyce = false);
+    virtual void startNetlist(QTextStream& stream, spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                QStringList& vars, QStringList &outputs);
     void removeAllSimulatorOutputs();

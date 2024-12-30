@@ -91,7 +91,7 @@ void XspiceGeneric::createSymbol()
 
   int No = n_ports.count();
   QString tmp;
-  
+
   // draw symbol outline
   #define HALFWIDTH  27
   int h = 30*((No-1)/2) + 15;
@@ -145,8 +145,10 @@ QString XspiceGeneric::netlist()
     return QString();
 }
 
-QString XspiceGeneric::spice_netlist(bool, bool)
+QString XspiceGeneric::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     QStringList t_ports = Props.at(0)->Value.split(',');

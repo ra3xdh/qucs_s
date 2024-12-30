@@ -162,7 +162,7 @@ void CdlNetlistWriter::startNetlist()
     {
         if (a_schematic->getIsAnalog() && !pc->isSimulation && !pc->isEquation)
         {
-            s = pc->getSpiceNetlist(false, true);
+            s = pc->getSpiceNetlist(spicecompat::CDL);
             a_netlistStream << s;
         }
     }

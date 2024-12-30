@@ -193,14 +193,14 @@ QString Param_Sweep::getCounterVar()
     return s;
 }
 
-QString Param_Sweep::spice_netlist(bool isXyce, bool)
+QString Param_Sweep::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     double start,stop,step,fac,points;
     QString unit;
     QString s;
 
-    if(getProperty("Type")->Value=="list") { // List STEP variance Xyce-only
-        if(isXyce) {
+    if (getProperty("Type")->Value=="list") { // List STEP variance Xyce-only
+        if(dialect == spicecompat::SPICEXyce) {
             QString var = getProperty("Param")->Value;
             QString list = getProperty("Values")->Value;
             list.remove('[').remove(']');
@@ -209,7 +209,7 @@ QString Param_Sweep::spice_netlist(bool isXyce, bool)
             return s.toLower();
         }
     }
-    if(getProperty("Type")->Value!="list" && getProperty("Type")->Value!="const"){
+    if (getProperty("Type")->Value!="list" && getProperty("Type")->Value!="const"){
         misc::str2num(getProperty("Start")->Value,start,unit,fac);
         start *= fac;
         misc::str2num(getProperty("Stop")->Value,stop,unit,fac);
@@ -222,8 +222,8 @@ QString Param_Sweep::spice_netlist(bool isXyce, bool)
     if (Props.at(0)->Value.toLower().startsWith("dc")) {
         QString src = getProperty("Param")->Value;
         s = QStringLiteral("DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
-        if (isXyce) s.prepend('.');
-    } else if (isXyce) {
+        if (dialect == spicecompat::SPICEXyce) s.prepend('.');
+    } else if (dialect == spicecompat::SPICEXyce) {
         QString var = getProperty("Param")->Value;
         s = QStringLiteral(".STEP %1 %2 %3 %4\n").arg(var).arg(start).arg(stop).arg(step);
     } else {

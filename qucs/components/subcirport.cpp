@@ -108,8 +108,10 @@ QString SubCirPort::netlist()
 }
 
 // -------------------------------------------------------
-QString SubCirPort::spice_netlist(bool, bool)
+QString SubCirPort::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     return QString();
 }
 

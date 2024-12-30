@@ -66,7 +66,9 @@ QString Ground::netlist()
   return QString();
 }
 
-QString Ground::spice_netlist(bool, bool)
+QString Ground::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     return QString();
 }

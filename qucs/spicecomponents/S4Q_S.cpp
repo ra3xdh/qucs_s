@@ -39,11 +39,11 @@ S4Q_S::S4Q_S()
     Lines.append(new qucs::Line(  5,  0,    0,  8,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
     Lines.append(new qucs::Line(-10, -30, -10,  -15,QPen(Qt::darkBlue,2)));
     Lines.append(new qucs::Line( 10, -30,  10,  -15,QPen(Qt::darkBlue,2)));
-    
+
     Lines.append(new qucs::Line(22,  -20, 18, -20,QPen(Qt::red,2)));
     Lines.append(new qucs::Line(20,  -22,  20,-18,QPen(Qt::red,2)));
     Lines.append(new qucs::Line(-20, -22, -20,-18,QPen(Qt::black,2)));
-    
+
     Ports.append(new Port(-30,  0)); // Ps+
     Ports.append(new Port( 30,  0)); // Ps-
     Ports.append(new Port( 10,-30)); // Pc+
@@ -93,8 +93,10 @@ Element* S4Q_S::info(QString& Name, char* &BitmapFile, bool getNewOne)
  //   return QString();
 //}
 
-QString S4Q_S::spice_netlist(bool, bool)
+QString S4Q_S::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;

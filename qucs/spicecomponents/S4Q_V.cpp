@@ -76,8 +76,10 @@ Element* S4Q_V::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString S4Q_V::spice_netlist(bool, bool)
+QString S4Q_V::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -103,5 +105,5 @@ QString S4Q_V::spice_netlist(bool, bool)
 
 QString S4Q_V::cdl_netlist()
 {
-    return spice_netlist(false, true);
+    return spice_netlist(spicecompat::CDL);
 }

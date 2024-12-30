@@ -96,8 +96,10 @@ QString vTRRANDOM::netlist()
     return QString();
 }
 
-QString vTRRANDOM::spice_netlist(bool, bool)
+QString vTRRANDOM::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -105,11 +107,11 @@ QString vTRRANDOM::spice_netlist(bool, bool)
         s += " "+ nam;   // node names
     }
 
-   QString Type= spicecompat::normalize_value(Props.at(0)->Value);
-   QString Ts= spicecompat::normalize_value(Props.at(1)->Value);
-   QString Td= spicecompat::normalize_value(Props.at(2)->Value);
-   QString Param1 = spicecompat::normalize_value(Props.at(3)->Value);
-   QString Param2 = spicecompat::normalize_value(Props.at(4)->Value);
+    QString Type= spicecompat::normalize_value(Props.at(0)->Value);
+    QString Ts= spicecompat::normalize_value(Props.at(1)->Value);
+    QString Td= spicecompat::normalize_value(Props.at(2)->Value);
+    QString Param1 = spicecompat::normalize_value(Props.at(3)->Value);
+    QString Param2 = spicecompat::normalize_value(Props.at(4)->Value);
 
     s += QStringLiteral(" DC 0 AC 0 TRRANDOM(%1 %2 %3 %4 %5 ) \n").arg(Type).arg(Ts).arg(Td).arg(Param1).arg(Param2);
     return s;

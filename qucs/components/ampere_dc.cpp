@@ -56,8 +56,10 @@ Ampere_dc::~Ampere_dc()
 {
 }
 
-QString Ampere_dc::spice_netlist(bool, bool)
+QString Ampere_dc::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     QString plus = Ports.at(1)->Connection->Name;
@@ -71,7 +73,7 @@ QString Ampere_dc::spice_netlist(bool, bool)
 
 QString Ampere_dc::cdl_netlist()
 {
-    return spice_netlist(false, true);
+    return spice_netlist(spicecompat::CDL);
 }
 
 Component* Ampere_dc::newOne()

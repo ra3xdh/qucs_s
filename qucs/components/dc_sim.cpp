@@ -67,10 +67,10 @@ Element* DC_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString DC_Sim::spice_netlist(bool isXyce, bool)
+QString DC_Sim::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s;
-    if ( !isXyce ) {
+    if (dialect != spicecompat::SPICEXyce) {
         s += "op\n";
     }
 

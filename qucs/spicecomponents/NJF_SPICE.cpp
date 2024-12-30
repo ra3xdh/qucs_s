@@ -29,23 +29,23 @@ NJF_SPICE::NJF_SPICE()
   Simulator = spicecompat::simSpice;
 
   Lines.append(new qucs::Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
-  
+
   Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(-20,  0,-10,  0,QPen(Qt::darkRed,3)));  
-  
+  Lines.append(new qucs::Line(-20,  0,-10,  0,QPen(Qt::darkRed,3)));
+
   Lines.append(new qucs::Line(-10,-10,  0,-10,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0,-10,  0,-20,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3))); 
-  
+  Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
+
   Lines.append(new qucs::Line(-10, 10,  0, 10,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0, 10,  0, 20,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,2)));
-  
+
   Lines.append(new qucs::Line(-16, -5,-11,  0,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(-16,  5,-11,  0,QPen(Qt::darkRed,3)));
 
   Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
-  
+
   //Texts.append(new Text(30,12,"NJF",Qt::darkRed,10.0,0.0,-1.0));
 
   Ports.append(new Port(  0,-30)); //D
@@ -93,15 +93,17 @@ QString NJF_SPICE::netlist()
     return QString();
 }
 
-QString NJF_SPICE::spice_netlist(bool, bool)
+QString NJF_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString J= Props.at(0)->Value;
     QString J_Line_2= Props.at(1)->Value;
     QString J_Line_3= Props.at(2)->Value;
@@ -120,5 +122,5 @@ QString NJF_SPICE::spice_netlist(bool, bool)
 
 QString NJF_SPICE::cdl_netlist()
 {
-    return spice_netlist(false, true);
+    return spice_netlist(spicecompat::CDL);
 }

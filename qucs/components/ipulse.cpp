@@ -89,8 +89,10 @@ Element* iPulse::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString iPulse::spice_netlist(bool, bool)
+QString iPulse::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
@@ -101,7 +103,7 @@ QString iPulse::spice_netlist(bool, bool)
 
     QString VL = spicecompat::normalize_value(Props.at(0)->Value); // VL
     QString VH = spicecompat::normalize_value(Props.at(1)->Value); // VH
-   QString Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr 
+    QString Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr 
     QString Tf = spicecompat::normalize_value(Props.at(5)->Value); // Tf
 
     misc::str2num(Props.at(2)->Value,T1,unit,fac); // Td

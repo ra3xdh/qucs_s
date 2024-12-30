@@ -53,7 +53,7 @@ Element* Capacitor::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Capacitor::spice_netlist(bool, bool isCdl /*= false */)
+QString Capacitor::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
@@ -64,7 +64,7 @@ QString Capacitor::spice_netlist(bool, bool isCdl /*= false */)
     s += " "+spicecompat::normalize_value(Props.at(0)->Value) + " ";
     QString val = Props.at(1)->Value; // add inial voltage if presents
     val = val.remove(' ').toUpper();
-    if (!val.isEmpty() && !isCdl) {
+    if (!val.isEmpty() && dialect != spicecompat::CDL) {
         s += " IC=" + val;
     }
 
@@ -73,7 +73,7 @@ QString Capacitor::spice_netlist(bool, bool isCdl /*= false */)
 
 QString Capacitor::cdl_netlist()
 {
-    return spice_netlist(false, true);
+    return spice_netlist(spicecompat::CDL);
 }
 
 QString Capacitor::va_code()

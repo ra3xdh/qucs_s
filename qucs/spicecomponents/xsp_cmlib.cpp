@@ -86,8 +86,10 @@ QString XSP_CMlib::getSpiceInit()
     return s;
 }
 
-QString XSP_CMlib::spice_netlist(bool, bool)
+QString XSP_CMlib::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     return QString();
 }
 

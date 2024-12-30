@@ -30,7 +30,7 @@ Src_eqndef::Src_eqndef()
   Model = "src_eqndef";
   SpiceModel = "B";
   Name  = "B";
-  
+
   Props.append(new Property("V", "", true,"B(V) specification"));
   Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
   Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
@@ -67,15 +67,17 @@ QString Src_eqndef::netlist()
     return QString();
 }
 
-QString Src_eqndef::spice_netlist(bool, bool)
+QString Src_eqndef::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam   + " ";   // node names
     }
-    
+
     QString VI  = Props.at(0)-> Name;
     QString VI2 = Props.at(0)->Value;
     QString Line_2 = Props.at(1)->Value;

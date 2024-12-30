@@ -37,7 +37,7 @@ private:
 protected:
   QString netlist();
   void createSymbol();
-  QString spice_netlist(bool isXyce = false, bool isCdl = false);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 
 };
 

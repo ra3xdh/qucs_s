@@ -33,14 +33,14 @@ PMF_MESFET_SPICE::PMF_MESFET_SPICE()
   Lines.append(new qucs::Line(-10,-10,  0,-10,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0,-10,  0,-20,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
-   
+
   Lines.append(new qucs::Line(-10, 10,  0, 10,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0, 10,  0, 20,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
   Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
 
   Texts.append(new Text(30,12,"PMF",Qt::darkRed,10.0,0.0,-1.0));
-  
+
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(-30,  0));
   Ports.append(new Port(  0, 30));
@@ -67,7 +67,7 @@ PMF_MESFET_SPICE::~PMF_MESFET_SPICE()
 {
 }
 
-Component* PMF_MESFET_SPICE::newOne() 
+Component* PMF_MESFET_SPICE::newOne()
 {
   return new PMF_MESFET_SPICE();
 }
@@ -86,15 +86,17 @@ QString PMF_MESFET_SPICE::netlist()
     return QString();
 }
 
-QString PMF_MESFET_SPICE::spice_netlist(bool, bool)
+QString PMF_MESFET_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString Z= Props.at(0)->Value;
     QString Z_Line_2= Props.at(1)->Value;
     QString Z_Line_3= Props.at(2)->Value;

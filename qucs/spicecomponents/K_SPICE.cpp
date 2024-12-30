@@ -44,11 +44,11 @@ K_SPICE::K_SPICE()
     SpiceModel = "K";
     Name  = "K";
 
-    
+
       Props.append(new Property("Ind1", "L1", true, "Inductance 1 name"));
       Props.append(new Property("Ind2", "L2", true, "Inductance 2 name"));
       Props.append(new Property("K",   "0.1", true, QObject::tr("Coupling factor ( 0  <  K  <= 1)")));
-  
+
     rotate();  // fix historical flaw
 }
 
@@ -75,20 +75,25 @@ QString K_SPICE::netlist()
     return QString();
 }
 
-QString K_SPICE::spice_netlist(bool, bool)
+QString K_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-	QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    Q_UNUSED(dialect);
+
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
+
+    for (Port *p1 : Ports)
+    {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
-        s += " "+ nam+" ";   // node names
-}
-   QString Ind1 = Props.at(0) ->Value;
-   QString Ind2 = Props.at(1) ->Value;
-   QString K = spicecompat::normalize_value(Props.at(2)->Value);
-   
-   s+= QStringLiteral(" %1 %2 %3 \n").arg(Ind1).arg(Ind2).arg(K);
-    
+        s += " " + nam + " ";   // node names
+    }
+
+    QString Ind1 = Props.at(0) ->Value;
+    QString Ind2 = Props.at(1) ->Value;
+    QString K = spicecompat::normalize_value(Props.at(2)->Value);
+
+    s+= QStringLiteral(" %1 %2 %3 \n").arg(Ind1).arg(Ind2).arg(K);
+
     return s;
 }
 

@@ -206,9 +206,9 @@ QString SP_Sim::xyce_netlist()
     return s;
 }
 
-QString SP_Sim::spice_netlist(bool isXyce, bool)
+QString SP_Sim::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isXyce) {
+    if (dialect == spicecompat::SPICEXyce) {
         return xyce_netlist();
     } else {
         return ngspice_netlist();

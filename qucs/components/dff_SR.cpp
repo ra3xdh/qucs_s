@@ -13,7 +13,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  */
 #include "dff_SR.h"
 #include "node.h"
@@ -46,7 +46,7 @@ Component * dff_SR::newOne()
   dff_SR * p = new dff_SR();
 
   p->Props.front()->Value = Props.front()->Value;
-  p->recreate(0); 
+  p->recreate(0);
   return p;
 }
 
@@ -85,7 +85,7 @@ void dff_SR::createSymbol()
   Texts.append(new Text( 15.5,  12,  "Q", Qt::darkBlue, 12.0));
   Texts.last()->over=true;
   Texts.append(new Text( -4, 24,  "R", Qt::darkBlue, 12.0));
- 
+
   Ports.append(new Port(0,  -60));  // S
   Ports.append(new Port(-50,-20));  // D
   Ports.append(new Port(-50, 20));  // CLK
@@ -121,7 +121,7 @@ QString dff_SR::vhdlCode( int )
       "      state := '0';\n"+
       "    elsif ("+CLK+" = '1' and "+CLK+"'event) then\n"+
       "      state := "+D+";\n"+
-      "    end if;\n"+ 
+      "    end if;\n"+
       "    "+Q+" <= state"+td+
       "    "+QB+" <= not state"+td+
       "  end process;\n";
@@ -132,9 +132,9 @@ QString dff_SR::verilogCode( int )
 {
   QString td = Props.at(2)->Value;        // delay time
   if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
-  
+
   QString l = "";
- 
+
   QString S     = Ports.at(0)->Connection->Name;
   QString D     = Ports.at(1)->Connection->Name;
   QString CLK   = Ports.at(2)->Connection->Name;
@@ -175,9 +175,9 @@ QString dff_SR::verilogCode( int )
   return l;
 }
 
-QString dff_SR::spice_netlist(bool isXyce, bool)
+QString dff_SR::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isXyce) return QString();
+    if (dialect == spicecompat::SPICEXyce) return QString();
 
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;

@@ -1,9 +1,9 @@
 /***************************************************************************
                          gNL.cpp  -  description
                    --------------------------------------
-    begin                    : Tue. Mar 31 2015
-    copyright              : (C) by Mike Brinson (mbrin72043@yahoo.co.uk),
-														Vadim Kuznetsov (ra3xdh@gmail.com)
+    begin                   : Tue. Mar 31 2015
+    copyright               : (C) by Mike Brinson (mbrin72043@yahoo.co.uk),
+                            : Vadim Kuznetsov (ra3xdh@gmail.com)
 
  ***************************************************************************/
 
@@ -36,7 +36,7 @@ gNL::gNL()
   Lines.append(new qucs::Line( -7,  0,  6,  0,QPen(Qt::blue,3, Qt::SolidLine, Qt::FlatCap)));
   Polylines.append(new qucs::Polyline(
     std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::blue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
- 
+
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
@@ -54,7 +54,7 @@ gNL::gNL()
   Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
   Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
   Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
-  
+
     rotate();  // fix historical flaw
 }
 
@@ -81,27 +81,30 @@ QString gNL::netlist()
     return QString();
 }
 
-QString gNL::spice_netlist(bool, bool)
+QString gNL::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
+
     QString G= Props.at(0)->Value;
-    QString Line_2 = Props.at(1)->Value; 
+    QString Line_2 = Props.at(1)->Value;
     QString Line_3 = Props.at(2)->Value;
     QString Line_4 = Props.at(3)->Value;
     QString Line_5 = Props.at(4)->Value;
- 
-    
+
     if(  G.length()      > 0 )   s += QStringLiteral("%1").arg(G);
     if(  Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_2);
     if(  Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_3);
     if(  Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_4);
     if(  Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_5);
+
     s += "\n";
 
-     return s;
+    return s;
 }

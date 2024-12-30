@@ -59,7 +59,7 @@ CCVS::CCVS()
   SpiceModel = "H";
 
   Props.append(new Property("G", "1 Ohm", true,
-		QObject::tr("forward transfer factor")));
+    QObject::tr("forward transfer factor")));
   Props.append(new Property("T", "0", false, QObject::tr("delay time (Qucsator only)")));
 }
 
@@ -82,28 +82,30 @@ Element* CCVS::info(QString& Name, char* &BitmapFile, bool getNewOne)
 }
 
 QString CCVS::va_code()
-{   
+{
     QString Gain = vacompat::normalize_value(Props.at(0)->Value);
-	QString P1 = Ports.at(0)->Connection->Name;
+    QString P1 = Ports.at(0)->Connection->Name;
     QString P4 = Ports.at(1)->Connection->Name;
     QString P3 = Ports.at(2)->Connection->Name;
     QString P2 = Ports.at(3)->Connection->Name;
     QString s = "";
-    
+
     QString Vpm = vacompat::normalize_voltage(P1,P2);
-    QString Ipm = vacompat::normalize_current(P1,P2,true);  
+    QString Ipm = vacompat::normalize_current(P1,P2,true);
     s += QStringLiteral(" %1  <+  %2 * 1e3;\n").arg(Ipm).arg(Vpm);
     QString Vpm2 = vacompat::normalize_voltage(P3,P4);
-    QString Ipm2 = vacompat::normalize_current(P3,P4,true); 
+    QString Ipm2 = vacompat::normalize_current(P3,P4,true);
     s += QStringLiteral("%1  <+  -(%2 * 1e3);\n").arg(Ipm2).arg(Vpm2);
     s += QStringLiteral("%1  <+  -(%2 * 1e6*  %3) ;\n").arg(Ipm2).arg(Vpm).arg(Gain);
-    
+
     return s;
 }
 
 // -------------------------------------------------------
-QString CCVS::spice_netlist(bool, bool)
+QString CCVS::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel); // spice CCVS consists two sources: output source
                         // and zero value controlling source
     QString val = spicecompat::normalize_value(Props.at(0)->Value);

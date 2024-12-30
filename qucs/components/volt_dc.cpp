@@ -59,7 +59,7 @@ Component* Volt_dc::newOne()
   return new Volt_dc();
 }
 
-QString Volt_dc::spice_netlist(bool, bool isCdl /* = false */)
+QString Volt_dc::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
@@ -68,14 +68,14 @@ QString Volt_dc::spice_netlist(bool, bool isCdl /* = false */)
         s += " "+ nam;   // node names
     }
 
-    s += QStringLiteral(" %1%2\n").arg(isCdl ? "" : "DC ").arg(spicecompat::normalize_value(Props.at(0)->Value));
+    s += QStringLiteral(" %1%2\n").arg(dialect == spicecompat::CDL ? "" : "DC ").arg(spicecompat::normalize_value(Props.at(0)->Value));
 
     return s;
 }
 
 QString Volt_dc::cdl_netlist()
 {
-    return spice_netlist(false, true);
+    return spice_netlist(spicecompat::CDL);
 }
 
 Element* Volt_dc::info(QString& Name, char* &BitmapFile, bool getNewOne)

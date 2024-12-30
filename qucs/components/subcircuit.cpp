@@ -219,7 +219,10 @@ QString Subcircuit::netlist() {
   return s + '\n';
 }
 
-QString Subcircuit::spice_netlist(bool, bool) {
+QString Subcircuit::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
+{
+  Q_UNUSED(dialect);
+
   QString s;
   QString f = misc::properFileName(Props.at(0)->Value);
   s += spicecompat::check_refdes(Name, SpiceModel);
@@ -240,7 +243,7 @@ QString Subcircuit::spice_netlist(bool, bool) {
 
 QString Subcircuit::cdl_netlist()
 {
-    return spice_netlist(false, true);
+    return spice_netlist(spicecompat::CDL);
 }
 
 // -------------------------------------------------------

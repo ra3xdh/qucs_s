@@ -229,9 +229,10 @@ void MutualX::createSymbol()
   }
 }
 
-QString MutualX::spice_netlist(bool isXyce, bool)
+QString MutualX::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
+
     int coils = getProperty("coils")->Value.toInt();
 
     QString s;

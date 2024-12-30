@@ -42,7 +42,7 @@ Component* BJT::newOne()
   return p;
 }
 
-QString BJT::spice_netlist(bool, bool isCdl /* = false */)
+QString BJT::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
@@ -60,14 +60,16 @@ QString BJT::spice_netlist(bool, bool isCdl /* = false */)
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
-    if (getProperty("UseGlobTemp")->Value == "yes" || isCdl) {
-        s += QStringLiteral(" QMOD_%1 %2=%3\n").arg(Name).arg(isCdl ? "$EA" : "AREA").arg(getProperty("Area")->Value);
+    const bool isDialectCDL(dialect == spicecompat::CDL);
+
+    if (getProperty("UseGlobTemp")->Value == "yes" || isDialectCDL) {
+        s += QStringLiteral(" QMOD_%1 %2=%3\n").arg(Name).arg(isDialectCDL ? "$EA" : "AREA").arg(getProperty("Area")->Value);
     } else {
         s += QStringLiteral(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
             .arg(getProperty("Temp")->Value);
     }
 
-    if (!isCdl)
+    if (!isDialectCDL)
     {
         s += QStringLiteral(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
     }
@@ -77,7 +79,7 @@ QString BJT::spice_netlist(bool, bool isCdl /* = false */)
 
 QString BJT::cdl_netlist()
 {
-    return spice_netlist(false, true);
+    return spice_netlist(spicecompat::CDL);
 }
 
 // -------------------------------------------------------

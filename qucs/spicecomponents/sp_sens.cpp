@@ -59,11 +59,11 @@ Element* SpiceSENS::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceSENS::spice_netlist(bool isXyce, bool)
+QString SpiceSENS::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s;
     s.clear();
-    if (!isXyce) {
+    if (dialect != spicecompat::SPICEXyce) {
         QString sweepvar = Props.at(1)->Value;
         QString par = sweepvar;
         sweepvar.remove(' ');

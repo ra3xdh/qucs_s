@@ -69,8 +69,10 @@ Element* XSP_CodeModel::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString XSP_CodeModel::spice_netlist(bool, bool)
+QString XSP_CodeModel::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     return QString();
 }
 

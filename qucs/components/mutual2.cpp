@@ -114,10 +114,10 @@ Element* Mutual2::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Mutual2::spice_netlist(bool isXyce, bool)
+QString Mutual2::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
+
     QString l1 = "L" + Name + "_L1";
     QString l2 = "L" + Name + "_L2";
     QString l3 = "L" + Name + "_L3";

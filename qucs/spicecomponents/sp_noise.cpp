@@ -64,7 +64,7 @@ Element* SpiceNoise::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceNoise::spice_netlist(bool isXyce, bool)
+QString SpiceNoise::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s;
     QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
@@ -91,7 +91,7 @@ QString SpiceNoise::spice_netlist(bool isXyce, bool)
     s = QStringLiteral("noise %1 %2 %3 %4 %5 %6\n").arg(Props.at(4)->Value).arg(Props.at(5)->Value)
             .arg(swp).arg(points).arg(fstart).arg(fstop);
     QString out = "spice4qucs." + Name.toLower() + ".cir.noise";
-    if (!isXyce) {
+    if (dialect != spicecompat::SPICEXyce) {
         s += QStringLiteral("print inoise_total onoise_total >> %1\n").arg(out);
     } else {
         s.insert(0,'.');

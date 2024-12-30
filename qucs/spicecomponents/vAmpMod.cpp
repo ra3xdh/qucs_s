@@ -40,8 +40,6 @@ vAmpMod::vAmpMod()
   // minus sign
   Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2)));
 
- 
-
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
@@ -91,8 +89,10 @@ QString vAmpMod::netlist()
     return QString();
 }
 
-QString vAmpMod::spice_netlist(bool, bool)
+QString vAmpMod::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;

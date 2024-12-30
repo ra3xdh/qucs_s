@@ -32,13 +32,13 @@ MESFET_SPICE::MESFET_SPICE()
   Lines.append(new qucs::Line(-30,  0,-10,  0,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(-10,-10,  0,-10,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0,-10,  0,-20,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3))); 
+  Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
 
   Lines.append(new qucs::Line(-10, 10,  0, 10,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0, 10,  0, 20,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));  
+  Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
   Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
-     
+
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(-30,  0));
   Ports.append(new Port(  0, 30));
@@ -58,7 +58,7 @@ MESFET_SPICE::MESFET_SPICE()
     Props.append(new Property("Z_Line 3", "", false,"+ continuation line 2"));
     Props.append(new Property("Z_Line 4", "", false,"+ continuation line 3"));
     Props.append(new Property("Z_Line 5", "", false,"+ continuation line 4"));
-    
+
     Texts.append(new Text(30,12,"NMF",Qt::darkRed,10.0,0.0,-1.0));
 
 }
@@ -86,15 +86,17 @@ QString MESFET_SPICE::netlist()
     return QString();
 }
 
-QString MESFET_SPICE::spice_netlist(bool, bool)
+QString MESFET_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString Z= Props.at(0)->Value;
     QString Z_Line_2= Props.at(1)->Value;
     QString Z_Line_3= Props.at(2)->Value;

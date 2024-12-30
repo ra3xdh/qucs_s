@@ -93,9 +93,10 @@ Element* RLCG::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString RLCG::spice_netlist(bool isXyce, bool)
+QString RLCG::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
+
     QString s;
     QString in = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
     QString out = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);

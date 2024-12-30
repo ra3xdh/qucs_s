@@ -68,9 +68,10 @@ Element* dcBlock::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString dcBlock::spice_netlist(bool isXyce, bool)
+QString dcBlock::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-  Q_UNUSED(isXyce);
+  Q_UNUSED(dialect);
+
   QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
   QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
   QString val = spicecompat::normalize_value(getProperty("C")->Value);
@@ -82,5 +83,5 @@ QString dcBlock::spice_netlist(bool isXyce, bool)
 
 QString dcBlock::cdl_netlist()
 {
-    return spice_netlist(false, true);
+    return spice_netlist(spicecompat::CDL);
 }

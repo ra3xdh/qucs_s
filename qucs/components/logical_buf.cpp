@@ -135,9 +135,9 @@ Element* Logical_Buf::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Logical_Buf::spice_netlist(bool isXyce, bool)
+QString Logical_Buf::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isXyce) return QString();
+    if (dialect == spicecompat::SPICEXyce) return QString();
 
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;

@@ -73,8 +73,10 @@ vPulse::~vPulse()
 {
 }
 
-QString vPulse::spice_netlist(bool, bool)
+QString vPulse::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     for (Port *p1 : Ports) {
@@ -88,7 +90,7 @@ QString vPulse::spice_netlist(bool, bool)
 
     QString VL = spicecompat::normalize_value(Props.at(0)->Value); // VL
     QString VH = spicecompat::normalize_value(Props.at(1)->Value); // VH
-   QString Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr 
+    QString Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr 
     QString Tf = spicecompat::normalize_value(Props.at(5)->Value); // Tf
 
     misc::str2num(Props.at(2)->Value,T1,unit,fac); // Td

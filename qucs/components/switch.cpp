@@ -84,8 +84,10 @@ QString Switch::netlist()
   return s + '\n';
 }
 
-QString Switch::spice_netlist(bool, bool)
+QString Switch::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+  Q_UNUSED(dialect);
+
   QString s = spicecompat::check_refdes(Name,SpiceModel);
   QString port1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
   QString port2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);

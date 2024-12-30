@@ -88,7 +88,7 @@ QString Digi_Source::netlist()
 
   // output node names
   s += " "+Ports.first()->Connection->Name;
-  
+
   // output all properties
      // first property not needed
   auto pp = Props.begin();
@@ -134,7 +134,7 @@ QString Digi_Source::vhdlCode(int NumPorts)
   else {  // truth table simulation
     State = '0';
     int Num = Props.at(0)->Value.toInt() - 1;
-    
+
     s += Out + State + "';";    // first value for signal
     s += "  wait for "+QString::number(1 << Num)+" ns;\n";
     State ^= 1;
@@ -179,7 +179,7 @@ QString Digi_Source::verilogCode(int NumPorts)
     }
   }
   else {  // truth table simulation
-    int Num = Props.front()->Value.toInt() - 1;    
+    int Num = Props.front()->Value.toInt() - 1;
     s += "  always begin\n";
     s += "    " + r + " = 0;\n";
     s += "    #"+ QString::number(1 << Num) + ";\n";
@@ -191,8 +191,10 @@ QString Digi_Source::verilogCode(int NumPorts)
   return s;
 }
 
-QString Digi_Source::spice_netlist(bool, bool)
+QString Digi_Source::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+  Q_UNUSED(dialect);
+
   QString s    = SpiceModel + Name;
   QString port = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
   s += " " + port + " 0 "; // node names

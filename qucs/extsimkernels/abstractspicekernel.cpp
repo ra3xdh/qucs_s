@@ -191,7 +191,7 @@ bool AbstractSpiceKernel::checkDCSimulation()
  * \param xyce Default is false. Should be set in true if netlist is
  *        prepared for Xyce simulator. For Ngspice should be false.
  */
-void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
+void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDialect dialect)
 {
         QString s;
 
@@ -235,7 +235,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         // Parameters, Initial conditions, Options
         for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
             if (pc->isEquation) {
-                s = pc->getExpression(xyce);
+                s = pc->getExpression(dialect);
                 stream<<s;
             }
         }
@@ -245,7 +245,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
           if(a_schematic->getIsAnalog() &&
              !(pc->isSimulation) &&
              !(pc->isEquation)) {
-            s = pc->getSpiceNetlist(xyce);
+            s = pc->getSpiceNetlist(dialect);
             stream<<s;
           }
         }
@@ -315,8 +315,10 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
     header += "\n";
     if (lib) stream<<"\n";
     stream<<header;
-    bool xyce = QucsSettings.DefaultSimulator == spicecompat::simXyce;
-    startNetlist(stream,xyce);
+
+    const spicecompat::SpiceDialect dialect(
+            QucsSettings.DefaultSimulator == spicecompat::simXyce ? spicecompat::SPICEXyce : spicecompat::SPICEDefault);
+    startNetlist(stream, dialect);
     stream<<".ENDS\n";
 }
 

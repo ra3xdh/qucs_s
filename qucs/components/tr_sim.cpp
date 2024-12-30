@@ -91,7 +91,7 @@ Element* TR_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString TR_Sim::spice_netlist(bool isXyce, bool)
+QString TR_Sim::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = SpiceModel;
     QString unit;
@@ -109,11 +109,11 @@ QString TR_Sim::spice_netlist(bool isXyce, bool)
     QString max_step = spicecompat::normalize_value(getProperty("MaxStep")->Value);
     if (max_step!="0") s+= max_step;
 
-    if (!isXyce) { // Xyce ignores this parameter
+    if (dialect != spicecompat::SPICEXyce) { // Xyce ignores this parameter
         if (Props.at(18)->Value == "no") s += " UIC";
     }
     s += "\n";
-    if (!isXyce) s.remove(0,1);
+    if (dialect != spicecompat::SPICEXyce) s.remove(0,1);
     return s.toLower();
 }
 

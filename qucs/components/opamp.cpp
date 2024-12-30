@@ -74,7 +74,7 @@ Element* OpAmp::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString OpAmp::spice_netlist(bool isXyce, bool)
+QString OpAmp::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString in_m = Ports.at(0)->Connection->Name;
     if (in_m=="gnd") in_m="0";
@@ -89,7 +89,7 @@ QString OpAmp::spice_netlist(bool isXyce, bool)
     QString s;
     s = QStringLiteral("B_%1 %2 0 V = ").arg(Name).arg(out);
 
-    if (isXyce) {
+    if (dialect == spicecompat::SPICEXyce) {
         s += QStringLiteral("%1*V(%2,%3)*stp(%4-%1*V(%2,%3))*stp(%1*V(%2,%3)-(-%4))"
                     "+%4*stp(%1*V(%2,%3)-%4)"
                     "+(-%4)*stp((-%4)-%1*V(%2,%3))\n").arg(G).arg(in_p).arg(in_m).arg(Vmax);

@@ -36,7 +36,7 @@ eNL::eNL()
   Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
   Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
   // minus sign
-  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2))); 
+  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -55,7 +55,7 @@ eNL::eNL()
   Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
   Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
   Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
-  
+
   rotate();  // fix historical flaw
 }
 
@@ -71,7 +71,7 @@ Component* eNL::newOne()
 Element* eNL::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("E");
-  BitmapFile = (char *) "eNL"; 
+  BitmapFile = (char *) "eNL";
 
   if(getNewOne)  return new eNL();
   return 0;
@@ -82,26 +82,30 @@ QString eNL::netlist()
     return QString();
 }
 
-QString eNL::spice_netlist(bool, bool)
+QString eNL::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
+
     QString E = Props.at(0)->Value;
-    QString Line_2 = Props.at(1)->Value; 
+    QString Line_2 = Props.at(1)->Value;
     QString Line_3 = Props.at(2)->Value;
     QString Line_4 = Props.at(3)->Value;
     QString Line_5 = Props.at(4)->Value;
 
-    
     if(  E.length()  > 0)        s += QStringLiteral("%1").arg(E);
     if(  Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_2);
     if(  Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_3);
     if(  Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_4);
     if(  Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_5);
+
     s += "\n";
+
     return s;
 }

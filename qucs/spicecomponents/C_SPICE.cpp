@@ -109,8 +109,10 @@ QString C_SPICE::netlist()
     return QString();
 }
 
-QString C_SPICE::spice_netlist(bool, bool)
+QString C_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString ltr = getProperty("Letter")->Value;
     QString s = spicecompat::check_refdes(Name,ltr);
     for (Port *p1 : Ports) {
@@ -130,7 +132,9 @@ QString C_SPICE::spice_netlist(bool, bool)
     if(  C_Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(C_Line_3);
     if(  C_Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(C_Line_4);
     if(  C_Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(C_Line_5);
+
     s += "\n";
+
     return s;
 }
 
@@ -138,7 +142,7 @@ QString C_SPICE::cdl_netlist()
 {
     if (Ports.size() == 2)
     {
-        return spice_netlist(false, true);
+        return spice_netlist(spicecompat::CDL);
     }
 
     return QString();

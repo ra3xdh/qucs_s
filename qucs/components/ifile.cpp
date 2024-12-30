@@ -109,9 +109,10 @@ QString iFile::netlist()
   return s + "\n";
 }
 
-QString iFile::spice_netlist(bool isXyce, bool)
+QString iFile::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
+
     QString s = SpiceModel + Name;
     QString modname = "mod_" + Model + Name;
     QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);

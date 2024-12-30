@@ -89,8 +89,10 @@ QString vSffm::netlist()
     return QString();
 }
 
-QString vSffm::spice_netlist(bool, bool)
+QString vSffm::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -98,12 +100,11 @@ QString vSffm::spice_netlist(bool, bool)
         s += " "+ nam;   // node names
     }
 
-   QString Vo= spicecompat::normalize_value(Props.at(0)->Value);
-   QString Va= spicecompat::normalize_value(Props.at(1)->Value);
-   QString Fc= spicecompat::normalize_value(Props.at(2)->Value);
-   QString Mdi = spicecompat::normalize_value(Props.at(3)->Value);
-   QString Fs = spicecompat::normalize_value(Props.at(4)->Value);
-
+    QString Vo= spicecompat::normalize_value(Props.at(0)->Value);
+    QString Va= spicecompat::normalize_value(Props.at(1)->Value);
+    QString Fc= spicecompat::normalize_value(Props.at(2)->Value);
+    QString Mdi = spicecompat::normalize_value(Props.at(3)->Value);
+    QString Fs = spicecompat::normalize_value(Props.at(4)->Value);
 
     s += QStringLiteral(" DC 0 SFFM(%1 %2 %3 %4 %5 ) AC 0\n").arg(Vo).arg(Va).arg(Fc).arg(Mdi).arg(Fs);
     return s;

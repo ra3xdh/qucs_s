@@ -93,8 +93,10 @@ QString PJF_SPICE::netlist()
     return QString();
 }
 
-QString PJF_SPICE::spice_netlist(bool, bool)
+QString PJF_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -120,5 +122,5 @@ QString PJF_SPICE::spice_netlist(bool, bool)
 
 QString PJF_SPICE::cdl_netlist()
 {
-    return spice_netlist(false, true);
+    return spice_netlist(spicecompat::CDL);
 }
