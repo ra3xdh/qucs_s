@@ -1869,7 +1869,8 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
 
 
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator ||
+      !a_isAnalog) {
 
         if(a_isAnalog) {
             // ..... analog subcircuit ...................................
@@ -1956,26 +1957,35 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
             } else {
               // ..... digital subcircuit ...................................
               (*tstream) << VHDL_LIBRARIES;
-              (*tstream) << "entity Sub_" << Type << " is\n"
-                        << " port ("
-                        << SubcircuitPortNames.join(";\n ") << ");\n";
+              (*tstream) << "entity Sub_" << Type << " is\n";
 
-              for(pi = a_SymbolPaints.first(); pi != 0; pi = a_SymbolPaints.next())
+              QString generic_str;
+              for(pi = a_SymbolPaints.first(); pi != 0; pi = a_SymbolPaints.next()) {
                 if(pi->Name == ".ID ") {
                   ID_Text *pid = (ID_Text*)pi;
                   QList<SubParameter *>::const_iterator it;
 
-                  (*tstream) << " generic (";
+
 
                   for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
                     s = (*it)->Name;
                     QString t = (*it)->Type.isEmpty() ? "real" : (*it)->Type;
-                    (*tstream) << s.replace("=", " : "+t+" := ") << ";\n ";
+                    generic_str += s.replace("=", " : "+t+" := ") + ";\n ";
                   }
 
-                  (*tstream) << ");\n";
+
                   break;
                 }
+              }
+              if (!generic_str.isEmpty()) {
+                (*tstream) << " generic (";
+                (*tstream) << generic_str;
+                (*tstream) << ");\n";
+              }
+
+              (*tstream) << " port ("
+                        << SubcircuitPortNames.join(";\n ") << ");\n";
+
 
               (*tstream) << "end entity;\n"
                           << "use work.all;\n"
@@ -2054,7 +2064,8 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
 
   // Emit subcircuit components
    createSubNetlistPlain(stream, ErrText, NumPorts);
-   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator &&
+       a_isAnalog) {
       AbstractSpiceKernel *kern = new AbstractSpiceKernel(this);
       QStringList err_lst;
       if (!kern->checkSchematic(err_lst)) {
