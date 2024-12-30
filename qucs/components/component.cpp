@@ -808,9 +808,9 @@ QString Component::getSpiceNetlist(spicecompat::SpiceDialect dialect /* = SPICED
     Port *pp = iport.next();
     QString Node1 = pp->Connection->Name;
     s = "";
-    while (iport.hasNext())
+    while (iport.hasNext()) // Add minR resistors
         s += "R" + Name + QString::number(z++) + " " +
-             Node1 + " " + iport.next()->Connection->Name + " 0\n";
+             Node1 + " " + iport.next()->Connection->Name + " 1e-12\n";
 
     s.replace(" gnd ", " 0 ");
     return s;

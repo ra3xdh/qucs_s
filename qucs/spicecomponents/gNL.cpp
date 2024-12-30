@@ -86,19 +86,15 @@ QString gNL::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::S
     Q_UNUSED(dialect);
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
-        QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam+" ";   // node names
-    }
-
+    s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    s += " " + spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
     QString G= Props.at(0)->Value;
     QString Line_2 = Props.at(1)->Value;
     QString Line_3 = Props.at(2)->Value;
     QString Line_4 = Props.at(3)->Value;
     QString Line_5 = Props.at(4)->Value;
 
-    if(  G.length()      > 0 )   s += QStringLiteral("%1").arg(G);
+    if(  G.length()      > 0 )   s += QStringLiteral(" %1").arg(G);
     if(  Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_2);
     if(  Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_3);
     if(  Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(Line_4);

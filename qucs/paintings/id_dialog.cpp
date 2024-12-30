@@ -327,9 +327,4 @@ void ID_Dialog::slotApply()
   item = ParamTable->item(selectedrow, 4);
   item->setText(TypeEdit->text());
 
-  ParamTable->setCurrentCell(selectedrow,0);
-  ParamNameEdit->clear();
-  ValueEdit->clear();
-  DescriptionEdit->clear();
-  TypeEdit->clear();
 }
