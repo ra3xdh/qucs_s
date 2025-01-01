@@ -1793,9 +1793,11 @@ bool QucsApp::saveAs()
   QucsDoc *Doc = getDoc();
 
   int n = -1;
-  QString s, Filter;
+  QString s, Filter, selfilter;
+  QStringList Filters;
   QFileInfo Info;
   while(true) {
+    QString file_ext;
     s = Doc->getDocName();
     Info.setFile(s);
     if(s.isEmpty()) {   // which is default directory ?
@@ -1804,6 +1806,8 @@ bool QucsApp::saveAs()
         else  s = lastDirOpenSave;
       }
       else s = QucsSettings.QucsWorkDir.path();
+    } else {
+      file_ext = QString("*.") + Info.suffix();
     }
 
     // list of known file extensions
@@ -1811,25 +1815,40 @@ bool QucsApp::saveAs()
     QStringList extlist = ext.split (';');
 
     if(isTextDocument (w)) {
-      Filter = tr("VHDL Sources")+" (*.vhdl *.vhd);;" +
-        tr("Verilog Sources")+" (*.v);;"+
-        tr("Verilog-A Sources")+" (*.va);;"+
-        tr("Octave Scripts")+" (*.m *.oct);;"+
-        tr("Qucs Netlist")+" (*.net *.qnet);;"+
-        tr("SPICE Netlist")+" (*.ckt *.cir *.sp);;"+
-        tr("Plain Text")+" (*.txt);;"+
-        tr("Any File")+" (*)";
+      Filters << tr("VHDL Sources")+" (*.vhdl *.vhd);;"
+              << tr("Verilog Sources")+" (*.v);;"
+              << tr("Verilog-A Sources")+" (*.va);;"
+              << tr("Octave Scripts")+" (*.m *.oct);;"
+              << tr("Qucs Netlist")+" (*.net *.qnet);;"
+              << tr("SPICE Netlist")+" (*.ckt *.cir *.sp);;"
+              << tr("Plain Text")+" (*.txt);;"
+              << tr("Any File")+" (*)";
+      Filter = Filters.join("");
+      bool found = false;
+      for (const auto &ss: Filters) {
+        if (ss.contains(file_ext)) {
+          found = true;
+          selfilter = ss;
+          selfilter.chop(2);
+          break;
+        }
+      }
+      if (!found) {
+        selfilter = Filters.first();
+      }
     } else {
       Schematic *sch = (Schematic *) Doc;
       if (sch->getIsSymbolOnly()) {
         Filter = tr("Subcircuit symbol") + "(*.sym)";
+        selfilter = tr("Subcircuit symbol") + "(*.sym)";
       } else {
         Filter = QucsFileFilter;
+        selfilter = tr("Schematic") + " (*.sch)";
       }
     }
 
     s = QFileDialog::getSaveFileName(this, tr("Enter a Document Name"),
-                                     s, Filter);
+                                     s, Filter, &selfilter);
     if(s.isEmpty())  return false;
     Info.setFile(s);               // try to guess the best extension ...
     ext = Info.suffix();
