@@ -304,7 +304,13 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
       if (line.startsWith("+")) {
         line.remove(0,1);
         QStringList pins = line.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
-        a_subcirPins[last_subcir].append(pins);
+        for (const auto &s1: pins) {
+        if (s1 == "PARAMS:") header_start = false;
+        if (!s1.contains('=') && (s1 != "PARAMS:")) {
+            a_subcirPins[subname].append(s1);
+          }
+        }
+        line.prepend('+'); // put the plus back
       } else {
         // end of header
         header_start = false;
