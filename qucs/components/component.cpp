@@ -1868,7 +1868,7 @@ void Component::loadfromComponentInfo(ComponentInfo C)
     QString parameter_name = it.key();
     ParameterInfo parameter = it.value();
 
-    QString value = QString("%1%2").arg(parameter.DefaultValue).arg(parameter.Unit);
+    QString value = QString("%1 %2").arg(parameter.DefaultValue).arg(parameter.Unit);
     // Append to the component's QList of properties
     Props.append(new Property(parameter_name, value, parameter.Show, parameter.Description));
   }
@@ -1878,6 +1878,13 @@ void Component::loadfromComponentInfo(ComponentInfo C)
   QMap<QString, SymbolDescription>::const_iterator symbol_it = C.symbol.constBegin();
   SymbolDescription SymbolInfo = symbol_it.value();
   loadSymbol(SymbolInfo, Ports, Lines, Arcs);
+
+  // Set component bounding box. This is required to have the greyed zone when the user clicks on the component
+  QVector<int> SymbolBoundingBox = C.SymbolBoundingBox["Standard"];
+  x1 = SymbolBoundingBox[0]; // Minimum x
+  x2 = SymbolBoundingBox[1]; // Maximum x
+  y1 = SymbolBoundingBox[2]; // Minimum y
+  y2 = SymbolBoundingBox[3]; // Maximum y
 
   // Load models
   Model = C.Models["Default"];

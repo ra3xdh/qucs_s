@@ -325,6 +325,8 @@ void QucsApp::readXML(QFile & library_file) {
 
                     SymbolDescription SymbolData;
 
+                    int minX = 1e3, maxX = -1e3, minY = 1e3, maxY = -1e3; // Variables used to calculate the component's bounding box
+
                     while (xmlReader.readNextStartElement()) {
                       qDebug() << xmlReader.name();
                       if (xmlReader.name() == "PortSym") {
@@ -333,6 +335,12 @@ void QucsApp::readXML(QFile & library_file) {
                         Port.y = xmlReader.attributes().value("y").toInt();
                         SymbolData.Ports.append(Port);
                         xmlReader.skipCurrentElement();
+
+                        // Update bounding box
+                        if (Port.x < minX) minX = Port.x;
+                        if (Port.x > maxX) maxX = Port.x;
+                        if (Port.y < minY) minY = Port.y;
+                        if (Port.y > maxY) maxY = Port.y;
 
                       } else if (xmlReader.name() == "Line") {
                         LineInfo Line;
@@ -349,6 +357,17 @@ void QucsApp::readXML(QFile & library_file) {
                         Line.Pen = pen;
                         SymbolData.Lines.append(Line);
                         xmlReader.skipCurrentElement();
+
+                        // Update bounding box
+                        if (Line.x1 < minX) minX = Line.x1;
+                        if (Line.x1 > maxX) maxX = Line.x1;
+                        if (Line.x2 < minX) minX = Line.x1;
+                        if (Line.x2 > maxX) maxX = Line.x2;
+
+                        if (Line.y1 < minY) minY = Line.y1;
+                        if (Line.y1 > maxY) maxY = Line.y1;
+                        if (Line.y2 < minY) minY = Line.y2;
+                        if (Line.y2 > maxY) maxY = Line.y2;
 
                       } else if (xmlReader.name() == "Arc") {
                         ArcInfo Arc;
@@ -367,6 +386,12 @@ void QucsApp::readXML(QFile & library_file) {
 
                         SymbolData.Arcs.append(Arc);
                         xmlReader.skipCurrentElement();
+
+                        // Update bounding box
+                        if (Arc.x - Arc.width/2 < minX) minX = Arc.x - Arc.width/2;
+                        if (Arc.x + Arc.width/2 > maxX) maxX = Arc.x + Arc.width/2;
+                        if (Arc.y - Arc.height/2 < minY) minY = Arc.y - Arc.height/2;
+                        if (Arc.y + Arc.height/2 > maxY) maxY = Arc.y + Arc.height/2;
 
                       } else if (xmlReader.name() == "Polyline") {
                         PolylineInfo Polyline;
@@ -396,6 +421,13 @@ void QucsApp::readXML(QFile & library_file) {
                             double y = xmlReader.attributes().value("y").toDouble();
                             Polyline.Points.append(QPointF(x, y));
                             xmlReader.skipCurrentElement();
+
+                            // Update bounding box
+                            if (x < minX) minX = x;
+                            if (x > maxX) maxX = x;
+                            if (y < minY) minY = y;
+                            if (y > maxY) maxY = y;
+
                           } else {
                             xmlReader.skipCurrentElement();
                           }
@@ -427,6 +459,12 @@ void QucsApp::readXML(QFile & library_file) {
                         SymbolData.Ellipses.append(Ellips);
                         xmlReader.skipCurrentElement();
 
+                        // Update bounding box
+                        if (Ellips.x < minX) minX = Ellips.x;
+                        if (Ellips.x > maxX) maxX = Ellips.x;
+                        if (Ellips.y < minY) minY = Ellips.y;
+                        if (Ellips.y > maxY) maxY = Ellips.y;
+
                       } else if (xmlReader.name() == "Rect") {
                         RectInfo Rect;
 
@@ -452,6 +490,13 @@ void QucsApp::readXML(QFile & library_file) {
                         SymbolData.Rects.append(Rect);
                         xmlReader.skipCurrentElement();
 
+                        // Update bounding box
+                        if (Rect.x - Rect.width/2 < minX) minX = Rect.x - Rect.width/2;
+                        if (Rect.x + Rect.width/2 > maxX) maxX = Rect.x + Rect.width/2;
+                        if (Rect.y - Rect.height/2 < minY) minY = Rect.y - Rect.height/2;
+                        if (Rect.y + Rect.height/2 > maxY) maxY = Rect.y + Rect.height/2;
+
+
                       } else if (xmlReader.name() == "Text") {
                         TextInfo Text;
 
@@ -469,12 +514,21 @@ void QucsApp::readXML(QFile & library_file) {
                         SymbolData.Texts.append(Text);
                         xmlReader.skipCurrentElement();
 
+                        // Update bounding box
+                        if (Text.x < minX) minX = Text.x;
+                        if (Text.x > maxX) maxX = Text.x;
+                        if (Text.y < minY) minY = Text.y;
+                        if (Text.y > maxY) maxY = Text.y;
+
+
                       } else {
                         xmlReader.skipCurrentElement();
                       }
                     }
 
                     Component[ComponentName].symbol[symbolName] = SymbolData;
+                    QVector<int> SymbolBoundingBox = {minX, maxX, minY, maxY};
+                    Component[ComponentName].SymbolBoundingBox[symbolName] = SymbolBoundingBox;
                   } else {
                     xmlReader.skipCurrentElement();
                   }
