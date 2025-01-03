@@ -133,7 +133,6 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
           if (magnitudeIndex != 5) unit = unit.mid(1);
           has_unit = true;
        }
-
         //Finally, add the unit to the QStringList for adding it to the scale comboboxes later
         if (has_unit) for (int i = 0; i < ScaleFactorList.length(); i++) ScaleFactorList[i] += unit;
     originalValue = QString::number(numValue)+ScaleFactorList[magnitudeIndex];
@@ -302,8 +301,17 @@ void tunerElement::resetValue()
  */
 void tunerElement::updateProperty()
 {
-    prop->Value = value->text().append(ValueUnitsCombobox->currentText());
-        qDebug() << "Updated property: " << prop->Value;
+  QString new_value = value->text();
+  QString suffix = ValueUnitsCombobox->currentText();
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator &&
+    suffix == "M") { // Process Mega suffix
+    QString unit;
+    double num,fac;
+    misc::str2num(new_value + suffix, num, unit, fac);
+    prop->Value = QString::number(num*fac, 'g', 3);
+  } else {
+    prop->Value = new_value + suffix;
+  }
 }
 
 
