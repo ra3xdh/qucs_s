@@ -245,11 +245,7 @@ spicefile.h
 )
 
 
-IF(QT_VERSION_MAJOR EQUAL 6)
-    qt6_wrap_cpp(COMPONENTS_MOC_SRCS ${COMPONENTS_MOC_HDRS})
-else()
-    qt5_wrap_cpp(COMPONENTS_MOC_SRCS ${COMPONENTS_MOC_HDRS})
-endif()
+qt6_wrap_cpp(COMPONENTS_MOC_SRCS ${COMPONENTS_MOC_HDRS})
 
 
 

@@ -32,20 +32,14 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-if(WITH_QT6)
-    set(QT_VERSION_MAJOR 6)
-else()
-    set(QT_VERSION_MAJOR 5)
-endif()
-
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 include_directories(
-      ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Gui_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
+      ${Qt6Core_INCLUDE_DIRS}
+      ${Qt6Gui_INCLUDE_DIRS}
+      ${Qt6Widgets_INCLUDE_DIRS}
       )
 
-set(QT_VERSION ${Qt${QT_VERSION_MAJOR}Core_VERSION})
+set(QT_VERSION ${Qt6Core_VERSION})
 
 if (${QT_VERSION} VERSION_LESS "6.7.0")
     set(CMAKE_CXX_STANDARD 17)
@@ -87,13 +81,8 @@ SET( attenuator_moc_headers qucsattenuator.h )
 
 SET(RESOURCES qucsattenuator.qrc)
 
-if(QT_VERSION_MAJOR EQUAL 6)
 QT6_WRAP_CPP( attenuator_moc_sources ${attenuator_moc_headers} )
 QT6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-else()
-QT5_WRAP_CPP( attenuator_moc_sources ${attenuator_moc_headers} )
-QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-endif()
 
 IF(APPLE)
   # set information on Info.plist file
@@ -118,7 +107,7 @@ ADD_EXECUTABLE( ${QUCS_NAME}attenuator MACOSX_BUNDLE WIN32
   ${attenuator_moc_sources}
   ${RESOURCES_SRCS} )
 
-TARGET_LINK_LIBRARIES( ${QUCS_NAME}attenuator Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets )
+TARGET_LINK_LIBRARIES( ${QUCS_NAME}attenuator Qt6::Core Qt6::Gui Qt6::Widgets )
 SET_TARGET_PROPERTIES(${QUCS_NAME}attenuator PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #INSTALL (TARGETS ${QUCS_NAME}attenuator DESTINATION bin)
 #
