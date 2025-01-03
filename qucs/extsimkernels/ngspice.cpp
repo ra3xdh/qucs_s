@@ -222,7 +222,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             spiceNetlist.append(pc->getSpiceNetlist());
             nods = pc->Props.at(1)->Value;
             nods.replace(';', ' ');
-            outputs.append(pc->Props.at(2)->Value.split(';', qucs::SkipEmptyParts));
+            outputs.append(pc->Props.at(2)->Value.split(';', Qt::SkipEmptyParts));
 
             QRegularExpression ac_rx("^\\s*ac\\s.*", QRegularExpression::CaseInsensitiveOption);
             QRegularExpression sp_rx("^\\s*sp\\s.*", QRegularExpression::CaseInsensitiveOption);

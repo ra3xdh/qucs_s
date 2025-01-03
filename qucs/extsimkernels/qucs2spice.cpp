@@ -125,7 +125,7 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
 QString qucs2spice::convert_rcl(const QString& line)
 {
     QString s="";
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString s1 = lst.takeFirst();
     s += s1.remove(':');
     s += " " + lst.takeFirst();
@@ -141,7 +141,7 @@ QString qucs2spice::convert_header(QString line)
 {
     QString s = line;
     s.replace(".Def:",".SUBCKT ");
-    QStringList lst = s.split(' ',qucs::SkipEmptyParts);
+    QStringList lst = s.split(' ', Qt::SkipEmptyParts);
     lst.insert(2," gnd "); // ground
     s = lst.join(" ");
     s += "\n";
@@ -151,7 +151,7 @@ QString qucs2spice::convert_header(QString line)
 QString qucs2spice::convert_diode(QString line,bool xyce)
 {
     QString s="";
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
     name =  name.right(name.size()-idx-1); // name
@@ -168,7 +168,7 @@ QString qucs2spice::convert_diode(QString line,bool xyce)
 QString qucs2spice::convert_mosfet(QString line, bool xyce)
 {
     QString s="";
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
     name =  name.right(name.size()-idx-1); // name
@@ -210,7 +210,7 @@ QString qucs2spice::convert_mosfet(QString line, bool xyce)
 QString qucs2spice::convert_jfet(const QString& line, bool xyce)
 {
     QString s="";
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
     name =  name.right(name.size()-idx-1); // name
@@ -241,7 +241,7 @@ QString qucs2spice::convert_jfet(const QString& line, bool xyce)
 QString qucs2spice::convert_bjt(const QString& line)
 {
     QString s="";
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
     name =  name.right(name.size()-idx-1); // name
@@ -291,7 +291,7 @@ QString qucs2spice::convert_ccvs(const QString& line)
 
 QString qucs2spice::convert_ccs(const QString& line, bool voltage)
 {
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
     name =  name.right(name.size()-idx-1); // name
@@ -323,7 +323,7 @@ QString qucs2spice::convert_vcvs(const QString& line)
 
 QString qucs2spice::convert_vcs(const QString& line,bool voltage)
 {
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
     name =  name.right(name.size()-idx-1); // name
@@ -346,7 +346,7 @@ QString qucs2spice::convert_vcs(const QString& line,bool voltage)
 QString qucs2spice::convert_dc_src(const QString& line)
 {
     QString s="";
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString s1 = lst.takeFirst();
     s += s1.remove(':');
     s += " " + lst.takeFirst();
@@ -361,7 +361,7 @@ QString qucs2spice::convert_dc_src(const QString& line)
 QString qucs2spice::convert_edd(const QString& line, QStringList &EqnsAndVars)
 {
     QString s="";
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QStringList nods;
     QString nam = lst.takeFirst().remove(':');
 
@@ -406,7 +406,7 @@ QString qucs2spice::convert_edd(const QString& line, QStringList &EqnsAndVars)
 QString qucs2spice::convert_subckt(QString line)
 {
     QString s="";
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString s1 = lst.takeFirst();
     s += "X" + s1.remove("Sub:") + " gnd ";
 
@@ -440,7 +440,7 @@ QString qucs2spice::convert_subckt(QString line)
 QString qucs2spice::convert_gyrator(QString line)
 {
     QString s="";
-    QStringList lst = line.split(" ",qucs::SkipEmptyParts);
+    QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString Name = lst.takeFirst();
     Name = Name.section(':',1,1);
     QString n1 = lst.takeFirst();

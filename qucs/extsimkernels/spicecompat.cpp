@@ -305,7 +305,7 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
         }
 
         if (subckt_header.match(lin).hasMatch()) {
-            QStringList lst2 = lin.split(sep,qucs::SkipEmptyParts);
+            QStringList lst2 = lin.split(sep, Qt::SkipEmptyParts);
             QString name = lin.section(sep,1,1,QString::SectionSkipEmpty).toLower();
             QString refname = compname.toLower();
             if (name != refname) continue;

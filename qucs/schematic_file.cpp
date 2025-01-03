@@ -299,7 +299,7 @@ int Schematic::savePropsJSON()
         continue;
       }
       if (line.contains("parameter")) {
-        auto tokens = line.split(QRegularExpression("[\\s=;]"),qucs::SkipEmptyParts);
+        auto tokens = line.split(QRegularExpression("[\\s=;]"), Qt::SkipEmptyParts);
         if (tokens.count() >= 4) {
           for(int ic = 0; ic <= tokens.count(); ic++) {
             if (tokens.at(ic) == "parameter") {

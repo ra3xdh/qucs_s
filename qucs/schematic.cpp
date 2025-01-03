@@ -1810,7 +1810,7 @@ int Schematic::adjustPortNumbers()
             VInfo = VHDL_File_Info(Name, true);
 
         if (!VInfo.PortNames.isEmpty())
-            Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
+            Names = VInfo.PortNames.split(",", Qt::SkipEmptyParts);
 
         for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
@@ -1818,11 +1818,11 @@ int Schematic::adjustPortNumbers()
                 id->Prefix = VInfo.EntityName.toUpper();
                 id->Parameter.clear();
                 if (!VInfo.GenNames.isEmpty())
-                    GNames = VInfo.GenNames.split(",", qucs::SkipEmptyParts);
+                    GNames = VInfo.GenNames.split(",", Qt::SkipEmptyParts);
                 if (!VInfo.GenTypes.isEmpty())
-                    GTypes = VInfo.GenTypes.split(",", qucs::SkipEmptyParts);
+                    GTypes = VInfo.GenTypes.split(",", Qt::SkipEmptyParts);
                 if (!VInfo.GenDefs.isEmpty())
-                    GDefs = VInfo.GenDefs.split(",", qucs::SkipEmptyParts);
+                    GDefs = VInfo.GenDefs.split(",", Qt::SkipEmptyParts);
                 ;
                 for (Number = 1, it = GNames.begin(); it != GNames.end(); ++it) {
                     id->Parameter.append(
@@ -1871,7 +1871,7 @@ int Schematic::adjustPortNumbers()
         else
             VInfo = Verilog_File_Info(Name, true);
         if (!VInfo.PortNames.isEmpty())
-            Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
+            Names = VInfo.PortNames.split(",", Qt::SkipEmptyParts);
 
         for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
@@ -1918,7 +1918,7 @@ int Schematic::adjustPortNumbers()
             VInfo = VerilogA_File_Info(Name, true);
 
         if (!VInfo.PortNames.isEmpty())
-            Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
+            Names = VInfo.PortNames.split(",", Qt::SkipEmptyParts);
 
         for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
