@@ -54,54 +54,6 @@ jobs:
         echo "Qucs-S version is ${{ env.VERSION }}"
         echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
       
-  build-linux-qt5:
-    runs-on: ubuntu-22.04
-    continue-on-error: true
-    needs: setup
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Set version environment variable
-      run: |
-        echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
-        echo "SHORT_HASH=${{ needs.setup.outputs.short_hash }}" >> $GITHUB_ENV
-
-    - name: Print version and hash
-      run: |
-        echo "Qucs-S version is ${{ env.VERSION }}"
-        echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
-
-    - name: Install Dependencies
-      run: |
-          sudo apt-get update
-          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix cups libcups2-dev
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
-
-    - name: 'Install Qt5'
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: 5.15.2
-        host: 'linux'
-        target: 'desktop'
-        cache: true
-        arch: 'gcc_64'
-        install-deps: 'true'
-        modules: 'qtcharts'
-
-    - name: 'Configure CMake'
-      run: |
-          cmake -B ${{github.workspace}}/build \
-                -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-                -DCI_VERSION="${{env.VERSION}}"
-
-    - name: 'Build'
-      # Build your program with the given configuration
-      run: |
-          cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
-      
-
   build-linux-appimage-qt6:
     runs-on: ubuntu-22.04
     needs: setup
