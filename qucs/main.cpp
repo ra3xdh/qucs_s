@@ -762,11 +762,6 @@ int main(int argc, char *argv[])
   QucsSettings.maxUndo = 20;
   QucsSettings.NodeWiring = 0;
 
-#if QT_VERSION < 0x060000
-  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling,true);
-  QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps,true);
-#endif
-
   // initially center the application
   QApplication a(argc, argv);
   //QDesktopWidget *d = a.desktop();

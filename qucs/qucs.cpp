@@ -89,9 +89,6 @@
 
 QucsApp::QucsApp()
 {
-#if QT_VERSION_MAJOR == 5
-  QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-#endif
 
   windowTitle = misc::getWindowTitle();
   setWindowTitle(windowTitle);
