@@ -1,0 +1,432 @@
+<Qucs Library 24.3.0 "Digital_HC">
+
+<Component 74HC00>
+  <Description>
+2-Input Nand Gate
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC00 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="n74HC00_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC00.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74HC00 ------
+*  Quad 2-Input Nand Gates
+*
+*  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-3 to 2-5
+*  bss    2/3/94
+*
+.SUBCKT 74HC00  1A 1B 1Y
++     optional: DPWR=$G_DPWR DGND=$G_DGND
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 nand(2) DPWR DGND
++     1A 1B 1Y
++     DLY_HC00 IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_HC00 ugate (tplhTY=9ns tplhMX=18ns tphlTY=9ns tphlMX=18ns)
+
+.ENDS  74HC00
+
+.SUBCKT Digital_HC_74HC00  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 74HC00
+.ENDS
+  </Spice>
+  <Symbol>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line -10 20 0 -40 #000000 2 1>
+    <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+  </Symbol>
+</Component>
+
+<Component 74HC02>
+  <Description>
+2-Input Nor Gate
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC02 _net0 _net2 _net1
+Sub:X1 _net0 _net2 _net1 gnd Type="n74HC02_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC02.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74HC02 ------
+*  Quad 2-Input Nor Gates
+*
+*  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-13 to 2-15
+*  bss    2/3/94
+*
+.SUBCKT 74HC02  1A 1B 1Y
++     optional: DPWR=$G_DPWR DGND=$G_DGND
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 nor(2) DPWR DGND
++     1A 1B 1Y
++     DLY_HC02 IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_HC02 ugate (tplhTY=9ns tplhMX=18ns tphlTY=9ns tphlMX=18ns)
+
+.ENDS  74HC02
+
+.SUBCKT Digital_HC_74HC02  gnd _net0 _net2 _net1 
+X1 _net0 _net2 _net1 74HC02
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #000080 2 1>
+    <Line -10 20 -5 0 #000000 2 1>
+    <Line -10 -20 -5 0 #000000 2 1>
+  </Symbol>
+</Component>
+
+<Component 74HC04>
+  <Description>
+Inverter
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC04 _net0 _net1
+Sub:X1 _net0 _net1 gnd Type="n74HC04_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC04.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74HC04 ------
+*  Hex Inverters
+*
+*  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-23 to 2-25
+*  bss    2/3/94
+*
+.SUBCKT 74HC04  1A  1Y
++     optional: DPWR=$G_DPWR DGND=$G_DGND
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 inv DPWR DGND
++     1A 1Y
++     DLY_HC04 IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_HC04 ugate (tplhTY=9ns tplhMX=19ns tphlTY=9ns tphlMX=19ns)
+
+.ENDS  74HC04
+
+.SUBCKT Digital_HC_74HC04  gnd _net0 _net1 
+X1 _net0 _net1 74HC04
+.ENDS
+  </Spice>
+  <Symbol>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line -10 20 0 -40 #000000 2 1>
+    <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <.ID 10 14 Y>
+    <.PortSym 30 0 2 180 P2>
+    <Line -30 0 20 0 #000080 2 1>
+    <.PortSym -30 0 1 0 P1>
+  </Symbol>
+</Component>
+
+<Component 74HC08>
+  <Description>
+2-Input And Gate
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC08 _net0 _net2 _net1
+Sub:X1 _net0 _net2 _net1 gnd Type="n74HC08_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC08.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74HC08 ------
+*  Quad 2-Input And Gates   
+*
+*  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-37 to 2-39
+*  bss    2/3/94
+*
+.SUBCKT 74HC08  1A 1B  1Y
++     optional: DPWR=$G_DPWR DGND=$G_DGND
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 and(2) DPWR DGND
++     1A 1B 1Y
++     DLY_HC08 IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_HC08 ugate (tplhTY=10ns tplhMX=20ns tphlTY=10ns tphlMX=20ns)
+
+.ENDS  74HC08
+
+.SUBCKT Digital_HC_74HC08  gnd _net0 _net2 _net1 
+X1 _net0 _net2 _net1 74HC08
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line -10 20 0 -40 #000000 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component 74HC32>
+  <Description>
+2-Input Or Gate
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC32 _net0 _net2 _net1
+Sub:X1 _net0 _net2 _net1 gnd Type="n74HC32_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC32.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74HC32 ------
+*  Quad 2-Input Or Gates
+*
+*  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-77 to 2-79
+*  bss    2/9/94
+*
+.SUBCKT 74HC32  1A 1B 1Y
++     optional: DPWR=$G_DPWR DGND=$G_DGND
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 or(2) DPWR DGND
++     1A 1B 1Y
++     DLY_HC32 IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_HC32 ugate (tplhTY=10ns tplhMX=20ns tphlTY=10ns tphlMX=20ns)
+
+.ENDS  74HC32
+
+.SUBCKT Digital_HC_74HC32  gnd _net0 _net2 _net1 
+X1 _net0 _net2 _net1 74HC32
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #000080 2 1>
+    <Line -10 20 -5 0 #000000 2 1>
+    <Line -10 -20 -5 0 #000000 2 1>
+  </Symbol>
+</Component>
+
+<Component 74HC74>
+  <Description>
+D-Type Positive Edge Triggered Flip-Flop With Preset And Clear
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC74 _net0 _net1 _net2 _net3 _net4 _net5
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 gnd Type="n74HC74_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC74.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74HC74 ------
+*  Dual D-Type Positive Edge Triggered Flip-Flops With  Preset And Clear
+*
+*  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-101 to 2-103
+*  bss    2/23/94
+*
+.SUBCKT 74HC74 1PREBAR 1CLRBAR 1CLK 1D 1Q 1QBAR
++     optional:  DPWR=$G_DPWR DGND=$G_DGND
++     params:  MNTYMXDLY=0 IO_LEVEL=0
+
+U1 DFF(1) DPWR DGND
++     1PREBAR 1CLRBAR 1CLK 1D 1Q 1QBAR
++     DLY_HC74 IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_HC74 ueff(tppcqlhTY=20ns tppcqlhMX=46ns tppcqhlTY=20ns
++                 tppcqhlMX=46ns twpclMN=25ns
++                 tpclkqlhTY=20ns tpclkqlhMX=35ns tpclkqhlTY=20ns
++                 tpclkqhlMX=35ns twclkhMN=20ns twclklMN=20ns
++                 tsudclkMN=25ns tsupcclkhMN=6ns)
+
+.ENDS 74HC74
+
+.SUBCKT Digital_HC_74HC74  gnd _net0 _net1 _net2 _net3 _net4 _net5 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 74HC74
+.ENDS
+  </Spice>
+  <Symbol>
+    <Rectangle -30 -40 60 80 #000080 2 1 #c0c0c0 1 0>
+    <Line -50 20 20 0 #000080 2 1>
+    <Line -50 -20 20 0 #000080 2 1>
+    <Line 30 -20 20 0 #000080 2 1>
+    <Line 0 -40 0 -20 #000080 2 1>
+    <Ellipse -4 40 8 8 #000080 1 1 #000080 1 1>
+    <Line 30 20 20 0 #000080 2 1>
+    <Ellipse -4 -48 8 8 #000080 1 1 #000080 1 1>
+    <Line 14 11 12 0 #000080 2 1>
+    <Text 14 -31 12 #000080 0 "Q">
+    <Text 14 9 12 #000080 0 "Q">
+    <Text -28 -30 12 #000080 0 "D">
+    <Line -15 20 -15 -10 #000080 2 1>
+    <Line -30 30 15 -10 #000080 2 1>
+    <.PortSym -50 20 3 0 P3>
+    <.PortSym -50 -20 4 0 P4>
+    <.PortSym 50 -20 5 180 P5>
+    <.PortSym 50 20 6 180 P6>
+    <.PortSym 0 -60 2 0 P2>
+    <.PortSym 0 60 1 0 P1>
+    <Line 0 61 0 -20 #000080 2 1>
+    <Text -6 -41 12 #000080 0 "C">
+    <.ID 20 44 Y>
+    <Text -3 19 12 #000080 0 "P">
+  </Symbol>
+</Component>
+
+<Component 74HC86>
+  <Description>
+2-Input Exclusive-Or Gate
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC86 _net0 _net2 _net1
+Sub:X1 _net0 _net2 _net1 gnd Type="n74HC86_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC86.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74HC86 ------
+*  Quad 2-Input Exclusive-Or Gates
+*
+*  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-129 to 2-131
+*  bss    2/25/94
+*
+.SUBCKT 74HC86 1A 1B 1Y
++     optional:  DPWR=$G_DPWR DGND=$G_DGND
++     params:  MNTYMXDLY=0 IO_LEVEL=0
+
+U1 xor DPWR DGND
++     1A 1B 1Y
++     DLY_HC86 IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_HC86 ugate (tplhTY=12ns tplhMX=20ns tphlTY=12ns tphlMX=20ns)
+
+.ENDS 74HC86
+
+.SUBCKT Digital_HC_74HC86  gnd _net0 _net2 _net1 
+X1 _net0 _net2 _net1 74HC86
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #000080 2 1>
+    <EArc -15 -20 10 40 4320 2880 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component 74HC132>
+  <Description>
+2-Input Nand Gate
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC132 _net0 _net2 _net1
+Sub:X1 _net0 _net2 _net1 gnd Type="n74HC132_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC132.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74HC132 ------
+*  Quad 2-Input Nand Schmitt Triggers
+*
+*  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-159 to 2-161
+*  bss    3/15/94
+*
+.SUBCKT 74HC132 1A 1B 1Y
++  optional:  DPWR=$G_DPWR DGND=$G_DGND
++  params:  MNTYMXDLY=0 IO_LEVEL=0
+
+U1 nand(2) DPWR DGND
++  1A 1B 1Y
++  DLY_HC132 IO_HC_ST MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_HC132 ugate (tplhTY=18ns tplhMX=25ns tphlTY=18ns tphlMX=25ns)
+
+.ENDS 74HC132
+
+.SUBCKT Digital_HC_74HC132  gnd _net0 _net2 _net1 
+X1 _net0 _net2 _net1 74HC132
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line -10 20 0 -40 #000000 2 1>
+    <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <Line -6 7 7 0 #000080 2 1>
+    <Line -3 -7 7 0 #000080 2 1>
+    <Line 1 7 0 -14 #000080 2 1>
+    <Line -3 7 0 -14 #000080 2 1>
+    <.PortSym -30 -10 1 0 P1>
+    <.ID 10 14 Y>
+  </Symbol>
+</Component>
+

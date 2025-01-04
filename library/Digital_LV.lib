@@ -1,0 +1,129 @@
+<Qucs Library 24.3.99 "Digital_LV">
+
+<Component 74LV00>
+  <Description>
+2-Input Nand Gate
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV00 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="n74LV00_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV00.cir.lst">
+  <Spice>
+* The timing parameters for all of these models were taken from the specifications for a 
+* 3.3V power supply and a 50pF capacitive load.
+
+* ----------------------------------------------------------- 74LV00A ------
+*  Quad 2-Input Positive-Nand Gates
+*
+*  TI PDF File
+*  bss    2/18/03
+*
+.SUBCKT 74LV00A  1A 1B 1Y
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 nand(2) DPWR_3V DGND_3V
++     1A 1B 1Y
++     DLY_LV00 IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_LV00 ugate (tplhTY=6.9ns tplhMX=11.4ns tphlTY=6.9ns tphlMX=11.4ns)
+
+.ENDS  74LV00A
+*
+
+.SUBCKT Digital_LV_74LV00  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 74LV00A
+.ENDS
+  </Spice>
+  <Symbol>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line -10 20 0 -40 #000000 2 1>
+    <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+  </Symbol>
+</Component>
+
+<Component 74LV74>
+  <Description>
+D-Type Positive Edge Triggered Flip-Flop With Preset And Clear
+
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV74 _net0 _net1 _net2 _net3 _net4 _net5
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 gnd Type="n74LV74_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV74.cir.lst">
+  <Spice>
+* The timing parameters for all of these models were taken from the specifications for a 
+* 3.3V power supply and a 50pF capacitive load.
+*
+* ----------------------------------------------------------- 74LV74A ------
+*  Dual Positive Edge Triggered D-Type Flip-Flop
+*
+*  TI PDF File
+*  bss    2/24/03
+*
+.SUBCKT 74LV74A 1PREBAR 1CLRBAR 1CLK 1D 1Q 1QBAR
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 DFF(1) DPWR_3V DGND_3V
++     1PREBAR 1CLRBAR 1CLK 1D 1Q 1QBAR
++     DLY_LV74 IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_LV74 ueff(tppcqlhty=9.2ns tppcqlhmx=15.8ns tppcqhlty=9.2ns tppcqhlmx=15.8ns
++							tpclkqlhty=10.2ns tpclkqlhmx=15.4ns tpclkqhlty=10.2ns tpclkqhlmx=15.4ns
++							twpclmn=6ns twclklmn=6ns twclkhmn=6ns tsudclkmn=6n tsupcclkhmn=5ns
++							thdclkmn=.5n)
+
+.ENDS 74LV74A
+*
+
+.SUBCKT Digital_LV_74LV74  gnd _net0 _net1 _net2 _net3 _net4 _net5 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 74LV74A
+.ENDS
+  </Spice>
+  <Symbol>
+    <Rectangle -30 -40 60 80 #000080 2 1 #c0c0c0 1 0>
+    <Line -50 20 20 0 #000080 2 1>
+    <Line -50 -20 20 0 #000080 2 1>
+    <Line 30 -20 20 0 #000080 2 1>
+    <Line 0 -40 0 -20 #000080 2 1>
+    <Ellipse -4 40 8 8 #000080 1 1 #000080 1 1>
+    <Line 30 20 20 0 #000080 2 1>
+    <Ellipse -4 -48 8 8 #000080 1 1 #000080 1 1>
+    <Line 14 11 12 0 #000080 2 1>
+    <Text 14 -31 12 #000080 0 "Q">
+    <Text 14 9 12 #000080 0 "Q">
+    <Text -28 -30 12 #000080 0 "D">
+    <Line -15 20 -15 -10 #000080 2 1>
+    <Line -30 30 15 -10 #000080 2 1>
+    <Line 0 61 0 -20 #000080 2 1>
+    <Text -6 -41 12 #000080 0 "C">
+    <Text -3 19 12 #000080 0 "P">
+    <.PortSym 0 60 1 0 P1>
+    <.ID 20 44 Y>
+    <.PortSym 0 -60 2 0 P2>
+    <.PortSym -50 -20 4 0 P4>
+    <.PortSym -50 20 3 0 P3>
+    <.PortSym 50 -20 5 180 P5>
+    <.PortSym 50 20 6 180 P6>
+  </Symbol>
+</Component>
+
