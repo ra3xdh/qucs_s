@@ -68,6 +68,12 @@ Component::Component() {
     containingSchematic = NULL;
 }
 
+Component::Component(const ComponentInfo& CI) : Component() {
+  // Call the default constructor first to initialize all members
+  // Then load data from ComponentInfo
+  loadfromComponentInfo(CI);
+}
+
 // -------------------------------------------------------
 Component *Component::newOne() {
   if (!Name.isEmpty() && Name.endsWith('1')) {
@@ -233,6 +239,7 @@ int Component::getTextSelected(int point_x, int point_y) {
 
     return -1;
 }
+
 
 // -------------------------------------------------------
 bool Component::getSelected(int x_, int y_) {
@@ -1804,8 +1811,19 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
         // backward compatible
         c = new SParamFile();
         c->Props.back()->Value = cstr.mid(6);
-    } else
+    } else{
+        // First look for the component in the QMap library. If the component is not there
+        // then must be a hardcoded component (i.e. simulation block, etc.)
+      ComponentInfo* component_data = findComponentBySchematicID(cstr);
+
+      if (component_data) {
+        // Component found in QMap library (static component)
+        c = new Component(*component_data);
+      } else {
+        // Dynamic component
         c = Module::getComponent(cstr);
+      }
+    }
 
     if (!c) {
         /// \todo enable user to load partial schematic, skip unknown components
@@ -1912,4 +1930,17 @@ void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, Q
     struct qucs::Arc * newArc = new struct qucs::Arc(arcInfo.x, arcInfo.y, arcInfo.width, arcInfo.height, arcInfo.angle, arcInfo.arclen, arcInfo.Pen);
     Arcs.append(newArc);
   }
+}
+
+// This function is used for getting a component from the QMap library
+ComponentInfo* findComponentBySchematicID(const QString& schematic_id)
+{
+  for (auto& category : LibraryComponents) {
+    for (auto& component : category) {
+      if (component.Schematic_ID == schematic_id) {
+        return &component;
+      }
+    }
+  }
+  return nullptr;
 }

@@ -38,6 +38,7 @@ class QPen;
 class Component : public Element {
 public:
   Component();
+  Component(const ComponentInfo& CI);
   virtual ~Component() {};
 
   virtual Component* newOne();
@@ -73,6 +74,7 @@ public:
   void    mirrorY();  // mirror about Y axis
   QString save();
   bool    load(const QString&);
+
   void loadfromComponentInfo(ComponentInfo);
   static void loadSymbol(SymbolDescription, QList<Port *>&, QList<qucs::Line *>&, QList<struct qucs::Arc *>&);
 
@@ -169,5 +171,7 @@ protected:
 
 // prototype of independent function
 Component* getComponentFromName(QString& Line, Schematic* p=NULL);
+ComponentInfo* findComponentBySchematicID(const QString&); // Gets a component from the QMap library
+
 
 #endif

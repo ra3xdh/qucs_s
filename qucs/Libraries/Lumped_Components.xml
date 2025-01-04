@@ -23,6 +23,9 @@
             <Parameter name="C" unit="pF" default_value="1" show="1">
                 <Description>Capacitance</Description>
             </Parameter>
+            <Parameter name="V" unit="V" default_value="1" show="0">
+                <Description>Initial voltage for transient simulation</Description>
+            </Parameter>
         </Parameters>
     </Component>
     <Component name="Resistor" schematic_id = "R">
