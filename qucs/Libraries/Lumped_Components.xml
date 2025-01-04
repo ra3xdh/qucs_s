@@ -10,7 +10,7 @@
                 </SpiceModel>
         </Models>
         <Symbols>
-            <Symbol id="Standard">
+            <Symbol id="Standard" type="explicit">
                 <PortSym x="-30" y="0" type="1" angle="0" />
                 <Line x1="-4" y1="-11" x2="-4" y2="11" color="#000080" width="2" style="1" />
                 <Line x1="4" y1="-11" x2="4" y2="11" color="#000080" width="2" style="1" />
@@ -36,7 +36,7 @@
                 </SpiceModel>
         </Models>
         <Symbols>
-            <Symbol id="Standard">
+            <Symbol id="Standard" type="explicit">
                 <PortSym x="-30" y="0" type="1" angle="0" />
                 <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
                 <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
@@ -64,19 +64,13 @@
                 </SpiceModel>
         </Models>
         <Symbols>
-            <Symbol id="Standard">
-                <PortSym x="-30" y="0" type="1" angle="0" />
-                <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
-                <Arc x="-18" y="-6" arc_width="12" arc_height="12" angle="0" arclen="2880" color="#000080" pen_width="2" />
-                <Arc x="-6" y="-6" arc_width="12" arc_height="12" angle="0" arclen="2880" color="#000080" pen_width="2" />
-                <Arc x="6" y="-6" arc_width="12" arc_height="12" angle="0" arclen="2880" color="#000080" pen_width="2" />
-                <PortSym x="30" y="0" type="2" angle="180"/>
-            </Symbol>
+            <Symbol id="Standard" type="external"> <!-- Defined externally only for future reference -->
+               <File>./Lumped_Component_Symbols/Inductor.sym</File>
+           </Symbol>
         </Symbols>
         <Parameters>
             <Parameter name="L" unit="nH" default_value="1" show="1">
-                <Description>Resistance</Description>
+                <Description>Inductance</Description>
             </Parameter>
         </Parameters>
     </Component>

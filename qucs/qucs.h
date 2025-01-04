@@ -26,6 +26,7 @@
 #include <QSortFilterProxyModel>
 #include "main.h"
 #include "element.h"
+ #include <QXmlStreamReader>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -98,7 +99,11 @@ public:
   QucsDoc* findDoc (QString, int * Pos = 0);
   QString fileType (const QString&);
   static bool isTextDocument(QWidget *);
+
+  // XML based components loading functions
   void readXML(QFile &);
+  SymbolDescription parseSymbol(QXmlStreamReader &, QVector<int> &);
+  void updateBoundingBox(int &, int &, int &, int &, int, int);
 
   QString ProjName;   // name of the project, that is open
   //QHash<QString,QString> schNameHash; // QHash for the schematic files lookup

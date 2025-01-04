@@ -108,5 +108,6 @@
         <file>bitmaps/svg/XAPWL.svg</file>
         <file>bitmaps/svg/vhdlfile.svg</file>
         <file>Libraries/Lumped_Components.xml</file>
+        <file>Libraries/Lumped_Component_Symbols/Inductor.sym</file>
     </qresource>
 </RCC>

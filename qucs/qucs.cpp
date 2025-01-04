@@ -321,214 +321,40 @@ void QucsApp::readXML(QFile & library_file) {
                 while (xmlReader.readNextStartElement()) {
                   if (xmlReader.name() == "Symbol") {
                     QString symbolName = xmlReader.attributes().value("id").toString();
-                    //qDebug() << "    Symbol ID:" << symbolName;
+                    QString symbolType = xmlReader.attributes().value("type").toString();
 
-                    SymbolDescription SymbolData;
+                    if (symbolType == "explicit") {
+                      QVector<int> boundingBox;
+                      SymbolDescription symbolData = parseSymbol(xmlReader, boundingBox);
+                      Component[ComponentName].symbol[symbolName] = symbolData;
+                      Component[ComponentName].SymbolBoundingBox[symbolName] = boundingBox;
+                    } else if (symbolType == "external") {
+                      xmlReader.readNextStartElement();
+                      if (xmlReader.name() == "File") {
+                        QString RelativePathSymbol = xmlReader.readElementText().trimmed();
+                        QString filePath = QFileInfo(library_file).absolutePath() + QString("/") + QDir::cleanPath(RelativePathSymbol);
 
-                    int minX = 1e3, maxX = -1e3, minY = 1e3, maxY = -1e3; // Variables used to calculate the component's bounding box
+                        // Read the external file and parse the symbol
+                        QFile externalFile(filePath);
+                        if (externalFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                          QXmlStreamReader externalXmlReader(&externalFile);
+                          QVector<int> boundingBox;
 
-                    while (xmlReader.readNextStartElement()) {
-                      qDebug() << xmlReader.name();
-                      if (xmlReader.name() == "PortSym") {
-                        PortInfo Port;
-                        Port.x = xmlReader.attributes().value("x").toInt();
-                        Port.y = xmlReader.attributes().value("y").toInt();
-                        SymbolData.Ports.append(Port);
-                        xmlReader.skipCurrentElement();
+                          externalXmlReader.readNextStartElement();
+                          qDebug() << externalXmlReader.name();
 
-                        // Update bounding box
-                        if (Port.x < minX) minX = Port.x;
-                        if (Port.x > maxX) maxX = Port.x;
-                        if (Port.y < minY) minY = Port.y;
-                        if (Port.y > maxY) maxY = Port.y;
-
-                      } else if (xmlReader.name() == "Line") {
-                        LineInfo Line;
-                        Line.x1 = xmlReader.attributes().value("x1").toInt();
-                        Line.y1 = xmlReader.attributes().value("y1").toInt();
-                        Line.x2 = xmlReader.attributes().value("x2").toInt();
-                        Line.y2 = xmlReader.attributes().value("y2").toInt();
-                        QColor color(xmlReader.attributes().value("color").toString());
-                        int penWidth = xmlReader.attributes().value("width").toInt();
-                        int style = xmlReader.attributes().value("style").toInt();
-
-                        Qt::PenStyle penStyle = static_cast<Qt::PenStyle>(style);
-                        QPen pen(color, penWidth, penStyle);
-                        Line.Pen = pen;
-                        SymbolData.Lines.append(Line);
-                        xmlReader.skipCurrentElement();
-
-                        // Update bounding box
-                        if (Line.x1 < minX) minX = Line.x1;
-                        if (Line.x1 > maxX) maxX = Line.x1;
-                        if (Line.x2 < minX) minX = Line.x1;
-                        if (Line.x2 > maxX) maxX = Line.x2;
-
-                        if (Line.y1 < minY) minY = Line.y1;
-                        if (Line.y1 > maxY) maxY = Line.y1;
-                        if (Line.y2 < minY) minY = Line.y2;
-                        if (Line.y2 > maxY) maxY = Line.y2;
-
-                      } else if (xmlReader.name() == "Arc") {
-                        ArcInfo Arc;
-                        Arc.x = xmlReader.attributes().value("x").toInt();
-                        Arc.y = xmlReader.attributes().value("y").toInt();
-                        Arc.width = xmlReader.attributes().value("arc_width").toInt();
-                        Arc.height = xmlReader.attributes().value("arc_height").toInt();
-                        Arc.angle = xmlReader.attributes().value("angle").toInt();
-                        Arc.arclen = xmlReader.attributes().value("arclen").toInt();
-
-                        QColor color(xmlReader.attributes().value("color").toString());
-                        int penWidth = xmlReader.attributes().value("pen_width").toInt();
-
-                        QPen pen(color, penWidth, Qt::SolidLine);
-                        Arc.Pen = pen;
-
-                        SymbolData.Arcs.append(Arc);
-                        xmlReader.skipCurrentElement();
-
-                        // Update bounding box
-                        if (Arc.x - Arc.width/2 < minX) minX = Arc.x - Arc.width/2;
-                        if (Arc.x + Arc.width/2 > maxX) maxX = Arc.x + Arc.width/2;
-                        if (Arc.y - Arc.height/2 < minY) minY = Arc.y - Arc.height/2;
-                        if (Arc.y + Arc.height/2 > maxY) maxY = Arc.y + Arc.height/2;
-
-                      } else if (xmlReader.name() == "Polyline") {
-                        PolylineInfo Polyline;
-
-                        // Read pen attributes
-                        QColor color(xmlReader.attributes().value("color").toString());
-                        int penWidth = xmlReader.attributes().value("width").toInt();
-                        int style = xmlReader.attributes().value("style").toInt();
-                        int capStyle = xmlReader.attributes().value("capStyle").toInt();
-                        int joinStyle = xmlReader.attributes().value("joinStyle").toInt();
-
-                        Qt::PenStyle penStyle = static_cast<Qt::PenStyle>(style);
-                        Qt::PenCapStyle penCapStyle = static_cast<Qt::PenCapStyle>(capStyle);
-                        Qt::PenJoinStyle penJoinStyle = static_cast<Qt::PenJoinStyle>(joinStyle);
-
-                        QPen pen(color, penWidth, penStyle, penCapStyle, penJoinStyle);
-                        Polyline.Pen = pen;
-
-                               // Read brush style
-                        int brushStyle = xmlReader.attributes().value("brushStyle").toInt();
-                        Polyline.Brush.setStyle(static_cast<Qt::BrushStyle>(brushStyle));
-
-                               // Read points
-                        while (xmlReader.readNextStartElement()) {
-                          if (xmlReader.name() == "point") {
-                            double x = xmlReader.attributes().value("x").toDouble();
-                            double y = xmlReader.attributes().value("y").toDouble();
-                            Polyline.Points.append(QPointF(x, y));
-                            xmlReader.skipCurrentElement();
-
-                            // Update bounding box
-                            if (x < minX) minX = x;
-                            if (x > maxX) maxX = x;
-                            if (y < minY) minY = y;
-                            if (y > maxY) maxY = y;
-
-                          } else {
-                            xmlReader.skipCurrentElement();
-                          }
+                          SymbolDescription symbolData = parseSymbol(externalXmlReader, boundingBox);
+                          Component[ComponentName].symbol[symbolName] = symbolData;
+                          Component[ComponentName].SymbolBoundingBox[symbolName] = boundingBox;
+                          externalFile.close();
+                        } else {
+                          qDebug() << "Error opening external symbol file:" << filePath;
                         }
-                        SymbolData.Polylines.append(Polyline);
-
-                      } else if (xmlReader.name() == "Ellipse") {
-                        EllipseInfo Ellips;
-
-                        // Read ellipse attributes
-                        Ellips.x = xmlReader.attributes().value("x").toDouble();
-                        Ellips.y = xmlReader.attributes().value("y").toDouble();
-                        Ellips.width = xmlReader.attributes().value("width").toDouble();
-                        Ellips.height = xmlReader.attributes().value("height").toDouble();
-
-                               // Read pen attributes
-                        QColor penColor(xmlReader.attributes().value("penColor").toString());
-                        int penWidth = xmlReader.attributes().value("penWidth").toInt();
-                        int penStyle = xmlReader.attributes().value("penStyle").toInt();
-
-                        Ellips.Pen = QPen(penColor, penWidth, static_cast<Qt::PenStyle>(penStyle));
-
-                               // Read brush attributes
-                        QColor brushColor(xmlReader.attributes().value("brushColor").toString());
-                        int brushStyle = xmlReader.attributes().value("brushStyle").toInt();
-
-                        Ellips.Brush = QBrush(brushColor, static_cast<Qt::BrushStyle>(brushStyle));
-
-                        SymbolData.Ellipses.append(Ellips);
-                        xmlReader.skipCurrentElement();
-
-                        // Update bounding box
-                        if (Ellips.x < minX) minX = Ellips.x;
-                        if (Ellips.x > maxX) maxX = Ellips.x;
-                        if (Ellips.y < minY) minY = Ellips.y;
-                        if (Ellips.y > maxY) maxY = Ellips.y;
-
-                      } else if (xmlReader.name() == "Rect") {
-                        RectInfo Rect;
-
-                        // Read rectangle attributes
-                        Rect.x = xmlReader.attributes().value("x").toDouble();
-                        Rect.y = xmlReader.attributes().value("y").toDouble();
-                        Rect.width = xmlReader.attributes().value("width").toDouble();
-                        Rect.height = xmlReader.attributes().value("height").toDouble();
-
-                               // Read pen attributes
-                        QColor penColor(xmlReader.attributes().value("penColor").toString());
-                        int penWidth = xmlReader.attributes().value("penWidth").toInt();
-                        int penStyle = xmlReader.attributes().value("penStyle").toInt();
-
-                        Rect.Pen = QPen(penColor, penWidth, static_cast<Qt::PenStyle>(penStyle));
-
-                               // Read brush attributes
-                        QColor brushColor(xmlReader.attributes().value("brushColor").toString());
-                        int brushStyle = xmlReader.attributes().value("brushStyle").toInt();
-
-                        Rect.Brush = QBrush(brushColor, static_cast<Qt::BrushStyle>(brushStyle));
-
-                        SymbolData.Rects.append(Rect);
-                        xmlReader.skipCurrentElement();
-
-                        // Update bounding box
-                        if (Rect.x - Rect.width/2 < minX) minX = Rect.x - Rect.width/2;
-                        if (Rect.x + Rect.width/2 > maxX) maxX = Rect.x + Rect.width/2;
-                        if (Rect.y - Rect.height/2 < minY) minY = Rect.y - Rect.height/2;
-                        if (Rect.y + Rect.height/2 > maxY) maxY = Rect.y + Rect.height/2;
-
-
-                      } else if (xmlReader.name() == "Text") {
-                        TextInfo Text;
-
-                        // Read text attributes
-                        Text.x = xmlReader.attributes().value("x").toDouble();
-                        Text.y = xmlReader.attributes().value("y").toDouble();
-                        Text.s = xmlReader.attributes().value("text").toString();
-                        Text.Color = QColor(xmlReader.attributes().value("color").toString());
-                        Text.Size = xmlReader.attributes().value("size").toDouble();
-                        Text.mCos = xmlReader.attributes().value("mCos").toDouble();
-                        Text.mSin = xmlReader.attributes().value("mSin").toDouble();
-                        Text.over = xmlReader.attributes().value("over").toInt() != 0;
-                        Text.under = xmlReader.attributes().value("under").toInt() != 0;
-
-                        SymbolData.Texts.append(Text);
-                        xmlReader.skipCurrentElement();
-
-                        // Update bounding box
-                        if (Text.x < minX) minX = Text.x;
-                        if (Text.x > maxX) maxX = Text.x;
-                        if (Text.y < minY) minY = Text.y;
-                        if (Text.y > maxY) maxY = Text.y;
-
-
-                      } else {
-                        xmlReader.skipCurrentElement();
                       }
+                      xmlReader.skipCurrentElement();
+                    } else {
+                      xmlReader.skipCurrentElement();
                     }
-
-                    Component[ComponentName].symbol[symbolName] = SymbolData;
-                    QVector<int> SymbolBoundingBox = {minX, maxX, minY, maxY};
-                    Component[ComponentName].SymbolBoundingBox[symbolName] = SymbolBoundingBox;
                   } else {
                     xmlReader.skipCurrentElement();
                   }
@@ -584,6 +410,211 @@ void QucsApp::readXML(QFile & library_file) {
 
   library_file.close();
 }
+
+// This function is used to parsing the XML symbol description (which could be embedded into the library file or in an external file)
+SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int> &boundingBox) {
+  SymbolDescription SymbolData;
+  int minX = 1e3, maxX = -1e3, minY = 1e3, maxY = -1e3;
+
+  while (xmlReader.readNextStartElement()) {
+    if (xmlReader.name() == "PortSym") {
+      PortInfo Port;
+      Port.x = xmlReader.attributes().value("x").toInt();
+      Port.y = xmlReader.attributes().value("y").toInt();
+      SymbolData.Ports.append(Port);
+      xmlReader.skipCurrentElement();
+
+      // Update bounding box
+      updateBoundingBox(minX, maxX, minY, maxY, Port.x, Port.y);
+
+    } else if (xmlReader.name() == "Line") {
+      LineInfo Line;
+      Line.x1 = xmlReader.attributes().value("x1").toInt();
+      Line.y1 = xmlReader.attributes().value("y1").toInt();
+      Line.x2 = xmlReader.attributes().value("x2").toInt();
+      Line.y2 = xmlReader.attributes().value("y2").toInt();
+      QColor color(xmlReader.attributes().value("color").toString());
+      int penWidth = xmlReader.attributes().value("width").toInt();
+      int style = xmlReader.attributes().value("style").toInt();
+
+      Qt::PenStyle penStyle = static_cast<Qt::PenStyle>(style);
+      QPen pen(color, penWidth, penStyle);
+      Line.Pen = pen;
+      SymbolData.Lines.append(Line);
+      xmlReader.skipCurrentElement();
+
+      // Update bounding box
+      updateBoundingBox(minX, maxX, minY, maxY, Line.x1, Line.y1);
+      updateBoundingBox(minX, maxX, minY, maxY, Line.x2, Line.y2);
+
+      if (Line.y1 < minY) minY = Line.y1;
+                        if (Line.y1 > maxY) maxY = Line.y1;
+                        if (Line.y2 < minY) minY = Line.y2;
+                        if (Line.y2 > maxY) maxY = Line.y2;
+
+    } else if (xmlReader.name() == "Arc") {
+      ArcInfo Arc;
+      Arc.x = xmlReader.attributes().value("x").toInt();
+      Arc.y = xmlReader.attributes().value("y").toInt();
+      Arc.width = xmlReader.attributes().value("arc_width").toInt();
+      Arc.height = xmlReader.attributes().value("arc_height").toInt();
+      Arc.angle = xmlReader.attributes().value("angle").toInt();
+      Arc.arclen = xmlReader.attributes().value("arclen").toInt();
+
+      QColor color(xmlReader.attributes().value("color").toString());
+      int penWidth = xmlReader.attributes().value("pen_width").toInt();
+
+      QPen pen(color, penWidth, Qt::SolidLine);
+      Arc.Pen = pen;
+
+      SymbolData.Arcs.append(Arc);
+      xmlReader.skipCurrentElement();
+
+             // Update bounding box
+      if (Arc.x - Arc.width/2 < minX) minX = Arc.x - Arc.width/2;
+                        if (Arc.x + Arc.width/2 > maxX) maxX = Arc.x + Arc.width/2;
+                        if (Arc.y - Arc.height/2 < minY) minY = Arc.y - Arc.height/2;
+                        if (Arc.y + Arc.height/2 > maxY) maxY = Arc.y + Arc.height/2;
+
+    } else if (xmlReader.name() == "Polyline") {
+      PolylineInfo Polyline;
+
+             // Read pen attributes
+      QColor color(xmlReader.attributes().value("color").toString());
+      int penWidth = xmlReader.attributes().value("width").toInt();
+      int style = xmlReader.attributes().value("style").toInt();
+      int capStyle = xmlReader.attributes().value("capStyle").toInt();
+      int joinStyle = xmlReader.attributes().value("joinStyle").toInt();
+
+      Qt::PenStyle penStyle = static_cast<Qt::PenStyle>(style);
+      Qt::PenCapStyle penCapStyle = static_cast<Qt::PenCapStyle>(capStyle);
+      Qt::PenJoinStyle penJoinStyle = static_cast<Qt::PenJoinStyle>(joinStyle);
+
+      QPen pen(color, penWidth, penStyle, penCapStyle, penJoinStyle);
+      Polyline.Pen = pen;
+
+             // Read brush style
+      int brushStyle = xmlReader.attributes().value("brushStyle").toInt();
+      Polyline.Brush.setStyle(static_cast<Qt::BrushStyle>(brushStyle));
+
+             // Read points
+      while (xmlReader.readNextStartElement()) {
+        if (xmlReader.name() == "point") {
+          double x = xmlReader.attributes().value("x").toDouble();
+          double y = xmlReader.attributes().value("y").toDouble();
+          Polyline.Points.append(QPointF(x, y));
+          xmlReader.skipCurrentElement();
+
+          // Update bounding box
+          updateBoundingBox(minX, maxX, minY, maxY, x, y);
+
+        } else {
+          xmlReader.skipCurrentElement();
+        }
+      }
+      SymbolData.Polylines.append(Polyline);
+
+    } else if (xmlReader.name() == "Ellipse") {
+      EllipseInfo Ellips;
+
+             // Read ellipse attributes
+      Ellips.x = xmlReader.attributes().value("x").toDouble();
+      Ellips.y = xmlReader.attributes().value("y").toDouble();
+      Ellips.width = xmlReader.attributes().value("width").toDouble();
+      Ellips.height = xmlReader.attributes().value("height").toDouble();
+
+             // Read pen attributes
+      QColor penColor(xmlReader.attributes().value("penColor").toString());
+      int penWidth = xmlReader.attributes().value("penWidth").toInt();
+      int penStyle = xmlReader.attributes().value("penStyle").toInt();
+
+      Ellips.Pen = QPen(penColor, penWidth, static_cast<Qt::PenStyle>(penStyle));
+
+             // Read brush attributes
+      QColor brushColor(xmlReader.attributes().value("brushColor").toString());
+      int brushStyle = xmlReader.attributes().value("brushStyle").toInt();
+
+      Ellips.Brush = QBrush(brushColor, static_cast<Qt::BrushStyle>(brushStyle));
+
+      SymbolData.Ellipses.append(Ellips);
+      xmlReader.skipCurrentElement();
+
+             // Update bounding box
+      if (Ellips.x < minX) minX = Ellips.x;
+      if (Ellips.x > maxX) maxX = Ellips.x;
+      if (Ellips.y < minY) minY = Ellips.y;
+      if (Ellips.y > maxY) maxY = Ellips.y;
+
+    } else if (xmlReader.name() == "Rect") {
+      RectInfo Rect;
+
+             // Read rectangle attributes
+      Rect.x = xmlReader.attributes().value("x").toDouble();
+      Rect.y = xmlReader.attributes().value("y").toDouble();
+      Rect.width = xmlReader.attributes().value("width").toDouble();
+      Rect.height = xmlReader.attributes().value("height").toDouble();
+
+             // Read pen attributes
+      QColor penColor(xmlReader.attributes().value("penColor").toString());
+      int penWidth = xmlReader.attributes().value("penWidth").toInt();
+      int penStyle = xmlReader.attributes().value("penStyle").toInt();
+
+      Rect.Pen = QPen(penColor, penWidth, static_cast<Qt::PenStyle>(penStyle));
+
+             // Read brush attributes
+      QColor brushColor(xmlReader.attributes().value("brushColor").toString());
+      int brushStyle = xmlReader.attributes().value("brushStyle").toInt();
+
+      Rect.Brush = QBrush(brushColor, static_cast<Qt::BrushStyle>(brushStyle));
+
+      SymbolData.Rects.append(Rect);
+      xmlReader.skipCurrentElement();
+
+             // Update bounding box
+      if (Rect.x - Rect.width/2 < minX) minX = Rect.x - Rect.width/2;
+                        if (Rect.x + Rect.width/2 > maxX) maxX = Rect.x + Rect.width/2;
+                        if (Rect.y - Rect.height/2 < minY) minY = Rect.y - Rect.height/2;
+                        if (Rect.y + Rect.height/2 > maxY) maxY = Rect.y + Rect.height/2;
+
+
+    } else if (xmlReader.name() == "Text") {
+      TextInfo Text;
+
+             // Read text attributes
+      Text.x = xmlReader.attributes().value("x").toDouble();
+      Text.y = xmlReader.attributes().value("y").toDouble();
+      Text.s = xmlReader.attributes().value("text").toString();
+      Text.Color = QColor(xmlReader.attributes().value("color").toString());
+      Text.Size = xmlReader.attributes().value("size").toDouble();
+      Text.mCos = xmlReader.attributes().value("mCos").toDouble();
+      Text.mSin = xmlReader.attributes().value("mSin").toDouble();
+      Text.over = xmlReader.attributes().value("over").toInt() != 0;
+      Text.under = xmlReader.attributes().value("under").toInt() != 0;
+
+      SymbolData.Texts.append(Text);
+      xmlReader.skipCurrentElement();
+
+             // Update bounding box
+      updateBoundingBox(minX, maxX, minY, maxY, Text.x, Text.y);
+
+    } else {
+      xmlReader.skipCurrentElement();
+    }
+  }
+
+  boundingBox = {minX, maxX, minY, maxY};
+  return SymbolData;
+}
+
+// This function is used to update the component's bounding box. The readXML function loads the symbol geometry description and this function
+// is called when parsing that information to look for new maximum and minimum x and y coordinates
+void QucsApp::updateBoundingBox(int &minX, int &maxX, int &minY, int &maxY, int x, int y) {
+  minX = std::min(minX, x);
+  maxX = std::max(maxX, x);
+  minY = std::min(minY, y);
+  maxY = std::max(maxY, y);
+}
+
 
 // #######################################################################
 // ##########                                                   ##########
