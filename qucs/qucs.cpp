@@ -368,7 +368,6 @@ void QucsApp::readXML(QFile & library_file) {
                     QString ShowParam = xmlReader.attributes().value("show").toString();
                     bool Show = (ShowParam.toInt() != 0); // Convert Show parameter to bool
                     qDebug() << "    Parameter:" << Name << Unit << DefaultValue;
-                    QString Value = DefaultValue + Unit;
 
                            // Read parameter description
                     QString Description;

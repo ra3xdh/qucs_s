@@ -1,5 +1,5 @@
 <Library name="Sources">
-    <Component name="AC Power Source" schematic_id = "P">
+    <Component name="AC Power Source" schematic_id = "Pac">
         <Description>
             AC Power Source
         </Description>
@@ -45,11 +45,8 @@
             <Parameter name="f" unit="GHz" default_value="1" show="0">
                 <Description>Frequency</Description>
             </Parameter>
-            <Parameter name="Temp" unit="C" default_value="26.85" show="0">
+            <Parameter name="Temp" unit="" default_value="26.85" show="0">
                 <Description>Simulation temperature</Description>
-            </Parameter>
-            <Parameter name="EnableTran" unit="" default_value="1" show="0">
-                <Description>Enable transient model as sine source</Description>
             </Parameter>
         </Parameters>
     </Component>

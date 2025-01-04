@@ -1886,7 +1886,12 @@ void Component::loadfromComponentInfo(ComponentInfo C)
     QString parameter_name = it.key();
     ParameterInfo parameter = it.value();
 
-    QString value = QString("%1 %2").arg(parameter.DefaultValue).arg(parameter.Unit);
+    QString value = QString("%1").arg(parameter.DefaultValue);
+
+    if (!parameter.Unit.isEmpty()) {
+      value += QString(" %1").arg(parameter.Unit);
+    }
+
     // Append to the component's QList of properties
     Props.append(new Property(parameter_name, value, parameter.Show, parameter.Description));
   }
