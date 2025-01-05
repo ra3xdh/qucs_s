@@ -228,17 +228,14 @@ void QucsApp::slotResetDiagramLimits()
 {
   if (view->focusElement && view->focusElement->Type == isDiagram)
   {
-    Diagram* diagram = (Diagram*)(view->focusElement);
+    Diagram* diagram = dynamic_cast<Diagram*>(view->focusElement);
+    Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
 
     diagram->xAxis.autoScale = true;
     diagram->yAxis.autoScale = true;
     diagram->zAxis.autoScale = true;
 
-    // Now read in the data.
-    auto* Doc = (Schematic*)DocumentTab->currentWidget();
-    QFileInfo Info(Doc->getDocName());
-    QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->getDataSet();
-    diagram->loadGraphData(defaultDataSet);
+    diagram->updateGraphData();
 
     Doc->setChanged(true, true);
     Doc->viewport()->update();

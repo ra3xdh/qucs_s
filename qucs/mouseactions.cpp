@@ -1886,10 +1886,7 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
 
             diagram->setLimitsBySelectionRect(select);
 
-            // TODO: Consider refactoring loadGraphData to reload the current dataset if an empty string is passed.
-            QFileInfo Info(Doc->getDocName());
-            QString defaultDataSet = Info.absolutePath() + QDir::separator() + Doc->getDataSet();
-            diagram->loadGraphData(defaultDataSet);
+            diagram->updateGraphData();
 
             Doc->setChanged(true, true);
 
