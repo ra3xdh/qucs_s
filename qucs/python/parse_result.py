@@ -1,131 +1,119 @@
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Literal, TypeAlias
 import re
+
 import numpy as np
 
 
+VariableType: TypeAlias = Literal["indep", "dep"]
+ComplexArray: TypeAlias = np.typing.NDArray[np.complex128]
+FloatArray: TypeAlias = np.typing.NDArray[np.float64]
+DataDict: TypeAlias = dict[str, ComplexArray | FloatArray]
+VariableDict: TypeAlias = dict[str, VariableType]
+
+
+@dataclass
 class QucsDataset:
-    def __init__(self, name: str) -> None:
-        '''
-        A class for parsing and working with QUCS-S simulation results.
+    """A class for parsing and working with QUCS-S simulation results."""
 
-        Methods:
-            results - returns simulation result for given simulation variable
-            variables - prints the list of variables and their types
+    file_path: str | Path
+    _variables: VariableDict = field(default_factory=dict, init=False)
+    _data: DataDict = field(default_factory=dict, init=False)
+    _qucs_dataset: list[str] = field(default_factory=list, init=False)
 
-        Args:
-            name (str): Path to the QUCS-S dataset file
-
-        Raises:
-            FileNotFoundError: If the specified dataset file is not found
-            ValueError: If data does not contain the expected variables
-            ValueError: If QUCS-S dataset is invalid
-
-        Attributes:
-            _variables (Dict[str, str]):
-                A dictionary mapping variable names to either 'indep' or 'dep'.
-            __data (Dict[str, np.ndarray]):
-                A dictionary mapping variable names to arrays of values.
-        '''
+    def __post_init__(self) -> None:
+        """Initialize the dataset by reading and parsing the file."""
         try:
-            with open(name, 'r') as f:
+            with open(self.file_path, "r", encoding="utf-8") as f:
                 first_line = f.readline()
                 if not first_line.startswith("<Qucs Dataset"):
-                    raise ValueError(f"Invalid QUCS-S dataset {name}.")
-                self.__qucs_dataset = f.readlines()
+                    raise ValueError(f"Invalid QUCS-S dataset {self.file_path}.")
+                self._qucs_dataset = f.readlines()
         except FileNotFoundError:
-            raise FileNotFoundError(f"QUCS-S dataset {name} not found.")
-        self._variables = {}
-        self.__data = self.__parse_qucs_result()
+            raise FileNotFoundError(f"QUCS-S dataset {self.file_path} not found.")
 
-    def __parse_qucs_result(self) -> dict:
-        '''
-        Parses a *.dat file containing QUCS-S simulation results.
+        self._parse_qucs_result()
 
-        Returns:
-            dict: A dictionary of the variables in the dataset and their values
-        '''
-        data = {}
-        numpoints = 1
-        indep_count = 0
-        shape = []
-        ind = 0
+    def _parse_qucs_result(self) -> None:
+        """Parse a *.dat file containing QUCS-S simulation results."""
+        numpoints: int = 1
+        indep_count: int = 0
+        shape: int = 1
+        ind: int = 0
+        current_var: str = ""
 
-        for line in self.__qucs_dataset:
-            if line.startswith('<'):
-                if line.startswith('<indep'):
-                    matched = re.search(r'<(\w+) (\S+) (\d+)>', line)
-                    name = matched.group(2)
+        for line in self._qucs_dataset:
+            if line.startswith("<"):
+                if line.startswith("<indep"):
+                    matched = re.search(r"<(?P<tag>\w+) (?P<var>\S+) (?P<points>\d+)>", line)
+                    if not matched:
+                        continue
 
-                    # work with several independent variables
+                    current_var = matched.group('var')
+                    points = int(matched.group('points'))
+
                     if indep_count >= 1:
-                        # keeps the total number of points
-                        numpoints = numpoints * int(matched.group(3))
-                        shape = int(matched.group(3))
+                        numpoints *= points
+                        shape = points
                     else:
-                        # only parse the total number of points
-                        numpoints = int(matched.group(3))
-                        shape = 1
+                        numpoints = points
 
-                    # reserve an array for the values
-                    data[name] = np.zeros(numpoints)
-                    ind = 0
-
-                    # save that this variable is independent
-                    self._variables[name] = 'indep'
+                    self._data[current_var] = np.zeros(numpoints)
+                    self._variables[current_var] = "indep"
                     indep_count += 1
-                elif line.startswith('<dep'):
-                    indep_count = 0
-                    matched = re.search(r'<dep (\S+)', line)
-                    name = matched.group(1)
-                    # reserve a complex matrix to be on the safe side
-                    data[name] = np.zeros(numpoints, dtype=np.complex128)
                     ind = 0
-                    # store that this variable is dependent
-                    self._variables[name] = 'dep'
-            else:
-                jind = line.find('j')
-                if jind == -1:
-                    val = float(line)
-                else:
-                    # complex number -> break into re/im part
-                    val_re = line[0:jind-1]
-                    sign = line[jind-1]
-                    val_im = sign + line[jind+1:-1]
-                    # complex number -> break into re/im part
-                    val = complex(float(val_re), float(val_im))
 
-                # store the extracted datapoint
-                data[name][ind] = val
+                elif line.startswith("<dep"):
+                    indep_count = 0
+                    matched = re.search(r"<dep (?P<var>\S+)", line)
+                    if not matched:
+                        continue
+
+                    current_var = matched.group('var')
+                    self._data[current_var] = np.zeros(numpoints, dtype=np.complex128)
+                    self._variables[current_var] = "dep"
+                    ind = 0
+
+            elif (
+                line.strip() and current_var
+            ):  # Проверяем что строка не пустая и переменная определена
+                val = self._parse_value(line.strip())
+                self._data[current_var][ind] = val
                 ind += 1
 
-        # here comes the clever trick :-)
-        # if a dependent variable depends on N > 1 (independent) variables,
-        # we reshape the vector we have obtained so far into an N-dimensional
-        # matrix
-        for key in self._variables:
-            if self._variables[key] == 'dep' and shape != 1:
-                data[key] = data[key].reshape(shape, int(data[key].size/shape))
-                print(f'Simulation results for variable {key} reshaped into an N-dimensional matrix')
-        return data
+        # Reshape dependent variables for N > 1 independent variables
+        if shape > 1:
+            for key, var_type in self._variables.items():
+                if var_type == "dep":
+                    rows = shape
+                    cols = int(self._data[key].size / shape)
+                    self._data[key] = self._data[key].reshape(rows, cols)
+                    print(
+                        f"Simulation results for variable {key} reshaped into an N-dimensional matrix"
+                    )
 
-    def results(self, variable_name: str) -> np.ndarray:
-        '''
-        Returns simulation results for given variable name.
+    @staticmethod
+    def _parse_value(line: str) -> complex | float:
+        """Parse a string value into either a complex number or float."""
+        jind = line.find("j")
+        if jind == -1:
+            return float(line)
 
-        Args:
-            variable_name (str): Name of the simulation variable
+        val_re = line[0:jind - 1]
+        sign = line[jind - 1]
+        val_im = sign + line[jind + 1:]
+        return complex(float(val_re), float(val_im))
 
-        Returns:
-            np.ndarray: Array of simulation results for the specified
-                variable name
-        '''
+    def results(self, variable_name: str) -> ComplexArray | FloatArray:
+        """Return simulation results for given variable name."""
         if variable_name not in self._variables:
             raise ValueError("Data does not contain the expected variables.")
-        return self.__data[variable_name]
+        return self._data[variable_name]
 
     def variables(self) -> None:
-        '''
-        Prints the variables in the dataset and their types to the console.
-        '''
-        print('Variables: ')
+        """Print the variables in the dataset and their types to the console."""
+        print("Variables: ")
         for name, vtype in self._variables.items():
             print(f"  {name}: {vtype}")
+
