@@ -3,6 +3,7 @@ Cores.lib
 Digital_CD.lib
 Digital_HC.lib
 Digital_LV.lib
+LaserDiodes.lib
 Transformers.lib
 Xanalogue.lib
 BF998.lib
