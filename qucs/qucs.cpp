@@ -297,6 +297,9 @@ void QucsApp::readXML(QFile & library_file) {
             Component[ComponentName].Schematic_ID = Schematic_ID;
 
             QString ShowName = xmlReader.attributes().value("show_name").toString();
+            if (ShowName.isEmpty()) {//If the XML file does not contain this field, set it to "true" automatically
+              ShowName = "true";
+            }
             bool ShowNameinSchematic = (ShowName.toInt() != 0); // Convert ShowName parameter to bool
             Component[ComponentName].ShowNameinSchematic = ShowNameinSchematic;
 
@@ -326,6 +329,10 @@ void QucsApp::readXML(QFile & library_file) {
                   if (xmlReader.name() == "Symbol") {
                     QString symbolName = xmlReader.attributes().value("id").toString();
                     QString symbolType = xmlReader.attributes().value("type").toString();
+
+                    if (symbolType.isEmpty()) {//If the XML file does not contain this field, set it to "true" automatically
+                      symbolType = "explicit";
+                    }
 
                     if (symbolType == "explicit") {
                       QVector<int> boundingBox;
@@ -876,6 +883,26 @@ void QucsApp::initView()
 
   for (const QString &filename : files) {
     QFile library_file(LibraryDir.filePath(filename));
+    readXML(library_file);
+  }
+
+  // Load user PDKs
+  QDir pdk_dir(QucsSettings.PDKDir);
+  QStringList pdk_folders = pdk_dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+  QStringList xml_files; // List of all PDKs to load
+  for (const QString &folder : pdk_folders) {
+    QDir tech_dir(pdk_dir.filePath(folder + "/libs.tech/qucs-s/"));
+    QStringList folder_xml_files = tech_dir.entryList(QStringList() << "*.xml", QDir::Files);
+
+    for (const QString &file : folder_xml_files) {
+      xml_files << tech_dir.filePath(file);
+    }
+  }
+
+  // Now xml_files contains paths to all PDK (XML) files
+  for (const QString &libfile : xml_files) {
+    // Process each XML file here
+    QFile library_file(libfile);
     readXML(library_file);
   }
 

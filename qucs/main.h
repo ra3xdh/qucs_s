@@ -66,6 +66,7 @@ struct tQucsSettings {
 
   unsigned int NodeWiring;
   QDir QucsWorkDir;
+  QDir PDKDir; // Directory where Qucs-S searches for PDKs.
 
   // A dir for user projects and libraries. See also https://github.com/ra3xdh/qucs_s/issues/145
   QDir qucsWorkspaceDir;

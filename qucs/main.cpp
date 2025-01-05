@@ -926,6 +926,7 @@ int main(int argc, char *argv[])
     QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/examples/";
     QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
     QucsSettings.Editor = "qucs";
+  QucsSettings.PDKDir =      QucsSettings.qucsWorkspaceDir.filePath("PDKs"); //Location of the user PDKs
 
     /// \todo Make the setting up of all executables below more consistent
     char *var = NULL; // Don't use QUCSDIR with Qucs-S
