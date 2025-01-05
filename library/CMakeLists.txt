@@ -16,6 +16,7 @@ GeDiodes.lib
 Ideal.lib
 JFETs.lib
 LEDs.lib
+LaserDiodes.lib
 Loudspeaker.lib
 MixerIC.lib
 MOSFETs.lib
