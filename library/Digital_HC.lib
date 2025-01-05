@@ -2,8 +2,8 @@
 
 <Component 74HC00>
   <Description>
-2-Input Nand Gate
-
+2-Input NAND Gate
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -15,7 +15,7 @@ Sub:X1 _net0 _net1 _net2 gnd Type="n74HC00_cir"
   </Model>
   <ModelIncludes "74HC00.cir.lst">
   <Spice>
-* ----------------------------------------------------------- 74HC00 ------
+* ---------------------------------- 74HC00 -------------------------------
 *  Quad 2-Input Nand Gates
 *
 *  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-3 to 2-5
@@ -39,7 +39,7 @@ X1 _net0 _net1 _net2 74HC00
   </Spice>
   <Symbol>
     <EArc -30 -20 40 40 4320 2880 #000080 2 1>
-    <Line -10 20 0 -40 #000000 2 1>
+    <Line -10 20 0 -40 #000080 2 1>
     <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
     <Line 10 0 20 0 #000080 2 1>
     <Line -30 -10 20 0 #000080 2 1>
@@ -53,8 +53,8 @@ X1 _net0 _net1 _net2 74HC00
 
 <Component 74HC02>
   <Description>
-2-Input Nor Gate
-
+2-Input NOR Gate
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -66,7 +66,7 @@ Sub:X1 _net0 _net2 _net1 gnd Type="n74HC02_cir"
   </Model>
   <ModelIncludes "74HC02.cir.lst">
   <Spice>
-* ----------------------------------------------------------- 74HC02 ------
+* ----------------------------------- 74HC02 ------------------------------
 *  Quad 2-Input Nor Gates
 *
 *  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-13 to 2-15
@@ -99,15 +99,15 @@ X1 _net0 _net2 _net1 74HC02
     <Line -30 -10 20 0 #000080 2 1>
     <Line -30 10 20 0 #000080 2 1>
     <EArc -20 -20 10 40 4320 2880 #000080 2 1>
-    <Line -10 20 -5 0 #000000 2 1>
-    <Line -10 -20 -5 0 #000000 2 1>
+    <Line -10 20 -5 0 #000080 2 1>
+    <Line -10 -20 -5 0 #000080 2 1>
   </Symbol>
 </Component>
 
 <Component 74HC04>
   <Description>
 Inverter
-
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -119,7 +119,7 @@ Sub:X1 _net0 _net1 gnd Type="n74HC04_cir"
   </Model>
   <ModelIncludes "74HC04.cir.lst">
   <Spice>
-* ----------------------------------------------------------- 74HC04 ------
+* ------------------------------- 74HC04 -------------------------
 *  Hex Inverters
 *
 *  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-23 to 2-25
@@ -143,7 +143,7 @@ X1 _net0 _net1 74HC04
   </Spice>
   <Symbol>
     <EArc -30 -20 40 40 4320 2880 #000080 2 1>
-    <Line -10 20 0 -40 #000000 2 1>
+    <Line -10 20 0 -40 #000080 2 1>
     <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
     <Line 10 0 20 0 #000080 2 1>
     <.ID 10 14 Y>
@@ -155,8 +155,8 @@ X1 _net0 _net1 74HC04
 
 <Component 74HC08>
   <Description>
-2-Input And Gate
-
+2-Input AND Gate
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -168,7 +168,7 @@ Sub:X1 _net0 _net2 _net1 gnd Type="n74HC08_cir"
   </Model>
   <ModelIncludes "74HC08.cir.lst">
   <Spice>
-* ----------------------------------------------------------- 74HC08 ------
+* ---------------------------------- 74HC08 -----------------------
 *  Quad 2-Input And Gates   
 *
 *  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-37 to 2-39
@@ -196,7 +196,7 @@ X1 _net0 _net2 _net1 74HC08
     <.PortSym 30 0 3 180 P3>
     <.ID 10 14 Y>
     <EArc -30 -20 40 40 4320 2880 #000080 2 1>
-    <Line -10 20 0 -40 #000000 2 1>
+    <Line -10 20 0 -40 #000080 2 1>
     <Line 10 0 20 0 #000080 2 1>
     <Line -30 -10 20 0 #000080 2 1>
     <Line -30 10 20 0 #000080 2 1>
@@ -205,8 +205,8 @@ X1 _net0 _net2 _net1 74HC08
 
 <Component 74HC32>
   <Description>
-2-Input Or Gate
-
+2-Input OR Gate
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -218,7 +218,7 @@ Sub:X1 _net0 _net2 _net1 gnd Type="n74HC32_cir"
   </Model>
   <ModelIncludes "74HC32.cir.lst">
   <Spice>
-* ----------------------------------------------------------- 74HC32 ------
+* ---------------------------------- 74HC32 ------------------------
 *  Quad 2-Input Or Gates
 *
 *  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-77 to 2-79
@@ -250,15 +250,15 @@ X1 _net0 _net2 _net1 74HC32
     <Line -30 -10 20 0 #000080 2 1>
     <Line -30 10 20 0 #000080 2 1>
     <EArc -20 -20 10 40 4320 2880 #000080 2 1>
-    <Line -10 20 -5 0 #000000 2 1>
-    <Line -10 -20 -5 0 #000000 2 1>
+    <Line -10 20 -5 0 #000080 2 1>
+    <Line -10 -20 -5 0 #000080 2 1>
   </Symbol>
 </Component>
 
 <Component 74HC74>
   <Description>
 D-Type Positive Edge Triggered Flip-Flop With Preset And Clear
-
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -270,7 +270,7 @@ Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 gnd Type="n74HC74_cir"
   </Model>
   <ModelIncludes "74HC74.cir.lst">
   <Spice>
-* ----------------------------------------------------------- 74HC74 ------
+* --------------------------------- 74HC74 -------------------------
 *  Dual D-Type Positive Edge Triggered Flip-Flops With  Preset And Clear
 *
 *  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-101 to 2-103
@@ -326,8 +326,8 @@ X1 _net0 _net1 _net2 _net3 _net4 _net5 74HC74
 
 <Component 74HC86>
   <Description>
-2-Input Exclusive-Or Gate
-
+2-Input Exclusive-OR Gate
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -339,7 +339,7 @@ Sub:X1 _net0 _net2 _net1 gnd Type="n74HC86_cir"
   </Model>
   <ModelIncludes "74HC86.cir.lst">
   <Spice>
-* ----------------------------------------------------------- 74HC86 ------
+* --------------------------------- 74HC86 ------------------------
 *  Quad 2-Input Exclusive-Or Gates
 *
 *  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-129 to 2-131
@@ -377,8 +377,8 @@ X1 _net0 _net2 _net1 74HC86
 
 <Component 74HC132>
   <Description>
-2-Input Nand Gate
-
+2-Input NAND Gate
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -390,7 +390,7 @@ Sub:X1 _net0 _net2 _net1 gnd Type="n74HC132_cir"
   </Model>
   <ModelIncludes "74HC132.cir.lst">
   <Spice>
-* ----------------------------------------------------------- 74HC132 ------
+* ---------------------------------- 74HC132 ----------------------------
 *  Quad 2-Input Nand Schmitt Triggers
 *
 *  The High-Speed CMOS Logic Data Book, 1989, TI Pages 2-159 to 2-161
@@ -416,7 +416,7 @@ X1 _net0 _net2 _net1 74HC132
     <.PortSym -30 10 2 0 P2>
     <.PortSym 30 0 3 180 P3>
     <EArc -30 -20 40 40 4320 2880 #000080 2 1>
-    <Line -10 20 0 -40 #000000 2 1>
+    <Line -10 20 0 -40 #000080 2 1>
     <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
     <Line 10 0 20 0 #000080 2 1>
     <Line -30 -10 20 0 #000080 2 1>
@@ -430,3 +430,971 @@ X1 _net0 _net2 _net1 74HC132
   </Symbol>
 </Component>
 
+<Component 74HC164>
+  <Description>
+8-Bit Parallel-Out Serial Shift Register
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC164 _net0 _net1 _net3 _net2 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11
+Sub:X1 _net0 _net1 _net3 _net2 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 gnd Type="n74HC164_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC164.cir.lst">
+  <Spice>
+* ------------------------------- 74HC164 ----------------------------------
+*  8-Bit Parallel-Out Serial Shift Register
+*
+*  The High Speed CMOS Logic Data Book, 1989, TI Pages 2-231 to 2-234
+*  jds    3/28/94
+*
+.SUBCKT 74HC164B A B CLRBAR CLK QA QB QC QD QE QF QG QH
++  optional: DPWR=$G_DPWR DGND=$G_DGND
++  params: MNTYMXDLY=0 IO_LEVEL=0
+
+U74HC164 LOGICEXP (3,3) DPWR DGND
++        CLK A B
++        r0 s0 clkbar
++        D0_GATE IO_HC IO_LEVEL={IO_LEVEL}
++
++    LOGIC:
++      r0 = { (~(A & B)) }
++      s0 = { (~r0) }
++      clkbar = { (~CLK) }
+
+
+uf0  JKff(8)  DPWR DGND
++    $D_HI CLRBAR clkbar
++    s0 QA_O QB_O QC_O QD_O QE_O QF_O QG_O
++    r0 qabar qbbar qcbar qdbar qebar qfbar qgbar
++    QA_O QB_O QC_O QD_O QE_O QF_O QG_O QH_O
++    qabar qbbar qcbar qdbar qebar qfbar qgbar qhbar
++    D0_EFF IO_HC
+
+Udly PINDLY (8,0,4) DPWR DGND
++    QA_O QB_O QC_O QD_O QE_O QF_O QG_O QH_O
++    CLRBAR CLK A B
++    QA QB QC QD QE QF QG QH
++    IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++
++    BOOLEAN:
++       DATA=  { ( CHANGED(A,0) | CHANGED(B,0) ) }
++       CLOCK= { CHANGED(CLK,0) }
++       CLEAR= { CHANGED(CLRBAR,0) }
++
++    PINDLY:
++       QA QB QC QD QE QF QG QH  = {
++                   CASE(
++                       CLEAR & TRN_HL, DELAY(-1,28ns,41ns),
++                       CLOCK & TRN_LH, DELAY(-1,23ns,35ns),
++                       CLOCK & TRN_HL, DELAY(-1,23ns,35ns),
++                       DELAY(-1,29ns,42ns)
++                       )
++                     }
+
+Ucnstr CONSTRAINT(4) DPWR DGND
++          CLRBAR CLK  A B
++          IO_HC
++
++      FREQ:
++         NODE = CLK
++         MAXFREQ = 31MEG
++      WIDTH:
++         NODE = CLK
++         MIN_LO = 16ns
++         MIN_HI = 16ns
++      WIDTH:
++         NODE = CLRBAR
++         MIN_LO = 20ns
++      SETUP_HOLD:
++        CLOCK LH = CLK
++        DATA(2) = A B
++        SETUPTIME = 20ns
++        HOLDTIME = 5ns
++        WHEN = { CLRBAR != '0 }
++      SETUP_HOLD:
++        DATA(1) = CLRBAR
++        CLOCK LH = CLK
++        SETUPTIME = 20ns
+
+.ENDS 74HC164B
+*
+
+.SUBCKT Digital_HC_74HC164  gnd _net0 _net1 _net3 _net2 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 
+X1 _net0 _net1 _net3 _net2 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 74HC164B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 30 20 20 0 #000080 2 1>
+    <Text 4 9 12 #000080 0 "QB">
+    <Text 4 -11 12 #000080 0 "QA">
+    <Text 4 29 12 #000080 0 "QC">
+    <Text 4 49 12 #000080 0 "QD">
+    <Text 4 69 12 #000080 0 "QE">
+    <Line -50 0 20 0 #000080 2 1>
+    <Text -28 -10 12 #000080 0 "A">
+    <Rectangle -30 -20 60 180 #000080 2 1 #c0c0c0 1 0>
+    <Line 30 0 20 0 #000080 2 1>
+    <Text 4 89 12 #000080 0 "QF">
+    <Text 4 109 12 #000080 0 "QG">
+    <Text 4 129 12 #000080 0 "QH">
+    <Line 30 60 20 0 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 100 20 0 #000080 2 1>
+    <Line 30 80 20 0 #000080 2 1>
+    <Line 30 140 20 0 #000080 2 1>
+    <Line 30 120 20 0 #000080 2 1>
+    <Line -50 20 20 0 #000080 2 1>
+    <Line -50 60 20 0 #000080 2 1>
+    <Text -28 10 12 #000080 0 "B">
+    <Text -28 50 12 #000080 0 "CLR">
+    <Ellipse -31 56 -8 8 #000080 1 1 #000080 1 1>
+    <Line -50 140 20 0 #000080 2 1>
+    <Line -15 140 -15 -10 #000080 2 1>
+    <Line -30 150 15 -10 #000080 2 1>
+    <.PortSym -50 60 3 0 CLRBAR>
+    <.ID -10 164 Y>
+    <.PortSym -50 0 1 0 A>
+    <.PortSym -50 20 2 0 B>
+    <.PortSym -50 140 4 0 CLK>
+    <.PortSym 50 0 5 180 QA>
+    <.PortSym 50 20 6 180 QB>
+    <.PortSym 50 40 7 180 QC>
+    <.PortSym 50 60 8 180 QD>
+    <.PortSym 50 80 9 180 QE>
+    <.PortSym 50 100 10 180 QF>
+    <.PortSym 50 120 11 180 QG>
+    <.PortSym 50 140 12 180 QH>
+  </Symbol>
+</Component>
+
+<Component 74HC4017>
+  <Description>
+5-stage Johnson Decade Counter
+with 10 Decoded Outputs
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC4017 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 gnd Type="n74HC4017_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC4017.cir.lst">
+  <Spice>
+*-----------------------------74HC4017-----------------------------
+
+* Decade Counters/Dividers
+* TI High-Speed CMOS Logic Data Book, 1989, pages 2-625 to 2-629
+* jat 12/29/95
+
+.SUBCKT 74HC4017B CLKENBAR CLK CLR Y0 Y1 Y2 Y3 Y4 Y5 Y6 Y7 Y8 Y9 CO
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 LOGICEXP(13,14) DPWR DGND
++ CLK CLKENBAR CLR Q1 Q2 Q3 Q4 Q5 Q1BAR Q2BAR Q3BAR Q4BAR Q5BAR
++ CLOCK CLRBAR D3 Y0O Y1O Y2O Y3O Y4O Y5O Y6O Y7O Y8O Y9O COO
++ D0_GATE IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ LOGIC:
++   CLOCK = {CLK & (~CLKENBAR)}
++   CLRBAR ={~CLR}
++   D3 = {Q2 & (Q1 | Q3)}
++   Y0O = {Q1BAR & Q5BAR}
++   Y1O = {Q1 & Q2BAR}
++   Y2O = {Q2 & Q3BAR}
++   Y3O = {Q3 & Q4BAR}
++   Y4O = {Q4 & Q5BAR}
++   Y5O = {Q1 & Q5}
++   Y6O = {Q2 & Q1BAR}
++   Y7O = {Q3 & Q2BAR}
++   Y8O = {Q4 & Q3BAR}
++   Y9O = {Q5 & Q4BAR}
++   COO = {Q5BAR}
+
+U2 DFF(5) DPWR DGND
++ $D_HI CLRBAR CLOCK
++ Q5BAR Q1 D3 Q3 Q4
++ Q1 Q2 Q3 Q4 Q5
++ Q1BAR Q2BAR Q3BAR Q4BAR Q5BAR
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U3 PINDLY(11,0,3) DPWR DGND
++ Y0O Y1O Y2O Y3O Y4O Y5O Y6O Y7O Y8O Y9O COO
++ CLR CLKENBAR CLK
++ Y0 Y1 Y2 Y3 Y4 Y5 Y6 Y7 Y8 Y9 CO
++ IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ BOOLEAN:
++  CLEAR = {CHANGED(CLR,0)}
++  ENAB = {CHANGED(CLKENBAR,0)}
++  EDGE = {CHANGED_LH(CLK,0)}
++ PINDLY:
++  Y0 Y1 Y2 Y3 Y4 Y5 Y6 Y7 Y8 Y9  = {
++    CASE(
++        CLEAR & (TRN_LH | TRN_HL), DELAY(-1,23NS,46NS),
++        ENAB & (TRN_LH | TRN_HL), DELAY(-1,25NS,50NS),
++        EDGE & (TRN_LH | TRN_HL), DELAY(-1,23NS,46NS),
++        DELAY(-1,26NS,51NS))}
++ PINDLY:
++    CO = {
++      CASE(
++        CLEAR & TRN_LH, DELAY(-1,23NS,46NS),
++        ENAB & (TRN_LH | TRN_HL), DELAY(-1,25NS,50NS),
++        EDGE & (TRN_LH | TRN_HL), DELAY(-1,23NS,46NS),
++        DELAY(-1,26NS,51NS))}
+
+U4 CONSTRAINT(3) DPWR DGND
++ CLK CLKENBAR CLR
++ IO_HC IO_LEVEL={IO_LEVEL}
++ FREQ:
++  NODE = CLK
++  MAXFREQ = 31MEG
++ FREQ:
++  NODE = CLKENBAR
++  MAXFREQ = 31MEG
++ WIDTH:
++  NODE = CLK
++  MIN_LO = 16NS
++  MIN_HI = 16NS
++ WIDTH:
++  NODE = CLKENBAR
++  MIN_LO = 16NS
++  MIN_HI = 16NS
++ WIDTH:
++  NODE = CLR
++  MIN_HI = 16NS
++ SETUP_HOLD:
++  CLOCK LH = CLK
++  DATA(1) = CLKENBAR
++  SETUPTIME_LO = 10NS
++  HOLDTIME_LO = 5NS
++ SETUP_HOLD:
++  CLOCK HL = CLKENBAR
++  DATA(1) = CLK
++  SETUPTIME_HI = 10NS
++  HOLDTIME_HI = 5NS
++ SETUP_HOLD:
++  CLOCK LH = CLK
++  DATA(1) = CLR
++  SETUPTIME_LO = 10NS
++ SETUP_HOLD:
++  CLOCK HL = CLKENBAR
++  DATA(1) = CLR
++  SETUPTIME_LO = 10NS
+
+.ENDS 74HC4017
+
+.SUBCKT Digital_HC_74HC4017  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 74HC4017B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 30 20 20 0 #000080 2 1>
+    <Text 4 -11 12 #000080 0 "Q0">
+    <Text 4 29 12 #000080 0 "Q2">
+    <Text 4 49 12 #000080 0 "Q3">
+    <Text 4 69 12 #000080 0 "Q4">
+    <Rectangle -30 -20 60 250 #000080 2 1 #c0c0c0 1 0>
+    <Line 30 0 20 0 #000080 2 1>
+    <Text 4 109 12 #000080 0 "Q6">
+    <Text 4 129 12 #000080 0 "Q7">
+    <Line 30 60 20 0 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 100 20 0 #000080 2 1>
+    <Line 30 80 20 0 #000080 2 1>
+    <Line 30 140 20 0 #000080 2 1>
+    <Line 30 120 20 0 #000080 2 1>
+    <Line 30 160 20 0 #000080 2 1>
+    <Line 30 180 20 0 #000080 2 1>
+    <Text 4 169 12 #000080 0 "Q9">
+    <Line -50 0 20 0 #000080 2 1>
+    <Line -15 0 -15 -10 #000080 2 1>
+    <Line -30 10 15 -10 #000080 2 1>
+    <Line -50 60 20 0 #000080 2 1>
+    <Text -28 50 12 #000080 0 "CLR">
+    <Text 4 9 12 #000080 0 "Q1">
+    <Text 4 89 12 #000080 0 "Q5">
+    <Text 4 149 12 #000080 0 "Q8">
+    <.ID -10 234 Y>
+    <.PortSym -50 60 3 0 CLR>
+    <Text -28 10 12 #000080 0 "ENB">
+    <Line 30 210 20 0 #000080 2 1>
+    <Text -16 199 12 #000080 0 "COUT">
+    <Line -50 20 20 0 #000080 2 1>
+    <Ellipse -31 16 -8 8 #000080 1 1 #000080 1 1>
+    <.PortSym 50 210 14 180 CO>
+    <.PortSym -50 20 1 0 CLKENB>
+    <.PortSym -50 0 2 0 CLK>
+    <.PortSym 50 20 5 180 Y1>
+    <.PortSym 50 40 6 180 Y2>
+    <.PortSym 50 60 7 180 Y3>
+    <.PortSym 50 80 8 180 Y4>
+    <.PortSym 50 100 9 180 Y5>
+    <.PortSym 50 120 10 180 Y6>
+    <.PortSym 50 140 11 180 Y7>
+    <.PortSym 50 160 12 180 Y8>
+    <.PortSym 50 180 13 180 Y9>
+    <.PortSym 50 0 4 180 Y0>
+  </Symbol>
+</Component>
+
+<Component 74HC4020>
+  <Description>
+14-Stage Binary Ripple Counter
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC4020 _net1 _net2 _net0 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13
+Sub:X1 _net1 _net2 _net0 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 gnd Type="n74HC4020_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC4020.cir.lst">
+  <Spice>
+* ---------------------------- 74HC4020 -------------------------------------
+*  Asynchronous 14-Bit Binary Counters
+*
+*  The High Speed CMOS Logic Data Book, 1989, TI Pages 2-631 to 2-634
+*  bss    6/28/94
+*
+.SUBCKT 74HC402B CLK CLR QA QD QE QF QG QH QI QJ QK QL QM QN 
++     optional:  DPWR=$G_DPWR DGND=$G_DGND
++     params:  MNTYMXDLY=0 IO_LEVEL=0
+
+U1 inv DPWR DGND
++     CLR RESETBAR
++     D0_GATE IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U2 JKFF(1) DPWR DGND
++     $D_HI RESETBAR CLK $D_HI $D_HI QA_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U3 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QA_O $D_HI $D_HI QB_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U4 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QB_O $D_HI $D_HI QC_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U5 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QC_O $D_HI $D_HI QD_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U6 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QD_O $D_HI $D_HI QE_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U7 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QE_O $D_HI $D_HI QF_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U8 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QF_O $D_HI $D_HI QG_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U9 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QG_O $D_HI $D_HI QH_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U10 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QH_O $D_HI $D_HI QI_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U11 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QI_O $D_HI $D_HI QJ_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U12 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QJ_O $D_HI $D_HI QK_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U13 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QK_O $D_HI $D_HI QL_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U14 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QL_O $D_HI $D_HI QM_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U15 JKFF(1) DPWR DGND
++     $D_HI RESETBAR QM_O $D_HI $D_HI QN_O $D_NC
++     D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U16DLY PINDLY(12,0,2) DPWR DGND
++     QA_O QD_O QE_O QF_O QG_O QH_O QI_O QJ_O QK_O QL_O QM_O QN_O
++     CLR CLK
++     QA QD QE QF QG QH QI QJ QK QL QM QN
++     IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++
++  BOOLEAN:
++     CLOCK = {CHANGED_HL(CLK,0)}
++     CLEAR = {CHANGED_LH(CLR,0)}
++
++  PINDLY:
++     QA = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,16ns,30ns),
++         CLOCK & TRN_HL, DELAY(-1,16ns,30ns),
++         DELAY(-1,18ns,31ns))}
++
++     QD = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,40ns,75ns),
++         CLOCK & TRN_HL, DELAY(-1,40ns,75ns),
++         DELAY(-1,41ns,76ns))}
++
++     QE = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,48ns,90ns),
++         CLOCK & TRN_HL, DELAY(-1,48ns,90ns),
++         DELAY(-1,49ns,91ns))}
++
++     QF = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,56ns,105ns),
++         CLOCK & TRN_HL, DELAY(-1,56ns,105ns),
++         DELAY(-1,57ns,106ns))}
++
++     QG = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,64ns,120ns),
++         CLOCK & TRN_HL, DELAY(-1,64ns,120ns),
++         DELAY(-1,65ns,121ns))}
++
++     QH = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,72ns,135ns),
++         CLOCK & TRN_HL, DELAY(-1,72ns,135ns),
++         DELAY(-1,73ns,136ns))}
++
++     QI = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,80ns,150ns),
++         CLOCK & TRN_HL, DELAY(-1,80ns,150ns),
++         DELAY(-1,81ns,151ns))}
++
++     QJ = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,88ns,165ns),
++         CLOCK & TRN_HL, DELAY(-1,88ns,165ns),
++         DELAY(-1,89ns,166ns))}
++
++     QK = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,96ns,180ns),
++         CLOCK & TRN_HL, DELAY(-1,96ns,180ns),
++         DELAY(-1,97ns,181ns))}
++
++     QL = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,104ns,195ns),
++         CLOCK & TRN_HL, DELAY(-1,104ns,195ns),
++         DELAY(-1,105ns,196ns))}
++
++     QM = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,112ns,210ns),
++         CLOCK & TRN_HL, DELAY(-1,112ns,210ns),
++         DELAY(-1,113ns,211ns))}
++
++     QN = {
++       CASE(
++         CLEAR & TRN_HL, DELAY(-1,17ns,28ns),
++         CLOCK & TRN_LH, DELAY(-1,120ns,225ns),
++         CLOCK & TRN_HL, DELAY(-1,120ns,225ns),
++         DELAY(-1,121ns,226ns))}
+
+U17CON CONSTRAINT(2) DPWR DGND
++     CLK CLR
++     IO_HC IO_LEVEL={IO_LEVEL}
++
++  WIDTH:
++     NODE=CLR
++     MIN_HI=18ns
++
++  WIDTH:
++     NODE=CLK
++     MIN_HI=23ns
++     MIN_LO=23ns
++
++	SETUP_HOLD:
++		CLOCK HL=CLK
++		DATA(1)=CLR
++		SETUPTIME_LO=15ns
+
+.ENDS 74HC4020B
+*
+
+.SUBCKT Digital_HC_74HC4020  gnd _net1 _net2 _net0 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 
+X1 _net1 _net2 _net0 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 74HC402B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 30 20 20 0 #000080 2 1>
+    <Text 4 9 12 #000080 0 "QD">
+    <Text 4 -11 12 #000080 0 "QA">
+    <Text 4 29 12 #000080 0 "QE">
+    <Text 4 49 12 #000080 0 "QF">
+    <Text 4 69 12 #000080 0 "QG">
+    <Rectangle -30 -20 60 260 #000080 2 1 #c0c0c0 1 0>
+    <Line 30 0 20 0 #000080 2 1>
+    <Text 4 89 12 #000080 0 "QH">
+    <Text 4 129 12 #000080 0 "QJ">
+    <Line 30 60 20 0 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 100 20 0 #000080 2 1>
+    <Line 30 80 20 0 #000080 2 1>
+    <Line 30 140 20 0 #000080 2 1>
+    <Line 30 120 20 0 #000080 2 1>
+    <Line 30 160 20 0 #000080 2 1>
+    <Line 30 180 20 0 #000080 2 1>
+    <Line 30 200 20 0 #000080 2 1>
+    <Line 30 220 20 0 #000080 2 1>
+    <.PortSym 50 0 3 180 QA>
+    <.PortSym 50 40 5 180 QE>
+    <.PortSym 50 60 6 180 QF>
+    <.PortSym 50 80 7 180 QG>
+    <.PortSym 50 100 8 180 QH>
+    <.PortSym 50 120 9 180 QI>
+    <.PortSym 50 140 10 180 QJ>
+    <.PortSym 50 160 11 180 QK>
+    <.PortSym 50 180 12 180 QL>
+    <Text 4 149 12 #000080 0 "QK">
+    <Text 4 209 12 #000080 0 "QN">
+    <.ID -10 244 Y>
+    <.PortSym 50 200 13 180 QM>
+    <.PortSym 50 220 14 180 QN>
+    <Line -50 0 20 0 #000080 2 1>
+    <Line -15 0 -15 -10 #000080 2 1>
+    <Line -30 10 15 -10 #000080 2 1>
+    <Line -50 60 20 0 #000080 2 1>
+    <Text -28 50 12 #000080 0 "CLR">
+    <.PortSym 50 20 4 180 QD>
+    <.PortSym -50 60 2 0 CLR>
+    <.PortSym -50 0 1 0 CLK>
+    <Text 4 109 12 #000080 0 "QI">
+    <Text 4 169 12 #000080 0 "QL">
+    <Text 4 189 12 #000080 0 "QM">
+  </Symbol>
+</Component>
+
+<Component 74HC4024>
+  <Description>
+7-Stage Binary Ripple Counter
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC4024 _net7 _net8 _net0 _net1 _net2 _net3 _net4 _net5 _net6
+Sub:X1 _net7 _net8 _net0 _net1 _net2 _net3 _net4 _net5 _net6 gnd Type="n74HC4024_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC4024.cir.lst">
+  <Spice>
+*-----------------------------74HC4024-----------------------------------
+
+* The 74HC4024 Asynchronous 7-Bit Binary Counter
+* TI High Speed CMOS Logic Data Book, 1989, pages 2-635 to 2-638
+* jat 8/9/95
+
+.SUBCKT 74HC4024B CLK CLR QA QB QC QD QE QF QG
++ OPTIONAL:  DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS:  MNTYMXDLY=0 IO_LEVEL=0
+
+U1 LOGICEXP(2,2) DPWR DGND
++ CLR CLK
++ CLOCKA CLRBAR
++ D0_GATE IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ LOGIC:
++  CLOCKA = {CLK & (~CLR)}
++  CLRBAR = {~CLR}
+
+U2 JKFF(1) DPWR DGND 
++ $D_HI CLRBAR CLOCKA 
++ $D_HI $D_HI Q_A $D_NC 
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U3 JKFF(1) DPWR DGND
++ $D_HI CLRBAR Q_A
++ $D_HI $D_HI Q_B $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U4 JKFF(1) DPWR DGND
++ $D_HI CLRBAR Q_B
++ $D_HI $D_HI Q_C $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+ 
+U5 JKFF(1) DPWR DGND
++ $D_HI CLRBAR Q_C
++ $D_HI $D_HI Q_D $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U6 JKFF(1) DPWR DGND
++ $D_HI CLRBAR Q_D
++ $D_HI $D_HI Q_E $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U7 JKFF(1) DPWR DGND
++ $D_HI CLRBAR Q_E
++ $D_HI $D_HI Q_F $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U8 JKFF(1) DPWR DGND
++ $D_HI CLRBAR Q_F
++ $D_HI $D_HI Q_G $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U9 PINDLY(7,0,2) DPWR DGND
++ Q_A Q_B Q_C Q_D Q_E Q_F Q_G
++ CLR CLOCKA
++ QA QB QC QD QE QF QG
++ IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ BOOLEAN:
++          CLEAR = {CHANGED_LH(CLR,0)}
++          ACLK = {CHANGED_HL(CLOCKA,0)}
++ PINDLY:
++          QA = {
++            CASE(
++               CLEAR & TRN_HL, DELAY(-1,17NS,26NS),
++               ACLK & (TRN_LH | TRN_HL), DELAY(-1,16NS,24NS),
++               DELAY(-1,18NS,27NS))}
++          QB = {
++            CASE(
++               CLEAR & TRN_HL, DELAY(-1,17NS,26NS),
++               ACLK & (TRN_LH | TRN_HL), DELAY(-1,24NS,39NS),
++               DELAY(-1,25NS,40NS))}
++          QC = {
++            CASE(
++               CLEAR & TRN_HL, DELAY(-1,17NS,26NS),
++               ACLK & (TRN_LH | TRN_HL), DELAY(-1,32NS,54NS),
++               DELAY(-1,33NS,55NS))}
++          QD = {
++            CASE(
++               CLEAR & TRN_HL, DELAY(-1,17NS,26NS),
++               ACLK & (TRN_LH | TRN_HL), DELAY(-1,40NS,69NS),
++               DELAY(-1,41NS,70NS))}
++          QE = {
++            CASE(
++               CLEAR & TRN_HL, DELAY(-1,17NS,26NS),
++               ACLK & (TRN_LH | TRN_HL), DELAY(-1,48NS,84NS),
++               DELAY(-1,49NS,85NS))}
++          QF = {
++            CASE(
++               CLEAR & TRN_HL, DELAY(-1,17NS,26NS),
++               ACLK & (TRN_LH | TRN_HL), DELAY(-1,56NS,99NS),
++               DELAY(-1,57NS,100NS))}
++          QG = {
++            CASE(
++               CLEAR & TRN_HL, DELAY(-1,17NS,26NS),
++               ACLK & (TRN_LH | TRN_HL), DELAY(-1,64NS,114NS),
++               DELAY(-1,65NS,115NS))}
+
+U10 CONSTRAINT(2) DPWR DGND
++ CLK CLR
++ IO_HC IO_LEVEL={IO_LEVEL}
++ SETUP_HOLD:
++             CLOCK HL = CLK
++             DATA(1) = CLR
++             SETUPTIME_LO = 20NS
++ WIDTH:
++             NODE = CLK
++             MIN_HI = 23NS
++             MIN_LO = 23NS
++ WIDTH:
++             NODE = CLR
++             MIN_HI = 20NS
++ FREQ:
++             NODE = CLK
++             MAXFREQ = 22MEG
+
+.ENDS 74HC4024B
+
+.SUBCKT Digital_HC_74HC4024  gnd _net7 _net8 _net0 _net1 _net2 _net3 _net4 _net5 _net6 
+X1 _net7 _net8 _net0 _net1 _net2 _net3 _net4 _net5 _net6 74HC4024B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 30 20 20 0 #000080 2 1>
+    <Text 4 9 12 #000080 0 "QB">
+    <Text 4 -11 12 #000080 0 "QA">
+    <Text 4 29 12 #000080 0 "QC">
+    <Text 4 49 12 #000080 0 "QD">
+    <Text 4 69 12 #000080 0 "QE">
+    <Rectangle -30 -20 60 160 #000080 2 1 #c0c0c0 1 0>
+    <Line 30 0 20 0 #000080 2 1>
+    <Text 4 89 12 #000080 0 "QF">
+    <Text 4 109 12 #000080 0 "QG">
+    <Line 30 60 20 0 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 100 20 0 #000080 2 1>
+    <Line 30 80 20 0 #000080 2 1>
+    <Line 30 120 20 0 #000080 2 1>
+    <.PortSym 50 0 3 180 QA>
+    <.PortSym 50 20 4 180 QB>
+    <.PortSym 50 40 5 180 QC>
+    <.PortSym 50 60 6 180 QD>
+    <.PortSym 50 80 7 180 QE>
+    <.PortSym 50 100 8 180 QF>
+    <.PortSym 50 120 9 180 QG>
+    <Line -50 0 20 0 #000080 2 1>
+    <Line -15 0 -15 -10 #000080 2 1>
+    <Line -30 10 15 -10 #000080 2 1>
+    <Line -50 60 20 0 #000080 2 1>
+    <Text -28 50 12 #000080 0 "CLR">
+    <.PortSym -50 60 2 0 CLR>
+    <.PortSym -50 0 1 0 CLK>
+    <.ID -10 144 Y>
+  </Symbol>
+</Component>
+
+<Component 74HC4040>
+  <Description>
+12-Stage Binary Ripple Counter
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_HC_74HC4040 _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11
+Sub:X1 _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 gnd Type="n74HC4040_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74HC4040.cir.lst">
+  <Spice>
+*---------------------------------------------------------74HC4040-------
+
+* The 74HC4040 Asynchronous 12 Bit Binary Counter
+* TI High Speed CMOS Logic Data Book, 1989, pages 2-639 to 2-642
+* jat 8/10/95
+
+.SUBCKT 74HC4040B CLR CLK QA QB QC QD QE QF QG QH QI QJ QK QL
++ OPTIONAL:  DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS:  MNTYMXDLY=0 IO_LEVEL=0
+
+U1 LOGICEXP(1,1) DPWR DGND
++ CLR
++ RESETBAR
++ D0_GATE IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ LOGIC:
++        RESETBAR = {~CLR}
+
+U2 JKFF(1) DPWR DGND
++ $D_HI RESETBAR CLK
++ $D_HI $D_HI Q_A $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U3 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_A
++ $D_HI $D_HI Q_B $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U4 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_B
++ $D_HI $D_HI Q_C $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U5 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_C
++ $D_HI $D_HI Q_D $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U6 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_D
++ $D_HI $D_HI Q_E $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U7 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_E
++ $D_HI $D_HI Q_F $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U8 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_F
++ $D_HI $D_HI Q_G $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U9 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_G
++ $D_HI $D_HI Q_H $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U10 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_H
++ $D_HI $D_HI Q_I $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U11 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_I
++ $D_HI $D_HI Q_J $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U12 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_J
++ $D_HI $D_HI Q_K $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U13 JKFF(1) DPWR DGND
++ $D_HI RESETBAR Q_K
++ $D_HI $D_HI Q_L $D_NC
++ D0_EFF IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U14 PINDLY(12,0,2) DPWR DGND
++ Q_A Q_B Q_C Q_D Q_E Q_F Q_G Q_H Q_I Q_J Q_K Q_L
++ CLR CLK
++ QA QB QC QD QE QF QG QH QI QJ QK QL
++ IO_HC MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ BOOLEAN:
++          CLEAR = {CHANGED_LH(CLR,0)}
++          ACLK = {CHANGED_HL(CLK,0)}
++ PINDLY:
++          QA = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,16NS,30NS),
++              DELAY(-1,17NS,31NS))}
++          QB = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,24NS,45NS),
++              DELAY(-1,25NS,46NS))}
++          QC = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,32NS,60NS),
++              DELAY(-1,33NS,61NS))}
++          QD = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,40NS,75NS),
++              DELAY(-1,41NS,76NS))}
++          QE = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,48NS,90NS),
++              DELAY(-1,49NS,91NS))}
++          QF = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,56NS,105NS),
++              DELAY(-1,57NS,106NS))}
++          QG = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,64NS,120NS),
++              DELAY(-1,65NS,121NS))}
++          QH = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,72NS,135NS),
++              DELAY(-1,73NS,136NS))}
++          QI = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,80NS,150NS),
++              DELAY(-1,81NS,151NS))}
++          QJ = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,88NS,165NS),
++              DELAY(-1,89NS,166NS))}
++          QK = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,96NS,180NS),
++              DELAY(-1,97NS,181NS))}
++          QL = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,17NS,28NS),
++              ACLK & (TRN_LH | TRN_HL), DELAY(-1,104NS,195NS),
++              DELAY(-1,105NS,196NS))}
+
+U15 CONSTRAINT(2) DPWR DGND
++ CLK CLR
++ IO_HC IO_LEVEL={IO_LEVEL}
++ SETUP_HOLD:
++             CLOCK HL = CLK
++             DATA(1) = CLR
++             SETUPTIME_LO = 15NS
++ WIDTH:
++             NODE = CLK
++             MIN_HI = 23NS
++             MIN_LO = 23NS
++ WIDTH:
++             NODE = CLR
++             MIN_HI = 18NS
++ FREQ:
++             NODE = CLK
++             MAXFREQ = 22MEG
+
+.ENDS 74HC4040B
+
+.SUBCKT Digital_HC_74HC4040  gnd _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 
+X1 _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 74HC4040B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 30 20 20 0 #000080 2 1>
+    <Text 4 9 12 #000080 0 "QB">
+    <Text 4 -11 12 #000080 0 "QA">
+    <Text 4 29 12 #000080 0 "QC">
+    <Text 4 49 12 #000080 0 "QD">
+    <Text 4 69 12 #000080 0 "QE">
+    <Rectangle -30 -20 60 260 #000080 2 1 #c0c0c0 1 0>
+    <Line 30 0 20 0 #000080 2 1>
+    <Text 4 89 12 #000080 0 "QF">
+    <Text 4 109 12 #000080 0 "QG">
+    <Text 4 129 12 #000080 0 "QH">
+    <Line 30 60 20 0 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 100 20 0 #000080 2 1>
+    <Line 30 80 20 0 #000080 2 1>
+    <Line 30 140 20 0 #000080 2 1>
+    <Line 30 120 20 0 #000080 2 1>
+    <Line 30 160 20 0 #000080 2 1>
+    <Line 30 180 20 0 #000080 2 1>
+    <Line 30 200 20 0 #000080 2 1>
+    <Line 30 220 20 0 #000080 2 1>
+    <.PortSym 50 0 3 180 QA>
+    <.PortSym 50 20 4 180 QB>
+    <.PortSym 50 40 5 180 QC>
+    <.PortSym 50 60 6 180 QD>
+    <.PortSym 50 80 7 180 QE>
+    <.PortSym 50 100 8 180 QF>
+    <.PortSym 50 120 9 180 QG>
+    <.PortSym 50 140 10 180 QH>
+    <.PortSym 50 160 11 180 QI>
+    <.PortSym 50 180 12 180 QJ>
+    <Text 4 149 12 #000080 0 "QI">
+    <Text 4 169 12 #000080 0 "QJ">
+    <Text 4 189 12 #000080 0 "QK">
+    <Text 4 209 12 #000080 0 "QL">
+    <.ID -10 244 Y>
+    <.PortSym 50 200 13 180 QK>
+    <.PortSym 50 220 14 180 QL>
+    <Line -50 0 20 0 #000080 2 1>
+    <Line -15 0 -15 -10 #000080 2 1>
+    <Line -30 10 15 -10 #000080 2 1>
+    <Line -50 60 20 0 #000080 2 1>
+    <Text -28 50 12 #000080 0 "CLR">
+    <.PortSym -50 0 2 0 CLK>
+    <.PortSym -50 60 1 0 CLR>
+  </Symbol>
+</Component>
