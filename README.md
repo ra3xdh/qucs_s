@@ -31,23 +31,30 @@ Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, Flex, Bi
 
 ### Dependencies
 
-#### Ubuntu
+Qucs-S requires Qt6 libraries including QtCharts, CMake, flex, bison, gperf, and dos2unix as compile time
+dependencies. Install these packages using the package manager of your distribution before compiling Qucs-S.
+Ngspice is not required at compile time, but it is required as runtime dependency to run the simulation.
+
+Here are some examples for the popular Linux distributions.
+
+#### Ubuntu or Debian
 
 ~~~
-sudo apt-get install ngspice build-essential git cmake qtbase5-dev qttools5-dev libqt5svg5-dev libqt5charts5-dev flex bison gperf dos2unix
+sudo apt-get install ngspice build-essential git cmake flex bison gperf dos2unix
+sudo apt-get install qt6-base-dev qt6-tools-dev qt6-tools-dev-tools libglx-dev linguist-qt6 
+sudo apt-get install qt6-l10n-tools libqt6svg6-dev libgl1-mesa-dev qt6-charts-dev libqt6opengl6-dev
 ~~~
 
-#### OpenSUSE Tumbleweed
+#### Fedora
 
 ~~~
-sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel libqt5-qtsvg-devel libqt5-qtcharts-devel flex bison gperf dos2unix
+sudo dnf install gcc-c++ cmake git flex bison gperf dos2unix ngspice
+sudo dnf install qt6-qtbase-devel cmake qt6-qtsvg-devel qt6-qttools-devel qt6-qtcharts-devel 
 ~~~
 
 ### Compiling
 
-#### Qt5
-
-Then clone this git repository and execute in the top directory:
+After installing the dependecies, clone this git repository and execute in the top directory:
 
 ~~~
 git submodule init
@@ -59,19 +66,16 @@ make
 make install
 ~~~
 
-Where `/your_install_prefix/` is desired installation directory. Substitute any
-desire path (for example `$HOME/qucs-s`) here. You may omit this option and
-installation steps. Default installation directory will be `/usr/local` if
+Since the v25.1.0 the Qucs-S will be configured with Qt6 by default. Substutute the  `/your_install_prefix/` 
+as desired installation directory. Substitute any desire path (for example `$HOME/qucs-s`) here. 
+You may omit this option and installation steps. Default installation directory will be `/usr/local` if
 `CMAKE_INSTALL_PREFIX` is not defined.
 
-#### Qt6
+### Qt5/Qt6 support
 
-Since v1.0.1 Qucs-S supports build with Qt6. Set the `WITH_QT6` flag to tell CMake use the Qt6. 
-For example use the following command sequence for Ubuntu-22.04
+Qt5 support has been dropped since v25.1.0. Only Qt6 libraries are supported. Set the `WITH_QT6=ON` 
+cmake flag if compiling the Qucs-S versions before v25.1.0
 
-~~~
-cmake .. -DWITH_QT6=ON -DCMAKE_INSTALL_PREFIX=/your_install_prefix/
-~~~ 
 
 ### Running
 

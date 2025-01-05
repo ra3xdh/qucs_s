@@ -1,9 +1,9 @@
-<Qucs Library 24.3.99 "Digital_LV">
+<Qucs Library 24.4.99 "Digital_LV">
 
 <Component 74LV00>
   <Description>
-2-Input Nand Gate
-
+2-Input NAND Gate
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -43,7 +43,6 @@ X1 _net0 _net1 _net2 74LV00A
   </Spice>
   <Symbol>
     <EArc -30 -20 40 40 4320 2880 #000080 2 1>
-    <Line -10 20 0 -40 #000000 2 1>
     <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
     <Line 10 0 20 0 #000080 2 1>
     <Line -30 -10 20 0 #000080 2 1>
@@ -52,13 +51,280 @@ X1 _net0 _net1 _net2 74LV00A
     <.PortSym -30 10 2 0 P2>
     <.PortSym 30 0 3 180 P3>
     <.ID 10 14 Y>
+    <Line -10 20 0 -40 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component 74LV02>
+  <Description>
+2-Input NOR Gate
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV02 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="n74LV02_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV02.cir.lst">
+  <Spice>
+* ---------------------------------- 74LV02A ---------------------
+*  Quad 2-Input Nor Gates
+*
+*  TI PDF File
+*  bss    2/18/03
+*
+.SUBCKT 74LV02A  1A 1B 1Y
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 nor(2) DPWR_3V DGND_3V
++     1A 1B 1Y
++     DLY_LV02 IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_LV02 ugate (tplhTY=7.6ns tplhMX=11.4ns tphlTY=7.6ns tphlMX=11.4ns)
+
+.ENDS  74LV02A
+*
+
+.SUBCKT Digital_LV_74LV02  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 74LV02A
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #000080 2 1>
+    <Line -10 20 -5 0 #000080 2 1>
+    <Line -10 -20 -5 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component 74LV04>
+  <Description>
+Inverter
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV04 _net0 _net1
+Sub:X1 _net0 _net1 gnd Type="n74LV04_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV04.cir.lst">
+  <Spice>
+* -------------------------- 74LV04A --------------------------------
+*  Hex Inverters
+*
+*  TI PDF File
+*  bss    1/2/03
+*
+.SUBCKT 74LV04A  1A  1Y
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 inv DPWR_3V DGND_3V
++     1A 1Y
++     DLY_LV04 IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_LV04 ugate (tplhTY=7.3ns tplhMX=10.6ns tphlTY=7.3ns tphlMX=10.6ns)
+
+.ENDS  74LV04A
+*
+
+.SUBCKT Digital_LV_74LV04  gnd _net0 _net1 
+X1 _net0 _net1 74LV04A
+.ENDS
+  </Spice>
+  <Symbol>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line -10 20 0 -40 #000080 2 1>
+    <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <.ID 10 14 Y>
+    <.PortSym 30 0 2 180 P2>
+    <Line -30 0 20 0 #000080 2 1>
+    <.PortSym -30 0 1 0 P1>
+  </Symbol>
+</Component>
+
+<Component 74LV08>
+  <Description>
+2-Input AND Gate
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV08 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="n74LV08_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV08.cir.lst">
+  <Spice>
+* ---------------------------- 74LV08A ------------------------------
+*  Quad 2-Input AND Gate
+*
+*  TI PDF File
+*  bss    2/21/03
+*
+.SUBCKT 74LV08A  1A 1B 1Y
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 and(2) DPWR_3V DGND_3V
++     1A 1B 1Y
++     DLY_LV08 IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_LV08 ugate (tplhTY=7.5ns tplhMX=12.3ns tphlTY=7.5ns tphlMX=12.3ns)
+
+.ENDS  74LV08A
+*
+
+.SUBCKT Digital_LV_74LV08  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 74LV08A
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line -10 20 0 -40 #000080 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component 74LV20>
+  <Description>
+4-Input NAND Gate
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV20 _net0 _net1 _net2 _net3 _net4
+Sub:X1 _net0 _net1 _net2 _net3 _net4 gnd Type="n74LV20_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV20.cir.lst">
+  <Spice>
+* ----------------------------- 74LV20A -------------------------
+*  Dual 4-Input Nand Gate 
+*
+*  TI PDF File
+*  bss    2/24/03
+*
+.SUBCKT 74LV20A  1A 1B 1C 1D 1Y
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 nand(4) DPWR_3V DGND_3V
++     1A 1B 1C 1D 1Y
++     DLY_LV20 IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_LV20 ugate (tplhTY=6.5ns tplhMX=10.1ns tphlTY=6.5ns tphlMX=10.1ns)
+
+.ENDS  74LV20A
+*
+
+.SUBCKT Digital_LV_74LV20  gnd _net0 _net1 _net2 _net3 _net4 
+X1 _net0 _net1 _net2 _net3 _net4 74LV20A
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 -30 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <Line -30 30 20 0 #000080 2 1>
+    <Line -10 40 0 -80 #000080 2 1>
+    <Ellipse 20 -4 8 8 #000080 1 1 #000080 1 1>
+    <EArc -20 -20 40 40 4320 2880 #000080 2 1>
+    <Line 0 20 -10 0 #000080 2 1>
+    <.PortSym -30 -30 1 0 P1>
+    <.PortSym -30 -10 2 0 P2>
+    <.PortSym -30 10 3 0 P3>
+    <.PortSym -30 30 4 0 P4>
+    <.PortSym 40 0 5 180 P5>
+    <.ID 20 14 Y>
+    <Line 28 0 12 0 #000080 2 1>
+    <Line 0 -20 -10 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component 74LV32>
+  <Description>
+2-Input OR Gate
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV32 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="n74LV32_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV32.cir.lst">
+  <Spice>
+* -------------------------- 74LV32A ----------------------------
+*  Quad 2-Input Or Gate
+*
+*  TI PDF File
+*  bss    2/24/03
+*
+.SUBCKT 74LV32A  1A 1B 1Y
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 or(2) DPWR_3V DGND_3V
++     1A 1B 1Y
++     DLY_LV32 IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_LV32 ugate (tplhTY=6.9ns tplhMX=11.4ns tphlTY=6.9ns tphlMX=11.4ns)
+
+.ENDS  74LV32A
+*
+
+.SUBCKT Digital_LV_74LV32  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 74LV32A
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #000080 2 1>
+    <Line -10 20 -5 0 #000080 2 1>
+    <Line -10 -20 -5 0 #000080 2 1>
   </Symbol>
 </Component>
 
 <Component 74LV74>
   <Description>
 D-Type Positive Edge Triggered Flip-Flop With Preset And Clear
-
+XSPICE Based Model
 Requirements:
 .spiceinit: set ngbehavior=psa
 .PARAM: vcc=5
@@ -73,7 +339,7 @@ Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 gnd Type="n74LV74_cir"
 * The timing parameters for all of these models were taken from the specifications for a 
 * 3.3V power supply and a 50pF capacitive load.
 *
-* ----------------------------------------------------------- 74LV74A ------
+* -------------------------------------- 74LV74A ---------------------------
 *  Dual Positive Edge Triggered D-Type Flip-Flop
 *
 *  TI PDF File
@@ -127,3 +393,544 @@ X1 _net0 _net1 _net2 _net3 _net4 _net5 74LV74A
   </Symbol>
 </Component>
 
+<Component 74LV86>
+  <Description>
+2-Input Exclusive-OR Gate
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV86 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="n74LV86_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV86.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74LV86A ------
+*  Quad 2-Input Exclusive-Or Gate
+*
+*  TI PDF File
+*  bss    2/24/03
+*
+.SUBCKT 74LV86  1A 1B 1Y
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 xor DPWR_3V DGND_3V
++     1A 1B 1Y
++     DLY_LV86 IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_LV86 ugate (tplhTY=7.4ns tplhMX=14.5ns tphlTY=7.4ns tphlMX=14.5ns)
+
+.ENDS  74LV86
+*
+
+.SUBCKT Digital_LV_74LV86  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 74LV86
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #000080 2 1>
+    <EArc -15 -20 10 40 4320 2880 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component 74LV138>
+  <Description>
+3-Line To 8-Line Decoder/Demultiplexer
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV138 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 gnd Type="n74LV138_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV138.cir.lst">
+  <Spice>
+*-----------------------------------------------------------74LV138A-----
+* 3-Line To 8-Line Decoder/Demultiplexer
+*
+*  TI PDF File
+*  bss    2/25/03
+
+.SUBCKT 74LV138A A B C G1 G2ABAR G2BBAR Y0 Y1 Y2 Y3 Y4 Y5 Y6 Y7
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 LOGICEXP(6,8) DPWR_3V DGND_3V
++ A B C G1 G2ABAR G2BBAR
++ Y0O Y1O Y2O Y3O Y4O Y5O Y6O Y7O
++ D0_GATE IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ LOGIC:
++   ENAB = {G1 & ~G2ABAR & ~G2BBAR}
++   Y0O = {~(~A & ~B & ~C & ENAB)}
++   Y1O = {~(A & ~B & ~C & ENAB)}
++   Y2O = {~(~A & B & ~C & ENAB)}
++   Y3O = {~(A & B & ~C & ENAB)}
++   Y4O = {~(~A & ~B & C & ENAB)}
++   Y5O = {~(A & ~B & C & ENAB)}
++   Y6O = {~(~A & B & C & ENAB)}
++   Y7O = {~(A & B & C & ENAB)}
+
+U2 PINDLY(8,0,6) DPWR_3V DGND_3V
++ Y0O Y1O Y2O Y3O Y4O Y5O Y6O Y7O
++ A B C G1 G2ABAR G2BBAR
++ Y0 Y1 Y2 Y3 Y4 Y5 Y6 Y7
++ IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ BOOLEAN:
++     IN = {CHANGED(A,0) | CHANGED(B,0) | CHANGED(C,0)}
++     ENBAR = {CHANGED(G2ABAR,0) | CHANGED(G2BBAR,0)}
++     EN = {CHANGED(G1,0)}
++  PINDLY:
++     Y0 Y1 Y2 Y3 Y4 Y5 Y6 Y7 = {
++       CASE(
++          EN & TRN_LH, DELAY(-1,10.6ns,16.3ns),
++          EN & TRN_HL, DELAY(-1,10.6ns,16.3ns),
++          ENBAR & TRN_LH, DELAY(-1,10ns,14.9ns),
++          ENBAR & TRN_HL, DELAY(-1,10ns,14.9ns),
++          IN & TRN_LH, DELAY(-1,10.3ns,15.8ns),
++          IN & TRN_HL, DELAY(-1,10.3ns,15.8ns),
++          DELAY(-1,11ns,17ns))}
+
+.ENDS 74LV138A
+*
+
+.SUBCKT Digital_LV_74LV138  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 74LV138A
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 30 20 20 0 #000080 2 1>
+    <Rectangle -30 -20 60 180 #000080 2 1 #c0c0c0 1 0>
+    <Line 30 0 20 0 #000080 2 1>
+    <Line 30 60 20 0 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 100 20 0 #000080 2 1>
+    <Line 30 80 20 0 #000080 2 1>
+    <Line 30 140 20 0 #000080 2 1>
+    <Line 30 120 20 0 #000080 2 1>
+    <Line -50 0 20 0 #000080 2 1>
+    <.PortSym 50 0 7 180 Y0>
+    <.PortSym 50 20 8 180 Y1>
+    <.PortSym 50 40 9 180 Y2>
+    <.PortSym 50 60 10 180 Y3>
+    <.PortSym 50 80 11 180 Y4>
+    <.PortSym 50 100 12 180 Y5>
+    <.PortSym 50 120 13 180 Y6>
+    <.PortSym 50 140 14 180 Y7>
+    <Line -50 20 20 0 #000080 2 1>
+    <Line -50 40 20 0 #000080 2 1>
+    <.PortSym -50 20 2 0 B>
+    <.PortSym -50 0 1 0 A>
+    <.PortSym -50 40 3 0 C>
+    <Line -50 80 20 0 #000080 2 1>
+    <Line -50 100 20 0 #000080 2 1>
+    <Ellipse -31 96 -8 8 #000080 1 1 #000080 1 1>
+    <Line -50 120 20 0 #000080 2 1>
+    <Ellipse -31 116 -8 8 #000080 1 1 #000080 1 1>
+    <.PortSym -50 80 4 0 G1>
+    <.PortSym -50 100 5 0 G2AB>
+    <.PortSym -50 120 6 0 G2BB>
+    <Text -25 -11 12 #000080 0 "A">
+    <Text 6 29 12 #000080 0 "Y2">
+    <Text 6 49 12 #000080 0 "Y3">
+    <Text 6 129 12 #000080 0 "Y7">
+    <Text 6 9 12 #000080 0 "Y1">
+    <Text 6 89 12 #000080 0 "Y5">
+    <Text 6 -11 12 #000080 0 "Y0">
+    <Text 6 69 12 #000080 0 "Y4">
+    <Text 6 109 12 #000080 0 "Y6">
+    <Text -25 9 12 #000080 0 "B">
+    <Text -25 69 12 #000080 0 "G1">
+    <Text -25 89 12 #000080 0 "G2">
+    <Text -25 109 12 #000080 0 "G3">
+    <.ID -10 164 Y>
+    <Text -25 29 12 #000080 0 "C">
+  </Symbol>
+</Component>
+
+<Component 74LV164>
+  <Description>
+8-Bit Parallel-Out Serial Shift Register
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV164 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 gnd Type="n74LV164_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV164.cir.lst">
+  <Spice>
+* ----------------------------------------------------------- 74LV164 ------
+*  8-Bit Parallel-Out Serial Shift Register
+*
+*  TI PDF File
+*  bss    2/26/03
+*
+.SUBCKT 74LV164 A B CLRBAR CLK QA QB QC QD QE QF QG QH
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U74164 LOGICEXP (3,3) DPWR_3V DGND_3V
++        CLK A B
++        r0 s0 clkbar
++        D0_GATE IO_LV-A IO_LEVEL={IO_LEVEL}
++
++    LOGIC:
++      r0 = { (~(A & B)) }
++      s0 = { (~r0) }
++      clkbar = { (~CLK) }
+
+uf0  JKff(8)  DPWR_3V DGND_3V
++    $D_HI CLRBAR clkbar
++    s0 QA_O QB_O QC_O QD_O QE_O QF_O QG_O
++    r0 qabar qbbar qcbar qdbar qebar qfbar qgbar
++    QA_O QB_O QC_O QD_O QE_O QF_O QG_O QH_O
++    qabar qbbar qcbar qdbar qebar qfbar qgbar qhbar
++    D0_EFF IO_LV-A
+
+Udly PINDLY (8,0,2) DPWR_3V DGND_3V
++    QA_O QB_O QC_O QD_O QE_O QF_O QG_O QH_O
++    CLRBAR CLK
++    QA QB QC QD QE QF QG QH
++    IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++
++    BOOLEAN:
++       CLOCK= { CHANGED(CLK,0) }
++       CLEAR= { CHANGED_HL(CLRBAR,0) }
++
++    PINDLY:
++       QA QB QC QD QE QF QG QH  = {
++                   CASE(
++                       CLEAR & TRN_HL, DELAY(-1,7.9ns,16.3ns),
++                       CLOCK, DELAY(-1,8.3ns,16.3ns),
++                       DELAY(-1,9ns,17ns)
++                       )
++                     }
+
+Ucnstr CONSTRAINT(4) DPWR_3V DGND_3V
++          CLRBAR CLK A B
++          IO_LV-A
++
++      FREQ:
++        NODE = CLK
++        MAXFREQ = 120MEG
++      WIDTH:
++        NODE = CLK
++        MIN_HI = 5ns
++			MIN_LO = 5ns
++      WIDTH:
++        NODE = CLRBAR
++        MIN_LO = 5ns
++      SETUP_HOLD:
++        CLOCK LH = CLK
++        DATA(2) = A B
++        SETUPTIME = 5ns
++        WHEN = { CLRBAR != '0 }
++      SETUP_HOLD:
++        DATA(1) = CLRBAR
++        CLOCK LH = CLK
++        SETUPTIME_HI = 2.5ns
+
+.ENDS 74LV164
+*
+
+.SUBCKT Digital_LV_74LV164  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 74LV164
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 30 20 20 0 #000080 2 1>
+    <Text 4 9 12 #000080 0 "QB">
+    <Text 4 -11 12 #000080 0 "QA">
+    <Text 4 29 12 #000080 0 "QC">
+    <Text 4 49 12 #000080 0 "QD">
+    <Text 4 69 12 #000080 0 "QE">
+    <Line -50 0 20 0 #000080 2 1>
+    <Text -28 -10 12 #000080 0 "A">
+    <Rectangle -30 -20 60 180 #000080 2 1 #c0c0c0 1 0>
+    <Line 30 0 20 0 #000080 2 1>
+    <Text 4 89 12 #000080 0 "QF">
+    <Text 4 109 12 #000080 0 "QG">
+    <Text 4 129 12 #000080 0 "QH">
+    <Line 30 60 20 0 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 100 20 0 #000080 2 1>
+    <Line 30 80 20 0 #000080 2 1>
+    <Line 30 140 20 0 #000080 2 1>
+    <Line 30 120 20 0 #000080 2 1>
+    <Line -50 20 20 0 #000080 2 1>
+    <Line -50 60 20 0 #000080 2 1>
+    <Text -28 10 12 #000080 0 "B">
+    <Text -28 50 12 #000080 0 "CLR">
+    <Ellipse -31 56 -8 8 #000080 1 1 #000080 1 1>
+    <Line -50 140 20 0 #000080 2 1>
+    <Line -15 140 -15 -10 #000080 2 1>
+    <Line -30 150 15 -10 #000080 2 1>
+    <.PortSym -50 60 3 0 CLRBAR>
+    <.ID -10 164 Y>
+    <.PortSym -50 0 1 0 A>
+    <.PortSym -50 20 2 0 B>
+    <.PortSym -50 140 4 0 CLK>
+    <.PortSym 50 0 5 180 QA>
+    <.PortSym 50 20 6 180 QB>
+    <.PortSym 50 40 7 180 QC>
+    <.PortSym 50 60 8 180 QD>
+    <.PortSym 50 80 9 180 QE>
+    <.PortSym 50 100 10 180 QF>
+    <.PortSym 50 120 11 180 QG>
+    <.PortSym 50 140 12 180 QH>
+  </Symbol>
+</Component>
+
+<Component 74LV4040>
+  <Description>
+12-Stage Binary Ripple Counter
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_LV_74LV4040 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 gnd Type="n74LV4040_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "74LV4040.cir.lst">
+  <Spice>
+*
+*---------------------74LV4040A-----------------------
+* 12-Bit Asynchronous Binary Counter
+*
+*  TI PDF File
+*  bss    2/28/03
+
+.SUBCKT 74LV4040 CLR CLK QA QB QC QD QE QF QG QH QI QJ QK QL
++     optional: DPWR_3V=$G_DPWR_3V DGND_3V=$G_DGND_3V
++     params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 LOGICEXP(1,1) DPWR_3V DGND_3V
++ CLR
++ RESETBAR
++ D0_GATE IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ LOGIC:
++        RESETBAR = {~CLR}
+
+U2 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR CLK
++ $D_HI $D_HI Q_A $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U3 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_A
++ $D_HI $D_HI Q_B $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U4 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_B
++ $D_HI $D_HI Q_C $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U5 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_C
++ $D_HI $D_HI Q_D $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U6 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_D
++ $D_HI $D_HI Q_E $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U7 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_E
++ $D_HI $D_HI Q_F $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U8 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_F
++ $D_HI $D_HI Q_G $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U9 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_G
++ $D_HI $D_HI Q_H $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U10 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_H
++ $D_HI $D_HI Q_I $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U11 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_I
++ $D_HI $D_HI Q_J $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U12 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_J
++ $D_HI $D_HI Q_K $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U13 JKFF(1) DPWR_3V DGND_3V
++ $D_HI RESETBAR Q_K
++ $D_HI $D_HI Q_L $D_NC
++ D0_EFF IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U14 PINDLY(12,0,2) DPWR_3V DGND_3V
++ Q_A Q_B Q_C Q_D Q_E Q_F Q_G Q_H Q_I Q_J Q_K Q_L
++ CLR CLK
++ QA QB QC QD QE QF QG QH QI QJ QK QL
++ IO_LV-A MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ BOOLEAN:
++          CLEAR = {CHANGED_LH(CLR,0)}
++          ACLK = {CHANGED_HL(CLK,0)}
++ PINDLY:
++          QA = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,7.5ns,15.4ns),
++              DELAY(-1,10ns,17ns))}
++          QB = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,8.7ns,19.8ns),
++              DELAY(-1,10ns,20ns))}
++          QC = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,9.9ns,24.2ns),
++              DELAY(-1,10ns,25ns))}
++          QD = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,11.1ns,28.6ns),
++              DELAY(-1,12ns,29ns))}
++          QE = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,12.3ns,33ns),
++              DELAY(-1,13ns,34ns))}
++          QF = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,13.5ns,37.4ns),
++              DELAY(-1,14ns,38ns))}
++          QG = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,14.7ns,41.8ns),
++              DELAY(-1,15ns,42ns))}
++          QH = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,15.9ns,46.2ns),
++              DELAY(-1,16ns,47ns))}
++          QI = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,17.1ns,50.6ns),
++              DELAY(-1,18ns,51ns))}
++          QJ = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,18.3ns,55ns),
++              DELAY(-1,19ns,56ns))}
++          QK = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,19.5ns,59.4ns),
++              DELAY(-1,20ns,60ns))}
++          QL = {
++            CASE(
++              CLEAR & TRN_HL, DELAY(-1,9ns,16.3ns),
++              ACLK, DELAY(-1,20.7ns,63.8ns),
++              DELAY(-1,21ns,64ns))}
+
+U15 CONSTRAINT(2) DPWR_3V DGND_3V
++ CLK CLR
++ IO_LV-A IO_LEVEL={IO_LEVEL}
++ SETUP_HOLD:
++             CLOCK HL = CLK
++             DATA(1) = CLR
++             SETUPTIME_LO = 5NS
++ WIDTH:
++             NODE = CLK
++             MIN_HI = 5NS
++             MIN_LO = 5NS
++ WIDTH:
++             NODE = CLR
++             MIN_HI = 5NS
++ FREQ:
++             NODE = CLK
++             MAXFREQ = 130MEG
+
+.ENDS 74LV4040
+*
+
+.SUBCKT Digital_LV_74LV4040  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 74LV4040
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 30 20 20 0 #000080 2 1>
+    <Text 4 9 12 #000080 0 "QB">
+    <Text 4 -11 12 #000080 0 "QA">
+    <Text 4 29 12 #000080 0 "QC">
+    <Text 4 49 12 #000080 0 "QD">
+    <Text 4 69 12 #000080 0 "QE">
+    <Rectangle -30 -20 60 260 #000080 2 1 #c0c0c0 1 0>
+    <Line 30 0 20 0 #000080 2 1>
+    <Text 4 89 12 #000080 0 "QF">
+    <Text 4 109 12 #000080 0 "QG">
+    <Text 4 129 12 #000080 0 "QH">
+    <Line 30 60 20 0 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 100 20 0 #000080 2 1>
+    <Line 30 80 20 0 #000080 2 1>
+    <Line 30 140 20 0 #000080 2 1>
+    <Line 30 120 20 0 #000080 2 1>
+    <Line 30 160 20 0 #000080 2 1>
+    <Line 30 180 20 0 #000080 2 1>
+    <Line 30 200 20 0 #000080 2 1>
+    <Line 30 220 20 0 #000080 2 1>
+    <.PortSym 50 0 3 180 QA>
+    <.PortSym 50 20 4 180 QB>
+    <.PortSym 50 40 5 180 QC>
+    <.PortSym 50 60 6 180 QD>
+    <.PortSym 50 80 7 180 QE>
+    <.PortSym 50 100 8 180 QF>
+    <.PortSym 50 120 9 180 QG>
+    <.PortSym 50 140 10 180 QH>
+    <.PortSym 50 160 11 180 QI>
+    <.PortSym 50 180 12 180 QJ>
+    <Text 4 149 12 #000080 0 "QI">
+    <Text 4 169 12 #000080 0 "QJ">
+    <Text 4 189 12 #000080 0 "QK">
+    <Text 4 209 12 #000080 0 "QL">
+    <.ID -10 244 Y>
+    <.PortSym 50 200 13 180 QK>
+    <.PortSym 50 220 14 180 QL>
+    <.PortSym -50 0 2 0 CLK>
+    <Line -50 0 20 0 #000080 2 1>
+    <Line -15 0 -15 -10 #000080 2 1>
+    <Line -30 10 15 -10 #000080 2 1>
+    <Line -50 60 20 0 #000080 2 1>
+    <Text -28 50 12 #000080 0 "CLR">
+    <.PortSym -50 60 1 0 CLR>
+  </Symbol>
+</Component>

@@ -1,11 +1,72 @@
-<Qucs Library 24.4.1 "Digital_CD4000">
+<Qucs Library 24.4.99 "Digital_CD">
+
+<Component CD4001>
+  <Description>
+2-Input NOR Gate
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_CD_CD4001 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="CD4001_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4001.cir.lst">
+  <Spice>
+* -------------------------------- CD4001B-------------------------------
+*
+*  Quad 2-Input NOR Gate
+*
+*  The CMOS Logic Data Book, 1991, Motorola Pages 6-5 to 6-14
+*  jds    6/6/94
+*  This part is shown in the data book as MC14001B
+*
+.SUBCKT CD4001B IN1A IN2A OUTA
++  optional: VDD=$G_CD4000_VDD VSS=$G_CD4000_VSS
++  params: MNTYMXDLY=0 IO_LEVEL=0
+*
+Uf0 nor(2) VDD VSS
++   IN1A IN2A OUTA
++   DLY_MOD IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_MOD ugate (TPLHMN=-1 TPLHTY=125ns TPLHMX=250ns
++                     TPHLMN=-1 TPHLTY=125ns TPHLMX=250ns)
+
+.ENDS CD4001B
+*
+
+.SUBCKT Digital_CD_CD4001  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 CD4001B
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #000080 2 1>
+    <Line -10 20 -5 0 #000080 2 1>
+    <Line -10 -20 -5 0 #000080 2 1>
+  </Symbol>
+</Component>
 
 <Component CD4011>
   <Description>
-Quad 2-Input CMOS NAND
+2-Input NAND Gate
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
   </Description>
   <Model>
-.Def:Digital_CD4000_CD4011 _net0 _net2 _net1
+.Def:Digital_CD_CD4011 _net0 _net2 _net1
 Sub:X1 _net0 _net2 _net1 gnd Type="CD4011_cir"
 .Def:End
   </Model>
@@ -33,7 +94,7 @@ Uf0 nand(2) VDD VSS
 .ENDS CD4011B
 *
 
-.SUBCKT Digital_CD4000_CD4011  gnd _net0 _net2 _net1 
+.SUBCKT Digital_CD_CD4011  gnd _net0 _net2 _net1 
 X1 _net0 _net2 _net1 CD4011B
 .ENDS
   </Spice>
@@ -51,12 +112,77 @@ X1 _net0 _net2 _net1 CD4011B
   </Symbol>
 </Component>
 
-<Component CD4013>
+<Component CD4012>
   <Description>
-Two D-type CMOS Flip-flops
+4-Input NAND Gate
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
   </Description>
   <Model>
-.Def:Digital_CD4000_CD4013 _net0 _net1 _net2 _net3 _net4 _net5
+.Def:Digital_CD_CD4012 _net0 _net1 _net2 _net3 _net4
+Sub:X1 _net0 _net1 _net2 _net3 _net4 gnd Type="CD4012_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4012.cir.lst">
+  <Spice>
+* ------------------------------ CD4012B------------------------
+*
+*  Dual 4-Input NAND Gate
+*
+*  The CMOS Logic Data Book, 1991, Motorola Pages 6-5 to 6-14
+*  jds    6/6/94
+*  This part is shown in the data book as MC14012B
+*
+.SUBCKT CD4012B IN1A IN2A IN3A IN4A OUTA
++  optional: VDD=$G_CD4000_VDD VSS=$G_CD4000_VSS
++  params: MNTYMXDLY=0 IO_LEVEL=0
+*
+Uf0 nand(4) VDD VSS
++   IN1A IN2A IN3A IN4A OUTA
++   DLY_MOD IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_MOD ugate (TPLHMN=-1 TPLHTY=160ns TPLHMX=300ns
++                     TPHLMN=-1 TPHLTY=160ns TPHLMX=300ns)
+
+.ENDS CD4012B
+*
+
+.SUBCKT Digital_CD_CD4012  gnd _net0 _net1 _net2 _net3 _net4 
+X1 _net0 _net1 _net2 _net3 _net4 CD4012B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 -30 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <Line -30 30 20 0 #000080 2 1>
+    <Line -10 40 0 -80 #000080 2 1>
+    <Ellipse 20 -4 8 8 #000080 1 1 #000080 1 1>
+    <EArc -20 -20 40 40 4320 2880 #000080 2 1>
+    <Line 0 20 -10 0 #000080 2 1>
+    <.PortSym -30 -30 1 0 P1>
+    <.PortSym -30 -10 2 0 P2>
+    <.PortSym -30 10 3 0 P3>
+    <.PortSym -30 30 4 0 P4>
+    <.PortSym 40 0 5 180 P5>
+    <.ID 20 14 Y>
+    <Line 28 0 12 0 #000080 2 1>
+    <Line 0 -20 -10 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component CD4013>
+  <Description>
+D-Type Positive Edge Triggered Flip-Flop With Preset And Clear
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+.PARAM: vcc=5
+  </Description>
+  <Model>
+.Def:Digital_CD_CD4013 _net0 _net1 _net2 _net3 _net4 _net5
 Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 gnd Type="CD4013_cir"
 .Def:End
   </Model>
@@ -120,7 +246,7 @@ U4 CONSTRAINT(3) VDD VSS
 .ENDS CD4013B
 *
 
-.SUBCKT Digital_CD4000_CD4013  gnd _net0 _net1 _net2 _net3 _net4 _net5 
+.SUBCKT Digital_CD_CD4013  gnd _net0 _net1 _net2 _net3 _net4 _net5 
 X1 _net0 _net1 _net2 _net3 _net4 _net5 CD4013B
 .ENDS
   </Spice>
@@ -152,10 +278,14 @@ X1 _net0 _net1 _net2 _net3 _net4 _net5 CD4013B
 
 <Component CD4017>
   <Description>
-Decade counter with 10 decoded outputs
+5-stage Johnson Decade Counter
+with 10 Decoded Outputs
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
   </Description>
   <Model>
-.Def:Digital_CD4000_CD4017 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12
+.Def:Digital_CD_CD4017 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12
 Sub:X1 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 gnd Type="CD4017_cir"
 .Def:End
   </Model>
@@ -256,7 +386,7 @@ Ucnstr CONSTRAINT(3) VDD VSS
 .ENDS CD4017B
 *
 
-.SUBCKT Digital_CD4000_CD4017  gnd _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 
+.SUBCKT Digital_CD_CD4017  gnd _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 
 X1 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 CD4017B
 .ENDS
   </Spice>
@@ -312,10 +442,13 @@ X1 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _ne
 
 <Component CD4022>
   <Description>
-Octal counter with 8 decoded outputs
+Octal Counter with 8 Decoded Outputs
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
   </Description>
   <Model>
-.Def:Digital_CD4000_CD4022 _net11 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10
+.Def:Digital_CD_CD4022 _net11 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10
 Sub:X1 _net11 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 gnd Type="CD4022_cir"
 .Def:End
   </Model>
@@ -402,7 +535,7 @@ U4 CONSTRAINT(3) VDD VSS
 
 .ENDS CD4022B
 
-.SUBCKT Digital_CD4000_CD4022  gnd _net11 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 
+.SUBCKT Digital_CD_CD4022  gnd _net11 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 
 X1 _net11 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 CD4022B
 .ENDS
   </Spice>
@@ -452,10 +585,13 @@ X1 _net11 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 CD4
 
 <Component CD4040>
   <Description>
-
+12-Stage Binary Ripple Counter
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
   </Description>
   <Model>
-.Def:Digital_CD4000_CD4040 _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11
+.Def:Digital_CD_CD4040 _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11
 Sub:X1 _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 gnd Type="CD4040_cir"
 .Def:End
   </Model>
@@ -643,7 +779,7 @@ Ucnstr CONSTRAINT(2) VDD VSS
 .ENDS CD4040B
 *
 
-.SUBCKT Digital_CD4000_CD4040  gnd _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 
+.SUBCKT Digital_CD_CD4040  gnd _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 
 X1 _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 CD4040B
 .ENDS
   </Spice>
@@ -696,3 +832,364 @@ X1 _net12 _net13 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _ne
   </Symbol>
 </Component>
 
+<Component CD4069>
+  <Description>
+Inverting Buffer
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_CD_CD4069 _net0 _net1
+Sub:X1 _net0 _net1 gnd Type="CD4069_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4069.cir.lst">
+  <Spice>
+* ---------------------------- CD4069UB --------------------------
+*
+*  Hex Inverting Buffer
+*
+*  The CMOS Logic Data Book, 1988, National Semiconductor Pages 5-180 to 5-183
+*  jds    6/8/94
+*
+.SUBCKT CD4069UB A ABAR
++  optional: VDD=$G_CD4000_VDD VSS=$G_CD4000_VSS
++  params: MNTYMXDLY=0 IO_LEVEL=0
+
+uf0 inv VDD VSS
++   A ABAR
++   DLY_MOD IO_4000UB MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_MOD ugate (TPLHMN=-1 TPLHTY=50ns TPLHMX=90ns
++                     TPHLMN=-1 TPHLTY=50ns TPHLMX=90ns)
+
+.ENDS CD4069UB
+*
+
+.SUBCKT Digital_CD_CD4069  gnd _net0 _net1 
+X1 _net0 _net1 CD4069UB
+.ENDS
+  </Spice>
+  <Symbol>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line -10 20 0 -40 #000080 2 1>
+    <Ellipse 10 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <.ID 10 14 Y>
+    <.PortSym 30 0 2 180 P2>
+    <Line -30 0 20 0 #000080 2 1>
+    <.PortSym -30 0 1 0 P1>
+  </Symbol>
+</Component>
+
+<Component CD4070>
+  <Description>
+2-Input XOR Gate
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_CD_CD4070 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="CD4070_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4070.cir.lst">
+  <Spice>
+* -------------------------------- CD4070B -------------------------------
+*
+*  Quad 2-Input XOR Gate
+*
+*  The CMOS Logic Data Book, 1988, National Semiconductor Pages 5-184 to 5-187
+*  jds    6/8/94
+*
+.SUBCKT CD4070B IN1A IN2A OUTA
++  optional: VDD=$G_CD4000_VDD VSS=$G_CD4000_VSS
++  params: MNTYMXDLY=0 IO_LEVEL=0
+
+uf0 xor VDD VSS
++   IN1A IN2A OUTA
++   DLY_MOD IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_MOD ugate (TPLHMN=-1 TPLHTY=110ns TPLHMX=185ns
++                     TPHLMN=-1 TPHLTY=110ns TPHLMX=185ns)
+
+.ENDS CD4070B
+*
+
+.SUBCKT Digital_CD_CD4070  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 CD4070B
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #000080 2 1>
+    <EArc -15 -20 10 40 4320 2880 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component CD4071>
+  <Description>
+2-Input OR Gate
+  XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_CD_CD4071 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="CD4071_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4071.cir.lst">
+  <Spice>
+* --------------------------- CD4071B------------------------
+*
+*  Quad 2-Input OR Gate
+*
+*  The CMOS Logic Data Book, 1991, Motorola Pages 6-5 to 6-14
+*  jds    6/6/94
+*  This part is shown in the data book as MC14071B
+*
+.SUBCKT CD4071B IN1A IN2A OUTA
++  optional: VDD=$G_CD4000_VDD VSS=$G_CD4000_VSS
++  params: MNTYMXDLY=0 IO_LEVEL=0
+*
+Uf0 or(2) VDD VSS
++   IN1A IN2A OUTA
++   DLY_MOD IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_MOD ugate (TPLHMN=-1 TPLHTY=160ns TPLHMX=300ns
++                     TPHLMN=-1 TPHLTY=160ns TPHLMX=300ns)
+
+.ENDS CD4071B
+*
+
+.SUBCKT Digital_CD_CD4071  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 CD4071B
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #000080 2 1>
+    <Line -10 20 -5 0 #000080 2 1>
+    <Line -10 -20 -5 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component CD4081>
+  <Description>
+2-Input AND Gate
+  XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_CD_CD4081 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="CD4081_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4081.cir.lst">
+  <Spice>
+* ------------------------------ CD4081B-------------------------
+*
+*  Quad 2-Input AND Gate
+*
+*  The CMOS Logic Data Book, 1991, Motorola Pages 6-5 to 6-14
+*  jds    6/6/94
+*  This part is shown in the data book as MC14081B
+*
+.SUBCKT CD4081B IN1A IN2A OUTA
++  optional: VDD=$G_CD4000_VDD VSS=$G_CD4000_VSS
++  params: MNTYMXDLY=0 IO_LEVEL=0
+*
+Uf0 and(2) VDD VSS
++   IN1A IN2A OUTA
++   DLY_MOD IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.model DLY_MOD ugate (TPLHMN=-1 TPLHTY=160ns TPLHMX=300ns
++                     TPHLMN=-1 TPHLTY=160ns TPHLMX=300ns)
+
+.ENDS CD4081B
+*
+
+.SUBCKT Digital_CD_CD4081  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 CD4081B
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 P1>
+    <.PortSym -30 10 2 0 P2>
+    <.PortSym 30 0 3 180 P3>
+    <.ID 10 14 Y>
+    <EArc -30 -20 40 40 4320 2880 #000080 2 1>
+    <Line -10 20 0 -40 #000080 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component CD4094>
+  <Description>
+8 Bit Static Shift Register/Latch
+XSPICE Based Model
+Requirements:
+.spiceinit: set ngbehavior=psa
+  </Description>
+  <Model>
+.Def:Digital_CD_CD4094 _net7 _net8 _net9 _net10 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net11 _net12 _net13
+Sub:X1 _net7 _net8 _net9 _net10 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net11 _net12 _net13 gnd Type="CD4094_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4094.cir.lst">
+  <Spice>
+*-------------------------------------------------------------CD4094B-----
+
+* 8 Bit Static Shift Register/Latch with Tri-State Outputs
+* National CMOS Logic Databook
+* jat 9/7/95
+
+.SUBCKT CD4094B STROBE DATA CLOCK OUTEN Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 QS QSPRIME
++ OPTIONAL:  VDD=$G_CD4000_VDD VSS=$G_CD4000_VSS
++ PARAMS:  MNTYMXDLY=0 IO_LEVEL=0
+
+U1 LOGICEXP(1,1) VDD VSS
++ CLOCK CLOCKBAR
++ D0_GATE IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ LOGIC:
++   CLOCKBAR = {~CLOCK}
+
+U2 DFF(8) VDD VSS
++ $D_HI $D_HI CLOCK
++ DATA Q1I Q2I Q3I Q4I Q5I Q6I Q7I
++ Q1I Q2I Q3I Q4I Q5I Q6I Q7I QSO
++ $D_NC $D_NC $D_NC $D_NC $D_NC $D_NC $D_NC $D_NC
++ D0_EFF IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U3 DFF(1) VDD VSS
++ $D_HI $D_HI CLOCKBAR
++ QSO QSPRIMEO $D_NC
++ D0_EFF IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U4 DLTCH(8) VDD VSS
++ $D_HI $D_HI STROBE
++ Q1I Q2I Q3I Q4I Q5I Q6I Q7I QSO
++ Q1O Q2O Q3O Q4O Q5O Q6O Q7O Q8O 
++ $D_NC $D_NC $D_NC $D_NC $D_NC $D_NC $D_NC $D_NC
++ D0_GFF IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U5 PINDLY(10,1,2) VDD VSS
++ Q1O Q2O Q3O Q4O Q5O Q6O Q7O Q8O QSO QSPRIMEO
++ OUTEN
++ STROBE CLOCK
++ Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 QS QSPRIME
++ IO_4000B MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ BOOLEAN:
++   UNLATCH = {CHANGED_LH(STROBE,0)}
++   EDGE = {CHANGED_LH(CLOCK,0)}
++ TRISTATE:
++   ENABLE HI = OUTEN
++      Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 = {
++         CASE(
++            TRN_Z$ | TRN_$Z, DELAY(-1,140NS,280NS),
++            UNLATCH & (TRN_LH | TRN_HL), DELAY(-1,290NS,580NS),
++            EDGE & (TRN_LH | TRN_HL), DELAY(-1,420NS,840NS),
++            DELAY(-1,421NS,841NS))}
++ PINDLY:
++   QS = {
++      CASE(
++         (TRN_LH | TRN_HL), DELAY(-1,300NS,600NS),
++          DELAY(-1,301NS,601NS))}
++ PINDLY:
++   QSPRIME= {
++      CASE(
++         (TRN_LH | TRN_HL), DELAY(-1,230NS,460NS),
++          DELAY(-1,231NS,461NS))}
+
+U6 CONSTRAINT(3) VDD VSS
++ CLOCK DATA STROBE
++ IO_4000B IO_LEVEL={IO_LEVEL}
++ SETUP_HOLD:
++   CLOCK LH = CLOCK
++   DATA(1) = DATA
++   SETUPTIME = 40NS
++ WIDTH:
++  NODE = CLOCK
++  MIN_HI = 100NS
++  MIN_LO = 100NS
++ WIDTH:
++  NODE = STROBE
++  MIN_HI = 100NS
++ FREQ: 
++  NODE = CLOCK
++  MAXFREQ = 3MEG
+
+.ENDS CD4094B
+
+.SUBCKT Digital_CD_CD4094  gnd _net7 _net8 _net9 _net10 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net11 _net12 _net13 
+X1 _net7 _net8 _net9 _net10 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net11 _net12 _net13 CD4094B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 30 20 20 0 #000080 2 1>
+    <Text 4 9 12 #000080 0 "QB">
+    <Text 4 -11 12 #000080 0 "QA">
+    <Text 4 29 12 #000080 0 "QC">
+    <Rectangle -30 -20 60 230 #000080 2 1 #c0c0c0 1 0>
+    <Line 30 0 20 0 #000080 2 1>
+    <Text 4 109 12 #000080 0 "QG">
+    <Text 4 129 12 #000080 0 "QH">
+    <Line 30 60 20 0 #000080 2 1>
+    <Line 30 40 20 0 #000080 2 1>
+    <Line 30 100 20 0 #000080 2 1>
+    <Line 30 80 20 0 #000080 2 1>
+    <Line 30 140 20 0 #000080 2 1>
+    <Line 30 120 20 0 #000080 2 1>
+    <.PortSym 50 0 5 180 QA>
+    <.PortSym 50 20 6 180 QB>
+    <.PortSym 50 40 7 180 QC>
+    <.PortSym 50 60 8 180 QD>
+    <.PortSym 50 80 9 180 QE>
+    <.PortSym 50 100 10 180 QF>
+    <.PortSym 50 120 11 180 QG>
+    <.PortSym 50 140 12 180 QH>
+    <.ID -10 214 Y>
+    <Text 4 159 12 #000080 0 "QS">
+    <Line 30 170 20 0 #000080 2 1>
+    <Line 30 190 20 0 #000080 2 1>
+    <.PortSym 50 170 13 180 QS>
+    <.PortSym 50 190 14 180 QSP>
+    <.PortSym -50 0 4 0 OE>
+    <Line -50 0 20 0 #000080 2 1>
+    <Text -28 -10 12 #000080 0 "OE">
+    <Text -3 179 12 #000080 0 "QSP">
+    <Text 3 69 12 #000080 0 "QE">
+    <Text 3 50 12 #000080 0 "QD">
+    <Text 3 89 12 #000080 0 "QF">
+    <Line -50 60 20 0 #000080 2 1>
+    <Text -28 50 12 #000080 0 "D">
+    <.PortSym -50 100 3 0 CLK>
+    <Line -50 100 20 0 #000080 2 1>
+    <Line -15 100 -15 -10 #000080 2 1>
+    <Line -30 110 15 -10 #000080 2 1>
+    <.PortSym -50 60 2 0 D>
+    <Line -50 20 20 0 #000080 2 1>
+    <.PortSym -50 20 1 0 STB>
+    <Text -28 10 12 #000080 0 "STB">
+  </Symbol>
+</Component>
