@@ -59,19 +59,13 @@ endif()
 add_compile_definitions(HAVE_CONFIG_H)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-if(WITH_QT6)
-    set(QT_VERSION_MAJOR 6)
-else()
-    set(QT_VERSION_MAJOR 5)
-endif()
-
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets Svg Xml PrintSupport)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Svg Xml PrintSupport)
 include_directories(
-      ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Svg_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Xml_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}PrintSupport_INCLUDE_DIRS}
+      ${Qt6Core_INCLUDE_DIRS}
+      ${Qt6Widgets_INCLUDE_DIRS}
+      ${Qt6Svg_INCLUDE_DIRS}
+      ${Qt6Xml_INCLUDE_DIRS}
+      ${Qt6PrintSupport_INCLUDE_DIRS}
       )
 
 
@@ -85,13 +79,11 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-IF(QT_VERSION_MAJOR EQUAL 6)
-    set(CMAKE_AUTOUIC ON)
-    set(CMAKE_AUTOMOC ON)
-    set(CMAKE_AUTORCC ON)
-ENDIF()
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
-set(QT_VERSION ${Qt${QT_VERSION_MAJOR}Core_VERSION})
+set(QT_VERSION ${Qt6Core_VERSION})
 
 if (${QT_VERSION} VERSION_LESS "6.7.0")
     set(CMAKE_CXX_STANDARD 17)
@@ -196,13 +188,8 @@ SET(QUCS_MOC_HDRS
 # headers that need to be moc'ed
 # generate rules for building source files from bitmap resources
 SET(RESOURCES qucs.qrc)
-IF(QT_VERSION_MAJOR EQUAL 6)
 Qt6_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
 Qt6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-ELSE()
-Qt5_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
-Qt5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-ENDIF()
 
 if(UNIX AND NOT APPLE)
 
@@ -275,8 +262,7 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
 #
 TARGET_LINK_LIBRARIES( ${QUCS_NAME}
     components diagrams dialogs paintings extsimkernels spicecomponents qt3_compat
-    Qt${QT_VERSION_MAJOR}::Core  Qt${QT_VERSION_MAJOR}::Gui  Qt${QT_VERSION_MAJOR}::Widgets
-    Qt${QT_VERSION_MAJOR}::Svg  Qt${QT_VERSION_MAJOR}::Xml  Qt${QT_VERSION_MAJOR}::PrintSupport )
+    Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::Xml  Qt6::PrintSupport )
 SET_TARGET_PROPERTIES(${QUCS_NAME} PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #
 # Prepare the installation

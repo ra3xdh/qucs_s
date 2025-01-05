@@ -39,14 +39,8 @@ endif()
 
 message(STATUS "${PROJECT_NAME} ${CMAKE_INSTALL_PREFIX} ${qucs-suite_BINARY_DIR}" )
 
-if(WITH_QT6)
-    set(QT_VERSION_MAJOR 6)
-else()
-    set(QT_VERSION_MAJOR 5)
-endif()
-
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets LinguistTools)
-set(QT_VERSION ${Qt${QT_VERSION_MAJOR}Core_VERSION})
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets LinguistTools)
+set(QT_VERSION ${Qt6Core_VERSION})
 
 message(STATUS "Qt Version: " ${QT_VERSION})
 

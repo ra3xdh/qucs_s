@@ -1810,7 +1810,7 @@ int Schematic::adjustPortNumbers()
             VInfo = VHDL_File_Info(Name, true);
 
         if (!VInfo.PortNames.isEmpty())
-            Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
+            Names = VInfo.PortNames.split(",", Qt::SkipEmptyParts);
 
         for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
@@ -1818,11 +1818,11 @@ int Schematic::adjustPortNumbers()
                 id->Prefix = VInfo.EntityName.toUpper();
                 id->Parameter.clear();
                 if (!VInfo.GenNames.isEmpty())
-                    GNames = VInfo.GenNames.split(",", qucs::SkipEmptyParts);
+                    GNames = VInfo.GenNames.split(",", Qt::SkipEmptyParts);
                 if (!VInfo.GenTypes.isEmpty())
-                    GTypes = VInfo.GenTypes.split(",", qucs::SkipEmptyParts);
+                    GTypes = VInfo.GenTypes.split(",", Qt::SkipEmptyParts);
                 if (!VInfo.GenDefs.isEmpty())
-                    GDefs = VInfo.GenDefs.split(",", qucs::SkipEmptyParts);
+                    GDefs = VInfo.GenDefs.split(",", Qt::SkipEmptyParts);
                 ;
                 for (Number = 1, it = GNames.begin(); it != GNames.end(); ++it) {
                     id->Parameter.append(
@@ -1871,7 +1871,7 @@ int Schematic::adjustPortNumbers()
         else
             VInfo = Verilog_File_Info(Name, true);
         if (!VInfo.PortNames.isEmpty())
-            Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
+            Names = VInfo.PortNames.split(",", Qt::SkipEmptyParts);
 
         for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
@@ -1918,7 +1918,7 @@ int Schematic::adjustPortNumbers()
             VInfo = VerilogA_File_Info(Name, true);
 
         if (!VInfo.PortNames.isEmpty())
-            Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
+            Names = VInfo.PortNames.split(",", Qt::SkipEmptyParts);
 
         for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
@@ -2340,15 +2340,9 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
         // zoom factor scaled according to the wheel delta, to accommodate
         //  values different from 60 (slower or faster zoom)
         double scaleCoef = pow(1.1, verticalWheelAngleDelta / 60.0);
-#if QT_VERSION >= 0x050f00
         const QPoint pointer{
             static_cast<int>(Event->position().x()),
             static_cast<int>(Event->position().y())};
-#else
-        const QPoint pointer{
-            Event->pos().x(),
-            Event->pos().y()};
-#endif
         zoomAroundPoint(scaleCoef, pointer);
     }
     // Scroll vertically
@@ -2557,13 +2551,8 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
         return;
     }
 
-#if QT_VERSION >= 0x060000
     auto ev_pos = Event->position();
     QPoint inModel = contentsToModel(ev_pos.toPoint());
-#else
-    auto ev_pos = Event->pos();
-    QPoint inModel = contentsToModel(ev_pos);
-#endif
     //QMouseEvent e(QEvent::MouseButtonPress, ev_pos, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 
     QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
@@ -2641,11 +2630,7 @@ void Schematic::contentsNativeGestureZoomEvent( QNativeGestureEvent* Event) {
   a_App->editText->setHidden(true); // disable edit of component property
 
   const auto factor = 1.0 + Event->value();
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
   const auto pointer = mapFromGlobal(Event->globalPosition().toPoint());
-#else
-  const auto pointer = mapFromGlobal(Event->globalPos());
-#endif
   zoomAroundPoint(factor,pointer);
 }
 
@@ -2658,7 +2643,6 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
             return;
         }
 
-#if QT_VERSION >= 0x060000
         auto ev_pos = Event->position();
         /*QMouseEvent e(QEvent::MouseMove,
                       Event->position(),
@@ -2666,10 +2650,6 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
                       Qt::NoButton,
                       Qt::NoModifier);*/
         QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
-
-#else
-        QMouseEvent e(QEvent::MouseMove, Event->pos(), Qt::NoButton, Qt::NoButton, Qt::NoModifier);
-#endif
         a_App->view->MMoveElement(this, &e);
     }
 

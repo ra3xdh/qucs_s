@@ -34,10 +34,6 @@ diagramdialog.h
 markerdialog.h
 )
 
-IF(QT_VERSION_MAJOR EQUAL 6)
-    qt6_wrap_cpp( DIAGRAMS_MOC_SRCS ${DIAGRAMS_MOC_HDRS} )
-else()
-    qt5_wrap_cpp( DIAGRAMS_MOC_SRCS ${DIAGRAMS_MOC_HDRS} )
-endif()
+qt6_wrap_cpp( DIAGRAMS_MOC_SRCS ${DIAGRAMS_MOC_HDRS} )
 
 ADD_LIBRARY(diagrams STATIC ${DIAGRAMS_HDRS} ${DIAGRAMS_SRCS} ${DIAGRAMS_MOC_SRCS})

@@ -32,16 +32,11 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-if(WITH_QT6)
-    set(QT_VERSION_MAJOR 6)
-else()
-    set(QT_VERSION_MAJOR 5)
-endif()
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets Charts)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Charts)
 include_directories(
-      ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Gui_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
+      ${Qt6Core_INCLUDE_DIRS}
+      ${Qt6Gui_INCLUDE_DIRS}
+      ${Qt6Widgets_INCLUDE_DIRS}
       )
 
 
@@ -85,13 +80,8 @@ SET( spar_viewer_moc_headers qucs-s-spar-viewer.h codeeditor.h)
 
 SET(RESOURCES qucs-s-spar-viewer.qrc)
 
-if(QT_VERSION_MAJOR EQUAL 6)
 QT6_WRAP_CPP( spar_viewer_moc_sources ${spar_viewer_moc_headers} )
 QT6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-else()
-QT5_WRAP_CPP( spar_viewer_moc_sources ${spar_viewer_moc_headers} )
-QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-endif()
 
 IF(APPLE)
   # set information on Info.plist file
@@ -118,7 +108,7 @@ ADD_EXECUTABLE( ${QUCS_NAME}spar-viewer MACOSX_BUNDLE WIN32
   codeeditor.cpp
   codeeditor.h )
 
-TARGET_LINK_LIBRARIES( ${QUCS_NAME}spar-viewer Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts )
+TARGET_LINK_LIBRARIES( ${QUCS_NAME}spar-viewer Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts )
 SET_TARGET_PROPERTIES(${QUCS_NAME}spar-viewer PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #INSTALL (TARGETS ${QUCS_NAME}spar-viewer DESTINATION bin)
 #

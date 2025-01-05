@@ -109,7 +109,7 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
     }
     /* input impedances */
 
-    QStringList tmp_lst = next_line.split(" ",qucs::SkipEmptyParts);
+    QStringList tmp_lst = next_line.split(" ", Qt::SkipEmptyParts);
     z[0] = tmp_lst.at(tmp_lst.count()-1).toDouble();
     for (int i = 0; i < ports; i++ ) {
         if ( a_z0 < 0 ) {  /* takes the Z value from the input file */
@@ -140,10 +140,10 @@ bool S2Spice::convertTouchstone(QTextStream *stream)
             break;
         }
         if(next_line.at(0)=='!') continue;
-        tmp_lst = next_line.split(QRegularExpression("[ \\t]"), qucs::SkipEmptyParts);
+        tmp_lst = next_line.split(QRegularExpression("[ \\t]"), Qt::SkipEmptyParts);
         if (tmp_lst.count() < 2*(ports*ports)+1) {
             while (in_stream.readLineInto(&next_line)) { // line continuation
-                auto new_items = next_line.split(QRegularExpression("[ \\t]"), qucs::SkipEmptyParts);
+                auto new_items = next_line.split(QRegularExpression("[ \\t]"), Qt::SkipEmptyParts);
                 tmp_lst.append(new_items);
                 if (tmp_lst.count() >= 2*(ports*ports)+1 ) break;
             }

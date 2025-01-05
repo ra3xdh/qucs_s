@@ -437,7 +437,7 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double
                 continue;
             }
             if (lin.startsWith("Index")) { // CSV heading
-                    QStringList vars1 = lin.split(" ",qucs::SkipEmptyParts);
+                    QStringList vars1 = lin.split(" ",Qt::SkipEmptyParts);
                     vars1.removeFirst();
                     vars1.removeFirst();
                     QStringList norm_vars;
@@ -450,7 +450,7 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double
                     var_list.append(norm_vars);
             }
             if ((lin.contains(QRegularExpression("\\d*\\.\\d+[+-]*[eE]*[\\d]*")))) { // CSV dataline
-                QStringList vals = lin.split(" ",qucs::SkipEmptyParts);
+                QStringList vals = lin.split(" ",Qt::SkipEmptyParts);
                 QList <double> sim_point;
                 sim_point.clear();
                 for (int i=1;i<vals.count();i++) {
@@ -495,7 +495,7 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
             QString lin = ngsp_data.readLine();
             if (lin.isEmpty()) continue;
             if (lin.contains("Fourier analysis for")) {
-                QStringList tokens = lin.split(sep,qucs::SkipEmptyParts);
+                QStringList tokens = lin.split(sep,Qt::SkipEmptyParts);
                 QString var; // TODO chech
                 for (const QString& var1 : tokens) {
                     if (var1.contains('(')&&var1.contains(')')) {
@@ -717,8 +717,8 @@ void AbstractSpiceKernel::parseDC_OPoutputXY(QString xyce_file)
         QTextStream ngsp_data(&ofile);
         QStringList lines = ngsp_data.readAll().split("\n");
         if (lines.count()>=2) {
-            QStringList nods = lines.at(0).split(QRegularExpression("\\s"),qucs::SkipEmptyParts);
-            QStringList vals = lines.at(1).split(QRegularExpression("\\s"),qucs::SkipEmptyParts);
+            QStringList nods = lines.at(0).split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
+            QStringList vals = lines.at(1).split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
             QStringList::iterator n,v;
             for(n = nods.begin(),v = vals.begin();n!=nods.end()||v!=vals.end();n++,v++) {
                 if ((*n).startsWith("I(")) {
@@ -918,7 +918,7 @@ bool AbstractSpiceKernel::extractASCIISamples(QString &lin, QTextStream &ngsp_da
     sim_point.append(indep_val);
     for (int i=0;i<NumVars;i++) {
         if (isComplex) {
-            QStringList lst = ngsp_data.readLine().split(sep,qucs::SkipEmptyParts);
+            QStringList lst = ngsp_data.readLine().split(sep, Qt::SkipEmptyParts);
             if (lst.count()==2) {
                 double re_dep_val = lst.at(0).toDouble();  // for complex sim results
                 double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
@@ -969,7 +969,7 @@ void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<doubl
         }
         if (lin.startsWith("End of ")) continue;
         if (lin.startsWith("Index ",Qt::CaseInsensitive)) {
-            var_list = lin.split(" ",qucs::SkipEmptyParts);
+            var_list = lin.split(" ", Qt::SkipEmptyParts);
             var_list.removeFirst(); // Drop Index
             for(int i = 0; i < var_list.count()-1; i++) {
                 QString var_re = var_list.at(i);
@@ -986,7 +986,7 @@ void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<doubl
             }
             continue;
         } else {
-            QStringList val_lst = lin.split(" ",qucs::SkipEmptyParts);
+            QStringList val_lst = lin.split(" ", Qt::SkipEmptyParts);
             QList<double> sim_point;
             for (int i = 1; i <= var_list.count(); i++ ) {
                 if (isComplex && i != 1) {
@@ -1074,10 +1074,10 @@ void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringLis
         while (!swp_data.atEnd()) {
             QString lin = swp_data.readLine();
             if (var_pattern.match(lin).hasMatch()) {
-                var = lin.split(sep,qucs::SkipEmptyParts).last();
+                var = lin.split(sep, Qt::SkipEmptyParts).last();
             }
             if (point_pattern.match(lin).hasMatch()) {
-                values.append(lin.split(sep,qucs::SkipEmptyParts).last());
+                values.append(lin.split(sep, Qt::SkipEmptyParts).last());
             }
         }
         ofile.close();

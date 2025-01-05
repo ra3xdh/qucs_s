@@ -33,30 +33,15 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-if(WITH_QT6)
-    set(QT_VERSION_MAJOR 6)
-else()
-    set(QT_VERSION_MAJOR 5)
-endif()
-
-if(QT_VERSION_MAJOR EQUAL 6)
-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core  Widgets Svg SvgWidgets)
+    find_package(Qt6 REQUIRED COMPONENTS Core  Widgets Svg SvgWidgets)
     include_directories(
-        ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
-        ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
-        ${Qt${QT_VERSION_MAJOR}Svg_INCLUDE_DIRS}
-        ${Qt${QT_VERSION_MAJOR}SvgWidgets_INCLUDE_DIRS}
+        ${Qt6Core_INCLUDE_DIRS}
+        ${Qt6Widgets_INCLUDE_DIRS}
+        ${Qt6Svg_INCLUDE_DIRS}
+        ${Qt6SvgWidgets_INCLUDE_DIRS}
         )
-else()
-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core  Widgets Svg)
-    include_directories(
-        ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
-        ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
-        ${Qt${QT_VERSION_MAJOR}Svg_INCLUDE_DIRS}
-        )
-endif()
 
-set(QT_VERSION ${Qt${QT_VERSION_MAJOR}Core_VERSION})
+set(QT_VERSION ${Qt6Core_VERSION})
 
 if (${QT_VERSION} VERSION_LESS "6.7.0")
     set(CMAKE_CXX_STANDARD 17)
@@ -104,13 +89,9 @@ SET(QUCS-POWCOMB_MOC_HDRS
 )
 
 SET(RESOURCES qucspowercombining.qrc)
-IF(QT_VERSION_MAJOR EQUAL 6)
+
 QT6_WRAP_CPP(QUCS-POWCOMB_MOC_SRCS ${QUCS-POWCOMB_MOC_HDRS})
 QT6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-ELSE()
-QT5_WRAP_CPP(QUCS-POWCOMB_MOC_SRCS ${QUCS-POWCOMB_MOC_HDRS})
-QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-ENDIF()
 
 IF(APPLE)
   # set information on Info.plist file
@@ -136,13 +117,8 @@ ADD_EXECUTABLE(${QUCS_NAME}powercombining MACOSX_BUNDLE WIN32
   ${QUCS-POWCOMB_MOC_SRCS}
   ${RESOURCES_SRCS} )
 
-if(QT_VERSION_MAJOR EQUAL 6)
-    TARGET_LINK_LIBRARIES(${QUCS_NAME}powercombining Qt${QT_VERSION_MAJOR}::Core
-        Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::SvgWidgets)
-else()
-    TARGET_LINK_LIBRARIES(${QUCS_NAME}powercombining Qt${QT_VERSION_MAJOR}::Core
-        Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg )
-endif()
+    TARGET_LINK_LIBRARIES(${QUCS_NAME}powercombining Qt6::Core
+        Qt6::Widgets Qt6::Svg Qt6::SvgWidgets)
 
 SET_TARGET_PROPERTIES(${QUCS_NAME}powercombining PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 

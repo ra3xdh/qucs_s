@@ -26,16 +26,6 @@
 
 #define Q_UINT32 uint32_t
 
-
-namespace qucs {
-#if QT_VERSION >= 0x050e00
-  const auto SkipEmptyParts = Qt::SkipEmptyParts;
-#else
-  const auto SkipEmptyParts = QString::SkipEmptyParts;
-#endif
-}
-
-
 class Schematic;
 
 namespace misc {
