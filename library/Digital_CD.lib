@@ -1193,3 +1193,81 @@ X1 _net7 _net8 _net9 _net10 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net11 _ne
     <Text -28 10 12 #000080 0 "STB">
   </Symbol>
 </Component>
+
+<Component CD4066>
+  <Description>
+CD4066
+CMOS Quad Bilateral Switch
+Component Level Model
+  </Description>
+  <Model>
+.Def:Digital_CD_CD4066 _net0 _net1 _net2 _net3 _net4
+Sub:X1 _net0 _net1 _net2 _net3 _net4 gnd Type="CD4066_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4066.cir.lst">
+  <Spice>
+* CD4066 Analog Switch
+* Helmut Sennewald @LTspice
+* Transistor models by kcin_melnick
+*
+*               C I  O Vd Vs
+.SUBCKT CD4066B 2 11 4 10 7
+X1 2 6 10 7 INVERT
+X2 6 1 10 7 INVERT
+M1 14 6 7 7 CD4007N
+M7 11 6 14 10 CD4007P
+M3 11 1 14 14 CD4007N
+M4 11 1 4 14 CD4007N
+M8 11 6 4 10 CD4007P
+*
+.SUBCKT INVERT 1 2 3 4
+* Inverter In Out Vcc Vss
+M1 2 1 3 3 CD4007P
+M2 2 1 4 4 CD4007N
+.ENDS INVERT
+*
+.ENDS CD4066B
+*
+***+ LEVEL=1 VTO=1.44 KP=320u L=10u W=30u GAMMA=0 PHI=.6 LAMBDA=10m
+ .MODEL CD4007N NMOS ( LEVEL=1 VTO=1.44 KP=320u L=10u W=30u GAMMA=0 PHI=.6 LAMBDA=10m
++ RD=23.2 RS=90.1 IS=16.64p CBD=2.0p CBS=2.0p CGSO=0.1p CGDO=0.1p PB=.8 TOX=1200n)
+* 
+.MODEL CD4007P PMOS (
++ LEVEL=1 VTO=-1.2 KP=110u L=10U W=60U GAMMA=0 PHI=.6 LAMBDA=40m
++ RD=21.2 RS=62.2 IS=16.64P CBD=4.0P CBS=4.0P CGSO=0.2P CGDO=0.2P PB=.8 TOX=1200N)
+*
+
+.SUBCKT Digital_CD_CD4066  gnd _net0 _net1 _net2 _net3 _net4 
+X1 _net0 _net1 _net2 _net3 _net4 CD4066B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 20 0 -40 #000080 2 1>
+    <Line 30 0 10 0 #000080 2 1>
+    <Line 30 20 0 -40 #000080 2 1>
+    <Line -30 20 60 0 #000080 2 1>
+    <Line -30 -20 60 0 #000080 2 1>
+    <Text 34 -18 10 #000000 0 "OI">
+    <Text -47 -18 10 #000000 0 "IO">
+    <Line -40 0 10 0 #000080 2 1>
+    <Line -30 0 15 0 #000080 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -15 0 25 -10 #000080 2 1>
+    <Line 0 10 -20 0 #000080 2 3>
+    <Line 0 0 0 10 #000080 2 3>
+    <.PortSym -40 0 2 0 IO>
+    <.PortSym 40 0 3 180 OI>
+    <Line -20 30 0 -10 #000080 2 1>
+    <Text -33 21 10 #000000 0 "C">
+    <Line -20 20 0 -10 #000080 2 3>
+    <.PortSym -20 30 1 0 C>
+    <Line 20 30 0 -10 #000080 2 1>
+    <Line 20 -20 0 -10 #000080 2 1>
+    <Text -8 -38 10 #000000 0 "VDD">
+    <.PortSym 20 -30 4 0 VDD>
+    <Text -7 21 10 #000000 0 "VSS">
+    <.ID 40 14 Y>
+    <.PortSym 20 30 5 0 VSS>
+  </Symbol>
+</Component>
