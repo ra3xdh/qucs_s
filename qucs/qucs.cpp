@@ -280,13 +280,13 @@ void QucsApp::readXML(QFile & library_file) {
 
   while (!xmlReader.atEnd() && !xmlReader.hasError()) {
     if (xmlReader.readNextStartElement()) {
-      if (xmlReader.name() == "Library") {
+      if (xmlReader.name() == QString("Library")) {
         QString libraryName = xmlReader.attributes().value("name").toString();
         //qDebug() << "Library:" << libraryName;
         LibraryName = libraryName;
 
         while (xmlReader.readNextStartElement()) {
-          if (xmlReader.name() == "Component") {
+          if (xmlReader.name() == QString("Component")) {
             QString componentName = xmlReader.attributes().value("name").toString();
             //qDebug() << "  Component:" << componentName;
             ComponentName = componentName;
@@ -304,18 +304,18 @@ void QucsApp::readXML(QFile & library_file) {
             Component[ComponentName].ShowNameinSchematic = ShowNameinSchematic;
 
             while (xmlReader.readNextStartElement()) {
-              if (xmlReader.name() == "Description") {
+              if (xmlReader.name() == QString("Description")) {
                 QString Description = xmlReader.readElementText().trimmed();
                 //qDebug() << "    Description:" << Description;
                 Component[ComponentName].description = Description;
-              } else if (xmlReader.name() == "Models") {
+              } else if (xmlReader.name() == QString("Models")) {
                 while (xmlReader.readNextStartElement()) {
-                  if (xmlReader.name() == "DefaultModel") {
+                  if (xmlReader.name() == QString("DefaultModel")) {
                     QString defaultModel = xmlReader.attributes().value("value").toString();
                     Component[ComponentName].Models["Default"] = defaultModel;
                     //qDebug() << "    Default Model:" << defaultModel;
                     xmlReader.skipCurrentElement();
-                  } else if (xmlReader.name() == "SpiceModel") {
+                  } else if (xmlReader.name() == QString("SpiceModel")) {
                     QString spiceModel = xmlReader.attributes().value("value").toString();
                     Component[ComponentName].Models["SPICE"] = spiceModel;
                     //qDebug() << "    Spice Model:" << spiceModel;
@@ -324,9 +324,9 @@ void QucsApp::readXML(QFile & library_file) {
                     xmlReader.skipCurrentElement();
                   }
                 }
-              } else if (xmlReader.name() == "Symbols") {
+              } else if (xmlReader.name() == QString("Symbols")) {
                 while (xmlReader.readNextStartElement()) {
-                  if (xmlReader.name() == "Symbol") {
+                  if (xmlReader.name() == QString("Symbol")) {
                     QString symbolName = xmlReader.attributes().value("id").toString();
                     QString symbolType = xmlReader.attributes().value("type").toString();
 
@@ -341,7 +341,7 @@ void QucsApp::readXML(QFile & library_file) {
                       Component[ComponentName].SymbolBoundingBox[symbolName] = boundingBox;
                     } else if (symbolType == "external") {
                       xmlReader.readNextStartElement();
-                      if (xmlReader.name() == "File") {
+                      if (xmlReader.name() == QString("File")) {
                         QString RelativePathSymbol = xmlReader.readElementText().trimmed();
                         QString filePath = QFileInfo(library_file).absolutePath() + QString("/") + QDir::cleanPath(RelativePathSymbol);
 
@@ -370,9 +370,9 @@ void QucsApp::readXML(QFile & library_file) {
                     xmlReader.skipCurrentElement();
                   }
                 }
-              } else if (xmlReader.name() == "Parameters") {
+              } else if (xmlReader.name() == QString("Parameters")) {
                 while (xmlReader.readNextStartElement()) {
-                  if (xmlReader.name() == "Parameter") {
+                  if (xmlReader.name() == QString("Parameter")) {
                     QString Name = xmlReader.attributes().value("name").toString();
                     QString Unit = xmlReader.attributes().value("unit").toString();
                     QString DefaultValue = xmlReader.attributes().value("default_value").toString();
@@ -383,7 +383,7 @@ void QucsApp::readXML(QFile & library_file) {
                            // Read parameter description
                     QString Description;
                     xmlReader.readNextStartElement();
-                    if (xmlReader.name() == "Description") {
+                    if (xmlReader.name() == QString("Description")) {
                       Description = xmlReader.readElementText().trimmed();
                     }
 
@@ -427,7 +427,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
   int minX = 1e3, maxX = -1e3, minY = 1e3, maxY = -1e3;
 
   while (xmlReader.readNextStartElement()) {
-    if (xmlReader.name() == "PortSym") {
+    if (xmlReader.name() == QString("PortSym")) {
       PortInfo Port;
       Port.x = xmlReader.attributes().value("x").toInt();
       Port.y = xmlReader.attributes().value("y").toInt();
@@ -437,7 +437,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
       // Update bounding box
       updateBoundingBox(minX, maxX, minY, maxY, Port.x, Port.y);
 
-    } else if (xmlReader.name() == "Line") {
+    } else if (xmlReader.name() == QString("Line")) {
       LineInfo Line;
       Line.x1 = xmlReader.attributes().value("x1").toInt();
       Line.y1 = xmlReader.attributes().value("y1").toInt();
@@ -462,7 +462,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
                         if (Line.y2 < minY) minY = Line.y2;
                         if (Line.y2 > maxY) maxY = Line.y2;
 
-    } else if (xmlReader.name() == "Arc") {
+    } else if (xmlReader.name() == QString("Arc")) {
       ArcInfo Arc;
       Arc.x = xmlReader.attributes().value("x").toInt();
       Arc.y = xmlReader.attributes().value("y").toInt();
@@ -486,7 +486,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
                         if (Arc.y - Arc.height/2 < minY) minY = Arc.y - Arc.height/2;
                         if (Arc.y + Arc.height/2 > maxY) maxY = Arc.y + Arc.height/2;
 
-    } else if (xmlReader.name() == "Polyline") {
+    } else if (xmlReader.name() == QString("Polyline")) {
       PolylineInfo Polyline;
 
              // Read pen attributes
@@ -509,7 +509,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
 
              // Read points
       while (xmlReader.readNextStartElement()) {
-        if (xmlReader.name() == "point") {
+        if (xmlReader.name() == QString("point")) {
           double x = xmlReader.attributes().value("x").toDouble();
           double y = xmlReader.attributes().value("y").toDouble();
           Polyline.Points.append(QPointF(x, y));
@@ -524,7 +524,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
       }
       SymbolData.Polylines.append(Polyline);
 
-    } else if (xmlReader.name() == "Ellipse") {
+    } else if (xmlReader.name() == QString("Ellipse")) {
       EllipseInfo Ellips;
 
              // Read ellipse attributes
@@ -555,7 +555,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
       if (Ellips.y < minY) minY = Ellips.y;
       if (Ellips.y > maxY) maxY = Ellips.y;
 
-    } else if (xmlReader.name() == "Rect") {
+    } else if (xmlReader.name() == QString("Rect")) {
       RectInfo Rect;
 
              // Read rectangle attributes
@@ -587,7 +587,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
                         if (Rect.y + Rect.height/2 > maxY) maxY = Rect.y + Rect.height/2;
 
 
-    } else if (xmlReader.name() == "Text") {
+    } else if (xmlReader.name() == QString("Text")) {
       TextInfo Text;
 
              // Read text attributes
