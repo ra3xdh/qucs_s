@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import warnings
 from parse_result import QucsDataset
 
-warnings.simplefilter("ignore", np.ComplexWarning)
+warnings.simplefilter("ignore", np.exceptions.ComplexWarning)
 
 
 # create the dat file to load with:
