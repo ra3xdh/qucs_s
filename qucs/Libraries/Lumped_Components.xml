@@ -1,5 +1,5 @@
 <Library name="Lumped Components">
-    <Component name="Capacitor" schematic_id = "C">
+    <Component name="Capacitor" schematic_id = "C" show_name="true">
         <Description>
             Ideal Capacitor
         </Description>
@@ -28,7 +28,7 @@
             </Parameter>
         </Parameters>
     </Component>
-    <Component name="Resistor" schematic_id = "R">
+    <Component name="Resistor" schematic_id = "R" show_name="true">
         <Description>
             Ideal Resistor
         </Description>
@@ -51,12 +51,12 @@
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="R" unit="Ohm" default_value="1000" show="1">
+            <Parameter name="R" unit="Ohm" default_value="1000">
                 <Description>Resistance</Description>
             </Parameter>
         </Parameters>
     </Component>
-    <Component name="Inductor" schematic_id = "L">
+    <Component name="Inductor" schematic_id = "L" show_name="true">
         <Description>
             Ideal Inductor
         </Description>
@@ -76,5 +76,25 @@
                 <Description>Inductance</Description>
             </Parameter>
         </Parameters>
+    </Component>
+    <Component name="Ground" schematic_id = "GND" show_name="true">
+        <Description>
+            Ground
+        </Description>
+        <Models>
+                <DefaultModel value = "GND">
+                </DefaultModel>
+                <SpiceModel value = "GND">
+                </SpiceModel>
+        </Models>
+        <Symbols>
+            <Symbol id="Standard" type="explicit">
+                <PortSym x="0" y="0" type="1" angle="0" />
+                <Line x1="0" y1="0" x2="0" y2="10" color="#000080" width="2" style="1" />
+                <Line x1="-11" y1="10" x2="11" y2="10" color="#000080" width="3" style="1" />
+                <Line x1="-7" y1="16" x2="7" y2="16" color="#000080" width="3" style="1" />
+                <Line x1="-3" y1="22" x2="3" y2="22" color="#000080" width="3" style="1" />
+           </Symbol>
+        </Symbols>
     </Component>
 </Library>

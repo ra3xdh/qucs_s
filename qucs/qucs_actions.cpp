@@ -481,7 +481,8 @@ void QucsApp::slotInsertGround(bool on)
   if(view->selElem)
     delete view->selElem;  // delete previously selected component
 
-  view->selElem = new Ground();
+  ComponentInfo CI = LibraryComponents["Lumped Components"]["Ground"];
+  view->selElem = new Component(CI);
 
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;

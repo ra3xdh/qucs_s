@@ -296,6 +296,10 @@ void QucsApp::readXML(QFile & library_file) {
             QString Schematic_ID = xmlReader.attributes().value("schematic_id").toString();
             Component[ComponentName].Schematic_ID = Schematic_ID;
 
+            QString ShowName = xmlReader.attributes().value("show_name").toString();
+            bool ShowNameinSchematic = (ShowName.toInt() != 0); // Convert ShowName parameter to bool
+            Component[ComponentName].ShowNameinSchematic = ShowNameinSchematic;
+
             while (xmlReader.readNextStartElement()) {
               if (xmlReader.name() == "Description") {
                 QString Description = xmlReader.readElementText().trimmed();

@@ -176,6 +176,7 @@ struct ComponentInfo {
   QString Schematic_ID; // This is the name that the schematic shows once the component is placed
   QString description;
   QString Category;
+  bool ShowNameinSchematic;
   QMap<QString, SymbolDescription> symbol;// Actually, there could be more than one
   QMap<QString, QVector<int>> SymbolBoundingBox;
   QMap<QString, ParameterInfo> parameters;

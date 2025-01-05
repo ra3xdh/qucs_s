@@ -737,6 +737,11 @@ void Component::mirrorY() {
 
 // -------------------------------------------------------
 QString Component::netlist() {
+
+  if (Props.isEmpty()) { // This was included to prevent GND component to be included as a component in the netlist.
+    return QString();
+  }
+
     QString s = Model + ":" + Name;
 
     // output all node names
@@ -1880,6 +1885,7 @@ void Component::loadfromComponentInfo(ComponentInfo C)
   Schematic_ID = C.Schematic_ID;
   Description = C.description;
   Category = C.Category;
+  showName = C.ShowNameinSchematic;
 
   // Iterate over all the parameters defined in the "ComponentInfo" object and add them to the "Component" list of properties
   for (auto it = C.parameters.constBegin(); it != C.parameters.constEnd(); ++it) {
