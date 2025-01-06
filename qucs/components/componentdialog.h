@@ -83,6 +83,9 @@ private:
   QHash<QPair<QString, QString>, QString> sweepTypeSpecialLabels;
   QHash<QString, QStringList> sweepTypeEnabledParams;
   QHash<QString, QStringList> paramsHiddenBySim;
+
+  // TODO: Hack; This list holds the devices with valid "Symbol" property
+  QStringList excludeList;
   
   // TODO: It would be better for simulations with sweeps to have a flag saying so.
   bool isEquation;
