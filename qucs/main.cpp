@@ -129,7 +129,6 @@ bool loadSettings()
     if (QucsSettings.S4Qworkdir == "")
       QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QucsSettings.QucsWorkDir.absolutePath()+"/spice4qucs");
 
-    QucsSettings.SimParameters = _settings::Get().item<QString>("SimParameters");
     QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveExecutable");
     QucsSettings.OpenVAFExecutable = _settings::Get().item<QString>("OpenVAFExecutable");
 
@@ -209,7 +208,6 @@ bool saveApplSettings()
     qs.setItem<QString>("Qucsator",QucsSettings.Qucsator);
     qs.setItem<int>("Nprocs",QucsSettings.NProcs);
     qs.setItem<QString>("S4Q_workdir",QucsSettings.S4Qworkdir);
-    qs.setItem<QString>("SimParameters",QucsSettings.SimParameters);
     qs.setItem<QString>("OctaveExecutable",QucsSettings.OctaveExecutable);
     qs.setItem<QString>("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
     qs.setItem<QString>("QucsHomeDir", QucsSettings.qucsWorkspaceDir.canonicalPath());
