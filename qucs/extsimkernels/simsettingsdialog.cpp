@@ -33,7 +33,9 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     //a_lblNprocs(new QLabel(tr("Number of processors in a system:"))),
     a_lblQucsator(new QLabel(tr("Qucsator executable location"))),
     //a_lblSimulator(new QLabel(tr("Default simulator"))),
-    a_lblSimParam(new QLabel(tr("Extra simulator parameters"))),
+    a_lblNgspiceSimParam(new QLabel(tr("Ngspice CLI parameters"))),
+    a_lblXyceSimParam(new QLabel(tr("Xyce CLI parameters"))),
+    a_lblSpopusSimParam(new QLabel(tr("SpiceOpus CLI parameters"))),
     a_lblCompatMode(new QLabel(tr("Ngspice compatibility mode"))),
     a_cbxCompatMode(new QComboBox),
     //a_cbxSimulator(new QComboBox(this)),
@@ -43,7 +45,9 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     //a_edtXycePar(new QLineEdit(QucsSettings.XyceParExecutable),
     a_edtQucsator(new QLineEdit(QucsSettings.Qucsator)),
     //a_spbNprocs(new QSpinBox(this)),
-    a_edtSimParam(new QLineEdit(QucsSettings.SimParameters)),
+    a_edtNgspiceSimParam(new QLineEdit()),
+    a_edtXyceSimParam(new QLineEdit()),
+    a_edtSpopusSimParam(new QLineEdit()),
     a_btnOK(new QPushButton(tr("Apply changes"))),
     a_btnCancel(new QPushButton(tr("Cancel"))),
     a_btnSetNgspice(new QPushButton(tr("Select ..."))),
@@ -68,6 +72,11 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
 //    a_spbNprocs->setMaximum(256);
 //    a_spbNprocs->setValue(1);
 //    a_spbNprocs->setValue(QucsSettings.NProcs);
+
+    a_edtNgspiceSimParam->setText(_settings::Get().item<QString>("NgspiceParams"));
+    a_edtXyceSimParam->setText(_settings::Get().item<QString>("XyceParams"));
+    a_edtSpopusSimParam->setText(_settings::Get().item<QString>("SpopusParams"));
+
 
     connect(a_btnOK,SIGNAL(clicked()),this,SLOT(slotApply()));
     connect(a_btnCancel,SIGNAL(clicked()),this,SLOT(reject()));
@@ -104,12 +113,16 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h4->addWidget(a_lblCompatMode);
     h4->addWidget(a_cbxCompatMode);
     top2->addLayout(h4);
+    top2->addWidget(a_lblNgspiceSimParam);
+    top2->addWidget(a_edtNgspiceSimParam);
 
     top2->addWidget(a_lblXyce);
     QHBoxLayout *h2 = new QHBoxLayout;
     h2->addWidget(a_edtXyce,3);
     h2->addWidget(a_btnSetXyce,1);
     top2->addLayout(h2);
+    top2->addWidget(a_lblXyceSimParam);
+    top2->addWidget(a_edtXyceSimParam);
 
 //    top2->addWidget(a_lblXycePar);
 //    QHBoxLayout *h4 = new QHBoxLayout;
@@ -127,12 +140,8 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h7->addWidget(a_edtSpiceOpus,3);
     h7->addWidget(a_btnSetSpOpus,1);
     top2->addLayout(h7);
-
-
-    top2->addWidget(a_lblSimParam);
-    QHBoxLayout *h10 = new QHBoxLayout;
-    h10->addWidget(a_edtSimParam,4);
-    top2->addLayout(h10);
+    top2->addWidget(a_lblSpopusSimParam);
+    top2->addWidget(a_edtSpopusSimParam);
 
     gbp1->setLayout(top2);
     top->addWidget(gbp1);
@@ -178,7 +187,7 @@ void SimSettingsDialog::slotApply()
     QucsSettings.SpiceOpusExecutable = a_edtSpiceOpus->text();
     QucsSettings.Qucsator = a_edtQucsator->text();
     //QucsSettings.NProcs = a_spbNprocs->value();
-    QucsSettings.SimParameters = a_edtSimParam->text();
+    QucsSettings.SimParameters = a_edtNgspiceSimParam->text();
 //    if ((QucsSettings.DefaultSimulator != a_cbxSimulator->currentIndex())&&
 //        (QucsSettings.DefaultSimulator != spicecompat::simNotSpecified)) {
 //        QMessageBox::warning(this,tr("Simulator settings"),tr("Default simulator engine was changed!\n"
@@ -187,6 +196,9 @@ void SimSettingsDialog::slotApply()
 //    QucsSettings.DefaultSimulator = a_cbxSimulator->currentIndex();
     settingsManager& qs = _settings::Get();
     qs.setItem<int>("NgspiceCompatMode", a_cbxCompatMode->currentIndex());
+    qs.setItem<QString>("NgspiceParams", a_edtNgspiceSimParam->text());
+    qs.setItem<QString>("XyceParams", a_edtXyceSimParam->text());
+    qs.setItem<QString>("SpopusParams", a_edtSpopusSimParam->text());
     accept();
     saveApplSettings();
   }

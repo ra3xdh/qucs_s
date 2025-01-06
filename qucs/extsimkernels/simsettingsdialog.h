@@ -34,7 +34,9 @@ private:
     //QLabel *a_lblNprocs;
     QLabel *a_lblQucsator;
     //QLabel *a_lblSimulator;
-    QLabel *a_lblSimParam;
+    QLabel *a_lblNgspiceSimParam;
+    QLabel *a_lblXyceSimParam;
+    QLabel *a_lblSpopusSimParam;
     QLabel *a_lblCompatMode;
 
     QComboBox *a_cbxCompatMode;
@@ -46,7 +48,9 @@ private:
     //QLineEdit *a_edtXycePar;
     QLineEdit *a_edtQucsator;
     //QSpinBox  *a_spbNprocs;
-    QLineEdit *a_edtSimParam;
+    QLineEdit *a_edtNgspiceSimParam;
+    QLineEdit *a_edtXyceSimParam;
+    QLineEdit *a_edtSpopusSimParam;
 
     QPushButton *a_btnOK;
     QPushButton *a_btnCancel;
