@@ -340,7 +340,9 @@ void AbstractSpiceKernel::slotSimulate()
  *        and independent variables. An independent variable is the first in list.
  * \param isComplex Type of variables. True if complex. False if real.
  */
-void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points,QStringList &var_list, bool &isComplex)
+void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file, QList< QList<double> > &sim_points,
+                                                QStringList &var_list, bool &isComplex,
+                                                QStringList &digital_vars, QList<int> &dig_vars_dims)
 {
     isComplex = false;
     bool isBinary = false;
@@ -384,6 +386,11 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
                 lin = ngsp_data.readLine();
                 QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
                 var_list.append(dep_var);
+                if (lin.contains("dims=")) {
+                  digital_vars.append(dep_var); // XSPICE digital node
+                  QString tail = lin.section("dims=",1,1,QString::SectionSkipEmpty);
+                  dig_vars_dims.append(tail.toInt());
+                }
             }
             continue;
         }
@@ -1163,12 +1170,13 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 
     for (const QString& ngspice_output_filename : a_output_files) { // For every simulation convert results to Qucs dataset
         QList< QList<double> > sim_points;
-        QStringList var_list;
+        QStringList var_list, digital_vars;
         QString swp_var,swp_var2;
         QStringList swp_var_val,swp_var2_val;
         bool isComplex = false;
         bool hasParSweep = false;
         bool hasDblParSweep = false;
+        QList<int> dig_vars_dims;
 
         QString dataset_prefix;
         bool isCustomPrefix = false;
@@ -1252,7 +1260,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
                 break;
             case spiceRaw:
-                parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);
+                parseNgSpiceSimOutput(full_outfile, sim_points, var_list, isComplex, digital_vars, dig_vars_dims);
                 break;
             case xyceSTD:
                 parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex,hasSwp);
@@ -1271,6 +1279,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         }
         if (var_list.isEmpty()) continue; // nothing to convert
         normalizeVarsNames(var_list, dataset_prefix, isCustomPrefix);
+        digital_vars.prepend(var_list.first());
+        normalizeVarsNames(digital_vars, dataset_prefix, isCustomPrefix);
 
         QString indep = var_list.first();
         //QList<double> sim_point;
@@ -1313,10 +1323,37 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             ds_stream<<"</indep>\n";
         }
 
+        int dig_var_idx = 0;
         for(int i=1;i<var_list.count();i++) { // output dep var
-            if (indep.isEmpty()) ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var_list.at(i)).arg(sim_points.count());
-            else ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
+            bool is_digital_var = false;
+            bool digital_indep = false;
+            if (indep.isEmpty()) {
+              ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var_list.at(i)).arg(sim_points.count());
+            } else {
+              QString var = var_list.at(i);
+              is_digital_var = digital_vars.contains(var);
+              if (is_digital_var && !var.endsWith("_steps")) { // XSPICE digital node
+                // requires another X-variable; not time
+                QString var2 = var + "_steps";
+                var2.remove("v(");
+                var2.remove("i(");
+                var2.remove(")");
+                if (hasParSweep) {
+                  var2 += " " + swp_var;
+                  if (hasDblParSweep) var += " " + swp_var2;
+                }
+                ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var).arg(var2);
+              } else if (is_digital_var && var.endsWith("_steps") && // indep XSPICE digital var
+                         !var.contains("(") && !var.contains(")")) {
+                digital_indep = true;
+                ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var).arg(dig_vars_dims.at(dig_var_idx));
+              } else {
+                ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
+              }
+            }
+            int count = 0;
             for (auto& sim_point : sim_points) {
+                if (is_digital_var && count > dig_vars_dims.at(dig_var_idx)) break;
                 if (isComplex) {
                     double re=sim_point.at(2*(i-1)+1);
                     double im = sim_point.at(2*i);
@@ -1329,9 +1366,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 } else {
                     ds_stream<<QString::number(sim_point.at(i),'e',12)<<"\n";
                 }
+                count++;
             }
-            if (indep.isEmpty()) ds_stream<<"</indep>\n";
-            else ds_stream<<"</dep>\n";
+            if (indep.isEmpty() || digital_indep) {
+              ds_stream<<"</indep>\n";
+            } else {
+              ds_stream<<"</dep>\n";
+            }
+            if (is_digital_var) dig_var_idx++;
         }
     }
 

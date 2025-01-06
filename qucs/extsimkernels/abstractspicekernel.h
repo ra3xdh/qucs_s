@@ -94,8 +94,9 @@ public:
     virtual void createSubNetlsit(QTextStream& stream, bool lib = false);
 
     void parseNgSpiceSimOutput(QString ngspice_file,
-                          QList< QList<double> > &sim_points,
-                          QStringList &var_list, bool &isComplex);
+                               QList< QList<double> > &sim_points,
+                               QStringList &var_list, bool &isComplex,
+                               QStringList &digital_vars, QList<int> &dig_vars_dims);
     void parseHBOutput(QString ngspice_file, QList< QList<double> > &sim_points,
                        QStringList &var_list, bool &hasParSweep);
     void parseFourierOutput(QString ngspice_file, QList< QList<double> > &sim_points,
