@@ -324,6 +324,10 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   component = schematicComponent;
   document = schematic;
 
+  // TODO: Hack; This list holds the devices with valid "Symbol" property
+  excludeList<<"Diode"<<"MCROSS"<<"MTEE"
+              <<"R"<<"C"<<"Buf"<<"Inv";
+
   // qDebug() << component->Model;
 
   restoreGeometry(_settings::Get().item<QByteArray>("ComponentDialog/geometry"));
@@ -635,8 +639,13 @@ void ComponentDialog::updatePropertyTable(const Component* updateComponent)
         continue;
 
       /* TODO: ***HACK*** to be fixed */
-      if (property->Name == "Symbol" || property->Name == "Values")
+      if (property->Name == "Values")
         continue;
+      if (property->Name == "Symbol") {
+        QString model = updateComponent->Model;
+        // HACK: Symbol property may be valid
+        if (!excludeList.contains(model)) continue;
+      }
 
       propertyTable->setRowCount(propertyTable->rowCount() + 1);
       propertyTable->setItem(row, 0, new QTableWidgetItem(property->Name, LabelCell));
@@ -797,7 +806,8 @@ void ComponentDialog::slotApplyButton()
         continue;
 
       /* TODO: ***HACK*** to be fixed */
-      if (property->Name == "Symbol")
+      if (property->Name == "Symbol" &&
+          !excludeList.contains(component->Model))
         continue;
 
       else 
