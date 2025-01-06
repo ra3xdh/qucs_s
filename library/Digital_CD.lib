@@ -1196,7 +1196,6 @@ X1 _net7 _net8 _net9 _net10 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net11 _ne
 
 <Component CD4066>
   <Description>
-CD4066
 CMOS Quad Bilateral Switch
 Component Level Model
   </Description>
@@ -1211,8 +1210,8 @@ Sub:X1 _net0 _net1 _net2 _net3 _net4 gnd Type="CD4066_cir"
 * Helmut Sennewald @LTspice
 * Transistor models by kcin_melnick
 *
-*               C I  O Vd Vs
-.SUBCKT CD4066B 2 11 4 10 7
+*               C I  O Vdd Vss
+.SUBCKT CD4066B 2 11 4 10  7
 X1 2 6 10 7 INVERT
 X2 6 1 10 7 INVERT
 M1 14 6 7 7 CD4007N
@@ -1222,7 +1221,7 @@ M4 11 1 4 14 CD4007N
 M8 11 6 4 10 CD4007P
 *
 .SUBCKT INVERT 1 2 3 4
-* Inverter In Out Vcc Vss
+* Inverter In Out Vdd Vss
 M1 2 1 3 3 CD4007P
 M2 2 1 4 4 CD4007N
 .ENDS INVERT
@@ -1269,5 +1268,61 @@ X1 _net0 _net1 _net2 _net3 _net4 CD4066B
     <Text -7 21 10 #000000 0 "VSS">
     <.ID 40 14 Y>
     <.PortSym 20 30 5 0 VSS>
+  </Symbol>
+</Component>
+
+<Component CD4069UB>
+  <Description>
+Unbuffered Inverter
+Component Level Model
+  </Description>
+  <Model>
+.Def:Digital_CD_CD4069UB _net0 _net1 _net2 _net3
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="CD4069UB_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4069UB.cir.lst">
+  <Spice>
+* CD4069UB CMOS HEX INVERTER
+.SUBCKT CD4069UB A Y VDD VSS
+* 
+D1 GND A D4069
+D2 A VDD D4069
+Rg A 1 100
+M2 Y 1 VSS VSS CD4069BN
+M3 Y 1 VDD VDD CD4069BP
+*
+.MODEL CD4069BN NMOS (LEVEL=1 VTO=2.1 KP=2.9M GAMMA=3.97U
++ PHI=.75 LAMBDA=1.87M RD=20.2 RS=184.1 IS=31.2F PB=.8 MJ=.46
++ CBD=47.6P CBS=57.2P CGSO=70.2N CGDO=58.5N CGBO=96.3N)
+*
+.MODEL CD4069BP PMOS (LEVEL=1 VTO=-2.9 KP=2M GAMMA=3.97U
++ PHI=.75 LAMBDA=1.87M RD=28.2 RS=145.2 IS=31.2F PB=.8 MJ=.46
++ CBD=47.6P CBS=57.2P CGSO=70.2N CGDO=58.5N CGBO=96.3N)
+*
+.model D4069 D(Is=1e-14 N=1.5 Rs=10 Cjo=2p)
+*
+.ENDS 4069UB
+
+.SUBCKT Digital_CD_CD4069UB  gnd _net0 _net1 _net2 _net3 
+X1 _net0 _net1 _net2 _net3 CD4069UB
+.ENDS
+  </Spice>
+  <Symbol>
+    <Ellipse 25 -4 8 8 #000080 1 1 #000080 1 1>
+    <Line -20 0 10 0 #000080 2 1>
+    <Line -10 20 0 -40 #000080 2 1>
+    <Line 30 0 10 0 #000080 2 1>
+    <Line -10 -20 40 20 #000080 2 1>
+    <Line -10 20 40 -20 #000080 2 1>
+    <Line 10 -10 0 -10 #000080 2 1>
+    <Line 10 20 0 -10 #000080 2 1>
+    <.PortSym -20 0 1 0 A>
+    <.PortSym 40 0 2 180 Y>
+    <Text 15 -20 6 #000000 0 "VDD">
+    <Text 15 10 6 #000000 0 "VSS">
+    <.PortSym 10 20 4 0 VSS>
+    <.PortSym 10 -20 3 0 VDD>
+    <.ID 39 14 Y>
   </Symbol>
 </Component>
