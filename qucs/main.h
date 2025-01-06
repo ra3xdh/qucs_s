@@ -83,7 +83,6 @@ struct tQucsSettings {
   QString XyceParExecutable;
   QString SpiceOpusExecutable;
   QString S4Qworkdir;
-  QString SimParameters;
   unsigned int NProcs; // Number of processors for Xyce
   QString OctaveExecutable; // OctaveExecutable location
   QString QucsOctave; // OUCS_OCTAVE variable

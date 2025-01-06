@@ -187,7 +187,6 @@ void SimSettingsDialog::slotApply()
     QucsSettings.SpiceOpusExecutable = a_edtSpiceOpus->text();
     QucsSettings.Qucsator = a_edtQucsator->text();
     //QucsSettings.NProcs = a_spbNprocs->value();
-    QucsSettings.SimParameters = a_edtNgspiceSimParam->text();
 //    if ((QucsSettings.DefaultSimulator != a_cbxSimulator->currentIndex())&&
 //        (QucsSettings.DefaultSimulator != spicecompat::simNotSpecified)) {
 //        QMessageBox::warning(this,tr("Simulator settings"),tr("Default simulator engine was changed!\n"

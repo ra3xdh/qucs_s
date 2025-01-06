@@ -19,6 +19,7 @@
 # include <config.h>
 #endif
 
+#include "settings.h"
 #include "externsimdialog.h"
 #include "simsettingsdialog.h"
 #include "main.h"
@@ -119,7 +120,7 @@ void ExternSimDialog::slotSetSimulator()
         } else {
             a_ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable); //rely on $PATH
         }
-        a_ngspice->setSimulatorParameters(QucsSettings.SimParameters);
+        a_ngspice->setSimulatorParameters(_settings::Get().item<QString>("NgspiceParams"));
     }
         break;
     case spicecompat::simXyce: {
@@ -127,7 +128,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(a_xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(a_xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(a_xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
-        a_xyce->setSimulatorParameters(QucsSettings.SimParameters);
+        a_xyce->setSimulatorParameters(_settings::Get().item<QString>("XyceParams"));
     }
         break;
 //    case spicecompat::simXycePar: {
@@ -149,7 +150,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(a_ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()),Qt::UniqueConnection);
         connect(a_ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
         a_ngspice->setSimulatorCmd(QucsSettings.SpiceOpusExecutable);
-        a_ngspice->setSimulatorParameters(QucsSettings.SimParameters);
+        a_ngspice->setSimulatorParameters(_settings::Get().item<QString>("NgspiceParams"));
     }
         break;
     default: break;
