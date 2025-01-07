@@ -900,7 +900,7 @@ int main(int argc, char *argv[])
       lang = loc.name();
 //    lang = QTextCodec::locale();
   }
-  tor.load( QStringLiteral("qucs_") + lang, QucsSettings.LangDir);
+  static_cast<void>(tor.load( QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
   QApplication::installTranslator( &tor );
 
   // This seems to be necessary on a few system to make strtod()
