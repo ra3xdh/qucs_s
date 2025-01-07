@@ -30,7 +30,8 @@ public:
   static Element* info_us(QString&, char* &, bool getNewOne=false);
 
 protected:
-  QString spice_netlist(bool isXyce = false);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
   QString va_code();
   void createSymbol();
 };

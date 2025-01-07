@@ -84,30 +84,30 @@ Element* VCCS::info(QString& Name, char* &BitmapFile, bool getNewOne)
 }
 
 QString VCCS::va_code()
-{   
-    
-    QString Gain = vacompat::normalize_value(Props.at(0)->Value); 
-	QString P1 = Ports.at(0)->Connection->Name;
+{
+    QString Gain = vacompat::normalize_value(Props.at(0)->Value);
+    QString P1 = Ports.at(0)->Connection->Name;
     QString P4 = Ports.at(1)->Connection->Name;
     QString P3 = Ports.at(2)->Connection->Name;
     QString P2 = Ports.at(3)->Connection->Name;
     QString s = "";
-    
+
     QString Vpm = vacompat::normalize_voltage(P1,P2);
-    QString Ipm = vacompat::normalize_current(P1,P2,true);  
+    QString Ipm = vacompat::normalize_current(P1,P2,true);
     s += QStringLiteral(" %1  <+  %2 * 1e-9;\n").arg(Ipm).arg(Vpm);
     QString Vpm2 = vacompat::normalize_voltage(P4,P3);
-    QString Ipm2 = vacompat::normalize_current(P4,P3,true); 
+    QString Ipm2 = vacompat::normalize_current(P4,P3,true);
     s += QStringLiteral("%1  <+   %2 * 1e-9;\n").arg(Ipm2).arg(Vpm2);
     s += QStringLiteral("%1  <+   %2 * %3 ;\n").arg(Ipm2).arg(Vpm).arg(Gain);
-    
-    return s;
 
+    return s;
 }
 
-QString VCCS::spice_netlist(bool)
+QString VCCS::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-   QString s = spicecompat::check_refdes(Name,SpiceModel);
+    Q_UNUSED(dialect);
+
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> seq; // nodes sequence
     seq<<1<<2<<0<<3;
     // output all node names

@@ -18,7 +18,8 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef BJT_SPICE_H
+
+#ifndef BJT_SPICE_H
 #define BJT_SPICE_H
 
 #include "components/component.h"
@@ -33,10 +34,12 @@ public:
   static Element* infoPNP4(QString&, char* &, bool getNewOne=false);
   static Element* infoNPN5(QString&, char* &, bool getNewOne=false);
   static Element* infoPNP5(QString&, char* &, bool getNewOne=false);
+
 protected:
   void createSymbol();
   QString netlist();
-  QString spice_netlist(bool isXyce = false);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
 };
 
 #endif // NPN_SPICE_H

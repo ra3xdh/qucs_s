@@ -758,7 +758,11 @@ QString Component::form_spice_param_list(QStringList &ignore_list, QStringList &
     return par_str;
 }
 
-QString Component::spice_netlist(bool) {
+QString Component::spice_netlist(spicecompat::SpiceDialect) {
+    return QStringLiteral("\n"); // ignore if not implemented
+}
+
+QString Component::cdl_netlist() {
     return QStringLiteral("\n"); // ignore if not implemented
 }
 
@@ -787,11 +791,11 @@ QString Component::getNetlist() {
     return s;
 }
 
-QString Component::getSpiceNetlist(bool isXyce) {
+QString Component::getSpiceNetlist(spicecompat::SpiceDialect dialect /* = SPICEDefault */) {
     QString s;
     switch (isActive) {
         case COMP_IS_ACTIVE:
-            s = spice_netlist(isXyce);
+            s = dialect == spicecompat::CDL ? cdl_netlist() : spice_netlist(dialect);
             s.replace(" gnd ", " 0 ");
             return s;
         case COMP_IS_OPEN:
@@ -824,7 +828,7 @@ QString Component::getVerilogACode() {
     }
 }
 
-QString Component::getExpression(bool) {
+QString Component::getExpression(bool, bool) {
     return QString();
 }
 
@@ -1537,8 +1541,11 @@ QString GateComponent::netlist() {
     return s;
 }
 
-QString GateComponent::spice_netlist(bool isXyce) {
-    if (isXyce) return {""};
+QString GateComponent::spice_netlist(spicecompat::SpiceDialect dialect) {
+    if (dialect == spicecompat::SPICEXyce)
+    {
+        return QString();
+    }
 
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;

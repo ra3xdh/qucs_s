@@ -29,9 +29,11 @@ public:
   ~NJF_SPICE();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+
 protected:
   QString netlist();
-  QString spice_netlist(bool isXyce = false);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
 };
 
 #endif // NJF_SPICE_H

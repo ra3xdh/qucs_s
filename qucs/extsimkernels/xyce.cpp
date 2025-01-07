@@ -90,7 +90,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
 
-    startNetlist(stream,true);
+    startNetlist(stream, spicecompat::SPICEXyce);
 
     // set variable names for named nodes and wires
     vars.clear();
@@ -168,7 +168,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) { // Xyce can run
        if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {                        // only one simulations per time.
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
-           QString s = pc->getSpiceNetlist(true);
+           QString s = pc->getSpiceNetlist(spicecompat::SPICEXyce);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
            if ((sim_typ==".NOISE")&&(sim=="noise")) stream<<s;
            if ((sim_typ==".SENS_XYCE")&&(sim=="sens")) stream<<s;
@@ -184,7 +184,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                for(Component *pc1 = comps.first(); pc1 != 0; pc1 = comps.next()) {
                    if (pc1->Model==".FOURIER") {
                        if (pc1->Props.at(0)->Value==pc->Name) {
-                           QString s1 = pc1->getSpiceNetlist(true);
+                           QString s1 = pc1->getSpiceNetlist(spicecompat::SPICEXyce);
                            outputs.append("spice4qucs.tran.cir.four0");
                            stream<<s1;
                        }

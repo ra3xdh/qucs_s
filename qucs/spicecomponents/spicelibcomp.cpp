@@ -218,8 +218,10 @@ int SpiceLibComp::loadSymbol(const QString& DocName)
   return -8;   // field not closed
 }
 
-QString SpiceLibComp::spice_netlist(bool)
+QString SpiceLibComp::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+  Q_UNUSED(dialect);
+
   QString s = QStringLiteral("X%1 ").arg(Name);
   QString pins = getProperty("PinAssign")->Value;
   QString sym = getProperty("SymPattern")->Value;
@@ -237,6 +239,11 @@ QString SpiceLibComp::spice_netlist(bool)
   }
   s += QStringLiteral(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);
   return s;
+}
+
+QString SpiceLibComp::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
 }
 
 QString SpiceLibComp::getSpiceLibrary()

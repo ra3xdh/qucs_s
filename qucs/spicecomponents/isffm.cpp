@@ -29,7 +29,7 @@ iSffm::iSffm()
   Simulator = spicecompat::simSpice;
 
   // normal current source symbol
-  
+
   Ellipses.append(new qucs::Ellips(-12,-12, 24, 24,QPen(Qt::darkRed,3)));
   Texts.append(new Text(26, 6,"SFFM",Qt::darkRed,12.0,0.0,-1.0));
   // pins
@@ -38,8 +38,10 @@ iSffm::iSffm()
   // arrow
   Lines.append(new qucs::Line( -6,  0,  7,  0,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
   Polylines.append(new qucs::Polyline(
- 
-    std::vector<QPointF>{{0, -4},{-6, 0}, {0, 4}}, QPen(Qt::darkRed, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+              std::vector<QPointF>{{0, -4},{-6, 0}, {0, 4}},
+              QPen(Qt::darkRed, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)
+              )
+          );
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
@@ -89,8 +91,10 @@ QString iSffm::netlist()
     return QString();
 }
 
-QString iSffm::spice_netlist(bool)
+QString iSffm::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -98,12 +102,11 @@ QString iSffm::spice_netlist(bool)
         s += " "+ nam;   // node names
     }
 
-   QString I0  = spicecompat::normalize_value(Props.at(0)->Value);
-   QString Ia  = spicecompat::normalize_value(Props.at(1)->Value);
-   QString Fc  = spicecompat::normalize_value(Props.at(2)->Value);
-   QString Mdi = spicecompat::normalize_value(Props.at(3)->Value);
-   QString Fs  = spicecompat::normalize_value(Props.at(4)->Value);
-
+    QString I0  = spicecompat::normalize_value(Props.at(0)->Value);
+    QString Ia  = spicecompat::normalize_value(Props.at(1)->Value);
+    QString Fc  = spicecompat::normalize_value(Props.at(2)->Value);
+    QString Mdi = spicecompat::normalize_value(Props.at(3)->Value);
+    QString Fs  = spicecompat::normalize_value(Props.at(4)->Value);
 
     s += QStringLiteral(" DC 0 SFFM(%1 %2 %3 %4 %5 ) AC 0\n").arg(I0).arg(Ia).arg(Fc).arg(Mdi).arg(Fs);
     return s;

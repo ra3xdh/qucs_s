@@ -79,8 +79,10 @@ Element* Gyrator::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Gyrator::spice_netlist(bool)
+QString Gyrator::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s;
     QString R = spicecompat::normalize_value(Props.at(0)->Value);
     QString n1 = Ports.at(0)->Connection->Name;

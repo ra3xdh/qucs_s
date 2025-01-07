@@ -29,29 +29,29 @@ LTRA_SPICE::LTRA_SPICE()
   Simulator = spicecompat::simSpice;
 
   Lines.append(new qucs::Line(-60,  -20,-45,  -20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-45,  -20, 45,  -20,QPen(Qt::darkRed,4))); 
+  Lines.append(new qucs::Line(-45,  -20, 45,  -20,QPen(Qt::darkRed,4)));
   Lines.append(new qucs::Line( 45,  -20, 60,  -20,QPen(Qt::darkBlue,2)));
-  
+
   Lines.append(new qucs::Line(-60,   20,-45,   20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-45,   20, 45,   20,QPen(Qt::darkRed,4))); 
+  Lines.append(new qucs::Line(-45,   20, 45,   20,QPen(Qt::darkRed,4)));
   Lines.append(new qucs::Line( 45,   20, 60,   20,QPen(Qt::darkBlue,2)));
-  
+
   Lines.append(new qucs::Line(-45,    0,  -37,  0,QPen(Qt::darkRed,4)));
   Lines.append(new qucs::Line(-37,    0,  -30, -10,QPen(Qt::darkRed,4)));
   Lines.append(new qucs::Line(-30,  -10,  -15,  10,QPen(Qt::darkRed,4)));
   Lines.append(new qucs::Line(-15,   10,   0,  -10,QPen(Qt::darkRed,4)));
   Lines.append(new qucs::Line(  0,  -10,   15,  10,QPen(Qt::darkRed,4)));
-  Lines.append(new qucs::Line(  15,  10,   30, -10,QPen(Qt::darkRed,4))); 
-  Lines.append(new qucs::Line(  30, -10,  37,   0,QPen(Qt::darkRed,4))); 
-  Lines.append(new qucs::Line(  37,   0,  45,   0,QPen(Qt::darkRed,4)));   
+  Lines.append(new qucs::Line(  15,  10,   30, -10,QPen(Qt::darkRed,4)));
+  Lines.append(new qucs::Line(  30, -10,  37,   0,QPen(Qt::darkRed,4)));
+  Lines.append(new qucs::Line(  37,   0,  45,   0,QPen(Qt::darkRed,4)));
 
- 
-    
+
+
   Ports.append(new Port(  -60, -20));  // P1
   Ports.append(new Port(  -60,  20));  // P2
   Ports.append(new Port(   60, -20));  // P3
   Ports.append(new Port(   60,  20));  // P4
-  
+
   x1 = -40; y1 = -20;
   x2 =  40; y2 =  30;
 
@@ -94,15 +94,17 @@ QString LTRA_SPICE::netlist()
     return QString();
 }
 
-QString LTRA_SPICE::spice_netlist(bool)
+QString LTRA_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString O= Props.at(0)->Value;
     QString O_Line_2= Props.at(1)->Value;
     QString O_Line_3= Props.at(2)->Value;

@@ -32,7 +32,7 @@ public:
   QString getSpiceInit();
 
 protected:
-  QString spice_netlist();
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 
 };
 

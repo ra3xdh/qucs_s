@@ -80,9 +80,10 @@ Element* BiasT::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString BiasT::spice_netlist(bool isXyce)
+QString BiasT::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
+
     QString s;
     QString L = spicecompat::normalize_value(getProperty("L")->Value);
     QString C = spicecompat::normalize_value(getProperty("C")->Value);

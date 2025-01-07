@@ -4,7 +4,6 @@
     begin                : Thu May 21 2015
     copyright            : (C) 2015 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
-             
     SPICE Version         : Friday Sept 11 2015
     copyright            : (C) 2015 Mike Brinson
     email                : mbrin72043@yahoo.co.uk
@@ -31,8 +30,10 @@ public:
   ~S4Q_I();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+
 protected:
-  QString spice_netlist(bool isXyce = false);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
 };
 
 #endif

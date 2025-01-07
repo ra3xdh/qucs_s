@@ -191,6 +191,7 @@ private slots:
   void slotFileChanged(bool);
   void slotSimSettings();
   void slotSaveNetlist();
+  void slotSaveCdlNetlist();
   void slotAfterSpiceSimulation(ExternSimDialog *SimDlg);
   void slotBuildVAModule();
   /*void slotBuildXSPICEIfs(int mode = 0);
@@ -223,7 +224,8 @@ public:
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
           *editCut, *editCopy, *magAll, *magSel, *magOne, *magMinus, *filePrintFit, *tune,
-          *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias;
+          *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias,
+          *saveCdlNetlist;
 
   QAction *exportAsImage;
 

@@ -57,9 +57,9 @@ Element* SpiceFFT::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceFFT::spice_netlist(bool isXyce)
+QString SpiceFFT::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
 
     QString s;
     QString unit;

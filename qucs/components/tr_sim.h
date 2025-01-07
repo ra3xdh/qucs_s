@@ -27,7 +27,7 @@ public:
   ~TR_Sim();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString spice_netlist(bool isXyce = false);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
   void recreate(Schematic*);
 };
 

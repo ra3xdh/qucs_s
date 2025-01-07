@@ -47,7 +47,7 @@ dcBlock::dcBlock()
   SpiceModel = "C";
 
   Props.append(new Property("C", "1 uF", false,
-	QObject::tr("for transient simulation: capacitance in Farad")));
+    QObject::tr("for transient simulation: capacitance in Farad")));
 }
 
 dcBlock::~dcBlock()
@@ -68,9 +68,10 @@ Element* dcBlock::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString dcBlock::spice_netlist(bool isXyce)
+QString dcBlock::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-  Q_UNUSED(isXyce);
+  Q_UNUSED(dialect);
+
   QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
   QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
   QString val = spicecompat::normalize_value(getProperty("C")->Value);
@@ -78,4 +79,9 @@ QString dcBlock::spice_netlist(bool isXyce)
   QString name = spicecompat::check_refdes(Name, SpiceModel);
   s = QStringLiteral("%1 %2 %3 %4\n").arg(name, p1, p2, val);
   return s;
+}
+
+QString dcBlock::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
 }

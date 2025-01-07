@@ -78,8 +78,10 @@ Element* Ampere_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 }
 
 
-QString Ampere_ac::spice_netlist(bool)
+QString Ampere_ac::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     QString plus = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);

@@ -59,11 +59,11 @@ Mutual::Mutual()
   SpiceModel = "K";
 
   Props.append(new Property("L1", "1 mH", false,
-		QObject::tr("inductance of coil 1")));
+    QObject::tr("inductance of coil 1")));
   Props.append(new Property("L2", "1 mH", false,
-		QObject::tr("inductance of coil 2")));
+    QObject::tr("inductance of coil 2")));
   Props.append(new Property("k", "0.9", false,
-		QObject::tr("coupling factor between coil 1 and 2")));
+    QObject::tr("coupling factor between coil 1 and 2")));
 }
 
 Mutual::~Mutual()
@@ -84,9 +84,10 @@ Element* Mutual::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Mutual::spice_netlist(bool isXyce)
+QString Mutual::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
+
     QString l1 = "L" + Name + "_L1";
     QString l2 = "L" + Name + "_L2";
     QString k1 = "K" + Name;

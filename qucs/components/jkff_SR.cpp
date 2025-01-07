@@ -184,9 +184,9 @@ QString jkff_SR::verilogCode( int )
   return l;
 }
 
-QString jkff_SR::spice_netlist(bool isXyce)
+QString jkff_SR::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isXyce) return QString();
+    if (dialect == spicecompat::SPICEXyce) return QString();
 
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;

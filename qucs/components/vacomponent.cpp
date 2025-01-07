@@ -296,9 +296,9 @@ void vacomponent::createSymbol(QJsonObject json)
 }
 
 
-QString vacomponent::spice_netlist(bool isXyce)
+QString vacomponent::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isXyce) return QString();
+    if (dialect == spicecompat::SPICEXyce) return QString();
 
     QString s = SpiceModel + Name + " ";
     for(const auto pp: Ports) {

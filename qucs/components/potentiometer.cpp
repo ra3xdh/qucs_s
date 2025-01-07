@@ -111,9 +111,10 @@ void potentiometer::createSymbol()
   x2 =  40; y2 =  15;
 }
 
-QString potentiometer::spice_netlist(bool isXyce)
+QString potentiometer::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
+
     QString s;
     QString R = spicecompat::normalize_value(getProperty("R_pot")->Value);
     QString rot = spicecompat::normalize_value(getProperty("Rotation")->Value);

@@ -70,9 +70,9 @@ Element* SpiceFunc::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceFunc::getExpression(bool)
+QString SpiceFunc::getExpression(bool, bool isCdl /* = false */)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString();
+    if (isActive != COMP_IS_ACTIVE || isCdl) return QString();
 
     QString s;
     s.clear();

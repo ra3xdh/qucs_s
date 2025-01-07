@@ -479,8 +479,10 @@ void SpiceFile::slotExited()
   }
 }
 
-QString SpiceFile::spice_netlist(bool)
+QString SpiceFile::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QStringList ports_lst = Props.at(1)->Value.split(",");
     for (auto & it : ports_lst) {
         if (it.startsWith("_net")) it.remove(0,4);
@@ -505,4 +507,9 @@ QString SpiceFile::spice_netlist(bool)
 
     s += " " + spicecompat::getSubcktName(getSubcircuitFile()) + "\n";
     return s;
+}
+
+QString SpiceFile::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
 }

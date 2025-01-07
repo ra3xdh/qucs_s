@@ -52,17 +52,16 @@ vPWL::vPWL()
   Name  = "V";
 
   Props.append(new Property("PWL", "", true,"Piece-Wise Linear\nSpecification"));
- Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
- Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
- Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
- Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
- Props.append(new Property("Line_6", "", false,"+ continuation line 5"));
- Props.append(new Property("Line_7", "", false,"+ continuation line 6"));
- Props.append(new Property("Line_8", "", false,"+ continuation line 7"));
- Props.append(new Property("Line_9", "", false,"+ continuation line 8"));
- Props.append(new Property("Line_10", "", false,"+ continuation line 9"));
- 
- 
+  Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
+  Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
+  Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
+  Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
+  Props.append(new Property("Line_6", "", false,"+ continuation line 5"));
+  Props.append(new Property("Line_7", "", false,"+ continuation line 6"));
+  Props.append(new Property("Line_8", "", false,"+ continuation line 7"));
+  Props.append(new Property("Line_9", "", false,"+ continuation line 8"));
+  Props.append(new Property("Line_10", "", false,"+ continuation line 9"));
+
   rotate();  // fix historical flaw
 }
 
@@ -89,8 +88,10 @@ QString vPWL::netlist()
     return QString();
 }
 
-QString vPWL::spice_netlist(bool)
+QString vPWL::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -98,20 +99,19 @@ QString vPWL::spice_netlist(bool)
         s += " "+ nam+" ";   // node names
     }
 
-
-QString PWL= Props.at(0)->Value;
-QString Line_2= Props.at(1)->Value;
-QString Line_3= Props.at(2)->Value;
-QString Line_4= Props.at(3)->Value;
-QString Line_5= Props.at(4)->Value;
-QString Line_6= Props.at(5)->Value;
-QString Line_7= Props.at(6)->Value;
-QString Line_8= Props.at(7)->Value;
-QString Line_9= Props.at(8)->Value;
-QString Line_10= Props.at(9)->Value;
+    QString PWL= Props.at(0)->Value;
+    QString Line_2= Props.at(1)->Value;
+    QString Line_3= Props.at(2)->Value;
+    QString Line_4= Props.at(3)->Value;
+    QString Line_5= Props.at(4)->Value;
+    QString Line_6= Props.at(5)->Value;
+    QString Line_7= Props.at(6)->Value;
+    QString Line_8= Props.at(7)->Value;
+    QString Line_9= Props.at(8)->Value;
+    QString Line_10= Props.at(9)->Value;
 
     s += QString();
-  
+
     if(  PWL.length()  > 0)        s += QStringLiteral("%1").arg(PWL);
     if(  Line_2.length() > 0 )     s += QStringLiteral("\n%1").arg(Line_2);
     if(  Line_3.length() > 0 )     s += QStringLiteral("\n%1").arg(Line_3);

@@ -79,7 +79,7 @@ void AC_Sim::recreate(Schematic*)
   }
 }
 
-QString AC_Sim::spice_netlist(bool isXyce)
+QString AC_Sim::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = SpiceModel + " ";
     QString unit;
@@ -100,7 +100,7 @@ QString AC_Sim::spice_netlist(bool isXyce)
     QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
     QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
     s += QStringLiteral("%1 %2 \n").arg(fstart).arg(fstop);
-    if (!isXyce) s.remove(0,1);
+    if (dialect != spicecompat::SPICEXyce) s.remove(0,1);
     return s.toLower();
 
 }

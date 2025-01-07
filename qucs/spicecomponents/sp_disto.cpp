@@ -61,10 +61,10 @@ Element* SpiceDisto::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceDisto::spice_netlist(bool isXyce)
+QString SpiceDisto::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s;
-    if (!isXyce) {
+    if (dialect != spicecompat::SPICEXyce) {
         QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
         QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
         QString swp = spicecompat::convert_sweep_type(Props.at(0)->Value); // Sweep mode (lin,dec,etc.)

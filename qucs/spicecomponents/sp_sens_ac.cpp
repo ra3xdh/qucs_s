@@ -59,11 +59,11 @@ Element* SpiceSENS_AC::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceSENS_AC::spice_netlist(bool isXyce)
+QString SpiceSENS_AC::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s;
     s.clear();
-    if (!isXyce) {
+    if (dialect != spicecompat::SPICEXyce) {
         QString fstart = spicecompat::normalize_value(Props.at(2)->Value); // Start freq.
         QString fstop = spicecompat::normalize_value(Props.at(3)->Value); // Stop freq.
         QString out = "spice4qucs." + Name.toLower() + ".sens.prn";

@@ -24,7 +24,7 @@ class dff_SR : public Component
     void createSymbol();
     QString vhdlCode(int);
     QString verilogCode(int);
-    QString spice_netlist(bool isXyce);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif /* dff_SR_H */

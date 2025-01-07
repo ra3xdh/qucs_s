@@ -159,9 +159,9 @@ QString Source_ac::xyce_netlist()
     return s;
 }
 
-QString Source_ac::spice_netlist(bool isXyce)
+QString Source_ac::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isXyce) {
+    if (dialect == spicecompat::SPICEXyce) {
         return xyce_netlist();
     } else {
         return ngspice_netlist();

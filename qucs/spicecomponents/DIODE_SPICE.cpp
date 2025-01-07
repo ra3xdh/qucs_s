@@ -114,8 +114,10 @@ QString DIODE_SPICE::netlist()
     return QString();
 }
 
-QString DIODE_SPICE::spice_netlist(bool)
+QString DIODE_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString ltr = getProperty("Letter")->Value;
     QString s = spicecompat::check_refdes(Name,ltr);
     for (Port *p1 : Ports) {
@@ -123,7 +125,7 @@ QString DIODE_SPICE::spice_netlist(bool)
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString D= Props.at(0)->Value;
     QString D_Line_2= Props.at(1)->Value;
     QString D_Line_3= Props.at(2)->Value;
@@ -135,6 +137,18 @@ QString DIODE_SPICE::spice_netlist(bool)
     if(  D_Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(D_Line_3);
     if(  D_Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(D_Line_4);
     if(  D_Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(D_Line_5);
+
     s += "\n";
+
     return s;
+}
+
+QString DIODE_SPICE::cdl_netlist()
+{
+    if (Ports.size() == 2)
+    {
+        return spice_netlist(spicecompat::CDL);
+    }
+
+    return QString();
 }

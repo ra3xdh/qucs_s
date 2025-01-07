@@ -96,8 +96,8 @@ QString EqnDefined::netlist()
   return s+e;
 }
 
-QString EqnDefined::spice_netlist(bool isXyce)
-{    
+QString EqnDefined::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
+{
     QString s;
 
     QList<int> used_currents;
@@ -123,7 +123,7 @@ QString EqnDefined::spice_netlist(bool isXyce)
             Ieqn.replace("^","**");
             QStringList Itokens;
             spicecompat::splitEqn(Ieqn,Itokens);
-            spicecompat::convert_functions(Itokens,isXyce);
+            spicecompat::convert_functions(Itokens, dialect == spicecompat::SPICEXyce);
             subsVoltages(Itokens,Nbranch);
             subsCurrents(Itokens);
             QString plus = Ports.at(2*i)->Connection->Name;
@@ -137,11 +137,11 @@ QString EqnDefined::spice_netlist(bool isXyce)
 
             QString Qeqn = Props.at(2*(i+1)+1)->Value; // parse charge equation only for Xyce
             if (Qeqn!="0") {
-            //if (isXyce) {
+            //if (dialect == spicecompat::SPICEXyce) {
                 Qeqn.replace("^","**");
                 QStringList Qtokens;
                 spicecompat::splitEqn(Qeqn,Qtokens);
-                spicecompat::convert_functions(Qtokens,isXyce);
+                spicecompat::convert_functions(Qtokens, dialect == spicecompat::SPICEXyce);
                 subsVoltages(Qtokens,Nbranch);
                 subsCurrents(Qtokens);
                 s += QStringLiteral("G%1Q%2 %3 %4 n%1Q%2 %4 1.0\n").arg(Name).arg(i).arg(plus).arg(minus);
@@ -182,7 +182,7 @@ QString EqnDefined::va_code()
                 vacompat::convert_functions(Qtokens);
                 subsVoltages(Qtokens,Nbranch);
                 if (plus=="gnd") s += QStringLiteral("%1 <+ -ddt( %2 );\n").arg(Ipm).arg(Qtokens.join(""));
-		else s += QStringLiteral("%1 <+ ddt( %2 );\n").arg(Ipm).arg(Qtokens.join(""));
+                else s += QStringLiteral("%1 <+ ddt( %2 );\n").arg(Ipm).arg(Qtokens.join(""));
             }
         }
     } else {
@@ -252,13 +252,13 @@ void EqnDefined::subsCurrents(QStringList &tokens)
 
 // -------------------------------------------------------
 void EqnDefined::createSymbol()
-{  
+{
   QFont Font(QucsSettings.font); // default application font
   // symbol text is smaller (10 pt default)
   //Font.setPointSizeF(Font.pointSizeF()/1.2);  // symbol text size proportional to default font size
   Font.setPointSize(10); // symbol text size fixed at 10 pt
   // get the small font size; use the screen-compatible metric
-  QFontMetrics  smallmetrics(Font, 0); 
+  QFontMetrics  smallmetrics(Font, 0);
   int fHeight = smallmetrics.lineSpacing();
   QString tmp;
   int i, PortDistance = 60;
@@ -277,9 +277,9 @@ void EqnDefined::createSymbol()
   if (NumProps < Num) {
     for(i = NumProps; i < Num; i++) {
       Props.append(new Property("I"+QString::number(i+1), "0", false,
-		QObject::tr("current equation") + " " +QString::number(i+1)));
+        QObject::tr("current equation") + " " +QString::number(i+1)));
       Props.append(new Property("Q"+QString::number(i+1), "0", false,
-		QObject::tr("charge equation") + " " +QString::number(i+1)));
+        QObject::tr("charge equation") + " " +QString::number(i+1)));
     }
   } else {
     for(i = Num; i < NumProps; i++) {

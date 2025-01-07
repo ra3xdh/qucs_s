@@ -35,10 +35,12 @@ public:
   static Element* info_PX3pin(QString&, char* &, bool getNewOne=false);
   static Element* info_NX4pin(QString&, char* &, bool getNewOne=false);
   static Element* info_PX4pin(QString&, char* &, bool getNewOne=false);
+
 protected:
   void createSymbol();
   QString netlist();
-  QString spice_netlist(bool isXyce = false);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
 };
 
 #endif // MOS_SPICE_H

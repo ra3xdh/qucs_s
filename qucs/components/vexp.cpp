@@ -86,8 +86,10 @@ Element* vExp::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString vExp::spice_netlist(bool)
+QString vExp::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -95,12 +97,12 @@ QString vExp::spice_netlist(bool)
         s += " "+ nam;   // node names
     }
 
-   QString U1= spicecompat::normalize_value(Props.at(0)->Value);
-   QString U2 = spicecompat::normalize_value(Props.at(1)->Value);
-   QString T1 = spicecompat::normalize_value(Props.at(2)->Value);
-   QString T2 = spicecompat::normalize_value(Props.at(3)->Value);
-   QString Tr = spicecompat::normalize_value(Props.at(4)->Value);
-   QString Tf = spicecompat::normalize_value(Props.at(5)->Value);
+    QString U1= spicecompat::normalize_value(Props.at(0)->Value);
+    QString U2 = spicecompat::normalize_value(Props.at(1)->Value);
+    QString T1 = spicecompat::normalize_value(Props.at(2)->Value);
+    QString T2 = spicecompat::normalize_value(Props.at(3)->Value);
+    QString Tr = spicecompat::normalize_value(Props.at(4)->Value);
+    QString Tf = spicecompat::normalize_value(Props.at(5)->Value);
 
     s += QStringLiteral(" DC 0 EXP(%1 %2 %3 %4 %5 %6) AC 0\n").arg(U1).arg(U2).arg(T1).arg(Tr).arg(T2).arg(Tf);
     return s;

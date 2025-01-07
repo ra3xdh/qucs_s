@@ -30,10 +30,12 @@ public:
   QString getSpiceLibrary();
 
 protected:
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
   void createSymbol();
   void remakeSymbol(int No, QStringList &pin_names);
   int  loadSymbol(const QString&);
+
 private:
   void removeUnusedPorts();
 };

@@ -42,9 +42,9 @@ public:
   virtual Component* newOne();
   virtual void recreate(Schematic*) {};
   QString getNetlist();
-  QString getSpiceNetlist(bool isXyce = false);
+  QString getSpiceNetlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
   QString getVerilogACode();
-  virtual QString getExpression(bool isXyce = false);
+  virtual QString getExpression(bool isXyce = false, bool isCdl = false);
   virtual QString getEquations(QString sim, QStringList &dep_vars);
   virtual QStringList getExtraVariables();
   virtual QString getProbeVariable(bool isXyce = false);
@@ -114,7 +114,8 @@ public:
 
 protected:
   virtual QString netlist();
-  virtual QString spice_netlist(bool isXyce = false);
+  virtual QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
   virtual QString va_code();
   virtual QString vhdlCode(int);
   virtual QString verilogCode(int);
@@ -149,7 +150,7 @@ class GateComponent : public MultiViewComponent {
 public:
   GateComponent();
   QString netlist();
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
   QString vhdlCode(int);
   QString verilogCode(int);
 

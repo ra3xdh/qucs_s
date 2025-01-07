@@ -169,10 +169,10 @@ void MutualX::createSymbol()
 
     } else { // add new coils
       for(int i = 0; i < dCoils; i++) { // add new properties for coils
-        Props.insert(oldCoils+1, new Property("L"+QString::number(Num-i), 
-					      "1 mH", 
-					      false, 
-					      QObject::tr("inductance of coil") + " " + QString::number(Num-i)));
+        Props.insert(oldCoils+1, new Property("L"+QString::number(Num-i),
+                "1 mH",
+                false,
+                QObject::tr("inductance of coil") + " " + QString::number(Num-i)));
       }
 
       for(int i = 1,state=1; i < Num; i++)
@@ -196,7 +196,7 @@ void MutualX::createSymbol()
     p1++;
   }
   // adjust coupling coeffs names
-  for(int i = 1,state=1; i < Num; i++) 
+  for(int i = 1,state=1; i < Num; i++)
     for(int j = i+1; j <= Num; j++,state++) {
       Props.at(Num+state)->Name = "k" + QString::number(i) + QString::number(j);
       Props.at(Num+state)->Description =
@@ -229,9 +229,10 @@ void MutualX::createSymbol()
   }
 }
 
-QString MutualX::spice_netlist(bool isXyce)
+QString MutualX::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
+
     int coils = getProperty("coils")->Value.toInt();
 
     QString s;
@@ -257,6 +258,7 @@ QString MutualX::spice_netlist(bool isXyce)
             s += QStringLiteral("%1 %2 %3 %4\n").arg(kij).arg(li).arg(lj).arg(val_k);
         }
     }
-    return s;
 
+    return s;
 }
+

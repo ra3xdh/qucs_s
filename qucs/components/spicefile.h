@@ -53,7 +53,8 @@ private:
 protected:
   QString netlist();
   void createSymbol();
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
 
 private slots:
   void slotGetNetlist();

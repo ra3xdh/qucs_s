@@ -47,7 +47,7 @@ Ampere_dc::Ampere_dc()
   SpiceModel = "I";
 
   Props.append(new Property("I", "1 mA", true,
-		QObject::tr("current in Ampere")));
+    QObject::tr("current in Ampere")));
 
   rotate();  // fix historical flaw
 }
@@ -56,8 +56,10 @@ Ampere_dc::~Ampere_dc()
 {
 }
 
-QString Ampere_dc::spice_netlist(bool)
+QString Ampere_dc::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     QString plus = Ports.at(1)->Connection->Name;
@@ -68,6 +70,12 @@ QString Ampere_dc::spice_netlist(bool)
             .arg(spicecompat::normalize_value(Props.at(0)->Value));
     return s;
 }
+
+QString Ampere_dc::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
+}
+
 Component* Ampere_dc::newOne()
 {
   return new Ampere_dc();

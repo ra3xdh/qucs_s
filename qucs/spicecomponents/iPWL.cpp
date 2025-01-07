@@ -38,7 +38,6 @@ iPWL::iPWL()
   Lines.append(new qucs::Line( -7,  0,  6,  0,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
   Polylines.append(new qucs::Polyline(
     std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::darkRed, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
-  
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -62,8 +61,7 @@ iPWL::iPWL()
  Props.append(new Property("Line_8", "", false,"+ continuation line 7"));
  Props.append(new Property("Line_9", "", false,"+ continuation line 8"));
  Props.append(new Property("Line_10", "", false,"+ continuation line 9"));
- 
- 
+
  rotate();  // fix historical flaw
 }
 
@@ -90,8 +88,10 @@ QString iPWL::netlist()
     return QString();
 }
 
-QString iPWL::spice_netlist(bool)
+QString iPWL::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+  Q_UNUSED(dialect);
+
   QString s = spicecompat::check_refdes(Name,SpiceModel);
 
   s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);

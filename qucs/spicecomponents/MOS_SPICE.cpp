@@ -225,15 +225,17 @@ void MOS_SPICE::createSymbol()
     x2 =   4; y2 =  30;
 }
 
-QString MOS_SPICE::spice_netlist(bool)
+QString MOS_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,Props.at(0)->Value);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString M= Props.at(3)->Value;
     QString M_Line_2= Props.at(4)->Value;
     QString M_Line_3= Props.at(5)->Value;
@@ -248,4 +250,14 @@ QString MOS_SPICE::spice_netlist(bool)
     s += "\n";
 
     return s;
+}
+
+QString MOS_SPICE::cdl_netlist()
+{
+    if (Ports.size() == 4)
+    {
+        return spice_netlist(spicecompat::CDL);
+    }
+
+    return QString();
 }

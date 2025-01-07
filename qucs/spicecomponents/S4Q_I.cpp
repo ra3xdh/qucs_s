@@ -4,7 +4,6 @@
     begin                : Thu May 21 2015
     copyright            : (C) 2015 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
-             
     SPICE Version         : Friday Sept 11 2015
     copyright            : (C) 2015 Mike Brinson
     email                : mbrin72043@yahoo.co.uk
@@ -37,8 +36,8 @@ S4Q_I::S4Q_I()
   Lines.append(new qucs::Line( -8,  0, 8, 0,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
   Lines.append(new qucs::Line( -8,  0, -4,  -4,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line( -8,  0, -4,   4,QPen(Qt::darkRed,3)));
-  
-   Ports.append(new Port( 30,  0));
+
+  Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
   x1 = -30; y1 = -14;
@@ -77,8 +76,10 @@ Element* S4Q_I::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString S4Q_I::spice_netlist(bool)
+QString S4Q_I::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -100,4 +101,9 @@ QString S4Q_I::spice_netlist(bool)
     s += "\n";
 
     return s;
+}
+
+QString S4Q_I::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
 }

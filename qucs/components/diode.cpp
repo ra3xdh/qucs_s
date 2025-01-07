@@ -99,7 +99,7 @@ Component* Diode::newOne()
   return new Diode();
 }
 
-QString Diode::spice_netlist(bool isXyce)
+QString Diode::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     // output all node names
@@ -113,7 +113,7 @@ QString Diode::spice_netlist(bool isXyce)
     }
 
     QStringList spice_incompat,spice_tr;
-    if (isXyce) {
+    if (dialect == spicecompat::SPICEXyce) {
         spice_tr<<"Tbv"<<"Tbv1"<<"Trs"<<"Trs1"; // parameters that need conversion of names
         spice_incompat<<"Ttt1"<<"Ttt2"<<"Tm1"<<"Tm2"<<"Cp"<<"Isr"
                      <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGlobTemp"; // spice-incompatible parameters
@@ -149,15 +149,21 @@ QString Diode::spice_netlist(bool isXyce)
       .arg(getProperty("Temp")->Value);
     }
 
-    if (isXyce) {
-        s += QStringLiteral(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
-    } else {
-        s += QStringLiteral(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
+    if (dialect != spicecompat::CDL)
+    {
+        if (dialect == spicecompat::SPICEXyce) {
+            s += QStringLiteral(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
+        } else {
+            s += QStringLiteral(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
+        }
     }
 
-
     return s;
+}
 
+QString Diode::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
 }
 
 Element* Diode::info(QString& Name, char* &BitmapFile, bool getNewOne)

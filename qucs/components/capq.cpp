@@ -91,9 +91,10 @@ Element* CapQ::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString CapQ::spice_netlist(bool isXyce)
+QString CapQ::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isXyce);
+    Q_UNUSED(dialect);
+
     QString s;
     QString pin1 = Ports.at(0)->Connection->Name;
     pin1 = spicecompat::normalize_node_name(pin1);
@@ -124,3 +125,4 @@ QString CapQ::spice_netlist(bool isXyce)
 
     return s;
 }
+

@@ -196,10 +196,10 @@ void SParamFile::createSymbol()
   ty = y1 - 2*metrics.lineSpacing() - 4;
 }
 
-QString SParamFile::spice_netlist(bool isXyce)
+QString SParamFile::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s;
-    if (isXyce) {
+    if (dialect == spicecompat::SPICEXyce) {
         int Np = getProperty("Ports")->Value.toInt();
         s = "YLIN YLIN_" + Name;
         QString s_mod = "YLIN_" + Name + "_model";

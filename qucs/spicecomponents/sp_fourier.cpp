@@ -54,12 +54,12 @@ Element* SpiceFourier::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceFourier::spice_netlist(bool isXyce)
+QString SpiceFourier::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s;
     QString f0 = spicecompat::normalize_value(Props.at(2)->Value);
     QString out = "spice4qucs." + Name.toLower() + ".four";
-    if (!isXyce) {
+    if (dialect != spicecompat::SPICEXyce) {
         s = QStringLiteral("set nfreqs=%1\n").arg(Props.at(1)->Value);
         s += QStringLiteral("fourier %1 %2 > %3\n").arg(f0).arg(Props.at(3)->Value).arg(out);
     } else {

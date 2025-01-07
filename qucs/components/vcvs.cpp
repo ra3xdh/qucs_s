@@ -64,7 +64,7 @@ VCVS::VCVS()
   SpiceModel = "E";
 
   Props.append(new Property("G", "1", true,
-		QObject::tr("forward transfer factor")));
+    QObject::tr("forward transfer factor")));
   Props.append(new Property("T", "0", false, QObject::tr("delay time (Qucsator only)")));
 }
 
@@ -89,25 +89,28 @@ Element* VCVS::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString VCVS::va_code()
 {
     QString Gain = vacompat::normalize_value(Props.at(0)->Value);
-	QString P1 = Ports.at(0)->Connection->Name;
+    QString P1 = Ports.at(0)->Connection->Name;
     QString P4 = Ports.at(1)->Connection->Name;
     QString P3 = Ports.at(2)->Connection->Name;
     QString P2 = Ports.at(3)->Connection->Name;
     QString s = "";
-    
+
     QString Vpm = vacompat::normalize_voltage(P1,P2);
-    QString Ipm = vacompat::normalize_current(P1,P2,true);  
+    QString Ipm = vacompat::normalize_current(P1,P2,true);
     s += QStringLiteral(" %1  <+  %2 * 1e-9;\n").arg(Ipm).arg(Vpm);
     QString Vpm2 = vacompat::normalize_voltage(P3,P4);
-    QString Ipm2 = vacompat::normalize_current(P3,P4,true); 
+    QString Ipm2 = vacompat::normalize_current(P3,P4,true);
     s += QStringLiteral("%1  <+  -(%2 * 1e3);\n").arg(Ipm2).arg(Vpm2);
     s += QStringLiteral("%1  <+  -(%2 * 1e3*  %3) ;\n").arg(Ipm2).arg(Vpm).arg(Gain);
-    
+
     return s;
- }
-QString VCVS::spice_netlist(bool)
+}
+
+QString VCVS::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-   QString s = spicecompat::check_refdes(Name,SpiceModel);
+    Q_UNUSED(dialect);
+
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> seq; // nodes sequence
     seq<<1<<2<<0<<3;
     // output all node names

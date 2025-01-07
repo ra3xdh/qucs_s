@@ -25,11 +25,11 @@ Capacitor::Capacitor()
   Description = QObject::tr("capacitor");
 
   Props.append(new Property("C", "1 nF", true,
-		QObject::tr("capacitance in Farad")));
+    QObject::tr("capacitance in Farad")));
   Props.append(new Property("V", "", false,
-		QObject::tr("initial voltage for transient simulation")));
+    QObject::tr("initial voltage for transient simulation")));
   Props.append(new Property("Symbol", "neutral", false,
-	QObject::tr("schematic symbol")+" [neutral, polar]"));
+  QObject::tr("schematic symbol")+" [neutral, polar]"));
 
   createSymbol();
   tx = x1+4;
@@ -53,7 +53,7 @@ Element* Capacitor::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Capacitor::spice_netlist(bool)
+QString Capacitor::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
@@ -64,24 +64,29 @@ QString Capacitor::spice_netlist(bool)
     s += " "+spicecompat::normalize_value(Props.at(0)->Value) + " ";
     QString val = Props.at(1)->Value; // add inial voltage if presents
     val = val.remove(' ').toUpper();
-    if (!val.isEmpty()) {
+    if (!val.isEmpty() && dialect != spicecompat::CDL) {
         s += " IC=" + val;
     }
 
     return s+'\n';
 }
 
+QString Capacitor::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
+}
+
 QString Capacitor::va_code()
 {
     QString val = vacompat::normalize_value(Props.at(0)->Value);
     QString plus =  Ports.at(0)->Connection->Name;
-    QString minus = Ports.at(1)->Connection->Name; 
+    QString minus = Ports.at(1)->Connection->Name;
     QString s = "";
     QString Vpm = vacompat::normalize_voltage(plus,minus);
     if (Vpm.startsWith("(-")) Vpm.remove(1,1); // Make capacitor unipolar, remove starting minus
-    QString Ipm = vacompat::normalize_current(plus,minus,true); 
+    QString Ipm = vacompat::normalize_current(plus,minus,true);
     s  += QStringLiteral("%1  <+ ddt( %2 *  %3  );\n").arg(Ipm).arg(Vpm).arg(val);
-            
+
     return s;
 }
 

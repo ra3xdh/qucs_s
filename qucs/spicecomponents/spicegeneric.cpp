@@ -134,8 +134,10 @@ QString SpiceGeneric::netlist()
     return QString();
 }
 
-QString SpiceGeneric::spice_netlist(bool)
+QString SpiceGeneric::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     // form RefDes from unique device letter and device name
     QString s = Props.at(1)->Value + Name;
     for (Port *pp : Ports) {
@@ -146,4 +148,9 @@ QString SpiceGeneric::spice_netlist(bool)
     s += " " + Props.at(3)->Value +"\n"; // Parameters
 
     return s;
+}
+
+QString SpiceGeneric::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
 }

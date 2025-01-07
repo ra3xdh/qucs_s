@@ -77,9 +77,9 @@ Element* InclScript::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString InclScript::getExpression(bool)
+QString InclScript::getExpression(bool, bool isCdl /* = false */)
 {
-    if (isActive != COMP_IS_ACTIVE)
+    if (isActive != COMP_IS_ACTIVE || isCdl)
         return QString();
     return Props.at(0)->Value+"\n";
 }

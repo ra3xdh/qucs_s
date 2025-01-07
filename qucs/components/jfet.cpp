@@ -94,7 +94,7 @@ Component* JFET::newOne()
   return p;
 }
 
-QString JFET::spice_netlist(bool isXyce)
+QString JFET::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
@@ -108,7 +108,7 @@ QString JFET::spice_netlist(bool isXyce)
 
 
     QStringList spice_incompat,spice_tr;
-    if (isXyce) {
+    if (dialect == spicecompat::SPICEXyce) {
         spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"
                      <<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"<<"Vt0tc"<<"UseGLobTemp";
                                   // spice-incompatible parameters
@@ -131,9 +131,17 @@ QString JFET::spice_netlist(bool isXyce)
       .arg(getProperty("Temp")->Value);
     }
 
-    s += QStringLiteral(".MODEL JMOD_%1 %2JF (%3)\n").arg(Name).arg(jfet_type).arg(par_str);
+    if (dialect != spicecompat::CDL)
+    {
+        s += QStringLiteral(".MODEL JMOD_%1 %2JF (%3)\n").arg(Name).arg(jfet_type).arg(par_str);
+    }
 
     return s;
+}
+
+QString JFET::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
 }
 
 // -------------------------------------------------------

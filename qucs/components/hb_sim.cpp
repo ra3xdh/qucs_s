@@ -63,10 +63,10 @@ Element* HB_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString HB_Sim::spice_netlist(bool isXyce)
+QString HB_Sim::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s="";
-    if (isXyce) {  // Only in Xyce
+    if (dialect == spicecompat::SPICEXyce) {  // Only in Xyce
         s += QStringLiteral(".options hbint numfreq=%1 STARTUPPERIODS=2\n").arg(Props.at(1)->Value);
         QStringList freqs = Props.at(0)->Value.split(QRegularExpression("\\s+(?=[0-9])"));
         // split frequencyes list by space before digit

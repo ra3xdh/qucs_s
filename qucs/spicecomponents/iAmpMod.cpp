@@ -30,16 +30,15 @@ iAmpMod::iAmpMod()
 
   // normal current source symbol
   Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::blue,3)));
-  Texts.append(new Text(26, 6,"AM",Qt::blue,12.0,0.0,-1.0)); 
+  Texts.append(new Text(26, 6,"AM",Qt::blue,12.0,0.0,-1.0));
   // pins
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  // arrow 
+  // arrow
   Lines.append(new qucs::Line( -6,  0,  7,  0,QPen(Qt::blue,3, Qt::SolidLine, Qt::FlatCap)));
   Polylines.append(new qucs::Polyline(
     std::vector<QPointF>{{0, -4},{-6, 0}, {0, 4}}, QPen(Qt::blue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
-  
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
@@ -89,8 +88,10 @@ QString iAmpMod::netlist()
     return QString();
 }
 
-QString iAmpMod::spice_netlist(bool)
+QString iAmpMod::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
@@ -98,12 +99,11 @@ QString iAmpMod::spice_netlist(bool)
         s += " "+ nam;   // node names
     }
 
-   QString Va= spicecompat::normalize_value(Props.at(0)->Value);
-   QString Vo= spicecompat::normalize_value(Props.at(1)->Value);
-   QString Mf= spicecompat::normalize_value(Props.at(2)->Value);
-   QString Fc = spicecompat::normalize_value(Props.at(3)->Value);
-   QString Td = spicecompat::normalize_value(Props.at(4)->Value);
-
+    QString Va = spicecompat::normalize_value(Props.at(0)->Value);
+    QString Vo = spicecompat::normalize_value(Props.at(1)->Value);
+    QString Mf = spicecompat::normalize_value(Props.at(2)->Value);
+    QString Fc = spicecompat::normalize_value(Props.at(3)->Value);
+    QString Td = spicecompat::normalize_value(Props.at(4)->Value);
 
     s += QStringLiteral(" DC 0 AM(%1 %2 %3 %4 %5 ) AC 0\n").arg(Va).arg(Vo).arg(Mf).arg(Fc).arg(Td);
     return s;

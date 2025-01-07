@@ -5,7 +5,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  */
 
 #ifndef UDRCTL_SPICE_H
@@ -14,15 +14,15 @@
 #include "components/component.h"
 
 class UDRCTL_SPICE : public Component {
-  public:
+public:
     UDRCTL_SPICE();
     ~UDRCTL_SPICE();
     Component* newOne();
     static Element* info(QString&, char* &, bool getNewOne=false);
-  protected:
-//    void createSymbol();
+
+protected:
     QString netlist();
-    QString spice_netlist(bool isXyce = false);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif /* UDRCTL_SPICE_H */

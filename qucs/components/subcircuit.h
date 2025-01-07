@@ -32,7 +32,8 @@ public:
 
 protected:
   QString netlist();
-  QString spice_netlist(bool isXyce);
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
   QString vhdlCode(int);
   QString verilogCode(int);
   void createSymbol();

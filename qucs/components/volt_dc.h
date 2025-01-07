@@ -27,7 +27,10 @@ public:
   ~Volt_dc();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString spice_netlist(bool isXyce = false);
+
+protected:
+  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual QString cdl_netlist();
 };
 
 #endif

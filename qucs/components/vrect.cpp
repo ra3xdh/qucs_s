@@ -74,8 +74,10 @@ vRect::~vRect()
 {
 }
 
-QString vRect::spice_netlist(bool)
+QString vRect::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     for (Port *p1 : Ports) {

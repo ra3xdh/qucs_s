@@ -186,8 +186,10 @@ QString BJT_SPICE::netlist()
     return QString();
 }
 
-QString BJT_SPICE::spice_netlist(bool)
+QString BJT_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString ltr =getProperty("Letter")->Value;
     QString s = spicecompat::check_refdes(Name,ltr);
     for (Port *p1 : Ports) {
@@ -195,7 +197,7 @@ QString BJT_SPICE::spice_netlist(bool)
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString Q= Props.at(3)->Value;
     QString Q_Line_2= Props.at(4)->Value;
     QString Q_Line_3= Props.at(5)->Value;
@@ -211,3 +213,9 @@ QString BJT_SPICE::spice_netlist(bool)
 
     return s;
 }
+
+QString BJT_SPICE::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
+}
+

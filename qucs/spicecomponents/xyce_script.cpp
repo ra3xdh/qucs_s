@@ -55,10 +55,10 @@ Element* XyceScript::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString XyceScript::spice_netlist(bool isXyce)
+QString XyceScript::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = "";
-    if (!isXyce) return s;
+    if (dialect != spicecompat::SPICEXyce) return s;
     s = Props.at(0)->Value+"\n";
     return s;
 }

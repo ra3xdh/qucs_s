@@ -48,6 +48,7 @@ namespace qucs { // otherwise conflict with <windows.h>
 
 class DrawingPrimitive {
 public:
+  virtual ~DrawingPrimitive() {}
   virtual void draw([[maybe_unused]] QPainter* painter) const {};
   virtual QBrush brushHint() const { return Qt::NoBrush; }
   virtual QPen penHint() const { return Qt::NoPen; }
@@ -56,6 +57,7 @@ public:
 struct Line : DrawingPrimitive {
   Line(double _x1, double _y1, double _x2, double _y2, QPen _style)
        : x1(_x1), y1(_y1), x2(_x2), y2(_y2), style(_style) {};
+  virtual ~Line() {}
   double   x1, y1, x2, y2;
   QPen  style;
   void draw(QPainter* painter) const override;
@@ -66,6 +68,7 @@ struct Arc : DrawingPrimitive {
   Arc(double _x, double _y, double _w, double _h, int _angle, int _arclen, QPen _style)
       : x(_x), y(_y), w(_w), h(_h), angle(_angle),
 	arclen(_arclen), style(_style) {};
+  virtual ~Arc() {}
   double   x, y, w, h;
   int angle, arclen;
   QPen  style;
@@ -128,6 +131,7 @@ struct Text : qucs::DrawingPrimitive {
 	double _Size = 10.0, double _mCos=1.0, double _mSin=0.0)
 	: x(_x), y(_y), s(_s), Color(_Color), Size(_Size),
 	  mSin(_mSin), mCos(_mCos) { over = under = false; };
+  virtual ~Text() {}
   double	  x, y;
   QString s;
   QColor  Color;

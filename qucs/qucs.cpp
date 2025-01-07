@@ -83,6 +83,7 @@
 #include "qucslib_common.h"
 #include "misc.h"
 #include "extsimkernels/verilogawriter.h"
+#include "extsimkernels/CdlNetlistWriter.h"
 #include "extsimkernels/simsettingsdialog.h"
 //#include "extsimkernels/codemodelgen.h"
 #include "symbolwidget.h"
@@ -3513,6 +3514,63 @@ void QucsApp::slotSaveNetlist()
         ExternSimDialog *SimDlg = new ExternSimDialog(sch, true);
         SimDlg->slotSaveNetlist();
         delete SimDlg;
+    }
+}
+
+void QucsApp::slotSaveCdlNetlist()
+{
+    if (!isTextDocument(DocumentTab->currentWidget()))
+    {
+        Schematic* schematic = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+        Q_ASSERT(schematic != nullptr);
+
+#ifdef NETLIST_CDL_TO_CONSOLE // for fast testing purposes
+        QString netlistString;
+        {
+            QTextStream netlistStream(&netlistString);
+            CdlNetlistWriter cdlWriter(netlistStream, schematic);
+            if (!cdlWriter.write())
+            {
+                QMessageBox::critical(
+                        this,
+                        tr("Save CDL netlist"),
+                        tr("Save CDL netlist failed!"),
+                        QMessageBox::Ok);
+            }
+            printf("\nCDL netlist:\n%s\n", netlistString.toUtf8().constData());
+            Content->refresh();
+        }
+#else
+        QFileInfo inf(schematic->getDocName());
+        QString filename = QFileDialog::getSaveFileName(
+                this,
+                tr("Save CDL netlist"),
+                inf.path() + QDir::separator() + "netlist.cdl",
+                "CDL netlist (*.cdl)");
+
+        if (filename.isEmpty())
+        {
+            return;
+        }
+
+        QFile netlistFile(filename);
+        if (netlistFile.open(QIODevice::WriteOnly))
+        {
+            QTextStream netlistStream(&netlistFile);
+            CdlNetlistWriter cdlWriter(netlistStream, schematic);
+            if (!cdlWriter.write())
+            {
+                QMessageBox::critical(
+                        this,
+                        tr("Save CDL netlist"),
+                        tr("Save CDL netlist failed!"),
+                        QMessageBox::Ok);
+            }
+            netlistFile.close();
+            Content->refresh();
+        }
+#endif
+
     }
 }
 

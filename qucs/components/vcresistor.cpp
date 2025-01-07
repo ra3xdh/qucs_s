@@ -109,9 +109,10 @@ QString vcresistor::netlist()
   return s;
 }
 
-QString vcresistor::spice_netlist(bool isXyce)
+QString vcresistor::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-  Q_UNUSED(isXyce);
+  Q_UNUSED(dialect);
+
   QString s;
   QString gain = spicecompat::normalize_value(getProperty("gain")->Value);
   QString in1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);

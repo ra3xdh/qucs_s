@@ -58,11 +58,11 @@ Element* SpicePZ::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpicePZ::spice_netlist(bool isXyce)
+QString SpicePZ::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s;
     QString out = "spice4qucs." + Name.toLower() + ".cir.pz";
-    if (!isXyce) {
+    if (dialect != spicecompat::SPICEXyce) {
         s = QStringLiteral("pz %1 %2 %3 %4\n").arg(Props.at(0)->Value).arg(Props.at(1)->Value)
                 .arg(Props.at(2)->Value).arg(Props.at(3)->Value);
         s += QStringLiteral("echo \"PZ analysis\" >> %1\n").arg(out);

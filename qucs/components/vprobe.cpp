@@ -39,7 +39,7 @@ vProbe::vProbe()
   Lines.append(new qucs::Line(-10,  0,-10,  6,QPen(Qt::red,2)));
   Lines.append(new qucs::Line(-13,  3, -7,  3,QPen(Qt::red,2)));
   Lines.append(new qucs::Line(  7,  3, 13,  3,QPen(Qt::black,2)));
-  
+
   Lines.append(new qucs::Line(-10,  9,-10, 20,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 10,  9, 10, 20,QPen(Qt::darkBlue,2)));
   Ports.append(new Port(-10, 20));
@@ -78,8 +78,10 @@ QString vProbe::getProbeVariable(bool)
     return Name;
 }
 
-QString vProbe::spice_netlist(bool)
+QString vProbe::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = QStringLiteral("E%1 %2 0 %3 %4 1.0\nR%1%2 %2 0 1E8\nR%1%3 %3 %4 1E8\n").arg(Name).arg(Name)
             .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name);
     return s;

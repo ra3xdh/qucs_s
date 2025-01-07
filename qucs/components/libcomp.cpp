@@ -361,8 +361,10 @@ QString LibComp::vhdlCode(int)
   return s;
 }
 
-QString LibComp::spice_netlist(bool)
+QString LibComp::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = SpiceModel + Name + " 0 "; // connect ground of subckt to circuit ground
     for (Port *p1 : Ports)
       s += " "+p1->Connection->Name;   // node names
@@ -376,6 +378,11 @@ QString LibComp::spice_netlist(bool)
     s +="\n";
 
     return s;
+}
+
+QString LibComp::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
 }
 
 QStringList LibComp::getAttachedIFS()

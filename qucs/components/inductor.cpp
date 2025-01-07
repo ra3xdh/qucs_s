@@ -58,7 +58,7 @@ Component* Inductor::newOne()
 }
 
 
-QString Inductor::spice_netlist(bool)
+QString Inductor::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
@@ -69,12 +69,17 @@ QString Inductor::spice_netlist(bool)
     s += " "+spicecompat::normalize_value(Props.at(0)->Value) + " ";
     QString val = Props.at(1)->Value; // add inial voltage if presents
     val = val.remove(' ').toUpper();
-    if (!val.isEmpty()) {
+    if (!val.isEmpty() && dialect != spicecompat::CDL) {
         s += " IC=" + val;
     }
     s += '\n';
 
     return s;
+}
+
+QString Inductor::cdl_netlist()
+{
+    return spice_netlist(spicecompat::CDL);
 }
 
 QString Inductor::va_code()

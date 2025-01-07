@@ -28,12 +28,11 @@ UDRCTL_SPICE::UDRCTL_SPICE()
   Description = QObject::tr("SPICE U(URC):\nMultiple line ngspice or Xyce U specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
   Simulator = spicecompat::simSpice;
 
-   
-  Lines.append(new qucs::Line(  -60,  0, -45,   0,QPen(Qt::darkBlue,2))); 
+  Lines.append(new qucs::Line(  -60,  0, -45,   0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  -45, 20,  45,  20,QPen(Qt::blue,4)));
-  Lines.append(new qucs::Line(   60,  0,  45,   0,QPen(Qt::darkBlue,2)));  
-  Lines.append(new qucs::Line(   0,  20,   0,  40,QPen(Qt::darkBlue,2))); 
-  
+  Lines.append(new qucs::Line(   60,  0,  45,   0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(   0,  20,   0,  40,QPen(Qt::darkBlue,2)));
+
   Lines.append(new qucs::Line(-45,    0,  -37,   0,QPen(Qt::blue,4)));
   Lines.append(new qucs::Line(-37,    0,  -30, -10,QPen(Qt::blue,4)));
   Lines.append(new qucs::Line(-30,  -10,  -15,  10,QPen(Qt::blue,4)));
@@ -43,9 +42,6 @@ UDRCTL_SPICE::UDRCTL_SPICE()
   Lines.append(new qucs::Line(  30, -10,  37,    0,QPen(Qt::blue,4)));
   Lines.append(new qucs::Line(  37,   0,  45,    0,QPen(Qt::blue,4)));
 
-
-
-    
   Ports.append(new Port(  -60, 0)); // P1
   Ports.append(new Port(   60, 0)); // P2
   Ports.append(new Port(    0, 40)); // P3
@@ -92,15 +88,17 @@ QString UDRCTL_SPICE::netlist()
     return QString();
 }
 
-QString UDRCTL_SPICE::spice_netlist(bool)
+QString UDRCTL_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
- 
+
     QString U= Props.at(0)->Value;
     QString U_Line_2= Props.at(1)->Value;
     QString U_Line_3= Props.at(2)->Value;

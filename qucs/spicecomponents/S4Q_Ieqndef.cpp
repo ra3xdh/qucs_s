@@ -4,7 +4,7 @@
     begin                    : 13 September 2015
     copyright                : (C) 2015 by Vadim Kaznetsov and Mike Brinson
     email                    : ra3xdh@gmil.co and mbrin72043@yahoo.co.uk
- 
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -29,14 +29,14 @@ S4Q_Ieqndef::S4Q_Ieqndef()
   // pins
   Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
- 
+
   // arrow
   Lines.append(new qucs::Line( -8,  0, 8, 0,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
   Lines.append(new qucs::Line( -8,  0, -4,  -4,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line( -8,  0, -4,   4,QPen(Qt::darkRed,3)));
-  
+
   Texts.append(new Text(25,-30,"Eqn",Qt::darkRed,12.0,0.0,-1.0));
-  
+
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -49,7 +49,7 @@ S4Q_Ieqndef::S4Q_Ieqndef()
   Model = "S4Q_Ieqndef";
   SpiceModel = "B";
   Name  = "B";
-  
+
   Props.append(new Property("I", "", true,"B(I) specification."));
   Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
   Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
@@ -86,15 +86,17 @@ QString S4Q_Ieqndef::netlist()
     return QString();
 }
 
-QString S4Q_Ieqndef::spice_netlist(bool)
+QString S4Q_Ieqndef::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam  + " ";   // node names
     }
-    
+
     QString VI  = Props.at(0)-> Name;
     QString VI2 = Props.at(0)->Value;
     QString Line_2 = Props.at(1)->Value;
