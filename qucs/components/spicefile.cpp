@@ -47,6 +47,7 @@ SpiceFile::SpiceFile()
   Props.append(new Property("Ports", "", false, QStringLiteral("x")));
   Props.append(new Property("Sim", "yes", false, QStringLiteral("x")));
   Props.append(new Property("Preprocessor", "none", false, QStringLiteral("x")));
+  Props.append(new Property("Params", "", false, QStringLiteral("x")));
   withSim = false;
 
   Model = "SPICE";
@@ -505,7 +506,9 @@ QString SpiceFile::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
         s += " "+Ports.at(i)->Connection->Name;   // node names
     }
 
-    s += " " + spicecompat::getSubcktName(getSubcircuitFile()) + "\n";
+    s += " " + spicecompat::getSubcktName(getSubcircuitFile());
+    s += " " + getProperty("Params")->Value;
+    s += "\n";
     return s;
 }
 
