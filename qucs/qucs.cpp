@@ -3508,7 +3508,7 @@ void QucsApp::slotSaveCdlNetlist()
         Schematic* schematic = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
         Q_ASSERT(schematic != nullptr);
 
-#ifdef NETLIST_CDL_TO_CONSOLEa // for fast testing purposes
+#ifdef NETLIST_CDL_TO_CONSOLE // for fast testing purposes
         QString netlistString;
         {
             QTextStream netlistStream(&netlistString);
