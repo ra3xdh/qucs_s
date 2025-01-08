@@ -81,20 +81,30 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
   topGrid->addWidget(FileEdit, 1,1);
   topGrid->addWidget(ButtBrowse, 1,2);
 
+  ParamsEdit = new QLineEdit;
+  ParamsEdit->setText(Comp->getProperty("Params")->Value);
+  ParamsEdit->setToolTip(tr("Set SPICE parameters string as a plain text.\n"
+                            "Example:\n"
+                            "V0=1.0 I0=2.0"));
+  ParamCheck = new QCheckBox(tr("Show"));
+  ParamCheck->setChecked(Comp->getProperty("Params")->display);
+  topGrid->addWidget(new QLabel(tr("SPICE parameters:")), 2,0);
+  topGrid->addWidget(ParamsEdit, 2,1);
+  topGrid->addWidget(ParamCheck, 2,2);
 
   FileCheck = new QCheckBox(tr("show file name in schematic"), myParent);
   ButtEdit = new QPushButton(tr("Edit"), myParent);
   connect(ButtEdit, SIGNAL(clicked()), SLOT(slotButtEdit()));
 
-  topGrid->addWidget(FileCheck, 2, 1);
-  topGrid->addWidget(ButtEdit, 2, 2);
+  topGrid->addWidget(FileCheck, 3, 1);
+  topGrid->addWidget(ButtEdit, 3, 2);
 
 
   SimCheck = new QCheckBox(tr("include SPICE simulations"), myParent);
-  topGrid->addWidget(SimCheck, 3,1);
+  topGrid->addWidget(SimCheck, 4,1);
 
   QHBoxLayout *hcenter = new QHBoxLayout;
-  topGrid->addLayout(hcenter, 4, 1);
+  topGrid->addLayout(hcenter, 5, 1);
 
   hcenter->setSpacing(5);
   PrepCombo = new QComboBox();
@@ -268,6 +278,9 @@ void SpiceDialog::slotButtApply()
     (*pp)->Value = PrepCombo->currentText();
     changed = true;
   }
+
+  Comp->getProperty("Params")->Value = ParamsEdit->text();
+  Comp->getProperty("Params")->display = ParamCheck->isChecked();
 
   if(changed || Comp->withSim)    // because of "sim" text
   {

@@ -333,3 +333,158 @@ X1 _net0 _net1 _net2 XS8020L
   </Symbol>
 </Component>
 
+<Component TriacGeneric>
+  <Description>
+Generic triac model from ST microelectronics. This model works only with LTSpice compatibility option:
+============================
+* Vdrm : Repetitive forward off-state voltage
+* Ih   : Holding current 
+* Igt  : Gate trigger current 
+* Rt   : Dynamic on-state resistance
+* Standard : Differenciation between Snubberless and Standard TRIACs
+* (Standard=0 => Snubberless TRIACs, Standard=1 => Standard TRIACs)
+  </Description>
+  <Model>
+.Def:Thyristor_TriacGeneric _net0 _net1 _net2 Vdrm="400" Igt="20m" Ih="6m" Rt="0.10" Standard="1"
+Sub:X1 _net0 _net2 _net1 gnd Type="TriacST_orig_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "TriacST_orig.cir.lst">
+  <Spice>
+.subckt Triac_ST A K G PARAMS:
++ Vdrm=400v     
++ Igt=20ma
++ Ih=6ma        
++ Rt=0.01
++ Standard=1
+*
+* Vdrm : Repetitive forward off-state voltage
+* Ih   : Holding current 
+* Igt  : Gate trigger current 
+* Rt   : Dynamic on-state resistance
+* Standard : Differenciation between Snubberless and Standard TRIACs
+* (Standard=0 => Snubberless TRIACs, Standard=1 => Standard TRIACs)
+*
+****************************
+* Power circuit *
+****************************
+*
+****************************
+*Switch circuit*
+****************************
+* Q1 & Q2 Conduction
+S_S3           A Plip1 positive 0 Smain
+*RS_S3         positive 0 1G
+D_DAK1         Plip1 Plip2 Dak 
+R_Rlip         Plip1 Plip2  1k
+V_Viak         Plip2 K DC 0 AC 0 
+*
+* Q3 & Q4 Conduction
+S_S4           A Plin1 negative 0 Smain
+*RS_S4         negative 0 1G
+D_DKA1         Plin2 Plin1 Dak 
+R_Rlin         Plin1 Plin2  1k 
+V_Vika         K Plin2 DC 0 AC 0  
+****************************
+*Gate circuit*
+****************************
+R_Rgk          G K  10G  
+D_DGKi         Pg2 G Dgk 
+D_DGKd         G Pg2 Dgk 
+V_Vig          Pg2 K DC 0 AC 0 
+R_Rlig         G Pg2  1k  
+*
+****************************
+*Interface circuit*
+****************************
+* positive pilot
+R_Rp              Controlp positive  2.2  
+C_Cp              0 positive  1u 
+E_IF15OR3         Controlp 0 VALUE {IF(  ( (V(CMDIG)>0.5) | (V(CMDILIH)>0.5) | (V(CMDVdrm)>0.5) ),400,0 )}
+* 
+* negative pilot
+R_Rn              Controln negative  2.2   
+C_Cn              0 negative  1u  
+E_IF14OR3         Controln 0 VALUE {IF(  ( (V(CMDIG)>0.5) | (V(CMDILIHN)>0.5) |  (V(CMDVdrm)>0.5) ),400,0 )}
+*
+****************************
+* Pilots circuit *
+****************************
+****************************
+* Pilot Gate     *
+****************************
+E_IF1IG             inIG 0 VALUE {IF(  ( ABS(I(V_Vig)) ) > (Igt-1u) ,1,0 )}
+E_MULT2MULT         CMDIG 0 VALUE {V(Q4)*V(inIG)}
+E_IF2Quadrant4      Q4 0 VALUE {IF(((I(V_Vig)>(Igt-0.000001))&((V(A)-V(K))<0)&(Standard==0)),0,1)}
+*
+****************************
+* Pilot IHIL     *
+****************************
+*
+E_IF10IL         inIL 0 VALUE {IF( ((I(V_Viak))>(Ih/2)),1,0 )}
+E_IF5IH          inIH 0 VALUE {IF( ((I(V_Viak))>(Ih/3)),1,0 )} 
+*
+* Flip_flop IHIL
+E_IF6DIHIL         SDIHIL 0 VALUE {IF((V(inIL)*V(inIH)+V(inIH)*(1-V(inIL))*(V(CMDILIH)) )>0.5,1,0)}
+C_CIHIL            CMDILIH 0  1n  
+R_RIHIL            SDIHIL CMDILIH  1K  
+R_RIHIL2           CMDILIH 0  100Meg  
+*
+****************************
+* Pilot IHILN    *
+****************************
+*
+E_IF11ILn           inILn 0 VALUE {IF( ((I(V_Vika))>(Ih/2)),1,0 )}
+E_IF3IHn            inIHn 0 VALUE {IF( ((I(V_Vika))>(Ih/3)),1,0 )} 
+* Flip_flop IHILn
+E_IF4DIHILN         SDIHILN 0 VALUE {IF((V(inILn)*V(inIHn)+V(inIHn)*(1-V(inILn))*(V(CMDILIHN)) )>0.5,1,0)}
+C_CIHILn            CMDILIHN 0  1n  
+R_RIHILn            SDIHILN CMDILIHN  1K  
+R_RIHILn2           CMDILIHN 0  100Meg  
+*
+****************************
+* Pilot VDRM     *
+****************************
+E_IF8Vdrm           inVdrm 0 VALUE {IF( (ABS(V(A)-V(K))>(Vdrm*1.3)),1,0 )}
+E_IF9IHVDRM         inIhVdrm 0 VALUE {IF( (I(V_Viak)>(Vdrm*1.3)/1.2meg)| (I(V_Vika)>(Vdrm*1.3)/1.2meg),1,0)}
+* Flip_flop VDRM
+E_IF7DVDRM          SDVDRM 0 VALUE {IF((V(inVdrm)+(1-V(inVdrm))*V(inIhVdrm)*V(CMDVdrm) )>0.5,1,0)}
+C_CVdrm             CMDVdrm 0  1n  
+R_RVdrm             SDVDRM CMDVdrm  100  
+R_RVdrm2            CMDVdrm 0  100Meg  
+*
+****************************
+* Switch Model *
+****************************
+.MODEL Smain VSWITCH Roff=1.2meg Ron={Rt} Voff=0 Von=100
+****************
+* Diodes Model *
+****************
+.MODEL  Dak D( Is=3E-12 Cjo=5pf) 
+.MODEL  Dgk D( Is=1E-16 Cjo=50pf Rs=5) 
+.ends 
+
+
+.SUBCKT Thyristor_TriacGeneric  gnd _net0 _net1 _net2 Vdrm=400 Igt=20m Ih=6m Rt=0.10 Standard=1 
+X1 _net0 _net2 _net1 Triac_ST Vdrm={Vdrm} Igt={Igt} Ih={Ih} Rt={Rt} Standard={Standard}
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -20 44 SUB "1=Vdrm=400=Repetitive forward off-state voltage=" "1=Igt=20m=Gate trigger current =" "1=Ih=6m=Holding current =" "1=Rt=0.10=Dynamic on-state resistance=" "1=Standard=1=0 -- Snubberless TRIACs;1 -- Standard TRIACs=">
+    <.PortSym 0 -30 1 0 P1>
+    <Line 0 6 0 24 #000080 2 1>
+    <Line 0 -30 0 24 #000080 2 1>
+    <Line 18 6 -36 0 #000080 2 1>
+    <Line -30 10 17 0 #000080 2 1>
+    <Line -13 10 4 -4 #000080 2 1>
+    <Line -9 6 -9 -12 #000080 2 1>
+    <Line -9 6 9 -12 #000080 2 1>
+    <Line 9 -6 9 12 #000080 2 1>
+    <Line 9 -6 -9 12 #000080 2 1>
+    <Line 18 -6 -36 0 #000080 2 1>
+    <.PortSym 0 30 3 0 P3>
+    <.PortSym -30 10 2 0 P2>
+  </Symbol>
+</Component>
+
+

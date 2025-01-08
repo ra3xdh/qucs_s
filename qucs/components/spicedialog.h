@@ -73,8 +73,8 @@ private:
   QRegularExpressionValidator *Validator, *ValRestrict;
   QRegularExpression    Expr;
   QListWidget *NodesList, *PortsList;
-  QCheckBox   *FileCheck, *SimCheck;
-  QLineEdit   *FileEdit, *CompNameEdit;
+  QCheckBox   *FileCheck, *SimCheck, *ParamCheck;
+  QLineEdit   *FileEdit, *CompNameEdit, *ParamsEdit;
   QPushButton *ButtBrowse, *ButtEdit, *ButtAdd, *ButtRemove,
               *ButtOK, *ButtApply, *ButtCancel;
   QComboBox   *PrepCombo;
