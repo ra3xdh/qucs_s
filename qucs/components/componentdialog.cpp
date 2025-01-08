@@ -597,13 +597,13 @@ void ComponentDialog::updateSweepProperty(const QString& property)
       if (property == "Start" || property == "Stop" || property == "Points" || property == "All")
       {
         double points = str2num(pointsEdit->value());
-        double step = (points - 1.0) / log10(fabs((stop < 1.0 ? 1.0 : stop) / (start < 1.0 ? 1.0 : start)));
+        double step = (points - 1.0) / log10(fabs((stop) / (start)));
         sweepParamWidget["Step"]->setValue(misc::num2str(step));
       }
       else if (property == "Step")
       {
         double step = str2num(sweepParamWidget["Step"]->value());
-        double points = log10(fabs((stop < 1.0 ? 1.0 : stop) / (start < 1.0 ? 1.0 : start))) * step + 1.0;
+        double points = log10(fabs((stop) / (start))) * step + 1.0;
         pointsEdit->setValue(QString::number(round(points), 'g', 16));
       }     
     }
