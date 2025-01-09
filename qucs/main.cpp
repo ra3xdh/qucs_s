@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <locale.h>
+#include <iostream>
 
 #include <QApplication>
 #include <QString>
@@ -36,6 +37,7 @@
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QtSvg>
+#include <QCommandLineParser>
 
 #include "qucs.h"
 #include "main.h"
@@ -750,305 +752,358 @@ void createListComponentEntry(){
 // #########################################################################
 int main(int argc, char *argv[])
 {
-  qInstallMessageHandler(qucsMessageOutput);
-  // set the Qucs version string
-  QucsVersion = VersionTriplet(PACKAGE_VERSION);
+    qInstallMessageHandler(qucsMessageOutput);
+    // set the Qucs version string
+    QucsVersion = VersionTriplet(PACKAGE_VERSION);
 
-  // apply default settings
-  //QucsSettings.font = QFont("Helvetica", 12);
-  QucsSettings.largeFontSize = 16.0;
-  QucsSettings.maxUndo = 20;
-  QucsSettings.NodeWiring = 0;
+    // apply default settings
+    //QucsSettings.font = QFont("Helvetica", 12);
+    QucsSettings.largeFontSize = 16.0;
+    QucsSettings.maxUndo = 20;
+    QucsSettings.NodeWiring = 0;
 
-  // initially center the application
-  QApplication a(argc, argv);
-  //QDesktopWidget *d = a.desktop();
-  QucsSettings.font = QApplication::font();
-  QucsSettings.appFont = QApplication::font();
-  QucsSettings.textFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-  QucsSettings.font.setPointSize(12);
+    // initially center the application
+    QApplication app(argc, argv);
+    //QDesktopWidget *d = app.desktop();
+    QucsSettings.font = QApplication::font();
+    QucsSettings.appFont = QApplication::font();
+    QucsSettings.textFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    QucsSettings.font.setPointSize(12);
 
-  // default
-  QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/QucsWorkspace");
-  QucsSettings.qucsWorkspaceDir.setPath(QucsWorkdirPath);
-  QucsSettings.QucsWorkDir.setPath(QucsSettings.qucsWorkspaceDir.canonicalPath());
+    // default
+    QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/QucsWorkspace");
+    QucsSettings.qucsWorkspaceDir.setPath(QucsWorkdirPath);
+    QucsSettings.QucsWorkDir.setPath(QucsSettings.qucsWorkspaceDir.canonicalPath());
 
-  // load existing settings (if any)
-  loadSettings();
+    // load existing settings (if any)
+    loadSettings();
 
-  /* restore saved style */
-  QString savedStyle = _settings::Get().item<QString>("AppStyle");
-  QStyle* style = QStyleFactory::create(savedStyle);
-  if (style) {
-      QApplication::setStyle(style);
-  }
-  /* restore saved style */
+    /* restore saved style */
+    QString savedStyle = _settings::Get().item<QString>("AppStyle");
+    QStyle* style = QStyleFactory::create(savedStyle);
+    if (style) {
+        QApplication::setStyle(style);
+    }
+    /* restore saved style */
 
-  QDir().mkpath(QucsSettings.qucsWorkspaceDir.absolutePath());
-  QDir().mkpath(QucsSettings.tempFilesDir.absolutePath());
+    QDir().mkpath(QucsSettings.qucsWorkspaceDir.absolutePath());
+    QDir().mkpath(QucsSettings.tempFilesDir.absolutePath());
 
-  // continue to set up overrides or default settings (some are saved on exit)
+    // continue to set up overrides or default settings (some are saved on exit)
 
-  // check for relocation env variable
-  QDir QucsDir;
-  QString QucsApplicationPath = QCoreApplication::applicationDirPath();
+    // check for relocation env variable
+    QDir QucsDir;
+    QString QucsApplicationPath = QCoreApplication::applicationDirPath();
 #ifdef __APPLE__
-  QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
+    QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
 #else
-  QucsDir = QDir(QucsApplicationPath);
-  QucsDir.cdUp();
+    QucsDir = QDir(QucsApplicationPath);
+    QucsDir.cdUp();
 #endif
 
-  QucsSettings.BinDir =      QucsApplicationPath.contains("bin") ?
-                                    (QucsApplicationPath + QDir::separator()) : QucsDir.absoluteFilePath("bin/");
-  QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
+    QucsSettings.BinDir = QucsApplicationPath.contains("bin") ?
+                            (QucsApplicationPath + QDir::separator()) : QucsDir.absoluteFilePath("bin/");
+    QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
 
-  QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
-  QucsSettings.OctaveDir =   QucsDir.canonicalPath() + "/share/" QUCS_NAME "/octave/";
-  QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/examples/";
-  QucsSettings.DocDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
-  QucsSettings.Editor = "qucs";
+    QucsSettings.LibDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
+    QucsSettings.OctaveDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/octave/";
+    QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/examples/";
+    QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
+    QucsSettings.Editor = "qucs";
 
-  /// \todo Make the setting up of all executables below more consistent
-  char *var = NULL; // Don't use QUCSDIR with Qucs-S
-  var = getenv("QUCSATOR");
-  if(var != NULL) {
-      QucsSettings.QucsatorVar = QString(var);
-  }
-  else {
-      QucsSettings.QucsatorVar = "";
-  }
-
-  var = getenv("QUCSCONV");
-  if(var != NULL) {
-      QucsSettings.Qucsconv = QString(var);
-  }
-
-
-  var = getenv("ADMSXMLBINDIR");
-  if(var != NULL) {
-      QucsSettings.AdmsXmlBinDir.setPath(QString(var));
-  }
-  else {
-      // default admsXml bindir same as Qucs
-      QString admsExec;
-#if defined(_WIN32) || defined(__MINGW32__)
-      admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml.exe");
-#else
-      admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml");
-#endif
-      QFile adms(admsExec);
-      if(adms.exists())
-        QucsSettings.AdmsXmlBinDir.setPath(QucsSettings.BinDir);
-  }
-
-  var = getenv("ASCOBINDIR");
-  if(var != NULL)  {
-      QucsSettings.AscoBinDir.setPath(QString(var));
-  }
-  else  {
-      // default ASCO bindir same as Qucs
-      QString ascoExec;
-#if defined(_WIN32) || defined(__MINGW32__)
-      ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco.exe");
-#else
-      ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco");
-#endif
-      QFile asco(ascoExec);
-      if(asco.exists())
-        QucsSettings.AscoBinDir.setPath(QucsSettings.BinDir);
-  }
-
-
-  var = getenv("QUCS_OCTAVE");
-  if (var != NULL) {
-      QucsSettings.QucsOctave = QString(var);
-  } else {
-      QucsSettings.QucsOctave.clear();
-  }
-
-  if(!QucsSettings.BGColor.isValid())
-    QucsSettings.BGColor.setRgb(255, 250, 225);
-
-  // syntax highlighting
-  if(!QucsSettings.Comment.isValid())
-    QucsSettings.Comment = Qt::gray;
-  if(!QucsSettings.String.isValid())
-    QucsSettings.String = Qt::red;
-  if(!QucsSettings.Integer.isValid())
-    QucsSettings.Integer = Qt::blue;
-  if(!QucsSettings.Real.isValid())
-    QucsSettings.Real = Qt::darkMagenta;
-  if(!QucsSettings.Character.isValid())
-    QucsSettings.Character = Qt::magenta;
-  if(!QucsSettings.Type.isValid())
-    QucsSettings.Type = Qt::darkRed;
-  if(!QucsSettings.Attribute.isValid())
-    QucsSettings.Attribute = Qt::darkCyan;
-  if(!QucsSettings.Directive.isValid())
-    QucsSettings.Directive = Qt::darkCyan;
-  if(!QucsSettings.Task.isValid())
-    QucsSettings.Task = Qt::darkRed;
-
-  QucsSettings.sysDefaultFont = QApplication::font();
-  QApplication::setFont(QucsSettings.appFont);
-
-  QTranslator tor( 0 );
-  QString lang = QucsSettings.Language;
-  if(lang.isEmpty()) {
-      QLocale loc;
-      lang = loc.name();
-//    lang = QTextCodec::locale();
-  }
-  static_cast<void>(tor.load( QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
-  QApplication::installTranslator( &tor );
-
-  // This seems to be necessary on a few system to make strtod()
-  // work properly !???!
-  setlocale (LC_NUMERIC, "C");
-
-  QString inputfile;
-  QString outputfile;
-
-  bool netlist_flag = false;
-  bool print_flag = false;
-  bool ngspice_flag = false;
-  bool xyce_flag = false;
-  bool run_flag = false;
-  QString page = "A4";
-  int dpi = 96;
-  QString color = "RGB";
-  QString orientation = "portraid";
-
-  // simple command line parser
-  for (int i = 1; i < argc; ++i) {
-    if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
-      fprintf(stdout,
-  "Usage: %s [-hv] \n"
-  "       qucs -n -i FILENAME -o FILENAME\n"
-  "       qucs -p -i FILENAME -o FILENAME.[pdf|png|svg|eps] \n\n"
-  "  -h, --help     display this help and exit\n"
-  "  -v, --version  display version information and exit\n"
-  "  -n, --netlist  convert Qucs schematic into netlist\n"
-  "  -p, --print    print Qucs schematic to file (eps needs inkscape)\n"
-  "    --page [A4|A3|B4|B5]         set print page size (default A4)\n"
-  "    --dpi NUMBER                 set dpi value (default 96)\n"
-  "    --color [RGB|RGB]            set color mode (default RGB)\n"
-  "    --orin [portraid|landscape]  set orientation (default portraid)\n"
-  "  -i FILENAME    use file as input schematic\n"
-  "  -o FILENAME    use file as output netlist\n"
-  "     --ngspice   create Ngspice netlist\n"
-  "     --xyce      Xyce netlist\n"
-  "     --run       execute Ngspice/Xyce immediately\n"
-  "  -icons         create component icons under ./bitmaps_generated\n"
-  "  -doc           dump data for documentation:\n"
-  "                 * file with of categories: categories.txt\n"
-  "                 * one directory per category (e.g. ./lumped components/)\n"
-  "                   - CSV file with component data ([comp#]_data.csv)\n"
-  "                   - CSV file with component properties. ([comp#]_props.csv)\n"
-  "  -list-entries  list component entry formats for schematic and netlist\n"
-  , argv[0]);
-      return 0;
-    }
-    else if (!strcmp(argv[i], "-v") || !strcmp(argv[i], "--version")) {
-#ifdef GIT
-      fprintf(stdout, "qucs s" PACKAGE_VERSION " (" GIT ")" "\n");
-#else
-      fprintf(stdout, "Qucs " PACKAGE_VERSION "\n");
-#endif
-      return 0;
-    }
-    else if (!strcmp(argv[i], "-n") || !strcmp(argv[i], "--netlist")) {
-      netlist_flag = true;
-    }
-    else if (!strcmp(argv[i], "-p") || !strcmp(argv[i], "--print")) {
-      print_flag = true;
-    }
-    else if (!strcmp(argv[i], "--page")) {
-      page = argv[++i];
-    }
-    else if (!strcmp(argv[i], "--dpi")) {
-      dpi = QString(argv[++i]).toInt();
-    }
-    else if (!strcmp(argv[i], "--color")) {
-      color = argv[++i];
-    }
-    else if (!strcmp(argv[i], "--orin")) {
-      orientation = argv[++i];
-    }
-    else if (!strcmp(argv[i], "-i")) {
-      inputfile = argv[++i];
-    }
-    else if (!strcmp(argv[i], "-o")) {
-      outputfile = argv[++i];
-    }
-    else if (!strcmp(argv[i], "--ngspice")) {
-      ngspice_flag = true;
-    }
-    else if (!strcmp(argv[i], "--xyce")) {
-      xyce_flag = true;
-    }
-    else if (!strcmp(argv[i], "--run")) {
-      run_flag = true;
-    }
-    else if(!strcmp(argv[i], "-icons")) {
-      createIcons();
-      return 0;
-    }
-    else if(!strcmp(argv[i], "-doc")) {
-      createDocData();
-      return 0;
-    }
-    else if(!strcmp(argv[i], "-list-entries")) {
-      createListComponentEntry();
-      return 0;
+    /// \todo Make the setting up of all executables below more consistent
+    char *var = NULL; // Don't use QUCSDIR with Qucs-S
+    var = getenv("QUCSATOR");
+    if (var != NULL) {
+        QucsSettings.QucsatorVar = QString(var);
     }
     else {
-      fprintf(stderr, "Error: Unknown option: %s\n", argv[i]);
-      return -1;
+        QucsSettings.QucsatorVar = "";
     }
-  }
 
-  // check operation and its required arguments
-  if (netlist_flag and print_flag) {
-    fprintf(stderr, "Error: --print and --netlist cannot be used together\n");
-    return -1;
-  } else if (((ngspice_flag||xyce_flag) && print_flag)||
-             (run_flag && print_flag))
-  {
-    fprintf(stderr, "Error: --print and Ngspice/Xyce cannot be used together\n");
-    return -1;
-  } else if (netlist_flag or print_flag) {
-    if (inputfile.isEmpty()) {
-      fprintf(stderr, "Error: Expected input file.\n");
-      return -1;
+    var = getenv("QUCSCONV");
+    if (var != NULL) {
+        QucsSettings.Qucsconv = QString(var);
     }
-    if (outputfile.isEmpty()) {
-      fprintf(stderr, "Error: Expected output file.\n");
-      return -1;
+
+    var = getenv("ADMSXMLBINDIR");
+    if (var != NULL) {
+        QucsSettings.AdmsXmlBinDir.setPath(QString(var));
     }
-    // create netlist from schematic
-    if (netlist_flag) {
-        if (!run_flag) {
-            if (ngspice_flag) return doNgspiceNetlist(inputfile, outputfile);
-            else if (xyce_flag) return doXyceNetlist(inputfile, outputfile);
-            else return doNetlist(inputfile, outputfile);
-        } else {
-            if (ngspice_flag) return runNgspice(inputfile, outputfile);
-            else if (xyce_flag) return runXyce(inputfile, outputfile);
-            else return 1;
+    else {
+        // default admsXml bindir same as Qucs
+        QString admsExec;
+#if defined(_WIN32) || defined(__MINGW32__)
+        admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml.exe");
+#else
+        admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml");
+#endif
+        QFile adms(admsExec);
+        if (adms.exists())
+        {
+            QucsSettings.AdmsXmlBinDir.setPath(QucsSettings.BinDir);
         }
-    } else if (print_flag) {
-      return doPrint(inputfile, outputfile,
-          page, dpi, color, orientation);
     }
-  }
 
-  QucsMain = new QucsApp();
-  //1a.setMainWidget(QucsMain);
+    var = getenv("ASCOBINDIR");
+    if (var != NULL) {
+        QucsSettings.AscoBinDir.setPath(QString(var));
+    }
+    else {
+        // default ASCO bindir same as Qucs
+        QString ascoExec;
+#if defined(_WIN32) || defined(__MINGW32__)
+        ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco.exe");
+#else
+        ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco");
+#endif
+        QFile asco(ascoExec);
+        if (asco.exists())
+        {
+            QucsSettings.AscoBinDir.setPath(QucsSettings.BinDir);
+        }
+    }
 
-  QucsMain->show();
-  int result = a.exec();
-  //saveApplSettings(QucsMain);
-  return result;
+    var = getenv("QUCS_OCTAVE");
+    if (var != NULL) {
+        QucsSettings.QucsOctave = QString(var);
+    } else {
+        QucsSettings.QucsOctave.clear();
+    }
+
+    if(!QucsSettings.BGColor.isValid())
+      QucsSettings.BGColor.setRgb(255, 250, 225);
+
+    // syntax highlighting
+    if(!QucsSettings.Comment.isValid())
+        QucsSettings.Comment = Qt::gray;
+    if(!QucsSettings.String.isValid())
+        QucsSettings.String = Qt::red;
+    if(!QucsSettings.Integer.isValid())
+        QucsSettings.Integer = Qt::blue;
+    if(!QucsSettings.Real.isValid())
+        QucsSettings.Real = Qt::darkMagenta;
+    if(!QucsSettings.Character.isValid())
+        QucsSettings.Character = Qt::magenta;
+    if(!QucsSettings.Type.isValid())
+        QucsSettings.Type = Qt::darkRed;
+    if(!QucsSettings.Attribute.isValid())
+        QucsSettings.Attribute = Qt::darkCyan;
+    if(!QucsSettings.Directive.isValid())
+        QucsSettings.Directive = Qt::darkCyan;
+    if(!QucsSettings.Task.isValid())
+        QucsSettings.Task = Qt::darkRed;
+
+    QucsSettings.sysDefaultFont = QApplication::font();
+    QApplication::setFont(QucsSettings.appFont);
+
+    QTranslator tor(nullptr);
+    QString lang = QucsSettings.Language;
+    if (lang.isEmpty()) {
+        QLocale loc;
+        lang = loc.name();
+//      lang = QTextCodec::locale();
+    }
+    static_cast<void>(tor.load( QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
+    QApplication::installTranslator( &tor );
+
+    // This seems to be necessary on a few system to make strtod()
+    // work properly !???!
+    setlocale (LC_NUMERIC, "C");
+
+#ifdef GIT
+    const QString applicationVersion(QString::fromUtf8("qucs s%1 (%2)").arg(PACKAGE_VERSION).arg(GIT));
+#else
+    const QString applicationVersion(QString::fromUtf8("Qucs %1").arg(PACKAGE_VERSION));
+#endif
+
+    QCoreApplication::setApplicationVersion(applicationVersion);
+    QStringList cmdArgs;
+    for (int i = 0; i < argc; ++i)
+    {
+        cmdArgs << argv[i];
+    }
+
+    QCommandLineParser parser;
+    parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
+    parser.addVersionOption();
+
+    parser.addOptions({
+        {{"h", "help"}, QCoreApplication::translate("main", "display this help and exit")},
+        {{"n", "netlist"}, QCoreApplication::translate("main", "convert Qucs schematic into netlist")},
+        {{"p", "print"}, QCoreApplication::translate("main", "print Qucs schematic to file (eps needs inkscape)")},
+        {"page", QCoreApplication::translate("main", "set print page size (default A4)"), "A4|A3|B4|B5", "A4"},
+        {"dpi", QCoreApplication::translate("main", "set dpi value (default 96)"), "NUMBER", "96"},
+        {"color", QCoreApplication::translate("main", "set color mode (default RGB)"), "RGB|BW", "RGB"},
+        {"orin", QCoreApplication::translate("main", "set orientation (default portraid)"), "portraid|landscape", "portraid"},
+        {"i", QCoreApplication::translate("main", "use file as input schematic"), "FILENAME"},
+        {"o", QCoreApplication::translate("main", "use file as output netlist"), "FILENAME"},
+        {"ngspice", QCoreApplication::translate("main", "create Ngspice netlist")},
+        {"xyce", QCoreApplication::translate("main", "Xyce netlist")},
+        {"run", QCoreApplication::translate("main", "execute Ngspice/Xyce immediately")},
+        {"icons", QCoreApplication::translate("main", "create component icons under ./bitmaps_generated")},
+        {"doc", QCoreApplication::translate(
+                "main",
+                "dump data for documentation:\n"
+                "* file with of categories: categories.txt\n"
+                "* one directory per category (e.g. ./lumped\n"
+                "   components/)\n"
+                "   - CSV file with component data\n"
+                "     ([comp#]_data.csv)\n"
+                "   - CSV file with component properties.\n"
+                "     ([comp#]_props.csv)"
+                )
+        },
+        {"list-entries", QCoreApplication::translate("main", "list component entry formats for schematic and netlist")},
+        {{"c", "netlist2Console"}, QCoreApplication::translate("main", "write netlist to console")},
+    });
+
+    parser.process(cmdArgs);
+
+    if (parser.isSet("help"))
+    {
+        // some modification of the Qt-generated usage text
+
+        QString helpText = parser.helpText();
+        helpText.insert(
+                helpText.indexOf('\n', 0)+1,
+                QString::fromUtf8(
+                    "       qucs -n -i FILENAME -o FILENAME\n"
+                    "       qucs -p -i FILENAME -o FILENAME.[pdf|png|svg|eps]\n"));
+
+        QRegularExpression optIndent(QString::fromUtf8("--page|--dpi|--color|--orin|--ngspice|--xyce|--run"));
+        int idx;
+        int from = 0;
+        while ((idx = helpText.indexOf(optIndent, from)) != -1)
+        {
+            helpText.insert(idx, "  ");
+            from = idx +3;
+        }
+
+        std::cout << helpText.toUtf8().constData();
+        exit(0);
+    }
+
+    const bool netlist_flag(parser.isSet("netlist"));
+    const bool print_flag(parser.isSet("print"));
+    const QString page(parser.value("page"));
+    const int dpi(parser.value("dpi").toInt());
+    const QString color(parser.value("color"));
+    const QString orientation(parser.value("orin"));
+    const QString inputfile(parser.value("i"));
+    const QString outputfile(parser.value("o"));
+    const bool ngspice_flag(parser.isSet("ngspice"));
+    const bool xyce_flag(parser.isSet("xyce"));
+    const bool run_flag(parser.isSet("run"));
+    const bool netlist2Console(parser.isSet("netlist2Console"));
+
+#if 0
+    std::cout << "Current cli values:" << std::endl;
+    std::cout << "netlist_flag: " << netlist_flag << std::endl;
+    std::cout << "print_flag: " << print_flag << std::endl;
+    std::cout << "page: " << page.toUtf8().constData() << std::endl;
+    std::cout << "dpi: " << dpi << std::endl;
+    std::cout << "color: " << color.toUtf8().constData() << std::endl;
+    std::cout << "orientation: " << orientation.toUtf8().constData() << std::endl;
+    std::cout << "inputfile: " << inputfile.toUtf8().constData() << std::endl;
+    std::cout << "outputfile: " << outputfile.toUtf8().constData() << std::endl;
+    std::cout << "ngspice_flag: " << ngspice_flag << std::endl;
+    std::cout << "xyce_flag: " << xyce_flag << std::endl;
+    std::cout << "run_flag: " << run_flag << std::endl;
+    std::cout << "netlist2Console: " << netlist2Console << std::endl;
+    std::cout << "icons: " << parser.isSet("icons") << std::endl;
+    std::cout << "doc: " << parser.isSet("doc") << std::endl;
+    std::cout << "list-entries: " << parser.isSet("list-entries") << std::endl;
+
+    exit(0);
+#endif
+
+    if (parser.isSet("icons"))
+    {
+        createIcons();
+        return 0;
+    }
+
+    if (parser.isSet("doc"))
+    {
+        createDocData();
+        return 0;
+    }
+
+    if (parser.isSet("list-entries"))
+    {
+        createListComponentEntry();
+        return 0;
+    }
+
+    // check operation and its required arguments
+    if (netlist_flag and print_flag)
+    {
+        fprintf(stderr, "Error: --print and --netlist cannot be used together\n");
+        return -1;
+    }
+    else if (((ngspice_flag || xyce_flag) && print_flag) || (run_flag && print_flag))
+    {
+        fprintf(stderr, "Error: --print and Ngspice/Xyce cannot be used together\n");
+        return -1;
+    }
+    else if (netlist_flag or print_flag)
+    {
+        if (inputfile.isEmpty())
+        {
+            fprintf(stderr, "Error: Expected input file.\n");
+            return -1;
+        }
+        if (outputfile.isEmpty())
+        {
+            fprintf(stderr, "Error: Expected output file.\n");
+            return -1;
+        }
+        // create netlist from schematic
+        if (netlist_flag)
+        {
+            if (!run_flag)
+            {
+                if (ngspice_flag)
+                {
+                    return doNgspiceNetlist(inputfile, outputfile);
+                }
+                else if (xyce_flag)
+                {
+                    return doXyceNetlist(inputfile, outputfile);
+                }
+                else
+                {
+                    return doNetlist(inputfile, outputfile);
+                }
+            }
+            else
+            {
+                if (ngspice_flag)
+                {
+                    return runNgspice(inputfile, outputfile);
+                }
+                else if (xyce_flag)
+                {
+                    return runXyce(inputfile, outputfile);
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+        }
+        else if (print_flag)
+        {
+          return doPrint(inputfile, outputfile, page, dpi, color, orientation);
+        }
+    }
+
+    QucsMain = new QucsApp();
+    //1a.setMainWidget(QucsMain);
+
+    QucsMain->show();
+    int result = app.exec();
+    //saveApplSettings(QucsMain);
+    return result;
 }
