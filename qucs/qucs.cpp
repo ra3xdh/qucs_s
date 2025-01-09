@@ -88,9 +88,9 @@
 //#include "extsimkernels/codemodelgen.h"
 #include "symbolwidget.h"
 
-QucsApp::QucsApp()
+QucsApp::QucsApp(bool netlist2Console) :
+  a_netlist2Console(netlist2Console)
 {
-
   windowTitle = misc::getWindowTitle();
   setWindowTitle(windowTitle);
 
@@ -575,11 +575,11 @@ void QucsApp::initView()
   messageDock = new MessageDock(this);
 
     // initial projects directory model
-    m_homeDirModel = new QucsFileSystemModel(this);
-    m_proxyModel = new QucsSortFilterProxyModel();
-    //m_proxyModel->setDynamicSortFilter(true);
+    a_homeDirModel = new QucsFileSystemModel(this);
+    a_proxyModel = new QucsSortFilterProxyModel();
+    //a_proxyModel->setDynamicSortFilter(true);
     // show all directories (project and non-project)
-    m_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
+    a_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
 
     // ............................................
     QString path = QucsSettings.qucsWorkspaceDir.absolutePath();
@@ -1386,21 +1386,21 @@ void QucsApp::readProjects()
 
     if (path == homepath) {
         // in Qucs Home, disallow further up in the dirs tree
-        m_homeDirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
+        a_homeDirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
     } else {
-        m_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
+        a_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
     }
 
     // set the root path
-    QModelIndex rootModelIndex = m_homeDirModel->setRootPath(path);
+    QModelIndex rootModelIndex = a_homeDirModel->setRootPath(path);
     // assign the model to the proxy and the proxy to the view
-    m_proxyModel->setSourceModel(m_homeDirModel);
-    m_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+    a_proxyModel->setSourceModel(a_homeDirModel);
+    a_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
     // sort by first column (file name, only column show in the QListView)
-    m_proxyModel->sort(0);
-    Projects->setModel(m_proxyModel);
+    a_proxyModel->sort(0);
+    Projects->setModel(a_proxyModel);
     // fix the listview on the root path of the model
-    Projects->setRootIndex(m_proxyModel->mapFromSource(rootModelIndex));
+    Projects->setRootIndex(a_proxyModel->mapFromSource(rootModelIndex));
 }
 
 // ----------------------------------------------------------
@@ -3524,53 +3524,55 @@ void QucsApp::slotSaveCdlNetlist()
         Schematic* schematic = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
         Q_ASSERT(schematic != nullptr);
 
-#ifdef NETLIST_CDL_TO_CONSOLE // for fast testing purposes
-        QString netlistString;
+        if (a_netlist2Console)
         {
-            QTextStream netlistStream(&netlistString);
-            CdlNetlistWriter cdlWriter(netlistStream, schematic);
-            if (!cdlWriter.write())
+            QString netlistString;
             {
-                QMessageBox::critical(
-                        this,
-                        tr("Save CDL netlist"),
-                        tr("Save CDL netlist failed!"),
-                        QMessageBox::Ok);
+                QTextStream netlistStream(&netlistString);
+                CdlNetlistWriter cdlWriter(netlistStream, schematic);
+                if (!cdlWriter.write())
+                {
+                    QMessageBox::critical(
+                            this,
+                            tr("Save CDL netlist"),
+                            tr("Save CDL netlist failed!"),
+                            QMessageBox::Ok);
+                }
+                printf("\nCDL netlist:\n%s\n", netlistString.toUtf8().constData());
+                Content->refresh();
             }
-            printf("\nCDL netlist:\n%s\n", netlistString.toUtf8().constData());
-            Content->refresh();
         }
-#else
-        QFileInfo inf(schematic->getDocName());
-        QString filename = QFileDialog::getSaveFileName(
-                this,
-                tr("Save CDL netlist"),
-                inf.path() + QDir::separator() + "netlist.cdl",
-                "CDL netlist (*.cdl)");
-
-        if (filename.isEmpty())
+        else
         {
-            return;
-        }
+            QFileInfo inf(schematic->getDocName());
+            QString filename = QFileDialog::getSaveFileName(
+                    this,
+                    tr("Save CDL netlist"),
+                    inf.path() + QDir::separator() + "netlist.cdl",
+                    "CDL netlist (*.cdl)");
 
-        QFile netlistFile(filename);
-        if (netlistFile.open(QIODevice::WriteOnly))
-        {
-            QTextStream netlistStream(&netlistFile);
-            CdlNetlistWriter cdlWriter(netlistStream, schematic);
-            if (!cdlWriter.write())
+            if (filename.isEmpty())
             {
-                QMessageBox::critical(
-                        this,
-                        tr("Save CDL netlist"),
-                        tr("Save CDL netlist failed!"),
-                        QMessageBox::Ok);
+                return;
             }
-            netlistFile.close();
-            Content->refresh();
-        }
-#endif
 
+            QFile netlistFile(filename);
+            if (netlistFile.open(QIODevice::WriteOnly))
+            {
+                QTextStream netlistStream(&netlistFile);
+                CdlNetlistWriter cdlWriter(netlistStream, schematic);
+                if (!cdlWriter.write())
+                {
+                    QMessageBox::critical(
+                            this,
+                            tr("Save CDL netlist"),
+                            tr("Save CDL netlist failed!"),
+                            QMessageBox::Ok);
+                }
+                netlistFile.close();
+                Content->refresh();
+            }
+        }
     }
 }
 

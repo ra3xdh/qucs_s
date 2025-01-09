@@ -1099,7 +1099,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    QucsMain = new QucsApp();
+    QucsMain = new QucsApp(netlist2Console);
     //1a.setMainWidget(QucsMain);
 
     QucsMain->show();
