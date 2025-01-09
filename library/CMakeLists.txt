@@ -9,9 +9,11 @@ Crystal.lib
 Diodes.lib
 DiodesSchottky.lib
 Diodes_Extended.lib
+Digital_AUX.lib
 Digital_CD.lib
 Digital_HC.lib
 Digital_LV.lib
+Digital_XSPICE.lib
 GeDiodes.lib
 Ideal.lib
 JFETs.lib

@@ -4,3 +4,5 @@ PWM_Controller.lib
 Digital_CD.lib
 Digital_HC.lib
 Digital_LV.lib
+Digital_AUX.lib
+Digital_XSPICE.lib
