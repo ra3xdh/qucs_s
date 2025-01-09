@@ -1,0 +1,1027 @@
+<Qucs Library 24.4.1 "Digital_AUX">
+
+<Component Clock>
+  <Description>
+Analog Clock
+Based on Analog Pulse source
+  </Description>
+  <Model>
+.Def:Digital_AUX_Clock _net0 _net1 Freq="10MEG" Vhigh="1" Vlow="0" Tt="0.1ns" Tdelay="0"
+Sub:X1 _net0 _net1 gnd Type="Clock_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "Clock.cir.lst">
+  <Spice>
+* Analog User selectable Clock Source based on the Analog Pulse source
+*
+.subckt clk out+ out- freq=10MEG vlow=0 vhigh=1 tdelay=0 tt=0.1ns
+*
+* Assume Ttransit=Trise=Tfall, Tt=Tr=Tf
+* PER = 1/freq
+* PW = (PER/2)-Tt
+* PULSE(V1 V2 TD TR TF PW PER)
+*
+vclk out+ out- dc 0 pulse('vlow' 'vhigh' 'tdelay' 'tt' 'tt' '(((1/freq)/2)-tt)' '1/freq')
+*
+.ends clk
+
+.SUBCKT Digital_AUX_Clock  gnd _net0 _net1 Freq=10MEG Vhigh=1 Vlow=0 Tt=0.1ns Tdelay=0 
+X1 _net0 _net1 clk FREQ=FREQ VLOW=VLOW VHIGH=VHIGH TDELAY=TDELAY TT=TT
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 -10 0 19 #000000 2 1>
+    <Line 0 -10 0 19 #000000 2 1>
+    <Line -10 -10 10 0 #000000 2 1>
+    <Line -15 10 5 0 #000000 2 1>
+    <Line 10 -10 0 19 #000000 2 1>
+    <Line 10 -10 5 0 #000000 2 1>
+    <Line 0 10 10 0 #000000 2 1>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line 20 0 20 0 #000080 2 1>
+    <Line 0 40 0 -20 #000080 2 1>
+    <.PortSym 0 40 2 0 Out_n>
+    <.PortSym 40 0 1 180 Out_p>
+    <.ID 14 25 CLK "1=Freq=10MEG=Clock Frequency (Hz)=" "1=Vhigh=1=Output High Voltage (volts)=" "1=Vlow=0=Output Low Voltage (volts)=" "1=Tt=0.1ns=Output Rise/Fall times (sec)=" "1=Tdelay=0=Output Time Delay (sec)=">
+    <Text -11 -37 10 #000000 0 "CLK">
+    <Text 24 -17 8 #000000 0 "OUT">
+  </Symbol>
+</Component>
+
+<Component d_Clock>
+  <Description>
+Digital Clock
+Based on Analog Pulse source
+followed by ADC Bridge
+  </Description>
+  <Model>
+.Def:Digital_AUX_d_Clock _net1 _net0 Freq="10MEG" Tdelay="0" rise_delay="1ps" fall_delay="1ps"
+Sub:X1 _net1 _net0 gnd Type="d_Clock_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_Clock.cir.lst">
+  <Spice>
+* XSPICE Digital User selectable Clock based on the Analog Pulse source followed by ADC Bridge
+*
+.subckt d_clk 0 dout freq=10MEG tdelay=0 rise_delay=1ps fall_delay=1ps
+*
+* Assume Ttransit=tt=TR=TF=1ps
+* PER = 1/freq
+* PW = (PER/2)-tt
+* PULSE(V1 V2 TD TR TF PW PER)
+*
+vclk aout 0 dc 0 pulse(0 1 'tdelay' 1ps 1ps '(((1/freq)/2)-1ps)' '1/freq')
+*
+* ADC Bridge - single line
+* Analog-in -> Digital-out
+*
+abridge1 [aout] [dout] adc1
+.model adc1 adc_bridge(in_low=0.5 in_high=0.5 rise_delay='rise_delay' fall_delay='fall_delay')
+*
+.ends d_clk
+
+.SUBCKT Digital_AUX_d_Clock  gnd _net1 _net0 Freq=10MEG Tdelay=0 rise_delay=1ps fall_delay=1ps 
+X1 _net1 _net0 d_clk FREQ=FREQ TDELAY=TDELAY RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 -10 0 19 #000000 2 1>
+    <Line 0 -10 0 19 #000000 2 1>
+    <Line -10 -10 10 0 #000000 2 1>
+    <Line -15 10 5 0 #000000 2 1>
+    <Line 10 -10 0 19 #000000 2 1>
+    <Line 10 -10 5 0 #000000 2 1>
+    <Line 0 10 10 0 #000000 2 1>
+    <Rectangle -20 -20 40 40 #0000ff 2 1 #c0c0c0 1 0>
+    <Line 0 40 0 -20 #000080 2 1>
+    <Text -11 -37 10 #000000 0 "CLK">
+    <Line 20 0 20 0 #000080 2 1>
+    <Text 24 -17 8 #000000 0 "DOUT">
+    <.ID 14 25 CLK "1=Freq=10MEG=Clock Frequency (Hz)=" "1=Tdelay=0=Output Time Delay (sec)=" "1=rise_delay=1ps=Rise Delay (sec)=" "1=fall_delay=1ps=Fall Delay (sec)=">
+    <.PortSym 40 0 2 180 dout>
+    <.PortSym 0 40 1 0 rtn>
+  </Symbol>
+</Component>
+
+<Component VCO_XSPICE>
+  <Description>
+XSPICE VCO
+Based on d-osc
+Digital Output
+Analog Output 1 Volt
+  </Description>
+  <Model>
+.Def:Digital_AUX_VCO_XSPICE _net0 _net2 _net1 c1="0.5" c2="1" c3="1.5" c4="2" c5="2.5" c6="3" c7="3.5" c8="4" c9="4.5" f1="6e6" f2="7e6" f3="8e6" f4="9e6" f5="10e6" f6="11e6" f7="12e6" f8="13e6" f9="14e6"
+Sub:X1 _net0 _net2 _net1 gnd Type="VCO_dosc_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "VCO_dosc.cir.lst">
+  <Spice>
+***** XSPICE digital controlled oscillator d_osc as vco *************** 
+* 6 MHz to 14 MHz
+* name: d_osc_vco
+* aout analog output
+* dout digital output
+* cont control voltage
+*
+.subckt d_osc_vco dout aout cont
++ params: c1=0.5 c2=1 c3=1.5 c4=2 c5=2.5 c6=3 c7=3.5 c8=4 c9=4.5
++ params: f1=6e6 f2=7e6 f3=8e6 f4=9e6 f5=10e6 f6=11e6 f7=12e6 f8=13e6 f9=14e6
+*
+a1 cont dout clock
+.model clock d_osc(cntl_array = [c1 c2 c3 c4 c5 c6 c7 c8 c9]
++ freq_array = [f1 f2 f3 f4 f5 f6 f7 f8 f9]
++ duty_cycle = 0.5 init_phase = 180.0001 ; bug won't let "180.0" work
++ rise_delay = 1e-14 fall_delay=1e-14)
+
+*generate an analog output
+abridge-fit [dout] [aout] dac1
+.model dac1 dac_bridge(out_low=0 out_high=1 input_load=1e-12 t_rise=1e-12 t_fall=1e-12)
+
+.ends d_osc_vco
+
+.SUBCKT Digital_AUX_VCO_XSPICE  gnd _net0 _net2 _net1 c1=0.5 c2=1 c3=1.5 c4=2 c5=2.5 c6=3 c7=3.5 c8=4 c9=4.5 f1=6e6 f2=7e6 f3=8e6 f4=9e6 f5=10e6 f6=11e6 f7=12e6 f8=13e6 f9=14e6 
+X1 _net0 _net2 _net1 d_osc_vco c1=c1 c2=c2 c3=c3 c4=c4 c5=c5 c6=c6 c7=c7 c8=c8 c9=c9 f1=f1 f2=f2 f3=f3 f4=f4 f5=f5 f6=f6 f7=f7 f8=f8 f9=f9
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 -10 0 19 #000000 2 1>
+    <Line 0 -10 0 19 #000000 2 1>
+    <Line -10 -10 10 0 #000000 2 1>
+    <Line -15 10 5 0 #000000 2 1>
+    <Line 10 -10 0 19 #000000 2 1>
+    <Line 10 -10 5 0 #000000 2 1>
+    <Line -40 0 20 0 #000080 2 1>
+    <Line 20 -10 20 0 #000080 2 1>
+    <Line 20 10 20 0 #000080 2 1>
+    <Rectangle -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line 0 30 0 -10 #000080 2 1>
+    <Line 10 30 -20 0 #000080 2 1>
+    <Line 10 30 -10 10 #000080 2 1>
+    <Line 0 40 -10 -10 #000080 2 1>
+    <Text -39 -16 8 #000000 0 "VC">
+    <Text 24 -6 8 #000000 0 "AOUT">
+    <Text 23 -26 8 #000000 0 "DOUT">
+    <Text -9 -38 10 #000000 0 "VCO">
+    <Line 0 10 10 0 #000000 2 1>
+    <.PortSym -40 0 3 0 cont>
+    <.PortSym 40 -10 1 180 dout>
+    <.PortSym 40 10 2 180 aout>
+    <.ID 30 14 VCO "1=c1=0.5=Control Voltage Array (Volts)=" "1=c2=1=Control Voltage Array (Volts)=" "1=c3=1.5=Control Voltage Array (Volts)=" "1=c4=2=Control Voltage Array (Volts)=" "1=c5=2.5=Control Voltage Array (Volts)=" "1=c6=3=Control Voltage Array (Volts)=" "1=c7=3.5=Control Voltage Array (Volts)=" "1=c8=4=Control Voltage Array (Volts)=" "1=c9=4.5=Control Voltage Array (Volts)=" "1=f1=6e6=Frequency Array (Hertz)=" "1=f2=7e6=Frequency Array (Hertz)=" "1=f3=8e6=Frequency Array (Hertz)=" "1=f4=9e6=Frequency Array (Hertz)=" "1=f5=10e6=Frequency Array (Hertz)=" "1=f6=11e6=Frequency Array (Hertz)=" "1=f7=12e6=Frequency Array (Hertz)=" "1=f8=13e6=Frequency Array (Hertz)=" "1=f9=14e6=Frequency Array (Hertz)=">
+  </Symbol>
+</Component>
+
+<Component ADC_bridge>
+  <Description>
+XSPICE ADC Bridge x1
+  </Description>
+  <Model>
+.Def:Digital_AUX_ADC_bridge _net0 _net1 in_low="0.5" in_high="0.5" rise_delay="1e-9" fall_delay="1e-9"
+Sub:X1 _net0 _net1 gnd Type="ADC_bridge_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "ADC_bridge.cir.lst">
+  <Spice>
+* ADC Bridge - single line
+* Analog-in -> Digital-out
+.subckt adcbridge Ain Dout in_low=0.5 in_high=0.5 rise_delay=1e-9 fall_delay=1e-9
+*
+abridge [Ain] [Dout] adc1 ; ngspice only accepts names starting with "a"
+*
+.model adc1 adc_bridge(in_low='in_low' in_high='in_high' rise_delay='rise_delay' fall_delay='fall_delay')
+*
+.ends adcbridge
+
+.SUBCKT Digital_AUX_ADC_bridge  gnd _net0 _net1 in_low=0.5 in_high=0.5 rise_delay=1e-9 fall_delay=1e-9 
+X1 _net0 _net1 adcbridge IN_LOW=IN_LOW IN_HIGH=IN_HIGH RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 0 20 0 #000080 2 1>
+    <Line -40 10 0 -20 #005500 3 1>
+    <Line -40 10 60 0 #005500 3 1>
+    <Line -40 -10 60 0 #005500 3 1>
+    <Line 20 10 20 -10 #005500 3 1>
+    <Line 20 -10 20 10 #005500 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <.PortSym -60 0 1 0 Ain>
+    <.PortSym 60 0 2 180 Dout>
+    <.ID -20 14 XS "1=in_low=0.5=Maximum 0-valued analog input (Volts)=" "1=in_high=0.5=Minimum 1-valued analog input (Volts)=" "1=rise_delay=1e-9=Rise Delay (sec)=" "1=fall_delay=1e-9=Fall Delay (sec)=">
+    <Text -33 -11 12 #005500 0 "A -> D">
+  </Symbol>
+</Component>
+
+<Component ADC_bridge_4>
+  <Description>
+XSPICE ADC Bridge x4
+  </Description>
+  <Model>
+.Def:Digital_AUX_ADC_bridge_4 _net0 _net1 _net2 _net5 _net3 _net6 _net4 _net7 in_low="0.5" in_high="0.5" rise_delay="1e-9" fall_delay="1e-9"
+Sub:X1 _net0 _net1 _net2 _net5 _net3 _net6 _net4 _net7 gnd Type="ADC_bridge_4_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "ADC_bridge_4.cir.lst">
+  <Spice>
+* ADC Bridge - four line
+* Analog-in -> Digital-out
+.subckt adcbridge4 Ain1 Dout1 Ain2 Dout2 Ain3 Dout3 Ain4 Dout4 in_low=0.5 in_high=0.5 rise_delay=1e-9 fall_delay=1e-9
+*
+abridge [Ain1 Ain2 Ain3 Ain4] [Dout1 Dout2 Dout3 Dout4] adc1 ; ngspice only accepts names starting with "a"
+*
+.model adc1 adc_bridge(in_low='in_low' in_high='in_high' rise_delay='rise_delay' fall_delay='fall_delay')
+*
+.ends adcbridge4
+
+.SUBCKT Digital_AUX_ADC_bridge_4  gnd _net0 _net1 _net2 _net5 _net3 _net6 _net4 _net7 in_low=0.5 in_high=0.5 rise_delay=1e-9 fall_delay=1e-9 
+X1 _net0 _net1 _net2 _net5 _net3 _net6 _net4 _net7 adcbridge4 IN_LOW=IN_LOW IN_HIGH=IN_HIGH RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -50 -30 1 0 Ain1>
+    <.PortSym 70 -30 2 180 Dout1>
+    <Line -30 -20 60 0 #005500 3 1>
+    <Line -50 -30 20 0 #000080 2 1>
+    <Line -30 -20 0 -20 #005500 3 1>
+    <Line -30 -40 60 0 #005500 3 1>
+    <Line 30 -20 20 -10 #005500 3 1>
+    <Line 30 -40 20 10 #005500 3 1>
+    <Line 50 -30 20 0 #000080 2 1>
+    <Line -30 0 0 -20 #005500 3 1>
+    <Line 30 0 20 -10 #005500 3 1>
+    <Line 30 -20 20 10 #005500 3 1>
+    <Line -50 -10 20 0 #000080 2 1>
+    <Line 50 -10 20 0 #000080 2 1>
+    <Line -30 0 60 0 #005500 3 1>
+    <Line -30 20 60 0 #005500 3 1>
+    <Line -30 20 0 -20 #005500 3 1>
+    <Line -30 0 60 0 #005500 3 1>
+    <Line 30 20 20 -10 #005500 3 1>
+    <Line 30 0 20 10 #005500 3 1>
+    <Line -30 40 0 -20 #005500 3 1>
+    <Line 30 40 20 -10 #005500 3 1>
+    <Line 30 20 20 10 #005500 3 1>
+    <Line -30 40 60 0 #005500 3 1>
+    <Line -50 10 20 0 #000080 2 1>
+    <Line 50 10 20 0 #000080 2 1>
+    <Line 50 30 20 0 #000080 2 1>
+    <Line -30 40 60 0 #005500 3 1>
+    <Line -50 30 20 0 #000080 2 1>
+    <Text -24 -40 12 #005500 0 "A -> D">
+    <Text -24 -21 12 #005500 0 "A -> D">
+    <Text -24 0 12 #005500 0 "A -> D">
+    <Text -24 19 12 #005500 0 "A -> D">
+    <.PortSym -50 -10 3 0 Ain2>
+    <.PortSym -50 10 5 0 Ain3>
+    <.PortSym -50 30 7 0 Ain4>
+    <.PortSym 70 -10 4 180 Dout2>
+    <.PortSym 70 10 6 180 Dout3>
+    <.PortSym 70 30 8 180 Dout4>
+    <.ID -20 44 XS "1=in_low=0.5=Maximum 0-valued analog input (Volts)=" "1=in_high=0.5=Minimum 1-valued analog input (Volts)=" "1=rise_delay=1e-9=Rise Delay (sec)=" "1=fall_delay=1e-9=Fall Delay (sec)=">
+  </Symbol>
+</Component>
+
+<Component ADC_bridge_8>
+  <Description>
+XSPICE ADC Bridge x8
+  </Description>
+  <Model>
+.Def:Digital_AUX_ADC_bridge_8 _net0 _net1 _net2 _net5 _net3 _net6 _net4 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 in_low="0.5" in_high="0.5" rise_delay="1e-9" fall_delay="1e-9"
+Sub:X1 _net0 _net1 _net2 _net5 _net3 _net6 _net4 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 gnd Type="ADC_bridge_8_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "ADC_bridge_8.cir.lst">
+  <Spice>
+* ADC Bridge - eight line
+* Analog-in -> Digital-out
+.subckt adcbridge8 Ain1 Dout1 Ain2 Dout2 Ain3 Dout3 Ain4 Dout4 Ain5 Dout5 Ain6 Dout6 Ain7 Dout7 Ain8 Dout8 in_low=0.5 in_high=0.5 rise_delay=1e-9 fall_delay=1e-9
+*
+abridge [Ain1 Ain2 Ain3 Ain4 Ain5 Ain6 Ain7 Ain8] [Dout1 Dout2 Dout3 Dout4 Dout5 Dout6 Dout7 Dout8] adc1 ; ngspice only accepts names starting with "a"
+*
+.model adc1 adc_bridge(in_low='in_low' in_high='in_high' rise_delay='rise_delay' fall_delay='fall_delay')
+*
+.ends adcbridge8
+
+.SUBCKT Digital_AUX_ADC_bridge_8  gnd _net0 _net1 _net2 _net5 _net3 _net6 _net4 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 in_low=0.5 in_high=0.5 rise_delay=1e-9 fall_delay=1e-9 
+X1 _net0 _net1 _net2 _net5 _net3 _net6 _net4 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 adcbridge8 IN_LOW=IN_LOW IN_HIGH=IN_HIGH RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -60 -70 1 0 Ain1>
+    <.PortSym 60 -70 2 180 Dout1>
+    <.PortSym -60 -50 3 0 Ain2>
+    <.PortSym -60 -30 5 0 Ain3>
+    <.PortSym -60 -10 7 0 Ain4>
+    <.PortSym 60 -50 4 180 Dout2>
+    <.PortSym 60 -30 6 180 Dout3>
+    <.PortSym 60 -10 8 180 Dout4>
+    <Line -40 -60 60 0 #005500 3 1>
+    <Line -60 -70 20 0 #000080 2 1>
+    <Line -40 -60 0 -20 #005500 3 1>
+    <Line -40 -80 60 0 #005500 3 1>
+    <Line 20 -60 20 -10 #005500 3 1>
+    <Line 20 -80 20 10 #005500 3 1>
+    <Line 40 -70 20 0 #000080 2 1>
+    <Line -40 -40 0 -20 #005500 3 1>
+    <Line 20 -40 20 -10 #005500 3 1>
+    <Line 20 -60 20 10 #005500 3 1>
+    <Line -60 -50 20 0 #000080 2 1>
+    <Line 40 -50 20 0 #000080 2 1>
+    <Line -40 -40 60 0 #005500 3 1>
+    <Line -40 -20 60 0 #005500 3 1>
+    <Line -40 -20 0 -20 #005500 3 1>
+    <Line -40 -40 60 0 #005500 3 1>
+    <Line 20 -20 20 -10 #005500 3 1>
+    <Line 20 -40 20 10 #005500 3 1>
+    <Line -40 0 0 -20 #005500 3 1>
+    <Line 20 0 20 -10 #005500 3 1>
+    <Line 20 -20 20 10 #005500 3 1>
+    <Line -40 0 60 0 #005500 3 1>
+    <Line -60 -30 20 0 #000080 2 1>
+    <Line 40 -30 20 0 #000080 2 1>
+    <Line 40 -10 20 0 #000080 2 1>
+    <Line -40 20 60 0 #005500 3 1>
+    <Line -40 20 0 -20 #005500 3 1>
+    <Line -40 0 60 0 #005500 3 1>
+    <Line 20 20 20 -10 #005500 3 1>
+    <Line 20 0 20 10 #005500 3 1>
+    <Line -40 40 0 -20 #005500 3 1>
+    <Line 20 40 20 -10 #005500 3 1>
+    <Line 20 20 20 10 #005500 3 1>
+    <Line -40 40 60 0 #005500 3 1>
+    <Line -40 60 60 0 #005500 3 1>
+    <Line -40 60 0 -20 #005500 3 1>
+    <Line -40 40 60 0 #005500 3 1>
+    <Line 20 60 20 -10 #005500 3 1>
+    <Line 20 40 20 10 #005500 3 1>
+    <Line -40 80 0 -20 #005500 3 1>
+    <Line 20 80 20 -10 #005500 3 1>
+    <Line 20 60 20 10 #005500 3 1>
+    <Line -40 80 60 0 #005500 3 1>
+    <Line -60 -10 20 0 #000080 2 1>
+    <Line -60 10 20 0 #000080 2 1>
+    <Line -60 30 20 0 #000080 2 1>
+    <Line -60 50 20 0 #000080 2 1>
+    <Line -60 70 20 0 #000080 2 1>
+    <Line 40 10 20 0 #000080 2 1>
+    <Line 40 30 20 0 #000080 2 1>
+    <Line 40 50 20 0 #000080 2 1>
+    <Line 40 70 20 0 #000080 2 1>
+    <Text -34 -80 12 #005500 0 "A -> D">
+    <Text -34 -61 12 #005500 0 "A -> D">
+    <Text -34 -40 12 #005500 0 "A -> D">
+    <Text -34 -21 12 #005500 0 "A -> D">
+    <Text -34 -1 12 #005500 0 "A -> D">
+    <Text -34 20 12 #005500 0 "A -> D">
+    <Text -34 39 12 #005500 0 "A -> D">
+    <Text -34 59 12 #005500 0 "A -> D">
+    <.PortSym -60 10 9 0 Ain5>
+    <.PortSym -60 30 11 0 Ain6>
+    <.PortSym -60 50 13 0 Ain7>
+    <.PortSym -60 70 15 0 Ain8>
+    <.PortSym 60 10 10 180 Dout5>
+    <.PortSym 60 30 12 180 Dout6>
+    <.PortSym 60 50 14 180 Dout7>
+    <.PortSym 60 70 16 180 Dout8>
+    <.ID -30 84 XS "1=in_low=0.5=Maximum 0-valued analog input (Volts)=" "1=in_high=0.5=Minimum 1-valued analog input (Volts)=" "1=rise_delay=1e-9=Rise Delay (sec)=" "1=fall_delay=1e-9=Fall Delay (sec)=">
+  </Symbol>
+</Component>
+
+<Component DAC_bridge>
+  <Description>
+XSPICE DAC Bridge x1
+  </Description>
+  <Model>
+.Def:Digital_AUX_DAC_bridge _net0 _net1 out_low="0" out_high="1" out_undef="0.5" input_load="1e-12" t_rise="1e-9" t_fall="1e-9"
+Sub:X1 _net0 _net1 gnd Type="DAC_bridge_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "DAC_bridge.cir.lst">
+  <Spice>
+* DAC Bridge - single line
+* Digital-in -> Analog-out
+.subckt dacbridge Din Aout out_low=0 out_high=1 out_undef=0.5 input_load=1e-12 t_rise=1e-9 t_fall=1e-9
+*
+abridge [Din] [Aout] dac1 ; ngspice only accepts names starting with "a"
+*
+.model dac1 dac_bridge(out_low='out_low' out_high='out_high' out_undef='out_undef' input_load='input_load' t_rise='t_rise' t_fall='t_fall')
+*
+.ends dacbridge
+
+.SUBCKT Digital_AUX_DAC_bridge  gnd _net0 _net1 out_low=0 out_high=1 out_undef=0.5 input_load=1e-12 t_rise=1e-9 t_fall=1e-9 
+X1 _net0 _net1 dacbridge OUT_LOW=OUT_LOW OUT_UNDEF=OUT_UNDEF OUT_HIGH=OUT_HIGH INPUT_LOAD=INPUT_LOAD T_RISE=T_RISE T_FALL=T_FALL
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -60 0 1 0 Din>
+    <.PortSym 60 0 2 180 Aout>
+    <Line -60 0 20 0 #000080 2 1>
+    <Line -40 10 0 -20 #005500 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -40 10 60 0 #005500 3 1>
+    <Line -40 -10 60 0 #005500 3 1>
+    <Line 20 10 20 -10 #005500 3 1>
+    <Line 20 -10 20 10 #005500 3 1>
+    <Text -34 -11 12 #005500 0 "D -> A">
+    <.ID -20 14 XS "1=out_low=0=0-valued analog output (Volts)=" "1=out_high=1=1-valued analog output (Volts)=" "1=out_undef=0.5=U-valued analog output (Volts)=" "1=input_load=1e-12=Input load (F)=" "1=t_rise=1e-9=Rise time 0->1 (sec)=" "1=t_fall=1e-9=Fall time 1->0 (sec)=">
+  </Symbol>
+</Component>
+
+<Component DAC_bridge_4>
+  <Description>
+XSPICE DAC Bridge x4
+  </Description>
+  <Model>
+.Def:Digital_AUX_DAC_bridge_4 _net0 _net1 _net2 _net3 _net5 _net4 _net6 _net7 out_low="0" out_high="1" out_undef="0.5" input_load="1e-12" t_rise="1e-9" t_fall="1e-9"
+Sub:X1 _net0 _net1 _net2 _net3 _net5 _net4 _net6 _net7 gnd Type="DAC_bridge_4_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "DAC_bridge_4.cir.lst">
+  <Spice>
+* DAC Bridge - four line
+* Digital-in -> Analog-out
+.subckt dacbridge4 Din1 Aout1 Din2 Aout2 Din3 Aout3 Din4 Aout4 out_low=0 out_high=1 out_undef=0.5 input_load=1e-12 t_rise=1e-9 t_fall=1e-9
+*
+abridge [Din1 Din2 Din3 Din4] [Aout1 Aout2 Aout3 Aout4] dac1 ; ngspice only accepts names starting with "a"
+*
+.model dac1 dac_bridge(out_low='out_low' out_high='out_high' out_undef='out_undef' input_load='input_load' t_rise='t_rise' t_fall='t_fall')
+*
+.ends dacbridge4
+
+.SUBCKT Digital_AUX_DAC_bridge_4  gnd _net0 _net1 _net2 _net3 _net5 _net4 _net6 _net7 out_low=0 out_high=1 out_undef=0.5 input_load=1e-12 t_rise=1e-9 t_fall=1e-9 
+X1 _net0 _net1 _net2 _net3 _net5 _net4 _net6 _net7 dacbridge4 OUT_LOW=OUT_LOW OUT_UNDEF=OUT_UNDEF OUT_HIGH=OUT_HIGH INPUT_LOAD=INPUT_LOAD T_RISE=T_RISE T_FALL=T_FALL
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -50 -30 1 0 Din1>
+    <.PortSym -50 -10 3 0 Din2>
+    <.PortSym -50 10 5 0 Din3>
+    <.PortSym 70 -30 2 180 Aout1>
+    <.PortSym 70 -10 4 180 Aout2>
+    <.PortSym 70 10 6 180 Aout3>
+    <.PortSym 70 30 8 180 Aout4>
+    <.PortSym -50 30 7 0 Din4>
+    <Line -50 -30 20 0 #000080 2 1>
+    <Line -30 -20 0 -20 #005500 3 1>
+    <Line 50 -30 20 0 #000080 2 1>
+    <Line -30 -20 60 0 #005500 3 1>
+    <Line -30 -40 60 0 #005500 3 1>
+    <Line 30 -20 20 -10 #005500 3 1>
+    <Line 30 -40 20 10 #005500 3 1>
+    <Line -30 0 0 -20 #005500 3 1>
+    <Line -30 0 60 0 #005500 3 1>
+    <Line -30 -20 60 0 #005500 3 1>
+    <Line 30 0 20 -10 #005500 3 1>
+    <Line 30 -20 20 10 #005500 3 1>
+    <Line -50 -10 20 0 #000080 2 1>
+    <Line 50 -10 20 0 #000080 2 1>
+    <Line -30 20 0 -20 #005500 3 1>
+    <Line -30 20 60 0 #005500 3 1>
+    <Line -30 0 60 0 #005500 3 1>
+    <Line 30 20 20 -10 #005500 3 1>
+    <Line 30 0 20 10 #005500 3 1>
+    <Line -30 40 0 -20 #005500 3 1>
+    <Line -30 40 60 0 #005500 3 1>
+    <Line -30 20 60 0 #005500 3 1>
+    <Line 30 40 20 -10 #005500 3 1>
+    <Line 30 20 20 10 #005500 3 1>
+    <Line -50 30 20 0 #000080 2 1>
+    <Line 50 10 20 0 #000080 2 1>
+    <Line 50 30 20 0 #000080 2 1>
+    <Line -50 10 20 0 #000080 2 1>
+    <Line -30 40 60 0 #005500 3 1>
+    <Text -24 -41 12 #005500 0 "D -> A">
+    <Text -24 -21 12 #005500 0 "D -> A">
+    <Text -24 -1 12 #005500 0 "D -> A">
+    <Text -24 19 12 #005500 0 "D -> A">
+    <.ID -20 44 XS "1=out_low=0=0-valued analog output (Volts)=" "1=out_high=1=1-valued analog output (Volts)=" "1=out_undef=0.5=U-valued analog output (Volts)=" "1=input_load=1e-12=Input load (F)=" "1=t_rise=1e-9=Rise time 0->1 (sec)=" "1=t_fall=1e-9=Fall time 1->0 (sec)=">
+  </Symbol>
+</Component>
+
+<Component DAC_bridge_8>
+  <Description>
+XSPICE DAC Bridge x8
+  </Description>
+  <Model>
+.Def:Digital_AUX_DAC_bridge_8 _net0 _net1 _net2 _net3 _net5 _net4 _net6 _net7 _net8 _net9 _net10 _net11 _net13 _net12 _net15 _net14 out_low="0" out_high="1" out_undef="0.5" input_load="1e-12" t_rise="1e-9" t_fall="1e-9"
+Sub:X1 _net0 _net1 _net2 _net3 _net5 _net4 _net6 _net7 _net8 _net9 _net10 _net11 _net13 _net12 _net15 _net14 gnd Type="DAC_bridge_8_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "DAC_bridge_8.cir.lst">
+  <Spice>
+* DAC Bridge - eight line
+* Digital-in -> Analog-out
+.subckt dacbridge8 Din1 Aout1 Din2 Aout2 Din3 Aout3 Din4 Aout4 Din5 Aout5 Din6 Aout6 Din7 Aout7 Din8 Aout8 out_low=0 out_high=1 out_undef=0.5 input_load=1e-12 t_rise=1e-9 t_fall=1e-9
+*
+abridge [Din1 Din2 Din3 Din4 Din5 Din6 Din7 Din8] [Aout1 Aout2 Aout3 Aout4 Aout5 Aout6 Aout7 Aout8] dac1 ; ngspice only accepts names starting with "a"
+*
+.model dac1 dac_bridge(out_low='out_low' out_high='out_high' out_undef='out_undef' input_load='input_load' t_rise='t_rise' t_fall='t_fall')
+*
+.ends dacbridge8
+
+.SUBCKT Digital_AUX_DAC_bridge_8  gnd _net0 _net1 _net2 _net3 _net5 _net4 _net6 _net7 _net8 _net9 _net10 _net11 _net13 _net12 _net15 _net14 out_low=0 out_high=1 out_undef=0.5 input_load=1e-12 t_rise=1e-9 t_fall=1e-9 
+X1 _net0 _net1 _net2 _net3 _net5 _net4 _net6 _net7 _net8 _net9 _net10 _net11 _net13 _net12 _net15 _net14 dacbridge8 OUT_LOW=OUT_LOW OUT_UNDEF=OUT_UNDEF OUT_HIGH=OUT_HIGH INPUT_LOAD=INPUT_LOAD T_RISE=T_RISE T_FALL=T_FALL
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 -70 20 0 #000080 2 1>
+    <Line -40 -60 0 -20 #005500 3 1>
+    <Line 40 -70 20 0 #000080 2 1>
+    <Line -40 -60 60 0 #005500 3 1>
+    <Line -40 -80 60 0 #005500 3 1>
+    <Line 20 -60 20 -10 #005500 3 1>
+    <Line 20 -80 20 10 #005500 3 1>
+    <Line -40 -40 0 -20 #005500 3 1>
+    <Line -40 -40 60 0 #005500 3 1>
+    <Line -40 -60 60 0 #005500 3 1>
+    <Line 20 -40 20 -10 #005500 3 1>
+    <Line 20 -60 20 10 #005500 3 1>
+    <Line -60 -50 20 0 #000080 2 1>
+    <Line 40 -50 20 0 #000080 2 1>
+    <Line -40 -20 0 -20 #005500 3 1>
+    <Line -40 -20 60 0 #005500 3 1>
+    <Line -40 -40 60 0 #005500 3 1>
+    <Line 20 -20 20 -10 #005500 3 1>
+    <Line 20 -40 20 10 #005500 3 1>
+    <Line -40 0 0 -20 #005500 3 1>
+    <Line -40 0 60 0 #005500 3 1>
+    <Line -40 -20 60 0 #005500 3 1>
+    <Line 20 0 20 -10 #005500 3 1>
+    <Line 20 -20 20 10 #005500 3 1>
+    <Line -60 -10 20 0 #000080 2 1>
+    <Line 40 -30 20 0 #000080 2 1>
+    <Line 40 -10 20 0 #000080 2 1>
+    <Line -60 -30 20 0 #000080 2 1>
+    <Line -40 20 0 -20 #005500 3 1>
+    <Line -40 20 60 0 #005500 3 1>
+    <Line -40 0 60 0 #005500 3 1>
+    <Line 20 20 20 -10 #005500 3 1>
+    <Line 20 0 20 10 #005500 3 1>
+    <Line -40 40 0 -20 #005500 3 1>
+    <Line -40 40 60 0 #005500 3 1>
+    <Line -40 20 60 0 #005500 3 1>
+    <Line 20 40 20 -10 #005500 3 1>
+    <Line 20 20 20 10 #005500 3 1>
+    <Line -40 60 0 -20 #005500 3 1>
+    <Line -40 60 60 0 #005500 3 1>
+    <Line -40 40 60 0 #005500 3 1>
+    <Line 20 60 20 -10 #005500 3 1>
+    <Line 20 40 20 10 #005500 3 1>
+    <Line -40 80 0 -20 #005500 3 1>
+    <Line -40 80 60 0 #005500 3 1>
+    <Line -40 60 60 0 #005500 3 1>
+    <Line 20 80 20 -10 #005500 3 1>
+    <Line 20 60 20 10 #005500 3 1>
+    <Line -60 10 20 0 #000080 2 1>
+    <Line -60 30 20 0 #000080 2 1>
+    <Line -60 50 20 0 #000080 2 1>
+    <Line -60 70 20 0 #000080 2 1>
+    <Line 40 10 20 0 #000080 2 1>
+    <Line 40 30 20 0 #000080 2 1>
+    <Line 40 50 20 0 #000080 2 1>
+    <Line 40 70 20 0 #000080 2 1>
+    <Text -34 -81 12 #005500 0 "D -> A">
+    <Text -34 -61 12 #005500 0 "D -> A">
+    <Text -34 -41 12 #005500 0 "D -> A">
+    <Text -34 -21 12 #005500 0 "D -> A">
+    <Text -34 -1 12 #005500 0 "D -> A">
+    <Text -34 19 12 #005500 0 "D -> A">
+    <Text -34 39 12 #005500 0 "D -> A">
+    <Text -34 59 12 #005500 0 "D -> A">
+    <.PortSym -60 -70 1 0 Din1>
+    <.PortSym -60 -50 3 0 Din2>
+    <.PortSym -60 -30 5 0 Din3>
+    <.PortSym -60 -10 7 0 Din4>
+    <.PortSym 60 -70 2 180 Aout1>
+    <.PortSym 60 -50 4 180 Aout2>
+    <.PortSym 60 -30 6 180 Aout3>
+    <.PortSym 60 -10 8 180 Aout4>
+    <.PortSym -60 10 9 0 Din5>
+    <.PortSym -60 30 11 0 Din6>
+    <.PortSym -60 50 13 0 Din7>
+    <.PortSym -60 70 15 0 Din8>
+    <.PortSym 60 10 10 180 Aout5>
+    <.PortSym 60 30 12 180 Aout6>
+    <.PortSym 60 50 14 180 Aout7>
+    <.PortSym 60 70 16 180 Aout8>
+    <.ID -30 84 XS "1=out_low=0=0-valued analog output (Volts)=" "1=out_high=1=1-valued analog output (Volts)=" "1=out_undef=0.5=U-valued analog output (Volts)=" "1=input_load=1e-12=Input load (F)=" "1=t_rise=1e-9=Rise time 0->1 (sec)=" "1=t_fall=1e-9=Fall time 1->0 (sec)=">
+  </Symbol>
+</Component>
+
+<Component D2R_bridge>
+  <Description>
+XSPICE Digital to Real Bridge
+  </Description>
+  <Model>
+.Def:Digital_AUX_D2R_bridge _net1 _net2 _net0 Zero="0" One="1" delay="1e-9"
+Sub:X1 _net1 _net2 _net0 gnd Type="D2R_bridge_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "D2R_bridge.cir.lst">
+  <Spice>
+* D2R Bridge - single line
+* Digital-in -> Real-out Unique to ngspice
+.subckt d2rbridge Din En Rout zero=0 one=1 delay=1e-9
+*
+abridge Din En Rout dr1 ; ngspice only accepts names starting with "a"
+*
+.model dr1 d_to_real (zero='zero' one='one' delay='delay')
+*
+.ends d2rbridge
+
+.SUBCKT Digital_AUX_D2R_bridge  gnd _net1 _net2 _net0 Zero=0 One=1 delay=1e-9 
+X1 _net1 _net2 _net0 d2rbridge ZERO=ZERO ONE=ONE DELAY=DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -60 0 1 0 Din>
+    <Line -60 0 20 0 #000080 2 1>
+    <Line -40 10 0 -20 #005500 3 1>
+    <Line -40 10 60 0 #005500 3 1>
+    <Line -40 -10 60 0 #005500 3 1>
+    <Line 20 10 20 -10 #005500 3 1>
+    <Line 20 -10 20 10 #005500 3 1>
+    <Text -34 -11 12 #005500 0 "D -> R">
+    <.ID -20 14 XS "1=Zero=0=value for 0, < one value=" "1=One=1=value for 1, >zero value=" "1=delay=1e-9=delay (sec)=">
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -10 -10 0 -20 #000080 2 1>
+    <.PortSym -10 -30 2 0 En>
+    <.PortSym 60 0 3 180 Rout>
+    <Text -4 -31 12 #005500 0 "E">
+  </Symbol>
+</Component>
+
+<Component R2V_bridge>
+  <Description>
+XSPICE Real to Voltage Bridge
+  </Description>
+  <Model>
+.Def:Digital_AUX_R2V_bridge _net0 _net1 Gain="1" transition_time="1e-9"
+Sub:X1 _net0 _net1 gnd Type="R2V_bridge_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "R2V_bridge.cir.lst">
+  <Spice>
+* R2V Bridge - single line
+* Real-in -> Digital-out Unique to ngspice
+.subckt r2vbridge Rin Vout gain=1 transition_time=1e-9
+*
+abridge Rin Vout dr1 ; ngspice only accepts names starting with "a"
+*
+.model dr1 real_to_v (gain='gain' transition_time='transition_time')
+*
+.ends r2vbridge
+
+.SUBCKT Digital_AUX_R2V_bridge  gnd _net0 _net1 Gain=1 transition_time=1e-9 
+X1 _net0 _net1 r2vbridge GAIN=GAIN TRANSITION_TIME=TRANSITION_TIME
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -60 0 1 0 Rin>
+    <Line -60 0 20 0 #000080 2 1>
+    <Line -40 10 0 -20 #005500 3 1>
+    <Line -40 10 60 0 #005500 3 1>
+    <Line -40 -10 60 0 #005500 3 1>
+    <Line 20 10 20 -10 #005500 3 1>
+    <Line 20 -10 20 10 #005500 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <Text -34 -11 12 #005500 0 "R -> V">
+    <.PortSym 60 0 2 180 Vout>
+    <.ID -20 14 XS "1=Gain=1=Gain=" "1=transition_time=1e-9=transition time (sec)=">
+  </Symbol>
+</Component>
+
+<Component Logic_zero>
+  <Description>
+XSPICE Digital Logic 0
+Analog Voltage Source '0V'
+followed by ADC Bridge
+  </Description>
+  <Model>
+.Def:Digital_AUX_Logic_zero _net0
+Sub:X1 _net0 gnd Type="PS_Logic_0_lib"
+.Def:End
+  </Model>
+  <ModelIncludes "PS_Logic_0.lib.lst">
+  <Spice>
+* PSpice Digital Logic 0
+*
+.SUBCKT Logic_0 _net0
+VS int 0 DC 0
+abridge2 [int] [_net0] adc_buff
+.model adc_buff adc_bridge(in_low = 0.5 in_high = 0.5)
+.ENDS Logic_0
+
+.SUBCKT Digital_AUX_Logic_zero  gnd _net0 
+X1 _net0 Logic_0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 10 30 0 #005500 3 1>
+    <Line -20 -10 0 20 #005500 3 1>
+    <Line -20 -10 30 0 #005500 3 1>
+    <Line 10 -10 10 10 #005500 3 1>
+    <Line 10 10 10 -10 #005500 3 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <Text -9 -11 12 #ff0000 0 "0">
+    <.PortSym 30 0 1 180 Net0>
+    <.ID -10 -35 Y>
+  </Symbol>
+</Component>
+
+<Component Logic_one>
+  <Description>
+XSPICE Digital Logic 1
+Analog Voltage Source '1V'
+followed by ADC Bridge
+  </Description>
+  <Model>
+.Def:Digital_AUX_Logic_one _net0
+Sub:X1 _net0 gnd Type="PS_Logic_1_lib"
+.Def:End
+  </Model>
+  <ModelIncludes "PS_Logic_1.lib.lst">
+  <Spice>
+* PSpice Digital Logic 1
+*
+.SUBCKT Logic_1 _net0 
+VS int 0 DC 1
+abridge2 [int] [_net0] adc_buff
+.model adc_buff adc_bridge(in_low = 0.5 in_high = 0.5)
+.ENDS Logic_1
+
+.SUBCKT Digital_AUX_Logic_one  gnd _net0 
+X1 _net0 Logic_1 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 10 30 0 #005500 3 1>
+    <Line -20 -10 0 20 #005500 3 1>
+    <Line -20 -10 30 0 #005500 3 1>
+    <Line 10 -10 10 10 #005500 3 1>
+    <Line 10 10 10 -10 #005500 3 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <Text -9 -11 12 #ff0000 0 "1">
+    <.PortSym 30 0 1 180 Net0>
+    <.ID -10 -35 Y>
+  </Symbol>
+</Component>
+
+<Component d_pulldown>
+  <Description>
+XSPICE Digital Pull-Down
+Based on d_pulldown
+  </Description>
+  <Model>
+.Def:Digital_AUX_d_pulldown _net0
+Sub:X1 _net0 gnd Type="d_pulldown_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_pulldown.cir.lst">
+  <Spice>
+* Digital "zero"
+*
+.subckt pulldown d_zero
+*
+a1 d_zero pulldown1
+.model pulldown1 d_pulldown(load=20.0e-12)
+*
+.ends pulldown
+
+.SUBCKT Digital_AUX_d_pulldown  gnd _net0 
+X1 _net0 pulldown 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 10 30 0 #005500 3 1>
+    <Line -20 -10 0 20 #005500 3 1>
+    <Line -20 -10 30 0 #005500 3 1>
+    <Line 10 -10 10 10 #005500 3 1>
+    <Line 10 10 10 -10 #005500 3 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <Text -9 -11 12 #005500 0 "0">
+    <.PortSym 30 0 1 180 d_zero>
+    <.ID -10 -36 Y>
+  </Symbol>
+</Component>
+
+<Component d_pullup>
+  <Description>
+XSPICE Digital Pull-Up
+Based on d_pullup
+  </Description>
+  <Model>
+.Def:Digital_AUX_d_pullup _net0
+Sub:X1 _net0 gnd Type="d_pullup_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_pullup.cir.lst">
+  <Spice>
+* Digital "one"
+*
+.subckt pullup d_one
+*
+a1 d_one pullup1
+.model pullup1 d_pullup(load=20.0e-12)
+*
+.ends pullup
+
+.SUBCKT Digital_AUX_d_pullup  gnd _net0 
+X1 _net0 pullup 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 10 30 0 #005500 3 1>
+    <Line -20 -10 0 20 #005500 3 1>
+    <Line -20 -10 30 0 #005500 3 1>
+    <Line 10 -10 10 10 #005500 3 1>
+    <Line 10 10 10 -10 #005500 3 1>
+    <Line 20 0 10 0 #000080 2 1>
+    <Text -9 -11 12 #005500 0 "1">
+    <.PortSym 30 0 1 180 d_one>
+    <.ID -10 -36 Y>
+  </Symbol>
+</Component>
+
+<Component R_Term4>
+  <Description>
+Resistor Termination x4
+  </Description>
+  <Model>
+.Def:Digital_AUX_R_Term4 _net0 _net4 _net1 _net2 _net3 RT="1k"
+R:R1 _net0 _net4 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 _net1 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 _net0 _net2 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R4 _net0 _net3 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 RT="RT" Export="Export=yes"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT Digital_AUX_R_Term4  gnd _net0 _net4 _net1 _net2 _net3 RT=1k 
+.PARAM RT=RT
+R1 _net0 _net4  {RT} tc1=0.0 tc2=0.0 
+R2 _net0 _net1  {RT} tc1=0.0 tc2=0.0 
+R3 _net0 _net2  {RT} tc1=0.0 tc2=0.0 
+R4 _net0 _net3  {RT} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Rectangle -40 -10 80 20 #000080 2 1 #c0c0c0 1 0>
+    <Line -10 -10 0 -10 #000080 2 1>
+    <Line -30 -10 0 -10 #000080 2 1>
+    <Line 30 -10 0 -10 #000080 2 1>
+    <Line 10 -10 0 -10 #000080 2 1>
+    <Line -30 0 12 0 #000080 2 1>
+    <Line 18 0 12 0 #000080 2 1>
+    <Line -18 0 3 -7 #000080 2 1>
+    <Line -15 -7 6 14 #000080 2 1>
+    <Line -9 7 6 -14 #000080 2 1>
+    <Line -3 -7 6 14 #000080 2 1>
+    <Line 3 7 6 -14 #000080 2 1>
+    <Line 9 -7 6 14 #000080 2 1>
+    <Line 15 7 3 -7 #000080 2 1>
+    <Line 0 20 0 -10 #000080 2 1>
+    <.ID 50 -6 RT "1=RT=1k=Resistance Value (Ohms)=">
+    <.PortSym -30 -20 2 0 T1>
+    <.PortSym -10 -20 3 0 T2>
+    <.PortSym 10 -20 4 0 T3>
+    <.PortSym 30 -20 5 0 T4>
+    <Text -14 12 8 #000080 0 "C">
+    <.PortSym 0 20 1 0 COM>
+  </Symbol>
+</Component>
+
+<Component R_Term8>
+  <Description>
+Resistor Termination x8
+  </Description>
+  <Model>
+.Def:Digital_AUX_R_Term8 _net0 _net4 _net1 _net2 _net3 _net5 _net6 _net7 _net8 RT="1k"
+R:R1 _net0 _net4 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 _net1 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 _net0 _net2 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R4 _net0 _net3 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R5 _net0 _net5 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R6 _net0 _net6 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R7 _net0 _net7 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R8 _net0 _net8 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 RT="RT" Export="Export=yes"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT Digital_AUX_R_Term8  gnd _net0 _net4 _net1 _net2 _net3 _net5 _net6 _net7 _net8 RT=1k 
+.PARAM RT=RT
+R1 _net0 _net4  {RT} tc1=0.0 tc2=0.0 
+R2 _net0 _net1  {RT} tc1=0.0 tc2=0.0 
+R3 _net0 _net2  {RT} tc1=0.0 tc2=0.0 
+R4 _net0 _net3  {RT} tc1=0.0 tc2=0.0 
+R5 _net0 _net5  {RT} tc1=0.0 tc2=0.0 
+R6 _net0 _net6  {RT} tc1=0.0 tc2=0.0 
+R7 _net0 _net7  {RT} tc1=0.0 tc2=0.0 
+R8 _net0 _net8  {RT} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 -10 0 -10 #000080 2 1>
+    <Line -30 -10 0 -10 #000080 2 1>
+    <Line 30 -10 0 -10 #000080 2 1>
+    <Line 10 -10 0 -10 #000080 2 1>
+    <Line -30 0 12 0 #000080 2 1>
+    <Line 18 0 12 0 #000080 2 1>
+    <Line -18 0 3 -7 #000080 2 1>
+    <Line -15 -7 6 14 #000080 2 1>
+    <Line -9 7 6 -14 #000080 2 1>
+    <Line -3 -7 6 14 #000080 2 1>
+    <Line 3 7 6 -14 #000080 2 1>
+    <Line 9 -7 6 14 #000080 2 1>
+    <Line 15 7 3 -7 #000080 2 1>
+    <Line 0 20 0 -10 #000080 2 1>
+    <Text -14 12 8 #000080 0 "C">
+    <.PortSym 0 20 1 0 COM>
+    <Line 70 -10 0 -10 #000080 2 1>
+    <Line 50 -10 0 -10 #000080 2 1>
+    <Line -50 -10 0 -10 #000080 2 1>
+    <Line -70 -10 0 -10 #000080 2 1>
+    <Rectangle -80 -10 160 20 #000080 2 1 #c0c0c0 1 0>
+    <.PortSym -70 -20 2 0 T1>
+    <.PortSym -50 -20 3 0 T2>
+    <.PortSym -30 -20 4 0 T3>
+    <.PortSym -10 -20 5 0 T4>
+    <.PortSym 10 -20 6 0 T5>
+    <.PortSym 30 -20 7 0 T6>
+    <.PortSym 50 -20 8 0 T7>
+    <.PortSym 70 -20 9 0 T8>
+    <.ID 90 -6 RT "1=RT=1k=Resistance Value (Ohms)=">
+  </Symbol>
+</Component>
+
+<Component R_Term10>
+  <Description>
+Resistor Termination x10
+  </Description>
+  <Model>
+.Def:Digital_AUX_R_Term10 _net0 _net4 _net1 _net2 _net3 _net5 _net6 _net7 _net8 _net9 _net10 RT="1k"
+R:R1 _net0 _net4 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 _net1 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 _net0 _net2 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R4 _net0 _net3 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R5 _net0 _net5 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R6 _net0 _net6 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R7 _net0 _net7 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R8 _net0 _net8 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 RT="RT" Export="Export=yes"
+R:R9 _net0 _net9 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R10 _net0 _net10 R="RT" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT Digital_AUX_R_Term10  gnd _net0 _net4 _net1 _net2 _net3 _net5 _net6 _net7 _net8 _net9 _net10 RT=1k 
+.PARAM RT=RT
+R1 _net0 _net4  {RT} tc1=0.0 tc2=0.0 
+R2 _net0 _net1  {RT} tc1=0.0 tc2=0.0 
+R3 _net0 _net2  {RT} tc1=0.0 tc2=0.0 
+R4 _net0 _net3  {RT} tc1=0.0 tc2=0.0 
+R5 _net0 _net5  {RT} tc1=0.0 tc2=0.0 
+R6 _net0 _net6  {RT} tc1=0.0 tc2=0.0 
+R7 _net0 _net7  {RT} tc1=0.0 tc2=0.0 
+R8 _net0 _net8  {RT} tc1=0.0 tc2=0.0 
+R9 _net0 _net9  {RT} tc1=0.0 tc2=0.0 
+R10 _net0 _net10  {RT} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -10 -10 0 -10 #000080 2 1>
+    <Line -30 -10 0 -10 #000080 2 1>
+    <Line 30 -10 0 -10 #000080 2 1>
+    <Line 10 -10 0 -10 #000080 2 1>
+    <Line -30 0 12 0 #000080 2 1>
+    <Line 18 0 12 0 #000080 2 1>
+    <Line -18 0 3 -7 #000080 2 1>
+    <Line -15 -7 6 14 #000080 2 1>
+    <Line -9 7 6 -14 #000080 2 1>
+    <Line -3 -7 6 14 #000080 2 1>
+    <Line 3 7 6 -14 #000080 2 1>
+    <Line 9 -7 6 14 #000080 2 1>
+    <Line 15 7 3 -7 #000080 2 1>
+    <Line 0 20 0 -10 #000080 2 1>
+    <Text -14 12 8 #000080 0 "C">
+    <.PortSym 0 20 1 0 COM>
+    <Line 70 -10 0 -10 #000080 2 1>
+    <Line 50 -10 0 -10 #000080 2 1>
+    <Line -50 -10 0 -10 #000080 2 1>
+    <Line -70 -10 0 -10 #000080 2 1>
+    <.ID 110 -6 RT "1=RT=1k=Resistance Value (Ohms)=">
+    <Line -90 -10 0 -10 #000080 2 1>
+    <Line 90 -10 0 -10 #000080 2 1>
+    <Rectangle -100 -10 200 20 #000080 2 1 #c0c0c0 1 0>
+    <.PortSym -90 -20 2 0 T1>
+    <.PortSym -70 -20 3 0 T2>
+    <.PortSym -50 -20 4 0 T3>
+    <.PortSym -30 -20 5 0 T4>
+    <.PortSym -10 -20 6 0 T5>
+    <.PortSym 10 -20 7 0 T6>
+    <.PortSym 30 -20 8 0 T7>
+    <.PortSym 50 -20 9 0 T8>
+    <.PortSym 70 -20 10 0 T9>
+    <.PortSym 90 -20 11 0 T10>
+  </Symbol>
+</Component>

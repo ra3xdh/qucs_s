@@ -1,0 +1,988 @@
+<Qucs Library 24.4.1 "Digital_XSPICE">
+
+<Component d_AND2>
+  <Description>
+2-Input AND
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_AND2 _net0 _net2 _net1 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net2 _net1 gnd Type="d_and2_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_and2.cir.lst">
+  <Spice>
+**** XSPICE digital 2-Input AND ****
+*
+.subckt d_and2X A B Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B] Y and1
+.model and1 d_and(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_and2X
+
+.SUBCKT Digital_XSPICE_d_AND2  gnd _net0 _net2 _net1 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net2 _net1 d_and2X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line -10 20 0 -40 #0000ff 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <.PortSym -30 10 2 0 B>
+    <.PortSym 30 0 3 180 Y>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <.PortSym -30 -10 1 0 A>
+  </Symbol>
+</Component>
+
+<Component d_AND3>
+  <Description>
+3-Input AND
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_AND3 _net0 _net1 _net2 _net3 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="d_and3_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_and3.cir.lst">
+  <Spice>
+**** XSPICE digital 3-Input AND ****
+*
+.subckt d_and3X A B C Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B C] Y and1
+.model and1 d_and(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_and3X
+
+.SUBCKT Digital_XSPICE_d_AND3  gnd _net0 _net1 _net2 _net3 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 _net2 _net3 d_and3X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line -10 20 0 -40 #0000ff 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <.PortSym -30 -10 1 0 A>
+    <Line -30 0 20 0 #000080 2 1>
+    <.PortSym -30 0 2 0 B>
+    <.PortSym -30 10 3 0 C>
+    <.PortSym 30 0 4 180 Y>
+  </Symbol>
+</Component>
+
+<Component d_AND4>
+  <Description>
+4-Input AND
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_AND4 _net0 _net1 _net2 _net3 _net4 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 _net2 _net3 _net4 gnd Type="d_and4_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_and4.cir.lst">
+  <Spice>
+**** XSPICE digital 4-Input AND ****
+*
+.subckt d_and4X A B C D Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B C D] Y and1
+.model and1 d_and(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_and4X
+
+.SUBCKT Digital_XSPICE_d_AND4  gnd _net0 _net1 _net2 _net3 _net4 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 _net2 _net3 _net4 d_and4X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -30 1 0 A>
+    <.PortSym -30 -10 2 0 B>
+    <.PortSym -30 10 3 0 C>
+    <.PortSym -30 30 4 0 D>
+    <.PortSym 40 0 5 180 Y>
+    <.ID 20 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <Line -30 -30 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <Line -30 30 20 0 #000080 2 1>
+    <Line -10 40 0 -80 #0000ff 2 1>
+    <Line 20 0 20 0 #000080 2 1>
+    <EArc -20 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line 0 20 -10 0 #0000ff 2 1>
+    <Line 0 -20 -10 0 #0000ff 2 1>
+  </Symbol>
+</Component>
+
+<Component d_AND8>
+  <Description>
+8-Input AND
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_AND8 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 gnd Type="d_and8_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_and8.cir.lst">
+  <Spice>
+**** XSPICE digital 8-Input AND ****
+*
+.subckt d_and8X A B C D E F G H Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B C D E F G H] Y and1
+.model and1 d_and(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_and8X
+
+.SUBCKT Digital_XSPICE_d_AND8  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 d_and8X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID 20 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <Line -30 -30 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <Line -30 30 20 0 #000080 2 1>
+    <Line 20 0 20 0 #000080 2 1>
+    <EArc -20 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line 0 20 -10 0 #0000ff 2 1>
+    <Line 0 -20 -10 0 #0000ff 2 1>
+    <Line -30 50 20 0 #000080 2 1>
+    <Line -30 70 20 0 #000080 2 1>
+    <Line -30 -70 20 0 #000080 2 1>
+    <Line -30 -50 20 0 #000080 2 1>
+    <.PortSym -30 -70 1 0 A>
+    <.PortSym -30 -50 2 0 B>
+    <.PortSym -30 -30 3 0 C>
+    <.PortSym -30 -10 4 0 D>
+    <.PortSym -30 10 5 0 E>
+    <.PortSym -30 30 6 0 F>
+    <.PortSym -30 50 7 0 G>
+    <.PortSym -30 70 8 0 H>
+    <.PortSym 40 0 9 180 Y>
+    <Line -10 80 0 -160 #0000ff 2 1>
+  </Symbol>
+</Component>
+
+<Component d_NAND2>
+  <Description>
+2-Input NAND
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_NAND2 _net0 _net1 _net2 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 _net2 gnd Type="d_nand2_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_nand2.cir.lst">
+  <Spice>
+**** XSPICE digital 2-Input NAND ****
+*
+.subckt d_nand2X A B Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B] Y nand1
+.model nand1 d_nand(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_nand2X
+
+.SUBCKT Digital_XSPICE_d_NAND2  gnd _net0 _net1 _net2 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 _net2 d_nand2X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 10 2 0 B>
+    <.PortSym 30 0 3 180 Y>
+    <.PortSym -30 -10 1 0 A>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line -10 20 0 -40 #0000ff 2 1>
+    <Ellipse 10 -4 8 8 #0000ff 1 1 #0000ff 1 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <Line 18 0 12 0 #000080 2 1>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+  </Symbol>
+</Component>
+
+<Component d_NAND3>
+  <Description>
+3-Input NAND
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_NAND3 _net0 _net1 _net2 _net3 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="d_nand3_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_nand3.cir.lst">
+  <Spice>
+**** XSPICE digital 3-Input NAND ****
+*
+.subckt d_nand3X A B C Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B C] Y nand1
+.model nand1 d_nand(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_nand3X
+
+
+.SUBCKT Digital_XSPICE_d_NAND3  gnd _net0 _net1 _net2 _net3 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 _net2 _net3 d_nand3X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 A>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line -10 20 0 -40 #0000ff 2 1>
+    <Ellipse 10 -4 8 8 #0000ff 1 1 #0000ff 1 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <Line 18 0 12 0 #000080 2 1>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <Line -30 0 20 0 #000080 2 1>
+    <.PortSym -30 0 2 0 B>
+    <.PortSym -30 10 3 0 C>
+    <.PortSym 30 0 4 180 Y>
+  </Symbol>
+</Component>
+
+<Component d_NAND4>
+  <Description>
+4-Input NAND
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_NAND4 _net0 _net1 _net2 _net3 _net4 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 _net2 _net3 _net4 gnd Type="d_nand4_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_nand4.cir.lst">
+  <Spice>
+**** XSPICE digital 4-Input NAND ****
+*
+.subckt d_nand4X A B C D Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B C D] Y nand1
+.model nand1 d_nand(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_nand4X
+
+
+.SUBCKT Digital_XSPICE_d_NAND4  gnd _net0 _net1 _net2 _net3 _net4 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 _net2 _net3 _net4 d_nand4X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 -30 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <Line -30 30 20 0 #000080 2 1>
+    <Line -10 40 0 -80 #0000ff 2 1>
+    <.PortSym -30 -30 1 0 A>
+    <.PortSym -30 -10 2 0 B>
+    <.PortSym -30 10 3 0 C>
+    <.PortSym -30 30 4 0 D>
+    <.PortSym 40 0 5 180 Y>
+    <Line 28 0 12 0 #000080 2 1>
+    <Ellipse 20 -4 8 8 #0000ff 1 1 #0000ff 1 1>
+    <EArc -20 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line 0 20 -10 0 #0000ff 2 1>
+    <Line 0 -20 -10 0 #0000ff 2 1>
+    <.ID 20 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+  </Symbol>
+</Component>
+
+<Component d_NAND8>
+  <Description>
+8-Input NAND
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_NAND8 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 gnd Type="d_nand8_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_nand8.cir.lst">
+  <Spice>
+**** XSPICE digital 8-Input AND ****
+*
+.subckt d_nand8X A B C D E F G H Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B C D E F G H] Y nand1
+.model nand1 d_nand(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_nand8X
+
+.SUBCKT Digital_XSPICE_d_NAND8  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 d_nand8X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID 20 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <Line -30 -30 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <Line -30 30 20 0 #000080 2 1>
+    <EArc -20 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line 0 20 -10 0 #0000ff 2 1>
+    <Line 0 -20 -10 0 #0000ff 2 1>
+    <Line -30 50 20 0 #000080 2 1>
+    <Line -30 70 20 0 #000080 2 1>
+    <Line -30 -70 20 0 #000080 2 1>
+    <Line -30 -50 20 0 #000080 2 1>
+    <.PortSym -30 -70 1 0 A>
+    <.PortSym -30 -50 2 0 B>
+    <.PortSym -30 -30 3 0 C>
+    <.PortSym -30 -10 4 0 D>
+    <.PortSym -30 10 5 0 E>
+    <.PortSym -30 30 6 0 F>
+    <.PortSym -30 50 7 0 G>
+    <.PortSym -30 70 8 0 H>
+    <.PortSym 40 0 9 180 Y>
+    <Line -10 80 0 -160 #0000ff 2 1>
+    <Ellipse 20 -4 8 8 #0000ff 1 1 #0000ff 1 1>
+    <Line 28 0 12 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component d_OR2>
+  <Description>
+2-Input OR
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_OR2 _net0 _net2 _net1 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net2 _net1 gnd Type="d_or2_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_or2.cir.lst">
+  <Spice>
+**** XSPICE digital 2-Input OR ****
+*
+.subckt d_or2X A B Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B] Y or1
+.model or1 d_or(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_or2X
+
+.SUBCKT Digital_XSPICE_d_OR2  gnd _net0 _net2 _net1 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net2 _net1 d_or2X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 10 2 0 B>
+    <.PortSym 30 0 3 180 Y>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <.PortSym -30 -10 1 0 A>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #0000ff 2 1>
+    <Line -10 20 -5 0 #0000ff 2 1>
+    <Line -10 -20 -5 0 #0000ff 2 1>
+  </Symbol>
+</Component>
+
+<Component d_OR3>
+  <Description>
+3-Input OR
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_OR3 _net0 _net1 _net2 _net3 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="d_or3_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_or3.cir.lst">
+  <Spice>
+**** XSPICE digital 3-Input OR ****
+*
+.subckt d_or3X A B C Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B C] Y or1
+.model or1 d_or(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_or3X
+
+.SUBCKT Digital_XSPICE_d_OR3  gnd _net0 _net1 _net2 _net3 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 _net2 _net3 d_or3X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 A>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #0000ff 2 1>
+    <Line -10 20 -5 0 #0000ff 2 1>
+    <Line -10 -20 -5 0 #0000ff 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <Line -30 0 20 0 #000080 2 1>
+    <.PortSym -30 0 2 0 B>
+    <.PortSym -30 10 3 0 C>
+    <.PortSym 30 0 4 180 Y>
+  </Symbol>
+</Component>
+
+<Component d_NOR2>
+  <Description>
+2-Input NOR
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_NOR2 _net0 _net2 _net1 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net2 _net1 gnd Type="d_nor2_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_nor2.cir.lst">
+  <Spice>
+**** XSPICE digital 2-Input NOR ****
+*
+.subckt d_nor2X A B Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B] Y nor1
+.model nor1 d_nor(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_nor2X
+
+.SUBCKT Digital_XSPICE_d_NOR2  gnd _net0 _net2 _net1 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net2 _net1 d_nor2X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 10 2 0 B>
+    <.PortSym 30 0 3 180 Y>
+    <.PortSym -30 -10 1 0 A>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #0000ff 2 1>
+    <Line -10 20 -5 0 #0000ff 2 1>
+    <Line -10 -20 -5 0 #0000ff 2 1>
+    <Ellipse 10 -4 8 8 #0000ff 1 1 #0000ff 1 1>
+    <Line 18 0 12 0 #000080 2 1>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+  </Symbol>
+</Component>
+
+<Component d_NOR3>
+  <Description>
+2-Input NOR
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_NOR3 _net0 _net1 _net2 _net3 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="d_nor3_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_nor3.cir.lst">
+  <Spice>
+**** XSPICE digital 3-Input NOR ****
+*
+.subckt d_nor3X A B C Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B C] Y nor1
+.model nor1 d_nor(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_nor3X
+
+.SUBCKT Digital_XSPICE_d_NOR3  gnd _net0 _net1 _net2 _net3 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 _net2 _net3 d_nor3X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 -10 1 0 A>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #0000ff 2 1>
+    <Line -10 20 -5 0 #0000ff 2 1>
+    <Line -10 -20 -5 0 #0000ff 2 1>
+    <Ellipse 10 -4 8 8 #0000ff 1 1 #0000ff 1 1>
+    <Line 18 0 12 0 #000080 2 1>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <Line -30 0 20 0 #000080 2 1>
+    <.PortSym -30 0 2 0 B>
+    <.PortSym -30 10 3 0 C>
+    <.PortSym 30 0 4 180 Y>
+  </Symbol>
+</Component>
+
+<Component d_XOR2>
+  <Description>
+2-Input XOR
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_XOR2 _net0 _net2 _net1 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net2 _net1 gnd Type="d_xor2_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_xor2.cir.lst">
+  <Spice>
+**** XSPICE digital 2-Input XOR ****
+*
+.subckt d_xor2X A B Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B] Y xor1
+.model xor1 d_xor(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_xor2X
+
+.SUBCKT Digital_XSPICE_d_XOR2  gnd _net0 _net2 _net1 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net2 _net1 d_xor2X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 10 2 0 B>
+    <.PortSym 30 0 3 180 Y>
+    <.PortSym -30 -10 1 0 A>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line 10 0 20 0 #000080 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #0000ff 2 1>
+    <EArc -15 -20 10 40 4320 2880 #0000ff 2 1>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+  </Symbol>
+</Component>
+
+<Component d_XNOR2>
+  <Description>
+2-Input XNOR
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_XNOR2 _net0 _net2 _net1 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net2 _net1 gnd Type="d_nor2_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_nor2.cir.lst">
+  <Spice>
+**** XSPICE digital 2-Input NOR ****
+*
+.subckt d_nor2X A B Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 [A B] Y nor1
+.model nor1 d_nor(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_nor2X
+
+.SUBCKT Digital_XSPICE_d_XNOR2  gnd _net0 _net2 _net1 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net2 _net1 d_nor2X RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.PortSym -30 10 2 0 B>
+    <.PortSym 30 0 3 180 Y>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <.PortSym -30 -10 1 0 A>
+    <EArc -30 -20 40 40 4320 2880 #0000ff 2 1>
+    <Line -30 -10 20 0 #000080 2 1>
+    <Line -30 10 20 0 #000080 2 1>
+    <EArc -20 -20 10 40 4320 2880 #0000ff 2 1>
+    <EArc -15 -20 10 40 4320 2880 #0000ff 2 1>
+    <Ellipse 10 -4 8 8 #0000ff 1 1 #0000ff 1 1>
+    <Line 18 0 12 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component d_BUF>
+  <Description>
+Digital Buffer
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_BUF _net0 _net1 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 gnd Type="d_buf_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_buf.cir.lst">
+  <Spice>
+**** XSPICE digital Buffer ****
+*
+.subckt d_bufX A Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 A Y buf1
+.model buf1 d_buffer(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_bufX
+
+.SUBCKT Digital_XSPICE_d_BUF  gnd _net0 _net1 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 d_bufX RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 15 0 15 0 #000080 2 1>
+    <Line -30 0 20 0 #000080 2 1>
+    <Line -10 -15 25 15 #0000ff 2 1>
+    <Line -10 15 0 -30 #0000ff 2 1>
+    <Line -10 15 25 -15 #0000ff 2 1>
+    <.PortSym -30 0 1 0 A>
+    <.PortSym 30 0 2 180 Y>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+  </Symbol>
+</Component>
+
+<Component d_INV>
+  <Description>
+Digital Inverter
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_INV _net0 _net1 Rise_Delay="1e-10" Fall_Delay="1e-10" Input_Load="0.5e-12"
+Sub:X1 _net0 _net1 gnd Type="d_inv_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_inv.cir.lst">
+  <Spice>
+**** XSPICE digital Inverter ****
+*
+.subckt d_invX A Y rise_delay=1e-10 fall_delay=1e-10 input_load=0.5e-12
+*
+a1 A Y inv1
+.model inv1 d_inverter(rise_delay='rise_delay' fall_delay='fall_delay' input_load='input_load')
+*
+.ends d_invX
+
+.SUBCKT Digital_XSPICE_d_INV  gnd _net0 _net1 Rise_Delay=1e-10 Fall_Delay=1e-10 Input_Load=0.5e-12 
+X1 _net0 _net1 d_invX RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY INPUT_LOAD=INPUT_LOAD
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID 10 14 Y "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=">
+    <Line -30 0 20 0 #000080 2 1>
+    <Line -10 -15 25 15 #0000ff 2 1>
+    <Line -10 15 0 -30 #0000ff 2 1>
+    <Line -10 15 25 -15 #0000ff 2 1>
+    <.PortSym -30 0 1 0 A>
+    <.PortSym 30 0 2 180 Y>
+    <Ellipse 10 -4 8 8 #0000ff 1 1 #0000ff 1 1>
+    <Line 18 0 12 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component d_TRI>
+  <Description>
+Tri-State Buffer
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_TRI _net0 _net2 _net1 Delay="1e-10" Input_Load="0.5e-12" Enable_Load="0.5e-12"
+SpLib:X1 _net0 _net2 _net1 File="d_tri.cir" Device="D_TRIX" SymPattern="auto" Params="DELAY=DELAY INPUT_LOAD=INPUT_LOAD ENABLE_LOAD=ENABLE_LOAD" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT Digital_XSPICE_d_TRI  gnd _net0 _net2 _net1 Delay=1e-10 Input_Load=0.5e-12 Enable_Load=0.5e-12 
+XX1  _net0 _net2 _net1 D_TRIX DELAY=DELAY INPUT_LOAD=INPUT_LOAD ENABLE_LOAD=ENABLE_LOAD
+.ENDS
+  </Spice>
+  <VerilogModel>
+module Sub_Digital_XSPICE_d_TRI (net_net0, net_net2, net_net1);
+ inout net_net0, net_net1, net_net2;
+
+ parameter Delay = 1e-10;
+ parameter Input_Load = 0.5e-12;
+ parameter Enable_Load = 0.5e-12;
+
+endmodule
+  </VerilogModel>
+  <VHDLModel>
+library ieee;
+use ieee.std_logic_1164.all;
+entity Sub_Digital_XSPICE_d_TRI is
+ generic (Delay : real := 1e-10;
+ Input_Load : real := 0.5e-12;
+ Enable_Load : real := 0.5e-12;
+ );
+ port (net_net0 : inout  ;
+ net_net2 : inout  ;
+ net_net1 : inout  );
+end entity;
+use work.all;
+architecture Arch_Sub_Digital_XSPICE_d_TRI of Sub_Digital_XSPICE_d_TRI is
+begin
+end architecture;
+  </VHDLModel>
+  <Symbol>
+    <Line 15 0 15 0 #000080 2 1>
+    <Line -30 0 20 0 #000080 2 1>
+    <Line -10 -15 25 15 #0000ff 2 1>
+    <Line -10 15 0 -30 #0000ff 2 1>
+    <Line -10 15 25 -15 #0000ff 2 1>
+    <.PortSym -30 0 1 0 A>
+    <.PortSym 30 0 3 180 Y>
+    <.ID 20 14 Y "1=Delay=1e-10=Delay (sec)=" "1=Input_Load=0.5e-12=Input Load (F)=" "1=Enable_Load=0.5e-12=Enable Load (F)=">
+    <Line 0 10 0 10 #000080 2 1>
+    <.PortSym 0 20 2 0 E>
+  </Symbol>
+</Component>
+
+<Component d_D_FF>
+  <Description>
+D Flip-Flop
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_D_FF _net0 _net1 _net4 _net5 _net2 _net3 Clk_Delay="1e-10" Set_Delay="1e-10" Reset_Delay="1e-10" IC="0" Rise_Delay="1e-10" Fall_Delay="1e-10"
+Sub:X1 _net0 _net1 _net4 _net5 _net2 _net3 gnd Type="d_dff_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_dff.cir.lst">
+  <Spice>
+* XSPICE d_dff Digital D Flip-Flop
+* 
+.subckt d_ff d_d d_c d_set d_reset d_q d_q_ clk_delay=1.0e-10 set_delay=1.0e-10 reset_delay=1.0e-10 ic=0 rise_delay=1.0e-10 fall_delay=1e-10
+*
+ad1 d_d d_c d_set d_reset d_q d_q_ flop1
+.model flop1 d_dff(clk_delay='clk_delay' set_delay='set_delay' reset_delay='reset_delay' ic='ic' rise_delay='rise_delay' fall_delay='fall_delay')
+*
+.ends d_dff
+
+.SUBCKT Digital_XSPICE_d_D_FF  gnd _net0 _net1 _net4 _net5 _net2 _net3 Clk_Delay=1e-10 Set_Delay=1e-10 Reset_Delay=1e-10 IC=0 Rise_Delay=1e-10 Fall_Delay=1e-10 
+X1 _net0 _net1 _net4 _net5 _net2 _net3 d_ff  CLK_DELAY=CLK_DELAY SET_DELAY=SET_DELAY RESET_DELAY=RESET_DELAY IC=IC RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 0 -40 0 -20 #000080 2 1>
+    <Line 0 61 0 -20 #000080 2 1>
+    <Line -50 20 20 0 #000080 2 1>
+    <Line -50 -20 20 0 #000080 2 1>
+    <Line 30 -20 20 0 #000080 2 1>
+    <Line 30 20 20 0 #000080 2 1>
+    <Line 14 11 12 0 #000080 2 1>
+    <Text 14 -31 12 #000080 0 "Q">
+    <Text 14 9 12 #000080 0 "Q">
+    <Line -15 20 -15 -10 #000080 2 1>
+    <Line -30 30 15 -10 #000080 2 1>
+    <.PortSym -50 -20 1 0 D>
+    <.PortSym -50 20 2 0 C>
+    <.PortSym 50 -20 5 180 Q>
+    <.PortSym 50 20 6 180 Q_>
+    <Text -6 -40 12 #000080 0 "S">
+    <Text -6 20 12 #000080 0 "R">
+    <Text -26 -30 12 #000080 0 "D">
+    <Rectangle -30 -40 60 80 #0000ff 2 1 #c0c0c0 1 0>
+    <.PortSym 0 60 4 0 Reset>
+    <.PortSym 0 -60 3 0 Set>
+    <.ID 20 44 Y "1=Clk_Delay=1e-10=Clock Delay (sec)=" "1=Set_Delay=1e-10=Set Delay (sec)=" "1=Reset_Delay=1e-10=Reset Delay (sec)=" "1=IC=0=Output Initial State=" "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=">
+  </Symbol>
+</Component>
+
+<Component d_D_FF_B>
+  <Description>
+D Flip-Flop
+Set-Reset Swapped
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_D_FF_B _net0 _net1 _net4 _net5 _net2 _net3 Clk_Delay="1e-10" Set_Delay="1e-10" Reset_Delay="1e-10" IC="0" Rise_Delay="1e-10" Fall_Delay="1e-10"
+Sub:X1 _net0 _net1 _net4 _net5 _net2 _net3 gnd Type="d_dff_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_dff.cir.lst">
+  <Spice>
+* XSPICE d_dff Digital D Flip-Flop
+* 
+.subckt d_ff d_d d_c d_set d_reset d_q d_q_ clk_delay=1.0e-10 set_delay=1.0e-10 reset_delay=1.0e-10 ic=0 rise_delay=1.0e-10 fall_delay=1e-10
+*
+ad1 d_d d_c d_set d_reset d_q d_q_ flop1
+.model flop1 d_dff(clk_delay='clk_delay' set_delay='set_delay' reset_delay='reset_delay' ic='ic' rise_delay='rise_delay' fall_delay='fall_delay')
+*
+.ends d_dff
+
+.SUBCKT Digital_XSPICE_d_D_FF_B  gnd _net0 _net1 _net4 _net5 _net2 _net3 Clk_Delay=1e-10 Set_Delay=1e-10 Reset_Delay=1e-10 IC=0 Rise_Delay=1e-10 Fall_Delay=1e-10 
+X1 _net0 _net1 _net4 _net5 _net2 _net3 d_ff  CLK_DELAY=CLK_DELAY SET_DELAY=SET_DELAY RESET_DELAY=RESET_DELAY IC=IC RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 0 -40 0 -20 #000080 2 1>
+    <Line 0 61 0 -20 #000080 2 1>
+    <Line -50 20 20 0 #000080 2 1>
+    <Line -50 -20 20 0 #000080 2 1>
+    <Line 30 -20 20 0 #000080 2 1>
+    <Line 30 20 20 0 #000080 2 1>
+    <Line 14 11 12 0 #000080 2 1>
+    <Text 14 -31 12 #000080 0 "Q">
+    <Text 14 9 12 #000080 0 "Q">
+    <Line -15 20 -15 -10 #000080 2 1>
+    <Line -30 30 15 -10 #000080 2 1>
+    <.PortSym -50 -20 1 0 D>
+    <.PortSym -50 20 2 0 C>
+    <.PortSym 50 -20 5 180 Q>
+    <.PortSym 50 20 6 180 Q_>
+    <Text -26 -30 12 #000080 0 "D">
+    <Rectangle -30 -40 60 80 #0000ff 2 1 #c0c0c0 1 0>
+    <.ID 20 44 Y "1=Clk_Delay=1e-10=Clock Delay (sec)=" "1=Set_Delay=1e-10=Set Delay (sec)=" "1=Reset_Delay=1e-10=Reset Delay (sec)=" "1=IC=0=Output Initial State=" "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=">
+    <Text -6 20 12 #000080 0 "S">
+    <Text -6 -40 12 #000080 0 "R">
+    <.PortSym 0 -60 4 0 Reset>
+    <.PortSym 0 60 3 0 Set>
+  </Symbol>
+</Component>
+
+<Component d_JK_FF>
+  <Description>
+JK Flip-Flop
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_JK_FF _net0 _net3 _net1 _net5 _net6 _net4 _net2 Clk_Delay="1e-10" Set_Delay="1e-10" Reset_Delay="1e-10" IC="0" Rise_Delay="1e-10" Fall_Delay="1e-10"
+Sub:X1 _net0 _net3 _net1 _net5 _net6 _net4 _net2 gnd Type="d_jkff_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_jkff.cir.lst">
+  <Spice>
+* XSPICE d_jkff Digital J-K Flip-Flop
+* 
+.subckt d_jkff d_j d_k d_c d_set d_reset d_q d_q_ clk_delay=1.0e-10 set_delay=1.0e-10 reset_delay=1.0e-10 ic=0 rise_delay=1.0e-10 fall_delay=1e-10
+*
+ad1 d_j d_k d_c d_set d_reset d_q d_q_ flop1
+.model flop1 d_jkff(clk_delay='clk_delay' set_delay='set_delay' reset_delay='reset_delay' ic='ic' rise_delay='rise_delay' fall_delay='fall_delay')
+*
+.ends d_jkff
+
+.SUBCKT Digital_XSPICE_d_JK_FF  gnd _net0 _net3 _net1 _net5 _net6 _net4 _net2 Clk_Delay=1e-10 Set_Delay=1e-10 Reset_Delay=1e-10 IC=0 Rise_Delay=1e-10 Fall_Delay=1e-10 
+X1 _net0 _net3 _net1 _net5 _net6 _net4 _net2 d_jkff  CLK_DELAY=CLK_DELAY SET_DELAY=SET_DELAY RESET_DELAY=RESET_DELAY IC=IC RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 0 -40 0 -20 #000080 2 1>
+    <Line 0 61 0 -20 #000080 2 1>
+    <Line -50 20 20 0 #000080 2 1>
+    <Line -50 -20 20 0 #000080 2 1>
+    <Line 30 -20 20 0 #000080 2 1>
+    <Line 30 20 20 0 #000080 2 1>
+    <Line 14 11 12 0 #000080 2 1>
+    <Text 14 -31 12 #000080 0 "Q">
+    <Text 14 9 12 #000080 0 "Q">
+    <.PortSym -50 -20 1 0 J>
+    <.PortSym -50 20 2 0 K>
+    <Text -6 -40 12 #000080 0 "S">
+    <Text -6 20 12 #000080 0 "R">
+    <Text -26 -30 12 #000080 0 "J">
+    <Rectangle -30 -40 60 80 #0000ff 2 1 #c0c0c0 1 0>
+    <Line -15 0 -15 -10 #000080 2 1>
+    <Line -30 10 15 -10 #000080 2 1>
+    <Line -50 0 20 0 #000080 2 1>
+    <.PortSym -50 0 3 0 C>
+    <.PortSym 0 -60 4 0 Set>
+    <.PortSym 0 60 5 0 Reset>
+    <.PortSym 50 -20 6 180 Q>
+    <.PortSym 50 20 7 180 Q_>
+    <Text -26 10 12 #000080 0 "K">
+    <.ID 20 44 Y "1=Clk_Delay=1e-10=Clock Delay (sec)=" "1=Set_Delay=1e-10=Set Delay (sec)=" "1=Reset_Delay=1e-10=Reset Delay (sec)=" "1=IC=0=Output Initial State=" "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=">
+  </Symbol>
+</Component>
+
+<Component d_SR_FF>
+  <Description>
+SR Flip-Flop
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_SR_FF _net5 _net6 _net0 _net3 _net4 _net2 _net1 Clk_Delay="1e-10" Set_Delay="1e-10" Reset_Delay="1e-10" IC="0" Rise_Delay="1e-10" Fall_Delay="1e-10"
+Sub:X1 _net5 _net6 _net0 _net3 _net4 _net2 _net1 gnd Type="d_srff_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_srff.cir.lst">
+  <Spice>
+* XSPICE d_srff Digital S-R Flip-Flop
+* 
+.subckt d_srff d_s d_r d_c d_set d_reset d_q d_q_ clk_delay=1.0e-10 set_delay=1.0e-10 reset_delay=1.0e-10 ic=0 rise_delay=1.0e-10 fall_delay=1e-10
+*
+ad1 d_s d_r d_c d_set d_reset d_q d_q_ flop1
+.model flop1 d_srff(clk_delay='clk_delay' set_delay='set_delay' reset_delay='reset_delay' ic='ic' rise_delay='rise_delay' fall_delay='fall_delay')
+*
+.ends d_srff
+
+.SUBCKT Digital_XSPICE_d_SR_FF  gnd _net5 _net6 _net0 _net3 _net4 _net2 _net1 Clk_Delay=1e-10 Set_Delay=1e-10 Reset_Delay=1e-10 IC=0 Rise_Delay=1e-10 Fall_Delay=1e-10 
+X1 _net5 _net6 _net0 _net3 _net4 _net2 _net1 d_srff  CLK_DELAY=CLK_DELAY SET_DELAY=SET_DELAY RESET_DELAY=RESET_DELAY IC=IC RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 0 -40 0 -20 #000080 2 1>
+    <Line 0 61 0 -20 #000080 2 1>
+    <Line -50 20 20 0 #000080 2 1>
+    <Line -50 -20 20 0 #000080 2 1>
+    <Line 30 -20 20 0 #000080 2 1>
+    <Line 30 20 20 0 #000080 2 1>
+    <Line 14 11 12 0 #000080 2 1>
+    <Text 14 -31 12 #000080 0 "Q">
+    <Text 14 9 12 #000080 0 "Q">
+    <.PortSym -50 -20 1 0 S>
+    <.PortSym -50 20 2 0 R>
+    <Text -6 -40 12 #000080 0 "S">
+    <Text -6 20 12 #000080 0 "R">
+    <Text -26 -30 12 #000080 0 "S">
+    <Rectangle -30 -40 60 80 #0000ff 2 1 #c0c0c0 1 0>
+    <.ID 20 44 Y "1=Clk_Delay=1e-10=Clock Delay (sec)=" "1=Set_Delay=1e-10=Set Delay (sec)=" "1=Reset_Delay=1e-10=Reset Delay (sec)=" "1=IC=0=Output Initial State=" "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=">
+    <Line -15 0 -15 -10 #000080 2 1>
+    <Line -30 10 15 -10 #000080 2 1>
+    <Line -50 0 20 0 #000080 2 1>
+    <.PortSym -50 0 3 0 C>
+    <.PortSym 0 -60 4 0 Set>
+    <.PortSym 0 60 5 0 Reset>
+    <.PortSym 50 -20 6 180 Q>
+    <.PortSym 50 20 7 180 Q_>
+    <Text -26 10 12 #000080 0 "R">
+  </Symbol>
+</Component>
+
+<Component d_Divider>
+  <Description>
+Digital Divider
+50/50 Duty Requires
+High-Cycles=(Div-Factor)/2
+XSPICE Based
+  </Description>
+  <Model>
+.Def:Digital_XSPICE_d_Divider _net0 _net1 Div_Factor="2" High_Cycles="1" I_Count="0" Rise_Delay="1e-10" Fall_Delay="1e-10"
+Sub:X1 _net0 _net1 gnd Type="d_divider_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "d_divider.cir.lst">
+  <Spice>
+**** XSPICE digital divider d_fdiv ****
+*
+* d_fin - digital input
+* d_fout - digital output
+*
+.subckt dig_div d_fin d_fout div_factor=2 high_cycles=1 i_count=0 rise_delay=1e-10 fall_delay=1e-10)
+*
+adiv1 d_fin d_fout divider
+*
+.model divider d_fdiv(div_factor='div_factor' high_cycles='high_cycles' i_count='i_count' rise_delay='rise_delay' fall_delay='fall_delay')
+*
+.ends dig_div
+
+.SUBCKT Digital_XSPICE_d_Divider  gnd _net0 _net1 Div_Factor=2 High_Cycles=1 I_Count=0 Rise_Delay=1e-10 Fall_Delay=1e-10 
+X1 _net0 _net1 dig_div DIV_FACTOR=DIV_FACTOR HIGH_CYCLES=HIGH_CYCLES I_COUNT=I_COUNT RISE_DELAY=RISE_DELAY FALL_DELAY=FALL_DELAY
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 9 0 -17 0 #000000 2 1>
+    <Ellipse -3 5 6 6 #000000 1 1 #000000 1 1>
+    <Ellipse -3 -11 6 6 #000000 1 1 #000000 1 1>
+    <.PortSym -50 0 1 0 IN>
+    <.PortSym 50 0 2 180 OUT>
+    <Rectangle -30 -20 60 40 #0000ff 2 1 #c0c0c0 1 0>
+    <Line -50 0 20 0 #000080 2 1>
+    <Line 30 0 20 0 #000080 2 1>
+    <Text -24 -10 12 #000080 0 "I">
+    <Text 15 -10 12 #000080 0 "O">
+    <.ID -20 24 DIV "1=Div_Factor=2=Division Ratio=" "1=High_Cycles=1=Number of high clock cycles=" "1=I_Count=0=Initial count value=" "1=Rise_Delay=1e-10=Rise Delay (sec)=" "1=Fall_Delay=1e-10=Fall Delay (sec)=">
+  </Symbol>
+</Component>

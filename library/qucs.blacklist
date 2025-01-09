@@ -13,3 +13,5 @@ VoltageReferences.lib
 PWM_Controller.lib
 MixerIC.lib
 SPICE_TLine.lib
+Digital_AUX.lib
+Digital_XSPICE.lib
