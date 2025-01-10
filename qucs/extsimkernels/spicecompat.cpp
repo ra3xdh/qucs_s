@@ -296,7 +296,14 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
           if (lin.startsWith("+")) {
             lin.remove(0,1);
             QStringList pins = lin.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
-            pin_names.append(pins);
+            for(const auto &pin: pins) {
+              if (pin.toLower() == "params:") {
+                header_start = false;
+                break;
+              } else {
+                pin_names.append(pin);
+              }
+            }
           } else {
             // end of header
             header_start = false;
