@@ -300,7 +300,7 @@ void QucsApp::readXML(QFile & library_file) {
             if (ShowName.isEmpty()) {//If the XML file does not contain this field, set it to "true" automatically
               ShowName = "true";
             }
-            bool ShowNameinSchematic = (ShowName.toInt() != 0); // Convert ShowName parameter to bool
+            bool ShowNameinSchematic = (ShowName.toLower() == "true"); // Convert ShowName parameter to bool
             Component[ComponentName].ShowNameinSchematic = ShowNameinSchematic;
 
             while (xmlReader.readNextStartElement()) {
@@ -308,17 +308,15 @@ void QucsApp::readXML(QFile & library_file) {
                 QString Description = xmlReader.readElementText().trimmed();
                 //qDebug() << "    Description:" << Description;
                 Component[ComponentName].description = Description;
-              } else if (xmlReader.name() == QString("Models")) {
+              } else if (xmlReader.name() == QString("Netlists")) {
                 while (xmlReader.readNextStartElement()) {
-                  if (xmlReader.name() == QString("DefaultModel")) {
-                    QString defaultModel = xmlReader.attributes().value("value").toString();
-                    Component[ComponentName].Models["Default"] = defaultModel;
-                    //qDebug() << "    Default Model:" << defaultModel;
+                  if (xmlReader.name() == QString("QucsatorNetlist")) {
+                    QString QucsatorNetlist = xmlReader.attributes().value("value").toString();
+                    Component[ComponentName].Netlists["Qucsator"] = QucsatorNetlist;
                     xmlReader.skipCurrentElement();
-                  } else if (xmlReader.name() == QString("SpiceModel")) {
-                    QString spiceModel = xmlReader.attributes().value("value").toString();
-                    Component[ComponentName].Models["SPICE"] = spiceModel;
-                    //qDebug() << "    Spice Model:" << spiceModel;
+                  } else if (xmlReader.name() == QString("NgspiceNetlist")) {
+                    QString NgspiceNetlist = xmlReader.attributes().value("value").toString();
+                    Component[ComponentName].Netlists["Ngspice"] = NgspiceNetlist;
                     xmlReader.skipCurrentElement();
                   } else {
                     xmlReader.skipCurrentElement();
@@ -376,9 +374,13 @@ void QucsApp::readXML(QFile & library_file) {
                     QString Name = xmlReader.attributes().value("name").toString();
                     QString Unit = xmlReader.attributes().value("unit").toString();
                     QString DefaultValue = xmlReader.attributes().value("default_value").toString();
+
                     QString ShowParam = xmlReader.attributes().value("show").toString();
-                    bool Show = (ShowParam.toInt() != 0); // Convert Show parameter to bool
-                    qDebug() << "    Parameter:" << Name << Unit << DefaultValue;
+                    if (ShowParam.isEmpty()) {//If the XML file does not contain this field, set it to "true" automatically
+                      ShowParam = "false";
+                    }
+                    bool Show = (ShowParam.toLower() == "true"); // Convert Show parameter to bool
+                    //qDebug() << "    Parameter:" << Name << Unit << DefaultValue;
 
                            // Read parameter description
                     QString Description;

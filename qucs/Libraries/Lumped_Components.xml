@@ -3,12 +3,12 @@
         <Description>
             Ideal Capacitor
         </Description>
-        <Models>
-                <DefaultModel value = "C">
-                </DefaultModel>
-                <SpiceModel value = "C">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+                <QucsatorNetlist value = 'C:C{PartCounter} {nets} C="{C}" V="{V}"'>
+                </QucsatorNetlist>
+                <NgspiceNetlist value = 'C{PartCounter} {nets} {C}'>
+                </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard" type="explicit">
                 <PortSym x="-30" y="0" type="1" angle="0" />
@@ -20,10 +20,10 @@
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="C" unit="pF" default_value="1" show="1">
+            <Parameter name="C" unit="pF" default_value="1" show="true">
                 <Description>Capacitance</Description>
             </Parameter>
-            <Parameter name="V" unit="V" default_value="1" show="0">
+            <Parameter name="V" unit="V" default_value="1" show="false">
                 <Description>Initial voltage for transient simulation</Description>
             </Parameter>
         </Parameters>
@@ -32,12 +32,12 @@
         <Description>
             Ideal Resistor
         </Description>
-        <Models>
-                <DefaultModel value = "R">
-                </DefaultModel>
-                <SpiceModel value = "R">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+                <QucsatorNetlist value = 'R:R{PartCounter} {nets} R="{R}" Temp="{Temp}" Tc1="{Tc1}" Tc2="{Tc2}"'>
+                </QucsatorNetlist>
+                <NgspiceNetlist value = 'R{PartCounter} {nets} {R} tc1={Tc1} tc1={Tc2}'>
+                </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard" type="explicit">
                 <PortSym x="-30" y="0" type="1" angle="0" />
@@ -51,8 +51,20 @@
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="R" unit="Ohm" default_value="1000">
+            <Parameter name="R" unit="Ohm" default_value="1000" show="true">
                 <Description>Resistance</Description>
+            </Parameter>
+            <Parameter name="Temp" unit="" default_value="26.85" show="false">
+                <Description>Simulation temperature in degree Celsius (Qucsator only)</Description>
+            </Parameter>
+            <Parameter name="Tc1" unit="" default_value="0" show="false">
+                <Description>First order temperature coefficient</Description>
+            </Parameter>
+            <Parameter name="Tc2" unit="" default_value="0" show="false">
+                <Description>Second order temperature coefficient</Description>
+            </Parameter>
+            <Parameter name="Tnom" unit="" default_value="26.85" show="false">
+                <Description>Temperature at which the parameters were extracted (Qucsator only)</Description>
             </Parameter>
         </Parameters>
     </Component>
@@ -60,24 +72,27 @@
         <Description>
             Ideal Inductor
         </Description>
-        <Models>
-                <DefaultModel value = "L">
-                </DefaultModel>
-                <SpiceModel value = "L">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+                <QucsatorNetlist value = 'L:L{PartCounter} {nets} L="{L}" I="{I}"'>
+                </QucsatorNetlist>
+                <NgspiceNetlist value = 'L{PartCounter} {nets} {L}'>
+                </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard" type="external"> <!-- Defined externally only for future reference -->
                <File>./Lumped_Component_Symbols/Inductor.sym</File>
            </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="L" unit="nH" default_value="1" show="1">
+            <Parameter name="L" unit="nH" default_value="1" show="true">
                 <Description>Inductance</Description>
+            </Parameter>
+            <Parameter name="I" unit="A" default_value="1e-3" show="false">
+                <Description>Initial current for transient simulation</Description>
             </Parameter>
         </Parameters>
     </Component>
-    <Component name="Ground" schematic_id = "GND" show_name="true">
+    <Component name="Ground" schematic_id = "GND" show_name="false">
         <Description>
             Ground
         </Description>

@@ -3,12 +3,12 @@
         <Description>
             AC Power Source
         </Description>
-        <Models>
-                <DefaultModel value = "Pac">
-                </DefaultModel>
-                <SpiceModel value = "P">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+                <QucsatorNetlist value = 'Pac:P{PartCounter} {nets} Num="{PartCounter}" Z="{Z}" P="{P}" f="{f}" Temp="{Temp}"'>
+                </QucsatorNetlist>
+                <NgspiceNetlist value = 'VP{PartCounter} {nets} dc 0 ac {P} SIN(0 {P} {f}) portnum {Num} z0 {Z}'>
+                </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard" type="explicit">
                 <PortSym x="0" y="30" type="1" angle="270" />
@@ -33,19 +33,19 @@
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="Num" unit="" default_value="1" show="1">
+            <Parameter name="Num" unit="" default_value="1" show="true">
                 <Description>Number of the port</Description>
             </Parameter>
-            <Parameter name="Z" unit="Ohm" default_value="50" show="1">
+            <Parameter name="Z" unit="Ohm" default_value="50" show="true">
                 <Description>Port impedance</Description>
             </Parameter>
-            <Parameter name="P" unit="dBm" default_value="0" show="0">
+            <Parameter name="P" unit="dBm" default_value="0" show="true">
                 <Description>(Available) AC power</Description>
             </Parameter>
-            <Parameter name="f" unit="GHz" default_value="1" show="0">
+            <Parameter name="f" unit="GHz" default_value="1" show="true">
                 <Description>Frequency</Description>
             </Parameter>
-            <Parameter name="Temp" unit="" default_value="26.85" show="0">
+            <Parameter name="Temp" unit="" default_value="26.85" show="false">
                 <Description>Simulation temperature</Description>
             </Parameter>
         </Parameters>
@@ -54,12 +54,12 @@
         <Description>
             Ideal DC Voltage Source
         </Description>
-        <Models>
-                <DefaultModel value = "Vdc">
-                </DefaultModel>
-                <SpiceModel value = "V">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+                <QucsatorNetlist value = 'Vdc:V{PartCounter} {nets} U="{U}"'>
+                </QucsatorNetlist>
+                <NgspiceNetlist value = 'V{PartCounter} {nets} DC {U}'>
+                </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard" type="explicit">
                 <PortSym x="0" y="30" type="1" angle="270" />
@@ -74,7 +74,7 @@
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="U" unit="V" default_value="1" show="1">
+            <Parameter name="U" unit="V" default_value="1" show="true">
                 <Description>Voltage</Description>
             </Parameter>
         </Parameters>

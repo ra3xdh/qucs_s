@@ -181,7 +181,7 @@ struct ComponentInfo {
   QMap<QString, SymbolDescription> symbol;// Actually, there could be more than one
   QMap<QString, QVector<int>> SymbolBoundingBox;
   QMap<QString, ParameterInfo> parameters;
-  QMap<QString, QString> Models;
+  QMap<QString, QString> Netlists;
 };
 extern QMap<QString, QMap<QString, ComponentInfo>> LibraryComponents;
 

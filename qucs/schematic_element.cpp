@@ -2606,17 +2606,34 @@ void Schematic::insertComponent(Component *c)
     }
     else
     {
+        // This assigns the number of the component and it must work for XML based component as well as with
+        // hardcoded devices, such as simulation blocks, etc.
+      if (c->Schematic_ID.isEmpty()){
+        // Hardcoded device
         // determines the name by looking for names with the same
         // prefix and increment the number
-        /*for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
+        for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
             if(pc->Name.left(len) == c->Name)
             {
                 s = pc->Name.right(pc->Name.length()-len);
                 z = s.toInt(&ok);
                 if(ok) if(z >= max) max = z + 1;
             }
-        c->Name += QString::number(max);  // create name with new number*/
-        c->Name += QString("%1").arg(c->PartCounter+1);  // create name with new number
+        c->Name += QString::number(max);  // create name with new number
+        //c->Name += QString("%1").arg(c->PartCounter+1);  // create name with new number
+      } else {
+        // XML-based component
+        // Inspect all components with the same Schematic_ID as this and add 1 to the maximum PartCounter
+        int max_ID = 0;
+        for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next()) {
+          if (pc->Schematic_ID == c->Schematic_ID){
+            if (max_ID < pc->PartCounter) {
+              max_ID = pc->PartCounter;
+            }
+          }
+        }
+        c->PartCounter = max_ID + 1; // Set the part counter of the new component to place
+      }
     }
 
     setComponentNumber(c); // important for power sources and subcircuit ports

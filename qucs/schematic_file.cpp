@@ -1509,7 +1509,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
     }
 
     // handle ground symbol
-    if(pc->Model == "GND") {
+    if(pc->Schematic_ID == "GND") {
       pc->Ports.first()->Connection->Name = "gnd";
       continue;
     }

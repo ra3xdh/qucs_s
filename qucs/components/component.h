@@ -123,6 +123,8 @@ public:
   void paintIcon(QPixmap *pixmap);
   Property * getProperty(const QString&);
 
+  QMap<QString, QString> Netlists;
+
 protected:
   virtual QString netlist();
   virtual QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);

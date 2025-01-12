@@ -63,7 +63,7 @@ Component::Component() {
     cy = 0;
     tx = 0;
     ty = 0;
-
+    PartCounter = 0; // Identifies the number of component inside the schematic
 
     containingSchematic = NULL;
 }
@@ -76,10 +76,6 @@ Component::Component(const ComponentInfo& CI) : Component() {
 
 // -------------------------------------------------------
 Component *Component::newOne() {
-  if (!Name.isEmpty() && Name.endsWith('1')) {
-    Name.chop(1);// Remove the last character. The name is modified after place. Being a constructor copy this would propagate misleading future component number assignations
-  }
-  PartCounter += 1;
   Name = Schematic_ID + QString("%1").arg(PartCounter);
   return new Component(*this);
 }
@@ -742,22 +738,75 @@ QString Component::netlist() {
     return QString();
   }
 
+  if (Netlists.isEmpty()) {
+    // Components not present in the XML libraries, such as simulation blocks.
     QString s = Model + ":" + Name;
-
     // output all node names
-    for (Port *p1: Ports)
-        s += " " + p1->Connection->Name;   // node names
+    for (Port *p1: Ports) {
+      s += " " + p1->Connection->Name;   // node names
+    }
 
-    // output all properties
-    QStringList no_sim_props;
-    no_sim_props<<"Symbol"<<"UseGlobTemp";
-    for (const auto &p2 : Props) {
-      if (!no_sim_props.contains(p2->Name)) {
+           // output all properties
+    for (Property *p2 : Props) {
+      if (p2->Name != "Symbol") {
         s += " " + p2->Name + "=\"" + p2->Value + "\"";
       }
     }
-
     return s + '\n';
+  } else {
+    // Components defined in the XML library
+    QString nets;
+    QString netlist_line;
+
+    // Get the nodes at which the component is connected
+    for (Port *p1: Ports) {
+      nets += QString("%1 ").arg(p1->Connection->Name);   // node names
+    }
+
+    // Check the current simulator and get its template line
+    if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
+      netlist_line = Netlists["Ngspice"];
+    } else {
+      if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+        netlist_line = Netlists["Qucsator"];
+      } else {
+
+      }
+    }
+
+    // Set the component number in the schematic
+    netlist_line.replace(QString("{PartCounter}"), QString::number(PartCounter));
+
+    // Add connections
+    netlist_line.replace("{nets}", nets);
+
+    // For each property in the template get the actual values. It is looking for
+    // variables inside brackets, defined in the XML library. Once found, they need
+    // to be replaced by its actual value. For doing this, the program must to find them
+    // on QList<Property*> Props;
+
+    QRegularExpression re("\\{([^}]+)\\}");
+    QRegularExpressionMatchIterator i = re.globalMatch(netlist_line);
+
+    while (i.hasNext()) {
+      QRegularExpressionMatch match = i.next();
+      QString placeholder = match.captured(1);
+
+      // Search for the property in the QList
+      auto it = std::find_if(Props.begin(), Props.end(),
+                             [&placeholder](const Property* prop) {
+                               return prop->Name == placeholder;
+                             });
+
+      if (it != Props.end()) {
+        // Replace the placeholder with the property's value
+        netlist_line.replace(QString("{%1}").arg(placeholder), (*it)->Value);
+      }
+    }
+
+    netlist_line.append('\n');
+    return netlist_line;
+  }
 }
 
 // Forms spice parameter list
@@ -1881,6 +1930,7 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
 void Component::loadfromComponentInfo(ComponentInfo C)
 {
   Name = C.name;
+  Model = C.name;
   ComponentName = Name;
   Schematic_ID = C.Schematic_ID;
   Description = C.description;
@@ -1916,8 +1966,8 @@ void Component::loadfromComponentInfo(ComponentInfo C)
   y2 = SymbolBoundingBox[3]; // Maximum y
 
   // Load models
-  Model = C.Models["Default"];
-  SpiceModel = C.Models["SPICE"];
+  Netlists["Qucsator"] = C.Netlists["Qucsator"];
+  Netlists["Ngspice"] = C.Netlists["Ngspice"];
 }
 
 
