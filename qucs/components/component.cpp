@@ -71,6 +71,7 @@ Component::Component() {
 Component::Component(const ComponentInfo& CI) : Component() {
   // Call the default constructor first to initialize all members
   // Then load data from ComponentInfo
+  Ports.clear();
   loadfromComponentInfo(CI);
 }
 
@@ -1936,6 +1937,16 @@ void Component::loadfromComponentInfo(ComponentInfo C)
   Description = C.description;
   Category = C.Category;
   showName = C.ShowNameinSchematic;
+
+  // Clear symbol information and properties
+  Lines.clear();
+  Polylines.clear();
+  Arcs.clear();
+  Rects.clear();
+  Ellipses.clear();
+  Ports.clear();
+  Texts.clear();
+  Props.clear();
 
   // Iterate over all the parameters defined in the "ComponentInfo" object and add them to the "Component" list of properties
   for (auto it = C.parameters.constBegin(); it != C.parameters.constEnd(); ++it) {
