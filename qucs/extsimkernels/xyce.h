@@ -46,15 +46,19 @@ private:
 
 public:
     void determineUsedSimulations(QStringList *sim_lst = NULL);
-    explicit Xyce(Schematic *schematic, QObject *parent = 0);
+    explicit Xyce(Schematic* schematic, QObject *parent = 0);
 
-    void SaveNetlist(QString filename);
+    void SaveNetlist(QString filename, bool netlist2Console);
     void setParallel(bool par);
     bool waitEndOfSimulation();
 
 protected:
-    void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
-                  QStringList &vars, QStringList &outputs);
+    void createNetlist(
+            QTextStream& stream,
+            QStringList& simulations,
+            QStringList& vars,
+            QStringList& outputs);
+
 protected slots:
     void slotFinished();
     void slotProcessOutput();

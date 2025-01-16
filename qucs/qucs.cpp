@@ -2410,7 +2410,7 @@ void QucsApp::slotTune(bool checked)
             return;
         }
 
-        Schematic *d = dynamic_cast<Schematic*>(w);
+        Schematic* d(dynamic_cast<Schematic*>(w));
         assert(d);
 
         bool found = false;
@@ -3463,57 +3463,83 @@ void QucsApp::slotSimSettings()
 
 void QucsApp::slotSimulateWithSpice()
 {
-    if (!isTextDocument(DocumentTab->currentWidget())) {
-        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
-        if (TuningMode) {
-            QFileInfo Info(sch->getDocName());
+    if (!isTextDocument(DocumentTab->currentWidget()))
+    {
+        Schematic* schematic(dynamic_cast<Schematic*>(DocumentTab->currentWidget()));
+        if (TuningMode)
+        {
+            QFileInfo Info(schematic->getDocName());
             QString ext = Info.suffix();
-            if (ext == "dpl") {
-                QucsDoc *Doc = (QucsDoc *)sch;
-                sch = (Schematic *) getSchematicWidget(Doc);
-                if (sch == nullptr) return;
+            if (ext == "dpl")
+            {
+                QucsDoc *doc(dynamic_cast<QucsDoc*>(schematic));
+                Q_ASSERT(doc != nullptr);
+                schematic = dynamic_cast<Schematic*>(getSchematicWidget(doc));
+                if (schematic == nullptr)
+                {
+                    return;
+                }
             }
         }
 
-        if (sch->getDocName().isEmpty()) {
-            auto biasState = sch->getShowBias();
-            QMessageBox::warning(this,tr("Simulate schematic"),
+        if (schematic->getDocName().isEmpty())
+        {
+            auto biasState = schematic->getShowBias();
+            QMessageBox::warning(
+                    this,
+                    tr("Simulate schematic"),
                     tr("Schematic not saved! Simulation of unsaved schematic "
-                       "not possible. Save schematic first!"));
+                      "not possible. Save schematic first!"));
             slotFileSaveAs();
-            sch->setShowBias(biasState);
+            schematic->setShowBias(biasState);
         }
-        ExternSimDialog *SimDlg = new ExternSimDialog(sch);
-        connect(SimDlg,SIGNAL(simulated(ExternSimDialog*)),
-                this,SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
-        connect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
-        connect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-        if (TuningMode || sch->getShowBias() == 0) SimDlg->slotStart();
-        else SimDlg->exec();
-        /*disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
-        disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
-        disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));*/
-        /*if (SimDlg->wasSimulated && sch->getSimOpenDpl())
-            if (sch->getShowBias() < 1) slotChangePage(sch->getDocName(),sch->getDataDisplay());
+        ExternSimDialog *SimDlg = new ExternSimDialog(schematic, false);
+        connect(SimDlg, SIGNAL(simulated(ExternSimDialog*)), this, SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
+        connect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
+        connect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));
+
+        if (TuningMode || schematic->getShowBias() == 0)
+        {
+            SimDlg->slotStart();
+        }
+        else
+        {
+            SimDlg->exec();
+        }
+        /*disconnect(SimDlg, SIGNAL(simulated()), this, SLOT(slotAfterSpiceSimulation()));
+        disconnect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
+        disconnect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));*/
+        /*if (SimDlg->wasSimulated && schematic->getSimOpenDpl())
+            if (schematic->getShowBias() < 1) slotChangePage(schematic->getDocName(), schematic->getDataDisplay());
         delete SimDlg;*/
-    } else {
-        QMessageBox::warning(this,tr("Simulate schematic"),
-                             tr("Simulation of text document is not possible!"));
+    }
+    else
+    {
+        QMessageBox::warning(
+                this,
+                tr("Simulate schematic"),
+                tr("Simulation of text document is not possible!"));
     }
 }
 
 void QucsApp::slotSaveNetlist()
 {
-    if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-        QMessageBox::information(this,tr("Save netlist"),
-                                 tr("This action is supported only for SPICE simulators!"));
+    if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
+    {
+        QMessageBox::information(
+                this,
+                tr("Save netlist"),
+                tr("This action is supported only for SPICE simulators!"));
         return;
     }
-    if (!isTextDocument(DocumentTab->currentWidget())) {
-        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
-        ExternSimDialog *SimDlg = new ExternSimDialog(sch, true);
-        SimDlg->slotSaveNetlist();
-        delete SimDlg;
+
+    if (!isTextDocument(DocumentTab->currentWidget()))
+    {
+        Schematic* schematic(dynamic_cast<Schematic*>(DocumentTab->currentWidget()));
+        Q_ASSERT(schematic != nullptr);
+
+        ExternSimDialog simDlg(schematic, a_netlist2Console, true);
+        simDlg.slotSaveNetlist();
     }
 }
 

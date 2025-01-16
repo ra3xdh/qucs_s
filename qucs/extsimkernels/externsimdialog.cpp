@@ -25,7 +25,7 @@
 #include "main.h"
 #include "qucs.h"
 
-ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
+ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
     QDialog(sch),
     a_schematic(sch),
     a_buttonStopSim(new QPushButton(tr("Stop"),this)),
@@ -37,7 +37,8 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, bool netlist_mode) :
     a_ngspice(new Ngspice(sch,this)),
     a_xyce(new Xyce(sch,this)),
     a_wasSimulated(true),
-    a_hasError(false)
+    a_hasError(false),
+    a_netlist2Console(netlist2Console)
 {
     const QString workdir(QucsSettings.S4Qworkdir);
 
@@ -296,27 +297,40 @@ void ExternSimDialog::slotStop()
 void ExternSimDialog::slotSaveNetlist()
 {
     QFileInfo inf(a_schematic->getDocName());
-    QString filename = QFileDialog::getSaveFileName(this,tr("Save netlist"),inf.path()+QDir::separator()+"netlist.cir",
-                       "All files (*)");
-    if (filename.isEmpty()) return;
+    QString filename;
 
-    switch (QucsSettings.DefaultSimulator) {
+    if (!a_netlist2Console)
+    {
+        filename = QFileDialog::getSaveFileName(
+                this,
+                tr("Save netlist"),
+                inf.path() + QDir::separator() + "netlist.cir",
+                "All files (*)");
+        if (filename.isEmpty())
+        {
+            return;
+        }
+    }
+
+    switch (QucsSettings.DefaultSimulator)
+    {
         case spicecompat::simNgspice:
-        case spicecompat::simSpiceOpus: {
-            a_ngspice->SaveNetlist(filename);
-        }
+        case spicecompat::simSpiceOpus:
+            a_ngspice->SaveNetlist(filename, a_netlist2Console);
             break;
-        case spicecompat::simXyce: {
-            a_xyce->SaveNetlist(filename);
-        }
+        case spicecompat::simXyce:
+            a_xyce->SaveNetlist(filename, a_netlist2Console);
             break;
         default:
             break;
     }
 
-    if (!QFile::exists(filename)) {
-      QMessageBox::critical(0, QObject::tr("Save netlist"),
-          QObject::tr("Disk write error!"), QMessageBox::Ok);
+    if (!a_netlist2Console && !QFile::exists(filename))
+    {
+        QMessageBox::critical(
+                nullptr,
+                QObject::tr("Save netlist"),
+                QObject::tr("Disk write error!"), QMessageBox::Ok);
     }
 }
 

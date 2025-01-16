@@ -33,6 +33,10 @@
 #include "config.h"
 #endif
 
+#include <QScopedPointer>
+
+#include <iostream>
+
 /*!
   \file ngspice.cpp
   \brief Implementation of the Ngspice class
@@ -43,7 +47,7 @@
  * \param schematic Schematic that need to be simulated with Ngspice.
  * \param parent Parent object
  */
-Ngspice::Ngspice(Schematic *schematic, QObject *parent) :
+Ngspice::Ngspice(Schematic* schematic, QObject *parent) :
     AbstractSpiceKernel(schematic, parent),
     a_spinit_name()
 {
@@ -67,8 +71,11 @@ Ngspice::Ngspice(Schematic *schematic, QObject *parent) :
  * \param[out] vars The list of output variables and node names.
  * \param[out] outputs The list of spice output raw text files.
  */
-void Ngspice::createNetlist(QTextStream &stream, int ,
-                       QStringList &simulations, QStringList &vars, QStringList &outputs)
+void Ngspice::createNetlist(
+        QTextStream& stream,
+        QStringList& simulations,
+        QStringList& vars,
+        QStringList& outputs)
 {
     Q_UNUSED(simulations);
 
@@ -464,7 +471,7 @@ void Ngspice::slotSimulate()
 
     QString netfile = "spice4qucs.cir";
     QString tmp_path = QDir::toNativeSeparators(a_workdir+QDir::separator()+netfile);
-    SaveNetlist(tmp_path);
+    SaveNetlist(tmp_path, false);
 
     removeAllSimulatorOutputs();
 
@@ -583,24 +590,43 @@ void Ngspice::slotProcessOutput()
  * \brief Ngspice::SaveNetlist Create netlist and save it to file without execution
  *        of simulator.
  * \param[in] filename Absolute path to netlist
+ * \param[in] netlist2Console Whether netlist to console instead to file
  */
-void Ngspice::SaveNetlist(QString filename)
+void Ngspice::SaveNetlist(QString filename, bool netlist2Console)
 {
-    int num=0;
     a_sims.clear();
     a_vars.clear();
 
-    QFile spice_file(filename);
-    if (spice_file.open(QFile::WriteOnly)) {
-        QTextStream stream(&spice_file);
-        createNetlist(stream,num,a_sims,a_vars,a_output_files);
-        spice_file.close();
+    QScopedPointer<QString> netlistString;
+    QScopedPointer<QTextStream> netlistStream;
+    QScopedPointer<QFile> netlistFile;
+
+    if (netlist2Console)
+    {
+        netlistString.reset(new QString);
+        netlistStream.reset(new QTextStream(netlistString.get()));
     }
     else
     {
-        QString msg=QStringLiteral("Tried to save netlist \nin %1\n(could not open for writing!)").arg(filename);
-        QString final_msg=QStringLiteral("%1\n This could be an error in the QSettings settings file\n(usually in ~/.config/qucs/qucs_s.conf)\nThe value for S4Q_workdir (default:/spice4qucs) needs to be writeable!\nFor a Simulation Simulation will raise error! (most likely S4Q_workdir does not exists)").arg(msg);
-        QMessageBox::critical(nullptr,tr("Problem with SaveNetlist"),final_msg,QMessageBox::Ok);
+        netlistFile.reset(new QFile(filename));
+        if (netlistFile->open(QFile::WriteOnly))
+        {
+            netlistStream.reset(new QTextStream(netlistFile.get()));
+        }
+        else
+        {
+            QString msg = QStringLiteral("Tried to save netlist \nin %1\n(could not open for writing!)").arg(filename);
+            QString final_msg = QStringLiteral("%1\n This could be an error in the QSettings settings file\n(usually in ~/.config/qucs/qucs_s.conf)\nThe value for S4Q_workdir (default:/spice4qucs) needs to be writeable!\nFor a Simulation Simulation will raise error! (most likely S4Q_workdir does not exists)").arg(msg);
+            QMessageBox::critical(nullptr,tr("Problem with SaveNetlist"), final_msg, QMessageBox::Ok);
+            return;
+        }
+    }
+
+    createNetlist(*netlistStream, a_sims, a_vars, a_output_files);
+
+    if (netlist2Console)
+    {
+        std::cout << netlistString->toUtf8().constData() << std::endl;
     }
 }
 
