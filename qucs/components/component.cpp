@@ -609,7 +609,7 @@ void Component::mirrorX() {
     QFont f = QucsSettings.font;
     // mirror all text
     for (Text *pt: Texts) {
-        f.setPointSizeF(pt->Size);
+        f.setPixelSize(pt->Size);
         // use the screen-compatible metric
         QFontMetrics smallMetrics(f, 0);
         QSize s = smallMetrics.size(0, pt->s);   // use size for more lines
@@ -677,7 +677,7 @@ void Component::mirrorY() {
     QFont f = QucsSettings.font;
     // mirror all text
     for (Text *pt: Texts) {
-        f.setPointSizeF(pt->Size);
+        f.setPixelSize(pt->Size);
         // use the screen-compatible metric
         QFontMetrics smallMetrics(f, 0);
         QSize s = smallMetrics.size(0, pt->s);   // use size for more lines

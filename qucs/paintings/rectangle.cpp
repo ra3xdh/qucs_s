@@ -24,6 +24,8 @@
 #include <QComboBox>
 #include <QCheckBox>
 
+#include <cmath>
+
 #include "misc.h"
 
 qucs::Rectangle::Rectangle(bool _filled)
@@ -306,25 +308,22 @@ bool qucs::Rectangle::MousePressing(Schematic *sch)
 bool qucs::Rectangle::getSelected(float fX, float fY, float w)
 {
   if(filled) {
-    if(int(fX) > cx+x2) return false;   // coordinates outside the rectangle ?
-    if(int(fY) > cy+y2) return false;
-    if(int(fX) < cx) return false;
-    if(int(fY) < cy) return false;
-  }
-  else {
-    fX -= float(cx);
-    fY -= float(cy);
-    float fX2 = float(x2);
-    float fY2 = float(y2);
-
-    if(fX > fX2+w) return false;   // coordinates outside the rectangle ?
-    if(fY > fY2+w) return false;
-    if(fX < -w) return false;
-    if(fY < -w) return false;
-
-    // coordinates inside the rectangle ?
-    if(fX < fX2-w) if(fX > w) if(fY < fY2-w) if(fY > w)
+    QRectF r(cx,cy,x2,y2);
+    if (!r.contains(fX,fY)) {
       return false;
+    }
+  } else {
+    double sgn_x2 = std::copysign(1.0, x2);
+    double sgn_y2 = std::copysign(1.0, y2);
+    QRectF r_outer(cx - sgn_x2*w, cy - sgn_y2*w, // outer rectangle
+                   x2 + 2*sgn_x2*w, y2 + 2*sgn_y2*w);
+    QRectF r_inner(cx + sgn_x2*w, cy + sgn_y2*w,
+                   x2 - 2*sgn_x2*w, y2 - 2*sgn_y2*w); // inner rectnagle w/o border
+    if (r_outer.contains(fX,fY)) {
+      if (r_inner.contains(fX,fY)) return false;
+    } else {
+      return false;
+    }
   }
 
   return true;
