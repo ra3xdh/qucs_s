@@ -216,20 +216,26 @@ QString qucs::Rectangle::saveJSON()
 // Checks if the resize area was clicked.
 bool qucs::Rectangle::resizeTouched(float fX, float fY, float len)
 {
-  float fCX = float(cx), fCY = float(cy);
-  float fX2 = float(cx+x2), fY2 = float(cy+y2);
-
   State = -1;
-  if(fX < fCX-len) return false;
-  if(fY < fCY-len) return false;
-  if(fX > fX2+len) return false;
-  if(fY > fY2+len) return false;
 
-  State = 0;
-  if(fX < fCX+len)  State = 1;
-  else if(fX < fX2-len) { State = -1; return false; }
-  if(fY < fCY+len)  State |= 2;
-  else if(fY < fY2-len) { State = -1; return false; }
+  QRectF r_ul(0,0,2*len,2*len);
+  r_ul.moveCenter(QPointF(cx,cy));
+  QRectF r_ll(0,0,2*len,2*len);
+  r_ll.moveCenter(QPointF(cx, cy + y2));
+  QRectF r_ur(0,0,2*len,2*len);
+  r_ur.moveCenter(QPointF(cx + x2, cy));
+  QRectF r_lr(0,0,2*len,2*len);
+  r_lr.moveCenter(QPointF(cx + x2, cy + y2));
+
+  if (!r_lr.contains(fX,fY) &&
+      !r_ll.contains(fX,fY) &&
+      !r_ur.contains(fX,fY) &&
+      !r_ul.contains(fX,fY)) return false;
+
+  if (r_lr.contains(fX,fY)) State = 0;
+  if (r_ll.contains(fX,fY)) State = 1;
+  if (r_ur.contains(fX,fY)) State = 2;
+  if (r_ul.contains(fX,fY)) State = 3;
 
   return true;
 }
