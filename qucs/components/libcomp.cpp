@@ -412,3 +412,29 @@ QStringList LibComp::getAttachedMOD()
     }
     return mod_lst;
 }
+
+QString LibComp::getSpiceLibrary()
+{
+  QStringList files;
+  QString content;
+  QStringList includes,attach;
+
+  int r = loadSection("Spice",content,&includes,&attach);
+  if (r<0) {
+    return QString();
+  }
+  for (const auto &file : attach) {
+    if (file.endsWith(".cir") ||
+        file.endsWith(".ckt") ||
+        file.endsWith(".lib") ||
+        file.endsWith(".sp")) {
+      files.append(getSubcircuitFile()+'/'+file);
+    }
+  }
+
+  QString s;
+  for (const auto &file: files) { // for netlist
+    s += QStringLiteral(".INCLUDE \"%1\"\n").arg(file);
+  }
+  return s;
+}

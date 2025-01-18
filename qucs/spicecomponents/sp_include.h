@@ -29,6 +29,7 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   QString getSpiceLibrary();
+  QStringList getSpiceLibraryFiles();
 
 protected:
   QString vhdlCode(int) { return QString(); }

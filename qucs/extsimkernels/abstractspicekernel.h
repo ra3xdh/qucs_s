@@ -130,6 +130,7 @@ public:
     virtual void SaveNetlist(QString filename);
     virtual bool waitEndOfSimulation();
     void setConsole(QPlainTextEdit *console) { a_console = console; }
+    QStringList collectSpiceLibraryFiles(Schematic *sch);
     static QString collectSpiceLibs(Schematic* sch);
 
 signals:

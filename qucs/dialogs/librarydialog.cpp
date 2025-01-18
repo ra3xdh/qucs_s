@@ -508,6 +508,17 @@ void LibraryDialog::slotSave()
         }
         kern->createSubNetlsit(ts,true);
         intoStream(Stream, tmp, "Spice");
+
+        QStringList libs = kern->collectSpiceLibraryFiles(Doc);
+        QStringList copiedFiles;
+        for (QString &file: libs) {
+          QString ofile = file;
+          intoFile(file, ofile, copiedFiles);
+        }
+        if (!copiedFiles.isEmpty()) {
+          Stream << "<SpiceAttach \"" << copiedFiles.join("\" \"")
+                 << "\">\n";
+        }
         delete kern;
         QucsSettings.DefaultSimulator = sim;
     //}
