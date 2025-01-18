@@ -33,7 +33,7 @@
             Ideal Resistor
         </Description>
         <Netlists>
-                <QucsatorNetlist value = 'R:R{PartCounter} {nets} R="{R}" Temp="{Temp}" Tc1="{Tc1}" Tc2="{Tc2}"'>
+                <QucsatorNetlist value = 'R:R{PartCounter} {nets} R="{R}" Temp="{Temp}" Tc1="{Tc1}" Tc2="{Tc2}" Tnom="{Temp}"'>
                 </QucsatorNetlist>
                 <NgspiceNetlist value = 'R{PartCounter} {nets} {R} tc1={Tc1} tc1={Tc2}'>
                 </NgspiceNetlist>

@@ -77,8 +77,13 @@ Component::Component(const ComponentInfo& CI) : Component() {
 
 // -------------------------------------------------------
 Component *Component::newOne() {
-  Name = Schematic_ID + QString("%1").arg(PartCounter);
-  return new Component(*this);
+  Component *C = new Component();
+  // Load component data from LibraryComponents
+  QMap<QString, ComponentInfo> Components = LibraryComponents[Category];
+  ComponentInfo CI = Components[ComponentName];
+
+  C->loadfromComponentInfo(CI);
+  return C;
 }
 
 // -------------------------------------------------------
@@ -763,6 +768,7 @@ QString Component::netlist() {
     for (Port *p1: Ports) {
       nets += QString("%1 ").arg(p1->Connection->Name);   // node names
     }
+    nets.chop(1); // Remove the last space
 
     // Check the current simulator and get its template line
     if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {

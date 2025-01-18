@@ -2589,19 +2589,19 @@ void Schematic::insertComponent(Component *c)
     bool ok;
     QString s;
     int  max=1, len = c->Name.length(), z;
-    if(c->Name.isEmpty())
+    if(c->Name.isEmpty() || (c->Schematic_ID == "GND"))
     {
         // a ground symbol erases an existing label on the wire line
-        if(c->Model == "GND")
+        if(c->Schematic_ID == "GND")
         {
-            c->Model = "x";    // prevent that this ground is found as label
+            c->Schematic_ID = "x";    // prevent that this ground is found as label
             Element *pe = getWireLabel(c->Ports.first()->Connection);
             if(pe) if((pe->Type & isComponent) == 0)
                 {
                     delete ((Conductor*)pe)->Label;
                     ((Conductor*)pe)->Label = 0;
                 }
-            c->Model = "GND";    // rebuild component model
+            c->Schematic_ID = "GND";    // rebuild component model
         }
     }
     else
@@ -2633,6 +2633,7 @@ void Schematic::insertComponent(Component *c)
           }
         }
         c->PartCounter = max_ID + 1; // Set the part counter of the new component to place
+        c->Name = c->Schematic_ID + QString("%1").arg(c->PartCounter);
       }
     }
 
