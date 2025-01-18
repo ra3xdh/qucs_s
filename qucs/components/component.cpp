@@ -807,13 +807,32 @@ QString Component::netlist() {
 
       if (it != Props.end()) {
         // Replace the placeholder with the property's value
-        netlist_line.replace(QString("{%1}").arg(placeholder), (*it)->Value);
+        // If the simulation is to be run in Ngspice, remove the unit
+        QString value = (*it)->Value;
+        if (QucsSettings.DefaultSimulator == spicecompat::simNgspice){
+          value = extractValue(value);
+        }
+        netlist_line.replace(QString("{%1}").arg(placeholder), value);
       }
     }
 
     netlist_line.append('\n');
     return netlist_line;
   }
+}
+
+// This function is used to convert the user input to Ngspice values. For example, values like "1000 Ohm" -> "1000", "1k" -> "1k"
+QString Component::extractValue(const QString &input) {
+  QRegularExpression regex("(\\d+(?:\\.\\d+)?)\\s*([kMGTPEZY]?)");
+  QRegularExpressionMatch match = regex.match(input);
+
+  if (match.hasMatch()) {
+    QString value = match.captured(1);
+    QString suffix = match.captured(2);
+    return value + suffix;
+  }
+
+  return QString();
 }
 
 // Forms spice parameter list

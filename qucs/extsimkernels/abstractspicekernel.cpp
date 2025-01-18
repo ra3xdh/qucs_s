@@ -130,7 +130,8 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
     incompat.clear();
     for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if ((!pc->isEquation)&&!(pc->isProbe)) {
-            if (pc->SpiceModel.isEmpty() && pc->isActive) incompat.append(pc->Name);
+        if(pc->ComponentName == QString("Ground")) continue; // Skip GND
+        if ((pc->SpiceModel.isEmpty() && pc->Netlists["Ngspice"].isEmpty()) && pc->isActive) incompat.append(pc->Name);
         }
     }
 
@@ -145,7 +146,7 @@ bool AbstractSpiceKernel::checkGround()
 {
     bool r = false;
     for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
-        if (pc->Model=="GND") {
+        if (pc->Name=="Ground") {
             r = true;
             break;
         }
@@ -245,7 +246,8 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
           if(a_schematic->getIsAnalog() &&
              !(pc->isSimulation) &&
              !(pc->isEquation)) {
-            s = pc->getSpiceNetlist(dialect);
+            //s = pc->getSpiceNetlist(dialect);
+            s = pc->getNetlist();
             stream<<s;
           }
         }

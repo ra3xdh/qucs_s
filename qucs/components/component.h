@@ -144,6 +144,7 @@ protected:
   Schematic* containingSchematic;
 
   virtual void drawSymbol(QPainter* p);
+  QString extractValue(const QString &input);
 };
 
 
