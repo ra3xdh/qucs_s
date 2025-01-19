@@ -105,6 +105,10 @@ LibraryDialog::LibraryDialog(QWidget *parent)
   hCheck->addStretch();
   connect(checkDescr, SIGNAL(stateChanged(int)), this, SLOT(slotCheckDescrChanged(int)));
 
+  checkAnalogLib = new QCheckBox(tr("Analog models only"));
+  checkAnalogLib->setChecked(true);
+  selectSubcktLayout->addWidget(checkAnalogLib);
+
   // ...........................................................
   QGridLayout *gridButts = new QGridLayout();
   selectSubcktLayout->addLayout(gridButts);
@@ -523,6 +527,7 @@ void LibraryDialog::slotSave()
         QucsSettings.DefaultSimulator = sim;
     //}
 
+  if (!checkAnalogLib->isChecked()) {
     // save verilog model
     tmp.truncate(0);
     Doc->setIsVerilog(true);
@@ -597,6 +602,7 @@ void LibraryDialog::slotSave()
       else {
           ErrText->insertPlainText("\n");
       }
+    }
 
       Stream << "  <Symbol>\n";
       Doc->createSubcircuitSymbol();

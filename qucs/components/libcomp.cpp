@@ -424,10 +424,10 @@ QString LibComp::getSpiceLibrary()
     return QString();
   }
   for (const auto &file : attach) {
-    if (file.endsWith(".cir") ||
-        file.endsWith(".ckt") ||
-        file.endsWith(".lib") ||
-        file.endsWith(".sp")) {
+    if (file.endsWith(".cir", Qt::CaseInsensitive) ||
+        file.endsWith(".ckt", Qt::CaseInsensitive) ||
+        file.endsWith(".lib", Qt::CaseInsensitive) ||
+        file.endsWith(".sp", Qt::CaseInsensitive)) {
       files.append(getSubcircuitFile()+'/'+file);
     }
   }
