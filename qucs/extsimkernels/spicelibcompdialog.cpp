@@ -289,6 +289,7 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
   QString last_subcir;
   QString subname;
   QString subcir_body;
+  int nested_count = 0;
   while (!ts.atEnd()) {
     QString line = ts.readLine();
     line = line.trimmed();
@@ -305,8 +306,10 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
         line.remove(0,1);
         QStringList pins = line.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
         for (const auto &s1: pins) {
-        if (s1 == "PARAMS:") header_start = false;
-        if (!s1.contains('=') && (s1 != "PARAMS:")) {
+          if (s1 == "PARAMS:" || s1 == ".OPTIONAL:") {
+            header_start = false;
+          }
+          if (!s1.contains('=') && (s1 != "PARAMS:") && (s1 != ".OPTIONAL:")) {
             a_subcirPins[subname].append(s1);
           }
         }
@@ -317,9 +320,10 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
       }
     }
 
-    if (line.startsWith(".SUBCKT")) {
+    if (line.startsWith(".SUBCKT") && ! subcir_start) {
       subcir_start = true;
       header_start = true;
+      nested_count++;
       subcir_body.clear();
       QStringList pin_names;
       QStringList tokens = line.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
@@ -330,19 +334,26 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
       tokens.removeFirst();
       tokens.removeFirst();
       for (const auto &s1: tokens) {
-        if (s1 == "PARAMS:") header_start = false;
-        if (!s1.contains('=') && (s1 != "PARAMS:")) {
+        if (s1 == "PARAMS:" || s1 == ".OPTIONAL:") {
+          header_start = false;
+        }
+        if (!s1.contains('=') && (s1 != "PARAMS:") && (s1 != ".OPTIONAL:")) {
           pin_names.append(s1);
         }
       }
       a_subcirPins[subname] = pin_names;
+    } else if (line.startsWith(".SUBCKT") && subcir_start) { // nested subcircuit
+      nested_count++;
     }
     if (subcir_start) {
       subcir_body += line + "\n";
     }
     if (line.startsWith(".ENDS")) {
-      subcir_start = false;
-      a_subcirSPICE[subname] = subcir_body;
+      if (nested_count > 0) nested_count--;
+      if (nested_count == 0) {
+        subcir_start = false;
+        a_subcirSPICE[subname] = subcir_body;
+      }
     }
   }
 
