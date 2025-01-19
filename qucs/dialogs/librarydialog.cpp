@@ -105,6 +105,10 @@ LibraryDialog::LibraryDialog(QWidget *parent)
   hCheck->addStretch();
   connect(checkDescr, SIGNAL(stateChanged(int)), this, SLOT(slotCheckDescrChanged(int)));
 
+  checkAnalogLib = new QCheckBox(tr("Analog models only"));
+  checkAnalogLib->setChecked(true);
+  selectSubcktLayout->addWidget(checkAnalogLib);
+
   // ...........................................................
   QGridLayout *gridButts = new QGridLayout();
   selectSubcktLayout->addLayout(gridButts);
@@ -508,10 +512,22 @@ void LibraryDialog::slotSave()
         }
         kern->createSubNetlsit(ts,true);
         intoStream(Stream, tmp, "Spice");
+
+        QStringList libs = kern->collectSpiceLibraryFiles(Doc);
+        QStringList copiedFiles;
+        for (QString &file: libs) {
+          QString ofile = file;
+          intoFile(file, ofile, copiedFiles);
+        }
+        if (!copiedFiles.isEmpty()) {
+          Stream << "<SpiceAttach \"" << copiedFiles.join("\" \"")
+                 << "\">\n";
+        }
         delete kern;
         QucsSettings.DefaultSimulator = sim;
     //}
 
+  if (!checkAnalogLib->isChecked()) {
     // save verilog model
     tmp.truncate(0);
     Doc->setIsVerilog(true);
@@ -586,6 +602,7 @@ void LibraryDialog::slotSave()
       else {
           ErrText->insertPlainText("\n");
       }
+    }
 
       Stream << "  <Symbol>\n";
       Doc->createSubcircuitSymbol();

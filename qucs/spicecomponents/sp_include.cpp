@@ -99,3 +99,16 @@ QString S4Q_Include::getSpiceLibrary()
     return s;
 }
 
+QStringList S4Q_Include::getSpiceLibraryFiles()
+{
+  QStringList files;
+  for (Property *pp : Props) {
+    QString val = pp->Value;
+    if (!val.isEmpty()) {
+      val = misc::properAbsFileName(val, containingSchematic);
+      files.append(val);
+    }
+  }
+  return files;
+}
+

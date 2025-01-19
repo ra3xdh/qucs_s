@@ -253,3 +253,11 @@ QString SpiceLibComp::getSpiceLibrary()
     QString s = QStringLiteral(".INCLUDE \"%1\"\n").arg(f);
     return s;
 }
+
+QStringList SpiceLibComp::getSpiceLibraryFiles()
+{
+  QString f = misc::properAbsFileName(getProperty("File")->Value, containingSchematic);
+  QStringList files;
+  files.append(f);
+  return files;
+}

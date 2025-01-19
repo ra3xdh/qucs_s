@@ -385,30 +385,28 @@ QString LibComp::cdl_netlist()
     return spice_netlist(spicecompat::CDL);
 }
 
-QStringList LibComp::getAttachedIFS()
+QString LibComp::getSpiceLibrary()
 {
-    QString content;
-    QStringList includes,attach,ifs_lst;
-    ifs_lst.clear();
+  QStringList files;
+  QString content;
+  QStringList includes,attach;
 
-    int r = loadSection("Spice",content,&includes,&attach);
-    if (r<0) return ifs_lst;
-    for (const QString& file : attach) {
-        if (file.endsWith(".ifs")) ifs_lst.append(getSubcircuitFile()+'/'+file);
+  int r = loadSection("Spice",content,&includes,&attach);
+  if (r<0) {
+    return QString();
+  }
+  for (const auto &file : attach) {
+    if (file.endsWith(".cir", Qt::CaseInsensitive) ||
+        file.endsWith(".ckt", Qt::CaseInsensitive) ||
+        file.endsWith(".lib", Qt::CaseInsensitive) ||
+        file.endsWith(".sp", Qt::CaseInsensitive)) {
+      files.append(getSubcircuitFile()+'/'+file);
     }
-    return ifs_lst;
-}
+  }
 
-QStringList LibComp::getAttachedMOD()
-{
-    QString content;
-    QStringList includes,attach,mod_lst;
-    mod_lst.clear();
-
-    int r = loadSection("Spice",content,&includes,&attach);
-    if (r<0) return mod_lst;
-    for (const QString& file : attach) {
-        if (file.endsWith(".mod")) mod_lst.append(getSubcircuitFile()+'/'+file);
-    }
-    return mod_lst;
+  QString s;
+  for (const auto &file: files) { // for netlist
+    s += QStringLiteral(".INCLUDE \"%1\"\n").arg(file);
+  }
+  return s;
 }

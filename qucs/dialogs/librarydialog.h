@@ -94,6 +94,7 @@ private:
   QStringList SelectedNames;
   QStringList Descriptions;
   QCheckBox *checkDescr;
+  QCheckBox *checkAnalogLib;
 
   QFile LibFile;
   QDir LibDir;

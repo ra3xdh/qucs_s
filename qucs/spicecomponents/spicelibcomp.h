@@ -28,6 +28,7 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   QString getSpiceLibrary();
+  QStringList getSpiceLibraryFiles();
 
 protected:
   QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);

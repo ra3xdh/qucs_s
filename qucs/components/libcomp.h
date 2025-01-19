@@ -32,8 +32,7 @@ public:
 
   bool createSubNetlist(QTextStream *, QStringList&, int type=1);
   QString getSubcircuitFile();
-  QStringList getAttachedMOD(); // LibComp can reference cfunc.mod and ifspec.ifs
-  QStringList getAttachedIFS(); // These should be compiled before SPICE simulation
+  QString getSpiceLibrary();
 
 protected:
   QString netlist();

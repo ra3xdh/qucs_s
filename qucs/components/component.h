@@ -50,6 +50,7 @@ public:
   virtual QString getProbeVariable(bool isXyce = false);
   virtual QString getSpiceModel();
   virtual QString getSpiceLibrary() { return QString(); }
+  virtual QStringList getSpiceLibraryFiles() { return QStringList(); }
   virtual QString getNgspiceBeforeSim(QString sim, int lvl=0);
   virtual QString getNgspiceAfterSim(QString sim, int lvl=0);
   virtual QString getVAvariables() {return QString();};

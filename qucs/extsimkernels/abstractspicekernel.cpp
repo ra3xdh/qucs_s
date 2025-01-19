@@ -1595,3 +1595,30 @@ QString AbstractSpiceKernel::collectSpiceLibs(Schematic* sch)
   return collected_spicelib.join("");
 }
 
+
+QStringList AbstractSpiceKernel::collectSpiceLibraryFiles(Schematic *sch)
+{
+  QStringList collected_spicelib;
+  for(Component *pc = sch->a_DocComps.first(); pc != 0; pc = sch->a_DocComps.next()) {
+    QStringList new_libs;
+    if (pc->Model == "Sub") {
+      Schematic *sub = new Schematic(nullptr, ((Subcircuit *)pc)->getSubcircuitFile());
+      if(!sub->loadDocument())      // load document if possible
+      {
+        delete sub;
+        continue;
+      }
+      new_libs = collectSpiceLibraryFiles(sub);
+      delete sub;
+    } else {
+      new_libs = pc->getSpiceLibraryFiles();
+    }
+    for (const auto&lib: new_libs) {
+      if (!collected_spicelib.contains(lib)) {
+        collected_spicelib.append(lib);
+      }
+    }
+  }
+  return collected_spicelib;
+}
+
