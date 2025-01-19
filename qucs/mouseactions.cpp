@@ -918,17 +918,6 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
                                  SLOT(slotSaveDiagramToGraphicsFile()));
                 ComponentMenu->addAction(actExport);
             }
-            /*if (focusElement->Type & isComponent) {
-          Component *pc = (Component *)focusElement;
-          if (pc->Model == "EDD") {
-              QAction *actEDDtoIFS = new QAction(QObject::tr("Create XSPICE IFS"), QucsMain);
-              QObject::connect(actEDDtoIFS,SIGNAL(triggered(bool)),QucsMain,SLOT(slotEDDtoIFS()));
-              ComponentMenu->addAction(actEDDtoIFS);
-              QAction *actEDDtoMOD = new QAction(QObject::tr("Create XSPICE MOD"), QucsMain);
-              QObject::connect(actEDDtoMOD,SIGNAL(triggered(bool)),QucsMain,SLOT(slotEDDtoMOD()));
-              ComponentMenu->addAction(actEDDtoMOD);
-          }
-      }*/
         }
         break;
     }

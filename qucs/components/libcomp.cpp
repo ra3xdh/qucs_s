@@ -385,34 +385,6 @@ QString LibComp::cdl_netlist()
     return spice_netlist(spicecompat::CDL);
 }
 
-QStringList LibComp::getAttachedIFS()
-{
-    QString content;
-    QStringList includes,attach,ifs_lst;
-    ifs_lst.clear();
-
-    int r = loadSection("Spice",content,&includes,&attach);
-    if (r<0) return ifs_lst;
-    for (const QString& file : attach) {
-        if (file.endsWith(".ifs")) ifs_lst.append(getSubcircuitFile()+'/'+file);
-    }
-    return ifs_lst;
-}
-
-QStringList LibComp::getAttachedMOD()
-{
-    QString content;
-    QStringList includes,attach,mod_lst;
-    mod_lst.clear();
-
-    int r = loadSection("Spice",content,&includes,&attach);
-    if (r<0) return mod_lst;
-    for (const QString& file : attach) {
-        if (file.endsWith(".mod")) mod_lst.append(getSubcircuitFile()+'/'+file);
-    }
-    return mod_lst;
-}
-
 QString LibComp::getSpiceLibrary()
 {
   QStringList files;
