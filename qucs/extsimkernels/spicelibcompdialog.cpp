@@ -306,8 +306,10 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
         line.remove(0,1);
         QStringList pins = line.split(QRegularExpression("[ \\t]"),Qt::SkipEmptyParts);
         for (const auto &s1: pins) {
-        if (s1 == "PARAMS:") header_start = false;
-        if (!s1.contains('=') && (s1 != "PARAMS:")) {
+          if (s1 == "PARAMS:" || s1 == ".OPTIONAL:") {
+            header_start = false;
+          }
+          if (!s1.contains('=') && (s1 != "PARAMS:") && (s1 != ".OPTIONAL:")) {
             a_subcirPins[subname].append(s1);
           }
         }
@@ -332,8 +334,10 @@ int SpiceLibCompDialog::parseLibFile(const QString &filename)
       tokens.removeFirst();
       tokens.removeFirst();
       for (const auto &s1: tokens) {
-        if (s1 == "PARAMS:") header_start = false;
-        if (!s1.contains('=') && (s1 != "PARAMS:")) {
+        if (s1 == "PARAMS:" || s1 == ".OPTIONAL:") {
+          header_start = false;
+        }
+        if (!s1.contains('=') && (s1 != "PARAMS:") && (s1 != ".OPTIONAL:")) {
           pin_names.append(s1);
         }
       }
