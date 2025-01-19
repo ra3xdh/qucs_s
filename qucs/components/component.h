@@ -44,7 +44,7 @@ public:
   QString getNetlist();
   QString getSpiceNetlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
   QString getVerilogACode();
-  virtual QString getExpression(bool isXyce = false, bool isCdl = false);
+  virtual QString getExpression(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
   virtual QString getEquations(QString sim, QStringList &dep_vars);
   virtual QStringList getExtraVariables();
   virtual QString getProbeVariable(bool isXyce = false);

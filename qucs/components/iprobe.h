@@ -27,7 +27,7 @@ public:
   ~iProbe();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getExpression(bool, bool) { return "";}
+  QString getExpression(spicecompat::SpiceDialect) { return "";}
   QString getProbeVariable(bool isXyce = false);
 
 protected:

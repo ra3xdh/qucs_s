@@ -69,8 +69,10 @@ Element* SpiceCSParam::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceCSParam::getExpression(bool)
+QString SpiceCSParam::getExpression(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
+    Q_UNUSED(dialect);
+
     if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s;

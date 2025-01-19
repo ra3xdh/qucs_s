@@ -27,7 +27,7 @@ public:
   ~InclScript();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getExpression(bool isXyce, bool isCdl = false);
+  QString getExpression(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 
 protected:
   QString vhdlCode(int) { return QString(); }

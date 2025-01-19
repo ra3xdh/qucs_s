@@ -69,9 +69,9 @@ Element* SpiceNodeset::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceNodeset::getExpression(bool, bool isCdl /* = false */)
+QString SpiceNodeset::getExpression(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isActive != COMP_IS_ACTIVE || isCdl) return QString();
+    if (isActive != COMP_IS_ACTIVE || dialect == spicecompat::CDL) return QString();
 
     QString s;
     s.clear();

@@ -70,9 +70,9 @@ Element* SpiceFunc::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceFunc::getExpression(bool, bool isCdl /* = false */)
+QString SpiceFunc::getExpression(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isActive != COMP_IS_ACTIVE || isCdl) return QString();
+    if (isActive != COMP_IS_ACTIVE || dialect == spicecompat::CDL) return QString();
 
     QString s;
     s.clear();

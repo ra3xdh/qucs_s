@@ -70,14 +70,15 @@ Element* SpiceGlobalParam::info(QString& Name, char* &BitmapFile, bool getNewOne
 }
 
 
-QString SpiceGlobalParam::getExpression(bool, bool isCdl /* = false */)
+QString SpiceGlobalParam::getExpression(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s;
     s.clear();
     for (Property *pp : Props) {
-        s += QStringLiteral(".%1PARAM %2 = %3\n").arg(isCdl ? "" : "GLOBAL_").arg(pp->Name).arg(pp->Value);
+        s += QStringLiteral(".%1PARAM %2 = %3\n")
+            .arg(dialect == spicecompat::CDL ? "" : "GLOBAL_").arg(pp->Name).arg(pp->Value);
     }
     return s;
 }

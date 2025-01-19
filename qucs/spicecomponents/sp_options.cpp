@@ -71,13 +71,13 @@ Element* SpiceOptions::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceOptions::getExpression(bool isXyce, bool isCdl /* = false */)
+QString SpiceOptions::getExpression(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isActive != COMP_IS_ACTIVE || isCdl) return QString();
+    if (isActive != COMP_IS_ACTIVE || dialect == spicecompat::CDL) return QString();
 
     QString s;
     s.clear();
-    if (isXyce) {
+    if (dialect == spicecompat::SPICEXyce) {
         s += QStringLiteral(".OPTIONS %1 ").arg(Props.at(0)->Value);
         for (int i=1;i<Props.count();i++) {
             s += QStringLiteral(" %1 = %2 ").arg(Props.at(i)->Name).arg(Props.at(i)->Value);

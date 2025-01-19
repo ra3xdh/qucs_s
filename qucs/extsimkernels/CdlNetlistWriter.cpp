@@ -149,7 +149,7 @@ void CdlNetlistWriter::startNetlist()
     {
         if (pc->isEquation)
         {
-            s = pc->getExpression(false, true);
+            s = pc->getExpression(spicecompat::CDL);
             a_netlistStream << s;
         }
     }
