@@ -27,7 +27,7 @@ public:
  ~vProbe();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getProbeVariable(bool isXyce = false);
+  QString getProbeVariable(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 protected:
   QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };

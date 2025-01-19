@@ -117,7 +117,7 @@ void Xyce::createNetlist(
     }
     for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if (pc->isProbe) {
-            QString var_pr = pc->getProbeVariable(true);
+            QString var_pr = pc->getProbeVariable(spicecompat::SPICEXyce);
             if (!vars.contains(var_pr)) {
                 vars.append(var_pr);
             }

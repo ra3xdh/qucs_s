@@ -90,13 +90,13 @@ QString iProbe::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
 
 /*!
  * \brief iProbe::getProbeVariable Get current probe variable
- * \param isXyce True if Xyce simulator
+ * \param dialect Spice dialect used
  * \return Current probe variable in Ngspice or Xyce notation
  */
-QString iProbe::getProbeVariable(bool isXyce)
+QString iProbe::getProbeVariable(spicecompat::SpiceDialect dialect)
 {
     QString s;
-    if (isXyce) {
+    if (dialect == spicecompat::SPICEXyce) {
         s = QStringLiteral("I(V%1)").arg(Name);
     } else {
         s = QStringLiteral("V%1#branch").arg(Name);

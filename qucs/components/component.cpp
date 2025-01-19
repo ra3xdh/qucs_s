@@ -840,7 +840,7 @@ QStringList Component::getExtraVariables() {
     return QStringList();
 }
 
-QString Component::getProbeVariable(bool) {
+QString Component::getProbeVariable(spicecompat::SpiceDialect) {
     return QString();
 }
 

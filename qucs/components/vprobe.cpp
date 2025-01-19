@@ -73,7 +73,7 @@ Element* vProbe::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString vProbe::getProbeVariable(bool)
+QString vProbe::getProbeVariable(spicecompat::SpiceDialect)
 {
     return Name;
 }
