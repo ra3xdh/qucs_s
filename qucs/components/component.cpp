@@ -1033,7 +1033,14 @@ QString Component::save() {
     }
     qDebug (doc.toString());
 #endif
-    QString s = "<" + Model;
+    QString s;
+
+    if (XML_Defined) {
+      // To avoid ambiguity, each line contains the library and the component model. Spaces are replaced by underscores
+      s = "<" + QString(Category).replace(" ", "_") + ":" + QString(ComponentName).replace(" ", "_") ;
+    } else {
+      s = "<" + Model;
+    }
 
     if (Name.isEmpty()) s += " * ";
     else s += " " + Name + " ";
@@ -2032,10 +2039,23 @@ void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, Q
 // This function is used for getting a component from the QMap library
 ComponentInfo* findComponentByModel(const QString& schematic_id)
 {
-  for (auto& category : LibraryComponents) {
-    for (auto& component : category) {
-      if (component.Model == schematic_id) {
-        return &component;
+  // First check if the component includes a semicolon. In that case, the format is the following: Category:Model.
+  if (schematic_id.contains(":")) {
+    QStringList parts = schematic_id.split(":");
+    QString Category = parts.first();
+    Category.replace("_", " "); // The library name in the schematic file cannot contain a space, so an underscore is placed instead
+    QString Name = parts.at(1);
+    Name.replace("_", " ");
+    ComponentInfo c = LibraryComponents[Category][Name];
+    return &LibraryComponents[Category][Name];
+  } else {
+    // Iterate over the categories to find the Model
+    // This should guarantee compatibility with previous Qucs-S file formats
+    for (auto& category : LibraryComponents) {
+      for (auto& component : category) {
+        if (component.Model == schematic_id) {
+          return &component;
+        }
       }
     }
   }
