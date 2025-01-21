@@ -293,8 +293,8 @@ void QucsApp::readXML(QFile & library_file) {
             Component[ComponentName].name = ComponentName;
             Component[ComponentName].Category = libraryName;
 
-            QString Schematic_ID = xmlReader.attributes().value("schematic_id").toString();
-            Component[ComponentName].Schematic_ID = Schematic_ID;
+            QString Model = xmlReader.attributes().value("schematic_id").toString();
+            Component[ComponentName].Model = Model;
 
             QString ShowName = xmlReader.attributes().value("show_name").toString();
             if (ShowName.isEmpty()) {//If the XML file does not contain this field, set it to "true" automatically

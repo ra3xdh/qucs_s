@@ -1509,7 +1509,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
     }
 
     // handle ground symbol
-    if(pc->Schematic_ID == "GND") {
+    if(pc->Model == "GND") {
       pc->Ports.first()->Connection->Name = "gnd";
       continue;
     }
@@ -2135,7 +2135,7 @@ bool Schematic::isDigitalCircuit()
 }
 
 // ---------------------------------------------------
-// Determines the node names and writes subcircuits into netlist file.
+// Determines the node names and writes subcircuits into  file.
 int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
                               QPlainTextEdit *ErrText)
 {

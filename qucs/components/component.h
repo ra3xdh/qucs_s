@@ -108,8 +108,10 @@ public:
   bool isSimulation; // is it AC,DC,TR or other spice-compatible simulation?
   bool isProbe; // is it Voltage/Current spice-compatible probe?
   bool isEquation;
+  bool XML_Defined; // Flag to identify externally defined component from hardcoded devices
   int Simulator = spicecompat::simAll;;
-  QString  Model, Name;
+  QString  Model; // This is the name it shows in the schematic (e.g. "C"). It does not contain the part counter.
+  QString Name;
   QString  Description;
   QString Category;
   QString  SpiceModel;
@@ -118,7 +120,6 @@ public:
 
   int PartCounter; // Counter. Used for schematic placing
   QString ComponentName; // Convenitional name (e.g. "Capacitor"). It does not contain the part counter.
-  QString Schematic_ID; // This is the name it shows in the schematic (e.g. "C"). It does not contain the part counter.
 
   void paintIcon(QPixmap *pixmap);
   Property * getProperty(const QString&);
@@ -174,7 +175,7 @@ protected:
 
 // prototype of independent function
 Component* getComponentFromName(QString& Line, Schematic* p=NULL);
-ComponentInfo* findComponentBySchematicID(const QString&); // Gets a component from the QMap library
+ComponentInfo* findComponentByModel(const QString&); // Gets a component from the QMap library
 
 
 #endif

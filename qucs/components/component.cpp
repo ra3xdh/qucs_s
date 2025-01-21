@@ -64,7 +64,7 @@ Component::Component() {
     tx = 0;
     ty = 0;
     PartCounter = 0; // Identifies the number of component inside the schematic
-
+    XML_Defined = false; // By default, the component is set to be a hardcoded device.
     containingSchematic = NULL;
 }
 
@@ -1894,7 +1894,7 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
     } else{
         // First look for the component in the QMap library. If the component is not there
         // then must be a hardcoded component (i.e. simulation block, etc.)
-      ComponentInfo* component_data = findComponentBySchematicID(cstr);
+      ComponentInfo* component_data = findComponentByModel(cstr);
 
       if (component_data) {
         // Component found in QMap library (static component)
@@ -1956,12 +1956,12 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
 void Component::loadfromComponentInfo(ComponentInfo C)
 {
   Name = C.name;
-  Model = C.name;
+  Model = C.Model;
   ComponentName = Name;
-  Schematic_ID = C.Schematic_ID;
   Description = C.description;
   Category = C.Category;
   showName = C.ShowNameinSchematic;
+  XML_Defined = true;
 
   // Clear symbol information and properties
   Lines.clear();
@@ -2030,11 +2030,11 @@ void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, Q
 }
 
 // This function is used for getting a component from the QMap library
-ComponentInfo* findComponentBySchematicID(const QString& schematic_id)
+ComponentInfo* findComponentByModel(const QString& schematic_id)
 {
   for (auto& category : LibraryComponents) {
     for (auto& component : category) {
-      if (component.Schematic_ID == schematic_id) {
+      if (component.Model == schematic_id) {
         return &component;
       }
     }

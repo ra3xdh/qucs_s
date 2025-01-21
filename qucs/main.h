@@ -174,7 +174,7 @@ struct ParameterInfo{
 
 struct ComponentInfo {
   QString name;
-  QString Schematic_ID; // This is the name that the schematic shows once the component is placed
+  QString Model; // This is the name that the schematic shows once the component is placed
   QString description;
   QString Category;
   bool ShowNameinSchematic;

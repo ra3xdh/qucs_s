@@ -2589,26 +2589,26 @@ void Schematic::insertComponent(Component *c)
     bool ok;
     QString s;
     int  max=1, len = c->Name.length(), z;
-    if(c->Name.isEmpty() || (c->Schematic_ID == "GND"))
+    if(c->Name.isEmpty() || (c->Model == "GND"))
     {
         // a ground symbol erases an existing label on the wire line
-        if(c->Schematic_ID == "GND")
+        if(c->Model == "GND")
         {
-            c->Schematic_ID = "x";    // prevent that this ground is found as label
+            c->Model = "x";    // prevent that this ground is found as label
             Element *pe = getWireLabel(c->Ports.first()->Connection);
             if(pe) if((pe->Type & isComponent) == 0)
                 {
                     delete ((Conductor*)pe)->Label;
                     ((Conductor*)pe)->Label = 0;
                 }
-            c->Schematic_ID = "GND";    // rebuild component model
+            c->Model = "GND";    // rebuild component model
         }
     }
     else
     {
         // This assigns the number of the component and it must work for XML based component as well as with
         // hardcoded devices, such as simulation blocks, etc.
-      if (c->Schematic_ID.isEmpty()){
+      if (c->XML_Defined == false){
         // Hardcoded device
         // determines the name by looking for names with the same
         // prefix and increment the number
@@ -2623,17 +2623,17 @@ void Schematic::insertComponent(Component *c)
         //c->Name += QString("%1").arg(c->PartCounter+1);  // create name with new number
       } else {
         // XML-based component
-        // Inspect all components with the same Schematic_ID as this and add 1 to the maximum PartCounter
+        // Inspect all components with the same Model as this and add 1 to the maximum PartCounter
         int max_ID = 0;
         for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next()) {
-          if (pc->Schematic_ID == c->Schematic_ID){
+          if (pc->Model == c->Model){
             if (max_ID < pc->PartCounter) {
               max_ID = pc->PartCounter;
             }
           }
         }
         c->PartCounter = max_ID + 1; // Set the part counter of the new component to place
-        c->Name = c->Schematic_ID + QString("%1").arg(c->PartCounter);
+        c->Name = c->Model + QString("%1").arg(c->PartCounter);
       }
     }
 
