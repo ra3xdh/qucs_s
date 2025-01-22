@@ -1,0 +1,27 @@
+* 2P2 Miniature Power Pentode Spice Model
+* Author: Zabb Csaba
+* Date:   4/12/2021
+* The following parameters are not modelled:
+*   (1) Filament and filament warmup time
+*   (2) Limiting values
+* This model is valid for the following tubes (within max. ratings):
+*   DL92, 3S4, CV484, VT-174
+.SUBCKT 2P2 A S G K 
++ PARAMS: MU=5.5 KG1=3916 KP=39.04 KVB=12 VCT=0.0025 EX=1.19 KG2=6384 KNEE=2.88 KVC=2.133
++ KLAM=2.75E-7 KLAMG=6.12E-4 KNEE2=11.76 KNEX=2.85
+E1  1 0  VALUE={V(S,K)/KP*LOG(1+EXP((1/MU+(VCT+V(G,K))/SQRT(KVB+V(S,K)*V(S,K)))*KP))}
+E2  2 0  VALUE={(PWR(V(1),EX)+PWRS(V(1),EX))}
+G4  A K  VALUE={IF(V(A,K)>0,V(2)/KG1*ATAN((V(A,K)+KNEX)/KNEE)*TANH(V(A,K)/KNEE2)*(1+KLAMG*V(A,K)),0)}
+E4  4 K  VALUE={IF(V(A,K)>0,V(A,K),0)}
+G2  S K  VALUE={V(2)/KG2*(KVC-ATAN((V(4,K)+KNEX)/KNEE)*TANH(V(4,K)/KNEE2))/(1+KLAMG*V(4,K))}
+B1  G K  I=URAMP(V(G,K)+8.68E-1)^1.5*2.1E-5*V(5)
+G3  G K  VALUE={3.1E-5*(PWR(V(G,K),1.5)+PWRS(V(G,K),1.5))/1.5} ; G1 diode
+E3  3 0  VALUE={IF(V(S,K)>0,1/(1+ABS(V(S,K))/20)^2.5,1)} ;G1 Splash current change
+E5  5 0  VALUE={IF(V(A,K)>=3,V(3),1)}
+R1  3 0  1G
+R2  5 0  1G
+C1  G K  4.4p
+C2  G A  0.4p
+C3  A K  6p 
+.ENDS
+*$

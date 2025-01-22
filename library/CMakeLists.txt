@@ -21,6 +21,7 @@ LEDs.lib
 LaserDiodes.lib
 Loudspeaker.lib
 MixerIC.lib
+Neon.lib
 MOSFETs.lib
 NMOSFETs.lib
 OpAmps.lib
@@ -38,6 +39,7 @@ SPICE_TLine.lib
 Thermistor.lib
 Thyristor.lib
 Transformers.lib
+TubesExtended.lib
 Xanalogue.lib
 XyceDigital.lib
 Xyce_Digital_TTL_Technology.lib
@@ -59,6 +61,8 @@ xyce.blacklist
 
 INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/${QUCS_NAME}/library )
 INSTALL( DIRECTORY "symbols" DESTINATION share/${QUCS_NAME}/ )
+INSTALL( DIRECTORY "TubesExtended" DESTINATION share/${QUCS_NAME}/library)
+INSTALL( DIRECTORY "Optocoupler" DESTINATION share/${QUCS_NAME}/library )
 
 ADD_SUBDIRECTORY( XyceDigital)
 

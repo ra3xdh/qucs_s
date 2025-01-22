@@ -1,0 +1,38 @@
+* 6F12P Triode-Pentode Spice Model
+* Author: Zabb Csaba
+* Date:   27/10/2021
+* The following parameters are not modelled:
+*   (1) Filament and filament warmup time
+*   (2) Limiting values
+.SUBCKT 6F12P A S G K 
++ PARAMS: MU=66.4 KG1=352 KP=423.45 KVB=5.64 VCT=6.25E-4 EX=1.596 KG2=672 KNEE=1.14 KVC=2.07
++ KLAM=2.5E-8 KLAMG=3.637E-5 KNEE2=14.56 KNEX=2.1 
+E1  1 0  VALUE={V(S,K)/KP*LOG(1+EXP((1/MU+(VCT+V(G,K))/SQRT(KVB+V(S,K)*V(S,K)))*KP))}
+E2  2 0  VALUE={(PWR(V(1),EX)+PWRS(V(1),EX))}
+G4  A K  VALUE={IF(V(A,K)>0,V(2)/KG1*ATAN((V(A,K)+KNEX)/KNEE)*TANH(V(A,K)/KNEE2)*(1+KLAMG*V(A,K)),0)}
+E4  4 K  VALUE={IF(V(A,K)>0,V(A,K),0)}
+G2  S K  VALUE={V(2)/KG2*(KVC-ATAN((V(4,K)+KNEX)/KNEE)*TANH(V(4,K)/KNEE2))/(1+KLAMG*V(4,K))}
+G3  G K  VALUE={2.1E-2*(PWR(V(G,K),1.5)+PWRS(V(G,K),1.5))/2} ; G1 diode
+B1  G K  I=URAMP(V(G,K)+1.045)^1.5*3.2E-4*V(3)
+B2  G K  I=URAMP(V(G,K)+1.045)^1.5*9.5E-5  
+E3  3 0  VALUE={IF(V(S,K)>0,1/(1+ABS(V(S,K))/20)^1.8,1)} ;G1 Splash current change
+R1  3 0  1G
+C1  K G  6.6p 
+C2  G A  0.02p
+C3  K A  1.9p
+.ENDS
+*$
+.SUBCKT 6F12PT A G K 
++PARAMS: MU=101 KG1=161.7 KP=691.2 KVB=69.96 VCT=0.1786 EX=1.44 
+E1  1 0  VALUE={V(A,K)/KP*LOG(1+EXP(KP*(1/MU+(VCT+V(G,K))/SQRT(KVB+V(A,K)*V(A,K)))))} 
+G1  A K  VALUE={(PWR(V(1),EX)+PWRS(V(1),EX))/KG1} 
+G3  G K  VALUE={3.5E-2*(PWR(V(G,K),1.5)+PWRS(V(G,K),1.5))/2} ; G1 diode
+B1  G K  I=URAMP(V(G,K)+1.05)^1.5*4.6E-4*V(3) 
+B2  G K  I=URAMP(V(G,K)+1.05)^1.5*7E-5  
+E3  3 0  VALUE={IF(V(A,K)>0,1/(1+ABS(V(A,K))/20)^2,1)} ;G1 Splash current change
+R1  3 0  1G
+C1  G K  2.1p
+C2  A K  0.26p
+C3  G A  1.6p
+.ENDS 
+*$
