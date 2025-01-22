@@ -1,0 +1,29 @@
+* 2P3 Miniature Power Pentode Spice Model
+* Author: Zabb Csaba
+* Date: 25/02/2023
+* The following parameters are not modelled:
+*   (1) Filament and filament warmup time
+*   (2) Limiting values
+* 2P3 maximum ratings:
+* Ua  max. 150V
+* Ug2 max. 135V
+* Ik  max. 25mA
+* Uf  1.4V
+* If  200mA
+* The cathode symbol is the negative end of the filament (pin 5, parallel filament).
+.SUBCKT 2P3 A S G K 
++ PARAMS: MU=5.2 KG1=5535 KP=60.06 KVB=12.96 VCT=0.274 EX=1.4 KG2=6852 KNEE=12 KVC=1.874
++ KLAMG=5.61E-4 KNEE2=21.41 KNEX=26.4  
+E1  1 0  VALUE={V(S,K)/KP*LOG(1+EXP((1/MU+(VCT+V(G,K))/SQRT(KVB+V(S,K)*V(S,K)))*KP))}
+E2  2 0  VALUE={(PWR(V(1),EX)+PWRS(V(1),EX))}
+G1  A K  VALUE={IF(V(A,K)>0,V(2)/KG1*ATAN((V(A,K)+KNEX)/KNEE)*TANH(V(A,K)/KNEE2)*(1+KLAMG*V(A,K)),0)}
+E3  4 K  VALUE={IF(V(A,K)>0,V(A,K),0)}
+G2  S K  VALUE={V(2)/KG2*(KVC-ATAN((V(4,K)+KNEX)/KNEE)*TANH(V(4,K)/KNEE2))/(1+KLAMG*V(4,K))}
+B1  G K  I=URAMP(V(G,K)+960m)^1.5*5.3E-5
+G3  G K  VALUE={3.1E-5*(PWR(V(G,K),1.5)+PWRS(V(G,K),1.5))/1.5} ; G1 diode
+C1  K G  4.8p  
+C2  G A  0.36p
+C3  K A  4.2p 
+.ENDS 2P3
+*
+

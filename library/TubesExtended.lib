@@ -1,0 +1,1636 @@
+<Qucs Library 24.4.1 "TubesExtended">
+
+<Component 12AT7>
+  <Description>
+12AT7 double triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_12AT7 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="12AT7" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_12AT7  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 12AT7 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 12AT7_H>
+  <Description>
+12AT7 double triode with heater; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_12AT7_H _net0 _net1 _net2 _net3 _net4
+SpLib:X1 _net0 _net1 _net2 _net3 _net4 File="tube.lib" Device="12AT7_H" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_12AT7_H  gnd _net0 _net1 _net2 _net3 _net4 
+XX1  _net0 _net1 _net2 _net3 _net4 12AT7_H 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <Line 0 25 -10 10 #000000 1 1>
+    <Line 0 25 10 10 #000000 1 1>
+    <Line -10 60 0 -25 #000000 1 1>
+    <Line 10 60 0 -25 #000000 1 1>
+    <.PortSym -10 60 4 0 P4>
+    <.PortSym 10 60 5 0 P5>
+  </Symbol>
+</Component>
+
+<Component 12AU7>
+  <Description>
+12AU7 double triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_12AU7 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="12AU7" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_12AU7  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 12AU7 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 12AU7_H>
+  <Description>
+12AU7 double triode with heater; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_12AU7_H _net0 _net1 _net2 _net3 _net4
+SpLib:X1 _net0 _net1 _net2 _net3 _net4 File="tube.lib" Device="12AU7_H" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_12AU7_H  gnd _net0 _net1 _net2 _net3 _net4 
+XX1  _net0 _net1 _net2 _net3 _net4 12AU7_H 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <Line 0 25 -10 10 #000000 1 1>
+    <Line 0 25 10 10 #000000 1 1>
+    <Line -10 60 0 -25 #000000 1 1>
+    <Line 10 60 0 -25 #000000 1 1>
+    <.PortSym -10 60 4 0 P4>
+    <.PortSym 10 60 5 0 P5>
+  </Symbol>
+</Component>
+
+<Component 12AX7>
+  <Description>
+12AX7 (6N2P, 6Н2П) double triode
+  </Description>
+  <Model>
+.Def:TubesExtended_12AX7 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="12AX7" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_12AX7  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 12AX7 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 12AX7A>
+  <Description>
+12AX7 double triode alternative model; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_12AX7A _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="12AX7A" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_12AX7A  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 12AX7A 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 12AX7_H>
+  <Description>
+12AX double triode with heater; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_12AX7_H _net0 _net1 _net2 _net3 _net4
+SpLib:X1 _net0 _net1 _net2 _net3 _net4 File="tube.lib" Device="12AX7_H" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_12AX7_H  gnd _net0 _net1 _net2 _net3 _net4 
+XX1  _net0 _net1 _net2 _net3 _net4 12AX7_H 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <Line 0 25 -10 10 #000000 1 1>
+    <Line 0 25 10 10 #000000 1 1>
+    <Line -10 60 0 -25 #000000 1 1>
+    <Line 10 60 0 -25 #000000 1 1>
+    <.PortSym -10 60 4 0 P4>
+    <.PortSym 10 60 5 0 P5>
+  </Symbol>
+</Component>
+
+<Component 2A3>
+  <Description>
+2A3 power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_2A3 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="2A3" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_2A3  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 2A3 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 2P2>
+  <Description>
+2P2 battery pentode. Model designed by Zabb Csaba: https://fotoelektronika.com/spice-models/
+  </Description>
+  <Model>
+.Def:TubesExtended_2P2 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="2P2.CIR" Device="2P2" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_2P2  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 2P2 
+.ENDS
+  </Spice>
+<SpiceAttach "2P2.CIR">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component 2P3>
+  <Description>
+2P3 battery pentode. Model designed by Zabb Csaba: https://fotoelektronika.com/spice-models/
+  </Description>
+  <Model>
+.Def:TubesExtended_2P3 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="2P3.CIR" Device="2P3" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_2P3  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 2P3 
+.ENDS
+  </Spice>
+<SpiceAttach "2P3.CIR">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component 300B>
+  <Description>
+300B power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_300B _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="300B" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_300B  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 300B 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 3CX300>
+  <Description>
+3CX300 audio power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_3CX300 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="3CX300" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_3CX300  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 3CX300 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 5751>
+  <Description>
+5751 double triode
+  </Description>
+  <Model>
+.Def:TubesExtended_5751 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="5751" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_5751  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 5751 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 5899>
+  <Description>
+5899 miniature RF pentode. Model designed by Zabb Csaba: https://fotoelektronika.com/spice-models/
+  </Description>
+  <Model>
+.Def:TubesExtended_5899 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="5899.CIR" Device="5899" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_5899  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 5899 
+.ENDS
+  </Spice>
+<SpiceAttach "5899.CIR">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component 6146>
+  <Description>
+6146 RF beam tetrode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6146 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="tube.lib" Device="6146" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6146  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 6146 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.PortSym -50 10 2 0 P2>
+    <.ID 40 14 SUB>
+    <.PortSym 50 0 3 180 P3>
+    <.PortSym 20 50 4 0 P4>
+  </Symbol>
+</Component>
+
+<Component 6AS7>
+  <Description>
+6AS7 power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6AS7 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="SV6AS7" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6AS7  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 SV6AS7 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 6BM8_pentode>
+  <Description>
+6BM8 (6F5P, 6Ф5П) pentode part; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6BM8_pentode _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="tube.lib" Device="6BM8P" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6BM8_pentode  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 6BM8P 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym -50 10 3 180 P3>
+    <.PortSym 50 0 2 0 P2>
+  </Symbol>
+</Component>
+
+<Component 6BM8_triode>
+  <Description>
+6BM8 (6Ф5П, 6F5P) triode part; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6BM8_triode _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="6BM8" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6BM8_triode  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 6BM8 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 6BQ5>
+  <Description>
+6BQ5 (EL84) audio pentode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6BQ5 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="tube.lib" Device="6BQ5" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6BQ5  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 6BQ5 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym -50 10 3 180 P3>
+    <.PortSym 50 0 2 0 P2>
+  </Symbol>
+</Component>
+
+<Component 6CA7>
+  <Description>
+6CA7 (EL34) power audio pentode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6CA7 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="tube.lib" Device="6CA7" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6CA7  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 6CA7 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym -50 10 3 180 P3>
+    <.PortSym 50 0 2 0 P2>
+  </Symbol>
+</Component>
+
+<Component 6DJ8>
+  <Description>
+6DJ8 (ECC88, 6N23P) double triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6DJ8 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="6DJ8" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6DJ8  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 6DJ8 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 6F12P_Pentode>
+  <Description>
+6F12P RF pentode part; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6F12P_Pentode _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="6F12P.CIR" Device="6F12P" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6F12P_Pentode  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 6F12P 
+.ENDS
+  </Spice>
+<SpiceAttach "6F12P.CIR">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym -50 10 3 180 P3>
+    <.PortSym 50 0 2 0 P2>
+  </Symbol>
+</Component>
+
+<Component 6F12P_Triode>
+  <Description>
+6F12P RF triode part; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6F12P_Triode _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="6F12P.CIR" Device="6F12PT" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6F12P_Triode  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 6F12PT 
+.ENDS
+  </Spice>
+<SpiceAttach "6F12P.CIR">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 6K1J>
+  <Description>
+6K1J (6К1Ж) RF miniature pentode ; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6K1J _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="6K1J.CIR" Device="6K1J" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6K1J  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 6K1J 
+.ENDS
+  </Spice>
+<SpiceAttach "6K1J.CIR">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym -50 10 3 180 P3>
+    <.PortSym 50 0 2 0 P2>
+  </Symbol>
+</Component>
+
+<Component 6KG6>
+  <Description>
+6KG6 (6P45S, EL509) power beam tetrode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6KG6 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="tube.lib" Device="6KG6" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6KG6  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 6KG6 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component 6L6>
+  <Description>
+6L6 (6P3S) power audio beam tetrode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6L6 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="tube.lib" Device="6L6" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6L6  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 6L6 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component 6N1P>
+  <Description>
+6N1P double triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6N1P _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="6N1P" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6N1P  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 6N1P 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 6SN7>
+  <Description>
+6SN7 (6N8S, 6Н8С) double audio triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6SN7 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="6SN7GTB" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6SN7  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 6SN7GTB 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component 6SN7_H>
+  <Description>
+6SN7 model with heater; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6SN7_H _net0 _net1 _net2 _net3 _net4
+SpLib:X1 _net0 _net1 _net2 _net3 _net4 File="tube.lib" Device="6SN7GTB_H" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6SN7_H  gnd _net0 _net1 _net2 _net3 _net4 
+XX1  _net0 _net1 _net2 _net3 _net4 6SN7GTB_H 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <Line 0 25 -10 10 #000000 1 1>
+    <Line 0 25 10 10 #000000 1 1>
+    <Line -10 60 0 -25 #000000 1 1>
+    <Line 10 60 0 -25 #000000 1 1>
+    <.PortSym -10 60 4 0 P4>
+    <.PortSym 10 60 5 0 P5>
+  </Symbol>
+</Component>
+
+<Component 6V6>
+  <Description>
+6V6 (6P6S) audio output pentode ; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_6V6 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="tube.lib" Device="6V6" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_6V6  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 6V6 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component 76>
+  <Description>
+79 (UY76) triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_76 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="76" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_76  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 76 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component EF183>
+  <Description>
+EF183 (6K13P) high gain RF pentode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_EF183 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="EF183.CIR" Device="EF183" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_EF183  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 EF183 
+.ENDS
+  </Spice>
+<SpiceAttach "EF183.CIR">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component EF184>
+  <Description>
+EF184 (6J51P) high gain RF pentode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_EF184 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="EF184.cir" Device="EF184" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_EF184  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 EF184 
+.ENDS
+  </Spice>
+<SpiceAttach "EF184.cir">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component EF86>
+  <Description>
+EF86 (6J32P, 6Ж32П) audio input pentode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_EF86 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="tube.lib" Device="EF86" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_EF86  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 EF86 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component SV57210>
+  <Description>
+SV5210 power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_SV57210 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="SV57210" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_SV57210  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 SV57210 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component SV5723>
+  <Description>
+SV572-3 power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_SV5723 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="SV5723" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_SV5723  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 SV5723 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component SV57230>
+  <Description>
+SV572-30 power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_SV57230 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="SV572-30" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_SV57230  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 SV572-30 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component SV811_10>
+  <Description>
+SV811-10 power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_SV811_10 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="SV811-10" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_SV811_10  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 SV811-10 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component SV811_3>
+  <Description>
+SV811-3 power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_SV811_3 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="SV811-3" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_SV811_3  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 SV811-3 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB>
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component SV83>
+  <Description>
+SV83 power triode; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_SV83 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="tube.lib" Device="SV83" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_SV83  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 SV83 
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <.PortSym 0 -40 1 0 P1>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 10 10 0 #000000 1 1>
+    <Line -5 10 10 0 #000000 1 1>
+    <Line 15 10 10 0 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -25 -10 10 0 #000000 1 1>
+    <Line -5 -10 10 0 #000000 1 1>
+    <Line 15 -10 10 0 #000000 1 1>
+    <Line -30 10 -20 0 #000000 1 1>
+    <Line 30 0 20 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line 20 20 8 -5 #000000 1 1>
+    <Line 28 14 0 -24 #000000 1 1>
+    <Line 25 -10 3 0 #000000 1 1>
+    <.ID 40 14 SUB>
+    <.PortSym 20 50 4 0 P4>
+    <.PortSym 50 0 2 0 P2>
+    <.PortSym -50 10 3 180 P3>
+  </Symbol>
+</Component>
+
+<Component TriodeGeneric>
+  <Description>
+Generic triode model; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_TriodeGeneric _net0 _net1 _net2 LIP="1.0" LIF="3.7e-3" CDO="0.0" RAF="18e-3" RAP="4e-3" ERP="1.5" MU0="17.3" MUR="19e-3" EMC="9.6e-6" GCO="0" GCF="213e-6" CGA="3.9e-12" CGK="2.4e-12" CAK="0.7e-12"
+SpLib:X1 _net0 _net1 _net2 File="tube.lib" Device="TRIODENH" SymPattern="auto" Params="LIP={LIP} LIF={LIF} RAF={RAF} CDO={CDO} RAP={RAP} ERP={ERP} MU0={MU0} MUR={MUR} EMC={EMC} GCO={GCO} GCF={GCF} CGA={CGA} CGK={CGK} CAK={CAK}" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_TriodeGeneric  gnd _net0 _net1 _net2 LIP=1.0 LIF=3.7e-3 CDO=0.0 RAF=18e-3 RAP=4e-3 ERP=1.5 MU0=17.3 MUR=19e-3 EMC=9.6e-6 GCO=0 GCF=213e-6 CGA=3.9e-12 CGK=2.4e-12 CAK=0.7e-12 
+XX1  _net0 _net1 _net2 TRIODENH LIP={LIP} LIF={LIF} RAF={RAF} CDO={CDO} RAP={RAP} ERP={ERP} MU0={MU0} MUR={MUR} EMC={EMC} GCO={GCO} GCF={GCF} CGA={CGA} CGK={CGK} CAK={CAK}
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB "1=LIP=1.0=Conduction limit exponent=" "1=LIF=3.7e-3=Conduction limit factor=" "1=CDO=0.0=Conduction offset=" "1=RAF=18e-3=Anode resistance factor for neg grid voltages=" "1=RAP=4e-3=Anode resistance factor for positive grid voltages=" "1=ERP=1.5=Emission power=" "1=MU0=17.3=Mu between grid and anode at zero bias=" "1=MUR=19e-3=Mu reduction factor for large negative grid voltages=" "1=EMC=9.6e-6=Emission coefficient=" "1=GCO=0=Grid current offset in volts=" "1=GCF=213e-6=Grid current scale factor=" "1=CGA=3.9e-12=Grid-plate capacitance=" "1=CGK=2.4e-12=Grid-cathode capacitance=" "1=CAK=0.7e-12=Plate-cathode capacitance=">
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+  </Symbol>
+</Component>
+
+<Component TriodeGenericHeater>
+  <Description>
+Generic triode mode with heater; LTSpice compatible mode is required
+  </Description>
+  <Model>
+.Def:TubesExtended_TriodeGenericHeater _net0 _net2 _net1 _net3 _net4 LIP="1.0" LIF="3.7e-3" CDO="0.0" RAF="18e-3" RAP="4e-3" ERP="1.5" MU0="17.3" MUR="19e-3" EMC="9.6e-6" GCO="0" GCF="213e-6" CGA="3.9e-12" CGK="2.4e-12" CAK="0.7e-12" RHO="10.5" RCO="1.6" HTV="6.3" HWU="10.5"
+SpLib:X1 _net0 _net2 _net1 _net3 _net4 File="tube.lib" Device="TRIODE" SymPattern="auto" Params="LIP={LIP} LIF={LIF} RAF={RAF} CDO={CDO} RAP={RAP} ERP={ERP} MU0={MU0} MUR={MUR} EMC={EMC} GCO={GCO} GCF={GCF} CGA={CGA} CGK={CGK} CAK={CAK} RCO={RCO} RHO={RHO} HTV={HTV} HWU={HWU}" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT TubesExtended_TriodeGenericHeater  gnd _net0 _net2 _net1 _net3 _net4 LIP=1.0 LIF=3.7e-3 CDO=0.0 RAF=18e-3 RAP=4e-3 ERP=1.5 MU0=17.3 MUR=19e-3 EMC=9.6e-6 GCO=0 GCF=213e-6 CGA=3.9e-12 CGK=2.4e-12 CAK=0.7e-12 RHO=10.5 RCO=1.6 HTV=6.3 HWU=10.5 
+XX1  _net0 _net2 _net1 _net3 _net4 TRIODE LIP={LIP} LIF={LIF} RAF={RAF} CDO={CDO} RAP={RAP} ERP={ERP} MU0={MU0} MUR={MUR} EMC={EMC} GCO={GCO} GCF={GCF} CGA={CGA} CGK={CGK} CAK={CAK} RCO={RCO} RHO={RHO} HTV={HTV} HWU={HWU}
+.ENDS
+  </Spice>
+<SpiceAttach "tube.lib">
+  <Symbol>
+    <Line 20 50 0 -20 #000000 1 1>
+    <Line -20 25 0 -5 #000000 1 1>
+    <Line -20 20 40 0 #000000 1 1>
+    <Line 20 20 0 10 #000000 1 1>
+    <Line -25 0 10 0 #000000 1 1>
+    <Line -5 0 10 0 #000000 1 1>
+    <Line 15 0 10 0 #000000 1 1>
+    <Line -10 -20 20 0 #000000 1 1>
+    <Line 0 -40 0 20 #000000 1 1>
+    <Ellipse -35 -35 70 70 #000000 1 1 #c0c0c0 1 0>
+    <Line -30 0 -20 0 #000000 1 1>
+    <.ID 40 -16 SUB "1=LIP=1.0=Conduction limit exponent=" "1=LIF=3.7e-3=Conduction limit factor=" "1=CDO=0.0=Conduction offset=" "1=RAF=18e-3=Anode resistance factor for neg grid voltages=" "1=RAP=4e-3=Anode resistance factor for positive grid voltages=" "1=ERP=1.5=Emission power=" "1=MU0=17.3=Mu between grid and anode at zero bias=" "1=MUR=19e-3=Mu reduction factor for large negative grid voltages=" "1=EMC=9.6e-6=Emission coefficient=" "1=GCO=0=Grid current offset in volts=" "1=GCF=213e-6=Grid current scale factor=" "1=CGA=3.9e-12=Grid-plate capacitance=" "1=CGK=2.4e-12=Grid-cathode capacitance=" "1=CAK=0.7e-12=Plate-cathode capacitance=" "1=RHO=10.5=Heater resistance hot (ohms)=" "1=RCO=1.6=Heater resistance cold (ohms)=" "1=HTV=6.3=Normal heater voltage (V)=" "1=HWU=10.5=Heater time to warm up to 90% of emission (seconds)=">
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym -50 0 2 0 P2>
+    <.PortSym 20 50 3 180 P3>
+    <.PortSym 10 60 5 90 P5>
+    <.PortSym -10 60 4 90 P4>
+    <Line 0 25 -10 10 #000000 1 1>
+    <Line 0 25 10 10 #000000 1 1>
+    <Line -10 60 0 -25 #000000 1 1>
+    <Line 10 60 0 -25 #000000 1 1>
+  </Symbol>
+</Component>
+

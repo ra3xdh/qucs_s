@@ -1,0 +1,51 @@
+<Qucs Library 24.3.0 "Neon">
+
+<Component Neon>
+  <Description>
+65V Neon Lamp Spice Model
+Author: Zabb Csaba
+
+  </Description>
+  <Model>
+.Def:Neon_Neon _net0 _net1
+Sub:X1 _net0 _net1 gnd Type="Neon_sp"
+.Def:End
+  </Model>
+  <ModelIncludes "Neon.sp.lst">
+  <Spice>
+.SUBCKT NB1 10 20
+D1  10 1  D1
+D2  20 1  D1
+D3  2  10 D1
+D4  2  20 D1
+D5  1  4  D2
+V1  4  5  0
+H1  6  0  V1 4.8E4
+R1  0  6  1E6
+B1  5  7  I=3.7E-4*V(5,7)+5.75E-3*V(5,7)*V(6)
+C1  5  7  1.3E-11
+R2  7  2  2.13E3
+R3  3  5  3.5E3
+R4  3  8  1.85E3
+V2  8  2  1.442E2
+.MODEL D1 D(IS=8E-16)
+.MODEL D2 D(IS=2.1E-13 N=1.8)
+.ENDS NB1
+
+
+.SUBCKT Neon_Neon  gnd _net0 _net1 
+X1 _net0 _net1 NB1
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -40 0 30 0 #000080 2 1>
+    <Line 10 0 30 0 #000080 2 1>
+    <Line -10 -20 0 40 #000080 2 1>
+    <Line 10 -20 0 40 #000080 2 1>
+    <Ellipse -30 -30 60 60 #ffaa00 2 1 #c0c0c0 12 1>
+    <.PortSym -40 0 1 0 P1>
+    <.PortSym 40 0 2 180 P2>
+    <.ID -20 44 NB>
+  </Symbol>
+</Component>
+

@@ -15,3 +15,6 @@ MixerIC.lib
 SPICE_TLine.lib
 Digital_AUX.lib
 Digital_XSPICE.lib
+TubesExtended.lib
+Neon.lib
+Optocoupler.lib

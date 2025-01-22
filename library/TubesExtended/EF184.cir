@@ -1,0 +1,32 @@
+* EF184 Pentode Spice Model
+* Copyright 2003--2006 by Ayumi Nakabayashi, All rights reserved.
+* Version 3.01, Generated on Wed Mar 22 17:19:41 2006
+* -Ig1 splash current modified by Zabb Csaba 21/10/2021
+.SUBCKT EF184 A G2 G1 K
+BGG   GG   0  V=V(G1,K)+0.40321166
+BEP   EP   0  V=URAMP(V(A,K))+1e-10
+BEG   EG   0  V=URAMP(V(G1,K))+1e-10
+BEG2  EG2  0  V=URAMP(V(G2,K))+1e-10
+BM1   M1   0  V=(0.0054275937*(URAMP(V(EG2)-1e-10)+1e-10))^-0.61801526
+BM2   M2   0  V=(0.7082102*(URAMP(V(GG)+V(EG2)/53.760436)+1e-10))^2.1180153
+BP    P    0  V=0.019963362*(URAMP(V(GG)+V(EG2)/75.910283)+1e-10)^1.5
+BIK   IK   0  V=U(V(GG))*V(P)+(1-U(V(GG)))*0.011540933*V(M1)*V(M2)
+BIG   IG   0  V=0.0099816812*V(EG)^1.5*(V(EG)/(V(EP)+V(EG))*1.2+0.4)
+BIK2  IK2  0  V=V(IK,IG)*(1-0.4*(EXP(-V(EP)/V(EG2)*15)-EXP(-15)))
+BIG2T IG2T 0  V=V(IK2)*(0.71666698*(1-V(EP)/(V(EP)+10))^1.5+0.28333302)
+BIK3  IK3  0  V=V(IK2)*(V(EP)+5500)/(V(EG2)+5500)
+BIK4  IK4  0  V=V(IK3)-URAMP(V(IK3)-(0.010377457*(V(EP)+URAMP(V(EG2,EP)))^1.5))
+BIP   IP   0  V=URAMP(V(IK4,IG2T)-URAMP(V(IK4,IG2T)-(0.010377457*V(EP)^1.5)))
+BIAK  A    K  I=V(IP)+1e-10*V(A,K)
+BIG2  G2   K  I=URAMP(V(IK4,IP))
+B1    G1   K  I=URAMP(V(G1,K)+1.3)^1.5*4.3E-4*V(3)
+G3    G1   K  VALUE={9.516E-3*(PWR(V(G1,K),1.5)+PWRS(V(G1,K),1.5))/2} ; G1 diode
+E3    3    0  VALUE={IF(V(G2,K)>0,1/(1+ABS(V(G2,K))/20)^1.3,1)} ;G1 Splash current change
+E5    5    0  VALUE={IF(V(A,K)>=8,V(3),1)}
+R1    3    0  1G
+R2    5    0  1G
+CGA   G1   A  0.005p
+CGK   G1   K  7.2p
+C12   G1   G2 2.8p
+CAK   A    K  3p
+.ENDS

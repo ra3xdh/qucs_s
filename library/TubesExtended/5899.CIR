@@ -1,0 +1,22 @@
+* 5899 Special Quality Variable-mu Pentode Spice Model
+* Author: Zabb Csaba
+* Date:   30/10/2021
+* The following parameters are not modelled:
+*   (1) Filament and filament warmup time
+*   (2) Limiting values
+.SUBCKT 5899 A S G K 
++ PARAMS: MU=27.2 KG1=11545.6 KP=35.3 KVB=11.88 VCT=8.438E-5 EX=2.64 KG2=7324 KNEE=7.44 KVC=1.772
++ KLAM=3E-8 KLAMG=2.04E-4 KNEE2=15.64 KNEX=10.8   
+E1  1 0  VALUE={V(S,K)/KP*LOG(1+EXP((1/MU+(VCT+V(G,K)*V(3))/SQRT(KVB+V(S,K)*V(S,K)))*KP))}
+E2  2 0  VALUE={(PWR(V(1),EX)+PWRS(V(1),EX))}
+G1  A K  VALUE={IF(V(A,K)>0,V(2)/KG1*ATAN((V(A,K)+KNEX)/KNEE)*TANH(V(A,K)/KNEE2)*(1+KLAMG*V(A,K)),0)}
+E4  4 K  VALUE={IF(V(A,K)>0,V(A,K),0)}
+G2  S K  VALUE={V(2)/KG2*(KVC-ATAN((V(4,K)+KNEX)/KNEE)*TANH(V(4,K)/KNEE2))/(1+KLAMG*V(4,K))}
+G3  G K  VALUE={2.16E-3*(PWR(V(G,K),1.5)+PWRS(V(G,K),1.5))/2} ; G1 diode
+E3  3 0  VALUE={IF(V(G,K)<0,(1-EXP(10/V(G,K)))^1.3,1)}
+B1  G K  I=URAMP(V(G,K)+8.56E-1)^1.5*2.6E-4
+C1  G K  4p
+C2  A K  1.9p
+C3  A G  0.03p
+.ENDS 5899
+*$
