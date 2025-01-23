@@ -807,7 +807,7 @@ QString Component::netlist() {
 
       if (it != Props.end()) {
         // Replace the placeholder with the property's value
-        // If the simulation is to be run in Ngspice, remove the unit
+        // If the simulation is to be run in Ngspice, remove the unit and leave only the greek suffix
         QString value = (*it)->Value;
         if (QucsSettings.DefaultSimulator == spicecompat::simNgspice){
           value = extractValue(value);
@@ -823,12 +823,13 @@ QString Component::netlist() {
 
 // This function is used to convert the user input to Ngspice values. For example, values like "1000 Ohm" -> "1000", "1k" -> "1k"
 QString Component::extractValue(const QString &input) {
-  QRegularExpression regex("(\\d+(?:\\.\\d+)?)\\s*([kMGTPEZY]?)");
+  QRegularExpression regex("(\\d+(?:\\.\\d+)?)\\s*([fpnumkMGTPEZY]?)");
   QRegularExpressionMatch match = regex.match(input);
 
   if (match.hasMatch()) {
     QString value = match.captured(1);
     QString suffix = match.captured(2);
+
     return value + suffix;
   }
 
@@ -2009,8 +2010,7 @@ void Component::loadfromComponentInfo(ComponentInfo C)
   y2 = SymbolBoundingBox[3]; // Maximum y
 
   // Load models
-  Netlists["Qucsator"] = C.Netlists["Qucsator"];
-  Netlists["Ngspice"] = C.Netlists["Ngspice"];
+  Netlists = C.Netlists;
 }
 
 

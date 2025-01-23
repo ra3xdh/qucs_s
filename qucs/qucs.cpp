@@ -282,13 +282,11 @@ void QucsApp::readXML(QFile & library_file) {
     if (xmlReader.readNextStartElement()) {
       if (xmlReader.name() == QString("Library")) {
         QString libraryName = xmlReader.attributes().value("name").toString();
-        //qDebug() << "Library:" << libraryName;
         LibraryName = libraryName;
 
         while (xmlReader.readNextStartElement()) {
           if (xmlReader.name() == QString("Component")) {
             QString componentName = xmlReader.attributes().value("name").toString();
-            //qDebug() << "  Component:" << componentName;
             ComponentName = componentName;
             Component[ComponentName].name = ComponentName;
             Component[ComponentName].Category = libraryName;
@@ -297,16 +295,15 @@ void QucsApp::readXML(QFile & library_file) {
             Component[ComponentName].Model = Model;
 
             QString ShowName = xmlReader.attributes().value("show_name").toString();
-            if (ShowName.isEmpty()) {//If the XML file does not contain this field, set it to "true" automatically
+            if (ShowName.isEmpty()) {
               ShowName = "true";
             }
-            bool ShowNameinSchematic = (ShowName.toLower() == "true"); // Convert ShowName parameter to bool
+            bool ShowNameinSchematic = (ShowName.toLower() == "true");
             Component[ComponentName].ShowNameinSchematic = ShowNameinSchematic;
 
             while (xmlReader.readNextStartElement()) {
               if (xmlReader.name() == QString("Description")) {
                 QString Description = xmlReader.readElementText().trimmed();
-                //qDebug() << "    Description:" << Description;
                 Component[ComponentName].description = Description;
               } else if (xmlReader.name() == QString("Netlists")) {
                 while (xmlReader.readNextStartElement()) {
@@ -317,7 +314,22 @@ void QucsApp::readXML(QFile & library_file) {
                   } else if (xmlReader.name() == QString("NgspiceNetlist")) {
                     QString NgspiceNetlist = xmlReader.attributes().value("value").toString();
                     Component[ComponentName].Netlists["Ngspice"] = NgspiceNetlist;
-                    xmlReader.skipCurrentElement();
+
+                    // Initialize optional properties with "None". These properties are required for PDK where circuit
+                    // are defined using subcircuits and they point to an external library
+                    Component[ComponentName].Netlists["Ngspice_LibraryInclude"] = "None";
+                    Component[ComponentName].Netlists["Ngspice_Subcircuit"] = "None";
+
+                    // Read the new Property elements
+                    while (xmlReader.readNextStartElement()) {
+                      if (xmlReader.name() == QString("Property")) {
+                        QString propertyName = xmlReader.attributes().value("name").toString();
+                        QString propertyValue = xmlReader.readElementText().trimmed();
+                        Component[ComponentName].Netlists["Ngspice_" + propertyName] = propertyValue;
+                      } else {
+                        xmlReader.skipCurrentElement();
+                      }
+                    }
                   } else {
                     xmlReader.skipCurrentElement();
                   }
@@ -343,7 +355,7 @@ void QucsApp::readXML(QFile & library_file) {
                         QString RelativePathSymbol = xmlReader.readElementText().trimmed();
                         QString filePath = QFileInfo(library_file).absolutePath() + QString("/") + QDir::cleanPath(RelativePathSymbol);
 
-                        // Read the external file and parse the symbol
+                               // Read the external file and parse the symbol
                         QFile externalFile(filePath);
                         if (externalFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
                           QXmlStreamReader externalXmlReader(&externalFile);
@@ -376,13 +388,11 @@ void QucsApp::readXML(QFile & library_file) {
                     QString DefaultValue = xmlReader.attributes().value("default_value").toString();
 
                     QString ShowParam = xmlReader.attributes().value("show").toString();
-                    if (ShowParam.isEmpty()) {//If the XML file does not contain this field, set it to "true" automatically
+                    if (ShowParam.isEmpty()) {
                       ShowParam = "false";
                     }
-                    bool Show = (ShowParam.toLower() == "true"); // Convert Show parameter to bool
-                    //qDebug() << "    Parameter:" << Name << Unit << DefaultValue;
+                    bool Show = (ShowParam.toLower() == "true");
 
-                           // Read parameter description
                     QString Description;
                     xmlReader.readNextStartElement();
                     if (xmlReader.name() == QString("Description")) {
@@ -422,6 +432,7 @@ void QucsApp::readXML(QFile & library_file) {
 
   library_file.close();
 }
+
 
 // This function is used to parsing the XML symbol description (which could be embedded into the library file or in an external file)
 SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int> &boundingBox) {
