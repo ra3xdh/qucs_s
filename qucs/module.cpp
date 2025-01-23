@@ -31,6 +31,10 @@
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
 
+#include "xml/Library.hxx"
+
+#include <iostream>
+
 // Global category and component lists.
 QHash<QString, Module *> Module::s_modules;
 QList<Category *> Category::Categories;
@@ -286,6 +290,11 @@ REGISTER_COMP_1 (QObject::tr("magnetic cores"),val)
   REGISTER_COMP_2 (QObject::tr("Qucs legacy devices"),val,inf1,inf2)
 #define REGISTER_QUCS_3(val,inf1,inf2,inf3) \
   REGISTER_COMP_3 (QObject::tr("Qucs legacy devices"),val,inf1,inf2,inf3)
+
+// XML components
+#define REGISTER_XML_1(val) \
+  REGISTER_COMP_1 (QObject::tr("XML Components"), val)
+
 
 // This function has to be called once at application startup.  It
 // registers every component available in the application.  Put here
