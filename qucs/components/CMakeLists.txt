@@ -62,6 +62,8 @@ taperedline.cpp
 circularloop.cpp
 spiralinductor.cpp
 simulation.cpp
+xml/Library.cxx
+xml/XmlComponent.cpp
 )
 
 SET(COMPONENTS_HDRS

@@ -23,7 +23,7 @@
 Node::Node(int x, int y)
 {
   Label = nullptr;
-  Type  = isNode;
+  Type  = isNode_;
   State = 0;
   DType = "";
 

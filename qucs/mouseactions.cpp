@@ -1004,7 +1004,7 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
             Doc->highlightWireLabels();
             return;
 
-        case isNode:
+        case isNode_:
             if (QucsSettings.NodeWiring) {
                 MAx1 = 0;                // paint wire corner first up, then left/right
                 MAx3 = focusElement->cx; // works even if node is not on grid

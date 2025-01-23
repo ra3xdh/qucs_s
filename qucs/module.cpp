@@ -30,6 +30,10 @@
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
 
+#include "xml/Library.hxx"
+
+#include <iostream>
+
 // Global category and component lists.
 QHash<QString, Module *> Module::Modules;
 QList<Category *> Category::Categories;
@@ -252,6 +256,11 @@ REGISTER_COMP_2 (QObject::tr("microelectronics"),val,inf1,inf2)
   REGISTER_COMP_2 (QObject::tr("Qucs legacy devices"),val,inf1,inf2)
 #define REGISTER_QUCS_3(val,inf1,inf2,inf3) \
   REGISTER_COMP_3 (QObject::tr("Qucs legacy devices"),val,inf1,inf2,inf3)
+
+// XML components
+#define REGISTER_XML_1(val) \
+  REGISTER_COMP_1 (QObject::tr("XML Components"), val)
+
 
 // This function has to be called once at application startup.  It
 // registers every component available in the application.  Put here
@@ -615,6 +624,35 @@ void Module::registerModules (void) {
   REGISTER_PAINT_2 (qucs::Rectangle, info, info_filled);
   REGISTER_PAINT_1 (EllipseArc);
 
+  registerXmlModules(QucsSettings.ComponentDir);
+}
+
+void Module::registerXmlModules(const QString& modulePath)
+{
+    QDir moduleDir(modulePath);
+
+    if (!moduleDir.exists())
+    {
+        std::cerr << "XML module path '" << modulePath.toUtf8().constData() << "' don't exists";
+    }
+
+    QStringList modules(moduleDir.entryList({"*.xml"}, QDir::Files));
+
+    foreach (const QString& module, modules)
+    {
+        try
+        {
+            std::unique_ptr<component::xml::Library> library(
+                    component::xml::Library_(
+                        (modulePath + QDir::separator() + module).toUtf8().constData()));
+
+            const QString libraryName(QString::fromUtf8(library->name().get()));
+        }
+        catch (const xml_schema::exception& exc)
+        {
+            std::cerr << exc << std::endl;
+        }
+    }
 }
 
 // This function has to be called once at application end.  It removes
