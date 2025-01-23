@@ -22,7 +22,8 @@
 
 Node::Node(int x, int y)
 {
-  Type  = isNode;
+  Label = nullptr;
+  Type  = isNode_;
   State = 0;
   DType = "";
 
