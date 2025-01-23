@@ -49,12 +49,16 @@ Ampere_ac::Ampere_ac()
 
   Props.append(new Property("I", "1 mA", true,
 		QObject::tr("peak current in Ampere")));
-  Props.append(new Property("f", "1 GHz", false,
+  Props.append(new Property("f", "1 kHz", false,
 		QObject::tr("frequency in Hertz")));
   Props.append(new Property("Phase", "0", false,
 		QObject::tr("initial phase in degrees")));
   Props.append(new Property("Theta", "0", false,
 		QObject::tr("damping factor (transient simulation only)")));
+  Props.append(new Property("IO", "0", false,
+                            QObject::tr("offset current (SPICE only)")));
+  Props.append(new Property("TD", "0", false,
+                            QObject::tr("delay time (SPICE only)")));
 
   rotate();  // fix historical flaw
 }
@@ -91,6 +95,9 @@ QString Ampere_ac::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
     QString amperes = spicecompat::normalize_value(Props.at(0)->Value);
     QString freq = spicecompat::normalize_value(Props.at(1)->Value);
 
+    QString IO = spicecompat::normalize_value(getProperty("IO")->Value);
+    QString TD = spicecompat::normalize_value(getProperty("TD")->Value);
+
     QString phase = Props.at(2)->Value;
     phase.remove(' ');
     if (phase.isEmpty()) phase = "0";
@@ -98,6 +105,8 @@ QString Ampere_ac::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
     QString theta = Props.at(3)->Value;
     theta.remove(' ');
     if (theta.isEmpty()) theta="0";
-    s += QStringLiteral(" DC 0 SIN(0 %1 %2 0 %3 %4) AC %5 ACPHASE %6\n").arg(amperes).arg(freq).arg(theta).arg(phase).arg(amperes).arg(phase);
+    s += QStringLiteral(" DC %7 SIN(%7 %1 %2 %8 %3 %4) AC %5 ACPHASE %6\n")
+             .arg(amperes).arg(freq).arg(theta).arg(phase).arg(amperes).arg(phase)
+             .arg(IO).arg(TD);
     return s;
 }
