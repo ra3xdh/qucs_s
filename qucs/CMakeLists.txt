@@ -264,7 +264,7 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
 #
 TARGET_LINK_LIBRARIES( ${QUCS_NAME}
     components diagrams dialogs geometry paintings extsimkernels spicecomponents magnetics qt3_compat
-    Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::SvgWidgets Qt6::Xml  Qt6::PrintSupport )
+    Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::SvgWidgets Qt6::Xml  Qt6::PrintSupport xerces-c)
 SET_TARGET_PROPERTIES(${QUCS_NAME} PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #
 # Prepare the installation
