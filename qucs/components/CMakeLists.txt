@@ -64,6 +64,8 @@ spiralinductor.cpp
 simulation.cpp
 vdmos.cpp
 property.cpp
+xml/Library.cxx
+xml/XmlComponent.cpp
 )
 
 SET(COMPONENTS_HDRS

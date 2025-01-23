@@ -157,7 +157,7 @@ struct Text : qucs::DrawingPrimitive {
 #define isDigitalComponent 0x20000
 
 #define isGraph            0x0020
-#define isNode             0x0040
+#define isNode_            0x0040
 #define isMarker           0x0080
 #define isWire             0x0100
 

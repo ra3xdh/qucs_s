@@ -47,6 +47,7 @@ class Module
 
  public:
   static void registerModules (void);
+  static void registerXmlModules(const QString& modulePath);
   static void unregisterModules (void);
 
  public:
