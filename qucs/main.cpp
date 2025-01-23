@@ -934,6 +934,7 @@ int main(int argc, char *argv[])
     QucsSettings.OctaveDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/octave/";
     QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/examples/";
     QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
+    QucsSettings.ComponentDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/components";
     QucsSettings.Editor = "qucs";
 
     /// \todo Make the setting up of all executables below more consistent
