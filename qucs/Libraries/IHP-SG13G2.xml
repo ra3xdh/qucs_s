@@ -88,12 +88,26 @@ X1 P1 P2 rsil w={w} l={l} m={m}
         <Description>
             SG13G2 polysilicon unsalicided resistor
         </Description>
-        <Models>
-                <DefaultModel value = "rppd">
-                </DefaultModel>
-                <SpiceModel value = "rppd">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+                <NgspiceNetlist value = 'Xrppd{PartCounter} gnd {nets} IHP_PDK_basic_components_rppd w={w} l={l} m=2'>
+                        <Property name="LibraryInclude">
+                        <![CDATA[
+                                .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_wcs
+.control
+op
+.endc
+                         ]]>
+                        </Property>
+                        <Property name="Subcircuit">
+                        <![CDATA[
+                        .SUBCKT IHP_PDK_basic_components_rppd  gnd P1 P2 w=1.0e-6 l=0.5e-6 m=1
+.INCLUDE ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/resistors_parm.lib
+X1 P1 P2 rppd w={w} l={l} m={m}
+.ENDS
+                         ]]>
+                        </Property>
+                </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
@@ -122,16 +136,29 @@ X1 P1 P2 rsil w={w} l={l} m={m}
         </Parameters>
     </Component>
 
-    <Component name="Rhigh" schematic_id = "Rhigh">
+    <Component name="Ntap" schematic_id = "Ntap">
         <Description>
-            SG13G2 polysilicon high sheet resistance resistor
+            N-type Tap device
         </Description>
-        <Models>
-                <DefaultModel value = "rhigh">
-                </DefaultModel>
-                <SpiceModel value = "rhigh">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+                <NgspiceNetlist value = 'Xntap{PartCounter} gnd {nets} IHP_PDK_basic_components_ntap1'>
+                        <Property name="LibraryInclude">
+                        <![CDATA[
+                                .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_wcs
+.control
+op
+.endc
+                         ]]>
+                        </Property>
+                        <Property name="Subcircuit">
+                        <![CDATA[
+                        .SUBCKT IHP_PDK_basic_components_ntap1  gnd P1 P2
+X1 P1 P2 ntap1
+.ENDS
+                         ]]>
+                        </Property>
+                </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
@@ -144,21 +171,96 @@ X1 P1 P2 rsil w={w} l={l} m={m}
                 <PortSym x="30" y="0" type="2" angle="180"/>
             </Symbol>
         </Symbols>
-        <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="true">
-                <Description>Width</Description>
-            </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="true">
-                <Description>Length</Description>
-            </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="true">
-                <Description>multiplier</Description>
-            </Parameter>
-            <Parameter name="b" unit="" default_value="0" show="true">
-                <Description>Number of bends</Description>
-            </Parameter>
-        </Parameters>
     </Component>
+
+<Component name="P-Type Tap" schematic_id = "Ptap">
+    <Description>
+        N-type Tap device
+    </Description>
+    <Netlists>
+            <NgspiceNetlist value = 'Xptap{PartCounter} gnd {nets} IHP_PDK_basic_components_ptap1'>
+                    <Property name="LibraryInclude">
+                    <![CDATA[
+                            .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_wcs
+.control
+op
+.endc
+                     ]]>
+                    </Property>
+                    <Property name="Subcircuit">
+                    <![CDATA[
+                    .SUBCKT IHP_PDK_basic_components_ptap1  gnd P1 P2
+X1 P1 P2 ptap1
+.ENDS
+                     ]]>
+                    </Property>
+            </NgspiceNetlist>
+    </Netlists>
+    <Symbols>
+        <Symbol id="Standard">
+            <PortSym x="-30" y="0" type="1" angle="0" />
+            <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
+            <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
+            <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
+            <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
+            <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
+            <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+            <PortSym x="30" y="0" type="2" angle="180"/>
+        </Symbol>
+    </Symbols>
+</Component>
+
+<Component name="Rhigh" schematic_id = "Rhigh">
+    <Description>
+        SG13G2 polysilicon high sheet resistance resistor
+    </Description>
+    <Netlists>
+            <NgspiceNetlist value = 'Xrhigh{PartCounter} gnd {nets} IHP_PDK_basic_components_rhigh w={w} l={l} m=1'>
+                    <Property name="LibraryInclude">
+                    <![CDATA[
+                            .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_wcs
+.control
+op
+.endc
+                     ]]>
+                    </Property>
+                    <Property name="Subcircuit">
+                    <![CDATA[
+                    .SUBCKT IHP_PDK_basic_components_rhigh  gnd P1 P2 w=1.0e-6 l=0.5e-6 m=1
+.INCLUDE ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/resistors_parm.lib
+X1 P1 P2 rhigh w={w} l={l} m={m}
+.ENDS
+                     ]]>
+                    </Property>
+            </NgspiceNetlist>
+    </Netlists>
+    <Symbols>
+        <Symbol id="Standard">
+            <PortSym x="-30" y="0" type="1" angle="0" />
+            <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
+            <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
+            <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
+            <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
+            <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
+            <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+            <PortSym x="30" y="0" type="2" angle="180"/>
+        </Symbol>
+    </Symbols>
+    <Parameters>
+        <Parameter name="w" unit="um" default_value="0.5" show="true">
+            <Description>Width</Description>
+        </Parameter>
+        <Parameter name="l" unit="um" default_value="0.5" show="true">
+            <Description>Length</Description>
+        </Parameter>
+        <Parameter name="m" unit="" default_value="1" show="true">
+            <Description>multiplier</Description>
+        </Parameter>
+        <Parameter name="b" unit="" default_value="0" show="true">
+            <Description>Number of bends</Description>
+        </Parameter>
+    </Parameters>
+</Component>
 
 
     <Component name="sg13_lv_nmos" schematic_id = "M">
