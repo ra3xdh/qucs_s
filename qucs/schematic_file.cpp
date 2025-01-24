@@ -881,6 +881,20 @@ void Schematic::simpleInsertComponent(Component *c)
     pp->Connection = pn;  // connect component node to schematic node
   }
 
+  // In case of XML components, update the PartCounter field
+  if (c->XML_Defined) {
+      // XML-based component
+      // Inspect all components with the same Model as this and add 1 to the maximum PartCounter
+      int max_ID = 0;
+      for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next()) {
+        if (pc->Model == c->Model){
+          if (max_ID < pc->PartCounter) {
+            max_ID = pc->PartCounter;
+          }
+        }
+      }
+      c->PartCounter = max_ID + 1; // Set the part counter of the new component to place
+    }
   a_DocComps.append(c);
 }
 
