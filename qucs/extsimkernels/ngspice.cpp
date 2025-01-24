@@ -89,7 +89,7 @@ void Ngspice::createNetlist(
         stream<<QStringLiteral(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
     // Find subcircuit definitions and library calls, they must be before the components
-    QString SubcircuitDefinition, LibraryCalls;
+    QStringList SubcircuitDefinition, LibraryCalls;
     QStringList AlreadyInspected;
     for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
       if (!AlreadyInspected.contains(pc->ComponentName)){
@@ -112,11 +112,13 @@ void Ngspice::createNetlist(
     }
 
     if (!SubcircuitDefinition.isEmpty()) {
-      stream << SubcircuitDefinition; // Add subcircuit declarations
+      stream << SubcircuitDefinition.join("\n"); // Add subcircuit declarations
       stream << QString("\n\n");
     }
     if (!LibraryCalls.isEmpty()){
-      stream << LibraryCalls; // Add library calls
+      stream << LibraryCalls.join("\n"); // Add library calls
+      // Close the library include section
+      stream << QString("\n.control\n\n.endc\n");
       stream << QString("\n\n");
     }
 
