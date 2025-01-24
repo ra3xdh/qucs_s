@@ -1,14 +1,24 @@
 <Library name="IHP 131 BiCmos components">
-     <Component name="Cmim" schematic_id = "C">
+     <Component name="MIM Capacitor" schematic_id = "Cmim">
         <Description>
-            SG13G2 MiM capacitor
+            SG13G2 MIM capacitor
         </Description>
-        <Models>
-                <DefaultModel value = "cmim">
-                </DefaultModel>
-                <SpiceModel value = "cmim">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+                <NgspiceNetlist value = 'Xcap_cmim{PartCounter} gnd {nets} IHP_PDK_basic_components_cap_cmim w={w} l={l} m=1'>
+                        <Property name="LibraryInclude">
+                        <![CDATA[
+                            .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib cap_typ
+                         ]]>
+                        </Property>
+                        <Property name="Subcircuit">
+                        <![CDATA[
+                        .SUBCKT IHP_PDK_basic_components_cap_cmim  gnd P1 P2  l=7.0u w=7.0u
+X1 P1 P2 cap_cmim l={l} w={w}
+.ENDS
+                         ]]>
+                        </Property>
+                </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
@@ -20,16 +30,53 @@
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="10.0" show="true">
+            <Parameter name="w" unit="um" default_value="70" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="10.0" show="true">
+            <Parameter name="l" unit="um" default_value="70" show="true">
                 <Description>Length</Description>
             </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="true">
-                <Description>multiplier</Description>
-            </Parameter>
         </Parameters>
+    </Component>
+
+    <Component name="RF MIM Capacitor" schematic_id = "RFCmim">
+       <Description>
+           SG13G2 RF MIM capacitor
+       </Description>
+       <Netlists>
+               <NgspiceNetlist value = 'Xcap_rfcmim{PartCounter} gnd {nets} IHP_PDK_basic_components_cap_rfcmim w={w} l={l} m=1'>
+                       <Property name="LibraryInclude">
+                       <![CDATA[
+                           .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib cap_typ
+                        ]]>
+                       </Property>
+                       <Property name="Subcircuit">
+                       <![CDATA[
+                       .SUBCKT IHP_PDK_basic_components_cap_rfcmim  gnd PLUS MINUS bulk l=7.0u w=7.0u
+X1 PLUS MINUS bulk cap_rfcmim l={l} w={w}
+.ENDS
+                        ]]>
+                       </Property>
+               </NgspiceNetlist>
+       </Netlists>
+       <Symbols>
+           <Symbol id="Standard">
+               <PortSym x="-30" y="0" type="1" angle="0" />
+               <Line x1="-4" y1="-11" x2="-4" y2="11" color="#000080" width="2" style="1" />
+               <Line x1="4" y1="-11" x2="4" y2="11" color="#000080" width="2" style="1" />
+               <Line x1="-30" y1="0" x2="-4" y2="0" color="#000080" width="2" style="1" />
+               <Line x1="4" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+               <PortSym x="30" y="0" type="2" angle="180"/>
+           </Symbol>
+       </Symbols>
+       <Parameters>
+           <Parameter name="w" unit="um" default_value="70" show="true">
+               <Description>Width</Description>
+           </Parameter>
+           <Parameter name="l" unit="um" default_value="70" show="true">
+               <Description>Length</Description>
+           </Parameter>
+       </Parameters>
     </Component>
 
     <Component name="Rsil" schematic_id = "Rsil">
@@ -41,9 +88,6 @@
                         <Property name="LibraryInclude">
                         <![CDATA[
                                 .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_wcs
-.control
-op
-.endc
                          ]]>
                         </Property>
                         <Property name="Subcircuit">
@@ -93,9 +137,6 @@ X1 P1 P2 rsil w={w} l={l} m={m}
                         <Property name="LibraryInclude">
                         <![CDATA[
                                 .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_wcs
-.control
-op
-.endc
                          ]]>
                         </Property>
                         <Property name="Subcircuit">
@@ -145,9 +186,6 @@ X1 P1 P2 rppd w={w} l={l} m={m}
                         <Property name="LibraryInclude">
                         <![CDATA[
                                 .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_wcs
-.control
-op
-.endc
                          ]]>
                         </Property>
                         <Property name="Subcircuit">
@@ -182,9 +220,6 @@ X1 P1 P2 ntap1
                     <Property name="LibraryInclude">
                     <![CDATA[
                             .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_wcs
-.control
-op
-.endc
                      ]]>
                     </Property>
                     <Property name="Subcircuit">
@@ -219,9 +254,6 @@ X1 P1 P2 ptap1
                     <Property name="LibraryInclude">
                     <![CDATA[
                             .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_wcs
-.control
-op
-.endc
                      ]]>
                     </Property>
                     <Property name="Subcircuit">
