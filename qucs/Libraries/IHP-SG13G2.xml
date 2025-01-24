@@ -20,13 +20,13 @@
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="10.0" show="1">
+            <Parameter name="w" unit="um" default_value="10.0" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="10.0" show="1">
+            <Parameter name="l" unit="um" default_value="10.0" show="true">
                 <Description>Length</Description>
             </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="1">
+            <Parameter name="m" unit="" default_value="1" show="true">
                 <Description>multiplier</Description>
             </Parameter>
         </Parameters>
@@ -69,16 +69,16 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="1">
+            <Parameter name="w" unit="um" default_value="0.5" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="1">
+            <Parameter name="l" unit="um" default_value="0.5" show="true">
                 <Description>Length</Description>
             </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="1">
+            <Parameter name="m" unit="" default_value="1" show="true">
                 <Description>multiplier</Description>
             </Parameter>
-            <Parameter name="b" unit="" default_value="0" show="1">
+            <Parameter name="b" unit="" default_value="0" show="true">
                 <Description>Number of bends</Description>
             </Parameter>
         </Parameters>
@@ -107,16 +107,16 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="1">
+            <Parameter name="w" unit="um" default_value="0.5" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="1">
+            <Parameter name="l" unit="um" default_value="0.5" show="true">
                 <Description>Length</Description>
             </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="1">
+            <Parameter name="m" unit="" default_value="1" show="true">
                 <Description>multiplier</Description>
             </Parameter>
-            <Parameter name="b" unit="" default_value="0" show="1">
+            <Parameter name="b" unit="" default_value="0" show="true">
                 <Description>Number of bends</Description>
             </Parameter>
         </Parameters>
@@ -145,16 +145,16 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="1">
+            <Parameter name="w" unit="um" default_value="0.5" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="1">
+            <Parameter name="l" unit="um" default_value="0.5" show="true">
                 <Description>Length</Description>
             </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="1">
+            <Parameter name="m" unit="" default_value="1" show="true">
                 <Description>multiplier</Description>
             </Parameter>
-            <Parameter name="b" unit="" default_value="0" show="1">
+            <Parameter name="b" unit="" default_value="0" show="true">
                 <Description>Number of bends</Description>
             </Parameter>
         </Parameters>
@@ -198,16 +198,16 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="1">
+            <Parameter name="w" unit="um" default_value="0.5" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="1">
+            <Parameter name="l" unit="um" default_value="0.5" show="true">
                 <Description>Length</Description>
             </Parameter>
-            <Parameter name="ng" unit="" default_value="1" show="1">
+            <Parameter name="ng" unit="" default_value="1" show="true">
                 <Description>Number of gates</Description>
             </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="1">
+            <Parameter name="m" unit="" default_value="1" show="true">
                 <Description>multiplier</Description>
             </Parameter>
         </Parameters>
@@ -250,16 +250,16 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="1">
+            <Parameter name="w" unit="um" default_value="0.5" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="1">
+            <Parameter name="l" unit="um" default_value="0.5" show="true">
                 <Description>Length</Description>
             </Parameter>
-            <Parameter name="ng" unit="" default_value="1" show="1">
+            <Parameter name="ng" unit="" default_value="1" show="true">
                 <Description>Number of gates</Description>
             </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="1">
+            <Parameter name="m" unit="" default_value="1" show="true">
                 <Description>multiplier</Description>
             </Parameter>
         </Parameters>
@@ -302,16 +302,16 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="1">
+            <Parameter name="w" unit="um" default_value="0.5" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="1">
+            <Parameter name="l" unit="um" default_value="0.5" show="true">
                 <Description>Length</Description>
             </Parameter>
-            <Parameter name="ng" unit="" default_value="1" show="1">
+            <Parameter name="ng" unit="" default_value="1" show="true">
                 <Description>Number of gates</Description>
             </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="1">
+            <Parameter name="m" unit="" default_value="1" show="true">
                 <Description>multiplier</Description>
             </Parameter>
         </Parameters>
@@ -354,16 +354,16 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="1">
+            <Parameter name="w" unit="um" default_value="0.5" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="1">
+            <Parameter name="l" unit="um" default_value="0.5" show="true">
                 <Description>Length</Description>
             </Parameter>
-            <Parameter name="ng" unit="" default_value="1" show="1">
+            <Parameter name="ng" unit="" default_value="1" show="true">
                 <Description>Number of gates</Description>
             </Parameter>
-            <Parameter name="m" unit="" default_value="1" show="1">
+            <Parameter name="m" unit="" default_value="1" show="true">
                 <Description>multiplier</Description>
             </Parameter>
         </Parameters>
@@ -402,10 +402,10 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="Nx" unit="" default_value="1" show="1">
+            <Parameter name="Nx" unit="" default_value="1" show="true">
                 <Description>Number of emitters</Description>
             </Parameter>
-            <Parameter name="El" unit="" default_value="2.5" show="1">
+            <Parameter name="El" unit="" default_value="2.5" show="true">
                 <Description>Emitter length</Description>
             </Parameter>
         </Parameters>
@@ -444,10 +444,10 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="Nx" unit="" default_value="1" show="1">
+            <Parameter name="Nx" unit="" default_value="1" show="true">
                 <Description>Number of emitters</Description>
             </Parameter>
-            <Parameter name="El" unit="" default_value="2.5" show="1">
+            <Parameter name="El" unit="" default_value="2.5" show="true">
                 <Description>Emitter length</Description>
             </Parameter>
         </Parameters>
@@ -486,7 +486,7 @@ X1 P1 P2 rsil w={w} l={l} m={m}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="Nx" unit="" default_value="1" show="1">
+            <Parameter name="Nx" unit="" default_value="1" show="true">
                 <Description>Number of emitters</Description>
             </Parameter>
         </Parameters>
