@@ -419,6 +419,20 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     locationsGrid->addWidget(RFLButt, 6, 2);
     connect(RFLButt, SIGNAL(clicked()), SLOT(slotRFLayoutDirBrowse()));
 
+    locationsGrid->addWidget(new QLabel(tr("PDKs root:"), locationsTab), 7, 0);
+    PDKDirEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(PDKDirEdit, 7,1);
+    QPushButton *PDK_Butt = new QPushButton("Browse");
+    locationsGrid->addWidget(PDK_Butt, 7, 2);
+    connect(PDK_Butt, SIGNAL(clicked()), SLOT(slotPDKDirBrowse()));
+
+    locationsGrid->addWidget(new QLabel(tr("OSDI files directory:"), locationsTab), 8, 0);
+    OSDIDirEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(OSDIDirEdit, 8, 1);
+    QPushButton *OSDI_Butt = new QPushButton("Browse");
+    locationsGrid->addWidget(OSDI_Butt, 8, 2);
+    connect(OSDI_Butt, SIGNAL(clicked()), SLOT(slotOSDI_Files_DirBrowse()));
+
 
     // the pathsTableWidget displays the path list
     pathsTableWidget = new QTableWidget(locationsTab);
@@ -439,20 +453,20 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
     connect(pathsTableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotPathSelectionChanged()));
-    locationsGrid->addWidget(pathsTableWidget,7,0,3,2);
+    locationsGrid->addWidget(pathsTableWidget,9,0,3,2);
 
     QPushButton *AddPathButt = new QPushButton("Add Path");
-    locationsGrid->addWidget(AddPathButt, 7, 2);
+    locationsGrid->addWidget(AddPathButt, 9, 2);
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
     QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders");
-    locationsGrid->addWidget(AddPathSubFolButt, 8, 2);
+    locationsGrid->addWidget(AddPathSubFolButt, 10, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
     RemovePathButt = new QPushButton("Remove Path");
     // disable button if no paths in the table are selected
     RemovePathButt->setEnabled(false);
-    locationsGrid->addWidget(RemovePathButt , 9, 2);
+    locationsGrid->addWidget(RemovePathButt , 11, 2);
     connect(RemovePathButt, SIGNAL(clicked()), SLOT(slotRemovePath()));
 
     // create a copy of the current global path list
@@ -522,7 +536,8 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     octaveEdit->setText(QucsSettings.OctaveExecutable);
     OpenVAFEdit->setText(QucsSettings.OpenVAFExecutable);
     RFLayoutEdit->setText(QucsSettings.RFLayoutExecutable);
-
+    PDKDirEdit->setText(QucsSettings.PDKDir.canonicalPath());
+    OSDIDirEdit->setText(QucsSettings.OSDI_FilesPath.canonicalPath());
 
     resize(300, 200);
 }
@@ -745,6 +760,8 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.OctaveExecutable = octaveEdit->text();
     QucsSettings.OpenVAFExecutable = OpenVAFEdit->text();
     QucsSettings.RFLayoutExecutable = RFLayoutEdit->text();
+    QucsSettings.PDKDir = PDKDirEdit->text();
+    QucsSettings.OSDI_FilesPath = OSDIDirEdit->text();
 
     if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())
     {
@@ -1117,6 +1134,28 @@ void QucsSettingsDialog::slotRFLayoutDirBrowse()
 
   if(!d.isEmpty())
     RFLayoutEdit->setText(d);
+}
+
+void QucsSettingsDialog::slotPDKDirBrowse()
+{
+  QString d = QFileDialog::getExistingDirectory
+      (this, tr("Select the PDKs root directory"),
+       PDKDirEdit->text(),
+       QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+  if(!d.isEmpty())
+    PDKDirEdit->setText(d);
+}
+
+void QucsSettingsDialog::slotOSDI_Files_DirBrowse()
+{
+  QString d = QFileDialog::getExistingDirectory
+      (this, tr("Select the OSDI files directory"),
+       OSDIDirEdit->text(),
+       QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+  if(!d.isEmpty())
+    OSDIDirEdit->setText(d);
 }
 
 /*! \brief (seems unused at present)
