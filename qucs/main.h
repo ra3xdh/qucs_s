@@ -183,6 +183,7 @@ struct ComponentInfo {
   QMap<QString, QVector<int>> SymbolBoundingBox;
   QMap<QString, ParameterInfo> parameters;
   QMap<QString, QString> Netlists;
+  QStringList OSDIfiles;
 };
 extern QMap<QString, QMap<QString, ComponentInfo>> LibraryComponents;
 

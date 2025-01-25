@@ -325,7 +325,13 @@ void QucsApp::readXML(QFile & library_file) {
                       if (xmlReader.name() == QString("Property")) {
                         QString propertyName = xmlReader.attributes().value("name").toString();
                         QString propertyValue = xmlReader.readElementText().trimmed();
-                        Component[ComponentName].Netlists["Ngspice_" + propertyName] = propertyValue;
+                        if (!propertyName.compare("OSDI")){
+                          // Path to OSDI file
+                          Component[ComponentName].OSDIfiles.append(propertyValue);
+                        } else {
+                          // Header
+                          Component[ComponentName].Netlists["Ngspice_" + propertyName] = propertyValue;
+                        }
                       } else {
                         xmlReader.skipCurrentElement();
                       }

@@ -89,13 +89,15 @@ void Ngspice::createNetlist(
         stream<<QStringLiteral(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
     // Find subcircuit definitions and library calls, they must be before the components
-    QStringList SubcircuitDefinition, LibraryCalls;
+    QStringList SubcircuitDefinition, LibraryCalls, OSDIfiles;
     QStringList AlreadyInspected;
     for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
       if (!AlreadyInspected.contains(pc->ComponentName)){
         // If it wasn't inspected yet, lets check the Subcircuit and Library calls
         QString Subcircuit = LibraryComponents[pc->Category][pc->ComponentName].Netlists["Ngspice_Subcircuit"];
         QString Library = LibraryComponents[pc->Category][pc->ComponentName].Netlists["Ngspice_LibraryInclude"];
+        QStringList OSDI = LibraryComponents[pc->Category][pc->ComponentName].OSDIfiles;
+
         if(Subcircuit.compare("None")){
           // Subcircuit is not "None", then add it to the Subcircuit field in the netlist if it isn't already there
           if (!SubcircuitDefinition.contains(Subcircuit)) {
@@ -108,6 +110,14 @@ void Ngspice::createNetlist(
             LibraryCalls.append(Library);
           }
         }
+        if(!OSDI.isEmpty()){
+          // The model needs to run OSDI files
+          for (const QString &item : OSDI) {
+            if (!OSDIfiles.contains(item)) {
+              OSDIfiles.append(item);
+            }
+          }
+        }
       }
     }
 
@@ -117,10 +127,20 @@ void Ngspice::createNetlist(
     }
     if (!LibraryCalls.isEmpty()){
       stream << LibraryCalls.join("\n"); // Add library calls
-      // Close the library include section
-      stream << QString("\n.control\n\n.endc\n");
-      stream << QString("\n\n");
     }
+
+    stream << QString("\n.control\n\n");
+    if(!OSDIfiles.isEmpty()){
+      QString OSDI_BaseDir = QucsSettings.OSDI_FilesPath.path();
+      QString OSDI_path;
+      for (int i = 0; i < OSDIfiles.size(); ++i) {
+        OSDI_path = QDir(OSDI_BaseDir).filePath(OSDIfiles[i]);
+        stream << "pre_osdi " << OSDI_path << "\n";
+      }
+    }
+    stream << QString("\n.endc\n");
+
+    stream << QString("\n\n");
 
     stream<<collectSpiceLibs(a_schematic); // collect libraries on the top of netlist
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
