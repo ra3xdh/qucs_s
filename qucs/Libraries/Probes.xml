@@ -37,4 +37,40 @@
         <Parameters>
         </Parameters>
     </Component>
+    <Component name="Voltage Probe" schematic_id = "Pr" show_name="true">
+        <Description>
+            Current Probe
+        </Description>
+        <Netlists>
+            <NgspiceNetlist value = 'EPr{PartCounter} Pr{PartCounter} {nets} 0 1.0\n'>
+            </NgspiceNetlist>
+            <ProbeVariables>
+                <Ngspice value = 'Pr{PartCounter}'>
+                </Ngspice>
+            </ProbeVariables>
+        </Netlists>
+        <Symbols>
+            <Symbol id="Standard" type="explicit">
+                <PortSym x="-10" y="20" type="1" angle="270" />
+                <Line x1="-20" y1="-31" x2="20" y2="-31" color="#000080" width="2" style="1" />
+                <Line x1="-20" y1="9" x2="20" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="-20" y1="-31" x2="-20" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="20" y1="-31" x2="20" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="-16" y1="-27" x2="16" y2="-27" color="#000080" width="2" style="1" />
+                <Line x1="-16" y1="-9" x2="16" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="-16" y1="-27" x2="-16" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="16" y1="-27" x2="16" y2="-9" color="#000080" width="2" style="1" />
+                <Arc x="-20" y="-23" arc_width="39" arc_height="39" angle="800" arclen="1280" color="#000080" pen_width="2" /> <!-- Gauge -->
+                <Line x1="-11" y1="-24" x2="-2" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="-10" y1="0" x2="-10" y2="6" color="#FF0000" width="2" style="1" />
+                <Line x1="-13" y1="3" x2="-7" y2="3" color="#FF0000" width="2" style="1" />
+                <Line x1="7" y1="3" x2="13" y2="3" color="#000000" width="2" style="1" />
+                <Line x1="-10" y1="9" x2="-10" y2="20" color="#000080" width="2" style="1" />
+                <Line x1="10" y1="9" x2="10" y2="20" color="#000080" width="2" style="1" />
+                <PortSym x="10" y="20" type="2" angle="90"/>
+            </Symbol>
+        </Symbols>
+        <Parameters>
+        </Parameters>
+    </Component>
 </Library>

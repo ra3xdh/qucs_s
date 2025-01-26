@@ -58,7 +58,6 @@ iProbe::iProbe()
   ty = y2+4;
   Model = "IProbe";
   Name  = "Pr";
-  isProbe = true;
 }
 
 iProbe::~iProbe()

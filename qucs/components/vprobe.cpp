@@ -52,7 +52,6 @@ vProbe::vProbe()
   ty = y1+4;
   Model = "VProbe";
   Name  = "Pr";
-  isProbe = true;
 }
 
 vProbe::~vProbe()
