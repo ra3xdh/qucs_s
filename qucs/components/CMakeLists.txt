@@ -44,8 +44,8 @@ opamp.cpp		verilogfile.cpp		vcresistor.cpp
 coplanar.cpp		ipulse.cpp		opt_sim.cpp		vexp.cpp
 coupler.cpp		irect.cpp		optimizedialog.cpp	vfile.cpp
 cpwgap.cpp		isolator.cpp	vhdlfile.cpp
-cpwopen.cpp		jfet.cpp		pad2bit.cpp		volt_ac.cpp
-cpwshort.cpp		jk_flipflop.cpp		pad3bit.cpp		volt_dc.cpp
+cpwopen.cpp		jfet.cpp		pad2bit.cpp
+cpwshort.cpp		jk_flipflop.cpp		pad3bit.cpp
 cpwstep.cpp		jkff_SR.cpp		pad4bit.cpp		volt_noise.cpp
 ctline.cpp		libcomp.cpp		param_sweep.cpp
 d_flipflop.cpp		log_amp.cpp		phaseshifter.cpp	vpulse.cpp
@@ -225,8 +225,8 @@ verilogfile.h
 vexp.h
 vfile.h
 vhdlfile.h
-volt_ac.h
-volt_dc.h
+
+
 volt_noise.h
 
 vpulse.h
