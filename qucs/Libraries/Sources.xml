@@ -50,7 +50,7 @@
             </Parameter>
         </Parameters>
     </Component>
-    <Component name="DC Voltage Source" schematic_id = "Vdc" show_name="true">
+    <Component name="DC Voltage Source" schematic_id = "V" show_name="true">
         <Description>
             Ideal DC Voltage Source
         </Description>
