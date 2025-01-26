@@ -1,0 +1,40 @@
+<Library name="Probes">
+    <Component name="Current Probe" schematic_id = "Pr" show_name="true">
+        <Description>
+            Current Probe
+        </Description>
+        <Netlists>
+            <NgspiceNetlist value = 'VPr{PartCounter} {nets} DC 0\n'>
+            </NgspiceNetlist>
+            <ProbeVariables>
+                <Ngspice value = 'VPr{PartCounter}#branch'>
+                </Ngspice>
+                <Xyce value = 'I(VPr{PartCounter})'>
+                </Xyce>
+            </ProbeVariables>
+        </Netlists>
+        <Symbols>
+            <Symbol id="Standard" type="explicit">
+                <PortSym x="-30" y="0" type="1" angle="270" />
+                <Line x1="-30" y1="0" x2="-20" y2="0" color="#000080" width="2" style="1" /> <!-- Terminals -->
+                <Line x1="30" y1="0" x2="20" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-20" y1="0" x2="20" y2="0" color="#000080" width="2" style="1" /> <!-- Arrow -->
+                <Line x1="-4" y1="-4" x2="4" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="4" y1="0" x2="-4" y2="4" color="#000080" width="2" style="1" />
+                <Line x1="-20" y1="-31" x2="20" y2="-31" color="#000080" width="2" style="1" /> <!-- Outer frame -->
+                <Line x1="-20" y1="9" x2="20" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="-20" y1="-31" x2="-20" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="20" y1="-31" x2="20" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="-16" y1="-27" x2="16" y2="-27" color="#000080" width="2" style="1" /> <!-- Gauge frame -->
+                <Line x1="-16" y1="-9" x2="16" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="-16" y1="-27" x2="-16" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="16" y1="-27" x2="16" y2="-9" color="#000080" width="2" style="1" />
+                <Arc x="-20" y="-23" arc_width="39" arc_height="39" angle="800" arclen="1280" color="#000080" pen_width="2" /> <!-- Gauge -->
+                <Line x1="-11" y1="-24" x2="-2" y2="-9" color="#000080" width="2" style="1" />
+                <PortSym x="30" y="0" type="2" angle="90"/>
+            </Symbol>
+        </Symbols>
+        <Parameters>
+        </Parameters>
+    </Component>
+</Library>

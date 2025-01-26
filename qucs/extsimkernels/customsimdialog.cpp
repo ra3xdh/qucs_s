@@ -179,7 +179,7 @@ void CustomSimDialog::slotFindVars()
     }
 
     for(Component *pc=a_schematic->a_DocComps.first();pc!=0;pc=a_schematic->a_DocComps.next()) {
-        if(pc->isProbe) {
+        if(!pc->Category.compare("Probes")) {
             if (!vars.contains(pc->getProbeVariable())) {
                 vars.append(pc->getProbeVariable());
             }

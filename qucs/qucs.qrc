@@ -111,5 +111,6 @@
         <file>Libraries/Lumped_Component_Symbols/Inductor.sym</file>
         <file>Libraries/Sources.xml</file>
         <file>Libraries/IHP-SG13G2.xml</file>
+        <file>Libraries/Probes.xml</file>
     </qresource>
 </RCC>

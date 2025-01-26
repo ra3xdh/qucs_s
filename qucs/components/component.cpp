@@ -51,7 +51,6 @@ Component::Component() {
 
     SpiceModel = "";
     isSimulation = false;
-    isProbe = false;
     isEquation = false;
     mirroredX = false;
     rotated = 0;
@@ -740,7 +739,7 @@ void Component::mirrorY() {
 // -------------------------------------------------------
 QString Component::netlist() {
 
-  if (Props.isEmpty()) { // This was included to prevent GND component to be included as a component in the netlist.
+  if (!Name.compare("Ground")) { // This was included to prevent GND component to be included as a component in the netlist.
     return QString();
   }
 

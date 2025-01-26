@@ -129,7 +129,10 @@ void Ngspice::createNetlist(
       stream << LibraryCalls.join("\n"); // Add library calls
     }
 
-    stream << QString("\n.control\n\n");
+    if(!SubcircuitDefinition.isEmpty() || !LibraryCalls.isEmpty()) {
+      stream << QString("\n.control\n\n");
+    }
+
     if(!OSDIfiles.isEmpty()){
       QString OSDI_BaseDir = QucsSettings.OSDI_FilesPath.path();
       QString OSDI_path;
@@ -138,9 +141,12 @@ void Ngspice::createNetlist(
         stream << "pre_osdi " << OSDI_path << "\n";
       }
     }
-    stream << QString("\n.endc\n");
 
-    stream << QString("\n\n");
+    if(!SubcircuitDefinition.isEmpty() || !LibraryCalls.isEmpty()) {
+      stream << QString("\n.endc\n");
+      stream << QString("\n\n");
+    }
+
 
     stream<<collectSpiceLibs(a_schematic); // collect libraries on the top of netlist
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
@@ -178,8 +184,9 @@ void Ngspice::createNetlist(
     }
 
     for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
-        if (pc->isProbe) {
-            QString var_pr = pc->getProbeVariable();
+        if (!pc->Category.compare("Probes")) {
+            QString var_pr = LibraryComponents["Probes"][pc->ComponentName].ProbeVariables["Ngspice"];
+            var_pr.replace("{PartCounter}", QString::number(pc->PartCounter));
             if (!vars.contains(var_pr)) {
                 vars.append(var_pr);
             }

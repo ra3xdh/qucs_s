@@ -183,6 +183,7 @@ struct ComponentInfo {
   QMap<QString, QVector<int>> SymbolBoundingBox;
   QMap<QString, ParameterInfo> parameters;
   QMap<QString, QString> Netlists;
+  QMap<QString, QString> ProbeVariables; // This is only used for probe component. Basically, it indicates to Ngspice and Xyce the syntax of the probes
   QStringList OSDIfiles;
 };
 extern QMap<QString, QMap<QString, ComponentInfo>> LibraryComponents;

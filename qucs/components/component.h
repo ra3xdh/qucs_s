@@ -106,7 +106,6 @@ public:
   int  tx, ty;   // upper left corner of text (position)
   bool showName;
   bool isSimulation; // is it AC,DC,TR or other spice-compatible simulation?
-  bool isProbe; // is it Voltage/Current spice-compatible probe?
   bool isEquation;
   bool XML_Defined; // Flag to identify externally defined component from hardcoded devices
   int Simulator = spicecompat::simAll;;

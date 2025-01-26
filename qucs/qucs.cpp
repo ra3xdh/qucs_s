@@ -336,7 +336,22 @@ void QucsApp::readXML(QFile & library_file) {
                         xmlReader.skipCurrentElement();
                       }
                     }
-                  } else {
+                  } else if (xmlReader.name() == QString("ProbeVariables")) {
+                    while (xmlReader.readNextStartElement()) {
+                      if (xmlReader.name() == QString("Ngspice")) {
+                        QString NgspiceProbeVariable = xmlReader.attributes().value("value").toString();
+                        Component[ComponentName].ProbeVariables["Ngspice"] = NgspiceProbeVariable;
+                        xmlReader.skipCurrentElement();
+                      } else if (xmlReader.name() == QString("Xyce")) {
+                        QString XyceProbeVariable = xmlReader.attributes().value("value").toString();
+                        Component[ComponentName].ProbeVariables["Xyce"] = XyceProbeVariable;
+                        xmlReader.skipCurrentElement();
+                      } else {
+                        xmlReader.skipCurrentElement();
+                      }
+                    }
+                  }
+                  else {
                     xmlReader.skipCurrentElement();
                   }
                 }
