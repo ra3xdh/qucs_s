@@ -295,16 +295,33 @@ X1 P1 P2 ntap1
     </Component>
 
 
-    <Component name="sg13_lv_nmos" schematic_id = "M">
+    <Component name="LV-nMOS" schematic_id = "M">
         <Description>
-            SG13G2 low voltage nmos transistor
+            SG13G2 Low Voltage nMOS transistor
         </Description>
-        <Models>
-                <DefaultModel value = "sg13_lv_nmos">
-                </DefaultModel>
-                <SpiceModel value = "sg13_lv_nmos">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+            <NgspiceNetlist value = 'Xsg13_lv_nmos{PartCounter} gnd {nets} IHP_PDK_nonlinear_components_sg13_lv_nmos w={w} l={l} ng={ng} m={m} as={as} ad={ad} pd={pd} ps={ps} trise={trise} z1={z1} z2={z2} wmin={wmin} rfmode={rfmode} pre_layout=1'>
+                    <Property name="LibraryInclude">
+                    <![CDATA[
+                        .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib mos_tt
+                     ]]>
+                    </Property>
+                    <Property name="Subcircuit">
+                    <![CDATA[
+                    .SUBCKT IHP_PDK_nonlinear_components_sg13_lv_nmos  gnd d g s b w=0.35u l=0.34u ng=1 m=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.346e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1
+.INCLUDE   ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_parm.lib
+X1 d g s b  sg13_lv_nmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
++ ps={ps} trise={trise} z1={z1} z2={z2} wmin={wmin} rfmode={rfmode} pre_layout={pre_layout}
+.ENDS
+                     ]]>
+                    </Property>
+                    <Property name="OSDI">
+                    <![CDATA[
+                    psp103_nqs.osdi
+                    ]]>
+                    </Property>
+            </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard">
                 <Line x1="-14" y1="-13" x2="-14" y2="13" color="#000080" width="2" style="1" />
@@ -332,17 +349,44 @@ X1 P1 P2 ntap1
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="true">
+            <Parameter name="w" unit="um" default_value="0.35" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="true">
+            <Parameter name="l" unit="um" default_value="0.34" show="true">
                 <Description>Length</Description>
             </Parameter>
             <Parameter name="ng" unit="" default_value="1" show="true">
                 <Description>Number of gates</Description>
             </Parameter>
             <Parameter name="m" unit="" default_value="1" show="true">
-                <Description>multiplier</Description>
+                <Description>Multiplier</Description>
+            </Parameter>
+            <Parameter name="as" unit="" default_value="0" show="false">
+                <Description></Description>
+            </Parameter>
+            <Parameter name="ad" unit="" default_value="0" show="false">
+                <Description></Description>
+            </Parameter>
+            <Parameter name="ps" unit="" default_value="0" show="false">
+                <Description></Description>
+            </Parameter>
+            <Parameter name="pd" unit="" default_value="0" show="false">
+                <Description></Description>
+            </Parameter>
+            <Parameter name="trise" unit="" default_value="0" show="false">
+                <Description></Description>
+            </Parameter>
+            <Parameter name="z1" unit="" default_value="0.346e-6" show="false">
+                <Description></Description>
+            </Parameter>
+            <Parameter name="z2" unit="" default_value="0.38e-6" show="false">
+                <Description></Description>
+            </Parameter>
+            <Parameter name="wmin" unit="" default_value="0.15e-6" show="false">
+                <Description></Description>
+            </Parameter>
+            <Parameter name="rfmode" unit="" default_value="0" show="false">
+                <Description></Description>
             </Parameter>
         </Parameters>
     </Component>
