@@ -821,18 +821,31 @@ QString Component::netlist() {
 
 // This function is used to convert the user input to Ngspice values. For example, values like "1000 Ohm" -> "1000", "1k" -> "1k"
 QString Component::extractValue(const QString &input) {
-  QRegularExpression regex("(\\d+(?:\\.\\d+)?)\\s*([fpnumkMGTPEZY]?)");
+  // Regular expression to match numbers in standard or scientific notation,
+  // optionally followed by a unit prefix
+  QRegularExpression regex("(\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?)\\s*([fpnumkMGTPEZY]?)");
   QRegularExpressionMatch match = regex.match(input);
 
   if (match.hasMatch()) {
     QString value = match.captured(1);
     QString suffix = match.captured(2);
 
+           // If the value is in scientific notation, convert it to a double and back to a string
+           // to normalize the representation
+    if (value.contains('e', Qt::CaseInsensitive)) {
+      bool ok;
+      double numValue = value.toDouble(&ok);
+      if (ok) {
+        value = QString::number(numValue, 'g', 12);  // 12 significant digits
+      }
+    }
+
     return value + suffix;
   }
 
   return QString();
 }
+
 
 // Forms spice parameter list
 // ignore_list --- QStringList with spice_incompatible parameters
