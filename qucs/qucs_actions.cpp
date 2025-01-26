@@ -49,7 +49,6 @@
 #include "textdoc.h"
 #include "mouseactions.h"
 #include "messagedock.h"
-#include "components/ground.h"
 #include "components/subcirport.h"
 #include "components/equation.h"
 #include "spicecomponents/sp_nutmeg.h"

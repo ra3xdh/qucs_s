@@ -8,7 +8,7 @@ SET(COMPONENTS_SRCS
 DLS_1ton.cpp		dff_SR.cpp		logical_buf.cpp		potentiometer.cpp
 DLS_nto1.cpp		diac.cpp		logical_inv.cpp		rectline.cpp
 digi_sim.cpp		logical_nand.cpp	relais.cpp
-digi_source.cpp		logical_nor.cpp		resistor.cpp
+digi_source.cpp		logical_nor.cpp
 MESFET.cpp		diode.cpp		logical_or.cpp		rfedd.cpp
 ac_sim.cpp		dmux2to4.cpp		logical_xnor.cpp	rfedd2p.cpp
 am_modulator.cpp	dmux3to8.cpp		logical_xor.cpp		rlcg.cpp
@@ -22,7 +22,7 @@ amplifier.cpp		etr_sim.cpp
 andor4x2.cpp		fa2b.cpp		mscorner.cpp		spicedialog.cpp
 andor4x3.cpp		gatedDlatch.cpp		mscoupled.cpp
 andor4x4.cpp		greytobinary4bit.cpp	mscross.cpp		spicefile.cpp
-attenuator.cpp		ground.cpp		msgap.cpp
+attenuator.cpp				msgap.cpp
 biast.cpp		gyrator.cpp		mslange.cpp		subcircuit.cpp
 binarytogrey4bit.cpp	ha1b.cpp		msline.cpp		subcirport.cpp
 bjt.cpp			hb_sim.cpp		msmbend.cpp		substrate.cpp
@@ -30,7 +30,7 @@ bjtsub.cpp			msopen.cpp		switch.cpp
 bondwire.cpp				msrstub.cpp		symtrafo.cpp
 msstep.cpp		tff_SR.cpp
 mstee.cpp		thyristor.cpp
-capacitor.cpp		msvia.cpp		tline.cpp
+msvia.cpp		tline.cpp
 cccs.cpp		mutual.cpp		tline_4port.cpp
 ccvs.cpp		mutual2.cpp		tr_sim.cpp
 circulator.cpp		mux2to1.cpp		transformer.cpp
@@ -39,7 +39,7 @@ comp_1bit.cpp		hpribin4bit.cpp		mux8to1.cpp		tunneldiode.cpp
 comp_2bit.cpp		hybrid.cpp		nigbt.cpp		twistedpair.cpp
 comp_4bit.cpp		iexp.cpp		noise_ii.cpp		vafile.cpp
 component.cpp		ifile.cpp		noise_iv.cpp		vccs.cpp
-componentdialog.cpp	inductor.cpp		noise_vv.cpp		vcvs.cpp
+componentdialog.cpp			noise_vv.cpp		vcvs.cpp
 opamp.cpp		verilogfile.cpp		vcresistor.cpp
 coplanar.cpp		ipulse.cpp		opt_sim.cpp		vexp.cpp
 coupler.cpp		irect.cpp		optimizedialog.cpp	vfile.cpp
@@ -80,7 +80,7 @@ binarytogrey4bit.h
 bjt.h
 bjtsub.h
 bondwire.h
-capacitor.h
+
 capq.h
 cccs.h
 ccvs.h
@@ -122,7 +122,7 @@ fa1b.h
 fa2b.h
 gatedDlatch.h
 greytobinary4bit.h
-ground.h
+
 gyrator.h
 ha1b.h
 hb_sim.h
@@ -131,7 +131,7 @@ hybrid.h
 iexp.h
 ifile.h
 indq.h
-inductor.h
+
 
 ipulse.h
 irect.h
@@ -190,7 +190,7 @@ pm_modulator.h
 potentiometer.h
 rectline.h
 relais.h
-resistor.h
+
 rfedd.h
 rfedd2p.h
 rlcg.h

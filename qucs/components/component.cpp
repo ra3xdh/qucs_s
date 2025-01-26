@@ -18,7 +18,6 @@
 
 #include "component.h"
 #include "libcomp.h"
-#include "resistor.h"
 #include "equation.h"
 #include "sparamfile.h"
 #include "spicefile.h"
@@ -1893,7 +1892,6 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
     if (cstr == "Lib") c = new LibComp();
     else if (cstr == "Eqn") c = new Equation();
     else if (cstr == "SPICE") c = new SpiceFile();
-    else if (cstr == "Rus") c = new Resistor(false);  // backward compatible
     else if (cstr.left(6) == "SPfile" && cstr != "SPfile") {
         // backward compatible
         c = new SParamFile();
