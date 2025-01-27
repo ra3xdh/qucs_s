@@ -295,7 +295,7 @@ X1 P1 P2 ntap1
     </Component>
 
 
-    <Component name="LV-nMOS" schematic_id = "M">
+    <Component name="LV-nMOS" schematic_id = "LV-nMOS">
         <Description>
             SG13G2 Low Voltage nMOS transistor
         </Description>
@@ -391,7 +391,7 @@ X1 d g s b  sg13_lv_nmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
         </Parameters>
     </Component>
 
-    <Component name="HV-nMOS" schematic_id = "M">
+    <Component name="HV-nMOS" schematic_id = "HV-nMOS">
         <Description>
             SG13G2 High Voltage nMOS transistor
         </Description>
@@ -487,7 +487,7 @@ X1 d g s b  sg13_lv_nmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
         </Parameters>
     </Component>
 
-    <Component name="LV-pMOS" schematic_id = "M">
+    <Component name="LV-pMOS" schematic_id = "LV-pMOS">
         <Description>
             SG13G2 Low Voltage pMOS transistor
         </Description>
@@ -583,7 +583,7 @@ X1 d g s b  sg13_lv_pmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
         </Parameters>
     </Component>
 
-    <Component name="HV-pMOS" schematic_id = "M">
+    <Component name="HV-pMOS" schematic_id = "HV-pMOS">
         <Description>
             SG13G2 High Voltage pMOS transistor
         </Description>
@@ -831,6 +831,98 @@ X1 c b e bn t  npn13G2v Nx={Nx}
         <Parameters>
             <Parameter name="Nx" unit="" default_value="1" show="true">
                 <Description>Number of emitters</Description>
+            </Parameter>
+        </Parameters>
+    </Component>
+    <Component name="LV Diode" schematic_id = "LV-D">
+        <Description>
+            Antenna diode - Low voltage protection
+        </Description>
+        <Netlists>
+            <NgspiceNetlist value = 'Xdantenna{PartCounter} {nets} gnd IHP_PDK_nonlinear_components_dantenna w={w} l={l}'>
+                    <Property name="LibraryInclude">
+                    <![CDATA[
+                        .INCLUDE ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/diodes.lib
+                     ]]>
+                    </Property>
+                    <Property name="Subcircuit">
+                    <![CDATA[
+                    .SUBCKT IHP_PDK_nonlinear_components_dantenna  gnd Pcathode Panode w=0.78u l=0.78u
+XD1 Pcathode Panode dantenna w={w} l={l}
+.ENDS
+                     ]]>
+                    </Property>
+                    <Property name="OSDI">
+                    <![CDATA[
+                    psp103_nqs.osdi
+                    ]]>
+                    </Property>
+            </NgspiceNetlist>
+        </Netlists>
+        <Symbols>
+            <Symbol id="Standard">
+                <Line x1="-30" y1="0" x2="-9" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-6" y1="-9" x2="-6" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="6" y1="-9" x2="6" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="6" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="6" y2="9" color="#000080" width="2" style="1" />
+                <PortSym x="-30" y="0" type="1" angle="0" />
+                <PortSym x="30" y="0" type="2" angle="0" />
+            </Symbol>
+        </Symbols>
+        <Parameters>
+            <Parameter name="w" unit="um" default_value="1" show="true">
+                <Description>Active width</Description>
+            </Parameter>
+            <Parameter name="l" unit="um" default_value="1" show="true">
+                <Description>Active length</Description>
+            </Parameter>
+        </Parameters>
+    </Component>
+    <Component name="HV Diode" schematic_id = "HV-D">
+        <Description>
+            Antenna diode - High voltage protection
+        </Description>
+        <Netlists>
+            <NgspiceNetlist value = 'Xdpantenna{PartCounter} {nets} gnd IHP_PDK_nonlinear_components_dpantenna w={w} l={l}'>
+                    <Property name="LibraryInclude">
+                    <![CDATA[
+                        .INCLUDE ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/diodes.lib
+                     ]]>
+                    </Property>
+                    <Property name="Subcircuit">
+                    <![CDATA[
+                    .SUBCKT IHP_PDK_nonlinear_components_dpantenna  gnd Pcathode Panode w=0.78u l=0.78u
+XD2 Pcathode Panode dpantenna w={w} l={l}
+.ENDS
+                     ]]>
+                    </Property>
+                    <Property name="OSDI">
+                    <![CDATA[
+                    psp103_nqs.osdi
+                    ]]>
+                    </Property>
+            </NgspiceNetlist>
+        </Netlists>
+        <Symbols>
+            <Symbol id="Standard">
+                <Line x1="-30" y1="0" x2="-9" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-6" y1="-9" x2="-6" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="6" y1="-9" x2="6" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="6" y2="-9" color="#000080" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="6" y2="9" color="#000080" width="2" style="1" />
+                <PortSym x="-30" y="0" type="1" angle="0" />
+                <PortSym x="30" y="0" type="2" angle="0" />
+            </Symbol>
+        </Symbols>
+        <Parameters>
+            <Parameter name="w" unit="um" default_value="1" show="true">
+                <Description>Active width</Description>
+            </Parameter>
+            <Parameter name="l" unit="um" default_value="1" show="true">
+                <Description>Active length</Description>
             </Parameter>
         </Parameters>
     </Component>

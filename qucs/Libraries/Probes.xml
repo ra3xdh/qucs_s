@@ -4,7 +4,7 @@
             Current Probe
         </Description>
         <Netlists>
-            <NgspiceNetlist value = 'VPr{PartCounter} {nets} DC 0\n'>
+            <NgspiceNetlist value = 'VPr{PartCounter} {nets} DC 0'>
             </NgspiceNetlist>
             <ProbeVariables>
                 <Ngspice value = 'VPr{PartCounter}#branch'>
@@ -42,7 +42,7 @@
             Current Probe
         </Description>
         <Netlists>
-            <NgspiceNetlist value = 'EPr{PartCounter} Pr{PartCounter} {nets} 0 1.0\n'>
+            <NgspiceNetlist value = 'EPr{PartCounter} Pr{PartCounter} {nets} 0 1.0'>
             </NgspiceNetlist>
             <ProbeVariables>
                 <Ngspice value = 'Pr{PartCounter}'>
