@@ -40,13 +40,13 @@
                 <Description>Port impedance</Description>
             </Parameter>
             <Parameter name="P" unit="dBm" default_value="0" show="true">
-                <Description>(Available) AC power</Description>
+                <Description>(Available) AC power (dBm)</Description>
             </Parameter>
             <Parameter name="f" unit="GHz" default_value="1" show="true">
                 <Description>Frequency</Description>
             </Parameter>
             <Parameter name="Temp" unit="" default_value="26.85" show="false">
-                <Description>Simulation temperature</Description>
+                <Description>Simulation temperature (C)</Description>
             </Parameter>
         </Parameters>
     </Component>
@@ -75,7 +75,38 @@
         </Symbols>
         <Parameters>
             <Parameter name="U" unit="V" default_value="1" show="true">
-                <Description>Voltage</Description>
+                <Description>Voltage (V)</Description>
+            </Parameter>
+        </Parameters>
+    </Component>
+
+    <Component name="DC Current Source" schematic_id = "I" show_name="true">
+        <Description>
+            Ideal DC Current Source
+        </Description>
+        <Netlists>
+                <QucsatorNetlist value = 'Idc:V{PartCounter} {nets} U="{U}"'>
+                </QucsatorNetlist>
+                <NgspiceNetlist value = 'I{PartCounter} {nets} DC {I}'>
+                </NgspiceNetlist>
+        </Netlists>
+        <Symbols>
+            <Symbol id="Standard" type="explicit">
+                <PortSym x="0" y="-30" type="1" angle="90"/>
+                <Line x1="0" y1="-30" x2="0" y2="-12" color="#14148C" width="2" style="1" /> <!-- Lower lead -->
+                <Line x1="0" y1="30" x2="0" y2="12" color="#14148C" width="2" style="1" />   <!-- Upper lead -->
+                <Line x1="0" y1="-8.25" x2="0" y2="6" color="#14148C" width="3" style="1" /> <!-- Arrow stem -->
+                <Polyline color="#00008B" width="3" style="1" capStyle="2" joinStyle="128" brushStyle="0"> <!-- Arrow cap -->
+                  <point x="-4" y="0"/>
+                  <point x="0" y="-6"/>
+                  <point x="4" y="0"/>
+                </Polyline>                <Arc x="-12" y="-12" arc_width="24" arc_height="24" angle="0" arclen="5760" color="#000080" pen_width="2" /> <!-- Circle -->
+                <PortSym x="0" y="30" type="2" angle="270" />
+            </Symbol>
+        </Symbols>
+        <Parameters>
+            <Parameter name="I" unit="mA" default_value="1" show="true">
+                <Description>Current (mA)</Description>
             </Parameter>
         </Parameters>
     </Component>

@@ -13,7 +13,7 @@ MESFET.cpp		diode.cpp		logical_or.cpp		rfedd.cpp
 ac_sim.cpp		dmux2to4.cpp		logical_xnor.cpp	rfedd2p.cpp
 am_modulator.cpp	dmux3to8.cpp		logical_xor.cpp		rlcg.cpp
 ampere_ac.cpp		dmux4to16.cpp		mod_amp.cpp		rs_flipflop.cpp
-ampere_dc.cpp		ecvs.cpp
+ecvs.cpp
 			eqndefined.cpp		#module.cpp
 source_ac.cpp
 ampere_noise.cpp	equation.cpp		mosfet.cpp		sp_sim.cpp
@@ -68,7 +68,7 @@ SET(COMPONENTS_HDRS
 ac_sim.h
 am_modulator.h
 ampere_ac.h
-ampere_dc.h
+
 ampere_noise.h
 amplifier.h
 andor4x2.h

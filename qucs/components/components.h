@@ -40,7 +40,6 @@
 #include "circulator.h"
 #include "gyrator.h"
 #include "phaseshifter.h"
-#include "ampere_dc.h"
 #include "ampere_ac.h"
 #include "source_ac.h"
 #include "vexp.h"
