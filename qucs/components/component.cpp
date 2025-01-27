@@ -2010,7 +2010,7 @@ void Component::loadfromComponentInfo(ComponentInfo C)
   // By default, take the first symbol
   QMap<QString, SymbolDescription>::const_iterator symbol_it = C.symbol.constBegin();
   SymbolDescription SymbolInfo = symbol_it.value();
-  loadSymbol(SymbolInfo, Ports, Lines, Arcs);
+  loadSymbol(SymbolInfo, Ports, Lines, Arcs, Polylines);
 
   // Set component bounding box. This is required to have the greyed zone when the user clicks on the component
   QVector<int> SymbolBoundingBox = C.SymbolBoundingBox["Standard"];
@@ -2025,7 +2025,7 @@ void Component::loadfromComponentInfo(ComponentInfo C)
 
 
 // This function is needed to turn the symbol description structure into actual Qucs-S geometrical objects.
-void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, QList<qucs::Line *>&Lines, QList<struct qucs::Arc *>&Arcs)
+void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, QList<qucs::Line *>&Lines, QList<struct qucs::Arc *>&Arcs, QList<qucs::Polyline *>&Polylines)
 {
   // Populate Ports
   for (const PortInfo& portInfo : SymbolInfo.Ports) {
@@ -2044,6 +2044,21 @@ void Component::loadSymbol(SymbolDescription SymbolInfo, QList<Port *>& Ports, Q
     struct qucs::Arc * newArc = new struct qucs::Arc(arcInfo.x, arcInfo.y, arcInfo.width, arcInfo.height, arcInfo.angle, arcInfo.arclen, arcInfo.Pen);
     Arcs.append(newArc);
   }
+
+  // Populate PolyLines
+  for (const PolylineInfo& polyInfo : SymbolInfo.Polylines) {
+    // Convert QList<QPointF> to std::vector<QPointF>
+    std::vector<QPointF> points(polyInfo.Points.begin(), polyInfo.Points.end());
+
+    qucs::Polyline* newPolyLine = new qucs::Polyline(
+        points,
+        polyInfo.Pen,
+        polyInfo.Brush
+        );
+    Polylines.append(newPolyLine);
+
+  }
+
 }
 
 // This function is used for getting a component from the QMap library

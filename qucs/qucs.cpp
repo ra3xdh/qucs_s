@@ -1399,13 +1399,15 @@ void QucsApp::slotSetCompView (int index)
       QList<qucs::Line *>  Lines;
       QList<Port *>     Ports;
       QList<struct qucs::Arc *> Arcs;
+      QList<qucs::Polyline *>  Polylines;
       // By default, take the first symbol
       QMap<QString, SymbolDescription>::const_iterator symbol_it = componentInfo.symbol.constBegin();
       SymbolDescription SymbolInfo = symbol_it.value();
-      Component::loadSymbol(SymbolInfo, Ports, Lines, Arcs);
+      Component::loadSymbol(SymbolInfo, Ports, Lines, Arcs, Polylines);
       C.Ports = Ports;
       C.Lines = Lines;
       C.Arcs = Arcs;
+      C.Polylines = Polylines;
 
       QPixmap *image = new QPixmap(128, 128);
       C.paintIcon(image);
