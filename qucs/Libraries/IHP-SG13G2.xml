@@ -681,14 +681,25 @@ X1 d g s b  sg13_lv_pmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
 
     <Component name="npn13G2" schematic_id = "Q">
         <Description>
-            SG13G2 basic HBT npn transistor
+            SG13G2 basic HBT NPN transistor
         </Description>
-        <Models>
-            <DefaultModel value = "npn13G2">
-                </DefaultModel>
-                <SpiceModel value = "npn13G2">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+            <NgspiceNetlist value = 'Xnpn13G{PartCounter} gnd {nets} IHP_PDK_nonlinear_components_npn13G2 Nx={Nx} El={El}'>
+                    <Property name="LibraryInclude">
+                    <![CDATA[
+                        .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib hbt_typ
+                     ]]>
+                    </Property>
+                    <Property name="Subcircuit">
+                    <![CDATA[
+                    .SUBCKT IHP_PDK_nonlinear_components_npn13G2  gnd c b e bn t Nx=1
+.INCLUDE   ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod.lib
+X1 c b e bn t  npn13G2 Nx={Nx}
+.ENDS
+                     ]]>
+                    </Property>
+            </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard">
                 <Line x1="-10" y1="-15" x2="-10" y2="15" color="#000080" width="2" style="1" />
@@ -723,14 +734,25 @@ X1 d g s b  sg13_lv_pmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
 
     <Component name="npn13G2l" schematic_id = "Q">
         <Description>
-            SG13G2 parametric HBT npn transistor
+            SG13G2 parametric HBT NPN transistor
         </Description>
-        <Models>
-            <DefaultModel value = "npn13G2l">
-                </DefaultModel>
-                <SpiceModel value = "npn13G2l">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+            <NgspiceNetlist value = 'Xnpn13G2l{PartCounter} gnd {nets} IHP_PDK_nonlinear_components_npn13G2l Nx={Nx} El={El}'>
+                    <Property name="LibraryInclude">
+                    <![CDATA[
+                        .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib hbt_typ
+                     ]]>
+                    </Property>
+                    <Property name="Subcircuit">
+                    <![CDATA[
+                    .SUBCKT IHP_PDK_nonlinear_components_npn13G2l  gnd c b e bn t Nx=1 El=1
+.INCLUDE   ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod.lib
+X1 c b e bn t  npn13G2l Nx={Nx} El={El}
+.ENDS
+                     ]]>
+                    </Property>
+            </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard">
                 <Line x1="-10" y1="-15" x2="-10" y2="15" color="#000080" width="2" style="1" />
@@ -765,14 +787,25 @@ X1 d g s b  sg13_lv_pmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
 
     <Component name="npn13G2v" schematic_id = "Q">
         <Description>
-            SG13G2 high power HBT npn transistor
+            SG13G2 high power HBT NPN transistor
         </Description>
-        <Models>
-            <DefaultModel value = "npn13G2v">
-                </DefaultModel>
-                <SpiceModel value = "npn13G2v">
-                </SpiceModel>
-        </Models>
+        <Netlists>
+            <NgspiceNetlist value = 'Xnpn13G2v{PartCounter} gnd {nets} IHP_PDK_nonlinear_components_npn13G2v Nx={Nx}'>
+                    <Property name="LibraryInclude">
+                    <![CDATA[
+                        .LIB ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib hbt_typ
+                     ]]>
+                    </Property>
+                    <Property name="Subcircuit">
+                    <![CDATA[
+                    .SUBCKT IHP_PDK_nonlinear_components_npn13G2v  gnd c b e bn t Nx=1
+.INCLUDE   ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod.lib
+X1 c b e bn t  npn13G2v Nx={Nx}
+.ENDS
+                     ]]>
+                    </Property>
+            </NgspiceNetlist>
+        </Netlists>
         <Symbols>
             <Symbol id="Standard">
                 <Line x1="-10" y1="-15" x2="-10" y2="15" color="#000080" width="2" style="1" />
