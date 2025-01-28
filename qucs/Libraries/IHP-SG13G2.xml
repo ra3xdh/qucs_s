@@ -22,10 +22,10 @@ X1 P1 P2 cap_cmim l={l} w={w}
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
-                <Line x1="-4" y1="-11" x2="-4" y2="11" color="#000080" width="2" style="1" />
-                <Line x1="4" y1="-11" x2="4" y2="11" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-4" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="4" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-4" y1="-11" x2="-4" y2="11" color="#FF0000" width="2" style="1" />
+                <Line x1="4" y1="-11" x2="4" y2="11" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-4" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="4" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
                 <PortSym x="30" y="0" type="2" angle="180"/>
             </Symbol>
         </Symbols>
@@ -62,10 +62,10 @@ X1 PLUS MINUS bulk cap_rfcmim l={l} w={w}
        <Symbols>
            <Symbol id="Standard">
                <PortSym x="-30" y="0" type="1" angle="0" />
-               <Line x1="-4" y1="-11" x2="-4" y2="11" color="#000080" width="2" style="1" />
-               <Line x1="4" y1="-11" x2="4" y2="11" color="#000080" width="2" style="1" />
-               <Line x1="-30" y1="0" x2="-4" y2="0" color="#000080" width="2" style="1" />
-               <Line x1="4" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+               <Line x1="-4" y1="-11" x2="-4" y2="11" color="#FF0000" width="2" style="1" />
+               <Line x1="4" y1="-11" x2="4" y2="11" color="#FF0000" width="2" style="1" />
+               <Line x1="-30" y1="0" x2="-4" y2="0" color="#FF0000" width="2" style="1" />
+               <Line x1="4" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
                <PortSym x="30" y="0" type="2" angle="180"/>
            </Symbol>
        </Symbols>
@@ -103,12 +103,12 @@ X1 P1 P2 rsil w={w} l={l} m={m}
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
-                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="-9" x2="18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="9" x2="-18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-18" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
                 <PortSym x="30" y="0" type="2" angle="180"/>
             </Symbol>
         </Symbols>
@@ -152,12 +152,12 @@ X1 P1 P2 rppd w={w} l={l} m={m}
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
-                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="-9" x2="18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="9" x2="-18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-18" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
                 <PortSym x="30" y="0" type="2" angle="180"/>
             </Symbol>
         </Symbols>
@@ -200,12 +200,12 @@ X1 P1 P2 ntap1
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
-                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="-9" x2="18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="9" x2="-18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-18" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
                 <PortSym x="30" y="0" type="2" angle="180"/>
             </Symbol>
         </Symbols>
@@ -234,12 +234,12 @@ X1 P1 P2 ntap1
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
-                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="-9" x2="18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="9" x2="-18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-18" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
                 <PortSym x="30" y="0" type="2" angle="180"/>
             </Symbol>
         </Symbols>
@@ -269,12 +269,12 @@ X1 P1 P2 ntap1
         <Symbols>
             <Symbol id="Standard">
                 <PortSym x="-30" y="0" type="1" angle="0" />
-                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="-9" x2="18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="9" x2="-18" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-18" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="18" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
                 <PortSym x="30" y="0" type="2" angle="180"/>
             </Symbol>
         </Symbols>
@@ -324,23 +324,23 @@ X1 d g s b  sg13_lv_nmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
         </Netlists>
         <Symbols>
             <Symbol id="Standard">
-                <Line x1="-14" y1="-13" x2="-14" y2="13" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-20" y1="0" x2="-14" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-11" x2="0" y2="-11" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-11" x2="0" y2="-20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-20" x2="0" y2="-30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="11" x2="0" y2="11" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="11" x2="0" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="20" x2="0" y2="30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-16" x2="-10" y2="7" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="7" x2="-10" y2="16" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-8" x2="-10" y2="8" color="#000080" width="2" style="1" />
-                <Line x1="-4" y1="24" x2="4" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="-8" y1="0" x2="20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="0" x2="-10" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-9" y1="0" x2="-4" y2="-5" color="#000080" width="2" style="1" />
-                <Line x1="-9" y1="0" x2="-4" y2="5" color="#000080" width="2" style="1" />
+                <Line x1="-14" y1="-13" x2="-14" y2="13" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-20" y1="0" x2="-14" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-11" x2="0" y2="-11" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-11" x2="0" y2="-20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-20" x2="0" y2="-30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="11" x2="0" y2="11" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="11" x2="0" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="20" x2="0" y2="30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-16" x2="-10" y2="7" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="7" x2="-10" y2="16" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-8" x2="-10" y2="8" color="#FF0000" width="2" style="1" />
+                <Line x1="-4" y1="24" x2="4" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="-8" y1="0" x2="20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="0" x2="-10" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-9" y1="0" x2="-4" y2="-5" color="#FF0000" width="2" style="1" />
+                <Line x1="-9" y1="0" x2="-4" y2="5" color="#FF0000" width="2" style="1" />
 
                 <PortSym x="0" y="-30" type="1" angle="0" />
                 <PortSym x="-30" y="0" type="2" angle="0" />
@@ -405,10 +405,10 @@ X1 d g s b  sg13_lv_nmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
                     <Property name="Subcircuit">
                     <![CDATA[
                     .SUBCKT IHP_PDK_nonlinear_components_sg13_hv_nmos  gnd d g s b w=0.35u l=0.34u ng=1 m=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.346e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1 mlist=1
-    .INCLUDE   ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_parm.lib
-    X1 d g s b  sg13_hv_nmos w={w} l={l} ng={ng} m={m} as={as} ad={ad} pd={pd}
-    + ps={ps} trise={trise} z1={z1} z2={z2} wmin={wmin} rfmode={rfmode} pre_layout={pre_layout}
-    .ENDS
+.INCLUDE   ~/.qucs/IHP-Open-PDK-main/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_parm.lib
+X1 d g s b  sg13_hv_nmos w={w} l={l} ng={ng} m={m} as={as} ad={ad} pd={pd}
++ ps={ps} trise={trise} z1={z1} z2={z2} wmin={wmin} rfmode={rfmode} pre_layout={pre_layout}
+.ENDS
                      ]]>
                     </Property>
                     <Property name="OSDI">
@@ -420,23 +420,23 @@ X1 d g s b  sg13_lv_nmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
         </Netlists>
         <Symbols>
             <Symbol id="Standard">
-                <Line x1="-14" y1="-13" x2="-14" y2="13" color="#000080" width="3" style="1" />
-                <Line x1="-30" y1="0" x2="-20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-20" y1="0" x2="-14" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-11" x2="0" y2="-11" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-11" x2="0" y2="-20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-20" x2="0" y2="-30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="11" x2="0" y2="11" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="11" x2="0" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="20" x2="0" y2="30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-16" x2="-10" y2="7" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="7" x2="-10" y2="16" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-8" x2="-10" y2="8" color="#000080" width="2" style="1" />
-                <Line x1="-4" y1="24" x2="4" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="-8" y1="0" x2="20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="0" x2="-10" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-9" y1="0" x2="-4" y2="-5" color="#000080" width="2" style="1" />
-                <Line x1="-9" y1="0" x2="-4" y2="5" color="#000080" width="2" style="1" />
+                <Line x1="-14" y1="-13" x2="-14" y2="13" color="#FF0000" width="3" style="1" />
+                <Line x1="-30" y1="0" x2="-20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-20" y1="0" x2="-14" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-11" x2="0" y2="-11" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-11" x2="0" y2="-20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-20" x2="0" y2="-30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="11" x2="0" y2="11" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="11" x2="0" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="20" x2="0" y2="30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-16" x2="-10" y2="7" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="7" x2="-10" y2="16" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-8" x2="-10" y2="8" color="#FF0000" width="2" style="1" />
+                <Line x1="-4" y1="24" x2="4" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="-8" y1="0" x2="20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="0" x2="-10" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-9" y1="0" x2="-4" y2="-5" color="#FF0000" width="2" style="1" />
+                <Line x1="-9" y1="0" x2="-4" y2="5" color="#FF0000" width="2" style="1" />
 
                 <PortSym x="0" y="-30" type="1" angle="0" />
                 <PortSym x="-30" y="0" type="2" angle="0" />
@@ -445,10 +445,10 @@ X1 d g s b  sg13_lv_nmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
             </Symbol>
         </Symbols>
         <Parameters>
-            <Parameter name="w" unit="um" default_value="0.5" show="true">
+            <Parameter name="w" unit="um" default_value="5" show="true">
                 <Description>Width</Description>
             </Parameter>
-            <Parameter name="l" unit="um" default_value="0.5" show="true">
+            <Parameter name="l" unit="um" default_value="0.45" show="true">
                 <Description>Length</Description>
             </Parameter>
             <Parameter name="ng" unit="" default_value="1" show="true">
@@ -516,23 +516,23 @@ X1 d g s b  sg13_lv_pmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
         </Netlists>
         <Symbols>
             <Symbol id="Standard">
-                <Line x1="-14" y1="-13" x2="-14" y2="13" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-20" y1="0" x2="-14" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-11" x2="0" y2="-11" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-11" x2="0" y2="-20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-20" x2="0" y2="-30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="11" x2="0" y2="11" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="11" x2="0" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="20" x2="0" y2="30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-16" x2="-10" y2="7" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="7" x2="-10" y2="16" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-8" x2="-10" y2="8" color="#000080" width="2" style="1" />
-                <Line x1="-4" y1="24" x2="4" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="-8" y1="0" x2="20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="0" x2="-10" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-1" y1="0" x2="-6" y2="-5" color="#000080" width="2" style="1" />
-                <Line x1="-1" y1="0" x2="-6" y2="5" color="#000080" width="2" style="1" />
+                <Line x1="-14" y1="-13" x2="-14" y2="13" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-20" y1="0" x2="-14" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-11" x2="0" y2="-11" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-11" x2="0" y2="-20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-20" x2="0" y2="-30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="11" x2="0" y2="11" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="11" x2="0" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="20" x2="0" y2="30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-16" x2="-10" y2="7" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="7" x2="-10" y2="16" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-8" x2="-10" y2="8" color="#FF0000" width="2" style="1" />
+                <Line x1="-4" y1="24" x2="4" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="-8" y1="0" x2="20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="0" x2="-10" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-1" y1="0" x2="-6" y2="-5" color="#FF0000" width="2" style="1" />
+                <Line x1="-1" y1="0" x2="-6" y2="5" color="#FF0000" width="2" style="1" />
 
                 <PortSym x="0" y="-30" type="1" angle="0" />
                 <PortSym x="-30" y="0" type="2" angle="0" />
@@ -612,23 +612,23 @@ X1 d g s b  sg13_lv_pmos w={w} l={l} ng={ng} m={1} as={as} ad={ad} pd={pd}
         </Netlists>
         <Symbols>
             <Symbol id="Standard">
-                <Line x1="-14" y1="-13" x2="-14" y2="13" color="#000080" width="3" style="1" />
-                <Line x1="-30" y1="0" x2="-20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-20" y1="0" x2="-14" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-11" x2="0" y2="-11" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-11" x2="0" y2="-20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-20" x2="0" y2="-30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="11" x2="0" y2="11" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="11" x2="0" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="20" x2="0" y2="30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-16" x2="-10" y2="7" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="7" x2="-10" y2="16" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-8" x2="-10" y2="8" color="#000080" width="2" style="1" />
-                <Line x1="-4" y1="24" x2="4" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="-8" y1="0" x2="20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="0" x2="-10" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-1" y1="0" x2="-6" y2="-5" color="#000080" width="2" style="1" />
-                <Line x1="-1" y1="0" x2="-6" y2="5" color="#000080" width="2" style="1" />
+                <Line x1="-14" y1="-13" x2="-14" y2="13" color="#FF0000" width="3" style="1" />
+                <Line x1="-30" y1="0" x2="-20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-20" y1="0" x2="-14" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-11" x2="0" y2="-11" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-11" x2="0" y2="-20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-20" x2="0" y2="-30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="11" x2="0" y2="11" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="11" x2="0" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="20" x2="0" y2="30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-16" x2="-10" y2="7" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="7" x2="-10" y2="16" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-8" x2="-10" y2="8" color="#FF0000" width="2" style="1" />
+                <Line x1="-4" y1="24" x2="4" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="-8" y1="0" x2="20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="0" x2="-10" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-1" y1="0" x2="-6" y2="-5" color="#FF0000" width="2" style="1" />
+                <Line x1="-1" y1="0" x2="-6" y2="5" color="#FF0000" width="2" style="1" />
 
                 <PortSym x="0" y="-30" type="1" angle="0" />
                 <PortSym x="-30" y="0" type="2" angle="0" />
@@ -702,19 +702,19 @@ X1 c b e bn t  npn13G2 Nx={Nx}
         </Netlists>
         <Symbols>
             <Symbol id="Standard">
-                <Line x1="-10" y1="-15" x2="-10" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-20" y1="0" x2="-10" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-5" x2="0" y2="-15" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-15" x2="0" y2="-20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-20" x2="0" y2="-30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="5" x2="0" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="15" x2="0" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="20" x2="0" y2="30" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="15" x2="0" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="9" x2="0" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="9" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="9" y1="-7" x2="9" y2="7" color="#000080" width="2" style="1" />
+                <Line x1="-10" y1="-15" x2="-10" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-20" y1="0" x2="-10" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-5" x2="0" y2="-15" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-15" x2="0" y2="-20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-20" x2="0" y2="-30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="5" x2="0" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="15" x2="0" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="20" x2="0" y2="30" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="15" x2="0" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="9" x2="0" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="9" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="9" y1="-7" x2="9" y2="7" color="#FF0000" width="2" style="1" />
 
                 <PortSym x="0" y="-30" type="1" angle="0" />
                 <PortSym x="-30" y="0" type="2" angle="0" />
@@ -755,19 +755,19 @@ X1 c b e bn t  npn13G2l Nx={Nx} El={El}
         </Netlists>
         <Symbols>
             <Symbol id="Standard">
-                <Line x1="-10" y1="-15" x2="-10" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-20" y1="0" x2="-10" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-5" x2="0" y2="-15" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-15" x2="0" y2="-20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-20" x2="0" y2="-30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="5" x2="0" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="15" x2="0" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="20" x2="0" y2="30" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="15" x2="0" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="9" x2="0" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="9" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="9" y1="-7" x2="9" y2="7" color="#000080" width="2" style="1" />
+                <Line x1="-10" y1="-15" x2="-10" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-20" y1="0" x2="-10" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-5" x2="0" y2="-15" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-15" x2="0" y2="-20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-20" x2="0" y2="-30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="5" x2="0" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="15" x2="0" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="20" x2="0" y2="30" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="15" x2="0" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="9" x2="0" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="9" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="9" y1="-7" x2="9" y2="7" color="#FF0000" width="2" style="1" />
 
                 <PortSym x="0" y="-30" type="1" angle="0" />
                 <PortSym x="-30" y="0" type="2" angle="0" />
@@ -808,19 +808,19 @@ X1 c b e bn t  npn13G2v Nx={Nx}
         </Netlists>
         <Symbols>
             <Symbol id="Standard">
-                <Line x1="-10" y1="-15" x2="-10" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-20" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-20" y1="0" x2="-10" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="-5" x2="0" y2="-15" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-15" x2="0" y2="-20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="-20" x2="0" y2="-30" color="#000080" width="2" style="1" />
-                <Line x1="-10" y1="5" x2="0" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="15" x2="0" y2="20" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="20" x2="0" y2="30" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="15" x2="0" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="0" y1="9" x2="0" y2="15" color="#000080" width="2" style="1" />
-                <Line x1="9" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="9" y1="-7" x2="9" y2="7" color="#000080" width="2" style="1" />
+                <Line x1="-10" y1="-15" x2="-10" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-20" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-20" y1="0" x2="-10" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="-5" x2="0" y2="-15" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-15" x2="0" y2="-20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="-20" x2="0" y2="-30" color="#FF0000" width="2" style="1" />
+                <Line x1="-10" y1="5" x2="0" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="15" x2="0" y2="20" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="20" x2="0" y2="30" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="15" x2="0" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="0" y1="9" x2="0" y2="15" color="#FF0000" width="2" style="1" />
+                <Line x1="9" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="9" y1="-7" x2="9" y2="7" color="#FF0000" width="2" style="1" />
 
                 <PortSym x="0" y="-30" type="1" angle="0" />
                 <PortSym x="-30" y="0" type="2" angle="0" />
@@ -861,12 +861,12 @@ XD1 Pcathode Panode dantenna w={w} l={l}
         </Netlists>
         <Symbols>
             <Symbol id="Standard">
-                <Line x1="-30" y1="0" x2="-9" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="-9" x2="-6" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="6" y1="-9" x2="6" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="0" x2="6" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="0" x2="6" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-9" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="-9" x2="-6" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="6" y1="-9" x2="6" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="6" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="6" y2="9" color="#FF0000" width="2" style="1" />
                 <PortSym x="-30" y="0" type="1" angle="0" />
                 <PortSym x="30" y="0" type="2" angle="0" />
             </Symbol>
@@ -907,12 +907,12 @@ XD2 Pcathode Panode dpantenna w={w} l={l}
         </Netlists>
         <Symbols>
             <Symbol id="Standard">
-                <Line x1="-30" y1="0" x2="-9" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="-9" x2="-6" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="6" y1="-9" x2="6" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="0" x2="6" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="-6" y1="0" x2="6" y2="9" color="#000080" width="2" style="1" />
+                <Line x1="-30" y1="0" x2="-9" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="30" y2="0" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="-9" x2="-6" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="6" y1="-9" x2="6" y2="9" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="6" y2="-9" color="#FF0000" width="2" style="1" />
+                <Line x1="-6" y1="0" x2="6" y2="9" color="#FF0000" width="2" style="1" />
                 <PortSym x="-30" y="0" type="1" angle="0" />
                 <PortSym x="30" y="0" type="2" angle="0" />
             </Symbol>
