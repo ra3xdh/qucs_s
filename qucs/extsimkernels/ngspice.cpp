@@ -125,26 +125,21 @@ void Ngspice::createNetlist(
     }
     if (!LibraryCalls.isEmpty()){
       stream << LibraryCalls.join("\n"); // Add library calls
+      stream << QString("\n\n");
     }
 
-    if(!SubcircuitDefinition.isEmpty() || !LibraryCalls.isEmpty()) {
-      stream << QString("\n.control\n\n");
-    }
 
     if(!OSDIfiles.isEmpty()){
+      stream << QString("\n.control\n\n");
       QString OSDI_BaseDir = QucsSettings.OSDI_FilesPath.path();
       QString OSDI_path;
       for (int i = 0; i < OSDIfiles.size(); ++i) {
         OSDI_path = QDir(OSDI_BaseDir).filePath(OSDIfiles[i]);
         stream << "pre_osdi " << OSDI_path << "\n";
       }
-    }
-
-    if(!SubcircuitDefinition.isEmpty() || !LibraryCalls.isEmpty()) {
       stream << QString("\n.endc\n");
       stream << QString("\n\n");
     }
-
 
     stream<<collectSpiceLibs(a_schematic); // collect libraries on the top of netlist
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation

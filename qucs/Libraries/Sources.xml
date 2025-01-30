@@ -92,16 +92,17 @@
         </Netlists>
         <Symbols>
             <Symbol id="Standard" type="explicit">
-                <PortSym x="0" y="-30" type="1" angle="90"/>
+                <PortSym x="0" y="30" type="1" angle="90"/>
                 <Line x1="0" y1="-30" x2="0" y2="-12" color="#14148C" width="2" style="1" /> <!-- Lower lead -->
                 <Line x1="0" y1="30" x2="0" y2="12" color="#14148C" width="2" style="1" />   <!-- Upper lead -->
-                <Line x1="0" y1="-8.25" x2="0" y2="6" color="#14148C" width="3" style="1" /> <!-- Arrow stem -->
+                <Line x1="0" y1="-5" x2="0" y2="6" color="#14148C" width="3" style="1" /> <!-- Arrow stem -->
                 <Polyline color="#00008B" width="3" style="1" capStyle="2" joinStyle="128" brushStyle="0"> <!-- Arrow cap -->
                   <point x="-4" y="0"/>
                   <point x="0" y="-6"/>
                   <point x="4" y="0"/>
-                </Polyline>                <Arc x="-12" y="-12" arc_width="24" arc_height="24" angle="0" arclen="5760" color="#000080" pen_width="2" /> <!-- Circle -->
-                <PortSym x="0" y="30" type="2" angle="270" />
+                </Polyline>
+                <Arc x="-12" y="-12" arc_width="24" arc_height="24" angle="0" arclen="5760" color="#000080" pen_width="2" /> <!-- Circle -->
+                <PortSym x="0" y="-30" type="2" angle="270" />
             </Symbol>
         </Symbols>
         <Parameters>

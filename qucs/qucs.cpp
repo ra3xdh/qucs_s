@@ -463,8 +463,8 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
   while (xmlReader.readNextStartElement()) {
     if (xmlReader.name() == QString("PortSym")) {
       PortInfo Port;
-      Port.x = xmlReader.attributes().value("x").toInt();
-      Port.y = xmlReader.attributes().value("y").toInt();
+      Port.x = xmlReader.attributes().value("x").toDouble();
+      Port.y = xmlReader.attributes().value("y").toDouble();
       SymbolData.Ports.append(Port);
       xmlReader.skipCurrentElement();
 
@@ -473,13 +473,13 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
 
     } else if (xmlReader.name() == QString("Line")) {
       LineInfo Line;
-      Line.x1 = xmlReader.attributes().value("x1").toInt();
-      Line.y1 = xmlReader.attributes().value("y1").toInt();
-      Line.x2 = xmlReader.attributes().value("x2").toInt();
-      Line.y2 = xmlReader.attributes().value("y2").toInt();
+      Line.x1 = xmlReader.attributes().value("x1").toDouble();
+      Line.y1 = xmlReader.attributes().value("y1").toDouble();
+      Line.x2 = xmlReader.attributes().value("x2").toDouble();
+      Line.y2 = xmlReader.attributes().value("y2").toDouble();
       QColor color(xmlReader.attributes().value("color").toString());
       int penWidth = xmlReader.attributes().value("width").toInt();
-      int style = xmlReader.attributes().value("style").toInt();
+      int style = xmlReader.attributes().value("style").toDouble();
 
       Qt::PenStyle penStyle = static_cast<Qt::PenStyle>(style);
       QPen pen(color, penWidth, penStyle);
@@ -498,15 +498,15 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
 
     } else if (xmlReader.name() == QString("Arc")) {
       ArcInfo Arc;
-      Arc.x = xmlReader.attributes().value("x").toInt();
-      Arc.y = xmlReader.attributes().value("y").toInt();
-      Arc.width = xmlReader.attributes().value("arc_width").toInt();
-      Arc.height = xmlReader.attributes().value("arc_height").toInt();
-      Arc.angle = xmlReader.attributes().value("angle").toInt();
-      Arc.arclen = xmlReader.attributes().value("arclen").toInt();
+      Arc.x = xmlReader.attributes().value("x").toDouble();
+      Arc.y = xmlReader.attributes().value("y").toDouble();
+      Arc.width = xmlReader.attributes().value("arc_width").toDouble();
+      Arc.height = xmlReader.attributes().value("arc_height").toDouble();
+      Arc.angle = xmlReader.attributes().value("angle").toDouble();
+      Arc.arclen = xmlReader.attributes().value("arclen").toDouble();
 
       QColor color(xmlReader.attributes().value("color").toString());
-      int penWidth = xmlReader.attributes().value("pen_width").toInt();
+      int penWidth = xmlReader.attributes().value("pen_width").toDouble();
 
       QPen pen(color, penWidth, Qt::SolidLine);
       Arc.Pen = pen;
@@ -525,7 +525,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
 
              // Read pen attributes
       QColor color(xmlReader.attributes().value("color").toString());
-      int penWidth = xmlReader.attributes().value("width").toInt();
+      int penWidth = xmlReader.attributes().value("width").toDouble();
       int style = xmlReader.attributes().value("style").toInt();
       int capStyle = xmlReader.attributes().value("capStyle").toInt();
       int joinStyle = xmlReader.attributes().value("joinStyle").toInt();
@@ -569,7 +569,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
 
              // Read pen attributes
       QColor penColor(xmlReader.attributes().value("penColor").toString());
-      int penWidth = xmlReader.attributes().value("penWidth").toInt();
+      int penWidth = xmlReader.attributes().value("penWidth").toDouble();
       int penStyle = xmlReader.attributes().value("penStyle").toInt();
 
       Ellips.Pen = QPen(penColor, penWidth, static_cast<Qt::PenStyle>(penStyle));
@@ -600,7 +600,7 @@ SymbolDescription QucsApp::parseSymbol(QXmlStreamReader &xmlReader, QVector<int>
 
              // Read pen attributes
       QColor penColor(xmlReader.attributes().value("penColor").toString());
-      int penWidth = xmlReader.attributes().value("penWidth").toInt();
+      int penWidth = xmlReader.attributes().value("penWidth").toDouble();
       int penStyle = xmlReader.attributes().value("penStyle").toInt();
 
       Rect.Pen = QPen(penColor, penWidth, static_cast<Qt::PenStyle>(penStyle));
