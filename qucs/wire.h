@@ -29,19 +29,25 @@ class QString;
 class Wire : public Conductor {
 public:
   Wire(int _x1=0, int _y1=0, int _x2=0, int _y2=0, Node *n1=0, Node *n2=0);
- ~Wire();
+ ~Wire() override;
 
   void paint(QPainter* painter) const;
-  void paintScheme(QPainter*) override;
-  void paintScheme(Schematic*) override;
-  void setCenter(int, int, bool relative=false);
-  void getCenter(int&, int&);
+  void paintScheme(Schematic* sch) override;
+
   bool getSelected(int, int);
-  void setName(const QString&, const QString&, int delta_=0, int x_=0, int y_=0);
+  void setName(const QString&, const QString&, int root_x=0, int root_y=0, int x_=0, int y_=0);
 
-  Node      *Port1, *Port2;
+  Node *Port1, *Port2;
 
-  void    rotate();
+  void rotate() noexcept override;
+
+  void mirrorX() noexcept override { std::swap(y1, y2); }
+  void mirrorY() noexcept override { std::swap(x1, x2); }
+
+  QRect boundingRect() const noexcept override;
+
+  void moveCenter(int dx, int dy) noexcept override;
+
   QString save();
   bool    load(const QString&);
   bool    isHorizontal();

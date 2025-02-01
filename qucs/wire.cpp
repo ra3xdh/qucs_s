@@ -15,21 +15,26 @@
  *                                                                         *
  ***************************************************************************/
 #include "wire.h"
+#include "multi_point.h"
+#include "one_point.h"
 #include "schematic.h"
 
 #include <QPainter>
 
 Wire::Wire(int _x1, int _y1, int _x2, int _y2, Node *n1, Node *n2)
 {
-  cx = 0;
-  cy = 0;
   x1 = _x1;
   y1 = _y1;
   x2 = _x2;
   y2 = _y2;
+
+  // Update center
+  cx = (x1 + x2) / 2;
+  cy = (y1 + y2) / 2;
+
   Port1 = n1;
   Port2 = n2;
-  Label  = 0;
+  Label = nullptr;
 
   Type = isWire;
   isSelected = false;
@@ -37,72 +42,25 @@ Wire::Wire(int _x1, int _y1, int _x2, int _y2, Node *n1, Node *n2)
 
 Wire::~Wire()
 {
+  delete Label;
 }
 
-// ----------------------------------------------------------------
-void Wire::rotate()
+void Wire::rotate() noexcept
 {
-  int xm, ym, tmp;
+  qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+  qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
 
-  xm = (x1+x2) >> 1;
-  ym = (y1+y2) >> 1;
-
-  tmp = x1;
-  x1  = xm + y1  - ym;
-  y1  = ym - tmp + xm;
-
-  tmp = x2;
-  x2  = xm + y2  - ym;
-  y2  = ym - tmp + xm;
-
-  if(Label) {
-    tmp = Label->cx;
-    Label->cx = xm + Label->cy - ym;
-    Label->cy = ym - tmp + xm;
-    if(Label->Type == isHWireLabel) Label->Type = isVWireLabel;
-    else Label->Type = isHWireLabel;
+  if (Label != nullptr) {
+    auto r = Label->root();
+    qucs_s::geom::rotate_point_ccw(r.rx(), y1, r.ry(), cy);
+    Label->moveRootTo(r.x(), r.y());
   }
 }
 
-// ----------------------------------------------------------------
-void Wire::setCenter(int x, int y, bool relative)
-{
-  if(relative) {
-    x1 += x;  x2 += x;
-    y1 += y;  y2 += y;
-//    if(Label) Label->setCenter(x, y, true);
-  }
-  else {
-    x1 = x;  x2 = x;
-    y1 = y;  y2 = y;
-  }
-}
-
-// ----------------------------------------------------------------
-void Wire::getCenter(int& x, int& y)
-{
-  x = (x1+x2) >> 1;
-  y = (y1+y2) >> 1;
-}
-
-// ----------------------------------------------------------------
 // Lie x/y on wire ? 5 is the precision the coordinates have to fit.
 bool Wire::getSelected(int x_, int y_)
 {
-  if(x1-5 <= x_) if(x2+5 >= x_) if(y1-5 <= y_) if(y2+5 >= y_)
-    return true;
-
-  return false;
-}
-
-// ----------------------------------------------------------------
-void Wire::paintScheme(QPainter *p)
-{
-  p->drawLine(x1, y1, x2, y2);
-//  if(Label)
-//    if((Label->Type == isHWireLabel) || (Label->Type == isHWireLabel))
-//    if(Label->Type == isHWireLabel)
-//      Label->paintScheme(p);
+  return qucs_s::geom::is_near_line(QPoint{x_, y_}, QPoint{x1, y1}, QPoint{x2, y2}, 5);
 }
 
 void Wire::paint(QPainter *painter) const {
@@ -120,19 +78,17 @@ void Wire::paint(QPainter *painter) const {
   painter->restore();
 }
 
-void Wire::paintScheme(Schematic *p)
+void Wire::paintScheme(Schematic* sch)
 {
-    p->PostPaintEvent(_Line, cx + x1, cy + y1, cx + x2, cy + y2);
+  sch->PostPaintEvent(_Line, x1, y1, x2, y2);
 }
 
-// ----------------------------------------------------------------
 bool Wire::isHorizontal()
 {
   return (y1 == y2);
 }
 
-// ----------------------------------------------------------------
-void Wire::setName(const QString& Name_, const QString& Value_, int delta_, int x_, int y_)
+void Wire::setName(const QString& Name_, const QString& Value_, int root_x, int root_y, int x_, int y_)
 {
   if(Name_.isEmpty() && Value_.isEmpty()) {
     delete Label;
@@ -141,17 +97,18 @@ void Wire::setName(const QString& Name_, const QString& Value_, int delta_, int 
   }
 
   if(!Label) {
-    if(isHorizontal())
-      Label = new WireLabel(Name_, x1+delta_, y1, x_, y_, isHWireLabel);
+    if (y1 == y2)
+      Label = new WireLabel(Name_, root_x, y1, x_, y_, isHWireLabel);
+    else if (x1 == x2)
+      Label = new WireLabel(Name_, x1, root_y, x_, y_, isVWireLabel);
     else
-      Label = new WireLabel(Name_, x1, y1+delta_, x_, y_, isVWireLabel);
+      Label = new WireLabel(Name_, root_x, root_y, x_, y_, isLabel);
     Label->pOwner = this;
     Label->initValue = Value_;
   }
   else Label->setName(Name_);
 }
 
-// ----------------------------------------------------------------
 // Converts all necessary data of the wire into a string. This can be used to
 // save it to an ASCII file or to transport it via the clipboard.
 QString Wire::save()
@@ -168,7 +125,6 @@ QString Wire::save()
   return s;
 }
 
-// ----------------------------------------------------------------
 // This is the counterpart to Wire::save.
 bool Wire::load(const QString& _s)
 {
@@ -196,6 +152,10 @@ bool Wire::load(const QString& _s)
   y2 = n.toInt(&ok);
   if(!ok) return false;
 
+  // Update center
+  cx = (x1 + x2) / 2;
+  cy = (y1 + y2) / 2;
+
   n = s.section('"',1,1);
   if(!n.isEmpty()) {     // is wire labeled ?
     int nx = s.section(' ',5,5).toInt(&ok);   // x coordinate
@@ -211,4 +171,20 @@ bool Wire::load(const QString& _s)
   }
 
   return true;
+}
+
+QRect Wire::boundingRect() const noexcept
+{
+  return QRect{QPoint{x1, y1}, QPoint{x2, y2}}
+    .normalized();
+}
+
+void Wire::moveCenter(int dx, int dy) noexcept
+{
+  Element::moveCenter(dx, dy);
+  x1 += dx;
+  y1 += dy;
+  x2 += dx;
+  y2 += dy;
+  if (Label) Label->moveRoot(dx, dy);
 }

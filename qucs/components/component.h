@@ -59,17 +59,17 @@ public:
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
   void    paint(QPainter* painter);
-  void    paintScheme(Schematic*);
-  void    setCenter(int, int, bool relative=false);
-  void    getCenter(int&, int&);
-  int     textSize(int&, int&);
+  void    paintScheme(Schematic*) override;
+  int     textSize(int&, int&) const;
   void    Bounding(int&, int&, int&, int&);
   void    entireBounds(int&, int&, int&, int&);
+  QRect   boundingRectNoProperties() const noexcept;
+  QRect   boundingRect() const noexcept override;
   bool    getSelected(int, int);
   int     getTextSelected(int, int);
-  void    rotate();
-  void    mirrorX();  // mirror about X axis
-  void    mirrorY();  // mirror about Y axis
+  void    rotate() noexcept override;
+  void    mirrorX() noexcept override;
+  void    mirrorY() noexcept override;
   QString save();
   bool    load(const QString&);
 

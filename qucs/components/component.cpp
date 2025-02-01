@@ -83,7 +83,7 @@ void Component::Bounding(int &_x1, int &_y1, int &_x2, int &_y2) {
 
 // -------------------------------------------------------
 // Size of component text.
-int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeight) {
+int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeight) const {
     // get size of text using the screen-compatible metric
     QFontMetrics metrics(QucsSettings.font, 0);
     int textPropertiesCount = 0;
@@ -126,22 +126,19 @@ void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
     boundingRectBottom = std::max(ty + totalTextPropertiesHeight, y2) + cy;
 }
 
-// -------------------------------------------------------
-void Component::setCenter(int x, int y, bool relative) {
-    if (relative) {
-        cx += x;
-        cy += y;
-    }
-    else {
-        cx = x;
-        cy = y;
-    }
+QRect Component::boundingRectNoProperties() const noexcept {
+    return QRect{x1, y1, x2 - x1, y2 - y1}
+        .normalized()
+        .translated(center());
 }
 
-// -------------------------------------------------------
-void Component::getCenter(int &x, int &y) {
-    x = cx;
-    y = cy;
+QRect Component::boundingRect() const noexcept {
+    int textPropertyMaxWidth, totalTextPropertiesHeight;
+    textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
+    return QRect{tx, ty, textPropertyMaxWidth, totalTextPropertiesHeight}
+        .translated(center())
+        .united(boundingRectNoProperties())
+        .normalized();
 }
 
 // Given coordinates of a point (usually coming from a mouse click), finds
@@ -384,41 +381,9 @@ void Component::paintIcon(QPixmap* pixmap) {
 void Component::paintScheme(Schematic *p) {
     // qDebug() << "paintScheme" << Model;
     if (Model.at(0) == '.' || isEquation) {   // is simulation component (dc, ac, ...) + Equations
-//        int a, b, xb, yb;
-//        QFont newFont = p->font();
-//
-//        float Scale =
-//                ((Schematic *) QucsMain->DocumentTab->currentWidget())->Scale;
-//        newFont.setPointSizeF(float(Scale) * QucsSettings.largeFontSize);
-//        newFont.setWeight(QFont::DemiBold);
-//        // here the font metric is already the screen metric, since the font
-//        // is the current font the painter is using
-//        QFontMetrics metrics(newFont);
-//
-//        a = b = 0;
-//        QSize r;
-//        for (Text *pt: Texts) {
-//            r = metrics.size(0, pt->s);
-//            b += r.height();
-//            if (a < r.width()) a = r.width();
-//        }
-//        xb = a + int(12.0 * Scale);
-//        yb = b + int(10.0 * Scale);
-//        x2 = x1 + 25 + int(float(a) / Scale);
-//        y2 = y1 + 23 + int(float(b) / Scale);
-//        if (ty < y2 + 1) if (ty > y1 - r.height()) ty = y2 + 1;
-//
-//        p->PostPaintEvent(_Rect, cx - 6, cy - 5, xb, yb);
-//        p->PostPaintEvent(_Line, cx - 1, cy + yb, cx - 6, cy + yb - 5);
-//        p->PostPaintEvent(_Line, cx + xb - 2, cy + yb, cx - 1, cy + yb);
-//        p->PostPaintEvent(_Line, cx + xb - 2, cy + yb, cx + xb - 6, cy + yb - 5);
-//        p->PostPaintEvent(_Line, cx + xb - 2, cy + yb, cx + xb - 2, cy);
-//        p->PostPaintEvent(_Line, cx + xb - 2, cy, cx + xb - 6, cy - 5);
 
-        int _x1, _x2, _y1, _y2;
-        // textCorr to entireBounds
-        entireBounds(_x1, _y1, _x2, _y2);
-        p->PostPaintEvent(_Rect, _x1, _y1, _x2 - _x1, _y2 - _y1);
+        auto br = boundingRect();
+        p->PostPaintEvent(_Rect, br.left(), br.top(), br.width(), br.height());
 
         return;
     }
@@ -457,7 +422,7 @@ void Component::paintScheme(Schematic *p) {
 
 // -------------------------------------------------------
 // Rotates the component 90 counter-clockwise around its center
-void Component::rotate() {
+void Component::rotate() noexcept {
     // Port count only available after recreate, createSymbol
     if ((Model != "Sub") && (Model != "VHDL") && (Model != "Verilog")
         && (Model != "SpLib")) // skip port count
@@ -573,7 +538,7 @@ void Component::rotate() {
 
 // -------------------------------------------------------
 // Mirrors the component about the x-axis.
-void Component::mirrorX() {
+void Component::mirrorX() noexcept {
     // Port count only available after recreate, createSymbol
     if ((Model != "Sub") && (Model != "VHDL") && (Model != "Verilog")
         && (Model != "SpLib")) // skip port count
@@ -642,7 +607,7 @@ void Component::mirrorX() {
 
 // -------------------------------------------------------
 // Mirrors the component about the y-axis.
-void Component::mirrorY() {
+void Component::mirrorY() noexcept {
     // Port count only available after recreate, createSymbol
     if ((Model != "Sub") && (Model != "VHDL") && (Model != "Verilog")
         && (Model != "SpLib")) // skip port count
