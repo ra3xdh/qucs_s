@@ -86,22 +86,15 @@ void Ngspice::createNetlist(
     if (found && QucsSettings.DefaultSimulator != spicecompat::simSpiceOpus)
         stream<<QStringLiteral(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
-    // Find subcircuit definitions and library calls, they must be before the components
-    QStringList SubcircuitDefinition, LibraryCalls, OSDIfiles;
+    // Find library calls, they must be before the components
+    QStringList LibraryCalls, OSDIfiles;
     QStringList AlreadyInspected;
     for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
       if (!AlreadyInspected.contains(pc->ComponentName)){
         // If it wasn't inspected yet, lets check the Subcircuit and Library calls
-        QString Subcircuit = LibraryComponents[pc->Category][pc->ComponentName].Netlists["Ngspice_Subcircuit"];
         QString Library = LibraryComponents[pc->Category][pc->ComponentName].Netlists["Ngspice_LibraryInclude"];
         QStringList OSDI = LibraryComponents[pc->Category][pc->ComponentName].OSDIfiles;
 
-        if(Subcircuit.compare("None")){
-          // Subcircuit is not "None", then add it to the Subcircuit field in the netlist if it isn't already there
-          if (!SubcircuitDefinition.contains(Subcircuit)) {
-            SubcircuitDefinition.append(Subcircuit);
-          }
-        }
         if(Library.compare("None")){
           // Subcircuit is not "None", then add it to the Subcircuit field in the netlist
           if (!LibraryCalls.contains(Library)) {
@@ -119,10 +112,6 @@ void Ngspice::createNetlist(
       }
     }
 
-    if (!SubcircuitDefinition.isEmpty()) {
-      stream << SubcircuitDefinition.join("\n"); // Add subcircuit declarations
-      stream << QString("\n\n");
-    }
     if (!LibraryCalls.isEmpty()){
       stream << LibraryCalls.join("\n"); // Add library calls
       stream << QString("\n\n");
