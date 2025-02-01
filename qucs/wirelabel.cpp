@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "wirelabel.h"
+#include "multi_point.h"
+#include "one_point.h"
 #include "wire.h"
 #include "main.h"
 
@@ -30,77 +32,25 @@ WireLabel::WireLabel(const QString& _Name, int _cx, int _cy,
   x1 = _x1;
   y1 = _y1;
   setName(_Name);
-  initValue = "";
+
+  QFontMetrics metrics(QucsSettings.font, 0);
+  textSize = metrics.size(0, Name);
+  x2 = x1 + textSize.width();
+  y2 = y1 + textSize.height();
 
   Type = _Type;
-  isSelected = false;
-  isHighlighted = false;
 }
 
-WireLabel::~WireLabel()
-{
-}
-
-// ----------------------------------------------------------------
-void WireLabel::paintScheme(QPainter *p)
-{
-  p->drawRect(x1, y1, x2, y2);
-
-  // which corner of rectangle should be connected to line ?
-  if(cx < x1+(x2>>1)) {
-    if(cy < y1+(y2>>1))
-      p->drawLine(cx, cy, x1, y1);
-    else
-      p->drawLine(cx, cy, x1, y1+y2);
-  }
-  else {
-    if(cy < y1+(y2>>1))
-      p->drawLine(cx, cy, x1+x2, y1);
-    else
-      p->drawLine(cx, cy, x1+x2, y1+y2);
-  }
-}
-
-// ----------------------------------------------------------------
-void WireLabel::setCenter(int x_, int y_, bool relative)
-{
-  switch(Type) {
-    case isMovingLabel:
-      if(relative) {
-        x1 += x_;  cx += x_;
-        y1 += y_;  cy += y_;
-      }
-      else {
-        x1 = x_;  cx = x_;
-        y1 = y_;  cy = y_;
-      }
-      break;
-    case isHMovingLabel:
-      if(relative) { x1 += x_;  cx += x_; }
-      else { x1 = x_;  cx = x_; }
-      break;
-    case isVMovingLabel:
-      if(relative) { y1 += y_;  cy += y_; }
-      else { y1 = y_;  cy = y_; }
-      break;
-    default:
-      if(relative) {
-        x1 += x_;  y1 += y_; // moving cx/cy is done by owner (wire, node)
-      }
-      else { x1 = x_; y1 = y_; }
-  }
-}
-
-// ----------------------------------------------------------------
 bool WireLabel::getSelected(int x, int y)
 {
-  if(x1 <= x)
-    if(y1 <= y)
-      if((x1+x2) >= x)
-        if((y1+y2) >= y)
-          return true;
-
-  return false;
+  const QPoint click{x, y};
+  const QPoint text{x1, y1};
+  return
+    QRect{text, textSize}
+      .marginsAdded({5, 5, 5, 5})
+      .contains(click)
+    ||
+    qucs_s::geom::is_near_line(click, root(), text, 5);
 }
 
 void WireLabel::paint(QPainter *p) const {
@@ -141,11 +91,14 @@ void WireLabel::paint(QPainter *p) const {
 
   if (Type != isNodeLabel) {
     int start_angle = 0;
+    // TODO: angle need to be calculated from the wire
+    // angle or not used at all.
     switch (Type) {
     case isHWireLabel:
       start_angle = 16 * (right ? 45 : 225);
       break;
     case isVWireLabel:
+    case isLabel: //  same as V for simplicity
       start_angle = 16 * (bottom ? -45 : 135);
       break;
     default:
@@ -159,24 +112,22 @@ void WireLabel::paint(QPainter *p) const {
   if(isSelected)
   {
     p->setPen(QPen(Qt::darkGray,3));
-    p->drawRoundedRect(x1-2, y1-2, x2+6, y2+5, 4, 4);
+    p->drawRoundedRect(QRect{{x1,y1}, textSize}, 4, 4);
   }
   p->restore();
 }
 
-// ----------------------------------------------------------------
 void WireLabel::setName(const QString& Name_)
 {
   Name = Name_;
-  
+
   // get size of text using the screen-compatible metric
   QFontMetrics metrics(QucsSettings.font, 0);
-  QSize r = metrics.size(0, Name);
-  x2 = r.width();
-  y2 = r.height()-2;    // remember size of text
+  textSize = metrics.size(0, Name);
+  x2 = x1 + textSize.width();
+  y2 = y1 + textSize.height();
 }
 
-// ----------------------------------------------------------------
 // Converts all necessary data of the wire into a string. This can be used to
 // save it to an ASCII file or to transport it via the clipboard.
 // Wire labels use the same format like wires, but with length zero.
@@ -199,4 +150,55 @@ void WireLabel::getLabelBounding(int& _xmin, int& _ymin, int& _xmax, int& _ymax)
     _ymin = std::min(y1,y1+(y2+6));
     _ymax = std::max(y1,y1+(y2+5));
     _ymax = std::max(cy,_ymax);
+}
+
+QPoint WireLabel::root() const noexcept
+{
+  return QPoint{cx, cy};
+}
+
+void WireLabel::moveRoot(int dx, int dy) noexcept
+{
+  cx += dx;
+  cy += dy;
+}
+
+void WireLabel::moveRootTo(int x, int y) noexcept
+{
+  cx = x;
+  cy = y;
+}
+
+QPoint WireLabel::center() const noexcept
+{
+  return QRect{{x1, y1}, textSize}.center();
+}
+
+void WireLabel::moveCenter(int dx, int dy) noexcept
+{
+  x1 += dx;
+  y1 += dy;
+}
+
+void WireLabel::rotate() noexcept
+{
+  qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+}
+
+void WireLabel::mirrorX() noexcept
+{
+  moveCenter(0, (center().y() - root().y()) * 2);
+}
+
+void WireLabel::mirrorY() noexcept
+{
+  moveCenter((center().x() - root().x()) * 2, 0);
+}
+
+
+QRect WireLabel::boundingRect() const noexcept
+{
+  return QRect{QPoint{cx, cy}, QPoint{x1, y1}}
+    .normalized()
+    .united(QRect{{x1, y1}, textSize}.normalized());
 }
