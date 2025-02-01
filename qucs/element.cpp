@@ -17,6 +17,7 @@
 
 #include "element.h"
 #include "misc.h"
+#include "one_point.h"
 
 #include <cmath>
 #include <QPainter>
@@ -103,29 +104,57 @@ void Property::paint(int x, int y, QPainter* p)
   p->drawText(x, y, 1, 1, Qt::TextDontClip, Name + "=" + Value, &br);
 }
 
-Element::Element()
+void Element::moveCenterTo(int x, int y) noexcept
 {
-  Type = isDummyElement;
-  isSelected = false;
-  cx = cy = x1 = y1 = x2 = y2 = 0;
+  auto c = center();
+  moveCenter(x - c.x(), y - c.y());
 }
 
-Element::~Element()
+void Element::moveCenterTo(const QPoint& p) noexcept
 {
+  moveCenterTo(p.x(), p.y());
 }
 
-void Element::paintScheme(Schematic *)
+void Element::moveCenter(int dx, int dy) noexcept
 {
+  cx += dx;
+  cy += dy;
 }
 
-void Element::paintScheme(QPainter *)
+void Element::rotate(int rcx, int rcy) noexcept
 {
+  int ncx = cx;
+  int ncy = cy;
+  qucs_s::geom::rotate_point_ccw(ncx, ncy, rcx, rcy);
+  moveCenterTo(ncx, ncy);
+  rotate();
 }
 
-void Element::setCenter(int, int, bool)
+void Element::rotate(const QPoint& center) noexcept
 {
+  rotate(center.x(), center.y());
 }
 
-void Element::getCenter(int&, int&)
+void Element::mirrorX(int axis) noexcept
 {
+  moveCenterTo(cx, qucs_s::geom::mirror_coordinate(cy, axis));
+  mirrorX();
+}
+
+void Element::mirrorY(int axis) noexcept
+{
+  moveCenterTo(qucs_s::geom::mirror_coordinate(cx, axis), cy);
+  mirrorY();
+}
+
+QRect Element::boundingRect() const noexcept
+{
+  return QRect{QPoint{x1, y1}, QPoint{x2, y2}}
+    .normalized()
+    .translated(center());
+}
+
+QPoint Element::center() const noexcept
+{
+  return {cx, cy};
 }

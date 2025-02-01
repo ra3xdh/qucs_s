@@ -1423,7 +1423,7 @@ bool Component::getBrush(const QString &s, QBrush &Brush, int i) {
 }
 
 // ---------------------------------------------------------------------
-Property *Component::getProperty(const QString &name) {      
+Property *Component::getProperty(const QString &name) {
     for(auto pp = Props.begin(); pp != Props.end(); ++pp) {
       if((*pp)->Name == name) {
         return *pp;
