@@ -123,9 +123,7 @@ public:
   virtual void paint(QPainter* p);
   virtual void paintDiagram(QPainter* painter);
   void paintMarkers(QPainter* p, bool paintAll = true);
-  void    setCenter(int, int, bool relative=false);
-  void    getCenter(int&, int&);
-  void    paintScheme(Schematic*);
+  void    paintScheme(Schematic*) override;
   void    Bounding(int&, int&, int&, int&);
   bool    getSelected(int, int);
   bool    resizeTouched(float, float, float);

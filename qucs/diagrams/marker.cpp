@@ -460,40 +460,6 @@ void Marker::paint(QPainter* painter) {
   painter->restore();
 }
 
-// ---------------------------------------------------------------------
-void Marker::paintScheme(QPainter *p)
-{
-  assert(diag());
-  int x0 = diag()->cx;
-  int y0 = diag()->cy;
-  p->drawRect(x0+x1, y0+y1, x2, y2);
-
-  // which corner of rectangle should be connected to line ?
-  if(cx < x1+(x2>>1)) {
-    if(-cy < y1+(y2>>1))
-      p->drawLine(x0+cx, y0-cy, x0+x1, y0+y1);
-    else
-      p->drawLine(x0+cx, y0-cy, x0+x1, y0+y1+y2-1);
-  }
-  else {
-    if(-cy < y1+(y2>>1))
-      p->drawLine(x0+cx, y0-cy, x0+x1+x2-1, y0+y1);
-    else
-      p->drawLine(x0+cx, y0-cy, x0+x1+x2-1, y0+y1+y2-1);
-  }
-}
-
-// ------------------------------------------------------------
-void Marker::setCenter(int x, int y, bool relative)
-{
-  if(relative) {
-    x1 += x;  y1 += y;
-  }
-  else {
-    x1 = x;  y1 = y;
-  }
-}
-
 // -------------------------------------------------------
 void Marker::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
 {

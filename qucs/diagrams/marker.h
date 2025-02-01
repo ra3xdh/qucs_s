@@ -51,8 +51,6 @@ public:
   bool    moveLeftRight(bool);
   bool    moveUpDown(bool);
   void    paint(QPainter* painter);
-  void    paintScheme(QPainter*);
-  void    setCenter(int, int, bool);
   void    Bounding(int& _x1, int& _y1, int& _x2, int& _y2);
   QString save();
   bool    load(const QString& Line);

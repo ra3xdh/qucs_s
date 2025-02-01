@@ -1208,23 +1208,6 @@ int Diagram::checkColumnWidth(const QString &Str,
 }
 
 // ------------------------------------------------------------
-void Diagram::setCenter(int x, int y, bool relative) {
-    if (relative) {
-        cx += x;
-        cy += y;
-    } else {
-        cx = x;
-        cy = y;
-    }
-}
-
-// -------------------------------------------------------
-void Diagram::getCenter(int &x, int &y) {
-    x = cx + (x2 >> 1);
-    y = cy - (y2 >> 1);
-}
-
-// ------------------------------------------------------------
 Diagram *Diagram::newOne() {
     return new Diagram();
 }

@@ -53,6 +53,7 @@ Graph::~Graph()
     cPointsY = nullptr;
   }
   qDeleteAll(cPointsX);
+  qDeleteAll(Markers);
 }
 
 // ---------------------------------------------------------------------
