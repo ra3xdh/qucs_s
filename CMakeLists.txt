@@ -51,6 +51,8 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(QT_NO_DEBUG_OUTPUT)
 endif()
 
+enable_testing()
+
 add_subdirectory( qucs )
 #add_subdirectory( converter )
 add_subdirectory( qucs-activefilter )

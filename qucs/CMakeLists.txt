@@ -117,6 +117,7 @@ INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}/components
   ${PROJECT_SOURCE_DIR}/diagrams
   ${PROJECT_SOURCE_DIR}/dialogs
+  ${PROJECT_SOURCE_DIR}/geometry
   #${qucs_SOURCE_DIR}/octave ->no sources here
   ${PROJECT_SOURCE_DIR}/paintings
   ${PROJECT_SOURCE_DIR}/third_party
@@ -127,6 +128,7 @@ ADD_SUBDIRECTORY( qt3_compat )
 ADD_SUBDIRECTORY( components )
 ADD_SUBDIRECTORY( diagrams )
 ADD_SUBDIRECTORY( dialogs )
+ADD_SUBDIRECTORY( geometry )
 ADD_SUBDIRECTORY( octave )
 ADD_SUBDIRECTORY( python )
 ADD_SUBDIRECTORY( paintings )
@@ -258,7 +260,7 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
 # Tell CMake which libraries we need to link our executable against.
 #
 TARGET_LINK_LIBRARIES( ${QUCS_NAME}
-    components diagrams dialogs paintings extsimkernels spicecomponents qt3_compat
+    components diagrams dialogs geometry paintings extsimkernels spicecomponents qt3_compat
     Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::Xml  Qt6::PrintSupport )
 SET_TARGET_PROPERTIES(${QUCS_NAME} PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #
