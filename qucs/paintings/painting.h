@@ -23,34 +23,38 @@
 
 class Painting : public Element  {
 public:
-  Painting();
- ~Painting() {};
+  Painting() { Type = isPainting; }
+ ~Painting() override = default;
 
-  virtual void getCenter(int&, int &) {};
-  virtual bool getSelected(float, float, float) { return false; };
+  virtual void paint(QPainter* p) = 0;
+  virtual Painting* newOne() = 0;
 
-  virtual Painting* newOne();
-  virtual bool load(const QString&) { return true; };
-  virtual QString save();
-  virtual QString saveCpp();
-  virtual QString saveJSON();
-  virtual void paint(QPainter*) {};
-  virtual void MouseMoving(Schematic*, int, int, int, int,
-                           Schematic*, int, int) {};
-  virtual bool MousePressing(Schematic *sch = 0) { Q_UNUSED(sch) return false; };
-  virtual void Bounding(int&, int&, int&, int&);
-  virtual bool resizeTouched(float, float, float) { return false; };
+  virtual bool load(const QString& /*input*/) = 0;
+  virtual QString save() = 0;
+  virtual QString saveCpp() = 0;
+  virtual QString saveJSON() = 0;
+
+  virtual bool getSelected(const QPoint& /*click*/, int /*tolerance*/) { return false; };
+  virtual bool resizeTouched(const QPoint& /*click*/, int /*tolerance*/) { return false; };
+
+  virtual void MouseMoving(const QPoint& /*onGrid*/, Schematic* /*sch*/, const QPoint& /*cursor*/) {};
+  virtual bool MousePressing(Schematic* sch = nullptr) { Q_UNUSED(sch) return false; };
+
   virtual void MouseResizeMoving(int, int, Schematic*) {};
 
-  virtual void rotate(int, int) {};
-  virtual void mirrorX() {};
-  virtual void mirrorY() {};
-  virtual bool Dialog(QWidget *parent = 0) { Q_UNUSED(parent) return false; };
+  void  moveCenterTo(int x, int y) noexcept override;
+  void  moveCenter(int dx, int dy) noexcept override;
 
+  QRect boundingRect() const noexcept override;
+
+  virtual bool Dialog(QWidget* parent = nullptr) { Q_UNUSED(parent) return false; };
+  QString Name; // name of painting, e.g. for saving
+
+protected:
   QString toPenString (int);
   QString toBrushString (int);
-  QString Name; // name of painting, e.g. for saving
-  int  State;   // state for different mouse operations
+  void updateCenter() noexcept;
+  virtual void afterMove([[maybe_unused]] int dx, [[maybe_unused]] int dy) noexcept {};
 };
 
 #endif

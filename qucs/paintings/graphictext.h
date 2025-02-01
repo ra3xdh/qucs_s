@@ -19,42 +19,39 @@
 #define GRAPHICTEXT_H
 
 #include "painting.h"
-
-#include <QColor>
 #include <QFont>
-#include <QString>
 
 
 class GraphicText : public Painting  {
 public:
   GraphicText();
- ~GraphicText();
 
-  void paintScheme(Schematic*);
-  void getCenter(int&, int&);
-  void setCenter(int, int, bool relative=false);
+  void paint(QPainter* painter) override;
+  void paintScheme(Schematic*) override;
 
-  Painting* newOne();
+  Painting* newOne() override;
   static Element* info(QString&, char* &, bool getNewOne=false);
-  bool load(const QString&);
-  QString save();
-  QString saveCpp();
-  QString saveJSON();
-  void paint(QPainter* painter);
-  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int);
-  bool MousePressing(Schematic *sch = 0);
-  bool getSelected(float, float, float);
-  void Bounding(int&, int&, int&, int&);
 
-  void rotate(int, int);
-  void mirrorX();
-  void mirrorY();
-  bool Dialog(QWidget *parent = 0);
+  bool    load(const QString&) override;
+  QString save() override;
+  QString saveCpp() override;
+  QString saveJSON() override;
 
-  QColor   Color;
-  QFont    Font;
-  QString  Text;
-  int      Angle;
+  bool getSelected(const QPoint& click, int tolerance) override;
+
+  void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
+  bool MousePressing(Schematic* sch = nullptr) override;
+
+  void rotate() noexcept override;
+  void rotate(int rcx, int rcy) noexcept override;
+
+  bool Dialog(QWidget* parent = nullptr) override;
+
+private:
+  QColor   color;
+  QFont    font;
+  QString  text;
+  int      angle;
 };
 
 #endif

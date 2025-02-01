@@ -187,9 +187,8 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
     for(pi = sch->a_SymbolPaints.first(); pi != 0; pi = sch->a_SymbolPaints.next())
       if(pi->Name == ".ID ") {
         ID_Text *pid = (ID_Text*)pi;
-        QList<SubParameter *>::const_iterator it;
-        for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-            QString s = "parameter real " + (*it)->Name + ";\n";
+        for(const auto& sub_param : pid->subParameters) {
+            QString s = "parameter real " + sub_param->name + ";\n";
             stream<<s;
         }
         break;

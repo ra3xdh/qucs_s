@@ -1914,9 +1914,8 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
             for(pi = a_SymbolPaints.first(); pi != 0; pi = a_SymbolPaints.next())
               if(pi->Name == ".ID ") {
                 ID_Text *pid = (ID_Text*)pi;
-                QList<SubParameter *>::const_iterator it;
-                for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-                  s = (*it)->Name; // keep 'Name' unchanged
+                for (const auto& sub_param : pid->subParameters) {
+                  s = sub_param->name; // keep 'Name' unchanged
                   (*tstream) << " " << s.replace("=", "=\"") << '"';
                 }
                 break;
@@ -1957,11 +1956,10 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
               // subcircuit parameters
               for(pi = a_SymbolPaints.first(); pi != 0; pi = a_SymbolPaints.next())
                 if(pi->Name == ".ID ") {
-                  QList<SubParameter *>::const_iterator it;
                   ID_Text *pid = (ID_Text*)pi;
-                  for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-                    s = (*it)->Name.section('=', 0,0);
-                    QString v = misc::Verilog_Param((*it)->Name.section('=', 1,1));
+                  for (const auto& sub_param : pid->subParameters) {
+                    s = sub_param->name.section('=', 0,0);
+                    QString v = misc::Verilog_Param(sub_param->name.section('=', 1,1));
                     (*tstream) << " parameter " << s << " = " << v << ";\n";
                   }
                   (*tstream) << "\n";
@@ -1999,13 +1997,12 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
               for(pi = a_SymbolPaints.first(); pi != 0; pi = a_SymbolPaints.next()) {
                 if(pi->Name == ".ID ") {
                   ID_Text *pid = (ID_Text*)pi;
-                  QList<SubParameter *>::const_iterator it;
 
 
 
-                  for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-                    s = (*it)->Name;
-                    QString t = (*it)->Type.isEmpty() ? "real" : (*it)->Type;
+                  for (const auto& sub_param : pid->subParameters) {
+                    s = sub_param->name;
+                    QString t = sub_param->type.isEmpty() ? "real" : sub_param->type;
                     generic_str += s.replace("=", " : "+t+" := ") + ";\n ";
                   }
 

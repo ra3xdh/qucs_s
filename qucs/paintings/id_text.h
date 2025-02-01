@@ -20,44 +20,39 @@
 
 #include "painting.h"
 
-#include <QString>
-#include <QList>
 
 struct SubParameter {
-  SubParameter(bool display_, const QString& Name_, const QString& Descr_)
-     : display(display_), Name(Name_), Description(Descr_) { Type = ""; };
-  SubParameter(bool display_, const QString& Name_, const QString& Descr_,
-	       const QString& Type_)
-     : display(display_), Name(Name_), Description(Descr_), Type(Type_) {};
+  SubParameter(bool display_, const QString& name_, const QString& description_,
+	       const QString& type_ = "")
+     : display(display_), name(name_), description(description_), type(type_) {};
 
   bool display;
-  QString Name, Description, Type;
+  QString name, description, type;
 };
 
 
 class ID_Text : public Painting  {
 public:
-  ID_Text(int cx_=0, int cy_=0);
- ~ID_Text();
+  ID_Text(int x1 = 0, int y1 = 0);
 
-  void paintScheme(Schematic*);
-  void getCenter(int&, int&);
-  void setCenter(int, int, bool relative=false);
+  Painting* newOne() override { /* required by interface but unused */ return nullptr; }
 
-  bool load(const QString&);
-  QString save();
-  QString saveCpp();
-  QString saveJSON();
   void paint(QPainter* painter) override;
-  bool getSelected(float, float, float);
+  void paintScheme(Schematic*) override;
 
-  void rotate(int, int);
-  void mirrorX();
-  void mirrorY();
-  bool Dialog(QWidget *parent = 0);
+  bool    load(const QString&) override;
+  QString save() override;
+  QString saveCpp() override;
+  QString saveJSON() override;
 
-  QString Prefix;
-  QList<SubParameter *> Parameter;
+  bool getSelected(const QPoint& click, int tolerance) override;
+
+  void rotate(int, int) noexcept override;
+
+  bool Dialog(QWidget* parent = nullptr) override;
+
+  QString prefix;
+  std::vector<std::unique_ptr<SubParameter>> subParameters;
 };
 
 #endif

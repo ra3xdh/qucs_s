@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "main.h"
+#include "one_point.h"
 #include "portsymbol.h"
 #include "schematic.h"
 
@@ -30,7 +31,7 @@ PortSymbol::PortSymbol(int cx_, int cy_, const QString& numberStr_,
   cx = cx_;
   cy = cy_;
 
-  Angel = 0;
+  angle = 0;
   nameStr = nameStr_;
   numberStr = numberStr_;
   // get size of text using the screen-compatible metric
@@ -40,10 +41,6 @@ PortSymbol::PortSymbol(int cx_, int cy_, const QString& numberStr_,
   y1 = -((r.height() + 8) >> 1);
   x2 = 8 - x1;
   y2 = r.height() + 8;
-}
-
-PortSymbol::~PortSymbol()
-{
 }
 
 void PortSymbol::paint(QPainter *painter) {
@@ -59,7 +56,7 @@ void PortSymbol::paint(QPainter *painter) {
   constexpr int offset = 8;
 
   int tx, ty;
-  switch(Angel) {
+  switch(angle) {
   case 90:
     tx = cx - half_nameheight;
     ty = cy + offset + name_size.width();
@@ -77,7 +74,7 @@ void PortSymbol::paint(QPainter *painter) {
     ty = cy - half_nameheight;
   }
 
-  const bool is_vertical = Angel == 90 || Angel == 270;
+  const bool is_vertical = angle == 90 || angle == 270;
 
   painter->save();
   {
@@ -99,10 +96,10 @@ void PortSymbol::paint(QPainter *painter) {
     .united(name_br.normalized())
     .marginsAdded(QMargins{2, 2, 2, 2});
 
-  x1 = total_br.left() - cx;
-  y1 = total_br.top() - cy;
-  x2 = total_br.width();
-  y2 = total_br.height();
+  x1 = total_br.left();
+  y1 = total_br.top();
+  x2 = total_br.right();
+  y2 = total_br.bottom();
 
   painter->setPen(Qt::lightGray);
   painter->drawRect(total_br);
@@ -114,29 +111,12 @@ void PortSymbol::paint(QPainter *painter) {
   painter->restore();
 }
 
-// --------------------------------------------------------------------------
 void PortSymbol::paintScheme(Schematic *p)
 {
   p->PostPaintEvent(_Ellipse, cx-4, cy-4, 8, 8);
   p->PostPaintEvent(_Rect, cx+x1, cy+y1, x2, y2);
 }
 
-// --------------------------------------------------------------------------
-void PortSymbol::getCenter(int& x, int &y)
-{
-  x = cx;
-  y = cy;
-}
-
-// --------------------------------------------------------------------------
-// Sets the center of the painting to x/y.
-void PortSymbol::setCenter(int x, int y, bool relative)
-{
-  if(relative) { cx += x;  cy += y; }
-  else { cx = x;  cy = y; }
-}
-
-// --------------------------------------------------------------------------
 bool PortSymbol::load(const QString& s)
 {
   bool ok;
@@ -155,7 +135,7 @@ bool PortSymbol::load(const QString& s)
 
   n  = s.section(' ',4,4);      // Angel
   if(n.isEmpty()) return true;  // be backward-compatible
-  Angel = n.toInt(&ok);
+  angle = n.toInt(&ok);
   if(!ok) return false;
 
   // name string
@@ -166,15 +146,13 @@ bool PortSymbol::load(const QString& s)
   return true;
 }
 
-// --------------------------------------------------------------------------
 QString PortSymbol::save()
 {
   QString s = Name+QString::number(cx)+" "+QString::number(cy)+" ";
-  s += numberStr+" "+QString::number(Angel) + " " + nameStr;
+  s += numberStr+" "+QString::number(angle) + " " + nameStr;
   return s;
 }
 
-// --------------------------------------------------------------------------
 QString PortSymbol::saveCpp()
 {
   QString s =
@@ -191,47 +169,57 @@ QString PortSymbol::saveJSON()
   return s;
 }
 
-// --------------------------------------------------------------------------
 // Checks if the coordinates x/y point to the painting.
-bool PortSymbol::getSelected(float fX, float fY, float)
+bool PortSymbol::getSelected(const QPoint& click, int /*tolerance*/)
 {
-  if(int(fX) < cx+x1)  return false;
-  if(int(fY) < cy+y1)  return false;
-  if(int(fX) > cx+x1+x2)  return false;
-  if(int(fY) > cy+y1+y2)  return false;
-
-  return true;
+  return QRect{QPoint{x1, y1}, QPoint{x2, y2}}.contains(click);
 }
 
-// --------------------------------------------------------------------------
-void PortSymbol::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
-{
-  _x1 = cx+x1;     _y1 = cy+y1;
-  _x2 = cx+x1+x2;  _y2 = cy+y1+y2;
-}
-
-// --------------------------------------------------------------------------
 // Rotates around the center.
-void PortSymbol::rotate(int, int)
+inline void PortSymbol::rotate() noexcept
 {
-  if(Angel < 270)  Angel += 90;
-  else  Angel = 0;
+  if (angle < 270) {
+    angle += 90;
+  } else {
+    angle = 0;
+  }
 }
 
-// --------------------------------------------------------------------------
-// Mirrors about connection node (not center line !).
-void PortSymbol::mirrorX()
+// Rotates around the center.
+inline void PortSymbol::rotate(int x, int y) noexcept
 {
-  if(Angel == 90)  Angel = 270;
-  else  if(Angel == 270)  Angel = 90;
+  qucs_s::geom::rotate_point_ccw(cx, cy, x, y);
+  rotate();
 }
 
-// --------------------------------------------------------------------------
 // Mirrors about connection node (not center line !).
-void PortSymbol::mirrorY()
+void PortSymbol::mirrorX() noexcept
 {
-  if(Angel == 0)  Angel = 180;
-  else  if(Angel == 180)  Angel = 0;
+  switch (angle) {
+    case 90:
+      angle = 270;
+      break;
+    case 270:
+      angle = 90;
+      break;
+    default:
+      break;
+  };
+}
+
+// Mirrors about connection node (not center line !).
+void PortSymbol::mirrorY() noexcept
+{
+  switch (angle) {
+    case 0:
+      angle = 180;
+      break;
+    case 180:
+      angle = 0;
+      break;
+    default:
+      break;
+  };
 }
 
 bool PortSymbol::MousePressing(Schematic *sch) {
@@ -249,10 +237,10 @@ bool PortSymbol::MousePressing(Schematic *sch) {
   return false;
 }
 
-void PortSymbol::MouseMoving(Schematic* doc, int, int, int gx, int gy, Schematic *, int, int) {
-  cx = gx;
-  cy = gy;
-  paintScheme(doc);
+void PortSymbol::MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& /*cursor*/) {
+  cx = onGrid.x();
+  cy = onGrid.y();
+  paintScheme(sch);
 }
 
 Painting* PortSymbol::newOne() {

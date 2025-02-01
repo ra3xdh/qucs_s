@@ -1832,8 +1832,8 @@ int Schematic::adjustPortNumbers()
         for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
                 ID_Text *id = (ID_Text *) pp;
-                id->Prefix = VInfo.EntityName.toUpper();
-                id->Parameter.clear();
+                id->prefix = VInfo.EntityName.toUpper();
+                id->subParameters.clear();
                 if (!VInfo.GenNames.isEmpty())
                     GNames = VInfo.GenNames.split(",", Qt::SkipEmptyParts);
                 if (!VInfo.GenTypes.isEmpty())
@@ -1842,8 +1842,9 @@ int Schematic::adjustPortNumbers()
                     GDefs = VInfo.GenDefs.split(",", Qt::SkipEmptyParts);
                 ;
                 for (Number = 1, it = GNames.begin(); it != GNames.end(); ++it) {
-                    id->Parameter.append(
-                        new SubParameter(true,
+                    id->subParameters.append(
+                        std::make_unique<SubParameter>(
+                                         true,
                                          *it + "=" + GDefs[Number - 1],
                                          tr("generic") + " " + QString::number(Number),
                                          GTypes[Number - 1]));
@@ -1893,8 +1894,8 @@ int Schematic::adjustPortNumbers()
         for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
                 ID_Text *id = (ID_Text *) pp;
-                id->Prefix = VInfo.ModuleName.toUpper();
-                id->Parameter.clear();
+                id->prefix = VInfo.ModuleName.toUpper();
+                id->subParameters.clear();
             }
 
         for (Number = 1, it = Names.begin(); it != Names.end(); ++it, Number++) {
@@ -1940,8 +1941,8 @@ int Schematic::adjustPortNumbers()
         for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
             if (pp->Name == ".ID ") {
                 ID_Text *id = (ID_Text *) pp;
-                id->Prefix = VInfo.ModuleName.toUpper();
-                id->Parameter.clear();
+                id->prefix = VInfo.ModuleName.toUpper();
+                id->subParameters.clear();
             }
 
         for (Number = 1, it = Names.begin(); it != Names.end(); ++it, Number++) {

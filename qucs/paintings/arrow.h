@@ -26,38 +26,59 @@
 class Arrow : public Painting  {
 public:
   Arrow();
- ~Arrow();
 
-  void paint(QPainter* painter);
-  void paintScheme(Schematic*);
-  void getCenter(int&, int&);
-  void setCenter(int, int, bool relative=false);
+  void paint(QPainter* painter) override;
+  void paintScheme(Schematic*) override;
 
-  Painting* newOne();
+  Painting* newOne() override;
   static Element* info(QString&, char* &, bool getNewOne=false);
-  bool load(const QString&);
-  QString save();
-  QString saveCpp();
-  QString saveJSON();
-  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int);
-  bool MousePressing(Schematic *sch = 0);
-  bool getSelected(float, float, float);
-  void Bounding(int&, int&, int&, int&);
-  bool resizeTouched(float, float, float);
-  void MouseResizeMoving(int, int, Schematic*);
 
-  void rotate(int, int);
-  void mirrorX();
-  void mirrorY();
-  bool Dialog(QWidget *parent = 0);
+  bool load(const QString&) override;
+  QString save() override;
+  QString saveCpp() override;
+  QString saveJSON() override;
 
-  void calcArrowHead();
+  bool getSelected(const QPoint& click, int tolerance) override;
+  bool resizeTouched(const QPoint& click, int tolerance) override;
 
-  QPen   Pen;
-  int    Style;
-  double Height, Width;  // size of the arrow head
-  double Length, beta;
-  int    xp1, yp1, xp2, yp2;   // coordinates to paint the arrow head
+  void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
+  bool MousePressing(Schematic *sch = nullptr) override;
+  void MouseResizeMoving(int, int, Schematic*) override;
+
+  void  rotate() noexcept override;
+  void  rotate(int, int) noexcept override;
+  void  mirrorX() noexcept override;
+  void  mirrorY() noexcept override;
+
+  bool Dialog(QWidget* parent = nullptr) override;
+
+private:
+  QPen   pen;
+
+  enum ArrowHeadStyle { empty = 0, filled };
+  ArrowHeadStyle headStyle;
+
+  // size of the arrow head
+  double headHeight, headWidth;
+  // calculated from height and width
+  double headWingLength, headAngle;
+
+  QPoint headLeftWing;
+  QPoint headRightWing;
+
+  // Helps in handling of mouse movements while resiging the line
+  enum class State { idle, moving_head, moving_tail };
+  State arrowState = State::idle;
+
+  // Helps distinguish first and second mouse click while
+  // drawing a line
+  bool isBeingDrawn = false;
+
+  // Calculates and updates coordinates of arrow wings
+  void updateHead() noexcept;
+
+protected:
+  void afterMove(int /*dx*/, int /*dy*/) noexcept override { updateHead(); }
 };
 
 #endif

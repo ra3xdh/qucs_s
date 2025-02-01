@@ -304,9 +304,8 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
     for(pai = a_schematic->a_SymbolPaints.first(); pai != 0; pai = a_schematic->a_SymbolPaints.next())
       if(pai->Name == ".ID ") {
         ID_Text *pid = (ID_Text*)pai;
-        QList<SubParameter *>::const_iterator it;
-        for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-            header += (*it)->Name + " "; // keep 'Name' unchanged
+        for (const auto& sub_param : pid->subParameters) {
+            header += sub_param->name + " "; // keep 'Name' unchanged
           //(*tstream) << " " << s.replace("=", "=\"") << '"';
         }
         break;

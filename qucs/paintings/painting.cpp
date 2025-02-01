@@ -15,23 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "painting.h"
-
-Painting::Painting()
-{
-  Type = isPainting;
-  State = 0;
-}
-
-Painting* Painting::newOne()
-{
-  return new Painting();
-}
-
-void Painting::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
-{
-  _x1 = cx;     _y1 = cy;
-  _x2 = cx+x2;  _y2 = cy+y2;
-}
+#include "one_point.h"
 
 QString Painting::save()
 {
@@ -81,4 +65,31 @@ QString Painting::toBrushString (int brush) {
   case Qt::TexturePattern : return "Qt::CustomPattern ";
   }
   return "Qt::NoBrush";
+}
+
+void Painting::moveCenterTo(int x, int y) noexcept
+{
+  moveCenter(x - cx, y - cy);
+}
+
+void Painting::moveCenter(int dx, int dy) noexcept
+{
+  cx += dx;
+  cy += dy;
+  x1 += dx;
+  x2 += dx;
+  y1 += dy;
+  y2 += dy;
+  afterMove(dx, dy);
+}
+
+void Painting::updateCenter() noexcept
+{
+  cx = x1 + (x2 - x1) / 2;
+  cy = y1 + (y2 - y1) / 2;
+}
+
+QRect Painting::boundingRect() const noexcept
+{
+  return QRect{QPoint{x1, y1}, QPoint{x2, y2}}.normalized();
 }
