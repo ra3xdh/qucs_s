@@ -3,7 +3,7 @@ If:
     PathMatch: [ .*\.cpp, .*\.h ]
 
 CompileFlags:
-    Add: [-std=c++17]
+    Add: [-std=c++20]
 
 Diagnostics:
     # List of clang-tidy checks: https://clang.llvm.org/extra/clang-tidy/checks/list.html
