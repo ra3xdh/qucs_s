@@ -441,7 +441,7 @@ private:
    ******************************************************************** */
 
 public:
-  Node* insertNode(int, int, Element*);
+  Node* insertNode(int, int);
   Node* selectedNode(int, int);
 
   qucs_s::wire::Planner a_wirePlanner;

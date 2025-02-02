@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#include "geometry/multi_point.h"
 #include "portsymbol.h"
 #include "schematic.h"
 
@@ -56,46 +57,30 @@ static bool shouldBeSelected(const QRect& elementBoundingRect, const QRect& sele
 
 // Inserts a port into the schematic and connects it to another node if
 // the coordinates are identical. The node is returned.
-Node* Schematic::insertNode(int x, int y, Element *e)
+Node* Schematic::insertNode(int x, int y)
 {
-    Node *pn;
-    // check if new node lies upon existing node
-    for(pn = a_Nodes->first(); pn != 0; pn = a_Nodes->next())  // check every node
-        if(pn->cx == x) if(pn->cy == y)
-            {
-                pn->connect(e);
-                break;
-            }
-
-    if(pn == 0)   // create new node, if no existing one lies at this position
-    {
-        pn = new Node(x, y);
-        a_Nodes->append(pn);
-        pn->connect(e);  // connect schematic node to component node
-    }
-    else return pn;   // return, if node is not new
-
-    // check if the new node lies upon an existing wire
-    for(Wire *pw = a_Wires->first(); pw != 0; pw = a_Wires->next())
-    {
-        if(pw->x1 == x)
-        {
-            if(pw->y1 > y) continue;
-            if(pw->y2 < y) continue;
-        }
-        else if(pw->y1 == y)
-        {
-            if(pw->x1 > x) continue;
-            if(pw->x2 < x) continue;
-        }
-        else continue;
-
-        // split the wire into two wires
-        splitWire(pw, pn);
-        return pn;
+    // Check if there is a node at given coordinates
+    for (auto* node : *a_Nodes) {
+      if (node->x() == x && node->y() == y) {
+        return node;
+      }
     }
 
-    return pn;
+    // Create new node, if no existing one at given coordinates
+    Node *new_node = new Node(x, y);
+    a_Nodes->append(new_node);
+
+    // Check if the new node lies upon an existing wire
+    for (auto* wire : *a_Wires)
+    {
+        if (qucs_s::geom::is_between(new_node, wire->Port1, wire->Port2)) {
+            // split the wire into two wires
+            splitWire(wire, new_node);
+            return new_node;
+        }
+    }
+
+    return new_node;
 }
 
 // ---------------------------------------------------
@@ -2849,8 +2834,10 @@ void Schematic::insertComponentNodes(Component *component, bool noOptimize)
     if (component->Ports.empty()) return;
 
     // connect every node of the component to corresponding schematic node
-    for (Port *pp : component->Ports)
-        pp->Connection = insertNode(pp->x+component->cx, pp->y+component->cy, component);
+    for (Port *pp : component->Ports) {
+        pp->Connection = insertNode(pp->x+component->cx, pp->y+component->cy);
+        pp->Connection->connect(component);
+    }
 
     if(noOptimize)  return;
 
@@ -3151,8 +3138,10 @@ void Schematic::setCompPorts(Component *pc)
 
     // Re-connect component node to schematic node. This must be done completely
     // after the first loop in order to avoid problems with node labels.
-    for (Port *pp : pc->Ports)
-        pp->Connection = insertNode(pp->x+pc->cx, pp->y+pc->cy, pc);
+    for (Port *pp : pc->Ports) {
+        pp->Connection = insertNode(pp->x+pc->cx, pp->y+pc->cy);
+        pp->Connection->connect(pc);
+    }
 
     for(pl = LabelCache.first(); pl != 0; pl = LabelCache.next())
         insertNodeLabel(pl);
