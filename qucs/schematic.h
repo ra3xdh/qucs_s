@@ -149,7 +149,7 @@ public:
   void  showAll();
   void zoomToSelection();
   void  showNoZoom();
-  void  enlargeView(int, int, int, int);
+  void  enlargeView(const Element* e);
   void  switchPaintMode();
   int   adjustPortNumbers();
   int   orderSymbolPorts();

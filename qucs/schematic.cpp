@@ -1054,30 +1054,16 @@ void Schematic::showNoZoom()
     }
  }
 
- // If the model plane is smaller than rectangle described by points (x1, y1)
- // and (x2, y2) than extend the model plane size.
- void Schematic::enlargeView(int x1, int y1, int x2, int y2) {
-    // Set 'Used' area size to the of the given rectangle
-    if (x1 < a_UsedX1)
-        a_UsedX1 = x1;
-    if (y1 < a_UsedY1)
-        a_UsedY1 = y1;
-    if (x2 > a_UsedX2)
-        a_UsedX2 = x2;
-    if (y2 > a_UsedY2)
-        a_UsedY2 = y2;
+void Schematic::enlargeView(const Element* e) {
+    const auto br = e->boundingRect();
 
-    // Construct the desired model plane
-    constexpr int margin = 40;
-    QRect newModel = modelRect();
-    if (x1 < a_ViewX1)
-        newModel.setLeft(x1 - margin);
-    if (y1 < a_ViewY1)
-        newModel.setTop(y1 - margin);
-    if (x2 > a_ViewX2)
-        newModel.setRight(x2 + margin);
-    if (y2 > a_ViewY2)
-        newModel.setBottom(y2 + margin);
+    a_UsedX1 = std::min(a_UsedX1, br.left());
+    a_UsedY1 = std::min(a_UsedY1, br.top());
+    a_UsedX2 = std::max(a_UsedX2, br.right());
+    a_UsedY2 = std::max(a_UsedY2, br.bottom());
+
+    QRect newModel = modelRect()
+        .united(br.marginsAdded({40, 40, 40, 40}));
 
     const auto vpCenter = viewportRect().center();
     const auto displayedInCenter = viewportToModel(vpCenter);

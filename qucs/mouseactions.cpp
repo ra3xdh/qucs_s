@@ -1291,7 +1291,6 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
     e->Type &= isSpecialMask; // remove special functions
 
     WireLabel *pl;
-    int x1, y1, x2, y2;
     //  e->isSelected = false;
     switch (e->Type) {
     case isComponent:
@@ -1302,8 +1301,7 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
         ((Component *) e)->rotate();
         Doc->setCompPorts((Component *) e);
         // enlarge viewarea if component lies outside the view
-        ((Component *) e)->entireBounds(x1, y1, x2, y2);
-        Doc->enlargeView(x1, y1, x2, y2);
+        Doc->enlargeView(e);
         break;
 
     case isWire:
@@ -1320,14 +1318,13 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
         Doc->insertWire((Wire *) e);
         Doc->a_Wires->setAutoDelete(true);
         if (Doc->a_Wires->containsRef((Wire *) e))
-            Doc->enlargeView(e->x1, e->y1, e->x2, e->y2);
+            Doc->enlargeView(e);
         break;
 
     case isPainting: {
         ((Painting *) e)->rotate();
         // enlarge viewarea if component lies outside the view
-        auto br = ((Painting *) e)->boundingRect();
-        Doc->enlargeView(br.left(), br.top(), br.right(), br.bottom());
+        Doc->enlargeView(e);
         break;
     }
     default:
@@ -1369,7 +1366,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 
             // enlarge viewarea if component lies outside the view
             Comp->entireBounds(x1, y1, x2, y2);
-            Doc->enlargeView(x1, y1, x2, y2);
+            Doc->enlargeView(Comp);
             //Doc->setOnGrid(Comp->cx,Comp->cy);
 
             Doc->viewport()->update();
@@ -1424,7 +1421,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
         }
 
         Doc->a_Diagrams->append(Diag);
-        Doc->enlargeView(Diag->cx, Diag->cy - Diag->y2, Diag->cx + Diag->x2, Diag->cy);
+        Doc->enlargeView(Diag);
         Doc->setChanged(true, true); // document has been changed
 
         Doc->viewport()->repaint();
@@ -1555,9 +1552,7 @@ void MouseActions::MPressMarker(Schematic *Doc, QMouseEvent *, float fX, float f
 
     if (pm) {
         assert(pm->diag());
-        int x0 = pm->diag()->cx;
-        int y0 = pm->diag()->cy;
-        Doc->enlargeView(x0 + pm->x1, y0 - pm->y1 - pm->y2, x0 + pm->x1 + pm->x2, y0 - pm->y1);
+        Doc->enlargeView(pm);
     }
     Doc->viewport()->update();
 }
@@ -1784,9 +1779,7 @@ void MouseActions::MReleaseResizeDiagram(Schematic *Doc, QMouseEvent *Event)
             pm->y1 += MAy3;
         }
 
-    int x1, x2, y1, y2;
-    pd->Bounding(x1, x2, y1, y2);
-    Doc->enlargeView(x1, x2, y1, y2);
+    Doc->enlargeView(pd);
 
     QucsMain->MouseMoveAction = nullptr;
     QucsMain->MousePressAction = &MouseActions::MPressSelect;
@@ -1942,12 +1935,11 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
                 Doc->a_Diagrams->append((Diagram *) pe);
                 ((Diagram *) pe)
                     ->loadGraphData(Info.absolutePath() + QDir::separator() + Doc->getDataSet());
-                Doc->enlargeView(pe->cx, pe->cy - pe->y2, pe->cx + pe->x2, pe->cy);
+                Doc->enlargeView(pe);
                 break;
             case isPainting: {
                 Doc->a_Paintings->append((Painting *) pe);
-                auto br = ((Painting *) pe)->boundingRect();
-                Doc->enlargeView(br.left(), br.top(), br.right(), br.bottom());
+                Doc->enlargeView(pe);
                 break;
             }
             case isMovingLabel:
@@ -1958,8 +1950,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
             case isAnalogComponent:
             case isDigitalComponent:
                 Doc->insertComponent((Component *) pe);
-                ((Component *) pe)->entireBounds(x1, y1, x2, y2);
-                Doc->enlargeView(x1, y1, x2, y2);
+                Doc->enlargeView(pe);
                 break;
             }
         }
@@ -2053,7 +2044,6 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     Diagram *dia;
     DiagramDialog *ddia;
     MarkerDialog *mdia;
-    int x1, y1, x2, y2;
 
     QFileInfo Info(Doc->getDocName());
     auto inModel = Doc->contentsToModel(Event->pos());
@@ -2102,8 +2092,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
         }
 
         Doc->setChanged(true, true);
-        c->entireBounds(x1, y1, x2, y2);
-        Doc->enlargeView(x1, y1, x2, y2);
+        Doc->enlargeView(c);
         break;
 
     case isDiagram:
@@ -2129,8 +2118,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
         if (ddia->exec() != QDialog::Rejected) // is WDestructiveClose
             Doc->setChanged(true, true);
 
-        dia->Bounding(x1, x2, y1, y2);
-        Doc->enlargeView(x1, x2, y1, y2);
+        Doc->enlargeView(dia);
         break;
 
     case isGraph:
