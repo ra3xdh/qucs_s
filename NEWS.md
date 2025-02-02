@@ -1,3 +1,53 @@
+# Qucs-S 25.1.0
+
+## New features
+
+* Component properties dialog redesign #1054
+* CDL netlist export #1165
+* Implemented plotting XSPICE digital nodes #1138
+* Add individual CLI oparameters setting for each simulator #1152
+* Add .CSPARAM virtual device #1136
+* Add Qt aplication style selection #1118
+* Add default graph line thickness setting #1066
+* Add setting for grid visibility  #1065
+* Allow parameter passing for SPICE file device #1197
+* S-parameter files viewer improvements #1133
+* Added background when renderign DC bias labels #1121
+* Added possibility to create libraries from SpiceLibraryDevice components #944 #1210
+
+## Bugfixes and general improvemnt
+
+* CI improvement #1103 #1091 #1086
+* Fixed graph renderign performance #984
+* Fixed SPICE models processing bugs #861 #1055 #1090 #1142
+* Default shorted resistance changed from 0 Ohms to 1/GMIN #1116
+* Fixed diagram memory leak #1139
+* Added offset parameter for AC current source #1218
+* Fixed schematic editing issues #1159 #1134
+
+## Component library
+
+This release contains a massive library extention:
+
+* Added libraries for 74HC, 74LV, CD4000 digital ICs for analog mode #1034 #1160
+* Added XSPICE generic logic gates library for analog mode #1199
+* Added XSPICE digital auxillary devices #1193
+* Added Laser diode library #942
+* Added generic triac device in Thyristor.lib #924
+* Added vaccum tubes extended library #846 #1216
+* Added neon bulb model #846 #1216
+* Added MOC3063/MOC3062 optocouple models #846 #1216
+
+## Packaging
+
+* Qt5 build deprecated; switch to Qt6 by default #938
+* Windows package improvements #1123
+
+## Localization
+
+* Update Turkish translation #1094
+
+
 # Qucs-S 24.4.1
 
 ## Bugfixes
