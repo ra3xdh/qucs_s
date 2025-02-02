@@ -110,7 +110,6 @@
         <file>Libraries/Lumped_Components.xml</file>
         <file>Libraries/Lumped_Component_Symbols/Inductor.sym</file>
         <file>Libraries/Sources.xml</file>
-        <file>Libraries/IHP-SG13G2.xml</file>
         <file>Libraries/Probes.xml</file>
         <file>Libraries/Lumped_Component_Symbols/Resistor.sym</file>
         <file>Libraries/Lumped_Component_Symbols/Capacitor.sym</file>

@@ -11,7 +11,7 @@
         </Netlists>
         <Symbols>
             <Symbol id="Standard" type="external"> <!-- Defined in a separate file -->
-               <File>./Lumped_Component_Symbols/Capacitor.sym</File>
+               <File>{QUCS_S_COMPONENTS_LIBRARY}/Lumped_Component_Symbols/Capacitor.sym</File>
             </Symbol>
         </Symbols>
         <Parameters>
@@ -35,7 +35,7 @@
         </Netlists>
         <Symbols>
             <Symbol id="Standard" type="external"> <!-- Defined in a separate file -->
-               <File>./Lumped_Component_Symbols/Resistor.sym</File>
+               <File>{QUCS_S_COMPONENTS_LIBRARY}/Lumped_Component_Symbols/Resistor.sym</File>
            </Symbol>
         </Symbols>
         <Parameters>
@@ -68,7 +68,7 @@
         </Netlists>
         <Symbols>
             <Symbol id="Standard" type="external"> <!-- Defined in a separate file -->
-               <File>./Lumped_Component_Symbols/Inductor.sym</File>
+               <File>{QUCS_S_COMPONENTS_LIBRARY}/Lumped_Component_Symbols/Inductor.sym</File>
            </Symbol>
         </Symbols>
         <Parameters>

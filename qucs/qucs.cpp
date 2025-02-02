@@ -277,6 +277,8 @@ void QucsApp::readXML(QFile & library_file) {
   QXmlStreamReader xmlReader(&library_file);
   QString LibraryName, ComponentName;
   QMap<QString, ComponentInfo> Component;
+  QDir LibraryDir(":/Libraries"); // Path to the Qucs-S XML library
+  QString QucsSLibraryPath = LibraryDir.path();
 
   while (!xmlReader.atEnd() && !xmlReader.hasError()) {
     if (xmlReader.readNextStartElement()) {
@@ -373,11 +375,11 @@ void QucsApp::readXML(QFile & library_file) {
                     } else if (symbolType == "external") {
                       xmlReader.readNextStartElement();
                       if (xmlReader.name() == QString("File")) {
-                        QString RelativePathSymbol = xmlReader.readElementText().trimmed();
-                        QString filePath = QFileInfo(library_file).absolutePath() + QString("/") + QDir::cleanPath(RelativePathSymbol);
+                        QString PathSymbol = xmlReader.readElementText().trimmed();
+                        PathSymbol.replace("{QUCS_S_COMPONENTS_LIBRARY}", QucsSLibraryPath);
 
-                               // Read the external file and parse the symbol
-                        QFile externalFile(filePath);
+                        // Read the external file and parse the symbol
+                        QFile externalFile(PathSymbol);
                         if (externalFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
                           QXmlStreamReader externalXmlReader(&externalFile);
                           QVector<int> boundingBox;
@@ -390,7 +392,7 @@ void QucsApp::readXML(QFile & library_file) {
                           Component[ComponentName].SymbolBoundingBox[symbolName] = boundingBox;
                           externalFile.close();
                         } else {
-                          qDebug() << "Error opening external symbol file:" << filePath;
+                          qDebug() << "Error opening external symbol file:" << PathSymbol;
                         }
                       }
                       xmlReader.skipCurrentElement();
@@ -925,7 +927,7 @@ void QucsApp::initView()
   QStringList pdk_folders = pdk_dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   QStringList xml_files; // List of all PDKs to load
   for (const QString &folder : pdk_folders) {
-    QDir tech_dir(pdk_dir.filePath(folder + "/libs.tech/qucs-s/"));
+    QDir tech_dir(pdk_dir.filePath(folder + "/libs.tech/qucs/"));
     QStringList folder_xml_files = tech_dir.entryList(QStringList() << "*.xml", QDir::Files);
 
     for (const QString &file : folder_xml_files) {
