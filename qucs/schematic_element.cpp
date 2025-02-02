@@ -49,6 +49,23 @@ static bool shouldBeSelected(const QRect& elementBoundingRect, const QRect& sele
     }
 }
 
+namespace internal {
+
+// Helper function to ease transition from Q3PtrList to another
+// container type. Use this when you need to remove item from
+// Q3PtrList and don't want auto-delete side effect.
+//
+// Who knows if auto-deletion is on and will it be a dozen commits
+// later? Use this function and get expected result.
+template<typename Q3PtrListContainer, typename Object>
+void removeFromPtrList(Object* obj, Q3PtrListContainer* cont) {
+    auto autoDelete = cont->autoDelete();
+    cont->setAutoDelete(false);
+    while (cont->removeRef(obj)) {};
+    cont->setAutoDelete(autoDelete);
+}
+}
+
 /* *******************************************************************
    *****                                                         *****
    *****              Actions handling the nodes                 *****
@@ -80,6 +97,130 @@ Node* Schematic::provideNode(int x, int y)
     }
 
     return new_node;
+}
+
+namespace internal {
+void merge(Node* donor, Node* recipient) {
+    // At first, replace old node with new one in every element connected to
+    // old node
+    for (auto* conn : *donor) {
+        if (auto* w = dynamic_cast<Wire*>(conn)) {
+            if (w->Port1 == donor) {
+                w->Port1 = recipient;
+            } else {
+                w->Port2 = recipient;
+            }
+        } else if (auto* c = dynamic_cast<Component*>(conn)) {
+            for (auto* p : c->Ports) {
+                if (p->Connection == donor) {
+                    p->Connection = recipient;
+                }
+            }
+        } else {
+            assert(false);
+        }
+    }
+
+    // Transfer all connections from old node to new one
+    while (donor->conn_count() > 0) {
+        auto* conn = donor->any();
+        recipient->connect(conn);
+        donor->disconnect(conn);
+    }
+}
+}
+
+namespace internal {
+// A node is redundant if it connects only two wires which form a line i.e.
+// For example, here B is redundant
+//  A      B      C
+//  o------o------o
+bool is_redundant(const Node* node) {
+    if (node->conn_count() != 2) {
+        return false;
+    }
+
+    auto* wire_1 = dynamic_cast<Wire*>(node->any());
+    if (wire_1 == nullptr) {
+        return false;
+    }
+
+    auto* wire_2 = dynamic_cast<Wire*>(node->other_than(wire_1));
+    if (wire_2 == nullptr) {
+        return false;
+    }
+
+    // If control flow has reached this point, then node connects two wires.
+    // Let's check if they form a line and can be replaced by a single wire.
+
+    auto* node_a = wire_1->Port1 == node ? wire_1->Port2 : wire_1->Port1;
+    auto* node_b = wire_2->Port1 == node ? wire_2->Port2 : wire_2->Port1;
+
+    return qucs_s::geom::is_between(node, node_a, node_b);
+}
+
+template<typename NodeContainer>
+Node* find_redundant_node(NodeContainer* nodes) {
+    for (auto* n : *nodes) {
+      if (is_redundant(n)) return n;
+    }
+
+    return nullptr;
+}
+
+}
+
+void Schematic::optimizeWires() {
+    while (auto* redundant_node = internal::find_redundant_node(a_Nodes)) {
+        auto* wire_1 = dynamic_cast<Wire*>(redundant_node->any());
+        auto* wire_2 = dynamic_cast<Wire*>(redundant_node->other_than(wire_1));
+
+        // First of all, let's deal with labels. Label of node, if present, has
+        // priority over wire labels.
+        auto* label = redundant_node->Label;
+        if (label == nullptr) {
+            // Node has no label, hoose label of one of the wires
+            label = wire_1->Label == nullptr ? wire_2->Label : wire_1->Label;
+        }
+
+        // We always extend wire_1 and delete wire_2.
+
+        // Find out which port of wire_2 is not shared with wire_1
+        auto* extend_to = wire_2->Port1 == redundant_node ? wire_2->Port2 : wire_2->Port1;
+
+        // Detach and remove wire_2
+        wire_2->Port1->disconnect(wire_2);
+        wire_2->Port1 = nullptr;
+        wire_2->Port2->disconnect(wire_2);
+        wire_2->Port2 = nullptr;
+        internal::removeFromPtrList(wire_2, a_Wires);
+        delete wire_2;
+
+        redundant_node->disconnect(wire_1);
+        assert(redundant_node->conn_count() == 0);
+
+        // Extend wire_1
+        if (wire_1->Port1 == redundant_node) {
+            wire_1->Port1 = extend_to;
+            wire_1->Port1->connect(wire_1);
+        } else {
+            wire_1->Port2 = extend_to;
+            wire_1->Port2->connect(wire_1);
+        }
+
+        wire_1->x1 = wire_1->Port1->x();
+        wire_1->y1 = wire_1->Port1->y();
+        wire_1->x2 = wire_1->Port2->x();
+        wire_1->y2 = wire_1->Port2->y();
+
+        internal::removeFromPtrList(redundant_node, a_Nodes);
+        delete redundant_node;
+
+        if (label != wire_1->Label) {
+            delete wire_1->Label;
+            wire_1->Label = label;
+        }
+    }
 }
 
 // ---------------------------------------------------
