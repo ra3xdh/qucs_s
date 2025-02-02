@@ -1299,11 +1299,13 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     }
 
     // test all paintings
+    QPoint click(fX, fY);
+    auto tolerance = static_cast<int>(Corr);
     for(Painting *pp = a_Paintings->last(); pp != 0; pp = a_Paintings->prev())
     {
         if(pp->isSelected)
         {
-            if(pp->resizeTouched(fX, fY, Corr))
+            if(pp->resizeTouched(click, tolerance))
             {
                 if(pe_1st == 0)
                 {
@@ -1313,7 +1315,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
             }
         }
 
-        if(pp->getSelected(fX, fY, Corr))
+        if(pp->getSelected(click, tolerance))
         {
             if(flag)
             {
@@ -1582,9 +1584,7 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
     }
 
     for (Painting *painting : *a_Paintings) {
-        painting->Bounding(left, top, right, bottom);
-
-        if (select_element(painting, QRect{left, top, right - left, bottom - top})) {
+        if (select_element(painting, painting->boundingRect())) {
             selected_count++;
         }
     }
@@ -1944,11 +1944,11 @@ int Schematic::copyElements(int& x1, int& y1, int& x2, int& y2,
     for(Painting *pp = a_Paintings->last(); pp != 0; pp = a_Paintings->prev())
         if(pp->isSelected)
         {
-            pp->Bounding(bx1, by1, bx2, by2);
-            if(bx1 < x1) x1 = bx1;
-            if(bx2 > x2) x2 = bx2;
-            if(by1 < y1) y1 = by1;
-            if(by2 > y2) y2 = by2;
+            auto br = pp->boundingRect();
+            x1 = std::min(x1, br.left());
+            y1 = std::max(y1, br.left() + br.width());
+            x2 = std::min(x2, br.top());
+            y2 = std::max(y2, br.top() + br.height());
             ElementCache->append(pp);
             number++;
         }
@@ -2176,11 +2176,15 @@ bool Schematic::aligning(int Mode)
             ((Diagram*)pe)->setCenter(x1-((*bx)+(*ax))/y2, y1-((*by)+(*ay))/y2, true);
             break;
 
-        case isPainting:
-            ((Painting*)pe)->Bounding(bx1, by1, bx2, by2);
+        case isPainting: {
+            auto br = ((Painting*)pe)->boundingRect();
+            bx1 = br.left();
+            by1 = br.top();
+            bx2 = br.left() + br.width();
+            by2 = br.top() + br.height();
             ((Painting*)pe)->setCenter(x1-((*bx)+(*ax))/y2, y1-((*by)+(*ay))/y2, true);
             break;
-
+        }
         case isNodeLabel:
             if(((Element*)(((WireLabel*)pe)->pOwner))->Type & isComponent)
             {
@@ -3143,10 +3147,11 @@ void Schematic::copyLabels(int& x1, int& y1, int& x2, int& y2,
 
 Painting* Schematic::selectedPainting(float fX, float fY)
 {
-    float Corr = 5.0 / a_Scale; // size of line select
+    QPoint click(fX, fY);
+    int tolerance = static_cast<int>(5.0 / a_Scale);
 
     for(Painting *pp = a_Paintings->first(); pp != 0; pp = a_Paintings->next())
-        if(pp->getSelected(fX, fY, Corr))
+        if(pp->getSelected(click, tolerance))
             return pp;
 
     return 0;
@@ -3156,15 +3161,14 @@ Painting* Schematic::selectedPainting(float fX, float fY)
 void Schematic::copyPaintings(int& x1, int& y1, int& x2, int& y2,
                               QList<Element *> *ElementCache)
 {
-    int bx1, by1, bx2, by2;
     // find boundings of all selected paintings
     for (auto* pp : currentSelection().paintings)
         {
-            pp->Bounding(bx1, by1, bx2, by2);
-            if(bx1 < x1) x1 = bx1;
-            if(bx2 > x2) x2 = bx2;
-            if(by1 < y1) y1 = by1;
-            if(by2 > y2) y2 = by2;
+            auto br = pp->boundingRect();
+            x1 = std::min(x1, br.left());
+            y1 = std::max(y1, br.left() + br.width());
+            x2 = std::min(x2, br.top());
+            y2 = std::max(y2, br.top() + br.height());
 
             ElementCache->append(pp);
             a_Paintings->take(a_Paintings->find(pp));

@@ -232,7 +232,7 @@ int Schematic::saveSymbolCpp (void)
   int ymin = INT_MAX;
   int xmax = INT_MIN;
   int ymax = INT_MIN;
-  int x1, y1, x2, y2;
+  int x1, y1;
   int maxNum = 0;
   Painting * pp;
 
@@ -250,11 +250,12 @@ int Schematic::saveSymbolCpp (void)
       if (y1 > ymax) ymax = y1;
       continue;
     }
-    pp->Bounding (x1, y1, x2, y2);
-    if (x1 < xmin) xmin = x1;
-    if (x2 > xmax) xmax = x2;
-    if (y1 < ymin) ymin = y1;
-    if (y2 > ymax) ymax = y2;
+    auto br = pp->boundingRect();
+    xmin = std::min(xmin, br.left());
+    xmax = std::max(xmax, br.left() + br.width());
+    ymin = std::min(ymin, br.top());
+    ymax = std::max(ymax, br.top() + br.height());
+
     stream << "  " << pp->saveCpp () << "\n";
   }
 
@@ -510,7 +511,7 @@ int Schematic::saveSymbolJSON()
   int ymin = INT_MAX;
   int xmax = INT_MIN;
   int ymax = INT_MIN;
-  int x1, y1, x2, y2;
+  int x1, y1;
   int maxNum = 0;
   Painting * pp;
 
@@ -532,11 +533,11 @@ int Schematic::saveSymbolJSON()
       if (y1 > ymax) ymax = y1;
       continue;
     }
-    pp->Bounding (x1, y1, x2, y2);
-    if (x1 < xmin) xmin = x1;
-    if (x2 > xmax) xmax = x2;
-    if (y1 < ymin) ymin = y1;
-    if (y2 > ymax) ymax = y2;
+    auto br = pp->boundingRect();
+    xmin = std::min(xmin, br.left());
+    xmax = std::max(xmax, br.left() + br.width());
+    ymin = std::min(ymin, br.top());
+    ymax = std::max(ymax, br.top() + br.height());
     stream << "  " << pp->saveJSON() << "\n";
   }
 
@@ -934,6 +935,7 @@ void Schematic::simpleInsertWire(Wire *pw)
       pn->Label->Type = isNodeLabel;
       pn->Label->pOwner = pn;
     }
+    pw->Label = nullptr;
     delete pw;           // delete wire because this is not a wire
     return;
   }

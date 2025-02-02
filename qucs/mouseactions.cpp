@@ -143,7 +143,7 @@ bool MouseActions::pasteElements(Schematic *Doc)
             pe->cy += ymin;
             pe->y1 += ymin;
         } else
-            pe->setCenter(xmin, ymin, true);
+            pe->moveCenter(xmin, ymin);
 
     return true;
 }
@@ -288,7 +288,7 @@ void MouseActions::moveElements(QList<Element*> *movElements, int x, int y)
             }
 
         } else
-            pe->setCenter(x, y, true);
+            pe->moveCenter(x, y);
     }
 }
 
@@ -307,8 +307,6 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
     QPoint contentsCoordinates = Event->pos();
     QPoint modelCoordinates = Doc->contentsToModel(contentsCoordinates);
 
-    int x = contentsCoordinates.x();
-    int y = contentsCoordinates.y();
     int fx = modelCoordinates.x();
     int fy = modelCoordinates.y();
     int gx = fx;
@@ -320,7 +318,7 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 
     if (selElem->Type == isPainting) {
         Doc->PostPaintEvent(_NotRop, 0, 0, 0, 0);
-        ((Painting *) selElem)->MouseMoving(Doc, x, y, gx, gy, Doc, fx, fy);
+        ((Painting *) selElem)->MouseMoving({gx, gy}, Doc, {fx, fy});
         Doc->viewport()->update();
         return;
     } // of "if(isPainting)"
@@ -328,7 +326,7 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
     //  Component *comp = (Component*)selElem;
     //qDebug() << "desc" << comp->Description << "gx" << gx << "gy" << gy;
 
-    selElem->setCenter(gx, gy);
+    selElem->moveCenterTo(gx, gy);
     selElem->paintScheme(Doc); // paint scheme at new position
     Doc->viewport()->update();
 }
@@ -1048,7 +1046,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
         Doc->setOnGrid(xl, yl);
         // set new name
         if (pw)
-            pw->setName(Name, Value, x - pw->x1 + y - pw->y1, xl, yl);
+            pw->setName(Name, Value, x, y, xl, yl);
         else
             pn->setName(Name, Value, xl, yl);
     }
@@ -1325,13 +1323,13 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
             Doc->enlargeView(e->x1, e->y1, e->x2, e->y2);
         break;
 
-    case isPainting:
-        ((Painting *) e)->rotate(0, 0);
+    case isPainting: {
+        ((Painting *) e)->rotate();
         // enlarge viewarea if component lies outside the view
-        ((Painting *) e)->Bounding(x1, y1, x2, y2);
-        Doc->enlargeView(x1, y1, x2, y2);
+        auto br = ((Painting *) e)->boundingRect();
+        Doc->enlargeView(br.left(), br.top(), br.right(), br.bottom());
         break;
-
+    }
     default:
         return;
     }
@@ -1439,8 +1437,6 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
     // ***********  it is a painting !!!
     if (((Painting *) selElem)->MousePressing(Doc)) {
         Doc->a_Paintings->append((Painting *) selElem);
-        ((Painting *) selElem)->Bounding(x1, y1, x2, y2);
-        //Doc->enlargeView(x1, y1, x2, y2);
         selElem = ((Painting *) selElem)->newOne();
 
         Doc->viewport()->update();
@@ -1881,7 +1877,7 @@ void MouseActions::moveElements(Schematic *Doc, int &x1, int &y1)
             pe->cy += y1;
             pe->y1 += y1;
         } else
-            pe->setCenter(x1, y1, true);
+            pe->moveCenter(x1, y1);
     }
 }
 
@@ -1898,7 +1894,7 @@ void MouseActions::rotateElements(Schematic *Doc, int &x1, int &y1)
         case isDigitalComponent:
             ((Component *) pe)->rotate(); // rotate !before! rotating the center
             x2 = x1 - pe->cx;
-            pe->setCenter(pe->cy - y1 + x1, x2 + y1);
+            pe->moveCenterTo(pe->cy - y1 + x1, x2 + y1);
             break;
         case isWire:
             x2 = pe->x1;
@@ -1913,7 +1909,7 @@ void MouseActions::rotateElements(Schematic *Doc, int &x1, int &y1)
             break;
         default:
             x2 = x1 - pe->cx; // if diagram -> only rotate cx/cy
-            pe->setCenter(pe->cy - y1 + x1, x2 + y1);
+            pe->moveCenterTo(pe->cy - y1 + x1, x2 + y1);
             break;
         }
     }
@@ -1948,11 +1944,12 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
                     ->loadGraphData(Info.absolutePath() + QDir::separator() + Doc->getDataSet());
                 Doc->enlargeView(pe->cx, pe->cy - pe->y2, pe->cx + pe->x2, pe->cy);
                 break;
-            case isPainting:
+            case isPainting: {
                 Doc->a_Paintings->append((Painting *) pe);
-                ((Painting *) pe)->Bounding(x1, y1, x2, y2);
-                Doc->enlargeView(x1, y1, x2, y2);
+                auto br = ((Painting *) pe)->boundingRect();
+                Doc->enlargeView(br.left(), br.top(), br.right(), br.bottom());
                 break;
+            }
             case isMovingLabel:
                 pe->Type = isNodeLabel;
                 Doc->placeNodeLabel((WireLabel *) pe);
@@ -2157,6 +2154,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     case isNodeLabel:
     case isHWireLabel:
     case isVWireLabel:
+    case isLabel:
         editLabel(Doc, (WireLabel *) focusElement);
         // update highlighting, labels may have changed
         Doc->highlightWireLabels();

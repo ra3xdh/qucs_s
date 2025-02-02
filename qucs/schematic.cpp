@@ -182,22 +182,22 @@ bool Schematic::createSubcircuitSymbol()
     int h = 30 * ((countPort - 1) / 2) + 10;
     a_SymbolPaints.prepend(new ID_Text(-20, h + 4));
 
-    a_SymbolPaints.append(new GraphicLine(-20, -h, 40, 0, QPen(Qt::darkBlue, 2)));
-    a_SymbolPaints.append(new GraphicLine(20, -h, 0, 2 * h, QPen(Qt::darkBlue, 2)));
-    a_SymbolPaints.append(new GraphicLine(-20, h, 40, 0, QPen(Qt::darkBlue, 2)));
-    a_SymbolPaints.append(new GraphicLine(-20, -h, 0, 2 * h, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.append(new GraphicLine(-20, -h, 20, -h, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.append(new GraphicLine(20, -h, 20, h, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.append(new GraphicLine(-20, h, 20, h, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.append(new GraphicLine(-20, -h, -20, h, QPen(Qt::darkBlue, 2)));
 
     unsigned int i = 0, y = 10 - h;
     while (i < countPort) {
         i++;
-        a_SymbolPaints.append(new GraphicLine(-30, y, 10, 0, QPen(Qt::darkBlue, 2)));
-        a_SymbolPaints.at(i)->setCenter(-30, y);
+        a_SymbolPaints.append(new GraphicLine(-30, y, -20, y, QPen(Qt::darkBlue, 2)));
+        a_SymbolPaints.at(i)->moveCenterTo(-30, y);
 
         if (i == countPort)
             break;
         i++;
-        a_SymbolPaints.append(new GraphicLine(20, y, 10, 0, QPen(Qt::darkBlue, 2)));
-        a_SymbolPaints.at(i)->setCenter(30, y);
+        a_SymbolPaints.append(new GraphicLine(20, y, 30, y, QPen(Qt::darkBlue, 2)));
+        a_SymbolPaints.at(i)->moveCenterTo(30, y);
         y += 60;
     }
     return true;
@@ -1278,11 +1278,11 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
 
     // find boundings of all Paintings
     for (auto* pp : *a_Paintings) {
-        pp->Bounding(x1, y1, x2, y2);
-        xmin = std::min(x1, xmin);
-        xmax = std::max(x2, xmax);
-        ymin = std::min(y1, ymin);
-        ymax = std::max(y2, ymax);
+        auto br = pp->boundingRect();
+        xmin = std::min(xmin, br.left());
+        xmax = std::max(xmax, br.left() + br.width());
+        ymin = std::min(ymin, br.top());
+        ymax = std::max(ymax, br.top() + br.height());
     }
 }
 
@@ -1389,11 +1389,11 @@ Schematic::Selection Schematic::currentSelection() const {
         }
         selection.paintings.push_back(pp);
         isAnySelected = true;
-        pp->Bounding(x1, y1, x2, y2);
-        xmin = std::min(x1, xmin);
-        xmax = std::max(x2, xmax);
-        ymin = std::min(y1, ymin);
-        ymax = std::max(y2, ymax);
+        auto br = pp->boundingRect();
+        xmin = std::min(xmin, br.left());
+        xmax = std::max(xmax, br.left() + br.width());
+        ymin = std::min(ymin, br.top());
+        ymax = std::max(ymax, br.top() + br.height());
     }
 
     if (!isAnySelected) {
@@ -1563,9 +1563,7 @@ bool Schematic::mirrorXComponents()
             break;
         case isPainting:
             pp = (Painting *) pe;
-            pp->getCenter(x2, y2);
             pp->mirrorX(); // mirror painting !before! mirroring its center
-            pp->setCenter(x2, y1 - y2);
             a_Paintings->append(pp);
             break;
         default:;
@@ -1632,9 +1630,7 @@ bool Schematic::mirrorYComponents()
             break;
         case isPainting:
             pp = (Painting *) pe;
-            pp->getCenter(x2, y2);
             pp->mirrorY(); // mirror painting !before! mirroring its center
-            pp->setCenter(x1 - x2, y2);
             a_Paintings->append(pp);
             break;
         default:;
@@ -1842,7 +1838,7 @@ int Schematic::adjustPortNumbers()
                     GDefs = VInfo.GenDefs.split(",", Qt::SkipEmptyParts);
                 ;
                 for (Number = 1, it = GNames.begin(); it != GNames.end(); ++it) {
-                    id->subParameters.append(
+                    id->subParameters.push_back(
                         std::make_unique<SubParameter>(
                                          true,
                                          *it + "=" + GDefs[Number - 1],
