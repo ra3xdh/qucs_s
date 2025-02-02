@@ -128,9 +128,7 @@ void merge(Node* donor, Node* recipient) {
         donor->disconnect(conn);
     }
 }
-}
 
-namespace internal {
 // A node is redundant if it connects only two wires which form a line i.e.
 // For example, here B is redundant
 //  A      B      C
@@ -168,58 +166,69 @@ Node* find_redundant_node(NodeContainer* nodes) {
     return nullptr;
 }
 
+Wire* merge_wires_at_node(Node* node) {
+    auto* extended_wire = dynamic_cast<Wire*>(node->any());
+    auto* dissapearing_wire = dynamic_cast<Wire*>(node->other_than(extended_wire));
+
+    assert(node->is_connected(extended_wire));
+    assert(node->is_connected(dissapearing_wire));
+    assert(is_redundant(node));
+
+    // First of all, let's deal with labels. Label of node, if present, has
+    // priority over wire labels.
+    auto* label = node->Label;
+    if (label == nullptr) {
+        // Node has no label, choose label of one of the wires
+        label = extended_wire->Label == nullptr ? dissapearing_wire->Label : extended_wire->Label;
+    }
+
+    auto* extend_to = dissapearing_wire->Port1 == node
+                    ? dissapearing_wire->Port2
+                    : dissapearing_wire->Port1;
+
+    dissapearing_wire->Port1->disconnect(dissapearing_wire);
+    dissapearing_wire->Port1 = nullptr;
+    dissapearing_wire->Port2->disconnect(dissapearing_wire);
+    dissapearing_wire->Port2 = nullptr;
+
+    node->disconnect(extended_wire);
+    if (extended_wire->Port1 == node) {
+        extended_wire->Port1 = extend_to;
+        extended_wire->Port1->connect(extended_wire);
+    } else {
+        extended_wire->Port2 = extend_to;
+        extended_wire->Port2->connect(extended_wire);
+    }
+
+    // Update wire dimensions
+    extended_wire->x1 = extended_wire->Port1->x();
+    extended_wire->y1 = extended_wire->Port1->y();
+    extended_wire->x2 = extended_wire->Port2->x();
+    extended_wire->y2 = extended_wire->Port2->y();
+
+    if (label != extended_wire->Label) {
+        delete extended_wire->Label;
+        extended_wire->Label = label;
+    }
+
+    return dissapearing_wire;
+}
+
 }
 
 void Schematic::optimizeWires() {
     while (auto* redundant_node = internal::find_redundant_node(a_Nodes)) {
-        auto* wire_1 = dynamic_cast<Wire*>(redundant_node->any());
-        auto* wire_2 = dynamic_cast<Wire*>(redundant_node->other_than(wire_1));
+        auto* obsolete_wire = internal::merge_wires_at_node(redundant_node);
 
-        // First of all, let's deal with labels. Label of node, if present, has
-        // priority over wire labels.
-        auto* label = redundant_node->Label;
-        if (label == nullptr) {
-            // Node has no label, hoose label of one of the wires
-            label = wire_1->Label == nullptr ? wire_2->Label : wire_1->Label;
-        }
-
-        // We always extend wire_1 and delete wire_2.
-
-        // Find out which port of wire_2 is not shared with wire_1
-        auto* extend_to = wire_2->Port1 == redundant_node ? wire_2->Port2 : wire_2->Port1;
-
-        // Detach and remove wire_2
-        wire_2->Port1->disconnect(wire_2);
-        wire_2->Port1 = nullptr;
-        wire_2->Port2->disconnect(wire_2);
-        wire_2->Port2 = nullptr;
-        internal::removeFromPtrList(wire_2, a_Wires);
-        delete wire_2;
-
-        redundant_node->disconnect(wire_1);
+        assert(obsolete_wire->Port1 == nullptr);
+        assert(obsolete_wire->Port2 == nullptr);
         assert(redundant_node->conn_count() == 0);
 
-        // Extend wire_1
-        if (wire_1->Port1 == redundant_node) {
-            wire_1->Port1 = extend_to;
-            wire_1->Port1->connect(wire_1);
-        } else {
-            wire_1->Port2 = extend_to;
-            wire_1->Port2->connect(wire_1);
-        }
-
-        wire_1->x1 = wire_1->Port1->x();
-        wire_1->y1 = wire_1->Port1->y();
-        wire_1->x2 = wire_1->Port2->x();
-        wire_1->y2 = wire_1->Port2->y();
+        internal::removeFromPtrList(obsolete_wire, a_Wires);
+        delete obsolete_wire;
 
         internal::removeFromPtrList(redundant_node, a_Nodes);
         delete redundant_node;
-
-        if (label != wire_1->Label) {
-            delete wire_1->Label;
-            wire_1->Label = label;
-        }
     }
 }
 

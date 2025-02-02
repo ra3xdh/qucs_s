@@ -447,6 +447,7 @@ public:
   qucs_s::wire::Planner a_wirePlanner;
   std::pair<bool,Node*> connectWithWire(const QPoint& a, const QPoint& b) noexcept;
   void showEphemeralWire(const QPoint& a, const QPoint& b) noexcept;
+  void  optimizeWires();
 
   int   insertWireNode1(Wire*);
   bool  connectHWires1(Wire*);
