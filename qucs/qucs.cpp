@@ -315,23 +315,23 @@ void QucsApp::readXML(QFile & library_file) {
                     QString NgspiceNetlist = xmlReader.attributes().value("value").toString();
                     Component[ComponentName].Netlists["Ngspice"] = NgspiceNetlist;
 
-                    // Initialize optional properties with "None". These properties are required for PDK where circuit
-                    // are defined using subcircuits and they point to an external library
-                    Component[ComponentName].Netlists["Ngspice_LibraryInclude"] = "None";
-                    Component[ComponentName].Netlists["Ngspice_Subcircuit"] = "None";
+                           // Initialize optional properties with "None". These properties are required for PDK where circuit
+                           // are defined using subcircuits and they point to an external library
 
-                    // Read the new Property elements
+                           // Process Include and OSDI elements
                     while (xmlReader.readNextStartElement()) {
-                      if (xmlReader.name() == QString("Property")) {
-                        QString propertyName = xmlReader.attributes().value("name").toString();
-                        QString propertyValue = xmlReader.readElementText().trimmed();
-                        if (!propertyName.compare("OSDI")){
-                          // Path to OSDI file
-                          Component[ComponentName].OSDIfiles.append(propertyValue);
-                        } else {
-                          // Header
-                          Component[ComponentName].Netlists["Ngspice_" + propertyName] = propertyValue;
-                        }
+                      if (xmlReader.name() == QString("Include")) {
+                        QString includeValue = xmlReader.attributes().value("value").toString();
+                        // Replace {PDK_ROOT} with the actual path
+                        includeValue.replace("{PDK_ROOT}", QucsSettings.PDKDir.absolutePath());
+                        Component[ComponentName].Netlists["Ngspice_LibraryInclude"].append(includeValue);
+                        xmlReader.skipCurrentElement();
+                      } else if (xmlReader.name() == QString("OSDI")) {
+                        QString osdiValue = xmlReader.attributes().value("value").toString();
+                        // Replace {PDK_ROOT} with the actual path
+                        osdiValue.replace("{PDK_ROOT}", QucsSettings.PDKDir.absolutePath());
+                        Component[ComponentName].Netlists["Ngspice_OSDI"] = osdiValue;
+                        xmlReader.skipCurrentElement();
                       } else {
                         xmlReader.skipCurrentElement();
                       }

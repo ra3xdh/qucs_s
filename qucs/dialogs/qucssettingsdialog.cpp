@@ -426,14 +426,6 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     locationsGrid->addWidget(PDK_Butt, 7, 2);
     connect(PDK_Butt, SIGNAL(clicked()), SLOT(slotPDKDirBrowse()));
 
-    locationsGrid->addWidget(new QLabel(tr("OSDI files directory:"), locationsTab), 8, 0);
-    OSDIDirEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(OSDIDirEdit, 8, 1);
-    QPushButton *OSDI_Butt = new QPushButton("Browse");
-    locationsGrid->addWidget(OSDI_Butt, 8, 2);
-    connect(OSDI_Butt, SIGNAL(clicked()), SLOT(slotOSDI_Files_DirBrowse()));
-
-
     // the pathsTableWidget displays the path list
     pathsTableWidget = new QTableWidget(locationsTab);
     pathsTableWidget->setColumnCount(1);
@@ -537,7 +529,6 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     OpenVAFEdit->setText(QucsSettings.OpenVAFExecutable);
     RFLayoutEdit->setText(QucsSettings.RFLayoutExecutable);
     PDKDirEdit->setText(QucsSettings.PDKDir.canonicalPath());
-    OSDIDirEdit->setText(QucsSettings.OSDI_FilesPath.canonicalPath());
 
     resize(300, 200);
 }
@@ -761,7 +752,6 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.OpenVAFExecutable = OpenVAFEdit->text();
     QucsSettings.RFLayoutExecutable = RFLayoutEdit->text();
     QucsSettings.PDKDir = PDKDirEdit->text();
-    QucsSettings.OSDI_FilesPath = OSDIDirEdit->text();
 
     if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())
     {
@@ -1145,17 +1135,6 @@ void QucsSettingsDialog::slotPDKDirBrowse()
 
   if(!d.isEmpty())
     PDKDirEdit->setText(d);
-}
-
-void QucsSettingsDialog::slotOSDI_Files_DirBrowse()
-{
-  QString d = QFileDialog::getExistingDirectory
-      (this, tr("Select the OSDI files directory"),
-       OSDIDirEdit->text(),
-       QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-
-  if(!d.isEmpty())
-    OSDIDirEdit->setText(d);
 }
 
 /*! \brief (seems unused at present)
