@@ -139,7 +139,7 @@ bool loadSettings()
 
     QucsSettings.RFLayoutExecutable = _settings::Get().item<QString>("RFLayoutExecutable");
 
-    QucsSettings.PDKDir = _settings::Get().item<QString>("PDKDir");
+    QucsSettings.PDK_ROOT = _settings::Get().item<QString>("PDK_ROOT");
     QucsSettings.OSDI_FilesPath = _settings::Get().item<QString>("OSDI_FilesDir");
 
 
@@ -224,7 +224,7 @@ bool saveApplSettings()
     qs.setItem<bool>("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
     qs.setItem<bool>("TextAntiAliasing", QucsSettings.TextAntiAliasing);
     qs.setItem<bool>("fullTraceName",QucsSettings.fullTraceName);
-    qs.setItem<QString>("PDKDir",QucsSettings.PDKDir.canonicalPath());
+    qs.setItem<QString>("PDK_ROOT",QucsSettings.PDK_ROOT.canonicalPath());
     qs.setItem<QString>("OSDI_FilesPath",QucsSettings.OSDI_FilesPath.canonicalPath());
 
     // Copy the list of directory paths in which Qucs should
@@ -931,8 +931,7 @@ int main(int argc, char *argv[])
     QucsSettings.OctaveDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/octave/";
     QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/examples/";
     QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
-    QucsSettings.Editor = "qucs";
-  QucsSettings.PDKDir =      QucsSettings.qucsWorkspaceDir.filePath("PDKs"); //Location of the user PDKs
+  QucsSettings.PDK_ROOT =      QucsSettings.qucsWorkspaceDir.filePath("PDKs"); //Location of the user PDKs
   QucsSettings.OSDI_FilesPath = QucsSettings.qucsWorkspaceDir;
 
   QucsSettings.Editor = "qucs";

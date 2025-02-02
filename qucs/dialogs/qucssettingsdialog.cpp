@@ -420,11 +420,11 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     connect(RFLButt, SIGNAL(clicked()), SLOT(slotRFLayoutDirBrowse()));
 
     locationsGrid->addWidget(new QLabel(tr("PDKs root:"), locationsTab), 7, 0);
-    PDKDirEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(PDKDirEdit, 7,1);
+    PDK_ROOTEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(PDK_ROOTEdit, 7,1);
     QPushButton *PDK_Butt = new QPushButton("Browse");
     locationsGrid->addWidget(PDK_Butt, 7, 2);
-    connect(PDK_Butt, SIGNAL(clicked()), SLOT(slotPDKDirBrowse()));
+    connect(PDK_Butt, SIGNAL(clicked()), SLOT(slotPDK_ROOTBrowse()));
 
     // the pathsTableWidget displays the path list
     pathsTableWidget = new QTableWidget(locationsTab);
@@ -528,7 +528,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     octaveEdit->setText(QucsSettings.OctaveExecutable);
     OpenVAFEdit->setText(QucsSettings.OpenVAFExecutable);
     RFLayoutEdit->setText(QucsSettings.RFLayoutExecutable);
-    PDKDirEdit->setText(QucsSettings.PDKDir.canonicalPath());
+    PDK_ROOTEdit->setText(QucsSettings.PDK_ROOT.canonicalPath());
 
     resize(300, 200);
 }
@@ -751,7 +751,7 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.OctaveExecutable = octaveEdit->text();
     QucsSettings.OpenVAFExecutable = OpenVAFEdit->text();
     QucsSettings.RFLayoutExecutable = RFLayoutEdit->text();
-    QucsSettings.PDKDir = PDKDirEdit->text();
+    QucsSettings.PDK_ROOT = PDK_ROOTEdit->text();
 
     if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())
     {
@@ -1126,15 +1126,15 @@ void QucsSettingsDialog::slotRFLayoutDirBrowse()
     RFLayoutEdit->setText(d);
 }
 
-void QucsSettingsDialog::slotPDKDirBrowse()
+void QucsSettingsDialog::slotPDK_ROOTBrowse()
 {
   QString d = QFileDialog::getExistingDirectory
       (this, tr("Select the PDKs root directory"),
-       PDKDirEdit->text(),
+       PDK_ROOTEdit->text(),
        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
   if(!d.isEmpty())
-    PDKDirEdit->setText(d);
+    PDK_ROOTEdit->setText(d);
 }
 
 /*! \brief (seems unused at present)

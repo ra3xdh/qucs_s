@@ -73,7 +73,7 @@ private slots:
     void slotOctaveDirBrowse();
     void slotOpenVAFDirBrowse();
     void slotRFLayoutDirBrowse();
-    void slotPDKDirBrowse();
+    void slotPDK_ROOTBrowse();
 
     void slotAddPath();
     void slotAddPathWithSubFolders();
@@ -94,7 +94,7 @@ public:
     QPushButton *FontButton, *AppFontButton, *TextFontButton, *BGColorButton, *GridColorButton;
     QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
               *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit,
-              *OpenVAFEdit, *RFLayoutEdit, *PDKDirEdit, *graphLineWidthEdit;
+              *OpenVAFEdit, *RFLayoutEdit, *PDK_ROOTEdit, *graphLineWidthEdit;
     QTableWidget *fileTypesTableWidget, *pathsTableWidget;
     QStandardItemModel *model;
     QPushButton *ColorComment, *ColorString, *ColorInteger,

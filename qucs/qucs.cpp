@@ -323,13 +323,13 @@ void QucsApp::readXML(QFile & library_file) {
                       if (xmlReader.name() == QString("Include")) {
                         QString includeValue = xmlReader.attributes().value("value").toString();
                         // Replace {PDK_ROOT} with the actual path
-                        includeValue.replace("{PDK_ROOT}", QucsSettings.PDKDir.absolutePath());
+                        includeValue.replace("{PDK_ROOT}", QucsSettings.PDK_ROOT.absolutePath());
                         Component[ComponentName].Netlists["Ngspice_LibraryInclude"].append(includeValue);
                         xmlReader.skipCurrentElement();
                       } else if (xmlReader.name() == QString("OSDI")) {
                         QString osdiValue = xmlReader.attributes().value("value").toString();
                         // Replace {PDK_ROOT} with the actual path
-                        osdiValue.replace("{PDK_ROOT}", QucsSettings.PDKDir.absolutePath());
+                        osdiValue.replace("{PDK_ROOT}", QucsSettings.PDK_ROOT.absolutePath());
                         Component[ComponentName].Netlists["Ngspice_OSDI"] = osdiValue;
                         xmlReader.skipCurrentElement();
                       } else {
@@ -921,7 +921,7 @@ void QucsApp::initView()
   }
 
   // Load user PDKs
-  QDir pdk_dir(QucsSettings.PDKDir);
+  QDir pdk_dir(QucsSettings.PDK_ROOT);
   QStringList pdk_folders = pdk_dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   QStringList xml_files; // List of all PDKs to load
   for (const QString &folder : pdk_folders) {
