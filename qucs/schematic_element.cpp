@@ -55,9 +55,8 @@ static bool shouldBeSelected(const QRect& elementBoundingRect, const QRect& sele
    *****                                                         *****
    ******************************************************************* */
 
-// Inserts a port into the schematic and connects it to another node if
-// the coordinates are identical. The node is returned.
-Node* Schematic::insertNode(int x, int y)
+// Provides a node located at given coordinates, either new or existing one
+Node* Schematic::provideNode(int x, int y)
 {
     // Check if there is a node at given coordinates
     for (auto* node : *a_Nodes) {
@@ -2835,7 +2834,7 @@ void Schematic::insertComponentNodes(Component *component, bool noOptimize)
 
     // connect every node of the component to corresponding schematic node
     for (Port *pp : component->Ports) {
-        pp->Connection = insertNode(pp->x+component->cx, pp->y+component->cy);
+        pp->Connection = provideNode(pp->x+component->cx, pp->y+component->cy);
         pp->Connection->connect(component);
     }
 
@@ -3139,7 +3138,7 @@ void Schematic::setCompPorts(Component *pc)
     // Re-connect component node to schematic node. This must be done completely
     // after the first loop in order to avoid problems with node labels.
     for (Port *pp : pc->Ports) {
-        pp->Connection = insertNode(pp->x+pc->cx, pp->y+pc->cy);
+        pp->Connection = provideNode(pp->x+pc->cx, pp->y+pc->cy);
         pp->Connection->connect(pc);
     }
 
