@@ -14,8 +14,8 @@
     <Line x1="-4" y1="24" x2="4" y2="20" color="#000080" width="2" style="1" />
     <Line x1="-8" y1="0" x2="20" y2="0" color="#000080" width="2" style="1" />
     <Line x1="-10" y1="0" x2="-10" y2="0" color="#000080" width="2" style="1" />
-    <Line x1="-9" y1="0" x2="-4" y2="-5" color="#000080" width="2" style="1" />
-    <Line x1="-9" y1="0" x2="-4" y2="5" color="#000080" width="2" style="1" />
+    <Line x1="-1" y1="0" x2="-6" y2="-5" color="#000080" width="2" style="1" />
+    <Line x1="-1" y1="0" x2="-6" y2="5" color="#000080" width="2" style="1" />
 
     <PortSym x="0" y="-30" type="1" angle="0" />
     <PortSym x="-30" y="0" type="2" angle="0" />

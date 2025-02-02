@@ -1,0 +1,10 @@
+<Symbol id="Standard">
+    <PortSym x="-30" y="0" type="1" angle="0" />
+    <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
+    <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
+    <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
+    <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
+    <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
+    <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+    <PortSym x="30" y="0" type="2" angle="180"/>
+</Symbol>

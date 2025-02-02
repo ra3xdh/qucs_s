@@ -10,13 +10,8 @@
                 </NgspiceNetlist>
         </Netlists>
         <Symbols>
-            <Symbol id="Standard" type="explicit">
-                <PortSym x="-30" y="0" type="1" angle="0" />
-                <Line x1="-4" y1="-11" x2="-4" y2="11" color="#000080" width="2" style="1" />
-                <Line x1="4" y1="-11" x2="4" y2="11" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-4" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="4" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
-                <PortSym x="30" y="0" type="2" angle="180"/>
+            <Symbol id="Standard" type="external"> <!-- Defined in a separate file -->
+               <File>./Lumped_Component_Symbols/Capacitor.sym</File>
             </Symbol>
         </Symbols>
         <Parameters>
@@ -39,16 +34,9 @@
                 </NgspiceNetlist>
         </Netlists>
         <Symbols>
-            <Symbol id="Standard" type="explicit">
-                <PortSym x="-30" y="0" type="1" angle="0" />
-                <Line x1="-18" y1="-9" x2="18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="-9" x2="18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="9" x2="-18" y2="9" color="#000080" width="2" style="1" />
-                <Line x1="-18" y1="9" x2="-18" y2="-9" color="#000080" width="2" style="1" />
-                <Line x1="-30" y1="0" x2="-18" y2="0" color="#000080" width="2" style="1" />
-                <Line x1="18" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
-                <PortSym x="30" y="0" type="2" angle="180"/>
-            </Symbol>
+            <Symbol id="Standard" type="external"> <!-- Defined in a separate file -->
+               <File>./Lumped_Component_Symbols/Resistor.sym</File>
+           </Symbol>
         </Symbols>
         <Parameters>
             <Parameter name="R" unit="Ohm" default_value="1000" show="true">
@@ -79,7 +67,7 @@
                 </NgspiceNetlist>
         </Netlists>
         <Symbols>
-            <Symbol id="Standard" type="external"> <!-- Defined externally only for future reference -->
+            <Symbol id="Standard" type="external"> <!-- Defined in a separate file -->
                <File>./Lumped_Component_Symbols/Inductor.sym</File>
            </Symbol>
         </Symbols>
