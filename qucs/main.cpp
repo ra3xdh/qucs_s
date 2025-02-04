@@ -140,8 +140,6 @@ bool loadSettings()
     QucsSettings.RFLayoutExecutable = _settings::Get().item<QString>("RFLayoutExecutable");
 
     QucsSettings.PDK_ROOT = _settings::Get().item<QString>("PDK_ROOT");
-    QucsSettings.OSDI_FilesPath = _settings::Get().item<QString>("OSDI_FilesDir");
-
 
     QucsSettings.qucsWorkspaceDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
     QucsSettings.QucsWorkDir = QucsSettings.qucsWorkspaceDir;
@@ -225,7 +223,6 @@ bool saveApplSettings()
     qs.setItem<bool>("TextAntiAliasing", QucsSettings.TextAntiAliasing);
     qs.setItem<bool>("fullTraceName",QucsSettings.fullTraceName);
     qs.setItem<QString>("PDK_ROOT",QucsSettings.PDK_ROOT.canonicalPath());
-    qs.setItem<QString>("OSDI_FilesPath",QucsSettings.OSDI_FilesPath.canonicalPath());
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList
@@ -932,7 +929,6 @@ int main(int argc, char *argv[])
     QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/examples/";
     QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
   QucsSettings.PDK_ROOT =      QucsSettings.qucsWorkspaceDir.filePath("PDKs"); //Location of the user PDKs
-  QucsSettings.OSDI_FilesPath = QucsSettings.qucsWorkspaceDir;
 
   QucsSettings.Editor = "qucs";
 

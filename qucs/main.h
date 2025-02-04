@@ -67,7 +67,6 @@ struct tQucsSettings {
   unsigned int NodeWiring;
   QDir QucsWorkDir;
   QDir PDK_ROOT; // Directory where Qucs-S searches for PDKs.
-  QDir OSDI_FilesPath; // Directory where OSDI files are located (IHP PDK)
 
   // A dir for user projects and libraries. See also https://github.com/ra3xdh/qucs_s/issues/145
   QDir qucsWorkspaceDir;

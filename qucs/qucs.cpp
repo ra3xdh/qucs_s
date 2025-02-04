@@ -332,7 +332,7 @@ void QucsApp::readXML(QFile & library_file) {
                         QString osdiValue = xmlReader.attributes().value("value").toString();
                         // Replace {PDK_ROOT} with the actual path
                         osdiValue.replace("{PDK_ROOT}", QucsSettings.PDK_ROOT.absolutePath());
-                        Component[ComponentName].Netlists["Ngspice_OSDI"] = osdiValue;
+                        Component[ComponentName].OSDIfiles.append(osdiValue);
                         xmlReader.skipCurrentElement();
                       } else {
                         xmlReader.skipCurrentElement();

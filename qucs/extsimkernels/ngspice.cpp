@@ -120,10 +120,9 @@ void Ngspice::createNetlist(
 
     if(!OSDIfiles.isEmpty()){
       stream << QString("\n.control\n\n");
-      QString OSDI_BaseDir = QucsSettings.OSDI_FilesPath.path();
       QString OSDI_path;
       for (int i = 0; i < OSDIfiles.size(); ++i) {
-        OSDI_path = QDir(OSDI_BaseDir).filePath(OSDIfiles[i]);
+        OSDI_path = OSDIfiles[i];
         stream << "pre_osdi " << OSDI_path << "\n";
       }
       stream << QString("\n.endc\n");
