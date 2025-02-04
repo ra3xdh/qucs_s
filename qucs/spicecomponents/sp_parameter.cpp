@@ -69,14 +69,14 @@ Element* SpiceParam::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceParam::getExpression(bool, bool isCdl /* = false */)
+QString SpiceParam::getExpression(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     if (isActive != COMP_IS_ACTIVE) return QString();
 
     QString s;
     s.clear();
     for (Property *pp : Props) {
-        if (isCdl)
+        if (dialect == spicecompat::CDL)
         {
             s += QStringLiteral(".PARAM %1=%2\n").arg(pp->Name).arg(pp->Value);
         }

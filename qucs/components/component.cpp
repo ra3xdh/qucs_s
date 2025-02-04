@@ -828,7 +828,7 @@ QString Component::getVerilogACode() {
     }
 }
 
-QString Component::getExpression(bool, bool) {
+QString Component::getExpression(spicecompat::SpiceDialect) {
     return QString();
 }
 
@@ -840,7 +840,7 @@ QStringList Component::getExtraVariables() {
     return QStringList();
 }
 
-QString Component::getProbeVariable(bool) {
+QString Component::getProbeVariable(spicecompat::SpiceDialect) {
     return QString();
 }
 

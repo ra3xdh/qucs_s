@@ -88,9 +88,9 @@
 //#include "extsimkernels/codemodelgen.h"
 #include "symbolwidget.h"
 
-QucsApp::QucsApp()
+QucsApp::QucsApp(bool netlist2Console) :
+  a_netlist2Console(netlist2Console)
 {
-
   windowTitle = misc::getWindowTitle();
   setWindowTitle(windowTitle);
 
@@ -575,11 +575,11 @@ void QucsApp::initView()
   messageDock = new MessageDock(this);
 
     // initial projects directory model
-    m_homeDirModel = new QucsFileSystemModel(this);
-    m_proxyModel = new QucsSortFilterProxyModel();
-    //m_proxyModel->setDynamicSortFilter(true);
+    a_homeDirModel = new QucsFileSystemModel(this);
+    a_proxyModel = new QucsSortFilterProxyModel();
+    //a_proxyModel->setDynamicSortFilter(true);
     // show all directories (project and non-project)
-    m_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
+    a_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
 
     // ............................................
     QString path = QucsSettings.qucsWorkspaceDir.absolutePath();
@@ -1386,21 +1386,21 @@ void QucsApp::readProjects()
 
     if (path == homepath) {
         // in Qucs Home, disallow further up in the dirs tree
-        m_homeDirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
+        a_homeDirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
     } else {
-        m_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
+        a_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
     }
 
     // set the root path
-    QModelIndex rootModelIndex = m_homeDirModel->setRootPath(path);
+    QModelIndex rootModelIndex = a_homeDirModel->setRootPath(path);
     // assign the model to the proxy and the proxy to the view
-    m_proxyModel->setSourceModel(m_homeDirModel);
-    m_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+    a_proxyModel->setSourceModel(a_homeDirModel);
+    a_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
     // sort by first column (file name, only column show in the QListView)
-    m_proxyModel->sort(0);
-    Projects->setModel(m_proxyModel);
+    a_proxyModel->sort(0);
+    Projects->setModel(a_proxyModel);
     // fix the listview on the root path of the model
-    Projects->setRootIndex(m_proxyModel->mapFromSource(rootModelIndex));
+    Projects->setRootIndex(a_proxyModel->mapFromSource(rootModelIndex));
 }
 
 // ----------------------------------------------------------
@@ -2410,7 +2410,7 @@ void QucsApp::slotTune(bool checked)
             return;
         }
 
-        Schematic *d = dynamic_cast<Schematic*>(w);
+        Schematic* d(dynamic_cast<Schematic*>(w));
         assert(d);
 
         bool found = false;
@@ -3463,57 +3463,83 @@ void QucsApp::slotSimSettings()
 
 void QucsApp::slotSimulateWithSpice()
 {
-    if (!isTextDocument(DocumentTab->currentWidget())) {
-        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
-        if (TuningMode) {
-            QFileInfo Info(sch->getDocName());
+    if (!isTextDocument(DocumentTab->currentWidget()))
+    {
+        Schematic* schematic(dynamic_cast<Schematic*>(DocumentTab->currentWidget()));
+        if (TuningMode)
+        {
+            QFileInfo Info(schematic->getDocName());
             QString ext = Info.suffix();
-            if (ext == "dpl") {
-                QucsDoc *Doc = (QucsDoc *)sch;
-                sch = (Schematic *) getSchematicWidget(Doc);
-                if (sch == nullptr) return;
+            if (ext == "dpl")
+            {
+                QucsDoc *doc(dynamic_cast<QucsDoc*>(schematic));
+                Q_ASSERT(doc != nullptr);
+                schematic = dynamic_cast<Schematic*>(getSchematicWidget(doc));
+                if (schematic == nullptr)
+                {
+                    return;
+                }
             }
         }
 
-        if (sch->getDocName().isEmpty()) {
-            auto biasState = sch->getShowBias();
-            QMessageBox::warning(this,tr("Simulate schematic"),
+        if (schematic->getDocName().isEmpty())
+        {
+            auto biasState = schematic->getShowBias();
+            QMessageBox::warning(
+                    this,
+                    tr("Simulate schematic"),
                     tr("Schematic not saved! Simulation of unsaved schematic "
-                       "not possible. Save schematic first!"));
+                      "not possible. Save schematic first!"));
             slotFileSaveAs();
-            sch->setShowBias(biasState);
+            schematic->setShowBias(biasState);
         }
-        ExternSimDialog *SimDlg = new ExternSimDialog(sch);
-        connect(SimDlg,SIGNAL(simulated(ExternSimDialog*)),
-                this,SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
-        connect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
-        connect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-        if (TuningMode || sch->getShowBias() == 0) SimDlg->slotStart();
-        else SimDlg->exec();
-        /*disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
-        disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
-        disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));*/
-        /*if (SimDlg->wasSimulated && sch->getSimOpenDpl())
-            if (sch->getShowBias() < 1) slotChangePage(sch->getDocName(),sch->getDataDisplay());
+        ExternSimDialog *SimDlg = new ExternSimDialog(schematic, false);
+        connect(SimDlg, SIGNAL(simulated(ExternSimDialog*)), this, SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
+        connect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
+        connect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));
+
+        if (TuningMode || schematic->getShowBias() == 0)
+        {
+            SimDlg->slotStart();
+        }
+        else
+        {
+            SimDlg->exec();
+        }
+        /*disconnect(SimDlg, SIGNAL(simulated()), this, SLOT(slotAfterSpiceSimulation()));
+        disconnect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
+        disconnect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));*/
+        /*if (SimDlg->wasSimulated && schematic->getSimOpenDpl())
+            if (schematic->getShowBias() < 1) slotChangePage(schematic->getDocName(), schematic->getDataDisplay());
         delete SimDlg;*/
-    } else {
-        QMessageBox::warning(this,tr("Simulate schematic"),
-                             tr("Simulation of text document is not possible!"));
+    }
+    else
+    {
+        QMessageBox::warning(
+                this,
+                tr("Simulate schematic"),
+                tr("Simulation of text document is not possible!"));
     }
 }
 
 void QucsApp::slotSaveNetlist()
 {
-    if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-        QMessageBox::information(this,tr("Save netlist"),
-                                 tr("This action is supported only for SPICE simulators!"));
+    if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
+    {
+        QMessageBox::information(
+                this,
+                tr("Save netlist"),
+                tr("This action is supported only for SPICE simulators!"));
         return;
     }
-    if (!isTextDocument(DocumentTab->currentWidget())) {
-        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
-        ExternSimDialog *SimDlg = new ExternSimDialog(sch, true);
-        SimDlg->slotSaveNetlist();
-        delete SimDlg;
+
+    if (!isTextDocument(DocumentTab->currentWidget()))
+    {
+        Schematic* schematic(dynamic_cast<Schematic*>(DocumentTab->currentWidget()));
+        Q_ASSERT(schematic != nullptr);
+
+        ExternSimDialog simDlg(schematic, a_netlist2Console, true);
+        simDlg.slotSaveNetlist();
     }
 }
 
@@ -3524,53 +3550,55 @@ void QucsApp::slotSaveCdlNetlist()
         Schematic* schematic = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
         Q_ASSERT(schematic != nullptr);
 
-#ifdef NETLIST_CDL_TO_CONSOLE // for fast testing purposes
-        QString netlistString;
+        if (a_netlist2Console)
         {
-            QTextStream netlistStream(&netlistString);
-            CdlNetlistWriter cdlWriter(netlistStream, schematic);
-            if (!cdlWriter.write())
+            QString netlistString;
             {
-                QMessageBox::critical(
-                        this,
-                        tr("Save CDL netlist"),
-                        tr("Save CDL netlist failed!"),
-                        QMessageBox::Ok);
+                QTextStream netlistStream(&netlistString);
+                CdlNetlistWriter cdlWriter(netlistStream, schematic);
+                if (!cdlWriter.write())
+                {
+                    QMessageBox::critical(
+                            this,
+                            tr("Save CDL netlist"),
+                            tr("Save CDL netlist failed!"),
+                            QMessageBox::Ok);
+                }
+                printf("\nCDL netlist:\n%s\n", netlistString.toUtf8().constData());
+                Content->refresh();
             }
-            printf("\nCDL netlist:\n%s\n", netlistString.toUtf8().constData());
-            Content->refresh();
         }
-#else
-        QFileInfo inf(schematic->getDocName());
-        QString filename = QFileDialog::getSaveFileName(
-                this,
-                tr("Save CDL netlist"),
-                inf.path() + QDir::separator() + "netlist.cdl",
-                "CDL netlist (*.cdl)");
-
-        if (filename.isEmpty())
+        else
         {
-            return;
-        }
+            QFileInfo inf(schematic->getDocName());
+            QString filename = QFileDialog::getSaveFileName(
+                    this,
+                    tr("Save CDL netlist"),
+                    inf.path() + QDir::separator() + "netlist.cdl",
+                    "CDL netlist (*.cdl)");
 
-        QFile netlistFile(filename);
-        if (netlistFile.open(QIODevice::WriteOnly))
-        {
-            QTextStream netlistStream(&netlistFile);
-            CdlNetlistWriter cdlWriter(netlistStream, schematic);
-            if (!cdlWriter.write())
+            if (filename.isEmpty())
             {
-                QMessageBox::critical(
-                        this,
-                        tr("Save CDL netlist"),
-                        tr("Save CDL netlist failed!"),
-                        QMessageBox::Ok);
+                return;
             }
-            netlistFile.close();
-            Content->refresh();
-        }
-#endif
 
+            QFile netlistFile(filename);
+            if (netlistFile.open(QIODevice::WriteOnly))
+            {
+                QTextStream netlistStream(&netlistFile);
+                CdlNetlistWriter cdlWriter(netlistStream, schematic);
+                if (!cdlWriter.write())
+                {
+                    QMessageBox::critical(
+                            this,
+                            tr("Save CDL netlist"),
+                            tr("Save CDL netlist failed!"),
+                            QMessageBox::Ok);
+                }
+                netlistFile.close();
+                Content->refresh();
+            }
+        }
     }
 }
 

@@ -41,7 +41,7 @@ private:
     QString a_spinit_name;
 
     bool checkNodeNames(QStringList &incompat);
-    static QString collectSpiceinit(Schematic *sch);
+    static QString collectSpiceinit(Schematic* sch);
     bool findMathFuncInc(QString &mathf_inc);
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
     QString getParentSWPCntVar(Component *pc_swp, QString sim);
@@ -49,14 +49,17 @@ private:
     void createSpiceinit(const QString &initial_spiceinit);
 
 public:
-    explicit Ngspice(Schematic *schematic, QObject *parent = 0);
-    void SaveNetlist(QString filename);
+    explicit Ngspice(Schematic* schematic, QObject *parent = 0);
+    void SaveNetlist(QString filename, bool netlist2Console);
     void setSimulatorCmd(QString cmd);
     void setSimulatorParameters(QString parameters);
 
 protected:
-    void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
-                       QStringList &vars, QStringList &outputs);
+    void createNetlist(
+            QTextStream& stream,
+            QStringList& simulations,
+            QStringList& vars,
+            QStringList& outputs);
 
 public slots:
     void slotSimulate();

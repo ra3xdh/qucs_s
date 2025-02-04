@@ -77,9 +77,9 @@ Element* InclScript::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString InclScript::getExpression(bool, bool isCdl /* = false */)
+QString InclScript::getExpression(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (isActive != COMP_IS_ACTIVE || isCdl)
+    if (isActive != COMP_IS_ACTIVE || dialect == spicecompat::CDL)
         return QString();
     return Props.at(0)->Value+"\n";
 }

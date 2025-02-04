@@ -574,12 +574,12 @@ void QucsApp::initActions()
 
   save_netlist = new QAction(tr("Save netlist"), this);
   save_netlist->setStatusTip(tr("Save netlist"));
-  save_netlist->setWhatsThis(tr("Save netlist to file"));
+  save_netlist->setWhatsThis(tr(QString::fromUtf8("Save netlist to %1").arg(a_netlist2Console ? "console" : "file").toLatin1().constData()));
   connect(save_netlist, SIGNAL(triggered()), SLOT(slotSaveNetlist()));
 
   saveCdlNetlist = new QAction(tr("Save CDL netlist"), this);
   saveCdlNetlist->setStatusTip(tr("Save CDL netlist"));
-  saveCdlNetlist->setWhatsThis(tr("Save CDL netlist to file"));
+  saveCdlNetlist->setWhatsThis(tr(QString::fromUtf8("Save CDL netlist to %1").arg(a_netlist2Console ? "console" : "file").toLatin1().constData()));
   connect(saveCdlNetlist, SIGNAL(triggered()), SLOT(slotSaveCdlNetlist()));
 
   setMarker = new QAction(QIcon((":/bitmaps/svg/marker.svg")),	tr("Set Marker on Graph"), this);

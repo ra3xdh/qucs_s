@@ -88,7 +88,7 @@ protected:
 class QucsApp : public QMainWindow {
   Q_OBJECT
 public:
-  QucsApp();
+  QucsApp(bool netlist2Console);
  ~QucsApp();
   bool closeAllFiles();
   bool gotoPage(const QString&);   // to load a document
@@ -251,10 +251,10 @@ private:
 // ********** Properties ************************************************
   QStack<QString> HierarchyHistory; // keeps track of "go into subcircuit"
   QString  QucsFileFilter;
-  QFileSystemModel *m_homeDirModel;
-  QucsSortFilterProxyModel *m_proxyModel;
-  QFileSystemModel *m_projModel;
+  QFileSystemModel *a_homeDirModel;
+  QucsSortFilterProxyModel *a_proxyModel;
   int ccCurIdx; // CompChooser current index (used during search)
+  bool a_netlist2Console;
 
 // ********** Methods ***************************************************
   void initView();

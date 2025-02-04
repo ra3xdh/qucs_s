@@ -25,6 +25,10 @@
 #include "config.h"
 #endif
 
+#include <QScopedPointer>
+
+#include <iostream>
+
 /*!
   \file xyce.cpp
   \brief Implementation of the Xyce class
@@ -35,7 +39,7 @@
  * \param schematic Schematic that need to be simulated with Ngspice.
  * \param parent Parent object
  */
-Xyce::Xyce(Schematic *schematic, QObject *parent) :
+Xyce::Xyce(Schematic* schematic, QObject *parent) :
     AbstractSpiceKernel(schematic, parent),
     a_Noisesim(false),
     a_simulationsQueue(),
@@ -79,8 +83,11 @@ void Xyce::determineUsedSimulations(QStringList *sim_lst)
  * \param[out] vars The list of output variables and node names.
  * \param[out] outputs The list of spice output raw text files.
  */
-void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
-                    QStringList &vars, QStringList &outputs)
+void Xyce::createNetlist(
+        QTextStream& stream,
+        QStringList& simulations,
+        QStringList& vars,
+        QStringList& outputs)
 {
     QString s;
     bool hasParSweep = false;
@@ -110,7 +117,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     }
     for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
         if (pc->isProbe) {
-            QString var_pr = pc->getProbeVariable(true);
+            QString var_pr = pc->getProbeVariable(spicecompat::SPICEXyce);
             if (!vars.contains(var_pr)) {
                 vars.append(var_pr);
             }
@@ -312,7 +319,6 @@ void Xyce::slotSimulate()
         return;
     }
 
-    int num=0;
     a_netlistQueue.clear();
     a_output_files.clear();
 
@@ -332,7 +338,7 @@ void Xyce::slotSimulate()
         QFile spice_file(tmp_path);
         if (spice_file.open(QFile::WriteOnly)) {
             QTextStream stream(&spice_file);
-            createNetlist(stream,num,sim_lst,a_vars,a_output_files);
+            createNetlist(stream,sim_lst,a_vars,a_output_files);
             spice_file.close();
         }
     }
@@ -347,16 +353,36 @@ void Xyce::slotSimulate()
  * \brief Xyce::SaveNetlist Save netlist into specified file without
  *        execution of simulator.
  * \param[in] filename The name of file in which netlist is saved
+ * \param[in] netlist2Console Whether netlist to console instead to file
  */
-void Xyce::SaveNetlist(QString filename)
+void Xyce::SaveNetlist(QString filename, bool netlist2Console)
 {
     determineUsedSimulations();
-    int num = 0;
-    QFile spice_file(filename);
-    if (spice_file.open(QFile::WriteOnly)) {
-        QTextStream stream(&spice_file);
-        createNetlist(stream,num,a_simulationsQueue,a_vars,a_output_files);
-        spice_file.close();
+
+    QScopedPointer<QString> netlistString;
+    QScopedPointer<QTextStream> netlistStream;
+    QScopedPointer<QFile> netlistFile;
+
+    if (netlist2Console)
+    {
+        netlistString.reset(new QString);
+        netlistStream.reset(new QTextStream(netlistString.get()));
+    }
+    else
+    {
+        netlistFile.reset(new QFile(filename));
+
+        if (netlistFile->open(QFile::WriteOnly))
+        {
+            netlistStream.reset(new QTextStream(netlistFile.get()));
+        }
+    }
+
+    createNetlist(*netlistStream, a_simulationsQueue, a_vars, a_output_files);
+
+    if (netlist2Console)
+    {
+        std::cout << netlistString->toUtf8().constData() << std::endl;
     }
 }
 

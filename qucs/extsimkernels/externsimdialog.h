@@ -30,7 +30,7 @@ class ExternSimDialog : public QDialog
     Q_OBJECT
 
 private:
-    Schematic *a_schematic;
+    Schematic* a_schematic;
 
     QPushButton *a_buttonStopSim;
     QPushButton *a_buttonSaveNetlist;
@@ -46,10 +46,13 @@ private:
 
     bool a_wasSimulated;
     bool a_hasError;
+    bool a_netlist2Console;
 
 public:
-    explicit ExternSimDialog(Schematic *sch,
-                             bool netlist_mode = false);
+    explicit ExternSimDialog(
+            Schematic* sch,
+            bool netlist2Console,
+            bool netlist_mode = false);
     ~ExternSimDialog();
 
     bool wasSimulated() const { return a_wasSimulated; }

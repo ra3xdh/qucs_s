@@ -119,14 +119,11 @@ QString Equation::getVAExpressions()
 /*!
  * \brief Equation::getExpression Extract equations that don't contain simulation variables
  *        (voltages/cureents) in .PARAM section of spice netlist
- * \param isXyce True if Xyce is used.
- * \param isCdl True if CDL is used.
+ * \param dialect Which spice-dialect is used.
  * \return .PARAM section of spice netlist as a single string.
  */
-QString Equation::getExpression(bool isXyce, bool isCdl /* = false */)
+QString Equation::getExpression(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    Q_UNUSED(isCdl);
-
     if (isActive != COMP_IS_ACTIVE) return QString();
 
     QStringList ng_vars,ngsims;
@@ -145,9 +142,9 @@ QString Equation::getExpression(bool isXyce, bool isCdl /* = false */)
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
         spicecompat::splitEqn(eqn,tokens);
-        spicecompat::convert_functions(tokens,isXyce);
+        spicecompat::convert_functions(tokens, dialect == spicecompat::SPICEXyce);
         eqn = tokens.join("");
-        if (isXyce) {
+        if (dialect == spicecompat::SPICEXyce) {
             eqn.replace("^","**");
 
             if (!(fp_pattern.match(eqn).hasMatch()||
