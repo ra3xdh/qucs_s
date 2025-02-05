@@ -1,3 +1,4 @@
+Analog.lib
 SpiceOpamp.lib
 Cores.lib
 Digital_CD.lib
@@ -15,6 +16,7 @@ MixerIC.lib
 SPICE_TLine.lib
 Digital_AUX.lib
 Digital_XSPICE.lib
+DualGateMOSFET.lib
 TubesExtended.lib
 Neon.lib
 Optocoupler.lib

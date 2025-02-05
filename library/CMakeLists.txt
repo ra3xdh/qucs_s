@@ -1,6 +1,7 @@
 
 SET(COMPLIBS
 555_timer.lib
+Analog.lib
 AudioIC.lib
 Bridges.lib
 BJT_Extended.lib
@@ -14,6 +15,7 @@ Digital_CD.lib
 Digital_HC.lib
 Digital_LV.lib
 Digital_XSPICE.lib
+DualGateMOSFET.lib
 GeDiodes.lib
 Ideal.lib
 JFETs.lib
@@ -63,6 +65,7 @@ INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/${QUCS_NAME}/library )
 INSTALL( DIRECTORY "symbols" DESTINATION share/${QUCS_NAME}/ )
 INSTALL( DIRECTORY "TubesExtended" DESTINATION share/${QUCS_NAME}/library)
 INSTALL( DIRECTORY "Optocoupler" DESTINATION share/${QUCS_NAME}/library )
+INSTALL( DIRECTORY "DualGateMOSFET" DESTINATION share/${QUCS_NAME}/library )
 
 ADD_SUBDIRECTORY( XyceDigital)
 

@@ -37,6 +37,7 @@ This release contains a massive library extention:
 * Added vaccum tubes extended library #846 #1216
 * Added neon bulb model #846 #1216
 * Added MOC3063/MOC3062 optocouple models #846 #1216
+* Added Analog ICs and dual gate MOSFET libraries #1229
 
 ## Packaging
 
