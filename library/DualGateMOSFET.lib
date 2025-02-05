@@ -1,0 +1,306 @@
+<Qucs Library 25.1.0 "DualGateMOSFET">
+
+<Component BF980>
+  <Description>
+BF980 dual gate MOSFET
+  </Description>
+  <Model>
+.Def:DualGateMOSFET_BF980 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="DualGateMos.cir" Device="BF980A" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT DualGateMOSFET_BF980  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 BF980A 
+.ENDS
+  </Spice>
+<SpiceAttach "DualGateMos.cir">
+  <Symbol>
+    <.ID 8 -26 T>
+    <Line -10 -11 10 0 #000080 2 1>
+    <Line 0 -11 0 -19 #000080 2 1>
+    <Line -10 11 10 0 #000080 2 1>
+    <Line 0 0 0 30 #000080 2 1>
+    <Line -10 0 10 0 #000080 2 1>
+    <Line -10 -4 0 8 #000080 3 1>
+    <Line -10 7 0 9 #000080 3 1>
+    <Line -9 0 5 -5 #000080 2 1>
+    <Line -9 0 5 5 #000080 2 1>
+    <Line -30 10 16 0 #000080 2 1>
+    <Line -30 -10 16 0 #000080 2 1>
+    <Line -10 -16 0 9 #000080 3 1>
+    <Line -14 -15 0 5 #000080 3 1>
+    <Line -14 5 0 5 #000080 3 1>
+    <.PortSym 0 30 4 0 P4>
+    <.PortSym 0 -30 1 0 P1>
+    <.PortSym -30 10 3 0 P3>
+    <.PortSym -30 -10 2 0 P2>
+  </Symbol>
+</Component>
+
+<Component BF981>
+  <Description>
+BF981 dual gate MOSFET
+  </Description>
+  <Model>
+.Def:DualGateMOSFET_BF981 _net1 _net2 _net3 _net0
+SpLib:X1 _net0 _net1 _net2 _net3 File="DualGateMos.cir" Device="BF981" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT DualGateMOSFET_BF981  gnd _net1 _net2 _net3 _net0 
+XX1  _net0 _net1 _net2 _net3 BF981 
+.ENDS
+  </Spice>
+<SpiceAttach "DualGateMos.cir">
+  <Symbol>
+    <.ID 8 -26 T>
+    <Line -10 -11 10 0 #000080 2 1>
+    <Line 0 -11 0 -19 #000080 2 1>
+    <Line -10 11 10 0 #000080 2 1>
+    <Line 0 0 0 30 #000080 2 1>
+    <Line -10 0 10 0 #000080 2 1>
+    <Line -10 -4 0 8 #000080 3 1>
+    <Line -10 7 0 9 #000080 3 1>
+    <Line -9 0 5 -5 #000080 2 1>
+    <Line -9 0 5 5 #000080 2 1>
+    <Line -30 10 16 0 #000080 2 1>
+    <Line -30 -10 16 0 #000080 2 1>
+    <Line -10 -16 0 9 #000080 3 1>
+    <Line -14 -15 0 5 #000080 3 1>
+    <Line -14 5 0 5 #000080 3 1>
+    <.PortSym 0 30 1 0 P1>
+    <.PortSym 0 -30 2 0 P2>
+    <.PortSym -30 -10 3 0 P3>
+    <.PortSym -30 10 4 0 P4>
+  </Symbol>
+</Component>
+
+<Component BF992>
+  <Description>
+BF992 dual gate MOSFET
+  </Description>
+  <Model>
+.Def:DualGateMOSFET_BF992 _net0 _net1 _net3 _net2
+SpLib:X1 _net0 _net1 _net3 _net2 File="DualGateMos.cir" Device="BF992" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT DualGateMOSFET_BF992  gnd _net0 _net1 _net3 _net2 
+XX1  _net0 _net1 _net3 _net2 BF992 
+.ENDS
+  </Spice>
+<SpiceAttach "DualGateMos.cir">
+  <Symbol>
+    <.ID 8 -26 T>
+    <Line -10 -11 10 0 #000080 2 1>
+    <Line 0 -11 0 -19 #000080 2 1>
+    <Line -10 11 10 0 #000080 2 1>
+    <Line 0 0 0 30 #000080 2 1>
+    <Line -10 0 10 0 #000080 2 1>
+    <Line -10 -4 0 8 #000080 3 1>
+    <Line -10 7 0 9 #000080 3 1>
+    <Line -9 0 5 -5 #000080 2 1>
+    <Line -9 0 5 5 #000080 2 1>
+    <Line -30 10 16 0 #000080 2 1>
+    <Line -30 -10 16 0 #000080 2 1>
+    <Line -10 -16 0 9 #000080 3 1>
+    <Line -14 -15 0 5 #000080 3 1>
+    <Line -14 5 0 5 #000080 3 1>
+    <.PortSym 0 30 1 0 P1>
+    <.PortSym 0 -30 2 0 P2>
+    <.PortSym -30 -10 3 0 P3>
+    <.PortSym -30 10 4 0 P4>
+  </Symbol>
+</Component>
+
+<Component BF993>
+  <Description>
+BF993 dual gate MOSFET
+  </Description>
+  <Model>
+.Def:DualGateMOSFET_BF993 _net0 _net1 _net2 _net3
+SpLib:X1 _net0 _net1 _net2 _net3 File="DualGateMos.cir" Device="BF993" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT DualGateMOSFET_BF993  gnd _net0 _net1 _net2 _net3 
+XX1  _net0 _net1 _net2 _net3 BF993 
+.ENDS
+  </Spice>
+<SpiceAttach "DualGateMos.cir">
+  <Symbol>
+    <.ID 8 -26 T>
+    <Line -10 -11 10 0 #000080 2 1>
+    <Line 0 -11 0 -19 #000080 2 1>
+    <Line -10 11 10 0 #000080 2 1>
+    <Line 0 0 0 30 #000080 2 1>
+    <Line -10 0 10 0 #000080 2 1>
+    <Line -10 -4 0 8 #000080 3 1>
+    <Line -10 7 0 9 #000080 3 1>
+    <Line -9 0 5 -5 #000080 2 1>
+    <Line -9 0 5 5 #000080 2 1>
+    <Line -30 10 16 0 #000080 2 1>
+    <Line -30 -10 16 0 #000080 2 1>
+    <Line -10 -16 0 9 #000080 3 1>
+    <Line -14 -15 0 5 #000080 3 1>
+    <Line -14 5 0 5 #000080 3 1>
+    <.PortSym 0 -30 1 0 P1>
+    <.PortSym -30 -10 2 0 P2>
+    <.PortSym -30 10 3 0 P3>
+    <.PortSym 0 30 4 0 P4>
+  </Symbol>
+</Component>
+
+<Component BF994>
+  <Description>
+BF994 dual gate MOSFET
+  </Description>
+  <Model>
+.Def:DualGateMOSFET_BF994 _net0 _net1 _net3 _net2
+SpLib:X1 _net0 _net1 _net3 _net2 File="DualGateMos.cir" Device="BF994S" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT DualGateMOSFET_BF994  gnd _net0 _net1 _net3 _net2 
+XX1  _net0 _net1 _net3 _net2 BF994S 
+.ENDS
+  </Spice>
+<SpiceAttach "DualGateMos.cir">
+  <Symbol>
+    <.ID 8 -26 T>
+    <Line -10 -11 10 0 #000080 2 1>
+    <Line 0 -11 0 -19 #000080 2 1>
+    <Line -10 11 10 0 #000080 2 1>
+    <Line 0 0 0 30 #000080 2 1>
+    <Line -10 0 10 0 #000080 2 1>
+    <Line -10 -4 0 8 #000080 3 1>
+    <Line -10 7 0 9 #000080 3 1>
+    <Line -9 0 5 -5 #000080 2 1>
+    <Line -9 0 5 5 #000080 2 1>
+    <Line -30 10 16 0 #000080 2 1>
+    <Line -30 -10 16 0 #000080 2 1>
+    <Line -10 -16 0 9 #000080 3 1>
+    <Line -14 -15 0 5 #000080 3 1>
+    <Line -14 5 0 5 #000080 3 1>
+    <.PortSym 0 30 1 0 P1>
+    <.PortSym 0 -30 2 0 P2>
+    <.PortSym -30 -10 3 0 P3>
+    <.PortSym -30 10 4 0 P4>
+  </Symbol>
+</Component>
+
+<Component BF998>
+  <Description>
+BF998 dual gate MOSFET
+  </Description>
+  <Model>
+.Def:DualGateMOSFET_BF998 _net0 _net1 _net3 _net2
+SpLib:X1 _net0 _net1 _net3 _net2 File="DualGateMos.cir" Device="BF998" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT DualGateMOSFET_BF998  gnd _net0 _net1 _net3 _net2 
+XX1  _net0 _net1 _net3 _net2 BF998 
+.ENDS
+  </Spice>
+<SpiceAttach "DualGateMos.cir">
+  <Symbol>
+    <.ID 8 -26 T>
+    <Line -10 -11 10 0 #000080 2 1>
+    <Line 0 -11 0 -19 #000080 2 1>
+    <Line -10 11 10 0 #000080 2 1>
+    <Line 0 0 0 30 #000080 2 1>
+    <Line -10 0 10 0 #000080 2 1>
+    <Line -10 -4 0 8 #000080 3 1>
+    <Line -10 7 0 9 #000080 3 1>
+    <Line -9 0 5 -5 #000080 2 1>
+    <Line -9 0 5 5 #000080 2 1>
+    <Line -30 10 16 0 #000080 2 1>
+    <Line -30 -10 16 0 #000080 2 1>
+    <Line -10 -16 0 9 #000080 3 1>
+    <Line -14 -15 0 5 #000080 3 1>
+    <Line -14 5 0 5 #000080 3 1>
+    <.PortSym 0 30 1 0 P1>
+    <.PortSym 0 -30 2 0 P2>
+    <.PortSym -30 -10 3 0 P3>
+    <.PortSym -30 10 4 0 P4>
+  </Symbol>
+</Component>
+
+<Component BF998WR>
+  <Description>
+BF998WR dual gate MOSFET
+  </Description>
+  <Model>
+.Def:DualGateMOSFET_BF998WR _net0 _net1 _net3 _net2
+SpLib:X1 _net0 _net1 _net3 _net2 File="DualGateMos.cir" Device="BF998WR" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT DualGateMOSFET_BF998WR  gnd _net0 _net1 _net3 _net2 
+XX1  _net0 _net1 _net3 _net2 BF998WR 
+.ENDS
+  </Spice>
+<SpiceAttach "DualGateMos.cir">
+  <Symbol>
+    <.ID 8 -26 T>
+    <Line -10 -11 10 0 #000080 2 1>
+    <Line 0 -11 0 -19 #000080 2 1>
+    <Line -10 11 10 0 #000080 2 1>
+    <Line 0 0 0 30 #000080 2 1>
+    <Line -10 0 10 0 #000080 2 1>
+    <Line -10 -4 0 8 #000080 3 1>
+    <Line -10 7 0 9 #000080 3 1>
+    <Line -9 0 5 -5 #000080 2 1>
+    <Line -9 0 5 5 #000080 2 1>
+    <Line -30 10 16 0 #000080 2 1>
+    <Line -30 -10 16 0 #000080 2 1>
+    <Line -10 -16 0 9 #000080 3 1>
+    <Line -14 -15 0 5 #000080 3 1>
+    <Line -14 5 0 5 #000080 3 1>
+    <.PortSym 0 30 1 0 P1>
+    <.PortSym 0 -30 2 0 P2>
+    <.PortSym -30 -10 3 0 P3>
+    <.PortSym -30 10 4 0 P4>
+  </Symbol>
+</Component>
+
+<Component MN201>
+  <Description>
+MN201 (3N201) dual gate MOSFET
+  </Description>
+  <Model>
+.Def:DualGateMOSFET_MN201 _net0 _net2 _net1 _net3
+SpLib:X1 _net0 _net2 _net1 _net3 File="DualGateMos.cir" Device="MN201" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT DualGateMOSFET_MN201  gnd _net0 _net2 _net1 _net3 
+XX1  _net0 _net2 _net1 _net3 MN201 
+.ENDS
+  </Spice>
+<SpiceAttach "DualGateMos.cir">
+  <Symbol>
+    <.ID 8 -26 T>
+    <Line -10 -11 10 0 #000080 2 1>
+    <Line 0 -11 0 -19 #000080 2 1>
+    <Line -10 11 10 0 #000080 2 1>
+    <Line 0 0 0 30 #000080 2 1>
+    <Line -10 0 10 0 #000080 2 1>
+    <Line -10 -4 0 8 #000080 3 1>
+    <Line -10 7 0 9 #000080 3 1>
+    <Line -9 0 5 -5 #000080 2 1>
+    <Line -9 0 5 5 #000080 2 1>
+    <Line -30 10 16 0 #000080 2 1>
+    <Line -30 -10 16 0 #000080 2 1>
+    <Line -10 -16 0 9 #000080 3 1>
+    <Line -14 -15 0 5 #000080 3 1>
+    <Line -14 5 0 5 #000080 3 1>
+    <.PortSym 0 30 4 0 P4>
+    <.PortSym 0 -30 1 0 P1>
+    <.PortSym -30 10 3 0 P3>
+    <.PortSym -30 -10 2 0 P2>
+  </Symbol>
+</Component>
+

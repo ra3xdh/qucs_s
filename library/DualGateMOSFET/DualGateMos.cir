@@ -1,0 +1,242 @@
+*   BF992 SPICE MODEL JANUARY 1996 PHILIPS SEMICONDUCTORS
+*   ENVELOPE    SOT143 
+*   1.: SOURCE;  2.: DRAIN;  3.: GATE 2;  4.: GATE 1;
+.SUBCKT BF992 1 2 3 4
+        L10          1 10   0.12N
+        L20          2 20   0.12N
+        L30          3 30   0.12N
+        L40          4 40   0.12N
+        L11         10 11   1.20N
+        L21         20 21   1.20N
+        L31         30 31   1.20N
+        L41         40 41   1.20N
+        C13         10 30   0.085P
+        C14         10 40   0.085P
+        C21         10 20   0.017P
+        C23         20 30   0.085P
+        C24         20 40   0.005P
+        D11         42 11   ZENER
+        D12         42 41   ZENER
+        D21         32 11   ZENER
+        D22         32 31   ZENER
+        RS          10 12   100
+        MOS1        61 41 11 12 GATE1 L=2E-6 W=2200E-6
+        MOS2        21 31 61 12 GATE2 L=3.0E-6 W=2200E-6
+
+.MODEL  ZENER  D  BV=10 CJO=1.2E-12  RS=10
+
+.MODEL  GATE1
++  NMOS LEVEL=3 UO=904.9  VTO=-0.2051 NFS=300E9 TOX=60E-9
++  NSUB=3E15 VMAX=140E3 RS=2.0 RD=2.0 XJ=500E-9 THETA=0.11
++  ETA=0.2095 KAPPA=0.6488 LD=0.3E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=0.5E-12 CBS=0.5E-12
+
+.MODEL  GATE2 
++  NMOS LEVEL=3 UO=600  VTO=-0.2051 NFS=300E9 TOX=60E-9
++  NSUB=3E15  VMAX=100E3 RS=2.0 RD=2.0 XJ=500E-9 THETA=0.11
++  ETA=0.06  KAPPA=2 LD=0.3E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=1.467E-12 CBS=0.5E-12
+
+.ENDS BF992
+
+
+
+*   BF998 SPICE MODEL OCTOBER 1993 PHILIPS SEMICONDUCTORS
+*   ENVELOPE    SOT143 
+*   1.: SOURCE;  2.: DRAIN;  3.: GATE 2;  4.: GATE 1;
+.SUBCKT BF998 1 2 3 4
+        L10          1 10   0.12N
+        L20          2 20   0.12N
+        L30          3 30   0.12N
+        L40          4 40   0.12N
+        L11         10 11   1.20N
+        L21         20 21   1.20N
+        L31         30 31   1.20N
+        L41         40 41   1.20N
+        C13         10 30   0.085P
+        C14         10 40   0.085P
+        C21         10 20   0.017P
+        C23         20 30   0.085P
+        C24         20 40   0.005P
+        D11         42 11   ZENER
+        D12         42 41   ZENER
+        D21         32 11   ZENER
+        D22         32 31   ZENER
+        RS          10 12   100
+        MOS1        61 41 11 12 GATE1 L=1.1E-6 W=1150E-6
+        MOS2        21 31 61 12 GATE2 L=2.0E-6 W=1150E-6
+
+.MODEL  ZENER  D  BV=10 CJO=1.2E-12  RS=10
+
+.MODEL  GATE1
++  NMOS LEVEL=3 UO=600  VTO=-0.250 NFS=300E9 TOX=42E-9
++  NSUB=3E15 VMAX=140E3 RS=2.0 RD=2.0 XJ=200E-9 THETA=0.11
++  ETA=0.06 KAPPA=2 LD=0.1E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=0.5E-12 CBS=0.5E-12
+
+.MODEL  GATE2 
++  NMOS LEVEL=3 UO=600  VTO=-0.250 NFS=300E9 TOX=42E-9
++  NSUB=3E15  VMAX=100E3 RS=2.0 RD=2.0 XJ=200E-9 THETA=0.11
++  ETA=0.06  KAPPA=2 LD=0.1E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=0.5E-12 CBS=0.5E-12
+
+.ENDS BF998
+
+
+*   BF998WR SPICE MODEL OCTOBER 1993 PHILIPS SEMICONDUCTORS
+*   ENVELOPE    SOT343R 
+*   1.: SOURCE;  2.: DRAIN;  3.: GATE 2;  4.: GATE 1;
+.SUBCKT BF998WR 1 2 3 4
+        L10          1 10   0.10N
+        L20          2 20   0.34N
+        L30          3 30   0.34N
+        L40          4 40   0.34N
+        L11         10 11   1.10N
+        L21         20 21   1.10N
+        L31         30 31   1.10N
+        L41         40 41   1.10N
+        C13         10 30   0.060P
+        C14         10 40   0.060P
+        C21         10 20   0.050P
+        C23         20 30   0.070P
+        C24         20 40   0.005P
+        D11         42 11   ZENER
+        D12         42 41   ZENER
+        D21         32 11   ZENER
+        D22         32 31   ZENER
+        RS          10 12   100
+        MOS1        61 41 11 12 GATE1 L=1.1E-6 W=1150E-6
+        MOS2        21 31 61 12 GATE2 L=2.0E-6 W=1150E-6
+
+.MODEL  ZENER  D  BV=10 CJO=1.2E-12  RS=10
+
+.MODEL  GATE1
++  NMOS LEVEL=3 UO=600  VTO=-0.250 NFS=300E9 TOX=42E-9
++  NSUB=3E15 VMAX=140E3 RS=2.0 RD=2.0 XJ=200E-9 THETA=0.11
++  ETA=0.06 KAPPA=2 LD=0.1E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=0.5E-12 CBS=0.5E-12
+
+.MODEL  GATE2 
++  NMOS LEVEL=3 UO=600  VTO=-0.250 NFS=300E9 TOX=42E-9
++  NSUB=3E15  VMAX=100E3 RS=2.0 RD=2.0 XJ=200E-9 THETA=0.11
++  ETA=0.06  KAPPA=2 LD=0.1E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=0.5E-12 CBS=0.5E-12
+
+.ENDS BF998WR
+
+
+*   BF994S SPICE MODEL MARCH 1996 PHILIPS SEMICONDUCTORS
+*   ENVELOPE    SOT143 
+*   1.: SOURCE;  2.: DRAIN;  3.: GATE 2;  4.: GATE 1;
+.SUBCKT BF994S 1 2 3 4
+        L10          1 10   0.12N
+        L20          2 20   0.12N
+        L30          3 30   0.12N
+        L40          4 40   0.12N
+        L11         10 11   1.20N
+        L21         20 21   1.20N
+        L31         30 31   1.20N
+        L41         40 41   1.20N
+        C13         10 30   0.085P
+        C14         10 40   0.085P
+        C21         10 20   0.017P
+        C23         20 30   0.085P
+        C24         20 40   0.005P
+        D11         42 11   ZENER
+        D12         42 41   ZENER
+        D21         32 11   ZENER
+        D22         32 31   ZENER
+        RS          10 12   100
+        MOS1        61 41 11 12 GATE1 L=2E-6 W=1280E-6
+        MOS2        21 31 61 12 GATE2 L=3.0E-6 W=1280E-6
+
+.MODEL  ZENER  D  BV=10 CJO=1.2E-12  RS=10
+
+.MODEL  GATE1
++  NMOS LEVEL=3 UO=750  VTO=-0.4357 NFS=300E9 TOX=60E-9
++  NSUB=3E15 VMAX=140E3 RS=2.0 RD=2.0 XJ=200E-9 THETA=0.11
++  ETA=0.1686 KAPPA=2.282 LD=0.3E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=0.5E-12 CBS=0.5E-12
+
+.MODEL  GATE2 
++  NMOS LEVEL=3 UO=600  VTO=-0.4357 NFS=300E9 TOX=60E-9
++  NSUB=3E15  VMAX=100E3 RS=2.0 RD=2.0 XJ=200E-9 THETA=0.11
++  ETA=0.06  KAPPA=2 LD=0.3E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=0.5E-12 CBS=0.5E-12
+
+.ENDS BF994S
+
+
+
+*.SUBCKT BF981 1 2 3 4
+*Drain  Gate2 Gate1 Source   
+
+* Pin order changed in BF981 model
+*   1.: SOURCE;  2.: DRAIN;  3.: GATE 2;  4.: GATE 1;
+.SUBCKT BF981 4 1 2 3
+
+*Dual Gate Mosfet
+MD1 5 3 4 4 BF981A
+MD2 1 2 5 4 BF981B W=50U
+.MODEL BF981A NMOS (LEVEL=1 VTO=-1.1 KP=15M GAMMA=3.3U
++ PHI=.75 LAMBDA=3.75M RS=2.2 IS=12.5F PB=.8 MJ=.46
++ CBD=3.43P CBS=4.11P CGSO=240P CGDO=200P CGBO=20.5N)
+.MODEL BF981B NMOS (LEVEL=1 VTO=-.9 KP=18M GAMMA=19.08U
++ PHI=.75 LAMBDA=13.75M RD=41.3 IS=12.5F PB=.8 MJ=.46
++ CBD=3.43P CBS=4.11P CGSO=240P CGDO=200P CGBO=14.5N)
+* Philips
+* N-Channel Depletion DG-MOSFET
+.ENDS BF981
+*
+**********
+* Copyright Intusoft 1991
+* All Rights Reserved
+**********
+*SYM=DGMOS
+.SUBCKT BF993 1      2     3     4
+*Connections  Drain  Gate2 Gate1 Source
+*Dual Gate Mosfet
+MD1 5 3 4 4 BF993G1
+MD2 1 2 5 4 BF993G2 W=65U
+.MODEL BF993G1 NMOS (LEVEL=1 VTO=-1.0 KP=23M GAMMA=7.4U 
++ PHI=.75 LAMBDA=13.75M RS=2.5 IS=31.2F PB=.8 MJ=.46
++ CBD=9.66P CBS=11.5P CGSO=600P CGDO=500P CGBO=61.4N
+.MODEL BF993G2 NMOS (LEVEL=1 VTO=-.9 KP=25M GAMMA=30.4U
++ PHI=.75 LAMBDA=23.75M RD=74.4 IS=31.2F PB=.8 MJ=.46
++ CBD=9.66P CBS=11.5P CGSO=600P CGDO=500P CGBO=61.4N
+* Siemens
+* N-Channel Depletion DG-MOSFET 
+.ENDS
+**********
+*SYM=DGMOS
+.SUBCKT BF980A 1      2     3     4
+*Connections   Drain  Gate2 Gate1 Source
+*Dual Gate Mosfet
+MD1 5 3 4 4 BF980AA
+MD2 1 2 5 4 BF980AB W=50U
+.MODEL BF980AA NMOS (LEVEL=1 VTO=-1.0 KP=17M GAMMA=4.34U
++ PHI=.75 LAMBDA=4.16M RS=3.2 IS=20.8F PB=.8 MJ=.46
++ CBD=2.89P CBS=3.47P CGSO=300P CGDO=250P CGBO=25.4N)
+.MODEL BF980AB NMOS (LEVEL=1 VTO=-.9 KP=20M GAMMA=17.47U
++ PHI=.75 LAMBDA=14.16M RD=30 IS=20.8F PB=.8 MJ=.46
++ CBD=2.89P CBS=3.47P CGSO=300P CGDO=250P CGBO=25.4N)
+* Philips
+* N-Channel Depletion DG-MOSFET 
+.ENDS
+**********
+*SYM=DGMOS
+.SUBCKT MN201 1      2     3     4
+*Connections  Drain  Gate2 Gate1 Source
+*Dual Gate Mosfet
+MD1 5 3 4 4 MN201-1
+MD2 1 2 5 4 MN201-2 W=35U
+.MODEL MN201-1 NMOS (LEVEL=1 VTO=-1.45 KP=11.8M GAMMA=3.26U
++ PHI=.75 LAMBDA=30M RD=1M RS=20.8 IS=25F PB=.8 MJ=.46
++ CBD=6.64P CBS=7.97P CGSO=168P CGDO=140P CGBO=32.6N)
+.MODEL MN201-2 NMOS (LEVEL=1 VTO=-1.00 KP=12.5M GAMMA=27.26U
++ PHI=.75 LAMBDA=37M RD=15.3 RS=1M IS=30F PB=.8 MJ=.46
++ CBD=6.64P CBS=7.97P CGSO=168P CGDO=140P CGBO=32.6N)
+* Motorola
+* N-Channel Depletion DG-MOSFET 
+.ENDS
+*************

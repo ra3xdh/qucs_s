@@ -1,0 +1,1874 @@
+<Qucs Library 25.1.0 "Analog">
+
+<Component AD22057>
+  <Description>
+AD22057 single supply sensor interface amplifier
+  </Description>
+  <Model>
+.Def:Analog_AD22057 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="Ad22057_lib"
+.Def:End
+  </Model>
+  <ModelIncludes "Ad22057.lib.lst">
+  <Spice>
+* AD22057T SPICE Macro-model            Rev. A, 11/95
+*                                       ARG / ADSC
+*
+* Copyright 1995 by Analog Devices
+*
+* Refer to "README.DOC" file for License Statement. Use of
+* this model indicates your acceptance of the terms and pro-
+* visions in the License Statement.
+*
+* Node assignments
+*                non-inverting input
+*                |  inverting input
+*                |  |  positive supply
+*                |  |  |  negative supply
+*                |  |  |  |  A1 out
+*                |  |  |  |  |  A2 in
+*                |  |  |  |  |  |  offset
+*                |  |  |  |  |  |  |  output
+*                |  |  |  |  |  |  |  |
+.SUBCKT AD22057T 1  2  99 50 30 31 40 49
+*
+* A1 INPUT ATTENUATORS, GAIN, AND OFFSET RESISTORS
+*
+R1 1 3 200K
+R2 2 4 200K
+RS1 3 16 1K
+RS2 4 18 1K
+R3 3 5 41K
+R4 4 6 41K
+R5 5 6 2.566K TC=-134U
+R6 5 50 250
+R7 6 50 250
+R8 5 19 9K
+R9 6 7 10K
+R10 19 40 2K
+R11 19 50 2K
+R12 7 30 100K
+R16 7 50 10K
+C1 16 50 5P
+C2 17 50 5P
+*
+* A1 INPUT STAGE AND POLE AT 1MHZ
+*
+I1 99 8 7.55U
+Q1 11 16 9 QP 1
+Q2 12 17 10 QP 1
+R21 11 50 6.89671K
+R22 12 50 6.89671K
+R23 8 9 .335
+R24 8 10 .335
+C3 11 12 11.5P
+EOS 61 17 POLY(1) 33 0 -220.5U 0.537
+ETC 18 61 POLY(1) 60 0 -49.665M 1
+ITC 0 60 49.665U
+RTC 60 0 1E3 TC=-102U
+*
+* GAIN STAGE AND DOMINANT POLE AT 400HZ
+*
+EREF 98 50 POLY(2) 99 0 50 0 0 0.5 0.5
+G1 98 13 12 11 144.997U
+R25 13 98 6.89671E6
+C4 13 98 57.6923P
+D1 13 99 DX
+D2 50 13 DX
+*
+* COMMON MODE STAGE WITH ZERO AT 1.78KHZ
+*
+ECM 32 0 POLY(2) 1 0 2 0 0 0.5 0.5
+R28 32 33 1E6
+R29 33 0 10
+CCM 32 33 89.5P
+*
+* NEGATIVE ZERO AT 0.6MHZ
+*
+E1 23 98 13 98 1E6
+R26 23 24 1E3
+R27 24 98 1E-3
+FNZ 23 24 VNZ -1
+ENZ 25 98 23 24 1
+VNZ 26 98 DC 0
+CNZ 25 26 265P
+*
+* POLE AT 5MHZ
+*
+G2 98 20 24 98 1E-6
+R30 20 98 1E6
+C5 20 98 32F
+*
+* A1 OUTPUT STAGE
+*
+EIN1 99 27 POLY(1) 20 98 1.4995 1.124
+Q216 50 27 28 QP375 3.444
+Q218 7 29 99 QP350 9.913
+R31 28 29 27K
+I2 99 29 4.75U
+*
+* A2 INPUT STAGE
+*
+I3 99 34 2.516667U
+Q3 35 31 37 QP 1
+Q4 36 39 38 QP 1
+R32 35 50 106.103K
+R33 36 50 106.103K
+R34 34 37 85.414K
+R35 34 38 85.414K
+R13 40 41 20K
+R14 41 50 20K
+R15 41 49 10K
+R17 39 41 95K
+*
+* A2 1ST GAIN STAGE AND SLEW RATE
+*
+G3 98 42 36 35 30.159U
+R36 42 98 1E6
+E2 99 43 POLY(1) 99 98 -0.473 1
+E3 44 50 POLY(1) 98 50 -0.473 1
+D3 42 43 DX
+D4 44 42 DX
+*
+* A2 2ND GAIN STAGE AND DOMINANT POLE AT 12HZ
+*
+G4 98 45 42 98 2.5U
+R37 45 98 132.629E6
+C7 45 98 100P
+D5 45 59 DX
+D6 55 45 DX
+VC1 59 99 5
+VC2 50 55 5
+*
+* NEGATIVE ZERO AT 1MHZ
+*
+E4 51 98 45 98 1E6
+R38 51 52 1E6
+R39 52 98 1
+FNZ2 51 52 VNZ2 -1
+ENZ2 53 98 51 52 1
+VNZ2 54 98 0
+CNZ2 53 54 159F
+*
+* A2 OUTPUT STAGE
+*
+ISY 99 50 169U
+EIN2 99 56 POLY(1) 52 98 1.73166 112.132E-3
+RIN 46 56 10K
+Q316 50 46 47 QP375 1.778
+Q310 50 47 48 QP375 5.925
+Q318 49 48 57 50 QP350 9.913
+I4 99 47 4.75U
+I5 99 48 9.5U
+VSC 99 57 0
+FSC 58 99 VSC 1
+QSC 46 58 99 QP350 1
+RSC 99 58 56
+*
+* MODELS USED
+*
+.MODEL QP350 PNP(IS=1.4E-15 BF=70 CJE=.012P CJC=.06P RE=20 RB=350
++RC=200)
+.MODEL QP375 PNP(IS=1.4E-15 CJE=.01P CJC=.05P RE=20 RC=400 RB=100)
+.MODEL QP PNP(IS=1.4E-15 BF=150 VA=100 CJE=.012P CJC=.06P RE=20 RB=350
++RC=200)
+.MODEL DX D(CJO=1F RS=.1)
+.ENDS
+*
+* AD22057N SPICE Macro-model            Rev. A, 11/95
+*                                       ARG / ADSC
+*
+* This version of the AD22057 model simulates the worst-case
+* parameters of the 'N' grade. The worst-case parameters
+* used correspond to those in the data sheet.
+*
+* Copyright 1995 by Analog Devices
+*
+* Refer to "README.DOC" file for License Statement. Use of
+* this model indicates your acceptance of the terms and pro-
+* visions in the License Statement.
+*
+* Node assignments
+*                non-inverting input
+*                |  inverting input
+*                |  |  positive supply
+*                |  |  |  negative supply
+*                |  |  |  |  A1 out
+*                |  |  |  |  |  A2 in
+*                |  |  |  |  |  |  offset
+*                |  |  |  |  |  |  |  output
+*                |  |  |  |  |  |  |  |
+.SUBCKT AD22057N 1  2  99 50 30 31 40 49
+*
+* A1 INPUT ATTENUATORS, GAIN, AND OFFSET RESISTORS
+*
+R1 1 3 200K
+R2 2 4 200K
+RS1 3 16 1K
+RS2 4 18 1K
+R3 3 5 41K
+R4 4 6 41K
+R5 5 6 2.55919K TC=-600U
+R6 5 50 250
+R7 6 50 250
+R8 5 19 9K
+R9 6 7 10K
+R10 19 40 2K
+R11 19 50 2K
+R12 7 30 100K
+R16 7 50 10K
+C1 16 50 5P
+C2 17 50 5P
+*
+* A1 INPUT STAGE AND POLE AT 1MHZ
+*
+I1 99 8 7.55U
+Q1 11 16 9 QP 1
+Q2 12 17 10 QP 1
+R21 11 50 6.89671K
+R22 12 50 6.89671K
+R23 8 9 .335
+R24 8 10 .335
+C3 11 12 11.5P
+EOS 61 17 POLY(1) 33 0 -61.149U 1.2
+ETC 18 61 POLY(1) 60 0 -49.665M 1
+ITC 0 60 49.665U
+RTC 60 0 1E3 TC=-107U
+*
+* GAIN STAGE AND DOMINANT POLE AT 400HZ
+*
+EREF 98 50 POLY(2) 99 0 50 0 0 0.5 0.5
+G1 98 13 12 11 144.997U
+R25 13 98 6.89671E6
+C4 13 98 57.6923P
+D1 13 99 DX
+D2 50 13 DX
+*
+* COMMON MODE STAGE WITH ZERO AT 1KHZ
+*
+ECM 32 0 POLY(2) 1 0 2 0 0 0.5 0.5
+R28 32 33 1E6
+R29 33 0 10
+CCM 32 33 159P
+*
+* NEGATIVE ZERO AT 0.6MHZ
+*
+E1 23 98 13 98 1E6
+R26 23 24 1E3
+R27 24 98 1E-3
+FNZ 23 24 VNZ -1
+ENZ 25 98 23 24 1
+VNZ 26 98 DC 0
+CNZ 25 26 265P
+*
+* POLE AT 5MHZ
+*
+G2 98 20 24 98 1E-6
+R30 20 98 1E6
+C5 20 98 32F
+*
+* A1 OUTPUT STAGE
+*
+EIN1 99 27 POLY(1) 20 98 1.5072 1.124
+Q216 50 27 28 QP375 3.444
+Q218 7 29 99 QP350 9.913
+R31 28 29 27K
+I2 99 29 4.75U
+*
+* A2 INPUT STAGE
+*
+I3 99 34 2.516667U
+Q3 35 31 37 QP 1
+Q4 36 39 38 QP 1
+R32 35 50 106.103K
+R33 36 50 106.103K
+R34 34 37 85.414K
+R35 34 38 85.414K
+R13 40 41 20K
+R14 41 50 20K
+R15 41 49 10K
+R17 39 41 95K
+*
+* A2 1ST GAIN STAGE AND SLEW RATE
+*
+G3 98 42 36 35 30.159U
+R36 42 98 1E6
+E2 99 43 POLY(1) 99 98 -0.473 1
+E3 44 50 POLY(1) 98 50 -0.473 1
+D3 42 43 DX
+D4 44 42 DX
+*
+* A2 2ND GAIN STAGE AND DOMINANT POLE AT 12HZ
+*
+G4 98 45 42 98 2.5U
+R37 45 98 132.629E6
+C7 45 98 100P
+D5 45 59 DX
+D6 55 45 DX
+VC1 59 99 5
+VC2 50 55 5
+*
+* NEGATIVE ZERO AT 1MHZ
+*
+E4 51 98 45 98 1E6
+R38 51 52 1E6
+R39 52 98 1
+FNZ2 51 52 VNZ2 -1
+ENZ2 53 98 51 52 1
+VNZ2 54 98 0
+CNZ2 53 54 159F
+*
+* A2 OUTPUT STAGE
+*
+ISY 99 50 469U
+EIN2 99 56 POLY(1) 52 98 1.6901 112.132E-3
+RIN 46 56 10K
+Q316 50 46 47 QP375 1.778
+Q310 50 47 48 QP375 5.925
+Q318 49 48 57 50 QP350 9.913
+I4 99 47 4.75U
+I5 99 48 9.5U
+VSC 99 57 0
+FSC 58 99 VSC 1
+QSC 46 58 99 QP350 1
+RSC 99 58 89
+*
+* MODELS USED
+*
+.MODEL QP350 PNP(IS=1.4E-15 BF=70 CJE=.012P CJC=.06P RE=20 RB=350
++RC=200)
+.MODEL QP375 PNP(IS=1.4E-15 CJE=.01P CJC=.05P RE=20 RC=400 RB=100)
+.MODEL QP AKO:QP350 PNP(BF=150 VA=100)
+.MODEL DX D(CJO=1F RS=.1)
+.ENDS
+
+.SUBCKT Analog_AD22057  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 AD22057T 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 50 0 -100 #000080 2 1>
+    <Line 70 -20 -130 -30 #000080 2 1>
+    <Line -80 -30 20 0 #000080 2 1>
+    <Line -55 -30 10 0 #ff0000 2 1>
+    <Line -50 -25 0 -10 #ff0000 2 1>
+    <Line -80 30 20 0 #000080 2 1>
+    <Line -55 30 10 0 #000000 2 1>
+    <Line -60 50 130 -30 #000080 2 1>
+    <Line 70 0 30 0 #000080 2 1>
+    <Text -25 55 8 #000000 0 "VEE">
+    <Line -30 -43 0 -17 #000080 2 1>
+    <Text -25 -65 8 #000000 0 "VCC">
+    <Line -30 70 0 -26 #000080 2 1>
+    <Line 70 20 0 -40 #000080 2 1>
+    <.PortSym -80 -30 1 0 P1>
+    <.PortSym -80 30 2 0 P2>
+    <.PortSym -30 -60 3 0 P3>
+    <.PortSym -30 70 4 0 P4>
+    <.PortSym 100 0 8 0 P8>
+    <Line 20 -60 0 28 #000080 2 1>
+    <Line 10 70 0 -36 #000080 2 1>
+    <.ID 120 34 SUB>
+    <Line 50 70 0 -45 #000080 2 1>
+    <Text 55 55 8 #000000 0 "A2">
+    <Text 15 55 8 #000000 0 "A1">
+    <.PortSym 50 70 6 0 P6>
+    <.PortSym 10 70 5 0 P5>
+    <.PortSym 20 -60 7 0 P7>
+    <Text 26 -66 8 #000000 0 "OFS">
+  </Symbol>
+</Component>
+
+<Component AD603>
+  <Description>
+AD603 90MHz low noise amplifier
+  </Description>
+  <Model>
+.Def:Analog_AD603 _net2 _net1 _net0 _net5 _net4 _net3 _net7 _net6
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="ad603_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "ad603.cir.lst">
+  <Spice>
+* AD603A SPICE Macro-model              Rev. A, 12/94
+*                                       ARG / PMI
+*
+* This version of the AD603 model simulates the worst-case
+* parameters of the 'A' grade.  The worst-case parameters
+* used correspond to those in the data sheet.
+*
+* Copyright 1993 by Analog Devices
+*
+* Refer to "README.DOC" file for License Statement.  Use of
+* this model indicates your acceptance of the terms and pro-
+* visions in the License Statement.
+*
+* Node assignments
+*                   vinp
+*                   |  common
+*                   |  |  vpos
+*                   |  |  |  vneg
+*                   |  |  |  |  vout
+*                   |  |  |  |  |  gpos
+*                   |  |  |  |  |  |  gneg
+*                   |  |  |  |  |  |  |  fdbk
+*                   |  |  |  |  |  |  |  |
+.SUBCKT AD603A_AD   3  2  99 50 48 40 41 49
+*
+* INPUT STAGE
+*
+Q1A  1    3    21   QN
+Q1B  4    5    21   QN
+Q2A  1    14   22   QN
+Q2B  4    5    22   QN
+Q3A  1    15   23   QN
+Q3B  4    5    23   QN
+Q4A  1    16   24   QN
+Q4B  4    5    24   QN
+Q5A  1    17   25   QN
+Q5B  4    5    25   QN
+Q6A  1    18   26   QN
+Q6B  4    5    26   QN
+Q7A  1    19   27   QN
+Q7B  4    5    27   QN
+Q8A  1    20   28   QN
+Q8B  4    5    28   QN
+RT   3    2    500
+CIN  3    2    2E-12
+RL1  3    14   62.5
+RL2  14   2    125
+RL3  14   15   62.5
+RL4  15   2    125
+RL5  15   16   62.5
+RL6  16   2    125
+RL7  16   17   62.5
+RL8  17   2    125
+RL9  17   18   62.5
+RL10 18   2    125
+RL11 18   19   62.5
+RL12 19   2    125
+RL13 19   20   62.5
+RL14 20   2    62.5
+VOS  11   5    0.45E-3
+IB1  99   7    400E-6
+IB2  99   29   200E-6
+IB3  99   30   200E-6
+IB4  99   31   200E-6
+IB5  99   32   200E-6
+IB6  99   33   200E-6
+IB7  99   34   200E-6
+IB8  99   13   400E-6
+Q100 50   51   7    QP
+Q101 50   52   13   QP
+R100 51   50   950
+R101 52   50   950
+G10  50   51   POLY(1) (40,41) 2E-3 3.5E-3
+G11  50   52   POLY(1) (41,40) 2E-3 3.5E-3
+RB1  7    29   700
+RB2  29   30   700
+RB3  30   31   700
+RB4  31   32   700
+RB5  32   33   700
+RB6  33   34   700
+RB7  34   13   700
+Q9   21   7    6    QN
+Q10  22   29   6    QN
+Q11  23   30   6    QN
+Q12  24   31   6    QN
+Q13  25   32   6    QN
+Q14  26   33   6    QN
+Q15  27   34   6    QN
+Q16  28   13   6    QN
+Q17  61   62   1    QN
+Q18  64   62   4    QN
+R102 61   62   12E3
+R103 64   62   12E3
+RC   40   41   50E6
+CCTL 40   41   3.183E-15
+IGP  40   0    205E-9
+IGN  41   0    195E-9
+I1   6    50   2.5E-3
+R1   99   61   2E3
+R2   99   64   2E3
+*
+* 1ST GAIN STAGE
+*
+EREF 98   0    POLY(2) (99,0) (50,0) 0 0.5 0.5
+G1   98   8    (64,61) 0.84
+R5   8    98   1
+E1   99   9    POLY(1) (99,98) -0.535 1
+E2   10   50   POLY(1) (98,50) -0.535 1
+D1   8    9    DX
+D2   10   8    DX
+*
+* 2ND GAIN STAGE AND DOMINANT POLE AT 317KHZ
+*
+G2   98   58   (8,98) 1.667E-3
+R6   58   98   55.2273E3
+C1   58   98   9.091E-12
+V1   99   59   3.2
+V2   60   50   3.2
+D3   58   59   DX
+D4   60   58   DX
+*
+* POLE AT 250MHZ
+*
+G5   98   35   (58,98) 1
+R11  35   98   1
+C2   35   98   0.637E-9
+*
+* POLE AT 300MHZ
+*
+G6   98   36   (35,98) 1
+R12  36   98   1
+C4   36   98   0.531E-9
+*
+* POLE AT 300MHZ
+*
+G7   98   37   (36,98) 1
+R13  37   98   1
+C5   37   98   0.531E-9
+*
+* POLE AT 300MHZ
+*
+G3   98   45   (37,98) 1E-3
+R10  45   98   1E3
+C3   45   98   0.531E-12
+*
+* OUTPUT STAGE
+*
+GSY  99   50   POLY(1) (99,50) -16E-3 1.6E-3
+FSY  99   50   POLY(2) V7 V8 12.51E-3 1 1
+RO1  99   48   4
+RO2  48   50   4
+GO1  48   99   (99,45) 250E-3
+GO2  50   48   (45,50) 250E-3
+V4   48   46   -0.7
+V5   47   48   -0.7
+D5   46   45   DX
+D6   45   47   DX
+G4   98   44   (48,45) 250E-3
+D7   44   42   DX
+D8   43   44   DX
+V7   42   98   0
+V8   98   43   0
+RF1  48   49   6.44E3
+RF2  11   49   694
+RIN  11   2    20
+.MODEL DX D(IS=1E-16)
+.MODEL QN NPN(BF=200 IS=1E-14 RB=20 KF=1E-16 AF=1)
+.MODEL QP PNP(BF=1000 IS=1E-14)
+.ENDS
+
+
+
+.SUBCKT Analog_AD603  gnd _net2 _net1 _net0 _net5 _net4 _net3 _net7 _net6 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 AD603A_AD 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 60 0 -120 #000080 2 1>
+    <Line -30 60 90 -60 #000080 2 1>
+    <.PortSym 80 0 5 180 P48>
+    <Line 60 0 20 0 #000080 2 1>
+    <Line 60 0 -90 -60 #000000 2 1>
+    <Line 0 -40 0 -20 #000080 2 1>
+    <.PortSym 0 -60 1 0 P99>
+    <Line 0 60 0 -20 #000080 2 1>
+    <.PortSym 0 60 6 0 P50>
+    <Text 5 45 8 #000000 0 "VEE">
+    <Text 5 -65 8 #000000 0 "VCC">
+    <Line -50 -30 20 0 #000080 2 1>
+    <Line -25 -30 10 0 #000000 2 1>
+    <Line -50 30 20 0 #000080 2 1>
+    <Line -25 30 10 0 #ff0000 2 1>
+    <Line -20 35 0 -10 #ff0000 2 1>
+    <.PortSym -50 30 3 0 P3>
+    <.ID 70 -76 X>
+    <.PortSym -50 -30 2 0 P2>
+    <Line 30 20 0 40 #00007f 2 1>
+    <Line 50 10 0 30 #00007f 2 1>
+    <Line 30 -60 0 40 #00007f 2 1>
+    <Text 35 -65 8 #000000 0 "FDBK">
+    <Line 50 40 40 0 #00007f 2 1>
+    <.PortSym 30 -60 7 0 P49>
+    <.PortSym 30 60 4 0 P40>
+    <.PortSym 90 40 8 0 P41>
+    <Text 35 45 8 #000000 0 "GPOS">
+    <Text 55 25 8 #000000 0 "GNEG">
+  </Symbol>
+</Component>
+
+<Component AD620>
+  <Description>
+AD620 high precision instrumentation amplifier
+  </Description>
+  <Model>
+.Def:Analog_AD620 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="ad620a_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "ad620a.cir.lst">
+  <Spice>
+* AD620A SPICE Macro-model              10/95, Rev. B
+*                                       ARG / ADSC
+*
+* This version of the AD620 model simulates the worst-case
+* parameters of the 'A' grade. The worst-case parameters
+* used correspond to those in the data sheet.
+*
+*
+* Revision History:
+*     Rev. B
+* Added V2,V3,V12,V13 and D3,D4,D15,D16 to clamp inputs to Q3,Q4 to
+* prevent output phase reversal.
+*
+*
+* Copyright 1990 by Analog Devices, Inc.
+*
+* Refer to "README.DOC" file for License Statement. Use of this model
+* indicates your acceptance with the terms and provisions in the License
+* Statement.
+*
+* Node assignments
+*                 non-inverting input
+*                 |  inverting input
+*                 |  |  positive supply
+*                 |  |  |  negative supply
+*                 |  |  |  |  output
+*                 |  |  |  |  |  ref
+*                 |  |  |  |  |  |  rg1
+*                 |  |  |  |  |  |  |  rg2
+*                 |  |  |  |  |  |  |  |
+.SUBCKT AD620A    1  2  99 50 46 20 7  8
+*
+* INPUT STAGE
+*
+I1   7    50   5.002E-6
+I2   8    50   5.002E-6
+IOS  3    4    0.5E-9
+VIOS 21   3    125E-6
+CCM  3    4    2E-12
+CD1  3    0    2E-12
+CD2  4    0    2E-12
+Q1   5    4    7    QN1
+Q2   6    21   8    QN1
+D1   7    4    DX
+D2   8    21   DX
+R1   1    3    400
+R2   2    4    400
+R3   99   5    100E3
+R4   99   6    100E3
+R5   7    9    24.7E3
+R6   8    10   24.7E3
+E1   9    46   (11,5) 375E6
+E2   10   46   (11,6) 375E6
+V1   99   11   0.5
+RV1  99   11   1E3
+CC1  5    9    4E-12
+CC2  6    10   4E-12
+*
+* DIFFERENCE AMPLIFIER AND POLE AT 1MHZ
+*
+I3   18   50   5E-6
+R7   99   12   11.937E3
+R8   99   15   11.937E3
+R9   14   18   1.592E3
+R10  17   18   1.592E3
+R11  9    13   10E3
+R12  13   46   10E3
+Q3   12   13   14   QN2
+Q4   15   16   17   QN2
+R13  19   16   10E3
+R14  16   20   10E3
+C1   12   15   6.667E-12
+EOOS 19   10   POLY(1) (38,98) 1.5E-3 223.872
+EREF 98   0    POLY(2) (99,0) (50,0) 0 0.5 0.5
+D3 13 51 DX
+D4 16 52 DX
+V2 99 51 0.7
+V3 99 52 0.7
+D15 53 13 DX
+D16 54 16 DX
+V12 53 50 0.7
+V13 54 50 0.7
+*
+* GAIN STAGE AND DOMINANT POLE AT 0.667HZ
+*
+R16  25   98   35.810E9
+C2   25   98   6.667E-12
+G1   98   25   (12,15) 83.776E-6
+V6   99   26   1.53
+V7   27   50   1.33
+D7   25   26   DX
+D8   27   25   DX
+*
+* POLE AT 10MHZ
+*
+R17  40   98   1
+C3   40   98   15.916E-9
+G2   98   40   (25,98) 1
+*
+* COMMON MODE STAGE WITH ZERO AT 708HZ
+*
+E3   36   98   POLY(2) (1,98) (2,98) 0 0.5 0.5
+R18  36   38   1E6
+R19  38   98   1
+C5   36   38   224.812E-12
+*
+* OUTPUT STAGE
+*
+GSY  99   50   POLY(1) (99,50) 1.1725E-3 3.125E-6
+RO1  99   45   250
+RO2  45   50   250
+L1   45   46   1E-6
+GO1  45   99   (99,40) 4E-3
+GO2  50   45   (40,50) 4E-3
+GC1  43   50   (40,45) 4E-3
+GC2  44   50   (45,40) 4E-3
+F1   45   0    V4 1
+F2   0    45   V5 1
+V4   41   45   1.65
+V5   45   42   1.65
+D9   50   43   DY
+D10  50   44   DY
+D11  99   43   DX
+D12  99   44   DX
+D13  40   41   DX
+D14  42   40   DX
+*
+* MODELS USED
+*
+.MODEL DX D(IS=1E-12)
+.MODEL DY D(IS=1E-12 BV=50)
+.MODEL QN1 NPN(BF=2.5E3 KF=0.7E-15 AF=1)
+.MODEL QN2 NPN(BF=250 KF=0.5E-14 AF=1)
+.ENDS AD620A
+
+
+.SUBCKT Analog_AD620  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 AD620A 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -50 80 0 -170 #000080 2 1>
+    <Line -50 80 130 -80 #000080 2 1>
+    <Line 80 0 -130 -90 #000080 2 1>
+    <Line 80 0 40 0 #000080 2 1>
+    <Line -20 80 0 -18 #000080 2 1>
+    <Text -15 65 8 #000000 0 "VEE">
+    <Line -20 -72 0 -18 #000080 2 1>
+    <Text -15 -85 8 #000000 0 "VCC">
+    <Line 30 30 0 50 #000080 2 1>
+    <Line -70 -60 20 0 #000080 2 1>
+    <Line -45 -60 10 0 #ff0000 2 1>
+    <Line -40 -55 0 -10 #ff0000 2 1>
+    <Line -70 -30 20 0 #000080 2 1>
+    <Line -70 20 20 0 #000080 2 1>
+    <Line -70 50 20 0 #000080 2 1>
+    <Line -45 50 10 0 #000000 2 1>
+    <Text -45 -35 8 #000000 0 "RG1">
+    <Text -45 15 8 #000000 0 "RG2">
+    <Text 35 35 8 #000000 0 "REF">
+    <.ID 30 -86 SUB>
+    <.PortSym -70 -60 1 0 P1>
+    <.PortSym -70 50 2 0 P2>
+    <.PortSym -70 -30 7 0 P7>
+    <.PortSym -70 20 8 0 P8>
+    <.PortSym -20 -90 3 0 P3>
+    <.PortSym -20 80 4 0 P4>
+    <.PortSym 120 0 5 0 P5>
+    <.PortSym 30 80 6 0 P6>
+  </Symbol>
+</Component>
+
+<Component AD633>
+  <Description>
+AD633 four quadrant analog multiplier
+  </Description>
+  <Model>
+.Def:Analog_AD633 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="AD633_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "AD633.cir.lst">
+  <Spice>
+* AD633 Analog Multiplier Macro Model 12/93, Rev. A
+* AAG/PMI
+*
+* Copyright 1993 by Analog Devices, Inc.
+*
+* Refer to "README.DOC" file for License Statement.  Use of this model
+* indicates your acceptance with the terms and provisions in the License Statement.
+*
+* Node assignments
+*              X1
+*              |  X2
+*              |  |  Y1
+*              |  |  |  Y2
+*              |  |  |  |  VNEG
+*              |  |  |  |  |  Z
+*              |  |  |  |  |  |  W
+*              |  |  |  |  |  |  |  VPOS
+*              |  |  |  |  |  |  |  |
+.SUBCKT AD633S 1  2  3  4  5  6  7  8
+*
+EREF 100 0 POLY(2) 8 0 5 0 (0,0.5,0.5)
+*
+* X-INPUT STAGE & POLE AT 15 MHz
+*
+IBX1 1 0 DC 8E-7
+IBX2 2 0 DC 8E-7
+EOSX 10 1 POLY(1) (16,100) (5E-3,1)
+RX1A 10 11 5E6
+RX1B 11 2 5E6
+*
+GX 100 12 10 2 1E-6
+RX 12 100 1E6
+CX 12 100 1.061E-14
+VX1 8 13 DC 3.05
+DX1 12 13 DX
+VX2 14 5 DC 3.05
+DX2 14 12 DX
+*
+* COMMON-MODE GAIN NETWORK WITH ZERO AT 560 Hz
+*
+ECMX 15 100 11 100 10
+RCMX1 15 16 1E6
+CCMX 15 16 2.8421E-10
+RCMX2 16 100 1
+*
+* Y-INPUT STAGE & POLE AT 15 MHz
+*
+IBY1 3 0 DC 8E-7
+IBY2 4 0 DC 8E-7
+EOSY 20 3 POLY(1) (26,100) (5E-3,1)
+RY1A 20 21 5E6
+RY1B 21 4 5E6
+*
+GY 100 22 20 4 1E-6
+RY 22 100 1E6
+CY 22 100 1.061E-14
+VY1 8 23 DC 3.05
+DY1 22 23 DX
+VY2 24 5 DC 3.05
+DY2 24 22 DX
+*
+* COMMON-MODE GAIN NETWORK WITH ZERO AT 560 Hz
+*
+ECMY 25 100 21 100 10
+RCMY1 25 26 1E6
+CCMY 25 26 2.8421E-10
+RCMY2 26 100 1
+*
+* Z-INPUT STAGE & POLE AT 15 MHz
+*
+IBZ1 7 0 DC 8E-7
+IBZ2 6 0 DC 8E-7
+RZ1 7 6 10E6
+*
+GZ 100 32 7 6 1E-6
+RZ2 32 100 1E6
+CZ 32 100 1.061E-14
+VZ1 8 33 DC 3.05
+DZ1 32 33 DX
+VZ2 34 5 DC 3.05
+DZ2 34 33 DX
+*
+* 50-MHz MULTIPLIER CORE & SUMMER
+*
+GXY 100 40 POLY(2) (12,100) (22,100) (0,0,0,0,0.1E-6)
+RXY 40 100 1E6
+CXY 40 100 3.1831E-15
+*
+* OP AMP INPUT STAGE
+*
+VOOS 59 40 DC 5E-3
+Q1 55 32 60 QX
+Q2 56 59 61 QX
+R1 8 55 3.1831E4
+R2 60 54 3.1313E4
+R3 8 56 3.1831E4
+R4 61 54 3.1313E4
+I1 54 5 1E-4
+*
+* GAIN STAGE & DOMINANT POLE AT 316.23 Hz
+*
+G1 100 62 55 56 3.141637E-5
+R5 62 100 1.0066E8
+C3 62 100 5E-12
+V1 8 63 DC 4.3399
+D1 62 63 DX
+V2 64 5 DC 4.3399
+D2 64 62 DX
+*
+* NEGATIVE ZERO AT 20 MHz
+*
+ENZ 65 100 62 100 1E6
+RNZ1 65 66 1
+FNZ 65 66 VNC -1
+RNZ2 66 100 1E-6
+ENC 67 0 65 66 1
+CNZ 67 68 7.9577E-9
+VNC 68 0 DC 0
+*
+* POLE AT 4 MHz
+*
+G2 100 69 66 100 1E-6
+R6 69 100 1E6
+C2 69 100 3.9789E-14
+*
+* OP AMP OUTPUT STAGE
+*
+FSY 8 5 POLY(2) VZC1 VZC2 (2.8286E-3,1,1)
+RDC 8 5 28E3
+GZC 100 73 72 69 11.623E-3
+VZC1 74 100 DC 0
+DZC1 73 74 DX
+VZC2 100 75 DC 0
+DZC2 75 73 DX
+VSC1 70 72 0.695
+DSC1 69 70 DX
+VSC2 72 71 0.695
+DSC2 71 69 DX
+GO1 72 8 8 69 11.623E-3 
+RO1 8 72 86
+GO2 5 72 69 5 11.623E-3 
+RO2 72 5 86
+LO 72 7 1E-7
+*
+* MODELS USED
+*
+.MODEL QX NPN(BF=1E4)
+.MODEL DX D(IS=1E-15)
+.ENDS AD633
+
+
+.SUBCKT Analog_AD633  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 AD633S 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -50 -80 100 0 #000080 2 1>
+    <Line -50 80 100 0 #000080 2 1>
+    <Line -60 60 10 0 #000080 2 1>
+    <Line -60 30 10 0 #000080 2 1>
+    <Line -60 -60 10 0 #000080 2 1>
+    <.PortSym -60 -60 1 0 P1>
+    <Line -60 -30 10 0 #000080 2 1>
+    <Line -50 -80 0 160 #000080 2 1>
+    <Text -40 -70 12 #000000 0 "X1">
+    <Text -40 -40 12 #000000 0 "X2">
+    <Text -40 20 12 #000000 0 "Y1">
+    <Text -40 50 12 #000000 0 "Y2">
+    <Line 50 -80 0 160 #000080 2 1>
+    <Line 50 -20 10 0 #000080 2 1>
+    <Line 50 10 10 0 #000080 2 1>
+    <Line 50 60 10 0 #000080 2 1>
+    <Line 50 -60 10 0 #000080 2 1>
+    <Text 20 -70 12 #000000 0 "VP">
+    <Text 20 50 12 #000000 0 "VN">
+    <Text 30 0 12 #000000 0 "Z">
+    <Text 30 -30 12 #000000 0 "W">
+    <.PortSym -60 -30 2 0 P2>
+    <.PortSym -60 30 3 0 P3>
+    <.PortSym -60 60 4 0 P4>
+    <.PortSym 60 -60 8 180 P8>
+    <.PortSym 60 60 5 180 P5>
+    <.PortSym 60 10 6 180 P6>
+    <.PortSym 60 -20 7 180 P7>
+    <.ID -40 -126 SUB>
+  </Symbol>
+</Component>
+
+<Component AD734>
+  <Description>
+AD734 four quadrant analog multiplier
+  </Description>
+  <Model>
+.Def:Analog_AD734 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 gnd Type="ad734_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "ad734.cir.lst">
+  <Spice>
+* AD734 SPICE Macro-model 4/92, Rev. B
+* AAG / PMI
+*
+* Revision History:
+* Removed input signal current compensation: GX1,GY1,GZ1
+* Added Isy vs. Vsy
+*
+* Copyright 1992 by Analog Devices, Inc.
+*
+* Refer to "README.DOC" file for License Statement.  Use of this model
+* indicates your acceptance with the terms and provisions in the License Statement.
+*
+* Node assignments
+*              X1
+*              |  X2
+*              |  |  UO
+*              |  |  |  U1
+*              |  |  |  |  U2
+*              |  |  |  |  |  Y1
+*              |  |  |  |  |  |  Y2
+*              |  |  |  |  |  |  |  VN
+*              |  |  |  |  |  |  |  |   ER
+*              |  |  |  |  |  |  |  |   |  Z2
+*              |  |  |  |  |  |  |  |   |  |  Z1
+*              |  |  |  |  |  |  |  |   |  |  |  W
+*              |  |  |  |  |  |  |  |   |  |  |  |  DD
+*              |  |  |  |  |  |  |  |   |  |  |  |  |  VP
+*              |  |  |  |  |  |  |  |   |  |  |  |  |  |
+.SUBCKT AD734S 10 11 49 50 51 20 21 200 58 31 30 77 54 100
+*
+EREF 300 0 POLY(2) 100 0 200 0 (0,0.5,0.5)
+*
+* X INPUT STAGE & POLE AT 40 MHz
+*
+CINX 10 11 2E-12
+IBX1 10 0 DC 50E-9
+IBX2 11 0 DC 50E-9
+EOSX 12 10 POLY(1) 18 300 15E-3 1
+RX1 12 13 25E3
+RX2 13 11 25E3
+*
+GX1 300 14 12 11 1E-6
+RX3 14 300 9.995E5
+CX1 14 300 3.9809E-15
+VX1 100 15 DC 3.1875
+DX1 14 15 DX
+VX2 16 200 DC 3.1875
+DX2 16 14 DX
+*
+* X INPUT STAGE COMMON-MODE REJECTION AND ZERO 40 kHz
+*
+ECMX 17 300 13 300 56.234
+RCMX1 17 18 1E6
+CCMX 17 18 3.9789E-12
+RCMX2 18 300 1
+*
+* Y INPUT STAGE & POLE AT 40 MHz
+*
+CINY 20 21 2E-12
+IBY1 20 0 DC 50E-9
+IBY2 21 0 DC 50E-9
+EOSY 22 20 POLY(1) 28 300 10E-3 1
+RY1 22 23 25E3
+RY2 23 21 25E3
+*
+GY1 300 24 22 21 1E-6
+RY3 24 300 9.995E5
+CY1 24 300 3.9809E-15
+VY1 100 25 DC 3.1875
+DY1 24 25 DX
+VY2 26 200 DC 3.1875
+DY2 26 24 DX
+*
+* Y INPUT STAGE COMMON-MODE REJECTION AND ZERO 80 kHz
+*
+ECMY 27 300 23 300 56.234
+RCMY1 27 28 1E6
+CCMY 27 28 1.9895E-12
+RCMY2 28 300 1
+*
+* Z INPUT STAGE & POLE AT 40 MHz
+*
+CINZ 30 31 2E-12
+IBZ1 30 0 DC 50E-9
+IBZ2 31 0 DC 50E-9
+EOSZ 32 30 POLY(1) 38 300 20E-3 1
+RZ1 32 33 25E3
+RZ2 33 31 25E3
+*
+GZ1 300 34 32 31 1E-6
+RZ3 34 300 1E6
+CZ1 34 300 3.9789E-15
+VZ1 100 35 DC 3.1875
+DZ1 34 35 DX
+VZ2 36 200 DC 3.1875
+DZ2 36 34 DX
+*
+* Z INPUT STAGE COMMON-MODE REJECTION AND ZERO 40 kHz
+*
+ECMZ 37 300 33 300 56.234
+RCMZ1 37 38 1E6
+CCMZ 37 38 3.9789E-12
+RCMZ2 38 300 1
+*
+* DENOMINATOR CONTROL & INTERNAL REFERENCE
+*
+QU1 100 49 50 QNU
+RU1 50 51 28E3
+*
+VU 100 52
+QU2 52 0 53 QNU
+RU2 53 54 0.001
+IU 53 200 DC 10E-6
+FU1 300 55 VU 1.01
+RU3 55 300 1E6
+*
+VR1 57 200 DC 8
+QR 59 57 58 QPU
+RR 57 58 1E5
+VR2 59 200
+FU4 300 56 VR2 1
+RU4 56 300 28E3
+*
+EU 60 300 POLY(3) 50 51 55 300 56 300 (0,1.0101,1,1.0101)
+RU5 60 300 1E6
+*
+* 250 MHz MULTIPLIER CORE
+*
+EXY 46 300 POLY(2) 14 300 24 300 (0,0,0,0,1)
+RXY 46 300 1E6
+GXY 300 47 46 300 1
+GU 47 300 POLY(2) 60 300 47 300 (0,0,0,0,1)
+RU 47 300 1E12
+CU 47 300 6.65E-9
+EW 48 300 POLY(2) 47 300 34 300 (0,1,-1)
+RW 48 300 1E6
+*
+* OUTPUT AMP BUFFER
+*
+GW 64 300 48 300 1
+QW1 100 0 61 QNW
+QW2 200 0 62 QPW
+QW3 63 62 64 QNW
+QW4 65 61 64 QPW
+RW1 100 63 1
+RW2 65 200 1
+IW1 100 62 DC 100E-6
+IW2 61 200 DC 100E-6
+VW1 100 66 DC 10
+DW1 66 63 DX
+VW2 67 200 DC 10
+DW2 65 67 DX
+*
+* OUTPUT AMP GAIN STAGE
+*
+GW1 300 68 100 63 1
+GW2 68 300 65 200 1
+RW3 68 300 1.38E3
+CW1 68 300 19E-9
+VW3 100 69 DC 3.8
+DW3 68 69 DX
+VW4 70 200 DC 3.8
+DW4 70 68 DX
+*
+* TRANSIENT SUPPLY CURRENT COMPENSATION
+*
+DCC1 80 100 DX
+GCC 0 80 48 300 1
+DCC2 0 80 DX
+DEE1 81 0 DX
+GEE 81 0 300 48 1
+DEE2 200 81 DX
+*
+* POLE AT 17.5 MHz
+*
+GW3 300 71 68 300 1E-6
+RW4 71 300 1E6
+CW2 71 300 9.0946E-15
+*
+IDC 100 200 DC 4.0125E-3
+RDC1 100 78 3.2E3
+RDC2 78 200 3.2E3
+DO1 100 72 DX
+GO1 72 200 76 71 25E-3
+DO2 200 72 DY
+DO3 100 73 DX
+GO2 73 200 71 76 25E-3
+DO4 200 73 DY
+VSC1 74 76 DC 0.4
+DSC1 71 74 DX
+VSC2 76 75 DC 0.4
+DSC2 75 71 DX
+GO3 76 100 100 71 25E-3
+GO4 200 76 71 200 25E-3
+RO1 100 76 40
+RO2 76 200 40
+LO 76 77 100E-9
+*
+* MODELS USED
+*
+.MODEL QNU NPN (BF=100 IS=1E-16)
+.MODEL QPU PNP (BF=100 IS=1E-16)
+.MODEL QNW NPN (BF=1E9 IS=1E-15)
+.MODEL QPW PNP (BF=1E9 IS=1E-15)
+.MODEL DX D(IS=1E-15)
+.MODEL DY D(IS=1E-15 BV=50)
+.ENDS AD734
+
+
+.SUBCKT Analog_AD734  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 AD734S 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 110 120 0 #000080 2 1>
+    <.PortSym -70 -110 1 0 P10>
+    <Line -60 -130 0 240 #000080 2 1>
+    <Line -70 -110 10 0 #000080 2 1>
+    <Line -70 -80 10 0 #000080 2 1>
+    <Line -70 -40 10 0 #000080 2 1>
+    <Line -70 -10 10 0 #000080 2 1>
+    <Line -70 20 10 0 #000080 2 1>
+    <Line -70 60 10 0 #000080 2 1>
+    <Line -70 90 10 0 #000080 2 1>
+    <Line 60 -130 0 240 #000080 2 1>
+    <Line 60 -110 10 0 #000080 2 1>
+    <Line 60 -80 10 0 #000080 2 1>
+    <Line 60 -50 10 0 #000080 2 1>
+    <Line 60 -10 10 0 #000080 2 1>
+    <Line 60 20 10 0 #000080 2 1>
+    <Line 60 90 10 0 #000080 2 1>
+    <Line 60 60 10 0 #000080 2 1>
+    <Text -50 -120 12 #000000 0 "X1">
+    <Text -50 -90 12 #000000 0 "X2">
+    <Text -50 -50 12 #000000 0 "U0">
+    <Text -50 -20 12 #000000 0 "U1">
+    <Text -50 50 12 #000000 0 "Y1">
+    <Text -50 80 12 #000000 0 "Y2">
+    <Text -50 10 12 #000000 0 "U2">
+    <Text 30 -120 12 #000000 0 "VP">
+    <Text 30 80 12 #000000 0 "VN">
+    <Text 30 50 12 #000000 0 "ER">
+    <Text 30 -20 12 #000000 0 "Z1">
+    <Text 30 10 12 #000000 0 "Z2">
+    <Text 30 -60 12 #000000 0 "W">
+    <Text 30 -90 12 #000000 0 "D0">
+    <.PortSym -70 -80 2 0 P11>
+    <.PortSym -70 -40 3 0 P49>
+    <.PortSym -70 -10 4 0 P50>
+    <.PortSym -70 20 5 0 P51>
+    <.PortSym -70 60 6 0 P20>
+    <.PortSym -70 90 7 0 P21>
+    <.PortSym 70 90 8 180 P200>
+    <.PortSym 70 60 9 180 P58>
+    <.PortSym 70 20 10 180 P31>
+    <.PortSym 70 -10 11 180 P30>
+    <.PortSym 70 -110 14 180 P100>
+    <.PortSym 70 -50 12 180 P77>
+    <.PortSym 70 -80 13 180 P54>
+    <Line -60 -130 120 0 #000080 2 1>
+    <.ID -40 -176 SUB>
+  </Symbol>
+</Component>
+
+<Component AD8138>
+  <Description>
+AD8138 differential ADC driver
+  </Description>
+  <Model>
+.Def:Analog_AD8138 _net0 _net2 _net4 _net6 _net1 _net3 _net5
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 gnd Type="AD8138_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "AD8138.cir.lst">
+  <Spice>
+* AD8138 SPICE Macro-model,  JG.            11/23/99,ADI
+*                            TRW     rev E; 11/2002, ADI     
+
+* Copyright 1999 by Analog Devices, Inc.
+
+* Refer to "README.DOC" file for License Statement.  Use of this model
+* indicates your acceptance with the terms and provisions in the License Statement.
+
+* This model will give typical performance characteristics
+* for the following parameters;
+
+*     closed loop gain and phase vs bandwidth
+*     output current and voltage limiting
+*     offset voltage (is  non-static, will  vary with gain)
+*     ibias (again, is static, will not vary with vcm)
+*     slew rate and step response performance
+*     (slew rate is based on 10-90% of step response)
+*     current on output will be reflected to the supplies 
+*     vnoise, not included in this version
+*     inoise, not included in this version
+*     Vocm is varable and include input typical offset
+*     distortion is not characterized
+*     cmrr is not  characterized in this version.
+* Node assignments
+*                non-inverting input
+*                | inverting input
+*                | | positive supply
+*                | | |  negative supply
+*                | | |  |  output positive
+*                | | |  |  |   output negative
+*                | | |  |  |   |   vocm input
+*                | | |  |  |   |   |
+.SUBCKT ad8138_sub 3a 9 99 50 71b 71  110
+
+****************************input stage*******************************************
+
+
+*****positive input left side*****
+
+I1 99 5 .4E-3
+Q1 50 2 5 QX
+vos 3a 2 -1.95E-3
+
+**RAIL CLIPING****
+
+Dlim+ 75 14b dx
+Vlim+ 99 14b 2.1
+Dlim 14c 75 dx
+Vlim 14c  50 2.1
+Dlim- 13b 76 DX
+Vlim- 13b 50 2.1
+Dlim-B 76 13C dx
+Vlim-B 99 13C 2.1
+
+** VOCM INPUT RAIL CLIPING****
+
+DOCMa 100 100A dx
+VOCMa 99 100A 1.899
+DOCMb 100b 100 DX
+VOCMb 100b 50 1.899
+
+*****negative input right side*****
+
+I2 99 6 .4E-3
+Q2 50 9 6 QX
+
+***********Input capacitance/impedance*******
+
+Cin 3a 9 1p
+
+***************************************pole, zero pole stage********************************************
+
+G1 13 14 5 6 5e-3
+c1 14 13 1.7p
+c2 13 98 .6p
+c3 14 98 .6p
+r11 13 98 250k
+r12 14 98 250k
+
+*********pole zero stage( POSITIVE SIDE)*******
+
+gp1 0 75 14 98 1
+RP1 75 0 1
+CP1 75 0 .38E-9
+
+*********pole zero stage( NEGATIVE SIDE)*******
+
+gp2 0 76 13 98 1
+RP2 76 0 1
+CP2 76 0 .38E-9
+
+**********output stage Negative side*************
+
+D17 76 84 DX
+VO1  84 70 .177V
+VO2  70 85 .177V
+D16 85 76  DX
+G30 70 99c 99 76  91E-3
+G31 98c 70 76 50  91E-3
+RO30 70 99c 11
+RO31 98c 70 11
+VIOUT1 99 99c 0V
+VIOUT2 50 98c 0V
+VIOUT3 70 71 0V
+
+********** Output Stage Positive side *************
+
+D17b 75 84b DX
+VO1b  84b 70b .177V
+VO2b  70b 85b .177V
+D16b 85b 75  DX
+G30b 70b 99d 99 75  91E-3
+G31b 98d 70b 75 50  91E-3
+RO30b 70b 99d 11
+RO31b 98d 70b 11
+VIOUTB1 99 99d 0V
+VIOUTB2 98d 50 0V
+VIOUTB3 70b 71b 0V
+
+*********VOCM STAGE*************************
+
+Gocm_a 0 75 110 0 1
+Gocm_b 0 76 110 0 1
+Rocm1 99 100 400k
+Rocm2 100 50 400k
+Voffset 100 110 -1E-3
+
+********CURRENT MIRROR TO SUPPLIES POSITVIE SIDE*********
+
+FO1 0 99 poly(2) VIOUT1 VI1 -19.803E-3 1 -1
+FO2 0 50 poly(2) VIOUT2 VI2 -19.803E-3 1 -1
+FO3 0 400 VIOUT1 1
+VI1 401 0 0
+VI2 0 402 0
+DM1 400 401 DX
+DM2 402 400 DX 
+
+********CURRENT MIRROR TO SUPPLIES NEGATIVE SIDE*********
+
+FO1B 0 99 poly(2) VIOUTB1 VIB1 -19.803E-3 1 -1
+FO2B 0 50 poly(2) VIOUTB2 VIB2 -19.803E-3 1 -1
+FO3B 0 400B VIOUTB1 1
+VIB1 401B 0 0
+VIB2 0 402B 0
+DMB1 400B 401B DX
+DMB2 402B 400B DX 
+
+***  Reference Stage
+
+Eref 98 0 poly(2) 99 0 50 0 0 0.5 0.5
+
+
+
+.MODEL QX PNP (BF=228.57 Is=1E-15)
+.MODEL DX D(IS=1E-15)
+.ENDS
+
+
+
+.SUBCKT Analog_AD8138  gnd _net0 _net2 _net4 _net6 _net1 _net3 _net5 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 ad8138_sub 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line 80 0 -100 -60 #000080 2 1>
+    <Line -20 60 0 -120 #000080 2 1>
+    <Line -20 60 100 -60 #000080 2 1>
+    <Line 10 60 0 -18 #000080 2 1>
+    <Line 10 -42 0 -18 #000080 2 1>
+    <Text 15 -55 8 #000000 0 "VCC">
+    <Line 46 -20 44 0 #000080 2 1>
+    <Line 46 20 44 0 #000080 2 1>
+    <Line -40 -30 20 0 #000080 2 1>
+    <Line -15 -30 10 0 #ff0000 2 1>
+    <Line -10 -25 0 -10 #ff0000 2 1>
+    <.PortSym -40 -30 1 0 P3>
+    <Line -40 30 20 0 #000080 2 1>
+    <Line -15 30 10 0 #000000 2 1>
+    <.PortSym -40 30 5 0 P9>
+    <.ID 40 -86 SUB>
+    <.PortSym 10 -60 2 0 P99>
+    <.PortSym 10 60 6 0 P50>
+    <Text 15 45 8 #000000 0 "VEE">
+    <Line -40 0 20 0 #000080 2 1>
+    <Text -15 -5 8 #000000 0 "VOCM">
+    <.PortSym -40 0 4 0 P110>
+    <.PortSym 90 -20 7 180 P72>
+    <.PortSym 90 20 3 180 P71>
+    <Ellipse 38 -28 15 15 #00007f 2 1 #c0c0c0 1 0>
+  </Symbol>
+</Component>
+
+<Component ADG444>
+  <Description>
+ADG444 four MOS analog switches
+  </Description>
+  <Model>
+.Def:Analog_ADG444 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 gnd Type="ADG444_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "ADG444.cir.lst">
+  <Spice>
+* Node assignments
+* 1 - IN1, 2 - D1, 3 - S1, 4 - Vss, 5 - GND, 6 - S4
+* 7 - D4, 8 - IN4, 9 - IN3, 10 - D3, 11 - S3, 12 - VL
+* 13 - Vdd, 14 - S2, 15 - D2, 16 - IN2
+*
+.SUBCKT ADG444B_AD 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+*
+* DEMUX SWITCHES (S1-8 ---> D)
+*
+*     First Section is for control lines IN1-4
+*
+E_IN1_2	  200   5   1   5   1
+E_IN1_1   301  40 201  40   -1
+R_IN1     200 201          1000
+C_IN1_1   201   5          65E-12
+
+
+E_IN2_2	  202   5  16   5  1
+E_IN2_1   302  40 203  40  -1
+R_IN2     202 203          1000
+C_IN2_1   203   5          65E-12
+
+E_IN3_2	  204   5   9   5  1
+E_IN3_1   303  40 205  40  -1
+R_IN3     204 205          1000
+C_IN3_1   205   5          65E-12
+
+E_IN4_2	  206   5   8  5  1
+E_IN4_1   304  40 207 40  -1
+R_IN4     206 207         1000
+C_IN4_1   207   5         65E-12
+
+V_INX      40  12         -2.5
+
+S_IN1      3 31 301 5	  Sdemux
+S_IN2     14 32 302 5	  Sdemux
+S_IN3     11 33 303 5     Sdemux
+S_IN4      6 34 304 5     Sdemux
+
+C_IN1_X1     1  5          3E-12
+C_IN1_D      1 31          3E-12
+C_IN2_X1    16  5          3E-12
+C_IN2_D     16 32          3E-12
+C_IN3_X1     9  5          3E-12
+C_IN3_D      9 33          3E-12
+C_IN4_X1     8  5          3E-12
+C_IN4_D      8 34          3E-12
+
+*          Input capacitances
+
+C_S1      3  5          4E-12
+C_S2     14  5          4E-12
+C_S3     11  5 	 	4E-12
+C_S4      6  5          4E-12
+
+C_D1      2  5          4E-12
+C_D2     15  5          4E-12
+C_D3     10  5          4E-12
+C_D4      7  5          4E-12
+*
+*	Leakage Current (SX and D ON only)
+*
+
+G_ON_S1     3  5  3  5    0.25E-9
+G_ON_S2	   14  5 14  5    0.25E-9
+G_ON_S3    11  5 11  5    0.25E-9
+G_ON_S4     6  5  6  5    0.25E-9
+G_ON_D1     2  5  2  5    0.25E-9
+G_ON_D2    15  5 15  5    0.25E-9
+G_ON_D3    10  5 10  5    0.25E-9
+G_ON_D4     7  5  7  5    0.25E-9
+
+*
+*	Leakage Current (SX OFF only
+*
+S_OFF_S1       3 581   1  5  Sdemux
+R_OFF_S1     581   5         1E12
+G_OFF_S1       3   5 581  5  0.25E-9
+
+S_OFF_S2      14 583  16  5  Sdemux
+R_OFF_S2     583   5         1E12
+G_OFF_S2      14   5 583  5  0.25E-9
+
+S_OFF_S3      11 585   9  5  Sdemux
+R_OFF_S3     585   5         1E12
+G_OFF_S3      11   5 585  5  0.25E-9
+
+S_OFF_S4       6 587  8   5  Sdemux
+R_OFF_S4     587   5         1E12
+G_OFF_S4       6   5 587  5  0.25E-9
+
+*	Leakage Current (D OFF only)
+*
+*
+
+S_OFF_D1       2 580   1  5  Sdemux
+R_OFF_D1     580   5         1E12
+G_OFF_D1       2   5 580  5  0.25E-9
+
+S_OFF_D2      15 582  16  5  Sdemux
+R_OFF_D2     582   5         1E12
+G_OFF_D2      15   5 582  5  0.25E-9
+
+S_OFF_D3      10 584   9  5  Sdemux
+R_OFF_D3     584   5         1E12
+G_OFF_D3      10   5 584  5  0.25E-9
+
+S_OFF_D4       7 586  8   5  Sdemux
+R_OFF_D4     586   5         1E12
+G_OFF_D4       7   5 586  5  0.25E-9
+
+
+*
+*     Main Series Switch combination
+*
+*
+
+S_1_A     412 411  4 2 SNCM
+R_1_A     412 411  200
+S_1_B       2 412  13   2 SPCM
+*R_1_B       2 412   50
+S_1_C       2 412 611 0 SMAINP
+S_1_D     412 411 0 612 SMAINN
+E_1_E     611 0  VALUE = {(10*V(2,500))/(PWR(V(13,500),1.13)+0.005)}
+E_1_F     612 0  VALUE = {(10*V(2,500))/(V(500,4)+0.005)}
+S_1_G     411  31  13  4  SBASE
+
+S_2_A     414 413   4  15 SNCM
+R_2_A     414 413         200
+S_2_B      15 414  13  15 SPCM
+*R_2_B     15 414         50
+S_2_C      15 414 613   0 SMAINP
+S_2_D     414 413   0 614 SMAINN
+E_2_E     613 0  VALUE = {(10*V(2,500))/(PWR(V(13,500),1.13)+0.005)}
+E_2_F     614 0  VALUE = {(10*V(2,500))/(V(500,4)+0.005)}
+S_2_G     413  32  13  4  SBASE
+
+S_3_A     416 415   4  10  SNCM
+R_3_A     416 415          200
+S_3_B      10 416  13  10  SPCM
+*R_3_B     10 416          50
+S_3_C      10 416 615   0  SMAINP
+S_3_D     416 415   0 616  SMAINN
+E_3_E     615   0          VALUE = {(10*V(2,500))/(PWR(V(13,500),1.13)+0.005)}
+E_3_F     616   0          VALUE = {(10*V(2,500))/(V(500,4)+0.005)}
+S_3_G     415  33  13   4  SBASE
+
+S_4_A     418 417   4   7  SNCM
+R_4_A     418 417          200
+S_4_B       7 418  13   7  SPCM
+*R_4_B      7 418          50
+S_4_C       7 418 617   0  SMAINP
+S_4_D     418 417   0 618  SMAINN
+E_4_E     617   0          VALUE = {(10*V(2,500))/(PWR(V(13,500),1.13)+0.005)}
+E_4_F     618   0          VALUE = {(10*V(2,500))/(V(500,4)+0.005)}
+S_4_G     417  34  13   4  SBASE
+*
+*     Power Supply Current Correction
+*
+I_PS_1     13  5           2.5E-6
+I_PS_2      5  4           2.5E-6
+I_PS_3     12  5           2.5E-6
+E_PS_1     99  5 13  5     1
+E_PS_2    500  4 13  4     .5
+
+*
+*	Crosstalk
+*
+
+RXT_12     31 32           1E12
+RXT_13     31 33           1E12
+RXT_14     31 34           1E12
+RXT_23     32 33           1E12
+RXT_24     32 34           1E12
+RXT_34     33 34           1E12
+CXT_12     31 32           1.6E-13
+CXT_13     31 33           1.6E-13
+CXT_14     31 34           1.6E-13
+CXT_23     32 33           1.6E-13
+CXT_24     32 34           1.6E-13
+CXT_34     33 34           1.6E-13
+
+*
+*	OFF Isolation
+*
+
+COI_1	    2  3           7E-13
+COI_2       6  7           7E-13
+COI_3      10 11           7E-13
+COI_4      14 15           7E-13
+*
+* MODELS USED
+*
+.MODEL SNCM  VSWITCH (RON=8 ROFF=250 VON=1 VOFF=-8)
+.MODEL SPCM  VSWITCH (RON=200 ROFF=25 VON=2 VOFF=-1)
+.MODEL SBASE VSWITCH (RON=34 ROFF=120 VON=32.5 VOFF=-10)
+.MODEL SMAINP VSWITCH (RON=190 ROFF=0.05 VON=9.22 VOFF=-1)
+.MODEL SMAINN VSWITCH (RON=200 ROFF=0.1 VON=12 VOFF=0)
+.MODEL Sdemux VSWITCH (RON=1 ROFF=1E12 VON=2.0 VOFF=1.4)
+
+.ENDS ADG444B_AD
+*
+
+
+.SUBCKT Analog_ADG444  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 ADG444B_AD 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 -160 0 300 #000080 2 1>
+    <Line 60 -160 0 300 #000080 2 1>
+    <Line -70 -100 10 0 #000080 2 1>
+    <Line 60 -100 10 0 #000080 2 1>
+    <Line -60 -100 50 0 #000000 1 1>
+    <Line -70 -70 10 0 #000080 2 1>
+    <Line -10 -100 20 -10 #000000 1 1>
+    <Line 20 -100 40 0 #000000 1 1>
+    <Line -60 -70 60 0 #000000 1 2>
+    <Line 0 -70 0 -30 #000000 1 2>
+    <.PortSym -70 -70 1 0 P1>
+    <.PortSym 70 -100 3 180 P3>
+    <Line -70 -40 10 0 #000080 2 1>
+    <Line 60 -40 10 0 #000080 2 1>
+    <Line -60 -40 50 0 #000000 1 1>
+    <Line -70 -10 10 0 #000080 2 1>
+    <Line -10 -40 20 -10 #000000 1 1>
+    <Line 20 -40 40 0 #000000 1 1>
+    <Line -60 -10 60 0 #000000 1 2>
+    <Line 0 -10 0 -30 #000000 1 2>
+    <.PortSym -70 -40 6 0 P6>
+    <.PortSym 70 -40 7 180 P7>
+    <.PortSym -70 -10 8 0 P8>
+    <Line -70 20 10 0 #000080 2 1>
+    <Line 60 20 10 0 #000080 2 1>
+    <Line -60 20 50 0 #000000 1 1>
+    <Line -10 20 20 -10 #000000 1 1>
+    <Line 20 20 40 0 #000000 1 1>
+    <Line 0 50 0 -30 #000000 1 2>
+    <.PortSym -70 50 9 0 P9>
+    <.PortSym -70 20 10 0 P10>
+    <.PortSym 70 20 11 180 P11>
+    <Line -70 50 10 0 #000080 2 1>
+    <Line -60 50 60 0 #000000 1 2>
+    <Line -70 80 10 0 #000080 2 1>
+    <Line 60 80 10 0 #000080 2 1>
+    <Line -60 80 50 0 #000000 1 1>
+    <Line -70 110 10 0 #000080 2 1>
+    <Line -10 80 20 -10 #000000 1 1>
+    <Line 20 80 40 0 #000000 1 1>
+    <Line -60 110 60 0 #000000 1 2>
+    <Line 0 110 0 -30 #000000 1 2>
+    <.PortSym -70 110 16 0 P16>
+    <.PortSym -70 80 14 0 P14>
+    <.PortSym 70 80 15 180 P15>
+    <Text 10 -150 12 #000000 0 "VDD">
+    <Text -40 -150 12 #000000 0 "VL">
+    <Line -60 -160 120 0 #000080 2 1>
+    <.PortSym -70 -100 2 0 P2>
+    <Line -30 -160 0 -20 #000080 2 1>
+    <Line 30 -160 0 -20 #000080 2 1>
+    <Line -60 140 120 0 #000080 2 1>
+    <Line -30 160 0 -20 #000080 2 1>
+    <Line 30 160 0 -20 #000080 2 1>
+    <Text 20 120 12 #000000 0 "VSS">
+    <Text -50 120 12 #000000 0 "GND">
+    <.PortSym -30 -180 12 0 P12>
+    <.PortSym 30 -180 13 0 P13>
+    <.PortSym -30 160 5 0 P5>
+    <.PortSym 30 160 4 0 P4>
+    <.ID 70 -176 SUB>
+    <Text 44 -120 12 #000000 0 "D">
+    <Text -56 -120 12 #000000 0 "S">
+    <Text 44 -60 12 #000000 0 "D">
+    <Text -56 -60 12 #000000 0 "S">
+    <Text 44 0 12 #000000 0 "D">
+    <Text -56 0 12 #000000 0 "S">
+    <Text 44 60 12 #000000 0 "D">
+    <Text -56 60 12 #000000 0 "S">
+  </Symbol>
+</Component>
+
+<Component ISO130>
+  <Description>
+ISO130 isolation amplifier
+  </Description>
+  <Model>
+.Def:Analog_ISO130 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="ISO130_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "ISO130.cir.lst">
+  <Spice>
+* ISO130X   SIMPLIFIED CIRCUIT MODEL
+* CREATED   12/19/94  SB
+* REV. A
+*
+*  ------------------------------------------------------------------------ 
+* |  NOTICE: THE INFORMATION PROVIDED HEREIN IS BELIEVED TO BE RELIABLE;   |
+* |  HOWEVER; BURR-BROWN ASSUMES NO RESPONSIBILITY FOR INACCURACIES OR     |
+* |  OMISSIONS.  BURR-BROWN ASSUMES NO RESPONSIBILITY FOR THE USE OF THIS  |
+* |  INFORMATION, AND ALL USE OF SUCH INFORMATION SHALL BE ENTIRELY AT     |
+* |  THE USER'S OWN RISK.  NO PATENT RIGHTS OR LICENSES TO ANY OF THE      |
+* |  CIRCUITS DESCRIBED HEREIN ARE IMPLIED OR GRANTED TO ANY THIRD PARTY.  |
+* |  BURR-BROWN DOES NOT AUTHORIZE OR WARRANT ANY BURR-BROWN PRODUCT FOR   |
+* |  USE IN LIFE-SUPPORT DEVICES AND/OR SYSTEMS.                           |
+*  ------------------------------------------------------------------------ 
+*
+* CONNECTIONS:   VS1
+*                |  VIN+
+*                |  |  VIN-
+*                |  |  |  GND1
+*                |  |  |  |  GND2
+*                |  |  |  |  |  VOUT-
+*                |  |  |  |  |  |  VOUT+
+*                |  |  |  |  |  |  |  VS2
+.SUBCKT ISO130X  1  2  3  4  5  6  7  8
+*
+* INPUT STAGE
+*
+D1   2    1   DMOD
+D2   3    1   DMOD
+R1   2    9   530
+R2   3    10  530
+D3   4    9   DMOD
+D4   4    10  DMOD
+R3   4    9   530k
+R4   4    10  530k
+I1   4    9   670n
+I2   4    10  670n
+GVS1 1    4   POLY(1) (22,23) 4.37M 0 -445U 0 69.1U 0 -6.34U
+R5   1    4   790
+*
+E1   11   5   POLY(1) (9,10) -3.6M 4
+V2   13   11  2.395
+V3   12   5   3.61
+Q1   13   11  14   QMOD
+Q2   17   5   16   QMOD
+RE1  14   15  31k
+RE2  15   16  31k
+I3   15   5   37.356U
+R6   12   17  65.7k
+TDELAY 17 5 18 5 Z0=65.7k TD=970n
+C1   18   5   6.3p
+R7   18   19  65.7k
+C2   19   5   6.3p
+R8   19   20  52.7k
+C3   20   22  15.2p
+R9   20   21  52.7k
+C4   21   5   6.52p
+E2   22   5  21  5  1
+E3   23   5   POLY(1) (22,5) 4.79 -1
+R10  22   7   11
+R11  23   6   11            
+R12  8    5   2.2k
+GVS2 8    5   POLY(1) (22,23) 8.71M 145U 189U -1.22U -15.8U -127N 1.43U
+.MODEL  DMOD  D  IS=8E-13
+.MODEL  QMOD  NPN
+.ENDS ISO130X
+
+
+.SUBCKT Analog_ISO130  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 ISO130X 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 60 0 -120 #000080 2 1>
+    <Line 70 30 0 -60 #000080 2 1>
+    <Line -55 40 10 0 #000000 2 1>
+    <Line 5 45 65 -15 #000080 2 1>
+    <Text -25 65 8 #000000 0 "GND1">
+    <Line -30 80 0 -26 #000080 2 1>
+    <Line 70 -30 -65 -15 #000080 2 1>
+    <Line -55 -40 10 0 #ff0000 2 1>
+    <Line -50 -35 0 -10 #ff0000 2 1>
+    <Line -30 -53 0 -17 #000080 2 1>
+    <Text -25 -75 8 #000000 0 "VCC1">
+    <Line 20 -70 0 28 #000080 2 1>
+    <Line -80 -40 20 0 #000080 2 1>
+    <Line -80 40 20 0 #000080 2 1>
+    <Line 70 -20 30 0 #000080 2 1>
+    <Line 70 20 30 0 #000080 2 1>
+    <Text 36 -26 8 #000000 0 "OUT+">
+    <Text 36 14 8 #000000 0 "OUT-">
+    <Line 20 80 0 -38 #000080 2 1>
+    <Line 5 45 0 -90 #000080 2 1>
+    <Line -5 46 0 -92 #000080 2 1>
+    <Line -5 -47 -55 -13 #000080 2 1>
+    <Line -60 60 55 -14 #000080 2 1>
+    <Text 25 65 8 #000000 0 "GND2">
+    <.PortSym -30 -70 1 0 P1>
+    <.PortSym -80 -40 2 0 P2>
+    <.PortSym -80 40 3 0 P3>
+    <.PortSym -30 80 4 0 P4>
+    <.PortSym 20 80 5 0 P5>
+    <.PortSym 100 20 6 0 P6>
+    <.PortSym 100 -20 7 0 P7>
+    <.PortSym 20 -70 8 0 P8>
+    <.ID 60 -96 SUB>
+    <Text 26 -76 8 #000000 0 "VCC2">
+  </Symbol>
+</Component>
+
