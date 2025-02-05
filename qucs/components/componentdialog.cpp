@@ -742,7 +742,8 @@ void ComponentDialog::writeEquation()
   }
 
   if (eqnExportCheck)
-    component->Props.append(new Property("Export", eqnExportCheck->checkState() == Qt::Checked ? "yes" : "no", false));
+    component->Props.append(new Property("Export", eqnExportCheck->checkState() == Qt::Checked ? "yes" : "no",
+                                         false, QObject::tr("put result into dataset")+" [yes, no]"));
 }
 
 // -------------------------------------------------------------------------
