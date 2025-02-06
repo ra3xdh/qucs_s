@@ -1872,3 +1872,100 @@ X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 ISO130X
   </Symbol>
 </Component>
 
+<Component NE592>
+  <Description>
+NE592 90MHz video amplifier
+  </Description>
+  <Model>
+.Def:Analog_NE592 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 gnd Type="NE592_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "NE592.cir.lst">
+  <Spice>
+* NE592 CKT - NE592 DIFFERENTIAL VIDEO AMPLIFIER
+* USAGE: XNM <IN1> <IN2> <OUT1> <V+> <V-> <G1A> <G2A> <G1B> <G2B> <OUT2> NE592
+.SUBCKT NE592S 14 15 13 21 20 19 17 18 16 22
+CZZ 17 16 3.2P
+C12 19 17 40P
+C22 18 16 40P
+CXX 5 1 2P
+DQ8 3 9 DL
+Q1 11 14 19 QNL
+Q2 10 15 18 QNL
+Q3 1 10 2 QNL 0.5
+Q4 5 11 2 QNL 0.5
+Q5 21 5 13 QNH
+Q6 21 1 22 QNH
+VCHAIN 9 20 0
+FQ7 4 20 VCHAIN 4.6667
+FQ9 2 20 VCHAIN 3.9
+FQ10 13 20 VCHAIN 3.5
+FQ11 22 20 VCHAIN 3.5
+R4 4 17 500
+R3 17 19 45
+R1 11 21 2.4K
+R6 4 16 500
+R5 16 18 45
+R2 10 21 2.4K
+RQ7 20 4 100K
+R8 3 21 12K
+R9 1 21 1.1K
+RQ9 20 2 33.4K
+R10 5 21 1.1K
+RQ10 20 13 45.2K
+RF1 13 11 6.4K
+RQ11 20 22 45.2K
+RF2 22 10 6.4K
+.MODEL QNL NPN (BF=200 BR=2 IS=0.5F VAF=50 RB=50 RC=75 RE=2
++ CJC=2P)
+.MODEL QNH NPN (BF=100 BR=2 IS=1.0F VAF=140 RB=50 RC=50 RE=3)
+.MODEL DL D (IS=1.5F CJO=10P)
+.ENDS NE592S
+
+
+
+.SUBCKT Analog_NE592  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 NE592S 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -60 60 0 -120 #000080 2 1>
+    <Line 70 30 0 -60 #000080 2 1>
+    <Line -55 40 10 0 #000000 2 1>
+    <Text -25 65 8 #000000 0 "VEE">
+    <Line -30 80 0 -26 #000080 2 1>
+    <Line -55 -40 10 0 #ff0000 2 1>
+    <Line -50 -35 0 -10 #ff0000 2 1>
+    <Line -30 -53 0 -17 #000080 2 1>
+    <Text -25 -75 8 #000000 0 "VCC">
+    <Line 20 -70 0 28 #000080 2 1>
+    <Line -80 -40 20 0 #000080 2 1>
+    <Line -80 40 20 0 #000080 2 1>
+    <Line 70 -20 30 0 #000080 2 1>
+    <Line 70 20 30 0 #000080 2 1>
+    <Text 36 -26 8 #000000 0 "OUT+">
+    <Text 36 14 8 #000000 0 "OUT-">
+    <Line 20 80 0 -38 #000080 2 1>
+    <Line 70 -30 -130 -30 #000080 2 1>
+    <Line -60 60 130 -30 #000080 2 1>
+    <Text 26 -76 8 #000000 0 "G1B">
+    <Line 50 35 0 43 #000080 2 1>
+    <Line 50 -70 0 35 #000080 2 1>
+    <.PortSym -80 -40 1 0 P14>
+    <.PortSym -80 40 2 0 P15>
+    <.PortSym 100 -20 3 0 P13>
+    <Text 56 -76 8 #000000 0 "G2B">
+    <Text 25 65 8 #000000 0 "G1A">
+    <Text 56 64 8 #000000 0 "G2A">
+    <.PortSym -30 -70 4 0 P21>
+    <.PortSym -30 80 5 0 P20>
+    <.PortSym 20 80 6 0 P19>
+    <.PortSym 50 80 7 0 P17>
+    <.PortSym 20 -70 8 0 P18>
+    <.PortSym 50 -70 9 0 P16>
+    <.PortSym 100 20 10 0 P22>
+    <.ID 80 -86 SUB>
+  </Symbol>
+</Component>
+
