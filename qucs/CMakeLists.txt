@@ -147,7 +147,7 @@ SET(QUCS_SRCS
   syntax.cpp misc.cpp messagedock.cpp
   settings.cpp
   imagewriter.cpp printerwriter.cpp projectView.cpp
-  symbolwidget.cpp
+  symbolwidget.cpp wire_planner.cpp
 )
 
 SET(QUCS_HDRS
@@ -170,6 +170,7 @@ symbolwidget.h
 textdoc.h
 wire.h
 wirelabel.h
+wire_planner.h
 )
 
 #
