@@ -98,9 +98,10 @@ double Text::angle() const {
 }
 
 // x and y are relative to component's x and y
-void Property::paint(int x, int y, QPainter* p)
+void Property::paint(int x, int y, QPainter* p, const QString& displayValue)
 {
-  p->drawText(x, y, 1, 1, Qt::TextDontClip, Name + "=" + Value, &br);
+  QString text = Name + "=" + displayValue;
+  p->drawText(x, y, 1, 1, Qt::TextDontClip, text, &br);
 }
 
 Element::Element()

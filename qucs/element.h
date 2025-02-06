@@ -144,14 +144,22 @@ struct Text : qucs::DrawingPrimitive {
 };
 
 struct Property {
+  // Constructor without Unit
   Property(const QString& _Name="", const QString& _Value="",
-	   bool _display=false, const QString& Desc="")
-	 : Name(_Name), Value(_Value), display(_display), Description(Desc) {};
-  QString Name, Value;
+           bool _display=false, const QString& Desc="", bool _IsExpression=false)
+      : Name(_Name), Value(_Value), display(_display), Description(Desc), IsExpression(_IsExpression) {};
+
+         // Constructor with Unit
+  Property(const QString& _Name, const QString& _Value, const QString& _Unit,
+           bool _display, const QString& Desc, bool _IsExpression)
+      : Name(_Name), Value(_Value), Unit(_Unit), display(_display), Description(Desc), IsExpression(_IsExpression) {};
+
+  QString Name, Value, Unit;
   bool    display;   // show on schematic or not ?
   QString Description;
+  bool    IsExpression; // indicates if the value is an expression
   QRect boundingRect() const { return br; };
-  void paint(int x, int y, QPainter* p);
+  void paint(int x, int y, QPainter* p, const QString& displayValue = QString());
 private:
   QRect br;
 };

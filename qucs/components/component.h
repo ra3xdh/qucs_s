@@ -28,6 +28,7 @@
 
 #include "element.h"
 #include "main.h"
+#include "muParser.h"
 
 
 class Schematic;
@@ -77,6 +78,8 @@ public:
 
   void loadfromComponentInfo(ComponentInfo);
   static void loadSymbol(SymbolDescription, QList<Port *>&, QList<qucs::Line *>&, QList<struct qucs::Arc *>&, QList<qucs::Polyline *>&);
+  double evaluateExpression(QString);
+  QString getValue(const Property* p);
 
   // to hold track of the component appearance for saving and copying
   bool mirroredX;   // is it mirrored about X axis or not

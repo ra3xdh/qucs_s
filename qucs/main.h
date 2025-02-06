@@ -165,12 +165,15 @@ struct SymbolDescription{
   QList<TextInfo> Texts;
 };
 
-struct ParameterInfo{
-  double DefaultValue;
+struct ParameterInfo {
+  QVariant DefaultValue; // Can store both double and QString
   QString Unit;
   QString Description;
   bool Show;
+  bool IsExpression;
 };
+
+
 
 struct ComponentInfo {
   QString name;

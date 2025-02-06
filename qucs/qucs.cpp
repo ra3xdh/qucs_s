@@ -423,11 +423,20 @@ void QucsApp::readXML(QFile & library_file) {
                     }
 
                     ParameterInfo parameter;
-                    parameter.DefaultValue = DefaultValue.toDouble();
+                    bool ok;
+                    double numericValue = DefaultValue.toDouble(&ok);
+                    if (ok) {
+                      parameter.DefaultValue = numericValue;
+                      parameter.IsExpression = false;
+                    } else {
+                      parameter.DefaultValue = DefaultValue;
+                      parameter.IsExpression = true;
+                    }
                     parameter.Unit = Unit;
                     parameter.Description = Description;
                     parameter.Show = Show;
                     Component[ComponentName].parameters[Name] = parameter;
+
 
                     xmlReader.skipCurrentElement();
                   } else {

@@ -42,6 +42,12 @@
             <Parameter name="P" unit="dBm" default_value="0" show="true">
                 <Description>(Available) AC power (dBm)</Description>
             </Parameter>
+            <Parameter name="Vrms" unit="V" default_value="sqrt(Z/1000.0)*10^(P/20)" show="true">
+                <Description>RMS Voltage</Description>
+            </Parameter>
+            <Parameter name="Vpp" unit="V" default_value="2.0*Vrms*sqrt(2.0)" show="false">
+                <Description>Peak-to-Peak Voltage</Description>
+            </Parameter>
             <Parameter name="f" unit="GHz" default_value="1" show="true">
                 <Description>Frequency</Description>
             </Parameter>
