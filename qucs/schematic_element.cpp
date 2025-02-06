@@ -3253,4 +3253,37 @@ void Schematic::copyPaintings(int& x1, int& y1, int& x2, int& y2,
         else pp = a_Paintings->next();
 }
 
+std::pair<bool,Node*> Schematic::connectWithWire(const QPoint& a, const QPoint& b) noexcept {
+    auto points = a_wirePlanner.plan(a, b);
+
+    int resultFlags = 0;
+    // Take points by pairs
+    for (std::size_t i = 1; i < points.size(); i++) {
+        auto m = points[i-1];
+        auto n = points[i];
+        resultFlags = resultFlags | insertWire(new Wire(m.x(), m.y(), n.x(), n.y()));
+    }
+
+    const auto lastPoint = points.back();
+    for (auto* node : *a_Nodes) {
+        if (node->cx == lastPoint.x() && node->cy == lastPoint.y()) {
+            return {resultFlags, node};
+        }
+    }
+
+    assert(false);  // Must never get there
+    return {resultFlags, nullptr};
+}
+
+void Schematic::showEphemeralWire(const QPoint& a, const QPoint& b) noexcept {
+    auto points = a_wirePlanner.plan(a, b);
+    // Take points by pairs
+    for (std::size_t i = 1; i < points.size(); i++) {
+        auto m = points[i-1];
+        auto n = points[i];
+	PostPaintEvent(_Line, m.x(), m.y(), n.x(), n.y());
+    }
+
+}
+
 // vim:ts=8:sw=2:noet
