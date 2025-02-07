@@ -1493,7 +1493,7 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
     case Qt::LeftButton: {
         auto [hasChanges, lastNode] = Doc->connectWithWire({MAx3, MAy3}, {MAx2, MAy2});
 
-        if (lastNode->conn_count() > 1) {
+        if (lastNode == nullptr || lastNode->conn_count() > 1) {
             // if last port is connected, then...
             if (formerAction) {
                 // ...restore old action

@@ -3271,7 +3271,21 @@ std::pair<bool,Node*> Schematic::connectWithWire(const QPoint& a, const QPoint& 
         }
     }
 
-    assert(false);  // Must never get there
+    // If we've got there, then the point at which the wire ended
+    // was optimized away. For example if there was a wire AB…
+    //
+    //          A        B
+    //          o--------o
+    //
+    // And a new wire was drawn from point M to point A:
+    //
+    //   M      A        B
+    //   o------o--------o
+    //
+    // then two wires wouild be merged and point A would be removed:
+    //
+    //   M               B
+    //   o---------------o
     return {resultFlags, nullptr};
 }
 
