@@ -448,6 +448,7 @@ public:
   std::pair<bool,Node*> connectWithWire(const QPoint& a, const QPoint& b) noexcept;
   void showEphemeralWire(const QPoint& a, const QPoint& b) noexcept;
   void  optimizeWires();
+  std::pair<bool,Node*> installWire(Wire* wire);
 
   int   insertWireNode1(Wire*);
   bool  connectHWires1(Wire*);

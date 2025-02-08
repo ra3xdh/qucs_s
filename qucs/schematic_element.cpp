@@ -3731,4 +3731,199 @@ void Schematic::showEphemeralWire(const QPoint& a, const QPoint& b) noexcept {
 
 }
 
+namespace internal {
+
+template <typename T, std::ranges::forward_range C>
+    requires std::same_as<T, std::iter_value_t<C>>
+std::vector<std::pair<T, T>> by_pairs(const C& objects) {
+    std::vector<std::pair<T, T>> pairs;
+    for (std::size_t i = 1; i < objects.size(); i++) {
+        pairs.push_back({objects[i - 1], objects[i]});
+     }
+    return pairs;
+}
+
+// Among all wires in a given container finds the one which connects
+// nodes A and B. Returns nullptr if no such wire.
+template <typename It>
+Wire* find_wire(const Node* a, const Node* b, It begin, It end) {
+    for (; begin != end; begin++) {
+        Wire* w = *begin;
+        if ((w->Port1 == a && w->Port2 == b) ||
+            (w->Port1 == b && w->Port2 == a)) {
+            return w;
+        }
+     }
+    return nullptr;
+}
+}
+
+std::pair<bool,Node*> Schematic::installWire(Wire* wire)
+{
+    assert(wire->Port1 == nullptr);
+    assert(wire->Port2 == nullptr);
+
+    auto* port1 = provideNode(wire->x1, wire->y1);
+    auto* port2 = provideNode(wire->x2, wire->y2);
+
+    auto crossed_nodes =
+        qucs_s::geom::on_line(port1, port2, a_Nodes->begin(), a_Nodes->end());
+
+    // Save for later
+    auto* wire_label = wire->Label;
+    wire->Label      = nullptr;
+
+    // All the nodes the wire goes over taken by pairs, e.g. if the wires
+    // goes over nodes A, B, C, D, then this is the sequence of [(A,B), (B,C),
+    // (C,D)]
+    const auto crossed_node_pairs = internal::by_pairs<Node*,std::vector<Node*>>(crossed_nodes);
+    bool has_been_used    = false;
+    bool has_changes = false;
+
+    // We don't know how many nodes the wire goes over. Take them by pairs
+    // and check if a pair of nodes is already connected by a wire.
+    // If not, then fill the gap either with the given wire, or a brand new one.
+    //
+    // By function contract given wire is NEVER discarded.
+    for (const auto& node_pair : crossed_node_pairs) {
+        auto* existing_wire =
+            internal::find_wire(node_pair.first, node_pair.second, a_Wires->begin(), a_Wires->end());
+
+        // No gap, continue search
+        if (existing_wire != nullptr) {
+            continue;
+        }
+
+        // There is a gap between nodes…
+
+        if (!has_been_used) {
+            // … the given wire hasn't been used yet. Fill the gap with it.
+            wire->Port1 = node_pair.first;
+            wire->Port1->connect(wire);
+            wire->Port2 = node_pair.second;
+            wire->Port2->connect(wire);
+            wire->x1 = wire->Port1->x();
+            wire->y1 = wire->Port1->y();
+            wire->x2 = wire->Port2->x();
+            wire->y2 = wire->Port2->y();
+            a_Wires->append(wire);
+            has_been_used = true;
+            has_changes = true;
+        } else {
+            // … the given wire has been already used to fill another gap.
+            // Fill this gap with a brand new wire.
+	        auto* w = new Wire(node_pair.first->x(), node_pair.first->y(),
+			                   node_pair.second->x(), node_pair.second->y());
+            w->Port1 = node_pair.first;
+            w->Port1->connect(w);
+            w->Port2 = node_pair.second;
+            w->Port2->connect(w);
+            a_Wires->append(w);
+            has_changes = true;
+        }
+    }
+
+    // If after iterating over all node pairs, the given wire still hasn't been
+    // used, it means that the wire goes over one or several existing wires, i.e.
+    // there is already a connection between the points the wire was intended
+    // to connect.
+    //
+    // By function contract the given wire is never discarded, and to fulfil this
+    // requirement  the wire between last pair of nodes is replaced with the given
+    // wire.
+    if (!has_been_used) {
+        has_changes = false;  // indicate no changes
+
+        auto last_pair = crossed_node_pairs.back();
+        auto* existing_wire =
+            internal::find_wire(last_pair.first, last_pair.second, a_Wires->begin(), a_Wires->end());
+
+        if (wire->Label == nullptr) {
+            wire->Label = existing_wire->Label;
+        } else {
+            delete existing_wire->Label;
+            existing_wire->Label = nullptr;
+        }
+
+        // Detach last wire
+        existing_wire->Port1->disconnect(existing_wire);
+        existing_wire->Port1 = nullptr;
+        existing_wire->Port2->disconnect(existing_wire);
+        existing_wire->Port2 = nullptr;
+
+        // And delete it
+        internal::removeFromPtrList(existing_wire, a_Wires);
+        delete existing_wire;
+
+        // Put the given wire in place of deleted one
+        wire->Port1 = last_pair.first;
+        wire->Port1->connect(wire);
+        wire->Port2 = last_pair.second;
+        wire->Port2->connect(wire);
+
+        // Update given wire dimensions
+        wire->x1 = wire->Port1->x();
+        wire->y1 = wire->Port1->y();
+        wire->x2 = wire->Port2->x();
+        wire->y2 = wire->Port2->y();
+
+        a_Wires->append(wire);
+    }
+
+
+    // This value (which will be returned) indicates two things:
+    // 1. If there was a change in schematic (i.e. the wire doesn't go all over
+    //    existing wires)
+    // 2. Number of connections of the node at which wire ends
+    const std::pair<bool,Node*> result{has_changes, crossed_node_pairs.back().second};
+
+    // Wire had no label, we're done here
+    if (wire_label == nullptr) {
+        return result;
+    }
+
+    // The last step is to put the label at its place
+    for (const auto& node_pair : crossed_node_pairs) {
+        // At first we check if label root has the same coordinates
+        // as one of the nodes over which the wire goes over
+
+        // First node of a pair
+        if (wire_label->cx == node_pair.first->x() &&
+            wire_label->cy == node_pair.first->y())
+             {
+                delete node_pair.first->Label;
+                node_pair.first->Label = wire_label;
+                wire_label             = nullptr;
+                break;
+             }
+
+        // Second node of a pair
+        if (wire_label->cx == node_pair.second->x() &&
+            wire_label->cy == node_pair.second->y()) {
+                delete node_pair.second->Label;
+                node_pair.first->Label = wire_label;
+                wire_label             = nullptr;
+                break;
+             }
+
+        // If we've got here, then label root doesn't have same coordinates
+        // as one of the nodes. Maybe it lies on the wire between the nodes
+
+        auto* a_wire =
+            internal::find_wire(node_pair.first, node_pair.second, a_Wires->begin(), a_Wires->end());
+
+        if (qucs_s::geom::is_between(QPoint{wire_label->cx, wire_label->cy},
+                                     a_wire->Port1, a_wire->Port2)) {
+            delete a_wire->Label;
+            a_wire->Label = wire_label;
+            wire_label    = nullptr;
+            break;
+         }
+    }
+
+    // safety net
+    assert(wire_label == nullptr);
+    return result;
+ }
+
 // vim:ts=8:sw=2:noet
