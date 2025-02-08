@@ -103,6 +103,11 @@ void Planner::next() {
     current = routers.cbegin();
 }
 
+Planner::PlanType Planner::setType(Planner::PlanType other) {
+    auto old = current->first;
+    while (current->first != other) next();
+    return old;
+}
 
 } // namespace wire
 } // namespace qucs_s

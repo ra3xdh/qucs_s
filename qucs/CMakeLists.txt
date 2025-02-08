@@ -138,7 +138,7 @@ ADD_SUBDIRECTORY( spicecomponents )
 SET(QUCS_SRCS
   element.cpp	octave_window.cpp	qucsdoc.cpp
   textdoc.cpp  main.cpp	schematic.cpp
-  mnemo.cpp	qucs.cpp
+  mnemo.cpp	qucs.cpp healer.cpp
   module.cpp	schematic_element.cpp	wire.cpp schematic_render.cpp
   mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
   wirelabel.cpp node.cpp qucs_init.cpp
@@ -151,6 +151,7 @@ SET(QUCS_SRCS
 SET(QUCS_HDRS
 element.h
 conductor.h
+healer.h
 main.h
 messagedock.h
 misc.h

@@ -450,6 +450,9 @@ public:
   void showEphemeralWire(const QPoint& a, const QPoint& b) noexcept;
   void  optimizeWires();
   std::pair<bool,Node*> installWire(Wire* wire);
+  void displayMutations();
+  void heal(qucs_s::wire::Planner::PlanType planType = qucs_s::wire::Planner::PlanType::Straight);
+  void dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept;
 
   int   insertWireNode1(Wire*);
   bool  connectHWires1(Wire*);
