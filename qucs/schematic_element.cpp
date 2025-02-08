@@ -3685,20 +3685,28 @@ void Schematic::copyPaintings(int& x1, int& y1, int& x2, int& y2,
 }
 
 std::pair<bool,Node*> Schematic::connectWithWire(const QPoint& a, const QPoint& b) noexcept {
-    auto points = a_wirePlanner.plan(a, b);
+    return connectWithWire(a, b, true, a_wirePlanner.planType());
+}
 
-    int resultFlags = 0;
+std::pair<bool,Node*> Schematic::connectWithWire(const QPoint& a, const QPoint& b, bool optimize, qucs_s::wire::Planner::PlanType planType) noexcept {
+
+    auto points = qucs_s::wire::Planner::plan(planType, a, b);
+
+    bool hasChanges = false;
     // Take points by pairs
     for (std::size_t i = 1; i < points.size(); i++) {
         auto m = points[i-1];
         auto n = points[i];
-        resultFlags = resultFlags | insertWire(new Wire(m.x(), m.y(), n.x(), n.y()));
+        auto [ch, node] = installWire(new Wire(m.x(), m.y(), n.x(), n.y()));
+        hasChanges = hasChanges || ch;
     }
+
+    if (optimize) optimizeWires();
 
     const auto lastPoint = points.back();
     for (auto* node : *a_Nodes) {
         if (node->cx == lastPoint.x() && node->cy == lastPoint.y()) {
-            return {resultFlags, node};
+            return {hasChanges, node};
         }
     }
 
@@ -3717,7 +3725,7 @@ std::pair<bool,Node*> Schematic::connectWithWire(const QPoint& a, const QPoint& 
     //
     //   M               B
     //   o---------------o
-    return {resultFlags, nullptr};
+    return {hasChanges, nullptr};
 }
 
 void Schematic::showEphemeralWire(const QPoint& a, const QPoint& b) noexcept {
