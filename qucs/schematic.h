@@ -468,8 +468,8 @@ public:
   void  deleteWire(Wire*, bool remove_orphans=true);
 
   Marker* setMarker(int, int);
-  void    markerLeftRight(bool, QList<Element*>*);
-  void    markerUpDown(bool, QList<Element*>*);
+  void    markerLeftRight(bool, const std::vector<Marker*>& markers);
+  void    markerUpDown(bool, const std::vector<Marker*>& markers);
 
   Element* selectElement(float, float, bool, int *index=0);
   void     deselectElements(Element*) const;

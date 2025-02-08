@@ -1103,34 +1103,27 @@ Marker* Schematic::setMarker(int x, int y)
   return NULL;
 }
 
-// ---------------------------------------------------
 // Moves the marker pointer left/right on the graph.
-void Schematic::markerLeftRight(bool left, QList<Element*> *Elements)
+void Schematic::markerLeftRight(bool left, const std::vector<Marker*>& markers)
 {
     bool acted = false;
-    for (auto* e : *Elements) {
-        if (auto* pm = dynamic_cast<Marker*>(e)) {
-            if (pm->moveLeftRight(left))
-                acted = true;
-            }
+    for (auto* m : markers) {
+        if (m->moveLeftRight(left)) acted = true;
     }
 
-    if(acted)  setChanged(true, true, 'm');
+    if (acted) setChanged(true, true, 'm');
 }
 
 // ---------------------------------------------------
 // Moves the marker pointer up/down on the more-dimensional graph.
-void Schematic::markerUpDown(bool up, QList<Element*> *Elements)
+void Schematic::markerUpDown(bool up, const std::vector<Marker*>& markers)
 {
     bool acted = false;
-    for (auto* e : *Elements) {
-        if (auto* pm = dynamic_cast<Marker*>(e)) {
-            if (pm->moveUpDown(up))
-                acted = true;
-        }
+    for (auto* m : markers) {
+        if (m->moveUpDown(up)) acted = true;
     }
 
-    if(acted)  setChanged(true, true, 'm');
+    if (acted) setChanged(true, true, 'm');
 }
 
 
