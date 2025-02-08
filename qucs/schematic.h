@@ -462,7 +462,7 @@ public:
   Wire* selectedWire(int, int);
   Wire* splitWire(Wire*, Node*);
   bool  oneTwoWires(Node*);
-  void  deleteWire(Wire*);
+  void  deleteWire(Wire*, bool remove_orphans=true);
 
   Marker* setMarker(int, int);
   void    markerLeftRight(bool, QList<Element*>*);

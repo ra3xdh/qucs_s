@@ -1005,40 +1005,26 @@ bool Schematic::oneTwoWires(Node *n)
     return false;
 }
 
-// ---------------------------------------------------
-// Deletes the wire 'w'.
-void Schematic::deleteWire(Wire *w)
+// Deletes the wire and the nodes it was connected to if they
+// become orphan after removing the wires.
+void Schematic::deleteWire(Wire *w, bool remove_orphans)
 {
-    if(w->Port1->conn_count() == 1)
-    {
-        if(w->Port1->Label) delete w->Port1->Label;
-        a_Nodes->removeRef(w->Port1);     // delete node 1 if open
-    }
-    else
-    {
-        w->Port1->disconnect(w);   // remove connection
-        if(w->Port1->conn_count() == 2)
-            oneTwoWires(w->Port1);  // two wires -> one wire
+    w->Port1->disconnect(w);
+    // Delete node if it has become an orphan
+    if (remove_orphans && w->Port1->conn_count() == 0) {
+        internal::removeFromPtrList(w->Port1, a_Nodes);
+        delete w->Port1;
     }
 
-    if(w->Port2->conn_count() == 1)
-    {
-        if(w->Port2->Label) delete w->Port2->Label;
-        a_Nodes->removeRef(w->Port2);     // delete node 2 if open
-    }
-    else
-    {
-        w->Port2->disconnect(w);   // remove connection
-        if(w->Port2->conn_count() == 2)
-            oneTwoWires(w->Port2);  // two wires -> one wire
+    w->Port2->disconnect(w);
+    // Delete node if it has become an orphan
+    if (remove_orphans && w->Port2->conn_count() == 0) {
+        internal::removeFromPtrList(w->Port2, a_Nodes);
+        delete w->Port2;
     }
 
-    if(w->Label)
-    {
-        delete w->Label;
-        w->Label = 0;
-    }
-    a_Wires->removeRef(w);
+    internal::removeFromPtrList(w, a_Wires);
+    delete w;
 }
 
 // ---------------------------------------------------
@@ -3353,24 +3339,18 @@ Component* Schematic::selectedComponent(int x, int y)
 void Schematic::deleteComp(Component *c)
 {
     // delete all port connections
-    for (Port *pn : c->Ports)
-        switch(pn->Connection->conn_count())
-        {
-        case 1  :
-            delete pn->Connection->Label;
-            a_Nodes->removeRef(pn->Connection);  // delete open nodes
-            pn->Connection = 0;		  //  (auto-delete)
-            break;
-        case 3  :
-            pn->Connection->disconnect(c);// delete connection
-            oneTwoWires(pn->Connection);  // two wires -> one wire
-            break;
-        default :
-            pn->Connection->disconnect(c);// remove connection
-            break;
+    for (auto* port : c->Ports) {
+        port->Connection->disconnect(c);
+
+        // Remove node if it has become orphan
+        if (port->Connection->conn_count() == 0) {
+            internal::removeFromPtrList(port->Connection, a_Nodes);
+            delete port->Connection;
         }
+    }
     emit signalComponentDeleted(c);
-    a_Components->removeRef(c);   // delete component
+    internal::removeFromPtrList(c, a_Components);
+    delete c;
 }
 
 Component *Schematic::getComponentByName(const QString& compname) const
