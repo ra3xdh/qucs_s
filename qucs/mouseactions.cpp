@@ -1240,96 +1240,46 @@ void MouseActions::MPressActivate(Schematic *Doc, QMouseEvent *, float fX, float
     Doc->viewport()->update();
 }
 
-// -----------------------------------------------------------
 void MouseActions::MPressMirrorX(Schematic *Doc, QMouseEvent *, float fX, float fY)
 {
-    // no use in mirroring wires or diagrams
-    Component *c = Doc->selectedComponent(int(fX), int(fY));
-    if (c) {
-        if (c->Ports.count() < 1)
-            return; // only mirror components with ports
+    if (auto* c = Doc->selectedComponent(int(fX), int(fY))) {
         c->mirrorX();
-        Doc->setCompPorts(c);
-    } else {
-        Painting *p = Doc->selectedPainting(fX, fY);
-        if (p == 0)
-            return;
+        Doc->heal(qucs_s::wire::Planner::PlanType::Straight);
+    }
+    else if (auto* p = Doc->selectedPainting(fX, fY)) {
         p->mirrorX();
+    } else {
+        return;
     }
 
     Doc->viewport()->update();
     Doc->setChanged(true, true);
 }
 
-// -----------------------------------------------------------
 void MouseActions::MPressMirrorY(Schematic *Doc, QMouseEvent *, float fX, float fY)
 {
-    // no use in mirroring wires or diagrams
-    Component *c = Doc->selectedComponent(int(fX), int(fY));
-    if (c) {
-        if (c->Ports.count() < 1)
-            return; // only mirror components with ports
+    if (auto* c = Doc->selectedComponent(int(fX), int(fY))) {
         c->mirrorY();
-        Doc->setCompPorts(c);
-    } else {
-        Painting *p = Doc->selectedPainting(fX, fY);
-        if (p == 0)
-            return;
+        Doc->heal(qucs_s::wire::Planner::PlanType::Straight);
+    }
+    else if (auto* p = Doc->selectedPainting(fX, fY)) {
         p->mirrorY();
+    } else {
+        return;
     }
 
     Doc->viewport()->update();
     Doc->setChanged(true, true);
 }
 
-// -----------------------------------------------------------
 void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float fY)
 {
-    Element *e = Doc->selectElement(int(fX), int(fY), false);
-    if (e == 0)
-        return;
-    e->Type &= isSpecialMask; // remove special functions
+    Element* e = Doc->selectElement(int(fX), int(fY), false);
+    if (e == nullptr) return;
 
-    WireLabel *pl;
-    //  e->isSelected = false;
-    switch (e->Type) {
-    case isComponent:
-    case isAnalogComponent:
-    case isDigitalComponent:
-        if (((Component *) e)->Ports.count() < 1)
-            break; // do not rotate components without ports
-        ((Component *) e)->rotate();
-        Doc->setCompPorts((Component *) e);
-        // enlarge viewarea if component lies outside the view
-        Doc->enlargeView(e);
-        break;
+    e->rotate();
+    Doc->heal(qucs_s::wire::Planner::PlanType::Straight);
 
-    case isWire:
-        pl = ((Wire *) e)->Label;
-        ((Wire *) e)->Label = 0; // prevent label to be deleted
-        Doc->a_Wires->setAutoDelete(false);
-        Doc->deleteWire((Wire *) e);
-        ((Wire *) e)->Label = pl;
-        ((Wire *) e)->rotate();
-        Doc->setOnGrid(e->x1, e->y1);
-        Doc->setOnGrid(e->x2, e->y2);
-        if (pl)
-            Doc->setOnGrid(pl->cx, pl->cy);
-        Doc->insertWire((Wire *) e);
-        Doc->a_Wires->setAutoDelete(true);
-        if (Doc->a_Wires->containsRef((Wire *) e))
-            Doc->enlargeView(e);
-        break;
-
-    case isPainting: {
-        ((Painting *) e)->rotate();
-        // enlarge viewarea if component lies outside the view
-        Doc->enlargeView(e);
-        break;
-    }
-    default:
-        return;
-    }
     Doc->viewport()->update();
     Doc->setChanged(true, true);
 }
