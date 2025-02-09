@@ -103,7 +103,19 @@ public:
     Returns the smallest rectangle enclosing all elements of schematic
   */
   QRect allBoundingRect();
-  QRect  sizeOfSelection() const;
+
+  struct Selection {
+    QRect bounds;
+    std::vector<Component*> components;
+    std::vector<Wire*> wires;
+    std::vector<Painting*> paintings;
+    std::vector<Diagram*> diagrams;
+    std::vector<WireLabel*> labels;
+    std::vector<Marker*> markers;
+    std::vector<Node*> nodes;
+  };
+
+  Selection  sizeOfSelection() const;
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();

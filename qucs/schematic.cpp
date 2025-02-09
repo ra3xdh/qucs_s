@@ -749,7 +749,7 @@ void Schematic::print(QPrinter*, QPainter* painter, bool printAll,
     const QRectF pageSize{0, 0, static_cast<double>(painter->device()->width()),
                           static_cast<double>(painter->device()->height())};
 
-    QRect printedArea = printAll ? allBoundingRect() : sizeOfSelection();
+    QRect printedArea = printAll ? allBoundingRect() : sizeOfSelection().bounds;
 
     if (printAll && a_showFrame) {
         int frame_width, frame_height;
@@ -977,7 +977,7 @@ void Schematic::zoomToSelection() {
                     return;
                 }
 
-    const QRect selectedBoundingRect{ sizeOfSelection() };
+    const QRect selectedBoundingRect{ sizeOfSelection().bounds };
 
     // Working with raw coordinates is clumsy, abstract them out
     const QRect usedBoundingRect{a_UsedX1, a_UsedY1, a_UsedX2 - a_UsedX1, a_UsedY2 - a_UsedY1};
@@ -1280,7 +1280,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 }
 
-QRect Schematic::sizeOfSelection() const {
+Schematic::Selection Schematic::sizeOfSelection() const {
     int xmin = INT_MAX;
     int ymin = INT_MAX;
     int xmax = INT_MIN;
@@ -1290,8 +1290,10 @@ QRect Schematic::sizeOfSelection() const {
 
     if (a_Components->isEmpty() && a_Wires->isEmpty() && a_Diagrams->isEmpty() &&
         a_Paintings->isEmpty()) {
-        return QRect{};
+        return {};
     }
+
+    Selection selection;
 
     int x1, y1, x2, y2;
     // find boundings of all components
@@ -1300,6 +1302,7 @@ QRect Schematic::sizeOfSelection() const {
             continue;
         }
         isAnySelected = true;
+        selection.components.push_back(pc);
         pc->entireBounds(x1, y1, x2, y2);
         xmin = std::min(x1, xmin);
         xmax = std::max(x2, xmax);
@@ -1313,12 +1316,14 @@ QRect Schematic::sizeOfSelection() const {
             continue;
         }
         isAnySelected = true;
+        selection.wires.push_back(pw);
         xmin          = std::min(pw->x1, xmin);
         xmax          = std::max(pw->x2, xmax);
         ymin          = std::min(pw->y1, ymin);
         ymax          = std::max(pw->y2, ymax);
 
         if (auto* pl = pw->Label; pl) { // check position of wire label
+            selection.labels.push_back(pl);
             pl->getLabelBounding(x1, y1, x2, y2);
             xmin = std::min(x1, xmin);
             xmax = std::max(x2, xmax);
@@ -1329,11 +1334,12 @@ QRect Schematic::sizeOfSelection() const {
 
     // find boundings of all node labels
     for (auto* pn : *a_Nodes) {
-        if (!pn->isSelected) {
-            continue;
+        if (std::all_of(pn->begin(), pn->end(), [](auto* e) { return e->isSelected; })) {
+            selection.nodes.push_back(pn);
         }
 
         if (auto* pl = pn->Label; pl) { // check position of node label
+            selection.labels.push_back(pl);
             isAnySelected = true;
             pl->getLabelBounding(x1, y1, x2, y2);
             xmin = std::min(x1, xmin);
@@ -1348,6 +1354,7 @@ QRect Schematic::sizeOfSelection() const {
         if (!pd->isSelected) {
             continue;
         }
+        selection.diagrams.push_back(pd);
         isAnySelected = true;
         pd->Bounding(x1, y1, x2, y2);
         xmin = std::min(x1, xmin);
@@ -1358,6 +1365,7 @@ QRect Schematic::sizeOfSelection() const {
         for (Graph* pg : pd->Graphs) {
             // test all markers of diagram
             for (Marker* pm : pg->Markers) {
+                selection.markers.push_back(pm);
                 pm->Bounding(x1, y1, x2, y2);
                 xmin = std::min(x1, xmin);
                 xmax = std::max(x2, xmax);
@@ -1372,6 +1380,7 @@ QRect Schematic::sizeOfSelection() const {
         if (!pp->isSelected) {
             continue;
         }
+        selection.paintings.push_back(pp);
         isAnySelected = true;
         pp->Bounding(x1, y1, x2, y2);
         xmin = std::min(x1, xmin);
@@ -1381,10 +1390,11 @@ QRect Schematic::sizeOfSelection() const {
     }
 
     if (!isAnySelected) {
-        return QRect{};
+        return {};
     }
 
-    return QRect{xmin, ymin, xmax - xmin, ymax - ymin};
+    selection.bounds = QRect{xmin, ymin, xmax - xmin, ymax - ymin};
+    return selection;
 }
 
 // ---------------------------------------------------
