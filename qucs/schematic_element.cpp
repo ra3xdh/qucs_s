@@ -20,6 +20,7 @@
 #include "portsymbol.h"
 #include "schematic.h"
 
+#include <set>
 
 /**
     Given an element bounding rectangle and selection rectangle tells
@@ -2472,41 +2473,29 @@ bool Schematic::distributeVertical()
 
 // Finds the correct number for power sources, subcircuit ports and
 // digital sources and sets them accordingly.
-void Schematic::setComponentNumber(Component *c)
+void Schematic::setComponentNumber(Component* component)
 {
-    if(!c->Props.isEmpty()){
-        auto pp = c->Props.front();
-        if(pp != nullptr){
-            if(pp->Name != "Num") return;
+    if (component->Props.isEmpty()) return;
 
-            int n = 1;
-            QString s = pp->Value;
-            QString cSign = c->Model;
-            Component *pc =a_Components->first();
-            // First look, if the port number already exists.
-            for(; pc != 0; pc = a_Components->next()){
-                if(pc->Model == cSign){
-                    if(pc->Props.front()->Value == s) {break;}
-                }
-            }
-            if(!pc) return;   // was port number not yet in use ?
+    auto* component_number_property = component->Props.front();
+    if (component_number_property == nullptr || component_number_property->Name != "Num") return;
 
-            // Find the first free number.
-            do
-            {
-                s  = QString::number(n);
-                // look for existing ports and their numbers
-                pc = a_Components->first();
-                for(; pc != 0; pc = a_Components->next()){
-                    if(pc->Model == cSign){
-                        if(pc->Props.front()->Value == s) {break;}
-                    }
-                }
-                n++;
-            }
-            while(pc);     // found not used component number
-            pp->Value = s; // set new number
-        }
+    // Collect all numbers that are already in use
+    std::set<int> used_numbers;
+    for (auto* other_component : *a_Components){
+        if (other_component->Model != component->Model) continue;
+        used_numbers.insert(other_component->Props.front()->Value.toInt());
+    }
+
+    // If current component number cannot be found among used component numbers
+    // then everything is ok, we're free to leave now
+    if (used_numbers.find(component_number_property->Value.toInt()) == used_numbers.end()) return;
+
+    // Otherwise look for the first free number
+    for (int n = 1; ; n++) {
+        if (used_numbers.find(n) != used_numbers.end()) continue;
+        component_number_property->Value = QString::number(n);
+        return;
     }
 }
 
