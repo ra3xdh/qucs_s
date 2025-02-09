@@ -1484,41 +1484,19 @@ void Schematic::highlightWireLabels ()
 // Deselects all elements except 'e'.
 void Schematic::deselectElements(Element *e) const
 {
-    // test all components
-    for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
-        if(e != pc)  pc->isSelected = false;
+    Selection selection = currentSelection();
+    auto deselector = [e](auto* elem) { elem->isSelected = elem == e; };
 
-    // test all wires
-    for(Wire *pw = a_Wires->first(); pw != 0; pw = a_Wires->next())
-    {
-        if(e != pw)  pw->isSelected = false;
-        if(pw->Label) if(pw->Label != e)  pw->Label->isSelected = false;
+    std::for_each(selection.components.begin(), selection.components.end(), deselector);
+    std::for_each(selection.wires.begin(), selection.wires.end(), deselector);
+    std::for_each(selection.paintings.begin(), selection.paintings.end(), deselector);
+    std::for_each(selection.diagrams.begin(), selection.diagrams.end(), deselector);
+    std::for_each(selection.labels.begin(), selection.labels.end(), deselector);
+    std::for_each(selection.markers.begin(), selection.markers.end(), deselector);
+
+    for(auto* pd : *a_Diagrams) {
+        std::for_each(pd->Graphs.begin(), pd->Graphs.end(), deselector);
     }
-
-    // test all node labels
-    for(Node *pn = a_Nodes->first(); pn != 0; pn = a_Nodes->next())
-        if(pn->Label) if(pn->Label != e)  pn->Label->isSelected = false;
-
-    // test all diagrams
-    for(Diagram *pd = a_Diagrams->first(); pd != 0; pd = a_Diagrams->next())
-    {
-        if(e != pd)  pd->isSelected = false;
-
-        // test graphs of diagram
-        for (Graph *pg : pd->Graphs)
-        {
-            if(e != pg) pg->isSelected = false;
-
-            // test markers of graph
-            for (Marker *pm : pg->Markers)
-                if(e != pm) pm->isSelected = false;
-        }
-
-    }
-
-    // test all paintings
-    for(Painting *pp = a_Paintings->first(); pp != 0; pp = a_Paintings->next())
-        if(e != pp)  pp->isSelected = false;
 }
 
 // Selects elements that lie within or intersect with the rectangle selectionRect
@@ -1982,46 +1960,24 @@ int Schematic::copyElements(int& x1, int& y1, int& x2, int& y2,
 bool Schematic::deleteElements()
 {
     bool sel = false;
+    auto selection = currentSelection();
 
-    Component *pc = a_Components->first();
-    while(pc != 0)      // all selected component
-        if(pc->isSelected)
-        {
+    for (auto* pc : selection.components) {     // all selected component
             deleteComp(pc);
-            pc = a_Components->current();
             sel = true;
-        }
-        else pc = a_Components->next();
+    }
 
-    Wire *pw = a_Wires->first();
-    while(pw != 0)        // all selected wires and their labels
+    for (auto* l : selection.labels) {
+        l->pOwner->Label = nullptr;
+        delete l;
+    }
+
+    for (auto* pw : selection.wires)        // all selected wires
     {
-        if(pw->Label)
-            if(pw->Label->isSelected)
-            {
-                delete pw->Label;
-                pw->Label = 0;
-                sel = true;
-            }
-
-        if(pw->isSelected)
-        {
             deleteWire(pw);
             pw = a_Wires->current();
             sel = true;
-        }
-        else pw = a_Wires->next();
     }
-
-    // all selected labels on nodes ***************************
-    for(Node *pn = a_Nodes->first(); pn != 0; pn = a_Nodes->next())
-        if(pn->Label)
-            if(pn->Label->isSelected)
-            {
-                delete pn->Label;
-                pn->Label = 0;
-                sel = true;
-            }
 
     Diagram *pd = a_Diagrams->first();
     while(pd != 0)      // test all diagrams
@@ -2067,11 +2023,8 @@ bool Schematic::deleteElements()
             pd = a_Diagrams->next();
         } //else
 
-
-    Painting *pp = a_Paintings->first();
-    while(pp != 0)      // test all paintings
+    for (auto* pp : selection.paintings)      // test all paintings
     {
-        if(pp->isSelected) {
             // Allow removing of manually inserted port symbols when in symbol
             // editing mode. If port symbol is inserted manually i.e. doesn't
             // have a corresponding port in schematic, its nameStr is empty.
@@ -2079,20 +2032,16 @@ bool Schematic::deleteElements()
             // must have found a pairing port in schematic.
             if (pp->Name.trimmed() == ".PortSym" && a_isSymbolOnly) {
                 sel = true;
-                a_Paintings->remove();
-                pp = a_Paintings->current();
+                a_Paintings->remove(pp);
                 continue;
             }
 
             if(pp->Name.at(0) != '.')    // do not delete "PortSym", "ID_text"
             {
                 sel = true;
-                a_Paintings->remove();
-                pp = a_Paintings->current();
+                a_Paintings->remove(pp);
                 continue;
             }
-        }
-        pp = a_Paintings->next();
     }
 
     if(sel)
@@ -2763,9 +2712,8 @@ bool Schematic::activateSelectedComponents()
 {
     int a;
     bool sel = false;
-    for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
-        if(pc->isSelected)
-        {
+
+    for (auto* pc : currentSelection().components) {
             a = pc->isActive - 1;
 
             if(pc->Ports.count() > 1)
@@ -2854,10 +2802,9 @@ Component* Schematic::selectCompText(int x_, int y_, int& w, int& h) const
 Component* Schematic::searchSelSubcircuit()
 {
     Component *sub=0;
-    // test all components
-    for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
+
+    for(auto* pc : currentSelection().components)
     {
-        if(!pc->isSelected) continue;
         if(pc->Model != "Sub")
             if(pc->Model != "VHDL")
                 if(pc->Model != "Verilog") continue;
@@ -2918,13 +2865,10 @@ Component *Schematic::getComponentByName(const QString& compname) const
 int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
                               QList<Element *> *ElementCache)
 {
-    Component *pc;
     int bx1, by1, bx2, by2, count=0;
     // find bounds of all selected components
-    for(pc = a_Components->first(); pc != 0; )
+    for (auto* pc : currentSelection().components)
     {
-        if(pc->isSelected)
-        {
             pc->Bounding(bx1, by1, bx2, by2);  // is needed because of "distribute
             if(bx1 < x1) x1 = bx1;             // uniformly"
             if(bx2 > x2) x2 = bx2;
@@ -2950,10 +2894,6 @@ int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
                     }
 
             deleteComp(pc);
-            pc = a_Components->current();
-            continue;
-        }
-        pc = a_Components->next();
     }
     return count;
 }
@@ -2962,12 +2902,9 @@ int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
 void Schematic::copyComponents2(int& x1, int& y1, int& x2, int& y2,
                                 QList<Element *> *ElementCache)
 {
-    Component *pc;
     // find bounds of all selected components
-    for(pc = a_Components->first(); pc != 0; )
+    for (auto* pc : currentSelection().components)
     {
-        if(pc->isSelected)
-        {
             // is better for unsymmetrical components
             if(pc->cx < x1)  x1 = pc->cx;
             if(pc->cx > x2)  x2 = pc->cx;
@@ -2988,10 +2925,6 @@ void Schematic::copyComponents2(int& x1, int& y1, int& x2, int& y2,
                     }
 
             deleteComp(pc);
-            pc = a_Components->current();
-            continue;
-        }
-        pc = a_Components->next();
     }
 }
 
@@ -3181,34 +3114,14 @@ void Schematic::insertNodeLabel(WireLabel *pl)
 void Schematic::copyLabels(int& x1, int& y1, int& x2, int& y2,
                            QList<Element *> *ElementCache)
 {
-    WireLabel *pl;
-    // find bounds of all selected wires
-    for(Wire *pw = a_Wires->first(); pw != 0; pw = a_Wires->next())
+    // find bounds of all selected labels
+    for (auto* pl : currentSelection().labels)
     {
-        pl = pw->Label;
-        if(pl) if(pl->isSelected)
-            {
                 if(pl->x1 < x1) x1 = pl->x1;
                 if(pl->y1-pl->y2 < y1) y1 = pl->y1-pl->y2;
                 if(pl->x1+pl->x2 > x2) x2 = pl->x1+pl->x2;
                 if(pl->y1 > y2) y2 = pl->y1;
                 ElementCache->append(pl);
-            }
-    }
-
-    for(Node *pn = a_Nodes->first(); pn != 0; pn = a_Nodes->next())
-    {
-        pl = pn->Label;
-        if(pl) if(pl->isSelected)
-            {
-                if(pl->x1 < x1) x1 = pl->x1;
-                if(pl->y1-pl->y2 < y1) y1 = pl->y1-pl->y2;
-                if(pl->x1+pl->x2 > x2) x2 = pl->x1+pl->x2;
-                if(pl->y1 > y2) y2 = pl->y1;
-                ElementCache->append(pl);
-                pl->pOwner->Label = 0;   // erase connection
-                pl->pOwner = 0;
-            }
     }
 }
 
@@ -3234,11 +3147,9 @@ Painting* Schematic::selectedPainting(float fX, float fY)
 void Schematic::copyPaintings(int& x1, int& y1, int& x2, int& y2,
                               QList<Element *> *ElementCache)
 {
-    Painting *pp;
     int bx1, by1, bx2, by2;
     // find boundings of all selected paintings
-    for(pp = a_Paintings->first(); pp != 0; )
-        if(pp->isSelected)
+    for (auto* pp : currentSelection().paintings)
         {
             pp->Bounding(bx1, by1, bx2, by2);
             if(bx1 < x1) x1 = bx1;
@@ -3247,10 +3158,8 @@ void Schematic::copyPaintings(int& x1, int& y1, int& x2, int& y2,
             if(by2 > y2) y2 = by2;
 
             ElementCache->append(pp);
-            a_Paintings->take();
-            pp = a_Paintings->current();
+            a_Paintings->take(a_Paintings->find(pp));
         }
-        else pp = a_Paintings->next();
 }
 
 // vim:ts=8:sw=2:noet
