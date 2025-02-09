@@ -2480,239 +2480,90 @@ bool Schematic::elementsOnGrid()
     return true;
 }
 
-// ---------------------------------------------------
 // Rotates all selected components around their midpoint.
 bool Schematic::rotateElements()
 {
-    a_Wires->setAutoDelete(false);
-    a_Components->setAutoDelete(false);
+    auto selection = currentSelection();
 
-    // To rotate a selected area its necessary to work with half steps
-    int x1 = INT_MAX, y1 = INT_MAX;
-    int x2 = INT_MIN, y2 = INT_MIN;
-    QList<Element *> ElementCache;
-    copyLabels(x1, y1, x2, y2, &ElementCache); // must be first of all !
-    copyComponents(x1, y1, x2, y2, &ElementCache);
-    copyWires(x1, y1, x2, y2, &ElementCache);
-    copyPaintings(x1, y1, x2, y2, &ElementCache);
-    if (y1 == INT_MAX)
-    {
-        return false; // no element selected
-    }
-    int comX = (x1 + ((x2-x1) / 2)); // center of mass
-    int comY = (y1 + ((y2-y1) / 2));
-    int newPosX = INT_MIN;
-    int newPosY = INT_MIN;
+    const auto count = internal::total_count(selection);
 
-    a_Wires->setAutoDelete(true);
-    a_Components->setAutoDelete(true);
-    setOnGrid(comX, comY);
+    if (count < 1) return false;
 
-    Wire *pw;
-    Painting *pp;
-    Component *pc;
-    WireLabel *pl;
-    // re-insert elements
-    for (Element *pe : ElementCache)
-        switch (pe->Type) {
-        case isComponent:
-        case isAnalogComponent:
-        case isDigitalComponent:
-            pc = (Component *) pe;
-            pc->rotate(); //rotate component !before! rotating its center
-            relativeRotation(newPosX, newPosY, comX, comY, pc->cx, pc->cy);
-            pc->setCenter(newPosX, newPosY);
-            insertRawComponent(pc);
-            break;
+    const bool in_place = count == 1;
+    const auto bounds = internal::total_br(selection);
+    if (!bounds) assert(false);
 
-        case isWire:
-            pw = (Wire *) pe;
-            relativeRotation(newPosX, newPosY, comX, comY, pw->x1, pw->y1);
-            pw->x1 = newPosX;
-            pw->y1 = newPosY;
-            relativeRotation(newPosX, newPosY, comX, comY, pw->x2, pw->y2);
-            pw->x2 = newPosX;
-            pw->y2 = newPosY;
+    const auto rotc = bounds->center();
 
-            pl = pw->Label;
-            if (pl) {
-                x2 = pl->cx;
-                relativeRotation(newPosX, newPosY, comX, comY, pl->cx, pl->cy);
-                pl->cx = newPosX;
-                pl->cy = newPosY;
-                if (pl->Type == isHWireLabel)
-                    pl->Type = isVWireLabel;
-                else
-                    pl->Type = isHWireLabel;
-            }
-            insertWire(pw);
-            break;
+    const auto rotator = [rotc,in_place](Element* e) { in_place ? e->rotate() : e->rotate(rotc); };
 
-        case isHWireLabel:
-        case isVWireLabel:
-            pl = (WireLabel *) pe;
-            relativeRotation(newPosX, newPosY, comX, comY, pl->x1, pl->y1);
-            pl->x1 = newPosX;
-            pl->y1 = newPosY;
-            break;
-        case isNodeLabel:
-            pl = (WireLabel *) pe;
-            if (pl->pOwner == 0) {
-                relativeRotation(newPosX, newPosY, comX, comY, pl->x1, pl->y1);
-                pl->x1 = newPosX;
-                pl->y1 = newPosY;
-            }
-            relativeRotation(newPosX, newPosY, comX, comY, pl->cx, pl->cy);
-            pl->cx = newPosX;
-            pl->cy = newPosY;
-            insertNodeLabel(pl);
-            break;
+    std::ranges::for_each(selection.components, rotator);
+    std::ranges::for_each(selection.wires, rotator);
+    std::ranges::for_each(selection.paintings, rotator);
+    std::ranges::for_each(selection.diagrams, rotator);
+    std::ranges::for_each(selection.labels, rotator);
 
-        case isPainting:
-            pp = (Painting *) pe;
-            pp->rotate(x1, y1); // rotate around the center x1 y1
-            a_Paintings->append(pp);
-            break;
-        default:;
-        }
-
-    ElementCache.clear();
+    heal(qucs_s::wire::Planner::PlanType::Straight);
 
     setChanged(true, true);
     return true;
 }
 
-// ---------------------------------------------------
 // Mirrors all selected components.
-// First copy them to 'ElementCache', then mirror and insert again.
 bool Schematic::mirrorXComponents()
 {
-    a_Wires->setAutoDelete(false);
-    a_Components->setAutoDelete(false);
+    const auto selection = currentSelection();
 
-    int x1, y1, x2, y2;
-    QList<Element *> ElementCache;
-    if (!copyComps2WiresPaints(x1, y1, x2, y2, &ElementCache))
-        return false;
-    a_Wires->setAutoDelete(true);
-    a_Components->setAutoDelete(true);
+    const auto count = internal::total_count(selection);
 
-    y1 = (y1 + y2) >> 1; // axis for mirroring
-    setOnGrid(y2, y1);
-    y1 <<= 1;
+    if (count < 1) return false;
 
-    Wire *pw;
-    Painting *pp;
-    Component *pc;
-    WireLabel *pl;
-    // re-insert elements
-    for (Element *pe : ElementCache)
-        switch (pe->Type) {
-        case isComponent:
-        case isAnalogComponent:
-        case isDigitalComponent:
-            pc = (Component *) pe;
-            pc->mirrorX(); // mirror component !before! mirroring its center
-            pc->setCenter(pc->cx, y1 - pc->cy);
-            insertRawComponent(pc);
-            break;
-        case isWire:
-            pw = (Wire *) pe;
-            pw->y1 = y1 - pw->y1;
-            pw->y2 = y1 - pw->y2;
-            pl = pw->Label;
-            if (pl)
-                pl->cy = y1 - pl->cy;
-            insertWire(pw);
-            break;
-        case isHWireLabel:
-        case isVWireLabel:
-            pl = (WireLabel *) pe;
-            pl->y1 = y1 - pl->y1;
-            break;
-        case isNodeLabel:
-            pl = (WireLabel *) pe;
-            if (pl->pOwner == 0)
-                pl->y1 = y1 - pl->y1;
-            pl->cy = y1 - pl->cy;
-            insertNodeLabel(pl);
-            break;
-        case isPainting:
-            pp = (Painting *) pe;
-            pp->mirrorX(); // mirror painting !before! mirroring its center
-            a_Paintings->append(pp);
-            break;
-        default:;
-        }
+    const auto in_place = count == 1;
+    const auto bounds = internal::total_br(selection);
+    if (!bounds) assert(false);
 
-    ElementCache.clear();
+    const auto axis = bounds->center().y();
+
+    const auto mirrorer = [axis,in_place](Element* e) { in_place ? e -> mirrorX() : e->mirrorX(axis); };
+
+    std::ranges::for_each(selection.components, mirrorer);
+    std::ranges::for_each(selection.wires, mirrorer);
+    std::ranges::for_each(selection.paintings, mirrorer);
+    std::ranges::for_each(selection.diagrams, mirrorer);
+    std::ranges::for_each(selection.labels, mirrorer);
+
+
+    heal(qucs_s::wire::Planner::PlanType::Straight);
+
     setChanged(true, true);
     return true;
 }
 
-// ---------------------------------------------------
-// Mirrors all selected components. First copy them to 'ElementCache', then mirror and insert again.
+// Mirrors all selected components.
 bool Schematic::mirrorYComponents()
 {
-    a_Wires->setAutoDelete(false);
-    a_Components->setAutoDelete(false);
+    const auto selection = currentSelection();
 
-    int x1, y1, x2, y2;
-    QList<Element *> ElementCache;
-    if (!copyComps2WiresPaints(x1, y1, x2, y2, &ElementCache))
-        return false;
-    a_Wires->setAutoDelete(true);
-    a_Components->setAutoDelete(true);
+    const auto count = internal::total_count(selection);
 
-    x1 = (x1 + x2) >> 1; // axis for mirroring
-    setOnGrid(x1, x2);
-    x1 <<= 1;
+    if (count < 1) return false;
 
-    Wire *pw;
-    Painting *pp;
-    Component *pc;
-    WireLabel *pl;
-    // re-insert elements
-    for (Element *pe : ElementCache)
-        switch (pe->Type) {
-        case isComponent:
-        case isAnalogComponent:
-        case isDigitalComponent:
-            pc = (Component *) pe;
-            pc->mirrorY(); // mirror component !before! mirroring its center
-            pc->setCenter(x1 - pc->cx, pc->cy);
-            insertRawComponent(pc);
-            break;
-        case isWire:
-            pw = (Wire *) pe;
-            pw->x1 = x1 - pw->x1;
-            pw->x2 = x1 - pw->x2;
-            pl = pw->Label;
-            if (pl)
-                pl->cx = x1 - pl->cx;
-            insertWire(pw);
-            break;
-        case isHWireLabel:
-        case isVWireLabel:
-            pl = (WireLabel *) pe;
-            pl->x1 = x1 - pl->x1;
-            break;
-        case isNodeLabel:
-            pl = (WireLabel *) pe;
-            if (pl->pOwner == 0)
-                pl->x1 = x1 - pl->x1;
-            pl->cx = x1 - pl->cx;
-            insertNodeLabel(pl);
-            break;
-        case isPainting:
-            pp = (Painting *) pe;
-            pp->mirrorY(); // mirror painting !before! mirroring its center
-            a_Paintings->append(pp);
-            break;
-        default:;
-        }
+    const auto in_place = count == 1;
+    const auto bounds = internal::total_br(selection);
+    if (!bounds) assert(false);
 
-    ElementCache.clear();
+    const auto axis = bounds->center().x();
+
+    const auto mirrorer = [axis,in_place](Element* e) { in_place ? e->mirrorY() : e->mirrorY(axis); };
+
+    std::ranges::for_each(selection.components, mirrorer);
+    std::ranges::for_each(selection.wires, mirrorer);
+    std::ranges::for_each(selection.paintings, mirrorer);
+    std::ranges::for_each(selection.diagrams, mirrorer);
+    std::ranges::for_each(selection.labels, mirrorer);
+
+    heal(qucs_s::wire::Planner::PlanType::Straight);
+
     setChanged(true, true);
     return true;
 }
