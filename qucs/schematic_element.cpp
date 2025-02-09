@@ -2189,148 +2189,211 @@ bool Schematic::deleteElements()
     return sel;
 }
 
-// ---------------------------------------------------
+namespace internal {
+
+std::size_t total_count(const Schematic::Selection& selection) {
+    return selection.components.size()
+       + selection.wires.size()
+       + selection.paintings.size()
+       + selection.diagrams.size()
+       + selection.labels.size()
+       + selection.markers.size();
+}
+
+std::optional<QRect> total_br(const std::vector<Component*> comps) {
+    if (comps.empty()) return std::nullopt;
+
+    return std::make_optional(std::transform_reduce(
+        comps.begin() + 1,
+        comps.end(),
+        comps.at(0)->boundingRectNoProperties(),
+        [](const QRect& a, const QRect& b) { return a.united(b);},
+        [](const Component* e) { return e->boundingRectNoProperties(); }
+    ));
+}
+
+template<typename T>
+std::optional<QRect> total_br(const std::vector<T*> elems) {
+    if (elems.empty()) return std::nullopt;
+
+    return std::make_optional(std::transform_reduce(
+        elems.begin() + 1,
+        elems.end(),
+        elems.at(0)->boundingRect(),
+        [](const QRect& a, const QRect& b) { return a.united(b);},
+        [](const T* e) { return e->boundingRect(); }
+    ));
+}
+
+std::optional<QRect> total_br(const Schematic::Selection& selection) {
+    std::optional<QRect> total = total_br(selection.components);
+
+    {
+        auto wires = total_br(selection.wires);
+        if (total && wires) {
+            total = std::make_optional(total->united(wires.value()));
+        } else {
+            total = wires ? wires : total;
+        }
+    }
+    {
+        auto paintings = total_br(selection.paintings);
+        if (total && paintings) {
+            total = std::make_optional(total->united(paintings.value()));
+        } else {
+            total = paintings ? paintings : total;
+        }
+    }
+    {
+        auto diagrams = total_br(selection.diagrams);
+        if (total && diagrams) {
+            total = std::make_optional(total->united(diagrams.value()));
+        } else {
+            total = diagrams ? diagrams : total;
+        }
+    }
+    {
+        auto labels = total_br(selection.labels);
+        if (total && labels) {
+            total = std::make_optional(total->united(labels.value()));
+        } else {
+            total = labels ? labels : total;
+        }
+    }
+    {
+        auto markers = total_br(selection.markers);
+        if (total && markers) {
+            total = std::make_optional(total->united(markers.value()));
+        } else {
+            total = markers ? markers : total;
+        }
+    }
+
+    return total;
+}
+
+class Aligner {
+    int m_mode;
+    QRect m_bounds;
+public:
+    Aligner(int mode, QRect bounds) : m_mode{mode}, m_bounds{bounds} {};
+
+    void operator() (Element* e) const {
+        switch (m_mode) {
+        case 0:  // align top
+            e->moveCenter(0, m_bounds.top() - e->boundingRect().top());
+            break;
+        case 1:  // align bottom
+            e->moveCenter(0, m_bounds.bottom() - e->boundingRect().bottom());
+            break;
+        case 2:  // align left
+            e->moveCenter(m_bounds.left() - e->boundingRect().left(), 0);
+            break;
+        case 3:  // align right
+            e->moveCenter(m_bounds.right() - e->boundingRect().right(), 0);
+            break;
+        case 4:  // center horizontally
+            e->moveCenter(m_bounds.center().x() - e->boundingRect().center().x(), 0);
+            break;
+        case 5:  // center vertically
+            e->moveCenter(0, m_bounds.center().y() - e->boundingRect().center().y());
+            break;
+    }
+    }
+
+    void operator() (Component* c) const {
+        switch (m_mode) {
+        case 0:  // align top
+            c->moveCenter(0, m_bounds.top() - c->boundingRectNoProperties().top());
+            break;
+        case 1:  // align bottom
+            c->moveCenter(0, m_bounds.bottom() - c->boundingRectNoProperties().bottom());
+            break;
+        case 2:  // align left
+            c->moveCenter(m_bounds.left() - c->boundingRectNoProperties().left(), 0);
+            break;
+        case 3:  // align right
+            c->moveCenter(m_bounds.right() - c->boundingRectNoProperties().right(), 0);
+            break;
+        case 4:  // center horizontally
+            c->moveCenter(m_bounds.center().x() - c->boundingRectNoProperties().center().x(), 0);
+            break;
+        case 5:  // center vertically
+            c->moveCenter(0, m_bounds.center().y() - c->boundingRectNoProperties().center().y());
+            break;
+    }
+    }
+};
+}
+
 /*!
  * \brief Schematic::aligning align selected elements.
  * \param Mode: top, bottom, left, right, center vertical, center horizontal
  * \return True if aligned
  */
-bool Schematic::aligning(int Mode)
+bool Schematic::aligning(int mode)
 {
-    int x1, y1, x2, y2;
-    int bx1, by1, bx2, by2, *bx=0, *by=0, *ax=0, *ay=0;
-    QList<Element *> ElementCache;
-    int count = copyElements(x1, y1, x2, y2, &ElementCache);
-    if(count < 1) return false;
+    auto selection = currentSelection();
 
+    if (internal::total_count(selection) <= 1) return false;
 
-    ax = ay = &x2;  // = 0
-    switch(Mode)
-    {
-    case 0:  // align top
-        bx = &x1;
-        by = &by1;
-        y2 = 1;
-        break;
-    case 1:  // align bottom
-        bx = &x1;
-        y1 = y2;
-        by = &by2;
-        y2 = 1;
-        break;
-    case 2:  // align left
-        by = &y1;
-        bx = &bx1;
-        y2 = 1;
-        break;
-    case 3:  // align right
-        by = &y1;
-        x1 = x2;
-        bx = &bx2;
-        y2 = 1;
-        break;
-    case 4:  // center horizontally
-        x1 = (x2+x1) / 2;
-        by = &x2;  // = 0
-        ax = &bx1;
-        bx = &bx2;
-        y1 = 0;
-        y2 = 2;
-        break;
-    case 5:  // center vertically
-        y1 = (y2+y1) / 2;
-        bx = &x2;  // = 0
-        ay = &by1;
-        by = &by2;
-        x1 = 0;
-        y2 = 2;
-        break;
-    }
-    x2 = 0;
+    const internal::Aligner aligner{mode, internal::total_br(selection).value()};
+    std::ranges::for_each(selection.paintings, aligner);
+    std::ranges::for_each(selection.diagrams, aligner);
+    std::ranges::for_each(selection.labels, aligner);
+    std::ranges::for_each(selection.components, aligner);
+    std::ranges::for_each(selection.wires, aligner);
 
-    Wire      *pw;
-    Component *pc;
-    Element   *pe;
-    // re-insert elements
-    // Go backwards in order to insert node labels before its component.
-    QListIterator<Element *> elementCacheIter(ElementCache);
-    elementCacheIter.toBack();
-    while (elementCacheIter.hasPrevious()) {
-        pe = elementCacheIter.previous();
-        switch(pe->Type)
-        {
-        case isComponent:
-        case isAnalogComponent:
-        case isDigitalComponent:
-            pc = (Component*)pe;
-            pc->Bounding(bx1, by1, bx2, by2);
-            pc->setCenter(x1-((*bx)+(*ax))/y2, y1-((*by)+(*ay))/y2, true);
-            insertRawComponent(pc);
-            break;
-
-        case isWire:
-            pw = (Wire*)pe;
-            bx1 = pw->x1;
-            by1 = pw->y1;
-            bx2 = pw->x2;
-            by2 = pw->y2;
-            pw->setCenter(x1-((*bx)+(*ax))/y2, y1-((*by)+(*ay))/y2, true);
-//        if(pw->Label) {  }
-            insertWire(pw);
-            break;
-
-        case isDiagram:
-            // Should the axis label be counted for ? I guess everyone
-            // has a different opinion.
-//        ((Diagram*)pe)->Bounding(bx1, by1, bx2, by2);
-
-            // Take size without axis label.
-            bx1 = ((Diagram*)pe)->cx;
-            by2 = ((Diagram*)pe)->cy;
-            bx2 = bx1 + ((Diagram*)pe)->x2;
-            by1 = by2 - ((Diagram*)pe)->y2;
-            ((Diagram*)pe)->setCenter(x1-((*bx)+(*ax))/y2, y1-((*by)+(*ay))/y2, true);
-            break;
-
-        case isPainting: {
-            auto br = ((Painting*)pe)->boundingRect();
-            bx1 = br.left();
-            by1 = br.top();
-            bx2 = br.left() + br.width();
-            by2 = br.top() + br.height();
-            ((Painting*)pe)->setCenter(x1-((*bx)+(*ax))/y2, y1-((*by)+(*ay))/y2, true);
-            break;
-        }
-        case isNodeLabel:
-            if(((Element*)(((WireLabel*)pe)->pOwner))->Type & isComponent)
-            {
-                pc = (Component*)(((WireLabel*)pe)->pOwner);
-                pc->Bounding(bx1, by1, bx2, by2);
-            }
-            else
-            {
-                pw = (Wire*)(((WireLabel*)pe)->pOwner);
-                bx1 = pw->x1;
-                by1 = pw->y1;
-                bx2 = pw->x2;
-                by2 = pw->y2;
-            }
-            ((WireLabel*)pe)->cx += x1-((*bx)+(*ax))/y2;
-            ((WireLabel*)pe)->cy += y1-((*by)+(*ay))/y2;
-            insertNodeLabel((WireLabel*)pe);
-            break;
-
-        default:
-            ;
-        }
-    }
-
-    ElementCache.clear();
-    if(count < 2) return false;
+    heal(qucs_s::wire::Planner::PlanType::Straight);
 
     setChanged(true, true);
     return true;
 }
+
+namespace internal {
+template <bool x_axis> struct CenterCoordinateSorter {
+  bool operator()(Element *a, Element *b) {
+    if constexpr (x_axis) {
+      return a->center().x() < b->center().x();
+    } else {
+      return a->center().y() < b->center().y();
+    }
+  }
+};
+
+template <bool x_axis> class Distributor {
+  std::size_t current_pos;
+  std::size_t last_pos;
+  int step;
+  int current_coord;
+
+public:
+  Distributor(std::vector<Element *> &elements)
+      : current_pos{0}, last_pos{elements.size()} {
+    std::ranges::sort(elements, CenterCoordinateSorter<x_axis>());
+
+    const auto *first = elements.front();
+    const auto *last = elements.back();
+
+    const auto distance =
+        std::abs(x_axis ? last->center().x() - first->center().x()
+                        : last->center().y() - first->center().y());
+
+    current_coord = x_axis ? first->center().x() : first->center().y();
+    step = distance / elements.size() - 1;
+  }
+
+  void next() {
+    if (current_pos >= last_pos) {
+      return;
+    }
+    current_coord += step;
+    current_pos++;
+  }
+
+  int get() const { return current_coord; }
+};
+} // namespace
 
 /*!
  * \brief Schematic::distributeHorizontal sort selection horizontally
@@ -2338,110 +2401,27 @@ bool Schematic::aligning(int Mode)
  */
 bool Schematic::distributeHorizontal()
 {
-    int x1, y1, x2, y2;
-    int bx1, by1, bx2, by2;
-    QList<Element *> ElementCache;
-    int count = copyElements(x1, y1, x2, y2, &ElementCache);
-    if(count < 1) return false;
+    auto selection = currentSelection();
 
-    Element *pe;
-    WireLabel *pl;
-    // Node labels are not counted for, so put them to the end.
-    /*  for(pe = ElementCache.last(); pe != 0; pe = ElementCache.prev())
-        if(pe->Type == isNodeLabel) {
-          ElementCache.append(pe);
-          ElementCache.removeRef(pe);
-        }*/
+    if (internal::total_count(selection) <= 1 ) return false;
 
-    // using bubble sort to get elements x ordered
-    QListIterator<Element *> elementCacheIter(ElementCache);
-    if(count > 1)
-        for(int i = count-1; i>0; i--)
-        {
-            pe = ElementCache.first();
-            for(int j=0; j<i; j++)
-            {
-                pe->getCenter(bx1, by1);
-                pe=elementCacheIter.peekNext();
-                pe->getCenter(bx2, by2);
-                if(bx1 > bx2)    // change two elements ?
-                {
-                    ElementCache.replace(j+1, elementCacheIter.peekPrevious());
-                    ElementCache.replace(j, pe);
-                    pe = elementCacheIter.next();
-                }
-            }
-        }
+    std::vector<Element*> distributed;
+    const auto appender = std::back_inserter(distributed);
 
-    ElementCache.last()->getCenter(x2, y2);
-    ElementCache.first()->getCenter(x1, y1);
-    Wire *pw;
-    int x = x2;
-    int dx=0;
-    if(count > 1) dx = (x2-x1)/(count-1);
-    // re-insert elements and put them at right position
-    // Go backwards in order to insert node labels before its component.
-    elementCacheIter.toBack();
-    while (elementCacheIter.hasPrevious())
-    {
-        pe = elementCacheIter.previous();
-        switch(pe->Type)
-        {
-        case isComponent:
-        case isAnalogComponent:
-        case isDigitalComponent:
-            pe->cx = x;
-            insertRawComponent((Component*)pe);
-            break;
+    std::ranges::copy(selection.components, appender);
+    std::ranges::copy(selection.wires, appender);
+    std::ranges::copy(selection.paintings, appender);
+    std::ranges::copy(selection.diagrams, appender);
+    std::ranges::copy(selection.labels, appender);
 
-        case isWire:
-            pw = (Wire*)pe;
-            if(pw->isHorizontal())
-            {
-                x1 = pw->x2 - pw->x1;
-                pw->x1 = x - (x1 >> 1);
-                pw->x2 = pw->x1 + x1;
-            }
-            else  pw->x1 = pw->x2 = x;
-//        if(pw->Label) {	}
-            insertWire(pw);
-            break;
+    internal::Distributor<true> dist(distributed);
 
-        case isDiagram:
-            pe->cx = x - (pe->x2 >> 1);
-            break;
-
-        case isPainting:
-            pe->getCenter(bx1, by1);
-            pe->setCenter(x, by1, false);
-            break;
-
-        case isNodeLabel:
-            pl = (WireLabel*)pe;
-            if(((Element*)(pl->pOwner))->Type & isComponent)
-                pe->cx += x - ((Component*)(pl->pOwner))->cx;
-            else
-            {
-                pw = (Wire*)(pl->pOwner);
-                if(pw->isHorizontal())
-                {
-                    x1 = pw->x2 - pw->x1;
-                    pe->cx += x - (x1 >> 1) - pw->x1;
-                }
-                else  pe->cx += x - pw->x1;
-            }
-            insertNodeLabel(pl);
-            x += dx;
-            break;
-
-        default:
-            ;
-        }
-        x -= dx;
+    for (auto* e : distributed) {
+        e->moveCenterTo(setOnGrid(QPoint{dist.get(), e->center().y()}));
+        dist.next();
     }
 
-    ElementCache.clear();
-    if(count < 2) return false;
+    heal(qucs_s::wire::Planner::PlanType::Straight);
 
     setChanged(true, true);
     return true;
@@ -2453,101 +2433,27 @@ bool Schematic::distributeHorizontal()
  */
 bool Schematic::distributeVertical()
 {
-    int x1, y1, x2, y2;
-    int bx1, by1, bx2, by2;
-    QList<Element *> ElementCache;
-    int count = copyElements(x1, y1, x2, y2, &ElementCache);
-    if(count < 1) return false;
+    auto selection = currentSelection();
 
-    // using bubble sort to get elements y ordered
-    QListIterator<Element *> elementCacheIter(ElementCache);
-    Element *pe;
-    if(count > 1)
-        for(int i = count-1; i>0; i--)
-        {
-            pe = ElementCache.first();
-            for(int j=0; j<i; j++)
-            {
-                pe->getCenter(bx1, by1);
-                pe = elementCacheIter.peekNext();
-                pe->getCenter(bx2, by2);
-                if(by1 > by2)    // change two elements ?
-                {
-                    ElementCache.replace(j+1, elementCacheIter.peekPrevious());
-                    ElementCache.replace(j, pe);
-                    pe = elementCacheIter.next();
-                }
-            }
-        }
+    if (internal::total_count(selection) <= 1) return false;
 
-    ElementCache.last()->getCenter(x2, y2);
-    ElementCache.first()->getCenter(x1, y1);
-    Wire *pw;
-    int y  = y2;
-    int dy=0;
-    if(count > 1) dy = (y2-y1)/(count-1);
-    // re-insert elements and put them at right position
-    // Go backwards in order to insert node labels before its component.
-    elementCacheIter.toBack();
-    while (elementCacheIter.hasPrevious())
-    {
-        pe = elementCacheIter.previous();
-        switch(pe->Type)
-        {
-        case isComponent:
-        case isAnalogComponent:
-        case isDigitalComponent:
-            pe->cy = y;
-            insertRawComponent((Component*)pe);
-            break;
+    std::vector<Element*> distributed;
+    const auto appender = std::back_inserter(distributed);
 
-        case isWire:
-            pw = (Wire*)pe;
-            if(pw->isHorizontal())  pw->y1 = pw->y2 = y;
-            else
-            {
-                y1 = pw->y2 - pw->y1;
-                pw->y1 = y - (y1 >> 1);
-                pw->y2 = pe->y1 + y1;
-            }
-//        if(pw->Label) {	}
-            insertWire(pw);
-            break;
+    std::ranges::copy(selection.components, appender);
+    std::ranges::copy(selection.wires, appender);
+    std::ranges::copy(selection.paintings, appender);
+    std::ranges::copy(selection.diagrams, appender);
+    std::ranges::copy(selection.labels, appender);
 
-        case isDiagram:
-            pe->cy = y + (pe->y2 >> 1);
-            break;
+    internal::Distributor<true> dist(distributed);
 
-        case isPainting:
-            pe->getCenter(bx1, by1);
-            pe->setCenter(bx1, y, false);
-            break;
-
-        case isNodeLabel:
-            if(((Element*)(((WireLabel*)pe)->pOwner))->Type & isComponent)
-                pe->cy += y - ((Component*)(((WireLabel*)pe)->pOwner))->cy;
-            else
-            {
-                pw = (Wire*)(((WireLabel*)pe)->pOwner);
-                if(!pw->isHorizontal())
-                {
-                    y1 = pw->y2 - pw->y1;
-                    pe->cy += y - (y1 >> 1) - pw->y1;
-                }
-                else  pe->cy += y - pw->y1;
-            }
-            insertNodeLabel((WireLabel*)pe);
-            y += dy;
-            break;
-
-        default:
-            ;
-        }
-        y -= dy;
+    for (auto* e : distributed) {
+        e->moveCenterTo(setOnGrid(QPoint{ e->center().x(), dist.get()}));
+        dist.next();
     }
 
-    ElementCache.clear();
-    if(count < 2) return false;
+    heal(qucs_s::wire::Planner::PlanType::Straight);
 
     setChanged(true, true);
     return true;
@@ -2556,136 +2462,22 @@ bool Schematic::distributeVertical()
 // Sets selected elements on grid.
 bool Schematic::elementsOnGrid()
 {
-    int x, y, No;
-    bool count = false;
-    WireLabel *pl, *pLabel;
-    Q3PtrList<WireLabel> LabelCache;
+    auto selection = currentSelection();
 
-    // test all components
-    a_Components->setAutoDelete(false);
-    for (Component *pc = a_Components->last(); pc != nullptr; pc = a_Components->prev())
-        if (pc->isSelected) {
-            // rescue non-selected node labels
-            for (Port *pp : pc->Ports)
-                if (pp->Connection->Label)
-                    if (pp->Connection->conn_count() < 2) {
-                        LabelCache.append(pp->Connection->Label);
-                        pp->Connection->Label->pOwner = 0;
-                        pp->Connection->Label = 0;
-                    }
+    if (internal::total_count(selection) == 0) return false;
 
-            x = pc->cx;
-            y = pc->cy;
-            No = a_Components->at();
-            deleteComp(pc);
-            setOnGrid(pc->cx, pc->cy);
-            insertRawComponent(pc);
-            a_Components->at(No); // restore current list position
-            pc->isSelected = false;
-            count = true;
+    const auto onGridSetter = [this](Element* e) { e->moveCenterTo(setOnGrid(e->center())); };
 
-            x -= pc->cx;
-            y -= pc->cy; // re-insert node labels and correct position
-            for (pl = LabelCache.first(); pl != 0; pl = LabelCache.next()) {
-                pl->cx -= x;
-                pl->cy -= y;
-                insertNodeLabel(pl);
-            }
-            LabelCache.clear();
-        }
-    a_Components->setAutoDelete(true);
+    std::ranges::for_each(selection.components, onGridSetter);
+    std::ranges::for_each(selection.wires, onGridSetter);
+    std::ranges::for_each(selection.paintings, onGridSetter);
+    std::ranges::for_each(selection.diagrams, onGridSetter);
+    std::ranges::for_each(selection.labels, onGridSetter);
 
-    a_Wires->setAutoDelete(false);
-    // test all wires and wire labels
-    for (Wire *pw = a_Wires->last(); pw != 0; pw = a_Wires->prev()) {
-        pl = pw->Label;
-        pw->Label = nullptr;
+    heal(qucs_s::wire::Planner::PlanType::Straight);
 
-        if (pw->isSelected) {
-            // rescue non-selected node label
-            pLabel = nullptr;
-            if (pw->Port1->Label) {
-                if (pw->Port1->conn_count() < 2) {
-                    pLabel = pw->Port1->Label;
-                    pw->Port1->Label = nullptr;
-                }
-            } else if (pw->Port2->Label) {
-                if (pw->Port2->conn_count() < 2) {
-                    pLabel = pw->Port2->Label;
-                    pw->Port2->Label = nullptr;
-                }
-            }
-
-            No = a_Wires->at();
-            deleteWire(pw);
-            setOnGrid(pw->x1, pw->y1);
-            setOnGrid(pw->x2, pw->y2);
-            insertWire(pw);
-            a_Wires->at(No); // restore current list position
-            pw->isSelected = false;
-            count = true;
-            if (pl)
-                setOnGrid(pl->cx, pl->cy);
-
-            if (pLabel) {
-                setOnGrid(pLabel->cx, pLabel->cy);
-                insertNodeLabel(pLabel);
-            }
-        }
-
-        if (pl) {
-            pw->Label = pl;
-            if (pl->isSelected) {
-                setOnGrid(pl->x1, pl->y1);
-                pl->isSelected = false;
-                count = true;
-            }
-        }
-    }
-    a_Wires->setAutoDelete(true);
-
-    // test all node labels
-    for (Node *pn = a_Nodes->first(); pn != 0; pn = a_Nodes->next())
-        if (pn->Label)
-            if (pn->Label->isSelected) {
-                setOnGrid(pn->Label->x1, pn->Label->y1);
-                pn->Label->isSelected = false;
-                count = true;
-            }
-
-    // test all diagrams
-    for (Diagram *pd = a_Diagrams->last(); pd != 0; pd = a_Diagrams->prev()) {
-        if (pd->isSelected) {
-            setOnGrid(pd->cx, pd->cy);
-            pd->isSelected = false;
-            count = true;
-        }
-
-        for (Graph *pg : pd->Graphs)
-            // test markers of diagram
-            for (Marker *pm : pg->Markers)
-                if (pm->isSelected) {
-                    x = pm->x1 + pd->cx;
-                    y = pm->y1 + pd->cy;
-                    setOnGrid(x, y);
-                    pm->x1 = x - pd->cx;
-                    pm->y1 = y - pd->cy;
-                    pm->isSelected = false;
-                    count = true;
-                }
-    }
-
-    // test all paintings
-    for (Painting *pa = a_Paintings->last(); pa != 0; pa = a_Paintings->prev())
-        if (pa->isSelected) {
-            setOnGrid(pa->cx, pa->cy);
-            pa->isSelected = false;
-            count = true;
-        }
-
-    if (count)
-        setChanged(true, true);
-    return count;
+    setChanged(true, true);
+    return true;
 }
 
 // ---------------------------------------------------
