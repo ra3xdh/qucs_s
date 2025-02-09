@@ -52,6 +52,207 @@ static bool shouldBeSelected(const QRect& elementBoundingRect, const QRect& sele
     }
 }
 
+// This namespace contains a bunch of functions to check schematic invariants.
+//
+// Mutating a schematic is quite complicated task and to make it a little bit
+// easier we can check invariants after changing something. In correct schematic
+// all of them must hold.
+//
+// Code below is not very efficient or beatiful and it's not intended to be used
+// "in production". Its main purpose is to help debugging and changing other
+// schematic logic.
+namespace invariants {
+
+bool noOrphanNodes(const Q3PtrList<Node>* nodes)
+{
+    for (auto* n : *nodes) {
+        assert(n->conn_count() > 0);
+    }
+    return true;
+}
+
+bool noSamePlaceNodes(const Q3PtrList<Node>* nodes)
+{
+    bool is_ok = true;
+    for (auto* n1 : *nodes) {
+        for (auto* n2 : *nodes) {
+            if (n1 == n2) continue;
+
+            if (n1->center() == n2->center()) {
+                qCritical() << "Two different nodes at the same location!"
+                            << "node 1:"
+                            << n1
+                            << "at" << n1->center()
+                            << "with" << n1->conn_count() << "connections"
+                            << "node 2:"
+                            << n2
+                            << "at" << n2->center()
+                            << "with" << n2->conn_count() << "connections";
+                is_ok = false;
+            }
+        }
+    }
+    return is_ok;
+}
+
+// It's an error to have a node lying in the middle of a wire and not splitting
+// the wire. If coordinates of a node lie on a wire, the wire MUST be splitted
+// into two wires.
+bool noNodesOnWires(const Q3PtrList<Node>* nodes, const Q3PtrList<Wire>* wires)
+{
+    bool is_ok = true;
+    for (auto* w : *wires) {
+        for (auto* n : *nodes) {
+            if (qucs_s::geom::is_between(n, w->Port1, w->Port2)) {
+                qCritical() << "A node lies on a wire withou splitting it!"
+                            << "node:" << n << "at" << n->center()
+                            << "wire:" << w
+                            << "from" << w->Port1->center()
+                            << "to" << w->Port2->center();
+
+                is_ok = false;
+            }
+        }
+    }
+    return is_ok;
+}
+
+// Two nodes may be connected with at most one wire
+bool noDuplicateWires(const Q3PtrList<Wire>* wires)
+{
+    bool is_ok = true;
+    for (auto* wire : *wires) {
+        // In correct schematic nodes have at least one connection.
+        // If a node of the wire has exactly one connection, then
+        // there is no chance some other wire connects them too.
+        // This "one" connection is the current wire.
+        if (wire->Port1->conn_count() == 1 || wire->Port2->conn_count() == 1) {
+            continue;
+        }
+
+        for (auto* conn : *wire->Port1) {
+            if (conn == wire) continue;
+
+            auto* other_wire = dynamic_cast<Wire*>(conn);
+            if (other_wire == nullptr) continue; // it was not a wire
+
+            // Some other wire connected too Port1 of current wire was found,
+            // let's check if it is not connected to Port2
+            if (wire->Port2->is_connected(other_wire)) {
+                qCritical() << "Duplicate wires found!"
+                            << "Nodes" 
+                            << wire->Port1 << "(" << wire->Port1->center() << ")"
+                            << "and"
+                            << wire->Port2 << "(" << wire->Port2->center() << ")"
+                            << "connected with" << wire << "and" << other_wire;
+                is_ok = false;
+            }
+        }
+
+        for (auto* conn : *wire->Port2) {
+            if (conn == wire) continue;
+
+            auto* other_wire = dynamic_cast<Wire*>(conn);
+            if (other_wire == nullptr) continue; // it was not a wire
+
+            // Some other wire connected too Port2 of current wire was found,
+            // let's check if it is not connected to Port1
+            if (wire->Port1->is_connected(other_wire)) {
+                qCritical() << "Duplicate wires found!"
+                            << "Nodes" 
+                            << wire->Port1 << "(" << wire->Port1->center() << ")"
+                            << "and"
+                            << wire->Port2 << "(" << wire->Port2->center() << ")"
+                            << "connected with" << wire << "and" << other_wire;
+                is_ok = false;
+            }
+        }
+    }
+    return is_ok;
+}
+
+bool noZeroLenWires(const Q3PtrList<Wire>* wires)
+{
+    bool is_ok = true;
+    for (auto* w : *wires) {
+        if (w->Port1->center() == w->Port2->center()) {
+            qCritical() << "A wire connecting two nodes at the same location is found!"
+                        << "wire: " << w
+                        << "node 1:" << w->Port1
+                        << "at" << w->Port1->center()
+                        << "with" << w->Port1->conn_count() << "connections"
+                        << "node 2:" << w->Port2
+                        << "at" << w->Port2->center()
+                        << "with" << w->Port2->conn_count() << "connections";
+            is_ok = false;
+        }
+    }
+    return is_ok;
+}
+
+bool allWiresAreConsistent(const Q3PtrList<Wire>* wires)
+{
+    bool is_ok = true;
+    for (auto* w : *wires) {
+        if (w->Port1 == nullptr) {
+            qCritical() << "Incostistent wire is found!"
+                        << "Port1 of" << w << "is nullptr";
+            is_ok = false;
+        }
+
+        if (w->Port2 == nullptr) {
+            qCritical() << "Incostistent wire is found!"
+                        << "Port2 of" << w << "is nullptr";
+            is_ok = false;
+        }
+
+        if (w->Port1 != nullptr && w->Port2 != nullptr && w->Port1 == w->Port2) {
+            qCritical() << "Incostistent wire is found!"
+                        << w << "has the same node" << w->Port1 << "on both ports";
+            is_ok = false;
+        }
+
+        if (!w->Port1->is_connected(w)) {
+            qCritical() << "Incostistent wire is found!"
+                        << "w->Port1->is_connected(w) == false"
+                        << "for" << w;
+            is_ok = false;
+        }
+
+        if (!w->Port2->is_connected(w)) {
+            qCritical() << "Incostistent wire is found!"
+                        << "w->Port2->is_connected(w) == false"
+                        << "for" << w;
+            is_ok = false;
+        }
+    }
+    return is_ok;
+}
+
+bool allComponentsAreConsistent(const Q3PtrList<Component>* components)
+{
+    bool is_ok = true;
+    for (auto* c : *components) {
+        for (auto* p : c->Ports) {
+            if (p->Connection == nullptr) {
+                qCritical() << "Incostistent component is found!"
+                            << "port->Connection == nullptr"
+                            << "for" << c;
+                is_ok = false;
+            }
+
+            if (!p->Connection->is_connected(c)) {
+                qCritical() << "Incostistent component is found!"
+                            << "Node from a port of component" << c
+                            << "doesn't have connection to" << c;
+                is_ok = false;
+            }
+        }
+    }
+    return is_ok;
+}
+}
+
 namespace internal {
 
 // Helper function to ease transition from Q3PtrList to another
