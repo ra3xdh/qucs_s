@@ -49,6 +49,7 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QTextStream>
+#include <numeric>
 #include <qt3_compat/q3ptrlist.h>
 
 #include <climits>
@@ -98,54 +99,10 @@ void MouseActions::setPainter(Schematic *Doc)
 // -----------------------------------------------------------
 bool MouseActions::pasteElements(Schematic *Doc)
 {
-    QClipboard *cb = QApplication::clipboard(); // get system clipboard
-    QString s = cb->text(QClipboard::Clipboard);
+    QString s = QApplication::clipboard()->text(QClipboard::Clipboard);
     QTextStream stream(&s, QIODevice::ReadOnly);
     movingElements.clear();
-    if (!Doc->paste(&stream, &movingElements))
-        return false;
-
-    int xmax, xmin, ymax, ymin;
-    xmin = ymin = INT_MAX;
-    xmax = ymax = INT_MIN;
-    // First, get the max and min coordinates of all selected elements.
-    for (auto* pe : movingElements) {
-        if (pe->Type == isWire) {
-            if (pe->x1 < xmin)
-                xmin = pe->x1;
-            if (pe->x2 > xmax)
-                xmax = pe->x2;
-            if (pe->y1 < ymin)
-                ymin = pe->y1;
-            if (pe->y2 > ymax)
-                ymax = pe->y2;
-        } else {
-            if (pe->cx < xmin)
-                xmin = pe->cx;
-            if (pe->cx > xmax)
-                xmax = pe->cx;
-            if (pe->cy < ymin)
-                ymin = pe->cy;
-            if (pe->cy > ymax)
-                ymax = pe->cy;
-        }
-    }
-
-    xmin = -((xmax + xmin) >> 1); // calculate midpoint
-    ymin = -((ymax + ymin) >> 1);
-    Doc->setOnGrid(xmin, ymin);
-
-    // moving with mouse cursor in the midpoint
-    for (auto* pe : movingElements)
-        if (pe->Type & isLabel) {
-            pe->cx += xmin;
-            pe->x1 += xmin;
-            pe->cy += ymin;
-            pe->y1 += ymin;
-        } else
-            pe->moveCenter(xmin, ymin);
-
-    return true;
+    return Doc->paste(&stream, &movingElements);
 }
 
 // -----------------------------------------------------------
@@ -539,14 +496,38 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
  */
 void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 {
+    const auto cursor = Doc->contentsToModel(Event->pos());
+    MAx1 = cursor.x();
+    MAy1 = cursor.y();
+
+    auto br = std::transform_reduce(
+        movingElements.begin() + 1,
+        movingElements.end(),
+        movingElements.at(0)->boundingRect(),
+        [](const QRect& a, const QRect& b) { return a.united(b);},
+        [](const Element* e) { return e->boundingRect(); }
+    );
+
+    const auto diff = cursor - Doc->setOnGrid(br.center());
+
+    for (auto* pe : movingElements) {
+        pe->moveCenter(diff.x(), diff.y());
+    }
+
+    QucsMain->MouseMoveAction = &MouseActions::MMovePaste2;
+    QucsMain->MouseReleaseAction = &MouseActions::MReleasePaste;
+}
+
+void MouseActions::MMovePaste2(Schematic *Doc, QMouseEvent *Event)
+{
     auto inModel = Doc->contentsToModel(Event->pos());
+    auto diff = inModel - QPoint{MAx1, MAy1};
     MAx1 = inModel.x();
     MAy1 = inModel.y();
-    moveElements(Doc, MAx1, MAy1);
+    for (auto* pe : movingElements) {
+        pe->moveCenter(diff.x(), diff.y());
+    }
     paintElementsScheme(Doc);
-
-    QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
-    QucsMain->MouseReleaseAction = &MouseActions::MReleasePaste;
 }
 
 // -----------------------------------------------------------
@@ -1820,14 +1801,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
             pe->isSelected = false;
             switch (pe->Type) {
             case isWire:
-                if (pe->x1 == pe->x2)
-                    if (pe->y1 == pe->y2)
-                        break;
-                Doc->insertWire((Wire *) pe);
-                if (Doc->a_Wires->containsRef((Wire *) pe))
-                    Doc->enlargeView(pe->x1, pe->y1, pe->x2, pe->y2);
-                else
-                    pe = NULL;
+                Doc->installWire(dynamic_cast<Wire*>(pe));
                 break;
             case isDiagram:
                 Doc->a_Diagrams->append((Diagram *) pe);
@@ -1856,9 +1830,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
         pasteElements(Doc);
         // keep rotation sticky for pasted elements
         rot = movingRotated;
-        x1 = y1 = 0;
-        while (rot--)
-            rotateElements(Doc, x1, y1);
+        while (rot--) std::ranges::for_each(movingElements, [](Element* e) { e->rotate(); });
 
         QucsMain->MouseMoveAction = &MouseActions::MMovePaste;
         QucsMain->MousePressAction = 0;
@@ -1876,7 +1848,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
         auto inModel = Doc->contentsToModel(Event->pos());
         x1 = inModel.x();
         y1 = inModel.y();
-        rotateElements(Doc, x1, y1);
+        std::ranges::for_each(movingElements, [x1, y1](Element* e){ e->rotate(x1, y1); });
         paintElementsScheme(Doc);
         // save rotation
         movingRotated++;

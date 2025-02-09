@@ -73,6 +73,7 @@ public:
   void MMoveMoving(Schematic*, QMouseEvent*);
   void MMoveMoving2(Schematic*, QMouseEvent*);
   void MMovePaste(Schematic*, QMouseEvent*);
+  void MMovePaste2(Schematic*, QMouseEvent*);
   void MMoveDelete(Schematic*, QMouseEvent*);
   void MMoveLabel(Schematic*, QMouseEvent*);
   void MMoveMarker(Schematic*, QMouseEvent*);
