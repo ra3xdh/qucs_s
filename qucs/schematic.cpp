@@ -1658,7 +1658,7 @@ void Schematic::cut()
 
 // ---------------------------------------------------
 // Performs paste function from clipboard
-bool Schematic::paste(QTextStream *stream, Q3PtrList<Element> *pe)
+bool Schematic::paste(QTextStream *stream, QList<Element*> *pe)
 {
     return pasteFromClipboard(stream, pe);
 }

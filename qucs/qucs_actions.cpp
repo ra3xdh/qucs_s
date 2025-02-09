@@ -1127,9 +1127,19 @@ void QucsApp::slotCursorLeft(bool left)
   }
   if(!editText->isHidden()) return;  // for edit of component property ?
 
-  Q3PtrList<Element> movingElements;
+  QList<Element*> movingElements;
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  int markerCount = Doc->copySelectedElements(&movingElements);
+  int markerCount = 0;
+  {
+    // Q3PtrList is long time deprecated and has to be replaced with another
+    // container type, which is not always easy. Here it's simpler to use it
+    // once and go back to QList, because copySelectedElements() uses API
+    // unique to Q3PtrList and to refactor it is a piece of work
+    Q3PtrList<Element> temp_buffer;
+    temp_buffer.setAutoDelete(false);
+    markerCount = Doc->copySelectedElements(&temp_buffer);
+    for (auto* e : temp_buffer) { movingElements.append(e); }
+  }
 
   if((movingElements.count() - markerCount) < 1) {
     if(markerCount > 0) {  // only move marker if nothing else selected
@@ -1193,9 +1203,19 @@ void QucsApp::slotCursorUp(bool up)
     return;
   }
 
-  Q3PtrList<Element> movingElements;
+  QList<Element*> movingElements;
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  int markerCount = Doc->copySelectedElements(&movingElements);
+  int markerCount = 0;
+  {
+    // Q3PtrList is long time deprecated and has to be replaced with another
+    // container type, which is not always easy. Here it's simpler to use it
+    // once and go back to QList, because copySelectedElements() uses API
+    // unique to Q3PtrList and to refactor it is a piece of work
+    Q3PtrList<Element> temp_buffer;
+    temp_buffer.setAutoDelete(false);
+    markerCount = Doc->copySelectedElements(&temp_buffer);
+    for (auto* e : temp_buffer) { movingElements.append(e); }
+  }
 
   if((movingElements.count() - markerCount) < 1) { // all selections are markers
     if(markerCount > 0) {  // only move marker if nothing else selected
