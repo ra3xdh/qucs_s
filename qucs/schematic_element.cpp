@@ -2545,6 +2545,9 @@ void Schematic::displayMutations() {
 }
 
 void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
+    assert(invariants::allComponentsAreConsistent(a_Components));
+    assert(invariants::allWiresAreConsistent(a_Wires));
+    assert(invariants::noOrphanNodes(a_Nodes));
 
     // Fix "same location nodes" anomalies
 
@@ -2581,6 +2584,12 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
             deleteWire(w);
         }
     }
+
+    assert(invariants::allComponentsAreConsistent(a_Components));
+    assert(invariants::allWiresAreConsistent(a_Wires));
+    assert(invariants::noOrphanNodes(a_Nodes));
+    assert(invariants::noSamePlaceNodes(a_Nodes));
+    assert(invariants::noZeroLenWires(a_Wires));
 
 
     // Fix "node above wire" anomalies
@@ -2621,6 +2630,14 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
             deleteWire(wire);
         }
     }
+
+    assert(invariants::allComponentsAreConsistent(a_Components));
+    assert(invariants::allWiresAreConsistent(a_Wires));
+    assert(invariants::noOrphanNodes(a_Nodes));
+    assert(invariants::noSamePlaceNodes(a_Nodes));
+    assert(invariants::noZeroLenWires(a_Wires));
+    assert(invariants::noNodesOnWires(a_Nodes, a_Wires));
+    assert(invariants::noDuplicateWires(a_Wires));
 
 
     // Fix geometric anomalies
@@ -2672,6 +2689,14 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
     //
     // Baked
     //
+
+    assert(invariants::allComponentsAreConsistent(a_Components));
+    assert(invariants::allWiresAreConsistent(a_Wires));
+    assert(invariants::noOrphanNodes(a_Nodes));
+    assert(invariants::noSamePlaceNodes(a_Nodes));
+    assert(invariants::noZeroLenWires(a_Wires));
+    assert(invariants::noNodesOnWires(a_Nodes, a_Wires));
+    assert(invariants::noDuplicateWires(a_Wires));
 }
 
 void Schematic::dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept {
