@@ -749,7 +749,7 @@ void Schematic::print(QPrinter*, QPainter* painter, bool printAll,
     const QRectF pageSize{0, 0, static_cast<double>(painter->device()->width()),
                           static_cast<double>(painter->device()->height())};
 
-    QRect printedArea = printAll ? allBoundingRect() : sizeOfSelection().bounds;
+    QRect printedArea = printAll ? allBoundingRect() : currentSelection().bounds;
 
     if (printAll && a_showFrame) {
         int frame_width, frame_height;
@@ -977,7 +977,7 @@ void Schematic::zoomToSelection() {
                     return;
                 }
 
-    const QRect selectedBoundingRect{ sizeOfSelection().bounds };
+    const QRect selectedBoundingRect{ currentSelection().bounds };
 
     // Working with raw coordinates is clumsy, abstract them out
     const QRect usedBoundingRect{a_UsedX1, a_UsedY1, a_UsedX2 - a_UsedX1, a_UsedY2 - a_UsedY1};
@@ -1280,7 +1280,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 }
 
-Schematic::Selection Schematic::sizeOfSelection() const {
+Schematic::Selection Schematic::currentSelection() const {
     int xmin = INT_MAX;
     int ymin = INT_MAX;
     int xmax = INT_MIN;

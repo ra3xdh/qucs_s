@@ -115,7 +115,7 @@ public:
     std::vector<Node*> nodes;
   };
 
-  Selection  sizeOfSelection() const;
+  Selection  currentSelection() const;
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
