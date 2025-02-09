@@ -1183,15 +1183,6 @@ void Schematic::drawGrid(QPainter* painter) {
     painter->restore();
 }
 
-void Schematic::relativeRotation(int &newX, int &newY, int comX, int comY, int oldX, int oldY)
-{
-    // Shift coordinate system to center of mass
-    // Rotate
-    // Shift coordinate system back to origin
-    newX = (oldY-comY)+comX;
-    newY = -(oldX-comX)+comY;
-}
-
 void Schematic::updateAllBoundingRect() {
     sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
 }

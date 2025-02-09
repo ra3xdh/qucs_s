@@ -140,115 +140,6 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
     Doc->setChanged(true, true);
 }
 
-// -----------------------------------------------------------
-// Reinserts all elements (moved by the user) back into the schematic.
-void MouseActions::endElementMoving(Schematic *Doc,
-                                    QList<Element*> *movElements) {
-  for (auto* pe : *movElements) {
-    //    pe->isSelected = false;  // deselect first (maybe afterwards pe ==
-    //    NULL)
-    switch (pe->Type) { // FIXME: use casts.
-    case isWire:
-      if (pe->x1 == pe->x2)
-        if (pe->y1 == pe->y2) {
-          // Delete wires with zero length, but preserve label.
-          if (((Wire *)pe)->Label) {
-            Doc->insertNodeLabel((WireLabel *)((Wire *)pe)->Label);
-            ((Wire *)pe)->Label = nullptr;
-          }
-          delete (Wire *)pe;
-          break;
-        }
-
-      Doc->insertWire((Wire *)pe);
-      break;
-    case isDiagram:
-      Doc->a_Diagrams->append((Diagram *)pe);
-      break;
-    case isPainting:
-      Doc->a_Paintings->append((Painting *)pe);
-      break;
-    case isComponent:
-    case isAnalogComponent:
-    case isDigitalComponent:
-      Doc->insertRawComponent((Component *)pe, false);
-      break;
-    case isMovingLabel:
-    case isHMovingLabel:
-    case isVMovingLabel:
-      Doc->insertNodeLabel((WireLabel *)pe);
-      break;
-    case isMarker:
-      assert(dynamic_cast<Marker *>(pe));
-      break;
-    }
-  }
-
-  movElements->clear();
-
-  if ((MAx3 != 0) || (MAy3 != 0)) // moved or put at the same place ?
-    Doc->setChanged(true, true);
-
-  // Position of some elements of schematic has changed. This change
-  // is "external" to schematic and its state must be updated to
-  // take the changes into account
-  auto totalBounds = Doc->allBoundingRect();
-  Doc->enlargeView(totalBounds.left(), totalBounds.top(), totalBounds.right(), totalBounds.bottom());
-
-  Doc->viewport()->update();
-}
-
-// -----------------------------------------------------------
-// Moves elements in "movElements" by x/y
-void MouseActions::moveElements(QList<Element*> *movElements, int x, int y)
-{
-    Wire *pw;
-    for (auto* pe : *movElements) {
-        if (pe->Type == isWire) {
-            pw = (Wire *) pe; // connected wires are not moved completely
-
-            if (((uintptr_t) pw->Port1) > 3) {
-                pw->x1 += x;
-                pw->y1 += y;
-                if (pw->Label) {
-                    pw->Label->cx += x;
-                    pw->Label->cy += y;
-                }
-            } else {
-                if ((uintptr_t) (pw->Port1) & 1) {
-                    pw->x1 += x;
-                }
-                if ((uintptr_t) (pw->Port1) & 2) {
-                    pw->y1 += y;
-                }
-            }
-
-            if (((uintptr_t) pw->Port2) > 3) {
-                pw->x2 += x;
-                pw->y2 += y;
-            } else {
-                if ((uintptr_t) (pw->Port2) & 1)
-                    pw->x2 += x;
-                if ((uintptr_t) (pw->Port2) & 2)
-                    pw->y2 += y;
-            }
-
-            if (pw->Label) { // root of node label must lie on wire
-                if (pw->Label->cx < pw->x1)
-                    pw->Label->cx = pw->x1;
-                if (pw->Label->cy < pw->y1)
-                    pw->Label->cy = pw->y1;
-                if (pw->Label->cx > pw->x2)
-                    pw->Label->cx = pw->x2;
-                if (pw->Label->cy > pw->y2)
-                    pw->Label->cy = pw->y2;
-            }
-
-        } else
-            pe->moveCenter(x, y);
-    }
-}
-
 // ***********************************************************************
 // **********                                                   **********
 // **********       Functions for serving mouse moving          **********
@@ -336,20 +227,6 @@ static void paintAim(Schematic *Doc, int aimX, int aimY) {
     Doc->PostPaintEvent(_Line, aimBounds.left(), aimY, aimBounds.right(), aimY);
     // Vertical line of cross
     Doc->PostPaintEvent(_Line, aimX, aimBounds.top(), aimX, aimBounds.bottom());
-}
-
-//paint ghost line - horizontal
-static void paintGhostLineH(Schematic *Doc, int fx, int fy, int fxx)
-{
-    Doc->PostPaintEvent(_Line, fx, fy - 1, fxx, fy - 1);
-    Doc->PostPaintEvent(_Line, fx, fy + 1, fxx, fy + 1);
-}
-
-//paint ghost line - vertical
-static void paintGhostLineV(Schematic *Doc, int fx, int fy, int fyy)
-{
-    Doc->PostPaintEvent(_Line, fx - 1, fy, fx - 1, fyy);
-    Doc->PostPaintEvent(_Line, fx + 1, fy, fx + 1, fyy);
 }
 
 // -----------------------------------------------------------
@@ -1735,22 +1612,6 @@ void MouseActions::paintElementsScheme(Schematic *p)
 {
     for (auto* pe : movingElements)
         pe->paintScheme(p);
-}
-
-// -----------------------------------------------------------
-void MouseActions::moveElements(Schematic *Doc, int &x1, int &y1)
-{
-    Doc->setOnGrid(x1, y1);
-
-    for (auto* pe : movingElements) {
-        if (pe->Type & isLabel) {
-            pe->cx += x1;
-            pe->x1 += x1;
-            pe->cy += y1;
-            pe->y1 += y1;
-        } else
-            pe->moveCenter(x1, y1);
-    }
 }
 
 // -----------------------------------------------------------

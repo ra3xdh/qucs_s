@@ -123,9 +123,6 @@ public:
 
   void paintElementsScheme(Schematic*);
   void rotateElements(Schematic*, int&, int&);
-  void moveElements(Schematic*, int&, int&);
-  static void moveElements(QList<Element*>*, int, int);
-  void endElementMoving(Schematic*, QList<Element*>*);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
 };
 

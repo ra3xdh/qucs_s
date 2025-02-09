@@ -431,7 +431,6 @@ private:
   void drawPostPaintEvents(QPainter* painter);
   void paintFrame(QPainter* painter);
   void drawGrid(QPainter* painter);
-  void relativeRotation(int &x, int &y, int comX, int comY, int posX, int posY);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
@@ -454,17 +453,9 @@ public:
   void heal(qucs_s::wire::Planner::PlanType planType = qucs_s::wire::Planner::PlanType::Straight);
   void dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept;
 
-  int   insertWireNode1(Wire*);
-  bool  connectHWires1(Wire*);
-  bool  connectVWires1(Wire*);
-  int   insertWireNode2(Wire*);
-  bool  connectHWires2(Wire*);
-  bool  connectVWires2(Wire*);
-  int   insertWire(Wire*);
   void  selectWireLine(Element*, Node*, bool);
   Wire* selectedWire(int, int);
   Wire* splitWire(Wire*, Node*);
-  bool  oneTwoWires(Node*);
   void  deleteWire(Wire*, bool remove_orphans=true);
 
   Marker* setMarker(int, int);
@@ -475,8 +466,6 @@ public:
   void     deselectElements(Element*) const;
   int      selectElements(const QRect&, bool, bool) const;
   void     selectMarkers() const;
-  void     newMovingWires(Q3PtrList<Element>*, Node*, int) const;
-  int      copySelectedElements(Q3PtrList<Element>*);
   bool     deleteElements();
   bool     aligning(int);
   bool     distributeHorizontal();
@@ -489,7 +478,6 @@ public:
   void       activateCompsWithinRect(int, int, int, int);
   bool       activateSpecifiedComponent(int, int);
   bool       activateSelectedComponents();
-  void       setCompPorts(Component*);
   Component* selectCompText(int, int, int&, int&) const;
   Component* searchSelSubcircuit();
   Component* selectedComponent(int, int);
@@ -499,21 +487,12 @@ public:
   void     oneLabel(Node*);
   int      placeNodeLabel(WireLabel*);
   Element* getWireLabel(Node*);
-  void     insertNodeLabel(WireLabel*);
-  void     copyLabels(int&, int&, int&, int&, QList<Element *> *);
 
   Painting* selectedPainting(float, float);
-  void      copyPaintings(int&, int&, int&, int&, QList<Element *> *);
 
 
 private:
   void insertComponentNodes(Component*, bool);
-  int  copyWires(int&, int&, int&, int&, QList<Element *> *);
-  int  copyComponents(int&, int&, int&, int&, QList<Element *> *);
-  void copyComponents2(int&, int&, int&, int&, QList<Element *> *);
-  bool copyComps2WiresPaints(int&, int&, int&, int&, QList<Element *> *);
-  int  copyElements(int&, int&, int&, int&, QList<Element *> *);
-
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
