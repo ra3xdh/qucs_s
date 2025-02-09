@@ -2079,9 +2079,9 @@ bool Schematic::deleteElements()
     bool sel = false;
     auto selection = currentSelection();
 
-    for (auto* pc : selection.components) {     // all selected component
-            deleteComp(pc);
-            sel = true;
+    for (auto* comp : selection.components) {     // all selected component
+        deleteComp(comp);
+        sel = true;
     }
 
     for (auto* l : selection.labels) {
@@ -2089,76 +2089,47 @@ bool Schematic::deleteElements()
         delete l;
     }
 
-    // selection.wires cannot be used for traversing,
-    // because each removal of a wire or a component may change
-    // wire set. Consider example:
-    //
-    //     o
-    //  w1 |   R1
-    //     o-[==]-o
-    //  w2 |
-    //     o
-    //
-    // Two wires and a component. If component is removed first,
-    // then wires w1 and w2 are merged into one wire. If they
-    // both were selected, then selection.wires becomes no longer
-    // valid.
-    for (auto* pw = a_Wires->first(); pw != nullptr; )
-    {
-        if (pw->isSelected) {
-            deleteWire(pw);
-            // Call to deleteWire removes one item from the list
-            // and everything shifts one position down.
-            pw = a_Wires->current();
-            sel = true;
-        } else {
-            pw = a_Wires->next();
-        }
+    for (auto* wire : selection.wires) {
+        deleteWire(wire);
+        sel = true;
     }
 
-    Diagram *pd = a_Diagrams->first();
-    while(pd != 0)      // test all diagrams
-        if(pd->isSelected)
-        {
-            a_Diagrams->remove();
-            pd = a_Diagrams->current();
-            sel = true;
-        }
-        else
-        {
-            bool wasGraphDeleted = false;
-            // all graphs of diagram
+    optimizeWires();
+    assert(invariants::allComponentsAreConsistent(a_Components));
+    assert(invariants::allWiresAreConsistent(a_Wires));
+    assert(invariants::noOrphanNodes(a_Nodes));
 
-            QMutableListIterator<Graph *> ig(pd->Graphs);
-            Graph *pg;
+    for (auto* diagram : selection.diagrams) {
+        internal::removeFromPtrList(diagram, a_Diagrams);
+        delete diagram;
+        sel = true;
+    }
 
-            while (ig.hasNext())
-            {
-                pg = ig.next();
-                // all markers of diagram
-                QMutableListIterator<Marker *> im(pg->Markers);
-                Marker *pm;
-                while (im.hasNext())
-                {
-                    pm = im.next();
-                    if(pm->isSelected)
-                    {
-                        im.remove();
-                        sel = true;
-                    }
-                }
+    for (auto* pd : *a_Diagrams) {
+        QMutableListIterator<Graph *> graph_iter(pd->Graphs);
 
-                if(pg->isSelected)
-                {
-                    ig.remove();
-                    sel = wasGraphDeleted = true;
+        while (graph_iter.hasNext()) {
+            Graph* graph = graph_iter.next();
+
+            if (graph->isSelected) {
+                graph_iter.remove();
+                delete graph;
+                pd->recalcGraphData();
+                sel = true;
+                continue;
+            }
+
+            QMutableListIterator<Marker*> marker_iter(graph->Markers);
+            while (marker_iter.hasNext()) {
+                Marker* marker = marker_iter.next();
+                if (marker->isSelected) {
+                    marker_iter.remove();
+                    delete marker;
+                    sel = true;
                 }
             }
-            if(wasGraphDeleted)
-                pd->recalcGraphData();  // update diagram (resize etc.)
-
-            pd = a_Diagrams->next();
-        } //else
+        }
+    }
 
     for (auto* pp : selection.paintings)      // test all paintings
     {
@@ -2181,8 +2152,7 @@ bool Schematic::deleteElements()
             }
     }
 
-    if(sel)
-    {
+    if (sel) {
         updateAllBoundingRect();   // set new document size
         setChanged(sel, true);
     }
