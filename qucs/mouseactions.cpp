@@ -490,66 +490,6 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
     MAy2 = inModel.y();
 
     Doc->setOnGrid(MAx2, MAy2);
-    MAx3 = MAx1 = MAx2 - MAx1;
-    MAy3 = MAy1 = MAy2 - MAy1;
-
-    movingElements.clear();
-    {
-        // Q3PtrList is long time deprecated and has to be replaced with another
-        // container type, which is not always easy. Here it's simpler to use it
-        // once and go back to QList, because copySelectedElements() uses API
-        // unique to Q3PtrList and to refactor it is a piece of work
-        Q3PtrList<Element> temp_buffer;
-        temp_buffer.setAutoDelete(false);
-        Doc->copySelectedElements(&temp_buffer);
-        for (auto* e : temp_buffer) { movingElements.append(e); }
-    }
-    Doc->viewport()->repaint();
-
-    Wire *pw;
-    // Changes the position of all moving elements by dx/dy
-    for (Element *pe : movingElements) {
-        if (pe->Type == isWire) {
-            pw = (Wire *) pe; // connecting wires are not moved completely
-
-            if (((uintptr_t) pw->Port1) > 3) {
-                pw->x1 += MAx1;
-                pw->y1 += MAy1;
-            } else {
-                if ((uintptr_t) (pw->Port1) & 1) {
-                    pw->x1 += MAx1;
-                }
-                if ((uintptr_t) (pw->Port1) & 2) {
-                    pw->y1 += MAy1;
-                }
-            }
-
-            if (((uintptr_t) pw->Port2) > 3) {
-                pw->x2 += MAx1;
-                pw->y2 += MAy1;
-            } else {
-                if ((uintptr_t) (pw->Port2) & 1)
-                    pw->x2 += MAx1;
-                if ((uintptr_t) (pw->Port2) & 2)
-                    pw->y2 += MAy1;
-            }
-
-            if (pw->Label) { // root of node label must lie on wire
-                if (pw->Label->cx < pw->x1)
-                    pw->Label->cx = pw->x1;
-                if (pw->Label->cy < pw->y1)
-                    pw->Label->cy = pw->y1;
-                if (pw->Label->cx > pw->x2)
-                    pw->Label->cx = pw->x2;
-                if (pw->Label->cy > pw->y2)
-                    pw->Label->cy = pw->y2;
-            }
-
-        } else
-            pe->setCenter(MAx1, MAy1, true);
-
-        pe->paintScheme(Doc);
-    }
 
     MAx1 = MAx2;
     MAy1 = MAy2;
@@ -570,7 +510,6 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
   MAx2 = inModel.x();
   MAy2 = inModel.y();
 
-
   if ((Event->modifiers().testFlag(Qt::ControlModifier)) == 0)
     Doc->setOnGrid(MAx2, MAy2); // use grid only if CTRL key not pressed
   MAx1 = MAx2 - MAx1;
@@ -578,14 +517,16 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
   MAx3 += MAx1;
   MAy3 += MAy1; // keep track of the complete movement
 
-  moveElements(&movingElements, MAx1, MAy1); // moves elements by MAx1/MAy1
+    const auto mover = [this](Element* e) { e->moveCenter(MAx1, MAy1); };
+    auto selection = Doc->currentSelection();
+    std::ranges::for_each(selection.paintings, mover);
+    std::ranges::for_each(selection.diagrams, mover);
+    std::ranges::for_each(selection.labels, mover);
+    std::ranges::for_each(selection.components, mover);
+    std::ranges::for_each(selection.wires, mover);
+    std::ranges::for_each(selection.nodes, mover);
 
-  // paint afterwards to avoid conflict between wire and label painting
-  for (auto* pe : movingElements)
-    pe->paintScheme(Doc);
-  //    if(pe->Type == isWire)  if(((Wire*)pe)->Label)
-  //      if(!((Wire*)pe)->Label->isSelected)
-  //        ((Wire*)pe)->Label->paintScheme(&painter);
+    Doc->displayMutations();
 
   MAx1 = MAx2;
   MAy1 = MAy2;
@@ -1671,11 +1612,18 @@ void MouseActions::MReleaseActivate(Schematic *Doc, QMouseEvent *Event)
 
 // -----------------------------------------------------------
 // Is called after moving selected elements.
-void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent *)
+void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent* event)
 {
+    if (event->button() == Qt::RightButton) {
+        Doc->a_wirePlanner.next();
+        Doc->displayMutations();
+        Doc->viewport()->update();
+        return;
+    }
     // Allow all mouse buttons, because for others than the left one,
     // a menu has already created.
-    endElementMoving(Doc, &movingElements);
+    Doc->heal(Doc->a_wirePlanner.planType());
+    Doc->viewport()->update();
     Doc->releaseKeyboard(); // allow keyboard inputs again
 
     QucsMain->MouseMoveAction = nullptr;

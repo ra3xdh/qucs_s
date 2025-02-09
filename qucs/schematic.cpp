@@ -705,16 +705,25 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
 
     const QPoint inModel = contentsToModel(Event->pos());
 
-    if (Event->button() == Qt::RightButton)
-        if (a_App->MousePressAction != &MouseActions::MPressElement)
-            if (a_App->MousePressAction != &MouseActions::MPressWire2) {
-                // show menu on right mouse button
-                a_App->view->rightPressMenu(this, Event, inModel.x(), inModel.y());
-                if (a_App->MouseReleaseAction)
-                    // Is not called automatically because menu has focus.
-                    (a_App->view->*(a_App->MouseReleaseAction))(this, Event);
-                return;
+    if (Event->button() == Qt::RightButton) {
+        // In some modes right-button menu is unavailable
+        if (   a_App->MouseMoveAction  == &MouseActions::MMoveMoving2
+            || a_App->MousePressAction == &MouseActions::MPressElement
+            || a_App->MousePressAction == &MouseActions::MPressWire2)
+        {
+            if (a_App->MousePressAction) {
+                (a_App->view->*(a_App->MousePressAction))(this, Event, inModel.x(), inModel.y());
             }
+            return;
+        }
+
+        // show menu on right mouse button
+        a_App->view->rightPressMenu(this, Event, inModel.x(), inModel.y());
+        if (a_App->MouseReleaseAction)
+            // Is not called automatically because menu has focus.
+            (a_App->view->*(a_App->MouseReleaseAction))(this, Event);
+        return;
+    }
 
     // Begin "pan with mouse" action. Panning starts if *only*
     // the middle button is pressed.
