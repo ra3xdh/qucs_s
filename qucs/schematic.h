@@ -33,6 +33,7 @@
 #include "diagrams/diagram.h"
 #include "paintings/painting.h"
 #include "components/component.h"
+#include "wire_planner.h"
 
 #include "qt3_compat/qt_compat.h"
 #include "qt3_compat/q3scrollview.h"
@@ -430,6 +431,10 @@ private:
 public:
   Node* insertNode(int, int, Element*);
   Node* selectedNode(int, int);
+
+  qucs_s::wire::Planner a_wirePlanner;
+  std::pair<bool,Node*> connectWithWire(const QPoint& a, const QPoint& b) noexcept;
+  void showEphemeralWire(const QPoint& a, const QPoint& b) noexcept;
 
   int   insertWireNode1(Wire*);
   bool  connectHWires1(Wire*);

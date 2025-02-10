@@ -414,16 +414,7 @@ void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
     Doc->setOnGrid(MAx2, MAy2);
     paintAim(Doc, MAx2, MAy2); //let we paint aim cross
 
-    //because cross slightly masks a wire, let we make wire thicker
-    //better to make it by increasing of pen, but here we cannot access
-    //pen
-    if (MAx1 == 0) {
-        paintGhostLineV(Doc, MAx3, MAy3, MAy2);
-        paintGhostLineH(Doc, MAx3, MAy2, MAx2);
-    } else {
-        paintGhostLineH(Doc, MAx3, MAy3, MAx2);
-        paintGhostLineV(Doc, MAx2, MAy3, MAy2);
-    }
+    Doc->showEphemeralWire({MAx3, MAy3}, {MAx2, MAy2});
 
     QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickWire2;
     Doc->viewport()->update();
@@ -1498,26 +1489,11 @@ void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent *, float fX, float fY
  */
 void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
-    int set1 = 0, set2 = 0;
     switch (Event->button()) {
-    case Qt::LeftButton:
-        if (MAx1 == 0) { // which wire direction first ?
-            if (MAy2 != MAy3)
-                set1 = Doc->insertWire(new Wire(MAx3, MAy3, MAx3, MAy2));
-            if (MAx2 != MAx3) {
-                set2 = set1;
-                set1 = Doc->insertWire(new Wire(MAx3, MAy2, MAx2, MAy2));
-            }
-        } else {
-            if (MAx2 != MAx3)
-                set1 = Doc->insertWire(new Wire(MAx3, MAy3, MAx2, MAy3));
-            if (MAy2 != MAy3) {
-                set2 = set1;
-                set1 = Doc->insertWire(new Wire(MAx2, MAy3, MAx2, MAy2));
-            }
-        }
+    case Qt::LeftButton: {
+        auto [hasChanges, lastNode] = Doc->connectWithWire({MAx3, MAy3}, {MAx2, MAy2});
 
-        if (set1 & 2) {
+        if (lastNode == nullptr || lastNode->conn_count() > 1) {
             // if last port is connected, then...
             if (formerAction) {
                 // ...restore old action
@@ -1530,18 +1506,15 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
             }
         }
 
-        //ALYS: excessive update. end of function does it.
-        //Doc->viewport()->update();
-
-        if (set1 | set2)
+        if (hasChanges)
             Doc->setChanged(true, true);
         MAx3 = MAx2;
         MAy3 = MAy2;
         break;
-
+    }
         /// \todo document right mouse button changes the wire corner
     case Qt::RightButton:
-
+        Doc->a_wirePlanner.next();
 #if 0
     //ALYS - old code preserved because isn't clear - what it was???
     //looks like deletion via painting.
@@ -1561,13 +1534,7 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
         Doc->setOnGrid(MAx2, MAy2);
 
         MAx1 ^= 1; // change the painting direction of wire corner
-        if (MAx1 == 0) {
-            paintGhostLineV(Doc, MAx3, MAy3, MAy2);
-            paintGhostLineH(Doc, MAx3, MAy2, MAx2);
-        } else {
-            paintGhostLineH(Doc, MAx3, MAy3, MAx2);
-            paintGhostLineV(Doc, MAx2, MAy3, MAy2);
-        }
+        Doc->showEphemeralWire({MAx3, MAy3}, {MAx2, MAy2});
         break;
 
     default:; // avoids compiler warnings
