@@ -104,6 +104,7 @@ public:
   void readXML(QFile &);
   SymbolDescription parseSymbol(QXmlStreamReader &, QVector<int> &);
   void updateBoundingBox(int &, int &, int &, int &, int, int);
+  void loadPDKTechParams(QFile &);
 
   QString ProjName;   // name of the project, that is open
   //QHash<QString,QString> schNameHash; // QHash for the schematic files lookup

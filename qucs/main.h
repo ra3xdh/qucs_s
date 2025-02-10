@@ -189,6 +189,7 @@ struct ComponentInfo {
   QStringList OSDIfiles;
 };
 extern QMap<QString, QMap<QString, ComponentInfo>> LibraryComponents;
+extern QMap<QString, QJsonObject> PDK_TechParams;
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used
 extern QucsApp *QucsMain;  // the Qucs application itself

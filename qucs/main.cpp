@@ -68,6 +68,7 @@
 
 tQucsSettings QucsSettings;
 QMap<QString, QMap<QString, ComponentInfo>> LibraryComponents; // Here is where all the info related to the static components is stored
+QMap<QString, QJsonObject> PDK_TechParams; // Here's were the technology parameters of the PDKs are stored
 QucsApp *QucsMain = nullptr;  // the Qucs application itself
 QString lastDir;    // to remember last directory for several dialogs
 QStringList qucsPathList;

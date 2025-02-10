@@ -286,10 +286,16 @@ void Component::paint(QPainter *p) {
           displayValue = QString::number(result, 'f', 2);
         }      }
 
-      if (!prop->Unit.isEmpty()) {
-        displayValue.append(QString(" "));
-        displayValue.append(prop->Unit);
+      bool isNumber;
+      displayValue.toDouble(&isNumber);
+      if (isNumber) {
+        // The string is a number. Let's check if the property has units to be attached
+        if (!prop->Unit.isEmpty()) {
+          displayValue.append(QString(" "));
+          displayValue.append(prop->Unit);
+        }
       }
+
 
       // Modify the Property::paint function call to include the evaluated value
       prop->paint(text_br.left(), text_br.bottom(), p, displayValue);
@@ -1075,8 +1081,8 @@ QString Component::save() {
     QString s;
 
     if (XML_Defined) {
-      // To avoid ambiguity, each line contains the library and the component model. Spaces are replaced by underscores
-      s = "<" + QString(Category).replace(" ", "_") + ":" + QString(ComponentName).replace(" ", "_") ;
+      // To avoid ambiguity, each line contains the library and the component model. Spaces are replaced by "{ }"
+      s = "<" + QString(Category).replace(" ", "{_}") + ":" + QString(ComponentName).replace(" ", "{_}") ;
     } else {
       s = "<" + Model;
     }
@@ -2058,7 +2064,20 @@ QString Component::getValue(const Property* p) {
     return QString::number(evaluateExpression(p->Value));
   } else {
     // The value is a number stored as a string
-    return p->Value;
+    bool isNumber;
+    p->Value.toDouble(&isNumber);
+    if (isNumber) {
+      // The string is a number. Check if the property has units and attach them, if they're not empty
+      if (!p->Unit.isEmpty()){
+        return p->Value + p->Unit; // Attach the units, as they're not empty
+      } else{
+        return p->Value; // The property is unitless
+      }
+    } else {
+      // The string is not a number. It contains the units already. Don't attach them twice...
+      return p->Value;
+    }
+
   }
 }
 
@@ -2154,9 +2173,9 @@ ComponentInfo* findComponentByModel(const QString& schematic_id)
   if (schematic_id.contains(":")) {
     QStringList parts = schematic_id.split(":");
     QString Category = parts.first();
-    Category.replace("_", " "); // The library name in the schematic file cannot contain a space, so an underscore is placed instead
+    Category.replace("{_}", " "); // The library name in the schematic file cannot contain a space, so an underscore is placed instead
     QString Name = parts.at(1);
-    Name.replace("_", " ");
+    Name.replace("{_}", " ");
     ComponentInfo c = LibraryComponents[Category][Name];
     return &LibraryComponents[Category][Name];
   } else {

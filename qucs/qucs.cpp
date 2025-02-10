@@ -43,6 +43,8 @@
 #include <QSettings>
 #include <QVariant>
 #include <QDebug>
+#include <QJsonDocument> // Needed to load technology json files
+#include <QJsonObject>
 
 #include "main.h"
 #include "qucs.h"
@@ -464,6 +466,31 @@ void QucsApp::readXML(QFile & library_file) {
 
   library_file.close();
 }
+
+
+void QucsApp::loadPDKTechParams(QFile & tech_file) {
+  if (!tech_file.open(QIODevice::ReadOnly)) {
+    qWarning() << "Could not open file:" << tech_file.fileName();
+    return;
+  }
+
+  QByteArray jsonData = tech_file.readAll();
+  QJsonDocument document = QJsonDocument::fromJson(jsonData);
+
+  if (document.isNull()) {
+    qWarning() << "Failed to parse JSON from file:" << tech_file.fileName();
+    return;
+  }
+
+  QJsonObject rootObject = document.object();
+  QJsonObject techParams = rootObject["techParams"].toObject();
+
+   // Store or update the technology parameters at global level
+  PDK_TechParams[tech_file.fileName()] = techParams;
+
+  tech_file.close();
+}
+
 
 
 // This function is used to parsing the XML symbol description (which could be embedded into the library file or in an external file)
@@ -935,20 +962,32 @@ void QucsApp::initView()
   QDir pdk_dir(QucsSettings.PDK_ROOT);
   QStringList pdk_folders = pdk_dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   QStringList xml_files; // List of all PDKs to load
+  QStringList technology_files; // List of all json files containing technology constants
   for (const QString &folder : pdk_folders) {
     QDir tech_dir(pdk_dir.filePath(folder + "/libs.tech/qucs/"));
-    QStringList folder_xml_files = tech_dir.entryList(QStringList() << "*.xml", QDir::Files);
+    QStringList folder_xml_files = tech_dir.entryList(QStringList() << "*.xml", QDir::Files); // XML files
+    QStringList json_files = tech_dir.entryList(QStringList() << "*.json", QDir::Files); // Technology constants (JSON files)
 
     for (const QString &file : folder_xml_files) {
       xml_files << tech_dir.filePath(file);
+    }
+
+    for (const QString &file : json_files) {
+      technology_files << tech_dir.filePath(file);
     }
   }
 
   // Now xml_files contains paths to all PDK (XML) files
   for (const QString &libfile : xml_files) {
-    // Process each XML file here
     QFile library_file(libfile);
     readXML(library_file);
+  }
+
+  // Similarly, technology_files contains a list of files with PDK-specific constants
+  // These constants are to be loaded into Qucs-S
+  for (const QString &techfile : technology_files) {
+    QFile tech_file(techfile);
+    loadPDKTechParams(tech_file);
   }
 
   libTreeWidget = new QTreeWidget (this);
