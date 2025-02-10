@@ -124,7 +124,7 @@ int ImageWriter::print(QWidget *doc)
   int h = all.height();
 
 
-  QRect selected = sch->sizeOfSelection();
+  QRect selected = sch->currentSelection().bounds;
   int wsel = selected.width();
   int hsel = selected.height();
 
