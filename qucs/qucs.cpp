@@ -378,9 +378,30 @@ void QucsApp::readXML(QFile & library_file) {
                       xmlReader.readNextStartElement();
                       if (xmlReader.name() == QString("File")) {
                         QString PathSymbol = xmlReader.readElementText().trimmed();
+
+                               // Replace {QUCS_S_COMPONENTS_LIBRARY} with QucsSLibraryPath
                         PathSymbol.replace("{QUCS_S_COMPONENTS_LIBRARY}", QucsSLibraryPath);
 
-                        // Read the external file and parse the symbol
+                               // Check for placeholders in the format {$ENV_VAR}
+                        QRegularExpression envVarRegex(R"(\{\$([A-Za-z_][A-Za-z0-9_]*)\})");
+                        QRegularExpressionMatch match = envVarRegex.match(PathSymbol);
+
+                        while (match.hasMatch()) {
+                          QString envVarName = match.captured(1); // Extract the environment variable name
+                          QByteArray envVarValue = qgetenv(envVarName.toUtf8().constData()); // Get its value
+
+                          if (!envVarValue.isEmpty()) {
+                            // Replace {$ENV_VAR} with its value
+                            PathSymbol.replace(match.captured(0), QString::fromUtf8(envVarValue));
+                          } else {
+                            qDebug() << "Environment variable" << envVarName << "is not set!";
+                          }
+
+                                 // Look for the next match
+                          match = envVarRegex.match(PathSymbol);
+                        }
+
+                               // Read the external file and parse the symbol
                         QFile externalFile(PathSymbol);
                         if (externalFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
                           QXmlStreamReader externalXmlReader(&externalFile);
