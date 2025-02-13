@@ -1331,6 +1331,7 @@ void QucsApp::slotApplyCompText()
   editText->move(view->MAx2, view->MAy2);
   editText->show();
   //editText->reparent(Doc->viewport(), 0, QPoint(view->MAx2, view->MAy2), true);
+  Doc->viewport()->repaint(); // Otherwise, components with parameters dependent on expression won't update its value until the user clicks on the schematic
 }
 
 // -----------------------------------------------------------
