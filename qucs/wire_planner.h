@@ -11,7 +11,7 @@ namespace wire {
 class Planner {
   public:
     using RouterFunc = std::function<std::vector<QPoint>(QPoint, QPoint)>;
-    enum class PlanType { TwoStepXY, TwoStepYX, ThreeStepXY, ThreeStepYX };
+    enum class PlanType { Straight, TwoStepXY, TwoStepYX, ThreeStepXY, ThreeStepYX };
 
     Planner();
     static std::vector<QPoint> plan(PlanType type, const QPoint from, const QPoint to);

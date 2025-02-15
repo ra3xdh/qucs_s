@@ -75,6 +75,7 @@ std::vector<QPoint> three_step_yx(const QPoint from, const QPoint to) {
 
 
 static const std::map<Planner::PlanType, Planner::RouterFunc> routers = {
+    {Planner::PlanType::Straight, straight},
     {Planner::PlanType::TwoStepXY, two_step_xy},
     {Planner::PlanType::TwoStepYX, two_step_yx},
     {Planner::PlanType::ThreeStepXY,three_step_xy},
