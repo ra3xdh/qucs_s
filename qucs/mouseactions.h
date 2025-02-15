@@ -50,7 +50,7 @@ public:
   QMouseEvent *focusMEvent;
 
   int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
-  Q3PtrList<Element> movingElements;
+  QList<Element*> movingElements;
   int movingRotated;
 
   // menu appearing by right mouse button click on component
@@ -123,8 +123,8 @@ public:
   void paintElementsScheme(Schematic*);
   void rotateElements(Schematic*, int&, int&);
   void moveElements(Schematic*, int&, int&);
-  static void moveElements(Q3PtrList<Element>*, int, int);
-  void endElementMoving(Schematic*, Q3PtrList<Element>*);
+  static void moveElements(QList<Element*>*, int, int);
+  void endElementMoving(Schematic*, QList<Element*>*);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
 };
 

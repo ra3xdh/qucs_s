@@ -188,7 +188,7 @@ public:
 
   void    cut();
   void    copy();
-  bool    paste(QTextStream*, Q3PtrList<Element>*);
+  bool    paste(QTextStream*, QList<Element*>*);
   bool    load();
   int     save();
   int     saveSymbolCpp (void);
@@ -462,8 +462,8 @@ public:
   void  deleteWire(Wire*);
 
   Marker* setMarker(int, int);
-  void    markerLeftRight(bool, Q3PtrList<Element>*);
-  void    markerUpDown(bool, Q3PtrList<Element>*);
+  void    markerLeftRight(bool, QList<Element*>*);
+  void    markerUpDown(bool, QList<Element*>*);
 
   Element* selectElement(float, float, bool, int *index=0);
   void     deselectElements(Element*) const;
@@ -539,15 +539,15 @@ private:
 
   bool loadProperties(QTextStream*);
   void simpleInsertComponent(Component*);
-  bool loadComponents(QTextStream*, Q3PtrList<Component> *List=0);
+  bool loadComponents(QTextStream*, QList<Component*> *List=0);
   void simpleInsertWire(Wire*);
-  bool loadWires(QTextStream*, Q3PtrList<Element> *List=0);
-  bool loadDiagrams(QTextStream*, Q3PtrList<Diagram>*);
-  bool loadPaintings(QTextStream*, Q3PtrList<Painting>*);
+  bool loadWires(QTextStream*, QList<Element*> *List=0);
+  bool loadDiagrams(QTextStream*, QList<Diagram*>*);
+  bool loadPaintings(QTextStream*, QList<Painting*>*);
   bool loadIntoNothing(QTextStream*);
 
   QString createClipboardFile();
-  bool    pasteFromClipboard(QTextStream *, Q3PtrList<Element>*);
+  bool    pasteFromClipboard(QTextStream *, QList<Element*>*);
 
   QString createUndoString(char);
   bool    rebuild(QString *);

@@ -61,6 +61,22 @@ extern void osdi_log_skip(void *handle, char* msg, uint32_t lvl)
   (void)lvl;
 }
 
+namespace shim {
+  // Historically Qucs-S has been using Q3PtrList a lot and it's not so easy
+  // to replace it. The goal of this shim is to help with transition to new
+  // container type.
+  // Wherever possible a "barrier" is made by replacing Q3PtrList with QList
+  // to stop its propagating. QList is passed instead of original Q3PtrList
+  // and then its contents are copied back to Q3PtrList as if it was passed
+  // in the first place
+template <typename T>
+void copyToQ3PtrList(const QList<T*>& src, Q3PtrList<T>& dst) {
+  for (auto* item : src) {
+    dst.append(item);
+  }
+}
+} // namespace shim
+
 // -------------------------------------------------------------
 // Creates a Qucs file format (without document properties) in the returning
 // string. This is used to copy the selected elements into the clipboard.
@@ -131,7 +147,7 @@ bool Schematic::loadIntoNothing(QTextStream *stream)
 
 // -------------------------------------------------------------
 // Paste from clipboard.
-bool Schematic::pasteFromClipboard(QTextStream *stream, Q3PtrList<Element> *pe)
+bool Schematic::pasteFromClipboard(QTextStream *stream, QList<Element*> *pe)
 {
   QString Line;
 
@@ -161,7 +177,7 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, Q3PtrList<Element> *pe)
         if(!loadIntoNothing(stream)) return false; }
       else
       if(Line == "<Paintings>") {
-        if(!loadPaintings(stream, (Q3PtrList<Painting>*)pe)) return false; }
+        if(!loadPaintings(stream, (QList<Painting*>*)pe)) return false; }
       else {
         QMessageBox::critical(0, QObject::tr("Error"),
         QObject::tr("Clipboard Format Error:\nUnknown field!"));
@@ -176,16 +192,16 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, Q3PtrList<Element> *pe)
   while(!stream->atEnd()) {
     Line = stream->readLine();
     if(Line == "<Components>") {
-      if(!loadComponents(stream, (Q3PtrList<Component>*)pe)) return false; }
+      if(!loadComponents(stream, (QList<Component*>*)pe)) return false; }
     else
     if(Line == "<Wires>") {
       if(!loadWires(stream, pe)) return false; }
     else
     if(Line == "<Diagrams>") {
-      if(!loadDiagrams(stream, (Q3PtrList<Diagram>*)pe)) return false; }
+      if(!loadDiagrams(stream, (QList<Diagram*>*)pe)) return false; }
     else
     if(Line == "<Paintings>") {
-      if(!loadPaintings(stream, (Q3PtrList<Painting>*)pe)) return false; }
+      if(!loadPaintings(stream, (QList<Painting*>*)pe)) return false; }
     else {
       QMessageBox::critical(0, QObject::tr("Error"),
       QObject::tr("Clipboard Format Error:\nUnknown field!"));
@@ -869,7 +885,7 @@ void Schematic::simpleInsertComponent(Component *c)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadComponents(QTextStream *stream, Q3PtrList<Component> *List)
+bool Schematic::loadComponents(QTextStream *stream, QList<Component*> *List)
 {
   QString Line, cstr;
   Component *c;
@@ -939,7 +955,7 @@ void Schematic::simpleInsertWire(Wire *pw)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadWires(QTextStream *stream, Q3PtrList<Element> *List)
+bool Schematic::loadWires(QTextStream *stream, QList<Element*> *List)
 {
   Wire *w;
   QString Line;
@@ -976,7 +992,7 @@ bool Schematic::loadWires(QTextStream *stream, Q3PtrList<Element> *List)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadDiagrams(QTextStream *stream, Q3PtrList<Diagram> *List)
+bool Schematic::loadDiagrams(QTextStream *stream, QList<Diagram*> *List)
 {
   Diagram *d;
   QString Line, cstr;
@@ -1019,7 +1035,7 @@ bool Schematic::loadDiagrams(QTextStream *stream, Q3PtrList<Diagram> *List)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadPaintings(QTextStream *stream, Q3PtrList<Painting> *List)
+bool Schematic::loadPaintings(QTextStream *stream, QList<Painting*> *List)
 {
   Painting *p=0;
   QString Line, cstr;
@@ -1135,10 +1151,12 @@ bool Schematic::loadDocument()
     if(Line.isEmpty()) continue;
 
     if(Line == "<Symbol>") {
-      if(!loadPaintings(&stream, &a_SymbolPaints)) {
+      QList<Painting*> paintings;
+      if (!loadPaintings(&stream, &paintings)) {
         file.close();
         return false;
       }
+      shim::copyToQ3PtrList(paintings, a_SymbolPaints);
     }
     else
     if(Line == "<Properties>") {
@@ -1151,10 +1169,16 @@ bool Schematic::loadDocument()
       if(!loadWires(&stream)) { file.close(); return false; } }
     else
     if(Line == "<Diagrams>") {
-      if(!loadDiagrams(&stream, &a_DocDiags)) { file.close(); return false; } }
+      QList<Diagram*> diagrams;
+      if (!loadDiagrams(&stream, &diagrams)) { file.close(); return false; }
+      shim::copyToQ3PtrList(diagrams, a_DocDiags);
+    }
     else
     if(Line == "<Paintings>") {
-      if(!loadPaintings(&stream, &a_DocPaints)) { file.close(); return false; } }
+      QList<Painting*> paintings;
+      if (!loadPaintings(&stream, &paintings)) { file.close(); return false; }
+      shim::copyToQ3PtrList(paintings, a_DocPaints);
+    }
     else {
        qDebug() << Line;
        QMessageBox::critical(0, QObject::tr("Error"),
@@ -1241,8 +1265,16 @@ bool Schematic::rebuild(QString *s)
   // read content *************************
   if(!loadComponents(&stream))  return false;
   if(!loadWires(&stream))  return false;
-  if(!loadDiagrams(&stream, &a_DocDiags))  return false;
-  if(!loadPaintings(&stream, &a_DocPaints)) return false;
+  {
+    QList<Diagram*> diagrams;
+    if (!loadDiagrams(&stream, &diagrams)) return false;
+    shim::copyToQ3PtrList(diagrams, a_DocDiags);
+  }
+  {
+    QList<Painting*> paintings;
+    if (!loadPaintings(&stream, &paintings)) return false;
+    shim::copyToQ3PtrList(paintings, a_DocPaints);
+  }
 
   return true;
 }
@@ -1261,8 +1293,12 @@ bool Schematic::rebuildSymbol(QString *s)
   Line = stream.readLine();  // skip components
   Line = stream.readLine();  // skip wires
   Line = stream.readLine();  // skip diagrams
-  if(!loadPaintings(&stream, &a_SymbolPaints)) return false;
 
+  {
+    QList<Painting*> paintings;
+    if (!loadPaintings(&stream, &paintings)) return false;
+    shim::copyToQ3PtrList(paintings, a_SymbolPaints);
+  }
   return true;
 }
 

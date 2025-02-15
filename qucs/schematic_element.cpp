@@ -982,14 +982,14 @@ Marker* Schematic::setMarker(int x, int y)
 
 // ---------------------------------------------------
 // Moves the marker pointer left/right on the graph.
-void Schematic::markerLeftRight(bool left, Q3PtrList<Element> *Elements)
+void Schematic::markerLeftRight(bool left, QList<Element*> *Elements)
 {
     bool acted = false;
-    for(auto i : *Elements) {
-        Marker* pm = prechecked_cast<Marker*>(i);
-        assert(pm);
-        if(pm->moveLeftRight(left))
-            acted = true;
+    for (auto* e : *Elements) {
+        if (auto* pm = dynamic_cast<Marker*>(e)) {
+            if (pm->moveLeftRight(left))
+                acted = true;
+            }
     }
 
     if(acted)  setChanged(true, true, 'm');
@@ -997,14 +997,14 @@ void Schematic::markerLeftRight(bool left, Q3PtrList<Element> *Elements)
 
 // ---------------------------------------------------
 // Moves the marker pointer up/down on the more-dimensional graph.
-void Schematic::markerUpDown(bool up, Q3PtrList<Element> *Elements)
+void Schematic::markerUpDown(bool up, QList<Element*> *Elements)
 {
-    Marker *pm;
     bool acted = false;
-    for(pm = (Marker*)Elements->first(); pm!=0; pm = (Marker*)Elements->next())
-    {
-        if(pm->moveUpDown(up))
-            acted = true;
+    for (auto* e : *Elements) {
+        if (auto* pm = dynamic_cast<Marker*>(e)) {
+            if (pm->moveUpDown(up))
+                acted = true;
+        }
     }
 
     if(acted)  setChanged(true, true, 'm');
