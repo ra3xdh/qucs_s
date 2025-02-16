@@ -1,0 +1,119 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Component">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="Description"/>
+        <xs:element name="Models">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DefaultModel">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="value"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="SpiceModel">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="value"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Netlists">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NgspiceNetlist" maxOccurs="1" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Include" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="value"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="value"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Symbols">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Symbol">
+                <xs:complexType>
+                  <xs:choice maxOccurs="unbounded" minOccurs="0">
+                    <xs:element name="PortSym">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:int" name="x"/>
+                            <xs:attribute type="xs:int" name="y"/>
+                            <xs:attribute type="xs:byte" name="type"/>
+                            <xs:attribute type="xs:short" name="angle"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Line" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:int" name="x1"/>
+                            <xs:attribute type="xs:int" name="y1"/>
+                            <xs:attribute type="xs:int" name="x2"/>
+                            <xs:attribute type="xs:int" name="y2"/>
+                            <xs:attribute type="xs:string" name="color" use="optional"/>
+                            <xs:attribute type="xs:int" name="width" use="optional"/>
+                            <xs:attribute type="xs:byte" name="style" use="optional"/>
+                            <xs:attribute type="xs:int" name="x" use="optional"/>
+                            <xs:attribute type="xs:int" name="y" use="optional"/>
+                            <xs:attribute type="xs:byte" name="type" use="optional"/>
+                            <xs:attribute type="xs:short" name="angle" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:attribute type="xs:string" name="id"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Parameters">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Parameter" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="Description"/>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="name"/>
+                  <xs:attribute type="xs:string" name="unit"/>
+                  <xs:attribute type="xs:string" name="default_value"/>
+                  <xs:attribute type="xs:boolean" name="show"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="library"/>
+      <xs:attribute type="xs:string" name="name"/>
+      <xs:attribute type="xs:string" name="schematic_id"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
