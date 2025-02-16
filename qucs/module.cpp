@@ -19,6 +19,10 @@
 #include <QStringList>
 #include <QList>
 #include <QDebug>
+#include <QFile>
+#include <QTextStream>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 
 #include "element.h"
 #include "components/component.h"
@@ -30,9 +34,11 @@
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
 
-#include "xml/Library.hxx"
+#include "xml/Component.hxx"
+#include "xml/XmlComponent.h"
 
 #include <iostream>
+#include <sstream>
 
 // Global category and component lists.
 QHash<QString, Module *> Module::Modules;
@@ -258,11 +264,6 @@ REGISTER_COMP_1 (QObject::tr("magnetic cores"),val)
   REGISTER_COMP_2 (QObject::tr("Qucs legacy devices"),val,inf1,inf2)
 #define REGISTER_QUCS_3(val,inf1,inf2,inf3) \
   REGISTER_COMP_3 (QObject::tr("Qucs legacy devices"),val,inf1,inf2,inf3)
-
-// XML components
-#define REGISTER_XML_1(val) \
-  REGISTER_COMP_1 (QObject::tr("XML Components"), val)
-
 
 // This function has to be called once at application startup.  It
 // registers every component available in the application.  Put here
@@ -632,33 +633,181 @@ void Module::registerModules (void) {
   REGISTER_PAINT_1 (EllipseArc);
   REGISTER_PAINT_1 (ImagePainting);
 
-  registerXmlModules(QucsSettings.ComponentDir);
+  registerXmlComponents(QucsSettings.ComponentDir);
 }
 
-void Module::registerXmlModules(const QString& modulePath)
+void Module::registerXmlComponents(const QString& componentPath)
 {
-    QDir moduleDir(modulePath);
+    QDir componentDir(componentPath);
 
-    if (!moduleDir.exists())
+    if (!componentDir.exists())
     {
-        std::cerr << "XML module path '" << modulePath.toUtf8().constData() << "' don't exists";
+        std::cerr << "XML component path '" << componentPath.toUtf8().constData() << "' don't exists" << std::endl;
+        return;
     }
 
-    QStringList modules(moduleDir.entryList({"*.xml"}, QDir::Files));
+    QStringList components(componentDir.entryList({"*.xml"}, QDir::Files));
 
-    foreach (const QString& module, modules)
+    foreach (const QString& component, components)
     {
+        QFile componentFile(componentPath + QDir::separator() + component);
+
+        if (!componentFile.open(QIODevice::ReadOnly))
+        {
+            std::cerr
+                << "Could not open '"
+                << componentPath.toUtf8().constData()
+                << QString(QDir::separator()).toUtf8().constData()
+                << component.toUtf8().constData()
+                << "'"
+                << std::endl;
+            break;
+        }
+
+        QTextStream componentStream(&componentFile);
+        QStringList componentContent;
+
+        while (true)
+        {
+            QString line = componentStream.readLine();
+
+            if (line.isNull())
+            {
+                break;
+            }
+            else
+            {
+                QRegularExpression pattern(QString::fromUtf8("<File>(.*)</File>"));
+                QRegularExpressionMatch match(pattern.match(line));
+
+                if (match.hasMatch())
+                {
+                    QString path(match.captured(1));
+                    path.replace("{QUCS_S_COMPONENTS_LIBRARY}", componentPath);
+
+                    QFile includeFile(path);
+
+                    if (!includeFile.open(QIODevice::ReadOnly))
+                    {
+                        std::cerr
+                            << "Could not open '"
+                            << path.toUtf8().constData()
+                            << "'"
+                            << std::endl;
+                    }
+                    else
+                    {
+                        QTextStream includeFileStream(&includeFile);
+                        QString content(includeFileStream.readAll());
+
+                        line.replace(pattern, content);
+                    }
+                }
+
+                componentContent.append(line);
+            }
+        }
+
+        std::istringstream stream(componentContent.join("\n").toUtf8().toStdString());
+
         try
         {
-            std::unique_ptr<component::xml::Library> library(
-                    component::xml::Library_(
-                        (modulePath + QDir::separator() + module).toUtf8().constData()));
+            ::xml_schema::properties properties;
+            properties.no_namespace_schema_location(
+                    QString(componentPath + QDir::separator() + "Component.xsd").toStdString());
 
-            const QString libraryName(QString::fromUtf8(library->name().get()));
+            std::unique_ptr<component::xml::Component> component(
+                    component::xml::Component_(stream, 0, properties));
+
+            QList<XmlComponent::Parameter> parameters;
+
+            auto compParameters(component->Parameters().Parameter());
+            for (auto it(compParameters.begin()); it != compParameters.end(); ++it)
+            {
+                XmlComponent::Parameter parameter(
+                        QString::fromUtf8(it->name().get()),
+                        QString::fromUtf8(it->unit().get()),
+                        QString::fromUtf8(it->default_value().get()),
+                        static_cast<bool>(it->show().get()),
+                        QString::fromUtf8(it->Description()).trimmed()
+                );
+
+                parameters << parameter;
+            }
+
+            XmlComponent comp(
+                    QString::fromUtf8(component->name().get()),
+                    QString::fromUtf8(component->schematic_id().get()),
+                    QString::fromUtf8(component->Description()).trimmed(),
+                    QString::fromUtf8(component->Models().DefaultModel().value().get()),
+                    QString::fromUtf8(component->Models().SpiceModel().value().get()),
+                    parameters
+            );
+
+#if 1
+            std::cout << "Component-library: " << component->library().get() << std::endl;
+            std::cout << "Component-name: " << component->name().get() << std::endl;
+            std::cout << "Schematic-id: " << component->schematic_id().get() << std::endl;
+            std::cout << "Description: " << QString::fromUtf8(component->Description()).trimmed().toStdString() << std::endl;
+            std::cout << "Default model: " << component->Models().DefaultModel().value().get() << std::endl;
+            std::cout << "Spice model: " << component->Models().SpiceModel().value().get() << std::endl;
+
+            if (component->Netlists().NgspiceNetlist().present())
+            {
+                std::cout
+                    << "Ngspice netlist: "
+                    << component->Netlists().NgspiceNetlist().get().value().get() << std::endl;
+
+                if (component->Netlists().NgspiceNetlist().get().Include().present())
+                {
+                    std::cout
+                        << "        include: "
+                        << component->Netlists().NgspiceNetlist().get().Include().get().value().get()
+                        << std::endl;
+                }
+            }
+
+            auto lines(component->Symbols().Symbol().Line());
+            for (auto it(lines.begin()); it != lines.end(); ++it)
+            {
+                std::cout
+                    << "Line x1=" << static_cast<int>(it->x1().get())
+                    << ", y1=" << static_cast<int>(it->y1().get())
+                    << ", x2=" << static_cast<int>(it->x2().get())
+                    << ", y2=" << static_cast<int>(it->y2().get())
+                    << ", color=" << it->color().get()
+                    << ", width=" << static_cast<int>(it->width().get())
+                    << ", style=" << static_cast<int>(it->style().get())
+                    << std::endl;
+            }
+
+            auto portSyms(component->Symbols().Symbol().PortSym());
+            for (auto it(portSyms.begin()); it != portSyms.end(); ++it)
+            {
+                std::cout
+                    << "PortSym x=" << static_cast<int>(it->x().get())
+                    << ", y=" << static_cast<int>(it->y().get())
+                    << ", type=" << static_cast<int>(it->type().get())
+                    << ", angle=" << static_cast<int>(it->angle().get())
+                    << std::endl;
+            }
+
+            for (auto it(compParameters.begin()); it != compParameters.end(); ++it)
+            {
+                std::cout
+                    << "Parameter name=" << it->name().get()
+                    << ", unit=" << it->unit().get()
+                    << ", default-value=" << it->default_value().get()
+                    << ", show=" << static_cast<bool>(it->show().get())
+                    << ", description=" << QString::fromUtf8(it->Description()).trimmed().toStdString()
+                    << std::endl;
+            }
+#endif
+
         }
         catch (const xml_schema::exception& exc)
         {
-            std::cerr << exc << std::endl;
+            std::cerr << componentFile.fileName().toUtf8().constData() << ": " << exc << std::endl;
         }
     }
 }
