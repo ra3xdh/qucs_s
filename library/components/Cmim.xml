@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<Component
+  xsi:noNamespaceSchemaLocation="Component.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  library="IHP 131 BiCmos components" name="Cmim" schematic_id = "C">
+    <Description>
+        SG13G2 MiM capacitor
+    </Description>
+    <Models>
+            <DefaultModel value="cmim">
+            </DefaultModel>
+            <SpiceModel value="cmim">
+            </SpiceModel>
+    </Models>
+    <Netlists>
+            <NgspiceNetlist value ="">
+                    <Include value="">
+                    </Include>
+            </NgspiceNetlist>
+    </Netlists>
+    <Symbols>
+        <Symbol id="Standard">
+            <PortSym x="-30" y="0" type="1" angle="0" />
+            <Line x1="-4" y1="-11" x2="-4" y2="11" color="#000080" width="2" style="1" />
+            <Line x1="4" y1="-11" x2="4" y2="11" color="#000080" width="2" style="1" />
+            <Line x1="-30" y1="0" x2="-4" y2="0" color="#000080" width="2" style="1" />
+            <Line x1="4" y1="0" x2="30" y2="0" color="#000080" width="2" style="1" />
+            <PortSym x="30" y="0" type="2" angle="127"/>
+        </Symbol>
+    </Symbols>
+    <Parameters>
+        <Parameter name="w" unit="um" default_value="10.0" show="true">
+            <Description>Width</Description>
+        </Parameter>
+        <Parameter name="l" unit="um" default_value="10.0" show="true">
+            <Description>Length</Description>
+        </Parameter>
+        <Parameter name="m" unit="" default_value="1" show="true">
+            <Description>multiplier</Description>
+        </Parameter>
+    </Parameters>
+</Component>

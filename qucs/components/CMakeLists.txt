@@ -62,7 +62,7 @@ taperedline.cpp
 circularloop.cpp
 spiralinductor.cpp
 simulation.cpp
-xml/Library.cxx
+xml/Component.cxx
 xml/XmlComponent.cpp
 )
 
