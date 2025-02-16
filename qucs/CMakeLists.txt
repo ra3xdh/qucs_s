@@ -139,6 +139,11 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     endif()
 endif()
 
+# This flags are used if cmake is called with -DCMAKE_BUILD_TYPE=PROFILE
+#set(CMAKE_C_FLAGS_PROFILE "--coverage -fprofile-abs-path")
+#set(CMAKE_CXX_FLAGS_PROFILE "--coverage -fprofile-abs-path")
+#add_link_options("--coverage")
+
 INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}
   #${qucs_SOURCE_DIR}/bitmaps ->no sources here

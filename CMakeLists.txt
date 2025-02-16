@@ -44,6 +44,13 @@ set(QT_VERSION ${Qt6Core_VERSION})
 
 message(STATUS "Qt Version: " ${QT_VERSION})
 
+find_library(XERCES-C_LIB NAMES xerces-c-3.3 xerces-c-3.2 xerces-c-3.1 xerces-c)
+if(NOT XERCES-C_LIB)
+    message(SEND_ERROR "Xerces-c lib not found: ${XERCES-C_LIB}")
+else()
+    message(STATUS "Xerces-c lib found at: ${XERCES-C_LIB}")
+endif()
+
 add_definitions(${QT_DEFINITIONS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
