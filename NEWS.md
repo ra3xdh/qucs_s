@@ -14,6 +14,7 @@
 * S-parameter files viewer improvements #1133
 * Added background when renderign DC bias labels #1121
 * Added possibility to create libraries from SpiceLibraryDevice components #944 #1210
+* Added two new wire forms #1232
 
 ## Bugfixes and general improvemnt
 
@@ -38,6 +39,7 @@ This release contains a massive library extention:
 * Added neon bulb model #846 #1216
 * Added MOC3063/MOC3062 optocouple models #846 #1216
 * Added Analog ICs and dual gate MOSFET libraries #1229
+* Added RC with parasitics library #1240
 
 ## Packaging
 

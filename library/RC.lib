@@ -1,0 +1,124 @@
+<Qucs Library 25.1.0 "RC">
+
+<Component C>
+  <Description>
+Capacitor with parasitic inductance and ESR. The model contains the generic data. Substitute the ESR and parasitic inductance value after RF measurements before insertion in the schematic!
+  </Description>
+  <Model>
+.Def:RC_C _net0 _net1 Cs="100n" Rs="1" Ls="1n"
+C:C1 _net0 _net2 C="Cs" V=""
+L:L1 _net3 _net1 L="Ls" I=""
+R:R1 _net2 _net3 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT RC_C  gnd _net0 _net1 Cs=100n Rs=1 Ls=1n 
+C1 _net0 _net2  {CS} 
+L1 _net3 _net1  {LS} 
+R1 _net2 _net3  {RS} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -20 14 SUB "1=Cs=100n=Capacitance (F)=" "1=Rs=1=Series resististance ESR (Ohms)=" "1=Ls=1n=Series inductance (H)=">
+    <.PortSym -30 0 1 0 P1>
+    <.PortSym 30 0 2 0 P2>
+    <Line -30 0 26 0 #000080 2 1>
+    <Line -4 -11 0 22 #000080 3 1>
+    <Line 4 -11 0 22 #000080 3 1>
+    <Line 4 0 26 0 #000080 2 1>
+    <Text -20 -40 12 #000000 0 "PAR">
+  </Symbol>
+</Component>
+
+<Component C_ESR>
+  <Description>
+Capacitor with ESR. The model contains the generic data. Substitute the ESR value before insertion in the schematic!
+  </Description>
+  <Model>
+.Def:RC_C_ESR _net0 _net1 Cs="10u" Rs="1"
+R:R1 _net2 _net1 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C1 _net0 _net2 C="Cs" V=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT RC_C_ESR  gnd _net0 _net1 Cs=10u Rs=1 
+R1 _net2 _net1  {RS} tc1=0.0 tc2=0.0 
+C1 _net0 _net2  {CS} 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -20 14 X "1=Cs=10u=Series capacitance (F)=" "1=Rs=1=Series resistance ESD (Ohms)=">
+    <.PortSym -30 0 1 0 P1>
+    <.PortSym 30 0 2 0 P2>
+    <Line -30 0 26 0 #000080 2 1>
+    <Line 4 0 26 0 #000080 2 1>
+    <Line -14 -8 6 0 #ff0000 2 1>
+    <Line -4 -11 0 22 #000080 3 1>
+    <EArc 4 -12 20 24 1952 1856 #000080 3 1>
+    <Line -11 -5 0 -6 #ff0000 2 1>
+    <Text -10 -40 12 #000000 0 "ESR">
+  </Symbol>
+</Component>
+
+<Component R>
+  <Description>
+Resistor with parasitic inductance and capacitance. The model contains the generic data. Substitute the parasitics value after RF measurements before insertion in the schematic!
+  </Description>
+  <Model>
+.Def:RC_R _net2 _net1 Rs="1k" Ls="10n" Cp="1p"
+L:L1 _net0 _net1 L="Ls" I=""
+R:R1 _net2 _net0 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C1 _net2 _net1 C="Cp" V=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT RC_R  gnd _net2 _net1 Rs=1k Ls=10n Cp=1p 
+L1 _net0 _net1  {LS} 
+R1 _net2 _net0  {RS} tc1=0.0 tc2=0.0 
+C1 _net2 _net1  {CP} 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 0 12 0 #000080 2 1>
+    <Line 18 0 12 0 #000080 2 1>
+    <Line -18 -9 36 0 #000080 2 1>
+    <Line 18 -9 0 18 #000080 2 1>
+    <Line 18 9 -36 0 #000080 2 1>
+    <Line -18 9 0 -18 #000080 2 1>
+    <.PortSym -30 0 1 0 P1>
+    <.PortSym 30 0 2 0 P2>
+    <.ID -20 14 X "1=Rs=1k=Resistance (Ohms)=" "1=Ls=10n=Series inductance (H)=" "1=Cp=1p=Parallel capacitance (F)=">
+    <Text -20 -30 12 #000000 0 "PAR">
+  </Symbol>
+</Component>
+
+<Component R_L>
+  <Description>
+Resistor with parasitic inductance. The model contains the generic data. Substitute the parasitic inductance value after measurements before insertion in the schematic!
+  </Description>
+  <Model>
+.Def:RC_R_L _net2 _net1 Rs="1k" Ls="10n"
+L:L1 _net0 _net1 L="Ls" I=""
+R:R1 _net2 _net0 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT RC_R_L  gnd _net2 _net1 Rs=1k Ls=10n 
+L1 _net0 _net1  {LS} 
+R1 _net2 _net0  {RS} tc1=0.0 tc2=0.0 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -30 0 12 0 #000080 2 1>
+    <Line 18 0 12 0 #000080 2 1>
+    <Line -18 -9 36 0 #000080 2 1>
+    <Line 18 -9 0 18 #000080 2 1>
+    <Line 18 9 -36 0 #000080 2 1>
+    <Line -18 9 0 -18 #000080 2 1>
+    <.PortSym -30 0 1 0 P1>
+    <.PortSym 30 0 2 0 P2>
+    <.ID -20 14 X "1=Rs=1k=Resistance (Ohms)=" "1=Ls=10n=Series inductance (H)=">
+    <Text -20 -30 12 #000000 0 "PAR">
+  </Symbol>
+</Component>
+

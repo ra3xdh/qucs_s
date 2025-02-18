@@ -32,6 +32,7 @@ PhotovoltaicRelay.lib
 PMOSFETs.lib
 PWM_Controller.lib
 Regulators.lib
+RC.lib
 Substrates.lib
 Transistors.lib
 Varistors.lib
