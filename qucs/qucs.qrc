@@ -107,15 +107,5 @@
         <file>bitmaps/svg/SDTF.svg</file>
         <file>bitmaps/svg/XAPWL.svg</file>
         <file>bitmaps/svg/vhdlfile.svg</file>
-        <file>Libraries/Lumped_Components.xml</file>
-        <file>Libraries/Lumped_Component_Symbols/Inductor.sym</file>
-        <file>Libraries/Sources.xml</file>
-        <file>Libraries/Probes.xml</file>
-        <file>Libraries/Lumped_Component_Symbols/Resistor.sym</file>
-        <file>Libraries/Lumped_Component_Symbols/Capacitor.sym</file>
-        <file>Libraries/Nonlinear_Components_Symbols/NMOS.sym</file>
-        <file>Libraries/Nonlinear_Components_Symbols/PMOS.sym</file>
-        <file>Libraries/Nonlinear_Components_Symbols/NPN.sym</file>
-        <file>Libraries/Nonlinear_Components_Symbols/Diode.sym</file>
     </qresource>
 </RCC>

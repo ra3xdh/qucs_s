@@ -63,6 +63,7 @@ struct tQucsSettings {
   QString OctaveDir;  // m-files location
   QString ExamplesDir;
   QString DocDir;
+  QString QucsSLibraryPath; // Component library path
 
   unsigned int NodeWiring;
   QDir QucsWorkDir;

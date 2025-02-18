@@ -279,8 +279,6 @@ void QucsApp::readXML(QFile & library_file) {
   QXmlStreamReader xmlReader(&library_file);
   QString LibraryName, ComponentName;
   QMap<QString, ComponentInfo> Component;
-  QDir LibraryDir(":/Libraries"); // Path to the Qucs-S XML library
-  QString QucsSLibraryPath = LibraryDir.path();
 
   while (!xmlReader.atEnd() && !xmlReader.hasError()) {
     if (xmlReader.readNextStartElement()) {
@@ -380,7 +378,7 @@ void QucsApp::readXML(QFile & library_file) {
                         QString PathSymbol = xmlReader.readElementText().trimmed();
 
                                // Replace {QUCS_S_COMPONENTS_LIBRARY} with QucsSLibraryPath
-                        PathSymbol.replace("{QUCS_S_COMPONENTS_LIBRARY}", QucsSLibraryPath);
+                        PathSymbol.replace("{QUCS_S_COMPONENTS_LIBRARY}", QucsSettings.QucsSLibraryPath);
 
                                // Check for placeholders in the format {$ENV_VAR}
                         QRegularExpression envVarRegex(R"(\{\$([A-Za-z_][A-Za-z0-9_]*)\})");
@@ -971,7 +969,8 @@ void QucsApp::initView()
   // Read the XML and register each component
   // The symbol is temporary loaded from a file as the code is not true XML.
 
-  QDir LibraryDir(":/Libraries");
+
+  QDir LibraryDir(QucsSettings.QucsSLibraryPath);
   QStringList files = LibraryDir.entryList(QStringList() << "*.xml", QDir::Files);
 
   for (const QString &filename : files) {

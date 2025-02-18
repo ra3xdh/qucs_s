@@ -141,6 +141,10 @@ bool loadSettings()
     QucsSettings.RFLayoutExecutable = _settings::Get().item<QString>("RFLayoutExecutable");
 
     QucsSettings.PDK_ROOT = _settings::Get().item<QString>("PDK_ROOT");
+    QucsSettings.QucsSLibraryPath = _settings::Get().item<QString>("QucsSLibraryPath");
+    if (QucsSettings.QucsSLibraryPath.isEmpty()){
+      QucsSettings.QucsSLibraryPath = QCoreApplication::applicationDirPath() + "/../share/" + QUCS_NAME + "/components/";
+    }
 
     QucsSettings.qucsWorkspaceDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
     QucsSettings.QucsWorkDir = QucsSettings.qucsWorkspaceDir;
