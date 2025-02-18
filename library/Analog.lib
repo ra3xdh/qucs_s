@@ -1969,3 +1969,185 @@ X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 NE592S
   </Symbol>
 </Component>
 
+<Component AD8221>
+  <Description>
+AD8221 instrumentation amplifier
+  </Description>
+  <Model>
+.Def:Analog_AD8221 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 gnd Type="AD8221_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "AD8221.cir.lst">
+  <Spice>
+
+* Node assignments
+*                 non-inverting input
+*                 |  inverting input
+*                 |  |  positive supply
+*                 |  |  |  negative supply
+*                 |  |  |  |  output
+*                 |  |  |  |  |  ref
+*                 |  |  |  |  |  |  rg1
+*                 |  |  |  |  |  |  |  rg2
+*                 |  |  |  |  |  |  |  |
+.SUBCKT AD8221    1  2  99 50 46 20 7  8
+*
+* INPUT STAGE
+*
+I1   7    50   5.0005E-6
+I2   8    50   5.0005E-6
+IOS  3    4    0.15E-9
+EIOS 21   3 poly(1) 100 98 39.215m 1
+CCM  3    4    2E-12
+CD1  3    0    2E-12
+CD2  4    0    2E-12
+Q1   5    4    7    QN1
+Q2   6    21   8    QN1
+D1   7    4    DX
+D2   8    21   DX
+R1   1    3    400
+R2   2    4    400
+R3   99   5    RNOISE 100E3 
+R4   99   6    RNOISE 100E3
+R5   7    9    RNOISE 24.7E3
+R6   8    10   RNOISE 24.7E3
+E1   9    46   11 5 375E6
+E2   10   46   11 6 375E6
+V1   99   11   0.5
+RV1  99   11   1E3
+CC1  5    9    4E-12
+CC2  6    10   4E-12
+*
+* DIFFERENCE AMPLIFIER AND POLE AT 1MHZ
+*
+I3   18   50   5E-6
+R7   99   12   RNOISE 19.099E3
+R8   99   15   RNOISE 19.099E3
+R9   14   18   RNOISE 8.754E3
+R10  17   18   RNOISE 8.754E3
+R11  9    13   RNOISE 10E3
+R12  13   46   RNOISE 10E3
+Q3   12   13   14   QN2
+Q4   15   16   17   QN2
+R13  19   16   RNOISE 10E3
+R14  16   20   RNOISE 10E3
+C1   12   15   2.083E-12
+Eoos 19 10 poly(1) 38 98 200e-6 10
+EREF 98   0    POLY(2) 99 0 50 0 0 0.5 0.5
+D3 13 51 DX
+D4 16 52 DX
+V2 99 51 0.7
+V3 99 52 0.7
+D15 53 13 DX
+D16 54 16 DX
+V12 53 50 0.7
+V13 54 50 0.7
+*
+* GAIN STAGE AND DOMINANT POLE AT 0.667HZ
+*
+R16  25   98  RNOISE 57.296E9
+C2   25   98   4.167E-12
+G1   98   25   12 15 52.360E-6
+V6   99   26   1.53
+V7   27   50   1.33
+D7   25   26   DX
+D8   27   25   DX
+*
+* POLE AT 10MHZ
+*
+R17  40   98   1
+C3   40   98   15.916E-9
+G2   98   40   25 98 1
+*
+* COMMON MODE STAGE WITH ZERO AT 100HZ
+*
+E3   36   98   POLY(2)  1 98  2 98 0 0.5 0.5
+R18  36   38   RNOISE 1E6
+R19  38   98   1
+C5   36   38   30e-12
+*
+* OUTPUT STAGE
+*
+GSY  99   50   POLY(1) 99 50 0.7725E-3 3.125E-6
+RO1  99   45   250
+RO2  45   50   250
+L1   45   46   1E-6
+GO1  45   99   99 40 4E-3
+GO2  50   45   40 50 4E-3
+GC1  43   50   40 45 4E-3
+GC2  44   50   45 40 4E-3
+F1   45   0    V4 1
+F2   0    45   V5 1
+V4   41   45   1.65
+V5   45   42   1.65
+D9   50   43   DY
+D10  50   44   DY
+D11  99   43   DX
+D12  99   44   DX
+D13  40   41   DX
+D14  42   40   DX
+*
+*Voltage Noise Stage
+*
+rnoise1 309 98 2.5e-6
+vnoise1 309 98 0
+vnoise2 101 98 0.75
+dnoise1 101 309 dn
+fnoise1 100 98 vnoise1 1
+rnoise2 100 98 1
+
+* Iq 
+
+Iq1 99 0 -0.4mA
+Iq2 0 50 .047ma
+
+* MODELS USED
+*
+.MODEL DX D(IS=1E-12)
+.MODEL DY D(IS=1E-12 BV=50)
+.MODEL QN1 NPN(BF=10E3 KF=0.7E-15 AF=1)
+.MODEL QN2 NPN(BF=250 KF=0.5E-14 AF=1)
+.MODEL RNOISE RES(t_abs=-373)
+.model dn d(kf=1e-18,af=1)
+.ENDS AD8221
+
+
+
+
+.SUBCKT Analog_AD8221  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 AD8221 
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -50 80 0 -170 #000080 2 1>
+    <Line -50 80 130 -80 #000080 2 1>
+    <Line 80 0 -130 -90 #000080 2 1>
+    <Line 80 0 40 0 #000080 2 1>
+    <Line -20 80 0 -18 #000080 2 1>
+    <Text -15 65 8 #000000 0 "VEE">
+    <Line -20 -72 0 -18 #000080 2 1>
+    <Text -15 -85 8 #000000 0 "VCC">
+    <Line 30 30 0 50 #000080 2 1>
+    <Line -70 -60 20 0 #000080 2 1>
+    <Line -45 -60 10 0 #ff0000 2 1>
+    <Line -40 -55 0 -10 #ff0000 2 1>
+    <Line -70 -30 20 0 #000080 2 1>
+    <Line -70 20 20 0 #000080 2 1>
+    <Line -70 50 20 0 #000080 2 1>
+    <Line -45 50 10 0 #000000 2 1>
+    <Text -45 -35 8 #000000 0 "RG1">
+    <Text -45 15 8 #000000 0 "RG2">
+    <Text 35 35 8 #000000 0 "REF">
+    <.ID 40 -86 SUB>
+    <.PortSym -70 -60 1 0 P1>
+    <.PortSym -70 50 2 0 P2>
+    <.PortSym -20 -90 3 0 P99>
+    <.PortSym -20 80 4 0 P50>
+    <.PortSym 120 0 5 0 P46>
+    <.PortSym 30 80 6 0 P20>
+    <.PortSym -70 -30 7 0 P7>
+    <.PortSym -70 20 8 0 P8>
+  </Symbol>
+</Component>
+
