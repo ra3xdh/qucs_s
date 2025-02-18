@@ -61,6 +61,7 @@ AboutDialog::AboutDialog(QWidget *parent)
      "Andrey Kalmykov - " + tr("Schematic rendering engine, refactoring"),
      "Andr&#xe9;s Mart&#xed;nez Mera - " + tr("RF design tools"),
      "Muhammet Şükrü Demir - " + tr("CI setup, build system, MacOS support"),
+     "Hampton Morgan - " + tr("Documentation"),
      "Iwbnwif Yiw - " + tr("Refactoring, general improvements"),
      "Maria Dubinina - " + tr("testing, general bugfixes")
   }};
