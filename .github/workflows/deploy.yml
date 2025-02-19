@@ -75,7 +75,7 @@ jobs:
     - name: Install Dependencies
       run: |
           sudo apt-get update
-          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix cups libcups2-dev
+          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix cups libcups2-dev libmuparser-dev
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
 
     - name: 'Install Qt6'
@@ -173,7 +173,7 @@ jobs:
     - name: 'Install Dependencies'
       shell: bash
       run: |
-          brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick
+          brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick muparser
           echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
           export LDFLAGS="-L$(brew --prefix bison)/lib"
           source ~/.bashrc
@@ -268,7 +268,7 @@ jobs:
     - name: 'Install Dependencies'
       shell: bash
       run: |
-        brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick
+        brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick muparser
         echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
         export LDFLAGS="-L$(brew --prefix bison)/lib"
         source ~/.bashrc
@@ -348,6 +348,17 @@ jobs:
       run: |
         echo "Qucs-S version is ${{ env.VERSION }}"
         echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
+    
+    - name: Install vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git
+        cd vcpkg
+        .\bootstrap-vcpkg.bat
+        .\vcpkg integrate install
+
+    - name: Install muparser via vcpkg
+      run: |
+        .\vcpkg install muparser:x64-windows
 
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -377,7 +388,8 @@ jobs:
               -DCMAKE_INSTALL_PREFIX=${{github.workspace}}\build\qucs-suite  `
               -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl  `
               -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}   `
-              -DCI_VERSION="${{env.VERSION}}"
+              -DCI_VERSION="${{env.VERSION}}" `
+              -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
     - name: 'Build Qucs-s'
       run: |
