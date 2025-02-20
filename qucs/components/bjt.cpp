@@ -38,7 +38,7 @@ Component* BJT::newOne()
 {
   BJT* p = new BJT();
   p->Props.front()->Value = Props.front()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -101,7 +101,7 @@ Element* BJT::info_pnp(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne) {
     BJT* p = new BJT();
     p->Props.at(0)->Value = "pnp";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;

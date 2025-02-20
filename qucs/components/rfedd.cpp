@@ -57,7 +57,7 @@ Component* RFedd::newOne()
   RFedd* p = new RFedd();
   p->Props.at(0)->Value = Props.at(0)->Value;
   p->Props.at(1)->Value = Props.at(1)->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -71,7 +71,7 @@ Element* RFedd::info(QString& Name, char* &BitmapFile, bool getNewOne)
     RFedd* p = new RFedd();
     p->Props.at(0)->Value = "Y";
     p->Props.at(1)->Value = "2";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;

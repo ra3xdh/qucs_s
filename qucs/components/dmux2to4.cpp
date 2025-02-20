@@ -41,7 +41,7 @@ Component * dmux2to4::newOne()
 {
   dmux2to4 * p = new dmux2to4();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

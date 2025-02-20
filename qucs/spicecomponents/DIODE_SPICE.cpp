@@ -82,7 +82,7 @@ Component* DIODE_SPICE::newOne()
     auto p = new DIODE_SPICE();
     p->getProperty("Pins")->Value = getProperty("Pins")->Value;
     p->getProperty("Letter")->Value = getProperty("Letter")->Value;
-    p->recreate(0);
+    p->recreate();
     return p;
 }
 
@@ -103,7 +103,7 @@ Element* DIODE_SPICE::info_DIODE3(QString& Name, char* &BitmapFile, bool getNewO
   if(getNewOne)  {
       auto p = new DIODE_SPICE();
       p->Props.at(5)->Value = "3";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;

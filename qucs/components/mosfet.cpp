@@ -40,7 +40,7 @@ Component* MOSFET::newOne()
   MOSFET* p = new MOSFET();
   p->Props.at(0)->Value = Props.at(0)->Value;
   p->Props.at(1)->Value = Props.at(1)->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -64,7 +64,7 @@ Element* MOSFET::info_p(QString& Name, char* &BitmapFile, bool getNewOne)
     MOSFET* p = new MOSFET();
     p->Props.at(0)->Value = "pfet";
     p->Props.at(1)->Value = "-1.0 V";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;
@@ -79,7 +79,7 @@ Element* MOSFET::info_depl(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne) {
     MOSFET* p = new MOSFET();
     p->Props.at(1)->Value = "-1.0 V";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;

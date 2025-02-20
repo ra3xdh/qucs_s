@@ -30,7 +30,7 @@ Component * pad3bit::newOne()
 {
   pad3bit * p = new pad3bit();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

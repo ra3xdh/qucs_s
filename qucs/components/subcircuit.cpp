@@ -44,7 +44,7 @@ Subcircuit::Subcircuit() {
 Component *Subcircuit::newOne() {
   Subcircuit *p = new Subcircuit();
   p->Props.front()->Value = Props.front()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -55,7 +55,7 @@ Element *Subcircuit::info(QString &Name, char *&BitmapFile, bool getNewOne) {
 
   if (getNewOne) {
     Subcircuit *p = new Subcircuit();
-    p->recreate(0); // createSymbol() is NOT called in constructor !!!
+    p->recreate(); // createSymbol() is NOT called in constructor !!!
     return p;
   }
   return 0;

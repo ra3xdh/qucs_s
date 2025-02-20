@@ -107,7 +107,7 @@ Component* BJT_SPICE::newOne()
     p->getProperty("Pins")->Value = getProperty("Pins")->Value;
     p->getProperty("Letter")->Value = getProperty("Letter")->Value;
     p->getProperty("type")->Value = getProperty("type")->Value;
-    p->recreate(0);
+    p->recreate();
     return p;
 }
 
@@ -129,7 +129,7 @@ Element* BJT_SPICE::infoNPN4(QString& Name, char* &BitmapFile, bool getNewOne)
       auto p = new BJT_SPICE();
       p->Props.at(0)->Value = "4";
       p->Props.at(1)->Value = "npn";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;
@@ -144,7 +144,7 @@ Element* BJT_SPICE::infoPNP4(QString& Name, char* &BitmapFile, bool getNewOne)
       auto p = new BJT_SPICE();
       p->Props.at(0)->Value = "4";
       p->Props.at(1)->Value = "pnp";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;
@@ -160,7 +160,7 @@ Element* BJT_SPICE::infoNPN5(QString& Name, char* &BitmapFile, bool getNewOne)
       auto p = new BJT_SPICE();
       p->Props.at(0)->Value = "5";
       p->Props.at(1)->Value = "npn";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;
@@ -175,7 +175,7 @@ Element* BJT_SPICE::infoPNP5(QString& Name, char* &BitmapFile, bool getNewOne)
       auto p = new BJT_SPICE();
       p->Props.at(0)->Value = "5";
       p->Props.at(1)->Value = "pnp";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;

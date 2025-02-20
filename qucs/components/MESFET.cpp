@@ -163,7 +163,7 @@ Component * MESFET::newOne()
 {
   MESFET * p = new MESFET();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

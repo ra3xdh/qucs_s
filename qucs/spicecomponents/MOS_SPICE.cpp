@@ -60,7 +60,7 @@ Component* MOS_SPICE::newOne()
     p->getProperty("Pins")->Value = getProperty("Pins")->Value;
     p->getProperty("Letter")->Value = getProperty("Letter")->Value;
     p->getProperty("type")->Value = getProperty("type")->Value;
-    p->recreate(0);
+    p->recreate();
     return p;
 }
 
@@ -83,7 +83,7 @@ Element* MOS_SPICE::info_NM3pin(QString& Name, char* &BitmapFile, bool getNewOne
       p->Props.at(0)->Value = "M";
       p->Props.at(1)->Value = "3";
       p->Props.at(2)->Value = "nmos";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;
@@ -99,7 +99,7 @@ Element* MOS_SPICE::info_PM3pin(QString& Name, char* &BitmapFile, bool getNewOne
       p->Props.at(0)->Value = "M";
       p->Props.at(1)->Value = "3";
       p->Props.at(2)->Value = "pmos";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;
@@ -116,7 +116,7 @@ Element* MOS_SPICE::info_NX3pin(QString& Name, char* &BitmapFile, bool getNewOne
       p->Props.at(0)->Value = "X";
       p->Props.at(1)->Value = "3";
       p->Props.at(2)->Value = "nmos";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;
@@ -133,7 +133,7 @@ Element* MOS_SPICE::info_PX3pin(QString& Name, char* &BitmapFile, bool getNewOne
       p->Props.at(0)->Value = "X";
       p->Props.at(1)->Value = "3";
       p->Props.at(2)->Value = "pmos";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;
@@ -150,7 +150,7 @@ Element* MOS_SPICE::info_NX4pin(QString& Name, char* &BitmapFile, bool getNewOne
       p->Props.at(0)->Value = "X";
       p->Props.at(1)->Value = "4";
       p->Props.at(2)->Value = "nmos";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;
@@ -167,7 +167,7 @@ Element* MOS_SPICE::info_PX4pin(QString& Name, char* &BitmapFile, bool getNewOne
       p->Props.at(0)->Value = "X";
       p->Props.at(1)->Value = "4";
       p->Props.at(2)->Value = "pmos";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;

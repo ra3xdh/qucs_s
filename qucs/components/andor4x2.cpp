@@ -41,7 +41,7 @@ Component * andor4x2::newOne()
 {
   andor4x2 * p = new andor4x2();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

@@ -51,7 +51,7 @@ Component* LibComp::newOne()
   LibComp *p = new LibComp();
   p->Props.at(0)->Value = Props.at(0)->Value;
   p->Props.at(1)->Value = Props.at(1)->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
