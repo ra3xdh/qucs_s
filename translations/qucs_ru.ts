@@ -63,7 +63,7 @@
     <message>
         <location line="+1"/>
         <source>Documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>Документация</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -594,12 +594,12 @@
     <message>
         <location line="+39"/>
         <source>Equation Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактор формул</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Put result in dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>Поместить результат в набор данных</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -677,47 +677,47 @@
     <message>
         <location line="-55"/>
         <source>Simulation</source>
-        <translation type="unfinished">Моделирование</translation>
+        <translation>Моделирование</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sweep Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметр развертки</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Type</source>
-        <translation type="unfinished">Тип</translation>
+        <translation>Тип</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Запустить</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Stop</source>
-        <translation type="unfinished">Остановить</translation>
+        <translation>Остановить</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Step</source>
-        <translation type="unfinished">Шаг</translation>
+        <translation>Шаг</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Номер</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Populate parameters from SPICE file...</source>
-        <translation type="unfinished"></translation>
+        <translation>Заполнить параметры из файла SPICE...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -727,7 +727,7 @@
     <message>
         <location line="+0"/>
         <source>Show</source>
-        <translation type="unfinished">Показать</translation>
+        <translation>Показать</translation>
     </message>
     <message>
         <source>display</source>
@@ -2407,7 +2407,7 @@ Node name will not be changed.</source>
     <message>
         <location line="+6"/>
         <source>Analog models only</source>
-        <translation type="unfinished"></translation>
+        <translation>Аналоговое моделирование только</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3937,7 +3937,7 @@ Resistor color code computation program
     <message>
         <location line="+8"/>
         <source>offset current (SPICE only)</source>
-        <translation type="unfinished"></translation>
+        <translation>ток смещения (только SPICE)</translation>
     </message>
     <message>
         <location filename="../qucs/components/volt_ac.cpp" line="-4"/>
@@ -9006,7 +9006,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>(available) ac power in dBm</source>
-        <translation type="unfinished"></translation>
+        <translation>(доступная) мощность переменного тока в дБм</translation>
     </message>
     <message>
         <source>(available) ac power in Watts</source>
@@ -11911,18 +11911,18 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location filename="../qucs/spicecomponents/sp_csparameter.cpp" line="+27"/>
         <source>.CSPARAM section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .CSPARAM</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+6"/>
         <source>.CSPARAM</source>
-        <translation type="unfinished"></translation>
+        <translation>.CSPARAM</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>.CSPARAM Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Раздел .CSPARAM</translation>
     </message>
 </context>
 <context>
@@ -13062,7 +13062,7 @@ and simple press Apply button</source>
         <location line="+32"/>
         <location line="+31"/>
         <source>Save CDL netlist failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось сохранить список соединений CDL!</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -13196,7 +13196,9 @@ Use subcircuit to crete Verilog-A module!</source>
         <source>Executable %1 not found! 
 
 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Исполняемый файл %1 не найден!
+
+(%2)</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -14214,29 +14216,31 @@ Starts S-parameter viewer</source>
         <location line="+13"/>
         <location line="+18"/>
         <source>Save CDL netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить список соединений CDL</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Show Grid (current document)</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать сетку (текущий документ)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Alt+G</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+G</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show or hide the grid for the current document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать или скрыть сетку для текущего документа.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show / Hide Grid
 
 Show or hide the grid for the current document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать/скрыть сетку
+
+Показать или скрыть сетку для текущего документа.</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -16526,22 +16530,22 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+33"/>
         <source>Grid Color (set after reload):</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет сетки (устанавливается после перезагрузки):</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Default graph line thickness:</source>
-        <translation type="unfinished"></translation>
+        <translation>Толщина линии графика по умолчанию:</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>App Style:</source>
-        <translation type="unfinished"></translation>
+        <translation>Стиль приложения:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешний вид</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -18015,17 +18019,17 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location line="-3"/>
         <source>Ngspice CLI parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры CLI Ngspice</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Xyce CLI parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры CLI Xyce</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>SpiceOpus CLI parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры CLI SpiceOpus</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -18108,17 +18112,19 @@ Please restart Qucs to affect changes!</source>
         <source>Set SPICE parameters string as a plain text.
 Example:
 V0=1.0 I0=2.0</source>
-        <translation type="unfinished"></translation>
+        <translation>Установите строку параметров SPICE как обычный текст.
+Пример:
+V0=1.0 I0=2.0</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show</source>
-        <translation type="unfinished">Показать</translation>
+        <translation>Показать</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SPICE parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры SPICE:</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -18292,14 +18298,17 @@ V0=1.0 I0=2.0</source>
         <location line="+51"/>
         <source>No symbol files found at the following path:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>По следующему пути не найдено ни одного файла символов:
+</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>
 Check you installation!
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+Проверьте установку!
+</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -18800,72 +18809,72 @@ Allowed LEVELS are: 1,2,3,4,5,6,9</source>
     <message>
         <location filename="../qucs/main.cpp" line="+1048"/>
         <source>display this help and exit</source>
-        <translation type="unfinished"></translation>
+        <translation>отобразить эту справку и выйти</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>convert Qucs schematic into netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>преобразовать схему Qucs в список соединений</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>print Qucs schematic to file (eps needs inkscape)</source>
-        <translation type="unfinished"></translation>
+        <translation>распечатать схему Qucs в файл (для eps нужен inkscape)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set print page size (default A4)</source>
-        <translation type="unfinished"></translation>
+        <translation>установить размер страницы печати (по умолчанию A4)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set dpi value (default 96)</source>
-        <translation type="unfinished"></translation>
+        <translation>установить значение dpi (по умолчанию 96)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set color mode (default RGB)</source>
-        <translation type="unfinished"></translation>
+        <translation>установить цветовой режим (по умолчанию RGB)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set orientation (default portraid)</source>
-        <translation type="unfinished"></translation>
+        <translation>установить ориентацию (по умолчанию портретная)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>use file as input schematic</source>
-        <translation type="unfinished"></translation>
+        <translation>использовать файл как входную схему</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>use file as output netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>использовать файл как выходной список соединений</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create Ngspice netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>создать список соединений Ngspice</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create CDL netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>создать список соединений CDL</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Xyce netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Список соединений Xyce</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>execute Ngspice/Xyce immediately</source>
-        <translation type="unfinished"></translation>
+        <translation>немедленно выполнить Ngspice/Xyce</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create component icons under ./bitmaps_generated</source>
-        <translation type="unfinished"></translation>
+        <translation>создать значки компонентов в ./bitmaps_generated</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -18877,17 +18886,24 @@ Allowed LEVELS are: 1,2,3,4,5,6,9</source>
      ([comp#]_data.csv)
    - CSV file with component properties.
      ([comp#]_props.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>дамп данных для документации:
+* файл с категориями: categories.txt
+* один каталог на категорию (например, ./lumped
+components/)
+- CSV-файл с данными компонентов
+([comp#]_data.csv)
+- CSV-файл со свойствами компонентов.
+([comp#]_props.csv)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>list component entry formats for schematic and netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>форматы записи компонентов списка для схемы и списка соединений</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>write netlist to console</source>
-        <translation type="unfinished"></translation>
+        <translation>записать список соединений на консоль</translation>
     </message>
 </context>
 <context>
