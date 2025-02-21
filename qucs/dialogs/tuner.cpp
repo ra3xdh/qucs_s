@@ -450,7 +450,7 @@ void tunerElement::slotStepChanged()
 
     if (!ok)
     {
-        QMessageBox::warning(this, "ERROR", "Entered step is not correct", QMessageBox::Ok);
+        QMessageBox::warning(this, tr("ERROR"), tr("Entered step is not correct"), QMessageBox::Ok);
         //Restore previous step
         QString val = misc::num2str(stepValue);
         int index = 5;//By default, no scaling
@@ -507,7 +507,7 @@ void tunerElement::slotValueChanged(bool simulate)
     ValueUnitsCombobox->blockSignals(true);
     if (!ok || (v < 0))
     {
-        QMessageBox::warning(this, "ERROR", "Value not correct", QMessageBox::Ok);
+        QMessageBox::warning(this, tr("ERROR"), tr("Value not correct"), QMessageBox::Ok);
         //Restore values
         QString val = misc::num2str(numValue);
         int index = 5;//By default, no scaling
@@ -663,8 +663,8 @@ TunerDialog::TunerDialog(QWidget *_w, QWidget *parent) :
 {
     setAttribute(Qt::WA_DeleteOnClose);//This attribute forces the widget to be destroyed after closing
     qDebug() << "Tuner::TunerDialog";
-    this->setObjectName("Tuner");
-    this->setWindowTitle("Tuner");
+    this->setObjectName(tr("Tuner"));
+    this->setWindowTitle(tr("Tuner"));
     gbox = new QGridLayout();
     this->setLayout(gbox);
 
@@ -673,10 +673,10 @@ TunerDialog::TunerDialog(QWidget *_w, QWidget *parent) :
     QGridLayout * buttonsLayout = new QGridLayout();
     ButtonsPanel->setLayout(buttonsLayout);
 
-    closeButton = new QPushButton("Close", this);
-    updateValues = new QPushButton("Update Values", this);
+    closeButton = new QPushButton(tr("Close"), this);
+    updateValues = new QPushButton(tr("Update Values"), this);
     updateValues->setEnabled(false);//It doesn't make sense to activate it at first... only when at least a tuning element is active...
-    resetValues = new QPushButton("Reset Values", this);
+    resetValues = new QPushButton(tr("Reset Values"), this);
     resetValues->setEnabled(false);
 
     //When pressing the Enter key at the Maxium lineedit focus is automatically set to the reset button leading to
@@ -700,7 +700,7 @@ TunerDialog::TunerDialog(QWidget *_w, QWidget *parent) :
     progressBar->setVisible(false);
     gbox->addWidget(progressBar, 2, 0);
 
-    info->showMessage("Please select a component to tune");
+    info->showMessage(tr("Please select a component to tune"));
     setMinimumWidth(300);//Otherwise, it won't fit the "help" text...
     valuesUpdated = false;
     connect(closeButton, SIGNAL(released()), this, SLOT(close()));

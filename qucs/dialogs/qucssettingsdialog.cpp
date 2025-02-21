@@ -380,42 +380,42 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     locationsGrid->addWidget(new QLabel(tr("Qucs Home:"), locationsTab) ,1,0);
     homeEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(homeEdit,1,1);
-    QPushButton *HomeButt = new QPushButton("Browse");
+    QPushButton *HomeButt = new QPushButton(tr("Browse"));
     locationsGrid->addWidget(HomeButt, 1, 2);
     connect(HomeButt, SIGNAL(clicked()), SLOT(slotHomeDirBrowse()));
 
     locationsGrid->addWidget(new QLabel(tr("AdmsXml Path:"), locationsTab) ,2,0);
     admsXmlEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(admsXmlEdit,2,1);
-    QPushButton *AdmsXmlButt = new QPushButton("Browse");
+    QPushButton *AdmsXmlButt = new QPushButton(tr("Browse"));
     locationsGrid->addWidget(AdmsXmlButt, 2, 2);
     connect(AdmsXmlButt, SIGNAL(clicked()), SLOT(slotAdmsXmlDirBrowse()));
 
     locationsGrid->addWidget(new QLabel(tr("ASCO Path:"), locationsTab) ,3,0);
     ascoEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(ascoEdit,3,1);
-    QPushButton *ascoButt = new QPushButton("Browse");
+    QPushButton *ascoButt = new QPushButton(tr("Browse"));
     locationsGrid->addWidget(ascoButt, 3, 2);
     connect(ascoButt, SIGNAL(clicked()), SLOT(slotAscoDirBrowse()));
 
     locationsGrid->addWidget(new QLabel(tr("Octave Path:"), locationsTab) ,4,0);
     octaveEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(octaveEdit,4,1);
-    QPushButton *OctaveButt = new QPushButton("Browse");
+    QPushButton *OctaveButt = new QPushButton(tr("Browse"));
     locationsGrid->addWidget(OctaveButt, 4, 2);
     connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveDirBrowse()));
 
     locationsGrid->addWidget(new QLabel(tr("OpenVAF Path:"), locationsTab) ,5,0);
     OpenVAFEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(OpenVAFEdit,5,1);
-    QPushButton *OpenVAFButt = new QPushButton("Browse");
+    QPushButton *OpenVAFButt = new QPushButton(tr("Browse"));
     locationsGrid->addWidget(OpenVAFButt, 5, 2);
     connect(OpenVAFButt, SIGNAL(clicked()), SLOT(slotOpenVAFDirBrowse()));
 
     locationsGrid->addWidget(new QLabel(tr("RF Layout Path:"), locationsTab) ,6,0);
     RFLayoutEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(RFLayoutEdit,6,1);
-    QPushButton *RFLButt = new QPushButton("Browse");
+    QPushButton *RFLButt = new QPushButton(tr("Browse"));
     locationsGrid->addWidget(RFLButt, 6, 2);
     connect(RFLButt, SIGNAL(clicked()), SLOT(slotRFLayoutDirBrowse()));
 
@@ -441,15 +441,15 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     connect(pathsTableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotPathSelectionChanged()));
     locationsGrid->addWidget(pathsTableWidget,7,0,3,2);
 
-    QPushButton *AddPathButt = new QPushButton("Add Path");
+    QPushButton *AddPathButt = new QPushButton(tr("Add Path"));
     locationsGrid->addWidget(AddPathButt, 7, 2);
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
-    QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders");
+    QPushButton *AddPathSubFolButt = new QPushButton(tr("Add Path With SubFolders"));
     locationsGrid->addWidget(AddPathSubFolButt, 8, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
-    RemovePathButt = new QPushButton("Remove Path");
+    RemovePathButt = new QPushButton(tr("Remove Path"));
     // disable button if no paths in the table are selected
     RemovePathButt->setEnabled(false);
     locationsGrid->addWidget(RemovePathButt , 9, 2);
