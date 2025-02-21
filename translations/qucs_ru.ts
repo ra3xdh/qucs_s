@@ -18688,7 +18688,7 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location line="+24"/>
         <source>Please select a component to tune</source>
-        <translation>Пожалуйста, выберите компонент для тюнинга</translation>
+        <translation>Выберите компонент для тюнинга</translation>
     </message>
     <message>
         <location line="+37"/>
