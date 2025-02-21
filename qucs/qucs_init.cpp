@@ -553,10 +553,10 @@ void QucsApp::initActions()
   simulate->setWhatsThis(tr("Simulate\n\nSimulates the current schematic"));
   connect(simulate, SIGNAL(triggered()), SLOT(slotSimulate()));
 
-  tune = new QAction(QIcon((":/bitmaps/svg/tune.svg")),"Tune", this);
+  tune = new QAction(QIcon((":/bitmaps/svg/tune.svg")),tr("Tune"), this);
   tune->setShortcut(Qt::Key_F3);
-  tune->setStatusTip("Tuner");
-  tune->setWhatsThis("Allows to live tune variables and show the result in the dataview");
+  tune->setStatusTip(tr("Tuner"));
+  tune->setWhatsThis(tr("Allows to live tune variables and show the result in the dataview"));
   tune->setCheckable(true);
   connect(tune, SIGNAL(toggled(bool)), SLOT(slotTune(bool)));
 
