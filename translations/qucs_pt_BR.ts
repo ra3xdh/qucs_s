@@ -13800,7 +13800,22 @@ Starts S-parameter viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+21"/>
+        <source>Tune</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Tuner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Allows to live tune variables and show the result in the dataview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <location line="+1"/>
         <location filename="../qucs/qucs.cpp" line="+321"/>
         <location line="+13"/>
@@ -16136,7 +16151,17 @@ open files with an appropriate program.</source>
         <translation>Qucs Home:</translation>
     </message>
     <message>
+        <location line="+3"/>
         <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <source>Browse</source>
+        <translation type="unfinished">Procurar</translation>
+    </message>
+    <message>
+        <location line="-31"/>
         <source>AdmsXml Path:</source>
         <translation>Caminho para AdmsXml:</translation>
     </message>
@@ -16166,7 +16191,22 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+13"/>
+        <source>Add Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Add Path With SubFolders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Remove Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18053,7 +18093,33 @@ Isere o esqueleto de uma função do Octave</translation>
 <context>
     <name>TunerDialog</name>
     <message>
-        <location filename="../qucs/dialogs/tuner.cpp" line="+740"/>
+        <location filename="../qucs/dialogs/tuner.cpp" line="+666"/>
+        <location line="+1"/>
+        <source>Tuner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Close</source>
+        <translation type="unfinished">Fechar</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Update Values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Reset Values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Please select a component to tune</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
         <source>Add component</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18343,6 +18409,22 @@ Allowed LEVELS are: 1,2,3,4,5,6,9</source>
     <message>
         <location line="+13"/>
         <source>Step</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+242"/>
+        <location line="+57"/>
+        <source>ERROR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-57"/>
+        <source>Entered step is not correct</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
+        <source>Value not correct</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
