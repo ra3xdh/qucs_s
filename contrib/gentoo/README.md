@@ -1,19 +1,25 @@
 qucs_s
 ===============
 
-Gentoo overlay with ebuilds for Qucs-S package
+Gentoo overlay with ebuild for Qucs-S package
 
-TODO: to Science project (sci-electronics)
+To use, follow https://wiki.gentoo.org/wiki/Creating_an_ebuild_repository
+and copy content of this folder to new repository
 
-TODO docs examples test USE flags ?
-TODO lib as separate package ? with meta like kicad-meta ?
-TODO qucsatorrf - separate ebuild ?
+===============
+TODO list:
 
-TODO qucs - qucsator ebuild
-TODO gnucsator - gnucap based
+to Science project (sci-electronics)
 
-TODO openvaf
+docs examples test USE flags ?
+lib as separate package ? with meta like kicad-meta ?
+qucsatorrf - separate ebuild ?
 
-TODO xyce ebuild ?
-TODO spiceopus ebuild ?
+qucs - qucsator ebuild
+gnucsator - gnucap based - ebuild
+
+openvaf - ebuild ?
+
+xyce ebuild ?
+spiceopus ebuild ?
 
