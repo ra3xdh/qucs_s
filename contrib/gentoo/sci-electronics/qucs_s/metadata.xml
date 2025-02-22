@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<name>Vadim Kuznetsov</name>
+		<email>ra3xdh@gmail.com</email>
+	</maintainer>
+	<maintainer type="person">
+		<name>Michael Tulupov</name>
+		<email>vaxxabait@gmail.com</email>
+	</maintainer>
+	<maintainer type="project">
+		<name>Proxy Maintainers</name>
+		<email>proxy-maint@gentoo.org</email>
+	</maintainer>
+	<longdescription lang="en">
+	Qucs-S is a circuit simulation program based on Qucs circuit simulator. The "S" letter indicates SPICE.
+	The purpose of the Qucs-S project is to use free circuit simulation kernels (Ngspice, Qucsator, Xyce)
+	with the unified GUI based on Qt6 toolkit. It merges the power of SPICE and the simplicity of the Qucs GUI.
+	Qucs-S is not a simulator by itself, but it requires to use an external simulation backend with it.
+	Qucs-S allows to use the following open-source simulation kernels:
+
+	<pkg>sci-electronics/ngspice</pkg> is recommended to use.
+	Ngspice is powerful mixed-level/mixed-signal circuit simulator.	The most of industrial SPICE models
+	are compatible with Ngspice. It has an excellent simulation performance and powerful postprocessor.
+	Google Skywater 130nm PDK supports Ngspice.
+	
+	XYCE is a new SPICE-compatible circuit simulator written by Sandia from the scratch. It supports
+	basic SPICE simulation types and has an advanced RF simulation features such as Harmonic balance simulation.
+    
+	QucsatorRF for RF and microwave circuits design. It provides advanced models for such devices microstrip
+	lines and waveguides. QucsatorRF is not SPICE compatible. The general purpose circuits simulation is
+	also possible but not recommended.
+	
+	SpiceOpus is developed by the Faculty of Electrical Engineering of the Ljubljana University. It based on
+	the SPICE-3f5 code
+	</longdescription>
+	<longdescription lang="ru">
+	Qucs-S - это кроссплатформенная программа с открытым исходным кодом для аналогового моделирования
+	электронных схем с графическим интерфейсом, написанная на С++ на базе библиотек Qt6.
+	
+	Qucs-S основан как форк проекта Qucs, а буква "S" обозначает SPICE - стандарт де-факто в аналоговом
+	моделировании. Он объединяет мощь разных SPICE-симуляторов с универсальным и простым в использовании
+	интерфейсом Qucs.
+	
+	Qucs-S не моделирует схему сам по себе, а использует внешний симулятор:
+
+	<pkg>sci-electronics/ngspice</pkg> - рекомендуется как наиболее распространённый симулятор
+	с открытым исходным кодом. Большая часть доступных SPICE-моделей компонентов совместима с Ngspice.
+	У него отличная скорость работы, а также мощный и гибкий постпроцессор обработки результатов.
+	Как один из примеров, Google Skywater 130nm PDK, библиотека компонентов для разработки микросхем
+	от Google, включает модели для Ngspice.
+
+	QucsatorRF - предназначен для радиочастотного моделирования. Несовместим с SPICE-моделями, зато имеет
+	продвинутые модели для микрополосковых линий и волноводов. Также способен моделировать обычные схемы,
+	но это не рекомендуется.
+	Не требует отдельной установки, поскольку входит в комплект Qucs-S.
+	
+	XYCE - новый SPICE-симулятор, написаный с руля, от Sandia National Laboratories. Поддерживает
+	как стандартные типы моделей SPICE, так и продвинутые функции для радиочастотного моделирования,
+	к примеру метод гармонического баланса.
+    	
+	SpiceOpus - бесплатный симулятор с закрытым исходным кодом от инженерного факультета университета Любляны.
+	Основан на оигинальном коде SPICE-3f5 с различными улучшениями и расширениями.
+	</longdescription>
+	<use lang="en">
+		<flag name="ngspice">Support Spice simulations via <pkg>sci-electronics/ngspice</pkg></flag>
+		<flag name="octave">Support post-processing via <pkg>sci-mathematics/octave</pkg></flag>
+	</use>
+	<upstream>
+		<maintainer status="active">
+			<name>Vadim Kuznetsov</name>
+			<email>ra3xdh@gmail.com</email>
+		</maintainer>
+		<changelog>https://github.com/ra3xdh/qucs_s/releases</changelog>
+		<doc lang="en">https://ra3xdh.github.io/pdf/qucs_s_tutorial.pdf</doc>
+		<bugs-to>mailto:ra3xdh@gmail.com</bugs-to>
+		<remote-id type="github">ra3xdh/qucs_s</remote-id>
+	</upstream>
+</pkgmetadata>
