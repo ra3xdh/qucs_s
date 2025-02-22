@@ -1973,11 +1973,31 @@ bool Schematic::deleteElements()
         delete l;
     }
 
-    for (auto* pw : selection.wires)        // all selected wires
+    // selection.wires cannot be used for traversing,
+    // because each removal of a wire or a component may change
+    // wire set. Consider example:
+    //
+    //     o
+    //  w1 |   R1
+    //     o-[==]-o
+    //  w2 |
+    //     o
+    //
+    // Two wires and a component. If component is removed first,
+    // then wires w1 and w2 are merged into one wire. If they
+    // both were selected, then selection.wires becomes no longer
+    // valid.
+    for (auto* pw = a_Wires->first(); pw != nullptr; )
     {
+        if (pw->isSelected) {
             deleteWire(pw);
+            // Call to deleteWire removes one item from the list
+            // and everything shifts one position down.
             pw = a_Wires->current();
             sel = true;
+        } else {
+            pw = a_Wires->next();
+        }
     }
 
     Diagram *pd = a_Diagrams->first();
