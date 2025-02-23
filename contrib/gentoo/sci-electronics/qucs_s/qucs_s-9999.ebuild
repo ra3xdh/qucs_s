@@ -3,18 +3,21 @@
 
 EAPI=8
 
-if [[ ${PV} == "9999" ]]; then
-	EGIT_REPO_URI="https://github.com/ra3xdh/qucs_s.git"
-	inherit git-r3
-else
-	SRC_URI="https://github.com/ra3xdh/qucs_s/releases/download/${PV}/qucs-s-${PV}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-fi
-
 inherit cmake-multilib optfeature xdg
 
 DESCRIPTION="Quite universal circuit simulator with SPICE"
 HOMEPAGE="https://github.com/ra3xdh/qucs_s"
+
+MY_PN="qucs-s"
+MY_P=${MY_PN}-${PV}
+
+if [[ ${PV} == 9999 ]]; then
+	EGIT_REPO_URI="https://github.com/ra3xdh/${PN}.git"
+	inherit git-r3
+else
+	SRC_URI="https://github.com/ra3xdh/${PN}/releases/download/${PV}/${MY_P}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+fi
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -31,6 +34,10 @@ BDEPEND="
 	dev-util/gperf
 	app-text/dos2unix
 "
+
+S="${WORKDIR}/${MY_P}"
+
+DOCS="${S}/AUTHORS ${S}/ChangeLog ${S}/debian/changelog ${S}/CONTRIBUTING.md ${S}/NEWS.md ${S}/NEWS_qucs ${S}/README.md ${S}/README_qucs ${S}/THANKS ${S}/TODO"
 
 multilib_src_configure() {
         local mycmakeargs=(
