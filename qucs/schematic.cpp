@@ -1318,19 +1318,19 @@ Schematic::Selection Schematic::currentSelection() const {
 
     // find boundings of all wires
     for (auto* pw : *a_Wires) {
-        if (!pw->isSelected) {
-            continue;
+        if (pw->isSelected) {
+            isAnySelected = true;
+            selection.wires.push_back(pw);
+            xmin = std::min(pw->x1, xmin);
+            xmax = std::max(pw->x2, xmax);
+            ymin = std::min(pw->y1, ymin);
+            ymax = std::max(pw->y2, ymax);
         }
-        isAnySelected = true;
-        selection.wires.push_back(pw);
-        xmin          = std::min(pw->x1, xmin);
-        xmax          = std::max(pw->x2, xmax);
-        ymin          = std::min(pw->y1, ymin);
-        ymax          = std::max(pw->y2, ymax);
 
-        if (auto* pl = pw->Label; pl) { // check position of wire label
-            selection.labels.push_back(pl);
-            pl->getLabelBounding(x1, y1, x2, y2);
+        if (pw->Label != nullptr && pw->Label->isSelected) { // check position of wire label
+            isAnySelected = true;
+            selection.labels.push_back(pw->Label);
+            pw->Label->getLabelBounding(x1, y1, x2, y2);
             xmin = std::min(x1, xmin);
             xmax = std::max(x2, xmax);
             ymin = std::min(y1, ymin);
@@ -1344,10 +1344,10 @@ Schematic::Selection Schematic::currentSelection() const {
             selection.nodes.push_back(pn);
         }
 
-        if (auto* pl = pn->Label; pl) { // check position of node label
-            selection.labels.push_back(pl);
+        if (pn->Label != nullptr && pn->Label->isSelected) { // check position of node label
+            selection.labels.push_back(pn->Label);
             isAnySelected = true;
-            pl->getLabelBounding(x1, y1, x2, y2);
+            pn->Label->getLabelBounding(x1, y1, x2, y2);
             xmin = std::min(x1, xmin);
             xmax = std::max(x2, xmax);
             ymin = std::min(y1, ymin);
@@ -1357,20 +1357,21 @@ Schematic::Selection Schematic::currentSelection() const {
 
     // find boundings of all diagrams
     for (auto* pd : *a_Diagrams) {
-        if (!pd->isSelected) {
-            continue;
+        if (pd->isSelected) {
+            selection.diagrams.push_back(pd);
+            isAnySelected = true;
+            pd->Bounding(x1, y1, x2, y2);
+            xmin = std::min(x1, xmin);
+            xmax = std::max(x2, xmax);
+            ymin = std::min(y1, ymin);
+            ymax = std::max(y2, ymax);
         }
-        selection.diagrams.push_back(pd);
-        isAnySelected = true;
-        pd->Bounding(x1, y1, x2, y2);
-        xmin = std::min(x1, xmin);
-        xmax = std::max(x2, xmax);
-        ymin = std::min(y1, ymin);
-        ymax = std::max(y2, ymax);
 
         for (Graph* pg : pd->Graphs) {
             // test all markers of diagram
             for (Marker* pm : pg->Markers) {
+                if (!pm->isSelected) continue;
+                isAnySelected = true;
                 selection.markers.push_back(pm);
                 pm->Bounding(x1, y1, x2, y2);
                 xmin = std::min(x1, xmin);
