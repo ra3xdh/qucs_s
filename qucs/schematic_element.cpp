@@ -3213,7 +3213,7 @@ void Schematic::showEphemeralWire(const QPoint& a, const QPoint& b) noexcept {
     for (std::size_t i = 1; i < points.size(); i++) {
         auto m = points[i-1];
         auto n = points[i];
-	PostPaintEvent(_Line, m.x(), m.y(), n.x(), n.y());
+        PostPaintEvent(_Line, m.x(), m.y(), n.x(), n.y(), 3);
     }
 
 }
