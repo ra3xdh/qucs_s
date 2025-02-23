@@ -584,9 +584,15 @@ void Schematic::drawPostPaintEvents(QPainter* painter) {
             painter->fillRect(p.x1, p.y1, p.x2, p.y2, QColor(200, 220, 240, 100));
             painter->drawRect(p.x1, p.y1, p.x2, p.y2);
             break;
-        case _Line:
+        case _Line: {
+            painter->save();
+            QPen lp{painter->pen()};
+            lp.setWidth(p.a == 0 ? 1 : p.a);
+            painter->setPen(lp);
             painter->drawLine(p.x1, p.y1, p.x2, p.y2);
+            painter->restore();
             break;
+        }
         case _Ellipse:
             painter->drawEllipse(p.x1, p.y1, p.x2, p.y2);
             break;
