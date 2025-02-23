@@ -63,10 +63,6 @@
 	SpiceOpus - бесплатный симулятор с закрытым исходным кодом от инженерного факультета университета Любляны.
 	Основан на оигинальном коде SPICE-3f5 с различными улучшениями и расширениями.
 	</longdescription>
-	<use lang="en">
-		<flag name="ngspice">Support Spice simulations via <pkg>sci-electronics/ngspice</pkg></flag>
-		<flag name="octave">Support post-processing via <pkg>sci-mathematics/octave</pkg></flag>
-	</use>
 	<upstream>
 		<maintainer status="active">
 			<name>Vadim Kuznetsov</name>

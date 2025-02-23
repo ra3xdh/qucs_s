@@ -11,7 +11,7 @@ else
 	KEYWORDS="~amd64 ~x86"
 fi
 
-inherit cmake-multilib xdg-utils
+inherit cmake-multilib optfeature xdg
 
 DESCRIPTION="Quite universal circuit simulator with SPICE"
 HOMEPAGE="https://github.com/ra3xdh/qucs_s"
@@ -19,19 +19,19 @@ HOMEPAGE="https://github.com/ra3xdh/qucs_s"
 LICENSE="GPL-2"
 SLOT="0"
 IUSE=""
-RESTRICT="mirror"
+RESTRICT=""
 
 DEPEND="
-		dev-qt/qtsvg:6
-		sci-electronics/ngspice
+	dev-qt/qtbase:6[gui,widgets]
+	dev-qt/qtsvg:6
 "
 RDEPEND="${DEPEND}"
 BDEPEND="
-		dev-qt/qttools:6
-		sys-devel/flex
-		sys-devel/bison
-		app-text/dos2unix
-		dev-util/gperf
+	dev-qt/qttools:6[linguist]
+	sys-devel/flex
+	sys-devel/bison
+	dev-util/gperf
+	app-text/dos2unix
 "
 
 multilib_src_configure() {
@@ -42,11 +42,19 @@ multilib_src_configure() {
         cmake_src_configure
 }
 
+pkg_preinst() {
+	xdg_pkg_preinst
+}
+
 pkg_postinst() {
-		xdg_icon_cache_update
+	optfeature "Result postprocessing in Octave" sci-mathematics/octave
+
+	optfeature_header "Install optonal simulator backends:"
+	optfeature "Ngspice" sci-electronics/ngspice
+
+	xdg_pkg_postinst
 }
 
 pkg_postrm() {
-		xdg_icon_cache_update
+	xdg_pkg_postrm
 }
-
