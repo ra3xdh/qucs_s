@@ -18,8 +18,6 @@ HOMEPAGE="https://github.com/ra3xdh/qucs_s"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE=""
-RESTRICT=""
 
 DEPEND="
 	dev-qt/qtbase:6[gui,widgets]
