@@ -315,7 +315,7 @@ Component * hic2_full::newOne()
 {
   hic2_full * p = new hic2_full();
   p->Props.getFirst()->Value = Props.getFirst()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

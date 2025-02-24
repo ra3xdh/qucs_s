@@ -146,7 +146,7 @@ Component* MOSFET_sub::newOne()
   MOSFET_sub* p = new MOSFET_sub();
   p->Props.at(0)->Value = Props.at(0)->Value;
   p->Props.at(1)->Value = Props.at(1)->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -243,7 +243,7 @@ Element* MOSFET_sub::info_p(QString& Name,
     MOSFET_sub* p = new MOSFET_sub();
     p->Props.at(0)->Value = "pfet";
     p->Props.at(1)->Value = "-1.0 V";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;
@@ -259,7 +259,7 @@ Element* MOSFET_sub::info_depl(QString& Name,
   if(getNewOne) {
     MOSFET_sub* p = new MOSFET_sub();
     p->Props.at(1)->Value = "-1.0 V";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;

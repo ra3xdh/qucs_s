@@ -61,7 +61,7 @@ Element* MutualX::info(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne) {
       MutualX* p =  new MutualX();
       p->Props.at(0)->Value = "2";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;
@@ -71,7 +71,7 @@ Component* MutualX::newOne()
 {
     MutualX *p  = new MutualX();
     p->Props.at(0)->Value=Props.at(0)->Value;
-    p->recreate(0);
+    p->recreate();
     return p;
 }
 

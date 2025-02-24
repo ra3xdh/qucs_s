@@ -90,7 +90,7 @@ Component* JFET::newOne()
 {
   JFET* p = new JFET();
   p->Props.front()->Value = Props.front()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -163,7 +163,7 @@ Element* JFET::info_p(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne) {
     JFET* p = new JFET();
     p->Props.front()->Value = "pfet";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;

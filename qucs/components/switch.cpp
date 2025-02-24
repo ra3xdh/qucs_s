@@ -52,7 +52,7 @@ Component* Switch::newOne()
 {
   Switch *p = new Switch();
   p->Props.front()->Value = Props.front()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 

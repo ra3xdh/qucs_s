@@ -41,7 +41,7 @@ Component * comp_2bit::newOne()
 {
   comp_2bit * p = new comp_2bit();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 
