@@ -36,7 +36,8 @@ SpiceFFT::SpiceFFT()
                                      "[none,rectangular,bartlet,blackman,hanning,hamming,gaussian,flattop]"));
   Props.append(new Property("Order","2",false,"Order of the Gaussian window"));
   Props.append(new Property("Tstart","0",false,"Transient starting time"));
-
+  Props.append(new Property("initialDC", "yes", false,
+              QObject::tr("perform initial DC (set \"no\" to activate UIC)")+" [yes, no]"));
 }
 
 SpiceFFT::~SpiceFFT()
@@ -73,7 +74,13 @@ QString SpiceFFT::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecomp
     double tstop = 1.0/df + tstart;
     double tstep = 1.0/(2*bw);
     QString win = getProperty("Window")->Value;
-    s =  QStringLiteral("tran %1 %2 %3\n").arg(tstep).arg(tstop).arg(tstart);
+    s =  QStringLiteral("tran %1 %2 %3").arg(tstep).arg(tstop).arg(tstart);
+    if (dialect != spicecompat::SPICEXyce) {
+      if (getProperty("initialDC")->Value == "no") {
+        s += " UIC";
+      }
+    }
+    s += "\n";
     s += QStringLiteral("set specwindow=%1\n").arg(win);
     if (win == "gaussian") {
         s += QStringLiteral("set specwindoworder=%1\n")
