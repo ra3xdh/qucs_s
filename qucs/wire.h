@@ -35,6 +35,7 @@ public:
   void paintScheme(Schematic* sch) override;
 
   bool getSelected(int, int);
+  void setName(int distFromPort1, int text_x, int text_y, const QString&, const QString&);
   void setName(const QString&, const QString&, int root_x=0, int root_y=0, int x_=0, int y_=0);
 
   Node *Port1, *Port2;

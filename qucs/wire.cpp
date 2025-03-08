@@ -88,6 +88,23 @@ bool Wire::isHorizontal()
   return (y1 == y2);
 }
 
+// Adapter to use when loading a label from a file. Label root coordinates are stored
+// as distance from port 1 of the wire. Here it's translated to absolute coordinates
+// and passed further where real work is done.
+void Wire::setName(int distFromPort1, int text_x, int text_y, const QString& name, const QString& value)
+{
+    // Zero-length wires are used to save node labels
+    if (x1 == x2 && y1 == y2) {
+        setName(name, value, x1, y1, text_x, text_y);
+        return;
+    }
+
+    const auto ratio = distFromPort1 / qucs_s::geom::distance(QPoint{x1, y1}, QPoint{x2, y2});
+    const auto root_x = static_cast<int>(x1 + ratio * (x2 - x1));
+    const auto root_y = static_cast<int>(y1 + ratio * (y2 - y1));
+    setName(name, value, root_x, root_y, text_x, text_y);
+}
+
 void Wire::setName(const QString& Name_, const QString& Value_, int root_x, int root_y, int x_, int y_)
 {
   if(Name_.isEmpty() && Value_.isEmpty()) {
@@ -118,7 +135,7 @@ QString Wire::save()
   if(Label) {
           s += " \""+Label->Name+"\" ";
           s += QString::number(Label->x1)+" "+QString::number(Label->y1)+" ";
-          s += QString::number(Label->cx-x1 + Label->cy-y1);
+          s += QString::number(static_cast<int>(qucs_s::geom::distance(QPoint{x1, y1}, Label->root())));
           s += " \""+Label->initValue+"\">";
   }
   else { s += R"( "" 0 0 0 "">)"; }
@@ -167,7 +184,7 @@ bool Wire::load(const QString& _s)
     int delta = s.section(' ',7,7).toInt(&ok);// delta for x/y root coordinate
     if(!ok) return false;
 
-    setName(n, s.section('"',3,3), delta, nx, ny);  // Wire Label
+    setName(delta, nx, ny, n, s.section('"',3,3));  // Wire Label
   }
 
   return true;
