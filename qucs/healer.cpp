@@ -119,18 +119,24 @@ QPoint qucs_s::GenericPort::center() const
             if (new_node == m_wire->Port1) return m_wire->Port1;
 
             auto* old_node = m_wire->Port1;
-            new_node->connect(m_wire);
-            m_wire->Port1->disconnect(m_wire);
+            if (old_node) old_node->disconnect(m_wire);
             m_wire->Port1 = new_node;
+            new_node->connect(m_wire);
+
+            // Ensure that only this port is connected to the new node
+            if (m_wire->Port2 == new_node) m_wire->Port2 = nullptr;
             return old_node;
         }
         case PortType::WireTwo: {
             if (new_node == m_wire->Port2) return m_wire->Port2;
 
             auto* old_node = m_wire->Port2;
-            new_node->connect(m_wire);
-            m_wire->Port2->disconnect(m_wire);
+            if (old_node) old_node->disconnect(m_wire);
             m_wire->Port2 = new_node;
+            new_node->connect(m_wire);
+
+            // Ensure that only this port is connected to the new node
+            if (m_wire->Port1 == new_node) m_wire->Port1 = nullptr;
             return old_node;
         }
     }
