@@ -528,10 +528,6 @@ void Component::rotate() noexcept {
     }
     else ty -= dx;
 
-    if (containingSchematic != nullptr) {
-        containingSchematic->setOnGrid(cx,cy);
-    }
-
     rotated++;  // keep track of what's done
     rotated &= 3;
 }

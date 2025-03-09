@@ -1537,10 +1537,18 @@ bool Schematic::elementsOnGrid()
     const auto onGridSetter = [this](Element* e) { e->moveCenterTo(setOnGrid(e->center())); };
 
     std::ranges::for_each(selection.components, onGridSetter);
-    std::ranges::for_each(selection.wires, onGridSetter);
     std::ranges::for_each(selection.paintings, onGridSetter);
     std::ranges::for_each(selection.diagrams, onGridSetter);
     std::ranges::for_each(selection.labels, onGridSetter);
+    std::ranges::for_each(selection.nodes, onGridSetter);
+
+    std::ranges::for_each(selection.wires, [this](Wire* w) {
+        setOnGrid(w->x1, w->y1);
+        setOnGrid(w->x2, w->y2);
+        // Update center
+        w->cx = (w->x1 + w->x2) / 2;
+        w->cy = (w->y1 + w->y2) / 2;
+    });
 
     heal(qucs_s::wire::Planner::PlanType::Straight);
 
@@ -1570,10 +1578,9 @@ bool Schematic::rotateElements()
     std::ranges::for_each(selection.paintings, rotator);
     std::ranges::for_each(selection.diagrams, rotator);
     std::ranges::for_each(selection.labels, rotator);
+    std::ranges::for_each(selection.nodes, rotator);
 
-    heal(qucs_s::wire::Planner::PlanType::Straight);
-
-    setChanged(true, true);
+    elementsOnGrid();
     return true;
 }
 
@@ -1599,11 +1606,9 @@ bool Schematic::mirrorXComponents()
     std::ranges::for_each(selection.paintings, mirrorer);
     std::ranges::for_each(selection.diagrams, mirrorer);
     std::ranges::for_each(selection.labels, mirrorer);
+    std::ranges::for_each(selection.nodes, mirrorer);
 
-
-    heal(qucs_s::wire::Planner::PlanType::Straight);
-
-    setChanged(true, true);
+    elementsOnGrid();
     return true;
 }
 
@@ -1629,10 +1634,9 @@ bool Schematic::mirrorYComponents()
     std::ranges::for_each(selection.paintings, mirrorer);
     std::ranges::for_each(selection.diagrams, mirrorer);
     std::ranges::for_each(selection.labels, mirrorer);
+    std::ranges::for_each(selection.nodes, mirrorer);
 
-    heal(qucs_s::wire::Planner::PlanType::Straight);
-
-    setChanged(true, true);
+    elementsOnGrid();
     return true;
 }
 
