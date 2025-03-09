@@ -243,8 +243,10 @@ bool allComponentsAreConsistent(const Q3PtrList<Component>* components)
 
             if (!p->Connection->is_connected(c)) {
                 qCritical() << "Incostistent component is found!"
-                            << "Node from a port of component" << c
-                            << "doesn't have connection to" << c;
+                            << "Port of the component" << c
+                            << "located at" << (QPoint{p->x, p->y} + c->center())
+                            << "is connected to a node" << p->Connection << "located at" << p->Connection->center()
+                            << "but the node doesn't have a reference to the component.";
                 is_ok = false;
             }
         }
