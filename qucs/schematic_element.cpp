@@ -2674,6 +2674,19 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
     }
 
 
+    // Fix "same location nodes" anomalies
+
+    for (auto sameloc_node_group : internal::sameloc_nodes(a_Nodes)) {
+        auto recipient = sameloc_node_group.front();
+
+        for (auto donor = (sameloc_node_group.begin() + 1); donor != sameloc_node_group.end(); donor++) {
+            internal::merge(*donor, recipient);
+            internal::removeFromPtrList(*donor, a_Nodes);
+            delete *donor;
+        }
+    }
+
+
     // Fix "duplicate wires" anomalies
 
     {
