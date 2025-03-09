@@ -492,6 +492,8 @@ Wire* Schematic::splitWire(Wire *pw, Node *pn)
 
     pw->x2 = pn->cx;
     pw->y2 = pn->cy;
+    pw->cx = (pw->x1 + pw->x2) / 2;
+    pw->cy = (pw->y1 + pw->y2) / 2;
     pw->Port2 = pn;
 
     newWire->Port2->connect(newWire);
