@@ -2703,6 +2703,41 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
         }
     }
 
+
+    // Remove wires between ports of the same component
+    {
+        std::vector<Wire*> shorts;
+        for (auto* wire : *a_Wires) {
+            std::set<Component*> port_1_comps;
+            for (auto* connectable : *wire->Port1) {
+                if (auto* comp = dynamic_cast<Component*>(connectable)) {
+                    port_1_comps.insert(comp);
+                }
+            }
+
+            if (port_1_comps.empty()) continue;
+
+            std::set<Component*> shorted;
+            for (auto* connectable : *wire->Port2) {
+                if (auto* comp = dynamic_cast<Component*>(connectable)) {
+                    if (port_1_comps.contains(comp)) {
+                        shorted.insert(comp);
+                    }
+                }
+            }
+
+            for (auto* comp : shorted) {
+                if (comp->boundingRectNoProperties().contains(wire->center())) {
+                    shorts.push_back(wire);
+                }
+            }
+        }
+
+        for (auto* wire : shorts) {
+            deleteWire(wire);
+        }
+    }
+
     optimizeWires();
     //
     // Baked
