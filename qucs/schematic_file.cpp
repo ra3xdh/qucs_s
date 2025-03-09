@@ -967,8 +967,7 @@ bool Schematic::loadWires(QTextStream *stream, QList<Element*> *List)
     Line = Line.trimmed();
     if(Line.isEmpty()) continue;
 
-    // (Node*)4 =  move all ports (later on)
-    w = new Wire(0,0,0,0, (Node*)4,(Node*)4);
+    w = new Wire(0,0,0,0, nullptr, nullptr);
     if(!w->load(Line)) {
       QMessageBox::critical(0, QObject::tr("Error"),
       QObject::tr("Format Error:\nWrong 'wire' line format!"));
