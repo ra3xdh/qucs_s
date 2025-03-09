@@ -127,7 +127,7 @@ QPoint qucs_s::GenericPort::center() const
         case PortType::WireTwo: {
             if (new_node == m_wire->Port2) return m_wire->Port2;
 
-            auto* old_node = m_wire->Port1;
+            auto* old_node = m_wire->Port2;
             new_node->connect(m_wire);
             m_wire->Port2->disconnect(m_wire);
             m_wire->Port2 = new_node;
