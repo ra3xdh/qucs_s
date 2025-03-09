@@ -52,7 +52,7 @@ void Wire::rotate() noexcept
 
   if (Label != nullptr) {
     auto r = Label->root();
-    qucs_s::geom::rotate_point_ccw(r.rx(), y1, r.ry(), cy);
+    qucs_s::geom::rotate_point_ccw(r.rx(), r.ry(), cx, cy);
     Label->moveRootTo(r.x(), r.y());
   }
 }
