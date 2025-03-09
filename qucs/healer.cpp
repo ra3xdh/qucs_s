@@ -101,9 +101,18 @@ QPoint qucs_s::GenericPort::center() const
             if (new_node == m_port->Connection) return new_node;
 
             auto* old_node = m_port->Connection;
-            m_port->Connection->disconnect(m_comp);
+            if (old_node) old_node->disconnect(m_comp);
             m_port->Connection = new_node;
             new_node->connect(m_comp);
+
+            // Ensure that only this and no other port of the component
+            // is connected to the new node.
+            for (auto* p : m_comp->Ports) {
+                if (p->Connection == new_node && p != m_port) {
+                    p->Connection = nullptr;
+                }
+            }
+
             return old_node;
         }
         case PortType::WireOne: {

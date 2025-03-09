@@ -2650,6 +2650,22 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
     }
     a_wirePlanner.setType(old_plan);
 
+
+    // Fix "node above wire" anomalies
+
+    {
+        for (auto* n : *a_Nodes) {
+            for (auto wit = a_Wires->begin(); wit != a_Wires->end(); wit++) {
+                auto w = *wit;
+                if (qucs_s::geom::is_between(n, w->Port1, w->Port2)) {
+                    splitWire(w, n);
+                    wit = a_Wires->begin();
+                }
+            }
+        }
+    }
+
+
     // Fix "duplicate wires" anomalies
 
     {
