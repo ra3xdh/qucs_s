@@ -1590,7 +1590,7 @@ bool Schematic::mirrorXComponents()
     const auto bounds = internal::total_br(selection);
     if (!bounds) assert(false);
 
-    const auto axis = bounds->center().y();
+    const auto axis = static_cast<int>(bounds->top() + std::round(bounds->height() / 2.0));
 
     const auto mirrorer = [axis,in_place](Element* e) { in_place ? e -> mirrorX() : e->mirrorX(axis); };
 
@@ -1620,7 +1620,7 @@ bool Schematic::mirrorYComponents()
     const auto bounds = internal::total_br(selection);
     if (!bounds) assert(false);
 
-    const auto axis = bounds->center().x();
+    const auto axis = static_cast<int>(bounds->left() + std::round(bounds->width() / 2.0));
 
     const auto mirrorer = [axis,in_place](Element* e) { in_place ? e->mirrorY() : e->mirrorY(axis); };
 
