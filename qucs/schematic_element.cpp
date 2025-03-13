@@ -2732,7 +2732,7 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
     // Remove wires between ports of the same component
     {
-        std::vector<Wire*> shorts;
+        std::set<Wire*> shorts;
         for (auto* wire : *a_Wires) {
             std::set<Component*> port_1_comps;
             for (auto* connectable : *wire->Port1) {
@@ -2754,7 +2754,7 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
             for (auto* comp : shorted) {
                 if (comp->boundingRectNoProperties().contains(wire->center())) {
-                    shorts.push_back(wire);
+                    shorts.insert(wire);
                 }
             }
         }
