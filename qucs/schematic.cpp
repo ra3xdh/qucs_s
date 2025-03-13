@@ -1192,139 +1192,88 @@ QRect Schematic::allBoundingRect() {
     return QRect{a_UsedX1, a_UsedY1, (a_UsedX2 - a_UsedX1), (a_UsedY2 - a_UsedY1)};
 }
 
+namespace internal {
+
+void unite(std::optional<QRect>& left, const QRect& right)
+{
+    if (left) {
+        (*left) |= right;
+    } else {
+        left.emplace(right);
+    }
+}
+
+}
+
 // ---------------------------------------------------
 void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
 {
-    xmin = INT_MAX;
-    ymin = INT_MAX;
-    xmax = INT_MIN;
-    ymax = INT_MIN;
+    std::optional<QRect> totalBounds = std::nullopt;
 
-    if (a_Components->isEmpty() && a_Wires->isEmpty() && a_Diagrams->isEmpty() && a_Paintings->isEmpty()) {
-        xmin = xmax = 0;
-        ymin = ymax = 0;
-        return;
-    }
-
-    int x1, y1, x2, y2;
-    // find boundings of all components
     for (auto* pc : *a_Components) {
-        pc->entireBounds(x1, y1, x2, y2);
-        xmin = std::min(x1, xmin);
-        xmax = std::max(x2, xmax);
-        ymin = std::min(y1, ymin);
-        ymax = std::max(y2, ymax);
+        internal::unite(totalBounds, pc->boundingRect());
     }
 
-    // find boundings of all wires
     for (auto* pw : *a_Wires) {
-        xmin = std::min(pw->x1, xmin);
-        xmax = std::max(pw->x2, xmax);
-        ymin = std::min(pw->y1, ymin);
-        ymax = std::max(pw->y2, ymax);
-
-        if (auto* pl = pw->Label; pl) { // check position of wire label
-            pl->getLabelBounding(x1, y1, x2, y2);
-            xmin = std::min(x1, xmin);
-            xmax = std::max(x2, xmax);
-            ymin = std::min(y1, ymin);
-            ymax = std::max(y2, ymax);
-        }
+        internal::unite(totalBounds, pw->boundingRect());
+        if (pw->Label) internal::unite(totalBounds, pw->Label->boundingRect());
     }
 
-    // find boundings of all node labels
     for (auto* pn : *a_Nodes) {
-        if (auto* pl = pn->Label; pl) { // check position of node label
-            pl->getLabelBounding(x1, y1, x2, y2);
-            xmin = std::min(x1, xmin);
-            xmax = std::max(x2, xmax);
-            ymin = std::min(y1, ymin);
-            ymax = std::max(y2, ymax);
-        }
+        if (pn->Label) internal::unite(totalBounds, pn->Label->boundingRect());
     }
 
-    // find boundings of all diagrams
     for (auto* pd : *a_Diagrams) {
-        pd->Bounding(x1, y1, x2, y2);
-        xmin = std::min(x1, xmin);
-        xmax = std::max(x2, xmax);
-        ymin = std::min(y1, ymin);
-        ymax = std::max(y2, ymax);
+        internal::unite(totalBounds, pd->boundingRect());
 
         for (auto* pg : pd->Graphs)
-            // test all markers of diagram
             for (auto* pm : pg->Markers) {
-                pm->Bounding(x1, y1, x2, y2);
-                xmin = std::min(x1, xmin);
-                xmax = std::max(x2, xmax);
-                ymin = std::min(y1, ymin);
-                ymax = std::max(y2, ymax);
+                internal::unite(totalBounds, pm->boundingRect());
             }
     }
 
-    // find boundings of all Paintings
     for (auto* pp : *a_Paintings) {
-        auto br = pp->boundingRect();
-        xmin = std::min(xmin, br.left());
-        xmax = std::max(xmax, br.left() + br.width());
-        ymin = std::min(ymin, br.top());
-        ymax = std::max(ymax, br.top() + br.height());
+        internal::unite(totalBounds, pp->boundingRect());
+    }
+
+    if (totalBounds) {
+        xmin = totalBounds->left();
+        ymin = totalBounds->top();
+        xmax = totalBounds->right();
+        ymax = totalBounds->bottom();
+    } else {
+        xmin = 0;
+        ymin = 0;
+        xmax = 0;
+        ymax = 0;
     }
 }
 
 Schematic::Selection Schematic::currentSelection() const {
-    int xmin = INT_MAX;
-    int ymin = INT_MAX;
-    int xmax = INT_MIN;
-    int ymax = INT_MIN;
 
-    bool isAnySelected = false;
-
-    if (a_Components->isEmpty() && a_Wires->isEmpty() && a_Diagrams->isEmpty() &&
-        a_Paintings->isEmpty()) {
-        return {};
-    }
+    std::optional<QRect> totalBounds = std::nullopt;
 
     Selection selection;
 
-    int x1, y1, x2, y2;
-    // find boundings of all components
     for (auto* pc : *a_Components) {
-        if (!pc->isSelected) {
-            continue;
-        }
-        isAnySelected = true;
+        if (!pc->isSelected) continue;
+
         selection.components.push_back(pc);
-        pc->entireBounds(x1, y1, x2, y2);
-        xmin = std::min(x1, xmin);
-        xmax = std::max(x2, xmax);
-        ymin = std::min(y1, ymin);
-        ymax = std::max(y2, ymax);
+        internal::unite(totalBounds, pc->boundingRect());
     }
 
-    // find boundings of all wires
     for (auto* pw : *a_Wires) {
         if (pw->isSelected) {
-            isAnySelected = true;
             selection.wires.push_back(pw);
-            xmin = std::min(pw->x1, xmin);
-            xmax = std::max(pw->x2, xmax);
-            ymin = std::min(pw->y1, ymin);
-            ymax = std::max(pw->y2, ymax);
+            internal::unite(totalBounds, pw->boundingRect());
         }
 
         if (pw->Label != nullptr && pw->Label->isSelected) { // check position of wire label
-            isAnySelected = true;
             selection.labels.push_back(pw->Label);
-            pw->Label->getLabelBounding(x1, y1, x2, y2);
-            xmin = std::min(x1, xmin);
-            xmax = std::max(x2, xmax);
-            ymin = std::min(y1, ymin);
-            ymax = std::max(y2, ymax);
+            internal::unite(totalBounds, pw->Label->boundingRect());
         }
     }
 
-    // find boundings of all node labels
     for (auto* pn : *a_Nodes) {
         if (std::all_of(pn->begin(), pn->end(), [](auto* e) { return e->isSelected; })) {
             selection.nodes.push_back(pn);
@@ -1332,61 +1281,36 @@ Schematic::Selection Schematic::currentSelection() const {
 
         if (pn->Label != nullptr && pn->Label->isSelected) { // check position of node label
             selection.labels.push_back(pn->Label);
-            isAnySelected = true;
-            pn->Label->getLabelBounding(x1, y1, x2, y2);
-            xmin = std::min(x1, xmin);
-            xmax = std::max(x2, xmax);
-            ymin = std::min(y1, ymin);
-            ymax = std::max(y2, ymax);
+            internal::unite(totalBounds, pn->Label->boundingRect());
         }
     }
 
-    // find boundings of all diagrams
     for (auto* pd : *a_Diagrams) {
         if (pd->isSelected) {
             selection.diagrams.push_back(pd);
-            isAnySelected = true;
-            pd->Bounding(x1, y1, x2, y2);
-            xmin = std::min(x1, xmin);
-            xmax = std::max(x2, xmax);
-            ymin = std::min(y1, ymin);
-            ymax = std::max(y2, ymax);
+            internal::unite(totalBounds, pd->boundingRect());
         }
 
         for (Graph* pg : pd->Graphs) {
-            // test all markers of diagram
             for (Marker* pm : pg->Markers) {
                 if (!pm->isSelected) continue;
-                isAnySelected = true;
                 selection.markers.push_back(pm);
-                pm->Bounding(x1, y1, x2, y2);
-                xmin = std::min(x1, xmin);
-                xmax = std::max(x2, xmax);
-                ymin = std::min(y1, ymin);
-                ymax = std::max(y2, ymax);
+                internal::unite(totalBounds, pm->boundingRect());
             }
         }
     }
 
-    // find boundings of all Paintings
     for (auto* pp : *a_Paintings) {
-        if (!pp->isSelected) {
-            continue;
-        }
+        if (!pp->isSelected) continue;
         selection.paintings.push_back(pp);
-        isAnySelected = true;
-        auto br = pp->boundingRect();
-        xmin = std::min(xmin, br.left());
-        xmax = std::max(xmax, br.left() + br.width());
-        ymin = std::min(ymin, br.top());
-        ymax = std::max(ymax, br.top() + br.height());
+        internal::unite(totalBounds, pp->boundingRect());
     }
 
-    if (!isAnySelected) {
+    if (!totalBounds) {
         return {};
     }
 
-    selection.bounds = QRect{xmin, ymin, xmax - xmin, ymax - ymin};
+    selection.bounds = *totalBounds;
     return selection;
 }
 
