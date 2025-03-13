@@ -482,6 +482,7 @@ public:
   Component* searchSelSubcircuit();
   Component* selectedComponent(int, int);
   void       deleteComp(Component*);
+  void       detachComp(Component*);
   Component* getComponentByName(const QString& compname) const;
 
   void     oneLabel(Node*);

@@ -2005,9 +2005,10 @@ Component* Schematic::selectedComponent(int x, int y)
     return 0;
 }
 
-// ---------------------------------------------------
-// Deletes the component 'c'.
-void Schematic::deleteComp(Component *c)
+// Disconnect component and remove it from the list of schematic components.
+// Component is not deleted, pointer remains valid after call. It is responsibility
+// of the caller to handle it by deleting, reinstalling, etc.
+void Schematic::detachComp(Component *c)
 {
     // delete all port connections
     for (auto* port : c->Ports) {
@@ -2021,6 +2022,12 @@ void Schematic::deleteComp(Component *c)
     }
     emit signalComponentDeleted(c);
     internal::removeFromPtrList(c, a_Components);
+}
+
+// Deletes the component 'c'.
+void Schematic::deleteComp(Component *c)
+{
+    detachComp(c);
     delete c;
 }
 
