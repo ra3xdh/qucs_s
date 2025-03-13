@@ -1430,8 +1430,7 @@ void Component::copyComponent(Component *pc) {
 // ***********************************************************************
 void MultiViewComponent::recreate(Schematic *Doc) {
     if (Doc) {
-        Doc->a_Components->setAutoDelete(false);
-        Doc->deleteComp(this);
+        Doc->detachComp(this);
     }
 
     Ellipses.clear();
@@ -1458,7 +1457,6 @@ void MultiViewComponent::recreate(Schematic *Doc) {
 
     if (Doc) {
         Doc->insertRawComponent(this);
-        Doc->a_Components->setAutoDelete(true);
     }
 }
 
