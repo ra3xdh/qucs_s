@@ -2207,26 +2207,30 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
   // update all occurencies of subcircuit in all open documents
   No = 0;
   QWidget *w;
-  Component *pc_tmp;
+
+  const auto needToRecreate = [&Model, &Name, &pathName](const Component* c) {
+    if (c->Model != Model) return false;
+    auto file = c->Props.front()->Value;
+    return file == pathName || file == Name;
+  };
+
   while((w=DocumentTab->widget(No++)) != 0) {
     if(isTextDocument (w))  continue;
 
-    // start from the last to omit re-appended components
-    Schematic *Doc = (Schematic*)w;
-    for(Component *pc=Doc->a_Components->last(); pc!=0; ) {
-      if(pc->Model == Model) {
-        File = pc->Props.front()->Value;
-        if((File == pathName) || (File == Name)) {
-          pc_tmp = Doc->a_Components->prev();
-          Doc->recreateComponent(pc);  // delete and re-append component
-          if(!pc_tmp)  break;
-          Doc->a_Components->findRef(pc_tmp);
-          pc = Doc->a_Components->current();
-          continue;
-        }
-      }
-      pc = Doc->a_Components->prev();
-    }
+    Schematic* Doc = dynamic_cast<Schematic*>(w);
+    assert(Doc != nullptr);
+
+    // Possibly there are components which need to be recreated by calling
+    // Schematic::recreateComponent on them. But there is a pitfall: invocation
+    // of Schematic::recreateComponent removes the component from the list
+    // of components, thus invalidating iterators to it. Because of that,
+    // recreateComponent cannot be invoked while iterating over the list
+    // of components. To circumvent this, pointers to relevant components are
+    // copied to a separate container.
+    // This is a nasty abstraction leak which has to be fixed somehow.
+    std::vector<Component*> to_recreate;
+    std::ranges::copy_if((*Doc->a_Components), std::back_inserter(to_recreate), needToRecreate);
+    std::ranges::for_each(to_recreate, [Doc](Component* c) { Doc->recreateComponent(c); });
   }
 }
 
@@ -2434,7 +2438,7 @@ void QucsApp::slotTune(bool checked)
             QMessageBox::warning(this,tr("Error"),tr("Tuning not possible for digital simulation. "
                                                      "Only analog simulation supported."));
         }
-        if (d->a_Diagrams->isEmpty() && !d->getSimOpenDpl()) {
+        if (d->a_Diagrams->empty() && !d->getSimOpenDpl()) {
             QMessageBox::warning(this,tr("Error"),tr("Tuning has no effect without diagrams. "
                                                      "Add at least one diagram on schematic."));
             exit = true;

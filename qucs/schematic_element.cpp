@@ -23,6 +23,7 @@
 #include "portsymbol.h"
 #include "schematic.h"
 
+#include <ranges>
 #include <set>
 #include <unordered_set>
 
@@ -63,7 +64,7 @@ static bool shouldBeSelected(const QRect& elementBoundingRect, const QRect& sele
 // schematic logic.
 namespace invariants {
 
-bool noOrphanNodes(const Q3PtrList<Node>* nodes)
+bool noOrphanNodes(const std::list<Node*>* nodes)
 {
     for (auto* n : *nodes) {
         assert(n->conn_count() > 0);
@@ -71,7 +72,7 @@ bool noOrphanNodes(const Q3PtrList<Node>* nodes)
     return true;
 }
 
-bool noSamePlaceNodes(const Q3PtrList<Node>* nodes)
+bool noSamePlaceNodes(const std::list<Node*>* nodes)
 {
     bool is_ok = true;
     for (auto* n1 : *nodes) {
@@ -98,7 +99,7 @@ bool noSamePlaceNodes(const Q3PtrList<Node>* nodes)
 // It's an error to have a node lying in the middle of a wire and not splitting
 // the wire. If coordinates of a node lie on a wire, the wire MUST be splitted
 // into two wires.
-bool noNodesOnWires(const Q3PtrList<Node>* nodes, const Q3PtrList<Wire>* wires)
+bool noNodesOnWires(const std::list<Node*>* nodes, const std::list<Wire*>* wires)
 {
     bool is_ok = true;
     for (auto* w : *wires) {
@@ -118,7 +119,7 @@ bool noNodesOnWires(const Q3PtrList<Node>* nodes, const Q3PtrList<Wire>* wires)
 }
 
 // Two nodes may be connected with at most one wire
-bool noDuplicateWires(const Q3PtrList<Wire>* wires)
+bool noDuplicateWires(const std::list<Wire*>* wires)
 {
     bool is_ok = true;
     for (auto* wire : *wires) {
@@ -171,7 +172,7 @@ bool noDuplicateWires(const Q3PtrList<Wire>* wires)
     return is_ok;
 }
 
-bool noZeroLenWires(const Q3PtrList<Wire>* wires)
+bool noZeroLenWires(const std::list<Wire*>* wires)
 {
     bool is_ok = true;
     for (auto* w : *wires) {
@@ -190,7 +191,7 @@ bool noZeroLenWires(const Q3PtrList<Wire>* wires)
     return is_ok;
 }
 
-bool allWiresAreConsistent(const Q3PtrList<Wire>* wires)
+bool allWiresAreConsistent(const std::list<Wire*>* wires)
 {
     bool is_ok = true;
     for (auto* w : *wires) {
@@ -229,7 +230,7 @@ bool allWiresAreConsistent(const Q3PtrList<Wire>* wires)
     return is_ok;
 }
 
-bool allComponentsAreConsistent(const Q3PtrList<Component>* components)
+bool allComponentsAreConsistent(const std::list<Component*>* components)
 {
     bool is_ok = true;
     for (auto* c : *components) {
@@ -255,22 +256,6 @@ bool allComponentsAreConsistent(const Q3PtrList<Component>* components)
 }
 }
 
-namespace internal {
-
-// Helper function to ease transition from Q3PtrList to another
-// container type. Use this when you need to remove item from
-// Q3PtrList and don't want auto-delete side effect.
-//
-// Who knows if auto-deletion is on and will it be a dozen commits
-// later? Use this function and get expected result.
-template<typename Q3PtrListContainer, typename Object>
-void removeFromPtrList(Object* obj, Q3PtrListContainer* cont) {
-    auto autoDelete = cont->autoDelete();
-    cont->setAutoDelete(false);
-    while (cont->removeRef(obj)) {};
-    cont->setAutoDelete(autoDelete);
-}
-}
 
 /* *******************************************************************
    *****                                                         *****
@@ -290,7 +275,7 @@ Node* Schematic::provideNode(int x, int y)
 
     // Create new node, if no existing one at given coordinates
     Node *new_node = new Node(x, y);
-    a_Nodes->append(new_node);
+    a_Nodes->push_back(new_node);
 
     // Check if the new node lies upon an existing wire
     for (auto* wire : *a_Wires)
@@ -430,10 +415,10 @@ void Schematic::optimizeWires() {
         assert(obsolete_wire->Port2 == nullptr);
         assert(redundant_node->conn_count() == 0);
 
-        internal::removeFromPtrList(obsolete_wire, a_Wires);
+        a_Wires->remove(obsolete_wire);
         delete obsolete_wire;
 
-        internal::removeFromPtrList(redundant_node, a_Nodes);
+        a_Nodes->remove(redundant_node);
         delete redundant_node;
     }
 }
@@ -502,7 +487,7 @@ Wire* Schematic::splitWire(Wire *pw, Node *pn)
     pn->connect(pw);
     pn->connect(newWire);
     newWire->Port2->disconnect(pw);
-    a_Wires->append(newWire);
+    a_Wires->push_back(newWire);
 
     if(pw->Label)
         if((pw->Label->cx > pn->cx) || (pw->Label->cy > pn->cy))
@@ -522,18 +507,18 @@ void Schematic::deleteWire(Wire *w, bool remove_orphans)
     w->Port1->disconnect(w);
     // Delete node if it has become an orphan
     if (remove_orphans && w->Port1->conn_count() == 0) {
-        internal::removeFromPtrList(w->Port1, a_Nodes);
+        a_Nodes->remove(w->Port1);
         delete w->Port1;
     }
 
     w->Port2->disconnect(w);
     // Delete node if it has become an orphan
     if (remove_orphans && w->Port2->conn_count() == 0) {
-        internal::removeFromPtrList(w->Port2, a_Nodes);
+        a_Nodes->remove(w->Port2);
         delete w->Port2;
     }
 
-    internal::removeFromPtrList(w, a_Wires);
+    a_Wires->remove(w);
     delete w;
 }
 
@@ -912,35 +897,24 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
 
 void Schematic::highlightWireLabels ()
 {
+    // First set highlighting for all wire and nodes labels to false
+
+    for (auto* wire : *a_Wires) {
+        if (wire->Label != nullptr) wire->Label->setHighlighted(false);
+    }
+
+    for(Node* node : *a_Nodes) {
+        if (node->Label != nullptr) node->Label->setHighlighted(false);
+    }
+
+
     WireLabel *pltestinner = 0;
     WireLabel *pltestouter = 0;
 
-    // First set highlighting for all wire and nodes labels to false
-    for(Wire *pwouter = a_Wires->last(); pwouter != 0; pwouter = a_Wires->prev())
-    {
-        pltestouter = pwouter->Label; // test any label associated with the wire
-        if (pltestouter)
-        {
-            pltestouter->setHighlighted (false);
-        }
-    }
-
-    for(Node *pnouter = a_Nodes->last(); pnouter != 0; pnouter = a_Nodes->prev())
-    {
-        pltestouter = pnouter->Label; // test any label associated with the node
-        if (pltestouter)
-        {
-            pltestouter->setHighlighted (false);
-        }
-    }
-
     // Then test every wire's label to see if we need to highlight it
     // and matching labels on wires and nodes
-    Q3PtrListIterator<Wire> itwouter(*a_Wires);
-    Wire *pwouter;
-    while ((pwouter = itwouter.current()) != 0)
+    for (auto* pwouter : *a_Wires)
     {
-        ++itwouter;
         // get any label associated with the wire
         pltestouter = pwouter->Label;
         if (pltestouter)
@@ -949,11 +923,8 @@ void Schematic::highlightWireLabels ()
             {
                 bool hiLightOuter = false;
                 // Search for matching labels on wires
-                Q3PtrListIterator<Wire> itwinner(*a_Wires);
-                Wire *pwinner;
-                while ((pwinner = itwinner.current()) != 0)
+                for (Wire* pwinner : *a_Wires)
                 {
-                    ++itwinner;
                     pltestinner = pwinner->Label; // test any label associated with the wire
                     if (pltestinner)
                     {
@@ -970,11 +941,8 @@ void Schematic::highlightWireLabels ()
                     }
                 }
                 // Search for matching labels on nodes
-                Q3PtrListIterator<Node> itninner(*a_Nodes);
-                Node *pninner;
-                while ((pninner = itninner.current()) != 0)
+                for (auto* pninner : *a_Nodes)
                 {
-                    ++itninner;
                     pltestinner = pninner->Label; // test any label associated with the node
                     if (pltestinner)
                     {
@@ -994,11 +962,8 @@ void Schematic::highlightWireLabels ()
     // Same as above but for nodes labels:
     // test every node label to see if we need to highlight it
     // and matching labels on wires and nodes
-    Q3PtrListIterator<Node> itnouter(*a_Nodes);
-    Node *pnouter;
-    while ((pnouter = itnouter.current()) != 0)
+    for (auto* pnouter : *a_Nodes)
     {
-        ++itnouter;
         // get any label associated with the node
         pltestouter = pnouter->Label;
         if (pltestouter)
@@ -1007,11 +972,8 @@ void Schematic::highlightWireLabels ()
             {
                 bool hiLightOuter = false;
                 // Search for matching labels on wires
-                Q3PtrListIterator<Wire> itwinner(*a_Wires);
-                Wire *pwinner;
-                while ((pwinner = itwinner.current()) != 0)
+                for (auto* pwinner : *a_Wires)
                 {
-                    ++itwinner;
                     pltestinner = pwinner->Label; // test any label associated with the wire
                     if (pltestinner)
                     {
@@ -1024,11 +986,8 @@ void Schematic::highlightWireLabels ()
                     }
                 }
                 // Search for matching labels on nodes
-                Q3PtrListIterator<Node> itninner(*a_Nodes);
-                Node *pninner;
-                while ((pninner = itninner.current()) != 0)
+                for (auto* pninner : *a_Nodes)
                 {
-                    ++itninner;
                     pltestinner = pninner->Label; // test any label associated with the node
                     if (pltestinner)
                     {
@@ -1198,7 +1157,7 @@ bool Schematic::deleteElements()
     assert(invariants::noOrphanNodes(a_Nodes));
 
     for (auto* diagram : selection.diagrams) {
-        internal::removeFromPtrList(diagram, a_Diagrams);
+        a_Diagrams->remove(diagram);
         delete diagram;
         sel = true;
     }
@@ -1729,7 +1688,7 @@ void Schematic::insertRawComponent(Component *c, bool noOptimize)
 {
     // connect every node of component to corresponding schematic node
     insertComponentNodes(c, noOptimize);
-    a_Components->append(c);
+    a_Components->push_back(c);
 
     // a ground symbol erases an existing label on the wire line
     if(c->Model == "GND")
@@ -1847,7 +1806,7 @@ void Schematic::insertComponent(Component *c)
     }
 
     setComponentNumber(c); // important for power sources and subcircuit ports
-    a_Components->append(c);
+    a_Components->push_back(c);
 }
 
 // ---------------------------------------------------
@@ -2016,12 +1975,12 @@ void Schematic::detachComp(Component *c)
 
         // Remove node if it has become orphan
         if (port->Connection->conn_count() == 0) {
-            internal::removeFromPtrList(port->Connection, a_Nodes);
+            a_Nodes->remove(port->Connection);
             delete port->Connection;
         }
     }
     emit signalComponentDeleted(c);
-    internal::removeFromPtrList(c, a_Components);
+    a_Components->remove(c);
 }
 
 // Deletes the component 'c'.
@@ -2049,73 +2008,60 @@ Component *Schematic::getComponentByName(const QString& compname) const
 
 // Test, if wire connects wire line with more than one label and delete
 // all further labels. Also delete all labels if wire line is grounded.
-void Schematic::oneLabel(Node *n1)
+void Schematic::oneLabel(Node *start_node)
 {
-    Wire *pw;
-    Node *pn, *pNode;
     WireLabel *pl = 0;
-    bool named=false;   // wire line already named ?
-    Q3PtrList<Node> Cons;
+    bool named = false;   // wire line already named ?
+    std::list<Node*> checked_nodes;
 
-    for(Node* pn : *a_Nodes)
-        pn->y1 = 0;   // mark all nodes as not checked
+    for (Node* pn : *a_Nodes) pn->y1 = 0;   // mark all nodes as not checked
 
-    Cons.append(n1);
-    n1->y1 = 1;  // mark Node as already checked
-    for(pn = Cons.first(); pn!=0; pn = Cons.next())
-    {
-        if(pn->Label)
-        {
-            if(named)
-            {
-                delete pn->Label;
-                pn->Label = 0;    // erase double names
+    checked_nodes.push_back(start_node);
+    start_node->y1 = 1;  // mark Node as already checked
+    for (auto* node : checked_nodes) {
+
+        if (node->Label) {
+            if (named) {
+                delete node->Label;
+                node->Label = nullptr;
             }
-            else
-            {
+            else {
                 named = true;
-                pl = pn->Label;
+                pl = node->Label;
             }
         }
 
-        for(auto* pe : *pn)
-        {
-            if(pe->Type != isWire)
-            {
-                if(((Component*)pe)->isActive == COMP_IS_ACTIVE)
-                    if(((Component*)pe)->Model == "GND")
-                    {
-                        named = true;
-                        if(pl)
-                        {
-                            pl->pOwner->Label = 0;
-                            delete pl;
-                        }
-                        pl = 0;
+        for (auto* connected_element : *node) {
+            auto* wire = dynamic_cast<Wire*>(connected_element);
+
+            if (wire == nullptr) { // it's a component
+                auto* comp = dynamic_cast<Component*>(connected_element);
+                assert (comp != nullptr);
+
+                if (comp->isActive == COMP_IS_ACTIVE && comp->Model == "GND") {
+                    named = true;
+                    if (pl) {
+                        pl->pOwner->Label = nullptr;
+                        delete pl;
                     }
+                    pl = nullptr;
+                }
                 continue;
             }
-            pw = (Wire*)pe;
 
-            if(pn != pw->Port1) pNode = pw->Port1;
-            else pNode = pw->Port2;
+            auto* other_node = node != wire->Port1 ? wire->Port1 : wire->Port2;
 
-            if(pNode->y1) continue;
-            pNode->y1 = 1;  // mark Node as already checked
-            Cons.append(pNode);
-            Cons.findRef(pn);
+            if (other_node->y1) continue;
+            other_node->y1 = 1;  // mark Node as already checked
+            checked_nodes.push_back(other_node);
 
-            if(pw->Label)
-            {
-                if(named)
-                {
-                    delete pw->Label;
-                    pw->Label = 0;    // erase double names
-                }
-                else
-                {
+            if (wire->Label) {
+                if (named) {
+                    delete wire->Label;
+                    wire->Label = nullptr;    // erase double names
+                } else {
                     named = true;
-                    pl = pw->Label;
+                    pl = wire->Label;
                 }
             }
         }
@@ -2163,15 +2109,15 @@ int Schematic::placeNodeLabel(WireLabel *pl)
 Element* Schematic::getWireLabel(Node *pn_)
 {
     Wire *pw;
-    Node *pn, *pNode;
-    Q3PtrList<Node> Cons;
+    Node *pNode;
+    std::list<Node*> Cons;
 
-    for(Node* pn : *a_Nodes)
+    for (Node* pn : *a_Nodes)
         pn->y1 = 0;   // mark all nodes as not checked
 
-    Cons.append(pn_);
+    Cons.push_back(pn_);
     pn_->y1 = 1;  // mark Node as already checked
-    for(pn = Cons.first(); pn!=0; pn = Cons.next())
+    for(auto* pn : Cons)
         if(pn->Label) return pn;
         else
             for(auto* pe : *pn)
@@ -2191,8 +2137,7 @@ Element* Schematic::getWireLabel(Node *pn_)
 
                 if(pNode->y1) continue;
                 pNode->y1 = 1;  // mark Node as already checked
-                Cons.append(pNode);
-                Cons.findRef(pn);
+                Cons.push_back(pNode);
             }
     return 0;   // no wire label found
 }
@@ -2346,7 +2291,7 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
             wire->y1 = wire->Port1->y();
             wire->x2 = wire->Port2->x();
             wire->y2 = wire->Port2->y();
-            a_Wires->append(wire);
+            a_Wires->push_back(wire);
             has_been_used = true;
             has_changes = true;
         } else {
@@ -2358,7 +2303,7 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
             w->Port1->connect(w);
             w->Port2 = node_pair.second;
             w->Port2->connect(w);
-            a_Wires->append(w);
+            a_Wires->push_back(w);
             has_changes = true;
         }
     }
@@ -2392,7 +2337,7 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
         existing_wire->Port2 = nullptr;
 
         // And delete it
-        internal::removeFromPtrList(existing_wire, a_Wires);
+        a_Wires->remove(existing_wire);
         delete existing_wire;
 
         // Put the given wire in place of deleted one
@@ -2407,7 +2352,7 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
         wire->x2 = wire->Port2->x();
         wire->y2 = wire->Port2->y();
 
-        a_Wires->append(wire);
+        a_Wires->push_back(wire);
     }
 
 
@@ -2574,7 +2519,7 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
         for (auto donor = (sameloc_node_group.begin() + 1); donor != sameloc_node_group.end(); donor++) {
             internal::merge(*donor, recipient);
-            internal::removeFromPtrList(*donor, a_Nodes);
+            a_Nodes->remove(*donor);
             delete *donor;
         }
     }
@@ -2691,7 +2636,7 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
         for (auto donor = (sameloc_node_group.begin() + 1); donor != sameloc_node_group.end(); donor++) {
             internal::merge(*donor, recipient);
-            internal::removeFromPtrList(*donor, a_Nodes);
+            a_Nodes->remove(*donor);
             delete *donor;
         }
     }
@@ -2721,16 +2666,8 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
         }
     }
 
-    {
-        std::vector<Node*> orphans;
-        for (auto* node : *a_Nodes) {
-            if (node->conn_count() == 0) orphans.push_back(node);
-        }
-        for (auto* node : orphans) {
-            internal::removeFromPtrList(node, a_Nodes);
-            delete node;
-        }
-    }
+
+    a_Nodes->remove_if([](const Node* n) { return n->conn_count() == 0;});
 
 
     // Remove wires between ports of the same component
@@ -2794,7 +2731,7 @@ void Schematic::dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept {
         wire->Port1->connect(wire);
         wire->Port2 = provideNode(n.x(), n.y());
         wire->Port2->connect(wire);
-        a_Wires->append(wire);
+        a_Wires->push_back(wire);
     }
 }
 // vim:ts=8:sw=2:noet

@@ -50,7 +50,6 @@
 #include <QMouseEvent>
 #include <QTextStream>
 #include <numeric>
-#include <qt3_compat/q3ptrlist.h>
 
 #include <climits>
 #include <cstdlib>
@@ -378,9 +377,9 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
     MAy1 = cursor.y();
 
     auto br = std::transform_reduce(
-        movingElements.begin() + 1,
+        ++movingElements.begin(),
         movingElements.end(),
-        movingElements.at(0)->boundingRect(),
+        movingElements.front()->boundingRect(),
         [](const QRect& a, const QRect& b) { return a.united(b);},
         [](const Element* e) { return e->boundingRect(); }
     );
@@ -1169,7 +1168,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             return;
         }
 
-        Doc->a_Diagrams->append(Diag);
+        Doc->a_Diagrams->push_back(Diag);
         Doc->enlargeView(Diag);
         Doc->setChanged(true, true); // document has been changed
 
@@ -1182,7 +1181,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 
     // ***********  it is a painting !!!
     if (((Painting *) selElem)->MousePressing(Doc)) {
-        Doc->a_Paintings->append((Painting *) selElem);
+        Doc->a_Paintings->push_back((Painting *) selElem);
         selElem = ((Painting *) selElem)->newOne();
 
         Doc->viewport()->update();
@@ -1318,7 +1317,6 @@ void MouseActions::MPressSetLimits(Schematic *Doc, QMouseEvent*, float fX, float
     MAx1 = int(fX);
     MAy1 = int(fY);
 
-    // TODO: Diagrams is currently a Q3PtrList, but it would be better to refactor
     // this (and many other collections) to be std::vector.
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
     for (Diagram* diagram : *Doc->a_Diagrams) {
@@ -1665,13 +1663,13 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
                 Doc->installWire(dynamic_cast<Wire*>(pe));
                 break;
             case isDiagram:
-                Doc->a_Diagrams->append((Diagram *) pe);
+                Doc->a_Diagrams->push_back((Diagram *) pe);
                 ((Diagram *) pe)
                     ->loadGraphData(Info.absolutePath() + QDir::separator() + Doc->getDataSet());
                 Doc->enlargeView(pe);
                 break;
             case isPainting: {
-                Doc->a_Paintings->append((Painting *) pe);
+                Doc->a_Paintings->push_back((Painting *) pe);
                 Doc->enlargeView(pe);
                 break;
             }
@@ -1816,10 +1814,9 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
             if (cd->exec() != 1)
                 break; // dialog is WDestructiveClose
 
-            Doc->a_Components->findRef(c);
-            Doc->a_Components->take();
+            Doc->a_Components->remove(c);
             Doc->setComponentNumber(c); // for ports/power sources
-            Doc->a_Components->append(c);
+            Doc->a_Components->push_back(c);
         }
 
         Doc->setChanged(true, true);

@@ -8,9 +8,6 @@
 #include <set>
 #include <unordered_set>
 
-#include "qt3_compat/q3ptrlist.h"
-
-
 namespace qucs_s {
 
 void Healer::HealingAction::execute(SchematicMutator* mutator) {
@@ -144,7 +141,7 @@ QPoint qucs_s::GenericPort::center() const
 }
 
 
-qucs_s::Healer::Healer(const Q3PtrList<Component>* components, const Q3PtrList<Wire>* wires)
+qucs_s::Healer::Healer(const std::list<Component*>* components, const std::list<Wire*>* wires)
 {
     for (auto* comp : *components) {
         for (auto* port : comp->Ports) {

@@ -24,7 +24,6 @@
 #include <QDir>
 #include <QStringList>
 #include <QPlainTextEdit>
-#include <qt3_compat/q3ptrlist.h>
 #include <QTextStream>
 #include <QList>
 #include <QProcess>
@@ -60,22 +59,6 @@ extern void osdi_log_skip(void *handle, char* msg, uint32_t lvl)
   (void)msg;
   (void)lvl;
 }
-
-namespace shim {
-  // Historically Qucs-S has been using Q3PtrList a lot and it's not so easy
-  // to replace it. The goal of this shim is to help with transition to new
-  // container type.
-  // Wherever possible a "barrier" is made by replacing Q3PtrList with QList
-  // to stop its propagating. QList is passed instead of original Q3PtrList
-  // and then its contents are copied back to Q3PtrList as if it was passed
-  // in the first place
-template <typename T>
-void copyToQ3PtrList(const QList<T*>& src, Q3PtrList<T>& dst) {
-  for (auto* item : src) {
-    dst.append(item);
-  }
-}
-} // namespace shim
 
 // -------------------------------------------------------------
 // Creates a Qucs file format (without document properties) in the returning
@@ -143,7 +126,7 @@ bool Schematic::loadIntoNothing(QTextStream *stream)
 
 // -------------------------------------------------------------
 // Paste from clipboard.
-bool Schematic::pasteFromClipboard(QTextStream *stream, QList<Element*> *pe)
+bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
 {
   QString Line;
 
@@ -173,7 +156,7 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, QList<Element*> *pe)
         if(!loadIntoNothing(stream)) return false; }
       else
       if(Line == "<Paintings>") {
-        if(!loadPaintings(stream, (QList<Painting*>*)pe)) return false; }
+        if(!loadPaintings(stream, (std::list<Painting*>*)pe)) return false; }
       else {
         QMessageBox::critical(0, QObject::tr("Error"),
         QObject::tr("Clipboard Format Error:\nUnknown field!"));
@@ -188,16 +171,16 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, QList<Element*> *pe)
   while(!stream->atEnd()) {
     Line = stream->readLine();
     if(Line == "<Components>") {
-      if(!loadComponents(stream, (QList<Component*>*)pe)) return false; }
+      if(!loadComponents(stream, (std::list<Component*>*)pe)) return false; }
     else
     if(Line == "<Wires>") {
       if(!loadWires(stream, pe)) return false; }
     else
     if(Line == "<Diagrams>") {
-      if(!loadDiagrams(stream, (QList<Diagram*>*)pe)) return false; }
+      if(!loadDiagrams(stream, (std::list<Diagram*>*)pe)) return false; }
     else
     if(Line == "<Paintings>") {
-      if(!loadPaintings(stream, (QList<Painting*>*)pe)) return false; }
+      if(!loadPaintings(stream, (std::list<Painting*>*)pe)) return false; }
     else {
       QMessageBox::critical(0, QObject::tr("Error"),
       QObject::tr("Clipboard Format Error:\nUnknown field!"));
@@ -844,29 +827,10 @@ bool Schematic::loadProperties(QTextStream *stream)
 // Inserts a component without performing logic for wire optimization.
 void Schematic::simpleInsertComponent(Component *c)
 {
-  Node *pn;
-  int x, y;
   // connect every node of component
   for (Port *pp : c->Ports) {
-    x = pp->x+c->cx;
-    y = pp->y+c->cy;
+    Node* pn = provideNode(c->cx + pp->x, c->cy + pp->y);
 
-    // check if new node lies upon existing node
-    for(pn = a_DocNodes.first(); pn != 0; pn = a_DocNodes.next())
-      if(pn->cx == x) if(pn->cy == y) {
-        if (!pn->DType.isEmpty()) {
-          pp->Type = pn->DType;
-        }
-        if (!pp->Type.isEmpty()) {
-          pn->DType = pp->Type;
-        }
-        break;
-      }
-
-    if(pn == nullptr) { // create new node, if no existing one lies at this position
-      pn = new Node(x, y);
-      a_DocNodes.append(pn);
-    }
     pn->connect(c);  // connect schematic node to component node
     if (!pp->Type.isEmpty()) {
       pn->DType = pp->Type;
@@ -875,11 +839,11 @@ void Schematic::simpleInsertComponent(Component *c)
     pp->Connection = pn;  // connect component node to schematic node
   }
 
-  a_DocComps.append(c);
+  a_DocComps.push_back(c);
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadComponents(QTextStream *stream, QList<Component*> *List)
+bool Schematic::loadComponents(QTextStream *stream, std::list<Component*> *List)
 {
   QString Line, cstr;
   Component *c;
@@ -898,7 +862,7 @@ bool Schematic::loadComponents(QTextStream *stream, QList<Component*> *List)
       for(z=c->Name.length()-1; z>=0; z--) // cut off number of component name
         if(!c->Name.at(z).isDigit()) break;
       c->Name = c->Name.left(z+1);
-      List->append(c);
+      List->push_back(c);
     }
     else  simpleInsertComponent(c);
   }
@@ -912,15 +876,7 @@ bool Schematic::loadComponents(QTextStream *stream, QList<Component*> *List)
 // Inserts a wire without performing logic for optimizing.
 void Schematic::simpleInsertWire(Wire *pw)
 {
-  Node *pn;
-  // check if first wire node lies upon existing node
-  for(pn = a_DocNodes.first(); pn != 0; pn = a_DocNodes.next())
-    if(pn->cx == pw->x1) if(pn->cy == pw->y1) break;
-
-  if(!pn) {   // create new node, if no existing one lies at this position
-    pn = new Node(pw->x1, pw->y1);
-    a_DocNodes.append(pn);
-  }
+  Node* pn = provideNode(pw->x1, pw->y1);
 
   if(pw->x1 == pw->x2) if(pw->y1 == pw->y2) {
     pn->Label = pw->Label;   // wire with length zero are just node labels
@@ -935,22 +891,15 @@ void Schematic::simpleInsertWire(Wire *pw)
   pn->connect(pw);  // connect schematic node to component node
   pw->Port1 = pn;
 
-  // check if second wire node lies upon existing node
-  for(pn = a_DocNodes.first(); pn != 0; pn = a_DocNodes.next())
-    if(pn->cx == pw->x2) if(pn->cy == pw->y2) break;
-
-  if(!pn) {   // create new node, if no existing one lies at this position
-    pn = new Node(pw->x2, pw->y2);
-    a_DocNodes.append(pn);
-  }
+  pn = provideNode(pw->x2, pw->y2);
   pn->connect(pw);  // connect schematic node to component node
   pw->Port2 = pn;
 
-  a_DocWires.append(pw);
+  a_DocWires.push_back(pw);
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadWires(QTextStream *stream, QList<Element*> *List)
+bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
 {
   Wire *w;
   QString Line;
@@ -970,12 +919,12 @@ bool Schematic::loadWires(QTextStream *stream, QList<Element*> *List)
     if(List) {
       if(w->x1 == w->x2) if(w->y1 == w->y2) if(w->Label) {
         w->Label->Type = isMovingLabel;
-        List->append(w->Label);
+        List->push_back(w->Label);
         delete w;
         continue;
       }
-      List->append(w);
-      if(w->Label)  List->append(w->Label);
+      List->push_back(w);
+      if(w->Label)  List->push_back(w->Label);
     }
     else simpleInsertWire(w);
   }
@@ -986,7 +935,7 @@ bool Schematic::loadWires(QTextStream *stream, QList<Element*> *List)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadDiagrams(QTextStream *stream, QList<Diagram*> *List)
+bool Schematic::loadDiagrams(QTextStream *stream, std::list<Diagram*> *List)
 {
   Diagram *d;
   QString Line, cstr;
@@ -1020,7 +969,7 @@ bool Schematic::loadDiagrams(QTextStream *stream, QList<Diagram*> *List)
       delete d;
       return false;
     }
-    List->append(d);
+    List->push_back(d);
   }
 
   QMessageBox::critical(0, QObject::tr("Error"),
@@ -1029,7 +978,7 @@ bool Schematic::loadDiagrams(QTextStream *stream, QList<Diagram*> *List)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadPaintings(QTextStream *stream, QList<Painting*> *List)
+bool Schematic::loadPaintings(QTextStream *stream, std::list<Painting*> *List)
 {
   Painting *p=0;
   QString Line, cstr;
@@ -1069,7 +1018,7 @@ bool Schematic::loadPaintings(QTextStream *stream, QList<Painting*> *List)
       delete p;
       return false;
     }
-    List->append(p);
+    List->push_back(p);
   }
 
   QMessageBox::critical(0, QObject::tr("Error"),
@@ -1145,12 +1094,10 @@ bool Schematic::loadDocument()
     if(Line.isEmpty()) continue;
 
     if(Line == "<Symbol>") {
-      QList<Painting*> paintings;
-      if (!loadPaintings(&stream, &paintings)) {
+      if (!loadPaintings(&stream, &a_SymbolPaints)) {
         file.close();
         return false;
       }
-      shim::copyToQ3PtrList(paintings, a_SymbolPaints);
     }
     else
     if(Line == "<Properties>") {
@@ -1163,15 +1110,11 @@ bool Schematic::loadDocument()
       if(!loadWires(&stream)) { file.close(); return false; } }
     else
     if(Line == "<Diagrams>") {
-      QList<Diagram*> diagrams;
-      if (!loadDiagrams(&stream, &diagrams)) { file.close(); return false; }
-      shim::copyToQ3PtrList(diagrams, a_DocDiags);
+      if (!loadDiagrams(&stream, &a_DocDiags)) { file.close(); return false; }
     }
     else
     if(Line == "<Paintings>") {
-      QList<Painting*> paintings;
-      if (!loadPaintings(&stream, &paintings)) { file.close(); return false; }
-      shim::copyToQ3PtrList(paintings, a_DocPaints);
+      if (!loadPaintings(&stream, &a_DocPaints)) { file.close(); return false; }
     }
     else {
        qDebug() << Line;
@@ -1253,16 +1196,8 @@ bool Schematic::rebuild(QString *s)
   // read content *************************
   if(!loadComponents(&stream))  return false;
   if(!loadWires(&stream))  return false;
-  {
-    QList<Diagram*> diagrams;
-    if (!loadDiagrams(&stream, &diagrams)) return false;
-    shim::copyToQ3PtrList(diagrams, a_DocDiags);
-  }
-  {
-    QList<Painting*> paintings;
-    if (!loadPaintings(&stream, &paintings)) return false;
-    shim::copyToQ3PtrList(paintings, a_DocPaints);
-  }
+  if (!loadDiagrams(&stream, &a_DocDiags)) return false;
+  if (!loadPaintings(&stream, &a_DocPaints)) return false;
 
   return true;
 }
@@ -1282,11 +1217,8 @@ bool Schematic::rebuildSymbol(QString *s)
   Line = stream.readLine();  // skip wires
   Line = stream.readLine();  // skip diagrams
 
-  {
-    QList<Painting*> paintings;
-    if (!loadPaintings(&stream, &paintings)) return false;
-    shim::copyToQ3PtrList(paintings, a_SymbolPaints);
-  }
+  if (!loadPaintings(&stream, &a_SymbolPaints)) return false;
+
   return true;
 }
 
@@ -1417,40 +1349,43 @@ void Schematic::collectDigitalSignals(void)
 // ---------------------------------------------------
 // Propagates the given node to connected component ports.
 void Schematic::propagateNode(QStringList& Collect,
-              int& countInit, Node *pn)
+              int& countInit, Node* start_node)
 {
   bool setName=false;
-  Q3PtrList<Node> Cons;
-  Node *p2;
-  Wire *pw;
+  std::list<Node*> Cons;
 
-  Cons.append(pn);
-  for(p2 = Cons.first(); p2 != 0; p2 = Cons.next())
-    for(auto* pe : *p2)
-      if(pe->Type == isWire) {
-        pw = (Wire*)pe;
-        if(p2 != pw->Port1) {
-          if(pw->Port1->Name.isEmpty()) {
-            pw->Port1->Name = pn->Name;
-            pw->Port1->State = 1;
-            Cons.append(pw->Port1);
-            setName = true;
-          }
-        }
-        else {
-          if(pw->Port2->Name.isEmpty()) {
-            pw->Port2->Name = pn->Name;
-            pw->Port2->State = 1;
-            Cons.append(pw->Port2);
-            setName = true;
-          }
-        }
-        if(setName) {
-          Cons.findRef(p2);   // back to current Connection
-          if (a_isAnalog) createNodeSet(Collect, countInit, pw, pn);
-            setName = false;
+  Cons.push_back(start_node);
+  for(auto it = Cons.begin(); it != Cons.end(); it++) {
+    auto* node = *it;
+
+    for (auto* connected_element : *node) {
+      auto* wire = dynamic_cast<Wire*>(connected_element);
+      if (wire == nullptr) continue;
+
+      if (node != wire->Port1) {
+        if (wire->Port1->Name.isEmpty()) {
+          wire->Port1->Name = start_node->Name;
+          wire->Port1->State = 1;
+          Cons.push_back(wire->Port1);
+          setName = true;
         }
       }
+      else {
+        if (wire->Port2->Name.isEmpty()) {
+          wire->Port2->Name = start_node->Name;
+          wire->Port2->State = 1;
+          Cons.push_back(wire->Port2);
+          setName = true;
+        }
+      }
+
+      if (setName) {
+        if (a_isAnalog) createNodeSet(Collect, countInit, wire, start_node);
+          setName = false;
+      }
+
+    }
+  }
   Cons.clear();
 }
 
@@ -1474,10 +1409,8 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
   QString s;
 
   // give the ground nodes the name "gnd", and insert subcircuits etc.
-  Q3PtrListIterator<Component> it(a_DocComps);
-  Component *pc;
-  while((pc = it.current()) != 0) {
-    ++it;
+  for (auto* pc : a_DocComps) {
+
     if(pc->isActive != COMP_IS_ACTIVE) continue;
 
     // check analog/digital typed components

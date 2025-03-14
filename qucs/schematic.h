@@ -35,7 +35,6 @@
 #include "components/component.h"
 #include "wire_planner.h"
 
-#include "qt3_compat/qt_compat.h"
 #include "qt3_compat/q3scrollview.h"
 #include <QVector>
 #include <QStringList>
@@ -188,7 +187,7 @@ public:
 
   void    cut();
   void    copy();
-  bool    paste(QTextStream*, QList<Element*>*);
+  bool    paste(QTextStream*, std::list<Element*>*);
   bool    load();
   int     save();
   int     saveSymbolCpp (void);
@@ -236,18 +235,18 @@ public:
 
   // The pointers points to the current lists, either to the schematic
   // elements "Doc..." or to the symbol elements "SymbolPaints".
-  Q3PtrList<Wire> *a_Wires;
-  Q3PtrList<Wire> a_DocWires;
-  Q3PtrList<Node>* a_Nodes;
-  Q3PtrList<Node> a_DocNodes;
-  Q3PtrList<Diagram>* a_Diagrams;
-  Q3PtrList<Diagram> a_DocDiags;
-  Q3PtrList<Painting>* a_Paintings;
-  Q3PtrList<Painting> a_DocPaints;
-  Q3PtrList<Component>* a_Components;
-  Q3PtrList<Component> a_DocComps;
+  std::list<Wire*> *a_Wires;
+  std::list<Wire*> a_DocWires;
+  std::list<Node*>* a_Nodes;
+  std::list<Node*> a_DocNodes;
+  std::list<Diagram*>* a_Diagrams;
+  std::list<Diagram*> a_DocDiags;
+  std::list<Painting*>* a_Paintings;
+  std::list<Painting*> a_DocPaints;
+  std::list<Component*>* a_Components;
+  std::list<Component*> a_DocComps;
 
-  Q3PtrList<Painting> a_SymbolPaints;  // symbol definition for subcircuit
+  std::list<Painting*> a_SymbolPaints;  // symbol definition for subcircuit
 
 private:
   QList<PostedPaintEvent> a_PostedPaintEvents;
@@ -525,15 +524,15 @@ private:
 
   bool loadProperties(QTextStream*);
   void simpleInsertComponent(Component*);
-  bool loadComponents(QTextStream*, QList<Component*> *List=0);
+  bool loadComponents(QTextStream*, std::list<Component*> *List=0);
   void simpleInsertWire(Wire*);
-  bool loadWires(QTextStream*, QList<Element*> *List=0);
-  bool loadDiagrams(QTextStream*, QList<Diagram*>*);
-  bool loadPaintings(QTextStream*, QList<Painting*>*);
+  bool loadWires(QTextStream*, std::list<Element*> *List=0);
+  bool loadDiagrams(QTextStream*, std::list<Diagram*>*);
+  bool loadPaintings(QTextStream*, std::list<Painting*>*);
   bool loadIntoNothing(QTextStream*);
 
   QString createClipboardFile();
-  bool    pasteFromClipboard(QTextStream *, QList<Element*>*);
+  bool    pasteFromClipboard(QTextStream *, std::list<Element*>*);
 
   QString createUndoString(char);
   bool    rebuild(QString *);

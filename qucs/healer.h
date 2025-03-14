@@ -1,12 +1,12 @@
 #ifndef HEALER_H
 #define HEALER_H
 
-#include "qt3_compat/q3ptrlist.h"
 #include <QPoint>
 #include <memory>
 #include <map>
 #include <set>
 #include <vector>
+#include <list>
 
 namespace qucs_s {
 
@@ -109,7 +109,7 @@ public:
         void execute(SchematicMutator* mutator);
     };
 
-    Healer(const Q3PtrList<Component>* components, const Q3PtrList<Wire>* wires);
+    Healer(const std::list<Component*>* components, const std::list<Wire*>* wires);
     std::vector<HealingAction> planHealing();
 };
 }

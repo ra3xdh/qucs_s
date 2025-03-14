@@ -21,7 +21,6 @@
 #include "element.h"
 #include <QAction>
 
-#include <qt3_compat/qt_compat.h>
 
 class Wire;
 class WireLabel;
@@ -50,7 +49,7 @@ public:
   QMouseEvent *focusMEvent;
 
   int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
-  QList<Element*> movingElements;
+  std::list<Element*> movingElements;
   int movingRotated;
 
   // menu appearing by right mouse button click on component

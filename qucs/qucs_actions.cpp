@@ -26,7 +26,6 @@
 #include <limits.h>
 
 #include <QProcess>
-#include <qt3_compat/q3ptrlist.h>
 #include <QRegularExpressionValidator>
 #include <QLineEdit>
 #include <QAction>
@@ -1268,15 +1267,12 @@ void QucsApp::slotApplyCompText()
       const auto new_name{editText->text()};
 
       if (!new_name.isEmpty() && component->Name != new_name) {
-        // TODO: rewrite with std::none_of after replacing Q3PtrList
-        //       with modern container
-        bool is_unique = true;
-        for (auto* other : *Doc->a_Components) {
-          if (other->Name == new_name) {
-            is_unique = false;
-            break;
-          }
-        }
+
+        bool is_unique = std::none_of(
+          Doc->a_Components->begin(),
+          Doc->a_Components->end(),
+          [&new_name](const Component* other) { return other->Name == new_name; }
+        );
 
         if (is_unique) {
           component->Name = new_name;

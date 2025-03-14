@@ -43,7 +43,6 @@
 #include <QTextStream>
 #include <QUrl>
 #include <QWheelEvent>
-#include <qt3_compat/qt_compat.h>
 #include <QRegularExpression>
 
 #include "components/vafile.h"
@@ -62,10 +61,10 @@
 #include "misc.h"
 
 // just dummies for empty lists
-Q3PtrList<Wire> SymbolWires;
-Q3PtrList<Node> SymbolNodes;
-Q3PtrList<Diagram> SymbolDiags;
-Q3PtrList<Component> SymbolComps;
+std::list<Wire*> SymbolWires;
+std::list<Node*> SymbolNodes;
+std::list<Diagram*> SymbolDiags;
+std::list<Component*> SymbolComps;
 
 /**
     If \c point does not lie within \c rect then returns a new
@@ -140,13 +139,6 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_) :
 
     a_tmpPosX = a_tmpPosY = -100;
 
-    a_DocComps.setAutoDelete(true);
-    a_DocWires.setAutoDelete(true);
-    a_DocNodes.setAutoDelete(true);
-    a_DocDiags.setAutoDelete(true);
-    a_DocPaints.setAutoDelete(true);
-    a_SymbolPaints.setAutoDelete(true);
-
     setVScrollBarMode(Q3ScrollView::AlwaysOn);
     setHScrollBarMode(Q3ScrollView::AlwaysOn);
     misc::setWidgetBackgroundColor(viewport(), QucsSettings.BGColor);
@@ -173,33 +165,41 @@ Schematic::~Schematic() {}
 bool Schematic::createSubcircuitSymbol()
 {
     // If the number of ports is not equal, remove or add some.
-    unsigned int countPort = adjustPortNumbers();
+    const std::size_t port_count = adjustPortNumbers();
 
     // If a symbol does not yet exist, create one.
-    if (a_SymbolPaints.count() != countPort)
-        return false;
+    if (a_SymbolPaints.size() != port_count) return false;
 
-    int h = 30 * ((countPort - 1) / 2) + 10;
-    a_SymbolPaints.prepend(new ID_Text(-20, h + 4));
+    const int symbol_rect_half_height = 30 * ((port_count - 1) / 2) + 10;
+    const int symbol_rect_half_width = 20;
 
-    a_SymbolPaints.append(new GraphicLine(-20, -h, 20, -h, QPen(Qt::darkBlue, 2)));
-    a_SymbolPaints.append(new GraphicLine(20, -h, 20, h, QPen(Qt::darkBlue, 2)));
-    a_SymbolPaints.append(new GraphicLine(-20, h, 20, h, QPen(Qt::darkBlue, 2)));
-    a_SymbolPaints.append(new GraphicLine(-20, -h, -20, h, QPen(Qt::darkBlue, 2)));
+    {
+        int port_y = 10 - symbol_rect_half_height;
+        auto port_painting = a_SymbolPaints.begin();
+        bool put_on_left_side = false;
 
-    unsigned int i = 0, y = 10 - h;
-    while (i < countPort) {
-        i++;
-        a_SymbolPaints.append(new GraphicLine(-30, y, -20, y, QPen(Qt::darkBlue, 2)));
-        a_SymbolPaints.at(i)->moveCenterTo(-30, y);
+        for (std::size_t port_n = 0; port_n < port_count; port_n++) {
 
-        if (i == countPort)
-            break;
-        i++;
-        a_SymbolPaints.append(new GraphicLine(20, y, 30, y, QPen(Qt::darkBlue, 2)));
-        a_SymbolPaints.at(i)->moveCenterTo(30, y);
-        y += 60;
+            if (put_on_left_side) {
+                (*port_painting)->moveCenterTo(-10 - symbol_rect_half_width, port_y);
+                a_SymbolPaints.push_back(new GraphicLine(-10 - symbol_rect_half_width, port_y, -symbol_rect_half_width, port_y, QPen(Qt::darkBlue, 2)));
+            } else {
+                (*port_painting)->moveCenterTo(30, port_y);
+                a_SymbolPaints.push_back(new GraphicLine(symbol_rect_half_width, port_y, symbol_rect_half_width + 10, port_y, QPen(Qt::darkBlue, 2)));
+            }
+
+            port_painting++;
+            put_on_left_side = !put_on_left_side;
+        }
     }
+
+    a_SymbolPaints.push_front(new ID_Text(-20, symbol_rect_half_height + 4));
+
+    a_SymbolPaints.push_back(new GraphicLine(-symbol_rect_half_width, -symbol_rect_half_height, symbol_rect_half_width, -symbol_rect_half_height, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.push_back(new GraphicLine(symbol_rect_half_width, -symbol_rect_half_height, symbol_rect_half_width, symbol_rect_half_height, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.push_back(new GraphicLine(-symbol_rect_half_width, symbol_rect_half_height, symbol_rect_half_width, symbol_rect_half_height, QPen(Qt::darkBlue, 2)));
+    a_SymbolPaints.push_back(new GraphicLine(-symbol_rect_half_width, -symbol_rect_half_height, -symbol_rect_half_width, symbol_rect_half_height, QPen(Qt::darkBlue, 2)));
+
     return true;
 }
 
@@ -1344,7 +1344,7 @@ void Schematic::cut()
 
 // ---------------------------------------------------
 // Performs paste function from clipboard
-bool Schematic::paste(QTextStream *stream, QList<Element*> *pe)
+bool Schematic::paste(QTextStream *stream, std::list<Element*> *pe)
 {
     return pasteFromClipboard(stream, pe);
 }
@@ -1536,7 +1536,7 @@ int Schematic::adjustPortNumbers()
             if (pp)
                 ((PortSymbol *) pp)->nameStr = *it;
             else {
-                a_SymbolPaints.append(new PortSymbol(x1, y2, Str, *it));
+                a_SymbolPaints.push_back(new PortSymbol(x1, y2, Str, *it));
                 y2 += 40;
             }
         }
@@ -1585,7 +1585,7 @@ int Schematic::adjustPortNumbers()
             if (pp)
                 ((PortSymbol *) pp)->nameStr = *it;
             else {
-                a_SymbolPaints.append(new PortSymbol(x1, y2, Str, *it));
+                a_SymbolPaints.push_back(new PortSymbol(x1, y2, Str, *it));
                 y2 += 40;
             }
         }
@@ -1635,7 +1635,7 @@ int Schematic::adjustPortNumbers()
             if (pp)
                 ((PortSymbol *) pp)->nameStr = *it;
             else {
-                a_SymbolPaints.append(new PortSymbol(x1, y2, Str, *it));
+                a_SymbolPaints.push_back(new PortSymbol(x1, y2, Str, *it));
                 y2 += 40;
             }
         }
@@ -1662,14 +1662,14 @@ int Schematic::adjustPortNumbers()
                 if (pp) {
                     ((PortSymbol *) pp)->nameStr = pc->Name;
                 } else {
-                    a_SymbolPaints.append(new PortSymbol(x1, y2, Str, pc->Name));
+                    a_SymbolPaints.push_back(new PortSymbol(x1, y2, Str, pc->Name));
                     y2 += 40;
                 }
             }
         }
     }
 
-    a_SymbolPaints.removeIf([](Painting* pp) {
+    a_SymbolPaints.remove_if([](Painting* pp) {
         return pp->Name == ".PortSym " && (((PortSymbol *) pp)->nameStr.isEmpty());
     });
 
