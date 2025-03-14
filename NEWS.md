@@ -1,3 +1,24 @@
+# Qucs-S 25.1.1
+
+## Bugfixes and general improvemnt
+
+* Add UIC option for FFT analysis #1261
+* Improve wire editing #1253
+* Fix crash when deleting shorted devices #1254
+* Fix removing labels #1255
+
+## Localization
+
+* Russian translation update #1246
+
+## Packaging
+
+* Update Gentoo ebuidl #1252
+
+## Known issues
+
+* The .OPTIONS and .FUNC devices not working properly. Use the *INCLUDE SCRIPT* instead. See #1260
+
 # Qucs-S 25.1.0
 
 ## New features

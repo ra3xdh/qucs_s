@@ -63,6 +63,7 @@ AboutDialog::AboutDialog(QWidget *parent)
      "Muhammet Şükrü Demir - " + tr("CI setup, build system, MacOS support"),
      "Hampton Morgan - " + tr("Documentation"),
      "Iwbnwif Yiw - " + tr("Refactoring, general improvements"),
+     "Thomas Zecha - " + tr("Microelectronics PDK support"),
      "Maria Dubinina - " + tr("testing, general bugfixes")
   }};
   currAuths = {{
@@ -146,7 +147,7 @@ AboutDialog::AboutDialog(QWidget *parent)
   lbl = new QLabel(versionText);
   lbl->setAlignment(Qt::AlignHCenter);
   vl->addWidget(lbl);
-  vl->addWidget(new QLabel(tr("Copyright (C)")+" 2017-2023 Qucs-S Team\n"+
+  vl->addWidget(new QLabel(tr("Copyright (C)")+" 2017-2025 Qucs-S Team\n"+
                tr("Copyright (C)")+" 2011-2016 Qucs Team\n"+
 			   tr("Copyright (C)")+" 2003-2009 Michael Margraf"));
 
