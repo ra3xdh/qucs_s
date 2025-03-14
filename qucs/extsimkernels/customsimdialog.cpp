@@ -163,14 +163,14 @@ void CustomSimDialog::slotCancel()
 void CustomSimDialog::slotFindVars()
 {
     QStringList vars;
-    for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
+    for (Node* pn : a_schematic->a_DocNodes) {
       if(pn->Label != 0) {
           if (!vars.contains(pn->Label->Name)) {
               vars.append(pn->Label->Name);
           }
       }
     }
-    for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
+    for (Wire* pw : a_schematic->a_DocWires) {
       if(pw->Label != 0) {
           if (!vars.contains(pw->Label->Name)) {
               vars.append(pw->Label->Name);
@@ -178,7 +178,7 @@ void CustomSimDialog::slotFindVars()
       }
     }
 
-    for(Component *pc=a_schematic->a_DocComps.first();pc!=0;pc=a_schematic->a_DocComps.next()) {
+    for (Component* pc : a_schematic->a_DocComps) {
         if(pc->isProbe) {
             if (!vars.contains(pc->getProbeVariable())) {
                 vars.append(pc->getProbeVariable());

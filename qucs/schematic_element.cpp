@@ -441,7 +441,7 @@ void Schematic::optimizeWires() {
 // ---------------------------------------------------
 Node* Schematic::selectedNode(int x, int y)
 {
-    for(Node *pn = a_Nodes->first(); pn != 0; pn = a_Nodes->next()) // test nodes
+    for(Node *pn : *a_Nodes) // test nodes
         if(pn->getSelected(x, y))
             return pn;
 
@@ -478,7 +478,7 @@ void Schematic::selectWireLine(Element *pe, Node *pn, bool ctrl)
 // ---------------------------------------------------
 Wire* Schematic::selectedWire(int x, int y)
 {
-    for(Wire *pw = a_Wires->first(); pw != 0; pw = a_Wires->next())
+    for(Wire *pw : *a_Wires)
         if(pw->getSelected(x, y))
             return pw;
 
@@ -546,7 +546,7 @@ void Schematic::deleteWire(Wire *w, bool remove_orphans)
 Marker* Schematic::setMarker(int x, int y)
 {
   // only diagrams ...
-  for(Diagram *pd = a_Diagrams->last(); pd != 0; pd = a_Diagrams->prev()){
+  for(Diagram *pd : *a_Diagrams){
     if(Marker* m=pd->setMarker(x,y)){
       setChanged(true, true);
       return m;
@@ -602,7 +602,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     WireLabel *pl = 0;
 
     // test all nodes and their labels
-    for(Node *pn = a_Nodes->last(); pn != 0; pn = a_Nodes->prev())
+    for (Node* pn : *a_Nodes)
     {
         if(!flag)
         {
@@ -656,7 +656,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     }
 
     // test all wires and wire labels
-    for(Wire *pw = a_Wires->last(); pw != 0; pw = a_Wires->prev())
+    for (Wire* pw : *a_Wires)
     {
         if(pw->getSelected(x, y))
         {
@@ -710,7 +710,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     }
 
     // test all components
-    for(Component *pc = a_Components->last(); pc != 0; pc = a_Components->prev())
+    for (Component* pc : *a_Components)
     {
         if(pc->getSelected(x, y))
         {
@@ -748,7 +748,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
 
     const double Corr = 5.0 / a_Scale;  // size of line select and area for resizing
     // test all diagrams
-    for(Diagram *pd = a_Diagrams->last(); pd != 0; pd = a_Diagrams->prev())
+    for (Diagram* pd : *a_Diagrams)
     {
 
         for (Graph *pg : pd->Graphs)
@@ -869,7 +869,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     // test all paintings
     QPoint click(fX, fY);
     auto tolerance = static_cast<int>(Corr);
-    for(Painting *pp = a_Paintings->last(); pp != 0; pp = a_Paintings->prev())
+    for (Painting* pp : *a_Paintings)
     {
         if(pp->isSelected)
         {
@@ -1164,7 +1164,7 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
 // Selects all markers.
 void Schematic::selectMarkers() const
 {
-    for(Diagram *pd = a_Diagrams->first(); pd != 0; pd = a_Diagrams->next())
+    for(Diagram *pd : *a_Diagrams)
         for (Graph *pg : pd->Graphs)
             for (Marker *pm : pg->Markers)
                 pm->isSelected = true;
@@ -1836,7 +1836,7 @@ void Schematic::insertComponent(Component *c)
     {
         // determines the name by looking for names with the same
         // prefix and increment the number
-        for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
+        for(Component *pc : *a_Components)
             if(pc->Name.left(len) == c->Name)
             {
                 s = pc->Name.right(pc->Name.length()-len);
@@ -1866,7 +1866,7 @@ void Schematic::activateCompsWithinRect(int x1, int y1, int x2, int y2)
     y2 = cy2;
 
 
-    for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
+    for(Component *pc : *a_Components)
     {
         pc->Bounding(cx1, cy1, cx2, cy2);
         if(cx1 >= x1) if(cx2 <= x2) if(cy1 >= y1) if(cy2 <= y2)
@@ -1897,7 +1897,7 @@ void Schematic::activateCompsWithinRect(int x1, int y1, int x2, int y2)
 bool Schematic::activateSpecifiedComponent(int x, int y)
 {
     int x1, y1, x2, y2, a;
-    for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
+    for(Component* pc : *a_Components)
     {
         pc->Bounding(x1, y1, x2, y2);
         if(x >= x1) if(x <= x2) if(y >= y1) if(y <= y2)
@@ -1958,7 +1958,7 @@ bool Schematic::activateSelectedComponents()
 Component* Schematic::selectCompText(int x_, int y_, int& w, int& h) const
 {
     int a, b, dx, dy;
-    for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
+    for(Component* pc : *a_Components)
     {
         a = pc->cx + pc->tx;
         if(x_ < a)  continue;
@@ -1998,7 +1998,7 @@ Component* Schematic::searchSelSubcircuit()
 Component* Schematic::selectedComponent(int x, int y)
 {
     // test all components
-    for(Component *pc = a_Components->first(); pc != 0; pc = a_Components->next())
+    for(Component* pc : *a_Components)
         if(pc->getSelected(x, y))
             return pc;
 
@@ -2033,7 +2033,7 @@ void Schematic::deleteComp(Component *c)
 
 Component *Schematic::getComponentByName(const QString& compname) const
 {
-    for(Component *pc = a_Components->first(); pc != nullptr; pc = a_Components->next()) {
+    for(Component* pc : *a_Components) {
         if (pc->Name.toLower() == compname.toLower()) {
             return pc;
         }
@@ -2057,7 +2057,7 @@ void Schematic::oneLabel(Node *n1)
     bool named=false;   // wire line already named ?
     Q3PtrList<Node> Cons;
 
-    for(pn = a_Nodes->first(); pn!=0; pn = a_Nodes->next())
+    for(Node* pn : *a_Nodes)
         pn->y1 = 0;   // mark all nodes as not checked
 
     Cons.append(n1);
@@ -2130,8 +2130,11 @@ int Schematic::placeNodeLabel(WireLabel *pl)
     int y = pl->cy;
 
     // check if new node lies upon an existing node
-    for(pn = a_Nodes->first(); pn != 0; pn = a_Nodes->next())
-        if(pn->cx == x) if(pn->cy == y) break;
+    for(auto* node : *a_Nodes)
+        if(pn->cx == x) if(pn->cy == y) {
+            pn = node;
+            break;
+        }
 
     if(!pn)  return -1;
 
@@ -2163,7 +2166,7 @@ Element* Schematic::getWireLabel(Node *pn_)
     Node *pn, *pNode;
     Q3PtrList<Node> Cons;
 
-    for(pn = a_Nodes->first(); pn!=0; pn = a_Nodes->next())
+    for(Node* pn : *a_Nodes)
         pn->y1 = 0;   // mark all nodes as not checked
 
     Cons.append(pn_);
@@ -2206,7 +2209,7 @@ Painting* Schematic::selectedPainting(float fX, float fY)
     QPoint click(fX, fY);
     int tolerance = static_cast<int>(5.0 / a_Scale);
 
-    for(Painting *pp = a_Paintings->first(); pp != 0; pp = a_Paintings->next())
+    for(Painting *pp : *a_Paintings)
         if(pp->getSelected(click, tolerance))
             return pp;
 

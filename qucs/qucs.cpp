@@ -2416,7 +2416,7 @@ void QucsApp::slotTune(bool checked)
         bool found = false;
         bool digi_found = false;
         bool exit = false;
-        for(Component *pc = d->a_DocComps.first(); pc != 0; pc = d->a_DocComps.next()) {
+        for (Component* pc : d->a_DocComps) {
             if (pc->isSimulation) {
                 found = true;
             }

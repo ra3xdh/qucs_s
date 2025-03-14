@@ -1321,7 +1321,7 @@ void MouseActions::MPressSetLimits(Schematic *Doc, QMouseEvent*, float fX, float
     // TODO: Diagrams is currently a Q3PtrList, but it would be better to refactor
     // this (and many other collections) to be std::vector.
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
-    for (Diagram* diagram = Doc->a_Diagrams->last(); diagram != 0; diagram = Doc->a_Diagrams->prev()) {
+    for (Diagram* diagram : *Doc->a_Diagrams) {
         // BUG: Obtaining the diagram type by name is marked as a bug elsewhere (to be solved separately).
         // TODO: Currently only rectangular diagrams are supported.
         if (diagram->getSelected(fX, fY) && diagram->Name == "Rect") {
@@ -1575,7 +1575,7 @@ void MouseActions::MReleaseSetLimits(Schematic *Doc, QMouseEvent *Event)
 
     qDebug() << "Mouse released after setting limits.";
     // Check to see if the mouse is within a diagram using the oddly named "getSelected".
-    for (Diagram* diagram = Doc->a_Diagrams->last(); diagram != 0; diagram = Doc->a_Diagrams->prev()) {
+    for (Diagram* diagram : *Doc->a_Diagrams) {
 
         // Only process the selection if it ends in a diagram, and is the same diagram as start.
         if (diagram->getSelected(MAx2, MAy2) && diagram == pActiveDiagram) {
@@ -1855,9 +1855,11 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     case isGraph:
         pg = (Graph *) focusElement;
         // searching diagram for this graph
-        for (dia = Doc->a_Diagrams->last(); dia != 0; dia = Doc->a_Diagrams->prev())
-            if (dia->Graphs.indexOf(pg) >= 0)
+        for (auto* d : *Doc->a_Diagrams)
+            if (d->Graphs.indexOf(pg) >= 0) {
+                dia = d;
                 break;
+            }
         if (!dia)
             break;
 

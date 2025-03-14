@@ -639,7 +639,7 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
 
     if (a_Diagrams == nullptr) return; // fix for crash on document closing; appears time to time
 
-    for (Diagram* diagram = a_Diagrams->last(); diagram != nullptr; diagram = a_Diagrams->prev()) {
+    for (Diagram* diagram : *a_Diagrams) {
         // BUG: Obtaining the diagram type by name is marked as a bug elsewhere (to be solved separately).
         // TODO: Currently only rectangular diagrams are supported.
         if (diagram->getSelected(xpos, ypos) && diagram->Name == "Rect") {
@@ -1319,7 +1319,7 @@ Schematic::Selection Schematic::currentSelection() const {
 void Schematic::reloadGraphs()
 {
     QFileInfo Info(a_DocName);
-    for (Diagram *pd = a_Diagrams->first(); pd != 0; pd = a_Diagrams->next())
+    for (Diagram *pd : *a_Diagrams)
         pd->loadGraphData(Info.path() + QDir::separator() + a_DataSet);
 }
 
@@ -1464,9 +1464,8 @@ int Schematic::adjustPortNumbers()
     y2 += 20;
     setOnGrid(x1, y2);
 
-    Painting *pp;
     // delete all port names in symbol
-    for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
+    for (auto* pp : a_SymbolPaints)
         if (pp->Name == ".PortSym ")
             ((PortSymbol *) pp)->nameStr = "";
 
@@ -1498,7 +1497,7 @@ int Schematic::adjustPortNumbers()
         if (!VInfo.PortNames.isEmpty())
             Names = VInfo.PortNames.split(",", Qt::SkipEmptyParts);
 
-        for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
+        for (auto* pp : a_SymbolPaints)
             if (pp->Name == ".ID ") {
                 ID_Text *id = (ID_Text *) pp;
                 id->prefix = VInfo.EntityName.toUpper();
@@ -1526,10 +1525,13 @@ int Schematic::adjustPortNumbers()
 
             Str = QString::number(Number);
             // search for matching port symbol
-            for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
-                if (pp->Name == ".PortSym ")
-                    if (((PortSymbol *) pp)->numberStr == Str)
+            Painting* pp = nullptr;
+            for (auto* painting : a_SymbolPaints)
+                if (painting->Name == ".PortSym ")
+                    if (((PortSymbol *) painting)->numberStr == Str) {
+                        pp = painting;
                         break;
+                    }
 
             if (pp)
                 ((PortSymbol *) pp)->nameStr = *it;
@@ -1560,7 +1562,7 @@ int Schematic::adjustPortNumbers()
         if (!VInfo.PortNames.isEmpty())
             Names = VInfo.PortNames.split(",", Qt::SkipEmptyParts);
 
-        for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
+        for (auto* pp : a_SymbolPaints)
             if (pp->Name == ".ID ") {
                 ID_Text *id = (ID_Text *) pp;
                 id->prefix = VInfo.ModuleName.toUpper();
@@ -1572,10 +1574,13 @@ int Schematic::adjustPortNumbers()
 
             Str = QString::number(Number);
             // search for matching port symbol
-            for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
-                if (pp->Name == ".PortSym ")
-                    if (((PortSymbol *) pp)->numberStr == Str)
+            Painting* pp = nullptr;
+            for (auto* painting : a_SymbolPaints)
+                if (painting->Name == ".PortSym ")
+                    if (((PortSymbol *) painting)->numberStr == Str) {
+                        pp = painting;
                         break;
+                    }
 
             if (pp)
                 ((PortSymbol *) pp)->nameStr = *it;
@@ -1607,7 +1612,7 @@ int Schematic::adjustPortNumbers()
         if (!VInfo.PortNames.isEmpty())
             Names = VInfo.PortNames.split(",", Qt::SkipEmptyParts);
 
-        for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
+        for (auto* pp : a_SymbolPaints)
             if (pp->Name == ".ID ") {
                 ID_Text *id = (ID_Text *) pp;
                 id->prefix = VInfo.ModuleName.toUpper();
@@ -1619,10 +1624,13 @@ int Schematic::adjustPortNumbers()
 
             Str = QString::number(Number);
             // search for matching port symbol
-            for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
-                if (pp->Name == ".PortSym ")
-                    if (((PortSymbol *) pp)->numberStr == Str)
+            Painting* pp = nullptr;
+            for (auto* painting : a_SymbolPaints)
+                if (painting->Name == ".PortSym ")
+                    if (((PortSymbol *) pp)->numberStr == Str) {
+                        pp = painting;
                         break;
+                    }
 
             if (pp)
                 ((PortSymbol *) pp)->nameStr = *it;
@@ -1635,16 +1643,19 @@ int Schematic::adjustPortNumbers()
     // handle schematic symbol
     else {
         // go through all components in a schematic
-        for (Component *pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
+        for (Component* pc : a_DocComps) {
             if (pc->Model == "Port") {
                 countPort++;
 
                 Str = pc->Props.front()->Value;
                 // search for matching port symbol
-                for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next()) {
-                    if (pp->Name == ".PortSym ") {
-                        if (((PortSymbol *) pp)->numberStr == Str)
+                Painting* pp = nullptr;
+                for (auto* painting : a_SymbolPaints) {
+                    if (painting->Name == ".PortSym ") {
+                        if (((PortSymbol *) pp)->numberStr == Str) {
+                            pp = painting;
                             break;
+                        }
                     }
                 }
 
@@ -1658,27 +1669,19 @@ int Schematic::adjustPortNumbers()
         }
     }
 
-    // delete not accounted port symbols
-    for (pp = a_SymbolPaints.first(); pp != 0;) {
-        if (pp->Name == ".PortSym ")
-            if (((PortSymbol *) pp)->nameStr.isEmpty()) {
-                a_SymbolPaints.remove();
-                pp = a_SymbolPaints.current();
-                continue;
-            }
-        pp = a_SymbolPaints.next();
-    }
+    a_SymbolPaints.removeIf([](Painting* pp) {
+        return pp->Name == ".PortSym " && (((PortSymbol *) pp)->nameStr.isEmpty());
+    });
 
     return countPort;
 }
 
 int Schematic::orderSymbolPorts()
 {
-  Painting *pp;
   int countPorts = 0;
   QSet<int> port_numbers, existing_numbers, free_numbers;
   int max_port_number = 0;
-  for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next()) {
+  for (auto* pp : a_SymbolPaints) {
     if (pp->Name == ".PortSym ") {
       countPorts++;
       QString numstr = ((PortSymbol *) pp)->numberStr;
@@ -1699,7 +1702,7 @@ int Schematic::orderSymbolPorts()
   free_numbers = port_numbers - existing_numbers;
 
   // Assign new numbers only if port number is empty; Preserve ports order.
-  for (pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next()) {
+  for (auto* pp : a_SymbolPaints) {
     if (pp->Name == ".PortSym ") {
       QString numstr = ((PortSymbol *) pp)->numberStr;
       if (numstr == "0") {

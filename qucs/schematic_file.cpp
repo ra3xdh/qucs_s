@@ -83,22 +83,18 @@ void copyToQ3PtrList(const QList<T*>& src, Q3PtrList<T>& dst) {
 QString Schematic::createClipboardFile()
 {
   int z=0;  // counts selected elements
-  Wire *pw;
-  Diagram *pd;
-  Painting *pp;
-  Component *pc;
 
   QString s("<Qucs Schematic " PACKAGE_VERSION ">\n");
 
   // Build element document.
   s += "<Components>\n";
-  for(pc = a_Components->first(); pc != 0; pc = a_Components->next())
+  for(Component* pc : *a_Components)
     if(pc->isSelected) {
       s += pc->save()+"\n";  z++; }
   s += "</Components>\n";
 
   s += "<Wires>\n";
-  for(pw = a_Wires->first(); pw != 0; pw = a_Wires->next())
+  for(Wire* pw : *a_Wires)
     if(pw->isSelected) {
       z++;
       if(pw->Label) if(!pw->Label->isSelected) {
@@ -107,19 +103,19 @@ QString Schematic::createClipboardFile()
       }
       s += pw->save()+"\n";
     }
-  for(Node *pn = a_Nodes->first(); pn != 0; pn = a_Nodes->next())
+  for(Node *pn : *a_Nodes)
     if(pn->Label) if(pn->Label->isSelected) {
       s += pn->Label->save()+"\n";  z++; }
   s += "</Wires>\n";
 
   s += "<Diagrams>\n";
-  for(pd = a_Diagrams->first(); pd != 0; pd = a_Diagrams->next())
+  for(Diagram* pd : *a_Diagrams)
     if(pd->isSelected) {
       s += pd->save()+"\n";  z++; }
   s += "</Diagrams>\n";
 
   s += "<Paintings>\n";
-  for(pp = a_Paintings->first(); pp != 0; pp = a_Paintings->next())
+  for(Painting* pp : *a_Paintings)
     if(pp->isSelected)
       if(pp->Name.at(0) != '.') {  // subcircuit specific -> do not copy
         s += "<"+pp->save()+">\n";  z++; }
@@ -234,10 +230,9 @@ int Schematic::saveSymbolCpp (void)
   int ymax = INT_MIN;
   int x1, y1;
   int maxNum = 0;
-  Painting * pp;
 
   stream << "  // symbol drawing code\n";
-  for (pp = a_SymbolPaints.first (); pp != 0; pp = a_SymbolPaints.next ()) {
+  for (auto* pp : a_SymbolPaints) {
     if (pp->Name == ".ID ") continue;
     if (pp->Name == ".PortSym ") {
       if (((PortSymbol*)pp)->numberStr.toInt() > maxNum)
@@ -261,7 +256,7 @@ int Schematic::saveSymbolCpp (void)
 
   stream << "\n  // terminal definitions\n";
   for (int i = 1; i <= maxNum; i++) {
-    for (pp = a_SymbolPaints.first (); pp != 0; pp = a_SymbolPaints.next ()) {
+    for (auto* pp : a_SymbolPaints) {
       if (pp->Name == ".PortSym ") {
         if (((PortSymbol*)pp)->numberStr.toInt() == i) {
           stream << "  " << pp->saveCpp () << "\n";
@@ -275,7 +270,7 @@ int Schematic::saveSymbolCpp (void)
     << "  x2 = " << xmax << "; " << "  y2 = " << ymax << ";\n";
 
   stream << "\n  // property text position\n";
-  for (pp = a_SymbolPaints.first (); pp != 0; pp = a_SymbolPaints.next ())
+  for (auto* pp : a_SymbolPaints)
     if (pp->Name == ".ID ")
       stream << "  " << pp->saveCpp () << "\n";
 
@@ -513,14 +508,13 @@ int Schematic::saveSymbolJSON()
   int ymax = INT_MIN;
   int x1, y1;
   int maxNum = 0;
-  Painting * pp;
 
   stream << "{\n";
 
   stream << "\"paintings\" : [\n";
 
   // symbol drawing code"
-  for (pp = a_SymbolPaints.first (); pp != 0; pp = a_SymbolPaints.next ()) {
+  for (auto* pp : a_SymbolPaints) {
     if (pp->Name == ".ID ") continue;
     if (pp->Name == ".PortSym ") {
       if (((PortSymbol*)pp)->numberStr.toInt() > maxNum)
@@ -544,7 +538,7 @@ int Schematic::saveSymbolJSON()
   // terminal definitions
   //stream << "terminal \n";
   for (int i = 1; i <= maxNum; i++) {
-    for (pp = a_SymbolPaints.first (); pp != 0; pp = a_SymbolPaints.next ()) {
+    for (auto* pp : a_SymbolPaints) {
       if (pp->Name == ".PortSym ") {
         if (((PortSymbol*)pp)->numberStr.toInt() == i) {
           stream << "  " << pp->saveJSON () << "\n";
@@ -561,7 +555,7 @@ int Schematic::saveSymbolJSON()
     << "  \"x2\" : " << xmax << ",\n" << "  \"y2\" : " << ymax << ",\n";
 
   // property text position
-  for (pp = a_SymbolPaints.first (); pp != 0; pp = a_SymbolPaints.next ())
+  for (auto* pp : a_SymbolPaints)
     if (pp->Name == ".ID ")
       stream << "  " << pp->saveJSON () << "\n";
 
@@ -631,33 +625,32 @@ int Schematic::saveDocument()
   stream << "  <FrameText3=" << t << ">\n";
   stream << "</Properties>\n";
 
-  Painting *pp;
   stream << "<Symbol>\n";     // save all paintings for symbol
-  for(pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
+  for(auto* pp : a_SymbolPaints)
     stream << "  <" << pp->save() << ">\n";
   stream << "</Symbol>\n";
 
   stream << "<Components>\n";    // save all components
-  for(Component *pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next())
+  for(Component *pc : a_DocComps)
     stream << "  " << pc->save() << "\n";
   stream << "</Components>\n";
 
   stream << "<Wires>\n";    // save all wires
-  for(Wire *pw = a_DocWires.first(); pw != 0; pw = a_DocWires.next())
+  for(Wire *pw : a_DocWires)
     stream << "  " << pw->save() << "\n";
 
   // save all labeled nodes as wires
-  for(Node *pn = a_DocNodes.first(); pn != 0; pn = a_DocNodes.next())
+  for(Node *pn : a_DocNodes)
     if(pn->Label) stream << "  " << pn->Label->save() << "\n";
   stream << "</Wires>\n";
 
   stream << "<Diagrams>\n";    // save all diagrams
-  for(Diagram *pd = a_DocDiags.first(); pd != 0; pd = a_DocDiags.next())
+  for(Diagram *pd : a_DocDiags)
     stream << "  " << pd->save() << "\n";
   stream << "</Diagrams>\n";
 
   stream << "<Paintings>\n";     // save all paintings
-  for(pp = a_DocPaints.first(); pp != 0; pp = a_DocPaints.next())
+  for(auto* pp : a_DocPaints)
     stream << "  <" << pp->save() << ">\n";
   stream << "</Paintings>\n";
 
@@ -1198,30 +1191,25 @@ bool Schematic::loadDocument()
 // string. This is used to save state for undo operation.
 QString Schematic::createUndoString(char Op)
 {
-  Wire *pw;
-  Diagram *pd;
-  Painting *pp;
-  Component *pc;
-
   // Build element document.
   QString s = "  \n";
   s.replace(0,1,Op);
-  for(pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next())
+  for(auto* pc : a_DocComps)
     s += pc->save()+"\n";
   s += "</>\n";  // short end flag
 
-  for(pw = a_DocWires.first(); pw != 0; pw = a_DocWires.next())
+  for(auto* pw : a_DocWires)
     s += pw->save()+"\n";
   // save all labeled nodes as wires
-  for(Node *pn = a_DocNodes.first(); pn != 0; pn = a_DocNodes.next())
+  for(Node *pn : a_DocNodes)
     if(pn->Label) s += pn->Label->save()+"\n";
   s += "</>\n";
 
-  for(pd = a_DocDiags.first(); pd != 0; pd = a_DocDiags.next())
+  for(auto* pd : a_DocDiags)
     s += pd->save()+"\n";
   s += "</>\n";
 
-  for(pp = a_DocPaints.first(); pp != 0; pp = a_DocPaints.next())
+  for(auto* pp : a_DocPaints)
     s += "<"+pp->save()+">\n";
   s += "</>\n";
 
@@ -1232,7 +1220,6 @@ QString Schematic::createUndoString(char Op)
 // Same as "createUndoString(char Op)" but for symbol edit mode.
 QString Schematic::createSymbolUndoString(char Op)
 {
-  Painting *pp;
 
   // Build element document.
   QString s = "  \n";
@@ -1241,7 +1228,7 @@ QString Schematic::createSymbolUndoString(char Op)
   s += "</>\n";  // short end flag for wires
   s += "</>\n";  // short end flag for diagrams
 
-  for(pp = a_SymbolPaints.first(); pp != 0; pp = a_SymbolPaints.next())
+  for(auto* pp : a_SymbolPaints)
     s += "<"+pp->save()+">\n";
   s += "</>\n";
 
@@ -1323,10 +1310,9 @@ void Schematic::createNodeSet(QStringList& Collect, int& countInit,
 void Schematic::throughAllNodes(bool User, QStringList& Collect,
         int& countInit)
 {
-  Node *pn;
   int z=0;
 
-  for(pn = a_DocNodes.first(); pn != 0; pn = a_DocNodes.next()) {
+  for(Node* pn : a_DocNodes) {
     if(pn->Name.isEmpty() == User) {
       continue;  // already named ?
     }
@@ -1418,9 +1404,7 @@ int Schematic::testFile(const QString& DocName)
 // Collects the signal names for digital simulations.
 void Schematic::collectDigitalSignals(void)
 {
-  Node *pn;
-
-  for(pn = a_DocNodes.first(); pn != 0; pn = a_DocNodes.next()) {
+  for(auto* pn : a_DocNodes) {
     DigMap::Iterator it = a_Signals.find(pn->Name);
     if(it == a_Signals.end()) { // avoid redeclaration of signal
       a_Signals.insert(pn->Name, DigSignal(pn->Name, pn->DType));
@@ -1714,7 +1698,7 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
                    QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
 {
   // delete the node names
-  for(Node *pn = a_DocNodes.first(); pn != 0; pn = a_DocNodes.next()) {
+  for(Node *pn : a_DocNodes) {
     pn->State = 0;
     if(pn->Label) {
       if(a_isAnalog)
@@ -1726,7 +1710,7 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
   }
 
   // set the wire names to the connected node
-  for(Wire *pw = a_DocWires.first(); pw != 0; pw = a_DocWires.next())
+  for(Wire *pw : a_DocWires)
     if(pw->Label != 0) {
       if(a_isAnalog)
         pw->Port1->Name = pw->Label->Name;
@@ -1805,7 +1789,6 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
   QStringList InOutPorts;
   QStringList::iterator it_name;
   QStringList::iterator it_type;
-  Component *pc;
 
   // probably creating a library currently
   QTextStream * tstream = stream;
@@ -1823,7 +1806,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
   // collect subcircuit ports and sort their node names into
   // "SubcircuitPortNames"
   a_PortTypes.clear();
-  for(pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
+  for(auto* pc : a_DocComps) {
     if(pc->Model.at(0) == '.') { // no simulations in subcircuits
       ErrText->appendPlainText(
         QObject::tr("WARNING: Ignore simulation component in subcircuit \"%1\".").arg(a_DocName)+"\n");
@@ -1902,7 +1885,6 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
   QString f = misc::properFileName(a_DocName);
   QString Type = misc::properName(f);
 
-  Painting *pi;
 
 
 
@@ -1912,7 +1894,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
         if(a_isAnalog) {
             // ..... analog subcircuit ...................................
             (*tstream) << "\n.Def:" << Type << " " << SubcircuitPortNames.join(" ");
-            for(pi = a_SymbolPaints.first(); pi != 0; pi = a_SymbolPaints.next())
+            for (auto* pi : a_SymbolPaints)
               if(pi->Name == ".ID ") {
                 ID_Text *pid = (ID_Text*)pi;
                 for (const auto& sub_param : pid->subParameters) {
@@ -1924,7 +1906,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
             (*tstream) << '\n';
 
             // write all components with node names into netlist file
-            for(pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next())
+            for (auto* pc : a_DocComps)
               (*tstream) << pc->getNetlist();
 
             (*tstream) << ".Def:End\n";
@@ -1955,7 +1937,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
               (*tstream) << "\n";
 
               // subcircuit parameters
-              for(pi = a_SymbolPaints.first(); pi != 0; pi = a_SymbolPaints.next())
+              for (auto* pi : a_SymbolPaints)
                 if(pi->Name == ".ID ") {
                   ID_Text *pid = (ID_Text*)pi;
                   for (const auto& sub_param : pid->subParameters) {
@@ -1968,7 +1950,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
                 }
 
               // write all equations into netlist file
-              for(pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
+              for (auto* pc : a_DocComps) {
                 if(pc->Model == "Eqn") {
                   (*tstream) << pc->get_Verilog_Code(NumPorts);
                 }
@@ -1978,7 +1960,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
               (*tstream) << " assign gnd = 0;\n"; // should appear only once
 
               // write all components into netlist file
-              for(pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
+              for (auto* pc : a_DocComps) {
                 if(pc->Model != "Eqn") {
                   s = pc->get_Verilog_Code(NumPorts);
                   if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
@@ -1995,7 +1977,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
               (*tstream) << "entity Sub_" << Type << " is\n";
 
               QString generic_str;
-              for(pi = a_SymbolPaints.first(); pi != 0; pi = a_SymbolPaints.next()) {
+              for (auto* pi : a_SymbolPaints) {
                 if(pi->Name == ".ID ") {
                   ID_Text *pid = (ID_Text*)pi;
 
@@ -2037,7 +2019,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
               }
 
               // write all equations into netlist file
-              for(pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
+              for (auto* pc : a_DocComps) {
                 if(pc->Model == "Eqn") {
                   ErrText->insertPlainText(
                               QObject::tr("WARNING: Equations in \"%1\" are 'time' typed.").
@@ -2052,7 +2034,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
               (*tstream) << " gnd <= '0';\n"; // should appear only once
 
               // write all components into netlist file
-              for(pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
+              for (auto* pc : a_DocComps) {
                 if(pc->Model != "Eqn") {
                     s = pc->get_VHDL_Code(NumPorts);
                     if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
@@ -2123,7 +2105,7 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
 // Detect simulation domain (analog/digital) by looking at component types.
 bool Schematic::isDigitalCircuit()
 {
-  for(Component *pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
+  for (Component *pc : a_DocComps) {
       if(pc->isActive == COMP_IS_OPEN) continue;
       if(pc->Model.at(0) == '.' && pc->Model == ".Digi") {
           return true;  // Verilog simulation detected
@@ -2145,7 +2127,7 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
   int allTypes = 0, NumPorts = 0;
 
   // Detect simulation domain (analog/digital) by looking at component types.
-  for(Component *pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
+  for (Component *pc : a_DocComps) {
     if(pc->isActive == COMP_IS_OPEN) continue;
     if(pc->Model.at(0) == '.') {
       if(pc->Model == ".Digi") {
@@ -2291,7 +2273,7 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
   FileList.clear();
 
   QString s, Time;
-  for(Component *pc = a_DocComps.first(); pc != 0; pc = a_DocComps.next()) {
+  for(Component *pc : a_DocComps) {
     if(a_isAnalog) {
       s = pc->getNetlist();
     }
