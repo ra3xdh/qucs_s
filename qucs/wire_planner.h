@@ -14,8 +14,8 @@ class Planner {
     enum class PlanType { TwoStepXY, TwoStepYX, ThreeStepXY, ThreeStepYX, Straight };
 
     Planner();
-    static std::vector<QPoint> plan(PlanType type, const QPoint from, const QPoint to);
-    std::vector<QPoint> plan(const QPoint from, const QPoint to) const;
+    static std::vector<QPoint> plan(PlanType type, const QPoint& from, const QPoint& to);
+    std::vector<QPoint> plan(const QPoint& from, const QPoint& to) const;
     void next();
     PlanType planType() const { return current->first; }
     PlanType setType(PlanType n);
