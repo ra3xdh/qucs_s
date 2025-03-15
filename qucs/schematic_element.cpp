@@ -368,9 +368,11 @@ Wire* merge_wires_at_node(Node* node) {
     // First of all, let's deal with labels. Label of node, if present, has
     // priority over wire labels.
     auto* label = node->Label;
+    node->Label = nullptr;
     if (label == nullptr) {
         // Node has no label, choose label of one of the wires
         label = extended_wire->Label == nullptr ? dissapearing_wire->Label : extended_wire->Label;
+        dissapearing_wire->Label = nullptr;
     }
 
     auto* extend_to = dissapearing_wire->Port1 == node
@@ -2325,6 +2327,7 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
 
         if (wire->Label == nullptr) {
             wire->Label = existing_wire->Label;
+            existing_wire->Label = nullptr;
         } else {
             delete existing_wire->Label;
             existing_wire->Label = nullptr;
