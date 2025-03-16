@@ -121,7 +121,7 @@ QString Schematic::createClipboardFile()
   s += "<Paintings>\n";
   for(pp = a_Paintings->first(); pp != 0; pp = a_Paintings->next())
     if(pp->isSelected)
-      if(pp->Name.at(0) != '.') {  // subcircuit specific -> do not copy
+      if ((a_isSymbolOnly && pp->Name.startsWith(".PortSym")) || pp->Name.at(0) != '.') {  // subcircuit specific -> do not copy
         s += "<"+pp->save()+">\n";  z++; }
   s += "</Paintings>\n";
 
