@@ -2452,13 +2452,24 @@ public:
 
     void putLabel(WireLabel* label, const QPoint& p) override {
         for (auto* node : *sch->a_Nodes) {
-            if (node->center() == p) {
-                label->pOwner->Label = nullptr;
-                delete node->Label;
-                node->Label = label;
-                node->Label->moveRootTo(p.x(), p.y());
+            if (node->center() != p) continue;
+
+            if (node->Label == label) {
+                assert(label->pOwner == node);
                 return;
             }
+
+            // Delete current node label
+            delete node->Label;
+
+            // Transfer label to a new host
+            label->pOwner->Label = nullptr;
+            node->Label = label;
+            label->pOwner = node;
+            label->Type = isNodeLabel;
+            label->moveRootTo(p.x(), p.y());
+
+            return;
         }
 
     }
