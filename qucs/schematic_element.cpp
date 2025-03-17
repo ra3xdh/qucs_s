@@ -2073,19 +2073,10 @@ void Schematic::oneLabel(Node *start_node)
 // ---------------------------------------------------
 int Schematic::placeNodeLabel(WireLabel *pl)
 {
-    Node *pn;
-    int x = pl->cx;
-    int y = pl->cy;
+    auto node = std::ranges::find_if(*a_Nodes, [pl](const Node* n) { return n->center() == pl->root(); });
+    if (node == a_Nodes->end()) return -1;
 
-    // check if new node lies upon an existing node
-    for(auto* node : *a_Nodes)
-        if(pn->cx == x) if(pn->cy == y) {
-            pn = node;
-            break;
-        }
-
-    if(!pn)  return -1;
-
+    Node* pn = *node;
     Element *pe = getWireLabel(pn);
     if(pe)      // name found ?
     {
