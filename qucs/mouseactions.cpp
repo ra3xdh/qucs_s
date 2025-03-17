@@ -1042,7 +1042,7 @@ void MouseActions::MPressMirrorX(Schematic *Doc, QMouseEvent *, float fX, float 
 {
     if (auto* c = Doc->selectedComponent(int(fX), int(fY))) {
         c->mirrorX();
-        Doc->heal(qucs_s::wire::Planner::PlanType::Straight);
+        Doc->healAfterKeyboardMutation();
     }
     else if (auto* p = Doc->selectedPainting(fX, fY)) {
         p->mirrorX();
@@ -1058,7 +1058,7 @@ void MouseActions::MPressMirrorY(Schematic *Doc, QMouseEvent *, float fX, float 
 {
     if (auto* c = Doc->selectedComponent(int(fX), int(fY))) {
         c->mirrorY();
-        Doc->heal(qucs_s::wire::Planner::PlanType::Straight);
+        Doc->healAfterKeyboardMutation();
     }
     else if (auto* p = Doc->selectedPainting(fX, fY)) {
         p->mirrorY();
@@ -1076,7 +1076,7 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float f
     if (e == nullptr) return;
 
     e->rotate();
-    Doc->heal(qucs_s::wire::Planner::PlanType::Straight);
+    Doc->healAfterKeyboardMutation();
 
     Doc->viewport()->update();
     Doc->setChanged(true, true);
@@ -1478,7 +1478,7 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent* event)
     }
     // Allow all mouse buttons, because for others than the left one,
     // a menu has already created.
-    Doc->heal(Doc->a_wirePlanner.planType());
+    Doc->healAfterMousyMutation();
     Doc->viewport()->update();
     Doc->releaseKeyboard(); // allow keyboard inputs again
 

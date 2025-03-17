@@ -23,7 +23,6 @@
 
 #include <QtCore>
 #include <stdlib.h>
-#include <limits.h>
 
 #include <QProcess>
 #include <QRegularExpressionValidator>
@@ -1153,7 +1152,7 @@ void QucsApp::slotCursorLeft(bool left)
   std::ranges::for_each(selection.components, mover);
   std::ranges::for_each(selection.wires, mover);
   std::ranges::for_each(selection.nodes, mover);
-  Doc->heal();
+  Doc->healAfterKeyboardMutation();
   Doc->viewport()->update();
 }
 
@@ -1232,7 +1231,7 @@ void QucsApp::slotCursorUp(bool up)
   std::ranges::for_each(selection.components, mover);
   std::ranges::for_each(selection.wires, mover);
   std::ranges::for_each(selection.nodes, mover);
-  Doc->heal();
+  Doc->healAfterKeyboardMutation();
   Doc->viewport()->update();
 }
 

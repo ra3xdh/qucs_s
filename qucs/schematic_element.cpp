@@ -14,18 +14,34 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include <memory>
 #include <optional>
 #include <stdlib.h>
-#include <limits.h>
 
 #include "geometry/multi_point.h"
 #include "healer.h"
-#include "portsymbol.h"
 #include "schematic.h"
 
 #include <ranges>
 #include <set>
-#include <unordered_set>
+
+struct Schematic::HealingParams
+{
+    qucs_s::HealerParameters m_healer_params = {.allowWireReshaping = false, .allowWireRelaying = false};
+    qucs_s::wire::Planner::PlanType m_wire_plan = qucs_s::wire::Planner::PlanType::Straight;
+};
+
+constexpr Schematic::HealingParams mousyMutationParams{
+    .m_healer_params = {.allowWireReshaping = false, .allowWireRelaying = true, .wireRelayingDepth = 3}
+};
+
+constexpr Schematic::HealingParams keyboardMutationParams{
+    .m_healer_params = {.allowWireReshaping = true, .allowWireRelaying = false}
+};
+
+constexpr Schematic::HealingParams noninteractiveMutationParams{
+    .m_healer_params = {.allowWireReshaping = false, .allowWireRelaying = false, .wireRelayingDepth = 3}
+};
 
 /**
     Given an element bounding rectangle and selection rectangle tells
@@ -280,7 +296,7 @@ Node* Schematic::provideNode(int x, int y)
     // Check if the new node lies upon an existing wire
     for (auto* wire : *a_Wires)
     {
-        if (qucs_s::geom::is_between(new_node, wire->Port1, wire->Port2)) {
+        if (qucs_s::geom::is_between(new_node, QPoint{wire->x1, wire->y1}, QPoint{wire->x2, wire->y2})) {
             // split the wire into two wires
             splitWire(wire, new_node);
             return new_node;
@@ -409,7 +425,9 @@ Wire* merge_wires_at_node(Node* node) {
 
 }
 
-void Schematic::optimizeWires() {
+bool Schematic::optimizeWires() {
+    bool thereWereChanges = false;
+
     while (auto* redundant_node = internal::find_redundant_node(a_Nodes)) {
         auto* obsolete_wire = internal::merge_wires_at_node(redundant_node);
 
@@ -422,7 +440,11 @@ void Schematic::optimizeWires() {
 
         a_Nodes->remove(redundant_node);
         delete redundant_node;
+
+        thereWereChanges = true;
     }
+
+    return thereWereChanges;
 }
 
 // ---------------------------------------------------
@@ -1146,6 +1168,7 @@ bool Schematic::deleteElements()
     for (auto* l : selection.labels) {
         l->pOwner->Label = nullptr;
         delete l;
+        sel = true;
     }
 
     for (auto* wire : selection.wires) {
@@ -1373,10 +1396,7 @@ bool Schematic::aligning(int mode)
     std::ranges::for_each(selection.components, aligner);
     std::ranges::for_each(selection.wires, aligner);
 
-    heal(qucs_s::wire::Planner::PlanType::Straight);
-
-    setChanged(true, true);
-    return true;
+    return heal(&noninteractiveMutationParams);
 }
 
 namespace internal {
@@ -1450,10 +1470,7 @@ bool Schematic::distributeHorizontal()
         dist.next();
     }
 
-    heal(qucs_s::wire::Planner::PlanType::Straight);
-
-    setChanged(true, true);
-    return true;
+    return heal(&noninteractiveMutationParams);
 }
 
 /*!
@@ -1482,10 +1499,7 @@ bool Schematic::distributeVertical()
         dist.next();
     }
 
-    heal(qucs_s::wire::Planner::PlanType::Straight);
-
-    setChanged(true, true);
-    return true;
+    return heal(&noninteractiveMutationParams);
 }
 
 // Sets selected elements on grid.
@@ -1511,10 +1525,7 @@ bool Schematic::elementsOnGrid()
         w->cy = (w->y1 + w->y2) / 2;
     });
 
-    heal(qucs_s::wire::Planner::PlanType::Straight);
-
-    setChanged(true, true);
-    return true;
+    return heal(&noninteractiveMutationParams);
 }
 
 // Rotates all selected components around their midpoint.
@@ -1541,8 +1552,7 @@ bool Schematic::rotateElements()
     std::ranges::for_each(selection.labels, rotator);
     std::ranges::for_each(selection.nodes, rotator);
 
-    elementsOnGrid();
-    return true;
+    return elementsOnGrid();
 }
 
 // Mirrors all selected components.
@@ -1569,8 +1579,7 @@ bool Schematic::mirrorXComponents()
     std::ranges::for_each(selection.labels, mirrorer);
     std::ranges::for_each(selection.nodes, mirrorer);
 
-    elementsOnGrid();
-    return true;
+    return elementsOnGrid();
 }
 
 // Mirrors all selected components.
@@ -2418,12 +2427,10 @@ public:
         sch->PostPaintEvent(_Line, c.x() + 5, c.y() - 5, c.x() - 5, c.y() + 5);
     }
 
-    void connectPortWithNode(qucs_s::GenericPort* port, Node* node) override {
-        sch->showEphemeralWire(port->center(), node->center());
+    void connectWithWire(const QPoint& a, const QPoint& b) override {
+        sch->showEphemeralWire(a, b);
     }
 
-    void putLabel(WireLabel* label, Node* dest_node) override {}
-    void moveNode(Node* node, const QPoint& p) override {}
 };
 
 
@@ -2433,9 +2440,8 @@ public:
     ActualMutator(Schematic* s) : sch{s} {}
     void deleteWire(Wire* w) override { sch->deleteWire(w, false); }
 
-    void connectPortWithNode(qucs_s::GenericPort* port, Node* node) override {
-        port->replaceNodeWith(sch->provideNode(port->center().x(), port->center().y()));
-        sch->dumbConnectWithWire(port->center(), node->center());
+    void connectWithWire(const QPoint& a, const QPoint& b) override {
+        sch->dumbConnectWithWire(a, b);
     }
 
     void putLabel(WireLabel* label, Node* dest_node) override {
@@ -2451,6 +2457,14 @@ public:
 
     void moveNode(Node* node, const QPoint& p) override {
         node->moveCenterTo(p);
+    }
+
+    void movePort(qucs_s::GenericPort* port, const QPoint& p) override {
+        port->moveCenterTo(p);
+    }
+
+    void replaceNode(qucs_s::GenericPort* port) override {
+        port->replaceNodeWith(sch->provideNode(port->center().x(), port->center().y()));
     }
 };
 
@@ -2479,7 +2493,7 @@ std::vector<std::vector<Node*>> sameloc_nodes(NodeContainer* nodes) {
 }
 
 void Schematic::displayMutations() {
-    qucs_s::Healer healer{a_Components, a_Wires, interactiveParams};
+    qucs_s::Healer healer{a_Components, a_Wires, mousyMutationParams.m_healer_params};
     internal::ChangesPainter p{this};
 
     for (auto& mutation : healer.planHealing()) {
@@ -2487,13 +2501,25 @@ void Schematic::displayMutations() {
     }
 }
 
-void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
+bool Schematic::heal(const HealingParams* params) {
     assert(invariants::allComponentsAreConsistent(a_Components));
     assert(invariants::allWiresAreConsistent(a_Wires));
     assert(invariants::noOrphanNodes(a_Nodes));
 
-    // Fix "same location nodes" anomalies
+    bool thereWereChanges = false;
 
+
+    // Remove wires connecting nodes at same location
+    {
+        std::vector<Wire*> zerolen_wires;
+        std::ranges::copy_if(*a_Wires, std::back_inserter(zerolen_wires), [](const Wire* w) -> bool { return w->Port1->center() == w->Port2->center(); });
+        std::ranges::for_each(zerolen_wires, [this](Wire* w) -> void { deleteWire(w); });
+        thereWereChanges = !zerolen_wires.empty() || thereWereChanges;
+        zerolen_wires.clear();
+    }
+
+
+    // Merge nodes having the same location
     for (auto sameloc_node_group : internal::sameloc_nodes(a_Nodes)) {
         auto recipient = sameloc_node_group.front();
 
@@ -2501,32 +2527,10 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
             internal::merge(*donor, recipient);
             a_Nodes->remove(*donor);
             delete *donor;
+            thereWereChanges = true;
         }
     }
 
-
-    // Fix "zero-length wires" anomalies
-
-    {
-        std::vector<Wire*> zerolen_wires;
-        for (auto* w : *a_Wires) {
-            assert(w->Port1 != nullptr);
-            assert(w->Port2 != nullptr);
-            if (w->Port1 == w->Port2) {
-                zerolen_wires.push_back(w);
-            }
-        }
-        for (auto* w : zerolen_wires) {
-            internal::merge(w->Port1, w->Port2);
-
-            if (w->Label != nullptr && w->Port2->Label == nullptr) {
-                w->Port2->Label = w->Label;
-                w->Label = nullptr;
-            }
-
-            deleteWire(w);
-        }
-    }
 
     assert(invariants::allComponentsAreConsistent(a_Components));
     assert(invariants::allWiresAreConsistent(a_Wires));
@@ -2536,14 +2540,14 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
 
     // Fix "node above wire" anomalies
-
     {
         for (auto* n : *a_Nodes) {
             for (auto wit = a_Wires->begin(); wit != a_Wires->end(); wit++) {
                 auto w = *wit;
-                if (qucs_s::geom::is_between(n, w->Port1, w->Port2)) {
+                if (qucs_s::geom::is_between(n, w->Port1, w->Port2) && n != w->Port1 && n != w->Port2) {
                     splitWire(w, n);
                     wit = a_Wires->begin();
+                    thereWereChanges = true;
                 }
             }
         }
@@ -2551,7 +2555,6 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
 
     // Fix "duplicate wires" anomalies
-
     {
         std::unordered_map<qucs_s::UnorderedPair<Node*,Node*>,Wire*> unique_wires;
         std::vector<Wire*> wire_duplicates;
@@ -2571,6 +2574,7 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
         for (auto* wire : wire_duplicates) {
             deleteWire(wire);
+            thereWereChanges = true;
         }
     }
 
@@ -2585,32 +2589,27 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
     // Fix geometric anomalies
 
-    auto old_plan = a_wirePlanner.setType(planType);
-    qucs_s::Healer healer{a_Components, a_Wires, params};
+    auto old_plan = a_wirePlanner.setType(params->m_wire_plan);
+    qucs_s::Healer healer{a_Components, a_Wires, params->m_healer_params};
     internal::ActualMutator mut{this};
     for (auto& mutation : healer.planHealing()) {
         mutation->execute(&mut);
+        thereWereChanges = true;
     }
     a_wirePlanner.setType(old_plan);
 
 
-    // Fix "node above wire" anomalies
-
+    // Remove wires connecting nodes at same location
     {
-        for (auto* n : *a_Nodes) {
-            for (auto wit = a_Wires->begin(); wit != a_Wires->end(); wit++) {
-                auto w = *wit;
-                if (qucs_s::geom::is_between(n, w->Port1, w->Port2)) {
-                    splitWire(w, n);
-                    wit = a_Wires->begin();
-                }
-            }
-        }
+        std::vector<Wire*> zerolen_wires;
+        std::ranges::copy_if(*a_Wires, std::back_inserter(zerolen_wires), [](const Wire* w) -> bool { return w->Port1->center() == w->Port2->center(); });
+        std::ranges::for_each(zerolen_wires, [this](Wire* w) -> void { deleteWire(w); });
+        thereWereChanges = !zerolen_wires.empty() || thereWereChanges;
+        zerolen_wires.clear();
     }
 
 
-    // Fix "same location nodes" anomalies
-
+    // Merge nodes having the same location
     for (auto sameloc_node_group : internal::sameloc_nodes(a_Nodes)) {
         auto recipient = sameloc_node_group.front();
 
@@ -2618,12 +2617,26 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
             internal::merge(*donor, recipient);
             a_Nodes->remove(*donor);
             delete *donor;
+            thereWereChanges = true;
+        }
+    }
+
+    // Fix "node above wire" anomalies
+    {
+        for (auto* n : *a_Nodes) {
+            for (auto wit = a_Wires->begin(); wit != a_Wires->end(); wit++) {
+                auto w = *wit;
+                if (qucs_s::geom::is_between(n, w->Port1, w->Port2)) {
+                    splitWire(w, n);
+                    wit = a_Wires->begin();
+                    thereWereChanges = true;
+                }
+            }
         }
     }
 
 
     // Fix "duplicate wires" anomalies
-
     {
         std::unordered_map<qucs_s::UnorderedPair<Node*,Node*>,Wire*> unique_wires;
         std::vector<Wire*> wire_duplicates;
@@ -2643,10 +2656,12 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
         for (auto* wire : wire_duplicates) {
             deleteWire(wire);
+            thereWereChanges = true;
         }
     }
 
 
+    // Remove orphan nodes
     a_Nodes->remove_if([](const Node* n) { return n->conn_count() == 0;});
 
 
@@ -2681,10 +2696,12 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
 
         for (auto* wire : shorts) {
             deleteWire(wire);
+            thereWereChanges = true;
         }
     }
 
-    optimizeWires();
+    thereWereChanges = optimizeWires() || thereWereChanges;
+
     //
     // Baked
     //
@@ -2696,9 +2713,13 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
     assert(invariants::noZeroLenWires(a_Wires));
     assert(invariants::noNodesOnWires(a_Nodes, a_Wires));
     assert(invariants::noDuplicateWires(a_Wires));
+
+    setChanged(thereWereChanges, thereWereChanges);
+    return thereWereChanges;
 }
 
 void Schematic::dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept {
+    assert(a != b);
     auto points = a_wirePlanner.plan(a, b);
 
     // Take points by pairs
@@ -2714,4 +2735,17 @@ void Schematic::dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept {
         a_Wires->push_back(wire);
     }
 }
+
+bool Schematic::healAfterMousyMutation()
+{
+    auto params_copy = std::make_unique<HealingParams>(mousyMutationParams);
+    params_copy->m_wire_plan = a_wirePlanner.planType();
+    return heal(params_copy.get());
+}
+
+bool Schematic::healAfterKeyboardMutation()
+{
+    return heal(&keyboardMutationParams);
+}
+
 // vim:ts=8:sw=2:noet

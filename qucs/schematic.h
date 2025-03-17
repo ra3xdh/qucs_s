@@ -446,10 +446,15 @@ public:
   std::pair<bool,Node*> connectWithWire(const QPoint& a, const QPoint& b) noexcept;
   std::pair<bool,Node*> connectWithWire(const QPoint& a, const QPoint& b, bool optimize, qucs_s::wire::Planner::PlanType planType) noexcept;
   void showEphemeralWire(const QPoint& a, const QPoint& b) noexcept;
-  void  optimizeWires();
+  bool  optimizeWires();
   std::pair<bool,Node*> installWire(Wire* wire);
   void displayMutations();
-  void heal(qucs_s::wire::Planner::PlanType planType = qucs_s::wire::Planner::PlanType::Straight);
+
+  struct HealingParams;
+  bool heal(const HealingParams* params);
+  bool healAfterMousyMutation();
+  bool healAfterKeyboardMutation();
+
   void dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept;
 
   void  selectWireLine(Element*, Node*, bool);
