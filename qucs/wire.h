@@ -52,6 +52,9 @@ public:
   QString save();
   bool    load(const QString&);
   bool    isHorizontal();
+
+  void setP1(const QPoint& p);
+  void setP2(const QPoint& p);
 };
 
 #endif

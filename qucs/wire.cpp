@@ -88,6 +88,14 @@ bool Wire::isHorizontal()
   return (y1 == y2);
 }
 
+QPoint coordinatesFromDistance(double distanceFromPort1, const QPoint& port1, const QPoint& port2)
+{
+    const auto ratio = distanceFromPort1 / qucs_s::geom::distance(port1, port2);
+    const auto x = static_cast<int>(port1.x() + ratio * (port2.x() - port1.x()));
+    const auto y = static_cast<int>(port1.y() + ratio * (port2.y() - port1.y()));
+    return {x, y};
+}
+
 // Adapter to use when loading a label from a file. Label root coordinates are stored
 // as distance from port 1 of the wire. Here it's translated to absolute coordinates
 // and passed further where real work is done.
@@ -99,10 +107,8 @@ void Wire::setName(int distFromPort1, int text_x, int text_y, const QString& nam
         return;
     }
 
-    const auto ratio = distFromPort1 / qucs_s::geom::distance(QPoint{x1, y1}, QPoint{x2, y2});
-    const auto root_x = static_cast<int>(x1 + ratio * (x2 - x1));
-    const auto root_y = static_cast<int>(y1 + ratio * (y2 - y1));
-    setName(name, value, root_x, root_y, text_x, text_y);
+    const auto root = coordinatesFromDistance(distFromPort1, QPoint{x1, y1}, QPoint{x2, y2});
+    setName(name, value, root.x(), root.y(), text_x, text_y);
 }
 
 void Wire::setName(const QString& Name_, const QString& Value_, int root_x, int root_y, int x_, int y_)
@@ -204,4 +210,48 @@ void Wire::moveCenter(int dx, int dy) noexcept
   x2 += dx;
   y2 += dy;
   if (Label) Label->moveRoot(dx, dy);
+}
+
+
+void Wire::setP1(const QPoint& new_p1)
+{
+  if (x1 == new_p1.x() && y1 == new_p1.y()) {
+    return;
+  }
+
+  if (Label != nullptr) {
+    const QPoint old_p1{x1, y1};
+    const QPoint p2{x2, y2};
+
+    const auto ratio = qucs_s::geom::distance(old_p1, Label->root()) / qucs_s::geom::distance(old_p1, p2);
+    const auto x = static_cast<int>(std::round(new_p1.x() + ratio * (p2.x() - new_p1.x())));
+    const auto y = static_cast<int>(std::round(new_p1.y() + ratio * (p2.y() - new_p1.y())));
+
+    Label->moveRootTo(x, y);
+  }
+
+  x1 = new_p1.x();
+  y1 = new_p1.y();
+}
+
+
+void Wire::setP2(const QPoint& new_p2)
+{
+  if (x2 == new_p2.x() && y2 == new_p2.y()) {
+    return;
+  }
+
+  if (Label != nullptr) {
+    const QPoint p1{x1, y1};
+    const QPoint old_p2{x2, y2};
+
+    const auto ratio = qucs_s::geom::distance(old_p2, Label->root()) / qucs_s::geom::distance(p1, old_p2);
+    const auto x = static_cast<int>(std::round(p1.x() + ratio * (new_p2.x() - p1.x())));
+    const auto y = static_cast<int>(std::round(p1.y() + ratio * (new_p2.y() - p1.y())));
+
+    Label->moveRootTo(x, y);
+  }
+
+  x2 = new_p2.x();
+  y2 = new_p2.y();
 }
