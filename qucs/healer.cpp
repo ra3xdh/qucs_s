@@ -1,38 +1,44 @@
 #include "healer.h"
 
 #include "component.h"
+#include "multi_point.h"
 #include "node.h"
 #include "wire.h"
+#include "wirelabel.h"
 
+#include <algorithm>
+#include <concepts>
+#include <limits>
 #include <memory>
+#include <ranges>
 #include <set>
-#include <unordered_set>
 
-namespace qucs_s {
 
-void Healer::HealingAction::execute(SchematicMutator* mutator) {
-    action->execute(mutator);
-}
-
-class ConnectPorts : public AbstractAction {
-    GenericPort* m_portA;
-    GenericPort* m_portB;
-public:
-    ConnectPorts(GenericPort* a, GenericPort* b) : m_portA{a}, m_portB{b} {}
-    void execute(SchematicMutator* mutator) override {
-        mutator->connectPorts(m_portA, m_portB);
+template<>
+struct std::less<QPoint> {
+    bool operator()(const QPoint& lhs, const QPoint& rhs) const
+    {
+        if (lhs.x() == rhs.x()) return lhs.y() < rhs.y();
+        return lhs.x() < rhs.x();
     }
 };
 
 
-class ConnectPortToNode : public AbstractAction {
+namespace qucs_s {
+
+using std::make_unique;
+using std::map;
+using std::unique_ptr;
+using std::shared_ptr;
+using std::vector;
+
+
+
+class ReplaceNode : public AbstractAction {
     GenericPort* m_port;
-    Node* m_node;
 public:
-    ConnectPortToNode(GenericPort* port, Node* node) : m_port{port}, m_node{node} {} 
-    void execute(SchematicMutator* mutator) override { 
-        mutator->connectPortWithNode(m_port, m_node);
-    }
+    ReplaceNode(GenericPort* port) : m_port{port} {} 
+    void execute(SchematicMutator* mutator) override { mutator->replaceNode(m_port); }
 };
 
 
@@ -41,18 +47,16 @@ class MoveNode : public AbstractAction {
     QPoint m_coords;
 public:
     MoveNode(Node* node, const QPoint& to) : m_node{node}, m_coords{to} {} 
-    void execute(SchematicMutator* mutator) override {
-        mutator->moveNode(m_node, m_coords);
-    }
+    void execute(SchematicMutator* mutator) override { mutator->moveNode(m_node, m_coords); }
 };
 
 
-class PutLabel : public AbstractAction {
+class ReattachLabel : public AbstractAction {
     WireLabel* m_label;
-    QPoint m_coords;
+    Node* m_dest;
 public:
-    PutLabel(WireLabel* label, const QPoint& to) : m_label{label}, m_coords{to} {} 
-    void execute(SchematicMutator* mutator) override { mutator->putLabel(m_label, m_coords); }
+    ReattachLabel(WireLabel* label, Node* new_host) : m_label{label}, m_dest{new_host} {} 
+    void execute(SchematicMutator* mutator) override { mutator->putLabel(m_label, m_dest); }
 };
 
 
@@ -60,24 +64,54 @@ class DeleteWire : public AbstractAction {
     Wire* m_wire;
 public:
     DeleteWire(Wire* wire) : m_wire{wire} {}
-    void execute(SchematicMutator* mutator) override {
-        mutator->deleteWire(m_wire);
-    }
+    void execute(SchematicMutator* mutator) override { mutator->deleteWire(m_wire); }
 };
 
+class MovePort : public AbstractAction {
+    GenericPort* m_port;
+    QPoint m_coords;
+public:
+    MovePort(GenericPort* port, const QPoint& coords) : m_port{port}, m_coords{coords} {}
+    void execute(SchematicMutator* mutator) override { mutator->movePort(m_port, m_coords); }
+};
+
+class ConnectWithWire : public AbstractAction {
+    QPoint m_point_A;
+    QPoint m_point_B;
+public:
+    ConnectWithWire(const QPoint& a, const QPoint& b) : m_point_A{a}, m_point_B{b} {}
+    void execute(SchematicMutator* mutator) override { mutator->connectWithWire(m_point_A, m_point_B); }
+};
+
+
+// GenericPort
+// --------------------------------------------------------------------------------------
+
+template<>
+Wire* GenericPort::host() const
+{ 
+    return (isOfWire() ? m_wire : nullptr);
 }
 
 
-Element* qucs_s::GenericPort::host() const
-{
-    if (m_portType == PortType::Component) {
+template<>
+Component* GenericPort::host() const
+{ 
+    return (isOfComponent() ? m_comp : nullptr);
+}
+
+
+template<>
+Element* GenericPort::host() const
+{ 
+    if (isOfComponent()) {
         return m_comp;
     }
     return m_wire;
 }
 
 
-QPoint qucs_s::GenericPort::center() const
+QPoint GenericPort::center() const
 {
     switch (m_portType) {
         case PortType::Component:
@@ -91,7 +125,7 @@ QPoint qucs_s::GenericPort::center() const
 }
 
 
-[[nodiscard]] Node* qucs_s::GenericPort::replaceNodeWith(Node* new_node)
+Node* GenericPort::replaceNodeWith(Node* new_node)
 {
     switch (m_portType) {
         case PortType::Component: {
@@ -141,113 +175,373 @@ QPoint qucs_s::GenericPort::center() const
 }
 
 
-qucs_s::Healer::Healer(const std::list<Component*>* components, const std::list<Wire*>* wires)
+void GenericPort::moveCenterTo(const QPoint& coords)
 {
-    for (auto* comp : *components) {
-        for (auto* port : comp->Ports) {
-            joints.emplace(
-                port->Connection,
-                std::make_unique<GenericPort>(port, comp));
-        }
-    }
-    for (auto* wire : *wires) {
-        joints.emplace(
-            wire->Port1,
-            std::make_unique<GenericPort>(wire, GenericPort::WirePort::One));
-        joints.emplace(
-            wire->Port2,
-            std::make_unique<GenericPort>(wire, GenericPort::WirePort::Two));
+    assert(isOfWire());
+    auto* wire = host<Wire>();
+
+    switch (m_portType) {
+    case (PortType::WireOne):
+        wire->setP1(coords);
+        return;
+
+    case (PortType::WireTwo):
+        wire->setP2(coords);
+        return;
+
+    default:
+        assert(false);
     }
 }
 
-std::vector<qucs_s::Healer::HealingAction> qucs_s::Healer::planHealing()
+
+// Utils
+// --------------------------------------------------------------------------------------
+
+bool hasMismatchedPorts(const Node* node, const vector<shared_ptr<GenericPort>>& ports)
 {
-    std::vector<HealingAction> healing_plan;
+    return std::ranges::any_of(ports,
+                        [node](const auto& port) {
+                        return port->center() != node->center();
+                        });
+}
 
-    std::set<Node*> skip_nodes;
 
-    for (auto& [node, port] : joints) {
-        if (skip_nodes.contains(node)) continue;
+template<std::ranges::forward_range R>
+requires std::same_as<QPoint, std::iter_value_t<R>>
+QPoint findClosest(const R& points, const QPoint point)
+{
+    QPoint closest = *points.begin();
+    double min_dist = geom::distance(point, closest);
+    for (auto& pt : points) {
+        auto d = geom::distance(pt, point);
+        if (d < min_dist) closest = pt;
+    }
+    return closest;
+}
 
-        if (joints.count(node) > 1 && allPortsMismatched(node)) {
-            for (auto* action : processFullMismatch(node)) {
-                healing_plan.push_back({ std::unique_ptr<AbstractAction>(action) });
-            }
-            skip_nodes.insert(node);
-            continue;
+
+class JointStateAssessor
+{
+    std::multimap<QPoint,GenericPort*> m_port_locations;
+    std::set<QPoint> m_unique_locations;
+    Node* m_node;
+
+public:
+    JointStateAssessor(Node* node, const vector<shared_ptr<GenericPort>>& ports)
+        : m_node{node}
+    {
+        for (const auto& p : ports) {
+            m_unique_locations.emplace(p->center());
+            m_port_locations.emplace(p->center(), p.get());
         }
-
-        if (node->center() == port->center()) {
-            continue;
-        }
-
-        if (node->conn_count() == 1) {
-            healing_plan.push_back({ std::make_unique<MoveNode>(node, port->center()) });
-            continue;
-        }
-
-        for (auto* action : processPartialMismatch(port.get(), node)) {
-            healing_plan.push_back({ std::unique_ptr<AbstractAction>(action) });
-        }    
     }
 
-    for (auto* w : obsolete_wires) {
-        healing_plan.push_back({std::make_unique<DeleteWire>(w)});
+    bool onlyWirePortsAt(const QPoint& loc) const
+    {
+        return std::none_of(
+            m_port_locations.lower_bound(loc),
+            m_port_locations.upper_bound(loc),
+            [](const auto& loc_port) { return loc_port.second->isOfComponent(); });
+    }
+
+    bool isOK() const
+    {
+        return m_unique_locations.size() == 1 && m_node->center() == *m_unique_locations.begin();
+    }
+
+    bool isOnlyNodeMisplaced() const
+    {
+        return m_unique_locations.size() == 1 && m_node->center() != *m_unique_locations.begin();
+    }
+
+    bool onlyTwoPortClusters() const
+    {
+        return  m_unique_locations.size() == 2;
+    }
+
+    const std::multimap<QPoint,GenericPort*>& portLocations() const
+    {
+        return m_port_locations;
+    }
+
+    const std::set<QPoint>& uniqueLocations() const
+    {
+        return m_unique_locations;
+    }
+};
+
+
+inline bool canRelay(Node* node, const JointStateAssessor& jsa)
+{
+    return jsa.onlyTwoPortClusters() && jsa.onlyWirePortsAt(node->center());
+}
+
+
+inline bool canReshape(Node* node, const JointStateAssessor& jsa)
+{
+    return jsa.onlyTwoPortClusters() && jsa.onlyWirePortsAt(node->center());
+}
+
+
+bool isSpecialCase(const JointStateAssessor& jsa)
+{
+    if (!jsa.onlyTwoPortClusters()) return false;
+
+    auto single_wire_port_loc = std::ranges::find_if(
+        jsa.uniqueLocations(),
+        [&jsa](auto& loc) { return jsa.portLocations().count(loc) == 1 && jsa.onlyWirePortsAt(loc); }
+    );
+
+
+    if (single_wire_port_loc == jsa.uniqueLocations().end()) return false;
+
+    const auto other_loc = std::ranges::find_if(jsa.uniqueLocations(), [single_wire_port_loc](auto loc) { return loc != *single_wire_port_loc; });
+    assert(other_loc != jsa.uniqueLocations().end());
+
+    if (jsa.onlyWirePortsAt(*other_loc)) return false;
+
+    Wire* single_wire = jsa.portLocations().lower_bound(*single_wire_port_loc)->second->host<Wire>();
+    assert(single_wire != nullptr);
+
+    const QPoint p1{single_wire->x1, single_wire->y1};
+    const QPoint p2{single_wire->x2, single_wire->y2};
+    return *other_loc == p1 || *other_loc == p2 || geom::is_between(*other_loc, p1, p2);
+}
+
+
+// HealerImpl
+// --------------------------------------------------------------------------------------
+
+class Healer::HealerImpl
+{
+    HealerParameters m_params;
+
+    using PortGroup = std::vector<std::shared_ptr<GenericPort>>;
+    std::map<Node*, PortGroup> m_port_groups;
+
+    vector<Healer::HealingAction> processSpecialCase(Node* node, const JointStateAssessor& jsa) const;
+    vector<Healer::HealingAction> processReshapingCase(Node* node, const JointStateAssessor& jsa) const;
+    vector<Healer::HealingAction> processRelayingCase(Node* node, const JointStateAssessor& jsa) const;
+    vector<Healer::HealingAction> processGenericCase(Node* node, const JointStateAssessor& jsa) const;
+
+    std::pair<Node*,std::vector<Wire*>> findStableNode(Node* begin, Wire* go) const;
+    std::pair<Node*,std::vector<Wire*>> mismatchFoundWhileTraversing(std::vector<Node*>& passed_nodes, std::vector<Wire*>& passed_wires) const;
+
+public:
+    HealerImpl(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& hp);
+    std::vector<Healer::HealingAction> planHealing() const;
+};
+
+
+Healer::HealerImpl::HealerImpl(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& hp)
+    : m_params{hp}
+{
+    for (auto* comp : *components) {
+        for (auto* port : comp->Ports) {
+            m_port_groups[port->Connection].push_back(std::make_unique<GenericPort>(port, comp));
+        }
+    }
+    for (auto* wire : *wires) {
+        m_port_groups[wire->Port1].push_back(std::make_unique<GenericPort>(wire, GenericPort::WirePort::One));
+        m_port_groups[wire->Port2].push_back(std::make_unique<GenericPort>(wire, GenericPort::WirePort::Two));
+    }
+}
+
+
+vector<Healer::HealingAction> Healer::HealerImpl::planHealing() const
+{
+    vector<HealingAction> healing_plan;
+
+    for (const auto& [node, port_group] : m_port_groups) {
+        const JointStateAssessor joint_state{node, port_group};
+
+        if (joint_state.isOK()) {
+            continue;
+        }
+
+        vector<unique_ptr<AbstractAction>> healing_actions;
+
+        if (joint_state.isOnlyNodeMisplaced()) {
+            healing_actions.push_back(make_unique<MoveNode>(node, port_group.front()->center()));
+        }
+        else if (isSpecialCase(joint_state)) {
+            healing_actions = processSpecialCase(node, joint_state);
+        }
+        else if (m_params.allowWireReshaping && canReshape(node, joint_state)) {
+            healing_actions = processReshapingCase(node, joint_state);
+        }
+        else if (m_params.allowWireRelaying && canRelay(node, joint_state)) {
+            healing_actions = processRelayingCase(node, joint_state);
+        }
+        else {
+            healing_actions = processGenericCase(node, joint_state);
+        }
+
+        for (auto& a : healing_actions) {
+            healing_plan.emplace_back(std::move(a));
+        }
     }
 
     return healing_plan;
 }
 
 
-std::pair<Node*,std::vector<Wire*>> qucs_s::Healer::findStableNode(Node* begin, Element* doNotGo)
+vector<Healer::HealingAction> Healer::HealerImpl::processSpecialCase(Node* node, const JointStateAssessor& jsa) const
 {
-    assert(hasMismatchedPorts(begin));
+    assert(jsa.uniqueLocations().size() == 2);
 
-    if (!stable_node_cache.contains(begin)) {
-        traverseAndFillCache(begin, doNotGo);
+    GenericPort* single_wire_port = nullptr;
+    for (const auto& [location, port] : jsa.portLocations()) {
+        if (port->isOfWire() && jsa.portLocations().count(location) == 1) {
+            single_wire_port = port;
+            break;
+        }
     }
+    assert(single_wire_port != nullptr);
 
-    return {stable_node_cache.at(begin), traversed_wires_cache.at(begin)};
+    const auto other_loc = std::ranges::find_if(jsa.uniqueLocations(), [single_wire_port](auto loc) { return loc != single_wire_port->center(); });
+    assert(other_loc != jsa.uniqueLocations().end());
+
+    vector<HealingAction> actions;
+    if (node->center() != *other_loc) {
+        actions.push_back(make_unique<MoveNode>(node, *other_loc));
+    }
+    actions.push_back(make_unique<MovePort>(single_wire_port, *other_loc));
+
+    return actions;
 }
 
 
-void qucs_s::Healer::traverseAndFillCache(Node* begin, Element* doNotGo)
+vector<Healer::HealingAction> Healer::HealerImpl::processReshapingCase(Node* node, const JointStateAssessor& jsa) const
 {
-    std::vector<Node*> passed_nodes{};
-    std::vector<Wire*> passed_wires{};
+    assert(jsa.uniqueLocations().size() == 2);
 
-    Node* current_node = begin;
-    while (current_node->conn_count() == 2) {
+    const auto other_loc = std::ranges::find_if(jsa.uniqueLocations(), [node](auto loc) { return loc != node->center(); });
 
-        if (current_node != begin && hasMismatchedPorts(current_node)) {
+    vector<HealingAction> actions;
+    actions.push_back(make_unique<MoveNode>(node, *other_loc));
+    
+    for (auto port : m_port_groups.at(node)) {
+        if (port->center() == *other_loc) continue;
+        actions.push_back(make_unique<MovePort>(port.get(), *other_loc));
+    }
+
+    return actions;
+}
+
+
+vector<Healer::HealingAction> Healer::HealerImpl::processRelayingCase(Node* node, const JointStateAssessor& /*jsa*/) const
+{
+    vector<HealingAction> actions;
+
+    for (auto port : m_port_groups.at(node)) {
+        if (port->center() != node->center()) {
+            actions.push_back(make_unique<MoveNode>(node, port->center()));
+            break;
+        }
+    }
+
+    for (auto port : m_port_groups.at(node)) {
+        if (port->center() != node->center()) {
+            continue;
+        }
+
+        assert(port->isOfWire());
+
+        auto [stable_node, obsolete_wires] = findStableNode(node, port->host<Wire>());
+
+        std::vector<WireLabel*> labels;
+        for (auto* wire : obsolete_wires) {
+            if (wire->Label != nullptr)        labels.push_back(wire->Label);
+            if (wire->Port1->Label != nullptr) labels.push_back(wire->Port1->Label);
+            if (wire->Port2->Label != nullptr) labels.push_back(wire->Port2->Label);
+        }
+
+        assert(labels.size() <= 1);
+
+        if (!labels.empty() && stable_node->Label == nullptr) {
+            actions.push_back(make_unique<ReattachLabel>(labels.front(), stable_node));
+        }
+
+        for (const auto& port : m_port_groups.at(node)) {
+            if (port->center() != node->center()) {
+                actions.push_back(make_unique<ConnectWithWire>(port->center(), stable_node->center()));
+            }
+        }
+
+        for (auto* wire : obsolete_wires) {
+            actions.push_back(make_unique<DeleteWire>(wire));
+        }
+    }
+    return actions;
+}
+
+
+vector<Healer::HealingAction> Healer::HealerImpl::processGenericCase(Node* node, const JointStateAssessor& jsa) const
+{
+    vector<Healer::HealingAction> actions;
+
+    auto node_loc = node->center();
+
+    if (!jsa.portLocations().contains(node->center())) {
+        node_loc = findClosest(jsa.uniqueLocations(), node_loc);
+        actions.push_back(make_unique<MoveNode>(node, node_loc));
+    }
+
+    for (auto port : m_port_groups.at(node)) {
+        if (port->center() == node_loc) continue;
+
+        actions.push_back(make_unique<ReplaceNode>(port.get()));
+        actions.push_back(make_unique<ConnectWithWire>(port->center(), node_loc));
+    }
+
+    return actions;
+}
+
+
+std::pair<Node*,vector<Wire*>> Healer::HealerImpl::findStableNode(Node* begin, Wire* go) const
+{
+    vector<Node*> passed_nodes{begin};
+    vector<Wire*> passed_wires{go};
+
+    int depth = m_params.wireRelayingDepth;
+    if (depth < 0) depth = std::numeric_limits<int>::max(); // "infinite"
+
+    Node* current_node = go->Port1 == begin ? go->Port2 : go->Port1;
+    Wire* prev_wire = go;
+    depth--;
+
+    while (current_node->conn_count() == 2 && depth > 0) {
+
+        if (::qucs_s::hasMismatchedPorts(current_node, m_port_groups.at(current_node))) {
             passed_nodes.push_back(current_node);
-            auto [stable_node, wires] = mismatchFoundWhileTraversing(passed_nodes, passed_wires);
-            stable_node_cache[begin] = stable_node;
-            traversed_wires_cache[begin] = wires;
-            return;
+            return mismatchFoundWhileTraversing(passed_nodes, passed_wires);
         }
         
-        auto* wire = dynamic_cast<Wire*>(current_node->other_than(doNotGo));
-        if (wire == nullptr) break;
-        passed_wires.push_back(wire);
-        doNotGo = wire;
+        auto* next_wire = dynamic_cast<Wire*>(current_node->other_than(prev_wire));
+        if (next_wire == nullptr) break;
 
         passed_nodes.push_back(current_node);
-        current_node = wire->Port1 == current_node
-                     ? wire->Port2
-                     : wire->Port1;
+        passed_wires.push_back(next_wire);
+
+        depth--;
+
+        current_node = next_wire->Port1 == current_node
+                     ? next_wire->Port2
+                     : next_wire->Port1; 
+
+        prev_wire = next_wire;
     }
 
     passed_nodes.push_back(current_node);
-
-    stable_node_cache[begin] = passed_nodes.back();
-    traversed_wires_cache[begin] = passed_wires;
+    return {passed_nodes.back(), passed_wires};
 }
 
-std::pair<Node*,std::vector<Wire*>> qucs_s::Healer::mismatchFoundWhileTraversing(std::vector<Node*>& passed_nodes, std::vector<Wire*>& passed_wires)
+std::pair<Node*,vector<Wire*>> Healer::HealerImpl::mismatchFoundWhileTraversing(vector<Node*>& passed_nodes, vector<Wire*>& passed_wires) const
 {
-    assert(hasMismatchedPorts(passed_nodes.front()));
-    assert(hasMismatchedPorts(passed_nodes.back()));
+    assert(hasMismatchedPorts(passed_nodes.front(), m_port_groups.at(passed_nodes.front())));
+    assert(hasMismatchedPorts(passed_nodes.back(), m_port_groups.at(passed_nodes.back())));
 
 
     //      A    B
@@ -270,7 +564,7 @@ std::pair<Node*,std::vector<Wire*>> qucs_s::Healer::mismatchFoundWhileTraversing
     // o----o----o----o----o   n = 4, take wires while i < 2
     //   0    1    2    3
 
-    std::vector<Wire*> traversed;
+    vector<Wire*> traversed;
     for (std::size_t i = 0; i < passed_wires.size() / 2; i++) {
         traversed.push_back(passed_wires.at(i));
     }
@@ -279,66 +573,21 @@ std::pair<Node*,std::vector<Wire*>> qucs_s::Healer::mismatchFoundWhileTraversing
 }
 
 
-bool qucs_s::Healer::hasMismatchedPorts(Node* node) const
+// Healer
+// --------------------------------------------------------------------------------------
+
+Healer::Healer(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& hp)
+    : pimpl{make_unique<HealerImpl>(components, wires, hp)}
 {
-    return std::any_of(joints.lower_bound(node), joints.upper_bound(node),
-                        [node](auto& node_port) {
-                        return node_port.second->center() != node->center();
-                        });
 }
 
 
-bool qucs_s::Healer::allPortsMismatched(Node* node) const
+Healer::~Healer() = default;
+
+
+std::vector<Healer::HealingAction>Healer::planHealing() const
 {
-    return std::all_of(joints.lower_bound(node), joints.upper_bound(node),
-                        [node](auto& node_port) {
-                        return node_port.second->center() != node->center();
-                        });
+    return pimpl->planHealing();
 }
 
-
-[[ nodiscard ]] std::vector<qucs_s::AbstractAction*> qucs_s::Healer::processFullMismatch(Node* node)
-{
-    using PortPair = UnorderedPair<GenericPort*,GenericPort*>;
-
-    std::unordered_set<PortPair> connected;
-    std::vector<AbstractAction*> actions;
-
-    for (auto outer = joints.lower_bound(node); outer != joints.upper_bound(node); outer++) {
-        for (auto inner = joints.lower_bound(node); inner != joints.upper_bound(node); inner++) {
-
-            PortPair port_pair{
-                outer->second.get(),
-                inner->second.get()
-            };
-
-            if (port_pair.first == port_pair.second) continue;
-            if (connected.contains(port_pair)) continue;
-            connected.insert(port_pair);
-            actions.push_back(new ConnectPorts(port_pair.first, port_pair.second));
-        }   
-    }
-
-    if (node->Label != nullptr) {
-        actions.push_back(new PutLabel(node->Label, connected.begin()->first->center()));
-    }
-
-    return actions;
-}
-
-
-[[ nodiscard ]] std::vector<qucs_s::AbstractAction*> qucs_s::Healer::processPartialMismatch(GenericPort* port, Node* node)
-{
-    auto [stable_node, passed_wires] = findStableNode(node, port->host());
-    std::vector<qucs_s::AbstractAction*> actions{new ConnectPortToNode(port, stable_node)};
-
-    for (auto* w : passed_wires) {
-        if (obsolete_wires.contains(w)) continue;
-        if (w->Label != nullptr) {
-            actions.push_back(new PutLabel(w->Label, stable_node->center()));
-        }
-        obsolete_wires.insert(w);
-    }
-
-    return actions;
 }

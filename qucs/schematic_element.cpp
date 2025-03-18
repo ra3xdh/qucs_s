@@ -2418,15 +2418,11 @@ public:
         sch->PostPaintEvent(_Line, c.x() + 5, c.y() - 5, c.x() - 5, c.y() + 5);
     }
 
-    void connectPorts(qucs_s::GenericPort* a, qucs_s::GenericPort* b) override {
-        sch->showEphemeralWire(a->center(), b->center());
-    }
-
     void connectPortWithNode(qucs_s::GenericPort* port, Node* node) override {
         sch->showEphemeralWire(port->center(), node->center());
     }
 
-    void putLabel(WireLabel* label, const QPoint& p) override {}
+    void putLabel(WireLabel* label, Node* dest_node) override {}
     void moveNode(Node* node, const QPoint& p) override {}
 };
 
@@ -2437,41 +2433,20 @@ public:
     ActualMutator(Schematic* s) : sch{s} {}
     void deleteWire(Wire* w) override { sch->deleteWire(w, false); }
 
-    void connectPorts(qucs_s::GenericPort* a, qucs_s::GenericPort* b) override {
-        Node* old_node;
-        old_node = a->replaceNodeWith(sch->provideNode(a->center().x(), a->center().y()));
-        old_node = b->replaceNodeWith(sch->provideNode(b->center().x(), b->center().y()));
-        sch->dumbConnectWithWire(a->center(), b->center());
-    }
-
     void connectPortWithNode(qucs_s::GenericPort* port, Node* node) override {
-        Node* old_node;
-        old_node = port->replaceNodeWith(sch->provideNode(port->center().x(), port->center().y()));
+        port->replaceNodeWith(sch->provideNode(port->center().x(), port->center().y()));
         sch->dumbConnectWithWire(port->center(), node->center());
     }
 
-    void putLabel(WireLabel* label, const QPoint& p) override {
-        for (auto* node : *sch->a_Nodes) {
-            if (node->center() != p) continue;
+    void putLabel(WireLabel* label, Node* dest_node) override {
+        delete dest_node->Label;
 
-            if (node->Label == label) {
-                assert(label->pOwner == node);
-                return;
-            }
-
-            // Delete current node label
-            delete node->Label;
-
-            // Transfer label to a new host
-            label->pOwner->Label = nullptr;
-            node->Label = label;
-            label->pOwner = node;
-            label->Type = isNodeLabel;
-            label->moveRootTo(p.x(), p.y());
-
-            return;
-        }
-
+        // Transfer label to a new host
+        label->pOwner->Label = nullptr;
+        dest_node->Label = label;
+        label->pOwner = dest_node;
+        label->Type = isNodeLabel;
+        label->moveRootTo(dest_node->center().x(), dest_node->center().y());
     }
 
     void moveNode(Node* node, const QPoint& p) override {
@@ -2504,11 +2479,11 @@ std::vector<std::vector<Node*>> sameloc_nodes(NodeContainer* nodes) {
 }
 
 void Schematic::displayMutations() {
-    qucs_s::Healer healer{a_Components, a_Wires};
+    qucs_s::Healer healer{a_Components, a_Wires, interactiveParams};
     internal::ChangesPainter p{this};
 
     for (auto& mutation : healer.planHealing()) {
-        mutation.execute(&p);
+        mutation->execute(&p);
     }
 }
 
@@ -2611,10 +2586,10 @@ void Schematic::heal(qucs_s::wire::Planner::PlanType planType) {
     // Fix geometric anomalies
 
     auto old_plan = a_wirePlanner.setType(planType);
-    qucs_s::Healer healer{a_Components, a_Wires};
+    qucs_s::Healer healer{a_Components, a_Wires, params};
     internal::ActualMutator mut{this};
     for (auto& mutation : healer.planHealing()) {
-        mutation.execute(&mut);
+        mutation->execute(&mut);
     }
     a_wirePlanner.setType(old_plan);
 

@@ -4,7 +4,6 @@
 #include <QPoint>
 #include <memory>
 #include <map>
-#include <set>
 #include <vector>
 #include <list>
 
@@ -63,55 +62,56 @@ private:
     Component* m_comp = nullptr;
     Wire* m_wire = nullptr;
     PortType m_portType;
+
 public:
-    Element* host() const;
+    bool isOfWire() const { return m_portType != PortType::Component; }
+    bool isOfComponent() const { return !isOfWire(); }
+
+    template<typename T>
+    T* host() const { static_assert(!std::is_same<T,T>::value); }
+    Node* node() const;
     QPoint center() const;
-    [[nodiscard]] Node* replaceNodeWith(Node* new_node);
+    Node* replaceNodeWith(Node* new_node);
+
+    void moveCenterTo(const QPoint& coords);
 };
 
 
 struct SchematicMutator {
-    virtual void deleteWire(Wire* w) = 0;
-    virtual void connectPorts(GenericPort* a, GenericPort* b) = 0;
-    virtual void connectPortWithNode(GenericPort* port, Node* node) = 0;
-    virtual void putLabel(WireLabel* label, const QPoint& p) = 0;
-    virtual void moveNode(Node* node, const QPoint& p) = 0;
+    virtual ~SchematicMutator() = default;
+    virtual void deleteWire(Wire* /*unused*/) {}
+    virtual void connectWithWire(const QPoint& /*unused*/, const QPoint& /*unused*/) {}
+    virtual void putLabel(WireLabel* /*unused*/, Node* /*unused*/) {}
+    virtual void moveNode(Node* /*unused*/, const QPoint& /*unused*/) {}
+    virtual void movePort(GenericPort* /*unused*/, const QPoint& /*unused*/) {}
+    virtual void replaceNode(GenericPort* /*unused*/) {}
 };
 
 
-class AbstractAction { 
-public:
+struct AbstractAction { 
     virtual ~AbstractAction() = default;
     virtual void execute(SchematicMutator* mutator) = 0;
 };
 
+
+struct HealerParameters {
+    bool allowWireReshaping = true;
+    bool allowWireRelaying = false;
+    int wireRelayingDepth = -1;
+};
+
+
 class Healer {
-
-    std::multimap<Node*,std::unique_ptr<GenericPort>> joints;
-    std::map<Node*,Node*> stable_node_cache;
-    std::map<Node*,std::vector<Wire*>> traversed_wires_cache;
-
-    std::set<Wire*> obsolete_wires;
-
-    bool hasMismatchedPorts(Node* node) const;
-    bool allPortsMismatched(Node* node) const;
-
-    [[ nodiscard ]] std::vector<AbstractAction*> processFullMismatch(Node* node);
-    [[ nodiscard ]] std::vector<AbstractAction*> processPartialMismatch(GenericPort* port, Node* node);
-
-    std::pair<Node*,std::vector<Wire*>> findStableNode(Node* begin, Element* doNotGo);
-    void traverseAndFillCache(Node* begin, Element* doNotGo);
-    std::pair<Node*,std::vector<Wire*>> mismatchFoundWhileTraversing(std::vector<Node*>& passed_nodes, std::vector<Wire*>& passed_wires);
+    class HealerImpl;
+    std::unique_ptr<HealerImpl> pimpl;
 
 public:
-    struct HealingAction {
-        std::unique_ptr<AbstractAction> action;
-        void execute(SchematicMutator* mutator);
-    };
+    using HealingAction = std::unique_ptr<AbstractAction>;
 
-    Healer(const std::list<Component*>* components, const std::list<Wire*>* wires);
-    std::vector<HealingAction> planHealing();
+    Healer(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& params);
+    ~Healer();
+    std::vector<HealingAction> planHealing() const;
 };
-}
 
+}
 #endif
