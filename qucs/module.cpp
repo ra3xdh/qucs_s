@@ -35,7 +35,7 @@
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
 
-#include "xml/Component.hxx"
+#include "Component.hxx"
 #include "xml/XmlComponent.h"
 
 #include <iostream>
