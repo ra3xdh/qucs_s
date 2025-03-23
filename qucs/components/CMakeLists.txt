@@ -4,6 +4,31 @@ INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 #INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
+SET(XSD_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/../../library/components/Component.xsd)
+
+if (NOT DEFINED XSD_PROG)
+    if(APPLE OR WIN32)
+        SET(XSD_PROG xsd)
+    else()
+        SET(XSD_PROG xsdcxx)
+    endif()
+endif()
+
+ADD_CUSTOM_COMMAND(
+    OUTPUT Component.cxx
+    COMMAND ${XSD_PROG} cxx-tree --namespace-map =component::xml ${XSD_SOURCE}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../../library/components/Component.xsd
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+SET(XSD_GENERATED_SRC ${CMAKE_CURRENT_BINARY_DIR}/Component.cxx)
+
+SET_SOURCE_FILES_PROPERTIES(
+    ${XSD_GENERATED_SRC}
+    PROPERTIES
+    COMPILE_FLAGS "-Wno-deprecated-declarations"
+)
+
 SET(COMPONENTS_SRCS
 DLS_1ton.cpp		dff_SR.cpp		logical_buf.cpp		potentiometer.cpp
 DLS_nto1.cpp		diac.cpp		logical_inv.cpp		rectline.cpp
@@ -252,9 +277,7 @@ spicefile.h
 
 qt6_wrap_cpp(COMPONENTS_MOC_SRCS ${COMPONENTS_MOC_HDRS})
 
-
-
-ADD_LIBRARY(components STATIC ${COMPONENTS_HDRS} ${COMPONENTS_SRCS} ${COMPONENTS_MOC_SRCS} )
+ADD_LIBRARY(components STATIC ${COMPONENTS_HDRS} ${COMPONENTS_SRCS} ${XSD_GENERATED_SRC} ${COMPONENTS_MOC_SRCS} )
 
 
 
