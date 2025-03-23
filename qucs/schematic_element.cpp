@@ -409,6 +409,8 @@ Wire* merge_wires_at_node(Node* node) {
         extended_wire->Port2->connect(extended_wire);
     }
 
+    if (!extended_wire->isSelected) extended_wire->isSelected = dissapearing_wire->isSelected;
+
     // Update wire dimensions
     extended_wire->x1 = extended_wire->Port1->x();
     extended_wire->y1 = extended_wire->Port1->y();
