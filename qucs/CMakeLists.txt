@@ -68,6 +68,23 @@ include_directories(
       ${Qt6PrintSupport_INCLUDE_DIRS}
       )
 
+find_library(XERCES-C_LIB NAMES xerces-c-3.3 xerces-c-3.2 xerces-c-3.1 xerces-c PATHS c:/xsd/lib)
+if(NOT XERCES-C_LIB)
+    message(SEND_ERROR "xerces-c lib not found: ${XERCES-C_LIB}")
+else()
+    message(STATUS "xerces-c lib found at: ${XERCES-C_LIB}")
+endif()
+
+if (APPLE OR WIN32)
+    find_program(XSD_PROG NAMES xsd xsdcxx xsd.exe)
+    if (NOT XSD_PROG)
+        message(SEND_ERROR "xsd prog not found: ${XSD_PROG}")
+    else()
+        message(STATUS "xsd prog found at: ${XSD_PROG}")
+        cmake_path(GET XSD_PROG PARENT_PATH XSD_PROG_PATH)
+        INCLUDE_DIRECTORIES(${XSD_PROG_PATH}/../include)
+    endif()
+endif()
 
 #MESSAGE("QT_INCLUDES=[${QT_INCLUDES}]")
 #MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
@@ -78,6 +95,7 @@ CONFIGURE_FILE (
 )
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/components)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -91,7 +109,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS LIBXERCES_C_SHARED)
         add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /Od /vmg)
         add_compile_options(/wd4244 /wd4267 /wd4312)
     else()
@@ -102,7 +120,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     endif()
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS LIBXERCES_C_SHARED)
         string(REGEX REPLACE "/W1" "/w" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
         add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /vmg)
         add_link_options(/OPT:REF /OPT:ICF)
@@ -110,11 +128,6 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
         add_compile_options(-w)
     endif()
 endif()
-
-# This flags are used if cmake is called with -DCMAKE_BUILD_TYPE=PROFILE
-#set(CMAKE_C_FLAGS_PROFILE "--coverage -fprofile-abs-path")
-#set(CMAKE_CXX_FLAGS_PROFILE "--coverage -fprofile-abs-path")
-#add_link_options("--coverage")
 
 INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}
@@ -266,9 +279,8 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
 # Tell CMake which libraries we need to link our executable against.
 #
 TARGET_LINK_LIBRARIES( ${QUCS_NAME}
-<<<<<<< HEAD
     components diagrams dialogs geometry paintings extsimkernels spicecomponents qt3_compat
-    Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::Xml  Qt6::PrintSupport xerces-c)
+    Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::Xml  Qt6::PrintSupport ${XERCES-C_LIB})
 SET_TARGET_PROPERTIES(${QUCS_NAME} PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #
 # Prepare the installation

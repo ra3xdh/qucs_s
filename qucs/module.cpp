@@ -34,7 +34,7 @@
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
 
-#include "xml/Component.hxx"
+#include "Component.hxx"
 #include "xml/XmlComponent.h"
 
 #include <iostream>
@@ -794,6 +794,7 @@ void Module::registerXmlComponents(const QString& componentPath)
                     << ", description=" << QString::fromUtf8(it->Description()).trimmed().toStdString()
                     << std::endl;
             }
+
 #endif
 
         }
