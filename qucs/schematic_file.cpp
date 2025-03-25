@@ -983,7 +983,26 @@ bool Schematic::loadWires(QTextStream *stream, QList<Element*> *List)
       List->append(w);
       if(w->Label)  List->append(w->Label);
     }
-    else simpleInsertWire(w);
+    else {
+      // Quick fix for ra3xdh#1273.
+      //
+      // A wire whose (x1,y1) coordinates are not less than (x2,y2)
+      // coordinates somehow deals some damage like crashes or funny behaviour.
+      //
+      // I wasn't able to understand how exactly this happens, i.e. why it's
+      // important to have x1 less than x2 for a wire, so I decided to fix this
+      // in a most straightforward way by "normalizing" the wire before installing
+      // it into schematic
+      if (w->x1 > w->x2) {
+        std::swap(w->x1, w->x2);
+        std::swap(w->y1, w->y2);
+      } else if (w->x1 == w->x2 && w->y1 > w->y2) {
+        std::swap(w->x1, w->x2);
+        std::swap(w->y1, w->y2);
+      }
+
+      simpleInsertWire(w);
+    }
   }
 
   QMessageBox::critical(0, QObject::tr("Error"),
