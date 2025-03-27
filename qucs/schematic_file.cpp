@@ -917,12 +917,20 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
       return false;
     }
     if(List) {
-      if(w->x1 == w->x2) if(w->y1 == w->y2) if(w->Label) {
-        w->Label->Type = isMovingLabel;
+
+      // Special case: node label. It's stored as zero-length wire.
+      // Only the label is kept, so it becomes "free" i.e. not having
+      // a host element like wire or node. We must be careful to treat
+      // such labels in a special way in other parts of the codebase.
+      if (w->x1 == w->x2 && w->y1 == w->y2 && w->Label) {
+        w->Label->Type = isNodeLabel;
         List->push_back(w->Label);
+        w->Label->pOwner = nullptr;
+        w->Label = nullptr;
         delete w;
         continue;
       }
+
       List->push_back(w);
       if(w->Label)  List->push_back(w->Label);
     }

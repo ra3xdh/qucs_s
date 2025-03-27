@@ -395,6 +395,12 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 
     for (auto* pe : movingElements) {
         pe->moveCenter(diff.x(), diff.y());
+
+        // Special case: node label. Pasted node label has no host element,
+        // which would move its root, thus it has to be moved explicitely.
+        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->pOwner == nullptr) {
+            l->moveRoot(diff.x(), diff.y());
+        }
     }
 
     QucsMain->MouseMoveAction = &MouseActions::MMovePaste2;
@@ -409,6 +415,12 @@ void MouseActions::MMovePaste2(Schematic *Doc, QMouseEvent *Event)
     MAy1 = inModel.y();
     for (auto* pe : movingElements) {
         pe->moveCenter(diff.x(), diff.y());
+
+        // Special case: node label. Pasted node label has no host element,
+        // which would move its root, thus it has to be moved explicitely.
+        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->pOwner == nullptr) {
+            l->moveRoot(diff.x(), diff.y());
+        }
     }
     paintElementsScheme(Doc);
 }
@@ -1680,8 +1692,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
                 Doc->enlargeView(pe);
                 break;
             }
-            case isMovingLabel:
-                pe->Type = isNodeLabel;
+            case isNodeLabel:
                 Doc->placeNodeLabel((WireLabel *) pe);
                 break;
             case isComponent:
