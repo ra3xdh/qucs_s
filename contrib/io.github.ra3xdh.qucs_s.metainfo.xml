@@ -35,6 +35,9 @@
   </screenshots>
 
   <releases>
+    <release version="25.1.1" date="2025-03-14">
+      <url type="details">https://github.com/ra3xdh/qucs_s/releases/tag/25.1.1</url>
+    </release>
     <release version="25.1.0" date="2025-02-20">
       <url type="details">https://github.com/ra3xdh/qucs_s/releases/tag/25.1.0</url>
     </release>
