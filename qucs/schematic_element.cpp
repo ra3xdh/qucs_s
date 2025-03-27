@@ -1058,7 +1058,6 @@ void Schematic::deselectElements(Element *e) const
 // Selects elements that lie within or intersect with the rectangle selectionRect
 int Schematic::selectElements(const QRect& selection_rect, bool append, bool entirely) const {
     int selected_count = 0;
-    int left, top, right, bottom;
 
     auto select_element = [=](Element* e, const QRect& ebr) {
         // If an element lies within selection rect, it must be selected regardless of any
@@ -1076,9 +1075,7 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
     };
 
     for (Component *component : *a_Components) {
-        component->Bounding(left, top, right, bottom);
-
-        if (select_element(component, QRect{left, top, right - left, bottom - top})) {
+        if (select_element(component, component->boundingRectNoProperties())) {
             selected_count++;
         }
     }
@@ -1086,31 +1083,18 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
 
     for (Wire* wire : *a_Wires)
     {
-        if (select_element(wire, QRect{wire->x1, wire->y1, wire->x2 - wire->x1, wire->y2 - wire->y1})) {
+        if (select_element(wire, wire->boundingRect())) {
+            selected_count++;
+        }
+
+        if (wire->Label != nullptr && select_element(wire->Label, wire->Label->boundingRect())) {
             selected_count++;
         }
     }
 
-    WireLabel *label = nullptr;
-    for (Wire* wire : *a_Wires) {
-        if (wire->Label) {
-            label = wire->Label;
-            label->getLabelBounding(left,top,right,bottom);
-
-            if (select_element(label, QRect{left, top, right - left, bottom - top})) {
-                selected_count++;
-            }
-        }
-    }
-
     for (Node *node : *a_Nodes) {
-        label = node->Label;
-        if (label) {
-            label->getLabelBounding(left,top,right,bottom);
-
-            if (select_element(label, QRect{left, top, right - left, bottom - top})) {
-                selected_count++;
-            }
+        if (node->Label != nullptr && select_element(node->Label, node->Label->boundingRect())) {
+            selected_count++;
         }
     }
 
@@ -1121,17 +1105,13 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             }
 
             for (Marker *marker: graph->Markers) {
-                marker->Bounding(left, top, right, bottom);
-
-                if (select_element(marker, QRect{left, top, right - left, bottom - top})) {
+                if (select_element(marker, marker->boundingRect())) {
                     selected_count++;
                 }
             }
         }
 
-        diagram->Bounding(left, top, right, bottom);
-
-        if (select_element(diagram, QRect{left, top, right - left, bottom - top})) {
+        if (select_element(diagram, diagram->boundingRect())) {
             selected_count++;
         }
     }
