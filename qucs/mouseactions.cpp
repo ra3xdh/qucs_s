@@ -376,12 +376,19 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
     MAx1 = cursor.x();
     MAy1 = cursor.y();
 
+    const auto get_br = [](const Element* e) {
+        if (const auto* c = dynamic_cast<const Component*>(e)) {
+            return c->boundingRectNoProperties();
+        }
+        return e->boundingRect();
+    };
+
     auto br = std::transform_reduce(
         ++movingElements.begin(),
         movingElements.end(),
-        movingElements.front()->boundingRect(),
+        get_br(movingElements.front()),
         [](const QRect& a, const QRect& b) { return a.united(b);},
-        [](const Element* e) { return e->boundingRect(); }
+        get_br
     );
 
     const auto diff = cursor - Doc->setOnGrid(br.center());
@@ -396,7 +403,7 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 
 void MouseActions::MMovePaste2(Schematic *Doc, QMouseEvent *Event)
 {
-    auto inModel = Doc->contentsToModel(Event->pos());
+    const auto inModel = Doc->setOnGrid(Doc->contentsToModel(Event->pos()));
     auto diff = inModel - QPoint{MAx1, MAy1};
     MAx1 = inModel.x();
     MAy1 = inModel.y();
