@@ -49,10 +49,8 @@ void GraphicText::paint(QPainter* painter) {
     QRectF br;
     misc::draw_richtext(painter, 0, 0, text, &br);
 
-    x1 = br.left();
-    y1 = br.bottom();
-    x2 = br.right();
-    y2 = br.top();
+    x2 = x1 + br.width();
+    y2 = y1 + br.height();
     updateCenter();
 
     if (isSelected) {
@@ -65,7 +63,7 @@ void GraphicText::paint(QPainter* painter) {
 
 void GraphicText::paintScheme(Schematic *p)
 {
-    p->PostPaintEvent(_Rect, x1, y1, x2, y2);
+    p->PostPaintEvent(_Rect, x1, y1, x2 - x1, y2 - y1);
 }
 
 Painting* GraphicText::newOne()
@@ -119,6 +117,16 @@ bool GraphicText::load(const QString &s)
         return false;
 
     misc::convert2Unicode(text);
+
+    // Size of the text is calculated here in order to set x2 and y2 coordinates.
+    // But there is a caveat: text may contain LaTeX-like macros for subscripts
+    // and upperscripts and here we treat these macros as usual text. Because
+    // of that, if text contains LaTeX-like macros it's countour is bigger than
+    // the actual text when it's being copied-and-pasted.
+    QFontMetrics metrics(QucsSettings.font, 0);
+    auto br = metrics.boundingRect(text);
+    x2 = x1 + br.width();
+    y2 = y1 + br.height();
 
     return true;
 }
