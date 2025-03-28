@@ -465,7 +465,7 @@ vector<Healer::HealingAction> Healer::HealerImpl::processRelayingCase(Node* node
         }
 
         for (const auto& port : m_port_groups.at(node)) {
-            if (port->center() != node->center()) {
+            if (port->center() != node->center() && port->center() != stable_node->center()) {
                 actions.push_back(make_unique<ConnectWithWire>(port->center(), stable_node->center()));
             }
         }
