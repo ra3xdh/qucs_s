@@ -1534,7 +1534,8 @@ bool Schematic::rotateElements()
     std::ranges::for_each(selection.labels, rotator);
     std::ranges::for_each(selection.nodes, rotator);
 
-    return elementsOnGrid();
+    elementsOnGrid();
+    return true;
 }
 
 // Mirrors all selected components.
@@ -1561,7 +1562,8 @@ bool Schematic::mirrorXComponents()
     std::ranges::for_each(selection.labels, mirrorer);
     std::ranges::for_each(selection.nodes, mirrorer);
 
-    return elementsOnGrid();
+    elementsOnGrid();
+    return true;
 }
 
 // Mirrors all selected components.
