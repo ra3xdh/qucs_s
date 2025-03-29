@@ -376,22 +376,30 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
     MAx1 = cursor.x();
     MAy1 = cursor.y();
 
-    const auto get_br = [](const Element* e) {
-        if (const auto* c = dynamic_cast<const Component*>(e)) {
-            return c->boundingRectNoProperties();
-        }
-        return e->boundingRect();
-    };
+    QPoint diff;
 
-    auto br = std::transform_reduce(
-        ++movingElements.begin(),
-        movingElements.end(),
-        get_br(movingElements.front()),
-        [](const QRect& a, const QRect& b) { return a.united(b);},
-        get_br
-    );
+    if (movingElements.size() == 1) {
+        diff = cursor - Doc->setOnGrid(movingElements.front()->center());
+    } else {
 
-    const auto diff = cursor - Doc->setOnGrid(br.center());
+        const auto get_br = [](const Element* e) {
+            if (const auto* c = dynamic_cast<const Component*>(e)) {
+                return c->boundingRectNoProperties();
+            }
+            return e->boundingRect();
+        };
+
+        auto br = std::transform_reduce(
+            ++movingElements.begin(),
+            movingElements.end(),
+            get_br(movingElements.front()),
+            [](const QRect& a, const QRect& b) { return a.united(b);},
+            get_br
+        );
+
+        diff = cursor - Doc->setOnGrid(br.center());
+    }
+
 
     for (auto* pe : movingElements) {
         pe->moveCenter(diff.x(), diff.y());
@@ -1722,10 +1730,13 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
     case Qt::RightButton: {// right button rotates the elements
         //setPainter(Doc, &painter);
 
-        auto inModel = Doc->contentsToModel(Event->pos());
-        x1 = inModel.x();
-        y1 = inModel.y();
-        std::ranges::for_each(movingElements, [x1, y1](Element* e){ e->rotate(x1, y1); });
+
+        if (movingElements.size() == 1) {
+            movingElements.front()->rotate();
+        } else {
+            const auto rot_c = Doc->setOnGrid(Doc->contentsToModel(Event->pos()));
+            std::ranges::for_each(movingElements, [rot_c](Element* e){ e->rotate(rot_c); });
+        }
         paintElementsScheme(Doc);
         // save rotation
         movingRotated++;
