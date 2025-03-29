@@ -51,6 +51,8 @@ public:
   QString numberStr, nameStr;
 private:
   int angle;
+  QPoint m_textOrigin;
+  void updateBounds();
 };
 
 #endif
