@@ -176,7 +176,7 @@ bool Schematic::createSubcircuitSymbol()
     {
         int port_y = 10 - symbol_rect_half_height;
         auto port_painting = a_SymbolPaints.begin();
-        bool put_on_left_side = false;
+        bool put_on_left_side = true;
 
         for (std::size_t port_n = 0; port_n < port_count; port_n++) {
 
@@ -185,7 +185,10 @@ bool Schematic::createSubcircuitSymbol()
                 a_SymbolPaints.push_back(new GraphicLine(-10 - symbol_rect_half_width, port_y, -symbol_rect_half_width, port_y, QPen(Qt::darkBlue, 2)));
             } else {
                 (*port_painting)->moveCenterTo(30, port_y);
+                (*port_painting)->mirrorY();
                 a_SymbolPaints.push_back(new GraphicLine(symbol_rect_half_width, port_y, symbol_rect_half_width + 10, port_y, QPen(Qt::darkBlue, 2)));
+
+                port_y += 60;
             }
 
             port_painting++;
@@ -1652,7 +1655,7 @@ int Schematic::adjustPortNumbers()
                 Painting* pp = nullptr;
                 for (auto* painting : a_SymbolPaints) {
                     if (painting->Name == ".PortSym ") {
-                        if (((PortSymbol *) pp)->numberStr == Str) {
+                        if (((PortSymbol *) painting)->numberStr == Str) {
                             pp = painting;
                             break;
                         }
