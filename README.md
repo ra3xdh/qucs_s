@@ -38,25 +38,26 @@ Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, Flex, Bi
 
 ### Dependencies
 
-Qucs-S requires Qt6 libraries including QtCharts, CMake, flex, bison, gperf, and dos2unix as compile time
-dependencies. Install these packages using the package manager of your distribution before compiling Qucs-S.
-Ngspice is not required at compile time, but it is required as runtime dependency to run the simulation.
+Qucs-S requires Qt6 libraries including QtCharts, CMake, flex, bison, gperf, dos2unix, xsdcxx and
+libxerces-c-dev as compile time dependencies. Install these packages using the package manager of your
+distribution before compiling Qucs-S. Ngspice is not required at compile time, but it is required as
+runtime dependency to run the simulation.
 
 Here are some examples for the popular Linux distributions.
 
 #### Ubuntu or Debian
 
 ~~~
-sudo apt-get install ngspice build-essential git cmake flex bison gperf dos2unix
-sudo apt-get install qt6-base-dev qt6-tools-dev qt6-tools-dev-tools libglx-dev linguist-qt6
+sudo apt-get install ngspice build-essential git cmake flex bison gperf dos2unix xsdcxx libxerces-c-dev
+sudo apt-get install qt6-base-dev qt6-tools-dev qt6-tools-dev-tools libglx-dev linguist-qt6 
 sudo apt-get install qt6-l10n-tools libqt6svg6-dev libgl1-mesa-dev qt6-charts-dev libqt6opengl6-dev
 ~~~
 
 #### Fedora
 
 ~~~
-sudo dnf install gcc-c++ cmake git flex bison gperf dos2unix ngspice
-sudo dnf install qt6-qtbase-devel cmake qt6-qtsvg-devel qt6-qttools-devel qt6-qtcharts-devel
+sudo dnf install gcc-c++ cmake git flex bison gperf dos2unix ngspice xsd libxerces-c-devel
+sudo dnf install qt6-qtbase-devel cmake qt6-qtsvg-devel qt6-qttools-devel qt6-qtcharts-devel 
 ~~~
 
 ### Compiling
