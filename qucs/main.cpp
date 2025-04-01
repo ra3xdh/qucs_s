@@ -615,9 +615,9 @@ void createIcons() {
     QString Name;
 
     for (Module *Mod: Comps) {
-      if (Mod->info) {
+      if (Mod->hasInfo()) {
 
-        Element *e = (Mod->info) (Name, File, true);
+        Element *e = Mod->getInfo(Name, File, true);
 
         Component *c = (Component* ) e;
 
@@ -762,7 +762,7 @@ void createDocData() {
 
         nComps += 1;
 
-        Element *e = (Mod->info) (Name, File, true);
+        Element *e = Mod->getInfo(Name, File, true);
         Component *c = (Component* ) e;
 
         // object info
@@ -840,7 +840,7 @@ void createListComponentEntry(){
     QString Name;
 
     for (Module *Mod: Comps) {
-      Element *e = (Mod->info) (Name, File, true);
+      Element *e = Mod->getInfo(Name, File, true);
       Component *c = (Component* ) e;
 
       QString qucsEntry = c->save();
