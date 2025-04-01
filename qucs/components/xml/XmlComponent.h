@@ -12,12 +12,13 @@
 
 #include "../component.h"
 
+#include <QString>
+
 class XmlComponent: public Component
 {
 public:
-    class Parameter
+    struct Parameter
     {
-    public:
         Parameter(
                 const QString& name,
                 const QString& unit,
@@ -31,12 +32,58 @@ public:
             a_description(description)
         {}
 
-    private:
         QString a_name;
         QString a_unit;
         QString a_defaultValue;
         bool a_show;
         QString a_description;
+    };
+
+    struct PortSym
+    {
+        PortSym(
+                int x,
+                int y,
+                int type,
+                int angle) :
+            a_x(x),
+            a_y(y),
+            a_type(type),
+            a_angle(angle)
+        {}
+
+        int a_x;
+        int a_y;
+        int a_type;
+        int a_angle;
+    };
+
+    struct Line
+    {
+        Line(
+                int x1,
+                int y1,
+                int x2,
+                int y2,
+                const QString& color,
+                uint32_t width,
+                int style) :
+            a_x1(x1),
+            a_y1(y1),
+            a_x2(x2),
+            a_y2(y2),
+            a_color(color),
+            a_width(width),
+            a_style(style)
+        {}
+
+        int a_x1;
+        int a_y1;
+        int a_x2;
+        int a_y2;
+        QString a_color;
+        uint32_t a_width;
+        int a_style;
     };
 
     XmlComponent(
@@ -45,24 +92,34 @@ public:
             const QString& description,
             const QString& defaultModel,
             const QString& spiceModel,
-            const QList<Parameter>& parameters);
+            const QString& ngspiceNetList,
+            const QString& ngspiceNetListInclude,
+            const QString& cdlNetList,
+            const QString& cdlNetListInclude,
+            const QList<Parameter>& parameters,
+            const QList<PortSym>& portSyms,
+            const QList<Line>& lines);
     ~XmlComponent() {}
 
     Component* newOne();
-    static Element* info(QString&, char* &, bool getNewOne = false);
+    Element* getInfo(QString&, char* &, bool getNewOne);
 
 protected:
-    QString netlist();
-    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual void createSymbol();
+    virtual QString netlist();
+    virtual QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
     virtual QString cdl_netlist();
 
 private:
-    QString a_name;
     QString a_schematicId;
     QString a_description;
-    QString a_defaultModel;
-    QString a_spiceModel;
+    QString a_ngspiceNetList;
+    QString a_ngspiceNetListInclude;
+    QString a_cdlNetList;
+    QString a_cdlNetListInclude;
     QList<Parameter> a_parameters;
+    QList<PortSym> a_portSyms;
+    QList<Line> a_lines;
 };
 
 #endif // XML_COMPONENT_H
