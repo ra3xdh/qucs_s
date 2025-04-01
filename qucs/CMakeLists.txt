@@ -156,40 +156,66 @@ ADD_SUBDIRECTORY( extsimkernels )
 ADD_SUBDIRECTORY( spicecomponents )
 
 SET(QUCS_SRCS
-  element.cpp	octave_window.cpp	qucsdoc.cpp
-  textdoc.cpp  main.cpp	schematic.cpp
-  mnemo.cpp	qucs.cpp healer.cpp
-  module.cpp	schematic_element.cpp	wire.cpp schematic_render.cpp
-  mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
-  wirelabel.cpp node.cpp qucs_init.cpp
-  syntax.cpp misc.cpp messagedock.cpp
-  settings.cpp
-  imagewriter.cpp printerwriter.cpp projectView.cpp
-  symbolwidget.cpp wire_planner.cpp
+    element.cpp
+    octave_window.cpp
+    qucsdoc.cpp
+    textdoc.cpp
+    main.cpp
+    schematic.cpp
+    mnemo.cpp
+    qucs.cpp
+    healer.cpp
+    module.cpp
+    module_xml.cpp
+    schematic_element.cpp
+    wire.cpp
+    schematic_render.cpp
+    mouseactions.cpp
+    qucs_actions.cpp
+    schematic_file.cpp
+    wirelabel.cpp
+    node.cpp
+    qucs_init.cpp
+    syntax.cpp
+    misc.cpp
+    messagedock.cpp
+    settings.cpp
+    imagewriter.cpp
+    printerwriter.cpp
+    projectView.cpp
+    symbolwidget.cpp
+    wire_planner.cpp
 )
 
 SET(QUCS_HDRS
-element.h
-conductor.h
-healer.h
-main.h
-messagedock.h
-misc.h
-mnemo.h
-module.h
-mouseactions.h
-node.h
-octave_window.h
-qucs.h
-qucsdoc.h
-schematic.h
-settings.h
-syntax.h
-symbolwidget.h
-textdoc.h
-wire.h
-wirelabel.h
-wire_planner.h
+    element.h
+    conductor.h
+    healer.h
+    main.h
+    messagedock.h
+    misc.h
+    mnemo.h
+    module.h
+    mouseactions.h
+    node.h
+    octave_window.h
+    qucs.h
+    qucsdoc.h
+    schematic.h
+    settings.h
+    syntax.h
+    symbolwidget.h
+    textdoc.h
+    wire.h
+    wirelabel.h
+    wire_planner.h
+)
+
+# prevent specific warning from xsd-generated code
+SET_SOURCE_FILES_PROPERTIES(
+    module_xml.cpp
+    PROPERTIES
+    COMPILE_FLAGS "-Wno-deprecated-declarations"
 )
 
 #

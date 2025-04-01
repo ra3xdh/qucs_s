@@ -16,7 +16,8 @@
         <NgspiceNetlist value = 'Xrsil{PartCounter} {nets} rsil w={w} l={l} m={m}'>
             <Include value=".LIB {PDK_ROOT}/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_typ">
             </Include>
-         </NgspiceNetlist>
+        </NgspiceNetlist>
+        <CDLNetlist value = 'R{PartCounter} {nets} rsil w={w} l={l} m={m}'> </CDLNetlist>
     </Netlists>
     <Symbols>
         <Symbol id="Standard">
