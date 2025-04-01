@@ -484,7 +484,7 @@ void SimMessage::startSimulator()
 
       // append command arguments
       // append netlist with same arguments
-      if (! Module::vaComponents.isEmpty()) {
+      if (! Module::s_vaComponents.isEmpty()) {
 
           /*! Only pass modules to Qucsator that are indeed used on
            * the schematic,it might be the case that the user loaded the icons,
@@ -502,7 +502,7 @@ void SimMessage::startSimulator()
           else {
              QString net = QString(NetlistFile.readAll());
 
-             QMapIterator<QString, QString> i(Module::vaComponents);
+             QMapIterator<QString, QString> i(Module::s_vaComponents);
              while (i.hasNext()) {
                  i.next();
                  if (net.contains(i.key()))
@@ -532,7 +532,7 @@ void SimMessage::startSimulator()
                NetlistFile.close();
             }
           }
-      } // vaComponents not empty
+      } // s_vaComponents not empty
 
       if((SimOpt = findOptimization((Schematic*)DocWidget))) {
       ((Optimize_Sim*)SimOpt)->createASCOnetlist();

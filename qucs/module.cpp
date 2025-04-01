@@ -19,13 +19,10 @@
 #include <QStringList>
 #include <QList>
 #include <QDebug>
-#include <QFile>
-#include <QTextStream>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
 
 #include "element.h"
 #include "components/component.h"
+#include "components/xml/XmlComponent.h"
 #include "components/components.h"
 #include "spicecomponents/spicecomponents.h"
 #include "paintings/paintings.h"
@@ -34,36 +31,50 @@
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
 
-#include "Component.hxx"
-#include "xml/XmlComponent.h"
-
-#include <iostream>
-#include <sstream>
-
 // Global category and component lists.
-QHash<QString, Module *> Module::Modules;
+QHash<QString, Module *> Module::s_modules;
 QList<Category *> Category::Categories;
 
-QMap<QString, QString> Module::vaComponents;
+QMap<QString, QString> Module::s_vaComponents;
 
 // Constructor creates instance of module object.
-Module::Module () {
-  info = 0;
-  category = "#special";
-  icon = nullptr;
+Module::Module() :
+    a_infoVA(nullptr),
+    a_category("#special"),
+    a_icon(nullptr),
+    a_info(nullptr),
+    a_xmlComp()
+{
 }
 
 // Destructor removes instance of module object from memory.
-Module::~Module () {
-    if (icon != nullptr) delete icon;
+Module::~Module()
+{
+    if (a_icon != nullptr) delete a_icon;
+}
+
+Element* Module::getInfo(QString& name, char* &bitmapFile, bool getNewOne)
+{
+    if (a_info != nullptr)
+    {
+        return a_info(name, bitmapFile, getNewOne);
+    }
+    else if (a_xmlComp)
+    {
+        return a_xmlComp->getInfo(name, bitmapFile, getNewOne);
+    }
+
+    Q_ASSERT(false);
+
+    return nullptr;
 }
 
 // Module registration using a category name and the appropriate
 // function returning a modules instance object.
 void Module::registerModule (QString category, pInfoFunc info) {
   Module * m = new Module ();
-  m->info = info;
-  m->category = category;
+  m->a_info = info;
+  m->a_category = category;
   intoCategory (m);
 }
 
@@ -81,15 +92,15 @@ void Module::registerComponent(QString category, pInfoFunc info) {
   if ((c->Simulator & QucsSettings.DefaultSimulator) ==
       QucsSettings.DefaultSimulator) {
     Module* m     = new Module();
-    m->info       = info;
-    m->category   = category;
+    m->a_info       = info;
+    m->a_category   = category;
 
-    m->icon = new QPixmap(128, 128);
-    c->paintIcon(m->icon);
+    m->a_icon = new QPixmap(128, 128);
+    c->paintIcon(m->a_icon);
 
     intoCategory(m);
-    if (!Modules.contains(c->Model)) {
-      Modules.insert(c->Model, m);
+    if (!s_modules.contains(c->Model)) {
+      s_modules.insert(c->Model, m);
     }
   }
   delete c;
@@ -98,16 +109,16 @@ void Module::registerComponent(QString category, pInfoFunc info) {
 // Returns instantiated component based on the given "Model" name.  If
 // there is no such component registers the function returns NULL.
 Component * Module::getComponent (QString Model) {
-  if ( Modules.contains(Model)) {
-    Module *m = Modules.find(Model).value();
+  if ( s_modules.contains(Model)) {
+    Module *m = s_modules.find(Model).value();
     QString Name;
     char * File;
     QString vaBitmap;
-    if (vaComponents.contains(Model))
+    if (s_vaComponents.contains(Model))
       return (Component *)
-              vacomponent::info (Name, vaBitmap, true, vaComponents[Model]);
+              vacomponent::info (Name, vaBitmap, true, s_vaComponents[Model]);
     else
-      return (Component *) m->info (Name, File, true);
+      return (Component *) m->a_info (Name, File, true);
   }
   return 0;
 }
@@ -117,10 +128,10 @@ void Module::registerDynamicComponents()
     qDebug() << "Module::registerDynamicComponents()";
 
 
-  // vaComponents is populated in QucsApp::slotLoadModule
+  // s_vaComponents is populated in QucsApp::slotLoadModule
 
-  // register modules symbol and properties out of in vaComponents
-  QMapIterator<QString, QString> i(vaComponents);
+  // register modules symbol and properties out of in s_vaComponents
+  QMapIterator<QString, QString> i(s_vaComponents);
    while (i.hasNext()) {
      i.next();
 
@@ -132,10 +143,10 @@ void Module::registerDynamicComponents()
 
      // the typedef needs to be different
      //passes the pointer, but it has no idea how to call the JSON
-     m->infoVA = &vacomponent::info;
+     m->a_infoVA = &vacomponent::info;
 
      // TODO maybe allow user load into custom category?
-     m->category = QObject::tr("verilog-a user devices");
+     m->a_category = QObject::tr("verilog-a user devices");
 
      // instantiation of the component once in order
      // to obtain "Model" property of the component
@@ -144,15 +155,15 @@ void Module::registerDynamicComponents()
      QString Name, Model, vaBitmap;
 //     char * File;
      Component * c = (Component *)
-             vacomponent::info (Name, vaBitmap, true, vaComponents[i.key()]);
+             vacomponent::info (Name, vaBitmap, true, s_vaComponents[i.key()]);
      Model = c->Model;
      delete c;
 
      // put into category and the component hash
      intoCategory (m);
 
-     if (!Modules.contains (Model))
-         Modules.insert (Model, m);
+     if (!s_modules.contains (Model))
+         s_modules.insert (Model, m);
 
    } // while
 }
@@ -165,7 +176,7 @@ void Module::intoCategory (Module * m) {
   QList<Category *>::const_iterator it;
   for (it = Category::Categories.constBegin();
        it != Category::Categories.constEnd(); it++) {
-    if ((*it)->Name == m->category) {
+    if ((*it)->Name == m->a_category) {
       (*it)->Content.append (m);
       break;
     }
@@ -173,7 +184,7 @@ void Module::intoCategory (Module * m) {
 
   // if there is no such category, then create it
   if (it == Category::Categories.constEnd()) {
-    Category *cat = new Category (m->category);
+    Category *cat = new Category (m->a_category);
     Category::Categories.append (cat);
     cat->Content.append (m);
   }
@@ -636,183 +647,6 @@ void Module::registerModules (void) {
   registerXmlComponents(QucsSettings.ComponentDir);
 }
 
-void Module::registerXmlComponents(const QString& componentPath)
-{
-    QDir componentDir(componentPath);
-
-    if (!componentDir.exists())
-    {
-        std::cerr << "XML component path '" << componentPath.toUtf8().constData() << "' don't exists" << std::endl;
-        return;
-    }
-
-    QStringList components(componentDir.entryList({"*.xml"}, QDir::Files));
-
-    foreach (const QString& component, components)
-    {
-        QFile componentFile(componentPath + QDir::separator() + component);
-
-        if (!componentFile.open(QIODevice::ReadOnly))
-        {
-            std::cerr
-                << "Could not open '"
-                << componentPath.toUtf8().constData()
-                << QString(QDir::separator()).toUtf8().constData()
-                << component.toUtf8().constData()
-                << "'"
-                << std::endl;
-            break;
-        }
-
-        QTextStream componentStream(&componentFile);
-        QStringList componentContent;
-
-        while (true)
-        {
-            QString line = componentStream.readLine();
-
-            if (line.isNull())
-            {
-                break;
-            }
-            else
-            {
-                QRegularExpression pattern(QString::fromUtf8("<File>(.*)</File>"));
-                QRegularExpressionMatch match(pattern.match(line));
-
-                if (match.hasMatch())
-                {
-                    QString path(match.captured(1));
-                    path.replace("{QUCS_S_COMPONENTS_LIBRARY}", componentPath);
-
-                    QFile includeFile(path);
-
-                    if (!includeFile.open(QIODevice::ReadOnly))
-                    {
-                        std::cerr
-                            << "Could not open '"
-                            << path.toUtf8().constData()
-                            << "'"
-                            << std::endl;
-                    }
-                    else
-                    {
-                        QTextStream includeFileStream(&includeFile);
-                        QString content(includeFileStream.readAll());
-
-                        line.replace(pattern, content);
-                    }
-                }
-
-                componentContent.append(line);
-            }
-        }
-
-        std::istringstream stream(componentContent.join("\n").toUtf8().toStdString());
-
-        try
-        {
-            ::xml_schema::properties properties;
-            properties.no_namespace_schema_location(
-                    QString(componentPath + QDir::separator() + "Component.xsd").toStdString());
-
-            std::unique_ptr<component::xml::Component> component(
-                    component::xml::Component_(stream, 0, properties));
-
-            QList<XmlComponent::Parameter> parameters;
-
-            auto compParameters(component->Parameters().Parameter());
-            for (auto it(compParameters.begin()); it != compParameters.end(); ++it)
-            {
-                XmlComponent::Parameter parameter(
-                        QString::fromUtf8(it->name().get()),
-                        QString::fromUtf8(it->unit().get()),
-                        QString::fromUtf8(it->default_value().get()),
-                        static_cast<bool>(it->show().get()),
-                        QString::fromUtf8(it->Description()).trimmed()
-                );
-
-                parameters << parameter;
-            }
-
-            XmlComponent comp(
-                    QString::fromUtf8(component->name().get()),
-                    QString::fromUtf8(component->schematic_id().get()),
-                    QString::fromUtf8(component->Description()).trimmed(),
-                    QString::fromUtf8(component->Models().DefaultModel().value().get()),
-                    QString::fromUtf8(component->Models().SpiceModel().value().get()),
-                    parameters
-            );
-
-#if 1
-            std::cout << "Component-library: " << component->library().get() << std::endl;
-            std::cout << "Component-name: " << component->name().get() << std::endl;
-            std::cout << "Schematic-id: " << component->schematic_id().get() << std::endl;
-            std::cout << "Description: " << QString::fromUtf8(component->Description()).trimmed().toStdString() << std::endl;
-            std::cout << "Default model: " << component->Models().DefaultModel().value().get() << std::endl;
-            std::cout << "Spice model: " << component->Models().SpiceModel().value().get() << std::endl;
-
-            if (component->Netlists().NgspiceNetlist().present())
-            {
-                std::cout
-                    << "Ngspice netlist: "
-                    << component->Netlists().NgspiceNetlist().get().value().get() << std::endl;
-
-                if (component->Netlists().NgspiceNetlist().get().Include().present())
-                {
-                    std::cout
-                        << "        include: "
-                        << component->Netlists().NgspiceNetlist().get().Include().get().value().get()
-                        << std::endl;
-                }
-            }
-
-            auto lines(component->Symbols().Symbol().Line());
-            for (auto it(lines.begin()); it != lines.end(); ++it)
-            {
-                std::cout
-                    << "Line x1=" << static_cast<int>(it->x1().get())
-                    << ", y1=" << static_cast<int>(it->y1().get())
-                    << ", x2=" << static_cast<int>(it->x2().get())
-                    << ", y2=" << static_cast<int>(it->y2().get())
-                    << ", color=" << it->color().get()
-                    << ", width=" << static_cast<int>(it->width().get())
-                    << ", style=" << static_cast<int>(it->style().get())
-                    << std::endl;
-            }
-
-            auto portSyms(component->Symbols().Symbol().PortSym());
-            for (auto it(portSyms.begin()); it != portSyms.end(); ++it)
-            {
-                std::cout
-                    << "PortSym x=" << static_cast<int>(it->x().get())
-                    << ", y=" << static_cast<int>(it->y().get())
-                    << ", type=" << static_cast<int>(it->type().get())
-                    << ", angle=" << static_cast<int>(it->angle().get())
-                    << std::endl;
-            }
-
-            for (auto it(compParameters.begin()); it != compParameters.end(); ++it)
-            {
-                std::cout
-                    << "Parameter name=" << it->name().get()
-                    << ", unit=" << it->unit().get()
-                    << ", default-value=" << it->default_value().get()
-                    << ", show=" << static_cast<bool>(it->show().get())
-                    << ", description=" << QString::fromUtf8(it->Description()).trimmed().toStdString()
-                    << std::endl;
-            }
-
-#endif
-
-        }
-        catch (const xml_schema::exception& exc)
-        {
-            std::cerr << componentFile.fileName().toUtf8().constData() << ": " << exc << std::endl;
-        }
-    }
-}
-
 // This function has to be called once at application end.  It removes
 // all categories and registered modules from memory.
 void Module::unregisterModules(void) {
@@ -820,16 +654,16 @@ void Module::unregisterModules(void) {
     delete Category::Categories.takeFirst();
   }
 
-  QHash<QString, Module*>::iterator i = Modules.begin();
-  while (i != Modules.end()) {
+  QHash<QString, Module*>::iterator i = s_modules.begin();
+  while (i != s_modules.end()) {
     if (i.value() == 0) { // test here
       delete i.value();
-      i = Modules.erase(i);
+      i = s_modules.erase(i);
     } else {
       ++i;
     }
   }
-  Modules.clear();
+  s_modules.clear();
 }
 
 // Constructor creates instance of module object.
