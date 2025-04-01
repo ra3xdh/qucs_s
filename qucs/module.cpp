@@ -19,10 +19,6 @@
 #include <QStringList>
 #include <QList>
 #include <QDebug>
-#include <QFile>
-#include <QTextStream>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
 
 #include "element.h"
 #include "components/component.h"
@@ -34,12 +30,6 @@
 #include "module.h"
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
-
-#include "Component.hxx"
-#include "xml/XmlComponent.h"
-
-#include <iostream>
-#include <sstream>
 
 // Global category and component lists.
 QHash<QString, Module *> Module::s_modules;
