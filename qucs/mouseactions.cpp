@@ -1154,8 +1154,8 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 
             // handle static and dynamic components
             //    QucsApp::CompChoose;
-            if (Module::vaComponents.contains(entryName)) {
-                QString filename = Module::vaComponents[entryName];
+            if (Module::s_vaComponents.contains(entryName)) {
+                QString filename = Module::s_vaComponents[entryName];
                 //      qDebug() << "   ===+ recast";
                 Comp = dynamic_cast<vacomponent *>(Comp)->newOne(filename); //va component
                 qDebug() << "   => recast = Comp;" << Comp->Name << "filename: " << filename;

@@ -892,13 +892,12 @@ void QucsApp::slotSetCompView (int index)
 
   Comps = Category::getModules(item);
   QString Name;
-  pInfoFunc Infos = 0;
 
   // if something was registered dynamically, get and draw icons into dock
   if (item == QObject::tr("verilog-a user devices")) {
 
     compIdx = 0;
-    QMapIterator<QString, QString> i(Module::vaComponents);
+    QMapIterator<QString, QString> i(Module::s_vaComponents);
     while (i.hasNext()) {
       i.next();
 
@@ -943,18 +942,17 @@ void QucsApp::slotSetCompView (int index)
     compIdx = 0;
     QList<Module *>::const_iterator it;
     for (it = Comps.constBegin(); it != Comps.constEnd(); it++) {
-      Infos = (*it)->info;
-      if (Infos) {
+      if ((*it)->hasInfo()) {
         /// \todo warning: expression result unused, can we rewrite this?
         //(void) *((*it)->info) (Name, File, false);
-        Component* c = (Component*)Infos(Name, File, true);
+        Component* c = dynamic_cast<Component*>((*it)->getInfo(Name, File, true));
         if (c) delete c;
         QString icon_path = misc::getIconPath(QString (File));
         QListWidgetItem *icon = new QListWidgetItem(Name);
         if (QFileInfo::exists(icon_path)) {
             icon->setIcon(QPixmap(icon_path));
         } else {
-            icon->setIcon(*(*it)->icon);
+            icon->setIcon(*(*it)->a_icon);
         }
         icon->setToolTip(Name);
         icon->setData(Qt::UserRole + 1, catIdx);
@@ -1002,9 +1000,9 @@ void QucsApp::slotSearchComponent(const QString &searchText)
       QList<Module *>::const_iterator modit;
       int compIdx = 0;
       for (modit = Comps.constBegin(); modit != Comps.constEnd(); modit++) {
-        if ((*modit)->info) {
+        if ((*modit)->hasInfo()) {
           /// \todo warning: expression result unused, can we rewrite this?
-          (void) *((*modit)->info) (Name, File, false);
+          (void) *((*modit)->getInfo(Name, File, false));
 
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
             //match
@@ -1013,7 +1011,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
             if (QFileInfo::exists(icon_path)) {
                 icon->setIcon(QPixmap(icon_path));
             } else {
-                icon->setIcon(*(*modit)->icon);
+                icon->setIcon(*(*modit)->a_icon);
             }
             icon->setToolTip(it + ": " + Name);
             // add component category and module indexes to the icon
@@ -1027,7 +1025,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
       catIdx++;
     }
     // the "verilog-a user devices" is the last category, if present
-    QMapIterator<QString, QString> i(Module::vaComponents);
+    QMapIterator<QString, QString> i(Module::s_vaComponents);
     int compIdx = 0;
     while (i.hasNext()) {
       i.next();
@@ -1113,7 +1111,6 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   MouseReleaseAction = 0;
   MouseDoubleClickAction = 0;
 
-  pInfoFunc Infos = 0;
   pInfoVAFunc InfosVA = 0;
 
   int i = CompComps->row(item);
@@ -1134,17 +1131,16 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
 
   Category* cat = Category::Categories.at(catIdx);
   Module *mod = cat->Content.at(compIdx);
-  qDebug() << "mod->info" << mod->info;
-  qDebug() << "mod->infoVA" << mod->infoVA;
-  Infos = mod->info;
-  if (Infos) {
+  qDebug() << "mod->a_info: " << (mod->hasInfo() ? "available" : "not available");
+  qDebug() << "mod->a_infoVA" << mod->a_infoVA;
+  if (mod->hasInfo()) {
     // static component
-    view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
+    view->selElem = mod->getInfo(CompName, CompFile_cptr, true);
   } else {
     // Verilog-A component
-    InfosVA = mod->infoVA;
+    InfosVA = mod->a_infoVA;
     // get JSON file out of item name on widgetitem
-    QString filename = Module::vaComponents[name];
+    QString filename = Module::s_vaComponents[name];
     if (InfosVA) {
       view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
     }
@@ -1152,7 +1148,7 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
 
   // in "search mode" ?
   if (CompChoose->itemText(0) == tr("Search results")) {
-    if (Infos || InfosVA) {
+    if (mod->hasInfo() || InfosVA) {
       // change currently selected category, so the user will
       //   see where the component comes from
       CompChoose->setCurrentIndex(catIdx+1); // +1 due to the added "Search Results" item

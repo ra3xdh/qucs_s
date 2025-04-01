@@ -18,12 +18,15 @@
 #ifndef MODULE_H
 #define MODULE_H
 
+#include "component.h"
+
 #include <QList>
 #include <QHash>
 #include <QMap>
-#include "component.h"
+#include <QSharedPointer>
 
 class QPixmap;
+class XmlComponent;
 
 // function typedefs for circuits and analyses
 typedef Element * (* pInfoFunc) (QString&, char * &, bool);
@@ -32,50 +35,57 @@ typedef Component * (* pCreatorFunc) ();
 
 class Module
 {
- public:
-  Module ();
-  ~Module ();
-  static void registerModule (QString, pInfoFunc);
-  static void registerComponent (QString, pInfoFunc);
-  static void intoCategory (Module *);
-  static Component * getComponent (QString);
-  static void registerDynamicComponents(void);
+public:
+    Module ();
+    ~Module ();
 
- public:
-  static QHash<QString, Module *> Modules;
-  static QMap<QString, QString> vaComponents;
+    Element* getInfo(QString& name, char* &bitmapFile, bool getNewOne);
+    bool hasInfo() const { return a_info != nullptr || a_xmlComp; }
 
- public:
-  static void registerModules (void);
-  static void registerXmlComponents(const QString& componentPath);
-  static void unregisterModules (void);
+    static void registerModule (QString, pInfoFunc);
+    static void registerComponent (QString, pInfoFunc);
+    static void registerXmlComponent(const QString& category, const QSharedPointer<XmlComponent>& xmlComp);
+    static void intoCategory (Module *);
+    static Component * getComponent (QString);
+    static void registerDynamicComponents(void);
 
- public:
-  pInfoFunc info = 0;
-  pInfoVAFunc infoVA = 0;
-  QString category;
+public:
+    static QHash<QString, Module*> s_modules;
+    static QMap<QString, QString> s_vaComponents;
 
-  QPixmap *icon;
+public:
+    static void registerModules (void);
+    static void registerXmlComponents(const QString& componentPath);
+    static void unregisterModules (void);
+
+public:
+    pInfoVAFunc a_infoVA;
+    QString a_category;
+    QPixmap* a_icon;
+
+private:
+    pInfoFunc a_info;
+    QSharedPointer<XmlComponent> a_xmlComp;
 };
 
 class Category
 {
- public:
-  Category ();
-  Category (QString);
-  ~Category ();
+public:
+    Category ();
+    Category (QString);
+    ~Category ();
 
- public:
-  static QList<Category *> Categories;
+public:
+    static QList<Category *> Categories;
 
- public:
-  static QStringList getCategories (void);
-  static QList<Module *> getModules (QString);
-  static int getModulesNr (QString);
+public:
+    static QStringList getCategories (void);
+    static QList<Module *> getModules (QString);
+    static int getModulesNr (QString);
 
- public:
-  QString Name;
-  QList<Module *> Content;
+public:
+    QString Name;
+    QList<Module *> Content;
 };
 
 #endif /* __MODULE_H__ */
