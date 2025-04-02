@@ -76,15 +76,13 @@ else()
     message(STATUS "xerces-c lib found at: ${XERCES-C_LIB}")
 endif()
 
-if (APPLE OR WIN32)
-    find_program(XSD_PROG NAMES xsd xsdcxx xsd.exe)
-    if (NOT XSD_PROG)
-        message(SEND_ERROR "xsd prog not found: ${XSD_PROG}")
-    else()
-        message(STATUS "xsd prog found at: ${XSD_PROG}")
-        cmake_path(GET XSD_PROG PARENT_PATH XSD_PROG_PATH)
-        INCLUDE_DIRECTORIES(${XSD_PROG_PATH}/../include)
-    endif()
+find_program(XSD_PROG NAMES xsdcxx xsd xsd.exe PATHS C:/xsd)
+if (NOT XSD_PROG)
+    message(SEND_ERROR "xsd prog not found: ${XSD_PROG}")
+else()
+    message(STATUS "xsd prog found at: ${XSD_PROG}")
+    cmake_path(GET XSD_PROG PARENT_PATH XSD_PROG_PATH)
+    INCLUDE_DIRECTORIES(${XSD_PROG_PATH}/../include)
 endif()
 
 #MESSAGE("QT_INCLUDES=[${QT_INCLUDES}]")
@@ -212,10 +210,16 @@ SET(QUCS_HDRS
 )
 
 # prevent specific warning from xsd-generated code
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(SUPPRESS_DEPRECATED_DECLARATION "/wd4996")
+else()
+    set(SUPPRESS_DEPRECATED_DECLARATION "-Wno-deprecated-declarations")
+endif()
+
 SET_SOURCE_FILES_PROPERTIES(
     module_xml.cpp
     PROPERTIES
-    COMPILE_FLAGS "-Wno-deprecated-declarations"
+    COMPILE_FLAGS ${SUPPRESS_DEPRECATED_DECLARATION}
 )
 
 #
