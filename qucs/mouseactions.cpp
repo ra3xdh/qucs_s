@@ -383,9 +383,6 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
     } else {
 
         const auto get_br = [](const Element* e) {
-            if (const auto* c = dynamic_cast<const Component*>(e)) {
-                return c->boundingRectNoProperties();
-            }
             return e->boundingRect();
         };
 

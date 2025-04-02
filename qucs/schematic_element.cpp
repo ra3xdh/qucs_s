@@ -1075,7 +1075,7 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
     };
 
     for (Component *component : *a_Components) {
-        if (select_element(component, component->boundingRectNoProperties())) {
+        if (select_element(component, component->boundingRect())) {
             selected_count++;
         }
     }
@@ -1234,18 +1234,6 @@ std::size_t total_count(const Schematic::Selection& selection) {
        + selection.markers.size();
 }
 
-std::optional<QRect> total_br(const std::vector<Component*> comps) {
-    if (comps.empty()) return std::nullopt;
-
-    return std::make_optional(std::transform_reduce(
-        comps.begin() + 1,
-        comps.end(),
-        comps.at(0)->boundingRectNoProperties(),
-        [](const QRect& a, const QRect& b) { return a.united(b);},
-        [](const Component* e) { return e->boundingRectNoProperties(); }
-    ));
-}
-
 template<typename T>
 std::optional<QRect> total_br(const std::vector<T*> elems) {
     if (elems.empty()) return std::nullopt;
@@ -1331,29 +1319,6 @@ public:
             break;
         case 5:  // center vertically
             e->moveCenter(0, m_bounds.center().y() - e->boundingRect().center().y());
-            break;
-    }
-    }
-
-    void operator() (Component* c) const {
-        switch (m_mode) {
-        case 0:  // align top
-            c->moveCenter(0, m_bounds.top() - c->boundingRectNoProperties().top());
-            break;
-        case 1:  // align bottom
-            c->moveCenter(0, m_bounds.bottom() - c->boundingRectNoProperties().bottom());
-            break;
-        case 2:  // align left
-            c->moveCenter(m_bounds.left() - c->boundingRectNoProperties().left(), 0);
-            break;
-        case 3:  // align right
-            c->moveCenter(m_bounds.right() - c->boundingRectNoProperties().right(), 0);
-            break;
-        case 4:  // center horizontally
-            c->moveCenter(m_bounds.center().x() - c->boundingRectNoProperties().center().x(), 0);
-            break;
-        case 5:  // center vertically
-            c->moveCenter(0, m_bounds.center().y() - c->boundingRectNoProperties().center().y());
             break;
     }
     }
@@ -2672,7 +2637,7 @@ bool Schematic::heal(const HealingParams* params) {
             }
 
             for (auto* comp : shorted) {
-                if (comp->boundingRectNoProperties().contains(wire->center())) {
+                if (comp->boundingRect().contains(wire->center())) {
                     shorts.insert(wire);
                 }
             }

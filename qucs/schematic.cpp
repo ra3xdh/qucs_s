@@ -1214,7 +1214,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     std::optional<QRect> totalBounds = std::nullopt;
 
     for (auto* pc : *a_Components) {
-        internal::unite(totalBounds, pc->boundingRect());
+        internal::unite(totalBounds, pc->boundingRectIncludingProperties());
     }
 
     for (auto* pw : *a_Wires) {
@@ -1262,7 +1262,7 @@ Schematic::Selection Schematic::currentSelection() const {
         if (!pc->isSelected) continue;
 
         selection.components.push_back(pc);
-        internal::unite(totalBounds, pc->boundingRect());
+        internal::unite(totalBounds, pc->boundingRectIncludingProperties());
     }
 
     for (auto* pw : *a_Wires) {

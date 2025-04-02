@@ -126,18 +126,18 @@ void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
     boundingRectBottom = std::max(ty + totalTextPropertiesHeight, y2) + cy;
 }
 
-QRect Component::boundingRectNoProperties() const noexcept {
+QRect Component::boundingRect() const noexcept {
     return QRect{x1, y1, x2 - x1, y2 - y1}
         .normalized()
         .translated(center());
 }
 
-QRect Component::boundingRect() const noexcept {
+QRect Component::boundingRectIncludingProperties() const noexcept {
     int textPropertyMaxWidth, totalTextPropertiesHeight;
     textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
     return QRect{tx, ty, textPropertyMaxWidth, totalTextPropertiesHeight}
         .translated(center())
-        .united(boundingRectNoProperties())
+        .united(boundingRect())
         .normalized();
 }
 

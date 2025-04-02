@@ -63,8 +63,8 @@ public:
   int     textSize(int&, int&) const;
   void    Bounding(int&, int&, int&, int&);
   void    entireBounds(int&, int&, int&, int&);
-  QRect   boundingRectNoProperties() const noexcept;
   QRect   boundingRect() const noexcept override;
+  QRect   boundingRectIncludingProperties() const noexcept;
   bool    getSelected(int, int);
   int     getTextSelected(int, int);
   bool    rotate() noexcept override;
