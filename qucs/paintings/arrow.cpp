@@ -283,35 +283,45 @@ bool Arrow::getSelected(const QPoint& click, int tolerance)
 }
 
 // Rotates around the center.
-void Arrow::rotate() noexcept
+bool Arrow::rotate() noexcept
 {
   qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
   qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
   updateHead();
+  return true;
 }
 
-void Arrow::rotate(int xc, int yc) noexcept
+bool Arrow::rotate(int xc, int yc) noexcept
 {
   qucs_s::geom::rotate_point_ccw(x1, y1, xc, yc);
   qucs_s::geom::rotate_point_ccw(x2, y2, xc, yc);
   qucs_s::geom::rotate_point_ccw(cx, cy, xc, yc);
   updateHead();
+  return true;
 }
 
 // Mirrors about center line.
-void Arrow::mirrorX() noexcept
+bool Arrow::mirrorX() noexcept
 {
+  // No effect if horizontal
+  if (y1 == y2) return false;
+
   qucs_s::geom::mirror_coordinate(y1, cy);
   qucs_s::geom::mirror_coordinate(y2, cy);
   updateHead();
+  return true;
 }
 
 // Mirrors about center line.
-void Arrow::mirrorY() noexcept
+bool Arrow::mirrorY() noexcept
 {
+  // No effect if vertical
+  if (x1 == x2) return false;
+
   qucs_s::geom::mirror_coordinate(x1, cx);
   qucs_s::geom::mirror_coordinate(x2, cx);
   updateHead();
+  return true;
 }
 
 

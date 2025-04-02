@@ -311,7 +311,7 @@ bool EllipseArc::getSelected(const QPoint& click, int tolerance)
 }
 
 // Rotates around the center.
-void EllipseArc::rotate() noexcept
+bool EllipseArc::rotate() noexcept
 {
   qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
   qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
@@ -321,10 +321,12 @@ void EllipseArc::rotate() noexcept
   if (arcStartAngle >= internal::qtFullCircle) {
     arcStartAngle -= internal::qtFullCircle;
   }
+
+  return true;
 }
 
 // Mirrors about center line.
-void EllipseArc::mirrorX() noexcept
+bool EllipseArc::mirrorX() noexcept
 {
   arcStartAngle += arcLengthAngle;
 
@@ -335,10 +337,12 @@ void EllipseArc::mirrorX() noexcept
   if (arcStartAngle != 0) {
     arcStartAngle = internal::qtFullCircle - arcStartAngle;
   }
+
+  return true;
 }
 
 // Mirrors about center line.
-void EllipseArc::mirrorY() noexcept
+bool EllipseArc::mirrorY() noexcept
 {
   arcStartAngle += arcLengthAngle;
 
@@ -351,6 +355,8 @@ void EllipseArc::mirrorY() noexcept
   } else  {
     arcStartAngle = internal::qtFullCircle + internal::qtHalfCircle - arcStartAngle;
   }
+
+  return true;
 }
 
 // Calls the property dialog for the painting and changes them accordingly.

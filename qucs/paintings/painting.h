@@ -42,8 +42,9 @@ public:
 
   virtual void MouseResizeMoving(int, int, Schematic*) {};
 
-  void  moveCenterTo(int x, int y) noexcept override;
-  void  moveCenter(int dx, int dy) noexcept override;
+  using Element::moveCenterTo;
+  bool  moveCenterTo(int x, int y) noexcept override;
+  bool  moveCenter(int dx, int dy) noexcept override;
 
   QRect boundingRect() const noexcept override;
 

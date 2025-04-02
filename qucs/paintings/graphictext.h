@@ -42,8 +42,8 @@ public:
   void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
   bool MousePressing(Schematic* sch = nullptr) override;
 
-  void rotate() noexcept override;
-  void rotate(int rcx, int rcy) noexcept override;
+  bool rotate() noexcept override;
+  bool rotate(int rcx, int rcy) noexcept override;
 
   bool Dialog(QWidget* parent = nullptr) override;
 

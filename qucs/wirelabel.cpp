@@ -157,16 +157,19 @@ QPoint WireLabel::root() const noexcept
   return QPoint{cx, cy};
 }
 
-void WireLabel::moveRoot(int dx, int dy) noexcept
+bool WireLabel::moveRoot(int dx, int dy) noexcept
 {
   cx += dx;
   cy += dy;
+  return dx != 0 || dy != 0;
 }
 
-void WireLabel::moveRootTo(int x, int y) noexcept
+bool WireLabel::moveRootTo(int x, int y) noexcept
 {
+  const bool is_different = x != cx || y != cy;
   cx = x;
   cy = y;
+  return is_different;
 }
 
 QPoint WireLabel::center() const noexcept
@@ -174,25 +177,33 @@ QPoint WireLabel::center() const noexcept
   return QRect{{x1, y1}, textSize}.center();
 }
 
-void WireLabel::moveCenter(int dx, int dy) noexcept
+bool WireLabel::moveCenter(int dx, int dy) noexcept
 {
   x1 += dx;
   y1 += dy;
+  return dx != 0 || dy != 0;
 }
 
-void WireLabel::rotate() noexcept
+bool WireLabel::rotate() noexcept
 {
   qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+  return true;
 }
 
-void WireLabel::mirrorX() noexcept
+bool WireLabel::mirrorX() noexcept
 {
-  moveCenter(0, (center().y() - root().y()) * 2);
+  const int new_y = (center().y() - root().y()) * 2;
+  const bool is_different = new_y != center().y();
+  moveCenter(0, new_y);
+  return is_different;
 }
 
-void WireLabel::mirrorY() noexcept
+bool WireLabel::mirrorY() noexcept
 {
-  moveCenter((center().x() - root().x()) * 2, 0);
+  const int new_x = (center().x() - root().x()) * 2;
+  const bool is_different = new_x != center().x();
+  moveCenter(new_x, 0);
+  return is_different;
 }
 
 

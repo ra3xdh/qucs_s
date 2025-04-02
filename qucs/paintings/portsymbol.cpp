@@ -209,7 +209,7 @@ bool PortSymbol::getSelected(const QPoint& click, int /*tolerance*/)
 }
 
 // Rotates around the center.
-inline void PortSymbol::rotate() noexcept
+inline bool PortSymbol::rotate() noexcept
 {
   if (angle < 270) {
     angle += 90;
@@ -217,17 +217,19 @@ inline void PortSymbol::rotate() noexcept
     angle = 0;
   }
   updateBounds();
+  return true;
 }
 
 // Rotates around the center.
-inline void PortSymbol::rotate(int x, int y) noexcept
+inline bool PortSymbol::rotate(int x, int y) noexcept
 {
   qucs_s::geom::rotate_point_ccw(cx, cy, x, y);
   rotate();
+  return true;
 }
 
 // Mirrors about connection node (not center line !).
-void PortSymbol::mirrorX() noexcept
+bool PortSymbol::mirrorX() noexcept
 {
   switch (angle) {
     case 90:
@@ -240,10 +242,11 @@ void PortSymbol::mirrorX() noexcept
       break;
   };
   updateBounds();
+  return true;
 }
 
 // Mirrors about connection node (not center line !).
-void PortSymbol::mirrorY() noexcept
+bool PortSymbol::mirrorY() noexcept
 {
   switch (angle) {
     case 0:
@@ -256,6 +259,7 @@ void PortSymbol::mirrorY() noexcept
       break;
   };
   updateBounds();
+  return true;
 }
 
 bool PortSymbol::MousePressing(Schematic *sch) {

@@ -47,7 +47,7 @@ public:
 
   bool getSelected(const QPoint& click, int tolerance) override;
 
-  void rotate(int, int) noexcept override;
+  bool rotate(int, int) noexcept override;
 
   bool Dialog(QWidget* parent = nullptr) override;
 

@@ -136,11 +136,12 @@ bool ID_Text::getSelected(const QPoint& click, int tolerance)
       .contains(click);
 }
 
-void ID_Text::rotate(int rcx, int rcy) noexcept
+bool ID_Text::rotate(int rcx, int rcy) noexcept
 {
   qucs_s::geom::rotate_point_ccw(x1, y1, rcx, rcy);
   qucs_s::geom::rotate_point_ccw(x2, y2, rcx, rcy);
   updateCenter();
+  return true;
 }
 
 // If there were changes, it returns 'true'.

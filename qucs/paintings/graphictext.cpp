@@ -203,17 +203,19 @@ bool GraphicText::getSelected(const QPoint& click, int tolerance)
 }
 
 // Rotates around the center.
-void GraphicText::rotate() noexcept
+bool GraphicText::rotate() noexcept
 {
     angle += 90;
     angle %= 360;
+    return true;
 }
 
-void GraphicText::rotate(int rcx, int rcy) noexcept
+bool GraphicText::rotate(int rcx, int rcy) noexcept
 {
     qucs_s::geom::rotate_point_ccw(x1, y1, rcx, rcy);
     angle += 90;
     angle %= 360;
+    return true;
 }
 
 bool GraphicText::Dialog(QWidget *parent)

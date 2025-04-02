@@ -50,34 +50,34 @@ public:
   QPoint root() const noexcept;
 
   /** Moves root by dx and dy */
-  void moveRoot(int dx, int dy) noexcept;
+  bool moveRoot(int dx, int dy) noexcept;
 
   /** Moves root to (x, y) */
-  void moveRootTo(int x, int y) noexcept;
+  bool moveRootTo(int x, int y) noexcept;
 
   /** Returns coordinates of label text center */
   QPoint center() const noexcept override;
 
   /** Moves label text center by dx and dy */
-  void moveCenter(int dx, int dy) noexcept override;
+  bool moveCenter(int dx, int dy) noexcept override;
 
   /** Rotates label around its root */
-  void rotate() noexcept override;
+  bool rotate() noexcept override;
 
   /** Same as rotate() */
-  void rotate(int /*rcx*/, int /*rcy*/) noexcept override { rotate(); }
+  bool rotate(int /*rcx*/, int /*rcy*/) noexcept override { return rotate(); }
 
   /** Mirrors label vertically relative to its root */
-  void mirrorX() noexcept override;
+  bool mirrorX() noexcept override;
 
   /** Mirrors label horizontally relative to its root */
-  void mirrorY() noexcept override;
+  bool mirrorY() noexcept override;
 
   /** Same as mirrorX() */
-   void mirrorX(int /*axis*/) noexcept override { mirrorX(); }
+  bool mirrorX(int /*axis*/) noexcept override { return mirrorX(); }
 
   /** Same as mirrorY() */
-  void mirrorY(int /*axis*/) noexcept override { mirrorY(); }
+  bool mirrorY(int /*axis*/) noexcept override { return mirrorY(); }
 
   QRect boundingRect() const noexcept override;
 

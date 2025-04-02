@@ -46,8 +46,8 @@ public:
   bool MousePressing(Schematic* sch = nullptr) override;
   void MouseResizeMoving(int, int, Schematic*) override;
 
-  void  rotate() noexcept override;
-  void  rotate(int, int) noexcept override;
+  bool rotate() noexcept override;
+  bool rotate(int, int) noexcept override;
 
   bool Dialog(QWidget* parent = nullptr) override;
 

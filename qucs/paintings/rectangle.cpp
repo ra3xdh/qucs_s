@@ -296,18 +296,24 @@ bool qucs::Rectangle::getSelected(const QPoint& click, int tolerance)
 }
 
 // Rotates around the center.
-void qucs::Rectangle::rotate() noexcept
+bool qucs::Rectangle::rotate() noexcept
 {
+  // No effect for squares
+  if (std::abs(x2 - x1) == std::abs(y2 - y1)) return false;
   qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
   qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
   updateCenter();
+  return true;
 }
 
-void qucs::Rectangle::rotate(int xc, int yc) noexcept
+bool qucs::Rectangle::rotate(int xc, int yc) noexcept
 {
+  if (cx == xc && cy == yc) return rotate();
+
   qucs_s::geom::rotate_point_ccw(x1, y1, xc, yc);
   qucs_s::geom::rotate_point_ccw(x2, y2, xc, yc);
   updateCenter();
+  return true;
 }
 
 // Calls the property dialog for the painting and changes them accordingly.

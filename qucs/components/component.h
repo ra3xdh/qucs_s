@@ -67,9 +67,9 @@ public:
   QRect   boundingRect() const noexcept override;
   bool    getSelected(int, int);
   int     getTextSelected(int, int);
-  void    rotate() noexcept override;
-  void    mirrorX() noexcept override;
-  void    mirrorY() noexcept override;
+  bool    rotate() noexcept override;
+  bool    mirrorX() noexcept override;
+  bool    mirrorY() noexcept override;
   QString save();
   bool    load(const QString&);
 

@@ -213,30 +213,34 @@ bool GraphicLine::getSelected(const QPoint& click, int tolerance)
 }
 
 // Rotates around the center.
-void GraphicLine::rotate() noexcept
+bool GraphicLine::rotate() noexcept
 {
   qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
   qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
   updateCenter();
+  return true;
 }
 
-void GraphicLine::rotate(int xc, int yc) noexcept
+bool GraphicLine::rotate(int xc, int yc) noexcept
 {
   qucs_s::geom::rotate_point_ccw(x1, y1, xc, yc);
   qucs_s::geom::rotate_point_ccw(x2, y2, xc, yc);
   updateCenter();
+  return true;
 }
 
 // Mirrors about center line.
-void GraphicLine::mirrorX() noexcept
+bool GraphicLine::mirrorX() noexcept
 {
   std::swap(y1, y2);
+  return y1 != y2;
 }
 
 // Mirrors about center line.
-void GraphicLine::mirrorY() noexcept
+bool GraphicLine::mirrorY() noexcept
 {
   std::swap(x1, x2);
+  return x1 != x2;
 }
 
 // Calls the property dialog for the painting and changes them accordingly.

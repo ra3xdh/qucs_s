@@ -104,47 +104,52 @@ void Property::paint(int x, int y, QPainter* p)
   p->drawText(x, y, 1, 1, Qt::TextDontClip, Name + "=" + Value, &br);
 }
 
-void Element::moveCenterTo(int x, int y) noexcept
+bool Element::moveCenterTo(int x, int y) noexcept
 {
-  auto c = center();
-  moveCenter(x - c.x(), y - c.y());
+  auto old_center = center();
+  moveCenter(x - old_center.x(), y - old_center.y());
+  return x != old_center.x() || y != old_center.y();
 }
 
-void Element::moveCenterTo(const QPoint& p) noexcept
+bool Element::moveCenterTo(const QPoint& p) noexcept
 {
-  moveCenterTo(p.x(), p.y());
+  return moveCenterTo(p.x(), p.y());
 }
 
-void Element::moveCenter(int dx, int dy) noexcept
+bool Element::moveCenter(int dx, int dy) noexcept
 {
   cx += dx;
   cy += dy;
+  return dx != 0 || dy != 0;
 }
 
-void Element::rotate(int rcx, int rcy) noexcept
+bool Element::rotate(int rcx, int rcy) noexcept
 {
   int ncx = cx;
   int ncy = cy;
   qucs_s::geom::rotate_point_ccw(ncx, ncy, rcx, rcy);
-  moveCenterTo(ncx, ncy);
-  rotate();
+  const bool has_moved = moveCenterTo(ncx, ncy);
+  const bool has_rotated = rotate();
+  return has_rotated || has_moved;
 }
 
-void Element::rotate(const QPoint& center) noexcept
+bool Element::rotate(const QPoint& center) noexcept
 {
-  rotate(center.x(), center.y());
+  return rotate(center.x(), center.y());
 }
 
-void Element::mirrorX(int axis) noexcept
+bool Element::mirrorX(int axis) noexcept
 {
-  moveCenterTo(cx, qucs_s::geom::mirror_coordinate(cy, axis));
-  mirrorX();
+  const bool has_moved = moveCenterTo(cx, qucs_s::geom::mirror_coordinate(cy, axis));
+  const bool has_mirrored = mirrorX();
+  return has_mirrored || has_moved;
 }
 
-void Element::mirrorY(int axis) noexcept
+bool Element::mirrorY(int axis) noexcept
 {
-  moveCenterTo(qucs_s::geom::mirror_coordinate(cx, axis), cy);
-  mirrorY();
+  const bool has_moved = moveCenterTo(qucs_s::geom::mirror_coordinate(cx, axis), cy);
+  const bool has_mirrored = mirrorY();
+  return has_mirrored || has_moved;
 }
 
 QRect Element::boundingRect() const noexcept

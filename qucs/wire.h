@@ -40,21 +40,24 @@ public:
 
   Node *Port1, *Port2;
 
-  void rotate() noexcept override;
+  bool rotate() noexcept override;
 
-  void mirrorX() noexcept override { std::swap(y1, y2); }
-  void mirrorY() noexcept override { std::swap(x1, x2); }
+  bool mirrorX() noexcept override { std::swap(y1, y2); return y1 != y2; }
+  bool mirrorY() noexcept override { std::swap(x1, x2); return x1 != x2; }
 
   QRect boundingRect() const noexcept override;
 
-  void moveCenter(int dx, int dy) noexcept override;
+  bool moveCenter(int dx, int dy) noexcept override;
 
   QString save();
   bool    load(const QString&);
   bool    isHorizontal();
 
-  void setP1(const QPoint& p);
-  void setP2(const QPoint& p);
+  bool setP1(const QPoint& p);
+  bool setP2(const QPoint& p);
+  QPoint P1() const { return {x1, y1}; }
+  QPoint P2() const { return {x2, y2}; }
+
 };
 
 #endif

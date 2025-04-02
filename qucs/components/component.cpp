@@ -422,11 +422,11 @@ void Component::paintScheme(Schematic *p) {
 
 // -------------------------------------------------------
 // Rotates the component 90 counter-clockwise around its center
-void Component::rotate() noexcept {
+bool Component::rotate() noexcept {
     // Port count only available after recreate, createSymbol
     if ((Model != "Sub") && (Model != "VHDL") && (Model != "Verilog")
         && (Model != "SpLib")) // skip port count
-        if (Ports.count() < 1) return;  // do not rotate components without ports
+        if (Ports.count() < 1) return false;  // do not rotate components without ports
     int tmp, dx, dy;
 
     // rotate all lines
@@ -530,15 +530,16 @@ void Component::rotate() noexcept {
 
     rotated++;  // keep track of what's done
     rotated &= 3;
+    return true;
 }
 
 // -------------------------------------------------------
 // Mirrors the component about the x-axis.
-void Component::mirrorX() noexcept {
+bool Component::mirrorX() noexcept {
     // Port count only available after recreate, createSymbol
     if ((Model != "Sub") && (Model != "VHDL") && (Model != "Verilog")
         && (Model != "SpLib")) // skip port count
-        if (Ports.count() < 1) return;  // do not rotate components without ports
+        if (Ports.count() < 1) return false;  // do not rotate components without ports
 
     // mirror all lines
     for (qucs::Line *p1: Lines) {
@@ -599,15 +600,16 @@ void Component::mirrorX() noexcept {
     mirroredX = !mirroredX;    // keep track of what's done
     rotated += rotated << 1;
     rotated &= 3;
+    return true;
 }
 
 // -------------------------------------------------------
 // Mirrors the component about the y-axis.
-void Component::mirrorY() noexcept {
+bool Component::mirrorY() noexcept {
     // Port count only available after recreate, createSymbol
     if ((Model != "Sub") && (Model != "VHDL") && (Model != "Verilog")
         && (Model != "SpLib")) // skip port count
-        if (Ports.count() < 1) return;  // do not rotate components without ports
+        if (Ports.count() < 1) return false;  // do not rotate components without ports
 
     // mirror all lines
     for (qucs::Line *p1: Lines) {
@@ -672,6 +674,7 @@ void Component::mirrorY() noexcept {
     rotated += rotated << 1;
     rotated += 2;
     rotated &= 3;
+    return true;
 }
 
 // -------------------------------------------------------

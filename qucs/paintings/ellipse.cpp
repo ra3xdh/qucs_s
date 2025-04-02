@@ -287,18 +287,25 @@ bool qucs::Ellipse::getSelected(const QPoint& click, int tolerance)
   return qucs_s::geom::is_near_ellipse(click, boundingRect(), tolerance);
 }
 
-void qucs::Ellipse::rotate() noexcept
+bool qucs::Ellipse::rotate() noexcept
 {
+  // No effect for circles
+  if (std::abs(x2 - x1) == std::abs(y2 - y1)) return false;
+
   qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
   qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
   updateCenter();
+  return true;
 }
 
-void qucs::Ellipse::rotate(int xc, int yc) noexcept
+bool qucs::Ellipse::rotate(int xc, int yc) noexcept
 {
+  if (xc == cx && yc == cy) return rotate();
+
   qucs_s::geom::rotate_point_ccw(x1, y1, xc, yc);
   qucs_s::geom::rotate_point_ccw(x2, y2, xc, yc);
   updateCenter();
+  return true;
 }
 
 bool qucs::Ellipse::Dialog(QWidget* parent)

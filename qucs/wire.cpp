@@ -45,7 +45,7 @@ Wire::~Wire()
   delete Label;
 }
 
-void Wire::rotate() noexcept
+bool Wire::rotate() noexcept
 {
   qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
   qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
@@ -55,6 +55,8 @@ void Wire::rotate() noexcept
     qucs_s::geom::rotate_point_ccw(r.rx(), r.ry(), cx, cy);
     Label->moveRootTo(r.x(), r.y());
   }
+
+  return true;
 }
 
 // Lie x/y on wire ? 5 is the precision the coordinates have to fit.
@@ -202,7 +204,7 @@ QRect Wire::boundingRect() const noexcept
     .normalized();
 }
 
-void Wire::moveCenter(int dx, int dy) noexcept
+bool Wire::moveCenter(int dx, int dy) noexcept
 {
   Element::moveCenter(dx, dy);
   x1 += dx;
@@ -210,13 +212,14 @@ void Wire::moveCenter(int dx, int dy) noexcept
   x2 += dx;
   y2 += dy;
   if (Label) Label->moveRoot(dx, dy);
+  return dx != 0 || dy != 0;
 }
 
 
-void Wire::setP1(const QPoint& new_p1)
+bool Wire::setP1(const QPoint& new_p1)
 {
   if (x1 == new_p1.x() && y1 == new_p1.y()) {
-    return;
+    return false;
   }
 
   if (Label != nullptr) {
@@ -232,13 +235,19 @@ void Wire::setP1(const QPoint& new_p1)
 
   x1 = new_p1.x();
   y1 = new_p1.y();
+
+  // Update center
+  cx = std::midpoint(x1, x2);
+  cy = std::midpoint(y1, y2);
+
+  return true;
 }
 
 
-void Wire::setP2(const QPoint& new_p2)
+bool Wire::setP2(const QPoint& new_p2)
 {
   if (x2 == new_p2.x() && y2 == new_p2.y()) {
-    return;
+    return false;
   }
 
   if (Label != nullptr) {
@@ -254,4 +263,10 @@ void Wire::setP2(const QPoint& new_p2)
 
   x2 = new_p2.x();
   y2 = new_p2.y();
+
+  // Update center
+  cx = std::midpoint(x1, x2);
+  cy = std::midpoint(y1, y2);
+
+  return true;
 }

@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "painting.h"
-#include "one_point.h"
+
 
 QString Painting::save()
 {
@@ -67,12 +67,12 @@ QString Painting::toBrushString (int brush) {
   return "Qt::NoBrush";
 }
 
-void Painting::moveCenterTo(int x, int y) noexcept
+bool Painting::moveCenterTo(int x, int y) noexcept
 {
-  moveCenter(x - cx, y - cy);
+  return moveCenter(x - cx, y - cy);
 }
 
-void Painting::moveCenter(int dx, int dy) noexcept
+bool Painting::moveCenter(int dx, int dy) noexcept
 {
   cx += dx;
   cy += dy;
@@ -81,6 +81,7 @@ void Painting::moveCenter(int dx, int dy) noexcept
   y1 += dy;
   y2 += dy;
   afterMove(dx, dy);
+  return dx != 0 || dy != 0;
 }
 
 void Painting::updateCenter() noexcept
