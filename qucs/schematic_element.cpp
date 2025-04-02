@@ -271,6 +271,40 @@ bool allComponentsAreConsistent(const std::list<Component*>* components)
     }
     return is_ok;
 }
+
+bool geometryIsInOrder(const std::list<Component*>* components, const std::list<Wire*>* wires)
+{
+    bool is_ok = true;
+    for (auto* c : *components) {
+        for (auto* p : c->Ports) {
+            auto port_loc = c->center() + QPoint{p->x, p->y};
+            if (p->Connection->center() != port_loc) {
+                qCritical() << "Crooked geometry! Port and node locations don't match."
+                            << "Component port located at" << port_loc
+                            << "is connected to node at" << p->Connection->center();
+                is_ok = false;
+            }
+        }
+    }
+
+    for (auto* w : *wires) {
+        if (w->P1() != w->Port1->center()) {
+            qCritical() << "Crooked geometry! Wire end and node locations don't match."
+                        << "Wire end located at" << w->P1()
+                        << "is connected to node at" <<  w->Port1->center();
+            is_ok = false;
+        }
+
+        if (w->P2() != w->Port2->center()) {
+            qCritical() << "Crooked geometry! Wire end and node locations don't match."
+                        << "Wire end located at" << w->P2()
+                        << "is connected to node at" <<  w->Port2->center();
+            is_ok = false;
+        }
+    }
+
+    return is_ok;
+}
 }
 
 
@@ -2767,7 +2801,7 @@ bool Schematic::heal(const HealingParams* params) {
     assert(invariants::noZeroLenWires(a_Wires));
     assert(invariants::noNodesOnWires(a_Nodes, a_Wires));
     assert(invariants::noDuplicateWires(a_Wires));
-
+    assert(invariants::geometryIsInOrder(a_Components, a_Wires));
     return thereWereChanges;
 }
 
