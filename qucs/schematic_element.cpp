@@ -2815,11 +2815,15 @@ void Schematic::dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept {
         auto n = points[i];
 
         auto* wire = new Wire(m.x(), m.y(), n.x(), n.y());
-        wire->Port1 = provideNode(m.x(), m.y());
-        wire->Port1->connect(wire);
-        wire->Port2 = provideNode(n.x(), n.y());
-        wire->Port2->connect(wire);
         a_Wires->push_back(wire);
+
+        wire->Port1 = new Node(m.x(), m.y());
+        wire->Port1->connect(wire);
+        a_Nodes->push_back(wire->Port1);
+
+        wire->Port2 = new Node(n.x(), n.y());
+        wire->Port2->connect(wire);
+        a_Nodes->push_back(wire->Port2);
     }
 }
 
