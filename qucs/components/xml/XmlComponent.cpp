@@ -94,7 +94,7 @@ void XmlComponent::createSymbol()
             line.a_y1,
             line.a_x2,
             line.a_y2,
-            QPen(QColor::fromString(line.a_color), line.a_width, static_cast<Qt::PenStyle>(line.a_style))));
+            QPen(misc::ColorFromString(line.a_color), line.a_width, static_cast<Qt::PenStyle>(line.a_style))));
     }
 
     foreach (const PortSym& portSym, a_portSyms)
