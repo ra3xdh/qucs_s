@@ -15,7 +15,7 @@ if (NOT DEFINED XSD_PROG)
 endif()
 
 ADD_CUSTOM_COMMAND(
-    OUTPUT Component.cxx
+    OUTPUT Component.cxx Component.hxx
     COMMAND ${XSD_PROG} cxx-tree --namespace-map =component::xml ${XSD_SOURCE}
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../../library/components/Component.xsd
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -25,10 +25,17 @@ SET(XSD_GENERATED_SRC
     ${CMAKE_CURRENT_BINARY_DIR}/Component.cxx
     ${CMAKE_CURRENT_BINARY_DIR}/Component.hxx)
 
+# prevent specific warning from xsd-generated code
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(SUPPRESS_DEPRECATED_DECLARATION "/wd4996")
+else()
+    set(SUPPRESS_DEPRECATED_DECLARATION "-Wno-deprecated-declarations")
+endif()
+
 SET_SOURCE_FILES_PROPERTIES(
     ${XSD_GENERATED_SRC}
     PROPERTIES
-    COMPILE_FLAGS "-Wno-deprecated-declarations"
+    COMPILE_FLAGS ${SUPPRESS_DEPRECATED_DECLARATION}
 )
 
 SET(COMPONENTS_SRCS
