@@ -20,6 +20,7 @@
 
 #include "geometry/multi_point.h"
 #include "healer.h"
+#include "portsymbol.h"
 #include "schematic.h"
 
 #include <ranges>
@@ -1300,26 +1301,23 @@ class Aligner {
 public:
     Aligner(int mode, QRect bounds) : m_mode{mode}, m_bounds{bounds} {};
 
-    void operator() (Element* e) const {
+    bool align(Element* e) const {
         switch (m_mode) {
         case 0:  // align top
-            e->moveCenter(0, m_bounds.top() - e->boundingRect().top());
-            break;
+            return e->moveCenter(0, m_bounds.top() - e->boundingRect().top());
         case 1:  // align bottom
-            e->moveCenter(0, m_bounds.bottom() - e->boundingRect().bottom());
-            break;
+            return e->moveCenter(0, m_bounds.bottom() - e->boundingRect().bottom());
         case 2:  // align left
-            e->moveCenter(m_bounds.left() - e->boundingRect().left(), 0);
-            break;
+            return e->moveCenter(m_bounds.left() - e->boundingRect().left(), 0);
         case 3:  // align right
-            e->moveCenter(m_bounds.right() - e->boundingRect().right(), 0);
-            break;
+            return e->moveCenter(m_bounds.right() - e->boundingRect().right(), 0);
         case 4:  // center horizontally
-            e->moveCenter(m_bounds.center().x() - e->boundingRect().center().x(), 0);
-            break;
+            return e->moveCenter(m_bounds.center().x() - e->boundingRect().center().x(), 0);
         case 5:  // center vertically
-            e->moveCenter(0, m_bounds.center().y() - e->boundingRect().center().y());
-            break;
+            return e->moveCenter(0, m_bounds.center().y() - e->boundingRect().center().y());
+        default:
+            assert(false);
+            return false;
     }
     }
 };
@@ -1333,17 +1331,27 @@ public:
 bool Schematic::aligning(int mode)
 {
     auto selection = currentSelection();
-
-    if (internal::total_count(selection) <= 1) return false;
+    if (internal::total_count(selection) < 2) return false;
 
     const internal::Aligner aligner{mode, internal::total_br(selection).value()};
-    std::ranges::for_each(selection.paintings, aligner);
-    std::ranges::for_each(selection.diagrams, aligner);
-    std::ranges::for_each(selection.labels, aligner);
-    std::ranges::for_each(selection.components, aligner);
-    std::ranges::for_each(selection.wires, aligner);
+    bool any_aligned = false;
+    const auto align = [&any_aligned, aligner](Element* e) { any_aligned = aligner.align(e) || any_aligned; };
+    std::ranges::for_each(selection.paintings, align);
+    std::ranges::for_each(selection.diagrams, align);
+    std::ranges::for_each(selection.labels, align);
+    std::ranges::for_each(selection.wires, align);
+    std::ranges::for_each(selection.components, [&any_aligned, aligner](Component* c) { any_aligned = aligner.align(c) || any_aligned; });
 
-    return heal(&noninteractiveMutationParams);
+    if (!any_aligned) return false;
+
+    // elementsOnGrid heals and adds undo-entry by its own
+    // if it changes something
+    if (!elementsOnGrid()) {
+        heal(&noninteractiveMutationParams);
+        setChanged(true, true);
+    }
+
+    return true;
 }
 
 namespace internal {
@@ -1358,36 +1366,51 @@ template <bool x_axis> struct CenterCoordinateSorter {
 };
 
 template <bool x_axis> class Distributor {
-  std::size_t current_pos;
-  std::size_t last_pos;
-  int step;
-  int current_coord;
+  int m_Step = 0;
+  int m_CurrentCoord = 0;
+
+  int next()
+  {
+    m_CurrentCoord += m_Step;
+    return m_CurrentCoord;
+  }
 
 public:
-  Distributor(std::vector<Element *> &elements)
-      : current_pos{0}, last_pos{elements.size()} {
-    std::ranges::sort(elements, CenterCoordinateSorter<x_axis>());
 
-    const auto *first = elements.front();
-    const auto *last = elements.back();
+  bool distribute(std::vector<Element*>& distributedElements) {
 
-    const auto distance =
-        std::abs(x_axis ? last->center().x() - first->center().x()
-                        : last->center().y() - first->center().y());
+    // Prepare
+    {
+        std::ranges::sort(distributedElements, CenterCoordinateSorter<x_axis>());
 
-    current_coord = x_axis ? first->center().x() : first->center().y();
-    step = distance / elements.size() - 1;
-  }
+        const auto* first = distributedElements.front();
+        const auto* last = distributedElements.back();
 
-  void next() {
-    if (current_pos >= last_pos) {
-      return;
+        const auto distance =
+            std::abs(x_axis ? last->center().x() - first->center().x()
+                            : last->center().y() - first->center().y());
+
+        m_CurrentCoord = x_axis ? first->center().x() : first->center().y();
+        m_Step = distance / (distributedElements.size() - 1);
     }
-    current_coord += step;
-    current_pos++;
-  }
 
-  int get() const { return current_coord; }
+    // Start distributing from second element and end on the one before last element
+    auto current = std::next(distributedElements.begin());
+    auto sentinel = std::prev(distributedElements.end());
+
+    // Keep track if something changes
+    bool any_moved = false;
+
+    while (current != sentinel) {
+        auto new_center = x_axis
+                        ? QPoint{ next(), (*current)->center().y() }
+                        : QPoint{ (*current)->center().x(), next() };
+
+        any_moved = (*current)->moveCenterTo(new_center) || any_moved;
+        current++;
+    }
+    return any_moved;
+  }
 };
 } // namespace
 
@@ -1399,25 +1422,30 @@ bool Schematic::distributeHorizontal()
 {
     auto selection = currentSelection();
 
-    if (internal::total_count(selection) <= 1 ) return false;
+    if (internal::total_count(selection) < 3) return false;
 
     std::vector<Element*> distributed;
-    const auto appender = std::back_inserter(distributed);
-
-    std::ranges::copy(selection.components, appender);
-    std::ranges::copy(selection.wires, appender);
-    std::ranges::copy(selection.paintings, appender);
-    std::ranges::copy(selection.diagrams, appender);
-    std::ranges::copy(selection.labels, appender);
-
-    internal::Distributor<true> dist(distributed);
-
-    for (auto* e : distributed) {
-        e->moveCenterTo(setOnGrid(QPoint{dist.get(), e->center().y()}));
-        dist.next();
+    {
+        const auto appender = std::back_inserter(distributed);
+        std::ranges::copy(selection.components, appender);
+        std::ranges::copy(selection.wires, appender);
+        std::ranges::copy(selection.paintings, appender);
+        std::ranges::copy(selection.diagrams, appender);
+        std::ranges::copy(selection.labels, appender);
     }
 
-    return heal(&noninteractiveMutationParams);
+    const bool any_moved = internal::Distributor<true>{}.distribute(distributed);
+
+    if (!any_moved) return false;
+
+    // elementsOnGrid heals and adds undo-entry by its own
+    // if it changes something
+    if (!elementsOnGrid()) {
+        heal(&noninteractiveMutationParams);
+        setChanged(true, true);
+    }
+
+    return true;
 }
 
 /*!
@@ -1428,25 +1456,30 @@ bool Schematic::distributeVertical()
 {
     auto selection = currentSelection();
 
-    if (internal::total_count(selection) <= 1) return false;
+    if (internal::total_count(selection) < 3) return false;
 
     std::vector<Element*> distributed;
-    const auto appender = std::back_inserter(distributed);
-
-    std::ranges::copy(selection.components, appender);
-    std::ranges::copy(selection.wires, appender);
-    std::ranges::copy(selection.paintings, appender);
-    std::ranges::copy(selection.diagrams, appender);
-    std::ranges::copy(selection.labels, appender);
-
-    internal::Distributor<true> dist(distributed);
-
-    for (auto* e : distributed) {
-        e->moveCenterTo(setOnGrid(QPoint{ e->center().x(), dist.get()}));
-        dist.next();
+    {
+        const auto appender = std::back_inserter(distributed);
+        std::ranges::copy(selection.components, appender);
+        std::ranges::copy(selection.wires, appender);
+        std::ranges::copy(selection.paintings, appender);
+        std::ranges::copy(selection.diagrams, appender);
+        std::ranges::copy(selection.labels, appender);
     }
 
-    return heal(&noninteractiveMutationParams);
+    const bool any_moved = internal::Distributor<false>{}.distribute(distributed);
+
+    if (!any_moved) return false;
+
+    // elementsOnGrid heals and adds undo-entry by its own
+    // if it changes something
+    if (!elementsOnGrid()) {
+        heal(&noninteractiveMutationParams);
+        setChanged(true, true);
+    }
+
+    return true;
 }
 
 // Sets selected elements on grid.
@@ -1454,25 +1487,49 @@ bool Schematic::elementsOnGrid()
 {
     auto selection = currentSelection();
 
-    if (internal::total_count(selection) == 0) return false;
+    const auto count = internal::total_count(selection);
+    if (count == 0) return false;
 
-    const auto onGridSetter = [this](Element* e) { e->moveCenterTo(setOnGrid(e->center())); };
+    bool any_set = false;
+    const auto onGridSetter = [&any_set, this](Element* e) {
+        any_set = e->moveCenterTo(setOnGrid(e->center())) || any_set;
+    };
 
+    // std::ranges::for_each(selection.paintings, onGridSetter);
     std::ranges::for_each(selection.components, onGridSetter);
-    std::ranges::for_each(selection.paintings, onGridSetter);
     std::ranges::for_each(selection.diagrams, onGridSetter);
     std::ranges::for_each(selection.labels, onGridSetter);
-    std::ranges::for_each(selection.nodes, onGridSetter);
-
-    std::ranges::for_each(selection.wires, [this](Wire* w) {
-        setOnGrid(w->x1, w->y1);
-        setOnGrid(w->x2, w->y2);
-        // Update center
-        w->cx = (w->x1 + w->x2) / 2;
-        w->cy = (w->y1 + w->y2) / 2;
+    std::ranges::for_each(selection.wires, [&any_set, this](Wire* w) {
+        auto p1_moved = w->setP1(setOnGrid(QPoint{w->x1, w->y1}));
+        auto p2_moved = w->setP2(setOnGrid(QPoint{w->x2, w->y2}));
+        any_set = p1_moved || p2_moved || any_set;
     });
 
-    return heal(&noninteractiveMutationParams);
+    if (!any_set) return false;
+
+    heal(&noninteractiveMutationParams);
+    setChanged(true, true);
+    return true;
+}
+
+namespace internal {
+
+bool symbolElementsOnGrid(Schematic* sch, const std::vector<Painting*>& paintings)
+{
+    auto port = std::ranges::find_if(paintings, [](Painting* p) { return dynamic_cast<PortSymbol*>(p) != nullptr; });
+
+    bool any_moved = false;
+    if (port != paintings.end()) {
+        auto diff = sch->setOnGrid((*port)->center()) - (*port)->center();
+        std::ranges::for_each(paintings, [diff, &any_moved](Painting* p) {
+            any_moved = p->moveCenter(diff.x(), diff.y()) || any_moved;});
+    } else {
+        std::ranges::for_each(paintings, [sch, &any_moved](Painting* p) {
+            any_moved = p->moveCenterTo(sch->setOnGrid(p->center())) || any_moved; });
+    }
+    return any_moved;
+}
+
 }
 
 // Rotates all selected components around their midpoint.
@@ -1486,11 +1543,14 @@ bool Schematic::rotateElements()
 
     const bool in_place = count == 1;
     const auto bounds = internal::total_br(selection);
-    if (!bounds) assert(false);
+    assert(bounds.has_value());
 
-    const auto rotc = bounds->center();
+    const auto rotc = setOnGrid(bounds->center());
 
-    const auto rotator = [rotc,in_place](Element* e) { in_place ? e->rotate() : e->rotate(rotc); };
+    bool any_rotated = false;
+    const auto rotator = [&any_rotated, in_place, rotc](Element* e) {
+        any_rotated = (in_place ? e->rotate() : e->rotate(rotc)) || any_rotated;
+    };
 
     std::ranges::for_each(selection.components, rotator);
     std::ranges::for_each(selection.wires, rotator);
@@ -1499,7 +1559,20 @@ bool Schematic::rotateElements()
     std::ranges::for_each(selection.labels, rotator);
     std::ranges::for_each(selection.nodes, rotator);
 
-    elementsOnGrid();
+    if (!any_rotated) return false;
+
+    if (a_symbolMode || a_isSymbolOnly) {
+        internal::symbolElementsOnGrid(this, selection.paintings);
+        setChanged(true, true);
+    } else {
+        // elementsOnGrid heals and adds undo-entry by its own
+        // if it changes something
+        if (!elementsOnGrid()) {
+            heal(&noninteractiveMutationParams);
+            setChanged(true, true);
+        }
+    }
+
     return true;
 }
 
@@ -1514,11 +1587,14 @@ bool Schematic::mirrorXComponents()
 
     const auto in_place = count == 1;
     const auto bounds = internal::total_br(selection);
-    if (!bounds) assert(false);
+    assert(bounds.has_value());
 
     const auto axis = static_cast<int>(bounds->top() + std::round(bounds->height() / 2.0));
 
-    const auto mirrorer = [axis,in_place](Element* e) { in_place ? e -> mirrorX() : e->mirrorX(axis); };
+    bool any_mirrored = false;
+    const auto mirrorer = [&any_mirrored, in_place, axis](Element* e) {
+        any_mirrored = (in_place ? e->mirrorX() : e->mirrorX(axis)) || any_mirrored;
+    };
 
     std::ranges::for_each(selection.components, mirrorer);
     std::ranges::for_each(selection.wires, mirrorer);
@@ -1527,7 +1603,20 @@ bool Schematic::mirrorXComponents()
     std::ranges::for_each(selection.labels, mirrorer);
     std::ranges::for_each(selection.nodes, mirrorer);
 
-    elementsOnGrid();
+    if (!any_mirrored) return false;
+
+    if (a_symbolMode || a_isSymbolOnly) {
+        internal::symbolElementsOnGrid(this, selection.paintings);
+        setChanged(true, true);
+    } else {
+        // elementsOnGrid heals and adds undo-entry by its own
+        // if it changes something
+        if (!elementsOnGrid()) {
+            heal(&noninteractiveMutationParams);
+            setChanged(true, true);
+        }
+    }
+
     return true;
 }
 
@@ -1542,11 +1631,14 @@ bool Schematic::mirrorYComponents()
 
     const auto in_place = count == 1;
     const auto bounds = internal::total_br(selection);
-    if (!bounds) assert(false);
+    assert(bounds.has_value());
 
     const auto axis = static_cast<int>(bounds->left() + std::round(bounds->width() / 2.0));
 
-    const auto mirrorer = [axis,in_place](Element* e) { in_place ? e->mirrorY() : e->mirrorY(axis); };
+    bool any_mirrored = false;
+    const auto mirrorer = [&any_mirrored, in_place, axis](Element* e) {
+        any_mirrored = (in_place ? e->mirrorY() : e->mirrorY(axis)) || any_mirrored;
+    };
 
     std::ranges::for_each(selection.components, mirrorer);
     std::ranges::for_each(selection.wires, mirrorer);
@@ -1555,7 +1647,20 @@ bool Schematic::mirrorYComponents()
     std::ranges::for_each(selection.labels, mirrorer);
     std::ranges::for_each(selection.nodes, mirrorer);
 
-    elementsOnGrid();
+    if (!any_mirrored) return false;
+
+    if (a_symbolMode || a_isSymbolOnly) {
+        internal::symbolElementsOnGrid(this, selection.paintings);
+        setChanged(true, true);
+    } else {
+        // elementsOnGrid heals and adds undo-entry by its own
+        // if it changes something
+        if (!elementsOnGrid()) {
+            heal(&noninteractiveMutationParams);
+            setChanged(true, true);
+        }
+    }
+
     return true;
 }
 
@@ -2663,7 +2768,6 @@ bool Schematic::heal(const HealingParams* params) {
     assert(invariants::noNodesOnWires(a_Nodes, a_Wires));
     assert(invariants::noDuplicateWires(a_Wires));
 
-    setChanged(thereWereChanges, thereWereChanges);
     return thereWereChanges;
 }
 

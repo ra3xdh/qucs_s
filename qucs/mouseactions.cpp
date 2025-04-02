@@ -1064,46 +1064,32 @@ void MouseActions::MPressActivate(Schematic *Doc, QMouseEvent *, float fX, float
 
 void MouseActions::MPressMirrorX(Schematic *Doc, QMouseEvent *, float fX, float fY)
 {
-    if (auto* c = Doc->selectedComponent(int(fX), int(fY))) {
-        c->mirrorX();
+    Element* e = Doc->selectElement(int(fX), int(fY), false);
+    if (e != nullptr && e->mirrorX()) {
         Doc->healAfterKeyboardMutation();
+        Doc->viewport()->update();
+        Doc->setChanged(true, true);
     }
-    else if (auto* p = Doc->selectedPainting(fX, fY)) {
-        p->mirrorX();
-    } else {
-        return;
-    }
-
-    Doc->viewport()->update();
-    Doc->setChanged(true, true);
 }
 
 void MouseActions::MPressMirrorY(Schematic *Doc, QMouseEvent *, float fX, float fY)
 {
-    if (auto* c = Doc->selectedComponent(int(fX), int(fY))) {
-        c->mirrorY();
+    Element* e = Doc->selectElement(int(fX), int(fY), false);
+    if (e != nullptr && e->mirrorY()) {
         Doc->healAfterKeyboardMutation();
+        Doc->viewport()->update();
+        Doc->setChanged(true, true);
     }
-    else if (auto* p = Doc->selectedPainting(fX, fY)) {
-        p->mirrorY();
-    } else {
-        return;
-    }
-
-    Doc->viewport()->update();
-    Doc->setChanged(true, true);
 }
 
 void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent *, float fX, float fY)
 {
     Element* e = Doc->selectElement(int(fX), int(fY), false);
-    if (e == nullptr) return;
-
-    e->rotate();
-    Doc->healAfterKeyboardMutation();
-
-    Doc->viewport()->update();
-    Doc->setChanged(true, true);
+    if (e != nullptr && e->rotate()) {
+        Doc->healAfterKeyboardMutation();
+        Doc->viewport()->update();
+        Doc->setChanged(true, true);
+    }
 }
 
 // -----------------------------------------------------------
@@ -1500,9 +1486,13 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent* event)
         Doc->viewport()->update();
         return;
     }
-    // Allow all mouse buttons, because for others than the left one,
-    // a menu has already created.
-    Doc->healAfterMousyMutation();
+
+    // Check if movement has made any effect on schematic
+    // MAx3 and MAy3 keep track of total movement
+    if ( Doc->healAfterMousyMutation() || MAx3 != 0 || MAy3 != 0 ) {
+        Doc->setChanged(true, true);
+    }
+
     Doc->viewport()->update();
     Doc->releaseKeyboard(); // allow keyboard inputs again
 
