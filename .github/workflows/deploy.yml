@@ -18,7 +18,7 @@ env:
   QUCS_MACOS_BIN: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
   NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/44.2/ngspice-44.2_64.7z
-  
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -417,12 +417,12 @@ jobs:
         $zipName = "${env:APP_NAME}-${env:VERSION}${env:SHORT_HASH}-MSVC-x64.zip"
         Compress-Archive -Path ./bin, ./share, ./lib, ./misc -DestinationPath "${{github.workspace}}\$zipName"
         cd ${{github.workspace}}
+
     
     - name: Compile .ISS to .EXE Installer
-      uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
-      with:
-        path: contrib/InnoSetup/qucs.iss
-        options: /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC"
+      shell: pwsh
+      run: |
+        ISCC.exe /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC" "${{github.workspace}}\contrib\InnoSetup\qucs.iss"
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -537,11 +537,10 @@ jobs:
         cd ../..
 
     - name: Compile .ISS to .EXE Installer
-      uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
-      with:
-        path: contrib/InnoSetup/qucs.iss
-        options: /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}${{ env.SHORT_HASH }}"
-        
+      shell: pwsh
+      run: |
+        ISCC.exe /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}${{ env.SHORT_HASH }}" "${{github.workspace}}\contrib\InnoSetup\qucs.iss"
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
