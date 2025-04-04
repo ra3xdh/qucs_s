@@ -355,6 +355,7 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
     std::ranges::for_each(selection.paintings, mover);
     std::ranges::for_each(selection.diagrams, mover);
     std::ranges::for_each(selection.labels, mover);
+    std::ranges::for_each(selection.markers, mover);
     std::ranges::for_each(selection.components, mover);
     std::ranges::for_each(selection.wires, mover);
     std::ranges::for_each(selection.nodes, mover);

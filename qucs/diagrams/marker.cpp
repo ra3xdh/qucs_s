@@ -24,6 +24,7 @@
 #include "marker.h"
 #include "diagram.h"
 #include "graph.h"
+#include "one_point.h"
 #include "main.h"
 
 #include <QString>
@@ -584,6 +585,47 @@ Marker* Marker::sameNewOne(Graph *pGraph_)
   pm->numMode     = numMode;
 
   return pm;
+}
+
+
+QRect Marker::boundingRect() const noexcept
+{
+  return QRect{QPoint{cx, cy}, QPoint{x1, y1}}
+    .normalized()
+    .united(QRect{x1, y1, x2, y2}.normalized());
+}
+
+
+bool Marker::moveCenter(int dx, int dy) noexcept
+{
+  // Members cx and cy store coordinates of root of the marker.
+  // Members x1 and y1 store coordinates of marker text
+  x1 += dx;
+  y1 += dy;
+  return dx != 0 || dy != 0;
+}
+
+
+bool Marker::rotate() noexcept
+{
+  qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+  return true;
+}
+
+
+bool Marker::mirrorX() noexcept
+{
+  return moveCenterTo(
+    center().x(),
+    qucs_s::geom::mirror_coordinate(center().y(), cy));
+}
+
+
+bool Marker::mirrorY() noexcept
+{
+  return moveCenterTo(
+    qucs_s::geom::mirror_coordinate(center().x(), cx),
+    center().y());
 }
 
 // vim:ts=8:sw=2:noet

@@ -1379,6 +1379,7 @@ bool Schematic::aligning(int mode)
     std::ranges::for_each(selection.paintings, align);
     std::ranges::for_each(selection.diagrams, align);
     std::ranges::for_each(selection.labels, align);
+    std::ranges::for_each(selection.markers, align);
     std::ranges::for_each(selection.wires, align);
     std::ranges::for_each(selection.components, [&any_aligned, aligner](Component* c) { any_aligned = aligner.align(c) || any_aligned; });
 
@@ -1472,6 +1473,7 @@ bool Schematic::distributeHorizontal()
         std::ranges::copy(selection.paintings, appender);
         std::ranges::copy(selection.diagrams, appender);
         std::ranges::copy(selection.labels, appender);
+        std::ranges::copy(selection.markers, appender);
     }
 
     const bool any_moved = internal::Distributor<true>{}.distribute(distributed);
@@ -1506,6 +1508,7 @@ bool Schematic::distributeVertical()
         std::ranges::copy(selection.paintings, appender);
         std::ranges::copy(selection.diagrams, appender);
         std::ranges::copy(selection.labels, appender);
+        std::ranges::copy(selection.markers, appender);
     }
 
     const bool any_moved = internal::Distributor<false>{}.distribute(distributed);
@@ -1539,6 +1542,7 @@ bool Schematic::elementsOnGrid()
     std::ranges::for_each(selection.components, onGridSetter);
     std::ranges::for_each(selection.diagrams, onGridSetter);
     std::ranges::for_each(selection.labels, onGridSetter);
+    std::ranges::for_each(selection.markers, onGridSetter);
     std::ranges::for_each(selection.wires, [&any_set, this](Wire* w) {
         auto p1_moved = w->setP1(setOnGrid(QPoint{w->x1, w->y1}));
         auto p2_moved = w->setP2(setOnGrid(QPoint{w->x2, w->y2}));
@@ -1597,6 +1601,7 @@ bool Schematic::rotateElements()
     std::ranges::for_each(selection.paintings, rotator);
     std::ranges::for_each(selection.diagrams, rotator);
     std::ranges::for_each(selection.labels, rotator);
+    std::ranges::for_each(selection.markers, rotator);
     std::ranges::for_each(selection.nodes, rotator);
 
     if (!any_rotated) return false;
@@ -1641,6 +1646,7 @@ bool Schematic::mirrorXComponents()
     std::ranges::for_each(selection.paintings, mirrorer);
     std::ranges::for_each(selection.diagrams, mirrorer);
     std::ranges::for_each(selection.labels, mirrorer);
+    std::ranges::for_each(selection.markers, mirrorer);
     std::ranges::for_each(selection.nodes, mirrorer);
 
     if (!any_mirrored) return false;
@@ -1685,6 +1691,7 @@ bool Schematic::mirrorYComponents()
     std::ranges::for_each(selection.paintings, mirrorer);
     std::ranges::for_each(selection.diagrams, mirrorer);
     std::ranges::for_each(selection.labels, mirrorer);
+    std::ranges::for_each(selection.markers, mirrorer);
     std::ranges::for_each(selection.nodes, mirrorer);
 
     if (!any_mirrored) return false;

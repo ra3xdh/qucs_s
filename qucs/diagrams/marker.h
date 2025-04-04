@@ -46,6 +46,28 @@ public:
 private:
   void    initText(int);
 public:
+  QPoint center() const noexcept override { return {x1, y1}; }
+
+  QRect boundingRect() const noexcept override;
+
+  /** Moves marker text */
+  bool moveCenter(int dx, int dy) noexcept override;
+
+  /** Rotates marker around its root */
+  bool rotate() noexcept override;
+  /** Same as rotate() */
+  bool rotate(int /*rcx*/, int /*rcy*/) noexcept override { return rotate(); }
+
+  /** Mirrors marker vertically relative to its root */
+  bool mirrorX() noexcept override;
+  /** Same as mirrorX() */
+  bool mirrorX(int /*axis*/) noexcept override { return mirrorX(); }
+
+  /** Mirrors markers horizontally relative to its root */
+  bool mirrorY() noexcept override;
+  /** Same as mirrorY() */
+  bool mirrorY(int /*axis*/) noexcept override { return mirrorY(); }
+
   void    createText();
   void    makeInvalid();
   bool    moveLeftRight(bool);
