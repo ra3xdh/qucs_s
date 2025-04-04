@@ -192,18 +192,16 @@ bool WireLabel::rotate() noexcept
 
 bool WireLabel::mirrorX() noexcept
 {
-  const int new_y = (center().y() - root().y()) * 2;
-  const bool is_different = new_y != center().y();
-  moveCenter(0, new_y);
-  return is_different;
+  return moveCenterTo(
+    center().x(),
+    qucs_s::geom::mirror_coordinate(center().y(), root().y()));
 }
 
 bool WireLabel::mirrorY() noexcept
 {
-  const int new_x = (center().x() - root().x()) * 2;
-  const bool is_different = new_x != center().x();
-  moveCenter(new_x, 0);
-  return is_different;
+  return moveCenterTo(
+    qucs_s::geom::mirror_coordinate(center().x(), root().x()),
+    center().y());
 }
 
 
