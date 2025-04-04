@@ -369,6 +369,12 @@ void merge(Node* donor, Node* recipient) {
         recipient->connect(conn);
         donor->disconnect(conn);
     }
+
+    // Try to keep donor label
+    if (recipient->Label == nullptr) {
+        recipient->Label = donor->Label;
+        donor->Label = nullptr;
+    }
 }
 
 // A node is redundant if it connects only two wires which form a line i.e.
