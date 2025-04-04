@@ -1627,39 +1627,6 @@ void MouseActions::paintElementsScheme(Schematic *p)
         pe->paintScheme(p);
 }
 
-// -----------------------------------------------------------
-void MouseActions::rotateElements(Schematic *Doc, int &x1, int &y1)
-{
-    int x2;
-    Doc->setOnGrid(x1, y1);
-
-    for (auto* pe : movingElements) {
-        switch (pe->Type) {
-        case isComponent:
-        case isAnalogComponent:
-        case isDigitalComponent:
-            ((Component *) pe)->rotate(); // rotate !before! rotating the center
-            x2 = x1 - pe->cx;
-            pe->moveCenterTo(pe->cy - y1 + x1, x2 + y1);
-            break;
-        case isWire:
-            x2 = pe->x1;
-            pe->x1 = pe->y1 - y1 + x1;
-            pe->y1 = x1 - x2 + y1;
-            x2 = pe->x2;
-            pe->x2 = pe->y2 - y1 + x1;
-            pe->y2 = x1 - x2 + y1;
-            break;
-        case isPainting:
-            ((Painting *) pe)->rotate(x1, y1); // rotate around the center x1 y1
-            break;
-        default:
-            x2 = x1 - pe->cx; // if diagram -> only rotate cx/cy
-            pe->moveCenterTo(pe->cy - y1 + x1, x2 + y1);
-            break;
-        }
-    }
-}
 
 // -----------------------------------------------------------
 void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)

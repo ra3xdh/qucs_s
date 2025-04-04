@@ -121,7 +121,6 @@ public:
   void MReleaseSetLimits(Schematic*, QMouseEvent*);
 
   void paintElementsScheme(Schematic*);
-  void rotateElements(Schematic*, int&, int&);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
 };
 
