@@ -254,7 +254,7 @@ bool Wire::setP2(const QPoint& new_p2)
     const QPoint p1{x1, y1};
     const QPoint old_p2{x2, y2};
 
-    const auto ratio = qucs_s::geom::distance(old_p2, Label->root()) / qucs_s::geom::distance(p1, old_p2);
+    const auto ratio = qucs_s::geom::distance(p1, Label->root()) / qucs_s::geom::distance(p1, old_p2);
     const auto x = static_cast<int>(std::round(p1.x() + ratio * (new_p2.x() - p1.x())));
     const auto y = static_cast<int>(std::round(p1.y() + ratio * (new_p2.y() - p1.y())));
 
