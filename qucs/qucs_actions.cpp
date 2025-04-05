@@ -310,6 +310,9 @@ void QucsApp::slotSelect(bool on)
     select->blockSignals(true);
     select->setChecked(false);
     select->blockSignals(false);
+
+    // Clear wiring modes hint if any
+    statusBar()->clearMessage();
     return;
   }
 

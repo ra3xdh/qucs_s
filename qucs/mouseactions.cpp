@@ -58,6 +58,26 @@
 
 QAction *formerAction; // remember action before drag n'drop etc.
 
+
+// Helper func to show a hint about wiring modes in app's status bar
+void showWireModeHint(QucsApp* app, const qucs_s::wire::Planner planner)
+{
+    app->statusBar()->clearMessage();
+
+    switch (planner.planType()) {
+        case qucs_s::wire::Planner::PlanType::Straight:
+            app->statusBar()->showMessage(QucsApp::tr("Wiring mode: free. RMB to switch to orthogonal."));
+            break;
+        // Here is a hidden knownledge: ThreeStepYX goes right before Straight in PlanType enumeration.
+        case qucs_s::wire::Planner::PlanType::ThreeStepYX:
+            app->statusBar()->showMessage(QucsApp::tr("Wiring mode: orthogonal. RMB to switch to free."));
+            break;
+        default:
+            app->statusBar()->showMessage(QucsApp::tr("Wiring mode: orthogonal. RMB to cycle through variants."));
+    }
+}
+
+
 MouseActions::MouseActions(QucsApp *App_)
 {
     App = App_;          // pointer to main app
@@ -1235,6 +1255,8 @@ void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent *, float fX, float fY
     // Double-click action is set in "MMoveWire2" to not initiate it
     // during "Wire1" actions.
     Doc->viewport()->update();
+
+    showWireModeHint(App, Doc->a_wirePlanner);
 }
 
 /**
@@ -1252,6 +1274,10 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
 
         if (lastNode == nullptr || lastNode->conn_count() > 1) {
             // if last port is connected, then...
+
+            // Don't show wiring mode hint anymore
+            App->statusBar()->clearMessage();
+
             if (formerAction) {
                 // ...restore old action
                 QucsMain->select->setChecked(true);
@@ -1272,6 +1298,7 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
         /// \todo document right mouse button changes the wire corner
     case Qt::RightButton:
         Doc->a_wirePlanner.next();
+        showWireModeHint(App, Doc->a_wirePlanner);
 #if 0
     //ALYS - old code preserved because isn't clear - what it was???
     //looks like deletion via painting.
