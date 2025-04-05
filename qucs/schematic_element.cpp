@@ -37,7 +37,7 @@ constexpr Schematic::HealingParams mousyMutationParams{
 };
 
 constexpr Schematic::HealingParams keyboardMutationParams{
-    .m_healer_params = {.allowWireReshaping = true, .allowWireRelaying = false}
+    .m_healer_params = {.allowWireReshaping = false, .allowWireRelaying = false}
 };
 
 constexpr Schematic::HealingParams noninteractiveMutationParams{
