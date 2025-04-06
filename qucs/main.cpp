@@ -773,7 +773,7 @@ void createDocData() {
         compData << "Category; "          + category;
 
         // 001_data.csv - CSV file with component data
-        QString ID = QStringLiteral("%1").arg(num,3,'d',0,'0');
+        QString ID = QStringLiteral("%1").arg(num,3,10,QChar('0'));
         QString objDataFile;
         objDataFile = QStringLiteral("%1_data.csv").arg( ID  ) ;
 
