@@ -1,3 +1,18 @@
+# Qucs-S 25.1.2
+
+## Bugfixes and general improvemnt
+
+* Fixed crash when dragging overlapping wires #1273
+* Fixed TLine SPICE entry for Xyce #1274
+* Partial fix of unable to modify .OPTIONS component #1260 #1262
+* Allow variables in sungle pulse sources #1289
+* Qucsator updated to v1.0.6
+
+## Known issues
+
+* The .OPTIONS devices works but allows to edit or delete its first property. 
+  It is recommended to use the *INCLUDE SCRIPT* instead. See #1262
+
 # Qucs-S 25.1.1
 
 ## Bugfixes and general improvemnt
