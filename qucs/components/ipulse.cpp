@@ -98,25 +98,16 @@ QString iPulse::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
     s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
     s += " " + spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
 
-    double T1,T2, TrVal, TfVal, Pw,fac,Per;
-    QString unit;
-
-    QString VL = spicecompat::normalize_value(Props.at(0)->Value); // VL
-    QString VH = spicecompat::normalize_value(Props.at(1)->Value); // VH
+    QString IL = spicecompat::normalize_value(Props.at(0)->Value); // VL
+    QString IH = spicecompat::normalize_value(Props.at(1)->Value); // VH
     QString Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr 
     QString Tf = spicecompat::normalize_value(Props.at(5)->Value); // Tf
+    QString T1 = spicecompat::normalize_value(getProperty("T1")->Value); // T1
+    QString T2 = spicecompat::normalize_value(getProperty("T2")->Value); // T2
 
-    misc::str2num(Props.at(2)->Value,T1,unit,fac); // Td
-    T1 *= fac;
-    misc::str2num(Props.at(3)->Value,T2,unit,fac); //T2
-    Pw=T2*fac-T1;
-    misc::str2num(Props.at(4)->Value,TrVal,unit,fac); //Value of Tr
-    Pw = Pw - TrVal*fac;
-    misc::str2num(Props.at(5)->Value,TfVal,unit,fac); //Value of Tf   
-    Pw = Pw - TfVal*fac;
-    Per = 1.0e9*Pw;
 
-    s += QStringLiteral(" DC 0 PULSE(%1 %2 %3 %4 %5 %6 %7) AC 0\n").arg(VL).arg(VH).arg(T1).arg(Tr).arg(Tf).arg(Pw).arg(Per);
+    s += QStringLiteral(" DC 0 PULSE(%1 %2 %3 %4 %5 {(%6)-(%3)-(%4)-(%5)}) AC 0\n")
+             .arg(IL).arg(IH).arg(T1).arg(Tr).arg(Tf).arg(T2);
 
     return s;
 }
