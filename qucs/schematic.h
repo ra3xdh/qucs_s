@@ -35,7 +35,6 @@
 #include "components/component.h"
 #include "wire_planner.h"
 
-#include "qt3_compat/qt_compat.h"
 #include "qt3_compat/q3scrollview.h"
 #include <QVector>
 #include <QStringList>
@@ -149,7 +148,7 @@ public:
   void  showAll();
   void zoomToSelection();
   void  showNoZoom();
-  void  enlargeView(int, int, int, int);
+  void  enlargeView(const Element* e);
   void  switchPaintMode();
   int   adjustPortNumbers();
   int   orderSymbolPorts();
@@ -188,7 +187,7 @@ public:
 
   void    cut();
   void    copy();
-  bool    paste(QTextStream*, QList<Element*>*);
+  bool    paste(QTextStream*, std::list<Element*>*);
   bool    load();
   int     save();
   int     saveSymbolCpp (void);
@@ -236,18 +235,18 @@ public:
 
   // The pointers points to the current lists, either to the schematic
   // elements "Doc..." or to the symbol elements "SymbolPaints".
-  Q3PtrList<Wire> *a_Wires;
-  Q3PtrList<Wire> a_DocWires;
-  Q3PtrList<Node>* a_Nodes;
-  Q3PtrList<Node> a_DocNodes;
-  Q3PtrList<Diagram>* a_Diagrams;
-  Q3PtrList<Diagram> a_DocDiags;
-  Q3PtrList<Painting>* a_Paintings;
-  Q3PtrList<Painting> a_DocPaints;
-  Q3PtrList<Component>* a_Components;
-  Q3PtrList<Component> a_DocComps;
+  std::list<Wire*> *a_Wires;
+  std::list<Wire*> a_DocWires;
+  std::list<Node*>* a_Nodes;
+  std::list<Node*> a_DocNodes;
+  std::list<Diagram*>* a_Diagrams;
+  std::list<Diagram*> a_DocDiags;
+  std::list<Painting*>* a_Paintings;
+  std::list<Painting*> a_DocPaints;
+  std::list<Component*>* a_Components;
+  std::list<Component*> a_DocComps;
 
-  Q3PtrList<Painting> a_SymbolPaints;  // symbol definition for subcircuit
+  std::list<Painting*> a_SymbolPaints;  // symbol definition for subcircuit
 
 private:
   QList<PostedPaintEvent> a_PostedPaintEvents;
@@ -431,7 +430,6 @@ private:
   void drawPostPaintEvents(QPainter* painter);
   void paintFrame(QPainter* painter);
   void drawGrid(QPainter* painter);
-  void relativeRotation(int &x, int &y, int comX, int comY, int posX, int posY);
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
@@ -441,36 +439,37 @@ private:
    ******************************************************************** */
 
 public:
-  Node* insertNode(int, int, Element*);
+  Node* provideNode(int, int);
   Node* selectedNode(int, int);
 
   qucs_s::wire::Planner a_wirePlanner;
   std::pair<bool,Node*> connectWithWire(const QPoint& a, const QPoint& b) noexcept;
+  std::pair<bool,Node*> connectWithWire(const QPoint& a, const QPoint& b, bool optimize, qucs_s::wire::Planner::PlanType planType) noexcept;
   void showEphemeralWire(const QPoint& a, const QPoint& b) noexcept;
+  bool  optimizeWires();
+  std::pair<bool,Node*> installWire(Wire* wire);
+  void displayMutations();
 
-  int   insertWireNode1(Wire*);
-  bool  connectHWires1(Wire*);
-  bool  connectVWires1(Wire*);
-  int   insertWireNode2(Wire*);
-  bool  connectHWires2(Wire*);
-  bool  connectVWires2(Wire*);
-  int   insertWire(Wire*);
+  struct HealingParams;
+  bool heal(const HealingParams* params);
+  bool healAfterMousyMutation();
+  bool healAfterKeyboardMutation();
+
+  void dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept;
+
   void  selectWireLine(Element*, Node*, bool);
   Wire* selectedWire(int, int);
   Wire* splitWire(Wire*, Node*);
-  bool  oneTwoWires(Node*);
-  void  deleteWire(Wire*);
+  void  deleteWire(Wire*, bool remove_orphans=true);
 
   Marker* setMarker(int, int);
-  void    markerLeftRight(bool, QList<Element*>*);
-  void    markerUpDown(bool, QList<Element*>*);
+  void    markerLeftRight(bool, const std::vector<Marker*>& markers);
+  void    markerUpDown(bool, const std::vector<Marker*>& markers);
 
   Element* selectElement(float, float, bool, int *index=0);
   void     deselectElements(Element*) const;
   int      selectElements(const QRect&, bool, bool) const;
   void     selectMarkers() const;
-  void     newMovingWires(Q3PtrList<Element>*, Node*, int) const;
-  int      copySelectedElements(Q3PtrList<Element>*);
   bool     deleteElements();
   bool     aligning(int);
   bool     distributeHorizontal();
@@ -483,31 +482,22 @@ public:
   void       activateCompsWithinRect(int, int, int, int);
   bool       activateSpecifiedComponent(int, int);
   bool       activateSelectedComponents();
-  void       setCompPorts(Component*);
   Component* selectCompText(int, int, int&, int&) const;
   Component* searchSelSubcircuit();
   Component* selectedComponent(int, int);
   void       deleteComp(Component*);
+  void       detachComp(Component*);
   Component* getComponentByName(const QString& compname) const;
 
   void     oneLabel(Node*);
   int      placeNodeLabel(WireLabel*);
   Element* getWireLabel(Node*);
-  void     insertNodeLabel(WireLabel*);
-  void     copyLabels(int&, int&, int&, int&, QList<Element *> *);
 
   Painting* selectedPainting(float, float);
-  void      copyPaintings(int&, int&, int&, int&, QList<Element *> *);
 
 
 private:
   void insertComponentNodes(Component*, bool);
-  int  copyWires(int&, int&, int&, int&, QList<Element *> *);
-  int  copyComponents(int&, int&, int&, int&, QList<Element *> *);
-  void copyComponents2(int&, int&, int&, int&, QList<Element *> *);
-  bool copyComps2WiresPaints(int&, int&, int&, int&, QList<Element *> *);
-  int  copyElements(int&, int&, int&, int&, QList<Element *> *);
-
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
@@ -539,15 +529,15 @@ private:
 
   bool loadProperties(QTextStream*);
   void simpleInsertComponent(Component*);
-  bool loadComponents(QTextStream*, QList<Component*> *List=0);
+  bool loadComponents(QTextStream*, std::list<Component*> *List=0);
   void simpleInsertWire(Wire*);
-  bool loadWires(QTextStream*, QList<Element*> *List=0);
-  bool loadDiagrams(QTextStream*, QList<Diagram*>*);
-  bool loadPaintings(QTextStream*, QList<Painting*>*);
+  bool loadWires(QTextStream*, std::list<Element*> *List=0);
+  bool loadDiagrams(QTextStream*, std::list<Diagram*>*);
+  bool loadPaintings(QTextStream*, std::list<Painting*>*);
   bool loadIntoNothing(QTextStream*);
 
   QString createClipboardFile();
-  bool    pasteFromClipboard(QTextStream *, QList<Element*>*);
+  bool    pasteFromClipboard(QTextStream *, std::list<Element*>*);
 
   QString createUndoString(char);
   bool    rebuild(QString *);

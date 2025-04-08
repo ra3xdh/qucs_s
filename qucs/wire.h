@@ -29,22 +29,35 @@ class QString;
 class Wire : public Conductor {
 public:
   Wire(int _x1=0, int _y1=0, int _x2=0, int _y2=0, Node *n1=0, Node *n2=0);
- ~Wire();
+ ~Wire() override;
 
   void paint(QPainter* painter) const;
-  void paintScheme(QPainter*) override;
-  void paintScheme(Schematic*) override;
-  void setCenter(int, int, bool relative=false);
-  void getCenter(int&, int&);
+  void paintScheme(Schematic* sch) override;
+
   bool getSelected(int, int);
-  void setName(const QString&, const QString&, int delta_=0, int x_=0, int y_=0);
+  void setName(int distFromPort1, int text_x, int text_y, const QString&, const QString&);
+  void setName(const QString&, const QString&, int root_x=0, int root_y=0, int x_=0, int y_=0);
 
-  Node      *Port1, *Port2;
+  Node *Port1, *Port2;
 
-  void    rotate();
+  bool rotate() noexcept override;
+
+  bool mirrorX() noexcept override { std::swap(y1, y2); return y1 != y2; }
+  bool mirrorY() noexcept override { std::swap(x1, x2); return x1 != x2; }
+
+  QRect boundingRect() const noexcept override;
+
+  bool moveCenter(int dx, int dy) noexcept override;
+
   QString save();
   bool    load(const QString&);
   bool    isHorizontal();
+
+  bool setP1(const QPoint& p);
+  bool setP2(const QPoint& p);
+  QPoint P1() const { return {x1, y1}; }
+  QPoint P2() const { return {x2, y2}; }
+
 };
 
 #endif

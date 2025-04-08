@@ -20,39 +20,47 @@
 
 #include "painting.h"
 
-#include <QPen>
-
 
 class GraphicLine : public Painting  {
 public:
-  GraphicLine(int cx_=0, int cy_=0, int x2_=0, int y2_=0,
-              QPen Pen_=QPen(QColor()));
- ~GraphicLine();
+  GraphicLine(int ax = 0, int ay = 0, int bx = 0, int by = 0,
+              QPen pen = QPen(QColor()));
 
-  void paintScheme(Schematic*);
-  void getCenter(int&, int&);
-  void setCenter(int, int, bool relative=false);
+  void paint(QPainter* painter) override;
+  void paintScheme(Schematic*) override;
 
-  Painting* newOne();
+  Painting* newOne() override;
   static Element* info(QString&, char* &, bool getNewOne=false);
-  bool load(const QString&);
-  QString save();
-  QString saveCpp();
-  QString saveJSON();
-  void paint(QPainter* painter);
-  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int);
-  bool MousePressing(Schematic *sch = 0);
-  bool getSelected(float, float, float);
-  void Bounding(int&, int&, int&, int&);
-  bool resizeTouched(float, float, float);
-  void MouseResizeMoving(int, int, Schematic*);
 
-  void rotate(int, int);
-  void mirrorX();
-  void mirrorY();
-  bool Dialog(QWidget *parent = 0);
+  bool    load(const QString&) override;
+  QString save() override;
+  QString saveCpp() override;
+  QString saveJSON() override;
 
-  QPen   Pen;
+  bool getSelected(const QPoint& click, int tolerance) override;
+  bool resizeTouched(const QPoint& click, int tolerance) override;
+
+  void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
+  bool MousePressing(Schematic* sch = nullptr) override;
+  void MouseResizeMoving(int, int, Schematic*) override;
+
+  bool rotate() noexcept override;
+  bool rotate(int, int) noexcept override;
+  bool mirrorX() noexcept override;
+  bool mirrorY() noexcept override;
+
+  bool Dialog(QWidget* parent = nullptr) override;
+
+private:
+  QPen pen;
+
+  // Helps in handling of mouse movements while resiging the line
+  enum class State { Idle, Moving_End1, Moving_End2 };
+  State lineState = State::Idle;
+
+  // Helps distinguish first and second mouse click while
+  // drawing a line
+  bool isBeingDrawn = false;
 };
 
 #endif

@@ -92,8 +92,7 @@ int SP_Sim::getSPortsNumber()
 {
     int p_num = 0;
     if (containingSchematic != NULL) {
-        auto comps = containingSchematic->a_DocComps;
-        for(Component *pc = comps.first(); pc != 0; pc = comps.next()) {
+        for (Component *pc : containingSchematic->a_DocComps) {
             if (pc->Model == "Pac") p_num++;
         }
         return  p_num;

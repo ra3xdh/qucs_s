@@ -1002,8 +1002,7 @@ QStringList ComponentDialog::getSimulationList(bool includeGeneric)
         return sim_lst;
     }
     
-    for (size_t i = 0; i < sch->a_DocComps.count(); i++) {
-        Component *c = sch->a_DocComps.at(i);
+    for (Component* c : sch->a_DocComps) {
         if (!c->isSimulation) continue;
         if (c->Model == ".FOUR") continue;
         if (c->Model == ".PZ") continue;

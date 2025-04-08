@@ -20,36 +20,39 @@
 
 #include "painting.h"
 
-#include <QString>
 
 class PortSymbol : public Painting  {
 public:
   PortSymbol(int cx_=0, int cy_=0, const QString& numberStr_="1",
                                    const QString& nameStr_="");
- ~PortSymbol();
 
-  void paintScheme(Schematic*);
-  void getCenter(int&, int&);
-  void setCenter(int, int, bool relative=false);
-  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int) override;
-  bool MousePressing(Schematic*sch) override;
+  void paint(QPainter* painter) override;
+  void paintScheme(Schematic*) override;
+
   Painting* newOne() override;
+
+  bool load(const QString&) override;
+  QString save() override;
+  QString saveCpp() override;
+  QString saveJSON() override;
+
+  bool getSelected(const QPoint& click, int tolerance) override;
+
+  void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
+  bool MousePressing(Schematic*sch) override;
+
+  bool  rotate() noexcept override;
+  bool  rotate(int, int) noexcept override;
+  bool  mirrorX() noexcept override;
+  bool  mirrorY() noexcept override;
+
   bool Dialog(QWidget *Doc) override;
 
-  bool load(const QString&);
-  QString save();
-  QString saveCpp();
-  QString saveJSON();
-  void paint(QPainter* painter);
-  bool getSelected(float, float, float);
-  void Bounding(int&, int&, int&, int&);
-
-  void rotate(int, int);
-  void mirrorX();
-  void mirrorY();
-
-  int Angel;
   QString numberStr, nameStr;
+private:
+  int angle;
+  QPoint m_textOrigin;
+  void updateBounds();
 };
 
 #endif

@@ -68,7 +68,7 @@ int CdlNetlistWriter::prepareNetlist()
     int numPorts = 0;
 
     // Detect simulation domain (analog/digital) by looking at component types.
-    for (Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next())
+    for (Component *pc : a_schematic->a_DocComps)
     {
         if (pc->isActive == COMP_IS_OPEN)
         {
@@ -145,7 +145,7 @@ void CdlNetlistWriter::startNetlist()
     QString s;
 
     // Parameters, Initial conditions, Options
-    for (Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next())
+    for (Component *pc : a_schematic->a_DocComps)
     {
         if (pc->isEquation)
         {
@@ -158,7 +158,7 @@ void CdlNetlistWriter::startNetlist()
     a_netlistStream << ".GLOBAL 0:G\n";
 
     // Components
-    for (Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next())
+    for (Component *pc : a_schematic->a_DocComps)
     {
         if (a_schematic->getIsAnalog() && !pc->isSimulation && !pc->isEquation)
         {

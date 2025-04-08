@@ -6,22 +6,11 @@ INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 SET(QT3_COMPAT_HDRS
 q3frame.h
-q3gdict.h
-q3ptrcollection.h
-q3ptrdict.h
 q3scrollview.h
-qt_compat.h
-q3ptrlist.h
-q3glist.h
-q3gvector.h
-#q3valuelist.h
 )
 
 SET(QT3_COMPAT_SRCS
 q3frame.cpp
-q3gdict.cpp
-q3gvector.cpp
-q3glist.cpp
 q3scrollview.cpp
 )
 

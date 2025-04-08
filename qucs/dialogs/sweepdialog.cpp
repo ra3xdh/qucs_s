@@ -172,8 +172,6 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
   QFileInfo Info(Doc->getDocName());
   QString DataSet = Info.absolutePath() + QDir::separator() + Doc->getDataSet();
 
-  Node *pn;
-
   // Note 1:
   // Invalidate it so that "Graph::loadDatFile()" does not check for the previously loaded time.
   // This is a current hack as "Graph::loadDatFile()" does not support multi-node data loading
@@ -183,7 +181,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
   ValueList.clear();
 
   // create DC voltage for all nodes
-  for(pn = Doc->a_Nodes->first(); pn != 0; pn = Doc->a_Nodes->next()) {
+  for(Node* pn : *Doc->a_Nodes) {
     if(pn->Name.isEmpty()) continue;
 
     pn->x1 = 0;
@@ -241,10 +239,9 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
 
 
   // create DC current through each probe
-  Component *pc;
-  for(pc = Doc->a_Components->first(); pc != 0; pc = Doc->a_Components->next())
+  for(Component* pc : *Doc->a_Components)
     if(pc->Model == "IProbe") {
-      pn = pc->Ports.first()->Connection;
+      Node* pn = pc->Ports.first()->Connection;
       if(!pn->Name.isEmpty())   // preserve node voltage ?
         pn = pc->Ports.at(1)->Connection;
 
@@ -277,7 +274,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
         }
     } else if (isSpice) {
         if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
-            pn = pc->Ports.first()->Connection;
+            Node* pn = pc->Ports.first()->Connection;
             if(!pn->Name.isEmpty())   // preserve node voltage ?
               pn = pc->Ports.at(1)->Connection;
 

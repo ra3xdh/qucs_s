@@ -55,7 +55,7 @@ Xyce::Xyce(Schematic* schematic, QObject *parent) :
 void Xyce::determineUsedSimulations(QStringList *sim_lst)
 {
 
-    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+    for(Component *pc : a_schematic->a_DocComps) {
        if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {
            QString sim_typ = pc->Model;
            if (sim_typ==".AC") a_simulationsQueue.append("ac");
@@ -101,21 +101,21 @@ void Xyce::createNetlist(
 
     // set variable names for named nodes and wires
     vars.clear();
-    for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
+    for(Node *pn : a_schematic->a_DocNodes) {
       if(pn->Label != 0) {
           if (!vars.contains(pn->Label->Name)) {
               vars.append(pn->Label->Name);
           }
       }
     }
-    for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
+    for(Wire *pw : a_schematic->a_DocWires) {
       if(pw->Label != 0) {
           if (!vars.contains(pw->Label->Name)) {
               vars.append(pw->Label->Name);
           }
       }
     }
-    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+    for(Component *pc : a_schematic->a_DocComps) {
         if (pc->isProbe) {
             QString var_pr = pc->getProbeVariable(spicecompat::SPICEXyce);
             if (!vars.contains(var_pr)) {
@@ -132,13 +132,13 @@ void Xyce::createNetlist(
 
     if (a_DC_OP_only) {
         // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
-        for(Node* pn = a_schematic->a_Nodes->first(); pn != 0; pn = a_schematic->a_Nodes->next()) {
+        for(Node* pn : *a_schematic->a_Nodes) {
             if ((!vars.contains(pn->Name))&&(pn->Name!="gnd")) {
                 vars.append(pn->Name);
             }
         }
         // Add DC sources
-        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+        for(Component *pc : a_schematic->a_DocComps) {
              if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
                  vars.append("I("+pc->Name+")");
              }
@@ -172,7 +172,7 @@ void Xyce::createNetlist(
 
     QString sim = simulations.first();
     QStringList spar_vars;
-    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) { // Xyce can run
+    for(Component *pc : a_schematic->a_DocComps) { // Xyce can run
        if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {                        // only one simulations per time.
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
            QString s = pc->getSpiceNetlist(spicecompat::SPICEXyce);
@@ -187,8 +187,8 @@ void Xyce::createNetlist(
            if (sim==pc->Name) stream<<s; // Xyce scripts
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
-               Q3PtrList<Component> comps(a_schematic->a_DocComps); // find Fourier tran
-               for(Component *pc1 = comps.first(); pc1 != 0; pc1 = comps.next()) {
+               // find Fourier tran
+               for(Component *pc1 : a_schematic->a_DocComps) {
                    if (pc1->Model==".FOURIER") {
                        if (pc1->Props.at(0)->Value==pc->Name) {
                            QString s1 = pc1->getSpiceNetlist(spicecompat::SPICEXyce);
@@ -221,7 +221,7 @@ void Xyce::createNetlist(
                    stream<<s;
                    hasParSweep = true;
                } else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
-                   for(Component *pc1 = a_schematic->a_DocComps.first(); pc1 != 0; pc1 = a_schematic->a_DocComps.next()) {
+                   for(Component *pc1 : a_schematic->a_DocComps) {
                        if ((pc1->Name==SwpSim)&&(pc1->Props.at(0)->Value.startsWith("DC"))) {
                            stream<<s;
                            hasParSweep = true;
@@ -234,7 +234,7 @@ void Xyce::createNetlist(
     }
 
     if (sim.startsWith("XYCESCR")) {
-        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+        for(Component *pc : a_schematic->a_DocComps) {
             if (pc->isSimulation)
                 if (sim == pc->Name)
                     outputs.append(pc->Props.at(2)->Value.split(';'));

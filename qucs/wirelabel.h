@@ -29,28 +29,61 @@ class WireLabel : public Element {
 public:
   WireLabel(const QString& _Name=0, int _cx=0, int _cy=0,
             int _x1=0, int _y1=0, int _Type=isNodeLabel);
-  ~WireLabel();
 
-  void paintScheme(QPainter *p);
-  void setCenter(int x, int y, bool relative=false);
   bool getSelected(int, int);
   void setName(const QString& Name_);
   void setHighlighted (bool newval) { isHighlighted = newval; };
 
 
-  Conductor *pOwner;  // Wire or Node where label belongs to
-  QString Name, initValue;
+  Conductor* pOwner = nullptr;  // Wire or Node where label belongs to
+  QString Name = "";
+  QString initValue = "";
 
   void    paint(QPainter* painter) const;
-  void    rotate();
+
   QString save();
   bool    load(const QString& s);
   bool    isHorizontal();
   void    getLabelBounding(int& _xmin, int& _ymin, int& _xmax, int& _ymax);
 
-private:
-  bool isHighlighted;
+  /** Returns coordinates of a point where label sticks its stem into conductor */
+  QPoint root() const noexcept;
 
+  /** Moves root by dx and dy */
+  bool moveRoot(int dx, int dy) noexcept;
+
+  /** Moves root to (x, y) */
+  bool moveRootTo(int x, int y) noexcept;
+
+  /** Returns coordinates of label text center */
+  QPoint center() const noexcept override;
+
+  /** Moves label text center by dx and dy */
+  bool moveCenter(int dx, int dy) noexcept override;
+
+  /** Rotates label around its root */
+  bool rotate() noexcept override;
+
+  /** Same as rotate() */
+  bool rotate(int /*rcx*/, int /*rcy*/) noexcept override { return rotate(); }
+
+  /** Mirrors label vertically relative to its root */
+  bool mirrorX() noexcept override;
+
+  /** Mirrors label horizontally relative to its root */
+  bool mirrorY() noexcept override;
+
+  /** Same as mirrorX() */
+  bool mirrorX(int /*axis*/) noexcept override { return mirrorX(); }
+
+  /** Same as mirrorY() */
+  bool mirrorY(int /*axis*/) noexcept override { return mirrorY(); }
+
+  QRect boundingRect() const noexcept override;
+
+private:
+  bool isHighlighted = false;
+  QSize textSize;
 };
 
 #endif

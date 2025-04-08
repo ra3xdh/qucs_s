@@ -1,4 +1,5 @@
 #include "wire_planner.h"
+#include <numeric>
 
 namespace qucs_s {
 namespace wire {
@@ -6,12 +7,6 @@ namespace wire {
 inline bool is_horizontal_or_vertical(const QPoint from, const QPoint to) {
     return from.x() == to.x() || from.y() == to.y();
 }
-
-// TODO: migrate to C++20 and yonger and use std::midpoint instead
-int midpoint(int a, int b) {
-  return a + (b - a) / 2;
-}
-
 
 std::vector<QPoint> straight(const QPoint from, const QPoint to) {
     return {from, to};
@@ -25,7 +20,7 @@ std::vector<QPoint> two_step_xy(const QPoint from, const QPoint to) {
     /*
     From o---+
              |
-             +---o To
+             o To
     */
     return {from, {to.x(), from.y()}, to};
 }
@@ -53,7 +48,7 @@ std::vector<QPoint> three_step_xy(const QPoint from, const QPoint to) {
              |
              +---o To
     */
-    int mid_x = midpoint(from.x(), to.x());
+    int mid_x = std::midpoint(from.x(), to.x());
     return {from, {mid_x, from.y()}, {mid_x, to.y()}, to};
 }
 
@@ -69,12 +64,13 @@ std::vector<QPoint> three_step_yx(const QPoint from, const QPoint to) {
           |
           o To
     */
-    int mid_y = midpoint(from.y(), to.y());
+    int mid_y = std::midpoint(from.y(), to.y());
     return {from, {from.x(), mid_y}, {to.x(), mid_y}, to};
 }
 
 
 static const std::map<Planner::PlanType, Planner::RouterFunc> routers = {
+    {Planner::PlanType::Straight, straight},
     {Planner::PlanType::TwoStepXY, two_step_xy},
     {Planner::PlanType::TwoStepYX, two_step_yx},
     {Planner::PlanType::ThreeStepXY,three_step_xy},
@@ -84,11 +80,11 @@ static const std::map<Planner::PlanType, Planner::RouterFunc> routers = {
 
 Planner::Planner() : current{routers.begin()} {}
 
-std::vector<QPoint> Planner::plan(PlanType type, const QPoint from, const QPoint to) {
+std::vector<QPoint> Planner::plan(PlanType type, const QPoint& from, const QPoint& to) {
     return routers.at(type)(from, to);
 }
 
-std::vector<QPoint> Planner::plan(const QPoint from, const QPoint to) const {
+std::vector<QPoint> Planner::plan(const QPoint& from, const QPoint& to) const {
     return current->second(from, to);
 }
 
@@ -102,6 +98,11 @@ void Planner::next() {
     current = routers.cbegin();
 }
 
+Planner::PlanType Planner::setType(Planner::PlanType other) {
+    auto old = current->first;
+    while (current->first != other) next();
+    return old;
+}
 
 } // namespace wire
 } // namespace qucs_s

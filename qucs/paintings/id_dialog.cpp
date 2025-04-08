@@ -48,7 +48,7 @@ ID_Dialog::ID_Dialog(ID_Text *idText_, QWidget *parent)
 
   Expr.setPattern("[A-Za-z][A-Za-z0-9_]*");
   SubVal = new QRegularExpressionValidator(Expr, this);
-  Prefix = new QLineEdit(idText->Prefix);
+  Prefix = new QLineEdit(idText->prefix);
   Prefix->setValidator(SubVal);
 
   htop->addWidget(new QLabel(tr("Prefix:")));
@@ -61,7 +61,7 @@ ID_Dialog::ID_Dialog(ID_Text *idText_, QWidget *parent)
 
   ParamTable = new QTableWidget();
   ParamTable->horizontalHeader()->setStretchLastSection(true);
-  // set automatic resize so all content will be visible, 
+  // set automatic resize so all content will be visible,
   //  horizontal scrollbar will appear if table becomes too large
   ParamTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
   ParamTable->horizontalHeader()->setSectionsClickable(false); // no action when clicking on the header
@@ -74,23 +74,22 @@ ID_Dialog::ID_Dialog(ID_Text *idText_, QWidget *parent)
   vbox_param->addWidget(ParamTable);
 
   QTableWidgetItem *item;
-  QList<SubParameter *>::const_iterator it;
-  for(it = idText->Parameter.constBegin(); it != idText->Parameter.constEnd(); it++) {
+  for (const auto& sub_param : idText->subParameters) {
     int row = ParamTable->rowCount();
     ParamTable->insertRow(row);
-    item = new QTableWidgetItem(((*it)->display)? tr("yes") : tr("no"));
+    item = new QTableWidgetItem((sub_param->display)? tr("yes") : tr("no"));
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 0, item);
-    item = new QTableWidgetItem((*it)->Name.section('=', 0, 0));
+    item = new QTableWidgetItem(sub_param->name.section('=', 0, 0));
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 1, item);
-    item = new QTableWidgetItem((*it)->Name.section('=', 1, 1));
+    item = new QTableWidgetItem(sub_param->name.section('=', 1, 1));
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 2, item);
-    item = new QTableWidgetItem((*it)->Description);
+    item = new QTableWidgetItem(sub_param->description);
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 3, item);
-    item = new QTableWidgetItem((*it)->Type);
+    item = new QTableWidgetItem(sub_param->type);
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 4, item);
   }
@@ -207,7 +206,7 @@ void ID_Dialog::slotAddParameter()
        tr("Parameter must not be named \"File\"!"));
     return;
   }
-  
+
   int row;
   for (row = 0; row < ParamTable->rowCount(); ++row) {
     if(ParamTable->item(row, 1)->text() == ParamNameEdit->text()) {
@@ -262,47 +261,40 @@ void ID_Dialog::slotOk()
 {
   bool changed = false;
 
-  if(!Prefix->text().isEmpty())
-    if(idText->Prefix != Prefix->text()) {
-      idText->Prefix = Prefix->text();
+  if (!Prefix->text().isEmpty())
+    if (idText->prefix != Prefix->text()) {
+      idText->prefix = Prefix->text();
       changed = true;
     }
 
-  QList<SubParameter *> scratch;
+  std::vector<std::unique_ptr<SubParameter>> scratch;
   for (int row = 0; row < ParamTable->rowCount(); ++row) {
       bool display = ParamTable->item(row, 0)->text() == tr("yes");
-      // s = "name=defaultval"
-      QString s(ParamTable->item(row, 1)->text() + "=" + ParamTable->item(row, 2)->text()),
-              desc(ParamTable->item(row, 3)->text()),
-              type(ParamTable->item(row, 4)->text());
+      QString name(ParamTable->item(row, 1)->text() + "=" + ParamTable->item(row, 2)->text());
+      QString desc(ParamTable->item(row, 3)->text());
+      QString type(ParamTable->item(row, 4)->text());
 
-      scratch.append(new SubParameter(display, s, desc, type));
+      scratch.push_back(std::make_unique<SubParameter>(display, name, desc, type));
   }
 
-  if (scratch.size()!=idText->Parameter.size()) {
+  if (scratch.size() != idText->subParameters.size()) {
       changed = true;
   } else {
-      QList<SubParameter *>::const_iterator A(scratch.begin()),
-                                            end(scratch.end()),
-                                            B(idText->Parameter.begin());
-      for(;A!=end; ++A, ++B) {
-          if((*A)->display!=(*B)->display || (*A)->Name!=(*B)->Name ||
-             (*A)->Description!=(*B)->Description || (*A)->Type!=(*B)->Type) {
-              changed = true;
-              break;
-          }
+      for (std::size_t i = 0; !changed && i < scratch.size(); i++) {
+        changed = changed
+                || scratch[i]->display     != idText->subParameters[i]->display
+                || scratch[i]->name        != idText->subParameters[i]->name
+                || scratch[i]->description != idText->subParameters[i]->description
+                || scratch[i]->type        != idText->subParameters[i]->type
+                ;
       }
   }
 
-  if(changed)
-      idText->Parameter.swap(scratch);
-
-  for (SubParameter *p : scratch) {
-      delete p;
+  if (changed) {
+      idText->subParameters.swap(scratch);
   }
 
-  if(changed)  accept();
-  else  reject();
+  changed ? accept() : reject();
 }
 
 

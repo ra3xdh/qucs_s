@@ -24,7 +24,7 @@
 class Node : public Conductor {
 public:
   Node(int x, int y);
- ~Node();
+ ~Node() override;
 
   void  paint(QPainter* painter) const;
   bool  getSelected(int, int);
@@ -57,6 +57,9 @@ public:
   QString Name;  // node name used by creation of netlist
   QString DType; // type of node (used by digital files)
   int State;	 // remember some things during some operations
+
+  int x() const { return cx; }
+  int y() const { return cy; }
 
 private:
   // Nodes usually have quite a few connections. In ideal case, when all wire

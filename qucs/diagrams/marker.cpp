@@ -24,6 +24,7 @@
 #include "marker.h"
 #include "diagram.h"
 #include "graph.h"
+#include "one_point.h"
 #include "main.h"
 
 #include <QString>
@@ -460,40 +461,6 @@ void Marker::paint(QPainter* painter) {
   painter->restore();
 }
 
-// ---------------------------------------------------------------------
-void Marker::paintScheme(QPainter *p)
-{
-  assert(diag());
-  int x0 = diag()->cx;
-  int y0 = diag()->cy;
-  p->drawRect(x0+x1, y0+y1, x2, y2);
-
-  // which corner of rectangle should be connected to line ?
-  if(cx < x1+(x2>>1)) {
-    if(-cy < y1+(y2>>1))
-      p->drawLine(x0+cx, y0-cy, x0+x1, y0+y1);
-    else
-      p->drawLine(x0+cx, y0-cy, x0+x1, y0+y1+y2-1);
-  }
-  else {
-    if(-cy < y1+(y2>>1))
-      p->drawLine(x0+cx, y0-cy, x0+x1+x2-1, y0+y1);
-    else
-      p->drawLine(x0+cx, y0-cy, x0+x1+x2-1, y0+y1+y2-1);
-  }
-}
-
-// ------------------------------------------------------------
-void Marker::setCenter(int x, int y, bool relative)
-{
-  if(relative) {
-    x1 += x;  y1 += y;
-  }
-  else {
-    x1 = x;  y1 = y;
-  }
-}
-
 // -------------------------------------------------------
 void Marker::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
 {
@@ -618,6 +585,47 @@ Marker* Marker::sameNewOne(Graph *pGraph_)
   pm->numMode     = numMode;
 
   return pm;
+}
+
+
+QRect Marker::boundingRect() const noexcept
+{
+  return QRect{QPoint{cx, cy}, QPoint{x1, y1}}
+    .normalized()
+    .united(QRect{x1, y1, x2, y2}.normalized());
+}
+
+
+bool Marker::moveCenter(int dx, int dy) noexcept
+{
+  // Members cx and cy store coordinates of root of the marker.
+  // Members x1 and y1 store coordinates of marker text
+  x1 += dx;
+  y1 += dy;
+  return dx != 0 || dy != 0;
+}
+
+
+bool Marker::rotate() noexcept
+{
+  qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+  return true;
+}
+
+
+bool Marker::mirrorX() noexcept
+{
+  return moveCenterTo(
+    center().x(),
+    qucs_s::geom::mirror_coordinate(center().y(), cy));
+}
+
+
+bool Marker::mirrorY() noexcept
+{
+  return moveCenterTo(
+    qucs_s::geom::mirror_coordinate(center().x(), cx),
+    center().y());
 }
 
 // vim:ts=8:sw=2:noet

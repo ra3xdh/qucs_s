@@ -22,7 +22,7 @@
 
 Node::Node(int x, int y)
 {
-  Label = 0;
+  Label = nullptr;
   Type  = isNode;
   State = 0;
   DType = "";
@@ -33,6 +33,7 @@ Node::Node(int x, int y)
 
 Node::~Node()
 {
+  delete Label;
 }
 
 void Node::paint(QPainter* painter) const {

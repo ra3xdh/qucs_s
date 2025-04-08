@@ -16,140 +16,117 @@
  ***************************************************************************/
 #include "graphicline.h"
 #include "filldialog.h"
+#include "misc.h"
+#include "multi_point.h"
+#include "one_point.h"
 #include "schematic.h"
 
-#include <QPainter>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
 
-#include "misc.h"
-
-GraphicLine::GraphicLine(int cx_, int cy_, int x2_, int y2_, QPen Pen_)
+GraphicLine::GraphicLine(int ax, int ay, int bx, int by, QPen pen_) : pen(pen_)
 {
   Name = "Line ";
   isSelected = false;
-  Pen = Pen_;
-  cx = cx_;
-  cy = cy_;
-  x1 = y1 = 0;
-  x2 = x2_;
-  y2 = y2_;
-}
 
-GraphicLine::~GraphicLine()
-{
+  x1 = ax;
+  y1 = ay;
+  x2 = bx;
+  y2 = by;
+
+  updateCenter();
 }
 
 void GraphicLine::paint(QPainter *painter) {
   painter->save();
-  painter->setPen(Pen);
-  painter->drawLine(cx, cy, cx+x2, cy+y2);
+  painter->setPen(pen);
+  painter->drawLine(x1, y1, x2, y2);
 
   if (isSelected) {
-    painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
-    painter->drawLine(cx, cy, cx+x2, cy+y2);
-    painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
-    painter->drawLine(cx, cy, cx+x2, cy+y2);
+    painter->setPen(QPen(Qt::darkGray,pen.width() + 5));
+    painter->drawLine(x1, y1, x2, y2);
+    painter->setPen(QPen(Qt::white, pen.width(), pen.style()));
+    painter->drawLine(x1, y1, x2, y2);
 
-    misc::draw_resize_handle(painter, QPoint{cx, cy});
-    misc::draw_resize_handle(painter, QPoint{cx + x2, cy + y2});
+    misc::draw_resize_handle(painter, QPoint{x1, y1});
+    misc::draw_resize_handle(painter, QPoint{x2, y2});
   }
   painter->restore();
 }
 
-// --------------------------------------------------------------------------
 void GraphicLine::paintScheme(Schematic *p)
 {
-  p->PostPaintEvent(_Line, cx, cy, cx+x2, cy+y2);
+  p->PostPaintEvent(_Line, x1, y1, x2, y2);
 }
 
-// --------------------------------------------------------------------------
-void GraphicLine::getCenter(int& x, int &y)
-{
-  x = cx+(x2>>1);
-  y = cy+(y2>>1);
-}
-
-// --------------------------------------------------------------------------
-// Sets the center of the painting to x/y.
-void GraphicLine::setCenter(int x, int y, bool relative)
-{
-  if(relative) { cx += x;  cy += y; }
-  else { cx = x-(x2>>1);  cy = y-(y2>>1); }
-}
-
-// --------------------------------------------------------------------------
 Painting* GraphicLine::newOne()
 {
   return new GraphicLine();
 }
 
-// --------------------------------------------------------------------------
-Element* GraphicLine::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* GraphicLine::info(QString& name, char* &bitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Line");
-  BitmapFile = (char *) "line";
+  name = QObject::tr("Line");
+  bitmapFile = (char *) "line";
 
-  if(getNewOne)  return new GraphicLine();
+  if (getNewOne) return new GraphicLine();
   return 0;
 }
 
-// --------------------------------------------------------------------------
 bool GraphicLine::load(const QString& s)
 {
   bool ok;
 
   QString n;
-  n  = s.section(' ',1,1);    // cx
-  cx = n.toInt(&ok);
+  n  = s.section(' ',1,1);    // x1
+  x1 = n.toInt(&ok);
   if(!ok) return false;
 
-  n  = s.section(' ',2,2);    // cy
-  cy = n.toInt(&ok);
+  n  = s.section(' ',2,2);    // y1
+  y1 = n.toInt(&ok);
   if(!ok) return false;
 
   n  = s.section(' ',3,3);    // x2
-  x2 = n.toInt(&ok);
+  auto w = n.toInt(&ok);
   if(!ok) return false;
+  x2 = x1 + w;
 
   n  = s.section(' ',4,4);    // y2
-  y2 = n.toInt(&ok);
+  auto h = n.toInt(&ok);
   if(!ok) return false;
+  y2 = y1 + h;
+
+  updateCenter();
 
   n  = s.section(' ',5,5);    // color
   QColor co = misc::ColorFromString(n);
-  Pen.setColor(co);
-  if(!Pen.color().isValid()) return false;
+  pen.setColor(co);
+  if(!pen.color().isValid()) return false;
 
   n  = s.section(' ',6,6);    // thickness
-  Pen.setWidth(n.toInt(&ok));
+  pen.setWidth(n.toInt(&ok));
   if(!ok) return false;
 
   n  = s.section(' ',7,7);    // line style
-  Pen.setStyle((Qt::PenStyle)n.toInt(&ok));
+  pen.setStyle((Qt::PenStyle)n.toInt(&ok));
   if(!ok) return false;
 
   return true;
 }
 
-// --------------------------------------------------------------------------
 QString GraphicLine::save()
 {
-  QString s = Name+QString::number(cx)+" "+QString::number(cy)+" ";
-  s += QString::number(x2)+" "+QString::number(y2)+" ";
-  s += Pen.color().name()+" "+QString::number(Pen.width())+" ";
-  s += QString::number(Pen.style());
+  QString s = Name+QString::number(x1) + " " + QString::number(y1) + " ";
+  s += QString::number(x2 - x1) + " " + QString::number(y2 - y1) + " ";
+  s += pen.color().name() + " " + QString::number(pen.width()) + " ";
+  s += QString::number(pen.style());
   return s;
 }
 
-// --------------------------------------------------------------------------
 QString GraphicLine::saveCpp()
 {
   QString s =
     QString ("new Line (%1, %2, %3, %4, QPen (QColor (\"%5\"), %6, %7))").
-    arg(cx+x1).arg(cy+y1).arg(cx+x2).arg(cy+y2).
-    arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style()));
+    arg(x1).arg(y1).arg(x2 - x1).arg(y2 - y1).
+    arg(pen.color().name()).arg(pen.width()).arg(toPenString(pen.style()));
   s = "Lines.append (" + s + ");";
   return s;
 }
@@ -160,197 +137,144 @@ QString GraphicLine::saveJSON()
     QString ("{\"type\" : \"line\", "
       "\"x1\" : %1, \"y1\" : %2, \"x2\" : %3, \"y2\" : %4, "
       "\"color\" : \"%5\", \"thick\" : %6, \"style\" : \"%7\"},").
-      arg(cx+x1).arg(cy+y1).arg(cx+x2).arg(cy+y2).
-      arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style()));
+      arg(x1).arg(cy).arg(x2 - x1).arg(y2 - y1).
+      arg(pen.color().name()).arg(pen.width()).arg(toPenString(pen.style()));
   return s;
 }
 
-// --------------------------------------------------------------------------
 // Checks if the resize area was clicked.
-bool GraphicLine::resizeTouched(float fX, float fY, float len)
+bool GraphicLine::resizeTouched(const QPoint& click, int tolerance)
 {
-  float fCX = float(cx), fCY = float(cy);
-
-  if(fX <= fCX+len) if(fX >= fCX-len) if(fY <= fCY+len) if(fY >= fCY-len) {
-    State = 1;
+  if (qucs_s::geom::distance(click, QPoint(x1, y1)) <= tolerance) {
+    lineState = State::Moving_End1;
     return true;
   }
 
-  fCX += float(x2);
-  fCY += float(y2);
-  if(fX <= fCX+len) if(fX >= fCX-len) if(fY <= fCY+len) if(fY >= fCY-len) {
-    State = 2;
+  if (qucs_s::geom::distance(click, QPoint(x2, y2)) <= tolerance) {
+    lineState = State::Moving_End2;
     return true;
   }
 
-  State = 0;
+  lineState = State::Idle;
   return false;
 }
 
-// --------------------------------------------------------------------------
 // Mouse move action during resize.
 void GraphicLine::MouseResizeMoving(int x, int y, Schematic *p)
 {
-  paintScheme(p);  // erase old painting
-  if(State == 1) { x2 += cx-x; y2 += cy-y; cx = x; cy = y; } // move beginning
-  else { x2 = x-cx;  y2 = y-cy; }  // move ending
+  switch (lineState) {
+    case State::Moving_End1:
+      x1 = x;
+      y1 = y;
+      break;
+    case State::Moving_End2:
+      x2 = x;
+      y2 = y;
+      break;
+    default:
+      return;
+    }
 
+  updateCenter();
   paintScheme(p);  // paint new painting
 }
 
-// --------------------------------------------------------------------------
-// fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
-// x/y are coordinates without scaling.
-void GraphicLine::MouseMoving(
-	Schematic *paintScale, int, int, int gx, int gy,
-	Schematic *p, int x, int y)
+void GraphicLine::MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor)
 {
-  if(State > 0) {
-    if(State > 1)
-      paintScale->PostPaintEvent(_Line, cx, cy, cx+x2, cy+y2);  // erase old painting
-    State++;
-    x2 = gx-cx;
-    y2 = gy-cy;
-    paintScale->PostPaintEvent(_Line, cx, cy, cx+x2, cy+y2);  // paint new painting
+  if (isBeingDrawn) {
+    x2 = onGrid.x();
+    y2 = onGrid.y();
+    updateCenter();
+    paintScheme(sch);
+  } else {
+    x1 = onGrid.x();
+    y1 = onGrid.y();
+    x2 = onGrid.x();
+    y2 = onGrid.y();
   }
-  else { cx = gx; cy = gy; }
 
-  x1 = x;
-  y1 = y;
-  p->PostPaintEvent(_Line, x1+27, y1, x1+15, y1+12,0,0,true);  // paint new cursor symbol
-  p->PostPaintEvent(_Line, x1+25, y1-2, x1+29, y1+2,0,0,true);
-  p->PostPaintEvent(_Line, x1+13, y1+10, x1+17, y1+14,0,0,true);
+  sch->PostPaintEvent(_Line, cursor.x() + 27, cursor.y(), cursor.x() + 15, cursor.y() + 12, 0, 0, true);  // paint new cursor scursor.y()mbol
+  sch->PostPaintEvent(_Line, cursor.x() + 25, cursor.y() - 2, cursor.x() + 29, cursor.y() + 2, 0, 0, true);
+  sch->PostPaintEvent(_Line, cursor.x() + 13, cursor.y() + 10, cursor.x() + 17, cursor.y() + 14, 0, 0, true);
 }
 
-// --------------------------------------------------------------------------
-bool GraphicLine::MousePressing(Schematic *sch)
+bool GraphicLine::MousePressing(Schematic*)
 {
-  Q_UNUSED(sch)
-  State++;
-  if(State > 2) {
-    x1 = y1 = 0;
-    State = 0;
-    return true;    // painting is ready
-  }
-  return false;
+  if (isBeingDrawn) updateCenter();
+  isBeingDrawn = !isBeingDrawn;
+  return !isBeingDrawn;
 }
 
-// --------------------------------------------------------------------------
 // Checks if the coordinates x/y point to the painting.
 // 5 is the precision the user must point onto the painting.
-bool GraphicLine::getSelected(float fX, float fY, float w)
+bool GraphicLine::getSelected(const QPoint& click, int tolerance)
 {
-  fX -= float(cx);
-  fY -= float(cy);
-
-  if(fX < -w) {
-    if(fX < float(x2)-w)  // is point between x coordinates ?
-      return false;
-  }
-  else {
-    if(fX > w)
-      if(fX > float(x2)+w)
-        return false;
-  }
-
-  if(fY < -w) {
-    if(fY < float(y2)-w)   // is point between y coordinates ?
-      return false;
-  }
-  else {
-    if(fY > w)
-      if(fY > float(y2)+w)
-        return false;
-  }
-
-  float A = float(x2)*fY - fX*float(y2); // calculate the rectangle area spanned
-  A *= A;               // avoid the need for square root
-
-  if(A <= w*w*float(x2*x2 + y2*y2))
-    return true;     // x/y lies on the graph line
-
-  return false;
+  return qucs_s::geom::is_near_line(click, QPoint(x1, y1), QPoint(x2, y2), tolerance);
 }
 
-// --------------------------------------------------------------------------
-void GraphicLine::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
-{
-  if(x2 < 0) { _x1 = cx+x2; _x2 = cx; }
-  else { _x1 = cx; _x2 = cx+x2; }
-
-  if(y2 < 0) { _y1 = cy+y2; _y2 = cy; }
-  else { _y1 = cy; _y2 = cy+y2; }
-}
-
-// --------------------------------------------------------------------------
 // Rotates around the center.
-void GraphicLine::rotate(int xc, int yc)
+bool GraphicLine::rotate() noexcept
 {
-    int xr1 = cx - xc;
-    int yr1 = cy - yc;
-    int xr2 = cx + x2 - xc;
-    int yr2 = cy + y2 - yc;
-
-    int tmp = xr2;
-    xr2  =  yr2;
-    yr2  = -tmp;
-
-    tmp = xr1;
-    xr1  =  yr1;
-    yr1  = -tmp;
-
-    cx = xr1 + xc;
-    cy = yr1 + yc;
-    x2 = xr2 - xr1;
-    y2 = yr2 - yr1;
+  qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+  qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
+  updateCenter();
+  return true;
 }
 
-// --------------------------------------------------------------------------
+bool GraphicLine::rotate(int xc, int yc) noexcept
+{
+  qucs_s::geom::rotate_point_ccw(x1, y1, xc, yc);
+  qucs_s::geom::rotate_point_ccw(x2, y2, xc, yc);
+  updateCenter();
+  return true;
+}
+
 // Mirrors about center line.
-void GraphicLine::mirrorX()
+bool GraphicLine::mirrorX() noexcept
 {
-  cy +=  y2;
-  y2  = -y2;
+  std::swap(y1, y2);
+  return y1 != y2;
 }
 
-// --------------------------------------------------------------------------
 // Mirrors about center line.
-void GraphicLine::mirrorY()
+bool GraphicLine::mirrorY() noexcept
 {
-  cx +=  x2;
-  x2  = -x2;
+  std::swap(x1, x2);
+  return x1 != x2;
 }
 
-// --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
 bool GraphicLine::Dialog(QWidget *parent)
 {
-  bool changed = false;
+  auto dialog = std::make_unique<FillDialog>(
+      QObject::tr("Edit Line Properties"), false, parent);
 
-  FillDialog *d = new FillDialog(QObject::tr("Edit Line Properties"), false, parent);
-  misc::setPickerColor(d->ColorButt,Pen.color());
-  d->LineWidth->setText(QString::number(Pen.width()));
-  d->StyleBox->setCurrentIndex(Pen.style()-1);
+  misc::setPickerColor(dialog->ColorButt, pen.color());
 
-  if(d->exec() == QDialog::Rejected) {
-    delete d;
+  dialog->LineWidth->setText(QString::number(pen.width()));
+  dialog->StyleBox->setCurrentIndex(pen.style() - 1);
+
+  if (dialog->exec() == QDialog::Rejected) {
     return false;
   }
 
-  if(Pen.color() != misc::getWidgetBackgroundColor(d->ColorButt)) {
-    Pen.setColor(misc::getWidgetBackgroundColor(d->ColorButt));
-    changed = true;
-  }
-  if(Pen.width()  != d->LineWidth->text().toInt()) {
-    Pen.setWidth(d->LineWidth->text().toInt());
-    changed = true;
-  }
-  if(Pen.style()  != (d->StyleBox->currentIndex()+1)) {
-    Pen.setStyle((Qt::PenStyle)(d->StyleBox->currentIndex()+1));
+  bool changed = false;
+
+  if (pen.color() != misc::getWidgetBackgroundColor(dialog->ColorButt)) {
+    pen.setColor(misc::getWidgetBackgroundColor(dialog->ColorButt));
     changed = true;
   }
 
-  delete d;
+  if (pen.width() != dialog->LineWidth->text().toInt()) {
+    pen.setWidth(dialog->LineWidth->text().toInt());
+    changed = true;
+  }
+
+  if (pen.style() != (dialog->StyleBox->currentIndex() + 1)) {
+    pen.setStyle((Qt::PenStyle)(dialog->StyleBox->currentIndex() + 1));
+    changed = true;
+  }
+
   return changed;
 }

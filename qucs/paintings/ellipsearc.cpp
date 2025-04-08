@@ -16,153 +16,128 @@
  ***************************************************************************/
 #include "ellipsearc.h"
 #include "filldialog.h"
-#include "main.h"
+#include "geometry.h"
 #include "schematic.h"
-
-#include <QPainter>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
-
 #include "misc.h"
 
-#include <cmath>
+#include <numbers>
+
 
 EllipseArc::EllipseArc()
 {
   Name = "EArc ";
   isSelected = false;
-  Pen = QPen(QColor());
-  cx = cy = x1 = x2 = y1 = y2 = Angle = ArcLen = 0;
-}
-
-EllipseArc::~EllipseArc()
-{
+  pen = QPen(QColor());
+  cx = cy = x1 = x2 = y1 = y2 = arcStartAngle = arcLengthAngle = 0;
 }
 
 void EllipseArc::paint(QPainter *painter) {
   painter->save();
+  const auto bounds = boundingRect();
+  painter->setPen(pen);
 
-  painter->setPen(Pen);
-  painter->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+  painter->drawArc(bounds, arcStartAngle, arcLengthAngle);
 
   if (isSelected) {
-    painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
-    painter->drawArc(cx, cy, x2, y2, Angle, ArcLen);
-    painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
-    painter->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+    painter->setPen(QPen(Qt::darkGray,pen.width() + 5));
+    painter->drawArc(bounds, arcStartAngle, arcLengthAngle);
+    painter->setPen(QPen(Qt::white, pen.width(), pen.style()));
+    painter->drawArc(bounds, arcStartAngle, arcLengthAngle);
 
-    misc::draw_resize_handle(painter, QPoint{cx, cy});
-    misc::draw_resize_handle(painter, QPoint{cx, cy + y2});
-    misc::draw_resize_handle(painter, QPoint{cx + x2, cy});
-    misc::draw_resize_handle(painter, QPoint{cx + x2, cy + y2});
+    misc::draw_resize_handle(painter, bounds.topLeft());
+    misc::draw_resize_handle(painter, bounds.topRight());
+    misc::draw_resize_handle(painter, bounds.bottomRight());
+    misc::draw_resize_handle(painter, bounds.bottomLeft());
   }
   painter->restore();
 }
 
-// --------------------------------------------------------------------------
 void EllipseArc::paintScheme(Schematic *p)
 {
-  p->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);
+  p->PostPaintEvent(_Arc, x1, y1, x2 - x1, y2 - y1, arcStartAngle, arcLengthAngle);
 }
 
-// --------------------------------------------------------------------------
-void EllipseArc::getCenter(int& x, int &y)
-{
-  x = cx+(x2>>1);
-  y = cy+(y2>>1);
-}
-
-// --------------------------------------------------------------------------
-// Sets the center of the painting to x/y.
-void EllipseArc::setCenter(int x, int y, bool relative)
-{
-  if(relative) { cx += x;  cy += y; }
-  else { cx = x-(x2>>1);  cy = y-(y2>>1); }
-}
-
-// --------------------------------------------------------------------------
 Painting* EllipseArc::newOne()
 {
   return new EllipseArc();
 }
 
-// --------------------------------------------------------------------------
-Element* EllipseArc::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* EllipseArc::info(QString& name, char* &bitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Elliptic Arc");
-  BitmapFile = (char *) "ellipsearc";
+  name = QObject::tr("Elliptic Arc");
+  bitmapFile = (char *) "ellipsearc";
 
-  if(getNewOne)  return new EllipseArc();
-  return 0;
+  if (getNewOne) return new EllipseArc();
+  return nullptr;
 }
 
-// --------------------------------------------------------------------------
 bool EllipseArc::load(const QString& s)
 {
   bool ok;
   QString n;
 
-  n  = s.section(' ',1,1);    // cx
-  cx = n.toInt(&ok);
+  n  = s.section(' ',1,1);    // x1
+  x1 = n.toInt(&ok);
   if(!ok) return false;
 
-  n  = s.section(' ',2,2);    // cy
-  cy = n.toInt(&ok);
+  n  = s.section(' ',2,2);    // y1
+  y1 = n.toInt(&ok);
   if(!ok) return false;
 
-  n  = s.section(' ',3,3);    // x2
-  x2 = n.toInt(&ok);
+  n  = s.section(' ',3,3);    // width
+  auto w = n.toInt(&ok);
   if(!ok) return false;
+  x2 = x1 + w;
 
-  n  = s.section(' ',4,4);    // y2
-  y2 = n.toInt(&ok);
+  n  = s.section(' ',4,4);    // height
+  auto h = n.toInt(&ok);
   if(!ok) return false;
+  y2 = y1 + h;
+
+  updateCenter();
 
   n  = s.section(' ',5,5);    // start angle
-  Angle = n.toInt(&ok);
+  arcStartAngle = n.toInt(&ok);
   if(!ok) return false;
 
   n  = s.section(' ',6,6);    // arc length
-  ArcLen = n.toInt(&ok);
+  arcLengthAngle = n.toInt(&ok);
   if(!ok) return false;
 
   n  = s.section(' ',7,7);    // color
   QColor co = misc::ColorFromString(n);
-  Pen.setColor(co);
-  if(!Pen.color().isValid()) return false;
+  pen.setColor(co);
+  if(!pen.color().isValid()) return false;
 
   n  = s.section(' ',8,8);    // thickness
-  Pen.setWidth(n.toInt(&ok));
+  pen.setWidth(n.toInt(&ok));
   if(!ok) return false;
 
   n  = s.section(' ',9,9);    // line style
-  Pen.setStyle((Qt::PenStyle)n.toInt(&ok));
+  pen.setStyle((Qt::PenStyle)n.toInt(&ok));
   if(!ok) return false;
 
   return true;
 }
 
-// --------------------------------------------------------------------------
 QString EllipseArc::save()
 {
   QString s = Name +
-	QString::number(cx) + " " + QString::number(cy) + " " +
-	QString::number(x2) + " " + QString::number(y2) + " " +
-	QString::number(Angle) + " " + QString::number(ArcLen) + " " +
-	Pen.color().name()  + " " + QString::number(Pen.width()) + " " +
-	QString::number(Pen.style());
+	QString::number(x1) + " " + QString::number(y1) + " " +
+	QString::number(x2 - x1) + " " + QString::number(y2 - y1) + " " +
+	QString::number(arcStartAngle) + " " + QString::number(arcLengthAngle) + " " +
+	pen.color().name()  + " " + QString::number(pen.width()) + " " +
+	QString::number(pen.style());
   return s;
 }
 
-// --------------------------------------------------------------------------
 QString EllipseArc::saveCpp()
 {
   QString s =
     QString ("new Arc (%1, %2, %3, %4, %5, %6, "
 	     "QPen (QColor (\"%7\"), %8, %9))").
-    arg(cx).arg(cy).arg(x2).arg(y2).arg(Angle).arg(ArcLen).
-    arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style()));
+    arg(x1).arg(y1).arg(x2 - x1).arg(y2 - y1).arg(arcStartAngle).arg(arcLengthAngle).
+    arg(pen.color().name()).arg(pen.width()).arg(toPenString(pen.style()));
   s = "Arcs.append (" + s + ");";
   return s;
 }
@@ -174,249 +149,243 @@ QString EllipseArc::saveJSON()
       "\"x\" : %1, \"y\" : %2, \"w\" : %3, \"h\" : %4, "
       "\"angle\" : %5, \"arclen\" : %6, "
       "\"color\" : \"%7\", \"thick\" : %8, \"style\" : \"%9\"},").
-      arg(cx).arg(cy).arg(x2).arg(y2).arg(Angle).arg(ArcLen).
-      arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style()));
+      arg(x1).arg(y1).arg(x2 - x1).arg(y2 - y1).arg(arcStartAngle).arg(arcLengthAngle).
+      arg(pen.color().name()).arg(pen.width()).arg(toPenString(pen.style()));
   return s;
 }
 
-// --------------------------------------------------------------------------
 // Checks if the resize area was clicked.
-bool EllipseArc::resizeTouched(float fX, float fY, float len)
+bool EllipseArc::resizeTouched(const QPoint& click, int tolerance)
 {
-  float fCX = float(cx), fCY = float(cy);
-  float fX2 = float(cx+x2), fY2 = float(cy+y2);
+  using qucs_s::geom::distance;
+  normalize();
+  const auto bounds = boundingRect();
 
-  State = -1;
-  if(fX < fCX-len) return false;
-  if(fY < fCY-len) return false;
-  if(fX > fX2+len) return false;
-  if(fY > fY2+len) return false;
-
-  State = 0;
-  if(fX < fCX+len) State = 1;
-  else if(fX <= fX2-len) { State = -1; return false; }
-  if(fY < fCY+len)  State |= 2;
-  else if(fY <= fY2-len) { State = -1; return false; }
-
-  return true;
-}
-
-// --------------------------------------------------------------------------
-// Mouse move action during resize.
-void EllipseArc::MouseResizeMoving(int x, int y, Schematic *p)
-{
-  paintScheme(p);  // erase old painting
-  switch(State) {
-    case 0: x2 = x-cx; y2 = y-cy; // lower right corner
-	    break;
-    case 1: x2 -= x-cx; cx = x; y2 = y-cy; // lower left corner
-	    break;
-    case 2: x2 = x-cx; y2 -= y-cy; cy = y; // upper right corner
-	    break;
-    case 3: x2 -= x-cx; cx = x; y2 -= y-cy; cy = y; // upper left corner
-	    break;
-  }
-  if(x2 < 0) { State ^= 1; x2 *= -1; cx -= x2; }
-  if(y2 < 0) { State ^= 2; y2 *= -1; cy -= y2; }
-
-  paintScheme(p);  // paint new painting
-}
-
-// --------------------------------------------------------------------------
-// fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
-// x/y are coordinates without scaling.
-void EllipseArc::MouseMoving(
-	Schematic *paintScale, int fx, int fy, int gx, int gy,
-	Schematic *p, int x, int y)
-{
-  switch(State) {
-    case 0 :
-       x2 = gx;
-       y2 = gy;
-       break;
-    case 1 :
-      State++;
-      x2 = gx - cx;
-      y2 = gy - cy;
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, 0, 16*360);  // paint new painting
-      break;
-    case 2 :
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, 0, 16*360);  // erase old painting
-      x2 = gx - cx;
-      y2 = gy - cy;
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, 0, 16*360);  // paint new painting
-      break;
-    case 3 :
-      State++;
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, 0, 16*360);  // erase old painting
-      if(x2 < 0) { cx += x2;  x2 *= -1; }
-      if(y2 < 0) { cy += y2;  y2 *= -1; }
-
-      Angle = int(16.0*180.0/pi
-		* atan2(double(x2*(cy+(y2>>1) - fy)),
-			double(y2*(fx - cx-(x2>>1)))));
-      if(Angle < 0) Angle += 16*360;
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180); // new painting
-      break;
-    case 4 :
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180);// erase old painting
-      Angle = int(16.0*180.0/pi
-		* atan2(double(x2*(cy+(y2>>1) - fy)),
-			double(y2*(fx - cx-(x2>>1)))));
-      if(Angle < 0) Angle += 16*360;
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180);// paint new painting
-      break;
-    case 5 :
-      State++;
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180);// erase old painting
-      ArcLen = int(16.0*180.0/pi
-		* atan2(double(x2*(cy+(y2>>1) - fy)),
-			double(y2*(fx - cx-(x2>>1)))));
-      ArcLen -= Angle;
-      while(ArcLen < 0) ArcLen += 16*360;
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);// paint new painting
-      break;
-    case 6 :
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);// erase old painting
-      ArcLen = int(16.0*180.0/pi
-		* atan2(double(x2*(cy+(y2>>1) - fy)),
-			double(y2*(fx - cx-(x2>>1)))));
-      ArcLen -= Angle;
-      while(ArcLen <= 32) ArcLen += 16*360;
-      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);// paint new painting
-      break;
+  if (distance(bounds.topLeft(), click) < tolerance) {
+    resizeState = State::moving_top_left;
+    return true;
   }
 
-  x1 = x;
-  y1 = y;
-  p->PostPaintEvent(_Arc, x1+13, y1, 18, 12, 16*45, 16*200,true);  // paint new cursor symbol
-}
-
-// --------------------------------------------------------------------------
-bool EllipseArc::MousePressing(Schematic *sch)
-{
-  Q_UNUSED(sch)
-  State++;
-  switch(State) {
-    case 1 :
-	cx = x2;
-	cy = y2;    // first corner is determined
-	x2 = y2 = Angle = ArcLen = 0;
-	break;
-    case 7 :
-	State = 0;
-	return true;    // painting is ready
+  if (distance(bounds.topRight(), click) < tolerance) {
+    resizeState = State::moving_top_right;
+    return true;
   }
+
+  if (distance(bounds.bottomRight(), click) < tolerance) {
+    resizeState = State::moving_bottom_right;
+    return true;
+  }
+
+  if (distance(bounds.bottomLeft(), click) < tolerance) {
+    resizeState = State::moving_bottom_left;
+    return true;
+  }
+
+  resizeState = State::idle;
   return false;
 }
 
-// --------------------------------------------------------------------------
-// Checks if the coordinates x/y point to the painting.
-bool EllipseArc::getSelected(float fX, float fY, float w)
+// Mouse move action during resize.
+void EllipseArc::MouseResizeMoving(int x, int y, Schematic *p)
 {
-  float fX2 = float(x2)/2.0;
-  float fY2 = float(y2)/2.0;
-  fX -= float(cx) + fX2;
-  fY -= float(cy) + fY2;
+  switch (resizeState) {
+    case State::moving_top_left:
+      x1 = x;
+      y1 = y;
+      break;
+    case State::moving_top_right:
+      x2 = x;
+      y1 = y;
+      break;
+    case State::moving_bottom_right:
+      x2 = x;
+      y2 = y;
+      break;
+    case State::moving_bottom_left:
+      x1 = x;
+      y2 = y;
+      break;
+    default:
+      return;
+  }
 
-  int Phase =
-      int(16.0*180.0/pi *
-          atan2(-double(x2)*double(fY), double(y2)*double(fX)));
-  Phase -= Angle;
-  while(Phase < 0) Phase += 16*360;
+  updateCenter();
+  paintScheme(p);
+}
 
-  if(Phase > ArcLen)
+namespace internal {
+constexpr int qtDegreeCoef = 16;
+constexpr int qtFullCircle = qtDegreeCoef * 360;
+constexpr int qtHalfCircle = qtDegreeCoef * 180;
+constexpr int qtQuarterCircle = qtDegreeCoef * 90;
+
+inline double toDegrees(double radians) {
+  return radians * 180 / std::numbers::pi;
+}
+
+int calculateQtAngle(const QPoint& origin, const QPoint& cursorPos)
+{
+  auto relCursorPos = cursorPos - origin;
+  auto angle = toDegrees(std::atan2(relCursorPos.y(), relCursorPos.x()));
+  return static_cast<int>(-1 * qtDegreeCoef * angle);
+}
+
+QPoint calculatePointOnEllipse(const QRect& ellipseBounds, const QPoint& cursorPos) {
+  auto relCursorPos = cursorPos - ellipseBounds.center();
+  auto angle = std::atan2(relCursorPos.y(), relCursorPos.x());
+  return ellipseBounds.center() + QPoint(
+    (ellipseBounds.width() / 2.0) * std::cos(angle),
+    (ellipseBounds.height() / 2.0) * std::sin(angle)
+  );
+}
+}
+
+void EllipseArc::MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor)
+{
+  switch (drawingState) {
+    case DrawingState::idle:
+      x1 = onGrid.x();
+      y1 = onGrid.y();
+      break;
+    case DrawingState::defining_arc_bounds:
+      x2 = onGrid.x();
+      y2 = onGrid.y();
+      sch->PostPaintEvent(_Ellipse, x1, y1, x2 - x1, y2 - y1);
+      break;
+    case DrawingState::defining_arc_start: {
+      arcStartAngle = internal::calculateQtAngle({cx, cy}, cursor);
+      auto p = internal::calculatePointOnEllipse(boundingRect(), cursor);
+      // draw full ellipse
+      sch->PostPaintEvent(_Ellipse, x1, y1, x2 - x1, y2 - y1);
+      // draw tiny circle where arc starts
+      sch->PostPaintEvent(_Ellipse, p.x() - 3, p.y() - 3, 6, 6);
+      break;
+    }
+    case DrawingState::defining_arc_length:
+      arcLengthAngle = internal::calculateQtAngle({cx, cy}, cursor) - arcStartAngle;
+      sch->PostPaintEvent(_Arc, x1, y1, x2 - x1, y2 - y1, arcStartAngle, arcLengthAngle);
+      break;
+    default:
+      assert(false);
+  }
+
+  // paint cursor symbol
+  sch->PostPaintEvent(_Arc, cursor.x() + 13, cursor.y(), 18, 12, 16*45, 16*200,true);
+}
+
+bool EllipseArc::MousePressing(Schematic*)
+{
+  switch (drawingState) {
+    case DrawingState::idle:
+      drawingState = DrawingState::defining_arc_bounds;
+      break;
+    case DrawingState::defining_arc_bounds:
+      normalize();
+      drawingState = DrawingState::defining_arc_start;
+      break;
+    case DrawingState::defining_arc_start:
+      drawingState = DrawingState::defining_arc_length;
+      break;
+    case DrawingState::defining_arc_length:
+      drawingState = DrawingState::idle;
+      break;
+    default:
+      assert(false);
+  }
+  updateCenter();
+  return drawingState == DrawingState::idle;
+}
+
+// Checks if the coordinates x/y point to the painting.
+bool EllipseArc::getSelected(const QPoint& click, int tolerance)
+{
+  const auto bounds = boundingRect();
+
+  auto a = internal::calculateQtAngle(bounds.center(), click);
+
+  if (a < arcStartAngle && a > arcStartAngle + arcLengthAngle) {
     return false;
+  }
 
-  float a1 = fX / (fX2 - w);  a1 *= a1;
-  float a2 = fX / (fX2 + w);  a2 *= a2;
-  float b1 = fY / (fY2 - w);  b1 *= b1;
-  float b2 = fY / (fY2 + w);  b2 *= b2;
+  return qucs_s::geom::is_near_ellipse(click, bounds, tolerance);
+}
 
-  if(a1+b1 < 1.0)  return false;
-  if(a2+b2 > 1.0)  return false;
+// Rotates around the center.
+bool EllipseArc::rotate() noexcept
+{
+  qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+  qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
+  updateCenter();
+
+  arcStartAngle += internal::qtQuarterCircle;
+  if (arcStartAngle >= internal::qtFullCircle) {
+    arcStartAngle -= internal::qtFullCircle;
+  }
 
   return true;
 }
 
-// --------------------------------------------------------------------------
-// Rotates around the center.
-// Rotates around the center.
-void EllipseArc::rotate(int xc, int yc)
-{
-    int xr1 = cx - xc;
-    int yr1 = cy - yc;
-    int xr2 = cx + x2 - xc;
-    int yr2 = cy + y2 - yc;
-
-    int tmp = xr2;
-    xr2  =  yr2;
-    yr2  = -tmp;
-
-    tmp = xr1;
-    xr1  =  yr1;
-    yr1  = -tmp;
-
-    cx = xr1 + xc;
-    cy = yr1 + yc;
-    x2 = xr2 - xr1;
-    y2 = yr2 - yr1;
-
-    Angle += 16*90;
-    if(Angle >= 16*360)  Angle -= 16*360;
-}
-
-// --------------------------------------------------------------------------
 // Mirrors about center line.
-void EllipseArc::mirrorX()
+bool EllipseArc::mirrorX() noexcept
 {
-  Angle += ArcLen;
-  if(Angle >= 16*360) Angle -= 16*360;
+  arcStartAngle += arcLengthAngle;
 
-  if(Angle != 0)  Angle = 16*360 - Angle;
+  if (arcStartAngle >= internal::qtFullCircle) {
+    arcStartAngle -= internal::qtFullCircle;
+  }
+
+  if (arcStartAngle != 0) {
+    arcStartAngle = internal::qtFullCircle - arcStartAngle;
+  }
+
+  return true;
 }
 
-// --------------------------------------------------------------------------
 // Mirrors about center line.
-void EllipseArc::mirrorY()
+bool EllipseArc::mirrorY() noexcept
 {
-  Angle += ArcLen;
-  if(Angle >= 16*360) Angle -= 16*360;
+  arcStartAngle += arcLengthAngle;
 
-  if(Angle <= 16*180)  Angle = 16*180 - Angle;
-  else  Angle = 16*540 - Angle;
+  if (arcStartAngle >= internal::qtFullCircle) {
+    arcStartAngle -= internal::qtFullCircle;
+  }
+
+  if (arcStartAngle <= internal::qtHalfCircle) {
+    arcStartAngle = internal::qtHalfCircle - arcStartAngle;
+  } else  {
+    arcStartAngle = internal::qtFullCircle + internal::qtHalfCircle - arcStartAngle;
+  }
+
+  return true;
 }
 
-// --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
 bool EllipseArc::Dialog(QWidget *parent)
 {
   bool changed = false;
 
-  FillDialog *d = new FillDialog(QObject::tr("Edit Arc Properties"), false, parent);
-  misc::setPickerColor(d->ColorButt,Pen.color());
-  d->LineWidth->setText(QString::number(Pen.width()));
-  d->StyleBox->setCurrentIndex(Pen.style()-1);
+  auto d = std::make_unique<FillDialog>(QObject::tr("Edit Arc Properties"), false, parent);
+  misc::setPickerColor(d->ColorButt,pen.color());
+  d->LineWidth->setText(QString::number(pen.width()));
+  d->StyleBox->setCurrentIndex(pen.style()-1);
 
-  if(d->exec() == QDialog::Rejected) {
-    delete d;
+  if (d->exec() == QDialog::Rejected) {
     return false;
   }
 
-  if(Pen.color() != misc::getWidgetBackgroundColor(d->ColorButt)) {
-    Pen.setColor(misc::getWidgetBackgroundColor(d->ColorButt));
+  if (pen.color() != misc::getWidgetBackgroundColor(d->ColorButt)) {
+    pen.setColor(misc::getWidgetBackgroundColor(d->ColorButt));
     changed = true;
   }
-  if(Pen.width()  != d->LineWidth->text().toInt()) {
-    Pen.setWidth(d->LineWidth->text().toInt());
+  if (pen.width()  != d->LineWidth->text().toInt()) {
+    pen.setWidth(d->LineWidth->text().toInt());
     changed = true;
   }
-  if(Pen.style()  != (Qt::PenStyle)(d->StyleBox->currentIndex()+1)) {
-    Pen.setStyle((Qt::PenStyle)(d->StyleBox->currentIndex()+1));
+  if (pen.style()  != (Qt::PenStyle)(d->StyleBox->currentIndex()+1)) {
+    pen.setStyle((Qt::PenStyle)(d->StyleBox->currentIndex()+1));
     changed = true;
   }
 
-  delete d;
   return changed;
 }

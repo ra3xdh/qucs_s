@@ -16,146 +16,119 @@
  ***************************************************************************/
 #include "rectangle.h"
 #include "filldialog.h"
+#include "multi_point.h"
+#include "one_point.h"
 #include "schematic.h"
-
-#include <QPainter>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QCheckBox>
-
-#include <cmath>
-
 #include "misc.h"
 
 qucs::Rectangle::Rectangle(bool _filled)
 {
   Name = "Rectangle ";
   isSelected = false;
-  Pen = QPen(QColor());
-  Brush = QBrush(Qt::lightGray);
+  pen = QPen(QColor());
+  brush = QBrush(Qt::lightGray);
   filled = _filled;
   cx = cy = 0;
   x1 = x2 = 0;
   y1 = y2 = 0;
 }
 
-qucs::Rectangle::~Rectangle()
-{
-}
-
 void qucs::Rectangle::paint(QPainter *painter) {
   painter->save();
+  painter->setPen(pen);
+  if (filled) painter->setBrush(brush);
 
-  painter->setPen(Pen);
-  if (filled) {
-    painter->setBrush(Brush);
-  }
-  painter->drawRect(cx, cy, x2, y2);
+  const auto bounds = boundingRect();
+
+  painter->drawRect(bounds);
 
   if (isSelected) {
-    painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
-    painter->drawRect(cx, cy, x2, y2);
-    painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
-    painter->drawRect(cx, cy, x2, y2);
+    painter->setPen(QPen(Qt::darkGray,pen.width() + 5));
+    painter->drawRect(bounds);
+    painter->setPen(QPen(Qt::white, pen.width(), pen.style()));
+    painter->drawRect(bounds);
 
-    misc::draw_resize_handle(painter, QPoint{cx, cy});
-    misc::draw_resize_handle(painter, QPoint{cx, cy + y2});
-    misc::draw_resize_handle(painter, QPoint{cx + x2, cy});
-    misc::draw_resize_handle(painter, QPoint{cx + x2, cy + y2});
+    misc::draw_resize_handle(painter, bounds.topLeft());
+    misc::draw_resize_handle(painter, bounds.topRight());
+    misc::draw_resize_handle(painter, bounds.bottomRight());
+    misc::draw_resize_handle(painter, bounds.bottomLeft());
   }
   painter->restore();
 }
 
-// --------------------------------------------------------------------------
-void qucs::Rectangle::paintScheme(Schematic *p)
+void qucs::Rectangle::paintScheme(Schematic* sch)
 {
-  p->PostPaintEvent(_Rect, cx, cy, x2, y2);
+  sch->PostPaintEvent(_Rect, x1, y1, x2 - x1, y2 - y1);
 }
 
-// --------------------------------------------------------------------------
-void qucs::Rectangle::getCenter(int& x, int &y)
-{
-  x = cx+(x2>>1);
-  y = cy+(y2>>1);
-}
-
-// --------------------------------------------------------------------------
-// Sets the center of the painting to x/y.
-void qucs::Rectangle::setCenter(int x, int y, bool relative)
-{
-  if(relative) { cx += x;  cy += y; }
-  else { cx = x-(x2>>1);  cy = y-(y2>>1); }
-}
-
-// --------------------------------------------------------------------------
 Painting* qucs::Rectangle::newOne()
 {
   return new qucs::Rectangle();
 }
 
-// --------------------------------------------------------------------------
 Element* qucs::Rectangle::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("Rectangle");
   BitmapFile = (char *) "rectangle";
 
-  if(getNewOne)  return new qucs::Rectangle();
-  return 0;
+  if (getNewOne) return new qucs::Rectangle();
+  return nullptr;
 }
 
-// --------------------------------------------------------------------------
 Element* qucs::Rectangle::info_filled(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("filled Rectangle");
   BitmapFile = (char *) "filledrect";
 
-  if(getNewOne)  return new qucs::Rectangle(true);
-  return 0;
+  if (getNewOne) return new qucs::Rectangle(true);
+  return nullptr;
 }
 
-// --------------------------------------------------------------------------
 bool qucs::Rectangle::load(const QString& s)
 {
   bool ok;
 
   QString n;
-  n  = s.section(' ',1,1);    // cx
-  cx = n.toInt(&ok);
+  n  = s.section(' ',1,1);    // x1
+  x1 = n.toInt(&ok);
   if(!ok) return false;
 
-  n  = s.section(' ',2,2);    // cy
-  cy = n.toInt(&ok);
+  n  = s.section(' ',2,2);    // y1
+  y1 = n.toInt(&ok);
   if(!ok) return false;
 
-  n  = s.section(' ',3,3);    // x2
-  x2 = n.toInt(&ok);
+  n  = s.section(' ',3,3);    // width
+  auto w = n.toInt(&ok);
   if(!ok) return false;
+  x2 = x1 + w;
 
-  n  = s.section(' ',4,4);    // y2
-  y2 = n.toInt(&ok);
+  n  = s.section(' ',4,4);    // height
+  auto h = n.toInt(&ok);
   if(!ok) return false;
+  y2 = y1 + h;
+
+  updateCenter();
 
   n  = s.section(' ',5,5);    // color
   QColor co = misc::ColorFromString(n);
-  Pen.setColor(co);
-  if(!Pen.color().isValid()) return false;
+  pen.setColor(co);
+  if(!pen.color().isValid()) return false;
 
   n  = s.section(' ',6,6);    // thickness
-  Pen.setWidth(n.toInt(&ok));
+  pen.setWidth(n.toInt(&ok));
   if(!ok) return false;
 
   n  = s.section(' ',7,7);    // line style
-  Pen.setStyle((Qt::PenStyle)n.toInt(&ok));
+  pen.setStyle((Qt::PenStyle)n.toInt(&ok));
   if(!ok) return false;
 
   n  = s.section(' ',8,8);    // fill color
   co = misc::ColorFromString(n);
-  Brush.setColor(co);
-  if(!Brush.color().isValid()) return false;
+  brush.setColor(co);
+  if(!brush.color().isValid()) return false;
 
   n  = s.section(' ',9,9);    // fill style
-  Brush.setStyle((Qt::BrushStyle)n.toInt(&ok));
+  brush.setStyle((Qt::BrushStyle)n.toInt(&ok));
   if(!ok) return false;
 
   n  = s.section(' ',10,10);    // filled
@@ -166,31 +139,29 @@ bool qucs::Rectangle::load(const QString& s)
   return true;
 }
 
-// --------------------------------------------------------------------------
 QString qucs::Rectangle::save()
 {
   QString s = Name +
-	QString::number(cx) + " " + QString::number(cy) + " " +
-	QString::number(x2) + " " + QString::number(y2) + " " +
-	Pen.color().name() + " " + QString::number(Pen.width()) + " " +
-	QString::number(Pen.style()) + " " +
-	Brush.color().name() + " " + QString::number(Brush.style());
+	QString::number(x1) + " " + QString::number(y1) + " " +
+	QString::number(x2 - x1) + " " + QString::number(y2 - y1) + " " +
+	pen.color().name() + " " + QString::number(pen.width()) + " " +
+	QString::number(pen.style()) + " " +
+	brush.color().name() + " " + QString::number(brush.style());
   if(filled) s += " 1";
   else s += " 0";
   return s;
 }
 
-// --------------------------------------------------------------------------
 QString qucs::Rectangle::saveCpp()
 {
   QString b = filled ?
     QString (", QBrush (QColor (\"%1\"), %2)").
-    arg(Brush.color().name()).arg(toBrushString(Brush.style())) : "";
+    arg(brush.color().name()).arg(toBrushString(brush.style())) : "";
   QString s =
     QString ("new Area (%1, %2, %3, %4, "
 	     "QPen (QColor (\"%5\"), %6, %7)%8)").
-    arg(cx).arg(cy).arg(x2).arg(y2).
-    arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style())).
+    arg(x1).arg(y1).arg(x2 - x1).arg(y2 - y1).
+    arg(pen.color().name()).arg(pen.width()).arg(toPenString(pen.style())).
     arg(b);
   s = "Rects.append (" + s + ");";
   return s;
@@ -200,224 +171,194 @@ QString qucs::Rectangle::saveJSON()
 {
   QString b = filled ?
     QString ("\"colorfill\" : \"%1\", \"stylefill\" : \"%2\"").
-    arg(Brush.color().name()).arg(toBrushString(Brush.style())) : "";
+    arg(brush.color().name()).arg(toBrushString(brush.style())) : "";
 
   QString s =
     QStringLiteral("{\"type\" : \"rectangle\", "
       "\"x\" : %1, \"y\" : %2, \"w\" : %3, \"h\" : %4, "
       "\"color\" : \"%5\", \"thick\" : %6, \"style\" : \"%7\", %8},").
-      arg(cx).arg(cy).arg(x2).arg(y2).
-      arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style())).
+      arg(x1).arg(y1).arg(x2 - x1).arg(y2 - y1).
+      arg(pen.color().name()).arg(pen.width()).arg(toPenString(pen.style())).
       arg(b);
   return s;
 }
 
-// --------------------------------------------------------------------------
 // Checks if the resize area was clicked.
-bool qucs::Rectangle::resizeTouched(float fX, float fY, float len)
+bool qucs::Rectangle::resizeTouched(const QPoint& click, int tolerance)
 {
-  State = -1;
+  using qucs_s::geom::distance;
+  normalize();
+  const auto bounds = boundingRect();
 
-  QRectF r_ul(0,0,2*len,2*len);
-  r_ul.moveCenter(QPointF(cx,cy));
-  QRectF r_ll(0,0,2*len,2*len);
-  r_ll.moveCenter(QPointF(cx, cy + y2));
-  QRectF r_ur(0,0,2*len,2*len);
-  r_ur.moveCenter(QPointF(cx + x2, cy));
-  QRectF r_lr(0,0,2*len,2*len);
-  r_lr.moveCenter(QPointF(cx + x2, cy + y2));
-
-  if (!r_lr.contains(fX,fY) &&
-      !r_ll.contains(fX,fY) &&
-      !r_ur.contains(fX,fY) &&
-      !r_ul.contains(fX,fY)) return false;
-
-  if (r_lr.contains(fX,fY)) State = 0;
-  if (r_ll.contains(fX,fY)) State = 1;
-  if (r_ur.contains(fX,fY)) State = 2;
-  if (r_ul.contains(fX,fY)) State = 3;
-
-  return true;
-}
-
-// --------------------------------------------------------------------------
-// Mouse move action during resize.
-void qucs::Rectangle::MouseResizeMoving(int x, int y, Schematic *p)
-{
-  paintScheme(p);  // erase old painting
-  switch(State) {
-    case 0: x2 = x-cx; y2 = y-cy; // lower right corner
-	    break;
-    case 1: x2 -= x-cx; cx = x; y2 = y-cy; // lower left corner
-	    break;
-    case 2: x2 = x-cx; y2 -= y-cy; cy = y; // upper right corner
-	    break;
-    case 3: x2 -= x-cx; cx = x; y2 -= y-cy; cy = y; // upper left corner
-	    break;
+  if (distance(bounds.topLeft(), click) < tolerance) {
+    resizeState = State::moving_top_left;
+    return true;
   }
-  if(x2 < 0) { State ^= 1; x2 *= -1; cx -= x2; }
-  if(y2 < 0) { State ^= 2; y2 *= -1; cy -= y2; }
 
-  paintScheme(p);  // paint new painting
-}
+  if (distance(bounds.topRight(), click) < tolerance) {
+    resizeState = State::moving_top_right;
+    return true;
+  }
 
-// --------------------------------------------------------------------------
-// fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
-// x/y are coordinates without scaling.
-void qucs::Rectangle::MouseMoving(
-	Schematic *paintScale, int, int, int gx, int gy,
-	Schematic *p, int x, int y)
-{
-  if(State > 0) {
-    if(State > 1)
-      paintScale->PostPaintEvent(_Rect,x1, y1, x2-x1, y2-y1);  // erase old painting
-    State++;
-    x2 = gx;
-    y2 = gy;
-    paintScale->PostPaintEvent(_Rect,x1, y1, x2-x1, y2-y1);  // paint new rectangle
+  if (distance(bounds.bottomRight(), click) < tolerance) {
+    resizeState = State::moving_bottom_right;
+    return true;
   }
-  else { x2 = gx; y2 = gy; }
 
-  cx = x;
-  cy = y;
-  p->PostPaintEvent(_Rect,cx+13, cy, 18, 12,0,0,true);  // paint new cursor symbol
-  if(filled) {   // hatched ?
-    p->PostPaintEvent(_Line, cx+14, cy+6, cx+19, cy+1,0,0,true);
-    p->PostPaintEvent(_Line, cx+26, cy+1, cx+17, cy+10,0,0,true);
-    p->PostPaintEvent(_Line, cx+29, cy+5, cx+24, cy+10,0,0,true);
+  if (distance(bounds.bottomLeft(), click) < tolerance) {
+    resizeState = State::moving_bottom_left;
+    return true;
   }
-}
 
-// --------------------------------------------------------------------------
-bool qucs::Rectangle::MousePressing(Schematic *sch)
-{
-  Q_UNUSED(sch)
-  State++;
-  if(State == 1) {
-    x1 = x2;
-    y1 = y2;    // first corner is determined
-  }
-  else {
-    if(x1 < x2) { cx = x1; x2 = x2-x1; } // cx/cy to upper left corner
-    else { cx = x2; x2 = x1-x2; }
-    if(y1 < y2) { cy = y1; y2 = y2-y1; }
-    else { cy = y2; y2 = y1-y2; }
-    x1 = y1 = 0;
-    State = 0;
-    return true;    // rectangle is ready
-  }
+  resizeState = State::idle;
   return false;
 }
 
-// --------------------------------------------------------------------------
-// Checks if the coordinates x/y point to the painting.
-bool qucs::Rectangle::getSelected(float fX, float fY, float w)
+// Mouse move action during resize.
+void qucs::Rectangle::MouseResizeMoving(int x, int y, Schematic *p)
 {
-  if(filled) {
-    QRectF r(cx,cy,x2,y2);
-    if (!r.contains(fX,fY)) {
-      return false;
-    }
-  } else {
-    double sgn_x2 = std::copysign(1.0, x2);
-    double sgn_y2 = std::copysign(1.0, y2);
-    QRectF r_outer(cx - sgn_x2*w, cy - sgn_y2*w, // outer rectangle
-                   x2 + 2*sgn_x2*w, y2 + 2*sgn_y2*w);
-    QRectF r_inner(cx + sgn_x2*w, cy + sgn_y2*w,
-                   x2 - 2*sgn_x2*w, y2 - 2*sgn_y2*w); // inner rectnagle w/o border
-    if (r_outer.contains(fX,fY)) {
-      if (r_inner.contains(fX,fY)) return false;
-    } else {
-      return false;
-    }
+  switch (resizeState) {
+    case State::moving_top_left:
+      x1 = x;
+      y1 = y;
+      break;
+    case State::moving_top_right:
+      x2 = x;
+      y1 = y;
+      break;
+    case State::moving_bottom_right:
+      x2 = x;
+      y2 = y;
+      break;
+    case State::moving_bottom_left:
+      x1 = x;
+      y2 = y;
+      break;
+    default:
+      return;
   }
 
+  updateCenter();
+  paintScheme(p);
+}
+
+void qucs::Rectangle::MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor)
+{
+  if (isBeingDrawn) {
+    x2 = onGrid.x();
+    y2 = onGrid.y();
+    updateCenter();
+    paintScheme(sch);
+  } else {
+    x1 = onGrid.x();
+    y1 = onGrid.y();
+    x2 = onGrid.x();
+    y2 = onGrid.y();
+  }
+
+  // paint cursor symbol
+  sch->PostPaintEvent(_Rect, cursor.x() + 13, cursor.y(), 18, 12,0,0,true);
+  if (filled) {
+    sch->PostPaintEvent(_Line, cursor.x() + 14, cursor.y() + 6, cursor.x() + 19, cursor.y() + 1,0,0,true);
+    sch->PostPaintEvent(_Line, cursor.x() + 26, cursor.y() + 1, cursor.x() + 17, cursor.y() + 10,0,0,true);
+    sch->PostPaintEvent(_Line, cursor.x() + 29, cursor.y() + 5, cursor.x() + 24, cursor.y() + 10,0,0,true);
+  }
+}
+
+bool qucs::Rectangle::MousePressing(Schematic*)
+{
+  if (isBeingDrawn) {
+    updateCenter();
+    normalize();
+  }
+
+  isBeingDrawn = !isBeingDrawn;
+  return !isBeingDrawn;
+}
+
+// Checks if the coordinates x/y point to the painting.
+bool qucs::Rectangle::getSelected(const QPoint& click, int tolerance)
+{
+  if (filled) {
+    return boundingRect()
+      .marginsAdded({tolerance, tolerance, tolerance, tolerance})
+      .contains(click);
+  }
+
+  return
+    boundingRect()
+      .marginsAdded({tolerance, tolerance, tolerance, tolerance})
+      .contains(click)
+    &&
+    !boundingRect()
+      .marginsRemoved({tolerance, tolerance, tolerance, tolerance})
+      .contains(click);
+}
+
+// Rotates around the center.
+bool qucs::Rectangle::rotate() noexcept
+{
+  // No effect for squares
+  if (std::abs(x2 - x1) == std::abs(y2 - y1)) return false;
+  qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+  qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
+  updateCenter();
   return true;
 }
 
-// --------------------------------------------------------------------------
-// Rotates around the center.
-void qucs::Rectangle::rotate(int xc, int yc)
+bool qucs::Rectangle::rotate(int xc, int yc) noexcept
 {
-    int xr1 = cx - xc;
-    int yr1 = cy - yc;
-    int xr2 = cx + x2 - xc;
-    int yr2 = cy + y2 - yc;
+  if (cx == xc && cy == yc) return rotate();
 
-    int tmp = xr2;
-    xr2  =  yr2;
-    yr2  = -tmp;
-
-    tmp = xr1;
-    xr1  =  yr1;
-    yr1  = -tmp;
-
-    cx = xr1 + xc;
-    cy = yr1 + yc;
-    x2 = xr2 - xr1;
-    y2 = yr2 - yr1;
+  qucs_s::geom::rotate_point_ccw(x1, y1, xc, yc);
+  qucs_s::geom::rotate_point_ccw(x2, y2, xc, yc);
+  updateCenter();
+  return true;
 }
 
-// --------------------------------------------------------------------------
-// Mirrors about center line.
-void qucs::Rectangle::mirrorX()
-{
-  // nothing to do
-}
-
-// --------------------------------------------------------------------------
-// Mirrors about center line.
-void qucs::Rectangle::mirrorY()
-{
-  // nothing to do
-}
-
-// --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
 bool qucs::Rectangle::Dialog(QWidget *parent)
 {
   bool changed = false;
 
-  FillDialog *d = new FillDialog(QObject::tr("Edit Rectangle Properties"), true, parent);
-  misc::setPickerColor(d->ColorButt,Pen.color());
-  d->LineWidth->setText(QString::number(Pen.width()));
-  d->StyleBox->setCurrentIndex(Pen.style()-1);
-  misc::setPickerColor(d->FillColorButt,Brush.color());
-  d->FillStyleBox->setCurrentIndex(Brush.style());
+  auto d = std::make_unique<FillDialog>(QObject::tr("Edit Rectangle Properties"), true, parent);
+  misc::setPickerColor(d->ColorButt,pen.color());
+  d->LineWidth->setText(QString::number(pen.width()));
+  d->StyleBox->setCurrentIndex(pen.style()-1);
+  misc::setPickerColor(d->FillColorButt,brush.color());
+  d->FillStyleBox->setCurrentIndex(brush.style());
   d->CheckFilled->setChecked(filled);
   d->slotCheckFilled(filled);
 
-  if(d->exec() == QDialog::Rejected) {
-    delete d;
+  if (d->exec() == QDialog::Rejected) {
     return false;
   }
 
-  if(Pen.color() != misc::getWidgetBackgroundColor(d->ColorButt)) {
-    Pen.setColor(misc::getWidgetBackgroundColor(d->ColorButt));
+  if (pen.color() != misc::getWidgetBackgroundColor(d->ColorButt)) {
+    pen.setColor(misc::getWidgetBackgroundColor(d->ColorButt));
     changed = true;
   }
-  if(Pen.width()  != d->LineWidth->text().toInt()) {
-    Pen.setWidth(d->LineWidth->text().toInt());
+  if (pen.width()  != d->LineWidth->text().toInt()) {
+    pen.setWidth(d->LineWidth->text().toInt());
     changed = true;
   }
-  if(Pen.style()  != (Qt::PenStyle)(d->StyleBox->currentIndex()+1)) {
-    Pen.setStyle((Qt::PenStyle)(d->StyleBox->currentIndex()+1));
+  if (pen.style()  != (Qt::PenStyle)(d->StyleBox->currentIndex()+1)) {
+    pen.setStyle((Qt::PenStyle)(d->StyleBox->currentIndex()+1));
     changed = true;
   }
-  if(filled != d->CheckFilled->isChecked()) {
+  if (filled != d->CheckFilled->isChecked()) {
     filled = d->CheckFilled->isChecked();
     changed = true;
   }
-  if(Brush.color() != misc::getWidgetBackgroundColor(d->FillColorButt)) {
-    Brush.setColor(misc::getWidgetBackgroundColor(d->FillColorButt));
+  if (brush.color() != misc::getWidgetBackgroundColor(d->FillColorButt)) {
+    brush.setColor(misc::getWidgetBackgroundColor(d->FillColorButt));
     changed = true;
   }
-  if(Brush.style() != d->FillStyleBox->currentIndex()) {
-    Brush.setStyle((Qt::BrushStyle)d->FillStyleBox->currentIndex());
+  if (brush.style() != d->FillStyleBox->currentIndex()) {
+    brush.setStyle((Qt::BrushStyle)d->FillStyleBox->currentIndex());
     changed = true;
   }
 
-  delete d;
   return changed;
 }

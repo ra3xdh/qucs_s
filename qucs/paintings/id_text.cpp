@@ -16,33 +16,30 @@
  ***************************************************************************/
 #include "id_text.h"
 #include "id_dialog.h"
+#include "one_point.h"
 #include "schematic.h"
 
 #include <QPainter>
 
-ID_Text::ID_Text(int cx_, int cy_)
+ID_Text::ID_Text(int x1_, int y1_)
 {
   Name = ".ID ";
   isSelected = false;
-  cx = cx_;
-  cy = cy_;
+  x1 = x1_;
+  y1 = y1_;
   x2 = y2 = 20;
 
-  Prefix = "SUB";
-}
-
-ID_Text::~ID_Text()
-{
+  prefix = "SUB";
 }
 
 void ID_Text::paint(QPainter* painter) {
   painter->save();
-  painter->translate(cx, cy);
+  painter->translate(x1, y1);
 
   painter->setPen(QPen(Qt::black,1));
 
   QRect r;
-  painter->drawText(QRect(0, 0, 1, 1), Qt::TextDontClip, Prefix, &r);
+  painter->drawText(QRect(0, 0, 1, 1), Qt::TextDontClip, prefix, &r);
   x2 = r.width();
   y2 = r.height();
 
@@ -50,10 +47,9 @@ void ID_Text::paint(QPainter* painter) {
   x2 = std::max(x2, r.width());
   y2 += r.height();
 
-  QList<SubParameter *>::const_iterator it;
-  for(it = Parameter.constBegin(); it != Parameter.constEnd(); it++) {
-    if((*it)->display) {
-      painter->drawText(QRect(0, y2, 1, 1), Qt::TextDontClip, (*it)->Name, &r);
+  for (const auto& sub_param : subParameters) {
+    if (sub_param->display) {
+      painter->drawText(QRect(0, y2, 1, 1), Qt::TextDontClip, sub_param->name, &r);
       x2 = std::max(x2, r.width());
       y2 += r.height();
     }
@@ -64,53 +60,37 @@ void ID_Text::paint(QPainter* painter) {
     painter->drawRoundedRect(-4, -4, x2+8, y2+8, 4.0, 4.0);
   }
   painter->restore();
+  updateCenter();
 }
 
-// --------------------------------------------------------------------------
 void ID_Text::paintScheme(Schematic *p)
 {
-  p->PostPaintEvent(_Rect, cx, cy, x2, y2);
+  p->PostPaintEvent(_Rect, x1, y1, x2, y2);
 }
 
-// --------------------------------------------------------------------------
-void ID_Text::getCenter(int& x, int &y)
-{
-  x = cx+(x2>>1);
-  y = cy+(y2>>1);
-}
-
-// --------------------------------------------------------------------------
-// Sets the center of the painting to x/y.
-void ID_Text::setCenter(int x, int y, bool relative)
-{
-  if(relative) { cx += x;  cy += y; }
-  else { cx = x-(x2>>1);  cy = y-(y2>>1); }
-}
-
-// --------------------------------------------------------------------------
 bool ID_Text::load(const QString& s)
 {
   bool ok;
 
   QString n;
-  n  = s.section(' ',1,1);    // cx
-  cx = n.toInt(&ok);
-  if(!ok) return false;
+  n  = s.section(' ',1,1);    // x1
+  x1 = n.toInt(&ok);
+  if (!ok) return false;
 
-  n  = s.section(' ',2,2);    // cy
-  cy = n.toInt(&ok);
-  if(!ok) return false;
+  n  = s.section(' ',2,2);    // y1
+  y1 = n.toInt(&ok);
+  if (!ok) return false;
 
-  Prefix = s.section(' ',3,3);    // Prefix
-  if(Prefix.isEmpty()) return false;
+  prefix = s.section(' ',3,3);    // Prefix
+  if( prefix.isEmpty()) return false;
 
   int i = 1;
   for(;;) {
     n = s.section('"', i,i);
     if(n.isEmpty())  break;
 
-    Parameter.append(new SubParameter(
-       (n.at(0) == '0') ? false : true,
+    subParameters.push_back(std::make_unique<SubParameter>(
+       n.at(0) != '0',
        n.section('=', 1,2),
        n.section('=', 3,3),
        n.section('=', 4,4)));
@@ -121,77 +101,52 @@ bool ID_Text::load(const QString& s)
   return true;
 }
 
-// --------------------------------------------------------------------------
 QString ID_Text::save()
 {
-  QString s = Name+QString::number(cx)+" "+QString::number(cy)+" ";
-  s += Prefix;
+  QString s = Name+QString::number(x1)+" "+QString::number(y1)+" ";
+  s += prefix;
 
-  QList<SubParameter *>::const_iterator it;
-  for(it = Parameter.constBegin(); it != Parameter.constEnd(); it++) {
-    s += (((*it)->display)? " \"1=" : " \"0=");
-    s += (*it)->Name + "=" + (*it)->Description + "=" + (*it)->Type + "\"";
+  for (const auto& sub_param : subParameters) {
+    s += (sub_param->display ? " \"1=" : " \"0=");
+    s += sub_param->name + "=" + sub_param->description + "=" + sub_param->type + "\"";
   }
 
   return s;
 }
 
-// --------------------------------------------------------------------------
 QString ID_Text::saveCpp()
 {
   QString s =
     QString ("tx = %1; ty = %2;").
-    arg(cx).arg(cy);
+    arg(x1).arg(y1);
   return s;
 }
 
 QString ID_Text::saveJSON()
 {
-  QString s =  QString ("\"tx\" : %1,\n  \"ty\" : %2,").arg(cx).arg(cy);
+  QString s =  QString ("\"tx\" : %1,\n  \"ty\" : %2,").arg(x1).arg(y1);
   return s;
 }
 
-// --------------------------------------------------------------------------
 // Checks if the coordinates x/y point to the painting.
-bool ID_Text::getSelected(float fX, float fY, float)
+bool ID_Text::getSelected(const QPoint& click, int tolerance)
 {
-  if(int(fX) < cx)  return false;
-  if(int(fY) < cy)  return false;
-  if(int(fX) > cx+x2)  return false;
-  if(int(fY) > cy+y2)  return false;
+  return boundingRect()
+      .marginsAdded(QMargins(tolerance, tolerance, tolerance, tolerance))
+      .contains(click);
+}
 
+bool ID_Text::rotate(int rcx, int rcy) noexcept
+{
+  qucs_s::geom::rotate_point_ccw(x1, y1, rcx, rcy);
+  qucs_s::geom::rotate_point_ccw(x2, y2, rcx, rcy);
+  updateCenter();
   return true;
 }
 
-// --------------------------------------------------------------------------
-// Rotates around the center.
-void ID_Text::rotate(int, int)
-{
-}
-
-// --------------------------------------------------------------------------
-// Mirrors about center line.
-void ID_Text::mirrorX()
-{
-}
-
-// --------------------------------------------------------------------------
-// Mirrors about center line.
-void ID_Text::mirrorY()
-{
-}
-
-// --------------------------------------------------------------------------
-// Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
 bool ID_Text::Dialog(QWidget *parent)
 {
-  ID_Dialog *d = new ID_Dialog(this, parent);
-  if(d->exec() == QDialog::Rejected) {
-    delete d;
-    return false;
-  }
-
-  delete d;
-  return true;
+  auto d = std::make_unique<ID_Dialog>(this, parent);
+  return d->exec() != QDialog::Rejected;
 }

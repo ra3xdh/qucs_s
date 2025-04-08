@@ -171,12 +171,11 @@ void ChangeDialog::slotButtReplace()
 
   QList<QCheckBox *> pList;
   QCheckBox *pb;
-  Component *pc;
   QStringList List;
   QString str;
   int i1, i2;
   // search through all components
-  for(pc = Doc->a_Components->first(); pc!=0; pc = Doc->a_Components->next()) {
+  for(Component* pc : *Doc->a_Components) {
     if(matches(pc->Model)) {
       QRegularExpressionMatch match = Expr.match(pc->Name);
       if(match.hasMatch())
@@ -229,7 +228,7 @@ void ChangeDialog::slotButtReplace()
     pb = i.next();
     if(!pb->isChecked())  continue;
 
-    for(pc = Doc->a_Components->first(); pc!=0; pc = Doc->a_Components->next()) {
+    for(Component* pc : *Doc->a_Components) {
       if(pb->text() != pc->Name)  continue;
 
       for(auto pp : pc->Props) {

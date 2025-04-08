@@ -23,10 +23,8 @@
 
 #include <QtCore>
 #include <stdlib.h>
-#include <limits.h>
 
 #include <QProcess>
-#include <qt3_compat/q3ptrlist.h>
 #include <QRegularExpressionValidator>
 #include <QLineEdit>
 #include <QAction>
@@ -312,6 +310,9 @@ void QucsApp::slotSelect(bool on)
     select->blockSignals(true);
     select->setChecked(false);
     select->blockSignals(false);
+
+    // Clear wiring modes hint if any
+    statusBar()->clearMessage();
     return;
   }
 
@@ -1121,42 +1122,41 @@ void QucsApp::slotAddToProject()
 // -----------------------------------------------------------
 void QucsApp::slotCursorLeft(bool left)
 {
-  int sign = 1;
-  if(left){
-    sign = -1;
-  }
   if(!editText->isHidden()) return;  // for edit of component property ?
 
-  QList<Element*> movingElements;
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  int markerCount = 0;
-  {
-    // Q3PtrList is long time deprecated and has to be replaced with another
-    // container type, which is not always easy. Here it's simpler to use it
-    // once and go back to QList, because copySelectedElements() uses API
-    // unique to Q3PtrList and to refactor it is a piece of work
-    Q3PtrList<Element> temp_buffer;
-    temp_buffer.setAutoDelete(false);
-    markerCount = Doc->copySelectedElements(&temp_buffer);
-    for (auto* e : temp_buffer) { movingElements.append(e); }
+  const auto selection = Doc->currentSelection();
+
+  const auto totalCount = selection.components.size()
+       + selection.wires.size()
+       + selection.paintings.size()
+       + selection.diagrams.size()
+       + selection.labels.size()
+       + selection.markers.size();
+
+  if (totalCount == selection.markers.size()) {
+      Doc->markerLeftRight(left, selection.markers);
   }
 
-  if((movingElements.count() - markerCount) < 1) {
-    if(markerCount > 0) {  // only move marker if nothing else selected
-      Doc->markerLeftRight(left, &movingElements);
-    } else if(left) {
-      Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep());
-    }else{ // right
-      Doc->scrollRight(Doc->horizontalScrollBar()->singleStep());
-    }
-
+  else if (totalCount == 0) {
+    left
+      ? Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep())
+      : Doc->scrollRight(Doc->horizontalScrollBar()->singleStep());
     Doc->viewport()->update();
     return;
-  } else { // random selection. move all of them
-    view->moveElements(&movingElements, sign*Doc->getGridX(), 0);
-    view->MAx3 = 1;  // sign for moved elements
-    view->endElementMoving(Doc, &movingElements);
   }
+
+  // random selection. move all of them
+  const auto dx = left ? -Doc->getGridX() : Doc->getGridX();
+  const auto mover = [dx](Element* e) { e->moveCenter(dx, 0); };
+  std::ranges::for_each(selection.paintings, mover);
+  std::ranges::for_each(selection.diagrams, mover);
+  std::ranges::for_each(selection.labels, mover);
+  std::ranges::for_each(selection.components, mover);
+  std::ranges::for_each(selection.wires, mover);
+  std::ranges::for_each(selection.nodes, mover);
+  Doc->healAfterKeyboardMutation();
+  Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
@@ -1203,36 +1203,39 @@ void QucsApp::slotCursorUp(bool up)
     return;
   }
 
-  QList<Element*> movingElements;
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  int markerCount = 0;
-  {
-    // Q3PtrList is long time deprecated and has to be replaced with another
-    // container type, which is not always easy. Here it's simpler to use it
-    // once and go back to QList, because copySelectedElements() uses API
-    // unique to Q3PtrList and to refactor it is a piece of work
-    Q3PtrList<Element> temp_buffer;
-    temp_buffer.setAutoDelete(false);
-    markerCount = Doc->copySelectedElements(&temp_buffer);
-    for (auto* e : temp_buffer) { movingElements.append(e); }
+  const auto selection = Doc->currentSelection();
+
+  const auto totalCount = selection.components.size()
+       + selection.wires.size()
+       + selection.paintings.size()
+       + selection.diagrams.size()
+       + selection.labels.size()
+       + selection.markers.size();
+
+  if (totalCount == selection.markers.size()) {
+      Doc->markerUpDown(up, selection.markers);
   }
 
-  if((movingElements.count() - markerCount) < 1) { // all selections are markers
-    if(markerCount > 0) {  // only move marker if nothing else selected
-      Doc->markerUpDown(up, &movingElements);
-    } else if(up) { // nothing selected at all
-      Doc->scrollUp(Doc->verticalScrollBar()->singleStep());
-    } else { // down
-      Doc->scrollDown(Doc->verticalScrollBar()->singleStep());
-    }
-
+  else if (totalCount == 0) {
+    up
+      ? Doc->scrollUp(Doc->verticalScrollBar()->singleStep())
+      : Doc->scrollDown(Doc->verticalScrollBar()->singleStep());
     Doc->viewport()->update();
     return;
-  }else{ // some random selection, put it back
-    view->moveElements(&movingElements, 0, ((up)?-1:1) * Doc->getGridY());
-    view->MAx3 = 1;  // sign for moved elements
-    view->endElementMoving(Doc, &movingElements);
   }
+
+  // random selection. move all of them
+  const auto dy = up ? -Doc->getGridY() : Doc->getGridY();
+  const auto mover = [dy](Element* e) { e->moveCenter(0, dy); };
+  std::ranges::for_each(selection.paintings, mover);
+  std::ranges::for_each(selection.diagrams, mover);
+  std::ranges::for_each(selection.labels, mover);
+  std::ranges::for_each(selection.components, mover);
+  std::ranges::for_each(selection.wires, mover);
+  std::ranges::for_each(selection.nodes, mover);
+  Doc->healAfterKeyboardMutation();
+  Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
@@ -1266,15 +1269,12 @@ void QucsApp::slotApplyCompText()
       const auto new_name{editText->text()};
 
       if (!new_name.isEmpty() && component->Name != new_name) {
-        // TODO: rewrite with std::none_of after replacing Q3PtrList
-        //       with modern container
-        bool is_unique = true;
-        for (auto* other : *Doc->a_Components) {
-          if (other->Name == new_name) {
-            is_unique = false;
-            break;
-          }
-        }
+
+        bool is_unique = std::none_of(
+          Doc->a_Components->begin(),
+          Doc->a_Components->end(),
+          [&new_name](const Component* other) { return other->Name == new_name; }
+        );
 
         if (is_unique) {
           component->Name = new_name;

@@ -197,17 +197,67 @@ private:
   */
 class Element {
 public:
-  Element();
-  virtual ~Element();
+  virtual ~Element() = default;
+  virtual void paintScheme(Schematic *) { /* default no-op */ };
 
-  virtual void paintScheme(Schematic *);
-  virtual void paintScheme(QPainter *);
-  virtual void setCenter(int, int, bool relative=false);
-  virtual void getCenter(int&, int&);
+  /** Rotates element in-place*/
+  virtual bool rotate() noexcept { /* default no-op */ return false; }
 
-  bool isSelected;
-  int  Type;    // whether it is Component, Wire, ...
-  int  cx, cy, x1, y1, x2, y2;  // center and relative boundings
+  /** Rotates element around point.
+      Defined as
+        1. Rotate coordinates of center and move element there
+        2. Rotate element in-place
+  */
+  virtual bool rotate(int rcx, int rcy) noexcept;
+
+  /** Overload of rotate around point */
+  virtual bool rotate(const QPoint& center) noexcept;
+
+  /** Mirrors element vertically in-place */
+  virtual bool mirrorX() noexcept { /* default no-op */ return false; }
+
+  /** Mirrors element horizontally in-place */
+  virtual bool mirrorY() noexcept { /* default no-op */ return false; }
+
+  /** Mirrors element vertically around axis.
+      Defined as
+        1. Mirror coordinate Y of center and move element there
+        2. Mirror in-place
+  */
+  virtual bool mirrorX(int axis) noexcept;
+
+  /** Mirrors element horizontally around axis.
+      Defined as
+        1. Mirror coordinate Y of center and move element there
+        2. Mirror in-place
+  */
+  virtual bool mirrorY(int axis) noexcept;
+
+  /** Moves elements so that its center is at (x,y) after move */
+  virtual bool moveCenterTo(int x, int y) noexcept;
+
+  /** Overload of moveCenterTo */
+  virtual bool moveCenterTo(const QPoint& p) noexcept;
+
+  /** Moves element center relatively to current location */
+  virtual bool moveCenter(int dx, int dy) noexcept;
+
+  /** Returns the tightest rectangle which can fit the entire element */
+  virtual QRect boundingRect() const noexcept;
+
+  /** Coordinates of center */
+  virtual QPoint center() const noexcept;
+
+  bool isSelected = false;
+  int  Type = isDummyElement;    // whether it is Component, Wire, ...
+
+  // center and relative boundings
+  int cx = 0;
+  int cy = 0;
+  int x1 = 0;
+  int y1 = 0;
+  int x2 = 0;
+  int y2 = 0;
 };
 
 #endif

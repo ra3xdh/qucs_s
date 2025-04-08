@@ -1208,23 +1208,6 @@ int Diagram::checkColumnWidth(const QString &Str,
 }
 
 // ------------------------------------------------------------
-void Diagram::setCenter(int x, int y, bool relative) {
-    if (relative) {
-        cx += x;
-        cy += y;
-    } else {
-        cx = x;
-        cy = y;
-    }
-}
-
-// -------------------------------------------------------
-void Diagram::getCenter(int &x, int &y) {
-    x = cx + (x2 >> 1);
-    y = cy - (y2 >> 1);
-}
-
-// ------------------------------------------------------------
 Diagram *Diagram::newOne() {
     return new Diagram();
 }
@@ -2002,6 +1985,18 @@ void Diagram::calcCoordinateP(const double *x, const double *y, const double *z,
     p->setScr(f1, f2);
 };
 
+
+QRect Diagram::boundingRect() const noexcept
+{
+    // Despite of having "Bounding_" in the name these are apparently
+    // not boungings at all. Computations are taken "as is" from legacy
+    // implementation, they work though it's hard to tell how.
+    int x1_ = cx - Bounding_x1;
+    int y1_ = cy - y2 - Bounding_y2;
+    int x2_ = cx + x2 + Bounding_x2;
+    int y2_ = cy - Bounding_y1;
+    return QRect{QPoint{x1_, y1_}, QPoint{x2_, y2_}}.normalized();
+}
 
 //void Diagram::SetLimitsBySelectionRect(QRectF) {}
 

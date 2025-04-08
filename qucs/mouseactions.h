@@ -21,7 +21,6 @@
 #include "element.h"
 #include <QAction>
 
-#include <qt3_compat/qt_compat.h>
 
 class Wire;
 class WireLabel;
@@ -50,7 +49,7 @@ public:
   QMouseEvent *focusMEvent;
 
   int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
-  QList<Element*> movingElements;
+  std::list<Element*> movingElements;
   int movingRotated;
 
   // menu appearing by right mouse button click on component
@@ -73,6 +72,7 @@ public:
   void MMoveMoving(Schematic*, QMouseEvent*);
   void MMoveMoving2(Schematic*, QMouseEvent*);
   void MMovePaste(Schematic*, QMouseEvent*);
+  void MMovePaste2(Schematic*, QMouseEvent*);
   void MMoveDelete(Schematic*, QMouseEvent*);
   void MMoveLabel(Schematic*, QMouseEvent*);
   void MMoveMarker(Schematic*, QMouseEvent*);
@@ -121,10 +121,6 @@ public:
   void MReleaseSetLimits(Schematic*, QMouseEvent*);
 
   void paintElementsScheme(Schematic*);
-  void rotateElements(Schematic*, int&, int&);
-  void moveElements(Schematic*, int&, int&);
-  static void moveElements(QList<Element*>*, int, int);
-  void endElementMoving(Schematic*, QList<Element*>*);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
 };
 

@@ -128,7 +128,7 @@ bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool isSubckt
 bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 {
     incompat.clear();
-    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+    for(Component *pc : a_schematic->a_DocComps) {
         if ((!pc->isEquation)&&!(pc->isProbe)) {
             if (pc->SpiceModel.isEmpty() && pc->isActive) incompat.append(pc->Name);
         }
@@ -144,7 +144,7 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 bool AbstractSpiceKernel::checkGround()
 {
     bool r = false;
-    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+    for(Component *pc : a_schematic->a_DocComps) {
         if (pc->Model=="GND") {
             r = true;
             break;
@@ -157,7 +157,7 @@ bool AbstractSpiceKernel::checkSimulations()
 {
     if (a_DC_OP_only) return true;
     bool r = false;
-    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+    for(Component *pc : a_schematic->a_DocComps) {
         if (pc->isSimulation) {
             r = true;
             break;
@@ -196,7 +196,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
         QString s;
 
         // User-defined functions
-        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+        for(Component *pc : a_schematic->a_DocComps) {
             if ((pc->SpiceModel==".FUNC")||
                 (pc->SpiceModel=="INCLSCR")) {
                 s = pc->getExpression();
@@ -206,7 +206,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
 
         // create .IC from wire labels
         QStringList wire_labels;
-        for(Wire *pw = a_schematic->a_DocWires.first(); pw != 0; pw = a_schematic->a_DocWires.next()) {
+        for(Wire *pw : a_schematic->a_DocWires) {
             if (pw->Label != nullptr) {
                 QString label = pw->Label->Name;
                 if (!wire_labels.contains(label)) wire_labels.append(label);
@@ -218,7 +218,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
                 }
             }
         }
-        for(Node *pn = a_schematic->a_DocNodes.first(); pn != 0; pn = a_schematic->a_DocNodes.next()) {
+        for(Node *pn : a_schematic->a_DocNodes) {
             Conductor *pw = (Conductor*) pn;
             if (pw->Label != nullptr) {
                 QString label = pw->Label->Name;
@@ -233,7 +233,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
         }
 
         // Parameters, Initial conditions, Options
-        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+        for(Component *pc : a_schematic->a_DocComps) {
             if (pc->isEquation) {
                 s = pc->getExpression(dialect);
                 stream<<s;
@@ -241,7 +241,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
         }
 
         // Components
-        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+        for(Component *pc : a_schematic->a_DocComps) {
           if(a_schematic->getIsAnalog() &&
              !(pc->isSimulation) &&
              !(pc->isEquation)) {
@@ -251,7 +251,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
         }
 
         // Modelcards
-        for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+        for(Component *pc : a_schematic->a_DocComps) {
             if (pc->SpiceModel==".MODEL") {
                 s = pc->getSpiceModel();
                 stream<<s;
@@ -288,7 +288,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
         emit errors(QProcess::FailedToStart);
         return;
     } // Unable to perform spice simulation
-    for(Component *pc = a_schematic->a_DocComps.first(); pc != 0; pc = a_schematic->a_DocComps.next()) {
+    for(Component *pc : a_schematic->a_DocComps) {
         if (pc->Model=="Port") {
             ports.append(qMakePair(pc->Props.first()->Value.toInt(),
                                    pc->Ports.first()->Connection->Name));
@@ -300,13 +300,11 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
         header += pp.second + " ";
     }
 
-    Painting *pai;
-    for(pai = a_schematic->a_SymbolPaints.first(); pai != 0; pai = a_schematic->a_SymbolPaints.next())
+    for(Painting* pai : a_schematic->a_SymbolPaints)
       if(pai->Name == ".ID ") {
         ID_Text *pid = (ID_Text*)pai;
-        QList<SubParameter *>::const_iterator it;
-        for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-            header += (*it)->Name + " "; // keep 'Name' unchanged
+        for (const auto& sub_param : pid->subParameters) {
+            header += sub_param->name + " "; // keep 'Name' unchanged
           //(*tstream) << " " << s.replace("=", "=\"") << '"';
         }
         break;
@@ -1572,7 +1570,7 @@ bool AbstractSpiceKernel::waitEndOfSimulation()
 QString AbstractSpiceKernel::collectSpiceLibs(Schematic* sch)
 {
   QStringList collected_spicelib;
-  for(Component *pc = sch->a_DocComps.first(); pc != 0; pc = sch->a_DocComps.next()) {
+  for(Component *pc : sch->a_DocComps) {
     if (pc->Model == "Sub") {
       Schematic *sub = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
       if(!sub->loadDocument())      // load document if possible
@@ -1599,7 +1597,7 @@ QString AbstractSpiceKernel::collectSpiceLibs(Schematic* sch)
 QStringList AbstractSpiceKernel::collectSpiceLibraryFiles(Schematic *sch)
 {
   QStringList collected_spicelib;
-  for(Component *pc = sch->a_DocComps.first(); pc != 0; pc = sch->a_DocComps.next()) {
+  for(Component *pc : sch->a_DocComps) {
     QStringList new_libs;
     if (pc->Model == "Sub") {
       Schematic *sub = new Schematic(nullptr, ((Subcircuit *)pc)->getSubcircuitFile());
