@@ -35,7 +35,7 @@ public:
   ~SP_Sim();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  void recreate(Schematic*);
+  void recreate();
   QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
   QStringList getExtraVariables();
 };

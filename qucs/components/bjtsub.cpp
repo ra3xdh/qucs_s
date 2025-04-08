@@ -141,7 +141,7 @@ Component* BJTsub::newOne()
 {
   BJTsub* p = new BJTsub();
   p->Props.front()->Value = Props.front()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -164,7 +164,7 @@ Element* BJTsub::info_pnp(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne) {
     BJTsub* p = new BJTsub();
     p->Props.front()->Value = "pnp";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;

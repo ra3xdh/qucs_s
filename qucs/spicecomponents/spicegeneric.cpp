@@ -48,7 +48,7 @@ SpiceGeneric::SpiceGeneric()
 Component* SpiceGeneric::newOne()
 {
   SpiceGeneric *p = new SpiceGeneric();
-  p->recreate(0);   // createSymbol() is NOT called in constructor !!!
+  p->recreate();   // createSymbol() is NOT called in constructor !!!
   return p;
 }
 
@@ -60,7 +60,7 @@ Element* SpiceGeneric::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     SpiceGeneric *p = new SpiceGeneric();
-    p->recreate(0);   // createSymbol() is NOT called in constructor !!!
+    p->recreate();   // createSymbol() is NOT called in constructor !!!
     return p;
   }
   return 0;

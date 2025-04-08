@@ -121,7 +121,7 @@ Component* Logical_Buf::newOne()
 {
   Logical_Buf* p = new Logical_Buf();
   p->Props.back()->Value = Props.back()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 

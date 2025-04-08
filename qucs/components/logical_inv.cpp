@@ -138,7 +138,7 @@ Component* Logical_Inv::newOne()
 {
   Logical_Inv* p = new Logical_Inv();
   p->Props.back()->Value = Props.back()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 

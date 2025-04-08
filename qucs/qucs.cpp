@@ -2922,7 +2922,7 @@ void QucsApp::slotSelectSubcircuit(const QModelIndex &idx)
   else
     Comp = new Subcircuit();
   Comp->Props.first()->Value = idx.sibling(idx.row(), 0).data().toString();
-  Comp->recreate(0);
+  Comp->recreate();
   view->selElem = Comp;
 
   MouseMoveAction = &MouseActions::MMoveElement;

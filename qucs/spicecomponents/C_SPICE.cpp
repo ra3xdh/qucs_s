@@ -77,7 +77,7 @@ Component* C_SPICE::newOne()
     auto p = new C_SPICE();
     p->getProperty("Pins")->Value = getProperty("Pins")->Value;
     p->getProperty("Letter")->Value = getProperty("Letter")->Value;
-    p->recreate(0);
+    p->recreate();
     return p;
 }
 
@@ -98,7 +98,7 @@ Element* C_SPICE::info_C3(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne)  {
       auto p = new C_SPICE();
       p->Props.at(5)->Value = "3";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;

@@ -45,7 +45,7 @@ Component * jkff_SR::newOne()
 {
   jkff_SR * p = new jkff_SR();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

@@ -40,7 +40,7 @@ public:
   virtual ~Component() {};
 
   virtual Component* newOne();
-  virtual void recreate(Schematic*) {};
+  virtual void recreate() {};
   QString getNetlist();
   QString getSpiceNetlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
   QString getVerilogACode();
@@ -140,7 +140,7 @@ public:
   MultiViewComponent() {};
   virtual ~MultiViewComponent() {};
 
-  void recreate(Schematic*);
+  void recreate();
 
 protected:
   virtual void createSymbol() {};

@@ -47,7 +47,7 @@ XspiceGeneric::XspiceGeneric()
 Component* XspiceGeneric::newOne()
 {
   XspiceGeneric *p = new XspiceGeneric();
-  p->recreate(0);   // createSymbol() is NOT called in constructor !!!
+  p->recreate();   // createSymbol() is NOT called in constructor !!!
   return p;
 }
 
@@ -59,7 +59,7 @@ Element* XspiceGeneric::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     XspiceGeneric *p = new XspiceGeneric();
-    p->recreate(0);   // createSymbol() is NOT called in constructor !!!
+    p->recreate();   // createSymbol() is NOT called in constructor !!!
     return p;
   }
   return 0;

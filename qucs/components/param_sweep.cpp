@@ -62,7 +62,7 @@ Element* Param_Sweep::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-void Param_Sweep::recreate(Schematic*)
+void Param_Sweep::recreate()
 {
   if((Props.at(1)->Value == "list") || (Props.at(1)->Value == "const")) {
     // Call them "Symbol" to omit them in the netlist.

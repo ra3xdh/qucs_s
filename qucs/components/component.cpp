@@ -1431,11 +1431,7 @@ void Component::copyComponent(Component *pc) {
 // ********          Functions of class MultiViewComponent        ********
 // ********                                                       ********
 // ***********************************************************************
-void MultiViewComponent::recreate(Schematic *Doc) {
-    if (Doc) {
-        Doc->detachComp(this);
-    }
-
+void MultiViewComponent::recreate() {
     Ellipses.clear();
     Texts.clear();
     Ports.clear();
@@ -1457,10 +1453,6 @@ void MultiViewComponent::recreate(Schematic *Doc) {
 
     rotated = rrot;   // restore properties (were changed by rotate/mirror)
     mirroredX = mmir;
-
-    if (Doc) {
-        Doc->insertRawComponent(this);
-    }
 }
 
 
@@ -1791,7 +1783,7 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
     cstr = c->Name;   // is perhaps changed in "recreate" (e.g. subcircuit)
     int x = c->tx, y = c->ty;
     c->setSchematic(p);
-    c->recreate(0);
+    c->recreate();
     c->Name = cstr;
     c->tx = x;
     c->ty = y;

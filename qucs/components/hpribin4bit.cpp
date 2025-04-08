@@ -41,7 +41,7 @@ Component * hpribin4bit::newOne()
 {
   hpribin4bit * p = new hpribin4bit();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

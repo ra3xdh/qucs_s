@@ -76,7 +76,7 @@ Component * log_amp::newOne()
 {
   log_amp * p = new log_amp();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

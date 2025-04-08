@@ -44,7 +44,7 @@ Component* VHDL_File::newOne()
 {
   VHDL_File *p = new VHDL_File();
   p->Props.front()->Value = Props.front()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -56,7 +56,7 @@ Element* VHDL_File::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     VHDL_File *p = new VHDL_File();
-    p->recreate(0);   // createSymbol() is NOT called in constructor !!!
+    p->recreate();   // createSymbol() is NOT called in constructor !!!
     return p;
   }
   return 0;

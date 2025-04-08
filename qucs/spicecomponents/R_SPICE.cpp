@@ -81,7 +81,7 @@ Component* R_SPICE::newOne()
     auto p = new R_SPICE();
     p->getProperty("Pins")->Value = getProperty("Pins")->Value;
     p->getProperty("Letter")->Value = getProperty("Letter")->Value;
-    p->recreate(0);
+    p->recreate();
     return p;
 }
 
@@ -102,7 +102,7 @@ Element* R_SPICE::info_R3(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne)  {
       auto p = new R_SPICE();
       p->Props.at(5)->Value = "3";
-      p->recreate(0);
+      p->recreate();
       return p;
   }
   return 0;

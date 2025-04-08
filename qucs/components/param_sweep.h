@@ -27,7 +27,7 @@ public:
   ~Param_Sweep();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  void recreate(Schematic*);
+  void recreate();
 
   QString getNgspiceBeforeSim(QString sim, int lvl=0);
   QString getNgspiceAfterSim(QString sim, int lvl=0);

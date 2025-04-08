@@ -46,7 +46,7 @@ Component * dff_SR::newOne()
   dff_SR * p = new dff_SR();
 
   p->Props.front()->Value = Props.front()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 

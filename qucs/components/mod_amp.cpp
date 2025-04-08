@@ -61,7 +61,7 @@ Component * mod_amp::newOne()
 {
   mod_amp * p = new mod_amp();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

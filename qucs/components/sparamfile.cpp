@@ -54,7 +54,7 @@ Component* SParamFile::newOne()
 {
   SParamFile* p = new SParamFile();
   p->Props.back()->Value = Props.back()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -68,7 +68,7 @@ Element* SParamFile::info(QString& Name, char* &BitmapFile, bool getNewOne)
     SParamFile* p = new SParamFile();
     p->Props.front()->Value = "test.s3p";
     p->Props.back()->Value = "3";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;
@@ -94,7 +94,7 @@ Element* SParamFile::info2(QString& Name, char* &BitmapFile, bool getNewOne)
     SParamFile* p = new SParamFile();
     p->Props.front()->Value = "test.s2p";
     p->Props.back()->Value = "2";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;
