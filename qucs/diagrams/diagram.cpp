@@ -1986,6 +1986,18 @@ void Diagram::calcCoordinateP(const double *x, const double *y, const double *z,
 };
 
 
+QRect Diagram::boundingRect() const noexcept
+{
+    // Despite of having "Bounding_" in the name these are apparently
+    // not boungings at all. Computations are taken "as is" from legacy
+    // implementation, they work though it's hard to tell how.
+    int x1_ = cx - Bounding_x1;
+    int y1_ = cy - y2 - Bounding_y2;
+    int x2_ = cx + x2 + Bounding_x2;
+    int y2_ = cy - Bounding_y1;
+    return QRect{QPoint{x1_, y1_}, QPoint{x2_, y2_}}.normalized();
+}
+
 //void Diagram::SetLimitsBySelectionRect(QRectF) {}
 
 

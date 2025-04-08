@@ -125,6 +125,7 @@ public:
   void paintMarkers(QPainter* p, bool paintAll = true);
   void    paintScheme(Schematic*) override;
   void    Bounding(int&, int&, int&, int&);
+  QRect boundingRect() const noexcept override;
   bool    getSelected(int, int);
   bool    resizeTouched(float, float, float);
   QString save();
