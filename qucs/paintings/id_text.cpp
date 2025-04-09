@@ -150,3 +150,9 @@ bool ID_Text::Dialog(QWidget *parent)
   auto d = std::make_unique<ID_Dialog>(this, parent);
   return d->exec() != QDialog::Rejected;
 }
+
+QRect ID_Text::boundingRect() const noexcept
+{
+  return QRect{x1, y1, x2, y2}  // x2 and y2 are width and height respectively
+    .normalized();
+}
