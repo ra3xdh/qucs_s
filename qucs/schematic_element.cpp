@@ -1184,14 +1184,14 @@ bool Schematic::deleteElements()
     bool sel = false;
     auto selection = currentSelection();
 
-    for (auto* comp : selection.components) {     // all selected component
-        deleteComp(comp);
-        sel = true;
-    }
-
     for (auto* l : selection.labels) {
         l->pOwner->Label = nullptr;
         delete l;
+        sel = true;
+    }
+
+    for (auto* comp : selection.components) {     // all selected component
+        deleteComp(comp);
         sel = true;
     }
 
