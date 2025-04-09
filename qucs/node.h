@@ -54,6 +54,8 @@ public:
   const_iterator begin() const;
   const_iterator end() const;
 
+  bool moveCenter(int dx, int dy) noexcept override;
+
   QString Name;  // node name used by creation of netlist
   QString DType; // type of node (used by digital files)
   int State;	 // remember some things during some operations
