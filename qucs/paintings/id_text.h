@@ -51,6 +51,8 @@ public:
 
   bool Dialog(QWidget* parent = nullptr) override;
 
+  QRect boundingRect() const noexcept override;
+
   QString prefix;
   std::vector<std::unique_ptr<SubParameter>> subParameters;
 };
