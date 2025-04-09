@@ -98,3 +98,12 @@ Element* Node::other_than(Element* elem) const
 
   return other == connections.end() ? nullptr : *other;
 }
+
+bool Node::moveCenter(int dx, int dy) noexcept
+{
+  Element::moveCenter(dx, dy);
+  if (Label != nullptr) {
+    Label->moveRoot(dx, dy);
+  }
+  return dx != 0 || dy != 0;
+}
