@@ -42,7 +42,7 @@ Component * binarytogrey4bit::newOne()
 {
   binarytogrey4bit * p = new binarytogrey4bit();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

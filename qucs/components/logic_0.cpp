@@ -39,7 +39,7 @@ Component * logic_0::newOne()
 {
   logic_0 * p = new logic_0();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

@@ -63,7 +63,7 @@ SpiceFile::SpiceFile()
 Component* SpiceFile::newOne()
 {
   SpiceFile *p = new SpiceFile();
-  p->recreate(0);   // createSymbol() is NOT called in constructor !!!
+  p->recreate();   // createSymbol() is NOT called in constructor !!!
   return p;
 }
 
@@ -75,7 +75,7 @@ Element* SpiceFile::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     SpiceFile *p = new SpiceFile();
-    p->recreate(0);   // createSymbol() is NOT called in constructor !!!
+    p->recreate();   // createSymbol() is NOT called in constructor !!!
     return p;
   }
   return 0;

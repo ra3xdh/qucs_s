@@ -45,7 +45,7 @@ Component * tff_SR::newOne()
 {
   tff_SR * p = new tff_SR();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

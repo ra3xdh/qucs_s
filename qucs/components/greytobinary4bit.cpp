@@ -42,7 +42,7 @@ Component * greytobinary4bit::newOne()
 {
   greytobinary4bit * p = new greytobinary4bit();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

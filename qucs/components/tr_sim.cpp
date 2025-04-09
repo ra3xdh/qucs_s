@@ -117,7 +117,7 @@ QString TR_Sim::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
     return s.toLower();
 }
 
-void TR_Sim::recreate(Schematic*)
+void TR_Sim::recreate()
 {
   if((Props.at(0)->Value == "list") || (Props.at(0)->Value == "const")) {
     // Call them "Symbol" to omit them in the netlist.

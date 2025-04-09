@@ -42,7 +42,7 @@ Component * dmux3to8::newOne()
 {
   dmux3to8 * p = new dmux3to8();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 

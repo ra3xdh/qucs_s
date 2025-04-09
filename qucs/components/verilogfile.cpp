@@ -45,7 +45,7 @@ Component* Verilog_File::newOne()
 {
   Verilog_File *p = new Verilog_File();
   p->Props.front()->Value = Props.front()->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -57,7 +57,7 @@ Element* Verilog_File::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
     Verilog_File *p = new Verilog_File();
-    p->recreate(0);   // createSymbol() is NOT called in constructor !!!
+    p->recreate();   // createSymbol() is NOT called in constructor !!!
     return p;
   }
   return 0;

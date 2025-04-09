@@ -56,7 +56,7 @@ Component* RFedd2P::newOne()
 {
   RFedd2P* p = new RFedd2P();
   p->Props.at(0)->Value = Props.at(0)->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -69,7 +69,7 @@ Element* RFedd2P::info(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne) {
     RFedd2P* p = new RFedd2P();
     p->Props.at(0)->Value = "Y";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;

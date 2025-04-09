@@ -62,7 +62,7 @@ Element* AC_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-void AC_Sim::recreate(Schematic*)
+void AC_Sim::recreate()
 {
   if((Props.at(0)->Value == "list") || (Props.at(0)->Value == "const")) {
     // Call them "Symbol" to omit them in the netlist.

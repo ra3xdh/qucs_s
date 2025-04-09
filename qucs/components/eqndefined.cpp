@@ -56,7 +56,7 @@ Component* EqnDefined::newOne()
   EqnDefined* p = new EqnDefined();
   p->Props.at(0)->Value = Props.at(0)->Value;
   p->Props.at(1)->Value = Props.at(1)->Value;
-  p->recreate(0);
+  p->recreate();
   return p;
 }
 
@@ -70,7 +70,7 @@ Element* EqnDefined::info(QString& Name, char* &BitmapFile, bool getNewOne)
     EqnDefined* p = new EqnDefined();
     p->Props.at(0)->Value = "explicit";
     p->Props.at(1)->Value = "1";
-    p->recreate(0);
+    p->recreate();
     return p;
   }
   return 0;

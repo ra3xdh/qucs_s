@@ -25,6 +25,7 @@
 
 #include <ranges>
 #include <set>
+#include <stack>
 
 struct Schematic::HealingParams
 {
@@ -1816,66 +1817,52 @@ void Schematic::insertRawComponent(Component *c, bool noOptimize)
     }
 }
 
-// ---------------------------------------------------
-void Schematic::recreateComponent(Component *Comp)
+void Schematic::recreateComponent(Component* comp)
 {
-
-    WireLabel **plMem=0, **pl;
-    int PortCount = Comp->Ports.count();
-
-    if(PortCount > 0)
-    {
-        // Save the labels whose node is not connected to somewhere else.
-        // Otherwise the label would be deleted.
-        pl = plMem = (WireLabel**)malloc(PortCount * sizeof(WireLabel*));
-        for (Port *pp : Comp->Ports)
-            if(pp->Connection->conn_count() < 2)
-            {
-                *(pl++) = pp->Connection->Label;
-                pp->Connection->Label = 0;
-            }
-            else  *(pl++) = 0;
+    std::stack<WireLabel*> saved_labels{};
+    for (auto* port : comp->Ports) {
+        if (port->Connection->Label != nullptr && port->Connection->conn_count() == 1) {
+            saved_labels.push(port->Connection->Label);
+            port->Connection->Label = nullptr;
+        }
     }
 
+    int tx = comp->tx;
+    int ty = comp->ty;
+    int x1 = comp->x1;
+    int x2 = comp->x2;
+    int y1 = comp->y1;
+    int y2 = comp->y2;
+    QString name = comp->Name;  // is sometimes changed by "recreate"
 
-    int x = Comp->tx, y = Comp->ty;
-    int x1 = Comp->x1, x2 = Comp->x2, y1 = Comp->y1, y2 = Comp->y2;
-    QString tmp = Comp->Name;    // is sometimes changed by "recreate"
-    Comp->recreate(this);   // to apply changes to the schematic symbol
-    Comp->Name = tmp;
-    if(x < x1)
-        x += Comp->x1 - x1;
-    else if(x > x2)
-        x += Comp->x2 - x2;
-    if(y < y1)
-        y += Comp->y1 - y1;
-    else if(y > y2)
-        y += Comp->y2 - y2;
-    Comp->tx = x;
-    Comp->ty = y;
+    detachComp(comp);
+    comp->recreate();  // to apply changes to the schematic symbol
+    insertRawComponent(comp);
 
+    comp->Name = name;
 
-    if(PortCount > 0)
-    {
-        // restore node labels
-        pl = plMem;
-        for (Port *pp : Comp->Ports)
-        {
-            if(*pl != 0)
-            {
-                (*pl)->cx = pp->Connection->cx;
-                (*pl)->cy = pp->Connection->cy;
-                placeNodeLabel(*pl);
-            }
-            pl++;
-            if((--PortCount) < 1)  break;
-        }
-        for( ; PortCount > 0; PortCount--)
-        {
-            delete (*pl);  // delete not needed labels
-            pl++;
-        }
-        free(plMem);
+    // This is wrong place to adjust component's text position.
+    // It should be better done in "recreate()" (idea for refactoring)
+         if (tx < x1) tx += comp->x1 - x1;
+    else if (tx > x2) tx += comp->x2 - x2;
+
+         if (ty < y1) ty += comp->y1 - y1;
+    else if (ty > y2) ty += comp->y2 - y2;
+
+    comp->tx = tx;
+    comp->ty = ty;
+
+    for (auto pIt = comp->Ports.begin(); pIt != comp->Ports.end() && !saved_labels.empty(); pIt++) {
+        auto* wl = saved_labels.top();
+        saved_labels.pop();
+        auto* port = *pIt;
+        wl->cx = port->Connection->cx;
+        wl->cy = port->Connection->cy;
+        placeNodeLabel(wl);
+    }
+    while (!saved_labels.empty()) {
+        delete saved_labels.top();
+        saved_labels.pop();
     }
 }
 

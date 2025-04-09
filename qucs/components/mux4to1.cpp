@@ -41,7 +41,7 @@ Component * mux4to1::newOne()
 {
   mux4to1 * p = new mux4to1();
   p->Props.front()->Value = Props.front()->Value; 
-  p->recreate(0); 
+  p->recreate();
   return p;
 }
 
