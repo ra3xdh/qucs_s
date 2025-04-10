@@ -326,7 +326,7 @@ class Healer::HealerImpl
     vector<Healer::HealingAction> processGenericCase(Node* node, const JointStateAssessor& jsa) const;
 
     std::pair<Node*,std::vector<Wire*>> findStableNode(Node* begin, Wire* go) const;
-    std::pair<Node*,std::vector<Wire*>> mismatchFoundWhileTraversing(std::vector<Node*>& passed_nodes, std::vector<Wire*>& passed_wires) const;
+    void stepBackOnMismatch(std::vector<Node*>& passed_nodes, std::vector<Wire*>& passed_wires) const;
 
 public:
     HealerImpl(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& hp);
@@ -460,6 +460,10 @@ vector<Healer::HealingAction> Healer::HealerImpl::processRelayingCase(Node* node
 
         assert(labels.size() <= 1);
 
+        if (stable_node == node) {
+            actions.push_back(make_unique<ReplaceNode>(port.get()));
+        }
+
         if (!labels.empty() && stable_node->Label == nullptr) {
             actions.push_back(make_unique<ReattachLabel>(labels.front(), stable_node));
         }
@@ -502,21 +506,26 @@ vector<Healer::HealingAction> Healer::HealerImpl::processGenericCase(Node* node,
 
 std::pair<Node*,vector<Wire*>> Healer::HealerImpl::findStableNode(Node* begin, Wire* go) const
 {
+    if (m_params.wireRelayingDepth == 0) {
+        return {begin, {}};
+    };
+
+    std::size_t max_depth = m_params.wireRelayingDepth < 0
+                          ? std::numeric_limits<std::size_t>::max() // "infinite"
+                          : m_params.wireRelayingDepth;
+
     vector<Node*> passed_nodes{begin};
     vector<Wire*> passed_wires{go};
 
-    int depth = m_params.wireRelayingDepth;
-    if (depth < 0) depth = std::numeric_limits<int>::max(); // "infinite"
-
     Node* current_node = go->Port1 == begin ? go->Port2 : go->Port1;
-    Wire* prev_wire = go;
-    depth--;
+    Wire* prev_wire    = go;
+    bool is_mismatch   = false;
 
-    while (current_node->conn_count() == 2 && depth > 0) {
+    while (current_node->conn_count() == 2) {
 
         if (::qucs_s::hasMismatchedPorts(current_node, m_port_groups.at(current_node))) {
-            passed_nodes.push_back(current_node);
-            return mismatchFoundWhileTraversing(passed_nodes, passed_wires);
+            is_mismatch = true;
+            break;
         }
         
         auto* next_wire = dynamic_cast<Wire*>(current_node->other_than(prev_wire));
@@ -524,8 +533,6 @@ std::pair<Node*,vector<Wire*>> Healer::HealerImpl::findStableNode(Node* begin, W
 
         passed_nodes.push_back(current_node);
         passed_wires.push_back(next_wire);
-
-        depth--;
 
         current_node = next_wire->Port1 == current_node
                      ? next_wire->Port2
@@ -535,41 +542,44 @@ std::pair<Node*,vector<Wire*>> Healer::HealerImpl::findStableNode(Node* begin, W
     }
 
     passed_nodes.push_back(current_node);
+
+    if (is_mismatch) {
+        stepBackOnMismatch(passed_nodes, passed_wires);
+    }
+
+    if (passed_wires.size() > max_depth) {
+        passed_wires.resize(max_depth);
+        passed_nodes.resize(max_depth + 1);
+    }
+
     return {passed_nodes.back(), passed_wires};
 }
 
-std::pair<Node*,vector<Wire*>> Healer::HealerImpl::mismatchFoundWhileTraversing(vector<Node*>& passed_nodes, vector<Wire*>& passed_wires) const
+void Healer::HealerImpl::stepBackOnMismatch(vector<Node*>& passed_nodes, vector<Wire*>& passed_wires) const
 {
     assert(hasMismatchedPorts(passed_nodes.front(), m_port_groups.at(passed_nodes.front())));
     assert(hasMismatchedPorts(passed_nodes.back(), m_port_groups.at(passed_nodes.back())));
+    assert(passed_nodes.size() == passed_wires.size() + 1);
 
+    // Odd-number of wires
+    //   w0   w1   w2
+    // o----o----o----0        keep nodes up to n1 and wires before n1 (w0)
+    // n0   n1   n2   n3
+    //
+    // Event number of wires
+    //   w0   w1   w2   w3
+    // o----o----o----o----o   keep nodes up to n2 and wires before n2 (w0, w1)
+    // n0   n1   n2   n3   n4
 
-    //      A    B
-    // o----o----o----o        n = 4, take node at i = 1
-    // 0    1    2    3
+    passed_wires.resize(passed_wires.size() / 2);
 
-    //           A
-    // o----o----o----o----o   n = 5, take node at i = 2
-    // 0    1    2    3    4
-
-    std::size_t node_ix = static_cast<std::size_t>(std::ceil(passed_nodes.size() / 2.0) - 1);
-    Node* stable_node = passed_nodes.at(node_ix);
-
-
-    //      A    B
-    // o----o----o----o        n = 3, take wires while i < 1
-    //   0    1    2
-
-    //           A
-    // o----o----o----o----o   n = 4, take wires while i < 2
-    //   0    1    2    3
-
-    vector<Wire*> traversed;
-    for (std::size_t i = 0; i < passed_wires.size() / 2; i++) {
-        traversed.push_back(passed_wires.at(i));
+    if (passed_nodes.size() % 2 > 0) {
+        passed_nodes.resize(passed_nodes.size() / 2 + 1);
+    } else {
+        passed_nodes.resize(passed_nodes.size() / 2);
     }
 
-    return {stable_node, traversed};
+    assert(passed_nodes.size() == passed_wires.size() + 1);
 }
 
 
