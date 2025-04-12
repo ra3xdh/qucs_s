@@ -39,6 +39,7 @@ class ReplaceNode : public AbstractAction {
 public:
     ReplaceNode(GenericPort* port) : m_port{port} {} 
     void execute(SchematicMutator* mutator) override { mutator->replaceNode(m_port); }
+    int priority() const override { return 80; }
 };
 
 
@@ -48,6 +49,7 @@ class MoveNode : public AbstractAction {
 public:
     MoveNode(Node* node, const QPoint& to) : m_node{node}, m_coords{to} {} 
     void execute(SchematicMutator* mutator) override { mutator->moveNode(m_node, m_coords); }
+    int priority() const override { return 100; }
 };
 
 
@@ -57,6 +59,7 @@ class ReattachLabel : public AbstractAction {
 public:
     ReattachLabel(WireLabel* label, Node* new_host) : m_label{label}, m_dest{new_host} {} 
     void execute(SchematicMutator* mutator) override { mutator->putLabel(m_label, m_dest); }
+    int priority() const override { return 70; }
 };
 
 
@@ -65,6 +68,7 @@ class DeleteWire : public AbstractAction {
 public:
     DeleteWire(Wire* wire) : m_wire{wire} {}
     void execute(SchematicMutator* mutator) override { mutator->deleteWire(m_wire); }
+    int priority() const override { return 0; }
 };
 
 class MovePort : public AbstractAction {
@@ -73,6 +77,7 @@ class MovePort : public AbstractAction {
 public:
     MovePort(GenericPort* port, const QPoint& coords) : m_port{port}, m_coords{coords} {}
     void execute(SchematicMutator* mutator) override { mutator->movePort(m_port, m_coords); }
+    int priority() const override { return 90; }
 };
 
 class ConnectWithWire : public AbstractAction {
@@ -81,6 +86,7 @@ class ConnectWithWire : public AbstractAction {
 public:
     ConnectWithWire(const QPoint& a, const QPoint& b) : m_point_A{a}, m_point_B{b} {}
     void execute(SchematicMutator* mutator) override { mutator->connectWithWire(m_point_A, m_point_B); }
+    int priority() const override { return 50; }
 };
 
 
@@ -383,6 +389,7 @@ vector<Healer::HealingAction> Healer::HealerImpl::planHealing() const
         }
     }
 
+    std::ranges::sort(healing_plan, [](const auto& lhs, const auto& rhs) { return lhs->priority() > rhs->priority(); });
     return healing_plan;
 }
 

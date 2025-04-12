@@ -91,6 +91,7 @@ struct SchematicMutator {
 struct AbstractAction { 
     virtual ~AbstractAction() = default;
     virtual void execute(SchematicMutator* mutator) = 0;
+    virtual int priority() const = 0;
 };
 
 
