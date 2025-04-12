@@ -34,15 +34,6 @@ using std::vector;
 
 
 
-class ReplaceNode : public AbstractAction {
-    GenericPort* m_port;
-public:
-    ReplaceNode(GenericPort* port) : m_port{port} {} 
-    void execute(SchematicMutator* mutator) override { mutator->replaceNode(m_port); }
-    int priority() const override { return 80; }
-};
-
-
 class MoveNode : public AbstractAction {
     Node* m_node;
     QPoint m_coords;
@@ -50,6 +41,25 @@ public:
     MoveNode(Node* node, const QPoint& to) : m_node{node}, m_coords{to} {} 
     void execute(SchematicMutator* mutator) override { mutator->moveNode(m_node, m_coords); }
     int priority() const override { return 100; }
+};
+
+
+class MovePort : public AbstractAction {
+    GenericPort* m_port;
+    QPoint m_coords;
+public:
+    MovePort(GenericPort* port, const QPoint& coords) : m_port{port}, m_coords{coords} {}
+    void execute(SchematicMutator* mutator) override { mutator->movePort(m_port, m_coords); }
+    int priority() const override { return 90; }
+};
+
+
+class ReplaceNode : public AbstractAction {
+    GenericPort* m_port;
+public:
+    ReplaceNode(GenericPort* port) : m_port{port} {}
+    void execute(SchematicMutator* mutator) override { mutator->replaceNode(m_port); }
+    int priority() const override { return 80; }
 };
 
 
@@ -63,23 +73,6 @@ public:
 };
 
 
-class DeleteWire : public AbstractAction {
-    Wire* m_wire;
-public:
-    DeleteWire(Wire* wire) : m_wire{wire} {}
-    void execute(SchematicMutator* mutator) override { mutator->deleteWire(m_wire); }
-    int priority() const override { return 0; }
-};
-
-class MovePort : public AbstractAction {
-    GenericPort* m_port;
-    QPoint m_coords;
-public:
-    MovePort(GenericPort* port, const QPoint& coords) : m_port{port}, m_coords{coords} {}
-    void execute(SchematicMutator* mutator) override { mutator->movePort(m_port, m_coords); }
-    int priority() const override { return 90; }
-};
-
 class ConnectWithWire : public AbstractAction {
     QPoint m_point_A;
     QPoint m_point_B;
@@ -87,6 +80,15 @@ public:
     ConnectWithWire(const QPoint& a, const QPoint& b) : m_point_A{a}, m_point_B{b} {}
     void execute(SchematicMutator* mutator) override { mutator->connectWithWire(m_point_A, m_point_B); }
     int priority() const override { return 50; }
+};
+
+
+class DeleteWire : public AbstractAction {
+    Wire* m_wire;
+public:
+    DeleteWire(Wire* wire) : m_wire{wire} {}
+    void execute(SchematicMutator* mutator) override { mutator->deleteWire(m_wire); }
+    int priority() const override { return 0; }
 };
 
 
