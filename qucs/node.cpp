@@ -68,7 +68,7 @@ void Node::paint(QPainter* painter) const {
 
 bool Node::getSelected(int x, int y)
 {
-  return cx - 5 <= x && x <= cx + 5 && cy - 5 <= y && y <= cy + 5;
+  return cx - 3 <= x && x <= cx + 3 && cy - 3 <= y && y <= cy + 3;
 }
 
 void Node::setName(const QString& name, const QString& value, int x, int y)
