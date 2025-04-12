@@ -38,7 +38,7 @@ class MoveNode : public AbstractAction {
     Node* m_node;
     QPoint m_coords;
 public:
-    MoveNode(Node* node, const QPoint& to) : m_node{node}, m_coords{to} {} 
+    MoveNode(Node* node, const QPoint& to) : m_node{node}, m_coords{to} {}
     void execute(SchematicMutator* mutator) override { mutator->moveNode(m_node, m_coords); }
     int priority() const override { return 100; }
 };
@@ -67,7 +67,7 @@ class ReattachLabel : public AbstractAction {
     WireLabel* m_label;
     Node* m_dest;
 public:
-    ReattachLabel(WireLabel* label, Node* new_host) : m_label{label}, m_dest{new_host} {} 
+    ReattachLabel(WireLabel* label, Node* new_host) : m_label{label}, m_dest{new_host} {}
     void execute(SchematicMutator* mutator) override { mutator->putLabel(m_label, m_dest); }
     int priority() const override { return 70; }
 };
@@ -97,21 +97,21 @@ public:
 
 template<>
 Wire* GenericPort::host() const
-{ 
+{
     return (isOfWire() ? m_wire : nullptr);
 }
 
 
 template<>
 Component* GenericPort::host() const
-{ 
+{
     return (isOfComponent() ? m_comp : nullptr);
 }
 
 
 template<>
 Element* GenericPort::host() const
-{ 
+{
     if (isOfComponent()) {
         return m_comp;
     }
@@ -430,7 +430,7 @@ vector<Healer::HealingAction> Healer::HealerImpl::processReshapingCase(Node* nod
 
     vector<HealingAction> actions;
     actions.push_back(make_unique<MoveNode>(node, *other_loc));
-    
+
     for (auto port : m_port_groups.at(node)) {
         if (port->center() == *other_loc) continue;
         actions.push_back(make_unique<MovePort>(port.get(), *other_loc));
@@ -536,7 +536,7 @@ std::pair<Node*,vector<Wire*>> Healer::HealerImpl::findStableNode(Node* begin, W
             is_mismatch = true;
             break;
         }
-        
+
         auto* next_wire = dynamic_cast<Wire*>(current_node->other_than(prev_wire));
         if (next_wire == nullptr) break;
 
@@ -545,7 +545,7 @@ std::pair<Node*,vector<Wire*>> Healer::HealerImpl::findStableNode(Node* begin, W
 
         current_node = next_wire->Port1 == current_node
                      ? next_wire->Port2
-                     : next_wire->Port1; 
+                     : next_wire->Port1;
 
         prev_wire = next_wire;
     }
