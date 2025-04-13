@@ -921,7 +921,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
 
     // test all paintings
     QPoint click(fX, fY);
-    auto tolerance = static_cast<int>(Corr);
+    auto tolerance = Corr < 1.0 ? 1 : static_cast<int>(Corr);
     for (Painting* pp : *a_Paintings)
     {
         if(pp->isSelected)
