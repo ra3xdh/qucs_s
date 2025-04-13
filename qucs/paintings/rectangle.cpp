@@ -48,10 +48,19 @@ void qucs::Rectangle::paint(QPainter *painter) {
     painter->setPen(QPen(Qt::white, pen.width(), pen.style()));
     painter->drawRect(bounds);
 
-    misc::draw_resize_handle(painter, bounds.topLeft());
-    misc::draw_resize_handle(painter, bounds.topRight());
-    misc::draw_resize_handle(painter, bounds.bottomRight());
-    misc::draw_resize_handle(painter, bounds.bottomLeft());
+    // QRect's topRight(), bottomRight() and bottomLeft() return coordinates
+    // which are by 1 smaller than the rectangle itself.
+    //
+    //    r.right() == r.left() + r.width() - 1)
+    //
+    // Here we use slightly enlarged bounding to obtain "real" topRight, etc.
+    // This is a workariund for the problem reported in ra3xdh#1305
+    const auto bounds_ = bounds.marginsAdded({0, 0, 1, 1});
+
+    misc::draw_resize_handle(painter, bounds_.topLeft());
+    misc::draw_resize_handle(painter, bounds_.topRight());
+    misc::draw_resize_handle(painter, bounds_.bottomRight());
+    misc::draw_resize_handle(painter, bounds_.bottomLeft());
   }
   painter->restore();
 }
@@ -188,7 +197,15 @@ bool qucs::Rectangle::resizeTouched(const QPoint& click, int tolerance)
 {
   using qucs_s::geom::distance;
   normalize();
-  const auto bounds = boundingRect();
+
+  // QRect's topRight(), bottomRight() and bottomLeft() return coordinates
+  // which are by 1 smaller than the rectangle itself.
+  //
+  //    r.right() == r.left() + r.width() - 1)
+  //
+  // Here we use slightly enlarged bounding to obtain "real" topRight, etc.
+  // This is a workariund for the problem reported in ra3xdh#1305
+  const auto bounds = boundingRect().marginsAdded({0, 0, 1, 1});
 
   if (distance(bounds.topLeft(), click) < tolerance) {
     resizeState = State::moving_top_left;
