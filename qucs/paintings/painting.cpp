@@ -92,5 +92,5 @@ void Painting::updateCenter() noexcept
 
 QRect Painting::boundingRect() const noexcept
 {
-  return QRect{QPoint{x1, y1}, QPoint{x2, y2}}.normalized();
+  return QRect{QPoint{x1, y1}, QSize{x2 - x1, y2 - y1}}.normalized();
 }
