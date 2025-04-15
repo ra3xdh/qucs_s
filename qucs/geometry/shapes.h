@@ -11,7 +11,7 @@ namespace geom {
 
 inline bool is_inside_ellipse(const QPoint m, const QRect& bounds, int tolerance)
 {
-    const auto m_rel_center = (m - bounds.center());
+    const auto m_rel_center = (m - QRectF(bounds).center());
     const auto radius_x = bounds.width() / 2.0;
     const auto radius_y = bounds.height() / 2.0;
 
@@ -23,7 +23,7 @@ inline bool is_inside_ellipse(const QPoint m, const QRect& bounds, int tolerance
 
 inline bool is_near_ellipse(const QPoint m, const QRect& bounds, int tolerance)
 {
-    const auto m_rel_center = (m - bounds.center());
+    const auto m_rel_center = (m - QRectF(bounds).center());
     const auto radius_x = bounds.width() / 2.0;
     const auto radius_y = bounds.height() / 2.0;
 
