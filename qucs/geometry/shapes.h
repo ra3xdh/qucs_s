@@ -1,10 +1,7 @@
 #ifndef GEOMETRY_SHAPES_H
 #define GEOMETRY_SHAPES_H
 
-#include "concepts.h"
 #include <QRect>
-#include <cmath>
-#include <QDebug>
 
 namespace qucs_s {
 namespace geom {
