@@ -569,7 +569,6 @@ void Schematic::drawPostPaintEvents(QPainter* painter) {
    * are put into a QList (PostedPaintEvents) and processed here
    */
     for (auto p : a_PostedPaintEvents) {
-        // QPainter painter2(viewport()); for if(p.PaintOnViewport)
         QPen pen(Qt::black);
         painter->setPen(Qt::black);
         switch (p.pe) {
@@ -1434,9 +1433,6 @@ int Schematic::save()
         //at(1) = 'i';   // state of being unchanged
         a_undoSymbol.at(a_undoSymbolIdx)->replace(1, 1, 'i');
     }
-    // update the subcircuit file lookup hashes
-    //QucsMain->updateSchNameHash();
-    //QucsMain->updateSpiceNameHash();
 
     return result;
 }
@@ -2110,7 +2106,6 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 
     auto ev_pos = Event->position();
     QPoint inModel = contentsToModel(ev_pos.toPoint());
-    //QMouseEvent e(QEvent::MouseButtonPress, ev_pos, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 
     QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 
@@ -2155,10 +2150,8 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
         return;
     }
 
-    //  if(Event->format(1) == 0) {  // only one MIME type ?
 
     // drag component from listview
-    //if(Event->provides("application/x-qabstractitemmodeldatalist")) {
     if (Event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
         QListWidgetItem *Item = a_App->CompComps->currentItem();
         if (Item) {
@@ -2201,11 +2194,6 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
         }
 
         auto ev_pos = Event->position();
-        /*QMouseEvent e(QEvent::MouseMove,
-                      Event->position(),
-                      Qt::NoButton,
-                      Qt::NoButton,
-                      Qt::NoModifier);*/
         QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
         a_App->view->MMoveElement(this, &e);
     }
