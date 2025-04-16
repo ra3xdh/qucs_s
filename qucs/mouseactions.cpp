@@ -798,11 +798,7 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
                 ComponentMenu->addAction(QucsMain->popH);
     } while (false);
 
-#if QT_VERSION >= 0x060000
     ComponentMenu->popup(Event->globalPosition().toPoint());
-#else
-    ComponentMenu->popup(Event->globalPos());
-#endif
     Doc->viewport()->update();
 }
 
@@ -1117,7 +1113,6 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
             // Note: insertCopmponents does increment  name1 -> name2
 
             // enlarge viewarea if component lies outside the view
-            Comp->entireBounds(x1, y1, x2, y2);
             Doc->enlargeView(Comp);
 
             Doc->viewport()->update();
@@ -1615,7 +1610,7 @@ void MouseActions::paintElementsScheme(Schematic *p)
 // -----------------------------------------------------------
 void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 {
-    int x1, y1, x2, y2, rot;
+    int rot;
     QFileInfo Info(Doc->getDocName());
 
     switch (Event->button()) {
