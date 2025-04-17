@@ -50,9 +50,6 @@
   - model size has changed because the view has been scrolled
  See method description for example usage.
 */
-#include "mouseactions.h"
-#include "qucsdoc.h"
-#include "qucs.h"
 #include "schematic.h"
 
 QRect Schematic::modelRect()

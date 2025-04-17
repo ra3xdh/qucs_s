@@ -53,7 +53,6 @@
 #include "mouseactions.h"
 #include "node.h"
 #include "paintings/paintings.h"
-#include "qucs.h"
 #include "schematic.h"
 #include "settings.h"
 #include "textdoc.h"
