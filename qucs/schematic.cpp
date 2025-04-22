@@ -950,23 +950,15 @@ float Schematic::zoomBy(float s)
 // ---------------------------------------------------
 void Schematic::showAll()
 {
-    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
-    if (a_UsedX1 == 0)
-        if (a_UsedX2 == 0)
-            if (a_UsedY1 == 0)
-                if (a_UsedY2 == 0) {
-                    a_UsedX1 = a_UsedY1 = INT_MAX;
-                    a_UsedX2 = a_UsedY2 = INT_MIN;
-                    return;
-                }
+    const auto usedArea = allBoundingRect();
 
-    // Reshape model plane to cut off unused parts
-    constexpr int margin = 40;
-    QRect newModelBounds = modelRect();
-    newModelBounds.setLeft(a_UsedX1 - margin);
-    newModelBounds.setTop(a_UsedY1 - margin);
-    newModelBounds.setRight(a_UsedX2 + margin);
-    newModelBounds.setBottom(a_UsedY2 + margin);
+    if (usedArea.isNull()) {
+        a_UsedX1 = a_UsedY1 = INT_MAX;
+        a_UsedX2 = a_UsedY2 = INT_MIN;
+        return;
+    }
+
+    const QRect newModelBounds = usedArea.marginsAdded({40, 40, 40, 40});
 
     // The shape of the model plane may not fit the shape of the viewport,
     // so we looking for a scale value which enables to fit the whole model
@@ -982,22 +974,16 @@ void Schematic::showAll()
 
 // ------------------------------------------------------
 void Schematic::zoomToSelection() {
-    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
-    if (a_UsedX1 == 0)
-        if (a_UsedX2 == 0)
-            if (a_UsedY1 == 0)
-                if (a_UsedY2 == 0) {
-                    a_UsedX1 = a_UsedY1 = INT_MAX;
-                    a_UsedX2 = a_UsedY2 = INT_MIN;
+    const auto usedArea = allBoundingRect();
 
-                    // No elements present – nothing can be selected; quit
-                    return;
-                }
+    if (usedArea.isNull()) {
+        a_UsedX1 = a_UsedY1 = INT_MAX;
+        a_UsedX2 = a_UsedY2 = INT_MIN;
+        // No elements present – nothing is selected; quit
+        return;
+    }
 
-    const QRect selectedBoundingRect{ currentSelection().bounds };
-
-    // Working with raw coordinates is clumsy, abstract them out
-    const QRect usedBoundingRect{a_UsedX1, a_UsedY1, a_UsedX2 - a_UsedX1, a_UsedY2 - a_UsedY1};
+    const QRect selectedBoundingRect(currentSelection().bounds);
 
     if (selectedBoundingRect.width() == 0 || selectedBoundingRect.height() == 0) {
         // If nothing is selected, then what should be shown? Probably it's best
@@ -1005,13 +991,7 @@ void Schematic::zoomToSelection() {
         return;
     }
 
-    // While we here, lets reshape model plane to cut off unused parts
-    constexpr int margin = 40;
-    QRect modelBounds = modelRect();
-    modelBounds.setLeft(usedBoundingRect.left() - margin);
-    modelBounds.setTop(usedBoundingRect.top() - margin);
-    modelBounds.setRight(usedBoundingRect.right() + margin);
-    modelBounds.setBottom(usedBoundingRect.bottom() + margin);
+    const QRect modelBounds = usedArea.marginsAdded({40, 40, 40, 40});
 
     // Find out the scale at which selected area's longest side would fit
     // into the viewport
@@ -1031,37 +1011,24 @@ void Schematic::showNoZoom()
     const QPoint vpCenter = viewportRect().center();
     const QPoint displayedInCenter = viewportToModel(vpCenter);
 
-    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
-    if (a_UsedX1 == 0)
-        if (a_UsedX2 == 0)
-            if (a_UsedY1 == 0)
-                if (a_UsedY2 == 0) {
-                    a_UsedX1 = a_UsedY1 = INT_MAX;
-                    a_UsedX2 = a_UsedY2 = INT_MIN;
-                    // If there is no elements in schematic, then just set scale 1.0
-                    // at the place we currently in.
-                    renderModel(noScale, includePoint(modelRect(), displayedInCenter), displayedInCenter, vpCenter);
-                    return;
-                }
+    const auto usedArea = allBoundingRect();
 
-    // Working with raw coordinates is clumsy. Wrap them in useful abstraction.
-    const QRect usedBoundingRect{a_UsedX1, a_UsedY1, a_UsedX2 - a_UsedX1, a_UsedY2 - a_UsedY1};
+    if (usedArea.isNull()) {
+      // If there is no elements in schematic, then just set scale 1.0
+      // at the place we currently in.
+      renderModel(noScale, includePoint(modelRect(), displayedInCenter), displayedInCenter, vpCenter);
+      return;
+    }
 
-    // Trim unused model space
-    constexpr int margin = 40;
-    QRect newModelBounds = modelRect();
-    newModelBounds.setLeft(usedBoundingRect.left() - margin);
-    newModelBounds.setTop(usedBoundingRect.top() - margin);
-    newModelBounds.setRight(usedBoundingRect.right() + margin);
-    newModelBounds.setBottom(usedBoundingRect.bottom() + margin);
+    const QRect newModelBounds = usedArea.marginsAdded({40, 40, 40, 40});
 
     // If a part of "used" area is currently displayed in the center of the
     // viewport, then keep it in the same place after scaling. Otherwise focus
     // on the center of the used area after scale change.
-    if (usedBoundingRect.contains(displayedInCenter)) {
+    if (usedArea.contains(displayedInCenter)) {
         renderModel(noScale, newModelBounds, displayedInCenter, vpCenter);
     } else {
-        renderModel(noScale, newModelBounds, usedBoundingRect.center(), vpCenter);
+        renderModel(noScale, newModelBounds, usedArea.center(), vpCenter);
     }
  }
 
