@@ -1942,30 +1942,29 @@ void Schematic::activateCompsWithinRect(int x1, int y1, int x2, int y2)
 // ---------------------------------------------------
 bool Schematic::activateSpecifiedComponent(int x, int y)
 {
-    int x1, y1, x2, y2, a;
+    int a;
     for(Component* pc : *a_Components)
     {
-        pc->Bounding(x1, y1, x2, y2);
-        if(x >= x1) if(x <= x2) if(y >= y1) if(y <= y2)
-                    {
-                        a = pc->isActive - 1;
+        if(pc->boundingRect().contains(x, y))
+        {
+            a = pc->isActive - 1;
 
-                        if(pc->Ports.count() > 1)
-                        {
-                            if(a < 0)  a = 2;
-                            pc->isActive = a;    // change "active status"
-                        }
-                        else
-                        {
-                            a &= 1;
-                            pc->isActive = a;    // change "active status"
-                            if(a == COMP_IS_ACTIVE)  // only for active (not shorten)
-                                if(pc->Model == "GND")  // if existing, delete label on wire line
-                                    oneLabel(pc->Ports.first()->Connection);
-                        }
-                        setChanged(true, true);
-                        return true;
-                    }
+            if(pc->Ports.count() > 1)
+            {
+                if(a < 0)  a = 2;
+                pc->isActive = a;    // change "active status"
+            }
+            else
+            {
+                a &= 1;
+                pc->isActive = a;    // change "active status"
+                if(a == COMP_IS_ACTIVE)  // only for active (not shorten)
+                    if(pc->Model == "GND")  // if existing, delete label on wire line
+                        oneLabel(pc->Ports.first()->Connection);
+            }
+            setChanged(true, true);
+            return true;
+        }
     }
     return false;
 }
