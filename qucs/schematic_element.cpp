@@ -1942,31 +1942,33 @@ void Schematic::activateCompsWithinRect(int x1, int y1, int x2, int y2)
 // ---------------------------------------------------
 bool Schematic::activateSpecifiedComponent(int x, int y)
 {
-    int a;
-    for(Component* pc : *a_Components)
-    {
-        if(pc->boundingRect().contains(x, y))
-        {
-            a = pc->isActive - 1;
+    auto componentIt = std::ranges::find_if(*a_Components, [x, y](const Component* pc){
+        return pc->boundingRect().contains(x, y);
+    });
 
-            if(pc->Ports.count() > 1)
-            {
-                if(a < 0)  a = 2;
-                pc->isActive = a;    // change "active status"
-            }
-            else
-            {
-                a &= 1;
-                pc->isActive = a;    // change "active status"
-                if(a == COMP_IS_ACTIVE)  // only for active (not shorten)
-                    if(pc->Model == "GND")  // if existing, delete label on wire line
-                        oneLabel(pc->Ports.first()->Connection);
-            }
-            setChanged(true, true);
-            return true;
-        }
+    if(componentIt == a_Components->end())
+    {
+        return false;
     }
-    return false;
+
+    Component* pc = *componentIt;
+    int a = pc->isActive - 1;
+
+    if(pc->Ports.count() > 1)
+    {
+        if(a < 0)  a = 2;
+        pc->isActive = a;    // change "active status"
+    }
+    else
+    {
+        a &= 1;
+        pc->isActive = a;    // change "active status"
+        if(a == COMP_IS_ACTIVE)  // only for active (not shorten)
+            if(pc->Model == "GND")  // if existing, delete label on wire line
+                oneLabel(pc->Ports.first()->Connection);
+    }
+    setChanged(true, true);
+    return true;
 }
 
 // ---------------------------------------------------
