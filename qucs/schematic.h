@@ -345,16 +345,6 @@ private:
   QFileInfo a_FileInfo;
 
   /**
-    Minimum scale at which schematic could be drawn.
-  */
-  static constexpr double a_minScale = 0.1;
-
-  /**
-    Maximum scale at which schematic could be drawn.
-  */
-  static constexpr double a_maxScale = 10.0;
-
-  /**
     Returns a rectangle which describes the model plane of the schematic.
     The rectangle is a copy, changes made to it do not affect schematic state.
   */
@@ -365,12 +355,6 @@ private:
     width and height are equal to viewport's width and height.
   */
   QRect viewportRect();
-
-  /**
-    If given value violates lower or upper scale limit, then returns
-    the limit value, original value otherwise.
-  */
-  static double clipScale(double);
 
   /**
     Tells whether the model should be rerendered. Model should be rendered
