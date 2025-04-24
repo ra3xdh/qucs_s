@@ -16,39 +16,12 @@
  ***************************************************************************/
 
 #include <algorithm>
-#include <cassert>
-#include <limits.h>
-#include <stdlib.h>
-
-#include <QAction>
-#include <QApplication>
-#include <QClipboard>
-#include <QDebug>
-#include <QDir>
-#include <QDragEnterEvent>
-#include <QDragLeaveEvent>
-#include <QDragMoveEvent>
-#include <QDropEvent>
-#include <QEvent>
-#include <QFileInfo>
-#include <QLineEdit>
-#include <QListWidget>
-#include <QMouseEvent>
-#include <QPaintDevice>
-#include <QPainter>
-#include <QPixmap>
-#include <QPoint>
-#include <QPrinter>
-#include <QRect>
-#include <QTextStream>
-#include <QUrl>
-#include <QWheelEvent>
-#include <QRegularExpression>
+#include <QString>
 
 #include "components/vafile.h"
 #include "components/verilogfile.h"
 #include "components/vhdlfile.h"
-#include "diagrams/diagrams.h"
+#include "diagrams/diagram.h"
 #include "main.h"
 #include "mouseactions.h"
 #include "node.h"
