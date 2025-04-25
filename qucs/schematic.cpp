@@ -44,12 +44,10 @@ std::list<Component*> SymbolComps;
     rectangle made by enlarging the source rectangle to include
     the \c point. Otherwise returns a rectangle of the same size.
 */
-static QRect includePoint(QRect rect, QPoint point) {
-  if (rect.contains(point)) {
-    return rect;
-  } else {
-    return rect.united(QRect{point, point});
-  }
+inline QRect includePoint(const QRect& rect, const QPoint& point) {
+  return rect.contains(point)
+       ? rect
+       : rect.united(QRect{point, point});
 }
 
 Schematic::Schematic(QucsApp *App_, const QString &Name_) :
