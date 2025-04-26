@@ -334,8 +334,6 @@ private:
   int a_UsedX2;
   int a_UsedY2;
 
-  void sizeOfAll(int&, int&, int&, int&);
-
   // Viewport-realative coordinates of the cursor between mouse movements.
   // Used in "pan with mouse" feature.
   QPoint a_previousCursorPosition;

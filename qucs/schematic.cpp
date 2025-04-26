@@ -1123,10 +1123,6 @@ void Schematic::drawGrid(QPainter* painter) {
     painter->restore();
 }
 
-void Schematic::updateAllBoundingRect() {
-    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
-}
-
 QRect Schematic::allBoundingRect() {
     updateAllBoundingRect();
     return QRect{a_UsedX1, a_UsedY1, (a_UsedX2 - a_UsedX1), (a_UsedY2 - a_UsedY1)};
@@ -1146,7 +1142,7 @@ void unite(std::optional<QRect>& left, const QRect& right)
 }
 
 // ---------------------------------------------------
-void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
+void Schematic::updateAllBoundingRect()
 {
     std::optional<QRect> totalBounds = std::nullopt;
 
@@ -1177,15 +1173,15 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
     }
 
     if (totalBounds) {
-        xmin = totalBounds->left();
-        ymin = totalBounds->top();
-        xmax = totalBounds->right();
-        ymax = totalBounds->bottom();
+        a_UsedX1 = totalBounds->left();
+        a_UsedY1 = totalBounds->top();
+        a_UsedX2 = totalBounds->right();
+        a_UsedY2 = totalBounds->bottom();
     } else {
-        xmin = 0;
-        ymin = 0;
-        xmax = 0;
-        ymax = 0;
+        a_UsedX1 = 0;
+        a_UsedY1 = 0;
+        a_UsedX2 = 0;
+        a_UsedY2 = 0;
     }
 }
 
