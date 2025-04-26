@@ -1380,25 +1380,25 @@ int Schematic::save()
 // equal add or remove some in the symbol.
 int Schematic::adjustPortNumbers()
 {
-    int x1, x2, y1, y2;
+    QRect usedArea;
     // get size of whole symbol to know where to place new ports
     if (a_symbolMode)
-        sizeOfAll(x1, y1, x2, y2);
+        usedArea = allBoundingRect();
     else {
         a_Components = &SymbolComps;
         a_Wires = &SymbolWires;
         a_Nodes = &SymbolNodes;
         a_Diagrams = &SymbolDiags;
         a_Paintings = &a_SymbolPaints;
-        sizeOfAll(x1, y1, x2, y2);
+        usedArea = allBoundingRect();
         a_Components = &a_DocComps;
         a_Wires = &a_DocWires;
         a_Nodes = &a_DocNodes;
         a_Diagrams = &a_DocDiags;
         a_Paintings = &a_DocPaints;
     }
-    x1 += 40;
-    y2 += 20;
+    int x1 = usedArea.left() + 40;
+    int y2 = usedArea.bottom() + 20;
     setOnGrid(x1, y2);
 
     // delete all port names in symbol
