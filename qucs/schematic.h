@@ -288,10 +288,7 @@ private:
   int a_tmpViewY1;
   int a_tmpViewX2;
   int a_tmpViewY2;
-  int a_tmpUsedX1;
-  int a_tmpUsedY1;
-  int a_tmpUsedX2;
-  int a_tmpUsedY2;
+  QRect a_tmpUsedArea;
 
   int a_undoActionIdx;
   QVector<QString *> a_undoAction;
@@ -326,13 +323,10 @@ protected slots:
   void slotScrollRight();
 
 private:
-  // Variables Used* hold the coordinates of top-left and bottom-right corners
-  // of a smallest rectangle which can fit all elements of the schematic.
+  // Describes the area occupied by all elements of schematic, i.e. it is
+  // the union of bounding rectangles of all elements.
   // This rectangle exists in the same coordinate system as View*-rectangle
-  int a_UsedX1;
-  int a_UsedY1;
-  int a_UsedX2;
-  int a_UsedY2;
+  QRect a_UsedArea;
 
   // Viewport-realative coordinates of the cursor between mouse movements.
   // Used in "pan with mouse" feature.

@@ -82,20 +82,12 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_) :
     a_tmpViewY1(-200),
     a_tmpViewX2(200),
     a_tmpViewY2(200),
-    a_tmpUsedX1(-200),
-    a_tmpUsedY1(-200),
-    a_tmpUsedX2(200),
-    a_tmpUsedY2(200),
     a_undoActionIdx(0),
     // The 'i' means state for being unchanged.
     a_undoAction((QVector<QString*>() << new QString(" i\n</>\n</>\n</>\n</>\n"))),
     a_undoSymbolIdx(0),
     // The 'i' means state for being unchanged.
     a_undoSymbol((QVector<QString*>() << new QString(" i\n</>\n</>\n</>\n</>\n"))),
-    a_UsedX1(INT_MAX),
-    a_UsedY1(INT_MAX),
-    a_UsedX2(INT_MAX),
-    a_UsedY2(INT_MAX),
     a_previousCursorPosition(),
     a_dragIsOkay(false),
     a_FileInfo(),
@@ -924,8 +916,6 @@ void Schematic::showAll()
     const auto usedArea = allBoundingRect();
 
     if (usedArea.isNull()) {
-        a_UsedX1 = a_UsedY1 = INT_MAX;
-        a_UsedX2 = a_UsedY2 = INT_MIN;
         return;
     }
 
@@ -948,8 +938,6 @@ void Schematic::zoomToSelection() {
     const auto usedArea = allBoundingRect();
 
     if (usedArea.isNull()) {
-        a_UsedX1 = a_UsedY1 = INT_MAX;
-        a_UsedX2 = a_UsedY2 = INT_MIN;
         // No elements present – nothing is selected; quit
         return;
     }
@@ -1006,10 +994,7 @@ void Schematic::showNoZoom()
 void Schematic::enlargeView(const Element* e) {
     const auto br = e->boundingRect();
 
-    a_UsedX1 = std::min(a_UsedX1, br.left());
-    a_UsedY1 = std::min(a_UsedY1, br.top());
-    a_UsedX2 = std::max(a_UsedX2, br.right());
-    a_UsedY2 = std::max(a_UsedY2, br.bottom());
+    a_UsedArea |= br;
 
     QRect newModel = modelRect()
         .united(br.marginsAdded({40, 40, 40, 40}));
@@ -1125,7 +1110,7 @@ void Schematic::drawGrid(QPainter* painter) {
 
 QRect Schematic::allBoundingRect() {
     updateAllBoundingRect();
-    return QRect{a_UsedX1, a_UsedY1, (a_UsedX2 - a_UsedX1), (a_UsedY2 - a_UsedY1)};
+    return a_UsedArea;
 }
 
 namespace internal {
@@ -1172,17 +1157,7 @@ void Schematic::updateAllBoundingRect()
         internal::unite(totalBounds, pp->boundingRect());
     }
 
-    if (totalBounds) {
-        a_UsedX1 = totalBounds->left();
-        a_UsedY1 = totalBounds->top();
-        a_UsedX2 = totalBounds->right();
-        a_UsedY2 = totalBounds->bottom();
-    } else {
-        a_UsedX1 = 0;
-        a_UsedY1 = 0;
-        a_UsedX2 = 0;
-        a_UsedY2 = 0;
-    }
+    a_UsedArea = totalBounds.has_value() ? *totalBounds : QRect();
 }
 
 Schematic::Selection Schematic::currentSelection() const {
@@ -1774,18 +1749,7 @@ void Schematic::switchPaintMode()
     tmp = a_ViewY2;
     a_ViewY2 = a_tmpViewY2;
     a_tmpViewY2 = tmp;
-    tmp = a_UsedX1;
-    a_UsedX1 = a_tmpUsedX1;
-    a_tmpUsedX1 = tmp;
-    tmp = a_UsedY1;
-    a_UsedY1 = a_tmpUsedY1;
-    a_tmpUsedY1 = tmp;
-    tmp = a_UsedX2;
-    a_UsedX2 = a_tmpUsedX2;
-    a_tmpUsedX2 = tmp;
-    tmp = a_UsedY2;
-    a_UsedY2 = a_tmpUsedY2;
-    a_tmpUsedY2 = tmp;
+    std::swap(a_UsedArea, a_tmpUsedArea);
 }
 
 // *********************************************************************
@@ -1870,7 +1834,7 @@ void Schematic::scrollUp(int step)
 
     // Cut off a bit of unused model space from its bottom side.
     const auto b = modelBounds.bottom() - stepInModel;
-    if (b > a_UsedY2) {
+    if (b > a_UsedArea.bottom()) {
         modelBounds.setBottom(b);
     }
 
@@ -1903,7 +1867,7 @@ void Schematic::scrollDown(int step)
 
     // Cut off a bit of unused model space from its top side.
     const auto t = modelBounds.top() + stepInModel;
-    if (t < a_UsedY1) {
+    if (t < a_UsedArea.top()) {
         modelBounds.setTop(t);
     }
 
@@ -1937,7 +1901,7 @@ void Schematic::scrollLeft(int step)
 
     // Cut off a bit of unused model space from its right side.
     const auto r = modelBounds.right() - stepInModel;
-    if (r > a_UsedX2) {
+    if (r > a_UsedArea.right()) {
         modelBounds.setRight(r);
     }
 
@@ -1970,7 +1934,7 @@ void Schematic::scrollRight(int step)
 
     // Cut off a bit of unused model space from its left side.
     const auto l = modelBounds.left() + stepInModel;
-    if (l < a_UsedX1) {
+    if (l < a_UsedArea.left()) {
         modelBounds.setLeft(l);
     }
 
