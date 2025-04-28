@@ -1727,28 +1727,16 @@ void Schematic::switchPaintMode()
 {
     a_symbolMode = !a_symbolMode; // change mode
 
-    int tmp, t2;
-    float temp;
-    temp = a_Scale;
-    a_Scale = a_tmpScale;
-    a_tmpScale = temp;
-    tmp = contentsX();
-    t2 = contentsY();
+    std::swap(a_Scale, a_tmpScale);
+    int x = contentsX();
+    int y = contentsY();
     setContentsPos(a_tmpPosX, a_tmpPosY);
-    a_tmpPosX = tmp;
-    a_tmpPosY = t2;
-    tmp = a_ViewX1;
-    a_ViewX1 = a_tmpViewX1;
-    a_tmpViewX1 = tmp;
-    tmp = a_ViewY1;
-    a_ViewY1 = a_tmpViewY1;
-    a_tmpViewY1 = tmp;
-    tmp = a_ViewX2;
-    a_ViewX2 = a_tmpViewX2;
-    a_tmpViewX2 = tmp;
-    tmp = a_ViewY2;
-    a_ViewY2 = a_tmpViewY2;
-    a_tmpViewY2 = tmp;
+    a_tmpPosX = x;
+    a_tmpPosY = y;
+    std::swap(a_ViewX1, a_tmpViewX1);
+    std::swap(a_ViewY1, a_tmpViewY1);
+    std::swap(a_ViewX2, a_tmpViewX2);
+    std::swap(a_ViewY2, a_tmpViewY2);
     std::swap(a_UsedArea, a_tmpUsedArea);
 }
 
