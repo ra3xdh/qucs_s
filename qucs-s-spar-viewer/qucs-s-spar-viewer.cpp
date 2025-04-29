@@ -3782,32 +3782,38 @@ bool Qucs_S_SPAR_Viewer::save() {
     }
     xml.writeEndElement(); // datasets
   }
-/*
-         // Save traces
+
+  // Save traces
   if (!traceMap.isEmpty()) { //Check empty map
     xml.writeStartElement("traces");
-    for (const QString& traceName : traceMap.keys()) {
-      TraceProperties props = traceMap[traceName];
-      int dotIndex = traceName.indexOf('.');
+    // Loop display mode
+    for (const DisplayMode& mode : traceMap.keys()) {
+      // For each display mode, get all the traces
+      QMap<QString, TraceProperties>& traces = traceMap[mode];
+      // Iterate through the inner QMap (traces in the current mode)
+      for (const QString& traceName : traces.keys()) {
+          TraceProperties props = traces[traceName];
+          int dotIndex = traceName.indexOf('.');
 
-      QString dataset = traceName.left(dotIndex);
-      QString trace = traceName.mid(dotIndex + 1);
+          QString dataset = traceName.left(dotIndex);
+          QString trace = traceName.mid(dotIndex + 1);
 
-      if (trace.endsWith("_n.u.")) {
-        trace.chop(5);
-      }
+          if (trace.endsWith("_n.u.")) {
+            trace.chop(5);
+          }
 
-      xml.writeStartElement("trace");
-      xml.writeAttribute("display", props.display_mode);
-      xml.writeAttribute("dataset", dataset); // Extract dataset name
-      xml.writeAttribute("name", trace);
-      xml.writeAttribute("color", props.colorButton->palette().color(QPalette::Button).name());
-      xml.writeAttribute("width", QString::number(props.width->value()));
-      xml.writeAttribute("style", props.LineStyleComboBox->currentText());
-      xml.writeEndElement(); // trace
+          xml.writeStartElement("trace");
+          xml.writeAttribute("display", QString::number((int) mode)); // The display mode is saved as an integer
+          xml.writeAttribute("dataset", dataset); // Extract dataset name
+          xml.writeAttribute("name", trace);
+          xml.writeAttribute("color", props.colorButton->palette().color(QPalette::Button).name());
+          xml.writeAttribute("width", QString::number(props.width->value()));
+          xml.writeAttribute("style", props.LineStyleComboBox->currentText());
+          xml.writeEndElement(); // trace
+        }
     }
     xml.writeEndElement(); // traces
-  }*/
+  }
 
          // Save markers
   if (!markerMap.isEmpty()) { //Check empty map
@@ -3925,41 +3931,21 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
             QString traceName = xml.attributes().value("name").toString();
             traceName = traceName.mid(traceName.indexOf('.') + 1); // Remove all that comes before the dot, including the dot.
             QString dataset = xml.attributes().value("dataset").toString(); // Read dataset from attributes
-            QString modeName = xml.attributes().value("display").toString(); // Display mode (e.g. rectangular, polar, Smith, etc.)
+            DisplayMode displayMode = (DisplayMode) xml.attributes().value("display").toInt(); // Display mode (e.g. rectangular, polar, Smith, etc.)
             QColor color(xml.attributes().value("color").toString()); // Read color from attributes
             int width = xml.attributes().value("width").toString().toInt(); // Read width from attributes
             QString style = xml.attributes().value("style").toString(); // Read style from attributes
 
             // Parse the traceName to determine parameter and display mode
             QString parameter;
-            DisplayMode displayMode;
 
             // Assuming the format is like "S11_dB", "S21_Smith", etc.
             if (traceName.contains("_")) {
               // Split parameter and mode
               parameter = traceName.left(traceName.indexOf('_'));
-
-              // Determine display mode from string
-              if (modeName == "Magnitude") {
-                displayMode = DisplayMode::Magnitude_dB;
-              } else if (modeName == "Phase") {
-                displayMode = DisplayMode::Phase;
-              } else if (modeName == "Smith") {
-                displayMode = DisplayMode::Smith;
-              } else if (modeName == "Polar") {
-                displayMode = DisplayMode::Polar;
-              } else if (modeName == "Natural Units") {
-                displayMode = DisplayMode::PortImpedance;
-              } else if (modeName == "Group Delay") {
-                displayMode = DisplayMode::GroupDelay;
-              } else {
-                // Default case or handle error
-                displayMode = DisplayMode::Magnitude_dB;
-              }
             } else {
               // If no underscore, assume the whole name is the parameter and use Magnitude_dB as default
               parameter = traceName;
-              displayMode = DisplayMode::PortImpedance; // Assuming this is appropriate for parameters like "Re{Zin}"
             }
 
             // Create TraceInfo struct
