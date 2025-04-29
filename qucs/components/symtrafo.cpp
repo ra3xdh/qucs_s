@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "node.h"
 #include "main.h"
 #include "symtrafo.h"
 #include "extsimkernels/spicecompat.h"
@@ -25,8 +26,7 @@
 symTrafo::symTrafo()
 {
   Description = QObject::tr("ideal symmetrical transformer");
-  Simulator = spicecompat::simQucsator;
-
+  Simulator = spicecompat::simAll;
   QFont Font(QucsSettings.font); // default application font
   // symbol text is smaller (10 pt default)
   Font.setPointSize(10); 
@@ -86,6 +86,7 @@ symTrafo::symTrafo()
   ty = y2+4;
   Model = "sTr";
   Name  = "Tr";
+  SpiceModel = "X";
 
   Props.append(new Property("T1", "1", true,
 		QObject::tr("voltage transformation ratio of coil 1")));
@@ -109,4 +110,40 @@ Element* symTrafo::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new symTrafo();
   return 0;
+}
+
+QString symTrafo::spice_netlist(spicecompat::SpiceDialect dialect)
+{
+  Q_UNUSED(dialect);
+
+  QString p1 = Ports.at(1)->Connection->Name;
+  QString p2 = Ports.at(2)->Connection->Name;
+
+  QString s1p = Ports.at(4)->Connection->Name;
+  QString s1m = Ports.at(3)->Connection->Name;
+
+  QString s2p = Ports.at(0)->Connection->Name;
+  QString s2m = Ports.at(5)->Connection->Name;
+
+  QString s;
+  s = "X_" + Name + "_W1 ";
+  s += p1 + " ";  s += p2 + " ";
+  s += s1p + " "; s += s1m + " ";
+  s += " XFMR RATIO=" + spicecompat::normalize_value(Props.at(0)->Value);
+  s += "\n";
+
+  s += "X_" + Name + "_W2 ";
+  s += p1 + " ";  s += p2 + " ";
+  s += s2p + " "; s += s2m + " ";
+  s += " XFMR RATIO=" + spicecompat::normalize_value(Props.at(1)->Value);
+  s += "\n";
+  return s;
+}
+
+
+QString symTrafo::getSpiceLibrary()
+{
+  QString f = spicecompat::getSpiceLibPath("xfmr.cir");
+  QString s = QString (".INCLUDE \"%1\"\n").arg(f);
+  return s;
 }

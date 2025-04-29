@@ -83,8 +83,8 @@ S4Q_W.cpp
 # XSPICE cpp list
 #
 
-Icouple.cpp
-core.cpp
+#Icouple.cpp
+#core.cpp
 SDTF.cpp
 XAPWL.cpp
 
@@ -174,8 +174,8 @@ S4Q_W.h
 # XSPICE component headers
 #
 
-Icouple.h
-core.h
+#Icouple.h
+#core.h
 SDTF.h
 XAPWL.h
 

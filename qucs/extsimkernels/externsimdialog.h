@@ -20,10 +20,10 @@
 
 #include <QtGui>
 
-#include "schematic.h"
 #include "ngspice.h"
 #include "xyce.h"
-#include "spicecompat.h"
+
+class Schematic;
 
 class ExternSimDialog : public QDialog
 {

@@ -28,6 +28,7 @@
 #include <QProcess>
 
 #include "schematic.h"
+#include "extsimkernels/spicecompat.h"
 
 class QPlainTextEdit;
 

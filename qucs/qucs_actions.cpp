@@ -59,6 +59,10 @@
 #include "dialogs/importdialog.h"
 #include "dialogs/aboutdialog.h"
 #include "module.h"
+#include "diagram.h"
+#include "node.h"
+#include "wirelabel.h"
+#include "wire.h"
 
 #include "extsimkernels/xyce.h"
 
@@ -881,8 +885,18 @@ void QucsApp::slotCallPwrComb()
 
 void QucsApp::slotCallSPAR_Viewer()
 {
-  auto currentStyle = QApplication::style()->objectName();
-  launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer",(QStringList() << "-style" << currentStyle));
+
+  QString project_name = this->ProjName;
+  QString project_path;
+  QStringList args; // Arguments to pass to the tool, i.e. the project folder to monitor files
+
+  if (!project_name.isEmpty()) {
+    project_path = QucsSettings.projsDir.filePath(this->ProjName);
+    project_path += QString("_prj");
+    args.append(project_path);
+  }
+
+  launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer", args);
 }
 
 
@@ -1461,7 +1475,7 @@ void QucsApp::slotExportGraphAsCsv()
 }
 
 
-void QucsApp::slotOpenRecent()
+void QucsApp::slotOpenRecentFile()
 {
   QAction *action = qobject_cast<QAction *>(sender());
   if (action) {
@@ -1494,6 +1508,42 @@ void QucsApp::slotClearRecentFiles()
 {
   QucsSettings.RecentDocs.clear();
   slotUpdateRecentFiles();
+}
+
+void QucsApp::slotOpenRecentProject()
+{
+  QAction *recentProjAction = qobject_cast<QAction *>(sender());
+  if (recentProjAction) {
+    openProject(recentProjAction->data().toString());
+  }
+}
+
+void QucsApp::slotUpdateRecentProjects()
+{
+  QMutableStringListIterator it(QucsSettings.RecentProjects);
+  QDir projDir;
+  while(it.hasNext()) {
+    // QDir::cd returns false if directory doesn't exist.
+    if (!projDir.cd(it.next())) {
+        it.remove();
+    }
+  }
+
+  for (int i = 0; i < MaxRecentProjects; ++i) {
+    if (i < QucsSettings.RecentProjects.size()) {
+      projRecentActions[i]->setText(QucsSettings.RecentProjects[i]);
+      projRecentActions[i]->setData(QucsSettings.RecentProjects[i]);
+      projRecentActions[i]->setVisible(true);
+    } else {
+      projRecentActions[i]->setVisible(false);
+    }
+  }
+}
+
+void QucsApp::slotClearRecentProjects()
+{
+  QucsSettings.RecentProjects.clear();
+  updateRecentProjectsList();
 }
 
 /*!

@@ -21,6 +21,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
 #include <QAction>
 #include <QMessageBox>
 #include <QTextStream>
+#include <qpalette.h>
 
 #include "main.h"
 #include "misc.h"
@@ -58,6 +59,12 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
 
   setWordWrapMode(QTextOption::NoWrap);
   misc::setWidgetBackgroundColor(viewport(),QucsSettings.BGColor);
+  // Set black text if light background
+  QPalette p = palette();
+  if(QucsSettings.BGColor.value() > 127) {
+    p.setColor(QPalette::Text, Qt::black);
+    setPalette(p);
+  }
   connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
   connect(this, SIGNAL(cursorPositionChanged()),
           SLOT(slotCursorPosChanged()));

@@ -31,6 +31,7 @@
 
 #include "main.h"
 #include "node.h"
+#include "wire.h"
 #include "schematic.h"
 #include "diagrams/diagrams.h"
 #include "paintings/paintings.h"
@@ -876,9 +877,9 @@ bool Schematic::loadComponents(QTextStream *stream, std::list<Component*> *List)
 // Inserts a wire without performing logic for optimizing.
 void Schematic::simpleInsertWire(Wire *pw)
 {
-  Node* pn = provideNode(pw->x1, pw->y1);
+  Node* pn = provideNode(pw->P1());
 
-  if(pw->x1 == pw->x2) if(pw->y1 == pw->y2) {
+  if(pw->P1() == pw->P2()) {
     pn->Label = pw->Label;   // wire with length zero are just node labels
     if (pn->Label) {
       pn->Label->Type = isNodeLabel;
@@ -891,7 +892,7 @@ void Schematic::simpleInsertWire(Wire *pw)
   pn->connect(pw);  // connect schematic node to component node
   pw->Port1 = pn;
 
-  pn = provideNode(pw->x2, pw->y2);
+  pn = provideNode(pw->P2());
   pn->connect(pw);  // connect schematic node to component node
   pw->Port2 = pn;
 
@@ -909,7 +910,7 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
     Line = Line.trimmed();
     if(Line.isEmpty()) continue;
 
-    w = new Wire(0,0,0,0, nullptr, nullptr);
+    w = new Wire();
     if(!w->load(Line)) {
       QMessageBox::critical(0, QObject::tr("Error"),
       QObject::tr("Format Error:\nWrong 'wire' line format!"));
@@ -922,7 +923,7 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
       // Only the label is kept, so it becomes "free" i.e. not having
       // a host element like wire or node. We must be careful to treat
       // such labels in a special way in other parts of the codebase.
-      if (w->x1 == w->x2 && w->y1 == w->y2 && w->Label) {
+      if (w->P1() == w->P2() && w->Label) {
         w->Label->Type = isNodeLabel;
         List->push_back(w->Label);
         w->Label->pOwner = nullptr;
@@ -935,23 +936,6 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
       if(w->Label)  List->push_back(w->Label);
     }
     else {
-      // Quick fix for ra3xdh#1273.
-      //
-      // A wire whose (x1,y1) coordinates are not less than (x2,y2)
-      // coordinates somehow deals some damage like crashes or funny behaviour.
-      //
-      // I wasn't able to understand how exactly this happens, i.e. why it's
-      // important to have x1 less than x2 for a wire, so I decided to fix this
-      // in a most straightforward way by "normalizing" the wire before installing
-      // it into schematic
-      if (w->x1 > w->x2) {
-        std::swap(w->x1, w->x2);
-        std::swap(w->y1, w->y2);
-      } else if (w->x1 == w->x2 && w->y1 > w->y2) {
-        std::swap(w->x1, w->x2);
-        std::swap(w->y1, w->y2);
-      }
-
       simpleInsertWire(w);
     }
   }

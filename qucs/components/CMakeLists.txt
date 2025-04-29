@@ -97,6 +97,7 @@ circularloop.cpp
 spiralinductor.cpp
 simulation.cpp
 xml/XmlComponent.cpp
+vdmos.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -268,6 +269,7 @@ vpulse.h
 vrect.h
 circularloop.h
 spiralinductor.h
+vdmos.h
 )
 
 

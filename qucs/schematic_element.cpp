@@ -22,6 +22,11 @@
 #include "healer.h"
 #include "portsymbol.h"
 #include "schematic.h"
+#include "settings.h"
+#include "component.h"
+#include "diagram.h"
+#include "node.h"
+#include "wire.h"
 
 #include <ranges>
 #include <set>
@@ -33,12 +38,19 @@ struct Schematic::HealingParams
     qucs_s::wire::Planner::PlanType m_wire_plan = qucs_s::wire::Planner::PlanType::Straight;
 };
 
-constexpr Schematic::HealingParams mousyMutationParams{
-    .m_healer_params = {.allowWireReshaping = false, .allowWireRelaying = false, .wireRelayingDepth = 3}
+const Schematic::HealingParams mousyMutationParams{
+    .m_healer_params = {
+        .allowWireReshaping = _settings::Get().item<bool>("AllowFlexibleWires"),
+        .allowWireRelaying = _settings::Get().item<bool>("AllowLayingWiresAnew"),
+        .wireRelayingDepth = 2
+    }
 };
 
-constexpr Schematic::HealingParams keyboardMutationParams{
-    .m_healer_params = {.allowWireReshaping = false, .allowWireRelaying = false}
+const Schematic::HealingParams keyboardMutationParams{
+    .m_healer_params = {
+        .allowWireReshaping = _settings::Get().item<bool>("AllowFlexibleWires"),
+        .allowWireRelaying = false
+    }
 };
 
 constexpr Schematic::HealingParams noninteractiveMutationParams{
@@ -332,7 +344,7 @@ Node* Schematic::provideNode(int x, int y)
     // Check if the new node lies upon an existing wire
     for (auto* wire : *a_Wires)
     {
-        if (qucs_s::geom::is_between(new_node, QPoint{wire->x1, wire->y1}, QPoint{wire->x2, wire->y2})) {
+        if (qucs_s::geom::is_between(new_node, wire->P1(), wire->P2())) {
             // split the wire into two wires
             splitWire(wire, new_node);
             return new_node;
@@ -454,10 +466,8 @@ Wire* merge_wires_at_node(Node* node) {
     if (!extended_wire->isSelected) extended_wire->isSelected = dissapearing_wire->isSelected;
 
     // Update wire dimensions
-    extended_wire->x1 = extended_wire->Port1->x();
-    extended_wire->y1 = extended_wire->Port1->y();
-    extended_wire->x2 = extended_wire->Port2->x();
-    extended_wire->y2 = extended_wire->Port2->y();
+    extended_wire->setP1(extended_wire->Port1->center());
+    extended_wire->setP2(extended_wire->Port2->center());
 
     if (label != extended_wire->Label) {
         delete extended_wire->Label;
@@ -540,32 +550,22 @@ Wire* Schematic::selectedWire(int x, int y)
 
 // ---------------------------------------------------
 // Splits the wire "*pw" into two pieces by the node "*pn".
-Wire* Schematic::splitWire(Wire *pw, Node *pn)
+Wire* Schematic::splitWire(Wire *source_wire, Node *splitter_node)
 {
-    Wire *newWire = new Wire(pn->cx, pn->cy, pw->x2, pw->y2, pn, pw->Port2);
-    newWire->isSelected = pw->isSelected;
+    Wire *new_wire = new Wire(splitter_node, source_wire->Port2);
+    new_wire->isSelected = source_wire->isSelected;
+    source_wire->connectPort2(splitter_node);
+    a_Wires->push_back(new_wire);
 
-    pw->x2 = pn->cx;
-    pw->y2 = pn->cy;
-    pw->cx = (pw->x1 + pw->x2) / 2;
-    pw->cy = (pw->y1 + pw->y2) / 2;
-    pw->Port2 = pn;
-
-    newWire->Port2->connect(newWire);
-    pn->connect(pw);
-    pn->connect(newWire);
-    newWire->Port2->disconnect(pw);
-    a_Wires->push_back(newWire);
-
-    if(pw->Label)
-        if((pw->Label->cx > pn->cx) || (pw->Label->cy > pn->cy))
+    if(source_wire->Label)
+        if((source_wire->Label->cx > splitter_node->cx) || (source_wire->Label->cy > splitter_node->cy))
         {
-            newWire->Label = pw->Label;   // label goes to the new wire
-            pw->Label = 0;
-            newWire->Label->pOwner = newWire;
+            new_wire->Label = source_wire->Label;   // label goes to the new wire
+            source_wire->Label = 0;
+            new_wire->Label->pOwner = new_wire;
         }
 
-    return newWire;
+    return new_wire;
 }
 
 // Deletes the wire and the nodes it was connected to if they
@@ -1545,8 +1545,8 @@ bool Schematic::elementsOnGrid()
     std::ranges::for_each(selection.labels, onGridSetter);
     std::ranges::for_each(selection.markers, onGridSetter);
     std::ranges::for_each(selection.wires, [&any_set, this](Wire* w) {
-        auto p1_moved = w->setP1(setOnGrid(QPoint{w->x1, w->y1}));
-        auto p2_moved = w->setP2(setOnGrid(QPoint{w->x2, w->y2}));
+        auto p1_moved = w->setP1(setOnGrid(w->P1()));
+        auto p2_moved = w->setP2(setOnGrid(w->P2()));
         any_set = p1_moved || p2_moved || any_set;
     });
 
@@ -1954,32 +1954,33 @@ void Schematic::activateCompsWithinRect(int x1, int y1, int x2, int y2)
 // ---------------------------------------------------
 bool Schematic::activateSpecifiedComponent(int x, int y)
 {
-    int x1, y1, x2, y2, a;
-    for(Component* pc : *a_Components)
-    {
-        pc->Bounding(x1, y1, x2, y2);
-        if(x >= x1) if(x <= x2) if(y >= y1) if(y <= y2)
-                    {
-                        a = pc->isActive - 1;
+    auto componentIt = std::ranges::find_if(*a_Components, [x, y](const Component* pc){
+        return pc->boundingRect().contains(x, y);
+    });
 
-                        if(pc->Ports.count() > 1)
-                        {
-                            if(a < 0)  a = 2;
-                            pc->isActive = a;    // change "active status"
-                        }
-                        else
-                        {
-                            a &= 1;
-                            pc->isActive = a;    // change "active status"
-                            if(a == COMP_IS_ACTIVE)  // only for active (not shorten)
-                                if(pc->Model == "GND")  // if existing, delete label on wire line
-                                    oneLabel(pc->Ports.first()->Connection);
-                        }
-                        setChanged(true, true);
-                        return true;
-                    }
+    if(componentIt == a_Components->end())
+    {
+        return false;
     }
-    return false;
+
+    Component* pc = *componentIt;
+    int a = pc->isActive - 1;
+
+    if(pc->Ports.count() > 1)
+    {
+        if(a < 0)  a = 2;
+        pc->isActive = a;    // change "active status"
+    }
+    else
+    {
+        a &= 1;
+        pc->isActive = a;    // change "active status"
+        if(a == COMP_IS_ACTIVE)  // only for active (not shorten)
+            if(pc->Model == "GND")  // if existing, delete label on wire line
+                oneLabel(pc->Ports.first()->Connection);
+    }
+    setChanged(true, true);
+    return true;
 }
 
 // ---------------------------------------------------
@@ -2338,8 +2339,8 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
     assert(wire->Port1 == nullptr);
     assert(wire->Port2 == nullptr);
 
-    auto* port1 = provideNode(wire->x1, wire->y1);
-    auto* port2 = provideNode(wire->x2, wire->y2);
+    auto* port1 = provideNode(wire->P1());
+    auto* port2 = provideNode(wire->P2());
 
     auto crossed_nodes =
         qucs_s::geom::on_line(port1, port2, a_Nodes->begin(), a_Nodes->end());
@@ -2373,26 +2374,15 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
 
         if (!has_been_used) {
             // … the given wire hasn't been used yet. Fill the gap with it.
-            wire->Port1 = node_pair.first;
-            wire->Port1->connect(wire);
-            wire->Port2 = node_pair.second;
-            wire->Port2->connect(wire);
-            wire->x1 = wire->Port1->x();
-            wire->y1 = wire->Port1->y();
-            wire->x2 = wire->Port2->x();
-            wire->y2 = wire->Port2->y();
+            wire->connectPort1(node_pair.first);
+            wire->connectPort2(node_pair.second);
             a_Wires->push_back(wire);
             has_been_used = true;
             has_changes = true;
         } else {
             // … the given wire has been already used to fill another gap.
             // Fill this gap with a brand new wire.
-	        auto* w = new Wire(node_pair.first->x(), node_pair.first->y(),
-			                   node_pair.second->x(), node_pair.second->y());
-            w->Port1 = node_pair.first;
-            w->Port1->connect(w);
-            w->Port2 = node_pair.second;
-            w->Port2->connect(w);
+	        auto* w = new Wire(node_pair.first, node_pair.second);
             a_Wires->push_back(w);
             has_changes = true;
         }
@@ -2432,16 +2422,8 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
         delete existing_wire;
 
         // Put the given wire in place of deleted one
-        wire->Port1 = last_pair.first;
-        wire->Port1->connect(wire);
-        wire->Port2 = last_pair.second;
-        wire->Port2->connect(wire);
-
-        // Update given wire dimensions
-        wire->x1 = wire->Port1->x();
-        wire->y1 = wire->Port1->y();
-        wire->x2 = wire->Port2->x();
-        wire->y2 = wire->Port2->y();
+        wire->connectPort1(last_pair.first);
+        wire->connectPort2(last_pair.second);
 
         a_Wires->push_back(wire);
     }
@@ -2519,6 +2501,11 @@ public:
         sch->showEphemeralWire(a, b);
     }
 
+    void movePort(qucs_s::GenericPort* port, const QPoint& p) override {
+        Wire* host = port->hostWire();
+        Node* other = host->Port1 == port->node() ? host->Port2 : host->Port1;
+        sch->PostPaintEvent(_Line, p.x(), p.y(), other->x(), other->y());
+    }
 };
 
 
@@ -2552,7 +2539,7 @@ public:
     }
 
     void replaceNode(qucs_s::GenericPort* port) override {
-        port->replaceNodeWith(sch->provideNode(port->center().x(), port->center().y()));
+        port->replaceNodeWith(sch->provideNode(port->center()));
     }
 };
 
@@ -2814,15 +2801,9 @@ void Schematic::dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept {
         auto m = points[i-1];
         auto n = points[i];
 
-        auto* wire = new Wire(m.x(), m.y(), n.x(), n.y());
+        auto* wire = new Wire(new Node(m.x(), m.y()), new Node(n.x(), n.y()));
         a_Wires->push_back(wire);
-
-        wire->Port1 = new Node(m.x(), m.y());
-        wire->Port1->connect(wire);
         a_Nodes->push_back(wire->Port1);
-
-        wire->Port2 = new Node(n.x(), n.y());
-        wire->Port2->connect(wire);
         a_Nodes->push_back(wire->Port2);
     }
 }

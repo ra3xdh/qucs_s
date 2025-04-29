@@ -149,6 +149,7 @@
 #include "log_amp.h"
 #include "potentiometer.h"
 #include "MESFET.h"
+#include "vdmos.h"
 
 #include "photodiode.h"
 #include "phototransistor.h"
@@ -186,6 +187,9 @@
 #include "hpribin4bit.h"
 #include "circularloop.h"
 #include "spiralinductor.h"
+
+#include "magnetics/ja_core.h"
+#include "magnetics/winding.h"
 
 // external simulation components
 #include "etr_sim.h"

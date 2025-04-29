@@ -342,8 +342,47 @@ int SymbolWidget::createStandardSymbol(const QString& Lib_, const QString& Comp_
     PortNo = 0;
     x1 = -34; y1 =-44;
     x2 =  84; y2 = 20;
-  }
-  else {
+  } else if (Comp == "VDMOS") {
+    Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::blue,2)));
+    Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::blue,2)));
+
+    Lines.append(new qucs::Line(-10,-11,  0,-11,QPen(Qt::blue,2)));
+    Lines.append(new qucs::Line(  0,-11,  0,-30,QPen(Qt::blue,2)));
+    Lines.append(new qucs::Line(-10, 11,  0, 11,QPen(Qt::blue,2)));
+    Lines.append(new qucs::Line(  0,  0,  0, 30,QPen(Qt::blue,2)));
+    Lines.append(new qucs::Line(-10,  0,  0,  0,QPen(Qt::blue,2)));
+
+    Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::blue,2)));
+    Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::blue,2)));
+
+    if(FirstProp == "nchan") {
+      Lines.append(new qucs::Line( -9,  0, -4, -5,QPen(Qt::blue,2)));
+      Lines.append(new qucs::Line( -9,  0, -4,  5,QPen(Qt::blue,2)));
+    }
+    else {
+      Lines.append(new qucs::Line( -1,  0, -6, -5,QPen(Qt::blue,2)));
+      Lines.append(new qucs::Line( -1,  0, -6,  5,QPen(Qt::blue,2)));
+    }
+
+    if(FirstProp == "nchan") {
+      Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::blue,2)));
+    } else
+      Lines.append(new qucs::Line(-10, -4,-10,  4,QPen(Qt::blue,2)));
+
+    Texts.append(new Text(17,-15,"VDMOS",Qt::black,10.0,0.0,-1.0));
+
+    Arcs.append(new struct qucs::Arc(-34, -4, 8, 8, 0, 16*360,
+                                     QPen(Qt::red,1)));
+    Arcs.append(new struct qucs::Arc(-4, -34, 8, 8, 0, 16*360,
+                                     QPen(Qt::red,1)));
+    Arcs.append(new struct qucs::Arc(-4, 26, 8, 8, 0, 16*360,
+                                     QPen(Qt::red,1)));
+
+    PortNo = 3;
+
+    x1 = -45; y1 = -40;
+    x2 =   4; y2 =  30;
+  } else {
     // Warn in case a default component symbol is not
     // mapped or implemented.
     if (!((Comp=="SpLib")||(Comp=="SpiceModel")))

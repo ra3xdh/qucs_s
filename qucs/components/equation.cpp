@@ -21,6 +21,7 @@
 
 #include <QFontInfo>
 #include <QFontMetrics>
+#include <QRegularExpression>
 
 Equation::Equation()
 {

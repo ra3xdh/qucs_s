@@ -22,12 +22,14 @@
 #include "main.h"
 #include "../diagrams/graph.h"
 #include "misc.h"
+#include "component.h"
+#include "wire.h"
+
 
 #include <QLabel>
 #include <QLineEdit>
 #include <QValidator>
 #include <QPushButton>
-#include <QDebug>
 
 // SpinBoxes are used to show the calculated bias points at the given set of sweep points
 mySpinBox::mySpinBox(int Min, int Max, int Step, double *Val, QWidget *Parent)

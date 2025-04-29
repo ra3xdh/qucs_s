@@ -15,6 +15,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "node.h"
+#include "main.h"
+
 #include "transformer.h"
 #include "extsimkernels/spicecompat.h"
 
@@ -22,7 +25,7 @@
 Transformer::Transformer()
 {
   Description = QObject::tr("ideal transformer");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Arcs.append(new qucs::Arc(-16,-18,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc(-16, -6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
@@ -58,6 +61,7 @@ Transformer::Transformer()
   ty = y2+4;
   Model = "Tr";
   Name  = "Tr";
+  SpiceModel = "X";
 
   Props.append(new Property("T", "1", true,
 		QObject::tr("voltage transformation ratio")));
@@ -79,4 +83,26 @@ Element* Transformer::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new Transformer();
   return 0;
+}
+
+QString Transformer::spice_netlist(spicecompat::SpiceDialect dialect)
+{
+  Q_UNUSED(dialect);
+  QString s;
+  s = "X_" + Name + " ";
+  s += spicecompat::normalize_node_name(Ports.at(0)->Connection->Name) + " ";
+  s += spicecompat::normalize_node_name(Ports.at(3)->Connection->Name) + " ";
+  s += spicecompat::normalize_node_name(Ports.at(1)->Connection->Name) + " ";
+  s += spicecompat::normalize_node_name(Ports.at(2)->Connection->Name) + " ";
+  s += "XFMR RATIO=" + spicecompat::normalize_value(Props.at(0)->Value);
+  s += "\n";
+  return s;
+}
+
+
+QString Transformer::getSpiceLibrary()
+{
+  QString f = spicecompat::getSpiceLibPath("xfmr.cir");
+  QString s = QString (".INCLUDE \"%1\"\n").arg(f);
+  return s;
 }

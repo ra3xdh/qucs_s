@@ -28,6 +28,7 @@
 #include "../paintings/id_text.h"
 #include "dialogs/sweepdialog.h"
 #include "components/subcircuit.h"
+#include "wire.h"
 
 
 #include <QPlainTextEdit>

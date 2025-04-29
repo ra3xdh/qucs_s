@@ -20,6 +20,7 @@
 #include "main.h"
 #include "misc.h"
 #include "schematic.h"
+#include "node.h"
 
 #include <QFileInfo>
 #include <QMutex>

@@ -22,6 +22,7 @@
 #include "abstractspicekernel.h"
 
 #include "schematic.h"
+#include "component.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

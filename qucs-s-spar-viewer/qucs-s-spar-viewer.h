@@ -2,6 +2,10 @@
 #define QUCSSPARVIEWER_H
 
 #include "codeeditor.h"
+#include "smithchartwidget.h"
+#include "rectangularplotwidget.h"
+#include "polarplotwidget.h"
+#include "matrixcombopopup.h"
 
 #include <QMainWindow>
 #include <QLabel>
@@ -33,6 +37,83 @@ struct tQucsSettings
 
 extern struct tQucsSettings QucsSettings;
 
+// Struct to hold all the widgets related a marker
+struct MarkerProperties {
+  QLabel* nameLabel;
+  QDoubleSpinBox* freqSpinBox;
+  QComboBox* scaleComboBox;
+  QToolButton* deleteButton;
+};
+
+// Structures for trace management
+enum class DisplayMode {
+  Magnitude_dB,
+  Phase,
+  Smith,
+  Polar,
+  PortImpedance,
+  Stability,
+  VSWR,
+  GroupDelay
+};
+
+// Struct to hold all the widgets related a trace
+struct TraceProperties {
+  QLabel* nameLabel;
+  QSpinBox* width;
+  QPushButton * colorButton;
+  QComboBox* LineStyleComboBox;
+  QToolButton* deleteButton;
+  QString display_mode;
+};
+
+
+// Struct to hold all the widgets related a limit
+struct LimitProperties {
+  QLabel* LimitLabel;
+  QDoubleSpinBox * Start_Freq;
+  QDoubleSpinBox * Stop_Freq;
+  QDoubleSpinBox * Start_Value;
+  QDoubleSpinBox * Stop_Value;
+  QComboBox * Start_Freq_Scale;
+  QComboBox * Stop_Freq_Scale;
+  QComboBox * axis;
+  QToolButton * Button_Delete_Limit;
+  QFrame* Separator;
+  QPushButton* Couple_Value;
+};
+
+// Structure to hold trace information
+struct TraceInfo {
+  QString dataset;
+  QString parameter;     // e.g., "S11", "S21"
+  DisplayMode displayMode;
+
+  // Helper to generate a unique identifier for the trace
+  QString uniqueId() const {
+    if ((displayMode == DisplayMode::Magnitude_dB) || (displayMode == DisplayMode::Phase)) {
+      return QString("%1.%2_%3").arg(dataset).arg(parameter).arg(static_cast<int>(displayMode));
+    } else {
+      return QString("%1.%2").arg(dataset).arg(parameter);
+    }
+  }
+
+  // Helper to get a human-readable name for the trace
+  QString displayName() const {
+    QString modeName = QString("");
+
+    if (displayMode == DisplayMode::Magnitude_dB) {
+      modeName = "dB";
+    } else {
+      if (displayMode == DisplayMode::Phase) {
+        modeName = "Phase";
+      } else {
+        return QString("%1.%2").arg(dataset).arg(parameter);
+      }
+    }
+    return QString("%1.%2_%3").arg(dataset).arg(parameter).arg(modeName);
+  }
+};
 
 class Qucs_S_SPAR_Viewer : public QMainWindow
 {
@@ -40,12 +121,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
  public:
   Qucs_S_SPAR_Viewer();
   ~Qucs_S_SPAR_Viewer();
-
-protected:
-  void resizeEvent(QResizeEvent *event) override {
-    QMainWindow::resizeEvent(event);
-    updateTraces();
-  }
+  void addPathToWatcher(const QString &path); // It's needed to pass the directory to watch from the main program
 
  private slots:
   void slotHelpIntro();
@@ -56,50 +132,70 @@ protected:
   void slotSaveAs();
   void slotLoadSession();
 
+  void raiseWidgetsOnTabSelection(int index);
+
   void addFile();
   void addFiles(QStringList);
+  QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath);
+  QMap<QString, QList<double>> readQucsatorDataset(const QString& filePath);
+  QMap<QString, QList<double>> readNGspiceData(const QString& filePath);
+  QString extractSParamIndices(const QString& sparam);
+  void applyDefaultVisualizations(const QStringList& fileNames);
+  void addOptionalTraces(QMap<QString, QList<double>>& file_data);
   void removeFile();
-  void removeFile(int);
+  void removeFile(QString ID);
   void removeAllFiles();
+  void removeTracesByDataset(const QString& dataset_to_remove);
+  void removeTraceByProps(DisplayMode mode, const QString& traceID, TraceProperties& props);
+  void CreateFileWidgets(QString filename, int position);
+
+  // File watching functions
+  void setupFileWatcher();
+  void fileChanged(const QString &path);
+  void directoryChanged(const QString &path);
 
   void addTrace();
-  void addTrace(QString, QString, QColor, int trace_width = 1, QString trace_style = "Solid");
+  void addTrace(const TraceInfo& traceInfo, QColor trace_color, int trace_width, QString trace_style = "Solid");
   void removeTrace();
-  void removeTrace(int);
-  void removeTrace(QList<int>);
+  //void removeTrace(const QString& );
+  //void removeTrace(QStringList);
+  void removeAndCollapseRow(QGridLayout* targetLayout, int row_to_remove);
+  int getNumberOfTraces();
+  //bool getTraceByPosition(int position, QString& outTraceName, TraceProperties& outProperties);
 
-  void updatePlot();
-  void updateTraces();
   void updateTracesCombo();
+  void updateDisplayType();
 
   void changeTraceColor();
   void changeTraceLineStyle();
   void changeTraceWidth();
-  void changeFreqUnits();
   void changeMarkerLimits();
   void changeMarkerLimits(QString);
 
-  void update_X_axis();
-  void update_Y_axis();
-  void lock_unlock_axis_settings(bool toogle = true);
-
-  void addMarker(double freq = -1);
+  void addMarker(double freq = -1, QString Freq_Marker_Scale = QString("MHz"));
   void removeMarker();
-  void removeMarker(int);
+  void removeMarker(const QString &);
   void removeAllMarkers();
+  int getNumberOfMarkers();
   void updateMarkerTable();
   void updateMarkerNames();
+  void updateMarkerData(QTableWidget & layout, DisplayMode mode, QStringList header);
+  bool getMarkerByPosition(int position, QString& outMarkerName, MarkerProperties& outProperties);
 
-  void addLimit(double f_limit1=-1, QString f_limit1_unit = "", double f_limit2=-1, QString f_limit2_unit = "", double y_limit1=-1, double y_limit2=-1, bool coupled=false);
+  void addLimit(double f_limit1=-1, QString f_limit1_unit = "", double f_limit2=-1, QString f_limit2_unit = "", double y_limit1=-1, double y_limit2=-1, bool coupled=true);
   void removeLimit();
-  void removeLimit(int);
+  void removeLimit(QString);
   void removeAllLimits();
   void updateLimits();
   void updateLimitNames();
+  int getNumberOfLimits();
+  bool getLimitByPosition(int, QString&, LimitProperties&);
 
   void coupleSpinBoxes();
 
   void updateGridLayout(QGridLayout*);
+  void updateAllPlots(const QString& datasetName);
+  void updateTracesInWidget(QWidget* widget, const QString& datasetName);
 
   void calculate_Sparameter_trace(QString, QString);
 
@@ -126,31 +222,29 @@ protected:
   QDockWidget *dockTracesList;
   QWidget * TracesList_Widget;
   QGridLayout * TracesGrid;
-  QList<QLabel *> List_TraceNames;
-  QList<QSpinBox *> List_TraceWidth;
-  QList<QPushButton *> List_Trace_Color;
-  QList<QComboBox *> List_Trace_LineStyle;
-  QList<QComboBox *> List_Trace_Type;
-  QList<QToolButton*> List_Button_DeleteTrace;
+
+  // This structure groups the widgets related to the traces so that they can be accessed by name
+  QMap<DisplayMode, QMap<QString, TraceProperties>>  traceMap;
+
+  QTabWidget *traceTabs;
+  QWidget *magnitudePhaseTab, *smithTab, *polarTab, *portImpedanceTab, *stabilityTab, *VSWRTab, *GroupDelayTab;
+  QGridLayout *magnitudePhaseLayout, *smithLayout, *polarLayout, *portImpedanceLayout, *stabilityLayout, *VSWRLayout, *GroupDelayLayout;
 
   // Axis settings widgets
-  QDockWidget *dockAxisSettings;
-  QComboBox *QCombobox_x_axis_units;//, *QCombobox_y_axis_units, *QCombobox_y2_axis_units;
-  QDoubleSpinBox *QSpinBox_x_axis_min, *QSpinBox_x_axis_max;
-  QList<double> available_x_axis_div;
-  QComboBox *QComboBox_x_axis_div;
-  QDoubleSpinBox *QSpinBox_y_axis_min, *QSpinBox_y_axis_max, *QSpinBox_y_axis_div;
-  QList<double> available_y_axis_div;
-  QComboBox *QComboBox_y_axis_div;
-  QDoubleSpinBox *QSpinBox_y2_axis_min, *QSpinBox_y2_axis_max, *QSpinBox_y2_axis_div;
   QPushButton *Lock_axis_settings_Button;
   bool lock_axis;
   QStringList frequency_units;
 
   // Trace management widgets
-  QComboBox *QCombobox_datasets, *QCombobox_traces;
+  QComboBox *QCombobox_datasets, *QCombobox_display_mode;
+  MatrixComboBox *QCombobox_traces;
   QPushButton *Button_add_trace;
   QTableWidget *Traces_Widget;
+
+  // Scrollable trace areas
+  void setupScrollableLayout();
+  void setupScrollAreaForLayout(QGridLayout* &layout, QWidget* parentTab, const QString &objectName);
+  QScrollArea *magnitudePhaseScrollArea, *smithScrollArea, *polarScrollArea, *nuScrollArea, *GroupDelayScrollArea;
 
   // Datasets
   QMap<QString, QMap<QString, QList<double>>> datasets;
@@ -162,44 +256,65 @@ protected:
   Filenamek.s3p | {"freq", "S11_dB", ..., "S33_ang"}
   */
 
-  // Trace data
-  QList<QString> trace_list;
-  QMap<QString, QList<QString>> trace_properties;
+  // File watching variables
+  QFileSystemWatcher *fileWatcher;
+  QMap<QString, QString> watchedFilePaths;
 
-  // Chart
-  QChart *chart;
+  // Rectangular plot
+  RectangularPlotWidget *Magnitude_PhaseChart;
   QDockWidget *dockChart;
-  QValueAxis *xAxis, *yAxis;
-  double f_min, f_max, y_min, y_max; // Minimum (maximum) values of the display
+  double f_min, f_max; // Minimum (maximum) values of the display
   QList<QColor> default_colors;
   QList<QGraphicsItem*> textLabels;
   bool removeSeriesByName(QChart*, const QString&);
+
+  // Smith Chart
+  SmithChartWidget *smithChart;
+  QDockWidget *dockSmithChart;
+  QList<SmithChartWidget::Trace> SmithChartTraces;
+
+  // Polar plot
+  PolarPlotWidget *polarChart;
+  QDockWidget *dockPolarChart;
+  QList<PolarPlotWidget::Trace> PolarChartTraces;
+
+  // Port impedance plot (Rectangular plot)
+  RectangularPlotWidget *impedanceChart;
+  QDockWidget *dockImpedanceChart;
+  QList<RectangularPlotWidget::Trace> impedanceChartTraces;
+
+  // Stability plot (Rectangular plot)
+  RectangularPlotWidget *stabilityChart;
+  QDockWidget *dockStabilityChart;
+  QList<RectangularPlotWidget::Trace> stabilityChartTraces;
+
+  // VSWR plot (Rectangular plot)
+  RectangularPlotWidget *VSWRChart;
+  QDockWidget *dockVSWRChart;
+  QList<RectangularPlotWidget::Trace> VSWRChartTraces;
+
+  // Group delay plot (Rectangular plot)
+  RectangularPlotWidget *GroupDelayChart;
+  QDockWidget *dockGroupDelayChart;
+  QList<RectangularPlotWidget::Trace> GroupDelayTraces;
 
   // Markers
   QDockWidget *dockMarkers;
   QWidget *Marker_Widget;
   QGridLayout * MarkersGrid;
-  QTableWidget *tableMarkers;
   QPushButton *Button_add_marker, *Button_Remove_All_Markers;
+  QTableWidget* tableMarkers_Magnitude_Phase,  *tableMarkers_Smith, *tableMarkers_Polar, *tableMarkers_PortImpedance, *tableMarkers_Stability, *tableMarkers_VSWR, *tableMarkers_GroupDelay;
+  QMap<QString, MarkerProperties> markerMap; // All marker widgets are here. This way they can be accessed by the name of the marker
 
-  QList<QLabel *> List_MarkerNames;
-  QList<QDoubleSpinBox *> List_MarkerFreq;
-  QList<QComboBox *> List_MarkerScale;
-  QList<QToolButton*> List_Button_DeleteMarker;
+  double getMarkerFreq(QString);
 
   // Limits
   QDockWidget *dockLimits;
   QWidget *Limits_Widget;
   QGridLayout * LimitsGrid;
   QPushButton *Button_add_Limit, *Button_Remove_All_Limits;
-  QList<QLabel *> List_LimitNames;
-  QList<QDoubleSpinBox *> List_Limit_Start_Freq, List_Limit_Stop_Freq;
-  QList<QDoubleSpinBox *> List_Limit_Start_Value, List_Limit_Stop_Value;
-  QList<QComboBox *> List_Limit_Start_Freq_Scale, List_Limit_Stop_Freq_Scale;
-  QList<QToolButton*> List_Button_Delete_Limit;
-  QList<QFrame*> List_Separators;
-  QList<QPushButton*> List_Couple_Value;
   QDoubleSpinBox * Limits_Offset;
+  QMap<QString, LimitProperties> limitsMap; // This structure groups the widgets related to the traces so that they can be accessed by name
 
   // Save
   QString savepath;
@@ -219,9 +334,18 @@ protected:
   void clearRecentFiles();
   void saveRecentFiles();
 
+  // Setup UI
+  void CreateMenuBar();
+  void CreateDisplayWidgets(); // Setup magnitude/phase and Smith charts
+
+  void CreateRightPanel(); // Setup managing docks
+  void setFileManagementDock(); // Setup file managment dock
+  void setTraceManagementDock(); // Setup trace managment dock
+  void setMarkerManagementDock(); // Setup marker managment dock
+  void setLimitManagementDock(); // Setup marker managment dock
+
   // Utilities
   void convert_MA_RI_to_dB(double *, double *, double *, double *, QString);
-  double getFreqScale();
   double getFreqScale(QString);
   void getMinMaxValues(QString, QString, qreal&, qreal&, qreal&, qreal&);
   void checkFreqSettingsLimits(QString filename, double& fmin, double& fmax);
@@ -231,6 +355,13 @@ protected:
   void adjust_x_axis_div();
   QPointF findClosestPoint(const QList<double>&, const QList<double>&, qreal);
   double getFreqFromText(QString);
+
+  // File monitoring
+  void setupSimulationWatcher();
+  QStringList getWatchDirectories() const;
+  bool isSparamFile(const QString& path); // Used to accept only data files when scanning project directories
+  QStringList filePaths; // Full path of the files in the progrom. It's used for file monitoring.
 };
 
 #endif
+

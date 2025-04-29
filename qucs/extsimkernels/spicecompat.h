@@ -24,6 +24,7 @@ namespace spicecompat {
      QString convert_sweep_type(const QString& sweep);
      bool check_nodename(QString &node);
      QString getDefaultSimulatorName(int simulator);
+     QString getSpiceLibPath(const QString &lib);
 
      enum Simulator : int {
          simNotSpecified = 0b00000000,

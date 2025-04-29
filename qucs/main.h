@@ -58,6 +58,7 @@ struct tQucsSettings {
   QString BinDir;
   QString LangDir;
   QString LibDir;
+  QString SpiceLibDir;
   QString OctaveDir;  // m-files location
   QString ExamplesDir;
   QString DocDir;
@@ -97,6 +98,8 @@ struct tQucsSettings {
 
   unsigned int numRecentDocs;
   QStringList RecentDocs;
+
+  QStringList RecentProjects;
 
   bool IgnoreFutureVersion;
   bool GraphAntiAliasing;

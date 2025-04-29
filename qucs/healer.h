@@ -67,8 +67,9 @@ public:
     bool isOfWire() const { return m_portType != PortType::Component; }
     bool isOfComponent() const { return !isOfWire(); }
 
-    template<typename T>
-    T* host() const { static_assert(!std::is_same<T,T>::value); }
+    Wire* hostWire() const { return m_wire; }
+    Component* hostComponent() const { return m_comp; }
+
     Node* node() const;
     QPoint center() const;
     Node* replaceNodeWith(Node* new_node);

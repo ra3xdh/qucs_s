@@ -28,6 +28,8 @@
 #include "misc.h"
 #include "qucs.h"
 #include "settings.h"
+#include "node.h"
+#include "wire.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

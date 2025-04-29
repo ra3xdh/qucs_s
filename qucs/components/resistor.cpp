@@ -17,6 +17,7 @@
 #include "resistor.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
+#include "node.h"
 
 
 Resistor::Resistor(bool european)

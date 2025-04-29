@@ -411,3 +411,10 @@ QString spicecompat::getDefaultSimulatorName(int simulator)
     }
     return result;
 }
+
+
+QString spicecompat::getSpiceLibPath(const QString &lib)
+{
+  QString f = QDir::toNativeSeparators(QucsSettings.SpiceLibDir + lib);
+  return f;
+}

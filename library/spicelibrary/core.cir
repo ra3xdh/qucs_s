@@ -1,0 +1,26 @@
+* Qucs 25.1.2  /home/vvk/.qucs/FerriteRing_prj/core_CM.sch
+
+.SUBCKT ja_core INP_H OUT_B A=26 K=27 MS=395k C=0.01 alpha=1e-4 AREA=1.0 PATH=1.0 GAP=0.0
+.PARAM mu0 = 16*atan(1)*1e-7
+B1 IN1  IN2  I = V(B)*AREA 
+B2 M  0  V = 1/(1+C)*V(Mi)+C/(1+C)*V(Ma) 
+R1 Mi 0  1E12 tc1=0.0 tc2=0.0 
+R3 0 B  1K tc1=0.0 tc2=0.0 
+R4 0 M  1K tc1=0.0 tc2=0.0 
+R5 0 N03  1M tc1=0.0 tc2=0.0 
+R7 IN2 IN1  1E12 tc1=0.0 tc2=0.0 
+C3 N03 H  1M 
+B9 dMiHC  0  V = V(dMiH)>0?v(dMiH):0 
+C1 0 Mi  1M 
+B6 0  Mi  I = V(dMiHC)*v(N03)/1m 
+B4 dMiH  0  V = (V(Ma)-V(Mi))/(1u+K*SGN(v(N03))) 
+B8 H  0  V = (V(IN1)-V(IN2))/PATH-v(B)/mu0*(GAP/PATH) 
+B7 B  0  V = mu0*(V(H)+MS*V(M)) 
+HSRC1 OUT_B 0  VSRC1 1
+VSRC1 IN2 _net0 DC 0 
+HSRC2 IN1 0  VSRC2 1
+VSRC2 INP_H _net1 DC 0 
+B3 Ma  0  V = (abs(V(H)/A)<0.1)?V(H)/(3*A):1/(1e-6+tanh(V(H)/A))-A/(1e-6+V(H)) 
+R8 0 _net0  1M  
+R9 0 _net1  1M  
+.ENDS

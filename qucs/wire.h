@@ -28,7 +28,8 @@ class QString;
 
 class Wire : public Conductor {
 public:
-  Wire(int _x1=0, int _y1=0, int _x2=0, int _y2=0, Node *n1=0, Node *n2=0);
+  Wire(int _x1=0, int _y1=0, int _x2=0, int _y2=0);
+  Wire(Node* n1, Node* n2);
  ~Wire() override;
 
   void paint(QPainter* painter) const;
@@ -58,6 +59,11 @@ public:
   QPoint P1() const { return {x1, y1}; }
   QPoint P2() const { return {x2, y2}; }
 
+  void connectPort1(Node* n);
+  void connectPort2(Node* n);
+
+private:
+  void updateCenter() noexcept;
 };
 
 #endif

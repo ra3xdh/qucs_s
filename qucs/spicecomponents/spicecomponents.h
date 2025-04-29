@@ -58,8 +58,8 @@
 #include "PMF_MESFET_SPICE.h"
 
 // XSPICE analogue blocks
-#include "Icouple.h"
-#include "core.h"
+//#include "Icouple.h"
+//#include "core.h"
 #include "SDTF.h"
 #include "XAPWL.h"
 

@@ -277,6 +277,8 @@ private:
   void closeFile(int);
 
   void updateRecentFilesList(QString s);
+  void updateRecentProjectsList(QString pathToProj);
+  void updateRecentProjectsList();
   void successExportMessages(bool ok);
   void fillLibrariesTreeView (void);
   bool populateLibTreeFromDir(const QString &LibDirPath, QList<QTreeWidgetItem *> &topitems, bool relpath = false);
@@ -320,11 +322,14 @@ private:
           *viewBrowseDock, *viewOctaveDock;
 
   // menus contain the items of their menubar
-  enum { MaxRecentFiles = 8 };
-  QMenu *fileMenu, *editMenu, *insMenu, *projMenu, *simMenu, *viewMenu,
+  enum { MaxRecentFiles = 8, MaxRecentProjects = 8 };
+  QMenu *fileMenu, *editMenu, *insMenu, *projMenu, *recentProjMenu, *simMenu, *viewMenu,
              *helpMenu, *alignMenu, *toolMenu, *recentFilesMenu, *cmMenu;
   QAction *fileRecentAction[MaxRecentFiles];
   QAction *fileClearRecent;
+
+  QAction *projRecentActions[MaxRecentProjects];
+  QAction *projClearRecent;
 
   // submenus for the PDF documents
   QMenu *helpTechnical, *helpReport, *helpTutorial;
@@ -417,7 +422,8 @@ public slots:
   void slotChangeProps();
   void slotAddToProject();
   void slotApplyCompText();
-  void slotOpenRecent();
+  void slotOpenRecentFile();
+  void slotOpenRecentProject();
   void slotSaveDiagramToGraphicsFile();
   void slotSaveSchematicToGraphicsFile(bool diagram = false);
 
@@ -432,6 +438,8 @@ private slots:
   void slotExportGraphAsCsv();
   void slotUpdateRecentFiles();
   void slotClearRecentFiles();
+  void slotUpdateRecentProjects();
+  void slotClearRecentProjects();
   void slotLoadModule();
   void slotBuildModule();
 

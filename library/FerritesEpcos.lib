@@ -1,0 +1,153 @@
+<Qucs Library 1.0.6 "Ferrite Cores EPCOS">
+
+<Component M33>
+  <Description>
+  </Description>
+  <Model>
+    <CORE M33_ 1 350 140 -40 35 0 0 "57.2141" 0 "69.2403" 0 "0.08" 0 "323.834k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N22>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N22_ 1 350 140 -40 35 0 0 "50.7895" 0 "29.0694" 0 "0.08" 0 "303.644k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N26>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N26_ 1 350 140 -40 35 0 0 "35.7384" 0 "26.1649" 0 "0.08" 0 "329.982k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N27>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N27_ 1 350 140 -40 35 0 0 "26.8906" 0 "27.9343" 0 "0.08" 0 "399.824k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N30>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N30_ 1 350 140 -40 35 0 0 "27.2164" 0 "14.0459" 0 "0.08" 0 "333.784k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N41>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N41_ 1 350 140 -40 35 0 0 "46.6514" 0 "29.5301" 0 "0.08" 0 "411.815k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N48>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N48_ 1 350 140 -40 35 0 0 "41.8956" 0 "30.909" 0 "13.4053m" 0 "354.821k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N49>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N49_ 1 350 140 -40 35 0 0 "45.4881" 0 "40.8166" 0 "0.08" 0 "418.599k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N67>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N67_ 1 350 140 -40 35 0 0 "19.5397" 0 "38.3568" 0 "0.08" 0 "375.431k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N72>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N72_ 1 350 140 -40 35 0 0 "65.6762" 0 "28.7727" 0 "0.08" 0 "427.582k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N87>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N87_ 1 350 140 -40 35 0 0 "27.2116" 0 "26.565" 0 "0.08" 0 "395.888k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N92>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N92_ 1 350 140 -40 35 0 0 "13.9106" 0 "32.4931" 0 "0.08" 0 "392.782k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component N97>
+  <Description>
+  </Description>
+  <Model>
+    <CORE N97_ 1 350 140 -40 35 0 0 "12.2018" 0 "30.2921" 0 "0.08" 0 "403.498k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component T35>
+  <Description>
+  </Description>
+  <Model>
+    <CORE T35_ 1 350 140 -40 35 0 0 "16.1696" 0 "11.0704" 0 "0.08" 0 "332.458k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component T37>
+  <Description>
+  </Description>
+  <Model>
+    <CORE T37_ 1 350 140 -40 35 0 0 "21.5198" 0 "12.7336" 0 "0.08" 0 "328.724k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component T38>
+  <Description>
+  </Description>
+  <Model>
+    <CORE T38_ 1 350 140 -40 35 0 0 "11.9576" 0 "8.17537" 0 "0.08" 0 "359.524k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component T42>
+  <Description>
+  </Description>
+  <Model>
+    <CORE T42_ 1 350 140 -40 35 0 0 "10.8663" 0 "8.19952" 0 "0.08" 0 "365.889k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component T57>
+  <Description>
+  </Description>
+  <Model>
+    <CORE T57_ 1 350 140 -40 35 0 0 "52.1711" 0 "17.7433" 0 "0.08" 0 "422.516k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component T65>
+  <Description>
+  </Description>
+  <Model>
+    <CORE T65_ 1 350 140 -40 35 0 0 "19.4786" 0 "22.3157" 0 "0.05" 0 "381.505k" 0 "0.0001" 0>
+  </Model>
+</Component>

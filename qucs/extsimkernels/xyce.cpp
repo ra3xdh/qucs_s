@@ -20,6 +20,8 @@
 #include "components/equation.h"
 #include "main.h"
 #include "misc.h"
+#include "node.h"
+#include "wire.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

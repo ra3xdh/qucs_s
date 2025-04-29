@@ -98,7 +98,7 @@ void QucsApp::initActions()
   for (auto & i : fileRecentAction) {
     i = new QAction(this);
     i->setVisible(false);
-    connect(i, SIGNAL(triggered()), SLOT(slotOpenRecent()));
+    connect(i, SIGNAL(triggered()), SLOT(slotOpenRecentFile()));
   }
 
   fileClearRecent = new QAction(tr("Clear Recent"), this);
@@ -309,6 +309,16 @@ void QucsApp::initActions()
   projOpen->setStatusTip(tr("Opens an existing project"));
   projOpen->setWhatsThis(tr("Open Project\n\nOpens an existing project"));
   connect(projOpen, SIGNAL(triggered()), SLOT(slotMenuProjOpen()));
+
+  // initialise recent project actions
+  for (auto &action : projRecentActions) {
+    action = new QAction(this);
+    action->setVisible(false);
+    connect(action, SIGNAL(triggered()), SLOT(slotOpenRecentProject()));
+  }
+
+  projClearRecent = new QAction(tr("Clear recent"), this);
+  connect(projClearRecent, SIGNAL(triggered()), SLOT(slotClearRecentProjects()));
 
   projDel = new QAction(tr("&Delete Project..."), this);
   projDel->setShortcut(tr("Ctrl+Shift+D"));
@@ -757,6 +767,17 @@ void QucsApp::initMenuBar()
   projMenu = new QMenu(tr("&Project"));  // menuBar entry projMenu
   projMenu->addAction(projNew);
   projMenu->addAction(projOpen);
+
+  recentProjMenu = new QMenu(tr("Open Recent"), projMenu);
+  projMenu->addMenu(recentProjMenu);
+
+  // Add recent project actions to recent project submenu
+  for (auto &action : projRecentActions) {
+    recentProjMenu->addAction(action);
+  }
+  recentProjMenu->addSeparator();
+  recentProjMenu->addAction(projClearRecent);
+
   projMenu->addAction(addToProj);
   projMenu->addAction(projClose);
   projMenu->addAction(projDel);

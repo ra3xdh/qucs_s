@@ -267,6 +267,8 @@ REGISTER_COMP_2 (QObject::tr("microelectronics"),val,inf1,inf2)
   REGISTER_COMP_1 (QObject::tr("SPICE simulations"),val)
 #define REGISTER_XSPICE_1(val) \
   REGISTER_COMP_1 (QObject::tr("XSPICE devices"),val)
+#define REGISTER_MAGCORES_1(val) \
+REGISTER_COMP_1 (QObject::tr("magnetic cores"),val)
 #define REGISTER_QUCS_1(val) \
   REGISTER_COMP_1 (QObject::tr("Qucs legacy devices"),val)
 #define REGISTER_QUCS_2(val,inf1,inf2) \
@@ -289,6 +291,8 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (Mutual);
   REGISTER_LUMPED_1 (Mutual2);
   REGISTER_LUMPED_1 (MutualX);
+  REGISTER_LUMPED_1 (Transformer);
+  REGISTER_LUMPED_1 (symTrafo);
   // lumped components
   //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_LUMPED_1 (R_SPICE);
@@ -298,8 +302,6 @@ void Module::registerModules (void) {
   //}
 
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_LUMPED_1 (Transformer);
-      REGISTER_LUMPED_1 (symTrafo);
       REGISTER_LUMPED_1 (Ground);
       REGISTER_LUMPED_1 (SubCirPort);
       REGISTER_LUMPED_1 (Gyrator);
@@ -434,6 +436,7 @@ void Module::registerModules (void) {
       REGISTER_NONLINEAR_2 (JFET, info, info_p);
       REGISTER_NONLINEAR_3 (MOSFET, info, info_p, info_depl);
       REGISTER_NONLINEAR_3 (MOSFET_sub, info, info_p, info_depl);
+      REGISTER_NONLINEAR_2 (VDMOS, info, info_p);
   //} else {
       REGISTER_NONLINEAR_1 (MESFET_SPICE);
       REGISTER_NONLINEAR_1 (PMF_MESFET_SPICE);
@@ -451,6 +454,10 @@ void Module::registerModules (void) {
       REGISTER_NONLINEAR_1 (Thyristor);
       REGISTER_NONLINEAR_1 (TunnelDiode);
   //}
+
+// Magnetic devices
+      REGISTER_MAGCORES_1 (Winding);
+      REGISTER_MAGCORES_1 (JA_core);
 
 // PDK devices
       REGISTER_MICROEL_1 (R_SPICE, info_R3);
@@ -590,8 +597,8 @@ void Module::registerModules (void) {
 
   //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       // XSPICE analogue component blocks
-      REGISTER_XSPICE_1 (Icouple);
-      REGISTER_XSPICE_1 (core);
+      REGISTER_XSPICE_1 (Winding);
+      REGISTER_XSPICE_1 (JA_core);
       REGISTER_XSPICE_1 (SDTF);
       REGISTER_XSPICE_1 (XAPWL);
 

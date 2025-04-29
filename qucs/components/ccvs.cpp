@@ -18,6 +18,7 @@
 #include "ccvs.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
+#include "node.h"
 
 CCVS::CCVS()
 {

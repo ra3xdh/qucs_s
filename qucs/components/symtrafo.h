@@ -27,6 +27,9 @@ public:
   ~symTrafo();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+  QString getSpiceLibrary();
+protected:
+  QString spice_netlist(spicecompat::SpiceDialect dialect);
 };
 
 #endif

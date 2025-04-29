@@ -41,14 +41,13 @@
 #include <QHBoxLayout>
 #include <QStackedWidget>
 #include <QGroupBox>
-#include <QDebug>
 #include <QStringList>
 
 #include "librarydialog.h"
 #include "main.h"
-#include "schematic.h"
+#include "painting.h"
 #include "extsimkernels/abstractspicekernel.h"
-//#include "extsimkernels/xspice_cmbuilder.h"
+#include "extsimkernels/spicecompat.h"
 
 extern SubMap FileList;
 

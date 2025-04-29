@@ -26,6 +26,7 @@
 #include "main.h"
 #include "schematic.h"
 #include "module.h"
+#include "node.h"
 #include "misc.h"
 
 #include <QPen>

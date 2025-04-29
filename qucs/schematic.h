@@ -27,18 +27,12 @@
 #  define prechecked_cast dynamic_cast
 #endif
 
-#include "wire.h"
-#include "node.h"
 #include "qucsdoc.h"
-#include "diagrams/diagram.h"
-#include "paintings/painting.h"
-#include "components/component.h"
 #include "wire_planner.h"
 
 #include "qt3_compat/q3scrollview.h"
 #include <QVector>
 #include <QStringList>
-#include <QFileInfo>
 
 class QTextStream;
 class QTextEdit;
@@ -50,6 +44,16 @@ class QWheelEvent;
 class QMouseEvent;
 class QDragEnterEvent;
 class QPainter;
+
+class Element;
+class Component;
+class Conductor;
+class Diagram;
+class Marker;
+class Node;
+class Painting;
+class Wire;
+class WireLabel;
 
 // digital signal data
 struct DigSignal {
@@ -440,6 +444,7 @@ private:
 
 public:
   Node* provideNode(int, int);
+  Node* provideNode(const QPoint& p) { return provideNode(p.x(), p.y()); }
   Node* selectedNode(int, int);
 
   qucs_s::wire::Planner a_wirePlanner;

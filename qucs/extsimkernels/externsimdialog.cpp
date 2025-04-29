@@ -21,9 +21,7 @@
 
 #include "settings.h"
 #include "externsimdialog.h"
-#include "simsettingsdialog.h"
 #include "main.h"
-#include "qucs.h"
 
 ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
     QDialog(sch),

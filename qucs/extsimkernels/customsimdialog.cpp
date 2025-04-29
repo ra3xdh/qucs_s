@@ -20,6 +20,7 @@
 #include "main.h"
 #include "customsimdialog.h"
 #include "node.h"
+#include "wire.h"
 
 /*!
   \file customsimdialog.cpp

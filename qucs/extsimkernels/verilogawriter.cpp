@@ -24,6 +24,9 @@
 #include "verilogawriter.h"
 #include <QPlainTextEdit>
 #include "paintings/id_text.h"
+#include "component.h"
+#include "node.h"
+#include "schematic.h"
 
 /*!
   \file verilogawriter.cpp

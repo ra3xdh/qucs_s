@@ -18,26 +18,32 @@
 #include "multi_point.h"
 #include "one_point.h"
 #include "schematic.h"
+#include "node.h"
 
 #include <QPainter>
 
-Wire::Wire(int _x1, int _y1, int _x2, int _y2, Node *n1, Node *n2)
+Wire::Wire(int _x1, int _y1, int _x2, int _y2)
 {
   x1 = _x1;
   y1 = _y1;
   x2 = _x2;
   y2 = _y2;
 
-  // Update center
-  cx = (x1 + x2) / 2;
-  cy = (y1 + y2) / 2;
+  updateCenter();
 
-  Port1 = n1;
-  Port2 = n2;
+  Port1 = nullptr;
+  Port2 = nullptr;
   Label = nullptr;
 
   Type = isWire;
   isSelected = false;
+}
+
+Wire::Wire(Node* n1, Node* n2)
+  : Wire(n1->x(), n1->y(), n2->x(), n2->y())
+{
+  connectPort1(n1);
+  connectPort2(n2);
 }
 
 Wire::~Wire()
@@ -177,9 +183,21 @@ bool Wire::load(const QString& _s)
   y2 = n.toInt(&ok);
   if(!ok) return false;
 
-  // Update center
-  cx = (x1 + x2) / 2;
-  cy = (y1 + y2) / 2;
+  // Quick fix for ra3xdh#1273 (25.03.25)
+  //
+  // A wire whose (x1,y1) coordinates are not less than (x2,y2)
+  // coordinates somehow deals some damage like crashes or funny behaviour.
+  //
+  // I wasn't able to understand how exactly this happens, i.e. why it's
+  // important to have x1 less than x2 for a wire, so I decided to fix this
+  // in a most straightforward way by "normalizing" the wire before installing
+  // it into schematic
+  if (x1 > x2 || (x1 == x2 && y1 > y2)) {
+    std::swap(x1, x2);
+    std::swap(y1, y2);
+  }
+
+  updateCenter();
 
   n = s.section('"',1,1);
   if(!n.isEmpty()) {     // is wire labeled ?
@@ -236,9 +254,7 @@ bool Wire::setP1(const QPoint& new_p1)
   x1 = new_p1.x();
   y1 = new_p1.y();
 
-  // Update center
-  cx = std::midpoint(x1, x2);
-  cy = std::midpoint(y1, y2);
+  updateCenter();
 
   return true;
 }
@@ -264,9 +280,46 @@ bool Wire::setP2(const QPoint& new_p2)
   x2 = new_p2.x();
   y2 = new_p2.y();
 
-  // Update center
-  cx = std::midpoint(x1, x2);
-  cy = std::midpoint(y1, y2);
+  updateCenter();
 
   return true;
+}
+
+void Wire::connectPort1(Node* n)
+{
+  assert(n != nullptr);
+
+  if (n == Port1) {
+    return;
+  }
+
+  if (Port1 != nullptr) {
+    Port1->disconnect(this);
+  }
+
+  n->connect(this);
+  Port1 = n;
+  setP1(Port1->center());
+}
+
+void Wire::connectPort2(Node* n)
+{
+  assert(n != nullptr);
+
+  if (n == Port2) {
+    return;
+  }
+
+  if (Port2 != nullptr) {
+    Port2->disconnect(this);
+  }
+
+  n->connect(this);
+  Port2 = n;
+  setP2(Port2->center());
+}
+
+inline void Wire::updateCenter() noexcept {
+  cx = std::midpoint(x1, x2);
+  cy = std::midpoint(y1, y2);
 }

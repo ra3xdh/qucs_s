@@ -39,7 +39,7 @@ struct tQucsSettings QucsSettings;
 bool loadSettings()
 {
     QSettings settings("qucs","qucs_s");
-    settings.beginGroup("QucsAttenuator");
+    settings.beginGroup("QucsSparViewer");
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
     settings.endGroup();
@@ -55,7 +55,7 @@ bool loadSettings()
 bool saveApplSettings(Qucs_S_SPAR_Viewer *qucs)
 {
     QSettings settings ("qucs","qucs_s");
-    settings.beginGroup("QucsAttenuator");
+    settings.beginGroup("QucsSparViewer");
     settings.setValue("x", qucs->x());
     settings.setValue("y", qucs->y());
     settings.endGroup();
@@ -103,7 +103,12 @@ int main( int argc, char ** argv )
   a.installTranslator( &tor );
 
   Qucs_S_SPAR_Viewer *qucs = new Qucs_S_SPAR_Viewer();
-  //a.setMainWidget(qucs);
+
+  if (argc > 1) { // File directory to watch
+    QString path = QString(argv[1]);
+    qucs->addPathToWatcher(path);
+  }
+
   qucs->raise();
   qucs->move(QucsSettings.x, QucsSettings.y);  // position before "show" !!!
   qucs->show();

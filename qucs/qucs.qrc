@@ -107,5 +107,9 @@
         <file>bitmaps/svg/SDTF.svg</file>
         <file>bitmaps/svg/XAPWL.svg</file>
         <file>bitmaps/svg/vhdlfile.svg</file>
+        <file>bitmaps/svg/ringcore.svg</file>
+        <file>bitmaps/svg/ecore.svg</file>
+        <file>bitmaps/svg/ucore.svg</file>
+        <file>bitmaps/svg/nocore.svg</file>
     </qresource>
 </RCC>

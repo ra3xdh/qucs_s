@@ -18,6 +18,7 @@
 #include "comp_1bit.h"
 #include "node.h"
 #include "misc.h"
+#include "node.h"
 
 comp_1bit::comp_1bit()
 {

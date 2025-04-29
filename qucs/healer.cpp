@@ -95,39 +95,15 @@ public:
 // GenericPort
 // --------------------------------------------------------------------------------------
 
-template<>
-Wire* GenericPort::host() const
-{
-    return (isOfWire() ? m_wire : nullptr);
-}
-
-
-template<>
-Component* GenericPort::host() const
-{
-    return (isOfComponent() ? m_comp : nullptr);
-}
-
-
-template<>
-Element* GenericPort::host() const
-{
-    if (isOfComponent()) {
-        return m_comp;
-    }
-    return m_wire;
-}
-
-
 QPoint GenericPort::center() const
 {
     switch (m_portType) {
         case PortType::Component:
             return m_comp->center() + QPoint{m_port->x, m_port->y};
         case PortType::WireOne:
-            return QPoint{m_wire->x1, m_wire->y1};
+            return m_wire->P1();
         case PortType::WireTwo:
-            return QPoint{m_wire->x2, m_wire->y2};
+            return m_wire->P2();
     }
     assert(false);
 }
@@ -186,7 +162,7 @@ Node* GenericPort::replaceNodeWith(Node* new_node)
 void GenericPort::moveCenterTo(const QPoint& coords)
 {
     assert(isOfWire());
-    auto* wire = host<Wire>();
+    auto* wire = hostWire();
 
     switch (m_portType) {
     case (PortType::WireOne):
@@ -199,6 +175,19 @@ void GenericPort::moveCenterTo(const QPoint& coords)
 
     default:
         assert(false);
+    }
+}
+
+
+Node* GenericPort::node() const
+{
+    switch (m_portType) {
+    case PortType::WireOne:
+      return m_wire->Port1;
+    case PortType::WireTwo:
+      return m_wire->Port2;
+    case PortType::Component:
+      return m_port->Connection;
     }
 }
 
@@ -309,11 +298,11 @@ bool isSpecialCase(const JointStateAssessor& jsa)
 
     if (jsa.onlyWirePortsAt(*other_loc)) return false;
 
-    Wire* single_wire = jsa.portLocations().lower_bound(*single_wire_port_loc)->second->host<Wire>();
+    Wire* single_wire = jsa.portLocations().lower_bound(*single_wire_port_loc)->second->hostWire();
     assert(single_wire != nullptr);
 
-    const QPoint p1{single_wire->x1, single_wire->y1};
-    const QPoint p2{single_wire->x2, single_wire->y2};
+    const QPoint p1 = single_wire->P1();
+    const QPoint p2 = single_wire->P2();
     return *other_loc == p1 || *other_loc == p2 || geom::is_between(*other_loc, p1, p2);
 }
 
@@ -458,7 +447,7 @@ vector<Healer::HealingAction> Healer::HealerImpl::processRelayingCase(Node* node
 
         assert(port->isOfWire());
 
-        auto [stable_node, obsolete_wires] = findStableNode(node, port->host<Wire>());
+        auto [stable_node, obsolete_wires] = findStableNode(node, port->hostWire());
 
         std::vector<WireLabel*> labels;
         for (auto* wire : obsolete_wires) {

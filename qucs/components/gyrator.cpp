@@ -18,6 +18,7 @@
 #include "gyrator.h"
 #include "node.h"
 #include "extsimkernels/spicecompat.h"
+#include "node.h"
 
 
 Gyrator::Gyrator()

@@ -1,0 +1,11 @@
+.SUBCKT winding INP INS H B N=10 Rs=0.1
+VI _net0 _net1 DC 0
+R1 INP _net0  {RS} 
+B1 0  H  I = N*i(VI) 
+R2 0 H  1E12 
+HSRC1 _net1 INS  VSRC1 {N}
+VSRC1 _net2 0 DC 0 
+C1 B _net2  1 
+R3 0 B  1E12  
+.ENDS
+

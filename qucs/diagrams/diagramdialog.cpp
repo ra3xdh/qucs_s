@@ -26,6 +26,7 @@
 #include "main.h"
 #include "misc.h"
 #include "settings.h"
+#include "extsimkernels/spicecompat.h"
 
 #include <cmath>
 #include <assert.h>

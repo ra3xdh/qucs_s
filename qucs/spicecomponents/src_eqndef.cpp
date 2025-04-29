@@ -1,6 +1,7 @@
 #include "src_eqndef.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
+#include "node.h"
 
 
 Src_eqndef::Src_eqndef()
