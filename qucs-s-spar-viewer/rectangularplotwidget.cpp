@@ -119,7 +119,7 @@ void RectangularPlotWidget::addTrace(const QString& name, const Trace& trace)
         yAxisMin->setValue(y_min);
         yAxisMax->setValue(y_max);
         double y_step = round((y_max - y_min)/10);
-        y_step = floor(y_step / 5) * 5; // round to 5
+        y_step = ceil(y_step / 5) * 5; // round to 5
         yAxisDiv->setValue(y_step);
 
       }
@@ -492,7 +492,7 @@ void RectangularPlotWidget::updateYAxis()
   double yMax = yAxisMax->value();
   double yDiv = yAxisDiv->value();
 
-  double min_step = (yMax-yMin)/10;
+  double min_step = (yMax-yMin)/20;
 
   if (yDiv < min_step) {
     // Avoid excessive ticking
