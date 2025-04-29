@@ -897,7 +897,7 @@ void Schematic::zoomAroundPoint(double offeredScaleChange, QPoint coords, bool v
 }
 
 // -----------------------------------------------------------
-float Schematic::zoomBy(float s)
+double Schematic::zoomBy(double s)
 {
     // Change scale and keep the point displayed in the center
     // of the viewport at same place after scaling.

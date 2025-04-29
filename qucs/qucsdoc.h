@@ -35,7 +35,7 @@ public:
   virtual int   save() { return 0; };
   virtual void  print(QPrinter*, QPainter*, bool, bool) {};
   virtual void  becomeCurrent(bool) {};
-  virtual float zoomBy(float) { return 1.0; };
+  virtual double zoomBy(double) { return 1.0; };
   virtual void  showAll() {};
   virtual void  zoomToSelection() {};
   virtual void  showNoZoom() {};
@@ -45,7 +45,7 @@ public:
   static QString fileBase (const QString&);
   QString fileBase (void);
 
-  float getScale() const { return a_Scale; }
+  double getScale() const { return a_Scale; }
   bool getDocChanged() const { return a_DocChanged; }
   void setDocChanged(bool value) { a_DocChanged = value; }
   bool getSimOpenDpl() const { return a_SimOpenDpl; }
@@ -78,7 +78,7 @@ protected:
   QString a_SimTime;     // used for VHDL simulation, but stored in datadisplay
   QDateTime a_lastSaved;
 
-  float a_Scale;
+  double a_Scale;
   QucsApp* a_App;
   bool a_DocChanged;
   bool a_SimOpenDpl;   // open data display after simulation ?

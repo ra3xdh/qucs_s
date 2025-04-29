@@ -148,7 +148,7 @@ public:
     @param viewportRelative  tells if coordinates are absolute or relative to viewport
   */
   void zoomAroundPoint(double scaleChange, QPoint coords, bool viewportRelative);
-  float zoomBy(float);
+  double zoomBy(double);
   void  showAll();
   void zoomToSelection();
   void  showNoZoom();
@@ -283,7 +283,7 @@ private:
 
   // Two of those data sets are needed for Schematic and for symbol.
   // Which one is in "tmp..." depends on "symbolMode".
-  float a_tmpScale;
+  double a_tmpScale;
   int a_tmpViewX1;
   int a_tmpViewY1;
   int a_tmpViewX2;
