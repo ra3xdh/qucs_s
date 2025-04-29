@@ -1591,12 +1591,12 @@ void Qucs_S_SPAR_Viewer::removeFile(QString ID)
 {
   // Find the row number of the button to remove
   int row_to_remove = -1;
-  QString dataset;
+  QString dataset_to_remove;
 
   for (int i = 0; i < List_RemoveButton.size(); i++) {
     if (List_RemoveButton.at(i)->objectName() == ID) {
       row_to_remove = i;
-      dataset = List_FileNames.at(i)->text();
+      dataset_to_remove = List_FileNames.at(i)->text();
       delete List_RemoveButton.takeAt(i);  // Use takeAt() instead of at()
       delete List_FileNames.takeAt(i);     // Removes AND returns the pointer
       break;
@@ -1608,8 +1608,15 @@ void Qucs_S_SPAR_Viewer::removeFile(QString ID)
     removeAndCollapseRow(FilesGrid, row_to_remove);
 
     // Find all traces belonging to this dataset and remove them
-    removeTracesByDataset(dataset);
+    removeTracesByDataset(dataset_to_remove);
   }
+
+  datasets.remove(dataset_to_remove);
+
+  // Update datasets' combobox
+  int index = QCombobox_datasets->findText(dataset_to_remove);
+  QCombobox_datasets->removeItem(index);
+  updateTracesCombo();
 }
 
 
@@ -1621,11 +1628,13 @@ void Qucs_S_SPAR_Viewer::removeFile()
   removeFile(ID);
 }
 
+
+// Given the name of a dataset, this function removes all traces related to it
 void Qucs_S_SPAR_Viewer::removeTracesByDataset(const QString& dataset_to_remove) {
   // Iterate through the outer QMap (display modes)
-  for (auto mode_it = traceMap.begin(); mode_it != traceMap.end(); ) {
-    QMap<QString, TraceProperties>& traces = mode_it.value();
-    DisplayMode mode = mode_it.key();
+
+  for (const DisplayMode& mode : traceMap.keys()) {
+    QMap<QString, TraceProperties>& traces = traceMap[mode];
 
     // Iterate through the inner QMap (traces in the current mode)
     for (auto trace_it = traces.begin(); trace_it != traces.end(); ) {
@@ -1648,13 +1657,6 @@ void Qucs_S_SPAR_Viewer::removeTracesByDataset(const QString& dataset_to_remove)
       } else {
         ++trace_it; // Increment iterator if not removed
       }
-    }
-
-    // Check if the mode is now empty after processing all traces
-    if (traces.isEmpty()) {
-      mode_it = traceMap.erase(mode_it);
-    } else {
-      ++mode_it;
     }
   }
 }
