@@ -4511,7 +4511,7 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString &path) {
   QStringList paths;
   for(const QString& file : newFiles) {
     const QString fullPath = dir.absoluteFilePath(file);
-    if(!filePaths.contains(fullPath)) {
+    if(!filePaths.contains(file)) {
       paths.append(fullPath);
     }
   }
