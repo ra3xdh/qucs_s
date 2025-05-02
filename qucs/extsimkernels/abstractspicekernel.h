@@ -91,7 +91,7 @@ public:
     ~AbstractSpiceKernel();
 
     bool checkSchematic(QStringList &incompat);
-    virtual void createSubNetlsit(QTextStream& stream, bool lib = false);
+    virtual void createSubNetlist(QTextStream& stream, bool lib = false);
 
     void parseNgSpiceSimOutput(QString ngspice_file,
                                QList< QList<double> > &sim_points,

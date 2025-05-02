@@ -271,13 +271,13 @@ void AbstractSpiceKernel::createNetlist(QTextStream&, int ,QStringList&,
 }
 
 /*!
- * \brief AbstractSpiceKernel::createSubNetlsit Output Netlist with
+ * \brief AbstractSpiceKernel::createSubNetlist Output Netlist with
  *        Subcircuit header .SUBCKT
  * \param stream QTextStream that associated with spice netlist file
  * \param xyce Default is false. Should be set in true if netlist is
  *        prepared for Xyce simulator. For Ngspice should be false.
  */
-void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
+void AbstractSpiceKernel::createSubNetlist(QTextStream &stream, bool lib)
 {
     QString header;
     QString f = misc::properFileName(a_schematic->getDocName());

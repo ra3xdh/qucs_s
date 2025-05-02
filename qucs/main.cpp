@@ -457,7 +457,11 @@ int doNgspiceNetlist(QString schematicFileName, QString netlistFileName, bool ne
     return 0;
 }
 
-int doCdlNetlist(QString schematicFileName, QString netlistFileName, bool netlist2Console)
+int doCdlNetlist(
+        QString schematicFileName,
+        QString netlistFileName,
+        bool netlist2Console,
+        bool resolveSpicePrefix)
 {
     QucsSettings.DefaultSimulator = spicecompat::simNgspice;
     Module::registerModules();
@@ -501,7 +505,7 @@ int doCdlNetlist(QString schematicFileName, QString netlistFileName, bool netlis
         }
     }
 
-    CdlNetlistWriter cdlWriter(*netlistStream, schematic.get());
+    CdlNetlistWriter cdlWriter(*netlistStream, schematic.get(), resolveSpicePrefix);
     if (!cdlWriter.write())
     {
         QMessageBox::critical(
@@ -1076,6 +1080,7 @@ int main(int argc, char *argv[])
         },
         {"list-entries", QCoreApplication::translate("main", "list component entry formats for schematic and netlist")},
         {{"c", "netlist2Console"}, QCoreApplication::translate("main", "write netlist to console")},
+        {{"x", "spiceprefix"}, QCoreApplication::translate("main", "resolve spice prefix during netlist CDL")},
     });
 
     parser.process(cmdArgs);
@@ -1117,6 +1122,7 @@ int main(int argc, char *argv[])
     const bool xyce_flag(parser.isSet("xyce"));
     const bool run_flag(parser.isSet("run"));
     const bool netlist2Console(parser.isSet("netlist2Console"));
+    const bool spiceprefix(parser.isSet("spiceprefix"));
 
 #if 0
     std::cout << "Current cli values:" << std::endl;
@@ -1133,6 +1139,7 @@ int main(int argc, char *argv[])
     std::cout << "xyce_flag: " << xyce_flag << std::endl;
     std::cout << "run_flag: " << run_flag << std::endl;
     std::cout << "netlist2Console: " << netlist2Console << std::endl;
+    std::cout << "spiceprefix: " << spiceprefix << std::endl;
     std::cout << "icons: " << parser.isSet("icons") << std::endl;
     std::cout << "doc: " << parser.isSet("doc") << std::endl;
     std::cout << "list-entries: " << parser.isSet("list-entries") << std::endl;
@@ -1197,7 +1204,7 @@ int main(int argc, char *argv[])
                 }
                 else if (cdl_flag)
                 {
-                    return doCdlNetlist(inputfile, outputfile, netlist2Console);
+                    return doCdlNetlist(inputfile, outputfile, netlist2Console, spiceprefix);
                 }
                 else if (xyce_flag)
                 {

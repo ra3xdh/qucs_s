@@ -2035,7 +2035,7 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
           ErrText->insertPlainText(s);
           return false;
       }
-      kern->createSubNetlsit(*stream);
+      kern->createSubNetlist(*stream);
 
       delete kern;
   }

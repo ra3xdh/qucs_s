@@ -509,7 +509,7 @@ void LibraryDialog::slotSave()
                                 "Check these components: %2 \n")
                     .arg(Doc->getDocName()).arg(err_lst.join("; ")));
         }
-        kern->createSubNetlsit(ts,true);
+        kern->createSubNetlist(ts,true);
         intoStream(Stream, tmp, "Spice");
 
         QStringList libs = kern->collectSpiceLibraryFiles(Doc);
