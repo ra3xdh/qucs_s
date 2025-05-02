@@ -3861,6 +3861,7 @@ bool Qucs_S_SPAR_Viewer::save() {
   saveRectangularPlotSettings(xml, VSWRChart, "VSWRChartSettings");
   saveRectangularPlotSettings(xml, GroupDelayChart, "GroupDelayChartSettings");
 
+  saveSmithPlotSettings(xml, smithChart, "SmithChartSettings");
 
   xml.writeEndElement(); // session
   xml.writeEndDocument();
@@ -4006,6 +4007,8 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
         loadRectangularPlotSettings(xml, VSWRChart, "VSWRChartSettings");
       } else if (xml.name() == QStringLiteral("GroupDelayChartSettings")) {
         loadRectangularPlotSettings(xml, GroupDelayChart, "GroupDelayChartSettings");
+      } else if (xml.name() == QStringLiteral("SmithChartSettings")) {
+        loadSmithPlotSettings(xml, smithChart, "SmithChartSettings");
       }
 
     }
@@ -4867,6 +4870,70 @@ void Qucs_S_SPAR_Viewer::loadRectangularPlotSettings(QXmlStreamReader &xml,
         settings.showValues = (text == "true");
       } else if (name == QStringView(u"lockAxis")) {
         settings.lockAxis = (text == "true");
+      }
+    }
+    xml.readNext();
+  }
+
+  widget->setSettings(settings);
+  xml.readNext();
+}
+
+
+void Qucs_S_SPAR_Viewer::saveSmithPlotSettings(QXmlStreamWriter &xml,
+                                                     SmithChartWidget *widget,
+                                                     const QString &elementName)
+{
+  if (!widget) return;
+
+  auto settings = widget->getSettings();
+
+  xml.writeStartElement(elementName);
+
+  xml.writeTextElement("Z0", settings.Z0);
+  xml.writeTextElement("freqMin", QString::number(settings.freqMin));
+  xml.writeTextElement("freqMax", QString::number(settings.freqMax));
+  xml.writeTextElement("freqUnit", settings.freqUnit);
+
+
+  xml.writeTextElement("z_chart", settings.z_chart ? "true" : "false");
+  xml.writeTextElement("y_chart", settings.y_chart ? "true" : "false");
+
+  xml.writeEndElement(); // elementName
+}
+
+
+void Qucs_S_SPAR_Viewer::loadSmithPlotSettings(QXmlStreamReader &xml,
+                                                     SmithChartWidget *widget,
+                                                     const QString &elementName)
+{
+  if (!widget) return;
+
+  if (!(xml.isStartElement() && xml.name() == elementName)) {
+    // Not positioned at the correct start element, return early
+    return;
+  }
+  xml.readNext();
+  SmithChartWidget::AxisSettings settings;
+
+         // Read inside the element until the corresponding end element
+  while (!(xml.tokenType() == QXmlStreamReader::EndElement)) {
+    if (xml.tokenType() == QXmlStreamReader::StartElement) {
+      QStringView name = xml.name();
+      QString text = xml.readElementText();
+
+      if (name == QStringView(u"freqMin")) {
+        settings.freqMin = text.toDouble();
+      } else if (name == QStringView(u"freqMax")) {
+        settings.freqMax = text.toDouble();
+      }  else if (name == QStringView(u"freqUnit")) {
+        settings.freqUnit = text;
+      } else if (name == QStringView(u"Z0")) {
+        settings.Z0 = text;
+      } else if (name == QStringView(u"y_chart")) {
+        settings.y_chart = (text == "true");
+      } else if (name == QStringView(u"z_chart")) {
+        settings.z_chart = (text == "true");
       }
     }
     xml.readNext();

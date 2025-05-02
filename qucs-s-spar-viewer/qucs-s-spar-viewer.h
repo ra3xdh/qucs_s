@@ -325,6 +325,9 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void saveRectangularPlotSettings(QXmlStreamWriter &xml, RectangularPlotWidget *widget, const QString &elementName);
   void loadRectangularPlotSettings(QXmlStreamReader &xml, RectangularPlotWidget *widget, const QString &elementName);
 
+  void saveSmithPlotSettings(QXmlStreamWriter &xml, SmithChartWidget *widget, const QString &elementName);
+  void loadSmithPlotSettings(QXmlStreamReader &xml, SmithChartWidget *widget, const QString &elementName);
+
 
   // Notes
   QDockWidget *dockNotes;
