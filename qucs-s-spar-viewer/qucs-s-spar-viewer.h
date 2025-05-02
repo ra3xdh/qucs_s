@@ -328,6 +328,9 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void saveSmithPlotSettings(QXmlStreamWriter &xml, SmithChartWidget *widget, const QString &elementName);
   void loadSmithPlotSettings(QXmlStreamReader &xml, SmithChartWidget *widget, const QString &elementName);
 
+  void savePolarPlotSettings(QXmlStreamWriter &xml, PolarPlotWidget *widget, const QString &elementName);
+  void loadPolarPlotSettings(QXmlStreamReader &xml, PolarPlotWidget *widget, const QString &elementName);
+
 
   // Notes
   QDockWidget *dockNotes;

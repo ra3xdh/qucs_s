@@ -37,6 +37,22 @@ public:
     QPen pen;
   };
 
+  struct AxisSettings {
+    double freqMax;
+    double freqMin;
+    QString freqUnit;
+
+    double radius_min;
+    double radius_max;
+    double radius_div;
+
+    QString marker_format;
+
+  };
+
+  void setSettings(const AxisSettings& settings);
+  PolarPlotWidget::AxisSettings getSettings() const;
+
   explicit PolarPlotWidget(QWidget *parent = nullptr);
   ~PolarPlotWidget();
 

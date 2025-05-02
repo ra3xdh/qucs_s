@@ -3731,7 +3731,8 @@ void Qucs_S_SPAR_Viewer::slotLoadSession()
   QString fileName = QFileDialog::getOpenFileName(this,
                                                   tr("Open S-parameter Viewer Session"),
                                                   QDir::homePath(),
-                                                  tr("Qucs-S snp viewer session (*.spar);"));
+                                                  tr("Qucs-S snp viewer session (*.spar)"));
+
 
   loadSession(fileName);
 }
@@ -3862,6 +3863,7 @@ bool Qucs_S_SPAR_Viewer::save() {
   saveRectangularPlotSettings(xml, GroupDelayChart, "GroupDelayChartSettings");
 
   saveSmithPlotSettings(xml, smithChart, "SmithChartSettings");
+  savePolarPlotSettings(xml, polarChart, "PolarChartSettings");
 
   xml.writeEndElement(); // session
   xml.writeEndDocument();
@@ -4009,6 +4011,8 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
         loadRectangularPlotSettings(xml, GroupDelayChart, "GroupDelayChartSettings");
       } else if (xml.name() == QStringLiteral("SmithChartSettings")) {
         loadSmithPlotSettings(xml, smithChart, "SmithChartSettings");
+      } else if (xml.name() == QStringLiteral("PolarChartSettings")) {
+        loadPolarPlotSettings(xml, polarChart, "PolarChartSettings");
       }
 
     }
@@ -4934,6 +4938,74 @@ void Qucs_S_SPAR_Viewer::loadSmithPlotSettings(QXmlStreamReader &xml,
         settings.y_chart = (text == "true");
       } else if (name == QStringView(u"z_chart")) {
         settings.z_chart = (text == "true");
+      }
+    }
+    xml.readNext();
+  }
+
+  widget->setSettings(settings);
+  xml.readNext();
+}
+
+
+void Qucs_S_SPAR_Viewer::savePolarPlotSettings(QXmlStreamWriter &xml,
+                                               PolarPlotWidget *widget,
+                                               const QString &elementName)
+{
+  if (!widget) return;
+
+  auto settings = widget->getSettings();
+
+  xml.writeStartElement(elementName);
+
+  xml.writeTextElement("freqMin", QString::number(settings.freqMin));
+  xml.writeTextElement("freqMax", QString::number(settings.freqMax));
+  xml.writeTextElement("freqUnit", settings.freqUnit);
+
+  xml.writeTextElement("radius_min", QString::number(settings.radius_min));
+  xml.writeTextElement("radius_max", QString::number(settings.radius_max));
+  xml.writeTextElement("radius_div", QString::number(settings.radius_div));
+
+
+  xml.writeTextElement("marker_format", settings.marker_format);
+
+  xml.writeEndElement(); // elementName
+}
+
+
+void Qucs_S_SPAR_Viewer::loadPolarPlotSettings(QXmlStreamReader &xml,
+                                               PolarPlotWidget *widget,
+                                               const QString &elementName)
+{
+  if (!widget) return;
+
+  if (!(xml.isStartElement() && xml.name() == elementName)) {
+    // Not positioned at the correct start element, return early
+    return;
+  }
+  xml.readNext();
+  PolarPlotWidget::AxisSettings settings;
+
+         // Read inside the element until the corresponding end element
+  while (!(xml.tokenType() == QXmlStreamReader::EndElement)) {
+    if (xml.tokenType() == QXmlStreamReader::StartElement) {
+      QStringView name = xml.name();
+      QString text = xml.readElementText();
+
+      if (name == QStringView(u"freqMin")) {
+        settings.freqMin = text.toDouble();
+      } else if (name == QStringView(u"freqMax")) {
+        settings.freqMax = text.toDouble();
+      }  else if (name == QStringView(u"freqUnit")) {
+        settings.freqUnit = text;
+      }  else if (name == QStringView(u"radius_min")) {
+        settings.radius_min = text.toDouble();
+      } else if (name == QStringView(u"radius_max")) {
+        settings.radius_max = text.toDouble();
+      } else if (name == QStringView(u"radius_div")) {
+        settings.radius_div = text.toDouble();
+      } else if (name == QStringView(u"marker_format")) {
+        settings.marker_format = text;
       }
     }
     xml.readNext();

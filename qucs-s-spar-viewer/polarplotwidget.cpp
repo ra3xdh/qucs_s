@@ -611,3 +611,34 @@ double PolarPlotWidget::getFrequencyMultiplier() const {
   }
 }
 
+
+// Send settings to the main program
+PolarPlotWidget::AxisSettings PolarPlotWidget::getSettings() const {
+  AxisSettings settings;
+  settings.freqMin = fMinSpinBox->value();
+  settings.freqMax = fMaxSpinBox->value();
+  settings.freqUnit = fUnitComboBox->currentText();
+
+  settings.radius_min = rAxisMin->value();
+  settings.radius_max = rAxisMax->value();
+  settings.radius_div = rAxisDiv->value();
+
+  settings.marker_format = displayModeCombo->currentText();
+
+  return settings;
+}
+
+// Get settings from the main program
+void PolarPlotWidget::setSettings(const AxisSettings& settings) {
+  fMinSpinBox->setValue(settings.freqMin);
+  fMaxSpinBox->setValue(settings.freqMax);
+  fUnitComboBox->setCurrentText(settings.freqUnit);
+
+  rAxisMin->setValue(settings.radius_min);
+  rAxisMax->setValue(settings.radius_max);
+  rAxisDiv->setValue(settings.radius_div);
+
+  displayModeCombo->setCurrentText(settings.marker_format);
+
+  update();
+}
