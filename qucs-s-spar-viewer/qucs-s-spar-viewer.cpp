@@ -3848,13 +3848,25 @@ bool Qucs_S_SPAR_Viewer::save() {
     xml.writeEndElement(); // limits
   }
 
-         // Save notes
+  // Save notes
   xml.writeStartElement("notes");
   xml.writeCDATA(Notes_Widget->toPlainText()); // Use CDATA for notes
   xml.writeEndElement(); // notes
 
+
+  // Save charts state
+  saveRectangularPlotSettings(xml, Magnitude_PhaseChart, "MagnitudePhaseChartSettings");
+  saveRectangularPlotSettings(xml, impedanceChart, "ImpedanceChartSettings");
+  saveRectangularPlotSettings(xml, stabilityChart, "StabilityChartSettings");
+  saveRectangularPlotSettings(xml, VSWRChart, "VSWRChartSettings");
+  saveRectangularPlotSettings(xml, GroupDelayChart, "GroupDelayChartSettings");
+
+
   xml.writeEndElement(); // session
   xml.writeEndDocument();
+
+
+
 
   if (file.error() != QFile::NoError) {
     QMessageBox::warning(this, tr("Save Session"), tr("Error writing file: ") + file.errorString());
@@ -3885,6 +3897,7 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
     QXmlStreamReader::TokenType token = xml.readNext();
 
     if (token == QXmlStreamReader::StartElement) {
+     // qDebug() << xml.name();
       if (xml.name() == QStringLiteral("settings")) {
         while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == QStringLiteral("settings"))) {
           if (xml.tokenType() == QXmlStreamReader::StartElement) {
@@ -3983,7 +3996,18 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
         }
       } else if (xml.name() == QStringLiteral("notes")) {
         Notes_Widget->setPlainText(xml.readElementText());
+      }  else if (xml.name() == QStringLiteral("MagnitudePhaseChartSettings")) {
+        loadRectangularPlotSettings(xml, Magnitude_PhaseChart, "MagnitudePhaseChartSettings");
+      } else if (xml.name() == QStringLiteral("ImpedanceChartSettings")) {
+        loadRectangularPlotSettings(xml, impedanceChart, "ImpedanceChartSettings");
+      } else if (xml.name() == QStringLiteral("StabilityChartSettings")) {
+        loadRectangularPlotSettings(xml, stabilityChart, "StabilityChartSettings");
+      } else if (xml.name() == QStringLiteral("VSWRChartSettings")) {
+        loadRectangularPlotSettings(xml, VSWRChart, "VSWRChartSettings");
+      } else if (xml.name() == QStringLiteral("GroupDelayChartSettings")) {
+        loadRectangularPlotSettings(xml, GroupDelayChart, "GroupDelayChartSettings");
       }
+
     }
   }
 
@@ -4770,3 +4794,84 @@ void Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection(int index) {
   }
 }
 
+
+void Qucs_S_SPAR_Viewer::saveRectangularPlotSettings(QXmlStreamWriter &xml,
+                                                     RectangularPlotWidget *widget,
+                                                     const QString &elementName)
+{
+  if (!widget) return;
+
+  auto settings = widget->getSettings();
+
+  xml.writeStartElement(elementName);
+
+  xml.writeTextElement("xAxisMin", QString::number(settings.xAxisMin));
+  xml.writeTextElement("xAxisMax", QString::number(settings.xAxisMax));
+  xml.writeTextElement("xAxisDiv", QString::number(settings.xAxisDiv));
+  xml.writeTextElement("xAxisUnits", settings.xAxisUnits);
+
+  xml.writeTextElement("yAxisMin", QString::number(settings.yAxisMin));
+  xml.writeTextElement("yAxisMax", QString::number(settings.yAxisMax));
+  xml.writeTextElement("yAxisDiv", QString::number(settings.yAxisDiv));
+
+  xml.writeTextElement("y2AxisMin", QString::number(settings.y2AxisMin));
+  xml.writeTextElement("y2AxisMax", QString::number(settings.y2AxisMax));
+  xml.writeTextElement("y2AxisDiv", QString::number(settings.y2AxisDiv));
+
+  xml.writeTextElement("showValues", settings.showValues ? "true" : "false");
+  xml.writeTextElement("lockAxis", settings.lockAxis ? "true" : "false");
+
+  xml.writeEndElement(); // elementName
+}
+
+void Qucs_S_SPAR_Viewer::loadRectangularPlotSettings(QXmlStreamReader &xml,
+                                                     RectangularPlotWidget *widget,
+                                                     const QString &elementName)
+{
+  if (!widget) return;
+
+  if (!(xml.isStartElement() && xml.name() == elementName)) {
+    // Not positioned at the correct start element, return early
+    return;
+  }
+  xml.readNext();
+  RectangularPlotWidget::AxisSettings settings;
+
+         // Read inside the element until the corresponding end element
+  while (!(xml.tokenType() == QXmlStreamReader::EndElement)) {
+    if (xml.tokenType() == QXmlStreamReader::StartElement) {
+      QStringView name = xml.name();
+      QString text = xml.readElementText();
+
+      if (name == QStringView(u"xAxisMin")) {
+        settings.xAxisMin = text.toDouble();
+      } else if (name == QStringView(u"xAxisMax")) {
+        settings.xAxisMax = text.toDouble();
+      } else if (name == QStringView(u"xAxisDiv")) {
+        settings.xAxisDiv = text.toDouble();
+      } else if (name == QStringView(u"xAxisUnits")) {
+        settings.xAxisUnits = text;
+      } else if (name == QStringView(u"yAxisMin")) {
+        settings.yAxisMin = text.toDouble();
+      } else if (name == QStringView(u"yAxisMax")) {
+        settings.yAxisMax = text.toDouble();
+      } else if (name == QStringView(u"yAxisDiv")) {
+        settings.yAxisDiv = text.toDouble();
+      } else if (name == QStringView(u"y2AxisMin")) {
+        settings.y2AxisMin = text.toDouble();
+      } else if (name == QStringView(u"y2AxisMax")) {
+        settings.y2AxisMax = text.toDouble();
+      } else if (name == QStringView(u"y2AxisDiv")) {
+        settings.y2AxisDiv = text.toDouble();
+      } else if (name == QStringView(u"showValues")) {
+        settings.showValues = (text == "true");
+      } else if (name == QStringView(u"lockAxis")) {
+        settings.lockAxis = (text == "true");
+      }
+    }
+    xml.readNext();
+  }
+
+  widget->setSettings(settings);
+  xml.readNext();
+}
