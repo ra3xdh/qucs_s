@@ -159,6 +159,7 @@ void Qucs_S_SPAR_Viewer::CreateRightPanel(){
   // Notes
   Notes_Widget = new CodeEditor();
   dockNotes = new QDockWidget("Notes", this);
+  dockNotes->setObjectName("dockNotes");
   dockNotes->setWidget(Notes_Widget);
 
   // Disable dock closing
@@ -195,6 +196,8 @@ void Qucs_S_SPAR_Viewer::CreateRightPanel(){
 void Qucs_S_SPAR_Viewer::setFileManagementDock(){
 
   dockFiles = new QDockWidget("S-parameter files", this);
+  dockFiles->setObjectName("dockFiles");
+
 
   QScrollArea *scrollArea_Files = new QScrollArea();
   FileList_Widget = new QWidget();
@@ -253,6 +256,7 @@ void Qucs_S_SPAR_Viewer::setFileManagementDock(){
 void Qucs_S_SPAR_Viewer::setTraceManagementDock(){
 
   dockTracesList = new QDockWidget("Traces List", this);
+  dockTracesList->setObjectName("TracesDock");
 
   QWidget * TracesGroup = new QWidget();
   QVBoxLayout *Traces_VBox = new QVBoxLayout(TracesGroup);
@@ -462,6 +466,7 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock(){
 void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
   // Markers dock
   dockMarkers = new QDockWidget("Markers", this);
+  dockMarkers->setObjectName("dockMarkers");
 
   QWidget* MarkersGroup = new QWidget();
   QVBoxLayout* Markers_VBox = new QVBoxLayout(MarkersGroup);
@@ -552,6 +557,8 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
 void Qucs_S_SPAR_Viewer::setLimitManagementDock(){
   // Limits dock
   dockLimits = new QDockWidget("Limits", this);
+  dockLimits->setObjectName("dockLimits");
+
 
   QWidget * LimitsGroup = new QWidget();
   QVBoxLayout *Limits_VBox = new QVBoxLayout(LimitsGroup);
@@ -636,6 +643,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockChart = new QDockWidget("Magnitude / Phase", this);
   dockChart->setWidget(Magnitude_PhaseChart);
   dockChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockChart->setObjectName("dockChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockChart);
 
   // Smith Chart
@@ -644,6 +652,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockSmithChart = new QDockWidget("Smith", this);
   dockSmithChart->setWidget(smithChart);
   dockSmithChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockSmithChart->setObjectName("dockSmithChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockSmithChart);
 
   // Polar Chart
@@ -652,6 +661,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockPolarChart = new QDockWidget("Polar", this);
   dockPolarChart->setWidget(polarChart);
   dockPolarChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockPolarChart->setObjectName("dockPolarChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockPolarChart);
 
   // Port impedance chart settings
@@ -659,6 +669,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockImpedanceChart = new QDockWidget("Port Impedance", this);
   dockImpedanceChart->setWidget(impedanceChart);
   dockImpedanceChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockImpedanceChart->setObjectName("dockImpedanceChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockImpedanceChart);
   impedanceChart->change_Y_axis_title(QString("Resistance (Ω)")); // Remove default labels
   impedanceChart->change_Y_axis_units(QString("Ω"));
@@ -670,6 +681,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockStabilityChart = new QDockWidget("Stability", this);
   dockStabilityChart->setWidget(stabilityChart);
   dockStabilityChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockStabilityChart->setObjectName("dockStabilityChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockStabilityChart);
   stabilityChart->set_y_autoscale(false);
   stabilityChart->setRightYAxisEnabled(false); // Hide right y-axis
@@ -688,6 +700,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockVSWRChart = new QDockWidget("VSWR", this);
   dockVSWRChart->setWidget(VSWRChart);
   dockVSWRChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockVSWRChart->setObjectName("dockVSWRChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockVSWRChart);
   VSWRChart->set_y_autoscale(false);
   VSWRChart->setRightYAxisEnabled(false); // Hide right y-axis
@@ -704,6 +717,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockGroupDelayChart = new QDockWidget("Group Delay", this);
   dockGroupDelayChart->setWidget(GroupDelayChart);
   dockGroupDelayChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockGroupDelayChart->setObjectName("dockGroupDelayChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockGroupDelayChart);
   GroupDelayChart->change_Y_axis_title(QString("Time (ns)")); // Remove default labels
   GroupDelayChart->change_Y_axis_units(QString("ns"));
@@ -3732,7 +3746,6 @@ void Qucs_S_SPAR_Viewer::slotLoadSession()
                                                   tr("Open S-parameter Viewer Session"),
                                                   QDir::homePath(),
                                                   tr("Qucs-S snp viewer session (*.spar)"));
-
 
   loadSession(fileName);
 }
