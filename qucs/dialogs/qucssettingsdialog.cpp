@@ -152,7 +152,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     appSettingsGrid->addWidget(allowFlexibleWires, 7, 1);
 
     appSettingsGrid->addWidget(new QLabel(tr("Lay wires anew when moving elements (requires restart):"), appSettingsTab), 8, 0);
-    allowLayingWiresAnew = new QCheckBox(allowLayingWiresAnew);
+    allowLayingWiresAnew = new QCheckBox(appSettingsTab);
     appSettingsGrid->addWidget(allowLayingWiresAnew, 8, 1);
 
     t->addTab(appSettingsTab, tr("Settings"));
