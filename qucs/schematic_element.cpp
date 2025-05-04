@@ -347,7 +347,6 @@ Node* Schematic::provideNode(int x, int y)
         if (qucs_s::geom::is_between(new_node, wire->P1(), wire->P2())) {
             // split the wire into two wires
             splitWire(wire, new_node);
-            return new_node;
         }
     }
 
