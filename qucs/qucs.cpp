@@ -2860,15 +2860,23 @@ void QucsApp::slotOpenContent(const QModelIndex &idx)
     it++;
   }
 
-  // If no appropriate program was found, open in system default program.
-  QUrl fileUrl = QUrl::fromLocalFile(Info.absoluteFilePath());
-  if (QDesktopServices::openUrl(fileUrl)) {
-    // Success
+  // If no appropriate program was found, open in system default program or, if it is a Touchstone file, open it in the S-parameter viewer.
+  if (extName == "s2p" || extName == "s3p" || extName == "s4p") {
+    QString file_path = Info.absoluteFilePath();
+    QStringList args;
+    args.append(file_path);
+    launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer", args);
     return;
   } else {
-    // If opening fails, optionally show an error message
-    QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot open \"%1\" with the system default program!").arg(Info.absoluteFilePath()));
+    QUrl fileUrl = QUrl::fromLocalFile(Info.absoluteFilePath());
+    if (QDesktopServices::openUrl(fileUrl)) {
+      // Success
+      return;
+    } else {
+      // If opening fails, optionally show an error message
+      QMessageBox::critical(this, tr("Error"),
+                            tr("Cannot open \"%1\" with the system default program!").arg(Info.absoluteFilePath()));
+    }
   }
 
   // If no appropriate program was found, open as text file.
