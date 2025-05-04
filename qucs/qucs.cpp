@@ -2864,7 +2864,7 @@ void QucsApp::slotOpenContent(const QModelIndex &idx)
   if (extName == "s2p" || extName == "s3p" || extName == "s4p") {
     QString file_path = Info.absoluteFilePath();
     QStringList args;
-    args.append(file_path);
+    args << file_path;
     launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer", args);
     return;
   } else {

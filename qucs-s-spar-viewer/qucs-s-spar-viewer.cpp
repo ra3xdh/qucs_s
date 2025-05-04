@@ -5027,3 +5027,19 @@ void Qucs_S_SPAR_Viewer::loadPolarPlotSettings(QXmlStreamReader &xml,
   widget->setSettings(settings);
   xml.readNext();
 }
+
+
+       // Wrapper of void "Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)". It is needed to open a Touchstone file from command line
+void Qucs_S_SPAR_Viewer::addFile(const QFileInfo& fileInfo) {
+  if (fileInfo.exists()) {
+    QStringList fileNames;
+    fileNames.append(fileInfo.absoluteFilePath());
+    addFiles(fileNames);
+  } else {
+    QMessageBox::warning(
+        this,
+        tr("Error"),
+        tr("The file or directory does not exist.")
+        );
+  }
+}
