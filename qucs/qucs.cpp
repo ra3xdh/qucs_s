@@ -2860,6 +2860,17 @@ void QucsApp::slotOpenContent(const QModelIndex &idx)
     it++;
   }
 
+  // If no appropriate program was found, open in system default program.
+  QUrl fileUrl = QUrl::fromLocalFile(Info.absoluteFilePath());
+  if (QDesktopServices::openUrl(fileUrl)) {
+    // Success
+    return;
+  } else {
+    // If opening fails, optionally show an error message
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Cannot open \"%1\" with the system default program!").arg(Info.absoluteFilePath()));
+  }
+
   // If no appropriate program was found, open as text file.
   editFile(Info.absoluteFilePath());  // open datasets with text editor
 }
