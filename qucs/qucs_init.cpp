@@ -856,11 +856,7 @@ void QucsApp::initMenuBar()
   simMenu->addAction(save_netlist);
   simMenu->addSeparator();
   simMenu->addAction(saveCdlNetlist);
-<<<<<<< HEAD
   simMenu->addAction(cdlSettings);
-=======
-  simMenu->addAction(resolveSpicePrefix);
->>>>>>> 7f2684ab (Fix for issues 1223 regarding CDL netlisting)
   simMenu->addSeparator();
   simMenu->addAction(simSettings);
 
