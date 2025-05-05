@@ -235,11 +235,7 @@ public:
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
           *editCut, *editCopy, *magAll, *magSel, *magOne, *magMinus, *filePrintFit, *tune,
           *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias,
-<<<<<<< HEAD
           *saveCdlNetlist, *cdlSettings;
-=======
-          *saveCdlNetlist, *resolveSpicePrefix;
->>>>>>> 7f2684ab (Fix for issues 1223 regarding CDL netlisting)
 
   QAction *exportAsImage;
 
@@ -467,7 +463,6 @@ private:
   friend class SaveDialog;
 
   QString lastExportFilename;
-  bool a_resolveSpicePrefix;
 };
 
 /** \brief Provide a template to declare singleton classes.

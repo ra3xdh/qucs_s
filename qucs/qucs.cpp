@@ -88,8 +88,7 @@
 #include "extsimkernels/CdlSettingsDialog.h"
 
 QucsApp::QucsApp(bool netlist2Console) :
-  a_netlist2Console(netlist2Console),
-  a_resolveSpicePrefix(false)
+  a_netlist2Console(netlist2Console)
 {
   windowTitle = misc::getWindowTitle();
   setWindowTitle(windowTitle);
