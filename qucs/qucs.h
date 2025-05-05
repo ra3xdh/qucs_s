@@ -192,7 +192,7 @@ private slots:
   void slotSimSettings();
   void slotSaveNetlist();
   void slotSaveCdlNetlist();
-  void slotResolveSpicePrefixToggled(bool checked);
+  void slotCdlSettings();
   void slotAfterSpiceSimulation(ExternSimDialog *SimDlg);
   void slotBuildVAModule();
   /*void slotBuildXSPICEIfs(int mode = 0);
@@ -226,7 +226,7 @@ public:
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
           *editCut, *editCopy, *magAll, *magSel, *magOne, *magMinus, *filePrintFit, *tune,
           *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias,
-          *saveCdlNetlist, *resolveSpicePrefix;
+          *saveCdlNetlist, *cdlSettings;
 
   QAction *exportAsImage;
 
@@ -452,7 +452,6 @@ private:
   friend class SaveDialog;
 
   QString lastExportFilename;
-  bool a_resolveSpicePrefix;
 };
 
 /** \brief Provide a template to declare singleton classes.

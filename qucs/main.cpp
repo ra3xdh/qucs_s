@@ -138,6 +138,7 @@ bool loadSettings()
     QucsSettings.OpenVAFExecutable = _settings::Get().item<QString>("OpenVAFExecutable");
 
     QucsSettings.RFLayoutExecutable = _settings::Get().item<QString>("RFLayoutExecutable");
+    QucsSettings.ResolveSpicePrefix = _settings::Get().item<bool>("ResolveSpicePrefix");
 
     QucsSettings.qucsWorkspaceDir.setPath(_settings::Get().item<QString>("QucsHomeDir"));
     QucsSettings.QucsWorkDir = QucsSettings.qucsWorkspaceDir;

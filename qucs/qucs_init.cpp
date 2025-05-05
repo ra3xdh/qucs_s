@@ -592,11 +592,10 @@ void QucsApp::initActions()
   saveCdlNetlist->setWhatsThis(tr(QString::fromUtf8("Save CDL netlist to %1").arg(a_netlist2Console ? "console" : "file").toLatin1().constData()));
   connect(saveCdlNetlist, SIGNAL(triggered()), SLOT(slotSaveCdlNetlist()));
 
-  resolveSpicePrefix = new QAction(tr("Resolve spice prefix"), this);
-  resolveSpicePrefix->setStatusTip(tr("Resolve spice prefix"));
-  resolveSpicePrefix->setWhatsThis(tr(QString::fromUtf8("Resolve spice prefix during netlist CDL").toLatin1().constData()));
-  resolveSpicePrefix->setCheckable(true);
-  connect(resolveSpicePrefix, SIGNAL(toggled(bool)), SLOT(slotResolveSpicePrefixToggled(bool)));
+  cdlSettings = new QAction(tr("CDL Settings..."), this);
+  cdlSettings->setStatusTip(tr("CDL Settings"));
+  cdlSettings->setWhatsThis(tr(QString::fromUtf8("CDL Settings").toLatin1().constData()));
+  connect(cdlSettings, SIGNAL(triggered()), SLOT(slotCdlSettings()));
 
   setMarker = new QAction(QIcon((":/bitmaps/svg/marker.svg")),	tr("Set Marker on Graph"), this);
   setMarker->setShortcut(Qt::CTRL|Qt::Key_B);
@@ -830,7 +829,7 @@ void QucsApp::initMenuBar()
   simMenu->addAction(save_netlist);
   simMenu->addSeparator();
   simMenu->addAction(saveCdlNetlist);
-  simMenu->addAction(resolveSpicePrefix);
+  simMenu->addAction(cdlSettings);
   simMenu->addSeparator();
   simMenu->addAction(simSettings);
 

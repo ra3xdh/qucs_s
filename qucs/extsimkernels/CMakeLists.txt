@@ -20,6 +20,7 @@ s2spice.h
 spicelibcompdialog.h
 #xspice_cmbuilder.h
 #codemodelgen.h
+CdlSettingsDialog.h
 )
 
 SET(EXTSIMKERNELS_SRCS
@@ -37,6 +38,7 @@ s2spice.cpp
 spicelibcompdialog.cpp
 #xspice_cmbuilder.cpp
 #codemodelgen.cpp
+CdlSettingsDialog.cpp
 )
 
 SET(EXTSIMKERNELS_MOC_HDRS
@@ -47,6 +49,7 @@ xyce.h
 customsimdialog.h
 simsettingsdialog.h
 spicelibcompdialog.h
+CdlSettingsDialog.h
 )
 
 QT6_WRAP_CPP( EXTSIMKERNELS_MOC_SRCS ${EXTSIMKERNELS_MOC_HDRS} )

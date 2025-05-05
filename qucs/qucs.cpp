@@ -85,10 +85,10 @@
 #include "extsimkernels/simsettingsdialog.h"
 #include "symbolwidget.h"
 #include "diagram.h"
+#include "extsimkernels/CdlSettingsDialog.h"
 
 QucsApp::QucsApp(bool netlist2Console) :
-  a_netlist2Console(netlist2Console),
-  a_resolveSpicePrefix(false)
+  a_netlist2Console(netlist2Console)
 {
   windowTitle = misc::getWindowTitle();
   setWindowTitle(windowTitle);
@@ -3586,9 +3586,10 @@ void QucsApp::slotSaveNetlist()
     }
 }
 
-void QucsApp::slotResolveSpicePrefixToggled(bool checked)
+void QucsApp::slotCdlSettings()
 {
-    a_resolveSpicePrefix = checked;
+    std::unique_ptr<CdlSettingsDialog> dlg(new CdlSettingsDialog(this));
+    dlg->exec();
 }
 
 void QucsApp::slotSaveCdlNetlist()
@@ -3603,7 +3604,7 @@ void QucsApp::slotSaveCdlNetlist()
             QString netlistString;
             {
                 QTextStream netlistStream(&netlistString);
-                CdlNetlistWriter cdlWriter(netlistStream, schematic, a_resolveSpicePrefix);
+                CdlNetlistWriter cdlWriter(netlistStream, schematic, QucsSettings.ResolveSpicePrefix);
                 if (!cdlWriter.write())
                 {
                     QMessageBox::critical(
@@ -3634,7 +3635,7 @@ void QucsApp::slotSaveCdlNetlist()
             if (netlistFile.open(QIODevice::WriteOnly))
             {
                 QTextStream netlistStream(&netlistFile);
-                CdlNetlistWriter cdlWriter(netlistStream, schematic, a_resolveSpicePrefix);
+                CdlNetlistWriter cdlWriter(netlistStream, schematic, QucsSettings.ResolveSpicePrefix);
                 if (!cdlWriter.write())
                 {
                     QMessageBox::critical(
