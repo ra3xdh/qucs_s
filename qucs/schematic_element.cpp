@@ -437,11 +437,16 @@ Wire* merge_wires_at_node(Node* node) {
     // First of all, let's deal with labels. Label of node, if present, has
     // priority over wire labels.
     auto* preserved_label = node->Label;
-    node->Label = nullptr;
+
     if (preserved_label == nullptr) {
         // Node has no label, choose label of one of the wires
         preserved_label = extended_wire->Label == nullptr ? dissapearing_wire->Label : extended_wire->Label;
-        dissapearing_wire->Label = nullptr;
+    }
+
+    // Isolate preserved label completely
+    if (preserved_label != nullptr) {
+        preserved_label->pOwner->Label = nullptr;
+        preserved_label->pOwner = nullptr;
     }
 
     auto* extend_to = dissapearing_wire->Port1 == node
@@ -468,9 +473,10 @@ Wire* merge_wires_at_node(Node* node) {
     extended_wire->setP1(extended_wire->Port1->center());
     extended_wire->setP2(extended_wire->Port2->center());
 
-    if (preserved_label != extended_wire->Label) {
+    if (preserved_label != nullptr) {
         delete extended_wire->Label;
         extended_wire->Label = preserved_label;
+        preserved_label->pOwner = extended_wire;
     }
 
     return dissapearing_wire;
