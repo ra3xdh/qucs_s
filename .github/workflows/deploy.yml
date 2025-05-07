@@ -200,6 +200,7 @@ jobs:
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/lang
         cp -pR ${{github.workspace}}/build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
         cp -pR ${{github.workspace}}/build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
         cp -pR ${{github.workspace}}/build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
@@ -311,6 +312,7 @@ jobs:
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/lang
         cp -pR ${{github.workspace}}/build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
         cp -pR ${{github.workspace}}/build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
         cp -pR ${{github.workspace}}/build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
