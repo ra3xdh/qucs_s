@@ -212,6 +212,7 @@ jobs:
         cp -pR ${{github.workspace}}/library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
         cp -pR ${{github.workspace}}/library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
         cp -pR ${{github.workspace}}/library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        cp -pR ${{github.workspace}}/build/translations/*.qm ${{env.QUCS_MACOS_RESOURCES}}/lang
         macdeployqt ${{github.workspace}}/build/qucs/qucs-s.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
@@ -322,6 +323,7 @@ jobs:
         cp -pR ${{github.workspace}}/library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
         cp -pR ${{github.workspace}}/library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
         cp -pR ${{github.workspace}}/library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        cp -pR ${{github.workspace}}/build/translations/*.qm ${{env.QUCS_MACOS_RESOURCES}}/lang
         macdeployqt ${{github.workspace}}/build/qucs/qucs-s.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
