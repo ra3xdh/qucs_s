@@ -7,7 +7,8 @@
 class QPainter;
 
 struct Property {
-  Property(const QString& _Name="", const QString& _Value="",
+  Property() = delete;
+  Property(const QString& _Name, const QString& _Value,
 	   bool _display=false, const QString& Desc="")
 	 : Name(_Name), Value(_Value), display(_display), Description(Desc) {};
   QString Name;
