@@ -8,9 +8,16 @@ class QPainter;
 
 struct Property {
   Property() = delete;
-  Property(const QString& _Name, const QString& _Value,
-	   bool _display=false, const QString& Desc="")
-	 : Name(_Name), Value(_Value), display(_display), Description(Desc) {};
+  Property(const QString& propertyName,
+           const QString& propertyValue,
+           bool isVisibleByDefault = false,
+           const QString& description = "")
+      : Name(propertyName)
+      , Value(propertyValue)
+      , display(isVisibleByDefault)
+      , Description(description)
+      {};
+
   QString Name;
   QString Value;
   bool    display;   // show on schematic or not ?
