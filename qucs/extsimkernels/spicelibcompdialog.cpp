@@ -475,7 +475,7 @@ void SpiceLibCompDialog::slotBtnOpenLib()
 {
   QString s = QFileDialog::getOpenFileName(this, tr("Open SPICE library"),
                                            a_lastLibDir,
-                                           tr("SPICE files (*.cir +.ckt *.sp *.lib)"));
+                                           tr("SPICE files (*.cir *.ckt *.sp *.lib)"));
   if (!s.isEmpty()) {
     QFileInfo inf(s);
     a_lastLibDir = inf.absoluteDir().path();
