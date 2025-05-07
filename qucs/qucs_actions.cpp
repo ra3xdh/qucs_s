@@ -1591,27 +1591,27 @@ void QucsApp::slotLoadModule()
 
     if (ld->exec() == QDialog::Accepted) {
 
-      Module::vaComponents = ld->selectedComponents;
+      Module::s_vaComponents = ld->selectedComponents;
 
       // dialog write new bitmap into JSON
       // load, unload, reload
       // inform if symbol changed
-      // populate Module::vaComponents
-      // vaComponents are selected with the dialog
+      // populate Module::s_vaComponents
+      // s_vaComponents are selected with the dialog
       // dialog should populate according to checkboxes
-      // build vaComponents QMap
+      // build s_vaComponents QMap
 
       // remove all previously registered modules
-      QMutableHashIterator<QString, Module *> it( Module::Modules );
+      QMutableHashIterator<QString, Module *> it( Module::s_modules );
       while(it.hasNext()) {
         it.next();
-        if (it.value()->category == QObject::tr("verilog-a user devices")) {
+        if (it.value()->a_category == QObject::tr("verilog-a user devices")) {
           it.remove();
         }
       }
 
-      if (! Module::vaComponents.isEmpty()) {
-        // Register whatever is in Module::vaComponents
+      if (! Module::s_vaComponents.isEmpty()) {
+        // Register whatever is in Module::s_vaComponents
         //Module::registerDynamicComponents();
 
         // update the combobox, set new category in view
