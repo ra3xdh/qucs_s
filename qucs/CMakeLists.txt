@@ -85,6 +85,17 @@ else()
     INCLUDE_DIRECTORIES(${XSD_PROG_PATH}/../include)
 endif()
 
+find_library(MUPARSER_LIB NAMES muparser-2.3 muparser)
+if(NOT MUPARSER_LIB)
+    message(SEND_ERROR "muparser lib not found: ${MUPARSER_LIB}")
+else()
+    message(STATUS "muparser lib found at: ${MUPARSER_LIB}")
+endif()
+
+if(DEFINED CMAKE_MUPARSER_INCLUDES)
+    INCLUDE_DIRECTORIES(${CMAKE_MUPARSER_INCLUDES})
+endif()
+
 #MESSAGE("QT_INCLUDES=[${QT_INCLUDES}]")
 #MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
 # configure the header config.h
@@ -312,7 +323,9 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
 #
 TARGET_LINK_LIBRARIES( ${QUCS_NAME}
     components diagrams dialogs geometry paintings extsimkernels spicecomponents magnetics qt3_compat
-    Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::SvgWidgets Qt6::Xml  Qt6::PrintSupport ${XERCES-C_LIB})
+    Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::SvgWidgets Qt6::Xml  Qt6::PrintSupport
+    ${XERCES-C_LIB} ${MUPARSER_LIB}
+)
 SET_TARGET_PROPERTIES(${QUCS_NAME} PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #
 # Prepare the installation
