@@ -255,6 +255,7 @@ void Component::paint(QPainter *p) {
 
     for (auto *prop : Props) {
         if (!prop->display) continue;
+        if ((prop->simulators & QucsSettings.DefaultSimulator) != QucsSettings.DefaultSimulator) continue;
         prop->paint(text_br.left(), text_br.bottom(), p);
         text_br = prop->boundingRect();
     }
