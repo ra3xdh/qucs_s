@@ -635,6 +635,10 @@ void ComponentDialog::updatePropertyTable(const Component* updateComponent)
     int row = 0;
     for (const Property* property : updateComponent->Props)
     {
+      if ((property->simulators & QucsSettings.DefaultSimulator) != QucsSettings.DefaultSimulator) {
+        continue;
+      }
+
       if (hasSweep && sweepProperties.contains(property->Name))
         continue;
 
@@ -802,6 +806,10 @@ void ComponentDialog::slotApplyButton()
     row = 0;
     for (Property* property : component->Props)
     {
+      if ((property->simulators & QucsSettings.DefaultSimulator) != QucsSettings.DefaultSimulator) {
+        continue;
+      }
+
       // Ignore sweep parameters here.
       if (hasSweep && sweepParamWidget.contains(property->Name))
         continue;
