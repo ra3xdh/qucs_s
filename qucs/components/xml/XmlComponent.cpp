@@ -12,6 +12,8 @@
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
+#include <muParser.h>
+
 #include <QColor>
 #include <QPen>
 
@@ -110,6 +112,8 @@ void XmlComponent::createSymbol()
 
 QString XmlComponent::netlist()
 {
+    mu::Parser parser;
+
     return QString("");
 }
 
