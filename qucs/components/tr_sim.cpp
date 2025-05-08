@@ -28,48 +28,55 @@ TR_Sim::TR_Sim()
   Name  = "TR";
   SpiceModel = ".TRAN";
 
+  Property::Builder bld;
+
+  bld.visible().simulator(spicecompat::simAll);
   // The index of the first 4 properties must not changed. Used in recreate().
-  Props.append(new Property("Type", "lin", true,
+  Props.append(bld.property("Type", "lin",
 	QObject::tr("sweep type")+" [lin, log, list, const]"));
-  Props.append(new Property("Start", "0", true,
+  Props.append(bld.property("Start", "0",
 	QObject::tr("start time in seconds")));
-  Props.append(new Property("Stop", "1 ms", true,
+  Props.append(bld.property("Stop", "1 ms",
 	QObject::tr("stop time in seconds")));
-  Props.append(new Property("Points", "200", false,
+  Props.append(bld.hidden().property("Points", "200",
 	QObject::tr("number of simulation time steps")));
-  Props.append(new Property("IntegrationMethod", "Trapezoidal", false,
+
+  bld.hidden().simulator(spicecompat::simQucsator);
+  Props.append(bld.property("IntegrationMethod", "Trapezoidal",
 	QObject::tr("integration method")+
 	" [Euler, Trapezoidal, Gear, AdamsMoulton]"));
-  Props.append(new Property("Order", "2", false,
+  Props.append(bld.property("Order", "2",
 	QObject::tr("order of integration method")+" (1-6)"));
-  Props.append(new Property("InitialStep", "1 ns", false,
+  Props.append(bld.property("InitialStep", "1 ns",
 	QObject::tr("initial step size in seconds")));
-  Props.append(new Property("MinStep", "1e-16", false,
+  Props.append(bld.property("MinStep", "1e-16",
 	QObject::tr("minimum step size in seconds")));
-  Props.append(new Property("MaxIter", "150", false,
+  Props.append(bld.property("MaxIter", "150",
 	QObject::tr("maximum number of iterations until error")));
-  Props.append(new Property("reltol", "0.001", false,
+  Props.append(bld.property("reltol", "0.001",
 	QObject::tr("relative tolerance for convergence")));
-  Props.append(new Property("abstol", "1 pA", false,
+  Props.append(bld.property("abstol", "1 pA",
 	QObject::tr("absolute tolerance for currents")));
-  Props.append(new Property("vntol", "1 uV", false,
+  Props.append(bld.property("vntol", "1 uV",
 	QObject::tr("absolute tolerance for voltages")));
-  Props.append(new Property("Temp", "26.85", false,
+  Props.append(bld.property("Temp", "26.85",
 	QObject::tr("simulation temperature in degree Celsius")));
-  Props.append(new Property("LTEreltol", "1e-3", false,
+  Props.append(bld.property("LTEreltol", "1e-3",
 	QObject::tr("relative tolerance of local truncation error")));
-  Props.append(new Property("LTEabstol", "1e-6", false,
+  Props.append(bld.property("LTEabstol", "1e-6",
 	QObject::tr("absolute tolerance of local truncation error")));
-  Props.append(new Property("LTEfactor", "1", false,
+  Props.append(bld.property("LTEfactor", "1",
 	QObject::tr("overestimation of local truncation error")));
-  Props.append(new Property("Solver", "CroutLU", false,
+  Props.append(bld.property("Solver", "CroutLU",
 	QObject::tr("method for solving the circuit matrix")+
 	" [CroutLU, DoolittleLU, HouseholderQR, HouseholderLQ, GolubSVD]"));
-  Props.append(new Property("relaxTSR", "no", false,
+  Props.append(bld.property("relaxTSR", "no",
 	QObject::tr("relax time step raster")+" [no, yes]"));
-  Props.append(new Property("initialDC", "yes", false,
+
+  bld.hidden().simulator(spicecompat::simAll);
+  Props.append(bld.property("initialDC", "yes",
     QObject::tr("perform initial DC (set \"no\" to activate UIC)")+" [yes, no]"));
-  Props.append(new Property("MaxStep", "0", false,
+  Props.append(bld.property("MaxStep", "0",
 	QObject::tr("maximum step size in seconds")));
 }
 
