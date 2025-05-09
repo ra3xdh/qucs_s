@@ -145,8 +145,12 @@ QString BJT::netlist()
   s += " "+Ports.at(1)->Connection->Name;  // connect substrate to collector
 
   // output all properties
-  for(const auto& p2 : Props)
+  for(const auto& p2 : Props) {
+    if (p2->Name == QString("UseGlobTemp")) {
+      continue;
+    }
     s += " "+p2->Name+"=\""+p2->Value+"\"";
+  }
 
   return s + '\n';
 }
