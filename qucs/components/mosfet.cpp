@@ -134,9 +134,12 @@ QString MOSFET::netlist()
   s += " "+Ports.at(2)->Connection->Name;  // connect substrate to source
 
   // output all properties
-  for(Property *p2 : Props)
+  for(Property *p2 : Props) {
+    if (p2->Name == QString("UseGlobTemp")) {
+      continue;
+    }
     s += " "+p2->Name+"=\""+p2->Value+"\"";
-
+  }
   return s + '\n';
 }
 
