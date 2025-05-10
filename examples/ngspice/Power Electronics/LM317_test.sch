@@ -1,6 +1,6 @@
-<Qucs Schematic 0.0.24>
+<Qucs Schematic 25.1.2>
 <Properties>
-  <View=0,-14,1244,661,1,0,0>
+  <View=-434,-305,1699,898,0.892243,244,105>
   <Grid=10,10,1>
   <DataSet=LM317_test.dat>
   <DataDisplay=LM317_test.dpl>
@@ -30,7 +30,7 @@
   <R R5 1 460 120 15 -26 1 3 "1.2 kOhm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
   <GND * 1 460 470 0 0 0 0>
   <GND * 1 460 170 0 0 0 0>
-  <.DC DC1 1 100 520 0 45 0 0 "26.85" 0 "0.001" 0 "1 pA" 0 "1 uV" 0 "no" 0 "150" 0 "no" 0 "none" 0 "CroutLU" 0>
+  <.DC DC1 1 100 520 0 36 0 0 "26.85" 0 "0.001" 0 "1 pA" 0 "1 uV" 0 "no" 0 "150" 0 "no" 0 "none" 0 "CroutLU" 0>
 </Components>
 <Wires>
   <240 100 240 170 "" 0 0 0 "">
@@ -63,6 +63,10 @@
   <460 360 460 360 "Vout2" 490 330 0 "">
 </Wires>
 <Diagrams>
+  <Tab 620 153 237 83 3 #c0c0c0 1 00 1 0 1 1 1 0 1 1 1 0 1 1 315 0 225 1 0 0 "" "" "">
+	<"ngspice/v(vout1)" #0000ff 0 3 1 0 0>
+	<"ngspice/v(vout2)" #0000ff 0 3 1 0 0>
+  </Tab>
 </Diagrams>
 <Paintings>
   <Text 510 200 12 #000000 0 "Press F8 to run DC simulation and \nsee the OP voltage">
