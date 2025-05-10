@@ -1,6 +1,6 @@
-<Qucs Schematic 0.0.18>
+<Qucs Schematic 25.1.2>
 <Properties>
-  <View=0,0,800,800,1,0,0>
+  <View=-176,41,665,516,1.87131,0,0>
   <Grid=10,10,1>
   <DataSet=example_sub_subcircuit.dat>
   <DataDisplay=example_sub_subcircuit.dpl>
@@ -14,15 +14,15 @@
   <FrameText3=Revision:>
 </Properties>
 <Symbol>
-  <.PortSym 40 20 1 0>
-  <.PortSym 40 60 2 0>
+  <.PortSym 40 20 1 0 P1>
+  <.PortSym 40 60 2 0 P2>
 </Symbol>
 <Components>
   <Port P1 1 130 90 -23 12 0 0 "1" 1 "analog" 0>
   <R R1 1 200 260 15 -26 0 1 "50 Ohm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
   <Port P2 1 130 430 -23 12 0 0 "2" 1 "analog" 0>
-  <Sub SUB1 1 200 140 21 -26 1 3 "example_subcircuit" 1>
-  <Sub SUB2 1 200 370 21 -26 0 1 "example_subcircuit" 1>
+  <Sub SUB1 1 200 140 18 -26 1 3 "example_subcircuit.sch" 1>
+  <Sub SUB2 1 200 370 18 -26 0 1 "example_subcircuit.sch" 1>
 </Components>
 <Wires>
   <130 90 200 90 "" 0 0 0 "">
