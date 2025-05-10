@@ -1,10 +1,10 @@
-<Qucs Schematic 1.0.2>
+<Qucs Schematic 25.1.2>
 <Properties>
-  <View=0,60,3553,850,1,0,0>
+  <View=20,-80,1677,854,0.949306,0,0>
   <Grid=10,10,1>
   <DataSet=CV_curve.dat>
   <DataDisplay=CV_curve.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
   <Script=CV_curve.m>
   <RunScript=0>
   <showFrame=0>
@@ -16,11 +16,11 @@
 <Symbol>
 </Symbol>
 <Components>
-  <.CUSTOMSIM CUSTOM1 1 70 300 0 51 0 0 "\nlet vecCj = vector(6)\nlet vecV1 = vector(6)\nlet number_v1 = 0\nforeach  v1_act 0 1 2 3 4 5 \nalter V1 = $v1_act\nac lin 1 1meg 1meg \nlet Cj = -imag(V1#branch)/(2*pi*1e6)\nlet vecCj[number_v1] = Cj\nlet vecV1[number_v1] = $v1_act\nlet number_v1 = number_v1 + 1\ndestroy ac1\nend\n\n" 1 "vecCj;vecV1;" 0 "" 0>
-  <Vac V2 1 310 360 18 -26 0 1 "1 V" 1 "1 kHz" 0 "0" 0 "0" 0>
+  <.CUSTOMSIM CUSTOM1 1 70 300 0 36 0 0 "\nlet vecCj = vector(6)\nlet vecV1 = vector(6)\nlet number_v1 = 0\nforeach  v1_act 0 1 2 3 4 5 \nalter V1 = $v1_act\nac lin 1 1meg 1meg \nlet Cj = -imag(V1#branch)/(2*pi*1e6)\nlet vecCj[number_v1] = Cj\nlet vecV1[number_v1] = $v1_act\nlet number_v1 = number_v1 + 1\ndestroy ac1\nend\n\n" 1 "vecCj;vecV1;" 0 "" 0>
+  <Vac V2 1 310 360 18 -26 0 1 "1 V" 1 "1 kHz" 0 "0" 0 "0" 0 "0" 0 "0" 0>
   <GND * 1 310 450 0 0 0 0>
   <GND * 1 490 400 0 0 0 0>
-  <Diode D_1N4148_1 1 490 370 -96 -26 0 3 "222p" 1 "1.65" 1 "4p" 1 "0.333" 0 "0.7" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "68.6m" 0 "5.76n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "75" 0 "1u" 0 "26.85" 0 "3.0" 0 "1.11" 0 "0.0" 0 "0.0" 0 "0.0" 0 "0.0" 0 "0.0" 0 "0.0" 0 "26.85" 0 "1.0" 0 "normal" 0>
+  <Diode D_1N4148_1 1 490 370 -96 -26 0 3 "222p" 1 "1.65" 1 "4p" 1 "0.333" 0 "0.7" 0 "0.5" 0 "0" 0 "0" 0 "2" 0 "68.6m" 0 "5.76n" 0 "0" 0 "0" 0 "1" 0 "1" 0 "75" 0 "1u" 0 "26.85" 0 "3.0" 0 "1.11" 0 "0.0" 0 "0.0" 0 "0.0" 0 "0.0" 0 "0.0" 0 "0.0" 0 "26.85" 0 "1.0" 0 "normal" 0 "yes" 0>
   <Vdc V1 1 310 420 18 -26 0 1 "1 V" 1>
 </Components>
 <Wires>
