@@ -3922,6 +3922,9 @@ void ContextMenuTabWidget::showContextMenu(const QPoint& point)
     APPEND_MENU(ActionCxMenuCloseOthers, slotCxMenuCloseLeft, "Close all to the left")
     APPEND_MENU(ActionCxMenuCloseOthers, slotCxMenuCloseRight, "Close all to the right")
     APPEND_MENU(ActionCxMenuCloseAll, slotCxMenuCloseAll, "Close all")
+    menu.addSeparator();
+    APPEND_MENU(ActionCxMenuCopyPath, slotCxMenuCopyPath, "Copy full path")
+    APPEND_MENU(ActionCxMenuOpenFolder, slotCxMenuOpenFolder, "Open containing folder")
 #undef APPEND_MENU
 
     menu.exec(tabBar()->mapToGlobal(point));
@@ -3958,4 +3961,25 @@ void ContextMenuTabWidget::slotCxMenuCloseAll()
   App->closeAllFiles();
   // create empty schematic
   App->slotFileNew();
+}
+
+void ContextMenuTabWidget::slotCxMenuCopyPath()
+{
+  // get the document where the context menu was opened
+  QucsDoc *d = App->getDoc(contextTabIndex);
+  // copy the document full path to the clipboard
+  QClipboard *cb = QApplication::clipboard();
+  cb->setText(d->getDocName());
+}
+
+void ContextMenuTabWidget::slotCxMenuOpenFolder()
+{
+  // get the document where the context menu was opened
+  QucsDoc *d = App->getDoc(contextTabIndex);
+  QString dName = d->getDocName();
+  // a not-yet-saved document does not have a DocName
+  if (!dName.isEmpty()) {
+    QFileInfo Info(dName);
+    QDesktopServices::openUrl(QUrl::fromLocalFile(Info.canonicalPath()));
+  }
 }
