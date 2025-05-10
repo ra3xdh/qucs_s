@@ -286,7 +286,7 @@ void QucsApp::initView()
   setStyleSheet("QToolButton { padding: 0px; }");
 #endif
 
-  DocumentTab = new QTabWidget(this);
+  DocumentTab = new ContextMenuTabWidget(this);
 #if __APPLE__
   DocumentTab->setDocumentMode(true);
 #endif
@@ -2015,30 +2015,82 @@ void QucsApp::closeFile(int index)
 }
 
 
-// --------------------------------------------------------------
-bool QucsApp::closeAllFiles()
+/**
+ * @brief close all open documents - except a specified one, optionally
+ * @param exceptTab tab to leave open, none if not specified
+ */
+bool QucsApp::closeAllFiles(int exceptTab)
 {
+  return closeTabsRange(0, DocumentTab->count()-1, exceptTab);
+}
+
+/**
+ * @brief close Tabs in a specified range, optionally skipping a specified one
+ * @param startTab first tab to be closed
+ * @param stoptTab last tab to be closed
+ * @param exceptTab tab to leave open, none if not specified
+ */
+bool QucsApp::closeTabsRange(int startTab, int stopTab, int exceptTab)
+{
+  if (stopTab < startTab)
+    return false;
+  // document to keep open, if any
+  QucsDoc *docToKeep = 0;
+  if (exceptTab >= 0) {
+    docToKeep = getDoc(exceptTab);
+  }
+
   SaveDialog *sd = new SaveDialog(this);
   sd->setApp(this);
-  for(int i=0; i < DocumentTab->count(); ++i) {
+  Q_ASSERT(startTab >= 0);
+  Q_ASSERT(stopTab < DocumentTab->count());
+
+  for(int i=startTab; i <= stopTab; ++i) {
     QucsDoc *doc = getDoc(i);
-    if(doc->getDocChanged())
+    if ((doc->getDocChanged()) && (doc != docToKeep))
       sd->addUnsavedDoc(doc);
   }
   int Result = SaveDialog::DontSave;
   if(!sd->isEmpty())
-     Result = sd->exec();
+    Result = sd->exec();
   delete sd;
   if(Result == SaveDialog::AbortClosing)
     return false;
+  // remove documents
   QucsDoc *doc = 0;
-  while((doc = getDoc()) != 0)
-  delete doc;
-
+  QucsDoc *stopDoc = getDoc(stopTab);
+  int i = 0;
+  do {
+    doc = getDoc(startTab+i);
+    if (doc == docToKeep) {
+      i++; // skip to next doc
+    } else {
+      delete doc;
+    }
+  } while (doc != stopDoc);
 
   //switchEditMode(true);   // set schematic edit mode
   return true;
 }
+
+/**
+ * @brief close all documents to the left of the specified one
+ * @param index reference tab
+ */
+bool QucsApp::closeAllLeft(int index)
+{
+  return closeTabsRange(0, index-1);
+}
+
+/**
+ * @brief close all documents to the right of the specified one
+ * @param index reference tab
+ */
+bool QucsApp::closeAllRight(int index)
+{
+  return closeTabsRange(index+1, DocumentTab->count()-1);
+}
+
 
 void QucsApp::slotFileExamples() {
   statusBar()->showMessage(tr("Open example…"));
@@ -3785,6 +3837,33 @@ void QucsApp::slotSearchLibClear()
     slotSearchLibComponent("");
 }
 
+// Close all documents except the current one
+void QucsApp::slotFileCloseOthers()
+{
+  closeAllFiles(DocumentTab->currentIndex());
+}
+
+// Close all documents to the left of the current one
+void QucsApp::slotFileCloseAllLeft()
+{
+  closeAllLeft(DocumentTab->currentIndex());
+}
+
+// Close all documents to the right of the current one
+void QucsApp::slotFileCloseAllRight()
+{
+  closeAllRight(DocumentTab->currentIndex());
+}
+
+// Close all documents
+void QucsApp::slotFileCloseAll()
+{
+  // close all tabs
+  closeAllFiles();
+  // create empty schematic
+  slotFileNew();
+}
+
 QVariant QucsFileSystemModel::data( const QModelIndex& index, int role ) const
 {
     if (role == Qt::DecorationRole) { // it's an icon
@@ -3837,4 +3916,94 @@ bool QucsSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelInd
     }
 
     return QSortFilterProxyModel::lessThan(left, right);
+}
+
+ContextMenuTabWidget::ContextMenuTabWidget(QucsApp *parent) : QTabWidget(parent)
+{
+  App = parent;
+  setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+}
+
+void ContextMenuTabWidget::showContextMenu(const QPoint& point)
+{
+  if (point.isNull()) {
+    qDebug() << "ContextMenuTabWidget::showContextMenu() : point is null!";
+    return;
+  }
+
+  contextTabIndex = tabBar()->tabAt(point);
+  qDebug() << "contextTabIndex =" << contextTabIndex;
+  if (contextTabIndex >= 0) { // clicked over a tab
+    QMenu menu(this);
+
+#define APPEND_MENU(action, slot, text)         \
+    {                                           \
+          QAction *action = new QAction(tr(text), &menu);    \
+          connect(action, SIGNAL(triggered()), SLOT(slot())); \
+          menu.addAction(action); \
+    }
+
+    APPEND_MENU(ActionCxMenuClose, slotCxMenuClose, "Close")
+    APPEND_MENU(ActionCxMenuCloseOthers, slotCxMenuCloseOthers, "Close all but this")
+    APPEND_MENU(ActionCxMenuCloseOthers, slotCxMenuCloseLeft, "Close all to the left")
+    APPEND_MENU(ActionCxMenuCloseOthers, slotCxMenuCloseRight, "Close all to the right")
+    APPEND_MENU(ActionCxMenuCloseAll, slotCxMenuCloseAll, "Close all")
+    menu.addSeparator();
+    APPEND_MENU(ActionCxMenuCopyPath, slotCxMenuCopyPath, "Copy full path")
+    APPEND_MENU(ActionCxMenuOpenFolder, slotCxMenuOpenFolder, "Open containing folder")
+#undef APPEND_MENU
+
+    menu.exec(tabBar()->mapToGlobal(point));
+  }
+}
+
+void ContextMenuTabWidget::slotCxMenuClose()
+{
+  // close tab where the context menu was opened
+  App->slotFileClose(contextTabIndex);
+}
+
+void ContextMenuTabWidget::slotCxMenuCloseOthers()
+{
+  // close all tabs, except the one where the context menu was opened
+  App->closeAllFiles(contextTabIndex);
+}
+
+void ContextMenuTabWidget::slotCxMenuCloseLeft()
+{
+  // close all tabs to the left of the current one
+  App->closeAllLeft(contextTabIndex);
+}
+
+void ContextMenuTabWidget::slotCxMenuCloseRight()
+{
+  // close all tabs to the right of the current one
+  App->closeAllRight(contextTabIndex);
+}
+
+void ContextMenuTabWidget::slotCxMenuCloseAll()
+{
+  App->slotFileCloseAll();
+}
+
+void ContextMenuTabWidget::slotCxMenuCopyPath()
+{
+  // get the document where the context menu was opened
+  QucsDoc *d = App->getDoc(contextTabIndex);
+  // copy the document full path to the clipboard
+  QClipboard *cb = QApplication::clipboard();
+  cb->setText(d->getDocName());
+}
+
+void ContextMenuTabWidget::slotCxMenuOpenFolder()
+{
+  // get the document where the context menu was opened
+  QucsDoc *d = App->getDoc(contextTabIndex);
+  QString dName = d->getDocName();
+  // a not-yet-saved document does not have a DocName
+  if (!dName.isEmpty()) {
+    QFileInfo Info(dName);
+    QDesktopServices::openUrl(QUrl::fromLocalFile(Info.canonicalPath()));
+  }
 }

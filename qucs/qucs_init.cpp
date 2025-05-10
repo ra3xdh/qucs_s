@@ -95,6 +95,26 @@ void QucsApp::initActions()
   fileClose->setWhatsThis(tr("Close File\n\nCloses the current document"));
   connect(fileClose, SIGNAL(triggered()), SLOT(slotFileClose()));
 
+  fileCloseOthers = new QAction(QIcon((":/bitmaps/fileclose.png")), tr("Close all but current"), this);
+  fileCloseOthers->setStatusTip(tr("Closes all documents except the current one"));
+  fileCloseOthers->setWhatsThis(tr("Close all but current\n\nCloses all documents except the current one"));
+  connect(fileCloseOthers, SIGNAL(triggered()), SLOT(slotFileCloseOthers()));
+
+  fileCloseAllLeft = new QAction(QIcon((":/bitmaps/fileclose.png")), tr("Close all left"), this);
+  fileCloseAllLeft->setStatusTip(tr("Closes all documents to the left of the current one"));
+  fileCloseAllLeft->setWhatsThis(tr("Close all left\n\nCloses all documents to the left of the current one"));
+  connect(fileCloseAllLeft, SIGNAL(triggered()), SLOT(slotFileCloseAllLeft()));
+
+  fileCloseAllRight = new QAction(QIcon((":/bitmaps/fileclose.png")), tr("Close all right"), this);
+  fileCloseAllRight->setStatusTip(tr("Closes all documents to the right of the current one"));
+  fileCloseAllRight->setWhatsThis(tr("Close all right\n\nCloses all documents to the right of the current one"));
+  connect(fileCloseAllRight, SIGNAL(triggered()), SLOT(slotFileCloseAllRight()));
+
+  fileCloseAll = new QAction(QIcon((":/bitmaps/fileclose.png")), tr("Close &All"), this);
+  fileCloseAll->setStatusTip(tr("Closes all documents"));
+  fileCloseAll->setWhatsThis(tr("Close All\n\nCloses all documents"));
+  connect(fileCloseAll, SIGNAL(triggered()), SLOT(slotFileCloseAll()));
+
   for (auto & i : fileRecentAction) {
     i = new QAction(this);
     i->setVisible(false);
@@ -690,7 +710,14 @@ void QucsApp::initMenuBar()
   fileMenu->addAction(textNew);
   fileMenu->addAction(symNew);
   fileMenu->addAction(fileOpen);
-  fileMenu->addAction(fileClose);
+
+  QMenu *closeFileMenu = new QMenu(tr("Close"), fileMenu);
+  closeFileMenu->addAction(fileClose);
+  closeFileMenu->addAction(fileCloseOthers);
+  closeFileMenu->addAction(fileCloseAllLeft);
+  closeFileMenu->addAction(fileCloseAllRight);
+  closeFileMenu->addAction(fileCloseAll);
+  fileMenu->addMenu(closeFileMenu);
 
   recentFilesMenu = new QMenu(tr("Open Recent"),fileMenu);
   fileMenu->addMenu(recentFilesMenu);
