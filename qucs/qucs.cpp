@@ -286,7 +286,7 @@ void QucsApp::initView()
   setStyleSheet("QToolButton { padding: 0px; }");
 #endif
 
-  DocumentTab = new QTabWidget(this);
+  DocumentTab = new ContextMenuTabWidget(this);
 #if __APPLE__
   DocumentTab->setDocumentMode(true);
 #endif
@@ -2015,14 +2015,23 @@ void QucsApp::closeFile(int index)
 }
 
 
-// --------------------------------------------------------------
-bool QucsApp::closeAllFiles()
+/**
+ * @brief close all open documents - except a specified one, optionally
+ * @param exceptTab tab to leave open, none if not specified
+ */
+bool QucsApp::closeAllFiles(int exceptTab)
 {
+  // document to keep open, if any
+  QucsDoc *docToKeep = 0;
+  if (exceptTab >= 0) {
+    docToKeep = getDoc(exceptTab);
+  }
+
   SaveDialog *sd = new SaveDialog(this);
   sd->setApp(this);
   for(int i=0; i < DocumentTab->count(); ++i) {
     QucsDoc *doc = getDoc(i);
-    if(doc->getDocChanged())
+    if ((doc->getDocChanged()) && (doc != docToKeep))
       sd->addUnsavedDoc(doc);
   }
   int Result = SaveDialog::DontSave;
@@ -2032,8 +2041,16 @@ bool QucsApp::closeAllFiles()
   if(Result == SaveDialog::AbortClosing)
     return false;
   QucsDoc *doc = 0;
-  while((doc = getDoc()) != 0)
-  delete doc;
+
+  // remove documents
+  int i = 0;
+  while (i < DocumentTab->count()) {
+    if ((doc=getDoc(i)) == docToKeep) {
+      i++; // skip to next doc
+    } else {
+      delete doc;
+    }
+  }
 
 
   //switchEditMode(true);   // set schematic edit mode
@@ -3837,4 +3854,59 @@ bool QucsSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelInd
     }
 
     return QSortFilterProxyModel::lessThan(left, right);
+}
+
+ContextMenuTabWidget::ContextMenuTabWidget(QucsApp *parent) : QTabWidget(parent)
+{
+  App = parent;
+  setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+}
+
+void ContextMenuTabWidget::showContextMenu(const QPoint& point)
+{
+  if (point.isNull()) {
+    qDebug() << "ContextMenuTabWidget::showContextMenu() : point is null!";
+    return;
+  }
+
+  contextTabIndex = tabBar()->tabAt(point);
+  qDebug() << "contextTabIndex =" << contextTabIndex;
+  if (contextTabIndex >= 0) { // clicked over a tab
+    QMenu menu(this);
+
+#define APPEND_MENU(action, slot, text)         \
+    {                                           \
+          QAction *action = new QAction(tr(text), &menu);    \
+          connect(action, SIGNAL(triggered()), SLOT(slot())); \
+          menu.addAction(action); \
+    }
+
+    APPEND_MENU(ActionCxMenuClose, slotCxMenuClose, "Close")
+    APPEND_MENU(ActionCxMenuCloseOthers, slotCxMenuCloseOthers, "Close other Tabs")
+    APPEND_MENU(ActionCxMenuCloseAll, slotCxMenuCloseAll, "Close all")
+#undef APPEND_MENU
+
+    menu.exec(tabBar()->mapToGlobal(point));
+  }
+}
+
+void ContextMenuTabWidget::slotCxMenuClose()
+{
+  // close tab where the context menu was opened
+  App->slotFileClose(contextTabIndex);
+}
+
+void ContextMenuTabWidget::slotCxMenuCloseOthers()
+{
+  // close all tabs, except the one where the context menu was opened
+  App->closeAllFiles(contextTabIndex);
+}
+
+void ContextMenuTabWidget::slotCxMenuCloseAll()
+{
+  // close all tabs
+  App->closeAllFiles();
+  // create empty schematic
+  App->slotFileNew();
 }
