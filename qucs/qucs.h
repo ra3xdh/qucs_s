@@ -91,7 +91,10 @@ class QucsApp : public QMainWindow {
 public:
   QucsApp(bool netlist2Console);
  ~QucsApp();
+  bool closeTabsRange(int startTab, int stopTab, int exceptTab = -1);
   bool closeAllFiles(int exceptTab = -1);
+  bool closeAllLeft(int);
+  bool closeAllRight(int);
   bool gotoPage(const QString&);   // to load a document
   QucsDoc *getDoc(int No=-1);
   QucsDoc* findDoc (QString, int * Pos = 0);
@@ -498,6 +501,8 @@ private slots:
   void slotCxMenuClose();
   void slotCxMenuCloseOthers();
   void slotCxMenuCloseAll();
+  void slotCxMenuCloseRight();
+  void slotCxMenuCloseLeft();
 };
 
 #endif /* QUCS_H */
