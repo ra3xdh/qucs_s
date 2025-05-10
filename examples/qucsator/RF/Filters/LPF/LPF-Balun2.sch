@@ -1,10 +1,12 @@
-<Qucs Schematic 0.0.15>
+<Qucs Schematic 25.1.2>
 <Properties>
-  <View=-74,-4,1084,644,1,41,0>
+  <View=-925,-543,2359,1309,0.701206,543,196>
   <Grid=10,10,1>
   <DataSet=LPF-Balun2.dat>
   <DataDisplay=LPF-Balun2.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
+  <Script=LPF-Balun2.m>
+  <RunScript=0>
   <showFrame=0>
   <FrameText0=Title>
   <FrameText1=Drawn By:>
@@ -23,7 +25,7 @@
   <L L5 1 510 260 -26 10 0 0 "1.2uH" 1 "" 0>
   <L L6 1 650 260 -26 10 0 0 "470nH" 1 "" 0>
   <GND * 1 130 270 0 0 0 0>
-  <Pac P1 1 -20 190 18 -26 0 1 "1" 1 "100 Ohm" 1 "0 dBm" 0 "1 GHz" 0 "26.85" 0>
+  <Pac P1 1 -20 190 18 -26 0 1 "1" 1 "100 Ohm" 1 "0 dBm" 0 "1 GHz" 0 "26.85" 0 "true" 0>
   <GND * 1 -20 240 0 0 0 0>
   <GND * 1 870 190 0 0 0 0>
   <Sub Balun1 1 160 150 -10 34 0 0 "IdealBalun.sch" 0>
@@ -32,11 +34,11 @@
   <Vdc V1 1 80 160 18 -26 0 1 "1V" 1>
   <VProbe Pr1 1 920 130 28 -31 0 0>
   <GND * 1 930 170 0 0 0 0>
-  <Pac P2 1 990 180 18 -26 0 1 "2" 1 "100 Ohm" 1 "0 dBm" 0 "1 GHz" 0 "26.85" 0>
+  <Pac P2 1 990 180 18 -26 0 1 "2" 1 "100 Ohm" 1 "0 dBm" 0 "1 GHz" 0 "26.85" 0 "true" 0>
   <GND * 1 990 250 0 0 1 2>
-  <.SP SP1 1 20 350 0 57 0 0 "log" 1 "1MHz" 1 "100MHz" 1 "1001" 1 "no" 0 "1" 0 "2" 0 "no" 0 "no" 0>
+  <.SP SP1 1 20 350 0 61 0 0 "log" 1 "1MHz" 1 "100MHz" 1 "1001" 1 "no" 0 "1" 0 "2" 0 "no" 0 "no" 0>
   <Eqn Eqn1 1 200 370 -28 15 0 0 "dBS21=dB(S[2,1])" 1 "dBS11=dB(S[1,1])" 1 "yes" 0>
-  <.DC DC1 1 600 350 0 34 0 0 "26.85" 0 "0.001" 0 "1 pA" 0 "1 uV" 0 "no" 0 "150" 0 "no" 0 "none" 0 "CroutLU" 0>
+  <.DC DC1 1 600 350 0 36 0 0 "26.85" 0 "0.001" 0 "1 pA" 0 "1 uV" 0 "no" 0 "150" 0 "no" 0 "none" 0 "CroutLU" 0>
 </Components>
 <Wires>
   <440 90 440 140 "" 0 0 0 "">
@@ -75,6 +77,10 @@
   <860 130 860 150 "" 0 0 0 "">
 </Wires>
 <Diagrams>
+  <Rect 1210 375 422 315 3 #c0c0c0 1 00 1 0 2e+07 1e+08 0 -100 10 10 1 -1 1 1 315 0 225 1 0 0 "" "" "">
+	<"dBS11" #0000ff 1 3 0 0 0>
+	<"dBS21" #ff0000 1 3 0 0 0>
+  </Rect>
 </Diagrams>
 <Paintings>
   <Text 350 340 12 #000000 0 "Butterworth low-pass filter\n10MHz cutoff, PI-type,\nimpedance matching 100 Ohm">

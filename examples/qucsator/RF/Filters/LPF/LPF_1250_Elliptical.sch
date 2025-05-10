@@ -1,10 +1,10 @@
-<Qucs Schematic 0.0.17>
+<Qucs Schematic 25.1.2>
 <Properties>
-  <View=596,124,1784,896,0.743523,0,0>
+  <View=596,-113,2682,1129,0.488729,0,0>
   <Grid=10,10,1>
   <DataSet=LPF_1250_Elliptical.dat>
   <DataDisplay=LPF_1250_Elliptical.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
   <Script=LPF_1250_Elliptical.m>
   <RunScript=0>
   <showFrame=0>
@@ -28,8 +28,8 @@
   <MLIN MS10 5 1360 510 -26 15 1 2 "Subst1" 0 "25 mil" 1 "210 mil" 1 "Hammerstad" 0 "Kirschning" 0 "26.85" 0>
   <MLIN MS13 5 1580 510 -26 15 1 2 "Subst1" 0 "170 mil" 1 "200 mil" 1 "Hammerstad" 0 "Kirschning" 0 "26.85" 0>
   <MSTEP MS15 5 1470 510 -26 17 1 2 "Subst1" 0 "170 mil" 1 "25 mil" 1 "Hammerstad" 0 "Kirschning" 0>
-  <Pac P1 5 650 570 23 5 0 1 "1" 0 "50 Ohm" 1 "0 dBm" 0 "1 GHz" 0 "26.85" 0>
-  <Pac P2 5 1660 560 23 5 0 1 "2" 0 "50 Ohm" 1 "0 dBm" 0 "1 GHz" 0 "26.85" 0>
+  <Pac P1 5 650 570 23 5 0 1 "1" 0 "50 Ohm" 1 "0 dBm" 0 "1 GHz" 0 "26.85" 0 "true" 0>
+  <Pac P2 5 1660 560 23 5 0 1 "2" 0 "50 Ohm" 1 "0 dBm" 0 "1 GHz" 0 "26.85" 0 "true" 0>
   <GND * 1 1660 610 0 0 0 0>
   <GND * 1 650 620 0 0 0 0>
   <MTEE MS11 5 1250 510 -34 29 0 2 "Subst1" 0 "25 mil" 1 "25 mil" 1 "25 mil" 1 "Hammerstad" 0 "Kirschning" 0 "26.85" 0 "showNumbers" 0>
@@ -38,7 +38,7 @@
   <MLIN MS14 5 1250 420 24 -23 0 3 "Subst1" 0 "25 mil" 1 "510 mil" 1 "Hammerstad" 0 "Kirschning" 0 "26.85" 0>
   <MLIN MS17 5 1250 240 31 -22 0 3 "Subst1" 0 "200 mil" 1 "330 mil" 1 "Hammerstad" 0 "Kirschning" 0 "26.85" 0>
   <Eqn Eqn1 1 1400 620 -30 16 0 0 "dBS11=dB(S[1,1])" 1 "dBS21=dB(S[2,1])" 1 "yes" 0>
-  <.SP SP1 1 820 330 0 69 0 0 "lin" 0 "10 MHz" 1 "3 GHz" 1 "100" 0 "no" 0 "1" 0 "2" 0 "no" 0 "no" 0>
+  <.SP SP1 1 820 330 0 61 0 0 "lin" 0 "10 MHz" 1 "3 GHz" 1 "100" 0 "no" 0 "1" 0 "2" 0 "no" 0 "no" 0>
   <SUBST Subst1 5 860 210 -30 24 0 0 "2.55" 1 "62 mil" 1 "0.7 mil" 1 "2e-4" 0 "0.022e-6" 0 "0.15e-6" 0>
 </Components>
 <Wires>
@@ -64,7 +64,7 @@
   <1250 270 1250 300 "" 0 0 0 "">
 </Wires>
 <Diagrams>
-  <Rect 1450 449 324 289 3 #c0c0c0 1 00 0 0 1e+09 3e+09 0 -40 20 5.29694 1 -1 1 1 315 0 225 "Frequency, Hz" "" "">
+  <Rect 1450 449 324 289 3 #c0c0c0 1 00 0 0 1e+09 3e+09 0 -40 20 5.29694 1 -1 1 1 315 0 225 1 0 0 "Frequency, Hz" "" "">
 	<"dBS11" #0000ff 0 3 0 0 0>
 	<"dBS21" #ff0000 0 3 0 0 0>
   </Rect>
