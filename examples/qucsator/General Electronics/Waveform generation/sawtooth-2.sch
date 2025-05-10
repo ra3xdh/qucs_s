@@ -1,10 +1,12 @@
-<Qucs Schematic 0.0.10>
+<Qucs Schematic 25.1.2>
 <Properties>
-  <View=0,0,980,800,1,0,0>
+  <View=-603,-386,2105,1141,0.850496,517,120>
   <Grid=10,10,1>
   <DataSet=sawtooth-2.dat>
   <DataDisplay=sawtooth-2.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
+  <Script=sawtooth-2.m>
+  <RunScript=0>
   <showFrame=0>
   <FrameText0=Titel>
   <FrameText1=Gezeichnet von:>
@@ -21,7 +23,7 @@
   <GND * 1 380 250 0 0 0 0>
   <R R1 1 150 320 -26 15 0 0 "100 kOhm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
   <R R2 1 150 230 -26 15 0 0 "120 kOhm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
-  <C C1 1 470 60 -25 -56 0 0 "1 pF" 1 "" 0>
+  <C C1 1 470 60 -25 -56 0 0 "1 pF" 1 "" 0 "neutral" 0>
   <R R3 1 290 130 -21 -46 0 0 "43 kOhm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
   <OpAmp OP3 1 910 170 -26 42 0 0 "1e6" 1 "15 V" 0>
   <R R4 1 920 270 -26 15 0 0 "100 kOhm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
@@ -31,7 +33,7 @@
   <GND * 1 820 340 0 0 0 0>
   <R R6 1 820 230 -38 41 0 1 "47.4 kOhm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
   <R R7 1 690 150 -26 15 0 0 "924 kOhm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
-  <.TR TR1 1 300 350 0 57 0 0 "lin" 1 "0" 1 "10u" 1 "1001" 0 "Gear" 0 "1" 0 "1 ns" 0 "1e-16" 0 "150" 0 "0.01" 0 "100 pA" 0 "100 uV" 0 "26.85" 0 "1e-2" 0 "1e-5" 0 "1" 0 "CroutLU" 0 "yes" 0 "no" 0>
+  <.TR TR1 1 300 350 0 61 0 0 "lin" 1 "0" 1 "10u" 1 "1001" 0 "Gear" 0 "1" 0 "1 ns" 0 "1e-16" 0 "150" 0 "0.01" 0 "100 pA" 0 "100 uV" 0 "26.85" 0 "1e-2" 0 "1e-5" 0 "1" 0 "CroutLU" 0 "yes" 0 "no" 0 "0" 0>
 </Components>
 <Wires>
   <180 130 210 130 "" 0 0 0 "">
@@ -77,6 +79,9 @@
   <550 150 550 150 "TOUT2" 570 110 0 "0">
 </Wires>
 <Diagrams>
+  <Rect 1080 340 350 244 3 #c0c0c0 1 00 1 0 0.2 1 1 -0.1 0.5 1.1 1 -0.1 0.5 1.1 315 0 225 1 0 0 "" "" "">
+	<"OUT.Vt" #0000ff 1 3 0 0 0>
+  </Rect>
 </Diagrams>
 <Paintings>
   <Text 590 390 14 #000000 0 "Saw-Tooth Generator">

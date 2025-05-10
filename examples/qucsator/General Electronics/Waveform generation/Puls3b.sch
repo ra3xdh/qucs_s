@@ -1,24 +1,31 @@
-<Qucs Schematic 0.0.9>
+<Qucs Schematic 25.1.2>
 <Properties>
-  <View=0,0,800,800,1,0,0>
+  <View=-298,-125,1252,633,1.16983,240,0>
   <Grid=10,10,1>
   <DataSet=Puls3b.dat>
   <DataDisplay=Puls3b.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
+  <Script=Puls3b.m>
+  <RunScript=0>
+  <showFrame=0>
+  <FrameText0=Title>
+  <FrameText1=Drawn By:>
+  <FrameText2=Date:>
+  <FrameText3=Revision:>
 </Properties>
 <Symbol>
 </Symbol>
 <Components>
-  <Switch S1 1 100 80 -26 11 0 0 "on" 0 "9ns" 1 "0" 0 "1e12" 0 "26.85" 0>
-  <Switch S2 1 220 80 -26 11 0 0 "off" 0 "10ns" 1 "0" 0 "1e12" 0 "26.85" 0>
+  <Switch S1 1 100 80 -26 11 0 0 "on" 0 "9ns" 1 "0" 0 "1e12" 0 "26.85" 0 "1e-6" 0 "spline" 0>
+  <Switch S2 1 220 80 -26 11 0 0 "off" 0 "10ns" 1 "0" 0 "1e12" 0 "26.85" 0 "1e-6" 0 "spline" 0>
   <R RD 1 340 80 -26 23 0 0 "200m" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
   <GND * 1 280 300 0 0 0 0>
   <Vdc VDC 1 280 270 18 -26 0 1 "13.5V" 1>
   <Vdc VGEN 1 40 170 18 -26 0 1 "200V" 1>
-  <C CS 1 160 170 17 -26 0 1 "40nF" 1>
+  <C CS 1 160 170 17 -26 0 1 "40nF" 1 "" 0 "neutral" 0>
   <R RE 1 280 170 15 -26 0 1 "400m" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
-  <C CL 1 400 170 17 -26 0 1 "40nF" 1>
-  <.TR TR1 1 50 250 0 53 0 0 "lin" 1 "0" 1 "200n" 1 "401" 1 "Trapezoidal" 0 "2" 0 "1 ns" 0 "1e-16" 0 "150" 0 "0.001" 0 "1 pA" 0 "1 uV" 0 "26.85" 0 "1e-3" 0 "1e-6" 0 "1" 0 "CroutLU" 0>
+  <C CL 1 400 170 17 -26 0 1 "40nF" 1 "" 0 "neutral" 0>
+  <.TR TR1 1 50 250 0 61 0 0 "lin" 1 "0" 1 "200n" 1 "401" 1 "Trapezoidal" 0 "2" 0 "1 ns" 0 "1e-16" 0 "150" 0 "0.001" 0 "1 pA" 0 "1 uV" 0 "26.85" 0 "1e-3" 0 "1e-6" 0 "1" 0 "CroutLU" 0 "no" 0 "yes" 0 "0" 0>
   <R RI 1 470 80 -26 23 0 0 "50" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
 </Components>
 <Wires>
@@ -45,6 +52,9 @@
   <500 80 500 80 "Puls3b" 520 40 0 "">
 </Wires>
 <Diagrams>
+  <Rect 630 259 311 229 3 #c0c0c0 1 00 1 0 0.2 1 1 -0.1 0.5 1.1 1 -0.1 0.5 1.1 315 0 225 1 0 0 "" "" "">
+	<"Puls3b.Vt" #0000ff 1 3 0 0 0>
+  </Rect>
 </Diagrams>
 <Paintings>
   <Text 170 350 16 #000000 0 "ISO 7637 -- Test Pulse 3b">
