@@ -62,16 +62,23 @@ IndQ::IndQ()
   SpiceModel = "L";
   Name  = "LQ";
 
-  Props.append(new Property("L", "1 nH", true,
-		QObject::tr("Inductance")));
-  Props.append(new Property("Q", "100", true,
-		QObject::tr("Quality factor")));
-  Props.append(new Property("f", "100 MHz", false,
-		QObject::tr("Frequency at which Q is measured")));
-  Props.append(new Property("Mode", "Linear", false,
-		QObject::tr("Q frequency profile")+
-		" [Linear, SquareRoot, Constant]"));
-   Props.append(new Property("Temp", "26.85", false,
+  Property::Builder b;
+
+  b.visible().simulator(spicecompat::simAll);
+  Props.append(b.property("L", "1 nH",
+               QObject::tr("Inductance")));
+  Props.append(b.property("Q", "100",
+               QObject::tr("Quality factor")));
+
+  b.hidden().simulator(spicecompat::simAll);
+  Props.append(b.property("f", "100 MHz",
+               QObject::tr("Frequency at which Q is measured")));
+  Props.append(b.property("Mode", "Linear",
+               QObject::tr("Q frequency profile") +
+               " [Linear, SquareRoot, Constant]"));
+
+  b.hidden().simulator(spicecompat::simQucsator);
+  Props.append(b.property("Temp", "26.85",
         QObject::tr("simulation temperature in degree Celsius (Qucsator only)")));
 }
 IndQ::~IndQ()
