@@ -24,19 +24,28 @@ Switch::Switch()
 {
   Description = QObject::tr("switch (time controlled)");
 
-  Props.append(new Property("init", "off", false,
+  Property::Builder b;
+
+  b.hidden().simulator(spicecompat::simAll);
+  Props.append(b.property("init", "off",
 		QObject::tr("initial state")+" [on, off]"));
-  Props.append(new Property("time", "1 ms", false,
+  Props.append(b.property("time", "1 ms",
 		QObject::tr("time when state changes (semicolon separated list possible, even numbered lists are repeated)")));
-  Props.append(new Property("Ron", "1e-9", false,
+  Props.append(b.property("Ron", "1e-9",
 		QObject::tr("resistance of \"on\" state in ohms")));
-  Props.append(new Property("Roff", "1e12", false,
+  Props.append(b.property("Roff", "1e12",
 		QObject::tr("resistance of \"off\" state in ohms")));
-  Props.append(new Property("Temp", "26.85", false,
-        QObject::tr("simulation temperature in degree Celsius (Qucsator only)")));
-  Props.append(new Property("MaxDuration", "1e-6", false,
+
+  b.hidden().simulator(spicecompat::simQucsator);
+  Props.append(b.property("Temp", "26.85",
+		QObject::tr("simulation temperature in degree Celsius (Qucsator only)")));
+
+  b.hidden().simulator(spicecompat::simAll);
+  Props.append(b.property("MaxDuration", "1e-6",
 		QObject::tr("Max possible switch transition time (transition time 1/100 smallest value in 'time', or this number)")));
-  Props.append(new Property("Transition", "spline", false,
+
+  b.hidden().simulator(spicecompat::simQucsator);
+  Props.append(b.property("Transition", "spline",
         QObject::tr("Resistance transition shape (Qucsator only)")+" [abrupt, linear, spline]"));
 
   createSymbol();
