@@ -373,7 +373,7 @@ jobs:
             msystem: ucrt64
             platform_tag: win64                 
           - os: windows-11-arm
-            msystem: CLANGARM64
+            msystem: clangarm64
             platform_tag: win-arm64
     defaults:
       run:
@@ -539,10 +539,11 @@ jobs:
       run: |
         # Find existing artifact files
         hash_files=$(find ~/artifacts -name "*.sha256" -print0 | xargs -0 echo)
-        exe_files=$(find ~/artifacts -name "*setup*.exe" -print0 | xargs -0 echo)
-        zip_files=$(find ~/artifacts -name "*-win64.zip" ! -name "*-win-arm64.zip" -print0 | xargs -0 echo)
+        exe_files=$(find ~/artifacts -name "*win*setup*.exe" -print0 | xargs -0 echo)
+        zip_files=$(find ~/artifacts -name "*win*.zip"  -print0 | xargs -0 echo)
         dmg_files=$(find ~/artifacts -name "*.dmg" -print0 | xargs -0 echo)
         appimage_files=$(find ~/artifacts -name "*.AppImage" -print0 | xargs -0 echo)
+
 
         # Check existing release and delete if it's exist
         if gh release view ${{ env.TAG_NAME }} --repo $GITHUB_REPOSITORY &> /dev/null; then
