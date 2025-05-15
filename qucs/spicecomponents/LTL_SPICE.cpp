@@ -54,15 +54,17 @@ LTL_SPICE::LTL_SPICE()
   SpiceModel = "T";
   Name  = "T";
 
-  Props.append(new Property("Z0", "50 ", true,     QObject::tr("Characteristic impedance")));
-  Props.append(new Property("Td", "0.25n ", true,  QObject::tr("Transmission delay")));
-  Props.append(new Property("F", "1e9", true,      QObject::tr("Frequency")));
-  Props.append(new Property("Nl", "0.25", true,    QObject::tr("Normalised length at given frequency")));
-  Props.append(new Property("V1", "0", true,       QObject::tr("Initial voltage at end 1")));
-  Props.append(new Property("I1", "0", true,       QObject::tr("Initial current at end 1")));
-  Props.append(new Property("V2", "0", true,       QObject::tr("Initial voltage at end 2")));
-  Props.append(new Property("I2", "0", true,       QObject::tr("Initial current at end 2")));
+  Property::Builder b;
+  b.simulator(static_cast<spicecompat::Simulator>(spicecompat::simSpice ^ spicecompat::simXyce));
 
+  Props.append(b.property("Z0", "50 ",    QObject::tr("Characteristic impedance")));
+  Props.append(b.property("Td", "0.25n ", QObject::tr("Transmission delay")));
+  Props.append(b.property("F", "1e9",     QObject::tr("Frequency")));
+  Props.append(b.property("Nl", "0.25",   QObject::tr("Normalised length at given frequency")));
+  Props.append(b.property("V1", "0",      QObject::tr("Initial voltage at end 1")));
+  Props.append(b.property("I1", "0",      QObject::tr("Initial current at end 1")));
+  Props.append(b.property("V2", "0",      QObject::tr("Initial voltage at end 2")));
+  Props.append(b.property("I2", "0",      QObject::tr("Initial current at end 2")));
 }
 
 LTL_SPICE::~LTL_SPICE()

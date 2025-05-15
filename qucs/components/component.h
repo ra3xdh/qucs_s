@@ -27,6 +27,7 @@
 #include <QList>
 
 #include "element.h"
+#include "property.h"
 
 
 class Schematic;

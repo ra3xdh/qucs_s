@@ -255,6 +255,7 @@ void Component::paint(QPainter *p) {
 
     for (auto *prop : Props) {
         if (!prop->display) continue;
+        if ((prop->simulators & QucsSettings.DefaultSimulator) != QucsSettings.DefaultSimulator) continue;
         prop->paint(text_br.left(), text_br.bottom(), p);
         text_br = prop->boundingRect();
     }
@@ -1174,10 +1175,11 @@ int Component::analyseLine(const QString &Row, int numProps) {
 
             pp++;
             if (pp == Props.end()) {
-                Props.append(new Property());
+                Props.append(new Property(
+                    "",
+                    s.section('=', 2, 2),
+                    (s.at(0) == '1')));
                 pp = --Props.end();
-                (*pp)->display = (s.at(0) == '1');
-                (*pp)->Value = s.section('=', 2, 2);
             }
 
             (*pp)->Name = s.section('=', 1, 1);

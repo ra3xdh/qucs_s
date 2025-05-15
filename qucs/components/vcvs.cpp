@@ -64,9 +64,12 @@ VCVS::VCVS()
   Name  = "SRC";
   SpiceModel = "E";
 
-  Props.append(new Property("G", "1", true,
-    QObject::tr("forward transfer factor")));
-  Props.append(new Property("T", "0", false, QObject::tr("delay time (Qucsator only)")));
+  Property::Builder b;
+
+  Props.append(b.visible().simulator(spicecompat::simAll)
+    .property("G", "1", QObject::tr("forward transfer factor")));
+  Props.append(b.visible().simulator(spicecompat::simQucsator)
+    .property("T", "0", QObject::tr("delay time (Qucsator only)")));
 }
 
 VCVS::~VCVS()
