@@ -1328,6 +1328,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         for(int i=1;i<var_list.count();i++) { // output dep var
             bool is_digital_var = false;
             bool digital_indep = false;
+            bool is_scalar = false;
             if (indep.isEmpty()) {
               ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var_list.at(i)).arg(sim_points.count());
             } else {
@@ -1343,7 +1344,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                   var2 += " " + swp_var;
                   if (hasDblParSweep) var += " " + swp_var2;
                 }
-                ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var).arg(var2);
+                if (var_list.contains(var2)) {
+                  // it is digtial variable
+                  ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var).arg(var2);
+                } else {
+                  // it is scalar
+                  ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var).arg(dig_vars_dims.at(dig_var_idx));
+                  is_scalar = true;
+                }
               } else if (is_digital_var && var.endsWith("_steps") && // indep XSPICE digital var
                          !var.contains("(") && !var.contains(")")) {
                 digital_indep = true;
@@ -1369,7 +1377,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 }
                 count++;
             }
-            if (indep.isEmpty() || digital_indep) {
+            if (indep.isEmpty() || digital_indep || is_scalar) {
               ds_stream<<"</indep>\n";
             } else {
               ds_stream<<"</dep>\n";
