@@ -111,7 +111,8 @@ public:
     void parseDC_OPoutputXY(QString xyce_file);
     void parseSTEPOutput(QString ngspice_file,
                          QList< QList<double> > &sim_points,
-                         QStringList &var_list, bool &isComplex);
+                         QStringList &var_list, bool &isComplex,
+                         QStringList &digital_vars, QList<int> &dig_vars_dims);
     void parsePrnOutput(const QString &ngspice_file,
                         QList< QList<double> > &sim_points,
                         QStringList &var_list,

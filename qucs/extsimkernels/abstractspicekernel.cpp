@@ -760,7 +760,8 @@ void AbstractSpiceKernel::parseDC_OPoutputXY(QString xyce_file)
  */
 void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
                      QList< QList<double> > &sim_points,
-                     QStringList &var_list, bool &isComplex)
+                     QStringList &var_list, bool &isComplex,
+                     QStringList &digital_vars, QList<int> &dig_vars_dims)
 {
     isComplex = false;
     bool isBinary = false;
@@ -809,6 +810,11 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
                     lin = ngsp_data.readLine();
                     QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
                     var_list.append(dep_var);
+                    if (lin.contains("dims=")) {
+                      digital_vars.append(dep_var); // XSPICE digital node
+                      QString tail = lin.section("dims=",1,1,QString::SectionSkipEmpty);
+                      dig_vars_dims.append(tail.toInt());
+                    }
                 }
                 header_parsed = true;
                 continue;
@@ -1250,7 +1256,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                                                     + "spice4qucs." + dataset_prefix + ".cir.res");
             parseResFile(res_file,swp_var,swp_var_val);
 
-            parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
+            parseSTEPOutput(full_outfile,sim_points,var_list,isComplex, digital_vars, dig_vars_dims);
         } else {
             int OutType = checkRawOutupt(full_outfile,swp_var_val);
             bool hasSwp = false;
@@ -1258,7 +1264,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             case spiceRawSwp:
                 hasParSweep = true;
                 swp_var = "Number";
-                parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
+                parseSTEPOutput(full_outfile,sim_points,var_list,isComplex, digital_vars, dig_vars_dims);
                 break;
             case spiceRaw:
                 parseNgSpiceSimOutput(full_outfile, sim_points, var_list, isComplex, digital_vars, dig_vars_dims);
@@ -1349,8 +1355,13 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                   ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var).arg(var2);
                 } else {
                   // it is scalar
-                  ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var).arg(dig_vars_dims.at(dig_var_idx));
-                  is_scalar = true;
+                  if (hasParSweep) {
+                    ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var).arg(swp_var);
+                  } else {
+                    ds_stream<<QStringLiteral("<indep %1 %2>\n")
+                                     .arg(var).arg(dig_vars_dims.at(dig_var_idx));
+                    is_scalar = true;
+                  }
                 }
               } else if (is_digital_var && var.endsWith("_steps") && // indep XSPICE digital var
                          !var.contains("(") && !var.contains(")")) {
@@ -1360,9 +1371,22 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
               }
             }
-            int count = 0;
-            for (auto& sim_point : sim_points) {
-                if (is_digital_var && count > dig_vars_dims.at(dig_var_idx)) break;
+
+            int count  = 0;
+            for (int idx = 0; idx < sim_points.count(); idx++) {
+                auto sim_point = sim_points.at(idx);
+                if (hasParSweep) {
+                  int dig_var_length = dig_vars_dims.at(dig_var_idx);
+                  if (is_digital_var && count >= dig_var_length) {
+                    // forward variables with dim= suffix
+                    int indep_cnt = sim_points.count()/swp_var_val.count();
+                    idx = idx + (indep_cnt - dig_var_length - 1);
+                    count = 0;
+                    continue;
+                  }
+                } else {
+                  if (is_digital_var && idx >= dig_vars_dims.at(dig_var_idx)) break;
+                }
                 if (isComplex) {
                     double re=sim_point.at(2*(i-1)+1);
                     double im = sim_point.at(2*i);
