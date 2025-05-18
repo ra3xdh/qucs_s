@@ -2045,18 +2045,6 @@ Component* Schematic::searchSelSubcircuit()
     return sub;
 }
 
-
-// ---------------------------------------------------
-Component* Schematic::selectedComponent(int x, int y)
-{
-    // test all components
-    for(Component* pc : *a_Components)
-        if(pc->getSelected(x, y))
-            return pc;
-
-    return 0;
-}
-
 // Disconnect component and remove it from the list of schematic components.
 // Component is not deleted, pointer remains valid after call. It is responsibility
 // of the caller to handle it by deleting, reinstalling, etc.
