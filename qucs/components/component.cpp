@@ -205,19 +205,6 @@ int Component::getTextSelected(int point_x, int point_y) {
     return -1;
 }
 
-// -------------------------------------------------------
-bool Component::getSelected(int x_, int y_) {
-    x_ -= cx;
-    y_ -= cy;
-    if (x_ >= x1)
-        if (x_ <= x2)
-            if (y_ >= y1)
-                if (y_ <= y2)
-                    return true;
-
-    return false;
-}
-
 void Component::paint(QPainter *p) {
     p->save();
     p->translate(cx, cy);
