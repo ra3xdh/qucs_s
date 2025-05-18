@@ -160,8 +160,7 @@ QString qucs2spice::convert_diode(QString line,bool xyce)
     s += QStringLiteral("D%1 %2 %3 DMOD_%4 \n").arg(name).arg(A).arg(K).arg(name);
     QString mod_params = lst.join(" ");
     mod_params.remove('\"');
-    if (xyce) s += QStringLiteral(".MODEL DMOD_%1 D(LEVEL=2 %2) \n").arg(name).arg(mod_params);
-    else  s += QStringLiteral(".MODEL DMOD_%1 D(%2) \n").arg(name).arg(mod_params);
+    s += QStringLiteral(".MODEL DMOD_%1 D(%2) \n").arg(name).arg(mod_params);
     return s;
 }
 
