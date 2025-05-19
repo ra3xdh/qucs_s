@@ -16,13 +16,14 @@
  ***************************************************************************/
 
 #include "coaxialline.h"
+#include "node.h"
 #include "extsimkernels/spicecompat.h"
 
 
 CoaxialLine::CoaxialLine()
 {
   Description = QObject::tr("coaxial transmission line");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Arcs.append(new qucs::Arc(-20, -9, 8, 18,     0, 16*360,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( 11, -9, 8, 18,16*270, 16*180,QPen(Qt::darkBlue,2)));
@@ -42,6 +43,7 @@ CoaxialLine::CoaxialLine()
   ty = y2+4;
   Model = "COAX";
   Name  = "Line";
+  SpiceModel ="X";
 
   Props.append(new Property("er", "2.29", true,
 		QObject::tr("relative permittivity of dielectric")));
@@ -77,4 +79,35 @@ Element* CoaxialLine::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new CoaxialLine();
   return 0;
+}
+
+QString CoaxialLine::spice_netlist(spicecompat::SpiceDialect dialect)
+{
+  Q_UNUSED(dialect);
+  QString s;
+
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+
+  QString D = spicecompat::normalize_value(getProperty("D")->Value);
+  QString d = spicecompat::normalize_value(getProperty("d")->Value);
+  QString er = spicecompat::normalize_value(getProperty("er")->Value);
+  QString mur = spicecompat::normalize_value(getProperty("mur")->Value);
+  QString L = spicecompat::normalize_value(getProperty("L")->Value);
+  QString rho = spicecompat::normalize_value(getProperty("rho")->Value);
+  QString tand = spicecompat::normalize_value(getProperty("tand")->Value);
+
+  s = QString("X%1 %2 0 %3 0 COAX De=%4 Di=%5 L=%6 er=%7 mur=%8 rho=%9 tand=%10\n")
+          .arg(Name).arg(p1).arg(p2)
+          .arg(D).arg(d).arg(L).arg(er).arg(mur).arg(rho).arg(tand);
+
+  return s;
+}
+
+
+QString CoaxialLine::getSpiceLibrary()
+{
+  QString f = spicecompat::getSpiceLibPath("coax.cir");
+  QString s = QString (".INCLUDE \"%1\"\n").arg(f);
+  return s;
 }

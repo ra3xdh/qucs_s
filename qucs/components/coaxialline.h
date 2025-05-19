@@ -27,6 +27,10 @@ public:
  ~CoaxialLine();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+protected:
+  QString spice_netlist(spicecompat::SpiceDialect dialect);
+  QString getSpiceLibrary();
+
 };
 
 #endif
