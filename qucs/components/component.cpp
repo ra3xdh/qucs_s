@@ -75,14 +75,6 @@ Component *Component::newOne() {
 }
 
 // -------------------------------------------------------
-void Component::Bounding(int &_x1, int &_y1, int &_x2, int &_y2) {
-    _x1 = x1 + cx;
-    _y1 = y1 + cy;
-    _x2 = x2 + cx;
-    _y2 = y2 + cy;
-}
-
-// -------------------------------------------------------
 // Size of component text.
 int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeight) const {
     // get size of text using the screen-compatible metric
@@ -111,20 +103,6 @@ int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeigh
         textPropertiesCount++;
     }
     return textPropertiesCount;
-}
-
-// -------------------------------------------------------
-// Boundings including the component text.
-void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
-                             int& boundingRectRight, int& boundingRectBottom) {
-    boundingRectLeft = std::min(x1, tx) + cx;
-    boundingRectTop  = std::min(y1, ty) + cy;
-
-    int textPropertyMaxWidth, totalTextPropertiesHeight;
-    textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
-
-    boundingRectRight  = std::max(tx + textPropertyMaxWidth, x2) + cx;
-    boundingRectBottom = std::max(ty + totalTextPropertiesHeight, y2) + cy;
 }
 
 QRect Component::boundingRect() const noexcept {
@@ -225,19 +203,6 @@ int Component::getTextSelected(int point_x, int point_y) {
     }
 
     return -1;
-}
-
-// -------------------------------------------------------
-bool Component::getSelected(int x_, int y_) {
-    x_ -= cx;
-    y_ -= cy;
-    if (x_ >= x1)
-        if (x_ <= x2)
-            if (y_ >= y1)
-                if (y_ <= y2)
-                    return true;
-
-    return false;
 }
 
 void Component::paint(QPainter *p) {

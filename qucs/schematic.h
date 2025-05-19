@@ -465,7 +465,6 @@ public:
   bool       activateSelectedComponents();
   Component* selectCompText(int, int, int&, int&) const;
   Component* searchSelSubcircuit();
-  Component* selectedComponent(int, int);
   void       deleteComp(Component*);
   void       detachComp(Component*);
   Component* getComponentByName(const QString& compname) const;
