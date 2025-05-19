@@ -2015,13 +2015,40 @@ void QucsApp::closeFile(int index)
 }
 
 
-/**
- * @brief close all open documents - except a specified one, optionally
- * @param exceptTab tab to leave open, none if not specified
- */
 bool QucsApp::closeAllFiles(int exceptTab)
 {
-  return closeTabsRange(0, DocumentTab->count()-1, exceptTab);
+  // document to keep open, if any
+  QucsDoc *docToKeep = 0;
+  if (exceptTab >= 0) {
+    docToKeep = getDoc(exceptTab);
+  }
+
+  SaveDialog *sd = new SaveDialog(this);
+  sd->setApp(this);
+  for(int i=0; i < DocumentTab->count(); ++i) {
+    QucsDoc *doc = getDoc(i);
+    if ((doc->getDocChanged()) && (doc != docToKeep))
+      sd->addUnsavedDoc(doc);
+  }
+  int Result = SaveDialog::DontSave;
+  if(!sd->isEmpty())
+    Result = sd->exec();
+  delete sd;
+  if(Result == SaveDialog::AbortClosing)
+    return false;
+  // remove documents
+  QucsDoc *doc = 0;
+  int i = 0;
+  while (i < DocumentTab->count()) {
+    if ((doc=getDoc(i)) == docToKeep) {
+      i++; // skip to next doc
+    } else {
+      delete doc;
+    }
+  }
+
+  switchEditMode(true);   // set schematic edit mode
+  return true;
 }
 
 /**
