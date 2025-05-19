@@ -1,0 +1,19 @@
+* Coax cable
+
+.SUBCKT COAX in n2 out n4 De=2.95e-3 Di=0.9e-3 L=1.500 er=2.29 
++ mur=1.0 tand=4e-4 rho=0.022e-6
+.PARAM m_pi = 4*atan(1)
+.PARAM mu0 = 4*m_pi*1e-7
+.PARAM e0 = 8.854e-12
+.PARAM L1 = (mu0*mur)/(2*m_pi)*log(De/Di)
+.PARAM C1 = 2*m_pi*er*e0/log(De/Di)
+.PARAM G1 = 4*m_pi*m_pi*e0*er*tand/log(De/Di)
+.PARAM Rdc = rho/(m_pi*Di*Di/4)
+RS1 in  n1 R='1e-12+0.5*L*sqrt(hertz*mu0/m_pi)*(sqrt(mur*rho)*(1/De+1/Di))' 
+RS2 out n3 R='1e-12+0.5*L*sqrt(hertz*mu0/m_pi)*(sqrt(mur*rho)*(1/De+1/Di))' 
+* Ngspice doesn't support R!=0 and G!=0 for LTRA 
+R1 n1 n2 R='2/(L*G1*(hertz+1e-12))'
+R2 n3 n4 R='2/(L*G1*(hertz+1e-12))'
+O1 n1 n2 n3 n4 COAX_MOD
+.MODEL COAX_MOD LTRA( G=0  R={Rdc} L={L1} C={C1} LEN={L} )
+.ENDS

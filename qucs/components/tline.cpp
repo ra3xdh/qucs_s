@@ -16,13 +16,14 @@
  ***************************************************************************/
 
 #include "tline.h"
+#include "node.h"
 #include "extsimkernels/spicecompat.h"
 
 
 TLine::TLine()
 {
   Description = QObject::tr("ideal transmission line");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Lines.append(new qucs::Line(-30,  0, 30,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-28,  7, 28,  7,QPen(Qt::darkBlue,2)));
@@ -46,6 +47,7 @@ TLine::TLine()
   ty = y2+4;
   Model = "TLIN";
   Name  = "Line";
+  SpiceModel = "T";
 
   Props.append(new Property("Z", "50 Ohm", true,
 		QObject::tr("characteristic impedance")));
@@ -73,4 +75,25 @@ Element* TLine::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new TLine();
   return 0;
+}
+
+
+QString TLine::spice_netlist(spicecompat::SpiceDialect dialect)
+{
+  Q_UNUSED(dialect);
+
+  QString c0 = "299792458.0"; // light speed
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+
+  QString zw = spicecompat::normalize_value(getProperty("Z")->Value);
+  QString l = spicecompat::normalize_value(getProperty("L")->Value);
+
+  QString s = QString("T%1 %2 0 %3 0 Z0=%4 TD={%5/%6}\n")
+                  .arg(Name)
+                  .arg(p1).arg(p2)
+                  .arg(zw).arg(l).arg(c0);
+
+  return s;
+
 }
