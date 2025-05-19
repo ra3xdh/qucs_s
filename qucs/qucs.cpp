@@ -2017,39 +2017,19 @@ void QucsApp::closeFile(int index)
 
 bool QucsApp::closeAllFiles(int exceptTab)
 {
-  // document to keep open, if any
-  QucsDoc *docToKeep = 0;
-  if (exceptTab >= 0) {
-    docToKeep = getDoc(exceptTab);
+  if (DocumentTab->count() == 0) {
+    return true;  // no documents to close
   }
 
-  SaveDialog *sd = new SaveDialog(this);
-  sd->setApp(this);
-  for(int i=0; i < DocumentTab->count(); ++i) {
-    QucsDoc *doc = getDoc(i);
-    if ((doc->getDocChanged()) && (doc != docToKeep))
-      sd->addUnsavedDoc(doc);
-  }
-  int Result = SaveDialog::DontSave;
-  if(!sd->isEmpty())
-    Result = sd->exec();
-  delete sd;
-  if(Result == SaveDialog::AbortClosing)
-    return false;
-  // remove documents
-  QucsDoc *doc = 0;
-  int i = 0;
-  while (i < DocumentTab->count()) {
-    if ((doc=getDoc(i)) == docToKeep) {
-      i++; // skip to next doc
-    } else {
-      delete doc;
-    }
-  }
+  // Use closeTabsRange to close all tabs (from 0 to last tab)
+  bool result = closeTabsRange(0, DocumentTab->count() - 1, exceptTab);
 
-  switchEditMode(true);   // set schematic edit mode
-  return true;
+  if (result) {
+    switchEditMode(true);   // set schematic edit mode
+  }
+  return result;
 }
+
 
 /**
  * @brief close Tabs in a specified range, optionally skipping a specified one
@@ -2096,10 +2076,8 @@ bool QucsApp::closeTabsRange(int startTab, int stopTab, int exceptTab)
     }
   } while (doc != stopDoc);
 
-  //switchEditMode(true);   // set schematic edit mode
   return true;
 }
-
 /**
  * @brief close all documents to the left of the specified one
  * @param index reference tab
