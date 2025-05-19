@@ -57,6 +57,10 @@ public:
   void setProjPath(const QString &);
   void refresh();
   QStringList exportSchematic();
+
+signals:
+  void filesSelected(const QStringList&);
+
 private:
   QStandardItemModel *m_model;
 

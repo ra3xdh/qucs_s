@@ -42,6 +42,7 @@ ProjectView::ProjectView(QWidget *parent)
 
   this->setModel(m_model);
   this->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  this->setSelectionMode(QAbstractItemView::ExtendedSelection); // Allow multiple selection
 }
 
 ProjectView::~ProjectView()
