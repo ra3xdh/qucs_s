@@ -1194,9 +1194,17 @@ void QucsApp::slotShowContentMenu(const QPoint& pos)
 {
   QModelIndex idx = Content->indexAt(pos);
   if (idx.isValid() && idx.parent().isValid()) {
+    QItemSelectionModel *selectionModel = Content->selectionModel();
+    bool multipleSelected = selectionModel->selectedIndexes().count() > 1;
+
     ActionCMenuInsert->setVisible(
         idx.sibling(idx.row(), 1).data().toString().contains(tr("-port"))
-    );
+        );
+
+    // Disable Duplicate and Rename when multiple files are selected
+    ActionCMenuCopy->setEnabled(!multipleSelected);
+    ActionCMenuRename->setEnabled(!multipleSelected);
+
     ContentMenu->popup(Content->mapToGlobal(pos));
   }
 }
