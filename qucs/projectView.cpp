@@ -78,16 +78,16 @@ ProjectView::refresh()
   header << tr("Content of %1").arg(m_projName) << tr("Note");
   m_model->setHorizontalHeaderLabels(header);
 
-  APPEND_ROW(m_model, tr("Datasets")     );
-  APPEND_ROW(m_model, tr("Data Displays"));
-  APPEND_ROW(m_model, tr("Verilog")      );
-  APPEND_ROW(m_model, tr("Verilog-A")    );
-  APPEND_ROW(m_model, tr("VHDL")         );
-  APPEND_ROW(m_model, tr("Octave")       );
-  APPEND_ROW(m_model, tr("Schematics")   );
-  APPEND_ROW(m_model, tr("Symbols")      );
-  APPEND_ROW(m_model, tr("SPICE")       );
-  APPEND_ROW(m_model, tr("Others")       );
+  APPEND_ROW(m_model, tr("Datasets"), QString(""));
+  APPEND_ROW(m_model, tr("Data Displays"), QString(""));
+  APPEND_ROW(m_model, tr("Verilog"), QString(""));
+  APPEND_ROW(m_model, tr("Verilog-A"), QString(""));
+  APPEND_ROW(m_model, tr("VHDL"), QString(""));
+  APPEND_ROW(m_model, tr("Octave"), QString(""));
+  APPEND_ROW(m_model, tr("Schematics"), QString(""));
+  APPEND_ROW(m_model, tr("Symbols"), QString(""));
+  APPEND_ROW(m_model, tr("SPICE"), QString(""));
+  APPEND_ROW(m_model, tr("Others"), QString(""));
 
   setExpanded(m_model->index(6, 0), true);
 

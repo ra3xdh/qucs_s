@@ -35,11 +35,16 @@
 })*/
 
 
-#define APPEND_ROW(parent, data) \
+#define APPEND_ROW(parent, data0, data1) \
 if(1){ \
-    QList<QStandardItem*> c; \
-    c.append(new QStandardItem(data)); \
-    parent->appendRow(c); \
+      QList<QStandardItem*> c; \
+      QStandardItem *col0 = new QStandardItem(data0); \
+      QStandardItem *col1 = new QStandardItem(data1); \
+      col0->setFlags(col0->flags() & ~Qt::ItemIsSelectable); \
+      col1->setFlags(col1->flags() & ~Qt::ItemIsSelectable); \
+      c.append(col0); \
+      c.append(col1); \
+      parent->appendRow(c); \
 }
 
 class QStandardItemModel;
