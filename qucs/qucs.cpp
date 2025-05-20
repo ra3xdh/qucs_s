@@ -1341,29 +1341,61 @@ void QucsApp::slotCMenuRename()
 
 void QucsApp::slotCMenuDelete()
 {
-  QModelIndex idx = Content->currentIndex();
+  QItemSelectionModel *selectionModel = Content->selectionModel();
+  QModelIndexList selected = selectionModel->selectedIndexes();
 
-  //test the item is valid
-  if (!idx.isValid() || !idx.parent().isValid()) { return; }
+         // We only want column 0 items (file names)
+  QSet<QString> filesToDelete; // Use QSet to avoid duplicates
+  for (const QModelIndex &index : selected) {
+    if (index.column() == 0 && index.parent().isValid()) {
+      QString filename = index.sibling(index.row(), 0).data().toString();
+      filesToDelete.insert(filename);
+    }
+  }
 
-  QString filename = idx.sibling(idx.row(), 0).data().toString();
-  QString file(QucsSettings.QucsWorkDir.filePath(filename));
-
-  if (findDoc (file)) {
-    QMessageBox::critical(this, tr("Error"), tr("Cannot delete an open file!"));
+  if (filesToDelete.isEmpty()) {
+    QMessageBox::information(this, tr("Info"), tr("No files selected for deletion!"));
     return;
   }
 
-  int No;
-  No = QMessageBox::warning(this, tr("Warning"),
-      tr("This will delete the file permanently! Continue ?"),
-      QMessageBox::No | QMessageBox::Yes);
-  if(No == QMessageBox::Yes) {
-    if(!QFile::remove(file)) {
-      QMessageBox::critical(this, tr("Error"),
-      tr("Cannot delete file: %1").arg(filename));
-      return;
+  QString message;
+  if (filesToDelete.size() > 1) {
+    message = tr("This will delete %1 files permanently! Continue?").arg(filesToDelete.size());
+  } else {
+    message = tr("This will delete the file permanently! Continue?");
+  }
+
+  int response = QMessageBox::warning(this, tr("Warning"),
+                                      message,
+                                      QMessageBox::No | QMessageBox::Yes);
+
+  if (response != QMessageBox::Yes) {
+    return;
+  }
+
+  QDir dir(QucsSettings.QucsWorkDir.path());
+  bool allDeleted = true;
+  QStringList failedFiles;
+
+  for (const QString &filename : filesToDelete) {
+    QString filePath = dir.filePath(filename);
+
+    if (findDoc(filePath)) {
+      failedFiles << filename + " (" + tr("file is open") + ")";
+      allDeleted = false;
+      continue;
     }
+
+    if (!QFile::remove(filePath)) {
+      failedFiles << filename;
+      allDeleted = false;
+    }
+  }
+
+  if (!allDeleted) {
+    QString errorMsg = tr("Could not delete the following files:\n") +
+                       failedFiles.join("\n");
+    QMessageBox::critical(this, tr("Error"), errorMsg);
   }
 
   slotUpdateTreeview();
