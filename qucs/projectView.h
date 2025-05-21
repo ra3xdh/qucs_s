@@ -26,26 +26,8 @@
 
 #include <QTreeView>
 #include <QString>
+#include <QStandardItem>
 
-/*#define APPEND_ROW(parent, data) \
-({ \
-  QList<QStandardItem*> c; \
-  c.append(new QStandardItem(data)); \
-  parent->appendRow(c); \
-})*/
-
-
-#define APPEND_ROW(parent, data0, data1) \
-if(1){ \
-      QList<QStandardItem*> c; \
-      QStandardItem *col0 = new QStandardItem(data0); \
-      QStandardItem *col1 = new QStandardItem(data1); \
-      col0->setFlags(col0->flags() & ~Qt::ItemIsSelectable); \
-      col1->setFlags(col1->flags() & ~Qt::ItemIsSelectable); \
-      c.append(col0); \
-      c.append(col1); \
-      parent->appendRow(c); \
-}
 
 class QStandardItemModel;
 
@@ -72,6 +54,23 @@ private:
   bool m_valid;
   QString m_projPath;
   QString m_projName;
+
+  inline void appendChild(int category, const QList<QStandardItem*>& data) {
+    if (auto *item = m_model->item(category, 0)) {
+      item->appendRow(data);
+    }
+  }
+
+  inline void appendRow(QStandardItem* parent, const QString& data0, const QString& data1) {
+    auto* col0 = new QStandardItem(data0);
+    auto* col1 = new QStandardItem(data1);
+
+    col0->setFlags(col0->flags() & ~Qt::ItemIsSelectable);
+    col1->setFlags(col1->flags() & ~Qt::ItemIsSelectable);
+
+    QList<QStandardItem*> row{ col0, col1 };
+    parent->appendRow(row);
+  }
 };
 
 #endif /* PROJECTVIEW_H_ */
