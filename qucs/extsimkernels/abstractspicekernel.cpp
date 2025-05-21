@@ -1375,17 +1375,19 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             int count  = 0;
             for (int idx = 0; idx < sim_points.count(); idx++) {
                 auto sim_point = sim_points.at(idx);
-                if (hasParSweep) {
-                  int var_length = extra_vars_dims.at(var_idx);
-                  if (is_extra_var && count >= var_length) {
-                    // forward variables with dim= suffix
-                    int indep_cnt = sim_points.count()/swp_var_val.count();
-                    idx = idx + (indep_cnt - var_length - 1);
-                    count = 0;
-                    continue;
+                if (!extra_vars_dims.isEmpty()) {
+                  if (hasParSweep) {
+                    int var_length = extra_vars_dims.at(var_idx);
+                    if (is_extra_var && count >= var_length) {
+                      // forward variables with dim= suffix
+                      int indep_cnt = sim_points.count()/swp_var_val.count();
+                      idx = idx + (indep_cnt - var_length - 1);
+                      count = 0;
+                      continue;
+                    }
+                  } else {
+                    if (is_extra_var && idx >= extra_vars_dims.at(var_idx)) break;
                   }
-                } else {
-                  if (is_extra_var && idx >= extra_vars_dims.at(var_idx)) break;
                 }
                 if (isComplex) {
                     double re=sim_point.at(2*(i-1)+1);
