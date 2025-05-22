@@ -403,8 +403,7 @@ void QucsApp::initActions()
   magPlus->setShortcut(QKeySequence::ZoomIn);
   magPlus->setStatusTip(tr("Zooms into the current view"));
   magPlus->setWhatsThis(tr("Zoom in\n\nZooms the current view"));
-  magPlus->setCheckable(true);
-  connect(magPlus, SIGNAL(toggled(bool)), SLOT(slotZoomIn(bool)));
+  connect(magPlus, SIGNAL(triggered()), SLOT(slotZoomIn()));
 
   magMinus = new QAction(QIcon((":/bitmaps/svg/viewmag-.svg")), tr("Zoom out"), this);
   magMinus->setShortcut(QKeySequence::ZoomOut);

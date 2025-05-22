@@ -270,18 +270,10 @@ void QucsApp::slotMoveText(bool on)
 
 // -----------------------------------------------------------------------
 // Is called, when "Zoom in" action is triggered.
-void QucsApp::slotZoomIn(bool on)
+void QucsApp::slotZoomIn()
 {
-  auto *Doc = (TextDoc*)DocumentTab->currentWidget();
-  if(isTextDocument(Doc)) {
-    Doc->zoomBy(1.5f);
-    magPlus->blockSignals(true);
-    magPlus->setChecked(false);
-    magPlus->blockSignals(false);
-  }
-  else
-    performToggleAction(on, magPlus, 0,
-      &MouseActions::MMoveZoomIn, &MouseActions::MPressZoomIn);
+  slotHideEdit(); // disable text edit of component property
+  getDoc()->zoomBy(1.5f);
 }
 
 

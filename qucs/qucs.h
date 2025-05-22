@@ -401,7 +401,7 @@ public slots:
   void slotShowGrid();        // turn the grid on or off
   void slotOnGrid(bool);      // set selected elements on grid
   void slotMoveText(bool);    // move property text of components
-  void slotZoomIn(bool);
+  void slotZoomIn();
   void slotEditUndo();    // makes the last operation undone
   void slotEditRedo();    // makes the last undo undone
   void slotEditFind();    // searches for a piece of text
