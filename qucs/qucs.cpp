@@ -1194,9 +1194,17 @@ void QucsApp::slotShowContentMenu(const QPoint& pos)
 {
   QModelIndex idx = Content->indexAt(pos);
   if (idx.isValid() && idx.parent().isValid()) {
+    QItemSelectionModel *selectionModel = Content->selectionModel();
+    bool multipleSelected = selectionModel->selectedIndexes().count() > 1;
+
     ActionCMenuInsert->setVisible(
         idx.sibling(idx.row(), 1).data().toString().contains(tr("-port"))
-    );
+        );
+
+    // Disable Duplicate and Rename when multiple files are selected
+    ActionCMenuCopy->setEnabled(!multipleSelected);
+    ActionCMenuRename->setEnabled(!multipleSelected);
+
     ContentMenu->popup(Content->mapToGlobal(pos));
   }
 }
@@ -1341,29 +1349,61 @@ void QucsApp::slotCMenuRename()
 
 void QucsApp::slotCMenuDelete()
 {
-  QModelIndex idx = Content->currentIndex();
+  QItemSelectionModel *selectionModel = Content->selectionModel();
+  QModelIndexList selected = selectionModel->selectedIndexes();
 
-  //test the item is valid
-  if (!idx.isValid() || !idx.parent().isValid()) { return; }
+         // We only want column 0 items (file names)
+  QSet<QString> filesToDelete; // Use QSet to avoid duplicates
+  for (const QModelIndex &index : selected) {
+    if (index.column() == 0 && index.parent().isValid()) {
+      QString filename = index.sibling(index.row(), 0).data().toString();
+      filesToDelete.insert(filename);
+    }
+  }
 
-  QString filename = idx.sibling(idx.row(), 0).data().toString();
-  QString file(QucsSettings.QucsWorkDir.filePath(filename));
-
-  if (findDoc (file)) {
-    QMessageBox::critical(this, tr("Error"), tr("Cannot delete an open file!"));
+  if (filesToDelete.isEmpty()) {
+    QMessageBox::information(this, tr("Info"), tr("No files selected for deletion!"));
     return;
   }
 
-  int No;
-  No = QMessageBox::warning(this, tr("Warning"),
-      tr("This will delete the file permanently! Continue ?"),
-      QMessageBox::No | QMessageBox::Yes);
-  if(No == QMessageBox::Yes) {
-    if(!QFile::remove(file)) {
-      QMessageBox::critical(this, tr("Error"),
-      tr("Cannot delete file: %1").arg(filename));
-      return;
+  QString message;
+  if (filesToDelete.size() > 1) {
+    message = tr("This will delete %1 files permanently! Continue?").arg(filesToDelete.size());
+  } else {
+    message = tr("This will delete the file permanently! Continue?");
+  }
+
+  int response = QMessageBox::warning(this, tr("Warning"),
+                                      message,
+                                      QMessageBox::No | QMessageBox::Yes);
+
+  if (response != QMessageBox::Yes) {
+    return;
+  }
+
+  QDir dir(QucsSettings.QucsWorkDir.path());
+  bool allDeleted = true;
+  QStringList failedFiles;
+
+  for (const QString &filename : filesToDelete) {
+    QString filePath = dir.filePath(filename);
+
+    if (findDoc(filePath)) {
+      failedFiles << filename + " (" + tr("file is open") + ")";
+      allDeleted = false;
+      continue;
     }
+
+    if (!QFile::remove(filePath)) {
+      failedFiles << filename;
+      allDeleted = false;
+    }
+  }
+
+  if (!allDeleted) {
+    QString errorMsg = tr("Could not delete the following files:\n") +
+                       failedFiles.join("\n");
+    QMessageBox::critical(this, tr("Error"), errorMsg);
   }
 
   slotUpdateTreeview();
@@ -2856,26 +2896,70 @@ void QucsApp::slotOpenContent(const QModelIndex &idx)
 {
   editText->setHidden(true); // disable text edit of component property
 
-  //test the item is valid
-  if (!idx.isValid()) { return; }
-  if (!idx.parent().isValid()) { return; }
+  // Get the selection model
+  QItemSelectionModel *selectionModel = Content->selectionModel();
+
+  // Handle multiple selections if CTRL is pressed or from context menu
+  // OR if Shift is pressed during double click
+  if ((QApplication::keyboardModifiers() & (Qt::ControlModifier | Qt::ShiftModifier)) ||
+      (sender() == ActionCMenuOpen && selectionModel->hasSelection())) {
+
+    QModelIndexList selected = selectionModel->selectedIndexes();
+    QSet<QString> openedFiles; // To avoid opening duplicates
+
+     // We only want column 0 items (file names)
+    for (const QModelIndex &index : selected) {
+      if (index.column() == 0 && index.parent().isValid()) {
+        QString filename = index.sibling(index.row(), 0).data().toString();
+        QString note = index.sibling(index.row(), 1).data().toString();
+        QFileInfo Info(QucsSettings.QucsWorkDir.filePath(filename));
+
+        // Only open each file once
+        if (!openedFiles.contains(Info.absoluteFilePath())) {
+          openFileFromProjectView(Info, note);
+          openedFiles.insert(Info.absoluteFilePath());
+        }
+      }
+    }
+    return;
+  }
+
+  if (!idx.isValid() || !idx.parent().isValid()) {
+    return;
+  }
 
   QString filename = idx.sibling(idx.row(), 0).data().toString();
   QString note = idx.sibling(idx.row(), 1).data().toString();
   QFileInfo Info(QucsSettings.QucsWorkDir.filePath(filename));
-  QString extName = Info.suffix();
+  openFileFromProjectView(Info, note);
+}
 
+/**
+ * Opens a file from the project view based on its file type
+ * @param Info - QFileInfo object containing file information
+ * @param note - Optional note from the project view (used for subcircuits)
+ */
+void QucsApp::openFileFromProjectView(const QFileInfo &Info, const QString &note)
+{
+  QString extName = Info.suffix().toLower();
+  QString absolutePath = Info.absoluteFilePath();
+
+   // Handle Qucs document types
   if (extName == "sch" || extName == "dpl" || extName == "vhdl" ||
       extName == "vhd" || extName == "v" || extName == "va" ||
       extName == "m" || extName == "oct" || extName == "net") {
-    gotoPage(Info.absoluteFilePath());
-    updateRecentFilesList(Info.absoluteFilePath());
+
+    gotoPage(absolutePath);
+    updateRecentFilesList(absolutePath);
     slotUpdateRecentFiles();
 
-    if(note.isEmpty())     // is subcircuit ?
-      if(extName == "sch") return;
+    // Special handling for subcircuits
+    if (note.isEmpty() && extName == "sch") {
+      return;
+    }
 
-    select->blockSignals(true);  // switch on the 'select' action ...
+    // Set selection mode if not in subcircuit
+    select->blockSignals(true);
     select->setChecked(true);
     select->blockSignals(false);
 
@@ -2887,34 +2971,42 @@ void QucsApp::slotOpenContent(const QModelIndex &idx)
     return;
   }
 
-  if(extName == "dat") {
-    editFile(Info.absoluteFilePath());  // open datasets with text editor
+  // Handle data files
+  if (extName == "dat") {
+    editFile(absolutePath);
     return;
   }
 
-  // File is no Qucs file, so go through list and search a user
-  // defined program to open it.
+  // Handle S-parameter files
+  if (extName == "s1p" || extName == "s2p" || extName == "s3p" || extName == "s4p") {
+    QStringList args;
+    args << absolutePath;
+    launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer", args);
+    return;
+  }
+
+  // Try to find a user-defined program for the file extension
   QStringList com;
   QStringList::const_iterator it = QucsSettings.FileTypes.constBegin();
-  while(it != QucsSettings.FileTypes.constEnd()) {
-    if(extName == (*it).section('/',0,0)) {
-      QString progName = (*it).section('/',1,1);
+  while (it != QucsSettings.FileTypes.constEnd()) {
+    if (extName == (*it).section('/', 0, 0)) {
+      QString progName = (*it).section('/', 1, 1);
       com = progName.split(" ");
-      com << Info.absoluteFilePath();
+      com << absolutePath;
 
       QProcess *Program = new QProcess();
-      //Program->setCommunication(0);
       QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-      env.insert("PATH", env.value("PATH") );
+      env.insert("PATH", env.value("PATH"));
       Program->setProcessEnvironment(env);
       QString cmd = com.at(0);
       QStringList com_args = com;
       com_args.removeAt(0);
       Program->start(cmd, com_args);
-      if(Program->state()!=QProcess::Running&&
-              Program->state()!=QProcess::Starting) {
+
+      if (Program->state() != QProcess::Running &&
+          Program->state() != QProcess::Starting) {
         QMessageBox::critical(this, tr("Error"),
-               tr("Cannot start \"%1\"!").arg(Info.absoluteFilePath()));
+                              tr("Cannot start \"%1\"!").arg(absolutePath));
         delete Program;
       }
       return;
@@ -2922,28 +3014,15 @@ void QucsApp::slotOpenContent(const QModelIndex &idx)
     it++;
   }
 
-  // If no appropriate program was found, open in system default program or, if it is a Touchstone file, open it in the S-parameter viewer.
-  if (extName == "s2p" || extName == "s3p" || extName == "s4p") {
-    QString file_path = Info.absoluteFilePath();
-    QStringList args;
-    args << file_path;
-    launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer", args);
-    return;
-  } else {
-    QUrl fileUrl = QUrl::fromLocalFile(Info.absoluteFilePath());
-    if (QDesktopServices::openUrl(fileUrl)) {
-      // Success
-      return;
-    } else {
-      // If opening fails, optionally show an error message
-      QMessageBox::critical(this, tr("Error"),
-                            tr("Cannot open \"%1\" with the system default program!").arg(Info.absoluteFilePath()));
-    }
+         // Fallback to system default handler
+  QUrl fileUrl = QUrl::fromLocalFile(absolutePath);
+  if (!QDesktopServices::openUrl(fileUrl)) {
+    // If system handler fails, try opening as text file
+    editFile(absolutePath);
   }
-
-  // If no appropriate program was found, open as text file.
-  editFile(Info.absoluteFilePath());  // open datasets with text editor
 }
+
+
 
 // ---------------------------------------------------------
 // Is called when the mouse is clicked within the Content QListView.

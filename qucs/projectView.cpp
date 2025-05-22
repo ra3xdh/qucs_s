@@ -42,6 +42,7 @@ ProjectView::ProjectView(QWidget *parent)
 
   this->setModel(m_model);
   this->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  this->setSelectionMode(QAbstractItemView::ExtendedSelection); // Allow multiple selection
 }
 
 ProjectView::~ProjectView()
@@ -77,16 +78,16 @@ ProjectView::refresh()
   header << tr("Content of %1").arg(m_projName) << tr("Note");
   m_model->setHorizontalHeaderLabels(header);
 
-  APPEND_ROW(m_model, tr("Datasets")     );
-  APPEND_ROW(m_model, tr("Data Displays"));
-  APPEND_ROW(m_model, tr("Verilog")      );
-  APPEND_ROW(m_model, tr("Verilog-A")    );
-  APPEND_ROW(m_model, tr("VHDL")         );
-  APPEND_ROW(m_model, tr("Octave")       );
-  APPEND_ROW(m_model, tr("Schematics")   );
-  APPEND_ROW(m_model, tr("Symbols")      );
-  APPEND_ROW(m_model, tr("SPICE")       );
-  APPEND_ROW(m_model, tr("Others")       );
+  appendRow(m_model->invisibleRootItem(), tr("Datasets"), QString(""));
+  appendRow(m_model->invisibleRootItem(), tr("Data Displays"), QString(""));
+  appendRow(m_model->invisibleRootItem(), tr("Verilog"), QString(""));
+  appendRow(m_model->invisibleRootItem(), tr("Verilog-A"), QString(""));
+  appendRow(m_model->invisibleRootItem(), tr("VHDL"), QString(""));
+  appendRow(m_model->invisibleRootItem(), tr("Octave"), QString(""));
+  appendRow(m_model->invisibleRootItem(), tr("Schematics"), QString(""));
+  appendRow(m_model->invisibleRootItem(), tr("Symbols"), QString(""));
+  appendRow(m_model->invisibleRootItem(), tr("SPICE"), QString(""));
+  appendRow(m_model->invisibleRootItem(), tr("Others"), QString(""));
 
   setExpanded(m_model->index(6, 0), true);
 
@@ -101,8 +102,6 @@ ProjectView::refresh()
   QString extName, fileName, fullExtName;
   QList<QStandardItem *> columnData;
 
-#define APPEND_CHILD(category, data) \
-  m_model->item(category, 0)->appendRow(data);
 
   for(it = files.begin(); it != files.end(); ++it) {
     fileName = (*it).toLatin1();
@@ -114,22 +113,22 @@ ProjectView::refresh()
 
     if(extName == "dat" || fullExtName == "dat.ngspice" ||
        fullExtName == "dat.xyce" || fullExtName == "dat.spopus" ) {
-      APPEND_CHILD(0, columnData);
+      appendChild(0, columnData);
     }
     else if(extName == "dpl") {
-      APPEND_CHILD(1, columnData);
+      appendChild(1, columnData);
     }
     else if(extName == "v") {
-      APPEND_CHILD(2, columnData);
+      appendChild(2, columnData);
     }
     else if(extName == "va") {
-      APPEND_CHILD(3, columnData);
+      appendChild(3, columnData);
     }
     else if((extName == "vhdl") || (extName == "vhd")) {
-      APPEND_CHILD(4, columnData);
+      appendChild(4, columnData);
     }
     else if((extName == "m") || (extName == "oct")) {
-      APPEND_CHILD(5, columnData);
+      appendChild(5, columnData);
     }
     else if(extName == "sch") {
       // test if it's a valid schematic file
@@ -138,24 +137,23 @@ ProjectView::refresh()
         if(n > 0) { // is a subcircuit
           columnData.append(new QStandardItem(QString::number(n)+tr("-port")));
         }
-        APPEND_CHILD(6, columnData);
+        appendChild(6, columnData);
       }
     } else if (extName == "sym") {
-        APPEND_CHILD(7,columnData);
+        appendChild(7,columnData);
     } else if ((extName == "cir") || (extName=="ckt") ||
              (extName=="sp")) {
-        APPEND_CHILD(8,columnData);
+        appendChild(8,columnData);
     }
     else {
-      APPEND_CHILD(9, columnData);
+      appendChild(9, columnData);
     }
   }
 
   resizeColumnToContents(0);
 }
 
-QStringList
-ProjectView::exportSchematic()
+QStringList ProjectView::exportSchematic()
 {
   QStringList list;
   QStandardItem *item = m_model->item(6, 0);

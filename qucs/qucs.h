@@ -328,6 +328,8 @@ private:
   void initToolBar();    // creates the toolbars
   void initStatusBar();  // setup the statusbar
 
+  void openFileFromProjectView(const QFileInfo &Info, const QString &note);
+
   QAction *helpAboutApp, *helpAboutQt,
           *viewBrowseDock, *viewOctaveDock;
 
