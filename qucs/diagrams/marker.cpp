@@ -206,8 +206,6 @@ void Marker::createText()
   pD = pGraph->axis(0);
   if(pGraph->axis(1)) {
     *py = VarPos[1];
-  }else{
-    qDebug() << *py << "is not" << VarPos[1]; // does it really matter?!
   }
 
   double pz[2];
