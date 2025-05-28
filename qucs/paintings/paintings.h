@@ -30,5 +30,6 @@
 #include "portsymbol.h"
 #include "ellipsearc.h"
 #include "id_text.h"
+#include "imagepainting.h"
 
 #endif
