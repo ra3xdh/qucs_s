@@ -22,7 +22,7 @@
 Substrate::Substrate()
 {
   Description = QObject::tr("substrate definition");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simQucsator + spicecompat::simNgspice;
 
   Lines.append(new qucs::Line(-30,-16, 30,-16,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,-12, 30,-12,QPen(Qt::darkBlue,2)));
@@ -57,6 +57,7 @@ Substrate::Substrate()
   icon_dx = -18;
   Model = "SUBST";
   Name  = "Subst";
+  SpiceModel = "*";
 
   Props.append(new Property("er", "9.8", true,
 		QObject::tr("relative permittivity")));
