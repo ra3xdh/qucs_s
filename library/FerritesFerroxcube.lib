@@ -1,0 +1,313 @@
+<Qucs Library 1.0.6 "Ferrite cores Ferroxcube">
+
+<Component 2P40>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X2P40_ 1 350 140 -40 35 0 0 "5.9091k" 0 "2.37881k" 0 "1m" 0 "912.644k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 2P50>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X2P50_ 1 350 140 -40 35 0 0 "2.9568k" 0 "2.33395k" 0 "390.807m" 0 "904.01k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 2P65>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X2P65_ 1 350 140 -40 35 0 0 "2.37271k" 0 "1.78624k" 0 "101.761m" 0 "937.727k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 2P80>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X2P80_ 1 350 140 -40 35 0 0 "2.09267k" 0 "1.37044k" 0 "0.08" 0 "1.10529M" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 2P90>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X2P90_ 1 350 140 -40 35 0 0 "2.30735k" 0 "1.0959k" 0 "1m" 0 "1.2642M" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3B1>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3B1_ 1 350 140 -40 35 0 0 "17.0376" 0 "33.034" 0 "0.08" 0 "295.328k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3B46>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3B46_ 1 350 140 -40 35 0 0 "17.1884" 0 "15.6784" 0 "0.08" 0 "423.53k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3C11>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3C11_ 1 350 140 -40 35 0 0 "11.1551" 0 "11.4914" 0 "1m" 0 "310.213k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3C30>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3C30_ 1 350 140 -40 35 0 0 "21.3536" 0 "23.4602" 0 "0.08" 0 "402.278k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3C34>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3C34_ 1 350 140 -40 35 0 0 "16.7974" 0 "19.1641" 0 "1m" 0 "400.442k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3C90>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3C90_ 1 350 140 -40 35 0 0 "17.543" 0 "20.896" 0 "1m" 0 "377.301k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3C91>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3C91_ 1 350 140 -40 35 0 0 "10.8891" 0 "16.2751" 0 "0.08" 0 "374.629k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3C92>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3C92_ 1 350 140 -40 35 0 0 "17.5503" 0 "17.9853" 0 "1m" 0 "431.558k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3C93>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3C93_ 1 350 140 -40 35 0 0 "19.7336" 0 "17.9398" 0 "1m" 0 "416.379k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3C94>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3C94_ 1 350 140 -40 35 0 0 "16.8483" 0 "21.0833" 0 "1m" 0 "377.104k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3C96>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3C96_ 1 350 140 -40 35 0 0 "16.3676" 0 "17.9021" 0 "0.08" 0 "400.291k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3E26>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3E26_ 1 350 140 -40 35 0 0 "10.0045" 0 "5.90952" 0 "16.6916m" 0 "336.979k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3E27>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3E27_ 1 350 140 -40 35 0 0 "10.1871" 0 "5.86545" 0 "0.08" 0 "337.736k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3E28>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3E28_ 1 350 140 -40 35 0 0 "31.5741" 0 "5.23539" 0 "1m" 0 "360.382k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3E55>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3E55_ 1 350 140 -40 35 0 0 "3.58" 0 "7.75" 0 "42.2497m" 0 "283.24k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3E6>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3E6_ 1 350 140 -40 35 0 0 "6.9868" 0 "5.00848" 0 "45.1067m" 0 "311.251k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3E7>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3E7_ 1 350 140 -40 35 0 0 "7.31575" 0 "4.87549" 0 "5.0136m" 0 "313.281k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3E8>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3E8_ 1 350 140 -40 35 0 0 "7.24796" 0 "4.92409" 0 "42.7813m" 0 "307.588k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3E9>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3E9_ 1 350 140 -40 35 0 0 "7.34864" 0 "4.90414" 0 "49.5541m" 0 "307.769k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3F35>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3F35_ 1 350 140 -40 35 0 0 "33.2547" 0 "41.0634" 0 "0.08" 0 "399.583k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3F4>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3F4_ 1 350 140 -40 35 0 0 "56.1632" 0 "61.7966" 0 "0.08" 0 "341.984k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3F45>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3F45_ 1 350 140 -40 35 0 0 "59.5864" 0 "64.2794" 0 "0.08" 0 "344.549k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3F5>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3F5_ 1 350 140 -40 35 0 0 "75.6857" 0 "68.3298" 0 "0.08" 0 "328.029k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3H3>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3H3_ 1 350 140 -40 35 0 0 "53.463" 0 "15.0863" 0 "0.08" 0 "322.801k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3S1>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3S1_ 1 350 140 -40 35 0 0 "13.9347" 0 "9.23081" 0 "0.08" 0 "304.653k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3S4>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3S4_ 1 350 140 -40 35 0 0 "3.06356" 0 "22.8392" 0 "0.08" 0 "237.56k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 3S5>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X3S5_ 1 350 140 -40 35 0 0 "18.0116" 0 "16.2105" 0 "1m" 0 "428.797k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 4A11>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X4A11_ 1 350 140 -40 35 0 0 "39.7579" 0 "36.2269" 0 "0.08" 0 "264.248k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 4A15>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X4A15_ 1 350 140 -40 35 0 0 "17.4737" 0 "27.6952" 0 "0.08" 0 "268.805k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 4M2>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X4M2_ 1 350 140 -40 35 0 0 "152.51" 0 "97.9193" 0 "0.08" 0 "254.705k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 4S2>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X4S2_ 1 350 140 -40 35 0 0 "40.1039" 0 "36.2011" 0 "0.08" 0 "263.081k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 4S60>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X4S60_ 1 350 140 -40 35 0 0 "8.56706" 0 "11.6551" 0 "1m" 0 "196.617k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 8C11>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X8C11_ 1 350 140 -40 35 0 0 "12.1735" 0 "25.4862" 0 "0.08" 0 "237.558k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+<Component 8C12>
+  <Description>
+  </Description>
+  <Model>
+    <CORE X8C12_ 1 350 140 -40 35 0 0 "33.061" 0 "35.7611" 0 "0.08" 0 "207.339k" 0 "0.0001" 0>
+  </Model>
+</Component>

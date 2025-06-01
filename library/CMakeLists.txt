@@ -17,6 +17,8 @@ Digital_LV.lib
 Digital_XSPICE.lib
 DualGateMOSFET.lib
 FerritesEpcos.lib
+FerritesFerroxcube.lib
+FerritesAmidon.lib
 GeDiodes.lib
 Ideal.lib
 JFETs.lib
@@ -56,6 +58,7 @@ VoltageComparators.lib
 VoltageReferences.lib
 VoltageRegulators.lib
 VDMOS.lib
+VDMOS_IR.lib
 )
 
 SET(BLACKLIST

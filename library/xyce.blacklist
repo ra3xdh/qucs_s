@@ -6,3 +6,8 @@ Digital_HC.lib
 Digital_LV.lib
 Digital_AUX.lib
 Digital_XSPICE.lib
+FerritesAmidon.lib
+FerritesEpcos.lib
+FerritesFerroxcube.lib
+VDMOS.lib
+VDMOS_IR.lib
