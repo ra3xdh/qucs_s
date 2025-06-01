@@ -1,0 +1,11 @@
+<Qucs Library 1.0.6 "Ferrite cores Amidon">
+
+<Component Amidon43>
+  <Description>
+  </Description>
+  <Model>
+    <CORE FT43_ 1 350 140 -40 35 0 0 "16.5" 0 "24.5" 0 "0.01" 0 "238.732k" 0 "0.0001" 0>
+  </Model>
+</Component>
+
+
