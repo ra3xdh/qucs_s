@@ -104,7 +104,9 @@ void Marker::initText(int n)
   Text = "";
 
   bool isCross = false;
-  int nn, nnn, m, x, y, d, dmin = INT_MAX;
+  int nn, nnn, m;
+  double dmin = std::numeric_limits<double>::max();
+  double x, y, d;
   DataX const *pD = pGraph->axis(0);
   px  = pD->Points;
   nnn = pD->count;
@@ -136,8 +138,8 @@ void Marker::initText(int n)
       py++;
       pz += 2*(pD->count-1);
     }
-    x = int(fCX+0.5) - cx;
-    y = int(fCY+0.5) - cy;
+    x = fCX+0.5 - cx;
+    y = fCY+0.5 - cy;
     d = x*x + y*y;
     if(d < dmin) {
       dmin = d;
