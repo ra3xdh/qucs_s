@@ -383,8 +383,9 @@ void merge(Node* donor, Node* recipient) {
     }
 
     // Try to keep donor label
-    if (recipient->Label == nullptr) {
+    if (recipient->Label == nullptr && donor->Label != nullptr) {
         recipient->Label = donor->Label;
+        recipient->Label->pOwner = recipient;
         donor->Label = nullptr;
     }
 }
