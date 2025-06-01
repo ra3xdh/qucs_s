@@ -1410,6 +1410,8 @@ QString Component::getSpiceSubstrateLine()
     }
   }
 
+  if (sub == nullptr) return s;
+
   for(Property *pp: sub->Props) {
     QString vv = spicecompat::normalize_value(pp->Value);
     QString nn = pp->Name;
