@@ -109,8 +109,6 @@ void Marker::initText(int n)
 
   bool isCross = false;
   int nn, nnn, m;
-  double dmin = std::numeric_limits<double>::max();
-  double x, y, d;
   DataX const *pD = pGraph->axis(0);
   px = pD->Points;
   nnn = pD->count;
@@ -135,6 +133,7 @@ void Marker::initText(int n)
   // find exact marker position
   m = nnn - 1;
   pz = pGraph->cPointsY + 2 * n;
+  double dmin = std::numeric_limits<double>::max();
   for (nn = 0; nn < nnn; nn++) {
     diag()->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
     ++px;
@@ -144,11 +143,14 @@ void Marker::initText(int n)
       py++;
       pz += 2 * (pD->count - 1);
     }
-    x = fCX + 0.5 - cx;
-    y = fCY + 0.5 - cy;
-    d = x * x + y * y;
-    if (d < dmin) {
-      dmin = d;
+
+    // Here distance between click screen coordinates (cx, cy) and
+    // datapoint screen coordinates (fCX, fCY) is assesed.
+    const double x = fCX + 0.5 - cx;
+    const double y = fCY + 0.5 - cy;
+    const double r_square = x * x + y * y;
+    if (r_square < dmin) {
+      dmin = r_square;
       m = nn;
     }
   }
