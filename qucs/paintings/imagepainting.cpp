@@ -16,6 +16,7 @@
 #include "imagepainting.h"
 #include "filldialog.h"
 #include "misc.h"
+#include "schematic.h"
 #include <QFileDialog>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -28,6 +29,8 @@
 #include <QObject>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QApplication>
+
 
 namespace qucs {
 
@@ -125,7 +128,31 @@ void ImagePainting::MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoi
 }
 
 bool ImagePainting::MousePressing(Schematic* sch) {
-  return Rectangle::MousePressing(sch);
+  bool drawingCompleted = Rectangle::MousePressing(sch);
+
+  // If drawing just completed and no image path is set, open dialog
+  if (drawingCompleted && imagePath.isEmpty()) {
+      // Use QWidget::find to get the main window as parent
+      QWidget* parentWidget = sch ? sch->parentWidget() : nullptr;
+      if (!parentWidget) {
+        parentWidget = QApplication::activeWindow();
+      }
+
+      QString newPath = QFileDialog::getOpenFileName(parentWidget, QObject::tr("Select Image"));
+
+      if (!newPath.isEmpty()) {
+        // Update image path
+        if (newPath != imagePath) {
+          imagePath = newPath;
+          // Clear cached image to force reload
+          image = QPixmap();
+          loadImage();
+        }
+      }
+
+  }
+
+  return drawingCompleted;
 }
 
 void ImagePainting::MouseResizeMoving(int x, int y, Schematic* p) {
