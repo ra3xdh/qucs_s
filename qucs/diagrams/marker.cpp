@@ -96,13 +96,10 @@ void Marker::initText(int n)
   }
 
   assert(diag());
-  Axis const *pa;
-  if (pGraph->yAxisNo == 0) {
-    pa = &(diag()->yAxis);
-  }
-  else {
-    pa = &(diag()->zAxis);
-  }
+  Axis const *pa = pGraph->yAxisNo == 0
+                 ? &(diag()->yAxis)
+                 : &(diag()->zAxis);
+
   double Dummy = 0.0; // needed for 2D graph in 3D diagram
   double *py = &Dummy;
   Text = "";
