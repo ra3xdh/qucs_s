@@ -104,44 +104,44 @@ void Marker::initText(int n)
     pa = &(diag()->zAxis);
   }
   double Dummy = 0.0; // needed for 2D graph in 3D diagram
-  double *px, *py = &Dummy, *pz;
+  double *x_axis_values_arr_p, *py = &Dummy, *pz;
   Text = "";
 
   bool isCross = false;
-  int nn, nnn, m;
-  DataX const *pD = pGraph->axis(0);
-  px = pD->Points;
-  nnn = pD->count;
+  int nn, x_axis_values_count;
+  DataX const *x_axis_values = pGraph->axis(0);
+  x_axis_values_arr_p = x_axis_values->Points;
+  x_axis_values_count = x_axis_values->count;
   DataX const *pDy = pGraph->axis(1);
   if (pDy) { // only for 3D diagram
-    nn = pGraph->countY * pD->count;
+    nn = pGraph->countY * x_axis_values->count;
     py = pDy->Points;
     if (n >= nn) { // is on cross grid ?
       isCross = true;
       n -= nn;
-      n /= nnn;
-      px += (n % nnn);
+      n /= x_axis_values_count;
+      x_axis_values_arr_p += (n % x_axis_values_count);
       if (pGraph->axis(2)) { // more than 2 indep variables ?
-        n = (n % nnn) + (n / nnn) * nnn * pDy->count;
+        n = (n % x_axis_values_count) + (n / x_axis_values_count) * x_axis_values_count * pDy->count;
       }
-      nnn = pDy->count;
+      x_axis_values_count = pDy->count;
     } else {
-      py += (n / pD->count) % pDy->count;
+      py += (n / x_axis_values->count) % pDy->count;
     }
   }
 
   // find exact marker position
-  m = nnn - 1;
+  std::size_t closest_datapoint_ix = x_axis_values_count - 1;
   pz = pGraph->cPointsY + 2 * n;
-  double dmin = std::numeric_limits<double>::max();
-  for (nn = 0; nn < nnn; nn++) {
-    diag()->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
-    ++px;
+  double smallest_distance = std::numeric_limits<double>::max();
+  for (std::size_t datapoint_ix = 0; datapoint_ix < x_axis_values_count; datapoint_ix++) {
+    diag()->calcCoordinate(x_axis_values_arr_p, pz, py, &fCX, &fCY, pa);
+    ++x_axis_values_arr_p;
     pz += 2;
     if (isCross) {
-      px--;
+      x_axis_values_arr_p--;
       py++;
-      pz += 2 * (pD->count - 1);
+      pz += 2 * (x_axis_values->count - 1);
     }
 
     // Here distance between click screen coordinates (cx, cy) and
@@ -149,15 +149,15 @@ void Marker::initText(int n)
     const double x = fCX + 0.5 - cx;
     const double y = fCY + 0.5 - cy;
     const double r_square = x * x + y * y;
-    if (r_square < dmin) {
-      dmin = r_square;
-      m = nn;
+    if (r_square < smallest_distance) {
+      smallest_distance = r_square;
+      closest_datapoint_ix = datapoint_ix;
     }
   }
   if (isCross) {
-    m *= pD->count;
+    closest_datapoint_ix *= x_axis_values->count;
   }
-  n += m;
+  n += closest_datapoint_ix;
 
   // why check over and over again?! do in the right place and just assert
   // otherwise.
@@ -168,11 +168,11 @@ void Marker::initText(int n)
 
   // gather text of all independent variables
   nn = n;
-  for (unsigned i = 0; (pD = pGraph->axis(i)); ++i) {
-    px = pD->Points + (nn % pD->count);
-    VarPos[i] = *px;
-    Text += pD->Var + ": " + QString::number(*px, 'g', Precision) + "\n";
-    nn /= pD->count;
+  for (unsigned axis_ix = 0; (x_axis_values = pGraph->axis(axis_ix)); ++axis_ix) {
+    x_axis_values_arr_p = x_axis_values->Points + (nn % x_axis_values->count);
+    VarPos[axis_ix] = *x_axis_values_arr_p;
+    Text += x_axis_values->Var + ": " + QString::number(*x_axis_values_arr_p, 'g', Precision) + "\n";
+    nn /= x_axis_values->count;
   }
 
   // createText();
