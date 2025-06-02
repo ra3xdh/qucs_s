@@ -166,9 +166,9 @@ void Marker::initText(int n)
   // gather text of all independent variables
   nn = n;
   for (unsigned axis_ix = 0; (x_axis_values = pGraph->axis(axis_ix)); ++axis_ix) {
-    x_axis_values_arr_p = x_axis_values->Points + (nn % x_axis_values->count);
-    VarPos[axis_ix] = *x_axis_values_arr_p;
-    Text += x_axis_values->Var + ": " + QString::number(*x_axis_values_arr_p, 'g', Precision) + "\n";
+    const double* x_value = x_axis_values->Points + (nn % x_axis_values->count);
+    VarPos[axis_ix] = *x_value;
+    Text += x_axis_values->Var + ": " + QString::number(*x_value, 'g', Precision) + "\n";
     nn /= x_axis_values->count;
   }
 
