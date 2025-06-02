@@ -95,8 +95,8 @@ void Marker::initText(int n)
     return;
   }
 
-  Axis const *pa;
   assert(diag());
+  Axis const *pa;
   if (pGraph->yAxisNo == 0) {
     pa = &(diag()->yAxis);
   }
@@ -104,14 +104,14 @@ void Marker::initText(int n)
     pa = &(diag()->zAxis);
   }
   double Dummy = 0.0; // needed for 2D graph in 3D diagram
-  double *x_axis_values_arr_p, *py = &Dummy, *pz;
+  double *py = &Dummy;
   Text = "";
 
   bool isCross = false;
-  int nn, x_axis_values_count;
+  int nn;
   DataX const *x_axis_values = pGraph->axis(0);
-  x_axis_values_arr_p = x_axis_values->Points;
-  x_axis_values_count = x_axis_values->count;
+  double* x_axis_values_arr_p = x_axis_values->Points;
+  std::size_t x_axis_values_count = x_axis_values->count;
   DataX const *pDy = pGraph->axis(1);
   if (pDy) { // only for 3D diagram
     nn = pGraph->countY * x_axis_values->count;
@@ -132,7 +132,7 @@ void Marker::initText(int n)
 
   // find exact marker position
   std::size_t closest_datapoint_ix = x_axis_values_count - 1;
-  pz = pGraph->cPointsY + 2 * n;
+  double* pz = pGraph->cPointsY + 2 * n;
   double smallest_distance = std::numeric_limits<double>::max();
   for (std::size_t datapoint_ix = 0; datapoint_ix < x_axis_values_count; datapoint_ix++) {
     diag()->calcCoordinate(x_axis_values_arr_p, pz, py, &fCX, &fCY, pa);
