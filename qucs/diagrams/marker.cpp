@@ -90,17 +90,21 @@ Marker::~Marker()
  */
 void Marker::initText(int n)
 {
-  if(pGraph->isEmpty()) {
-      makeInvalid();
-      return;
+  if (pGraph->isEmpty()) {
+    makeInvalid();
+    return;
   }
 
   Axis const *pa;
   assert(diag());
-  if(pGraph->yAxisNo == 0)  pa = &(diag()->yAxis);
-  else  pa = &(diag()->zAxis);
-  double Dummy = 0.0;   // needed for 2D graph in 3D diagram
-  double *px, *py=&Dummy, *pz;
+  if (pGraph->yAxisNo == 0) {
+    pa = &(diag()->yAxis);
+  }
+  else {
+    pa = &(diag()->zAxis);
+  }
+  double Dummy = 0.0; // needed for 2D graph in 3D diagram
+  double *px, *py = &Dummy, *pz;
   Text = "";
 
   bool isCross = false;
@@ -108,59 +112,64 @@ void Marker::initText(int n)
   double dmin = std::numeric_limits<double>::max();
   double x, y, d;
   DataX const *pD = pGraph->axis(0);
-  px  = pD->Points;
+  px = pD->Points;
   nnn = pD->count;
   DataX const *pDy = pGraph->axis(1);
-  if(pDy) {   // only for 3D diagram
+  if (pDy) { // only for 3D diagram
     nn = pGraph->countY * pD->count;
-    py  = pDy->Points;
-    if(n >= nn) {    // is on cross grid ?
+    py = pDy->Points;
+    if (n >= nn) { // is on cross grid ?
       isCross = true;
       n -= nn;
       n /= nnn;
       px += (n % nnn);
-      if(pGraph->axis(2))   // more than 2 indep variables ?
-        n  = (n % nnn) + (n / nnn) * nnn * pDy->count;
+      if (pGraph->axis(2)) { // more than 2 indep variables ?
+        n = (n % nnn) + (n / nnn) * nnn * pDy->count;
+      }
       nnn = pDy->count;
+    } else {
+      py += (n / pD->count) % pDy->count;
     }
-    else py += (n/pD->count) % pDy->count;
   }
 
   // find exact marker position
-  m  = nnn - 1;
-  pz = pGraph->cPointsY + 2*n;
-  for(nn=0; nn<nnn; nn++) {
+  m = nnn - 1;
+  pz = pGraph->cPointsY + 2 * n;
+  for (nn = 0; nn < nnn; nn++) {
     diag()->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
     ++px;
     pz += 2;
-    if(isCross) {
+    if (isCross) {
       px--;
       py++;
-      pz += 2*(pD->count-1);
+      pz += 2 * (pD->count - 1);
     }
-    x = fCX+0.5 - cx;
-    y = fCY+0.5 - cy;
-    d = x*x + y*y;
-    if(d < dmin) {
+    x = fCX + 0.5 - cx;
+    y = fCY + 0.5 - cy;
+    d = x * x + y * y;
+    if (d < dmin) {
       dmin = d;
       m = nn;
     }
   }
-  if(isCross) m *= pD->count;
+  if (isCross) {
+    m *= pD->count;
+  }
   n += m;
 
-  // why check over and over again?! do in the right place and just assert otherwise.
-  if(VarPos.size() != pGraph->numAxes()){
+  // why check over and over again?! do in the right place and just assert
+  // otherwise.
+  if (VarPos.size() != pGraph->numAxes()) {
     qDebug() << "huh, wrong size" << VarPos.size() << pGraph->numAxes();
     VarPos.resize(pGraph->numAxes());
   }
 
   // gather text of all independent variables
   nn = n;
-  for(unsigned i=0; (pD = pGraph->axis(i)); ++i) {
+  for (unsigned i = 0; (pD = pGraph->axis(i)); ++i) {
     px = pD->Points + (nn % pD->count);
     VarPos[i] = *px;
-    Text += pD->Var + ": " + QString::number(*px,'g',Precision) + "\n";
+    Text += pD->Var + ": " + QString::number(*px, 'g', Precision) + "\n";
     nn /= pD->count;
   }
 
