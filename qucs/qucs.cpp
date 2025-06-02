@@ -807,6 +807,12 @@ void QucsApp::fillSimulatorsComboBox() {
         QucsSettings.DefaultSimulator = simulatorsCombobox->itemData(idx).toInt();
     } else {
         QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
+        QMessageBox::critical(this,tr("Error"),
+                              tr("No simulation backend found! Simulaiton not possible.\n"
+                                 "This may happen by the following reasons:\n\n"
+                                 "1. You are using portable version and have moved installation directory.\n"
+                                 "2. The simulators were removed from system or the paths configured wrong.\n\n"
+                                 "Please configure simulator paths in Simulation->Simulator settings menu.\n"));
     }
 
     simulate->setEnabled(anySimulatorsFound);
