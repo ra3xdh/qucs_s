@@ -81,12 +81,27 @@ Marker::~Marker()
 {
 }
 
-// ---------------------------------------------------------------------
 /*!
- * compute VarPos from branch number n and click position (cx, cy)
- * this is done by recreating branch samples and comparing against click
+ * Original function doctext:
+ *   compute VarPos from branch number n and click position (cx, cy)
+ *   this is done by recreating branch samples and comparing against click
  *
- * FIXME: should use ScrPoints instead. do not call calcCoordinate from here!
+ *   FIXME: should use ScrPoints instead. do not call calcCoordinate from here!
+ *
+ * 2025.06.03:
+ *   This function not initializes text, but also populates VarPos member field.
+ *
+ *   Original doctext calls function parameter a "branch number", which is not
+ *   exactly true. To explain the meaning of this parameter a few words on how
+ *   Graph stores its datapoints have to be said beforehand.
+ *
+ *   A graph consists of one more "branches" and it stores all datapoints in one
+ *   sequence. Special pseudo datapoints divide the sequence into subsequences
+ *   each corresponding to a "branch".
+ *
+ *   This function, as it comes from its usage, is supplied with the number of
+ *   datapoints before the subsequence of datapoints corresponding to a branch
+ *   on which the click was made.
  */
 void Marker::initText(int datapoints_before_branch)
 {
