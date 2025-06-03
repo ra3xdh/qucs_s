@@ -124,35 +124,56 @@ bool ImagePainting::resizeTouched(const QPoint& click, int tolerance) {
 
 // Override mouse interaction methods
 void ImagePainting::MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) {
-  Rectangle::MouseMoving(onGrid, sch, cursor);
+  // Get the cursor coordinates
+  x1 = onGrid.x();
+  y1 = onGrid.y();
+  x2 = x1;
+  y2 = y1;
+
+  // Draw a symbol (two mountains) while hovering
+  // Draw frame
+  sch->PostPaintEvent(_Rect, cursor.x() + 13, cursor.y(), 105, 48, 0, 0, true);
+
+  // Draw the sun (larger, in the top-right corner)
+  sch->PostPaintEvent(_Ellipse, cursor.x() + 100, cursor.y() + 8, 12, 12, 0, 0, true); // (x, y, width, height)
+
+  // Draw the mountain on the left
+  sch->PostPaintEvent(_Line, cursor.x() + 15, cursor.y() + 44, cursor.x() + 45, cursor.y() + 12, 0, 0, true); // left base to peak
+  sch->PostPaintEvent(_Line, cursor.x() + 45, cursor.y() + 12, cursor.x() + 75, cursor.y() + 44, 0, 0, true); // peak to right base
+
+  // Draw the mountain on the right
+  sch->PostPaintEvent(_Line, cursor.x() + 45, cursor.y() + 44, cursor.x() + 81, cursor.y() + 4, 0, 0, true); // left base to peak
+  sch->PostPaintEvent(_Line, cursor.x() + 81, cursor.y() + 4, cursor.x() + 115, cursor.y() + 44, 0, 0, true); // peak to right base
+
+  // Add a ground line
+  sch->PostPaintEvent(_Line, cursor.x() + 15, cursor.y() + 44, cursor.x() + 115, cursor.y() + 44, 0, 0, true); // ground
 }
 
 bool ImagePainting::MousePressing(Schematic* sch) {
-  bool drawingCompleted = Rectangle::MousePressing(sch);
 
-  // If drawing just completed and no image path is set, open dialog
-  if (drawingCompleted && imagePath.isEmpty()) {
-      // Use QWidget::find to get the main window as parent
-      QWidget* parentWidget = sch ? sch->parentWidget() : nullptr;
-      if (!parentWidget) {
-        parentWidget = QApplication::activeWindow();
-      }
+  if (imagePath.isEmpty()) {
+    // Define square size
+    const int squareSize = 100;
 
-      QString newPath = QFileDialog::getOpenFileName(parentWidget, QObject::tr("Select Image"));
+    // Override to make it a square
+    x2 = x1 + squareSize;
+    y2 = y1 + squareSize;
 
-      if (!newPath.isEmpty()) {
-        // Update image path
-        if (newPath != imagePath) {
-          imagePath = newPath;
-          // Clear cached image to force reload
-          image = QPixmap();
-          loadImage();
-        }
-      }
+    QWidget* parentWidget = sch ? sch->parentWidget() : nullptr;
+    if (!parentWidget) {
+      parentWidget = QApplication::activeWindow();
+    }
 
+    QString newPath = QFileDialog::getOpenFileName(parentWidget, QObject::tr("Select Image"));
+
+    if (!newPath.isEmpty()) {
+      imagePath = newPath;
+      image = QPixmap();
+      loadImage();
+    }
   }
 
-  return drawingCompleted;
+  return true;
 }
 
 void ImagePainting::MouseResizeMoving(int x, int y, Schematic* p) {
@@ -163,11 +184,11 @@ void ImagePainting::MouseResizeMoving(int x, int y, Schematic* p) {
 
 bool ImagePainting::Dialog(QWidget* parent) {
   QDialog dialog(parent);
-  dialog.setWindowTitle(QObject::tr("Image Rectangle Properties"));
+  dialog.setWindowTitle(QObject::tr("Image Properties"));
   auto* layout = new QVBoxLayout(&dialog);
 
   // Reuse FillDialog for common properties
-  auto* fillDialog = new FillDialog(QObject::tr("Image Rectangle"), true, &dialog);
+  auto* fillDialog = new FillDialog(QObject::tr("Image"), true, &dialog);
   misc::setPickerColor(fillDialog->ColorButt, penColor);
   fillDialog->LineWidth->setText(QString::number(penWidth));
   fillDialog->StyleBox->setCurrentIndex(penStyle - Qt::SolidLine);
@@ -219,7 +240,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
 }
 
 Element* ImagePainting::info(QString& Name, char* &BitmapFile, bool getNewOne) {
-  Name = QObject::tr("Image Rectangle");
+  Name = QObject::tr("Image");
   BitmapFile = (char*)"ImagePainting";
   return getNewOne ? new ImagePainting() : nullptr;
 }
