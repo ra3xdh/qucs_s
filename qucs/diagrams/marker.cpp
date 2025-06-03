@@ -88,7 +88,7 @@ Marker::~Marker()
  *
  * FIXME: should use ScrPoints instead. do not call calcCoordinate from here!
  */
-void Marker::initText(int n)
+void Marker::initText(int datapoints_before_branch)
 {
   if (pGraph->isEmpty()) {
     makeInvalid();
@@ -113,23 +113,23 @@ void Marker::initText(int n)
   if (pDy) { // only for 3D diagram
     nn = pGraph->countY * x_axis_values->count;
     py = pDy->Points;
-    if (n >= nn) { // is on cross grid ?
+    if (datapoints_before_branch >= nn) { // is on cross grid ?
       isCross = true;
-      n -= nn;
-      n /= x_axis_values_count;
-      x_axis_values_arr_p += (n % x_axis_values_count);
+      datapoints_before_branch -= nn;
+      datapoints_before_branch /= x_axis_values_count;
+      x_axis_values_arr_p += (datapoints_before_branch % x_axis_values_count);
       if (pGraph->axis(2)) { // more than 2 indep variables ?
-        n = (n % x_axis_values_count) + (n / x_axis_values_count) * x_axis_values_count * pDy->count;
+        datapoints_before_branch = (datapoints_before_branch % x_axis_values_count) + (datapoints_before_branch / x_axis_values_count) * x_axis_values_count * pDy->count;
       }
       x_axis_values_count = pDy->count;
     } else {
-      py += (n / x_axis_values->count) % pDy->count;
+      py += (datapoints_before_branch / x_axis_values->count) % pDy->count;
     }
   }
 
   // find exact marker position
   std::size_t closest_datapoint_ix = x_axis_values_count - 1;
-  double* pz = pGraph->cPointsY + 2 * n;
+  double* pz = pGraph->cPointsY + 2 * datapoints_before_branch;
   double smallest_distance = std::numeric_limits<double>::max();
   for (std::size_t datapoint_ix = 0; datapoint_ix < x_axis_values_count; datapoint_ix++) {
     diag()->calcCoordinate(x_axis_values_arr_p, pz, py, &fCX, &fCY, pa);
@@ -154,7 +154,7 @@ void Marker::initText(int n)
   if (isCross) {
     closest_datapoint_ix *= x_axis_values->count;
   }
-  n += closest_datapoint_ix;
+  datapoints_before_branch += closest_datapoint_ix;
 
   // why check over and over again?! do in the right place and just assert
   // otherwise.
@@ -164,7 +164,7 @@ void Marker::initText(int n)
   }
 
   // gather text of all independent variables
-  nn = n;
+  nn = datapoints_before_branch;
   for (unsigned axis_ix = 0; (x_axis_values = pGraph->axis(axis_ix)); ++axis_ix) {
     const double* x_value = x_axis_values->Points + (nn % x_axis_values->count);
     VarPos[axis_ix] = *x_value;
