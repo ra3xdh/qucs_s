@@ -199,7 +199,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
   fillDialog->CheckFilled->setChecked(m_filled);
   fillDialog->slotCheckFilled(m_filled);
 
-         // Add image path UI
+  // Add image path UI
   auto* imageLayout = new QHBoxLayout;
   auto* pathLabel = new QLabel(QObject::tr("Image Path:"));
   auto* pathEdit = new QLineEdit(imagePath);
@@ -214,8 +214,80 @@ bool ImagePainting::Dialog(QWidget* parent) {
   imageLayout->addWidget(pathEdit);
   imageLayout->addWidget(browseButton);
 
+  // Add dimensions UI
+  auto* dimensionsLayout = new QVBoxLayout;
+
+  // Width input
+  auto* widthLayout = new QHBoxLayout;
+  auto* widthLabel = new QLabel(QObject::tr("Width:"));
+  auto* widthEdit = new QLineEdit(QString::number(x2 - x1));
+  widthEdit->setValidator(new QIntValidator(1, 10000, &dialog));
+  widthLayout->addWidget(widthLabel);
+  widthLayout->addWidget(widthEdit);
+
+  // Height input
+  auto* heightLayout = new QHBoxLayout;
+  auto* heightLabel = new QLabel(QObject::tr("Height:"));
+  auto* heightEdit = new QLineEdit(QString::number(y2 - y1));
+  heightEdit->setValidator(new QIntValidator(1, 10000, &dialog));
+  heightLayout->addWidget(heightLabel);
+  heightLayout->addWidget(heightEdit);
+
+  // Aspect ratio checkbox
+  auto* aspectRatioCheck = new QCheckBox(QObject::tr("Keep aspect ratio"));
+  aspectRatioCheck->setChecked(false);
+
+  dimensionsLayout->addLayout(widthLayout);
+  dimensionsLayout->addLayout(heightLayout);
+  dimensionsLayout->addWidget(aspectRatioCheck);
+
+         // Function to calculate and update height based on width and aspect ratio
+  auto updateHeight = [&]() {
+    if (aspectRatioCheck->isChecked() && !image.isNull()) {
+      int width = widthEdit->text().toInt();
+      if (width > 0) {
+        double aspectRatio = (double)image.height() / image.width();
+        int height = qRound(width * aspectRatio);
+        heightEdit->setText(QString::number(height));
+      }
+    }
+  };
+
+  // Connect aspect ratio checkbox
+  QObject::connect(aspectRatioCheck, &QCheckBox::toggled, [&](bool checked) {
+    heightEdit->setEnabled(!checked);
+    if (checked) {
+      // Load image to get original dimensions if not already loaded
+      if (image.isNull() && !imagePath.isEmpty()) {
+        image.load(imagePath);
+      }
+      updateHeight();
+    }
+  });
+
+  // Connect width change to height calculation
+  QObject::connect(widthEdit, &QLineEdit::textChanged, [&]() {
+    if (aspectRatioCheck->isChecked()) {
+      updateHeight();
+    }
+  });
+
+  // Connect path change to reload image and update aspect ratio
+  QObject::connect(pathEdit, &QLineEdit::textChanged, [&](const QString& newPath) {
+    if (!newPath.isEmpty() && newPath != imagePath) {
+      QPixmap tempImage;
+      if (tempImage.load(newPath)) {
+        image = tempImage;
+        if (aspectRatioCheck->isChecked()) {
+          updateHeight();
+        }
+      }
+    }
+  });
+
   layout->addWidget(fillDialog);
   layout->addLayout(imageLayout);
+  layout->addLayout(dimensionsLayout);
 
   QDialogButtonBox buttons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
   QObject::connect(&buttons, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
@@ -240,8 +312,18 @@ bool ImagePainting::Dialog(QWidget* parent) {
     loadImage();
   }
 
+  // Update dimensions
+  int newWidth = widthEdit->text().toInt();
+  int newHeight = heightEdit->text().toInt();
+
+  if (newWidth > 0 && newHeight > 0) {
+    x2 = x1 + newWidth;
+    y2 = y1 + newHeight;
+  }
+
   return true;
 }
+
 
 Element* ImagePainting::info(QString& Name, char* &BitmapFile, bool getNewOne) {
   Name = QObject::tr("Image");
