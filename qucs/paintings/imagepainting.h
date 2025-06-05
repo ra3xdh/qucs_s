@@ -26,6 +26,7 @@ namespace qucs {
 class ImagePainting : public Rectangle {
 public:
   ImagePainting(bool filled = false);
+  Painting* newOne() override;
   void paint(QPainter* painter) override;
   bool load(const QString& s) override;
   QString save() override;

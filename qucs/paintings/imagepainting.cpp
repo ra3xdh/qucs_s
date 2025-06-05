@@ -44,6 +44,12 @@ ImagePainting::ImagePainting(bool filled) :
   Name = "ImagePainting";
 }
 
+Painting* qucs::ImagePainting::newOne()
+{
+  return new qucs::ImagePainting();
+}
+
+
 void ImagePainting::paint(QPainter* painter) {
   loadImage();
 
