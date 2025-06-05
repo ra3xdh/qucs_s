@@ -191,7 +191,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
   dialog.setWindowTitle(QObject::tr("Image Properties"));
   auto* layout = new QVBoxLayout(&dialog);
 
-  // Reuse FillDialog for common properties
+         // Reuse FillDialog for common properties
   auto* fillDialog = new FillDialog(QObject::tr("Image"), true, &dialog);
   misc::setPickerColor(fillDialog->ColorButt, penColor);
   fillDialog->LineWidth->setText(QString::number(penWidth));
@@ -199,7 +199,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
   fillDialog->CheckFilled->setChecked(m_filled);
   fillDialog->slotCheckFilled(m_filled);
 
-  // Add image path UI
+         // Add image path UI
   auto* imageLayout = new QHBoxLayout;
   auto* pathLabel = new QLabel(QObject::tr("Image Path:"));
   auto* pathEdit = new QLineEdit(imagePath);
@@ -214,7 +214,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
   imageLayout->addWidget(pathEdit);
   imageLayout->addWidget(browseButton);
 
-  // Add dimensions UI
+         // Add dimensions UI
   auto* dimensionsLayout = new QVBoxLayout;
 
   // Width input
@@ -237,9 +237,27 @@ bool ImagePainting::Dialog(QWidget* parent) {
   auto* aspectRatioCheck = new QCheckBox(QObject::tr("Keep aspect ratio"));
   aspectRatioCheck->setChecked(false);
 
+  // Reset to original button
+  auto* resetButton = new QPushButton(QObject::tr("Reset to Original"));
+  resetButton->setEnabled(false); // Initially disabled until image is loaded
+
   dimensionsLayout->addLayout(widthLayout);
   dimensionsLayout->addLayout(heightLayout);
   dimensionsLayout->addWidget(aspectRatioCheck);
+  dimensionsLayout->addWidget(resetButton);
+
+         // Function to reset dimensions to original image size
+  auto resetToOriginal = [&]() {
+    QPixmap tempImage;
+    QString currentPath = pathEdit->text();
+
+    if (!currentPath.isEmpty() && tempImage.load(currentPath)) {
+      widthEdit->setText(QString::number(tempImage.width()));
+      heightEdit->setText(QString::number(tempImage.height()));
+      image = tempImage;
+      resetButton->setEnabled(true);
+    }
+  };
 
          // Function to calculate and update height based on width and aspect ratio
   auto updateHeight = [&]() {
@@ -253,7 +271,10 @@ bool ImagePainting::Dialog(QWidget* parent) {
     }
   };
 
-  // Connect aspect ratio checkbox
+         // Connect reset button
+  QObject::connect(resetButton, &QPushButton::clicked, resetToOriginal);
+
+         // Connect aspect ratio checkbox
   QObject::connect(aspectRatioCheck, &QCheckBox::toggled, [&](bool checked) {
     heightEdit->setEnabled(!checked);
     if (checked) {
@@ -265,25 +286,39 @@ bool ImagePainting::Dialog(QWidget* parent) {
     }
   });
 
-  // Connect width change to height calculation
+         // Connect width change to height calculation
   QObject::connect(widthEdit, &QLineEdit::textChanged, [&]() {
     if (aspectRatioCheck->isChecked()) {
       updateHeight();
     }
   });
 
-  // Connect path change to reload image and update aspect ratio
+         // Connect path change to reload image and update aspect ratio
   QObject::connect(pathEdit, &QLineEdit::textChanged, [&](const QString& newPath) {
     if (!newPath.isEmpty() && newPath != imagePath) {
       QPixmap tempImage;
       if (tempImage.load(newPath)) {
         image = tempImage;
+        resetButton->setEnabled(true);
         if (aspectRatioCheck->isChecked()) {
           updateHeight();
         }
+      } else {
+        resetButton->setEnabled(false);
       }
+    } else if (newPath.isEmpty()) {
+      resetButton->setEnabled(false);
     }
   });
+
+         // Enable reset button if image is already loaded
+  if (!imagePath.isEmpty()) {
+    QPixmap tempImage;
+    if (tempImage.load(imagePath)) {
+      image = tempImage;
+      resetButton->setEnabled(true);
+    }
+  }
 
   layout->addWidget(fillDialog);
   layout->addLayout(imageLayout);
@@ -297,13 +332,13 @@ bool ImagePainting::Dialog(QWidget* parent) {
 
   if (dialog.exec() == QDialog::Rejected) return false;
 
-  // Update properties from FillDialog
+         // Update properties from FillDialog
   penColor = misc::getWidgetBackgroundColor(fillDialog->ColorButt);
   penWidth = fillDialog->LineWidth->text().toInt();
   penStyle = static_cast<Qt::PenStyle>(fillDialog->StyleBox->currentIndex() + Qt::SolidLine);
   m_filled = fillDialog->CheckFilled->isChecked();
 
-  // Update image path
+         // Update image path
   QString newPath = pathEdit->text();
   if (newPath != imagePath) {
     imagePath = newPath;
@@ -312,7 +347,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
     loadImage();
   }
 
-  // Update dimensions
+         // Update dimensions
   int newWidth = widthEdit->text().toInt();
   int newHeight = heightEdit->text().toInt();
 
@@ -323,7 +358,6 @@ bool ImagePainting::Dialog(QWidget* parent) {
 
   return true;
 }
-
 
 Element* ImagePainting::info(QString& Name, char* &BitmapFile, bool getNewOne) {
   Name = QObject::tr("Image");
