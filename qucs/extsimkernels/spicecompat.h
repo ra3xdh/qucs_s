@@ -42,6 +42,7 @@ namespace spicecompat {
 
      int strToMSlineModel(const QString &model);
      int strToDispModel(const QString &model);
+     int strToTranModel(const QString &model);
 
 }
 

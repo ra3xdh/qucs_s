@@ -59,6 +59,9 @@ MSline::MSline()
 	"Yamashita, Hammerstad, Getsinger, Schneider, Pramanick]"));
   Props.append(new Property("Temp", "26.85", false,
 	QObject::tr("simulation temperature in degree Celsius")));
+  Props.append(new Property("TranModel", "DC", false,
+                            QObject::tr("Transisent model") + " [DC,Full]"));
+  getProperty("TranModel")->simulators = spicecompat::simNgspice;
 }
 
 MSline::~MSline()
@@ -92,11 +95,12 @@ QString MSline::spice_netlist(spicecompat::SpiceDialect dialect)
 
   int Mod = spicecompat::strToMSlineModel(getProperty("Model")->Value);
   int Disp = spicecompat::strToDispModel(getProperty("DispModel")->Value);
+  int Tran = spicecompat::strToTranModel(getProperty("TranModel")->Value);
 
   s = QString("A_%1 %hd(%2 0) %hd(%3 0) %vd(%2 0) %vd(%3 0) MODEL_%1\n")
           .arg(Name).arg(p1).arg(p2);
-  s += QString(".MODEL MODEL_%1 MLIN(l=%2 w=%3 model=%4 disp=%5 %6)\n")
-          .arg(Name).arg(L).arg(W).arg(Mod).arg(Disp).arg(subline);
+  s += QString(".MODEL MODEL_%1 MLIN(l=%2 w=%3 model=%4 disp=%5 tranmodel=%6 %7)\n")
+          .arg(Name).arg(L).arg(W).arg(Mod).arg(Disp).arg(Tran).arg(subline);
 
   return s;
 }

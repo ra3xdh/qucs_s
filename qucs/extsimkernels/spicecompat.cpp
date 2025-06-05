@@ -434,3 +434,10 @@ int spicecompat::strToDispModel(const QString &model)
         <<"Hammerstad"<<"Getsinger"<<"Schneider"<<"Pramanick";
   return models.indexOf(model);
 }
+
+int spicecompat::strToTranModel(const QString &model)
+{
+  QStringList models;
+  models<<"DC"<<"Full";
+  return models.indexOf(model);
+}

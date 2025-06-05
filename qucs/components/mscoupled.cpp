@@ -71,6 +71,9 @@ MScoupled::MScoupled()
 	" [Kirschning, Getsinger]"));
   Props.append(new Property("Temp", "26.85", false,
 	QObject::tr("simulation temperature in degree Celsius")));
+  Props.append(new Property("TranModel", "DC", false,
+                            QObject::tr("Transisent model") + " [DC,Full]"));
+  getProperty("TranModel")->simulators = spicecompat::simNgspice;
 }
 
 MScoupled::~MScoupled()
@@ -107,12 +110,13 @@ QString MScoupled::spice_netlist(spicecompat::SpiceDialect dialect)
 
   int Mod = spicecompat::strToMSlineModel(getProperty("Model")->Value);
   int Disp = spicecompat::strToDispModel(getProperty("DispModel")->Value);
+  int Tran = spicecompat::strToTranModel(getProperty("TranModel")->Value);
 
   s = QString("A_%1 %hd(%2 0) %hd(%3 0) %hd(%4 0) %hd(%5 0)"
               " %vd(%2 0) %vd(%3 0) %vd(%4 0) %vd(%5 0) MODEL_%1\n")
           .arg(Name).arg(p1).arg(p2).arg(p3).arg(p4);
-  s += QString(".MODEL MODEL_%1 CPMLIN(L=%2 W=%3 S=%4 model=%4 disp=%5 %6)\n")
-           .arg(Name).arg(L).arg(W).arg(S).arg(Mod).arg(Disp).arg(subline);
+  s += QString(".MODEL MODEL_%1 CPMLIN(L=%2 W=%3 S=%4 model=%5 disp=%6 tranmodel=%7 %8)\n")
+           .arg(Name).arg(L).arg(W).arg(S).arg(Mod).arg(Disp).arg(Tran).arg(subline);
 
   return s;
 }
