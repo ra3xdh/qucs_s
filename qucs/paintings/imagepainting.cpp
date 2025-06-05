@@ -32,8 +32,6 @@
 #include <QApplication>
 
 
-namespace qucs {
-
 ImagePainting::ImagePainting(bool filled) :
       Rectangle(filled),
       m_filled(filled),
@@ -44,9 +42,9 @@ ImagePainting::ImagePainting(bool filled) :
   Name = "ImagePainting";
 }
 
-Painting* qucs::ImagePainting::newOne()
+Painting* ImagePainting::newOne()
 {
-  return new qucs::ImagePainting();
+  return new ImagePainting();
 }
 
 
@@ -264,7 +262,7 @@ void ImagePainting::loadImage() {
 
 // Override rotate methods to maintain functionality
 bool ImagePainting::rotate() noexcept {
-  bool result = Rectangle::rotate();
+  bool result = qucs::Rectangle::rotate();
   if (result) {
     // Clear cached image to force reload with new orientation
     image = QPixmap();
@@ -273,12 +271,10 @@ bool ImagePainting::rotate() noexcept {
 }
 
 bool ImagePainting::rotate(int xc, int yc) noexcept {
-  bool result = Rectangle::rotate(xc, yc);
+  bool result = qucs::Rectangle::rotate(xc, yc);
   if (result) {
     // Clear cached image to force reload with new orientation
     image = QPixmap();
   }
   return result;
-}
-
 }

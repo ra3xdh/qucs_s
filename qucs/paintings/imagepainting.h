@@ -21,9 +21,7 @@
 #include <QPen>
 #include <QPixmap>
 
-namespace qucs {
-
-class ImagePainting : public Rectangle {
+class ImagePainting : public qucs::Rectangle {
 public:
   ImagePainting(bool filled = false);
   Painting* newOne() override;
@@ -35,7 +33,7 @@ public:
   bool Dialog(QWidget* parent = nullptr) override;
   static Element* info(QString& Name, char* &BitmapFile, bool getNewOne = false);
 
-         // CRITICAL FIX: Override selection and interaction methods
+  // Override selection and interaction methods
   bool getSelected(const QPoint& click, int tolerance) override;
   bool resizeTouched(const QPoint& click, int tolerance) override;
   void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
@@ -49,13 +47,11 @@ private:
   QPixmap image;
   void loadImage();
 
-         // Local pen properties
+  // Local pen properties
   QColor penColor;
   int penWidth;
   Qt::PenStyle penStyle;
   bool m_filled;
 };
-
-}
 
 #endif // IMAGEPAINTING_H
