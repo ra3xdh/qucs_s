@@ -33,21 +33,31 @@ GraphicText::GraphicText()
     x1 = x2 = 0;
     y1 = y2 = 0;
     angle = 0;
+    br = QRect(0, 0, 0, 0);
 }
 
 void GraphicText::paint(QPainter* painter) {
     painter->save();
 
-    painter->translate(x1, y1);
-    painter->rotate(-angle);
-    painter->setPen(color);
+    // Build transformation
+    QTransform transform;
+    transform.translate(x1, y1);
+    transform.rotate(-angle);
 
+    // Use combined transform to handle zooming
+    painter->setTransform(transform, true);
+
+    // Set font and pen color
+    painter->setPen(color);
     QFont f = font;
     f.setPixelSize(QFontInfo{font}.pixelSize());
     painter->setFont(f);
 
-    QRectF br;
-    misc::draw_richtext(painter, 0, 0, text, &br);
+    QRectF textBox;
+    misc::draw_richtext(painter, 0, 0, text, &textBox);
+
+    // Store the transformed boundingRect
+    br = transform.mapRect(textBox.toRect());
 
     x2 = x1 + br.width();
     y2 = y1 + br.height();
@@ -55,7 +65,7 @@ void GraphicText::paint(QPainter* painter) {
 
     if (isSelected) {
         painter->setPen(QPen(Qt::darkGray, 3));
-        painter->drawRect(br);
+        painter->drawRect(textBox);
     }
 
     painter->restore();
@@ -124,7 +134,7 @@ bool GraphicText::load(const QString &s)
     // of that, if text contains LaTeX-like macros it's countour is bigger than
     // the actual text when it's being copied-and-pasted.
     QFontMetrics metrics(QucsSettings.font, 0);
-    auto br = metrics.boundingRect(text);
+    br = metrics.boundingRect(text);
     x2 = x1 + br.width();
     y2 = y1 + br.height();
 
@@ -216,6 +226,11 @@ bool GraphicText::rotate(int rcx, int rcy) noexcept
     angle += 90;
     angle %= 360;
     return true;
+}
+
+QRect GraphicText::boundingRect() const noexcept
+{
+    return br;
 }
 
 bool GraphicText::Dialog(QWidget *parent)

@@ -45,6 +45,8 @@ public:
   bool rotate() noexcept override;
   bool rotate(int rcx, int rcy) noexcept override;
 
+  QRect boundingRect() const noexcept override;
+
   bool Dialog(QWidget* parent = nullptr) override;
 
 private:
@@ -52,6 +54,7 @@ private:
   QFont    font;
   QString  text;
   int      angle;
+  QRect    br;
 };
 
 #endif
