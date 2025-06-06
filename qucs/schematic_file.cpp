@@ -1027,6 +1027,7 @@ bool Schematic::loadPaintings(QTextStream *stream, std::list<Painting*> *List)
     else if(cstr == "Rectangle") p = new qucs::Rectangle();
     else if(cstr == "Arrow") p = new Arrow();
     else if(cstr == "Ellipse") p = new qucs::Ellipse();
+    else if(cstr == "ImagePainting") p = new ImagePainting();
     else {
       QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nUnknown painting!"));

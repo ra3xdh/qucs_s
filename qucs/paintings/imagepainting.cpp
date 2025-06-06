@@ -38,7 +38,7 @@ ImagePainting::ImagePainting() :
       penWidth(1),
       penStyle(Qt::SolidLine)
 {
-  Name = "ImagePainting";
+  Name = "ImagePainting ";
 }
 
 Painting* ImagePainting::newOne()
@@ -50,14 +50,25 @@ Painting* ImagePainting::newOne()
 void ImagePainting::paint(QPainter* painter) {
   loadImage();
 
-   // Null checks
-  if (!image.isNull() && !boundingRect().isEmpty()) {
+         // Use originalImage if available, otherwise use image
+  QPixmap imageToPaint = originalImage.isNull() ? image : originalImage;
+
+         // Null checks
+  if (!imageToPaint.isNull() && !boundingRect().isEmpty()) {
     painter->save();
     painter->setPen(Qt::NoPen);
-    painter->drawPixmap(boundingRect(), image);
+
+    // Scale the image to fit the bounding rectangle
+    QPixmap scaledImage = imageToPaint.scaled(
+        boundingRect().size(),
+        Qt::IgnoreAspectRatio,
+        Qt::SmoothTransformation
+        );
+
+    painter->drawPixmap(boundingRect().topLeft(), scaledImage);
     painter->restore();
 
-    // Draw selection handles when selected
+           // Draw selection handles when selected
     if (isSelected) {
       painter->setPen(QPen(Qt::darkGray, penWidth + 5));
       painter->drawRect(boundingRect());
@@ -79,26 +90,82 @@ void ImagePainting::paint(QPainter* painter) {
   }
 }
 
+
 bool ImagePainting::load(const QString& s) {
   QStringList parts = s.split(' ', Qt::SkipEmptyParts);
-  if (parts.size() < 11) return false;
+  if (parts.size() < 6) return false;
 
-         // Validate base class coordinates first
-  if (!Rectangle::load(parts.mid(0, 10).join(' '))) {
-    // Initialize safe defaults
-    x1 = y1 = 0;
-    x2 = y2 = 100;
-    return false;
+         // Extract coordinates
+  if (parts[0] != "ImagePainting") return false;
+
+  bool ok;
+  x1 = parts[1].toInt(&ok);
+  if (!ok) return false;
+
+  y1 = parts[2].toInt(&ok);
+  if (!ok) return false;
+
+  x2 = parts[3].toInt(&ok);
+  if (!ok) return false;
+
+  y2 = parts[4].toInt(&ok);
+  if (!ok) return false;
+
+         // The base64 image data is in part 5
+  QString imageData = parts[5];
+
+         // Clear previous image and path
+  image = QPixmap();
+  originalImage = QPixmap();
+  imagePath.clear();
+
+         // Try to load image from base64 data
+  if (!imageData.isEmpty()) {
+    QByteArray byteArray = QByteArray::fromBase64(imageData.toUtf8());
+    if (!byteArray.isEmpty()) {
+      if (image.loadFromData(byteArray)) {
+        originalImage = image; // Store original for resize operations
+        return true;
+      } else {
+        qWarning("Failed to load image from base64 data");
+      }
+    }
   }
 
-  imagePath = parts.value(10);
-  // Clear cached image to force reload
-  image = QPixmap();
-  return true;
+  return false;
 }
 
 QString ImagePainting::save() {
-  return Rectangle::save() + " " + imagePath;
+  QString imageData;
+
+  // If we have a loaded image, convert it to base64
+  if (!image.isNull()) {
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+
+    // Save as PNG format for best quality and transparency support
+    if (image.save(&buffer, "PNG")) {
+      imageData = byteArray.toBase64();
+    }
+  }
+  // If no image loaded but we have a path, try to load and convert
+  else if (!imagePath.isEmpty()) {
+    QPixmap tempImage;
+    if (tempImage.load(imagePath)) {
+      QByteArray byteArray;
+      QBuffer buffer(&byteArray);
+      buffer.open(QIODevice::WriteOnly);
+
+      if (tempImage.save(&buffer, "PNG")) {
+        imageData = byteArray.toBase64();
+      }
+    }
+  }
+
+  // Return in format: "ImagePainting x1 y1 x2 y2 base64_data"
+  return QString("ImagePainting %1 %2 %3 %4 %5")
+      .arg(x1).arg(y1).arg(x2).arg(y2).arg(imageData);
 }
 
 QString ImagePainting::saveCpp() {
@@ -153,7 +220,6 @@ void ImagePainting::MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoi
 }
 
 bool ImagePainting::MousePressing(Schematic* sch) {
-
   if (imagePath.isEmpty()) {
     QWidget* parentWidget = sch ? sch->parentWidget() : nullptr;
     if (!parentWidget) {
@@ -165,9 +231,10 @@ bool ImagePainting::MousePressing(Schematic* sch) {
     if (!newPath.isEmpty()) {
       imagePath = newPath;
       image = QPixmap();
+      originalImage = QPixmap();
       loadImage();
 
-      // Set dimensions to actual image size if image loaded successfully
+             // Set dimensions to actual image size if image loaded successfully
       if (!image.isNull()) {
         x2 = x1 + image.width();
         y2 = y1 + image.height();
@@ -190,8 +257,6 @@ bool ImagePainting::MousePressing(Schematic* sch) {
 
 void ImagePainting::MouseResizeMoving(int x, int y, Schematic* p) {
   Rectangle::MouseResizeMoving(x, y, p);
-  // Clear cached image to force reload with new dimensions
-  image = QPixmap();
 }
 
 bool ImagePainting::Dialog(QWidget* parent) {
@@ -205,9 +270,26 @@ bool ImagePainting::Dialog(QWidget* parent) {
   auto* pathEdit = new QLineEdit(imagePath);
   auto* browseButton = new QPushButton(QObject::tr("Browse..."));
 
+  // Add status label to show if image is embedded or external
+  auto* statusLabel = new QLabel();
+  if (!image.isNull() && imagePath.isEmpty()) {
+    statusLabel->setText(QObject::tr("Image embedded in schematic"));
+    statusLabel->setStyleSheet("color: green; font-style: italic;");
+  } else if (!imagePath.isEmpty()) {
+    statusLabel->setText(QObject::tr("External image file"));
+    statusLabel->setStyleSheet("color: blue; font-style: italic;");
+  } else {
+    statusLabel->setText(QObject::tr("No image loaded"));
+    statusLabel->setStyleSheet("color: red; font-style: italic;");
+  }
+
   QObject::connect(browseButton, &QPushButton::clicked, [&]() {
     QString path = QFileDialog::getOpenFileName(&dialog, QObject::tr("Select Image"));
-    if (!path.isEmpty()) pathEdit->setText(path);
+    if (!path.isEmpty()) {
+      pathEdit->setText(path);
+      statusLabel->setText(QObject::tr("External image file"));
+      statusLabel->setStyleSheet("color: blue; font-style: italic;");
+    }
   });
 
   imageLayout->addWidget(pathLabel);
@@ -237,9 +319,9 @@ bool ImagePainting::Dialog(QWidget* parent) {
   auto* aspectRatioCheck = new QCheckBox(QObject::tr("Keep aspect ratio"));
   aspectRatioCheck->setChecked(false);
 
-  // Reset to original button
+         // Reset to original button
   auto* resetButton = new QPushButton(QObject::tr("Reset to original dimensions"));
-  resetButton->setEnabled(false); // Initially disabled until image is loaded
+  resetButton->setEnabled(!image.isNull()); // Enable if image is loaded
 
   dimensionsLayout->addLayout(widthLayout);
   dimensionsLayout->addLayout(heightLayout);
@@ -251,22 +333,39 @@ bool ImagePainting::Dialog(QWidget* parent) {
     QPixmap tempImage;
     QString currentPath = pathEdit->text();
 
-    if (!currentPath.isEmpty() && tempImage.load(currentPath)) {
+    // First try to use already loaded image
+    if (!image.isNull()) {
+      tempImage = image;
+    }
+    // Otherwise try to load from path
+    else if (!currentPath.isEmpty() && tempImage.load(currentPath)) {
+      image = tempImage;
+    }
+
+    if (!tempImage.isNull()) {
       widthEdit->setText(QString::number(tempImage.width()));
       heightEdit->setText(QString::number(tempImage.height()));
-      image = tempImage;
       resetButton->setEnabled(true);
     }
   };
 
   // Function to calculate and update height based on width and aspect ratio
   auto updateHeight = [&]() {
-    if (aspectRatioCheck->isChecked() && !image.isNull()) {
-      int width = widthEdit->text().toInt();
-      if (width > 0) {
-        double aspectRatio = (double)image.height() / image.width();
-        int height = qRound(width * aspectRatio);
-        heightEdit->setText(QString::number(height));
+    if (aspectRatioCheck->isChecked()) {
+      QPixmap currentImage = image;
+
+      // If no image loaded, try to load from path
+      if (currentImage.isNull() && !pathEdit->text().isEmpty()) {
+        currentImage.load(pathEdit->text());
+      }
+
+      if (!currentImage.isNull()) {
+        int width = widthEdit->text().toInt();
+        if (width > 0) {
+          double aspectRatio = (double)currentImage.height() / currentImage.width();
+          int height = qRound(width * aspectRatio);
+          heightEdit->setText(QString::number(height));
+        }
       }
     }
   };
@@ -278,10 +377,6 @@ bool ImagePainting::Dialog(QWidget* parent) {
   QObject::connect(aspectRatioCheck, &QCheckBox::toggled, [&](bool checked) {
     heightEdit->setEnabled(!checked);
     if (checked) {
-      // Load image to get original dimensions if not already loaded
-      if (image.isNull() && !imagePath.isEmpty()) {
-        image.load(imagePath);
-      }
       updateHeight();
     }
   });
@@ -293,12 +388,11 @@ bool ImagePainting::Dialog(QWidget* parent) {
     }
   });
 
-   // Connect path change to reload image and update aspect ratio
+  // Connect path change to reload image and update aspect ratio
   QObject::connect(pathEdit, &QLineEdit::textChanged, [&](const QString& newPath) {
-    if (!newPath.isEmpty() && newPath != imagePath) {
+    if (!newPath.isEmpty()) {
       QPixmap tempImage;
       if (tempImage.load(newPath)) {
-        image = tempImage;
         resetButton->setEnabled(true);
         if (aspectRatioCheck->isChecked()) {
           updateHeight();
@@ -306,20 +400,12 @@ bool ImagePainting::Dialog(QWidget* parent) {
       } else {
         resetButton->setEnabled(false);
       }
-    } else if (newPath.isEmpty()) {
-      resetButton->setEnabled(false);
+    } else {
+      resetButton->setEnabled(!image.isNull());
     }
   });
 
-         // Enable reset button if image is already loaded
-  if (!imagePath.isEmpty()) {
-    QPixmap tempImage;
-    if (tempImage.load(imagePath)) {
-      image = tempImage;
-      resetButton->setEnabled(true);
-    }
-  }
-
+  layout->addWidget(statusLabel);
   layout->addLayout(imageLayout);
   layout->addLayout(dimensionsLayout);
 
@@ -331,16 +417,20 @@ bool ImagePainting::Dialog(QWidget* parent) {
 
   if (dialog.exec() == QDialog::Rejected) return false;
 
-  // Update image path
+  // Update image path and load new image if changed
   QString newPath = pathEdit->text();
   if (newPath != imagePath) {
     imagePath = newPath;
-    // Clear cached image to force reload
-    image = QPixmap();
-    loadImage();
+    if (!imagePath.isEmpty()) {
+      // Load new image from file path
+      image = QPixmap();
+      loadImage();
+    }
+    // If path is cleared but we have an embedded image, keep it
+    // (imagePath will be empty but image will remain loaded)
   }
 
-         // Update dimensions
+  // Update dimensions
   int newWidth = widthEdit->text().toInt();
   int newHeight = heightEdit->text().toInt();
 
@@ -351,7 +441,6 @@ bool ImagePainting::Dialog(QWidget* parent) {
 
   return true;
 }
-
 Element* ImagePainting::info(QString& Name, char* &BitmapFile, bool getNewOne) {
   Name = QObject::tr("Image");
   BitmapFile = (char*)"ImagePainting";
@@ -359,11 +448,19 @@ Element* ImagePainting::info(QString& Name, char* &BitmapFile, bool getNewOne) {
 }
 
 void ImagePainting::loadImage() {
+  // Don't reload if we already have an image and no path (base64 loaded)
+  if (!image.isNull() && imagePath.isEmpty()) {
+    return;
+  }
+
+  // This method is now primarily used for loading from file path
   if (imagePath.isEmpty()) return;
 
   // Only load if not already loaded or if path changed
   if (image.isNull()) {
-    if (!image.load(imagePath)) {
+    if (image.load(imagePath)) {
+      originalImage = image; // Store original for resize operations
+    } else {
       qWarning("Failed to load image: %s", qUtf8Printable(imagePath));
     }
   }

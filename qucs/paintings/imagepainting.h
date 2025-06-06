@@ -45,6 +45,7 @@ public:
 private:
   QString imagePath;
   QPixmap image;
+  QPixmap originalImage;
   void loadImage();
 
   // Local pen properties
