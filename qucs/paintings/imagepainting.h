@@ -23,7 +23,7 @@
 
 class ImagePainting : public qucs::Rectangle {
 public:
-  ImagePainting(bool filled = false);
+  ImagePainting();
   Painting* newOne() override;
   void paint(QPainter* painter) override;
   bool load(const QString& s) override;

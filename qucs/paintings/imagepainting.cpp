@@ -32,9 +32,8 @@
 #include <QApplication>
 
 
-ImagePainting::ImagePainting(bool filled) :
-      Rectangle(filled),
-      m_filled(filled),
+ImagePainting::ImagePainting() :
+      Rectangle(false),
       penColor(Qt::black),
       penWidth(1),
       penStyle(Qt::SolidLine)
@@ -200,14 +199,6 @@ bool ImagePainting::Dialog(QWidget* parent) {
   dialog.setWindowTitle(QObject::tr("Image Properties"));
   auto* layout = new QVBoxLayout(&dialog);
 
-  // Reuse FillDialog for common properties
-  auto* fillDialog = new FillDialog(QObject::tr("Image"), true, &dialog);
-  misc::setPickerColor(fillDialog->ColorButt, penColor);
-  fillDialog->LineWidth->setText(QString::number(penWidth));
-  fillDialog->StyleBox->setCurrentIndex(penStyle - Qt::SolidLine);
-  fillDialog->CheckFilled->setChecked(m_filled);
-  fillDialog->slotCheckFilled(m_filled);
-
   // Add image path UI
   auto* imageLayout = new QHBoxLayout;
   auto* pathLabel = new QLabel(QObject::tr("Image Path:"));
@@ -329,7 +320,6 @@ bool ImagePainting::Dialog(QWidget* parent) {
     }
   }
 
-  layout->addWidget(fillDialog);
   layout->addLayout(imageLayout);
   layout->addLayout(dimensionsLayout);
 
@@ -341,13 +331,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
 
   if (dialog.exec() == QDialog::Rejected) return false;
 
-         // Update properties from FillDialog
-  penColor = misc::getWidgetBackgroundColor(fillDialog->ColorButt);
-  penWidth = fillDialog->LineWidth->text().toInt();
-  penStyle = static_cast<Qt::PenStyle>(fillDialog->StyleBox->currentIndex() + Qt::SolidLine);
-  m_filled = fillDialog->CheckFilled->isChecked();
-
-         // Update image path
+  // Update image path
   QString newPath = pathEdit->text();
   if (newPath != imagePath) {
     imagePath = newPath;
