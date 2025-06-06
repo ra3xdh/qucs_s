@@ -50,10 +50,10 @@ Painting* ImagePainting::newOne()
 void ImagePainting::paint(QPainter* painter) {
   loadImage();
 
-         // Use originalImage if available, otherwise use image
+  // Use originalImage if available, otherwise use image
   QPixmap imageToPaint = originalImage.isNull() ? image : originalImage;
 
-         // Null checks
+  // Null checks
   if (!imageToPaint.isNull() && !boundingRect().isEmpty()) {
     painter->save();
     painter->setPen(Qt::NoPen);
@@ -68,7 +68,7 @@ void ImagePainting::paint(QPainter* painter) {
     painter->drawPixmap(boundingRect().topLeft(), scaledImage);
     painter->restore();
 
-           // Draw selection handles when selected
+    // Draw selection handles when selected
     if (isSelected) {
       painter->setPen(QPen(Qt::darkGray, penWidth + 5));
       painter->drawRect(boundingRect());
@@ -95,7 +95,7 @@ bool ImagePainting::load(const QString& s) {
   QStringList parts = s.split(' ', Qt::SkipEmptyParts);
   if (parts.size() < 6) return false;
 
-         // Extract coordinates
+  // Extract coordinates
   if (parts[0] != "ImagePainting") return false;
 
   bool ok;
@@ -111,15 +111,15 @@ bool ImagePainting::load(const QString& s) {
   y2 = parts[4].toInt(&ok);
   if (!ok) return false;
 
-         // The base64 image data is in part 5
+  // The base64 image data is in part 5
   QString imageData = parts[5];
 
-         // Clear previous image and path
+  // Clear previous image and path
   image = QPixmap();
   originalImage = QPixmap();
   imagePath.clear();
 
-         // Try to load image from base64 data
+  // Try to load image from base64 data
   if (!imageData.isEmpty()) {
     QByteArray byteArray = QByteArray::fromBase64(imageData.toUtf8());
     if (!byteArray.isEmpty()) {
@@ -234,7 +234,7 @@ bool ImagePainting::MousePressing(Schematic* sch) {
       originalImage = QPixmap();
       loadImage();
 
-             // Set dimensions to actual image size if image loaded successfully
+        // Set dimensions to actual image size if image loaded successfully
       if (!image.isNull()) {
         x2 = x1 + image.width();
         y2 = y1 + image.height();
@@ -284,7 +284,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
   }
 
   QObject::connect(browseButton, &QPushButton::clicked, [&]() {
-    QString path = QFileDialog::getOpenFileName(&dialog, QObject::tr("Select Image"));
+    QString path = QFileDialog::getOpenFileName(&dialog, QObject::tr("Select Image"), QDir::homePath());
     if (!path.isEmpty()) {
       pathEdit->setText(path);
       statusLabel->setText(QObject::tr("External image file"));
@@ -374,7 +374,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
   QObject::connect(resetButton, &QPushButton::clicked, resetToOriginal);
 
   // Connect aspect ratio checkbox
-  QObject::connect(aspectRatioCheck, &QCheckBox::toggled, [&](bool checked) {
+  QObject::connect(aspectRatioCheck, &QCheckBox::toggled, &dialog, [heightEdit, updateHeight](bool checked) {
     heightEdit->setEnabled(!checked);
     if (checked) {
       updateHeight();
@@ -382,8 +382,9 @@ bool ImagePainting::Dialog(QWidget* parent) {
   });
 
   // Connect width change to height calculation
-  QObject::connect(widthEdit, &QLineEdit::textChanged, [&]() {
-    if (aspectRatioCheck->isChecked()) {
+  QObject::connect(aspectRatioCheck, &QCheckBox::toggled, &dialog, [heightEdit, updateHeight](bool checked) {
+    heightEdit->setEnabled(!checked);
+    if (checked) {
       updateHeight();
     }
   });
@@ -483,4 +484,33 @@ bool ImagePainting::rotate(int xc, int yc) noexcept {
     image = QPixmap();
   }
   return result;
+}
+
+
+void ImagePainting::setImageFromPixmap(const QPixmap& pixmap) {
+  if (!pixmap.isNull()) {
+    image = pixmap;
+    originalImage = pixmap;
+    imagePath.clear(); // Clear path since this is embedded image data
+  }
+}
+
+void ImagePainting::setImageFromPath(const QString& path) {
+  if (!path.isEmpty()) {
+    imagePath = path;
+    image = QPixmap(); // Clear current image
+    originalImage = QPixmap(); // Clear original image
+    loadImage(); // Load from the new path
+  }
+}
+
+void ImagePainting::setImageFromClipboard() {
+  QClipboard* clipboard = QApplication::clipboard();
+  if (clipboard->mimeData()->hasImage()) {
+    QImage clipboardImage = clipboard->image();
+    if (!clipboardImage.isNull()) {
+      QPixmap pixmap = QPixmap::fromImage(clipboardImage);
+      setImageFromPixmap(pixmap);
+    }
+  }
 }

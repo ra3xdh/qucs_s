@@ -33,6 +33,10 @@ public:
   bool Dialog(QWidget* parent = nullptr) override;
   static Element* info(QString& Name, char* &BitmapFile, bool getNewOne = false);
 
+  void setImageFromPixmap(const QPixmap& pixmap);
+  void setImageFromPath(const QString& path);
+  void setImageFromClipboard();
+
   // Override selection and interaction methods
   bool getSelected(const QPoint& click, int tolerance) override;
   bool resizeTouched(const QPoint& click, int tolerance) override;

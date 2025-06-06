@@ -129,12 +129,110 @@ bool Schematic::loadIntoNothing(QTextStream *stream)
 // Paste from clipboard.
 bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
 {
-  QString Line;
+  // First, check if clipboard contains image data or file path
+  QClipboard* clipboard = QApplication::clipboard();
+  const QMimeData* mimeData = clipboard->mimeData();
 
+  // Check for image data first
+  if (mimeData->hasImage()) {
+    QImage clipboardImage = clipboard->image();
+    if (!clipboardImage.isNull()) {
+      // Create an ImagePainting with the clipboard image
+      ImagePainting* imagePainting = new ImagePainting();
+
+      // Convert QImage to QPixmap and set it
+      QPixmap pixmap = QPixmap::fromImage(clipboardImage);
+
+      // Set position (you might want to adjust this based on current cursor position)
+      // For now, place it at a default position
+      int defaultX = 100;
+      int defaultY = 100;
+      imagePainting->x1 = defaultX;
+      imagePainting->y1 = defaultY;
+      imagePainting->x2 = defaultX + clipboardImage.width();
+      imagePainting->y2 = defaultY + clipboardImage.height();
+
+      // Set the image data directly in the ImagePainting
+      imagePainting->setImageFromPixmap(pixmap);
+
+      // Add to the elements list
+      pe->push_back(imagePainting);
+
+      return true;
+    }
+  }
+
+  // Check for text that might be a file path to an image
+  if (mimeData->hasText()) {
+    QString clipboardText = clipboard->text().trimmed();
+
+    // Check if the text looks like a file path and if it's an image file
+    if (!clipboardText.isEmpty() && isImageFilePath(clipboardText)) {
+      QPixmap testPixmap;
+      if (testPixmap.load(clipboardText)) {
+        // Successfully loaded image from path
+        ImagePainting* imagePainting = new ImagePainting();
+
+        // Set position
+        int defaultX = 100;
+        int defaultY = 100;
+        imagePainting->x1 = defaultX;
+        imagePainting->y1 = defaultY;
+        imagePainting->x2 = defaultX + testPixmap.width();
+        imagePainting->y2 = defaultY + testPixmap.height();
+
+        // Set the image from file path
+        imagePainting->setImageFromPath(clipboardText);
+
+        // Add to the elements list
+        pe->push_back(imagePainting);
+
+        return true;
+      }
+    }
+  }
+
+  // Check for file URLs (drag and drop from file manager)
+  if (mimeData->hasUrls()) {
+    QList<QUrl> urls = mimeData->urls();
+    for (const QUrl& url : urls) {
+      if (url.isLocalFile()) {
+        QString filePath = url.toLocalFile();
+        if (isImageFilePath(filePath)) {
+          QPixmap testPixmap;
+          if (testPixmap.load(filePath)) {
+            // Successfully loaded image from file
+            ImagePainting* imagePainting = new ImagePainting();
+
+            // Set position (offset multiple images if there are several)
+            int defaultX = 100 + (pe->size() * 20); // Offset each image
+            int defaultY = 100 + (pe->size() * 20);
+            imagePainting->x1 = defaultX;
+            imagePainting->y1 = defaultY;
+            imagePainting->x2 = defaultX + testPixmap.width();
+            imagePainting->y2 = defaultY + testPixmap.height();
+
+            // Set the image from file path
+            imagePainting->setImageFromPath(filePath);
+
+            // Add to the elements list
+            pe->push_back(imagePainting);
+          }
+        }
+      }
+    }
+
+    // If we processed any image files, return true
+    if (!pe->empty()) {
+      return true;
+    }
+  }
+
+  // If no image in clipboard, proceed with normal text-based clipboard processing
+  QString Line;
   Line = stream->readLine();
   if(Line.left(16) != "<Qucs Schematic ")   // wrong file type ?
     return false;
-
   QString s = PACKAGE_VERSION;
   Line = Line.mid(16, Line.length()-17);
   if(Line != s) {  // wrong version number ?
@@ -142,7 +240,6 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
                  QObject::tr("Wrong document version: ")+Line);
     return false;
   }
-
   // read content in symbol edit mode *************************
   if(a_symbolMode) {
     while(!stream->atEnd()) {
@@ -164,10 +261,8 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
         return false;
       }
     }
-
     return true;
   }
-
   // read content in schematic edit mode *************************
   while(!stream->atEnd()) {
     Line = stream->readLine();
@@ -188,9 +283,22 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
       return false;
     }
   }
-
   return true;
 }
+
+bool Schematic::isImageFilePath(const QString& path) {
+  if (path.isEmpty()) return false;
+
+  QFileInfo fileInfo(path);
+  if (!fileInfo.exists() || !fileInfo.isFile()) {
+    return false;
+  }
+
+  // Use QImageReader to check if the file format is supported
+  QImageReader reader(path);
+  return reader.canRead();
+}
+
 
 // -------------------------------------------------------------
 int Schematic::saveSymbolCpp (void)
