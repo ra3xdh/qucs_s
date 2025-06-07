@@ -2408,16 +2408,13 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
         // as one of the nodes over which the wire goes over
 
         // First node of a pair
-        if (wire_label->cx == node_pair.first->x() &&
-            wire_label->cy == node_pair.first->y())
-             {
+        if (wire_label->root() == node_pair.first->center()) {
                 node_pair.first->acquireLabel(std::move(wire_label));
                 break;
              }
 
         // Second node of a pair
-        if (wire_label->cx == node_pair.second->x() &&
-            wire_label->cy == node_pair.second->y()) {
+        if (wire_label->root() == node_pair.second->center()) {
                 node_pair.second->acquireLabel(std::move(wire_label));
                 break;
              }
@@ -2428,8 +2425,7 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
         auto* a_wire =
             internal::find_wire(node_pair.first, node_pair.second, a_Wires->begin(), a_Wires->end());
 
-        if (qucs_s::geom::is_between(QPoint{wire_label->cx, wire_label->cy},
-                                     a_wire->Port1, a_wire->Port2)) {
+        if (qucs_s::geom::is_between(wire_label->root(), a_wire->P1(), a_wire->P2())) {
             a_wire->acquireLabel(std::move(wire_label));
             break;
          }
