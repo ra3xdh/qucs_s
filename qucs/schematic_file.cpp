@@ -930,7 +930,7 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
       }
 
       List->push_back(w);
-      if(w->hasLabel())  List->push_back(w->releaseLabel().release());
+      if(w->hasLabel())  List->push_back(w->label());
     }
     else {
       simpleInsertWire(w);

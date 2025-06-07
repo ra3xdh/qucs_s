@@ -27,6 +27,7 @@ class QPainter;
 
 
 class WireLabel : public Element {
+  Conductor* pOwner = nullptr;  // Wire or Node where label belongs to
 public:
   WireLabel(const QString& _Name=0, int _cx=0, int _cy=0,
             int _x1=0, int _y1=0, int _Type=isNodeLabel);
@@ -36,7 +37,8 @@ public:
   void setHighlighted (bool newval) { isHighlighted = newval; };
 
 
-  Conductor* pOwner = nullptr;  // Wire or Node where label belongs to
+  void setOwner(Conductor* c);
+  Conductor* owner() const { return pOwner; }
   QString Name = "";
   QString initValue = "";
 

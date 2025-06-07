@@ -140,7 +140,7 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
     delete Dia;
 
     if (Name.isEmpty() && Value.isEmpty()) { // if nothing entered, delete label
-        pl->pOwner->dropLabel();               // delete name of wire
+        pl->owner()->dropLabel();               // delete name of wire
     } else {
         if (Result == 1)
             return; // nothing changed
@@ -416,7 +416,7 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 
         // Special case: node label. Pasted node label has no host element,
         // which would move its root, thus it has to be moved explicitely.
-        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->pOwner == nullptr) {
+        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->owner() == nullptr) {
             l->moveRoot(diff.x(), diff.y());
         }
     }
@@ -436,7 +436,7 @@ void MouseActions::MMovePaste2(Schematic *Doc, QMouseEvent *Event)
 
         // Special case: node label. Pasted node label has no host element,
         // which would move its root, thus it has to be moved explicitely.
-        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->pOwner == nullptr) {
+        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->owner() == nullptr) {
             l->moveRoot(diff.x(), diff.y());
         }
     }

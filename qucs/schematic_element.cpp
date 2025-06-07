@@ -1183,7 +1183,7 @@ bool Schematic::deleteElements()
     auto selection = currentSelection();
 
     for (auto* l : selection.labels) {
-        l->pOwner->dropLabel();
+        l->owner()->dropLabel();
         sel = true;
     }
 
@@ -2110,7 +2110,7 @@ void Schematic::oneLabel(Node *start_node)
                 if (comp->isActive == COMP_IS_ACTIVE && comp->Model == "GND") {
                     named = true;
                     if (pl) {
-                        pl->pOwner->dropLabel();
+                        pl->owner()->dropLabel();
                     }
                     pl = nullptr;
                 }
@@ -2142,6 +2142,9 @@ int Schematic::placeNodeLabel(WireLabel *pl)
     if (node == a_Nodes->end()) return -1;
 
     Node* pn = *node;
+
+    if (pn == pl->owner()) return 0;
+
     Element *pe = getWireLabel(pn);
     if(pe)      // name found ?
     {
