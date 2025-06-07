@@ -208,11 +208,11 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
         // create .IC from wire labels
         QStringList wire_labels;
         for(Wire *pw : a_schematic->a_DocWires) {
-            if (pw->Label != nullptr) {
-                QString label = pw->Label->Name;
+            if (pw->hasLabel()) {
+                QString label = pw->label()->Name;
                 if (!wire_labels.contains(label)) wire_labels.append(label);
                 else continue;
-                QString ic = pw->Label->initValue;
+                QString ic = pw->label()->initValue;
                 if (!ic.isEmpty()) {
                     QString ic_str = QStringLiteral(".IC v(%1)=%2\n").arg(label).arg(ic);
                     stream<<ic_str;
@@ -221,11 +221,11 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
         }
         for(Node *pn : a_schematic->a_DocNodes) {
             Conductor *pw = (Conductor*) pn;
-            if (pw->Label != nullptr) {
-                QString label = pw->Label->Name;
+            if (pw->hasLabel()) {
+                QString label = pw->label()->Name;
                 if (!wire_labels.contains(label)) wire_labels.append(label);
                 else continue;
-                QString ic = pw->Label->initValue;
+                QString ic = pw->label()->initValue;
                 if (!ic.isEmpty()) {
                     QString ic_str = QStringLiteral(".IC v(%1)=%2\n").arg(label).arg(ic);
                     stream<<ic_str;

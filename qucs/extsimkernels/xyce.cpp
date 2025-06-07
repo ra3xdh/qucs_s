@@ -104,16 +104,16 @@ void Xyce::createNetlist(
     // set variable names for named nodes and wires
     vars.clear();
     for(Node *pn : a_schematic->a_DocNodes) {
-      if(pn->Label != 0) {
-          if (!vars.contains(pn->Label->Name)) {
-              vars.append(pn->Label->Name);
+      if(pn->hasLabel()) {
+          if (!vars.contains(pn->label()->Name)) {
+              vars.append(pn->label()->Name);
           }
       }
     }
     for(Wire *pw : a_schematic->a_DocWires) {
-      if(pw->Label != 0) {
-          if (!vars.contains(pw->Label->Name)) {
-              vars.append(pw->Label->Name);
+      if(pw->hasLabel()) {
+          if (!vars.contains(pw->label()->Name)) {
+              vars.append(pw->label()->Name);
           }
       }
     }

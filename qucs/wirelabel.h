@@ -18,10 +18,11 @@
 #ifndef WIRELABEL_H
 #define WIRELABEL_H
 
-#include "conductor.h"
-
 #include <QString>
 
+#include "element.h"
+
+class Conductor;
 class QPainter;
 
 

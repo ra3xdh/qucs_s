@@ -24,7 +24,6 @@
 class Node : public Conductor {
 public:
   Node(int x, int y);
- ~Node() override;
 
   void  paint(QPainter* painter) const;
   bool  getSelected(int, int);
