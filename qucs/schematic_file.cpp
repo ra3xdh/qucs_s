@@ -916,6 +916,10 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
       delete w;
       return false;
     }
+
+    // When this pointer is not null, "paste" operation is in progress.
+    // In this case loaded elements must be placed in the list and not
+    // into schematic.
     if(List) {
 
       // Special case: node label. It's stored as zero-length wire.
@@ -930,6 +934,15 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
       }
 
       List->push_back(w);
+
+      // Label is also added to the list as *independent* element. This is
+      // because items of this list a subject of moving, rotating, etc. and
+      // label must be treated the same way.
+      //
+      // Think of the list as of "selected items" and it will instantly make
+      // sense.
+      //
+      // Label ownership is still controlled by the host wire.
       if(w->hasLabel())  List->push_back(w->label());
     }
     else {
