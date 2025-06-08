@@ -548,20 +548,38 @@ Wire* Schematic::selectedWire(int x, int y)
     return 0;
 }
 
-// ---------------------------------------------------
-// Splits the wire "*pw" into two pieces by the node "*pn".
+// Splits the wire into two pieces by the node
 Wire* Schematic::splitWire(Wire *source_wire, Node *splitter_node)
 {
+    // It's definetely abnormal usage if the node doesn't lie on the wire
+    assert(qucs_s::geom::is_between(splitter_node, source_wire->P1(), source_wire->P2()));
+
+    // Create new wire
     Wire *new_wire = new Wire(splitter_node, source_wire->Port2);
     new_wire->isSelected = source_wire->isSelected;
-    source_wire->connectPort2(splitter_node);
     a_Wires->push_back(new_wire);
 
-    if(source_wire->hasLabel())
-        if((source_wire->label()->cx > splitter_node->cx) || (source_wire->label()->cy > splitter_node->cy))
-        {
-            new_wire->acquireLabel(source_wire->releaseLabel());   // label goes to the new wire
+    // Preserve label. Label has to be detached from host *before* schrinking the
+    // source wire in order to not move label's root. When size of a wire is
+    // changed, wire tries to preserve the ratio between distances from label root
+    // to wire ports. This is not wanted here and label root must stay in place.
+    auto label = source_wire->releaseLabel();
+
+    // Schrink source wire
+    source_wire->connectPort2(splitter_node);
+
+    // Find a host for the label
+    if (label != nullptr) {
+        if (qucs_s::geom::is_between(label->root(), new_wire->P1(), new_wire->P2())) {
+            new_wire->acquireLabel(std::move(label));
         }
+        else if (qucs_s::geom::is_between(label->root(), source_wire->P1(), source_wire->P2())) {
+            source_wire->acquireLabel(std::move(label));
+        }
+        else if (!splitter_node->hasLabel() && label->root() == splitter_node->center()) {
+            splitter_node->acquireLabel(std::move(label));
+        }
+    }
 
     return new_wire;
 }
