@@ -17,19 +17,6 @@
 #include "filldialog.h"
 #include "misc.h"
 #include "schematic.h"
-#include <QFileDialog>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QDialogButtonBox>
-#include <QDebug>
-#include <QPainter>
-#include <QObject>
-#include <QComboBox>
-#include <QCheckBox>
-#include <QApplication>
 
 
 ImagePainting::ImagePainting() :
@@ -265,33 +252,27 @@ bool ImagePainting::Dialog(QWidget* parent) {
   // Add image path UI
   auto* imageLayout = new QHBoxLayout;
   auto* pathLabel = new QLabel(QObject::tr("Image Path:"));
-  auto* pathEdit = new QLineEdit(imagePath);
+  m_pathEdit = new QLineEdit(imagePath);
   auto* browseButton = new QPushButton(QObject::tr("Browse..."));
 
   // Add status label to show if image is embedded or external
-  auto* statusLabel = new QLabel();
+  m_statusLabel = new QLabel();
   if (!image.isNull() && imagePath.isEmpty()) {
-    statusLabel->setText(QObject::tr("Image embedded in schematic"));
-    statusLabel->setStyleSheet("color: green; font-style: italic;");
+    m_statusLabel->setText(QObject::tr("Image embedded in schematic"));
+    m_statusLabel->setStyleSheet("color: green; font-style: italic;");
   } else if (!imagePath.isEmpty()) {
-    statusLabel->setText(QObject::tr("External image file"));
-    statusLabel->setStyleSheet("color: blue; font-style: italic;");
+    m_statusLabel->setText(QObject::tr("External image file"));
+    m_statusLabel->setStyleSheet("color: blue; font-style: italic;");
   } else {
-    statusLabel->setText(QObject::tr("No image loaded"));
-    statusLabel->setStyleSheet("color: red; font-style: italic;");
+    m_statusLabel->setText(QObject::tr("No image loaded"));
+    m_statusLabel->setStyleSheet("color: red; font-style: italic;");
   }
 
-  QObject::connect(browseButton, &QPushButton::clicked, [&]() {
-    QString path = QFileDialog::getOpenFileName(&dialog, QObject::tr("Select Image"), QDir::homePath());
-    if (!path.isEmpty()) {
-      pathEdit->setText(path);
-      statusLabel->setText(QObject::tr("External image file"));
-      statusLabel->setStyleSheet("color: blue; font-style: italic;");
-    }
-  });
+  // Connect browse button
+  QObject::connect(browseButton, &QPushButton::clicked, this, &ImagePainting::onBrowseClicked);
 
   imageLayout->addWidget(pathLabel);
-  imageLayout->addWidget(pathEdit);
+  imageLayout->addWidget(m_pathEdit);
   imageLayout->addWidget(browseButton);
 
   // Add dimensions UI
@@ -300,111 +281,45 @@ bool ImagePainting::Dialog(QWidget* parent) {
   // Width input
   auto* widthLayout = new QHBoxLayout;
   auto* widthLabel = new QLabel(QObject::tr("Width:"));
-  auto* widthEdit = new QLineEdit(QString::number(x2 - x1));
-  widthEdit->setValidator(new QIntValidator(1, 10000, &dialog));
+  m_widthEdit = new QLineEdit(QString::number(x2 - x1));
+  m_widthEdit->setValidator(new QIntValidator(1, 10000, &dialog));
   widthLayout->addWidget(widthLabel);
-  widthLayout->addWidget(widthEdit);
+  widthLayout->addWidget(m_widthEdit);
 
   // Height input
   auto* heightLayout = new QHBoxLayout;
   auto* heightLabel = new QLabel(QObject::tr("Height:"));
-  auto* heightEdit = new QLineEdit(QString::number(y2 - y1));
-  heightEdit->setValidator(new QIntValidator(1, 10000, &dialog));
+  m_heightEdit = new QLineEdit(QString::number(y2 - y1));
+  m_heightEdit->setValidator(new QIntValidator(1, 10000, &dialog));
   heightLayout->addWidget(heightLabel);
-  heightLayout->addWidget(heightEdit);
+  heightLayout->addWidget(m_heightEdit);
 
   // Aspect ratio checkbox
-  auto* aspectRatioCheck = new QCheckBox(QObject::tr("Keep aspect ratio"));
-  aspectRatioCheck->setChecked(false);
+  m_aspectRatioCheck = new QCheckBox(QObject::tr("Keep aspect ratio"));
+  m_aspectRatioCheck->setChecked(false);
 
-         // Reset to original button
-  auto* resetButton = new QPushButton(QObject::tr("Reset to original dimensions"));
-  resetButton->setEnabled(!image.isNull()); // Enable if image is loaded
+  // Reset to original button
+  m_resetButton = new QPushButton(QObject::tr("Reset to original dimensions"));
+  m_resetButton->setEnabled(!image.isNull()); // Enable if image is loaded
 
   dimensionsLayout->addLayout(widthLayout);
   dimensionsLayout->addLayout(heightLayout);
-  dimensionsLayout->addWidget(aspectRatioCheck);
-  dimensionsLayout->addWidget(resetButton);
+  dimensionsLayout->addWidget(m_aspectRatioCheck);
+  dimensionsLayout->addWidget(m_resetButton);
 
-  // Function to reset dimensions to original image size
-  auto resetToOriginal = [&]() {
-    QPixmap tempImage;
-    QString currentPath = pathEdit->text();
+         // Connect signals to handlers
+  QObject::connect(m_resetButton, &QPushButton::clicked, this, &ImagePainting::onResetClicked);
+  QObject::connect(m_aspectRatioCheck, &QCheckBox::toggled, this, &ImagePainting::onAspectRatioToggled);
+  QObject::connect(m_pathEdit, &QLineEdit::textChanged, this, &ImagePainting::onPathChanged);
 
-    // First try to use already loaded image
-    if (!image.isNull()) {
-      tempImage = image;
-    }
-    // Otherwise try to load from path
-    else if (!currentPath.isEmpty() && tempImage.load(currentPath)) {
-      image = tempImage;
-    }
-
-    if (!tempImage.isNull()) {
-      widthEdit->setText(QString::number(tempImage.width()));
-      heightEdit->setText(QString::number(tempImage.height()));
-      resetButton->setEnabled(true);
-    }
-  };
-
-  // Function to calculate and update height based on width and aspect ratio
-  auto updateHeight = [&]() {
-    if (aspectRatioCheck->isChecked()) {
-      QPixmap currentImage = image;
-
-      // If no image loaded, try to load from path
-      if (currentImage.isNull() && !pathEdit->text().isEmpty()) {
-        currentImage.load(pathEdit->text());
-      }
-
-      if (!currentImage.isNull()) {
-        int width = widthEdit->text().toInt();
-        if (width > 0) {
-          double aspectRatio = (double)currentImage.height() / currentImage.width();
-          int height = qRound(width * aspectRatio);
-          heightEdit->setText(QString::number(height));
-        }
-      }
-    }
-  };
-
-  // Connect reset button
-  QObject::connect(resetButton, &QPushButton::clicked, resetToOriginal);
-
-  // Connect aspect ratio checkbox
-  QObject::connect(aspectRatioCheck, &QCheckBox::toggled, &dialog, [heightEdit, updateHeight](bool checked) {
-    heightEdit->setEnabled(!checked);
-    if (checked) {
+  // Connect width change to height calculation when aspect ratio is locked
+  QObject::connect(m_widthEdit, &QLineEdit::textChanged, this, [this]() {
+    if (m_aspectRatioCheck->isChecked()) {
       updateHeight();
     }
   });
 
-  // Connect width change to height calculation
-  QObject::connect(aspectRatioCheck, &QCheckBox::toggled, &dialog, [heightEdit, updateHeight](bool checked) {
-    heightEdit->setEnabled(!checked);
-    if (checked) {
-      updateHeight();
-    }
-  });
-
-  // Connect path change to reload image and update aspect ratio
-  QObject::connect(pathEdit, &QLineEdit::textChanged, [&](const QString& newPath) {
-    if (!newPath.isEmpty()) {
-      QPixmap tempImage;
-      if (tempImage.load(newPath)) {
-        resetButton->setEnabled(true);
-        if (aspectRatioCheck->isChecked()) {
-          updateHeight();
-        }
-      } else {
-        resetButton->setEnabled(false);
-      }
-    } else {
-      resetButton->setEnabled(!image.isNull());
-    }
-  });
-
-  layout->addWidget(statusLabel);
+  layout->addWidget(m_statusLabel);
   layout->addLayout(imageLayout);
   layout->addLayout(dimensionsLayout);
 
@@ -417,7 +332,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
   if (dialog.exec() == QDialog::Rejected) return false;
 
   // Update image path and load new image if changed
-  QString newPath = pathEdit->text();
+  QString newPath = m_pathEdit->text();
   if (newPath != imagePath) {
     imagePath = newPath;
     if (!imagePath.isEmpty()) {
@@ -430,8 +345,8 @@ bool ImagePainting::Dialog(QWidget* parent) {
   }
 
   // Update dimensions
-  int newWidth = widthEdit->text().toInt();
-  int newHeight = heightEdit->text().toInt();
+  int newWidth = m_widthEdit->text().toInt();
+  int newHeight = m_heightEdit->text().toInt();
 
   if (newWidth > 0 && newHeight > 0) {
     x2 = x1 + newWidth;
@@ -440,6 +355,8 @@ bool ImagePainting::Dialog(QWidget* parent) {
 
   return true;
 }
+
+
 Element* ImagePainting::info(QString& Name, char* &BitmapFile, bool getNewOne) {
   Name = QObject::tr("Image");
   BitmapFile = (char*)"ImagePainting";
@@ -509,6 +426,83 @@ void ImagePainting::setImageFromClipboard() {
     if (!clipboardImage.isNull()) {
       QPixmap pixmap = QPixmap::fromImage(clipboardImage);
       setImageFromPixmap(pixmap);
+    }
+  }
+}
+
+
+void ImagePainting::onBrowseClicked() {
+  QString path = QFileDialog::getOpenFileName(
+      m_pathEdit->parentWidget(),
+      QObject::tr("Select Image"),
+      QDir::homePath()
+      );
+  if (!path.isEmpty()) {
+    m_pathEdit->setText(path);
+    m_statusLabel->setText(QObject::tr("External image file"));
+    m_statusLabel->setStyleSheet("color: blue; font-style: italic;");
+  }
+}
+
+void ImagePainting::onResetClicked() {
+  QPixmap tempImage;
+  QString currentPath = m_pathEdit->text();
+
+         // First try to use already loaded image
+  if (!image.isNull()) {
+    tempImage = image;
+  }
+  // Otherwise try to load from path
+  else if (!currentPath.isEmpty() && tempImage.load(currentPath)) {
+    image = tempImage;
+  }
+
+  if (!tempImage.isNull()) {
+    m_widthEdit->setText(QString::number(tempImage.width()));
+    m_heightEdit->setText(QString::number(tempImage.height()));
+    m_resetButton->setEnabled(true);
+  }
+}
+
+void ImagePainting::onAspectRatioToggled(bool checked) {
+  m_heightEdit->setEnabled(!checked);
+  if (checked) {
+    updateHeight();
+  }
+}
+
+void ImagePainting::onPathChanged(const QString& newPath) {
+  if (!newPath.isEmpty()) {
+    QPixmap tempImage;
+    if (tempImage.load(newPath)) {
+      m_resetButton->setEnabled(true);
+      if (m_aspectRatioCheck->isChecked()) {
+        updateHeight();
+      }
+    } else {
+      m_resetButton->setEnabled(false);
+    }
+  } else {
+    m_resetButton->setEnabled(!image.isNull());
+  }
+}
+
+void ImagePainting::updateHeight() {
+  if (m_aspectRatioCheck->isChecked()) {
+    QPixmap currentImage = image;
+
+           // If no image loaded, try to load from path
+    if (currentImage.isNull() && !m_pathEdit->text().isEmpty()) {
+      currentImage.load(m_pathEdit->text());
+    }
+
+    if (!currentImage.isNull()) {
+      int width = m_widthEdit->text().toInt();
+      if (width > 0) {
+        double aspectRatio = (double)currentImage.height() / currentImage.width();
+        int height = qRound(width * aspectRatio);
+        m_heightEdit->setText(QString::number(height));
+      }
     }
   }
 }

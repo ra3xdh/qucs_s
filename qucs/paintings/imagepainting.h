@@ -20,8 +20,22 @@
 #include <QColor>
 #include <QPen>
 #include <QPixmap>
+#include <QFileDialog>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QDebug>
+#include <QPainter>
+#include <QObject>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QApplication>
 
-class ImagePainting : public qucs::Rectangle {
+class ImagePainting : public QObject, public qucs::Rectangle {
+  Q_OBJECT
 public:
   ImagePainting();
   Painting* newOne() override;
@@ -57,6 +71,21 @@ private:
   int penWidth;
   Qt::PenStyle penStyle;
   bool m_filled;
+
+  // Dialog widget members
+  QLineEdit* m_pathEdit;
+  QLineEdit* m_widthEdit;
+  QLineEdit* m_heightEdit;
+  QCheckBox* m_aspectRatioCheck;
+  QPushButton* m_resetButton;
+  QLabel* m_statusLabel;
+
+  // Dialog handler methods
+  void onBrowseClicked();
+  void onResetClicked();
+  void onAspectRatioToggled(bool checked);
+  void onPathChanged(const QString& newPath);
+  void updateHeight();
 };
 
 #endif // IMAGEPAINTING_H
