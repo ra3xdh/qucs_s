@@ -875,11 +875,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
 // -----------------------------------------------------------
 void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
-    bool Ctrl;
-    if (Event->modifiers().testFlag(Qt::ControlModifier))
-        Ctrl = true;
-    else
-        Ctrl = false;
+    const bool Ctrl = Event->modifiers().testFlag(Qt::ControlModifier);
 
     int No = 0;
     MAx1 = int(fX);
@@ -1390,11 +1386,7 @@ void MouseActions::MPressZoomIn(Schematic *Doc, QMouseEvent *, float fX, float f
 // ***********************************************************************
 void MouseActions::MReleaseSelect(Schematic *Doc, QMouseEvent *Event)
 {
-    bool ctrl;
-    if (Event->modifiers().testFlag(Qt::ControlModifier))
-        ctrl = true;
-    else
-        ctrl = false;
+    const bool ctrl = Event->modifiers().testFlag(Qt::ControlModifier);
 
     if (!ctrl)
         Doc->deselectElements(focusElement);

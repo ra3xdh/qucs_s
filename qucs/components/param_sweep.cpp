@@ -146,8 +146,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 
         Schematic *sch = getSchematic();
         Component *pc = sch->getComponentByName(getProperty("Param")->Value);
-        if (pc != NULL) compfound = true;
-        else compfound = false;
+        compfound = pc != NULL;
 
         if (step_var == "temp" || step_var == "temper") temper_sweep = true;
 
