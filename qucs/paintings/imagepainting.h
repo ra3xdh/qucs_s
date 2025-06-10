@@ -72,6 +72,10 @@ private:
   Qt::PenStyle penStyle;
   bool m_filled;
 
+  // Aspect ratio control
+  bool m_keepAspectRatio;
+  double m_aspectRatio; // cached aspect ratio
+
   // Dialog widget members
   QLineEdit* m_pathEdit;
   QLineEdit* m_widthEdit;
@@ -86,6 +90,10 @@ private:
   void onAspectRatioToggled(bool checked);
   void onPathChanged(const QString& newPath);
   void updateHeight();
+
+  // Helper methods
+  void updateAspectRatio();
+  void applyAspectRatioToResize(int& newWidth, int& newHeight);
 };
 
 #endif // IMAGEPAINTING_H

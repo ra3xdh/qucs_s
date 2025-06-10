@@ -143,10 +143,9 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
       // Convert QImage to QPixmap and set it
       QPixmap pixmap = QPixmap::fromImage(clipboardImage);
 
-      // Set position (you might want to adjust this based on current cursor position)
-      // For now, place it at a default position
-      int defaultX = 100;
-      int defaultY = 100;
+      // Set position
+      int defaultX = 0;
+      int defaultY = 0;
       imagePainting->x1 = defaultX;
       imagePainting->y1 = defaultY;
       imagePainting->x2 = defaultX + clipboardImage.width();
@@ -174,8 +173,8 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
         ImagePainting* imagePainting = new ImagePainting();
 
         // Set position
-        int defaultX = 100;
-        int defaultY = 100;
+        int defaultX = 0;
+        int defaultY = 0;
         imagePainting->x1 = defaultX;
         imagePainting->y1 = defaultY;
         imagePainting->x2 = defaultX + testPixmap.width();

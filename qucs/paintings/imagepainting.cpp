@@ -23,7 +23,9 @@ ImagePainting::ImagePainting() :
       Rectangle(false),
       penColor(Qt::black),
       penWidth(1),
-      penStyle(Qt::SolidLine)
+      penStyle(Qt::SolidLine),
+      m_keepAspectRatio(false),
+      m_aspectRatio(1.0)
 {
   Name = "ImagePainting ";
 }
@@ -62,7 +64,7 @@ void ImagePainting::paint(QPainter* painter) {
       painter->setPen(QPen(Qt::white, penWidth, penStyle));
       painter->drawRect(boundingRect());
 
-             // Draw resize handles
+      // Draw resize handles
       const auto bounds = boundingRect().marginsAdded({0, 0, 1, 1});
       misc::draw_resize_handle(painter, bounds.topLeft());
       misc::draw_resize_handle(painter, bounds.topRight());
@@ -112,6 +114,7 @@ bool ImagePainting::load(const QString& s) {
     if (!byteArray.isEmpty()) {
       if (image.loadFromData(byteArray)) {
         originalImage = image; // Store original for resize operations
+        updateAspectRatio(); // Update aspect ratio when image is loaded
         return true;
       } else {
         qWarning("Failed to load image from base64 data");
@@ -221,10 +224,11 @@ bool ImagePainting::MousePressing(Schematic* sch) {
       originalImage = QPixmap();
       loadImage();
 
-      // Set dimensions to actual image size if image loaded successfully
+             // Set dimensions to actual image size if image loaded successfully
       if (!image.isNull()) {
         x2 = x1 + image.width();
         y2 = y1 + image.height();
+        updateAspectRatio(); // Update aspect ratio when new image is loaded
       } else {
         // Fallback to default square size if image fails to load
         const int squareSize = 100;
@@ -241,7 +245,20 @@ bool ImagePainting::MousePressing(Schematic* sch) {
 }
 
 void ImagePainting::MouseResizeMoving(int x, int y, Schematic* p) {
+  // Call parent resize method
   Rectangle::MouseResizeMoving(x, y, p);
+
+  // Apply aspect ratio constraint if enabled
+  if (m_keepAspectRatio && m_aspectRatio > 0) {
+    int newWidth = x2 - x1;
+    int newHeight = y2 - y1;
+
+    applyAspectRatioToResize(newWidth, newHeight);
+
+    // Update coordinates with constrained dimensions
+    x2 = x1 + newWidth;
+    y2 = y1 + newHeight;
+  }
 }
 
 bool ImagePainting::Dialog(QWidget* parent) {
@@ -294,9 +311,9 @@ bool ImagePainting::Dialog(QWidget* parent) {
   heightLayout->addWidget(heightLabel);
   heightLayout->addWidget(m_heightEdit);
 
-  // Aspect ratio checkbox
+  // Aspect ratio checkbox - initialize with current state
   m_aspectRatioCheck = new QCheckBox(QObject::tr("Keep aspect ratio"));
-  m_aspectRatioCheck->setChecked(false);
+  m_aspectRatioCheck->setChecked(m_keepAspectRatio);
 
   // Reset to original button
   m_resetButton = new QPushButton(QObject::tr("Reset to original dimensions"));
@@ -307,7 +324,7 @@ bool ImagePainting::Dialog(QWidget* parent) {
   dimensionsLayout->addWidget(m_aspectRatioCheck);
   dimensionsLayout->addWidget(m_resetButton);
 
-         // Connect signals to handlers
+  // Connect signals to handlers
   QObject::connect(m_resetButton, &QPushButton::clicked, this, &ImagePainting::onResetClicked);
   QObject::connect(m_aspectRatioCheck, &QCheckBox::toggled, this, &ImagePainting::onAspectRatioToggled);
   QObject::connect(m_pathEdit, &QLineEdit::textChanged, this, &ImagePainting::onPathChanged);
@@ -339,10 +356,14 @@ bool ImagePainting::Dialog(QWidget* parent) {
       // Load new image from file path
       image = QPixmap();
       loadImage();
+      updateAspectRatio(); // Update aspect ratio when new image is loaded
     }
     // If path is cleared but we have an embedded image, keep it
     // (imagePath will be empty but image will remain loaded)
   }
+
+  // Update persistent aspect ratio setting
+  m_keepAspectRatio = m_aspectRatioCheck->isChecked();
 
   // Update dimensions
   int newWidth = m_widthEdit->text().toInt();
@@ -376,6 +397,7 @@ void ImagePainting::loadImage() {
   if (image.isNull()) {
     if (image.load(imagePath)) {
       originalImage = image; // Store original for resize operations
+      updateAspectRatio(); // Update aspect ratio when image is loaded
     } else {
       qWarning("Failed to load image: %s", qUtf8Printable(imagePath));
     }
@@ -388,6 +410,10 @@ bool ImagePainting::rotate() noexcept {
   if (result) {
     // Clear cached image to force reload with new orientation
     image = QPixmap();
+    // Invert aspect ratio when rotating
+    if (m_aspectRatio > 0) {
+      m_aspectRatio = 1.0 / m_aspectRatio;
+    }
   }
   return result;
 }
@@ -397,6 +423,10 @@ bool ImagePainting::rotate(int xc, int yc) noexcept {
   if (result) {
     // Clear cached image to force reload with new orientation
     image = QPixmap();
+    // Invert aspect ratio when rotating
+    if (m_aspectRatio > 0) {
+      m_aspectRatio = 1.0 / m_aspectRatio;
+    }
   }
   return result;
 }
@@ -407,6 +437,7 @@ void ImagePainting::setImageFromPixmap(const QPixmap& pixmap) {
     image = pixmap;
     originalImage = pixmap;
     imagePath.clear(); // Clear path since this is embedded image data
+    updateAspectRatio(); // Update aspect ratio for new image
   }
 }
 
@@ -415,7 +446,7 @@ void ImagePainting::setImageFromPath(const QString& path) {
     imagePath = path;
     image = QPixmap(); // Clear current image
     originalImage = QPixmap(); // Clear original image
-    loadImage(); // Load from the new path
+    loadImage(); // Load from the new path (this will call updateAspectRatio)
   }
 }
 
@@ -488,15 +519,15 @@ void ImagePainting::onPathChanged(const QString& newPath) {
 }
 
 void ImagePainting::updateHeight() {
-  if (m_aspectRatioCheck->isChecked()) {
+  if (m_aspectRatioCheck && m_aspectRatioCheck->isChecked()) {
     QPixmap currentImage = image;
 
-           // If no image loaded, try to load from path
-    if (currentImage.isNull() && !m_pathEdit->text().isEmpty()) {
+    // If no image loaded, try to load from path
+    if (currentImage.isNull() && m_pathEdit && !m_pathEdit->text().isEmpty()) {
       currentImage.load(m_pathEdit->text());
     }
 
-    if (!currentImage.isNull()) {
+    if (!currentImage.isNull() && m_widthEdit && m_heightEdit) {
       int width = m_widthEdit->text().toInt();
       if (width > 0) {
         double aspectRatio = (double)currentImage.height() / currentImage.width();
@@ -505,4 +536,23 @@ void ImagePainting::updateHeight() {
       }
     }
   }
+}
+
+void ImagePainting::updateAspectRatio() {
+  QPixmap currentImage = originalImage.isNull() ? image : originalImage;
+  if (!currentImage.isNull()) {
+    m_aspectRatio = (double)currentImage.height() / currentImage.width();
+  } else {
+    m_aspectRatio = 1.0; // Default square aspect ratio
+  }
+}
+
+void ImagePainting::applyAspectRatioToResize(int& newWidth, int& newHeight) {
+  if (m_aspectRatio <= 0) return;
+
+  // Calculate what the height should be based on width and aspect ratio
+  int calculatedHeight = qRound(newWidth * m_aspectRatio);
+
+  // Use the calculated height
+  newHeight = calculatedHeight;
 }
