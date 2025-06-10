@@ -234,7 +234,7 @@ bool ImagePainting::MousePressing(Schematic* sch) {
       originalImage = QPixmap();
       loadImage();
 
-        // Set dimensions to actual image size if image loaded successfully
+      // Set dimensions to actual image size if image loaded successfully
       if (!image.isNull()) {
         x2 = x1 + image.width();
         y2 = y1 + image.height();
@@ -245,10 +245,8 @@ bool ImagePainting::MousePressing(Schematic* sch) {
         y2 = y1 + squareSize;
       }
     } else {
-      // If no image selected, use default square size
-      const int squareSize = 100;
-      x2 = x1 + squareSize;
-      y2 = y1 + squareSize;
+      // No image selected.
+      return false;
     }
   }
 
