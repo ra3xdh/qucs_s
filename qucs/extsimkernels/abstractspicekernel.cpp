@@ -144,27 +144,18 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
  */
 bool AbstractSpiceKernel::checkGround()
 {
-    bool r = false;
-    for(Component *pc : a_schematic->a_DocComps) {
-        if (pc->Model=="GND") {
-            r = true;
-            break;
-        }
-    }
-    return r;
+    return std::ranges::any_of(
+        a_schematic->a_DocComps,
+        [](auto* c) { return c->Model == "GND"; });
 }
 
 bool AbstractSpiceKernel::checkSimulations()
 {
     if (a_DC_OP_only) return true;
-    bool r = false;
-    for(Component *pc : a_schematic->a_DocComps) {
-        if (pc->isSimulation) {
-            r = true;
-            break;
-        }
-    }
-    return r;
+
+    return std::ranges::any_of(
+        a_schematic->a_DocComps,
+        [](auto* c) { return c->isSimulation; });
 }
 
 bool AbstractSpiceKernel::checkDCSimulation()
