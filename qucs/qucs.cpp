@@ -125,10 +125,10 @@ QucsApp::QucsApp(bool netlist2Console) :
   //updateSchNameHash();
   //updateSpiceNameHash();
 
-  MouseMoveAction = 0;
-  MousePressAction = 0;
-  MouseReleaseAction = 0;
-  MouseDoubleClickAction = 0;
+  MouseMoveAction = nullptr;
+  MousePressAction = nullptr;
+  MouseReleaseAction = nullptr;
+  MouseDoubleClickAction = nullptr;
 
   initView();
   initActions();
@@ -735,7 +735,7 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
   QucsDoc * d;
   int No = 0;
   File = QDir::toNativeSeparators (File);
-  while ((d = getDoc (No++)) != 0)
+  while ((d = getDoc (No++)) != nullptr)
     if (QDir::toNativeSeparators (d->getDocName()) == File) {
       if (Pos) *Pos = No - 1;
       return d;
@@ -898,7 +898,7 @@ void QucsApp::slotSetCompView (int index)
 
   Comps = Category::getModules(item);
   QString Name;
-  pInfoFunc Infos = 0;
+  pInfoFunc Infos = nullptr;
 
   // if something was registered dynamically, get and draw icons into dock
   if (item == QObject::tr("verilog-a user devices")) {
@@ -1094,10 +1094,10 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   slotHideEdit(); // disable text edit of component property
 
   // delete previously selected elements
-  if(view->selElem != 0)  delete view->selElem;
-  view->selElem  = 0;   // no component/diagram/painting selected
+  if(view->selElem != nullptr)  delete view->selElem;
+  view->selElem  = nullptr;   // no component/diagram/painting selected
 
-  if(item == 0) {   // mouse button pressed not over an item ?
+  if(item == nullptr) {   // mouse button pressed not over an item ?
     CompComps->clearSelection();  // deselect component in ViewList
     return;
   }
@@ -1112,15 +1112,15 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
     activeAction->setChecked(false);       // set last toolbar button off
     activeAction->blockSignals(false);
   }
-  activeAction = 0;
+  activeAction = nullptr;
 
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
-  MouseReleaseAction = 0;
-  MouseDoubleClickAction = 0;
+  MouseReleaseAction = nullptr;
+  MouseDoubleClickAction = nullptr;
 
-  pInfoFunc Infos = 0;
-  pInfoVAFunc InfosVA = 0;
+  pInfoFunc Infos = nullptr;
+  pInfoVAFunc InfosVA = nullptr;
 
   int i = CompComps->row(item);
   QList<Module *> Comps;
@@ -1260,7 +1260,7 @@ void QucsApp::slotCMenuCopy()
   //check changed file save
   int z = 0; //search if the doc is loaded
   QucsDoc *d = findDoc(file, &z);
-  if (d != NULL && d->getDocChanged()) {
+  if (d != nullptr && d->getDocChanged()) {
     DocumentTab->setCurrentIndex(z);
     int ret = QMessageBox::question(this, tr("Copying Qucs document"),
         tr("The document contains unsaved changes!\n") +
@@ -1984,7 +1984,7 @@ void QucsApp::slotFileSaveAll()
 
   int No=0;
   QucsDoc *Doc;  // search, if page is already loaded
-  while((Doc=getDoc(No++)) != 0) {
+  while((Doc=getDoc(No++)) != nullptr) {
     if(Doc->getDocName().isEmpty())  // make document the current ?
       DocumentTab->setCurrentIndex(No-1);
     if (saveFile(Doc)) { // Hack! TODO: Maybe it's better to let slotFileChanged()
@@ -2088,7 +2088,7 @@ bool QucsApp::closeTabsRange(int startTab, int stopTab, int exceptTab)
   if (stopTab < startTab)
     return false;
   // document to keep open, if any
-  QucsDoc *docToKeep = 0;
+  QucsDoc *docToKeep = nullptr;
   if (exceptTab >= 0) {
     docToKeep = getDoc(exceptTab);
   }
@@ -2110,7 +2110,7 @@ bool QucsApp::closeTabsRange(int startTab, int stopTab, int exceptTab)
   if(Result == SaveDialog::AbortClosing)
     return false;
   // remove documents
-  QucsDoc *doc = 0;
+  QucsDoc *doc = nullptr;
   QucsDoc *stopDoc = getDoc(stopTab);
   int i = 0;
   do {
@@ -2189,7 +2189,7 @@ void QucsApp::slotChangeView()
   QWidget *w = DocumentTab->currentWidget();
   editText->setHidden (true); // disable text edit of component property
   QucsDoc * Doc;
-  if(w==NULL)return;
+  if(w==nullptr)return;
   // for text documents
   if (isTextDocument (w)) {
     TextDoc *d = (TextDoc*)w;
@@ -2320,7 +2320,7 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
     return file == pathName || file == Name;
   };
 
-  while((w=DocumentTab->widget(No++)) != 0) {
+  while((w=DocumentTab->widget(No++)) != nullptr) {
     if(isTextDocument (w))  continue;
 
     Schematic* Doc = dynamic_cast<Schematic*>(w);
@@ -2442,7 +2442,7 @@ void QucsApp::slotIntoHierarchy()
 
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   Component *pc = Doc->searchSelSubcircuit();
-  if(pc == 0) { return; }
+  if(pc == nullptr) { return; }
 
   QString s = pc->getSubcircuitFile();
   if(!gotoPage(s)) { return; }
@@ -2569,7 +2569,7 @@ void QucsApp::slotTune(bool checked)
         simulateToolbar->setEnabled(false); // disable workToolbar to preserve TuneMouseAction
 
         MousePressAction = &MouseActions::MPressTune;
-        MouseReleaseAction = 0; //While Tune is active release is not needed. This puts Press Action back to normal select
+        MouseReleaseAction = nullptr; //While Tune is active release is not needed. This puts Press Action back to normal select
 
         tunerDia->show();
     }
@@ -2748,7 +2748,7 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 
   int i=0;
   QWidget *w;  // search, if page is still open
-  while((w=DocumentTab->widget(i++)) != 0)
+  while((w=DocumentTab->widget(i++)) != nullptr)
     if(w == sim->DocWidget)
       break;
 
@@ -2970,7 +2970,7 @@ void QucsApp::openFileFromProjectView(const QFileInfo &Info, const QString &note
     select->blockSignals(false);
 
     activeAction = select;
-    MouseMoveAction = 0;
+    MouseMoveAction = nullptr;
     MousePressAction = &MouseActions::MPressSelect;
     MouseReleaseAction = &MouseActions::MReleaseSelect;
     MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
@@ -3067,8 +3067,8 @@ void QucsApp::slotSelectSubcircuit(const QModelIndex &idx)
   if (filename == tab_titl ) return; // Forbid to paste subcircuit into itself.
 
   // delete previously selected elements
-  if(view->selElem != 0)  delete view->selElem;
-  view->selElem = 0;
+  if(view->selElem != nullptr)  delete view->selElem;
+  view->selElem = nullptr;
 
   // toggle last toolbar button off
   if(activeAction) {
@@ -3076,7 +3076,7 @@ void QucsApp::slotSelectSubcircuit(const QModelIndex &idx)
     activeAction->setChecked(false);       // set last toolbar button off
     activeAction->blockSignals(false);
   }
-  activeAction = 0;
+  activeAction = nullptr;
 
   Component *Comp;
   if(isVHDL)
@@ -3091,8 +3091,8 @@ void QucsApp::slotSelectSubcircuit(const QModelIndex &idx)
 
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
-  MouseReleaseAction = 0;
-  MouseDoubleClickAction = 0;
+  MouseReleaseAction = nullptr;
+  MouseDoubleClickAction = nullptr;
 }
 
 // ---------------------------------------------------------
@@ -3107,7 +3107,7 @@ void QucsApp::slotSelectLibComponent(QTreeWidgetItem *item)
     {
         // if there's not a higher level item, this is a top level item,
         // not a component item so return
-        if(item->parent() == 0) return;
+        if(item->parent() == nullptr) return;
         if(item->text(1).isEmpty()) return;   // return, if not a subcircuit
 
         // copy the subcircuit schematic to the clipboard
@@ -3186,7 +3186,7 @@ void QucsApp::switchSchematicDoc (bool SchematicMode)
   }
   // schematic document
   else {
-    MouseMoveAction = 0;
+    MouseMoveAction = nullptr;
     MousePressAction = &MouseActions::MPressSelect;
     MouseReleaseAction = &MouseActions::MReleaseSelect;
     MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;

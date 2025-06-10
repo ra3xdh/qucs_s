@@ -161,11 +161,11 @@ int TabDiagram::calcDiagram()
   Graph *firstGraph;
 
   QListIterator<Graph *> ig(Graphs);
-  Graph *g = 0;
+  Graph *g = nullptr;
   if (ig.hasNext()) // point to first graph
     g = ig.next();
 
-  if(g == 0) {  // no variables specified in diagram ?
+  if(g == nullptr) {  // no variables specified in diagram ?
     Str = QObject::tr("no variables");
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
     if(colWidth >= 0)

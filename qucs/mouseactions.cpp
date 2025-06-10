@@ -88,7 +88,7 @@ MouseActions::MouseActions(QucsApp *App_)
       selElem = nullptr;         // no component/diagram is selected
     }
     isMoveEqual = false; // mouse cursor move x and y the same way
-    focusElement = 0;    //element being interacted with mouse
+    focusElement = nullptr;    //element being interacted with mouse
 
     // ...............................................................
     // initialize menu appearing by right mouse button click on component
@@ -808,8 +808,8 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
 void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY)
 {
     int x = int(fX), y = int(fY);
-    Wire *pw = 0;
-    WireLabel *pl = 0;
+    Wire *pw = nullptr;
+    WireLabel *pl = nullptr;
     Node *pn = Doc->selectedNode(x, y);
     if (!pn) {
         pw = Doc->selectedWire(x, y);
@@ -818,7 +818,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
     }
 
     QString Name, Value;
-    Element *pe = 0;
+    Element *pe = nullptr;
     // is wire line already labeled ?
     if (pw)
         pe = Doc->getWireLabel(pw->Port1);
@@ -896,8 +896,8 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
             focusElement->Type = isPainting;
             QucsMain->MouseReleaseAction = &MouseActions::MReleaseResizePainting;
             QucsMain->MouseMoveAction = &MouseActions::MMoveResizePainting;
-            QucsMain->MousePressAction = 0;
-            QucsMain->MouseDoubleClickAction = 0;
+            QucsMain->MousePressAction = nullptr;
+            QucsMain->MouseDoubleClickAction = nullptr;
             Doc->grabKeyboard(); // no keyboard inputs during move actions
             // Update matching wire label highlighting
             Doc->highlightWireLabels();
@@ -925,8 +925,8 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
 
             QucsMain->MouseReleaseAction = &MouseActions::MReleaseResizeDiagram;
             QucsMain->MouseMoveAction = &MouseActions::MMoveSelect;
-            QucsMain->MousePressAction = 0;
-            QucsMain->MouseDoubleClickAction = 0;
+            QucsMain->MousePressAction = nullptr;
+            QucsMain->MouseDoubleClickAction = nullptr;
             Doc->grabKeyboard(); // no keyboard inputs during move actions
             // Update matching wire label highlighting
             Doc->highlightWireLabels();
@@ -949,8 +949,8 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
                 break;
             case 2: // move scroll bar with mouse cursor
                 QucsMain->MouseMoveAction = &MouseActions::MMoveScrollBar;
-                QucsMain->MousePressAction = 0;
-                QucsMain->MouseDoubleClickAction = 0;
+                QucsMain->MousePressAction = nullptr;
+                QucsMain->MouseDoubleClickAction = nullptr;
                 Doc->grabKeyboard(); // no keyboard inputs during move actions
 
                 // Remember initial scroll bar position.
@@ -980,8 +980,8 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
                 MAy3 = focusElement->cy;
                 QucsMain->MouseMoveAction = &MouseActions::MMoveWire2;
                 QucsMain->MousePressAction = &MouseActions::MPressWire2;
-                QucsMain->MouseReleaseAction = 0; // if function is called from elsewhere
-                QucsMain->MouseDoubleClickAction = 0;
+                QucsMain->MouseReleaseAction = nullptr; // if function is called from elsewhere
+                QucsMain->MouseDoubleClickAction = nullptr;
 
                 formerAction = QucsMain->select; // to restore action afterwards
                 QucsMain->activeAction = QucsMain->insWire;
@@ -999,12 +999,12 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
             }
         }
 
-    QucsMain->MousePressAction = 0;
-    QucsMain->MouseDoubleClickAction = 0;
+    QucsMain->MousePressAction = nullptr;
+    QucsMain->MouseDoubleClickAction = nullptr;
     Doc->grabKeyboard(); // no keyboard inputs during move actions
     Doc->viewport()->update();
 
-    if (focusElement == 0) {
+    if (focusElement == nullptr) {
         MAx2 = 0; // if not clicking on an element => open a rectangle
         MAy2 = 0;
         QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect2;
@@ -1044,7 +1044,7 @@ void MouseActions::MPressActivate(Schematic *Doc, QMouseEvent *, float fX, float
     if (!Doc->activateSpecifiedComponent(MAx1, MAy1)) {
         MAx2 = 0; // if not clicking on a component => open a rectangle
         MAy2 = 0;
-        QucsMain->MousePressAction = 0;
+        QucsMain->MousePressAction = nullptr;
         QucsMain->MouseReleaseAction = &MouseActions::MReleaseActivate;
         QucsMain->MouseMoveAction = &MouseActions::MMoveSelect;
     }
@@ -1200,7 +1200,7 @@ void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent *, float fX, float fY
     paintAim(Doc, MAx3, MAy3);
     //#######################
 
-    formerAction = 0; // keep wire action active after first wire finished
+    formerAction = nullptr; // keep wire action active after first wire finished
     QucsMain->MouseMoveAction = &MouseActions::MMoveWire2;
     QucsMain->MousePressAction = &MouseActions::MPressWire2;
     // Double-click action is set in "MMoveWire2" to not initiate it
@@ -1227,7 +1227,7 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
         if (from == to) {
             QucsMain->MouseMoveAction = &MouseActions::MMoveWire1;
             QucsMain->MousePressAction = &MouseActions::MPressWire1;
-            QucsMain->MouseDoubleClickAction = 0;
+            QucsMain->MouseDoubleClickAction = nullptr;
             break;
         }
 
@@ -1246,7 +1246,7 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
                 // ...start a new wire
                 QucsMain->MouseMoveAction = &MouseActions::MMoveWire1;
                 QucsMain->MousePressAction = &MouseActions::MPressWire1;
-                QucsMain->MouseDoubleClickAction = 0;
+                QucsMain->MouseDoubleClickAction = nullptr;
             }
         }
 
@@ -1402,7 +1402,7 @@ void MouseActions::MReleaseSelect(Schematic *Doc, QMouseEvent *Event)
     QucsMain->MousePressAction = &MouseActions::MPressSelect;
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
     QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
-    QucsMain->MouseMoveAction = 0; // no element moving
+    QucsMain->MouseMoveAction = nullptr; // no element moving
     Doc->highlightWireLabels();
     Doc->viewport()->update();
 }
@@ -1422,7 +1422,7 @@ void MouseActions::MReleaseSelect2(Schematic *Doc, QMouseEvent *Event)
         QRect{MAx1, MAy1, MAx2, MAy2}.normalized(), IsCtrl, !IsShift);
 
     Doc->releaseKeyboard(); // allow keyboard inputs again
-    QucsMain->MouseMoveAction = 0;
+    QucsMain->MouseMoveAction = nullptr;
     QucsMain->MousePressAction = &MouseActions::MPressSelect;
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
     QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
@@ -1442,8 +1442,8 @@ void MouseActions::MReleaseActivate(Schematic *Doc, QMouseEvent *Event)
 
     QucsMain->MouseMoveAction = &MouseActions::MMoveActivate;
     QucsMain->MousePressAction = &MouseActions::MPressActivate;
-    QucsMain->MouseReleaseAction = 0;
-    QucsMain->MouseDoubleClickAction = 0;
+    QucsMain->MouseReleaseAction = nullptr;
+    QucsMain->MouseDoubleClickAction = nullptr;
     Doc->highlightWireLabels();
     Doc->viewport()->update();
 }
@@ -1643,9 +1643,9 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
         while (rot--) std::ranges::for_each(movingElements, [](Element* e) { e->rotate(); });
 
         QucsMain->MouseMoveAction = &MouseActions::MMovePaste;
-        QucsMain->MousePressAction = 0;
-        QucsMain->MouseReleaseAction = 0;
-        QucsMain->MouseDoubleClickAction = 0;
+        QucsMain->MousePressAction = nullptr;
+        QucsMain->MouseReleaseAction = nullptr;
+        QucsMain->MouseDoubleClickAction = nullptr;
 
         Doc->viewport()->update();
         Doc->setChanged(true, true);
@@ -1679,7 +1679,7 @@ void MouseActions::MReleaseMoveText(Schematic *Doc, QMouseEvent *Event)
         return;
 
     QucsMain->MouseMoveAction = &MouseActions::MMoveMoveTextB;
-    QucsMain->MouseReleaseAction = 0;
+    QucsMain->MouseReleaseAction = nullptr;
     Doc->releaseKeyboard(); // allow keyboard inputs again
 
     ((Component *) focusElement)->tx = MAx1 - ((Component *) focusElement)->cx;
@@ -1703,7 +1703,7 @@ void MouseActions::MReleaseZoomIn(Schematic *Doc, QMouseEvent *Event)
     Doc->zoomAroundPoint(1.5, click, false);
 
     QucsMain->MouseMoveAction = &MouseActions::MMoveZoomIn;
-    QucsMain->MouseReleaseAction = 0;
+    QucsMain->MouseReleaseAction = nullptr;
     Doc->releaseKeyboard(); // allow keyboard inputs again
 }
 
@@ -1715,7 +1715,7 @@ void MouseActions::MReleaseZoomIn(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
 {
 
-    if (focusElement == 0)
+    if (focusElement == nullptr)
         return;
 
 
@@ -1877,7 +1877,7 @@ void MouseActions::MDoubleClickWire2(Schematic *Doc, QMouseEvent *Event)
     else {
         QucsMain->MouseMoveAction = &MouseActions::MMoveWire1;
         QucsMain->MousePressAction = &MouseActions::MPressWire1;
-        QucsMain->MouseDoubleClickAction = 0;
+        QucsMain->MouseDoubleClickAction = nullptr;
     }
 }
 
@@ -1913,7 +1913,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
         case isComponentText: // property text of component ?
             focusElement->Type &= (~isComponentText) | isComponent;
             pc = (Component *) focusElement;
-            pp = 0;
+            pp = nullptr;
             if (!pc)
                 return; // should never happen
 
@@ -1934,7 +1934,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
             if (isPropertyTunable(pc, pp)) {
                 tunerElement *tune = new tunerElement(App->tunerDia, pc, pp, No);
                 tune->schematicName = Doc->getDocName();
-                if (tune != NULL)
+                if (tune != nullptr)
                     App->tunerDia->addTunerElement(tune); //Tunable property
             } else {
                 QMessageBox::warning(nullptr,

@@ -45,7 +45,7 @@ Rect3DDiagram::Rect3DDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
   y2 = 200;
   x3 = 207;    // with some distance for right axes text
 
-  Mem = pMem = 0;  // auxiliary buffer for hidden lines
+  Mem = pMem = nullptr;  // auxiliary buffer for hidden lines
 
   Name = "Rect3D"; // BUG
   // symbolic diagram painting
@@ -793,7 +793,7 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
         if(!pg->cPointsY)  continue;
         if(valid < 0) {
           delete[] pg->cPointsY;
-          pg->cPointsY = 0;
+          pg->cPointsY = nullptr;
           continue;
         }
         pD = pg->axis(Index);
@@ -1054,8 +1054,8 @@ void Rect3DDiagram::calcData(Graph *g)
 void Rect3DDiagram::createAxisLabels()
 {
   if(Mem)  free (Mem);
-  Mem  = 0;
-  pMem = 0;
+  Mem  = nullptr;
+  pMem = nullptr;
 }
 
 // ------------------------------------------------------------

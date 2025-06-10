@@ -1399,7 +1399,7 @@ QString MatchDialog::calcBinomialLines(double r_real, double r_imag, double Z0,
         0, QObject::tr("Error"),
         QObject::tr("The load has not resistive part. It cannot be matched "
                     "using the quarter wavelength method"));
-    return NULL;
+    return nullptr;
   }
   if (XL != 0) {
     QMessageBox::warning(0, QObject::tr("Warning"),
@@ -1530,7 +1530,7 @@ QString MatchDialog::calcMatchingCascadedLCSections(double r_real,
         0, QObject::tr("Error"),
         QObject::tr("The load is reactive. It cannot be matched "
                     "using the quarter wavelength method"));
-    return NULL;
+    return nullptr;
   }
   if (XL != 0) {
     QMessageBox::warning(0, QObject::tr("Warning"),

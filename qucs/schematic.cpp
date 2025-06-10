@@ -2043,8 +2043,8 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
         if (Item) {
             formerAction = a_App->activeAction;
             a_App->slotSelectComponent(Item); // also sets drawn=false
-            a_App->MouseMoveAction = 0;
-            a_App->MousePressAction = 0;
+            a_App->MouseMoveAction = nullptr;
+            a_App->MousePressAction = nullptr;
 
             Event->accept();
             return;
@@ -2074,7 +2074,7 @@ void Schematic::contentsNativeGestureZoomEvent( QNativeGestureEvent* Event) {
 void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
 {
     if (!a_dragIsOkay) {
-        if (a_App->view->selElem == 0) {
+        if (a_App->view->selElem == nullptr) {
             Event->ignore();
             return;
         }

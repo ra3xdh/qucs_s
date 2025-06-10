@@ -652,7 +652,7 @@ void Diagram::getAxisLimits(Graph *pg) {
     int z;
     double x, y, *p;
     DataX const *pD = pg->axis(0);
-    if (pD == 0) return;
+    if (pD == nullptr) return;
 
     if (Name[0] != 'C') {   // not for location curves
         p = pD->Points;
@@ -684,7 +684,7 @@ void Diagram::getAxisLimits(Graph *pg) {
     else pa = &zAxis;
     (pa->numGraphs)++;    // count graphs
     p = pg->cPointsY;
-    if (p == 0) return;    // if no data => invalid
+    if (p == nullptr) return;    // if no data => invalid
     for (z = pg->countY * pD->count; z > 0; z--) {  // check every y coordinate
         x = *(p++);
         y = *(p++);
@@ -796,7 +796,7 @@ void Diagram::updateGraphData() {
             calcData(pg);   // calculate screen coordinates
         else if (pg->cPointsY) {
             delete[] pg->cPointsY;
-            pg->cPointsY = 0;
+            pg->cPointsY = nullptr;
         }
     }
 
@@ -999,7 +999,7 @@ int Graph::loadDatFile(const QString &fileName) {
     if (Variable.right(3) != ".X ") { // not "digital"
 
         for (int z = counting; z > 0; z--) {
-            pEnd = 0;
+            pEnd = nullptr;
             while ((*pPos) && (*pPos <= ' ')) pPos++; // find start of next number
             x = strtod(pPos, &pEnd);  // real part
             pPos = pEnd + 1;
@@ -1008,11 +1008,11 @@ int Graph::loadDatFile(const QString &fileName) {
             else {
                 if (((*pEnd != '+') && (*pEnd != '-')) || (*pPos != 'j')) {
                     delete[] g->cPointsY;
-                    g->cPointsY = 0;
+                    g->cPointsY = nullptr;
                     return 0;
                 }
                 *pPos = *pEnd;  // overwrite 'j' with sign
-                pEnd = 0;
+                pEnd = nullptr;
                 y = strtod(pPos, &pEnd); // imaginary part
                 *pPos = 'j';   // write back old character
                 pPos = pEnd;
@@ -1055,7 +1055,7 @@ int Graph::loadDatFile(const QString &fileName) {
             while ((*pPos) && (*pPos <= ' ')) pPos++; // find start of next bit vector
             if (*pPos == 0) {
                 delete[] g->cPointsY;
-                g->cPointsY = 0;
+                g->cPointsY = nullptr;
                 return 0;
             }
 
@@ -1153,7 +1153,7 @@ int Graph::loadIndepVarData(const QString &Variable,
 
         if (pPos == pEnd) {
             delete[] pD->Points;
-            pD->Points = 0;
+            pD->Points = nullptr;
             return -1;
         }
 

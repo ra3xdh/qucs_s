@@ -73,7 +73,7 @@ void Xyce::determineUsedSimulations(QStringList *sim_lst)
        }
     }
 
-    if (sim_lst != NULL) {
+    if (sim_lst != nullptr) {
         *sim_lst = a_simulationsQueue;
     }
 }

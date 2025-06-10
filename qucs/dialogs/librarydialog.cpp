@@ -245,7 +245,7 @@ void LibraryDialog::slotCreateNext()
   int count=0;
   for(int i = 0; i < subcirFileList->count(); i++) {
       auto itm = subcirFileList->item(i);
-      if (itm == NULL) continue;
+      if (itm == nullptr) continue;
       if (itm->checkState() == Qt::Checked) {
           SelectedNames.append(itm->text());
           Descriptions.append("");

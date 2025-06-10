@@ -587,7 +587,7 @@ bool Marker::getSelected(int x_, int y_)
  */
 const Diagram* Marker::diag() const
 {
-  if(!pGraph) return NULL;
+  if(!pGraph) return nullptr;
   return pGraph->parentDiagram();
 }
 

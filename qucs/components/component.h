@@ -159,6 +159,6 @@ protected:
 };
 
 // prototype of independent function
-Component* getComponentFromName(QString& Line, Schematic* p=NULL);
+Component* getComponentFromName(QString& Line, Schematic* p=nullptr);
 
 #endif
