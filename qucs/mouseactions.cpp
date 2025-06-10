@@ -167,26 +167,20 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
     if (selElem == nullptr)
         return;
 
-    QPoint contentsCoordinates = Event->pos();
-    QPoint modelCoordinates = Doc->contentsToModel(contentsCoordinates);
-
-    int fx = modelCoordinates.x();
-    int fy = modelCoordinates.y();
-    int gx = fx;
-    int gy = fy;
-    Doc->setOnGrid(gx, gy);
+    const QPoint modelCoordinates = Doc->contentsToModel(Event->pos());
+    const QPoint onGrid = Doc->setOnGrid(modelCoordinates);
 
     setPainter(Doc);
 
     if (selElem->Type == isPainting) {
         Doc->PostPaintEvent(_NotRop, 0, 0, 0, 0);
-        ((Painting *) selElem)->MouseMoving({gx, gy}, Doc, {fx, fy});
+        ((Painting *) selElem)->MouseMoving(onGrid, Doc, modelCoordinates);
         Doc->viewport()->update();
         return;
     } // of "if(isPainting)"
 
 
-    selElem->moveCenterTo(gx, gy);
+    selElem->moveCenterTo(onGrid);
     selElem->paintScheme(Doc); // paint scheme at new position
     Doc->viewport()->update();
 }
