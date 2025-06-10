@@ -111,16 +111,16 @@ void Ngspice::createNetlist(
     // set variable names for named nodes and wires
     vars.clear();
     for(Node *pn : a_schematic->a_DocNodes) {
-      if(pn->Label != 0) {
-          if (!vars.contains(pn->Label->Name)) {
-              vars.append(pn->Label->Name);
+      if(pn->hasLabel()) {
+          if (!vars.contains(pn->label()->Name)) {
+            vars.append(pn->label()->Name);
           }
       }
     }
     for(Wire *pw : a_schematic->a_DocWires) {
-      if(pw->Label != 0) {
-          if (!vars.contains(pw->Label->Name)) {
-              vars.append(pw->Label->Name);
+      if(pw->hasLabel()) {
+          if (!vars.contains(pw->label()->Name)) {
+              vars.append(pw->label()->Name);
           }
       }
     }
@@ -503,17 +503,17 @@ bool Ngspice::checkNodeNames(QStringList &incompat)
 {
     bool result = true;
     for(Node *pn : a_schematic->a_DocNodes) {
-      if(pn->Label != 0) {
-          if (!spicecompat::check_nodename(pn->Label->Name)) {
-              incompat.append(pn->Label->Name);
+      if(pn->hasLabel()) {
+          if (!spicecompat::check_nodename(pn->label()->Name)) {
+              incompat.append(pn->label()->Name);
               result = false;
           }
       }
     }
     for(Wire *pw : a_schematic->a_DocWires) {
-      if(pw->Label != 0) {
-          if (!spicecompat::check_nodename(pw->Label->Name)) {
-              incompat.append(pw->Label->Name);
+      if(pw->hasLabel()) {
+          if (!spicecompat::check_nodename(pw->label()->Name)) {
+              incompat.append(pw->label()->Name);
               result = false;
           }
       }

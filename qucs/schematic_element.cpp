@@ -383,10 +383,8 @@ void merge(Node* donor, Node* recipient) {
     }
 
     // Try to keep donor label
-    if (recipient->Label == nullptr && donor->Label != nullptr) {
-        recipient->Label = donor->Label;
-        recipient->Label->pOwner = recipient;
-        donor->Label = nullptr;
+    if (!recipient->hasLabel() && donor->hasLabel()) {
+        recipient->acquireLabel(donor->releaseLabel());
     }
 }
 
@@ -437,17 +435,15 @@ Wire* merge_wires_at_node(Node* node) {
 
     // First of all, let's deal with labels. Label of node, if present, has
     // priority over wire labels.
-    auto* preserved_label = node->Label;
-
-    if (preserved_label == nullptr) {
-        // Node has no label, choose label of one of the wires
-        preserved_label = extended_wire->Label == nullptr ? dissapearing_wire->Label : extended_wire->Label;
+    std::unique_ptr<WireLabel> preserved_label;
+    if (node->hasLabel()) {
+        preserved_label = node->releaseLabel();
     }
-
-    // Isolate preserved label completely
-    if (preserved_label != nullptr) {
-        preserved_label->pOwner->Label = nullptr;
-        preserved_label->pOwner = nullptr;
+    else {
+        // Node has no label, choose label of one of the wires
+        preserved_label = extended_wire->hasLabel()
+                        ? extended_wire->releaseLabel()
+                        : dissapearing_wire->releaseLabel();
     }
 
     auto* extend_to = dissapearing_wire->Port1 == node
@@ -475,9 +471,7 @@ Wire* merge_wires_at_node(Node* node) {
     extended_wire->setP2(extended_wire->Port2->center());
 
     if (preserved_label != nullptr) {
-        delete extended_wire->Label;
-        extended_wire->Label = preserved_label;
-        preserved_label->pOwner = extended_wire;
+        extended_wire->acquireLabel(std::move(preserved_label));
     }
 
     return dissapearing_wire;
@@ -554,22 +548,38 @@ Wire* Schematic::selectedWire(int x, int y)
     return 0;
 }
 
-// ---------------------------------------------------
-// Splits the wire "*pw" into two pieces by the node "*pn".
+// Splits the wire into two pieces by the node
 Wire* Schematic::splitWire(Wire *source_wire, Node *splitter_node)
 {
+    // It's definetely abnormal usage if the node doesn't lie on the wire
+    assert(qucs_s::geom::is_between(splitter_node, source_wire->P1(), source_wire->P2()));
+
+    // Create new wire
     Wire *new_wire = new Wire(splitter_node, source_wire->Port2);
     new_wire->isSelected = source_wire->isSelected;
-    source_wire->connectPort2(splitter_node);
     a_Wires->push_back(new_wire);
 
-    if(source_wire->Label)
-        if((source_wire->Label->cx > splitter_node->cx) || (source_wire->Label->cy > splitter_node->cy))
-        {
-            new_wire->Label = source_wire->Label;   // label goes to the new wire
-            source_wire->Label = 0;
-            new_wire->Label->pOwner = new_wire;
+    // Preserve label. Label has to be detached from host *before* schrinking the
+    // source wire in order to not move label's root. When size of a wire is
+    // changed, wire tries to preserve the ratio between distances from label root
+    // to wire ports. This is not wanted here and label root must stay in place.
+    auto label = source_wire->releaseLabel();
+
+    // Schrink source wire
+    source_wire->connectPort2(splitter_node);
+
+    // Find a host for the label
+    if (label != nullptr) {
+        if (qucs_s::geom::is_between(label->root(), new_wire->P1(), new_wire->P2())) {
+            new_wire->acquireLabel(std::move(label));
         }
+        else if (qucs_s::geom::is_between(label->root(), source_wire->P1(), source_wire->P2())) {
+            source_wire->acquireLabel(std::move(label));
+        }
+        else if (!splitter_node->hasLabel() && label->root() == splitter_node->center()) {
+            splitter_node->acquireLabel(std::move(label));
+        }
+    }
 
     return new_wire;
 }
@@ -677,7 +687,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
             }
         }
 
-        pl = pn->Label; // Get any wire label associated with the Node
+        pl = pn->label(); // Get any wire label associated with the Node
         if(pl)
         {
             if(pl->getSelected(x, y))
@@ -739,7 +749,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
                 pe_sel = pw;
             }
         }
-        pl = pw->Label; // test any label associated with the wire
+        pl = pw->label(); // test any label associated with the wire
         if(pl)
         {
             if(pl->getSelected(x, y))
@@ -974,11 +984,11 @@ void Schematic::highlightWireLabels ()
     // First set highlighting for all wire and nodes labels to false
 
     for (auto* wire : *a_Wires) {
-        if (wire->Label != nullptr) wire->Label->setHighlighted(false);
+        if (wire->hasLabel()) wire->label()->setHighlighted(false);
     }
 
     for(Node* node : *a_Nodes) {
-        if (node->Label != nullptr) node->Label->setHighlighted(false);
+        if (node->hasLabel()) node->label()->setHighlighted(false);
     }
 
 
@@ -990,7 +1000,7 @@ void Schematic::highlightWireLabels ()
     for (auto* pwouter : *a_Wires)
     {
         // get any label associated with the wire
-        pltestouter = pwouter->Label;
+        pltestouter = pwouter->label();
         if (pltestouter)
         {
             if (pltestouter->isSelected)
@@ -999,7 +1009,7 @@ void Schematic::highlightWireLabels ()
                 // Search for matching labels on wires
                 for (Wire* pwinner : *a_Wires)
                 {
-                    pltestinner = pwinner->Label; // test any label associated with the wire
+                    pltestinner = pwinner->label(); // test any label associated with the wire
                     if (pltestinner)
                     {
                         // Highlight the label if it has the same name as the selected label
@@ -1017,7 +1027,7 @@ void Schematic::highlightWireLabels ()
                 // Search for matching labels on nodes
                 for (auto* pninner : *a_Nodes)
                 {
-                    pltestinner = pninner->Label; // test any label associated with the node
+                    pltestinner = pninner->label(); // test any label associated with the node
                     if (pltestinner)
                     {
                         if (pltestouter->Name == pltestinner->Name)
@@ -1039,7 +1049,7 @@ void Schematic::highlightWireLabels ()
     for (auto* pnouter : *a_Nodes)
     {
         // get any label associated with the node
-        pltestouter = pnouter->Label;
+        pltestouter = pnouter->label();
         if (pltestouter)
         {
             if (pltestouter->isSelected)
@@ -1048,7 +1058,7 @@ void Schematic::highlightWireLabels ()
                 // Search for matching labels on wires
                 for (auto* pwinner : *a_Wires)
                 {
-                    pltestinner = pwinner->Label; // test any label associated with the wire
+                    pltestinner = pwinner->label(); // test any label associated with the wire
                     if (pltestinner)
                     {
                         if (pltestouter->Name == pltestinner->Name)
@@ -1062,7 +1072,7 @@ void Schematic::highlightWireLabels ()
                 // Search for matching labels on nodes
                 for (auto* pninner : *a_Nodes)
                 {
-                    pltestinner = pninner->Label; // test any label associated with the node
+                    pltestinner = pninner->label(); // test any label associated with the node
                     if (pltestinner)
                     {
                         // Highlight the label if it has the same name as the selected label
@@ -1135,13 +1145,13 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
             selected_count++;
         }
 
-        if (wire->Label != nullptr && select_element(wire->Label, wire->Label->boundingRect())) {
+        if (wire->hasLabel() && select_element(wire->label(), wire->label()->boundingRect())) {
             selected_count++;
         }
     }
 
     for (Node *node : *a_Nodes) {
-        if (node->Label != nullptr && select_element(node->Label, node->Label->boundingRect())) {
+        if (node->hasLabel() && select_element(node->label(), node->label()->boundingRect())) {
             selected_count++;
         }
     }
@@ -1191,8 +1201,7 @@ bool Schematic::deleteElements()
     auto selection = currentSelection();
 
     for (auto* l : selection.labels) {
-        l->pOwner->Label = nullptr;
-        delete l;
+        l->owner()->dropLabel();
         sel = true;
     }
 
@@ -1816,8 +1825,7 @@ void Schematic::insertRawComponent(Component *c, bool noOptimize)
         Element *pe = getWireLabel(c->Ports.first()->Connection);
         if(pe) if((pe->Type & isComponent) == 0)
             {
-                delete ((Conductor*)pe)->Label;
-                ((Conductor*)pe)->Label = 0;
+                ((Conductor*)pe)->dropLabel();
             }
         c->Model = "GND";    // rebuild component model
     }
@@ -1827,9 +1835,8 @@ void Schematic::recreateComponent(Component* comp)
 {
     std::stack<WireLabel*> saved_labels{};
     for (auto* port : comp->Ports) {
-        if (port->Connection->Label != nullptr && port->Connection->conn_count() == 1) {
-            saved_labels.push(port->Connection->Label);
-            port->Connection->Label = nullptr;
+        if (port->Connection->hasLabel() && port->Connection->conn_count() == 1) {
+            saved_labels.push(port->Connection->releaseLabel().release());
         }
     }
 
@@ -1890,8 +1897,7 @@ void Schematic::insertComponent(Component *c)
             Element *pe = getWireLabel(c->Ports.first()->Connection);
             if(pe) if((pe->Type & isComponent) == 0)
                 {
-                    delete ((Conductor*)pe)->Label;
-                    ((Conductor*)pe)->Label = 0;
+                    ((Conductor*)pe)->dropLabel();
                 }
             c->Model = "GND";    // rebuild component model
         }
@@ -2102,14 +2108,13 @@ void Schematic::oneLabel(Node *start_node)
     start_node->y1 = 1;  // mark Node as already checked
     for (auto* node : checked_nodes) {
 
-        if (node->Label) {
+        if (node->hasLabel()) {
             if (named) {
-                delete node->Label;
-                node->Label = nullptr;
+                node->dropLabel();
             }
             else {
                 named = true;
-                pl = node->Label;
+                pl = node->label();
             }
         }
 
@@ -2123,8 +2128,7 @@ void Schematic::oneLabel(Node *start_node)
                 if (comp->isActive == COMP_IS_ACTIVE && comp->Model == "GND") {
                     named = true;
                     if (pl) {
-                        pl->pOwner->Label = nullptr;
-                        delete pl;
+                        pl->owner()->dropLabel();
                     }
                     pl = nullptr;
                 }
@@ -2137,13 +2141,12 @@ void Schematic::oneLabel(Node *start_node)
             other_node->y1 = 1;  // mark Node as already checked
             checked_nodes.push_back(other_node);
 
-            if (wire->Label) {
+            if (wire->hasLabel()) {
                 if (named) {
-                    delete wire->Label;
-                    wire->Label = nullptr;    // erase double names
+                    wire->dropLabel();
                 } else {
                     named = true;
-                    pl = wire->Label;
+                    pl = wire->label();
                 }
             }
         }
@@ -2157,6 +2160,9 @@ int Schematic::placeNodeLabel(WireLabel *pl)
     if (node == a_Nodes->end()) return -1;
 
     Node* pn = *node;
+
+    if (pn == pl->owner()) return 0;
+
     Element *pe = getWireLabel(pn);
     if(pe)      // name found ?
     {
@@ -2166,13 +2172,11 @@ int Schematic::placeNodeLabel(WireLabel *pl)
             return -2;  // ground potential
         }
 
-        delete ((Conductor*)pe)->Label;
-        ((Conductor*)pe)->Label = 0;
+        ((Conductor*)pe)->dropLabel();
     }
 
-    pn->Label = pl;   // insert node label
+    pn->acquireLabel(pl);   // insert node label
     pl->Type = isNodeLabel;
-    pl->pOwner = pn;
     return 0;
 }
 
@@ -2191,7 +2195,7 @@ Element* Schematic::getWireLabel(Node *pn_)
     Cons.push_back(pn_);
     pn_->y1 = 1;  // mark Node as already checked
     for(auto* pn : Cons)
-        if(pn->Label) return pn;
+        if(pn->hasLabel()) return pn;
         else
             for(auto* pe : *pn)
             {
@@ -2203,7 +2207,7 @@ Element* Schematic::getWireLabel(Node *pn_)
                 }
 
                 pw = (Wire*)pe;
-                if(pw->Label) return pw;
+                if(pw->hasLabel()) return pw;
 
                 if(pn != pw->Port1) pNode = pw->Port1;
                 else pNode = pw->Port2;
@@ -2328,8 +2332,7 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
         qucs_s::geom::on_line(port1, port2, a_Nodes->begin(), a_Nodes->end());
 
     // Save for later
-    auto* wire_label = wire->Label;
-    wire->Label      = nullptr;
+    auto wire_label = wire->releaseLabel();
 
     // All the nodes the wire goes over taken by pairs, e.g. if the wires
     // goes over nodes A, B, C, D, then this is the sequence of [(A,B), (B,C),
@@ -2385,13 +2388,11 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
         auto* existing_wire =
             internal::find_wire(last_pair.first, last_pair.second, a_Wires->begin(), a_Wires->end());
 
-        if (wire->Label == nullptr) {
-            wire->Label = existing_wire->Label;
-            existing_wire->Label = nullptr;
+        if (!wire->hasLabel()) {
+            wire->acquireLabel(existing_wire->releaseLabel());
         } else {
-            delete existing_wire->Label;
-            existing_wire->Label = nullptr;
-        }
+            existing_wire->dropLabel();
+         }
 
         // Detach last wire
         existing_wire->Port1->disconnect(existing_wire);
@@ -2428,21 +2429,14 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
         // as one of the nodes over which the wire goes over
 
         // First node of a pair
-        if (wire_label->cx == node_pair.first->x() &&
-            wire_label->cy == node_pair.first->y())
-             {
-                delete node_pair.first->Label;
-                node_pair.first->Label = wire_label;
-                wire_label             = nullptr;
+        if (wire_label->root() == node_pair.first->center()) {
+                node_pair.first->acquireLabel(std::move(wire_label));
                 break;
              }
 
         // Second node of a pair
-        if (wire_label->cx == node_pair.second->x() &&
-            wire_label->cy == node_pair.second->y()) {
-                delete node_pair.second->Label;
-                node_pair.first->Label = wire_label;
-                wire_label             = nullptr;
+        if (wire_label->root() == node_pair.second->center()) {
+                node_pair.second->acquireLabel(std::move(wire_label));
                 break;
              }
 
@@ -2452,11 +2446,8 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
         auto* a_wire =
             internal::find_wire(node_pair.first, node_pair.second, a_Wires->begin(), a_Wires->end());
 
-        if (qucs_s::geom::is_between(QPoint{wire_label->cx, wire_label->cy},
-                                     a_wire->Port1, a_wire->Port2)) {
-            delete a_wire->Label;
-            a_wire->Label = wire_label;
-            wire_label    = nullptr;
+        if (qucs_s::geom::is_between(wire_label->root(), a_wire->P1(), a_wire->P2())) {
+            a_wire->acquireLabel(std::move(wire_label));
             break;
          }
     }
@@ -2502,12 +2493,10 @@ public:
     }
 
     void putLabel(WireLabel* label, Node* dest_node) override {
-        delete dest_node->Label;
+        dest_node->dropLabel();
 
         // Transfer label to a new host
-        label->pOwner->Label = nullptr;
-        dest_node->Label = label;
-        label->pOwner = dest_node;
+        dest_node->acquireLabel(label);
         label->Type = isNodeLabel;
         label->moveRootTo(dest_node->center().x(), dest_node->center().y());
     }
@@ -2619,9 +2608,8 @@ bool Schematic::heal(const HealingParams* params) {
             qucs_s::UnorderedPair<Node*,Node*> p{wire->Port1, wire->Port2};
 
             if (unique_wires.contains(p)) {
-                if (unique_wires.at(p)->Label == nullptr) {
-                    unique_wires.at(p)->Label = wire->Label;
-                    wire->Label = nullptr;
+                if (!unique_wires.at(p)->hasLabel()) {
+                    unique_wires.at(p)->acquireLabel(wire->releaseLabel());
                 }
                 wire_duplicates.push_back(wire);
             } else {
@@ -2701,9 +2689,8 @@ bool Schematic::heal(const HealingParams* params) {
             qucs_s::UnorderedPair<Node*,Node*> p{wire->Port1, wire->Port2};
 
             if (unique_wires.contains(p)) {
-                if (unique_wires.at(p)->Label == nullptr) {
-                    unique_wires.at(p)->Label = wire->Label;
-                    wire->Label = nullptr;
+                if (!unique_wires.at(p)->hasLabel()) {
+                    unique_wires.at(p)->acquireLabel(wire->releaseLabel());
                 }
                 wire_duplicates.push_back(wire);
             } else {

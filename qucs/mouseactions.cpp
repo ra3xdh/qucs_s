@@ -140,8 +140,7 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
     delete Dia;
 
     if (Name.isEmpty() && Value.isEmpty()) { // if nothing entered, delete label
-        pl->pOwner->Label = 0;               // delete name of wire
-        delete pl;
+        pl->owner()->dropLabel();               // delete name of wire
     } else {
         if (Result == 1)
             return; // nothing changed
@@ -417,7 +416,7 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 
         // Special case: node label. Pasted node label has no host element,
         // which would move its root, thus it has to be moved explicitely.
-        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->pOwner == nullptr) {
+        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->owner() == nullptr) {
             l->moveRoot(diff.x(), diff.y());
         }
     }
@@ -437,7 +436,7 @@ void MouseActions::MMovePaste2(Schematic *Doc, QMouseEvent *Event)
 
         // Special case: node label. Pasted node label has no host element,
         // which would move its root, thus it has to be moved explicitely.
-        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->pOwner == nullptr) {
+        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->owner() == nullptr) {
             l->moveRoot(diff.x(), diff.y());
         }
     }
@@ -832,7 +831,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
                                      QObject::tr("The ground potential cannot be labeled!"));
             return;
         }
-        pl = ((Conductor *) pe)->Label;
+        pl = ((Conductor *) pe)->label();
     }
 
     LabelDialog *Dia = new LabelDialog(pl, Doc);
@@ -845,9 +844,8 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
 
     if (Name.isEmpty() && Value.isEmpty()) { // if nothing entered, delete name
         if (pe) {
-            if (((Conductor *) pe)->Label)
-                delete ((Conductor *) pe)->Label; // delete old name
-            ((Conductor *) pe)->Label = 0;
+            if (((Conductor *) pe)->hasLabel())
+                ((Conductor *) pe)->dropLabel(); // delete old name
         } else {
             if (pw)
                 pw->setName("", ""); // delete name of wire
@@ -856,8 +854,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
         }
     } else {
         if (pe) {
-            delete ((Conductor *) pe)->Label; // delete old name
-            ((Conductor *) pe)->Label = nullptr;
+            ((Conductor *) pe)->dropLabel(); // delete old name
         }
 
         int xl = x + 30;

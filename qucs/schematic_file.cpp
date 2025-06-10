@@ -81,15 +81,15 @@ QString Schematic::createClipboardFile()
   for(Wire* pw : *a_Wires)
     if(pw->isSelected) {
       z++;
-      if(pw->Label) if(!pw->Label->isSelected) {
+      if(pw->hasLabel()) if(!pw->label()->isSelected) {
         s += pw->save().section('"', 0, 0)+"\"\" 0 0 0>\n";
         continue;
       }
       s += pw->save()+"\n";
     }
   for(Node *pn : *a_Nodes)
-    if(pn->Label) if(pn->Label->isSelected) {
-      s += pn->Label->save()+"\n";  z++; }
+    if(pn->hasLabel()) if(pn->label()->isSelected) {
+      s += pn->label()->save()+"\n";  z++; }
   s += "</Wires>\n";
 
   s += "<Diagrams>\n";
@@ -625,7 +625,7 @@ int Schematic::saveDocument()
 
   // save all labeled nodes as wires
   for(Node *pn : a_DocNodes)
-    if(pn->Label) stream << "  " << pn->Label->save() << "\n";
+    if(pn->hasLabel()) stream << "  " << pn->label()->save() << "\n";
   stream << "</Wires>\n";
 
   stream << "<Diagrams>\n";    // save all diagrams
@@ -880,12 +880,11 @@ void Schematic::simpleInsertWire(Wire *pw)
   Node* pn = provideNode(pw->P1());
 
   if(pw->P1() == pw->P2()) {
-    pn->Label = pw->Label;   // wire with length zero are just node labels
-    if (pn->Label) {
-      pn->Label->Type = isNodeLabel;
-      pn->Label->pOwner = pn;
+    pn->acquireLabel(pw->releaseLabel());   // wire with length zero are just node labels
+    if (pn->hasLabel()) {
+      pn->label()->Type = isNodeLabel;
     }
-    pw->Label = nullptr;
+
     delete pw;           // delete wire because this is not a wire
     return;
   }
@@ -917,23 +916,34 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
       delete w;
       return false;
     }
+
+    // When this pointer is not null, "paste" operation is in progress.
+    // In this case loaded elements must be placed in the list and not
+    // into schematic.
     if(List) {
 
       // Special case: node label. It's stored as zero-length wire.
       // Only the label is kept, so it becomes "free" i.e. not having
       // a host element like wire or node. We must be careful to treat
       // such labels in a special way in other parts of the codebase.
-      if (w->P1() == w->P2() && w->Label) {
-        w->Label->Type = isNodeLabel;
-        List->push_back(w->Label);
-        w->Label->pOwner = nullptr;
-        w->Label = nullptr;
+      if (w->P1() == w->P2() && w->hasLabel()) {
+        w->label()->Type = isNodeLabel;
+        List->push_back(w->releaseLabel().release());
         delete w;
         continue;
       }
 
       List->push_back(w);
-      if(w->Label)  List->push_back(w->Label);
+
+      // Label is also added to the list as *independent* element. This is
+      // because items of this list a subject of moving, rotating, etc. and
+      // label must be treated the same way.
+      //
+      // Think of the list as of "selected items" and it will instantly make
+      // sense.
+      //
+      // Label ownership is still controlled by the host wire.
+      if(w->hasLabel())  List->push_back(w->label());
     }
     else {
       simpleInsertWire(w);
@@ -1156,7 +1166,7 @@ QString Schematic::createUndoString(char Op)
     s += pw->save()+"\n";
   // save all labeled nodes as wires
   for(Node *pn : a_DocNodes)
-    if(pn->Label) s += pn->Label->save()+"\n";
+    if(pn->hasLabel()) s += pn->label()->save()+"\n";
   s += "</>\n";
 
   for(auto* pd : a_DocDiags)
@@ -1243,10 +1253,10 @@ bool Schematic::rebuildSymbol(QString *s)
 void Schematic::createNodeSet(QStringList& Collect, int& countInit,
           Conductor *pw, Node *p1)
 {
-  if(pw->Label)
-    if(!pw->Label->initValue.isEmpty())
+  if(pw->hasLabel())
+    if(!pw->label()->initValue.isEmpty())
       Collect.append("NodeSet:NS" + QString::number(countInit++) + " " +
-                     p1->Name + " U=\"" + pw->Label->initValue + "\"");
+                     p1->Name + " U=\"" + pw->label()->initValue + "\"");
 }
 
 // ---------------------------------------------------
@@ -1644,22 +1654,22 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
   // delete the node names
   for(Node *pn : a_DocNodes) {
     pn->State = 0;
-    if(pn->Label) {
+    if(pn->hasLabel()) {
       if(a_isAnalog)
-        pn->Name = pn->Label->Name;
+        pn->Name = pn->label()->Name;
       else
-        pn->Name = "net" + pn->Label->Name;
+        pn->Name = "net" + pn->label()->Name;
     }
     else pn->Name = "";
   }
 
   // set the wire names to the connected node
   for(Wire *pw : a_DocWires)
-    if(pw->Label != 0) {
+    if(pw->hasLabel()) {
       if(a_isAnalog)
-        pw->Port1->Name = pw->Label->Name;
+        pw->Port1->Name = pw->label()->Name;
       else  // avoid to use reserved VHDL words
-        pw->Port1->Name = "net" + pw->Label->Name;
+        pw->Port1->Name = "net" + pw->label()->Name;
     }
 
   // go through components

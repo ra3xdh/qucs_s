@@ -449,11 +449,11 @@ vector<Healer::HealingAction> Healer::HealerImpl::processRelayingCase(Node* node
 
         auto [stable_node, obsolete_wires] = findStableNode(node, port->hostWire());
 
-        std::vector<WireLabel*> labels;
+        std::vector<std::unique_ptr<WireLabel>> labels;
         for (auto* wire : obsolete_wires) {
-            if (wire->Label != nullptr)        labels.push_back(wire->Label);
-            if (wire->Port1->Label != nullptr) labels.push_back(wire->Port1->Label);
-            if (wire->Port2->Label != nullptr) labels.push_back(wire->Port2->Label);
+            if (wire->hasLabel())        labels.emplace_back(wire->releaseLabel());
+            if (wire->Port1->hasLabel()) labels.emplace_back(wire->Port1->releaseLabel());
+            if (wire->Port2->hasLabel()) labels.emplace_back(wire->Port2->releaseLabel());
         }
 
         assert(labels.size() <= 1);
@@ -462,8 +462,8 @@ vector<Healer::HealingAction> Healer::HealerImpl::processRelayingCase(Node* node
             actions.push_back(make_unique<ReplaceNode>(port.get()));
         }
 
-        if (!labels.empty() && stable_node->Label == nullptr) {
-            actions.push_back(make_unique<ReattachLabel>(labels.front(), stable_node));
+        if (!labels.empty() && !stable_node->hasLabel()) {
+            actions.push_back(make_unique<ReattachLabel>(labels.front().release(), stable_node));
         }
 
         for (const auto& port : m_port_groups.at(node)) {

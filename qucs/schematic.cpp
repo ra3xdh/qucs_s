@@ -459,15 +459,15 @@ void Schematic::drawElements(QPainter* painter) {
 
     for (auto* wire : *a_Wires) {
         wire->paint(painter);
-        if (wire->Label) {
-            wire->Label->paint(painter); // separate because of paintSelected
+        if (wire->hasLabel()) {
+            wire->label()->paint(painter); // separate because of paintSelected
         }
     }
 
     for (auto* node : *a_Nodes) {
         node->paint(painter);
-        if (node->Label) {
-            node->Label->paint(painter); // separate because of paintSelected
+        if (node->hasLabel()) {
+            node->label()->paint(painter); // separate because of paintSelected
         }
     }
 
@@ -817,7 +817,7 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
             draw_preserve_selection(wire, painter);
         }
 
-        if (auto* label = wire->Label) {
+        if (auto* label = wire->label()) {
             if (should_draw(label)) {
                 draw_preserve_selection(label, painter);
             }
@@ -832,7 +832,7 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
             }
         }
 
-        if (auto* label = node->Label) {
+        if (auto* label = node->label()) {
             if (should_draw(label)) {
                 draw_preserve_selection(label, painter);
             }
@@ -1137,11 +1137,11 @@ void Schematic::updateAllBoundingRect()
 
     for (auto* pw : *a_Wires) {
         internal::unite(totalBounds, pw->boundingRect());
-        if (pw->Label) internal::unite(totalBounds, pw->Label->boundingRect());
+        if (pw->hasLabel()) internal::unite(totalBounds, pw->label()->boundingRect());
     }
 
     for (auto* pn : *a_Nodes) {
-        if (pn->Label) internal::unite(totalBounds, pn->Label->boundingRect());
+        if (pn->hasLabel()) internal::unite(totalBounds, pn->label()->boundingRect());
     }
 
     for (auto* pd : *a_Diagrams) {
@@ -1179,9 +1179,9 @@ Schematic::Selection Schematic::currentSelection() const {
             internal::unite(totalBounds, pw->boundingRect());
         }
 
-        if (pw->Label != nullptr && pw->Label->isSelected) { // check position of wire label
-            selection.labels.push_back(pw->Label);
-            internal::unite(totalBounds, pw->Label->boundingRect());
+        if (pw->hasLabel() && pw->label()->isSelected) { // check position of wire label
+            selection.labels.push_back(pw->label());
+            internal::unite(totalBounds, pw->label()->boundingRect());
         }
     }
 
@@ -1190,9 +1190,9 @@ Schematic::Selection Schematic::currentSelection() const {
             selection.nodes.push_back(pn);
         }
 
-        if (pn->Label != nullptr && pn->Label->isSelected) { // check position of node label
-            selection.labels.push_back(pn->Label);
-            internal::unite(totalBounds, pn->Label->boundingRect());
+        if (pn->hasLabel() && pn->label()->isSelected) { // check position of node label
+            selection.labels.push_back(pn->label());
+            internal::unite(totalBounds, pn->label()->boundingRect());
         }
     }
 

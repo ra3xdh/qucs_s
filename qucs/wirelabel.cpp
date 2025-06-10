@@ -211,3 +211,16 @@ QRect WireLabel::boundingRect() const noexcept
     .normalized()
     .united(QRect{{x1, y1}, textSize}.normalized());
 }
+
+void WireLabel::setOwner(Conductor* c)
+{
+  pOwner = c;
+
+  if (c == nullptr) return;
+
+  if (Wire* w = dynamic_cast<Wire*>(c); w != nullptr) {
+    Type = w->isHorizontal() ? isHWireLabel : isVWireLabel;
+  } else {
+    Type = isNodeLabel;
+  }
+}
