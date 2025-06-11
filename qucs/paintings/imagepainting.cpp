@@ -245,20 +245,20 @@ bool ImagePainting::MousePressing(Schematic* sch) {
 }
 
 void ImagePainting::MouseResizeMoving(int x, int y, Schematic* p) {
-  // Call parent resize method
-  Rectangle::MouseResizeMoving(x, y, p);
-
-  // Apply aspect ratio constraint if enabled
+  // Apply aspect ratio constraint before calling parent method
   if (m_keepAspectRatio && m_aspectRatio > 0) {
-    int newWidth = x2 - x1;
-    int newHeight = y2 - y1;
-
+    // Calculate constrained dimensions based on which corner is being dragged
+    int newWidth = x - x1;
+    int newHeight = y - y1;
     applyAspectRatioToResize(newWidth, newHeight);
 
     // Update coordinates with constrained dimensions
-    x2 = x1 + newWidth;
-    y2 = y1 + newHeight;
+    x = x1 + newWidth;
+    y = y1 + newHeight;
   }
+
+  // Call parent resize method with corrected coordinates
+  Rectangle::MouseResizeMoving(x, y, p);
 }
 
 bool ImagePainting::Dialog(QWidget* parent) {
