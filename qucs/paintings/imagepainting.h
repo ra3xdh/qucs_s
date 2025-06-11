@@ -60,6 +60,9 @@ public:
   bool rotate() noexcept override;
   bool rotate(int xc, int yc) noexcept override;
 
+  int getImageWidth() const;
+  int getImageHeight() const;
+
 private:
   QString imagePath;
   QPixmap image;

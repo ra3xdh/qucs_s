@@ -556,3 +556,16 @@ void ImagePainting::applyAspectRatioToResize(int& newWidth, int& newHeight) {
   // Use the calculated height
   newHeight = calculatedHeight;
 }
+
+// Needed to have the image size at schematic.cpp when drag and dropping
+int ImagePainting::getImageWidth() const {
+  if (!originalImage.isNull()) return originalImage.width();
+  if (!image.isNull()) return image.width();
+  return 100; // default fallback
+}
+
+int ImagePainting::getImageHeight() const {
+  if (!originalImage.isNull()) return originalImage.height();
+  if (!image.isNull()) return image.height();
+  return 100; // default fallback
+}
