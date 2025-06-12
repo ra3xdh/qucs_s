@@ -838,8 +838,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
 
     if (Name.isEmpty() && Value.isEmpty()) { // if nothing entered, delete name
         if (pe) {
-            if (((Conductor *) pe)->hasLabel())
-                ((Conductor *) pe)->dropLabel(); // delete old name
+            ((Conductor *) pe)->dropLabel(); // delete old name
         } else {
             if (pw)
                 pw->dropLabel(); // delete name of wire
