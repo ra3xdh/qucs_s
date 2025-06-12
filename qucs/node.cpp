@@ -67,12 +67,12 @@ bool Node::getSelected(int x, int y)
 
 void Node::setName(const QString& name, const QString& value, int x, int y)
 {
-  if (name.isEmpty() && value.isEmpty()) {
-    if (hasLabel()) {
-      dropLabel();
-    }
-    return;
-  }
+  // Passing two empty strings acted like a signal to remove the label
+  // and later was superseded by dropLabel() method. This assertion is
+  // just merely a guard against legacy usage, it may be freely removed
+  // after some time.
+  // Added on 2025-06-12.
+  assert(!(name.isEmpty() && value.isEmpty()));
 
   if (!hasLabel()) {
     acquireLabel(new WireLabel(name, cx, cy, x, y, isNodeLabel));

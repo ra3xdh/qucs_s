@@ -115,10 +115,12 @@ void Wire::setName(int distFromPort1, int text_x, int text_y, const QString& nam
 
 void Wire::setName(const QString& Name_, const QString& Value_, int root_x, int root_y, int x_, int y_)
 {
-  if(Name_.isEmpty() && Value_.isEmpty()) {
-    dropLabel();
-    return;
-  }
+  // Passing two empty strings acted like a signal to remove the label
+  // and later was superseded by dropLabel() method. This assertion is
+  // just merely a guard against legacy usage, it may be freely removed
+  // after some time.
+  // Added on 2025-06-12.
+  assert(!(Name_.isEmpty() && Value_.isEmpty()));
 
   if(!hasLabel()) {
     if (y1 == y2)

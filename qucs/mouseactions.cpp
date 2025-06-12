@@ -842,9 +842,9 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
                 ((Conductor *) pe)->dropLabel(); // delete old name
         } else {
             if (pw)
-                pw->setName("", ""); // delete name of wire
+                pw->dropLabel(); // delete name of wire
             else
-                pn->setName("", "");
+                pn->dropLabel();
         }
     } else {
         if (pe) {
