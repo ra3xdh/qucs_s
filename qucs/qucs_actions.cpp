@@ -84,11 +84,11 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
 
   // Perform toggle release clean up.
   if(!on) {
-    MouseMoveAction = 0;
-    MousePressAction = 0;
-    MouseReleaseAction = 0;
-    MouseDoubleClickAction = 0;
-    activeAction = 0;   // no action active
+    MouseMoveAction = nullptr;
+    MousePressAction = nullptr;
+    MouseReleaseAction = nullptr;
+    MouseDoubleClickAction = nullptr;
+    activeAction = nullptr;   // no action active
 
     // Return to select mode.
     slotEscape();
@@ -113,8 +113,8 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
 
     MouseMoveAction = MouseMove;
     MousePressAction = MousePress;
-    MouseReleaseAction = 0;
-    MouseDoubleClickAction = 0;
+    MouseReleaseAction = nullptr;
+    MouseDoubleClickAction = nullptr;
 
   } while(false);   // to perform "break"
 
@@ -381,11 +381,11 @@ void QucsApp::slotEditPaste(bool on)
 
     if(!on)
     {
-      MouseMoveAction = 0;
-      MousePressAction = 0;
-      MouseReleaseAction = 0;
-      MouseDoubleClickAction = 0;
-      activeAction = 0;   // no action active
+      MouseMoveAction = nullptr;
+      MousePressAction = nullptr;
+      MouseReleaseAction = nullptr;
+      MouseDoubleClickAction = nullptr;
+      activeAction = nullptr;   // no action active
       return;
     }
 
@@ -407,9 +407,9 @@ void QucsApp::slotEditPaste(bool on)
 
     MouseMoveAction = &MouseActions::MMovePaste;
     view->movingRotated = 0;
-    MousePressAction = 0;
-    MouseReleaseAction = 0;
-    MouseDoubleClickAction = 0;
+    MousePressAction = nullptr;
+    MouseReleaseAction = nullptr;
+    MouseDoubleClickAction = nullptr;
   }
 }
 
@@ -433,13 +433,13 @@ void QucsApp::slotInsertEntity ()
 void QucsApp::slotInsertEquation(bool on)
 {
   slotHideEdit(); // disable text edit of component property
-  MouseReleaseAction = 0;
-  MouseDoubleClickAction = 0;
+  MouseReleaseAction = nullptr;
+  MouseDoubleClickAction = nullptr;
 
   if(!on) {
-    MouseMoveAction = 0;
-    MousePressAction = 0;
-    activeAction = 0;   // no action active
+    MouseMoveAction = nullptr;
+    MousePressAction = nullptr;
+    activeAction = nullptr;   // no action active
     return;
   }
   if(activeAction) {
@@ -467,13 +467,13 @@ void QucsApp::slotInsertEquation(bool on)
 void QucsApp::slotInsertGround(bool on)
 {
   slotHideEdit(); // disable text edit of component property
-  MouseReleaseAction = 0;
-  MouseDoubleClickAction = 0;
+  MouseReleaseAction = nullptr;
+  MouseDoubleClickAction = nullptr;
 
   if(!on) {
-    MouseMoveAction = 0;
-    MousePressAction = 0;
-    activeAction = 0;   // no action active
+    MouseMoveAction = nullptr;
+    MousePressAction = nullptr;
+    activeAction = nullptr;   // no action active
     return;
   }
   if(activeAction) {
@@ -497,13 +497,13 @@ void QucsApp::slotInsertGround(bool on)
 void QucsApp::slotInsertPort(bool on)
 {
   slotHideEdit(); // disable text edit of component property
-  MouseReleaseAction = 0;
-  MouseDoubleClickAction = 0;
+  MouseReleaseAction = nullptr;
+  MouseDoubleClickAction = nullptr;
 
   if(!on) {
-    MouseMoveAction = 0;
-    MousePressAction = 0;
-    activeAction = 0;   // no action active
+    MouseMoveAction = nullptr;
+    MousePressAction = nullptr;
+    activeAction = nullptr;   // no action active
     return;
   }
   if(activeAction) {

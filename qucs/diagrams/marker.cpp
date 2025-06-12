@@ -565,8 +565,7 @@ bool Marker::load(const QString& Line)
 
   n  = s.section(' ',6,6);      // transparent
   if(n.isEmpty()) return true;  // is optional
-  if(n == "0")  transparent = false;
-  else  transparent = true;
+  transparent = n != "0";
 
   return true;
 }
@@ -588,7 +587,7 @@ bool Marker::getSelected(int x_, int y_)
  */
 const Diagram* Marker::diag() const
 {
-  if(!pGraph) return NULL;
+  if(!pGraph) return nullptr;
   return pGraph->parentDiagram();
 }
 

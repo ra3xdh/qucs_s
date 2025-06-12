@@ -136,10 +136,10 @@ public:
   Graph*  sameNewOne();
   
 private: // tmp hack
-  DataX* mutable_axis(uint i) { if(i<(uint)cPointsX.size()) return cPointsX.at(i); return NULL;}
+  DataX* mutable_axis(uint i) { if(i<(uint)cPointsX.size()) return cPointsX.at(i); return nullptr;}
 public:
   unsigned numAxes() const { return cPointsX.size(); }
-  DataX const* axis(uint i) const { if(i<(uint)cPointsX.size()) return cPointsX.at(i); return NULL;}
+  DataX const* axis(uint i) const { if(i<(uint)cPointsX.size()) return cPointsX.at(i); return nullptr;}
   size_t count(uint i) const { if(axis(i)) return axis(i)->count; return 0; }
   QString axisName(unsigned i) const {if(axis(i))return axis(i)->Var; return "";}
   bool isEmpty() const { return !cPointsX.size(); }

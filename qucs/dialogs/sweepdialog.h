@@ -41,7 +41,7 @@ protected:
   QValidator::State validate ( QString & text, int & pos ) const;
 
 private:
-  double *Values = NULL;
+  double *Values = nullptr;
   int ValueSize;
 };
 

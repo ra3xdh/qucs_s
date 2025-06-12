@@ -621,7 +621,7 @@ Marker* Schematic::setMarker(int x, int y)
       return m;
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 // Moves the marker pointer left/right on the graph.
@@ -666,9 +666,9 @@ void Schematic::markerUpDown(bool up, const std::vector<Marker*>& markers)
 Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
 {
     int n, x = int(fX), y = int(fY);
-    Element *pe_1st = 0;
-    Element *pe_sel = 0;
-    WireLabel *pl = 0;
+    Element *pe_1st = nullptr;
+    Element *pe_sel = nullptr;
+    WireLabel *pl = nullptr;
 
     // test all nodes and their labels
     for (Node* pn : *a_Nodes)
@@ -706,7 +706,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
                     pe_sel->isSelected = false;
                     return pl;
                 }
-                if(pe_1st == 0)
+                if(pe_1st == nullptr)
                 {
                     // give access to elements lying beneath by storing this label.
                     // If no label pointer (or other element) has previously been
@@ -740,7 +740,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
                 pe_sel->isSelected = false;
                 return pw;
             }
-            if(pe_1st == 0)
+            if(pe_1st == nullptr)
             {
                 pe_1st = pw;   // give access to elements lying beneath
             }
@@ -765,7 +765,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
                     pe_sel->isSelected = false;
                     return pl;
                 }
-                if(pe_1st == 0)
+                if(pe_1st == nullptr)
                 {
                     // give access to elements lying beneath
                     pe_1st = pl;
@@ -794,7 +794,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
                 pe_sel->isSelected = false;
                 return pc;
             }
-            if(pe_1st == 0)
+            if(pe_1st == nullptr)
             {
                 pe_1st = pc;
             }  // give access to elements lying beneath
@@ -838,7 +838,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
                         pe_sel->isSelected = false;
                         return pm;
                     }
-                    if(pe_1st == 0)
+                    if(pe_1st == nullptr)
                     {
                         pe_1st = pm;   // give access to elements beneath
                     }
@@ -855,7 +855,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
         {
             if(pd->resizeTouched(fX, fY, Corr))
             {
-                if(pe_1st == 0)
+                if(pe_1st == nullptr)
                 {
                     pd->Type = isDiagramResize;
                     return pd;
@@ -902,7 +902,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
                         pe_sel->isSelected = false;
                         return pg;
                     }
-                    if(pe_1st == 0)
+                    if(pe_1st == nullptr)
                     {
                         pe_1st = pg;   // access to elements lying beneath
                     }
@@ -924,7 +924,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
                 pe_sel->isSelected = false;
                 return pd;
             }
-            if(pe_1st == 0)
+            if(pe_1st == nullptr)
             {
                 pe_1st = pd;    // give access to elements lying beneath
             }
@@ -944,7 +944,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
         {
             if(pp->resizeTouched(click, tolerance))
             {
-                if(pe_1st == 0)
+                if(pe_1st == nullptr)
                 {
                     pp->Type = isPaintingResize;
                     return pp;
@@ -965,7 +965,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
                 pe_sel->isSelected = false;
                 return pp;
             }
-            if(pe_1st == 0)
+            if(pe_1st == nullptr)
             {
                 pe_1st = pp;    // give access to elements lying beneath
             }
@@ -992,8 +992,8 @@ void Schematic::highlightWireLabels ()
     }
 
 
-    WireLabel *pltestinner = 0;
-    WireLabel *pltestouter = 0;
+    WireLabel *pltestinner = nullptr;
+    WireLabel *pltestouter = nullptr;
 
     // Then test every wire's label to see if we need to highlight it
     // and matching labels on wires and nodes
@@ -2033,12 +2033,12 @@ Component* Schematic::selectCompText(int x_, int y_, int& w, int& h) const
         return pc;
     }
 
-    return 0;
+    return nullptr;
 }
 
 Component* Schematic::searchSelSubcircuit()
 {
-    Component *sub=0;
+    Component *sub = nullptr;
 
     for(auto* pc : currentSelection().components)
     {
@@ -2046,7 +2046,7 @@ Component* Schematic::searchSelSubcircuit()
             if(pc->Model != "VHDL")
                 if(pc->Model != "Verilog") continue;
 
-        if(sub != 0) return 0;    // more than one subcircuit selected
+        if(sub != nullptr) return nullptr;    // more than one subcircuit selected
         sub = pc;
     }
     return sub;
@@ -2098,7 +2098,7 @@ Component *Schematic::getComponentByName(const QString& compname) const
 // all further labels. Also delete all labels if wire line is grounded.
 void Schematic::oneLabel(Node *start_node)
 {
-    WireLabel *pl = 0;
+    WireLabel *pl = nullptr;
     bool named = false;   // wire line already named ?
     std::list<Node*> checked_nodes;
 
@@ -2216,7 +2216,7 @@ Element* Schematic::getWireLabel(Node *pn_)
                 pNode->y1 = 1;  // mark Node as already checked
                 Cons.push_back(pNode);
             }
-    return 0;   // no wire label found
+    return nullptr;   // no wire label found
 }
 
 
@@ -2235,7 +2235,7 @@ Painting* Schematic::selectedPainting(float fX, float fY)
         if(pp->getSelected(click, tolerance))
             return pp;
 
-    return 0;
+    return nullptr;
 }
 
 std::pair<bool,Node*> Schematic::connectWithWire(const QPoint& a, const QPoint& b) noexcept {

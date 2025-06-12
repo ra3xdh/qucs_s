@@ -66,7 +66,7 @@ Component::Component() {
     ty = 0;
 
 
-    containingSchematic = NULL;
+    containingSchematic = nullptr;
 }
 
 // -------------------------------------------------------
@@ -1692,7 +1692,7 @@ void GateComponent::createSymbol() {
 // ***********************************************************************
 
 Component *getComponentFromName(QString &Line, Schematic *p) {
-    Component *c = 0;
+    Component *c = nullptr;
 
     Line = Line.trimmed();
     if (Line.at(0) != '<') {
