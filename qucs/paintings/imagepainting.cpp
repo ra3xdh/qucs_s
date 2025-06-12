@@ -216,7 +216,13 @@ bool ImagePainting::MousePressing(Schematic* sch) {
       parentWidget = QApplication::activeWindow();
     }
 
-    QString newPath = QFileDialog::getOpenFileName(parentWidget, QObject::tr("Select Image"));
+    QString filter = QObject::tr("Images (*.bmp *.gif *.jpg *.jpeg *.png)");
+    QString newPath = QFileDialog::getOpenFileName(
+        parentWidget,
+        QObject::tr("Select Image"),
+        QDir::homePath(),
+        filter
+        );
 
     if (!newPath.isEmpty()) {
       imagePath = newPath;
@@ -463,11 +469,16 @@ void ImagePainting::setImageFromClipboard() {
 
 
 void ImagePainting::onBrowseClicked() {
+
+  QString filter = QObject::tr("Images (*.bmp *.gif *.jpg *.jpeg *.png)");
   QString path = QFileDialog::getOpenFileName(
       m_pathEdit->parentWidget(),
       QObject::tr("Select Image"),
-      QDir::homePath()
+      QDir::homePath(),
+      filter
       );
+
+
   if (!path.isEmpty()) {
     m_pathEdit->setText(path);
     m_statusLabel->setText(QObject::tr("External image file"));
