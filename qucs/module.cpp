@@ -106,21 +106,32 @@ void Module::registerComponent(QString category, pInfoFunc info) {
   delete c;
 }
 
-// Returns instantiated component based on the given "Model" name.  If
+// Returns instantiated component based on the given "model" name.  If
 // there is no such component registers the function returns NULL.
-Component * Module::getComponent (QString Model) {
-  if ( s_modules.contains(Model)) {
-    Module *m = s_modules.find(Model).value();
-    QString Name;
-    char * File;
-    QString vaBitmap;
-    if (s_vaComponents.contains(Model))
-      return (Component *)
-              vacomponent::info (Name, vaBitmap, true, s_vaComponents[Model]);
-    else
-      return (Component *) m->a_info (Name, File, true);
-  }
-  return 0;
+Component* Module::getComponent(const QString& model)
+{
+    if (s_modules.contains(model))
+    {
+        Module* m = s_modules.find(model).value();
+        QString Name;
+        char* File;
+        QString vaBitmap;
+
+        if (s_vaComponents.contains(model))
+        {
+            return static_cast<Component*>(vacomponent::info(Name, vaBitmap, true, s_vaComponents[model]));
+        }
+        else if (m->a_info != nullptr)
+        {
+            return static_cast<Component*>(m->a_info(Name, File, true));
+        }
+        else if (m->a_xmlComp)
+        {
+            return static_cast<Component*>(m->a_xmlComp->getInfo(Name, File, true));
+        }
+    }
+
+    return nullptr;
 }
 
 void Module::registerDynamicComponents()
