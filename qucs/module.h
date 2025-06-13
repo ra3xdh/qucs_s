@@ -46,7 +46,7 @@ public:
     static void registerComponent (QString, pInfoFunc);
     static void registerXmlComponent(const QString& category, const QSharedPointer<XmlComponent>& xmlComp);
     static void intoCategory (Module *);
-    static Component * getComponent (QString);
+    static Component* getComponent(const QString& model);
     static void registerDynamicComponents(void);
 
 public:
