@@ -159,6 +159,7 @@ void Qucs_S_SPAR_Viewer::CreateRightPanel(){
   // Notes
   Notes_Widget = new CodeEditor();
   dockNotes = new QDockWidget("Notes", this);
+  dockNotes->setObjectName("dockNotes");
   dockNotes->setWidget(Notes_Widget);
 
   // Disable dock closing
@@ -195,6 +196,8 @@ void Qucs_S_SPAR_Viewer::CreateRightPanel(){
 void Qucs_S_SPAR_Viewer::setFileManagementDock(){
 
   dockFiles = new QDockWidget("S-parameter files", this);
+  dockFiles->setObjectName("dockFiles");
+
 
   QScrollArea *scrollArea_Files = new QScrollArea();
   FileList_Widget = new QWidget();
@@ -253,6 +256,7 @@ void Qucs_S_SPAR_Viewer::setFileManagementDock(){
 void Qucs_S_SPAR_Viewer::setTraceManagementDock(){
 
   dockTracesList = new QDockWidget("Traces List", this);
+  dockTracesList->setObjectName("TracesDock");
 
   QWidget * TracesGroup = new QWidget();
   QVBoxLayout *Traces_VBox = new QVBoxLayout(TracesGroup);
@@ -462,6 +466,7 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock(){
 void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
   // Markers dock
   dockMarkers = new QDockWidget("Markers", this);
+  dockMarkers->setObjectName("dockMarkers");
 
   QWidget* MarkersGroup = new QWidget();
   QVBoxLayout* Markers_VBox = new QVBoxLayout(MarkersGroup);
@@ -552,6 +557,8 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
 void Qucs_S_SPAR_Viewer::setLimitManagementDock(){
   // Limits dock
   dockLimits = new QDockWidget("Limits", this);
+  dockLimits->setObjectName("dockLimits");
+
 
   QWidget * LimitsGroup = new QWidget();
   QVBoxLayout *Limits_VBox = new QVBoxLayout(LimitsGroup);
@@ -636,6 +643,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockChart = new QDockWidget("Magnitude / Phase", this);
   dockChart->setWidget(Magnitude_PhaseChart);
   dockChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockChart->setObjectName("dockChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockChart);
 
   // Smith Chart
@@ -644,6 +652,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockSmithChart = new QDockWidget("Smith", this);
   dockSmithChart->setWidget(smithChart);
   dockSmithChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockSmithChart->setObjectName("dockSmithChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockSmithChart);
 
   // Polar Chart
@@ -652,6 +661,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockPolarChart = new QDockWidget("Polar", this);
   dockPolarChart->setWidget(polarChart);
   dockPolarChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockPolarChart->setObjectName("dockPolarChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockPolarChart);
 
   // Port impedance chart settings
@@ -659,6 +669,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockImpedanceChart = new QDockWidget("Port Impedance", this);
   dockImpedanceChart->setWidget(impedanceChart);
   dockImpedanceChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockImpedanceChart->setObjectName("dockImpedanceChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockImpedanceChart);
   impedanceChart->change_Y_axis_title(QString("Resistance (Ω)")); // Remove default labels
   impedanceChart->change_Y_axis_units(QString("Ω"));
@@ -670,6 +681,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockStabilityChart = new QDockWidget("Stability", this);
   dockStabilityChart->setWidget(stabilityChart);
   dockStabilityChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockStabilityChart->setObjectName("dockStabilityChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockStabilityChart);
   stabilityChart->set_y_autoscale(false);
   stabilityChart->setRightYAxisEnabled(false); // Hide right y-axis
@@ -688,6 +700,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockVSWRChart = new QDockWidget("VSWR", this);
   dockVSWRChart->setWidget(VSWRChart);
   dockVSWRChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockVSWRChart->setObjectName("dockVSWRChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockVSWRChart);
   VSWRChart->set_y_autoscale(false);
   VSWRChart->setRightYAxisEnabled(false); // Hide right y-axis
@@ -704,6 +717,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
   dockGroupDelayChart = new QDockWidget("Group Delay", this);
   dockGroupDelayChart->setWidget(GroupDelayChart);
   dockGroupDelayChart->setAllowedAreas(Qt::AllDockWidgetAreas);
+  dockGroupDelayChart->setObjectName("dockGroupDelayChart");
   addDockWidget(Qt::LeftDockWidgetArea, dockGroupDelayChart);
   GroupDelayChart->change_Y_axis_title(QString("Time (ns)")); // Remove default labels
   GroupDelayChart->change_Y_axis_units(QString("ns"));
@@ -1591,12 +1605,12 @@ void Qucs_S_SPAR_Viewer::removeFile(QString ID)
 {
   // Find the row number of the button to remove
   int row_to_remove = -1;
-  QString dataset;
+  QString dataset_to_remove;
 
   for (int i = 0; i < List_RemoveButton.size(); i++) {
     if (List_RemoveButton.at(i)->objectName() == ID) {
       row_to_remove = i;
-      dataset = List_FileNames.at(i)->text();
+      dataset_to_remove = List_FileNames.at(i)->text();
       delete List_RemoveButton.takeAt(i);  // Use takeAt() instead of at()
       delete List_FileNames.takeAt(i);     // Removes AND returns the pointer
       break;
@@ -1608,8 +1622,15 @@ void Qucs_S_SPAR_Viewer::removeFile(QString ID)
     removeAndCollapseRow(FilesGrid, row_to_remove);
 
     // Find all traces belonging to this dataset and remove them
-    removeTracesByDataset(dataset);
+    removeTracesByDataset(dataset_to_remove);
   }
+
+  datasets.remove(dataset_to_remove);
+
+  // Update datasets' combobox
+  int index = QCombobox_datasets->findText(dataset_to_remove);
+  QCombobox_datasets->removeItem(index);
+  updateTracesCombo();
 }
 
 
@@ -1621,11 +1642,13 @@ void Qucs_S_SPAR_Viewer::removeFile()
   removeFile(ID);
 }
 
+
+// Given the name of a dataset, this function removes all traces related to it
 void Qucs_S_SPAR_Viewer::removeTracesByDataset(const QString& dataset_to_remove) {
   // Iterate through the outer QMap (display modes)
-  for (auto mode_it = traceMap.begin(); mode_it != traceMap.end(); ) {
-    QMap<QString, TraceProperties>& traces = mode_it.value();
-    DisplayMode mode = mode_it.key();
+
+  for (const DisplayMode& mode : traceMap.keys()) {
+    QMap<QString, TraceProperties>& traces = traceMap[mode];
 
     // Iterate through the inner QMap (traces in the current mode)
     for (auto trace_it = traces.begin(); trace_it != traces.end(); ) {
@@ -1648,13 +1671,6 @@ void Qucs_S_SPAR_Viewer::removeTracesByDataset(const QString& dataset_to_remove)
       } else {
         ++trace_it; // Increment iterator if not removed
       }
-    }
-
-    // Check if the mode is now empty after processing all traces
-    if (traces.isEmpty()) {
-      mode_it = traceMap.erase(mode_it);
-    } else {
-      ++mode_it;
     }
   }
 }
@@ -3729,7 +3745,7 @@ void Qucs_S_SPAR_Viewer::slotLoadSession()
   QString fileName = QFileDialog::getOpenFileName(this,
                                                   tr("Open S-parameter Viewer Session"),
                                                   QDir::homePath(),
-                                                  tr("Qucs-S snp viewer session (*.spar);"));
+                                                  tr("Qucs-S snp viewer session (*.spar)"));
 
   loadSession(fileName);
 }
@@ -3782,32 +3798,38 @@ bool Qucs_S_SPAR_Viewer::save() {
     }
     xml.writeEndElement(); // datasets
   }
-/*
-         // Save traces
+
+  // Save traces
   if (!traceMap.isEmpty()) { //Check empty map
     xml.writeStartElement("traces");
-    for (const QString& traceName : traceMap.keys()) {
-      TraceProperties props = traceMap[traceName];
-      int dotIndex = traceName.indexOf('.');
+    // Loop display mode
+    for (const DisplayMode& mode : traceMap.keys()) {
+      // For each display mode, get all the traces
+      QMap<QString, TraceProperties>& traces = traceMap[mode];
+      // Iterate through the inner QMap (traces in the current mode)
+      for (const QString& traceName : traces.keys()) {
+          TraceProperties props = traces[traceName];
+          int dotIndex = traceName.indexOf('.');
 
-      QString dataset = traceName.left(dotIndex);
-      QString trace = traceName.mid(dotIndex + 1);
+          QString dataset = traceName.left(dotIndex);
+          QString trace = traceName.mid(dotIndex + 1);
 
-      if (trace.endsWith("_n.u.")) {
-        trace.chop(5);
-      }
+          if (trace.endsWith("_n.u.")) {
+            trace.chop(5);
+          }
 
-      xml.writeStartElement("trace");
-      xml.writeAttribute("display", props.display_mode);
-      xml.writeAttribute("dataset", dataset); // Extract dataset name
-      xml.writeAttribute("name", trace);
-      xml.writeAttribute("color", props.colorButton->palette().color(QPalette::Button).name());
-      xml.writeAttribute("width", QString::number(props.width->value()));
-      xml.writeAttribute("style", props.LineStyleComboBox->currentText());
-      xml.writeEndElement(); // trace
+          xml.writeStartElement("trace");
+          xml.writeAttribute("display", QString::number((int) mode)); // The display mode is saved as an integer
+          xml.writeAttribute("dataset", dataset); // Extract dataset name
+          xml.writeAttribute("name", trace);
+          xml.writeAttribute("color", props.colorButton->palette().color(QPalette::Button).name());
+          xml.writeAttribute("width", QString::number(props.width->value()));
+          xml.writeAttribute("style", props.LineStyleComboBox->currentText());
+          xml.writeEndElement(); // trace
+        }
     }
     xml.writeEndElement(); // traces
-  }*/
+  }
 
          // Save markers
   if (!markerMap.isEmpty()) { //Check empty map
@@ -3840,13 +3862,27 @@ bool Qucs_S_SPAR_Viewer::save() {
     xml.writeEndElement(); // limits
   }
 
-         // Save notes
+  // Save notes
   xml.writeStartElement("notes");
   xml.writeCDATA(Notes_Widget->toPlainText()); // Use CDATA for notes
   xml.writeEndElement(); // notes
 
+
+  // Save charts state
+  saveRectangularPlotSettings(xml, Magnitude_PhaseChart, "MagnitudePhaseChartSettings");
+  saveRectangularPlotSettings(xml, impedanceChart, "ImpedanceChartSettings");
+  saveRectangularPlotSettings(xml, stabilityChart, "StabilityChartSettings");
+  saveRectangularPlotSettings(xml, VSWRChart, "VSWRChartSettings");
+  saveRectangularPlotSettings(xml, GroupDelayChart, "GroupDelayChartSettings");
+
+  saveSmithPlotSettings(xml, smithChart, "SmithChartSettings");
+  savePolarPlotSettings(xml, polarChart, "PolarChartSettings");
+
   xml.writeEndElement(); // session
   xml.writeEndDocument();
+
+
+
 
   if (file.error() != QFile::NoError) {
     QMessageBox::warning(this, tr("Save Session"), tr("Error writing file: ") + file.errorString());
@@ -3877,6 +3913,7 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
     QXmlStreamReader::TokenType token = xml.readNext();
 
     if (token == QXmlStreamReader::StartElement) {
+     // qDebug() << xml.name();
       if (xml.name() == QStringLiteral("settings")) {
         while (!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == QStringLiteral("settings"))) {
           if (xml.tokenType() == QXmlStreamReader::StartElement) {
@@ -3925,41 +3962,21 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
             QString traceName = xml.attributes().value("name").toString();
             traceName = traceName.mid(traceName.indexOf('.') + 1); // Remove all that comes before the dot, including the dot.
             QString dataset = xml.attributes().value("dataset").toString(); // Read dataset from attributes
-            QString modeName = xml.attributes().value("display").toString(); // Display mode (e.g. rectangular, polar, Smith, etc.)
+            DisplayMode displayMode = (DisplayMode) xml.attributes().value("display").toInt(); // Display mode (e.g. rectangular, polar, Smith, etc.)
             QColor color(xml.attributes().value("color").toString()); // Read color from attributes
             int width = xml.attributes().value("width").toString().toInt(); // Read width from attributes
             QString style = xml.attributes().value("style").toString(); // Read style from attributes
 
             // Parse the traceName to determine parameter and display mode
             QString parameter;
-            DisplayMode displayMode;
 
             // Assuming the format is like "S11_dB", "S21_Smith", etc.
             if (traceName.contains("_")) {
               // Split parameter and mode
               parameter = traceName.left(traceName.indexOf('_'));
-
-              // Determine display mode from string
-              if (modeName == "Magnitude") {
-                displayMode = DisplayMode::Magnitude_dB;
-              } else if (modeName == "Phase") {
-                displayMode = DisplayMode::Phase;
-              } else if (modeName == "Smith") {
-                displayMode = DisplayMode::Smith;
-              } else if (modeName == "Polar") {
-                displayMode = DisplayMode::Polar;
-              } else if (modeName == "Natural Units") {
-                displayMode = DisplayMode::PortImpedance;
-              } else if (modeName == "Group Delay") {
-                displayMode = DisplayMode::GroupDelay;
-              } else {
-                // Default case or handle error
-                displayMode = DisplayMode::Magnitude_dB;
-              }
             } else {
               // If no underscore, assume the whole name is the parameter and use Magnitude_dB as default
               parameter = traceName;
-              displayMode = DisplayMode::PortImpedance; // Assuming this is appropriate for parameters like "Re{Zin}"
             }
 
             // Create TraceInfo struct
@@ -3995,7 +4012,22 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
         }
       } else if (xml.name() == QStringLiteral("notes")) {
         Notes_Widget->setPlainText(xml.readElementText());
+      }  else if (xml.name() == QStringLiteral("MagnitudePhaseChartSettings")) {
+        loadRectangularPlotSettings(xml, Magnitude_PhaseChart, "MagnitudePhaseChartSettings");
+      } else if (xml.name() == QStringLiteral("ImpedanceChartSettings")) {
+        loadRectangularPlotSettings(xml, impedanceChart, "ImpedanceChartSettings");
+      } else if (xml.name() == QStringLiteral("StabilityChartSettings")) {
+        loadRectangularPlotSettings(xml, stabilityChart, "StabilityChartSettings");
+      } else if (xml.name() == QStringLiteral("VSWRChartSettings")) {
+        loadRectangularPlotSettings(xml, VSWRChart, "VSWRChartSettings");
+      } else if (xml.name() == QStringLiteral("GroupDelayChartSettings")) {
+        loadRectangularPlotSettings(xml, GroupDelayChart, "GroupDelayChartSettings");
+      } else if (xml.name() == QStringLiteral("SmithChartSettings")) {
+        loadSmithPlotSettings(xml, smithChart, "SmithChartSettings");
+      } else if (xml.name() == QStringLiteral("PolarChartSettings")) {
+        loadPolarPlotSettings(xml, polarChart, "PolarChartSettings");
       }
+
     }
   }
 
@@ -4523,7 +4555,7 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString &path) {
   QStringList paths;
   for(const QString& file : newFiles) {
     const QString fullPath = dir.absoluteFilePath(file);
-    if(!filePaths.contains(fullPath)) {
+    if(!filePaths.contains(file)) {
       paths.append(fullPath);
     }
   }
@@ -4782,3 +4814,232 @@ void Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection(int index) {
   }
 }
 
+
+void Qucs_S_SPAR_Viewer::saveRectangularPlotSettings(QXmlStreamWriter &xml,
+                                                     RectangularPlotWidget *widget,
+                                                     const QString &elementName)
+{
+  if (!widget) return;
+
+  auto settings = widget->getSettings();
+
+  xml.writeStartElement(elementName);
+
+  xml.writeTextElement("xAxisMin", QString::number(settings.xAxisMin));
+  xml.writeTextElement("xAxisMax", QString::number(settings.xAxisMax));
+  xml.writeTextElement("xAxisDiv", QString::number(settings.xAxisDiv));
+  xml.writeTextElement("xAxisUnits", settings.xAxisUnits);
+
+  xml.writeTextElement("yAxisMin", QString::number(settings.yAxisMin));
+  xml.writeTextElement("yAxisMax", QString::number(settings.yAxisMax));
+  xml.writeTextElement("yAxisDiv", QString::number(settings.yAxisDiv));
+
+  xml.writeTextElement("y2AxisMin", QString::number(settings.y2AxisMin));
+  xml.writeTextElement("y2AxisMax", QString::number(settings.y2AxisMax));
+  xml.writeTextElement("y2AxisDiv", QString::number(settings.y2AxisDiv));
+
+  xml.writeTextElement("showValues", settings.showValues ? "true" : "false");
+  xml.writeTextElement("lockAxis", settings.lockAxis ? "true" : "false");
+
+  xml.writeEndElement(); // elementName
+}
+
+void Qucs_S_SPAR_Viewer::loadRectangularPlotSettings(QXmlStreamReader &xml,
+                                                     RectangularPlotWidget *widget,
+                                                     const QString &elementName)
+{
+  if (!widget) return;
+
+  if (!(xml.isStartElement() && xml.name() == elementName)) {
+    // Not positioned at the correct start element, return early
+    return;
+  }
+  xml.readNext();
+  RectangularPlotWidget::AxisSettings settings;
+
+         // Read inside the element until the corresponding end element
+  while (!(xml.tokenType() == QXmlStreamReader::EndElement)) {
+    if (xml.tokenType() == QXmlStreamReader::StartElement) {
+      QStringView name = xml.name();
+      QString text = xml.readElementText();
+
+      if (name == QStringView(u"xAxisMin")) {
+        settings.xAxisMin = text.toDouble();
+      } else if (name == QStringView(u"xAxisMax")) {
+        settings.xAxisMax = text.toDouble();
+      } else if (name == QStringView(u"xAxisDiv")) {
+        settings.xAxisDiv = text.toDouble();
+      } else if (name == QStringView(u"xAxisUnits")) {
+        settings.xAxisUnits = text;
+      } else if (name == QStringView(u"yAxisMin")) {
+        settings.yAxisMin = text.toDouble();
+      } else if (name == QStringView(u"yAxisMax")) {
+        settings.yAxisMax = text.toDouble();
+      } else if (name == QStringView(u"yAxisDiv")) {
+        settings.yAxisDiv = text.toDouble();
+      } else if (name == QStringView(u"y2AxisMin")) {
+        settings.y2AxisMin = text.toDouble();
+      } else if (name == QStringView(u"y2AxisMax")) {
+        settings.y2AxisMax = text.toDouble();
+      } else if (name == QStringView(u"y2AxisDiv")) {
+        settings.y2AxisDiv = text.toDouble();
+      } else if (name == QStringView(u"showValues")) {
+        settings.showValues = (text == "true");
+      } else if (name == QStringView(u"lockAxis")) {
+        settings.lockAxis = (text == "true");
+      }
+    }
+    xml.readNext();
+  }
+
+  widget->setSettings(settings);
+  xml.readNext();
+}
+
+
+void Qucs_S_SPAR_Viewer::saveSmithPlotSettings(QXmlStreamWriter &xml,
+                                                     SmithChartWidget *widget,
+                                                     const QString &elementName)
+{
+  if (!widget) return;
+
+  auto settings = widget->getSettings();
+
+  xml.writeStartElement(elementName);
+
+  xml.writeTextElement("Z0", settings.Z0);
+  xml.writeTextElement("freqMin", QString::number(settings.freqMin));
+  xml.writeTextElement("freqMax", QString::number(settings.freqMax));
+  xml.writeTextElement("freqUnit", settings.freqUnit);
+
+
+  xml.writeTextElement("z_chart", settings.z_chart ? "true" : "false");
+  xml.writeTextElement("y_chart", settings.y_chart ? "true" : "false");
+
+  xml.writeEndElement(); // elementName
+}
+
+
+void Qucs_S_SPAR_Viewer::loadSmithPlotSettings(QXmlStreamReader &xml,
+                                                     SmithChartWidget *widget,
+                                                     const QString &elementName)
+{
+  if (!widget) return;
+
+  if (!(xml.isStartElement() && xml.name() == elementName)) {
+    // Not positioned at the correct start element, return early
+    return;
+  }
+  xml.readNext();
+  SmithChartWidget::AxisSettings settings;
+
+         // Read inside the element until the corresponding end element
+  while (!(xml.tokenType() == QXmlStreamReader::EndElement)) {
+    if (xml.tokenType() == QXmlStreamReader::StartElement) {
+      QStringView name = xml.name();
+      QString text = xml.readElementText();
+
+      if (name == QStringView(u"freqMin")) {
+        settings.freqMin = text.toDouble();
+      } else if (name == QStringView(u"freqMax")) {
+        settings.freqMax = text.toDouble();
+      }  else if (name == QStringView(u"freqUnit")) {
+        settings.freqUnit = text;
+      } else if (name == QStringView(u"Z0")) {
+        settings.Z0 = text;
+      } else if (name == QStringView(u"y_chart")) {
+        settings.y_chart = (text == "true");
+      } else if (name == QStringView(u"z_chart")) {
+        settings.z_chart = (text == "true");
+      }
+    }
+    xml.readNext();
+  }
+
+  widget->setSettings(settings);
+  xml.readNext();
+}
+
+
+void Qucs_S_SPAR_Viewer::savePolarPlotSettings(QXmlStreamWriter &xml,
+                                               PolarPlotWidget *widget,
+                                               const QString &elementName)
+{
+  if (!widget) return;
+
+  auto settings = widget->getSettings();
+
+  xml.writeStartElement(elementName);
+
+  xml.writeTextElement("freqMin", QString::number(settings.freqMin));
+  xml.writeTextElement("freqMax", QString::number(settings.freqMax));
+  xml.writeTextElement("freqUnit", settings.freqUnit);
+
+  xml.writeTextElement("radius_min", QString::number(settings.radius_min));
+  xml.writeTextElement("radius_max", QString::number(settings.radius_max));
+  xml.writeTextElement("radius_div", QString::number(settings.radius_div));
+
+
+  xml.writeTextElement("marker_format", settings.marker_format);
+
+  xml.writeEndElement(); // elementName
+}
+
+
+void Qucs_S_SPAR_Viewer::loadPolarPlotSettings(QXmlStreamReader &xml,
+                                               PolarPlotWidget *widget,
+                                               const QString &elementName)
+{
+  if (!widget) return;
+
+  if (!(xml.isStartElement() && xml.name() == elementName)) {
+    // Not positioned at the correct start element, return early
+    return;
+  }
+  xml.readNext();
+  PolarPlotWidget::AxisSettings settings;
+
+         // Read inside the element until the corresponding end element
+  while (!(xml.tokenType() == QXmlStreamReader::EndElement)) {
+    if (xml.tokenType() == QXmlStreamReader::StartElement) {
+      QStringView name = xml.name();
+      QString text = xml.readElementText();
+
+      if (name == QStringView(u"freqMin")) {
+        settings.freqMin = text.toDouble();
+      } else if (name == QStringView(u"freqMax")) {
+        settings.freqMax = text.toDouble();
+      }  else if (name == QStringView(u"freqUnit")) {
+        settings.freqUnit = text;
+      }  else if (name == QStringView(u"radius_min")) {
+        settings.radius_min = text.toDouble();
+      } else if (name == QStringView(u"radius_max")) {
+        settings.radius_max = text.toDouble();
+      } else if (name == QStringView(u"radius_div")) {
+        settings.radius_div = text.toDouble();
+      } else if (name == QStringView(u"marker_format")) {
+        settings.marker_format = text;
+      }
+    }
+    xml.readNext();
+  }
+
+  widget->setSettings(settings);
+  xml.readNext();
+}
+
+
+       // Wrapper of void "Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)". It is needed to open a Touchstone file from command line
+void Qucs_S_SPAR_Viewer::addFile(const QFileInfo& fileInfo) {
+  if (fileInfo.exists()) {
+    QStringList fileNames;
+    fileNames.append(fileInfo.absoluteFilePath());
+    addFiles(fileNames);
+  } else {
+    QMessageBox::warning(
+        this,
+        tr("Error"),
+        tr("The file or directory does not exist.")
+        );
+  }
+}

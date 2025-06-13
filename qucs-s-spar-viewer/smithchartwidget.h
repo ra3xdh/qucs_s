@@ -54,6 +54,20 @@ public:
     QPen pen;
   };
 
+  struct AxisSettings {
+    QString Z0;
+
+    double freqMax;
+    double freqMin;
+    QString freqUnit;
+
+    bool y_chart;
+    bool z_chart;
+  };
+
+  SmithChartWidget::AxisSettings getSettings() const;
+  void setSettings(const AxisSettings& settings);
+
   SmithChartWidget(QWidget *parent = nullptr);
   ~SmithChartWidget() override;
 

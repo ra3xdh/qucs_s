@@ -21,13 +21,16 @@
 #ifndef CDL_NETLIST_WRITER_H
 #define CDL_NETLIST_WRITER_H
 
-class QTextStream;
+#include <QMap>
+#include <QStringList>
+#include <QTextStream>
+
 class Schematic;
 
 class CdlNetlistWriter
 {
 public:
-    CdlNetlistWriter(QTextStream& netlistStream, Schematic* schematic);
+    CdlNetlistWriter(QTextStream& netlistStream, Schematic* schematic, bool resolveSpicePrefix);
     ~CdlNetlistWriter() {};
 
     bool write();
@@ -35,9 +38,15 @@ public:
 private:
     int prepareNetlist();
     void startNetlist();
+    void resolveNetListContinuation(QStringList& netList);
+    void resolveSpicePrefix();
 
     QTextStream& a_netlistStream;
     Schematic* a_schematic;
+    const bool a_resolveSpicePrefix;
+    QString a_netListString;
+    QTextStream a_netListStringStream;
+    QTextStream& a_effectiveNetlistStream;
 };
 
 #endif // CDL_NETLIST_WRITER_H

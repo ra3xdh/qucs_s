@@ -455,7 +455,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     QVBoxLayout *propertyTableLayout = new QVBoxLayout(propertyGroup);
 
     // Allow populating from a spice file if appropriate.
-    if (QStringList({"Diode", "_BJT", "JFET", "MOSFET", "VDMOS"}).contains(component->Model))
+    if (QStringList({"Diode", "_BJT", "JFET", "MOSFET", "_MOSFET", "VDMOS"}).contains(component->Model))
     {
       QHBoxLayout *spiceButtonLayout = new QHBoxLayout;
       propertyTableLayout->addLayout(spiceButtonLayout);

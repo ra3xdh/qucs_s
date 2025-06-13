@@ -192,6 +192,7 @@ private slots:
   void slotSimSettings();
   void slotSaveNetlist();
   void slotSaveCdlNetlist();
+  void slotCdlSettings();
   void slotAfterSpiceSimulation(ExternSimDialog *SimDlg);
   void slotBuildVAModule();
   /*void slotBuildXSPICEIfs(int mode = 0);
@@ -225,7 +226,7 @@ public:
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
           *editCut, *editCopy, *magAll, *magSel, *magOne, *magMinus, *filePrintFit, *tune,
           *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias,
-          *saveCdlNetlist;
+          *saveCdlNetlist, *cdlSettings;
 
   QAction *exportAsImage;
 
@@ -449,6 +450,7 @@ private:
   void launchTool(const QString&, const QString&,
                   const QStringList& = QStringList(),bool qucs_tool = false); // tool, description and args
   friend class SaveDialog;
+
   QString lastExportFilename;
 };
 

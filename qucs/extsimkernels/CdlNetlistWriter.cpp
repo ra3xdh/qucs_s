@@ -28,19 +28,36 @@
 #include "config.h"
 #endif
 
-#include <QTextStream>
+#include <QMutableListIterator>
+#include <QRegularExpression>
 
-CdlNetlistWriter::CdlNetlistWriter(QTextStream& netlistStream, Schematic* schematic) :
+#include <iostream>
+
+CdlNetlistWriter::CdlNetlistWriter(
+        QTextStream& netlistStream,
+        Schematic* schematic,
+        bool resolveSpicePrefix) :
     a_netlistStream(netlistStream),
-    a_schematic(schematic)
+    a_schematic(schematic),
+    a_resolveSpicePrefix(resolveSpicePrefix),
+    a_netListString(),
+    a_netListStringStream(&a_netListString, QIODeviceBase::WriteOnly),
+    a_effectiveNetlistStream(resolveSpicePrefix ? a_netListStringStream : a_netlistStream)
 {
+    if (a_resolveSpicePrefix)
+    {
+        // reserve space for a netlist of 100000 line of 80 characters each
+        a_netListString.reserve(100000 * 80);
+    }
 }
 
 bool CdlNetlistWriter::write()
 {
-    a_netlistStream << "* Qucs " << PACKAGE_VERSION << "  " << a_schematic->getDocName() << "\n";
+    a_effectiveNetlistStream << "* Qucs " << PACKAGE_VERSION << "  " << a_schematic->getDocName() << "\n";
 
-    a_netlistStream << AbstractSpiceKernel::collectSpiceLibs(a_schematic);
+    a_effectiveNetlistStream << AbstractSpiceKernel::collectSpiceLibs(a_schematic);
+    QString s(AbstractSpiceKernel::collectSpiceLibs(a_schematic));
+    a_effectiveNetlistStream << s;
 
     if (prepareNetlist() == -10)
     {
@@ -49,7 +66,15 @@ bool CdlNetlistWriter::write()
 
     startNetlist();
 
-    a_netlistStream << ".END\n";
+    a_effectiveNetlistStream << ".END\n";
+
+    if (a_resolveSpicePrefix)
+    {
+        a_effectiveNetlistStream.flush();
+        resolveSpicePrefix();
+
+        a_netlistStream << a_netListString;
+    }
 
     return true;
 }
@@ -132,7 +157,7 @@ int CdlNetlistWriter::prepareNetlist()
     QStringList collect;
     QPlainTextEdit errorText;
 
-    if (!a_schematic->giveNodeNames(&a_netlistStream, countInit, collect, &errorText, numPorts))
+    if (!a_schematic->giveNodeNames(&a_effectiveNetlistStream, countInit, collect, &errorText, numPorts))
     {
         fprintf(stderr, "Error giving NodeNames\n");
         return -10;
@@ -151,12 +176,12 @@ void CdlNetlistWriter::startNetlist()
         if (pc->isEquation)
         {
             s = pc->getExpression(spicecompat::CDL);
-            a_netlistStream << s;
+            a_effectiveNetlistStream << s;
         }
     }
 
     // global net 0 is always ground
-    a_netlistStream << ".GLOBAL 0:G\n";
+    a_effectiveNetlistStream << ".GLOBAL 0:G\n";
 
     // Components
     for (Component *pc : a_schematic->a_DocComps)
@@ -164,7 +189,8 @@ void CdlNetlistWriter::startNetlist()
         if (a_schematic->getIsAnalog() && !pc->isSimulation && !pc->isEquation)
         {
             s = pc->getSpiceNetlist(spicecompat::CDL);
-            a_netlistStream << s;
+
+            a_effectiveNetlistStream << s;
         }
     }
 
@@ -175,9 +201,143 @@ void CdlNetlistWriter::startNetlist()
         if (pc->SpiceModel==".MODEL")
         {
             s = pc->getSpiceModel();
-            a_netlistStream << s;
+            a_effectiveNetlistStream << s;
         }
     }*/
 }
 
+void CdlNetlistWriter::resolveNetListContinuation(QStringList& netList)
+{
+    QMutableListIterator<QString> it(netList);
+    while (it.hasNext())
+    {
+        it.next();
+        if (it.hasNext())
+        {
+            QString line(QString(it.peekNext()).trimmed());
+            if (!line.isEmpty() && line[0] == '+')
+            {
+                line[0] = ' ';
+                it.value() += line;
+                it.next();
+                it.remove();
+                it.previous();
+            }
+        }
+    }
+}
+
+void CdlNetlistWriter::resolveSpicePrefix()
+{
+#if 0 // several test-cases for resolve spice prefix
+    a_netListString = QString::fromUtf8(
+
+"* Qucs 25.1.1  /home/herman/.qucs/CDL-Export-testcases_prj/cmim.sch\n"
+"\n"
+".SUBCKT IHP_PDK_nonlinear_components_diodevss_2kv  gnd PVdd Pad PVss m=1\n"
+"      XD12 PVdd Pad PVss diodevss_2kv m={m}\n"
+".ENDS\n"
+"  \n"
+"\n"
+"\n"
+"Xdiodevss_2kv1 0  net_vdd net_pin net_vss IHP_PDK_nonlinear_components_diodevss_2kv m=1\n"
+"Xdiodevss_2kv2 0  net_vdd net_pin IHP_PDK_nonlinear_components_diodevss_2kv m=1\n"
+"Xdiodevss_2kv3 0  net_vdd net_pin net_vss\n"
+"+ IHP_PDK_nonlinear_components_diodevss_2kv m=1\n"
+"\n"
+".GLOBAL 0:G\n"
+"\n"
+"\n"
+"XC1 net_top  net_bottom cmim w=7.0u l=7.0u m=1\n"
+"XD1 net_top  net_bottom dantenna w=0.78u l=0.78u m=1\n"
+"XM1 net_d  net_g  net_s  net_b sg13_hv_nmos w=0.13u l=0.13u ng=1 m=1ßn\n"
+"M2 net_d  net_g  net_s  net_b sg13_hv_nmos w=0.13u l=0.13u ng=1 m=1ßn\n"
+"XQ1 net_col  net_base  net_emi  bet_bulk npn13G2 Nx=1\n"
+"XR1 net_bottom  net_top rsil w=1u l=1u m=1\n"
+".END"
+    );
+#endif
+
+
+    Q_ASSERT(!a_netListString.isEmpty());
+
+    QStringList netList(a_netListString.split("\n"));
+
+    resolveNetListContinuation(netList);
+
+    // acquire subcircuits and respective number of ports
+    QRegularExpression subcktPattern(
+            QString::fromUtf8("^\\s*((\\.SUBCKT.*)|(\\.SUBCIRCUIT.*)|(\\.MACRO.*))"),
+            QRegularExpression::CaseInsensitiveOption);
+    Q_ASSERT(subcktPattern.isValid());
+
+    QMap<QString, bool> subcktsWithPins;
+
+    int from(0);
+    int idx;
+    while ((idx = netList.indexOf(subcktPattern, from)) != -1)
+    {
+        netList[idx].replace("=", " = ");
+        netList[idx].replace("/", " / ");
+        QStringList subcktComponents(netList[idx].split(' ', Qt::SkipEmptyParts));
+        uint32_t numPins(subcktComponents.size()-2);
+
+        int firstParamEqualSign(subcktComponents.indexOf("="));
+        if (firstParamEqualSign != -1)
+        {
+            numPins -= (subcktComponents.size() - firstParamEqualSign + 1);
+        }
+
+        if (subcktComponents.indexOf("/") != -1)
+        {
+            --numPins;
+        }
+
+        const QString subcktKey(QString::fromUtf8("%1_%2").arg(subcktComponents[1]).arg(numPins));
+        subcktsWithPins[subcktKey] = true;
+        qDebug() << "map subcircuit key: " << subcktKey;
+
+        from = idx+1;
+    }
+
+
+    // acquire subcircuit instances and respective number of ports
+    QRegularExpression subcktInstPattern(
+            QString::fromUtf8("^\\s*X(C|D|L|R|Q|J|M|I|V).*"),
+            QRegularExpression::CaseInsensitiveOption);
+    Q_ASSERT(subcktInstPattern.isValid());
+
+    from = 0;
+    while ((idx = netList.indexOf(subcktInstPattern, from)) != -1)
+    {
+        netList[idx].replace("=", " = ");
+        netList[idx].replace("/", " / ");
+        QStringList subcktInstComponents(netList[idx].split(' ', Qt::SkipEmptyParts));
+        uint32_t numPins(subcktInstComponents.size()-2);
+
+        int firstParamEqualSign(subcktInstComponents.indexOf("="));
+        if (firstParamEqualSign != -1)
+        {
+            numPins -= (subcktInstComponents.size() - firstParamEqualSign + 1);
+        }
+        uint32_t modelIdx(numPins+1);
+
+        if (subcktInstComponents.indexOf("/") != -1)
+        {
+            --numPins;
+        }
+
+        const QString subcktInstKey(QString::fromUtf8("%1_%2").arg(subcktInstComponents[modelIdx]).arg(numPins));
+        // check whether referenced subcircuit is present in current netlist
+        if (!subcktsWithPins.contains(subcktInstKey))
+        {
+            qDebug() << "remove spice prefix from: " << subcktInstKey;
+            a_netListString.replace(
+                    subcktInstComponents[0],
+                    subcktInstComponents[0].right(subcktInstComponents[0].size()-1));
+        }
+
+        from = idx+1;
+    }
+}
 

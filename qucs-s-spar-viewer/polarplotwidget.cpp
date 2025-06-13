@@ -190,29 +190,51 @@ void PolarPlotWidget::updatePlot() {
     delete series;
   }
 
+  const double PHASE_WRAP_THRESHOLD = 180.0;  // Degrees
+
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
     const QString &name = it.key();
     const Trace &trace = it.value();
 
-    QLineSeries *series = new QLineSeries();
-    series->setPen(trace.pen);
-    series->setName(name);
+    QLineSeries *currentSeries = new QLineSeries();
+    currentSeries->setPen(trace.pen);
+    currentSeries->setName(name);
+
+    double prevPhase = -1e3;  // Initialize with impossible value
 
     for (int i = 0; i < trace.values.size() && i < trace.frequencies.size(); ++i) {
       double frequency = trace.frequencies[i];
-      if (frequency >= fMin && frequency <= fMax) {  // Filter frequency
+      if (frequency >= fMin && frequency <= fMax) {
         std::complex value = trace.values[i];
         double magnitude = std::abs(value);
         double phase = std::arg(value) * 180.0 / M_PI;
         if (phase < 0) phase += 360;
-                series->append(phase, magnitude);
+
+        // Check for phase wrap (only after first point)
+        if (prevPhase != -1e3 && std::abs(phase - prevPhase) > PHASE_WRAP_THRESHOLD) {
+          // Finalize current series
+          polarChart->addSeries(currentSeries);
+          currentSeries->attachAxis(angleAxis);
+          currentSeries->attachAxis(radiusAxis);
+
+          // Start new series
+          currentSeries = new QLineSeries();
+          currentSeries->setPen(trace.pen);
+        }
+
+        currentSeries->append(phase, magnitude);
+        prevPhase = phase;
+
+       // qDebug() << frequency << ": " << magnitude << "  " << phase;
       }
     }
 
-    polarChart->addSeries(series);
-    series->attachAxis(angleAxis);
-    series->attachAxis(radiusAxis);
+    // Add the final series for this trace
+    polarChart->addSeries(currentSeries);
+    currentSeries->attachAxis(angleAxis);
+    currentSeries->attachAxis(radiusAxis);
   }
+
   drawCustomMarkers();
   polarChart->update();
 }
@@ -589,3 +611,34 @@ double PolarPlotWidget::getFrequencyMultiplier() const {
   }
 }
 
+
+// Send settings to the main program
+PolarPlotWidget::AxisSettings PolarPlotWidget::getSettings() const {
+  AxisSettings settings;
+  settings.freqMin = fMinSpinBox->value();
+  settings.freqMax = fMaxSpinBox->value();
+  settings.freqUnit = fUnitComboBox->currentText();
+
+  settings.radius_min = rAxisMin->value();
+  settings.radius_max = rAxisMax->value();
+  settings.radius_div = rAxisDiv->value();
+
+  settings.marker_format = displayModeCombo->currentText();
+
+  return settings;
+}
+
+// Get settings from the main program
+void PolarPlotWidget::setSettings(const AxisSettings& settings) {
+  fMinSpinBox->setValue(settings.freqMin);
+  fMaxSpinBox->setValue(settings.freqMax);
+  fUnitComboBox->setCurrentText(settings.freqUnit);
+
+  rAxisMin->setValue(settings.radius_min);
+  rAxisMax->setValue(settings.radius_max);
+  rAxisDiv->setValue(settings.radius_div);
+
+  displayModeCombo->setCurrentText(settings.marker_format);
+
+  update();
+}

@@ -17,6 +17,10 @@
 #include <complex>
 #include <limits>
 
+
+
+
+
 class RectangularPlotWidget : public QWidget
 {
   Q_OBJECT
@@ -45,6 +49,25 @@ public:
     double y2; // End y
     int y_axis; // 0: Left y-axis; 1: Right y-axis
     QPen pen;
+  };
+
+  // Struct to exchange the widget settings with the main program
+  struct AxisSettings {
+    double xAxisMin;
+    double xAxisMax;
+    double xAxisDiv;
+    QString xAxisUnits;
+
+    double yAxisMin;
+    double yAxisMax;
+    double yAxisDiv;
+
+    double y2AxisMin;
+    double y2AxisMax;
+    double y2AxisDiv;
+
+    bool showValues;
+    bool lockAxis;
   };
 
   explicit RectangularPlotWidget(QWidget *parent = nullptr);
@@ -107,6 +130,10 @@ public:
   bool updateLimit(const QString& limitId, const Limit& limit);
 
   QChart *chart() const { return ChartWidget; }
+
+  // Exchange the settings with the main program
+  AxisSettings getSettings() const;
+  void setSettings(const AxisSettings& settings);
 
 private slots:
   void updateXAxis();

@@ -119,7 +119,7 @@ void RectangularPlotWidget::addTrace(const QString& name, const Trace& trace)
         yAxisMin->setValue(y_min);
         yAxisMax->setValue(y_max);
         double y_step = round((y_max - y_min)/10);
-        y_step = floor(y_step / 5) * 5; // round to 5
+        y_step = ceil(y_step / 5) * 5; // round to 5
         yAxisDiv->setValue(y_step);
 
       }
@@ -492,7 +492,7 @@ void RectangularPlotWidget::updateYAxis()
   double yMax = yAxisMax->value();
   double yDiv = yAxisDiv->value();
 
-  double min_step = (yMax-yMin)/10;
+  double min_step = (yMax-yMin)/20;
 
   if (yDiv < min_step) {
     // Avoid excessive ticking
@@ -985,4 +985,55 @@ bool RectangularPlotWidget::areAxisSettingsLocked() const
 
 void RectangularPlotWidget::set_y_autoscale(bool value){
   y_autoscale = value;
+}
+
+
+// Send settings to the main program
+RectangularPlotWidget::AxisSettings RectangularPlotWidget::getSettings() const {
+  AxisSettings settings;
+  settings.xAxisMin = xAxisMin->value();
+  settings.xAxisMax = xAxisMax->value();
+  settings.xAxisDiv = xAxisDiv->value();
+  settings.xAxisUnits = xAxisUnits->currentText();
+
+  settings.yAxisMin = yAxisMin->value();
+  settings.yAxisMax = yAxisMax->value();
+  settings.yAxisDiv = yAxisDiv->value();
+
+  settings.y2AxisMin = y2AxisMin->value();
+  settings.y2AxisMax = y2AxisMax->value();
+  settings.y2AxisDiv = y2AxisDiv->value();
+
+  settings.showValues = showValuesCheckbox->isChecked();
+  settings.lockAxis = lockAxisCheckbox->isChecked();
+
+  return settings;
+}
+
+// Get settings from the main program
+void RectangularPlotWidget::setSettings(const AxisSettings& settings) {
+  xAxisMin->setValue(settings.xAxisMin);
+  xAxisMax->setValue(settings.xAxisMax);
+  xAxisDiv->setValue(settings.xAxisDiv);
+  int index = xAxisUnits->findText(settings.xAxisUnits);
+  if (index != -1) {
+    xAxisUnits->setCurrentIndex(index);
+  }
+
+  yAxisMin->setValue(settings.yAxisMin);
+  yAxisMax->setValue(settings.yAxisMax);
+  yAxisDiv->setValue(settings.yAxisDiv);
+
+  y2AxisMin->setValue(settings.y2AxisMin);
+  y2AxisMax->setValue(settings.y2AxisMax);
+  y2AxisDiv->setValue(settings.y2AxisDiv);
+
+  showValuesCheckbox->setChecked(settings.showValues);
+  lockAxisCheckbox->setChecked(settings.lockAxis);
+
+         // Update axes to reflect new settings
+  updateXAxis();
+  updateYAxis();
+  updateY2Axis();
+  updatePlot();
 }

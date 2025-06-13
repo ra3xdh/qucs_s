@@ -116,15 +116,25 @@ QPoint Schematic::modelToContents(const QPoint& coordinates)
     return contentsCoords;
 }
 
-double Schematic::clipScale(double offeredScale)
+/**
+   Minimum scale at which schematic could be drawn.
+*/
+constexpr double minScale = 0.1;
+
+/**
+   Maximum scale at which schematic could be drawn.
+*/
+constexpr double maxScale = 10.0;
+
+inline double clipScale(double offeredScale)
 {
-    if (offeredScale > a_maxScale) {
-        return a_maxScale;
-    } else if (offeredScale < a_minScale) {
-        return a_minScale;
-    } else {
-       return offeredScale;
+    if (offeredScale > maxScale) {
+        return maxScale;
     }
+    if (offeredScale < minScale) {
+        return minScale;
+    }
+    return offeredScale;
 }
 
 bool Schematic::shouldRender(const double& newScale, const QRect& newModelBounds, const QPoint& toBeDisplayed, const QPoint& viewportCoords) {

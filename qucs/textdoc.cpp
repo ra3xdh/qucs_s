@@ -422,7 +422,7 @@ int TextDoc::save ()
  * \brief Zooms the document in and out. Note, the zoom amount is fixed by Qt and the
  *        amount passed is ignored.
  */
-float TextDoc::zoomBy(float zoom)
+double TextDoc::zoomBy(double zoom)
 {
   // qucs_actions defines zooming in as > 1.
   if (zoom > 1.0) {

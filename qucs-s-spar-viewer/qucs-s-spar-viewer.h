@@ -122,6 +122,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   Qucs_S_SPAR_Viewer();
   ~Qucs_S_SPAR_Viewer();
   void addPathToWatcher(const QString &path); // It's needed to pass the directory to watch from the main program
+  void addFile(const QFileInfo& fileInfo); // The main qucs program uses this function to open a Touchstone file from the Project View
 
  private slots:
   void slotHelpIntro();
@@ -320,6 +321,17 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QString savepath;
   bool save();
   void loadSession(QString);
+
+  // Save rectangular plot settings
+  void saveRectangularPlotSettings(QXmlStreamWriter &xml, RectangularPlotWidget *widget, const QString &elementName);
+  void loadRectangularPlotSettings(QXmlStreamReader &xml, RectangularPlotWidget *widget, const QString &elementName);
+
+  void saveSmithPlotSettings(QXmlStreamWriter &xml, SmithChartWidget *widget, const QString &elementName);
+  void loadSmithPlotSettings(QXmlStreamReader &xml, SmithChartWidget *widget, const QString &elementName);
+
+  void savePolarPlotSettings(QXmlStreamWriter &xml, PolarPlotWidget *widget, const QString &elementName);
+  void loadPolarPlotSettings(QXmlStreamReader &xml, PolarPlotWidget *widget, const QString &elementName);
+
 
   // Notes
   QDockWidget *dockNotes;

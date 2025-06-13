@@ -592,6 +592,11 @@ void QucsApp::initActions()
   saveCdlNetlist->setWhatsThis(tr(QString::fromUtf8("Save CDL netlist to %1").arg(a_netlist2Console ? "console" : "file").toLatin1().constData()));
   connect(saveCdlNetlist, SIGNAL(triggered()), SLOT(slotSaveCdlNetlist()));
 
+  cdlSettings = new QAction(tr("CDL Settings..."), this);
+  cdlSettings->setStatusTip(tr("CDL Settings"));
+  cdlSettings->setWhatsThis(tr(QString::fromUtf8("CDL Settings").toLatin1().constData()));
+  connect(cdlSettings, SIGNAL(triggered()), SLOT(slotCdlSettings()));
+
   setMarker = new QAction(QIcon((":/bitmaps/svg/marker.svg")),	tr("Set Marker on Graph"), this);
   setMarker->setShortcut(Qt::CTRL|Qt::Key_B);
   setMarker->setStatusTip(tr("Sets a marker on a diagram's graph"));
@@ -822,7 +827,10 @@ void QucsApp::initMenuBar()
   simMenu->addAction(showMsg);
   simMenu->addAction(showNet);
   simMenu->addAction(save_netlist);
+  simMenu->addSeparator();
   simMenu->addAction(saveCdlNetlist);
+  simMenu->addAction(cdlSettings);
+  simMenu->addSeparator();
   simMenu->addAction(simSettings);
 
 

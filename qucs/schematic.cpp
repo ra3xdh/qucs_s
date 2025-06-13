@@ -16,39 +16,12 @@
  ***************************************************************************/
 
 #include <algorithm>
-#include <cassert>
-#include <limits.h>
-#include <stdlib.h>
-
-#include <QAction>
-#include <QApplication>
-#include <QClipboard>
-#include <QDebug>
-#include <QDir>
-#include <QDragEnterEvent>
-#include <QDragLeaveEvent>
-#include <QDragMoveEvent>
-#include <QDropEvent>
-#include <QEvent>
-#include <QFileInfo>
-#include <QLineEdit>
-#include <QListWidget>
-#include <QMouseEvent>
-#include <QPaintDevice>
-#include <QPainter>
-#include <QPixmap>
-#include <QPoint>
-#include <QPrinter>
-#include <QRect>
-#include <QTextStream>
-#include <QUrl>
-#include <QWheelEvent>
-#include <QRegularExpression>
+#include <QString>
 
 #include "components/vafile.h"
 #include "components/verilogfile.h"
 #include "components/vhdlfile.h"
-#include "diagrams/diagrams.h"
+#include "diagrams/diagram.h"
 #include "main.h"
 #include "mouseactions.h"
 #include "node.h"
@@ -71,12 +44,10 @@ std::list<Component*> SymbolComps;
     rectangle made by enlarging the source rectangle to include
     the \c point. Otherwise returns a rectangle of the same size.
 */
-static QRect includePoint(QRect rect, QPoint point) {
-  if (rect.contains(point)) {
-    return rect;
-  } else {
-    return rect.united(QRect{point, point});
-  }
+inline QRect includePoint(const QRect& rect, const QPoint& point) {
+  return rect.contains(point)
+       ? rect
+       : rect.united(QRect{point, point});
 }
 
 Schematic::Schematic(QucsApp *App_, const QString &Name_) :
@@ -111,20 +82,12 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_) :
     a_tmpViewY1(-200),
     a_tmpViewX2(200),
     a_tmpViewY2(200),
-    a_tmpUsedX1(-200),
-    a_tmpUsedY1(-200),
-    a_tmpUsedX2(200),
-    a_tmpUsedY2(200),
     a_undoActionIdx(0),
     // The 'i' means state for being unchanged.
     a_undoAction((QVector<QString*>() << new QString(" i\n</>\n</>\n</>\n</>\n"))),
     a_undoSymbolIdx(0),
     // The 'i' means state for being unchanged.
     a_undoSymbol((QVector<QString*>() << new QString(" i\n</>\n</>\n</>\n</>\n"))),
-    a_UsedX1(INT_MAX),
-    a_UsedY1(INT_MAX),
-    a_UsedX2(INT_MAX),
-    a_UsedY2(INT_MAX),
     a_previousCursorPosition(),
     a_dragIsOkay(false),
     a_FileInfo(),
@@ -934,7 +897,7 @@ void Schematic::zoomAroundPoint(double offeredScaleChange, QPoint coords, bool v
 }
 
 // -----------------------------------------------------------
-float Schematic::zoomBy(float s)
+double Schematic::zoomBy(double s)
 {
     // Change scale and keep the point displayed in the center
     // of the viewport at same place after scaling.
@@ -950,23 +913,13 @@ float Schematic::zoomBy(float s)
 // ---------------------------------------------------
 void Schematic::showAll()
 {
-    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
-    if (a_UsedX1 == 0)
-        if (a_UsedX2 == 0)
-            if (a_UsedY1 == 0)
-                if (a_UsedY2 == 0) {
-                    a_UsedX1 = a_UsedY1 = INT_MAX;
-                    a_UsedX2 = a_UsedY2 = INT_MIN;
-                    return;
-                }
+    const auto usedArea = allBoundingRect();
 
-    // Reshape model plane to cut off unused parts
-    constexpr int margin = 40;
-    QRect newModelBounds = modelRect();
-    newModelBounds.setLeft(a_UsedX1 - margin);
-    newModelBounds.setTop(a_UsedY1 - margin);
-    newModelBounds.setRight(a_UsedX2 + margin);
-    newModelBounds.setBottom(a_UsedY2 + margin);
+    if (usedArea.isNull()) {
+        return;
+    }
+
+    const QRect newModelBounds = usedArea.marginsAdded({40, 40, 40, 40});
 
     // The shape of the model plane may not fit the shape of the viewport,
     // so we looking for a scale value which enables to fit the whole model
@@ -982,22 +935,14 @@ void Schematic::showAll()
 
 // ------------------------------------------------------
 void Schematic::zoomToSelection() {
-    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
-    if (a_UsedX1 == 0)
-        if (a_UsedX2 == 0)
-            if (a_UsedY1 == 0)
-                if (a_UsedY2 == 0) {
-                    a_UsedX1 = a_UsedY1 = INT_MAX;
-                    a_UsedX2 = a_UsedY2 = INT_MIN;
+    const auto usedArea = allBoundingRect();
 
-                    // No elements present – nothing can be selected; quit
-                    return;
-                }
+    if (usedArea.isNull()) {
+        // No elements present – nothing is selected; quit
+        return;
+    }
 
-    const QRect selectedBoundingRect{ currentSelection().bounds };
-
-    // Working with raw coordinates is clumsy, abstract them out
-    const QRect usedBoundingRect{a_UsedX1, a_UsedY1, a_UsedX2 - a_UsedX1, a_UsedY2 - a_UsedY1};
+    const QRect selectedBoundingRect(currentSelection().bounds);
 
     if (selectedBoundingRect.width() == 0 || selectedBoundingRect.height() == 0) {
         // If nothing is selected, then what should be shown? Probably it's best
@@ -1005,13 +950,7 @@ void Schematic::zoomToSelection() {
         return;
     }
 
-    // While we here, lets reshape model plane to cut off unused parts
-    constexpr int margin = 40;
-    QRect modelBounds = modelRect();
-    modelBounds.setLeft(usedBoundingRect.left() - margin);
-    modelBounds.setTop(usedBoundingRect.top() - margin);
-    modelBounds.setRight(usedBoundingRect.right() + margin);
-    modelBounds.setBottom(usedBoundingRect.bottom() + margin);
+    const QRect modelBounds = usedArea.marginsAdded({40, 40, 40, 40});
 
     // Find out the scale at which selected area's longest side would fit
     // into the viewport
@@ -1031,47 +970,31 @@ void Schematic::showNoZoom()
     const QPoint vpCenter = viewportRect().center();
     const QPoint displayedInCenter = viewportToModel(vpCenter);
 
-    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
-    if (a_UsedX1 == 0)
-        if (a_UsedX2 == 0)
-            if (a_UsedY1 == 0)
-                if (a_UsedY2 == 0) {
-                    a_UsedX1 = a_UsedY1 = INT_MAX;
-                    a_UsedX2 = a_UsedY2 = INT_MIN;
-                    // If there is no elements in schematic, then just set scale 1.0
-                    // at the place we currently in.
-                    renderModel(noScale, includePoint(modelRect(), displayedInCenter), displayedInCenter, vpCenter);
-                    return;
-                }
+    const auto usedArea = allBoundingRect();
 
-    // Working with raw coordinates is clumsy. Wrap them in useful abstraction.
-    const QRect usedBoundingRect{a_UsedX1, a_UsedY1, a_UsedX2 - a_UsedX1, a_UsedY2 - a_UsedY1};
+    if (usedArea.isNull()) {
+      // If there is no elements in schematic, then just set scale 1.0
+      // at the place we currently in.
+      renderModel(noScale, includePoint(modelRect(), displayedInCenter), displayedInCenter, vpCenter);
+      return;
+    }
 
-    // Trim unused model space
-    constexpr int margin = 40;
-    QRect newModelBounds = modelRect();
-    newModelBounds.setLeft(usedBoundingRect.left() - margin);
-    newModelBounds.setTop(usedBoundingRect.top() - margin);
-    newModelBounds.setRight(usedBoundingRect.right() + margin);
-    newModelBounds.setBottom(usedBoundingRect.bottom() + margin);
+    const QRect newModelBounds = usedArea.marginsAdded({40, 40, 40, 40});
 
     // If a part of "used" area is currently displayed in the center of the
     // viewport, then keep it in the same place after scaling. Otherwise focus
     // on the center of the used area after scale change.
-    if (usedBoundingRect.contains(displayedInCenter)) {
+    if (usedArea.contains(displayedInCenter)) {
         renderModel(noScale, newModelBounds, displayedInCenter, vpCenter);
     } else {
-        renderModel(noScale, newModelBounds, usedBoundingRect.center(), vpCenter);
+        renderModel(noScale, newModelBounds, usedArea.center(), vpCenter);
     }
  }
 
 void Schematic::enlargeView(const Element* e) {
     const auto br = e->boundingRect();
 
-    a_UsedX1 = std::min(a_UsedX1, br.left());
-    a_UsedY1 = std::min(a_UsedY1, br.top());
-    a_UsedX2 = std::max(a_UsedX2, br.right());
-    a_UsedY2 = std::max(a_UsedY2, br.bottom());
+    a_UsedArea |= br;
 
     QRect newModel = modelRect()
         .united(br.marginsAdded({40, 40, 40, 40}));
@@ -1185,13 +1108,9 @@ void Schematic::drawGrid(QPainter* painter) {
     painter->restore();
 }
 
-void Schematic::updateAllBoundingRect() {
-    sizeOfAll(a_UsedX1, a_UsedY1, a_UsedX2, a_UsedY2);
-}
-
 QRect Schematic::allBoundingRect() {
     updateAllBoundingRect();
-    return QRect{a_UsedX1, a_UsedY1, (a_UsedX2 - a_UsedX1), (a_UsedY2 - a_UsedY1)};
+    return a_UsedArea;
 }
 
 namespace internal {
@@ -1208,7 +1127,7 @@ void unite(std::optional<QRect>& left, const QRect& right)
 }
 
 // ---------------------------------------------------
-void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
+void Schematic::updateAllBoundingRect()
 {
     std::optional<QRect> totalBounds = std::nullopt;
 
@@ -1238,17 +1157,7 @@ void Schematic::sizeOfAll(int &xmin, int &ymin, int &xmax, int &ymax)
         internal::unite(totalBounds, pp->boundingRect());
     }
 
-    if (totalBounds) {
-        xmin = totalBounds->left();
-        ymin = totalBounds->top();
-        xmax = totalBounds->right();
-        ymax = totalBounds->bottom();
-    } else {
-        xmin = 0;
-        ymin = 0;
-        xmax = 0;
-        ymax = 0;
-    }
+    a_UsedArea = totalBounds.has_value() ? *totalBounds : QRect();
 }
 
 Schematic::Selection Schematic::currentSelection() const {
@@ -1442,25 +1351,25 @@ int Schematic::save()
 // equal add or remove some in the symbol.
 int Schematic::adjustPortNumbers()
 {
-    int x1, x2, y1, y2;
+    QRect usedArea;
     // get size of whole symbol to know where to place new ports
     if (a_symbolMode)
-        sizeOfAll(x1, y1, x2, y2);
+        usedArea = allBoundingRect();
     else {
         a_Components = &SymbolComps;
         a_Wires = &SymbolWires;
         a_Nodes = &SymbolNodes;
         a_Diagrams = &SymbolDiags;
         a_Paintings = &a_SymbolPaints;
-        sizeOfAll(x1, y1, x2, y2);
+        usedArea = allBoundingRect();
         a_Components = &a_DocComps;
         a_Wires = &a_DocWires;
         a_Nodes = &a_DocNodes;
         a_Diagrams = &a_DocDiags;
         a_Paintings = &a_DocPaints;
     }
-    x1 += 40;
-    y2 += 20;
+    int x1 = usedArea.left() + 40;
+    int y2 = usedArea.bottom() + 20;
     setOnGrid(x1, y2);
 
     // delete all port names in symbol
@@ -1818,40 +1727,17 @@ void Schematic::switchPaintMode()
 {
     a_symbolMode = !a_symbolMode; // change mode
 
-    int tmp, t2;
-    float temp;
-    temp = a_Scale;
-    a_Scale = a_tmpScale;
-    a_tmpScale = temp;
-    tmp = contentsX();
-    t2 = contentsY();
+    std::swap(a_Scale, a_tmpScale);
+    int x = contentsX();
+    int y = contentsY();
     setContentsPos(a_tmpPosX, a_tmpPosY);
-    a_tmpPosX = tmp;
-    a_tmpPosY = t2;
-    tmp = a_ViewX1;
-    a_ViewX1 = a_tmpViewX1;
-    a_tmpViewX1 = tmp;
-    tmp = a_ViewY1;
-    a_ViewY1 = a_tmpViewY1;
-    a_tmpViewY1 = tmp;
-    tmp = a_ViewX2;
-    a_ViewX2 = a_tmpViewX2;
-    a_tmpViewX2 = tmp;
-    tmp = a_ViewY2;
-    a_ViewY2 = a_tmpViewY2;
-    a_tmpViewY2 = tmp;
-    tmp = a_UsedX1;
-    a_UsedX1 = a_tmpUsedX1;
-    a_tmpUsedX1 = tmp;
-    tmp = a_UsedY1;
-    a_UsedY1 = a_tmpUsedY1;
-    a_tmpUsedY1 = tmp;
-    tmp = a_UsedX2;
-    a_UsedX2 = a_tmpUsedX2;
-    a_tmpUsedX2 = tmp;
-    tmp = a_UsedY2;
-    a_UsedY2 = a_tmpUsedY2;
-    a_tmpUsedY2 = tmp;
+    a_tmpPosX = x;
+    a_tmpPosY = y;
+    std::swap(a_ViewX1, a_tmpViewX1);
+    std::swap(a_ViewY1, a_tmpViewY1);
+    std::swap(a_ViewX2, a_tmpViewX2);
+    std::swap(a_ViewY2, a_tmpViewY2);
+    std::swap(a_UsedArea, a_tmpUsedArea);
 }
 
 // *********************************************************************
@@ -1936,7 +1822,7 @@ void Schematic::scrollUp(int step)
 
     // Cut off a bit of unused model space from its bottom side.
     const auto b = modelBounds.bottom() - stepInModel;
-    if (b > a_UsedY2) {
+    if (b > a_UsedArea.bottom()) {
         modelBounds.setBottom(b);
     }
 
@@ -1969,7 +1855,7 @@ void Schematic::scrollDown(int step)
 
     // Cut off a bit of unused model space from its top side.
     const auto t = modelBounds.top() + stepInModel;
-    if (t < a_UsedY1) {
+    if (t < a_UsedArea.top()) {
         modelBounds.setTop(t);
     }
 
@@ -2003,7 +1889,7 @@ void Schematic::scrollLeft(int step)
 
     // Cut off a bit of unused model space from its right side.
     const auto r = modelBounds.right() - stepInModel;
-    if (r > a_UsedX2) {
+    if (r > a_UsedArea.right()) {
         modelBounds.setRight(r);
     }
 
@@ -2036,7 +1922,7 @@ void Schematic::scrollRight(int step)
 
     // Cut off a bit of unused model space from its left side.
     const auto l = modelBounds.left() + stepInModel;
-    if (l < a_UsedX1) {
+    if (l < a_UsedArea.left()) {
         modelBounds.setLeft(l);
     }
 

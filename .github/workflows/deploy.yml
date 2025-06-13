@@ -78,7 +78,8 @@ jobs:
     - name: Install Dependencies
       run: |
           sudo apt-get update
-          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix cups libcups2-dev xsdcxx libxerces-c-dev
+          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix cups libcups2-dev xsdcxx libxerces-c-dev \
+            libmuparser-dev
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
 
     - name: 'Install Qt6'
@@ -176,7 +177,7 @@ jobs:
       shell: bash
       run: |
           rm '/usr/local/share/man/man1/xsd.1'
-          brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick xsd
+          brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick xsd muparser
           echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
           export LDFLAGS="-L$(brew --prefix bison)/lib"
           source ~/.bashrc
@@ -200,6 +201,7 @@ jobs:
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/lang
         cp -pR ${{github.workspace}}/build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
         cp -pR ${{github.workspace}}/build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
         cp -pR ${{github.workspace}}/build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
@@ -212,6 +214,7 @@ jobs:
         cp -pR ${{github.workspace}}/library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
         cp -pR ${{github.workspace}}/library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
         cp -pR ${{github.workspace}}/library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        cp -pR ${{github.workspace}}/build/translations/*.qm ${{env.QUCS_MACOS_RESOURCES}}/lang
         macdeployqt ${{github.workspace}}/build/qucs/qucs-s.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
@@ -271,9 +274,10 @@ jobs:
     - name: 'Install Dependencies'
       shell: bash
       run: |
-        brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick xsd
+        brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick xsd muparser
         arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         /usr/local/bin/brew install xsd
+
         arch -arm64 brew install xerces-c
         cd $(brew --prefix xerces-c)/lib
         XERCES_C_MULTI_ARCH_LIB_NAME=libxerces-c.arm64_x86_64.dylib
@@ -285,6 +289,19 @@ jobs:
         XERCES_C_LIB_NAME=$(find . -type f -name libxerces-c-3.*.dylib)
         rm ${XERCES_C_LIB_NAME}
         mv ${XERCES_C_MULTI_ARCH_LIB_NAME} ${XERCES_C_LIB_NAME}
+
+        /usr/local/bin/brew install muparser
+        arch -arm64 brew install muparser
+        cd $(brew --prefix muparser)/lib
+        MUPARSER_MULTI_ARCH_LIB_NAME=libmuparser.arm64_x86_64.dylib
+        lipo \
+          libmuparser.dylib \
+          $(/usr/local/bin/brew --prefix muparser)/lib/libmuparser.dylib \
+          -output ${MUPARSER_MULTI_ARCH_LIB_NAME} \
+          -create
+        rm libmuparser.dylib
+        ln -s ${MUPARSER_MULTI_ARCH_LIB_NAME} libmuparser.dylib
+
         cd ${{github.workspace}}
         echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
         export LDFLAGS="-L$(brew --prefix bison)/lib"
@@ -310,6 +327,7 @@ jobs:
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
         mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/lang
         cp -pR ${{github.workspace}}/build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
         cp -pR ${{github.workspace}}/build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
         cp -pR ${{github.workspace}}/build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
@@ -322,6 +340,7 @@ jobs:
         cp -pR ${{github.workspace}}/library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
         cp -pR ${{github.workspace}}/library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
         cp -pR ${{github.workspace}}/library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
+        cp -pR ${{github.workspace}}/build/translations/*.qm ${{env.QUCS_MACOS_RESOURCES}}/lang
         macdeployqt ${{github.workspace}}/build/qucs/qucs-s.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
         macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
@@ -366,6 +385,17 @@ jobs:
         echo "Qucs-S version is ${{ env.VERSION }}"
         echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
 
+    - name: Install vcpkg
+      run: |
+        mkdir c:\vcpkg -ErrorAction SilentlyContinue
+        git clone https://github.com/microsoft/vcpkg.git c:\vcpkg
+        c:\vcpkg\bootstrap-vcpkg.bat
+        c:\vcpkg\vcpkg integrate install
+
+    - name: Install muparser via vcpkg
+      run: |
+        c:\vcpkg\vcpkg.exe install muparser:x64-windows
+
     - name: Checkout repository
       uses: actions/checkout@v4
 
@@ -405,7 +435,9 @@ jobs:
               -DCMAKE_INSTALL_PREFIX=${{github.workspace}}\build\qucs-suite  `
               -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl  `
               -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}   `
-              -DCI_VERSION="${{env.VERSION}}"
+              -DCI_VERSION="${{env.VERSION}}" `
+              -DCMAKE_TOOLCHAIN_FILE=c:\vcpkg\scripts\buildsystems\vcpkg.cmake `
+              -DCMAKE_MUPARSER_INCLUDES=c:\vcpkg\packages\muparser_x64-windows\include
 
     - name: 'Build Qucs-s'
       run: |
@@ -502,7 +534,7 @@ jobs:
         msystem: ucrt64
         cache: true
         update: true
-        install: bison flex dos2unix curl zip p7zip mingw-w64-ucrt-x86_64-xerces-c
+        install: bison flex dos2unix curl zip p7zip mingw-w64-ucrt-x86_64-xerces-c mingw-w64-ucrt-x86_64-muparser
         pacboy: cmake:p gcc:p qt6-base:p qt6-tools:p qt6-svg:p make:p ninja:p python:p gperf:p github-cli:p qt6-charts:p
 
     - name: Install xsd

@@ -907,6 +907,9 @@ void SmithChartWidget::onMinFreqChanged(double value)
   double minFreq = m_minFreqSpinBox->value();
   double maxFreq = m_maxFreqSpinBox->value();
 
+  m_maxFreqSpinBox->setMinimum(minFreq); // Update the minimum of the maximum freq
+
+
   if (minFreq > maxFreq) {
     m_minFreqSpinBox->blockSignals(true);
     m_minFreqSpinBox->setValue(maxFreq);
@@ -925,6 +928,8 @@ void SmithChartWidget::onMaxFreqChanged(double value)
   // Make sure max is greater than min
   double minFreq = m_minFreqSpinBox->value();
   double maxFreq = m_maxFreqSpinBox->value();
+
+  m_minFreqSpinBox->setMaximum(maxFreq); // Update the maximum of the minimum freq
   if (maxFreq < minFreq) {
     m_maxFreqSpinBox->blockSignals(true);
     m_maxFreqSpinBox->setValue(minFreq);
@@ -1057,4 +1062,30 @@ bool SmithChartWidget::updateMarkerFrequency(const QString& markerId, double new
   // Trigger repaint
   update();
   return true;
+}
+
+
+// Send settings to the main program
+SmithChartWidget::AxisSettings SmithChartWidget::getSettings() const {
+  AxisSettings settings;
+  settings.Z0 = m_Z0ComboBox->currentText();
+  settings.freqMin = m_minFreqSpinBox->value();
+  settings.freqMax = m_maxFreqSpinBox->value();
+  settings.freqUnit = m_freqUnitComboBox->currentText();
+
+  settings.z_chart = m_ShowConstantCurvesCheckBox->isChecked();
+  settings.y_chart = m_ShowAdmittanceChartCheckBox->isChecked();
+
+  return settings;
+}
+
+// Get settings from the main program
+void SmithChartWidget::setSettings(const AxisSettings& settings) {
+  m_Z0ComboBox->setCurrentText(settings.Z0);
+  m_minFreqSpinBox->setValue(settings.freqMin);
+  m_maxFreqSpinBox->setValue(settings.freqMax);
+  m_freqUnitComboBox->setCurrentText(settings.freqUnit);
+  m_ShowConstantCurvesCheckBox->setChecked(settings.z_chart);
+  m_ShowAdmittanceChartCheckBox->setChecked(settings.y_chart);
+  update();
 }

@@ -148,7 +148,7 @@ public:
     @param viewportRelative  tells if coordinates are absolute or relative to viewport
   */
   void zoomAroundPoint(double scaleChange, QPoint coords, bool viewportRelative);
-  float zoomBy(float);
+  double zoomBy(double);
   void  showAll();
   void zoomToSelection();
   void  showNoZoom();
@@ -283,15 +283,12 @@ private:
 
   // Two of those data sets are needed for Schematic and for symbol.
   // Which one is in "tmp..." depends on "symbolMode".
-  float a_tmpScale;
+  double a_tmpScale;
   int a_tmpViewX1;
   int a_tmpViewY1;
   int a_tmpViewX2;
   int a_tmpViewY2;
-  int a_tmpUsedX1;
-  int a_tmpUsedY1;
-  int a_tmpUsedX2;
-  int a_tmpUsedY2;
+  QRect a_tmpUsedArea;
 
   int a_undoActionIdx;
   QVector<QString *> a_undoAction;
@@ -326,15 +323,10 @@ protected slots:
   void slotScrollRight();
 
 private:
-  // Variables Used* hold the coordinates of top-left and bottom-right corners
-  // of a smallest rectangle which can fit all elements of the schematic.
+  // Describes the area occupied by all elements of schematic, i.e. it is
+  // the union of bounding rectangles of all elements.
   // This rectangle exists in the same coordinate system as View*-rectangle
-  int a_UsedX1;
-  int a_UsedY1;
-  int a_UsedX2;
-  int a_UsedY2;
-
-  void sizeOfAll(int&, int&, int&, int&);
+  QRect a_UsedArea;
 
   // Viewport-realative coordinates of the cursor between mouse movements.
   // Used in "pan with mouse" feature.
@@ -343,16 +335,6 @@ private:
   bool a_dragIsOkay;
   /*! \brief hold system-independent information about a schematic file */
   QFileInfo a_FileInfo;
-
-  /**
-    Minimum scale at which schematic could be drawn.
-  */
-  static constexpr double a_minScale = 0.1;
-
-  /**
-    Maximum scale at which schematic could be drawn.
-  */
-  static constexpr double a_maxScale = 10.0;
 
   /**
     Returns a rectangle which describes the model plane of the schematic.
@@ -365,12 +347,6 @@ private:
     width and height are equal to viewport's width and height.
   */
   QRect viewportRect();
-
-  /**
-    If given value violates lower or upper scale limit, then returns
-    the limit value, original value otherwise.
-  */
-  static double clipScale(double);
 
   /**
     Tells whether the model should be rerendered. Model should be rendered

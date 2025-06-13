@@ -53,7 +53,7 @@ public:
   void  setName (const QString&);
   bool  load ();
   int   save ();
-  virtual float zoomBy (float zoom) override;
+  virtual double zoomBy (double zoom) override;
   virtual void showNoZoom () override;
   void  becomeCurrent (bool);
   bool  loadSimulationTime (QString&);

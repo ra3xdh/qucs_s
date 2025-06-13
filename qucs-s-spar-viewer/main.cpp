@@ -104,11 +104,22 @@ int main( int argc, char ** argv )
 
   Qucs_S_SPAR_Viewer *qucs = new Qucs_S_SPAR_Viewer();
 
-  if (argc > 1) { // File directory to watch
+  if (argc > 1) { // File or directory path to watch
     QString path = QString(argv[1]);
-    qucs->addPathToWatcher(path);
-  }
+    QFileInfo fileInfo(path);
 
+    if (fileInfo.exists()) {
+      if (fileInfo.isDir()) {
+        // It's a directory
+        qucs->addPathToWatcher(path);
+      } else if (fileInfo.isFile()) {
+        // It's a file
+        qucs->addFile(fileInfo);
+      }
+    } else {
+      QMessageBox::warning(qucs, "Path Error", "The specified path does not exist.");
+    }
+  }
   qucs->raise();
   qucs->move(QucsSettings.x, QucsSettings.y);  // position before "show" !!!
   qucs->show();
