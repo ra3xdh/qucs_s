@@ -1856,11 +1856,17 @@ void Schematic::recreateComponent(Component* comp)
 
     // This is wrong place to adjust component's text position.
     // It should be better done in "recreate()" (idea for refactoring)
-         if (tx < x1) tx += comp->x1 - x1;
-    else if (tx > x2) tx += comp->x2 - x2;
+    if (tx < x1) {
+      tx += comp->x1 - x1;
+    } else if (tx > x2) {
+      tx += comp->x2 - x2;
+    }
 
-         if (ty < y1) ty += comp->y1 - y1;
-    else if (ty > y2) ty += comp->y2 - y2;
+    if (ty < y1) {
+      ty += comp->y1 - y1;
+    } else if (ty > y2) {
+      ty += comp->y2 - y2;
+    }
 
     comp->tx = tx;
     comp->ty = ty;

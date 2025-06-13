@@ -1970,41 +1970,71 @@ void Schematic::slotScrollRight()
 // Is called if an object is dropped (after drag'n drop).
 void Schematic::contentsDropEvent(QDropEvent *Event)
 {
-    if (a_dragIsOkay) {
-        QList<QUrl> urls = Event->mimeData()->urls();
-        if (urls.isEmpty()) {
-            return;
-        }
-
-        // do not close untitled document to avoid segfault
-        QucsDoc *d = QucsMain->getDoc(0);
-        bool changed = d->getDocChanged();
-        d->setDocChanged(true);
-
-        // URI:  file:/home/linuxuser/Desktop/example.sch
-        for (QUrl url : urls) {
-            a_App->gotoPage(QDir::toNativeSeparators(url.toLocalFile()));
-        }
-
-        d->setDocChanged(changed);
-        return;
+  if (a_dragIsOkay) {
+    QList<QUrl> urls = Event->mimeData()->urls();
+    if (urls.isEmpty()) {
+      return;
     }
 
-    auto ev_pos = Event->position();
-    QPoint inModel = contentsToModel(ev_pos.toPoint());
+           // do not close untitled document to avoid segfault
+    QucsDoc *d = QucsMain->getDoc(0);
+    bool changed = d->getDocChanged();
+    d->setDocChanged(true);
 
-    QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    for (const QUrl &url : urls) {
+      QString filePath = QDir::toNativeSeparators(url.toLocalFile());
+      QString lower = filePath.toLower();
 
-    a_App->view->MPressElement(this, &e, inModel.x(), inModel.y());
-
-    delete a_App->view->selElem;
-    a_App->view->selElem = nullptr; // no component selected
-
-    if (formerAction) {
-        formerAction->setChecked(true);
-    } else {
-        QucsMain->select->setChecked(true); // restore old action
+             // Check if file is a supported image
+      if (lower.endsWith(".png") || lower.endsWith(".jpg") ||
+          lower.endsWith(".jpeg") || lower.endsWith(".bmp") ||
+          lower.endsWith(".gif")) {
+        // Insert ImagePainting at drop position
+        auto ev_pos = Event->position();
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+        QPoint inModel = contentsToModel(ev_pos.toPoint());
+#else
+        QPoint inModel = contentsToModel(ev_pos.toPoint());
+#endif
+        ImagePainting* imgPaint = new ImagePainting();
+        imgPaint->setImageFromPath(filePath);
+        imgPaint->x1 = inModel.x();
+        imgPaint->y1 = inModel.y();
+        imgPaint->x2 = imgPaint->x1 + imgPaint->getImageWidth();
+        imgPaint->y2 = imgPaint->y1 + imgPaint->getImageHeight();
+        this->a_Paintings->push_back(imgPaint);
+        viewport()->update();
+        setChanged(true, true);
+        continue; // allow dropping multiple images at once
+      }
+      // For non-image files, fallback to original page opening behavior
+      a_App->gotoPage(filePath);
     }
+
+    d->setDocChanged(changed);
+    return;
+  }
+
+         // Not a document drag, fallback to component insertion
+  auto ev_pos = Event->position();
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+  QPoint inModel = contentsToModel(ev_pos.toPoint());
+#else
+  QPoint inModel = contentsToModel(ev_pos.toPoint());
+#endif
+
+  QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+
+  a_App->view->MPressElement(this, &e, inModel.x(), inModel.y());
+
+  delete a_App->view->selElem;
+  a_App->view->selElem = nullptr; // no component selected
+
+  if (formerAction) {
+    formerAction->setChecked(true);
+  } else {
+    QucsMain->select->setChecked(true); // restore old action
+  }
 }
 
 // ---------------------------------------------------
