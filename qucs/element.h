@@ -165,12 +165,6 @@ struct Text : qucs::DrawingPrimitive {
 #define isPaintingResize   0x2001
 
 #define isLabel            0x4000
-#define isHWireLabel       0x4020
-#define isVWireLabel       0x4040
-#define isNodeLabel        0x4080
-#define isMovingLabel      0x4001
-#define isHMovingLabel     0x4002
-#define isVMovingLabel     0x4004
 
 #define isDiagram          0x8000
 #define isDiagramResize    0x8001
