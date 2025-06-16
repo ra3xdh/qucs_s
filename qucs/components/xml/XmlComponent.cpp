@@ -17,6 +17,8 @@
 #include <QColor>
 #include <QPen>
 
+#include <limits>
+
 XmlComponent::XmlComponent(
         const QString& name,
         const QString& schematicId,
@@ -55,6 +57,9 @@ XmlComponent::XmlComponent(
     }
 
     createSymbol();
+ 
+    tx = x1+4;
+    ty = y2+4;
 }
 
 Component* XmlComponent::newOne()
@@ -89,6 +94,11 @@ Element* XmlComponent::getInfo(QString& Name, char* &BitmapFile, bool getNewOne)
 
 void XmlComponent::createSymbol()
 {
+    x1 = std::numeric_limits<int>::max();
+    y1 = std::numeric_limits<int>::max();
+    x2 = std::numeric_limits<int>::min();
+    y2 = std::numeric_limits<int>::min();
+
     foreach (const Line& line, a_lines)
     {
         Lines.append(new qucs::Line(
@@ -97,17 +107,17 @@ void XmlComponent::createSymbol()
             line.a_x2,
             line.a_y2,
             QPen(misc::ColorFromString(line.a_color), line.a_width, static_cast<Qt::PenStyle>(line.a_style))));
+
+        x1 = line.a_x1 < x1 ? line.a_x1 : x1;
+        y1 = line.a_y1 < y1 ? line.a_y1 : y1;
+        x2 = line.a_x2 > x2 ? line.a_x2 : x2;
+        y2 = line.a_y2 > y2 ? line.a_y2 : y2;
     }
 
     foreach (const PortSym& portSym, a_portSyms)
     {
         Ports.append(new Port(portSym.a_x,  portSym.a_y));
     }
-
-    x1 = -30;
-    y1 = -30;
-    x2 = 4;
-    y2 = 30;
 }
 
 QString XmlComponent::netlist()
