@@ -988,10 +988,6 @@ void Schematic::simpleInsertWire(Wire *pw)
 
   if(pw->P1() == pw->P2()) {
     pn->acquireLabel(pw->releaseLabel());   // wire with length zero are just node labels
-    if (pn->hasLabel()) {
-      pn->label()->Type = isNodeLabel;
-    }
-
     delete pw;           // delete wire because this is not a wire
     return;
   }
@@ -1034,7 +1030,6 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
       // a host element like wire or node. We must be careful to treat
       // such labels in a special way in other parts of the codebase.
       if (w->P1() == w->P2() && w->hasLabel()) {
-        w->label()->Type = isNodeLabel;
         List->push_back(w->releaseLabel().release());
         delete w;
         continue;

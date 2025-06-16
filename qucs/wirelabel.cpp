@@ -25,7 +25,7 @@
 #include <QPainter>
 
 WireLabel::WireLabel(const QString& _Name, int _cx, int _cy,
-                     int _x1, int _y1, int _Type)
+                     int _x1, int _y1)
 {
   cx = _cx;
   cy = _cy;
@@ -38,7 +38,7 @@ WireLabel::WireLabel(const QString& _Name, int _cx, int _cy,
   x2 = x1 + textSize.width();
   y2 = y1 + textSize.height();
 
-  Type = _Type;
+  Type = isLabel;
 }
 
 bool WireLabel::getSelected(int x, int y)
@@ -89,22 +89,10 @@ void WireLabel::paint(QPainter *p) const {
     bottom ? text_br.bottom() : text_br.top()
   );
 
-  if (Type != isNodeLabel) {
-    int start_angle = 0;
-    // TODO: angle need to be calculated from the wire
-    // angle or not used at all.
-    switch (Type) {
-    case isHWireLabel:
-      start_angle = 16 * (right ? 45 : 225);
-      break;
-    case isVWireLabel:
-    case isLabel: //  same as V for simplicity
-      start_angle = 16 * (bottom ? -45 : 135);
-      break;
-    default:
-      assert(false);  // shouln't get there
-    }
-
+  if (pOwner != nullptr && pOwner->Type == isWire) {
+    const int start_angle = dynamic_cast<Wire*>(pOwner)->isHorizontal()
+      ? 16 * (right  ?  45 : 225)
+      : 16 * (bottom ? -45 : 135);
     constexpr int span_angle = 16 * 270;
     p->drawArc(cx-4, cy-4, 8, 8, start_angle, span_angle);
   }
@@ -215,12 +203,4 @@ QRect WireLabel::boundingRect() const noexcept
 void WireLabel::setOwner(Conductor* c)
 {
   pOwner = c;
-
-  if (c == nullptr) return;
-
-  if (Wire* w = dynamic_cast<Wire*>(c); w != nullptr) {
-    Type = w->isHorizontal() ? isHWireLabel : isVWireLabel;
-  } else {
-    Type = isNodeLabel;
-  }
 }

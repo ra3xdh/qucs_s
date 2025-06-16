@@ -75,7 +75,7 @@ void Node::setName(const QString& name, const QString& value, int x, int y)
   assert(!(name.isEmpty() && value.isEmpty()));
 
   if (!hasLabel()) {
-    acquireLabel(new WireLabel(name, cx, cy, x, y, isNodeLabel));
+    acquireLabel(new WireLabel(name, cx, cy, x, y));
   }
   else {
     label()->setName(name);

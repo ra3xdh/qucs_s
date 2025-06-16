@@ -2182,7 +2182,6 @@ int Schematic::placeNodeLabel(WireLabel *pl)
     }
 
     pn->acquireLabel(pl);   // insert node label
-    pl->Type = isNodeLabel;
     return 0;
 }
 
@@ -2503,7 +2502,6 @@ public:
 
         // Transfer label to a new host
         dest_node->acquireLabel(label);
-        label->Type = isNodeLabel;
         label->moveRootTo(dest_node->center().x(), dest_node->center().y());
     }
 

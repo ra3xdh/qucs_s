@@ -1618,9 +1618,14 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
                 Doc->enlargeView(pe);
                 break;
             }
-            case isNodeLabel:
-                Doc->placeNodeLabel((WireLabel *) pe);
+            case isLabel: {
+                auto wl = dynamic_cast<WireLabel*>(pe);
+                if (wl->owner() != nullptr) break;
+                // If label here has no owner it means it was a node label.
+                // New host node has to be found for it.
+                Doc->placeNodeLabel(wl);
                 break;
+            }
             case isComponent:
             case isAnalogComponent:
             case isDigitalComponent:
@@ -1817,9 +1822,6 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
         MPressLabel(Doc, Event, fX, fY);
         break;
 
-    case isNodeLabel:
-    case isHWireLabel:
-    case isVWireLabel:
     case isLabel:
         editLabel(Doc, (WireLabel *) focusElement);
         // update highlighting, labels may have changed

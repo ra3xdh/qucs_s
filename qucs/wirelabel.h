@@ -30,7 +30,7 @@ class WireLabel : public Element {
   Conductor* pOwner = nullptr;  // Wire or Node where label belongs to
 public:
   WireLabel(const QString& _Name=0, int _cx=0, int _cy=0,
-            int _x1=0, int _y1=0, int _Type=isNodeLabel);
+            int _x1=0, int _y1=0);
 
   bool getSelected(int, int);
   void setName(const QString& Name_);

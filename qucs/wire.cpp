@@ -124,11 +124,11 @@ void Wire::setName(const QString& Name_, const QString& Value_, int root_x, int 
 
   if(!hasLabel()) {
     if (y1 == y2)
-      acquireLabel(new WireLabel(Name_, root_x, y1, x_, y_, isHWireLabel));
+      acquireLabel(new WireLabel(Name_, root_x, y1, x_, y_));
     else if (x1 == x2)
-      acquireLabel(new WireLabel(Name_, x1, root_y, x_, y_, isVWireLabel));
+      acquireLabel(new WireLabel(Name_, x1, root_y, x_, y_));
     else
-      acquireLabel(new WireLabel(Name_, root_x, root_y, x_, y_, isLabel));
+      acquireLabel(new WireLabel(Name_, root_x, root_y, x_, y_));
     label()->initValue = Value_;
   }
   else label()->setName(Name_);
