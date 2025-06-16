@@ -366,7 +366,7 @@ void Ngspice::createNetlist(
            << ".endc\n";
     stream << ".END\n";
 
-    a_needsPrefix = ( (dcSims | freqSims | timeSims | fourSims | pzSims) > 1 );
+    a_needsPrefix = a_needsPrefix || ( (dcSims | freqSims | timeSims | fourSims | pzSims) > 1 );
 
     qDebug() << '\n'
              << "Simulations:\n"

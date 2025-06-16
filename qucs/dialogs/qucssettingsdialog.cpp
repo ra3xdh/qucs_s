@@ -147,13 +147,19 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     appSettingsGrid->addWidget(checkFullTraceNames, 6, 1);
     checkFullTraceNames->setChecked(QucsSettings.fullTraceName);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Flexible wires (requires restart):"), appSettingsTab), 7, 0);
-    allowFlexibleWires = new QCheckBox(appSettingsTab);
-    appSettingsGrid->addWidget(allowFlexibleWires, 7, 1);
+    appSettingsGrid->addWidget(new QLabel(tr("Always prefix the dataset with simulation label:")), 7, 0);
+    alwaysPrefixDataset = new QCheckBox(appSettingsTab);
+    alwaysPrefixDataset->setToolTip(tr("Always use the prefix for dataset, i.e. \"tr1.v(out)\" rather than \"v(out)\""));
+    appSettingsGrid->addWidget(alwaysPrefixDataset, 7, 1);
+    alwaysPrefixDataset->setChecked(QucsSettings.alwaysPrefixDataset);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Lay wires anew when moving elements (requires restart):"), appSettingsTab), 8, 0);
+    appSettingsGrid->addWidget(new QLabel(tr("Flexible wires (requires restart):"), appSettingsTab), 8, 0);
+    allowFlexibleWires = new QCheckBox(appSettingsTab);
+    appSettingsGrid->addWidget(allowFlexibleWires, 8, 1);
+
+    appSettingsGrid->addWidget(new QLabel(tr("Lay wires anew when moving elements (requires restart):"), appSettingsTab), 9, 0);
     allowLayingWiresAnew = new QCheckBox(appSettingsTab);
-    appSettingsGrid->addWidget(allowLayingWiresAnew, 8, 1);
+    appSettingsGrid->addWidget(allowLayingWiresAnew, 9, 1);
 
     t->addTab(appSettingsTab, tr("Settings"));
 
@@ -780,6 +786,12 @@ void QucsSettingsDialog::slotApply()
     if (QucsSettings.fullTraceName != checkFullTraceNames->isChecked())
     {
       QucsSettings.fullTraceName = checkFullTraceNames->isChecked();
+      changed = true;
+    }
+
+    if (QucsSettings.alwaysPrefixDataset != alwaysPrefixDataset->isChecked())
+    {
+      QucsSettings.alwaysPrefixDataset = alwaysPrefixDataset->isChecked();
       changed = true;
     }
 
