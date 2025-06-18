@@ -1,0 +1,64 @@
+name: 🤖 Code Formatter & PR Bot
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🧑‍🔧 Set up Git config
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: 🛠️ Install clang-format
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang-format
+
+    - name: 🎯 Format Qucs-S files with clang-format
+      run: |
+        find . -type f \( -path "./qucs/*" -o -path "./qucs-*/**" \) \
+        \( -iname "*.cpp" -o -iname "*.c" -o -iname "*.h" -o -iname "*.hpp" \) \
+        -exec clang-format -i {} +
+
+    - name: 🔍 Check for formatting changes
+      id: git-diff
+      run: |
+        if git diff --quiet; then
+          echo "✅ No formatting changes detected."
+          echo "changed=false" >> $GITHUB_OUTPUT
+        else
+          echo "⚠️ Formatting changes detected."
+          echo "changed=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: 🌿 Create branch, commit & push
+      if: steps.git-diff.outputs.changed == 'true'
+      run: |
+        BRANCH_NAME=qucs-format-$(date +%Y%m%d-%H%M%S)
+        git checkout -b $BRANCH_NAME
+        git add .
+        git commit -m "chore: format Qucs-S source files with clang-format"
+        git push origin $BRANCH_NAME
+        echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
+
+    - name: 🔄 Create Pull Request with GitHub CLI
+      if: steps.git-diff.outputs.changed == 'true'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh auth setup-git
+        gh pr create \
+          --title "Apply clang-format to Qucs-S sources" \
+          --body "This PR was automatically created by a GitHub Action that formats the codebase using clang-format." \
+          --base current \
+          --head ${{ env.branch_name }}
