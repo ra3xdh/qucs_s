@@ -196,7 +196,10 @@ jobs:
       - name: 'Install Dependencies'
         shell: bash
         run: |
-          rm '/usr/local/share/man/man1/xsd.1'
+          if [ "${{ matrix.cmake_arch }}" == "x86_64" ]
+          then
+            rm '/usr/local/share/man/man1/xsd.1'
+          fi
           brew install gperf dos2unix bison flex graphicsmagick imagemagick xsd muparser
 
           if [ "${{ matrix.cmake_arch }}" == "arm64;x86_64" ]
@@ -437,9 +440,11 @@ jobs:
           - os: windows-2022
             msystem: ucrt64
             platform_tag: win64
+            packet_tag: ucrt-x86_64
           - os: windows-11-arm
             msystem: clangarm64
             platform_tag: win-arm64
+            packet_tag: clang-aarch64
     defaults:
       run:
         shell: msys2 {0}
@@ -473,7 +478,8 @@ jobs:
         msystem: ${{ matrix.config.msystem }}
         cache: true
         update: true
-        install: bison flex dos2unix curl zip p7zip mingw-w64-ucrt-x86_64-xerces-c mingw-w64-ucrt-x86_64-muparser
+        install: bison flex dos2unix curl zip p7zip
+                 mingw-w64-${{ matrix.config.packet_tag }}-xerces-c mingw-w64-${{ matrix.config.packet_tag }}-muparser
         pacboy: cmake:p gcc:p qt6-base:p qt6-tools:p qt6-svg:p make:p ninja:p python:p gperf:p github-cli:p qt6-charts:p
 
     - name: Install xsd
