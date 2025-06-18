@@ -1,11 +1,11 @@
-name: 🤖 Code Formatter & PR Bot
+name: Code Formatter
 
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  format:
+  clang-format:
     runs-on: ubuntu-latest
 
     steps:
