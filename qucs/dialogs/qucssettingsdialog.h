@@ -88,7 +88,7 @@ public:
     QCheckBox *checkWiring, *checkLoadFromFutureVersions,
               *allowFlexibleWires, *allowLayingWiresAnew,
               *checkAntiAliasing, *checkTextAntiAliasing,
-              *checkFullTraceNames;
+              *checkFullTraceNames,  *alwaysPrefixDataset;
     QComboBox *LanguageCombo,
               *StyleCombo;
     QPushButton *FontButton, *AppFontButton, *TextFontButton, *BGColorButton, *GridColorButton;

@@ -68,6 +68,9 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *schematic, QObject *parent) 
         a_schematic->setShowBias(0);
     }
 
+    // Enforce dataset prefix from config:
+    a_needsPrefix = QucsSettings.alwaysPrefixDataset;
+
     a_workdir = QucsSettings.S4Qworkdir;
     QFileInfo inf(a_workdir);
     if (!inf.exists()) {
