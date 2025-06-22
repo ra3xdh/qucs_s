@@ -83,14 +83,6 @@ void Node::setName(const QString& name, const QString& value, int x, int y)
   label()->initValue = value;
 }
 
-Element* Node::other_than(Element* elem) const
-{
-  auto other = std::find_if_not(connections.begin(), connections.end(), [elem](auto o){return o == elem;}
-  );
-
-  return other == connections.end() ? nullptr : *other;
-}
-
 bool Node::moveCenter(int dx, int dy) noexcept
 {
   Element::moveCenter(dx, dy);
