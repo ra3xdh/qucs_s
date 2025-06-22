@@ -20,52 +20,53 @@
  ***************************************************************************/
 
 #include "vexp.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 vExp::vExp()
 {
-  Description = QObject::tr("exponential voltage source");
+    Description = QObject::tr("exponential voltage source");
 
-  // normal voltage source symbol
-  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24,  QPen(Qt::darkBlue,2)));
-  // pins
-  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  // plus sign
-  Lines.append(new qucs::Line( 21,  8, 15,  8,QPen(Qt::red,1)));
-  Lines.append(new qucs::Line( 18,  5, 18,  11,QPen(Qt::red,1)));
-  // minus sign
-  Lines.append(new qucs::Line(-18,  5,-18, 11,QPen(Qt::black,1)));
-  Texts.append(new Text(8, -10, "Exp", Qt::darkBlue, 12, 0.0, -1.0));
+    // normal voltage source symbol
+    Ellipses.append(new qucs::Ellips(-12, -12, 24, 24, QPen(Qt::darkBlue, 2)));
+    // pins
+    Lines.append(new qucs::Line(-30, 0, -12, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(30, 0, 12, 0, QPen(Qt::darkBlue, 2)));
+    // plus sign
+    Lines.append(new qucs::Line(21, 8, 15, 8, QPen(Qt::red, 1)));
+    Lines.append(new qucs::Line(18, 5, 18, 11, QPen(Qt::red, 1)));
+    // minus sign
+    Lines.append(new qucs::Line(-18, 5, -18, 11, QPen(Qt::black, 1)));
+    Texts.append(new Text(8, -10, "Exp", Qt::darkBlue, 12, 0.0, -1.0));
 
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(-30, 0));
 
-  x1 = -30; y1 = -14;
-  x2 =  30; y2 =  14;
+    x1 = -30;
+    y1 = -14;
+    x2 = 30;
+    y2 = 14;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "Vexp";
-  SpiceModel = "V";
-  Name  = "V";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "Vexp";
+    SpiceModel = "V";
+    Name = "V";
 
-  Props.append(new Property("U1", "0 V", true,
-		QObject::tr("voltage before rising edge")));
-  Props.append(new Property("U2", "1 V", true,
-		QObject::tr("maximum voltage of the pulse")));
-  Props.append(new Property("T1", "0", true,
-		QObject::tr("start time of the exponentially rising edge")));
-  Props.append(new Property("T2", "1 ms", true,
-		QObject::tr("start of exponential decay")));
-  Props.append(new Property("Tr", "1 ns", false,
-		QObject::tr("rise time of the rising edge")));
-  Props.append(new Property("Tf", "1 ns", false,
-		QObject::tr("fall time of the falling edge")));
+    Props.append(new Property("U1", "0 V", true,
+        QObject::tr("voltage before rising edge")));
+    Props.append(new Property("U2", "1 V", true,
+        QObject::tr("maximum voltage of the pulse")));
+    Props.append(new Property("T1", "0", true,
+        QObject::tr("start time of the exponentially rising edge")));
+    Props.append(new Property("T2", "1 ms", true,
+        QObject::tr("start of exponential decay")));
+    Props.append(new Property("Tr", "1 ns", false,
+        QObject::tr("rise time of the rising edge")));
+    Props.append(new Property("Tf", "1 ns", false,
+        QObject::tr("fall time of the falling edge")));
 
-  rotate();  // fix historical flaw
+    rotate(); // fix historical flaw
 }
 
 vExp::~vExp()
@@ -74,30 +75,32 @@ vExp::~vExp()
 
 Component* vExp::newOne()
 {
-  return new vExp();
+    return new vExp();
 }
 
-Element* vExp::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* vExp::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Exponential Voltage Pulse");
-  BitmapFile = (char *) "vexp";
+    Name = QObject::tr("Exponential Voltage Pulse");
+    BitmapFile = (char*)"vexp";
 
-  if(getNewOne)  return new vExp();
-  return 0;
+    if (getNewOne)
+        return new vExp();
+    return 0;
 }
 
 QString vExp::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam; // node names
     }
 
-    QString U1= spicecompat::normalize_value(Props.at(0)->Value);
+    QString U1 = spicecompat::normalize_value(Props.at(0)->Value);
     QString U2 = spicecompat::normalize_value(Props.at(1)->Value);
     QString T1 = spicecompat::normalize_value(Props.at(2)->Value);
     QString T2 = spicecompat::normalize_value(Props.at(3)->Value);

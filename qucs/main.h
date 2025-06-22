@@ -22,104 +22,103 @@
 #ifndef QUCS_MAIN_H
 #define QUCS_MAIN_H
 
-#include <QFont>
 #include <QColor>
-#include <QStringList>
 #include <QDir>
-
+#include <QFont>
+#include <QStringList>
 
 class QucsApp;
 class Component;
 class VersionTriplet;
 
-static const double pi = 3.1415926535897932384626433832795029;  /* pi   */
+static const double pi = 3.1415926535897932384626433832795029; /* pi   */
 
 struct tQucsSettings {
-  int DefaultSimulator;
+    int DefaultSimulator;
 
-  QFont font;
-  QFont appFont;
-  QFont textFont;
-  QFont sysDefaultFont;
-  float largeFontSize;
-  QColor BGColor;      // background color of view area
-  QString Language;
+    QFont font;
+    QFont appFont;
+    QFont textFont;
+    QFont sysDefaultFont;
+    float largeFontSize;
+    QColor BGColor; // background color of view area
+    QString Language;
 
-  // syntax highlighting
-  QColor Comment, String, Integer, Real, Character, Type,
-    Attribute, Directive, Task;
+    // syntax highlighting
+    QColor Comment, String, Integer, Real, Character, Type,
+        Attribute, Directive, Task;
 
-  unsigned int maxUndo;    // size of undo stack
-  QString Editor;
-  QString Qucsator;
-  QString QucsatorDir;
-  QString QucsatorVar;
-  QString Qucsconv;
-  QString BinDir;
-  QString LangDir;
-  QString LibDir;
-  QString SpiceLibDir;
-  QString OctaveDir;  // m-files location
-  QString ExamplesDir;
-  QString DocDir;
+    unsigned int maxUndo; // size of undo stack
+    QString Editor;
+    QString Qucsator;
+    QString QucsatorDir;
+    QString QucsatorVar;
+    QString Qucsconv;
+    QString BinDir;
+    QString LangDir;
+    QString LibDir;
+    QString SpiceLibDir;
+    QString OctaveDir; // m-files location
+    QString ExamplesDir;
+    QString DocDir;
 
-  unsigned int NodeWiring;
-  QDir QucsWorkDir;
+    unsigned int NodeWiring;
+    QDir QucsWorkDir;
 
-  // A dir for user projects and libraries. See also https://github.com/ra3xdh/qucs_s/issues/145
-  QDir qucsWorkspaceDir;
+    // A dir for user projects and libraries. See also https://github.com/ra3xdh/qucs_s/issues/145
+    QDir qucsWorkspaceDir;
 
-  // This is the dir where all temporary or intermediate data should be stored.
-  // Consider a data "temporary" if its used only once or it makes sense only
-  // through out a single app run or a shorter period of time.
-  // Don't make any assumptions about the lifetime of contents in this dir,
-  // think that everything placed in here is deleted when app is terminated.
-  QDir tempFilesDir;
-  QDir projsDir; // current user projects subdirectory
-  QDir AdmsXmlBinDir;  // dir of admsXml executable
-  QDir AscoBinDir;     // dir of asco executable
-  QString OpenVAFExecutable;
-  QString NgspiceExecutable;  // Executables of external simulators
-  QString XyceExecutable;
-  QString XyceParExecutable;
-  QString SpiceOpusExecutable;
-  QString S4Qworkdir;
-  unsigned int NProcs; // Number of processors for Xyce
-  QString OctaveExecutable; // OctaveExecutable location
-  QString QucsOctave; // OUCS_OCTAVE variable
-  QString RFLayoutExecutable;
-  bool ResolveSpicePrefix;
+    // This is the dir where all temporary or intermediate data should be stored.
+    // Consider a data "temporary" if its used only once or it makes sense only
+    // through out a single app run or a shorter period of time.
+    // Don't make any assumptions about the lifetime of contents in this dir,
+    // think that everything placed in here is deleted when app is terminated.
+    QDir tempFilesDir;
+    QDir projsDir; // current user projects subdirectory
+    QDir AdmsXmlBinDir; // dir of admsXml executable
+    QDir AscoBinDir; // dir of asco executable
+    QString OpenVAFExecutable;
+    QString NgspiceExecutable; // Executables of external simulators
+    QString XyceExecutable;
+    QString XyceParExecutable;
+    QString SpiceOpusExecutable;
+    QString S4Qworkdir;
+    unsigned int NProcs; // Number of processors for Xyce
+    QString OctaveExecutable; // OctaveExecutable location
+    QString QucsOctave; // OUCS_OCTAVE variable
+    QString RFLayoutExecutable;
+    bool ResolveSpicePrefix;
 
-  // registered filename extensions with program to open the file
-  QStringList FileTypes;
+    // registered filename extensions with program to open the file
+    QStringList FileTypes;
 
-  // List of extensions used for spice files
-  QStringList spiceExtensions;
+    // List of extensions used for spice files
+    QStringList spiceExtensions;
 
-  unsigned int numRecentDocs;
-  QStringList RecentDocs;
+    unsigned int numRecentDocs;
+    QStringList RecentDocs;
 
-  QStringList RecentProjects;
+    QStringList RecentProjects;
 
-  bool IgnoreFutureVersion;
-  bool GraphAntiAliasing;
-  bool TextAntiAliasing;
+    bool IgnoreFutureVersion;
+    bool GraphAntiAliasing;
+    bool TextAntiAliasing;
 
-  bool hasDarkTheme;
-  bool fullTraceName;
-  bool alwaysPrefixDataset;
+    bool hasDarkTheme;
+    bool fullTraceName;
+    bool alwaysPrefixDataset;
 
-  bool firstRun;
+    bool firstRun;
 };
 
-extern tQucsSettings QucsSettings;  // extern because nearly everywhere used
-extern QucsApp *QucsMain;  // the Qucs application itself
-extern QString lastDir;    // to remember last directory for several dialogs
+extern tQucsSettings QucsSettings; // extern because nearly everywhere used
+extern QucsApp* QucsMain; // the Qucs application itself
+extern QString lastDir; // to remember last directory for several dialogs
 extern QStringList qucsPathList;
 extern VersionTriplet QucsVersion;
 
 bool loadSettings();
 bool saveApplSettings();
-void qucsMessageOutput(QtMsgType type, const char *msg);
+void qucsMessageOutput(QtMsgType type, const char* msg);
 
 #endif // ifndef QUCS_MAIN_H

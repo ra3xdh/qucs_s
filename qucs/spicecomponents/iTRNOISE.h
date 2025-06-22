@@ -18,20 +18,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef ITRNOISE_H
+#ifndef ITRNOISE_H
 #define ITRNOISE_H
 
 #include "components/component.h"
 
 class iTRNOISE : public Component {
 public:
-  iTRNOISE();
-  ~iTRNOISE();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    iTRNOISE();
+    ~iTRNOISE();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // ITRNOISE_H

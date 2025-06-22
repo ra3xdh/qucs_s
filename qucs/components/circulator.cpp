@@ -17,41 +17,42 @@
 #include "circulator.h"
 #include "main.h"
 
-
 Circulator::Circulator()
 {
-  Description = QObject::tr("circulator");
-  Simulator = spicecompat::simQucsator;
+    Description = QObject::tr("circulator");
+    Simulator = spicecompat::simQucsator;
 
-  Arcs.append(new qucs::Arc(-14,-14, 28, 28,  0,16*360,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  0, 14,  0, 30,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(-14, -14, 28, 28, 0, 16 * 360, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-30, 0, -14, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(30, 0, 14, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(0, 14, 0, 30, QPen(Qt::darkBlue, 2)));
 
-  Arcs.append(new qucs::Arc( -8, -6, 16, 16,16*20,16*150,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  8,  0,  9, -7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  8,  0,  2, -1,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(-8, -6, 16, 16, 16 * 20, 16 * 150, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(8, 0, 9, -7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(8, 0, 2, -1, QPen(Qt::darkBlue, 2)));
 
-  Lines.append(new qucs::Line(-22, -4,-26,  4,QPen(Qt::darkBlue,2)));   // marks port 1
+    Lines.append(new qucs::Line(-22, -4, -26, 4, QPen(Qt::darkBlue, 2))); // marks port 1
 
-  Ports.append(new Port(-30,  0));
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(  0, 30));
+    Ports.append(new Port(-30, 0));
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(0, 30));
 
-  x1 = -30; y1 = -16;
-  x2 =  30; y2 =  30;
+    x1 = -30;
+    y1 = -16;
+    x2 = 30;
+    y2 = 30;
 
-  tx = x1 + 4;
-  ty = y1 - QucsSettings.font.pointSize()-4;
-  Model = "Circulator";
-  Name  = "X";
+    tx = x1 + 4;
+    ty = y1 - QucsSettings.font.pointSize() - 4;
+    Model = "Circulator";
+    Name = "X";
 
-  Props.append(new Property("Z1", "50 Ohm", false,
-		QObject::tr("reference impedance of port 1")));
-  Props.append(new Property("Z2", "50 Ohm", false,
-		QObject::tr("reference impedance of port 2")));
-  Props.append(new Property("Z3", "50 Ohm", false,
-		QObject::tr("reference impedance of port 3")));
+    Props.append(new Property("Z1", "50 Ohm", false,
+        QObject::tr("reference impedance of port 1")));
+    Props.append(new Property("Z2", "50 Ohm", false,
+        QObject::tr("reference impedance of port 2")));
+    Props.append(new Property("Z3", "50 Ohm", false,
+        QObject::tr("reference impedance of port 3")));
 }
 
 Circulator::~Circulator()
@@ -60,14 +61,15 @@ Circulator::~Circulator()
 
 Component* Circulator::newOne()
 {
-  return new Circulator();
+    return new Circulator();
 }
 
-Element* Circulator::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* Circulator::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Circulator");
-  BitmapFile = (char *) "circulator";
+    Name = QObject::tr("Circulator");
+    BitmapFile = (char*)"circulator";
 
-  if(getNewOne)  return new Circulator();
-  return 0;
+    if (getNewOne)
+        return new Circulator();
+    return 0;
 }

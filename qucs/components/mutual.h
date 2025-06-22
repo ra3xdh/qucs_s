@@ -20,16 +20,15 @@
 
 #include "component.h"
 
-
-class Mutual : public Component  {
+class Mutual : public Component {
 public:
-  Mutual();
- ~Mutual();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Mutual();
+    ~Mutual();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

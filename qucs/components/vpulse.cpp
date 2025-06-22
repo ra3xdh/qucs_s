@@ -5,7 +5,7 @@
     copyright          : (C) 2004 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
     spice4qucs code added  Thurs.. 19 March 2015
-    copyright          : (C) 2015 by Vadim Kusnetsov (Vadim Kuznetsov (ra3xdh@gmail.com) 
+    copyright          : (C) 2015 by Vadim Kusnetsov (Vadim Kuznetsov (ra3xdh@gmail.com)
                                            and Mike Brinson (mbrin72043@yahoo.co.uk
  ***************************************************************************/
 
@@ -19,54 +19,55 @@
  ***************************************************************************/
 
 #include "vpulse.h"
-#include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "misc.h"
+#include "node.h"
 
 vPulse::vPulse()
 {
-  Description = QObject::tr("ideal voltage pulse source");
+    Description = QObject::tr("ideal voltage pulse source");
 
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 18,  5, 18, 11,QPen(Qt::red,1)));
-  Lines.append(new qucs::Line( 21,  8, 15,  8,QPen(Qt::red,1)));
-  Lines.append(new qucs::Line(-18,  5,-18, 11,QPen(Qt::black,1)));
+    Arcs.append(new qucs::Arc(-12, -12, 24, 24, 0, 16 * 360, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-30, 0, -12, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(30, 0, 12, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(18, 5, 18, 11, QPen(Qt::red, 1)));
+    Lines.append(new qucs::Line(21, 8, 15, 8, QPen(Qt::red, 1)));
+    Lines.append(new qucs::Line(-18, 5, -18, 11, QPen(Qt::black, 1)));
 
-  Lines.append(new qucs::Line(  6, -3,  6,  3,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -6, -7, -6, -3,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -6,  3, -6,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -6, -3,  6, -3,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -6,  3,  6,  3,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(6, -3, 6, 3, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-6, -7, -6, -3, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-6, 3, -6, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-6, -3, 6, -3, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-6, 3, 6, 3, QPen(Qt::darkBlue, 2)));
 
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(-30, 0));
 
-  x1 = -30; y1 = -14;
-  x2 =  30; y2 =  14;
+    x1 = -30;
+    y1 = -14;
+    x2 = 30;
+    y2 = 14;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "Vpulse";
-  Name  = "V";
-  SpiceModel = "V";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "Vpulse";
+    Name = "V";
+    SpiceModel = "V";
 
-  Props.append(new Property("U1", "0 V", true,
-		QObject::tr("voltage before and after the pulse")));
-  Props.append(new Property("U2", "1 V", true,
-		QObject::tr("voltage of the pulse")));
-  Props.append(new Property("T1", "0", true,
-		QObject::tr("start time of the pulse")));
-  Props.append(new Property("T2", "1 ms", true,
-		QObject::tr("ending time of the pulse")));
-  Props.append(new Property("Tr", "1 ns", false,
-		QObject::tr("rise time of the leading edge")));
-  Props.append(new Property("Tf", "1 ns", false,
-		QObject::tr("fall time of the trailing edge")));
+    Props.append(new Property("U1", "0 V", true,
+        QObject::tr("voltage before and after the pulse")));
+    Props.append(new Property("U2", "1 V", true,
+        QObject::tr("voltage of the pulse")));
+    Props.append(new Property("T1", "0", true,
+        QObject::tr("start time of the pulse")));
+    Props.append(new Property("T2", "1 ms", true,
+        QObject::tr("ending time of the pulse")));
+    Props.append(new Property("Tr", "1 ns", false,
+        QObject::tr("rise time of the leading edge")));
+    Props.append(new Property("Tf", "1 ns", false,
+        QObject::tr("fall time of the trailing edge")));
 
-  rotate();  // fix historical flaw
+    rotate(); // fix historical flaw
 }
 
 vPulse::~vPulse()
@@ -77,37 +78,44 @@ QString vPulse::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
 
-    for (Port *p1 : Ports) {
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam; // node names
     }
 
     QString VL = spicecompat::normalize_value(Props.at(0)->Value); // VL
     QString VH = spicecompat::normalize_value(Props.at(1)->Value); // VH
-    QString Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr 
+    QString Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr
     QString Tf = spicecompat::normalize_value(Props.at(5)->Value); // Tf
     QString T1 = spicecompat::normalize_value(getProperty("T1")->Value); // T1
     QString T2 = spicecompat::normalize_value(getProperty("T2")->Value); // T2
 
     s += QStringLiteral(" DC 0 PULSE(%1 %2 %3 %4 %5 {(%6)-(%3)-(%4)-(%5)}) AC 0\n")
-             .arg(VL).arg(VH).arg(T1).arg(Tr).arg(Tf).arg(T2);
+             .arg(VL)
+             .arg(VH)
+             .arg(T1)
+             .arg(Tr)
+             .arg(Tf)
+             .arg(T2);
 
     return s;
 }
 
 Component* vPulse::newOne()
 {
-  return new vPulse();
+    return new vPulse();
 }
 
-Element* vPulse::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* vPulse::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Voltage Pulse");
-  BitmapFile = (char *) "vpulse";
+    Name = QObject::tr("Voltage Pulse");
+    BitmapFile = (char*)"vpulse";
 
-  if(getNewOne)  return new vPulse();
-  return 0;
+    if (getNewOne)
+        return new vPulse();
+    return 0;
 }

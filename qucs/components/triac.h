@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class Triac : public Component  {
+class Triac : public Component {
 public:
-  Triac();
- ~Triac() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Triac();
+    ~Triac() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

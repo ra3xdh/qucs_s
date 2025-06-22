@@ -22,35 +22,37 @@
 
 S4Q_Lib::S4Q_Lib()
 {
-  isEquation = false;
-  Type = isComponent; // Analogue and digital component.
-  Description = QObject::tr(".LIB directive\n");
-  Simulator = spicecompat::simSpice;
+    isEquation = false;
+    Type = isComponent; // Analogue and digital component.
+    Description = QObject::tr(".LIB directive\n");
+    Simulator = spicecompat::simSpice;
 
-  QFont f = QucsSettings.font;
-  f.setWeight(QFont::Light);
-  f.setPointSizeF(12.0);
-  QFontMetrics  metrics(f, 0);  // use the the screen-compatible metric
-  QSize r = metrics.size(0, QObject::tr(".LIB"));
-  int xb = r.width()  >> 1;
-  int yb = r.height() >> 1;
+    QFont f = QucsSettings.font;
+    f.setWeight(QFont::Light);
+    f.setPointSizeF(12.0);
+    QFontMetrics metrics(f, 0); // use the the screen-compatible metric
+    QSize r = metrics.size(0, QObject::tr(".LIB"));
+    int xb = r.width() >> 1;
+    int yb = r.height() >> 1;
 
-  Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
-  Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
-  Texts.append(new Text(-xb+4,  -yb-3, QObject::tr(".LIB"),
-			QColor(0,0,0), QFontInfo(f).pixelSize()));
+    Lines.append(new qucs::Line(-xb, -yb, -xb, yb, QPen(Qt::darkRed, 2)));
+    Lines.append(new qucs::Line(-xb, yb, xb + 3, yb, QPen(Qt::darkRed, 2)));
+    Texts.append(new Text(-xb + 4, -yb - 3, QObject::tr(".LIB"),
+        QColor(0, 0, 0), QFontInfo(f).pixelSize()));
 
-  x1 = -xb-3;  y1 = -yb-5;
-  x2 =  xb+9; y2 =  yb+3;
+    x1 = -xb - 3;
+    y1 = -yb - 5;
+    x2 = xb + 9;
+    y2 = yb + 3;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "SpiceLib";
-  Name  = "SpiceLib";
-  SpiceModel = ".LIB";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "SpiceLib";
+    Name = "SpiceLib";
+    SpiceModel = ".LIB";
 
-  Props.append(new Property("File", "/home/user/library.inc", true,"SPICE file to include"));
-  Props.append(new Property("Section", "mos1", true,"Library section name"));
+    Props.append(new Property("File", "/home/user/library.inc", true, "SPICE file to include"));
+    Props.append(new Property("Section", "mos1", true, "Library section name"));
 }
 
 S4Q_Lib::~S4Q_Lib()
@@ -59,31 +61,32 @@ S4Q_Lib::~S4Q_Lib()
 
 Component* S4Q_Lib::newOne()
 {
-  return new S4Q_Lib();
+    return new S4Q_Lib();
 }
 
-Element* S4Q_Lib::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* S4Q_Lib::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr(".Lib directive");
-  BitmapFile = (char *) "sp_lib";
+    Name = QObject::tr(".Lib directive");
+    BitmapFile = (char*)"sp_lib";
 
-  if(getNewOne)  return new S4Q_Lib();
-  return 0;
+    if (getNewOne)
+        return new S4Q_Lib();
+    return 0;
 }
 
 QString S4Q_Lib::getSpiceLibrary()
 {
-  if (isActive != COMP_IS_ACTIVE) return QString();
-  QString s;
-  s.clear();
+    if (isActive != COMP_IS_ACTIVE)
+        return QString();
+    QString s;
+    s.clear();
 
-  QString file = getProperty("File")->Value;
-  if ( !file.isEmpty() ){
-    file = misc::properAbsFileName(file, containingSchematic);
-    QString sec = getProperty("Section")->Value;
-    s += QStringLiteral("%1 \"%2\" %3\n").arg(SpiceModel).arg(file).arg(sec);
-  }
+    QString file = getProperty("File")->Value;
+    if (!file.isEmpty()) {
+        file = misc::properAbsFileName(file, containingSchematic);
+        QString sec = getProperty("Section")->Value;
+        s += QStringLiteral("%1 \"%2\" %3\n").arg(SpiceModel).arg(file).arg(sec);
+    }
 
-  return s;
+    return s;
 }
-

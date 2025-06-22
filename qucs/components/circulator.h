@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class Circulator : public Component  {
+class Circulator : public Component {
 public:
-  Circulator();
-  ~Circulator();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Circulator();
+    ~Circulator();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

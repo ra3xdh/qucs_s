@@ -25,24 +25,23 @@
 
 class Schematic;
 
-class ExternSimDialog : public QDialog
-{
+class ExternSimDialog : public QDialog {
     Q_OBJECT
 
 private:
     Schematic* a_schematic;
 
-    QPushButton *a_buttonStopSim;
-    QPushButton *a_buttonSaveNetlist;
-    QPushButton *a_buttonExit;
+    QPushButton* a_buttonStopSim;
+    QPushButton* a_buttonSaveNetlist;
+    QPushButton* a_buttonExit;
 
-    QPlainTextEdit *a_editSimConsole;
-    QListWidget *a_simStatusLog;
+    QPlainTextEdit* a_editSimConsole;
+    QListWidget* a_simStatusLog;
 
-    QProgressBar *a_simProgress;
+    QProgressBar* a_simProgress;
 
-    Ngspice *a_ngspice;
-    Xyce *a_xyce;
+    Ngspice* a_ngspice;
+    Xyce* a_xyce;
 
     bool a_wasSimulated;
     bool a_hasError;
@@ -50,9 +49,9 @@ private:
 
 public:
     explicit ExternSimDialog(
-            Schematic* sch,
-            bool netlist2Console,
-            bool netlist_mode = false);
+        Schematic* sch,
+        bool netlist2Console,
+        bool netlist_mode = false);
     ~ExternSimDialog();
 
     bool wasSimulated() const { return a_wasSimulated; }
@@ -60,12 +59,12 @@ public:
 
 private:
     void saveLog();
-    void addLogEntry(const QString&text, const QIcon &icon);
-    bool logContainsError(const QString &out);
-    bool logContainsWarning(const QString &out);
+    void addLogEntry(const QString& text, const QIcon& icon);
+    bool logContainsError(const QString& out);
+    bool logContainsWarning(const QString& out);
 
 signals:
-    void simulated(ExternSimDialog *);
+    void simulated(ExternSimDialog*);
     void warnings();
     void success();
 
@@ -75,7 +74,7 @@ public slots:
 
 private slots:
     void slotProcessOutput();
-    //void slotProcessXyceOutput();
+    // void slotProcessXyceOutput();
     void slotNgspiceStarted();
     void slotNgspiceStartError(QProcess::ProcessError err);
     void slotStop();

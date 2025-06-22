@@ -20,15 +20,15 @@
 
 #include "component.h"
 
-class RLCG : public Component  {
+class RLCG : public Component {
 public:
-  RLCG();
-  ~RLCG();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    RLCG();
+    ~RLCG();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

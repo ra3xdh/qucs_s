@@ -20,21 +20,20 @@
 
 #include "components/component.h"
 
-
-class SpiceGlobalParam : public Component  {
+class SpiceGlobalParam : public Component {
 
 public:
-  SpiceGlobalParam();
-  ~SpiceGlobalParam();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  static void splitEqn(QString &eqn, QStringList &tokens);
-  QString getExpression(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    SpiceGlobalParam();
+    ~SpiceGlobalParam();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    static void splitEqn(QString& eqn, QStringList& tokens);
+    QString getExpression(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 
 protected:
-  QString vhdlCode(int) { return QString(); }
-  QString verilogCode(int) { return QString(); }
-  QString netlist() { return QString(); }
+    QString vhdlCode(int) { return QString(); }
+    QString verilogCode(int) { return QString(); }
+    QString netlist() { return QString(); }
 };
 
 #endif

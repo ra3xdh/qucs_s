@@ -15,33 +15,33 @@
  *                                                                         *
  ***************************************************************************/
 #include "param_sweep.h"
-#include "schematic.h"
 #include "misc.h"
+#include "schematic.h"
 
 Param_Sweep::Param_Sweep()
 {
-  Description = QObject::tr("Parameter sweep");
+    Description = QObject::tr("Parameter sweep");
 
-  QString  s = Description;
-  initSymbol(Description);
-  Model = ".SW";
-  Name  = "SW";
-  SpiceModel = "*";
-  isSimulation = true;
+    QString s = Description;
+    initSymbol(Description);
+    Model = ".SW";
+    Name = "SW";
+    SpiceModel = "*";
+    isSimulation = true;
 
-  // The index of the first 6 properties must not changed. Used in recreate().
-  Props.append(new Property("Sim", "", true,
-		QObject::tr("simulation to perform parameter sweep on")));
-  Props.append(new Property("Type", "lin", true,
-		QObject::tr("sweep type")+" [lin, log, list, const]"));
-  Props.append(new Property("Param", "R1", true,
-		QObject::tr("parameter to sweep")));
-  Props.append(new Property("Start", "5 Ohm", true,
-		QObject::tr("start value for sweep")));
-  Props.append(new Property("Stop", "50 Ohm", true,
-		QObject::tr("stop value for sweep")));
-  Props.append(new Property("Points", "20", true,
-		QObject::tr("number of simulation steps")));
+    // The index of the first 6 properties must not changed. Used in recreate().
+    Props.append(new Property("Sim", "", true,
+        QObject::tr("simulation to perform parameter sweep on")));
+    Props.append(new Property("Type", "lin", true,
+        QObject::tr("sweep type") + " [lin, log, list, const]"));
+    Props.append(new Property("Param", "R1", true,
+        QObject::tr("parameter to sweep")));
+    Props.append(new Property("Start", "5 Ohm", true,
+        QObject::tr("start value for sweep")));
+    Props.append(new Property("Stop", "50 Ohm", true,
+        QObject::tr("stop value for sweep")));
+    Props.append(new Property("Points", "20", true,
+        QObject::tr("number of simulation steps")));
 }
 
 Param_Sweep::~Param_Sweep()
@@ -50,76 +50,79 @@ Param_Sweep::~Param_Sweep()
 
 Component* Param_Sweep::newOne()
 {
-  return new Param_Sweep();
+    return new Param_Sweep();
 }
 
-Element* Param_Sweep::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* Param_Sweep::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Parameter sweep");
-  BitmapFile = (char *) "sweep";
+    Name = QObject::tr("Parameter sweep");
+    BitmapFile = (char*)"sweep";
 
-  if(getNewOne)  return new Param_Sweep();
-  return 0;
+    if (getNewOne)
+        return new Param_Sweep();
+    return 0;
 }
 
 void Param_Sweep::recreate()
 {
-  if((Props.at(1)->Value == "list") || (Props.at(1)->Value == "const")) {
-    // Call them "Symbol" to omit them in the netlist.
-    Props.at(3)->Name = "Symbol";
-    Props.at(3)->display = false;
-    Props.at(4)->Name = "Symbol";
-    Props.at(4)->display = false;
-    Props.at(5)->Name = "Values";
-  }
-  else {
-    Props.at(3)->Name = "Start";
-    Props.at(4)->Name = "Stop";
-    Props.at(5)->Name = "Points";
-  }
+    if ((Props.at(1)->Value == "list") || (Props.at(1)->Value == "const")) {
+        // Call them "Symbol" to omit them in the netlist.
+        Props.at(3)->Name = "Symbol";
+        Props.at(3)->display = false;
+        Props.at(4)->Name = "Symbol";
+        Props.at(4)->display = false;
+        Props.at(5)->Name = "Values";
+    } else {
+        Props.at(3)->Name = "Start";
+        Props.at(4)->Name = "Stop";
+        Props.at(5)->Name = "Points";
+    }
 }
 
 QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString();
+    if (isActive != COMP_IS_ACTIVE)
+        return QString();
 
-    QString s,unit;
-    QStringList parameter_list = getProperty("Param")->Value.split( this->param_split_str );
+    QString s, unit;
+    QStringList parameter_list = getProperty("Param")->Value.split(this->param_split_str);
     QStringList::const_iterator constListIterator;
     QString type = getProperty("Type")->Value;
-    QString step_var = parameter_list.begin()->toLower();// use first element name as variable name
+    QString step_var = parameter_list.begin()->toLower(); // use first element name as variable name
     step_var.remove(QRegularExpression("[\\.\\[\\]@:]"));
 
     s = "option interp\n";
     s += QStringLiteral("let number_%1 = 0\n").arg(step_var);
-    if (lvl==0) s += QStringLiteral("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
-    else s += QStringLiteral("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res%4\n").arg(sim).arg(step_var).arg(sim).arg(lvl);
+    if (lvl == 0)
+        s += QStringLiteral("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
+    else
+        s += QStringLiteral("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res%4\n").arg(sim).arg(step_var).arg(sim).arg(lvl);
 
     s += QStringLiteral("foreach  %1_act ").arg(step_var);
 
-    if((type == "list") || (type == "const")) {
+    if ((type == "list") || (type == "const")) {
         QString list_str = getProperty("Values")->Value;
-        list_str.remove(0,1); // remove  [ ]
+        list_str.remove(0, 1); // remove  [ ]
         list_str.chop(1);
         QStringList List = list_str.split(";");
-        for(int i = 0; i < List.length(); i++) {
+        for (int i = 0; i < List.length(); i++) {
             s += QStringLiteral("%1 ").arg(List[i]);
         }
     } else {
-        double start,stop,step,fac,points,ostart,ostop;
-        misc::str2num(getProperty("Start")->Value,ostart,unit,fac);
+        double start, stop, step, fac, points, ostart, ostop;
+        misc::str2num(getProperty("Start")->Value, ostart, unit, fac);
         ostart *= fac;
-        misc::str2num(getProperty("Stop")->Value,ostop,unit,fac);
+        misc::str2num(getProperty("Stop")->Value, ostop, unit, fac);
         ostop *= fac;
-        misc::str2num(getProperty("Points")->Value,points,unit,fac);
+        misc::str2num(getProperty("Points")->Value, points, unit, fac);
         points *= fac;
 
-        start = std::min(ostart,ostop);
-        stop = std::max(ostart,ostop);
+        start = std::min(ostart, ostop);
+        stop = std::max(ostart, ostop);
 
-        if(type == "lin") {
-            step = (stop-start)/(points-1);
-            while ( points > 0 ) {
+        if (type == "lin") {
+            step = (stop - start) / (points - 1);
+            while (points > 0) {
                 s += QStringLiteral("%1 ").arg(start);
                 start += step;
                 points -= 1;
@@ -127,9 +130,9 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         } else {
             start = log10(start);
             stop = log10(stop);
-            step = (stop - start)/(points - 1);
+            step = (stop - start) / (points - 1);
 
-            while ( points > 0 ) {
+            while (points > 0) {
                 s += QStringLiteral("%1 ").arg(pow(10, start));
                 start += step;
                 points -= 1;
@@ -138,26 +141,26 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     }
     s += "\n"; // newline after step listing
     QString nline_char('\n');
-    for(constListIterator=parameter_list.begin(); constListIterator!=parameter_list.end();++constListIterator)
-    {
+    for (constListIterator = parameter_list.begin(); constListIterator != parameter_list.end(); ++constListIterator) {
         QString par = *constListIterator;
         bool compfound = false;
         bool temper_sweep = false;
 
-        Schematic *sch = getSchematic();
-        Component *pc = sch->getComponentByName(getProperty("Param")->Value);
+        Schematic* sch = getSchematic();
+        Component* pc = sch->getComponentByName(getProperty("Param")->Value);
         compfound = pc != nullptr;
 
-        if (step_var == "temp" || step_var == "temper") temper_sweep = true;
+        if (step_var == "temp" || step_var == "temper")
+            temper_sweep = true;
 
         if (temper_sweep) { // Sweep temperature
-          s += QStringLiteral("option temp = $%1_act%2").arg(step_var).arg(nline_char);
+            s += QStringLiteral("option temp = $%1_act%2").arg(step_var).arg(nline_char);
         } else if (compfound) { // Sweep device
-          s += QStringLiteral("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+            s += QStringLiteral("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
         } else if (par.startsWith("@")) { // Sweep model
-          s += QStringLiteral("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+            s += QStringLiteral("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
         } else { // Sweep .PARAM variable
-          s += QStringLiteral("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
+            s += QStringLiteral("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
         }
     }
     return s;
@@ -165,18 +168,21 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 
 QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
 {
-    if (isActive != COMP_IS_ACTIVE) return QString();
+    if (isActive != COMP_IS_ACTIVE)
+        return QString();
 
     QString s;
-    QStringList parameter_list = getProperty("Param")->Value.split( this->param_split_str );
+    QStringList parameter_list = getProperty("Param")->Value.split(this->param_split_str);
     QString par = parameter_list.begin()->toLower();
     QString type = getProperty("Type")->Value;
     par.remove(QRegularExpression("[\\.\\[\\]@:]"));
 
     s = "set appendwrite\n";
 
-    if (lvl==0) s += QStringLiteral("echo \"$&number_%1  $%2_act\" >> spice4qucs.%3.cir.res\n").arg(par).arg(par).arg(sim);
-    else s += QStringLiteral("echo \"$&number_%1\" $%1_act >> spice4qucs.%2.cir.res%3\n").arg(par).arg(sim).arg(lvl);
+    if (lvl == 0)
+        s += QStringLiteral("echo \"$&number_%1  $%2_act\" >> spice4qucs.%3.cir.res\n").arg(par).arg(par).arg(sim);
+    else
+        s += QStringLiteral("echo \"$&number_%1\" $%1_act >> spice4qucs.%2.cir.res%3\n").arg(par).arg(sim).arg(lvl);
     s += QStringLiteral("let number_%1 = number_%1 + 1\n").arg(par);
 
     s += "end\n";
@@ -194,12 +200,12 @@ QString Param_Sweep::getCounterVar()
 
 QString Param_Sweep::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    double start,stop,step,fac,points;
+    double start, stop, step, fac, points;
     QString unit;
     QString s;
 
-    if (getProperty("Type")->Value=="list") { // List STEP variance Xyce-only
-        if(dialect == spicecompat::SPICEXyce) {
+    if (getProperty("Type")->Value == "list") { // List STEP variance Xyce-only
+        if (dialect == spicecompat::SPICEXyce) {
             QString var = getProperty("Param")->Value;
             QString list = getProperty("Values")->Value;
             list.remove('[').remove(']');
@@ -208,20 +214,21 @@ QString Param_Sweep::spice_netlist(spicecompat::SpiceDialect dialect /* = spicec
             return s.toLower();
         }
     }
-    if (getProperty("Type")->Value!="list" && getProperty("Type")->Value!="const"){
-        misc::str2num(getProperty("Start")->Value,start,unit,fac);
+    if (getProperty("Type")->Value != "list" && getProperty("Type")->Value != "const") {
+        misc::str2num(getProperty("Start")->Value, start, unit, fac);
         start *= fac;
-        misc::str2num(getProperty("Stop")->Value,stop,unit,fac);
+        misc::str2num(getProperty("Stop")->Value, stop, unit, fac);
         stop *= fac;
-        misc::str2num(getProperty("Points")->Value,points,unit,fac);
+        misc::str2num(getProperty("Points")->Value, points, unit, fac);
         points *= fac;
-        step = (stop-start)/(points-1);
+        step = (stop - start) / (points - 1);
     }
 
     if (Props.at(0)->Value.toLower().startsWith("dc")) {
         QString src = getProperty("Param")->Value;
         s = QStringLiteral("DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
-        if (dialect == spicecompat::SPICEXyce) s.prepend('.');
+        if (dialect == spicecompat::SPICEXyce)
+            s.prepend('.');
     } else if (dialect == spicecompat::SPICEXyce) {
         QString var = getProperty("Param")->Value;
         s = QStringLiteral(".STEP %1 %2 %3 %4\n").arg(var).arg(start).arg(stop).arg(step);
@@ -230,4 +237,3 @@ QString Param_Sweep::spice_netlist(spicecompat::SpiceDialect dialect /* = spicec
     }
     return s.toLower();
 }
-

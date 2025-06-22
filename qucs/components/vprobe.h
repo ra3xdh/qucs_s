@@ -20,16 +20,16 @@
 
 #include "component.h"
 
-
-class vProbe : public Component  {
+class vProbe : public Component {
 public:
-  vProbe();
- ~vProbe();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getProbeVariable(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    vProbe();
+    ~vProbe();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    QString getProbeVariable(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

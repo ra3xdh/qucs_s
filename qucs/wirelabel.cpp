@@ -15,105 +15,100 @@
  *                                                                         *
  ***************************************************************************/
 #include "wirelabel.h"
+#include "main.h"
 #include "multi_point.h"
 #include "one_point.h"
 #include "wire.h"
-#include "main.h"
 
 #include <QMargins>
-#include <QString>
 #include <QPainter>
+#include <QString>
 
 WireLabel::WireLabel(const QString& _Name, int _cx, int _cy,
-                     int _x1, int _y1)
+    int _x1, int _y1)
 {
-  cx = _cx;
-  cy = _cy;
-  x1 = _x1;
-  y1 = _y1;
-  setName(_Name);
+    cx = _cx;
+    cy = _cy;
+    x1 = _x1;
+    y1 = _y1;
+    setName(_Name);
 
-  QFontMetrics metrics(QucsSettings.font, 0);
-  textSize = metrics.size(0, Name);
-  x2 = x1 + textSize.width();
-  y2 = y1 + textSize.height();
+    QFontMetrics metrics(QucsSettings.font, 0);
+    textSize = metrics.size(0, Name);
+    x2 = x1 + textSize.width();
+    y2 = y1 + textSize.height();
 
-  Type = isLabel;
+    Type = isLabel;
 }
 
 bool WireLabel::getSelected(int x, int y)
 {
-  const QPoint click{x, y};
-  const QPoint text{x1, y1};
-  return
-    QRect{text, textSize}
-      .marginsAdded({5, 5, 5, 5})
-      .contains(click)
-    ||
-    qucs_s::geom::is_near_line(click, root(), text, 5);
+    const QPoint click { x, y };
+    const QPoint text { x1, y1 };
+    return QRect { text, textSize }
+               .marginsAdded({ 5, 5, 5, 5 })
+               .contains(click)
+        || qucs_s::geom::is_near_line(click, root(), text, 5);
 }
 
-void WireLabel::paint(QPainter *p) const {
-  p->save();
+void WireLabel::paint(QPainter* p) const
+{
+    p->save();
 
-  QFont newFont{ p->font() };
-  newFont.setWeight(isHighlighted ? QFont::Bold : QFont::Normal);
-  p->setFont(newFont);
+    QFont newFont { p->font() };
+    newFont.setWeight(isHighlighted ? QFont::Bold : QFont::Normal);
+    p->setFont(newFont);
 
-  p->setPen(QPen{
-    isHighlighted ? Qt::darkBlue : Qt::black,
-    isHighlighted ? 3.0 : 1.0
-  });
+    p->setPen(QPen {
+        isHighlighted ? Qt::darkBlue : Qt::black,
+        isHighlighted ? 3.0 : 1.0 });
 
-  QRect text_br;
-  p->drawText(x1, y1, 1, 1, Qt::TextDontClip, Name, &text_br);
+    QRect text_br;
+    p->drawText(x1, y1, 1, 1, Qt::TextDontClip, Name, &text_br);
 
-  bool right = text_br.right() < cx;
-  bool bottom = text_br.bottom() < cy;
+    bool right = text_br.right() < cx;
+    bool bottom = text_br.bottom() < cy;
 
-  p->setPen(QPen{initValue.isEmpty() ? Qt::darkMagenta : Qt::red,0});
+    p->setPen(QPen { initValue.isEmpty() ? Qt::darkMagenta : Qt::red, 0 });
 
-  text_br = text_br.marginsAdded(QMargins{3, 3, 3, 3});
-  p->drawLine(cx, cy, right ? text_br.right() : text_br.left(), bottom ? text_br.bottom() : text_br.top());
-  p->drawLine(
-    right ? text_br.right() : text_br.left(),
-    bottom ? text_br.bottom() : text_br.top(),
-    right ? text_br.right() : text_br.left(),
-    bottom ? text_br.top() : text_br.bottom()
-  );
+    text_br = text_br.marginsAdded(QMargins { 3, 3, 3, 3 });
+    p->drawLine(cx, cy, right ? text_br.right() : text_br.left(), bottom ? text_br.bottom() : text_br.top());
+    p->drawLine(
+        right ? text_br.right() : text_br.left(),
+        bottom ? text_br.bottom() : text_br.top(),
+        right ? text_br.right() : text_br.left(),
+        bottom ? text_br.top() : text_br.bottom());
 
-  p->drawLine(
-    right ? text_br.right() : text_br.left(),
-    bottom ? text_br.bottom() : text_br.top(),
-    right ? text_br.left() : text_br.right(),
-    bottom ? text_br.bottom() : text_br.top()
-  );
+    p->drawLine(
+        right ? text_br.right() : text_br.left(),
+        bottom ? text_br.bottom() : text_br.top(),
+        right ? text_br.left() : text_br.right(),
+        bottom ? text_br.bottom() : text_br.top());
 
-  if (pOwner != nullptr && pOwner->Type == isWire) {
-    const int start_angle = dynamic_cast<Wire*>(pOwner)->isHorizontal()
-      ? 16 * (right  ?  45 : 225)
-      : 16 * (bottom ? -45 : 135);
-    constexpr int span_angle = 16 * 270;
-    p->drawArc(cx-4, cy-4, 8, 8, start_angle, span_angle);
-  }
+    if (pOwner != nullptr && pOwner->Type == isWire) {
+        const int start_angle = dynamic_cast<Wire*>(pOwner)->isHorizontal()
+            ? 16 * (right ? 45 : 225)
+            : 16 * (bottom ? -45 : 135);
+        constexpr int span_angle = 16 * 270;
+        p->drawArc(cx - 4, cy - 4, 8, 8, start_angle, span_angle);
+    }
 
-  if(isSelected)
-  {
-    p->setPen(QPen(Qt::darkGray,3));
-    p->drawRoundedRect(QRect{{x1,y1}, textSize}, 4, 4);
-  }
-  p->restore();
+    if (isSelected) {
+        p->setPen(QPen(Qt::darkGray, 3));
+        p->drawRoundedRect(QRect { { x1, y1 }, textSize }, 4, 4);
+    }
+    p->restore();
 }
 
 void WireLabel::setName(const QString& Name_)
 {
-  Name = Name_;
+    Name = Name_;
 
-  // get size of text using the screen-compatible metric
-  QFontMetrics metrics(QucsSettings.font, 0);
-  textSize = metrics.size(0, Name);
-  x2 = x1 + textSize.width();
-  y2 = y1 + textSize.height();
+    // get size of text using the screen-compatible metric
+    QFontMetrics metrics(QucsSettings.font, 0);
+    textSize = metrics.size(0, Name);
+    x2 = x1 + textSize.width();
+    y2 = y1 + textSize.height();
 }
 
 // Converts all necessary data of the wire into a string. This can be used to
@@ -121,86 +116,84 @@ void WireLabel::setName(const QString& Name_)
 // Wire labels use the same format like wires, but with length zero.
 QString WireLabel::save()
 {
-  QString s("<");
-	s += QString::number(cx)+" "+QString::number(cy)+" "
-	  +  QString::number(cx)+" "+QString::number(cy)
-	  +  " \""+Name +"\" "
-	  +  QString::number(x1)+" "+QString::number(y1)+" 0 \""
-	  +  initValue+"\">";
-  return s;
+    QString s("<");
+    s += QString::number(cx) + " " + QString::number(cy) + " "
+        + QString::number(cx) + " " + QString::number(cy)
+        + " \"" + Name + "\" "
+        + QString::number(x1) + " " + QString::number(y1) + " 0 \""
+        + initValue + "\">";
+    return s;
 }
-
 
 void WireLabel::getLabelBounding(int& _xmin, int& _ymin, int& _xmax, int& _ymax)
 {
-    _xmin = std::min(x1,x1+(x2+6));
-    _xmax = std::max(x1,x1+(x2+6));
-    _ymin = std::min(y1,y1+(y2+6));
-    _ymax = std::max(y1,y1+(y2+5));
-    _ymax = std::max(cy,_ymax);
+    _xmin = std::min(x1, x1 + (x2 + 6));
+    _xmax = std::max(x1, x1 + (x2 + 6));
+    _ymin = std::min(y1, y1 + (y2 + 6));
+    _ymax = std::max(y1, y1 + (y2 + 5));
+    _ymax = std::max(cy, _ymax);
 }
 
 QPoint WireLabel::root() const noexcept
 {
-  return QPoint{cx, cy};
+    return QPoint { cx, cy };
 }
 
 bool WireLabel::moveRoot(int dx, int dy) noexcept
 {
-  cx += dx;
-  cy += dy;
-  return dx != 0 || dy != 0;
+    cx += dx;
+    cy += dy;
+    return dx != 0 || dy != 0;
 }
 
 bool WireLabel::moveRootTo(int x, int y) noexcept
 {
-  const bool is_different = x != cx || y != cy;
-  cx = x;
-  cy = y;
-  return is_different;
+    const bool is_different = x != cx || y != cy;
+    cx = x;
+    cy = y;
+    return is_different;
 }
 
 QPoint WireLabel::center() const noexcept
 {
-  return QRect{{x1, y1}, textSize}.center();
+    return QRect { { x1, y1 }, textSize }.center();
 }
 
 bool WireLabel::moveCenter(int dx, int dy) noexcept
 {
-  x1 += dx;
-  y1 += dy;
-  return dx != 0 || dy != 0;
+    x1 += dx;
+    y1 += dy;
+    return dx != 0 || dy != 0;
 }
 
 bool WireLabel::rotate() noexcept
 {
-  qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
-  return true;
+    qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+    return true;
 }
 
 bool WireLabel::mirrorX() noexcept
 {
-  return moveCenterTo(
-    center().x(),
-    qucs_s::geom::mirror_coordinate(center().y(), root().y()));
+    return moveCenterTo(
+        center().x(),
+        qucs_s::geom::mirror_coordinate(center().y(), root().y()));
 }
 
 bool WireLabel::mirrorY() noexcept
 {
-  return moveCenterTo(
-    qucs_s::geom::mirror_coordinate(center().x(), root().x()),
-    center().y());
+    return moveCenterTo(
+        qucs_s::geom::mirror_coordinate(center().x(), root().x()),
+        center().y());
 }
-
 
 QRect WireLabel::boundingRect() const noexcept
 {
-  return QRect{QPoint{cx, cy}, QPoint{x1, y1}}
-    .normalized()
-    .united(QRect{{x1, y1}, textSize}.normalized());
+    return QRect { QPoint { cx, cy }, QPoint { x1, y1 } }
+        .normalized()
+        .united(QRect { { x1, y1 }, textSize }.normalized());
 }
 
 void WireLabel::setOwner(Conductor* c)
 {
-  pOwner = c;
+    pOwner = c;
 }

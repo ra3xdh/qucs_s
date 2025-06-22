@@ -20,17 +20,16 @@
 
 #include "component.h"
 
-
-class vRect : public Component  {
+class vRect : public Component {
 public:
-  vRect();
-  ~vRect();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    vRect();
+    ~vRect();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
 };
 
 #endif

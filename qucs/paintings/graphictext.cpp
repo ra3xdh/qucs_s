@@ -22,7 +22,6 @@
 #include "one_point.h"
 #include "schematic.h"
 
-
 GraphicText::GraphicText()
 {
     Name = "Text ";
@@ -36,7 +35,8 @@ GraphicText::GraphicText()
     br = QRect(0, 0, 0, 0);
 }
 
-void GraphicText::paint(QPainter* painter) {
+void GraphicText::paint(QPainter* painter)
+{
     painter->save();
 
     // Build transformation
@@ -50,7 +50,7 @@ void GraphicText::paint(QPainter* painter) {
     // Set font and pen color
     painter->setPen(color);
     QFont f = font;
-    f.setPixelSize(QFontInfo{font}.pixelSize());
+    f.setPixelSize(QFontInfo { font }.pixelSize());
     painter->setFont(f);
 
     QRectF textBox;
@@ -71,7 +71,7 @@ void GraphicText::paint(QPainter* painter) {
     painter->restore();
 }
 
-void GraphicText::paintScheme(Schematic *p)
+void GraphicText::paintScheme(Schematic* p)
 {
     p->PostPaintEvent(_Rect, x1, y1, x2 - x1, y2 - y1);
 }
@@ -81,17 +81,17 @@ Painting* GraphicText::newOne()
     return new GraphicText();
 }
 
-Element *GraphicText::info(QString &Name, char *&BitmapFile, bool getNewOne)
+Element* GraphicText::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
     Name = QObject::tr("Text");
-    BitmapFile = (char *) "text";
+    BitmapFile = (char*)"text";
 
     if (getNewOne)
         return new GraphicText();
     return 0;
 }
 
-bool GraphicText::load(const QString &s)
+bool GraphicText::load(const QString& s)
 {
     bool ok;
 
@@ -148,8 +148,8 @@ QString GraphicText::save()
 
     // The 'Text' property has to be the last within the line !
     QString s = Name + QString::number(x1) + " " + QString::number(y1) + " "
-                + QString::number(font.pointSize()) + " " + color.name() + " "
-                + QString::number(angle) + " \"" + t + "\"";
+        + QString::number(font.pointSize()) + " " + color.name() + " "
+        + QString::number(angle) + " \"" + t + "\"";
     return s;
 }
 
@@ -176,8 +176,8 @@ QString GraphicText::saveJSON()
     misc::convert2ASCII(t);
 
     QString s = QStringLiteral("{\"type\" : \"graphictext\", "
-                        "\"x\" : %1, \"y\" : %2, \"s\" : \"%3\", "
-                        "\"color\" : \"%4\", \"size\" : %5, \"cos\" : %6, \"sin\" : %7},")
+                               "\"x\" : %1, \"y\" : %2, \"s\" : \"%3\", "
+                               "\"color\" : \"%4\", \"size\" : %5, \"cos\" : %6, \"sin\" : %7},")
                     .arg(x1)
                     .arg(y1)
                     .arg(t)
@@ -199,7 +199,7 @@ void GraphicText::MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint
     sch->PostPaintEvent(_Line, cursor.x() + 17, cursor.y() + 8, cursor.x() + 23, cursor.y() + 8, 0, 0, true);
 }
 
-bool GraphicText::MousePressing(Schematic *sch)
+bool GraphicText::MousePressing(Schematic* sch)
 {
     return Dialog(sch);
 }
@@ -233,7 +233,7 @@ QRect GraphicText::boundingRect() const noexcept
     return br;
 }
 
-bool GraphicText::Dialog(QWidget *parent)
+bool GraphicText::Dialog(QWidget* parent)
 {
     QFont f(QucsSettings.font); // to avoid wrong text width
     bool changed = false;

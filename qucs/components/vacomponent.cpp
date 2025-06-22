@@ -15,19 +15,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "vacomponent.h"
 
-#include <QString>
 #include <QFile>
-#include <QTextStream>
-#include <QMessageBox>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonArray>
+#include <QMessageBox>
+#include <QString>
+#include <QTextStream>
 
 #include "node.h"
-
 
 /*!
  * \file vacomponent.cpp
@@ -35,9 +33,8 @@
  */
 vacomponent::vacomponent(QJsonObject json)
 {
-   parseJson(json);
+    parseJson(json);
 }
-
 
 /*!
  * \brief vacomponent::vacomponent
@@ -45,7 +42,7 @@ vacomponent::vacomponent(QJsonObject json)
  */
 vacomponent::vacomponent(QString filename)
 {
-    //QString data = getData(filename);
+    // QString data = getData(filename);
     QJsonObject json;
     try {
         json = getJsonObject(filename);
@@ -67,7 +64,7 @@ void vacomponent::parseJson(QJsonObject json)
 
     for (int propIndex = 0; propIndex < propArray.size(); ++propIndex) {
         QJsonObject property = propArray[propIndex].toObject();
-        //if (it.name().compare("length")) {
+        // if (it.name().compare("length")) {
         QString name = getString(property, "name");
         QString value = getString(property, "value");
         QString display = getString(property, "display");
@@ -83,18 +80,18 @@ void vacomponent::parseJson(QJsonObject json)
             show = true;
 
         /// \todo what if there are no properties?
-        Props.append (new Property (name, value, show, desc));
+        Props.append(new Property(name, value, show, desc));
     }
 
     createSymbol(json);
 
     Model = getString(json, "Model");
-    Name  = getString(json, "SymName");
+    Name = getString(json, "SymName");
     SpiceModel = "N";
 
     /// TODO adjust location of text
-    tx = x1+100;
-    ty = y1+20;
+    tx = x1 + 100;
+    ty = y1 + 20;
 }
 
 /*!
@@ -103,14 +100,13 @@ void vacomponent::parseJson(QJsonObject json)
  * \return \a Component based on the \p filename
  *  Used by mouseactions to drop new items into the schematic.
  */
-Component *vacomponent::newOne(QString filename)
+Component* vacomponent::newOne(QString filename)
 {
-  vacomponent * p = new vacomponent(filename);
-  if (Props.count())
-      p->Props.front()->Value = Props.front()->Value;
-  p->recreate();
-  return p;
-
+    vacomponent* p = new vacomponent(filename);
+    if (Props.count())
+        p->Props.front()->Value = Props.front()->Value;
+    p->recreate();
+    return p;
 }
 
 /*!
@@ -123,8 +119,8 @@ Component *vacomponent::newOne(QString filename)
  * Used to get \p Name and \p BitmapFile.
  * It can also create new objects from symbol file.
  */
-Element *vacomponent::info(QString &Name, QString &BitmapFile,
-                           bool getNewOne, QString filename)
+Element* vacomponent::info(QString& Name, QString& BitmapFile,
+    bool getNewOne, QString filename)
 {
     // get variables out of file
     QJsonObject json;
@@ -134,13 +130,14 @@ Element *vacomponent::info(QString &Name, QString &BitmapFile,
         return 0;
     }
 
-    Name  = getString(json, "Model");
+    Name = getString(json, "Model");
 
     /// Default BitmapFile is [modulename]
     /// The BitmapFile JSON entry can be modified in \see LoadDialog::slotChangeIcon()
-    BitmapFile  = getString(json, "BitmapFile");
+    BitmapFile = getString(json, "BitmapFile");
 
-    if(getNewOne) return new vacomponent(json);
+    if (getNewOne)
+        return new vacomponent(json);
     return 0;
 }
 
@@ -157,20 +154,20 @@ void vacomponent::createSymbol(QJsonObject json)
     QMap<QString, Qt::BrushStyle> brushMap;
     QMap<QString, Qt::PenStyle> penMap;
 
-    brushMap.insert("Qt::NoBrush",          Qt::NoBrush);
-    brushMap.insert("Qt::SolidPattern",     Qt::SolidPattern);
-    brushMap.insert("Qt::Dense1Pattern",    Qt::Dense1Pattern);
-    brushMap.insert("Qt::Dense2Pattern",    Qt::Dense2Pattern);
-    brushMap.insert("Qt::Dense3Pattern",    Qt::Dense3Pattern);
-    brushMap.insert("Qt::Dense4Pattern",    Qt::Dense4Pattern);
-    brushMap.insert("Qt::Dense5Pattern",    Qt::Dense5Pattern);
-    brushMap.insert("Qt::Dense6Pattern",    Qt::Dense6Pattern);
-    brushMap.insert("Qt::Dense7Pattern",    Qt::Dense7Pattern);
-    brushMap.insert("Qt::HorPattern",       Qt::HorPattern);
-    brushMap.insert("Qt::VerPattern",       Qt::VerPattern);
-    brushMap.insert("Qt::CrossPattern",     Qt::CrossPattern);
-    brushMap.insert("Qt::BDiagPattern",     Qt::BDiagPattern);
-    brushMap.insert("Qt::FDiagPattern",     Qt::FDiagPattern);
+    brushMap.insert("Qt::NoBrush", Qt::NoBrush);
+    brushMap.insert("Qt::SolidPattern", Qt::SolidPattern);
+    brushMap.insert("Qt::Dense1Pattern", Qt::Dense1Pattern);
+    brushMap.insert("Qt::Dense2Pattern", Qt::Dense2Pattern);
+    brushMap.insert("Qt::Dense3Pattern", Qt::Dense3Pattern);
+    brushMap.insert("Qt::Dense4Pattern", Qt::Dense4Pattern);
+    brushMap.insert("Qt::Dense5Pattern", Qt::Dense5Pattern);
+    brushMap.insert("Qt::Dense6Pattern", Qt::Dense6Pattern);
+    brushMap.insert("Qt::Dense7Pattern", Qt::Dense7Pattern);
+    brushMap.insert("Qt::HorPattern", Qt::HorPattern);
+    brushMap.insert("Qt::VerPattern", Qt::VerPattern);
+    brushMap.insert("Qt::CrossPattern", Qt::CrossPattern);
+    brushMap.insert("Qt::BDiagPattern", Qt::BDiagPattern);
+    brushMap.insert("Qt::FDiagPattern", Qt::FDiagPattern);
     brushMap.insert("Qt::DiagCrossPattern", Qt::DiagCrossPattern);
 
     penMap.insert("Qt::NoPen", Qt::NoPen);
@@ -181,8 +178,6 @@ void vacomponent::createSymbol(QJsonObject json)
     penMap.insert("Qt::DashDotDotLine", Qt::DashDotDotLine);
     penMap.insert("Qt::CustomDashLine", Qt::CustomDashLine);
 
-
-
     QJsonArray paintArray = json["paintings"].toArray();
 
     for (int paintIndex = 0; paintIndex < paintArray.size(); ++paintIndex) {
@@ -190,9 +185,9 @@ void vacomponent::createSymbol(QJsonObject json)
 
         qreal x, x1, x2, y, y1, y2, w, h, thick, angle, arclen;
         qreal size, cos, sin;
-        QString color, style    , colorfill, stylefill, s;
+        QString color, style, colorfill, stylefill, s;
 
-        //QScriptValue entry = it.value();
+        // QScriptValue entry = it.value();
         QString type = getString(paint, "type");
 
         if (!type.compare("line")) {
@@ -204,8 +199,8 @@ void vacomponent::createSymbol(QJsonObject json)
             thick = getDouble(paint, "thick");
             style = getString(paint, "style");
 
-            Lines.append (new qucs::Line (x1, y1, x2, y2,
-                                        QPen (QColor (color), thick, penMap.value(style))));
+            Lines.append(new qucs::Line(x1, y1, x2, y2,
+                QPen(QColor(color), thick, penMap.value(style))));
         }
 
         if (!type.compare("rectangle")) {
@@ -219,10 +214,9 @@ void vacomponent::createSymbol(QJsonObject json)
             colorfill = getString(paint, "colorfill");
             stylefill = getString(paint, "stylefill");
 
-            Rects.append (new qucs::Rect (x, y, w, h,
-                                        QPen (QColor (color), thick, penMap.value(style)),
-                                        QBrush(QColor (colorfill), brushMap.value(stylefill))
-                                        ));
+            Rects.append(new qucs::Rect(x, y, w, h,
+                QPen(QColor(color), thick, penMap.value(style)),
+                QBrush(QColor(colorfill), brushMap.value(stylefill))));
         }
 
         if (!type.compare("ellipse")) {
@@ -236,10 +230,9 @@ void vacomponent::createSymbol(QJsonObject json)
             colorfill = getString(paint, "colorfill");
             stylefill = getString(paint, "stylefill");
 
-            Ellipses.append (new qucs::Ellips (x, y, w, h,
-                                         QPen (QColor (color), thick, penMap.value(style)),
-                                         QBrush(QColor (colorfill), brushMap.value(stylefill))
-                                         ));
+            Ellipses.append(new qucs::Ellips(x, y, w, h,
+                QPen(QColor(color), thick, penMap.value(style)),
+                QBrush(QColor(colorfill), brushMap.value(stylefill))));
         }
 
         if (!type.compare("ellipsearc")) {
@@ -253,14 +246,14 @@ void vacomponent::createSymbol(QJsonObject json)
             thick = getDouble(paint, "thick");
             style = getString(paint, "style");
 
-            Arcs.append (new qucs::Arc (x, y, w, h, angle, arclen,
-                                      QPen (QColor (color), thick, penMap.value(style))));
+            Arcs.append(new qucs::Arc(x, y, w, h, angle, arclen,
+                QPen(QColor(color), thick, penMap.value(style))));
         }
 
         if (!type.compare("portsymbol")) {
             x = getDouble(paint, "x");
             y = getDouble(paint, "y");
-            Ports.append (new Port (x, y));
+            Ports.append(new Port(x, y));
         }
 
         if (!type.compare("graphictext")) {
@@ -271,8 +264,8 @@ void vacomponent::createSymbol(QJsonObject json)
             size = getDouble(paint, "size");
             cos = getDouble(paint, "cos");
             sin = getDouble(paint, "sin");
-            Texts.append (new Text (x, y, s,
-                                  QColor (color), size, cos, sin));
+            Texts.append(new Text(x, y, s,
+                QColor(color), size, cos, sin));
         }
 
         if (!type.compare("arrow")) {
@@ -283,8 +276,8 @@ void vacomponent::createSymbol(QJsonObject json)
             color = getString(paint, "color");
             thick = getDouble(paint, "thick");
             style = getString(paint, "style");
-            Lines.append (new qucs::Line (x1, y1, x2, y2,
-                                        QPen (QColor (color), thick, penMap.value(style))));
+            Lines.append(new qucs::Line(x1, y1, x2, y2,
+                QPen(QColor(color), thick, penMap.value(style))));
         }
     }
 
@@ -295,31 +288,28 @@ void vacomponent::createSymbol(QJsonObject json)
     y2 = getDouble(json, "y2");
 }
 
-
 QString vacomponent::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (dialect == spicecompat::SPICEXyce) return QString();
+    if (dialect == spicecompat::SPICEXyce)
+        return QString();
 
     QString s = SpiceModel + Name + " ";
-    for(const auto pp: Ports) {
+    for (const auto pp : Ports) {
         s += pp->Connection->Name + " ";
     }
     QString tmp_model = QStringLiteral("mod_%1_%2").arg(Model).arg(Name);
     s += tmp_model + "\n";
     QString par_str;
-    for(int i = 0; i < Props.count(); i++) {
+    for (int i = 0; i < Props.count(); i++) {
         par_str += QStringLiteral("%1=%2 ")
-                .arg(Props.at(i)->Name)
-                .arg(Props.at(i)->Value);
+                       .arg(Props.at(i)->Name)
+                       .arg(Props.at(i)->Value);
     }
-    s += QStringLiteral(".MODEL %1 %2 %3\n").arg(tmp_model)
-                                      .arg(Model)
-                                      .arg(par_str);
+    s += QStringLiteral(".MODEL %1 %2 %3\n").arg(tmp_model).arg(Model).arg(par_str);
     return s;
 }
 
 // Move this elsewhere?
-
 
 /*!
  * \brief getJsonObject Reads the JSON file
@@ -332,7 +322,7 @@ QJsonObject getJsonObject(QString filename)
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::critical(0, QObject::tr("Error"),
-                              QObject::tr("Symbol file not found: %1").arg(filename));
+            QObject::tr("Symbol file not found: %1").arg(filename));
         throw std::runtime_error("File not found");
     }
 
@@ -340,12 +330,12 @@ QJsonObject getJsonObject(QString filename)
     QTextStream in(&file);
 
     // Put into a string
-    QString data = (QString) in.readAll();
+    QString data = (QString)in.readAll();
     // remove trailing comma`s
     data = data.simplified();
     data.remove(" ");
-    data.replace(",]","]");
-    data.replace(",}","}");
+    data.replace(",]", "]");
+    data.replace(",}", "}");
     // close
     file.close();
 
@@ -353,13 +343,11 @@ QJsonObject getJsonObject(QString filename)
 
     QJsonDocument jdoc = QJsonDocument::fromJson(data.toUtf8(), &error);
 
-
-    if(error.error != QJsonParseError::NoError) {
+    if (error.error != QJsonParseError::NoError) {
         QMessageBox::critical(0, QObject::tr("Error"),
-                              QObject::tr("Symbol file not found: %1").arg(filename));
+            QObject::tr("Symbol file not found: %1").arg(filename));
         throw std::runtime_error("Json parse error");
     }
-
 
     QJsonObject object = jdoc.object();
 
@@ -372,8 +360,9 @@ QJsonObject getJsonObject(QString filename)
  * \param prop JSON property key
  * \return a double corresponding to the JSON value
  */
-double getDouble(QJsonObject data, QString prop){
-  return data[prop].toDouble();
+double getDouble(QJsonObject data, QString prop)
+{
+    return data[prop].toDouble();
 }
 
 /*!
@@ -382,6 +371,7 @@ double getDouble(QJsonObject data, QString prop){
  * \param prop JSON property key
  * \return a QString corresponding to the JSON value
  */
-QString getString(QJsonObject data, QString prop){
-  return data[prop].toString();
+QString getString(QJsonObject data, QString prop)
+{
+    return data[prop].toString();
 }

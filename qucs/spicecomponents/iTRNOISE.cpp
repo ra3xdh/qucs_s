@@ -19,59 +19,60 @@
  *                                                                         *
  ***************************************************************************/
 #include "iTRNOISE.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 iTRNOISE::iTRNOISE()
 {
-  Description = QObject::tr("SPICE I(TRNOISE):");
-  Simulator = spicecompat::simSpice;
+    Description = QObject::tr("SPICE I(TRNOISE):");
+    Simulator = spicecompat::simSpice;
 
-  // normal voltage source symbol
-  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::blue,3)));
-  Texts.append(new Text(26, 6,"ITRN",Qt::blue,12.0,0.0,-1.0));
-  // pins
-  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  // diagonal strokes
-  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkGray,3, Qt::SolidLine, Qt::FlatCap)));
-  Lines.append(new qucs::Line(-10,  6,  6,-10,QPen(Qt::darkGray,3, Qt::SolidLine, Qt::FlatCap)));
-  Lines.append(new qucs::Line( -7, 10, 10, -7,QPen(Qt::darkGray,3, Qt::SolidLine, Qt::FlatCap)));
-  Lines.append(new qucs::Line( -2, 12, 12, -2,QPen(Qt::darkGray,3, Qt::SolidLine, Qt::FlatCap)));
-  // arrow
-  Lines.append(new qucs::Line( -7,  0,  6,  0,QPen(Qt::blue,3, Qt::SolidLine, Qt::FlatCap)));
-  Polylines.append(new qucs::Polyline(
-    std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::blue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+    // normal voltage source symbol
+    Ellipses.append(new qucs::Ellips(-12, -12, 24, 24, QPen(Qt::blue, 3)));
+    Texts.append(new Text(26, 6, "ITRN", Qt::blue, 12.0, 0.0, -1.0));
+    // pins
+    Lines.append(new qucs::Line(-30, 0, -12, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(30, 0, 12, 0, QPen(Qt::darkBlue, 2)));
+    // diagonal strokes
+    Lines.append(new qucs::Line(-12, 1, 1, -12, QPen(Qt::darkGray, 3, Qt::SolidLine, Qt::FlatCap)));
+    Lines.append(new qucs::Line(-10, 6, 6, -10, QPen(Qt::darkGray, 3, Qt::SolidLine, Qt::FlatCap)));
+    Lines.append(new qucs::Line(-7, 10, 10, -7, QPen(Qt::darkGray, 3, Qt::SolidLine, Qt::FlatCap)));
+    Lines.append(new qucs::Line(-2, 12, 12, -2, QPen(Qt::darkGray, 3, Qt::SolidLine, Qt::FlatCap)));
+    // arrow
+    Lines.append(new qucs::Line(-7, 0, 6, 0, QPen(Qt::blue, 3, Qt::SolidLine, Qt::FlatCap)));
+    Polylines.append(new qucs::Polyline(
+        std::vector<QPointF> { { 0, -4 }, { 6, 0 }, { 0, 4 } }, QPen(Qt::blue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(-30, 0));
 
-  x1 = -30; y1 = -14;
-  x2 =  30; y2 =  40;
+    x1 = -30;
+    y1 = -14;
+    x2 = 30;
+    y2 = 40;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "iTRNOISE";
-  SpiceModel = "I";
-  Name  = "I";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "iTRNOISE";
+    SpiceModel = "I";
+    Name = "I";
 
-  Props.append(new Property("Na",  "20n", true,
-		QObject::tr(" Rms noise amplitude Gaussian)")));
-  Props.append(new Property("Nt",  "0.5n", true,
-		QObject::tr("Time step")));
-  Props.append(new Property("Nalpha",  "1.1", true,
-		QObject::tr("1/f exponent (0  < alpha < 2)")));
-  Props.append(new Property("Namp",  "12p", true,
-		QObject::tr("Amplitude (1/f)")));
-   Props.append(new Property("Rtsam",  "0", true,
-		QObject::tr("Amplitude (1/f)")));
-  Props.append(new Property("Rtscapt",  "0", true,
-		QObject::tr("Trap capture time")));
-  Props.append(new Property("Rtsemt",  "0", true,
-		QObject::tr("Trap emission time" )));
+    Props.append(new Property("Na", "20n", true,
+        QObject::tr(" Rms noise amplitude Gaussian)")));
+    Props.append(new Property("Nt", "0.5n", true,
+        QObject::tr("Time step")));
+    Props.append(new Property("Nalpha", "1.1", true,
+        QObject::tr("1/f exponent (0  < alpha < 2)")));
+    Props.append(new Property("Namp", "12p", true,
+        QObject::tr("Amplitude (1/f)")));
+    Props.append(new Property("Rtsam", "0", true,
+        QObject::tr("Amplitude (1/f)")));
+    Props.append(new Property("Rtscapt", "0", true,
+        QObject::tr("Trap capture time")));
+    Props.append(new Property("Rtsemt", "0", true,
+        QObject::tr("Trap emission time")));
 
-  rotate();  // fix historical flaw
+    rotate(); // fix historical flaw
 }
 
 iTRNOISE::~iTRNOISE()
@@ -80,16 +81,17 @@ iTRNOISE::~iTRNOISE()
 
 Component* iTRNOISE::newOne()
 {
-  return new iTRNOISE();
+    return new iTRNOISE();
 }
 
-Element* iTRNOISE::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* iTRNOISE::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("I(TRNOISE)");
-  BitmapFile = (char *) "iTRNOISE";
+    Name = QObject::tr("I(TRNOISE)");
+    BitmapFile = (char*)"iTRNOISE";
 
-  if(getNewOne)  return new iTRNOISE();
-  return 0;
+    if (getNewOne)
+        return new iTRNOISE();
+    return 0;
 }
 
 QString iTRNOISE::netlist()
@@ -101,22 +103,22 @@ QString iTRNOISE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecomp
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam; // node names
     }
 
-    QString Na= spicecompat::normalize_value(Props.at(0)->Value);
-    QString Nt= spicecompat::normalize_value(Props.at(1)->Value);
-    QString Nalpha= spicecompat::normalize_value(Props.at(2)->Value);
+    QString Na = spicecompat::normalize_value(Props.at(0)->Value);
+    QString Nt = spicecompat::normalize_value(Props.at(1)->Value);
+    QString Nalpha = spicecompat::normalize_value(Props.at(2)->Value);
     QString Namp = spicecompat::normalize_value(Props.at(3)->Value);
     QString Rtsam = spicecompat::normalize_value(Props.at(4)->Value);
     QString Rtscapt = spicecompat::normalize_value(Props.at(4)->Value);
     QString Rtsemt = spicecompat::normalize_value(Props.at(4)->Value);
 
-    s += QStringLiteral(" DC 0 AC 0 TRNOISE(%1 %2 %3 %4 %5  %6 %7) \n").arg(Na).arg(Nt).arg(Nalpha).arg(Namp).
-                                arg(Rtsam).arg(Rtscapt).arg(Rtsemt);
+    s += QStringLiteral(" DC 0 AC 0 TRNOISE(%1 %2 %3 %4 %5  %6 %7) \n").arg(Na).arg(Nt).arg(Nalpha).arg(Namp).arg(Rtsam).arg(Rtscapt).arg(Rtsemt);
     return s;
 }

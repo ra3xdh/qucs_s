@@ -20,17 +20,16 @@
 
 #include "component.h"
 
-
-class RFedd : public MultiViewComponent  {
+class RFedd : public MultiViewComponent {
 public:
-  RFedd();
- ~RFedd() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    RFedd();
+    ~RFedd() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString netlist();
-  void createSymbol();
+    QString netlist();
+    void createSymbol();
 };
 
 #endif

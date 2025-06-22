@@ -18,22 +18,22 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef PNP_SPICE_H
+#ifndef PNP_SPICE_H
 #define PNP_SPICE_H
 
 #include "components/component.h"
 
 class PNP_SPICE : public Component {
 public:
-  PNP_SPICE();
-  ~PNP_SPICE();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    PNP_SPICE();
+    ~PNP_SPICE();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
 };
 
 #endif // PNP_SPICE_H

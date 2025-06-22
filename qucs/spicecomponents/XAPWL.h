@@ -18,20 +18,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef XAPWL_H
+#ifndef XAPWL_H
 #define XAPWL_H
 
 #include "components/component.h"
 
-class XAPWL: public Component {
+class XAPWL : public Component {
 public:
-  XAPWL();
-  ~XAPWL();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    XAPWL();
+    ~XAPWL();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // XAPWL_H

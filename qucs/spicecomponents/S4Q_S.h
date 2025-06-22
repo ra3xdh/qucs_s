@@ -4,7 +4,7 @@
     begin                : Thu May 21 2015
     copyright            : (C) 2015 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
-             
+
     SPICE Version         : Wednesday Sept 16 2015
     copyright            : (C) 2015 Mike Brinson
     email                : mbrin72043@yahoo.co.uk
@@ -24,15 +24,15 @@
 
 #include "components/component.h"
 
-
-class S4Q_S : public Component  {
+class S4Q_S : public Component {
 public:
-  S4Q_S();
-  ~S4Q_S();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    S4Q_S();
+    ~S4Q_S();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

@@ -37,58 +37,58 @@ class QucsApp;
 class QTextStream;
 
 class SpiceDialog : public QDialog {
-   Q_OBJECT
+    Q_OBJECT
 public:
-  SpiceDialog(QucsApp*, SpiceFile*, Schematic*);
- ~SpiceDialog();
+    SpiceDialog(QucsApp*, SpiceFile*, Schematic*);
+    ~SpiceDialog();
 
 private slots:
-  void slotButtOK();
-  void slotButtCancel();
-  void slotButtApply();
-  void slotButtBrowse();
-  void slotButtEdit();
+    void slotButtOK();
+    void slotButtCancel();
+    void slotButtApply();
+    void slotButtBrowse();
+    void slotButtEdit();
 
-  void slotButtAdd();
-  void slotButtRemove();
-  void slotAddPort(QListWidgetItem *);
-  void slotRemovePort(QListWidgetItem *);
+    void slotButtAdd();
+    void slotButtRemove();
+    void slotAddPort(QListWidgetItem*);
+    void slotRemovePort(QListWidgetItem*);
 
-  void slotGetNetlist();
-  void slotGetError();
+    void slotGetNetlist();
+    void slotGetError();
 
-  void slotSkipOut();
-  void slotSkipErr();
-  void slotGetPrepOut();
-  void slotGetPrepErr();
-  void slotPrepChanged(int);
+    void slotSkipOut();
+    void slotSkipErr();
+    void slotGetPrepOut();
+    void slotGetPrepErr();
+    void slotPrepChanged(int);
 
 protected slots:
     void reject();
 
 private:
-  bool loadSpiceNetList(const QString&);
+    bool loadSpiceNetList(const QString&);
 
-  QVBoxLayout *all;   // the mother of all widgets
-  QRegularExpressionValidator *Validator, *ValRestrict;
-  QRegularExpression    Expr;
-  QListWidget *NodesList, *PortsList;
-  QCheckBox   *FileCheck, *SimCheck, *ParamCheck;
-  QLineEdit   *FileEdit, *CompNameEdit, *ParamsEdit;
-  QPushButton *ButtBrowse, *ButtEdit, *ButtAdd, *ButtRemove,
-              *ButtOK, *ButtApply, *ButtCancel;
-  QComboBox   *PrepCombo;
-  SpiceFile   *Comp;
-  Schematic   *Doc;
-  bool        changed;
-  int         currentPrep;
+    QVBoxLayout* all; // the mother of all widgets
+    QRegularExpressionValidator *Validator, *ValRestrict;
+    QRegularExpression Expr;
+    QListWidget *NodesList, *PortsList;
+    QCheckBox *FileCheck, *SimCheck, *ParamCheck;
+    QLineEdit *FileEdit, *CompNameEdit, *ParamsEdit;
+    QPushButton *ButtBrowse, *ButtEdit, *ButtAdd, *ButtRemove,
+        *ButtOK, *ButtApply, *ButtCancel;
+    QComboBox* PrepCombo;
+    SpiceFile* Comp;
+    Schematic* Doc;
+    bool changed;
+    int currentPrep;
 
-  QTextStream *prestream;
-  QProcess *QucsConv, *SpicePrep;
-  QString Line, Error;  // to store the text read from QucsConv
-  int textStatus; // to store with text data QucsConv will sent next
+    QTextStream* prestream;
+    QProcess *QucsConv, *SpicePrep;
+    QString Line, Error; // to store the text read from QucsConv
+    int textStatus; // to store with text data QucsConv will sent next
 
-  QucsApp* App;
+    QucsApp* App;
 };
 
 #endif

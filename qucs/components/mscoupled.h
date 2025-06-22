@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class MScoupled : public Component  {
+class MScoupled : public Component {
 public:
-  MScoupled();
-  ~MScoupled();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    MScoupled();
+    ~MScoupled();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

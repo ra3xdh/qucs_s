@@ -20,13 +20,12 @@
 
 #include "simulation.h"
 
-
-class Digi_Sim : public qucs::component::SimulationComponent  {
+class Digi_Sim : public qucs::component::SimulationComponent {
 public:
-  Digi_Sim();
- ~Digi_Sim();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Digi_Sim();
+    ~Digi_Sim();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

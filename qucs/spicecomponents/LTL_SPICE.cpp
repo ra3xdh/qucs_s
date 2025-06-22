@@ -16,55 +16,56 @@
  *                                                                         *
  ***************************************************************************/
 #include "LTL_SPICE.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 LTL_SPICE::LTL_SPICE()
 {
-  Description = QObject::tr("SPICE T:");
-  Simulator = spicecompat::simSpice;
+    Description = QObject::tr("SPICE T:");
+    Simulator = spicecompat::simSpice;
 
-  Arcs.append(new qucs::Arc(-28,-40, 18, 38,16*232, 16*33,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc(-28,  2, 18, 38, 16*95, 16*33,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(-28, -40, 18, 38, 16 * 232, 16 * 33, QPen(Qt::darkBlue, 2)));
+    Arcs.append(new qucs::Arc(-28, 2, 18, 38, 16 * 95, 16 * 33, QPen(Qt::darkBlue, 2)));
 
-  Lines.append(new qucs::Line(-20,-2, 20,-2,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(-20, 2, 20, 2,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-20, -2, 20, -2, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(-20, 2, 20, 2, QPen(Qt::darkRed, 3)));
 
-  Arcs.append(new qucs::Arc( 10,-40, 18, 38,16*270, 16*40,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc( 10,  2, 18, 38, 16*50, 16*40,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(10, -40, 18, 38, 16 * 270, 16 * 40, QPen(Qt::darkBlue, 2)));
+    Arcs.append(new qucs::Arc(10, 2, 18, 38, 16 * 50, 16 * 40, QPen(Qt::darkBlue, 2)));
 
-  Arcs.append(new qucs::Arc(-38,-10, 16, 28, 16*45, 16*45,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc(-38,-18, 16, 28,16*270, 16*45,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc( 22,-10, 16, 28, 16*90, 16*45,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc( 22,-18, 16, 28,16*225, 16*45,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(-38, -10, 16, 28, 16 * 45, 16 * 45, QPen(Qt::darkBlue, 2)));
+    Arcs.append(new qucs::Arc(-38, -18, 16, 28, 16 * 270, 16 * 45, QPen(Qt::darkBlue, 2)));
+    Arcs.append(new qucs::Arc(22, -10, 16, 28, 16 * 90, 16 * 45, QPen(Qt::darkBlue, 2)));
+    Arcs.append(new qucs::Arc(22, -18, 16, 28, 16 * 225, 16 * 45, QPen(Qt::darkBlue, 2)));
 
-  Ports.append(new Port(-30,-10));
-  Ports.append(new Port(-30, 10));
-  Ports.append(new Port( 30,-10));
-  Ports.append(new Port( 30, 10));
+    Ports.append(new Port(-30, -10));
+    Ports.append(new Port(-30, 10));
+    Ports.append(new Port(30, -10));
+    Ports.append(new Port(30, 10));
 
-  x1 = -30; y1 =-12;
-  x2 =  30; y2 = 12;
+    x1 = -30;
+    y1 = -12;
+    x2 = 30;
+    y2 = 12;
 
-  tx = x1+4;
-  ty = y2+4;
+    tx = x1 + 4;
+    ty = y2 + 4;
 
-  Model = "LTL_SPICE";
-  SpiceModel = "T";
-  Name  = "T";
+    Model = "LTL_SPICE";
+    SpiceModel = "T";
+    Name = "T";
 
-  Property::Builder b;
-  b.simulator(static_cast<spicecompat::Simulator>(spicecompat::simSpice ^ spicecompat::simXyce));
+    Property::Builder b;
+    b.simulator(static_cast<spicecompat::Simulator>(spicecompat::simSpice ^ spicecompat::simXyce));
 
-  Props.append(b.property("Z0", "50 ",    QObject::tr("Characteristic impedance")));
-  Props.append(b.property("Td", "0.25n ", QObject::tr("Transmission delay")));
-  Props.append(b.property("F", "1e9",     QObject::tr("Frequency")));
-  Props.append(b.property("Nl", "0.25",   QObject::tr("Normalised length at given frequency")));
-  Props.append(b.property("V1", "0",      QObject::tr("Initial voltage at end 1")));
-  Props.append(b.property("I1", "0",      QObject::tr("Initial current at end 1")));
-  Props.append(b.property("V2", "0",      QObject::tr("Initial voltage at end 2")));
-  Props.append(b.property("I2", "0",      QObject::tr("Initial current at end 2")));
+    Props.append(b.property("Z0", "50 ", QObject::tr("Characteristic impedance")));
+    Props.append(b.property("Td", "0.25n ", QObject::tr("Transmission delay")));
+    Props.append(b.property("F", "1e9", QObject::tr("Frequency")));
+    Props.append(b.property("Nl", "0.25", QObject::tr("Normalised length at given frequency")));
+    Props.append(b.property("V1", "0", QObject::tr("Initial voltage at end 1")));
+    Props.append(b.property("I1", "0", QObject::tr("Initial current at end 1")));
+    Props.append(b.property("V2", "0", QObject::tr("Initial voltage at end 2")));
+    Props.append(b.property("I2", "0", QObject::tr("Initial current at end 2")));
 }
 
 LTL_SPICE::~LTL_SPICE()
@@ -73,16 +74,17 @@ LTL_SPICE::~LTL_SPICE()
 
 Component* LTL_SPICE::newOne()
 {
-  return new LTL_SPICE();
+    return new LTL_SPICE();
 }
 
-Element* LTL_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* LTL_SPICE::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("T");
-  BitmapFile = (char *) "LTL_SPICE";
+    Name = QObject::tr("T");
+    BitmapFile = (char*)"LTL_SPICE";
 
-  if(getNewOne)  return new LTL_SPICE();
-  return 0;
+    if (getNewOne)
+        return new LTL_SPICE();
+    return 0;
 }
 
 QString LTL_SPICE::netlist()
@@ -94,11 +96,12 @@ QString LTL_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam; // node names
     }
 
     QString Z0 = spicecompat::normalize_value(Props.at(0)->Value);
@@ -110,23 +113,23 @@ QString LTL_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
     QString V2 = spicecompat::normalize_value(Props.at(6)->Value);
     QString I2 = spicecompat::normalize_value(Props.at(7)->Value);
 
-    if( Z0.trimmed().length() > 0) {
+    if (Z0.trimmed().length() > 0) {
         s += QStringLiteral(" Z0=%1").arg(Z0);
     }
-    if( Td.trimmed().length() > 0 )  {
+    if (Td.trimmed().length() > 0) {
         s += QStringLiteral(" Td=%1").arg(Td);
     }
-    if( Freq.trimmed().length() > 0 ) {
+    if (Freq.trimmed().length() > 0) {
         s += QStringLiteral(" F=%1").arg(Freq);
     }
-    if( Nl.trimmed().length() > 0 ) {
+    if (Nl.trimmed().length() > 0) {
         s += QStringLiteral(" NL=%1").arg(Nl);
     }
 
     if (dialect == spicecompat::SPICEXyce) {
-      s += "\n"; // Xyce doesn't support IC
+        s += "\n"; // Xyce doesn't support IC
     } else {
-      s += QStringLiteral(" IC=%5, %6, %7, %8 \n").arg(V1).arg(I1).arg(V2).arg(I2);
+        s += QStringLiteral(" IC=%5, %6, %7, %8 \n").arg(V1).arg(I1).arg(V2).arg(I2);
     }
 
     return s;

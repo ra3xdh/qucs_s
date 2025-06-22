@@ -16,8 +16,8 @@
  ***************************************************************************/
 
 /*! \file id_dialog.h
-  * \brief Dialog to edit parameters in a subcircuit symbol.
-  */
+ * \brief Dialog to edit parameters in a subcircuit symbol.
+ */
 
 #ifndef ID_DIALOG_H
 #define ID_DIALOG_H
@@ -36,31 +36,31 @@ class QRegExpValidator;
 /*!
  * \brief The ID_Dialog class, edit subcircuit symbol properties.
  */
-class ID_Dialog : public QDialog  {
-Q_OBJECT
+class ID_Dialog : public QDialog {
+    Q_OBJECT
 public:
-  ID_Dialog(ID_Text*, QWidget *parent = 0);
- ~ID_Dialog();
+    ID_Dialog(ID_Text*, QWidget* parent = 0);
+    ~ID_Dialog();
 
 private:
-  ID_Text *idText;
+    ID_Text* idText;
 
-  QVBoxLayout *all;
-  QLineEdit *Prefix;
+    QVBoxLayout* all;
+    QLineEdit* Prefix;
 
-  QTableWidget *ParamTable;
-  QCheckBox *showCheck;
-  QLineEdit *ParamNameEdit, *ValueEdit, *DescriptionEdit, *TypeEdit;
+    QTableWidget* ParamTable;
+    QCheckBox* showCheck;
+    QLineEdit *ParamNameEdit, *ValueEdit, *DescriptionEdit, *TypeEdit;
 
-  QRegularExpression Expr;
-  QRegularExpressionValidator *SubVal, *NameVal, *ValueVal, *DescrVal, *TypeVal;
+    QRegularExpression Expr;
+    QRegularExpressionValidator *SubVal, *NameVal, *ValueVal, *DescrVal, *TypeVal;
 
 private slots:
-  void slotOk();
-  void slotApply();
-  void slotAddParameter();
-  void slotRemoveParameter();
-  void slotEditParameter();
+    void slotOk();
+    void slotApply();
+    void slotAddParameter();
+    void slotRemoveParameter();
+    void slotEditParameter();
 };
 
 #endif

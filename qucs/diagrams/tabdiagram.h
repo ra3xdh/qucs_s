@@ -20,24 +20,23 @@
 
 #include "diagram.h"
 
+class TabDiagram : public Diagram {
+public:
+    TabDiagram(int _cx = 0, int _cy = 0);
+    ~TabDiagram();
 
-class TabDiagram : public Diagram  {
-public: 
-  TabDiagram(int _cx=0, int _cy=0);
- ~TabDiagram();
+    virtual Diagram* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    virtual void paint(QPainter* painter) override;
+    virtual void paintDiagram(QPainter* painter) override;
+    virtual int calcDiagram();
+    virtual int scroll(int);
+    virtual bool scrollTo(int, int, int);
 
-  virtual Diagram* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  virtual void paint(QPainter* painter) override;
-  virtual void paintDiagram(QPainter* painter) override;
-  virtual int calcDiagram();
-  virtual int scroll(int);
-  virtual bool scrollTo(int, int, int);
-
-  void createAxisLabels() {};   // no labels in this diagram
+    void createAxisLabels() { }; // no labels in this diagram
 
 protected:
-  void calcData(Graph*) {};  // no graph data
+    void calcData(Graph*) { }; // no graph data
 };
 
 #endif

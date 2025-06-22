@@ -24,80 +24,79 @@
 #include "searchdialog.h"
 #include "ui_searchdialog.h"
 
-SearchDialog::SearchDialog(QWidget *parent) : 
-    QDialog(parent),
-    ui(new Ui::SearchDialog)
+SearchDialog::SearchDialog(QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::SearchDialog)
 {
-  ui->setupUi(this);
+    ui->setupUi(this);
 
-  connect(ui->ButtonSearch, SIGNAL(clicked()), SLOT(slotSearch()));
-  connect(this, SIGNAL(finished(int)), SLOT(slotDisconnect()));
+    connect(ui->ButtonSearch, SIGNAL(clicked()), SLOT(slotSearch()));
+    connect(this, SIGNAL(finished(int)), SLOT(slotDisconnect()));
 }
 
 SearchDialog::~SearchDialog()
 {
-  delete ui;
+    delete ui;
 }
 
 // ---------------------------------------------------------------------
-void SearchDialog::initSearch(QWidget *_doc, const QString &text, bool replace)
+void SearchDialog::initSearch(QWidget* _doc, const QString& text, bool replace)
 {
-  doc = _doc;
+    doc = _doc;
 
-  if(replace) {
-    setWindowTitle(tr("Replace Text"));
-    ui->AskBox->setHidden(false);
-    ui->ReplaceGroup->setHidden(false);
-    connect(this, SIGNAL(replace(const QString &, const QString &, bool, bool, bool, bool)),
-        doc, SLOT(replace(const QString &, const QString &, bool, bool, bool, bool)));
-  }
-  else {
-    setWindowTitle(tr("Search Text"));
-    ui->AskBox->setHidden(true);
-    ui->ReplaceGroup->setHidden(true);
-    connect(this, SIGNAL(search(const QString &, bool, bool, bool)),
-        doc, SLOT(search(const QString &, bool, bool, bool)));
-  }
+    if (replace) {
+        setWindowTitle(tr("Replace Text"));
+        ui->AskBox->setHidden(false);
+        ui->ReplaceGroup->setHidden(false);
+        connect(this, SIGNAL(replace(const QString&, const QString&, bool, bool, bool, bool)),
+            doc, SLOT(replace(const QString&, const QString&, bool, bool, bool, bool)));
+    } else {
+        setWindowTitle(tr("Search Text"));
+        ui->AskBox->setHidden(true);
+        ui->ReplaceGroup->setHidden(true);
+        connect(this, SIGNAL(search(const QString&, bool, bool, bool)),
+            doc, SLOT(search(const QString&, bool, bool, bool)));
+    }
 
-  ui->ReplaceEdit->clear();
-  ui->SearchEdit->setText(text);
-  ui->SearchEdit->selectAll();
+    ui->ReplaceEdit->clear();
+    ui->SearchEdit->setText(text);
+    ui->SearchEdit->selectAll();
 
-  ui->SearchEdit->setFocus();
-  layout()->setSizeConstraint(QLayout::SetFixedSize);
-  show();
-  raise();
-  activateWindow();
+    ui->SearchEdit->setFocus();
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
+    show();
+    raise();
+    activateWindow();
 }
 
 // ---------------------------------------------------------------------
 void SearchDialog::slotSearch()
 {
-  if(ui->SearchEdit->text().isEmpty()) {
-    return;
-  }
+    if (ui->SearchEdit->text().isEmpty()) {
+        return;
+    }
 
-  if(ui->AskBox->isHidden()) { //search
-    emit search(
-        ui->SearchEdit->text(), ui->CaseBox->isChecked(), ui->WordBox->isChecked(),
-        ui->BackwardBox->isChecked());
-  } else {
-    emit replace(
-        ui->SearchEdit->text(), ui->ReplaceEdit->text(),
-        ui->AskBox->isChecked(), ui->CaseBox->isChecked(),
-        ui->WordBox->isChecked(), ui->BackwardBox->isChecked());
-  }
+    if (ui->AskBox->isHidden()) { // search
+        emit search(
+            ui->SearchEdit->text(), ui->CaseBox->isChecked(), ui->WordBox->isChecked(),
+            ui->BackwardBox->isChecked());
+    } else {
+        emit replace(
+            ui->SearchEdit->text(), ui->ReplaceEdit->text(),
+            ui->AskBox->isChecked(), ui->CaseBox->isChecked(),
+            ui->WordBox->isChecked(), ui->BackwardBox->isChecked());
+    }
 }
 
 // ---------------------------------------------------------------------
 void SearchDialog::slotDisconnect()
 {
-  //hidden -> search
-  if (ui->AskBox->isHidden()) {
-    disconnect(this, SIGNAL(search(const QString &, bool, bool, bool)),
-        doc, SLOT(search(const QString &, bool, bool, bool)));
-  } else {
-    disconnect(this, SIGNAL(replace(const QString &, const QString &, bool, bool, bool, bool)),
-        doc, SLOT(replace(const QString &, const QString &, bool, bool, bool, bool)));
-  }
+    // hidden -> search
+    if (ui->AskBox->isHidden()) {
+        disconnect(this, SIGNAL(search(const QString&, bool, bool, bool)),
+            doc, SLOT(search(const QString&, bool, bool, bool)));
+    } else {
+        disconnect(this, SIGNAL(replace(const QString&, const QString&, bool, bool, bool, bool)),
+            doc, SLOT(replace(const QString&, const QString&, bool, bool, bool, bool)));
+    }
 }

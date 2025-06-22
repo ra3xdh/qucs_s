@@ -23,17 +23,18 @@
 
 #include "components/component.h"
 
-class JA_core: public MultiViewComponent {
+class JA_core : public MultiViewComponent {
 public:
-  JA_core();
-  ~JA_core();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getSpiceLibrary();
+    JA_core();
+    ~JA_core();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    QString getSpiceLibrary();
+
 protected:
-  void createSymbol();
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    void createSymbol();
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // core_H

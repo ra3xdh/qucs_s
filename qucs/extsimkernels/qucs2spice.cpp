@@ -15,12 +15,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-
 #include "qucs2spice.h"
-#include "spicecompat.h"
 #include "components/equation.h"
+#include "spicecompat.h"
 
 #include "misc.h"
 
@@ -29,27 +26,26 @@
   \brief Implementation of qucs2spice namespace
 */
 
-namespace qucs2spice
-{
-   QString convert_rcl(const QString& line);
-   QString convert_header(QString line);
-   QString convert_diode(QString line,bool xyce=false);
-   QString convert_jfet(const QString& line, bool xyce=false);
-   QString convert_mosfet(QString line, bool xyce=false);
-   QString convert_bjt(const QString& line);
-   QString convert_cccs(const QString& line);
-   QString convert_ccvs(const QString& line);
-   QString convert_ccs(const QString& line, bool voltage);
-   QString convert_vccs(const QString& line);
-   QString convert_vcvs(const QString& line);
-   QString convert_vcs(const QString& line, bool voltage);
-   QString convert_dc_src(const QString& line);
-   QString convert_edd(const QString& line, QStringList &EqnsAndVars);
-   QString convert_subckt(QString line);
-   QString convert_gyrator(QString line);
+namespace qucs2spice {
+QString convert_rcl(const QString& line);
+QString convert_header(QString line);
+QString convert_diode(QString line, bool xyce = false);
+QString convert_jfet(const QString& line, bool xyce = false);
+QString convert_mosfet(QString line, bool xyce = false);
+QString convert_bjt(const QString& line);
+QString convert_cccs(const QString& line);
+QString convert_ccvs(const QString& line);
+QString convert_ccs(const QString& line, bool voltage);
+QString convert_vccs(const QString& line);
+QString convert_vcvs(const QString& line);
+QString convert_vcs(const QString& line, bool voltage);
+QString convert_dc_src(const QString& line);
+QString convert_edd(const QString& line, QStringList& EqnsAndVars);
+QString convert_subckt(QString line);
+QString convert_gyrator(QString line);
 
-   void ExtractVarsAndValues(QString line,QStringList& VarsAndVals);
-   void subsVoltages(QStringList &tokens, QStringList& nods);
+void ExtractVarsAndValues(QString line, QStringList& VarsAndVals);
+void subsVoltages(QStringList& tokens, QStringList& nods);
 }
 
 /*!
@@ -60,7 +56,7 @@ namespace qucs2spice
  */
 QString qucs2spice::convert_netlist(QString netlist, bool xyce)
 {
-    QStringList net_lst=netlist.split("\n");
+    QStringList net_lst = netlist.split("\n");
 
     QRegularExpression res_pattern("^[ \t]*R:[A-Za-z]+.*");
     QRegularExpression cap_pattern("^[ \t]*C:[A-Za-z]+.*");
@@ -81,50 +77,66 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
     QRegularExpression subckt_pattern("^[ \t]*Sub:[A-Za-z]+.*");
     QRegularExpression gyrator_pattern("^[ \t]*Gyrator:[A-Za-z]+.*");
 
-    QString s="";
+    QString s = "";
 
     QStringList EqnsAndVars;
 
-    for (QString line : net_lst) {  // Find equations
+    for (QString line : net_lst) { // Find equations
         if (eqn_pattern.match(line).hasMatch()) {
             line.remove(QRegularExpression("^[ \t]*Eqn:[A-Za-z]+\\w+\\s+"));
-            ExtractVarsAndValues(line,EqnsAndVars);
+            ExtractVarsAndValues(line, EqnsAndVars);
         }
     }
     EqnsAndVars.removeAll("Export");
     EqnsAndVars.removeAll("no");
     EqnsAndVars.removeAll("yes");
 
-
     for (QString& line : net_lst) {
         if (subckt_head_pattern.match(line).hasMatch()) {
-            if (ends_pattern.match(line).hasMatch()) s += ".ENDS\n";
-            else s += convert_header(line);
+            if (ends_pattern.match(line).hasMatch())
+                s += ".ENDS\n";
+            else
+                s += convert_header(line);
         }
-        if (res_pattern.match(line).hasMatch()) s += convert_rcl(line);
-        if (cap_pattern.match(line).hasMatch()) s += convert_rcl(line);
-        if (ind_pattern.match(line).hasMatch()) s += convert_rcl(line);
-        if (diode_pattern.match(line).hasMatch()) s += convert_diode(line,xyce);
-        if (mosfet_pattern.match(line).hasMatch()) s += convert_mosfet(line,xyce);
-        if (jfet_pattern.match(line).hasMatch()) s += convert_jfet(line,xyce);
-        if (bjt_pattern.match(line).hasMatch()) s += convert_bjt(line);
-        if (vccs_pattern.match(line).hasMatch()) s += convert_vccs(line);
-        if (vcvs_pattern.match(line).hasMatch()) s += convert_vcvs(line);
-        if (cccs_pattern.match(line).hasMatch()) s+= convert_cccs(line);
-        if (ccvs_pattern.match(line).hasMatch()) s+= convert_ccvs(line);
-        if (dc_pattern.match(line).hasMatch()) s += convert_dc_src(line);
-        if (edd_pattern.match(line).hasMatch()) s += convert_edd(line,EqnsAndVars);
-        if (subckt_pattern.match(line).hasMatch()) s+= convert_subckt(line);
-        if (gyrator_pattern.match(line).hasMatch()) s+= convert_gyrator(line);
+        if (res_pattern.match(line).hasMatch())
+            s += convert_rcl(line);
+        if (cap_pattern.match(line).hasMatch())
+            s += convert_rcl(line);
+        if (ind_pattern.match(line).hasMatch())
+            s += convert_rcl(line);
+        if (diode_pattern.match(line).hasMatch())
+            s += convert_diode(line, xyce);
+        if (mosfet_pattern.match(line).hasMatch())
+            s += convert_mosfet(line, xyce);
+        if (jfet_pattern.match(line).hasMatch())
+            s += convert_jfet(line, xyce);
+        if (bjt_pattern.match(line).hasMatch())
+            s += convert_bjt(line);
+        if (vccs_pattern.match(line).hasMatch())
+            s += convert_vccs(line);
+        if (vcvs_pattern.match(line).hasMatch())
+            s += convert_vcvs(line);
+        if (cccs_pattern.match(line).hasMatch())
+            s += convert_cccs(line);
+        if (ccvs_pattern.match(line).hasMatch())
+            s += convert_ccvs(line);
+        if (dc_pattern.match(line).hasMatch())
+            s += convert_dc_src(line);
+        if (edd_pattern.match(line).hasMatch())
+            s += convert_edd(line, EqnsAndVars);
+        if (subckt_pattern.match(line).hasMatch())
+            s += convert_subckt(line);
+        if (gyrator_pattern.match(line).hasMatch())
+            s += convert_gyrator(line);
     }
 
-    //s.replace(" gnd "," 0 ");
+    // s.replace(" gnd "," 0 ");
     return s;
 }
 
 QString qucs2spice::convert_rcl(const QString& line)
 {
-    QString s="";
+    QString s = "";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString s1 = lst.takeFirst();
     s += s1.remove(':');
@@ -132,7 +144,7 @@ QString qucs2spice::convert_rcl(const QString& line)
     s += " " + lst.takeFirst() + " ";
     s1 = lst.takeFirst().remove("\"");
     auto idx = s1.indexOf('=');
-    s += spicecompat::normalize_value(s1.right(s1.size()-idx-1));
+    s += spicecompat::normalize_value(s1.right(s1.size() - idx - 1));
     s += "\n";
     return s;
 }
@@ -140,21 +152,21 @@ QString qucs2spice::convert_rcl(const QString& line)
 QString qucs2spice::convert_header(QString line)
 {
     QString s = line;
-    s.replace(".Def:",".SUBCKT ");
+    s.replace(".Def:", ".SUBCKT ");
     QStringList lst = s.split(' ', Qt::SkipEmptyParts);
-    lst.insert(2," gnd "); // ground
+    lst.insert(2, " gnd "); // ground
     s = lst.join(" ");
     s += "\n";
     return s;
 }
 
-QString qucs2spice::convert_diode(QString line,bool xyce)
+QString qucs2spice::convert_diode(QString line, bool xyce)
 {
-    QString s="";
+    QString s = "";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
-    name =  name.right(name.size()-idx-1); // name
+    name = name.right(name.size() - idx - 1); // name
     QString K = lst.takeFirst();
     QString A = lst.takeFirst();
     s += QStringLiteral("D%1 %2 %3 DMOD_%4 \n").arg(name).arg(A).arg(K).arg(name);
@@ -166,11 +178,11 @@ QString qucs2spice::convert_diode(QString line,bool xyce)
 
 QString qucs2spice::convert_mosfet(QString line, bool xyce)
 {
-    QString s="";
+    QString s = "";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
-    name =  name.right(name.size()-idx-1); // name
+    name = name.right(name.size() - idx - 1); // name
     QString G = lst.takeFirst();
     QString D = lst.takeFirst();
     QString S = lst.takeFirst();
@@ -180,7 +192,7 @@ QString qucs2spice::convert_mosfet(QString line, bool xyce)
     QString Typ = "NMOS";
     QStringList par_lst;
     par_lst.clear();
-    for(int i=0;i<lst.count();i++) {
+    for (int i = 0; i < lst.count(); i++) {
         QString s1 = lst.at(i);
         if (s1.startsWith("L=\"")) {
             s1.remove('\"');
@@ -194,32 +206,32 @@ QString qucs2spice::convert_mosfet(QString line, bool xyce)
             Typ = "PMOS";
         } else {
             if (!s1.startsWith("N=")) // add ignore list
-            par_lst.append(s1); // usual parameter
+                par_lst.append(s1); // usual parameter
         }
     }
-    s += QStringLiteral("M%1 %2 %3 %4 %5 MMOD_%6 %7 %8 \n").arg(name).arg(D).arg(G).arg(S).arg(Sub)
-            .arg(name).arg(L).arg(W);
+    s += QStringLiteral("M%1 %2 %3 %4 %5 MMOD_%6 %7 %8 \n").arg(name).arg(D).arg(G).arg(S).arg(Sub).arg(name).arg(L).arg(W);
     QString mod_params = par_lst.join(" ");
     mod_params.remove('\"');
     s += QStringLiteral(".MODEL MMOD_%1 %2(%3) \n").arg(name).arg(Typ).arg(mod_params);
-    if (xyce) s.replace("Vt0=","VtO=");
+    if (xyce)
+        s.replace("Vt0=", "VtO=");
     return s;
 }
 
 QString qucs2spice::convert_jfet(const QString& line, bool xyce)
 {
-    QString s="";
+    QString s = "";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
-    name =  name.right(name.size()-idx-1); // name
+    name = name.right(name.size() - idx - 1); // name
     QString G = lst.takeFirst();
     QString D = lst.takeFirst();
     QString S = lst.takeFirst();
     QString Typ = "NJF";
     QStringList par_lst;
     par_lst.clear();
-    for(int i=0;i<lst.count();i++) {
+    for (int i = 0; i < lst.count(); i++) {
         const QString& s1 = lst.at(i);
         if (s1.startsWith("Type=\"nfet\"")) {
             Typ = "NJF";
@@ -233,17 +245,18 @@ QString qucs2spice::convert_jfet(const QString& line, bool xyce)
     QString mod_params = par_lst.join(" ");
     mod_params.remove('\"');
     s += QStringLiteral(".MODEL JMOD_%1 %2(%3) \n").arg(name).arg(Typ).arg(mod_params);
-    if (xyce) s.replace(" Vt0="," VtO=");
+    if (xyce)
+        s.replace(" Vt0=", " VtO=");
     return s;
 }
 
 QString qucs2spice::convert_bjt(const QString& line)
 {
-    QString s="";
+    QString s = "";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
-    name =  name.right(name.size()-idx-1); // name
+    name = name.right(name.size() - idx - 1); // name
     QString B = lst.takeFirst();
     QString C = lst.takeFirst();
     QString E = lst.takeFirst();
@@ -253,8 +266,8 @@ QString qucs2spice::convert_bjt(const QString& line)
     par_lst.clear();
 
     QStringList spice_incompat; // spice incompatibel parameters;
-    spice_incompat<<"Type="<<"Area="<<"Temp="<<"Ffe="<<"Kb="<<"Ab="<<"Fb=";
-    for(int i=0;i<lst.count();i++) {
+    spice_incompat << "Type=" << "Area=" << "Temp=" << "Ffe=" << "Kb=" << "Ab=" << "Fb=";
+    for (int i = 0; i < lst.count(); i++) {
         const QString& s1 = lst.at(i);
         if (s1.startsWith("Type=\"npn\"")) {
             Typ = "NPN";
@@ -263,12 +276,13 @@ QString qucs2spice::convert_bjt(const QString& line)
         } else {
             bool is_incompat = false;
             for (const QString& incompat : spice_incompat) {
-               if (s1.startsWith(incompat)) {
-                   is_incompat = true;
-                   break;
-               }
+                if (s1.startsWith(incompat)) {
+                    is_incompat = true;
+                    break;
+                }
             }
-            if (!is_incompat) par_lst.append(s1); // usual parameter
+            if (!is_incompat)
+                par_lst.append(s1); // usual parameter
         }
     }
     s += QStringLiteral("Q%1 %2 %3 %4 %5 QMOD_%6 \n").arg(name).arg(C).arg(B).arg(E).arg(Sub).arg(name);
@@ -280,12 +294,12 @@ QString qucs2spice::convert_bjt(const QString& line)
 
 QString qucs2spice::convert_cccs(const QString& line)
 {
-    return convert_ccs(line,false);
+    return convert_ccs(line, false);
 }
 
 QString qucs2spice::convert_ccvs(const QString& line)
 {
-    return convert_ccs(line,true);
+    return convert_ccs(line, true);
 }
 
 QString qucs2spice::convert_ccs(const QString& line, bool voltage)
@@ -293,7 +307,7 @@ QString qucs2spice::convert_ccs(const QString& line, bool voltage)
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
-    name =  name.right(name.size()-idx-1); // name
+    name = name.right(name.size() - idx - 1); // name
 
     QString nod0 = lst.takeFirst();
     QString nod1 = lst.takeFirst();
@@ -301,31 +315,33 @@ QString qucs2spice::convert_ccs(const QString& line, bool voltage)
     QString nod3 = lst.takeFirst();
     QString s1 = lst.takeFirst().remove("\"");
     idx = s1.indexOf('=');
-    QString val = s1.right(s1.size()-idx-1);
+    QString val = s1.right(s1.size() - idx - 1);
     QString s;
-    if (voltage) s="H";
-    else s="F";
+    if (voltage)
+        s = "H";
+    else
+        s = "F";
     s += QStringLiteral("%1 %2 %3 V%4 %5\n").arg(name).arg(nod1).arg(nod2).arg(name).arg(val); // output source nodes
-    s += QStringLiteral("V%1 %2 %3 DC 0\n").arg(name).arg(nod0).arg(nod3);   // controlling 0V source
+    s += QStringLiteral("V%1 %2 %3 DC 0\n").arg(name).arg(nod0).arg(nod3); // controlling 0V source
     return s;
 }
 
 QString qucs2spice::convert_vccs(const QString& line)
 {
-    return convert_vcs(line,false);
+    return convert_vcs(line, false);
 }
 
 QString qucs2spice::convert_vcvs(const QString& line)
 {
-    return convert_vcs(line,true);
+    return convert_vcs(line, true);
 }
 
-QString qucs2spice::convert_vcs(const QString& line,bool voltage)
+QString qucs2spice::convert_vcs(const QString& line, bool voltage)
 {
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString name = lst.takeFirst();
     auto idx = name.indexOf(':');
-    name =  name.right(name.size()-idx-1); // name
+    name = name.right(name.size() - idx - 1); // name
 
     QString nod0 = lst.takeFirst();
     QString nod1 = lst.takeFirst();
@@ -333,18 +349,20 @@ QString qucs2spice::convert_vcs(const QString& line,bool voltage)
     QString nod3 = lst.takeFirst();
     QString s1 = lst.takeFirst().remove("\"");
     idx = s1.indexOf('=');
-    QString val = s1.right(s1.size()-idx-1);
+    QString val = s1.right(s1.size() - idx - 1);
 
     QString s;
-    if (voltage) s="E";
-    else s="G";
+    if (voltage)
+        s = "E";
+    else
+        s = "G";
     s += QStringLiteral("%1 %2 %3 %4 %5 %6\n").arg(name).arg(nod1).arg(nod2).arg(nod0).arg(nod3).arg(val);
     return s;
 }
 
 QString qucs2spice::convert_dc_src(const QString& line)
 {
-    QString s="";
+    QString s = "";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString s1 = lst.takeFirst();
     s += s1.remove(':');
@@ -352,43 +370,44 @@ QString qucs2spice::convert_dc_src(const QString& line)
     s += " " + lst.takeFirst() + " ";
     s1 = lst.takeFirst().remove("\"");
     auto idx = s1.indexOf('=');
-    QString val = s1.right(s1.size()-idx-1);
+    QString val = s1.right(s1.size() - idx - 1);
     s += "DC " + val + "\n";
     return s;
 }
 
-QString qucs2spice::convert_edd(const QString& line, QStringList &EqnsAndVars)
+QString qucs2spice::convert_edd(const QString& line, QStringList& EqnsAndVars)
 {
-    QString s="";
+    QString s = "";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QStringList nods;
     QString nam = lst.takeFirst().remove(':');
 
     for (const QString& str : lst) {
         if (!str.contains('=')) {
-            //str.replace("gnd","0");
+            // str.replace("gnd","0");
             nods.append(str);
-        } else break;
+        } else
+            break;
     }
 
-    int Branch = nods.count()/2;
+    int Branch = nods.count() / 2;
 
-    for (int i=0;i<Branch;i++) {
+    for (int i = 0; i < Branch; i++) {
         // current part
-        QString Ivar = line.section('"',4*i+1,4*i+1,QString::SectionSkipEmpty);
-        QString Ieqn = EqnsAndVars.at(EqnsAndVars.indexOf(Ivar)+1);
+        QString Ivar = line.section('"', 4 * i + 1, 4 * i + 1, QString::SectionSkipEmpty);
+        QString Ieqn = EqnsAndVars.at(EqnsAndVars.indexOf(Ivar) + 1);
 
         QStringList Itokens;
-        spicecompat::splitEqn(Ieqn,Itokens);
-        subsVoltages(Itokens,nods);
-        spicecompat::convert_functions(Itokens,false);
-        QString plus = nods.at(2*i+1);
-        QString minus = nods.at(2*i);
+        spicecompat::splitEqn(Ieqn, Itokens);
+        subsVoltages(Itokens, nods);
+        spicecompat::convert_functions(Itokens, false);
+        QString plus = nods.at(2 * i + 1);
+        QString minus = nods.at(2 * i);
 
         s += QStringLiteral("BI%1_%2 %3 %4 I=%5\n").arg(nam).arg(i).arg(plus).arg(minus).arg(Itokens.join(""));
         // charge part
-        QString Qvar = line.section('"',2*i+3,2*i+3,QString::SectionSkipEmpty);
-        QString Qeqn = EqnsAndVars.at(EqnsAndVars.indexOf(Qvar)+1);
+        QString Qvar = line.section('"', 2 * i + 3, 2 * i + 3, QString::SectionSkipEmpty);
+        QString Qeqn = EqnsAndVars.at(EqnsAndVars.indexOf(Qvar) + 1);
         Qeqn.remove(' ');
         QRegularExpression zero_pattern("0+(\\.*0+|)");
         if (!zero_pattern.match(Qeqn).hasMatch()) {
@@ -401,30 +420,29 @@ QString qucs2spice::convert_edd(const QString& line, QStringList &EqnsAndVars)
     return s;
 }
 
-
 QString qucs2spice::convert_subckt(QString line)
 {
-    QString s="";
+    QString s = "";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString s1 = lst.takeFirst();
     s += "X" + s1.remove("Sub:") + " gnd ";
 
     QStringList::iterator it = lst.begin();
 
-    while(!((*it).contains('='))) {
+    while (!((*it).contains('='))) {
         //(*it).replace("gnd","0");
         s += " " + (*it) + " ";
         it++;
     };
 
     QStringList Par;
-    ExtractVarsAndValues(lst.join(" "),Par);
+    ExtractVarsAndValues(lst.join(" "), Par);
 
     Par.removeFirst();
     QString sub_nam = Par.takeFirst();
-    s += " " + sub_nam +" ";
+    s += " " + sub_nam + " ";
 
-    for (QStringList::iterator it = Par.begin();it!=Par.end();it++) {
+    for (QStringList::iterator it = Par.begin(); it != Par.end(); it++) {
         QString var = (*it);
         it++;
         QString val = (*it);
@@ -438,58 +456,56 @@ QString qucs2spice::convert_subckt(QString line)
 
 QString qucs2spice::convert_gyrator(QString line)
 {
-    QString s="";
+    QString s = "";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
     QString Name = lst.takeFirst();
-    Name = Name.section(':',1,1);
+    Name = Name.section(':', 1, 1);
     QString n1 = lst.takeFirst();
     QString n2 = lst.takeFirst();
     QString n3 = lst.takeFirst();
     QString n4 = lst.takeFirst();
-    QString R = line.section('"',1,1);
-    s +=  QStringLiteral("B%1_1 %2 %3 I=(1/(%4))*(V(%5)-V(%6))\n").arg(Name).arg(n1).arg(n4).arg(R).arg(n2).arg(n3);
-    s +=  QStringLiteral("B%1_2 %2 %3 I=-1.0*(1/(%4))*(V(%5)-V(%6))\n").arg(Name).arg(n2).arg(n3).arg(R).arg(n1).arg(n4);
+    QString R = line.section('"', 1, 1);
+    s += QStringLiteral("B%1_1 %2 %3 I=(1/(%4))*(V(%5)-V(%6))\n").arg(Name).arg(n1).arg(n4).arg(R).arg(n2).arg(n3);
+    s += QStringLiteral("B%1_2 %2 %3 I=-1.0*(1/(%4))*(V(%5)-V(%6))\n").arg(Name).arg(n2).arg(n3).arg(R).arg(n1).arg(n4);
     return s;
 }
 
-void qucs2spice::ExtractVarsAndValues(QString line,QStringList& VarsAndVals)
+void qucs2spice::ExtractVarsAndValues(QString line, QStringList& VarsAndVals)
 {
     QString var;
-    for(QString::iterator it = line.begin();it != line.end(); it++) {
+    for (QString::iterator it = line.begin(); it != line.end(); it++) {
         if ((*it).isLetterOrNumber()) {
-            while ((*it)!='=') {
+            while ((*it) != '=') {
                 var.append(*it);
                 it++;
             }
             VarsAndVals.append(var);
             var.clear();
-        } else if ((*it)=='"') {
+        } else if ((*it) == '"') {
             it++;
             do {
                 var.append(*it);
                 it++;
-            } while ((*it)!='"');
+            } while ((*it) != '"');
             VarsAndVals.append(var);
             var.clear();
         }
     }
 }
 
-
-void qucs2spice::subsVoltages(QStringList &tokens, QStringList& nods)
+void qucs2spice::subsVoltages(QStringList& tokens, QStringList& nods)
 {
     QRegularExpression volt_pattern("^V[0-9]+$");
-    for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
+    for (QStringList::iterator it = tokens.begin(); it != tokens.end(); it++) {
         if (volt_pattern.match(*it).hasMatch()) {
             QString volt = *it;
             volt.remove('V').remove(' ');
             int i = volt.toInt();
-            QString plus = nods.at(2*(i-1)+1);
-            QString minus = nods.at(2*(i-1));
-            //if (plus=="gnd") plus="0";
-            //if (minus=="gnd") minus="0";
+            QString plus = nods.at(2 * (i - 1) + 1);
+            QString minus = nods.at(2 * (i - 1));
+            // if (plus=="gnd") plus="0";
+            // if (minus=="gnd") minus="0";
             *it = QStringLiteral("(V(%1)-V(%2))").arg(plus).arg(minus);
         }
     }
 }
-

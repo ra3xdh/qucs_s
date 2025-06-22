@@ -12,20 +12,21 @@
  *   the Free Software Foundation; either version 2 of the License, or             *
  *   (at your option) any later version.                                                                            *
  ***************************************************************************/
- #ifndef ISFFM_H
+#ifndef ISFFM_H
 #define ISFFM_H
 
 #include "components/component.h"
 
 class iSffm : public Component {
 public:
-  iSffm();
-  ~iSffm();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    iSffm();
+    ~iSffm();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // ISFFM_H

@@ -20,63 +20,67 @@
  *
  */
 
-
 #include "verilogawriter.h"
-#include <QPlainTextEdit>
-#include "paintings/id_text.h"
 #include "component.h"
 #include "node.h"
+#include "paintings/id_text.h"
 #include "schematic.h"
+#include <QPlainTextEdit>
 
 /*!
   \file verilogawriter.cpp
   \brief Implementation of the VerilogAwriter class and vacompat namespace.
 */
 
-
 /*!
  * \brief vacompat::convert_functions convert Qucs mathematical function or constant to
  *        Verilog-A equivalent
  * \param tokens[in/out] QStringList contains equation tokens
  */
-void vacompat::convert_functions(QStringList &tokens)
+void vacompat::convert_functions(QStringList& tokens)
 {
     QStringList conv_list; // Put here functions need to be converted
-    conv_list<<"q"<<"`P_Q"
-            <<"kB"<<"`P_K"
-            <<"pi"<<"`M_PI";
+    conv_list << "q" << "`P_Q"
+              << "kB" << "`P_K"
+              << "pi" << "`M_PI";
 
-    for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
-        for(int i=0;i<conv_list.count();i+=2) {
-            if (conv_list.at(i)==(*it))
-                (*it) = conv_list.at(i+1);
+    for (QStringList::iterator it = tokens.begin(); it != tokens.end(); it++) {
+        for (int i = 0; i < conv_list.count(); i += 2) {
+            if (conv_list.at(i) == (*it))
+                (*it) = conv_list.at(i + 1);
         }
     }
-
 }
 
-QString vacompat::normalize_voltage(QString &plus, QString &minus, bool left_side)
+QString vacompat::normalize_voltage(QString& plus, QString& minus, bool left_side)
 {
     QString s;
-    if (plus=="gnd") {
-        if (left_side) s = QStringLiteral("V(%1)").arg(minus);
-        else s = QStringLiteral("(-V(%1))").arg(minus);
-    } else if (minus=="gnd") s = QStringLiteral("V(%1)").arg(plus);
-    else s = QStringLiteral("V(%1,%2)").arg(plus).arg(minus);
+    if (plus == "gnd") {
+        if (left_side)
+            s = QStringLiteral("V(%1)").arg(minus);
+        else
+            s = QStringLiteral("(-V(%1))").arg(minus);
+    } else if (minus == "gnd")
+        s = QStringLiteral("V(%1)").arg(plus);
+    else
+        s = QStringLiteral("V(%1,%2)").arg(plus).arg(minus);
     return s;
 }
 
-QString vacompat::normalize_current(QString &plus, QString &minus, bool left_side)
+QString vacompat::normalize_current(QString& plus, QString& minus, bool left_side)
 {
     QString s;
-    if (plus=="gnd") {
-        if (left_side) s = QStringLiteral("I(%1)").arg(minus);
-       else s = QStringLiteral("(-I(%1))").arg(minus);
-    } else if (minus=="gnd") s = QStringLiteral("I(%1)").arg(plus);
-    else s = QStringLiteral("I(%1,%2)").arg(plus).arg(minus);
+    if (plus == "gnd") {
+        if (left_side)
+            s = QStringLiteral("I(%1)").arg(minus);
+        else
+            s = QStringLiteral("(-I(%1))").arg(minus);
+    } else if (minus == "gnd")
+        s = QStringLiteral("I(%1)").arg(plus);
+    else
+        s = QStringLiteral("I(%1,%2)").arg(plus).arg(minus);
     return s;
 }
-
 
 /*!
  * \brief vacompat::normalize_value Convert value from Qucs or SPICE notation
@@ -94,7 +98,8 @@ QString vacompat::normalize_value(QString Value)
     QRegularExpression s_pattern("^[0-9]+.*S$");
 
     QString s = Value.remove(' ');
-    if (s.startsWith('\'')&&s.endsWith('\'')) return Value.remove('\''); // Expression detected
+    if (s.startsWith('\'') && s.endsWith('\''))
+        return Value.remove('\''); // Expression detected
 
     if (r_pattern.match(s).hasMatch()) { // Component value
         s.remove("Ohm");
@@ -113,14 +118,12 @@ QString vacompat::normalize_value(QString Value)
     return s;
 }
 
-
 VerilogAwriter::VerilogAwriter()
 {
 }
 
 VerilogAwriter::~VerilogAwriter()
 {
-
 }
 
 /*!
@@ -129,12 +132,12 @@ VerilogAwriter::~VerilogAwriter()
  * \param sch[in] Schematic pointer
  * \return true if schematic is subcircuit; false otherwise.
  */
-bool VerilogAwriter::prepareToVerilogA(Schematic *sch)
+bool VerilogAwriter::prepareToVerilogA(Schematic* sch)
 {
     QStringList collect;
-    QPlainTextEdit *err = new QPlainTextEdit;
+    QPlainTextEdit* err = new QPlainTextEdit;
     QTextStream stream;
-    if (sch->prepareNetlist(stream,collect,err)==-10) { // Broken netlist
+    if (sch->prepareNetlist(stream, collect, err) == -10) { // Broken netlist
         delete err;
         return false;
     }
@@ -149,13 +152,13 @@ bool VerilogAwriter::prepareToVerilogA(Schematic *sch)
  * \param sch[in] Schematic that should be converted to Verilog-A module
  * \return true on success; false otherwise
  */
-bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
+bool VerilogAwriter::createVA_module(QTextStream& stream, Schematic* sch)
 {
     prepareToVerilogA(sch);
 
     QString s;
-    stream<<"`include \"disciplines.vams\"\n";
-    stream<<"`include \"constants.vams\"\n";
+    stream << "`include \"disciplines.vams\"\n";
+    stream << "`include \"constants.vams\"\n";
 
     QStringList ports;
     QStringList nodes;
@@ -163,65 +166,67 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
     nodes.clear();
 
     for (Component* pc : sch->a_DocComps) {
-        if (pc->Model=="Port") { // Find module ports
+        if (pc->Model == "Port") { // Find module ports
             QString s = pc->Ports.first()->Connection->Name;
-            if (!ports.contains(s)) ports.append(s);
+            if (!ports.contains(s))
+                ports.append(s);
         } else {
-            for (Port *pp : pc->Ports) { // Find all signals
+            for (Port* pp : pc->Ports) { // Find all signals
                 QString s = pp->Connection->Name;
-                if (!nodes.contains(s)) nodes.append(s);
+                if (!nodes.contains(s))
+                    nodes.append(s);
             }
             pc->getExtraVANodes(nodes);
         }
     }
 
-    if (ports.isEmpty()) return false; // Not a subcircuit
+    if (ports.isEmpty())
+        return false; // Not a subcircuit
 
     QFileInfo inf(sch->getDocName());
     QString base = inf.completeBaseName();
     base.remove('-').remove(' ');
     nodes.removeAll("gnd"); // Exclude ground node
 
-    stream<<QStringLiteral("module %1(%2);\n").arg(base).arg(ports.join(", "));
-    stream<<QStringLiteral("inout %1;\n").arg(ports.join(", "));
-    stream<<QStringLiteral("electrical %1;\n").arg(nodes.join(", "));
+    stream << QStringLiteral("module %1(%2);\n").arg(base).arg(ports.join(", "));
+    stream << QStringLiteral("inout %1;\n").arg(ports.join(", "));
+    stream << QStringLiteral("electrical %1;\n").arg(nodes.join(", "));
 
     for (Painting* pi : sch->a_SymbolPaints)
-      if(pi->Name == ".ID ") {
-        ID_Text *pid = (ID_Text*)pi;
-        for(const auto& sub_param : pid->subParameters) {
-            QString s = "parameter real " + sub_param->name + ";\n";
-            stream<<s;
+        if (pi->Name == ".ID ") {
+            ID_Text* pid = (ID_Text*)pi;
+            for (const auto& sub_param : pid->subParameters) {
+                QString s = "parameter real " + sub_param->name + ";\n";
+                stream << s;
+            }
+            break;
         }
-        break;
-      }
-
 
     // List all variables
-    for( Component* pc : sch->a_DocComps) {
+    for (Component* pc : sch->a_DocComps) {
         if (pc->isEquation && pc->isActive) {
-            stream<<pc->getVAvariables();
+            stream << pc->getVAvariables();
         }
     }
 
-    stream<<"analog begin \n"
-            "@(initial_model)\n"
-            "begin \n";
+    stream << "analog begin \n"
+              "@(initial_model)\n"
+              "begin \n";
     // Output expressions
     for (Component* pc : sch->a_DocComps) {
         if (pc->isEquation && pc->isActive) {
-            stream<<pc->getVAExpressions();
+            stream << pc->getVAExpressions();
         }
     }
 
-    stream<<"end\n";
+    stream << "end\n";
 
     // Convert components to current equations.
     for (Component* pc : sch->a_DocComps) {
-         stream<<pc->getVerilogACode();
+        stream << pc->getVerilogACode();
     }
 
-    stream<<"end\n"
-            "endmodule\n";
+    stream << "end\n"
+              "endmodule\n";
     return true;
 }

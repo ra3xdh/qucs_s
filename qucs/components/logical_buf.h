@@ -20,19 +20,18 @@
 
 #include "component.h"
 
-
-class Logical_Buf : public MultiViewComponent  {
+class Logical_Buf : public MultiViewComponent {
 public:
-  Logical_Buf();
- ~Logical_Buf() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Logical_Buf();
+    ~Logical_Buf() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString vhdlCode(int);
-  QString verilogCode(int);
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  void createSymbol();
+    QString vhdlCode(int);
+    QString verilogCode(int);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    void createSymbol();
 };
 
 #endif

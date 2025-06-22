@@ -18,20 +18,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef VSFFM_H
+#ifndef VSFFM_H
 #define VSFFM_H
 
 #include "components/component.h"
 
 class vSffm : public Component {
 public:
-  vSffm();
-  ~vSffm();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    vSffm();
+    ~vSffm();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // VSFFM_H

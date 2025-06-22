@@ -17,23 +17,21 @@
 #include "sp_fourier.h"
 #include "extsimkernels/spicecompat.h"
 
-
 SpiceFourier::SpiceFourier()
 {
-  isSimulation = true;
-  Description = QObject::tr("Fourier simulation");
-  Simulator = spicecompat::simSpice;
-  initSymbol(Description);
-  Model = ".FOURIER";
-  Name  = "FOUR";
-  SpiceModel = ".FOURIER";
+    isSimulation = true;
+    Description = QObject::tr("Fourier simulation");
+    Simulator = spicecompat::simSpice;
+    initSymbol(Description);
+    Model = ".FOURIER";
+    Name = "FOUR";
+    SpiceModel = ".FOURIER";
 
-  // The index of the first 4 properties must not changed. Used in recreate().
-  Props.append(new Property("Sim","TR1",true,"Transient simulation name"));
-  Props.append(new Property("numfreq","10",true,"Number of harmonics"));
-  Props.append(new Property("F0","1kHz", true, "First harmonic frequency"));
-  Props.append(new Property("Vars","V(1)",true,"Output expressions"));
-
+    // The index of the first 4 properties must not changed. Used in recreate().
+    Props.append(new Property("Sim", "TR1", true, "Transient simulation name"));
+    Props.append(new Property("numfreq", "10", true, "Number of harmonics"));
+    Props.append(new Property("F0", "1kHz", true, "First harmonic frequency"));
+    Props.append(new Property("Vars", "V(1)", true, "Output expressions"));
 }
 
 SpiceFourier::~SpiceFourier()
@@ -42,16 +40,17 @@ SpiceFourier::~SpiceFourier()
 
 Component* SpiceFourier::newOne()
 {
-  return new SpiceFourier();
+    return new SpiceFourier();
 }
 
-Element* SpiceFourier::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* SpiceFourier::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Fourier simulation");
-  BitmapFile = (char *) "sp_fourier";
+    Name = QObject::tr("Fourier simulation");
+    BitmapFile = (char*)"sp_fourier";
 
-  if(getNewOne)  return new SpiceFourier();
-  return 0;
+    if (getNewOne)
+        return new SpiceFourier();
+    return 0;
 }
 
 QString SpiceFourier::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)

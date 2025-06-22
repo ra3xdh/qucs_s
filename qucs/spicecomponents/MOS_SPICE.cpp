@@ -19,35 +19,31 @@
  *                                                                         *
  ***************************************************************************/
 #include "MOS_SPICE.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 MOS_SPICE::MOS_SPICE()
 {
-  Description = QObject::tr("Unified (M,X,3-,4-pin) MOS:\nMultiple line ngspice or Xyce M model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
-  Simulator = spicecompat::simSpice;
+    Description = QObject::tr("Unified (M,X,3-,4-pin) MOS:\nMultiple line ngspice or Xyce M model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+    Simulator = spicecompat::simSpice;
 
-  Props.append(new Property("Letter", "M", true,"[M,X,N] SPICE letter"));
-  Props.append(new Property("Pins", "4", true,"[3,4] Pins count"));
-  Props.append(new Property("type", "nmos", true,"[nmos,pmos] Channel type"));
-  Props.append(new Property("M", "", true,"Param list and\n .model spec."));
-  Props.append(new Property("M_Line 2", "", false,"+ continuation line 1"));
-  Props.append(new Property("M_Line 3", "", false,"+ continuation line 2"));
-  Props.append(new Property("M_Line 4", "", false,"+ continuation line 3"));
-  Props.append(new Property("M_Line 5", "", false,"+ continuation line 4"));
+    Props.append(new Property("Letter", "M", true, "[M,X,N] SPICE letter"));
+    Props.append(new Property("Pins", "4", true, "[3,4] Pins count"));
+    Props.append(new Property("type", "nmos", true, "[nmos,pmos] Channel type"));
+    Props.append(new Property("M", "", true, "Param list and\n .model spec."));
+    Props.append(new Property("M_Line 2", "", false, "+ continuation line 1"));
+    Props.append(new Property("M_Line 3", "", false, "+ continuation line 2"));
+    Props.append(new Property("M_Line 4", "", false, "+ continuation line 3"));
+    Props.append(new Property("M_Line 5", "", false, "+ continuation line 4"));
 
-  createSymbol();
+    createSymbol();
 
-    tx = x1+4;
-    ty = y2+4;
+    tx = x1 + 4;
+    ty = y2 + 4;
 
     Model = "MOS_SPICE";
     SpiceModel = "M";
-    Name  = "M";
-
-
-
+    Name = "M";
 }
 
 MOS_SPICE::~MOS_SPICE()
@@ -64,115 +60,115 @@ Component* MOS_SPICE::newOne()
     return p;
 }
 
-Element* MOS_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MOS_SPICE::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("unified MOSFET (3-4 pin)");
-  BitmapFile = (char *) "NMOS_SPICE";
+    Name = QObject::tr("unified MOSFET (3-4 pin)");
+    BitmapFile = (char*)"NMOS_SPICE";
 
-  if(getNewOne)  return new MOS_SPICE();
-  return 0;
+    if (getNewOne)
+        return new MOS_SPICE();
+    return 0;
 }
 
-Element* MOS_SPICE::info_NM3pin(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MOS_SPICE::info_NM3pin(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("M(NMOS 3 pin)");
-  BitmapFile = (char *) "NMOS_SPICE_3";
+    Name = QObject::tr("M(NMOS 3 pin)");
+    BitmapFile = (char*)"NMOS_SPICE_3";
 
-  if(getNewOne)  {
-      MOS_SPICE *p = new MOS_SPICE();
-      p->Props.at(0)->Value = "M";
-      p->Props.at(1)->Value = "3";
-      p->Props.at(2)->Value = "nmos";
-      p->recreate();
-      return p;
-  }
-  return 0;
+    if (getNewOne) {
+        MOS_SPICE* p = new MOS_SPICE();
+        p->Props.at(0)->Value = "M";
+        p->Props.at(1)->Value = "3";
+        p->Props.at(2)->Value = "nmos";
+        p->recreate();
+        return p;
+    }
+    return 0;
 }
 
-Element* MOS_SPICE::info_PM3pin(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MOS_SPICE::info_PM3pin(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("M(PMOS 3 pin)");
-  BitmapFile = (char *) "PMOS_SPICE_3";
+    Name = QObject::tr("M(PMOS 3 pin)");
+    BitmapFile = (char*)"PMOS_SPICE_3";
 
-  if(getNewOne)  {
-      MOS_SPICE *p = new MOS_SPICE();
-      p->Props.at(0)->Value = "M";
-      p->Props.at(1)->Value = "3";
-      p->Props.at(2)->Value = "pmos";
-      p->recreate();
-      return p;
-  }
-  return 0;
+    if (getNewOne) {
+        MOS_SPICE* p = new MOS_SPICE();
+        p->Props.at(0)->Value = "M";
+        p->Props.at(1)->Value = "3";
+        p->Props.at(2)->Value = "pmos";
+        p->recreate();
+        return p;
+    }
+    return 0;
 }
 
-Element* MOS_SPICE::info_NX3pin(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MOS_SPICE::info_NX3pin(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("X(NMOS 3 pin)");
-  BitmapFile = (char *) "NMOS_SPICE_3";
+    Name = QObject::tr("X(NMOS 3 pin)");
+    BitmapFile = (char*)"NMOS_SPICE_3";
 
-  if(getNewOne)  {
-      MOS_SPICE *p = new MOS_SPICE();
-      p->Name = "X";
-      p->Props.at(0)->Value = "X";
-      p->Props.at(1)->Value = "3";
-      p->Props.at(2)->Value = "nmos";
-      p->recreate();
-      return p;
-  }
-  return 0;
+    if (getNewOne) {
+        MOS_SPICE* p = new MOS_SPICE();
+        p->Name = "X";
+        p->Props.at(0)->Value = "X";
+        p->Props.at(1)->Value = "3";
+        p->Props.at(2)->Value = "nmos";
+        p->recreate();
+        return p;
+    }
+    return 0;
 }
 
-Element* MOS_SPICE::info_PX3pin(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MOS_SPICE::info_PX3pin(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("X(PMOS 3 pin)");
-  BitmapFile = (char *) "PMOS_SPICE_3";
+    Name = QObject::tr("X(PMOS 3 pin)");
+    BitmapFile = (char*)"PMOS_SPICE_3";
 
-  if(getNewOne)  {
-      MOS_SPICE *p = new MOS_SPICE();
-      p->Name = "X";
-      p->Props.at(0)->Value = "X";
-      p->Props.at(1)->Value = "3";
-      p->Props.at(2)->Value = "pmos";
-      p->recreate();
-      return p;
-  }
-  return 0;
+    if (getNewOne) {
+        MOS_SPICE* p = new MOS_SPICE();
+        p->Name = "X";
+        p->Props.at(0)->Value = "X";
+        p->Props.at(1)->Value = "3";
+        p->Props.at(2)->Value = "pmos";
+        p->recreate();
+        return p;
+    }
+    return 0;
 }
 
-Element* MOS_SPICE::info_NX4pin(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MOS_SPICE::info_NX4pin(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("X(NMOS 4 pin)");
-  BitmapFile = (char *) "NMOS_SPICE";
+    Name = QObject::tr("X(NMOS 4 pin)");
+    BitmapFile = (char*)"NMOS_SPICE";
 
-  if(getNewOne)  {
-      MOS_SPICE *p = new MOS_SPICE();
-      p->Name = "X";
-      p->Props.at(0)->Value = "X";
-      p->Props.at(1)->Value = "4";
-      p->Props.at(2)->Value = "nmos";
-      p->recreate();
-      return p;
-  }
-  return 0;
+    if (getNewOne) {
+        MOS_SPICE* p = new MOS_SPICE();
+        p->Name = "X";
+        p->Props.at(0)->Value = "X";
+        p->Props.at(1)->Value = "4";
+        p->Props.at(2)->Value = "nmos";
+        p->recreate();
+        return p;
+    }
+    return 0;
 }
 
-Element* MOS_SPICE::info_PX4pin(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MOS_SPICE::info_PX4pin(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("X(PMOS 4 pin)");
-  BitmapFile = (char *) "PMOS_SPICE";
+    Name = QObject::tr("X(PMOS 4 pin)");
+    BitmapFile = (char*)"PMOS_SPICE";
 
-  if(getNewOne)  {
-      MOS_SPICE *p = new MOS_SPICE();
-      p->Name = "X";
-      p->Props.at(0)->Value = "X";
-      p->Props.at(1)->Value = "4";
-      p->Props.at(2)->Value = "pmos";
-      p->recreate();
-      return p;
-  }
-  return 0;
+    if (getNewOne) {
+        MOS_SPICE* p = new MOS_SPICE();
+        p->Name = "X";
+        p->Props.at(0)->Value = "X";
+        p->Props.at(1)->Value = "4";
+        p->Props.at(2)->Value = "pmos";
+        p->recreate();
+        return p;
+    }
+    return 0;
 }
-
 
 QString MOS_SPICE::netlist()
 {
@@ -181,72 +177,80 @@ QString MOS_SPICE::netlist()
 
 void MOS_SPICE::createSymbol()
 {
-    Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(-14, -13, -14, 13, QPen(Qt::darkRed, 2)));
 
-    Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-20,  0,-14,  0,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(-30, 0, -20, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-20, 0, -14, 0, QPen(Qt::darkRed, 2)));
 
-    Lines.append(new qucs::Line(-10,-11,  0,-11,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(-10, -11, 0, -11, QPen(Qt::darkRed, 2)));
 
-    Lines.append(new qucs::Line(  0,-11,  0,-20,QPen(Qt::darkRed,2)));
-    Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(0, -11, 0, -20, QPen(Qt::darkRed, 2)));
+    Lines.append(new qucs::Line(0, -20, 0, -30, QPen(Qt::darkBlue, 2)));
 
-    Lines.append(new qucs::Line(-10, 11,  0, 11,QPen(Qt::darkRed,2)));
-    Lines.append(new qucs::Line(  0, 11,  0, 20,QPen(Qt::darkRed,2)));
-    Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-10, 11, 0, 11, QPen(Qt::darkRed, 2)));
+    Lines.append(new qucs::Line(0, 11, 0, 20, QPen(Qt::darkRed, 2)));
+    Lines.append(new qucs::Line(0, 20, 0, 30, QPen(Qt::darkBlue, 2)));
 
-    Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::darkRed,2)));
-    Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(-10, -16, -10, -7, QPen(Qt::darkRed, 2)));
+    Lines.append(new qucs::Line(-10, 7, -10, 16, QPen(Qt::darkRed, 2)));
 
-    Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkRed,2)));
-    Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(-10, -8, -10, 8, QPen(Qt::darkRed, 2)));
+    Lines.append(new qucs::Line(-4, 24, 4, 20, QPen(Qt::darkRed, 2)));
 
-    Ports.append(new Port(  0,-30)); //D
-    Ports.append(new Port(-30,  0)); //G
-    Ports.append(new Port(  0, 30)); //S
-    if (Props.at(1)->Value=="4") {
-        Ports.append(new Port( 20,  0)); //B
-        Lines.append(new qucs::Line( 10,  0, 20,  0,QPen(Qt::darkBlue,2)));
-        Lines.append(new qucs::Line(-10,  0, 10,  0,QPen(Qt::darkRed,2)));
+    Ports.append(new Port(0, -30)); // D
+    Ports.append(new Port(-30, 0)); // G
+    Ports.append(new Port(0, 30)); // S
+    if (Props.at(1)->Value == "4") {
+        Ports.append(new Port(20, 0)); // B
+        Lines.append(new qucs::Line(10, 0, 20, 0, QPen(Qt::darkBlue, 2)));
+        Lines.append(new qucs::Line(-10, 0, 10, 0, QPen(Qt::darkRed, 2)));
     } else {
-        Lines.append(new qucs::Line(-10,  0, 0,  0,QPen(Qt::darkRed,2)));
-        Lines.append(new qucs::Line(0,  0, 0,  10,QPen(Qt::darkRed,2)));
+        Lines.append(new qucs::Line(-10, 0, 0, 0, QPen(Qt::darkRed, 2)));
+        Lines.append(new qucs::Line(0, 0, 0, 10, QPen(Qt::darkRed, 2)));
     }
 
-    if (Props.at(2)->Value=="nmos") {
-        Lines.append(new qucs::Line( -9,  0, -4, -5,QPen(Qt::darkRed,2)));
-        Lines.append(new qucs::Line( -9,  0, -4,  5,QPen(Qt::darkRed,2)));
+    if (Props.at(2)->Value == "nmos") {
+        Lines.append(new qucs::Line(-9, 0, -4, -5, QPen(Qt::darkRed, 2)));
+        Lines.append(new qucs::Line(-9, 0, -4, 5, QPen(Qt::darkRed, 2)));
     } else {
-        Lines.append(new qucs::Line( -1,  0, -6, -5,QPen(Qt::darkRed,2)));
-        Lines.append(new qucs::Line( -1,  0, -6,  5,QPen(Qt::darkRed,2)));
+        Lines.append(new qucs::Line(-1, 0, -6, -5, QPen(Qt::darkRed, 2)));
+        Lines.append(new qucs::Line(-1, 0, -6, 5, QPen(Qt::darkRed, 2)));
     }
 
-    x1 = -30; y1 = -30;
-    x2 =   4; y2 =  30;
+    x1 = -30;
+    y1 = -30;
+    x2 = 4;
+    y2 = 30;
 }
 
 QString MOS_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,Props.at(0)->Value);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, Props.at(0)->Value);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam+" ";   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam + " "; // node names
     }
 
-    QString M= Props.at(3)->Value;
-    QString M_Line_2= Props.at(4)->Value;
-    QString M_Line_3= Props.at(5)->Value;
-    QString M_Line_4= Props.at(6)->Value;
-    QString M_Line_5= Props.at(7)->Value;
+    QString M = Props.at(3)->Value;
+    QString M_Line_2 = Props.at(4)->Value;
+    QString M_Line_3 = Props.at(5)->Value;
+    QString M_Line_4 = Props.at(6)->Value;
+    QString M_Line_5 = Props.at(7)->Value;
 
-    if(  M.length()  > 0)          s += QStringLiteral("%1").arg(M);
-    if(  M_Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(M_Line_2);
-    if(  M_Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(M_Line_3);
-    if(  M_Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(M_Line_4);
-    if(  M_Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(M_Line_5);
+    if (M.length() > 0)
+        s += QStringLiteral("%1").arg(M);
+    if (M_Line_2.length() > 0)
+        s += QStringLiteral("\n%1").arg(M_Line_2);
+    if (M_Line_3.length() > 0)
+        s += QStringLiteral("\n%1").arg(M_Line_3);
+    if (M_Line_4.length() > 0)
+        s += QStringLiteral("\n%1").arg(M_Line_4);
+    if (M_Line_5.length() > 0)
+        s += QStringLiteral("\n%1").arg(M_Line_5);
     s += "\n";
 
     return s;
@@ -254,8 +258,7 @@ QString MOS_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
 
 QString MOS_SPICE::cdl_netlist()
 {
-    if (Ports.size() == 4)
-    {
+    if (Ports.size() == 4) {
         return spice_netlist(spicecompat::CDL);
     }
 

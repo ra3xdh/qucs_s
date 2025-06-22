@@ -15,31 +15,29 @@
  ***************************************************************************/
 
 /** \file ecvs.h
-  * \brief The externally controlled voltage source component header file.
-  *
-  * Contains the m-code interface class definition.
-  */
+ * \brief The externally controlled voltage source component header file.
+ *
+ * Contains the m-code interface class definition.
+ */
 
 /**
-  * \ingroup QucsInterface
-  */
+ * \ingroup QucsInterface
+ */
 
 #ifndef ECVS_H
 #define ECVS_H
 
 #include "component.h"
 
-
-class ecvs : public Component  {
+class ecvs : public Component {
 public:
-  ecvs();
-  ~ecvs();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    ecvs();
+    ~ecvs();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString netlist();
+    QString netlist();
 };
 
 #endif
-

@@ -21,132 +21,130 @@
 #include <QFileInfo>
 #include <QFontMetrics>
 
-
-
 RFedd2P::RFedd2P()
 {
-  Description = QObject::tr("equation defined 2-port RF device");
-  Simulator = spicecompat::simQucsator;
+    Description = QObject::tr("equation defined 2-port RF device");
+    Simulator = spicecompat::simQucsator;
 
-  Model = "RFEDD2P";
-  Name  = "RF";
+    Model = "RFEDD2P";
+    Name = "RF";
 
-  // first properties !!!
-  Props.append(new Property("Type", "Y", false,
-		QObject::tr("type of parameters")+" [Y, Z, S, H, G, A, T]"));
-  Props.append(new Property("duringDC", "open", false,
-		QObject::tr("representation during DC analysis")+
-			    " [open, short, unspecified, zerofrequency]"));
+    // first properties !!!
+    Props.append(new Property("Type", "Y", false,
+        QObject::tr("type of parameters") + " [Y, Z, S, H, G, A, T]"));
+    Props.append(new Property("duringDC", "open", false,
+        QObject::tr("representation during DC analysis") + " [open, short, unspecified, zerofrequency]"));
 
-  // last properties
-  Props.append(new Property("P11", "0", false,
-		QObject::tr("parameter equation") + " 11"));
-  Props.append(new Property("P12", "0", false,
-		QObject::tr("parameter equation") + " 12"));
-  Props.append(new Property("P21", "0", false,
-		QObject::tr("parameter equation") + " 21"));
-  Props.append(new Property("P22", "0", false,
-		QObject::tr("parameter equation") + " 22"));
+    // last properties
+    Props.append(new Property("P11", "0", false,
+        QObject::tr("parameter equation") + " 11"));
+    Props.append(new Property("P12", "0", false,
+        QObject::tr("parameter equation") + " 12"));
+    Props.append(new Property("P21", "0", false,
+        QObject::tr("parameter equation") + " 21"));
+    Props.append(new Property("P22", "0", false,
+        QObject::tr("parameter equation") + " 22"));
 
-  createSymbol();
+    createSymbol();
 }
 
 // -------------------------------------------------------
 Component* RFedd2P::newOne()
 {
-  RFedd2P* p = new RFedd2P();
-  p->Props.at(0)->Value = Props.at(0)->Value;
-  p->recreate();
-  return p;
+    RFedd2P* p = new RFedd2P();
+    p->Props.at(0)->Value = Props.at(0)->Value;
+    p->recreate();
+    return p;
 }
 
 // -------------------------------------------------------
-Element* RFedd2P::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* RFedd2P::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Equation Defined 2-port RF Device");
-  BitmapFile = (char *) "rfedd";
+    Name = QObject::tr("Equation Defined 2-port RF Device");
+    BitmapFile = (char*)"rfedd";
 
-  if(getNewOne) {
-    RFedd2P* p = new RFedd2P();
-    p->Props.at(0)->Value = "Y";
-    p->recreate();
-    return p;
-  }
-  return 0;
+    if (getNewOne) {
+        RFedd2P* p = new RFedd2P();
+        p->Props.at(0)->Value = "Y";
+        p->recreate();
+        return p;
+    }
+    return 0;
 }
 
 // -------------------------------------------------------
 QString RFedd2P::netlist()
 {
-  QString s = "RFEDD:"+Name;
-  QString e = "\n";
-  QString n, p;
+    QString s = "RFEDD:" + Name;
+    QString e = "\n";
+    QString n, p;
 
-  // output all node names
-  for (Port *p1 : Ports)
-    s += " "+p1->Connection->Name;   // node names
+    // output all node names
+    for (Port* p1 : Ports)
+        s += " " + p1->Connection->Name; // node names
 
-  // output all properties
-  // output all properties
-  s += " "+Props.at(0)->Name+"=\""+Props.at(0)->Value+"\"";
-  p = Props.at(0)->Value;
-  s += " "+Props.at(1)->Name+"=\""+Props.at(1)->Value+"\"";
-  for (int i = 2; i < int(Props.size()); ++i) {
-    n = Props.at(i)->Name.mid(1);
-    s += " "+Props.at(i)->Name+"=\""+Name+"."+p+n+"\"";
-    e += "  Eqn:Eqn"+Name+Props.at(i)->Name+" "+
-         Name+"."+p+n+"=\""+Props.at(i)->Value+"\" Export=\"no\"\n";
-  }
+    // output all properties
+    // output all properties
+    s += " " + Props.at(0)->Name + "=\"" + Props.at(0)->Value + "\"";
+    p = Props.at(0)->Value;
+    s += " " + Props.at(1)->Name + "=\"" + Props.at(1)->Value + "\"";
+    for (int i = 2; i < int(Props.size()); ++i) {
+        n = Props.at(i)->Name.mid(1);
+        s += " " + Props.at(i)->Name + "=\"" + Name + "." + p + n + "\"";
+        e += "  Eqn:Eqn" + Name + Props.at(i)->Name + " " + Name + "." + p + n + "=\"" + Props.at(i)->Value + "\" Export=\"no\"\n";
+    }
 
-  return s+e;
+    return s + e;
 }
 
 // -------------------------------------------------------
 void RFedd2P::createSymbol()
 {
-  QFont Font(QucsSettings.font); // default application font
-  // symbol text is smaller (10 pt default)
-  Font.setPointSize(10); 
-  // get the small font size; use the screen-compatible metric
-  QFontMetrics  smallmetrics(Font, 0); 
-  int fHeight = smallmetrics.lineSpacing();
-  QString tmp;
-  int w, i;
+    QFont Font(QucsSettings.font); // default application font
+    // symbol text is smaller (10 pt default)
+    Font.setPointSize(10);
+    // get the small font size; use the screen-compatible metric
+    QFontMetrics smallmetrics(Font, 0);
+    int fHeight = smallmetrics.lineSpacing();
+    QString tmp;
+    int w, i;
 
-  // draw symbol
-  #define HALFWIDTH  17
-  int h = 15;
-  Lines.append(new qucs::Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+// draw symbol
+#define HALFWIDTH 17
+    int h = 15;
+    Lines.append(new qucs::Line(-HALFWIDTH, -h, HALFWIDTH, -h, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(HALFWIDTH, -h, HALFWIDTH, h, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-HALFWIDTH, h, HALFWIDTH, h, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-HALFWIDTH, -h, -HALFWIDTH, h, QPen(Qt::darkBlue, 2)));
 
-  // component text name
-  tmp = Props.at(0)->Value;
-  w = smallmetrics.boundingRect(tmp).width();
-  Texts.append(new Text(-w/2, -fHeight/2, tmp)); // text centered in the box
+    // component text name
+    tmp = Props.at(0)->Value;
+    w = smallmetrics.boundingRect(tmp).width();
+    Texts.append(new Text(-w / 2, -fHeight / 2, tmp)); // text centered in the box
 
-  // add port numbers text
-  i = 0;
-  int y = 15-h;
-  Lines.append(new qucs::Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
-  Ports.append(new Port(-30,  y));
-  tmp = QString::number(i+1);
-  w = smallmetrics.boundingRect(tmp).width();
-  Texts.append(new Text(-25-w, y-fHeight-2, tmp)); // text right-aligned
-  i++;
+    // add port numbers text
+    i = 0;
+    int y = 15 - h;
+    Lines.append(new qucs::Line(-30, y, -HALFWIDTH, y, QPen(Qt::darkBlue, 2)));
+    Ports.append(new Port(-30, y));
+    tmp = QString::number(i + 1);
+    w = smallmetrics.boundingRect(tmp).width();
+    Texts.append(new Text(-25 - w, y - fHeight - 2, tmp)); // text right-aligned
+    i++;
 
-  Lines.append(new qucs::Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
-  Ports.append(new Port( 30,  y));
-  tmp = QString::number(i+1);
-  Texts.append(new Text(25, y-fHeight-2, tmp)); // text left-aligned
-  y += 60;
-  i++;
+    Lines.append(new qucs::Line(HALFWIDTH, y, 30, y, QPen(Qt::darkBlue, 2)));
+    Ports.append(new Port(30, y));
+    tmp = QString::number(i + 1);
+    Texts.append(new Text(25, y - fHeight - 2, tmp)); // text left-aligned
+    y += 60;
+    i++;
 
-  x1 = -30; y1 = -h-2;
-  x2 =  30; y2 =  h+2;
-  // compute component name text position - normal size font
-  QFontMetrics  metrics(QucsSettings.font, 0);   // use the screen-compatible metric
-  tx = x1+4;
-  ty = y1 - metrics.lineSpacing() - 4;
+    x1 = -30;
+    y1 = -h - 2;
+    x2 = 30;
+    y2 = h + 2;
+    // compute component name text position - normal size font
+    QFontMetrics metrics(QucsSettings.font, 0); // use the screen-compatible metric
+    tx = x1 + 4;
+    ty = y1 - metrics.lineSpacing() - 4;
 }

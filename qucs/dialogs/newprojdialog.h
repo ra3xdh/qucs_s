@@ -27,24 +27,24 @@ class QPushButton;
 class QGridLayout;
 
 /**
-  *@author Michael Margraf
-  */
+ *@author Michael Margraf
+ */
 
-class NewProjDialog : public QDialog  {
-  Q_OBJECT
+class NewProjDialog : public QDialog {
+    Q_OBJECT
 public:
-	NewProjDialog(QWidget *parent=0);
-	~NewProjDialog();
+    NewProjDialog(QWidget* parent = 0);
+    ~NewProjDialog();
 
-  QLineEdit   *ProjName;
-  QCheckBox   *OpenProj;
+    QLineEdit* ProjName;
+    QCheckBox* OpenProj;
 
 private slots:
-  void slotTextChanged(const QString &);
+    void slotTextChanged(const QString&);
 
 private:
-  QPushButton *ButtonOk, *ButtonCancel;
-  QGridLayout *gbox;
+    QPushButton *ButtonOk, *ButtonCancel;
+    QGridLayout* gbox;
 };
 
 #endif

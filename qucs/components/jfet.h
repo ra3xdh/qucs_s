@@ -20,19 +20,18 @@
 
 #include "component.h"
 
-
 class JFET : public MultiViewComponent {
 public:
-  JFET();
- ~JFET() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  static Element* info_p(QString&, char* &, bool getNewOne=false);
+    JFET();
+    ~JFET() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    static Element* info_p(QString&, char*&, bool getNewOne = false);
 
 protected:
-  void createSymbol();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
+    void createSymbol();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
 };
 
 #endif

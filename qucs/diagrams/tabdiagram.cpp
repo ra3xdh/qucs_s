@@ -21,403 +21,425 @@
 */
 
 #include <QFontMetrics>
-#include <QPolygon>
 #include <QPainter>
+#include <QPolygon>
 
-#include "tabdiagram.h"
 #include "main.h"
-#include <cmath>
 #include "misc.h"
+#include "tabdiagram.h"
+#include <cmath>
 
-
-TabDiagram::TabDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
+TabDiagram::TabDiagram(int _cx, int _cy)
+    : Diagram(_cx, _cy)
 {
-  x1 = 0;    // no extension to select area
-  y1 = 0;
-  x2 = x3 = 300;  // initial size of diagram
-  y2 = 200;
-  Name = "Tab";
-  xAxis.limit_min = 0.0;  // scroll bar position (needs to be saved in file)
+    x1 = 0; // no extension to select area
+    y1 = 0;
+    x2 = x3 = 300; // initial size of diagram
+    y2 = 200;
+    Name = "Tab";
+    xAxis.limit_min = 0.0; // scroll bar position (needs to be saved in file)
 
-  calcDiagram();
+    calcDiagram();
 }
 
 TabDiagram::~TabDiagram()
 {
 }
 
-void TabDiagram::paint(QPainter* painter) {
+void TabDiagram::paint(QPainter* painter)
+{
     paintDiagram(painter);
 }
 
-void TabDiagram::paintDiagram(QPainter *painter) {
-  painter->save();
-  painter->translate(cx, cy);
+void TabDiagram::paintDiagram(QPainter* painter)
+{
+    painter->save();
+    painter->translate(cx, cy);
 
-  for (qucs::Line *pl : Lines) {
-    painter->setPen(pl->style);
-    painter->drawLine(pl->x1, -pl->y1, pl->x2, -pl->y2);
-  }
+    for (qucs::Line* pl : Lines) {
+        painter->setPen(pl->style);
+        painter->drawLine(pl->x1, -pl->y1, pl->x2, -pl->y2);
+    }
 
-  if(x1 > 0) {  // paint scroll bar ?
-    QPolygon Points;
-    int y = y2 - 20;
-    // draw scroll bar
-    int by = -y + yAxis.numGraphs;
-    painter->fillRect(-14, by+1, 12, zAxis.numGraphs-1, QColor(192, 192, 192));
+    if (x1 > 0) { // paint scroll bar ?
+        QPolygon Points;
+        int y = y2 - 20;
+        // draw scroll bar
+        int by = -y + yAxis.numGraphs;
+        painter->fillRect(-14, by + 1, 12, zAxis.numGraphs - 1, QColor(192, 192, 192));
 
-    // draw frame for scroll bar
-    painter->setPen(QPen(Qt::black,0));
-    painter->drawLine(-17, -y2, -17, 0);
-    painter->drawLine(-17, -y2, 0, -y2);
-    painter->drawLine(-17, 0, 0, 0);
-    y += 2;
-    painter->drawLine(-17, -y, 0, -y);
-    y -= y2;
-    painter->drawLine(-17, +y, 0, +y);
+        // draw frame for scroll bar
+        painter->setPen(QPen(Qt::black, 0));
+        painter->drawLine(-17, -y2, -17, 0);
+        painter->drawLine(-17, -y2, 0, -y2);
+        painter->drawLine(-17, 0, 0, 0);
+        y += 2;
+        painter->drawLine(-17, -y, 0, -y);
+        y -= y2;
+        painter->drawLine(-17, +y, 0, +y);
 
-    // draw the arrows above and below the scroll bar
-    painter->setBrush(QColor(192, 192, 192));
-    painter->setPen(QColor(152, 152, 152));
-    painter->drawLine(-2, by, -2, by + zAxis.numGraphs);
-    painter->drawLine(-15, by + zAxis.numGraphs, -2, by + zAxis.numGraphs);
+        // draw the arrows above and below the scroll bar
+        painter->setBrush(QColor(192, 192, 192));
+        painter->setPen(QColor(152, 152, 152));
+        painter->drawLine(-2, by, -2, by + zAxis.numGraphs);
+        painter->drawLine(-15, by + zAxis.numGraphs, -2, by + zAxis.numGraphs);
 
-    int x = -14;
-    y = -y2 + 3;
-    int dx = -3;
-    int dy = -y2 + 14;
-    Points.setPoints(3, x, dy, (x+dx)>>1, y, dx, dy);
-    painter->drawConvexPolygon(Points);
-    painter->setPen(QColor(224, 224, 224));
-    painter->drawLine(x, dy, (x+dx)>>1, y);
-    painter->drawLine(-15, by, -2, by);
-    painter->drawLine(-15, by, -15, by + zAxis.numGraphs);
+        int x = -14;
+        y = -y2 + 3;
+        int dx = -3;
+        int dy = -y2 + 14;
+        Points.setPoints(3, x, dy, (x + dx) >> 1, y, dx, dy);
+        painter->drawConvexPolygon(Points);
+        painter->setPen(QColor(224, 224, 224));
+        painter->drawLine(x, dy, (x + dx) >> 1, y);
+        painter->drawLine(-15, by, -2, by);
+        painter->drawLine(-15, by, -15, by + zAxis.numGraphs);
 
-    painter->setPen(QColor(152, 152, 152));
-    dy -= y;
-    x = -14;
-    y = -3;
-    Points.setPoints(3, x, y-dy, (x+dx)>>1, y, dx, y-dy);
-    painter->drawConvexPolygon(Points);
-    painter->setPen(QColor(208, 208, 208));
-    painter->drawLine(x, y-dy, (x+dx)>>1, y);
-    painter->setPen(QColor(224, 224, 224));
-    painter->drawLine(x, y-dy, dx, y-dy);
+        painter->setPen(QColor(152, 152, 152));
+        dy -= y;
+        x = -14;
+        y = -3;
+        Points.setPoints(3, x, y - dy, (x + dx) >> 1, y, dx, y - dy);
+        painter->drawConvexPolygon(Points);
+        painter->setPen(QColor(208, 208, 208));
+        painter->drawLine(x, y - dy, (x + dx) >> 1, y);
+        painter->setPen(QColor(224, 224, 224));
+        painter->drawLine(x, y - dy, dx, y - dy);
 
-    painter->setBrush(QBrush(Qt::NoBrush));
-  }
+        painter->setBrush(QBrush(Qt::NoBrush));
+    }
 
+    painter->setPen(Qt::black);
+    for (Text* pt : Texts) {
+        painter->drawText(pt->x, -pt->y, 1, 1, Qt::TextDontClip, pt->s);
+    }
 
-  painter->setPen(Qt::black);
-  for (Text *pt : Texts) {
-    painter->drawText(pt->x, -pt->y, 1, 1, Qt::TextDontClip, pt->s);
-  }
+    if (isSelected) {
+        painter->setPen(QPen(Qt::darkGray, 3));
+        painter->drawRect(-5, -y2 - 5, x2 + 10, y2 + 10);
 
-  if (isSelected) {
-    painter->setPen(QPen(Qt::darkGray,3));
-    painter->drawRect(-5, -y2-5, x2+10, y2+10);
-
-    misc::draw_resize_handle(painter, QPoint{0, -y2});
-    misc::draw_resize_handle(painter, QPoint{0, 0});
-    misc::draw_resize_handle(painter, QPoint{x2, -y2});
-    misc::draw_resize_handle(painter, QPoint{x2, 0});
-  }
-  painter->restore();
+        misc::draw_resize_handle(painter, QPoint { 0, -y2 });
+        misc::draw_resize_handle(painter, QPoint { 0, 0 });
+        misc::draw_resize_handle(painter, QPoint { x2, -y2 });
+        misc::draw_resize_handle(painter, QPoint { x2, 0 });
+    }
+    painter->restore();
 }
 
 // ------------------------------------------------------------
 // calculates the text in the tabular
 int TabDiagram::calcDiagram()
 {
-  Lines.clear();
-  Texts.clear();
-  Arcs.clear();
+    Lines.clear();
+    Texts.clear();
+    Arcs.clear();
 
-  x1 = 0;  // no scroll bar
-  x3 = x2;
-  // get size of text using the screen-compatible metric
-  QFontMetrics metrics(QucsSettings.font, 0);
-  int tHeight = metrics.lineSpacing();
-  QString Str;
-  int colWidth=0, x=8, y;
+    x1 = 0; // no scroll bar
+    x3 = x2;
+    // get size of text using the screen-compatible metric
+    QFontMetrics metrics(QucsSettings.font, 0);
+    int tHeight = metrics.lineSpacing();
+    QString Str;
+    int colWidth = 0, x = 8, y;
 
-  if(y2 < (41 + MIN_SCROLLBAR_SIZE))
-    y2 = 41 + MIN_SCROLLBAR_SIZE;
+    if (y2 < (41 + MIN_SCROLLBAR_SIZE))
+        y2 = 41 + MIN_SCROLLBAR_SIZE;
 
-  if(y2 < (tHeight + 8))
-    y2 = tHeight + 8;
-  y = y2 - tHeight - 6;
+    if (y2 < (tHeight + 8))
+        y2 = tHeight + 8;
+    y = y2 - tHeight - 6;
 
-  // outer frame
-  Lines.append(new qucs::Line(0, y2, x2, y2, QPen(Qt::black,0)));
-  Lines.append(new qucs::Line(0, y2, 0, 0, QPen(Qt::black,0)));
-  Lines.append(new qucs::Line(x2, y2, x2, 0, QPen(Qt::black,0)));
-  Lines.append(new qucs::Line(0, 0, x2, 0, QPen(Qt::black,0)));
-  Lines.append(new qucs::Line(0, y+2, x2, y+2, QPen(Qt::black,2)));
+    // outer frame
+    Lines.append(new qucs::Line(0, y2, x2, y2, QPen(Qt::black, 0)));
+    Lines.append(new qucs::Line(0, y2, 0, 0, QPen(Qt::black, 0)));
+    Lines.append(new qucs::Line(x2, y2, x2, 0, QPen(Qt::black, 0)));
+    Lines.append(new qucs::Line(0, 0, x2, 0, QPen(Qt::black, 0)));
+    Lines.append(new qucs::Line(0, y + 2, x2, y + 2, QPen(Qt::black, 2)));
 
-  if(xAxis.limit_min < 0.0)
-    xAxis.limit_min = 0.0;
+    if (xAxis.limit_min < 0.0)
+        xAxis.limit_min = 0.0;
 
-  Graph *firstGraph;
+    Graph* firstGraph;
 
-  QListIterator<Graph *> ig(Graphs);
-  Graph *g = nullptr;
-  if (ig.hasNext()) // point to first graph
-    g = ig.next();
+    QListIterator<Graph*> ig(Graphs);
+    Graph* g = nullptr;
+    if (ig.hasNext()) // point to first graph
+        g = ig.next();
 
-  if(g == nullptr) {  // no variables specified in diagram ?
-    Str = QObject::tr("no variables");
-    colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
-    if(colWidth >= 0)
-      Texts.append(new Text(x-4, y2-2, Str)); // independent variable
-    return 0;
-  }
-
-  int NumAll=0;   // how many numbers per column
-  int NumLeft=0;  // how many numbers could not be written
-
-  double *py, *px;
-  int counting, invisibleCount=0;
-  int startWriting, lastCount = 1;
-
-  // any graph with data ?
-  while(g->isEmpty()) {
-    if (!ig.hasNext()) break; // no more graphs
-    g = ig.next(); // point to next graph
-  }
-
-  if(!g->isEmpty()) { // did we find a graph with data ?
-    // ................................................
-    counting = g->axis(0)->count * g->countY;  // number of values
-    NumAll = counting;
-    
-    invisibleCount = counting - y/tHeight;
-    if(invisibleCount <= 0)  xAxis.limit_min = 0.0;// height bigger than needed
-    else {
-      NumLeft = invisibleCount - int(xAxis.limit_min + 0.5);
-      if(invisibleCount < int(xAxis.limit_min + 0.5))
-	xAxis.limit_min = double(invisibleCount); // adjust limit of scroll bar
+    if (g == nullptr) { // no variables specified in diagram ?
+        Str = QObject::tr("no variables");
+        colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
+        if (colWidth >= 0)
+            Texts.append(new Text(x - 4, y2 - 2, Str)); // independent variable
+        return 0;
     }
-    
-    for(int h = g->numAxes(); h>0;){
-		DataX const *pD = g->axis(--h); // BUG
-      colWidth = 0;
-      Str = pD->Var;
-      colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
-      if(colWidth < 0)  goto funcEnd;
-      startWriting = int(xAxis.limit_min + 0.5);  // when to reach visible area
-      
-      Texts.append(new Text(x-4, y2-2, Str)); // independent variable
-      if(pD->count != 0) {
-	y = y2-tHeight-5;
-	counting /= pD->count;   // how many rows to be skipped
-	for(int z1=0; z1<lastCount; z1++) {
-	  px = pD->Points;
-	  for(int z=pD->count; z>0; z--) {
-	    if(startWriting <= 0) { // reached visible area ?
-	      y += tHeight*startWriting;
-	      startWriting = 0;
-	      if(y < tHeight) break;  // no room for more rows ?
-	      Str = misc::StringNum(*px, 'g', g->Precision);
-	      colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
-	      if(colWidth < 0)  goto funcEnd;
-	      
-	      Texts.append(new Text( x, y, Str));
-	      y -= tHeight*counting;
-	    }
-	    else startWriting -= counting;
-	    px++;
-	  }
-	  if(pD == g->axis(0))   // only paint one time
-	    if(y >= tHeight) if(y < y2-tHeight-5)
-	      Lines.append(new qucs::Line(0, y+1, x2, y+1, QPen(Qt::black,0)));
-	}
-	lastCount *= pD->count;
-      }
-      x += colWidth+15;
-      Lines.append(new qucs::Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
+
+    int NumAll = 0; // how many numbers per column
+    int NumLeft = 0; // how many numbers could not be written
+
+    double *py, *px;
+    int counting, invisibleCount = 0;
+    int startWriting, lastCount = 1;
+
+    // any graph with data ?
+    while (g->isEmpty()) {
+        if (!ig.hasNext())
+            break; // no more graphs
+        g = ig.next(); // point to next graph
     }
-    Lines.last()->style = QPen(Qt::black,2);
-  }  // of "if no data in graphs"
 
-  
-  firstGraph = g;
-  // ................................................
-  // all dependent variables
-  for (Graph *g : Graphs) {
-    y = y2-tHeight-5;
-    colWidth = 0;
+    if (!g->isEmpty()) { // did we find a graph with data ?
+        // ................................................
+        counting = g->axis(0)->count * g->countY; // number of values
+        NumAll = counting;
 
-    Str = g->Var;
-    if (Str.contains('/')) Str = g->Var.section('/', 1);
-
-    colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
-    if(colWidth < 0)  goto funcEnd;
-    Texts.append(new Text(x, y2-2, Str));  // dependent variable
-
-
-    startWriting = int(xAxis.limit_min + 0.5); // when to reach visible area
-    py = g->cPointsY - 2;
-    if(g->axis(0)) {
-
-      if (!g->cPointsY) {   // no data points
-	Str = QObject::tr("invalid");
-	colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
-	if(colWidth < 0)  goto funcEnd;
-	Texts.append(new Text(x, y, Str));
-      }
-      else if(sameDependencies(g, firstGraph)) {
-        int z=g->axis(0)->count * g->countY;
-        if(z > NumAll)  NumAll = z;
-
-        if(g->Var.right(2) != ".X")
-          for(; z>0; z--) {
-            py += 2;
-            if(startWriting-- > 0) continue; // reached visible area ?
-            if(y < tHeight) break;           // no room for more rows ?
-            switch(g->numMode) {
-              case 0: Str = misc::complexRect(*py, *(py+1), g->Precision); break;
-              case 1: Str = misc::complexDeg (*py, *(py+1), g->Precision); break;
-              case 2: Str = misc::complexRad (*py, *(py+1), g->Precision); break;
-            }
-
-            colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
-            if(colWidth < 0)  goto funcEnd;
-
-            Texts.append(new Text(x, y, Str));
-            y -= tHeight;
-          }
-
-        else {  // digital data
-          char *pcy = (char*)g->cPointsY;
-          for(; z>0; z--) {
-            if(startWriting-- > 0) {  // reached visible area ?
-              pcy += strlen(pcy) + 1;
-              continue;
-            }
-            if(y < tHeight) break;           // no room for more rows ?
-            Str = QString(pcy);
-
-            colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
-            if(colWidth < 0)  goto funcEnd;
-
-            Texts.append(new Text(x, y, Str));
-            pcy += strlen(pcy) + 1;
-            y -= tHeight;
-          }
+        invisibleCount = counting - y / tHeight;
+        if (invisibleCount <= 0)
+            xAxis.limit_min = 0.0; // height bigger than needed
+        else {
+            NumLeft = invisibleCount - int(xAxis.limit_min + 0.5);
+            if (invisibleCount < int(xAxis.limit_min + 0.5))
+                xAxis.limit_min = double(invisibleCount); // adjust limit of scroll bar
         }
 
-        if(z > NumLeft)  NumLeft = z;
-      }  // of "if(sameDeps)"
-      else {
-        Str = QObject::tr("wrong dependency");
-        colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
-        if(colWidth < 0)  goto funcEnd;
-        Texts.append(new Text(x, y, Str));
-      }
+        for (int h = g->numAxes(); h > 0;) {
+            DataX const* pD = g->axis(--h); // BUG
+            colWidth = 0;
+            Str = pD->Var;
+            colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
+            if (colWidth < 0)
+                goto funcEnd;
+            startWriting = int(xAxis.limit_min + 0.5); // when to reach visible area
+
+            Texts.append(new Text(x - 4, y2 - 2, Str)); // independent variable
+            if (pD->count != 0) {
+                y = y2 - tHeight - 5;
+                counting /= pD->count; // how many rows to be skipped
+                for (int z1 = 0; z1 < lastCount; z1++) {
+                    px = pD->Points;
+                    for (int z = pD->count; z > 0; z--) {
+                        if (startWriting <= 0) { // reached visible area ?
+                            y += tHeight * startWriting;
+                            startWriting = 0;
+                            if (y < tHeight)
+                                break; // no room for more rows ?
+                            Str = misc::StringNum(*px, 'g', g->Precision);
+                            colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
+                            if (colWidth < 0)
+                                goto funcEnd;
+
+                            Texts.append(new Text(x, y, Str));
+                            y -= tHeight * counting;
+                        } else
+                            startWriting -= counting;
+                        px++;
+                    }
+                    if (pD == g->axis(0)) // only paint one time
+                        if (y >= tHeight)
+                            if (y < y2 - tHeight - 5)
+                                Lines.append(new qucs::Line(0, y + 1, x2, y + 1, QPen(Qt::black, 0)));
+                }
+                lastCount *= pD->count;
+            }
+            x += colWidth + 15;
+            Lines.append(new qucs::Line(x - 8, y2, x - 8, 0, QPen(Qt::black, 0)));
+        }
+        Lines.last()->style = QPen(Qt::black, 2);
+    } // of "if no data in graphs"
+
+    firstGraph = g;
+    // ................................................
+    // all dependent variables
+    for (Graph* g : Graphs) {
+        y = y2 - tHeight - 5;
+        colWidth = 0;
+
+        Str = g->Var;
+        if (Str.contains('/'))
+            Str = g->Var.section('/', 1);
+
+        colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
+        if (colWidth < 0)
+            goto funcEnd;
+        Texts.append(new Text(x, y2 - 2, Str)); // dependent variable
+
+        startWriting = int(xAxis.limit_min + 0.5); // when to reach visible area
+        py = g->cPointsY - 2;
+        if (g->axis(0)) {
+
+            if (!g->cPointsY) { // no data points
+                Str = QObject::tr("invalid");
+                colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
+                if (colWidth < 0)
+                    goto funcEnd;
+                Texts.append(new Text(x, y, Str));
+            } else if (sameDependencies(g, firstGraph)) {
+                int z = g->axis(0)->count * g->countY;
+                if (z > NumAll)
+                    NumAll = z;
+
+                if (g->Var.right(2) != ".X")
+                    for (; z > 0; z--) {
+                        py += 2;
+                        if (startWriting-- > 0)
+                            continue; // reached visible area ?
+                        if (y < tHeight)
+                            break; // no room for more rows ?
+                        switch (g->numMode) {
+                        case 0:
+                            Str = misc::complexRect(*py, *(py + 1), g->Precision);
+                            break;
+                        case 1:
+                            Str = misc::complexDeg(*py, *(py + 1), g->Precision);
+                            break;
+                        case 2:
+                            Str = misc::complexRad(*py, *(py + 1), g->Precision);
+                            break;
+                        }
+
+                        colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
+                        if (colWidth < 0)
+                            goto funcEnd;
+
+                        Texts.append(new Text(x, y, Str));
+                        y -= tHeight;
+                    }
+
+                else { // digital data
+                    char* pcy = (char*)g->cPointsY;
+                    for (; z > 0; z--) {
+                        if (startWriting-- > 0) { // reached visible area ?
+                            pcy += strlen(pcy) + 1;
+                            continue;
+                        }
+                        if (y < tHeight)
+                            break; // no room for more rows ?
+                        Str = QString(pcy);
+
+                        colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
+                        if (colWidth < 0)
+                            goto funcEnd;
+
+                        Texts.append(new Text(x, y, Str));
+                        pcy += strlen(pcy) + 1;
+                        y -= tHeight;
+                    }
+                }
+
+                if (z > NumLeft)
+                    NumLeft = z;
+            } // of "if(sameDeps)"
+            else {
+                Str = QObject::tr("wrong dependency");
+                colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
+                if (colWidth < 0)
+                    goto funcEnd;
+                Texts.append(new Text(x, y, Str));
+            }
+        } else { // no data in graph
+            Str = QObject::tr("no data");
+            colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
+            if (colWidth < 0)
+                goto funcEnd;
+            Texts.append(new Text(x, y, Str));
+        }
+        x += colWidth + 15;
+        if (g != Graphs.last()) // do not paint last line
+            Lines.append(new qucs::Line(x - 8, y2, x - 8, 0, QPen(Qt::black, 0)));
     }
-    else {   // no data in graph
-      Str = QObject::tr("no data");
-      colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
-      if(colWidth < 0)  goto funcEnd;
-      Texts.append(new Text(x, y, Str));
-    }
-    x += colWidth+15;
-    if(g != Graphs.last())   // do not paint last line
-      Lines.append(new qucs::Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
-  }
 
 funcEnd:
-  if(invisibleCount > 0) {  // could all numbers be written ?
-    x1 = 18;   // extend the select area to the left
+    if (invisibleCount > 0) { // could all numbers be written ?
+        x1 = 18; // extend the select area to the left
 
-    zAxis.limit_max = double(NumAll);  // number of data (rows) 
+        zAxis.limit_max = double(NumAll); // number of data (rows)
 
-    // calculate data for painting scroll bar
-    y = int(xAxis.limit_min + 0.5);
-    NumLeft = NumAll - NumLeft - y;
+        // calculate data for painting scroll bar
+        y = int(xAxis.limit_min + 0.5);
+        NumLeft = NumAll - NumLeft - y;
 
-    // position of scroll bar in pixel
-    yAxis.numGraphs = (y2 - 39) * y / NumAll;
+        // position of scroll bar in pixel
+        yAxis.numGraphs = (y2 - 39) * y / NumAll;
 
-    // height of scroll bar
-    zAxis.numGraphs = (y2 - 39) * NumLeft / NumAll;
-    if(zAxis.numGraphs < MIN_SCROLLBAR_SIZE) {
-      yAxis.numGraphs -= (MIN_SCROLLBAR_SIZE - zAxis.numGraphs + 1)
-                         * y / NumAll;
-      zAxis.numGraphs = MIN_SCROLLBAR_SIZE;
+        // height of scroll bar
+        zAxis.numGraphs = (y2 - 39) * NumLeft / NumAll;
+        if (zAxis.numGraphs < MIN_SCROLLBAR_SIZE) {
+            yAxis.numGraphs -= (MIN_SCROLLBAR_SIZE - zAxis.numGraphs + 1)
+                * y / NumAll;
+            zAxis.numGraphs = MIN_SCROLLBAR_SIZE;
+        }
+
+        xAxis.numGraphs = NumLeft; // number of lines in the diagram
     }
 
-    xAxis.numGraphs = NumLeft;  // number of lines in the diagram
-  }
-
-  return 1;
+    return 1;
 }
 
 // ------------------------------------------------------------
 int TabDiagram::scroll(int clickPos)
 {
-  if(x1 <= 0) return 0;   // no scroll bar ?
-  int tmp = int(xAxis.limit_min + 0.5);
+    if (x1 <= 0)
+        return 0; // no scroll bar ?
+    int tmp = int(xAxis.limit_min + 0.5);
 
-  int y = cy;
-  if(clickPos > (cy-20)) {  // scroll one line down ?
-    xAxis.limit_min++;
-  }
-  else {
-    y -= y2 - 20;
-    if(clickPos < y) {  // scroll bar one line up ?
-      if(xAxis.limit_min <= 0.0)  return 0;
-      xAxis.limit_min--;
+    int y = cy;
+    if (clickPos > (cy - 20)) { // scroll one line down ?
+        xAxis.limit_min++;
+    } else {
+        y -= y2 - 20;
+        if (clickPos < y) { // scroll bar one line up ?
+            if (xAxis.limit_min <= 0.0)
+                return 0;
+            xAxis.limit_min--;
+        } else {
+            y += yAxis.numGraphs;
+            if (clickPos < y) // scroll bar one page up ?
+                xAxis.limit_min -= double(xAxis.numGraphs);
+            else {
+                y += zAxis.numGraphs;
+                if (clickPos > y) // a page down?
+                    xAxis.limit_min += double(xAxis.numGraphs);
+                else
+                    return 2; // click on position bar
+            }
+        }
     }
-    else {
-      y += yAxis.numGraphs;
-      if(clickPos < y)   // scroll bar one page up ?
-        xAxis.limit_min -= double(xAxis.numGraphs);
-      else {
-        y += zAxis.numGraphs;
-        if(clickPos > y)   // a page down?
-          xAxis.limit_min += double(xAxis.numGraphs);
-        else
-          return 2;  // click on position bar
-      }
-    }
-  }
 
-  calcDiagram();
-  if(tmp == int(xAxis.limit_min + 0.5))
-    return 0;   // did anything change ?
+    calcDiagram();
+    if (tmp == int(xAxis.limit_min + 0.5))
+        return 0; // did anything change ?
 
-  return 1;
+    return 1;
 }
 
 // ------------------------------------------------------------
 bool TabDiagram::scrollTo(int initial, int, int dy)
 {
-  int tmp = int(xAxis.limit_min + 0.5);
-  xAxis.limit_min  = double(initial);
-  xAxis.limit_min += double(dy) / double(y2 - 39) * zAxis.limit_max;
-  xAxis.limit_min  = floor(xAxis.limit_min + 0.5);
+    int tmp = int(xAxis.limit_min + 0.5);
+    xAxis.limit_min = double(initial);
+    xAxis.limit_min += double(dy) / double(y2 - 39) * zAxis.limit_max;
+    xAxis.limit_min = floor(xAxis.limit_min + 0.5);
 
-  calcDiagram();
-  if(tmp == int(xAxis.limit_min + 0.5))
-    return false;   // did anything change ?
+    calcDiagram();
+    if (tmp == int(xAxis.limit_min + 0.5))
+        return false; // did anything change ?
 
-  return true;
+    return true;
 }
 
 // ------------------------------------------------------------
 Diagram* TabDiagram::newOne()
 {
-  return new TabDiagram();
+    return new TabDiagram();
 }
 
 // ------------------------------------------------------------
-Element* TabDiagram::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* TabDiagram::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Tabular");
-  BitmapFile = (char *) "tabular";
+    Name = QObject::tr("Tabular");
+    BitmapFile = (char*)"tabular";
 
-  if(getNewOne)  return new TabDiagram();
-  return 0;
+    if (getNewOne)
+        return new TabDiagram();
+    return 0;
 }

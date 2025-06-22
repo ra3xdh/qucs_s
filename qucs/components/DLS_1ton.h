@@ -5,7 +5,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  */
 
 #ifndef DLS_1ton_H
@@ -13,14 +13,14 @@
 
 #include "component.h"
 
-class DLS_1ton : public Component
-{
-  public:
+class DLS_1ton : public Component {
+public:
     DLS_1ton();
     ~DLS_1ton() { };
     Component* newOne();
-    static Element* info(QString&, char* &, bool getNewOne=false);
-  protected:
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
+protected:
     void createSymbol();
 };
 

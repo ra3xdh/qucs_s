@@ -20,19 +20,18 @@
 
 #include "simulation.h"
 
-
-class Optimize_Sim : public qucs::component::SimulationComponent  {
+class Optimize_Sim : public qucs::component::SimulationComponent {
 public:
-  Optimize_Sim();
- ~Optimize_Sim();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  bool createASCOFiles();
-  bool createASCOnetlist();
-  bool loadASCOout();
+    Optimize_Sim();
+    ~Optimize_Sim();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    bool createASCOFiles();
+    bool createASCOnetlist();
+    bool loadASCOout();
 
 protected:
-  QString netlist();
+    QString netlist();
 };
 
 #endif

@@ -20,39 +20,39 @@
 
 #include "painting.h"
 
-
-class PortSymbol : public Painting  {
+class PortSymbol : public Painting {
 public:
-  PortSymbol(int cx_=0, int cy_=0, const QString& numberStr_="1",
-                                   const QString& nameStr_="");
+    PortSymbol(int cx_ = 0, int cy_ = 0, const QString& numberStr_ = "1",
+        const QString& nameStr_ = "");
 
-  void paint(QPainter* painter) override;
-  void paintScheme(Schematic*) override;
+    void paint(QPainter* painter) override;
+    void paintScheme(Schematic*) override;
 
-  Painting* newOne() override;
+    Painting* newOne() override;
 
-  bool load(const QString&) override;
-  QString save() override;
-  QString saveCpp() override;
-  QString saveJSON() override;
+    bool load(const QString&) override;
+    QString save() override;
+    QString saveCpp() override;
+    QString saveJSON() override;
 
-  bool getSelected(const QPoint& click, int tolerance) override;
+    bool getSelected(const QPoint& click, int tolerance) override;
 
-  void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
-  bool MousePressing(Schematic*sch) override;
+    void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
+    bool MousePressing(Schematic* sch) override;
 
-  bool  rotate() noexcept override;
-  bool  rotate(int, int) noexcept override;
-  bool  mirrorX() noexcept override;
-  bool  mirrorY() noexcept override;
+    bool rotate() noexcept override;
+    bool rotate(int, int) noexcept override;
+    bool mirrorX() noexcept override;
+    bool mirrorY() noexcept override;
 
-  bool Dialog(QWidget *Doc) override;
+    bool Dialog(QWidget* Doc) override;
 
-  QString numberStr, nameStr;
+    QString numberStr, nameStr;
+
 private:
-  int angle;
-  QPoint m_textOrigin;
-  void updateBounds();
+    int angle;
+    QPoint m_textOrigin;
+    void updateBounds();
 };
 
 #endif

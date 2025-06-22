@@ -14,22 +14,22 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <cmath>
 #include "exportdialog.h"
+#include <cmath>
 
-#include <QValidator>
-#include <QLabel>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
 #include <QCheckBox>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QFileInfo>
+#include <QComboBox>
 #include <QFileDialog>
+#include <QFileInfo>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QValidator>
 
-ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_, QWidget *parent) :
-    QDialog(parent)
+ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_, QWidget* parent)
+    : QDialog(parent)
 {
 
     setWindowTitle(tr("Export graphics"));
@@ -49,54 +49,55 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     lblFormat = new QLabel(tr("Image format:"));
 
     ExportButt = new QPushButton(tr("Export"));
-    connect(ExportButt,SIGNAL(clicked()),this,SLOT(accept()));
+    connect(ExportButt, SIGNAL(clicked()), this, SLOT(accept()));
     CancelButt = new QPushButton(tr("Cancel"));
-    connect(CancelButt,SIGNAL(clicked()),this,SLOT(reject()));
+    connect(CancelButt, SIGNAL(clicked()), this, SLOT(reject()));
     SaveButt = new QPushButton(tr("Browse"));
-    connect(SaveButt,SIGNAL(clicked()),this,SLOT(setFileName()));
+    connect(SaveButt, SIGNAL(clicked()), this, SLOT(setFileName()));
 
     editFilename = new QLineEdit(filename);
-    connect(editFilename,SIGNAL(textChanged(QString)),this,SLOT(setSvg(QString)));
+    connect(editFilename, SIGNAL(textChanged(QString)), this, SLOT(setSvg(QString)));
 
     editResolutionX = new QLineEdit(QString::number(dwidth));
-    QIntValidator *val = new QIntValidator(0,64000,this);
+    QIntValidator* val = new QIntValidator(0, 64000, this);
     editResolutionX->setValidator(val);
     editResolutionX->setEnabled(false);
     editResolutionY = new QLineEdit(QString::number(dheight));
     editResolutionY->setValidator(val);
     editResolutionY->setEnabled(false);
     editScale = new QLineEdit(QString::number(1.0));
-    QDoubleValidator *val1 = new QDoubleValidator(0,20.0,2,this);
+    QDoubleValidator* val1 = new QDoubleValidator(0, 20.0, 2, this);
     val1->setLocale(QLocale::C);
     editScale->setValidator(val1);
 
     cbxImgType = new QComboBox(this);
     QStringList lst;
-    lst<<tr("Colour")<<tr("Grayscale")<<tr("Monochrome");
+    lst << tr("Colour") << tr("Grayscale") << tr("Monochrome");
     cbxImgType->addItems(lst);
 
     cbRatio = new QCheckBox(tr("Original width to height ratio"));
     cbRatio->setChecked(true);
-    connect(cbRatio,SIGNAL(toggled(bool)),this,SLOT(recalcRatio()));
+    connect(cbRatio, SIGNAL(toggled(bool)), this, SLOT(recalcRatio()));
 
     cbResolution = new QCheckBox(tr("Original size"));
-    connect(cbResolution,SIGNAL(toggled(bool)),editResolutionX,SLOT(setDisabled(bool)));
-    connect(cbResolution,SIGNAL(toggled(bool)),editResolutionY,SLOT(setDisabled(bool)));
-    connect(cbResolution,SIGNAL(toggled(bool)),cbRatio,SLOT(setDisabled(bool)));
-    connect(cbResolution,SIGNAL(toggled(bool)),editScale,SLOT(setDisabled(bool)));
-    connect(cbResolution,SIGNAL(toggled(bool)),this,SLOT(restoreOriginalWtoH()));
+    connect(cbResolution, SIGNAL(toggled(bool)), editResolutionX, SLOT(setDisabled(bool)));
+    connect(cbResolution, SIGNAL(toggled(bool)), editResolutionY, SLOT(setDisabled(bool)));
+    connect(cbResolution, SIGNAL(toggled(bool)), cbRatio, SLOT(setDisabled(bool)));
+    connect(cbResolution, SIGNAL(toggled(bool)), editScale, SLOT(setDisabled(bool)));
+    connect(cbResolution, SIGNAL(toggled(bool)), this, SLOT(restoreOriginalWtoH()));
 
-    connect(editResolutionX,SIGNAL(textEdited(QString)),this,SLOT(calcHeight()));
-    connect(editResolutionY,SIGNAL(textEdited(QString)),this,SLOT(calcWidth()));
-    connect(editScale,SIGNAL(textChanged(QString)),this,SLOT(recalcScale()));
+    connect(editResolutionX, SIGNAL(textEdited(QString)), this, SLOT(calcHeight()));
+    connect(editResolutionY, SIGNAL(textEdited(QString)), this, SLOT(calcWidth()));
+    connect(editScale, SIGNAL(textChanged(QString)), this, SLOT(recalcScale()));
 
     cbSelected = new QCheckBox(tr("Export selected only"));
-    connect(cbSelected,SIGNAL(toggled(bool)),this,SLOT(setSelectedWH()));
+    connect(cbSelected, SIGNAL(toggled(bool)), this, SLOT(setSelectedWH()));
     cbSelected->setChecked(false);
-    if (noselected) cbSelected->setDisabled(true);
-    
+    if (noselected)
+        cbSelected->setDisabled(true);
+
     cbResolution->setChecked(true);
-    //cbResolution->setEnabled(false);
+    // cbResolution->setEnabled(false);
     cbRatio->setEnabled(false);
 
     top = new QVBoxLayout;
@@ -113,7 +114,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     lower4->addWidget(cbxImgType);
     top->addLayout(lower4);
     top->addWidget(cbResolution);
-    //top->addWidget(cbRatio);
+    // top->addWidget(cbRatio);
     lower3->addWidget(lblRatio);
     lower3->addWidget(editScale);
     top->addLayout(lower3);
@@ -156,65 +157,70 @@ int ExportDialog::Ypixels()
 
 void ExportDialog::setFileName()
 {
-  QString selectedFilter;
-  QString currentExtension;
-  QString filterExtension;
+    QString selectedFilter;
+    QString currentExtension;
+    QString filterExtension;
 
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Export Schematic to Image"),
-      editFilename->text(),
-      "PNG images (*.png);;"
-      "JPEG images (*.jpg *.jpeg);;"
-      "SVG vector graphics (*.svg);;"
-      "PDF (*.pdf);;"
-      "PDF + LaTeX (*.pdf_tex);;"
-      "EPS Encapsulated Postscript (*.eps)",
-      &selectedFilter);
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export Schematic to Image"),
+        editFilename->text(),
+        "PNG images (*.png);;"
+        "JPEG images (*.jpg *.jpeg);;"
+        "SVG vector graphics (*.svg);;"
+        "PDF (*.pdf);;"
+        "PDF + LaTeX (*.pdf_tex);;"
+        "EPS Encapsulated Postscript (*.eps)",
+        &selectedFilter);
 
-  if (fileName.isEmpty()) return;
+    if (fileName.isEmpty())
+        return;
 
-  if (selectedFilter.contains("*.png", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".png");
-  if (selectedFilter.contains("*.jpg", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".jpg");
-  if (selectedFilter.contains("*.svg", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".svg");
-  if (selectedFilter.contains("*.pdf", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".pdf");
-  if (selectedFilter.contains("*.pdf_tex", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".pdf_tex");
-  if (selectedFilter.contains("*.eps", Qt::CaseInsensitive)) filterExtension = QStringLiteral(".eps");
+    if (selectedFilter.contains("*.png", Qt::CaseInsensitive))
+        filterExtension = QStringLiteral(".png");
+    if (selectedFilter.contains("*.jpg", Qt::CaseInsensitive))
+        filterExtension = QStringLiteral(".jpg");
+    if (selectedFilter.contains("*.svg", Qt::CaseInsensitive))
+        filterExtension = QStringLiteral(".svg");
+    if (selectedFilter.contains("*.pdf", Qt::CaseInsensitive))
+        filterExtension = QStringLiteral(".pdf");
+    if (selectedFilter.contains("*.pdf_tex", Qt::CaseInsensitive))
+        filterExtension = QStringLiteral(".pdf_tex");
+    if (selectedFilter.contains("*.eps", Qt::CaseInsensitive))
+        filterExtension = QStringLiteral(".eps");
 
-  QFileInfo fileInfo(fileName);
+    QFileInfo fileInfo(fileName);
 
-  currentExtension = fileInfo.suffix();
+    currentExtension = fileInfo.suffix();
 
-  QString allowedExtensions = "png;jpg;jpeg;svg;pdf;pdf_tex;eps";
-  QStringList extensionsList = allowedExtensions.split (';');
+    QString allowedExtensions = "png;jpg;jpeg;svg;pdf;pdf_tex;eps";
+    QStringList extensionsList = allowedExtensions.split(';');
 
-  if (currentExtension.isEmpty()) {
-    fileName.append(filterExtension);
-  } else {
-    if (!extensionsList.contains(currentExtension)) {
-      fileName.append(filterExtension);
+    if (currentExtension.isEmpty()) {
+        fileName.append(filterExtension);
+    } else {
+        if (!extensionsList.contains(currentExtension)) {
+            fileName.append(filterExtension);
+        }
     }
-  }
 
-  editFilename->setText(fileName);
+    editFilename->setText(fileName);
 }
 
 void ExportDialog::calcWidth()
 {
     if (cbRatio->isChecked()) {
         float h = editResolutionY->text().toFloat();
-        float w =  round((h*dwidth)/dheight);
+        float w = round((h * dwidth) / dheight);
         editResolutionX->setText(QString::number(w));
     }
 }
-
 
 void ExportDialog::calcHeight()
 {
     if (cbRatio->isChecked()) {
         float w = editResolutionX->text().toFloat();
-        float h =  round((w*dheight)/dwidth);
+        float h = round((w * dheight) / dwidth);
         editResolutionY->setText(QString::number(h));
     }
-
 }
 
 void ExportDialog::recalcRatio()
@@ -227,7 +233,7 @@ void ExportDialog::recalcRatio()
 void ExportDialog::restoreOriginalWtoH()
 {
     if (cbResolution->isChecked()) {
-      if (cbSelected->isChecked()) { // Export selected only
+        if (cbSelected->isChecked()) { // Export selected only
             editResolutionX->setText(QString::number(dwidthsel));
             editResolutionY->setText(QString::number(dheightsel));
         } else {
@@ -253,7 +259,7 @@ void ExportDialog::setSvg(QString filename)
     QFileInfo graphics_file(filename);
     QString ext = graphics_file.suffix();
     ext = ext.toLower();
-    if ((ext=="svg")||(ext=="pdf")||(ext=="eps")||(ext=="pdf_tex")) {
+    if ((ext == "svg") || (ext == "pdf") || (ext == "eps") || (ext == "pdf_tex")) {
         svg = true;
         cbResolution->setChecked(true);
         cbResolution->setDisabled(true);
@@ -271,9 +277,9 @@ bool ExportDialog::isValidFilename()
     QString nam = editFilename->text();
     QStringList filetypes;
     QFileInfo inf(nam);
-    filetypes<<"png"<<"svg"<<"jpeg"<<"jpg"<<"pdf"<<"pdf_tex"<<"eps"
-            <<"PNG"<<"JPG"<<"SVG"<<"JPEG"<<"PDF"
-            <<"PDF_TEX"<<"EPS";
+    filetypes << "png" << "svg" << "jpeg" << "jpg" << "pdf" << "pdf_tex" << "eps"
+              << "PNG" << "JPG" << "SVG" << "JPEG" << "PDF"
+              << "PDF_TEX" << "EPS";
 
     if (filetypes.contains(inf.suffix())) {
         return true;
@@ -287,7 +293,7 @@ bool ExportDialog::needsInkscape()
     QString nam = editFilename->text();
     QStringList filetypes;
     QFileInfo inf(nam);
-    filetypes<<"pdf"<<"pdf_tex"<<"eps"<<"PDF"<<"PDF_TEX"<<"EPS";
+    filetypes << "pdf" << "pdf_tex" << "eps" << "PDF" << "PDF_TEX" << "EPS";
 
     if (filetypes.contains(inf.suffix())) {
         return true;
@@ -299,22 +305,28 @@ bool ExportDialog::needsInkscape()
 bool ExportDialog::isPdf()
 {
     QFileInfo inf(editFilename->text());
-    if (inf.suffix().toLower()=="pdf") return true;
-    else return false;
+    if (inf.suffix().toLower() == "pdf")
+        return true;
+    else
+        return false;
 }
 
 bool ExportDialog::isPdf_Tex()
 {
     QFileInfo inf(editFilename->text());
-    if (inf.suffix().toLower()=="pdf_tex") return true;
-    else return false;
+    if (inf.suffix().toLower() == "pdf_tex")
+        return true;
+    else
+        return false;
 }
 
 bool ExportDialog::isEps()
 {
     QFileInfo inf(editFilename->text());
-    if (inf.suffix().toLower()=="eps") return true;
-    else return false;
+    if (inf.suffix().toLower() == "eps")
+        return true;
+    else
+        return false;
 }
 
 void ExportDialog::setSelectedWH()
@@ -346,13 +358,12 @@ void ExportDialog::recalcScale()
 {
     scale = editScale->text().toFloat();
     if (cbSelected->isChecked()) {
-        editResolutionX->setText(QString::number(scale*dwidthsel));
-        editResolutionY->setText(QString::number(scale*dheightsel));
+        editResolutionX->setText(QString::number(scale * dwidthsel));
+        editResolutionY->setText(QString::number(scale * dheightsel));
     } else {
-        editResolutionX->setText(QString::number(scale*dwidth));
-        editResolutionY->setText(QString::number(scale*dheight));
+        editResolutionX->setText(QString::number(scale * dwidth));
+        editResolutionY->setText(QString::number(scale * dheight));
     }
-
 }
 
 ExportDialog::ImgFormat ExportDialog::getImgFormat()
@@ -361,16 +372,17 @@ ExportDialog::ImgFormat ExportDialog::getImgFormat()
     ExportDialog::ImgFormat ImgFormat = ExportDialog::Coloured;
 
     switch (cbxImgType->currentIndex()) {
-    case 0 :
+    case 0:
         ImgFormat = ExportDialog::Coloured;
         break;
-    case 1 :
+    case 1:
         ImgFormat = ExportDialog::Grayscale;
         break;
-    case 2 :
+    case 2:
         ImgFormat = ExportDialog::Monochrome;
         break;
-    default : break;
+    default:
+        break;
     }
 
     return ImgFormat;

@@ -19,51 +19,52 @@
  *                                                                         *
  ***************************************************************************/
 #include "vsffm.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 vSffm::vSffm()
 {
-  Description = QObject::tr("SPICE V(SFFM):");
-  Simulator = spicecompat::simSpice;
+    Description = QObject::tr("SPICE V(SFFM):");
+    Simulator = spicecompat::simSpice;
 
-  // normal voltage source symbol
-  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::darkRed,3)));
-  Texts.append(new Text(26, 6,"SFFM",Qt::darkRed,12.0,0.0,-1.0));
-  // pins
-  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  // plus sign
-  Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
-  Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
-  // minus sign
-  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2)));
+    // normal voltage source symbol
+    Ellipses.append(new qucs::Ellips(-12, -12, 24, 24, QPen(Qt::darkRed, 3)));
+    Texts.append(new Text(26, 6, "SFFM", Qt::darkRed, 12.0, 0.0, -1.0));
+    // pins
+    Lines.append(new qucs::Line(-30, 0, -12, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(30, 0, 12, 0, QPen(Qt::darkBlue, 2)));
+    // plus sign
+    Lines.append(new qucs::Line(18, -5, 18, -11, QPen(Qt::red, 2)));
+    Lines.append(new qucs::Line(21, -8, 15, -8, QPen(Qt::red, 2)));
+    // minus sign
+    Lines.append(new qucs::Line(-18, -5, -18, -11, QPen(Qt::black, 2)));
 
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(-30, 0));
 
-  x1 = -30; y1 = -14;
-  x2 =  30; y2 =  40;
+    x1 = -30;
+    y1 = -14;
+    x2 = 30;
+    y2 = 40;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "vSffm";
-  SpiceModel = "V";
-  Name  = "V";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "vSffm";
+    SpiceModel = "V";
+    Name = "V";
 
-  Props.append(new Property("Vo", "0 V", true,
-		QObject::tr("offset volage")));
-  Props.append(new Property("Va", "1 V", true,
-		QObject::tr("carrier amplitude")));
-  Props.append(new Property("Fc", "1k", true,
-		QObject::tr("carrier signal frequency")));
-  Props.append(new Property("Mdi", "10", true,
-		QObject::tr("modulation index")));
-  Props.append(new Property("Fs", "500", false,
-		QObject::tr("modulating signal frequency")));
+    Props.append(new Property("Vo", "0 V", true,
+        QObject::tr("offset volage")));
+    Props.append(new Property("Va", "1 V", true,
+        QObject::tr("carrier amplitude")));
+    Props.append(new Property("Fc", "1k", true,
+        QObject::tr("carrier signal frequency")));
+    Props.append(new Property("Mdi", "10", true,
+        QObject::tr("modulation index")));
+    Props.append(new Property("Fs", "500", false,
+        QObject::tr("modulating signal frequency")));
 
-  rotate();  // fix historical flaw
+    rotate(); // fix historical flaw
 }
 
 vSffm::~vSffm()
@@ -72,16 +73,17 @@ vSffm::~vSffm()
 
 Component* vSffm::newOne()
 {
-  return new vSffm();
+    return new vSffm();
 }
 
-Element* vSffm::info(QString& Name, char* &BitmapFile, bool getNewOne) 
+Element* vSffm::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("V(SFFM)");
-  BitmapFile = (char *) "vsffm";
+    Name = QObject::tr("V(SFFM)");
+    BitmapFile = (char*)"vsffm";
 
-  if(getNewOne)  return new vSffm();
-  return 0;
+    if (getNewOne)
+        return new vSffm();
+    return 0;
 }
 
 QString vSffm::netlist()
@@ -93,16 +95,17 @@ QString vSffm::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam; // node names
     }
 
-    QString Vo= spicecompat::normalize_value(Props.at(0)->Value);
-    QString Va= spicecompat::normalize_value(Props.at(1)->Value);
-    QString Fc= spicecompat::normalize_value(Props.at(2)->Value);
+    QString Vo = spicecompat::normalize_value(Props.at(0)->Value);
+    QString Va = spicecompat::normalize_value(Props.at(1)->Value);
+    QString Fc = spicecompat::normalize_value(Props.at(2)->Value);
     QString Mdi = spicecompat::normalize_value(Props.at(3)->Value);
     QString Fs = spicecompat::normalize_value(Props.at(4)->Value);
 

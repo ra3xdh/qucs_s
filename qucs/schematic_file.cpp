@@ -16,36 +16,35 @@
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
 
-#include <QtCore>
-#include <QMessageBox>
-#include <QDir>
-#include <QStringList>
-#include <QPlainTextEdit>
-#include <QTextStream>
-#include <QList>
-#include <QProcess>
 #include <QDebug>
+#include <QDir>
+#include <QList>
+#include <QMessageBox>
+#include <QPlainTextEdit>
+#include <QProcess>
+#include <QStringList>
+#include <QTextStream>
+#include <QtCore>
 
-#include "main.h"
-#include "node.h"
-#include "wire.h"
-#include "schematic.h"
-#include "diagrams/diagrams.h"
-#include "paintings/paintings.h"
-#include "components/spicefile.h"
-#include "components/vhdlfile.h"
-#include "components/verilogfile.h"
 #include "components/libcomp.h"
 #include "components/sparamfile.h"
-#include "module.h"
-#include "misc.h"
+#include "components/spicefile.h"
+#include "components/verilogfile.h"
+#include "components/vhdlfile.h"
+#include "diagrams/diagrams.h"
 #include "extsimkernels/abstractspicekernel.h"
 #include "extsimkernels/s2spice.h"
+#include "main.h"
+#include "misc.h"
+#include "module.h"
+#include "node.h"
 #include "osdi/osdi_0_3.h"
-
+#include "paintings/paintings.h"
+#include "schematic.h"
+#include "wire.h"
 
 // Here the subcircuits, SPICE components etc are collected. It must be
 // global to also work within the subcircuits.
@@ -54,11 +53,11 @@ SubMap FileList;
 // Dummy function for osdi_log callback.
 // Without it, the program will crash if print or display function called
 // in verilog-a model.
-extern void osdi_log_skip(void *handle, char* msg, uint32_t lvl)
+extern void osdi_log_skip(void* handle, char* msg, uint32_t lvl)
 {
-  (void)handle;
-  (void)msg;
-  (void)lvl;
+    (void)handle;
+    (void)msg;
+    (void)lvl;
 }
 
 // -------------------------------------------------------------
@@ -66,1088 +65,1175 @@ extern void osdi_log_skip(void *handle, char* msg, uint32_t lvl)
 // string. This is used to copy the selected elements into the clipboard.
 QString Schematic::createClipboardFile()
 {
-  int z=0;  // counts selected elements
+    int z = 0; // counts selected elements
 
-  QString s("<Qucs Schematic " PACKAGE_VERSION ">\n");
+    QString s("<Qucs Schematic " PACKAGE_VERSION ">\n");
 
-  // Build element document.
-  s += "<Components>\n";
-  for(Component* pc : *a_Components)
-    if(pc->isSelected) {
-      s += pc->save()+"\n";  z++; }
-  s += "</Components>\n";
+    // Build element document.
+    s += "<Components>\n";
+    for (Component* pc : *a_Components)
+        if (pc->isSelected) {
+            s += pc->save() + "\n";
+            z++;
+        }
+    s += "</Components>\n";
 
-  s += "<Wires>\n";
-  for(Wire* pw : *a_Wires)
-    if(pw->isSelected) {
-      z++;
-      if(pw->hasLabel()) if(!pw->label()->isSelected) {
-        s += pw->save().section('"', 0, 0)+"\"\" 0 0 0>\n";
-        continue;
-      }
-      s += pw->save()+"\n";
-    }
-  for(Node *pn : *a_Nodes)
-    if(pn->hasLabel()) if(pn->label()->isSelected) {
-      s += pn->label()->save()+"\n";  z++; }
-  s += "</Wires>\n";
+    s += "<Wires>\n";
+    for (Wire* pw : *a_Wires)
+        if (pw->isSelected) {
+            z++;
+            if (pw->hasLabel())
+                if (!pw->label()->isSelected) {
+                    s += pw->save().section('"', 0, 0) + "\"\" 0 0 0>\n";
+                    continue;
+                }
+            s += pw->save() + "\n";
+        }
+    for (Node* pn : *a_Nodes)
+        if (pn->hasLabel())
+            if (pn->label()->isSelected) {
+                s += pn->label()->save() + "\n";
+                z++;
+            }
+    s += "</Wires>\n";
 
-  s += "<Diagrams>\n";
-  for(Diagram* pd : *a_Diagrams)
-    if(pd->isSelected) {
-      s += pd->save()+"\n";  z++; }
-  s += "</Diagrams>\n";
+    s += "<Diagrams>\n";
+    for (Diagram* pd : *a_Diagrams)
+        if (pd->isSelected) {
+            s += pd->save() + "\n";
+            z++;
+        }
+    s += "</Diagrams>\n";
 
-  s += "<Paintings>\n";
-  for(Painting* pp : *a_Paintings)
-    if(pp->isSelected)
-      if ((a_isSymbolOnly && pp->Name.startsWith(".PortSym")) || pp->Name.at(0) != '.') {  // subcircuit specific -> do not copy
-        s += "<"+pp->save()+">\n";  z++; }
-  s += "</Paintings>\n";
+    s += "<Paintings>\n";
+    for (Painting* pp : *a_Paintings)
+        if (pp->isSelected)
+            if ((a_isSymbolOnly && pp->Name.startsWith(".PortSym")) || pp->Name.at(0) != '.') { // subcircuit specific -> do not copy
+                s += "<" + pp->save() + ">\n";
+                z++;
+            }
+    s += "</Paintings>\n";
 
-  if(z == 0) return "";   // return empty if no selection
+    if (z == 0)
+        return ""; // return empty if no selection
 
-  return s;
+    return s;
 }
 
 // -------------------------------------------------------------
 // Only read fields without loading them.
-bool Schematic::loadIntoNothing(QTextStream *stream)
+bool Schematic::loadIntoNothing(QTextStream* stream)
 {
-  QString Line, cstr;
-  while(!stream->atEnd()) {
-    Line = stream->readLine();
-    if(Line.at(0) == '<') if(Line.at(1) == '/') return true;
-  }
+    QString Line, cstr;
+    while (!stream->atEnd()) {
+        Line = stream->readLine();
+        if (Line.at(0) == '<')
+            if (Line.at(1) == '/')
+                return true;
+    }
 
-  QMessageBox::critical(nullptr, QObject::tr("Error"),
-  QObject::tr("Format Error:\n'Painting' field is not closed!"));
-  return false;
+    QMessageBox::critical(nullptr, QObject::tr("Error"),
+        QObject::tr("Format Error:\n'Painting' field is not closed!"));
+    return false;
 }
 
 // -------------------------------------------------------------
 // Paste from clipboard.
-bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
+bool Schematic::pasteFromClipboard(QTextStream* stream, std::list<Element*>* pe)
 {
-  // First, check if clipboard contains image data or file path
-  QClipboard* clipboard = QApplication::clipboard();
-  const QMimeData* mimeData = clipboard->mimeData();
+    // First, check if clipboard contains image data or file path
+    QClipboard* clipboard = QApplication::clipboard();
+    const QMimeData* mimeData = clipboard->mimeData();
 
-  // Check for image data first
-  if (mimeData->hasImage()) {
-    QImage clipboardImage = clipboard->image();
-    if (!clipboardImage.isNull()) {
-      // Create an ImagePainting with the clipboard image
-      ImagePainting* imagePainting = new ImagePainting();
-
-      // Convert QImage to QPixmap and set it
-      QPixmap pixmap = QPixmap::fromImage(clipboardImage);
-
-      // Set position
-      int defaultX = 0;
-      int defaultY = 0;
-      imagePainting->x1 = defaultX;
-      imagePainting->y1 = defaultY;
-      imagePainting->x2 = defaultX + clipboardImage.width();
-      imagePainting->y2 = defaultY + clipboardImage.height();
-
-      // Set the image data directly in the ImagePainting
-      imagePainting->setImageFromPixmap(pixmap);
-
-      // Add to the elements list
-      pe->push_back(imagePainting);
-
-      return true;
-    }
-  }
-
-  // Check for text that might be a file path to an image
-  if (mimeData->hasText()) {
-    QString clipboardText = clipboard->text().trimmed();
-
-    // Check if the text looks like a file path and if it's an image file
-    if (!clipboardText.isEmpty() && isImageFilePath(clipboardText)) {
-      QPixmap testPixmap;
-      if (testPixmap.load(clipboardText)) {
-        // Successfully loaded image from path
-        ImagePainting* imagePainting = new ImagePainting();
-
-        // Set position
-        int defaultX = 0;
-        int defaultY = 0;
-        imagePainting->x1 = defaultX;
-        imagePainting->y1 = defaultY;
-        imagePainting->x2 = defaultX + testPixmap.width();
-        imagePainting->y2 = defaultY + testPixmap.height();
-
-        // Set the image from file path
-        imagePainting->setImageFromPath(clipboardText);
-
-        // Add to the elements list
-        pe->push_back(imagePainting);
-
-        return true;
-      }
-    }
-  }
-
-  // Check for file URLs (drag and drop from file manager)
-  if (mimeData->hasUrls()) {
-    QList<QUrl> urls = mimeData->urls();
-    for (const QUrl& url : urls) {
-      if (url.isLocalFile()) {
-        QString filePath = url.toLocalFile();
-        if (isImageFilePath(filePath)) {
-          QPixmap testPixmap;
-          if (testPixmap.load(filePath)) {
-            // Successfully loaded image from file
+    // Check for image data first
+    if (mimeData->hasImage()) {
+        QImage clipboardImage = clipboard->image();
+        if (!clipboardImage.isNull()) {
+            // Create an ImagePainting with the clipboard image
             ImagePainting* imagePainting = new ImagePainting();
 
-            // Set position (offset multiple images if there are several)
-            int defaultX = 100 + (pe->size() * 20); // Offset each image
-            int defaultY = 100 + (pe->size() * 20);
+            // Convert QImage to QPixmap and set it
+            QPixmap pixmap = QPixmap::fromImage(clipboardImage);
+
+            // Set position
+            int defaultX = 0;
+            int defaultY = 0;
             imagePainting->x1 = defaultX;
             imagePainting->y1 = defaultY;
-            imagePainting->x2 = defaultX + testPixmap.width();
-            imagePainting->y2 = defaultY + testPixmap.height();
+            imagePainting->x2 = defaultX + clipboardImage.width();
+            imagePainting->y2 = defaultY + clipboardImage.height();
 
-            // Set the image from file path
-            imagePainting->setImageFromPath(filePath);
+            // Set the image data directly in the ImagePainting
+            imagePainting->setImageFromPixmap(pixmap);
 
             // Add to the elements list
             pe->push_back(imagePainting);
-          }
+
+            return true;
         }
-      }
     }
 
-    // If we processed any image files, return true
-    if (!pe->empty()) {
-      return true;
-    }
-  }
+    // Check for text that might be a file path to an image
+    if (mimeData->hasText()) {
+        QString clipboardText = clipboard->text().trimmed();
 
-  // If no image in clipboard, proceed with normal text-based clipboard processing
-  QString Line;
-  Line = stream->readLine();
-  if(Line.left(16) != "<Qucs Schematic ")   // wrong file type ?
-    return false;
-  QString s = PACKAGE_VERSION;
-  Line = Line.mid(16, Line.length()-17);
-  if(Line != s) {  // wrong version number ?
-    QMessageBox::critical(nullptr, QObject::tr("Error"),
-                 QObject::tr("Wrong document version: ")+Line);
-    return false;
-  }
-  // read content in symbol edit mode *************************
-  if(a_symbolMode) {
-    while(!stream->atEnd()) {
-      Line = stream->readLine();
-      if(Line == "<Components>") {
-        if(!loadIntoNothing(stream)) return false; }
-      else
-      if(Line == "<Wires>") {
-        if(!loadIntoNothing(stream)) return false; }
-      else
-      if(Line == "<Diagrams>") {
-        if(!loadIntoNothing(stream)) return false; }
-      else
-      if(Line == "<Paintings>") {
-        if(!loadPaintings(stream, (std::list<Painting*>*)pe)) return false; }
-      else {
-        QMessageBox::critical(nullptr, QObject::tr("Error"),
-        QObject::tr("Clipboard Format Error:\nUnknown field!"));
+        // Check if the text looks like a file path and if it's an image file
+        if (!clipboardText.isEmpty() && isImageFilePath(clipboardText)) {
+            QPixmap testPixmap;
+            if (testPixmap.load(clipboardText)) {
+                // Successfully loaded image from path
+                ImagePainting* imagePainting = new ImagePainting();
+
+                // Set position
+                int defaultX = 0;
+                int defaultY = 0;
+                imagePainting->x1 = defaultX;
+                imagePainting->y1 = defaultY;
+                imagePainting->x2 = defaultX + testPixmap.width();
+                imagePainting->y2 = defaultY + testPixmap.height();
+
+                // Set the image from file path
+                imagePainting->setImageFromPath(clipboardText);
+
+                // Add to the elements list
+                pe->push_back(imagePainting);
+
+                return true;
+            }
+        }
+    }
+
+    // Check for file URLs (drag and drop from file manager)
+    if (mimeData->hasUrls()) {
+        QList<QUrl> urls = mimeData->urls();
+        for (const QUrl& url : urls) {
+            if (url.isLocalFile()) {
+                QString filePath = url.toLocalFile();
+                if (isImageFilePath(filePath)) {
+                    QPixmap testPixmap;
+                    if (testPixmap.load(filePath)) {
+                        // Successfully loaded image from file
+                        ImagePainting* imagePainting = new ImagePainting();
+
+                        // Set position (offset multiple images if there are several)
+                        int defaultX = 100 + (pe->size() * 20); // Offset each image
+                        int defaultY = 100 + (pe->size() * 20);
+                        imagePainting->x1 = defaultX;
+                        imagePainting->y1 = defaultY;
+                        imagePainting->x2 = defaultX + testPixmap.width();
+                        imagePainting->y2 = defaultY + testPixmap.height();
+
+                        // Set the image from file path
+                        imagePainting->setImageFromPath(filePath);
+
+                        // Add to the elements list
+                        pe->push_back(imagePainting);
+                    }
+                }
+            }
+        }
+
+        // If we processed any image files, return true
+        if (!pe->empty()) {
+            return true;
+        }
+    }
+
+    // If no image in clipboard, proceed with normal text-based clipboard processing
+    QString Line;
+    Line = stream->readLine();
+    if (Line.left(16) != "<Qucs Schematic ") // wrong file type ?
         return false;
-      }
+    QString s = PACKAGE_VERSION;
+    Line = Line.mid(16, Line.length() - 17);
+    if (Line != s) { // wrong version number ?
+        QMessageBox::critical(nullptr, QObject::tr("Error"),
+            QObject::tr("Wrong document version: ") + Line);
+        return false;
+    }
+    // read content in symbol edit mode *************************
+    if (a_symbolMode) {
+        while (!stream->atEnd()) {
+            Line = stream->readLine();
+            if (Line == "<Components>") {
+                if (!loadIntoNothing(stream))
+                    return false;
+            } else if (Line == "<Wires>") {
+                if (!loadIntoNothing(stream))
+                    return false;
+            } else if (Line == "<Diagrams>") {
+                if (!loadIntoNothing(stream))
+                    return false;
+            } else if (Line == "<Paintings>") {
+                if (!loadPaintings(stream, (std::list<Painting*>*)pe))
+                    return false;
+            } else {
+                QMessageBox::critical(nullptr, QObject::tr("Error"),
+                    QObject::tr("Clipboard Format Error:\nUnknown field!"));
+                return false;
+            }
+        }
+        return true;
+    }
+    // read content in schematic edit mode *************************
+    while (!stream->atEnd()) {
+        Line = stream->readLine();
+        if (Line == "<Components>") {
+            if (!loadComponents(stream, (std::list<Component*>*)pe))
+                return false;
+        } else if (Line == "<Wires>") {
+            if (!loadWires(stream, pe))
+                return false;
+        } else if (Line == "<Diagrams>") {
+            if (!loadDiagrams(stream, (std::list<Diagram*>*)pe))
+                return false;
+        } else if (Line == "<Paintings>") {
+            if (!loadPaintings(stream, (std::list<Painting*>*)pe))
+                return false;
+        } else {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Clipboard Format Error:\nUnknown field!"));
+            return false;
+        }
     }
     return true;
-  }
-  // read content in schematic edit mode *************************
-  while(!stream->atEnd()) {
-    Line = stream->readLine();
-    if(Line == "<Components>") {
-      if(!loadComponents(stream, (std::list<Component*>*)pe)) return false; }
-    else
-    if(Line == "<Wires>") {
-      if(!loadWires(stream, pe)) return false; }
-    else
-    if(Line == "<Diagrams>") {
-      if(!loadDiagrams(stream, (std::list<Diagram*>*)pe)) return false; }
-    else
-    if(Line == "<Paintings>") {
-      if(!loadPaintings(stream, (std::list<Painting*>*)pe)) return false; }
-    else {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Clipboard Format Error:\nUnknown field!"));
-      return false;
+}
+
+bool Schematic::isImageFilePath(const QString& path)
+{
+    if (path.isEmpty())
+        return false;
+
+    QFileInfo fileInfo(path);
+    if (!fileInfo.exists() || !fileInfo.isFile()) {
+        return false;
     }
-  }
-  return true;
+
+    // Use QImageReader to check if the file format is supported
+    QImageReader reader(path);
+    return reader.canRead();
 }
-
-bool Schematic::isImageFilePath(const QString& path) {
-  if (path.isEmpty()) return false;
-
-  QFileInfo fileInfo(path);
-  if (!fileInfo.exists() || !fileInfo.isFile()) {
-    return false;
-  }
-
-  // Use QImageReader to check if the file format is supported
-  QImageReader reader(path);
-  return reader.canRead();
-}
-
 
 // -------------------------------------------------------------
-int Schematic::saveSymbolCpp (void)
+int Schematic::saveSymbolCpp(void)
 {
-  QFileInfo info (a_DocName);
-  QString cppfile = info.absolutePath () + QDir::separator() + a_DataSet;
-  QFile file (cppfile);
+    QFileInfo info(a_DocName);
+    QString cppfile = info.absolutePath() + QDir::separator() + a_DataSet;
+    QFile file(cppfile);
 
-  if (!file.open (QIODevice::WriteOnly)) {
-    QMessageBox::critical (nullptr, QObject::tr("Error"),
-    QObject::tr("Cannot save C++ file \"%1\"!").arg(cppfile));
-    return -1;
-  }
-
-  QTextStream stream (&file);
-
-  // automatically compute boundings of drawing
-  int xmin = INT_MAX;
-  int ymin = INT_MAX;
-  int xmax = INT_MIN;
-  int ymax = INT_MIN;
-  int x1, y1;
-  int maxNum = 0;
-
-  stream << "  // symbol drawing code\n";
-  for (auto* pp : a_SymbolPaints) {
-    if (pp->Name == ".ID ") continue;
-    if (pp->Name == ".PortSym ") {
-      if (((PortSymbol*)pp)->numberStr.toInt() > maxNum)
-        maxNum = ((PortSymbol*)pp)->numberStr.toInt();
-      x1 = ((PortSymbol*)pp)->cx;
-      y1 = ((PortSymbol*)pp)->cy;
-      if (x1 < xmin) xmin = x1;
-      if (x1 > xmax) xmax = x1;
-      if (y1 < ymin) ymin = y1;
-      if (y1 > ymax) ymax = y1;
-      continue;
+    if (!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::critical(nullptr, QObject::tr("Error"),
+            QObject::tr("Cannot save C++ file \"%1\"!").arg(cppfile));
+        return -1;
     }
-    auto br = pp->boundingRect();
-    xmin = std::min(xmin, br.left());
-    xmax = std::max(xmax, br.left() + br.width());
-    ymin = std::min(ymin, br.top());
-    ymax = std::max(ymax, br.top() + br.height());
 
-    stream << "  " << pp->saveCpp () << "\n";
-  }
+    QTextStream stream(&file);
 
-  stream << "\n  // terminal definitions\n";
-  for (int i = 1; i <= maxNum; i++) {
+    // automatically compute boundings of drawing
+    int xmin = INT_MAX;
+    int ymin = INT_MAX;
+    int xmax = INT_MIN;
+    int ymax = INT_MIN;
+    int x1, y1;
+    int maxNum = 0;
+
+    stream << "  // symbol drawing code\n";
     for (auto* pp : a_SymbolPaints) {
-      if (pp->Name == ".PortSym ") {
-        if (((PortSymbol*)pp)->numberStr.toInt() == i) {
-          stream << "  " << pp->saveCpp () << "\n";
+        if (pp->Name == ".ID ")
+            continue;
+        if (pp->Name == ".PortSym ") {
+            if (((PortSymbol*)pp)->numberStr.toInt() > maxNum)
+                maxNum = ((PortSymbol*)pp)->numberStr.toInt();
+            x1 = ((PortSymbol*)pp)->cx;
+            y1 = ((PortSymbol*)pp)->cy;
+            if (x1 < xmin)
+                xmin = x1;
+            if (x1 > xmax)
+                xmax = x1;
+            if (y1 < ymin)
+                ymin = y1;
+            if (y1 > ymax)
+                ymax = y1;
+            continue;
         }
-      }
+        auto br = pp->boundingRect();
+        xmin = std::min(xmin, br.left());
+        xmax = std::max(xmax, br.left() + br.width());
+        ymin = std::min(ymin, br.top());
+        ymax = std::max(ymax, br.top() + br.height());
+
+        stream << "  " << pp->saveCpp() << "\n";
     }
-  }
 
-  stream << "\n  // symbol boundings\n"
-    << "  x1 = " << xmin << "; " << "  y1 = " << ymin << ";\n"
-    << "  x2 = " << xmax << "; " << "  y2 = " << ymax << ";\n";
+    stream << "\n  // terminal definitions\n";
+    for (int i = 1; i <= maxNum; i++) {
+        for (auto* pp : a_SymbolPaints) {
+            if (pp->Name == ".PortSym ") {
+                if (((PortSymbol*)pp)->numberStr.toInt() == i) {
+                    stream << "  " << pp->saveCpp() << "\n";
+                }
+            }
+        }
+    }
 
-  stream << "\n  // property text position\n";
-  for (auto* pp : a_SymbolPaints)
-    if (pp->Name == ".ID ")
-      stream << "  " << pp->saveCpp () << "\n";
+    stream << "\n  // symbol boundings\n"
+           << "  x1 = " << xmin << "; " << "  y1 = " << ymin << ";\n"
+           << "  x2 = " << xmax << "; " << "  y2 = " << ymax << ";\n";
 
-  file.close ();
-  return 0;
+    stream << "\n  // property text position\n";
+    for (auto* pp : a_SymbolPaints)
+        if (pp->Name == ".ID ")
+            stream << "  " << pp->saveCpp() << "\n";
+
+    file.close();
+    return 0;
 }
 
 int Schematic::savePropsJSON()
 {
-  QFileInfo info (a_DocName);
-  QString jsonfile = info.absolutePath () + QDir::separator()
-                     + info.baseName() + "_props.json";
-  QString vafilename = info.absolutePath () + QDir::separator()
-                       + info.baseName() + ".va";
-  QString osdifile = info.absolutePath() + QDir::separator()
-                     + info.baseName() + ".osdi";
+    QFileInfo info(a_DocName);
+    QString jsonfile = info.absolutePath() + QDir::separator()
+        + info.baseName() + "_props.json";
+    QString vafilename = info.absolutePath() + QDir::separator()
+        + info.baseName() + ".va";
+    QString osdifile = info.absolutePath() + QDir::separator()
+        + info.baseName() + ".osdi";
 
-  QFile vafile(vafilename);
-  if (!vafile.open (QIODevice::ReadOnly)) {
-    QMessageBox::critical (nullptr, QObject::tr("Error"),
-                          QObject::tr("Cannot open Verilog-A file \"%1\"!").arg(vafilename));
-    return -1;
-  }
+    QFile vafile(vafilename);
+    if (!vafile.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(nullptr, QObject::tr("Error"),
+            QObject::tr("Cannot open Verilog-A file \"%1\"!").arg(vafilename));
+        return -1;
+    }
 
-  // if no osdi file exits, generete json file in the old way
-  if (!QFile::exists(osdifile)){
-    QString module;
-    QStringList prop_name;
-    QStringList prop_val;
-    QTextStream vastream (&vafile);
-    while(!vastream.atEnd()) {
-      QString line = vastream.readLine();
-      line = line.toLower();
-      if (line.contains("module")) {
-        auto tokens = line.split(QRegularExpression("[\\s()]"));
-        if (tokens.count() > 1) module = tokens.at(1);
-            module = module.trimmed();
-        continue;
-      }
-      if (line.contains("parameter")) {
-        auto tokens = line.split(QRegularExpression("[\\s=;]"), Qt::SkipEmptyParts);
-        if (tokens.count() >= 4) {
-          for(int ic = 0; ic <= tokens.count(); ic++) {
-            if (tokens.at(ic) == "parameter") {
-              prop_name.append(tokens.at(ic+2));
-              prop_val.append(tokens.at(ic+3));
-              break;
+    // if no osdi file exits, generete json file in the old way
+    if (!QFile::exists(osdifile)) {
+        QString module;
+        QStringList prop_name;
+        QStringList prop_val;
+        QTextStream vastream(&vafile);
+        while (!vastream.atEnd()) {
+            QString line = vastream.readLine();
+            line = line.toLower();
+            if (line.contains("module")) {
+                auto tokens = line.split(QRegularExpression("[\\s()]"));
+                if (tokens.count() > 1)
+                    module = tokens.at(1);
+                module = module.trimmed();
+                continue;
             }
-          }
+            if (line.contains("parameter")) {
+                auto tokens = line.split(QRegularExpression("[\\s=;]"), Qt::SkipEmptyParts);
+                if (tokens.count() >= 4) {
+                    for (int ic = 0; ic <= tokens.count(); ic++) {
+                        if (tokens.at(ic) == "parameter") {
+                            prop_name.append(tokens.at(ic + 2));
+                            prop_val.append(tokens.at(ic + 3));
+                            break;
+                        }
+                    }
+                }
+            }
         }
-      }
+        vafile.close();
+
+        QFile file(jsonfile);
+
+        if (!file.open(QIODevice::WriteOnly)) {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
+            return -1;
+        }
+
+        QTextStream stream(&file);
+
+        stream << "{\n";
+
+        stream << QStringLiteral("  \"description\" : \"%1 verilog device\",\n").arg(module);
+        stream << "  \"property\" : [\n";
+        auto name = prop_name.begin();
+        auto val = prop_val.begin();
+        for (; name != prop_name.end(); name++, val++) {
+            stream << QStringLiteral("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"false\", \"desc\" : \"-\"},\n")
+                          .arg(*name, *val);
+        }
+        stream << "  ],\n\n";
+        stream << "  \"tx\" : 4,\n";
+        stream << "  \"ty\" : 4,\n";
+        stream << QStringLiteral("  \"Model\" : \"%1\",\n").arg(module);
+        stream << "  \"NetName\" : \"T\",\n\n\n";
+        stream << QStringLiteral("  \"SymName\" : \"%1\",\n").arg(module);
+        stream << QStringLiteral("  \"BitmapFile\" : \"%1\",\n").arg(module);
+
+        stream << "}";
+
+        file.close();
+    } else {
+        QString module;
+        QStringList prop_name;
+        QStringList prop_val;
+        QStringList prop_disp;
+        QStringList prop_desc;
+
+        QLibrary osdilib(osdifile);
+        if (!osdilib.load()) {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("No valid osdi file. Re-compile verilog-a file first!"));
+            return -1;
+        }
+
+        // log function is disabled here.
+        // the dummy function osdi_log_backup is assigned to callback pointer
+        // to avoid program crash.
+        void** osdi_log_ = reinterpret_cast<void**>(osdilib.resolve("osdi_log"));
+        void* osdi_log_backup = nullptr;
+        if (osdi_log_) {
+            osdi_log_backup = *osdi_log_;
+        }
+        *osdi_log_ = (void*)osdi_log_skip;
+
+        OsdiDescriptor* descriptors = reinterpret_cast<OsdiDescriptor*>(osdilib.resolve("OSDI_DESCRIPTORS"));
+        auto descriptor = descriptors[0];
+        void* handler = nullptr;
+
+        // OsdiSimParas and OsdiInitInfo have to be initialized before setup_model and setup_instance
+        std::vector<char*> sim_params_names_vec = { nullptr };
+        std::vector<double> sim_params_vals_vec = {};
+        std::vector<char*> sim_params_str_vec = { nullptr };
+        OsdiSimParas sim_params = {
+            .names = sim_params_names_vec.data(),
+            .vals = sim_params_vals_vec.data(),
+            .names_str = sim_params_str_vec.data(),
+            .vals_str = nullptr
+        };
+        OsdiInitInfo sim_info = {
+            .flags = 0,
+            .num_errors = 0,
+            .errors = nullptr
+        };
+
+        void* model = calloc(1, descriptor.model_size);
+        void* instance = calloc(1, descriptor.instance_size);
+
+        descriptor.setup_model(handler, model, &sim_params, &sim_info);
+        descriptor.setup_instance(handler, instance, model, 300, descriptor.num_terminals, &sim_params, &sim_info);
+
+        module = QString(descriptor.name);
+        for (uint32_t i = 1; i < descriptor.num_params; i++) {
+            auto param = descriptor.param_opvar + i;
+            void* value;
+            if (i < descriptor.num_instance_params) {
+                value = descriptor.access(instance, model, i, ACCESS_FLAG_INSTANCE);
+                prop_disp.append("true");
+            } else {
+                value = descriptor.access(instance, model, i, ACCESS_FLAG_READ);
+                prop_disp.append("false");
+            }
+
+            switch (param->flags & PARA_TY_MASK) {
+            case PARA_TY_INT:
+                prop_val.append(QString::number(*static_cast<uint32_t*>(value)));
+                break;
+            case PARA_TY_REAL:
+                prop_val.append(QString::number(*static_cast<double*>(value)));
+                break;
+            case PARA_TY_STR:
+                prop_val.append(QString(static_cast<char*>(value)));
+                break;
+            default:
+                prop_val.append("");
+                break;
+            }
+
+            prop_name.append(param->name[0]);
+            prop_desc.append(param->description);
+        }
+
+        free(model);
+        free(instance);
+        if (osdi_log_backup) {
+            *osdi_log_ = osdi_log_backup;
+        }
+        osdilib.unload();
+
+        QFile file(jsonfile);
+
+        if (!file.open(QIODevice::WriteOnly)) {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
+            return -1;
+        }
+
+        QTextStream stream(&file);
+
+        stream << "{\n";
+
+        stream << QStringLiteral("  \"description\" : \"%1 verilog device\",\n").arg(module);
+        stream << "  \"property\" : [\n";
+        auto name = prop_name.begin();
+        auto val = prop_val.begin();
+        auto disp = prop_disp.begin();
+        auto desc = prop_desc.begin();
+        for (; name != prop_name.end(); name++, val++, disp++, desc++) {
+            stream << QStringLiteral("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"%3\", \"desc\" : \"%4\"},\n")
+                          .arg(*name, *val, *disp, *desc);
+        }
+        stream << "  ],\n\n";
+        stream << "  \"tx\" : 4,\n";
+        stream << "  \"ty\" : 4,\n";
+        stream << QStringLiteral("  \"Model\" : \"%1\",\n").arg(module);
+        stream << "  \"NetName\" : \"T\",\n\n\n";
+        stream << QStringLiteral("  \"SymName\" : \"%1\",\n").arg(module);
+        stream << QStringLiteral("  \"BitmapFile\" : \"%1\",\n").arg(module);
+
+        stream << "}";
+
+        file.close();
     }
-    vafile.close();
-
-    QFile file (jsonfile);
-
-    if (!file.open (QIODevice::WriteOnly)) {
-      QMessageBox::critical (nullptr, QObject::tr("Error"),
-                            QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
-      return -1;
-    }
-
-    QTextStream stream (&file);
-
-    stream << "{\n";
-
-    stream << QStringLiteral("  \"description\" : \"%1 verilog device\",\n").arg(module);
-    stream << "  \"property\" : [\n";
-    auto name = prop_name.begin();
-    auto val = prop_val.begin();
-    for(; name != prop_name.end(); name++,val++) {
-      stream << QStringLiteral("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"false\", \"desc\" : \"-\"},\n")
-                    .arg(*name,*val);
-    }
-    stream << "  ],\n\n";
-    stream << "  \"tx\" : 4,\n";
-    stream << "  \"ty\" : 4,\n";
-    stream << QStringLiteral("  \"Model\" : \"%1\",\n").arg(module);
-    stream << "  \"NetName\" : \"T\",\n\n\n";
-    stream << QStringLiteral("  \"SymName\" : \"%1\",\n").arg(module);
-    stream << QStringLiteral("  \"BitmapFile\" : \"%1\",\n").arg(module);
-
-    stream << "}";
-
-    file.close ();
-  }else{
-    QString module;
-    QStringList prop_name;
-    QStringList prop_val;
-    QStringList prop_disp;
-    QStringList prop_desc;
-
-    QLibrary osdilib (osdifile);
-    if (!osdilib.load()){
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-                            QObject::tr("No valid osdi file. Re-compile verilog-a file first!"));
-      return -1;
-    }
-
-    // log function is disabled here.
-    // the dummy function osdi_log_backup is assigned to callback pointer
-    // to avoid program crash.
-    void** osdi_log_ = reinterpret_cast<void**>(osdilib.resolve("osdi_log"));
-    void* osdi_log_backup = nullptr;
-    if (osdi_log_){
-      osdi_log_backup = *osdi_log_;
-    }
-    *osdi_log_ = (void*)osdi_log_skip;
-
-    OsdiDescriptor* descriptors = reinterpret_cast<OsdiDescriptor*>(osdilib.resolve("OSDI_DESCRIPTORS"));
-    auto descriptor = descriptors[0];
-    void* handler = nullptr;
-
-    // OsdiSimParas and OsdiInitInfo have to be initialized before setup_model and setup_instance
-    std::vector<char*> sim_params_names_vec={nullptr};
-    std::vector<double> sim_params_vals_vec={};
-    std::vector<char*> sim_params_str_vec = {nullptr};
-    OsdiSimParas sim_params = {
-                        .names = sim_params_names_vec.data(),
-                        .vals = sim_params_vals_vec.data(),
-                        .names_str = sim_params_str_vec.data(),
-                        .vals_str = nullptr
-    };
-    OsdiInitInfo sim_info = {
-        .flags = 0,
-        .num_errors = 0,
-        .errors = nullptr
-    };
-
-    void* model = calloc(1,descriptor.model_size);
-    void* instance = calloc(1,descriptor.instance_size);
-
-    descriptor.setup_model(handler,model,&sim_params,&sim_info);
-    descriptor.setup_instance(handler,instance,model,300,descriptor.num_terminals,&sim_params,&sim_info);
-
-    module = QString(descriptor.name);
-    for(uint32_t i=1;i<descriptor.num_params;i++) {
-      auto param = descriptor.param_opvar+i;
-      void* value;
-      if (i<descriptor.num_instance_params){
-        value = descriptor.access(instance,model,i,ACCESS_FLAG_INSTANCE);
-        prop_disp.append("true");
-      }else{
-        value = descriptor.access(instance,model,i,ACCESS_FLAG_READ);
-        prop_disp.append("false");
-      }
-
-      switch (param->flags & PARA_TY_MASK)
-      {
-      case PARA_TY_INT:
-        prop_val.append(QString::number(*static_cast<uint32_t*>(value)));
-        break;
-      case PARA_TY_REAL:
-        prop_val.append(QString::number(*static_cast<double*>(value)));
-        break;
-      case PARA_TY_STR:
-        prop_val.append(QString(static_cast<char*>(value)));
-        break;
-      default:
-        prop_val.append("");
-        break;
-      }
-
-      prop_name.append(param->name[0]);
-      prop_desc.append(param->description);
-    }
-
-    free(model);
-    free(instance);
-    if (osdi_log_backup) {
-      *osdi_log_ = osdi_log_backup;
-    }
-    osdilib.unload();
-
-    QFile file (jsonfile);
-
-    if (!file.open (QIODevice::WriteOnly)) {
-      QMessageBox::critical (nullptr, QObject::tr("Error"),
-                            QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
-      return -1;
-    }
-
-    QTextStream stream (&file);
-
-    stream << "{\n";
-
-    stream << QStringLiteral("  \"description\" : \"%1 verilog device\",\n").arg(module);
-    stream << "  \"property\" : [\n";
-    auto name = prop_name.begin();
-    auto val = prop_val.begin();
-    auto disp = prop_disp.begin();
-    auto desc = prop_desc.begin();
-    for(; name != prop_name.end(); name++,val++,disp++,desc++) {
-      stream << QStringLiteral("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"%3\", \"desc\" : \"%4\"},\n")
-                    .arg(*name,*val,*disp,*desc);
-    }
-    stream << "  ],\n\n";
-    stream << "  \"tx\" : 4,\n";
-    stream << "  \"ty\" : 4,\n";
-    stream << QStringLiteral("  \"Model\" : \"%1\",\n").arg(module);
-    stream << "  \"NetName\" : \"T\",\n\n\n";
-    stream << QStringLiteral("  \"SymName\" : \"%1\",\n").arg(module);
-    stream << QStringLiteral("  \"BitmapFile\" : \"%1\",\n").arg(module);
-
-    stream << "}";
-
-    file.close ();
-  }
-  return 0;
+    return 0;
 }
 
 // save symbol paintings in JSON format
 int Schematic::saveSymbolJSON()
 {
-  QFileInfo info (a_DocName);
-  QString jsonfile = info.absolutePath () + QDir::separator()
-                   + info.baseName() + "_sym.json";
+    QFileInfo info(a_DocName);
+    QString jsonfile = info.absolutePath() + QDir::separator()
+        + info.baseName() + "_sym.json";
 
-  qDebug() << "saveSymbolJson for " << jsonfile;
+    qDebug() << "saveSymbolJson for " << jsonfile;
 
-  QFile file (jsonfile);
+    QFile file(jsonfile);
 
-  if (!file.open (QIODevice::WriteOnly)) {
-    QMessageBox::critical (nullptr, QObject::tr("Error"),
-		   QObject::tr("Cannot save JSON symbol file \"%1\"!").arg(jsonfile));
-    return -1;
-  }
-
-  QTextStream stream (&file);
-
-  // automatically compute boundings of drawing
-  int xmin = INT_MAX;
-  int ymin = INT_MAX;
-  int xmax = INT_MIN;
-  int ymax = INT_MIN;
-  int x1, y1;
-  int maxNum = 0;
-
-  stream << "{\n";
-
-  stream << "\"paintings\" : [\n";
-
-  // symbol drawing code"
-  for (auto* pp : a_SymbolPaints) {
-    if (pp->Name == ".ID ") continue;
-    if (pp->Name == ".PortSym ") {
-      if (((PortSymbol*)pp)->numberStr.toInt() > maxNum)
-        maxNum = ((PortSymbol*)pp)->numberStr.toInt();
-      x1 = ((PortSymbol*)pp)->cx;
-      y1 = ((PortSymbol*)pp)->cy;
-      if (x1 < xmin) xmin = x1;
-      if (x1 > xmax) xmax = x1;
-      if (y1 < ymin) ymin = y1;
-      if (y1 > ymax) ymax = y1;
-      continue;
+    if (!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::critical(nullptr, QObject::tr("Error"),
+            QObject::tr("Cannot save JSON symbol file \"%1\"!").arg(jsonfile));
+        return -1;
     }
-    auto br = pp->boundingRect();
-    xmin = std::min(xmin, br.left());
-    xmax = std::max(xmax, br.left() + br.width());
-    ymin = std::min(ymin, br.top());
-    ymax = std::max(ymax, br.top() + br.height());
-    stream << "  " << pp->saveJSON() << "\n";
-  }
 
-  // terminal definitions
-  //stream << "terminal \n";
-  for (int i = 1; i <= maxNum; i++) {
+    QTextStream stream(&file);
+
+    // automatically compute boundings of drawing
+    int xmin = INT_MAX;
+    int ymin = INT_MAX;
+    int xmax = INT_MIN;
+    int ymax = INT_MIN;
+    int x1, y1;
+    int maxNum = 0;
+
+    stream << "{\n";
+
+    stream << "\"paintings\" : [\n";
+
+    // symbol drawing code"
     for (auto* pp : a_SymbolPaints) {
-      if (pp->Name == ".PortSym ") {
-        if (((PortSymbol*)pp)->numberStr.toInt() == i) {
-          stream << "  " << pp->saveJSON () << "\n";
+        if (pp->Name == ".ID ")
+            continue;
+        if (pp->Name == ".PortSym ") {
+            if (((PortSymbol*)pp)->numberStr.toInt() > maxNum)
+                maxNum = ((PortSymbol*)pp)->numberStr.toInt();
+            x1 = ((PortSymbol*)pp)->cx;
+            y1 = ((PortSymbol*)pp)->cy;
+            if (x1 < xmin)
+                xmin = x1;
+            if (x1 > xmax)
+                xmax = x1;
+            if (y1 < ymin)
+                ymin = y1;
+            if (y1 > ymax)
+                ymax = y1;
+            continue;
         }
-      }
+        auto br = pp->boundingRect();
+        xmin = std::min(xmin, br.left());
+        xmax = std::max(xmax, br.left() + br.width());
+        ymin = std::min(ymin, br.top());
+        ymax = std::max(ymax, br.top() + br.height());
+        stream << "  " << pp->saveJSON() << "\n";
     }
-  }
 
-  stream << "],\n"; //end of paintings JSON array
+    // terminal definitions
+    // stream << "terminal \n";
+    for (int i = 1; i <= maxNum; i++) {
+        for (auto* pp : a_SymbolPaints) {
+            if (pp->Name == ".PortSym ") {
+                if (((PortSymbol*)pp)->numberStr.toInt() == i) {
+                    stream << "  " << pp->saveJSON() << "\n";
+                }
+            }
+        }
+    }
 
-  // symbol boundings
-  stream
-    << "  \"x1\" : " << xmin << ",\n" << "  \"y1\" : " << ymin << ",\n"
-    << "  \"x2\" : " << xmax << ",\n" << "  \"y2\" : " << ymax << ",\n";
+    stream << "],\n"; // end of paintings JSON array
 
-  // property text position
-  for (auto* pp : a_SymbolPaints)
-    if (pp->Name == ".ID ")
-      stream << "  " << pp->saveJSON () << "\n";
+    // symbol boundings
+    stream
+        << "  \"x1\" : " << xmin << ",\n"
+        << "  \"y1\" : " << ymin << ",\n"
+        << "  \"x2\" : " << xmax << ",\n"
+        << "  \"y2\" : " << ymax << ",\n";
 
-  stream << "}\n";
+    // property text position
+    for (auto* pp : a_SymbolPaints)
+        if (pp->Name == ".ID ")
+            stream << "  " << pp->saveJSON() << "\n";
 
-  file.close ();
-  return 0;
+    stream << "}\n";
 
-
+    file.close();
+    return 0;
 }
 
 // -------------------------------------------------------------
 // Returns the number of subcircuit ports.
 int Schematic::saveDocument()
 {
-  QFile file(a_DocName);
-  if(!file.open(QIODevice::WriteOnly)) {
-    QMessageBox::critical(nullptr, QObject::tr("Error"),
-    QObject::tr("Cannot save document!"));
-    return -1;
-  }
+    QFile file(a_DocName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::critical(nullptr, QObject::tr("Error"),
+            QObject::tr("Cannot save document!"));
+        return -1;
+    }
 
-  QTextStream stream(&file);
+    QTextStream stream(&file);
 
-  stream << "<Qucs Schematic " << PACKAGE_VERSION << ">\n";
+    stream << "<Qucs Schematic " << PACKAGE_VERSION << ">\n";
 
-  // Special case of saving a file when we want to save *only*
-  // the symbol defintion (i.e. to create a "symbol file")
-  if (a_DocName.endsWith(".sym")) {
-      stream << "<Symbol>\n";
-      for(auto* pp : a_SymbolPaints) {
-          stream << "  <" << pp->save() << ">\n";
-      }
-      stream << "</Symbol>\n";
-      file.close();
-      return 0;
-  }
+    // Special case of saving a file when we want to save *only*
+    // the symbol defintion (i.e. to create a "symbol file")
+    if (a_DocName.endsWith(".sym")) {
+        stream << "<Symbol>\n";
+        for (auto* pp : a_SymbolPaints) {
+            stream << "  <" << pp->save() << ">\n";
+        }
+        stream << "</Symbol>\n";
+        file.close();
+        return 0;
+    }
 
-  stream << "<Properties>\n";
-  if(a_symbolMode) {
-    stream << "  <View=" << a_tmpViewX1<<","<<a_tmpViewY1<<","
-      << a_tmpViewX2<<","<<a_tmpViewY2<< ",";
-    stream <<a_tmpScale<<","<<a_tmpPosX<<","<<a_tmpPosY << ">\n";
-  }
-  else {
-    stream << "  <View=" << a_ViewX1<<","<<a_ViewY1<<","
-      << a_ViewX2<<","<<a_ViewY2<< ",";
-    stream << a_Scale <<","<<contentsX()<<","<<contentsY() << ">\n";
-  }
-  stream << "  <Grid=" << a_GridX<<","<<a_GridY<<","
-    << a_GridOn << ">\n";
-  stream << "  <DataSet=" << a_DataSet << ">\n";
-  stream << "  <DataDisplay=" << a_DataDisplay << ">\n";
-  stream << "  <OpenDisplay=" << a_SimOpenDpl << ">\n";
-  stream << "  <Script=" << a_Script << ">\n";
-  stream << "  <RunScript=" << a_SimRunScript << ">\n";
-  stream << "  <showFrame=" << a_showFrame << ">\n";
+    stream << "<Properties>\n";
+    if (a_symbolMode) {
+        stream << "  <View=" << a_tmpViewX1 << "," << a_tmpViewY1 << ","
+               << a_tmpViewX2 << "," << a_tmpViewY2 << ",";
+        stream << a_tmpScale << "," << a_tmpPosX << "," << a_tmpPosY << ">\n";
+    } else {
+        stream << "  <View=" << a_ViewX1 << "," << a_ViewY1 << ","
+               << a_ViewX2 << "," << a_ViewY2 << ",";
+        stream << a_Scale << "," << contentsX() << "," << contentsY() << ">\n";
+    }
+    stream << "  <Grid=" << a_GridX << "," << a_GridY << ","
+           << a_GridOn << ">\n";
+    stream << "  <DataSet=" << a_DataSet << ">\n";
+    stream << "  <DataDisplay=" << a_DataDisplay << ">\n";
+    stream << "  <OpenDisplay=" << a_SimOpenDpl << ">\n";
+    stream << "  <Script=" << a_Script << ">\n";
+    stream << "  <RunScript=" << a_SimRunScript << ">\n";
+    stream << "  <showFrame=" << a_showFrame << ">\n";
 
-  QString t;
-  misc::convert2ASCII(t = a_Frame_Text0);
-  stream << "  <FrameText0=" << t << ">\n";
-  misc::convert2ASCII(t = a_Frame_Text1);
-  stream << "  <FrameText1=" << t << ">\n";
-  misc::convert2ASCII(t = a_Frame_Text2);
-  stream << "  <FrameText2=" << t << ">\n";
-  misc::convert2ASCII(t = a_Frame_Text3);
-  stream << "  <FrameText3=" << t << ">\n";
-  stream << "</Properties>\n";
+    QString t;
+    misc::convert2ASCII(t = a_Frame_Text0);
+    stream << "  <FrameText0=" << t << ">\n";
+    misc::convert2ASCII(t = a_Frame_Text1);
+    stream << "  <FrameText1=" << t << ">\n";
+    misc::convert2ASCII(t = a_Frame_Text2);
+    stream << "  <FrameText2=" << t << ">\n";
+    misc::convert2ASCII(t = a_Frame_Text3);
+    stream << "  <FrameText3=" << t << ">\n";
+    stream << "</Properties>\n";
 
-  stream << "<Symbol>\n";     // save all paintings for symbol
-  for(auto* pp : a_SymbolPaints)
-    stream << "  <" << pp->save() << ">\n";
-  stream << "</Symbol>\n";
+    stream << "<Symbol>\n"; // save all paintings for symbol
+    for (auto* pp : a_SymbolPaints)
+        stream << "  <" << pp->save() << ">\n";
+    stream << "</Symbol>\n";
 
-  stream << "<Components>\n";    // save all components
-  for(Component *pc : a_DocComps)
-    stream << "  " << pc->save() << "\n";
-  stream << "</Components>\n";
+    stream << "<Components>\n"; // save all components
+    for (Component* pc : a_DocComps)
+        stream << "  " << pc->save() << "\n";
+    stream << "</Components>\n";
 
-  stream << "<Wires>\n";    // save all wires
-  for(Wire *pw : a_DocWires)
-    stream << "  " << pw->save() << "\n";
+    stream << "<Wires>\n"; // save all wires
+    for (Wire* pw : a_DocWires)
+        stream << "  " << pw->save() << "\n";
 
-  // save all labeled nodes as wires
-  for(Node *pn : a_DocNodes)
-    if(pn->hasLabel()) stream << "  " << pn->label()->save() << "\n";
-  stream << "</Wires>\n";
+    // save all labeled nodes as wires
+    for (Node* pn : a_DocNodes)
+        if (pn->hasLabel())
+            stream << "  " << pn->label()->save() << "\n";
+    stream << "</Wires>\n";
 
-  stream << "<Diagrams>\n";    // save all diagrams
-  for(Diagram *pd : a_DocDiags)
-    stream << "  " << pd->save() << "\n";
-  stream << "</Diagrams>\n";
+    stream << "<Diagrams>\n"; // save all diagrams
+    for (Diagram* pd : a_DocDiags)
+        stream << "  " << pd->save() << "\n";
+    stream << "</Diagrams>\n";
 
-  stream << "<Paintings>\n";     // save all paintings
-  for(auto* pp : a_DocPaints)
-    stream << "  <" << pp->save() << ">\n";
-  stream << "</Paintings>\n";
+    stream << "<Paintings>\n"; // save all paintings
+    for (auto* pp : a_DocPaints)
+        stream << "  <" << pp->save() << ">\n";
+    stream << "</Paintings>\n";
 
-  file.close();
+    file.close();
 
-  // additionally save symbol C++ code if in a symbol drawing and the
-  // associated file is a Verilog-A file
-  if (fileSuffix () == "sym") {
-    if (fileSuffix (a_DataDisplay) == "va") {
-      saveSymbolCpp ();
-      saveSymbolJSON ();
-      if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
-          savePropsJSON();
-      } else if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-          // TODO slit this into another method, or merge into saveSymbolJSON
-          // handle errors in separate
-          qDebug() << "  -> Run adms for symbol";
+    // additionally save symbol C++ code if in a symbol drawing and the
+    // associated file is a Verilog-A file
+    if (fileSuffix() == "sym") {
+        if (fileSuffix(a_DataDisplay) == "va") {
+            saveSymbolCpp();
+            saveSymbolJSON();
+            if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
+                savePropsJSON();
+            } else if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+                // TODO slit this into another method, or merge into saveSymbolJSON
+                // handle errors in separate
+                qDebug() << "  -> Run adms for symbol";
 
-          QString vaFile;
+                QString vaFile;
 
-    //      QDir prefix = QDir(QucsSettings.BinDir);
+                //      QDir prefix = QDir(QucsSettings.BinDir);
 
-          QFileInfo inf(QucsSettings.Qucsator);
-          QString QucsatorPath = inf.path()+QDir::separator();
-          QDir include = QDir(QucsatorPath+"../include/qucs-core");
+                QFileInfo inf(QucsSettings.Qucsator);
+                QString QucsatorPath = inf.path() + QDir::separator();
+                QDir include = QDir(QucsatorPath + "../include/qucs-core");
 
-          //pick admsXml from settings
-          QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
+                // pick admsXml from settings
+                QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
 
 #if defined(_WIN32) || defined(__MINGW32__)
-          admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
-    #else
-          admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");
-    #endif
+                admsXml = QDir::toNativeSeparators(admsXml + "/" + "admsXml.exe");
+#else
+                admsXml = QDir::toNativeSeparators(admsXml + "/" + "admsXml");
+#endif
 
-          QString workDir = QucsSettings.QucsWorkDir.absolutePath();
+                QString workDir = QucsSettings.QucsWorkDir.absolutePath();
 
-          qDebug() << "App path : " << qApp->applicationDirPath();
-          qDebug() << "workdir"  << workDir;
-          qDebug() << "workspacedir"  << QucsSettings.qucsWorkspaceDir.absolutePath();
+                qDebug() << "App path : " << qApp->applicationDirPath();
+                qDebug() << "workdir" << workDir;
+                qDebug() << "workspacedir" << QucsSettings.qucsWorkspaceDir.absolutePath();
 
-          vaFile = QucsSettings.QucsWorkDir.filePath(fileBase()+".va");
+                vaFile = QucsSettings.QucsWorkDir.filePath(fileBase() + ".va");
 
-          QStringList Arguments;
-          Arguments << QDir::toNativeSeparators(vaFile)
-                    << "-I" << QDir::toNativeSeparators(include.absolutePath())
-                    << "-e" << QDir::toNativeSeparators(include.absoluteFilePath("qucsMODULEguiJSONsymbol.xml"))
-                    << "-A" << "dyload";
+                QStringList Arguments;
+                Arguments << QDir::toNativeSeparators(vaFile)
+                          << "-I" << QDir::toNativeSeparators(include.absolutePath())
+                          << "-e" << QDir::toNativeSeparators(include.absoluteFilePath("qucsMODULEguiJSONsymbol.xml"))
+                          << "-A" << "dyload";
 
-    //      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    //      env.insert("PATH", env.value("PATH") );
+                //      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+                //      env.insert("PATH", env.value("PATH") );
 
-          QFile file(admsXml);
-          if ( !file.exists() ){
-            QMessageBox::critical(this, tr("Error"),
-                                  tr("Program admsXml not found: %1\n\n"
-                                      "Set the admsXml location on the application settings.").arg(admsXml));
-            return -1;
-          }
+                QFile file(admsXml);
+                if (!file.exists()) {
+                    QMessageBox::critical(this, tr("Error"),
+                        tr("Program admsXml not found: %1\n\n"
+                           "Set the admsXml location on the application settings.")
+                            .arg(admsXml));
+                    return -1;
+                }
 
-          qDebug() << "Command: " << admsXml << Arguments.join(" ");
+                qDebug() << "Command: " << admsXml << Arguments.join(" ");
 
-          // need to cd into project to run admsXml?
-          QDir::setCurrent(workDir);
+                // need to cd into project to run admsXml?
+                QDir::setCurrent(workDir);
 
-          QProcess builder;
-          builder.setProcessChannelMode(QProcess::MergedChannels);
+                QProcess builder;
+                builder.setProcessChannelMode(QProcess::MergedChannels);
 
-          builder.start(admsXml, Arguments);
+                builder.start(admsXml, Arguments);
 
+                // how to capture [warning]? need to modify admsXml?
+                // TODO put stdout, stderr into a dock window, not messagebox
+                if (!builder.waitForFinished()) {
+                    QString cmdString = QStringLiteral("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
+                    cmdString = cmdString + builder.errorString();
+                    QMessageBox::critical(this, tr("Error"), cmdString);
+                } else {
+                    QString cmdString = QStringLiteral("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
+                    cmdString = cmdString + builder.readAll();
+                    QMessageBox::information(this, tr("Status"), cmdString);
+                }
+            }
 
-          // how to capture [warning]? need to modify admsXml?
-          // TODO put stdout, stderr into a dock window, not messagebox
-          if (!builder.waitForFinished()) {
-            QString cmdString = QStringLiteral("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
-            cmdString = cmdString + builder.errorString();
-            QMessageBox::critical(this, tr("Error"), cmdString);
-          }
-          else {
-            QString cmdString = QStringLiteral("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
-            cmdString = cmdString + builder.readAll();
-            QMessageBox::information(this, tr("Status"), cmdString);
-          }
-      }
+            // Append _sym.json into _props.json, save into _symbol.json
+            QFile f1(QucsSettings.QucsWorkDir.filePath(fileBase() + "_props.json"));
+            QFile f2(QucsSettings.QucsWorkDir.filePath(fileBase() + "_sym.json"));
+            f1.open(QIODevice::ReadOnly | QIODevice::Text);
+            f2.open(QIODevice::ReadOnly | QIODevice::Text);
 
+            QString dat1 = QString(f1.readAll());
+            QString dat2 = QString(f2.readAll());
+            QString finalJSON = dat1.append(dat2);
 
+            // remove joining point
+            finalJSON = finalJSON.replace("}{", "");
 
-      // Append _sym.json into _props.json, save into _symbol.json
-      QFile f1(QucsSettings.QucsWorkDir.filePath(fileBase()+"_props.json"));
-      QFile f2(QucsSettings.QucsWorkDir.filePath(fileBase()+"_sym.json"));
-      f1.open(QIODevice::ReadOnly | QIODevice::Text);
-      f2.open(QIODevice::ReadOnly | QIODevice::Text);
+            QFile f3(QucsSettings.QucsWorkDir.filePath(fileBase() + "_symbol.json"));
+            f3.open(QIODevice::WriteOnly | QIODevice::Text);
+            QTextStream out(&f3);
+            out << finalJSON;
 
-      QString dat1 = QString(f1.readAll());
-      QString dat2 = QString(f2.readAll());
-      QString finalJSON = dat1.append(dat2);
+            f1.close();
+            f2.close();
+            f3.close();
 
-      // remove joining point
-      finalJSON = finalJSON.replace("}{", "");
+            // TODO choose icon, default to something or provided png
 
-      QFile f3(QucsSettings.QucsWorkDir.filePath(fileBase()+"_symbol.json"));
-      f3.open(QIODevice::WriteOnly | QIODevice::Text);
-      QTextStream out(&f3);
-      out << finalJSON;
+        } // if DataDisplay va
+    } // if suffix .sym
 
-      f1.close();
-      f2.close();
-      f3.close();
-
-      // TODO choose icon, default to something or provided png
-
-    } // if DataDisplay va
-  } // if suffix .sym
-
-  return 0;
+    return 0;
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadProperties(QTextStream *stream)
+bool Schematic::loadProperties(QTextStream* stream)
 {
-  bool ok = true;
-  QString Line, cstr, nstr;
-  while(!stream->atEnd()) {
-    Line = stream->readLine();
-    if(Line.at(0) == '<') if(Line.at(1) == '/') return true;  // field end ?
-    Line = Line.trimmed();
-    if(Line.isEmpty()) continue;
+    bool ok = true;
+    QString Line, cstr, nstr;
+    while (!stream->atEnd()) {
+        Line = stream->readLine();
+        if (Line.at(0) == '<')
+            if (Line.at(1) == '/')
+                return true; // field end ?
+        Line = Line.trimmed();
+        if (Line.isEmpty())
+            continue;
 
-    if(Line.at(0) != '<') {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Format Error:\nWrong property field limiter!"));
-      return false;
-    }
-    if(Line.at(Line.length()-1) != '>') {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Format Error:\nWrong property field limiter!"));
-      return false;
-    }
-    Line = Line.mid(1, Line.length()-2);   // cut off start and end character
+        if (Line.at(0) != '<') {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nWrong property field limiter!"));
+            return false;
+        }
+        if (Line.at(Line.length() - 1) != '>') {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nWrong property field limiter!"));
+            return false;
+        }
+        Line = Line.mid(1, Line.length() - 2); // cut off start and end character
 
-    cstr = Line.section('=',0,0);    // property type
-    nstr = Line.section('=',1,1);    // property value
-    if(cstr == "View") {
-      a_ViewX1 = nstr.section(',',0,0).toInt(&ok); if(ok) {
-      a_ViewY1 = nstr.section(',',1,1).toInt(&ok); if(ok) {
-      a_ViewX2 = nstr.section(',',2,2).toInt(&ok); if(ok) {
-      a_ViewY2 = nstr.section(',',3,3).toInt(&ok); if(ok) {
-      a_Scale  = nstr.section(',',4,4).toDouble(&ok); if(ok) {
-      a_tmpViewX1 = nstr.section(',',5,5).toInt(&ok); if(ok)
-      a_tmpViewY1 = nstr.section(',',6,6).toInt(&ok); }}}}}
+        cstr = Line.section('=', 0, 0); // property type
+        nstr = Line.section('=', 1, 1); // property value
+        if (cstr == "View") {
+            a_ViewX1 = nstr.section(',', 0, 0).toInt(&ok);
+            if (ok) {
+                a_ViewY1 = nstr.section(',', 1, 1).toInt(&ok);
+                if (ok) {
+                    a_ViewX2 = nstr.section(',', 2, 2).toInt(&ok);
+                    if (ok) {
+                        a_ViewY2 = nstr.section(',', 3, 3).toInt(&ok);
+                        if (ok) {
+                            a_Scale = nstr.section(',', 4, 4).toDouble(&ok);
+                            if (ok) {
+                                a_tmpViewX1 = nstr.section(',', 5, 5).toInt(&ok);
+                                if (ok)
+                                    a_tmpViewY1 = nstr.section(',', 6, 6).toInt(&ok);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (cstr == "Grid") {
+            a_GridX = nstr.section(',', 0, 0).toInt(&ok);
+            if (ok) {
+                a_GridY = nstr.section(',', 1, 1).toInt(&ok);
+                if (ok) {
+                    if (nstr.section(',', 2, 2).toInt(&ok) == 0)
+                        a_GridOn = false;
+                    else
+                        a_GridOn = true;
+                }
+            }
+        } else if (cstr == "DataSet")
+            a_DataSet = nstr;
+        else if (cstr == "DataDisplay")
+            a_DataDisplay = nstr;
+        else if (cstr == "OpenDisplay")
+            if (nstr.toInt(&ok) == 0)
+                a_SimOpenDpl = false;
+            else
+                a_SimOpenDpl = true;
+        else if (cstr == "Script")
+            a_Script = nstr;
+        else if (cstr == "RunScript")
+            if (nstr.toInt(&ok) == 0)
+                a_SimRunScript = false;
+            else
+                a_SimRunScript = true;
+        else if (cstr == "showFrame")
+            a_showFrame = nstr.at(0).toLatin1() - '0';
+        else if (cstr == "FrameText0")
+            misc::convert2Unicode(a_Frame_Text0 = nstr);
+        else if (cstr == "FrameText1")
+            misc::convert2Unicode(a_Frame_Text1 = nstr);
+        else if (cstr == "FrameText2")
+            misc::convert2Unicode(a_Frame_Text2 = nstr);
+        else if (cstr == "FrameText3")
+            misc::convert2Unicode(a_Frame_Text3 = nstr);
+        else {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nUnknown property: ") + cstr);
+            return false;
+        }
+        if (!ok) {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nNumber expected in property field!"));
+            return false;
+        }
     }
-    else if(cstr == "Grid") {
-      a_GridX = nstr.section(',',0,0).toInt(&ok); if(ok) {
-      a_GridY = nstr.section(',',1,1).toInt(&ok); if(ok) {
-      if(nstr.section(',',2,2).toInt(&ok) == 0) a_GridOn = false;
-      else a_GridOn = true; }}
-    }
-    else if(cstr == "DataSet") a_DataSet = nstr;
-    else if(cstr == "DataDisplay") a_DataDisplay = nstr;
-    else if(cstr == "OpenDisplay")
-    if(nstr.toInt(&ok) == 0) a_SimOpenDpl = false;
-    else a_SimOpenDpl = true;
-    else if(cstr == "Script") a_Script = nstr;
-    else if(cstr == "RunScript")
-    if(nstr.toInt(&ok) == 0) a_SimRunScript = false;
-    else a_SimRunScript = true;
-    else if(cstr == "showFrame")
-    a_showFrame = nstr.at(0).toLatin1() - '0';
-    else if(cstr == "FrameText0") misc::convert2Unicode(a_Frame_Text0 = nstr);
-    else if(cstr == "FrameText1") misc::convert2Unicode(a_Frame_Text1 = nstr);
-    else if(cstr == "FrameText2") misc::convert2Unicode(a_Frame_Text2 = nstr);
-    else if(cstr == "FrameText3") misc::convert2Unicode(a_Frame_Text3 = nstr);
-    else {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Format Error:\nUnknown property: ")+cstr);
-      return false;
-    }
-    if(!ok) {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Format Error:\nNumber expected in property field!"));
-      return false;
-    }
-  }
 
-  QMessageBox::critical(nullptr, QObject::tr("Error"),
-               QObject::tr("Format Error:\n'Property' field is not closed!"));
-  return false;
+    QMessageBox::critical(nullptr, QObject::tr("Error"),
+        QObject::tr("Format Error:\n'Property' field is not closed!"));
+    return false;
 }
 
 // ---------------------------------------------------
 // Inserts a component without performing logic for wire optimization.
-void Schematic::simpleInsertComponent(Component *c)
+void Schematic::simpleInsertComponent(Component* c)
 {
-  // connect every node of component
-  for (Port *pp : c->Ports) {
-    Node* pn = provideNode(c->cx + pp->x, c->cy + pp->y);
+    // connect every node of component
+    for (Port* pp : c->Ports) {
+        Node* pn = provideNode(c->cx + pp->x, c->cy + pp->y);
 
-    pn->connect(c);  // connect schematic node to component node
-    if (!pp->Type.isEmpty()) {
-      pn->DType = pp->Type;
+        pn->connect(c); // connect schematic node to component node
+        if (!pp->Type.isEmpty()) {
+            pn->DType = pp->Type;
+        }
+
+        pp->Connection = pn; // connect component node to schematic node
     }
 
-    pp->Connection = pn;  // connect component node to schematic node
-  }
-
-  a_DocComps.push_back(c);
+    a_DocComps.push_back(c);
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadComponents(QTextStream *stream, std::list<Component*> *List)
+bool Schematic::loadComponents(QTextStream* stream, std::list<Component*>* List)
 {
-  QString Line, cstr;
-  Component *c;
-  while(!stream->atEnd()) {
-    Line = stream->readLine();
-    if(Line.at(0) == '<') if(Line.at(1) == '/') return true;
-    Line = Line.trimmed();
-    if(Line.isEmpty()) continue;
+    QString Line, cstr;
+    Component* c;
+    while (!stream->atEnd()) {
+        Line = stream->readLine();
+        if (Line.at(0) == '<')
+            if (Line.at(1) == '/')
+                return true;
+        Line = Line.trimmed();
+        if (Line.isEmpty())
+            continue;
 
-    /// \todo enable user to load partial schematic, skip unknown components
-    c = getComponentFromName(Line, this);
-    if(!c) return false;
+        /// \todo enable user to load partial schematic, skip unknown components
+        c = getComponentFromName(Line, this);
+        if (!c)
+            return false;
 
-    if(List) {  // "paste" ?
-      int z;
-      for(z=c->Name.length()-1; z>=0; z--) // cut off number of component name
-        if(!c->Name.at(z).isDigit()) break;
-      c->Name = c->Name.left(z+1);
-      List->push_back(c);
+        if (List) { // "paste" ?
+            int z;
+            for (z = c->Name.length() - 1; z >= 0; z--) // cut off number of component name
+                if (!c->Name.at(z).isDigit())
+                    break;
+            c->Name = c->Name.left(z + 1);
+            List->push_back(c);
+        } else
+            simpleInsertComponent(c);
     }
-    else  simpleInsertComponent(c);
-  }
 
-  QMessageBox::critical(0, QObject::tr("Error"),
-	   QObject::tr("Format Error:\n'Component' field is not closed!"));
-  return false;
+    QMessageBox::critical(0, QObject::tr("Error"),
+        QObject::tr("Format Error:\n'Component' field is not closed!"));
+    return false;
 }
 
 // -------------------------------------------------------------
 // Inserts a wire without performing logic for optimizing.
-void Schematic::simpleInsertWire(Wire *pw)
+void Schematic::simpleInsertWire(Wire* pw)
 {
-  Node* pn = provideNode(pw->P1());
+    Node* pn = provideNode(pw->P1());
 
-  if(pw->P1() == pw->P2()) {
-    pn->acquireLabel(pw->releaseLabel());   // wire with length zero are just node labels
-    delete pw;           // delete wire because this is not a wire
-    return;
-  }
-  pn->connect(pw);  // connect schematic node to component node
-  pw->Port1 = pn;
+    if (pw->P1() == pw->P2()) {
+        pn->acquireLabel(pw->releaseLabel()); // wire with length zero are just node labels
+        delete pw; // delete wire because this is not a wire
+        return;
+    }
+    pn->connect(pw); // connect schematic node to component node
+    pw->Port1 = pn;
 
-  pn = provideNode(pw->P2());
-  pn->connect(pw);  // connect schematic node to component node
-  pw->Port2 = pn;
+    pn = provideNode(pw->P2());
+    pn->connect(pw); // connect schematic node to component node
+    pw->Port2 = pn;
 
-  a_DocWires.push_back(pw);
+    a_DocWires.push_back(pw);
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
+bool Schematic::loadWires(QTextStream* stream, std::list<Element*>* List)
 {
-  Wire *w;
-  QString Line;
-  while(!stream->atEnd()) {
-    Line = stream->readLine();
-    if(Line.at(0) == '<') if(Line.at(1) == '/') return true;
-    Line = Line.trimmed();
-    if(Line.isEmpty()) continue;
+    Wire* w;
+    QString Line;
+    while (!stream->atEnd()) {
+        Line = stream->readLine();
+        if (Line.at(0) == '<')
+            if (Line.at(1) == '/')
+                return true;
+        Line = Line.trimmed();
+        if (Line.isEmpty())
+            continue;
 
-    w = new Wire();
-    if(!w->load(Line)) {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Format Error:\nWrong 'wire' line format!"));
-      delete w;
-      return false;
+        w = new Wire();
+        if (!w->load(Line)) {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nWrong 'wire' line format!"));
+            delete w;
+            return false;
+        }
+
+        // When this pointer is not null, "paste" operation is in progress.
+        // In this case loaded elements must be placed in the list and not
+        // into schematic.
+        if (List) {
+
+            // Special case: node label. It's stored as zero-length wire.
+            // Only the label is kept, so it becomes "free" i.e. not having
+            // a host element like wire or node. We must be careful to treat
+            // such labels in a special way in other parts of the codebase.
+            if (w->P1() == w->P2() && w->hasLabel()) {
+                List->push_back(w->releaseLabel().release());
+                delete w;
+                continue;
+            }
+
+            List->push_back(w);
+
+            // Label is also added to the list as *independent* element. This is
+            // because items of this list a subject of moving, rotating, etc. and
+            // label must be treated the same way.
+            //
+            // Think of the list as of "selected items" and it will instantly make
+            // sense.
+            //
+            // Label ownership is still controlled by the host wire.
+            if (w->hasLabel())
+                List->push_back(w->label());
+        } else {
+            simpleInsertWire(w);
+        }
     }
 
-    // When this pointer is not null, "paste" operation is in progress.
-    // In this case loaded elements must be placed in the list and not
-    // into schematic.
-    if(List) {
-
-      // Special case: node label. It's stored as zero-length wire.
-      // Only the label is kept, so it becomes "free" i.e. not having
-      // a host element like wire or node. We must be careful to treat
-      // such labels in a special way in other parts of the codebase.
-      if (w->P1() == w->P2() && w->hasLabel()) {
-        List->push_back(w->releaseLabel().release());
-        delete w;
-        continue;
-      }
-
-      List->push_back(w);
-
-      // Label is also added to the list as *independent* element. This is
-      // because items of this list a subject of moving, rotating, etc. and
-      // label must be treated the same way.
-      //
-      // Think of the list as of "selected items" and it will instantly make
-      // sense.
-      //
-      // Label ownership is still controlled by the host wire.
-      if(w->hasLabel())  List->push_back(w->label());
-    }
-    else {
-      simpleInsertWire(w);
-    }
-  }
-
-  QMessageBox::critical(nullptr, QObject::tr("Error"),
-  QObject::tr("Format Error:\n'Wire' field is not closed!"));
-  return false;
+    QMessageBox::critical(nullptr, QObject::tr("Error"),
+        QObject::tr("Format Error:\n'Wire' field is not closed!"));
+    return false;
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadDiagrams(QTextStream *stream, std::list<Diagram*> *List)
+bool Schematic::loadDiagrams(QTextStream* stream, std::list<Diagram*>* List)
 {
-  Diagram *d;
-  QString Line, cstr;
-  while(!stream->atEnd()) {
-    Line = stream->readLine();
-    if(Line.at(0) == '<') if(Line.at(1) == '/') return true;
-    Line = Line.trimmed();
-    if(Line.isEmpty()) continue;
+    Diagram* d;
+    QString Line, cstr;
+    while (!stream->atEnd()) {
+        Line = stream->readLine();
+        if (Line.at(0) == '<')
+            if (Line.at(1) == '/')
+                return true;
+        Line = Line.trimmed();
+        if (Line.isEmpty())
+            continue;
 
-    cstr = Line.section(' ',0,0);    // diagram type
-         if(cstr == "<Rect") d = new RectDiagram();
-    else if(cstr == "<Polar") d = new PolarDiagram();
-    else if(cstr == "<Tab") d = new TabDiagram();
-    else if(cstr == "<Smith") d = new SmithDiagram();
-    else if(cstr == "<ySmith") d = new SmithDiagram(0,0,false);
-    else if(cstr == "<PS") d = new PSDiagram();
-    else if(cstr == "<SP") d = new PSDiagram(0,0,false);
-    else if(cstr == "<Rect3D") d = new Rect3DDiagram();
-    else if(cstr == "<Curve") d = new CurveDiagram();
-    else if(cstr == "<Time") d = new TimingDiagram();
-    else if(cstr == "<Truth") d = new TruthDiagram();
-    else {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Format Error:\nUnknown diagram!"));
-      return false;
+        cstr = Line.section(' ', 0, 0); // diagram type
+        if (cstr == "<Rect")
+            d = new RectDiagram();
+        else if (cstr == "<Polar")
+            d = new PolarDiagram();
+        else if (cstr == "<Tab")
+            d = new TabDiagram();
+        else if (cstr == "<Smith")
+            d = new SmithDiagram();
+        else if (cstr == "<ySmith")
+            d = new SmithDiagram(0, 0, false);
+        else if (cstr == "<PS")
+            d = new PSDiagram();
+        else if (cstr == "<SP")
+            d = new PSDiagram(0, 0, false);
+        else if (cstr == "<Rect3D")
+            d = new Rect3DDiagram();
+        else if (cstr == "<Curve")
+            d = new CurveDiagram();
+        else if (cstr == "<Time")
+            d = new TimingDiagram();
+        else if (cstr == "<Truth")
+            d = new TruthDiagram();
+        else {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nUnknown diagram!"));
+            return false;
+        }
+
+        if (!d->load(Line, stream)) {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nWrong 'diagram' line format!"));
+            delete d;
+            return false;
+        }
+        List->push_back(d);
     }
 
-    if(!d->load(Line, stream)) {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Format Error:\nWrong 'diagram' line format!"));
-      delete d;
-      return false;
-    }
-    List->push_back(d);
-  }
-
-  QMessageBox::critical(nullptr, QObject::tr("Error"),
-  QObject::tr("Format Error:\n'Diagram' field is not closed!"));
-  return false;
+    QMessageBox::critical(nullptr, QObject::tr("Error"),
+        QObject::tr("Format Error:\n'Diagram' field is not closed!"));
+    return false;
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadPaintings(QTextStream *stream, std::list<Painting*> *List)
+bool Schematic::loadPaintings(QTextStream* stream, std::list<Painting*>* List)
 {
-  Painting *p=0;
-  QString Line, cstr;
-  while(!stream->atEnd()) {
-    Line = stream->readLine();
-    if (Line.trimmed().isEmpty()) continue;
+    Painting* p = 0;
+    QString Line, cstr;
+    while (!stream->atEnd()) {
+        Line = stream->readLine();
+        if (Line.trimmed().isEmpty())
+            continue;
 
-    if(Line.at(0) == '<') if(Line.at(1) == '/') return true;
+        if (Line.at(0) == '<')
+            if (Line.at(1) == '/')
+                return true;
 
-    Line = Line.trimmed();
-    if(Line.isEmpty()) continue;
-    if( (Line.at(0) != '<') || (Line.at(Line.length()-1) != '>')) {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Format Error:\nWrong 'painting' line delimiter!"));
-      return false;
+        Line = Line.trimmed();
+        if (Line.isEmpty())
+            continue;
+        if ((Line.at(0) != '<') || (Line.at(Line.length() - 1) != '>')) {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nWrong 'painting' line delimiter!"));
+            return false;
+        }
+        Line = Line.mid(1, Line.length() - 2); // cut off start and end character
+
+        cstr = Line.section(' ', 0, 0); // painting type
+        if (cstr == "Line")
+            p = new GraphicLine();
+        else if (cstr == "EArc")
+            p = new EllipseArc();
+        else if (cstr == ".PortSym")
+            p = new PortSymbol();
+        else if (cstr == ".ID")
+            p = new ID_Text();
+        else if (cstr == "Text")
+            p = new GraphicText();
+        else if (cstr == "Rectangle")
+            p = new qucs::Rectangle();
+        else if (cstr == "Arrow")
+            p = new Arrow();
+        else if (cstr == "Ellipse")
+            p = new qucs::Ellipse();
+        else if (cstr == "ImagePainting")
+            p = new ImagePainting();
+        else {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nUnknown painting!"));
+            return false;
+        }
+
+        if (!p->load(Line)) {
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Format Error:\nWrong 'painting' line format!"));
+            delete p;
+            return false;
+        }
+        List->push_back(p);
     }
-    Line = Line.mid(1, Line.length()-2);  // cut off start and end character
 
-    cstr = Line.section(' ',0,0);    // painting type
-         if(cstr == "Line") p = new GraphicLine();
-    else if(cstr == "EArc") p = new EllipseArc();
-    else if(cstr == ".PortSym") p = new PortSymbol();
-    else if(cstr == ".ID") p = new ID_Text();
-    else if(cstr == "Text") p = new GraphicText();
-    else if(cstr == "Rectangle") p = new qucs::Rectangle();
-    else if(cstr == "Arrow") p = new Arrow();
-    else if(cstr == "Ellipse") p = new qucs::Ellipse();
-    else if(cstr == "ImagePainting") p = new ImagePainting();
-    else {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("Format Error:\nUnknown painting!"));
-      return false;
-    }
-
-    if(!p->load(Line)) {
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-        QObject::tr("Format Error:\nWrong 'painting' line format!"));
-      delete p;
-      return false;
-    }
-    List->push_back(p);
-  }
-
-  QMessageBox::critical(nullptr, QObject::tr("Error"),
-  QObject::tr("Format Error:\n'Painting' field is not closed!"));
-  return false;
+    QMessageBox::critical(nullptr, QObject::tr("Error"),
+        QObject::tr("Format Error:\n'Painting' field is not closed!"));
+    return false;
 }
 
 /*!
@@ -1156,101 +1242,107 @@ bool Schematic::loadPaintings(QTextStream *stream, std::list<Painting*> *List)
  */
 bool Schematic::loadDocument()
 {
-  QFile file(a_DocName);
-  if(!file.open(QIODevice::ReadOnly)) {
-    /// \todo implement unified error/warning handling GUI and CLI
-    if (QucsMain != nullptr)
-      QMessageBox::critical(nullptr, QObject::tr("Error"),
-                 QObject::tr("Cannot load document: ")+a_DocName);
-    else
-      qCritical() << "Schematic::loadDocument:"
-                  << QObject::tr("Cannot load document: ")+a_DocName;
-    return false;
-  }
-
-  // Keep reference to source file (the schematic file)
-  setFileInfo(a_DocName);
-
-  QString Line;
-  QTextStream stream(&file);
-
-  // read header **************************
-  do {
-    if(stream.atEnd()) {
-      file.close();
-      return true;
+    QFile file(a_DocName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        /// \todo implement unified error/warning handling GUI and CLI
+        if (QucsMain != nullptr)
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("Cannot load document: ") + a_DocName);
+        else
+            qCritical() << "Schematic::loadDocument:"
+                        << QObject::tr("Cannot load document: ") + a_DocName;
+        return false;
     }
 
-    Line = stream.readLine();
-  } while(Line.isEmpty());
+    // Keep reference to source file (the schematic file)
+    setFileInfo(a_DocName);
 
-  if(Line.left(16) != "<Qucs Schematic ") {  // wrong file type ?
+    QString Line;
+    QTextStream stream(&file);
+
+    // read header **************************
+    do {
+        if (stream.atEnd()) {
+            file.close();
+            return true;
+        }
+
+        Line = stream.readLine();
+    } while (Line.isEmpty());
+
+    if (Line.left(16) != "<Qucs Schematic ") { // wrong file type ?
+        file.close();
+        QMessageBox::critical(nullptr, QObject::tr("Error"),
+            QObject::tr("Wrong document type: ") + a_DocName);
+        return false;
+    }
+
+    Line = Line.mid(16, Line.length() - 17);
+    if (!misc::checkVersion(Line)) { // wrong version number ?
+
+        QMessageBox::StandardButton result;
+        result = QMessageBox::warning(nullptr,
+            QObject::tr("Warning"),
+            QObject::tr("Wrong document version \n") + a_DocName + "\n" + QObject::tr("Try to open it anyway?"),
+            QMessageBox::Yes | QMessageBox::No);
+
+        if (result == QMessageBox::No) {
+            file.close();
+            return false;
+        }
+
+        // QMessageBox::critical(0, QObject::tr("Error"),
+        //  QObject::tr("Wrong document version: ")+Line);
+    }
+
+    // read content *************************
+    while (!stream.atEnd()) {
+        Line = stream.readLine();
+        Line = Line.trimmed();
+        if (Line.isEmpty())
+            continue;
+
+        if (Line == "<Symbol>") {
+            if (!loadPaintings(&stream, &a_SymbolPaints)) {
+                file.close();
+                return false;
+            }
+        } else if (Line == "<Properties>") {
+            if (!loadProperties(&stream)) {
+                file.close();
+                return false;
+            }
+        } else if (Line == "<Components>") {
+            if (!loadComponents(&stream)) {
+                file.close();
+                return false;
+            }
+        } else if (Line == "<Wires>") {
+            if (!loadWires(&stream)) {
+                file.close();
+                return false;
+            }
+        } else if (Line == "<Diagrams>") {
+            if (!loadDiagrams(&stream, &a_DocDiags)) {
+                file.close();
+                return false;
+            }
+        } else if (Line == "<Paintings>") {
+            if (!loadPaintings(&stream, &a_DocPaints)) {
+                file.close();
+                return false;
+            }
+        } else {
+            qDebug() << Line;
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
+                QObject::tr("File Format Error:\nUnknown field!"));
+            file.close();
+            return false;
+        }
+    }
+
     file.close();
-    QMessageBox::critical(nullptr, QObject::tr("Error"),
-    QObject::tr("Wrong document type: ")+a_DocName);
-    return false;
-  }
-
-  Line = Line.mid(16, Line.length()-17);
-  if(!misc::checkVersion(Line)) { // wrong version number ?
-
-    QMessageBox::StandardButton result;
-    result = QMessageBox::warning(nullptr,
-                                  QObject::tr("Warning"),
-                                  QObject::tr("Wrong document version \n") +
-                                              a_DocName + "\n" +
-                                  QObject::tr("Try to open it anyway?"),
-                                  QMessageBox::Yes|QMessageBox::No);
-
-    if (result==QMessageBox::No) {
-        file.close();
-        return false;
-    }
-
-    //QMessageBox::critical(0, QObject::tr("Error"),
-        // QObject::tr("Wrong document version: ")+Line);
-  }
-
-  // read content *************************
-  while(!stream.atEnd()) {
-    Line = stream.readLine();
-    Line = Line.trimmed();
-    if(Line.isEmpty()) continue;
-
-    if(Line == "<Symbol>") {
-      if (!loadPaintings(&stream, &a_SymbolPaints)) {
-        file.close();
-        return false;
-      }
-    }
-    else
-    if(Line == "<Properties>") {
-      if(!loadProperties(&stream)) { file.close(); return false; } }
-    else
-    if(Line == "<Components>") {
-      if(!loadComponents(&stream)) { file.close(); return false; } }
-    else
-    if(Line == "<Wires>") {
-      if(!loadWires(&stream)) { file.close(); return false; } }
-    else
-    if(Line == "<Diagrams>") {
-      if (!loadDiagrams(&stream, &a_DocDiags)) { file.close(); return false; }
-    }
-    else
-    if(Line == "<Paintings>") {
-      if (!loadPaintings(&stream, &a_DocPaints)) { file.close(); return false; }
-    }
-    else {
-       qDebug() << Line;
-       QMessageBox::critical(nullptr, QObject::tr("Error"),
-      QObject::tr("File Format Error:\nUnknown field!"));
-      file.close();
-      return false;
-    }
-  }
-
-  file.close();
-  return true;
+    return true;
 }
 
 // -------------------------------------------------------------
@@ -1258,29 +1350,30 @@ bool Schematic::loadDocument()
 // string. This is used to save state for undo operation.
 QString Schematic::createUndoString(char Op)
 {
-  // Build element document.
-  QString s = "  \n";
-  s.replace(0,1,Op);
-  for(auto* pc : a_DocComps)
-    s += pc->save()+"\n";
-  s += "</>\n";  // short end flag
+    // Build element document.
+    QString s = "  \n";
+    s.replace(0, 1, Op);
+    for (auto* pc : a_DocComps)
+        s += pc->save() + "\n";
+    s += "</>\n"; // short end flag
 
-  for(auto* pw : a_DocWires)
-    s += pw->save()+"\n";
-  // save all labeled nodes as wires
-  for(Node *pn : a_DocNodes)
-    if(pn->hasLabel()) s += pn->label()->save()+"\n";
-  s += "</>\n";
+    for (auto* pw : a_DocWires)
+        s += pw->save() + "\n";
+    // save all labeled nodes as wires
+    for (Node* pn : a_DocNodes)
+        if (pn->hasLabel())
+            s += pn->label()->save() + "\n";
+    s += "</>\n";
 
-  for(auto* pd : a_DocDiags)
-    s += pd->save()+"\n";
-  s += "</>\n";
+    for (auto* pd : a_DocDiags)
+        s += pd->save() + "\n";
+    s += "</>\n";
 
-  for(auto* pp : a_DocPaints)
-    s += "<"+pp->save()+">\n";
-  s += "</>\n";
+    for (auto* pp : a_DocPaints)
+        s += "<" + pp->save() + ">\n";
+    s += "</>\n";
 
-  return s;
+    return s;
 }
 
 // -------------------------------------------------------------
@@ -1288,64 +1381,68 @@ QString Schematic::createUndoString(char Op)
 QString Schematic::createSymbolUndoString(char Op)
 {
 
-  // Build element document.
-  QString s = "  \n";
-  s.replace(0,1,Op);
-  s += "</>\n";  // short end flag for components
-  s += "</>\n";  // short end flag for wires
-  s += "</>\n";  // short end flag for diagrams
+    // Build element document.
+    QString s = "  \n";
+    s.replace(0, 1, Op);
+    s += "</>\n"; // short end flag for components
+    s += "</>\n"; // short end flag for wires
+    s += "</>\n"; // short end flag for diagrams
 
-  for(auto* pp : a_SymbolPaints)
-    s += "<"+pp->save()+">\n";
-  s += "</>\n";
+    for (auto* pp : a_SymbolPaints)
+        s += "<" + pp->save() + ">\n";
+    s += "</>\n";
 
-  return s;
+    return s;
 }
 
 // -------------------------------------------------------------
 // Is quite similar to "loadDocument()" but with less error checking.
 // Used for "undo" function.
-bool Schematic::rebuild(QString *s)
+bool Schematic::rebuild(QString* s)
 {
-  a_DocWires.clear();	// delete whole document
-  a_DocNodes.clear();
-  a_DocComps.clear();
-  a_DocDiags.clear();
-  a_DocPaints.clear();
+    a_DocWires.clear(); // delete whole document
+    a_DocNodes.clear();
+    a_DocComps.clear();
+    a_DocDiags.clear();
+    a_DocPaints.clear();
 
-  QString Line;
-  QTextStream stream(s, QIODevice::ReadOnly);
-  Line = stream.readLine();  // skip identity byte
+    QString Line;
+    QTextStream stream(s, QIODevice::ReadOnly);
+    Line = stream.readLine(); // skip identity byte
 
-  // read content *************************
-  if(!loadComponents(&stream))  return false;
-  if(!loadWires(&stream))  return false;
-  if (!loadDiagrams(&stream, &a_DocDiags)) return false;
-  if (!loadPaintings(&stream, &a_DocPaints)) return false;
+    // read content *************************
+    if (!loadComponents(&stream))
+        return false;
+    if (!loadWires(&stream))
+        return false;
+    if (!loadDiagrams(&stream, &a_DocDiags))
+        return false;
+    if (!loadPaintings(&stream, &a_DocPaints))
+        return false;
 
-  return true;
+    return true;
 }
 
 // -------------------------------------------------------------
 // Same as "rebuild(QString *s)" but for symbol edit mode.
-bool Schematic::rebuildSymbol(QString *s)
+bool Schematic::rebuildSymbol(QString* s)
 {
-  a_SymbolPaints.clear();	// delete whole document
+    a_SymbolPaints.clear(); // delete whole document
 
-  QString Line;
-  QTextStream stream(s, QIODevice::ReadOnly);
-  Line = stream.readLine();  // skip identity byte
+    QString Line;
+    QTextStream stream(s, QIODevice::ReadOnly);
+    Line = stream.readLine(); // skip identity byte
 
-  // read content *************************
-  Line = stream.readLine();  // skip components
-  Line = stream.readLine();  // skip wires
-  Line = stream.readLine();  // skip diagrams
+    // read content *************************
+    Line = stream.readLine(); // skip components
+    Line = stream.readLine(); // skip wires
+    Line = stream.readLine(); // skip diagrams
 
-  if (!loadPaintings(&stream, &a_SymbolPaints)) return false;
+    if (!loadPaintings(&stream, &a_SymbolPaints))
+        return false;
 
-  return true;
+    return true;
 }
-
 
 // ***************************************************************
 // *****                                                     *****
@@ -1354,40 +1451,39 @@ bool Schematic::rebuildSymbol(QString *s)
 // ***************************************************************
 
 void Schematic::createNodeSet(QStringList& Collect, int& countInit,
-          Conductor *pw, Node *p1)
+    Conductor* pw, Node* p1)
 {
-  if(pw->hasLabel())
-    if(!pw->label()->initValue.isEmpty())
-      Collect.append("NodeSet:NS" + QString::number(countInit++) + " " +
-                     p1->Name + " U=\"" + pw->label()->initValue + "\"");
+    if (pw->hasLabel())
+        if (!pw->label()->initValue.isEmpty())
+            Collect.append("NodeSet:NS" + QString::number(countInit++) + " " + p1->Name + " U=\"" + pw->label()->initValue + "\"");
 }
 
 // ---------------------------------------------------
 void Schematic::throughAllNodes(bool User, QStringList& Collect,
-        int& countInit)
+    int& countInit)
 {
-  int z=0;
+    int z = 0;
 
-  for(Node* pn : a_DocNodes) {
-    if(pn->Name.isEmpty() == User) {
-      continue;  // already named ?
-    }
-    if(!User) {
-      if(a_isAnalog)
-        pn->Name = "_net";
-      else
-        pn->Name = "net_net";   // VHDL names must not begin with '_'
-      pn->Name += QString::number(z++);  // create numbered node name
-    }
-    else if(pn->State) {
-      continue;  // already worked on
-    }
+    for (Node* pn : a_DocNodes) {
+        if (pn->Name.isEmpty() == User) {
+            continue; // already named ?
+        }
+        if (!User) {
+            if (a_isAnalog)
+                pn->Name = "_net";
+            else
+                pn->Name = "net_net"; // VHDL names must not begin with '_'
+            pn->Name += QString::number(z++); // create numbered node name
+        } else if (pn->State) {
+            continue; // already worked on
+        }
 
-    if(a_isAnalog) createNodeSet(Collect, countInit, pn, pn);
+        if (a_isAnalog)
+            createNodeSet(Collect, countInit, pn, pn);
 
-    pn->State = 1;
-    propagateNode(Collect, countInit, pn);
-  }
+        pn->State = 1;
+        propagateNode(Collect, countInit, pn);
+    }
 }
 
 // ----------------------------------------------------------
@@ -1395,122 +1491,123 @@ void Schematic::throughAllNodes(bool User, QStringList& Collect,
 // It returns the number of subcircuit ports.
 int Schematic::testFile(const QString& DocName)
 {
-  QFile file(DocName);
-  if(!file.open(QIODevice::ReadOnly)) {
-    return -1;
-  }
-
-  QString Line;
-  // .........................................
-  // To strongly speed up the file read operation the whole file is
-  // read into the memory in one piece.
-  QTextStream ReadWhole(&file);
-  QString FileString = ReadWhole.readAll();
-  file.close();
-  QTextStream stream(&FileString, QIODevice::ReadOnly);
-
-
-  // read header ........................
-  do {
-    if(stream.atEnd()) {
-      file.close();
-      return -2;
+    QFile file(DocName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return -1;
     }
-    Line = stream.readLine();
-    Line = Line.trimmed();
-  } while(Line.isEmpty());
 
-  if(Line.left(16) != "<Qucs Schematic ") {  // wrong file type ?
+    QString Line;
+    // .........................................
+    // To strongly speed up the file read operation the whole file is
+    // read into the memory in one piece.
+    QTextStream ReadWhole(&file);
+    QString FileString = ReadWhole.readAll();
     file.close();
-    return -3;
-  }
+    QTextStream stream(&FileString, QIODevice::ReadOnly);
 
-  Line = Line.mid(16, Line.length()-17);
-  if(!misc::checkVersion(Line)) { // wrong version number ?
-      if (!QucsSettings.IgnoreFutureVersion) {
-          file.close();
-          return -4;
-      }
-    //file.close();
-    //return -4;
-  }
+    // read header ........................
+    do {
+        if (stream.atEnd()) {
+            file.close();
+            return -2;
+        }
+        Line = stream.readLine();
+        Line = Line.trimmed();
+    } while (Line.isEmpty());
 
-  // read content ....................
-  while(!stream.atEnd()) {
-    Line = stream.readLine();
-    if(Line == "<Components>") break;
-  }
-
-  int z=0;
-  while(!stream.atEnd()) {
-    Line = stream.readLine();
-    if(Line == "</Components>") {
-      file.close();
-      return z;       // return number of ports
+    if (Line.left(16) != "<Qucs Schematic ") { // wrong file type ?
+        file.close();
+        return -3;
     }
 
-    Line = Line.trimmed();
-    QString s = Line.section(' ',0,0);    // component type
-    if(s == "<Port") z++;
-  }
-  return -5;  // component field not closed
+    Line = Line.mid(16, Line.length() - 17);
+    if (!misc::checkVersion(Line)) { // wrong version number ?
+        if (!QucsSettings.IgnoreFutureVersion) {
+            file.close();
+            return -4;
+        }
+        // file.close();
+        // return -4;
+    }
+
+    // read content ....................
+    while (!stream.atEnd()) {
+        Line = stream.readLine();
+        if (Line == "<Components>")
+            break;
+    }
+
+    int z = 0;
+    while (!stream.atEnd()) {
+        Line = stream.readLine();
+        if (Line == "</Components>") {
+            file.close();
+            return z; // return number of ports
+        }
+
+        Line = Line.trimmed();
+        QString s = Line.section(' ', 0, 0); // component type
+        if (s == "<Port")
+            z++;
+    }
+    return -5; // component field not closed
 }
 
 // ---------------------------------------------------
 // Collects the signal names for digital simulations.
 void Schematic::collectDigitalSignals(void)
 {
-  for(auto* pn : a_DocNodes) {
-    DigMap::Iterator it = a_Signals.find(pn->Name);
-    if(it == a_Signals.end()) { // avoid redeclaration of signal
-      a_Signals.insert(pn->Name, DigSignal(pn->Name, pn->DType));
-    } else if (!pn->DType.isEmpty()) {
-      it.value().Type = pn->DType;
+    for (auto* pn : a_DocNodes) {
+        DigMap::Iterator it = a_Signals.find(pn->Name);
+        if (it == a_Signals.end()) { // avoid redeclaration of signal
+            a_Signals.insert(pn->Name, DigSignal(pn->Name, pn->DType));
+        } else if (!pn->DType.isEmpty()) {
+            it.value().Type = pn->DType;
+        }
     }
-  }
 }
 
 // ---------------------------------------------------
 // Propagates the given node to connected component ports.
 void Schematic::propagateNode(QStringList& Collect,
-              int& countInit, Node* start_node)
+    int& countInit, Node* start_node)
 {
-  bool setName=false;
-  std::list<Node*> Cons;
+    bool setName = false;
+    std::list<Node*> Cons;
 
-  Cons.push_back(start_node);
-  for(auto it = Cons.begin(); it != Cons.end(); it++) {
-    auto* node = *it;
+    Cons.push_back(start_node);
+    for (auto it = Cons.begin(); it != Cons.end(); it++) {
+        auto* node = *it;
 
-    for (auto* connected_element : *node) {
-      auto* wire = dynamic_cast<Wire*>(connected_element);
-      if (wire == nullptr) continue;
+        for (auto* connected_element : *node) {
+            auto* wire = dynamic_cast<Wire*>(connected_element);
+            if (wire == nullptr)
+                continue;
 
-      if (node != wire->Port1) {
-        if (wire->Port1->Name.isEmpty()) {
-          wire->Port1->Name = start_node->Name;
-          wire->Port1->State = 1;
-          Cons.push_back(wire->Port1);
-          setName = true;
+            if (node != wire->Port1) {
+                if (wire->Port1->Name.isEmpty()) {
+                    wire->Port1->Name = start_node->Name;
+                    wire->Port1->State = 1;
+                    Cons.push_back(wire->Port1);
+                    setName = true;
+                }
+            } else {
+                if (wire->Port2->Name.isEmpty()) {
+                    wire->Port2->Name = start_node->Name;
+                    wire->Port2->State = 1;
+                    Cons.push_back(wire->Port2);
+                    setName = true;
+                }
+            }
+
+            if (setName) {
+                if (a_isAnalog)
+                    createNodeSet(Collect, countInit, wire, start_node);
+                setName = false;
+            }
         }
-      }
-      else {
-        if (wire->Port2->Name.isEmpty()) {
-          wire->Port2->Name = start_node->Name;
-          wire->Port2->State = 1;
-          Cons.push_back(wire->Port2);
-          setName = true;
-        }
-      }
-
-      if (setName) {
-        if (a_isAnalog) createNodeSet(Collect, countInit, wire, start_node);
-          setName = false;
-      }
-
     }
-  }
-  Cons.clear();
+    Cons.clear();
 }
 
 #include <iostream>
@@ -1526,853 +1623,827 @@ void Schematic::propagateNode(QStringList& Collect,
  * \param NumPorts counter for the number of ports
  * \return true in case of success (false otherwise)
  */
-bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
-                   QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
+bool Schematic::throughAllComps(QTextStream* stream, int& countInit,
+    QStringList& Collect, QPlainTextEdit* ErrText, int NumPorts)
 {
-  bool r;
-  QString s;
+    bool r;
+    QString s;
 
-  // give the ground nodes the name "gnd", and insert subcircuits etc.
-  for (auto* pc : a_DocComps) {
+    // give the ground nodes the name "gnd", and insert subcircuits etc.
+    for (auto* pc : a_DocComps) {
 
-    if(pc->isActive != COMP_IS_ACTIVE) continue;
+        if (pc->isActive != COMP_IS_ACTIVE)
+            continue;
 
-    // check analog/digital typed components
-    if(a_isAnalog) {
-      if((pc->Type & isAnalogComponent) == 0) {
-        ErrText->appendPlainText(QObject::tr("ERROR: Component \"%1\" has no analog model.").arg(pc->Name));
-        return false;
-      }
-    } else {
-      if((pc->Type & isDigitalComponent) == 0) {
-        ErrText->appendPlainText(QObject::tr("ERROR: Component \"%1\" has no digital model.").arg(pc->Name));
-        return false;
-      }
-    }
-
-    // handle ground symbol
-    if(pc->Model == "GND") {
-      pc->Ports.first()->Connection->Name = "gnd";
-      continue;
-    }
-
-    // handle subcircuits
-    if(pc->Model == "Sub")
-    {
-      int i;
-      // tell the subcircuit it belongs to this schematic
-      pc->setSchematic (this);
-      QString f = pc->getSubcircuitFile();
-      SubMap::Iterator it = FileList.find(f);
-      if(it != FileList.end())
-      {
-        if (!it.value().PortTypes.isEmpty())
-        {
-          i = 0;
-          // apply in/out signal types of subcircuit
-          for (Port *pp : pc->Ports)
-          {
-            pp->Type = it.value().PortTypes[i];
-            pp->Connection->DType = pp->Type;
-            i++;
-          }
+        // check analog/digital typed components
+        if (a_isAnalog) {
+            if ((pc->Type & isAnalogComponent) == 0) {
+                ErrText->appendPlainText(QObject::tr("ERROR: Component \"%1\" has no analog model.").arg(pc->Name));
+                return false;
+            }
+        } else {
+            if ((pc->Type & isDigitalComponent) == 0) {
+                ErrText->appendPlainText(QObject::tr("ERROR: Component \"%1\" has no digital model.").arg(pc->Name));
+                return false;
+            }
         }
-        continue;   // insert each subcircuit just one time
-      }
 
-      // The subcircuit has not previously been added
-      SubFile sub = SubFile("SCH", f);
-      FileList.insert(f, sub);
-
-
-      // load subcircuit schematic
-      s = pc->Props.first()->Value;
-      Schematic *d = new Schematic(0, pc->getSubcircuitFile());
-      if(!d->loadDocument())      // load document if possible
-      {
-          delete d;
-          /// \todo implement error/warning message dispatcher for GUI and CLI modes.
-          QString message = QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s);
-          if (QucsMain != nullptr) // GUI is running
-            ErrText->appendPlainText(message);
-          else // command line
-            qCritical() << "Schematic::throughAllComps" << message;
-          return false;
-      }
-      d->a_DocName = s;
-      d->a_isVerilog = a_isVerilog;
-      d->a_isAnalog = a_isAnalog;
-      d->a_creatingLib = a_creatingLib;
-      r = d->createSubNetlist(stream, countInit, Collect, ErrText, NumPorts);
-      if (r)
-      {
-        i = 0;
-        // save in/out signal types of subcircuit
-        for (Port *pp : pc->Ports)
-        {
-            //if(i>=d->a_PortTypes.count())break;
-            pp->Type = d->a_PortTypes[i];
-            pp->Connection->DType = pp->Type;
-            i++;
+        // handle ground symbol
+        if (pc->Model == "GND") {
+            pc->Ports.first()->Connection->Name = "gnd";
+            continue;
         }
-        sub.PortTypes = d->a_PortTypes;
-        FileList.insert(f,sub);
-        //FileList.replace(f, sub);
-      }
-      delete d;
-      if(!r)
-      {
-        return false;
-      }
-      continue;
-    } // if(pc->Model == "Sub")
 
-    if(LibComp* lib = dynamic_cast</*const*/LibComp*>(pc)) {
-      if(a_creatingLib) {
-        ErrText->appendPlainText(
-        QObject::tr("WARNING: Skipping library component \"%1\".").
-        arg(pc->Name));
-        continue;
-      }
-      QString scfile = pc->getSubcircuitFile();
-      s = scfile + "/" + pc->Props.at(1)->Value;
-      SubMap::Iterator it = FileList.find(s);
-      if(it != FileList.end())
-        continue;   // insert each library subcircuit just one time
-      FileList.insert(s, SubFile("LIB", s));
+        // handle subcircuits
+        if (pc->Model == "Sub") {
+            int i;
+            // tell the subcircuit it belongs to this schematic
+            pc->setSchematic(this);
+            QString f = pc->getSubcircuitFile();
+            SubMap::Iterator it = FileList.find(f);
+            if (it != FileList.end()) {
+                if (!it.value().PortTypes.isEmpty()) {
+                    i = 0;
+                    // apply in/out signal types of subcircuit
+                    for (Port* pp : pc->Ports) {
+                        pp->Type = it.value().PortTypes[i];
+                        pp->Connection->DType = pp->Type;
+                        i++;
+                    }
+                }
+                continue; // insert each subcircuit just one time
+            }
 
-      unsigned whatisit = a_isAnalog?1:(a_isVerilog?4:2);
-      if(a_isAnalog) {
-        if (QucsSettings.DefaultSimulator!=spicecompat::simQucsator) {
-            if (QucsSettings.DefaultSimulator==spicecompat::simXyce)
-                whatisit = 16;
-            else whatisit = 8;
-        } else whatisit = 1;
-      }
-      r = lib->createSubNetlist(stream, Collect, whatisit);
+            // The subcircuit has not previously been added
+            SubFile sub = SubFile("SCH", f);
+            FileList.insert(f, sub);
 
-      if(!r) {
-        ErrText->appendPlainText(
-        QObject::tr("ERROR: \"%1\": Cannot load library component \"%2\" from \"%3\"").
-        arg(pc->Name, pc->Props.at(1)->Value, scfile));
-        return false;
-      }
-      continue;
-    }
+            // load subcircuit schematic
+            s = pc->Props.first()->Value;
+            Schematic* d = new Schematic(0, pc->getSubcircuitFile());
+            if (!d->loadDocument()) // load document if possible
+            {
+                delete d;
+                /// \todo implement error/warning message dispatcher for GUI and CLI modes.
+                QString message = QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s);
+                if (QucsMain != nullptr) // GUI is running
+                    ErrText->appendPlainText(message);
+                else // command line
+                    qCritical() << "Schematic::throughAllComps" << message;
+                return false;
+            }
+            d->a_DocName = s;
+            d->a_isVerilog = a_isVerilog;
+            d->a_isAnalog = a_isAnalog;
+            d->a_creatingLib = a_creatingLib;
+            r = d->createSubNetlist(stream, countInit, Collect, ErrText, NumPorts);
+            if (r) {
+                i = 0;
+                // save in/out signal types of subcircuit
+                for (Port* pp : pc->Ports) {
+                    // if(i>=d->a_PortTypes.count())break;
+                    pp->Type = d->a_PortTypes[i];
+                    pp->Connection->DType = pp->Type;
+                    i++;
+                }
+                sub.PortTypes = d->a_PortTypes;
+                FileList.insert(f, sub);
+                // FileList.replace(f, sub);
+            }
+            delete d;
+            if (!r) {
+                return false;
+            }
+            continue;
+        } // if(pc->Model == "Sub")
 
-    // handle SPICE subcircuit components
-    if(pc->Model == "SPICE") {
-      s = pc->Props.first()->Value;
-      // tell the spice component it belongs to this schematic
-      pc->setSchematic (this);
-      if(s.isEmpty()) {
-        ErrText->appendPlainText(QObject::tr("ERROR: No file name in SPICE component \"%1\".").
-                        arg(pc->Name));
-        return false;
-      }
-      QString f = pc->getSubcircuitFile();
-      SubMap::Iterator it = FileList.find(f);
-      if(it != FileList.end())
-        continue;   // insert each spice component just one time
-      FileList.insert(f, SubFile("CIR", f));
+        if (LibComp* lib = dynamic_cast</*const*/ LibComp*>(pc)) {
+            if (a_creatingLib) {
+                ErrText->appendPlainText(
+                    QObject::tr("WARNING: Skipping library component \"%1\".").arg(pc->Name));
+                continue;
+            }
+            QString scfile = pc->getSubcircuitFile();
+            s = scfile + "/" + pc->Props.at(1)->Value;
+            SubMap::Iterator it = FileList.find(s);
+            if (it != FileList.end())
+                continue; // insert each library subcircuit just one time
+            FileList.insert(s, SubFile("LIB", s));
 
-      SpiceFile *sf = (SpiceFile*)pc;
-      if (QucsSettings.DefaultSimulator != spicecompat::simQucsator)
-          r = sf->createSpiceSubckt(stream);
-      else r = sf->createSubNetlist(stream);
-      ErrText->appendPlainText(sf->getErrorText());
-      if(!r){
-        return false;
-      }
-      continue;
-    }
+            unsigned whatisit = a_isAnalog ? 1 : (a_isVerilog ? 4 : 2);
+            if (a_isAnalog) {
+                if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+                    if (QucsSettings.DefaultSimulator == spicecompat::simXyce)
+                        whatisit = 16;
+                    else
+                        whatisit = 8;
+                } else
+                    whatisit = 1;
+            }
+            r = lib->createSubNetlist(stream, Collect, whatisit);
 
-    if (pc->Model == "SPfile" &&
-        QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
-        QString f = pc->getSubcircuitFile();
-        QString sub_name = "Sub_" + pc->Model + "_" + pc->Name;
-        S2Spice *conv = new S2Spice();
-        conv->setFile(f);
-        conv->setDeviceName(sub_name);
-        bool r = conv->convertTouchstone(stream);
-        QString msg = conv->getErrText();
-        if (!r) {
-            QMessageBox::warning(this,tr("Netlist error"), msg);
-            return false;
-        } else if (!msg.isEmpty()) {
-            QMessageBox::warning(this,tr("S2Spice warning"), msg);
+            if (!r) {
+                ErrText->appendPlainText(
+                    QObject::tr("ERROR: \"%1\": Cannot load library component \"%2\" from \"%3\"").arg(pc->Name, pc->Props.at(1)->Value, scfile));
+                return false;
+            }
+            continue;
         }
-        delete conv;
-    }
 
-    // handle digital file subcircuits
-    if(pc->Model == "VHDL" || pc->Model == "Verilog") {
-      if(a_isVerilog && pc->Model == "VHDL")
-        continue;
-      if(!a_isVerilog && pc->Model == "Verilog")
-        continue;
-      s = pc->Props.front()->Value;
-      if(s.isEmpty()) {
-        ErrText->appendPlainText(QObject::tr("ERROR: No file name in %1 component \"%2\".").
-          arg(pc->Model).
-          arg(pc->Name));
-        return false;
-      }
-      QString f = pc->getSubcircuitFile();
-      SubMap::Iterator it = FileList.find(f);
-      if(it != FileList.end())
-        continue;   // insert each vhdl/verilog component just one time
-      s = ((pc->Model == "VHDL") ? "VHD" : "VER");
-      FileList.insert(f, SubFile(s, f));
+        // handle SPICE subcircuit components
+        if (pc->Model == "SPICE") {
+            s = pc->Props.first()->Value;
+            // tell the spice component it belongs to this schematic
+            pc->setSchematic(this);
+            if (s.isEmpty()) {
+                ErrText->appendPlainText(QObject::tr("ERROR: No file name in SPICE component \"%1\".").arg(pc->Name));
+                return false;
+            }
+            QString f = pc->getSubcircuitFile();
+            SubMap::Iterator it = FileList.find(f);
+            if (it != FileList.end())
+                continue; // insert each spice component just one time
+            FileList.insert(f, SubFile("CIR", f));
 
-      if(pc->Model == "VHDL") {
-        VHDL_File *vf = (VHDL_File*)pc;
-        r = vf->createSubNetlist(stream);
-        ErrText->appendPlainText(vf->getErrorText());
-        if(!r) {
-          return false;
+            SpiceFile* sf = (SpiceFile*)pc;
+            if (QucsSettings.DefaultSimulator != spicecompat::simQucsator)
+                r = sf->createSpiceSubckt(stream);
+            else
+                r = sf->createSubNetlist(stream);
+            ErrText->appendPlainText(sf->getErrorText());
+            if (!r) {
+                return false;
+            }
+            continue;
         }
-      }
-      if(pc->Model == "Verilog") {
-        Verilog_File *vf = (Verilog_File*)pc;
-        r = vf->createSubNetlist(stream);
-        ErrText->appendPlainText(vf->getErrorText());
-        if(!r) {
-          return false;
+
+        if (pc->Model == "SPfile" && QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
+            QString f = pc->getSubcircuitFile();
+            QString sub_name = "Sub_" + pc->Model + "_" + pc->Name;
+            S2Spice* conv = new S2Spice();
+            conv->setFile(f);
+            conv->setDeviceName(sub_name);
+            bool r = conv->convertTouchstone(stream);
+            QString msg = conv->getErrText();
+            if (!r) {
+                QMessageBox::warning(this, tr("Netlist error"), msg);
+                return false;
+            } else if (!msg.isEmpty()) {
+                QMessageBox::warning(this, tr("S2Spice warning"), msg);
+            }
+            delete conv;
         }
-      }
-      continue;
+
+        // handle digital file subcircuits
+        if (pc->Model == "VHDL" || pc->Model == "Verilog") {
+            if (a_isVerilog && pc->Model == "VHDL")
+                continue;
+            if (!a_isVerilog && pc->Model == "Verilog")
+                continue;
+            s = pc->Props.front()->Value;
+            if (s.isEmpty()) {
+                ErrText->appendPlainText(QObject::tr("ERROR: No file name in %1 component \"%2\".").arg(pc->Model).arg(pc->Name));
+                return false;
+            }
+            QString f = pc->getSubcircuitFile();
+            SubMap::Iterator it = FileList.find(f);
+            if (it != FileList.end())
+                continue; // insert each vhdl/verilog component just one time
+            s = ((pc->Model == "VHDL") ? "VHD" : "VER");
+            FileList.insert(f, SubFile(s, f));
+
+            if (pc->Model == "VHDL") {
+                VHDL_File* vf = (VHDL_File*)pc;
+                r = vf->createSubNetlist(stream);
+                ErrText->appendPlainText(vf->getErrorText());
+                if (!r) {
+                    return false;
+                }
+            }
+            if (pc->Model == "Verilog") {
+                Verilog_File* vf = (Verilog_File*)pc;
+                r = vf->createSubNetlist(stream);
+                ErrText->appendPlainText(vf->getErrorText());
+                if (!r) {
+                    return false;
+                }
+            }
+            continue;
+        }
     }
-  }
-  return true;
+    return true;
 }
 
 // ---------------------------------------------------
 // Follows the wire lines in order to determine the node names for
 // each component. Output into "stream", NodeSets are collected in
 // "Collect" and counted with "countInit".
-bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
-                   QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
+bool Schematic::giveNodeNames(QTextStream* stream, int& countInit,
+    QStringList& Collect, QPlainTextEdit* ErrText, int NumPorts)
 {
-  // delete the node names
-  for(Node *pn : a_DocNodes) {
-    pn->State = 0;
-    if(pn->hasLabel()) {
-      if(a_isAnalog)
-        pn->Name = pn->label()->Name;
-      else
-        pn->Name = "net" + pn->label()->Name;
-    }
-    else pn->Name = "";
-  }
-
-  // set the wire names to the connected node
-  for(Wire *pw : a_DocWires)
-    if(pw->hasLabel()) {
-      if(a_isAnalog)
-        pw->Port1->Name = pw->label()->Name;
-      else  // avoid to use reserved VHDL words
-        pw->Port1->Name = "net" + pw->label()->Name;
+    // delete the node names
+    for (Node* pn : a_DocNodes) {
+        pn->State = 0;
+        if (pn->hasLabel()) {
+            if (a_isAnalog)
+                pn->Name = pn->label()->Name;
+            else
+                pn->Name = "net" + pn->label()->Name;
+        } else
+            pn->Name = "";
     }
 
-  // go through components
-  if(!throughAllComps(stream, countInit, Collect, ErrText, NumPorts)){
-    fprintf(stderr, "Error: Could not go throughAllComps\n");
-    return false;
-  }
+    // set the wire names to the connected node
+    for (Wire* pw : a_DocWires)
+        if (pw->hasLabel()) {
+            if (a_isAnalog)
+                pw->Port1->Name = pw->label()->Name;
+            else // avoid to use reserved VHDL words
+                pw->Port1->Name = "net" + pw->label()->Name;
+        }
 
-  // work on named nodes first in order to preserve the user given names
-  throughAllNodes(true, Collect, countInit);
+    // go through components
+    if (!throughAllComps(stream, countInit, Collect, ErrText, NumPorts)) {
+        fprintf(stderr, "Error: Could not go throughAllComps\n");
+        return false;
+    }
 
-  // give names to the remaining (unnamed) nodes
-  throughAllNodes(false, Collect, countInit);
+    // work on named nodes first in order to preserve the user given names
+    throughAllNodes(true, Collect, countInit);
 
-  if(!a_isAnalog) // collect all node names for VHDL signal declaration
-    collectDigitalSignals();
+    // give names to the remaining (unnamed) nodes
+    throughAllNodes(false, Collect, countInit);
 
-  return true;
+    if (!a_isAnalog) // collect all node names for VHDL signal declaration
+        collectDigitalSignals();
+
+    return true;
 }
 
 // ---------------------------------------------------
-bool Schematic::createLibNetlist(QTextStream *stream, QPlainTextEdit *ErrText,
-          int NumPorts)
+bool Schematic::createLibNetlist(QTextStream* stream, QPlainTextEdit* ErrText,
+    int NumPorts)
 {
-  int countInit = 0;
-  QStringList Collect;
-  Collect.clear();
-  FileList.clear();
-  a_Signals.clear();
-  // Apply node names and collect subcircuits and file include
-  a_creatingLib = true;
-  if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts)) {
+    int countInit = 0;
+    QStringList Collect;
+    Collect.clear();
+    FileList.clear();
+    a_Signals.clear();
+    // Apply node names and collect subcircuits and file include
+    a_creatingLib = true;
+    if (!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts)) {
+        a_creatingLib = false;
+        return false;
+    }
     a_creatingLib = false;
-    return false;
-  }
-  a_creatingLib = false;
 
-  // Marking start of actual top-level subcircuit
-  QString c;
-  if(!a_isAnalog) {
-    if (a_isVerilog)
-      c = "///";
-    else
-      c = "---";
-  }
-  else c = "###";
-  (*stream) << "\n" << c << " TOP LEVEL MARK " << c << "\n";
+    // Marking start of actual top-level subcircuit
+    QString c;
+    if (!a_isAnalog) {
+        if (a_isVerilog)
+            c = "///";
+        else
+            c = "---";
+    } else
+        c = "###";
+    (*stream) << "\n"
+              << c << " TOP LEVEL MARK " << c << "\n";
 
-  // Emit subcircuit components
-  createSubNetlistPlain(stream, ErrText, NumPorts);
+    // Emit subcircuit components
+    createSubNetlistPlain(stream, ErrText, NumPorts);
 
-  a_Signals.clear();  // was filled in "giveNodeNames()"
-  return true;
+    a_Signals.clear(); // was filled in "giveNodeNames()"
+    return true;
 }
 
-//#define VHDL_SIGNAL_TYPE "bit"
-//#define VHDL_LIBRARIES   ""
+// #define VHDL_SIGNAL_TYPE "bit"
+// #define VHDL_LIBRARIES   ""
 #define VHDL_SIGNAL_TYPE "std_logic"
-#define VHDL_LIBRARIES   "\nlibrary ieee;\nuse ieee.std_logic_1164.all;\n"
+#define VHDL_LIBRARIES "\nlibrary ieee;\nuse ieee.std_logic_1164.all;\n"
 
 // ---------------------------------------------------
-void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrText,
-                                      int NumPorts)
+void Schematic::createSubNetlistPlain(QTextStream* stream, QPlainTextEdit* ErrText,
+    int NumPorts)
 {
-  int i, z;
-  QString s;
-  QStringList SubcircuitPortNames;
-  QStringList SubcircuitPortTypes;
-  QStringList InPorts;
-  QStringList OutPorts;
-  QStringList InOutPorts;
-  QStringList::iterator it_name;
-  QStringList::iterator it_type;
+    int i, z;
+    QString s;
+    QStringList SubcircuitPortNames;
+    QStringList SubcircuitPortTypes;
+    QStringList InPorts;
+    QStringList OutPorts;
+    QStringList InOutPorts;
+    QStringList::iterator it_name;
+    QStringList::iterator it_type;
 
-  // probably creating a library currently
-  QTextStream * tstream = stream;
-  QFile ofile;
-  if(a_creatingLib) {
-    QString f = misc::properAbsFileName(a_DocName) + ".lst";
-    ofile.setFileName(f);
-    if(!ofile.open(QIODevice::WriteOnly)) {
-      ErrText->appendPlainText(tr("ERROR: Cannot create library file \"%s\".").arg(f));
-      return;
-    }
-    tstream = new QTextStream(&ofile);
-  }
-
-  // collect subcircuit ports and sort their node names into
-  // "SubcircuitPortNames"
-  a_PortTypes.clear();
-  for(auto* pc : a_DocComps) {
-    if(pc->Model.at(0) == '.') { // no simulations in subcircuits
-      ErrText->appendPlainText(
-        QObject::tr("WARNING: Ignore simulation component in subcircuit \"%1\".").arg(a_DocName)+"\n");
-      continue;
-    }
-    else if(pc->Model == "Port") {
-      i = pc->Props.first()->Value.toInt();
-      for(z=SubcircuitPortNames.size(); z<i; z++) { // add empty port names
-        SubcircuitPortNames.append(" ");
-        SubcircuitPortTypes.append(" ");
-      }
-      it_name = SubcircuitPortNames.begin();
-      it_type = SubcircuitPortTypes.begin();
-      for(int n=1;n<i;n++)
-      {
-        it_name++;
-        it_type++;
-      }
-      (*it_name) = pc->Ports.first()->Connection->Name;
-      DigMap::Iterator it = a_Signals.find(*it_name);
-      if(it!=a_Signals.end())
-        (*it_type) = it.value().Type;
-      // propagate type to port symbol
-      pc->Ports.first()->Connection->DType = *it_type;
-
-      if(!a_isAnalog) {
-        if (a_isVerilog) {
-          a_Signals.remove(*it_name); // remove node name
-          switch(pc->Props.at(1)->Value.at(0).toLatin1()) {
-            case 'a':
-              InOutPorts.append(*it_name);
-              break;
-            case 'o':
-              OutPorts.append(*it_name);
-              break;
-              default:
-                InPorts.append(*it_name);
-          }
+    // probably creating a library currently
+    QTextStream* tstream = stream;
+    QFile ofile;
+    if (a_creatingLib) {
+        QString f = misc::properAbsFileName(a_DocName) + ".lst";
+        ofile.setFileName(f);
+        if (!ofile.open(QIODevice::WriteOnly)) {
+            ErrText->appendPlainText(tr("ERROR: Cannot create library file \"%s\".").arg(f));
+            return;
         }
-        else {
-          // remove node name of output port
-          a_Signals.remove(*it_name);
-          switch(pc->Props.at(1)->Value.at(0).toLatin1()) {
-            case 'a':
-              (*it_name) += " : inout"; // attribute "analog" is "inout"
-              break;
-            case 'o': // output ports need workaround
-              a_Signals.insert(*it_name, DigSignal(*it_name, *it_type));
-              (*it_name) = "net_out" + (*it_name);
-              (*it_name) += " : " + pc->Props.at(1)->Value;
-              break;
-            default:
-              (*it_name) += " : " + pc->Props.at(1)->Value;
-          }
-          (*it_name) += " " + ((*it_type).isEmpty() ?
-          VHDL_SIGNAL_TYPE : (*it_type));
+        tstream = new QTextStream(&ofile);
+    }
+
+    // collect subcircuit ports and sort their node names into
+    // "SubcircuitPortNames"
+    a_PortTypes.clear();
+    for (auto* pc : a_DocComps) {
+        if (pc->Model.at(0) == '.') { // no simulations in subcircuits
+            ErrText->appendPlainText(
+                QObject::tr("WARNING: Ignore simulation component in subcircuit \"%1\".").arg(a_DocName) + "\n");
+            continue;
+        } else if (pc->Model == "Port") {
+            i = pc->Props.first()->Value.toInt();
+            for (z = SubcircuitPortNames.size(); z < i; z++) { // add empty port names
+                SubcircuitPortNames.append(" ");
+                SubcircuitPortTypes.append(" ");
+            }
+            it_name = SubcircuitPortNames.begin();
+            it_type = SubcircuitPortTypes.begin();
+            for (int n = 1; n < i; n++) {
+                it_name++;
+                it_type++;
+            }
+            (*it_name) = pc->Ports.first()->Connection->Name;
+            DigMap::Iterator it = a_Signals.find(*it_name);
+            if (it != a_Signals.end())
+                (*it_type) = it.value().Type;
+            // propagate type to port symbol
+            pc->Ports.first()->Connection->DType = *it_type;
+
+            if (!a_isAnalog) {
+                if (a_isVerilog) {
+                    a_Signals.remove(*it_name); // remove node name
+                    switch (pc->Props.at(1)->Value.at(0).toLatin1()) {
+                    case 'a':
+                        InOutPorts.append(*it_name);
+                        break;
+                    case 'o':
+                        OutPorts.append(*it_name);
+                        break;
+                    default:
+                        InPorts.append(*it_name);
+                    }
+                } else {
+                    // remove node name of output port
+                    a_Signals.remove(*it_name);
+                    switch (pc->Props.at(1)->Value.at(0).toLatin1()) {
+                    case 'a':
+                        (*it_name) += " : inout"; // attribute "analog" is "inout"
+                        break;
+                    case 'o': // output ports need workaround
+                        a_Signals.insert(*it_name, DigSignal(*it_name, *it_type));
+                        (*it_name) = "net_out" + (*it_name);
+                        (*it_name) += " : " + pc->Props.at(1)->Value;
+                        break;
+                    default:
+                        (*it_name) += " : " + pc->Props.at(1)->Value;
+                    }
+                    (*it_name) += " " + ((*it_type).isEmpty() ? VHDL_SIGNAL_TYPE : (*it_type));
+                }
+            }
         }
-      }
     }
-  }
 
-  // remove empty subcircuit ports (missing port numbers)
-  for(it_name = SubcircuitPortNames.begin(),
-      it_type = SubcircuitPortTypes.begin();
-      it_name != SubcircuitPortNames.end(); ) {
-    if(*it_name == " ") {
-      it_name = SubcircuitPortNames.erase(it_name);
-      it_type = SubcircuitPortTypes.erase(it_type);
-    } else {
-      a_PortTypes.append(*it_type);
-      it_name++;
-      it_type++;
+    // remove empty subcircuit ports (missing port numbers)
+    for (it_name = SubcircuitPortNames.begin(),
+        it_type = SubcircuitPortTypes.begin();
+        it_name != SubcircuitPortNames.end();) {
+        if (*it_name == " ") {
+            it_name = SubcircuitPortNames.erase(it_name);
+            it_type = SubcircuitPortTypes.erase(it_type);
+        } else {
+            a_PortTypes.append(*it_type);
+            it_name++;
+            it_type++;
+        }
     }
-  }
 
-  QString f = misc::properFileName(a_DocName);
-  QString Type = misc::properName(f);
+    QString f = misc::properFileName(a_DocName);
+    QString Type = misc::properName(f);
 
+    if (QucsSettings.DefaultSimulator == spicecompat::simQucsator || !a_isAnalog) {
 
-
-
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator ||
-      !a_isAnalog) {
-
-        if(a_isAnalog) {
+        if (a_isAnalog) {
             // ..... analog subcircuit ...................................
             (*tstream) << "\n.Def:" << Type << " " << SubcircuitPortNames.join(" ");
             for (auto* pi : a_SymbolPaints)
-              if(pi->Name == ".ID ") {
-                ID_Text *pid = (ID_Text*)pi;
-                for (const auto& sub_param : pid->subParameters) {
-                  s = sub_param->name; // keep 'Name' unchanged
-                  (*tstream) << " " << s.replace("=", "=\"") << '"';
+                if (pi->Name == ".ID ") {
+                    ID_Text* pid = (ID_Text*)pi;
+                    for (const auto& sub_param : pid->subParameters) {
+                        s = sub_param->name; // keep 'Name' unchanged
+                        (*tstream) << " " << s.replace("=", "=\"") << '"';
+                    }
+                    break;
                 }
-                break;
-              }
             (*tstream) << '\n';
 
             // write all components with node names into netlist file
             for (auto* pc : a_DocComps)
-              (*tstream) << pc->getNetlist();
+                (*tstream) << pc->getNetlist();
 
             (*tstream) << ".Def:End\n";
 
-          }
-          else {
+        } else {
             if (a_isVerilog) {
-              // ..... digital subcircuit ...................................
-              (*tstream) << "\nmodule Sub_" << Type << " ("
-                      << SubcircuitPortNames.join(", ") << ");\n";
+                // ..... digital subcircuit ...................................
+                (*tstream) << "\nmodule Sub_" << Type << " ("
+                           << SubcircuitPortNames.join(", ") << ");\n";
 
-              // subcircuit in/out connections
-              if(!InPorts.isEmpty())
-                (*tstream) << " input " << InPorts.join(", ") << ";\n";
-              if(!OutPorts.isEmpty())
-                (*tstream) << " output " << OutPorts.join(", ") << ";\n";
-              if(!InOutPorts.isEmpty())
-                (*tstream) << " inout " << InOutPorts.join(", ") << ";\n";
+                // subcircuit in/out connections
+                if (!InPorts.isEmpty())
+                    (*tstream) << " input " << InPorts.join(", ") << ";\n";
+                if (!OutPorts.isEmpty())
+                    (*tstream) << " output " << OutPorts.join(", ") << ";\n";
+                if (!InOutPorts.isEmpty())
+                    (*tstream) << " inout " << InOutPorts.join(", ") << ";\n";
 
-              // subcircuit connections
-              if(!a_Signals.isEmpty()) {
-                QList<DigSignal> values = a_Signals.values();
-                QList<DigSignal>::const_iterator it;
-                for (it = values.constBegin(); it != values.constEnd(); ++it) {
-                  (*tstream) << " wire " << (*it).Name << ";\n";
+                // subcircuit connections
+                if (!a_Signals.isEmpty()) {
+                    QList<DigSignal> values = a_Signals.values();
+                    QList<DigSignal>::const_iterator it;
+                    for (it = values.constBegin(); it != values.constEnd(); ++it) {
+                        (*tstream) << " wire " << (*it).Name << ";\n";
+                    }
                 }
-              }
-              (*tstream) << "\n";
+                (*tstream) << "\n";
 
-              // subcircuit parameters
-              for (auto* pi : a_SymbolPaints)
-                if(pi->Name == ".ID ") {
-                  ID_Text *pid = (ID_Text*)pi;
-                  for (const auto& sub_param : pid->subParameters) {
-                    s = sub_param->name.section('=', 0,0);
-                    QString v = misc::Verilog_Param(sub_param->name.section('=', 1,1));
-                    (*tstream) << " parameter " << s << " = " << v << ";\n";
-                  }
-                  (*tstream) << "\n";
-                  break;
+                // subcircuit parameters
+                for (auto* pi : a_SymbolPaints)
+                    if (pi->Name == ".ID ") {
+                        ID_Text* pid = (ID_Text*)pi;
+                        for (const auto& sub_param : pid->subParameters) {
+                            s = sub_param->name.section('=', 0, 0);
+                            QString v = misc::Verilog_Param(sub_param->name.section('=', 1, 1));
+                            (*tstream) << " parameter " << s << " = " << v << ";\n";
+                        }
+                        (*tstream) << "\n";
+                        break;
+                    }
+
+                // write all equations into netlist file
+                for (auto* pc : a_DocComps) {
+                    if (pc->Model == "Eqn") {
+                        (*tstream) << pc->get_Verilog_Code(NumPorts);
+                    }
                 }
 
-              // write all equations into netlist file
-              for (auto* pc : a_DocComps) {
-                if(pc->Model == "Eqn") {
-                  (*tstream) << pc->get_Verilog_Code(NumPorts);
+                if (a_Signals.find("gnd") != a_Signals.end())
+                    (*tstream) << " assign gnd = 0;\n"; // should appear only once
+
+                // write all components into netlist file
+                for (auto* pc : a_DocComps) {
+                    if (pc->Model != "Eqn") {
+                        s = pc->get_Verilog_Code(NumPorts);
+                        if (s.length() > 0 && s.at(0) == '\xA7') { // section symbol
+                            ErrText->insertPlainText(s.mid(1));
+                        } else
+                            (*tstream) << s;
+                    }
                 }
-              }
 
-              if(a_Signals.find("gnd") != a_Signals.end())
-              (*tstream) << " assign gnd = 0;\n"; // should appear only once
-
-              // write all components into netlist file
-              for (auto* pc : a_DocComps) {
-                if(pc->Model != "Eqn") {
-                  s = pc->get_Verilog_Code(NumPorts);
-                  if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
-                    ErrText->insertPlainText(s.mid(1));
-                  }
-                  else (*tstream) << s;
-                }
-              }
-
-              (*tstream) << "endmodule\n";
+                (*tstream) << "endmodule\n";
             } else {
-              // ..... digital subcircuit ...................................
-              (*tstream) << VHDL_LIBRARIES;
-              (*tstream) << "entity Sub_" << Type << " is\n";
+                // ..... digital subcircuit ...................................
+                (*tstream) << VHDL_LIBRARIES;
+                (*tstream) << "entity Sub_" << Type << " is\n";
 
-              QString generic_str;
-              for (auto* pi : a_SymbolPaints) {
-                if(pi->Name == ".ID ") {
-                  ID_Text *pid = (ID_Text*)pi;
+                QString generic_str;
+                for (auto* pi : a_SymbolPaints) {
+                    if (pi->Name == ".ID ") {
+                        ID_Text* pid = (ID_Text*)pi;
 
+                        for (const auto& sub_param : pid->subParameters) {
+                            s = sub_param->name;
+                            QString t = sub_param->type.isEmpty() ? "real" : sub_param->type;
+                            generic_str += s.replace("=", " : " + t + " := ") + ";\n ";
+                        }
 
-
-                  for (const auto& sub_param : pid->subParameters) {
-                    s = sub_param->name;
-                    QString t = sub_param->type.isEmpty() ? "real" : sub_param->type;
-                    generic_str += s.replace("=", " : "+t+" := ") + ";\n ";
-                  }
-
-
-                  break;
+                        break;
+                    }
                 }
-              }
-              if (!generic_str.isEmpty()) {
-                (*tstream) << " generic (";
-                (*tstream) << generic_str;
-                (*tstream) << ");\n";
-              }
-
-              (*tstream) << " port ("
-                        << SubcircuitPortNames.join(";\n ") << ");\n";
-
-
-              (*tstream) << "end entity;\n"
-                          << "use work.all;\n"
-                          << "architecture Arch_Sub_" << Type << " of Sub_" << Type
-                          << " is\n";
-
-              if(!a_Signals.isEmpty()) {
-                QList<DigSignal> values = a_Signals.values();
-                QList<DigSignal>::const_iterator it;
-                for (it = values.constBegin(); it != values.constEnd(); ++it) {
-                  (*tstream) << " signal " << (*it).Name << " : "
-                  << ((*it).Type.isEmpty() ?
-                  VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
+                if (!generic_str.isEmpty()) {
+                    (*tstream) << " generic (";
+                    (*tstream) << generic_str;
+                    (*tstream) << ");\n";
                 }
-              }
 
-              // write all equations into netlist file
-              for (auto* pc : a_DocComps) {
-                if(pc->Model == "Eqn") {
-                  ErrText->insertPlainText(
-                              QObject::tr("WARNING: Equations in \"%1\" are 'time' typed.").
-                  arg(pc->Name));
-                  (*tstream) << pc->get_VHDL_Code(NumPorts);
+                (*tstream) << " port ("
+                           << SubcircuitPortNames.join(";\n ") << ");\n";
+
+                (*tstream) << "end entity;\n"
+                           << "use work.all;\n"
+                           << "architecture Arch_Sub_" << Type << " of Sub_" << Type
+                           << " is\n";
+
+                if (!a_Signals.isEmpty()) {
+                    QList<DigSignal> values = a_Signals.values();
+                    QList<DigSignal>::const_iterator it;
+                    for (it = values.constBegin(); it != values.constEnd(); ++it) {
+                        (*tstream) << " signal " << (*it).Name << " : "
+                                   << ((*it).Type.isEmpty() ? VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
+                    }
                 }
-              }
 
-              (*tstream) << "begin\n";
-
-              if(a_Signals.find("gnd") != a_Signals.end())
-              (*tstream) << " gnd <= '0';\n"; // should appear only once
-
-              // write all components into netlist file
-              for (auto* pc : a_DocComps) {
-                if(pc->Model != "Eqn") {
-                    s = pc->get_VHDL_Code(NumPorts);
-                    if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
-                      ErrText->insertPlainText(s.mid(1));
-                  }
-                  else (*tstream) << s;
+                // write all equations into netlist file
+                for (auto* pc : a_DocComps) {
+                    if (pc->Model == "Eqn") {
+                        ErrText->insertPlainText(
+                            QObject::tr("WARNING: Equations in \"%1\" are 'time' typed.").arg(pc->Name));
+                        (*tstream) << pc->get_VHDL_Code(NumPorts);
+                    }
                 }
-              }
 
-              (*tstream) << "end architecture;\n";
+                (*tstream) << "begin\n";
+
+                if (a_Signals.find("gnd") != a_Signals.end())
+                    (*tstream) << " gnd <= '0';\n"; // should appear only once
+
+                // write all components into netlist file
+                for (auto* pc : a_DocComps) {
+                    if (pc->Model != "Eqn") {
+                        s = pc->get_VHDL_Code(NumPorts);
+                        if (s.length() > 0 && s.at(0) == '\xA7') { // section symbol
+                            ErrText->insertPlainText(s.mid(1));
+                        } else
+                            (*tstream) << s;
+                    }
+                }
+
+                (*tstream) << "end architecture;\n";
             }
-          }
-
+        }
     }
 
-
-  // close file
-  if(a_creatingLib) {
-    ofile.close();
-    delete tstream;
-  }
+    // close file
+    if (a_creatingLib) {
+        ofile.close();
+        delete tstream;
+    }
 }
 // ---------------------------------------------------
 // Write the netlist as subcircuit to the text stream 'stream'.
-bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
-                     QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
+bool Schematic::createSubNetlist(QTextStream* stream, int& countInit,
+    QStringList& Collect, QPlainTextEdit* ErrText, int NumPorts)
 {
-//  int Collect_count = Collect.count();   // position for this subcircuit
+    //  int Collect_count = Collect.count();   // position for this subcircuit
 
-  // TODO: NodeSets have to be put into the subcircuit block.
-  if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts)){
-    fprintf(stderr, "Error giving NodeNames in createSubNetlist\n");
-    return false;
-  }
+    // TODO: NodeSets have to be put into the subcircuit block.
+    if (!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts)) {
+        fprintf(stderr, "Error giving NodeNames in createSubNetlist\n");
+        return false;
+    }
 
-/*  Example for TODO
-      for(it = Collect.at(Collect_count); it != Collect.end(); )
-      if((*it).left(4) == "use ") {  // output all subcircuit uses
-        (*stream) << (*it);
-        it = Collect.remove(it);
-      }
-      else it++;*/
+    /*  Example for TODO
+          for(it = Collect.at(Collect_count); it != Collect.end(); )
+          if((*it).left(4) == "use ") {  // output all subcircuit uses
+            (*stream) << (*it);
+            it = Collect.remove(it);
+          }
+          else it++;*/
 
-  // Emit subcircuit components
-   createSubNetlistPlain(stream, ErrText, NumPorts);
-   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator &&
-       a_isAnalog) {
-      AbstractSpiceKernel *kern = new AbstractSpiceKernel(this);
-      QStringList err_lst;
-      if (!kern->checkSchematic(err_lst)) {
-          QString s = QStringLiteral("Subcircuit %1 contains SPICE-incompatible components.\n"
-                              "Check these components: %2 \n")
-                  .arg(this->a_DocName).arg(err_lst.join("; "));
-          ErrText->insertPlainText(s);
-          return false;
-      }
-      kern->createSubNetlist(*stream);
+    // Emit subcircuit components
+    createSubNetlistPlain(stream, ErrText, NumPorts);
+    if (QucsSettings.DefaultSimulator != spicecompat::simQucsator && a_isAnalog) {
+        AbstractSpiceKernel* kern = new AbstractSpiceKernel(this);
+        QStringList err_lst;
+        if (!kern->checkSchematic(err_lst)) {
+            QString s = QStringLiteral("Subcircuit %1 contains SPICE-incompatible components.\n"
+                                       "Check these components: %2 \n")
+                            .arg(this->a_DocName)
+                            .arg(err_lst.join("; "));
+            ErrText->insertPlainText(s);
+            return false;
+        }
+        kern->createSubNetlist(*stream);
 
-      delete kern;
-  }
+        delete kern;
+    }
 
-
-  a_Signals.clear();  // was filled in "giveNodeNames()"
-  return true;
+    a_Signals.clear(); // was filled in "giveNodeNames()"
+    return true;
 }
 
 // ---------------------------------------------------
 // Detect simulation domain (analog/digital) by looking at component types.
 bool Schematic::isDigitalCircuit()
 {
-  for (Component *pc : a_DocComps) {
-      if(pc->isActive == COMP_IS_OPEN) continue;
-      if(pc->Model.at(0) == '.' && pc->Model == ".Digi") {
-          return true;  // Verilog simulation detected
-      }
-  }
-  return false;  // Verilog simulation not found
+    for (Component* pc : a_DocComps) {
+        if (pc->isActive == COMP_IS_OPEN)
+            continue;
+        if (pc->Model.at(0) == '.' && pc->Model == ".Digi") {
+            return true; // Verilog simulation detected
+        }
+    }
+    return false; // Verilog simulation not found
 }
 
 // ---------------------------------------------------
 // Determines the node names and writes subcircuits into netlist file.
 int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
-                              QPlainTextEdit *ErrText)
+    QPlainTextEdit* ErrText)
 {
-  if(a_showBias > 0) a_showBias = -1;  // do not show DC bias anymore
+    if (a_showBias > 0)
+        a_showBias = -1; // do not show DC bias anymore
 
-  a_isVerilog = false;
-  a_isAnalog = true;
-  bool isTruthTable = false;
-  int allTypes = 0, NumPorts = 0;
-
-  // Detect simulation domain (analog/digital) by looking at component types.
-  for (Component *pc : a_DocComps) {
-    if(pc->isActive == COMP_IS_OPEN) continue;
-    if(pc->Model.at(0) == '.') {
-      if(pc->Model == ".Digi") {
-        if(allTypes & isDigitalComponent) {
-          ErrText->appendPlainText(
-             QObject::tr("ERROR: Only one digital simulation allowed."));
-          return -10;
-        }
-        if(pc->Props.front()->Value != "TimeList")
-          isTruthTable = true;
-        if(pc->Props.back()->Value != "VHDL")
-          a_isVerilog = true;
-        allTypes |= isDigitalComponent;
-        a_isAnalog = false;
-      }
-      else allTypes |= isAnalogComponent;
-      if((allTypes & isComponent) == isComponent) {
-        ErrText->appendPlainText(
-           QObject::tr("ERROR: Analog and digital simulations cannot be mixed."));
-        return -10;
-      }
-    }
-    else if(pc->Model == "DigiSource") NumPorts++;
-  }
-
-  if((allTypes & isAnalogComponent) == 0) {
-    if(allTypes == 0) {
-      // If no simulation exists, assume analog simulation. There may
-      // be a simulation within a SPICE file. Otherwise Qucsator will
-      // output an error.
-      a_isAnalog = true;
-      allTypes |= isAnalogComponent;
-      NumPorts = -1;
-    }
-    else {
-      if(NumPorts < 1 && isTruthTable) {
-        ErrText->appendPlainText(
-           QObject::tr("ERROR: Digital simulation needs at least one digital source."));
-        return -10;
-      }
-      if(!isTruthTable) NumPorts = 0;
-    }
-  }
-  else {
-    NumPorts = -1;
+    a_isVerilog = false;
     a_isAnalog = true;
-  }
+    bool isTruthTable = false;
+    int allTypes = 0, NumPorts = 0;
 
-  // first line is documentation
-  bool has_header = true;
-  if(allTypes & isAnalogComponent) {
-    if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
-      has_header = false;
-    } else {
-      stream << '#';
+    // Detect simulation domain (analog/digital) by looking at component types.
+    for (Component* pc : a_DocComps) {
+        if (pc->isActive == COMP_IS_OPEN)
+            continue;
+        if (pc->Model.at(0) == '.') {
+            if (pc->Model == ".Digi") {
+                if (allTypes & isDigitalComponent) {
+                    ErrText->appendPlainText(
+                        QObject::tr("ERROR: Only one digital simulation allowed."));
+                    return -10;
+                }
+                if (pc->Props.front()->Value != "TimeList")
+                    isTruthTable = true;
+                if (pc->Props.back()->Value != "VHDL")
+                    a_isVerilog = true;
+                allTypes |= isDigitalComponent;
+                a_isAnalog = false;
+            } else
+                allTypes |= isAnalogComponent;
+            if ((allTypes & isComponent) == isComponent) {
+                ErrText->appendPlainText(
+                    QObject::tr("ERROR: Analog and digital simulations cannot be mixed."));
+                return -10;
+            }
+        } else if (pc->Model == "DigiSource")
+            NumPorts++;
     }
-  } else if (a_isVerilog) {
-    stream << "//";
-  } else {
-    stream << "--";
-  }
-  if (has_header) {
-    stream << " Qucs " << PACKAGE_VERSION << "  " << a_DocName << "\n";
-  }
 
-  // set timescale property for verilog schematics
-  if (a_isVerilog) {
-    stream << "\n`timescale 1ps/100fs\n";
-  }
+    if ((allTypes & isAnalogComponent) == 0) {
+        if (allTypes == 0) {
+            // If no simulation exists, assume analog simulation. There may
+            // be a simulation within a SPICE file. Otherwise Qucsator will
+            // output an error.
+            a_isAnalog = true;
+            allTypes |= isAnalogComponent;
+            NumPorts = -1;
+        } else {
+            if (NumPorts < 1 && isTruthTable) {
+                ErrText->appendPlainText(
+                    QObject::tr("ERROR: Digital simulation needs at least one digital source."));
+                return -10;
+            }
+            if (!isTruthTable)
+                NumPorts = 0;
+        }
+    } else {
+        NumPorts = -1;
+        a_isAnalog = true;
+    }
 
-  int countInit = 0;  // counts the nodesets to give them unique names
+    // first line is documentation
+    bool has_header = true;
+    if (allTypes & isAnalogComponent) {
+        if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+            has_header = false;
+        } else {
+            stream << '#';
+        }
+    } else if (a_isVerilog) {
+        stream << "//";
+    } else {
+        stream << "--";
+    }
+    if (has_header) {
+        stream << " Qucs " << PACKAGE_VERSION << "  " << a_DocName << "\n";
+    }
 
-  if(!giveNodeNames(&stream, countInit, Collect, ErrText, NumPorts)){
-    fprintf(stderr, "Error giving NodeNames\n");
-    return -10;
-  }
+    // set timescale property for verilog schematics
+    if (a_isVerilog) {
+        stream << "\n`timescale 1ps/100fs\n";
+    }
 
-  if(allTypes & isAnalogComponent){
+    int countInit = 0; // counts the nodesets to give them unique names
+
+    if (!giveNodeNames(&stream, countInit, Collect, ErrText, NumPorts)) {
+        fprintf(stderr, "Error giving NodeNames\n");
+        return -10;
+    }
+
+    if (allTypes & isAnalogComponent) {
+        return NumPorts;
+    }
+
+    if (!a_isVerilog) {
+        stream << VHDL_LIBRARIES;
+        stream << "entity TestBench is\n"
+               << "end entity;\n"
+               << "use work.all;\n";
+    }
     return NumPorts;
-  }
-
-  if (!a_isVerilog) {
-    stream << VHDL_LIBRARIES;
-    stream << "entity TestBench is\n"
-      << "end entity;\n"
-      << "use work.all;\n";
-  }
-  return NumPorts;
 }
 
 // ---------------------------------------------------
 // Write the beginning of digital netlist to the text stream 'stream'.
 void Schematic::beginNetlistDigital(QTextStream& stream)
 {
-  if (a_isVerilog) {
-    stream << "module TestBench ();\n";
-    QList<DigSignal> values = a_Signals.values();
-    QList<DigSignal>::const_iterator it;
-    for (it = values.constBegin(); it != values.constEnd(); ++it) {
-      stream << "  wire " << (*it).Name << ";\n";
-    }
-    stream << "\n";
-  } else {
-    stream << "architecture Arch_TestBench of TestBench is\n";
-    QList<DigSignal> values = a_Signals.values();
-    QList<DigSignal>::const_iterator it;
-    for (it = values.constBegin(); it != values.constEnd(); ++it) {
-      stream << "  signal " << (*it).Name << " : "
-        << ((*it).Type.isEmpty() ?
-        VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
-    }
-    stream << "begin\n";
-  }
-
-  if(a_Signals.find("gnd") != a_Signals.end()) {
     if (a_isVerilog) {
-      stream << "  assign gnd = 0;\n";
+        stream << "module TestBench ();\n";
+        QList<DigSignal> values = a_Signals.values();
+        QList<DigSignal>::const_iterator it;
+        for (it = values.constBegin(); it != values.constEnd(); ++it) {
+            stream << "  wire " << (*it).Name << ";\n";
+        }
+        stream << "\n";
     } else {
-      stream << "  gnd <= '0';\n";  // should appear only once
+        stream << "architecture Arch_TestBench of TestBench is\n";
+        QList<DigSignal> values = a_Signals.values();
+        QList<DigSignal>::const_iterator it;
+        for (it = values.constBegin(); it != values.constEnd(); ++it) {
+            stream << "  signal " << (*it).Name << " : "
+                   << ((*it).Type.isEmpty() ? VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
+        }
+        stream << "begin\n";
     }
-  }
+
+    if (a_Signals.find("gnd") != a_Signals.end()) {
+        if (a_isVerilog) {
+            stream << "  assign gnd = 0;\n";
+        } else {
+            stream << "  gnd <= '0';\n"; // should appear only once
+        }
+    }
 }
 
 // ---------------------------------------------------
 // Write the end of digital netlist to the text stream 'stream'.
 void Schematic::endNetlistDigital(QTextStream& stream)
 {
-  if (a_isVerilog) {
-  } else {
-    stream << "end architecture;\n";
-  }
+    if (a_isVerilog) {
+    } else {
+        stream << "end architecture;\n";
+    }
 }
 
 // ---------------------------------------------------
 // write all components with node names into the netlist file
 QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
 {
-  if(!a_isAnalog) {
-    beginNetlistDigital(stream);
-  }
-
-  a_Signals.clear();  // was filled in "giveNodeNames()"
-  FileList.clear();
-
-  QString s, Time;
-  for(Component *pc : a_DocComps) {
-    if(a_isAnalog) {
-      s = pc->getNetlist();
+    if (!a_isAnalog) {
+        beginNetlistDigital(stream);
     }
-    else {
-      if(pc->Model == ".Digi" && pc->isActive) {  // simulation component ?
-        if(NumPorts > 0) { // truth table simulation ?
-          if (a_isVerilog)
-            Time = QString::number((1 << NumPorts));
-          else
-            Time = QString::number((1 << NumPorts) - 1) + " ns";
+
+    a_Signals.clear(); // was filled in "giveNodeNames()"
+    FileList.clear();
+
+    QString s, Time;
+    for (Component* pc : a_DocComps) {
+        if (a_isAnalog) {
+            s = pc->getNetlist();
         } else {
-          Time = pc->Props.at(1)->Value;
-        if (a_isVerilog) {
-          if(!misc::Verilog_Time(Time, pc->Name)) return Time;
-        } else {
-          if(!misc::VHDL_Time(Time, pc->Name)) return Time;  // wrong time format
+            if (pc->Model == ".Digi" && pc->isActive) { // simulation component ?
+                if (NumPorts > 0) { // truth table simulation ?
+                    if (a_isVerilog)
+                        Time = QString::number((1 << NumPorts));
+                    else
+                        Time = QString::number((1 << NumPorts) - 1) + " ns";
+                } else {
+                    Time = pc->Props.at(1)->Value;
+                    if (a_isVerilog) {
+                        if (!misc::Verilog_Time(Time, pc->Name))
+                            return Time;
+                    } else {
+                        if (!misc::VHDL_Time(Time, pc->Name))
+                            return Time; // wrong time format
+                    }
+                }
+            }
+            if (a_isVerilog) {
+                s = pc->get_Verilog_Code(NumPorts);
+            } else {
+                s = pc->get_VHDL_Code(NumPorts);
+            }
+            if (s.length() > 0 && s.at(0) == '\xA7') {
+                return s; // return error
+            }
         }
-        }
-      }
-      if (a_isVerilog) {
-        s = pc->get_Verilog_Code(NumPorts);
-      } else {
-        s = pc->get_VHDL_Code(NumPorts);
-      }
-      if (s.length()>0 && s.at(0) == '\xA7'){
-          return s; // return error
-      }
+        stream << s;
     }
-    stream << s;
-  }
 
-  if(!a_isAnalog) {
-    endNetlistDigital(stream);
-  }
+    if (!a_isAnalog) {
+        endNetlistDigital(stream);
+    }
 
-  return Time;
+    return Time;
 }
-
 
 void Schematic::clearSignalsAndFileList()
 {
-    a_Signals.clear();  // was filled in "giveNodeNames()"
+    a_Signals.clear(); // was filled in "giveNodeNames()"
     FileList.clear();
 }
 

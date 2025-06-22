@@ -29,31 +29,31 @@ class QPushButton;
 class QLineEdit;
 
 /**
-  *@author Michael Margraf
-  */
+ *@author Michael Margraf
+ */
 
-class FillDialog : public QDialog  {
-Q_OBJECT
+class FillDialog : public QDialog {
+    Q_OBJECT
 public:
-  FillDialog(const QString& _Caption, bool show=true, QWidget *parent=0);
-  ~FillDialog();
+    FillDialog(const QString& _Caption, bool show = true, QWidget* parent = 0);
+    ~FillDialog();
 
 public slots:
-  void slotCheckFilled(bool on);
+    void slotCheckFilled(bool on);
 
 private slots:
-  void slotSetColor();
-  void slotSetFillColor();
+    void slotSetColor();
+    void slotSetFillColor();
 
 public:
-  QLabel        *FillLabel1, *FillLabel2;
-  QCheckBox     *CheckFilled;
-  QLineEdit     *LineWidth;
-  QPushButton   *ColorButt, *FillColorButt;
-  QComboBox     *StyleBox, *FillStyleBox;
+    QLabel *FillLabel1, *FillLabel2;
+    QCheckBox* CheckFilled;
+    QLineEdit* LineWidth;
+    QPushButton *ColorButt, *FillColorButt;
+    QComboBox *StyleBox, *FillStyleBox;
 
-  QVBoxLayout   *all;
-  QIntValidator *val100;
+    QVBoxLayout* all;
+    QIntValidator* val100;
 };
 
 #endif

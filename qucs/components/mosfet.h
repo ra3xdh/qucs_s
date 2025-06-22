@@ -20,21 +20,20 @@
 
 #include "mosfet_sub.h"
 
-
 class MOSFET : public Basic_MOSFET {
 public:
-  MOSFET();
- ~MOSFET() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  static Element* info_p(QString&, char* &, bool getNewOne=false);
-  static Element* info_depl(QString&, char* &, bool getNewOne=false);
+    MOSFET();
+    ~MOSFET() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    static Element* info_p(QString&, char*&, bool getNewOne = false);
+    static Element* info_depl(QString&, char*&, bool getNewOne = false);
 
 protected:
-  void createSymbol();
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
+    void createSymbol();
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
 };
 
 #endif

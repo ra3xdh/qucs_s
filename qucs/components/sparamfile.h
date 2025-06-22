@@ -20,22 +20,21 @@
 
 #include "component.h"
 
-
-class SParamFile : public MultiViewComponent  {
+class SParamFile : public MultiViewComponent {
 public:
-  SParamFile();
- ~SParamFile() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  static Element* info1(QString&, char* &, bool getNewOne=false);
-  static Element* info2(QString&, char* &, bool getNewOne=false);
+    SParamFile();
+    ~SParamFile() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    static Element* info1(QString&, char*&, bool getNewOne = false);
+    static Element* info2(QString&, char*&, bool getNewOne = false);
 
-  QString getSubcircuitFile();
+    QString getSubcircuitFile();
 
 protected:
-  QString netlist();
-  void createSymbol();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    void createSymbol();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

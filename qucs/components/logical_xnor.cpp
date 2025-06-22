@@ -19,13 +19,13 @@
 
 Logical_XNOR::Logical_XNOR()
 {
-  Description = QObject::tr("logical XNOR");
-  Model = "XNOR";
-  SpiceModel = "A";
+    Description = QObject::tr("logical XNOR");
+    Model = "XNOR";
+    SpiceModel = "A";
 
-  createSymbol();
-  tx = x1+4;
-  ty = y2+4;
+    createSymbol();
+    tx = x1 + 4;
+    ty = y2 + 4;
 }
 
 Logical_XNOR::~Logical_XNOR()
@@ -34,18 +34,19 @@ Logical_XNOR::~Logical_XNOR()
 
 Component* Logical_XNOR::newOne()
 {
-  Logical_XNOR* p = new Logical_XNOR();
-  p->Props.front()->Value = Props.front()->Value;
-  p->Props.back()->Value = Props.back()->Value;
-  p->recreate();
-  return p;
+    Logical_XNOR* p = new Logical_XNOR();
+    p->Props.front()->Value = Props.front()->Value;
+    p->Props.back()->Value = Props.back()->Value;
+    p->recreate();
+    return p;
 }
 
-Element* Logical_XNOR::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* Logical_XNOR::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("n-port XNOR");
-  BitmapFile = (char *) "xnor";
+    Name = QObject::tr("n-port XNOR");
+    BitmapFile = (char*)"xnor";
 
-  if(getNewOne)  return new Logical_XNOR();
-  return 0;
+    if (getNewOne)
+        return new Logical_XNOR();
+    return 0;
 }

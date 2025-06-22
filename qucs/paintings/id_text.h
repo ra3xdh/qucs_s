@@ -20,41 +20,42 @@
 
 #include "painting.h"
 
-
 struct SubParameter {
-  SubParameter(bool display_, const QString& name_, const QString& description_,
-	       const QString& type_ = "")
-     : display(display_), name(name_), description(description_), type(type_) {};
+    SubParameter(bool display_, const QString& name_, const QString& description_,
+        const QString& type_ = "")
+        : display(display_)
+        , name(name_)
+        , description(description_)
+        , type(type_) { };
 
-  bool display;
-  QString name, description, type;
+    bool display;
+    QString name, description, type;
 };
 
-
-class ID_Text : public Painting  {
+class ID_Text : public Painting {
 public:
-  ID_Text(int x1 = 0, int y1 = 0);
+    ID_Text(int x1 = 0, int y1 = 0);
 
-  Painting* newOne() override { /* required by interface but unused */ return nullptr; }
+    Painting* newOne() override { /* required by interface but unused */ return nullptr; }
 
-  void paint(QPainter* painter) override;
-  void paintScheme(Schematic*) override;
+    void paint(QPainter* painter) override;
+    void paintScheme(Schematic*) override;
 
-  bool    load(const QString&) override;
-  QString save() override;
-  QString saveCpp() override;
-  QString saveJSON() override;
+    bool load(const QString&) override;
+    QString save() override;
+    QString saveCpp() override;
+    QString saveJSON() override;
 
-  bool getSelected(const QPoint& click, int tolerance) override;
+    bool getSelected(const QPoint& click, int tolerance) override;
 
-  bool rotate(int, int) noexcept override;
+    bool rotate(int, int) noexcept override;
 
-  bool Dialog(QWidget* parent = nullptr) override;
+    bool Dialog(QWidget* parent = nullptr) override;
 
-  QRect boundingRect() const noexcept override;
+    QRect boundingRect() const noexcept override;
 
-  QString prefix;
-  std::vector<std::unique_ptr<SubParameter>> subParameters;
+    QString prefix;
+    std::vector<std::unique_ptr<SubParameter>> subParameters;
 };
 
 #endif

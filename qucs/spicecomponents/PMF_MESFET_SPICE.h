@@ -18,20 +18,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef PMF_MESFET_SPICE_H
+#ifndef PMF_MESFET_SPICE_H
 #define PMF_MESFET_SPICE_H
 
 #include "components/component.h"
 
 class PMF_MESFET_SPICE : public Component {
 public:
-  PMF_MESFET_SPICE();
-  ~PMF_MESFET_SPICE();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    PMF_MESFET_SPICE();
+    ~PMF_MESFET_SPICE();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // PMF_MESFET_SPICE_H

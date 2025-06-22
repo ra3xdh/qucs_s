@@ -20,18 +20,20 @@
 
 #include "component.h"
 
-class Source_ac : public Component  {
+class Source_ac : public Component {
 private:
-  QString ngspice_netlist();
-  QString xyce_netlist();
+    QString ngspice_netlist();
+    QString xyce_netlist();
+
 public:
-  Source_ac();
-  ~Source_ac();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Source_ac();
+    ~Source_ac();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
 };
 
 #endif

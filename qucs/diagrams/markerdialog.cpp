@@ -17,96 +17,95 @@
 #include "markerdialog.h"
 #include "diagram.h"
 
+#include <QCheckBox>
+#include <QComboBox>
+#include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QValidator>
-#include <QGridLayout>
-#include <QComboBox>
-#include <QCheckBox>
 
-
-MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
-                     : QDialog(parent)
+MarkerDialog::MarkerDialog(Marker* pm_, QWidget* parent)
+    : QDialog(parent)
 {
-  setAttribute(Qt::WA_DeleteOnClose);
-  setWindowTitle(tr("Edit Marker Properties"));
-  pMarker = pm_;
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Edit Marker Properties"));
+    pMarker = pm_;
 
-  QGridLayout *g = new QGridLayout;
+    QGridLayout* g = new QGridLayout;
 
-  Precision = new QLineEdit();
-  Precision->setText(QString::number(pMarker->Precision));
-  Precision->setValidator(new QIntValidator(0, 12, this));
+    Precision = new QLineEdit();
+    Precision->setText(QString::number(pMarker->Precision));
+    Precision->setValidator(new QIntValidator(0, 12, this));
 
-  XPosition = new QLineEdit();
-  if (pMarker->varPos().size() > 0) {
-      XPosition->setText(QString::number(pMarker->varPos().at(0),
-                         'g', pMarker->precision()));
-  } else {
-      XPosition->setText("0");
-      XPosition->setEnabled(false);
-  }
-  QDoubleValidator *dblVal = new QDoubleValidator(this);
-  dblVal->setLocale(QLocale::C);
-  XPosition->setValidator(dblVal);
+    XPosition = new QLineEdit();
+    if (pMarker->varPos().size() > 0) {
+        XPosition->setText(QString::number(pMarker->varPos().at(0),
+            'g', pMarker->precision()));
+    } else {
+        XPosition->setText("0");
+        XPosition->setEnabled(false);
+    }
+    QDoubleValidator* dblVal = new QDoubleValidator(this);
+    dblVal->setLocale(QLocale::C);
+    XPosition->setValidator(dblVal);
 
-  g->addWidget(new QLabel(tr("Precision: ")), 0, 0);
-  g->addWidget(Precision, 0, 1);
+    g->addWidget(new QLabel(tr("Precision: ")), 0, 0);
+    g->addWidget(Precision, 0, 1);
 
-  NumberBox = new QComboBox();
-  NumberBox->addItem(tr("real/imaginary"));
-  NumberBox->addItem(tr("magnitude/angle (degree)"));
-  NumberBox->addItem(tr("magnitude/angle (radian)"));
-  NumberBox->setCurrentIndex(pMarker->numMode);
+    NumberBox = new QComboBox();
+    NumberBox->addItem(tr("real/imaginary"));
+    NumberBox->addItem(tr("magnitude/angle (degree)"));
+    NumberBox->addItem(tr("magnitude/angle (radian)"));
+    NumberBox->setCurrentIndex(pMarker->numMode);
 
-  g->addWidget(new QLabel(tr("Number Notation: ")), 1,0);
-  g->addWidget(NumberBox, 1, 1);
+    g->addWidget(new QLabel(tr("Number Notation: ")), 1, 0);
+    g->addWidget(NumberBox, 1, 1);
 
-  QLabel *lblXpos = new QLabel(tr("X-axis position:"));
-  g->addWidget(lblXpos, 2, 0);
-  g->addWidget(XPosition, 2, 1);
+    QLabel* lblXpos = new QLabel(tr("X-axis position:"));
+    g->addWidget(lblXpos, 2, 0);
+    g->addWidget(XPosition, 2, 1);
 
-  IndicatorBox = new QComboBox();
-  IndicatorBox->addItem(tr("Off"));
-  IndicatorBox->addItem(tr("Square"));
-  IndicatorBox->addItem(tr("Triangle"));
-  IndicatorBox->setCurrentIndex(pMarker->indicatorMode);
+    IndicatorBox = new QComboBox();
+    IndicatorBox->addItem(tr("Off"));
+    IndicatorBox->addItem(tr("Square"));
+    IndicatorBox->addItem(tr("Triangle"));
+    IndicatorBox->setCurrentIndex(pMarker->indicatorMode);
 
-  QLabel *lblIndicator = new QLabel(tr("Marker Indicator"));
-  g->addWidget(lblIndicator, 3, 0);
-  g->addWidget(IndicatorBox, 3, 1);
+    QLabel* lblIndicator = new QLabel(tr("Marker Indicator"));
+    g->addWidget(lblIndicator, 3, 0);
+    g->addWidget(IndicatorBox, 3, 1);
 
-  assert(pMarker->diag());
-  if(pMarker->diag()->Name=="Smith") // BUG
-  {
-      //S parameter also displayed as Z, need Z0 here
-      lblXpos->setText("Frequency:");
-      SourceImpedance = new QLineEdit();
-      SourceImpedance->setText(QString::number(pMarker->Z0));
+    assert(pMarker->diag());
+    if (pMarker->diag()->Name == "Smith") // BUG
+    {
+        // S parameter also displayed as Z, need Z0 here
+        lblXpos->setText("Frequency:");
+        SourceImpedance = new QLineEdit();
+        SourceImpedance->setText(QString::number(pMarker->Z0));
 
-      g->addWidget(new QLabel(tr("Z0: ")), 4, 0);
-      g->addWidget(SourceImpedance, 4, 1);
-  }
-  
-  TransBox = new QCheckBox(tr("transparent"));
-  TransBox->setChecked(pMarker->transparent);
-  g->addWidget(TransBox, 5, 0);
+        g->addWidget(new QLabel(tr("Z0: ")), 4, 0);
+        g->addWidget(SourceImpedance, 4, 1);
+    }
 
-  // first => activated by pressing RETURN
-  QPushButton *ButtOK = new QPushButton(tr("OK"));
-  connect(ButtOK, SIGNAL(clicked()), SLOT(slotAcceptValues()));
+    TransBox = new QCheckBox(tr("transparent"));
+    TransBox->setChecked(pMarker->transparent);
+    g->addWidget(TransBox, 5, 0);
 
-  QPushButton *ButtCancel = new QPushButton(tr("Cancel"));
-  connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
+    // first => activated by pressing RETURN
+    QPushButton* ButtOK = new QPushButton(tr("OK"));
+    connect(ButtOK, SIGNAL(clicked()), SLOT(slotAcceptValues()));
 
-  QHBoxLayout *b = new QHBoxLayout();
-  b->setSpacing(5);
-  b->addWidget(ButtOK);
-  b->addWidget(ButtCancel);
-  g->addLayout(b,5,0,1,2);
+    QPushButton* ButtCancel = new QPushButton(tr("Cancel"));
+    connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
 
-  this->setLayout(g);
+    QHBoxLayout* b = new QHBoxLayout();
+    b->setSpacing(5);
+    b->addWidget(ButtOK);
+    b->addWidget(ButtCancel);
+    g->addLayout(b, 5, 0, 1, 2);
+
+    this->setLayout(g);
 }
 
 MarkerDialog::~MarkerDialog()
@@ -116,47 +115,45 @@ MarkerDialog::~MarkerDialog()
 // ----------------------------------------------------------
 void MarkerDialog::slotAcceptValues()
 {
-  bool changed = false;
-  int tmp = Precision->text().toInt();
-  if(tmp != pMarker->Precision) {
-    pMarker->Precision = tmp;
-    changed = true;
-  }
-  assert(pMarker->diag());
-  if(pMarker->diag()->Name=="Smith") // BUG: need generic MarkerDialog.
-	{
-			double SrcImp = SourceImpedance->text().toDouble();
-			if(SrcImp != pMarker->Z0)
-			{
-					pMarker->Z0 = SrcImp;
-					changed = true;
-			}
-	}
-  if(NumberBox->currentIndex() != pMarker->numMode) {
-    pMarker->numMode = NumberBox->currentIndex();
-    changed = true;
-  }
-  if (IndicatorBox->currentIndex() != pMarker->indicatorMode) {
-    pMarker->indicatorMode = static_cast<indicatorMode_t>(IndicatorBox->currentIndex());
-    changed = true;
-  }
-  if(TransBox->isChecked() != pMarker->transparent) {
-    pMarker->transparent = TransBox->isChecked();
-    changed = true;
-  }
+    bool changed = false;
+    int tmp = Precision->text().toInt();
+    if (tmp != pMarker->Precision) {
+        pMarker->Precision = tmp;
+        changed = true;
+    }
+    assert(pMarker->diag());
+    if (pMarker->diag()->Name == "Smith") // BUG: need generic MarkerDialog.
+    {
+        double SrcImp = SourceImpedance->text().toDouble();
+        if (SrcImp != pMarker->Z0) {
+            pMarker->Z0 = SrcImp;
+            changed = true;
+        }
+    }
+    if (NumberBox->currentIndex() != pMarker->numMode) {
+        pMarker->numMode = NumberBox->currentIndex();
+        changed = true;
+    }
+    if (IndicatorBox->currentIndex() != pMarker->indicatorMode) {
+        pMarker->indicatorMode = static_cast<indicatorMode_t>(IndicatorBox->currentIndex());
+        changed = true;
+    }
+    if (TransBox->isChecked() != pMarker->transparent) {
+        pMarker->transparent = TransBox->isChecked();
+        changed = true;
+    }
 
-  double xpos = XPosition->text().toDouble();
-  if ((xpos != pMarker->powFreq()) &&
-      (pMarker->varPos().size() > 0)) {
-      pMarker->setPos(XPosition->text().toDouble());
-      changed = true;
-  }
+    double xpos = XPosition->text().toDouble();
+    if ((xpos != pMarker->powFreq()) && (pMarker->varPos().size() > 0)) {
+        pMarker->setPos(XPosition->text().toDouble());
+        changed = true;
+    }
 
-  if(changed) {
-    pMarker->createText();
-    done(2);
-  }
-  else done(1);
+    if (changed) {
+        pMarker->createText();
+        done(2);
+    } else
+        done(1);
 }
 
 // vim:ts=8:sw=2:noet

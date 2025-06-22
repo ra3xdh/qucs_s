@@ -20,17 +20,16 @@
 
 #include "components/simulation.h"
 
-
 class SpiceFourier : public qucs::component::SimulationComponent {
 public:
-  SpiceFourier();
-  ~SpiceFourier();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    SpiceFourier();
+    ~SpiceFourier();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  Qt::GlobalColor color() const override { return Qt::darkRed; }
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    Qt::GlobalColor color() const override { return Qt::darkRed; }
 };
 
 #endif

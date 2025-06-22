@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class Coplanar : public Component  {
+class Coplanar : public Component {
 public:
-  Coplanar();
-  ~Coplanar();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Coplanar();
+    ~Coplanar();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

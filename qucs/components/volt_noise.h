@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class Volt_noise : public Component  {
+class Volt_noise : public Component {
 public:
-  Volt_noise();
-  ~Volt_noise();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Volt_noise();
+    ~Volt_noise();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

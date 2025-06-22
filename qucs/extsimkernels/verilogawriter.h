@@ -35,23 +35,23 @@ class Schematic;
 */
 
 namespace vacompat {
-    QString normalize_value(QString Value);
-    void convert_functions(QStringList &tokens);
-    QString normalize_voltage(QString &plus, QString &minus, bool left_side = false); // Exclude gnd nodes from
-    QString normalize_current(QString &plus, QString &minus, bool left_side = false); // currents and voltages
+QString normalize_value(QString Value);
+void convert_functions(QStringList& tokens);
+QString normalize_voltage(QString& plus, QString& minus, bool left_side = false); // Exclude gnd nodes from
+QString normalize_current(QString& plus, QString& minus, bool left_side = false); // currents and voltages
 }
 
-class VerilogAwriter
-{
+class VerilogAwriter {
 
 public:
     VerilogAwriter();
     ~VerilogAwriter();
-protected:
-    bool prepareToVerilogA(Schematic *sch);
-public:
-    bool createVA_module(QTextStream &stream, Schematic *sch);
 
+protected:
+    bool prepareToVerilogA(Schematic* sch);
+
+public:
+    bool createVA_module(QTextStream& stream, Schematic* sch);
 };
 
 #endif // VERILOGAWRITER_H

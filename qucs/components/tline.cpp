@@ -16,47 +16,48 @@
  ***************************************************************************/
 
 #include "tline.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 TLine::TLine()
 {
-  Description = QObject::tr("ideal transmission line");
-  Simulator = spicecompat::simAll;
+    Description = QObject::tr("ideal transmission line");
+    Simulator = spicecompat::simAll;
 
-  Lines.append(new qucs::Line(-30,  0, 30,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-28,  7, 28,  7,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30, 0, 30, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-28, 7, 28, 7, QPen(Qt::darkBlue, 2)));
 
-  Lines.append(new qucs::Line(-28, 14,-21,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-21, 14,-14,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-14, 14, -7,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -7, 14,  0,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  0, 14,  7,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  7, 14, 14,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 14, 14, 21,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 21, 14, 28,  7,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-28, 14, -21, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-21, 14, -14, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-14, 14, -7, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-7, 14, 0, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(0, 14, 7, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(7, 14, 14, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(14, 14, 21, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(21, 14, 28, 7, QPen(Qt::darkBlue, 2)));
 
-  Ports.append(new Port(-30, 0));
-  Ports.append(new Port( 30, 0));
+    Ports.append(new Port(-30, 0));
+    Ports.append(new Port(30, 0));
 
-  x1 = -30; y1 = -4;
-  x2 =  30; y2 = 16;
+    x1 = -30;
+    y1 = -4;
+    x2 = 30;
+    y2 = 16;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "TLIN";
-  Name  = "Line";
-  SpiceModel = "T";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "TLIN";
+    Name = "Line";
+    SpiceModel = "T";
 
-  Props.append(new Property("Z", "50 Ohm", true,
-		QObject::tr("characteristic impedance")));
-  Props.append(new Property("L", "1 mm", true,
-		QObject::tr("electrical length of the line")));
-  Props.append(new Property("Alpha", "0 dB", false,
-		QObject::tr("attenuation factor per length in 1/m")));
-  Props.append(new Property("Temp", "26.85", false,
-		QObject::tr("simulation temperature in degree Celsius")));
+    Props.append(new Property("Z", "50 Ohm", true,
+        QObject::tr("characteristic impedance")));
+    Props.append(new Property("L", "1 mm", true,
+        QObject::tr("electrical length of the line")));
+    Props.append(new Property("Alpha", "0 dB", false,
+        QObject::tr("attenuation factor per length in 1/m")));
+    Props.append(new Property("Temp", "26.85", false,
+        QObject::tr("simulation temperature in degree Celsius")));
 }
 
 TLine::~TLine()
@@ -65,35 +66,37 @@ TLine::~TLine()
 
 Component* TLine::newOne()
 {
-  return new TLine();
+    return new TLine();
 }
 
-Element* TLine::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* TLine::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Transmission Line");
-  BitmapFile = (char *) "tline";
+    Name = QObject::tr("Transmission Line");
+    BitmapFile = (char*)"tline";
 
-  if(getNewOne)  return new TLine();
-  return 0;
+    if (getNewOne)
+        return new TLine();
+    return 0;
 }
-
 
 QString TLine::spice_netlist(spicecompat::SpiceDialect dialect)
 {
-  Q_UNUSED(dialect);
+    Q_UNUSED(dialect);
 
-  QString c0 = "299792458.0"; // light speed
-  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    QString c0 = "299792458.0"; // light speed
+    QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+    QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
 
-  QString zw = spicecompat::normalize_value(getProperty("Z")->Value);
-  QString l = spicecompat::normalize_value(getProperty("L")->Value);
+    QString zw = spicecompat::normalize_value(getProperty("Z")->Value);
+    QString l = spicecompat::normalize_value(getProperty("L")->Value);
 
-  QString s = QString("T%1 %2 0 %3 0 Z0=%4 TD={%5/%6}\n")
-                  .arg(Name)
-                  .arg(p1).arg(p2)
-                  .arg(zw).arg(l).arg(c0);
+    QString s = QString("T%1 %2 0 %3 0 Z0=%4 TD={%5/%6}\n")
+                    .arg(Name)
+                    .arg(p1)
+                    .arg(p2)
+                    .arg(zw)
+                    .arg(l)
+                    .arg(c0);
 
-  return s;
-
+    return s;
 }

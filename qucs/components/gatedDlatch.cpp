@@ -13,126 +13,113 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  */
 #include "gatedDlatch.h"
-#include "node.h"
 #include "misc.h"
+#include "node.h"
 
 gatedDlatch::gatedDlatch()
 {
-  Type = isComponent; // Analogue and digital component.
-  Description = QObject::tr ("gated D latch verilog device");
+    Type = isComponent; // Analogue and digital component.
+    Description = QObject::tr("gated D latch verilog device");
 
-  Props.append (new Property ("TR_H", "6", false,
-    QObject::tr ("cross coupled gate transfer function high scaling factor")));
-  Props.append (new Property ("TR_L", "5", false,
-    QObject::tr ("cross coupled gate transfer function low scaling factor")));
-  Props.append (new Property ("Delay", "1 ns", false,
-    QObject::tr ("cross coupled gate delay")
-    +" ("+QObject::tr ("s")+")"));
+    Props.append(new Property("TR_H", "6", false,
+        QObject::tr("cross coupled gate transfer function high scaling factor")));
+    Props.append(new Property("TR_L", "5", false,
+        QObject::tr("cross coupled gate transfer function low scaling factor")));
+    Props.append(new Property("Delay", "1 ns", false,
+        QObject::tr("cross coupled gate delay")
+            + " (" + QObject::tr("s") + ")"));
 
-  createSymbol ();
-  tx = x1 + 19;
-  ty = y2 + 4;
-  Model = "gatedDlatch";
-  Name  = "Y";
+    createSymbol();
+    tx = x1 + 19;
+    ty = y2 + 4;
+    Model = "gatedDlatch";
+    Name = "Y";
 }
 
-Component * gatedDlatch::newOne()
+Component* gatedDlatch::newOne()
 {
-  gatedDlatch * p = new gatedDlatch();
-  p->Props.front()->Value = Props.front()->Value; 
-  p->recreate();
-  return p;
+    gatedDlatch* p = new gatedDlatch();
+    p->Props.front()->Value = Props.front()->Value;
+    p->recreate();
+    return p;
 }
 
-Element * gatedDlatch::info(QString& Name, char * &BitmapFile, bool getNewOne)
+Element* gatedDlatch::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Gated D-Latch");
-  BitmapFile = (char *) "gatedDlatch";
+    Name = QObject::tr("Gated D-Latch");
+    BitmapFile = (char*)"gatedDlatch";
 
-  if(getNewOne) return new gatedDlatch();
-  return 0;
+    if (getNewOne)
+        return new gatedDlatch();
+    return 0;
 }
 
 void gatedDlatch::createSymbol()
 {
-  Rects.append(new qucs::Rect(-30, -40, 60, 80,QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+    Rects.append(new qucs::Rect(-30, -40, 60, 80, QPen(Qt::darkBlue, 2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
-  Lines.append(new qucs::Line(-50,-20,-30,-20,QPen(Qt::darkBlue,2))); // D
-  Lines.append(new qucs::Line(-50, 20,-30, 20,QPen(Qt::darkBlue,2))); // C
-  Lines.append(new qucs::Line( 40, 20, 50, 20,QPen(Qt::darkBlue,2))); // QB
-  Lines.append(new qucs::Line( 30,-20, 50,-20,QPen(Qt::darkBlue,2))); // Q
+    Lines.append(new qucs::Line(-50, -20, -30, -20, QPen(Qt::darkBlue, 2))); // D
+    Lines.append(new qucs::Line(-50, 20, -30, 20, QPen(Qt::darkBlue, 2))); // C
+    Lines.append(new qucs::Line(40, 20, 50, 20, QPen(Qt::darkBlue, 2))); // QB
+    Lines.append(new qucs::Line(30, -20, 50, -20, QPen(Qt::darkBlue, 2))); // Q
 
-  Arcs.append(new qucs::Arc( 30, 15, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(30, 15, 10, 10, 0, 16 * 360, QPen(Qt::darkBlue, 2)));
 
-  Texts.append(new Text(-25,-28, "D", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-25, 12, "C", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 13,-28, "Q", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 13, 12, "Q", Qt::darkBlue, 12.0));
-  Texts.last()->over=true;
+    Texts.append(new Text(-25, -28, "D", Qt::darkBlue, 12.0));
+    Texts.append(new Text(-25, 12, "C", Qt::darkBlue, 12.0));
+    Texts.append(new Text(13, -28, "Q", Qt::darkBlue, 12.0));
+    Texts.append(new Text(13, 12, "Q", Qt::darkBlue, 12.0));
+    Texts.last()->over = true;
 
-  Ports.append(new Port(-50,-20));  // D
-  Ports.append(new Port(-50, 20));  // C
-  Ports.append(new Port( 50, 20));  // QB
-  Ports.append(new Port( 50,-20));  // Q
+    Ports.append(new Port(-50, -20)); // D
+    Ports.append(new Port(-50, 20)); // C
+    Ports.append(new Port(50, 20)); // QB
+    Ports.append(new Port(50, -20)); // Q
 
-  x1 = -50; y1 = -44;
-  x2 =  50; y2 =  44;
+    x1 = -50;
+    y1 = -44;
+    x2 = 50;
+    y2 = 44;
 }
 
-QString gatedDlatch::vhdlCode( int )
+QString gatedDlatch::vhdlCode(int)
 {
-  QString s="";
+    QString s = "";
 
-  QString td = Props.at(2)->Value;     // delay time
-  if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
-  td += ";\n";
+    QString td = Props.at(2)->Value; // delay time
+    if (!misc::VHDL_Delay(td, Name))
+        return td; // time has not VHDL format
+    td += ";\n";
 
-  QString D    = Ports.at(0)->Connection->Name;
-  QString C    = Ports.at(1)->Connection->Name;
-  QString QB   = Ports.at(2)->Connection->Name;
-  QString Q    = Ports.at(3)->Connection->Name;
+    QString D = Ports.at(0)->Connection->Name;
+    QString C = Ports.at(1)->Connection->Name;
+    QString QB = Ports.at(2)->Connection->Name;
+    QString Q = Ports.at(3)->Connection->Name;
 
-  s = "\n  "+Name+":process ("+D+", "+C+")\n"+
-      "  begin\n" +
-      "    if ("+C+" = '1') then\n"+
-      "      "+Q+" <= "+D+td+
-      "      "+QB+" <= not "+D+td+
-      "    end if;\n"+
-      "  end process;\n";
-  return s;
+    s = "\n  " + Name + ":process (" + D + ", " + C + ")\n" + "  begin\n" + "    if (" + C + " = '1') then\n" + "      " + Q + " <= " + D + td + "      " + QB + " <= not " + D + td + "    end if;\n" + "  end process;\n";
+    return s;
 }
 
-QString gatedDlatch::verilogCode( int )
+QString gatedDlatch::verilogCode(int)
 {
-  QString td = Props.at(2)->Value;        // delay time
-  if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
-  
-  QString l = "";
+    QString td = Props.at(2)->Value; // delay time
+    if (!misc::Verilog_Delay(td, Name))
+        return td; // time does not have VHDL format
 
-  QString D    = Ports.at(0)->Connection->Name;
-  QString C    = Ports.at(1)->Connection->Name;
-  QString QB   = Ports.at(2)->Connection->Name;
-  QString Q    = Ports.at(3)->Connection->Name;
+    QString l = "";
 
-  QString QR   = "Q_reg"  + Name + Q;
-  QString QBR  = "QB_reg"  + Name + QB;
+    QString D = Ports.at(0)->Connection->Name;
+    QString C = Ports.at(1)->Connection->Name;
+    QString QB = Ports.at(2)->Connection->Name;
+    QString Q = Ports.at(3)->Connection->Name;
 
-  l = "\n  // "+Name+" gated d latch\n"+
-      "  assign  "+Q+" = "+QR+";\n"+
-      "  reg     "+QR+" = 0;\n"+
-      "  assign  "+QB+" = "+QBR+";\n"+
-      "  reg     "+QBR+" = 0;\n"+
-      "  always @ ("+D+" or "+C+")\n"+
-      "  begin\n"+
-      "    if ("+C+" == 1)\n"+
-      "    begin\n"+
-      "      " +QR+" <="+td+" "+D+";\n"+
-      "      " +QBR+" <="+td+" ~"+D+";\n" +
-      "    end\n"+
-      "  end\n";
+    QString QR = "Q_reg" + Name + Q;
+    QString QBR = "QB_reg" + Name + QB;
 
-  return l;
+    l = "\n  // " + Name + " gated d latch\n" + "  assign  " + Q + " = " + QR + ";\n" + "  reg     " + QR + " = 0;\n" + "  assign  " + QB + " = " + QBR + ";\n" + "  reg     " + QBR + " = 0;\n" + "  always @ (" + D + " or " + C + ")\n" + "  begin\n" + "    if (" + C + " == 1)\n" + "    begin\n" + "      " + QR + " <=" + td + " " + D + ";\n" + "      " + QBR + " <=" + td + " ~" + D + ";\n" + "    end\n" + "  end\n";
+
+    return l;
 }

@@ -19,11 +19,11 @@
 #define SWEEPDIALOG_H
 
 #include <QDialog>
-#include <QRegularExpression>
 #include <QList>
+#include <QRegularExpression>
 
-#include <QSpinBox>
 #include <QGridLayout>
+#include <QSpinBox>
 
 #include "node.h"
 
@@ -32,39 +32,39 @@ class Schematic;
 class QGridLayout;
 
 class mySpinBox : public QSpinBox {
-   Q_OBJECT
+    Q_OBJECT
 public:
-  mySpinBox(int, int, int, double*, QWidget*);
+    mySpinBox(int, int, int, double*, QWidget*);
 
 protected:
-  QString textFromValue(int) const;
-  QValidator::State validate ( QString & text, int & pos ) const;
+    QString textFromValue(int) const;
+    QValidator::State validate(QString& text, int& pos) const;
 
 private:
-  double *Values = nullptr;
-  int ValueSize;
+    double* Values = nullptr;
+    int ValueSize;
 };
 
 class SweepDialog : public QDialog {
-   Q_OBJECT
+    Q_OBJECT
 public:
-  SweepDialog(Schematic*, QHash<QString,double> *NodeVals = 0);
- ~SweepDialog();
+    SweepDialog(Schematic*, QHash<QString, double>* NodeVals = 0);
+    ~SweepDialog();
 
 private slots:
-  void slotNewValue(int);
+    void slotNewValue(int);
 
 private:
-  Graph* setBiasPoints(QHash<QString,double> *NodeVals = 0);
+    Graph* setBiasPoints(QHash<QString, double>* NodeVals = 0);
 
-  QGridLayout *all;   // the mother of all widgets
-  QList<mySpinBox *> BoxList;
+    QGridLayout* all; // the mother of all widgets
+    QList<mySpinBox*> BoxList;
 
-  Graph *pGraph;
-  Schematic *Doc;
-  QList<Node *> NodeList;
-  QList<double *> ValueList;
-  bool isSpice;
+    Graph* pGraph;
+    Schematic* Doc;
+    QList<Node*> NodeList;
+    QList<double*> ValueList;
+    bool isSpice;
 };
 
 #endif

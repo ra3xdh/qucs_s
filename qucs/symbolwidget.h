@@ -18,16 +18,16 @@
 #ifndef SYMBOLWIDGET_H
 #define SYMBOLWIDGET_H
 
-#include <QWidget>
-#include <QSize>
-#include <QPen>
 #include <QBrush>
 #include <QColor>
-#include <QString>
 #include <QList>
+#include <QMessageBox>
 #include <QMouseEvent>
 #include <QPaintEvent>
-#include <QMessageBox>
+#include <QPen>
+#include <QSize>
+#include <QString>
+#include <QWidget>
 
 #include "element.h"
 
@@ -39,56 +39,56 @@
 class QPaintEvent;
 class QSizePolicy;
 
-class SymbolWidget : public QWidget  {
-   Q_OBJECT
+class SymbolWidget : public QWidget {
+    Q_OBJECT
 public:
-  SymbolWidget(QWidget *parent = 0);
- ~SymbolWidget();
+    SymbolWidget(QWidget* parent = 0);
+    ~SymbolWidget();
 
-  QString theModel();
-  int setSymbol( QString&, const QString&, const QString&);
-  int loadSymFile(const QString &file);
-  void enableDragNDrop();
-  void disableDragNDrop();
-  bool dragNDropEnabled() { return dragNDrop; }
-  void enableShowPinNumbers() { showPinNumbers = true; }
-  void disableShowPinNumbers() { showPinNumbers = false; }
-  bool showPinNumbersEnabled() { return showPinNumbers; }
-  int getPortsNumber() { return portsNumber; }
-  void setPaintText(const QString &txt);
-  void setWarning(const QString &warn) { Warning = warn; }
-  // component properties
-  int Text_x, Text_y;
-  QString Prefix, LibraryPath, ComponentName;
-  QString ModelString, VerilogModelString, VHDLModelString,
-          SpiceString;
+    QString theModel();
+    int setSymbol(QString&, const QString&, const QString&);
+    int loadSymFile(const QString& file);
+    void enableDragNDrop();
+    void disableDragNDrop();
+    bool dragNDropEnabled() { return dragNDrop; }
+    void enableShowPinNumbers() { showPinNumbers = true; }
+    void disableShowPinNumbers() { showPinNumbers = false; }
+    bool showPinNumbersEnabled() { return showPinNumbers; }
+    int getPortsNumber() { return portsNumber; }
+    void setPaintText(const QString& txt);
+    void setWarning(const QString& warn) { Warning = warn; }
+    // component properties
+    int Text_x, Text_y;
+    QString Prefix, LibraryPath, ComponentName;
+    QString ModelString, VerilogModelString, VHDLModelString,
+        SpiceString;
 
 protected:
-  void mouseMoveEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
 
 private:
-  int createStandardSymbol(const QString&, const QString&);
+    int createStandardSymbol(const QString&, const QString&);
 
-  void  paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent*);
 
-  int  analyseLine(const QString&);
+    int analyseLine(const QString&);
 
-  static bool getPen  (const QString&, QPen&, int);
-  bool getBrush(const QString&, QBrush&, int);
+    static bool getPen(const QString&, QPen&, int);
+    bool getBrush(const QString&, QBrush&, int);
 
-  bool dragNDrop;
-  bool showPinNumbers;
-  int portsNumber;
-  QString PaintText;
-  QString DragNDropText;
-  QString Warning;
-  int TextWidth, DragNDropWidth, TextHeight;
-  int cx, cy, x1, x2, y1, y2;
-  QList<qucs::Line *> Lines;
-  QList<qucs::Arc *> Arcs;
-  QList<qucs::Rect *> Rects;
-  QList<qucs::Ellips *> Ellipses;
-  QList<Text *>  Texts;
+    bool dragNDrop;
+    bool showPinNumbers;
+    int portsNumber;
+    QString PaintText;
+    QString DragNDropText;
+    QString Warning;
+    int TextWidth, DragNDropWidth, TextHeight;
+    int cx, cy, x1, x2, y1, y2;
+    QList<qucs::Line*> Lines;
+    QList<qucs::Arc*> Arcs;
+    QList<qucs::Rect*> Rects;
+    QList<qucs::Ellips*> Ellipses;
+    QList<Text*> Texts;
 };
 
 #endif // SYMBOLWIDGET_H

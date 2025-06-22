@@ -20,47 +20,46 @@
  */
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
 
-#include <stdlib.h>
 #include <ctype.h>
-#include <locale.h>
 #include <iostream>
+#include <locale.h>
+#include <stdlib.h>
 
 #include <QApplication>
 #include <QString>
 #include <QStringList>
-//#include <QTextCodec>
-#include <QTranslator>
+// #include <QTextCodec>
+#include <QCommandLineParser>
 #include <QFile>
 #include <QMessageBox>
 #include <QRegularExpression>
-#include <QtSvg>
-#include <QCommandLineParser>
-#include <QTextStream>
 #include <QScopedPointer>
+#include <QTextStream>
+#include <QTranslator>
+#include <QtSvg>
 
-#include "qucs.h"
+#include "imagewriter.h"
 #include "main.h"
+#include "misc.h"
+#include "module.h"
 #include "node.h"
 #include "printerwriter.h"
-#include "imagewriter.h"
+#include "qucs.h"
 #include "schematic.h"
 #include "settings.h"
-#include "module.h"
-#include "misc.h"
 
-
+#include "extsimkernels/CdlNetlistWriter.h"
 #include "extsimkernels/ngspice.h"
 #include "extsimkernels/xyce.h"
-#include "extsimkernels/CdlNetlistWriter.h"
 
-#if defined(_WIN32) ||defined(__MINGW32__)
-#include <windows.h>  //for OutputDebugString
+#if defined(_WIN32) || defined(__MINGW32__)
+#include <windows.h> //for OutputDebugString
 #endif
 
-#if defined(_WIN32) ||defined(__MINGW32__)
+#if defined(_WIN32) || defined(__MINGW32__)
 #define executableSuffix ".exe"
 #else
 #define executableSuffix ""
@@ -68,8 +67,8 @@
 
 tQucsSettings QucsSettings;
 
-QucsApp *QucsMain = nullptr;  // the Qucs application itself
-QString lastDir;    // to remember last directory for several dialogs
+QucsApp* QucsMain = nullptr; // the Qucs application itself
+QString lastDir; // to remember last directory for several dialogs
 QStringList qucsPathList;
 VersionTriplet QucsVersion; // Qucs version string
 
@@ -77,7 +76,7 @@ VersionTriplet QucsVersion; // Qucs version string
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-    QSettings settings("qucs","qucs_s");
+    QSettings settings("qucs", "qucs_s");
 
     QucsSettings.DefaultSimulator = _settings::Get().item<int>("DefaultSimulator");
     QucsSettings.firstRun = _settings::Get().item<bool>("firstRun");
@@ -106,17 +105,17 @@ bool loadSettings()
     QucsSettings.Task = _settings::Get().item<QString>("Task");
 
     // TODO: Convert this to the new settings model.
-    if(settings.contains("Qucsator")) {
+    if (settings.contains("Qucsator")) {
         QucsSettings.Qucsator = settings.value("Qucsator").toString();
         QFileInfo inf(QucsSettings.Qucsator);
         QucsSettings.QucsatorDir = inf.canonicalPath() + QDir::separator();
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QStandardPaths::findExecutable("qucsconv_rf",{QucsSettings.QucsatorDir});
+            QucsSettings.Qucsconv = QStandardPaths::findExecutable("qucsconv_rf", { QucsSettings.QucsatorDir });
     } else {
-        QucsSettings.Qucsator = QStandardPaths::findExecutable("qucsator_rf",{QucsSettings.BinDir});
+        QucsSettings.Qucsator = QStandardPaths::findExecutable("qucsator_rf", { QucsSettings.BinDir });
         QucsSettings.QucsatorDir = QucsSettings.BinDir;
         if (QucsSettings.Qucsconv.isEmpty())
-            QucsSettings.Qucsconv = QStandardPaths::findExecutable("qucsconv_rf",{QucsSettings.BinDir});
+            QucsSettings.Qucsconv = QStandardPaths::findExecutable("qucsconv_rf", { QucsSettings.BinDir });
     }
 
     QucsSettings.AdmsXmlBinDir.setPath(_settings::Get().item<QString>("AdmsXmlBinDir"));
@@ -132,7 +131,7 @@ bool loadSettings()
     // empty string and populate it here by brute force.
     QucsSettings.S4Qworkdir = _settings::Get().item<QString>("S4Q_workdir");
     if (QucsSettings.S4Qworkdir == "")
-      QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QucsSettings.QucsWorkDir.absolutePath()+"/spice4qucs");
+        QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QucsSettings.QucsWorkDir.absolutePath() + "/spice4qucs");
 
     QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveExecutable");
     QucsSettings.OpenVAFExecutable = _settings::Get().item<QString>("OpenVAFExecutable");
@@ -157,8 +156,7 @@ bool loadSettings()
     // If present read in the list of directory paths in which Qucs should
     // search for subcircuit schematics
     int npaths = settings.beginReadArray("Paths");
-    for (int i = 0; i < npaths; ++i)
-    {
+    for (int i = 0; i < npaths; ++i) {
         settings.setArrayIndex(i);
         QString apath = settings.value("path").toString();
         qucsPathList.append(apath);
@@ -174,7 +172,7 @@ bool loadSettings()
 // Saves the settings in the settings file.
 bool saveApplSettings()
 {
-    QSettings settings ("qucs","qucs_s");
+    QSettings settings("qucs", "qucs_s");
 
     // Note: It is not really necessary to take the following reference, but it
     // arguably makes the code slightly cleaner - thoughts? To be clear:
@@ -187,7 +185,7 @@ bool saveApplSettings()
     qs.setItem<QString>("appFont", QucsSettings.appFont.toString());
     qs.setItem<QString>("textFont", QucsSettings.textFont.toString());
     if (QucsMain != nullptr) {
-      qs.setItem<QByteArray>("MainWindowGeometry", QucsMain->saveGeometry());
+        qs.setItem<QByteArray>("MainWindowGeometry", QucsMain->saveGeometry());
     }
 
     // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
@@ -209,35 +207,35 @@ bool saveApplSettings()
     qs.setItem<QString>("Task", QucsSettings.Task.name());
     qs.setItem<QString>("AdmsXmlBinDir", QucsSettings.AdmsXmlBinDir.canonicalPath());
     qs.setItem<QString>("AscoBinDir", QucsSettings.AscoBinDir.canonicalPath());
-    qs.setItem<QString>("NgspiceExecutable",QucsSettings.NgspiceExecutable);
-    qs.setItem<QString>("XyceExecutable",QucsSettings.XyceExecutable);
-    qs.setItem<QString>("XyceParExecutable",QucsSettings.XyceParExecutable);
-    qs.setItem<QString>("SpiceOpusExecutable",QucsSettings.SpiceOpusExecutable);
-    qs.setItem<QString>("Qucsator",QucsSettings.Qucsator);
-    qs.setItem<int>("Nprocs",QucsSettings.NProcs);
-    qs.setItem<QString>("S4Q_workdir",QucsSettings.S4Qworkdir);
-    qs.setItem<QString>("OctaveExecutable",QucsSettings.OctaveExecutable);
-    qs.setItem<QString>("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
+    qs.setItem<QString>("NgspiceExecutable", QucsSettings.NgspiceExecutable);
+    qs.setItem<QString>("XyceExecutable", QucsSettings.XyceExecutable);
+    qs.setItem<QString>("XyceParExecutable", QucsSettings.XyceParExecutable);
+    qs.setItem<QString>("SpiceOpusExecutable", QucsSettings.SpiceOpusExecutable);
+    qs.setItem<QString>("Qucsator", QucsSettings.Qucsator);
+    qs.setItem<int>("Nprocs", QucsSettings.NProcs);
+    qs.setItem<QString>("S4Q_workdir", QucsSettings.S4Qworkdir);
+    qs.setItem<QString>("OctaveExecutable", QucsSettings.OctaveExecutable);
+    qs.setItem<QString>("OpenVAFExecutable", QucsSettings.OpenVAFExecutable);
     qs.setItem<QString>("QucsHomeDir", QucsSettings.qucsWorkspaceDir.canonicalPath());
     qs.setItem<bool>("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     qs.setItem<bool>("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
     qs.setItem<bool>("TextAntiAliasing", QucsSettings.TextAntiAliasing);
-    qs.setItem<bool>("fullTraceName",QucsSettings.fullTraceName);
-    qs.setItem<bool>("alwaysPrefixDataset",QucsSettings.alwaysPrefixDataset);
+    qs.setItem<bool>("fullTraceName", QucsSettings.fullTraceName);
+    qs.setItem<bool>("alwaysPrefixDataset", QucsSettings.alwaysPrefixDataset);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList
     settings.remove("Paths");
     settings.beginWriteArray("Paths");
     int i = 0;
-    for (QString& path: qucsPathList) {
-         settings.setArrayIndex(i);
-         settings.setValue("path", path);
-         i++;
-     }
-     settings.endArray();
+    for (QString& path : qucsPathList) {
+        settings.setArrayIndex(i);
+        settings.setValue("path", path);
+        i++;
+    }
+    settings.endArray();
 
-  return true;
+    return true;
 }
 
 /*!
@@ -252,27 +250,27 @@ bool saveApplSettings()
  * <http://qt-project.org/doc/qt-4.8/debug.html#warning-and-debugging-messages>
  * <http://qt-project.org/doc/qt-4.8/qtglobal.html#qInstallMsgHandler>
  */
-void qucsMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void qucsMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
     QByteArray localMsg = msg.toLocal8Bit();
-    const char *file = context.file ? context.file : "";
-    const char *function = context.function ? context.function : "";
+    const char* file = context.file ? context.file : "";
+    const char* function = context.function ? context.function : "";
     switch (type) {
-        case QtDebugMsg:
-            fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-            break;
-        case QtInfoMsg:
-            fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-            break;
-        case QtWarningMsg:
-            fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-            break;
-        case QtCriticalMsg:
-            fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-            break;
-        case QtFatalMsg:
-            fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-            break;
+    case QtDebugMsg:
+        fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtInfoMsg:
+        fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtWarningMsg:
+        fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtCriticalMsg:
+        fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtFatalMsg:
+        fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
     }
     fflush(stderr);
 }
@@ -281,26 +279,22 @@ Schematic* openSchematic(const QString& schematicFileName)
 {
     qDebug() << "*** try to load schematic :" << schematicFileName;
 
-    QFile file(schematicFileName);  // save simulator messages
-    if (file.open(QIODevice::ReadOnly))
-    {
+    QFile file(schematicFileName); // save simulator messages
+    if (file.open(QIODevice::ReadOnly)) {
         file.close();
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "Error: Could not load schematic %s\n", schematicFileName.toLatin1().data());
         return nullptr;
     }
 
     // populate Modules list
-    //Module::registerModules ();
+    // Module::registerModules ();
 
     // new schematic from file
-    Schematic *schematic = new Schematic(nullptr, schematicFileName);
+    Schematic* schematic = new Schematic(nullptr, schematicFileName);
 
     // load schematic file if possible
-    if (!schematic->loadDocument())
-    {
+    if (!schematic->loadDocument()) {
         fprintf(stderr, "Error: Could not load schematic %s\n", schematicFileName.toLatin1().data());
         delete schematic;
         return nullptr;
@@ -315,13 +309,11 @@ int doNetlist(QString schematicFileName, QString netlistFileName, bool netlist2C
     Module::registerModules();
 
     QScopedPointer<Schematic> schematic(openSchematic(schematicFileName));
-    if (!schematic)
-    {
+    if (!schematic) {
         return 1;
     }
 
-    if (!netlist2Console)
-    {
+    if (!netlist2Console) {
         qDebug() << "*** try to write netlist  :" << netlistFileName;
     }
 
@@ -329,29 +321,24 @@ int doNetlist(QString schematicFileName, QString netlistFileName, bool netlist2C
     QScopedPointer<QTextStream> netlistStream;
     QScopedPointer<QString> netlistString;
 
-    if (!netlist2Console)
-    {
+    if (!netlist2Console) {
         netlistFile.reset(new QFile(netlistFileName));
-        if (!netlistFile->open(QIODevice::WriteOnly))
-        {
+        if (!netlistFile->open(QIODevice::WriteOnly)) {
             fprintf(stderr, "Error: Could not load netlist %s\n", netlistFileName.toLatin1().data());
             return -1;
         }
 
         netlistStream.reset(new QTextStream(netlistFile.get()));
-    }
-    else
-    {
+    } else {
         netlistString.reset(new QString);
         netlistStream.reset(new QTextStream(netlistString.get()));
     }
 
-    QPlainTextEdit errText;  // dummy
-    QStringList Collect;  // clear list for NodeSets, SPICE components etc.
+    QPlainTextEdit errText; // dummy
+    QStringList Collect; // clear list for NodeSets, SPICE components etc.
     int SimPorts = schematic->prepareNetlist(*netlistStream, Collect, &errText);
 
-    if (SimPorts < -5)
-    {
+    if (SimPorts < -5) {
         QByteArray ba = netlistFileName.toLatin1();
         fprintf(stderr, "Error: Could not prepare netlist %s\n", ba.data());
         /// \todo better handling for error/warnings
@@ -360,14 +347,9 @@ int doNetlist(QString schematicFileName, QString netlistFileName, bool netlist2C
     }
 
     // output NodeSets, SPICE simulations etc.
-    for (QStringList::Iterator it = Collect.begin(); it != Collect.end(); ++it)
-    {
+    for (QStringList::Iterator it = Collect.begin(); it != Collect.end(); ++it) {
         // don't put library includes into netlist...
-        if ((*it).right(4) != ".lst" &&
-            (*it).right(5) != ".vhdl" &&
-            (*it).right(4) != ".vhd" &&
-            (*it).right(2) != ".v")
-        {
+        if ((*it).right(4) != ".lst" && (*it).right(5) != ".vhdl" && (*it).right(4) != ".vhd" && (*it).right(2) != ".v") {
             *netlistStream << *it << '\n';
         }
     }
@@ -376,9 +358,9 @@ int doNetlist(QString schematicFileName, QString netlistFileName, bool netlist2C
 
     schematic->createNetlist(*netlistStream, SimPorts);
 
-    if (netlist2Console)
-    {
-        std::cout << std::endl << netlistString->toLatin1().constData() << std::endl;
+    if (netlist2Console) {
+        std::cout << std::endl
+                  << netlistString->toLatin1().constData() << std::endl;
     }
 
     return 0;
@@ -390,21 +372,17 @@ int runNgspice(QString schematicFileName, QString dataset)
     Module::registerModules();
 
     QScopedPointer<Schematic> schematic(openSchematic(schematicFileName));
-    if (!schematic)
-    {
+    if (!schematic) {
         return 1;
     }
 
     QScopedPointer<Ngspice> ngspice(new Ngspice(schematic.get()));
     ngspice->slotSimulate();
     bool ok = ngspice->waitEndOfSimulation();
-    if (!ok)
-    {
+    if (!ok) {
         fprintf(stderr, "Ngspice timed out or start error!\n");
         return -1;
-    }
-    else
-    {
+    } else {
         ngspice->convertToQucsData(dataset);
     }
 
@@ -417,21 +395,17 @@ int runXyce(QString schematicFileName, QString dataset)
     Module::registerModules();
 
     QScopedPointer<Schematic> schematic(openSchematic(schematicFileName));
-    if (!schematic)
-    {
+    if (!schematic) {
         return 1;
     }
 
     QScopedPointer<Xyce> xyce(new Xyce(schematic.get()));
     xyce->slotSimulate();
     bool ok = xyce->waitEndOfSimulation();
-    if (!ok)
-    {
+    if (!ok) {
         fprintf(stderr, "Xyce timed out or start error!\n");
         return -1;
-    }
-    else
-    {
+    } else {
         xyce->convertToQucsData(dataset);
     }
 
@@ -444,16 +418,14 @@ int doNgspiceNetlist(QString schematicFileName, QString netlistFileName, bool ne
     Module::registerModules();
 
     QScopedPointer<Schematic> schematic(openSchematic(schematicFileName));
-    if (!schematic)
-    {
+    if (!schematic) {
         return 1;
     }
 
     QScopedPointer<Ngspice> ngspice(new Ngspice(schematic.get()));
     ngspice->SaveNetlist(netlistFileName, netlist2Console);
 
-    if (!netlist2Console && !QFile::exists(netlistFileName))
-    {
+    if (!netlist2Console && !QFile::exists(netlistFileName)) {
         return -1;
     }
 
@@ -461,17 +433,16 @@ int doNgspiceNetlist(QString schematicFileName, QString netlistFileName, bool ne
 }
 
 int doCdlNetlist(
-        QString schematicFileName,
-        QString netlistFileName,
-        bool netlist2Console,
-        bool resolveSpicePrefix)
+    QString schematicFileName,
+    QString netlistFileName,
+    bool netlist2Console,
+    bool resolveSpicePrefix)
 {
     QucsSettings.DefaultSimulator = spicecompat::simNgspice;
     Module::registerModules();
 
     QScopedPointer<Schematic> schematic(openSchematic(schematicFileName));
-    if (!schematic)
-    {
+    if (!schematic) {
         return -1;
     }
 
@@ -479,29 +450,23 @@ int doCdlNetlist(
     QScopedPointer<QString> netlistString;
     QScopedPointer<QFile> cdlFile;
 
-    if (netlist2Console)
-    {
+    if (netlist2Console) {
         netlistString.reset(new QString());
         netlistStream.reset(new QTextStream(netlistString.get()));
-    }
-    else
-    {
+    } else {
         cdlFile.reset(new QFile(netlistFileName));
 
-        if (cdlFile->open(QFile::WriteOnly))
-        {
+        if (cdlFile->open(QFile::WriteOnly)) {
             netlistStream.reset(new QTextStream(cdlFile.get()));
-        }
-        else
-        {
+        } else {
             QString msg = QStringLiteral(
-                    "Tried to save netlist \nto %1\n(could not open for writing!)")
-                .arg(netlistFileName);
+                "Tried to save netlist \nto %1\n(could not open for writing!)")
+                              .arg(netlistFileName);
             QString finalMsg = QStringLiteral(
-                    "%1\n This could be an error in the QSettings settings file\n"
-                    "(usually in ~/.config/qucs/qucs_s.conf)\n"
-                    "The value for S4Q_workdir (default:/spice4qucs) needs to be writeable!")
-                .arg(msg);
+                "%1\n This could be an error in the QSettings settings file\n"
+                "(usually in ~/.config/qucs/qucs_s.conf)\n"
+                "The value for S4Q_workdir (default:/spice4qucs) needs to be writeable!")
+                                   .arg(msg);
             QMessageBox::critical(nullptr, QStringLiteral("Problem with SaveNetlist"), finalMsg, QMessageBox::Ok);
 
             return -1;
@@ -509,24 +474,20 @@ int doCdlNetlist(
     }
 
     CdlNetlistWriter cdlWriter(*netlistStream, schematic.get(), resolveSpicePrefix);
-    if (!cdlWriter.write())
-    {
+    if (!cdlWriter.write()) {
         QMessageBox::critical(
-                nullptr,
-                QStringLiteral("Save CDL netlist"),
-                QStringLiteral("Save CDL netlist failed!"),
-                QMessageBox::Ok);
+            nullptr,
+            QStringLiteral("Save CDL netlist"),
+            QStringLiteral("Save CDL netlist failed!"),
+            QMessageBox::Ok);
         return -1;
     }
 
-    if (netlist2Console)
-    {
-        std::cout << std::endl << netlistString->toUtf8().constData() << std::endl;
-    }
-    else
-    {
-        if (!QFile::exists(netlistFileName))
-        {
+    if (netlist2Console) {
+        std::cout << std::endl
+                  << netlistString->toUtf8().constData() << std::endl;
+    } else {
+        if (!QFile::exists(netlistFileName)) {
             return -1;
         }
     }
@@ -540,16 +501,14 @@ int doXyceNetlist(QString schematicFileName, QString netlistFileName, bool netli
     Module::registerModules();
     QScopedPointer<Schematic> schematic(openSchematic(schematicFileName));
 
-    if (!schematic)
-    {
+    if (!schematic) {
         return 1;
     }
 
     QScopedPointer<Xyce> xyce(new Xyce(schematic.get()));
     xyce->SaveNetlist(netlistFileName, netlist2Console);
 
-    if (!netlist2Console && !QFile::exists(netlistFileName))
-    {
+    if (!netlist2Console && !QFile::exists(netlistFileName)) {
         return -1;
     }
 
@@ -562,8 +521,7 @@ int doPrint(QString schematicFileName, QString printFile,
     QucsSettings.DefaultSimulator = spicecompat::simQucsator;
 
     QScopedPointer<Schematic> schematic(openSchematic(schematicFileName));
-    if (!schematic)
-    {
+    if (!schematic) {
         return 1;
     }
 
@@ -578,14 +536,12 @@ int doPrint(QString schematicFileName, QString printFile,
 
     // determine filetype
     if (printFile.endsWith(".pdf")) {
-        //initial printer
-        PrinterWriter *Printer = new PrinterWriter();
+        // initial printer
+        PrinterWriter* Printer = new PrinterWriter();
         Printer->setFitToPage(true);
         Printer->noGuiPrint(schematic.get(), printFile, page, dpi, color, orientation);
-    }
-    else
-    {
-        ImageWriter *Printer = new ImageWriter("");
+    } else {
+        ImageWriter* Printer = new ImageWriter("");
         Printer->noGuiPrint(schematic.get(), printFile, color);
     }
 
@@ -595,116 +551,120 @@ int doPrint(QString schematicFileName, QString printFile,
 /*!
  * \brief createIcons Create component icons (png) from command line.
  */
-void createIcons() {
+void createIcons()
+{
 
-  int nCats = 0, nComps = 0;
+    int nCats = 0, nComps = 0;
 
-  if(!QDir("./bitmaps_generated").exists()){
-    QDir().mkdir("bitmaps_generated");
-  }
-  Module::registerModules ();
-  QStringList cats = Category::getCategories ();
+    if (!QDir("./bitmaps_generated").exists()) {
+        QDir().mkdir("bitmaps_generated");
+    }
+    Module::registerModules();
+    QStringList cats = Category::getCategories();
 
-  for (const QString& category: cats) {
+    for (const QString& category : cats) {
 
-    QList<Module *> Comps;
-    Comps = Category::getModules(category);
+        QList<Module*> Comps;
+        Comps = Category::getModules(category);
 
-    // crash with diagrams, skip
-    if(category == "diagrams") break;
+        // crash with diagrams, skip
+        if (category == "diagrams")
+            break;
 
-    char * File;
-    QString Name;
+        char* File;
+        QString Name;
 
-    for (Module *Mod: Comps) {
-      if (Mod->info) {
+        for (Module* Mod : Comps) {
+            if (Mod->info) {
 
-        Element *e = (Mod->info) (Name, File, true);
+                Element* e = (Mod->info)(Name, File, true);
 
-        Component *c = (Component* ) e;
+                Component* c = (Component*)e;
 
-        QList<qucs::Line *> Lines      = c->Lines;
-        QList<struct qucs::Arc *> Arcs = c-> Arcs;
-        QList<qucs::Rect *> Rects      = c-> Rects;
-        QList<qucs::Ellips *> Ellips     = c-> Ellipses;
-        QList<Port *> Ports      = c->Ports;
-        QList<Text*> Texts       = c->Texts;
+                QList<qucs::Line*> Lines = c->Lines;
+                QList<struct qucs::Arc*> Arcs = c->Arcs;
+                QList<qucs::Rect*> Rects = c->Rects;
+                QList<qucs::Ellips*> Ellips = c->Ellipses;
+                QList<Port*> Ports = c->Ports;
+                QList<Text*> Texts = c->Texts;
 
-        QGraphicsScene *scene = new QGraphicsScene();
+                QGraphicsScene* scene = new QGraphicsScene();
 
-        for (qucs::Line *l : Lines) {
-          scene->addLine(l->x1, l->y1, l->x2, l->y2, l->style);
-        }
+                for (qucs::Line* l : Lines) {
+                    scene->addLine(l->x1, l->y1, l->x2, l->y2, l->style);
+                }
 
-        for (struct qucs::Arc *a: Arcs) {
-          // we need an open item here; QGraphisEllipseItem draws a filled ellipse and doesn't do the job here...
-          QPainterPath *path = new QPainterPath();
-          // the components do not contain the angles in degrees but in 1/16th degrees -> conversion needed
-          path->arcMoveTo(a->x,a->y,a->w,a->h,a->angle/16);
-          path->arcTo(a->x,a->y,a->w,a->h,a->angle/16,a->arclen/16);
-          scene->addPath(*path);
-        }
+                for (struct qucs::Arc* a : Arcs) {
+                    // we need an open item here; QGraphisEllipseItem draws a filled ellipse and doesn't do the job here...
+                    QPainterPath* path = new QPainterPath();
+                    // the components do not contain the angles in degrees but in 1/16th degrees -> conversion needed
+                    path->arcMoveTo(a->x, a->y, a->w, a->h, a->angle / 16);
+                    path->arcTo(a->x, a->y, a->w, a->h, a->angle / 16, a->arclen / 16);
+                    scene->addPath(*path);
+                }
 
-        for(qucs::Rect *a: Rects) {
-          scene->addRect(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
-        }
+                for (qucs::Rect* a : Rects) {
+                    scene->addRect(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
+                }
 
-        for(qucs::Ellips *a: Ellips) {
-          scene->addEllipse(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
-        }
+                for (qucs::Ellips* a : Ellips) {
+                    scene->addEllipse(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
+                }
 
-        for(Port *p: Ports) {
-          scene->addEllipse(p->x-4, p->y-4, 8, 8, QPen(Qt::red));
-        }
+                for (Port* p : Ports) {
+                    scene->addEllipse(p->x - 4, p->y - 4, 8, 8, QPen(Qt::red));
+                }
 
-        for(Text *t: Texts) {
-          QFont myFont;
-          myFont.setPointSize(10);
-          QGraphicsTextItem* item  = new QGraphicsTextItem(t->s);
-          item->setX(t->x);
-          item->setY(t->y);
-          item->setFont(myFont);
+                for (Text* t : Texts) {
+                    QFont myFont;
+                    myFont.setPointSize(10);
+                    QGraphicsTextItem* item = new QGraphicsTextItem(t->s);
+                    item->setX(t->x);
+                    item->setY(t->y);
+                    item->setFont(myFont);
 
-          scene->addItem(item);
-        }
+                    scene->addItem(item);
+                }
 
-        // this uses the size of the component as icon size
-        // Qt bug ? The returned sceneRect() is often 1 px short on bottom
-        //   and right sides without anti-aliasing. 1 px more missing on top
-        //   and left when anti-aliasing is used
-        QRectF rScene = scene->sceneRect().adjusted(-1,-1,1,1);
-        // image and scene need to be the same size, since render()
-        //   will fill the entire image, otherwise the scaling will
-        //   introduce artifacts
-        QSize sImage = rScene.size().toSize(); // rounding seems not to be an issue
-        // ARGB32_Premultiplied is faster (Qt docs)
-        //QImage image(sImage.toSize(), QImage::Format_ARGB32);
-        QImage image(sImage, QImage::Format_ARGB32_Premultiplied);
-        // this uses a fixed size for the icon (32 x 32)
-        //QImage image(32, 32, QImage::Format_ARGB32);
-        image.fill(Qt::transparent);
+                // this uses the size of the component as icon size
+                // Qt bug ? The returned sceneRect() is often 1 px short on bottom
+                //   and right sides without anti-aliasing. 1 px more missing on top
+                //   and left when anti-aliasing is used
+                QRectF rScene = scene->sceneRect().adjusted(-1, -1, 1, 1);
+                // image and scene need to be the same size, since render()
+                //   will fill the entire image, otherwise the scaling will
+                //   introduce artifacts
+                QSize sImage = rScene.size().toSize(); // rounding seems not to be an issue
+                // ARGB32_Premultiplied is faster (Qt docs)
+                // QImage image(sImage.toSize(), QImage::Format_ARGB32);
+                QImage image(sImage, QImage::Format_ARGB32_Premultiplied);
+                // this uses a fixed size for the icon (32 x 32)
+                // QImage image(32, 32, QImage::Format_ARGB32);
+                image.fill(Qt::transparent);
 
-        QPainter painter(&image);
-        QPainter::RenderHints hints = QPainter::RenderHints();
-        // Ask to antialias drawings if requested
-        if (QucsSettings.GraphAntiAliasing) hints |= QPainter::Antialiasing;
-        // Ask to antialias text if requested
-        if (QucsSettings.TextAntiAliasing) hints |= QPainter::TextAntialiasing;
-        painter.setRenderHints(hints);
+                QPainter painter(&image);
+                QPainter::RenderHints hints = QPainter::RenderHints();
+                // Ask to antialias drawings if requested
+                if (QucsSettings.GraphAntiAliasing)
+                    hints |= QPainter::Antialiasing;
+                // Ask to antialias text if requested
+                if (QucsSettings.TextAntiAliasing)
+                    hints |= QPainter::TextAntialiasing;
+                painter.setRenderHints(hints);
 
-        // pass target and source size eplicitly, otherwise sceneRect() is used
-        //   for the source size, which is often wrong (see comment above)
-        scene->render(&painter, image.rect(), rScene);
+                // pass target and source size eplicitly, otherwise sceneRect() is used
+                //   for the source size, which is often wrong (see comment above)
+                scene->render(&painter, image.rect(), rScene);
 
-        image.save("./bitmaps_generated/" + QString(File) + ".png");
+                image.save("./bitmaps_generated/" + QString(File) + ".png");
 
-        fprintf(stdout, "[%s] %s\n", category.toLatin1().data(), File);
-      }
-      nComps++;
-    } // module
-    nCats++;
-  } // category
-  fprintf(stdout, "Created %i component icons from %i categories\n", nComps, nCats);
+                fprintf(stdout, "[%s] %s\n", category.toLatin1().data(), File);
+            }
+            nComps++;
+        } // module
+        nCats++;
+    } // category
+    fprintf(stdout, "Created %i component icons from %i categories\n", nComps, nCats);
 }
 
 /*!
@@ -716,106 +676,107 @@ void createIcons() {
  *    - CSV with component data fields. Ex [component#]_data.csv
  *    - CSV with component properties. Ex [component#]_props.csv
  */
-void createDocData() {
+void createDocData()
+{
 
-  QMap<int, QString> typeMap;
-  typeMap.insert(0x30000, "Component");
-  typeMap.insert(0x30002, "ComponentText");
-  typeMap.insert(0x10000, "AnalogComponent");
-  typeMap.insert(0x20000, "DigitalComponent") ;
+    QMap<int, QString> typeMap;
+    typeMap.insert(0x30000, "Component");
+    typeMap.insert(0x30002, "ComponentText");
+    typeMap.insert(0x10000, "AnalogComponent");
+    typeMap.insert(0x20000, "DigitalComponent");
 
-  Module::registerModules ();
-  QStringList cats = Category::getCategories ();
-  int nCats = cats.size();
+    Module::registerModules();
+    QStringList cats = Category::getCategories();
+    int nCats = cats.size();
 
-  QStringList catHeader;
-  catHeader << "# Note: auto-generated file (changes will be lost on update)";
-  QFile file("categories.txt");
-  if (!file.open(QFile::WriteOnly | QFile::Text)) return;
-  QTextStream out(&file);
-  out << cats.join("\n");
-  file.close();
+    QStringList catHeader;
+    catHeader << "# Note: auto-generated file (changes will be lost on update)";
+    QFile file("categories.txt");
+    if (!file.open(QFile::WriteOnly | QFile::Text))
+        return;
+    QTextStream out(&file);
+    out << cats.join("\n");
+    file.close();
 
-  int nComps = 0;
+    int nComps = 0;
 
-  // table for quick reference, schematic and netlist entry
-  for (const QString& category: cats) {
+    // table for quick reference, schematic and netlist entry
+    for (const QString& category : cats) {
 
-    QList<Module *> Comps;
-    Comps = Category::getModules(category);
+        QList<Module*> Comps;
+        Comps = Category::getModules(category);
 
-    // \fixme, crash with diagrams, skip
-    if(category == "diagrams") break;
+        // \fixme, crash with diagrams, skip
+        if (category == "diagrams")
+            break;
 
-    // one dir per category
-    QString curDir = "./"+category+"/";
-    qDebug() << "Creating dir:" << curDir;
-    if(!QDir(curDir).exists()){
-        QDir().mkdir(curDir);
-    }
-
-    char * File;
-    QString Name;
-
-    int num = 0; // component id inside category
-
-    for (Module *Mod: Comps) {
-        num += 1;
-
-        nComps += 1;
-
-        Element *e = (Mod->info) (Name, File, true);
-        Component *c = (Component* ) e;
-
-        // object info
-        QStringList compData;
-
-        compData << "# Note: auto-generated file (changes will be lost on update)";
-        compData << "Caption; "           + Name;
-        compData << "Description; "       + c->Description;
-        compData << "Identifier; ``"      + c->Model + "``"; // backticks for reST verbatim
-        compData << "Default name; ``"    + c->Name  + "``";
-        compData << "Type; "              + typeMap.value(c->Type);
-        compData << "Bitmap file; "       + QString(File);
-        compData << "Properties; "        + QString::number(c->Props.count());
-        compData << "Category; "          + category;
-
-        // 001_data.csv - CSV file with component data
-        QString ID = QStringLiteral("%1").arg(num,3,10,QChar('0'));
-        QString objDataFile;
-        objDataFile = QStringLiteral("%1_data.csv").arg( ID  ) ;
-
-        QFile file(curDir + objDataFile);
-        if (!file.open(QFile::WriteOnly | QFile::Text)) return;
-        QTextStream out(&file);
-        out << compData.join("\n");
-        file.close();
-        fprintf(stdout, "[%s] %s %s \n", category.toLatin1().data(), c->Model.toLatin1().data(), file.fileName().toLatin1().data());
-
-        QStringList compProps;
-        compProps << "# Note: auto-generated file (changes will be lost on update)";
-        compProps << QStringLiteral("# %1; %2; %3; %4").arg(  "Name", "Value", "Display", "Description");
-        for (Property *prop : c->Props) {
-          compProps << QStringLiteral("%1; \"%2\"; %3; \"%4\"").arg(
-                         prop->Name,
-                         prop->Value,
-                         prop->display?"yes":"no",
-                         prop->Description.replace("\"","\"\"")); // escape quote in quote
+        // one dir per category
+        QString curDir = "./" + category + "/";
+        qDebug() << "Creating dir:" << curDir;
+        if (!QDir(curDir).exists()) {
+            QDir().mkdir(curDir);
         }
 
-        // 001_props.csv - CSV file with component properties
-        QString objPropFile = QStringLiteral("%1_prop.csv").arg( ID ) ;
+        char* File;
+        QString Name;
 
-        QFile fileProps(curDir + objPropFile );
-        if (!fileProps.open(QFile::WriteOnly | QFile::Text)) return;
-        QTextStream outProps(&fileProps);
-        outProps << compProps.join("\n");
-        compProps.clear();
-        file.close();
-        fprintf(stdout, "[%s] %s %s \n", category.toLatin1().data(), c->Model.toLatin1().data(), fileProps.fileName().toLatin1().data());
-    } // module
-  } // category
-  fprintf(stdout, "Created data for %i components from %i categories\n", nComps, nCats);
+        int num = 0; // component id inside category
+
+        for (Module* Mod : Comps) {
+            num += 1;
+
+            nComps += 1;
+
+            Element* e = (Mod->info)(Name, File, true);
+            Component* c = (Component*)e;
+
+            // object info
+            QStringList compData;
+
+            compData << "# Note: auto-generated file (changes will be lost on update)";
+            compData << "Caption; " + Name;
+            compData << "Description; " + c->Description;
+            compData << "Identifier; ``" + c->Model + "``"; // backticks for reST verbatim
+            compData << "Default name; ``" + c->Name + "``";
+            compData << "Type; " + typeMap.value(c->Type);
+            compData << "Bitmap file; " + QString(File);
+            compData << "Properties; " + QString::number(c->Props.count());
+            compData << "Category; " + category;
+
+            // 001_data.csv - CSV file with component data
+            QString ID = QStringLiteral("%1").arg(num, 3, 10, QChar('0'));
+            QString objDataFile;
+            objDataFile = QStringLiteral("%1_data.csv").arg(ID);
+
+            QFile file(curDir + objDataFile);
+            if (!file.open(QFile::WriteOnly | QFile::Text))
+                return;
+            QTextStream out(&file);
+            out << compData.join("\n");
+            file.close();
+            fprintf(stdout, "[%s] %s %s \n", category.toLatin1().data(), c->Model.toLatin1().data(), file.fileName().toLatin1().data());
+
+            QStringList compProps;
+            compProps << "# Note: auto-generated file (changes will be lost on update)";
+            compProps << QStringLiteral("# %1; %2; %3; %4").arg("Name", "Value", "Display", "Description");
+            for (Property* prop : c->Props) {
+                compProps << QStringLiteral("%1; \"%2\"; %3; \"%4\"").arg(prop->Name, prop->Value, prop->display ? "yes" : "no", prop->Description.replace("\"", "\"\"")); // escape quote in quote
+            }
+
+            // 001_props.csv - CSV file with component properties
+            QString objPropFile = QStringLiteral("%1_prop.csv").arg(ID);
+
+            QFile fileProps(curDir + objPropFile);
+            if (!fileProps.open(QFile::WriteOnly | QFile::Text))
+                return;
+            QTextStream outProps(&fileProps);
+            outProps << compProps.join("\n");
+            compProps.clear();
+            file.close();
+            fprintf(stdout, "[%s] %s %s \n", category.toLatin1().data(), c->Model.toLatin1().data(), fileProps.fileName().toLatin1().data());
+        } // module
+    } // category
+    fprintf(stdout, "Created data for %i components from %i categories\n", nComps, nCats);
 }
 
 /*!
@@ -825,47 +786,49 @@ void createDocData() {
  *  - Qucs schematic
  *  - Qucsator netlist
  */
-void createListComponentEntry(){
+void createListComponentEntry()
+{
 
-  Module::registerModules ();
-  QStringList cats = Category::getCategories ();
-  // table for quick reference, schematic and netlist entry
-  for (QString category: cats) {
+    Module::registerModules();
+    QStringList cats = Category::getCategories();
+    // table for quick reference, schematic and netlist entry
+    for (QString category : cats) {
 
-    QList<Module *> Comps;
-    Comps = Category::getModules(category);
+        QList<Module*> Comps;
+        Comps = Category::getModules(category);
 
-    // \fixme, crash with diagrams, skip
-    if(category == "diagrams") break;
+        // \fixme, crash with diagrams, skip
+        if (category == "diagrams")
+            break;
 
-    char * File;
-    QString Name;
+        char* File;
+        QString Name;
 
-    for (Module *Mod: Comps) {
-      Element *e = (Mod->info) (Name, File, true);
-      Component *c = (Component* ) e;
+        for (Module* Mod : Comps) {
+            Element* e = (Mod->info)(Name, File, true);
+            Component* c = (Component*)e;
 
-      QString qucsEntry = c->save();
-      fprintf(stdout, "%s; qucs    ; %s\n", c->Model.toLatin1().data(), qucsEntry.toLatin1().data());
+            QString qucsEntry = c->save();
+            fprintf(stdout, "%s; qucs    ; %s\n", c->Model.toLatin1().data(), qucsEntry.toLatin1().data());
 
-      // add dummy ports/wires, avoid segfault
-      int port = 0;
-      for (Port *p: c->Ports) {
-        Node *n = new Node(0,0);
-        n->Name="_net"+QString::number(port);
-        p->Connection = n;
-        port +=1;
-      }
+            // add dummy ports/wires, avoid segfault
+            int port = 0;
+            for (Port* p : c->Ports) {
+                Node* n = new Node(0, 0);
+                n->Name = "_net" + QString::number(port);
+                p->Connection = n;
+                port += 1;
+            }
 
-      // skip Subcircuit, segfault, there is nothing to netlist
-      if (c->Model == "Sub" or c->Model == ".Opt") {
-        fprintf(stdout, "WARNING, qucsator netlist not generated for %s\n\n", c->Model.toLatin1().data());
-        continue;
-      }
+            // skip Subcircuit, segfault, there is nothing to netlist
+            if (c->Model == "Sub" or c->Model == ".Opt") {
+                fprintf(stdout, "WARNING, qucsator netlist not generated for %s\n\n", c->Model.toLatin1().data());
+                continue;
+            }
 
-      QString qucsatorEntry = c->getNetlist();
-      fprintf(stdout, "%s; qucsator; %s\n", c->Model.toLatin1().data(), qucsatorEntry.toLatin1().data());
-      } // module
+            QString qucsatorEntry = c->getNetlist();
+            fprintf(stdout, "%s; qucsator; %s\n", c->Model.toLatin1().data(), qucsatorEntry.toLatin1().data());
+        } // module
     } // category
 }
 
@@ -874,28 +837,28 @@ void createListComponentEntry(){
 // ##########                  Program Start                      ##########
 // ##########                                                     ##########
 // #########################################################################
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     qInstallMessageHandler(qucsMessageOutput);
     // set the Qucs version string
     QucsVersion = VersionTriplet(PACKAGE_VERSION);
 
     // apply default settings
-    //QucsSettings.font = QFont("Helvetica", 12);
+    // QucsSettings.font = QFont("Helvetica", 12);
     QucsSettings.largeFontSize = 16.0;
     QucsSettings.maxUndo = 20;
     QucsSettings.NodeWiring = 0;
 
     // initially center the application
     QApplication app(argc, argv);
-    //QDesktopWidget *d = app.desktop();
+    // QDesktopWidget *d = app.desktop();
     QucsSettings.font = QApplication::font();
     QucsSettings.appFont = QApplication::font();
     QucsSettings.textFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
     QucsSettings.font.setPointSize(12);
 
     // default
-    QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/QucsWorkspace");
+    QString QucsWorkdirPath = QDir::homePath() + QDir::toNativeSeparators("/QucsWorkspace");
     QucsSettings.qucsWorkspaceDir.setPath(QucsWorkdirPath);
     QucsSettings.QucsWorkDir.setPath(QucsSettings.qucsWorkspaceDir.canonicalPath());
 
@@ -919,14 +882,13 @@ int main(int argc, char *argv[])
     QDir QucsDir;
     QString QucsApplicationPath = QCoreApplication::applicationDirPath();
 #ifdef __APPLE__
-    QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
+    QucsDir = QDir(QucsApplicationPath.section("/bin", 0, 0));
 #else
     QucsDir = QDir(QucsApplicationPath);
     QucsDir.cdUp();
 #endif
 
-    QucsSettings.BinDir = QucsApplicationPath.contains("bin") ?
-                            (QucsApplicationPath + QDir::separator()) : QucsDir.absoluteFilePath("bin/");
+    QucsSettings.BinDir = QucsApplicationPath.contains("bin") ? (QucsApplicationPath + QDir::separator()) : QucsDir.absoluteFilePath("bin/");
     QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
 
     QucsSettings.LibDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
@@ -937,12 +899,11 @@ int main(int argc, char *argv[])
     QucsSettings.Editor = "qucs";
 
     /// \todo Make the setting up of all executables below more consistent
-    char *var = nullptr; // Don't use QUCSDIR with Qucs-S
+    char* var = nullptr; // Don't use QUCSDIR with Qucs-S
     var = getenv("QUCSATOR");
     if (var != nullptr) {
         QucsSettings.QucsatorVar = QString(var);
-    }
-    else {
+    } else {
         QucsSettings.QucsatorVar = "";
     }
 
@@ -954,18 +915,16 @@ int main(int argc, char *argv[])
     var = getenv("ADMSXMLBINDIR");
     if (var != nullptr) {
         QucsSettings.AdmsXmlBinDir.setPath(QString(var));
-    }
-    else {
+    } else {
         // default admsXml bindir same as Qucs
         QString admsExec;
 #if defined(_WIN32) || defined(__MINGW32__)
-        admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml.exe");
+        admsExec = QDir::toNativeSeparators(QucsSettings.BinDir + "/" + "admsXml.exe");
 #else
-        admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml");
+        admsExec = QDir::toNativeSeparators(QucsSettings.BinDir + "/" + "admsXml");
 #endif
         QFile adms(admsExec);
-        if (adms.exists())
-        {
+        if (adms.exists()) {
             QucsSettings.AdmsXmlBinDir.setPath(QucsSettings.BinDir);
         }
     }
@@ -973,18 +932,16 @@ int main(int argc, char *argv[])
     var = getenv("ASCOBINDIR");
     if (var != nullptr) {
         QucsSettings.AscoBinDir.setPath(QString(var));
-    }
-    else {
+    } else {
         // default ASCO bindir same as Qucs
         QString ascoExec;
 #if defined(_WIN32) || defined(__MINGW32__)
-        ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco.exe");
+        ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir + "/" + "asco.exe");
 #else
-        ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco");
+        ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir + "/" + "asco");
 #endif
         QFile asco(ascoExec);
-        if (asco.exists())
-        {
+        if (asco.exists()) {
             QucsSettings.AscoBinDir.setPath(QucsSettings.BinDir);
         }
     }
@@ -996,27 +953,27 @@ int main(int argc, char *argv[])
         QucsSettings.QucsOctave.clear();
     }
 
-    if(!QucsSettings.BGColor.isValid())
-      QucsSettings.BGColor.setRgb(255, 250, 225);
+    if (!QucsSettings.BGColor.isValid())
+        QucsSettings.BGColor.setRgb(255, 250, 225);
 
     // syntax highlighting
-    if(!QucsSettings.Comment.isValid())
+    if (!QucsSettings.Comment.isValid())
         QucsSettings.Comment = Qt::gray;
-    if(!QucsSettings.String.isValid())
+    if (!QucsSettings.String.isValid())
         QucsSettings.String = Qt::red;
-    if(!QucsSettings.Integer.isValid())
+    if (!QucsSettings.Integer.isValid())
         QucsSettings.Integer = Qt::blue;
-    if(!QucsSettings.Real.isValid())
+    if (!QucsSettings.Real.isValid())
         QucsSettings.Real = Qt::darkMagenta;
-    if(!QucsSettings.Character.isValid())
+    if (!QucsSettings.Character.isValid())
         QucsSettings.Character = Qt::magenta;
-    if(!QucsSettings.Type.isValid())
+    if (!QucsSettings.Type.isValid())
         QucsSettings.Type = Qt::darkRed;
-    if(!QucsSettings.Attribute.isValid())
+    if (!QucsSettings.Attribute.isValid())
         QucsSettings.Attribute = Qt::darkCyan;
-    if(!QucsSettings.Directive.isValid())
+    if (!QucsSettings.Directive.isValid())
         QucsSettings.Directive = Qt::darkCyan;
-    if(!QucsSettings.Task.isValid())
+    if (!QucsSettings.Task.isValid())
         QucsSettings.Task = Qt::darkRed;
 
     QucsSettings.sysDefaultFont = QApplication::font();
@@ -1027,14 +984,14 @@ int main(int argc, char *argv[])
     if (lang.isEmpty()) {
         QLocale loc;
         lang = loc.name();
-//      lang = QTextCodec::locale();
+        //      lang = QTextCodec::locale();
     }
-    static_cast<void>(tor.load( QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
-    QApplication::installTranslator( &tor );
+    static_cast<void>(tor.load(QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
+    QApplication::installTranslator(&tor);
 
     // This seems to be necessary on a few system to make strtod()
     // work properly !???!
-    setlocale (LC_NUMERIC, "C");
+    setlocale(LC_NUMERIC, "C");
 
 #ifdef GIT
     const QString applicationVersion(QString::fromUtf8("qucs s%1 (%2)").arg(PACKAGE_VERSION).arg(GIT));
@@ -1044,8 +1001,7 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setApplicationVersion(applicationVersion);
     QStringList cmdArgs;
-    for (int i = 0; i < argc; ++i)
-    {
+    for (int i = 0; i < argc; ++i) {
         cmdArgs << argv[i];
     }
 
@@ -1054,57 +1010,51 @@ int main(int argc, char *argv[])
     parser.addVersionOption();
 
     parser.addOptions({
-        {{"h", "help"}, QCoreApplication::translate("main", "display this help and exit")},
-        {{"n", "netlist"}, QCoreApplication::translate("main", "convert Qucs schematic into netlist")},
-        {{"p", "print"}, QCoreApplication::translate("main", "print Qucs schematic to file (eps needs inkscape)")},
-        {"page", QCoreApplication::translate("main", "set print page size (default A4)"), "A4|A3|B4|B5", "A4"},
-        {"dpi", QCoreApplication::translate("main", "set dpi value (default 96)"), "NUMBER", "96"},
-        {"color", QCoreApplication::translate("main", "set color mode (default RGB)"), "RGB|BW", "RGB"},
-        {"orin", QCoreApplication::translate("main", "set orientation (default portraid)"), "portraid|landscape", "portraid"},
-        {"i", QCoreApplication::translate("main", "use file as input schematic"), "FILENAME"},
-        {"o", QCoreApplication::translate("main", "use file as output netlist"), "FILENAME"},
-        {"ngspice", QCoreApplication::translate("main", "create Ngspice netlist")},
-        {"cdl", QCoreApplication::translate("main", "create CDL netlist")},
-        {"xyce", QCoreApplication::translate("main", "Xyce netlist")},
-        {"run", QCoreApplication::translate("main", "execute Ngspice/Xyce immediately")},
-        {"icons", QCoreApplication::translate("main", "create component icons under ./bitmaps_generated")},
-        {"doc", QCoreApplication::translate(
-                "main",
-                "dump data for documentation:\n"
-                "* file with of categories: categories.txt\n"
-                "* one directory per category (e.g. ./lumped\n"
-                "   components/)\n"
-                "   - CSV file with component data\n"
-                "     ([comp#]_data.csv)\n"
-                "   - CSV file with component properties.\n"
-                "     ([comp#]_props.csv)"
-                )
-        },
-        {"list-entries", QCoreApplication::translate("main", "list component entry formats for schematic and netlist")},
-        {{"c", "netlist2Console"}, QCoreApplication::translate("main", "write netlist to console")},
-        {{"x", "spiceprefix"}, QCoreApplication::translate("main", "resolve spice prefix during netlist CDL")},
+        { { "h", "help" }, QCoreApplication::translate("main", "display this help and exit") },
+        { { "n", "netlist" }, QCoreApplication::translate("main", "convert Qucs schematic into netlist") },
+        { { "p", "print" }, QCoreApplication::translate("main", "print Qucs schematic to file (eps needs inkscape)") },
+        { "page", QCoreApplication::translate("main", "set print page size (default A4)"), "A4|A3|B4|B5", "A4" },
+        { "dpi", QCoreApplication::translate("main", "set dpi value (default 96)"), "NUMBER", "96" },
+        { "color", QCoreApplication::translate("main", "set color mode (default RGB)"), "RGB|BW", "RGB" },
+        { "orin", QCoreApplication::translate("main", "set orientation (default portraid)"), "portraid|landscape", "portraid" },
+        { "i", QCoreApplication::translate("main", "use file as input schematic"), "FILENAME" },
+        { "o", QCoreApplication::translate("main", "use file as output netlist"), "FILENAME" },
+        { "ngspice", QCoreApplication::translate("main", "create Ngspice netlist") },
+        { "cdl", QCoreApplication::translate("main", "create CDL netlist") },
+        { "xyce", QCoreApplication::translate("main", "Xyce netlist") },
+        { "run", QCoreApplication::translate("main", "execute Ngspice/Xyce immediately") },
+        { "icons", QCoreApplication::translate("main", "create component icons under ./bitmaps_generated") },
+        { "doc", QCoreApplication::translate("main", "dump data for documentation:\n"
+                                                     "* file with of categories: categories.txt\n"
+                                                     "* one directory per category (e.g. ./lumped\n"
+                                                     "   components/)\n"
+                                                     "   - CSV file with component data\n"
+                                                     "     ([comp#]_data.csv)\n"
+                                                     "   - CSV file with component properties.\n"
+                                                     "     ([comp#]_props.csv)") },
+        { "list-entries", QCoreApplication::translate("main", "list component entry formats for schematic and netlist") },
+        { { "c", "netlist2Console" }, QCoreApplication::translate("main", "write netlist to console") },
+        { { "x", "spiceprefix" }, QCoreApplication::translate("main", "resolve spice prefix during netlist CDL") },
     });
 
     parser.process(cmdArgs);
 
-    if (parser.isSet("help"))
-    {
+    if (parser.isSet("help")) {
         // some modification of the Qt-generated usage text
 
         QString helpText = parser.helpText();
         helpText.insert(
-                helpText.indexOf('\n', 0)+1,
-                QString::fromUtf8(
-                    "       qucs -n -i FILENAME -o FILENAME\n"
-                    "       qucs -p -i FILENAME -o FILENAME.[pdf|png|svg|eps]\n"));
+            helpText.indexOf('\n', 0) + 1,
+            QString::fromUtf8(
+                "       qucs -n -i FILENAME -o FILENAME\n"
+                "       qucs -p -i FILENAME -o FILENAME.[pdf|png|svg|eps]\n"));
 
         QRegularExpression optIndent(QString::fromUtf8("--page|--dpi|--color|--orin|--ngspice|--xyce|--run|--cdl"));
         int idx;
         int from = 0;
-        while ((idx = helpText.indexOf(optIndent, from)) != -1)
-        {
+        while ((idx = helpText.indexOf(optIndent, from)) != -1) {
             helpText.insert(idx, "  ");
-            from = idx +3;
+            from = idx + 3;
         }
 
         std::cout << helpText.toUtf8().constData();
@@ -1149,101 +1099,71 @@ int main(int argc, char *argv[])
     exit(0);
 #endif
 
-    if (parser.isSet("icons"))
-    {
+    if (parser.isSet("icons")) {
         createIcons();
         return 0;
     }
 
-    if (parser.isSet("doc"))
-    {
+    if (parser.isSet("doc")) {
         createDocData();
         return 0;
     }
 
-    if (parser.isSet("list-entries"))
-    {
+    if (parser.isSet("list-entries")) {
         createListComponentEntry();
         return 0;
     }
 
     // check operation and its required arguments
-    if (netlist_flag and print_flag)
-    {
+    if (netlist_flag and print_flag) {
         fprintf(stderr, "Error: --print and --netlist cannot be used together\n");
         return -1;
-    }
-    else if (cdl_flag and run_flag)
-    {
+    } else if (cdl_flag and run_flag) {
         fprintf(stderr, "Error: --cdl and --run cannot be used together\n");
         return -1;
-    }
-    else if (((ngspice_flag || xyce_flag || cdl_flag) && print_flag) || (run_flag && print_flag))
-    {
+    } else if (((ngspice_flag || xyce_flag || cdl_flag) && print_flag) || (run_flag && print_flag)) {
         fprintf(stderr, "Error: --print and Ngspice/CDL/Xyce cannot be used together\n");
         return -1;
-    }
-    else if (netlist_flag or print_flag)
-    {
-        if (inputfile.isEmpty())
-        {
+    } else if (netlist_flag or print_flag) {
+        if (inputfile.isEmpty()) {
             fprintf(stderr, "Error: Expected input file.\n");
             return -1;
         }
-        if (!netlist2Console && outputfile.isEmpty())
-        {
+        if (!netlist2Console && outputfile.isEmpty()) {
             fprintf(stderr, "Error: Expected output file.\n");
             return -1;
         }
         // create netlist from schematic
-        if (netlist_flag)
-        {
-            if (!run_flag)
-            {
-                if (ngspice_flag)
-                {
+        if (netlist_flag) {
+            if (!run_flag) {
+                if (ngspice_flag) {
                     return doNgspiceNetlist(inputfile, outputfile, netlist2Console);
-                }
-                else if (cdl_flag)
-                {
+                } else if (cdl_flag) {
                     return doCdlNetlist(inputfile, outputfile, netlist2Console, spiceprefix);
-                }
-                else if (xyce_flag)
-                {
+                } else if (xyce_flag) {
                     return doXyceNetlist(inputfile, outputfile, netlist2Console);
-                }
-                else
-                {
+                } else {
                     return doNetlist(inputfile, outputfile, netlist2Console);
                 }
-            }
-            else
-            {
-                if (ngspice_flag)
-                {
+            } else {
+                if (ngspice_flag) {
                     return runNgspice(inputfile, outputfile);
-                }
-                else if (xyce_flag)
-                {
+                } else if (xyce_flag) {
                     return runXyce(inputfile, outputfile);
-                }
-                else
-                {
+                } else {
                     return 1;
                 }
             }
-        }
-        else if (print_flag)
-        {
+        } else if (print_flag) {
             return doPrint(inputfile, outputfile, page, dpi, color, orientation);
         }
     }
 
     QucsMain = new QucsApp(netlist2Console);
-    //1a.setMainWidget(QucsMain);
+    // 1a.setMainWidget(QucsMain);
 
     QucsMain->show();
     int result = app.exec();
-    //saveApplSettings(QucsMain);
+    // saveApplSettings(QucsMain);
     return result;
 }

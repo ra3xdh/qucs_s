@@ -20,14 +20,13 @@
 #ifndef SAVEDIALOG_H
 #define SAVEDIALOG_H
 
-#include <QVariant>
-#include <QDialog>
-#include <QMap>
 #include <QBoxLayout>
-#include <QGridLayout>
-#include <QBoxLayout>
-#include <QLabel>
 #include <QCheckBox>
+#include <QDialog>
+#include <QGridLayout>
+#include <QLabel>
+#include <QMap>
+#include <QVariant>
 
 class QBoxLayout;
 class QBoxLayout;
@@ -40,41 +39,40 @@ class QPushButton;
 class QucsDoc;
 class QucsApp;
 
-class SaveDialog : public QDialog
-{
-   Q_OBJECT
-   public:
-      enum {
-         AbortClosing = 0,
-         DontSave,
-         SaveSelected
-      };
-            
-      SaveDialog(QWidget* p = 0, const char* n = 0, bool modal = true, Qt::WindowFlags fl = Qt::WindowFlags() );
-      ~SaveDialog();
-      void addUnsavedDoc(QucsDoc *doc);
-      void setApp(QucsApp *a);
-      bool isEmpty() const;
-			     
-   protected slots:
-      void dontSaveClicked();
-      void saveSelectedClicked();
-      void reject();
-      
-   private:
-      void initDialog();
-      
-      QMap<QucsDoc*,QListWidgetItem*> unsavedDocs;
-            
-      QLabel* label;
-      QListWidget* fileView;
-      QPushButton* abortClosingButton;
-      QPushButton* dontSaveButton;
-      QPushButton* saveSelectedButton;
-      QBoxLayout* SaveDialogLayout;
-      QHBoxLayout* buttonsLayout;
-      QSpacerItem* spacer;
-      QucsApp *app;
+class SaveDialog : public QDialog {
+    Q_OBJECT
+public:
+    enum {
+        AbortClosing = 0,
+        DontSave,
+        SaveSelected
+    };
+
+    SaveDialog(QWidget* p = 0, const char* n = 0, bool modal = true, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~SaveDialog();
+    void addUnsavedDoc(QucsDoc* doc);
+    void setApp(QucsApp* a);
+    bool isEmpty() const;
+
+protected slots:
+    void dontSaveClicked();
+    void saveSelectedClicked();
+    void reject();
+
+private:
+    void initDialog();
+
+    QMap<QucsDoc*, QListWidgetItem*> unsavedDocs;
+
+    QLabel* label;
+    QListWidget* fileView;
+    QPushButton* abortClosingButton;
+    QPushButton* dontSaveButton;
+    QPushButton* saveSelectedButton;
+    QBoxLayout* SaveDialogLayout;
+    QHBoxLayout* buttonsLayout;
+    QSpacerItem* spacer;
+    QucsApp* app;
 };
 
 #endif // SAVEDIALOG_H

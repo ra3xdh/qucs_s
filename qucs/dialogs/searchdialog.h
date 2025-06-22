@@ -27,31 +27,30 @@
 #include <QDialog>
 
 namespace Ui {
-  class SearchDialog;
+class SearchDialog;
 }
 
-class SearchDialog : public QDialog
-{
-  Q_OBJECT
+class SearchDialog : public QDialog {
+    Q_OBJECT
 
 public:
-  SearchDialog(QWidget *);
- ~SearchDialog();
+    SearchDialog(QWidget*);
+    ~SearchDialog();
 
-  void initSearch(QWidget *doc, const QString &text, bool replace=false);
+    void initSearch(QWidget* doc, const QString& text, bool replace = false);
 
 signals:
-  void search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward);
-  void replace(const QString &str, const QString &str2, bool needConfirmed,
-               bool CaseSensitive, bool wordOnly, bool backward);
+    void search(const QString& str, bool CaseSensitive, bool wordOnly, bool backward);
+    void replace(const QString& str, const QString& str2, bool needConfirmed,
+        bool CaseSensitive, bool wordOnly, bool backward);
 
 private slots:
-  void slotSearch();
-  void slotDisconnect();
+    void slotSearch();
+    void slotDisconnect();
 
 private:
-  Ui::SearchDialog *ui;
-  QWidget *doc;
+    Ui::SearchDialog* ui;
+    QWidget* doc;
 };
 
 #endif

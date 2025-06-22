@@ -19,9 +19,9 @@
 #define SIMMESSAGE_H
 
 #include <QDialog>
+#include <QFile>
 #include <QProcess>
 #include <QStringList>
-#include <QFile>
 #include <QTextStream>
 #include <QVBoxLayout>
 
@@ -37,75 +37,75 @@ class Schematic;
 
 // #define SPEEDUP_PROGRESSBAR
 
-
-class SimMessage : public QDialog  {
-Q_OBJECT
+class SimMessage : public QDialog {
+    Q_OBJECT
 public:
-  SimMessage(QWidget*, QWidget *parent=0);
- ~SimMessage();
+    SimMessage(QWidget*, QWidget* parent = 0);
+    ~SimMessage();
 
-  bool startProcess();
-  void setDocWidget(QWidget*);
+    bool startProcess();
+    void setDocWidget(QWidget*);
 
 signals:
-  void SimulationEnded(int, SimMessage*);
-  void displayDataPage(QString&, QString&);
-  void progressBarChanged(int);
+    void SimulationEnded(int, SimMessage*);
+    void displayDataPage(QString&, QString&);
+    void progressBarChanged(int);
 
 public slots:
-  void slotClose();
+    void slotClose();
 
 private slots:
-  void slotDisplayMsg();
-  void slotDisplayErr();
-  void slotCloseStdin();
-  void slotStateChanged(QProcess::ProcessState newState);
-  void slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus);
-  void slotDisplayButton();
-  void AbortSim();
+    void slotDisplayMsg();
+    void slotDisplayErr();
+    void slotCloseStdin();
+    void slotStateChanged(QProcess::ProcessState newState);
+    void slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus);
+    void slotDisplayButton();
+    void AbortSim();
 
-  void slotReadSpiceNetlist();
-  void slotFinishSpiceNetlist(int status);
+    void slotReadSpiceNetlist();
+    void slotFinishSpiceNetlist(int status);
 
-/* #ifdef SPEEDUP_PROGRESSBAR
-  void slotUpdateProgressBar();
+    /* #ifdef SPEEDUP_PROGRESSBAR
+      void slotUpdateProgressBar();
+    private:
+      int  iProgress;
+      bool waitForUpdate;
+    #endif
+    */
+
 private:
-  int  iProgress;
-  bool waitForUpdate;
-#endif
-*/
-
-private:
-  void FinishSimulation(int);
-  void nextSPICE();
-  void startSimulator();
-  Component * findOptimization(Schematic *);
+    void FinishSimulation(int);
+    void nextSPICE();
+    void startSimulator();
+    Component* findOptimization(Schematic*);
 
 public:
-  QWidget *DocWidget;
-  int showBias;
-  bool SimOpenDpl;
-  bool SimRunScript;
-  QString DocName, DataSet, DataDisplay, Script;
+    QWidget* DocWidget;
+    int showBias;
+    bool SimOpenDpl;
+    bool SimRunScript;
+    QString DocName, DataSet, DataDisplay, Script;
 
-  QProcess       SimProcess;
-  QPlainTextEdit *ProgText, *ErrText;
-  bool           wasLF;   // linefeed for "ProgText"
-  bool           simKilled; // true if simulation was aborted by the user
-  QPushButton    *Display, *Abort;
-  QProgressBar   *SimProgress;
-  QString        ProgressText;
+    QProcess SimProcess;
+    QPlainTextEdit *ProgText, *ErrText;
+    bool wasLF; // linefeed for "ProgText"
+    bool simKilled; // true if simulation was aborted by the user
+    QPushButton *Display, *Abort;
+    QProgressBar* SimProgress;
+    QString ProgressText;
 
-  Component      *SimOpt;
-  int            SimPorts;
-  bool           makeSubcircuit, insertSim;
-  QStringList    Collect;
-  QFile          NetlistFile;
-  QTextStream    Stream;
+    Component* SimOpt;
+    int SimPorts;
+    bool makeSubcircuit, insertSim;
+    QStringList Collect;
+    QFile NetlistFile;
+    QTextStream Stream;
 
-  QVBoxLayout  *all;
+    QVBoxLayout* all;
+
 protected:
-  QString Program;
+    QString Program;
 };
 
 #endif

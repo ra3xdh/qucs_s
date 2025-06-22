@@ -20,17 +20,16 @@
 
 #include "component.h"
 
-
-class JK_FlipFlop : public Component  {
+class JK_FlipFlop : public Component {
 public:
-  JK_FlipFlop();
- ~JK_FlipFlop() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    JK_FlipFlop();
+    ~JK_FlipFlop() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString vhdlCode(int);
-  QString verilogCode(int);
+    QString vhdlCode(int);
+    QString verilogCode(int);
 };
 
 #endif

@@ -16,27 +16,27 @@
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
 
-#include "settings.h"
 #include "externsimdialog.h"
 #include "main.h"
+#include "settings.h"
 
-ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
-    QDialog(sch),
-    a_schematic(sch),
-    a_buttonStopSim(new QPushButton(tr("Stop"),this)),
-    a_buttonSaveNetlist(new QPushButton(tr("Save netlist"),this)),
-    a_buttonExit(new QPushButton(tr("Exit"),this)),
-    a_editSimConsole(new QPlainTextEdit(this)),
-    a_simStatusLog(new QListWidget),
-    a_simProgress(new QProgressBar(this)),
-    a_ngspice(new Ngspice(sch,this)),
-    a_xyce(new Xyce(sch,this)),
-    a_wasSimulated(true),
-    a_hasError(false),
-    a_netlist2Console(netlist2Console)
+ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode)
+    : QDialog(sch)
+    , a_schematic(sch)
+    , a_buttonStopSim(new QPushButton(tr("Stop"), this))
+    , a_buttonSaveNetlist(new QPushButton(tr("Save netlist"), this))
+    , a_buttonExit(new QPushButton(tr("Exit"), this))
+    , a_editSimConsole(new QPlainTextEdit(this))
+    , a_simStatusLog(new QListWidget)
+    , a_simProgress(new QProgressBar(this))
+    , a_ngspice(new Ngspice(sch, this))
+    , a_xyce(new Xyce(sch, this))
+    , a_wasSimulated(true)
+    , a_hasError(false)
+    , a_netlist2Console(netlist2Console)
 {
     const QString workdir(QucsSettings.S4Qworkdir);
 
@@ -52,18 +52,18 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
         dir.mkpath(workdir);
     }
 
-    connect(a_buttonStopSim,SIGNAL(clicked()),a_ngspice,SLOT(killThemAll()));
-    connect(a_buttonStopSim,SIGNAL(clicked()),a_xyce,SLOT(killThemAll()));
+    connect(a_buttonStopSim, SIGNAL(clicked()), a_ngspice, SLOT(killThemAll()));
+    connect(a_buttonStopSim, SIGNAL(clicked()), a_xyce, SLOT(killThemAll()));
     a_buttonStopSim->setEnabled(false);
 
-    connect(a_buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
+    connect(a_buttonSaveNetlist, SIGNAL(clicked()), this, SLOT(slotSaveNetlist()));
 
-    connect(a_buttonExit,SIGNAL(clicked()),this,SLOT(slotExit()));
-    connect(a_buttonExit,SIGNAL(clicked()),a_ngspice,SLOT(killThemAll()));
-    connect(a_buttonExit,SIGNAL(clicked()),a_xyce,SLOT(killThemAll()));
+    connect(a_buttonExit, SIGNAL(clicked()), this, SLOT(slotExit()));
+    connect(a_buttonExit, SIGNAL(clicked()), a_ngspice, SLOT(killThemAll()));
+    connect(a_buttonExit, SIGNAL(clicked()), a_xyce, SLOT(killThemAll()));
 
-    QGroupBox *grp_1 = new QGroupBox(tr("Simulation console"),this);
-    QVBoxLayout *vbl1 = new QVBoxLayout;
+    QGroupBox* grp_1 = new QGroupBox(tr("Simulation console"), this);
+    QVBoxLayout* vbl1 = new QVBoxLayout;
 
     QFont font;
     font.setFamily("monospace");
@@ -75,14 +75,14 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     a_ngspice->setConsole(a_editSimConsole);
     a_xyce->setConsole(a_editSimConsole);
 
-    connect(a_ngspice,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
-    connect(a_xyce,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
+    connect(a_ngspice, SIGNAL(progress(int)), a_simProgress, SLOT(setValue(int)));
+    connect(a_xyce, SIGNAL(progress(int)), a_simProgress, SLOT(setValue(int)));
 
-    QVBoxLayout *vl_top = new QVBoxLayout;
-    vl_top->addWidget(grp_1,3);
-    vl_top->addWidget(a_simStatusLog,1);
+    QVBoxLayout* vl_top = new QVBoxLayout;
+    vl_top->addWidget(grp_1, 3);
+    vl_top->addWidget(a_simStatusLog, 1);
     vl_top->addWidget(a_simProgress);
-    QHBoxLayout *hl1 = new QHBoxLayout;
+    QHBoxLayout* hl1 = new QHBoxLayout;
     hl1->addWidget(a_buttonStopSim);
     hl1->addWidget(a_buttonSaveNetlist);
     hl1->addWidget(a_buttonExit);
@@ -92,7 +92,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     slotSetSimulator();
     if (!netlist_mode && !QucsMain->TuningMode && a_schematic->getShowBias() != 0)
         slotStart(); // Start simulation
-
 }
 
 ExternSimDialog::~ExternSimDialog()
@@ -105,9 +104,9 @@ void ExternSimDialog::slotSetSimulator()
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simNgspice: {
         a_xyce->setParallel(false);
-        connect(a_ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        connect(a_ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-        connect(a_ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
+        connect(a_ngspice, SIGNAL(started()), this, SLOT(slotNgspiceStarted()));
+        connect(a_ngspice, SIGNAL(finished()), this, SLOT(slotProcessOutput()));
+        connect(a_ngspice, SIGNAL(errors(QProcess::ProcessError)), this, SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         QString cmd;
         if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) { // this check is related to MacOS
             cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
@@ -117,45 +116,42 @@ void ExternSimDialog::slotSetSimulator()
         if (QFileInfo::exists(cmd)) {
             a_ngspice->setSimulatorCmd(cmd);
         } else {
-            a_ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable); //rely on $PATH
+            a_ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable); // rely on $PATH
         }
         a_ngspice->setSimulatorParameters(_settings::Get().item<QString>("NgspiceParams"));
-    }
-        break;
+    } break;
     case spicecompat::simXyce: {
         a_xyce->setParallel(false);
-        connect(a_xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        connect(a_xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-        connect(a_xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
+        connect(a_xyce, SIGNAL(started()), this, SLOT(slotNgspiceStarted()));
+        connect(a_xyce, SIGNAL(finished()), this, SLOT(slotProcessOutput()));
+        connect(a_xyce, SIGNAL(errors(QProcess::ProcessError)), this, SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         a_xyce->setSimulatorParameters(_settings::Get().item<QString>("XyceParams"));
-    }
-        break;
-//    case spicecompat::simXycePar: {
-//#ifdef Q_OS_UNIX
-//        a_xyce->setParallel(true);
-//#else
-//        a_xyce->setParallel(false);
-//#endif
-//        connect(a_xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-//        connect(a_xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-//        connect(a_xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
-//        connect(buttonSimulate,SIGNAL(clicked()),a_xyce,SLOT(slotSimulate()));
-//        a_xyce->setSimulatorParameters(QucsSettings.SimParameters);
-//    }
-//        break;
+    } break;
+        //    case spicecompat::simXycePar: {
+        // #ifdef Q_OS_UNIX
+        //        a_xyce->setParallel(true);
+        // #else
+        //        a_xyce->setParallel(false);
+        // #endif
+        //        connect(a_xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
+        //        connect(a_xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
+        //        connect(a_xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
+        //        connect(buttonSimulate,SIGNAL(clicked()),a_xyce,SLOT(slotSimulate()));
+        //        a_xyce->setSimulatorParameters(QucsSettings.SimParameters);
+        //    }
+        //        break;
     case spicecompat::simSpiceOpus: {
         a_xyce->setParallel(false);
-        connect(a_ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()),Qt::UniqueConnection);
-        connect(a_ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()),Qt::UniqueConnection);
-        connect(a_ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
+        connect(a_ngspice, SIGNAL(started()), this, SLOT(slotNgspiceStarted()), Qt::UniqueConnection);
+        connect(a_ngspice, SIGNAL(finished()), this, SLOT(slotProcessOutput()), Qt::UniqueConnection);
+        connect(a_ngspice, SIGNAL(errors(QProcess::ProcessError)), this, SLOT(slotNgspiceStartError(QProcess::ProcessError)), Qt::UniqueConnection);
         a_ngspice->setSimulatorCmd(QucsSettings.SpiceOpusExecutable);
         a_ngspice->setSimulatorParameters(_settings::Get().item<QString>("NgspiceParams"));
-    }
+    } break;
+    default:
         break;
-    default: break;
     }
 }
-
 
 void ExternSimDialog::slotProcessOutput()
 {
@@ -187,52 +183,51 @@ void ExternSimDialog::slotProcessOutput()
 
     if (logContainsError(out)) {
         addLogEntry(tr("There were simulation errors. Please check log."),
-                    this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
+            this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
         a_hasError = true;
         a_wasSimulated = false;
         emit warnings();
     } else if (logContainsWarning(out)) {
         addLogEntry(tr("There were simulation warnings. Please check log."),
-                    this->style()->standardIcon(QStyle::SP_MessageBoxWarning));
+            this->style()->standardIcon(QStyle::SP_MessageBoxWarning));
         addLogEntry(tr("Simulation finished. Now place diagram on schematic to plot the result."),
-                    QIcon(":/bitmaps/svg/ok_apply.svg"));
+            QIcon(":/bitmaps/svg/ok_apply.svg"));
         emit warnings();
-    } else  {
-        if ( !a_hasError ) {
+    } else {
+        if (!a_hasError) {
             addLogEntry(tr("Simulation successful. Now place diagram on schematic to plot the result."),
-                    QIcon(":/bitmaps/svg/ok_apply.svg"));
+                QIcon(":/bitmaps/svg/ok_apply.svg"));
             emit success();
         }
     }
-    //a_editSimConsole->clear();
+    // a_editSimConsole->clear();
     /*a_editSimConsole->insertPlainText(out);
     a_editSimConsole->moveCursor(QTextCursor::End);*/
     saveLog();
     a_editSimConsole->insertPlainText("Simulation finished\n");
 
-    if ( !a_hasError ) {
+    if (!a_hasError) {
         QFileInfo inf(a_schematic->getDocName());
-        //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
-        QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.completeBaseName()+ext;
+        // QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
+        QString qucs_dataset = inf.canonicalPath() + QDir::separator() + inf.completeBaseName() + ext;
         switch (QucsSettings.DefaultSimulator) {
-            case spicecompat::simNgspice:
-            case spicecompat::simSpiceOpus:
-                a_ngspice->convertToQucsData(qucs_dataset);
-                break;
-            case spicecompat::simXyce:
-                a_xyce->convertToQucsData(qucs_dataset);
-                break;
-            default:
-                break;
+        case spicecompat::simNgspice:
+        case spicecompat::simSpiceOpus:
+            a_ngspice->convertToQucsData(qucs_dataset);
+            break;
+        case spicecompat::simXyce:
+            a_xyce->convertToQucsData(qucs_dataset);
+            break;
+        default:
+            break;
         }
     }
-    //a_wasSimulated = true;
-    //if (out.contains("error",Qt::CaseInsensitive))
-    //    a_hasError = true;
+    // a_wasSimulated = true;
+    // if (out.contains("error",Qt::CaseInsensitive))
+    //     a_hasError = true;
     emit simulated(this);
-    //if (a_schematic->getShowBias()>0 || QucsMain->TuningMode) this->close();
+    // if (a_schematic->getShowBias()>0 || QucsMain->TuningMode) this->close();
 }
-
 
 void ExternSimDialog::slotNgspiceStarted()
 {
@@ -240,7 +235,7 @@ void ExternSimDialog::slotNgspiceStarted()
     QString sim = spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator);
     a_editSimConsole->insertPlainText(sim + tr(" started...\n"));
     addLogEntry(tr("Simulation started on: ") + QDateTime::currentDateTime().toString(),
-                this->style()->standardIcon(QStyle::SP_MessageBoxInformation));
+        this->style()->standardIcon(QStyle::SP_MessageBoxInformation));
 }
 
 void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
@@ -257,8 +252,8 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
         msg = tr("Simulator error!");
     }
 
-    //QMessageBox::critical(this,tr("Simulate with SPICE"),msg,QMessageBox::Ok);
-    addLogEntry(msg,this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
+    // QMessageBox::critical(this,tr("Simulate with SPICE"),msg,QMessageBox::Ok);
+    addLogEntry(msg, this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
 
     QString sim = spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator);
     a_editSimConsole->insertPlainText(sim + tr(" error..."));
@@ -281,7 +276,8 @@ void ExternSimDialog::slotStart()
     case spicecompat::simSpiceOpus:
         a_ngspice->slotSimulate();
         break;
-    default: break;
+    default:
+        break;
     }
 }
 
@@ -297,46 +293,42 @@ void ExternSimDialog::slotSaveNetlist()
     QFileInfo inf(a_schematic->getDocName());
     QString filename;
 
-    if (!a_netlist2Console)
-    {
+    if (!a_netlist2Console) {
         filename = QFileDialog::getSaveFileName(
-                this,
-                tr("Save netlist"),
-                inf.path() + QDir::separator() + "netlist.cir",
-                "All files (*)");
-        if (filename.isEmpty())
-        {
+            this,
+            tr("Save netlist"),
+            inf.path() + QDir::separator() + "netlist.cir",
+            "All files (*)");
+        if (filename.isEmpty()) {
             return;
         }
     }
 
-    switch (QucsSettings.DefaultSimulator)
-    {
-        case spicecompat::simNgspice:
-        case spicecompat::simSpiceOpus:
-            a_ngspice->SaveNetlist(filename, a_netlist2Console);
-            break;
-        case spicecompat::simXyce:
-            a_xyce->SaveNetlist(filename, a_netlist2Console);
-            break;
-        default:
-            break;
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice:
+    case spicecompat::simSpiceOpus:
+        a_ngspice->SaveNetlist(filename, a_netlist2Console);
+        break;
+    case spicecompat::simXyce:
+        a_xyce->SaveNetlist(filename, a_netlist2Console);
+        break;
+    default:
+        break;
     }
 
-    if (!a_netlist2Console && !QFile::exists(filename))
-    {
+    if (!a_netlist2Console && !QFile::exists(filename)) {
         QMessageBox::critical(
-                nullptr,
-                QObject::tr("Save netlist"),
-                QObject::tr("Disk write error!"), QMessageBox::Ok);
+            nullptr,
+            QObject::tr("Save netlist"),
+            QObject::tr("Disk write error!"), QMessageBox::Ok);
     }
 }
 
 void ExternSimDialog::slotExit()
 {
     // Save window size / position and close this dialog.
-    QSettings settings("qucs","qucs_s");
-    settings.setValue("ExternSimDialog/geometry", saveGeometry());  
+    QSettings settings("qucs", "qucs_s");
+    settings.setValue("ExternSimDialog/geometry", saveGeometry());
 
     accept();
 }
@@ -347,39 +339,40 @@ void ExternSimDialog::saveLog()
     QFile log(filename);
     if (log.open(QIODevice::WriteOnly)) {
         QTextStream ts_log(&log);
-        ts_log<<a_editSimConsole->toPlainText();
+        ts_log << a_editSimConsole->toPlainText();
         log.flush();
         log.close();
     }
 }
 
-void ExternSimDialog::addLogEntry(const QString &text, const QIcon &icon)
+void ExternSimDialog::addLogEntry(const QString& text, const QIcon& icon)
 {
-    QListWidgetItem *itm = new QListWidgetItem;
+    QListWidgetItem* itm = new QListWidgetItem;
     itm->setText(text);
     itm->setIcon(icon);
     a_simStatusLog->addItem(itm);
 }
 
-bool ExternSimDialog::logContainsError(const QString &out)
+bool ExternSimDialog::logContainsError(const QString& out)
 {
     bool found = false;
     QStringList err_patterns;
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simNgspice:
-        err_patterns<<"Error:"<<"ERROR"<<"Error "
-                    <<"Syntax error:"<<"Expression err:"
-                    <<"errors:"<<"simulation(s) aborted"
-                    <<"simulation aborted"<<"analysis aborted";
+        err_patterns << "Error:" << "ERROR" << "Error "
+                     << "Syntax error:" << "Expression err:"
+                     << "errors:" << "simulation(s) aborted"
+                     << "simulation aborted" << "analysis aborted";
         break;
     case spicecompat::simXyce:
-        err_patterns<<"Error:"<<"ERROR"<<"MSG_ERROR"
-                    <<"error:"<<"MSG_FATAL";
+        err_patterns << "Error:" << "ERROR" << "MSG_ERROR"
+                     << "error:" << "MSG_FATAL";
         break;
-    default: err_patterns<<"error";
+    default:
+        err_patterns << "error";
         break;
     }
-    for(const auto &err_str: err_patterns) {
+    for (const auto& err_str : err_patterns) {
         if (out.contains(err_str)) {
             found = true;
             break;
@@ -388,23 +381,24 @@ bool ExternSimDialog::logContainsError(const QString &out)
     return found;
 }
 
-bool ExternSimDialog::logContainsWarning(const QString &out)
+bool ExternSimDialog::logContainsWarning(const QString& out)
 {
     bool found = false;
     QStringList warn_patterns;
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simNgspice:
-        warn_patterns<<"Warning:"<<"WARNING"<<"Warning "
-                    <<"warning:";
+        warn_patterns << "Warning:" << "WARNING" << "Warning "
+                      << "warning:";
         break;
     case spicecompat::simXyce:
-        warn_patterns<<"Warning:"<<"WARNING"<<"Warning "
-                    <<"warning:";
+        warn_patterns << "Warning:" << "WARNING" << "Warning "
+                      << "warning:";
         break;
-    default: warn_patterns<<"warning";
+    default:
+        warn_patterns << "warning";
         break;
     }
-    for(const auto &warn_str: warn_patterns) {
+    for (const auto& warn_str : warn_patterns) {
         if (out.contains(warn_str)) {
             found = true;
             break;
@@ -412,4 +406,3 @@ bool ExternSimDialog::logContainsWarning(const QString &out)
     }
     return found;
 }
-

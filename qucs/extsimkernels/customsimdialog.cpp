@@ -15,10 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-#include "main.h"
 #include "customsimdialog.h"
+#include "main.h"
 #include "node.h"
 #include "wire.h"
 
@@ -32,26 +30,26 @@
  * \param pc[in] Component that need to be edit.
  * \param sch[in] Schematic on which component presents.
  */
-CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
-    QDialog(sch),
-    a_isXyceScr(false),
-    a_isChanged(false),
-    a_comp(pc),
-    a_schematic(sch),
-    a_edtCode(new QTextEdit(this)),
-    a_checkCode(new QCheckBox(tr("display in schematic"), this)),
-    a_btnOK(new QPushButton(tr("OK"))),
-    a_btnApply(new QPushButton(tr("Apply"))),
-    a_btnCancel(new QPushButton(tr("Cancel"))),
-    a_btnPlotAll(new QPushButton(tr("Find all variables"))),
-    a_btnFindOutputs(new QPushButton(tr("Find all outputs"))),
-    a_edtVars(new QLineEdit(a_comp->Props.at(1)->Value)),
-    a_edtOutputs(new QLineEdit(a_comp->Props.at(2)->Value))
+CustomSimDialog::CustomSimDialog(SpiceCustomSim* pc, Schematic* sch)
+    : QDialog(sch)
+    , a_isXyceScr(false)
+    , a_isChanged(false)
+    , a_comp(pc)
+    , a_schematic(sch)
+    , a_edtCode(new QTextEdit(this))
+    , a_checkCode(new QCheckBox(tr("display in schematic"), this))
+    , a_btnOK(new QPushButton(tr("OK")))
+    , a_btnApply(new QPushButton(tr("Apply")))
+    , a_btnCancel(new QPushButton(tr("Cancel")))
+    , a_btnPlotAll(new QPushButton(tr("Find all variables")))
+    , a_btnFindOutputs(new QPushButton(tr("Find all outputs")))
+    , a_edtVars(new QLineEdit(a_comp->Props.at(1)->Value))
+    , a_edtOutputs(new QLineEdit(a_comp->Props.at(2)->Value))
 {
     resize(640, 480);
 
     setWindowTitle(tr("Edit SPICE code"));
-    QLabel* lblName = new QLabel(tr("Component: ")+a_comp->Description);
+    QLabel* lblName = new QLabel(tr("Component: ") + a_comp->Description);
 
     a_edtCode->document()->setDefaultFont(QucsSettings.textFont);
     a_edtCode->setWordWrapMode(QTextOption::NoWrap);
@@ -67,18 +65,18 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
     QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw-SPICE or XYCE-STD or scalars print format)"));
     connect(a_edtOutputs, SIGNAL(textChanged(const QString&)), this, SLOT(slotChanged()));
 
-    connect(a_btnApply,SIGNAL(clicked()),this,SLOT(slotApply()));
-    connect(a_btnCancel,SIGNAL(clicked()),this,SLOT(slotCancel()));
-    connect(a_btnOK,SIGNAL(clicked()),this,SLOT(slotOK()));
-    connect(a_btnPlotAll,SIGNAL(clicked()),this,SLOT(slotFindVars()));
-    connect(a_btnFindOutputs,SIGNAL(clicked()),this,SLOT(slotFindOutputs()));
+    connect(a_btnApply, SIGNAL(clicked()), this, SLOT(slotApply()));
+    connect(a_btnCancel, SIGNAL(clicked()), this, SLOT(slotCancel()));
+    connect(a_btnOK, SIGNAL(clicked()), this, SLOT(slotOK()));
+    connect(a_btnPlotAll, SIGNAL(clicked()), this, SLOT(slotFindVars()));
+    connect(a_btnFindOutputs, SIGNAL(clicked()), this, SLOT(slotFindOutputs()));
 
-    QVBoxLayout *vl1 = new QVBoxLayout;
-    QVBoxLayout *vl2 = new QVBoxLayout;
-    QHBoxLayout *hl1 = new QHBoxLayout;
+    QVBoxLayout* vl1 = new QVBoxLayout;
+    QVBoxLayout* vl2 = new QVBoxLayout;
+    QHBoxLayout* hl1 = new QHBoxLayout;
 
     vl1->addWidget(lblName);
-    QGroupBox *gpb1 = new QGroupBox(tr("SPICE code editor"));
+    QGroupBox* gpb1 = new QGroupBox(tr("SPICE code editor"));
     vl2->addWidget(a_edtCode);
     vl2->addWidget(a_checkCode);
     gpb1->setLayout(vl2);
@@ -109,7 +107,8 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch) :
         a_btnPlotAll->setEnabled(false);
         a_btnFindOutputs->setEnabled(false);
         lblOut->setEnabled(false);
-    } else a_isXyceScr = false;
+    } else
+        a_isXyceScr = false;
 }
 
 /*!
@@ -124,7 +123,7 @@ void CustomSimDialog::slotChanged()
  */
 void CustomSimDialog::slotApply()
 {
-    if ( a_isChanged ) {
+    if (a_isChanged) {
         a_edtVars->setText(a_edtVars->text().remove(' '));
         a_edtOutputs->setText(a_edtOutputs->text().remove(' '));
 
@@ -165,40 +164,39 @@ void CustomSimDialog::slotFindVars()
 {
     QStringList vars;
     for (Node* pn : a_schematic->a_DocNodes) {
-      if(pn->hasLabel()) {
-          if (!vars.contains(pn->label()->Name)) {
-              vars.append(pn->label()->Name);
-          }
-      }
+        if (pn->hasLabel()) {
+            if (!vars.contains(pn->label()->Name)) {
+                vars.append(pn->label()->Name);
+            }
+        }
     }
     for (Wire* pw : a_schematic->a_DocWires) {
-      if(pw->hasLabel()) {
-          if (!vars.contains(pw->label()->Name)) {
-              vars.append(pw->label()->Name);
-          }
-      }
+        if (pw->hasLabel()) {
+            if (!vars.contains(pw->label()->Name)) {
+                vars.append(pw->label()->Name);
+            }
+        }
     }
 
     for (Component* pc : a_schematic->a_DocComps) {
-        if(pc->isProbe) {
+        if (pc->isProbe) {
             if (!vars.contains(pc->getProbeVariable())) {
                 vars.append(pc->getProbeVariable());
             }
         }
     }
 
-    for(QStringList::iterator it = vars.begin();it != vars.end(); it++) {
-        if (!(it->endsWith("#branch"))) *it=QStringLiteral("V(%1)").arg(*it);
+    for (QStringList::iterator it = vars.begin(); it != vars.end(); it++) {
+        if (!(it->endsWith("#branch")))
+            *it = QStringLiteral("V(%1)").arg(*it);
     }
-
-
 
     QStringList strings = a_edtCode->toPlainText().split('\n');
     QRegularExpression let_pattern("^\\s*let\\s+[A-Za-z].*=.+");
 
     for (const QString& line : strings) {
         if (let_pattern.match(line).hasMatch()) {
-            QString var = line.section('=',0,0);
+            QString var = line.section('=', 0, 0);
             var.remove("let ");
             var.remove(' ');
             vars.append(var);
@@ -218,13 +216,15 @@ void CustomSimDialog::slotFindOutputs()
         QRegularExpression file_ex("\\s*file\\s*=\\s*", QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
             if (print_ex.match(line).hasMatch()) {
-                //file_ex.setCaseSensitivity(Qt::CaseInsensitive);
+                // file_ex.setCaseSensitivity(Qt::CaseInsensitive);
                 int p = line.indexOf(file_ex);
-                p = line.indexOf('=',p);
-                int l = line.size()-(p+1);
+                p = line.indexOf('=', p);
+                int l = line.size() - (p + 1);
                 QString sub = line.right(l);
-                outp = sub.section(" ",0,0,QString::SectionSkipEmpty);
-                if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
+                outp = sub.section(" ", 0, 0, QString::SectionSkipEmpty);
+                if (!outp.isEmpty())
+                    if (!outps.contains(outp))
+                        outps.append(outp);
             }
         }
     } else {
@@ -234,12 +234,15 @@ void CustomSimDialog::slotFindOutputs()
         print_rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
             if (write_ex.match(line).hasMatch()) {
-                outp = line.section(QRegularExpression("\\s"),1,1,QString::SectionSkipEmpty);
-                if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
-            }
-            else if ( print_rx.match(line).hasMatch() ) {
+                outp = line.section(QRegularExpression("\\s"), 1, 1, QString::SectionSkipEmpty);
+                if (!outp.isEmpty())
+                    if (!outps.contains(outp))
+                        outps.append(outp);
+            } else if (print_rx.match(line).hasMatch()) {
                 outp = line.section('>', 1, 1, QString::SectionSkipEmpty).trimmed();
-                if ( !outp.isEmpty() ) if ( !outps.contains(outp) ) outps.append(outp);
+                if (!outp.isEmpty())
+                    if (!outps.contains(outp))
+                        outps.append(outp);
             }
         }
     }

@@ -20,19 +20,18 @@
 
 #include "component.h"
 
-
-class Digi_Source : public Component  {
+class Digi_Source : public Component {
 public:
-  Digi_Source();
- ~Digi_Source();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Digi_Source();
+    ~Digi_Source();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString netlist();
-  QString vhdlCode(int);
-  QString verilogCode(int);
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString vhdlCode(int);
+    QString verilogCode(int);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

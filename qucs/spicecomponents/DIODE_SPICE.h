@@ -18,24 +18,24 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef DIODE_SPICE_H
+#ifndef DIODE_SPICE_H
 #define DIODE_SPICE_H
 
 #include "components/component.h"
 
 class DIODE_SPICE : public MultiViewComponent {
 public:
-  DIODE_SPICE();
-  ~DIODE_SPICE();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  static Element* info_DIODE3(QString&, char* &, bool getNewOne=false);
+    DIODE_SPICE();
+    ~DIODE_SPICE();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    static Element* info_DIODE3(QString&, char*&, bool getNewOne = false);
 
 protected:
-  void createSymbol();
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
+    void createSymbol();
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
 };
 
 #endif // DIODE_SPICE_H

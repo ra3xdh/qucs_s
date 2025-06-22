@@ -18,21 +18,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef VAMPMOD_H
+#ifndef VAMPMOD_H
 #define VAMPMOD_H
 
 #include "components/component.h"
 
 class vAmpMod : public Component {
 public:
-  vAmpMod();
-  ~vAmpMod();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    vAmpMod();
+    ~vAmpMod();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // VAMPMOD_H

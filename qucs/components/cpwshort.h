@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class CPWshort : public Component  {
+class CPWshort : public Component {
 public:
-  CPWshort();
-  ~CPWshort();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    CPWshort();
+    ~CPWshort();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

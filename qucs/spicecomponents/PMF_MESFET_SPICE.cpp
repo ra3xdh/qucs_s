@@ -19,48 +19,48 @@
  *                                                                         *
  ***************************************************************************/
 #include "PMF_MESFET_SPICE.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 PMF_MESFET_SPICE::PMF_MESFET_SPICE()
 {
     Description = QObject::tr("Z(PMF) MESFET:\nMultiple line ngspice or Xyce Z model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
     Simulator = spicecompat::simSpice;
 
-  Lines.append(new qucs::Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(-30,  0,-10,  0,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(-10,-10,  0,-10,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(  0,-10,  0,-20,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line(-10, -15, -10, 15, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(-30, 0, -10, 0, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(-10, -10, 0, -10, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(0, -10, 0, -20, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(0, -20, 0, -30, QPen(Qt::darkBlue, 3)));
 
-  Lines.append(new qucs::Line(-10, 10,  0, 10,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(  0, 10,  0, 20,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(-10, 10, 0, 10, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(0, 10, 0, 20, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(0, 20, 0, 30, QPen(Qt::darkBlue, 3)));
+    Lines.append(new qucs::Line(-4, 24, 4, 20, QPen(Qt::darkRed, 2)));
 
-  Texts.append(new Text(30,12,"PMF",Qt::darkRed,10.0,0.0,-1.0));
+    Texts.append(new Text(30, 12, "PMF", Qt::darkRed, 10.0, 0.0, -1.0));
 
-  Ports.append(new Port(  0,-30));
-  Ports.append(new Port(-30,  0));
-  Ports.append(new Port(  0, 30));
+    Ports.append(new Port(0, -30));
+    Ports.append(new Port(-30, 0));
+    Ports.append(new Port(0, 30));
 
-  x1 = -30; y1 = -30;
-  x2 =   4; y2 =  30;
+    x1 = -30;
+    y1 = -30;
+    x2 = 4;
+    y2 = 30;
 
-    tx = x1+4;
-    ty = y2+4;
+    tx = x1 + 4;
+    ty = y2 + 4;
 
     Model = "PMF_MESFET_SPICE";
     SpiceModel = "Z";
-    Name  = "Z";
+    Name = "Z";
 
-    Props.append(new Property("Z", "", true,"Param list and\n .model spec."));
-    Props.append(new Property("Z_Line 2", "", false,"+ continuation line 1"));
-    Props.append(new Property("Z_Line 3", "", false,"+ continuation line 2"));
-    Props.append(new Property("Z_Line 4", "", false,"+ continuation line 3"));
-    Props.append(new Property("Z_Line 5", "", false,"+ continuation line 4"));
-
+    Props.append(new Property("Z", "", true, "Param list and\n .model spec."));
+    Props.append(new Property("Z_Line 2", "", false, "+ continuation line 1"));
+    Props.append(new Property("Z_Line 3", "", false, "+ continuation line 2"));
+    Props.append(new Property("Z_Line 4", "", false, "+ continuation line 3"));
+    Props.append(new Property("Z_Line 5", "", false, "+ continuation line 4"));
 }
 
 PMF_MESFET_SPICE::~PMF_MESFET_SPICE()
@@ -69,16 +69,17 @@ PMF_MESFET_SPICE::~PMF_MESFET_SPICE()
 
 Component* PMF_MESFET_SPICE::newOne()
 {
-  return new PMF_MESFET_SPICE();
+    return new PMF_MESFET_SPICE();
 }
 
-Element* PMF_MESFET_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* PMF_MESFET_SPICE::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Z(PMF)");
-  BitmapFile = (char *) "PMF_MESFET_SPICE";
+    Name = QObject::tr("Z(PMF)");
+    BitmapFile = (char*)"PMF_MESFET_SPICE";
 
-  if(getNewOne)  return new PMF_MESFET_SPICE();
-  return 0;
+    if (getNewOne)
+        return new PMF_MESFET_SPICE();
+    return 0;
 }
 
 QString PMF_MESFET_SPICE::netlist()
@@ -90,24 +91,30 @@ QString PMF_MESFET_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = s
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam+" ";   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam + " "; // node names
     }
 
-    QString Z= Props.at(0)->Value;
-    QString Z_Line_2= Props.at(1)->Value;
-    QString Z_Line_3= Props.at(2)->Value;
-    QString Z_Line_4= Props.at(3)->Value;
-    QString Z_Line_5= Props.at(4)->Value;
+    QString Z = Props.at(0)->Value;
+    QString Z_Line_2 = Props.at(1)->Value;
+    QString Z_Line_3 = Props.at(2)->Value;
+    QString Z_Line_4 = Props.at(3)->Value;
+    QString Z_Line_5 = Props.at(4)->Value;
 
-    if(  Z.length()  > 0)          s += QStringLiteral("%1").arg(Z);
-    if(  Z_Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(Z_Line_2);
-    if(  Z_Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(Z_Line_3);
-    if(  Z_Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(Z_Line_4);
-    if(  Z_Line_5.length() >  0 )  s += QStringLiteral("\n%1").arg(Z_Line_5);
+    if (Z.length() > 0)
+        s += QStringLiteral("%1").arg(Z);
+    if (Z_Line_2.length() > 0)
+        s += QStringLiteral("\n%1").arg(Z_Line_2);
+    if (Z_Line_3.length() > 0)
+        s += QStringLiteral("\n%1").arg(Z_Line_3);
+    if (Z_Line_4.length() > 0)
+        s += QStringLiteral("\n%1").arg(Z_Line_4);
+    if (Z_Line_5.length() > 0)
+        s += QStringLiteral("\n%1").arg(Z_Line_5);
     s += "\n";
 
     return s;

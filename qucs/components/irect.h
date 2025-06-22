@@ -20,14 +20,13 @@
 
 #include "component.h"
 
-
-class iRect : public Component  {
+class iRect : public Component {
 public:
-  iRect();
-  ~iRect();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    iRect();
+    ~iRect();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

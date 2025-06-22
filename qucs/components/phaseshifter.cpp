@@ -18,37 +18,38 @@
 #include "phaseshifter.h"
 #include "extsimkernels/spicecompat.h"
 
-
 Phaseshifter::Phaseshifter()
 {
-  Description = QObject::tr("phase shifter");
-  Simulator = spicecompat::simQucsator;
+    Description = QObject::tr("phase shifter");
+    Simulator = spicecompat::simQucsator;
 
-  Lines.append(new qucs::Line(-14,-14, 14,-14,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-14, 14, 14, 14,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-14,-14,-14, 14,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 14,-14, 14, 14,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc( -9, -9, 17, 17, 0, 16*360,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-10, 10, 10,-10,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-14, -14, 14, -14, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-14, 14, 14, 14, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-14, -14, -14, 14, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(14, -14, 14, 14, QPen(Qt::darkBlue, 2)));
+    Arcs.append(new qucs::Arc(-9, -9, 17, 17, 0, 16 * 360, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-10, 10, 10, -10, QPen(Qt::darkBlue, 2)));
 
-  Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 14,  0, 30,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30, 0, -14, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(14, 0, 30, 0, QPen(Qt::darkBlue, 2)));
 
-  Ports.append(new Port(-30,  0));
-  Ports.append(new Port( 30,  0));
+    Ports.append(new Port(-30, 0));
+    Ports.append(new Port(30, 0));
 
-  x1 = -30; y1 = -17;
-  x2 =  30; y2 =  17;
+    x1 = -30;
+    y1 = -17;
+    x2 = 30;
+    y2 = 17;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "PShift";
-  Name  = "X";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "PShift";
+    Name = "X";
 
-  Props.append(new Property("phi", "90", true,
-		QObject::tr("phase shift in degree")));
-  Props.append(new Property("Zref", "50 Ohm", false,
-		QObject::tr("reference impedance")));
+    Props.append(new Property("phi", "90", true,
+        QObject::tr("phase shift in degree")));
+    Props.append(new Property("Zref", "50 Ohm", false,
+        QObject::tr("reference impedance")));
 }
 
 Phaseshifter::~Phaseshifter()
@@ -57,14 +58,15 @@ Phaseshifter::~Phaseshifter()
 
 Component* Phaseshifter::newOne()
 {
-  return new Phaseshifter();
+    return new Phaseshifter();
 }
 
-Element* Phaseshifter::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* Phaseshifter::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Phase Shifter");
-  BitmapFile = (char *) "pshifter";
+    Name = QObject::tr("Phase Shifter");
+    BitmapFile = (char*)"pshifter";
 
-  if(getNewOne)  return new Phaseshifter();
-  return 0;
+    if (getNewOne)
+        return new Phaseshifter();
+    return 0;
 }

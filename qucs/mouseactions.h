@@ -21,7 +21,6 @@
 #include "element.h"
 #include <QAction>
 
-
 class Wire;
 class WireLabel;
 class Schematic;
@@ -31,97 +30,96 @@ class QMenu;
 class QMouseEvent;
 class QucsApp;
 
-extern QAction *formerAction;
-
+extern QAction* formerAction;
 
 class MouseActions {
 public:
-  MouseActions(QucsApp*);
-  virtual ~MouseActions();
+    MouseActions(QucsApp*);
+    virtual ~MouseActions();
 
-  static void setPainter(Schematic*);
-  bool pasteElements(Schematic*);
-  void editElement(Schematic*, QMouseEvent*);
-  void editLabel(Schematic*, WireLabel*);
+    static void setPainter(Schematic*);
+    bool pasteElements(Schematic*);
+    void editElement(Schematic*, QMouseEvent*);
+    void editLabel(Schematic*, WireLabel*);
 
-  Element *selElem;  // component/diagram/painting selected in IconView
-  Element *focusElement;
-  QMouseEvent *focusMEvent;
+    Element* selElem; // component/diagram/painting selected in IconView
+    Element* focusElement;
+    QMouseEvent* focusMEvent;
 
-  int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
-  std::list<Element*> movingElements;
-  int movingRotated;
+    int MAx1, MAy1, MAx2, MAy2, MAx3, MAy3; // cache for mouse movements
+    std::list<Element*> movingElements;
+    int movingRotated;
 
-  // menu appearing by right mouse button click on component
-  QMenu *ComponentMenu;
+    // menu appearing by right mouse button click on component
+    QMenu* ComponentMenu;
 
 private:
-  bool isMoveEqual;
-  QucsApp* App;
+    bool isMoveEqual;
+    QucsApp* App;
 
-  Diagram* pActiveDiagram = nullptr;
-  QPointF mouseDownPoint;
-  QPointF mouseUpPoint;
+    Diagram* pActiveDiagram = nullptr;
+    QPointF mouseDownPoint;
+    QPointF mouseUpPoint;
 
-  // -------------------------------------------------------------------
+    // -------------------------------------------------------------------
 public:
-  void MMoveSelect(Schematic*, QMouseEvent*);
-  void MMoveElement(Schematic*, QMouseEvent*);
-  void MMoveWire1(Schematic*, QMouseEvent*);
-  void MMoveWire2(Schematic*, QMouseEvent*);
-  void MMoveMoving(Schematic*, QMouseEvent*);
-  void MMoveMoving2(Schematic*, QMouseEvent*);
-  void MMovePaste(Schematic*, QMouseEvent*);
-  void MMovePaste2(Schematic*, QMouseEvent*);
-  void MMoveDelete(Schematic*, QMouseEvent*);
-  void MMoveLabel(Schematic*, QMouseEvent*);
-  void MMoveMarker(Schematic*, QMouseEvent*);
-  void MMoveSetLimits(Schematic*, QMouseEvent*);
-  void MMoveMirrorY(Schematic*, QMouseEvent*);
-  void MMoveMirrorX(Schematic*, QMouseEvent*);
-  void MMoveRotate(Schematic*, QMouseEvent*);
-  void MMoveActivate(Schematic*, QMouseEvent*);
-  void MMoveOnGrid(Schematic*, QMouseEvent*);
-  void MMoveResizePainting(Schematic*, QMouseEvent*);
-  void MMoveMoveText(Schematic*, QMouseEvent*);
-  void MMoveMoveTextB(Schematic*, QMouseEvent*);
-  void MMoveZoomIn(Schematic*, QMouseEvent*);
-  void MMoveScrollBar(Schematic*, QMouseEvent*);
+    void MMoveSelect(Schematic*, QMouseEvent*);
+    void MMoveElement(Schematic*, QMouseEvent*);
+    void MMoveWire1(Schematic*, QMouseEvent*);
+    void MMoveWire2(Schematic*, QMouseEvent*);
+    void MMoveMoving(Schematic*, QMouseEvent*);
+    void MMoveMoving2(Schematic*, QMouseEvent*);
+    void MMovePaste(Schematic*, QMouseEvent*);
+    void MMovePaste2(Schematic*, QMouseEvent*);
+    void MMoveDelete(Schematic*, QMouseEvent*);
+    void MMoveLabel(Schematic*, QMouseEvent*);
+    void MMoveMarker(Schematic*, QMouseEvent*);
+    void MMoveSetLimits(Schematic*, QMouseEvent*);
+    void MMoveMirrorY(Schematic*, QMouseEvent*);
+    void MMoveMirrorX(Schematic*, QMouseEvent*);
+    void MMoveRotate(Schematic*, QMouseEvent*);
+    void MMoveActivate(Schematic*, QMouseEvent*);
+    void MMoveOnGrid(Schematic*, QMouseEvent*);
+    void MMoveResizePainting(Schematic*, QMouseEvent*);
+    void MMoveMoveText(Schematic*, QMouseEvent*);
+    void MMoveMoveTextB(Schematic*, QMouseEvent*);
+    void MMoveZoomIn(Schematic*, QMouseEvent*);
+    void MMoveScrollBar(Schematic*, QMouseEvent*);
 
-  void MPressSelect(Schematic*, QMouseEvent*, float, float);
-  void MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, float fY);
-  void MPressDelete(Schematic*, QMouseEvent*, float, float);
-  void MPressActivate(Schematic*, QMouseEvent*, float, float);
-  void MPressMirrorX(Schematic*, QMouseEvent*, float, float);
-  void MPressMirrorY(Schematic*, QMouseEvent*, float, float);
-  void MPressRotate(Schematic*, QMouseEvent*, float, float);
-  void MPressElement(Schematic*, QMouseEvent*, float, float);
-  void MPressLabel(Schematic*, QMouseEvent*, float, float);
-  void MPressWire1(Schematic*, QMouseEvent*, float, float);
-  void MPressWire2(Schematic*, QMouseEvent*, float, float);
-  void MPressPainting(Schematic*, QMouseEvent*, float, float);
-  void MPressMarker(Schematic*, QMouseEvent*, float, float);
-  void MPressSetLimits(Schematic*, QMouseEvent*, float, float);
-  void MPressOnGrid(Schematic*, QMouseEvent*, float, float);
-  void MPressMoveText(Schematic*, QMouseEvent*, float, float);
-  void MPressZoomIn(Schematic*, QMouseEvent*, float, float);
+    void MPressSelect(Schematic*, QMouseEvent*, float, float);
+    void MPressTune(Schematic* Doc, QMouseEvent* Event, float fX, float fY);
+    void MPressDelete(Schematic*, QMouseEvent*, float, float);
+    void MPressActivate(Schematic*, QMouseEvent*, float, float);
+    void MPressMirrorX(Schematic*, QMouseEvent*, float, float);
+    void MPressMirrorY(Schematic*, QMouseEvent*, float, float);
+    void MPressRotate(Schematic*, QMouseEvent*, float, float);
+    void MPressElement(Schematic*, QMouseEvent*, float, float);
+    void MPressLabel(Schematic*, QMouseEvent*, float, float);
+    void MPressWire1(Schematic*, QMouseEvent*, float, float);
+    void MPressWire2(Schematic*, QMouseEvent*, float, float);
+    void MPressPainting(Schematic*, QMouseEvent*, float, float);
+    void MPressMarker(Schematic*, QMouseEvent*, float, float);
+    void MPressSetLimits(Schematic*, QMouseEvent*, float, float);
+    void MPressOnGrid(Schematic*, QMouseEvent*, float, float);
+    void MPressMoveText(Schematic*, QMouseEvent*, float, float);
+    void MPressZoomIn(Schematic*, QMouseEvent*, float, float);
 
-  void MDoubleClickSelect(Schematic*, QMouseEvent*);
-  void MDoubleClickWire2(Schematic*, QMouseEvent*);
+    void MDoubleClickSelect(Schematic*, QMouseEvent*);
+    void MDoubleClickWire2(Schematic*, QMouseEvent*);
 
-  void MReleaseSelect(Schematic*, QMouseEvent*);
-  void MReleaseSelect2(Schematic*, QMouseEvent*);
-  void MReleaseActivate(Schematic*, QMouseEvent*);
-  void MReleaseMoving(Schematic*, QMouseEvent*);
-  void MReleaseResizeDiagram(Schematic*, QMouseEvent*);
-  void MReleasePaste(Schematic*, QMouseEvent*);
-  void MReleaseResizePainting(Schematic*, QMouseEvent*);
-  void MReleaseMoveText(Schematic*, QMouseEvent*);
-  void MReleaseZoomIn(Schematic*, QMouseEvent*);
-  void MReleaseSetLimits(Schematic*, QMouseEvent*);
+    void MReleaseSelect(Schematic*, QMouseEvent*);
+    void MReleaseSelect2(Schematic*, QMouseEvent*);
+    void MReleaseActivate(Schematic*, QMouseEvent*);
+    void MReleaseMoving(Schematic*, QMouseEvent*);
+    void MReleaseResizeDiagram(Schematic*, QMouseEvent*);
+    void MReleasePaste(Schematic*, QMouseEvent*);
+    void MReleaseResizePainting(Schematic*, QMouseEvent*);
+    void MReleaseMoveText(Schematic*, QMouseEvent*);
+    void MReleaseZoomIn(Schematic*, QMouseEvent*);
+    void MReleaseSetLimits(Schematic*, QMouseEvent*);
 
-  void paintElementsScheme(Schematic*);
-  void rightPressMenu(Schematic*, QMouseEvent*, float, float);
+    void paintElementsScheme(Schematic*);
+    void rightPressMenu(Schematic*, QMouseEvent*, float, float);
 };
 
 #endif

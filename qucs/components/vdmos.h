@@ -20,18 +20,17 @@
 
 #include "component.h"
 
-
 class VDMOS : public MultiViewComponent {
 public:
-  VDMOS();
-	 ~VDMOS() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  static Element* info_p(QString&, char* &, bool getNewOne=false);
+    VDMOS();
+    ~VDMOS() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    static Element* info_p(QString&, char*&, bool getNewOne = false);
 
 protected:
-  void createSymbol();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    void createSymbol();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif
