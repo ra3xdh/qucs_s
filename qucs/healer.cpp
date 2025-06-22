@@ -526,7 +526,7 @@ std::pair<Node*,vector<Wire*>> Healer::HealerImpl::findStableNode(Node* begin, W
             break;
         }
 
-        auto* next_wire = dynamic_cast<Wire*>(current_node->other_than(prev_wire));
+        auto* next_wire = current_node->other_than(prev_wire);
         if (next_wire == nullptr) break;
 
         passed_nodes.push_back(current_node);

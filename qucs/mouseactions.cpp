@@ -1387,8 +1387,9 @@ void MouseActions::MReleaseSelect(Schematic *Doc, QMouseEvent *Event)
     if (focusElement)
         if (Event->button() == Qt::LeftButton)
             if (focusElement->Type == isWire) {
-                Doc->selectWireLine(focusElement, ((Wire *) focusElement)->Port1, ctrl);
-                Doc->selectWireLine(focusElement, ((Wire *) focusElement)->Port2, ctrl);
+                auto w = dynamic_cast<Wire*>(focusElement);
+                Doc->selectWireLine(w, w->Port1, ctrl);
+                Doc->selectWireLine(w, w->Port2, ctrl);
             }
 
     Doc->releaseKeyboard(); // allow keyboard inputs again

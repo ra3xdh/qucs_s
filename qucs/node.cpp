@@ -33,7 +33,7 @@ Node::Node(int x, int y)
 void Node::paint(QPainter* painter) const {
   painter->save();
 
-  switch(connections.size()) {
+  switch(conn_count()) {
     case 1:
       if (label()) {
         painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
@@ -45,7 +45,7 @@ void Node::paint(QPainter* painter) const {
       return;
 
     case 2:
-      if (connections.front()->Type == isWire && connections.back()->Type == isWire) {
+      if (m_wires.size() == 2) {
           painter->restore();
           return;
       }

@@ -825,11 +825,8 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
     }
 
     for (auto* node : *a_Nodes) {
-        for (auto* connected : *node) {
-            if (should_draw(connected)) {
-                draw_preserve_selection(node, painter);
-                break;
-            }
+        if (std::ranges::any_of(node->wires(), should_draw) || std::ranges::any_of(node->components(), should_draw)) {
+            draw_preserve_selection(node, painter);
         }
 
         if (auto* label = node->label()) {
@@ -1186,7 +1183,9 @@ Schematic::Selection Schematic::currentSelection() const {
     }
 
     for (auto* pn : *a_Nodes) {
-        if (std::all_of(pn->begin(), pn->end(), [](auto* e) { return e->isSelected; })) {
+        if (std::ranges::all_of(pn->wires(), [](auto* e) { return e->isSelected; })
+            && std::ranges::all_of(pn->components(), [](auto* e) { return e->isSelected; }))
+        {
             selection.nodes.push_back(pn);
         }
 
