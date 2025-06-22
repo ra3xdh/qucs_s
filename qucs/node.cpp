@@ -21,10 +21,10 @@
 #include <QPainter>
 
 Node::Node(int x, int y)
+  : DType("")
+  , State(0)
 {
   Type  = isNode;
-  State = 0;
-  DType = "";
 
   cx = x;
   cy = y;
@@ -33,30 +33,23 @@ Node::Node(int x, int y)
 void Node::paint(QPainter* painter) const {
   painter->save();
 
-  switch(conn_count()) {
-    case 1:
-      if (label()) {
+  if (conn_count() == 1) {
+      if (hasLabel()) {
         painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
       } else {
         painter->setPen(QPen(Qt::red,1));  // node is open
         painter->drawEllipse(cx-4, cy-4, 8, 8);
       }
-      painter->restore();
-      return;
-
-    case 2:
-      if (m_wires.size() == 2) {
-          painter->restore();
-          return;
-      }
-      painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
-      break;
-
-    default:
-        painter->setBrush(Qt::darkBlue);  // more than 2 connections
-	      painter->setPen(QPen(Qt::darkBlue,1));
-	      painter->drawEllipse(cx-3, cy-3, 6, 6);
   }
+  else if (conn_count() > 2) {
+      painter->setBrush(Qt::darkBlue);  // more than 2 connections
+      painter->setPen(QPen(Qt::darkBlue,1));
+      painter->drawEllipse(cx-3, cy-3, 6, 6);
+  }
+  else if (m_wires.size() != 2) {
+      painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
+  }
+
   painter->restore();
 }
 
@@ -75,7 +68,7 @@ void Node::setName(const QString& name, const QString& value, int x, int y)
   assert(!(name.isEmpty() && value.isEmpty()));
 
   if (!hasLabel()) {
-    acquireLabel(new WireLabel(name, cx, cy, x, y));
+    acquireLabel(std::make_unique<WireLabel>(name, cx, cy, x, y));
   }
   else {
     label()->setName(name);
