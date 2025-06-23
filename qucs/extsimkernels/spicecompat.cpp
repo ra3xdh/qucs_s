@@ -441,3 +441,10 @@ int spicecompat::strToTranModel(const QString &model)
   models<<"DC"<<"Full";
   return models.indexOf(model);
 }
+
+int spicecompat::strToMsopenModel(const QString &model)
+{
+  QStringList models;
+  models<<"Kirschning"<<"Hammerstad"<<"Alexopoulos";
+  return models.indexOf(model);
+}
