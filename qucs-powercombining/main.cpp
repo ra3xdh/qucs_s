@@ -21,46 +21,46 @@
  *
  */
 
-#include <QApplication>
-#include "qucspowercombiningtool.h"
 #include "../qucs/extsimkernels/spicecompat.h"
+#include "qucspowercombiningtool.h"
+#include <QApplication>
 
 struct tQucsSettings QucsSettings;
-
-
 
 // #########################################################################
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-    QSettings settings("qucs","qucs_s");
+    QSettings settings("qucs", "qucs_s");
     settings.beginGroup("QucsPowercombining");
-    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
-    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    if (settings.contains("x"))
+        QucsSettings.x = settings.value("x").toInt();
+    if (settings.contains("y"))
+        QucsSettings.y = settings.value("y").toInt();
     settings.endGroup();
-    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
-    if(settings.contains("DefaultSimulator"))
+    if (settings.contains("Language"))
+        QucsSettings.Language = settings.value("Language").toString();
+    if (settings.contains("DefaultSimulator"))
         QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
-    else QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
+    else
+        QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
 
-  return true;
+    return true;
 }
-
 
 // #########################################################################
 // Saves the settings in the settings file.
-bool saveApplSettings(QucsPowerCombiningTool *qucs)
+bool saveApplSettings(QucsPowerCombiningTool* qucs)
 {
-    QSettings settings ("qucs","qucs_s");
+    QSettings settings("qucs", "qucs_s");
     settings.beginGroup("QucsPowercombining");
     settings.setValue("x", qucs->x());
     settings.setValue("y", qucs->y());
     settings.endGroup();
-  return true;
-
+    return true;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     // apply default settings
     QucsSettings.x = 200;
@@ -70,14 +70,14 @@ int main(int argc, char *argv[])
 
     loadSettings();
 
-    QTranslator tor( 0 );
+    QTranslator tor(0);
     QString lang = QucsSettings.Language;
-    if(lang.isEmpty())
-      lang = QString(QLocale::system().name());
-    static_cast<void>(tor.load( QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
-    app.installTranslator( &tor );
+    if (lang.isEmpty())
+        lang = QString(QLocale::system().name());
+    static_cast<void>(tor.load(QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
+    app.installTranslator(&tor);
 
-    QucsPowerCombiningTool *PowerCombiningTool = new QucsPowerCombiningTool();
+    QucsPowerCombiningTool* PowerCombiningTool = new QucsPowerCombiningTool();
     PowerCombiningTool->raise();
     PowerCombiningTool->resize(350, 350);
     PowerCombiningTool->move(QucsSettings.x, QucsSettings.y);
