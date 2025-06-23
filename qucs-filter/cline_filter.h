@@ -19,9 +19,9 @@
 // coupled transmission line filter
 class CoupledLine_Filter : public TL_Filter {
 public:
-  CoupledLine_Filter();
+    CoupledLine_Filter();
 
-  static QString* createSchematic(tFilter*, tSubstrate*, bool);
+    static QString* createSchematic(tFilter*, tSubstrate*, bool);
 };
 
 #endif

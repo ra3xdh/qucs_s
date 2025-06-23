@@ -19,9 +19,9 @@
 // stepped-impedance transmission line filter
 class StepImpedance_Filter : public TL_Filter {
 public:
-  StepImpedance_Filter();
+    StepImpedance_Filter();
 
-  static QString* createSchematic(tFilter*, tSubstrate*, bool);
+    static QString* createSchematic(tFilter*, tSubstrate*, bool);
 };
 
 #endif

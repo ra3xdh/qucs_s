@@ -16,71 +16,67 @@
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
 
 #include "helpdialog.h"
 
-
-#include <QPushButton>
-#include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QPushButton>
 #include <QTextEdit>
+#include <QVBoxLayout>
 
-
-HelpDialog::HelpDialog(QWidget *parent)
-                     : QDialog(parent) 
+HelpDialog::HelpDialog(QWidget* parent)
+    : QDialog(parent)
 {
-  setWindowTitle("Qucs Filter Help");
+    setWindowTitle("Qucs Filter Help");
 
+    // --------  set help text into dialog  ------------
+    QString s(tr("QucsFilter is a filter synthesis program. "
+                 "To create a filter, simply enter all "
+                 "parameters and press the big button at the "
+                 "bottom of the main window. Immediately, the "
+                 "schematic of the filter is calculated and "
+                 "put into the clipboard. Now go to Qucs, "
+                 "open an empty schematic and press "
+                 "CTRL-V (paste from clipboard). The filter "
+                 "schematic can now be inserted and "
+                 " simulated. Have lots of fun!"));
 
-  // --------  set help text into dialog  ------------
-  QString s(tr("QucsFilter is a filter synthesis program. "
-	       "To create a filter, simply enter all "
-	       "parameters and press the big button at the "
-	       "bottom of the main window. Immediately, the "
-	       "schematic of the filter is calculated and "
-	       "put into the clipboard. Now go to Qucs, "
-	       "open an empty schematic and press "
-	       "CTRL-V (paste from clipboard). The filter "
-	       "schematic can now be inserted and "
-	       " simulated. Have lots of fun!"));
+    // --------  create dialog widgets  ------------
+    resize(250, 230);
 
+    vLayout = new QVBoxLayout();
 
-  // --------  create dialog widgets  ------------
-  resize(250, 230);
+    Text = new QTextEdit(s, this);
+    // Text->setTextFormat(Qt::PlainText);
+    Text->setReadOnly(true);
+    // Text->setWordWrap(QTextEdit::NoWrap);
+    Text->setMinimumSize(200, 200);
+    vLayout->addWidget(Text);
 
-  vLayout = new QVBoxLayout();
+    QHBoxLayout* h = new QHBoxLayout();
+    h->addLayout(vLayout);
 
-  Text = new QTextEdit(s, this);
-  //Text->setTextFormat(Qt::PlainText);
-  Text->setReadOnly(true);
-  //Text->setWordWrap(QTextEdit::NoWrap);
-  Text->setMinimumSize(200,200);
-  vLayout->addWidget(Text);
+    h->addStretch(5);
 
-  QHBoxLayout *h = new QHBoxLayout();
-  h->addLayout(vLayout);
+    QPushButton* ButtonClose = new QPushButton(tr("Close"));
+    h->addWidget(ButtonClose);
+    connect(ButtonClose, SIGNAL(clicked()), SLOT(slotClose()));
+    ButtonClose->setFocus();
 
-  h->addStretch(5);
+    h->addStretch(5);
 
-  QPushButton *ButtonClose = new QPushButton(tr("Close"));
-  h->addWidget(ButtonClose);
-  connect(ButtonClose, SIGNAL(clicked()), SLOT(slotClose()));
-  ButtonClose->setFocus();
-
-  h->addStretch(5);
-
-  setLayout(h);
+    setLayout(h);
 }
 
 HelpDialog::~HelpDialog()
 {
-  delete vLayout;
+    delete vLayout;
 }
 
 // ************************************************************
 void HelpDialog::slotClose()
 {
-  accept();
+    accept();
 }

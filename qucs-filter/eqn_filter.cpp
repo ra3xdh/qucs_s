@@ -12,19 +12,17 @@
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
 
 #include "eqn_filter.h"
 
-#include <QString>
 #include <QMessageBox>
-
+#include <QString>
 
 Equation_Filter::Equation_Filter()
 {
 }
-
 
 // ====================================================================
 // This is the main function. It creates the filter schematic.
@@ -38,113 +36,125 @@ Equation_Filter::Equation_Filter()
 //       Frequency  - corner frequency (lowpass and highpass) or
 //                    band start frequency (bandpass and bandstop)
 //       Frequency2 - band stop frequency (only for bandpass and bandstop)
-QString* Equation_Filter::createSchematic(tFilter *Filter)
+QString* Equation_Filter::createSchematic(tFilter* Filter)
 {
-  int i;
-  double a, b, Omega;
-  if((Filter->Class == CLASS_BANDPASS) || (Filter->Class == CLASS_BANDSTOP))
-    Omega = (Filter->Frequency2 + Filter->Frequency) / 2.0;
-  else {
-    Filter->Frequency2 = 0.0;
-    Omega = Filter->Frequency;
-  }
+    int i;
+    double a, b, Omega;
+    if ((Filter->Class == CLASS_BANDPASS) || (Filter->Class == CLASS_BANDSTOP))
+        Omega = (Filter->Frequency2 + Filter->Frequency) / 2.0;
+    else {
+        Filter->Frequency2 = 0.0;
+        Omega = Filter->Frequency;
+    }
 
-  // create the Qucs schematic
-  QString *s = new QString("<qucs Schematic " PACKAGE_VERSION ">\n");
+    // create the Qucs schematic
+    QString* s = new QString("<qucs Schematic " PACKAGE_VERSION ">\n");
 
-  *s += "<Components>\n";
-  *s += QStringLiteral("<Pac P1 1 100 30 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Filter->Impedance);
-  *s += QStringLiteral("<GND * 1 100 60 0 0 0 0>\n");
+    *s += "<Components>\n";
+    *s += QStringLiteral("<Pac P1 1 100 30 18 -26 0 1 \"1\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Filter->Impedance);
+    *s += QStringLiteral("<GND * 1 100 60 0 0 0 0>\n");
 
-  QString eqn = "2";  // because of 50ohms input and output
+    QString eqn = "2"; // because of 50ohms input and output
 
-  if(Filter->Type == TYPE_CHEBYSHEV) {
-    // for Chebyshev filters: set cut-off frequency to 3dB-frequency
-    a = sqrt(pow(10.0, Filter->Ripple/10.0) - 1.0);  // = epsilon
-    Omega /= cosh(acosh(1.0 / a) / double(Filter->Order));
+    if (Filter->Type == TYPE_CHEBYSHEV) {
+        // for Chebyshev filters: set cut-off frequency to 3dB-frequency
+        a = sqrt(pow(10.0, Filter->Ripple / 10.0) - 1.0); // = epsilon
+        Omega /= cosh(acosh(1.0 / a) / double(Filter->Order));
 
-    // Even order Chebyshev filters have ripple above 0dB, let's compensate it.
-    if((Filter->Order & 1) == 0)
-      eqn = QString::number(2.0 / pow(10.0, Filter->Ripple/20.0));
-  }
+        // Even order Chebyshev filters have ripple above 0dB, let's compensate it.
+        if ((Filter->Order & 1) == 0)
+            eqn = QString::number(2.0 / pow(10.0, Filter->Ripple / 20.0));
+    }
 
-  Omega *= 2.0*pi;   // angular frequency
+    Omega *= 2.0 * pi; // angular frequency
 
-  QString varS = "*S";
-  switch(Filter->Class) {
-    case CLASS_HIGHPASS:  // transform to highpass
-      varS = "/S";
-      Omega = 1.0 / Omega;
-      break;
-    case CLASS_BANDPASS:  // transform to bandpass
-      varS = QStringLiteral("*(S+%1/S)").arg(Omega*Omega);
-      Omega = 0.5 / pi / fabs(Filter->Frequency2 - Filter->Frequency);
-      break;
-    case CLASS_BANDSTOP:  // transform to bandstop
-      varS = QStringLiteral("/(S+%1/S)").arg(Omega*Omega);
-      Omega = 2.0 * pi * fabs(Filter->Frequency2 - Filter->Frequency);
-      break;
-  }
+    QString varS = "*S";
+    switch (Filter->Class) {
+    case CLASS_HIGHPASS: // transform to highpass
+        varS = "/S";
+        Omega = 1.0 / Omega;
+        break;
+    case CLASS_BANDPASS: // transform to bandpass
+        varS = QStringLiteral("*(S+%1/S)").arg(Omega * Omega);
+        Omega = 0.5 / pi / fabs(Filter->Frequency2 - Filter->Frequency);
+        break;
+    case CLASS_BANDSTOP: // transform to bandstop
+        varS = QStringLiteral("/(S+%1/S)").arg(Omega * Omega);
+        Omega = 2.0 * pi * fabs(Filter->Frequency2 - Filter->Frequency);
+        break;
+    }
 
+    if (Filter->Order & 1) {
+        a = getQuadraticNormValues(0, Filter, b);
+        eqn += QStringLiteral(" / (1 + %1%2)").arg(a / Omega).arg(varS);
+    }
+    for (i = 1; i <= Filter->Order / 2; i++) {
+        a = getQuadraticNormValues(i, Filter, b);
+        eqn += QStringLiteral(" / (1 + %1%2 + %3%4%5)")
+                   .arg(a / Omega)
+                   .arg(varS)
+                   .arg(b / Omega / Omega)
+                   .arg(varS)
+                   .arg(varS);
+    }
 
-  if(Filter->Order & 1) {
-    a = getQuadraticNormValues(0, Filter, b);
-    eqn += QStringLiteral(" / (1 + %1%2)").arg(a / Omega).arg(varS);
-  }
-  for(i = 1; i <= Filter->Order/2; i++) {
-    a = getQuadraticNormValues(i, Filter, b);
-    eqn += QStringLiteral(" / (1 + %1%2 + %3%4%5)")
-           .arg(a/Omega).arg(varS).arg(b/Omega/Omega).arg(varS).arg(varS);
-  }
+    *s += QStringLiteral("<RFEDD X1 1 260 0 -26 21 0 0 \"G\" 0 \"2\" 0 \"open\" 0 \"%1\" 1 \"0\" 1 \"%2\" 1 \"%3\" 1>\n").arg(1.0 / Filter->Impedance).arg(eqn).arg(Filter->Impedance);
 
+    *s += QStringLiteral("<Pac P2 1 400 30 18 -26 0 1 \"2\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Filter->Impedance);
+    *s += QStringLiteral("<GND * 1 400 60 0 0 0 0>\n");
 
-  *s += QStringLiteral("<RFEDD X1 1 260 0 -26 21 0 0 \"G\" 0 \"2\" 0 \"open\" 0 \"%1\" 1 \"0\" 1 \"%2\" 1 \"%3\" 1>\n").arg(1.0/Filter->Impedance).arg(eqn).arg(Filter->Impedance);
+    if ((Filter->Class == CLASS_BANDPASS) || (Filter->Class == CLASS_BANDSTOP))
+        a = 10.0 * Filter->Frequency2;
+    else
+        a = 10.0 * Filter->Frequency;
+    *s += QStringLiteral("<.SP SP1 1 110 160 0 67 0 0 \"log\" 1 \"%1Hz\" 1 \"%2Hz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(0.1 * Filter->Frequency)).arg(num2str(a));
+    *s += QStringLiteral("<Eqn Eqn1 1 350 170 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
+    *s += "</Components>\n";
 
-  *s += QStringLiteral("<Pac P2 1 400 30 18 -26 0 1 \"2\" 1 \"%1 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(Filter->Impedance);
-  *s += QStringLiteral("<GND * 1 400 60 0 0 0 0>\n");
+    *s += "<Wires>\n";
 
-  if((Filter->Class == CLASS_BANDPASS) || (Filter->Class == CLASS_BANDSTOP))
-    a = 10.0 * Filter->Frequency2;
-  else
-    a = 10.0 * Filter->Frequency;
-  *s += QStringLiteral("<.SP SP1 1 110 160 0 67 0 0 \"log\" 1 \"%1Hz\" 1 \"%2Hz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(0.1*Filter->Frequency)).arg(num2str(a));
-  *s += QStringLiteral("<Eqn Eqn1 1 350 170 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
-  *s += "</Components>\n";
+    // connect left source
+    *s += QStringLiteral("<100 0 230 0 \"\" 0 0 0>\n");
 
-  *s += "<Wires>\n";
+    // connect right source
+    *s += QStringLiteral("<290 0 400 0 \"\" 0 0 0>\n");
 
-  // connect left source
-  *s += QStringLiteral("<100 0 230 0 \"\" 0 0 0>\n");
+    *s += "</Wires>\n";
 
-  // connect right source
-  *s += QStringLiteral("<290 0 400 0 \"\" 0 0 0>\n");
+    *s += "<Diagrams>\n";
+    *s += "</Diagrams>\n";
 
-  *s += "</Wires>\n";
+    *s += "<Paintings>\n";
 
-  *s += "<Diagrams>\n";
-  *s += "</Diagrams>\n";
+    *s += QStringLiteral("<Text 450 150 12 #000000 0 \"");
+    switch (Filter->Type) {
+    case TYPE_BESSEL:
+        *s += QStringLiteral("Bessel ");
+        break;
+    case TYPE_BUTTERWORTH:
+        *s += QStringLiteral("Butterworth ");
+        break;
+    case TYPE_CHEBYSHEV:
+        *s += QStringLiteral("Chebyshev ");
+        break;
+    }
 
-  *s += "<Paintings>\n";
-
-  *s += QStringLiteral("<Text 450 150 12 #000000 0 \"");
-  switch(Filter->Type) {
-    case TYPE_BESSEL:      *s += QStringLiteral("Bessel "); break;
-    case TYPE_BUTTERWORTH: *s += QStringLiteral("Butterworth "); break;
-    case TYPE_CHEBYSHEV:   *s += QStringLiteral("Chebyshev "); break;
-  }
-
-  switch(Filter->Class) {
+    switch (Filter->Class) {
     case CLASS_LOWPASS:
-      *s += QStringLiteral("low-pass filter, %1Hz cutoff").arg(num2str(Filter->Frequency)); break;
+        *s += QStringLiteral("low-pass filter, %1Hz cutoff").arg(num2str(Filter->Frequency));
+        break;
     case CLASS_HIGHPASS:
-      *s += QStringLiteral("high-pass filter, %1Hz cutoff").arg(num2str(Filter->Frequency)); break;
+        *s += QStringLiteral("high-pass filter, %1Hz cutoff").arg(num2str(Filter->Frequency));
+        break;
     case CLASS_BANDPASS:
-      *s += QStringLiteral("band-pass filter, %1Hz...%2Hz").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2)); break;
+        *s += QStringLiteral("band-pass filter, %1Hz...%2Hz").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
+        break;
     case CLASS_BANDSTOP:
-      *s += QStringLiteral("band-reject filter, %1Hz...%2Hz").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2)); break;
-  }
-  *s += QStringLiteral(" \\n PI-type, impedance matching %1 Ohm\">\n").arg(Filter->Impedance);
-  *s += "</Paintings>\n";
+        *s += QStringLiteral("band-reject filter, %1Hz...%2Hz").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
+        break;
+    }
+    *s += QStringLiteral(" \\n PI-type, impedance matching %1 Ohm\">\n").arg(Filter->Impedance);
+    *s += "</Paintings>\n";
 
-  return s;
+    return s;
 }

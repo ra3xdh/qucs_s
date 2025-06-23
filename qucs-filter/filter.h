@@ -14,77 +14,77 @@
 #ifndef FILTER_H
 #define FILTER_H
 
-#define CLASS_LOWPASS   0
-#define CLASS_HIGHPASS  1
-#define CLASS_BANDPASS  2
-#define CLASS_BANDSTOP  3
+#define CLASS_LOWPASS 0
+#define CLASS_HIGHPASS 1
+#define CLASS_BANDPASS 2
+#define CLASS_BANDSTOP 3
 
-#define TYPE_BESSEL      0
+#define TYPE_BESSEL 0
 #define TYPE_BUTTERWORTH 1
-#define TYPE_CHEBYSHEV   2
-#define TYPE_CAUER       3
+#define TYPE_CHEBYSHEV 2
+#define TYPE_CAUER 3
 
 #include <cmath>
 
-static const double pi          = 3.1415926535897932384626433832795029;  /* pi       */
-static const double one_over_pi = 0.3183098861837906715377675267450287;  /* 1/pi     */
-static const double ln2         = 0.6931471805599453094172321214581766;  /* log_e(2) */
+static const double pi = 3.1415926535897932384626433832795029; /* pi       */
+static const double one_over_pi = 0.3183098861837906715377675267450287; /* 1/pi     */
+static const double ln2 = 0.6931471805599453094172321214581766; /* log_e(2) */
 
 static const double LIGHTSPEED = 299792458.0;
 static const double Z_FIELD = 376.73031346958504364963;
 
 /*! coth function */
-static inline double coth(const double x) {
-  return (1.0 + 2.0 / (exp(2.0*(x)) - 1.0));
+static inline double coth(const double x)
+{
+    return (1.0 + 2.0 / (exp(2.0 * (x)) - 1.0));
 }
 
 /*! sech function */
-static inline double sech(const double x) {
-  return  (2.0 / (exp(x) + exp(-(x))));
+static inline double sech(const double x)
+{
+    return (2.0 / (exp(x) + exp(-(x))));
 }
 
 struct tFilter {
-  int Type;
-  int Class;
-  int Order;
-  double Ripple;  // in dB
-  double Impedance;
-  double Frequency;
-  double Frequency2;
-  double Frequency3;
-  double Attenuation;
+    int Type;
+    int Class;
+    int Order;
+    double Ripple; // in dB
+    double Impedance;
+    double Frequency;
+    double Frequency2;
+    double Frequency3;
+    double Attenuation;
 };
-
 
 class QString;
 
 class Filter {
 public:
-  Filter();
+    Filter();
 
-  static double getNormValue(int, tFilter*);
-  static double getQuadraticNormValues(int, tFilter*, double&);
+    static double getNormValue(int, tFilter*);
+    static double getQuadraticNormValues(int, tFilter*, double&);
 
-  // Component wrappers
-  static QString getLineString(bool isMicrostrip, double width_or_impedance, double l, int x, int y, int rotate=0);
-  static QString getTeeString(int x, int y, double width1, double width2, double width3);
-  static QString getWireString(int x1, int x2, int x3, int x4);
-  static QString getMS_Via(double height, int x, int y, int rotate);
-  static QString getMS_Open(double width, int x, int y, int rotate);
-
+    // Component wrappers
+    static QString getLineString(bool isMicrostrip, double width_or_impedance, double l, int x, int y, int rotate = 0);
+    static QString getTeeString(int x, int y, double width1, double width2, double width3);
+    static QString getWireString(int x1, int x2, int x3, int x4);
+    static QString getMS_Via(double height, int x, int y, int rotate);
+    static QString getMS_Open(double width, int x, int y, int rotate);
 
 protected:
-  static QString num2str(double);
-  static double getE6value(double);
+    static QString num2str(double);
+    static double getE6value(double);
 
 private:
-  static double BesselValue(int, int);
-  static double ButterworthValue(int, int);
-  static double ChebyshevValue(int, int, double);
+    static double BesselValue(int, int);
+    static double ButterworthValue(int, int);
+    static double ChebyshevValue(int, int, double);
 
-  static double quadraticBesselValues(int, int, double&);
-  static double quadraticButterworthValues(int, int, double&);
-  static double quadraticChebyshevValues(int, int, double, double&);
+    static double quadraticBesselValues(int, int, double&);
+    static double quadraticButterworthValues(int, int, double&);
+    static double quadraticChebyshevValues(int, int, double, double&);
 };
 
 #endif

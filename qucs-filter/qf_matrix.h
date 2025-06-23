@@ -26,24 +26,25 @@ namespace qf {
 
 class matrix {
 public:
-  // constructor
-  matrix(unsigned int d) {
-    data = (qf_float*)calloc(d * d, sizeof(qf_float));
-    n    = d;
-  }
+    // constructor
+    matrix(unsigned int d)
+    {
+        data = (qf_float*)calloc(d * d, sizeof(qf_float));
+        n = d;
+    }
 
-  // destructor
-  ~matrix() { free(data); }
+    // destructor
+    ~matrix() { free(data); }
 
-  // accessor operators
-  qf_float operator()(int r, int c) const { return data[r * n + c]; }
-  qf_float& operator()(int r, int c) { return data[r * n + c]; }
+    // accessor operators
+    qf_float operator()(int r, int c) const { return data[r * n + c]; }
+    qf_float& operator()(int r, int c) { return data[r * n + c]; }
 
-  // size of matrix
-  unsigned int n;
+    // size of matrix
+    unsigned int n;
 
 private:
-  qf_float* data;
+    qf_float* data;
 };
 } // namespace qf
 
