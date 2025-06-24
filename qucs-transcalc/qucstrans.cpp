@@ -53,6 +53,7 @@
 #include <QAction>
 #include <QDebug>
 
+// clang-format off: inclusion order magic
 #include "qucstrans.h"
 #include "helpdialog.h"
 #include "optionsdialog.h"
@@ -64,6 +65,7 @@
 #include "rectwaveguide.h"
 #include "c_microstrip.h"
 #include "stripline.h"
+// clang-format on
 
 // Defines maximum number of entries in each property category.
 static const int TransMaxBox[MAX_TRANS_BOXES] = { 9, 1, 4, 3 };

@@ -28,7 +28,7 @@
  * performs the associated calculations
  */
 
-
+// clang-format off: inclusion order magic
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -37,6 +37,7 @@
 #include "units.h"
 #include "transline.h"
 #include "coax.h"
+// clang-format on
 
 coax::coax() : transline()
 {

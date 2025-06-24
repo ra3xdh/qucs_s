@@ -20,7 +20,7 @@
  *
  */
 
-
+// clang-format off: inclusion order magic
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -29,6 +29,7 @@
 #include "units.h"
 #include "transline.h"
 #include "stripline.h"
+// clang-format on
 
 stripline::stripline() : transline()
 {

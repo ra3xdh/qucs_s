@@ -26,6 +26,7 @@
  * Based on the original microstrip.c by Gopal Narayanan 
  */
 
+// clang-format off: inclusion order magic
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -35,6 +36,7 @@
 #include "transline.h"
 #include "microstrip.h"
 #include "c_microstrip.h"
+// clang-format on
 
 c_microstrip::c_microstrip() : transline()
 {

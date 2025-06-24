@@ -21,6 +21,7 @@
  *
  */
 
+// clang-format off: inclusion order magic
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
@@ -28,6 +29,7 @@
 #include "units.h"
 #include "transline.h"
 #include "rectwaveguide.h"
+// clang-format on
 
 rectwaveguide::rectwaveguide() : transline()
 {

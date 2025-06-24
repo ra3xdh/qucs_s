@@ -21,7 +21,7 @@
  *
  */
 
-
+// clang-format off: inclusion order magic
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -33,6 +33,7 @@
 #include "units.h"
 #include "transline.h"
 #include "coplanar.h"
+// clang-format on
 
 coplanar::coplanar() : transline()
 {
