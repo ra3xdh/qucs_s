@@ -16,94 +16,94 @@
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
 
+#include <QComboBox>
 #include <QGroupBox>
+#include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QLabel>
-#include <QComboBox>
 
 #include "optionsdialog.h"
 #include "qucstrans.h"
 
 extern struct TransUnit TransUnits[];
 
-OptionsDialog::OptionsDialog(QWidget *parent)
-                     : QDialog(parent) 
+OptionsDialog::OptionsDialog(QWidget* parent)
+    : QDialog(parent)
 {
-  setWindowTitle("QucsTranscalc "+tr("Options"));
+    setWindowTitle("QucsTranscalc " + tr("Options"));
 
-  // --------  create dialog widgets  ------------
-  vLayout = new QVBoxLayout(this);
-  vLayout->setContentsMargins(3,3,3,3);
-  vLayout->setSpacing(3);
+    // --------  create dialog widgets  ------------
+    vLayout = new QVBoxLayout(this);
+    vLayout->setContentsMargins(3, 3, 3, 3);
+    vLayout->setSpacing(3);
 
-  QGroupBox * unitsGroup = new QGroupBox(tr("Units"));
-  QVBoxLayout * l = new QVBoxLayout();
-  l->setSpacing(3);
-  QLabel * lfr = new QLabel(tr("Frequency"));
-  lfr->setAlignment (Qt::AlignRight);
-  l->addWidget(lfr);
-  QLabel * lle = new QLabel(tr("Length"));
-  lle->setAlignment (Qt::AlignRight);
-  l->addWidget(lle);
-  QLabel * lre = new QLabel(tr("Resistance"));
-  lre->setAlignment (Qt::AlignRight);
-  l->addWidget(lre);
-  QLabel * lan = new QLabel(tr("Angle"));
-  lan->setAlignment (Qt::AlignRight);
-  l->addWidget(lan);
-  QVBoxLayout * r = new QVBoxLayout();
-  r->setSpacing(3);
-  for (int j = 0; j < 4; j++) {
-    units[j] = new QComboBox(); //?r);
-    r->addWidget(units[j]);
-    for (int i = 0; TransUnits[j].units[i] != NULL; i++)
-      units[j]->addItem(TransUnits[j].units[i]);
-  }
-  units[0]->setCurrentIndex(QucsSettings.freq_unit);
-  units[1]->setCurrentIndex(QucsSettings.length_unit);
-  units[2]->setCurrentIndex(QucsSettings.res_unit);
-  units[3]->setCurrentIndex(QucsSettings.ang_unit);
-  
-  QHBoxLayout * h1 = new QHBoxLayout();
-  h1->addLayout(l);
-  h1->addLayout(r);
-  unitsGroup->setLayout(h1);
+    QGroupBox* unitsGroup = new QGroupBox(tr("Units"));
+    QVBoxLayout* l = new QVBoxLayout();
+    l->setSpacing(3);
+    QLabel* lfr = new QLabel(tr("Frequency"));
+    lfr->setAlignment(Qt::AlignRight);
+    l->addWidget(lfr);
+    QLabel* lle = new QLabel(tr("Length"));
+    lle->setAlignment(Qt::AlignRight);
+    l->addWidget(lle);
+    QLabel* lre = new QLabel(tr("Resistance"));
+    lre->setAlignment(Qt::AlignRight);
+    l->addWidget(lre);
+    QLabel* lan = new QLabel(tr("Angle"));
+    lan->setAlignment(Qt::AlignRight);
+    l->addWidget(lan);
+    QVBoxLayout* r = new QVBoxLayout();
+    r->setSpacing(3);
+    for (int j = 0; j < 4; j++) {
+        units[j] = new QComboBox(); //?r);
+        r->addWidget(units[j]);
+        for (int i = 0; TransUnits[j].units[i] != NULL; i++)
+            units[j]->addItem(TransUnits[j].units[i]);
+    }
+    units[0]->setCurrentIndex(QucsSettings.freq_unit);
+    units[1]->setCurrentIndex(QucsSettings.length_unit);
+    units[2]->setCurrentIndex(QucsSettings.res_unit);
+    units[3]->setCurrentIndex(QucsSettings.ang_unit);
 
-  vLayout->addWidget(unitsGroup);
+    QHBoxLayout* h1 = new QHBoxLayout();
+    h1->addLayout(l);
+    h1->addLayout(r);
+    unitsGroup->setLayout(h1);
 
-  QHBoxLayout * h2 = new QHBoxLayout();
+    vLayout->addWidget(unitsGroup);
 
-  QPushButton *ButtonSave = new QPushButton(tr("Save as Default"));
-  connect(ButtonSave, SIGNAL(clicked()), SLOT(slotSave()));
+    QHBoxLayout* h2 = new QHBoxLayout();
 
-  QPushButton *ButtonClose = new QPushButton(tr("Dismiss"));
-  connect(ButtonClose, SIGNAL(clicked()), SLOT(slotClose()));
-  ButtonClose->setFocus();
+    QPushButton* ButtonSave = new QPushButton(tr("Save as Default"));
+    connect(ButtonSave, SIGNAL(clicked()), SLOT(slotSave()));
 
-  h2->addWidget(ButtonSave);
-  h2->addWidget(ButtonClose);
-  vLayout->addLayout(h2);
+    QPushButton* ButtonClose = new QPushButton(tr("Dismiss"));
+    connect(ButtonClose, SIGNAL(clicked()), SLOT(slotClose()));
+    ButtonClose->setFocus();
+
+    h2->addWidget(ButtonSave);
+    h2->addWidget(ButtonClose);
+    vLayout->addLayout(h2);
 }
 
 OptionsDialog::~OptionsDialog()
 {
-  delete vLayout;
+    delete vLayout;
 }
 
 void OptionsDialog::slotClose()
 {
-  accept();
+    accept();
 }
 
 void OptionsDialog::slotSave()
 {
-  QucsSettings.freq_unit = units[0]->currentIndex();
-  QucsSettings.length_unit = units[1]->currentIndex();
-  QucsSettings.res_unit = units[2]->currentIndex();
-  QucsSettings.ang_unit = units[3]->currentIndex();
-  accept();
+    QucsSettings.freq_unit = units[0]->currentIndex();
+    QucsSettings.length_unit = units[1]->currentIndex();
+    QucsSettings.res_unit = units[2]->currentIndex();
+    QucsSettings.ang_unit = units[3]->currentIndex();
+    accept();
 }

@@ -25,21 +25,21 @@ class QTextEdit;
 class QVBoxLayout;
 
 /**
-  *@author Stefan Jahn
-  */
+ *@author Stefan Jahn
+ */
 
-class HelpDialog : public QDialog  {
-   Q_OBJECT
+class HelpDialog : public QDialog {
+    Q_OBJECT
 public:
-  HelpDialog(QWidget *parent = 0);
- ~HelpDialog();
+    HelpDialog(QWidget* parent = 0);
+    ~HelpDialog();
 
 private slots:
-  void slotClose();
+    void slotClose();
 
 private:
-  QVBoxLayout *vLayout;
-  QTextEdit *Text;
+    QVBoxLayout* vLayout;
+    QTextEdit* Text;
 };
 
 #endif
