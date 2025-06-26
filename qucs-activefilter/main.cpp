@@ -16,53 +16,53 @@
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
 
-#include <stdlib.h>
-#include <QtCore>
-#include <QtWidgets> 
-#include <QSvgWidget> 
 #include <QApplication>
+#include <QSvgWidget>
+#include <QtCore>
+#include <QtWidgets>
+#include <stdlib.h>
 
 #include "qucsactivefilter.h"
 
 struct tQucsSettings QucsSettings;
 
-
 // #########################################################################
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-    QSettings settings("qucs","qucs_s");
+    QSettings settings("qucs", "qucs_s");
     settings.beginGroup("QucsActiveFilter");
-    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
-    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
-    if(settings.contains("showConsole")) QucsSettings.showConsole=settings.value("showConsole").toBool();
+    if (settings.contains("x"))
+        QucsSettings.x = settings.value("x").toInt();
+    if (settings.contains("y"))
+        QucsSettings.y = settings.value("y").toInt();
+    if (settings.contains("showConsole"))
+        QucsSettings.showConsole = settings.value("showConsole").toBool();
     settings.endGroup();
 
-    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+    if (settings.contains("Language"))
+        QucsSettings.Language = settings.value("Language").toString();
 
-  return true;
+    return true;
 }
-
 
 // #########################################################################
 // Saves the settings in the settings file.
-bool saveApplSettings(QucsActiveFilter *qucs)
+bool saveApplSettings(QucsActiveFilter* qucs)
 {
-    QSettings settings ("qucs","qucs_s");
+    QSettings settings("qucs", "qucs_s");
     settings.beginGroup("QucsActiveFilter");
     settings.setValue("x", qucs->x());
     settings.setValue("y", qucs->y());
     settings.setValue("showConsole", QucsSettings.showConsole);
     settings.endGroup();
-  return true;
-
+    return true;
 }
 
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     QDir QucsDir;
     QString QucsApplicationPath = QCoreApplication::applicationDirPath();
 #ifdef __APPLE__
-    QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
+    QucsDir = QDir(QucsApplicationPath.section("/bin", 0, 0));
 #else
     QucsDir = QDir(QucsApplicationPath);
     QucsDir.cdUp();
@@ -85,18 +85,18 @@ int main(int argc, char *argv[])
 
     loadSettings();
 
-    QTranslator tor( 0 );
+    QTranslator tor(0);
     QString Lang = QucsSettings.Language;
-    if(Lang.isEmpty())
-      Lang = QString(QLocale::system().name());
-    static_cast<void>(tor.load( QStringLiteral("qucs_") + Lang, LangDir));
-    a.installTranslator( &tor );
+    if (Lang.isEmpty())
+        Lang = QString(QLocale::system().name());
+    static_cast<void>(tor.load(QStringLiteral("qucs_") + Lang, LangDir));
+    a.installTranslator(&tor);
 
-    QucsActiveFilter *w = new QucsActiveFilter();
+    QucsActiveFilter* w = new QucsActiveFilter();
     w->raise();
-    w->move(QucsSettings.x, QucsSettings.y);  // position before "show" !!!
+    w->move(QucsSettings.x, QucsSettings.y); // position before "show" !!!
     w->show();
-    
+
     int result = a.exec();
     saveApplSettings(w);
     return result;

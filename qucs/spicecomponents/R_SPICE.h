@@ -18,24 +18,24 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef R_SPICE_H
+#ifndef R_SPICE_H
 #define R_SPICE_H
 
 #include "components/component.h"
 
-class R_SPICE : public  MultiViewComponent {
+class R_SPICE : public MultiViewComponent {
 public:
-  R_SPICE();
-  ~R_SPICE();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  static Element* info_R3(QString&, char* &, bool getNewOne=false);
+    R_SPICE();
+    ~R_SPICE();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    static Element* info_R3(QString&, char*&, bool getNewOne = false);
 
 protected:
-  void createSymbol();
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
+    void createSymbol();
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
 };
 
 #endif // R_SPICE_H

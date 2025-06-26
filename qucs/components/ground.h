@@ -20,17 +20,16 @@
 
 #include "component.h"
 
-
-class Ground : public Component  {
+class Ground : public Component {
 public:
-  Ground();
- ~Ground();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Ground();
+    ~Ground();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

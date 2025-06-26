@@ -20,13 +20,12 @@
 
 #include "simulation.h"
 
-
-class ETR_Sim : public qucs::component::SimulationComponent  {
+class ETR_Sim : public qucs::component::SimulationComponent {
 public:
-  ETR_Sim();
-  ~ETR_Sim();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    ETR_Sim();
+    ~ETR_Sim();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

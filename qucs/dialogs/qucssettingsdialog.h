@@ -37,11 +37,10 @@ class QRegExpValidator;
 class QStandardItemModel;
 class QTableWidget;
 
-class QucsSettingsDialog : public QDialog
-{
+class QucsSettingsDialog : public QDialog {
     Q_OBJECT
 public:
-    QucsSettingsDialog(QucsApp *parent=0);
+    QucsSettingsDialog(QucsApp* parent = 0);
     ~QucsSettingsDialog();
 
 private slots:
@@ -64,8 +63,8 @@ private slots:
     void slotColorAttribute();
     void slotColorDirective();
     void slotColorTask();
-    void slotTableClicked(int,int);
-    void slotPathTableClicked(int,int);
+    void slotTableClicked(int, int);
+    void slotPathTableClicked(int, int);
 
     void slotHomeDirBrowse();
     void slotAdmsXmlDirBrowse();
@@ -80,41 +79,39 @@ private slots:
     void slotPathSelectionChanged();
 
 public:
-    QucsApp *App;
+    QucsApp* App;
 
     QFont Font;
     QFont AppFont;
     QFont TextFont;
     QCheckBox *checkWiring, *checkLoadFromFutureVersions,
-              *allowFlexibleWires, *allowLayingWiresAnew,
-              *checkAntiAliasing, *checkTextAntiAliasing,
-              *checkFullTraceNames,  *alwaysPrefixDataset;
+        *allowFlexibleWires, *allowLayingWiresAnew,
+        *checkAntiAliasing, *checkTextAntiAliasing,
+        *checkFullTraceNames, *alwaysPrefixDataset;
     QComboBox *LanguageCombo,
-              *StyleCombo;
+        *StyleCombo;
     QPushButton *FontButton, *AppFontButton, *TextFontButton, *BGColorButton, *GridColorButton;
     QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
-              *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit,
-              *OpenVAFEdit, *RFLayoutEdit, *graphLineWidthEdit;
+        *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit,
+        *OpenVAFEdit, *RFLayoutEdit, *graphLineWidthEdit;
     QTableWidget *fileTypesTableWidget, *pathsTableWidget;
-    QStandardItemModel *model;
+    QStandardItemModel* model;
     QPushButton *ColorComment, *ColorString, *ColorInteger,
-                *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
-                *ColorDirective, *ColorTask;
-    QPushButton *RemovePathButt;
+        *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
+        *ColorDirective, *ColorTask;
+    QPushButton* RemovePathButt;
 
-    QVBoxLayout *all;
-    QIntValidator *val50;
-    QIntValidator *val200;
+    QVBoxLayout* all;
+    QIntValidator* val50;
+    QIntValidator* val200;
     QRegularExpression Expr;
-    QRegularExpressionValidator *Validator;
+    QRegularExpressionValidator* Validator;
 
 private:
     QStringList currentPaths;
 
-
 private:
     void makePathTable();
-
 };
 
 #endif

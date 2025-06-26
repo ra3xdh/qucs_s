@@ -21,95 +21,93 @@
  *
  */
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
-#include <complex>
+#include <QDebug>
+#include <QSvgWidget>
 #include <QtSvg>
 #include <QtWidgets>
-#include <QSvgWidget>
-#include <QDebug>
+#include <complex>
 
-//namespace spicecompat {
-//    enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};
-//}
+// namespace spicecompat {
+//     enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};
+// }
 
 struct tQucsSettings {
-  int x, y;      // position of main window
-  QFont font;
-  QString LangDir;
-  QString Language;
-  int DefaultSimulator;
+    int x, y; // position of main window
+    QFont font;
+    QString LangDir;
+    QString Language;
+    int DefaultSimulator;
 };
 
 extern struct tQucsSettings QucsSettings;
 
-
 struct tSubstrate {
-  double er;
-  double height;
-  double thickness;
-  double tand;
-  double resistivity;
-  double roughness;
-  double minWidth, maxWidth;
+    double er;
+    double height;
+    double thickness;
+    double tand;
+    double resistivity;
+    double roughness;
+    double minWidth, maxWidth;
 };
-
 
 static const double Z_FIELD = 376.73031346958504364963;
 static const double SPEED_OF_LIGHT = 299792458.0;
 
 /*! coth function */
-static inline double coth(const double x) {
-  return (1.0 + 2.0 / (exp(2.0*(x)) - 1.0));
+static inline double coth(const double x)
+{
+    return (1.0 + 2.0 / (exp(2.0 * (x)) - 1.0));
 }
 
 /*! sech function */
-static inline double sech(const double x) {
-  return  (2.0 / (exp(x) + exp(-(x))));
+static inline double sech(const double x)
+{
+    return (2.0 / (exp(x) + exp(-(x))));
 }
-
 
 /*
  References:
- [1] "High Efficiency RF and Microwave Solid State Power Amplifiers". Paolo Colantonio, 
+ [1] "High Efficiency RF and Microwave Solid State Power Amplifiers". Paolo Colantonio,
       Franco Giannini and Ernesto Limiti. 2009. John Wiley and Sons Inc.
  [2] "RF and Microwave Transmitter Design, First Edition". Andrei Grebennikov. 2011. John Wiley and Sons Inc.
 */
 
-class QucsPowerCombiningTool : public QMainWindow
-{
-  Q_OBJECT
+class QucsPowerCombiningTool : public QMainWindow {
+    Q_OBJECT
 public:
-     QucsPowerCombiningTool();
+    QucsPowerCombiningTool();
     ~QucsPowerCombiningTool();
-     QLabel *NLabel,*RefImp,*FreqLabel,*K1Label, *K1LabeldB, *RelPermlabel, *SubstrateHeightlabel, *SubstrateMMlabel, *ThicknessLabel,
-            *ThicknessumLabel, *MinWidthLabel, *MinWidthmmLabel, *MaxWidthLabel, *MaxWidthmmLabel, *tanDLabel,
-            *ResistivityLabel, *RoughnessLabel,*TopoLabel, *OhmLabel, *NStagesLabel, *AlphaLabel, *AlphadBLabel, *UnitsLabel;
+    QLabel *NLabel, *RefImp, *FreqLabel, *K1Label, *K1LabeldB, *RelPermlabel, *SubstrateHeightlabel, *SubstrateMMlabel, *ThicknessLabel,
+        *ThicknessumLabel, *MinWidthLabel, *MinWidthmmLabel, *MaxWidthLabel, *MaxWidthmmLabel, *tanDLabel,
+        *ResistivityLabel, *RoughnessLabel, *TopoLabel, *OhmLabel, *NStagesLabel, *AlphaLabel, *AlphadBLabel, *UnitsLabel;
 
-     QComboBox *TopoCombo, *BranchesCombo, *FreqScaleCombo, *RelPermcomboBox, *NStagesCombo, *UnitsCombo;
+    QComboBox *TopoCombo, *BranchesCombo, *FreqScaleCombo, *RelPermcomboBox, *NStagesCombo, *UnitsCombo;
 
-     QLineEdit *RefImplineEdit, *FreqlineEdit, *K1lineEdit, *SubstrateHeightlineEdit, *ThicknesslineEdit, *MinWidthlineEdit,
-                 *MaxWidthlineEdit, *tanDlineEdit, *ResistivitylineEdit, *RoughnesslineEdit, *AlphalineEdit;
+    QLineEdit *RefImplineEdit, *FreqlineEdit, *K1lineEdit, *SubstrateHeightlineEdit, *ThicknesslineEdit, *MinWidthlineEdit,
+        *MaxWidthlineEdit, *tanDlineEdit, *ResistivitylineEdit, *RoughnesslineEdit, *AlphalineEdit;
 
-     QCheckBox *AddSparcheckBox;
-     QRadioButton *IdealTLradioButton, *MicrostripradioButton, *LumpedElementsradioButton;
-     QPushButton *GenerateButton;
-     QGroupBox *SpecificationsgroupBox,*MicrostripgroupBox, *ImagegroupBox, *ImplementationgroupBox;
-     QWidget *centralWidget;
-     QStatusBar *statusBar;
-     QGridLayout *gboxImage;
-     QSvgWidget *imgWidget;
+    QCheckBox* AddSparcheckBox;
+    QRadioButton *IdealTLradioButton, *MicrostripradioButton, *LumpedElementsradioButton;
+    QPushButton* GenerateButton;
+    QGroupBox *SpecificationsgroupBox, *MicrostripgroupBox, *ImagegroupBox, *ImplementationgroupBox;
+    QWidget* centralWidget;
+    QStatusBar* statusBar;
+    QGridLayout* gboxImage;
+    QSvgWidget* imgWidget;
 
 private slots:
-     void on_TopoCombo_currentIndexChanged(int index);
-     void on_GenerateButton_clicked();
-     void on_MicrostripradioButton_clicked();
-     void on_LCRadioButton_clicked();
-     void on_IdealTLRadioButton_clicked();
+    void on_TopoCombo_currentIndexChanged(int index);
+    void on_GenerateButton_clicked();
+    void on_MicrostripradioButton_clicked();
+    void on_LCRadioButton_clicked();
+    void on_IdealTLRadioButton_clicked();
 
 private:
     double getScaleFreq();
-    void getMicrostrip(double Z0, double freq, tSubstrate *substrate, double &width, double &er_eff);
+    void getMicrostrip(double Z0, double freq, tSubstrate* substrate, double& width, double& er_eff);
     QString ConvertLengthFromM(double);
     QString RoundVariablePrecision(double);
     QString num2str(double);
@@ -127,5 +125,4 @@ private:
     int Tree(double Z0, double Freq, int N, bool SP_block, bool microcheck, tSubstrate Substrate, double Alpha);
     QString calcChebyLines(double RL, double Z0, double gamma, int NStages);
     QString calcMultistageWilkinsonIsolators(QString Zlines, double L, std::complex<double> gamma, int NStages, double Z0);
-
 };

@@ -20,22 +20,21 @@
 
 #include "simulation.h"
 
-
-class Param_Sweep : public qucs::component::SimulationComponent  {
+class Param_Sweep : public qucs::component::SimulationComponent {
 public:
-  Param_Sweep();
-  ~Param_Sweep();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  void recreate();
+    Param_Sweep();
+    ~Param_Sweep();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    void recreate();
 
-  QString getNgspiceBeforeSim(QString sim, int lvl=0);
-  QString getNgspiceAfterSim(QString sim, int lvl=0);
-  QString getCounterVar();
+    QString getNgspiceBeforeSim(QString sim, int lvl = 0);
+    QString getNgspiceAfterSim(QString sim, int lvl = 0);
+    QString getCounterVar();
 
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  QString param_split_str=";";
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString param_split_str = ";";
 };
 
 #endif

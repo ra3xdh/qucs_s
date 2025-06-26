@@ -26,29 +26,28 @@ class QPushButton;
 class QComboBox;
 class QIntValidator;
 
-
-class ArrowDialog : public QDialog  {
-Q_OBJECT
+class ArrowDialog : public QDialog {
+    Q_OBJECT
 public:
-  ArrowDialog(QWidget *parent=0, const char *name=0);
- ~ArrowDialog();
+    ArrowDialog(QWidget* parent = 0, const char* name = 0);
+    ~ArrowDialog();
 
-  void SetComboBox(Qt::PenStyle);
+    void SetComboBox(Qt::PenStyle);
 
 private slots:
-  void slotSetColor();
-  void slotSetStyle(int);
+    void slotSetColor();
+    void slotSetStyle(int);
 
 public:
-  // TODO: I'm not sure whether declaring all this as public is really a good idea :-(
-  // data encapsulation => make this stuff private & provide getter & setter methods...
-  QLineEdit    *LineWidth, *HeadWidth, *HeadLength;
-  QPushButton  *ColorButt;
-  QComboBox    *StyleBox, *ArrowStyleBox;
-  Qt::PenStyle LineStyle;
+    // TODO: I'm not sure whether declaring all this as public is really a good idea :-(
+    // data encapsulation => make this stuff private & provide getter & setter methods...
+    QLineEdit *LineWidth, *HeadWidth, *HeadLength;
+    QPushButton* ColorButt;
+    QComboBox *StyleBox, *ArrowStyleBox;
+    Qt::PenStyle LineStyle;
 
-  QGridLayout   *all;
-  QIntValidator *val100;
+    QGridLayout* all;
+    QIntValidator* val100;
 };
 
 #endif

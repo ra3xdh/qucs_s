@@ -27,8 +27,8 @@
 
 #include "quarterwave_filter.h"
 
-#include <QString>
 #include <QMessageBox>
+#include <QString>
 
 double QuarterWave_Filter::bw = 0;
 double QuarterWave_Filter::fc = 0;
@@ -39,126 +39,122 @@ QuarterWave_Filter::QuarterWave_Filter()
 }
 
 // -----------------------------------------------------------------------
-QString *QuarterWave_Filter::createSchematic(tFilter *Filter, tSubstrate *Substrate, bool isMicrostrip)
+QString* QuarterWave_Filter::createSchematic(tFilter* Filter, tSubstrate* Substrate, bool isMicrostrip)
 {
-  if (Filter->Class < 2)
-  {
-      QMessageBox::warning(0, QObject::tr("Error"),
-                            QObject::tr("Quarter wave filters do not allow low-pass nor high-pass masks\n"));
-      return NULL;
-  }
-  // Auxiliary variables
-  double Zres;
-  double W_line, W_res, er_eff_line, er_eff_res, L_line, L_res;
-  double Z0 = Filter->Impedance; // System impedance
+    if (Filter->Class < 2) {
+        QMessageBox::warning(0, QObject::tr("Error"),
+            QObject::tr("Quarter wave filters do not allow low-pass nor high-pass masks\n"));
+        return NULL;
+    }
+    // Auxiliary variables
+    double Zres;
+    double W_line, W_res, er_eff_line, er_eff_res, L_line, L_res;
+    double Z0 = Filter->Impedance; // System impedance
 
-  // Set filter main params as static members
-  fc = Filter->Frequency + 0.5 * (Filter->Frequency2 - Filter->Frequency);
-  d_lamdba4 = 0.25 * LIGHTSPEED / fc;
-  QuarterWave_Filter::bw = (Filter->Frequency2 - Filter->Frequency) / (fc);
-  // create the Qucs schematic
-  QString *s = new QString("<Qucs Schematic " PACKAGE_VERSION ">\n");
-  QString c_s = "<Components>\n";
-  QString w_s = "<Wires>\n";
-  int x = 60;
-  int x_space = 50;
+    // Set filter main params as static members
+    fc = Filter->Frequency + 0.5 * (Filter->Frequency2 - Filter->Frequency);
+    d_lamdba4 = 0.25 * LIGHTSPEED / fc;
+    QuarterWave_Filter::bw = (Filter->Frequency2 - Filter->Frequency) / (fc);
+    // create the Qucs schematic
+    QString* s = new QString("<Qucs Schematic " PACKAGE_VERSION ">\n");
+    QString c_s = "<Components>\n";
+    QString w_s = "<Wires>\n";
+    int x = 60;
+    int x_space = 50;
 
-  // First power and ground
-  c_s += QStringLiteral("<Pac P1 1 %1 330 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
-  c_s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
-  w_s += getWireString(60, 180, 60, 300);
-  w_s += getWireString(60, 180, 90, 180);
-  x += 60;
+    // First power and ground
+    c_s += QStringLiteral("<Pac P1 1 %1 330 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
+    c_s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
+    w_s += getWireString(60, 180, 60, 300);
+    w_s += getWireString(60, 180, 90, 180);
+    x += 60;
 
-  // If the microstrip implementation is selected, calculate the width of the Z0 lines.
-  if (isMicrostrip)
-      TL_Filter::getMicrostrip(Z0, fc, Substrate, W_line, er_eff_line); // Series line
+    // If the microstrip implementation is selected, calculate the width of the Z0 lines.
+    if (isMicrostrip)
+        TL_Filter::getMicrostrip(Z0, fc, Substrate, W_line, er_eff_line); // Series line
 
-  for (int i = 0; i < Filter->Order; i++)
-  {
-      // Calculate the impedance of the resonator
-      if (Filter->Class == CLASS_BANDPASS)
-            Zres = (pi*Z0*bw)/(4*getNormValue(i, Filter)); // Bandpass
-      else
-            Zres = (4*Z0)/(pi*bw*getNormValue(i, Filter)); // Bandstop
+    for (int i = 0; i < Filter->Order; i++) {
+        // Calculate the impedance of the resonator
+        if (Filter->Class == CLASS_BANDPASS)
+            Zres = (pi * Z0 * bw) / (4 * getNormValue(i, Filter)); // Bandpass
+        else
+            Zres = (4 * Z0) / (pi * bw * getNormValue(i, Filter)); // Bandstop
 
-      if (isMicrostrip)
-      {
-          // Calculate width of the resonator according to its Z
-          TL_Filter::getMicrostrip(Zres, fc, Substrate, W_res, er_eff_res); // Shunt QW resonator
+        if (isMicrostrip) {
+            // Calculate width of the resonator according to its Z
+            TL_Filter::getMicrostrip(Zres, fc, Substrate, W_res, er_eff_res); // Shunt QW resonator
 
-          L_line = d_lamdba4/sqrt(er_eff_line); // Length of the line
-          L_res = d_lamdba4/sqrt(er_eff_res); // Length of the resonator
+            L_line = d_lamdba4 / sqrt(er_eff_line); // Length of the line
+            L_res = d_lamdba4 / sqrt(er_eff_res); // Length of the resonator
 
-          c_s += getLineString(isMicrostrip, W_line, L_line, x, 180, 0); // Series line
-          c_s += getTeeString(x+ 60 + x_space, 180, W_line, W_line, W_res);
-          c_s += getLineString(isMicrostrip, W_res, L_res, x + 60 + x_space, 60, 1); // Shunt quarter-wavelength resonator
+            c_s += getLineString(isMicrostrip, W_line, L_line, x, 180, 0); // Series line
+            c_s += getTeeString(x + 60 + x_space, 180, W_line, W_line, W_res);
+            c_s += getLineString(isMicrostrip, W_res, L_res, x + 60 + x_space, 60, 1); // Shunt quarter-wavelength resonator
 
-          if (Filter->Class == CLASS_BANDSTOP){// If MS bandstop, add MOPEN
-              c_s += getMS_Open(W_res, x + 60 + x_space, 0, 1); // MS open
-          }
+            if (Filter->Class == CLASS_BANDSTOP) { // If MS bandstop, add MOPEN
+                c_s += getMS_Open(W_res, x + 60 + x_space, 0, 1); // MS open
+            }
 
-          w_s += getWireString(x+30, 180, x+30+x_space, 180);
-          w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 150);
-          w_s += getWireString(x+60 + x_space + 30, 180, x+60 + x_space + 30 + x_space, 180);
-      }
-      else
-      {// Ideal transmission lines
-          c_s += getLineString(isMicrostrip, Z0, d_lamdba4, x, 180, 0); // Series transmission line
-          c_s += getLineString(isMicrostrip, Zres, d_lamdba4,  x+60+x_space, 60, 3); // Shunt quarter-wavelength resonator
+            w_s += getWireString(x + 30, 180, x + 30 + x_space, 180);
+            w_s += getWireString(x + 60 + x_space, 90, x + 60 + x_space, 150);
+            w_s += getWireString(x + 60 + x_space + 30, 180, x + 60 + x_space + 30 + x_space, 180);
+        } else { // Ideal transmission lines
+            c_s += getLineString(isMicrostrip, Z0, d_lamdba4, x, 180, 0); // Series transmission line
+            c_s += getLineString(isMicrostrip, Zres, d_lamdba4, x + 60 + x_space, 60, 3); // Shunt quarter-wavelength resonator
 
-          w_s += getWireString(x+30, 180, x+90+2*x_space, 180);// Join series lines
-          w_s += getWireString(x+60 + x_space, 90, x+60 + x_space, 180); // Join middle point with the stub
-      }
-      if (Filter->Class == CLASS_BANDPASS){
-          // If bandpass, shunt resonators
-          if (isMicrostrip){
-              c_s += getMS_Via(0.5, x+40 + x_space, 30, 2); // MS via diameter = 0.5 mm
-          }
-          else{
-              c_s += QStringLiteral("<GND * 1 %1 30 0 0 1 0>\n").arg(x + 60 + x_space);
-          }
-      }
+            w_s += getWireString(x + 30, 180, x + 90 + 2 * x_space, 180); // Join series lines
+            w_s += getWireString(x + 60 + x_space, 90, x + 60 + x_space, 180); // Join middle point with the stub
+        }
+        if (Filter->Class == CLASS_BANDPASS) {
+            // If bandpass, shunt resonators
+            if (isMicrostrip) {
+                c_s += getMS_Via(0.5, x + 40 + x_space, 30, 2); // MS via diameter = 0.5 mm
+            } else {
+                c_s += QStringLiteral("<GND * 1 %1 30 0 0 1 0>\n").arg(x + 60 + x_space);
+            }
+        }
 
-    x += 120 + 2 * x_space;
-  }
+        x += 120 + 2 * x_space;
+    }
 
-  // Last Z0 line
-  if (isMicrostrip)
-  {
-      c_s += getLineString(isMicrostrip, W_line, d_lamdba4/sqrt(er_eff_line), x, 180);
-  }
-  else
-  {// Ideal transmission line
-      c_s += getLineString(isMicrostrip, Filter->Impedance, d_lamdba4, x, 180);
-  }
+    // Last Z0 line
+    if (isMicrostrip) {
+        c_s += getLineString(isMicrostrip, W_line, d_lamdba4 / sqrt(er_eff_line), x, 180);
+    } else { // Ideal transmission line
+        c_s += getLineString(isMicrostrip, Filter->Impedance, d_lamdba4, x, 180);
+    }
 
-  // Last power and ground
-  x += 80;
-  c_s += QStringLiteral("<Pac P2 1 %1 330 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
-  c_s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
-  w_s += getWireString(x, 180, x, 300);
-  w_s += getWireString(x-50, 180, x, 180);
-  // Components footer
-  c_s += QStringLiteral("<.SP SP1 1 70 460 0 67 0 0 \"lin\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(0.1 * Filter->Frequency)).arg(num2str(10.0 * Filter->Frequency));
-  if (isMicrostrip)
-    c_s += QStringLiteral("<SUBST Sub1 1 300 500 -30 24 0 0 \"%1\" 1 \"%2m\" 1 \"%3m\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate->er).arg(num2str(Substrate->height)).arg(num2str(Substrate->thickness)).arg(Substrate->tand).arg(Substrate->resistivity).arg(Substrate->roughness);
-  c_s += QStringLiteral("<Eqn Eqn1 1 450 560 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
-  *s += c_s + "</Components>\n";
-  *s += w_s + "</Wires>\n";
-  // Footer
-  *s += "<Diagrams>\n";
-  *s += "</Diagrams>\n";
-  *s += "<Paintings>\n";
-  *s += QStringLiteral("<Text 420 460 12 #000000 0 \"Quarter wave bandpass filter \\n ");
-  switch (Filter->Type)
-  {
-    case TYPE_BESSEL: *s += QStringLiteral("Bessel"); break;
-    case TYPE_BUTTERWORTH: *s += QStringLiteral("Butterworth"); break;
-    case TYPE_CHEBYSHEV: *s += QStringLiteral("Chebyshev"); break;
-  }
-  *s += QStringLiteral(" %1Hz...%2Hz \\n ").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
-  *s += QStringLiteral("Impedance matching %3 Ohm\">\n").arg(Filter->Impedance);
-  *s += "</Paintings>\n";
-  return s;
+    // Last power and ground
+    x += 80;
+    c_s += QStringLiteral("<Pac P2 1 %1 330 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
+    c_s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
+    w_s += getWireString(x, 180, x, 300);
+    w_s += getWireString(x - 50, 180, x, 180);
+    // Components footer
+    c_s += QStringLiteral("<.SP SP1 1 70 460 0 67 0 0 \"lin\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(0.1 * Filter->Frequency)).arg(num2str(10.0 * Filter->Frequency));
+    if (isMicrostrip)
+        c_s += QStringLiteral("<SUBST Sub1 1 300 500 -30 24 0 0 \"%1\" 1 \"%2m\" 1 \"%3m\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate->er).arg(num2str(Substrate->height)).arg(num2str(Substrate->thickness)).arg(Substrate->tand).arg(Substrate->resistivity).arg(Substrate->roughness);
+    c_s += QStringLiteral("<Eqn Eqn1 1 450 560 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
+    *s += c_s + "</Components>\n";
+    *s += w_s + "</Wires>\n";
+    // Footer
+    *s += "<Diagrams>\n";
+    *s += "</Diagrams>\n";
+    *s += "<Paintings>\n";
+    *s += QStringLiteral("<Text 420 460 12 #000000 0 \"Quarter wave bandpass filter \\n ");
+    switch (Filter->Type) {
+    case TYPE_BESSEL:
+        *s += QStringLiteral("Bessel");
+        break;
+    case TYPE_BUTTERWORTH:
+        *s += QStringLiteral("Butterworth");
+        break;
+    case TYPE_CHEBYSHEV:
+        *s += QStringLiteral("Chebyshev");
+        break;
+    }
+    *s += QStringLiteral(" %1Hz...%2Hz \\n ").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
+    *s += QStringLiteral("Impedance matching %3 Ohm\">\n").arg(Filter->Impedance);
+    *s += "</Paintings>\n";
+    return s;
 }

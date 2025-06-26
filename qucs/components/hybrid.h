@@ -17,11 +17,11 @@
 
 #include "component.h"
 
-class Hybrid : public Component  {
+class Hybrid : public Component {
 public:
-  Hybrid();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Hybrid();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

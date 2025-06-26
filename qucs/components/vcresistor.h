@@ -20,16 +20,16 @@
 
 #include "component.h"
 
-
-class vcresistor : public Component  {
+class vcresistor : public Component {
 public:
-  vcresistor();
-  ~vcresistor();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    vcresistor();
+    ~vcresistor();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

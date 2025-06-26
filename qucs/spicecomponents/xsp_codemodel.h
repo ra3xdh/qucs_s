@@ -20,18 +20,16 @@
 
 #include "components/component.h"
 
-
-class XSP_CodeModel : public Component  {
+class XSP_CodeModel : public Component {
 
 public:
-  XSP_CodeModel();
-  ~XSP_CodeModel();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    XSP_CodeModel();
+    ~XSP_CodeModel();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

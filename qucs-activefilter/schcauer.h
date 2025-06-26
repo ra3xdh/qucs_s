@@ -18,27 +18,26 @@
 #ifndef SCHCAUER_H
 #define SCHCAUER_H
 
-#include <QtCore>
-#include <complex>
-#include <cmath>
 #include "filter.h"
+#include <QtCore>
+#include <cmath>
+#include <complex>
 
 class SchCauer : public Filter // Cauer 2-order section
 {
 
 private:
-    void createGenericSchematic(QString &s);
+    void createGenericSchematic(QString& s);
 
 protected:
-
     void calcHighPass();
     void calcLowPass();
     void calcBandPass();
     void calcBandStop();
-    void createHighPassSchematic(QString &s);
-    void createLowPassSchematic(QString &s);
-    void createBandPassSchematic(QString &s);
-    void createBandStopSchematic(QString &s);
+    void createHighPassSchematic(QString& s);
+    void createLowPassSchematic(QString& s);
+    void createBandPassSchematic(QString& s);
+    void createBandStopSchematic(QString& s);
 
 public:
     SchCauer(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par);

@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class MSline : public Component  {
+class MSline : public Component {
 public:
-  MSline();
-  ~MSline();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    MSline();
+    ~MSline();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

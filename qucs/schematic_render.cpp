@@ -54,21 +54,22 @@
 
 QRect Schematic::modelRect()
 {
-    return QRect{a_ViewX1, a_ViewY1, a_ViewX2 - a_ViewX1, a_ViewY2 - a_ViewY1};
+    return QRect { a_ViewX1, a_ViewY1, a_ViewX2 - a_ViewX1, a_ViewY2 - a_ViewY1 };
 }
 
-QRect Schematic::viewportRect() {
-    return QRect{0, 0, viewport()->width(), viewport()->height()};
+QRect Schematic::viewportRect()
+{
+    return QRect { 0, 0, viewport()->width(), viewport()->height() };
 }
 
 QPoint Schematic::modelToViewport(const QPoint& modelCoordinates)
 {
-    return modelToContents(modelCoordinates) - QPoint{ contentsX(), contentsY() };
+    return modelToContents(modelCoordinates) - QPoint { contentsX(), contentsY() };
 }
 
 QPoint Schematic::viewportToModel(const QPoint& viewportCoordinates)
 {
-    return contentsToModel(QPoint{ contentsX(), contentsY() } + viewportCoordinates);
+    return contentsToModel(QPoint { contentsX(), contentsY() } + viewportCoordinates);
 }
 
 QPoint Schematic::contentsToModel(const QPoint& coordinates)
@@ -111,7 +112,7 @@ QPoint Schematic::modelToContents(const QPoint& coordinates)
     // 2. Adjust resulting coordinates so thay they become having the same scale
     //    as contents
 
-    QPoint contentsCoords{coordinates.x() - a_ViewX1, coordinates.y() - a_ViewY1};
+    QPoint contentsCoords { coordinates.x() - a_ViewX1, coordinates.y() - a_ViewY1 };
     contentsCoords *= a_Scale;
     return contentsCoords;
 }
@@ -137,7 +138,8 @@ inline double clipScale(double offeredScale)
     return offeredScale;
 }
 
-bool Schematic::shouldRender(const double& newScale, const QRect& newModelBounds, const QPoint& toBeDisplayed, const QPoint& viewportCoords) {
+bool Schematic::shouldRender(const double& newScale, const QRect& newModelBounds, const QPoint& toBeDisplayed, const QPoint& viewportCoords)
+{
     const QRect currentModelBounds = modelRect();
     // This point currently displayed at "viewportCoords" of the viewport
     const QPoint currenlyDisplayed = viewportToModel(viewportCoords);
@@ -158,7 +160,7 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
     // Maybe there is no need to do anything
     const double newScale = clipScale(offeredScale);
     if (!shouldRender(newScale, newModel, modelPoint, viewportPoint)) {
-       return a_Scale;
+        return a_Scale;
     }
 
     // The part below is quite tricky: while working at the model plane scale,
@@ -172,12 +174,12 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
 
     QSize viewportSizeOnModelPlane = viewportRect().size() / newScale;
 
-    QPoint vpTopLeftOnModelPlane{
+    QPoint vpTopLeftOnModelPlane {
         modelPoint.x() - static_cast<int>(std::round(viewportPoint.x() / newScale)),
         modelPoint.y() - static_cast<int>(std::round(viewportPoint.y() / newScale))
     };
 
-    QRect viewportOnModelPlane{vpTopLeftOnModelPlane, viewportSizeOnModelPlane};
+    QRect viewportOnModelPlane { vpTopLeftOnModelPlane, viewportSizeOnModelPlane };
     newModel |= viewportOnModelPlane;
 
     // At this point everything is ready for rendering and positioning
@@ -190,7 +192,7 @@ double Schematic::renderModel(const double offeredScale, QRect newModel, const Q
 
     a_Scale = newScale;
     resizeContents(static_cast<int>(std::round(newModel.width() * a_Scale)),
-                   static_cast<int>(std::round(newModel.height() * a_Scale)));
+        static_cast<int>(std::round(newModel.height() * a_Scale)));
 
     auto contentTopLeft = modelToContents(vpTopLeftOnModelPlane);
     setContentsPos(contentTopLeft.x(), contentTopLeft.y());

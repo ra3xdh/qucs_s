@@ -27,11 +27,10 @@
 
 class Schematic;
 
-class CdlNetlistWriter
-{
+class CdlNetlistWriter {
 public:
     CdlNetlistWriter(QTextStream& netlistStream, Schematic* schematic, bool resolveSpicePrefix);
-    ~CdlNetlistWriter() {};
+    ~CdlNetlistWriter() { };
 
     bool write();
 

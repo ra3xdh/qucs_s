@@ -18,20 +18,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef VTRRANDOM_H
+#ifndef VTRRANDOM_H
 #define VTRRANDOM_H
 
 #include "components/component.h"
 
 class vTRRANDOM : public Component {
 public:
-  vTRRANDOM();
-  ~vTRRANDOM();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    vTRRANDOM();
+    ~vTRRANDOM();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // VTRRANDOM_H

@@ -18,44 +18,44 @@
 #include "msline.h"
 #include "extsimkernels/spicecompat.h"
 
-
 MSline::MSline()
 {
-  Description = QObject::tr("microstrip line");
-  Simulator = spicecompat::simQucsator;
+    Description = QObject::tr("microstrip line");
+    Simulator = spicecompat::simQucsator;
 
-  Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-13, -8, 23, -8,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-23,  8, 13,  8,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-13, -8,-23,  8,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 23, -8, 13,  8,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30, 0, -18, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(18, 0, 30, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-13, -8, 23, -8, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-23, 8, 13, 8, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-13, -8, -23, 8, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(23, -8, 13, 8, QPen(Qt::darkBlue, 2)));
 
-  Ports.append(new Port(-30, 0));
-  Ports.append(new Port( 30, 0));
+    Ports.append(new Port(-30, 0));
+    Ports.append(new Port(30, 0));
 
-  x1 = -30; y1 =-11;
-  x2 =  30; y2 = 11;
+    x1 = -30;
+    y1 = -11;
+    x2 = 30;
+    y2 = 11;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "MLIN";
-  Name  = "MS";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "MLIN";
+    Name = "MS";
 
-  Props.append(new Property("Subst", "Subst1", true,
-	QObject::tr("name of substrate definition")));
-  Props.append(new Property("W", "1 mm", true,
-	QObject::tr("width of the line")));
-  Props.append(new Property("L", "10 mm", true,
-	QObject::tr("length of the line")));
-  Props.append(new Property("Model", "Hammerstad", false,
-	QObject::tr("quasi-static microstrip model")+
-		    " [Hammerstad, Wheeler, Schneider]"));
-  Props.append(new Property("DispModel", "Kirschning", false,
-	QObject::tr("microstrip dispersion model")+" [Kirschning, Kobayashi, "
-	"Yamashita, Hammerstad, Getsinger, Schneider, Pramanick]"));
-  Props.append(new Property("Temp", "26.85", false,
-	QObject::tr("simulation temperature in degree Celsius")));
+    Props.append(new Property("Subst", "Subst1", true,
+        QObject::tr("name of substrate definition")));
+    Props.append(new Property("W", "1 mm", true,
+        QObject::tr("width of the line")));
+    Props.append(new Property("L", "10 mm", true,
+        QObject::tr("length of the line")));
+    Props.append(new Property("Model", "Hammerstad", false,
+        QObject::tr("quasi-static microstrip model") + " [Hammerstad, Wheeler, Schneider]"));
+    Props.append(new Property("DispModel", "Kirschning", false,
+        QObject::tr("microstrip dispersion model") + " [Kirschning, Kobayashi, "
+                                                     "Yamashita, Hammerstad, Getsinger, Schneider, Pramanick]"));
+    Props.append(new Property("Temp", "26.85", false,
+        QObject::tr("simulation temperature in degree Celsius")));
 }
 
 MSline::~MSline()
@@ -64,14 +64,15 @@ MSline::~MSline()
 
 Component* MSline::newOne()
 {
-  return new MSline();
+    return new MSline();
 }
 
-Element* MSline::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MSline::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Microstrip Line");
-  BitmapFile = (char *) "msline";
+    Name = QObject::tr("Microstrip Line");
+    BitmapFile = (char*)"msline";
 
-  if(getNewOne)  return new MSline();
-  return 0;
+    if (getNewOne)
+        return new MSline();
+    return 0;
 }

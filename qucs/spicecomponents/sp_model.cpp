@@ -22,40 +22,42 @@
 
 S4Q_Model::S4Q_Model()
 {
-  isEquation = false;
-  Type = isComponent; // Analogue and digital component.
-  Description = QObject::tr(".MODEL section\n"
-                            "Multiple line ngspice or Xyce .MODEL allowed using \"+\" continuation lines.\n"
-                            "Leave continuation lines blank when NOT in use.");
-  Simulator = spicecompat::simSpice;
+    isEquation = false;
+    Type = isComponent; // Analogue and digital component.
+    Description = QObject::tr(".MODEL section\n"
+                              "Multiple line ngspice or Xyce .MODEL allowed using \"+\" continuation lines.\n"
+                              "Leave continuation lines blank when NOT in use.");
+    Simulator = spicecompat::simSpice;
 
-  QFont f = QucsSettings.font;
-  f.setWeight(QFont::Light);
-  f.setPointSizeF(12.0);
-  QFontMetrics  metrics(f, 0);  // use the the screen-compatible metric
-  QSize r = metrics.size(0, QObject::tr(".MODEL"));
-  int xb = r.width()  >> 1;
-  int yb = r.height() >> 1;
+    QFont f = QucsSettings.font;
+    f.setWeight(QFont::Light);
+    f.setPointSizeF(12.0);
+    QFontMetrics metrics(f, 0); // use the the screen-compatible metric
+    QSize r = metrics.size(0, QObject::tr(".MODEL"));
+    int xb = r.width() >> 1;
+    int yb = r.height() >> 1;
 
-  Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
-  Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
-  Texts.append(new Text(-xb+4,  -yb-3, QObject::tr(".MODEL"),
-			QColor(0,0,0), QFontInfo(f).pixelSize()));
+    Lines.append(new qucs::Line(-xb, -yb, -xb, yb, QPen(Qt::darkRed, 2)));
+    Lines.append(new qucs::Line(-xb, yb, xb + 3, yb, QPen(Qt::darkRed, 2)));
+    Texts.append(new Text(-xb + 4, -yb - 3, QObject::tr(".MODEL"),
+        QColor(0, 0, 0), QFontInfo(f).pixelSize()));
 
-  x1 = -xb-3;  y1 = -yb-5;
-  x2 =  xb+9; y2 =  yb+3;
+    x1 = -xb - 3;
+    y1 = -yb - 5;
+    x2 = xb + 9;
+    y2 = yb + 3;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "SpiceModel";
-  Name  = "SpiceModel";
-  SpiceModel = ".MODEL";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "SpiceModel";
+    Name = "SpiceModel";
+    SpiceModel = ".MODEL";
 
-  Props.append(new Property("Line_1", ".MODEL DIODE1 D(BV=50 Is=1e-13 N = 1.5)", true,"Model statement"));
-  Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
-  Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
-  Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
-  Props.append(new Property("Line_5", "", false,"")); // empty description to allow extendeable .MODEL
+    Props.append(new Property("Line_1", ".MODEL DIODE1 D(BV=50 Is=1e-13 N = 1.5)", true, "Model statement"));
+    Props.append(new Property("Line_2", "", false, "+ continuation line 1"));
+    Props.append(new Property("Line_3", "", false, "+ continuation line 2"));
+    Props.append(new Property("Line_4", "", false, "+ continuation line 3"));
+    Props.append(new Property("Line_5", "", false, "")); // empty description to allow extendeable .MODEL
 }
 
 S4Q_Model::~S4Q_Model()
@@ -64,28 +66,29 @@ S4Q_Model::~S4Q_Model()
 
 Component* S4Q_Model::newOne()
 {
-  return new S4Q_Model();
+    return new S4Q_Model();
 }
 
-Element* S4Q_Model::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* S4Q_Model::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr(".MODEL Section");
-  BitmapFile = (char *) "sp_model";
+    Name = QObject::tr(".MODEL Section");
+    BitmapFile = (char*)"sp_model";
 
-  if(getNewOne)  return new S4Q_Model();
-  return 0;
+    if (getNewOne)
+        return new S4Q_Model();
+    return 0;
 }
 
 QString S4Q_Model::getSpiceModel()
 {
-    if (isActive != COMP_IS_ACTIVE) return QString();
+    if (isActive != COMP_IS_ACTIVE)
+        return QString();
 
     QString s;
     s.clear();
-    for (Property *pp : Props) {
+    for (Property* pp : Props) {
         if (!pp->Value.isEmpty())
             s += pp->Value + "\n";
     }
     return s;
 }
-

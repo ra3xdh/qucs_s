@@ -23,29 +23,28 @@
 class QTextStream;
 class QString;
 
-
-class LibComp : public MultiViewComponent  {
+class LibComp : public MultiViewComponent {
 public:
-  LibComp();
- ~LibComp() {};
-  Component* newOne();
+    LibComp();
+    ~LibComp() { };
+    Component* newOne();
 
-  bool createSubNetlist(QTextStream *, QStringList&, int type=1);
-  QString getSubcircuitFile();
-  QString getSpiceLibrary();
+    bool createSubNetlist(QTextStream*, QStringList&, int type = 1);
+    QString getSubcircuitFile();
+    QString getSpiceLibrary();
 
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
-  QString vhdlCode(int);
-  QString verilogCode(int);
-  void createSymbol();
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
+    QString vhdlCode(int);
+    QString verilogCode(int);
+    void createSymbol();
 
 private:
-  int  loadSymbol();
-  int  loadSection(const QString&, QString&, QStringList* i=0, QStringList *Attach=0);
-  QString createType();
+    int loadSymbol();
+    int loadSection(const QString&, QString&, QStringList* i = 0, QStringList* Attach = 0);
+    QString createType();
 };
 
 #endif

@@ -28,21 +28,20 @@ class QString;
  * \brief Definition of the vacomponent class.
  */
 
-class vacomponent : public Component
-{
-  public:
+class vacomponent : public Component {
+public:
     using Component::newOne;
     vacomponent(QString filename);
     vacomponent(QJsonObject json);
     ~vacomponent() { };
     virtual Component* newOne(QString filename);
-    static Element* info(QString&, QString &,
-                         bool getNewOne=false, QString filename="");
-  protected:
+    static Element* info(QString&, QString&,
+        bool getNewOne = false, QString filename = "");
+
+protected:
     void createSymbol(QJsonObject json);
     void parseJson(QJsonObject json);
     QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-
 };
 
 QJsonObject getJsonObject(QString filename);

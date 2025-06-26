@@ -24,143 +24,131 @@
 #include "projectView.h"
 #include "schematic.h"
 
-#include <QString>
-#include <QStringList>
+#include <QDebug>
 #include <QDir>
 #include <QStandardItemModel>
-#include <QDebug>
+#include <QString>
+#include <QStringList>
 
-ProjectView::ProjectView(QWidget *parent)
-  : QTreeView(parent)
+ProjectView::ProjectView(QWidget* parent)
+    : QTreeView(parent)
 {
-  m_projPath = QString();
-  m_projPath = QString();
-  m_valid = false;
-  m_model = new QStandardItemModel(8, 2, this);
+    m_projPath = QString();
+    m_projPath = QString();
+    m_valid = false;
+    m_model = new QStandardItemModel(8, 2, this);
 
-  refresh();
+    refresh();
 
-  this->setModel(m_model);
-  this->setEditTriggers(QAbstractItemView::NoEditTriggers);
-  this->setSelectionMode(QAbstractItemView::ExtendedSelection); // Allow multiple selection
+    this->setModel(m_model);
+    this->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    this->setSelectionMode(QAbstractItemView::ExtendedSelection); // Allow multiple selection
 }
 
 ProjectView::~ProjectView()
 {
-  delete m_model;
+    delete m_model;
 }
 
-void
-ProjectView::setProjPath(const QString &path)
+void ProjectView::setProjPath(const QString& path)
 {
-  // check if path exist
-  m_valid = !path.isEmpty() && QDir(path).exists();
+    // check if path exist
+    m_valid = !path.isEmpty() && QDir(path).exists();
 
-  if (m_valid) {
-    m_projPath = path; // full path
-    m_projName = QDir(m_projPath).dirName(); // only project directory name
-    if (m_projName.endsWith("_prj")) {
-      m_projName.chop(4);// remove "_prj" from name
-    } else { // should not happen
-      qWarning() << "ProjectView::setProjPath() : path does not end in '_prj' (" << m_projName << ")";
+    if (m_valid) {
+        m_projPath = path; // full path
+        m_projName = QDir(m_projPath).dirName(); // only project directory name
+        if (m_projName.endsWith("_prj")) {
+            m_projName.chop(4); // remove "_prj" from name
+        } else { // should not happen
+            qWarning() << "ProjectView::setProjPath() : path does not end in '_prj' (" << m_projName << ")";
+        }
     }
-  }
-  refresh();
+    refresh();
 }
 
 // refresh using projectPath
-void
-ProjectView::refresh()
+void ProjectView::refresh()
 {
-  m_model->clear();
+    m_model->clear();
 
-  QStringList header;
-  header << tr("Content of %1").arg(m_projName) << tr("Note");
-  m_model->setHorizontalHeaderLabels(header);
+    QStringList header;
+    header << tr("Content of %1").arg(m_projName) << tr("Note");
+    m_model->setHorizontalHeaderLabels(header);
 
-  appendRow(m_model->invisibleRootItem(), tr("Datasets"), QString(""));
-  appendRow(m_model->invisibleRootItem(), tr("Data Displays"), QString(""));
-  appendRow(m_model->invisibleRootItem(), tr("Verilog"), QString(""));
-  appendRow(m_model->invisibleRootItem(), tr("Verilog-A"), QString(""));
-  appendRow(m_model->invisibleRootItem(), tr("VHDL"), QString(""));
-  appendRow(m_model->invisibleRootItem(), tr("Octave"), QString(""));
-  appendRow(m_model->invisibleRootItem(), tr("Schematics"), QString(""));
-  appendRow(m_model->invisibleRootItem(), tr("Symbols"), QString(""));
-  appendRow(m_model->invisibleRootItem(), tr("SPICE"), QString(""));
-  appendRow(m_model->invisibleRootItem(), tr("Others"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("Datasets"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("Data Displays"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("Verilog"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("Verilog-A"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("VHDL"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("Octave"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("Schematics"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("Symbols"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("SPICE"), QString(""));
+    appendRow(m_model->invisibleRootItem(), tr("Others"), QString(""));
 
-  setExpanded(m_model->index(6, 0), true);
+    setExpanded(m_model->index(6, 0), true);
 
-  if (!m_valid) {
-    return;
-  }
-
-  // put all files into "Content"-ListView
-  QDir workPath(m_projPath);
-  QStringList files = workPath.entryList(QStringList() << "*", QDir::Files, QDir::Name);
-  QStringList::iterator it;
-  QString extName, fileName, fullExtName;
-  QList<QStandardItem *> columnData;
-
-
-  for(it = files.begin(); it != files.end(); ++it) {
-    fileName = (*it).toLatin1();
-    extName = QFileInfo(workPath.filePath(fileName)).suffix().toLower();
-    fullExtName = QFileInfo(workPath.filePath(fileName)).completeSuffix().toLower();
-
-    columnData.clear();
-    columnData.append(new QStandardItem(fileName));
-
-    if(extName == "dat" || fullExtName == "dat.ngspice" ||
-       fullExtName == "dat.xyce" || fullExtName == "dat.spopus" ) {
-      appendChild(0, columnData);
+    if (!m_valid) {
+        return;
     }
-    else if(extName == "dpl") {
-      appendChild(1, columnData);
-    }
-    else if(extName == "v") {
-      appendChild(2, columnData);
-    }
-    else if(extName == "va") {
-      appendChild(3, columnData);
-    }
-    else if((extName == "vhdl") || (extName == "vhd")) {
-      appendChild(4, columnData);
-    }
-    else if((extName == "m") || (extName == "oct")) {
-      appendChild(5, columnData);
-    }
-    else if(extName == "sch") {
-      // test if it's a valid schematic file
-      int n = Schematic::testFile(workPath.filePath(fileName));
-      if(n >= 0) {
-        if(n > 0) { // is a subcircuit
-          columnData.append(new QStandardItem(QString::number(n)+tr("-port")));
+
+    // put all files into "Content"-ListView
+    QDir workPath(m_projPath);
+    QStringList files = workPath.entryList(QStringList() << "*", QDir::Files, QDir::Name);
+    QStringList::iterator it;
+    QString extName, fileName, fullExtName;
+    QList<QStandardItem*> columnData;
+
+    for (it = files.begin(); it != files.end(); ++it) {
+        fileName = (*it).toLatin1();
+        extName = QFileInfo(workPath.filePath(fileName)).suffix().toLower();
+        fullExtName = QFileInfo(workPath.filePath(fileName)).completeSuffix().toLower();
+
+        columnData.clear();
+        columnData.append(new QStandardItem(fileName));
+
+        if (extName == "dat" || fullExtName == "dat.ngspice" || fullExtName == "dat.xyce" || fullExtName == "dat.spopus") {
+            appendChild(0, columnData);
+        } else if (extName == "dpl") {
+            appendChild(1, columnData);
+        } else if (extName == "v") {
+            appendChild(2, columnData);
+        } else if (extName == "va") {
+            appendChild(3, columnData);
+        } else if ((extName == "vhdl") || (extName == "vhd")) {
+            appendChild(4, columnData);
+        } else if ((extName == "m") || (extName == "oct")) {
+            appendChild(5, columnData);
+        } else if (extName == "sch") {
+            // test if it's a valid schematic file
+            int n = Schematic::testFile(workPath.filePath(fileName));
+            if (n >= 0) {
+                if (n > 0) { // is a subcircuit
+                    columnData.append(new QStandardItem(QString::number(n) + tr("-port")));
+                }
+                appendChild(6, columnData);
+            }
+        } else if (extName == "sym") {
+            appendChild(7, columnData);
+        } else if ((extName == "cir") || (extName == "ckt") || (extName == "sp")) {
+            appendChild(8, columnData);
+        } else {
+            appendChild(9, columnData);
         }
-        appendChild(6, columnData);
-      }
-    } else if (extName == "sym") {
-        appendChild(7,columnData);
-    } else if ((extName == "cir") || (extName=="ckt") ||
-             (extName=="sp")) {
-        appendChild(8,columnData);
     }
-    else {
-      appendChild(9, columnData);
-    }
-  }
 
-  resizeColumnToContents(0);
+    resizeColumnToContents(0);
 }
 
 QStringList ProjectView::exportSchematic()
 {
-  QStringList list;
-  QStandardItem *item = m_model->item(6, 0);
-  for (int i = 0; i < item->rowCount(); ++i) {
-    if (item->child(i,1)) {
-      list.append(item->child(i,0)->text());
+    QStringList list;
+    QStandardItem* item = m_model->item(6, 0);
+    for (int i = 0; i < item->rowCount(); ++i) {
+        if (item->child(i, 1)) {
+            list.append(item->child(i, 0)->text());
+        }
     }
-  }
-  return list;
+    return list;
 }

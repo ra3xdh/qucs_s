@@ -18,38 +18,39 @@
 #include "amplifier.h"
 #include "extsimkernels/spicecompat.h"
 
-
 Amplifier::Amplifier()
 {
-  Description = QObject::tr("ideal amplifier");
-  Simulator = spicecompat::simQucsator;
+    Description = QObject::tr("ideal amplifier");
+    Simulator = spicecompat::simQucsator;
 
-  Lines.append(new qucs::Line(-16,-20,-16, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-16,-20, 16,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-16, 20, 16,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-16, -20, -16, 20, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-16, -20, 16, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-16, 20, 16, 0, QPen(Qt::darkBlue, 2)));
 
-  Lines.append(new qucs::Line(-30,  0,-16,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 16,  0, 30,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30, 0, -16, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(16, 0, 30, 0, QPen(Qt::darkBlue, 2)));
 
-  Ports.append(new Port(-30,  0));
-  Ports.append(new Port( 30,  0));
+    Ports.append(new Port(-30, 0));
+    Ports.append(new Port(30, 0));
 
-  x1 = -30; y1 = -23;
-  x2 =  30; y2 =  23;
+    x1 = -30;
+    y1 = -23;
+    x2 = 30;
+    y2 = 23;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "Amp";
-  Name  = "X";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "Amp";
+    Name = "X";
 
-  Props.append(new Property("G", "10", true,
-		QObject::tr("voltage gain")));
-  Props.append(new Property("Z1", "50 Ohm", false,
-		QObject::tr("reference impedance of input port")));
-  Props.append(new Property("Z2", "50 Ohm", false,
-		QObject::tr("reference impedance of output port")));
-  Props.append(new Property("NF", "0 dB", false,
-		QObject::tr("noise figure")));
+    Props.append(new Property("G", "10", true,
+        QObject::tr("voltage gain")));
+    Props.append(new Property("Z1", "50 Ohm", false,
+        QObject::tr("reference impedance of input port")));
+    Props.append(new Property("Z2", "50 Ohm", false,
+        QObject::tr("reference impedance of output port")));
+    Props.append(new Property("NF", "0 dB", false,
+        QObject::tr("noise figure")));
 }
 
 Amplifier::~Amplifier()
@@ -58,14 +59,15 @@ Amplifier::~Amplifier()
 
 Component* Amplifier::newOne()
 {
-  return new Amplifier();
+    return new Amplifier();
 }
 
-Element* Amplifier::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* Amplifier::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Amplifier");
-  BitmapFile = (char *) "amplifier";
+    Name = QObject::tr("Amplifier");
+    BitmapFile = (char*)"amplifier";
 
-  if(getNewOne)  return new Amplifier();
-  return 0;
+    if (getNewOne)
+        return new Amplifier();
+    return 0;
 }

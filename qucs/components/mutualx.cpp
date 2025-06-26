@@ -17,60 +17,59 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "mutualx.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
+#include "node.h"
 #include <cmath>
 
 MutualX::MutualX()
 {
-  Description = QObject::tr("several mutual inductors");
-  Simulator = spicecompat::simAll;
+    Description = QObject::tr("several mutual inductors");
+    Simulator = spicecompat::simAll;
 
-  Model = "MUTX";
-  Name  = "Tr";
-  SpiceModel = "K";
+    Model = "MUTX";
+    Name = "Tr";
+    SpiceModel = "K";
 
-  const int init_coils=2; // initial number of coils
-  // must be the first property!
-  Props.append(new Property("coils", QString::number(init_coils), false,
-                QObject::tr("number of mutual inductances")));
+    const int init_coils = 2; // initial number of coils
+    // must be the first property!
+    Props.append(new Property("coils", QString::number(init_coils), false,
+        QObject::tr("number of mutual inductances")));
 
-  for (int i=1;i<=init_coils; i++) {
-      Props.append(new Property("L"+QString::number(i), "1 mH", false,
-                                QObject::tr("inductance of coil") + " " + QString::number(i)));
-  }
-
-  for(int i = 1; i < init_coils; i++)
-    for(int j = i+1; j <= init_coils; j++) {
-       QString nam = "k" + QString::number(i) + QString::number(j);
-       QString desc = QObject::tr("coupling factor between coil %1 and coil %2").arg(i).arg(j);
-       Props.append(new Property(nam,"0.9",false,desc));
+    for (int i = 1; i <= init_coils; i++) {
+        Props.append(new Property("L" + QString::number(i), "1 mH", false,
+            QObject::tr("inductance of coil") + " " + QString::number(i)));
     }
 
-  createSymbol();
+    for (int i = 1; i < init_coils; i++)
+        for (int j = i + 1; j <= init_coils; j++) {
+            QString nam = "k" + QString::number(i) + QString::number(j);
+            QString desc = QObject::tr("coupling factor between coil %1 and coil %2").arg(i).arg(j);
+            Props.append(new Property(nam, "0.9", false, desc));
+        }
+
+    createSymbol();
 }
 
 // --------------------------------------------------------
-Element* MutualX::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MutualX::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("N Mutual Inductors");
-  BitmapFile = (char *) "mutualx";
+    Name = QObject::tr("N Mutual Inductors");
+    BitmapFile = (char*)"mutualx";
 
-  if(getNewOne) {
-      MutualX* p =  new MutualX();
-      p->Props.at(0)->Value = "2";
-      p->recreate();
-      return p;
-  }
-  return 0;
+    if (getNewOne) {
+        MutualX* p = new MutualX();
+        p->Props.at(0)->Value = "2";
+        p->recreate();
+        return p;
+    }
+    return 0;
 }
 
 Component* MutualX::newOne()
 {
-    MutualX *p  = new MutualX();
-    p->Props.at(0)->Value=Props.at(0)->Value;
+    MutualX* p = new MutualX();
+    p->Props.at(0)->Value = Props.at(0)->Value;
     p->recreate();
     return p;
 }
@@ -80,55 +79,52 @@ QString MutualX::netlist()
     QString s = Model + ":" + Name;
 
     // output all node names
-    for (Port *p1 : Ports) {
-      s += " "+p1->Connection->Name;   // node names
+    for (Port* p1 : Ports) {
+        s += " " + p1->Connection->Name; // node names
     }
 
     int coils = Props.at(0)->Value.toInt();
 
-    QString L="";
-    for (int i=0;i<coils;i++) {
-        L += Props.at(i+1)->Value + ";";
+    QString L = "";
+    for (int i = 0; i < coils; i++) {
+        L += Props.at(i + 1)->Value + ";";
     }
     L.chop(1);
 
-    QString k="";
+    QString k = "";
 
-    QString **k_matrix = new QString*[coils];
-    for (int i=0;i<coils;i++) {
-        k_matrix[i]= new QString[coils];
+    QString** k_matrix = new QString*[coils];
+    for (int i = 0; i < coils; i++) {
+        k_matrix[i] = new QString[coils];
     }
 
-
-    for (int i=0, state=1;i<coils;i++) {
-        for (int j=i;j<coils;j++,state++) {
-            if (i==j) {
+    for (int i = 0, state = 1; i < coils; i++) {
+        for (int j = i; j < coils; j++, state++) {
+            if (i == j) {
                 k_matrix[i][j] = "1.0"; // for self-inductance
                 state--;
             } else {
-                k_matrix[i][j] = Props.at(coils+state)->Value; // for mutual inductances
+                k_matrix[i][j] = Props.at(coils + state)->Value; // for mutual inductances
             }
-
         }
-        for (int j=0;j<i;j++) {
-            k_matrix[i][j]= k_matrix[j][i];
+        for (int j = 0; j < i; j++) {
+            k_matrix[i][j] = k_matrix[j][i];
         }
     }
 
-    for (int i=0;i<coils;i++) {
-        for (int j=0;j<coils;j++) {
-            k += k_matrix[i][j]+";";
+    for (int i = 0; i < coils; i++) {
+        for (int j = 0; j < coils; j++) {
+            k += k_matrix[i][j] + ";";
         }
     }
     k.chop(1);
 
-    for (int i=0;i<coils;i++) {
-        delete [] k_matrix[i];
+    for (int i = 0; i < coils; i++) {
+        delete[] k_matrix[i];
     }
-    delete [] k_matrix;
+    delete[] k_matrix;
 
-
-    s += QStringLiteral(" L=\"[%1]\" k=\"[%2]\"\n").arg(L,k);
+    s += QStringLiteral(" L=\"[%1]\" k=\"[%2]\"\n").arg(L, k);
 
     return s;
 }
@@ -136,97 +132,94 @@ QString MutualX::netlist()
 // --------------------------------------------------------
 void MutualX::createSymbol()
 {
-  // adjust port number
-  int Num = Props.first()->Value.toInt();
-  if(Num < 2)
-    Num = 2;
-  else if(Num > 8)
-    Num = 8;
-  Props.first()->Value = QString::number(Num);
+    // adjust port number
+    int Num = Props.first()->Value.toInt();
+    if (Num < 2)
+        Num = 2;
+    else if (Num > 8)
+        Num = 8;
+    Props.first()->Value = QString::number(Num);
 
-  int NumProps,oldNumProps;
-  oldNumProps = Props.count();
-  NumProps = Num + Num * (Num - 1) / 2 + 1;
-  if (oldNumProps!=NumProps) { // Coils count was changed
-    int oldCoils = rint(0.5*(sqrt(8*oldNumProps-7)-1.0)); // calculate old number of coils
-    // we need to solve quadratic equation
-    int dCoils = abs(oldCoils - Num);          // how many coils were added/removed?
+    int NumProps, oldNumProps;
+    oldNumProps = Props.count();
+    NumProps = Num + Num * (Num - 1) / 2 + 1;
+    if (oldNumProps != NumProps) { // Coils count was changed
+        int oldCoils = rint(0.5 * (sqrt(8 * oldNumProps - 7) - 1.0)); // calculate old number of coils
+        // we need to solve quadratic equation
+        int dCoils = abs(oldCoils - Num); // how many coils were added/removed?
 
-    if (oldCoils>Num) { // reduce coils number
-      for(int i = 0; i < dCoils; i++){
-        Props.removeAt(Num+1); // remove excess coils
-      }
-
-      // remove only the no longer valid coupling coefficients, leave the
-      //   ones related to existing coils untouched
-      for(int i = 1,state=1; i < oldCoils; i++)
-        for(int j = i+1; j <= oldCoils; j++,state++) {
-            if ((i>Num)||(j>Num)) {
-              Props.removeAt(Num + state);
-              state--;
+        if (oldCoils > Num) { // reduce coils number
+            for (int i = 0; i < dCoils; i++) {
+                Props.removeAt(Num + 1); // remove excess coils
             }
-        }
 
-    } else { // add new coils
-      for(int i = 0; i < dCoils; i++) { // add new properties for coils
-        Props.insert(oldCoils+1, new Property("L"+QString::number(Num-i),
-                "1 mH",
-                false,
-                QObject::tr("inductance of coil") + " " + QString::number(Num-i)));
-      }
+            // remove only the no longer valid coupling coefficients, leave the
+            //   ones related to existing coils untouched
+            for (int i = 1, state = 1; i < oldCoils; i++)
+                for (int j = i + 1; j <= oldCoils; j++, state++) {
+                    if ((i > Num) || (j > Num)) {
+                        Props.removeAt(Num + state);
+                        state--;
+                    }
+                }
 
-      for(int i = 1,state=1; i < Num; i++)
-        for(int j = i+1; j <= Num; j++,state++) {
-            if ((i>oldCoils)||(j>oldCoils)) {
-                Props.insert(Num + state, new Property("k", "0.9", false, " "));
+        } else { // add new coils
+            for (int i = 0; i < dCoils; i++) { // add new properties for coils
+                Props.insert(oldCoils + 1, new Property("L" + QString::number(Num - i), "1 mH", false, QObject::tr("inductance of coil") + " " + QString::number(Num - i)));
             }
+
+            for (int i = 1, state = 1; i < Num; i++)
+                for (int j = i + 1; j <= Num; j++, state++) {
+                    if ((i > oldCoils) || (j > oldCoils)) {
+                        Props.insert(Num + state, new Property("k", "0.9", false, " "));
+                    }
+                }
         }
-
-    }
-  }
-
-  // in any case rewrite properties Name and Description
-  // (when loading a component, added properties have a default name)
-  // adjust coils names
-  auto p1 = Props.begin();
-  ++p1;
-  for(int i = 1; i <= Num; i++) {
-    (*p1)->Name = "L"+QString::number(i);
-    (*p1)->Description = QObject::tr("inductance of coil") + " " + QString::number(i);
-    p1++;
-  }
-  // adjust coupling coeffs names
-  for(int i = 1,state=1; i < Num; i++)
-    for(int j = i+1; j <= Num; j++,state++) {
-      Props.at(Num+state)->Name = "k" + QString::number(i) + QString::number(j);
-      Props.at(Num+state)->Description =
-        QObject::tr("coupling factor between coil %1 and coil %2").arg(i).arg(j);
     }
 
-  // draw symbol
-  int x = -10 * (Num-1);
-  Texts.append(new Text(x-9,-22,"1"));
+    // in any case rewrite properties Name and Description
+    // (when loading a component, added properties have a default name)
+    // adjust coils names
+    auto p1 = Props.begin();
+    ++p1;
+    for (int i = 1; i <= Num; i++) {
+        (*p1)->Name = "L" + QString::number(i);
+        (*p1)->Description = QObject::tr("inductance of coil") + " " + QString::number(i);
+        p1++;
+    }
+    // adjust coupling coeffs names
+    for (int i = 1, state = 1; i < Num; i++)
+        for (int j = i + 1; j <= Num; j++, state++) {
+            Props.at(Num + state)->Name = "k" + QString::number(i) + QString::number(j);
+            Props.at(Num + state)->Description = QObject::tr("coupling factor between coil %1 and coil %2").arg(i).arg(j);
+        }
 
-  x1 = x-6;  y1 = -30;
-  x2 = 10-x; y2 =  30;
+    // draw symbol
+    int x = -10 * (Num - 1);
+    Texts.append(new Text(x - 9, -22, "1"));
 
-  tx = x2+4;
-  ty = y1+4;
+    x1 = x - 6;
+    y1 = -30;
+    x2 = 10 - x;
+    y2 = 30;
 
-  x -= 6;
-  for(int i=0; i<Num; i++) {
-    Arcs.append(new qucs::Arc(x,-18,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-    Arcs.append(new qucs::Arc(x, -6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-    Arcs.append(new qucs::Arc(x,  6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+    tx = x2 + 4;
+    ty = y1 + 4;
 
-    x += 6;
-    Lines.append(new qucs::Line(x,-18,x,-30,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(x, 18,x, 30,QPen(Qt::darkBlue,2)));
+    x -= 6;
+    for (int i = 0; i < Num; i++) {
+        Arcs.append(new qucs::Arc(x, -18, 12, 12, 16 * 270, 16 * 180, QPen(Qt::darkBlue, 2)));
+        Arcs.append(new qucs::Arc(x, -6, 12, 12, 16 * 270, 16 * 180, QPen(Qt::darkBlue, 2)));
+        Arcs.append(new qucs::Arc(x, 6, 12, 12, 16 * 270, 16 * 180, QPen(Qt::darkBlue, 2)));
 
-    Ports.append(new Port(x,-30));
-    Ports.append(new Port(x, 30));
-    x += 14;
-  }
+        x += 6;
+        Lines.append(new qucs::Line(x, -18, x, -30, QPen(Qt::darkBlue, 2)));
+        Lines.append(new qucs::Line(x, 18, x, 30, QPen(Qt::darkBlue, 2)));
+
+        Ports.append(new Port(x, -30));
+        Ports.append(new Port(x, 30));
+        x += 14;
+    }
 }
 
 QString MutualX::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
@@ -237,23 +230,22 @@ QString MutualX::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
 
     QString s;
     for (int i = 0; i < coils; i++) {
-        QString li = "L" + Name + "_L" + QString::number(i+1);
-        QString prop_l = "L" + QString::number(i+1);
+        QString li = "L" + Name + "_L" + QString::number(i + 1);
+        QString prop_l = "L" + QString::number(i + 1);
         QString ind = spicecompat::normalize_value(getProperty(prop_l)->Value);
-        s += QStringLiteral("%1 %2 %3 %4\n").arg(li)
-                .arg(spicecompat::normalize_node_name(Ports.at(2*i)->Connection->Name))
-                .arg(spicecompat::normalize_node_name(Ports.at(2*i+1)->Connection->Name))
-                .arg(ind);
+        s += QStringLiteral("%1 %2 %3 %4\n").arg(li).arg(spicecompat::normalize_node_name(Ports.at(2 * i)->Connection->Name)).arg(spicecompat::normalize_node_name(Ports.at(2 * i + 1)->Connection->Name)).arg(ind);
     }
     for (int i = 0; i < coils; i++) {
         for (int j = i; j < coils; j++) {
-            if (i == j) continue;
+            if (i == j)
+                continue;
             QString kij = "K" + Name + "_K"
-                    + QString::number(i+1) + QString::number(j+1);
-            QString li = "L" + Name + "_L" + QString::number(i+1);
-            QString lj = "L" + Name + "_L" + QString::number(j+1);
-            auto pp = getProperty("k" + QString::number(i+1) + QString::number(j+1));
-            if (pp == nullptr) continue;
+                + QString::number(i + 1) + QString::number(j + 1);
+            QString li = "L" + Name + "_L" + QString::number(i + 1);
+            QString lj = "L" + Name + "_L" + QString::number(j + 1);
+            auto pp = getProperty("k" + QString::number(i + 1) + QString::number(j + 1));
+            if (pp == nullptr)
+                continue;
             QString val_k = spicecompat::normalize_value(pp->Value);
             s += QStringLiteral("%1 %2 %3 %4\n").arg(kij).arg(li).arg(lj).arg(val_k);
         }
@@ -261,4 +253,3 @@ QString MutualX::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
 
     return s;
 }
-

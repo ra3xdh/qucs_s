@@ -17,28 +17,29 @@
 
 #include "ground.h"
 
-
 Ground::Ground()
 {
-  Type = isComponent;   // both analog and digital
-  Description = QObject::tr("ground (reference potential)");
+    Type = isComponent; // both analog and digital
+    Description = QObject::tr("ground (reference potential)");
 
-  Lines.append(new qucs::Line(  0,  0,  0, 10,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-11, 10, 11, 10,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line( -7, 16,  7, 16,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line( -3, 22,  3, 22,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line(0, 0, 0, 10, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-11, 10, 11, 10, QPen(Qt::darkBlue, 3)));
+    Lines.append(new qucs::Line(-7, 16, 7, 16, QPen(Qt::darkBlue, 3)));
+    Lines.append(new qucs::Line(-3, 22, 3, 22, QPen(Qt::darkBlue, 3)));
 
-  Ports.append(new Port(  0,  0));
+    Ports.append(new Port(0, 0));
 
-  x1 = -12; y1 =  0;
-  x2 =  12; y2 = 25;
+    x1 = -12;
+    y1 = 0;
+    x2 = 12;
+    y2 = 25;
 
-  tx = 0;
-  ty = 0;
-  icon_dy = -2;
-  Model = "GND";
-  Name  = "";
-  SpiceModel = "*";
+    tx = 0;
+    ty = 0;
+    icon_dy = -2;
+    Model = "GND";
+    Name = "";
+    SpiceModel = "*";
 }
 
 Ground::~Ground()
@@ -47,23 +48,24 @@ Ground::~Ground()
 
 Component* Ground::newOne()
 {
-  return new Ground();
+    return new Ground();
 }
 
 // -------------------------------------------------------
-Element* Ground::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* Ground::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Ground");
-  BitmapFile = (char *) "gnd";
+    Name = QObject::tr("Ground");
+    BitmapFile = (char*)"gnd";
 
-  if(getNewOne)  return new Ground();
-  return 0;
+    if (getNewOne)
+        return new Ground();
+    return 0;
 }
 
 // -------------------------------------------------------
 QString Ground::netlist()
 {
-  return QString();
+    return QString();
 }
 
 QString Ground::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)

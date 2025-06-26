@@ -19,53 +19,52 @@
  *                                                                         *
  ***************************************************************************/
 #include "isffm.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 iSffm::iSffm()
 {
-  Description = QObject::tr("SPICE I(SFFM):");
-  Simulator = spicecompat::simSpice;
+    Description = QObject::tr("SPICE I(SFFM):");
+    Simulator = spicecompat::simSpice;
 
-  // normal current source symbol
+    // normal current source symbol
 
-  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24,QPen(Qt::darkRed,3)));
-  Texts.append(new Text(26, 6,"SFFM",Qt::darkRed,12.0,0.0,-1.0));
-  // pins
-  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  // arrow
-  Lines.append(new qucs::Line( -6,  0,  7,  0,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
-  Polylines.append(new qucs::Polyline(
-              std::vector<QPointF>{{0, -4},{-6, 0}, {0, 4}},
-              QPen(Qt::darkRed, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)
-              )
-          );
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+    Ellipses.append(new qucs::Ellips(-12, -12, 24, 24, QPen(Qt::darkRed, 3)));
+    Texts.append(new Text(26, 6, "SFFM", Qt::darkRed, 12.0, 0.0, -1.0));
+    // pins
+    Lines.append(new qucs::Line(-30, 0, -12, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(30, 0, 12, 0, QPen(Qt::darkBlue, 2)));
+    // arrow
+    Lines.append(new qucs::Line(-6, 0, 7, 0, QPen(Qt::darkRed, 3, Qt::SolidLine, Qt::FlatCap)));
+    Polylines.append(new qucs::Polyline(
+        std::vector<QPointF> { { 0, -4 }, { -6, 0 }, { 0, 4 } },
+        QPen(Qt::darkRed, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(-30, 0));
 
-  x1 = -30; y1 = -14;
-  x2 =  30; y2 =  40;
+    x1 = -30;
+    y1 = -14;
+    x2 = 30;
+    y2 = 40;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "I";
-  SpiceModel = "I";
-  Name  = "I";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "I";
+    SpiceModel = "I";
+    Name = "I";
 
-  Props.append(new Property("I0", "0 ", true,
-		QObject::tr("offset current")));
-  Props.append(new Property("Ia", "1 ", true,
-		QObject::tr("carrier current amplitude")));
-  Props.append(new Property("Fc", "1", true,
-		QObject::tr("carrier signal frequency")));
-  Props.append(new Property("Mdi", "10", true,
-		QObject::tr("modulation index")));
-  Props.append(new Property("Fs", "500", true,
-		QObject::tr("modulating signal frequency")));
+    Props.append(new Property("I0", "0 ", true,
+        QObject::tr("offset current")));
+    Props.append(new Property("Ia", "1 ", true,
+        QObject::tr("carrier current amplitude")));
+    Props.append(new Property("Fc", "1", true,
+        QObject::tr("carrier signal frequency")));
+    Props.append(new Property("Mdi", "10", true,
+        QObject::tr("modulation index")));
+    Props.append(new Property("Fs", "500", true,
+        QObject::tr("modulating signal frequency")));
 
-  rotate();  // fix historical flaw
+    rotate(); // fix historical flaw
 }
 
 iSffm::~iSffm()
@@ -74,16 +73,17 @@ iSffm::~iSffm()
 
 Component* iSffm::newOne()
 {
-  return new iSffm();
+    return new iSffm();
 }
 
-Element* iSffm::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* iSffm::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("I(SFFM)");
-  BitmapFile = (char *) "isffm";
+    Name = QObject::tr("I(SFFM)");
+    BitmapFile = (char*)"isffm";
 
-  if(getNewOne)  return new iSffm();
-  return 0;
+    if (getNewOne)
+        return new iSffm();
+    return 0;
 }
 
 QString iSffm::netlist()
@@ -95,18 +95,19 @@ QString iSffm::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam; // node names
     }
 
-    QString I0  = spicecompat::normalize_value(Props.at(0)->Value);
-    QString Ia  = spicecompat::normalize_value(Props.at(1)->Value);
-    QString Fc  = spicecompat::normalize_value(Props.at(2)->Value);
+    QString I0 = spicecompat::normalize_value(Props.at(0)->Value);
+    QString Ia = spicecompat::normalize_value(Props.at(1)->Value);
+    QString Fc = spicecompat::normalize_value(Props.at(2)->Value);
     QString Mdi = spicecompat::normalize_value(Props.at(3)->Value);
-    QString Fs  = spicecompat::normalize_value(Props.at(4)->Value);
+    QString Fs = spicecompat::normalize_value(Props.at(4)->Value);
 
     s += QStringLiteral(" DC 0 SFFM(%1 %2 %3 %4 %5 ) AC 0\n").arg(I0).arg(Ia).arg(Fc).arg(Mdi).arg(Fs);
     return s;

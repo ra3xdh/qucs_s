@@ -16,40 +16,41 @@
  ***************************************************************************/
 
 #include "ampere_dc.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 Ampere_dc::Ampere_dc()
 {
-  Description = QObject::tr("ideal dc current source");
+    Description = QObject::tr("ideal dc current source");
 
-  Arcs.append(new qucs::Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(-12, -12, 24, 24, 0, 16 * 360, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-30, 0, -12, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(30, 0, 12, 0, QPen(Qt::darkBlue, 2)));
 
-  // arrow stem
-  Lines.append(new qucs::Line( -8.5,  0,  6,  0,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
-  // arrow head
-  Polylines.append(new qucs::Polyline(
-    std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+    // arrow stem
+    Lines.append(new qucs::Line(-8.5, 0, 6, 0, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::FlatCap)));
+    // arrow head
+    Polylines.append(new qucs::Polyline(
+        std::vector<QPointF> { { 0, -4 }, { 6, 0 }, { 0, 4 } }, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(-30, 0));
 
-  x1 = -30; y1 = -14;
-  x2 =  30; y2 =  14;
+    x1 = -30;
+    y1 = -14;
+    x2 = 30;
+    y2 = 14;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "Idc";
-  Name  = "I";
-  SpiceModel = "I";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "Idc";
+    Name = "I";
+    SpiceModel = "I";
 
-  Props.append(new Property("I", "1 mA", true,
-    QObject::tr("current in Ampere")));
+    Props.append(new Property("I", "1 mA", true,
+        QObject::tr("current in Ampere")));
 
-  rotate();  // fix historical flaw
+    rotate(); // fix historical flaw
 }
 
 Ampere_dc::~Ampere_dc()
@@ -60,14 +61,15 @@ QString Ampere_dc::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
 
     QString plus = Ports.at(1)->Connection->Name;
-    if (plus=="gnd") plus = "0";
+    if (plus == "gnd")
+        plus = "0";
     QString minus = Ports.at(0)->Connection->Name;
-    if (minus=="gnd") minus = "0";
-    s += QStringLiteral(" %1 %2 DC %3\n").arg(plus).arg(minus)
-            .arg(spicecompat::normalize_value(Props.at(0)->Value));
+    if (minus == "gnd")
+        minus = "0";
+    s += QStringLiteral(" %1 %2 DC %3\n").arg(plus).arg(minus).arg(spicecompat::normalize_value(Props.at(0)->Value));
     return s;
 }
 
@@ -78,14 +80,15 @@ QString Ampere_dc::cdl_netlist()
 
 Component* Ampere_dc::newOne()
 {
-  return new Ampere_dc();
+    return new Ampere_dc();
 }
 
-Element* Ampere_dc::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* Ampere_dc::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("dc Current Source");
-  BitmapFile = (char *) "dc_current";
+    Name = QObject::tr("dc Current Source");
+    BitmapFile = (char*)"dc_current";
 
-  if(getNewOne)  return new Ampere_dc();
-  return 0;
+    if (getNewOne)
+        return new Ampere_dc();
+    return 0;
 }

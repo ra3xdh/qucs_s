@@ -19,9 +19,9 @@
 #define VASETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QLabel>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
-#include <QLabel>
 
 class TextDoc;
 class QLineEdit;
@@ -32,28 +32,28 @@ class QCheckBox;
 class QButtonGroup;
 class QVBoxLayout;
 
-class VASettingsDialog : public QDialog  {
-Q_OBJECT
+class VASettingsDialog : public QDialog {
+    Q_OBJECT
 public:
-  VASettingsDialog (TextDoc *);
- ~VASettingsDialog ();
+    VASettingsDialog(TextDoc*);
+    ~VASettingsDialog();
 
-  QLineEdit * IconEdit, * OutputEdit, * NameEdit, * ShortDescEdit,
-    * LongDescEdit;
-  QPushButton * BrowseButt;
-  QLabel * IconButt;
-  QCheckBox * RecreateCheck;
-  QButtonGroup * toggleGroupDev, * toggleGroupTyp;
+    QLineEdit *IconEdit, *OutputEdit, *NameEdit, *ShortDescEdit,
+        *LongDescEdit;
+    QPushButton* BrowseButt;
+    QLabel* IconButt;
+    QCheckBox* RecreateCheck;
+    QButtonGroup *toggleGroupDev, *toggleGroupTyp;
 
 private slots:
-  void slotOk ();
-  void slotBrowse ();
+    void slotOk();
+    void slotBrowse();
 
 private:
-  TextDoc * Doc;
-  QRegularExpression Expr;
-  QRegularExpressionValidator * Validator;
-  QVBoxLayout *vLayout;
+    TextDoc* Doc;
+    QRegularExpression Expr;
+    QRegularExpressionValidator* Validator;
+    QVBoxLayout* vLayout;
 };
 
 #endif

@@ -19,10 +19,10 @@
 #define LABELDIALOG_H
 
 #include <QDialog>
-#include <QRegularExpression>
-#include <QRegularExpressionValidator>
 #include <QGridLayout>
 #include <QLabel>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 class QLabel;
 class QLineEdit;
@@ -31,28 +31,27 @@ class QGridLayout;
 class QRegExpValidator;
 class WireLabel;
 
-
-class LabelDialog : public QDialog  {
-Q_OBJECT
+class LabelDialog : public QDialog {
+    Q_OBJECT
 public:
-  LabelDialog(WireLabel*, QWidget *parent=0);
- ~LabelDialog();
+    LabelDialog(WireLabel*, QWidget* parent = 0);
+    ~LabelDialog();
 
-  QLineEdit  *NodeName, *InitValue;
+    QLineEdit *NodeName, *InitValue;
 
 private slots:
-  void slotExtend();
-  void slotOk();
-  void slotCancel();
+    void slotExtend();
+    void slotOk();
+    void slotCancel();
 
 private:
-  QPushButton *ButtonOk, *ButtonCancel, *ButtonMore;
-  QGridLayout *gbox;
-  QRegularExpressionValidator *Validator1, *Validator2;
-  QRegularExpression      Expr1, Expr2;
-  QLabel      *Label2;
+    QPushButton *ButtonOk, *ButtonCancel, *ButtonMore;
+    QGridLayout* gbox;
+    QRegularExpressionValidator *Validator1, *Validator2;
+    QRegularExpression Expr1, Expr2;
+    QLabel* Label2;
 
-  WireLabel *pLabel;
+    WireLabel* pLabel;
 };
 
 #endif

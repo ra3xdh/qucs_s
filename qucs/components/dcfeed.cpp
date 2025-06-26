@@ -21,34 +21,36 @@
 
 dcFeed::dcFeed()
 {
-  Description = QObject::tr("dc feed");
-  Simulator = spicecompat::simAll;
+    Description = QObject::tr("dc feed");
+    Simulator = spicecompat::simAll;
 
-  Arcs.append(new qucs::Arc(-17, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new qucs::Arc(  5, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30,  0,-17,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 17,  0, 30,  0,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(-17, -6, 12, 12, 0, 16 * 180, QPen(Qt::darkBlue, 2)));
+    Arcs.append(new qucs::Arc(-6, -6, 12, 12, 0, 16 * 180, QPen(Qt::darkBlue, 2)));
+    Arcs.append(new qucs::Arc(5, -6, 12, 12, 0, 16 * 180, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-30, 0, -17, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(17, 0, 30, 0, QPen(Qt::darkBlue, 2)));
 
-  Lines.append(new qucs::Line(-23,-13, 23,-13,QPen(Qt::darkBlue,1)));
-  Lines.append(new qucs::Line(-23, 13, 23, 13,QPen(Qt::darkBlue,1)));
-  Lines.append(new qucs::Line(-23,-13,-23, 13,QPen(Qt::darkBlue,1)));
-  Lines.append(new qucs::Line( 23,-13, 23, 13,QPen(Qt::darkBlue,1)));
+    Lines.append(new qucs::Line(-23, -13, 23, -13, QPen(Qt::darkBlue, 1)));
+    Lines.append(new qucs::Line(-23, 13, 23, 13, QPen(Qt::darkBlue, 1)));
+    Lines.append(new qucs::Line(-23, -13, -23, 13, QPen(Qt::darkBlue, 1)));
+    Lines.append(new qucs::Line(23, -13, 23, 13, QPen(Qt::darkBlue, 1)));
 
-  Ports.append(new Port(-30,  0));
-  Ports.append(new Port( 30,  0));
+    Ports.append(new Port(-30, 0));
+    Ports.append(new Port(30, 0));
 
-  x1 = -30; y1 = -15;
-  x2 =  30; y2 =  16;
+    x1 = -30;
+    y1 = -15;
+    x2 = 30;
+    y2 = 16;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "DCFeed";
-  Name  = "L";
-  SpiceModel = "L";
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "DCFeed";
+    Name = "L";
+    SpiceModel = "L";
 
-  Props.append(new Property("L", "1 uH", false,
-	QObject::tr("for transient simulation: inductance in Henry")));
+    Props.append(new Property("L", "1 uH", false,
+        QObject::tr("for transient simulation: inductance in Henry")));
 }
 
 dcFeed::~dcFeed()
@@ -57,31 +59,31 @@ dcFeed::~dcFeed()
 
 Component* dcFeed::newOne()
 {
-  return new dcFeed();
+    return new dcFeed();
 }
 
-Element* dcFeed::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* dcFeed::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("dc Feed");
-  BitmapFile = (char *) "dcfeed";
+    Name = QObject::tr("dc Feed");
+    BitmapFile = (char*)"dcfeed";
 
-  if(getNewOne)  return new dcFeed();
-  return 0;
+    if (getNewOne)
+        return new dcFeed();
+    return 0;
 }
 
 QString dcFeed::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-  Q_UNUSED(dialect);
+    Q_UNUSED(dialect);
 
-  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-  QString val = spicecompat::normalize_value(getProperty("L")->Value);
-  QString s;
-  QString name = spicecompat::check_refdes(Name, SpiceModel);
-  s = QStringLiteral("%1 %2 %3 %4\n").arg(name, p1, p2, val);
-  return s;
+    QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+    QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    QString val = spicecompat::normalize_value(getProperty("L")->Value);
+    QString s;
+    QString name = spicecompat::check_refdes(Name, SpiceModel);
+    s = QStringLiteral("%1 %2 %3 %4\n").arg(name, p1, p2, val);
+    return s;
 }
-
 
 QString dcFeed::cdl_netlist()
 {

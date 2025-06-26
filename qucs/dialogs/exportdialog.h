@@ -26,12 +26,11 @@ class QComboBox;
 class QHBoxLayout;
 class QVBoxLayout;
 
-class ExportDialog : public QDialog
-{
+class ExportDialog : public QDialog {
     Q_OBJECT
 public:
-    explicit ExportDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_=true, QWidget *parent = 0);
-    
+    explicit ExportDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_ = true, QWidget* parent = 0);
+
 private:
     QPushButton* ExportButt;
     QPushButton* CancelButt;
@@ -71,8 +70,9 @@ private:
     QString filename;
 
 public:
-
-    enum ImgFormat {Coloured, Monochrome, Grayscale};
+    enum ImgFormat { Coloured,
+        Monochrome,
+        Grayscale };
 
     QString FileToSave();
     bool isOriginalSize();
@@ -91,7 +91,7 @@ public:
     ExportDialog::ImgFormat getImgFormat();
 
 signals:
-    
+
 private slots:
     void setFileName();
     void calcWidth();
@@ -103,7 +103,6 @@ private slots:
     void recalcScale();
 
 public slots:
-    
 };
 
 #endif // EXPORTDIALOG_H

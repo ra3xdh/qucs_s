@@ -20,20 +20,19 @@
 
 #include "components/component.h"
 
-
-class SpiceIC : public Component  {
+class SpiceIC : public Component {
 
 public:
-  SpiceIC();
-  ~SpiceIC();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getExpression(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    SpiceIC();
+    ~SpiceIC();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    QString getExpression(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 
 protected:
-  QString vhdlCode(int) { return QString(); }
-  QString verilogCode(int) { return QString(); }
-  QString netlist() { return QString(); }
+    QString vhdlCode(int) { return QString(); }
+    QString verilogCode(int) { return QString(); }
+    QString netlist() { return QString(); }
 };
 
 #endif

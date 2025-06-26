@@ -12,8 +12,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include "textboxdialog.h"
 
 /*!
@@ -27,29 +25,29 @@
  * \param pc[in] Component that need to be edit.
  * \param parent[in] Parent object.
  */
-TextBoxDialog::TextBoxDialog(const char* window_title, Component *pc, QWidget *parent) :
-    QDialog(parent)
+TextBoxDialog::TextBoxDialog(const char* window_title, Component* pc, QWidget* parent)
+    : QDialog(parent)
 {
     comp = pc;
 
     setWindowTitle(tr(window_title));
-    QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
+    QLabel* lblName = new QLabel(tr("Component: ") + comp->Description);
     edtCode = new QTextEdit(this);
     edtCode->insertPlainText(comp->Props.at(0)->Value);
 
     btnApply = new QPushButton(tr("Apply"));
-    connect(btnApply,SIGNAL(clicked()),this,SLOT(slotApply()));
+    connect(btnApply, SIGNAL(clicked()), this, SLOT(slotApply()));
     btnCancel = new QPushButton(tr("Cancel"));
-    connect(btnCancel,SIGNAL(clicked()),this,SLOT(slotCancel()));
+    connect(btnCancel, SIGNAL(clicked()), this, SLOT(slotCancel()));
     btnOK = new QPushButton(tr("OK"));
-    connect(btnOK,SIGNAL(clicked()),this,SLOT(slotOK()));
+    connect(btnOK, SIGNAL(clicked()), this, SLOT(slotOK()));
 
-    QVBoxLayout *vl1 = new QVBoxLayout;
-    QVBoxLayout *vl2 = new QVBoxLayout;
-    QHBoxLayout *hl1 = new QHBoxLayout;
+    QVBoxLayout* vl1 = new QVBoxLayout;
+    QVBoxLayout* vl2 = new QVBoxLayout;
+    QHBoxLayout* hl1 = new QHBoxLayout;
 
     vl1->addWidget(lblName);
-    QGroupBox *gpb1 = new QGroupBox(tr("Editor"));
+    QGroupBox* gpb1 = new QGroupBox(tr("Editor"));
     vl2->addWidget(edtCode);
     gpb1->setLayout(vl2);
     vl1->addWidget(gpb1);

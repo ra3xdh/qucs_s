@@ -15,15 +15,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef NGSPICE_H
 #define NGSPICE_H
 
+#include "abstractspicekernel.h"
+#include "schematic.h"
+#include <QDataStream>
 #include <QString>
 #include <QStringList>
-#include <QDataStream>
-#include "schematic.h"
-#include "abstractspicekernel.h"
 
 /*!
   \file ngspice.h
@@ -33,33 +32,32 @@
 /*!
  * \brief The Ngspice class Responsible for Ngspice simulator execution.
  */
-class Ngspice : public AbstractSpiceKernel
-{
+class Ngspice : public AbstractSpiceKernel {
     Q_OBJECT
 
 private:
     QString a_spinit_name;
 
-    bool checkNodeNames(QStringList &incompat);
+    bool checkNodeNames(QStringList& incompat);
     static QString collectSpiceinit(Schematic* sch);
-    bool findMathFuncInc(QString &mathf_inc);
-    QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
-    QString getParentSWPCntVar(Component *pc_swp, QString sim);
+    bool findMathFuncInc(QString& mathf_inc);
+    QString getParentSWPscript(Component* pc_swp, QString sim, bool before, bool& hasDblSWP);
+    QString getParentSWPCntVar(Component* pc_swp, QString sim);
     void cleanSpiceinit();
-    void createSpiceinit(const QString &initial_spiceinit);
+    void createSpiceinit(const QString& initial_spiceinit);
 
 public:
-    explicit Ngspice(Schematic* schematic, QObject *parent = 0);
+    explicit Ngspice(Schematic* schematic, QObject* parent = 0);
     void SaveNetlist(QString filename, bool netlist2Console);
     void setSimulatorCmd(QString cmd);
     void setSimulatorParameters(QString parameters);
 
 protected:
     void createNetlist(
-            QTextStream& stream,
-            QStringList& simulations,
-            QStringList& vars,
-            QStringList& outputs);
+        QTextStream& stream,
+        QStringList& simulations,
+        QStringList& vars,
+        QStringList& outputs);
 
 public slots:
     void slotSimulate();

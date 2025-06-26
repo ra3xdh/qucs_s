@@ -19,207 +19,200 @@
  * Boston, MA 02110-1301, USA.                                             *
  ***************************************************************************/
 
-#include <QVariant>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QScrollArea>
 #include <QDebug>
+#include <QEvent>
 #include <QFileDialog>
 #include <QGroupBox>
+#include <QHBoxLayout>
+#include <QKeyEvent>
+#include <QLabel>
 #include <QListWidget>
 #include <QListWidgetItem>
-#include <QEvent>
-#include <QKeyEvent>
 #include <QMessageBox>
+#include <QPushButton>
+#include <QScrollArea>
+#include <QVBoxLayout>
+#include <QVariant>
 
+#include "components/component.h"
+#include "components/vacomponent.h"
 #include "loaddialog.h"
 #include "qucs.h"
 #include "qucsdoc.h"
-#include "components/component.h"
-#include "components/vacomponent.h"
 
-LoadDialog::LoadDialog( QWidget* parent )
-   : QDialog( parent )
+LoadDialog::LoadDialog(QWidget* parent)
+    : QDialog(parent)
 {
-   setWindowTitle( tr( "Load Verilog-A symbols" ) );
-   app = 0l;
-//   initDialog();
+    setWindowTitle(tr("Load Verilog-A symbols"));
+    app = 0l;
+    //   initDialog();
 }
 
 LoadDialog::~LoadDialog()
 {
 }
 
-void LoadDialog::setApp(QucsApp *a)
+void LoadDialog::setApp(QucsApp* a)
 {
-   app = a;
+    app = a;
 }
 
 void LoadDialog::initDialog()
 {
-   QVBoxLayout *all = new QVBoxLayout(this);
-   all->setContentsMargins(5,5,5,5);
-   all->setSpacing(6);
+    QVBoxLayout* all = new QVBoxLayout(this);
+    all->setContentsMargins(5, 5, 5, 5);
+    all->setSpacing(6);
 
-   // hold group of files / group icon and checkboxes
-   QHBoxLayout *hGroups = new QHBoxLayout();
-   all->addLayout(hGroups);
+    // hold group of files / group icon and checkboxes
+    QHBoxLayout* hGroups = new QHBoxLayout();
+    all->addLayout(hGroups);
 
-   // ---
-   QGroupBox *group1 = new QGroupBox( tr( "Choose Verilog-A symbol files:" ) );
-   hGroups->addWidget(group1);
+    // ---
+    QGroupBox* group1 = new QGroupBox(tr("Choose Verilog-A symbol files:"));
+    hGroups->addWidget(group1);
 
-   QScrollArea *scrollArea = new QScrollArea(group1);
-   scrollArea->setWidgetResizable(true);
+    QScrollArea* scrollArea = new QScrollArea(group1);
+    scrollArea->setWidgetResizable(true);
 
-   fileView = new QListWidget(this);
+    fileView = new QListWidget(this);
 
-   scrollArea->setWidget(fileView);
+    scrollArea->setWidget(fileView);
 
-   QVBoxLayout *areaLayout = new QVBoxLayout();
-   areaLayout->addWidget(scrollArea);
-   group1->setLayout(areaLayout);
+    QVBoxLayout* areaLayout = new QVBoxLayout();
+    areaLayout->addWidget(scrollArea);
+    group1->setLayout(areaLayout);
 
+    // ...........................................................
+    QGridLayout* gridButts = new QGridLayout();
+    all->addLayout(gridButts);
 
-   // ...........................................................
-   QGridLayout *gridButts = new QGridLayout();
-   all->addLayout(gridButts);
+    ButtSelectAll = new QPushButton(tr("Select All"));
+    gridButts->addWidget(ButtSelectAll, 0, 0);
+    connect(ButtSelectAll, SIGNAL(clicked()), SLOT(slotSelectAll()));
+    ButtSelectNone = new QPushButton(tr("Deselect All"));
+    gridButts->addWidget(ButtSelectNone, 0, 1);
+    connect(ButtSelectNone, SIGNAL(clicked()), SLOT(slotSelectNone()));
+    // ...........................................................
+    ButtCancel = new QPushButton(tr("Cancel"));
+    gridButts->addWidget(ButtCancel, 1, 0);
+    connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
+    ButtOk = new QPushButton(tr("Ok"));
+    gridButts->addWidget(ButtOk, 1, 1);
+    connect(ButtOk, SIGNAL(clicked()), SLOT(loadSelected()));
+    ButtOk->setDefault(true);
 
-   ButtSelectAll = new QPushButton(tr("Select All"));
-   gridButts->addWidget(ButtSelectAll, 0, 0);
-   connect(ButtSelectAll, SIGNAL(clicked()), SLOT(slotSelectAll()));
-   ButtSelectNone = new QPushButton(tr("Deselect All"));
-   gridButts->addWidget(ButtSelectNone, 0, 1);
-   connect(ButtSelectNone, SIGNAL(clicked()), SLOT(slotSelectNone()));
-   // ...........................................................
-   ButtCancel = new QPushButton(tr("Cancel"));
-   gridButts->addWidget(ButtCancel, 1, 0);
-   connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
-   ButtOk = new QPushButton(tr("Ok"));
-   gridButts->addWidget(ButtOk, 1, 1);
-   connect(ButtOk, SIGNAL(clicked()), SLOT(loadSelected()));
-   ButtOk->setDefault(true);
+    QVBoxLayout* iconLayout = new QVBoxLayout();
 
+    QGroupBox* group2 = new QGroupBox();
 
-   QVBoxLayout *iconLayout = new QVBoxLayout();
+    QVBoxLayout* group2Layout = new QVBoxLayout();
 
-   QGroupBox *group2 = new QGroupBox( );
+    iconPixmap = new QLabel();
+    iconPixmap->setSizePolicy(QSizePolicy::Expanding,
+        QSizePolicy::Expanding);
+    iconPixmap->setAlignment(Qt::AlignCenter);
+    group2Layout->addWidget(iconPixmap);
 
-   QVBoxLayout *group2Layout = new QVBoxLayout();
+    group2->setLayout(group2Layout);
+    iconLayout->addWidget(group2);
 
-   iconPixmap = new QLabel();
-   iconPixmap->setSizePolicy(QSizePolicy::Expanding,
-                             QSizePolicy::Expanding);
-   iconPixmap->setAlignment(Qt::AlignCenter);
-   group2Layout->addWidget(iconPixmap);
+    ButtChangeIcon = new QPushButton(tr("Change Icon"));
+    iconLayout->addWidget(ButtChangeIcon);
+    hGroups->addLayout(iconLayout);
+    connect(ButtChangeIcon, SIGNAL(clicked()), this, SLOT(slotChangeIcon()));
 
-   group2->setLayout(group2Layout);
-   iconLayout->addWidget(group2);
+    // group checkboxes
+    QGroupBox* group3 = new QGroupBox();
+    QVBoxLayout* group3Layout = new QVBoxLayout();
+    group3->setLayout(group3Layout);
+    iconLayout->addWidget(group3);
 
-   ButtChangeIcon = new QPushButton(tr("Change Icon"));
-   iconLayout->addWidget(ButtChangeIcon);
-   hGroups->addLayout(iconLayout);
-   connect(ButtChangeIcon,SIGNAL(clicked()),this,SLOT(slotChangeIcon()));
+    //
+    QCheckBox* autoLoadSelCheck = new QCheckBox(tr("auto-load selected"));
+    autoLoadSelCheck->setToolTip(
+        tr("Load the selected symbols when opening the project."));
 
-   // group checkboxes
-   QGroupBox *group3 = new QGroupBox();
-   QVBoxLayout *group3Layout = new QVBoxLayout();
-   group3->setLayout(group3Layout);
-   iconLayout->addWidget(group3);
+    autoLoadSelCheck->setDisabled(true); // disabled for now
 
-   //
-   QCheckBox *autoLoadSelCheck = new QCheckBox(tr("auto-load selected"));
-   autoLoadSelCheck->setToolTip(
-               tr("Load the selected symbols when opening the project."));
+    group3Layout->addWidget(autoLoadSelCheck);
 
-   autoLoadSelCheck->setDisabled(true); //disabled for now
+    /*
+    QCheckBox *autoLoadAllwaysCheck = new QCheckBox(tr("auto-load all"));
+    autoLoadAllwaysCheck->setToolTip(
+                tr("Load all symbols."));
+    group3Layout->addWidget(autoLoadAllwaysCheck);
+    */
 
-   group3Layout->addWidget(autoLoadSelCheck);
+    connect(fileView, SIGNAL(itemPressed(QListWidgetItem*)),
+        this, SLOT(slotSymbolFileClicked(QListWidgetItem*)));
 
-   /*
-   QCheckBox *autoLoadAllwaysCheck = new QCheckBox(tr("auto-load all"));
-   autoLoadAllwaysCheck->setToolTip(
-               tr("Load all symbols."));
-   group3Layout->addWidget(autoLoadAllwaysCheck);
-   */
+    //   qDebug() << "files " << symbolFiles;
 
-   connect(fileView, SIGNAL(itemPressed(QListWidgetItem*)),
-           this, SLOT(slotSymbolFileClicked(QListWidgetItem*)));
+    for (int i = 0; i < symbolFiles.size(); i++) {
+        QListWidgetItem* item = new QListWidgetItem(symbolFiles.at(i), fileView);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(Qt::Checked);
 
-//   qDebug() << "files " << symbolFiles;
+        // set first as selected, one need to be selected to assign bitmap
+        fileView->setCurrentRow(0);
+    }
 
-   for(int i=0; i < symbolFiles.size(); i++){
-       QListWidgetItem *item = new QListWidgetItem(symbolFiles.at(i), fileView);
-     item->setFlags( item->flags() | Qt::ItemIsUserCheckable );
-     item->setCheckState(Qt::Checked);
+    // update icon
+    this->slotSymbolFileClicked(fileView->currentItem());
 
-     //set first as selected, one need to be selected to assign bitmap
-     fileView->setCurrentRow(0);
-   }
-
-   // update icon
-   this->slotSymbolFileClicked(fileView->currentItem());
-
-   fileView->installEventFilter(this);
-   fileView->setFocus();
-
+    fileView->installEventFilter(this);
+    fileView->setFocus();
 }
 
 void LoadDialog::slotSelectAll()
 {
-    for(int i = 0; i < fileView->count(); ++i)
-    {
+    for (int i = 0; i < fileView->count(); ++i) {
         QListWidgetItem* item = fileView->item(i);
         item->setCheckState(Qt::Checked);
-//        qDebug() << "select" << item->text();
+        //        qDebug() << "select" << item->text();
     }
 }
 
 void LoadDialog::slotSelectNone()
 {
-    for(int i = 0; i < fileView->count(); ++i)
-    {
+    for (int i = 0; i < fileView->count(); ++i) {
         QListWidgetItem* item = fileView->item(i);
         item->setCheckState(Qt::Unchecked);
-//        qDebug() << "unselect" << item->text();
+        //        qDebug() << "unselect" << item->text();
     }
 }
 
 void LoadDialog::slotSymbolFileClicked(QListWidgetItem* item)
 {
-//  qDebug() << "pressed" << item->text();
- // get bitmap, try to plot
- // similar to QucsApp::slotSetCompView
-  QString JSON = projDir.filePath(item->text());
+    //  qDebug() << "pressed" << item->text();
+    // get bitmap, try to plot
+    // similar to QucsApp::slotSetCompView
+    QString JSON = projDir.filePath(item->text());
 
-//  qDebug() << "read " << JSON;
+    //  qDebug() << "read " << JSON;
 
-  // Just need path to bitmap, do not create an object
-  QString Name, vaBitmap;
-  Component * c = (Component *)
-          vacomponent::info (Name, vaBitmap, false, JSON);
-  if (c) delete c;
+    // Just need path to bitmap, do not create an object
+    QString Name, vaBitmap;
+    Component* c = (Component*)
+        vacomponent::info(Name, vaBitmap, false, JSON);
+    if (c)
+        delete c;
 
-//  qDebug() << "slotSymbolFileClicked" << Name << vaBitmap;
+    //  qDebug() << "slotSymbolFileClicked" << Name << vaBitmap;
 
-  // check if icon exists, fall back to default
-  QString iconPath = QString(projDir.absoluteFilePath(vaBitmap+".png"));
-  QFile iconFile(iconPath);
+    // check if icon exists, fall back to default
+    QString iconPath = QString(projDir.absoluteFilePath(vaBitmap + ".png"));
+    QFile iconFile(iconPath);
 
-  if(iconFile.exists())
-  {
-    // load bitmap defined on the JSON symbol file
-    iconPixmap->setPixmap(QPixmap(iconPath));
-  }
-  else
-  {
-    QMessageBox::information(this, tr("Info"),
-                 tr("Icon not found:\n %1.png").arg(vaBitmap));
-    // default icon
-    iconPixmap->setPixmap(QPixmap(":/bitmaps/editdelete.png"));
-  }
+    if (iconFile.exists()) {
+        // load bitmap defined on the JSON symbol file
+        iconPixmap->setPixmap(QPixmap(iconPath));
+    } else {
+        QMessageBox::information(this, tr("Info"),
+            tr("Icon not found:\n %1.png").arg(vaBitmap));
+        // default icon
+        iconPixmap->setPixmap(QPixmap(":/bitmaps/editdelete.png"));
+    }
 }
 
 void LoadDialog::reject()
@@ -230,43 +223,42 @@ void LoadDialog::reject()
 //
 void LoadDialog::loadSelected()
 {
-  // build list vaComponentds
-  // hand it down to main app
+    // build list vaComponentds
+    // hand it down to main app
 
-  selectedComponents.clear();
+    selectedComponents.clear();
 
-  for(int i = 0; i < fileView->count(); ++i)
-  {
-    QListWidgetItem* item = fileView->item(i);
+    for (int i = 0; i < fileView->count(); ++i) {
+        QListWidgetItem* item = fileView->item(i);
 
-    if (item->checkState() == Qt::Checked){
+        if (item->checkState() == Qt::Checked) {
 
-        bool json_found = true;
-        QJsonObject json;
-        try {
-            json = getJsonObject(projDir.filePath(item->text()));
-        } catch (const std::runtime_error& ex) {
-            json_found = false;
+            bool json_found = true;
+            QJsonObject json;
+            try {
+                json = getJsonObject(projDir.filePath(item->text()));
+            } catch (const std::runtime_error& ex) {
+                json_found = false;
+            }
+
+            QString key = item->text().split("_symbol.json").at(0);
+            QString value = projDir.absoluteFilePath(item->text());
+
+            if (json_found) {
+                QString Name = getString(json, "Model");
+                if (!Name.isEmpty())
+                    key = Name;
+            }
+
+            qDebug() << "key" << key;
+            qDebug() << "file " << value;
+
+            selectedComponents[key] = value;
         }
-
-        QString key = item->text().split("_symbol.json").at(0);
-        QString value = projDir.absoluteFilePath(item->text());
-
-        if (json_found) {
-            QString Name = getString(json, "Model");
-            if (!Name.isEmpty()) key = Name;
-        }
-
-        qDebug() << "key" << key;
-        qDebug() << "file " << value;
-
-        selectedComponents[key] = value;
     }
-  }
 
-  accept();
+    accept();
 }
-
 
 /*
  * Browse for icon image
@@ -274,77 +266,72 @@ void LoadDialog::loadSelected()
  */
 void LoadDialog::slotChangeIcon()
 {
-//  qDebug() << "slotChangeIcon";
-  QString iconFileName =
-          QFileDialog::getOpenFileName(this,
-                                        tr("Open File"),
-                                        QString(projDir.absolutePath()),
-                                        tr("Icon image (*.png)"));
+    //  qDebug() << "slotChangeIcon";
+    QString iconFileName = QFileDialog::getOpenFileName(this,
+        tr("Open File"),
+        QString(projDir.absolutePath()),
+        tr("Icon image (*.png)"));
 
-  QString newIcon =  QFileInfo(iconFileName).completeBaseName();
-//  qDebug() << "icon "<< newIcon;
+    QString newIcon = QFileInfo(iconFileName).completeBaseName();
+    //  qDebug() << "icon "<< newIcon;
 
-  QString filename = fileView->currentItem()->text();
-  filename = projDir.absoluteFilePath(filename);
-//  qDebug() << "for " <<  filename;
+    QString filename = fileView->currentItem()->text();
+    filename = projDir.absoluteFilePath(filename);
+    //  qDebug() << "for " <<  filename;
 
-  // open json
-  // change property
-  // save&close
-  // Try to open the JSON file, can use QScriptEngine for this?
-  //
-  QFile file(filename);
-  QByteArray ba;
-  ba.clear();
-  if (!file.open(QIODevice::ReadWrite | QIODevice::Text)){
-    QMessageBox::critical(this, tr("Error"),
-                          tr("File not found: %1").arg(filename));
-  }
-  else {
-    QTextStream in(&file);
-    while ( !in.atEnd() )
-    {
-      QString line = in.readLine();
-      if (line.contains("BitmapFile")){
-          QString change =
-                  QStringLiteral("  \"BitmapFile\" : \"%1\",").arg(newIcon);
-          QString stmp = change + "\n";
-          ba.append(stmp.toLatin1());
-      }
-      else{
-          QString stmp = line + "\n";
-          ba.append(stmp.toLatin1());
-      }
+    // open json
+    // change property
+    // save&close
+    // Try to open the JSON file, can use QScriptEngine for this?
+    //
+    QFile file(filename);
+    QByteArray ba;
+    ba.clear();
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        QMessageBox::critical(this, tr("Error"),
+            tr("File not found: %1").arg(filename));
+    } else {
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            if (line.contains("BitmapFile")) {
+                QString change = QStringLiteral("  \"BitmapFile\" : \"%1\",").arg(newIcon);
+                QString stmp = change + "\n";
+                ba.append(stmp.toLatin1());
+            } else {
+                QString stmp = line + "\n";
+                ba.append(stmp.toLatin1());
+            }
+        }
     }
-  }
 
-  // write back to the same file, clear it first
-  file.resize(0);
-  file.write(ba);
-  file.close();
+    // write back to the same file, clear it first
+    file.resize(0);
+    file.write(ba);
+    file.close();
 
-  // update icon
-  this->slotSymbolFileClicked(fileView->currentItem());
+    // update icon
+    this->slotSymbolFileClicked(fileView->currentItem());
 }
 
-bool LoadDialog::eventFilter(QObject *obj, QEvent *event)
+bool LoadDialog::eventFilter(QObject* obj, QEvent* event)
 {
-  Q_UNUSED(obj);
+    Q_UNUSED(obj);
 
-  if (event->type() == QEvent::KeyPress) {
-    QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-//    qDebug() << "type" << keyEvent->key() << fileView->count();
-    if (keyEvent->key() == Qt::Key_Up) {
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        //    qDebug() << "type" << keyEvent->key() << fileView->count();
+        if (keyEvent->key() == Qt::Key_Up) {
 
-        fileView->setCurrentRow(std::max(0, fileView->currentRow()-1));
-        this->slotSymbolFileClicked(fileView->currentItem());
-        return true;
+            fileView->setCurrentRow(std::max(0, fileView->currentRow() - 1));
+            this->slotSymbolFileClicked(fileView->currentItem());
+            return true;
+        }
+        if (keyEvent->key() == Qt::Key_Down) {
+            fileView->setCurrentRow(std::min(fileView->count() - 1, fileView->currentRow() + 1));
+            this->slotSymbolFileClicked(fileView->currentItem());
+            return true;
+        }
     }
-    if (keyEvent->key() == Qt::Key_Down) {
-        fileView->setCurrentRow(std::min(fileView->count()-1, fileView->currentRow()+1));
-        this->slotSymbolFileClicked(fileView->currentItem());
-        return true;
-    }
-  }
-  return false;
+    return false;
 }

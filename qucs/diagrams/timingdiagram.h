@@ -20,19 +20,18 @@
 
 #include "tabdiagram.h"
 
+class TimingDiagram : public TabDiagram {
+public:
+    TimingDiagram(int _cx = 0, int _cy = 0);
+    ~TimingDiagram();
 
-class TimingDiagram : public TabDiagram  {
-public: 
-  TimingDiagram(int _cx=0, int _cy=0);
- ~TimingDiagram();
-
-  Diagram* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  void paint(QPainter* painter) override;
-  void paintDiagram(QPainter* painter) override;
-  int calcDiagram();
-  int scroll(int);
-  bool scrollTo(int, int, int);
+    Diagram* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    void paint(QPainter* painter) override;
+    void paintDiagram(QPainter* painter) override;
+    int calcDiagram();
+    int scroll(int);
+    bool scrollTo(int, int, int);
 };
 
 #endif

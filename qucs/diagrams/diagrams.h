@@ -22,13 +22,13 @@
 
 #include "diagram.h"
 
-#include "rectdiagram.h"
+#include "curvediagram.h"
 #include "polardiagram.h"
-#include "smithdiagram.h"
-#include "tabdiagram.h"
 #include "psdiagram.h"
 #include "rect3ddiagram.h"
-#include "curvediagram.h"
+#include "rectdiagram.h"
+#include "smithdiagram.h"
+#include "tabdiagram.h"
 #include "timingdiagram.h"
 #include "truthdiagram.h"
 

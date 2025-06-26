@@ -19,9 +19,9 @@
 #define IMPORTDIALOG_H
 
 #include <QDialog>
-#include <QProcess>
 #include <QGridLayout>
 #include <QLabel>
+#include <QProcess>
 
 class QPlainTextEdit;
 class QLineEdit;
@@ -30,46 +30,44 @@ class QPushButton;
 class QComboBox;
 class QLabel;
 
-
-class ImportDialog : public QDialog  {
-   Q_OBJECT
+class ImportDialog : public QDialog {
+    Q_OBJECT
 
 private:
     QString lastImportDir;
 
 public:
-  ImportDialog(QWidget*);
- ~ImportDialog();
+    ImportDialog(QWidget*);
+    ~ImportDialog();
 
 private slots:
-  void slotDisplayMsg();
-  void slotDisplayErr();
-  void slotProcessEnded(int status);
-  void slotImport();
-  void slotAbort();
-  void slotBrowse();
-  void slotSaveBrowse();
-  void slotType(int index);
-  void slotValidateInput();
-  void slotValidateOutput();
+    void slotDisplayMsg();
+    void slotDisplayErr();
+    void slotProcessEnded(int status);
+    void slotImport();
+    void slotAbort();
+    void slotBrowse();
+    void slotSaveBrowse();
+    void slotType(int index);
+    void slotValidateInput();
+    void slotValidateOutput();
 
 private:
-  void startSimulator();
-  bool getDataVarsFromDatafile(const QString &filename);
+    void startSimulator();
+    bool getDataVarsFromDatafile(const QString& filename);
 
 private:
-  QGridLayout *all;
+    QGridLayout* all;
 
-  QLabel *OutputLabel, *LibLabel;
-  QProcess Process;
-  QPlainTextEdit *MsgText;
-  QLineEdit *ImportEdit, *OutputEdit, *LibName;
-  QPushButton *ImportButt, *CancelButt, *AbortButt;
-  QComboBox *OutType, *InType, *OutputData;
+    QLabel *OutputLabel, *LibLabel;
+    QProcess Process;
+    QPlainTextEdit* MsgText;
+    QLineEdit *ImportEdit, *OutputEdit, *LibName;
+    QPushButton *ImportButt, *CancelButt, *AbortButt;
+    QComboBox *OutType, *InType, *OutputData;
 
 public:
-  void setImportDir(const QString &dir) { lastImportDir = dir; };
-
+    void setImportDir(const QString& dir) { lastImportDir = dir; };
 };
 
 #endif

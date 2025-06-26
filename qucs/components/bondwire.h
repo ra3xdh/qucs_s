@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class BondWire : public Component  {
+class BondWire : public Component {
 public:
-  BondWire();
- ~BondWire() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    BondWire();
+    ~BondWire() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

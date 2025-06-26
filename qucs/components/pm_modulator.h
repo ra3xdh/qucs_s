@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class PM_Modulator : public Component  {
+class PM_Modulator : public Component {
 public:
-  PM_Modulator();
- ~PM_Modulator();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    PM_Modulator();
+    ~PM_Modulator();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

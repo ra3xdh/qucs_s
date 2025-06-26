@@ -19,9 +19,9 @@
 // equaton defined filter
 class Equation_Filter : public Filter {
 public:
-  Equation_Filter();
+    Equation_Filter();
 
-  static QString* createSchematic(tFilter*);
+    static QString* createSchematic(tFilter*);
 };
 
 #endif

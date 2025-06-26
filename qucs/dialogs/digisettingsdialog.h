@@ -19,9 +19,9 @@
 #define DIGISETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QLabel>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
-#include <QLabel>
 
 class TextDoc;
 class QLineEdit;
@@ -30,26 +30,25 @@ class QRegExpValidator;
 class QLabel;
 class QRadioButton;
 
-
-class DigiSettingsDialog : public QDialog  {
-Q_OBJECT
+class DigiSettingsDialog : public QDialog {
+    Q_OBJECT
 public:
-  DigiSettingsDialog(TextDoc*);
- ~DigiSettingsDialog();
+    DigiSettingsDialog(TextDoc*);
+    ~DigiSettingsDialog();
 
-  QString SimTime;
-  QLineEdit *TimeEdit, *LibEdit, *NameEdit;
-  QLabel *TimeLabel, *LibLabel, *NameLabel;
-  QRadioButton *simRadio, *comRadio;
+    QString SimTime;
+    QLineEdit *TimeEdit, *LibEdit, *NameEdit;
+    QLabel *TimeLabel, *LibLabel, *NameLabel;
+    QRadioButton *simRadio, *comRadio;
 
 private slots:
-  void slotOk();
-  void slotChangeMode(int);
+    void slotOk();
+    void slotChangeMode(int);
 
 private:
-  TextDoc *Doc;
-  QRegularExpression Expr;
-  QRegularExpressionValidator *Validator;
+    TextDoc* Doc;
+    QRegularExpression Expr;
+    QRegularExpressionValidator* Validator;
 };
 
 #endif

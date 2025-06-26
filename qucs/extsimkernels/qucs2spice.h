@@ -15,13 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef QUCS2SPICE_H
 #define QUCS2SPICE_H
 
-#include <QString>
 #include <QRegularExpression>
+#include <QString>
 
 /*!
   \file qucs2spice.h
@@ -33,9 +31,8 @@
  *         conversion of Qucs netlist into Spice netlist
  *
  */
-namespace qucs2spice
-{
-    QString convert_netlist(QString netlist, bool xyce=false);
+namespace qucs2spice {
+QString convert_netlist(QString netlist, bool xyce = false);
 }
 
 #endif // QUCS2SPICE_H

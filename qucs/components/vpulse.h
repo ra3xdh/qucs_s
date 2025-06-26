@@ -5,7 +5,7 @@
     copyright            : (C) 2004 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
     spice4qucs code added  Thurs. 19 March 2015
-    copyright          : (C) 2015 by Vadim Kusnetsov (Vadim Kuznetsov (ra3xdh@gmail.com) 
+    copyright          : (C) 2015 by Vadim Kusnetsov (Vadim Kuznetsov (ra3xdh@gmail.com)
                                            and Mike Brinson (mbrin72043@yahoo.co.uk
  ***************************************************************************/
 
@@ -23,14 +23,13 @@
 
 #include "component.h"
 
-
-class vPulse : public Component  {
+class vPulse : public Component {
 public:
-  vPulse();
-  ~vPulse();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    vPulse();
+    ~vPulse();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

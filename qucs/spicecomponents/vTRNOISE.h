@@ -18,20 +18,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef VTRNOISE_H
+#ifndef VTRNOISE_H
 #define VTRNOISE_H
 
 #include "components/component.h"
 
 class vTRNOISE : public Component {
 public:
-  vTRNOISE();
-  ~vTRNOISE();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    vTRNOISE();
+    ~vTRNOISE();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // VTRNOISE_H

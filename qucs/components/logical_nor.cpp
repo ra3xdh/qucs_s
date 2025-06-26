@@ -19,13 +19,13 @@
 
 Logical_NOR::Logical_NOR()
 {
-  Description = QObject::tr("logical NOR");
-  Model = "NOR";
-  SpiceModel = "A";
+    Description = QObject::tr("logical NOR");
+    Model = "NOR";
+    SpiceModel = "A";
 
-  createSymbol();
-  tx = x1+4;
-  ty = y2+4;
+    createSymbol();
+    tx = x1 + 4;
+    ty = y2 + 4;
 }
 
 Logical_NOR::~Logical_NOR()
@@ -34,18 +34,19 @@ Logical_NOR::~Logical_NOR()
 
 Component* Logical_NOR::newOne()
 {
-  Logical_NOR* p = new Logical_NOR();
-  p->Props.front()->Value = Props.front()->Value;
-  p->Props.back()->Value = Props.back()->Value;
-  p->recreate();
-  return p;
+    Logical_NOR* p = new Logical_NOR();
+    p->Props.front()->Value = Props.front()->Value;
+    p->Props.back()->Value = Props.back()->Value;
+    p->recreate();
+    return p;
 }
 
-Element* Logical_NOR::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* Logical_NOR::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("n-port NOR");
-  BitmapFile = (char *) "nor";
+    Name = QObject::tr("n-port NOR");
+    BitmapFile = (char*)"nor";
 
-  if(getNewOne)  return new Logical_NOR();
-  return 0;
+    if (getNewOne)
+        return new Logical_NOR();
+    return 0;
 }

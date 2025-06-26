@@ -20,15 +20,14 @@
 
 #include "tabdiagram.h"
 
+class TruthDiagram : public TabDiagram {
+public:
+    TruthDiagram(int _cx = 0, int _cy = 0);
+    ~TruthDiagram();
 
-class TruthDiagram : public TabDiagram  {
-public: 
-  TruthDiagram(int _cx=0, int _cy=0);
- ~TruthDiagram();
-
-  Diagram* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  int calcDiagram();
+    Diagram* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    int calcDiagram();
 };
 
 #endif

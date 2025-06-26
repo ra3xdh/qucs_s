@@ -15,146 +15,148 @@
  *                                                                         *
  ***************************************************************************/
 #include "logical_inv.h"
-#include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "misc.h"
+#include "node.h"
 
 Logical_Inv::Logical_Inv()
 {
-  Type = isComponent;   // both analog and digital
-  Description = QObject::tr("logical inverter");
+    Type = isComponent; // both analog and digital
+    Description = QObject::tr("logical inverter");
 
-  // the list order must be preserved !!!
-  Props.append(new Property("V", "1 V", false,
-		QObject::tr("voltage of high level")));
-  Props.append(new Property("t", "1 ns", false,
-		QObject::tr("delay time")));
-  Props.append(new Property("TR", "10", false,
-		QObject::tr("transfer function scaling factor")));
+    // the list order must be preserved !!!
+    Props.append(new Property("V", "1 V", false,
+        QObject::tr("voltage of high level")));
+    Props.append(new Property("t", "1 ns", false,
+        QObject::tr("delay time")));
+    Props.append(new Property("TR", "10", false,
+        QObject::tr("transfer function scaling factor")));
 
-  // this must be the last property in the list !!!
-  Props.append(new Property("Symbol", "old", false,
-		QObject::tr("schematic symbol")+" [old, DIN40900]"));
+    // this must be the last property in the list !!!
+    Props.append(new Property("Symbol", "old", false,
+        QObject::tr("schematic symbol") + " [old, DIN40900]"));
 
-  createSymbol();
-  tx = x1+4;
-  ty = y2+4;
-  Model = "Inv";
-  Name  = "Y";
-  SpiceModel = "A";
+    createSymbol();
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "Inv";
+    Name = "Y";
+    SpiceModel = "A";
 }
 
 // -------------------------------------------------------
 QString Logical_Inv::vhdlCode(int NumPorts)
 {
-  QString s = "  " + Ports.first()->Connection->Name + " <= not " +
-              Ports.last()->Connection->Name;
+    QString s = "  " + Ports.first()->Connection->Name + " <= not " + Ports.last()->Connection->Name;
 
-  if(NumPorts <= 0) { // no truth table simulation ?
-    QString td = Props.at(1)->Value;
-    if(!misc::VHDL_Delay(td, Name)) return td;
-    s += td;
-  }
+    if (NumPorts <= 0) { // no truth table simulation ?
+        QString td = Props.at(1)->Value;
+        if (!misc::VHDL_Delay(td, Name))
+            return td;
+        s += td;
+    }
 
-  s += ";\n";
-  return s;
+    s += ";\n";
+    return s;
 }
 
 // -------------------------------------------------------
 QString Logical_Inv::verilogCode(int NumPorts)
 {
-  bool synthesize = true;
-  Port *pp = Ports.at(0);
-  QString s ("");
+    bool synthesize = true;
+    Port* pp = Ports.at(0);
+    QString s("");
 
-  if (synthesize) {
-    s = "  assign";
+    if (synthesize) {
+        s = "  assign";
 
-    if(NumPorts <= 0) { // no truth table simulation ?
-      QString td = Props.at(1)->Value;
-      if(!misc::Verilog_Delay(td, Name)) return td;
-      s += td;
+        if (NumPorts <= 0) { // no truth table simulation ?
+            QString td = Props.at(1)->Value;
+            if (!misc::Verilog_Delay(td, Name))
+                return td;
+            s += td;
+        }
+        s += " ";
+        s += pp->Connection->Name + " = "; // output port
+        pp = Ports.at(1);
+        s += "~" + pp->Connection->Name; // input port
+        s += ";\n";
+    } else {
+        s = "  not";
+
+        if (NumPorts <= 0) { // no truth table simulation ?
+            QString td = Props.at(1)->Value;
+            if (!misc::Verilog_Delay(td, Name))
+                return td; // time has not VHDL format
+            s += td;
+        }
+        s += " " + Name + " (" + pp->Connection->Name; // output port
+        pp = Ports.at(1);
+        s += ", " + pp->Connection->Name; // first input port
+        s += ");\n";
     }
-    s += " ";
-    s += pp->Connection->Name + " = ";  // output port
-    pp = Ports.at(1);
-    s += "~" + pp->Connection->Name;   // input port
-    s += ";\n";
-  }
-  else {
-    s = "  not";
-
-    if(NumPorts <= 0) { // no truth table simulation ?
-      QString td = Props.at(1)->Value;
-      if(!misc::Verilog_Delay(td, Name))
-	return td;    // time has not VHDL format
-      s += td;
-    }
-    s += " " + Name + " (" + pp->Connection->Name;  // output port
-    pp = Ports.at(1);
-    s += ", " + pp->Connection->Name; // first input port
-    s += ");\n";
-  }
-  return s;
+    return s;
 }
 
 // -------------------------------------------------------
 void Logical_Inv::createSymbol()
 {
-  int xr;
+    int xr;
 
-  if(Props.back()->Value.at(0) == 'D') {  // DIN symbol
-    Lines.append(new qucs::Line( 15,-20, 15, 20,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-15,-20, 15,-20,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-15, 20, 15, 20,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-15,-20,-15, 20,QPen(Qt::darkBlue,2)));
+    if (Props.back()->Value.at(0) == 'D') { // DIN symbol
+        Lines.append(new qucs::Line(15, -20, 15, 20, QPen(Qt::darkBlue, 2)));
+        Lines.append(new qucs::Line(-15, -20, 15, -20, QPen(Qt::darkBlue, 2)));
+        Lines.append(new qucs::Line(-15, 20, 15, 20, QPen(Qt::darkBlue, 2)));
+        Lines.append(new qucs::Line(-15, -20, -15, 20, QPen(Qt::darkBlue, 2)));
 
-    Texts.append(new Text(-11,-17, "1", Qt::darkBlue, 15.0));
-    xr =  15;
-  }
-  else {   // old symbol
-    Lines.append(new qucs::Line(-10,-20,-10,20, QPen(Qt::darkBlue,2)));
-    Arcs.append(new qucs::Arc(-30,-20, 40, 30,  0, 16*90,QPen(Qt::darkBlue,2)));
-    Arcs.append(new qucs::Arc(-30,-10, 40, 30,  0,-16*90,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line( 10,-5, 10, 5,QPen(Qt::darkBlue,2)));
-    xr =  10;
-  }
+        Texts.append(new Text(-11, -17, "1", Qt::darkBlue, 15.0));
+        xr = 15;
+    } else { // old symbol
+        Lines.append(new qucs::Line(-10, -20, -10, 20, QPen(Qt::darkBlue, 2)));
+        Arcs.append(new qucs::Arc(-30, -20, 40, 30, 0, 16 * 90, QPen(Qt::darkBlue, 2)));
+        Arcs.append(new qucs::Arc(-30, -10, 40, 30, 0, -16 * 90, QPen(Qt::darkBlue, 2)));
+        Lines.append(new qucs::Line(10, -5, 10, 5, QPen(Qt::darkBlue, 2)));
+        xr = 10;
+    }
 
-  Ellipses.append(new qucs::Ellips(xr,-4, 8, 8,
-                QPen(Qt::darkBlue,0), QBrush(Qt::darkBlue)));
+    Ellipses.append(new qucs::Ellips(xr, -4, 8, 8,
+        QPen(Qt::darkBlue, 0), QBrush(Qt::darkBlue)));
 
-  Lines.append(new qucs::Line( xr, 0, 30, 0, QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-30, 0,-xr, 0, QPen(Qt::darkBlue,2)));
-  Ports.append(new Port( 30, 0));
-  Ports.append(new Port(-30, 0));
+    Lines.append(new qucs::Line(xr, 0, 30, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-30, 0, -xr, 0, QPen(Qt::darkBlue, 2)));
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(-30, 0));
 
-  x1 = -30; y1 = -23;
-  x2 =  30; y2 =  23;
+    x1 = -30;
+    y1 = -23;
+    x2 = 30;
+    y2 = 23;
 }
 
 // -------------------------------------------------------
 Component* Logical_Inv::newOne()
 {
-  Logical_Inv* p = new Logical_Inv();
-  p->Props.back()->Value = Props.back()->Value;
-  p->recreate();
-  return p;
+    Logical_Inv* p = new Logical_Inv();
+    p->Props.back()->Value = Props.back()->Value;
+    p->recreate();
+    return p;
 }
 
 // -------------------------------------------------------
-Element* Logical_Inv::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* Logical_Inv::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Inverter");
-  BitmapFile = (char *) "inverter";
+    Name = QObject::tr("Inverter");
+    BitmapFile = (char*)"inverter";
 
-  if(getNewOne)  return new Logical_Inv();
-  return 0;
+    if (getNewOne)
+        return new Logical_Inv();
+    return 0;
 }
 
 QString Logical_Inv::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    if (dialect == spicecompat::SPICEXyce) return QString();
+    if (dialect == spicecompat::SPICEXyce)
+        return QString();
 
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;
@@ -163,6 +165,7 @@ QString Logical_Inv::spice_netlist(spicecompat::SpiceDialect dialect /* = spicec
     s += " " + Ports.at(0)->Connection->Name;
     s += " " + tmp_model + "\n";
     s += QStringLiteral(".model %1 d_inverter(rise_delay=%2 fall_delay=%2 input_load=5e-13)\n")
-            .arg(tmp_model).arg(td);
+             .arg(tmp_model)
+             .arg(td);
     return s;
 }

@@ -16,60 +16,58 @@
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
 
 #include <stdlib.h>
 
 #include <QApplication>
-#include <QString>
-#include <QTranslator>
-#include <QFile>
-#include <QTextStream>
-#include <QMessageBox>
 #include <QDir>
+#include <QFile>
 #include <QFont>
+#include <QMessageBox>
 #include <QSettings>
+#include <QString>
+#include <QTextStream>
+#include <QTranslator>
 
-#include "qucsfilter.h"
 #include "../qucs/extsimkernels/spicecompat.h"
+#include "qucsfilter.h"
 
 struct tQucsSettings QucsSettings;
-
-
 
 // #########################################################################
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-    QSettings settings("qucs","qucs_s");
+    QSettings settings("qucs", "qucs_s");
     settings.beginGroup("QucsFilter");
-    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
-    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    if (settings.contains("x"))
+        QucsSettings.x = settings.value("x").toInt();
+    if (settings.contains("y"))
+        QucsSettings.y = settings.value("y").toInt();
     settings.endGroup();
-    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
-    if(settings.contains("DefaultSimulator"))
+    if (settings.contains("Language"))
+        QucsSettings.Language = settings.value("Language").toString();
+    if (settings.contains("DefaultSimulator"))
         QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
-    else QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
+    else
+        QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
 
-  return true;
+    return true;
 }
-
 
 // #########################################################################
 // Saves the settings in the settings file.
-bool saveApplSettings(QucsFilter *qucs)
+bool saveApplSettings(QucsFilter* qucs)
 {
-    QSettings settings ("qucs","qucs_s");
+    QSettings settings("qucs", "qucs_s");
     settings.beginGroup("QucsFilter");
     settings.setValue("x", qucs->x());
     settings.setValue("y", qucs->y());
     settings.endGroup();
-  return true;
-
+    return true;
 }
-
-
 
 // #########################################################################
 // ##########                                                     ##########
@@ -77,39 +75,39 @@ bool saveApplSettings(QucsFilter *qucs)
 // ##########                                                     ##########
 // #########################################################################
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  QApplication a(argc, argv);
+    QApplication a(argc, argv);
 
-  // apply default settings
-  QucsSettings.x = 200;
-  QucsSettings.y = 100;
+    // apply default settings
+    QucsSettings.x = 200;
+    QucsSettings.y = 100;
 
-  // is application relocated?
-  QDir QucsDir;
-  QString QucsApplicationPath = QCoreApplication::applicationDirPath();
+    // is application relocated?
+    QDir QucsDir;
+    QString QucsApplicationPath = QCoreApplication::applicationDirPath();
 #ifdef __APPLE__
-  QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
+    QucsDir = QDir(QucsApplicationPath.section("/bin", 0, 0));
 #else
-  QucsDir = QDir(QucsApplicationPath);
-  QucsDir.cdUp();
+    QucsDir = QDir(QucsApplicationPath);
+    QucsDir.cdUp();
 #endif
-  QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
+    QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
 
-  loadSettings();
+    loadSettings();
 
-  QTranslator tor( 0 );
-  QString lang = QucsSettings.Language;
-  if(lang.isEmpty())
-    lang = QString(QLocale::system().name());
-  static_cast<void>(tor.load( QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
-  a.installTranslator( &tor );
+    QTranslator tor(0);
+    QString lang = QucsSettings.Language;
+    if (lang.isEmpty())
+        lang = QString(QLocale::system().name());
+    static_cast<void>(tor.load(QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
+    a.installTranslator(&tor);
 
-  QucsFilter *qucs = new QucsFilter();
-  qucs->raise();
-  qucs->move(QucsSettings.x, QucsSettings.y);  // position before "show" !!!
-  qucs->show();
-  int result = a.exec();
-  saveApplSettings(qucs);
-  return result;
+    QucsFilter* qucs = new QucsFilter();
+    qucs->raise();
+    qucs->move(QucsSettings.x, QucsSettings.y); // position before "show" !!!
+    qucs->show();
+    int result = a.exec();
+    saveApplSettings(qucs);
+    return result;
 }

@@ -52,4 +52,17 @@ if (blah-blah) {
   doFooBar();
 }
 ```
-- Format your changes with `clang-format`. You can use it to format a portion of a file: `clang-format --lines=<first line number>:<last line number> path/to/file` (number of last line is *inclusive*, i.e. `--lines=15:17` formats lines 15, 16 and 17)
+
+### Code formatting
+
+Use WebKit style to format code. With `clang-format` you can either do this manually:
+
+```
+clang-format -i --style=WebKit <your file>
+```
+
+or use `.clang-format` file to integrate with IDE. The file was generated with version 19.1.7 of clang-format as
+
+```
+clang-format --style=WebKit --dump-config > .clang-format
+```

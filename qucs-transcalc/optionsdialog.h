@@ -25,22 +25,22 @@ class QVBoxLayout;
 class QComboBox;
 
 /**
-  *@author Stefan Jahn
-  */
+ *@author Stefan Jahn
+ */
 
-class OptionsDialog : public QDialog  {
-   Q_OBJECT
+class OptionsDialog : public QDialog {
+    Q_OBJECT
 public:
-  OptionsDialog(QWidget *parent = 0);
- ~OptionsDialog();
+    OptionsDialog(QWidget* parent = 0);
+    ~OptionsDialog();
 
 private slots:
-  void slotClose();
-  void slotSave();
+    void slotClose();
+    void slotSave();
 
 private:
-  QVBoxLayout *vLayout;
-  QComboBox *units[4];
+    QVBoxLayout* vLayout;
+    QComboBox* units[4];
 };
 
 #endif

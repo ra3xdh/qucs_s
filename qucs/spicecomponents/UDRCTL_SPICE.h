@@ -18,7 +18,7 @@ public:
     UDRCTL_SPICE();
     ~UDRCTL_SPICE();
     Component* newOne();
-    static Element* info(QString&, char* &, bool getNewOne=false);
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
     QString netlist();

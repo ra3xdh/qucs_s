@@ -18,22 +18,22 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef NMOS_SPICE_H
+#ifndef NMOS_SPICE_H
 #define NMOS_SPICE_H
 
 #include "components/component.h"
 
 class NMOS_SPICE : public Component {
 public:
-  NMOS_SPICE();
-  ~NMOS_SPICE();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    NMOS_SPICE();
+    ~NMOS_SPICE();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
 };
 
 #endif // NMOS_SPICE_H

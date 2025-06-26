@@ -20,18 +20,16 @@
 
 #include "diagram.h"
 
+class PolarDiagram : public Diagram {
+public:
+    PolarDiagram(int _cx = 0, int _cy = 0);
+    ~PolarDiagram();
 
-class PolarDiagram : public Diagram  {
-public: 
-  PolarDiagram(int _cx=0, int _cy=0);
- ~PolarDiagram();
-
-
-  Diagram* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  int  calcDiagram();
-  void calcLimits();
-  void calcCoordinate(const double*, const double*, const double*, float*, float*, Axis const*) const;
+    Diagram* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    int calcDiagram();
+    void calcLimits();
+    void calcCoordinate(const double*, const double*, const double*, float*, float*, Axis const*) const;
 };
 
 #endif

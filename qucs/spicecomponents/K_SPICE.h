@@ -18,20 +18,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef K_SPICE_H
+#ifndef K_SPICE_H
 #define K_SPICE_H
 
 #include "components/component.h"
 
-class K_SPICE: public Component {
+class K_SPICE : public Component {
 public:
-  K_SPICE();
-  ~K_SPICE();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    K_SPICE();
+    ~K_SPICE();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // K_SPICE_H

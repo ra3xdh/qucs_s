@@ -20,60 +20,60 @@
  ***************************************************************************/
 
 #include "irect.h"
-#include "node.h"
-#include "misc.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "misc.h"
+#include "node.h"
 
 iRect::iRect()
 {
-  Description = QObject::tr("ideal rectangle current source");
+    Description = QObject::tr("ideal rectangle current source");
 
-  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24,QPen(Qt::darkBlue,2)));
-  // pins
-  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  // arrow
-  Lines.append(new qucs::Line( -8,  0,  6,  0,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
-  Polylines.append(new qucs::Polyline(
-    std::vector<QPointF>{{0, -4},{6, 0}, {0, 4}}, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+    Ellipses.append(new qucs::Ellips(-12, -12, 24, 24, QPen(Qt::darkBlue, 2)));
+    // pins
+    Lines.append(new qucs::Line(-30, 0, -12, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(30, 0, 12, 0, QPen(Qt::darkBlue, 2)));
+    // arrow
+    Lines.append(new qucs::Line(-8, 0, 6, 0, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::FlatCap)));
+    Polylines.append(new qucs::Polyline(
+        std::vector<QPointF> { { 0, -4 }, { 6, 0 }, { 0, 4 } }, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
+    // little rectangle symbol
+    Lines.append(new qucs::Line(19, 5, 19, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(13, 7, 19, 7, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(13, 7, 13, 11, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(13, 11, 19, 11, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(19, 11, 19, 15, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(13, 15, 19, 15, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(13, 15, 13, 17, QPen(Qt::darkBlue, 2)));
 
-  // little rectangle symbol
-  Lines.append(new qucs::Line( 19,  5, 19,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 13,  7, 19,  7,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 13,  7, 13, 11,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 13, 11, 19, 11,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 19, 11, 19, 15,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 13, 15, 19, 15,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 13, 15, 13, 17,QPen(Qt::darkBlue,2)));
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(-30, 0));
 
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+    x1 = -30;
+    y1 = -14;
+    x2 = 30;
+    y2 = 20;
 
-  x1 = -30; y1 = -14;
-  x2 =  30; y2 =  20;
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "Irect";
+    Name = "I";
+    SpiceModel = "I";
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "Irect";
-  Name  = "I";
-  SpiceModel = "I";
+    Props.append(new Property("I", "1 mA", true,
+        QObject::tr("current at high pulse")));
+    Props.append(new Property("TH", "1 ms", true,
+        QObject::tr("duration of high pulses")));
+    Props.append(new Property("TL", "1 ms", true,
+        QObject::tr("duration of low pulses")));
+    Props.append(new Property("Tr", "1 ns", false,
+        QObject::tr("rise time of the leading edge")));
+    Props.append(new Property("Tf", "1 ns", false,
+        QObject::tr("fall time of the trailing edge")));
+    Props.append(new Property("Td", "0 ns", false,
+        QObject::tr("initial delay time")));
 
-  Props.append(new Property("I", "1 mA", true,
-		QObject::tr("current at high pulse")));
-  Props.append(new Property("TH", "1 ms", true,
-		QObject::tr("duration of high pulses")));
-  Props.append(new Property("TL", "1 ms", true,
-		QObject::tr("duration of low pulses")));
-  Props.append(new Property("Tr", "1 ns", false,
-		QObject::tr("rise time of the leading edge")));
-  Props.append(new Property("Tf", "1 ns", false,
-		QObject::tr("fall time of the trailing edge")));
-  Props.append(new Property("Td", "0 ns", false,
-		QObject::tr("initial delay time")));
-
-  rotate();  // fix historical flaw
+    rotate(); // fix historical flaw
 }
 
 iRect::~iRect()
@@ -84,29 +84,30 @@ QString iRect::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
 
-    for (Port *p1 : Ports) {
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam; // node names
     }
 
     double T, TL, TH, Trval, Tfval, fac;
     QString unit;
 
-    QString U = spicecompat::normalize_value(Props.at(0)->Value); //VH
+    QString U = spicecompat::normalize_value(Props.at(0)->Value); // VH
     QString Td = spicecompat::normalize_value(Props.at(5)->Value); // Td
     QString Tr = spicecompat::normalize_value(Props.at(3)->Value); // Tr
-    QString Tf = spicecompat::normalize_value(Props.at(4)->Value); //Tf
-    misc::str2num(Props.at(1)->Value,TH,unit,fac); //TH
-    TH *= fac;    // TH = pw
-    misc::str2num(Props.at(2)->Value,TL,unit,fac);
-    T = TL*fac+TH;
-    misc::str2num(Props.at(3)->Value,Trval,unit,fac);
-    T = Trval*fac+T;
-    misc::str2num(Props.at(4)->Value,Tfval,unit,fac);
-    T = Tfval*fac+T;
+    QString Tf = spicecompat::normalize_value(Props.at(4)->Value); // Tf
+    misc::str2num(Props.at(1)->Value, TH, unit, fac); // TH
+    TH *= fac; // TH = pw
+    misc::str2num(Props.at(2)->Value, TL, unit, fac);
+    T = TL * fac + TH;
+    misc::str2num(Props.at(3)->Value, Trval, unit, fac);
+    T = Trval * fac + T;
+    misc::str2num(Props.at(4)->Value, Tfval, unit, fac);
+    T = Tfval * fac + T;
 
     s += QStringLiteral(" DC 0 PULSE( 0  -%1 %2 %3 %4 %5 %6)  AC 0\n").arg(U).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T);
 
@@ -115,14 +116,15 @@ QString iRect::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
 
 Component* iRect::newOne()
 {
-  return new iRect();
+    return new iRect();
 }
 
-Element* iRect::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* iRect::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Rectangle Current");
-  BitmapFile = (char *) "irect";
+    Name = QObject::tr("Rectangle Current");
+    BitmapFile = (char*)"irect";
 
-  if(getNewOne)  return new iRect();
-  return 0;
+    if (getNewOne)
+        return new iRect();
+    return 0;
 }

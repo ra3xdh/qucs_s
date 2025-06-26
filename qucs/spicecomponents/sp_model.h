@@ -20,20 +20,19 @@
 
 #include "components/component.h"
 
-
-class S4Q_Model : public Component  {
+class S4Q_Model : public Component {
 
 public:
-  S4Q_Model();
-  ~S4Q_Model();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getSpiceModel();
+    S4Q_Model();
+    ~S4Q_Model();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    QString getSpiceModel();
 
 protected:
-  QString vhdlCode(int) { return QString(); }
-  QString verilogCode(int) { return QString(); }
-  QString netlist() { return QString(); }
+    QString vhdlCode(int) { return QString(); }
+    QString verilogCode(int) { return QString(); }
+    QString netlist() { return QString(); }
 };
 
 #endif

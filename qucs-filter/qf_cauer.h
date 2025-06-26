@@ -23,24 +23,24 @@
 namespace qf {
 class cauer : public filter {
 private:
-  // Standard parameters
-  qf_float rho_; // Reflection coeff.
-  qf_float th_;  // Modular angle
+    // Standard parameters
+    qf_float rho_; // Reflection coeff.
+    qf_float th_; // Modular angle
 
-  // Zeros of transmission
-  qf_float* a_;
+    // Zeros of transmission
+    qf_float* a_;
 
 public:
-  cauer(qf_float, qf_float, qf_float, qf_float, qf_float, qf_float, qft,
+    cauer(qf_float, qf_float, qf_float, qf_float, qf_float, qf_float, qft,
         bool is_tee);
-  virtual ~cauer(void);
+    virtual ~cauer(void);
 
-  // Computes standard form
-  void normalize(qf_float, qf_float, qf_float);
+    // Computes standard form
+    void normalize(qf_float, qf_float, qf_float);
 
-  void xfer(void);      // Computes xfer fctn
-  void values(void);    // Computes norm values
-  virtual void synth(); // Standard -> Actual form
+    void xfer(void); // Computes xfer fctn
+    void values(void); // Computes norm values
+    virtual void synth(); // Standard -> Actual form
 };
 } // namespace qf
 

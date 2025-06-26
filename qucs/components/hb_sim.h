@@ -20,15 +20,15 @@
 
 #include "simulation.h"
 
-
-class HB_Sim : public qucs::component::SimulationComponent  {
+class HB_Sim : public qucs::component::SimulationComponent {
 public:
-  HB_Sim();
-  ~HB_Sim();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    HB_Sim();
+    ~HB_Sim();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class Substrate : public Component  {
+class Substrate : public Component {
 public:
-  Substrate();
-  ~Substrate();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Substrate();
+    ~Substrate();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

@@ -17,11 +17,11 @@
 
 #include "component.h"
 
-class TunnelDiode : public Component  {
+class TunnelDiode : public Component {
 public:
-  TunnelDiode();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    TunnelDiode();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

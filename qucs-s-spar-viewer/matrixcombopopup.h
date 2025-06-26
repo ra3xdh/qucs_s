@@ -4,45 +4,43 @@
 
 #include <QComboBox>
 #include <QFrame>
+#include <QGridLayout>
+#include <QPaintEvent>
 #include <QPushButton>
 #include <QStringList>
-#include <QGridLayout>
 #include <QVBoxLayout>
-#include <QPaintEvent>
 
-class MatrixComboPopup : public QFrame
-{
-  Q_OBJECT
+class MatrixComboPopup : public QFrame {
+    Q_OBJECT
 
 public:
-  MatrixComboPopup(const QStringList &sParams, const QStringList &otherParams, QComboBox *parent = nullptr);
-  void showBelow(QWidget *widget);
+    MatrixComboPopup(const QStringList& sParams, const QStringList& otherParams, QComboBox* parent = nullptr);
+    void showBelow(QWidget* widget);
 
 private slots:
-  void selectItem();
+    void selectItem();
 
 private:
-  QComboBox *parentCombo;
+    QComboBox* parentCombo;
 };
 
-class MatrixComboBox : public QComboBox
-{
-  Q_OBJECT
+class MatrixComboBox : public QComboBox {
+    Q_OBJECT
 
 public:
-  explicit MatrixComboBox(QWidget *parent = nullptr);
-  void setParameters(const QStringList &sParams, const QStringList &otherParams);
+    explicit MatrixComboBox(QWidget* parent = nullptr);
+    void setParameters(const QStringList& sParams, const QStringList& otherParams);
 
 protected:
-  void showPopup() override;
-  void hidePopup() override;
-  void paintEvent(QPaintEvent *event) override;
+    void showPopup() override;
+    void hidePopup() override;
+    void paintEvent(QPaintEvent* event) override;
 
 private:
-  QStringList sParams;
-  QStringList otherParams;
-  bool popupVisible;
-  MatrixComboPopup *popup;
+    QStringList sParams;
+    QStringList otherParams;
+    bool popupVisible;
+    MatrixComboPopup* popup;
 };
 
 #endif // MATRIXCOMBOBOX_H

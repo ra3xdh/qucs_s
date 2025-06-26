@@ -17,86 +17,86 @@
 #define IMAGEPAINTING_H
 
 #include "rectangle.h"
+#include <QApplication>
+#include <QCheckBox>
 #include <QColor>
-#include <QPen>
-#include <QPixmap>
+#include <QComboBox>
+#include <QDebug>
+#include <QDialogButtonBox>
 #include <QFileDialog>
-#include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
-#include <QPushButton>
-#include <QDialogButtonBox>
-#include <QDebug>
-#include <QPainter>
 #include <QObject>
-#include <QComboBox>
-#include <QCheckBox>
-#include <QApplication>
+#include <QPainter>
+#include <QPen>
+#include <QPixmap>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 class ImagePainting : public QObject, public qucs::Rectangle {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ImagePainting();
-  Painting* newOne() override;
-  void paint(QPainter* painter) override;
-  bool load(const QString& s) override;
-  QString save() override;
-  QString saveCpp() override;
-  QString saveJSON() override;
-  bool Dialog(QWidget* parent = nullptr) override;
-  static Element* info(QString& Name, char* &BitmapFile, bool getNewOne = false);
+    ImagePainting();
+    Painting* newOne() override;
+    void paint(QPainter* painter) override;
+    bool load(const QString& s) override;
+    QString save() override;
+    QString saveCpp() override;
+    QString saveJSON() override;
+    bool Dialog(QWidget* parent = nullptr) override;
+    static Element* info(QString& Name, char*& BitmapFile, bool getNewOne = false);
 
-  void setImageFromPixmap(const QPixmap& pixmap);
-  void setImageFromPath(const QString& path);
-  void setImageFromClipboard();
+    void setImageFromPixmap(const QPixmap& pixmap);
+    void setImageFromPath(const QString& path);
+    void setImageFromClipboard();
 
-  // Override selection and interaction methods
-  bool getSelected(const QPoint& click, int tolerance) override;
-  bool resizeTouched(const QPoint& click, int tolerance) override;
-  void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
-  bool MousePressing(Schematic* sch = nullptr) override;
-  void MouseResizeMoving(int x, int y, Schematic* p) override;
-  bool rotate() noexcept override;
-  bool rotate(int xc, int yc) noexcept override;
+    // Override selection and interaction methods
+    bool getSelected(const QPoint& click, int tolerance) override;
+    bool resizeTouched(const QPoint& click, int tolerance) override;
+    void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
+    bool MousePressing(Schematic* sch = nullptr) override;
+    void MouseResizeMoving(int x, int y, Schematic* p) override;
+    bool rotate() noexcept override;
+    bool rotate(int xc, int yc) noexcept override;
 
-  int getImageWidth() const;
-  int getImageHeight() const;
+    int getImageWidth() const;
+    int getImageHeight() const;
 
 private:
-  QString imagePath;
-  QPixmap image;
-  QPixmap originalImage;
-  void loadImage();
+    QString imagePath;
+    QPixmap image;
+    QPixmap originalImage;
+    void loadImage();
 
-  // Local pen properties
-  QColor penColor;
-  int penWidth;
-  Qt::PenStyle penStyle;
-  bool m_filled;
+    // Local pen properties
+    QColor penColor;
+    int penWidth;
+    Qt::PenStyle penStyle;
+    bool m_filled;
 
-  // Aspect ratio control
-  bool m_keepAspectRatio;
-  double m_aspectRatio; // cached aspect ratio
+    // Aspect ratio control
+    bool m_keepAspectRatio;
+    double m_aspectRatio; // cached aspect ratio
 
-  // Dialog widget members
-  QLineEdit* m_pathEdit;
-  QLineEdit* m_widthEdit;
-  QLineEdit* m_heightEdit;
-  QCheckBox* m_aspectRatioCheck;
-  QPushButton* m_resetButton;
-  QLabel* m_statusLabel;
+    // Dialog widget members
+    QLineEdit* m_pathEdit;
+    QLineEdit* m_widthEdit;
+    QLineEdit* m_heightEdit;
+    QCheckBox* m_aspectRatioCheck;
+    QPushButton* m_resetButton;
+    QLabel* m_statusLabel;
 
-  // Dialog handler methods
-  void onBrowseClicked();
-  void onResetClicked();
-  void onAspectRatioToggled(bool checked);
-  void onPathChanged(const QString& newPath);
-  void updateHeight();
+    // Dialog handler methods
+    void onBrowseClicked();
+    void onResetClicked();
+    void onAspectRatioToggled(bool checked);
+    void onPathChanged(const QString& newPath);
+    void updateHeight();
 
-  // Helper methods
-  void updateAspectRatio();
-  void applyAspectRatioToResize(int& newWidth, int& newHeight);
+    // Helper methods
+    void updateAspectRatio();
+    void applyAspectRatioToResize(int& newWidth, int& newHeight);
 };
 
 #endif // IMAGEPAINTING_H

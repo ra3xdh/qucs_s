@@ -20,16 +20,16 @@
 
 #include "component.h"
 
-
-class CCCS : public Component  {
+class CCCS : public Component {
 public:
-  CCCS();
-  ~CCCS();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    CCCS();
+    ~CCCS();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  QString va_code();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString va_code();
 };
 
 #endif

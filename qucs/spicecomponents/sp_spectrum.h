@@ -20,16 +20,15 @@
 
 #include "components/simulation.h"
 
-
-class SpiceFFT : public qucs::component::SimulationComponent  {
+class SpiceFFT : public qucs::component::SimulationComponent {
 public:
-  SpiceFFT();
-  ~SpiceFFT();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    SpiceFFT();
+    ~SpiceFFT();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif

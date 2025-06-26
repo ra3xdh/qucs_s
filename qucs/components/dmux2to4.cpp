@@ -13,154 +13,139 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  */
 #include "dmux2to4.h"
-#include "node.h"
 #include "misc.h"
+#include "node.h"
 
 dmux2to4::dmux2to4()
 {
-  Type = isComponent; // Analogue and digital component.
-  Description = QObject::tr ("2to4 demultiplexer verilog device");
+    Type = isComponent; // Analogue and digital component.
+    Description = QObject::tr("2to4 demultiplexer verilog device");
 
-  Props.append (new Property ("TR", "6", false,
-    QObject::tr ("transfer function high scaling factor")));
-  Props.append (new Property ("Delay", "1 ns", false,
-    QObject::tr ("output delay")
-    +" ("+QObject::tr ("s")+")"));
+    Props.append(new Property("TR", "6", false,
+        QObject::tr("transfer function high scaling factor")));
+    Props.append(new Property("Delay", "1 ns", false,
+        QObject::tr("output delay")
+            + " (" + QObject::tr("s") + ")"));
 
-  createSymbol ();
-  tx = x1 + 19;
-  ty = y2 + 4;
-  Model = "dmux2to4";
-  Name  = "Y";
+    createSymbol();
+    tx = x1 + 19;
+    ty = y2 + 4;
+    Model = "dmux2to4";
+    Name = "Y";
 }
 
-Component * dmux2to4::newOne()
+Component* dmux2to4::newOne()
 {
-  dmux2to4 * p = new dmux2to4();
-  p->Props.front()->Value = Props.front()->Value; 
-  p->recreate();
-  return p;
+    dmux2to4* p = new dmux2to4();
+    p->Props.front()->Value = Props.front()->Value;
+    p->recreate();
+    return p;
 }
 
-Element * dmux2to4::info(QString& Name, char * &BitmapFile, bool getNewOne)
+Element* dmux2to4::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("2to4 Demux");
-  BitmapFile = (char *) "dmux2to4";
+    Name = QObject::tr("2to4 Demux");
+    BitmapFile = (char*)"dmux2to4";
 
-  if(getNewOne) return new dmux2to4();
-  return 0;
+    if (getNewOne)
+        return new dmux2to4();
+    return 0;
 }
 
 void dmux2to4::createSymbol()
 {
-  Rects.append(new qucs::Rect(-30, -90, 60, 110, QPen(Qt::darkBlue,2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
+    Rects.append(new qucs::Rect(-30, -90, 60, 110, QPen(Qt::darkBlue, 2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
-  Lines.append(new qucs::Line(-50,-50,-40,-50,QPen(Qt::darkBlue,2)));  // EN
-  Lines.append(new qucs::Line(-50,-30,-30,-30,QPen(Qt::darkBlue,2)));  // A
-  Lines.append(new qucs::Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // B
-  Lines.append(new qucs::Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));  // Y3
-  Lines.append(new qucs::Line( 30,-10, 50,-10,QPen(Qt::darkBlue,2)));  // Y2
-  Lines.append(new qucs::Line( 30,-30, 50,-30,QPen(Qt::darkBlue,2)));  // Y1
-  Lines.append(new qucs::Line( 30,-50, 50,-50,QPen(Qt::darkBlue,2)));  // Y0
+    Lines.append(new qucs::Line(-50, -50, -40, -50, QPen(Qt::darkBlue, 2))); // EN
+    Lines.append(new qucs::Line(-50, -30, -30, -30, QPen(Qt::darkBlue, 2))); // A
+    Lines.append(new qucs::Line(-50, -10, -30, -10, QPen(Qt::darkBlue, 2))); // B
+    Lines.append(new qucs::Line(30, 10, 50, 10, QPen(Qt::darkBlue, 2))); // Y3
+    Lines.append(new qucs::Line(30, -10, 50, -10, QPen(Qt::darkBlue, 2))); // Y2
+    Lines.append(new qucs::Line(30, -30, 50, -30, QPen(Qt::darkBlue, 2))); // Y1
+    Lines.append(new qucs::Line(30, -50, 50, -50, QPen(Qt::darkBlue, 2))); // Y0
 
-  Ellipses.append(new qucs::Ellips( -40, -55, 10, 10, QPen(Qt::darkBlue,2)));
- 
-  Texts.append(new Text(-18.5,-85, "DMUX", Qt::darkBlue, 12.0));
+    Ellipses.append(new qucs::Ellips(-40, -55, 10, 10, QPen(Qt::darkBlue, 2)));
 
-  Texts.append(new Text(-28,-58, "En",Qt::darkBlue, 12.0));
-  Texts.append(new Text(-20,-28, "G", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-8, -32, "}", Qt::darkBlue, 20.0));
-  Texts.append(new Text( 2, -35, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 2, -11, "3", Qt::darkBlue, 12.0));
+    Texts.append(new Text(-18.5, -85, "DMUX", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-28,-38, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text(-28,-18, "1", Qt::darkBlue, 12.0));
+    Texts.append(new Text(-28, -58, "En", Qt::darkBlue, 12.0));
+    Texts.append(new Text(-20, -28, "G", Qt::darkBlue, 12.0));
+    Texts.append(new Text(-8, -32, "}", Qt::darkBlue, 20.0));
+    Texts.append(new Text(2, -35, "0", Qt::darkBlue, 12.0));
+    Texts.append(new Text(2, -11, "3", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text( 15,-58, "0", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 15,-38, "1", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 15,-18, "2", Qt::darkBlue, 12.0));
-  Texts.append(new Text( 15,  2, "3", Qt::darkBlue, 12.0));
+    Texts.append(new Text(-28, -38, "0", Qt::darkBlue, 12.0));
+    Texts.append(new Text(-28, -18, "1", Qt::darkBlue, 12.0));
 
-  Lines.append(new qucs::Line(0, -18, 12, -18, QPen(Qt::darkBlue,2)));
+    Texts.append(new Text(15, -58, "0", Qt::darkBlue, 12.0));
+    Texts.append(new Text(15, -38, "1", Qt::darkBlue, 12.0));
+    Texts.append(new Text(15, -18, "2", Qt::darkBlue, 12.0));
+    Texts.append(new Text(15, 2, "3", Qt::darkBlue, 12.0));
 
-  Ports.append(new Port(-50,-50));  // En
-  Ports.append(new Port(-50,-30));  // A
-  Ports.append(new Port(-50,-10));  // B
-  Ports.append(new Port( 50, 10));  // Y3
-  Ports.append(new Port( 50,-10));  // Y2
-  Ports.append(new Port( 50,-30));  // Y1
-  Ports.append(new Port( 50,-50));  // Y0
+    Lines.append(new qucs::Line(0, -18, 12, -18, QPen(Qt::darkBlue, 2)));
 
-  x1 = -50; y1 = -94;
-  x2 =  50; y2 =  24;
+    Ports.append(new Port(-50, -50)); // En
+    Ports.append(new Port(-50, -30)); // A
+    Ports.append(new Port(-50, -10)); // B
+    Ports.append(new Port(50, 10)); // Y3
+    Ports.append(new Port(50, -10)); // Y2
+    Ports.append(new Port(50, -30)); // Y1
+    Ports.append(new Port(50, -50)); // Y0
+
+    x1 = -50;
+    y1 = -94;
+    x2 = 50;
+    y2 = 24;
 }
 
-QString dmux2to4::vhdlCode( int )
+QString dmux2to4::vhdlCode(int)
 {
-  QString s="";
+    QString s = "";
 
-  QString td = Props.at(1)->Value;     // delay time
-  if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
-  td += ";\n";
+    QString td = Props.at(1)->Value; // delay time
+    if (!misc::VHDL_Delay(td, Name))
+        return td; // time has not VHDL format
+    td += ";\n";
 
-  QString En = Ports.at(0)->Connection->Name;
-  QString A  = Ports.at(1)->Connection->Name;
-  QString B  = Ports.at(2)->Connection->Name;
-  QString Y3 = Ports.at(3)->Connection->Name;
-  QString Y2 = Ports.at(4)->Connection->Name;
-  QString Y1 = Ports.at(5)->Connection->Name;
-  QString Y0 = Ports.at(6)->Connection->Name;
+    QString En = Ports.at(0)->Connection->Name;
+    QString A = Ports.at(1)->Connection->Name;
+    QString B = Ports.at(2)->Connection->Name;
+    QString Y3 = Ports.at(3)->Connection->Name;
+    QString Y2 = Ports.at(4)->Connection->Name;
+    QString Y1 = Ports.at(5)->Connection->Name;
+    QString Y0 = Ports.at(6)->Connection->Name;
 
-  s = "\n  "+Name+":process ("+En+", "+A+", "+B+")\n"+
-      "  begin\n" +
-      "    "+Y0+" <= "+"(not "+En+") and (not "+B+") and (not "+A+")"+td+ 
-      "    "+Y1+" <= "+"(not "+En+") and (not "+B+") and "+A+td+
-      "    "+Y2+" <= "+"(not "+En+") and "+B+" and (not "+A+")"+td+
-      "    "+Y3+" <= "+"(not "+En+") and "+B+" and "+A+td+  
-      "  end process;\n" ;
-  return s;
+    s = "\n  " + Name + ":process (" + En + ", " + A + ", " + B + ")\n" + "  begin\n" + "    " + Y0 + " <= " + "(not " + En + ") and (not " + B + ") and (not " + A + ")" + td + "    " + Y1 + " <= " + "(not " + En + ") and (not " + B + ") and " + A + td + "    " + Y2 + " <= " + "(not " + En + ") and " + B + " and (not " + A + ")" + td + "    " + Y3 + " <= " + "(not " + En + ") and " + B + " and " + A + td + "  end process;\n";
+    return s;
 }
 
-QString dmux2to4::verilogCode( int )
+QString dmux2to4::verilogCode(int)
 {
-  QString td = Props.at(1)->Value;        // delay time
-  if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
+    QString td = Props.at(1)->Value; // delay time
+    if (!misc::Verilog_Delay(td, Name))
+        return td; // time does not have VHDL format
 
-  QString l = "";
+    QString l = "";
 
-  QString En = Ports.at(0)->Connection->Name;
-  QString A  = Ports.at(1)->Connection->Name;
-  QString B  = Ports.at(2)->Connection->Name;
-  QString Y3 = Ports.at(3)->Connection->Name;
-  QString Y2 = Ports.at(4)->Connection->Name;
-  QString Y1 = Ports.at(5)->Connection->Name;
-  QString Y0 = Ports.at(6)->Connection->Name;
+    QString En = Ports.at(0)->Connection->Name;
+    QString A = Ports.at(1)->Connection->Name;
+    QString B = Ports.at(2)->Connection->Name;
+    QString Y3 = Ports.at(3)->Connection->Name;
+    QString Y2 = Ports.at(4)->Connection->Name;
+    QString Y1 = Ports.at(5)->Connection->Name;
+    QString Y0 = Ports.at(6)->Connection->Name;
 
-  QString Y3R = "net_reg" + Name + Y3;
-  QString Y2R = "net_reg" + Name + Y2;
-  QString Y1R = "net_reg" + Name + Y1;
-  QString Y0R = "net_reg" + Name + Y0;
-  
-  l = "\n  // " + Name + " 2to4 demux\n" +
-      "  assign  " + Y0 + " = " + Y0R + ";\n" +
-      "  reg     " + Y0R + " = 0;\n" +
-      "  assign  " + Y1 + " = " + Y1R + ";\n" +
-      "  reg     " + Y1R + " = 0;\n" +
-      "  assign  " + Y2 + " = " + Y2R + ";\n" +
-      "  reg     " + Y2R + " = 0;\n" +
-      "  assign  " + Y3 + " = " + Y3R + ";\n" +
-      "  reg     " + Y3R + " = 0;\n" +
+    QString Y3R = "net_reg" + Name + Y3;
+    QString Y2R = "net_reg" + Name + Y2;
+    QString Y1R = "net_reg" + Name + Y1;
+    QString Y0R = "net_reg" + Name + Y0;
 
-      "  always @ ("+En+" or "+A+" or "+B+")\n" +
-      "  begin\n"+
-      "    "+Y0R+" <="+td+" (~"+En+") && (~"+B+") && (~"+A+")"+";\n" +
-      "    "+Y1R+" <="+td+" (~"+En+") && (~"+B+") && ("+A+")"+";\n" +
-      "    "+Y2R+" <="+td+" (~"+En+") && ("+B+") && (~"+A+")"+";\n" +
-      "    "+Y3R+" <="+td+" (~"+En+") && ("+B+") && ("+A+")"+";\n" +
-      "  end\n" ;
+    l = "\n  // " + Name + " 2to4 demux\n" + "  assign  " + Y0 + " = " + Y0R + ";\n" + "  reg     " + Y0R + " = 0;\n" + "  assign  " + Y1 + " = " + Y1R + ";\n" + "  reg     " + Y1R + " = 0;\n" + "  assign  " + Y2 + " = " + Y2R + ";\n" + "  reg     " + Y2R + " = 0;\n" + "  assign  " + Y3 + " = " + Y3R + ";\n" + "  reg     " + Y3R + " = 0;\n" +
 
-  return l;
+        "  always @ (" + En + " or " + A + " or " + B + ")\n" + "  begin\n" + "    " + Y0R + " <=" + td + " (~" + En + ") && (~" + B + ") && (~" + A + ")" + ";\n" + "    " + Y1R + " <=" + td + " (~" + En + ") && (~" + B + ") && (" + A + ")" + ";\n" + "    " + Y2R + " <=" + td + " (~" + En + ") && (" + B + ") && (~" + A + ")" + ";\n" + "    " + Y3R + " <=" + td + " (~" + En + ") && (" + B + ") && (" + A + ")" + ";\n" + "  end\n";
+
+    return l;
 }

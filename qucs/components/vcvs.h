@@ -20,17 +20,16 @@
 
 #include "component.h"
 
-
-class VCVS : public Component  {
+class VCVS : public Component {
 public:
-  VCVS();
-  ~VCVS();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    VCVS();
+    ~VCVS();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  QString va_code();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString va_code();
 };
 
 #endif

@@ -24,24 +24,24 @@ class QLineEdit;
 class QComboBox;
 class QCheckBox;
 
-class MarkerDialog : public QDialog  {
-Q_OBJECT
+class MarkerDialog : public QDialog {
+    Q_OBJECT
 public:
-  MarkerDialog(Marker *pm_, QWidget *parent=0);
- ~MarkerDialog();
+    MarkerDialog(Marker* pm_, QWidget* parent = 0);
+    ~MarkerDialog();
 
 private slots:
-  void slotAcceptValues();
+    void slotAcceptValues();
 
 public:
-  Marker *pMarker;
+    Marker* pMarker;
 
-  QComboBox  *NumberBox;
-  QLineEdit  *Precision;
-  QLineEdit  *XPosition;
-  QComboBox  *IndicatorBox;
-  QLineEdit  *SourceImpedance;
-  QCheckBox  *TransBox;
+    QComboBox* NumberBox;
+    QLineEdit* Precision;
+    QLineEdit* XPosition;
+    QComboBox* IndicatorBox;
+    QLineEdit* SourceImpedance;
+    QCheckBox* TransBox;
 };
 
 #endif

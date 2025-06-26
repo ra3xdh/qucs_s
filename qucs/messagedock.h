@@ -31,34 +31,31 @@ class QPlainTextEdit;
  * \brief The MessageDock class definiion
  */
 class MessageDock : public QWidget {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  MessageDock(QucsApp*);
- ~MessageDock() {};
+    MessageDock(QucsApp*);
+    ~MessageDock() { };
 
 public:
+    QDockWidget* msgDock;
 
-  QDockWidget *msgDock;
+    QTabWidget* builderTabs;
 
-  QTabWidget *builderTabs;
+    /*!
+     * \brief admsOutput holds the make output of running admsXml
+     */
+    QPlainTextEdit* admsOutput;
+    /*!
+     * \brief cppOutput holds the make output of running a C++ compiler
+     */
+    QPlainTextEdit* cppOutput;
 
-  /*!
-   * \brief admsOutput holds the make output of running admsXml
-   */
-  QPlainTextEdit *admsOutput;
-  /*!
-   * \brief cppOutput holds the make output of running a C++ compiler
-   */
-  QPlainTextEdit *cppOutput;
-
-  void reset();
-
+    void reset();
 
 private slots:
-  void slotAdmsChanged();
-  void slotCppChanged();
-  void slotCursor();
-
+    void slotAdmsChanged();
+    void slotCppChanged();
+    void slotCursor();
 };
 
 #endif // MESSAGEDOCK_H

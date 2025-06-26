@@ -18,29 +18,29 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef MOS_SPICE_H
+#ifndef MOS_SPICE_H
 #define MOS_SPICE_H
 
 #include "components/component.h"
 
 class MOS_SPICE : public MultiViewComponent {
 public:
-  MOS_SPICE();
-  ~MOS_SPICE();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  static Element* info_NM3pin(QString&, char* &, bool getNewOne=false);
-  static Element* info_PM3pin(QString&, char* &, bool getNewOne=false);
-  static Element* info_NX3pin(QString&, char* &, bool getNewOne=false);
-  static Element* info_PX3pin(QString&, char* &, bool getNewOne=false);
-  static Element* info_NX4pin(QString&, char* &, bool getNewOne=false);
-  static Element* info_PX4pin(QString&, char* &, bool getNewOne=false);
+    MOS_SPICE();
+    ~MOS_SPICE();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    static Element* info_NM3pin(QString&, char*&, bool getNewOne = false);
+    static Element* info_PM3pin(QString&, char*&, bool getNewOne = false);
+    static Element* info_NX3pin(QString&, char*&, bool getNewOne = false);
+    static Element* info_PX3pin(QString&, char*&, bool getNewOne = false);
+    static Element* info_NX4pin(QString&, char*&, bool getNewOne = false);
+    static Element* info_PX4pin(QString&, char*&, bool getNewOne = false);
 
 protected:
-  void createSymbol();
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
+    void createSymbol();
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
 };
 
 #endif // MOS_SPICE_H

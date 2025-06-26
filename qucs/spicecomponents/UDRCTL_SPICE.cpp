@@ -19,50 +19,51 @@
  *                                                                         *
  ***************************************************************************/
 #include "UDRCTL_SPICE.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 UDRCTL_SPICE::UDRCTL_SPICE()
 {
-  Description = QObject::tr("SPICE U(URC):\nMultiple line ngspice or Xyce U specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
-  Simulator = spicecompat::simSpice;
+    Description = QObject::tr("SPICE U(URC):\nMultiple line ngspice or Xyce U specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+    Simulator = spicecompat::simSpice;
 
-  Lines.append(new qucs::Line(  -60,  0, -45,   0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  -45, 20,  45,  20,QPen(Qt::blue,4)));
-  Lines.append(new qucs::Line(   60,  0,  45,   0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(   0,  20,   0,  40,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-60, 0, -45, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-45, 20, 45, 20, QPen(Qt::blue, 4)));
+    Lines.append(new qucs::Line(60, 0, 45, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(0, 20, 0, 40, QPen(Qt::darkBlue, 2)));
 
-  Lines.append(new qucs::Line(-45,    0,  -37,   0,QPen(Qt::blue,4)));
-  Lines.append(new qucs::Line(-37,    0,  -30, -10,QPen(Qt::blue,4)));
-  Lines.append(new qucs::Line(-30,  -10,  -15,  10,QPen(Qt::blue,4)));
-  Lines.append(new qucs::Line(-15,   10,   0,  -10,QPen(Qt::blue,4)));
-  Lines.append(new qucs::Line(  0,  -10,   15,  10,QPen(Qt::blue,4)));
-  Lines.append(new qucs::Line(  15,  10,   30, -10,QPen(Qt::blue,4)));
-  Lines.append(new qucs::Line(  30, -10,  37,    0,QPen(Qt::blue,4)));
-  Lines.append(new qucs::Line(  37,   0,  45,    0,QPen(Qt::blue,4)));
+    Lines.append(new qucs::Line(-45, 0, -37, 0, QPen(Qt::blue, 4)));
+    Lines.append(new qucs::Line(-37, 0, -30, -10, QPen(Qt::blue, 4)));
+    Lines.append(new qucs::Line(-30, -10, -15, 10, QPen(Qt::blue, 4)));
+    Lines.append(new qucs::Line(-15, 10, 0, -10, QPen(Qt::blue, 4)));
+    Lines.append(new qucs::Line(0, -10, 15, 10, QPen(Qt::blue, 4)));
+    Lines.append(new qucs::Line(15, 10, 30, -10, QPen(Qt::blue, 4)));
+    Lines.append(new qucs::Line(30, -10, 37, 0, QPen(Qt::blue, 4)));
+    Lines.append(new qucs::Line(37, 0, 45, 0, QPen(Qt::blue, 4)));
 
-  Ports.append(new Port(  -60, 0)); // P1
-  Ports.append(new Port(   60, 0)); // P2
-  Ports.append(new Port(    0, 40)); // P3
+    Ports.append(new Port(-60, 0)); // P1
+    Ports.append(new Port(60, 0)); // P2
+    Ports.append(new Port(0, 40)); // P3
 
-  x1 = -60; y1 = -20;
-  x2 =  60; y2 =  40;
+    x1 = -60;
+    y1 = -20;
+    x2 = 60;
+    y2 = 40;
 
-    tx = x1+4;
-    ty = y2+4;
+    tx = x1 + 4;
+    ty = y2 + 4;
 
     Model = "UDRCTL_SPICE";
     SpiceModel = "U";
-    Name  = "U";
+    Name = "U";
 
-    Props.append(new Property("U",        "", true,"Specification expression"));
-    Props.append(new Property("U_Line 2", "", false,"+ continuation line 1"));
-    Props.append(new Property("U_Line 3", "", false,"+ continuation line 2"));
-    Props.append(new Property("U_Line 4", "", false,"+ continuation line 3"));
-    Props.append(new Property("U_Line 5", "", false,"+ continuation line 4"));
+    Props.append(new Property("U", "", true, "Specification expression"));
+    Props.append(new Property("U_Line 2", "", false, "+ continuation line 1"));
+    Props.append(new Property("U_Line 3", "", false, "+ continuation line 2"));
+    Props.append(new Property("U_Line 4", "", false, "+ continuation line 3"));
+    Props.append(new Property("U_Line 5", "", false, "+ continuation line 4"));
 
-//    rotate();  // fix historical flaw
+    //    rotate();  // fix historical flaw
 }
 
 UDRCTL_SPICE::~UDRCTL_SPICE()
@@ -71,16 +72,17 @@ UDRCTL_SPICE::~UDRCTL_SPICE()
 
 Component* UDRCTL_SPICE::newOne()
 {
-  return new UDRCTL_SPICE();
+    return new UDRCTL_SPICE();
 }
 
-Element* UDRCTL_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* UDRCTL_SPICE::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("U(URC)");
-  BitmapFile = (char *) "UDRCTL_SPICE";
+    Name = QObject::tr("U(URC)");
+    BitmapFile = (char*)"UDRCTL_SPICE";
 
-  if(getNewOne)  return new UDRCTL_SPICE();
-  return 0;
+    if (getNewOne)
+        return new UDRCTL_SPICE();
+    return 0;
 }
 
 QString UDRCTL_SPICE::netlist()
@@ -92,24 +94,30 @@ QString UDRCTL_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spice
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam+" ";   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam + " "; // node names
     }
 
-    QString U= Props.at(0)->Value;
-    QString U_Line_2= Props.at(1)->Value;
-    QString U_Line_3= Props.at(2)->Value;
-    QString U_Line_4= Props.at(3)->Value;
-    QString U_Line_5= Props.at(4)->Value;
+    QString U = Props.at(0)->Value;
+    QString U_Line_2 = Props.at(1)->Value;
+    QString U_Line_3 = Props.at(2)->Value;
+    QString U_Line_4 = Props.at(3)->Value;
+    QString U_Line_5 = Props.at(4)->Value;
 
-    if(  U.length()  > 0)          s += QStringLiteral("%1").arg(U);
-    if(  U_Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(U_Line_2);
-    if(  U_Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(U_Line_3);
-    if(  U_Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(U_Line_4);
-    if(  U_Line_5.length() > 0 )   s += QStringLiteral("\n%1").arg(U_Line_5);
+    if (U.length() > 0)
+        s += QStringLiteral("%1").arg(U);
+    if (U_Line_2.length() > 0)
+        s += QStringLiteral("\n%1").arg(U_Line_2);
+    if (U_Line_3.length() > 0)
+        s += QStringLiteral("\n%1").arg(U_Line_3);
+    if (U_Line_4.length() > 0)
+        s += QStringLiteral("\n%1").arg(U_Line_4);
+    if (U_Line_5.length() > 0)
+        s += QStringLiteral("\n%1").arg(U_Line_5);
     s += "\n";
 
     return s;

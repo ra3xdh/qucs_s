@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class MSopen : public Component  {
+class MSopen : public Component {
 public:
-  MSopen();
-  ~MSopen();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    MSopen();
+    ~MSopen();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

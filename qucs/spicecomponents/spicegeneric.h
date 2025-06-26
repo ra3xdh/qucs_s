@@ -19,26 +19,25 @@
 #define SPICEGENERIC_H
 #include "components/component.h"
 
-
 class QProcess;
 class QTextStream;
 class QString;
 
-class SpiceGeneric : public MultiViewComponent  {
+class SpiceGeneric : public MultiViewComponent {
 public:
-  SpiceGeneric();
- ~SpiceGeneric() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    SpiceGeneric();
+    ~SpiceGeneric() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 private:
-  bool changed;
+    bool changed;
 
 protected:
-  QString netlist();
-  void createSymbol();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
+    QString netlist();
+    void createSymbol();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
 };
 
 #endif

@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class Logical_XOR : public GateComponent  {
+class Logical_XOR : public GateComponent {
 public:
-  Logical_XOR();
- ~Logical_XOR();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Logical_XOR();
+    ~Logical_XOR();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

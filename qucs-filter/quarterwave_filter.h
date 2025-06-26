@@ -29,13 +29,13 @@
 class QuarterWave_Filter : public TL_Filter {
 
 public:
-  static double bw;
-  static double fc;
-  static double d_lamdba4;
+    static double bw;
+    static double fc;
+    static double d_lamdba4;
 
-  QuarterWave_Filter();
+    QuarterWave_Filter();
 
-  static QString* createSchematic(tFilter*, tSubstrate*, bool);
+    static QString* createSchematic(tFilter*, tSubstrate*, bool);
 };
 
 #endif

@@ -20,20 +20,19 @@
 
 #include "component.h"
 
-
-class SubCirPort : public MultiViewComponent  {
+class SubCirPort : public MultiViewComponent {
 public:
-  SubCirPort();
- ~SubCirPort() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    SubCirPort();
+    ~SubCirPort() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  QString vhdlCode(int);
-  QString verilogCode(int);
-  void createSymbol();
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString vhdlCode(int);
+    QString verilogCode(int);
+    void createSymbol();
 };
 
 #endif

@@ -18,31 +18,27 @@
 #ifndef SALLENKEY_H
 #define SALLENKEY_H
 
-#include <QtCore>
-#include <complex>
-#include <cmath>
 #include "filter.h"
+#include <QtCore>
+#include <cmath>
+#include <complex>
 
-
-class SallenKey : public Filter
-{
+class SallenKey : public Filter {
 
 protected:
-
     void calcHighPass();
     void calcLowPass();
     void calcBandPass();
     void calcBandStop();
-    void createHighPassSchematic(QString &s);
-    void createLowPassSchematic(QString &s);
-    void createBandPassSchematic(QString &s);
-    void createBandStopSchematic(QString &s);
+    void createHighPassSchematic(QString& s);
+    void createLowPassSchematic(QString& s);
+    void createBandPassSchematic(QString& s);
+    void createBandStopSchematic(QString& s);
 
 public:
     SallenKey(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par);
 
-    //void createSchematic(QString &s);
-
+    // void createSchematic(QString &s);
 };
 
 #endif // SALLENKEY_H

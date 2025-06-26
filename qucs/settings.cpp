@@ -1,12 +1,12 @@
 #include <QApplication>
 #include <QStandardPaths>
 
+#include "extsimkernels/spicecompat.h"
 #include "main.h"
 #include "settings.h"
-#include "extsimkernels/spicecompat.h"
 
 settingsManager::settingsManager()
-    :QSettings("qucs", "qucs_s")
+    : QSettings("qucs", "qucs_s")
 {
     // qDebug() << this << " created " << organizationName() << " " << applicationName();
 
@@ -19,7 +19,7 @@ settingsManager::~settingsManager()
     // qDebug() << this << " destroyed";
 }
 
-void settingsManager::resetDefaults(const QString &group)
+void settingsManager::resetDefaults(const QString& group)
 {
     qDebug() << "Reset settings group " << group;
 
@@ -61,19 +61,19 @@ void settingsManager::initDefaults()
     m_Defaults["OctaveExecutable"] = "octave.exe";
 #else
     m_Defaults["NgspiceExecutable"] = "ngspice";
-    #ifndef Q_OS_MACOS
-        m_Defaults["XyceExecutable"] = "/usr/local/Xyce-Release-6.8.0-OPENSOURCE/bin/Xyce";
-    #else
-        m_Defaults["XyceExecutable"] = "Xyce";
-    #endif
+#ifndef Q_OS_MACOS
+    m_Defaults["XyceExecutable"] = "/usr/local/Xyce-Release-6.8.0-OPENSOURCE/bin/Xyce";
+#else
+    m_Defaults["XyceExecutable"] = "Xyce";
+#endif
     m_Defaults["RFLayoutExecutable"] = "qucsrflayout";
     m_Defaults["OctaveExecutable"] = "octave";
 #endif
 
     m_Defaults["XyceParExecutable"] = "mpirun -np %p /usr/local/Xyce-Release-6.8.0-OPENMPI-OPENSOURCE/bin/Xyce";
     m_Defaults["S4Q_workdir"] = QDir::toNativeSeparators(
-                                QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
-                                + "/qucs-s");
+        QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
+        + "/qucs-s");
     m_Defaults["Nprocs"] = 4;
     m_Defaults["SpiceOpusExecutable"] = "spiceopus";
     m_Defaults["SimParameters"] = "";
@@ -87,5 +87,5 @@ void settingsManager::initDefaults()
 
 void settingsManager::initAliases()
 {
-    m_Aliases["IgnoreVersion"] = QStringList({"IngnoreVersion"});
+    m_Aliases["IgnoreVersion"] = QStringList({ "IngnoreVersion" });
 }

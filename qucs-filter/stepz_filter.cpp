@@ -12,129 +12,135 @@
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#include <config.h>
 #endif
 
 #include "stepz_filter.h"
 
-#include <QString>
 #include <QMessageBox>
+#include <QString>
 
 StepImpedance_Filter::StepImpedance_Filter()
 {
 }
 
 // -----------------------------------------------------------------------
-QString* StepImpedance_Filter::createSchematic(tFilter *Filter, tSubstrate *Substrate, bool isMicrostrip)
+QString* StepImpedance_Filter::createSchematic(tFilter* Filter, tSubstrate* Substrate, bool isMicrostrip)
 {
-  int i, x;
-  double len, width, er_eff_min, er_eff_max, Z0;
-  double Omega = 2.0 * pi * Filter->Frequency;
-  double Zlow  = 20.0;
-  double Zhigh = 400.0;
+    int i, x;
+    double len, width, er_eff_min, er_eff_max, Z0;
+    double Omega = 2.0 * pi * Filter->Frequency;
+    double Zlow = 20.0;
+    double Zhigh = 400.0;
 
-  width = er_eff_min = er_eff_max = 1.0;
+    width = er_eff_min = er_eff_max = 1.0;
 
-  if(isMicrostrip) {
-    TL_Filter::calcMicrostrip(Substrate, Substrate->minWidth,
-                              Filter->Frequency, er_eff_min, Zhigh);
-    TL_Filter::calcMicrostrip(Substrate, Substrate->maxWidth,
-                              Filter->Frequency, er_eff_max, Zlow);
+    if (isMicrostrip) {
+        TL_Filter::calcMicrostrip(Substrate, Substrate->minWidth,
+            Filter->Frequency, er_eff_min, Zhigh);
+        TL_Filter::calcMicrostrip(Substrate, Substrate->maxWidth,
+            Filter->Frequency, er_eff_max, Zlow);
 
-    if((Substrate->er > 4.0) || (Substrate->height > 0.6))
-      QMessageBox::warning(0, QObject::tr("Warning"),
-          QObject::tr("High-impedance is %1 ohms, low-impedance is %2 ohms.\n"
-                      "To get acceptable results it is recommended to use\n"
-                      "a substrate with lower permittivity and larger height.\n").arg(Zhigh).arg(Zlow));
-  }
-
-  // create the Qucs schematic
-  QString *s = new QString("<Qucs Schematic " PACKAGE_VERSION ">\n");
-
-  x = 60;
-  *s += "<Components>\n";
-  *s += QStringLiteral("<Pac P1 1 %1 330 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
-  *s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
-
-  x -= 30;
-  for(i = 0; i < Filter->Order; i++) {
-    x += 90;
-
-    // de-normalize values and calculate transmission line length
-    if(i & 1) {
-      // replace a capacitor
-      Z0 = Zlow;
-      len = getNormValue(i, Filter) / Filter->Impedance * Zlow;
-      if(isMicrostrip)
-        len -= 0.1 * Zlow / Zhigh;
-      len *= LIGHTSPEED / sqrt(er_eff_max) / Omega;
-      width = Substrate->maxWidth;
-    }
-    else {
-      // replace an inductor
-      Z0 = Zhigh;
-      len = getNormValue(i, Filter) * Filter->Impedance;
-      if(i > 0)
-        len -= 0.5 * Zlow * Zlow * getNormValue(i-1, Filter) / Filter->Impedance;
-      if(isMicrostrip)
-        if((i+1) < Filter->Order)
-          len -= 0.5 * Zlow * Zlow * getNormValue(i+1, Filter) / Filter->Impedance;
-      len /= Zhigh;
-      len *= LIGHTSPEED / sqrt(er_eff_min) / Omega;
-      width = Substrate->minWidth;
+        if ((Substrate->er > 4.0) || (Substrate->height > 0.6))
+            QMessageBox::warning(0, QObject::tr("Warning"),
+                QObject::tr("High-impedance is %1 ohms, low-impedance is %2 ohms.\n"
+                            "To get acceptable results it is recommended to use\n"
+                            "a substrate with lower permittivity and larger height.\n")
+                    .arg(Zhigh)
+                    .arg(Zlow));
     }
 
-    if(isMicrostrip)
-      *s += QStringLiteral("<MLIN MS1 1 %1 180 -26 15 0 0 \"Sub1\" 1 \"%2\" 1 \"%3\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(x).arg(num2str(width)).arg(num2str(len));
-    else
-      *s += QStringLiteral("<TLIN Line1 1 %1 180 -26 20 0 0 \"%2\" 1 \"%3\" 1 \"0 dB\" 0 \"26.85\" 0>\n").arg(x).arg(Z0).arg(num2str(len));
-  }
+    // create the Qucs schematic
+    QString* s = new QString("<Qucs Schematic " PACKAGE_VERSION ">\n");
 
+    x = 60;
+    *s += "<Components>\n";
+    *s += QStringLiteral("<Pac P1 1 %1 330 18 -26 0 1 \"1\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
+    *s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
 
-  x += 80;
-  *s += QStringLiteral("<Pac P2 1 %1 330 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
-  *s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
+    x -= 30;
+    for (i = 0; i < Filter->Order; i++) {
+        x += 90;
 
-  *s += QStringLiteral("<.SP SP1 1 70 460 0 67 0 0 \"lin\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(0.1 * Filter->Frequency)).arg(num2str(10.0 * Filter->Frequency));
-  if(isMicrostrip)
-    *s += QStringLiteral("<SUBST Sub1 1 300 500 -30 24 0 0 \"%1\" 1 \"%2m\" 1 \"%3m\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate->er).arg(num2str(Substrate->height)).arg(num2str(Substrate->thickness)).arg(Substrate->tand).arg(Substrate->resistivity).arg(Substrate->roughness);
-  *s += QStringLiteral("<Eqn Eqn1 1 450 560 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
-  *s += "</Components>\n";
+        // de-normalize values and calculate transmission line length
+        if (i & 1) {
+            // replace a capacitor
+            Z0 = Zlow;
+            len = getNormValue(i, Filter) / Filter->Impedance * Zlow;
+            if (isMicrostrip)
+                len -= 0.1 * Zlow / Zhigh;
+            len *= LIGHTSPEED / sqrt(er_eff_max) / Omega;
+            width = Substrate->maxWidth;
+        } else {
+            // replace an inductor
+            Z0 = Zhigh;
+            len = getNormValue(i, Filter) * Filter->Impedance;
+            if (i > 0)
+                len -= 0.5 * Zlow * Zlow * getNormValue(i - 1, Filter) / Filter->Impedance;
+            if (isMicrostrip)
+                if ((i + 1) < Filter->Order)
+                    len -= 0.5 * Zlow * Zlow * getNormValue(i + 1, Filter) / Filter->Impedance;
+            len /= Zhigh;
+            len *= LIGHTSPEED / sqrt(er_eff_min) / Omega;
+            width = Substrate->minWidth;
+        }
 
-  *s += "<Wires>\n";
+        if (isMicrostrip)
+            *s += QStringLiteral("<MLIN MS1 1 %1 180 -26 15 0 0 \"Sub1\" 1 \"%2\" 1 \"%3\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").arg(x).arg(num2str(width)).arg(num2str(len));
+        else
+            *s += QStringLiteral("<TLIN Line1 1 %1 180 -26 20 0 0 \"%2\" 1 \"%3\" 1 \"0 dB\" 0 \"26.85\" 0>\n").arg(x).arg(Z0).arg(num2str(len));
+    }
 
-  // connect left source
-  *s += QStringLiteral("<60 180 60 300 \"\" 0 0 0>\n");
-  *s += QStringLiteral("<60 180 90 180 \"\" 0 0 0>\n");
+    x += 80;
+    *s += QStringLiteral("<Pac P2 1 %1 330 18 -26 0 1 \"2\" 1 \"%2 Ohm\" 1 \"0 dBm\" 0 \"1 GHz\" 0>\n").arg(x).arg(Filter->Impedance);
+    *s += QStringLiteral("<GND * 1 %1 360 0 0 0 0>\n").arg(x);
 
-  // connect right source
-  *s += QStringLiteral("<%1 180 %2 300 \"\" 0 0 0>\n").arg(x).arg(x);
-  *s += QStringLiteral("<%1 180 %2 180 \"\" 0 0 0>\n").arg(x-50).arg(x);
+    *s += QStringLiteral("<.SP SP1 1 70 460 0 67 0 0 \"lin\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(num2str(0.1 * Filter->Frequency)).arg(num2str(10.0 * Filter->Frequency));
+    if (isMicrostrip)
+        *s += QStringLiteral("<SUBST Sub1 1 300 500 -30 24 0 0 \"%1\" 1 \"%2m\" 1 \"%3m\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate->er).arg(num2str(Substrate->height)).arg(num2str(Substrate->thickness)).arg(Substrate->tand).arg(Substrate->resistivity).arg(Substrate->roughness);
+    *s += QStringLiteral("<Eqn Eqn1 1 450 560 -28 15 0 0 \"S21_dB=dB(S[2,1])\" 1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n");
+    *s += "</Components>\n";
 
-  // wires between components
-  x = 150;
-  for(i = 1; i < Filter->Order; i++) {
-    *s += QStringLiteral("<%1 180 %2 180 \"\" 0 0 0>\n").arg(x).arg(x+30);
-    x += 90;
-  }
+    *s += "<Wires>\n";
 
-  *s += "</Wires>\n";
+    // connect left source
+    *s += QStringLiteral("<60 180 60 300 \"\" 0 0 0>\n");
+    *s += QStringLiteral("<60 180 90 180 \"\" 0 0 0>\n");
 
-  *s += "<Diagrams>\n";
-  *s += "</Diagrams>\n";
+    // connect right source
+    *s += QStringLiteral("<%1 180 %2 300 \"\" 0 0 0>\n").arg(x).arg(x);
+    *s += QStringLiteral("<%1 180 %2 180 \"\" 0 0 0>\n").arg(x - 50).arg(x);
 
-  *s += "<Paintings>\n";
+    // wires between components
+    x = 150;
+    for (i = 1; i < Filter->Order; i++) {
+        *s += QStringLiteral("<%1 180 %2 180 \"\" 0 0 0>\n").arg(x).arg(x + 30);
+        x += 90;
+    }
 
-  *s += QStringLiteral("<Text 420 460 12 #000000 0 \"stepped-impedance lowpass filter \\n ");
-  switch(Filter->Type) {
-    case TYPE_BESSEL:      *s += QStringLiteral("Bessel"); break;
-    case TYPE_BUTTERWORTH: *s += QStringLiteral("Butterworth"); break;
-    case TYPE_CHEBYSHEV:   *s += QStringLiteral("Chebyshev"); break;
-  }
+    *s += "</Wires>\n";
 
-  *s += QStringLiteral(" %1Hz...%2Hz \\n ").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
-  *s += QStringLiteral("impedance matching %3 Ohm\">\n").arg(Filter->Impedance);
-  *s += "</Paintings>\n";
+    *s += "<Diagrams>\n";
+    *s += "</Diagrams>\n";
 
-  return s;
+    *s += "<Paintings>\n";
+
+    *s += QStringLiteral("<Text 420 460 12 #000000 0 \"stepped-impedance lowpass filter \\n ");
+    switch (Filter->Type) {
+    case TYPE_BESSEL:
+        *s += QStringLiteral("Bessel");
+        break;
+    case TYPE_BUTTERWORTH:
+        *s += QStringLiteral("Butterworth");
+        break;
+    case TYPE_CHEBYSHEV:
+        *s += QStringLiteral("Chebyshev");
+        break;
+    }
+
+    *s += QStringLiteral(" %1Hz...%2Hz \\n ").arg(num2str(Filter->Frequency)).arg(num2str(Filter->Frequency2));
+    *s += QStringLiteral("impedance matching %3 Ohm\">\n").arg(Filter->Impedance);
+    *s += "</Paintings>\n";
+
+    return s;
 }

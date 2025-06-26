@@ -23,15 +23,16 @@
 
 #include "components/component.h"
 
-class Icouple: public Component {
+class Icouple : public Component {
 public:
-  Icouple();
-  ~Icouple();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Icouple();
+    ~Icouple();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // Icouple

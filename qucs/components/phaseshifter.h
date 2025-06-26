@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class Phaseshifter : public Component  {
+class Phaseshifter : public Component {
 public:
-  Phaseshifter();
-  ~Phaseshifter();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Phaseshifter();
+    ~Phaseshifter();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

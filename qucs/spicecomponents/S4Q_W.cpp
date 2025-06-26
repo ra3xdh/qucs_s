@@ -19,48 +19,46 @@
  *                                                                         *
  ***************************************************************************/
 #include "S4Q_W.h"
-#include "node.h"
 #include "extsimkernels/spicecompat.h"
-
+#include "node.h"
 
 S4Q_W::S4Q_W()
 {
     Description = QObject::tr("SPICE W:\nMultiple line ngspice or Xyce W specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
     Simulator = spicecompat::simSpice;
 
-    Lines.append(new qucs::Line(-15, -15, -15, 15,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line(-15,  15,  15, 15,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line( 15,  15,  15,-15,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line( 15, -15, -15, -15,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line(-30,  0,  -15,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-15,  0,   -5,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line( 30,  0,   15,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line( 15,  0,    5,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line(  5,  0,    0,  8,QPen(Qt::darkRed,3, Qt::SolidLine, Qt::FlatCap)));
+    Lines.append(new qucs::Line(-15, -15, -15, 15, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(-15, 15, 15, 15, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(15, 15, 15, -15, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(15, -15, -15, -15, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(-30, 0, -15, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-15, 0, -5, 0, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(30, 0, 15, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(15, 0, 5, 0, QPen(Qt::darkRed, 3)));
+    Lines.append(new qucs::Line(5, 0, 0, 8, QPen(Qt::darkRed, 3, Qt::SolidLine, Qt::FlatCap)));
 
-    Ports.append(new Port(-30,  0)); // Ps+
-    Ports.append(new Port( 30,  0)); // Ps-
+    Ports.append(new Port(-30, 0)); // Ps+
+    Ports.append(new Port(30, 0)); // Ps-
 
+    x1 = -30;
+    y1 = -15;
+    x2 = 40;
+    y2 = 15;
 
-    x1 = -30; y1 = -15;
-    x2 =  40; y2 =  15;
-
-    tx = x1+4;
-    ty = y2+4;
+    tx = x1 + 4;
+    ty = y2 + 4;
 
     Model = "S4Q_W";
     SpiceModel = "W";
-    Name  = "W";
+    Name = "W";
 
-    Props.append(new Property("W", "", true,"W param list and\n .model spec."));
-    Props.append(new Property("W_Line 2", "", false,"+ continuation line 1"));
-    Props.append(new Property("W_Line 3", "", false,"+ continuation line 2"));
-    Props.append(new Property("W_Line 4", "", false,"+ continuation line 3"));
-    Props.append(new Property("W_Line 5", "", false,"+ continuation line 4"));
+    Props.append(new Property("W", "", true, "W param list and\n .model spec."));
+    Props.append(new Property("W_Line 2", "", false, "+ continuation line 1"));
+    Props.append(new Property("W_Line 3", "", false, "+ continuation line 2"));
+    Props.append(new Property("W_Line 4", "", false, "+ continuation line 3"));
+    Props.append(new Property("W_Line 5", "", false, "+ continuation line 4"));
 
-
-
-    rotate();  // fix historical flaw
+    rotate(); // fix historical flaw
 }
 
 S4Q_W::~S4Q_W()
@@ -69,40 +67,47 @@ S4Q_W::~S4Q_W()
 
 Component* S4Q_W::newOne()
 {
-  return new S4Q_W();
+    return new S4Q_W();
 }
 
-Element* S4Q_W::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* S4Q_W::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr(" W(CSW)");
-  BitmapFile = (char *) "S4Q_W";
+    Name = QObject::tr(" W(CSW)");
+    BitmapFile = (char*)"S4Q_W";
 
-  if(getNewOne)  return new S4Q_W();
-  return 0;
+    if (getNewOne)
+        return new S4Q_W();
+    return 0;
 }
 
 QString S4Q_W::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam+" ";   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam + " "; // node names
     }
 
     QString W = Props.at(0)->Value;
-    QString W_Line_2= Props.at(1)->Value;
-    QString W_Line_3= Props.at(2)->Value;
-    QString W_Line_4= Props.at(3)->Value;
-    QString W_Line_5= Props.at(4)->Value;
+    QString W_Line_2 = Props.at(1)->Value;
+    QString W_Line_3 = Props.at(2)->Value;
+    QString W_Line_4 = Props.at(3)->Value;
+    QString W_Line_5 = Props.at(4)->Value;
 
-    if(  W.length()  > 0)          s += QStringLiteral("%1").arg(W);
-    if(  W_Line_2.length() > 0 )   s += QStringLiteral("\n%1").arg(W_Line_2);
-    if(  W_Line_3.length() > 0 )   s += QStringLiteral("\n%1").arg(W_Line_3);
-    if(  W_Line_4.length() > 0 )   s += QStringLiteral("\n%1").arg(W_Line_4);
-    if(  W_Line_5.length() > 0)    s += QStringLiteral("\n%1").arg(W_Line_5);
+    if (W.length() > 0)
+        s += QStringLiteral("%1").arg(W);
+    if (W_Line_2.length() > 0)
+        s += QStringLiteral("\n%1").arg(W_Line_2);
+    if (W_Line_3.length() > 0)
+        s += QStringLiteral("\n%1").arg(W_Line_3);
+    if (W_Line_4.length() > 0)
+        s += QStringLiteral("\n%1").arg(W_Line_4);
+    if (W_Line_5.length() > 0)
+        s += QStringLiteral("\n%1").arg(W_Line_5);
     s += "\n";
 
     return s;

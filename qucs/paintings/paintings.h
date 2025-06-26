@@ -22,14 +22,14 @@
 
 #include "painting.h"
 
-#include "rectangle.h"
-#include "ellipse.h"
 #include "arrow.h"
+#include "ellipse.h"
+#include "ellipsearc.h"
 #include "graphicline.h"
 #include "graphictext.h"
-#include "portsymbol.h"
-#include "ellipsearc.h"
 #include "id_text.h"
 #include "imagepainting.h"
+#include "portsymbol.h"
+#include "rectangle.h"
 
 #endif

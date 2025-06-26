@@ -18,20 +18,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef VPWL_H
+#ifndef VPWL_H
 #define VPWL_H
 
 #include "components/component.h"
 
 class vPWL : public Component {
 public:
-  vPWL();
-  ~vPWL();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    vPWL();
+    ~vPWL();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
 };
 
 #endif // VPWL_H

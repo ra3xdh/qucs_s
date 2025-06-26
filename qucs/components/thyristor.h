@@ -20,13 +20,12 @@
 
 #include "component.h"
 
-
-class Thyristor : public Component  {
+class Thyristor : public Component {
 public:
-  Thyristor();
- ~Thyristor() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Thyristor();
+    ~Thyristor() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 };
 
 #endif

@@ -18,39 +18,40 @@
 #include "msmbend.h"
 #include "extsimkernels/spicecompat.h"
 
-
 MSmbend::MSmbend()
 {
-  Description = QObject::tr("microstrip mitered bend");
-  Simulator = spicecompat::simQucsator;
+    Description = QObject::tr("microstrip mitered bend");
+    Simulator = spicecompat::simQucsator;
 
-  Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  0, 18,  0, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-18, -8, -8, -8,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -8, -8,  8,  8,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-18,  8, -8,  8,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(-18, -8,-18,  8,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -8,  8, -8, 18,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line(  8,  8,  8, 18,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( -8, 18,  8, 18,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30, 0, -18, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(0, 18, 0, 30, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-18, -8, -8, -8, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-8, -8, 8, 8, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-18, 8, -8, 8, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-18, -8, -18, 8, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-8, 8, -8, 18, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(8, 8, 8, 18, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(-8, 18, 8, 18, QPen(Qt::darkBlue, 2)));
 
-  Ports.append(new Port(-30, 0));
-  Ports.append(new Port(  0,30));
+    Ports.append(new Port(-30, 0));
+    Ports.append(new Port(0, 30));
 
-  x1 = -30; y1 =-11;
-  x2 =  11; y2 = 30;
+    x1 = -30;
+    y1 = -11;
+    x2 = 11;
+    y2 = 30;
 
-  tx = x2+4;
-  ty = y1+4;
-  icon_dx = 6;
-  icon_dy = -6;
-  Model = "MMBEND";
-  Name  = "MS";
+    tx = x2 + 4;
+    ty = y1 + 4;
+    icon_dx = 6;
+    icon_dy = -6;
+    Model = "MMBEND";
+    Name = "MS";
 
-  Props.append(new Property("Subst", "Subst1", true,
-		QObject::tr("substrate")));
-  Props.append(new Property("W", "1 mm", true,
-		QObject::tr("width of line")));
+    Props.append(new Property("Subst", "Subst1", true,
+        QObject::tr("substrate")));
+    Props.append(new Property("W", "1 mm", true,
+        QObject::tr("width of line")));
 }
 
 MSmbend::~MSmbend()
@@ -59,14 +60,15 @@ MSmbend::~MSmbend()
 
 Component* MSmbend::newOne()
 {
-  return new MSmbend();
+    return new MSmbend();
 }
 
-Element* MSmbend::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* MSmbend::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Microstrip Mitered Bend");
-  BitmapFile = (char *) "msmbend";
+    Name = QObject::tr("Microstrip Mitered Bend");
+    BitmapFile = (char*)"msmbend";
 
-  if(getNewOne)  return new MSmbend();
-  return 0;
+    if (getNewOne)
+        return new MSmbend();
+    return 0;
 }

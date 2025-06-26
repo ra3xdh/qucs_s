@@ -20,25 +20,24 @@
 
 #include "component.h"
 
-
-class Subcircuit : public MultiViewComponent  {
+class Subcircuit : public MultiViewComponent {
 public:
-  Subcircuit();
- ~Subcircuit() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    Subcircuit();
+    ~Subcircuit() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
 
-  QString getSubcircuitFile();
+    QString getSubcircuitFile();
 
 protected:
-  QString netlist();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
-  QString vhdlCode(int);
-  QString verilogCode(int);
-  void createSymbol();
-  void remakeSymbol(int No);
-  int  loadSymbol(const QString&);
+    QString netlist();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
+    QString vhdlCode(int);
+    QString verilogCode(int);
+    void createSymbol();
+    void remakeSymbol(int No);
+    int loadSymbol(const QString&);
 };
 
 #endif

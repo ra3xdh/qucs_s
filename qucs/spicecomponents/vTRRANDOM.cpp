@@ -19,58 +19,57 @@
  *                                                                                                                     *
  ***************************************************************************/
 #include "vTRRANDOM.h"
+#include "extsimkernels/spicecompat.h"
 #include "node.h"
-#include "extsimkernels/spicecompat.h" 
-
 
 vTRRANDOM::vTRRANDOM()
 {
-  Description = QObject::tr("SPICE V(TRRANDOM):");
-  Simulator = spicecompat::simSpice;
+    Description = QObject::tr("SPICE V(TRRANDOM):");
+    Simulator = spicecompat::simSpice;
 
-  // normal voltage source symbol
-  Ellipses.append(new qucs::Ellips(-12,-12, 24, 24, QPen(Qt::blue,3)));
-  Texts.append(new Text(26, 6,"TRR",Qt::blue,12.0,0.0,-1.0));
-  // pins
-  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  // diagonal strokes
-  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
-  Lines.append(new qucs::Line(-10,  6,  6,-10,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
-  Lines.append(new qucs::Line( -7, 10, 10, -7,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
-  Lines.append(new qucs::Line( -2, 12, 12, -2,QPen(Qt::darkBlue,3, Qt::SolidLine, Qt::FlatCap)));
-  // plus sign
-  Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
-  Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
-  // minus sign
-  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2))); 
+    // normal voltage source symbol
+    Ellipses.append(new qucs::Ellips(-12, -12, 24, 24, QPen(Qt::blue, 3)));
+    Texts.append(new Text(26, 6, "TRR", Qt::blue, 12.0, 0.0, -1.0));
+    // pins
+    Lines.append(new qucs::Line(-30, 0, -12, 0, QPen(Qt::darkBlue, 2)));
+    Lines.append(new qucs::Line(30, 0, 12, 0, QPen(Qt::darkBlue, 2)));
+    // diagonal strokes
+    Lines.append(new qucs::Line(-12, 1, 1, -12, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::FlatCap)));
+    Lines.append(new qucs::Line(-10, 6, 6, -10, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::FlatCap)));
+    Lines.append(new qucs::Line(-7, 10, 10, -7, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::FlatCap)));
+    Lines.append(new qucs::Line(-2, 12, 12, -2, QPen(Qt::darkBlue, 3, Qt::SolidLine, Qt::FlatCap)));
+    // plus sign
+    Lines.append(new qucs::Line(18, -5, 18, -11, QPen(Qt::red, 2)));
+    Lines.append(new qucs::Line(21, -8, 15, -8, QPen(Qt::red, 2)));
+    // minus sign
+    Lines.append(new qucs::Line(-18, -5, -18, -11, QPen(Qt::black, 2)));
 
+    Ports.append(new Port(30, 0));
+    Ports.append(new Port(-30, 0));
 
-  
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+    x1 = -30;
+    y1 = -14;
+    x2 = 30;
+    y2 = 40;
 
-  x1 = -30; y1 = -14;
-  x2 =  30; y2 =  40;
+    tx = x1 + 4;
+    ty = y2 + 4;
+    Model = "vTRRANDOM";
+    SpiceModel = "V";
+    Name = "V";
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "vTRRANDOM";
-  SpiceModel = "V";
-  Name  = "V";
+    Props.append(new Property("Type", "2", true,
+        QObject::tr(" Distribution selector (1 to 4)")));
+    Props.append(new Property("Ts", "1m", true,
+        QObject::tr("Duration of each random voltage value")));
+    Props.append(new Property("Td", "0", true,
+        QObject::tr("Time delay before random voltages output ( for time < Td  Vout  =  0 V)")));
+    Props.append(new Property("Param1", "1", true,
+        QObject::tr("Changes with  different values of Type.")));
+    Props.append(new Property("Param2", "0", true,
+        QObject::tr("Changes with different values of Type")));
 
-  Props.append(new Property("Type",  "2", true,
-		QObject::tr(" Distribution selector (1 to 4)")));
-  Props.append(new Property("Ts",  "1m", true,
-		QObject::tr("Duration of each random voltage value")));
-  Props.append(new Property("Td",  "0", true,
-		QObject::tr("Time delay before random voltages output ( for time < Td  Vout  =  0 V)")));
-  Props.append(new Property("Param1",  "1", true,
-		QObject::tr("Changes with  different values of Type.")));
-   Props.append(new Property("Param2",  "0", true,
-		QObject::tr("Changes with different values of Type")));
- 
-  rotate();  // fix historical flaw
+    rotate(); // fix historical flaw
 }
 
 vTRRANDOM::~vTRRANDOM()
@@ -79,16 +78,17 @@ vTRRANDOM::~vTRRANDOM()
 
 Component* vTRRANDOM::newOne()
 {
-  return new vTRRANDOM();
+    return new vTRRANDOM();
 }
 
-Element* vTRRANDOM::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* vTRRANDOM::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("V(TRRANDOM)");
-  BitmapFile = (char *) "vTRRANDOM";
+    Name = QObject::tr("V(TRRANDOM)");
+    BitmapFile = (char*)"vTRRANDOM";
 
-  if(getNewOne)  return new vTRRANDOM();
-  return 0;
+    if (getNewOne)
+        return new vTRRANDOM();
+    return 0;
 }
 
 QString vTRRANDOM::netlist()
@@ -100,16 +100,17 @@ QString vTRRANDOM::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
 {
     Q_UNUSED(dialect);
 
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    QString s = spicecompat::check_refdes(Name, SpiceModel);
+    for (Port* p1 : Ports) {
         QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        if (nam == "gnd")
+            nam = "0";
+        s += " " + nam; // node names
     }
 
-    QString Type= spicecompat::normalize_value(Props.at(0)->Value);
-    QString Ts= spicecompat::normalize_value(Props.at(1)->Value);
-    QString Td= spicecompat::normalize_value(Props.at(2)->Value);
+    QString Type = spicecompat::normalize_value(Props.at(0)->Value);
+    QString Ts = spicecompat::normalize_value(Props.at(1)->Value);
+    QString Td = spicecompat::normalize_value(Props.at(2)->Value);
     QString Param1 = spicecompat::normalize_value(Props.at(3)->Value);
     QString Param2 = spicecompat::normalize_value(Props.at(4)->Value);
 

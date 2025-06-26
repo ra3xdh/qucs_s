@@ -1,18 +1,18 @@
 #include "simulation.h"
 #include "settings.h"
-#include <vector>
 #include <QPainter>
+#include <vector>
 
 namespace {
-const QPen wrongSimulatorPen{Qt::gray};
+const QPen wrongSimulatorPen { Qt::gray };
 // "Air" around a simulation component title.
-constexpr QMargins label_margins{5, 5, 5, 5};
+constexpr QMargins label_margins { 5, 5, 5, 5 };
 // Height of component "box". See 'drawSymbol()' below for more about the "box"
-constexpr QPoint box_height{5, 5};
+constexpr QPoint box_height { 5, 5 };
 
 // Wraps simulation label text on spaces to make it consist of multiple
 // lines of almost the same length
-QString wrapLabel(const QString &label)
+QString wrapLabel(const QString& label)
 {
     // Acting here like this: given a desired line length L, take every L-th
     // character, find first space before and first space after it, and then
@@ -51,8 +51,8 @@ QString wrapLabel(const QString &label)
         if (prev_space != not_found && next_space != not_found) {
             // find the closest space
             curr_ix = curr_ix - prev_space > next_space - curr_ix
-                    ? next_space
-                    : prev_space;
+                ? next_space
+                : prev_space;
         } else if (prev_space != not_found) {
             curr_ix = prev_space;
         } else if (next_space != not_found) {
@@ -67,7 +67,7 @@ QString wrapLabel(const QString &label)
 
 QRect selectionRect(const QRect& label_bounds)
 {
-    auto selection_rect = label_bounds.marginsAdded({3, 3, 3, 3});
+    auto selection_rect = label_bounds.marginsAdded({ 3, 3, 3, 3 });
     selection_rect.setBottomRight(selection_rect.bottomRight() + box_height);
     return selection_rect;
 }
@@ -85,10 +85,10 @@ namespace qucs::component {
 
 QPen SimulationComponent::pen() const
 {
-    auto default_sim      = _settings::Get().item<int>("DefaultSimulator");
+    auto default_sim = _settings::Get().item<int>("DefaultSimulator");
     auto correctSimulator = (Simulator & default_sim) == default_sim;
 
-    return correctSimulator ? QPen{color(), 2, Qt::SolidLine, Qt::FlatCap}
+    return correctSimulator ? QPen { color(), 2, Qt::SolidLine, Qt::FlatCap }
                             : wrongSimulatorPen;
 }
 
@@ -103,15 +103,13 @@ void SimulationComponent::updateComponentBounds(const QRect& label_bounds)
     ty = y2;
 }
 
-
-void SimulationComponent::initSymbol(const QString &label)
+void SimulationComponent::initSymbol(const QString& label)
 {
     label_text = wrapLabel(label);
-    updateComponentBounds(QRect{{0,0}, QFontMetrics{labelFont()}.size(0, label_text)});
+    updateComponentBounds(QRect { { 0, 0 }, QFontMetrics { labelFont() }.size(0, label_text) });
 }
 
-
-void SimulationComponent::drawSymbol(QPainter *p)
+void SimulationComponent::drawSymbol(QPainter* p)
 {
     const auto label_font = labelFont();
 
@@ -136,12 +134,12 @@ void SimulationComponent::drawSymbol(QPainter *p)
     const QRect ABCD = label_bounds.marginsAdded(label_margins);
     p->drawRect(ABCD);
 
-    const std::vector<QPoint> CEFGA{
-      ABCD.topRight(),
-      ABCD.topRight()    + box_height,
-      ABCD.bottomRight() + box_height,
-      ABCD.bottomLeft()  + box_height,
-      ABCD.bottomLeft()
+    const std::vector<QPoint> CEFGA {
+        ABCD.topRight(),
+        ABCD.topRight() + box_height,
+        ABCD.bottomRight() + box_height,
+        ABCD.bottomLeft() + box_height,
+        ABCD.bottomLeft()
     };
     p->drawPolyline(CEFGA.data(), CEFGA.size());
 

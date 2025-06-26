@@ -20,25 +20,24 @@
 
 #include "components/component.h"
 
-
-class SpiceLibComp : public MultiViewComponent  {
+class SpiceLibComp : public MultiViewComponent {
 public:
-  SpiceLibComp();
- ~SpiceLibComp() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getSpiceLibrary();
-  QStringList getSpiceLibraryFiles();
+    SpiceLibComp();
+    ~SpiceLibComp() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    QString getSpiceLibrary();
+    QStringList getSpiceLibraryFiles();
 
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
-  void createSymbol();
-  void remakeSymbol(int No, QStringList &pin_names);
-  int  loadSymbol(const QString&);
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
+    void createSymbol();
+    void remakeSymbol(int No, QStringList& pin_names);
+    int loadSymbol(const QString&);
 
 private:
-  void removeUnusedPorts();
+    void removeUnusedPorts();
 };
 
 #endif

@@ -19,9 +19,9 @@
 // capacitive end-coupled, half-wavelength bandpass filter
 class Line_Filter : public TL_Filter {
 public:
-  Line_Filter();
+    Line_Filter();
 
-  static QString* createSchematic(tFilter*, tSubstrate*, bool);
+    static QString* createSchematic(tFilter*, tSubstrate*, bool);
 };
 
 #endif

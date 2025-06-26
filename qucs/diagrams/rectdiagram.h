@@ -20,25 +20,23 @@
 
 #include "diagram.h"
 
+class RectDiagram : public Diagram {
+public:
+    RectDiagram(int _cx = 0, int _cy = 0);
+    ~RectDiagram();
 
-class RectDiagram : public Diagram  {
-public: 
-  RectDiagram(int _cx=0, int _cy=0);
- ~RectDiagram();
-
-
-  Diagram* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  int  calcDiagram();
-  void calcLimits();
-  void calcCoordinate(const double*, const double*, const double*, float*, float*, Axis const*) const;
-  MappedPoint  pointToValue(const QPointF& point) override;
-  void setLimitsBySelectionRect(QRectF) override;
-  void finishMarkerCoordinates(float&, float&) const;
-  bool insideDiagram(float, float) const;
+    Diagram* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    int calcDiagram();
+    void calcLimits();
+    void calcCoordinate(const double*, const double*, const double*, float*, float*, Axis const*) const;
+    MappedPoint pointToValue(const QPointF& point) override;
+    void setLimitsBySelectionRect(QRectF) override;
+    void finishMarkerCoordinates(float&, float&) const;
+    bool insideDiagram(float, float) const;
 
 protected:
-  void clip(Graph::iterator &) const;
+    void clip(Graph::iterator&) const;
 };
 
 #endif

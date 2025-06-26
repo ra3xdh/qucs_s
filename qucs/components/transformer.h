@@ -20,16 +20,16 @@
 
 #include "component.h"
 
-
-class Transformer : public Component  {
+class Transformer : public Component {
 public:
-  Transformer();
-  ~Transformer();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getSpiceLibrary();
+    Transformer();
+    ~Transformer();
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    QString getSpiceLibrary();
+
 protected:
-  QString spice_netlist(spicecompat::SpiceDialect dialect);
+    QString spice_netlist(spicecompat::SpiceDialect dialect);
 };
 
 #endif

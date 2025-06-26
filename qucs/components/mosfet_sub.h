@@ -20,26 +20,25 @@
 
 #include "component.h"
 
-
 class Basic_MOSFET : public MultiViewComponent {
 public:
-  Basic_MOSFET();
- ~Basic_MOSFET() {};
+    Basic_MOSFET();
+    ~Basic_MOSFET() { };
 };
 
 class MOSFET_sub : public Basic_MOSFET {
 public:
-  MOSFET_sub();
- ~MOSFET_sub() {};
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
-  static Element* info_p(QString&, char* &, bool getNewOne=false);
-  static Element* info_depl(QString&, char* &, bool getNewOne=false);
+    MOSFET_sub();
+    ~MOSFET_sub() { };
+    Component* newOne();
+    static Element* info(QString&, char*&, bool getNewOne = false);
+    static Element* info_p(QString&, char*&, bool getNewOne = false);
+    static Element* info_depl(QString&, char*&, bool getNewOne = false);
 
 protected:
-  void createSymbol();
-  QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
-  virtual QString cdl_netlist();
+    void createSymbol();
+    QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+    virtual QString cdl_netlist();
 };
 
 #endif

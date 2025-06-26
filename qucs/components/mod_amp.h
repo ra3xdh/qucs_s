@@ -5,7 +5,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  */
 
 #ifndef mod_amp_H
@@ -13,14 +13,14 @@
 
 #include "component.h"
 
-class mod_amp : public Component
-{
-  public:
+class mod_amp : public Component {
+public:
     mod_amp();
     ~mod_amp() { };
     Component* newOne();
-    static Element* info(QString&, char* &, bool getNewOne=false);
-  protected:
+    static Element* info(QString&, char*&, bool getNewOne = false);
+
+protected:
     void createSymbol();
 };
 

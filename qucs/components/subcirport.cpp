@@ -17,91 +17,90 @@
 #include "subcirport.h"
 #include "node.h"
 
-
 SubCirPort::SubCirPort()
 {
-  Type = isComponent;   // both analog and digital
-  Description = QObject::tr("port of a subcircuit");
+    Type = isComponent; // both analog and digital
+    Description = QObject::tr("port of a subcircuit");
 
-  // This property must be the first one !
-  Props.append(new Property("Num", "1", true,
-		QObject::tr("number of the port within the subcircuit")));
-  // This property must be the second one !
-  Props.append(new Property("Type", "analog", false,
-		QObject::tr("type of the port (for digital simulation only)")
-		+" [analog, in, out, inout]"));
+    // This property must be the first one !
+    Props.append(new Property("Num", "1", true,
+        QObject::tr("number of the port within the subcircuit")));
+    // This property must be the second one !
+    Props.append(new Property("Type", "analog", false,
+        QObject::tr("type of the port (for digital simulation only)")
+            + " [analog, in, out, inout]"));
 
-  createSymbol();
-  tx = x1+4;
-  ty = y2+4;
-  icon_dx = 4;
-  Model = "Port";
-  Name  = "P";
-  SpiceModel = "*";
+    createSymbol();
+    tx = x1 + 4;
+    ty = y2 + 4;
+    icon_dx = 4;
+    Model = "Port";
+    Name = "P";
+    SpiceModel = "*";
 }
 
 // -------------------------------------------------------
 void SubCirPort::createSymbol()
 {
-  x1 = -27; y1 = -8;
-  x2 =   0; y2 =  8;
+    x1 = -27;
+    y1 = -8;
+    x2 = 0;
+    y2 = 8;
 
-  if(Props.at(1)->Value.at(0) == 'a') {
-    Arcs.append(new qucs::Arc(-25, -6, 12, 12,  0, 16*360,QPen(Qt::darkBlue,2)));
-    Lines.append(new qucs::Line(-13,  0,  0,  0,QPen(Qt::darkBlue,2)));
-  }
-  else {
-    Lines.append(new qucs::Line( -9,  0,  0,  0,QPen(Qt::darkBlue,2)));
-    if(Props.at(1)->Value == "out") {
-      Lines.append(new qucs::Line(-20, -5,-25,  0,QPen(Qt::red,2)));
-      Lines.append(new qucs::Line(-20,  5,-25,  0,QPen(Qt::red,2)));
-      Lines.append(new qucs::Line(-20, -5, -9, -5,QPen(Qt::red,2)));
-      Lines.append(new qucs::Line(-20,  5, -9,  5,QPen(Qt::red,2)));
-      Lines.append(new qucs::Line( -9, -5, -9,  5,QPen(Qt::red,2)));
+    if (Props.at(1)->Value.at(0) == 'a') {
+        Arcs.append(new qucs::Arc(-25, -6, 12, 12, 0, 16 * 360, QPen(Qt::darkBlue, 2)));
+        Lines.append(new qucs::Line(-13, 0, 0, 0, QPen(Qt::darkBlue, 2)));
+    } else {
+        Lines.append(new qucs::Line(-9, 0, 0, 0, QPen(Qt::darkBlue, 2)));
+        if (Props.at(1)->Value == "out") {
+            Lines.append(new qucs::Line(-20, -5, -25, 0, QPen(Qt::red, 2)));
+            Lines.append(new qucs::Line(-20, 5, -25, 0, QPen(Qt::red, 2)));
+            Lines.append(new qucs::Line(-20, -5, -9, -5, QPen(Qt::red, 2)));
+            Lines.append(new qucs::Line(-20, 5, -9, 5, QPen(Qt::red, 2)));
+            Lines.append(new qucs::Line(-9, -5, -9, 5, QPen(Qt::red, 2)));
+        } else {
+            Lines.append(new qucs::Line(-14, -5, -9, 0, QPen(Qt::darkGreen, 2)));
+            Lines.append(new qucs::Line(-14, 5, -9, 0, QPen(Qt::darkGreen, 2)));
+            if (Props.at(1)->Value == "in") {
+                Lines.append(new qucs::Line(-25, -5, -14, -5, QPen(Qt::darkGreen, 2)));
+                Lines.append(new qucs::Line(-25, 5, -14, 5, QPen(Qt::darkGreen, 2)));
+                Lines.append(new qucs::Line(-25, -5, -25, 5, QPen(Qt::darkGreen, 2)));
+            } else {
+                x1 = -30;
+                Lines.append(new qucs::Line(-18, -5, -14, -5, QPen(Qt::darkGreen, 2)));
+                Lines.append(new qucs::Line(-18, 5, -14, 5, QPen(Qt::darkGreen, 2)));
+                Lines.append(new qucs::Line(-23, -5, -28, 0, QPen(Qt::red, 2)));
+                Lines.append(new qucs::Line(-23, 5, -28, 0, QPen(Qt::red, 2)));
+                Lines.append(new qucs::Line(-23, -5, -18, -5, QPen(Qt::red, 2)));
+                Lines.append(new qucs::Line(-23, 5, -18, 5, QPen(Qt::red, 2)));
+            }
+        }
     }
-    else {
-      Lines.append(new qucs::Line(-14, -5, -9,  0,QPen(Qt::darkGreen,2)));
-      Lines.append(new qucs::Line(-14,  5, -9,  0,QPen(Qt::darkGreen,2)));
-      if(Props.at(1)->Value == "in") {
-        Lines.append(new qucs::Line(-25, -5,-14, -5,QPen(Qt::darkGreen,2)));
-        Lines.append(new qucs::Line(-25,  5,-14,  5,QPen(Qt::darkGreen,2)));
-        Lines.append(new qucs::Line(-25, -5,-25,  5,QPen(Qt::darkGreen,2)));
-      }
-      else {
-        x1 = -30;
-        Lines.append(new qucs::Line(-18, -5,-14, -5,QPen(Qt::darkGreen,2)));
-        Lines.append(new qucs::Line(-18,  5,-14,  5,QPen(Qt::darkGreen,2)));
-        Lines.append(new qucs::Line(-23, -5,-28,  0,QPen(Qt::red,2)));
-        Lines.append(new qucs::Line(-23,  5,-28,  0,QPen(Qt::red,2)));
-        Lines.append(new qucs::Line(-23, -5,-18, -5,QPen(Qt::red,2)));
-        Lines.append(new qucs::Line(-23,  5,-18,  5,QPen(Qt::red,2)));
-      }
-    }
-  }
 
-  Ports.append(new Port(  0,  0));
+    Ports.append(new Port(0, 0));
 }
 
 // -------------------------------------------------------
 Component* SubCirPort::newOne()
 {
-  return new SubCirPort();
+    return new SubCirPort();
 }
 
 // -------------------------------------------------------
-Element* SubCirPort::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* SubCirPort::info(QString& Name, char*& BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Subcircuit Port");
-  BitmapFile = (char *) "subport";
+    Name = QObject::tr("Subcircuit Port");
+    BitmapFile = (char*)"subport";
 
-  if(getNewOne)  return new SubCirPort();
-  return 0;
+    if (getNewOne)
+        return new SubCirPort();
+    return 0;
 }
 
 // -------------------------------------------------------
 QString SubCirPort::netlist()
 {
-  return QString();
+    return QString();
 }
 
 // -------------------------------------------------------
@@ -115,19 +114,19 @@ QString SubCirPort::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
 // -------------------------------------------------------
 QString SubCirPort::vhdlCode(int)
 {
-  if(Props.at(1)->Value != "out")
-    return QString();
+    if (Props.at(1)->Value != "out")
+        return QString();
 
-  // Insert dummy buffer to avoid reading from an output port.
-  QString s = "  net_out";
-  Node *pn = Ports.first()->Connection;
-  s += pn->Name + " <= ";
-  s += pn->Name + ";\n";
-  return s;
+    // Insert dummy buffer to avoid reading from an output port.
+    QString s = "  net_out";
+    Node* pn = Ports.first()->Connection;
+    s += pn->Name + " <= ";
+    s += pn->Name + ";\n";
+    return s;
 }
 
 // -------------------------------------------------------
 QString SubCirPort::verilogCode(int)
 {
-  return QString();
+    return QString();
 }
