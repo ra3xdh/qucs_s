@@ -72,6 +72,8 @@ public:
   const std::list<Wire*>& wires() const { return m_wires; }
   const std::list<Component*>& components() const { return m_components; }
 
+  Node* merge(Node* other);
+
 private:
   // Nodes usually have quite a few connections. In ideal case, when all wire
   // placement optimizations work properly, there can be at most four connections

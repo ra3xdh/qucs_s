@@ -16,7 +16,8 @@
  ***************************************************************************/
 #include "node.h"
 
-#include "wirelabel.h"
+#include "component.h"
+#include "wire.h"
 
 #include <QPainter>
 
@@ -33,7 +34,11 @@ Node::Node(int x, int y)
 void Node::paint(QPainter* painter) const {
   painter->save();
 
-  if (conn_count() == 1) {
+  if (isSelected) {
+      painter->setPen(QPen(Qt::darkGray, 5));
+      painter->drawEllipse(cx-5, cy-5, 10, 10);
+  }
+  else if (conn_count() == 1) {
       if (hasLabel()) {
         painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
       } else {
@@ -83,4 +88,30 @@ bool Node::moveCenter(int dx, int dy) noexcept
     label()->moveRoot(dx, dy);
   }
   return dx != 0 || dy != 0;
+}
+
+  Node* Node::merge(Node* donor)
+  {
+    std::ranges::for_each(donor->wires(), [this,donor](auto* w) { w->Port1 == donor ? w->Port1 = this : w->Port2 = this; });
+    std::ranges::copy(donor->wires(), std::back_inserter(m_wires));
+    donor->m_wires.clear();
+
+    for (auto* c : donor->components()) {
+        for (auto* p : c->Ports) {
+            if (p->Connection == donor) {
+                p->Connection = this;
+            }
+        }
+    }
+
+    std::ranges::copy(donor->components(), std::back_inserter(m_components));
+    donor->m_components.clear();
+
+    if (!this->hasLabel() && donor->hasLabel()) {
+        this->acquireLabel(donor->releaseLabel());
+    }
+
+    this->isSelected = this->isSelected || donor->isSelected;
+
+    return donor;
 }

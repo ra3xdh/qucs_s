@@ -348,43 +348,6 @@ Node* Schematic::provideNode(int x, int y)
 }
 
 namespace internal {
-void merge(Node* donor, Node* recipient) {
-    // At first, replace old node with new one in every element connected to
-    // old node
-    for (auto* w : donor->wires()) {
-            if (w->Port1 == donor) {
-                w->Port1 = recipient;
-            } else {
-                w->Port2 = recipient;
-            }
-    }
-
-    for (auto* c : donor->components()) {
-            for (auto* p : c->Ports) {
-                if (p->Connection == donor) {
-                    p->Connection = recipient;
-                }
-            }
-    }
-
-    // Transfer all connections from old node to new one
-    while (donor->conn_count() > 0) {
-        auto* conn = donor->anyWire();
-        recipient->connect(conn);
-        donor->disconnect(conn);
-    }
-
-    while (donor->conn_count() > 0) {
-        auto* conn = donor->anyComp();
-        recipient->connect(conn);
-        donor->disconnect(conn);
-    }
-
-    // Try to keep donor label
-    if (!recipient->hasLabel() && donor->hasLabel()) {
-        recipient->acquireLabel(donor->releaseLabel());
-    }
-}
 
 // A node is redundant if it connects only two wires which form a line i.e.
 // For example, here B is redundant
@@ -1097,6 +1060,7 @@ void Schematic::deselectElements(Element *e) const
 
     std::for_each(selection.components.begin(), selection.components.end(), deselector);
     std::for_each(selection.wires.begin(), selection.wires.end(), deselector);
+    std::for_each(selection.nodes.begin(), selection.nodes.end(), deselector);
     std::for_each(selection.paintings.begin(), selection.paintings.end(), deselector);
     std::for_each(selection.diagrams.begin(), selection.diagrams.end(), deselector);
     std::for_each(selection.labels.begin(), selection.labels.end(), deselector);
@@ -1145,6 +1109,16 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
     }
 
     for (Node *node : *a_Nodes) {
+        // Workaround for a case when a single node is being moved in order to modify
+        // wire structure.
+        // This method somehow ends up being called from MouseActions::MReleaseSelect2
+        // with an empty selection rectangle after user clicks on something other than
+        // the node they moved. Nodes are deselected because this is expected from such
+        // a click.
+        if (node->isSelected && selection_rect.isEmpty()) {
+            node->isSelected = false;
+        }
+
         if (node->hasLabel() && select_element(node->label(), node->label()->boundingRect())) {
             selected_count++;
         }
@@ -2555,7 +2529,7 @@ bool Schematic::heal(const HealingParams* params) {
         auto recipient = sameloc_node_group.front();
 
         for (auto donor = (sameloc_node_group.begin() + 1); donor != sameloc_node_group.end(); donor++) {
-            internal::merge(*donor, recipient);
+            recipient->merge(*donor);
             a_Nodes->remove(*donor);
             delete *donor;
             thereWereChanges = true;
@@ -2644,7 +2618,7 @@ bool Schematic::heal(const HealingParams* params) {
         auto recipient = sameloc_node_group.front();
 
         for (auto donor = (sameloc_node_group.begin() + 1); donor != sameloc_node_group.end(); donor++) {
-            internal::merge(*donor, recipient);
+            recipient->merge(*donor);
             a_Nodes->remove(*donor);
             delete *donor;
             thereWereChanges = true;
