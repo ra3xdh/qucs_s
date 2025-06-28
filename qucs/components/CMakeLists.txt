@@ -98,6 +98,8 @@ spiralinductor.cpp
 simulation.cpp
 xml/XmlComponent.cpp
 vdmos.cpp
+property.cpp
+xml/XmlComponent.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -224,6 +226,7 @@ photodiode.h
 phototransistor.h
 pm_modulator.h
 potentiometer.h
+property.h
 rectline.h
 relais.h
 resistor.h

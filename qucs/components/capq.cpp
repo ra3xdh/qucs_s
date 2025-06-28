@@ -61,17 +61,18 @@ CapQ::CapQ()
   SpiceModel = "C";
   Name  = "CQ";
 
-  Props.append(new Property("C", "1 pF", true,
-		QObject::tr("Capacitance")));
-  Props.append(new Property("Q", "100", true,
-		QObject::tr("Quality factor")));
-  Props.append(new Property("f", "100 MHz", false,
-		QObject::tr("Frequency at which Q is measured")));
-  Props.append(new Property("Mode", "Linear", false,
-		QObject::tr("Q frequency profile")+
-		" [Linear, SquareRoot, Constant]"));
-  Props.append(new Property("Temp", "26.85", false,
-                QObject::tr("simulation temperature in degree Celsius (Qucsator only)")));
+  Property::Builder b;
+
+  b.visible().simulator(spicecompat::simAll);
+  Props.append(b.property("C", "1 pF", QObject::tr("Capacitance")));
+  Props.append(b.property("Q", "100",  QObject::tr("Quality factor")));
+
+  b.hidden().simulator(spicecompat::simAll);
+  Props.append(b.property("f", "100 MHz",   QObject::tr("Frequency at which Q is measured")));
+  Props.append(b.property("Mode", "Linear", QObject::tr("Q frequency profile") + " [Linear, SquareRoot, Constant]"));
+
+  b.hidden().simulator(spicecompat::simQucsator);
+  Props.append(b.property("Temp", "26.85", QObject::tr("simulation temperature in degree Celsius (Qucsator only)")));
 }
 CapQ::~CapQ()
 {

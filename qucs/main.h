@@ -108,6 +108,7 @@ struct tQucsSettings {
 
   bool hasDarkTheme;
   bool fullTraceName;
+  bool alwaysPrefixDataset;
 
   bool firstRun;
 };

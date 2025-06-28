@@ -45,7 +45,7 @@ private:
     void nextSimulation();
 
 public:
-    void determineUsedSimulations(QStringList *sim_lst = NULL);
+    void determineUsedSimulations(QStringList *sim_lst = nullptr);
     explicit Xyce(Schematic* schematic, QObject *parent = 0);
 
     void SaveNetlist(QString filename, bool netlist2Console);

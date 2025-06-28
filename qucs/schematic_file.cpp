@@ -81,15 +81,15 @@ QString Schematic::createClipboardFile()
   for(Wire* pw : *a_Wires)
     if(pw->isSelected) {
       z++;
-      if(pw->Label) if(!pw->Label->isSelected) {
+      if(pw->hasLabel()) if(!pw->label()->isSelected) {
         s += pw->save().section('"', 0, 0)+"\"\" 0 0 0>\n";
         continue;
       }
       s += pw->save()+"\n";
     }
   for(Node *pn : *a_Nodes)
-    if(pn->Label) if(pn->Label->isSelected) {
-      s += pn->Label->save()+"\n";  z++; }
+    if(pn->hasLabel()) if(pn->label()->isSelected) {
+      s += pn->label()->save()+"\n";  z++; }
   s += "</Wires>\n";
 
   s += "<Diagrams>\n";
@@ -120,7 +120,7 @@ bool Schematic::loadIntoNothing(QTextStream *stream)
     if(Line.at(0) == '<') if(Line.at(1) == '/') return true;
   }
 
-  QMessageBox::critical(0, QObject::tr("Error"),
+  QMessageBox::critical(nullptr, QObject::tr("Error"),
   QObject::tr("Format Error:\n'Painting' field is not closed!"));
   return false;
 }
@@ -129,20 +129,116 @@ bool Schematic::loadIntoNothing(QTextStream *stream)
 // Paste from clipboard.
 bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
 {
-  QString Line;
+  // First, check if clipboard contains image data or file path
+  QClipboard* clipboard = QApplication::clipboard();
+  const QMimeData* mimeData = clipboard->mimeData();
 
+  // Check for image data first
+  if (mimeData->hasImage()) {
+    QImage clipboardImage = clipboard->image();
+    if (!clipboardImage.isNull()) {
+      // Create an ImagePainting with the clipboard image
+      ImagePainting* imagePainting = new ImagePainting();
+
+      // Convert QImage to QPixmap and set it
+      QPixmap pixmap = QPixmap::fromImage(clipboardImage);
+
+      // Set position
+      int defaultX = 0;
+      int defaultY = 0;
+      imagePainting->x1 = defaultX;
+      imagePainting->y1 = defaultY;
+      imagePainting->x2 = defaultX + clipboardImage.width();
+      imagePainting->y2 = defaultY + clipboardImage.height();
+
+      // Set the image data directly in the ImagePainting
+      imagePainting->setImageFromPixmap(pixmap);
+
+      // Add to the elements list
+      pe->push_back(imagePainting);
+
+      return true;
+    }
+  }
+
+  // Check for text that might be a file path to an image
+  if (mimeData->hasText()) {
+    QString clipboardText = clipboard->text().trimmed();
+
+    // Check if the text looks like a file path and if it's an image file
+    if (!clipboardText.isEmpty() && isImageFilePath(clipboardText)) {
+      QPixmap testPixmap;
+      if (testPixmap.load(clipboardText)) {
+        // Successfully loaded image from path
+        ImagePainting* imagePainting = new ImagePainting();
+
+        // Set position
+        int defaultX = 0;
+        int defaultY = 0;
+        imagePainting->x1 = defaultX;
+        imagePainting->y1 = defaultY;
+        imagePainting->x2 = defaultX + testPixmap.width();
+        imagePainting->y2 = defaultY + testPixmap.height();
+
+        // Set the image from file path
+        imagePainting->setImageFromPath(clipboardText);
+
+        // Add to the elements list
+        pe->push_back(imagePainting);
+
+        return true;
+      }
+    }
+  }
+
+  // Check for file URLs (drag and drop from file manager)
+  if (mimeData->hasUrls()) {
+    QList<QUrl> urls = mimeData->urls();
+    for (const QUrl& url : urls) {
+      if (url.isLocalFile()) {
+        QString filePath = url.toLocalFile();
+        if (isImageFilePath(filePath)) {
+          QPixmap testPixmap;
+          if (testPixmap.load(filePath)) {
+            // Successfully loaded image from file
+            ImagePainting* imagePainting = new ImagePainting();
+
+            // Set position (offset multiple images if there are several)
+            int defaultX = 100 + (pe->size() * 20); // Offset each image
+            int defaultY = 100 + (pe->size() * 20);
+            imagePainting->x1 = defaultX;
+            imagePainting->y1 = defaultY;
+            imagePainting->x2 = defaultX + testPixmap.width();
+            imagePainting->y2 = defaultY + testPixmap.height();
+
+            // Set the image from file path
+            imagePainting->setImageFromPath(filePath);
+
+            // Add to the elements list
+            pe->push_back(imagePainting);
+          }
+        }
+      }
+    }
+
+    // If we processed any image files, return true
+    if (!pe->empty()) {
+      return true;
+    }
+  }
+
+  // If no image in clipboard, proceed with normal text-based clipboard processing
+  QString Line;
   Line = stream->readLine();
   if(Line.left(16) != "<Qucs Schematic ")   // wrong file type ?
     return false;
-
   QString s = PACKAGE_VERSION;
   Line = Line.mid(16, Line.length()-17);
   if(Line != s) {  // wrong version number ?
-    QMessageBox::critical(0, QObject::tr("Error"),
+    QMessageBox::critical(nullptr, QObject::tr("Error"),
                  QObject::tr("Wrong document version: ")+Line);
     return false;
   }
-
   // read content in symbol edit mode *************************
   if(a_symbolMode) {
     while(!stream->atEnd()) {
@@ -159,15 +255,13 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
       if(Line == "<Paintings>") {
         if(!loadPaintings(stream, (std::list<Painting*>*)pe)) return false; }
       else {
-        QMessageBox::critical(0, QObject::tr("Error"),
+        QMessageBox::critical(nullptr, QObject::tr("Error"),
         QObject::tr("Clipboard Format Error:\nUnknown field!"));
         return false;
       }
     }
-
     return true;
   }
-
   // read content in schematic edit mode *************************
   while(!stream->atEnd()) {
     Line = stream->readLine();
@@ -183,14 +277,27 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, std::list<Element*> *pe)
     if(Line == "<Paintings>") {
       if(!loadPaintings(stream, (std::list<Painting*>*)pe)) return false; }
     else {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Clipboard Format Error:\nUnknown field!"));
       return false;
     }
   }
-
   return true;
 }
+
+bool Schematic::isImageFilePath(const QString& path) {
+  if (path.isEmpty()) return false;
+
+  QFileInfo fileInfo(path);
+  if (!fileInfo.exists() || !fileInfo.isFile()) {
+    return false;
+  }
+
+  // Use QImageReader to check if the file format is supported
+  QImageReader reader(path);
+  return reader.canRead();
+}
+
 
 // -------------------------------------------------------------
 int Schematic::saveSymbolCpp (void)
@@ -200,7 +307,7 @@ int Schematic::saveSymbolCpp (void)
   QFile file (cppfile);
 
   if (!file.open (QIODevice::WriteOnly)) {
-    QMessageBox::critical (0, QObject::tr("Error"),
+    QMessageBox::critical (nullptr, QObject::tr("Error"),
     QObject::tr("Cannot save C++ file \"%1\"!").arg(cppfile));
     return -1;
   }
@@ -274,7 +381,7 @@ int Schematic::savePropsJSON()
 
   QFile vafile(vafilename);
   if (!vafile.open (QIODevice::ReadOnly)) {
-    QMessageBox::critical (0, QObject::tr("Error"),
+    QMessageBox::critical (nullptr, QObject::tr("Error"),
                           QObject::tr("Cannot open Verilog-A file \"%1\"!").arg(vafilename));
     return -1;
   }
@@ -312,7 +419,7 @@ int Schematic::savePropsJSON()
     QFile file (jsonfile);
 
     if (!file.open (QIODevice::WriteOnly)) {
-      QMessageBox::critical (0, QObject::tr("Error"),
+      QMessageBox::critical (nullptr, QObject::tr("Error"),
                             QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
       return -1;
     }
@@ -349,7 +456,7 @@ int Schematic::savePropsJSON()
 
     QLibrary osdilib (osdifile);
     if (!osdilib.load()){
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
                             QObject::tr("No valid osdi file. Re-compile verilog-a file first!"));
       return -1;
     }
@@ -432,7 +539,7 @@ int Schematic::savePropsJSON()
     QFile file (jsonfile);
 
     if (!file.open (QIODevice::WriteOnly)) {
-      QMessageBox::critical (0, QObject::tr("Error"),
+      QMessageBox::critical (nullptr, QObject::tr("Error"),
                             QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
       return -1;
     }
@@ -478,7 +585,7 @@ int Schematic::saveSymbolJSON()
   QFile file (jsonfile);
 
   if (!file.open (QIODevice::WriteOnly)) {
-    QMessageBox::critical (0, QObject::tr("Error"),
+    QMessageBox::critical (nullptr, QObject::tr("Error"),
 		   QObject::tr("Cannot save JSON symbol file \"%1\"!").arg(jsonfile));
     return -1;
   }
@@ -557,7 +664,7 @@ int Schematic::saveDocument()
 {
   QFile file(a_DocName);
   if(!file.open(QIODevice::WriteOnly)) {
-    QMessageBox::critical(0, QObject::tr("Error"),
+    QMessageBox::critical(nullptr, QObject::tr("Error"),
     QObject::tr("Cannot save document!"));
     return -1;
   }
@@ -625,7 +732,7 @@ int Schematic::saveDocument()
 
   // save all labeled nodes as wires
   for(Node *pn : a_DocNodes)
-    if(pn->Label) stream << "  " << pn->Label->save() << "\n";
+    if(pn->hasLabel()) stream << "  " << pn->label()->save() << "\n";
   stream << "</Wires>\n";
 
   stream << "<Diagrams>\n";    // save all diagrams
@@ -764,12 +871,12 @@ bool Schematic::loadProperties(QTextStream *stream)
     if(Line.isEmpty()) continue;
 
     if(Line.at(0) != '<') {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nWrong property field limiter!"));
       return false;
     }
     if(Line.at(Line.length()-1) != '>') {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nWrong property field limiter!"));
       return false;
     }
@@ -808,18 +915,18 @@ bool Schematic::loadProperties(QTextStream *stream)
     else if(cstr == "FrameText2") misc::convert2Unicode(a_Frame_Text2 = nstr);
     else if(cstr == "FrameText3") misc::convert2Unicode(a_Frame_Text3 = nstr);
     else {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nUnknown property: ")+cstr);
       return false;
     }
     if(!ok) {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nNumber expected in property field!"));
       return false;
     }
   }
 
-  QMessageBox::critical(0, QObject::tr("Error"),
+  QMessageBox::critical(nullptr, QObject::tr("Error"),
                QObject::tr("Format Error:\n'Property' field is not closed!"));
   return false;
 }
@@ -880,12 +987,7 @@ void Schematic::simpleInsertWire(Wire *pw)
   Node* pn = provideNode(pw->P1());
 
   if(pw->P1() == pw->P2()) {
-    pn->Label = pw->Label;   // wire with length zero are just node labels
-    if (pn->Label) {
-      pn->Label->Type = isNodeLabel;
-      pn->Label->pOwner = pn;
-    }
-    pw->Label = nullptr;
+    pn->acquireLabel(pw->releaseLabel());   // wire with length zero are just node labels
     delete pw;           // delete wire because this is not a wire
     return;
   }
@@ -912,35 +1014,45 @@ bool Schematic::loadWires(QTextStream *stream, std::list<Element*> *List)
 
     w = new Wire();
     if(!w->load(Line)) {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nWrong 'wire' line format!"));
       delete w;
       return false;
     }
+
+    // When this pointer is not null, "paste" operation is in progress.
+    // In this case loaded elements must be placed in the list and not
+    // into schematic.
     if(List) {
 
       // Special case: node label. It's stored as zero-length wire.
       // Only the label is kept, so it becomes "free" i.e. not having
       // a host element like wire or node. We must be careful to treat
       // such labels in a special way in other parts of the codebase.
-      if (w->P1() == w->P2() && w->Label) {
-        w->Label->Type = isNodeLabel;
-        List->push_back(w->Label);
-        w->Label->pOwner = nullptr;
-        w->Label = nullptr;
+      if (w->P1() == w->P2() && w->hasLabel()) {
+        List->push_back(w->releaseLabel().release());
         delete w;
         continue;
       }
 
       List->push_back(w);
-      if(w->Label)  List->push_back(w->Label);
+
+      // Label is also added to the list as *independent* element. This is
+      // because items of this list a subject of moving, rotating, etc. and
+      // label must be treated the same way.
+      //
+      // Think of the list as of "selected items" and it will instantly make
+      // sense.
+      //
+      // Label ownership is still controlled by the host wire.
+      if(w->hasLabel())  List->push_back(w->label());
     }
     else {
       simpleInsertWire(w);
     }
   }
 
-  QMessageBox::critical(0, QObject::tr("Error"),
+  QMessageBox::critical(nullptr, QObject::tr("Error"),
   QObject::tr("Format Error:\n'Wire' field is not closed!"));
   return false;
 }
@@ -969,13 +1081,13 @@ bool Schematic::loadDiagrams(QTextStream *stream, std::list<Diagram*> *List)
     else if(cstr == "<Time") d = new TimingDiagram();
     else if(cstr == "<Truth") d = new TruthDiagram();
     else {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nUnknown diagram!"));
       return false;
     }
 
     if(!d->load(Line, stream)) {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nWrong 'diagram' line format!"));
       delete d;
       return false;
@@ -983,7 +1095,7 @@ bool Schematic::loadDiagrams(QTextStream *stream, std::list<Diagram*> *List)
     List->push_back(d);
   }
 
-  QMessageBox::critical(0, QObject::tr("Error"),
+  QMessageBox::critical(nullptr, QObject::tr("Error"),
   QObject::tr("Format Error:\n'Diagram' field is not closed!"));
   return false;
 }
@@ -1002,7 +1114,7 @@ bool Schematic::loadPaintings(QTextStream *stream, std::list<Painting*> *List)
     Line = Line.trimmed();
     if(Line.isEmpty()) continue;
     if( (Line.at(0) != '<') || (Line.at(Line.length()-1) != '>')) {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nWrong 'painting' line delimiter!"));
       return false;
     }
@@ -1017,14 +1129,15 @@ bool Schematic::loadPaintings(QTextStream *stream, std::list<Painting*> *List)
     else if(cstr == "Rectangle") p = new qucs::Rectangle();
     else if(cstr == "Arrow") p = new Arrow();
     else if(cstr == "Ellipse") p = new qucs::Ellipse();
+    else if(cstr == "ImagePainting") p = new ImagePainting();
     else {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("Format Error:\nUnknown painting!"));
       return false;
     }
 
     if(!p->load(Line)) {
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
         QObject::tr("Format Error:\nWrong 'painting' line format!"));
       delete p;
       return false;
@@ -1032,7 +1145,7 @@ bool Schematic::loadPaintings(QTextStream *stream, std::list<Painting*> *List)
     List->push_back(p);
   }
 
-  QMessageBox::critical(0, QObject::tr("Error"),
+  QMessageBox::critical(nullptr, QObject::tr("Error"),
   QObject::tr("Format Error:\n'Painting' field is not closed!"));
   return false;
 }
@@ -1047,7 +1160,7 @@ bool Schematic::loadDocument()
   if(!file.open(QIODevice::ReadOnly)) {
     /// \todo implement unified error/warning handling GUI and CLI
     if (QucsMain != nullptr)
-      QMessageBox::critical(0, QObject::tr("Error"),
+      QMessageBox::critical(nullptr, QObject::tr("Error"),
                  QObject::tr("Cannot load document: ")+a_DocName);
     else
       qCritical() << "Schematic::loadDocument:"
@@ -1073,7 +1186,7 @@ bool Schematic::loadDocument()
 
   if(Line.left(16) != "<Qucs Schematic ") {  // wrong file type ?
     file.close();
-    QMessageBox::critical(0, QObject::tr("Error"),
+    QMessageBox::critical(nullptr, QObject::tr("Error"),
     QObject::tr("Wrong document type: ")+a_DocName);
     return false;
   }
@@ -1082,7 +1195,7 @@ bool Schematic::loadDocument()
   if(!misc::checkVersion(Line)) { // wrong version number ?
 
     QMessageBox::StandardButton result;
-    result = QMessageBox::warning(0,
+    result = QMessageBox::warning(nullptr,
                                   QObject::tr("Warning"),
                                   QObject::tr("Wrong document version \n") +
                                               a_DocName + "\n" +
@@ -1129,7 +1242,7 @@ bool Schematic::loadDocument()
     }
     else {
        qDebug() << Line;
-       QMessageBox::critical(0, QObject::tr("Error"),
+       QMessageBox::critical(nullptr, QObject::tr("Error"),
       QObject::tr("File Format Error:\nUnknown field!"));
       file.close();
       return false;
@@ -1156,7 +1269,7 @@ QString Schematic::createUndoString(char Op)
     s += pw->save()+"\n";
   // save all labeled nodes as wires
   for(Node *pn : a_DocNodes)
-    if(pn->Label) s += pn->Label->save()+"\n";
+    if(pn->hasLabel()) s += pn->label()->save()+"\n";
   s += "</>\n";
 
   for(auto* pd : a_DocDiags)
@@ -1243,10 +1356,10 @@ bool Schematic::rebuildSymbol(QString *s)
 void Schematic::createNodeSet(QStringList& Collect, int& countInit,
           Conductor *pw, Node *p1)
 {
-  if(pw->Label)
-    if(!pw->Label->initValue.isEmpty())
+  if(pw->hasLabel())
+    if(!pw->label()->initValue.isEmpty())
       Collect.append("NodeSet:NS" + QString::number(countInit++) + " " +
-                     p1->Name + " U=\"" + pw->Label->initValue + "\"");
+                     p1->Name + " U=\"" + pw->label()->initValue + "\"");
 }
 
 // ---------------------------------------------------
@@ -1644,22 +1757,22 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
   // delete the node names
   for(Node *pn : a_DocNodes) {
     pn->State = 0;
-    if(pn->Label) {
+    if(pn->hasLabel()) {
       if(a_isAnalog)
-        pn->Name = pn->Label->Name;
+        pn->Name = pn->label()->Name;
       else
-        pn->Name = "net" + pn->Label->Name;
+        pn->Name = "net" + pn->label()->Name;
     }
     else pn->Name = "";
   }
 
   // set the wire names to the connected node
   for(Wire *pw : a_DocWires)
-    if(pw->Label != 0) {
+    if(pw->hasLabel()) {
       if(a_isAnalog)
-        pw->Port1->Name = pw->Label->Name;
+        pw->Port1->Name = pw->label()->Name;
       else  // avoid to use reserved VHDL words
-        pw->Port1->Name = "net" + pw->Label->Name;
+        pw->Port1->Name = "net" + pw->label()->Name;
     }
 
   // go through components

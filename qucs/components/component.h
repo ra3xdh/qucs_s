@@ -27,6 +27,7 @@
 #include <QList>
 
 #include "element.h"
+#include "property.h"
 
 
 class Schematic;
@@ -61,11 +62,9 @@ public:
   void    paint(QPainter* painter);
   void    paintScheme(Schematic*) override;
   int     textSize(int&, int&) const;
-  void    Bounding(int&, int&, int&, int&);
-  void    entireBounds(int&, int&, int&, int&);
   QRect   boundingRect() const noexcept override;
   QRect   boundingRectIncludingProperties() const noexcept;
-  bool    getSelected(int, int);
+  bool    getSelected(int x, int y) const { return boundingRect().contains(x, y); }
   int     getTextSelected(int, int);
   bool    rotate() noexcept override;
   bool    mirrorX() noexcept override;
@@ -160,6 +159,6 @@ protected:
 };
 
 // prototype of independent function
-Component* getComponentFromName(QString& Line, Schematic* p=NULL);
+Component* getComponentFromName(QString& Line, Schematic* p=nullptr);
 
 #endif

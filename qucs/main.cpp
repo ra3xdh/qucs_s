@@ -148,6 +148,7 @@ bool loadSettings()
     QucsSettings.GraphAntiAliasing = _settings::Get().item<bool>("GraphAntiAliasing");
     QucsSettings.TextAntiAliasing = _settings::Get().item<bool>("TextAntiAliasing");
     QucsSettings.fullTraceName = _settings::Get().item<bool>("fullTraceName");
+    QucsSettings.alwaysPrefixDataset = _settings::Get().item<bool>("alwaysPrefixDataset");
     QucsSettings.RecentProjects = _settings::Get().item<QString>("RecentProjects").split("*", Qt::SkipEmptyParts);
     QucsSettings.RecentDocs = _settings::Get().item<QString>("RecentDocs").split("*", Qt::SkipEmptyParts);
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
@@ -222,6 +223,7 @@ bool saveApplSettings()
     qs.setItem<bool>("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
     qs.setItem<bool>("TextAntiAliasing", QucsSettings.TextAntiAliasing);
     qs.setItem<bool>("fullTraceName",QucsSettings.fullTraceName);
+    qs.setItem<bool>("alwaysPrefixDataset",QucsSettings.alwaysPrefixDataset);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList
@@ -936,9 +938,9 @@ int main(int argc, char *argv[])
     QucsSettings.Editor = "qucs";
 
     /// \todo Make the setting up of all executables below more consistent
-    char *var = NULL; // Don't use QUCSDIR with Qucs-S
+    char *var = nullptr; // Don't use QUCSDIR with Qucs-S
     var = getenv("QUCSATOR");
-    if (var != NULL) {
+    if (var != nullptr) {
         QucsSettings.QucsatorVar = QString(var);
     }
     else {
@@ -946,12 +948,12 @@ int main(int argc, char *argv[])
     }
 
     var = getenv("QUCSCONV");
-    if (var != NULL) {
+    if (var != nullptr) {
         QucsSettings.Qucsconv = QString(var);
     }
 
     var = getenv("ADMSXMLBINDIR");
-    if (var != NULL) {
+    if (var != nullptr) {
         QucsSettings.AdmsXmlBinDir.setPath(QString(var));
     }
     else {
@@ -970,7 +972,7 @@ int main(int argc, char *argv[])
     }
 
     var = getenv("ASCOBINDIR");
-    if (var != NULL) {
+    if (var != nullptr) {
         QucsSettings.AscoBinDir.setPath(QString(var));
     }
     else {
@@ -989,7 +991,7 @@ int main(int argc, char *argv[])
     }
 
     var = getenv("QUCS_OCTAVE");
-    if (var != NULL) {
+    if (var != nullptr) {
         QucsSettings.QucsOctave = QString(var);
     } else {
         QucsSettings.QucsOctave.clear();

@@ -24,19 +24,29 @@ Resistor::Resistor(bool european)
 {
   Description = QObject::tr("resistor");
 
-  Props.append(new Property("R", "1 kOhm", true,
+  Property::Builder b;
+
+  b.visible().simulator(spicecompat::simAll);
+  Props.append(b.property("R", "1 kOhm",
     QObject::tr("ohmic resistance in Ohms")));
-  Props.append(new Property("Temp", "26.85", false,
+
+  b.hidden().simulator(spicecompat::simQucsator);
+  Props.append(b.property("Temp", "26.85",
     QObject::tr("simulation temperature in degree Celsius (Qucsator only)")));
-  Props.append(new Property("Tc1", "0.0", false,
+
+  b.hidden().simulator(spicecompat::simAll);
+  Props.append(b.property("Tc1", "0.0",
     QObject::tr("first order temperature coefficient")));
-  Props.append(new Property("Tc2", "0.0", false,
+  Props.append(b.property("Tc2", "0.0",
     QObject::tr("second order temperature coefficient")));
-  Props.append(new Property("Tnom", "26.85", false,
+
+  b.hidden().simulator(spicecompat::simQucsator);
+  Props.append(b.property("Tnom", "26.85",
     QObject::tr("temperature at which parameters were extracted (Qucsator only)")));
 
   // this must be the last property in the list !!!
-  Props.append(new Property("Symbol", "european", false,
+  b.hidden().simulator(spicecompat::simAll);
+  Props.append(b.property("Symbol", "european",
         QObject::tr("schematic symbol")+" [european, US]"));
   if(!european)  Props.back()->Value = "US";
 

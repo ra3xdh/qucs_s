@@ -151,11 +151,7 @@ QString Diode::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
 
     if (dialect != spicecompat::CDL)
     {
-        if (dialect == spicecompat::SPICEXyce) {
-            s += QStringLiteral(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
-        } else {
-            s += QStringLiteral(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
-        }
+      s += QStringLiteral(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
     }
 
     return s;

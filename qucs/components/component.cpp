@@ -66,20 +66,12 @@ Component::Component() {
     ty = 0;
 
 
-    containingSchematic = NULL;
+    containingSchematic = nullptr;
 }
 
 // -------------------------------------------------------
 Component *Component::newOne() {
     return new Component();
-}
-
-// -------------------------------------------------------
-void Component::Bounding(int &_x1, int &_y1, int &_x2, int &_y2) {
-    _x1 = x1 + cx;
-    _y1 = y1 + cy;
-    _x2 = x2 + cx;
-    _y2 = y2 + cy;
 }
 
 // -------------------------------------------------------
@@ -111,20 +103,6 @@ int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeigh
         textPropertiesCount++;
     }
     return textPropertiesCount;
-}
-
-// -------------------------------------------------------
-// Boundings including the component text.
-void Component::entireBounds(int& boundingRectLeft, int& boundingRectTop,
-                             int& boundingRectRight, int& boundingRectBottom) {
-    boundingRectLeft = std::min(x1, tx) + cx;
-    boundingRectTop  = std::min(y1, ty) + cy;
-
-    int textPropertyMaxWidth, totalTextPropertiesHeight;
-    textSize(textPropertyMaxWidth, totalTextPropertiesHeight);
-
-    boundingRectRight  = std::max(tx + textPropertyMaxWidth, x2) + cx;
-    boundingRectBottom = std::max(ty + totalTextPropertiesHeight, y2) + cy;
 }
 
 QRect Component::boundingRect() const noexcept {
@@ -227,19 +205,6 @@ int Component::getTextSelected(int point_x, int point_y) {
     return -1;
 }
 
-// -------------------------------------------------------
-bool Component::getSelected(int x_, int y_) {
-    x_ -= cx;
-    y_ -= cy;
-    if (x_ >= x1)
-        if (x_ <= x2)
-            if (y_ >= y1)
-                if (y_ <= y2)
-                    return true;
-
-    return false;
-}
-
 void Component::paint(QPainter *p) {
     p->save();
     p->translate(cx, cy);
@@ -255,6 +220,7 @@ void Component::paint(QPainter *p) {
 
     for (auto *prop : Props) {
         if (!prop->display) continue;
+        if ((prop->simulators & QucsSettings.DefaultSimulator) != QucsSettings.DefaultSimulator) continue;
         prop->paint(text_br.left(), text_br.bottom(), p);
         text_br = prop->boundingRect();
     }
@@ -1174,10 +1140,11 @@ int Component::analyseLine(const QString &Row, int numProps) {
 
             pp++;
             if (pp == Props.end()) {
-                Props.append(new Property());
+                Props.append(new Property(
+                    "",
+                    s.section('=', 2, 2),
+                    (s.at(0) == '1')));
                 pp = --Props.end();
-                (*pp)->display = (s.at(0) == '1');
-                (*pp)->Value = s.section('=', 2, 2);
             }
 
             (*pp)->Name = s.section('=', 1, 1);
@@ -1725,7 +1692,7 @@ void GateComponent::createSymbol() {
 // ***********************************************************************
 
 Component *getComponentFromName(QString &Line, Schematic *p) {
-    Component *c = 0;
+    Component *c = nullptr;
 
     Line = Line.trimmed();
     if (Line.at(0) != '<') {

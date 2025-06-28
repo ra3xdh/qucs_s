@@ -363,7 +363,7 @@ void SimMessage::startSimulator()
   QString QucsDigi = "qucs_run_hdl";
   QString QucsVeri = "qucs_run_verilog";
 #endif
-  SimOpt = NULL;
+  SimOpt = nullptr;
   bool isVerilog = false;
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
@@ -648,7 +648,7 @@ Component * SimMessage::findOptimization(Schematic *Doc) {
     if(pc->isActive)
       if(pc->Model == ".Opt")
 	return pc;
-  return NULL;
+  return nullptr;
 }
 
 

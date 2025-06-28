@@ -295,6 +295,8 @@ private:
   int a_undoSymbolIdx;
   QVector<QString *> a_undoSymbol;    // undo stack for circuit symbol
 
+  bool isImageFilePath(const QString& path); // Detect if a file is an image
+
 signals:
   void signalCursorPosChanged(int, int, QString);
   void signalUndoState(bool);
@@ -465,7 +467,6 @@ public:
   bool       activateSelectedComponents();
   Component* selectCompText(int, int, int&, int&) const;
   Component* searchSelSubcircuit();
-  Component* selectedComponent(int, int);
   void       deleteComp(Component*);
   void       detachComp(Component*);
   Component* getComponentByName(const QString& compname) const;

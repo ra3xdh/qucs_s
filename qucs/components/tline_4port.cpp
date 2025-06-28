@@ -16,13 +16,14 @@
  ***************************************************************************/
 
 #include "tline_4port.h"
+#include "node.h"
 #include "extsimkernels/spicecompat.h"
 
 
 TLine_4Port::TLine_4Port()
 {
   Description = QObject::tr("ideal 4-terminal transmission line");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Arcs.append(new qucs::Arc(-28,-40, 18, 38,16*232, 16*33,QPen(Qt::darkBlue,1)));
   Arcs.append(new qucs::Arc(-28,  2, 18, 38, 16*95, 16*33,QPen(Qt::darkBlue,1)));
@@ -50,6 +51,7 @@ TLine_4Port::TLine_4Port()
   ty = y2+4;
   Model = "TLIN4P";
   Name  = "Line";
+  SpiceModel ="T";
 
   Props.append(new Property("Z", "50 Ohm", true,
 		QObject::tr("characteristic impedance")));
@@ -77,4 +79,27 @@ Element* TLine_4Port::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new TLine_4Port();
   return 0;
+}
+
+
+QString TLine_4Port::spice_netlist(spicecompat::SpiceDialect dialect)
+{
+  Q_UNUSED(dialect);
+
+  QString c0 = "299792458.0"; // light speed
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+  QString p3 = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
+  QString p4 = spicecompat::normalize_node_name(Ports.at(3)->Connection->Name);
+
+  QString zw = spicecompat::normalize_value(getProperty("Z")->Value);
+  QString l = spicecompat::normalize_value(getProperty("L")->Value);
+
+  QString s = QString("T%1 %2 %3 %4 %5 Z0=%6 TD={%7/%8}\n")
+                  .arg(Name)
+                  .arg(p1).arg(p3).arg(p2).arg(p4)
+                  .arg(zw).arg(l).arg(c0);
+
+  return s;
+
 }

@@ -81,85 +81,110 @@ Marker::~Marker()
 {
 }
 
-// ---------------------------------------------------------------------
 /*!
- * compute VarPos from branch number n and click position (cx, cy)
- * this is done by recreating branch samples and comparing against click
+ * Original function doctext:
+ *   compute VarPos from branch number n and click position (cx, cy)
+ *   this is done by recreating branch samples and comparing against click
  *
- * FIXME: should use ScrPoints instead. do not call calcCoordinate from here!
+ *   FIXME: should use ScrPoints instead. do not call calcCoordinate from here!
+ *
+ * 2025.06.03:
+ *   This function not initializes text, but also populates VarPos member field.
+ *
+ *   Original doctext calls function parameter a "branch number", which is not
+ *   exactly true. To explain the meaning of this parameter a few words on how
+ *   Graph stores its datapoints have to be said beforehand.
+ *
+ *   A graph consists of one more "branches" and it stores all datapoints in one
+ *   sequence. Special pseudo datapoints divide the sequence into subsequences
+ *   each corresponding to a "branch".
+ *
+ *   This function, as it comes from its usage, is supplied with the number of
+ *   datapoints before the subsequence of datapoints corresponding to a branch
+ *   on which the click was made.
  */
-void Marker::initText(int n)
+void Marker::initText(int datapoints_before_branch)
 {
-  if(pGraph->isEmpty()) {
-      makeInvalid();
-      return;
+  if (pGraph->isEmpty()) {
+    makeInvalid();
+    return;
   }
 
-  Axis const *pa;
   assert(diag());
-  if(pGraph->yAxisNo == 0)  pa = &(diag()->yAxis);
-  else  pa = &(diag()->zAxis);
-  double Dummy = 0.0;   // needed for 2D graph in 3D diagram
-  double *px, *py=&Dummy, *pz;
+  Axis const *pa = pGraph->yAxisNo == 0
+                 ? &(diag()->yAxis)
+                 : &(diag()->zAxis);
+
+  double Dummy = 0.0; // needed for 2D graph in 3D diagram
+  double *py = &Dummy;
   Text = "";
 
   bool isCross = false;
-  int nn, nnn, m, x, y, d, dmin = INT_MAX;
-  DataX const *pD = pGraph->axis(0);
-  px  = pD->Points;
-  nnn = pD->count;
+  int nn;
+  DataX const *x_axis_values = pGraph->axis(0);
+  double* x_axis_values_arr_p = x_axis_values->Points;
+  std::size_t x_axis_values_count = x_axis_values->count;
   DataX const *pDy = pGraph->axis(1);
-  if(pDy) {   // only for 3D diagram
-    nn = pGraph->countY * pD->count;
-    py  = pDy->Points;
-    if(n >= nn) {    // is on cross grid ?
+  if (pDy) { // only for 3D diagram
+    nn = pGraph->countY * x_axis_values->count;
+    py = pDy->Points;
+    if (datapoints_before_branch >= nn) { // is on cross grid ?
       isCross = true;
-      n -= nn;
-      n /= nnn;
-      px += (n % nnn);
-      if(pGraph->axis(2))   // more than 2 indep variables ?
-        n  = (n % nnn) + (n / nnn) * nnn * pDy->count;
-      nnn = pDy->count;
+      datapoints_before_branch -= nn;
+      datapoints_before_branch /= x_axis_values_count;
+      x_axis_values_arr_p += (datapoints_before_branch % x_axis_values_count);
+      if (pGraph->axis(2)) { // more than 2 indep variables ?
+        datapoints_before_branch = (datapoints_before_branch % x_axis_values_count) + (datapoints_before_branch / x_axis_values_count) * x_axis_values_count * pDy->count;
+      }
+      x_axis_values_count = pDy->count;
+    } else {
+      py += (datapoints_before_branch / x_axis_values->count) % pDy->count;
     }
-    else py += (n/pD->count) % pDy->count;
   }
 
   // find exact marker position
-  m  = nnn - 1;
-  pz = pGraph->cPointsY + 2*n;
-  for(nn=0; nn<nnn; nn++) {
-    diag()->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
-    ++px;
+  std::size_t closest_datapoint_ix = x_axis_values_count - 1;
+  double* pz = pGraph->cPointsY + 2 * datapoints_before_branch;
+  double smallest_distance = std::numeric_limits<double>::max();
+  for (std::size_t datapoint_ix = 0; datapoint_ix < x_axis_values_count; datapoint_ix++) {
+    diag()->calcCoordinate(x_axis_values_arr_p, pz, py, &fCX, &fCY, pa);
+    ++x_axis_values_arr_p;
     pz += 2;
-    if(isCross) {
-      px--;
+    if (isCross) {
+      x_axis_values_arr_p--;
       py++;
-      pz += 2*(pD->count-1);
+      pz += 2 * (x_axis_values->count - 1);
     }
-    x = int(fCX+0.5) - cx;
-    y = int(fCY+0.5) - cy;
-    d = x*x + y*y;
-    if(d < dmin) {
-      dmin = d;
-      m = nn;
+
+    // Here distance between click screen coordinates (cx, cy) and
+    // datapoint screen coordinates (fCX, fCY) is assesed.
+    const double x = fCX + 0.5 - cx;
+    const double y = fCY + 0.5 - cy;
+    const double r_square = x * x + y * y;
+    if (r_square < smallest_distance) {
+      smallest_distance = r_square;
+      closest_datapoint_ix = datapoint_ix;
     }
   }
-  if(isCross) m *= pD->count;
-  n += m;
+  if (isCross) {
+    closest_datapoint_ix *= x_axis_values->count;
+  }
+  datapoints_before_branch += closest_datapoint_ix;
 
-  // why check over and over again?! do in the right place and just assert otherwise.
-  if(VarPos.size() != pGraph->numAxes()){
+  // why check over and over again?! do in the right place and just assert
+  // otherwise.
+  if (VarPos.size() != pGraph->numAxes()) {
     qDebug() << "huh, wrong size" << VarPos.size() << pGraph->numAxes();
     VarPos.resize(pGraph->numAxes());
   }
 
   // gather text of all independent variables
-  nn = n;
-  for(unsigned i=0; (pD = pGraph->axis(i)); ++i) {
-    px = pD->Points + (nn % pD->count);
-    VarPos[i] = *px;
-    Text += pD->Var + ": " + QString::number(*px,'g',Precision) + "\n";
-    nn /= pD->count;
+  nn = datapoints_before_branch;
+  for (unsigned axis_ix = 0; (x_axis_values = pGraph->axis(axis_ix)); ++axis_ix) {
+    const double* x_value = x_axis_values->Points + (nn % x_axis_values->count);
+    VarPos[axis_ix] = *x_value;
+    Text += x_axis_values->Var + ": " + QString::number(*x_value, 'g', Precision) + "\n";
+    nn /= x_axis_values->count;
   }
 
   // createText();
@@ -206,8 +231,6 @@ void Marker::createText()
   pD = pGraph->axis(0);
   if(pGraph->axis(1)) {
     *py = VarPos[1];
-  }else{
-    qDebug() << *py << "is not" << VarPos[1]; // does it really matter?!
   }
 
   double pz[2];
@@ -542,8 +565,7 @@ bool Marker::load(const QString& Line)
 
   n  = s.section(' ',6,6);      // transparent
   if(n.isEmpty()) return true;  // is optional
-  if(n == "0")  transparent = false;
-  else  transparent = true;
+  transparent = n != "0";
 
   return true;
 }
@@ -565,7 +587,7 @@ bool Marker::getSelected(int x_, int y_)
  */
 const Diagram* Marker::diag() const
 {
-  if(!pGraph) return NULL;
+  if(!pGraph) return nullptr;
   return pGraph->parentDiagram();
 }
 

@@ -143,18 +143,6 @@ struct Text : qucs::DrawingPrimitive {
   double angle() const;
 };
 
-struct Property {
-  Property(const QString& _Name="", const QString& _Value="",
-	   bool _display=false, const QString& Desc="")
-	 : Name(_Name), Value(_Value), display(_display), Description(Desc) {};
-  QString Name, Value;
-  bool    display;   // show on schematic or not ?
-  QString Description;
-  QRect boundingRect() const { return br; };
-  void paint(int x, int y, QPainter* p);
-private:
-  QRect br;
-};
 
 
 // valid values for Element.Type
@@ -177,12 +165,6 @@ private:
 #define isPaintingResize   0x2001
 
 #define isLabel            0x4000
-#define isHWireLabel       0x4020
-#define isVWireLabel       0x4040
-#define isNodeLabel        0x4080
-#define isMovingLabel      0x4001
-#define isHMovingLabel     0x4002
-#define isVMovingLabel     0x4004
 
 #define isDiagram          0x8000
 #define isDiagramResize    0x8001

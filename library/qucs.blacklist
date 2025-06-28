@@ -1,6 +1,9 @@
 Analog.lib
 SpiceOpamp.lib
 Cores.lib
+FerritesAmidon.lib
+FerritesEpcos.lib
+FerritesFerroxcube.lib
 Digital_CD.lib
 Digital_HC.lib
 Digital_LV.lib
@@ -20,3 +23,5 @@ DualGateMOSFET.lib
 TubesExtended.lib
 Neon.lib
 Optocoupler.lib
+VDMOS.lib
+VDMOS_IR.lib

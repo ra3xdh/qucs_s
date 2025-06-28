@@ -22,7 +22,6 @@
 
 Node::Node(int x, int y)
 {
-  Label = nullptr;
   Type  = isNode_;
   State = 0;
   DType = "";
@@ -31,17 +30,12 @@ Node::Node(int x, int y)
   cy = y;
 }
 
-Node::~Node()
-{
-  delete Label;
-}
-
 void Node::paint(QPainter* painter) const {
   painter->save();
 
   switch(connections.size()) {
     case 1:
-      if (Label) {
+      if (label()) {
         painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
       } else {
         painter->setPen(QPen(Qt::red,1));  // node is open
@@ -73,22 +67,20 @@ bool Node::getSelected(int x, int y)
 
 void Node::setName(const QString& name, const QString& value, int x, int y)
 {
-  if (name.isEmpty() && value.isEmpty()) {
-    if (Label) {
-      delete Label;
-      Label = nullptr;
-    }
-    return;
-  }
+  // Passing two empty strings acted like a signal to remove the label
+  // and later was superseded by dropLabel() method. This assertion is
+  // just merely a guard against legacy usage, it may be freely removed
+  // after some time.
+  // Added on 2025-06-12.
+  assert(!(name.isEmpty() && value.isEmpty()));
 
-  if (!Label) {
-    Label = new WireLabel(name, cx, cy, x, y, isNodeLabel);
+  if (!hasLabel()) {
+    acquireLabel(new WireLabel(name, cx, cy, x, y));
   }
   else {
-    Label->setName(name);
+    label()->setName(name);
   }
-  Label->pOwner = this;
-  Label->initValue = value;
+  label()->initValue = value;
 }
 
 Element* Node::other_than(Element* elem) const
@@ -102,8 +94,8 @@ Element* Node::other_than(Element* elem) const
 bool Node::moveCenter(int dx, int dy) noexcept
 {
   Element::moveCenter(dx, dy);
-  if (Label != nullptr) {
-    Label->moveRoot(dx, dy);
+  if (hasLabel()) {
+    label()->moveRoot(dx, dy);
   }
   return dx != 0 || dy != 0;
 }

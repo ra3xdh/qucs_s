@@ -459,15 +459,15 @@ void Schematic::drawElements(QPainter* painter) {
 
     for (auto* wire : *a_Wires) {
         wire->paint(painter);
-        if (wire->Label) {
-            wire->Label->paint(painter); // separate because of paintSelected
+        if (wire->hasLabel()) {
+            wire->label()->paint(painter); // separate because of paintSelected
         }
     }
 
     for (auto* node : *a_Nodes) {
         node->paint(painter);
-        if (node->Label) {
-            node->Label->paint(painter); // separate because of paintSelected
+        if (node->hasLabel()) {
+            node->label()->paint(painter); // separate because of paintSelected
         }
     }
 
@@ -817,7 +817,7 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
             draw_preserve_selection(wire, painter);
         }
 
-        if (auto* label = wire->Label) {
+        if (auto* label = wire->label()) {
             if (should_draw(label)) {
                 draw_preserve_selection(label, painter);
             }
@@ -832,7 +832,7 @@ void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
             }
         }
 
-        if (auto* label = node->Label) {
+        if (auto* label = node->label()) {
             if (should_draw(label)) {
                 draw_preserve_selection(label, painter);
             }
@@ -1137,11 +1137,11 @@ void Schematic::updateAllBoundingRect()
 
     for (auto* pw : *a_Wires) {
         internal::unite(totalBounds, pw->boundingRect());
-        if (pw->Label) internal::unite(totalBounds, pw->Label->boundingRect());
+        if (pw->hasLabel()) internal::unite(totalBounds, pw->label()->boundingRect());
     }
 
     for (auto* pn : *a_Nodes) {
-        if (pn->Label) internal::unite(totalBounds, pn->Label->boundingRect());
+        if (pn->hasLabel()) internal::unite(totalBounds, pn->label()->boundingRect());
     }
 
     for (auto* pd : *a_Diagrams) {
@@ -1179,9 +1179,9 @@ Schematic::Selection Schematic::currentSelection() const {
             internal::unite(totalBounds, pw->boundingRect());
         }
 
-        if (pw->Label != nullptr && pw->Label->isSelected) { // check position of wire label
-            selection.labels.push_back(pw->Label);
-            internal::unite(totalBounds, pw->Label->boundingRect());
+        if (pw->hasLabel() && pw->label()->isSelected) { // check position of wire label
+            selection.labels.push_back(pw->label());
+            internal::unite(totalBounds, pw->label()->boundingRect());
         }
     }
 
@@ -1190,9 +1190,9 @@ Schematic::Selection Schematic::currentSelection() const {
             selection.nodes.push_back(pn);
         }
 
-        if (pn->Label != nullptr && pn->Label->isSelected) { // check position of node label
-            selection.labels.push_back(pn->Label);
-            internal::unite(totalBounds, pn->Label->boundingRect());
+        if (pn->hasLabel() && pn->label()->isSelected) { // check position of node label
+            selection.labels.push_back(pn->label());
+            internal::unite(totalBounds, pn->label()->boundingRect());
         }
     }
 
@@ -1970,41 +1970,71 @@ void Schematic::slotScrollRight()
 // Is called if an object is dropped (after drag'n drop).
 void Schematic::contentsDropEvent(QDropEvent *Event)
 {
-    if (a_dragIsOkay) {
-        QList<QUrl> urls = Event->mimeData()->urls();
-        if (urls.isEmpty()) {
-            return;
-        }
-
-        // do not close untitled document to avoid segfault
-        QucsDoc *d = QucsMain->getDoc(0);
-        bool changed = d->getDocChanged();
-        d->setDocChanged(true);
-
-        // URI:  file:/home/linuxuser/Desktop/example.sch
-        for (QUrl url : urls) {
-            a_App->gotoPage(QDir::toNativeSeparators(url.toLocalFile()));
-        }
-
-        d->setDocChanged(changed);
-        return;
+  if (a_dragIsOkay) {
+    QList<QUrl> urls = Event->mimeData()->urls();
+    if (urls.isEmpty()) {
+      return;
     }
 
-    auto ev_pos = Event->position();
-    QPoint inModel = contentsToModel(ev_pos.toPoint());
+           // do not close untitled document to avoid segfault
+    QucsDoc *d = QucsMain->getDoc(0);
+    bool changed = d->getDocChanged();
+    d->setDocChanged(true);
 
-    QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    for (const QUrl &url : urls) {
+      QString filePath = QDir::toNativeSeparators(url.toLocalFile());
+      QString lower = filePath.toLower();
 
-    a_App->view->MPressElement(this, &e, inModel.x(), inModel.y());
-
-    delete a_App->view->selElem;
-    a_App->view->selElem = nullptr; // no component selected
-
-    if (formerAction) {
-        formerAction->setChecked(true);
-    } else {
-        QucsMain->select->setChecked(true); // restore old action
+             // Check if file is a supported image
+      if (lower.endsWith(".png") || lower.endsWith(".jpg") ||
+          lower.endsWith(".jpeg") || lower.endsWith(".bmp") ||
+          lower.endsWith(".gif")) {
+        // Insert ImagePainting at drop position
+        auto ev_pos = Event->position();
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+        QPoint inModel = contentsToModel(ev_pos.toPoint());
+#else
+        QPoint inModel = contentsToModel(ev_pos.toPoint());
+#endif
+        ImagePainting* imgPaint = new ImagePainting();
+        imgPaint->setImageFromPath(filePath);
+        imgPaint->x1 = inModel.x();
+        imgPaint->y1 = inModel.y();
+        imgPaint->x2 = imgPaint->x1 + imgPaint->getImageWidth();
+        imgPaint->y2 = imgPaint->y1 + imgPaint->getImageHeight();
+        this->a_Paintings->push_back(imgPaint);
+        viewport()->update();
+        setChanged(true, true);
+        continue; // allow dropping multiple images at once
+      }
+      // For non-image files, fallback to original page opening behavior
+      a_App->gotoPage(filePath);
     }
+
+    d->setDocChanged(changed);
+    return;
+  }
+
+         // Not a document drag, fallback to component insertion
+  auto ev_pos = Event->position();
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+  QPoint inModel = contentsToModel(ev_pos.toPoint());
+#else
+  QPoint inModel = contentsToModel(ev_pos.toPoint());
+#endif
+
+  QMouseEvent e(QEvent::MouseButtonPress, ev_pos, mapToGlobal(ev_pos), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+
+  a_App->view->MPressElement(this, &e, inModel.x(), inModel.y());
+
+  delete a_App->view->selElem;
+  a_App->view->selElem = nullptr; // no component selected
+
+  if (formerAction) {
+    formerAction->setChecked(true);
+  } else {
+    QucsMain->select->setChecked(true); // restore old action
+  }
 }
 
 // ---------------------------------------------------
@@ -2043,8 +2073,8 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
         if (Item) {
             formerAction = a_App->activeAction;
             a_App->slotSelectComponent(Item); // also sets drawn=false
-            a_App->MouseMoveAction = 0;
-            a_App->MousePressAction = 0;
+            a_App->MouseMoveAction = nullptr;
+            a_App->MousePressAction = nullptr;
 
             Event->accept();
             return;
@@ -2074,7 +2104,7 @@ void Schematic::contentsNativeGestureZoomEvent( QNativeGestureEvent* Event) {
 void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
 {
     if (!a_dragIsOkay) {
-        if (a_App->view->selElem == 0) {
+        if (a_App->view->selElem == nullptr) {
             Event->ignore();
             return;
         }

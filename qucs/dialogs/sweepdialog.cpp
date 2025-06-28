@@ -49,7 +49,7 @@ mySpinBox::mySpinBox(int Min, int Max, int Step, double *Val, QWidget *Parent)
 using namespace std;
 QString mySpinBox::textFromValue(int Val) const
 {
-  if (Values == NULL) return "";
+  if (Values == nullptr) return "";
 
   //qDebug() << "Values + Val" << *(Values+Val) << endl;
   return QString::number(*(Values+Val));
@@ -170,7 +170,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
   qDebug() << "SweepDialog::setBiasPoints()";
 
   bool hasNoComp;
-  Graph *pg = new Graph(NULL, ""); // HACK!
+  Graph *pg = new Graph(nullptr, ""); // HACK!
   QFileInfo Info(Doc->getDocName());
   QString DataSet = Info.absolutePath() + QDir::separator() + Doc->getDataSet();
 

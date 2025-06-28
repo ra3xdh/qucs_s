@@ -137,229 +137,163 @@ jobs:
           name: ${{ env.APP_NAME }}-${{env.VERSION}}${{env.SHORT_HASH}}-linux-x86_64
           path: ${{ env.APP_NAME }}-${{env.VERSION}}${{env.SHORT_HASH}}-linux-x86_64.AppImage
 
-
-  build-mac-intel:
-    runs-on: macos-13
+  build-mac:
     needs: setup
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
+      matrix:
+        arch:
+          - x86_64
+          - universal
+        include:
+          - arch: x86_64
+            os: macos-13
+            cmake_arch: x86_64
+            dmg_suffix: macOSX-x86_64
+            deployment_target: 10.14
+            qt_version: 6.2.4
+          - arch: universal
+            os: macos-15
+            cmake_arch: arm64;x86_64
+            dmg_suffix: macOS
+            deployment_target: 12.0
+            qt_version: ""
+
     steps:
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
 
-    - name: Set version environment variable
-      run: |
-        echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
-        echo "SHORT_HASH=${{ needs.setup.outputs.short_hash }}" >> $GITHUB_ENV
+      - name: Set version environment variable
+        run: |
+          echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
+          echo "SHORT_HASH=${{ needs.setup.outputs.short_hash }}" >> $GITHUB_ENV
 
-    - name: Print version and hash
-      run: |
-        echo "Qucs-S version is ${{ env.VERSION }}"
-        echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
+      - name: Print version and hash
+        run: |
+          echo "Qucs-S version is ${{ env.VERSION }}"
+          echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
 
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: 'Install Qt6'
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: '6.2.4'
-        host: 'mac'
-        target: 'desktop'
-        cache: true
-        arch: 'clang_64'
-        install-deps: 'true'
-        modules: 'qtcharts'
+      - name: Set QT_VERSION if not defined in matrix
+        run: echo "QT_VERSION=${{ matrix.qt_version != '' && matrix.qt_version || env.QT_VERSION }}" >> $GITHUB_ENV
 
-    - name: 'Install Dependencies'
-      shell: bash
-      run: |
-          rm '/usr/local/share/man/man1/xsd.1'
-          brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick xsd muparser
+      - name: 'Install Qt6'
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          host: 'mac'
+          target: 'desktop'
+          cache: true
+          arch: 'clang_64'
+          install-deps: 'true'
+          modules: 'qtcharts'
+
+      - name: 'Install Dependencies'
+        shell: bash
+        run: |
+          if [ "${{ matrix.cmake_arch }}" == "x86_64" ]
+          then
+            rm '/usr/local/share/man/man1/xsd.1'
+          fi
+          brew install gperf dos2unix bison flex graphicsmagick imagemagick xsd muparser
+
+          if [ "${{ matrix.cmake_arch }}" == "arm64;x86_64" ]
+          then
+            arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            /usr/local/bin/brew install xsd
+
+            arch -arm64 brew install xerces-c
+            cd $(brew --prefix xerces-c)/lib
+            XERCES_C_MULTI_ARCH_LIB_NAME=libxerces-c.arm64_x86_64.dylib
+            lipo \
+              libxerces-c.dylib \
+              $(/usr/local/bin/brew --prefix xerces-c)/lib/libxerces-c.dylib \
+              -output ${XERCES_C_MULTI_ARCH_LIB_NAME} \
+              -create
+            XERCES_C_LIB_NAME=$(find . -type f -name libxerces-c-3.*.dylib)
+            rm ${XERCES_C_LIB_NAME}
+            mv ${XERCES_C_MULTI_ARCH_LIB_NAME} ${XERCES_C_LIB_NAME}
+
+            /usr/local/bin/brew install muparser
+            arch -arm64 brew install muparser
+            cd $(brew --prefix muparser)/lib
+            MUPARSER_MULTI_ARCH_LIB_NAME=libmuparser.arm64_x86_64.dylib
+            lipo \
+              libmuparser.dylib \
+              $(/usr/local/bin/brew --prefix muparser)/lib/libmuparser.dylib \
+              -output ${MUPARSER_MULTI_ARCH_LIB_NAME} \
+              -create
+            rm libmuparser.dylib
+            ln -s ${MUPARSER_MULTI_ARCH_LIB_NAME} libmuparser.dylib
+
+            cd ${{github.workspace}}
+            echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
+            export LDFLAGS="-L$(brew --prefix bison)/lib"
+            source ~/.bashrc
+            brew link bison --force
+          fi
+
           echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
           export LDFLAGS="-L$(brew --prefix bison)/lib"
           source ~/.bashrc
           brew link bison --force
 
-    - name: 'Configure CMake'
-      run: |
-        cmake -B ${{github.workspace}}/build  -G 'Ninja' \
-              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-              -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 \
-              -DCMAKE_OSX_ARCHITECTURES="x86_64" \
-              -DCI_VERSION="${{env.VERSION}}"
+      - name: 'Configure CMake'
+        run: |
+          cmake -B ${{ github.workspace }}/build -G 'Ninja' \
+            -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=${{ matrix.deployment_target }} \
+            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" \
+            -DCI_VERSION="${{ env.VERSION }}"
 
-    - name: 'Build Qucs-s'
-      run: |
-        cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
+      - name: 'Build Qucs-s'
+        run: |
+          cmake --build ${{ github.workspace }}/build --parallel --config=${{ env.BUILD_TYPE }}
 
-    - name: 'Package App Bundle'
-      run: |
-        mkdir -p ${{env.QUCS_MACOS_BIN}}
-        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
-        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
-        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
-        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/lang
-        cp -pR ${{github.workspace}}/build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-powercombining/qucs-spowercombining.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-s-spar-viewer/qucs-sspar-viewer.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-transcalc/qucs-strans.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucsator_rf/src/qucsator_rf ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucsator_rf/src/converter/qucsconv_rf ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/examples/* ${{env.QUCS_MACOS_RESOURCES}}/examples
-        cp -pR ${{github.workspace}}/library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
-        cp -pR ${{github.workspace}}/library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
-        cp -pR ${{github.workspace}}/library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
-        cp -pR ${{github.workspace}}/build/translations/*.qm ${{env.QUCS_MACOS_RESOURCES}}/lang
-        macdeployqt ${{github.workspace}}/build/qucs/qucs-s.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sfilter.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-spowercombining.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sspar-viewer.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-strans.app
-        strip ${{env.QUCS_MACOS_BIN}}/qucsator_rf
-        strip ${{env.QUCS_MACOS_BIN}}/qucsconv_rf
-        codesign --force --deep --sign - ${{github.workspace}}/build/qucs/qucs-s.app
-        npm install --global create-dmg
-        create-dmg ${{github.workspace}}/build/qucs/qucs-s.app ${{github.workspace}}/build/qucs/ || true
-        cp -pR ${{github.workspace}}/build/qucs/qucs-*.dmg ${{github.workspace}}/${{ env.APP_NAME }}-${{env.VERSION}}-macOSX-x86_64.dmg
+      - name: 'Package App Bundle'
+        run: |
+          mkdir -p ${{ env.QUCS_MACOS_BIN }}
+          mkdir -p ${{ env.QUCS_MACOS_RESOURCES }}/examples
+          mkdir -p ${{ env.QUCS_MACOS_RESOURCES }}/library
+          mkdir -p ${{ env.QUCS_MACOS_RESOURCES }}/symbols
+          mkdir -p ${{ env.QUCS_MACOS_RESOURCES }}/lang
+          cp -pR ${{ github.workspace }}/build/qucs-activefilter/qucs-sactivefilter.app ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/build/qucs-attenuator/qucs-sattenuator.app ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/build/qucs-filter/qucs-sfilter.app ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/build/qucs-powercombining/qucs-spowercombining.app ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/build/qucs-s-spar-viewer/qucs-sspar-viewer.app ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/build/qucs-transcalc/qucs-strans.app ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/build/qucsator_rf/src/qucsator_rf ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/build/qucsator_rf/src/converter/qucsconv_rf ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/examples/* ${{ env.QUCS_MACOS_RESOURCES }}/examples
+          cp -pR ${{ github.workspace }}/library/*.lib ${{ env.QUCS_MACOS_RESOURCES }}/library
+          cp -pR ${{ github.workspace }}/library/*.blacklist ${{ env.QUCS_MACOS_RESOURCES }}/library
+          cp -pR ${{ github.workspace }}/library/symbols/* ${{ env.QUCS_MACOS_RESOURCES }}/symbols
+          cp -pR ${{ github.workspace }}/build/translations/*.qm ${{ env.QUCS_MACOS_RESOURCES }}/lang
+          macdeployqt ${{ github.workspace }}/build/qucs/qucs-s.app
+          macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-sactivefilter.app
+          macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-sattenuator.app
+          macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-sfilter.app
+          macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-spowercombining.app
+          macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-sspar-viewer.app
+          macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-strans.app
+          strip ${{ env.QUCS_MACOS_BIN }}/qucsator_rf
+          strip ${{ env.QUCS_MACOS_BIN }}/qucsconv_rf
+          codesign --force --deep --sign - ${{ github.workspace }}/build/qucs/qucs-s.app
+          npm install --global create-dmg
+          create-dmg ${{ github.workspace }}/build/qucs/qucs-s.app ${{ github.workspace }}/build/qucs/ || true
+          cp -pR ${{ github.workspace }}/build/qucs/qucs-*.dmg ${{ github.workspace }}/${{ env.APP_NAME }}-${{ env.VERSION }}-${{ matrix.dmg_suffix }}.dmg
 
-    - name: 'Upload build artifacts'
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOSX-x86_64
-        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOSX-x86_64.dmg
-
-
-  build-mac-universal:
-    runs-on: macos-15
-    needs: setup
-    strategy:
-      fail-fast: false
-    steps:
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-
-    - name: Set version environment variable
-      run: |
-        echo "VERSION=${{ needs.setup.outputs.version }}" >> $GITHUB_ENV
-        echo "SHORT_HASH=${{ needs.setup.outputs.short_hash }}" >> $GITHUB_ENV
-
-    - name: Print version and hash
-      run: |
-        echo "Qucs-S version is ${{ env.VERSION }}"
-        echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
-
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: 'Install Qt6'
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: ${{env.QT_VERSION}}
-        host: 'mac'
-        target: 'desktop'
-        cache: true
-        arch: 'clang_64'
-        install-deps: 'true'
-        modules: 'qtcharts'
-
-    - name: 'Install Dependencies'
-      shell: bash
-      run: |
-        brew install gperf dos2unix bison flex ninja graphicsmagick imagemagick xsd muparser
-        arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        /usr/local/bin/brew install xsd
-
-        arch -arm64 brew install xerces-c
-        cd $(brew --prefix xerces-c)/lib
-        XERCES_C_MULTI_ARCH_LIB_NAME=libxerces-c.arm64_x86_64.dylib
-        lipo \
-          libxerces-c.dylib \
-          $(/usr/local/bin/brew --prefix xerces-c)/lib/libxerces-c.dylib \
-          -output ${XERCES_C_MULTI_ARCH_LIB_NAME} \
-          -create
-        XERCES_C_LIB_NAME=$(find . -type f -name libxerces-c-3.*.dylib)
-        rm ${XERCES_C_LIB_NAME}
-        mv ${XERCES_C_MULTI_ARCH_LIB_NAME} ${XERCES_C_LIB_NAME}
-
-        /usr/local/bin/brew install muparser
-        arch -arm64 brew install muparser
-        cd $(brew --prefix muparser)/lib
-        MUPARSER_MULTI_ARCH_LIB_NAME=libmuparser.arm64_x86_64.dylib
-        lipo \
-          libmuparser.dylib \
-          $(/usr/local/bin/brew --prefix muparser)/lib/libmuparser.dylib \
-          -output ${MUPARSER_MULTI_ARCH_LIB_NAME} \
-          -create
-        rm libmuparser.dylib
-        ln -s ${MUPARSER_MULTI_ARCH_LIB_NAME} libmuparser.dylib
-
-        cd ${{github.workspace}}
-        echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
-        export LDFLAGS="-L$(brew --prefix bison)/lib"
-        source ~/.bashrc
-        brew link bison --force
-
-
-    - name: 'Configure CMake'
-      run: |
-        cmake -B ${{github.workspace}}/build  -G 'Ninja' \
-              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-              -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0 \
-              -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
-              -DCI_VERSION="${{env.VERSION}}"
-
-    - name: 'Build Qucs-s'
-      run: |
-        cmake --build ${{github.workspace}}/build --parallel --config=${{env.BUILD_TYPE}}
-
-    - name: 'Package App Bundle'
-      run: |
-        mkdir -p ${{env.QUCS_MACOS_BIN}}
-        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/examples
-        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/library
-        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/symbols
-        mkdir -p ${{env.QUCS_MACOS_RESOURCES}}/lang
-        cp -pR ${{github.workspace}}/build/qucs-activefilter/qucs-sactivefilter.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-attenuator/qucs-sattenuator.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-filter/qucs-sfilter.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-powercombining/qucs-spowercombining.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-s-spar-viewer/qucs-sspar-viewer.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucs-transcalc/qucs-strans.app ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucsator_rf/src/qucsator_rf ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/build/qucsator_rf/src/converter/qucsconv_rf ${{env.QUCS_MACOS_BIN}}
-        cp -pR ${{github.workspace}}/examples/* ${{env.QUCS_MACOS_RESOURCES}}/examples
-        cp -pR ${{github.workspace}}/library/*.lib ${{env.QUCS_MACOS_RESOURCES}}/library
-        cp -pR ${{github.workspace}}/library/*.blacklist ${{env.QUCS_MACOS_RESOURCES}}/library
-        cp -pR ${{github.workspace}}/library/symbols/* ${{env.QUCS_MACOS_RESOURCES}}/symbols
-        cp -pR ${{github.workspace}}/build/translations/*.qm ${{env.QUCS_MACOS_RESOURCES}}/lang
-        macdeployqt ${{github.workspace}}/build/qucs/qucs-s.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sactivefilter.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sattenuator.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sfilter.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-spowercombining.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-sspar-viewer.app
-        macdeployqt ${{env.QUCS_MACOS_BIN}}/qucs-strans.app
-        strip ${{env.QUCS_MACOS_BIN}}/qucsator_rf
-        strip ${{env.QUCS_MACOS_BIN}}/qucsconv_rf
-        codesign --force --deep --sign - ${{github.workspace}}/build/qucs/qucs-s.app
-        npm install --global create-dmg
-        create-dmg ${{github.workspace}}/build/qucs/qucs-s.app ${{github.workspace}}/build/qucs/ || true
-        cp -pR ${{github.workspace}}/build/qucs/qucs-*.dmg ${{github.workspace}}/${{ env.APP_NAME }}-${{env.VERSION}}-macOS.dmg
-
-    - name: 'Upload build artifacts'
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS
-        path: ${{ env.APP_NAME }}-${{env.VERSION}}-macOS.dmg
+      - name: 'Upload build artifacts'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-${{ env.VERSION }}-${{ matrix.dmg_suffix }}
+          path: ${{ env.APP_NAME }}-${{ env.VERSION }}-${{ matrix.dmg_suffix }}.dmg
 
   build-windows-msvc:
     runs-on: windows-latest
@@ -418,7 +352,7 @@ jobs:
       with:
         arch: x64
 
-    - name: Install xsd
+    - name: 'Install xsd'
       run: |
         mkdir c:\xsd
         curl -sL --retry 3 --retry-delay 5 -o xsd.zip ${{env.XSD_URL}}
@@ -496,11 +430,21 @@ jobs:
         path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-setup.exe
 
   build-windows:
-    runs-on: windows-2022
+    runs-on: ${{ matrix.config.os }}
     continue-on-error: true
-    needs: setup
+    needs: setup # Bu 'setup' işinin var olduğunu ve 'version' ile 'short_hash' çıktılarını sağladığını varsayıyoruz.
     strategy:
       fail-fast: false
+      matrix:
+        config:
+          - os: windows-2022
+            msystem: ucrt64
+            platform_tag: win64
+            packet_tag: ucrt-x86_64
+          - os: windows-11-arm
+            msystem: clangarm64
+            platform_tag: win-arm64
+            packet_tag: clang-aarch64
     defaults:
       run:
         shell: msys2 {0}
@@ -531,10 +475,11 @@ jobs:
     - name: Set up MSYS2 environment
       uses: msys2/setup-msys2@v2
       with:
-        msystem: ucrt64
+        msystem: ${{ matrix.config.msystem }}
         cache: true
         update: true
-        install: bison flex dos2unix curl zip p7zip mingw-w64-ucrt-x86_64-xerces-c mingw-w64-ucrt-x86_64-muparser
+        install: bison flex dos2unix curl zip p7zip
+                 mingw-w64-${{ matrix.config.packet_tag }}-xerces-c mingw-w64-${{ matrix.config.packet_tag }}-muparser
         pacboy: cmake:p gcc:p qt6-base:p qt6-tools:p qt6-svg:p make:p ninja:p python:p gperf:p github-cli:p qt6-charts:p
 
     - name: Install xsd
@@ -586,7 +531,7 @@ jobs:
     - name: Copy non-Qt DLLs to bin directory
       run: |
         shopt -s extglob
-        FILES=$(ldd build/qucs-suite/bin/qucs-s.exe | awk '($3 ~ /\/ucrt64\/bin\//) {print $3}')
+        FILES=$(ldd build/qucs-suite/bin/qucs-s.exe | awk '($3 ~ /\/${{ matrix.config.msystem }}\/bin\//) {print $3}')
         for file in $FILES; do
           if [[ $(basename "$file") != Qt6* ]]; then
             cp -r "$file" build/qucs-suite/bin
@@ -607,30 +552,30 @@ jobs:
         mkdir -p build/qucs-suite/misc
         cp -rf contrib/InnoSetup/misc build/qucs-suite/
         cd build/qucs-suite
-        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-win64.zip ./bin ./share ./lib ./misc
+        zip -r ../../${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-${{ matrix.config.platform_tag }}.zip ./bin ./share ./lib ./misc
         cd ../..
 
     - name: Compile .ISS to .EXE Installer
       shell: pwsh
       run: |
-        ISCC.exe /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}${{ env.SHORT_HASH }}" "${{github.workspace}}\contrib\InnoSetup\qucs.iss"
+        ISCC.exe /Qp /O"${{github.workspace}}" /DAPPNAME=${{ env.APP_NAME }} /DRELEASE="${{ env.VERSION }}${{ env.SHORT_HASH }}-${{ matrix.config.platform_tag }}" "${{github.workspace}}\contrib\InnoSetup\qucs.iss"
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-win64
-        path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-win64.zip
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-${{ matrix.config.platform_tag }}
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-${{ matrix.config.platform_tag }}.zip
 
     - name: Upload exe artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-setup
-        path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-setup.exe
+        name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-${{ matrix.config.platform_tag }}-setup
+        path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-${{ matrix.config.platform_tag }}-setup.exe
 
   create-release:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
-    needs: [setup, build-linux-appimage-qt6, build-mac-intel, build-mac-universal, build-windows]
+    needs: [setup, build-linux-appimage-qt6, build-mac, build-windows]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -655,7 +600,7 @@ jobs:
       run: |
         cd ~/artifacts
         > hashes.sha256
-        for file in $(find . -type f \( -name "*-setup.exe" ! -name "*-MSVC-setup.exe" -o -name "*-win64.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
+        for file in $(find . -type f \( -name "*-setup.exe" ! -name "*-MSVC-setup.exe" -o -name "*-win-arm64.zip" -o -name "*-win-arm64-setup.exe" -o -name "*-win64.zip" -o -name "*.dmg" -o -name "*.AppImage" \)); do
           filename=$(basename "$file")
           sha256sum "$file" | awk -v fname="$filename" '{print $1 " *" fname}' >> hashes.sha256
         done
@@ -681,10 +626,11 @@ jobs:
       run: |
         # Find existing artifact files
         hash_files=$(find ~/artifacts -name "*.sha256" -print0 | xargs -0 echo)
-        exe_files=$(find ~/artifacts -name "*-setup.exe" ! -name "*-MSVC-setup.exe" -print0 | xargs -0 echo)
-        zip_files=$(find ~/artifacts -name "*-win64.zip" -print0 | xargs -0 echo)
+        exe_files=$(find ~/artifacts -name "*win*setup*.exe" -print0 | xargs -0 echo)
+        zip_files=$(find ~/artifacts -name "*win*.zip"  -print0 | xargs -0 echo)
         dmg_files=$(find ~/artifacts -name "*.dmg" -print0 | xargs -0 echo)
         appimage_files=$(find ~/artifacts -name "*.AppImage" -print0 | xargs -0 echo)
+
 
         # Check existing release and delete if it's exist
         if gh release view ${{ env.TAG_NAME }} --repo $GITHUB_REPOSITORY &> /dev/null; then

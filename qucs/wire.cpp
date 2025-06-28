@@ -33,7 +33,6 @@ Wire::Wire(int _x1, int _y1, int _x2, int _y2)
 
   Port1 = nullptr;
   Port2 = nullptr;
-  Label = nullptr;
 
   Type = isWire;
   isSelected = false;
@@ -46,20 +45,15 @@ Wire::Wire(Node* n1, Node* n2)
   connectPort2(n2);
 }
 
-Wire::~Wire()
-{
-  delete Label;
-}
-
 bool Wire::rotate() noexcept
 {
   qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
   qucs_s::geom::rotate_point_ccw(x2, y2, cx, cy);
 
-  if (Label != nullptr) {
-    auto r = Label->root();
+  if (hasLabel()) {
+    auto r = label()->root();
     qucs_s::geom::rotate_point_ccw(r.rx(), r.ry(), cx, cy);
-    Label->moveRootTo(r.x(), r.y());
+    label()->moveRootTo(r.x(), r.y());
   }
 
   return true;
@@ -121,23 +115,23 @@ void Wire::setName(int distFromPort1, int text_x, int text_y, const QString& nam
 
 void Wire::setName(const QString& Name_, const QString& Value_, int root_x, int root_y, int x_, int y_)
 {
-  if(Name_.isEmpty() && Value_.isEmpty()) {
-    delete Label;
-    Label = nullptr;
-    return;
-  }
+  // Passing two empty strings acted like a signal to remove the label
+  // and later was superseded by dropLabel() method. This assertion is
+  // just merely a guard against legacy usage, it may be freely removed
+  // after some time.
+  // Added on 2025-06-12.
+  assert(!(Name_.isEmpty() && Value_.isEmpty()));
 
-  if(!Label) {
+  if(!hasLabel()) {
     if (y1 == y2)
-      Label = new WireLabel(Name_, root_x, y1, x_, y_, isHWireLabel);
+      acquireLabel(new WireLabel(Name_, root_x, y1, x_, y_));
     else if (x1 == x2)
-      Label = new WireLabel(Name_, x1, root_y, x_, y_, isVWireLabel);
+      acquireLabel(new WireLabel(Name_, x1, root_y, x_, y_));
     else
-      Label = new WireLabel(Name_, root_x, root_y, x_, y_, isLabel);
-    Label->pOwner = this;
-    Label->initValue = Value_;
+      acquireLabel(new WireLabel(Name_, root_x, root_y, x_, y_));
+    label()->initValue = Value_;
   }
-  else Label->setName(Name_);
+  else label()->setName(Name_);
 }
 
 // Converts all necessary data of the wire into a string. This can be used to
@@ -146,11 +140,11 @@ QString Wire::save()
 {
   QString s  = "<"+QString::number(x1)+" "+QString::number(y1);
           s += " "+QString::number(x2)+" "+QString::number(y2);
-  if(Label) {
-          s += " \""+Label->Name+"\" ";
-          s += QString::number(Label->x1)+" "+QString::number(Label->y1)+" ";
-          s += QString::number(static_cast<int>(qucs_s::geom::distance(QPoint{x1, y1}, Label->root())));
-          s += " \""+Label->initValue+"\">";
+  if(hasLabel()) {
+          s += " \""+label()->Name+"\" ";
+          s += QString::number(label()->x1)+" "+QString::number(label()->y1)+" ";
+          s += QString::number(static_cast<int>(qucs_s::geom::distance(QPoint{x1, y1}, label()->root())));
+          s += " \""+label()->initValue+"\">";
   }
   else { s += R"( "" 0 0 0 "">)"; }
   return s;
@@ -229,7 +223,7 @@ bool Wire::moveCenter(int dx, int dy) noexcept
   y1 += dy;
   x2 += dx;
   y2 += dy;
-  if (Label) Label->moveRoot(dx, dy);
+  if (hasLabel()) label()->moveRoot(dx, dy);
   return dx != 0 || dy != 0;
 }
 
@@ -240,15 +234,15 @@ bool Wire::setP1(const QPoint& new_p1)
     return false;
   }
 
-  if (Label != nullptr) {
+  if (hasLabel()) {
     const QPoint old_p1{x1, y1};
     const QPoint p2{x2, y2};
 
-    const auto ratio = qucs_s::geom::distance(old_p1, Label->root()) / qucs_s::geom::distance(old_p1, p2);
+    const auto ratio = qucs_s::geom::distance(old_p1, label()->root()) / qucs_s::geom::distance(old_p1, p2);
     const auto x = static_cast<int>(std::round(new_p1.x() + ratio * (p2.x() - new_p1.x())));
     const auto y = static_cast<int>(std::round(new_p1.y() + ratio * (p2.y() - new_p1.y())));
 
-    Label->moveRootTo(x, y);
+    label()->moveRootTo(x, y);
   }
 
   x1 = new_p1.x();
@@ -266,15 +260,15 @@ bool Wire::setP2(const QPoint& new_p2)
     return false;
   }
 
-  if (Label != nullptr) {
+  if (hasLabel()) {
     const QPoint p1{x1, y1};
     const QPoint old_p2{x2, y2};
 
-    const auto ratio = qucs_s::geom::distance(p1, Label->root()) / qucs_s::geom::distance(p1, old_p2);
+    const auto ratio = qucs_s::geom::distance(p1, label()->root()) / qucs_s::geom::distance(p1, old_p2);
     const auto x = static_cast<int>(std::round(p1.x() + ratio * (new_p2.x() - p1.x())));
     const auto y = static_cast<int>(std::round(p1.y() + ratio * (new_p2.y() - p1.y())));
 
-    Label->moveRootTo(x, y);
+    label()->moveRootTo(x, y);
   }
 
   x2 = new_p2.x();
@@ -323,3 +317,4 @@ inline void Wire::updateCenter() noexcept {
   cx = std::midpoint(x1, x2);
   cy = std::midpoint(y1, y2);
 }
+

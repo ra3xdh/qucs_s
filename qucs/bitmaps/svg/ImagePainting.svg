@@ -1,0 +1,13 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sky background -->
+  <rect x="0" y="0" width="200" height="200" fill="#87ceeb"/>
+  <!-- Sun -->
+  <circle cx="55" cy="55" r="25" fill="#ffd700"/>
+  <!-- Mountains -->
+  <polygon points="20,180 80,100 120,140 160,80 200,180" fill="#4b8b3b"/>
+  <polygon points="0,180 60,120 100,180" fill="#228b22"/>
+  <!-- Ground -->
+  <rect x="0" y="180" width="200" height="20" fill="#a0522d"/>
+  <!-- Border (optional) -->
+  <rect x="5" y="5" width="190" height="190" fill="none" stroke="#7b8a99" stroke-width="10"/>
+</svg>

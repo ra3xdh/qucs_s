@@ -24,7 +24,7 @@
 Gyrator::Gyrator()
 {
   Description = QObject::tr("gyrator (impedance inverter)");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simAll;
 
   Arcs.append(new qucs::Arc(  3, -9, 18, 18, 16*90, 16*180,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc(-21, -9, 18, 18,16*270, 16*180,QPen(Qt::darkBlue,2)));
@@ -54,7 +54,7 @@ Gyrator::Gyrator()
   ty = y2+4;
   Model = "Gyrator";
   Name  = "X";
-  SpiceModel = "*";
+  SpiceModel = "X";
 
   Props.append(new Property("R", "50 Ohm", true,
 		QObject::tr("gyrator ratio")));

@@ -91,7 +91,7 @@ void SP_Sim::recreate()
 int SP_Sim::getSPortsNumber()
 {
     int p_num = 0;
-    if (containingSchematic != NULL) {
+    if (containingSchematic != nullptr) {
         for (Component *pc : containingSchematic->a_DocComps) {
             if (pc->Model == "Pac") p_num++;
         }
