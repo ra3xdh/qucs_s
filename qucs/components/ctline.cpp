@@ -11,6 +11,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include "node.h"
 
 #include "ctline.h"
 #include "extsimkernels/spicecompat.h"
@@ -18,7 +19,7 @@
 CoupledTLine::CoupledTLine()
 {
   Description = QObject::tr("coupled transmission lines");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simQucsator + spicecompat::simNgspice;
 
   Arcs.append(new qucs::Arc(-28,-40, 18, 38,16*232, 16*33,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc(-28,  2, 18, 38, 16*95, 16*33,QPen(Qt::darkBlue,2)));
@@ -52,6 +53,7 @@ CoupledTLine::CoupledTLine()
   ty = y2+4;
   Model = "CTLIN";
   Name  = "Line";
+  SpiceModel = "A";
 
   Props.append(new Property("Ze", "50 Ohm", true,
 		QObject::tr("characteristic impedance of even mode")));
@@ -85,4 +87,31 @@ Element* CoupledTLine::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new CoupledTLine();
   return 0;
+}
+
+
+QString CoupledTLine::spice_netlist(spicecompat::SpiceDialect dialect)
+{
+  QString s;
+  if (dialect != spicecompat::SPICEDefault) return s;
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+  QString p3 = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
+  QString p4 = spicecompat::normalize_node_name(Ports.at(3)->Connection->Name);
+
+  QString L = spicecompat::normalize_value(getProperty("L")->Value);
+  QString Ze = spicecompat::normalize_value(getProperty("Ze")->Value);
+  QString Zo = spicecompat::normalize_value(getProperty("Zo")->Value);
+  QString Ere = spicecompat::normalize_value(getProperty("Ere")->Value);
+  QString Ero = spicecompat::normalize_value(getProperty("Ero")->Value);
+  QString Ae = spicecompat::normalize_value(getProperty("Ae")->Value);
+  QString Ao = spicecompat::normalize_value(getProperty("Ao")->Value);
+
+  s = QString("A_%1 %hd(%2 0) %hd(%3 0) %hd(%4 0) %hd(%5 0)"
+              " %vd(%2 0) %vd(%3 0) %vd(%4 0) %vd(%5 0) MODEL_%1\n")
+              .arg(Name).arg(p1).arg(p2).arg(p3).arg(p4);
+  s += QString(".MODEL MODEL_%1 CPLINE(L=%2 ze=%3 zo=%4 ere=%5 ero=%6 ae=%7 ao=%8)\n")
+           .arg(Name).arg(L).arg(Ze).arg(Zo).arg(Ere).arg(Ero).arg(Ae).arg(Ao);
+
+  return s;
 }

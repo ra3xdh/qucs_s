@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include "node.h"
 #include "mscoupled.h"
 #include "extsimkernels/spicecompat.h"
 
@@ -22,7 +22,7 @@
 MScoupled::MScoupled()
 {
   Description = QObject::tr("coupled microstrip line");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simQucsator + spicecompat::simNgspice;
 
   Lines.append(new qucs::Line(-30,-12,-16,-12,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,-30,-30,-12,QPen(Qt::darkBlue,2)));
@@ -54,6 +54,7 @@ MScoupled::MScoupled()
   ty = y2+4;
   Model = "MCOUPLED";
   Name  = "MS";
+  SpiceModel = "A";
 
   Props.append(new Property("Subst", "Subst1", true,
 	QObject::tr("name of substrate definition")));
@@ -70,6 +71,9 @@ MScoupled::MScoupled()
 	" [Kirschning, Getsinger]"));
   Props.append(new Property("Temp", "26.85", false,
 	QObject::tr("simulation temperature in degree Celsius")));
+  Props.append(new Property("TranModel", "DC", false,
+                            QObject::tr("Transisent model") + " [DC,Full]"));
+  getProperty("TranModel")->simulators = spicecompat::simNgspice;
 }
 
 MScoupled::~MScoupled()
@@ -88,4 +92,31 @@ Element* MScoupled::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new MScoupled();
   return 0;
+}
+
+QString MScoupled::spice_netlist(spicecompat::SpiceDialect dialect)
+{
+  QString s;
+  if (dialect != spicecompat::SPICEDefault) return s;
+  QString subline = getSpiceSubstrateLine();
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+  QString p3 = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
+  QString p4 = spicecompat::normalize_node_name(Ports.at(3)->Connection->Name);
+
+  QString L = spicecompat::normalize_value(getProperty("L")->Value);
+  QString W = spicecompat::normalize_value(getProperty("W")->Value);
+  QString S = spicecompat::normalize_value(getProperty("S")->Value);
+
+  int Mod = spicecompat::strToMSlineModel(getProperty("Model")->Value);
+  int Disp = spicecompat::strToDispModel(getProperty("DispModel")->Value);
+  int Tran = spicecompat::strToTranModel(getProperty("TranModel")->Value);
+
+  s = QString("A_%1 %hd(%2 0) %hd(%3 0) %hd(%4 0) %hd(%5 0)"
+              " %vd(%2 0) %vd(%3 0) %vd(%4 0) %vd(%5 0) MODEL_%1\n")
+          .arg(Name).arg(p1).arg(p2).arg(p3).arg(p4);
+  s += QString(".MODEL MODEL_%1 CPMLIN(L=%2 W=%3 S=%4 model=%5 disp=%6 tranmodel=%7 %8)\n")
+           .arg(Name).arg(L).arg(W).arg(S).arg(Mod).arg(Disp).arg(Tran).arg(subline);
+
+  return s;
 }

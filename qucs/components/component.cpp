@@ -1394,6 +1394,34 @@ void Component::copyComponent(Component *pc) {
 }
 
 
+QString Component::getSpiceSubstrateLine()
+{
+  QString s;
+  if (Props.count() < 1) return s;
+  if (Props.at(0)->Name != "Subst") return s;
+
+  Component *sub = nullptr;
+  QString subname = Props.at(0)->Value;
+  if (containingSchematic == nullptr) return s;
+  for(Component *pc: *containingSchematic->a_Components) {
+    if (pc->Name == subname) {
+      sub = pc;
+      break;
+    }
+  }
+
+  if (sub == nullptr) return s;
+
+  for(Property *pp: sub->Props) {
+    QString vv = spicecompat::normalize_value(pp->Value);
+    QString nn = pp->Name;
+    s += QString(" %1=%2 ").arg(nn.toLower()).arg(vv);
+  }
+
+  return s;
+}
+
+
 // ***********************************************************************
 // ********                                                       ********
 // ********          Functions of class MultiViewComponent        ********

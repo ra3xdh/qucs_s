@@ -18,11 +18,13 @@
 #include "msopen.h"
 #include "extsimkernels/spicecompat.h"
 
+#include "node.h"
+
 
 MSopen::MSopen()
 {
   Description = QObject::tr("microstrip open");
-  Simulator = spicecompat::simQucsator;
+  Simulator = spicecompat::simQucsator + spicecompat::simNgspice;
 
   Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-13, -8, 13, -8,QPen(Qt::darkBlue,2)));
@@ -40,6 +42,7 @@ MSopen::MSopen()
   icon_dx = 6;
   Model = "MOPEN";
   Name  = "MS";
+  SpiceModel = "A";
 
   Props.append(new Property("Subst", "Subst1", true,
 	QObject::tr("name of substrate definition")));
@@ -72,4 +75,25 @@ Element* MSopen::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new MSopen();
   return 0;
+}
+
+QString MSopen::spice_netlist(spicecompat::SpiceDialect dialect)
+{
+  QString s;
+  if (dialect != spicecompat::SPICEDefault) return s;
+  QString subline = getSpiceSubstrateLine();
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+
+  QString W = spicecompat::normalize_value(getProperty("W")->Value);
+
+  int Mod = spicecompat::strToMSlineModel(getProperty("MSModel")->Value);
+  int Disp = spicecompat::strToDispModel(getProperty("MSDispModel")->Value);
+  int Mopen = spicecompat::strToMsopenModel(getProperty("Model")->Value);
+
+  s = QString("A_%1 %gd(%2 0) MODEL_%1\n")
+          .arg(Name).arg(p1);
+  s += QString(".MODEL MODEL_%1 MSOPEN(w=%2 model=%3 disp=%4 msopen_model=%5 %6)\n")
+           .arg(Name).arg(W).arg(Mod).arg(Disp).arg(Mopen).arg(subline);
+
+  return s;
 }

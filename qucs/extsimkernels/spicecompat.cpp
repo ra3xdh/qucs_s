@@ -418,3 +418,33 @@ QString spicecompat::getSpiceLibPath(const QString &lib)
   QString f = QDir::toNativeSeparators(QucsSettings.SpiceLibDir + lib);
   return f;
 }
+
+
+int spicecompat::strToMSlineModel(const QString &model)
+{
+  QStringList models;
+  models<<"Hammerstad"<<"Kirschning"<<"Wheeler"<<"Schneider";
+  return models.indexOf(model);
+}
+
+int spicecompat::strToDispModel(const QString &model)
+{
+  QStringList models;
+  models<<"Kirschning"<<"Kobayashi"<<"Yamashita"
+        <<"Hammerstad"<<"Getsinger"<<"Schneider"<<"Pramanick";
+  return models.indexOf(model);
+}
+
+int spicecompat::strToTranModel(const QString &model)
+{
+  QStringList models;
+  models<<"DC"<<"Full";
+  return models.indexOf(model);
+}
+
+int spicecompat::strToMsopenModel(const QString &model)
+{
+  QStringList models;
+  models<<"Kirschning"<<"Hammerstad"<<"Alexopoulos";
+  return models.indexOf(model);
+}
