@@ -180,10 +180,34 @@ void Module::registerXmlComponents(const QString& componentPath)
                 lines << line;
             }
 
+            QList<XmlComponent::Arc> arcs;
+
+            auto compArcs(component->Symbols().Symbol().Arc());
+            for (auto it(compArcs.begin()); it != compArcs.end(); ++it)
+            {
+                XmlComponent::Arc arc(
+                        it->x().get(),
+                        it->y().get(),
+                        it->arcWidth().get(),
+                        it->height().get(),
+                        it->angle().get(),
+                        it->len().get(),
+                        QString::fromUtf8(it->color().get()),
+                        static_cast<uint32_t>(it->width()),
+                        it->style()
+                );
+
+                arcs << arc;
+            }
+
             QString nspiceNetlist;
             QString nspiceNetlistInclude;
             QString cdlNetlist;
             QString cdlNetlistInclude;
+            QString xyceNetlist;
+            QString xyceNetlistInclude;
+            QString qucsatorNetlist;
+            QString qucsatorNetlistInclude;
 
             if (component->Netlists().NgspiceNetlist().present())
             {
@@ -209,6 +233,30 @@ void Module::registerXmlComponents(const QString& componentPath)
                 }
             }
 
+            if (component->Netlists().XyceNetlist().present())
+            {
+                xyceNetlist = QString::fromUtf8(component->Netlists().XyceNetlist().get().value().get());
+
+                if (component->Netlists().XyceNetlist().get().Include().present())
+                {
+                    xyceNetlistInclude =
+                        QString::fromUtf8(
+                                component->Netlists().XyceNetlist().get().Include().get().value().get());
+                }
+            }
+
+            if (component->Netlists().QucsatorNetlist().present())
+            {
+                qucsatorNetlist = QString::fromUtf8(component->Netlists().QucsatorNetlist().get().value().get());
+
+                if (component->Netlists().QucsatorNetlist().get().Include().present())
+                {
+                    qucsatorNetlistInclude =
+                        QString::fromUtf8(
+                                component->Netlists().QucsatorNetlist().get().Include().get().value().get());
+                }
+            }
+
             QSharedPointer<XmlComponent> xmlComponent(new XmlComponent(
                     QString::fromUtf8(component->name().get()),
                     QString::fromUtf8(component->schematic_id().get()),
@@ -219,9 +267,14 @@ void Module::registerXmlComponents(const QString& componentPath)
                     nspiceNetlistInclude,
                     cdlNetlist,
                     cdlNetlistInclude,
+                    xyceNetlist,
+                    xyceNetlistInclude,
+                    qucsatorNetlist,
+                    qucsatorNetlistInclude,
                     parameters,
                     portSyms,
-                    lines
+                    lines,
+                    arcs
             ));
 
             registerXmlComponent(
@@ -265,6 +318,21 @@ void Module::registerXmlComponents(const QString& componentPath)
                 }
             }
 
+            if (component->Netlists().QucsatorNetlist().present())
+            {
+                std::cout
+                    << "Qucsator netlist: "
+                    << component->Netlists().QucsatorNetlist().get().value().get() << std::endl;
+
+                if (component->Netlists().QucsatorNetlist().get().Include().present())
+                {
+                    std::cout
+                        << "        include: "
+                        << component->Netlists().QucsatorNetlist().get().Include().get().value().get()
+                        << std::endl;
+                }
+            }
+
             auto _lines(component->Symbols().Symbol().Line());
             for (auto it(_lines.begin()); it != _lines.end(); ++it)
             {
@@ -276,6 +344,22 @@ void Module::registerXmlComponents(const QString& componentPath)
                     << ", color=" << it->color().get()
                     << ", width=" << static_cast<int>(it->width().get())
                     << ", style=" << static_cast<int>(it->style().get())
+                    << std::endl;
+            }
+
+            auto _arcs(component->Symbols().Symbol().Arc());
+            for (auto it(_arcs.begin()); it != _arcs.end(); ++it)
+            {
+                std::cout
+                    << "Arc x=" << static_cast<int>(it->x().get())
+                    << ", y=" << static_cast<int>(it->y().get())
+                    << ", arcWidth=" << static_cast<int>(it->arcWidth().get())
+                    << ", height=" << static_cast<int>(it->height().get())
+                    << ", angle=" << static_cast<int>(it->angle().get())
+                    << ", len=" << static_cast<int>(it->len().get())
+                    << ", color=" << it->color().get()
+                    << ", width=" << static_cast<int>(it->width())
+                    << ", style=" << static_cast<int>(it->style())
                     << std::endl;
             }
 

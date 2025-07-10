@@ -29,6 +29,8 @@
 #include "node.h"
 #include "misc.h"
 
+#include <muParser.h>
+
 #include <QPen>
 #include <QString>
 #include <QMessageBox>
@@ -93,7 +95,9 @@ int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeigh
         if (!(p->display)) continue;
 
         // Update overall width if text of the current property is wider
-        auto w = metrics.size(flags, p->Name + "=" + p->Value).width();
+        const QString propertyValue(getValue(*p));
+
+        auto w = metrics.size(flags, p->Name + "=" + propertyValue).width();
         if (w > textPropertyMaxWidth) {
             textPropertyMaxWidth = w;
         }
@@ -193,7 +197,10 @@ int Component::getTextSelected(int point_x, int point_y) {
             continue;
         }
 
-        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, prop->Name + "=" + prop->Value)};
+        // The value of the parameter may be an expression. In that case, it must be parsed before displaying
+        const QString propertyValue(getValue(*prop));
+
+        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, prop->Name + "=" + propertyValue)};
         if (text_br.contains(click)) {
             return text_index;
         }
@@ -221,7 +228,24 @@ void Component::paint(QPainter *p) {
     for (auto *prop : Props) {
         if (!prop->display) continue;
         if ((prop->simulators & QucsSettings.DefaultSimulator) != QucsSettings.DefaultSimulator) continue;
-        prop->paint(text_br.left(), text_br.bottom(), p);
+
+        QString propertyValue = prop->Value;
+        if (prop->type == Property::Type::Equation)
+        {
+            // Evaluate the expression
+            double result = evaluateExpression(prop->Value);
+            // Display only two decimals. If the value is lower than 0.1, use scientific notation
+            if (std::abs(result) < 0.1 && result != 0)
+            {
+                propertyValue = QString::number(result, 'e', 2);
+            }
+            else
+            {
+                propertyValue = QString::number(result, 'f', 2);
+            }
+        }
+
+        prop->paint(text_br.left(), text_br.bottom(), p, propertyValue);
         text_br = prop->boundingRect();
     }
 
@@ -483,7 +507,8 @@ bool Component::rotate() noexcept {
     for (Property *pp : Props)
         if (pp->display) {
             // get width of text
-            tmp = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
+            const QString propertyValue(getValue(*pp));
+            tmp = metrics.boundingRect(pp->Name + "=" + propertyValue).width();
             if (tmp > dx) dx = tmp;
             dy += metrics.lineSpacing();
         }
@@ -631,7 +656,8 @@ bool Component::mirrorY() noexcept {
     for (Property *pp : Props)
         if (pp->display) {
             // get width of text
-            tmp = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
+            const QString propertyValue(getValue(*pp));
+            tmp = metrics.boundingRect(pp->Name + "=" + propertyValue).width();
             if (tmp > dx) dx = tmp;
         }
     if ((ty > y1) && (ty < y2)) tx = -tx - dx;     // mirror text position
@@ -657,7 +683,8 @@ QString Component::netlist() {
     no_sim_props<<"Symbol"<<"UseGlobTemp";
     for (const auto &p2 : Props) {
       if (!no_sim_props.contains(p2->Name)) {
-        s += " " + p2->Name + "=\"" + p2->Value + "\"";
+        const QString propertyValue(getValue(*p2));
+        s += " " + p2->Name + "=\"" + propertyValue + "\"";
       }
     }
 
@@ -680,7 +707,8 @@ QString Component::form_spice_param_list(QStringList &ignore_list, QStringList &
             } else {
                 nam = Props.at(i)->Name;
             }
-            QString val = spicecompat::normalize_value(Props.at(i)->Value);
+            const QString propertyValue(getValue(*Props.at(i)));
+            QString val = spicecompat::normalize_value(propertyValue);
             par_str += QStringLiteral("%1=%2 ").arg(nam).arg(val);
         }
 
@@ -880,7 +908,7 @@ QString Component::save() {
 
     // write all properties
     for (Property *p1 : Props) {
-        QString val = p1->Value; // enable newline in properties
+        QString val = getValue(*p1); // enable newline in properties
         val.replace("\n", "\\n");
         val.replace("\"", "''");
         if (p1->Description.isEmpty() || (p1->Description == "Expression"))
@@ -1393,6 +1421,77 @@ void Component::copyComponent(Component *pc) {
     Texts = pc->Texts;
 }
 
+double Component::evaluateExpression(const QString& expression) const
+{
+    mu::Parser parser;
+    QMap<QString, double> variables;
+
+    // Populate variables from Props
+    for (const Property* prop : Props)
+    {
+        if (prop->type == Property::Type::Value)
+        {
+            bool ok;
+            double value = prop->Value.toDouble(&ok);
+            if (ok)
+            {
+                variables[prop->Name] = value;
+                parser.DefineVar(prop->Name.toStdString(), &variables[prop->Name]);
+            }
+        }
+    }
+
+    // Evaluate expressions in Props and add them to variables
+    bool changed;
+    do
+    {
+        changed = false;
+        for (const Property* prop : Props)
+        {
+            if (prop->type == Property::Type::Equation && !variables.contains(prop->Name))
+            {
+                try
+                {
+                    parser.SetExpr(prop->Value.toStdString());
+                    double result = parser.Eval();
+                    variables[prop->Name] = result;
+                    parser.DefineVar(prop->Name.toStdString(), &variables[prop->Name]);
+                    changed = true;
+                }
+                catch (mu::Parser::exception_type &e)
+                {
+                    // Skip this expression if it can't be evaluated yet
+                }
+            }
+        }
+    } while (changed);
+
+    // Set the final expression to evaluate
+    parser.SetExpr(expression.toStdString());
+
+    try
+    {
+        return parser.Eval();
+    }
+    catch (mu::Parser::exception_type &e)
+    {
+        qDebug() << "Error evaluating expression:" << e.GetMsg().c_str();
+        return 0.0;
+    }
+}
+
+QString Component::getValue(const Property& property) const
+{
+    if (property.type == Property::Type::Equation)
+    {
+        // The value is an expression. It must be evaluated by muparser
+        return QString::number(evaluateExpression(property.Value));
+    }
+    else
+    {
+        return property.Value;
+    }
+}
 
 QString Component::getSpiceSubstrateLine()
 {
