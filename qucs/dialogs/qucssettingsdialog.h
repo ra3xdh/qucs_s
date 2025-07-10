@@ -79,42 +79,63 @@ private slots:
     void slotRemovePath();
     void slotPathSelectionChanged();
 
-public:
-    QucsApp *App;
-
-    QFont Font;
-    QFont AppFont;
-    QFont TextFont;
-    QCheckBox *checkWiring, *checkLoadFromFutureVersions,
-              *allowFlexibleWires, *allowLayingWiresAnew,
-              *checkAntiAliasing, *checkTextAntiAliasing,
-              *checkFullTraceNames,  *alwaysPrefixDataset;
-    QComboBox *LanguageCombo,
-              *StyleCombo;
-    QPushButton *FontButton, *AppFontButton, *TextFontButton, *BGColorButton, *GridColorButton;
-    QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
-              *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit,
-              *OpenVAFEdit, *RFLayoutEdit, *graphLineWidthEdit;
-    QTableWidget *fileTypesTableWidget, *pathsTableWidget;
-    QStandardItemModel *model;
-    QPushButton *ColorComment, *ColorString, *ColorInteger,
-                *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
-                *ColorDirective, *ColorTask;
-    QPushButton *RemovePathButt;
-
-    QVBoxLayout *all;
-    QIntValidator *val50;
-    QIntValidator *val200;
-    QRegularExpression Expr;
-    QRegularExpressionValidator *Validator;
-
-private:
-    QStringList currentPaths;
-
-
 private:
     void makePathTable();
 
+    QucsApp *a_app;
+
+    QFont a_font;
+    QFont a_appFont;
+    QFont a_textFont;
+    QCheckBox* a_checkWiring;
+    QCheckBox* a_checkLoadFromFutureVersions;
+    QCheckBox* a_allowFlexibleWires;
+    QCheckBox* a_allowLayingWiresAnew;
+    QCheckBox* a_checkAntiAliasing;
+    QCheckBox* a_checkTextAntiAliasing;
+    QCheckBox* a_checkFullTraceNames;
+    QCheckBox* a_alwaysPrefixDataset;
+    QComboBox* a_languageCombo;
+    QComboBox* a_styleCombo;
+    QPushButton* a_fontButton;
+    QPushButton* a_appFontButton;
+    QPushButton* a_textFontButton;
+    QPushButton* a_bGColorButton;
+    QPushButton* a_gridColorButton;
+    QLineEdit* a_largeFontSizeEdit;
+    QLineEdit* a_undoNumEdit;
+    QLineEdit* a_editorEdit;
+    QLineEdit* a_inputSuffix;
+
+    QLineEdit* a_inputProgram;
+    QLineEdit* a_homeEdit;
+    QLineEdit* a_admsXmlEdit;
+    QLineEdit* a_ascoEdit;
+    QLineEdit* a_octaveEdit;
+
+    QLineEdit* a_openVAFEdit;
+    QLineEdit* a_rfLayoutEdit;
+    QLineEdit* a_graphLineWidthEdit;
+
+    QTableWidget* a_fileTypesTableWidget;
+    QTableWidget* a_pathsTableWidget;
+    QPushButton* a_colorComment;
+    QPushButton* a_colorString;
+    QPushButton* a_colorInteger;
+    QPushButton* a_colorReal;
+    QPushButton* a_colorCharacter;
+    QPushButton* a_colorDataType;
+    QPushButton* a_colorAttribute;
+    QPushButton* a_colorDirective;
+    QPushButton* a_colorTask;
+    QPushButton* a_removePathButt;
+
+    QVBoxLayout* a_all;
+    QIntValidator* a_val50;
+    QIntValidator* a_val200;
+    QRegularExpression a_expr;
+    QRegularExpressionValidator* a_validator;
+    QStringList a_currentPaths;
 };
 
 #endif
