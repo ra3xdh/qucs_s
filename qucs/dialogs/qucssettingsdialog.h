@@ -87,6 +87,11 @@ private:
     QFont a_font;
     QFont a_appFont;
     QFont a_textFont;
+    QTabWidget* a_tabWidget;
+    QWidget* a_appSettingsTab;
+    QWidget* a_fileTypesTab;
+    QWidget* a_locationsTab;
+    QWidget* a_editorTab;
     QCheckBox* a_checkWiring;
     QCheckBox* a_checkLoadFromFutureVersions;
     QCheckBox* a_allowFlexibleWires;
