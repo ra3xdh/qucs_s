@@ -24,7 +24,7 @@ ImagePainting::ImagePainting() :
       penColor(Qt::black),
       penWidth(1),
       penStyle(Qt::SolidLine),
-      m_keepAspectRatio(false),
+      m_keepAspectRatio(true),
       m_aspectRatio(1.0)
 {
   Name = "ImagePainting ";
