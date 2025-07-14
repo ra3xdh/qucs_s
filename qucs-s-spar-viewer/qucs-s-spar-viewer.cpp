@@ -1710,7 +1710,13 @@ void Qucs_S_SPAR_Viewer::removeTrace() {
 
   DisplayMode mode;
   if (!scrollname.compare(QString("magnitudePhaseScrollArea"))) {
-    mode = DisplayMode::Magnitude_dB;
+    // Check if the trace is magnitude or phase
+    if (ID.endsWith("_dB")){
+      mode = DisplayMode::Magnitude_dB;
+    } else {
+      // It's a phase trace
+      mode = DisplayMode::Phase;
+    }
   } else if (!scrollname.compare(QString("smithScrollArea"))) {
     mode = DisplayMode::Smith;
   } else if (!scrollname.compare(QString("polarScrollArea"))) {
