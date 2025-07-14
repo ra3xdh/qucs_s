@@ -1964,7 +1964,19 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo, QColor trace_color
   DisplayMode mode = traceInfo.displayMode;
   int n_trace = this->traceMap[mode].size() + 1; // Number of displayed traces
 
-         // Get display name for the trace
+  // Magnitude and phase plots are on the same display, so it's needed count the number of both
+  // types of graphs
+  if (mode == DisplayMode::Magnitude_dB) {
+    int n_phase_plots = this->traceMap[DisplayMode::Phase].size();
+    n_trace += n_phase_plots;
+  } else {
+    if (mode == DisplayMode::Phase){
+      int n_magnitude_plots = this->traceMap[DisplayMode::Magnitude_dB].size();
+      n_trace += n_magnitude_plots;
+    }
+  }
+
+  // Get display name for the trace
   QString trace_name = traceInfo.displayName();
 
   // Check if the trace is already shown
