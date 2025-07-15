@@ -3476,7 +3476,7 @@ void QucsApp::slotUpdateTreeview()
 // a hash for lookup later
 void QucsApp::updateSchNameHash(void)
 {
-    // update the list of paths to search in qucsPathList, this
+    // update the list of paths to search in qucsSubcktPathList, this
     // removes nonexisting entries
     updatePathList();
 
@@ -3492,7 +3492,7 @@ void QucsApp::updateSchNameHash(void)
     // clear out any existing hash table entries
     schNameHash.clear();
 
-    for (const QString& qucspath : qucsPathList) {
+    for (const QString& qucspath : qucsSubcktPathList) {
         QDir thispath(qucspath);
         // get all the schematic files in the directory
         QFileInfoList schfilesList = thispath.entryInfoList( nameFilter, QDir::Files );
@@ -3519,7 +3519,7 @@ void QucsApp::updateSchNameHash(void)
 // a hash for lookup later
 void QucsApp::updateSpiceNameHash()
 {
-    // update the list of paths to search in qucsPathList, this
+    // update the list of paths to search in qucsSubcktPathList, this
     // removes nonexisting entries
     updatePathList();
 
@@ -3533,7 +3533,7 @@ void QucsApp::updateSpiceNameHash()
     // clear out any existing hash table entries
     spiceNameHash.clear();
 
-    for (const QString& qucspath : qucsPathList) {
+    for (const QString& qucspath : qucsSubcktPathList) {
         QDir thispath(qucspath);
         // get all the schematic files in the directory
         QFileInfoList spicefilesList = thispath.entryInfoList( QucsSettings.spiceExtensions, QDir::Files );
@@ -3556,10 +3556,10 @@ void QucsApp::updateSpiceNameHash()
 */
 // -----------------------------------------------------------
 // update the list of paths, pruning non-existing paths
-void QucsApp::updatePathList()
+void QucsApp::updatePathList(QStringList& refPathList)
 {
     // check each path actually exists, if not remove it
-    QMutableListIterator<QString> i(qucsPathList);
+    QMutableListIterator<QString> i(refPathList);
     while (i.hasNext()) {
         i.next();
         QDir thispath(i.value());
@@ -3572,18 +3572,18 @@ void QucsApp::updatePathList()
 }
 
 // replace the old path list with a new one
-void QucsApp::updatePathList(QStringList newPathList)
+void QucsApp::updatePathList(const QStringList& newPathList, QStringList& refPathList)
 {
     // clear out the old path list
-    qucsPathList.clear();
+    refPathList.clear();
 
     // copy the new path into the path list
     for (const QString& path : newPathList)
     {
-        qucsPathList.append(path);
+        refPathList.append(path);
     }
     // do the normal path update operations
-    updatePathList();
+    updatePathList(refPathList);
 }
 
 

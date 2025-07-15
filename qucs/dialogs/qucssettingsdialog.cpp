@@ -60,6 +60,8 @@
 
 using namespace std;
 
+Q_DECLARE_METATYPE(QStringList*)
+
 auto getFontDescription = [](const auto& a_font) -> QString {
     const QChar comma(u',');
     QString fontDescription = a_font.family() + comma +
@@ -112,6 +114,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent) :
     a_graphLineWidthEdit(new QLineEdit(a_appSettingsTab)),
     a_fileTypesTableWidget(new QTableWidget(a_fileTypesTab)),
     a_pathsTableWidget(new QTableWidget(a_locationsTab)),
+    a_pathsTypeCombo(new QComboBox(a_locationsTab)),
     a_colorComment(new QPushButton(tr("Comment"), a_editorTab)),
     a_colorString(new QPushButton(tr("String"), a_editorTab)),
     a_colorInteger(new QPushButton(tr("Integer Number"), a_editorTab)),
@@ -127,7 +130,8 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent) :
     a_val200(new QIntValidator(0, 200, this)),
     a_expr("[\\w_]+"),
     a_validator(new QRegularExpressionValidator(a_expr, this)),
-    a_currentPaths(QStringList(qucsPathList))
+    a_subcktPaths(qucsSubcktPathList),
+    a_xmlCompPaths(qucsXmlCompPathList)
 {
     setWindowTitle(tr("Edit Qucs Properties"));
 
@@ -438,15 +442,21 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent) :
     locationsGrid->addWidget(RFLButt, 6, 2);
     connect(RFLButt, SIGNAL(clicked()), SLOT(slotRFLayoutDirBrowse()));
 
-
     // the a_pathsTableWidget displays the path list
     a_pathsTableWidget->setColumnCount(1);
 
-    QTableWidgetItem *pitem1 = new QTableWidgetItem();
+    a_pathsTableWidget->horizontalHeader()->hide();
 
-    a_pathsTableWidget->setHorizontalHeaderItem(0, pitem1);
+    a_pathsTypeCombo->addItem(
+            "Subcircuit Search Path List:",
+            QVariant::fromValue(static_cast<QStringList*>(&a_subcktPaths)));
+    a_pathsTypeCombo->addItem(
+            "XML Component Search Path List:",
+            QVariant::fromValue(static_cast<QStringList*>(&a_xmlCompPaths)));
+    a_pathsTypeCombo->setCurrentIndex(0);
+    connect(a_pathsTypeCombo, SIGNAL(currentIndexChanged(int)), SLOT(slotPathTypeSelectionChanged(int)));
 
-    pitem1->setText(tr("Subcircuit Search Path List"));
+    locationsGrid->addWidget(a_pathsTypeCombo,7,0,1,2);
 
     a_pathsTableWidget->horizontalHeader()->setStretchLastSection(true);
     // avoid drawing header text in bold when some data is selected
@@ -457,7 +467,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent) :
     a_pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(a_pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
     connect(a_pathsTableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotPathSelectionChanged()));
-    locationsGrid->addWidget(a_pathsTableWidget,7,0,3,2);
+    locationsGrid->addWidget(a_pathsTableWidget,8,0,2,2);
 
     QPushButton *AddPathButt = new QPushButton(tr("Add Path"));
     locationsGrid->addWidget(AddPathButt, 7, 2);
@@ -822,11 +832,18 @@ void QucsSettingsDialog::slotApply()
         a_app->repaint();
     }
 
-    // update the schenatic filelist hash
-    QucsMain->updatePathList(a_currentPaths);
+    // update the subckt/xml-comp pathlist
+    Q_ASSERT(a_pathsTypeCombo->count() == 2);
+    QList<QStringList*> refList = {&qucsSubcktPathList, &qucsXmlCompPathList};
+    for (int idx = 0; idx < a_pathsTypeCombo->count(); ++idx)
+    {
+        QucsMain->updatePathList(
+                *static_cast<QStringList*>(a_pathsTypeCombo->itemData(idx).value<QStringList*>()),
+                *(refList[idx]));
+    }
+
     //QucsMain->updateSchNameHash();
     //QucsMain->updateSpiceNameHash();
-
 }
 
 
@@ -1160,6 +1177,11 @@ void QucsSettingsDialog::slotPathSelectionChanged()
   a_removePathButt->setEnabled(selectionIsNotEmpty);
 }
 
+void QucsSettingsDialog::slotPathTypeSelectionChanged(int)
+{
+    makePathTable();
+}
+
 void QucsSettingsDialog::slotAddPath()
 {
   QString d = QFileDialog::getExistingDirectory
@@ -1169,7 +1191,7 @@ void QucsSettingsDialog::slotAddPath()
 
   if(!d.isEmpty())
     {
-        a_currentPaths.append(d);
+        getCurrentPathRef().append(d);
         // reconstruct the table again
         makePathTable();
     }
@@ -1193,7 +1215,7 @@ void QucsSettingsDialog::slotAddPathWithSubFolders()
     if(!d.isEmpty())
     {
         // add the selected path
-        a_currentPaths.append(d);
+        getCurrentPathRef().append(d);
         // Iterate through the directories
         QDirIterator pathIter(d, QDirIterator::Subdirectories);
         while (pathIter.hasNext())
@@ -1205,7 +1227,7 @@ void QucsSettingsDialog::slotAddPathWithSubFolders()
                 pathIter.fileName() != "." && pathIter.fileName() != "..")
             {
                 QDir thispath(path);
-                a_currentPaths.append(thispath.canonicalPath());
+                getCurrentPathRef().append(thispath.canonicalPath());
             }
         }
         makePathTable();
@@ -1226,10 +1248,10 @@ void QucsSettingsDialog::slotRemovePath()
     {
         QString path = item->text();
         //removedPaths.append(path);
-        int pathind = a_currentPaths.indexOf(path,0);
+        int pathind = getCurrentPathRef().indexOf(path,0);
         if (pathind != -1)
         {
-            a_currentPaths.removeAt(pathind);
+            getCurrentPathRef().removeAt(pathind);
         }
     }
 
@@ -1247,7 +1269,7 @@ void QucsSettingsDialog::makePathTable()
     a_pathsTableWidget->setRowCount(0);
 
     // fill listview with the list of paths
-    for (const QString& pathstr : a_currentPaths)
+    for (const QString& pathstr : getCurrentPathRef())
     {
         int row = a_pathsTableWidget->rowCount();
         a_pathsTableWidget->setRowCount(row+1);
@@ -1255,4 +1277,9 @@ void QucsSettingsDialog::makePathTable()
         path->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         a_pathsTableWidget->setItem(row, 0, path);
     }
+}
+
+QStringList& QucsSettingsDialog::getCurrentPathRef() const
+{
+    return *static_cast<QStringList*>(a_pathsTypeCombo->currentData().value<QStringList*>());
 }
