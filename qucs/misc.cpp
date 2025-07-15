@@ -346,7 +346,12 @@ QString misc::properAbsFileName(const QString& filename, Schematic* sch)
   fileInfo.setFile(QucsSettings.QucsWorkDir.filePath(fName));
   if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
 
-  for (const QString& path : qucsPathList) {
+  for (const QString& path : qucsSubcktPathList) {
+    fileInfo.setFile(QDir(path).filePath(fName));
+    if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
+  }
+
+  for (const QString& path : qucsXmlCompPathList) {
     fileInfo.setFile(QDir(path).filePath(fName));
     if ( fileInfo.exists() ) return fileInfo.canonicalFilePath();
   }

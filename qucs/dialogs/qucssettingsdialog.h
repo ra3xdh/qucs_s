@@ -78,9 +78,11 @@ private slots:
     void slotAddPathWithSubFolders();
     void slotRemovePath();
     void slotPathSelectionChanged();
+    void slotPathTypeSelectionChanged(int);
 
 private:
     void makePathTable();
+    QStringList& getCurrentPathRef() const;
 
     QucsApp *a_app;
 
@@ -124,6 +126,7 @@ private:
 
     QTableWidget* a_fileTypesTableWidget;
     QTableWidget* a_pathsTableWidget;
+    QComboBox* a_pathsTypeCombo;
     QPushButton* a_colorComment;
     QPushButton* a_colorString;
     QPushButton* a_colorInteger;
@@ -140,7 +143,8 @@ private:
     QIntValidator* a_val200;
     QRegularExpression a_expr;
     QRegularExpressionValidator* a_validator;
-    QStringList a_currentPaths;
+    QStringList a_subcktPaths;
+    QStringList a_xmlCompPaths;
 };
 
 #endif

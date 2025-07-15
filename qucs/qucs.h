@@ -298,8 +298,8 @@ private:
 public:
 
   void readProjects();
-  void updatePathList(void); // update the list of paths, pruning non-existing paths
-  void updatePathList(QStringList);
+  void updatePathList(QStringList& refPathList); // update the list of paths, pruning non-existing paths
+  void updatePathList(const QStringList& newPathList, QStringList& refPathList);
   //void updateSchNameHash(void); // maps all schematic files in the path list
   //void updateSpiceNameHash(void); // maps all spice files in the path list
 
