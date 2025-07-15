@@ -1710,7 +1710,13 @@ void Qucs_S_SPAR_Viewer::removeTrace() {
 
   DisplayMode mode;
   if (!scrollname.compare(QString("magnitudePhaseScrollArea"))) {
-    mode = DisplayMode::Magnitude_dB;
+    // Check if the trace is magnitude or phase
+    if (ID.endsWith("_dB")){
+      mode = DisplayMode::Magnitude_dB;
+    } else {
+      // It's a phase trace
+      mode = DisplayMode::Phase;
+    }
   } else if (!scrollname.compare(QString("smithScrollArea"))) {
     mode = DisplayMode::Smith;
   } else if (!scrollname.compare(QString("polarScrollArea"))) {
@@ -1964,7 +1970,19 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo, QColor trace_color
   DisplayMode mode = traceInfo.displayMode;
   int n_trace = this->traceMap[mode].size() + 1; // Number of displayed traces
 
-         // Get display name for the trace
+  // Magnitude and phase plots are on the same display, so it's needed count the number of both
+  // types of graphs
+  if (mode == DisplayMode::Magnitude_dB) {
+    int n_phase_plots = this->traceMap[DisplayMode::Phase].size();
+    n_trace += n_phase_plots;
+  } else {
+    if (mode == DisplayMode::Phase){
+      int n_magnitude_plots = this->traceMap[DisplayMode::Magnitude_dB].size();
+      n_trace += n_magnitude_plots;
+    }
+  }
+
+  // Get display name for the trace
   QString trace_name = traceInfo.displayName();
 
   // Check if the trace is already shown
@@ -4547,20 +4565,93 @@ void Qucs_S_SPAR_Viewer::fileChanged(const QString &path)
 // Handle directory changed events
 void Qucs_S_SPAR_Viewer::directoryChanged(const QString &path) {
   qDebug() << "Directory changed:" << path;
-
-  // Scan for new S-parameter files
   QDir dir(path);
-  const QStringList newFiles = dir.entryList({"*.dat", "*.s*", "*.dat.ngspice"}, QDir::Files);
 
-  QStringList paths;
-  for(const QString& file : newFiles) {
-    const QString fullPath = dir.absoluteFilePath(file);
-    if(!filePaths.contains(file)) {
-      paths.append(fullPath);
+  // List all files
+  const QStringList allFiles = dir.entryList(QDir::Files);
+
+  // Regular expression for S-Parameter files (*.s1p, *.s2p, ..., *.snp) and data files
+  QRegularExpression sparamRegex(R"(\.s\d+p$)", QRegularExpression::CaseInsensitiveOption);
+  QRegularExpression snpRegex(R"(\.s\d+p$)", QRegularExpression::CaseInsensitiveOption);
+  QRegularExpression datRegex(R"(\.dat$)", QRegularExpression::CaseInsensitiveOption);
+  QRegularExpression ngspiceDatRegex(R"(\.ngspice\.dat$)", QRegularExpression::CaseInsensitiveOption);
+
+  QStringList filesToAdd;
+  for(const QString& file : allFiles) {
+    // Match *.snp (n is 1 or more digits), *.dat, *.ngspice.dat
+    if (sparamRegex.match(file).hasMatch() ||
+        datRegex.match(file).hasMatch() ||
+        ngspiceDatRegex.match(file).hasMatch()) {
+      if (!filePaths.contains(file)) {
+        filesToAdd.append(file);
+      }
     }
   }
-  this->addFiles(paths);
+
+  if(filesToAdd.isEmpty()) {
+    return;
+  }
+
+  // Create dialog
+  QDialog dialog(this);
+  dialog.setWindowTitle("Select files to add");
+  QVBoxLayout *layout = new QVBoxLayout(&dialog);
+  QListWidget *listWidget = new QListWidget(&dialog);
+  listWidget->setSelectionMode(QAbstractItemView::NoSelection);
+
+  // Add files as checkable items
+  for(const QString &file : filesToAdd) {
+    QListWidgetItem *item = new QListWidgetItem(file, listWidget);
+    item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+    item->setCheckState(Qt::Checked);
+  }
+  layout->addWidget(listWidget);
+
+  // Horizontal layout for select/unselect all buttons
+  QHBoxLayout *buttonLayout = new QHBoxLayout;
+  QPushButton *selectAllButton = new QPushButton("Select All", &dialog);
+  QPushButton *unselectAllButton = new QPushButton("Unselect All", &dialog);
+  buttonLayout->addWidget(selectAllButton);
+  buttonLayout->addWidget(unselectAllButton);
+  layout->addLayout(buttonLayout);
+
+  // Add OK/Cancel buttons
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+  layout->addWidget(buttonBox);
+
+  QObject::connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+  QObject::connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+  // Select All functionality
+  QObject::connect(selectAllButton, &QPushButton::clicked, [&]() {
+    for(int i = 0; i < listWidget->count(); ++i) {
+      QListWidgetItem *item = listWidget->item(i);
+      item->setCheckState(Qt::Checked);
+    }
+  });
+
+  // Unselect All functionality
+  QObject::connect(unselectAllButton, &QPushButton::clicked, [&]() {
+    for(int i = 0; i < listWidget->count(); ++i) {
+      QListWidgetItem *item = listWidget->item(i);
+      item->setCheckState(Qt::Unchecked);
+    }
+  });
+
+  // Show dialog and process selection
+  if(dialog.exec() == QDialog::Accepted) {
+    QStringList selectedFiles;
+    for(int i = 0; i < listWidget->count(); ++i) {
+      QListWidgetItem *item = listWidget->item(i);
+      if(item->checkState() == Qt::Checked) {
+        selectedFiles.append(dir.absoluteFilePath(item->text()));
+      }
+    }
+    this->addFiles(selectedFiles);
+  }
 }
+
+
 
 // This function is called when a file in the dataset has changes. It updates the traces in the display widgets
 void Qucs_S_SPAR_Viewer::updateAllPlots(const QString& datasetName)

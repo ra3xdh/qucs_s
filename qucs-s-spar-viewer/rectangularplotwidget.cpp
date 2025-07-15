@@ -303,6 +303,12 @@ void RectangularPlotWidget::updatePlot()
     }
   }
 
+  if (getY2AxisTraceCount() == 0) {
+    y2Axis->setVisible(false);
+  } else {
+    y2Axis->setVisible(true);
+  }
+
   // Draw markers if any
   for (auto it = markers.constBegin(); it != markers.constEnd(); ++it) {
     const Marker& marker = it.value();
