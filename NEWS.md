@@ -7,8 +7,7 @@
 * Added new *Image* paiting. This component allows to put a raster image on schematic #1403
 * Added VDMOS device support #1326
 * Massive redesign of schematic rendering engine, enable arbitrary angle wires #1226
-* Added microstrip lines simulation support for Ngspice. It is a test mode feature. The XSPICE models fro microstrip lines
-  still be not accepted to Ngspice upstream. It is required to compile Ngspice from special branch. See #1401 #1402
+* Added microstrip lines simulation support for Ngspice. Compile Ngspice from pre-master branch to get access. See #1401 #1402
 * Hide the component properties incompatible with the selected simulator #974
 
 ## General improvements and bugfixes
