@@ -27,14 +27,11 @@
 #endif
 
 #include "qucssettingsdialog.h"
-#include <iostream>
-#include <cmath>
-#include <QGridLayout>
-#include <QVBoxLayout>
 #include "main.h"
 #include "textdoc.h"
 #include "schematic.h"
 #include "settings.h"
+#include "module.h"
 
 #include <QWidget>
 #include <QLabel>
@@ -57,8 +54,8 @@
 #include <QObject>
 #include <QString>
 #include <QList>
-
-using namespace std;
+#include <QGridLayout>
+#include <QVBoxLayout>
 
 Q_DECLARE_METATYPE(QStringList*)
 
@@ -665,8 +662,8 @@ void QucsSettingsDialog::slotApply()
         if (style) {
           QApplication::setStyle(style);
           _settings::Get().setItem<QString>("AppStyle",  selectedStyle);
-          changed = true;  
-        } 
+          changed = true;
+        }
     }
 
     // Update all open schematics with the new grid color.
@@ -832,6 +829,8 @@ void QucsSettingsDialog::slotApply()
         a_app->repaint();
     }
 
+    const bool xmlCompPathChanged(a_xmlCompPaths != qucsXmlCompPathList);
+
     // update the subckt/xml-comp pathlist
     Q_ASSERT(a_pathsTypeCombo->count() == 2);
     QList<QStringList*> refList = {&qucsSubcktPathList, &qucsXmlCompPathList};
@@ -840,6 +839,13 @@ void QucsSettingsDialog::slotApply()
         QucsMain->updatePathList(
                 *static_cast<QStringList*>(a_pathsTypeCombo->itemData(idx).value<QStringList*>()),
                 *(refList[idx]));
+    }
+
+    if (xmlCompPathChanged)
+    {
+        Module::unregisterXmlComponents();
+        Module::registerXmlComponents();
+        a_app->refreshCurrentComponentList();
     }
 
     //QucsMain->updateSchNameHash();

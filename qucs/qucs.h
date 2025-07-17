@@ -100,6 +100,7 @@ public:
   QucsDoc* findDoc (QString, int * Pos = 0);
   QString fileType (const QString&);
   static bool isTextDocument(QWidget *);
+  void refreshCurrentComponentList();
 
   QString ProjName;   // name of the project, that is open
   //QHash<QString,QString> schNameHash; // QHash for the schematic files lookup

@@ -41,6 +41,7 @@ public:
 
     Element* getInfo(QString& name, char* &bitmapFile, bool getNewOne);
     bool hasInfo() const { return a_info != nullptr || a_xmlComp; }
+    bool isXmlModule() const { return !a_xmlComp.isNull(); }
 
     static void registerModule (QString, pInfoFunc);
     static void registerComponent (QString, pInfoFunc);
@@ -55,8 +56,9 @@ public:
 
 public:
     static void registerModules (void);
-    static void registerXmlComponents(const QString& componentPath);
-    static void unregisterModules (void);
+    static void registerXmlComponents();
+    static void unregisterModules(void);
+    static void unregisterXmlComponents();
 
 public:
     pInfoVAFunc a_infoVA;
@@ -64,6 +66,8 @@ public:
     QPixmap* a_icon;
 
 private:
+    static void registerXmlComponents(const QString& componentPath);
+
     pInfoFunc a_info;
     QSharedPointer<XmlComponent> a_xmlComp;
 };
@@ -82,6 +86,7 @@ public:
     static QStringList getCategories (void);
     static QList<Module *> getModules (QString);
     static int getModulesNr (QString);
+    static void unregisterXmlModules();
 
 public:
     QString Name;

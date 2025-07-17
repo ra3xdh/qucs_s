@@ -3263,6 +3263,11 @@ bool QucsApp::isTextDocument(QWidget *w) {
   return w->inherits("QPlainTextEdit");
 }
 
+void QucsApp::refreshCurrentComponentList()
+{
+    slotSetCompView(CompChoose->currentIndex());
+}
+
 // ---------------------------------------------------------
 // Is called if the "symEdit" action is activated, i.e. if the user
 // switches between the two painting mode: Schematic and (subcircuit)
