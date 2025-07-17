@@ -25,7 +25,6 @@
 #include <QFont>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
-#include <QVBoxLayout>
 
 class QLineEdit;
 class QCheckBox;

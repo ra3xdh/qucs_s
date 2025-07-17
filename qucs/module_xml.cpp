@@ -46,6 +46,35 @@ void Module::registerXmlComponent(const QString& category, const QSharedPointer<
     }
 }
 
+void Module::unregisterXmlComponents()
+{
+    Category::unregisterXmlModules();
+
+    QHash<QString, Module*>::iterator i(s_modules.begin());
+    while (i != s_modules.end())
+    {
+        if (i.value() == nullptr || i.value()->a_xmlComp)
+        {
+            delete i.value();
+            i = s_modules.erase(i);
+        }
+        else
+        {
+            ++i;
+        }
+    }
+}
+
+void Module::registerXmlComponents()
+{
+    registerXmlComponents(QucsSettings.ComponentDir);
+
+    foreach (const QString& path, qucsXmlCompPathList)
+    {
+        registerXmlComponents(path);
+    }
+}
+
 void Module::registerXmlComponents(const QString& componentPath)
 {
     QDir componentDir(componentPath);
@@ -61,16 +90,15 @@ void Module::registerXmlComponents(const QString& componentPath)
     foreach (const QString& component, components)
     {
         QFile componentFile(componentPath + QDir::separator() + component);
+        QString logComponent(QString::fromUtf8("Component xml: %1%2%3").arg(componentPath).arg(QDir::separator()).arg(component));
 
-        std::cout << "Component xml: " << component.toUtf8().constData() << std::endl;
+        std::cout << logComponent.toUtf8().constData() << std::endl;
 
         if (!componentFile.open(QIODevice::ReadOnly))
         {
             std::cerr
                 << "Could not open '"
-                << componentPath.toUtf8().constData()
-                << QString(QDir::separator()).toUtf8().constData()
-                << component.toUtf8().constData()
+                << logComponent.toUtf8().constData()
                 << "'"
                 << std::endl;
             break;
@@ -94,25 +122,41 @@ void Module::registerXmlComponents(const QString& componentPath)
 
                 if (match.hasMatch())
                 {
-                    QString path(match.captured(1));
-                    path.replace("{QUCS_S_COMPONENTS_LIBRARY}", componentPath);
+                    QStringList pathsToTry = {componentPath, QucsSettings.ComponentDir};
+                    bool found(false);
+                    QFile includeFile;
 
-                    QFile includeFile(path);
-
-                    if (!includeFile.open(QIODevice::ReadOnly))
+                    foreach (const QString& pathToTry, pathsToTry)
                     {
-                        std::cerr
-                            << "Could not open '"
-                            << path.toUtf8().constData()
-                            << "'"
-                            << std::endl;
+                        QString path(match.captured(1));
+                        path.replace("{QUCS_S_COMPONENTS_LIBRARY}", pathToTry);
+
+                        includeFile.setFileName(path);
+
+                        if (includeFile.open(QIODevice::ReadOnly))
+                        {
+                            found = true;
+                            break;
+                        }
                     }
-                    else
+
+                    if (found)
                     {
                         QTextStream includeFileStream(&includeFile);
                         QString content(includeFileStream.readAll());
 
                         line.replace(pattern, content);
+                    }
+                    else
+                    {
+                        QString path(match.captured(1));
+                        path.replace("{QUCS_S_COMPONENTS_LIBRARY}", componentPath);
+
+                        std::cerr
+                            << "Could not open '"
+                            << path.toUtf8().constData()
+                            << "'"
+                            << std::endl;
                     }
                 }
 
@@ -126,7 +170,7 @@ void Module::registerXmlComponents(const QString& componentPath)
         {
             ::xml_schema::properties properties;
             properties.no_namespace_schema_location(
-                    QString(componentPath + QDir::separator() + "Component.xsd").toStdString());
+                    QString(QucsSettings.ComponentDir + QDir::separator() + "Component.xsd").toStdString());
 
             std::unique_ptr<component::xml::Component> component(
                     component::xml::Component_(stream, 0, properties));
