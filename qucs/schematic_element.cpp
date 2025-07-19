@@ -41,7 +41,7 @@ struct Schematic::HealingParams
 const Schematic::HealingParams mousyMutationParams{
     .m_healer_params = {
         .allowWireReshaping = _settings::Get().item<bool>("AllowFlexibleWires"),
-        .allowWireRelaying = _settings::Get().item<bool>("AllowLayingWiresAnew"),
+        .allowWireRelaying = false,
         .wireRelayingDepth = 2
     }
 };

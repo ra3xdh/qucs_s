@@ -86,7 +86,7 @@ public:
     QFont AppFont;
     QFont TextFont;
     QCheckBox *checkWiring, *checkLoadFromFutureVersions,
-              *allowFlexibleWires, *allowLayingWiresAnew,
+              *allowFlexibleWires,
               *checkAntiAliasing, *checkTextAntiAliasing,
               *checkFullTraceNames,  *alwaysPrefixDataset;
     QComboBox *LanguageCombo,
