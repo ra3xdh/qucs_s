@@ -1,11 +1,12 @@
 #ifndef QUCSSPARVIEWER_H
 #define QUCSSPARVIEWER_H
 
-#include "codeeditor.h"
-#include "smithchartwidget.h"
-#include "rectangularplotwidget.h"
-#include "polarplotwidget.h"
-#include "matrixcombopopup.h"
+#include "PlotWidgets/smithchartwidget.h"
+#include "PlotWidgets/rectangularplotwidget.h"
+#include "PlotWidgets/polarplotwidget.h"
+
+#include "CustomWidgets/codeeditor.h"
+#include "CustomWidgets/matrixcombopopup.h"
 
 #include <QMainWindow>
 #include <QLabel>

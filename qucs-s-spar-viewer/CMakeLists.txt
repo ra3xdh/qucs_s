@@ -85,9 +85,29 @@ ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
 
-SET( spar_viewer_sources main.cpp qucs-s-spar-viewer.cpp codeeditor.cpp smithchartwidget.cpp rectangularplotwidget.cpp polarplotwidget.cpp matrixcombopopup.cpp)
 
-SET( spar_viewer_moc_headers qucs-s-spar-viewer.h codeeditor.h smithchartwidget.h rectangularplotwidget.h polarplotwidget.h matrixcombopopup.h)
+file(GLOB PLOT_WIDGETS_SOURCES
+     PlotWidgets/*.cpp
+)
+
+file(GLOB PLOT_WIDGETS_HEADERS
+     PlotWidgets/*.h
+)
+
+file(GLOB CUSTOM_WIDGETS_SOURCES
+     CustomWidgets/*.cpp
+)
+
+file(GLOB CUSTOM_WIDGETS_HEADERS
+     CustomWidgets/*.h
+)
+
+
+
+
+SET( spar_viewer_sources main.cpp qucs-s-spar-viewer.cpp ${PLOT_WIDGETS_SOURCES} ${CUSTOM_WIDGETS_SOURCES})
+
+SET( spar_viewer_moc_headers qucs-s-spar-viewer.h ${PLOT_WIDGETS_HEADERS} ${CUSTOM_WIDGETS_HEADERS})
 
 SET(RESOURCES qucs-s-spar-viewer.qrc)
 
