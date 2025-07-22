@@ -24,6 +24,14 @@ on original Qucs code: https://github.com/Qucs/qucs
 
 Qucs-S accepts donation using Boosty platform: https://boosty.to/qucs_s
 
+## Installation using a package manager
+
+### Guix
+
+~~~
+guix install qucs-s
+~~~
+
 ## Build instructions
 
 Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, Flex, Bison and SPICE
