@@ -367,7 +367,7 @@ QString LibComp::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
 
     QString s = SpiceModel + Name + " 0 "; // connect ground of subckt to circuit ground
     for (Port *p1 : Ports)
-      s += " "+p1->Connection->Name;   // node names
+      s += " "  + spicecompat::normalize_node_name(p1->Connection->Name);   // node names
     s += " " + createType();
 
     // output user defined parameters
