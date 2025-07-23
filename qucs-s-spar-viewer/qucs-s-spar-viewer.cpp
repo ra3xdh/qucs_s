@@ -155,6 +155,7 @@ void Qucs_S_SPAR_Viewer::CreateRightPanel(){
   setTraceManagementDock();
   setMarkerManagementDock();
   setLimitManagementDock();
+  setToolsDock();
 
   // Notes
   Notes_Widget = new CodeEditor();
@@ -167,6 +168,7 @@ void Qucs_S_SPAR_Viewer::CreateRightPanel(){
   dockTracesList->setFeatures(dockTracesList->features() & ~QDockWidget::DockWidgetClosable);
   dockMarkers->setFeatures(dockMarkers->features() & ~QDockWidget::DockWidgetClosable);
   dockLimits->setFeatures(dockLimits->features() & ~QDockWidget::DockWidgetClosable);
+  dockTools->setFeatures(dockTools->features() & ~QDockWidget::DockWidgetClosable);
   dockNotes->setFeatures(dockNotes->features() & ~QDockWidget::DockWidgetClosable);
 
   // Add all panel docks to the right area
@@ -174,13 +176,15 @@ void Qucs_S_SPAR_Viewer::CreateRightPanel(){
   addDockWidget(Qt::RightDockWidgetArea, dockTracesList);
   addDockWidget(Qt::RightDockWidgetArea, dockMarkers);
   addDockWidget(Qt::RightDockWidgetArea, dockLimits);
+  addDockWidget(Qt::RightDockWidgetArea, dockTools);
   addDockWidget(Qt::RightDockWidgetArea, dockNotes);
 
          // Tabify the panel docks
   tabifyDockWidget(dockFiles, dockTracesList);
   tabifyDockWidget(dockTracesList, dockMarkers);
   tabifyDockWidget(dockMarkers, dockLimits);
-  tabifyDockWidget(dockLimits, dockNotes);
+  tabifyDockWidget(dockLimits, dockTools);
+  tabifyDockWidget(dockTools, dockNotes);
 
   // Remove the tabify between chart docks as it's already done in CreateDisplayWidgets
   // tabifyDockWidget(dockChart, dockSmithChart);
@@ -634,6 +638,24 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock(){
   dockLimits->setWidget(LimitsGroup);
 }
 
+void Qucs_S_SPAR_Viewer::setToolsDock() {
+  // Tools dock
+  dockTools = new QDockWidget("Tools", this);
+  dockTools->setObjectName("dockTools");
+
+
+  QTabWidget *tabWidget = new QTabWidget();
+
+  // Filter design
+  FilterTool = new FilterDesignTool(this);
+  tabWidget->addTab(FilterTool, "Filter Design");
+
+
+  // Scratch pad
+  tabWidget->addTab(new QWidget(), "Scratch Pad");
+  dockTools->setWidget(tabWidget);
+
+}
 
 
 

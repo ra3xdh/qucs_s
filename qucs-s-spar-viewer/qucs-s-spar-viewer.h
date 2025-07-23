@@ -8,6 +8,8 @@
 #include "CustomWidgets/codeeditor.h"
 #include "CustomWidgets/matrixcombopopup.h"
 
+#include "Filtering/FilterDesignTool.h"
+
 #include <QMainWindow>
 #include <QLabel>
 #include <QCheckBox>
@@ -318,6 +320,15 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QDoubleSpinBox * Limits_Offset;
   QMap<QString, LimitProperties> limitsMap; // This structure groups the widgets related to the traces so that they can be accessed by name
 
+
+  // Tools
+  QDockWidget *dockTools;
+
+  // Filter Tool
+  QTabWidget * toolsTabs;
+  QWidget * FilterToolTab;
+  FilterDesignTool *FilterTool;
+
   // Save
   QString savepath;
   bool save();
@@ -352,10 +363,11 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void CreateDisplayWidgets(); // Setup magnitude/phase and Smith charts
 
   void CreateRightPanel(); // Setup managing docks
-  void setFileManagementDock(); // Setup file managment dock
-  void setTraceManagementDock(); // Setup trace managment dock
-  void setMarkerManagementDock(); // Setup marker managment dock
-  void setLimitManagementDock(); // Setup marker managment dock
+  void setFileManagementDock(); // Setup file management dock
+  void setTraceManagementDock(); // Setup trace management dock
+  void setMarkerManagementDock(); // Setup marker management dock
+  void setLimitManagementDock(); // Setup limit management dock
+  void setToolsDock(); // Setup limit management dock
 
   // Utilities
   void convert_MA_RI_to_dB(double *, double *, double *, double *, QString);

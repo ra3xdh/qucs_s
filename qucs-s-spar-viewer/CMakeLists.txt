@@ -102,12 +102,34 @@ file(GLOB CUSTOM_WIDGETS_HEADERS
      CustomWidgets/*.h
 )
 
+file(GLOB FILTERING_SOURCES
+     Filtering/*.cpp
+)
+
+file(GLOB FILTERING_HEADERS
+     Filtering/*.h
+)
+
+file(GLOB SCHEMATIC_SOURCES
+     Schematic/*.cpp
+)
+
+file(GLOB SCHEMATIC_HEADERS
+     Schematic/*.h
+)
+
+file(GLOB MISC_SOURCES
+     Misc/*.cpp
+)
+
+file(GLOB MISC_HEADERS
+     Misc/*.h
+)
 
 
+SET( spar_viewer_sources main.cpp qucs-s-spar-viewer.cpp ${PLOT_WIDGETS_SOURCES} ${CUSTOM_WIDGETS_SOURCES} ${FILTERING_SOURCES} ${SCHEMATIC_SOURCES} ${MISC_SOURCES})
 
-SET( spar_viewer_sources main.cpp qucs-s-spar-viewer.cpp ${PLOT_WIDGETS_SOURCES} ${CUSTOM_WIDGETS_SOURCES})
-
-SET( spar_viewer_moc_headers qucs-s-spar-viewer.h ${PLOT_WIDGETS_HEADERS} ${CUSTOM_WIDGETS_HEADERS})
+SET( spar_viewer_moc_headers qucs-s-spar-viewer.h ${PLOT_WIDGETS_HEADERS} ${CUSTOM_WIDGETS_HEADERS} ${FILTERING_HEADERS} ${SCHEMATIC_HEADERS} ${MISC_HEADERS})
 
 SET(RESOURCES qucs-s-spar-viewer.qrc)
 
