@@ -323,6 +323,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
   // Tools
   QDockWidget *dockTools;
+  GraphWidget *SchematicWidget; // Schematic viewer
 
   // Filter Tool
   QTabWidget * toolsTabs;

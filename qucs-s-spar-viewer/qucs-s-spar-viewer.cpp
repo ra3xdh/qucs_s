@@ -643,19 +643,30 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   dockTools = new QDockWidget("Tools", this);
   dockTools->setObjectName("dockTools");
 
+  // Main container widget for the dock
+  QWidget *container = new QWidget();
 
+  // Vertical layout for the container
+  QVBoxLayout *layout = new QVBoxLayout(container);
+  layout->setContentsMargins(0, 0, 0, 0); // Optional: remove margins
+
+  // Tab widget
   QTabWidget *tabWidget = new QTabWidget();
-
-  // Filter design
   FilterTool = new FilterDesignTool(this);
   tabWidget->addTab(FilterTool, "Filter Design");
-
-
-  // Scratch pad
   tabWidget->addTab(new QWidget(), "Scratch Pad");
-  dockTools->setWidget(tabWidget);
 
+  // Schematic widget
+  SchematicWidget = new GraphWidget(this); // Schematic window
+
+  // Add widgets to layout
+  layout->addWidget(tabWidget);
+  layout->addWidget(SchematicWidget); // This will appear *below* the tab widget
+
+         // Set the layout container as the dock widget's content
+  dockTools->setWidget(container);
 }
+
 
 
 
