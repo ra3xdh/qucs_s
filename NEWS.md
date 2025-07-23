@@ -1,3 +1,32 @@
+# Qucs-S 25.2.0
+
+## New features
+
+* Added Jiles-Atherton magnetic core model. The same model is used by MicroCAP simulator. Added a new
+  device group *magnetic cores* containing two new devices: *Winding* and *Magnetic core* #1284
+* Added new *Image* paiting. This component allows to put a raster image on schematic #1403
+* Added VDMOS device support #1326
+* Massive redesign of schematic rendering engine, enable arbitrary angle wires #1226
+* Added microstrip lines simulation support for Ngspice. Compile Ngspice from pre-master branch to get access. See #1401 #1402
+* Hide the component properties incompatible with the selected simulator #974
+
+## General improvements and bugfixes
+
+* Implemented open recent project #705
+* Fixed symbol editing issues #945
+* Improved S-parameter files viewer #1309
+* Added context menu for document tabs #1362
+
+## Library update
+
+* Added Amidon, Epcos, and Ferroxcube ferrite cores library #1284
+* Added VDMOS devices library #1326
+
+## Documentation
+
+* New documentation available at: https://qucs-s-help.readthedocs.io/en/latest/
+* Reorganized examples #1361
+
 # Qucs-S 25.1.2
 
 ## Bugfixes and general improvemnt
@@ -10,7 +39,7 @@
 
 ## Known issues
 
-* The .OPTIONS devices works but allows to edit or delete its first property. 
+* The .OPTIONS devices works but allows to edit or delete its first property.
   It is recommended to use the *INCLUDE SCRIPT* instead. See #1262
 
 # Qucs-S 25.1.1
@@ -131,7 +160,7 @@ This release contains a massive library extention:
 
 ## QucsatorRF
 
-* QucsatorRF updated to v1.0.3. See the release notes. 
+* QucsatorRF updated to v1.0.3. See the release notes.
 
 # Qucs-S 24.3.2
 
@@ -179,7 +208,7 @@ This release contains a massive library extention:
 
 ## New features
 
-* SpiceLibComp redesign. This device is renamed to *Spice Library Device* and provides an easy way 
+* SpiceLibComp redesign. This device is renamed to *Spice Library Device* and provides an easy way
   to add SPICE model to schematic and assign symbol to it. See #679
 * Added possibity to import SPICE model for Diode, BJT, MOSFET, and JFET unified devices (blue) #795
 * Implemeted symbol files (`*.sym`)  editing mode. These files are needed to attach symbol to SPICE devices #700
@@ -203,7 +232,7 @@ This release contains a massive library extention:
 
 * Linux DEB and RPM packages switched to Qt6
 * Windows package switched to Qt6
-* Introduced continous release of Linux, Windows, and Mac packages #719 
+* Introduced continous release of Linux, Windows, and Mac packages #719
 * Added MacOS package build #797 and homebrew support #804
 
 ## General improvements
@@ -291,14 +320,14 @@ This release contains no new features except the fixing of the critical bugs.
 * Added YLIN device support for XYCE #451
 * Fixed touchstone simulation issues for Ngspice #392
 * Added BiasT device support for SPICE #374
-* Added option to disable transient model for RF port #410 
+* Added option to disable transient model for RF port #410
 
 ## Libraries
 
 * Fixed different issues related to creating libraries #432
 * Added audio IC library
 * Added loudspeaker library #421
-* Added comparators library #436 
+* Added comparators library #436
 * Modified voltage regulators library #433
 * Added voltage references library #439
 * Added thermistor library #538
@@ -318,7 +347,7 @@ This release contains no new features except the fixing of the critical bugs.
 
 ## Documentation
 
-* Added new examples 
+* Added new examples
 * Added Ngspice templates #441
 * The readthdocs documentantion is a candidate for deprecation #554
 
@@ -335,7 +364,7 @@ Thanks @wawuwo and @iwbnwif for providing refactoring PRs! Many thanks to @tomha
 * Added tuner simulation mode #123 (used implementation by @tipofthesowrd)
 * Added support for touchstone s2p file devices for Ngspice #233 (implementation by @transmitterdan)
 * Redesign of the simulation window #309
-* Diagrams are placed on schematic and `*.dpl` files are disabled by default  #309 
+* Diagrams are placed on schematic and `*.dpl` files are disabled by default  #309
 * Backport of the active Legendre filter synthesis from Qucs-0.0.20rc2 #318
 * Added SPICE entry for MUT and MUT2 devices
 * Backported circular waveguide and tapered line symbols from Qucs-0.0.20rc2
@@ -382,7 +411,7 @@ Thanks @wawuwo and @iwbnwif for providing refactoring PRs! Many thanks to @tomha
 
 ## Packaging
 
-* Linux AppImage build switched to Github workflow #281 
+* Linux AppImage build switched to Github workflow #281
 * Added Windows 64-bit installer with Ngspice
 
 ## Component library
@@ -410,7 +439,7 @@ Thanks @wawuwo and @iwbnwif for providing refactoring PRs! Many thanks to @tomha
 ## Deprecated features
 
 * XSPICE CodeModel synthesiszer has been deprected since v1.0.3. The precompiled CM libraries
-  are still supported using *spiceinit* virtual device. See #204 
+  are still supported using *spiceinit* virtual device. See #204
 
 ## Known issues of digital simulation
 
@@ -447,10 +476,10 @@ Thanks @wawuwo and @iwbnwif for providing refactoring PRs! Many thanks to @tomha
 * Added support for Verilog-A defined devices using Ngspice+OpenVAF #197. Old Qucsator+ADMS
   workflow is marked as deprecated. Ngspice >=39 is required to support OpenVAF.
 * Implemented variable parameter sweep analysis #189
-* Added possibility to build Qucs-S with Qt6 #190 The -DWITH=QT6=ON option for cmake is required. 
+* Added possibility to build Qucs-S with Qt6 #190 The -DWITH=QT6=ON option for cmake is required.
   The source code of the Qucs-S is Qt6 compatible now. Thanks @Zergud !
-* Simulator prefixes like "ngspice/" are not show anymore on plot traces if the plot contains data 
-  from only one simulator #178 
+* Simulator prefixes like "ngspice/" are not show anymore on plot traces if the plot contains data
+  from only one simulator #178
 
 
 ## Component library
@@ -461,7 +490,7 @@ Thanks @wawuwo and @iwbnwif for providing refactoring PRs! Many thanks to @tomha
 
 ## Bugfix and general improvements
 
-* Change default RCL device values and simulation settings to prevent convergence error when putting 
+* Change default RCL device values and simulation settings to prevent convergence error when putting
   together device with default values #195
 * Fixed auto-scaling issue on Windows 64-bit platform #133
 
@@ -476,7 +505,7 @@ Thanks @wawuwo and @iwbnwif for providing refactoring PRs! Many thanks to @tomha
 * Added possibility to set dB units for Y-axis on digrams from the diagram properties dialog #92
 * Backported advanced features for projects tree from Qucs-0.0.20 #95
 * Show warning if schematic file name changed, but dataset/display file name are not updated #111
-* Revised examples tree (by Tom Hajjar @tomhajjar); legacy Ngspice-incompatible examples 
+* Revised examples tree (by Tom Hajjar @tomhajjar); legacy Ngspice-incompatible examples
   moved to `examples/qucsator` subdirectory
 
 ## Component library
