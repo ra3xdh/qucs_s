@@ -46,6 +46,35 @@ void Module::registerXmlComponent(const QString& category, const QSharedPointer<
     }
 }
 
+void Module::unregisterXmlComponents()
+{
+    Category::unregisterXmlModules();
+
+    QHash<QString, Module*>::iterator i(s_modules.begin());
+    while (i != s_modules.end())
+    {
+        if (i.value() == nullptr || i.value()->a_xmlComp)
+        {
+            delete i.value();
+            i = s_modules.erase(i);
+        }
+        else
+        {
+            ++i;
+        }
+    }
+}
+
+void Module::registerXmlComponents()
+{
+    registerXmlComponents(QucsSettings.ComponentDir);
+
+    foreach (const QString& path, qucsXmlCompPathList)
+    {
+        registerXmlComponents(path);
+    }
+}
+
 void Module::registerXmlComponents(const QString& componentPath)
 {
     QDir componentDir(componentPath);
@@ -61,16 +90,15 @@ void Module::registerXmlComponents(const QString& componentPath)
     foreach (const QString& component, components)
     {
         QFile componentFile(componentPath + QDir::separator() + component);
+        QString logComponent(QString::fromUtf8("Component xml: %1%2%3").arg(componentPath).arg(QDir::separator()).arg(component));
 
-        std::cout << "Component xml: " << component.toUtf8().constData() << std::endl;
+        std::cout << logComponent.toUtf8().constData() << std::endl;
 
         if (!componentFile.open(QIODevice::ReadOnly))
         {
             std::cerr
                 << "Could not open '"
-                << componentPath.toUtf8().constData()
-                << QString(QDir::separator()).toUtf8().constData()
-                << component.toUtf8().constData()
+                << logComponent.toUtf8().constData()
                 << "'"
                 << std::endl;
             break;
@@ -94,25 +122,41 @@ void Module::registerXmlComponents(const QString& componentPath)
 
                 if (match.hasMatch())
                 {
-                    QString path(match.captured(1));
-                    path.replace("{QUCS_S_COMPONENTS_LIBRARY}", componentPath);
+                    QStringList pathsToTry = {componentPath, QucsSettings.ComponentDir};
+                    bool found(false);
+                    QFile includeFile;
 
-                    QFile includeFile(path);
-
-                    if (!includeFile.open(QIODevice::ReadOnly))
+                    foreach (const QString& pathToTry, pathsToTry)
                     {
-                        std::cerr
-                            << "Could not open '"
-                            << path.toUtf8().constData()
-                            << "'"
-                            << std::endl;
+                        QString path(match.captured(1));
+                        path.replace("{QUCS_S_COMPONENTS_LIBRARY}", pathToTry);
+
+                        includeFile.setFileName(path);
+
+                        if (includeFile.open(QIODevice::ReadOnly))
+                        {
+                            found = true;
+                            break;
+                        }
                     }
-                    else
+
+                    if (found)
                     {
                         QTextStream includeFileStream(&includeFile);
                         QString content(includeFileStream.readAll());
 
                         line.replace(pattern, content);
+                    }
+                    else
+                    {
+                        QString path(match.captured(1));
+                        path.replace("{QUCS_S_COMPONENTS_LIBRARY}", componentPath);
+
+                        std::cerr
+                            << "Could not open '"
+                            << path.toUtf8().constData()
+                            << "'"
+                            << std::endl;
                     }
                 }
 
@@ -126,7 +170,7 @@ void Module::registerXmlComponents(const QString& componentPath)
         {
             ::xml_schema::properties properties;
             properties.no_namespace_schema_location(
-                    QString(componentPath + QDir::separator() + "Component.xsd").toStdString());
+                    QString(QucsSettings.ComponentDir + QDir::separator() + "Component.xsd").toStdString());
 
             std::unique_ptr<component::xml::Component> component(
                     component::xml::Component_(stream, 0, properties));
@@ -180,10 +224,34 @@ void Module::registerXmlComponents(const QString& componentPath)
                 lines << line;
             }
 
+            QList<XmlComponent::Arc> arcs;
+
+            auto compArcs(component->Symbols().Symbol().Arc());
+            for (auto it(compArcs.begin()); it != compArcs.end(); ++it)
+            {
+                XmlComponent::Arc arc(
+                        it->x().get(),
+                        it->y().get(),
+                        it->arcWidth().get(),
+                        it->height().get(),
+                        it->angle().get(),
+                        it->len().get(),
+                        QString::fromUtf8(it->color().get()),
+                        static_cast<uint32_t>(it->width()),
+                        it->style()
+                );
+
+                arcs << arc;
+            }
+
             QString nspiceNetlist;
             QString nspiceNetlistInclude;
             QString cdlNetlist;
             QString cdlNetlistInclude;
+            QString xyceNetlist;
+            QString xyceNetlistInclude;
+            QString qucsatorNetlist;
+            QString qucsatorNetlistInclude;
 
             if (component->Netlists().NgspiceNetlist().present())
             {
@@ -209,6 +277,30 @@ void Module::registerXmlComponents(const QString& componentPath)
                 }
             }
 
+            if (component->Netlists().XyceNetlist().present())
+            {
+                xyceNetlist = QString::fromUtf8(component->Netlists().XyceNetlist().get().value().get());
+
+                if (component->Netlists().XyceNetlist().get().Include().present())
+                {
+                    xyceNetlistInclude =
+                        QString::fromUtf8(
+                                component->Netlists().XyceNetlist().get().Include().get().value().get());
+                }
+            }
+
+            if (component->Netlists().QucsatorNetlist().present())
+            {
+                qucsatorNetlist = QString::fromUtf8(component->Netlists().QucsatorNetlist().get().value().get());
+
+                if (component->Netlists().QucsatorNetlist().get().Include().present())
+                {
+                    qucsatorNetlistInclude =
+                        QString::fromUtf8(
+                                component->Netlists().QucsatorNetlist().get().Include().get().value().get());
+                }
+            }
+
             QSharedPointer<XmlComponent> xmlComponent(new XmlComponent(
                     QString::fromUtf8(component->name().get()),
                     QString::fromUtf8(component->schematic_id().get()),
@@ -219,9 +311,14 @@ void Module::registerXmlComponents(const QString& componentPath)
                     nspiceNetlistInclude,
                     cdlNetlist,
                     cdlNetlistInclude,
+                    xyceNetlist,
+                    xyceNetlistInclude,
+                    qucsatorNetlist,
+                    qucsatorNetlistInclude,
                     parameters,
                     portSyms,
-                    lines
+                    lines,
+                    arcs
             ));
 
             registerXmlComponent(
@@ -265,6 +362,21 @@ void Module::registerXmlComponents(const QString& componentPath)
                 }
             }
 
+            if (component->Netlists().QucsatorNetlist().present())
+            {
+                std::cout
+                    << "Qucsator netlist: "
+                    << component->Netlists().QucsatorNetlist().get().value().get() << std::endl;
+
+                if (component->Netlists().QucsatorNetlist().get().Include().present())
+                {
+                    std::cout
+                        << "        include: "
+                        << component->Netlists().QucsatorNetlist().get().Include().get().value().get()
+                        << std::endl;
+                }
+            }
+
             auto _lines(component->Symbols().Symbol().Line());
             for (auto it(_lines.begin()); it != _lines.end(); ++it)
             {
@@ -276,6 +388,22 @@ void Module::registerXmlComponents(const QString& componentPath)
                     << ", color=" << it->color().get()
                     << ", width=" << static_cast<int>(it->width().get())
                     << ", style=" << static_cast<int>(it->style().get())
+                    << std::endl;
+            }
+
+            auto _arcs(component->Symbols().Symbol().Arc());
+            for (auto it(_arcs.begin()); it != _arcs.end(); ++it)
+            {
+                std::cout
+                    << "Arc x=" << static_cast<int>(it->x().get())
+                    << ", y=" << static_cast<int>(it->y().get())
+                    << ", arcWidth=" << static_cast<int>(it->arcWidth().get())
+                    << ", height=" << static_cast<int>(it->height().get())
+                    << ", angle=" << static_cast<int>(it->angle().get())
+                    << ", len=" << static_cast<int>(it->len().get())
+                    << ", color=" << it->color().get()
+                    << ", width=" << static_cast<int>(it->width())
+                    << ", style=" << static_cast<int>(it->style())
                     << std::endl;
             }
 

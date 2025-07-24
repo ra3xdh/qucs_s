@@ -19,6 +19,7 @@
 #include <QStringList>
 #include <QList>
 #include <QDebug>
+#include <QMutableListIterator>
 
 #include "element.h"
 #include "components/component.h"
@@ -655,7 +656,7 @@ void Module::registerModules (void) {
   REGISTER_PAINT_1 (EllipseArc);
   REGISTER_PAINT_1 (ImagePainting);
 
-  registerXmlComponents(QucsSettings.ComponentDir);
+  registerXmlComponents();
 }
 
 // This function has to be called once at application end.  It removes
@@ -736,3 +737,19 @@ int Category::getModulesNr (QString category) {
   }
   return -1;
 }
+
+void Category::unregisterXmlModules()
+{
+    foreach (Category* category, Categories)
+    {
+        QMutableListIterator<Module*> it(category->Content);
+        while (it.hasNext())
+        {
+            if (it.next()->isXmlModule())
+            {
+                it.remove();
+            }
+        }
+    }
+}
+

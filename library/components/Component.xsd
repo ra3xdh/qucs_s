@@ -30,6 +30,22 @@
         <xs:element name="Netlists">
           <xs:complexType>
             <xs:sequence>
+              <xs:element name="QucsatorNetlist" maxOccurs="1" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Include" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="value"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="value"/>
+                </xs:complexType>
+              </xs:element>
               <xs:element name="NgspiceNetlist" maxOccurs="1" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
@@ -47,6 +63,22 @@
                 </xs:complexType>
               </xs:element>
               <xs:element name="CDLNetlist" maxOccurs="1" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Include" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="value"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="value"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="XyceNetlist" maxOccurs="1" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="Include" maxOccurs="1" minOccurs="0">
@@ -94,6 +126,23 @@
                             <xs:attribute type="xs:string" name="color" use="optional"/>
                             <xs:attribute type="xs:int" name="width" use="optional"/>
                             <xs:attribute type="xs:byte" name="style" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Arc" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:int" name="x"/>
+                            <xs:attribute type="xs:int" name="y"/>
+                            <xs:attribute type="xs:int" name="arcWidth"/>
+                            <xs:attribute type="xs:int" name="height"/>
+                            <xs:attribute type="xs:int" name="angle"/>
+                            <xs:attribute type="xs:int" name="len"/>
+                            <xs:attribute type="xs:string" name="color" use="optional"/>
+                            <xs:attribute type="xs:int" name="width" use="optional" default="2"/>
+                            <xs:attribute type="xs:byte" name="style" use="optional" default="1"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
