@@ -66,10 +66,6 @@ private slots:
   void ResposeComboChanged();
   void ImplementationComboChanged(int);
   void EllipticTypeChanged();
-  // Zverev mode slots
-  void SwitchZverevTablesMode(bool);
-  void UpdateRipple(int); // Update the load resistance and the ripple for a
-                          // given filter order according to the Zverev tables
   void ChangeRL_CLC_LCL_mode();
 
 private:
@@ -82,8 +78,7 @@ private:
   QDoubleSpinBox *FCSpinbox, *BWSpinbox, *RippleSpinbox, *StopbandAttSpinbox,
       *MinimumZ_Spinbox, *MaximumZ_Spinbox, *ImpedanceRatio_Spinbox;
   QSpinBox *OrderSpinBox;
-  QComboBox *OrderCombobox, *RLCombobox, *PhaseErrorCombobox; // Zverev mode
-  QComboBox *RippleCombobox;
+
   QLineEdit *SourceImpedanceLineEdit;
   QRadioButton *CLCRadioButton, *LCLRadioButton;
   QLabel *StopbandAttLabel, *StopbandAttdBLabel, *EllipticTypeLabel,
@@ -92,7 +87,6 @@ private:
       *ImpedanceRatio_Label;
   QLabel *RLlabel, *RLlabelOhm, *PhaseErrorLabel, *PhaseErrorLabelDeg,
       *MinimumZLabel, *MaximumZLabel; // Zverev mode
-  QCheckBox *UseZverevTablesCheckBox;
   QStringList DefaultFilterResponses;
   struct FilterSpecifications Filter_SP; // User specifications
   QString netlist;
@@ -103,7 +97,7 @@ private:
   void synthesize();
 
 signals:
-  void simulateNetwork(SchematicContent);
+  void updateSchematic(SchematicContent);
 };
 
 #endif // FILTERDESIGNTOOL_H

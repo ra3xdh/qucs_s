@@ -665,9 +665,10 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
          // Set the layout container as the dock widget's content
   dockTools->setWidget(container);
+
+  // Connect with tools to update the schematic viewer
+  connect(FilterTool, SIGNAL(updateSchematic(SchematicContent)), this, SLOT(updateSchematicContent(SchematicContent)));
 }
-
-
 
 
 void Qucs_S_SPAR_Viewer::CreateDisplayWidgets(){
@@ -847,6 +848,12 @@ void Qucs_S_SPAR_Viewer::setupScrollableLayout()
   setupScrollAreaForLayout(VSWRLayout, VSWRTab, "VSWRScrollArea");
   setupScrollAreaForLayout(GroupDelayLayout, GroupDelayTab, "GroupDelayScrollArea");
 }
+
+void Qucs_S_SPAR_Viewer::updateSchematicContent(SchematicContent SI) {
+  SchematicWidget->clear(); // Remove the components in the scene
+  SchematicWidget->setSchematic(SI);
+}
+
 
 Qucs_S_SPAR_Viewer::~Qucs_S_SPAR_Viewer()
 {

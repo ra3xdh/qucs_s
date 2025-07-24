@@ -75,12 +75,10 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   OrderSpinBox = new QSpinBox();
   OrderSpinBox->setValue(2);
   OrderSpinBox->setMinimum(1);
-  OrderCombobox = new QComboBox(); // Combobox option for Zverev mode. This is
-                                   // filled up in the corresponding slot
-  OrderCombobox->hide();
+
   FilterDesignLayout->addWidget(new QLabel("Order"), 4, 0);
   FilterDesignLayout->addWidget(OrderSpinBox, 4, 1);
-  FilterDesignLayout->addWidget(OrderCombobox, 4, 1);
+
   //******* Cutoff freq (Lowpass and Highpass) *********
   //****** Central freq (Bandpass and Bandstop) *********
   FCSpinbox = new QDoubleSpinBox();
@@ -120,13 +118,10 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   RippleSpinbox->setMaximum(2);
   RippleSpinbox->setValue(0.01);
   RippleSpinbox->setSingleStep(0.01); // Step fixed to 0.01dB
-  RippleCombobox = new QComboBox();
-  RippleCombobox->hide();
   RippleLabel = new QLabel("Ripple");
   RippledBLabel = new QLabel("dB");
   FilterDesignLayout->addWidget(RippleLabel, 7, 0);
   FilterDesignLayout->addWidget(RippleSpinbox, 7, 1);
-  FilterDesignLayout->addWidget(RippleCombobox, 7, 1);
   FilterDesignLayout->addWidget(RippledBLabel, 7, 2);
   //************** Stopband attenuation ****************
   StopbandAttSpinbox = new QDoubleSpinBox();
@@ -153,26 +148,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   EllipticType->setVisible(false);
   FilterDesignLayout->addWidget(EllipticTypeLabel, 9, 0);
   FilterDesignLayout->addWidget(EllipticType, 9, 1);
-  //************* Load resistance (Zverev mode only) ***********
-  RLCombobox = new QComboBox();
-  RLlabel = new QLabel("Load");
-  RLlabelOhm = new QLabel(QChar(0xa9, 0x03));
-  RLCombobox->hide();
-  RLlabel->hide();
-  RLlabelOhm->hide();
-  FilterDesignLayout->addWidget(RLlabel, 9, 0);
-  FilterDesignLayout->addWidget(RLCombobox, 9, 1);
-  FilterDesignLayout->addWidget(RLlabelOhm, 9, 2);
-  //**************** Phase error (Zverev mode only) ***********
-  PhaseErrorLabel = new QLabel("Phase error");
-  PhaseErrorCombobox = new QComboBox();
-  PhaseErrorLabelDeg = new QLabel("deg");
-  PhaseErrorLabel->hide();
-  PhaseErrorCombobox->hide();
-  PhaseErrorLabelDeg->hide();
-  FilterDesignLayout->addWidget(PhaseErrorLabel, 10, 0);
-  FilterDesignLayout->addWidget(PhaseErrorCombobox, 10, 1);
-  FilterDesignLayout->addWidget(PhaseErrorLabelDeg, 10, 2);
+
   //***************  Minimum impedance achievable in the manufacturing process
   //**************
   MinimumZLabel = new QLabel("Minimum Z");
@@ -185,9 +161,9 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   MinimumZLabel->hide();
   MinimumZ_Spinbox->hide();
   MinimumZ_Unit_Label->hide();
-  FilterDesignLayout->addWidget(MinimumZLabel, 11, 0);
-  FilterDesignLayout->addWidget(MinimumZ_Spinbox, 11, 1);
-  FilterDesignLayout->addWidget(MinimumZ_Unit_Label, 11, 2);
+  FilterDesignLayout->addWidget(MinimumZLabel, 10, 0);
+  FilterDesignLayout->addWidget(MinimumZ_Spinbox, 10, 1);
+  FilterDesignLayout->addWidget(MinimumZ_Unit_Label, 10, 2);
   //***************  Maximum impedance achievable in the manufacturing process
   //**************
   MaximumZLabel = new QLabel("Maximum Z");
@@ -200,9 +176,9 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   MaximumZLabel->hide();
   MaximumZ_Spinbox->hide();
   MaximumZ_Unit_Label->hide();
-  FilterDesignLayout->addWidget(MaximumZLabel, 12, 0);
-  FilterDesignLayout->addWidget(MaximumZ_Spinbox, 12, 1);
-  FilterDesignLayout->addWidget(MaximumZ_Unit_Label, 12, 2);
+  FilterDesignLayout->addWidget(MaximumZLabel, 11, 0);
+  FilterDesignLayout->addWidget(MaximumZ_Spinbox, 11, 1);
+  FilterDesignLayout->addWidget(MaximumZ_Unit_Label, 11, 2);
   //************************* Semilumped implementation settings
   //*********************
   SemiLumpedImplementationLabel = new QLabel("Semilumped settings");
@@ -212,8 +188,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   SemiLumpedImplementationCombo->addItem("Replace only inductors");
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
-  FilterDesignLayout->addWidget(SemiLumpedImplementationLabel, 13, 0);
-  FilterDesignLayout->addWidget(SemiLumpedImplementationCombo, 13, 1);
+  FilterDesignLayout->addWidget(SemiLumpedImplementationLabel, 12, 0);
+  FilterDesignLayout->addWidget(SemiLumpedImplementationCombo, 12, 1);
 
          // Coupled line SIR BPF type
   ImpedanceRatio_Label = new QLabel(QString("Impedance ratio, K"));
@@ -223,14 +199,14 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   ImpedanceRatio_Spinbox->setValue(0.5);
   ImpedanceRatio_Spinbox->setSingleStep(0.1);
 
-  FilterDesignLayout->addWidget(ImpedanceRatio_Label, 14, 0);
-  FilterDesignLayout->addWidget(ImpedanceRatio_Spinbox, 14, 1);
+  FilterDesignLayout->addWidget(ImpedanceRatio_Label, 13, 0);
+  FilterDesignLayout->addWidget(ImpedanceRatio_Spinbox, 13, 1);
 
          //************ Source impedance **********
   SourceImpedanceLineEdit = new QLineEdit("50");
-  FilterDesignLayout->addWidget(new QLabel("ZS"), 15, 0);
-  FilterDesignLayout->addWidget(SourceImpedanceLineEdit, 15, 1);
-  FilterDesignLayout->addWidget(new QLabel(QChar(0xa9, 0x03)), 15, 2);
+  FilterDesignLayout->addWidget(new QLabel("ZS"), 14, 0);
+  FilterDesignLayout->addWidget(SourceImpedanceLineEdit, 14, 1);
+  FilterDesignLayout->addWidget(new QLabel(QChar(0xa9, 0x03)), 14, 2);
   this->setLayout(FilterDesignLayout);
 
          // Connection functions for updating the network requirements and simulate on
@@ -267,8 +243,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
           SLOT(UpdateDesignParameters()));
   connect(DC_CouplingTypeCombo, SIGNAL(currentIndexChanged(int)), this,
           SLOT(UpdateDesignParameters()));
-  connect(RLCombobox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateRipple(int)));
+
   connect(MinimumZ_Spinbox, SIGNAL(valueChanged(double)), this,
           SLOT(UpdateDesignParameters()));
   connect(MaximumZ_Spinbox, SIGNAL(valueChanged(double)), this,
@@ -322,6 +297,8 @@ void FilterDesignTool::synthesize() {
     SchContent.setDescription(QString(""));
   }
   delete CF;
+
+  emit updateSchematic(SchContent);
 
 }
 
@@ -476,17 +453,14 @@ void FilterDesignTool::UpdateDesignParameters() {
     Filter_SP.SemiLumpedISettings = ONLY_INDUCTORS;
 
  // The data comes from comboboxes rather than spinboxes
-  Filter_SP.order = 3;//OrderCombobox->currentText().toInt();
-  Filter_SP.Ripple = 0.01;//RippleCombobox->currentText().toDouble();
-    bool ok;
-  Filter_SP.ZL = 50;//RLCombobox->currentText().toDouble(&ok);
-    if (!ok)
-      Filter_SP.ZL = 1e8 * Filter_SP.ZS; // It is a single ended filter
+  Filter_SP.order = OrderSpinBox->value();
+  Filter_SP.Ripple = RippleSpinbox->value();
+
+  Filter_SP.ZL = 50;
+
 
 
   synthesize();
-  // EMIT SIGNAL TO FORCE SIMULATION
-  emit simulateNetwork(SchContent);
 }
 
 void FilterDesignTool::EllipticTypeChanged() {
@@ -497,117 +471,10 @@ void FilterDesignTool::EllipticTypeChanged() {
   }
 }
 
-void FilterDesignTool::SwitchZverevTablesMode(bool ZverevMode) {
-  if (FilterResponseTypeCombo->currentText() == "Elliptic")
-    return; // Zverev mode is only available for canonical responses
-  if (ZverevMode) {
-    QString aux = FilterResponseTypeCombo->currentText();
-    QStringList data = setItemsResponseTypeCombo();
-    FilterResponseTypeCombo->blockSignals(true);
-    FilterResponseTypeCombo->clear();
-    FilterResponseTypeCombo->addItems(data);
-    FilterResponseTypeCombo->blockSignals(false);
-    // Find the index of the current response type and select it for the Zverev
-    // mode
-    for (int i = 0; i < FilterResponseTypeCombo->count(); i++) {
-      if (FilterResponseTypeCombo->itemText(i) == aux) {
-        FilterResponseTypeCombo->setCurrentIndex(i);
-        break;
-      }
-    }
-    ResposeComboChanged(); // Fill the user input widgets with the parameters of
-                           // the Zverev tables
-
-    OrderSpinBox->hide();
-    OrderCombobox->show();
-    RLlabel->show();
-    RLlabelOhm->show();
-    RLCombobox->show();
-    RippleCombobox->show();
-    RippleSpinbox->hide();
-    FilterResponseTypeCombo->blockSignals(false);
-  } else { // Conventional mode. Restore the default filter responses
-    OrderSpinBox->show();
-    OrderCombobox->hide();
-    OrderCombobox->clear();
-    RLlabel->hide();
-    RLlabelOhm->hide();
-    RLCombobox->hide();
-    RippleCombobox->hide();
-    RippleSpinbox->show();
-
-    QString aux =
-        FilterResponseTypeCombo
-            ->currentText(); // Last response selected in the Zverev mode
-    FilterResponseTypeCombo->clear();
-    FilterResponseTypeCombo->addItems(
-        DefaultFilterResponses); // Fill the combo with the default option
-    for (int i = 0; i < FilterResponseTypeCombo->count();
-         i++) { // Find the index of the current response type and select it for
-                // the conventional mode
-      if (FilterResponseTypeCombo->itemText(i) == aux) {
-        FilterResponseTypeCombo->setCurrentIndex(i);
-        break;
-      }
-    }
-    ResposeComboChanged();
-    // Update order and ripple
-    OrderSpinBox->setValue(OrderCombobox->currentText().toInt());
-    RippleSpinbox->setValue(RippleCombobox->currentText().toDouble());
-  }
-  UpdateDesignParameters();
-}
-
 void FilterDesignTool::ChangeRL_CLC_LCL_mode() {
-  RLCombobox->blockSignals(true);
-  RLCombobox->setInsertPolicy(QComboBox::InsertAfterCurrent);
-  if (UseZverevTablesCheckBox->isChecked()) {
-    bool mode = CLCRadioButton->isChecked();
-    double ZS = SourceImpedanceLineEdit->text().toDouble();
-    for (int i = 0; i < RLCombobox->count(); i++) {
-      double aux = RLCombobox->itemText(i).toDouble();
-
-      if (mode) { // CLC mode selected, then previously it was LCL
-        aux /= ZS;
-        aux = 1 / aux;
-        aux *= ZS;
-      } else {     // LCL mode selected, then previously it was CLC
-        aux /= ZS; // Now aux = gi or aux = 1/gi
-        aux = ZS / aux;
-      }
-      RLCombobox->insertItem(i, QString("%1").arg(aux));
-      RLCombobox->removeItem(i + 1);
-    }
-  }
-  for (int i = 0; i < RLCombobox->count(); i++)
-    qDebug() << QString("%1").arg(RLCombobox->itemText(i).toDouble());
-  qDebug() << "Current index: " << RLCombobox->currentIndex() << " = "
-           << RLCombobox->currentText().toDouble();
-  RLCombobox->blockSignals(false);
   UpdateDesignParameters();
   return;
 }
-
-void FilterDesignTool::UpdateRipple(int refresh = 0) {
-  if (OrderCombobox->currentText().isEmpty())
-    return;
-  double Ripple_CurrentVal = RippleCombobox->currentText().toDouble();
-  double min_dist_err = 1e6;
-  int index = 0, selected_index = 0;
-  QStringList data;
-  QString table = FilterResponseTypeCombo->currentText()
-                      .trimmed(); // Name of the table without whitespaces
-
-  data.clear();
-  QString query_str;
-
-
-    RippleCombobox->clear();
-
-  if (refresh > -1)
-    UpdateDesignParameters();
-}
-
 
 
 QStringList FilterDesignTool::setItemsResponseTypeCombo() {

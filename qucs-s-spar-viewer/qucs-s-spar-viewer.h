@@ -387,6 +387,10 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QStringList getWatchDirectories() const;
   bool isSparamFile(const QString& path); // Used to accept only data files when scanning project directories
   QStringList filePaths; // Full path of the files in the progrom. It's used for file monitoring.
+
+private slots:
+  void updateSchematicContent(SchematicContent SI); // Updates the content of the schematic window in the tool section
+
 };
 
 #endif
