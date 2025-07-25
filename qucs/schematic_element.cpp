@@ -630,6 +630,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     // test all nodes and their labels
     for (Node* pn : *a_Nodes)
     {
+        pn->isSelected = false;
         if(!flag)
         {
             // The element cannot be deselected

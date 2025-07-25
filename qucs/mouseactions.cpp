@@ -990,6 +990,7 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
                 Doc->highlightWireLabels();
                 return;
             }
+            Doc->deselectElements(focusElement);
         }
 
     QucsMain->MousePressAction = nullptr;

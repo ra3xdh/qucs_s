@@ -300,22 +300,25 @@ bool isSpecialCase(const JointStateAssessor& jsa)
 class Healer::HealerImpl
 {
     HealerParameters m_params;
+    std::size_t m_affectedCount;
 
     using PortGroup = std::vector<std::shared_ptr<GenericPort>>;
     std::map<Node*, PortGroup> m_port_groups;
 
+    vector<Healer::HealingAction> processMisplacedNodeCase(Node* node, const JointStateAssessor& jsa) const;
     vector<Healer::HealingAction> processSpecialCase(Node* node, const JointStateAssessor& jsa) const;
     vector<Healer::HealingAction> processReshapingCase(Node* node, const JointStateAssessor& jsa) const;
     vector<Healer::HealingAction> processGenericCase(Node* node, const JointStateAssessor& jsa) const;
 
 public:
-    HealerImpl(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& hp);
+    HealerImpl(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& hp, std::size_t affected_count);
     std::vector<Healer::HealingAction> planHealing() const;
 };
 
 
-Healer::HealerImpl::HealerImpl(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& hp)
+Healer::HealerImpl::HealerImpl(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& hp, std::size_t affected_count)
     : m_params{hp}
+    , m_affectedCount{affected_count}
 {
     for (auto* comp : *components) {
         for (auto* port : comp->Ports) {
@@ -343,7 +346,7 @@ vector<Healer::HealingAction> Healer::HealerImpl::planHealing() const
         vector<unique_ptr<AbstractAction>> healing_actions;
 
         if (joint_state.isOnlyNodeMisplaced()) {
-            healing_actions.push_back(make_unique<MoveNode>(node, port_group.front()->center()));
+            healing_actions = processMisplacedNodeCase(node, joint_state);
         }
         else if (isSpecialCase(joint_state)) {
             healing_actions = processSpecialCase(node, joint_state);
@@ -362,6 +365,41 @@ vector<Healer::HealingAction> Healer::HealerImpl::planHealing() const
 
     std::ranges::sort(healing_plan, [](const auto& lhs, const auto& rhs) { return lhs->priority() > rhs->priority(); });
     return healing_plan;
+}
+
+
+vector<Healer::HealingAction> Healer::HealerImpl::processMisplacedNodeCase(Node* node, const JointStateAssessor& jsa) const
+{
+    assert(jsa.isOnlyNodeMisplaced());
+    vector<HealingAction> actions;
+
+    if (m_affectedCount != 0) {
+        actions.push_back(make_unique<MoveNode>(node, *jsa.uniqueLocations().begin()));
+        return actions;
+    }
+
+    for (const auto& port : m_port_groups.at(node)) {
+        if (port->isOfComponent()) {
+            actions.push_back(make_unique<ReplaceNode>(port.get()));
+            actions.push_back(make_unique<ConnectWithWire>(port->center(), node->center()));
+        } else {
+            if (m_params.allowWireReshaping) {
+                actions.push_back(make_unique<MovePort>(port.get(), node->center()));
+            } else {
+                auto* wire = port->hostWire();
+                auto* other_node = wire->Port1 == node ? wire->Port2 : wire->Port1;
+
+                if (wire->hasLabel()) {
+                    actions.push_back(make_unique<ReattachLabel>(wire->releaseLabel().release(), other_node));
+                }
+
+                actions.push_back(make_unique<ConnectWithWire>(node->center(), other_node->center()));
+                actions.push_back(make_unique<DeleteWire>(wire));
+            }
+        }
+    }
+
+    return actions;
 }
 
 
@@ -435,7 +473,10 @@ vector<Healer::HealingAction> Healer::HealerImpl::processGenericCase(Node* node,
 // --------------------------------------------------------------------------------------
 
 Healer::Healer(const std::list<Component*>* components, const std::list<Wire*>* wires, const HealerParameters& hp)
-    : pimpl{make_unique<HealerImpl>(components, wires, hp)}
+    : pimpl{make_unique<HealerImpl>(
+        components, wires, hp,
+        std::ranges::count_if(*wires, [](auto* w) { return w->isSelected; }) + std::ranges::count_if(*components, [](auto* w) { return w->isSelected; })
+        )}
 {
 }
 

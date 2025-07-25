@@ -1188,6 +1188,11 @@ Schematic::Selection Schematic::currentSelection() const {
         {
             selection.nodes.push_back(pn);
         }
+        else if (pn->isSelected)
+        {
+            selection.nodes.push_back(pn);
+            totalBounds = std::optional<QRect>{pn->boundingRect()};
+        }
 
         if (pn->hasLabel() && pn->label()->isSelected) { // check position of node label
             selection.labels.push_back(pn->label());
