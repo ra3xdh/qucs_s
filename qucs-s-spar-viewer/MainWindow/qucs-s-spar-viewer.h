@@ -1,16 +1,18 @@
 #ifndef QUCSSPARVIEWER_H
 #define QUCSSPARVIEWER_H
 
-#include "PlotWidgets/smithchartwidget.h"
-#include "PlotWidgets/rectangularplotwidget.h"
-#include "PlotWidgets/polarplotwidget.h"
+#include "../PlotWidgets/smithchartwidget.h"
+#include "../PlotWidgets/rectangularplotwidget.h"
+#include "../PlotWidgets/polarplotwidget.h"
 
-#include "CustomWidgets/codeeditor.h"
-#include "CustomWidgets/matrixcombopopup.h"
+#include "../CustomWidgets/codeeditor.h"
+#include "../CustomWidgets/matrixcombopopup.h"
 
-#include "Filtering/FilterDesignTool.h"
+#include "../Filtering/FilterDesignTool.h"
 
-#include "SPAR/SParameterCalculator.h"
+#include "../SPAR/SParameterCalculator.h"
+
+#include "../Misc/general.h"
 
 #include <QMainWindow>
 #include <QLabel>
@@ -153,7 +155,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void removeAllFiles();
   void removeTracesByDataset(const QString& dataset_to_remove);
   void removeTraceByProps(DisplayMode mode, const QString& traceID, TraceProperties& props);
-  void CreateFileWidgets(QString filename, int position);
+  void CreateFileWidgets(QString filename, int position=0);
 
   // File watching functions
   void setupFileWatcher();
@@ -378,16 +380,10 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   void setToolsDock(); // Setup limit management dock
 
   // Utilities
-  void convert_MA_RI_to_dB(double *, double *, double *, double *, QString);
-  double getFreqScale(QString);
   void getMinMaxValues(QString, QString, qreal&, qreal&, qreal&, qreal&);
-  void checkFreqSettingsLimits(QString filename, double& fmin, double& fmax);
-  int findClosestIndex(const QList<double>&, double);
   void adjust_x_axis_to_file(QString);
   void adjust_y_axis_to_trace(QString, QString);
   void adjust_x_axis_div();
-  QPointF findClosestPoint(const QList<double>&, const QList<double>&, qreal);
-  double getFreqFromText(QString);
 
   // File monitoring
   void setupSimulationWatcher();
@@ -397,7 +393,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
 private slots:
   void updateSchematicContent(SchematicContent SI); // Updates the content of the schematic window in the tool section
-  void updatSimulatedTraces(SchematicContent SI); // Updates the traces from the designer tools
+  void updateSimulatedTraces(SchematicContent SI); // Updates the traces from the designer tools
 
 };
 

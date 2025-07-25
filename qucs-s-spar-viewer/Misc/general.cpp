@@ -267,3 +267,116 @@ QString ConvertLengthFromM(QString units, double len) {
   } while (true);
   return QString("");
 }
+
+
+void convert_MA_RI_to_dB(double * S_1, double * S_2, double *S_3, double *S_4, QString format)
+{
+  double S_dB = *S_1, S_ang =*S_2;
+  double S_re = *S_3, S_im = *S_4;
+  if (format == "MA"){
+    S_dB = 20*log10(*S_1);
+    S_ang = *S_2;
+    S_re = *S_1 * std::cos(*S_2 * M_PI/180);
+    S_im = *S_1 * std::sin(*S_2 * M_PI/180);
+  }else{
+    if (format == "RI"){
+      S_dB = 20*log10(sqrt((*S_1)*(*S_1) + (*S_2)*(*S_2)));
+      S_ang = atan2(*S_2, *S_1) * 180 / M_PI;
+      S_re = *S_1;
+      S_im = *S_2;
+    } else {
+      // DB format
+      double r = std::pow(10, *S_1 / 10.0);
+      double theta = *S_2 * M_PI / 180.0;
+      S_re = r * std::cos(theta);
+      S_im = r * std::sin(theta);
+    }
+
+  }
+  *S_1 = S_dB;
+  *S_2 = S_ang;
+  *S_3 = S_re;
+  *S_4 = S_im;
+}
+
+// Gets the frequency scale unit from a String lke kHz, MHz, GHz
+double getFreqScale(QString frequency_unit)
+{
+  double freq_scale=1;
+  if (frequency_unit == "kHz"){
+    freq_scale = 1e-3;
+  } else {
+    if (frequency_unit == "MHz"){
+      freq_scale = 1e-6;
+    } else {
+      if (frequency_unit == "GHz"){
+        freq_scale = 1e-9;
+      }
+    }
+  }
+  return freq_scale;
+}
+
+int findClosestIndex(const QList<double>& list, double value)
+{
+  return std::min_element(list.begin(), list.end(),
+                          [value](double a, double b) {
+                            return std::abs(a - value) < std::abs(b - value);
+                          }) - list.begin();
+}
+
+
+double getFreqFromText(QString freq)
+{
+  // Remove any whitespace from the string
+  freq = freq.simplified();
+
+         // Regular expression to match the number and unit
+  QRegularExpression re("(\\d+(?:\\.\\d+)?)(\\s*)(Hz|kHz|MHz|GHz)");
+  re.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
+  QRegularExpressionMatch match = re.match(freq);
+
+  if (match.hasMatch()) {
+    double value = match.captured(1).toDouble();
+    QString unit = match.captured(3).toLower();
+
+           // Convert to Hz based on the unit
+    if (unit == "khz") {
+      return value * 1e3;
+    } else if (unit == "mhz") {
+      return value * 1e6;
+    } else if (unit == "ghz") {
+      return value * 1e9;
+    } else {
+      // Assume Hz if no unit or Hz is specified
+      return value;
+    }
+  }
+
+         // Return -1 if the input doesn't match the expected format
+  return -1;
+}
+
+
+// Find the closest x-axis value in a series given a x value (not necesarily in the grid)
+QPointF findClosestPoint(const QList<double>& xValues, const QList<double>& yValues, double targetX)
+{
+  if (xValues.isEmpty() || yValues.isEmpty() || xValues.size() != yValues.size()) {
+    return QPointF(); // Return invalid point if lists are empty or have different sizes
+  }
+
+         // Initialize with the first point
+  QPointF closestPoint(xValues.first(), yValues.first());
+  double minDistance = qAbs(targetX - closestPoint.x());
+
+         // Iterate through all points to find the closest one
+  for (int i = 0; i < xValues.size(); ++i) {
+    double distance = qAbs(targetX - xValues[i]);
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestPoint = QPointF(xValues[i], yValues[i]);
+    }
+  }
+
+  return closestPoint;
+}

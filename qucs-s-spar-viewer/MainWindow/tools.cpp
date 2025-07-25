@@ -1,0 +1,78 @@
+#include "qucs-s-spar-viewer.h"
+
+void Qucs_S_SPAR_Viewer::setToolsDock() {
+  // Tools dock
+  dockTools = new QDockWidget("Tools", this);
+  dockTools->setObjectName("dockTools");
+
+  // Main container widget for the dock
+  QWidget *container = new QWidget();
+
+  // Vertical layout for the container
+  QVBoxLayout *layout = new QVBoxLayout(container);
+  layout->setContentsMargins(0, 0, 0, 0); // Optional: remove margins
+
+  // Tab widget
+  toolsTabWidget = new QTabWidget();
+  FilterTool = new FilterDesignTool(this);
+  toolsTabWidget->addTab(FilterTool, "Filter Design");
+  toolsTabWidget->addTab(new QWidget(), "Scratch Pad");
+
+  // Schematic widget
+  SchematicWidget = new GraphWidget(this); // Schematic window
+
+  // Add widgets to layout
+  layout->addWidget(toolsTabWidget);
+  layout->addWidget(SchematicWidget); // This will appear *below* the tab widget
+
+  // Set the layout container as the dock widget's content
+  dockTools->setWidget(container);
+
+  // Connect with tools to update the schematic viewer
+  connect(FilterTool, SIGNAL(updateSchematic(SchematicContent)), this, SLOT(updateSchematicContent(SchematicContent)));
+
+  // Connect with tools to update the simulated traces
+  connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulatedTraces(SchematicContent)));
+
+  connect(dockTools, &QDockWidget::visibilityChanged, this, &Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged);
+}
+
+
+void Qucs_S_SPAR_Viewer::updateSimulatedTraces(SchematicContent SI) {
+  QString netlist = SI.getSParameterNetlist();
+  SPAR_engine.setNetlist(netlist);
+  double fstart = 0;
+  double fstop = 2e9; // TO BE FIXED. It's needed to create a panel inside the tool tab to set the simulation settings
+  SPAR_engine.setFrequencySweep(fstart, fstop, 200);
+  SPAR_engine.calculateSParameterSweep();
+  QMap<QString, QList<double>> data = SPAR_engine.getData();
+
+  QString dataset_name = SI.Name;
+
+         // Update data
+  datasets[dataset_name] = data;
+
+         // Check if the dataset exists in the Combo, if not add it
+  if (QCombobox_datasets->findText(dataset_name) == -1) {
+    QCombobox_datasets->addItem(dataset_name);
+  }
+
+         // Check if the trace has been added
+  QMap<QString, TraceProperties>rect_traces = traceMap[DisplayMode::Magnitude_dB];
+
+  QStringList displayed_traces_keys = rect_traces.keys();
+
+  QRegularExpression regex(dataset_name, QRegularExpression::CaseInsensitiveOption);
+  QStringList filteredList = displayed_traces_keys.filter(regex);
+
+  if (filteredList.isEmpty()) {
+    // Add traces
+    TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB};
+    TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB};
+    this->addTrace(s21_dB, Qt::red, 1);
+    this->addTrace(s11_dB, Qt::blue, 1);
+  }
+
+  updateAllPlots(dataset_name);
+
+}

@@ -28,7 +28,7 @@
 #include <QScreen>
 #include <QStyle>
 
-#include "qucs-s-spar-viewer.h"
+#include "MainWindow/qucs-s-spar-viewer.h"
 
 
 
