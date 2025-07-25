@@ -10,6 +10,8 @@
 
 #include "Filtering/FilterDesignTool.h"
 
+#include "SPAR/SParameterCalculator.h"
+
 #include <QMainWindow>
 #include <QLabel>
 #include <QCheckBox>
@@ -330,6 +332,9 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QWidget * FilterToolTab;
   FilterDesignTool *FilterTool;
 
+  // S-parameter simulation class
+  SParameterCalculator SPAR_engine;
+
   // Save
   QString savepath;
   bool save();
@@ -390,6 +395,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
 private slots:
   void updateSchematicContent(SchematicContent SI); // Updates the content of the schematic window in the tool section
+  void updatSimulatedTraces(SchematicContent SI); // Updates the traces from the designer tools
 
 };
 

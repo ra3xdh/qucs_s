@@ -73,8 +73,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(FilterClassCombo, 3, 1);
   //*************** Order *******************
   OrderSpinBox = new QSpinBox();
-  OrderSpinBox->setValue(2);
-  OrderSpinBox->setMinimum(1);
+  OrderSpinBox->setValue(3);
+  OrderSpinBox->setMinimum(2);
 
   FilterDesignLayout->addWidget(new QLabel("Order"), 4, 0);
   FilterDesignLayout->addWidget(OrderSpinBox, 4, 1);
@@ -207,6 +207,16 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(new QLabel("ZS"), 14, 0);
   FilterDesignLayout->addWidget(SourceImpedanceLineEdit, 14, 1);
   FilterDesignLayout->addWidget(new QLabel(QChar(0xa9, 0x03)), 14, 2);
+
+  // Widgets to add a trace to plot
+  traceNameLabel = new QLabel("Trace name");
+  traceNameLineEdit = new QLineEdit("Filter1");
+  FilterDesignLayout->addWidget(traceNameLabel, 15, 0);
+  FilterDesignLayout->addWidget(traceNameLineEdit, 15, 1);
+
+
+
+
   this->setLayout(FilterDesignLayout);
 
          // Connection functions for updating the network requirements and simulate on
@@ -289,24 +299,14 @@ void FilterDesignTool::synthesize() {
   CF = new CanonicalFilter(Filter_SP);
   CF->synthesize();
   SchContent = CF->Schematic;
-  if (FilterClassCombo->currentText() ==
-      "Bandstop") { // The bandstop configuration contains a shunt resonator
-                    // which cannot be handled with the internal simulator
-    SchContent.setDescription(QString("NOT LADDER"));
-  } else {
-    SchContent.setDescription(QString(""));
-  }
   delete CF;
 
+  QString FilterName = traceNameLineEdit->text();
+  SchContent.Name = FilterName;
   emit updateSchematic(SchContent);
+  emit updateSimulation(SchContent);
 
 }
-
-QString FilterDesignTool::getQucsNetlist() {
-  return SchContent.getQucsNetlist();
-}
-
-SchematicContent FilterDesignTool::getSchematic() { return SchContent; }
 
 void FilterDesignTool::ResposeComboChanged() {
   bool ActivateCauer =
@@ -384,16 +384,6 @@ void FilterDesignTool::UpdateDesignParameters() {
       BW_ScaleCombobox->setCurrentIndex(FC_ScaleCombobox->currentIndex());
       BWSpinbox->blockSignals(false);
     }
-  }
-
-  if ((Filter_SP.FilterType == Lowpass) || (Filter_SP.FilterType == Highpass)) {
-    SPAR_Settings.fstart = Filter_SP.fc * 0.5;
-    SPAR_Settings.fstop = Filter_SP.fc * 1.5;
-    SPAR_Settings.n_points = 200;
-  } else {
-    SPAR_Settings.fstart = (Filter_SP.fc - Filter_SP.bw / 2) * 0.5;
-    SPAR_Settings.fstop = (Filter_SP.fc - Filter_SP.bw / 2) * 1.5;
-    SPAR_Settings.n_points = 200;
   }
 
   if (Filter_SP.Implementation == "LC Direct Coupled") {

@@ -663,11 +663,14 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   layout->addWidget(tabWidget);
   layout->addWidget(SchematicWidget); // This will appear *below* the tab widget
 
-         // Set the layout container as the dock widget's content
+  // Set the layout container as the dock widget's content
   dockTools->setWidget(container);
 
   // Connect with tools to update the schematic viewer
   connect(FilterTool, SIGNAL(updateSchematic(SchematicContent)), this, SLOT(updateSchematicContent(SchematicContent)));
+
+  // Connect with tools to update the simulated traces
+  connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updatSimulatedTraces(SchematicContent)));
 }
 
 
@@ -853,7 +856,6 @@ void Qucs_S_SPAR_Viewer::updateSchematicContent(SchematicContent SI) {
   SchematicWidget->clear(); // Remove the components in the scene
   SchematicWidget->setSchematic(SI);
 }
-
 
 Qucs_S_SPAR_Viewer::~Qucs_S_SPAR_Viewer()
 {
@@ -1425,6 +1427,7 @@ QMap<QString, QList<double>> Qucs_S_SPAR_Viewer::readNGspiceData(const QString& 
 
   return file_data;
 }
+
 
 // Helper function to extract S-parameter indices from S[i,j] format
 QString Qucs_S_SPAR_Viewer::extractSParamIndices(const QString& sparam)
@@ -5160,7 +5163,7 @@ void Qucs_S_SPAR_Viewer::loadPolarPlotSettings(QXmlStreamReader &xml,
 }
 
 
-       // Wrapper of void "Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)". It is needed to open a Touchstone file from command line
+// Wrapper of void "Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)". It is needed to open a Touchstone file from command line
 void Qucs_S_SPAR_Viewer::addFile(const QFileInfo& fileInfo) {
   if (fileInfo.exists()) {
     QStringList fileNames;
@@ -5174,3 +5177,47 @@ void Qucs_S_SPAR_Viewer::addFile(const QFileInfo& fileInfo) {
         );
   }
 }
+
+
+void Qucs_S_SPAR_Viewer::updatSimulatedTraces(SchematicContent SI) {
+  QString netlist = SI.getSParameterNetlist();
+  SPAR_engine.setNetlist(netlist);
+  double fstart = 0;
+  double fstop = 2e9; // TO BE FIXED. It's needed to create a panel inside the tool tab to set the simulation settings
+  SPAR_engine.setFrequencySweep(fstart, fstop, 200);
+  SPAR_engine.calculateSParameterSweep();
+  QMap<QString, QList<double>> data = SPAR_engine.getData();
+
+  QString dataset_name = SI.Name;
+
+  // Update data
+  datasets[dataset_name] = data;
+
+  // Check if the dataset exists in the Combo, if not add it
+  if (QCombobox_datasets->findText(dataset_name) == -1) {
+    QCombobox_datasets->addItem(dataset_name);
+  }
+
+  // Check if the trace has been added
+  QMap<QString, TraceProperties>rect_traces = traceMap[DisplayMode::Magnitude_dB];
+
+  QStringList displayed_traces_keys = rect_traces.keys();
+
+  QRegularExpression regex(dataset_name, QRegularExpression::CaseInsensitiveOption);
+  QStringList filteredList = displayed_traces_keys.filter(regex);
+
+  if (filteredList.isEmpty()) {
+    // Add traces
+    TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB};
+    TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB};
+    this->addTrace(s21_dB, Qt::red, 1);
+    this->addTrace(s11_dB, Qt::blue, 1);
+  }
+
+
+
+  updateAllPlots(dataset_name);
+
+
+}
+

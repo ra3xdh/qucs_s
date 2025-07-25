@@ -34,7 +34,7 @@ class Component : public Symbol {
   Q_OBJECT
 public:
   Component(GraphWidget *graphWidget, ComponentType, double,
-            std::map<QString, QString>, QString ID);
+            QMap<QString, QString>, QString ID);
   Component(GraphWidget *graphWidget, struct ComponentInfo);
   void addWire(Wire *Wire);
   QList<Wire *> Wires() const;
@@ -49,8 +49,8 @@ public:
   QPoint getPortLocation(int);
   QString getID();
   void setRotation(double);
-  void setParameters(std::map<QString, QString>);
-  std::map<QString, QString> getParameters();
+  void setParameters(QMap<QString, QString>);
+  QMap<QString, QString> getParameters();
   void setComponentType(ComponentType);
   ComponentType getComponentType();
 
@@ -67,7 +67,7 @@ private:
   GraphWidget *graph;
   ComponentType CompType;
   double Rotation;
-  std::map<QString, QString> Value;
+  QMap<QString, QString> Value;
   QString ID;
 
   void RotatePoint(QPoint &);

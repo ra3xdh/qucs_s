@@ -46,10 +46,6 @@ void CanonicalFilter::synthesize() {
     }
   }
 
-  Schematic.clearGraphs();
-  Schematic.appendGraph(QString("S[2,1]"), QPen(Qt::red, 1, Qt::SolidLine));
-  Schematic.appendGraph(QString("S[1,1]"), QPen(Qt::blue, 1, Qt::SolidLine));
-
   switch (Specification.FilterType) {
   case Lowpass:
     SynthesizeLPF();

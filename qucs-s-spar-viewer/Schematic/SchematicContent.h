@@ -22,13 +22,6 @@
 #include "../Misc/general.h"
 #include <QPen>
 
-struct SP_Analysis {
-  unsigned int n_points;
-  double fstart;
-  double fstop;
-  std::vector<double> freq;
-};
-
 class Component;
 
 class SchematicContent {
@@ -39,6 +32,8 @@ public:
                // simulator. It's faster than using Qucs, but it is
                // restricted to ladder networks
   QString getQucsNetlist();
+  QString getSParameterNetlist();
+  QString Name;
 
 private:
   void assignNetToWiresConnectedToNode(QString, QString);
@@ -62,29 +57,15 @@ public:
   QList<struct WireInfo> getWires();
   QList<struct NodeInfo> getNodes();
 
-  // Description
-  void setDescription(QString);
-  QString getDescription();
-
-  // Display graphs
-  void appendGraph(QString, QPen);
-  void clearGraphs();
-  void setDisplayGraphs(QMap<QString, QPen>);
-  QMap<QString, QPen> getDisplayGraphs();
   QMap<ComponentType, int>
       NumberComponents; // List for assigning IDs to the filter components
   unsigned int NumberWires;
 
-  // Frequency sweep
-  struct SP_Analysis getSPAR_Sweep();
-  void setSPAR_Sweep(struct SP_Analysis);
 
 private:
-  struct SP_Analysis SPAR_Settings;
   QList<struct ComponentInfo> Comps;
   QList<struct WireInfo> Wires;
   QList<struct NodeInfo> Nodes;
-  QMap<QString, QPen> displayGraphs;
   QString Description;
   QString netlist;
 };

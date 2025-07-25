@@ -4,7 +4,6 @@ SchematicContent::SchematicContent() {
   Comps.clear();
   Nodes.clear();
   Wires.clear();
-  displayGraphs.clear();
   // Initialize list of components
   NumberComponents[Capacitor] = 0;
   NumberComponents[Inductor] = 0;
@@ -168,6 +167,207 @@ QString SchematicContent::getQucsNetlist() {
   }
   return codestr;
 }
+
+
+QString SchematicContent::getSParameterNetlist() {
+  // Build netlist compatible with SParameterCalculator
+  QString netlist;
+
+  // Add header comment
+  netlist += "* Netlist generated from SchematicContent for SParameterCalculator\n";
+
+  // First, assign nets to wires (same logic as original getQucsNetlist)
+
+  // Find wires connected to ground
+  for (int i = 0; i < Wires.length(); i++) {
+    if ((Wires[i].OriginID.contains("GND")) || (Wires[i].DestinationID.contains("GND"))) {
+      Wires[i].setNet("0"); // Use node 0 for ground in SPICE format
+    }
+  }
+
+         // Find wires connecting two nodes and assign same net
+  for (int i = 0; i < Wires.length(); i++) {
+    if ((Wires[i].OriginID.at(0) == 'N') && (Wires[i].DestinationID.at(0) == 'N')) {
+      QString net_name;
+      if (Wires[i].getNet().isEmpty()) {
+        net_name = Wires[i].OriginID;
+      } else {
+        net_name = Wires[i].getNet();
+      }
+      assignNetToWiresConnectedToNode(Wires[i].OriginID, net_name);
+      assignNetToWiresConnectedToNode(Wires[i].DestinationID, net_name);
+    }
+  }
+
+         // Assign nets for wires connected to nodes
+  for (int i = 0; i < Wires.length(); i++) {
+    if (!Wires[i].getNet().isEmpty()) {
+      continue;
+    }
+
+    QString net_name;
+    if (Wires[i].OriginID.at(0) == 'N') {
+      net_name = Wires[i].OriginID;
+      Wires[i].setNet(net_name);
+      assignNetToWiresConnectedToNode(Wires[i].OriginID, net_name);
+    }
+    if (Wires[i].DestinationID.at(0) == 'N') {
+      net_name = Wires[i].DestinationID;
+      Wires[i].setNet(net_name);
+      assignNetToWiresConnectedToNode(Wires[i].DestinationID, net_name);
+    }
+  }
+
+  // Set remaining wires net = Wire ID
+  for (int i = 0; i < Wires.length(); i++) {
+    if (!Wires[i].getNet().isEmpty()) {
+      continue;
+    }
+    Wires[i].setNet(Wires[i].getID());
+  }
+
+  // Create a mapping from net names to node numbers
+  QMap<QString, int> netToNodeMap;
+  int nodeCounter = 1; // Start from 1, 0 is reserved for ground
+
+  // Reserve node 0 for ground
+  netToNodeMap["0"] = 0;
+  netToNodeMap["gnd"] = 0;
+
+  // Assign node numbers to all nets
+  for (int i = 0; i < Wires.length(); i++) {
+    QString net = Wires[i].getNet();
+    if (!netToNodeMap.contains(net) && net != "0" && net != "gnd") {
+      netToNodeMap[net] = nodeCounter++;
+    }
+  }
+
+  // Process components and generate SPICE-like netlist
+  for (int i = 0; i < Comps.length(); i++) {
+    if (Comps[i].Type == GND) {
+      continue;
+    }
+
+    // Get component connections
+    QVector<QString> connections;
+    int connection_counter = 0;
+    connections.resize(Comps[i].getNumberOfPorts());
+
+           // Handle special cases for grounded components
+    if (Comps[i].Type == Term) {
+      connections[1] = QString("0"); // Ground
+    }
+    if (Comps[i].Type == ShortStub) {
+      connections[0] = QString("0"); // Ground
+    }
+
+    int num_ports = Comps[i].getNumberOfPorts();
+
+    // Find wire connections for this component
+    for (int k = 0; k < Wires.length(); k++) {
+      if (connection_counter == num_ports) {
+        break;
+      }
+      if (Wires[k].DestinationID == Comps[i].ID) {
+        connections[Wires[k].PortDestination] = Wires[k].getNet();
+        connection_counter++;
+      }
+      if (Wires[k].OriginID == Comps[i].ID) {
+        connections[Wires[k].PortOrigin] = Wires[k].getNet();
+        connection_counter++;
+      }
+    }
+
+    // Convert component to SPICE format
+    QString componentLine;
+
+    switch (Comps[i].Type) {
+    case Resistor:
+      if (connections.size() >= 2) {
+        int node1 = netToNodeMap.value(connections[0], 0);
+        int node2 = netToNodeMap.value(connections[1], 0);
+        QString value = Comps[i].val.contains("R") ? Comps[i].val["R"] : "50";
+        componentLine = QString("%1 %2 %3 %4\n")
+                            .arg(Comps[i].ID)
+                            .arg(node1)
+                            .arg(node2)
+                            .arg(value);
+      }
+      break;
+
+    case Capacitor:
+      if (connections.size() >= 2) {
+        int node1 = netToNodeMap.value(connections[0], 0);
+        int node2 = netToNodeMap.value(connections[1], 0);
+        QString value = Comps[i].val.contains("C") ? Comps[i].val["C"] : "1e-12";
+        componentLine = QString("%1 %2 %3 %4\n")
+                            .arg(Comps[i].ID)
+                            .arg(node1)
+                            .arg(node2)
+                            .arg(value);
+      }
+      break;
+
+    case Inductor:
+      if (connections.size() >= 2) {
+        int node1 = netToNodeMap.value(connections[0], 0);
+        int node2 = netToNodeMap.value(connections[1], 0);
+        QString value = Comps[i].val.contains("L") ? Comps[i].val["L"] : "1e-9";
+        componentLine = QString("%1 %2 %3 %4\n")
+                            .arg(Comps[i].ID)
+                            .arg(node1)
+                            .arg(node2)
+                            .arg(value);
+      }
+      break;
+
+    case Term:
+      // Terminal/Port
+      if (connections.size() >= 1) {
+        int node = netToNodeMap.value(connections[0], 1);
+        QString impedance = Comps[i].val.contains("Z") ? Comps[i].val["Z"] : "50";
+        // Change component ID to start with 'P' for port
+        QString portID = Comps[i].ID;
+        if (portID.at(0) != 'P') {
+          portID = "P" + portID.mid(1);
+        }
+        componentLine = QString("%1 %2 %3\n")
+                            .arg(portID)
+                            .arg(node)
+                            .arg(impedance);
+      }
+      break;
+
+    case TransmissionLine:
+      // Treat as resistor with characteristic impedance for now
+      if (connections.size() >= 2) {
+        int node1 = netToNodeMap.value(connections[0], 0);
+        int node2 = netToNodeMap.value(connections[1], 0);
+        QString value = Comps[i].val.contains("Z") ? Comps[i].val["Z"] : "50";
+        // Change ID to start with 'R' for resistor representation
+        QString resistorID = "R" + Comps[i].ID.mid(1);
+        componentLine = QString("%1 %2 %3 %4\n")
+                            .arg(resistorID)
+                            .arg(node1)
+                            .arg(node2)
+                            .arg(value);
+      }
+      break;
+
+    default:
+      // Skip unsupported components
+      componentLine = QString("* Unsupported component: %1\n").arg(Comps[i].ID);
+      break;
+    }
+
+    if (!componentLine.isEmpty()) {
+      netlist += componentLine;
+    }
+  }
+
+  return netlist;
+}
+
 void SchematicContent::appendComponent(struct ComponentInfo C) {
   Comps.append(C);
 }
@@ -200,18 +400,6 @@ QList<struct ComponentInfo> SchematicContent::getComponents() { return Comps; }
 QList<struct WireInfo> SchematicContent::getWires() { return Wires; }
 QList<struct NodeInfo> SchematicContent::getNodes() { return Nodes; }
 
-void SchematicContent::setDescription(QString d) { Description = d; }
-QString SchematicContent::getDescription() { return Description; }
-
-void SchematicContent::appendGraph(QString title, QPen pen) {
-  displayGraphs[title] = pen;
-}
-void SchematicContent::clearGraphs() { displayGraphs.clear(); }
-
-QMap<QString, QPen> SchematicContent::getDisplayGraphs() {
-  return displayGraphs;
-}
-
 double SchematicContent::getZin() { return Comps[0].val["Z"].toDouble(); }
 double SchematicContent::getZout() {
   return Comps[Comps.size() - 1].val["Z"].toDouble();
@@ -221,9 +409,3 @@ QString SchematicContent::getZinString() { return Comps[0].val["Z"]; }
 QString SchematicContent::getZoutString() {
   return Comps[Comps.size() - 1].val["Z"];
 }
-
-struct SP_Analysis SchematicContent::getSPAR_Sweep() {
-  return SPAR_Settings;
-}
-
-void SchematicContent::setSPAR_Sweep(SP_Analysis SPAR) { SPAR_Settings = SPAR; }

@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include <QRadioButton>
 #include <QSpinBox>
+#include <QPushButton>
 #include <QWidget>
 
 #include "CanonicalFilter.h"
@@ -55,10 +56,6 @@ class FilterDesignTool : public QWidget {
 public:
   FilterDesignTool(QWidget *parent = nullptr);
   ~FilterDesignTool();
-  QString getQucsNetlist();
-  SchematicContent getSchematic();
-  SP_Analysis
-      SPAR_Settings; // The simulation settings vary depending on the design
   void design();
 
 private slots:
@@ -96,8 +93,13 @@ private:
   double getScale(QString); // Gets the scale from the comboboxes
   void synthesize();
 
+  // Add trace to simulate
+  QLabel *traceNameLabel;
+  QLineEdit *traceNameLineEdit;
+
 signals:
   void updateSchematic(SchematicContent);
+  void updateSimulation(SchematicContent);
 };
 
 #endif // FILTERDESIGNTOOL_H

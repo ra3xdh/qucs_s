@@ -23,7 +23,7 @@
 #include <qdebug.h>
 
 Component::Component(GraphWidget *graphWidget, ComponentType comp, double Rot_,
-                     std::map<QString, QString> val, QString ID_)
+                     QMap<QString, QString> val, QString ID_)
     : graph(graphWidget) {
   ID = ID_;
   CompType = comp;
@@ -310,9 +310,9 @@ QString Component::getID() { return ID; }
 
 void Component::setRotation(double R) { Rotation = R; }
 
-void Component::setParameters(std::map<QString, QString> val) { Value = val; }
+void Component::setParameters(QMap<QString, QString> val) { Value = val; }
 
-std::map<QString, QString> Component::getParameters() { return Value; }
+QMap<QString, QString> Component::getParameters() { return Value; }
 
 void Component::setComponentType(ComponentType CT) { CompType = CT; }
 

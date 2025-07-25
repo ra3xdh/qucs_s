@@ -30,7 +30,7 @@ public:
   };
   void setParams(QString ID_, ComponentType Type_, double Rotation_, double x,
                  double y // Coordinates
-  ) {
+                 ) {
     ID = ID_;
     Type = Type_;
     Rotation = Rotation_;
@@ -77,12 +77,12 @@ public:
     return code;
   }
   QString getQucsProperties() {
-    std::map<QString, QString>::iterator it = val.begin();
+    QMap<QString, QString>::iterator it = val.begin();
     QString code;
     QString prop; // Temporal variable to translate the internal property
                   // names to Qucs property names
     while (it != val.end()) {
-      prop = it->first;
+      prop = it.key();
       switch (Type) {
       case OpenStub:
       case ShortStub:
@@ -92,25 +92,25 @@ public:
           prop = "L";
         if (prop == "Z0")
           prop = "Z";
-        code += QString(" %1=\"%2\"").arg(prop).arg(it->second);
+        code += QString(" %1=\"%2\"").arg(prop).arg(it.value());
         break;
 
       case Term:
         if (prop == "Z0")
           prop = "Z";
-        code += QString(" %1=\"%2\"").arg(prop).arg(it->second);
+        code += QString(" %1=\"%2\"").arg(prop).arg(it.value());
         break;
 
       case Coupler:
       default:
-        code += QString(" %1=\"%2\"").arg(it->first).arg(it->second);
+        code += QString(" %1=\"%2\"").arg(it.key()).arg(it.value());
       }
       it++;
     }
     code += "\n";
     return code;
   };
-  std::map<QString, QString> val; // freq, L1.L, C1.C,...
+  QMap<QString, QString> val; // freq, L1.L, C1.C,...
   double getVal(QString);
 };
 
