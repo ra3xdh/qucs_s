@@ -114,7 +114,7 @@ QucsFilter::QucsFilter()
   ComboRealize->addItem("Equation-defined");
 
   // microstrip filters cannot be implemented with SPICE
-  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+  /*if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       QStandardItemModel *model =
             qobject_cast<QStandardItemModel *>(ComboRealize->model());
       Q_ASSERT(model != nullptr);
@@ -122,7 +122,7 @@ QucsFilter::QucsFilter()
           QStandardItem *itm = model->item(i);
           itm->setFlags(itm->flags() & ~Qt::ItemIsEnabled);
       }
-  }
+  }*/
 
   gbox1->addWidget(ComboRealize, 0,1);
   connect(ComboRealize, SIGNAL(activated(int)), SLOT(slotRealizationChanged(int)));

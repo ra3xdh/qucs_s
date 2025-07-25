@@ -70,7 +70,8 @@ tQucsSettings QucsSettings;
 
 QucsApp *QucsMain = nullptr;  // the Qucs application itself
 QString lastDir;    // to remember last directory for several dialogs
-QStringList qucsPathList;
+QStringList qucsSubcktPathList;
+QStringList qucsXmlCompPathList;
 VersionTriplet QucsVersion; // Qucs version string
 
 // #########################################################################
@@ -155,15 +156,22 @@ bool loadSettings()
     QucsSettings.spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
 
     // If present read in the list of directory paths in which Qucs should
-    // search for subcircuit schematics
-    int npaths = settings.beginReadArray("Paths");
-    for (int i = 0; i < npaths; ++i)
+    // search for subcircuit schematics/XML components
+    QStringList pathNames = {"Paths", "XmlCompPaths"};
+    QList<QStringList*> refList = {&qucsSubcktPathList, &qucsXmlCompPathList};
+    Q_ASSERT(pathNames.size() == refList.size());
+
+    for (int idx = 0; idx < pathNames.size(); ++idx)
     {
-        settings.setArrayIndex(i);
-        QString apath = settings.value("path").toString();
-        qucsPathList.append(apath);
+        int npaths = settings.beginReadArray(pathNames[idx]);
+        for (int i = 0; i < npaths; ++i)
+        {
+            settings.setArrayIndex(i);
+            QString apath = settings.value("path").toString();
+            refList[idx]->append(apath);
+        }
+        settings.endArray();
     }
-    settings.endArray();
 
     QucsSettings.numRecentDocs = 0;
 
@@ -226,16 +234,24 @@ bool saveApplSettings()
     qs.setItem<bool>("alwaysPrefixDataset",QucsSettings.alwaysPrefixDataset);
 
     // Copy the list of directory paths in which Qucs should
-    // search for subcircuit schematics from qucsPathList
-    settings.remove("Paths");
-    settings.beginWriteArray("Paths");
-    int i = 0;
-    for (QString& path: qucsPathList) {
-         settings.setArrayIndex(i);
-         settings.setValue("path", path);
-         i++;
-     }
-     settings.endArray();
+    // search for subcircuit schematics/XML components from qucsSubcktPathList/qucsXmlCompPathList
+    QStringList pathNames = {"Paths", "XmlCompPaths"};
+    QList<QStringList*> refList = {&qucsSubcktPathList, &qucsXmlCompPathList};
+    Q_ASSERT(pathNames.size() == refList.size());
+
+    for (int idx = 0; idx < pathNames.size(); ++idx)
+    {
+        settings.remove(pathNames[idx]);
+        settings.beginWriteArray(pathNames[idx]);
+        int i = 0;
+        for (QString& path: *(refList[idx]))
+        {
+            settings.setArrayIndex(i);
+            settings.setValue("path", path);
+            i++;
+        }
+        settings.endArray();
+    }
 
   return true;
 }

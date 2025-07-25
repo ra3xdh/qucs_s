@@ -8,7 +8,7 @@
 ## About Qucs-S
 
 Qucs-S provides a fancy graphical user interface for a number of popular circuit simulation
-engines. Qucs-S contains instruments for schematic capture, visualization and provides differents 
+engines. Qucs-S contains instruments for schematic capture, visualization and provides differents
 passive and active components including device library. The following simulation kernels are supported:
 
 * Ngspice (recommended)
@@ -23,6 +23,13 @@ on original Qucs code: https://github.com/Qucs/qucs
 ## Donation
 
 Qucs-S accepts donation using Boosty platform: https://boosty.to/qucs_s
+
+## Binary installation
+
+The instruction how to install binary version could be found on this wiki page:
+https://github.com/ra3xdh/qucs_s/wiki/Installation
+
+Qucs-S supports Linux, Windows, FreeBSD, and MacOS.
 
 ## Build instructions
 
@@ -67,14 +74,14 @@ make
 make install
 ~~~
 
-Since the v25.1.0 the Qucs-S will be configured with Qt6 by default. Substutute the  `/your_install_prefix/` 
-as desired installation directory. Substitute any desire path (for example `$HOME/qucs-s`) here. 
+Since the v25.1.0 the Qucs-S will be configured with Qt6 by default. Substutute the  `/your_install_prefix/`
+as desired installation directory. Substitute any desire path (for example `$HOME/qucs-s`) here.
 You may omit this option and installation steps. Default installation directory will be `/usr/local` if
 `CMAKE_INSTALL_PREFIX` is not defined.
 
 ### Qt5/Qt6 support
 
-Qt5 support has been dropped since v25.1.0. Only Qt6 libraries are supported. Set the `WITH_QT6=ON` 
+Qt5 support has been dropped since v25.1.0. Only Qt6 libraries are supported. Set the `WITH_QT6=ON`
 cmake flag if compiling the Qucs-S versions before v25.1.0
 
 

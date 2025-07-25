@@ -128,9 +128,13 @@ protected:
   bool getBrush(const QString&, QBrush&, int);
 
   void copyComponent(Component*);
+  double evaluateExpression(const QString& expression) const;
+  QString getValue(const Property& property) const;
+
   Schematic* containingSchematic;
 
   virtual void drawSymbol(QPainter* p);
+  QString getSpiceSubstrateLine(); // get SPICE params for microstrips
 };
 
 

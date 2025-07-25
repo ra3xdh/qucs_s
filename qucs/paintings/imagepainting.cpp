@@ -24,7 +24,7 @@ ImagePainting::ImagePainting() :
       penColor(Qt::black),
       penWidth(1),
       penStyle(Qt::SolidLine),
-      m_keepAspectRatio(false),
+      m_keepAspectRatio(true),
       m_aspectRatio(1.0)
 {
   Name = "ImagePainting ";
@@ -251,21 +251,101 @@ bool ImagePainting::MousePressing(Schematic* sch) {
 }
 
 void ImagePainting::MouseResizeMoving(int x, int y, Schematic* p) {
-  // Apply aspect ratio constraint before calling parent method
   if (m_keepAspectRatio && m_aspectRatio > 0) {
-    // Calculate constrained dimensions based on which corner is being dragged
-    int newWidth = x - x1;
-    int newHeight = y - y1;
-    applyAspectRatioToResize(newWidth, newHeight);
+    // If this is the first call or position jumped significantly, determine the corner
+    if (m_draggedCorner == NotSet || abs(x - m_lastDragX) > 50 || abs(y - m_lastDragY) > 50) {
+      // Calculate distances to each corner
+      int distToTopLeft = abs(x - x1) + abs(y - y1);
+      int distToTopRight = abs(x - x2) + abs(y - y1);
+      int distToBottomLeft = abs(x - x1) + abs(y - y2);
+      int distToBottomRight = abs(x - x2) + abs(y - y2);
 
-    // Update coordinates with constrained dimensions
-    x = x1 + newWidth;
-    y = y1 + newHeight;
+      // Find the minimum distance to determine which corner is being dragged
+      int minDist = qMin(qMin(distToTopLeft, distToTopRight), qMin(distToBottomLeft, distToBottomRight));
+
+      if (minDist == distToTopLeft) {
+        m_draggedCorner = TopLeft;
+      } else if (minDist == distToTopRight) {
+        m_draggedCorner = TopRight;
+      } else if (minDist == distToBottomLeft) {
+        m_draggedCorner = BottomLeft;
+      } else {
+        m_draggedCorner = BottomRight;
+      }
+    }
+
+    m_lastDragX = x;
+    m_lastDragY = y;
+
+    int constrainedX = x;
+    int constrainedY = y;
+
+    // Use the stored corner that was determined at drag start
+    switch (m_draggedCorner) {
+    case TopLeft: {
+      int deltaX = x2 - x;
+      int deltaY = y2 - y;
+      if (deltaX <= 0 || deltaY <= 0) return;
+
+      double scale = (double)deltaX / (x2 - x1);
+      int newWidth = qRound((x2 - x1) * scale);
+      int newHeight = qRound(newWidth * m_aspectRatio);
+      constrainedX = x2 - newWidth;
+      constrainedY = y2 - newHeight;
+      break;
+    }
+    case TopRight: {
+      int deltaX = x - x1;
+      int deltaY = y2 - y;
+      if (deltaX <= 0 || deltaY <= 0) return;
+
+      double scale = (double)deltaX / (x2 - x1);
+      int newWidth = qRound((x2 - x1) * scale);
+      int newHeight = qRound(newWidth * m_aspectRatio);
+      constrainedX = x1 + newWidth;
+      constrainedY = y2 - newHeight;
+      break;
+    }
+    case BottomLeft: {
+      int deltaX = x2 - x;
+      int deltaY = y - y1;
+      if (deltaX <= 0 || deltaY <= 0) return;
+
+      double scale = (double)deltaX / (x2 - x1);
+      int newWidth = qRound((x2 - x1) * scale);
+      int newHeight = qRound(newWidth * m_aspectRatio);
+      constrainedX = x2 - newWidth;
+      constrainedY = y1 + newHeight;
+      break;
+    }
+    case BottomRight: {
+      int deltaX = x - x1;
+      int deltaY = y - y1;
+      if (deltaX <= 0 || deltaY <= 0) return;
+
+      double scale = (double)deltaX / (x2 - x1);
+      int newWidth = qRound((x2 - x1) * scale);
+      int newHeight = qRound(newWidth * m_aspectRatio);
+      constrainedX = x1 + newWidth;
+      constrainedY = y1 + newHeight;
+      break;
+    }
+    default:
+      break;
+    }
+
+    Rectangle::MouseResizeMoving(constrainedX, constrainedY, p);
+  } else {
+    Rectangle::MouseResizeMoving(x, y, p);
   }
-
-  // Call parent resize method with corrected coordinates
-  Rectangle::MouseResizeMoving(x, y, p);
 }
+
+void ImagePainting::ResetDragTracking() {
+  m_draggedCorner = NotSet;
+  m_lastDragX = -1;
+  m_lastDragY = -1;
+}
+
 
 bool ImagePainting::Dialog(QWidget* parent) {
   QDialog dialog(parent);

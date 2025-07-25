@@ -57,6 +57,7 @@ public:
   void MouseMoving(const QPoint& onGrid, Schematic* sch, const QPoint& cursor) override;
   bool MousePressing(Schematic* sch = nullptr) override;
   void MouseResizeMoving(int x, int y, Schematic* p) override;
+  void ResetDragTracking();
   bool rotate() noexcept override;
   bool rotate(int xc, int yc) noexcept override;
 
@@ -68,6 +69,11 @@ private:
   QPixmap image;
   QPixmap originalImage;
   void loadImage();
+
+  enum DraggedCorner { TopLeft, TopRight, BottomLeft, BottomRight, NotSet };
+  DraggedCorner m_draggedCorner = NotSet;
+  int m_lastDragX = -1;
+  int m_lastDragY = -1;
 
   // Local pen properties
   QColor penColor;
