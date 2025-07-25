@@ -14,6 +14,8 @@
 
 #include "../Misc/general.h"
 
+#include "simulationsetup.h"
+
 #include <QMainWindow>
 #include <QLabel>
 #include <QCheckBox>
@@ -329,6 +331,8 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QDockWidget *dockTools;
   GraphWidget *SchematicWidget; // Schematic viewer
   QTabWidget *toolsTabWidget; // Tools' tab widget. It contains all the RF design tools
+  SimulationSetup *SimulationSetupWidget;
+
   void onToolsDockVisibilityChanged(bool visible);
 
   // Filter Tool

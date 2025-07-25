@@ -14,9 +14,13 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
   // Tab widget
   toolsTabWidget = new QTabWidget();
+
   FilterTool = new FilterDesignTool(this);
+  SimulationSetupWidget = new SimulationSetup(this);
+
   toolsTabWidget->addTab(FilterTool, "Filter Design");
   toolsTabWidget->addTab(new QWidget(), "Scratch Pad");
+  toolsTabWidget->addTab(SimulationSetupWidget, "Simulation Setup");
 
   // Schematic widget
   SchematicWidget = new GraphWidget(this); // Schematic window
