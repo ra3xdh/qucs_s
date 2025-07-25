@@ -195,20 +195,6 @@ Node* GenericPort::node() const
 // Utils
 // --------------------------------------------------------------------------------------
 
-template<std::ranges::forward_range R>
-requires std::same_as<QPoint, std::iter_value_t<R>>
-QPoint findClosest(const R& points, const QPoint point)
-{
-    QPoint closest = *points.begin();
-    double min_dist = geom::distance(point, closest);
-    for (auto& pt : points) {
-        auto d = geom::distance(pt, point);
-        if (d < min_dist) closest = pt;
-    }
-    return closest;
-}
-
-
 class JointStateAssessor
 {
     std::multimap<QPoint,GenericPort*> m_port_locations;
@@ -261,6 +247,20 @@ public:
 
 
 namespace {
+
+template<std::ranges::forward_range R>
+requires std::same_as<QPoint, std::iter_value_t<R>>
+QPoint findClosest(const R& points, const QPoint point)
+{
+    QPoint closest = *points.begin();
+    double min_dist = geom::distance(point, closest);
+    for (auto& pt : points) {
+        auto d = geom::distance(pt, point);
+        if (d < min_dist) closest = pt;
+    }
+    return closest;
+}
+
 
 inline bool canReshape(Node* node, const JointStateAssessor& jsa)
 {
