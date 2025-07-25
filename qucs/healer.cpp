@@ -221,12 +221,12 @@ public:
 
     bool isOK() const
     {
-        return m_unique_locations.size() == 1 && m_node->center() == *m_unique_locations.begin();
+        return m_unique_locations.size() == 1 && m_unique_locations.contains(m_node->center());
     }
 
     bool isOnlyNodeMisplaced() const
     {
-        return m_unique_locations.size() == 1 && m_node->center() != *m_unique_locations.begin();
+        return m_unique_locations.size() == 1 && !m_unique_locations.contains(m_node->center());
     }
 
     bool onlyTwoPortClusters() const
