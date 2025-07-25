@@ -24,16 +24,15 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
          //********** Filter Implementation ***********
   FilterImplementationCombo = new QComboBox();
   FilterImplementationCombo->addItem("LC Ladder");
-  FilterImplementationCombo->addItem("LC Direct Coupled");
-  FilterImplementationCombo->addItem("Quarter-wavelength");
-  FilterImplementationCombo->addItem("Stepped impedance");
-  FilterImplementationCombo->addItem("End-coupled");
-  FilterImplementationCombo->addItem("Capacitively-coupled shunt resonators");
-  FilterImplementationCombo->addItem("Semilumped Elliptic");
-  FilterImplementationCombo->addItem("Semilumped Canonical");
-  FilterImplementationCombo->addItem("Coupled line bandpass");
-  FilterImplementationCombo->addItem(
-      "Coupled line SIR with harmonic rejection");
+  //FilterImplementationCombo->addItem("LC Direct Coupled");
+  //FilterImplementationCombo->addItem("Quarter-wavelength");
+  //FilterImplementationCombo->addItem("Stepped impedance");
+  //FilterImplementationCombo->addItem("End-coupled");
+  //FilterImplementationCombo->addItem("Capacitively-coupled shunt resonators");
+  //FilterImplementationCombo->addItem("Semilumped Elliptic");
+  //FilterImplementationCombo->addItem("Semilumped Canonical");
+  //FilterImplementationCombo->addItem("Coupled line bandpass");
+  //FilterImplementationCombo->addItem("Coupled line SIR with harmonic rejection");
   FilterDesignLayout->addWidget(new QLabel("Implementation"), 0, 0);
   FilterDesignLayout->addWidget(FilterImplementationCombo, 0, 1);
   //******** Tee or Pi (LC ladder only) ********

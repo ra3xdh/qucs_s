@@ -651,16 +651,16 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   layout->setContentsMargins(0, 0, 0, 0); // Optional: remove margins
 
   // Tab widget
-  QTabWidget *tabWidget = new QTabWidget();
+  toolsTabWidget = new QTabWidget();
   FilterTool = new FilterDesignTool(this);
-  tabWidget->addTab(FilterTool, "Filter Design");
-  tabWidget->addTab(new QWidget(), "Scratch Pad");
+  toolsTabWidget->addTab(FilterTool, "Filter Design");
+  toolsTabWidget->addTab(new QWidget(), "Scratch Pad");
 
   // Schematic widget
   SchematicWidget = new GraphWidget(this); // Schematic window
 
   // Add widgets to layout
-  layout->addWidget(tabWidget);
+  layout->addWidget(toolsTabWidget);
   layout->addWidget(SchematicWidget); // This will appear *below* the tab widget
 
   // Set the layout container as the dock widget's content
@@ -671,6 +671,8 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
   // Connect with tools to update the simulated traces
   connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updatSimulatedTraces(SchematicContent)));
+
+  connect(dockTools, &QDockWidget::visibilityChanged, this, &Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged);
 }
 
 
@@ -5221,3 +5223,13 @@ void Qucs_S_SPAR_Viewer::updatSimulatedTraces(SchematicContent SI) {
 
 }
 
+void Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged(bool visible) {
+  if (visible) {
+    // Dock is now visible - trigger your function
+    int index = toolsTabWidget->currentIndex();
+    switch (index){
+    case 0: // Filter design tool
+      FilterTool->synthesize();
+    }
+  }
+}

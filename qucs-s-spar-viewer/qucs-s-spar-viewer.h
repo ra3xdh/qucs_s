@@ -326,6 +326,8 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   // Tools
   QDockWidget *dockTools;
   GraphWidget *SchematicWidget; // Schematic viewer
+  QTabWidget *toolsTabWidget; // Tools' tab widget. It contains all the RF design tools
+  void onToolsDockVisibilityChanged(bool visible);
 
   // Filter Tool
   QTabWidget * toolsTabs;

@@ -91,11 +91,13 @@ private:
 
   QStringList setItemsResponseTypeCombo();
   double getScale(QString); // Gets the scale from the comboboxes
-  void synthesize();
 
   // Add trace to simulate
   QLabel *traceNameLabel;
   QLineEdit *traceNameLineEdit;
+
+public:
+  void synthesize();
 
 signals:
   void updateSchematic(SchematicContent);
