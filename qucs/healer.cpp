@@ -260,6 +260,8 @@ public:
 };
 
 
+namespace {
+
 inline bool canReshape(Node* node, const JointStateAssessor& jsa)
 {
     return jsa.onlyTwoPortClusters() && jsa.onlyWirePortsAt(node->center());
@@ -290,7 +292,7 @@ bool isSpecialCase(const JointStateAssessor& jsa)
     const QPoint p2 = single_wire->P2();
     return *other_loc == p1 || *other_loc == p2 || geom::is_between(*other_loc, p1, p2);
 }
-
+}
 
 // HealerImpl
 // --------------------------------------------------------------------------------------
