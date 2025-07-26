@@ -36,32 +36,35 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   connect(FilterTool, SIGNAL(updateSchematic(SchematicContent)), this, SLOT(updateSchematicContent(SchematicContent)));
 
   // Connect with tools to update the simulated traces
-  connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulatedTraces(SchematicContent)));
+  connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
+  connect(SimulationSetupWidget, SIGNAL(updateSimulation()), this, SLOT(updateSimulation()));
+
 
   connect(dockTools, &QDockWidget::visibilityChanged, this, &Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged);
 }
 
 
-void Qucs_S_SPAR_Viewer::updateSimulatedTraces(SchematicContent SI) {
-  QString netlist = SI.getSParameterNetlist();
+void Qucs_S_SPAR_Viewer::updateSimulation() {
+  QString netlist = Circuit.getSParameterNetlist();
   SPAR_engine.setNetlist(netlist);
-  double fstart = 0;
-  double fstop = 2e9; // TO BE FIXED. It's needed to create a panel inside the tool tab to set the simulation settings
-  SPAR_engine.setFrequencySweep(fstart, fstop, 200);
+  double fstart = SimulationSetupWidget->getFstart();
+  double fstop = SimulationSetupWidget->getFstop();
+  int npoints =  SimulationSetupWidget->getNpoints();
+  SPAR_engine.setFrequencySweep(fstart, fstop, npoints);
   SPAR_engine.calculateSParameterSweep();
   QMap<QString, QList<double>> data = SPAR_engine.getData();
 
-  QString dataset_name = SI.Name;
+  QString dataset_name = Circuit.Name;
 
-         // Update data
+  // Update data
   datasets[dataset_name] = data;
 
-         // Check if the dataset exists in the Combo, if not add it
+  // Check if the dataset exists in the Combo, if not add it
   if (QCombobox_datasets->findText(dataset_name) == -1) {
     QCombobox_datasets->addItem(dataset_name);
   }
 
-         // Check if the trace has been added
+  // Check if the trace has been added
   QMap<QString, TraceProperties>rect_traces = traceMap[DisplayMode::Magnitude_dB];
 
   QStringList displayed_traces_keys = rect_traces.keys();
@@ -79,4 +82,10 @@ void Qucs_S_SPAR_Viewer::updateSimulatedTraces(SchematicContent SI) {
 
   updateAllPlots(dataset_name);
 
+}
+
+
+void Qucs_S_SPAR_Viewer::updateSimulation(SchematicContent SI) {
+  Circuit = SI;
+  updateSimulation();
 }

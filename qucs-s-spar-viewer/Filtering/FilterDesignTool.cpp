@@ -447,8 +447,6 @@ void FilterDesignTool::UpdateDesignParameters() {
 
   Filter_SP.ZL = 50;
 
-
-
   synthesize();
 }
 

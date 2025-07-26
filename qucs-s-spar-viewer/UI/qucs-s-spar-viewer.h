@@ -332,6 +332,9 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   GraphWidget *SchematicWidget; // Schematic viewer
   QTabWidget *toolsTabWidget; // Tools' tab widget. It contains all the RF design tools
   SimulationSetup *SimulationSetupWidget;
+  SchematicContent Circuit; // Description of the circuit in the schematic.
+                             // It needs to be a member variable since the simulation can be triggered by a change in the simulation settings.
+                            // i.e. in this case there's no SchematicContent object to emit
 
   void onToolsDockVisibilityChanged(bool visible);
 
@@ -397,8 +400,8 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
 private slots:
   void updateSchematicContent(SchematicContent SI); // Updates the content of the schematic window in the tool section
-  void updateSimulatedTraces(SchematicContent SI); // Updates the traces from the designer tools
-
+  void updateSimulation(SchematicContent SI); // Updates the traces from the designer tools
+  void updateSimulation();
 };
 
 #endif
