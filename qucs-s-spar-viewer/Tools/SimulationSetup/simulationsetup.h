@@ -7,7 +7,7 @@
 #include <QDoubleSpinBox>
 #include <QSpinBox>
 #include <QComboBox>
-#include "../Misc/general.h"
+#include "../..//Misc/general.h"
 
 class SimulationSetup : public QWidget {
   Q_OBJECT

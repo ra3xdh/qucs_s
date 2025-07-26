@@ -102,14 +102,6 @@ file(GLOB CUSTOM_WIDGETS_HEADERS
      CustomWidgets/*.h
 )
 
-file(GLOB FILTERING_SOURCES
-     Filtering/*.cpp
-)
-
-file(GLOB FILTERING_HEADERS
-     Filtering/*.h
-)
-
 file(GLOB SCHEMATIC_SOURCES
      Schematic/*.cpp
 )
@@ -142,10 +134,58 @@ file(GLOB UI_HEADERS
      UI/*.h
 )
 
+## TOOLS
+file(GLOB FILTERING_SOURCES
+     Tools/Filtering/*.cpp
+)
 
-SET( spar_viewer_sources main.cpp ${UI_SOURCES} ${PLOT_WIDGETS_SOURCES} ${CUSTOM_WIDGETS_SOURCES} ${FILTERING_SOURCES} ${SCHEMATIC_SOURCES} ${SPAR_SOURCES} ${MISC_SOURCES})
+file(GLOB FILTERING_HEADERS
+     Tools/Filtering/*.h
+)
 
-SET( spar_viewer_moc_headers ${UI_HEADERS} ${PLOT_WIDGETS_HEADERS} ${CUSTOM_WIDGETS_HEADERS} ${FILTERING_HEADERS} ${SCHEMATIC_HEADERS} ${SPAR_HEADERS} ${MISC_HEADERS})
+file(GLOB NETLIST_SCRATCHPAD_SOURCES
+     Tools/NetlistScratchPad/*.cpp
+)
+
+file(GLOB NETLIST_SCRATCHPAD_HEADERS
+     Tools/NetlistScratchPad/*.h
+)
+
+file(GLOB SIMULATION_SETTINGS_SOURCES
+     Tools/SimulationSetup/*.cpp
+)
+
+file(GLOB SIMULATION_SETTINGS_HEADERS
+     Tools/SimulationSetup/*.h
+)
+
+
+set(spar_viewer_sources
+    main.cpp
+    ${UI_SOURCES}
+    ${PLOT_WIDGETS_SOURCES}
+    ${CUSTOM_WIDGETS_SOURCES}
+    ${SCHEMATIC_SOURCES}
+    ${SPAR_SOURCES}
+    ${MISC_SOURCES}
+    ${TOOLS_SOURCES}
+    ${FILTERING_SOURCES}
+    ${NETLIST_SCRATCHPAD_SOURCES}
+    ${SIMULATION_SETTINGS_SOURCES}
+)
+
+set(spar_viewer_moc_headers
+    ${UI_HEADERS}
+    ${PLOT_WIDGETS_HEADERS}
+    ${CUSTOM_WIDGETS_HEADERS}
+    ${SCHEMATIC_HEADERS}
+    ${SPAR_HEADERS}
+    ${MISC_HEADERS}
+    ${TOOLS_HEADERS}
+    ${FILTERING_HEADERS}
+    ${NETLIST_SCRATCHPAD_HEADERS}
+    ${SIMULATION_SETTINGS_HEADERS}
+)
 
 SET(RESOURCES qucs-s-spar-viewer.qrc)
 

@@ -17,10 +17,10 @@
 #define CANONICALFILTER_H
 
 #include "LowpassPrototypeCoeffs.h"
-#include "../Schematic/Network.h"
-#include "../Schematic/SchematicContent.h"
-#include "../Schematic/component.h"
-#include "../Misc/general.h"
+#include "../../Schematic/Network.h"
+#include "../../Schematic/SchematicContent.h"
+#include "../../Schematic/component.h"
+#include "../../Misc/general.h"
 #include <QPen>
 class CanonicalFilter : public Network {
 public:

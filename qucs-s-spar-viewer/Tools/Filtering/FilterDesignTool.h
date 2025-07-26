@@ -38,7 +38,7 @@
 #include "Filtering/EndCoupled.h"
 #include "Filtering/QuarterWaveFilters.h"
 #include "Filtering/SteppedImpedanceFilter.h"*/
-#include "../Schematic/Network.h"
+#include "../../Schematic/Network.h"
 
 #define LC_LADDER 0
 #define LC_DIRECT_COUPLED 1

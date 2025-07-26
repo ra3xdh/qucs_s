@@ -8,13 +8,13 @@
 #include "../CustomWidgets/codeeditor.h"
 #include "../CustomWidgets/matrixcombopopup.h"
 
-#include "../Filtering/FilterDesignTool.h"
+#include "../Tools/Filtering/FilterDesignTool.h"
 
 #include "../SPAR/SParameterCalculator.h"
 
 #include "../Misc/general.h"
 
-#include "simulationsetup.h"
+#include "../Tools/SimulationSetup/simulationsetup.h"
 
 #include <QMainWindow>
 #include <QLabel>

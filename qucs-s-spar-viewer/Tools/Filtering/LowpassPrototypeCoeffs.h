@@ -15,8 +15,8 @@
  ***************************************************************************/
 #ifndef LOWPASSPROTOTYPECOEFFS_H
 #define LOWPASSPROTOTYPECOEFFS_H
-#include "../Schematic/Network.h"
-#include "../Schematic/structures.h"
+#include "../../Schematic/Network.h"
+#include "../../Schematic/structures.h"
 #include <deque>
 #include <QDebug>
 
