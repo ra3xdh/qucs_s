@@ -170,8 +170,11 @@ QString SchematicContent::getQucsNetlist() {
 
 
 QString SchematicContent::getSParameterNetlist() {
-  // Build netlist compatible with SParameterCalculator
-  QString netlist;
+  if (Comps.isEmpty()) {
+    return netlist; // This is used in case the network is defined using a plain text netlist
+  }
+
+  netlist.clear(); // Clear previous netlist
 
   // Add header comment
   netlist += "* Netlist generated from SchematicContent for SParameterCalculator\n";
@@ -366,6 +369,11 @@ QString SchematicContent::getSParameterNetlist() {
   }
 
   return netlist;
+}
+
+
+void SchematicContent::setNetlist(QString netlist) {
+  this->netlist = netlist;
 }
 
 void SchematicContent::appendComponent(struct ComponentInfo C) {

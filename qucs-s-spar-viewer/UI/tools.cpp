@@ -16,10 +16,11 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   toolsTabWidget = new QTabWidget();
 
   FilterTool = new FilterDesignTool(this);
+  Netlist_Tool = new NetlistScratchPad(this);
   SimulationSetupWidget = new SimulationSetup(this);
 
   toolsTabWidget->addTab(FilterTool, "Filter Design");
-  toolsTabWidget->addTab(new QWidget(), "Scratch Pad");
+  toolsTabWidget->addTab(Netlist_Tool, "Scratch Pad");
   toolsTabWidget->addTab(SimulationSetupWidget, "Simulation Setup");
 
   // Schematic widget
@@ -37,6 +38,7 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
   // Connect with tools to update the simulated traces
   connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
+  connect(Netlist_Tool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(SimulationSetupWidget, SIGNAL(updateSimulation()), this, SLOT(updateSimulation()));
 
 
@@ -46,6 +48,8 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
 void Qucs_S_SPAR_Viewer::updateSimulation() {
   QString netlist = Circuit.getSParameterNetlist();
+  qDebug() << "Netlist";
+  qDebug() << netlist;
   SPAR_engine.setNetlist(netlist);
   double fstart = SimulationSetupWidget->getFstart();
   double fstop = SimulationSetupWidget->getFstop();
@@ -53,6 +57,10 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
   SPAR_engine.setFrequencySweep(fstart, fstop, npoints);
   SPAR_engine.calculateSParameterSweep();
   QMap<QString, QList<double>> data = SPAR_engine.getData();
+
+  if (data.isEmpty()) {
+    return;
+  }
 
   QString dataset_name = Circuit.Name;
 
@@ -82,10 +90,20 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
 
   updateAllPlots(dataset_name);
 
+  updateSchematicContent();
+
 }
 
 
 void Qucs_S_SPAR_Viewer::updateSimulation(SchematicContent SI) {
   Circuit = SI;
   updateSimulation();
+}
+
+void Qucs_S_SPAR_Viewer::updateSchematicContent() {
+  SchematicWidget->clear(); // Remove the components in the scene
+
+  if (!Circuit.getComponents().isEmpty()) {
+    SchematicWidget->setSchematic(Circuit);
+  }
 }

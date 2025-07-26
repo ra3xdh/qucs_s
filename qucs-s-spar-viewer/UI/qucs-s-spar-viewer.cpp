@@ -817,11 +817,6 @@ void Qucs_S_SPAR_Viewer::setupScrollableLayout()
   setupScrollAreaForLayout(GroupDelayLayout, GroupDelayTab, "GroupDelayScrollArea");
 }
 
-void Qucs_S_SPAR_Viewer::updateSchematicContent(SchematicContent SI) {
-  SchematicWidget->clear(); // Remove the components in the scene
-  SchematicWidget->setSchematic(SI);
-}
-
 Qucs_S_SPAR_Viewer::~Qucs_S_SPAR_Viewer()
 {
   QSettings settings;

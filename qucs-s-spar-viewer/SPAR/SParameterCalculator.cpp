@@ -342,7 +342,7 @@ void SParameterCalculator::setFrequencySweep(double start, double stop, int poin
 
 void SParameterCalculator::calculateSParameterSweep() {
   if (ports.empty()) {
-    throw std::runtime_error("No ports defined");
+    return;
   }
 
   sweepResults.clear();

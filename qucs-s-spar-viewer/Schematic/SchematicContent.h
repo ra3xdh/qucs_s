@@ -33,6 +33,7 @@ public:
                // restricted to ladder networks
   QString getQucsNetlist();
   QString getSParameterNetlist();
+  void setNetlist(QString);
   QString Name;
 
 private:

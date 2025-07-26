@@ -9,12 +9,15 @@
 #include "../CustomWidgets/matrixcombopopup.h"
 
 #include "../Tools/Filtering/FilterDesignTool.h"
+#include "../Tools/NetlistScratchPad/netlistscratchpad.h"
+#include "../Tools/SimulationSetup/simulationsetup.h"
+
 
 #include "../SPAR/SParameterCalculator.h"
 
 #include "../Misc/general.h"
 
-#include "../Tools/SimulationSetup/simulationsetup.h"
+
 
 #include <QMainWindow>
 #include <QLabel>
@@ -335,6 +338,9 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   SchematicContent Circuit; // Description of the circuit in the schematic.
                              // It needs to be a member variable since the simulation can be triggered by a change in the simulation settings.
                             // i.e. in this case there's no SchematicContent object to emit
+  NetlistScratchPad *Netlist_Tool;
+
+  void updateSchematicContent(); // This is called by the updateSimulation() function
 
   void onToolsDockVisibilityChanged(bool visible);
 
@@ -399,7 +405,6 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   QStringList filePaths; // Full path of the files in the progrom. It's used for file monitoring.
 
 private slots:
-  void updateSchematicContent(SchematicContent SI); // Updates the content of the schematic window in the tool section
   void updateSimulation(SchematicContent SI); // Updates the traces from the designer tools
   void updateSimulation();
 };
