@@ -30,11 +30,11 @@
 #include <QWidget>
 
 #include "CanonicalFilter.h"
+#include "EllipticFilter.h"
 #include "DirectCoupledFilters.h"
 /*#include "Filtering/CapacitivelyCoupledShuntResonatorsFilter.h"
 #include "Filtering/CoupledLineBandpassFilter.h"
 #include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"
-#include "Filtering/EllipticFilter.h"
 #include "Filtering/EndCoupled.h"
 #include "Filtering/QuarterWaveFilters.h"
 #include "Filtering/SteppedImpedanceFilter.h"*/

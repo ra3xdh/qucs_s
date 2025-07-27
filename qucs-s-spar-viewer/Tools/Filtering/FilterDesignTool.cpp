@@ -273,11 +273,19 @@ void FilterDesignTool::synthesize() {
 
   switch (filter_type) {
     case LC_LADDER:
-      CanonicalFilter *CF;
-      CF = new CanonicalFilter(Filter_SP);
-      CF->synthesize();
-      SchContent = CF->Schematic;
-      delete CF;
+      if (FilterResponseTypeCombo->currentText() == QString("Elliptic")){
+          EllipticFilter *EF;
+          EF = new EllipticFilter(Filter_SP);
+          EF->synthesize();
+          SchContent = EF->Schematic;
+          delete EF;
+      } else {
+        CanonicalFilter *CF;
+        CF = new CanonicalFilter(Filter_SP);
+        CF->synthesize();
+        SchContent = CF->Schematic;
+        delete CF;
+      }
       break;
 
     case LC_DIRECT_COUPLED:
@@ -324,8 +332,8 @@ void FilterDesignTool::ResposeComboChanged() {
 // specificatios
 void FilterDesignTool::UpdateDesignParameters() {
   Filter_SP.Implementation = FilterImplementationCombo->currentText();
-  //************************** Set filter response
-  //*********************************
+
+  // Filter response
   if (!FilterResponseTypeCombo->currentText().compare("Chebyshev"))
     Filter_SP.FilterResponse = Chebyshev;
   if (!FilterResponseTypeCombo->currentText().compare("Butterworth"))
@@ -341,8 +349,7 @@ void FilterDesignTool::UpdateDesignParameters() {
   if (!FilterResponseTypeCombo->currentText().compare("LinearPhase"))
     Filter_SP.FilterResponse = LinearPhaseEqError;
 
-         //**************************** Set filter type
-         //**************************************
+  // Filter type
   if (!FilterClassCombo->currentText().compare("Lowpass"))
     Filter_SP.FilterType = Lowpass;
   if (!FilterClassCombo->currentText().compare("Highpass"))
@@ -352,8 +359,7 @@ void FilterDesignTool::UpdateDesignParameters() {
   if (!FilterClassCombo->currentText().compare("Bandstop"))
     Filter_SP.FilterType = Bandstop;
 
-         //**************************** Set coupling
-         //********************************************
+  // Coupling
   if (!DC_CouplingTypeCombo->currentText().compare(
           "Capacitative coupled shunt resonators"))
     Filter_SP.DC_Coupling = CapacitativeCoupledShuntResonators;
@@ -417,27 +423,29 @@ void FilterDesignTool::UpdateDesignParameters() {
     FilterResponseTypeCombo->blockSignals(false);
   }
 
-         // Update parameters
+  // Update parameters
   Filter_SP.bw = BWSpinbox->value() * getScale(BW_ScaleCombobox->currentText());
   Filter_SP.fc = FCSpinbox->value() * getScale(FC_ScaleCombobox->currentText());
+  Filter_SP.EllipticType = EllipticType->currentText();
   Filter_SP.isCLC = CLCRadioButton->isChecked();
   Filter_SP.ZS = SourceImpedanceLineEdit->text().toDouble();
   Filter_SP.Implementation = FilterImplementationCombo->currentText();
   Filter_SP.minZ = MinimumZ_Spinbox->value();
   Filter_SP.maxZ = MaximumZ_Spinbox->value();
   Filter_SP.ImpedanceRatio = ImpedanceRatio_Spinbox->value();
-
-  if (SemiLumpedImplementationCombo->currentText() ==
-      "Replace inductors and shunt capacitors")
-    Filter_SP.SemiLumpedISettings = INDUCTORS_AND_SHUNT_CAPS;
-  if (SemiLumpedImplementationCombo->currentText() == "Replace only inductors")
-    Filter_SP.SemiLumpedISettings = ONLY_INDUCTORS;
-
- // The data comes from comboboxes rather than spinboxes
   Filter_SP.order = OrderSpinBox->value();
   Filter_SP.Ripple = RippleSpinbox->value();
-
+  Filter_SP.as = StopbandAttSpinbox->value();
   Filter_SP.ZL = 50;
+
+
+
+  if (SemiLumpedImplementationCombo->currentText() == "Replace inductors and shunt capacitors") {
+    Filter_SP.SemiLumpedISettings = INDUCTORS_AND_SHUNT_CAPS;
+  }
+  if (SemiLumpedImplementationCombo->currentText() == "Replace only inductors") {
+    Filter_SP.SemiLumpedISettings = ONLY_INDUCTORS;
+  }
 
   synthesize();
 }
