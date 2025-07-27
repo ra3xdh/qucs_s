@@ -74,6 +74,7 @@ QRectF Component::boundingRect() const {
     R = QRect(-30, -30, 60, 60);
     break;
   case Capacitor:
+    R = QRect(-30, -30, 60, 60);
   case Inductor:
     R = QRect(-40, -40, 80, 80);
     break;
@@ -94,8 +95,6 @@ QPainterPath Component::shape() const {
   QPainterPath path;
   switch (CompType) {
   case Capacitor:
-    path.addRect(-15, -15, 30, 30);
-    break;
   case OpenStub:
   case ShortStub:
   case TransmissionLine:
@@ -103,9 +102,6 @@ QPainterPath Component::shape() const {
   case CoupledLines:
   case Coupler:
     path.addRect(-30, -30, 60, 60);
-    break;
-  case Inductor:
-    path.addRect(-20, -20, 40, 40);
     break;
   case GND:
     path.addRect(-2 * 7, -2 * 7, 2 * 15, 2 * 10);
@@ -218,6 +214,7 @@ QPoint Component::getPortLocation(int port_number) {
   case TransmissionLine:
   case Resistor:
   case Inductor:
+  case Capacitor:
     switch (port_number) {
     case 1:
       P = QPoint(0, -25);
@@ -225,16 +222,6 @@ QPoint Component::getPortLocation(int port_number) {
     case 0:
     default:
       P = QPoint(0, 25);
-    }
-    break;
-  case Capacitor:
-    switch (port_number) {
-    case 1:
-      P = QPoint(0, -20);
-      break;
-    case 0:
-    default:
-      P = QPoint(0, 20);
     }
     break;
   case GND:
@@ -400,8 +387,8 @@ void Component::paintCapacitor(QPainter *painter) {
 
   // The following lines draw the capacitor in a vertical position
   // Lines from ports to parallel plates
-  painter->drawLine(QPoint(0, 20), QPoint(0, 4));
-  painter->drawLine(QPoint(0, -20), QPoint(0, -4));
+  painter->drawLine(QPoint(0, 25), QPoint(0, 4));
+  painter->drawLine(QPoint(0, -25), QPoint(0, -4));
 
   // Parallel plates
   painter->drawLine(QPoint(-10, -4), QPoint(10, -4));

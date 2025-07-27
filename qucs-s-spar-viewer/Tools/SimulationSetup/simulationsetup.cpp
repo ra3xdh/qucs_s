@@ -8,7 +8,7 @@ SimulationSetup::SimulationSetup(QWidget *parent): QWidget(parent) {
   fstartSpinBox = new QDoubleSpinBox();
   fstartSpinBox->setMinimum(0);
   fstartSpinBox->setMaximum(1e7);
-  fstartSpinBox->setValue(0);
+  fstartSpinBox->setValue(10);
 
   fstartScaleComboBox = new QComboBox();
   fstartScaleComboBox->addItem("GHz");
