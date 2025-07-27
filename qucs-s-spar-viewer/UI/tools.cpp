@@ -33,9 +33,6 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   // Set the layout container as the dock widget's content
   dockTools->setWidget(container);
 
-  // Connect with tools to update the schematic viewer
-  connect(FilterTool, SIGNAL(updateSchematic(SchematicContent)), this, SLOT(updateSchematicContent(SchematicContent)));
-
   // Connect with tools to update the simulated traces
   connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(Netlist_Tool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));

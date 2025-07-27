@@ -24,7 +24,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
          //********** Filter Implementation ***********
   FilterImplementationCombo = new QComboBox();
   FilterImplementationCombo->addItem("LC Ladder");
-  //FilterImplementationCombo->addItem("LC Direct Coupled");
+  FilterImplementationCombo->addItem("LC Direct Coupled");
   //FilterImplementationCombo->addItem("Quarter-wavelength");
   //FilterImplementationCombo->addItem("Stepped impedance");
   //FilterImplementationCombo->addItem("End-coupled");
@@ -214,53 +214,28 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(traceNameLineEdit, 15, 1);
 
 
-
-
   this->setLayout(FilterDesignLayout);
 
-         // Connection functions for updating the network requirements and simulate on
-         // the fly
-  connect(FilterImplementationCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(ImplementationComboChanged(int)));
-  connect(CLCRadioButton, SIGNAL(toggled(bool)), this,
-          SLOT(ChangeRL_CLC_LCL_mode()));
-  // connect(LCLRadioButton, SIGNAL(toggled(bool)), this,
-  // SLOT(ChangeRL_CLC_LCL_mode()));
-  connect(FilterResponseTypeCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(ResposeComboChanged()));
-  connect(EllipticType, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(EllipticTypeChanged()));
-  connect(FilterClassCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(OrderSpinBox, SIGNAL(valueChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FCSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FC_ScaleCombobox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(BWSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(BW_ScaleCombobox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(SourceImpedanceLineEdit, SIGNAL(textChanged(QString)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(RippleSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(StopbandAttSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(EllipticType, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(DC_CouplingTypeCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-
-  connect(MinimumZ_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(MaximumZ_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(SemiLumpedImplementationCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(ImpedanceRatio_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
+  // Connection functions for updating the network requirements and simulate in real time
+  connect(FilterImplementationCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ImplementationComboChanged(int)));
+  connect(CLCRadioButton, SIGNAL(toggled(bool)), this, SLOT(ChangeRL_CLC_LCL_mode()));
+  connect(FilterResponseTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ResposeComboChanged()));
+  connect(EllipticType, SIGNAL(currentIndexChanged(int)), this, SLOT(EllipticTypeChanged()));
+  connect(FilterClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(OrderSpinBox, SIGNAL(valueChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(FCSpinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(FC_ScaleCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(BWSpinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(BW_ScaleCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(SourceImpedanceLineEdit, SIGNAL(textChanged(QString)), this, SLOT(UpdateDesignParameters()));
+  connect(RippleSpinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(StopbandAttSpinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(EllipticType, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(DC_CouplingTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(MinimumZ_Spinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(MaximumZ_Spinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(SemiLumpedImplementationCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(ImpedanceRatio_Spinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
 
   ImplementationComboChanged(LC_LADDER);
 }
@@ -294,11 +269,28 @@ FilterDesignTool::~FilterDesignTool() {
 void FilterDesignTool::synthesize() {
   // Recalculate network
 
-  CanonicalFilter *CF;
-  CF = new CanonicalFilter(Filter_SP);
-  CF->synthesize();
-  SchContent = CF->Schematic;
-  delete CF;
+  int filter_type = FilterImplementationCombo->currentIndex();
+
+  switch (filter_type) {
+    case LC_LADDER:
+      CanonicalFilter *CF;
+      CF = new CanonicalFilter(Filter_SP);
+      CF->synthesize();
+      SchContent = CF->Schematic;
+      delete CF;
+      break;
+
+    case LC_DIRECT_COUPLED:
+      DirectCoupledFilters *DCF;
+      DCF = new DirectCoupledFilters(Filter_SP);
+      DCF->synthesize();
+      SchContent = DCF->Schematic;
+      delete DCF;
+      break;
+
+  }
+
+
 
   QString FilterName = traceNameLineEdit->text();
   SchContent.Name = FilterName;
@@ -395,7 +387,7 @@ void FilterDesignTool::UpdateDesignParameters() {
     FilterResponseTypeCombo->clear();
     QStringList data = setItemsResponseTypeCombo();
     data.removeAt(data.indexOf("Elliptic"));
-    data.removeAt(data.indexOf("Cauer"));
+    //data.removeAt(data.indexOf("Cauer"));
     FilterResponseTypeCombo->addItems(data);
     for (int i = 0; i < data.length(); i++) {
       if (CurrentResponse == data.at(i)) {
