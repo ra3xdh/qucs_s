@@ -52,6 +52,7 @@ public:
 
   void  setName (const QString&);
   bool  load ();
+  bool  reload ();
   int   save ();
   virtual double zoomBy (double zoom) override;
   virtual void showNoZoom () override;

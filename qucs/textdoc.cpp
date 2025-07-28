@@ -387,6 +387,16 @@ bool TextDoc::load ()
   return true;
 }
 
+/*!
+ * \brief TextDoc::clears and re-loads a text document
+ * \return true/false if the document was opened with success
+ */
+bool TextDoc::reload()
+{
+  clear();
+  return load();
+}
+
 
 /*!
  * \brief TextDoc::save saves the current document and it settings
