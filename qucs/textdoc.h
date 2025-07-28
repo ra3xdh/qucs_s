@@ -20,6 +20,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
 
 #include <QPlainTextEdit>
 #include <QFont>
+#include <qdatetime.h>
 
 #include "qucsdoc.h"
 
@@ -53,6 +54,7 @@ public:
   void  setName (const QString&);
   bool  load ();
   bool  reload ();
+  bool  hasFileChangedOnDisk() const;
   int   save ();
   virtual double zoomBy (double zoom) override;
   virtual void showNoZoom () override;
@@ -99,6 +101,7 @@ public slots:
 
 private:
   SyntaxHighlighter * syntaxHighlight;
+  QDateTime lastLoadModTime; // Timestamp of last successful load
 
 private slots:
   void highlightCurrentLine();
