@@ -364,7 +364,7 @@ private:
    ************************************************** */
 
 public:
-  void editFile(const QString&);
+  void editFile(const QString&, bool reloadFile = false);
 
   QAction *insWire, *insLabel, *insGround, *insPort, *insEquation, *magPlus,
           *editRotate, *editMirror, *editMirrorY, *editPaste, *select,
