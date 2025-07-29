@@ -36,3 +36,12 @@ void NetlistScratchPad::update() {
 }
 
 
+QString NetlistScratchPad::getText() {
+  return Netlist_Editor_Widget->getText();
+}
+
+void NetlistScratchPad::setText(QString netlist) {
+  Netlist_Editor_Widget->clear();
+  Netlist_Editor_Widget->insertPlainText(netlist);
+}
+

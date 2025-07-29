@@ -47,6 +47,7 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
   QString netlist = Circuit.getSParameterNetlist();
   qDebug() << "Netlist";
   qDebug() << netlist;
+
   SPAR_engine.setNetlist(netlist);
   double fstart = SimulationSetupWidget->getFstart();
   double fstop = SimulationSetupWidget->getFstop();
@@ -94,6 +95,16 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
 
 void Qucs_S_SPAR_Viewer::updateSimulation(SchematicContent SI) {
   Circuit = SI;
+
+  QString tool_netlist = SI.getSParameterNetlist();
+  QString scratchpad = Netlist_Tool->getText();
+
+  if (tool_netlist != scratchpad) {
+    Netlist_Tool->blockSignals(true);
+    Netlist_Tool->setText(tool_netlist);
+    Netlist_Tool->blockSignals(false);
+  }
+
   updateSimulation();
 }
 

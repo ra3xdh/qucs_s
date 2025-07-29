@@ -402,6 +402,7 @@ void FilterDesignTool::UpdateDesignParameters() {
     filter_response.append("Butterworth");
     filter_response.append("Chebyshev");
     filter_response.append("Elliptic");
+    FilterResponseTypeCombo->clear();
     FilterResponseTypeCombo->addItems(filter_response);
 
 
@@ -427,6 +428,7 @@ void FilterDesignTool::UpdateDesignParameters() {
       QStringList filter_response;
       filter_response.append("Butterworth");
       filter_response.append("Chebyshev");
+      FilterResponseTypeCombo->clear();
       FilterResponseTypeCombo->addItems(filter_response);
 
 
@@ -446,6 +448,7 @@ void FilterDesignTool::UpdateDesignParameters() {
         QStringList filter_response;
         filter_response.append("Butterworth");
         filter_response.append("Chebyshev");
+        FilterResponseTypeCombo->clear();
         FilterResponseTypeCombo->addItems(filter_response);
         FilterClassCombo->setEnabled(false);
       }

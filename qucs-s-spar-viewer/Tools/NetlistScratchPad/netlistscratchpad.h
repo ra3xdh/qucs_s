@@ -14,6 +14,8 @@ class NetlistScratchPad : public QWidget {
 public:
   NetlistScratchPad(QWidget *parent = nullptr);
   ~NetlistScratchPad();
+  QString getText();
+  void setText(QString);
 
 
 
