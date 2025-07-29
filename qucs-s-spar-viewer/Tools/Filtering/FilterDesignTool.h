@@ -32,18 +32,18 @@
 #include "CanonicalFilter.h"
 #include "EllipticFilter.h"
 #include "DirectCoupledFilters.h"
+#include "SteppedImpedanceFilter.h"
 /*#include "Filtering/CapacitivelyCoupledShuntResonatorsFilter.h"
 #include "Filtering/CoupledLineBandpassFilter.h"
 #include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"
 #include "Filtering/EndCoupled.h"
-#include "Filtering/QuarterWaveFilters.h"
-#include "Filtering/SteppedImpedanceFilter.h"*/
+#include "Filtering/QuarterWaveFilters.h"*/
 #include "../../Schematic/Network.h"
 
 #define LC_LADDER 0
 #define LC_DIRECT_COUPLED 1
-#define QUARTERWAVE 2
-#define STEPPED_IMPEDANCE 3
+#define STEPPED_IMPEDANCE 2
+#define QUARTERWAVE 3
 #define END_COUPLED 4
 #define CAPACITIVELY_COUPLED_RESONATORS 5
 #define SEMILUMPED_ELLIPTIC 6

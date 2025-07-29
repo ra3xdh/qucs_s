@@ -25,8 +25,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterImplementationCombo = new QComboBox();
   FilterImplementationCombo->addItem("LC Ladder");
   FilterImplementationCombo->addItem("LC Direct Coupled");
+  FilterImplementationCombo->addItem("Stepped impedance");
   //FilterImplementationCombo->addItem("Quarter-wavelength");
-  //FilterImplementationCombo->addItem("Stepped impedance");
   //FilterImplementationCombo->addItem("End-coupled");
   //FilterImplementationCombo->addItem("Capacitively-coupled shunt resonators");
   //FilterImplementationCombo->addItem("Semilumped Elliptic");
@@ -296,6 +296,14 @@ void FilterDesignTool::synthesize() {
       delete DCF;
       break;
 
+    case STEPPED_IMPEDANCE:
+      SteppedImpedanceFilter *STIF;
+      STIF = new SteppedImpedanceFilter(Filter_SP);
+      STIF->synthesize();
+      SchContent = STIF->Schematic;
+      delete STIF;
+      break;
+
   }
 
 
@@ -338,16 +346,9 @@ void FilterDesignTool::UpdateDesignParameters() {
     Filter_SP.FilterResponse = Chebyshev;
   if (!FilterResponseTypeCombo->currentText().compare("Butterworth"))
     Filter_SP.FilterResponse = Butterworth;
-  if (!FilterResponseTypeCombo->currentText().compare("Legendre"))
-    Filter_SP.FilterResponse = Legendre;
   if (!FilterResponseTypeCombo->currentText().compare("Elliptic"))
     Filter_SP.FilterResponse = Elliptic;
-  if (!FilterResponseTypeCombo->currentText().compare("Bessel"))
-    Filter_SP.FilterResponse = Bessel;
-  if (!FilterResponseTypeCombo->currentText().compare("Gegenbauer"))
-    Filter_SP.FilterResponse = Gegenbauer;
-  if (!FilterResponseTypeCombo->currentText().compare("LinearPhase"))
-    Filter_SP.FilterResponse = LinearPhaseEqError;
+
 
   // Filter type
   if (!FilterClassCombo->currentText().compare("Lowpass"))
@@ -360,16 +361,16 @@ void FilterDesignTool::UpdateDesignParameters() {
     Filter_SP.FilterType = Bandstop;
 
   // Coupling
-  if (!DC_CouplingTypeCombo->currentText().compare(
-          "Capacitative coupled shunt resonators"))
+  if (!DC_CouplingTypeCombo->currentText().compare("Capacitative coupled shunt resonators")) {
     Filter_SP.DC_Coupling = CapacitativeCoupledShuntResonators;
-  if (!DC_CouplingTypeCombo->currentText().compare(
-          "Inductive coupled series resonators"))
-    Filter_SP.DC_Coupling = InductiveCoupledSeriesResonators;
+  }
 
-         // Update user input
-  if ((!FilterClassCombo->currentText().compare("Lowpass")) ||
-      (!FilterClassCombo->currentText().compare("Highpass"))) {
+  if (!DC_CouplingTypeCombo->currentText().compare("Inductive coupled series resonators")) {
+    Filter_SP.DC_Coupling = InductiveCoupledSeriesResonators;
+  }
+
+  // Update user input
+  if ((!FilterClassCombo->currentText().compare("Lowpass")) ||  (!FilterClassCombo->currentText().compare("Highpass"))) {
     BWSpinbox->setEnabled(false);
     BW_ScaleCombobox->setEnabled(false);
   } else {
@@ -383,27 +384,10 @@ void FilterDesignTool::UpdateDesignParameters() {
     }
   }
 
-  if (Filter_SP.Implementation == "LC Direct Coupled") {
-    DC_CouplingTypeCombo->show();
-    DC_CouplingLabel->show();
-    FilterResponseTypeCombo->blockSignals(true);
-    CLCRadioButton->hide();
-    LCLRadioButton->hide();
-    QString CurrentResponse = FilterResponseTypeCombo->currentText();
-    FilterResponseTypeCombo->clear();
-    QStringList data = setItemsResponseTypeCombo();
-    data.removeAt(data.indexOf("Elliptic"));
-    //data.removeAt(data.indexOf("Cauer"));
-    FilterResponseTypeCombo->addItems(data);
-    for (int i = 0; i < data.length(); i++) {
-      if (CurrentResponse == data.at(i)) {
-        FilterResponseTypeCombo->setCurrentIndex(i);
-        break;
-      }
-    }
-    FilterClassCombo->blockSignals(false);
-    FilterResponseTypeCombo->blockSignals(false);
-  } else {
+
+  // Set the user input widgets according to the topology selected
+  if (Filter_SP.Implementation == QString("LC Ladder")){
+    // LC ladder filters
     DC_CouplingTypeCombo->hide();
     DC_CouplingLabel->hide();
     CLCRadioButton->show();
@@ -411,17 +395,68 @@ void FilterDesignTool::UpdateDesignParameters() {
     FilterClassCombo->setEnabled(true);
     QString CurrentResponse = FilterResponseTypeCombo->currentText();
     FilterResponseTypeCombo->blockSignals(true);
-    QStringList data = setItemsResponseTypeCombo();
-    FilterResponseTypeCombo->clear();
-    FilterResponseTypeCombo->addItems(data);
-    for (int i = 0; i < data.length(); i++) {
-      if (CurrentResponse == data.at(i)) {
+
+
+    // Update filter possible filter responses
+    QStringList filter_response;
+    filter_response.append("Butterworth");
+    filter_response.append("Chebyshev");
+    filter_response.append("Elliptic");
+    FilterResponseTypeCombo->addItems(filter_response);
+
+
+    for (int i = 0; i < filter_response.length(); i++) {
+      if (CurrentResponse == filter_response.at(i)) {
         FilterResponseTypeCombo->setCurrentIndex(i);
         break;
       }
     }
     FilterResponseTypeCombo->blockSignals(false);
+  } else {
+    // Direct Coupled Filters
+    if (Filter_SP.Implementation == QString("LC Direct Coupled")) {
+      DC_CouplingTypeCombo->show();
+      DC_CouplingLabel->show();
+      FilterResponseTypeCombo->blockSignals(true);
+      CLCRadioButton->hide();
+      LCLRadioButton->hide();
+      QString CurrentResponse = FilterResponseTypeCombo->currentText();
+      FilterResponseTypeCombo->clear();
+
+      // Update filter possible filter responses
+      QStringList filter_response;
+      filter_response.append("Butterworth");
+      filter_response.append("Chebyshev");
+      FilterResponseTypeCombo->addItems(filter_response);
+
+
+      for (int i = 0; i < filter_response.length(); i++) {
+        if (CurrentResponse == filter_response.at(i)) {
+          FilterResponseTypeCombo->setCurrentIndex(i);
+          break;
+        }
+      }
+      FilterClassCombo->blockSignals(false);
+      FilterResponseTypeCombo->blockSignals(false);
+    } else {
+      // Stepped LPF
+      if (Filter_SP.Implementation == QString("Stepped Impedance")) {
+
+        // Update filter possible filter responses
+        QStringList filter_response;
+        filter_response.append("Butterworth");
+        filter_response.append("Chebyshev");
+        FilterResponseTypeCombo->addItems(filter_response);
+        FilterClassCombo->setEnabled(false);
+      }
+    }
   }
+
+
+
+
+
+
 
   // Update parameters
   Filter_SP.bw = BWSpinbox->value() * getScale(BW_ScaleCombobox->currentText());

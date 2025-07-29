@@ -6,8 +6,8 @@
 #include <QRegularExpression>
 
 // Component constructor
-Component_SPAR::Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, double val)
-    : type(t), name(n), nodes(nds), value(val), frequency(0.0) {}
+Component_SPAR::Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, double> val)
+                              : type(t), name(n), nodes(nds), value(val), frequency(0.0) {}
 
 // Port constructor
 Port::Port(int n, double z) : node(n), impedance(z) {}
@@ -48,40 +48,59 @@ bool SParameterCalculator::parseNetlist() {
 
     QString name = parts[0];
     char type = name[0].toUpper().toLatin1();
+    QMap<QString, double> value;
 
     if (type == 'R' && parts.size() >= 4) {
       // Resistor: R1 node1 node2 value
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
-      double value = parseScaledValue(parts[3]);
+      double R = parseScaledValue(parts[3]);
+      value["R"] = R;
       addComponent(ComponentType_SPAR::RESISTOR, name.toStdString(), {node1, node2}, value);
     }
     else if (type == 'C' && parts.size() >= 4) {
       // Capacitor: C1 node1 node2 value
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
-      double value = parseScaledValue(parts[3]);
+      double C = parseScaledValue(parts[3]);
+      value["C"] = C;
       addComponent(ComponentType_SPAR::CAPACITOR, name.toStdString(), {node1, node2}, value);
     }
     else if (type == 'L' && parts.size() >= 4) {
       // Inductor: L1 node1 node2 value
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
-      double value = parseScaledValue(parts[3]);
+      double L = parseScaledValue(parts[3]);
+      value["L"] = L;
       addComponent(ComponentType_SPAR::INDUCTOR, name.toStdString(), {node1, node2}, value);
     }
-    else if (type == 'T' && parts.size() >= 4) {
-      // Transmission Line: T1 node1 node2 impedance
+    else if (type == 'T' && parts.size() >= 5) {
+      // Transmission Line: T1 node1 node2 impedance length
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
-      double impedance = parseScaledValue(parts[3]);
-      addComponent(ComponentType_SPAR::TRANSMISSION_LINE, name.toStdString(), {node1, node2}, impedance);
+      double Z0 = parseScaledValue(parts[3]);
+      double Length = parseScaledValue(parts[4]);
+      value["Z0"] = Z0;
+      value["Length"] = Length;
+      // Update numNodes before adding component
+      if (node1 > numNodes) {
+        numNodes = node1;
+      }
+      if (node2 > numNodes) {
+         numNodes = node2;
+      }
+      addComponent(ComponentType_SPAR::TRANSMISSION_LINE, name.toStdString(), {node1, node2}, value);
     }
     else if (type == 'P' && parts.size() >= 2) {
       // Port: P1 node [impedance]
       int node = parts[1].toInt();
-      double impedance = parseScaledValue(parts[2]);
-      addPort(node, impedance);
+      double impedance = 50.0; // Default impedance
+      if (parts.size() >= 3) {
+        impedance = parseScaledValue(parts[2]);
+      }
+      // Update numNodes before adding the port
+      if (node > numNodes) numNodes = node;
+    addPort(node, impedance);
     }
   }
 
@@ -154,54 +173,111 @@ vector<vector<Complex>> SParameterCalculator::invertMatrix(const vector<vector<C
 
 Complex SParameterCalculator::getImpedance(const Component_SPAR& comp, double freq) {
   double omega = 2 * M_PI * freq;
-
   switch (comp.type) {
   case ComponentType_SPAR::RESISTOR:
-    return Complex(comp.value, 0);
+    return Complex(comp.value["R"], 0);
   case ComponentType_SPAR::CAPACITOR:
-    return Complex(0, -1.0 / (omega * comp.value));
+    return Complex(0, -1.0 / (omega * comp.value["C"]));
   case ComponentType_SPAR::INDUCTOR:
-    return Complex(0, omega * comp.value);
-  case ComponentType_SPAR::TRANSMISSION_LINE:
-    return Complex(comp.value, 0); // Characteristic impedance
+    return Complex(0, omega * comp.value["L"]);
+  // Transmission lines are handled in buildAdmittanceMatrix()
   default:
     return Complex(0, 0);
   }
 }
 
+
+
 vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
   vector<vector<Complex>> Y = createMatrix(numNodes, numNodes);
 
+  // First handle ALL lumped elements (R, L, C)
   for (const auto& comp : components) {
-    if (comp.type == ComponentType_SPAR::VOLTAGE_SOURCE ||
-        comp.type == ComponentType_SPAR::CURRENT_SOURCE) {
-      continue; // Handle sources separately
-    }
+    if (comp.type == ComponentType_SPAR::TRANSMISSION_LINE)
+      continue; // TLIN: do separately
 
     Complex impedance = getImpedance(comp, frequency);
-    Complex admittance = Complex(1, 0) / impedance;
+    if (abs(impedance) < 1e-12)
+      impedance = Complex(1e-12, 0); // Avoid division by zero!
 
+    Complex admittance = Complex(1, 0) / impedance;
     if (comp.nodes.size() == 2) {
       int node1 = comp.nodes[0];
       int node2 = comp.nodes[1];
 
-             // Add to diagonal elements
-      if (node1 > 0) Y[node1-1][node1-1] += admittance;
-            if (node2 > 0) Y[node2-1][node2-1] += admittance;
-
-             // Add to off-diagonal elements
-      if (node1 > 0 && node2 > 0) {
+      if (node1 > 0)
+        Y[node1-1][node1-1] += admittance;
+            if (node2 > 0)
+        Y[node2-1][node2-1] += admittance;
+            if (node1 > 0 && node2 > 0) {
         Y[node1-1][node2-1] -= admittance;
         Y[node2-1][node1-1] -= admittance;
       }
     }
   }
 
+  // Now add all TRANSMISSION LINES (TLIN)
+  for (const auto& comp : components) {
+    if (comp.type != ComponentType_SPAR::TRANSMISSION_LINE)
+      continue;
+
+    // Extract TLIN parameters
+    int node1 = comp.nodes[0];
+    int node2 = comp.nodes[1];
+    double Z0 = comp.value["Z0"];
+    double Length = comp.value["Length"]; // mm
+
+    double freq = frequency;
+    double c = 299792458.0; // speed of light [m/s], assume lossless line in air
+    double l_m = Length * 1e-3; // mm -> m
+
+    double beta = 2 * M_PI * freq / c;    // [rad/m]
+    double theta = beta * l_m;            // [rad]
+    Complex j(0, 1);
+    Complex Z0c(Z0, 0);
+
+           // Compute TLIN Y-matrix block
+    Complex sinT = sin(theta);
+    Complex cosT = cos(theta);
+
+    // Handle the (rare) limit of sinT = 0 (open/short-circuit resonance)
+    if (abs(sinT) < 1e-12) {
+      // Pure open/short
+      // Series open: Y=0 block; series short: Y=infinity block. Safer to just skip adding anything.
+      continue;
+    }
+
+     // Standard 2-port, lossless TLIN block admittance matrix:
+     // Y = (1 / (Z0 * sin(theta))) * [ -j cos(theta)   j;
+     //                                   j         -j cos(theta)]
+    Complex y11 = -j * cosT / (Z0c * sinT);
+    Complex y12 =  j      / (Z0c * sinT);
+    // y21 == y12; y22 == y11
+
+    if (node1 > 0) {
+      Y[node1-1][node1-1] += y11;
+    }
+
+    if (node2 > 0) {
+      Y[node2-1][node2-1] += y11;
+    }
+
+    if (node1 > 0 && node2 > 0) {
+      Y[node1-1][node2-1] += y12;
+      Y[node2-1][node1-1] += y12;
+    }
+  }
+
+  //Add small conductance to ground to prevent singular matrix (for all nodes)
+  double gmin = 1e-12;
+  for (int i = 0; i < numNodes; ++i)
+    Y[i][i] += Complex(gmin, 0);
+
   return Y;
 }
 
 void SParameterCalculator::addComponent(ComponentType_SPAR type, const string& name,
-                                        const vector<int>& nodes, double value) {
+                                        const vector<int>& nodes, QMap<QString, double> value) {
   components.emplace_back(type, name, nodes, value);
 
   // Update number of nodes
@@ -222,6 +298,14 @@ vector<vector<Complex>> SParameterCalculator::calculateSParameters() {
   int numPorts = ports.size();
   vector<vector<Complex>> S = createMatrix(numPorts, numPorts);
   vector<vector<Complex>> Y = buildAdmittanceMatrix();
+
+  // Check all port nodes are within bounds
+  for (const auto& port : ports) {
+    if (port.node <= 0 || port.node > numNodes) {
+      throw runtime_error("Port node " + to_string(port.node) +
+                          " is out of bounds (1-" + to_string(numNodes) + ")");
+    }
+  }
 
   for (int j = 0; j < numPorts; j++) {
     int systemSize = numNodes + numPorts;
@@ -315,13 +399,14 @@ void SParameterCalculator::exportTouchstone(const QString& filename, const vecto
   double freqGHz = frequency / 1e9;
   out << freqGHz;
 
-  for (int i = 0; i < S.size(); i++) {
-    for (int j = 0; j < S[i].size(); j++) {
+  for (size_t i = 0; i < S.size(); i++) {
+    for (size_t j = 0; j < S[i].size(); j++) {
       double mag = abs(S[i][j]);
       double phase = arg(S[i][j]) * 180.0 / M_PI;
       out << " " << mag << " " << phase;
     }
   }
+
   out << "\n";
 
   file.close();
@@ -364,10 +449,10 @@ void SParameterCalculator::calculateSParameterSweep() {
       auto S = calculateSParameters();
       sweepResults.push_back(S);
 
-      for (int i = 1; i <= n_ports; i++) {
-        for (int j = 1; j <= n_ports; j++) {
+      for (int row = 1; row <= n_ports; ++row) {
+        for (int col = 1; col <= n_ports; ++col) {
           // Get the S-parameter value (note: S matrix uses 0-based indexing)
-          Complex sParam = S[i-1][j-1];
+          Complex sParam = S[row-1][col-1];
 
           // Extract real and imaginary parts
           double re = sParam.real();
@@ -380,10 +465,10 @@ void SParameterCalculator::calculateSParameterSweep() {
           // Calculate phase angle in degrees
           double ang = atan2(im, re) * 180.0 / M_PI;
 
-          QString keyDb  = QString("S%1%2_dB").arg(j).arg(i);
-          QString keyAng = QString("S%1%2ang").arg(j).arg(i);
-          QString keyRe  = QString("S%1%2re").arg(j).arg(i);
-          QString keyIm  = QString("S%1%2im").arg(j).arg(i);
+          QString keyDb  = QString("S%1%2_dB").arg(row).arg(col);
+          QString keyAng = QString("S%1%2ang").arg(row).arg(col);
+          QString keyRe  = QString("S%1%2re").arg(row).arg(col);
+          QString keyIm  = QString("S%1%2im").arg(row).arg(col);
 
           data[keyDb].append(dB);
           data[keyAng].append(ang);
@@ -449,13 +534,14 @@ void SParameterCalculator::exportSweepTouchstone(const QString& filename) const 
 
     out << freqGHz;
 
-    for (int row = 0; row < S.size(); row++) {
-      for (int col = 0; col < S[row].size(); col++) {
-        double mag = abs(S[row][col]);
-        double phase = arg(S[row][col]) * 180.0 / M_PI;
+    for (const auto& rowVec : S) {
+      for (const auto& value : rowVec) {
+        double mag = abs(value);
+        double phase = arg(value) * 180.0 / M_PI;
         out << " " << mag << " " << phase;
       }
     }
+
     out << "\n";
   }
 

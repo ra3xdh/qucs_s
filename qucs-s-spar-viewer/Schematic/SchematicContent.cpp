@@ -346,14 +346,18 @@ QString SchematicContent::getSParameterNetlist() {
       if (connections.size() >= 2) {
         int node1 = netToNodeMap.value(connections[0], 0);
         int node2 = netToNodeMap.value(connections[1], 0);
-        QString value = Comps[i].val.contains("Z") ? Comps[i].val["Z"] : "50";
+
+        QString Z0 = Comps[i].val["Z0"];
+        QString Length = Comps[i].val["Length"];
+
         // Change ID to start with 'R' for resistor representation
-        QString resistorID = "R" + Comps[i].ID.mid(1);
-        componentLine = QString("%1 %2 %3 %4\n")
-                            .arg(resistorID)
+        QString TL_ID = Comps[i].ID;
+        componentLine = QString("%1 %2 %3 %4 %5\n")
+                            .arg(TL_ID)
                             .arg(node1)
                             .arg(node2)
-                            .arg(value);
+                            .arg(Z0)
+                            .arg(Length);
       }
       break;
 

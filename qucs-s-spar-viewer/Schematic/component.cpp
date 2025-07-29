@@ -71,10 +71,8 @@ QRectF Component::boundingRect() const {
     R = QRect(-60, -60, 120, 120);
     break;
   case Resistor:
-    R = QRect(-30, -30, 60, 60);
     break;
   case Capacitor:
-    R = QRect(-30, -30, 60, 60);
   case Inductor:
     R = QRect(-40, -40, 80, 80);
     break;

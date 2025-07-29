@@ -32,10 +32,10 @@ struct Component_SPAR {
   ComponentType_SPAR type;
   string name;
   vector<int> nodes;
-  double value;
+  QMap<QString, double> value;
   double frequency; // For frequency-dependent components
 
-  Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, double val);
+  Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, double> val);
 };
 
 // Network port definition
@@ -83,7 +83,7 @@ public:
 
          // Add component to the circuit (for programmatic building)
   void addComponent(ComponentType_SPAR type, const string& name,
-                    const vector<int>& nodes, double value);
+                    const vector<int>& nodes, QMap<QString, double> value);
 
          // Add port to the circuit (for programmatic building)
   void addPort(int node, double impedance = 50.0);
