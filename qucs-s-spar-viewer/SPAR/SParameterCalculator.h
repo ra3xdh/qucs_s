@@ -24,7 +24,9 @@ enum class ComponentType_SPAR {
   INDUCTOR,
   VOLTAGE_SOURCE,
   CURRENT_SOURCE,
-  TRANSMISSION_LINE
+  TRANSMISSION_LINE,
+  OPEN_STUB,
+  SHORT_STUB
 };
 
 // Circuit component structure

@@ -47,10 +47,11 @@ bool SParameterCalculator::parseNetlist() {
     if (parts.isEmpty()) continue;
 
     QString name = parts[0];
-    char type = name[0].toUpper().toLatin1();
+    QString type = name.replace(QRegularExpression("\\d+$"), "");  // Remove the number at the end
+
     QMap<QString, double> value;
 
-    if (type == 'R' && parts.size() >= 4) {
+    if (type == QString("R") && parts.size() >= 4) {
       // Resistor: R1 node1 node2 value
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
@@ -58,7 +59,7 @@ bool SParameterCalculator::parseNetlist() {
       value["R"] = R;
       addComponent(ComponentType_SPAR::RESISTOR, name.toStdString(), {node1, node2}, value);
     }
-    else if (type == 'C' && parts.size() >= 4) {
+    else if (type == QString("C") && parts.size() >= 4) {
       // Capacitor: C1 node1 node2 value
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
@@ -66,7 +67,7 @@ bool SParameterCalculator::parseNetlist() {
       value["C"] = C;
       addComponent(ComponentType_SPAR::CAPACITOR, name.toStdString(), {node1, node2}, value);
     }
-    else if (type == 'L' && parts.size() >= 4) {
+    else if (type == QString("L") && parts.size() >= 4) {
       // Inductor: L1 node1 node2 value
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
@@ -74,7 +75,7 @@ bool SParameterCalculator::parseNetlist() {
       value["L"] = L;
       addComponent(ComponentType_SPAR::INDUCTOR, name.toStdString(), {node1, node2}, value);
     }
-    else if (type == 'T' && parts.size() >= 5) {
+    else if ( ((type == QString("TLIN")) || (type == QString("OSTUB")) || (type == QString("SSTUB"))) && parts.size() >= 5) {
       // Transmission Line: T1 node1 node2 impedance length
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
@@ -89,9 +90,16 @@ bool SParameterCalculator::parseNetlist() {
       if (node2 > numNodes) {
          numNodes = node2;
       }
-      addComponent(ComponentType_SPAR::TRANSMISSION_LINE, name.toStdString(), {node1, node2}, value);
-    }
-    else if (type == 'P' && parts.size() >= 2) {
+      if (type == QString("TLIN")) {
+        addComponent(ComponentType_SPAR::TRANSMISSION_LINE, name.toStdString(), {node1, node2}, value);
+      } else {
+        if (type == QString("OSTUB")) {
+          addComponent(ComponentType_SPAR::OPEN_STUB, name.toStdString(), {node1, node2}, value);
+        } else {
+          addComponent(ComponentType_SPAR::SHORT_STUB, name.toStdString(), {node1, node2}, value);
+        }
+      }
+    } else if (type == QString("P") && parts.size() >= 2) {
       // Port: P1 node [impedance]
       int node = parts[1].toInt();
       double impedance = 50.0; // Default impedance
@@ -176,11 +184,32 @@ Complex SParameterCalculator::getImpedance(const Component_SPAR& comp, double fr
   switch (comp.type) {
   case ComponentType_SPAR::RESISTOR:
     return Complex(comp.value["R"], 0);
+
   case ComponentType_SPAR::CAPACITOR:
     return Complex(0, -1.0 / (omega * comp.value["C"]));
+
   case ComponentType_SPAR::INDUCTOR:
     return Complex(0, omega * comp.value["L"]);
   // Transmission lines are handled in buildAdmittanceMatrix()
+
+  case ComponentType_SPAR::OPEN_STUB:  {
+    double Z0 = comp.value["Z0"];
+    double len = comp.value["Length"]*1e-3; // The value comes in mm
+    const double c = 299792458.0; // speed of light (m/s)
+    double beta = omega / c;
+    double cot_beta_l = 1.0 / tan(beta * len);
+    return Complex(0, -Z0 * cot_beta_l);
+  }
+
+  case ComponentType_SPAR::SHORT_STUB: {
+    double Z0 = comp.value["Z0"];
+    double len = comp.value["Length"] * 1e-3; // convert mm to meters
+    const double c = 299792458.0; // speed of light in m/s
+    double beta = omega / c;
+    double tan_beta_l = tan(beta * len);
+    return Complex(0, Z0 * tan_beta_l);
+  }
+
   default:
     return Complex(0, 0);
   }

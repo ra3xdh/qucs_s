@@ -26,7 +26,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterImplementationCombo->addItem("LC Ladder");
   FilterImplementationCombo->addItem("LC Direct Coupled");
   FilterImplementationCombo->addItem("Stepped impedance");
-  //FilterImplementationCombo->addItem("Quarter-wavelength");
+  FilterImplementationCombo->addItem("Quarter-wavelength");
   //FilterImplementationCombo->addItem("End-coupled");
   //FilterImplementationCombo->addItem("Capacitively-coupled shunt resonators");
   //FilterImplementationCombo->addItem("Semilumped Elliptic");
@@ -304,8 +304,13 @@ void FilterDesignTool::synthesize() {
       delete STIF;
       break;
 
+    case QUARTERWAVE:
+      QuarterWaveFilters *QWF;
+      QWF = new QuarterWaveFilters(Filter_SP);
+      QWF->synthesize();
+      SchContent = QWF->Schematic;
+      delete QWF;
   }
-
 
 
   QString FilterName = traceNameLineEdit->text();
@@ -316,8 +321,8 @@ void FilterDesignTool::synthesize() {
 }
 
 void FilterDesignTool::ResposeComboChanged() {
-  bool ActivateCauer =
-      !FilterResponseTypeCombo->currentText().compare("Elliptic");
+  QString Response = FilterResponseTypeCombo->currentText();
+  bool ActivateCauer = !Response.compare("Elliptic");
   StopbandAttSpinbox->setVisible(ActivateCauer);
   StopbandAttLabel->setVisible(ActivateCauer);
   StopbandAttdBLabel->setVisible(ActivateCauer);
@@ -385,80 +390,19 @@ void FilterDesignTool::UpdateDesignParameters() {
   }
 
 
-  // Set the user input widgets according to the topology selected
-  if (Filter_SP.Implementation == QString("LC Ladder")){
-    // LC ladder filters
-    DC_CouplingTypeCombo->hide();
-    DC_CouplingLabel->hide();
-    CLCRadioButton->show();
-    LCLRadioButton->show();
-    FilterClassCombo->setEnabled(true);
-    QString CurrentResponse = FilterResponseTypeCombo->currentText();
-    FilterResponseTypeCombo->blockSignals(true);
+  int filter_type = FilterImplementationCombo->currentIndex();
 
-
-    // Update filter possible filter responses
-    QStringList filter_response;
-    filter_response.append("Butterworth");
-    filter_response.append("Chebyshev");
-    filter_response.append("Elliptic");
-    FilterResponseTypeCombo->clear();
-    FilterResponseTypeCombo->addItems(filter_response);
-
-
-    for (int i = 0; i < filter_response.length(); i++) {
-      if (CurrentResponse == filter_response.at(i)) {
-        FilterResponseTypeCombo->setCurrentIndex(i);
-        break;
-      }
-    }
-    FilterResponseTypeCombo->blockSignals(false);
-  } else {
-    // Direct Coupled Filters
-    if (Filter_SP.Implementation == QString("LC Direct Coupled")) {
-      DC_CouplingTypeCombo->show();
-      DC_CouplingLabel->show();
-      FilterResponseTypeCombo->blockSignals(true);
-      CLCRadioButton->hide();
-      LCLRadioButton->hide();
-      QString CurrentResponse = FilterResponseTypeCombo->currentText();
-      FilterResponseTypeCombo->clear();
-
-      // Update filter possible filter responses
-      QStringList filter_response;
-      filter_response.append("Butterworth");
-      filter_response.append("Chebyshev");
-      FilterResponseTypeCombo->clear();
-      FilterResponseTypeCombo->addItems(filter_response);
-
-
-      for (int i = 0; i < filter_response.length(); i++) {
-        if (CurrentResponse == filter_response.at(i)) {
-          FilterResponseTypeCombo->setCurrentIndex(i);
-          break;
-        }
-      }
-      FilterClassCombo->blockSignals(false);
-      FilterResponseTypeCombo->blockSignals(false);
-    } else {
-      // Stepped LPF
-      if (Filter_SP.Implementation == QString("Stepped Impedance")) {
-
-        // Update filter possible filter responses
-        QStringList filter_response;
-        filter_response.append("Butterworth");
-        filter_response.append("Chebyshev");
-        FilterResponseTypeCombo->clear();
-        FilterResponseTypeCombo->addItems(filter_response);
-        FilterClassCombo->setEnabled(false);
-      }
-    }
+  switch (filter_type) {
+    case LC_LADDER:
+      setSettings_LC_Ladder();
+      break;
+    case LC_DIRECT_COUPLED:
+      setSettings_LC_Direct_Coupled();
+      break;
+    case STEPPED_IMPEDANCE:
+      setSettings_Stepped_Z_LPF();
+      break;
   }
-
-
-
-
-
 
 
   // Update parameters
@@ -487,6 +431,99 @@ void FilterDesignTool::UpdateDesignParameters() {
 
   synthesize();
 }
+
+
+void FilterDesignTool::setSettings_LC_Ladder(){
+  // LC ladder filters
+  DC_CouplingTypeCombo->hide();
+  DC_CouplingLabel->hide();
+  CLCRadioButton->show();
+  LCLRadioButton->show();
+  FilterClassCombo->setEnabled(true);
+  QString CurrentResponse = FilterResponseTypeCombo->currentText();
+  FilterResponseTypeCombo->blockSignals(true);
+
+
+         // Update filter possible filter responses
+  QStringList filter_response;
+  filter_response.append("Butterworth");
+  filter_response.append("Chebyshev");
+  filter_response.append("Elliptic");
+  FilterResponseTypeCombo->clear();
+  FilterResponseTypeCombo->addItems(filter_response);
+
+
+  for (int i = 0; i < filter_response.length(); i++) {
+    if (CurrentResponse == filter_response.at(i)) {
+      FilterResponseTypeCombo->setCurrentIndex(i);
+      break;
+    }
+  }
+  FilterResponseTypeCombo->blockSignals(false);
+}
+
+
+void FilterDesignTool::setSettings_LC_Direct_Coupled(){
+  DC_CouplingTypeCombo->show();
+  DC_CouplingLabel->show();
+  FilterResponseTypeCombo->blockSignals(true);
+  CLCRadioButton->hide();
+  LCLRadioButton->hide();
+  QString CurrentResponse = FilterResponseTypeCombo->currentText();
+
+  // Update filter possible filter responses
+  QStringList filter_response;
+  filter_response.append("Butterworth");
+  filter_response.append("Chebyshev");
+  FilterResponseTypeCombo->clear();
+  FilterResponseTypeCombo->addItems(filter_response);
+
+
+  for (int i = 0; i < filter_response.length(); i++) {
+    if (CurrentResponse == filter_response.at(i)) {
+      FilterResponseTypeCombo->setCurrentIndex(i);
+      break;
+    }
+  }
+  FilterClassCombo->blockSignals(false);
+  FilterResponseTypeCombo->blockSignals(false);
+}
+
+void FilterDesignTool::setSettings_Stepped_Z_LPF(){
+  FilterResponseTypeCombo->blockSignals(true);
+  QStringList filter_response;
+  filter_response.append("Butterworth");
+  filter_response.append("Chebyshev");
+  FilterResponseTypeCombo->clear();
+  FilterResponseTypeCombo->addItems(filter_response);
+  FilterResponseTypeCombo->setCurrentIndex(1); // Chebyshev
+  FilterClassCombo->setEnabled(false);
+  FilterResponseTypeCombo->blockSignals(false);
+}
+
+void FilterDesignTool::setSettings_Quarterwavelength_BPF_BSF(){
+  FilterResponseTypeCombo->blockSignals(true);
+  FilterClassCombo->blockSignals(true);
+
+  QStringList filter_response;
+  filter_response.append("Butterworth");
+  filter_response.append("Chebyshev");
+  FilterResponseTypeCombo->clear();
+  FilterResponseTypeCombo->addItems(filter_response);
+  FilterResponseTypeCombo->setCurrentIndex(1); // Chebyshev
+
+
+  FilterClassCombo->setEnabled(true);
+  QStringList filter_masks;
+  filter_masks.append("Bandpass");
+  filter_masks.append("Bandstop");
+  FilterClassCombo->addItems(filter_masks);
+
+
+  FilterResponseTypeCombo->blockSignals(false);
+  FilterClassCombo->blockSignals(false);
+}
+
 
 void FilterDesignTool::EllipticTypeChanged() {
   if (EllipticType->currentText() != "Type S") {

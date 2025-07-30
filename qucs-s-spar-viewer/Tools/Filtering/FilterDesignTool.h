@@ -33,17 +33,20 @@
 #include "EllipticFilter.h"
 #include "DirectCoupledFilters.h"
 #include "SteppedImpedanceFilter.h"
+#include "QuarterWaveFilters.h"
+
 /*#include "Filtering/CapacitivelyCoupledShuntResonatorsFilter.h"
 #include "Filtering/CoupledLineBandpassFilter.h"
 #include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"
-#include "Filtering/EndCoupled.h"
-#include "Filtering/QuarterWaveFilters.h"*/
+#include "Filtering/EndCoupled.h"*/
+
 #include "../../Schematic/Network.h"
 
 #define LC_LADDER 0
 #define LC_DIRECT_COUPLED 1
 #define STEPPED_IMPEDANCE 2
 #define QUARTERWAVE 3
+
 #define END_COUPLED 4
 #define CAPACITIVELY_COUPLED_RESONATORS 5
 #define SEMILUMPED_ELLIPTIC 6
@@ -95,6 +98,12 @@ private:
   // Add trace to simulate
   QLabel *traceNameLabel;
   QLineEdit *traceNameLineEdit;
+
+  // Set UI settings depending on filter topology
+  void setSettings_LC_Ladder();
+  void setSettings_LC_Direct_Coupled();
+  void setSettings_Stepped_Z_LPF();
+  void setSettings_Quarterwavelength_BPF_BSF();
 
 public:
   void synthesize();

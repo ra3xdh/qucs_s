@@ -341,6 +341,8 @@ QString SchematicContent::getSParameterNetlist() {
       }
       break;
 
+    case OpenStub:
+    case ShortStub:
     case TransmissionLine:
       // Treat as resistor with characteristic impedance for now
       if (connections.size() >= 2) {
