@@ -64,8 +64,12 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
         add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /Od /vmg)
         add_compile_options(/wd4244 /wd4267 /wd4312)
+        add_compile_options(/fsanitize=address)
+        add_link_options(/fsanitize=address)
     else()
         add_compile_options(-Wall -Wextra -O0 -g)
+        add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+        add_link_options(-fsanitize=address)
         if (CMAKE_CXX_COMPILER_ID MATCHES "^AppleClang$|^Clang$")
             add_compile_options(-Wno-ignored-attributes)
         endif()
@@ -84,10 +88,6 @@ endif()
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
-set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
-
 
 
 file(GLOB PLOT_WIDGETS_SOURCES
