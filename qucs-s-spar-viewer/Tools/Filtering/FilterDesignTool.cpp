@@ -28,10 +28,10 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterImplementationCombo->addItem("Stepped impedance");
   FilterImplementationCombo->addItem("Quarter-wavelength");
   FilterImplementationCombo->addItem("Capacitively-coupled shunt resonators");
+  FilterImplementationCombo->addItem("Coupled line bandpass");
   //FilterImplementationCombo->addItem("End-coupled");
   //FilterImplementationCombo->addItem("Semilumped Elliptic");
   //FilterImplementationCombo->addItem("Semilumped Canonical");
-  //FilterImplementationCombo->addItem("Coupled line bandpass");
   //FilterImplementationCombo->addItem("Coupled line SIR with harmonic rejection");
   FilterDesignLayout->addWidget(new QLabel("Implementation"), 0, 0);
   FilterDesignLayout->addWidget(FilterImplementationCombo, 0, 1);
@@ -318,6 +318,14 @@ void FilterDesignTool::synthesize() {
       CCSRF->synthesize();
       SchContent = CCSRF->Schematic;
       delete CCSRF;
+      break;
+
+    case COUPLED_LINE:
+      CoupledLineBandpassFilter *CLBPF;
+      CLBPF = new CoupledLineBandpassFilter(Filter_SP);
+      CLBPF->synthesize();
+      SchContent = CLBPF->Schematic;
+      delete CLBPF;
       break;
   }
 

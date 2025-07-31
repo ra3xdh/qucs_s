@@ -35,8 +35,8 @@
 #include "SteppedImpedanceFilter.h"
 #include "QuarterWaveFilters.h"
 #include "CapacitivelyCoupledShuntResonatorsFilter.h"
-/*#include "Filtering/CoupledLineBandpassFilter.h"
-#include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"
+#include "CoupledLineBandpassFilter.h"
+/*#include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"
 #include "Filtering/EndCoupled.h"*/
 
 #include "../../Schematic/Network.h"
@@ -46,11 +46,11 @@
 #define STEPPED_IMPEDANCE 2
 #define QUARTERWAVE 3
 #define CAPACITIVELY_COUPLED_RESONATORS 4
+#define COUPLED_LINE 5
 
-#define END_COUPLED 5
-#define SEMILUMPED_ELLIPTIC 6
-#define SEMILUMPED_CANONICAL 7
-#define COUPLED_LINE 8
+#define END_COUPLED 6
+#define SEMILUMPED_ELLIPTIC 7
+#define SEMILUMPED_CANONICAL 8
 #define COUPLED_LINE_SIR 9
 
 class FilterDesignTool : public QWidget {
