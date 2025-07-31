@@ -34,9 +34,8 @@
 #include "DirectCoupledFilters.h"
 #include "SteppedImpedanceFilter.h"
 #include "QuarterWaveFilters.h"
-
-/*#include "Filtering/CapacitivelyCoupledShuntResonatorsFilter.h"
-#include "Filtering/CoupledLineBandpassFilter.h"
+#include "CapacitivelyCoupledShuntResonatorsFilter.h"
+/*#include "Filtering/CoupledLineBandpassFilter.h"
 #include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"
 #include "Filtering/EndCoupled.h"*/
 
@@ -46,9 +45,9 @@
 #define LC_DIRECT_COUPLED 1
 #define STEPPED_IMPEDANCE 2
 #define QUARTERWAVE 3
+#define CAPACITIVELY_COUPLED_RESONATORS 4
 
-#define END_COUPLED 4
-#define CAPACITIVELY_COUPLED_RESONATORS 5
+#define END_COUPLED 5
 #define SEMILUMPED_ELLIPTIC 6
 #define SEMILUMPED_CANONICAL 7
 #define COUPLED_LINE 8

@@ -27,8 +27,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterImplementationCombo->addItem("LC Direct Coupled");
   FilterImplementationCombo->addItem("Stepped impedance");
   FilterImplementationCombo->addItem("Quarter-wavelength");
+  FilterImplementationCombo->addItem("Capacitively-coupled shunt resonators");
   //FilterImplementationCombo->addItem("End-coupled");
-  //FilterImplementationCombo->addItem("Capacitively-coupled shunt resonators");
   //FilterImplementationCombo->addItem("Semilumped Elliptic");
   //FilterImplementationCombo->addItem("Semilumped Canonical");
   //FilterImplementationCombo->addItem("Coupled line bandpass");
@@ -310,6 +310,15 @@ void FilterDesignTool::synthesize() {
       QWF->synthesize();
       SchContent = QWF->Schematic;
       delete QWF;
+      break;
+
+    case CAPACITIVELY_COUPLED_RESONATORS:
+      CapacitivelyCoupledShuntResonatorsFilter *CCSRF;
+      CCSRF = new CapacitivelyCoupledShuntResonatorsFilter(Filter_SP);
+      CCSRF->synthesize();
+      SchContent = CCSRF->Schematic;
+      delete CCSRF;
+      break;
   }
 
 

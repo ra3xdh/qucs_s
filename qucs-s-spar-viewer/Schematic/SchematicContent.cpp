@@ -176,9 +176,6 @@ QString SchematicContent::getSParameterNetlist() {
 
   netlist.clear(); // Clear previous netlist
 
-  // Add header comment
-  netlist += "* Netlist generated from SchematicContent for SParameterCalculator\n";
-
   // First, assign nets to wires (same logic as original getQucsNetlist)
 
   // Find wires connected to ground
