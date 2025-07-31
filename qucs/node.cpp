@@ -16,15 +16,16 @@
  ***************************************************************************/
 #include "node.h"
 
-#include "wirelabel.h"
+#include "component.h"
+#include "wire.h"
 
 #include <QPainter>
 
 Node::Node(int x, int y)
+  : DType("")
+  , State(0)
 {
   Type  = isNode;
-  State = 0;
-  DType = "";
 
   cx = x;
   cy = y;
@@ -33,30 +34,27 @@ Node::Node(int x, int y)
 void Node::paint(QPainter* painter) const {
   painter->save();
 
-  switch(connections.size()) {
-    case 1:
-      if (label()) {
+  if (isSelected) {
+      painter->setPen(QPen(Qt::darkGray, 5));
+      painter->drawEllipse(cx-5, cy-5, 10, 10);
+  }
+  else if (conn_count() == 1) {
+      if (hasLabel()) {
         painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
       } else {
         painter->setPen(QPen(Qt::red,1));  // node is open
         painter->drawEllipse(cx-4, cy-4, 8, 8);
       }
-      painter->restore();
-      return;
-
-    case 2:
-      if (connections.front()->Type == isWire && connections.back()->Type == isWire) {
-          painter->restore();
-          return;
-      }
-      painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
-      break;
-
-    default:
-        painter->setBrush(Qt::darkBlue);  // more than 2 connections
-	      painter->setPen(QPen(Qt::darkBlue,1));
-	      painter->drawEllipse(cx-3, cy-3, 6, 6);
   }
+  else if (conn_count() > 2) {
+      painter->setBrush(Qt::darkBlue);  // more than 2 connections
+      painter->setPen(QPen(Qt::darkBlue,1));
+      painter->drawEllipse(cx-3, cy-3, 6, 6);
+  }
+  else if (m_wires.size() != 2) {
+      painter->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
+  }
+
   painter->restore();
 }
 
@@ -75,20 +73,12 @@ void Node::setName(const QString& name, const QString& value, int x, int y)
   assert(!(name.isEmpty() && value.isEmpty()));
 
   if (!hasLabel()) {
-    acquireLabel(new WireLabel(name, cx, cy, x, y));
+    acquireLabel(std::make_unique<WireLabel>(name, cx, cy, x, y));
   }
   else {
     label()->setName(name);
   }
   label()->initValue = value;
-}
-
-Element* Node::other_than(Element* elem) const
-{
-  auto other = std::find_if_not(connections.begin(), connections.end(), [elem](auto o){return o == elem;}
-  );
-
-  return other == connections.end() ? nullptr : *other;
 }
 
 bool Node::moveCenter(int dx, int dy) noexcept
@@ -98,4 +88,30 @@ bool Node::moveCenter(int dx, int dy) noexcept
     label()->moveRoot(dx, dy);
   }
   return dx != 0 || dy != 0;
+}
+
+  Node* Node::merge(Node* donor)
+  {
+    std::ranges::for_each(donor->wires(), [this,donor](auto* w) { w->Port1 == donor ? w->Port1 = this : w->Port2 = this; });
+    std::ranges::copy(donor->wires(), std::back_inserter(m_wires));
+    donor->m_wires.clear();
+
+    for (auto* c : donor->components()) {
+        for (auto* p : c->Ports) {
+            if (p->Connection == donor) {
+                p->Connection = this;
+            }
+        }
+    }
+
+    std::ranges::copy(donor->components(), std::back_inserter(m_components));
+    donor->m_components.clear();
+
+    if (!this->hasLabel() && donor->hasLabel()) {
+        this->acquireLabel(donor->releaseLabel());
+    }
+
+    this->isSelected = this->isSelected || donor->isSelected;
+
+    return donor;
 }

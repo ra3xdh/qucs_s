@@ -1482,10 +1482,7 @@ void Schematic::propagateNode(QStringList& Collect,
   for(auto it = Cons.begin(); it != Cons.end(); it++) {
     auto* node = *it;
 
-    for (auto* connected_element : *node) {
-      auto* wire = dynamic_cast<Wire*>(connected_element);
-      if (wire == nullptr) continue;
-
+    for (auto* wire : node->wires()) {
       if (node != wire->Port1) {
         if (wire->Port1->Name.isEmpty()) {
           wire->Port1->Name = start_node->Name;
