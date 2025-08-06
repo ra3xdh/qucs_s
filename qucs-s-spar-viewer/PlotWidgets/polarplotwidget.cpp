@@ -1,52 +1,60 @@
 #include "polarplotwidget.h"
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QDebug>
+#include <cmath>
 
 PolarPlotWidget::PolarPlotWidget(QWidget *parent)
     : QWidget(parent), fMin(1e20), fMax(-1)
 {
-  // Initialize the chart and chart view
-  polarChart = new QPolarChart();
-  polarChart->legend()->hide();
-  chartView = new QChartView(polarChart, this);
-  chartView->setRenderHint(QPainter::Antialiasing);
+  // Initialize the QCustomPlot widget
+  plot = new QCustomPlot(this);
+  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 
-         // Initialize axes
-  radiusAxis = new QValueAxis();
-  angleAxis = new QCategoryAxis();
+  // Clear default plot layout and set up polar plot
+  plot->plotLayout()->clear();
 
-         // Set up radius axis (the concentric circles)
-  polarChart->addAxis(radiusAxis, QPolarChart::PolarOrientationRadial);
-  radiusAxis->setTickCount(6);
-  radiusAxis->setLabelFormat("%.1f");
-  radiusAxis->setRange(0, 1.0);
+  // Create angular axis and add to layout
+  angularAxis = new QCPPolarAxisAngular(plot);
+  plot->plotLayout()->addElement(0, 0, angularAxis);
 
-         // Set up angle axis (the angle lines)
-  polarChart->addAxis(angleAxis, QPolarChart::PolarOrientationAngular);
-  // Add categories for each 45 degrees
-  angleAxis->append("0°", 0);
-  angleAxis->append("45°", 45);
-  angleAxis->append("90°", 90);
-  angleAxis->append("135°", 135);
-  angleAxis->append("180°", 180);
-  angleAxis->append("225°", 225);
-  angleAxis->append("270°", 270);
-  angleAxis->append("315°", 315);
-  angleAxis->setRange(0, 360);
-  angleAxis->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
+  // Get the radial axis from angular axis
+  radialAxis = angularAxis->radialAxis();
 
-         // Set up the frequency units
+  // Configure angular axis (angle lines)
+  angularAxis->setRange(0, 360);
+  angularAxis->setRangeDrag(false);
+  angularAxis->setTickLabelMode(QCPPolarAxisAngular::lmUpright);
+
+  // Configure radial axis (concentric circles)
+  radialAxis->setRange(0, 1.0);
+  radialAxis->setTickLabelMode(QCPPolarAxisRadial::lmUpright);
+  radialAxis->setTickLabelRotation(0);
+  radialAxis->setAngle(45);
+
+  // Configure grid
+  angularAxis->grid()->setAngularPen(QPen(QColor(200, 200, 200), 1, Qt::SolidLine));
+  angularAxis->grid()->setRadialPen(QPen(QColor(200, 200, 200), 1, Qt::SolidLine));
+  angularAxis->grid()->setSubGridType(QCPPolarGrid::gtAll);
+
+  // Set up the frequency units
   frequencyUnits << "Hz" << "kHz" << "MHz" << "GHz";
 
-         // Initialize marker and value label lists
+         // Clear containers
+  markerItems.clear();
   markerLabels.clear();
-  valueLabels.clear();
+  traceGraphs.clear();
 
          // Create the main layout
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
-  mainLayout->addWidget(chartView);
+  mainLayout->addWidget(plot);
 
          // Add the axis settings layout
   mainLayout->addLayout(setupAxisSettings());
   setLayout(mainLayout);
+
+  // Initial plot update
+  plot->replot();
 }
 
 PolarPlotWidget::~PolarPlotWidget()
@@ -54,8 +62,7 @@ PolarPlotWidget::~PolarPlotWidget()
   // Clean up any remaining graphics items
   clearGraphicsItems();
 
-         // Delete the chart (which will delete all series)
-  delete polarChart;
+  // QCustomPlot will handle cleanup of its own objects
 }
 
 void PolarPlotWidget::addTrace(const QString& name, const Trace& trace) {
@@ -74,8 +81,8 @@ void PolarPlotWidget::updateFrequencyRange() {
       double traceMaxFreq = trace.frequencies.last();
 
       if (traceMinFreq < fMin) fMin = traceMinFreq;
-            if (traceMaxFreq > fMax) fMax = traceMaxFreq;
-        }
+      if (traceMaxFreq > fMax) fMax = traceMaxFreq;
+    }
   }
 
          // Update spin box values
@@ -90,12 +97,29 @@ void PolarPlotWidget::updateFrequencyRange() {
 void PolarPlotWidget::removeTrace(const QString& name)
 {
   traces.remove(name);
+
+  // Remove associated polar graphs if they exist
+  if (traceGraphs.contains(name)) {
+    for (QCPPolarGraph* graph : traceGraphs[name]) {
+      angularAxis->removeGraph(graph);
+    }
+    traceGraphs.remove(name);
+  }
   updatePlot();
 }
 
 void PolarPlotWidget::clearTraces()
 {
   traces.clear();
+
+  // Clear all polar graphs
+  for (auto& graphList : traceGraphs) {
+    for (QCPPolarGraph* graph : graphList) {
+      angularAxis->removeGraph(graph);
+    }
+  }
+  traceGraphs.clear();
+
   updatePlot();
 }
 
@@ -184,11 +208,13 @@ QMap<QString, double> PolarPlotWidget::getMarkers() const
 void PolarPlotWidget::updatePlot() {
   clearGraphicsItems();
 
-  QList<QAbstractSeries *> oldSeries = polarChart->series();
-  for (QAbstractSeries *series : oldSeries) {
-    polarChart->removeSeries(series);
-    delete series;
+  // Remove existing polar graphs
+  for (auto& graphList : traceGraphs) {
+    for (QCPPolarGraph* graph : graphList) {
+      angularAxis->removeGraph(graph);
+    }
   }
+  traceGraphs.clear();
 
   const double PHASE_WRAP_THRESHOLD = 180.0;  // Degrees
 
@@ -196,65 +222,60 @@ void PolarPlotWidget::updatePlot() {
     const QString &name = it.key();
     const Trace &trace = it.value();
 
-    QLineSeries *currentSeries = new QLineSeries();
-    currentSeries->setPen(trace.pen);
-    currentSeries->setName(name);
+    QList<QCPPolarGraph*> graphsForTrace;
+
+           // Create initial polar graph for this trace
+    QCPPolarGraph *currentGraph = new QCPPolarGraph(angularAxis, radialAxis);
+    currentGraph->setPen(trace.pen);
+    currentGraph->setName(name);
+    graphsForTrace.append(currentGraph);
 
     double prevPhase = -1e3;  // Initialize with impossible value
 
     for (int i = 0; i < trace.values.size() && i < trace.frequencies.size(); ++i) {
       double frequency = trace.frequencies[i];
       if (frequency >= fMin && frequency <= fMax) {
-        std::complex value = trace.values[i];
+        std::complex<double> value = trace.values[i];
         double magnitude = std::abs(value);
         double phase = std::arg(value) * 180.0 / M_PI;
         if (phase < 0) phase += 360;
 
-        // Check for phase wrap (only after first point)
+               // Check for phase wrap (only after first point)
         if (prevPhase != -1e3 && std::abs(phase - prevPhase) > PHASE_WRAP_THRESHOLD) {
-          // Finalize current series
-          polarChart->addSeries(currentSeries);
-          currentSeries->attachAxis(angleAxis);
-          currentSeries->attachAxis(radiusAxis);
-
-          // Start new series
-          currentSeries = new QLineSeries();
-          currentSeries->setPen(trace.pen);
+          // Create new polar graph for next segment
+          currentGraph = new QCPPolarGraph(angularAxis, radialAxis);
+          currentGraph->setPen(trace.pen);
+          currentGraph->setName(name);
+          graphsForTrace.append(currentGraph);
         }
 
-        currentSeries->append(phase, magnitude);
+               // Add data point to current graph
+        currentGraph->addData(phase, magnitude);
         prevPhase = phase;
-
-       // qDebug() << frequency << ": " << magnitude << "  " << phase;
       }
     }
 
-    // Add the final series for this trace
-    polarChart->addSeries(currentSeries);
-    currentSeries->attachAxis(angleAxis);
-    currentSeries->attachAxis(radiusAxis);
+           // Store all graphs for this trace
+    traceGraphs[name] = graphsForTrace;
   }
 
   drawCustomMarkers();
-  polarChart->update();
+  plot->replot();
 }
 
 void PolarPlotWidget::updateRAxis()
 {
   double rMin = rAxisMin->value();
   double rMax = rAxisMax->value();
-  double rDiv = rAxisDiv->value();
 
-  radiusAxis->setRange(rMin, rMax);
-  radiusAxis->setTickInterval(rDiv);
-  radiusAxis->setTickCount(floor((rMax - rMin) / rDiv) + 1);
+  radialAxis->setRange(rMin, rMax);
 
   updatePlot();
 }
 
 void PolarPlotWidget::updateAngleAxis()
 {
-  // For angle axis updates - typically fixed at 360 degrees
+  // Angular axis is typically fixed at 360 degrees
   updatePlot();
 }
 
@@ -296,26 +317,17 @@ bool PolarPlotWidget::updateMarkerFrequency(const QString& markerId, double newF
 
 void PolarPlotWidget::clearGraphicsItems()
 {
-  // Remove all marker labels
-  for (QGraphicsTextItem* label : markerLabels) {
-    polarChart->scene()->removeItem(label);
-    delete label;
-  }
-  markerLabels.clear();
-
-  // Remove all value labels
-  for (QGraphicsTextItem* label : valueLabels) {
-    polarChart->scene()->removeItem(label);
-    delete label;
-  }
-  valueLabels.clear();
-
   // Remove all marker items
-  for (QGraphicsEllipseItem* item : markerItems) {
-    polarChart->scene()->removeItem(item);
-    delete item;
+  for (QCPItemEllipse* item : markerItems) {
+    plot->removeItem(item);
   }
   markerItems.clear();
+
+         // Remove all marker labels
+  for (QCPItemText* label : markerLabels) {
+    plot->removeItem(label);
+  }
+  markerLabels.clear();
 }
 
 QGridLayout* PolarPlotWidget::setupAxisSettings()
@@ -328,23 +340,26 @@ QGridLayout* PolarPlotWidget::setupAxisSettings()
   QLabel *FreqLabel = new QLabel("<b>Frequency</b>");
   axisLayout->addWidget(FreqLabel, 0, 0);
 
-  // Create frequency controls
+         // Create frequency controls
   fMinSpinBox = new QDoubleSpinBox;
   fMinSpinBox->setRange(0, 1e12);
   fMinSpinBox->setSingleStep(10);
-  connect(fMinSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onFMinChanged(double)));
+  connect(fMinSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          this, &PolarPlotWidget::onFMinChanged);
   axisLayout->addWidget(fMinSpinBox, 0, 1);
 
   fMaxSpinBox = new QDoubleSpinBox;
   fMaxSpinBox->setRange(0, 1e12);
   fMaxSpinBox->setSingleStep(10);
-  connect(fMaxSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onFMaxChanged(double)));
+  connect(fMaxSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          this, &PolarPlotWidget::onFMaxChanged);
   axisLayout->addWidget(fMaxSpinBox, 0, 2);
 
   fUnitComboBox = new QComboBox;
   fUnitComboBox->addItems(frequencyUnits);
   fUnitComboBox->setCurrentIndex(2); // MHz
-  connect(fUnitComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFUnitChanged()));
+  connect(fUnitComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+          this, &PolarPlotWidget::onFUnitChanged);
   axisLayout->addWidget(fUnitComboBox, 0, 3);
 
          // Radius axis settings
@@ -357,7 +372,8 @@ QGridLayout* PolarPlotWidget::setupAxisSettings()
   rAxisMin->setValue(0.0);
   rAxisMin->setDecimals(2);
   rAxisMin->setSingleStep(0.1);
-  connect(rAxisMin, SIGNAL(valueChanged(double)), this, SLOT(updateRAxis()));
+  connect(rAxisMin, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          this, &PolarPlotWidget::updateRAxis);
   axisLayout->addWidget(rAxisMin, 1, 1);
 
   rAxisMax = new QDoubleSpinBox();
@@ -366,7 +382,8 @@ QGridLayout* PolarPlotWidget::setupAxisSettings()
   rAxisMax->setValue(1.0);
   rAxisMax->setDecimals(2);
   rAxisMax->setSingleStep(0.1);
-  connect(rAxisMax, SIGNAL(valueChanged(double)), this, SLOT(updateRAxis()));
+  connect(rAxisMax, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          this, &PolarPlotWidget::updateRAxis);
   axisLayout->addWidget(rAxisMax, 1, 2);
 
   rAxisDiv = new QDoubleSpinBox();
@@ -375,7 +392,8 @@ QGridLayout* PolarPlotWidget::setupAxisSettings()
   rAxisDiv->setValue(0.2);
   rAxisDiv->setDecimals(2);
   rAxisDiv->setSingleStep(0.1);
-  connect(rAxisDiv, SIGNAL(valueChanged(double)), this, SLOT(updateRAxis()));
+  connect(rAxisDiv, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          this, &PolarPlotWidget::updateRAxis);
   axisLayout->addWidget(rAxisDiv, 1, 3);
 
          // Display mode
@@ -385,7 +403,8 @@ QGridLayout* PolarPlotWidget::setupAxisSettings()
   displayModeCombo = new QComboBox();
   displayModeCombo->addItem("Magnitude/Phase");
   displayModeCombo->addItem("Real/Imaginary");
-  connect(displayModeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(toggleDisplayMode()));
+  connect(displayModeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+          this, &PolarPlotWidget::toggleDisplayMode);
   axisLayout->addWidget(displayModeCombo, 2, 1, 1, 2);
 
   return axisLayout;
@@ -461,45 +480,40 @@ std::complex<double> PolarPlotWidget::convertToDisplayFormat(const std::complex<
   }
 }
 
-
 void PolarPlotWidget::drawCustomMarkers()
 {
   if (markers.isEmpty() || traces.isEmpty()) {
     return;
   }
 
-  // Clear existing marker graphics items
+         // Clear existing marker graphics items
   clearGraphicsItems();
 
-  // Font configuration for marker labels
-  QFont markerFont;
-  markerFont.setBold(true);
-
-  // Iterate through each trace
+         // Iterate through each trace
   for (auto traceIt = traces.constBegin(); traceIt != traces.constEnd(); ++traceIt) {
     const QString& traceName = traceIt.key();
     const Trace& trace = traceIt.value();
 
-    // Skip traces with no frequency data
+           // Skip traces with no frequency data
     if (trace.frequencies.isEmpty() || trace.values.isEmpty()) {
       continue;
     }
 
-    // Draw markers for this trace
+           // Draw markers for this trace
     for (auto markerIt = markers.constBegin(); markerIt != markers.constEnd(); ++markerIt) {
       const QString& markerId = markerIt.key();
       const Marker& marker = markerIt.value();
       double markerFreq = marker.frequency;
 
-      // Check if marker frequency is within the trace frequency range
+             // Check if marker frequency is within the trace frequency range
       if (markerFreq < trace.frequencies.first() || markerFreq > trace.frequencies.last()) {
         continue;
       }
 
-      // Get interpolated complex value at marker frequency
+             // Get interpolated complex value at marker frequency
       std::complex<double> value = getComplexValueAtFrequency(trace, markerFreq);
 
-      // Convert to display format based on current mode
+             // Convert to display format based on current mode
       double angle, radius;
       int displayMode = displayModeCombo->currentIndex();
 
@@ -508,24 +522,37 @@ void PolarPlotWidget::drawCustomMarkers()
         radius = std::abs(value);
         angle = std::arg(value) * 180.0 / M_PI;
         if (angle < 0) angle += 360;
-        } else {
+      } else {
         // Real/Imaginary mode
         angle = std::atan2(value.imag(), value.real()) * 180.0 / M_PI;
         if (angle < 0) angle += 360;
-                radius = std::sqrt(value.real()*value.real() + value.imag()*value.imag());
+        radius = std::sqrt(value.real()*value.real() + value.imag()*value.imag());
       }
 
-      // Create a marker point (custom drawn circle)
-      QGraphicsEllipseItem* markerPoint = new QGraphicsEllipseItem(polarChart);
-      QPointF pointPos = polarChart->mapToPosition(QPointF(angle, radius));
-      markerPoint->setRect(pointPos.x() - 4, pointPos.y() - 4, 8, 8);
-      markerPoint->setPen(marker.pen);
-      markerPoint->setBrush(marker.pen.color());
+             // Create a marker point using QCPItemEllipse
+      QCPItemEllipse *markerPoint = new QCPItemEllipse(plot);
 
-      // Add to tracking list for cleanup
+      // Set position using polar coordinates - QCustomPlot handles the conversion
+      double angleRad = angle * M_PI / 180.0;
+      double xTopLeft = radius * cos(angleRad);
+      double yTopLeft = radius * sin(angleRad);
+
+      double xBottomRight = (radius - 0.02) * cos((angle + 2) * M_PI / 180.0);
+      double yBottomRight = (radius - 0.02) * sin((angle + 2) * M_PI / 180.0);
+
+      markerPoint->topLeft->setType(QCPItemPosition::ptPlotCoords);
+      markerPoint->topLeft->setCoords(xTopLeft, yTopLeft);
+
+      markerPoint->bottomRight->setType(QCPItemPosition::ptPlotCoords);
+      markerPoint->bottomRight->setCoords(xBottomRight, yBottomRight);
+
+      // Set marker appearance
+      markerPoint->setPen(marker.pen);
+      markerPoint->setBrush(QBrush(marker.pen.color()));
+
       markerItems.append(markerPoint);
 
-      // Determine frequency unit and scaling
+             // Determine frequency unit and scaling
       QString freqUnit = "Hz";
       double freqValue = markerFreq;
       if (markerFreq >= 1e9) {
@@ -539,50 +566,50 @@ void PolarPlotWidget::drawCustomMarkers()
         freqValue = markerFreq / 1e3;
       }
 
-      // Create label with marker ID, value, and frequency
-      QString label;
+             // Create label with marker ID, value, and frequency
+      QString labelText;
       if (displayMode == 0) {
         // Magnitude/Phase format
-        label = QString("%1 [%2]: %3 %4\n%5∠%6°")
-                    .arg(markerId)
-                    .arg(traceName)
-                    .arg(freqValue, 0, 'g', 3)
-                    .arg(freqUnit)
-                    .arg(radius, 0, 'f', 2)
-                    .arg(angle, 0, 'f', 2);
+        labelText = QString("%1 [%2]: %3 %4\n%5∠%6°")
+                        .arg(markerId)
+                        .arg(traceName)
+                        .arg(freqValue, 0, 'g', 3)
+                        .arg(freqUnit)
+                        .arg(radius, 0, 'f', 2)
+                        .arg(angle, 0, 'f', 2);
       } else {
         // Real/Imaginary format
-        label = QString("%1 [%2]: %3 %4\n%5%6j%7")
-                    .arg(markerId)
-                    .arg(traceName)
-                    .arg(freqValue, 0, 'g', 3)
-                    .arg(freqUnit)
-                    .arg(value.real(), 0, 'f', 2)
-                    .arg(value.imag() >= 0 ? "+" : "")
-                    .arg(value.imag(), 0, 'f', 2);
+        labelText = QString("%1 [%2]: %3 %4\n%5%6j%7")
+                        .arg(markerId)
+                        .arg(traceName)
+                        .arg(freqValue, 0, 'g', 3)
+                        .arg(freqUnit)
+                        .arg(value.real(), 0, 'f', 2)
+                        .arg(value.imag() >= 0 ? "+" : "")
+                        .arg(value.imag(), 0, 'f', 2);
       }
 
-      // Create and position the label
-      QGraphicsTextItem* markerLabel = new QGraphicsTextItem(polarChart);
-      markerLabel->setFont(markerFont);
+             // Create and position the label using QCPItemText
+      QCPItemText *markerLabel = new QCPItemText(plot);
 
-      // Set HTML formatted text with background similar to SmithChartWidget
-      markerLabel->setHtml(
-          QString("<div style='background-color: rgba(255, 255, 255, 200); "
-                  "padding: 6px; border: 1px solid black;'>%1</div>")
-              .arg(label.replace("\n", "<br>"))
-          );
+      double xLabel = radius * cos(angleRad);
+      double yLabel = radius * sin(angleRad);
 
-      // Position the label relative to the marker point
-      QPointF labelPos = QPointF(pointPos.x() + 8, pointPos.y() - markerLabel->boundingRect().height() / 2);
-      markerLabel->setPos(labelPos);
+      markerLabel->position->setType(QCPItemPosition::ptPlotCoords);
+      markerLabel->position->setCoords(xLabel, yLabel + 0.1);
 
-      // Add to tracking list
+
+      markerLabel->setText(labelText);
+      markerLabel->setFont(QFont("Arial", 9, QFont::Bold));
+      markerLabel->setColor(Qt::black);
+      markerLabel->setBrush(QBrush(QColor(255, 255, 255, 200)));
+      markerLabel->setPen(QPen(Qt::black));
+      markerLabel->setPadding(QMargins(6, 6, 6, 6));
+
       markerLabels.append(markerLabel);
     }
   }
 }
-
 
 void PolarPlotWidget::onFMinChanged(double value) {
   fMin = value * getFrequencyMultiplier();
@@ -610,7 +637,6 @@ double PolarPlotWidget::getFrequencyMultiplier() const {
   default: return 1.0;
   }
 }
-
 
 // Send settings to the main program
 PolarPlotWidget::AxisSettings PolarPlotWidget::getSettings() const {
@@ -640,5 +666,5 @@ void PolarPlotWidget::setSettings(const AxisSettings& settings) {
 
   displayModeCombo->setCurrentText(settings.marker_format);
 
-  update();
+  updatePlot();
 }

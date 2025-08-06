@@ -495,9 +495,9 @@ void SParameterCalculator::calculateSParameterSweep() {
           double ang = atan2(im, re) * 180.0 / M_PI;
 
           QString keyDb  = QString("S%1%2_dB").arg(row).arg(col);
-          QString keyAng = QString("S%1%2ang").arg(row).arg(col);
-          QString keyRe  = QString("S%1%2re").arg(row).arg(col);
-          QString keyIm  = QString("S%1%2im").arg(row).arg(col);
+          QString keyAng = QString("S%1%2_ang").arg(row).arg(col);
+          QString keyRe  = QString("S%1%2_re").arg(row).arg(col);
+          QString keyIm  = QString("S%1%2_im").arg(row).arg(col);
 
           data[keyDb].append(dB);
           data[keyAng].append(ang);

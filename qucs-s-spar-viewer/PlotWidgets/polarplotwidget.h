@@ -2,19 +2,13 @@
 #define POLARPLOTWIDGET_H
 
 #include <QWidget>
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QScatterSeries>
-#include <QtCharts/QPolarChart>
-#include <QtCharts/QValueAxis>
-#include <QtCharts/QCategoryAxis>
+#include "./QCustomPlot/qcustomplot.h"
 #include <QDoubleSpinBox>
 #include <QComboBox>
 #include <QGridLayout>
 #include <QLabel>
 #include <QMap>
 #include <QPen>
-#include <QGraphicsTextItem>
 #include <QCheckBox>
 #include <complex>
 #include <limits>
@@ -47,7 +41,6 @@ public:
     double radius_div;
 
     QString marker_format;
-
   };
 
   void setSettings(const AxisSettings& settings);
@@ -70,10 +63,7 @@ public:
   double getRdiv();
   int getDisplayMode() const;
 
-  QList<QGraphicsEllipseItem*> markerItems;
-
-  // Marker management functions
-  void drawCustomMarkers();
+         // Marker management functions
   bool addMarker(const QString& markerId, double frequency, const QPen& pen = QPen(Qt::red, 2));
   bool removeMarker(const QString& markerId);
   bool updateMarkerFrequency(const QString& markerId, double newFrequency);
@@ -81,8 +71,8 @@ public:
 
   QMap<QString, double> getMarkers() const;
 
-         // Access to underlying chart
-  QPolarChart *chart() const { return polarChart; }
+         // Access to underlying plot
+  QCustomPlot *customPlot() const { return plot; }
 
 private slots:
   void updateRAxis();
@@ -92,13 +82,11 @@ private slots:
   void onFMinChanged(double value);
   void onFMaxChanged(double value);
   void onFUnitChanged();
-  double getFrequencyMultiplier() const;
 
 private:
-  QPolarChart *polarChart;
-  QChartView *chartView;
-  QValueAxis *radiusAxis;
-  QCategoryAxis *angleAxis;
+  QCustomPlot *plot;
+  QCPPolarAxisAngular *angularAxis;
+  QCPPolarAxisRadial *radialAxis;
 
   QDoubleSpinBox *rAxisMin;
   QDoubleSpinBox *rAxisMax;
@@ -111,23 +99,26 @@ private:
   double fMin;
   double fMax;
   QStringList frequencyUnits;
-  void updateFrequencyRange();
 
   QMap<QString, Trace> traces;
   QMap<QString, Marker> markers;
+  QMap<QString, QList<QCPPolarGraph*>> traceGraphs; // Each trace can have multiple graphs for phase wrapping
 
-         // Lists to keep track of graphics items
-  QList<QGraphicsTextItem*> markerLabels;
-  QList<QGraphicsTextItem*> valueLabels;
+         // Marker items for drawing
+  QList<QCPItemEllipse*> markerItems;
+  QList<QCPItemText*> markerLabels;
 
+  void updateFrequencyRange();
   QGridLayout* setupAxisSettings();
   void updatePlot();
   void clearGraphicsItems();
+  void drawCustomMarkers();
+  double getFrequencyMultiplier() const;
 
-  // Helper to find a complex value at a specific frequency using interpolation
+         // Helper to find a complex value at a specific frequency using interpolation
   std::complex<double> getComplexValueAtFrequency(const Trace& trace, double frequency);
 
-  // Convert between display modes (magnitude/phase <-> real/imaginary)
+         // Convert between display modes (magnitude/phase <-> real/imaginary)
   std::complex<double> convertToDisplayFormat(const std::complex<double>& value, int mode);
 };
 
