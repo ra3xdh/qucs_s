@@ -3,36 +3,20 @@
 RectangularPlotWidget::RectangularPlotWidget(QWidget *parent)
     : QWidget(parent), showTraceValues(true), axisSettingsLocked(false), fMin(1e20), fMax(-1)
 {
-  // Initialize the chart and chart view
-  ChartWidget = new QChart();
-  ChartWidget->legend()->hide();
-  chartView = new QChartView(ChartWidget, this);
-  chartView->setRenderHint(QPainter::Antialiasing);
+  // Create the QCustomPlot widget
+  plotWidget = new QCustomPlot(this);
 
-         // Initialize axes
-  xAxis = new QValueAxis();
-  yAxis = new QValueAxis();
-  y2Axis = new QValueAxis();
-
-  ChartWidget->addAxis(xAxis, Qt::AlignBottom);
-  ChartWidget->addAxis(yAxis, Qt::AlignLeft);
-  ChartWidget->addAxis(y2Axis, Qt::AlignRight);
-
-  yAxis->setTitleText("Magnitude (dB)");
-  y2Axis->setTitleText("Phase (deg)");
-
-         // Set up the frequency units
+  // Set up the frequency units
   frequencyUnits << "Hz" << "kHz" << "MHz" << "GHz";
 
   y_autoscale = true; // Allow autoscaling when a trace is added
 
-         // Initialize our marker label lists
-  markerLabels.clear();
-  intersectionLabels.clear();
+         // Setup the plot
+  setupPlot();
 
          // Create the main layout
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
-  mainLayout->addWidget(chartView);
+  mainLayout->addWidget(plotWidget);
 
          // Add the axis settings layout
   mainLayout->addLayout(setupAxisSettings());
@@ -44,36 +28,67 @@ RectangularPlotWidget::~RectangularPlotWidget()
   // Clean up any remaining graphics items
   clearGraphicsItems();
 
-  // Delete the chart (which will delete all series)
-  delete ChartWidget;
+         // QCustomPlot will be automatically deleted by Qt's parent-child system
 }
 
+void RectangularPlotWidget::setupPlot()
+{
+  // Configure basic plot properties
+  plotWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+
+  // Set up axes
+  plotWidget->xAxis->setLabel("Frequency (MHz)");
+  plotWidget->yAxis->setLabel("Magnitude (dB)");
+
+  // Set up right y-axis (y2)
+  plotWidget->yAxis2->setVisible(true);
+  plotWidget->yAxis2->setLabel("Phase (deg)");
+  plotWidget->yAxis2->setTickLabels(true);
+
+  // Set up top x-axis to match bottom
+  plotWidget->xAxis2->setVisible(true);
+  plotWidget->xAxis2->setTickLabels(false);
+
+  // Make left and bottom axes transfer their ranges to right and top axes
+  connect(plotWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),
+          plotWidget->xAxis2, SLOT(setRange(QCPRange)));
+  connect(plotWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),
+          plotWidget->yAxis2, SLOT(setRange(QCPRange)));
+
+  // Set default ranges
+  plotWidget->xAxis->setRange(0, 1000);
+  plotWidget->yAxis->setRange(-10, 10);
+  plotWidget->yAxis2->setRange(-180, 180);
+
+  // Hide right y-axis initially
+  setRightYAxisEnabled(false);
+}
 
 void RectangularPlotWidget::addTrace(const QString& name, const Trace& trace)
 {
   // Create a local copy of the trace that we can modify
   Trace traceCopy = trace;
 
-  // Store the (potentially modified) trace in the map
+         // Store the (potentially modified) trace in the map
   traces[name] = traceCopy;
 
-  // Only update frequency range if not locked and this trace has data
+         // Only update frequency range if not locked and this trace has data
   if (!axisSettingsLocked && !traceCopy.frequencies.isEmpty()) {
     double traceMinFreq = traceCopy.frequencies.first();
     double traceMaxFreq = traceCopy.frequencies.last();
 
-    // Update global min/max frequency (stored in Hz)
+           // Update global min/max frequency (stored in Hz)
     if (traceMinFreq < fMin) fMin = traceMinFreq;
-        if (traceMaxFreq > fMax) fMax = traceMaxFreq;
+    if (traceMaxFreq > fMax) fMax = traceMaxFreq;
 
-    // Get current frequency scale factor based on selected units
+           // Get current frequency scale factor based on selected units
     double freqScale = getXscale();
 
-    // Update the axis limits with the scaled frequency values
+           // Update the axis limits with the scaled frequency values
     xAxisMin->setValue(fMin * freqScale);
     xAxisMax->setValue(fMax * freqScale);
 
-    // If this is the first trace being added, set a suitable division step
+           // If this is the first trace being added, set a suitable division step
     if (traces.size() == 1) {
       // Calculate a nice step size based on the frequency range
       double range = (fMax - fMin) * freqScale;
@@ -82,11 +97,11 @@ void RectangularPlotWidget::addTrace(const QString& name, const Trace& trace)
       xAxisDiv->setValue(step);
     }
 
-    // Update the x-axis
+           // Update the x-axis
     updateXAxis();
   }
 
-  // Only adjust y-axis and y2-axis ranges if not locked and trace has data
+         // Only adjust y-axis and y2-axis ranges if not locked and trace has data
   if (!axisSettingsLocked && !traceCopy.trace.isEmpty() && y_autoscale) {
     // Find min and max values in the trace data
     double traceMin = std::numeric_limits<double>::max();
@@ -94,14 +109,14 @@ void RectangularPlotWidget::addTrace(const QString& name, const Trace& trace)
 
     for (double value : traceCopy.trace) {
       if (value < traceMin) traceMin = value;
-            if (value > traceMax) traceMax = value;
-        }
+      if (value > traceMax) traceMax = value;
+    }
 
-    // Add some padding (5% of range)
+           // Add some padding (5% of range)
     double padding = (traceMax - traceMin) * 0.05;
     if (padding < 1.0) padding = 1.0; // Minimum padding
 
-    // Update appropriate y-axis based on the trace's y_axis value
+           // Update appropriate y-axis based on the trace's y_axis value
     if (traceCopy.y_axis == 2) {
       // Only adjust y2-axis if this is the first trace for y2 or if values exceed current range
       if (traceMin < y2AxisMin->value() || traceMax > y2AxisMax->value() ||
@@ -121,7 +136,6 @@ void RectangularPlotWidget::addTrace(const QString& name, const Trace& trace)
         double y_step = round((y_max - y_min)/10);
         y_step = ceil(y_step / 5) * 5; // round to 5
         yAxisDiv->setValue(y_step);
-
       }
       updateYAxis();
     }
@@ -130,20 +144,18 @@ void RectangularPlotWidget::addTrace(const QString& name, const Trace& trace)
   updatePlot();
 }
 
-
-// The first time a trace is added to the plot it is needed to find a suitable step. This function helps to do that
 double RectangularPlotWidget::calculateNiceStep(double range)
 {
   // Target 8-10 divisions on the axis
   double rawStep = range / 8.0;
 
-  // Find the magnitude of the step
+         // Find the magnitude of the step
   double magnitude = pow(10, floor(log10(rawStep)));
 
-  // Normalize the step to a value between 1 and 10
+         // Normalize the step to a value between 1 and 10
   double normalizedStep = rawStep / magnitude;
 
-  // Choose a nice step value (1, 2, 2.5, 5, or 10)
+         // Choose a nice step value (1, 2, 2.5, 5, or 10)
   double niceStep;
   if (normalizedStep < 1.5) {
     niceStep = 1;
@@ -155,7 +167,7 @@ double RectangularPlotWidget::calculateNiceStep(double range)
     niceStep = 10;
   }
 
-  // Return the nice step size
+         // Return the nice step size
   return niceStep * magnitude;
 }
 
@@ -177,13 +189,12 @@ QPen RectangularPlotWidget::getTracePen(const QString& traceName) const
     return traces[traceName].pen;
   }
 
-  // Return a default-constructed pen with valid settings
+         // Return a default-constructed pen with valid settings
   QPen defaultPen;
-  defaultPen.setStyle(Qt::SolidLine);  // Explicit initialization
-  defaultPen.setColor(Qt::black);      // Explicit initialization
+  defaultPen.setStyle(Qt::SolidLine);
+  defaultPen.setColor(Qt::black);
   return defaultPen;
 }
-
 
 void RectangularPlotWidget::setTracePen(const QString& traceName, const QPen& pen)
 {
@@ -261,212 +272,198 @@ QMap<QString, double> RectangularPlotWidget::getMarkers() const
 
 void RectangularPlotWidget::updatePlot()
 {
-  // Clear existing graphics items
+  // Clear existing graphics items and graphs
   clearGraphicsItems();
+  plotWidget->clearGraphs();
 
-  // Get the current scale factor based on selected units
+         // Get the current scale factor based on selected units
   double freqScale = getXscale();
 
-         // Remove all existing series from the chart
-  QList<QAbstractSeries*> oldSeries = ChartWidget->series();
-  for (QAbstractSeries* series : oldSeries) {
-    ChartWidget->removeSeries(series);
-    delete series;
-  }
-
-  // Add each trace as a new series
+         // Add each trace as a new graph
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
     const QString& name = it.key();
     const Trace& trace = it.value();
 
-           // Create a new line series for the trace
-    QLineSeries* series = new QLineSeries();
-    series->setPen(trace.pen);
-    series->setName(name);
+           // Create a new graph for the trace
+    QCPGraph* graph = plotWidget->addGraph();
 
-           // Add data points to the series with proper frequency scaling
+    // Determine which y-axis to use
+    if (trace.y_axis == 2) {
+      graph->setKeyAxis(plotWidget->xAxis);
+      graph->setValueAxis(plotWidget->yAxis2);
+    } else {
+      graph->setKeyAxis(plotWidget->xAxis);
+      graph->setValueAxis(plotWidget->yAxis);
+    }
+
+    // Set the pen
+    graph->setPen(trace.pen);
+    graph->setName(name);
+
+           // Add data points to the graph with proper frequency scaling
+    QVector<double> xData, yData;
     for (int i = 0; i < trace.frequencies.size() && i < trace.trace.size(); ++i) {
       // Scale the frequency values according to the current frequency units
       double scaledFreq = trace.frequencies[i] * freqScale;
-      series->append(scaledFreq, trace.trace[i]);
+      xData.append(scaledFreq);
+      yData.append(trace.trace[i]);
     }
 
-    // Add the series to the chart
-    ChartWidget->addSeries(series);
+    graph->setData(xData, yData);
 
-    // Attach to the appropriate axes
-    series->attachAxis(xAxis);
-    if (trace.y_axis == 2) {
-      series->attachAxis(y2Axis);
-    } else {
-      series->attachAxis(yAxis);
-    }
+    // Store reference for future use
+    traceGraphs[name] = graph;
   }
 
+         // Show/hide right y-axis based on whether we have traces using it
   if (getY2AxisTraceCount() == 0) {
-    y2Axis->setVisible(false);
+    setRightYAxisEnabled(false);
   } else {
-    y2Axis->setVisible(true);
+    setRightYAxisEnabled(true);
   }
 
-  // Draw markers if any
+         // Draw markers if any
   for (auto it = markers.constBegin(); it != markers.constEnd(); ++it) {
     const Marker& marker = it.value();
-
-           // Create a vertical line series for each marker
-    QLineSeries* markerSeries = new QLineSeries();
-    markerSeries->setPen(marker.pen);
-    markerSeries->setName(marker.id);
-
-           // Find the y-range to cover based on current axes
-    double yBottom = yAxis->min();
-    double yTop = yAxis->max();
 
            // Scale the marker frequency according to the current units
     double scaledMarkerFreq = marker.frequency * freqScale;
 
-           // Add a vertical line at the marker frequency
-    markerSeries->append(scaledMarkerFreq, yBottom);
-    markerSeries->append(scaledMarkerFreq, yTop);
+           // Create a vertical line for the marker
+    QCPItemStraightLine* markerLine = new QCPItemStraightLine(plotWidget);
+    markerLine->point1->setCoords(scaledMarkerFreq, -1e20);
+    markerLine->point2->setCoords(scaledMarkerFreq, 1e20);
+    markerLine->setPen(marker.pen);
+    markerLines[marker.id] = markerLine;
 
-           // Add the marker series to the chart
-    ChartWidget->addSeries(markerSeries);
-    markerSeries->attachAxis(xAxis);
-    markerSeries->attachAxis(yAxis);
-
-           // Create a text label showing just the frequency value
+           // Create a text label showing the frequency value
     QString unitText = xAxisUnits->currentText();
     QString freqText = QString::number(scaledMarkerFreq, 'f', 1) + " " + unitText;
 
-    // Create a QGraphicsTextItem for the marker frequency label
-    QGraphicsTextItem* markerLabel = new QGraphicsTextItem(ChartWidget);
-    markerLabel->setHtml("<div style='text-align:center; background:white; padding:2px; border:1px solid " +
-                         marker.pen.color().name() + "'>" + freqText + "</div>");
+    QCPItemText* markerLabel = new QCPItemText(plotWidget);
+    markerLabel->setText(freqText);
+    markerLabel->position->setCoords(scaledMarkerFreq, plotWidget->yAxis->range().upper);
+    markerLabel->setPositionAlignment(Qt::AlignBottom | Qt::AlignHCenter);
+    markerLabel->setBrush(QBrush(Qt::white));
+    markerLabel->setPen(marker.pen);
+    markerLabels[marker.id] = markerLabel;
 
-    // Get the position at the top of the marker line
-    QPointF labelPos = ChartWidget->mapToPosition(QPointF(scaledMarkerFreq, yTop), markerSeries);
-
-    // Position slightly above the chart
-    labelPos.setY(labelPos.y() - 25); // Move label up by 25 pixels
-
-    // Center the label horizontally on the line
-    QRectF labelRect = markerLabel->boundingRect();
-    labelPos.setX(labelPos.x() - labelRect.width()/2);
-
-    markerLabel->setPos(labelPos);
-
-    // Add to our tracking list for later cleanup
-    markerLabels.append(markerLabel);
-
-    // Add marker intersections with all traces
-    for (auto traceIt = traces.constBegin(); traceIt != traces.constEnd(); ++traceIt) {
-      const Trace& trace = traceIt.value();
-
-      // Find the intersection point of the marker with this trace
-      double intersectionValue = -std::numeric_limits<double>::max();
-      bool found = false;
-
-      // Check if marker frequency is within trace's frequency range
-      if (!trace.frequencies.isEmpty() &&
-          marker.frequency >= trace.frequencies.first() &&
-          marker.frequency <= trace.frequencies.last()) {
-
-        // Find the closest frequency points in the trace
-        int lowerIndex = -1;
-        for (int i = 0; i < trace.frequencies.size() - 1; ++i) {
-          if (trace.frequencies[i] <= marker.frequency && marker.frequency <= trace.frequencies[i+1]) {
-            lowerIndex = i;
-            break;
-          }
-        }
-
-        // If we found an interval containing the marker frequency
-        if (lowerIndex >= 0) {
-          // Linear interpolation to find the value at marker frequency
-          double f1 = trace.frequencies[lowerIndex];
-          double f2 = trace.frequencies[lowerIndex + 1];
-          double v1 = trace.trace[lowerIndex];
-          double v2 = trace.trace[lowerIndex + 1];
-
-          // Linear interpolation formula: v = v1 + (f - f1) * (v2 - v1) / (f2 - f1)
-          intersectionValue = v1 + (marker.frequency - f1) * (v2 - v1) / (f2 - f1);
-          found = true;
-        }
-      }
-
-      // If intersection was found, add a point marker
-      if (found) {
-        QScatterSeries* intersectionPoint = new QScatterSeries();
-        intersectionPoint->setMarkerSize(7);
-
-        // Use the same color as the trace for the intersection point
-        intersectionPoint->setColor(trace.pen.color());
-        intersectionPoint->setBorderColor(Qt::black);
-
-        // Get the y-axis for this trace
-        QAbstractAxis* traceYAxis = (trace.y_axis == 2) ? y2Axis : yAxis;
-
-        // Add the point to the chart
-        intersectionPoint->append(scaledMarkerFreq, intersectionValue);
-        ChartWidget->addSeries(intersectionPoint);
-        intersectionPoint->attachAxis(xAxis);
-        intersectionPoint->attachAxis(traceYAxis);
-
-        // Add value label for the intersection point
-        if (showTraceValues) {
-          QGraphicsTextItem* valueLabel = new QGraphicsTextItem(ChartWidget);
-          QString valueText = QString::number(intersectionValue, 'f', 1);
-          valueText += QString(" %1").arg(trace.units); // Attach units
-
-          valueLabel->setHtml("<div style='background:white; padding:1px; border:1px solid " +
-                              trace.pen.color().name() + "'>" + valueText + "</div>");
-
-
-          // Position the label near the intersection point
-          QPointF labelPos = ChartWidget->mapToPosition(
-              QPointF(scaledMarkerFreq, intersectionValue), intersectionPoint);
-          labelPos.setX(labelPos.x() + 5); // Offset slightly to avoid overlapping the point
-          valueLabel->setPos(labelPos);
-
-          // Add to our tracking list for later cleanup
-          intersectionLabels.append(valueLabel);
-        }
-      }
-    }
+           // Add marker intersections with all traces
+    addMarkerIntersections(marker.id, marker);
   }
 
-
-  // Draw limits if any
+         // Draw limits if any
   for (auto it = limits.constBegin(); it != limits.constEnd(); ++it) {
     const Limit& limit = it.value();
 
-    // Create a line series for the limit
-    QLineSeries* limitSeries = new QLineSeries();
-    limitSeries->setPen(limit.pen);
-    limitSeries->setName(it.key());
+           // Create a graph for the limit
+    QCPGraph* limitGraph = plotWidget->addGraph();
 
-    // Scale the frequencies according to the current units
+    // Determine which y-axis to use
+    if (limit.y_axis == 1) {
+      limitGraph->setKeyAxis(plotWidget->xAxis);
+      limitGraph->setValueAxis(plotWidget->yAxis2);
+    } else {
+      limitGraph->setKeyAxis(plotWidget->xAxis);
+      limitGraph->setValueAxis(plotWidget->yAxis);
+    }
+
+    // Set the pen
+    limitGraph->setPen(limit.pen);
+    limitGraph->setName(it.key());
+
+           // Scale the frequencies according to the current units
     double scaledF1 = limit.f1 * freqScale;
     double scaledF2 = limit.f2 * freqScale;
 
-    // Add the two points defining the limit line
-    limitSeries->append(scaledF1, limit.y1);
-    limitSeries->append(scaledF2, limit.y2);
+           // Add the two points defining the limit line
+    QVector<double> xData = {scaledF1, scaledF2};
+    QVector<double> yData = {limit.y1, limit.y2};
+    limitGraph->setData(xData, yData);
 
-    // Add the limit series to the chart
-    ChartWidget->addSeries(limitSeries);
-
-    // Attach to the appropriate axes
-    limitSeries->attachAxis(xAxis);
-    if (limit.y_axis == 1) {
-      limitSeries->attachAxis(y2Axis);
-    } else {
-      limitSeries->attachAxis(yAxis);
-    }
+    limitGraphs[it.key()] = limitGraph;
   }
 
-  // Refresh the chart
-  ChartWidget->update();
+         // Replot to show all changes
+  plotWidget->replot();
+}
+
+void RectangularPlotWidget::addMarkerIntersections(const QString& markerId, const Marker& marker)
+{
+  double freqScale = getXscale();
+  double scaledMarkerFreq = marker.frequency * freqScale;
+
+  for (auto traceIt = traces.constBegin(); traceIt != traces.constEnd(); ++traceIt) {
+    const Trace& trace = traceIt.value();
+
+           // Find the intersection point of the marker with this trace
+    double intersectionValue = -std::numeric_limits<double>::max();
+    bool found = false;
+
+           // Check if marker frequency is within trace's frequency range
+    if (!trace.frequencies.isEmpty() &&
+        marker.frequency >= trace.frequencies.first() &&
+        marker.frequency <= trace.frequencies.last()) {
+
+      // Find the closest frequency points in the trace
+      int lowerIndex = -1;
+      for (int i = 0; i < trace.frequencies.size() - 1; ++i) {
+        if (trace.frequencies[i] <= marker.frequency && marker.frequency <= trace.frequencies[i+1]) {
+          lowerIndex = i;
+          break;
+        }
+      }
+
+             // If we found an interval containing the marker frequency
+      if (lowerIndex >= 0) {
+        // Linear interpolation to find the value at marker frequency
+        double f1 = trace.frequencies[lowerIndex];
+        double f2 = trace.frequencies[lowerIndex + 1];
+        double v1 = trace.trace[lowerIndex];
+        double v2 = trace.trace[lowerIndex + 1];
+
+               // Linear interpolation formula: v = v1 + (f - f1) * (v2 - v1) / (f2 - f1)
+        intersectionValue = v1 + (marker.frequency - f1) * (v2 - v1) / (f2 - f1);
+        found = true;
+      }
+    }
+
+           // If intersection was found, add a point marker
+    if (found) {
+      QString pointId = markerId + "_" + traceIt.key();
+
+      // Create a tracer for the intersection point
+      QCPItemTracer* tracer = new QCPItemTracer(plotWidget);
+
+      // Find the corresponding graph
+      if (traceGraphs.contains(traceIt.key())) {
+        tracer->setGraph(traceGraphs[traceIt.key()]);
+        tracer->setGraphKey(scaledMarkerFreq);
+        tracer->setInterpolating(true);
+        tracer->setStyle(QCPItemTracer::tsCircle);
+        tracer->setPen(QPen(Qt::black));
+        tracer->setBrush(QBrush(trace.pen.color()));
+        tracer->setSize(7);
+
+        intersectionPoints[pointId] = tracer;
+
+               // Add value label for the intersection point
+        if (showTraceValues) {
+          QCPItemText* valueLabel = new QCPItemText(plotWidget);
+          QString valueText = QString::number(intersectionValue, 'f', 1);
+          valueText += QString(" %1").arg(trace.units);
+
+          valueLabel->setText(valueText);
+          valueLabel->position->setCoords(scaledMarkerFreq, intersectionValue);
+          valueLabel->setPositionAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+          valueLabel->setBrush(QBrush(Qt::white));
+          valueLabel->setPen(trace.pen);
+
+          intersectionLabels[pointId] = valueLabel;
+        }
+      }
+    }
+  }
 }
 
 void RectangularPlotWidget::updateXAxis()
@@ -483,12 +480,18 @@ void RectangularPlotWidget::updateXAxis()
   }
 
          // Set the axis range in display units
-  xAxis->setRange(xMin, xMax);
-  xAxis->setTickInterval(xDiv);
-  xAxis->setTickCount(floor((xMax - xMin) / xDiv) + 1);
-  xAxis->setTitleText("frequency (" + xAxisUnits->currentText() + ")");
+  plotWidget->xAxis->setRange(xMin, xMax);
 
-         // Instead of trying to modify existing series, just redraw everything
+  // Set ticks
+  QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
+  fixedTicker->setTickStep(xDiv);
+  fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);  // No scaling
+  plotWidget->xAxis->setTicker(fixedTicker);
+
+  // Set title
+  plotWidget->xAxis->setLabel("Frequency (" + xAxisUnits->currentText() + ")");
+
+  // Update the plot
   updatePlot();
 }
 
@@ -506,9 +509,13 @@ void RectangularPlotWidget::updateYAxis()
     yAxisDiv->setValue(yDiv);
   }
 
-  yAxis->setRange(yMin, yMax);
-  yAxis->setTickInterval(yDiv);
-  yAxis->setTickCount(floor((yMax - yMin) / yDiv) + 1);
+  plotWidget->yAxis->setRange(yMin, yMax);
+
+  // Set ticks
+  QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
+  fixedTicker->setTickStep(yDiv);
+  fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);  // No scaling
+  plotWidget->yAxis->setTicker(fixedTicker);
 
   updatePlot();
 }
@@ -519,13 +526,16 @@ void RectangularPlotWidget::updateY2Axis()
   double y2Max = y2AxisMax->value();
   double y2Div = y2AxisDiv->value();
 
-  y2Axis->setRange(y2Min, y2Max);
-  y2Axis->setTickInterval(y2Div);
-  y2Axis->setTickCount(floor((y2Max - y2Min) / y2Div) + 1);
+  plotWidget->yAxis2->setRange(y2Min, y2Max);
+
+  // Set ticks
+  QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
+  fixedTicker->setTickStep(y2Div);
+  fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);  // No scaling
+  plotWidget->yAxis2->setTicker(fixedTicker);
 
   updatePlot();
 }
-
 
 void RectangularPlotWidget::changeFreqUnits()
 {
@@ -536,15 +546,15 @@ void RectangularPlotWidget::changeFreqUnits()
   xAxisMin->blockSignals(true);
   xAxisMax->blockSignals(true);
 
-  // Update the spinbox values with scaled values from the global min/max (in Hz)
+         // Update the spinbox values with scaled values from the global min/max (in Hz)
   xAxisMin->setValue(fMin * freqScale);
   xAxisMax->setValue(fMax * freqScale);
 
-  // Re-enable signals
+         // Re-enable signals
   xAxisMin->blockSignals(false);
   xAxisMax->blockSignals(false);
 
-  // Update the axis
+         // Update the axis
   updateXAxis();
 }
 
@@ -552,7 +562,7 @@ QGridLayout* RectangularPlotWidget::setupAxisSettings()
 {
   QGridLayout *axisLayout = new QGridLayout();
 
-  // X-axis settings
+         // X-axis settings
   xAxisLabel = new QLabel("<b>Frequency</b>");
   axisLayout->addWidget(xAxisLabel, 0, 0);
 
@@ -663,7 +673,7 @@ QGridLayout* RectangularPlotWidget::setupAxisSettings()
   connect(showValuesCheckbox, SIGNAL(toggled(bool)), this, SLOT(toggleShowValues(bool)));
   axisLayout->addWidget(showValuesCheckbox, 3, 1, 1, 2);  // Span 2 columns
 
-  // Lock Axis Settings checkbox
+         // Lock Axis Settings checkbox
   lockAxisCheckbox = new QCheckBox("Lock Axis Settings");
   lockAxisCheckbox->setChecked(false);  // Default to unlocked
   connect(lockAxisCheckbox, SIGNAL(toggled(bool)), this, SLOT(toggleLockAxisSettings(bool)));
@@ -725,7 +735,6 @@ QString RectangularPlotWidget::getXunits(){
   return xAxisUnits->currentText();
 }
 
-
 // Count traces assigned to the primary y-axis
 int RectangularPlotWidget::getYAxisTraceCount() const
 {
@@ -750,7 +759,6 @@ int RectangularPlotWidget::getY2AxisTraceCount() const
   return count;
 }
 
-
 // Returns a scale factor depending on the selection of the frequency units
 double RectangularPlotWidget::getXscale(){
   QString unit = xAxisUnits->currentText();
@@ -769,7 +777,6 @@ double RectangularPlotWidget::getXscale(){
 int RectangularPlotWidget::getFreqIndex(){
   return xAxisUnits->currentIndex();
 }
-
 
 bool RectangularPlotWidget::updateMarkerFrequency(const QString& markerId, double newFrequency) {
   // Check if marker exists
@@ -804,28 +811,45 @@ bool RectangularPlotWidget::updateMarkerFrequency(const QString& markerId, doubl
 // Removes the old graphic elements, such as the labels from past marker positions
 void RectangularPlotWidget::clearGraphicsItems()
 {
-  // Remove all marker labels
-  for (QGraphicsTextItem* label : markerLabels) {
-    ChartWidget->scene()->removeItem(label);
-    delete label;
+  // Remove all marker lines
+  for (auto it = markerLines.begin(); it != markerLines.end(); ++it) {
+    plotWidget->removeItem(it.value());
+  }
+  markerLines.clear();
+
+         // Remove all marker labels
+  for (auto it = markerLabels.begin(); it != markerLabels.end(); ++it) {
+    plotWidget->removeItem(it.value());
   }
   markerLabels.clear();
 
-  // Remove all intersection labels
-  for (QGraphicsTextItem* label : intersectionLabels) {
-    ChartWidget->scene()->removeItem(label);
-    delete label;
+         // Remove all intersection points
+  for (auto it = intersectionPoints.begin(); it != intersectionPoints.end(); ++it) {
+    plotWidget->removeItem(it.value());
+  }
+  intersectionPoints.clear();
+
+         // Remove all intersection labels
+  for (auto it = intersectionLabels.begin(); it != intersectionLabels.end(); ++it) {
+    plotWidget->removeItem(it.value());
   }
   intersectionLabels.clear();
-}
 
+         // Remove all limit graphs
+  for (auto it = limitGraphs.begin(); it != limitGraphs.end(); ++it) {
+    plotWidget->removeGraph(it.value());
+  }
+  limitGraphs.clear();
+
+         // Clear trace graphs map
+  traceGraphs.clear();
+}
 
 void RectangularPlotWidget::toggleShowValues(bool show)
 {
   showTraceValues = show;
   updatePlot();  // Redraw with new setting
 }
-
 
 bool RectangularPlotWidget::addLimit(const QString& limitId, const Limit& limit)
 {
@@ -841,7 +865,6 @@ bool RectangularPlotWidget::addLimit(const QString& limitId, const Limit& limit)
   updatePlot();
   return true;
 }
-
 
 void RectangularPlotWidget::removeLimit(const QString& limitId)
 {
@@ -859,12 +882,10 @@ void RectangularPlotWidget::clearLimits()
   updatePlot();
 }
 
-
 QMap<QString, RectangularPlotWidget::Limit> RectangularPlotWidget::getLimits() const
 {
   return limits;
 }
-
 
 // Update limit given the name
 bool RectangularPlotWidget::updateLimit(const QString& limitId, const Limit& limit)
@@ -874,17 +895,18 @@ bool RectangularPlotWidget::updateLimit(const QString& limitId, const Limit& lim
     return false;
   }
 
-  // Update the limit in the map
+         // Update the limit in the map
   limits[limitId] = limit;
 
-  // Update the plot to reflect the changes
+         // Update the plot to reflect the changes
   updatePlot();
 
   return true;
 }
 
 void RectangularPlotWidget::change_Y_axis_title(QString title) {
-  yAxis->setTitleText(title);
+  plotWidget->yAxis->setLabel(title);
+  plotWidget->replot();
 }
 
 void RectangularPlotWidget::change_Y_axis_units(QString units) {
@@ -892,7 +914,8 @@ void RectangularPlotWidget::change_Y_axis_units(QString units) {
 }
 
 void RectangularPlotWidget::change_Y2_axis_title(QString title) {
-  y2Axis->setTitleText(title);
+  plotWidget->yAxis2->setLabel(title);
+  plotWidget->replot();
 }
 
 void RectangularPlotWidget::change_Y2_axis_units(QString units) {
@@ -900,55 +923,43 @@ void RectangularPlotWidget::change_Y2_axis_units(QString units) {
 }
 
 void RectangularPlotWidget::change_X_axis_title(QString title) {
-  xAxis->setTitleText(title);
+  plotWidget->xAxis->setLabel(title);
+  plotWidget->replot();
 }
 
+void RectangularPlotWidget::change_X_axis_label(QString title) {
+  // This function appears to be unused in the original code
+  change_X_axis_title(title);
+}
 
 void RectangularPlotWidget::setRightYAxisEnabled(bool enabled)
 {
   // Hide or show the right y-axis
-  y2Axis->setVisible(enabled);
+  plotWidget->yAxis2->setVisible(enabled);
+  plotWidget->yAxis2->setTickLabels(enabled);
 
          // Hide/show the y2-axis label and related controls
-  y2AxisLabel->setVisible(enabled);
+  /*y2AxisLabel->setVisible(enabled);
   y2AxisMin->setVisible(enabled);
   y2AxisMax->setVisible(enabled);
   y2AxisDiv->setVisible(enabled);
-  y2AxisUnits->setVisible(enabled);
-
-         // If disabling, remove all traces associated with the right y-axis
-  if (!enabled) {
-    QList<QAbstractSeries*> seriesToRemove;
-    for (QAbstractSeries* series : ChartWidget->series()) {
-      // Check if the series is attached to the right y-axis
-      if (series->attachedAxes().contains(y2Axis)) {
-        seriesToRemove.append(series);
-      }
-    }
-
-           // Remove identified series
-    for (QAbstractSeries* series : seriesToRemove) {
-      ChartWidget->removeSeries(series);
-      delete series;
-    }
-  }
+  y2AxisUnits->setVisible(enabled);*/
 
          // Redraw the plot to reflect changes
-  updatePlot();
+  plotWidget->replot();
 }
 
 bool RectangularPlotWidget::isRightYAxisEnabled() const
 {
-  return y2Axis->isVisible();
+  return plotWidget->yAxis2->visible();
 }
-
 
 // Handle lock axis checkbox
 void RectangularPlotWidget::toggleLockAxisSettings(bool locked)
 {
   axisSettingsLocked = locked;
 
-  // Enable/disable all axis controls based on lock state
+         // Enable/disable all axis controls based on lock state
   xAxisMin->setEnabled(!locked);
   xAxisMax->setEnabled(!locked);
   xAxisDiv->setEnabled(!locked);
@@ -962,7 +973,7 @@ void RectangularPlotWidget::toggleLockAxisSettings(bool locked)
   y2AxisMax->setEnabled(!locked);
   y2AxisDiv->setEnabled(!locked);
 
-  // Visual feedback - change the appearance of labels when locked
+         // Visual feedback - change the appearance of labels when locked
   QColor labelColor = locked ? QColor(120, 120, 120) : QColor(0, 0, 0);
 
   QPalette pal = xAxisLabel->palette();
@@ -971,7 +982,7 @@ void RectangularPlotWidget::toggleLockAxisSettings(bool locked)
   xAxisLabel->setPalette(pal);
   y2AxisLabel->setPalette(pal);
 
-  // Find the y-axis label and update its palette too
+         // Find the y-axis label and update its palette too
   for (QObject* child : children()) {
     QLabel* label = qobject_cast<QLabel*>(child);
     if (label && label->text() == "<b>y-axis</b>") {
@@ -981,18 +992,15 @@ void RectangularPlotWidget::toggleLockAxisSettings(bool locked)
   }
 }
 
-
 // Public function to let check whether the axes are locked or not
 bool RectangularPlotWidget::areAxisSettingsLocked() const
 {
   return axisSettingsLocked;
 }
 
-
 void RectangularPlotWidget::set_y_autoscale(bool value){
   y_autoscale = value;
 }
-
 
 // Send settings to the main program
 RectangularPlotWidget::AxisSettings RectangularPlotWidget::getSettings() const {

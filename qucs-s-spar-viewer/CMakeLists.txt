@@ -32,7 +32,7 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Charts)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets PrintSupport Charts)
 include_directories(
       ${Qt6Core_INCLUDE_DIRS}
       ${Qt6Gui_INCLUDE_DIRS}
@@ -96,6 +96,14 @@ file(GLOB PLOT_WIDGETS_SOURCES
 
 file(GLOB PLOT_WIDGETS_HEADERS
      PlotWidgets/*.h
+)
+
+file(GLOB QCUSTOMPLOT_SOURCE
+     PlotWidgets/QCustomPlot/qcustomplot.cpp
+)
+
+file(GLOB QCUSTOMPLOT_HEADER
+     PlotWidgets/QCustomPlot/qcustomplot.h
 )
 
 file(GLOB CUSTOM_WIDGETS_SOURCES
@@ -176,6 +184,7 @@ set(spar_viewer_sources
     ${FILTERING_SOURCES}
     ${NETLIST_SCRATCHPAD_SOURCES}
     ${SIMULATION_SETTINGS_SOURCES}
+    ${QCUSTOMPLOT_SOURCE}
 )
 
 set(spar_viewer_moc_headers
@@ -189,6 +198,7 @@ set(spar_viewer_moc_headers
     ${FILTERING_HEADERS}
     ${NETLIST_SCRATCHPAD_HEADERS}
     ${SIMULATION_SETTINGS_HEADERS}
+    ${QCUSTOMPLOT_HEADER}
 )
 
 SET(RESOURCES qucs-s-spar-viewer.qrc)
@@ -220,7 +230,7 @@ ADD_EXECUTABLE( ${QUCS_NAME}spar-viewer MACOSX_BUNDLE WIN32
   ${RESOURCES_SRCS}
 )
 
-TARGET_LINK_LIBRARIES( ${QUCS_NAME}spar-viewer Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts )
+TARGET_LINK_LIBRARIES( ${QUCS_NAME}spar-viewer Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts Qt6::PrintSupport)
 SET_TARGET_PROPERTIES(${QUCS_NAME}spar-viewer PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #INSTALL (TARGETS ${QUCS_NAME}spar-viewer DESTINATION bin)
 #

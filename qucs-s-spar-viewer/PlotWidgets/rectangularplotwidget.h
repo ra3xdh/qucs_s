@@ -2,24 +2,17 @@
 #define RECTANGULARPLOTWIDGET_H
 
 #include <QWidget>
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QScatterSeries>
-#include <QtCharts/QValueAxis>
 #include <QDoubleSpinBox>
 #include <QComboBox>
 #include <QGridLayout>
 #include <QLabel>
 #include <QMap>
 #include <QPen>
-#include <QGraphicsTextItem>
-#include <QCheckBox>  // Added for checkbox
+#include <QCheckBox>
+#include <QVBoxLayout>
 #include <complex>
 #include <limits>
-
-
-
-
+#include "./QCustomPlot/qcustomplot.h"
 
 class RectangularPlotWidget : public QWidget
 {
@@ -51,7 +44,7 @@ public:
     QPen pen;
   };
 
-  // Struct to exchange the widget settings with the main program
+         // Struct to exchange the widget settings with the main program
   struct AxisSettings {
     double xAxisMin;
     double xAxisMax;
@@ -102,7 +95,7 @@ public:
   void updatePlot();
   void set_y_autoscale(bool value);
 
-  bool areAxisSettingsLocked() const; // Public function to check whether the axes are locked or not
+  bool areAxisSettingsLocked() const;
 
   void setRightYAxisEnabled(bool enabled);
   bool isRightYAxisEnabled() const;
@@ -122,16 +115,15 @@ public:
   void clearMarkers();
   QMap<QString, double> getMarkers() const;
 
-
   bool addLimit(const QString& LimitId, const Limit & limit);
   void removeLimit(const QString& LimitID);
   void clearLimits();
   QMap<QString, Limit> getLimits() const;
   bool updateLimit(const QString& limitId, const Limit& limit);
 
-  QChart *chart() const { return ChartWidget; }
+  QCustomPlot* customPlot() const { return plotWidget; }
 
-  // Exchange the settings with the main program
+         // Exchange the settings with the main program
   AxisSettings getSettings() const;
   void setSettings(const AxisSettings& settings);
 
@@ -144,11 +136,7 @@ private slots:
   void toggleLockAxisSettings(bool locked);
 
 private:
-  QChart *ChartWidget;
-  QChartView *chartView;
-  QValueAxis *xAxis;
-  QValueAxis *yAxis;
-  QValueAxis *y2Axis;
+  QCustomPlot *plotWidget;
 
   QDoubleSpinBox *xAxisMin;
   QDoubleSpinBox *xAxisMax;
@@ -166,10 +154,10 @@ private:
   QLabel *y2AxisUnits;
   QLabel *y2AxisLabel;
 
-  QCheckBox *showValuesCheckbox;  // Checkbox for showing values
-  bool showTraceValues;           // Flag to control value display
+  QCheckBox *showValuesCheckbox;
+  bool showTraceValues;
 
-  QCheckBox *lockAxisCheckbox;    // Checkbox for locking the axis settings
+  QCheckBox *lockAxisCheckbox;
   bool axisSettingsLocked;
 
   QStringList frequencyUnits;
@@ -182,12 +170,18 @@ private:
   QMap<QString, Marker> markers;
   QMap<QString, Limit> limits;
 
-  // Lists to keep track of graphics items
-  QList<QGraphicsTextItem*> markerLabels;
-  QList<QGraphicsTextItem*> intersectionLabels;
+         // QCustomPlot specific members
+  QMap<QString, QCPGraph*> traceGraphs;
+  QMap<QString, QCPItemStraightLine*> markerLines;
+  QMap<QString, QCPItemText*> markerLabels;
+  QMap<QString, QCPItemTracer*> intersectionPoints;
+  QMap<QString, QCPItemText*> intersectionLabels;
+  QMap<QString, QCPGraph*> limitGraphs;
 
   QGridLayout* setupAxisSettings();
   void clearGraphicsItems();
+  void setupPlot();
+  void addMarkerIntersections(const QString& markerId, const Marker& marker);
 
   int getYAxisTraceCount() const;
   int getY2AxisTraceCount() const;
