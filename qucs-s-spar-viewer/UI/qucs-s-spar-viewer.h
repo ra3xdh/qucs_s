@@ -27,7 +27,6 @@
 #include <QGridLayout>
 #include <QColorDialog>
 #include <QScrollArea>
-#include <QtCharts>
 #include <QtGlobal>
 #include <complex>
 
@@ -279,7 +278,6 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   double f_min, f_max; // Minimum (maximum) values of the display
   QList<QColor> default_colors;
   QList<QGraphicsItem*> textLabels;
-  bool removeSeriesByName(QChart*, const QString&);
 
   // Smith Chart
   SmithChartWidget *smithChart;

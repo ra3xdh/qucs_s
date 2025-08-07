@@ -297,16 +297,12 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo, QColor trace_color
   traceMap[mode][trace_name].deleteButton = new_trace_removebutton;
   targetLayout->addWidget(new_trace_removebutton, n_trace, 4);
 
-         // Create the series for the trace
-  QLineSeries* series = new QLineSeries();
-  series->setName(trace_name);
 
-         // Color settings
+  // Color settings
   QPen pen;
   pen.setColor(trace_color);
   pen.setStyle(pen_style);
   pen.setWidth(trace_width);
-  series->setPen(pen); // Apply the pen to the series
 
          // Create and add the appropriate trace based on display mode
   QList<double> frequencies = datasets[traceInfo.dataset]["frequency"];

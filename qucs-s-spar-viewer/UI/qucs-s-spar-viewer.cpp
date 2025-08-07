@@ -42,7 +42,6 @@
 #include <QClipboard>
 #include <QApplication>
 #include <QDebug>
-#include <QLineSeries>
 
 
 Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
@@ -1139,19 +1138,6 @@ void Qucs_S_SPAR_Viewer::removeAndCollapseRow(QGridLayout* targetLayout, int row
       container->setUpdatesEnabled(true);
     }
   }
-}
-
-
-bool Qucs_S_SPAR_Viewer::removeSeriesByName(QChart* chart, const QString& name)
-{
-    QList<QAbstractSeries*> seriesList = chart->series();
-    for (QAbstractSeries* series : seriesList) {
-        if (series->name() == name) {
-            chart->removeSeries(series);
-            return true; // Series found and removed
-        }
-    }
-    return false; // Series not found
 }
 
 // This function is used for setting the available traces depending on the selected dataset
