@@ -135,6 +135,11 @@ private slots:
   void toggleShowValues(bool show);
   void toggleLockAxisSettings(bool locked);
 
+private slots: // To handle axis settings widgets when panning or zooming the plot
+  void onXAxisRangeChanged(const QCPRange &range);
+  void onYAxisRangeChanged(const QCPRange &range);
+  void onY2AxisRangeChanged(const QCPRange &range);
+
 private:
   QCustomPlot *plotWidget;
 
