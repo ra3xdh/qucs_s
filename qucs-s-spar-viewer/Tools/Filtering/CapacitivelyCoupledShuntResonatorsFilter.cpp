@@ -44,7 +44,7 @@ void CapacitivelyCoupledShuntResonatorsFilter::synthesize() {
   double w0 = 2 * M_PI * Specification.fc;
   double Z0 = Specification.ZS;
   double lambda0 = SPEED_OF_LIGHT / Specification.fc;
-  double J[N + 1], C[N + 1], deltaC[N], l[N];
+  std::vector<double> J(N + 1), C(N + 1), deltaC(N), l(N);
 
          // Add Term 1
   ComponentInfo TermSpar1(
@@ -59,7 +59,7 @@ void CapacitivelyCoupledShuntResonatorsFilter::synthesize() {
   for (int k = 0; k < N; k++) {
     if (k == 0) { // First element
       J[k] = sqrt(M_PI * delta / (4 * gi[k + 1])) / Z0;
-      C[k] = J[k] / (w0 * sqrt(1 - Z0 * Z0 * J[k] * J[k]));
+      C[k] = J[k] / (w0 * sqrt(1.0 - Z0 * Z0 * J[k] * J[k]));
       // Series capacitor
       Cseries.setParams(
           QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),

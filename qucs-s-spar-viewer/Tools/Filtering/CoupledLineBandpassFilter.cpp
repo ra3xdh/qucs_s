@@ -41,7 +41,7 @@ void CoupledLineBandpassFilter::synthesize() {
   double Z0 = Specification.ZS;
   double lambda0 = SPEED_OF_LIGHT / Specification.fc;
   double l4 = 0.25 * lambda0;
-  double J[N + 1], Z0e[N + 1], Z0o[N + 1];
+  std::vector<double> J(N + 1), Z0e(N + 1), Z0o(N + 1);
 
   // Add Term 1
   ComponentInfo TermSpar1(
@@ -113,6 +113,10 @@ void CoupledLineBandpassFilter::synthesize() {
   posx += 50;
   posy += 10;
   Schematic.appendWire(PreviousComponent, 2, Coupled_Lines.ID, 0);
+
+  if ((int) gi.size() < N + 2) {
+    throw std::runtime_error("gi does not contain enough coefficients (expected N+2).");
+  }
 
   // Add Term 2
   double k = Specification.ZS;
