@@ -300,3 +300,21 @@ QRectF GraphicText::getTextBounds(QPainter* painter) const {
 
     return textBounds;
 }
+
+// Returns the center of the transformed text boundary
+QPoint GraphicText::center() const noexcept {
+    return getTransform()
+        .map(getTextBounds().center())
+        .toPoint();
+}
+
+bool GraphicText::moveCenterTo(int x, int y) noexcept {
+    QPoint currentCenter = center();
+    return moveCenter(x - currentCenter.x(), y - currentCenter.y());
+}
+
+bool GraphicText::moveCenter(int dx, int dy) noexcept {
+    x1 += dx;
+    y1 += dy;
+    return true;
+}
