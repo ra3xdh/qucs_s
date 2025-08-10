@@ -54,7 +54,6 @@ private:
   QFont    font;
   QString  text;
   int      angle;
-  QRect    br;
   QTransform getTransform() const;
   QRectF getTextBounds(QPainter* painter = nullptr) const;
 };

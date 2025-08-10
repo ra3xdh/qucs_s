@@ -33,7 +33,6 @@ GraphicText::GraphicText()
     x1 = x2 = 0;
     y1 = y2 = 0;
     angle = 0;
-    br = QRect(0, 0, 0, 0);
 }
 
 void GraphicText::paint(QPainter* painter) {
@@ -46,9 +45,7 @@ void GraphicText::paint(QPainter* painter) {
     // Calculate (local) textBox boundary
     QRectF textBox = getTextBounds(painter);
 
-    // Store the transformed boundingRect
-    br = getTransform().mapRect(textBox.toRect());
-
+    QRect br = boundingRect();
     x2 = x1 + br.width();
     y2 = y1 + br.height();
     updateCenter();
@@ -63,7 +60,12 @@ void GraphicText::paint(QPainter* painter) {
 
 void GraphicText::paintScheme(Schematic *p)
 {
-    p->PostPaintEvent(_Rect, x1, y1, x2 - x1, y2 - y1);
+    QRect br = boundingRect();
+    p->PostPaintEvent(_Rect,
+                      br.x(),
+                      br.y(),
+                      br.width(),
+                      br.height());
 }
 
 Painting* GraphicText::newOne()
@@ -215,7 +217,10 @@ bool GraphicText::rotate(int rcx, int rcy) noexcept
 
 QRect GraphicText::boundingRect() const noexcept
 {
-    return br;
+    // Return the transformed text-boundary
+    return getTransform()
+        .mapRect(getTextBounds())
+        .toRect();
 }
 
 bool GraphicText::Dialog(QWidget *parent)
