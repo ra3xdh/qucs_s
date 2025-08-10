@@ -42,15 +42,9 @@ void GraphicText::paint(QPainter* painter) {
     // Apply current transformation
     // Use combined transform to handle zooming
     painter->setTransform(getTransform(), /*combine=*/true);
-
-    // Set font and pen color
     painter->setPen(color);
-    QFont f = font;
-    f.setPixelSize(QFontInfo{font}.pixelSize());
-    painter->setFont(f);
-
-    QRectF textBox;
-    misc::draw_richtext(painter, 0, 0, text, &textBox);
+    // Calculate (local) textBox boundary
+    QRectF textBox = getTextBounds(painter);
 
     // Store the transformed boundingRect
     br = getTransform().mapRect(textBox.toRect());
@@ -124,15 +118,10 @@ bool GraphicText::load(const QString &s)
 
     misc::convert2Unicode(text);
 
-    // Size of the text is calculated here in order to set x2 and y2 coordinates.
-    // But there is a caveat: text may contain LaTeX-like macros for subscripts
-    // and upperscripts and here we treat these macros as usual text. Because
-    // of that, if text contains LaTeX-like macros it's countour is bigger than
-    // the actual text when it's being copied-and-pasted.
-    QFontMetrics metrics(QucsSettings.font, 0);
-    br = metrics.boundingRect(text);
-    x2 = x1 + br.width();
-    y2 = y1 + br.height();
+    QRect textBounds = getTextBounds().toRect();
+
+    x2 = x1 + textBounds.width();
+    y2 = y1 + textBounds.height();
 
     return true;
 }
@@ -280,4 +269,29 @@ QTransform GraphicText::getTransform() const {
     transform.translate(x1, y1);
     transform.rotate(-angle);
     return transform;
+}
+
+QRectF GraphicText::getTextBounds(QPainter* painter) const {
+    QPainter* p = painter;
+    QPixmap textPixmap;
+    QPainter textPainter;
+
+    // If there is no painter given
+    // we create a minimal temporary painter
+    if (!p) {
+        textPixmap = QPixmap(1, 1);
+        textPainter.begin(&textPixmap);
+        p = &textPainter;
+    }
+
+    // Setup font
+    QFont f = font;
+    f.setPixelSize(QFontInfo{font}.pixelSize());
+    p->setFont(f);
+
+    // Draw text using draw_richtext
+    QRectF textBounds;
+    misc::draw_richtext(p, 0, 0, text, &textBounds);
+
+    return textBounds;
 }
