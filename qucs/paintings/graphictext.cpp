@@ -45,11 +45,6 @@ void GraphicText::paint(QPainter* painter) {
     // Calculate (local) textBox boundary
     QRectF textBox = getTextBounds(painter);
 
-    QRect br = boundingRect();
-    x2 = x1 + br.width();
-    y2 = y1 + br.height();
-    updateCenter();
-
     if (isSelected) {
         painter->setPen(QPen(Qt::darkGray, 3));
         painter->drawRect(textBox);
@@ -119,11 +114,6 @@ bool GraphicText::load(const QString &s)
         return false;
 
     misc::convert2Unicode(text);
-
-    QRect textBounds = getTextBounds().toRect();
-
-    x2 = x1 + textBounds.width();
-    y2 = y1 + textBounds.height();
 
     return true;
 }
