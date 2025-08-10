@@ -46,6 +46,7 @@ public:
   bool rotate(int rcx, int rcy) noexcept override;
 
   QRect boundingRect() const noexcept override;
+  QRectF getTextBounds(QPainter* painter = nullptr) const;
 
   bool Dialog(QWidget* parent = nullptr) override;
 
@@ -55,6 +56,7 @@ private:
   QString  text;
   int      angle;
   QRect    br;
+  QTransform getTransform() const;
 };
 
 #endif

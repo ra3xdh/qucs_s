@@ -39,13 +39,9 @@ GraphicText::GraphicText()
 void GraphicText::paint(QPainter* painter) {
     painter->save();
 
-    // Build transformation
-    QTransform transform;
-    transform.translate(x1, y1);
-    transform.rotate(-angle);
-
+    // Apply current transformation
     // Use combined transform to handle zooming
-    painter->setTransform(transform, true);
+    painter->setTransform(getTransform(), /*combine=*/true);
 
     // Set font and pen color
     painter->setPen(color);
@@ -57,7 +53,7 @@ void GraphicText::paint(QPainter* painter) {
     misc::draw_richtext(painter, 0, 0, text, &textBox);
 
     // Store the transformed boundingRect
-    br = transform.mapRect(textBox.toRect());
+    br = getTransform().mapRect(textBox.toRect());
 
     x2 = x1 + br.width();
     y2 = y1 + br.height();
@@ -277,4 +273,11 @@ bool GraphicText::Dialog(QWidget *parent)
         }
 
     return changed;
+}
+
+QTransform GraphicText::getTransform() const {
+    QTransform transform;
+    transform.translate(x1, y1);
+    transform.rotate(-angle);
+    return transform;
 }
