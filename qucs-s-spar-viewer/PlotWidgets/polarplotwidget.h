@@ -20,9 +20,9 @@ class PolarPlotWidget : public QWidget
 public:
   struct Trace {
     QList<std::complex<double>> values;    // Complex values (for polar representation)
-    QList<double> frequencies;             // Corresponding frequencies for each point
-    QPen pen;                              // Line style for this trace
-    int displayMode;                       // 0: Magnitude/Phase, 1: Real/Imaginary
+    QList<double> frequencies;      // Corresponding frequencies for each point
+    QPen pen;  // Line style for this trace
+    int displayMode;  // 0: Magnitude/Phase, 1: Real/Imaginary
   };
 
   struct Marker {
@@ -49,7 +49,7 @@ public:
   explicit PolarPlotWidget(QWidget *parent = nullptr);
   ~PolarPlotWidget();
 
-         // Trace management functions
+  // Trace management functions
   void addTrace(const QString& name, const Trace& trace);
   void removeTrace(const QString& name);
   void clearTraces();
@@ -57,13 +57,13 @@ public:
   void setTracePen(const QString& traceName, const QPen& pen);
   QMap<QString, QPen> getTracesInfo() const;
 
-         // Axis value access functions
+  // Axis value access functions
   double getRmax();
   double getRmin();
   double getRdiv();
   int getDisplayMode() const;
 
-         // Marker management functions
+  // Marker management functions
   bool addMarker(const QString& markerId, double frequency, const QPen& pen = QPen(Qt::red, 2));
   bool removeMarker(const QString& markerId);
   bool updateMarkerFrequency(const QString& markerId, double newFrequency);
@@ -71,7 +71,7 @@ public:
 
   QMap<QString, double> getMarkers() const;
 
-         // Access to underlying plot
+  // Access to underlying plot
   QCustomPlot *customPlot() const { return plot; }
 
 private slots:
@@ -82,6 +82,11 @@ private slots:
   void onFMinChanged(double value);
   void onFMaxChanged(double value);
   void onFUnitChanged();
+
+private slots: // Slot to update axis settings widget based on the user zoom
+  void checkAxisRanges();
+  void checkAxisRanges(QMouseEvent* event);
+  void onRadialRangeChanged(const QCPRange &newRange);
 
 private:
   QCustomPlot *plot;
@@ -104,7 +109,7 @@ private:
   QMap<QString, Marker> markers;
   QMap<QString, QList<QCPPolarGraph*>> traceGraphs; // Each trace can have multiple graphs for phase wrapping
 
-         // Marker items for drawing
+  // Marker items for drawing
   QList<QCPItemEllipse*> markerItems;
   QList<QCPItemText*> markerLabels;
 
@@ -115,10 +120,10 @@ private:
   void drawCustomMarkers();
   double getFrequencyMultiplier() const;
 
-         // Helper to find a complex value at a specific frequency using interpolation
+  // Helper to find a complex value at a specific frequency using interpolation
   std::complex<double> getComplexValueAtFrequency(const Trace& trace, double frequency);
 
-         // Convert between display modes (magnitude/phase <-> real/imaginary)
+  // Convert between display modes (magnitude/phase <-> real/imaginary)
   std::complex<double> convertToDisplayFormat(const std::complex<double>& value, int mode);
 };
 
