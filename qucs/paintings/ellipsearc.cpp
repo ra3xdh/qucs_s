@@ -325,6 +325,13 @@ bool EllipseArc::rotate() noexcept
   return true;
 }
 
+void EllipseArc::snapToGrid(Schematic* sch)
+{
+  sch->setOnGrid(x1, y1);
+  sch->setOnGrid(x2, y2);
+  updateCenter();
+}
+
 // Mirrors about center line.
 bool EllipseArc::mirrorX() noexcept
 {

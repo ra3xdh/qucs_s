@@ -44,6 +44,8 @@ public:
   void MouseResizeMoving(int, int, Schematic*) override;
 
   bool rotate() noexcept override;
+  void snapToGrid(Schematic* sch) override;
+
   bool mirrorX() noexcept override;
   bool mirrorY() noexcept override;
 
