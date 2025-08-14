@@ -185,7 +185,7 @@ QString SchematicContent::getSParameterNetlist() {
     }
   }
 
-         // Find wires connecting two nodes and assign same net
+  // Find wires connecting two nodes and assign same net
   for (int i = 0; i < Wires.length(); i++) {
     if ((Wires[i].OriginID.at(0) == 'N') && (Wires[i].DestinationID.at(0) == 'N')) {
       QString net_name;
@@ -199,7 +199,7 @@ QString SchematicContent::getSParameterNetlist() {
     }
   }
 
-         // Assign nets for wires connected to nodes
+  // Assign nets for wires connected to nodes
   for (int i = 0; i < Wires.length(); i++) {
     if (!Wires[i].getNet().isEmpty()) {
       continue;
@@ -253,7 +253,7 @@ QString SchematicContent::getSParameterNetlist() {
     int connection_counter = 0;
     connections.resize(Comps[i].getNumberOfPorts());
 
-           // Handle special cases for grounded components
+    // Handle special cases for grounded components
     if (Comps[i].Type == Term) {
       connections[1] = QString("0"); // Ground
     }
@@ -349,7 +349,6 @@ QString SchematicContent::getSParameterNetlist() {
         QString Z0 = Comps[i].val["Z0"];
         QString Length = Comps[i].val["Length"];
 
-        // Change ID to start with 'R' for resistor representation
         QString TL_ID = Comps[i].ID;
         componentLine = QString("%1 %2 %3 %4 %5\n")
                             .arg(TL_ID)
@@ -358,6 +357,49 @@ QString SchematicContent::getSParameterNetlist() {
                             .arg(Z0)
                             .arg(Length);
       }
+      break;
+
+    case CoupledLines: {
+
+      int node1 = netToNodeMap.value(connections[0], -1);
+      if (node1 == -1) {
+        nodeCounter++;
+        node1 = nodeCounter;
+      }
+
+      int node2 = netToNodeMap.value(connections[1], -1);
+      if (node2 == -1) {
+        nodeCounter++;
+        node2 = nodeCounter;
+      }
+
+      int node3 = netToNodeMap.value(connections[2], -1);
+      if (node3 == -1) {
+        nodeCounter++;
+        node3 = nodeCounter;
+      }
+
+      int node4 = netToNodeMap.value(connections[3], -1);
+      if (node4 == -1) {
+        nodeCounter++;
+        node4 = nodeCounter;
+      }
+
+      QString Z0e = Comps[i].val["Ze"];
+      QString Z0o = Comps[i].val["Zo"];
+      QString Length = Comps[i].val["Length"];
+
+      QString CLIN_ID = Comps[i].ID;
+      componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
+                          .arg(CLIN_ID)
+                          .arg(node1)
+                          .arg(node2)
+                          .arg(node4)
+                          .arg(node3)
+                          .arg(Z0e)
+                          .arg(Z0o)
+                          .arg(Length);
+    }
       break;
 
     default:

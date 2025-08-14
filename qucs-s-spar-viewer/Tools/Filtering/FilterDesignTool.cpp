@@ -320,7 +320,7 @@ void FilterDesignTool::synthesize() {
       delete CCSRF;
       break;
 
-    case COUPLED_LINE:
+    case COUPLED_LINES:
       CoupledLineBandpassFilter *CLBPF;
       CLBPF = new CoupledLineBandpassFilter(Filter_SP);
       CLBPF->synthesize();
@@ -805,7 +805,7 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     SemiLumpedImplementationCombo->show();
     SemiLumpedImplementationLabel->show();
     break;
-  case COUPLED_LINE: // Coupled line bandpass
+  case COUPLED_LINES: // Coupled line bandpass
     // Hide LC box
     CLCRadioButton->hide();
     LCLRadioButton->hide();

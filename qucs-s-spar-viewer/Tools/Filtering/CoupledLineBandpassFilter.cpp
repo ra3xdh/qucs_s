@@ -60,7 +60,7 @@ void CoupledLineBandpassFilter::synthesize() {
 
       // Set connections
       Coupled_Lines.setParams(
-          QString("COUPL%1").arg(++Schematic.NumberComponents[CoupledLines]),
+          QString("CLIN%1").arg(++Schematic.NumberComponents[CoupledLines]),
           CoupledLines, 90, posx, posy);
       Coupled_Lines.val["Ze"] = num2str(Z0e[k], Resistance);
       Coupled_Lines.val["Zo"] = num2str(Z0o[k], Resistance);
@@ -81,7 +81,7 @@ void CoupledLineBandpassFilter::synthesize() {
 
     // Coupled lines
     Coupled_Lines.setParams(
-        QString("COUPL%1").arg(++Schematic.NumberComponents[CoupledLines]),
+        QString("CLIN%1").arg(++Schematic.NumberComponents[CoupledLines]),
         CoupledLines, 90, posx, posy);
     Coupled_Lines.val["Ze"] = num2str(Z0e[k], Resistance);
     Coupled_Lines.val["Zo"] = num2str(Z0o[k], Resistance);
@@ -103,7 +103,7 @@ void CoupledLineBandpassFilter::synthesize() {
 
   // Coupled lines
   Coupled_Lines.setParams(
-      QString("COUPL%1").arg(++Schematic.NumberComponents[CoupledLines]),
+      QString("CLIN%1").arg(++Schematic.NumberComponents[CoupledLines]),
       CoupledLines, 90, posx, posy);
   Coupled_Lines.val["Ze"] = num2str(Z0e[N], Resistance);
   Coupled_Lines.val["Zo"] = num2str(Z0o[N], Resistance);
