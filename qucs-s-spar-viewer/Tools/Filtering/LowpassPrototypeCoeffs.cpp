@@ -26,6 +26,8 @@ std::deque<double> LowpassPrototypeCoeffs::getCoefficients() {
   case Butterworth:
     gi = calcButterworth_gi();
     break;
+  case Bessel:
+    gi = calcBessel_gi();
   default:
     gi = calcChebyshev_gi();
     break;
@@ -98,6 +100,44 @@ std::deque<double> LowpassPrototypeCoeffs::calcChebyshev_gi() {
   qDebug() << "*************Chebyshev coefficients**********";
   for (int i = 0; i <=N+1; i++) qDebug() << "g" << i << ": " << gi[i];
   qDebug() << "***********************************************";*/
+  return gi;
+}
+
+
+// Bessel LPF prototype coefficients
+// References:
+// [1] Handbook of Filter Synthesis by Anatol I. Zverev, John Wiley & Sons, 1967 (pages 323 to 325)
+std::deque<double> LowpassPrototypeCoeffs::calcBessel_gi() {
+  std::deque<double> gi;
+  gi.clear();
+  int N = Specification.order;
+
+  // Pre-calculated normalized Bessel filter element values for orders 1-10
+  // These values are normalized to provide maximally flat group delay (RL = RS)
+  std::vector<std::vector<double>> besselCoeffs = {
+      {}, // Order 0 (unused)
+      {1.0, 2.0000, 1.0}, // Order 1
+      {1.0, 0.5775, 2.1478, 1.0}, // Order 2
+      {1.0, 0.3374, 0.9705, 2.2034, 1.0}, // Order 3
+      {1.0, 0.2334, 0.6725, 1.0815, 2.2404, 1.0}, // Order 4
+      {1.0, 0.1743, 0.5072, 0.8040, 1.1110, 2.2582, 1.0}, // Order 5
+      {1.0, 0.1365, 0.4002, 0.6392, 0.8538, 1.1126, 2.2645, 1.0}, // Order 6
+      {1.0, 0.1106, 0.3259, 0.5249, 0.7020, 0.8690, 1.1052, 2.2659, 1.0}, // Order 7
+      {1.0, 0.0919, 0.2719, 0.4409, 0.5936, 0.7303, 0.8695, 1.0956, 2.2656, 1.0}, // Order 8
+      {1.0, 0.0780, 0.2313, 0.3770, 0.5108, 0.6306, 0.7407, 0.8639, 1.0863, 2.2649, 1.0}, // Order 9
+      {1.0, 0.0672, 0.1998, 0.3270, 0.4454, 0.5528, 0.6493, 0.7420, 0.8561, 1.0781, 2.2641, 1.0} // Order 10
+  };
+
+
+  for (size_t i = 0; i < besselCoeffs[N].size(); i++) {
+    gi.push_back(besselCoeffs[N][i]);
+  }
+
+  // Debug
+  /*qDebug() << "*************Bessel coefficients**********";
+  for (int i = 0; i <= N+1; i++) qDebug() << "g" << i << ": " << gi[i];
+  qDebug() << "*******************************************";*/
+
   return gi;
 }
 

@@ -49,6 +49,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   DefaultFilterResponses.append("Chebyshev");
   DefaultFilterResponses.append("Butterworth");
   DefaultFilterResponses.append("Elliptic");
+  DefaultFilterResponses.append("Bessel");
   FilterResponseTypeCombo->addItems(DefaultFilterResponses);
   FilterDesignLayout->addWidget(new QLabel("Response"), 1, 0);
   FilterDesignLayout->addWidget(FilterResponseTypeCombo, 1, 1);
@@ -389,16 +390,18 @@ void FilterDesignTool::ResposeComboChanged() {
 void FilterDesignTool::UpdateDesignParameters() {
   Filter_SP.Implementation = FilterImplementationCombo->currentText();
 
-         // Filter response
+  // Filter response
   if (!FilterResponseTypeCombo->currentText().compare("Chebyshev"))
     Filter_SP.FilterResponse = Chebyshev;
   if (!FilterResponseTypeCombo->currentText().compare("Butterworth"))
     Filter_SP.FilterResponse = Butterworth;
   if (!FilterResponseTypeCombo->currentText().compare("Elliptic"))
     Filter_SP.FilterResponse = Elliptic;
+  if (!FilterResponseTypeCombo->currentText().compare("Bessel"))
+    Filter_SP.FilterResponse = Bessel;
 
 
-         // Filter type
+  // Filter type
   if (!FilterClassCombo->currentText().compare("Lowpass"))
     Filter_SP.FilterType = Lowpass;
   if (!FilterClassCombo->currentText().compare("Highpass"))
@@ -408,7 +411,7 @@ void FilterDesignTool::UpdateDesignParameters() {
   if (!FilterClassCombo->currentText().compare("Bandstop"))
     Filter_SP.FilterType = Bandstop;
 
-         // Coupling
+  // Coupling
   if (!DC_CouplingTypeCombo->currentText().compare("Capacitative coupled shunt resonators")) {
     Filter_SP.DC_Coupling = CapacitativeCoupledShuntResonators;
   }
@@ -417,7 +420,7 @@ void FilterDesignTool::UpdateDesignParameters() {
     Filter_SP.DC_Coupling = InductiveCoupledSeriesResonators;
   }
 
-         // Update user input
+  // Update user input
   if ((!FilterClassCombo->currentText().compare("Lowpass")) ||  (!FilterClassCombo->currentText().compare("Highpass"))) {
     BWSpinbox->setEnabled(false);
     BW_ScaleCombobox->setEnabled(false);
@@ -487,11 +490,9 @@ void FilterDesignTool::setSettings_LC_Ladder(){
   FilterResponseTypeCombo->blockSignals(true);
 
 
-         // Update filter possible filter responses
+  // Update filter possible filter responses
   QStringList filter_response;
-  filter_response.append("Butterworth");
-  filter_response.append("Chebyshev");
-  filter_response.append("Elliptic");
+  filter_response = DefaultFilterResponses;
   FilterResponseTypeCombo->clear();
   FilterResponseTypeCombo->addItems(filter_response);
 
@@ -514,7 +515,7 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled(){
   LCLRadioButton->hide();
   QString CurrentResponse = FilterResponseTypeCombo->currentText();
 
-         // Update filter possible filter responses
+  // Update filter possible filter responses
   QStringList filter_response;
   filter_response.append("Butterworth");
   filter_response.append("Chebyshev");
@@ -612,7 +613,7 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     CLCRadioButton->show();
     LCLRadioButton->show();
 
-           // Hide impedance ratio
+    // Hide impedance ratio
     ImpedanceRatio_Label->hide();
     ImpedanceRatio_Spinbox->hide();
 

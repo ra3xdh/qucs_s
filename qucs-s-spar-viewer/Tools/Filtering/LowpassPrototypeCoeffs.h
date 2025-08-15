@@ -31,6 +31,7 @@ private:
 
   std::deque<double> calcButterworth_gi();
   std::deque<double> calcChebyshev_gi();
+  std::deque<double> calcBessel_gi();
 };
 
 #endif // LOWPASSPROTOTYPECOEFFS_H
