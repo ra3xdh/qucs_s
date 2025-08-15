@@ -36,8 +36,9 @@
 #include "QuarterWaveFilters.h"
 #include "CapacitivelyCoupledShuntResonatorsFilter.h"
 #include "CoupledLineBandpassFilter.h"
-/*#include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"
-#include "Filtering/EndCoupled.h"*/
+#include "EndCoupled.h"
+/*#include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"*/
+
 
 #include "../../Schematic/Network.h"
 
@@ -47,8 +48,8 @@
 #define QUARTERWAVE 3
 #define CAPACITIVELY_COUPLED_RESONATORS 4
 #define COUPLED_LINES 5
-
 #define END_COUPLED 6
+
 #define SEMILUMPED_ELLIPTIC 7
 #define SEMILUMPED_CANONICAL 8
 #define COUPLED_LINE_SIR 9
