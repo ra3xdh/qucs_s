@@ -33,35 +33,17 @@ GraphicText::GraphicText()
     x1 = x2 = 0;
     y1 = y2 = 0;
     angle = 0;
-    br = QRect(0, 0, 0, 0);
 }
 
 void GraphicText::paint(QPainter* painter) {
     painter->save();
 
-    // Build transformation
-    QTransform transform;
-    transform.translate(x1, y1);
-    transform.rotate(-angle);
-
+    // Apply current transformation
     // Use combined transform to handle zooming
-    painter->setTransform(transform, true);
-
-    // Set font and pen color
+    painter->setTransform(getTransform(), /*combine=*/true);
     painter->setPen(color);
-    QFont f = font;
-    f.setPixelSize(QFontInfo{font}.pixelSize());
-    painter->setFont(f);
-
-    QRectF textBox;
-    misc::draw_richtext(painter, 0, 0, text, &textBox);
-
-    // Store the transformed boundingRect
-    br = transform.mapRect(textBox.toRect());
-
-    x2 = x1 + br.width();
-    y2 = y1 + br.height();
-    updateCenter();
+    // Calculate (local) textBox boundary
+    QRectF textBox = getTextBounds(painter);
 
     if (isSelected) {
         painter->setPen(QPen(Qt::darkGray, 3));
@@ -73,7 +55,12 @@ void GraphicText::paint(QPainter* painter) {
 
 void GraphicText::paintScheme(Schematic *p)
 {
-    p->PostPaintEvent(_Rect, x1, y1, x2 - x1, y2 - y1);
+    QRect br = boundingRect();
+    p->PostPaintEvent(_Rect,
+                      br.x(),
+                      br.y(),
+                      br.width(),
+                      br.height());
 }
 
 Painting* GraphicText::newOne()
@@ -127,16 +114,6 @@ bool GraphicText::load(const QString &s)
         return false;
 
     misc::convert2Unicode(text);
-
-    // Size of the text is calculated here in order to set x2 and y2 coordinates.
-    // But there is a caveat: text may contain LaTeX-like macros for subscripts
-    // and upperscripts and here we treat these macros as usual text. Because
-    // of that, if text contains LaTeX-like macros it's countour is bigger than
-    // the actual text when it's being copied-and-pasted.
-    QFontMetrics metrics(QucsSettings.font, 0);
-    br = metrics.boundingRect(text);
-    x2 = x1 + br.width();
-    y2 = y1 + br.height();
 
     return true;
 }
@@ -230,7 +207,10 @@ bool GraphicText::rotate(int rcx, int rcy) noexcept
 
 QRect GraphicText::boundingRect() const noexcept
 {
-    return br;
+    // Return the transformed text-boundary
+    return getTransform()
+        .mapRect(getTextBounds())
+        .toRect();
 }
 
 bool GraphicText::Dialog(QWidget *parent)
@@ -277,4 +257,54 @@ bool GraphicText::Dialog(QWidget *parent)
         }
 
     return changed;
+}
+
+QTransform GraphicText::getTransform() const {
+    QTransform transform;
+    transform.translate(x1, y1);
+    transform.rotate(-angle);
+    return transform;
+}
+
+QRectF GraphicText::getTextBounds(QPainter* painter) const {
+    QPainter* p = painter;
+    QPixmap textPixmap;
+    QPainter textPainter;
+
+    // If there is no painter given
+    // we create a minimal temporary painter
+    if (!p) {
+        textPixmap = QPixmap(1, 1);
+        textPainter.begin(&textPixmap);
+        p = &textPainter;
+    }
+
+    // Setup font
+    QFont f = font;
+    f.setPixelSize(QFontInfo{font}.pixelSize());
+    p->setFont(f);
+
+    // Draw text using draw_richtext
+    QRectF textBounds;
+    misc::draw_richtext(p, 0, 0, text, &textBounds);
+
+    return textBounds;
+}
+
+// Returns the center of the transformed text boundary
+QPoint GraphicText::center() const noexcept {
+    return getTransform()
+        .map(getTextBounds().center())
+        .toPoint();
+}
+
+bool GraphicText::moveCenterTo(int x, int y) noexcept {
+    QPoint currentCenter = center();
+    return moveCenter(x - currentCenter.x(), y - currentCenter.y());
+}
+
+bool GraphicText::moveCenter(int dx, int dy) noexcept {
+    x1 += dx;
+    y1 += dy;
+    return true;
 }

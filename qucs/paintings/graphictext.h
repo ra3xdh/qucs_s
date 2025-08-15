@@ -46,6 +46,9 @@ public:
   bool rotate(int rcx, int rcy) noexcept override;
 
   QRect boundingRect() const noexcept override;
+  QPoint center() const noexcept override;
+  bool moveCenter(int dx, int dy) noexcept override;
+  bool moveCenterTo(int x, int y) noexcept;
 
   bool Dialog(QWidget* parent = nullptr) override;
 
@@ -54,7 +57,8 @@ private:
   QFont    font;
   QString  text;
   int      angle;
-  QRect    br;
+  QTransform getTransform() const;
+  QRectF getTextBounds(QPainter* painter = nullptr) const;
 };
 
 #endif
