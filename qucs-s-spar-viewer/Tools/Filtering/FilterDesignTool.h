@@ -103,6 +103,10 @@ private:
   void setSettings_LC_Direct_Coupled();
   void setSettings_Stepped_Z_LPF();
   void setSettings_Quarterwavelength_BPF_BSF();
+  void setSettings_EndCoupled_BPF();
+  void setSettings_CCoupledShuntResonators_BPF();
+  void setSettings_Semilumped();
+  void setSettings_SideCoupled_BPF();
 
 public:
   void synthesize();
