@@ -1,7 +1,7 @@
 /*
- * qucs-s-spar-viewer.cpp - S-parameter viewer for Qucs-S
+ * qucs-s-spar-viewer.cpp - S-parameter viewer & RF Circuit Synthesis for Qucs-S
  *
- * copyright (C) 2024 Andres Martinez-Mera <andresmartinezmera@gmail.com>
+ * copyright (C) 2025 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer()
   centralWidget->setMaximumWidth(0); // Minimize central widget size
 
   setWindowIcon(QPixmap(":/bitmaps/big.qucs.xpm"));
-  setWindowTitle("Qucs S-parameter Viewer " PACKAGE_VERSION);
+  setWindowTitle("Qucs S-parameter Viewer & RF Circuit Synthesis " PACKAGE_VERSION);
 
   CreateMenuBar();
 
@@ -825,14 +825,24 @@ Qucs_S_SPAR_Viewer::~Qucs_S_SPAR_Viewer()
 
 void Qucs_S_SPAR_Viewer::slotHelpIntro()
 {
-  QMessageBox::about(this, tr("Qucs-S S-parameter Help"),
-    tr("This is a simple viewer for S-parameter data.\n"
-         "It can show several .snp files at a time in the "
-         "same diagram. Trace markers can also be added "
-         "so that the user can read the trace value at "
-         "at an specific frequency."));
-}
+  QMessageBox msgBox(this);
+  msgBox.setWindowTitle(tr("Help"));
+  msgBox.setIcon(QMessageBox::Information);
 
+  msgBox.setText(tr(
+      "<b>Qucs-S S-parameter Viewer & RF Circuit Synthesis Tool Help</b><br><br>"
+      "This is a simple viewer for S-parameter data with RF circuit synthesis capabilities.<br>"
+      "It can show several .snp files at a time in the same diagram. "
+      "Trace markers can also be added so that the user can read the trace value at "
+      "a specific frequency.<br><br>"
+      "Additionally, this viewer now includes basic filter design features, "
+      "and supports visualization with polar plots and Smith charts. "
+      "These specialized plots help in analyzing impedance, reflection coefficients, "
+      "and other key S-parameter properties relevant to RF design and filter analysis."
+      ));
+
+  msgBox.exec();
+}
 void Qucs_S_SPAR_Viewer::slotHelpAboutQt()
 {
       QMessageBox::aboutQt(this, tr("About Qt"));
@@ -841,7 +851,7 @@ void Qucs_S_SPAR_Viewer::slotHelpAboutQt()
 void Qucs_S_SPAR_Viewer::slotHelpAbout()
 {
     QMessageBox::about(this, tr("About..."),
-    "Qucs-S S-parameter Viewer Version " PACKAGE_VERSION+
+    "Qucs-S S-parameter Viewer & RF Circuit Synthesis Tool Version " PACKAGE_VERSION+
     tr("\nCopyright (C) 2025 by")+" Andrés Martínez Mera"
     "\n"
     "\nThis is free software; see the source for copying conditions."
