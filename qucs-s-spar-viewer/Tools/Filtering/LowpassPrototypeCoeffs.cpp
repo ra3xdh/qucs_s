@@ -28,6 +28,10 @@ std::deque<double> LowpassPrototypeCoeffs::getCoefficients() {
     break;
   case Bessel:
     gi = calcBessel_gi();
+    break;
+  case Gaussian:
+    gi = calcGaussian_gi();
+    break;
   default:
     gi = calcChebyshev_gi();
     break;
@@ -140,4 +144,43 @@ std::deque<double> LowpassPrototypeCoeffs::calcBessel_gi() {
 
   return gi;
 }
+
+
+// Gaussian LPF prototype coefficients
+// References:
+// [1] Handbook of Filter Synthesis by Anatol I. Zverev, John Wiley & Sons, 1967 (pages 332 to 334)
+std::deque<double> LowpassPrototypeCoeffs::calcGaussian_gi() {
+  std::deque<double> gi;
+  gi.clear();
+  int N = Specification.order;
+
+  // Pre-calculated normalized Gaussian filter element values for orders 1-10
+  // These values are normalized to provide maximally flat group delay (RL = RS)
+  std::vector<std::vector<double>> guassianCoeffs = {
+      {}, // Order 0 (unused)
+      {1.0, 2.0000, 1.0}, // Order 1 (Not used -> This is Butterworth)
+      {1.0, 0.4738, 2.1850, 1.0}, // Order 2
+      {1.0, 0.2624, 0.8167, 2.2262, 1.0}, // Order 3
+      {1.0, 0.1772, 0.5302, 0.9321, 2.2450, 1.0}, // Order 4
+      {1.0, 0.1312, 0.3896, 0.6485, 0.9782, 2.2533, 1.0}, // Order 5
+      {1.0, 0.1026, 0.3045, 0.5004, 0.7050, 0.9982, 2.2568, 1.0}, // Order 6
+      {1.0, 0.0833, 0.2473, 0.4055, 0.5606, 0.7333, 1.0073, 2.2583, 1.0}, // Order 7
+      {1.0, 0.0695, 0.2065, 0.3388, 0.4658, 0.5942, 0.7479, 1.0116, 2.2590, 1.0}, // Order 8
+      {1.0, 0.0591, 0.1761, 0.2892, 0.3973, 0.5025, 0.6134, 0.7556, 1.0137, 2.2593, 1.0}, // Order 9
+      {1.0, 0.0512, 0.1525, 0.2509, 0.3451, 0.4353, 0.5250, 0.6244, 0.7597, 1.0147, 2.2594, 1.0} // Order 10
+  };
+
+
+  for (size_t i = 0; i < guassianCoeffs[N].size(); i++) {
+    gi.push_back(guassianCoeffs[N][i]);
+  }
+
+         // Debug
+  /*qDebug() << "*************Gaussian coefficients**********";
+  for (int i = 0; i <= N+1; i++) qDebug() << "g" << i << ": " << gi[i];
+  qDebug() << "*******************************************";*/
+
+  return gi;
+}
+
 

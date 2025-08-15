@@ -50,6 +50,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   DefaultFilterResponses.append("Butterworth");
   DefaultFilterResponses.append("Elliptic");
   DefaultFilterResponses.append("Bessel");
+  DefaultFilterResponses.append("Gaussian");
   FilterResponseTypeCombo->addItems(DefaultFilterResponses);
   FilterDesignLayout->addWidget(new QLabel("Response"), 1, 0);
   FilterDesignLayout->addWidget(FilterResponseTypeCombo, 1, 1);
@@ -399,6 +400,9 @@ void FilterDesignTool::UpdateDesignParameters() {
     Filter_SP.FilterResponse = Elliptic;
   if (!FilterResponseTypeCombo->currentText().compare("Bessel"))
     Filter_SP.FilterResponse = Bessel;
+  if (!FilterResponseTypeCombo->currentText().compare("Gaussian"))
+    Filter_SP.FilterResponse = Gaussian;
+
 
 
   // Filter type

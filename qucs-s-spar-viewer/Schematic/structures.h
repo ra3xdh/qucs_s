@@ -25,6 +25,7 @@ enum ResponseType {
   Butterworth,
   Chebyshev,
   Legendre,
+  Gaussian,
   Elliptic,
   Blichinkoff,
   Bessel,
