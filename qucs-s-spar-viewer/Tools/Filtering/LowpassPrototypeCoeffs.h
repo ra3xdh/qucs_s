@@ -33,6 +33,7 @@ private:
   std::deque<double> calcChebyshev_gi();
   std::deque<double> calcBessel_gi();
   std::deque<double> calcGaussian_gi();
+  std::deque<double> calcLegendre_gi();
 };
 
 #endif // LOWPASSPROTOTYPECOEFFS_H

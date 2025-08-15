@@ -44,16 +44,18 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   TeePiLayout->addWidget(LCLRadioButton);
   TeePiWidget->setLayout(TeePiLayout);
   FilterDesignLayout->addWidget(TeePiWidget, 0, 2);
+
   //************ Response type **************
   FilterResponseTypeCombo = new QComboBox();
   DefaultFilterResponses.append("Chebyshev");
   DefaultFilterResponses.append("Butterworth");
-  DefaultFilterResponses.append("Elliptic");
+  DefaultFilterResponses.append("Legendre");
   DefaultFilterResponses.append("Bessel");
   DefaultFilterResponses.append("Gaussian");
   FilterResponseTypeCombo->addItems(DefaultFilterResponses);
   FilterDesignLayout->addWidget(new QLabel("Response"), 1, 0);
   FilterDesignLayout->addWidget(FilterResponseTypeCombo, 1, 1);
+
   //********** Direct coupled filters - Coupling type *****
   DC_CouplingTypeCombo = new QComboBox();
   DC_CouplingTypeCombo->addItem("Capacitative coupled shunt resonators");
@@ -63,6 +65,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(DC_CouplingTypeCombo, 2, 1);
   DC_CouplingTypeCombo->hide();
   DC_CouplingLabel->hide();
+
   //************ Filter class ****************
   FilterClassCombo = new QComboBox();
   FilterClassCombo->addItem("Lowpass");
@@ -71,6 +74,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterClassCombo->addItem("Bandstop");
   FilterDesignLayout->addWidget(new QLabel("Class"), 3, 0);
   FilterDesignLayout->addWidget(FilterClassCombo, 3, 1);
+
   //*************** Order *******************
   OrderSpinBox = new QSpinBox();
   OrderSpinBox->setValue(3);
@@ -79,8 +83,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(new QLabel("Order"), 4, 0);
   FilterDesignLayout->addWidget(OrderSpinBox, 4, 1);
 
-         //******* Cutoff freq (Lowpass and Highpass) *********
-         //****** Central freq (Bandpass and Bandstop) *********
+  //******* Cutoff freq (Lowpass and Highpass) *********
+  //****** Central freq (Bandpass and Bandstop) *********
   FCSpinbox = new QDoubleSpinBox();
   FCSpinbox->setMinimum(1);
   FCSpinbox->setMaximum(1e6);
@@ -96,6 +100,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(new QLabel("Cutoff freq"), 5, 0);
   FilterDesignLayout->addWidget(FCSpinbox, 5, 1);
   FilterDesignLayout->addWidget(FC_ScaleCombobox, 5, 2);
+
   //************* Bandwidth ***********
   BWSpinbox = new QDoubleSpinBox();
   BWSpinbox->setMinimum(1);
@@ -112,6 +117,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(new QLabel("Bandwidth"), 6, 0);
   FilterDesignLayout->addWidget(BWSpinbox, 6, 1);
   FilterDesignLayout->addWidget(BW_ScaleCombobox, 6, 2);
+
   //************** Ripple ****************
   RippleSpinbox = new QDoubleSpinBox();
   RippleSpinbox->setMinimum(0.01);
@@ -123,6 +129,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(RippleLabel, 7, 0);
   FilterDesignLayout->addWidget(RippleSpinbox, 7, 1);
   FilterDesignLayout->addWidget(RippledBLabel, 7, 2);
+
   //************** Stopband attenuation ****************
   StopbandAttSpinbox = new QDoubleSpinBox();
   StopbandAttSpinbox->setMinimum(5);
@@ -137,6 +144,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   StopbandAttSpinbox->setVisible(false);
   StopbandAttLabel->setVisible(false);
   StopbandAttdBLabel->setVisible(false);
+
   //************** Elliptic type ****************
   EllipticTypeLabel = new QLabel("Elliptic type");
   EllipticType = new QComboBox();
@@ -149,8 +157,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(EllipticTypeLabel, 9, 0);
   FilterDesignLayout->addWidget(EllipticType, 9, 1);
 
-         //***************  Minimum impedance achievable in the manufacturing process
-         //**************
+  //***************  Minimum impedance achievable in the manufacturing process **************
   MinimumZLabel = new QLabel("Minimum Z");
   MinimumZ_Spinbox = new QDoubleSpinBox();
   MinimumZ_Spinbox->setMinimum(1);
@@ -164,8 +171,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(MinimumZLabel, 10, 0);
   FilterDesignLayout->addWidget(MinimumZ_Spinbox, 10, 1);
   FilterDesignLayout->addWidget(MinimumZ_Unit_Label, 10, 2);
-  //***************  Maximum impedance achievable in the manufacturing process
-  //**************
+
+  //***************  Maximum impedance achievable in the manufacturing process **************
   MaximumZLabel = new QLabel("Maximum Z");
   MaximumZ_Spinbox = new QDoubleSpinBox();
   MaximumZ_Spinbox->setMinimum(1);
@@ -179,19 +186,17 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(MaximumZLabel, 11, 0);
   FilterDesignLayout->addWidget(MaximumZ_Spinbox, 11, 1);
   FilterDesignLayout->addWidget(MaximumZ_Unit_Label, 11, 2);
-  //************************* Semilumped implementation settings
-  //*********************
+  //************************* Semilumped implementation settings *********************
   SemiLumpedImplementationLabel = new QLabel("Semilumped settings");
   SemiLumpedImplementationCombo = new QComboBox();
-  SemiLumpedImplementationCombo->addItem(
-      "Replace inductors and shunt capacitors");
+  SemiLumpedImplementationCombo->addItem("Replace inductors and shunt capacitors");
   SemiLumpedImplementationCombo->addItem("Replace only inductors");
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
   FilterDesignLayout->addWidget(SemiLumpedImplementationLabel, 12, 0);
   FilterDesignLayout->addWidget(SemiLumpedImplementationCombo, 12, 1);
 
-         // Coupled line SIR BPF type
+  // Coupled line SIR BPF type
   ImpedanceRatio_Label = new QLabel(QString("Impedance ratio, K"));
   ImpedanceRatio_Spinbox = new QDoubleSpinBox();
   ImpedanceRatio_Spinbox->setMinimum(0.1);
@@ -217,7 +222,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
 
   this->setLayout(FilterDesignLayout);
 
-         // Connection functions for updating the network requirements and simulate in real time
+  // Connection functions for updating the network requirements and simulate in real time
   connect(FilterImplementationCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ImplementationComboChanged(int)));
   connect(CLCRadioButton, SIGNAL(toggled(bool)), this, SLOT(ChangeRL_CLC_LCL_mode()));
   connect(FilterResponseTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ResposeComboChanged()));
@@ -339,20 +344,20 @@ void FilterDesignTool::synthesize() {
 
   case SEMILUMPED:
     if (!FilterResponseTypeCombo->currentText().compare("Elliptic")){
-      EllipticFilter *SMLEF;
-      SMLEF = new EllipticFilter(Filter_SP);
-      SMLEF->setSemilumpedMode(true);
-      SMLEF->synthesize();
-      SchContent = SMLEF->Schematic;
-      delete SMLEF;
+        EllipticFilter *SMLEF;
+        SMLEF = new EllipticFilter(Filter_SP);
+        SMLEF->setSemilumpedMode(true);
+        SMLEF->synthesize();
+        SchContent = SMLEF->Schematic;
+        delete SMLEF;
     } else {
-      // Canonical filter
-      CanonicalFilter *CF;
-      CF = new CanonicalFilter(Filter_SP);
-      CF->setSemilumpedMode(true);
-      CF->synthesize();
-      SchContent = CF->Schematic;
-      delete CF;
+        // Canonical filter
+        CanonicalFilter *CF;
+        CF = new CanonicalFilter(Filter_SP);
+        CF->setSemilumpedMode(true);
+        CF->synthesize();
+        SchContent = CF->Schematic;
+        delete CF;
     }
     break;
   }
@@ -374,7 +379,6 @@ void FilterDesignTool::ResposeComboChanged() {
 
   EllipticType->setVisible(ActivateCauer);
   EllipticTypeLabel->setVisible(ActivateCauer);
-  OrderSpinBox->setMinimum(1);
   if (ActivateCauer) {
     CLCRadioButton->setText("Min L");
     LCLRadioButton->setText("Min C");
@@ -383,11 +387,46 @@ void FilterDesignTool::ResposeComboChanged() {
     LCLRadioButton->setText("LCL");
   }
 
+  // By default, don't limit the order.
+  OrderSpinBox->setMinimum(1);
+  OrderSpinBox->setMaximum(100);
+
+  // Bessel, Gaussian and Legendre filter types are tabulated and the data is limited
+  if (!Response.compare("Bessel")) {
+    OrderSpinBox->setMinimum(2);
+    OrderSpinBox->setMaximum(10);
+    RippleLabel->hide();
+    RippleSpinbox->hide();
+  } else {
+    if (!Response.compare("Gaussian")) {
+      OrderSpinBox->setMinimum(3);
+      OrderSpinBox->setMaximum(10);
+      RippleLabel->hide();
+      RippleSpinbox->hide();
+    } else {
+      if (!Response.compare("Legendre")) {
+        OrderSpinBox->setMinimum(4);
+        OrderSpinBox->setMaximum(10);
+        RippleLabel->hide();
+        RippleSpinbox->hide();
+      } else {
+        if (!Response.compare("Butterworth")) {
+          RippleLabel->hide();
+          RippleSpinbox->hide();
+        } else {
+          // Elliptic and Chebyshev
+          RippleLabel->show();
+          RippleSpinbox->show();
+        }
+      }
+    }
+  }
+
+
   UpdateDesignParameters();
 }
 
-// This function catches the events related to the changes in the filter
-// specificatios
+// This function catches the events related to the changes in the filter specificatios
 void FilterDesignTool::UpdateDesignParameters() {
   Filter_SP.Implementation = FilterImplementationCombo->currentText();
 
@@ -402,6 +441,8 @@ void FilterDesignTool::UpdateDesignParameters() {
     Filter_SP.FilterResponse = Bessel;
   if (!FilterResponseTypeCombo->currentText().compare("Gaussian"))
     Filter_SP.FilterResponse = Gaussian;
+  if (!FilterResponseTypeCombo->currentText().compare("Legendre"))
+    Filter_SP.FilterResponse = Legendre;
 
 
 
@@ -455,7 +496,7 @@ void FilterDesignTool::UpdateDesignParameters() {
   }
 
 
-         // Update parameters
+  // Update parameters
   Filter_SP.bw = BWSpinbox->value() * getScale(BW_ScaleCombobox->currentText());
   Filter_SP.fc = FCSpinbox->value() * getScale(FC_ScaleCombobox->currentText());
   Filter_SP.EllipticType = EllipticType->currentText();
@@ -497,6 +538,7 @@ void FilterDesignTool::setSettings_LC_Ladder(){
   // Update filter possible filter responses
   QStringList filter_response;
   filter_response = DefaultFilterResponses;
+  filter_response.append("Elliptic");
   FilterResponseTypeCombo->clear();
   FilterResponseTypeCombo->addItems(filter_response);
 
@@ -520,15 +562,12 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled(){
   QString CurrentResponse = FilterResponseTypeCombo->currentText();
 
   // Update filter possible filter responses
-  QStringList filter_response;
-  filter_response.append("Butterworth");
-  filter_response.append("Chebyshev");
   FilterResponseTypeCombo->clear();
-  FilterResponseTypeCombo->addItems(filter_response);
+  FilterResponseTypeCombo->addItems(DefaultFilterResponses);
 
 
-  for (int i = 0; i < filter_response.length(); i++) {
-    if (CurrentResponse == filter_response.at(i)) {
+  for (int i = 0; i < DefaultFilterResponses.length(); i++) {
+    if (CurrentResponse == DefaultFilterResponses.at(i)) {
       FilterResponseTypeCombo->setCurrentIndex(i);
       break;
     }
@@ -539,11 +578,8 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled(){
 
 void FilterDesignTool::setSettings_Stepped_Z_LPF(){
   FilterResponseTypeCombo->blockSignals(true);
-  QStringList filter_response;
-  filter_response.append("Butterworth");
-  filter_response.append("Chebyshev");
   FilterResponseTypeCombo->clear();
-  FilterResponseTypeCombo->addItems(filter_response);
+  FilterResponseTypeCombo->addItems(DefaultFilterResponses);
   FilterResponseTypeCombo->setCurrentIndex(1); // Chebyshev
   FilterClassCombo->setEnabled(false);
   FilterResponseTypeCombo->blockSignals(false);
@@ -553,11 +589,8 @@ void FilterDesignTool::setSettings_Quarterwavelength_BPF_BSF(){
   FilterResponseTypeCombo->blockSignals(true);
   FilterClassCombo->blockSignals(true);
 
-  QStringList filter_response;
-  filter_response.append("Butterworth");
-  filter_response.append("Chebyshev");
   FilterResponseTypeCombo->clear();
-  FilterResponseTypeCombo->addItems(filter_response);
+  FilterResponseTypeCombo->addItems(DefaultFilterResponses);
   FilterResponseTypeCombo->setCurrentIndex(1); // Chebyshev
 
 
@@ -621,137 +654,141 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     ImpedanceRatio_Label->hide();
     ImpedanceRatio_Spinbox->hide();
 
-           // Hide minimum impedance
+    // Hide minimum impedance
     MinimumZLabel->hide();
     MinimumZ_Spinbox->hide();
     MinimumZ_Unit_Label->hide();
 
-           // Hide maximum impedance
+    // Hide maximum impedance
     MaximumZLabel->hide();
     MaximumZ_Spinbox->hide();
     MaximumZ_Unit_Label->hide();
 
-           // All response types available: Lowpass, highpass, bandpass and notch
-           // Elliptic types are available
+    // All response types available: Lowpass, highpass, bandpass and notch
+    // Elliptic types are available
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Lowpass");
     FilterClassCombo->addItem("Highpass");
     FilterClassCombo->addItem("Bandpass");
     FilterClassCombo->addItem("Bandstop");
 
-           // Hide semilumped type combobox
+    // Hide semilumped type combobox
     SemiLumpedImplementationCombo->hide();
     SemiLumpedImplementationLabel->hide();
     break;
+
   case LC_DIRECT_COUPLED: // LC Direct Coupled
     // Hide LC box
     CLCRadioButton->hide();
     LCLRadioButton->hide();
 
-           // Hide impedance ratio
+    // Hide impedance ratio
     ImpedanceRatio_Label->hide();
     ImpedanceRatio_Spinbox->hide();
 
-           // Hide minimum impedance
+    // Hide minimum impedance
     MinimumZLabel->hide();
     MinimumZ_Spinbox->hide();
     MinimumZ_Unit_Label->hide();
 
-           // Hide maximum impedance
+    // Hide maximum impedance
     MaximumZLabel->hide();
     MaximumZ_Spinbox->hide();
     MaximumZ_Unit_Label->hide();
 
-           // Only bandpass filters can be implemented using direct coupled filters
-           // The elliptic response cannot be implemented too
+    // Only bandpass filters can be implemented using direct coupled filters
+    // The elliptic response cannot be implemented too
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Bandpass");
     FilterClassCombo->setCurrentIndex(0);
 
-           // Hide semilumped type combobox
+    // Hide semilumped type combobox
     SemiLumpedImplementationCombo->hide();
     SemiLumpedImplementationLabel->hide();
     break;
+
   case QUARTERWAVE: // QW bandpass and bandstop
     // Hide LC box
     CLCRadioButton->hide();
     LCLRadioButton->hide();
 
-           // Hide impedance ratio
+    // Hide impedance ratio
     ImpedanceRatio_Label->hide();
     ImpedanceRatio_Spinbox->hide();
 
-           // Hide minimum impedance
+    // Hide minimum impedance
     MinimumZLabel->hide();
     MinimumZ_Spinbox->hide();
     MinimumZ_Unit_Label->hide();
 
-           // Hide maximum impedance
+    // Hide maximum impedance
     MaximumZLabel->hide();
     MaximumZ_Spinbox->hide();
     MaximumZ_Unit_Label->hide();
 
-           // Only bandpass and notch types available
-           // Of course, the elliptic type cannot be implemented this way.
+    // Only bandpass and notch types available
+    // Of course, the elliptic type cannot be implemented this way.
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Bandpass");
     FilterClassCombo->addItem("Bandstop");
     FilterClassCombo->setCurrentIndex(0);
 
-           // Hide semilumped type combobox
+    // Hide semilumped type combobox
     SemiLumpedImplementationCombo->hide();
     SemiLumpedImplementationLabel->hide();
     break;
+
   case STEPPED_IMPEDANCE: // Stepped impedance LPF
     // Hide LC box
     CLCRadioButton->hide();
     LCLRadioButton->hide();
 
-           // Hide impedance ratio
+    // Hide impedance ratio
     ImpedanceRatio_Label->hide();
     ImpedanceRatio_Spinbox->hide();
 
-           // Show minimum impedance
+    //Show minimum impedance
     MinimumZLabel->show();
     MinimumZ_Spinbox->show();
     MinimumZ_Unit_Label->show();
 
-           // Show maximum impedance
+    // Show maximum impedance
     MaximumZLabel->show();
     MaximumZ_Spinbox->show();
     MaximumZ_Unit_Label->show();
 
-           // Only bandpass filters can be implemented using direct coupled filters
-           // The elliptic response cannot be implemented too
+    // Only bandpass filters can be implemented using direct coupled filters
+    // The elliptic response cannot be implemented too
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Lowpass");
     FilterClassCombo->setCurrentIndex(0);
 
-           // Hide semilumped type combobox
+    // Hide semilumped type combobox
     SemiLumpedImplementationCombo->hide();
     SemiLumpedImplementationLabel->hide();
     break;
+
   case END_COUPLED: // End-coupled bandpass
     // Hide LC box
     CLCRadioButton->hide();
     LCLRadioButton->hide();
 
-           // Hide impedance ratio
+    // Hide impedance ratio
     ImpedanceRatio_Label->hide();
     ImpedanceRatio_Spinbox->hide();
 
-           // Hide minimum impedance
+    // Hide minimum impedance
     MinimumZLabel->hide();
     MinimumZ_Spinbox->hide();
     MinimumZ_Unit_Label->hide();
 
-           // Hide maximum impedance
+    // Hide maximum impedance
     MaximumZLabel->hide();
     MaximumZ_Spinbox->hide();
     MaximumZ_Unit_Label->hide();
 
-           // Only bandpass type available
-           // Of course, the elliptic type cannot be implemented this way.
+    // Only bandpass type available
+    // Of course, the elliptic type cannot be implemented this way.
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Bandpass");
     FilterClassCombo->setCurrentIndex(0);
@@ -760,35 +797,37 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     SemiLumpedImplementationCombo->hide();
     SemiLumpedImplementationLabel->hide();
     break;
+
   case CAPACITIVELY_COUPLED_RESONATORS: // Capacitively-coupled shunt resonators
     // Hide LC box
     CLCRadioButton->hide();
     LCLRadioButton->hide();
 
-           // Hide impedance ratio
+    // Hide impedance ratio
     ImpedanceRatio_Label->hide();
     ImpedanceRatio_Spinbox->hide();
 
-           // Hide minimum impedance
+    // Hide minimum impedance
     MinimumZLabel->hide();
     MinimumZ_Spinbox->hide();
     MinimumZ_Unit_Label->hide();
 
-           // Hide maximum impedance
+    // Hide maximum impedance
     MaximumZLabel->hide();
     MaximumZ_Spinbox->hide();
     MaximumZ_Unit_Label->hide();
 
-           // Only bandpass type available
-           // Of course, the elliptic type cannot be implemented this way.
+    // Only bandpass type available
+    // Of course, the elliptic type cannot be implemented this way.
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Bandpass");
     FilterClassCombo->setCurrentIndex(0);
 
-           // Hide semilumped type combobox
+    // Hide semilumped type combobox
     SemiLumpedImplementationCombo->hide();
     SemiLumpedImplementationLabel->hide();
     break;
+
   case SEMILUMPED:
     if (!FilterResponseTypeCombo->currentText().compare("Elliptic")){
       // Semilumped Elliptic
@@ -796,26 +835,26 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
       CLCRadioButton->show();
       LCLRadioButton->show();
 
-             // Hide impedance ratio
+      // Hide impedance ratio
       ImpedanceRatio_Label->hide();
       ImpedanceRatio_Spinbox->hide();
 
-             // Show minimum impedance
+      // Show minimum impedance
       MinimumZLabel->show();
       MinimumZ_Spinbox->show();
       MinimumZ_Unit_Label->show();
 
-             // Show maximum impedance
+      // Show maximum impedance
       MaximumZLabel->show();
       MaximumZ_Spinbox->show();
       MaximumZ_Unit_Label->show();
 
-             // Only lowpass and highpass
+      // Only lowpass and highpass
       FilterClassCombo->clear();
       FilterClassCombo->addItem("Lowpass");
       FilterClassCombo->addItem("Highpass");
 
-             // Show semilumped type combobox
+      // Show semilumped type combobox
       SemiLumpedImplementationCombo->show();
       SemiLumpedImplementationLabel->show();
     } else {
@@ -825,16 +864,16 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
       CLCRadioButton->show();
       LCLRadioButton->show();
 
-             // Hide impedance ratio
+      // Hide impedance ratio
       ImpedanceRatio_Label->hide();
       ImpedanceRatio_Spinbox->hide();
 
-             // Only lowpass and highpass
+      // Only lowpass and highpass
       FilterClassCombo->clear();
       FilterClassCombo->addItem("Lowpass");
       FilterClassCombo->addItem("Highpass");
 
-             // Show semilumped type combobox
+      // Show semilumped type combobox
       SemiLumpedImplementationCombo->show();
       SemiLumpedImplementationLabel->show();
     }
@@ -845,56 +884,57 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     CLCRadioButton->hide();
     LCLRadioButton->hide();
 
-           // Hide impedance ratio
+    // Hide impedance ratio
     ImpedanceRatio_Label->hide();
     ImpedanceRatio_Spinbox->hide();
 
-           // Show minimum impedance
+    // Show minimum impedance
     MinimumZLabel->show();
     MinimumZ_Spinbox->show();
     MinimumZ_Unit_Label->show();
 
-           // Show maximum impedance
+    // Show maximum impedance
     MaximumZLabel->show();
     MaximumZ_Spinbox->show();
     MaximumZ_Unit_Label->show();
 
-           // Only bandpass type available
-           // Of course, the elliptic type cannot be implemented this way.
+    // Only bandpass type available
+    // Of course, the elliptic type cannot be implemented this way.
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Bandpass");
     FilterClassCombo->setCurrentIndex(0);
 
-           // Hide semilumped type combobox
+    // Hide semilumped type combobox
     SemiLumpedImplementationCombo->hide();
     SemiLumpedImplementationLabel->hide();
     break;
+
   case COUPLED_LINE_SIR: // Coupled line with harmonic rejection
     // Hide LC box
     CLCRadioButton->hide();
     LCLRadioButton->hide();
 
-           // Show impedance ratio
+    // Show impedance ratio
     ImpedanceRatio_Label->show();
     ImpedanceRatio_Spinbox->show();
 
-           // Show minimum impedance
+    // Show minimum impedance
     MinimumZLabel->show();
     MinimumZ_Spinbox->show();
     MinimumZ_Unit_Label->show();
 
-           // Show maximum impedance
+    // Show maximum impedance
     MaximumZLabel->show();
     MaximumZ_Spinbox->show();
     MaximumZ_Unit_Label->show();
 
-           // Only bandpass type available
-           // Of course, the elliptic type cannot be implemented this way.
+    // Only bandpass type available
+    // Of course, the elliptic type cannot be implemented this way.
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Bandpass");
     FilterClassCombo->setCurrentIndex(0);
 
-           // Hide semilumped type combobox
+    // Hide semilumped type combobox
     SemiLumpedImplementationCombo->hide();
     SemiLumpedImplementationLabel->hide();
     break;
