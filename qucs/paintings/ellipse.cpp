@@ -324,6 +324,13 @@ bool qucs::Ellipse::rotate(int xc, int yc) noexcept
   return true;
 }
 
+void qucs::Ellipse::snapToGrid(Schematic* sch)
+{
+  sch->setOnGrid(x1, y1);
+  sch->setOnGrid(x2, y2);
+  updateCenter();
+}
+
 bool qucs::Ellipse::Dialog(QWidget* parent)
 {
   bool changed = false;

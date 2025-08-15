@@ -48,6 +48,7 @@ public:
 
   bool rotate() noexcept override;
   bool rotate(int, int) noexcept override;
+  void snapToGrid(Schematic* sch) override;
 
   bool Dialog(QWidget* parent = nullptr) override;
 

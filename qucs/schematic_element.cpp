@@ -1577,8 +1577,16 @@ bool Schematic::rotateElements()
     const auto rotc = setOnGrid(bounds->center());
 
     bool any_rotated = false;
-    const auto rotator = [&any_rotated, in_place, rotc](Element* e) {
-        any_rotated = (in_place ? e->rotate() : e->rotate(rotc)) || any_rotated;
+    const auto rotator = [&any_rotated, in_place, rotc, this](Element* e) {
+        const bool elem_rotated = in_place ? e->rotate() : e->rotate(rotc);
+        any_rotated = elem_rotated || any_rotated;
+
+        // Snap painting to grid if rotated
+        if(elem_rotated) {
+            if (auto* painting = dynamic_cast<Painting*>(e)) {
+                painting->snapToGrid(this);
+            }
+        }
     };
 
     std::ranges::for_each(selection.components, rotator);
