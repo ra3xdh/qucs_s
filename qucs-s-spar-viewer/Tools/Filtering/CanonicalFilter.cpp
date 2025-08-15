@@ -99,8 +99,8 @@ void CanonicalFilter::SynthesizeLPF() {
                         Specification.ZS); // Lowpass to highpass transformation
       if ((semilumped == true) &&
           (Specification.SemiLumpedISettings == INDUCTORS_AND_SHUNT_CAPS)) {
-        Cshunt.setParams(QString("TLIN%1").arg(
-                             ++Schematic.NumberComponents[TransmissionLine]),
+        Cshunt.setParams(QString("OSTUB%1").arg(
+                             ++Schematic.NumberComponents[OpenStub]),
                          OpenStub, 0.0, posx, 50);
         // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M.
         // J. LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
@@ -212,8 +212,8 @@ void CanonicalFilter::SynthesizeHPF() {
       // Shunt inductor
       gi[k + 1] = Specification.ZS / (2 * M_PI * Specification.fc * gi[k + 1]);
       if (semilumped == true) {
-        Lshunt.setParams(QString("TLIN%1").arg(
-                             ++Schematic.NumberComponents[TransmissionLine]),
+        Lshunt.setParams(QString("SSTUB%1").arg(
+                             ++Schematic.NumberComponents[ShortStub]),
                          ShortStub, 0, posx, 50);
         // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M.
         // J. LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9

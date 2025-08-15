@@ -418,8 +418,7 @@ void EllipticFilter::SynthesizeEllipticFilter() {
   Schematic.appendComponent(TermSpar2);
 
   // Connect the last components to the load (taking into account the pinout)
-  QMap<QString, unsigned int>::const_iterator i =
-      UnconnectedComponents.constBegin();
+  QMap<QString, unsigned int>::const_iterator i =  UnconnectedComponents.constBegin();
   while (i != UnconnectedComponents.constEnd()) {
     Schematic.appendWire(TermSpar2.ID, 0, i.key(), i.value());
     ++i;
@@ -1024,11 +1023,11 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
     // Series capacitor
     if (Lseries_LP_MINC != 0) {
       Cshunt.setParams(
-          QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+          QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),
           OpenStub, 0, posx, 100);
     } else {
       Cshunt.setParams(
-          QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+          QString("TLIN%1").arg(++Schematic.NumberComponents[OpenStub]),
           OpenStub, 0, posx, 100);
     }
     L_ci =
@@ -1072,6 +1071,7 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
     if (mapIT.hasNext())
       mapIT.next();
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
+    UnconnectedComponents.clear();
     if (j == Specification.order)
       UnconnectedComponents.clear();
     if (Lseries_LP_MINC != 0)
@@ -1320,7 +1320,7 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
              asin(2 * M_PI * Specification.fc * Specification.minZ *
                   Cshunt_HP_MINL);
       Cshunt.setParams(
-          QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+          QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),
           OpenStub, 0, posx, 100);
       Cshunt.val["Z0"] = num2str(Specification.minZ, Resistance);
       Cshunt.val["Length"] = ConvertLengthFromM("mm", L_ci);

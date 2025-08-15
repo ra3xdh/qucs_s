@@ -49,9 +49,8 @@
 #define CAPACITIVELY_COUPLED_RESONATORS 4
 #define COUPLED_LINES 5
 #define END_COUPLED 6
+#define SEMILUMPED 7
 
-#define SEMILUMPED_ELLIPTIC 7
-#define SEMILUMPED_CANONICAL 8
 #define COUPLED_LINE_SIR 9
 
 class FilterDesignTool : public QWidget {

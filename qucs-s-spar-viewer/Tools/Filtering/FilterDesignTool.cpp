@@ -2,8 +2,8 @@
                                 FilterDesignTool.cpp
                                 ----------
 
- author                :  2019 Andres Martinez-Mera
- email                  :  andresmmera@protonmail.com
+author                :  2019 Andres Martinez-Mera
+email                  :  andresmmera@protonmail.com
 ***************************************************************************/
 
 /***************************************************************************
@@ -30,8 +30,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterImplementationCombo->addItem("Capacitively-coupled shunt resonators");
   FilterImplementationCombo->addItem("Coupled line bandpass");
   FilterImplementationCombo->addItem("End-coupled");
-  //FilterImplementationCombo->addItem("Semilumped Elliptic");
-  //FilterImplementationCombo->addItem("Semilumped Canonical");
+  FilterImplementationCombo->addItem("Semilumped");
   //FilterImplementationCombo->addItem("Coupled line SIR with harmonic rejection");
   FilterDesignLayout->addWidget(new QLabel("Implementation"), 0, 0);
   FilterDesignLayout->addWidget(FilterImplementationCombo, 0, 1);
@@ -78,8 +77,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(new QLabel("Order"), 4, 0);
   FilterDesignLayout->addWidget(OrderSpinBox, 4, 1);
 
-  //******* Cutoff freq (Lowpass and Highpass) *********
-  //****** Central freq (Bandpass and Bandstop) *********
+         //******* Cutoff freq (Lowpass and Highpass) *********
+         //****** Central freq (Bandpass and Bandstop) *********
   FCSpinbox = new QDoubleSpinBox();
   FCSpinbox->setMinimum(1);
   FCSpinbox->setMaximum(1e6);
@@ -148,8 +147,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(EllipticTypeLabel, 9, 0);
   FilterDesignLayout->addWidget(EllipticType, 9, 1);
 
-  //***************  Minimum impedance achievable in the manufacturing process
-  //**************
+         //***************  Minimum impedance achievable in the manufacturing process
+         //**************
   MinimumZLabel = new QLabel("Minimum Z");
   MinimumZ_Spinbox = new QDoubleSpinBox();
   MinimumZ_Spinbox->setMinimum(1);
@@ -207,7 +206,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(SourceImpedanceLineEdit, 14, 1);
   FilterDesignLayout->addWidget(new QLabel(QChar(0xa9, 0x03)), 14, 2);
 
-  // Widgets to add a trace to plot
+         // Widgets to add a trace to plot
   traceNameLabel = new QLabel("Trace name");
   traceNameLineEdit = new QLineEdit("Filter1");
   FilterDesignLayout->addWidget(traceNameLabel, 15, 0);
@@ -216,7 +215,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
 
   this->setLayout(FilterDesignLayout);
 
-  // Connection functions for updating the network requirements and simulate in real time
+         // Connection functions for updating the network requirements and simulate in real time
   connect(FilterImplementationCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ImplementationComboChanged(int)));
   connect(CLCRadioButton, SIGNAL(toggled(bool)), this, SLOT(ChangeRL_CLC_LCL_mode()));
   connect(FilterResponseTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ResposeComboChanged()));
@@ -272,69 +271,88 @@ void FilterDesignTool::synthesize() {
   int filter_type = FilterImplementationCombo->currentIndex();
 
   switch (filter_type) {
-    case LC_LADDER:
-      if (FilterResponseTypeCombo->currentText() == QString("Elliptic")){
-          EllipticFilter *EF;
-          EF = new EllipticFilter(Filter_SP);
-          EF->synthesize();
-          SchContent = EF->Schematic;
-          delete EF;
-      } else {
-        CanonicalFilter *CF;
-        CF = new CanonicalFilter(Filter_SP);
-        CF->synthesize();
-        SchContent = CF->Schematic;
-        delete CF;
-      }
-      break;
+  case LC_LADDER:
+    if (FilterResponseTypeCombo->currentText() == QString("Elliptic")){
+      EllipticFilter *EF;
+      EF = new EllipticFilter(Filter_SP);
+      EF->synthesize();
+      SchContent = EF->Schematic;
+      delete EF;
+    } else {
+      CanonicalFilter *CF;
+      CF = new CanonicalFilter(Filter_SP);
+      CF->synthesize();
+      SchContent = CF->Schematic;
+      delete CF;
+    }
+    break;
 
-    case LC_DIRECT_COUPLED:
-      DirectCoupledFilters *DCF;
-      DCF = new DirectCoupledFilters(Filter_SP);
-      DCF->synthesize();
-      SchContent = DCF->Schematic;
-      delete DCF;
-      break;
+  case LC_DIRECT_COUPLED:
+    DirectCoupledFilters *DCF;
+    DCF = new DirectCoupledFilters(Filter_SP);
+    DCF->synthesize();
+    SchContent = DCF->Schematic;
+    delete DCF;
+    break;
 
-    case STEPPED_IMPEDANCE:
-      SteppedImpedanceFilter *STIF;
-      STIF = new SteppedImpedanceFilter(Filter_SP);
-      STIF->synthesize();
-      SchContent = STIF->Schematic;
-      delete STIF;
-      break;
+  case STEPPED_IMPEDANCE:
+    SteppedImpedanceFilter *STIF;
+    STIF = new SteppedImpedanceFilter(Filter_SP);
+    STIF->synthesize();
+    SchContent = STIF->Schematic;
+    delete STIF;
+    break;
 
-    case QUARTERWAVE:
-      QuarterWaveFilters *QWF;
-      QWF = new QuarterWaveFilters(Filter_SP);
-      QWF->synthesize();
-      SchContent = QWF->Schematic;
-      delete QWF;
-      break;
+  case QUARTERWAVE:
+    QuarterWaveFilters *QWF;
+    QWF = new QuarterWaveFilters(Filter_SP);
+    QWF->synthesize();
+    SchContent = QWF->Schematic;
+    delete QWF;
+    break;
 
-    case CAPACITIVELY_COUPLED_RESONATORS:
-      CapacitivelyCoupledShuntResonatorsFilter *CCSRF;
-      CCSRF = new CapacitivelyCoupledShuntResonatorsFilter(Filter_SP);
-      CCSRF->synthesize();
-      SchContent = CCSRF->Schematic;
-      delete CCSRF;
-      break;
+  case CAPACITIVELY_COUPLED_RESONATORS:
+    CapacitivelyCoupledShuntResonatorsFilter *CCSRF;
+    CCSRF = new CapacitivelyCoupledShuntResonatorsFilter(Filter_SP);
+    CCSRF->synthesize();
+    SchContent = CCSRF->Schematic;
+    delete CCSRF;
+    break;
 
-    case COUPLED_LINES:
-      CoupledLineBandpassFilter *CLBPF;
-      CLBPF = new CoupledLineBandpassFilter(Filter_SP);
-      CLBPF->synthesize();
-      SchContent = CLBPF->Schematic;
-      delete CLBPF;
-      break;
+  case COUPLED_LINES:
+    CoupledLineBandpassFilter *CLBPF;
+    CLBPF = new CoupledLineBandpassFilter(Filter_SP);
+    CLBPF->synthesize();
+    SchContent = CLBPF->Schematic;
+    delete CLBPF;
+    break;
 
-    case END_COUPLED:
-      EndCoupled *ECF;
-      ECF = new EndCoupled(Filter_SP);
-      ECF->synthesize();
-      SchContent = ECF->Schematic;
-      delete ECF;
-      break;
+  case END_COUPLED:
+    EndCoupled *ECF;
+    ECF = new EndCoupled(Filter_SP);
+    ECF->synthesize();
+    SchContent = ECF->Schematic;
+    delete ECF;
+    break;
+
+  case SEMILUMPED:
+    if (!FilterResponseTypeCombo->currentText().compare("Elliptic")){
+      EllipticFilter *SMLEF;
+      SMLEF = new EllipticFilter(Filter_SP);
+      SMLEF->setSemilumpedMode(true);
+      SMLEF->synthesize();
+      SchContent = SMLEF->Schematic;
+      delete SMLEF;
+    } else {
+      // Canonical filter
+      CanonicalFilter *CF;
+      CF = new CanonicalFilter(Filter_SP);
+      CF->setSemilumpedMode(true);
+      CF->synthesize();
+      SchContent = CF->Schematic;
+      delete CF;
+    }
+    break;
   }
 
 
@@ -371,7 +389,7 @@ void FilterDesignTool::ResposeComboChanged() {
 void FilterDesignTool::UpdateDesignParameters() {
   Filter_SP.Implementation = FilterImplementationCombo->currentText();
 
-  // Filter response
+         // Filter response
   if (!FilterResponseTypeCombo->currentText().compare("Chebyshev"))
     Filter_SP.FilterResponse = Chebyshev;
   if (!FilterResponseTypeCombo->currentText().compare("Butterworth"))
@@ -380,7 +398,7 @@ void FilterDesignTool::UpdateDesignParameters() {
     Filter_SP.FilterResponse = Elliptic;
 
 
-  // Filter type
+         // Filter type
   if (!FilterClassCombo->currentText().compare("Lowpass"))
     Filter_SP.FilterType = Lowpass;
   if (!FilterClassCombo->currentText().compare("Highpass"))
@@ -390,7 +408,7 @@ void FilterDesignTool::UpdateDesignParameters() {
   if (!FilterClassCombo->currentText().compare("Bandstop"))
     Filter_SP.FilterType = Bandstop;
 
-  // Coupling
+         // Coupling
   if (!DC_CouplingTypeCombo->currentText().compare("Capacitative coupled shunt resonators")) {
     Filter_SP.DC_Coupling = CapacitativeCoupledShuntResonators;
   }
@@ -399,7 +417,7 @@ void FilterDesignTool::UpdateDesignParameters() {
     Filter_SP.DC_Coupling = InductiveCoupledSeriesResonators;
   }
 
-  // Update user input
+         // Update user input
   if ((!FilterClassCombo->currentText().compare("Lowpass")) ||  (!FilterClassCombo->currentText().compare("Highpass"))) {
     BWSpinbox->setEnabled(false);
     BW_ScaleCombobox->setEnabled(false);
@@ -418,19 +436,19 @@ void FilterDesignTool::UpdateDesignParameters() {
   int filter_type = FilterImplementationCombo->currentIndex();
 
   switch (filter_type) {
-    case LC_LADDER:
-      setSettings_LC_Ladder();
-      break;
-    case LC_DIRECT_COUPLED:
-      setSettings_LC_Direct_Coupled();
-      break;
-    case STEPPED_IMPEDANCE:
-      setSettings_Stepped_Z_LPF();
-      break;
+  case LC_LADDER:
+    setSettings_LC_Ladder();
+    break;
+  case LC_DIRECT_COUPLED:
+    setSettings_LC_Direct_Coupled();
+    break;
+  case STEPPED_IMPEDANCE:
+    setSettings_Stepped_Z_LPF();
+    break;
   }
 
 
-  // Update parameters
+         // Update parameters
   Filter_SP.bw = BWSpinbox->value() * getScale(BW_ScaleCombobox->currentText());
   Filter_SP.fc = FCSpinbox->value() * getScale(FC_ScaleCombobox->currentText());
   Filter_SP.EllipticType = EllipticType->currentText();
@@ -496,7 +514,7 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled(){
   LCLRadioButton->hide();
   QString CurrentResponse = FilterResponseTypeCombo->currentText();
 
-  // Update filter possible filter responses
+         // Update filter possible filter responses
   QStringList filter_response;
   filter_response.append("Butterworth");
   filter_response.append("Chebyshev");
@@ -567,20 +585,19 @@ void FilterDesignTool::ChangeRL_CLC_LCL_mode() {
 QStringList FilterDesignTool::setItemsResponseTypeCombo() {
   QStringList data;
 
-    data = DefaultFilterResponses;
+  data = DefaultFilterResponses;
   return data;
 }
 
 // This function returns the scale of the argument
 double FilterDesignTool::getScale(QString scale) {
-  if (!scale.compare("GHz"))
-    return 1e9;
-  if (!scale.compare("MHz"))
-    return 1e6;
-  if (!scale.compare("kHz"))
-    return 1e3;
-   else
-    return 1;
+  QStringView view(scale);
+  static const QHash<QStringView, double> units {
+      { u"GHz", 1e9 },
+      { u"MHz", 1e6 },
+      { u"kHz", 1e3 }
+  };
+  return units.value(view, 1.0);
 }
 
 // The purpose of this function is to trigger a design from the main application
@@ -767,52 +784,57 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     SemiLumpedImplementationCombo->hide();
     SemiLumpedImplementationLabel->hide();
     break;
-  case SEMILUMPED_ELLIPTIC: // Semilumped Elliptic
-    // Show LC box
-    CLCRadioButton->show();
-    LCLRadioButton->show();
+  case SEMILUMPED:
+    if (!FilterResponseTypeCombo->currentText().compare("Elliptic")){
+      // Semilumped Elliptic
+      // Show LC box
+      CLCRadioButton->show();
+      LCLRadioButton->show();
 
-           // Hide impedance ratio
-    ImpedanceRatio_Label->hide();
-    ImpedanceRatio_Spinbox->hide();
+             // Hide impedance ratio
+      ImpedanceRatio_Label->hide();
+      ImpedanceRatio_Spinbox->hide();
 
-           // Show minimum impedance
-    MinimumZLabel->show();
-    MinimumZ_Spinbox->show();
-    MinimumZ_Unit_Label->show();
+             // Show minimum impedance
+      MinimumZLabel->show();
+      MinimumZ_Spinbox->show();
+      MinimumZ_Unit_Label->show();
 
-           // Show maximum impedance
-    MaximumZLabel->show();
-    MaximumZ_Spinbox->show();
-    MaximumZ_Unit_Label->show();
+             // Show maximum impedance
+      MaximumZLabel->show();
+      MaximumZ_Spinbox->show();
+      MaximumZ_Unit_Label->show();
 
-           // Only lowpass and highpass
-    FilterClassCombo->clear();
-    FilterClassCombo->addItem("Lowpass");
-    FilterClassCombo->addItem("Highpass");
+             // Only lowpass and highpass
+      FilterClassCombo->clear();
+      FilterClassCombo->addItem("Lowpass");
+      FilterClassCombo->addItem("Highpass");
 
-           // Show semilumped type combobox
-    SemiLumpedImplementationCombo->show();
-    SemiLumpedImplementationLabel->show();
+             // Show semilumped type combobox
+      SemiLumpedImplementationCombo->show();
+      SemiLumpedImplementationLabel->show();
+    } else {
+      // Semilumped Canonical
+
+      // Show LC box
+      CLCRadioButton->show();
+      LCLRadioButton->show();
+
+             // Hide impedance ratio
+      ImpedanceRatio_Label->hide();
+      ImpedanceRatio_Spinbox->hide();
+
+             // Only lowpass and highpass
+      FilterClassCombo->clear();
+      FilterClassCombo->addItem("Lowpass");
+      FilterClassCombo->addItem("Highpass");
+
+             // Show semilumped type combobox
+      SemiLumpedImplementationCombo->show();
+      SemiLumpedImplementationLabel->show();
+    }
     break;
-  case SEMILUMPED_CANONICAL: // Semilumped Canonical
-    // Show LC box
-    CLCRadioButton->show();
-    LCLRadioButton->show();
 
-           // Hide impedance ratio
-    ImpedanceRatio_Label->hide();
-    ImpedanceRatio_Spinbox->hide();
-
-           // Only lowpass and highpass
-    FilterClassCombo->clear();
-    FilterClassCombo->addItem("Lowpass");
-    FilterClassCombo->addItem("Highpass");
-
-           // Show semilumped type combobox
-    SemiLumpedImplementationCombo->show();
-    SemiLumpedImplementationLabel->show();
-    break;
   case COUPLED_LINES: // Coupled line bandpass
     // Hide LC box
     CLCRadioButton->hide();
