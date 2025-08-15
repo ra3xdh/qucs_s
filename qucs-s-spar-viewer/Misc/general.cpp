@@ -205,7 +205,7 @@ QString ConvertLengthFromM(QString units, double len) {
         index = 2; // microns
         break;
       }
-      return QString("%1 mil").arg(RoundVariablePrecision(conv));
+      return QString("%1mil").arg(RoundVariablePrecision(conv));
     case 2: // microns
       conv *= 1e6;
       if (conv > 999.99) {
@@ -216,14 +216,14 @@ QString ConvertLengthFromM(QString units, double len) {
         index = 3; // nanometers
         break;
       }
-      return QString("%1 um").arg(RoundVariablePrecision(conv));
+      return QString("%1um").arg(RoundVariablePrecision(conv));
     case 3: // nanometers
       conv *= 1e9;
       if (conv > 999.99) {
         index = 2; // microns
         break;
       }
-      return QString("%1 nm").arg(RoundVariablePrecision(conv));
+      return QString("%1nm").arg(RoundVariablePrecision(conv));
     case 4: // inch
       conv *= 39.3701;
       if (conv > 999.99) {
@@ -234,7 +234,7 @@ QString ConvertLengthFromM(QString units, double len) {
         index = 1; // mils
         break;
       }
-      return QString("%1 in").arg(RoundVariablePrecision(conv));
+      return QString("%1in").arg(RoundVariablePrecision(conv));
     case 5: // ft
       conv *= 3.280841666667;
       if (conv > 999.99) {
@@ -245,7 +245,7 @@ QString ConvertLengthFromM(QString units, double len) {
         index = 4; // inches
         break;
       }
-      return QString("%1 ft").arg(RoundVariablePrecision(conv));
+      return QString("%1ft").arg(RoundVariablePrecision(conv));
     case 6: // m
       if (conv < 1) {
         index = 0; // mm
@@ -262,7 +262,7 @@ QString ConvertLengthFromM(QString units, double len) {
         index = 2; // microns
         break;
       }
-      return QString("%1 mm").arg(RoundVariablePrecision(conv));
+      return QString("%1mm").arg(RoundVariablePrecision(conv));
     }
   } while (true);
   return QString("");
