@@ -35,6 +35,7 @@ public:
   QString getSParameterNetlist();
   void setNetlist(QString);
   QString Name;
+  QString Type;
 
 private:
   void assignNetToWiresConnectedToNode(QString, QString);

@@ -206,6 +206,7 @@ void PowerCombiningTool::UpdateDesignParameters() {
 
   QString TraceName = traceNameLineEdit->text();
   SchContent.Name = TraceName;
+  SchContent.Type = QString("Power Combiner"); // Indicate the main tool the kind of circuit to adjust default traces (in case no traces were selected)
   emit updateSchematic(SchContent);
   emit updateSimulation(SchContent);
 }
