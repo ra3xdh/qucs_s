@@ -42,7 +42,7 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   connect(SimulationSetupWidget, SIGNAL(updateSimulation()), this, SLOT(updateSimulation()));
 
   // Update simulation and schematic when the user clicks on another tab
-  connect(toolsTabWidget, &QTabWidget::currentChanged, this, &Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged);
+  connect(toolsTabWidget, &QTabWidget::currentChanged, this, &Qucs_S_SPAR_Viewer::onToolsTabChanged);
   connect(dockTools, &QDockWidget::visibilityChanged, this, &Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged);
 }
 
@@ -83,29 +83,20 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
   QStringList filteredList = displayed_traces_keys.filter(regex);
 
   if (filteredList.isEmpty()) {
-    // Add traces depending on the circuit type
-    if (Circuit.Type == QString("Filter")) {
-      // Filter
-      TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
-      TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss
-      this->addTrace(s11_dB, Qt::blue, 1);
-      this->addTrace(s21_dB, Qt::red, 1);
-    } else {
-      if (Circuit.Type == QString("Power Combiner")) {
-        // Power Combiner
-        TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
-        TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss branch 1
-        TraceInfo s31_dB = {dataset_name, "S31", DisplayMode::Magnitude_dB}; // Insertion loss branch 2
-        TraceInfo s32_dB = {dataset_name, "S32", DisplayMode::Magnitude_dB}; // Isolation
+    // Default to Filter traces
+    TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
+    TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss
+    this->addTrace(s11_dB, Qt::blue, 1);
+    this->addTrace(s21_dB, Qt::red, 1);
 
-        this->addTrace(s11_dB, Qt::blue, 1);
-        this->addTrace(s21_dB, Qt::red, 1);
-        this->addTrace(s31_dB, Qt::green, 1);
-        this->addTrace(s32_dB, Qt::black, 1);
-      }
+           // If not Filter, check if Power Combiner to add extra traces
+    if (Circuit.Type == QString("Power Combiner")) {
+      TraceInfo s31_dB = {dataset_name, "S31", DisplayMode::Magnitude_dB}; // Insertion loss branch 2
+      TraceInfo s32_dB = {dataset_name, "S32", DisplayMode::Magnitude_dB}; // Isolation
+      this->addTrace(s31_dB, Qt::darkGreen, 1);
+      this->addTrace(s32_dB, Qt::black, 1);
     }
   }
-
   updateAllPlots(dataset_name);
 
   updateSchematicContent();
@@ -115,6 +106,7 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
 
 void Qucs_S_SPAR_Viewer::updateSimulation(SchematicContent SI) {
   Circuit = SI;
+  Tools_Datasets.append(SI.Name);
 
   QString tool_netlist = SI.getSParameterNetlist();
   QString scratchpad = Netlist_Tool->getText();
@@ -133,5 +125,27 @@ void Qucs_S_SPAR_Viewer::updateSchematicContent() {
 
   if (!Circuit.getComponents().isEmpty()) {
     SchematicWidget->setSchematic(Circuit);
+  }
+}
+
+
+// This function handles the event of selecting a new tab in the design tools.
+// First, it's needed to remove the traces from other designer tabs (otherwise, it may clutter the display)
+// Second, it calls onToolsDockVisibilityChanged() function to trigger circuit synthesis
+void Qucs_S_SPAR_Viewer::onToolsTabChanged(int index) {
+
+  if (index < 2) {
+    // Remove other design datasets.
+    // This does not make sense if the netlist tool is selected since it can be used to test values and compare with the trace of the previously selected tool
+    for (const QString &ID : qAsConst(Tools_Datasets)) {
+      removeTracesByDataset(ID); // Remove all the traces from the dataset
+    }
+    Tools_Datasets.clear();
+  }
+
+  // Trigger circuit synthesis
+  if (index < 4){
+    // Avoid simulate again when the "Simulation Setup" tab is selected
+    onToolsDockVisibilityChanged(true);
   }
 }

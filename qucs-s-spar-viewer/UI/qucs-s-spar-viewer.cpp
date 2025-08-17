@@ -1976,6 +1976,7 @@ void Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection(int index) {
   }
 }
 
+// Triggers synthesis when a tool is selected
 void Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged(bool visible) {
   if (visible) {
     // Dock is now visible - trigger your function
