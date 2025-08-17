@@ -2,7 +2,7 @@
 
 void Qucs_S_SPAR_Viewer::setToolsDock() {
   // Tools dock
-  dockTools = new QDockWidget("Tools", this);
+  dockTools = new QDockWidget("Circuit Synthesis", this);
   dockTools->setObjectName("dockTools");
 
   // Main container widget for the dock
@@ -16,10 +16,12 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   toolsTabWidget = new QTabWidget();
 
   FilterTool = new FilterDesignTool(this);
+  PowerCombTool = new PowerCombiningTool(this);
   Netlist_Tool = new NetlistScratchPad(this);
   SimulationSetupWidget = new SimulationSetup(this);
 
   toolsTabWidget->addTab(FilterTool, "Filter Design");
+  toolsTabWidget->addTab(PowerCombTool, "Power Combining");
   toolsTabWidget->addTab(Netlist_Tool, "Scratch Pad");
   toolsTabWidget->addTab(SimulationSetupWidget, "Simulation Setup");
 
@@ -35,10 +37,12 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
   // Connect with tools to update the simulated traces
   connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
+  connect(PowerCombTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(Netlist_Tool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(SimulationSetupWidget, SIGNAL(updateSimulation()), this, SLOT(updateSimulation()));
 
-
+  // Update simulation and schematic when the user clicks on another tab
+  connect(toolsTabWidget, &QTabWidget::currentChanged, this, &Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged);
   connect(dockTools, &QDockWidget::visibilityChanged, this, &Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged);
 }
 

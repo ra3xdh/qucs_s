@@ -87,9 +87,6 @@ endif()
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
-#ADD_SUBDIRECTORY( bitmaps ) -> added as resources
-
-
 file(GLOB PLOT_WIDGETS_SOURCES
      PlotWidgets/*.cpp
 )
@@ -155,6 +152,14 @@ file(GLOB FILTERING_HEADERS
      Tools/Filtering/*.h
 )
 
+file(GLOB POWER_COMBINING_SOURCES
+     Tools/PowerCombining/*.cpp
+)
+
+file(GLOB POWER_COMBINING_HEADERS
+     Tools/PowerCombining/*.h
+)
+
 file(GLOB NETLIST_SCRATCHPAD_SOURCES
      Tools/NetlistScratchPad/*.cpp
 )
@@ -182,6 +187,7 @@ set(spar_viewer_sources
     ${MISC_SOURCES}
     ${TOOLS_SOURCES}
     ${FILTERING_SOURCES}
+    ${POWER_COMBINING_SOURCES}
     ${NETLIST_SCRATCHPAD_SOURCES}
     ${SIMULATION_SETTINGS_SOURCES}
     ${QCUSTOMPLOT_SOURCE}
@@ -196,6 +202,7 @@ set(spar_viewer_moc_headers
     ${MISC_HEADERS}
     ${TOOLS_HEADERS}
     ${FILTERING_HEADERS}
+    ${POWER_COMBINING_HEADERS}
     ${NETLIST_SCRATCHPAD_HEADERS}
     ${SIMULATION_SETTINGS_HEADERS}
     ${QCUSTOMPLOT_HEADER}

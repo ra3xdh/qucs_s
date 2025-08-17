@@ -1983,6 +1983,10 @@ void Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged(bool visible) {
     switch (index){
     case 0: // Filter design tool
       FilterTool->synthesize();
+      break;
+    case 1: // Power Combining tool
+      PowerCombTool->design();
+      break;
     }
   }
 }

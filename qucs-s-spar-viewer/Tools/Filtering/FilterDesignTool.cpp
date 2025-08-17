@@ -363,8 +363,8 @@ void FilterDesignTool::synthesize() {
   }
 
 
-  QString FilterName = traceNameLineEdit->text();
-  SchContent.Name = FilterName;
+  QString TraceName = traceNameLineEdit->text();
+  SchContent.Name = TraceName;
   emit updateSchematic(SchContent);
   emit updateSimulation(SchContent);
 
@@ -776,7 +776,7 @@ void FilterDesignTool::setSettings_Semilumped(){
   FilterResponseTypeCombo->blockSignals(true);
   FilterClassCombo->blockSignals(true);
 
-  // Load default filter response types + Elliptic type
+         // Load default filter response types + Elliptic type
   FilterResponseTypeCombo->clear();
   FilterResponseTypeCombo->addItems(DefaultFilterResponses);
   FilterResponseTypeCombo->addItem("Elliptic");

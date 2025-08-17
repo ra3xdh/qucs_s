@@ -9,6 +9,7 @@
 #include "../CustomWidgets/matrixcombopopup.h"
 
 #include "../Tools/Filtering/FilterDesignTool.h"
+#include "../Tools/PowerCombining/PowerCombiningTool.h"
 #include "../Tools/NetlistScratchPad/netlistscratchpad.h"
 #include "../Tools/SimulationSetup/simulationsetup.h"
 
@@ -342,10 +343,14 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
   void onToolsDockVisibilityChanged(bool visible);
 
-  // Filter Tool
   QTabWidget * toolsTabs;
+
+  // Filter Tool
   QWidget * FilterToolTab;
   FilterDesignTool *FilterTool;
+
+  // Power Combining Tool
+  PowerCombiningTool * PowerCombTool;
 
   // S-parameter simulation class
   SParameterCalculator SPAR_engine;
