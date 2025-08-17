@@ -30,7 +30,7 @@ std::deque<double> PowerCombinerDesigner::ChebyshevTaper(double RL,
             cosh((1 / (1. * N)) * acosh(fabs(log(RL / Z0) / (2 * gamma))));
 
   std::deque<double> Taper;
-  double w[N];
+  std::vector<double> w(N, 0.0);
 
   switch (N) // The weights are calculated by equating the reflection coeffient
              // formula to the N-th Chebyshev polinomial

@@ -18,7 +18,7 @@
 void PowerCombinerDesigner::TJunction() {
   // Design equations
   double K = Specs.OutputRatio.at(0) * Specs.OutputRatio.at(0);
-  int index_t2 = 2, index_t3 = 3;
+  int index_t2 = 2;
   double lambda4 = SPEED_OF_LIGHT / (4 * Specs.freq);
 
   ComponentInfo TL4, TL5; // Auxiliar lines for matching in case of K!=1
@@ -80,7 +80,6 @@ void PowerCombinerDesigner::TJunction() {
 
     xpos_term += 25;
     index_t2 = 5;
-    index_t3 = 4;
   }
 
   ComponentInfo TermSpar2(
