@@ -682,7 +682,7 @@ QGridLayout* RectangularPlotWidget::setupAxisSettings()
 
   y2AxisDiv = new QDoubleSpinBox();
   y2AxisDiv->setMinimum(0.1);
-  y2AxisDiv->setMaximum(1000000);
+  y2AxisDiv->setMaximum(180);
   y2AxisDiv->setValue(45);
   y2AxisDiv->setSingleStep(5);
   connect(y2AxisDiv, SIGNAL(valueChanged(double)), this, SLOT(updateY2Axis()));
