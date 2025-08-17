@@ -44,20 +44,20 @@ public:
   // Setter getter functions
 
   // Components, wires and nodes
-  void appendComponent(struct ComponentInfo);
-  void appendWire(struct WireInfo);
+  void appendComponent(ComponentInfo);
+  void appendWire(WireInfo);
   void appendWire(QString, int, QString, int);
   void appendWire(QString, int, QString, int, QColor);
-  void appendNode(struct NodeInfo);
+  void appendNode(NodeInfo);
 
   double getZin();
   double getZout();
   QString getZinString();
   QString getZoutString();
 
-  QList<struct ComponentInfo> getComponents();
-  QList<struct WireInfo> getWires();
-  QList<struct NodeInfo> getNodes();
+  QList<ComponentInfo> getComponents();
+  QList<WireInfo> getWires();
+  QList<NodeInfo> getNodes();
 
   QMap<ComponentType, int>
       NumberComponents; // List for assigning IDs to the filter components
@@ -65,9 +65,9 @@ public:
 
 
 private:
-  QList<struct ComponentInfo> Comps;
-  QList<struct WireInfo> Wires;
-  QList<struct NodeInfo> Nodes;
+  QList<ComponentInfo> Comps;
+  QList<WireInfo> Wires;
+  QList<NodeInfo> Nodes;
   QString Description;
   QString netlist;
 };
