@@ -113,8 +113,7 @@ QPainterPath Component::shape() const {
   return path;
 }
 
-void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                      QWidget *) {
+void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget *) {
   painter->setPen(QPen(Qt::darkBlue, 1));
   painter->setFont(QFont("Arial", 6, QFont::Bold));
   switch (CompType) {

@@ -17,7 +17,7 @@
 
 void PowerCombinerDesigner::MultistageWilkinson() {
   int NStages = Specs.Nstages;
-  double C[NStages], L[NStages];
+  std::vector<double> C(NStages, 0.0), L(NStages, 0.0);
   std::deque<double> Zlines = ChebyshevTaper(2 * Specs.Z0, 0.05);
   ComponentInfo TermSpar1, TermSpar2, TermSpar3;
   ComponentInfo Ground;

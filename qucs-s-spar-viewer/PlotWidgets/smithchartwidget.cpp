@@ -219,7 +219,7 @@ void SmithChartWidget::setCharacteristicImpedance(double z)
   update(); // Redraw the chart with the new Z0
 }
 
-void SmithChartWidget::paintEvent(QPaintEvent *event)
+void SmithChartWidget::paintEvent(QPaintEvent */*event*/)
 {
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);

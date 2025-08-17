@@ -70,7 +70,7 @@ void GraphWidget::ComponentSelectionHandler(struct ComponentInfo CI) {
   emit this->SendComponentSelectionToMainFunction(CI);
 }
 
-void GraphWidget::keyPressEvent(QKeyEvent *event) {}
+void GraphWidget::keyPressEvent(QKeyEvent */*event*/) {}
 //! [3]
 
 //! [4]

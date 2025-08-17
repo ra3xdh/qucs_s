@@ -55,8 +55,7 @@ QPainterPath Node::shape() const {
 
 QString Node::getID() { return ID; }
 
-void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                 QWidget *) {
+void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget *) {
   QBrush brush = painter->brush();
   brush.setStyle(Qt::SolidPattern);
   painter->setBrush(brush);
@@ -89,4 +88,4 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   QGraphicsItem::mouseReleaseEvent(event);
 }
 
-QPoint Node::getPortLocation(int port_number) { return QPoint(0, 0); }
+QPoint Node::getPortLocation(int /*port_number*/) { return QPoint(0, 0); }

@@ -779,7 +779,6 @@ void EllipticFilter::Insert_LowpassMinC_Section(
 
   double Kl = Specification.ZS / (2 * M_PI * Specification.fc);
   double Kc = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
-  int corr = 1;
   QMapIterator<QString, unsigned int> mapIT(UnconnectedComponents);
 
   if (CentralSection) {
@@ -829,10 +828,6 @@ void EllipticFilter::Insert_LowpassMinC_Section(
   //********************************************************************************
 
   (flip) ? posx -= 50 : posx += 50;
-  if (!flip)
-    corr = 0;
-  else
-    corr = 1;
 
   // Shunt inductor
   if (Lshunt_LP_MINC != 0) {
@@ -916,7 +911,6 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
 
   double Kl = Specification.ZS / (2 * M_PI * Specification.fc);
   double Kc = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
-  int corr = 1;
   QMapIterator<QString, unsigned int> mapIT(UnconnectedComponents);
 
   if (CentralSection) {
@@ -977,10 +971,6 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   //********************************************************************************
 
   (flip) ? posx -= 50 : posx += 50;
-  if (!flip)
-    corr = 0;
-  else
-    corr = 1;
 
   // Shunt inductor
   if (Lshunt_LP_MINC != 0) {
@@ -1090,7 +1080,6 @@ void EllipticFilter::Insert_HighpassMinL_Section(
 
   double Kl = Specification.ZS / (2 * M_PI * Specification.fc);
   double Kc = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
-  int corr = 1;
   QMapIterator<QString, unsigned int> mapIT(UnconnectedComponents);
 
   if (CentralSection) {
@@ -1137,11 +1126,6 @@ void EllipticFilter::Insert_HighpassMinL_Section(
   Schematic.appendNode(NI);
 
   (flip) ? posx -= 50 : posx += 50;
-
-  if (!flip)
-    corr = 0;
-  else
-    corr = 1;
 
   // Shunt inductor
   if (Cseries_LP->at(j) != 0) {
@@ -1228,7 +1212,6 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
 
   double Kl = Specification.ZS / (2 * M_PI * Specification.fc);
   double Kc = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
-  int corr = 1;
   double L_li, L_ci, lambda0 = SPEED_OF_LIGHT / Specification.fc;
   QMapIterator<QString, unsigned int> mapIT(UnconnectedComponents);
 
@@ -1276,11 +1259,6 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
   Schematic.appendNode(NI);
 
   (flip) ? posx -= 50 : posx += 50;
-
-  if (!flip)
-    corr = 0;
-  else
-    corr = 1;
 
   // Shunt inductor
   if (Cseries_LP->at(j) != 0) {
