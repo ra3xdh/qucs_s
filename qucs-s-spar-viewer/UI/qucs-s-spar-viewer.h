@@ -10,15 +10,13 @@
 
 #include "../Tools/Filtering/FilterDesignTool.h"
 #include "../Tools/PowerCombining/PowerCombiningTool.h"
+#include "../Tools/AttenuatorDesign/AttenuatorDesignTool.h"
 #include "../Tools/NetlistScratchPad/netlistscratchpad.h"
 #include "../Tools/SimulationSetup/simulationsetup.h"
-
 
 #include "../SPAR/SParameterCalculator.h"
 
 #include "../Misc/general.h"
-
-
 
 #include <QMainWindow>
 #include <QLabel>
@@ -354,6 +352,9 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
   // Power Combining Tool
   PowerCombiningTool * PowerCombTool;
+
+  // Attenuator Design Tool
+  AttenuatorDesignTool *AttenuatorTool;
 
   // S-parameter simulation class
   SParameterCalculator SPAR_engine;

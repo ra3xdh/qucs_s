@@ -103,8 +103,4 @@ struct AttenuatorDesignParameters {
   bool Lumped_TL;     // Use the lumped equivalent of a QW transmission line
 };
 
-struct PdissAtt {
-  double R1, R2, R3, R4;
-};
-
 #endif // STRUCTURES_H

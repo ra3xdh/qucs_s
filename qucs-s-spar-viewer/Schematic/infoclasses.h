@@ -6,13 +6,14 @@
 
 class ComponentInfo {
 public:
-  ComponentInfo() : Coordinates(2){};
+  ComponentInfo() : Coordinates(2){}
+
   ComponentInfo(QString ID_, ComponentType Type_, double rot_, double x,
                 double y)
       : ID(ID_), Type(Type_), Rotation(rot_), Coordinates(2) {
     Coordinates[0] = x;
     Coordinates[1] = y;
-  };
+  }
 
   QString ID;
   ComponentType Type;
@@ -27,7 +28,8 @@ public:
     case Coupler:
       return 4;
     }
-  };
+  }
+
   void setParams(QString ID_, ComponentType Type_, double Rotation_, double x,
                  double y // Coordinates
                  ) {
@@ -36,7 +38,7 @@ public:
     Rotation = Rotation_;
     Coordinates[0] = x;
     Coordinates[1] = y;
-  };
+  }
 
   QString getQucsCode() {
     QString code;

@@ -17,11 +17,13 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
   FilterTool = new FilterDesignTool(this);
   PowerCombTool = new PowerCombiningTool(this);
+  AttenuatorTool = new AttenuatorDesignTool(this);
   Netlist_Tool = new NetlistScratchPad(this);
   SimulationSetupWidget = new SimulationSetup(this);
 
   toolsTabWidget->addTab(FilterTool, "Filter Design");
   toolsTabWidget->addTab(PowerCombTool, "Power Combining");
+  toolsTabWidget->addTab(AttenuatorTool, "Attenuator Design");
   toolsTabWidget->addTab(Netlist_Tool, "Scratch Pad");
   toolsTabWidget->addTab(SimulationSetupWidget, "Simulation Setup");
 

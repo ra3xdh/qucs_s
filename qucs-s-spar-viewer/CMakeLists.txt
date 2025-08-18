@@ -160,6 +160,14 @@ file(GLOB POWER_COMBINING_HEADERS
      Tools/PowerCombining/*.h
 )
 
+file(GLOB ATTENUATOR_SOURCES
+     Tools/AttenuatorDesign/*.cpp
+)
+
+file(GLOB ATTENUATOR_HEADERS
+     Tools/AttenuatorDesign/*.h
+)
+
 file(GLOB NETLIST_SCRATCHPAD_SOURCES
      Tools/NetlistScratchPad/*.cpp
 )
@@ -188,6 +196,7 @@ set(spar_viewer_sources
     ${TOOLS_SOURCES}
     ${FILTERING_SOURCES}
     ${POWER_COMBINING_SOURCES}
+    ${ATTENUATOR_SOURCES}
     ${NETLIST_SCRATCHPAD_SOURCES}
     ${SIMULATION_SETTINGS_SOURCES}
     ${QCUSTOMPLOT_SOURCE}
@@ -203,6 +212,7 @@ set(spar_viewer_moc_headers
     ${TOOLS_HEADERS}
     ${FILTERING_HEADERS}
     ${POWER_COMBINING_HEADERS}
+    ${ATTENUATOR_HEADERS}
     ${NETLIST_SCRATCHPAD_HEADERS}
     ${SIMULATION_SETTINGS_HEADERS}
     ${QCUSTOMPLOT_HEADER}
