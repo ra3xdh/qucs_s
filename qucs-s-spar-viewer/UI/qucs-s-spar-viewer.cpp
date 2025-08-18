@@ -1988,6 +1988,9 @@ void Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged(bool visible) {
     case 1: // Power Combining tool
       PowerCombTool->design();
       break;
+    case 2: // Attenuator tool
+      AttenuatorTool->design();
+      break;
     }
   }
 }

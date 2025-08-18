@@ -20,6 +20,9 @@ AttenuatorDesigner::AttenuatorDesigner(AttenuatorDesignParameters SPC) {
   Specs = SPC;
 }
 
+AttenuatorDesigner::~AttenuatorDesigner() {
+}
+
 QList<ComponentInfo> AttenuatorDesigner::getComponents() { return Components; }
 
 QList<WireInfo> AttenuatorDesigner::getWires() { return Wires; }

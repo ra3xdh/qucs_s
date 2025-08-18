@@ -57,7 +57,7 @@ void AttenuatorDesigner::PiAttenuator() {
 
   Schematic.appendWire(TermSpar1.ID, 0, NI.ID, 0);
   Schematic.appendWire(Res1.ID, 1, NI.ID, 0);
-  Schematic.appendWire(Res1.ID, 2, Ground.ID, 0);
+  Schematic.appendWire(Res1.ID, 0, Ground.ID, 0);
 
   // Series resistor
   Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 90, 100, 0);

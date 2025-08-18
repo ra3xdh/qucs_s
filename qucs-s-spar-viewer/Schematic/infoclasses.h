@@ -22,11 +22,11 @@ public:
   std::vector<double> Coordinates;
   int getNumberOfPorts() {
     switch (Type) {
-    default:
-      return 2;
     case CoupledLines:
     case Coupler:
       return 4;
+    default:
+      return 2;
     }
   }
 

@@ -40,6 +40,7 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   // Connect with tools to update the simulated traces
   connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(PowerCombTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
+  connect(AttenuatorTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(Netlist_Tool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(SimulationSetupWidget, SIGNAL(updateSimulation()), this, SLOT(updateSimulation()));
 
@@ -85,7 +86,7 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
   QStringList filteredList = displayed_traces_keys.filter(regex);
 
   if (filteredList.isEmpty()) {
-    // Default to Filter traces
+    // Default traces (used in filter and attenuator design tools)
     TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
     TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss
     this->addTrace(s11_dB, Qt::blue, 1);
@@ -136,7 +137,7 @@ void Qucs_S_SPAR_Viewer::updateSchematicContent() {
 // Second, it calls onToolsDockVisibilityChanged() function to trigger circuit synthesis
 void Qucs_S_SPAR_Viewer::onToolsTabChanged(int index) {
 
-  if (index < 2) {
+  if (index < 3) {
     // Remove other design datasets.
     // This does not make sense if the netlist tool is selected since it can be used to test values and compare with the trace of the previously selected tool
     for (const QString &ID : qAsConst(Tools_Datasets)) {

@@ -153,32 +153,20 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   AttenuatorDesignLayout->addWidget(traceNameLabel, 11, 0);
   AttenuatorDesignLayout->addWidget(traceNameLineEdit, 11, 1);
 
-  connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(on_TopoCombo_currentIndexChanged(int)));
-  connect(AttenuationSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(ZinSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(ZoutSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(freqSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqScaleCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(Pin_SpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(Pin_units_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(LumpedImplementationCheckbox, SIGNAL(stateChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(R1_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(QString)), this,
-          SLOT(UpdatePowerDissipationData()));
-  connect(R2_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(QString)), this,
-          SLOT(UpdatePowerDissipationData()));
-  connect(R3_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(QString)), this,
-          SLOT(UpdatePowerDissipationData()));
-  connect(R4_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(QString)), this,
-          SLOT(UpdatePowerDissipationData()));
+  connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_TopoCombo_currentIndexChanged(int)));
+  connect(AttenuationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(ZinSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(ZoutSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(freqSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(FreqScaleCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(Pin_SpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(Pin_units_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(LumpedImplementationCheckbox, SIGNAL(stateChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(R1_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdatePowerDissipationData()));
+  connect(R2_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdatePowerDissipationData()));
+  connect(R3_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdatePowerDissipationData()));
+  connect(R4_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdatePowerDissipationData()));
+
   this->setLayout(AttenuatorDesignLayout);
 
   on_TopoCombo_currentIndexChanged(0);
@@ -392,6 +380,7 @@ double AttenuatorDesignTool::getPowerW(double Pin, unsigned int index) {
     Pin = pow(10, (0.1 * Pin - 6)) / 50; // dBmV [50Ohm] -> W
     break;
   }
+  return Pin;
 }
 
 // Given a power data in W, this function converts the power

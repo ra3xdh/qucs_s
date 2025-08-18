@@ -27,6 +27,7 @@ struct PdissAtt {
 class AttenuatorDesigner : public Network {
 public:
   AttenuatorDesigner(AttenuatorDesignParameters);
+  ~AttenuatorDesigner();
   QList<ComponentInfo> getComponents();
   QList<WireInfo> getWires();
   QList<NodeInfo> getNodes();
