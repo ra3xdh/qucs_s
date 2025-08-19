@@ -27,6 +27,7 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   Topology_Combo->addItem("Reflection Attenuator");
   Topology_Combo->addItem("Quarter-wave series");
   Topology_Combo->addItem("Quarter-wave shunt");
+  Topology_Combo->addItem("L-pad 1st series");
   AttenuatorDesignLayout->addWidget(Topology_Label, 0, 0);
   AttenuatorDesignLayout->addWidget(Topology_Combo, 0, 1);
 
@@ -345,6 +346,36 @@ void AttenuatorDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     freqLabel->show();
     freqSpinBox->show();
     FreqScaleCombo->show();
+    break;
+
+  case 6: // Lpads
+    // Hide lumped component checkbox
+    LumpedImplementationCheckbox->hide();
+
+    // Replace Zin by Z0
+    Zin_Label->setText(QString("Z0"));
+
+    // Shows Pdiss for R3
+    Pdiss_R3_Label->show();
+    Pdiss_R3_Lineedit->show();
+    R3_Pdiss_Units_Combo->show();
+
+           // Hide Pdiss for R4
+    Pdiss_R4_Label->hide();
+    Pdiss_R4_Lineedit->hide();
+    R4_Pdiss_Units_Combo->hide();
+
+    // Hide Zout
+    Zout_Label->hide();
+    ZoutSpinBox->hide();
+    Ohm_Zout_Label->hide();
+
+    // Hide frequency input
+    freqLabel->hide();
+    freqSpinBox->hide();
+    FreqScaleCombo->hide();
+    break;
+
   default:
     break;
   }

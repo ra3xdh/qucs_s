@@ -49,9 +49,15 @@ private:
   void PiAttenuator();
   void TeeAttenuator();
   void BridgedTeeAttenuator();
+
   void ReflectionAttenuator();
+
+  // Tuned attenuators
   void QW_SeriesAttenuator();
   void QW_ShuntAttenuator();
+
+  // L-pads
+  void LPadFirstSeriesAttenuator();
 };
 
 #endif // ATTENUATORDESIGNER_H

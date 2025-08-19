@@ -30,16 +30,20 @@ QList<WireInfo> AttenuatorDesigner::getWires() { return Wires; }
 QList<NodeInfo> AttenuatorDesigner::getNodes() { return Nodes; }
 
 void AttenuatorDesigner::synthesize() {
-  if (Specs.Topology == "Pi")
+  if (Specs.Topology == "Pi") {
     PiAttenuator();
-  if (Specs.Topology == "Tee")
+  } else if (Specs.Topology == "Tee") {
     TeeAttenuator();
-  if (Specs.Topology == "Bridged Tee")
+  } else if (Specs.Topology == "Bridged Tee") {
     BridgedTeeAttenuator();
-  if (Specs.Topology == "Reflection Attenuator")
+  } else if (Specs.Topology == "Reflection Attenuator") {
     ReflectionAttenuator();
-  if (Specs.Topology == "Quarter-wave series")
+  } else if (Specs.Topology == "Quarter-wave series") {
     QW_SeriesAttenuator();
-  if (Specs.Topology == "Quarter-wave shunt")
+  } else if (Specs.Topology == "Quarter-wave shunt") {
     QW_ShuntAttenuator();
+  } else if (Specs.Topology == "L-pad 1st series") {
+    LPadFirstSeriesAttenuator();
+  }
 }
+
