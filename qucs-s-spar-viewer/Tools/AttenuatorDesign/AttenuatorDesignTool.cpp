@@ -28,6 +28,7 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   Topology_Combo->addItem("Quarter-wave series");
   Topology_Combo->addItem("Quarter-wave shunt");
   Topology_Combo->addItem("L-pad 1st series");
+  Topology_Combo->addItem("L-pad 1st shunt");
   AttenuatorDesignLayout->addWidget(Topology_Label, 0, 0);
   AttenuatorDesignLayout->addWidget(Topology_Combo, 0, 1);
 
@@ -348,7 +349,8 @@ void AttenuatorDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     FreqScaleCombo->show();
     break;
 
-  case 6: // Lpads
+  case 6:
+  case 7: // Lpads
     // Hide lumped component checkbox
     LumpedImplementationCheckbox->hide();
 

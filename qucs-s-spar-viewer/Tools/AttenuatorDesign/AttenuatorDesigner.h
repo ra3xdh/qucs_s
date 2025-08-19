@@ -58,6 +58,7 @@ private:
 
   // L-pads
   void LPadFirstSeriesAttenuator();
+  void LPadFirstShuntAttenuator();
 };
 
 #endif // ATTENUATORDESIGNER_H

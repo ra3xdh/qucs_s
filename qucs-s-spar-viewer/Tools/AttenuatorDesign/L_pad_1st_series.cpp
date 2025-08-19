@@ -60,7 +60,7 @@ void AttenuatorDesigner::LPadFirstSeriesAttenuator() {
 
          // Output terminal
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 200, 0);
-  TermSpar2.val["Z"] = num2str(R3, Resistance);  // Output impedance is R3
+  TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
   Schematic.appendComponent(TermSpar2);
 
          // Wiring connections
