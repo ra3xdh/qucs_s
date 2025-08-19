@@ -59,6 +59,9 @@ private:
   // L-pads
   void LPadFirstSeriesAttenuator();
   void LPadFirstShuntAttenuator();
+
+  // Single resistor attenuators
+  void RSeriesAttenuator();
 };
 
 #endif // ATTENUATORDESIGNER_H

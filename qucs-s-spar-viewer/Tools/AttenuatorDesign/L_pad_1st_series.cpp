@@ -28,7 +28,7 @@ void AttenuatorDesigner::LPadFirstSeriesAttenuator() {
   double L = pow(10, -Specs.Attenuation / 10);
   double R1 = -Specs.Zin * (L - 1) / (sqrt(L) + 1);  // Series resistor
   double R2 = -Specs.Zin * (L + sqrt(L)) / (L - 1);  // Shunt resistor
-  double R3 = R2 * (R1 + Specs.Zin) / (R1 + R2 + Specs.Zin);  // Output impedance
+  double Zout = R2 * (R1 + Specs.Zin) / (R1 + R2 + Specs.Zin);  // Output impedance
 
          // Power dissipation calculation (from attenuatorfunc.cpp)
   Pdiss.R1 = Specs.Pin * (1 - sqrt(L));  // Series resistor

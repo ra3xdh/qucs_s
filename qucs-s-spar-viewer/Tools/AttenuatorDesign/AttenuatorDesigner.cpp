@@ -46,6 +46,8 @@ void AttenuatorDesigner::synthesize() {
     LPadFirstSeriesAttenuator();
   } else if (Specs.Topology == "L-pad 1st shunt") {
     LPadFirstShuntAttenuator();
+  } else if (Specs.Topology == "Rseries") {
+    RSeriesAttenuator();
   }
 }
 
