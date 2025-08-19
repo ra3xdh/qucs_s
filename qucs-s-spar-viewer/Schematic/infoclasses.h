@@ -3,6 +3,8 @@
 #include "../Schematic/structures.h"
 #include <QColor>
 #include <QMap>
+#include <QFont>
+#include <QPointF>
 
 class ComponentInfo {
 public:
@@ -150,18 +152,43 @@ private:
 
 class NodeInfo {
 public:
-  NodeInfo() : Coordinates(2){};
+  NodeInfo() : Coordinates(2){}
   NodeInfo(QString ID_, double x, double y) : ID(ID_), Coordinates(2) {
     Coordinates[0] = x;
     Coordinates[1] = y;
-  };
+  }
   void setParams(QString ID_, double x, double y) {
     ID = ID_;
     Coordinates[0] = x;
     Coordinates[1] = y;
-  };
+  }
   QString ID;
   QString Net;
   std::vector<double> Coordinates;
 };
+
+class TextInfo {
+public:
+  TextInfo() : position(0, 0) {}
+
+  TextInfo(QString ID_, QString text_, QFont font_ = QFont(),
+           QColor color_ = Qt::black, QPointF position_ = QPointF())
+      : ID(ID_), text(text_), font(font_), color(color_), position(position_) {}
+
+  void setParams(QString ID_, QString text_, QFont font_ = QFont(),
+                 QColor color_ = Qt::black, QPointF position_ = QPointF()) {
+    ID = ID_;
+    text = text_;
+    font = font_;
+    color = color_;
+    position = position_;
+  }
+
+  QString ID;
+  QString text;
+  QFont font;
+  QColor color;
+  QPointF position;
+};
+
 #endif // INFOCLASSES_H

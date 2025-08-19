@@ -207,6 +207,7 @@ void GraphWidget::setSchematic(SchematicContent SchContent) {
   this->setNodes(SchContent.getNodes());
   this->setComponents(SchContent.getComponents());
   this->setWires(SchContent.getWires());
+  this->setTexts(SchContent.getTexts());
 }
 
 // Clear the scene
@@ -217,4 +218,16 @@ void GraphWidget::clear() {
     delete Nodes.front(), Nodes.pop_front(); // Remove nodes
   while (!Wires.empty())
     delete Wires.front(), Wires.pop_front(); // Remove wires
+  while (!Texts.empty())
+    delete Texts.front(), Texts.pop_front(); // Remove texts
+}
+
+
+void GraphWidget::setTexts(QList<QGraphicsTextItem *> texts) {
+  this->Texts.clear();
+  for (int i = 0; i < texts.length(); i++) {
+    QGraphicsTextItem * TI = texts.at(i);
+    Texts.push_back(TI);
+    scene()->addItem(TI);
+  }
 }

@@ -53,8 +53,6 @@
 #include "node.h"
 #include "wire.h"
 
-
-
 class Node;
 class Wire;
 
@@ -66,18 +64,19 @@ public:
   GraphWidget(QWidget *parent = 0);
 
   void itemMoved();
-  void setComponents(QList<struct ComponentInfo>);
-  void ModifyComponent(struct ComponentInfo);
-  void setWires(QList<struct WireInfo>);
-  void setNodes(QList<struct NodeInfo>);
+  void setComponents(QList<ComponentInfo>);
+  void ModifyComponent(ComponentInfo);
+  void setWires(QList<WireInfo>);
+  void setNodes(QList<NodeInfo>);
   void setSchematic(SchematicContent);
+  void setTexts(QList<QGraphicsTextItem *>);
   void clear();
 
 public slots:
   void shuffle();
   void zoomIn();
   void zoomOut();
-  void ComponentSelectionHandler(struct ComponentInfo);
+  void ComponentSelectionHandler(ComponentInfo);
 
 protected:
   void keyPressEvent(QKeyEvent *event);
@@ -91,8 +90,10 @@ private:
   std::deque<Component *> Components;
   std::deque<Wire *> Wires;
   std::deque<Node *> Nodes;
+  std::deque<QGraphicsTextItem *> Texts;
+
 signals:
-  void SendComponentSelectionToMainFunction(struct ComponentInfo);
+  void SendComponentSelectionToMainFunction(ComponentInfo);
 };
 //! [0]
 

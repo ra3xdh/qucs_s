@@ -495,6 +495,7 @@ void SchematicContent::appendNode(struct NodeInfo N) { Nodes.append(N); }
 QList<struct ComponentInfo> SchematicContent::getComponents() { return Comps; }
 QList<struct WireInfo> SchematicContent::getWires() { return Wires; }
 QList<struct NodeInfo> SchematicContent::getNodes() { return Nodes; }
+QList<QGraphicsTextItem *> SchematicContent::getTexts() { return Texts; }
 
 double SchematicContent::getZin() { return Comps[0].val["Z"].toDouble(); }
 double SchematicContent::getZout() {
@@ -504,4 +505,9 @@ double SchematicContent::getZout() {
 QString SchematicContent::getZinString() { return Comps[0].val["Z"]; }
 QString SchematicContent::getZoutString() {
   return Comps[Comps.size() - 1].val["Z"];
+}
+
+
+void SchematicContent::appendText(QGraphicsTextItem *text) {
+  Texts.append(text);
 }

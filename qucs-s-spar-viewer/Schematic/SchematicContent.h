@@ -17,10 +17,12 @@
 #ifndef SCHEMATICCONTENT_H
 #define SCHEMATICCONTENT_H
 
+#include <QPen>
+#include <QGraphicsTextItem>
+
 #include "infoclasses.h"
 #include "structures.h"
 #include "../Misc/general.h"
-#include <QPen>
 
 class Component;
 
@@ -49,6 +51,8 @@ public:
   void appendWire(QString, int, QString, int);
   void appendWire(QString, int, QString, int, QColor);
   void appendNode(NodeInfo);
+  void appendText(QGraphicsTextItem * text);
+
 
   double getZin();
   double getZout();
@@ -58,6 +62,7 @@ public:
   QList<ComponentInfo> getComponents();
   QList<WireInfo> getWires();
   QList<NodeInfo> getNodes();
+  QList<QGraphicsTextItem *> getTexts();
 
   QMap<ComponentType, int>  NumberComponents; // List for assigning IDs to the filter components
   unsigned int NumberWires;
@@ -67,6 +72,7 @@ private:
   QList<ComponentInfo> Comps;
   QList<WireInfo> Wires;
   QList<NodeInfo> Nodes;
+  QList<QGraphicsTextItem *> Texts;
   QString Description;
   QString netlist;
 };
