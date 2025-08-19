@@ -43,7 +43,7 @@ void AttenuatorDesigner::ReflectionAttenuator() {
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 50, 150);
   Schematic.appendComponent(Ground);
 
-  Schematic.appendWire(Res1.ID, 2, Ground.ID, 0);
+  Schematic.appendWire(Res1.ID, 0, Ground.ID, 0);
 
          // Coupler
   QStringList ConnectionNodes;
@@ -51,12 +51,13 @@ void AttenuatorDesigner::ReflectionAttenuator() {
   ConnectionNodes.append(QString("NR1"));
   ConnectionNodes.append(QString("NR2"));
   ConnectionNodes.append(QString("N1"));
-  Coup.setParams(QString("COUP%1").arg(++Schematic.NumberComponents[Coupler]), Coupler, 0, 100, 25);
+  Coup.setParams(QString("COUPLER%1").arg(++Schematic.NumberComponents[Coupler]), Coupler, 0, 100, 50);
   Coup.val["k"] = num2str(0.7071, NoUnits);
-  Coup.val["phi"] = num2str(90, NoUnits);
+  Coup.val["Z0"] = num2str(Specs.Zin, Resistance);
+  Coup.val["phase"] = num2str(90, NoUnits);
   Schematic.appendComponent(Coup);
 
-  Schematic.appendWire(Res1.ID, 1, Coup.ID, 2);
+  Schematic.appendWire(Res1.ID, 1, Coup.ID, 0);
 
          // Second shunt resistor
   Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 150, 100);
@@ -74,7 +75,7 @@ void AttenuatorDesigner::ReflectionAttenuator() {
   TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
 
-  Schematic.appendWire(TermSparIN.ID, 0, Coup.ID, 0);
-  Schematic.appendWire(TermSpar2.ID, 0, Coup.ID, 1);
+  Schematic.appendWire(TermSparIN.ID, 0, Coup.ID, 1);
+  Schematic.appendWire(TermSpar2.ID, 0, Coup.ID, 2);
 }
 

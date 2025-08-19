@@ -359,6 +359,49 @@ QString SchematicContent::getSParameterNetlist() {
       }
       break;
 
+    case Coupler: {
+
+      int node1 = netToNodeMap.value(connections[0], -1);
+      if (node1 == -1) {
+        nodeCounter++;
+        node1 = nodeCounter;
+      }
+
+      int node2 = netToNodeMap.value(connections[1], -1);
+      if (node2 == -1) {
+        nodeCounter++;
+        node2 = nodeCounter;
+      }
+
+      int node3 = netToNodeMap.value(connections[2], -1);
+      if (node3 == -1) {
+        nodeCounter++;
+        node3 = nodeCounter;
+      }
+
+      int node4 = netToNodeMap.value(connections[3], -1);
+      if (node4 == -1) {
+        nodeCounter++;
+        node4 = nodeCounter;
+      }
+
+      QString Z0 = Comps[i].val["Z0"]; // Reference impedance
+      QString k = Comps[i].val["k"]; // Coupling factor
+      QString Phase = Comps[i].val["phase"]; // Coupler phase shift
+
+      QString COUP_ID = Comps[i].ID;
+      componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
+                          .arg(COUP_ID)
+                          .arg(node1)
+                          .arg(node2)
+                          .arg(node4)
+                          .arg(node3)
+                          .arg(k)
+                          .arg(Phase)
+                          .arg(Z0);
+
+      break;
+    }
     case CoupledLines: {
 
       int node1 = netToNodeMap.value(connections[0], -1);
