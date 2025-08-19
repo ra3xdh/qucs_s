@@ -48,6 +48,8 @@ void AttenuatorDesigner::synthesize() {
     LPadFirstShuntAttenuator();
   } else if (Specs.Topology == "Rseries") {
     RSeriesAttenuator();
+  } else if (Specs.Topology == "Rshunt") {
+    RShuntAttenuator();
   }
 }
 

@@ -62,6 +62,7 @@ private:
 
   // Single resistor attenuators
   void RSeriesAttenuator();
+  void RShuntAttenuator();
 };
 
 #endif // ATTENUATORDESIGNER_H

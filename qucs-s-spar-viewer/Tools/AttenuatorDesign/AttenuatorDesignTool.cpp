@@ -30,6 +30,7 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   Topology_Combo->addItem("L-pad 1st series");
   Topology_Combo->addItem("L-pad 1st shunt");
   Topology_Combo->addItem("Rseries");
+  Topology_Combo->addItem("Rshunt");
   AttenuatorDesignLayout->addWidget(Topology_Label, 0, 0);
   AttenuatorDesignLayout->addWidget(Topology_Combo, 0, 1);
 
