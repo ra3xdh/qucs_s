@@ -17,8 +17,8 @@
 #ifndef SCHEMATICCONTENT_H
 #define SCHEMATICCONTENT_H
 
-#include "../Schematic/infoclasses.h"
-#include "../Schematic/structures.h"
+#include "infoclasses.h"
+#include "structures.h"
 #include "../Misc/general.h"
 #include <QPen>
 
@@ -59,8 +59,7 @@ public:
   QList<WireInfo> getWires();
   QList<NodeInfo> getNodes();
 
-  QMap<ComponentType, int>
-      NumberComponents; // List for assigning IDs to the filter components
+  QMap<ComponentType, int>  NumberComponents; // List for assigning IDs to the filter components
   unsigned int NumberWires;
 
 

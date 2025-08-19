@@ -19,6 +19,10 @@
 #define WIRE_H
 
 #include <QGraphicsItem>
+#include <QPainter>
+#include <math.h>
+
+#include "symbol.h"
 
 class Symbol;
 

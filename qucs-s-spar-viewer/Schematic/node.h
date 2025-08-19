@@ -40,8 +40,17 @@
 
 #ifndef NODE_H
 #define NODE_H
-#include "../Schematic/Network.h"
+
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QStyleOption>
+
+
+#include "Network.h"
 #include "symbol.h"
+#include "graphwidget.h"
+#include "wire.h"
 
 class Node : public Symbol {
 public:

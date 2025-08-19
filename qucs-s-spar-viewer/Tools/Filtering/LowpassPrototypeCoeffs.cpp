@@ -99,14 +99,14 @@ std::deque<double> LowpassPrototypeCoeffs::calcChebyshev_gi() {
     gi.push_back(1);
   }
 
-  for (unsigned int i = 0; i < gi.size(); i++) {
-    qDebug() << "Lowpass coeff:" << gi.at(i);
+/* // LP coefficients
+  QStringList coeffStrings;
+  for (const auto &coeff : gi) {
+    coeffStrings << QString::number(coeff);
   }
+  qDebug() << "Lowpass coeffs:" << coeffStrings.join(' ');
+*/
 
-  /*//Debug
-  qDebug() << "*************Chebyshev coefficients**********";
-  for (int i = 0; i <=N+1; i++) qDebug() << "g" << i << ": " << gi[i];
-  qDebug() << "***********************************************";*/
   return gi;
 }
 

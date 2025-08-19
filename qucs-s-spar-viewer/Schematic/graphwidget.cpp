@@ -39,12 +39,7 @@
 ****************************************************************************/
 
 #include "graphwidget.h"
-#include "component.h"
-#include "node.h"
-#include "wire.h"
-#include <QtGui>
 
-#include <math.h>
 
 //! [0]
 GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), timerId(0) {

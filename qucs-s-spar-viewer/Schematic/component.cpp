@@ -13,14 +13,8 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
 
-#include "../Schematic/component.h"
-
-#include <qdebug.h>
+#include "component.h"
 
 Component::Component(GraphWidget *graphWidget, ComponentType comp, double Rot_,
                      QMap<QString, QString> val, QString ID_)

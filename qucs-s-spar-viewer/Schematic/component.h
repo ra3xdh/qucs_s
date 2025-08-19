@@ -20,12 +20,17 @@
 #include <QGraphicsView>
 #include <QList>
 #include <cmath>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QStyleOption>
+#include <qdebug.h>
 
-#include "../Schematic/graphwidget.h"
-#include "../Schematic/infoclasses.h"
-#include "../Schematic/structures.h"
-#include "../Schematic/symbol.h"
-#include "../Schematic/wire.h"
+#include "graphwidget.h"
+#include "infoclasses.h"
+#include "structures.h"
+#include "symbol.h"
+#include "wire.h"
 #include "../Misc/general.h"
 
 class Wire;

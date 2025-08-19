@@ -13,14 +13,8 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
 
-#include "graphwidget.h"
 #include "node.h"
-#include "wire.h"
 
 Node::Node(GraphWidget *graphWidget) : graph(graphWidget) {
   setFlag(ItemIsMovable);
