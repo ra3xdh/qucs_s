@@ -84,7 +84,7 @@ void AttenuatorDesigner::LPadFirstShuntAttenuator() {
   Schematic.appendWire(Res1.ID, 0, Ground.ID, 0);
 
          // Input terminal to series resistor
-  Schematic.appendWire(TermSpar1.ID, 0, Res2.ID, 0);
+  Schematic.appendWire(NI.ID, 0, Res2.ID, 0);
 
          // Series resistor to output terminal
   Schematic.appendWire(Res2.ID, 1, TermSpar2.ID, 0);
