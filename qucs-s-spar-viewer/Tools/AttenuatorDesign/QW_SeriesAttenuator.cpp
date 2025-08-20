@@ -17,35 +17,44 @@
 #include "AttenuatorDesigner.h"
 
 void AttenuatorDesigner::QW_SeriesAttenuator() {
-  ComponentInfo TermSpar1, TermSpar2;
+  ComponentInfo TermSpar2;
   ComponentInfo Ground, Res1, Res2, Res3, TL;
   ComponentInfo Lseries, Cshunt;
   NodeInfo NI;
   Components.clear();
+
   // Design equations
   double R = Specs.Zin / (pow(10, .05 * Specs.Attenuation) - 1);
   double l4 = .25 * SPEED_OF_LIGHT / Specs.Frequency;
   double w0 = 2 * M_PI * Specs.Frequency;
+
   // Power dissipation
   double K = (R + Specs.Zin) * (R + Specs.Zin);
   Pdiss.R1 = Specs.Pin * Specs.Zin * R / K;
   Pdiss.R2 = Specs.Pin * Specs.Zin * Specs.Zin / K;
   Pdiss.R3 = Pdiss.R1;
-  // Schematic implementation (updated style)
+
+  // Zout calculation
+  double Zout = (R * R * Specs.Zin + 2 * R * Specs.Zin * Specs.Zin) / (R * R + 2 * R * Specs.Zin + 2 * Specs.Zin * Specs.Zin);
+
+  // Schematic implementation
   // Input terminal
   ComponentInfo TermSparIN(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
   TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
+
   // 1st shunt resistor
   Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 50, 50);
   Res1.val["R"] = num2str(R, Resistance);
   Schematic.appendComponent(Res1);
+
   // First node after input and shunt
   NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50, 0);
   Schematic.appendNode(NI);
   Schematic.appendWire(TermSparIN.ID, 0, NI.ID, 0);   // Input to node
   Schematic.appendWire(Res1.ID, 1, NI.ID, 0);         // Res1 to node
+
   // 2nd shunt resistor and ground
   Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 50, 125);
   Res2.val["R"] = num2str(Specs.Zin, Resistance);
@@ -54,6 +63,7 @@ void AttenuatorDesigner::QW_SeriesAttenuator() {
   Schematic.appendComponent(Ground);
   Schematic.appendWire(Res1.ID, 0, Res2.ID, 1);       // Res1 to Res2
   Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);     // Res2 to ground
+
   if (Specs.Lumped_TL) {
     // Lumped transmission line: series L, shunt C
     Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 0, 50, -50);
@@ -75,6 +85,7 @@ void AttenuatorDesigner::QW_SeriesAttenuator() {
     Schematic.appendComponent(TL);
     Schematic.appendWire(TL.ID, 0, NI.ID, 0);         // TL to node
   }
+
   // Second node (output side of TL, L, etc)
   NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 150, 0);
   Schematic.appendNode(NI);
@@ -91,6 +102,7 @@ void AttenuatorDesigner::QW_SeriesAttenuator() {
   } else {
     Schematic.appendWire(NI.ID, 0, TL.ID, 1);         // Node to output of TL
   }
+
   // 3rd shunt resistor and ground
   Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 150, 50);
   Res3.val["R"] = num2str(R, Resistance);
@@ -99,6 +111,16 @@ void AttenuatorDesigner::QW_SeriesAttenuator() {
   Schematic.appendComponent(Ground);
   Schematic.appendWire(Res3.ID, 1, NI.ID, 0);         // Res3 to node
   Schematic.appendWire(Res3.ID, 0, Ground.ID, 0);     // Res3 to ground
+
+
+  // Zout label
+  QString Zout_label = QString("Zout = %1 \u03A9").arg(num2str(Zout));
+  QGraphicsTextItem* label2 = new QGraphicsTextItem(Zout_label);
+  label2->setDefaultTextColor(Qt::red);
+  label2->setFont(QFont("Arial", 6, QFont::Bold));
+  label2->setPos(130, -20);
+  Schematic.appendText(label2);
+
   // Output terminal
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 200, 0);
   TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
