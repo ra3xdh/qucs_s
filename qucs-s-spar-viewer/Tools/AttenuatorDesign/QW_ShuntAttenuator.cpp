@@ -22,17 +22,22 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
   ComponentInfo Lseries, Cshunt;
   NodeInfo NI1, NI2;
   Components.clear();
+
   // Design equations
   double R = Specs.Zin * (pow(10, .05 * Specs.Attenuation) - 1);
   double l4 = .25 * SPEED_OF_LIGHT / Specs.Frequency;
   double w0 = 2 * M_PI * Specs.Frequency;
+
   // Power dissipation
   double K = (R + Specs.Zin) * (R + Specs.Zin);
   Pdiss.R1 = Specs.Pin * Specs.Zin * R / K;
   Pdiss.R2 = Specs.Pin * R * R / K;
   Pdiss.R3 = Pdiss.R1;
 
-         // Schematic implementation - updated style
+  //Zout
+  double Zout = R + Specs.Zin*(R+Specs.Zin)/(2*R+Specs.Zin);
+
+         // Schematic implementation
 
          // Input terminal
   ComponentInfo TermSparIN(
@@ -125,6 +130,14 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
   Schematic.appendComponent(Res1);
 
   Schematic.appendWire(Res1.ID, 0, NI1.ID, 0);
+
+  // Zout label
+  QString Zout_label = QString("Zout = %1 \u03A9").arg(num2str(Zout));
+  QGraphicsTextItem* label2 = new QGraphicsTextItem(Zout_label);
+  label2->setDefaultTextColor(Qt::red);
+  label2->setFont(QFont("Arial", 6, QFont::Bold));
+  label2->setPos(130, -20);
+  Schematic.appendText(label2);
 
 
          // Output terminal
