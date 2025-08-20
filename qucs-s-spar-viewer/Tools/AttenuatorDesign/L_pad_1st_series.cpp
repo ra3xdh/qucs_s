@@ -58,6 +58,15 @@ void AttenuatorDesigner::LPadFirstSeriesAttenuator() {
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 150, 100);
   Schematic.appendComponent(Ground);
 
+  // Zout label
+  QString Zout_label = QString("Zout = %1 \u03A9").arg(num2str(Zout));
+  QGraphicsTextItem* label2 = new QGraphicsTextItem(Zout_label);
+  label2->setDefaultTextColor(Qt::red);
+  label2->setFont(QFont("Arial", 6, QFont::Bold));
+  label2->setPos(130, -20);
+  Schematic.appendText(label2);
+
+
          // Output terminal
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 200, 0);
   TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
