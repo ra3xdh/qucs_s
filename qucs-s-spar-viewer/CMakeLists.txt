@@ -144,43 +144,19 @@ file(GLOB UI_HEADERS
 )
 
 ## TOOLS
-file(GLOB FILTERING_SOURCES
+file(GLOB TOOLS_SOURCES
      Tools/Filtering/*.cpp
-)
-
-file(GLOB FILTERING_HEADERS
-     Tools/Filtering/*.h
-)
-
-file(GLOB POWER_COMBINING_SOURCES
      Tools/PowerCombining/*.cpp
-)
-
-file(GLOB POWER_COMBINING_HEADERS
-     Tools/PowerCombining/*.h
-)
-
-file(GLOB ATTENUATOR_SOURCES
      Tools/AttenuatorDesign/*.cpp
-)
-
-file(GLOB ATTENUATOR_HEADERS
-     Tools/AttenuatorDesign/*.h
-)
-
-file(GLOB NETLIST_SCRATCHPAD_SOURCES
      Tools/NetlistScratchPad/*.cpp
-)
-
-file(GLOB NETLIST_SCRATCHPAD_HEADERS
-     Tools/NetlistScratchPad/*.h
-)
-
-file(GLOB SIMULATION_SETTINGS_SOURCES
      Tools/SimulationSetup/*.cpp
 )
 
-file(GLOB SIMULATION_SETTINGS_HEADERS
+file(GLOB TOOLS_HEADERS
+     Tools/Filtering/*.h
+     Tools/PowerCombining/*.h
+     Tools/AttenuatorDesign/*.h
+     Tools/NetlistScratchPad/*.h
      Tools/SimulationSetup/*.h
 )
 
@@ -194,11 +170,6 @@ set(spar_viewer_sources
     ${SPAR_SOURCES}
     ${MISC_SOURCES}
     ${TOOLS_SOURCES}
-    ${FILTERING_SOURCES}
-    ${POWER_COMBINING_SOURCES}
-    ${ATTENUATOR_SOURCES}
-    ${NETLIST_SCRATCHPAD_SOURCES}
-    ${SIMULATION_SETTINGS_SOURCES}
     ${QCUSTOMPLOT_SOURCE}
 )
 
@@ -210,11 +181,6 @@ set(spar_viewer_moc_headers
     ${SPAR_HEADERS}
     ${MISC_HEADERS}
     ${TOOLS_HEADERS}
-    ${FILTERING_HEADERS}
-    ${POWER_COMBINING_HEADERS}
-    ${ATTENUATOR_HEADERS}
-    ${NETLIST_SCRATCHPAD_HEADERS}
-    ${SIMULATION_SETTINGS_HEADERS}
     ${QCUSTOMPLOT_HEADER}
 )
 
