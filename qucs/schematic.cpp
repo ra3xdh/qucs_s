@@ -1572,7 +1572,7 @@ int Schematic::adjustPortNumbers()
                 }
 
                 if (pp) {
-                    ((PortSymbol *) pp)->nameStr = pc->Name;
+                    ((PortSymbol *) pp)->setPortName(pc->Name);
                 } else {
                     a_SymbolPaints.push_back(new PortSymbol(x1, y2, Str, pc->Name));
                     y2 += 40;

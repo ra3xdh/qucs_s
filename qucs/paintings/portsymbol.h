@@ -49,6 +49,7 @@ public:
   bool Dialog(QWidget *Doc) override;
 
   QString numberStr, nameStr;
+  void setPortName(const QString& newName);
 private:
   int angle;
   QPoint m_textOrigin;
