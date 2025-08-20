@@ -29,6 +29,23 @@ QString RoundVariablePrecision(double val) {
                          precision); // Round to 'precision' decimals.
 }
 
+
+QString num2str(std::complex<double> Z, Units CompType) {
+  QString Real = num2str(Z.real());
+
+  if (abs(Z.imag()) < 1e-6) {
+    return num2str(Z.real(), CompType);
+  } else {
+      Real = num2str(Z.real());
+  }
+
+  if (Z.imag() < 0) {
+    return QString("%1 -j %2").arg(Real).arg(num2str(abs(Z.imag()), CompType));
+  } else {
+    return QString("%1 +j %2").arg(Real).arg(num2str(Z.imag(), CompType));
+  }
+}
+
 QString num2str(double Num, Units CompType) {
   char c = 0;
   double cal = std::abs(Num);

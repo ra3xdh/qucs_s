@@ -27,6 +27,7 @@
 enum Units { Capacitance, Inductance, Length, Resistance, Degrees, NoUnits };
 
 QString RoundVariablePrecision(double);
+QString num2str(std::complex<double> Z, Units CompType);
 QString num2str(double, Units);
 QString num2str(double);
 std::complex<double> Str2Complex(QString);

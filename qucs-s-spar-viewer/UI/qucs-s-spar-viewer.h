@@ -9,6 +9,7 @@
 #include "../CustomWidgets/matrixcombopopup.h"
 
 #include "../Tools/Filtering/FilterDesignTool.h"
+#include "../Tools/MatchingNetwork/MatchingNetworkDesignTool.h"
 #include "../Tools/PowerCombining/PowerCombiningTool.h"
 #include "../Tools/AttenuatorDesign/AttenuatorDesignTool.h"
 #include "../Tools/NetlistScratchPad/netlistscratchpad.h"
@@ -339,7 +340,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
   void updateSchematicContent(); // This is called by the updateSimulation() function
 
-  void onToolsDockVisibilityChanged(bool visible);
+  void callTools(bool visible);
   void onToolsTabChanged(int index);
 
   // Tools
@@ -349,6 +350,10 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   // Filter Tool
   QWidget * FilterToolTab;
   FilterDesignTool *FilterTool;
+
+  // Matching network tool
+  QWidget * MatchingToolTab;
+  MatchingNetworkDesignTool *MatchingTool;
 
   // Power Combining Tool
   PowerCombiningTool * PowerCombTool;

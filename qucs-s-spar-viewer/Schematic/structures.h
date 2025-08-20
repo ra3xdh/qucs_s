@@ -73,6 +73,16 @@ struct FilterSpecifications {
   double ImpedanceRatio;
 };
 
+struct MatchingNetworkDesignParameters {
+  QString Topology;          // Attenuator topology
+  std::complex<double> Zin;  // Input impedance
+  std::complex<double> Zout; // Output impedance
+  int Solution; // Some matching techniques yield several valid solutions to the
+                // matching problem
+  double freqStart;
+  double freqEnd;
+};
+
 struct NetworkInfo {
   std::vector<std::complex<double>> ZS;
   std::vector<std::complex<double>> ZL;

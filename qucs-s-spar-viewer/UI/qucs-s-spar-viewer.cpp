@@ -1977,7 +1977,7 @@ void Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection(int index) {
 }
 
 // Triggers synthesis when a tool is selected
-void Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged(bool visible) {
+void Qucs_S_SPAR_Viewer::callTools(bool visible) {
   if (visible) {
     // Dock is now visible - trigger your function
     int index = toolsTabWidget->currentIndex();
@@ -1985,10 +1985,13 @@ void Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged(bool visible) {
     case 0: // Filter design tool
       FilterTool->synthesize();
       break;
-    case 1: // Power Combining tool
+    case 1: // Matching tool
+      MatchingTool->design();
+      break;
+    case 2: // Power Combining tool
       PowerCombTool->design();
       break;
-    case 2: // Attenuator tool
+    case 3: // Attenuator tool
       AttenuatorTool->design();
       break;
     }

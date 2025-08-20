@@ -1,6 +1,7 @@
 /***************************************************************************
-                                component.h
+                                Lsection.h
                                 ----------
+    copyright            :  QUCS team
     author                :  2019 Andres Martinez-Mera
     email                  :  andresmmera@protonmail.com
  ***************************************************************************/
@@ -13,30 +14,21 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
-#ifndef NETWORK_H
-#define NETWORK_H
+#ifndef LSECTION_H
+#define LSECTION_H
+#include "../../Schematic/Network.h"
+#include "../../Schematic/SchematicContent.h"
+#include "../../Schematic/component.h"
+#include "../../Misc/general.h"
 
-#include "../Schematic/SchematicContent.h"
-#include <QMap>
-#include <QPen>
-#include <QString>
-#include <QStringList>
-#include <complex>
-#include <deque>
-#include <vector>
-
-class SchematicContent;
-class WireInfo;
-class NodeInfo;
-class ComponentInfo;
-
-// Inherited by the network implementation classes
-class Network {
+class Lsection : public Network {
 public:
-  virtual ~Network() {}
-  virtual void synthesize() = 0;
-  SchematicContent Schematic; // This object contains all the circuit data of
-  // the filter, i.e. components and nets and it
-  // returns data for the simulation
+  Lsection();
+  virtual ~Lsection();
+  Lsection(MatchingNetworkDesignParameters);
+  void synthesize();
+
+private:
+  struct MatchingNetworkDesignParameters Specs;
 };
-#endif
+#endif // LSECTION_H

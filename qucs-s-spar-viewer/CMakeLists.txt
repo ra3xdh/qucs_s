@@ -150,6 +150,7 @@ file(GLOB TOOLS_SOURCES
      Tools/AttenuatorDesign/*.cpp
      Tools/NetlistScratchPad/*.cpp
      Tools/SimulationSetup/*.cpp
+     Tools/MatchingNetwork/*.cpp
 )
 
 file(GLOB TOOLS_HEADERS
@@ -158,6 +159,7 @@ file(GLOB TOOLS_HEADERS
      Tools/AttenuatorDesign/*.h
      Tools/NetlistScratchPad/*.h
      Tools/SimulationSetup/*.h
+     Tools/MatchingNetwork/*.h
 )
 
 

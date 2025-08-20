@@ -16,12 +16,14 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   toolsTabWidget = new QTabWidget();
 
   FilterTool = new FilterDesignTool(this);
+  MatchingTool = new MatchingNetworkDesignTool(this);
   PowerCombTool = new PowerCombiningTool(this);
   AttenuatorTool = new AttenuatorDesignTool(this);
   Netlist_Tool = new NetlistScratchPad(this);
   SimulationSetupWidget = new SimulationSetup(this);
 
   toolsTabWidget->addTab(FilterTool, "Filter Design");
+  toolsTabWidget->addTab(MatchingTool, "Matching");
   toolsTabWidget->addTab(PowerCombTool, "Power Combining");
   toolsTabWidget->addTab(AttenuatorTool, "Attenuator Design");
   toolsTabWidget->addTab(Netlist_Tool, "Scratch Pad");
@@ -39,6 +41,7 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
   // Connect with tools to update the simulated traces
   connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
+  connect(MatchingTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(PowerCombTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(AttenuatorTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(Netlist_Tool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
@@ -46,7 +49,7 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
   // Update simulation and schematic when the user clicks on another tab
   connect(toolsTabWidget, &QTabWidget::currentChanged, this, &Qucs_S_SPAR_Viewer::onToolsTabChanged);
-  connect(dockTools, &QDockWidget::visibilityChanged, this, &Qucs_S_SPAR_Viewer::onToolsDockVisibilityChanged);
+  connect(dockTools, &QDockWidget::visibilityChanged, this, &Qucs_S_SPAR_Viewer::callTools);
 }
 
 
@@ -134,10 +137,10 @@ void Qucs_S_SPAR_Viewer::updateSchematicContent() {
 
 // This function handles the event of selecting a new tab in the design tools.
 // First, it's needed to remove the traces from other designer tabs (otherwise, it may clutter the display)
-// Second, it calls onToolsDockVisibilityChanged() function to trigger circuit synthesis
+// Second, it calls callTools() function to trigger circuit synthesis
 void Qucs_S_SPAR_Viewer::onToolsTabChanged(int index) {
 
-  if (index < 3) {
+  if (index < 4 ) {
     // Remove other design datasets.
     // This does not make sense if the netlist tool is selected since it can be used to test values and compare with the trace of the previously selected tool
     for (const QString &ID : qAsConst(Tools_Datasets)) {
@@ -147,8 +150,8 @@ void Qucs_S_SPAR_Viewer::onToolsTabChanged(int index) {
   }
 
   // Trigger circuit synthesis
-  if (index < 4){
+  if (index < 5){
     // Avoid simulate again when the "Simulation Setup" tab is selected
-    onToolsDockVisibilityChanged(true);
+    callTools(true);
   }
 }
