@@ -328,3 +328,9 @@ void PortSymbol::updateBounds()
   x2 = cx + br.right();
   y2 = cy + br.bottom();
 }
+
+void PortSymbol::setPortName(const QString& newName)
+{
+  nameStr = newName;
+  updateBounds();
+}
