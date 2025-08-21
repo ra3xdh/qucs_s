@@ -290,7 +290,7 @@ bool isSpecialCase(const JointStateAssessor& jsa)
 
     const QPoint p1 = single_wire->P1();
     const QPoint p2 = single_wire->P2();
-    return *other_loc == p1 || *other_loc == p2 || geom::is_between(*other_loc, p1, p2);
+    return *other_loc == p1 || *other_loc == p2 || qucs_s::geom::is_it_line(*other_loc, p1, p2);
 }
 }
 
@@ -383,10 +383,11 @@ vector<Healer::HealingAction> Healer::HealerImpl::processMisplacedNodeCase(Node*
             actions.push_back(make_unique<ReplaceNode>(port.get()));
             actions.push_back(make_unique<ConnectWithWire>(port->center(), node->center()));
         } else {
-            if (m_params.allowWireReshaping) {
+            auto* wire = port->hostWire();
+
+            if (m_params.allowWireReshaping || qucs_s::geom::is_it_line(node->center(), wire->P1(), wire->P2())) {
                 actions.push_back(make_unique<MovePort>(port.get(), node->center()));
             } else {
-                auto* wire = port->hostWire();
                 auto* other_node = wire->Port1 == node ? wire->Port2 : wire->Port1;
 
                 if (wire->hasLabel()) {
