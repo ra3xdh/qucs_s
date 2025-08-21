@@ -89,19 +89,32 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
   QStringList filteredList = displayed_traces_keys.filter(regex);
 
   if (filteredList.isEmpty()) {
-    // Default traces (used in filter and attenuator design tools)
-    TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
-    TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss
-    this->addTrace(s11_dB, Qt::blue, 1);
-    this->addTrace(s21_dB, Qt::red, 1);
-
-           // If not Filter, check if Power Combiner to add extra traces
+    // If not Filter, check if Power Combiner to add extra traces
     if (Circuit.Type == QString("Power Combiner")) {
+      TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
+      TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss
       TraceInfo s31_dB = {dataset_name, "S31", DisplayMode::Magnitude_dB}; // Insertion loss branch 2
       TraceInfo s32_dB = {dataset_name, "S32", DisplayMode::Magnitude_dB}; // Isolation
+      this->addTrace(s11_dB, Qt::blue, 1);
+      this->addTrace(s21_dB, Qt::red, 1);
       this->addTrace(s31_dB, Qt::darkGreen, 1);
       this->addTrace(s32_dB, Qt::black, 1);
+    } else {
+      if (Circuit.Type == QString("Matching")) {
+        TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
+        this->addTrace(s11_dB, Qt::blue, 1);
+      } else {
+        // Default traces (used in filter and attenuator design tools)
+        TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
+        TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss
+        this->addTrace(s11_dB, Qt::blue, 1);
+        this->addTrace(s21_dB, Qt::red, 1);
+      }
     }
+
+
+
+
   }
   updateAllPlots(dataset_name);
 
