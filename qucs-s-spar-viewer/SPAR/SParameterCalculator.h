@@ -28,7 +28,8 @@ enum class ComponentType_SPAR {
   OPEN_STUB,
   SHORT_STUB,
   COUPLED_LINE,
-  IDEAL_COUPLER
+  IDEAL_COUPLER,
+  COMPLEX_IMPEDANCE
 };
 
 // Circuit component structure
@@ -37,9 +38,11 @@ struct Component_SPAR {
   string name;
   vector<int> nodes;
   QMap<QString, double> value;
+  QMap<QString, Complex> Zvalue;
   double frequency; // For frequency-dependent components
 
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, double> val);
+  Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, Complex> zval); // Constructor for complex impedances
 };
 
 // Network port definition
@@ -94,8 +97,8 @@ public:
   const QString& getNetlist() const { return currentNetlist; }
 
          // Add component to the circuit (for programmatic building)
-  void addComponent(ComponentType_SPAR type, const string& name,
-                    const vector<int>& nodes, QMap<QString, double> value);
+  void addComponent(ComponentType_SPAR type, const string& name, const vector<int>& nodes, QMap<QString, double> value);
+  void addComponent(ComponentType_SPAR type, const string& name, const vector<int>& nodes, QMap<QString, Complex> Zvalue);
 
          // Add port to the circuit (for programmatic building)
   void addPort(int node, double impedance = 50.0);

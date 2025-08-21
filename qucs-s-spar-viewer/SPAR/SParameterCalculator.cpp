@@ -9,6 +9,9 @@
 Component_SPAR::Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, double> val)
     : type(t), name(n), nodes(nds), value(val), frequency(0.0) {}
 
+Component_SPAR::Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, Complex> z)
+    : type(t), name(n), nodes(nds), value(), frequency(0.0), Zvalue(z) {}
+
 // Port constructor
 Port::Port(int n, double z) : node(n), impedance(z) {}
 
@@ -50,6 +53,7 @@ bool SParameterCalculator::parseNetlist() {
     QString type = name.replace(QRegularExpression("\\d+$"), "");  // Remove the number at the end
 
     QMap<QString, double> value;
+    QMap<QString, Complex> zValue;
 
     if (type == QString("R") && parts.size() >= 4) {
       // Resistor: R1 node1 node2 value
@@ -74,6 +78,31 @@ bool SParameterCalculator::parseNetlist() {
       double L = parseScaledValue(parts[3]);
       value["L"] = L;
       addComponent(ComponentType_SPAR::INDUCTOR, name.toStdString(), {node1, node2}, value);
+    }
+    else if (name.startsWith("Z", Qt::CaseInsensitive)) {
+      if (parts.size() < 4) {
+        cerr << "Error: Invalid complex impedance definition: " << line.toStdString() << endl;
+        continue;
+      }
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+      QString zStr = parts[3];
+
+             // Parse format "R±jX"
+      double realPart = 0.0, imagPart = 0.0;
+      QRegularExpression regex("([-+]?[0-9]*\\.?[0-9]+)([-+]j[0-9]*\\.?[0-9]+)?");
+      QRegularExpressionMatch match = regex.match(zStr);
+      if (match.hasMatch()) {
+        realPart = match.captured(1).toDouble();
+        if (match.captured(2).startsWith("+j") || match.captured(2).startsWith("-j")) {
+          QString imagStr = match.captured(2);
+          imagStr.remove('j');
+          imagPart = imagStr.toDouble();
+        }
+      }
+      Complex z(realPart, imagPart);
+      zValue["Z"] = z;
+      addComponent(ComponentType_SPAR::COMPLEX_IMPEDANCE, name.toStdString(), {node1, node2}, zValue);
     }
     else if ( ((type == QString("TLIN")) || (type == QString("OSTUB")) || (type == QString("SSTUB"))) && parts.size() >= 5) {
       // Transmission Line: T1 node1 node2 impedance length
@@ -226,6 +255,9 @@ Complex SParameterCalculator::getImpedance(const Component_SPAR& comp, double fr
   switch (comp.type) {
   case ComponentType_SPAR::RESISTOR:
     return Complex(comp.value["R"], 0);
+
+  case ComponentType_SPAR::COMPLEX_IMPEDANCE:
+    return comp.Zvalue["Z"];
 
   case ComponentType_SPAR::CAPACITOR:
     return Complex(0, -1.0 / (omega * comp.value["C"]));
@@ -437,6 +469,17 @@ vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
 
   return Y;
 }
+
+void SParameterCalculator::addComponent(ComponentType_SPAR type, const string& name,
+                                        const vector<int>& nodes, QMap<QString, Complex> Zvalue) {
+  components.emplace_back(type, name, nodes, Zvalue);
+
+         // Update number of nodes
+  for (int node : nodes) {
+    if (node > numNodes) numNodes = node;
+    }
+}
+
 
 void SParameterCalculator::addComponent(ComponentType_SPAR type, const string& name,
                                         const vector<int>& nodes, QMap<QString, double> value) {
