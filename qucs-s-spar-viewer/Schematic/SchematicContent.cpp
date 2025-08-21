@@ -321,6 +321,22 @@ QString SchematicContent::getSParameterNetlist() {
       }
       break;
 
+    case ComplexImpedance:
+      if (connections.size() >= 2) {
+        int node1 = netToNodeMap.value(connections[0], 0);
+        int node2 = netToNodeMap.value(connections[1], 0);
+        QString value = Comps[i].val.contains("Z") ? Comps[i].val["Z"] : "50";
+        static const QRegularExpression whitespaceRegex("\\s");
+        value = value.remove(whitespaceRegex); // Remove blank spaces
+
+        componentLine = QString("%1 %2 %3 %4\n")
+                            .arg(Comps[i].ID)
+                            .arg(node1)
+                            .arg(node2)
+                            .arg(value);
+      }
+      break;
+
     case Term:
       // Terminal/Port
       if (connections.size() >= 1) {

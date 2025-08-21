@@ -83,6 +83,7 @@ private:
   void paintInductor(QPainter *);
   void paintTransmissionLine(QPainter *);
   void paintResistor(QPainter *);
+  void paintComplexImpedance(QPainter *);
   void paintTerm(QPainter *);
   void paintGND(QPainter *);
   void paintOpenStub(QPainter *);

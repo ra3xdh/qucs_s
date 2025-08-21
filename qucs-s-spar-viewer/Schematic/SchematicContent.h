@@ -19,6 +19,7 @@
 
 #include <QPen>
 #include <QGraphicsTextItem>
+#include <QRegularExpression>
 
 #include "infoclasses.h"
 #include "structures.h"

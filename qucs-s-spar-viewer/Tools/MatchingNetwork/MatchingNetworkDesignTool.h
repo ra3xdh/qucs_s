@@ -47,8 +47,8 @@ private slots:
 
 private:
   QLabel *Topology_Label, *Zin_Label, *Ohm_Zin_Label, *Zout_Label,
-      *Ohm_Zout_Label, *FreqStart_Label, *FreqEnd_Label, *Zin_J, *Zout_J;
-  QDoubleSpinBox *ZinRSpinBox, *ZoutRSpinBox, *ZinISpinBox, *ZoutISpinBox,
+      *Ohm_Zout_Label, *FreqStart_Label, *FreqEnd_Label, *Zout_J;
+  QDoubleSpinBox *ZinRSpinBox, *ZoutRSpinBox, *ZoutISpinBox,
       *FreqStart_Spinbox, *FreqEnd_Spinbox;
   QComboBox *Topology_Combo, *FreqStart_Scale_Combo, *FreqEnd_Scale_Combo;
   QCheckBox *Broadband_Checkbox;

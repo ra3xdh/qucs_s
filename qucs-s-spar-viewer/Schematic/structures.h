@@ -18,7 +18,8 @@ enum ComponentType {
   OpenStub,
   ShortStub,
   CoupledLines,
-  Coupler
+  Coupler,
+  ComplexImpedance
 };
 
 enum ResponseType {

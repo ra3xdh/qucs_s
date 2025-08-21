@@ -31,13 +31,21 @@ void Lsection::synthesize() {
   TermSpar1.val["Z"] = num2str(Specs.Zin.real(), Resistance);
   Schematic.appendComponent(TermSpar1);
 
-  // Port 2
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 200, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
-
   ComponentInfo Shunt, Series, Ground;
   NodeInfo NI;
+
+  // Complex load
+  ComponentInfo Zload(
+      QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, 175, 50);
+  Zload.val["Z"] = num2str(Specs.Zout, Resistance);
+  Schematic.appendComponent(Zload);
+
+
+         // GND_ZL
+  ComponentInfo GND_ZL;
+  GND_ZL.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
+                   GND, 0, 175, 100);
+  Schematic.appendComponent(GND_ZL);
 
   // Design equations
   double w0 = 2.0 * M_PI * Specs.freqStart;
@@ -114,7 +122,7 @@ void Lsection::synthesize() {
     Schematic.appendWire(Shunt.ID, 1, NI.ID, 0);
     Schematic.appendWire(Shunt.ID, 0, Ground.ID, 0);
     Schematic.appendWire(NI.ID, 0, Series.ID, 1);
-    Schematic.appendWire(Series.ID, 0, TermSpar2.ID, 0);
+    Schematic.appendWire(Zload.ID, 1, Series.ID, 0);
 
   } else {
     // Z0 < RL
@@ -183,11 +191,9 @@ void Lsection::synthesize() {
     Schematic.appendWire(Series.ID, 0, NI.ID, 0);
     Schematic.appendWire(NI.ID, 0, Shunt.ID, 1);
     Schematic.appendWire(Shunt.ID, 0, Ground.ID, 0);
-    Schematic.appendWire(NI.ID, 0, TermSpar2.ID, 0);
+    Schematic.appendWire(Zload.ID, 1, NI.ID, 0);
   }
 
-  Schematic.appendComponent(
-      TermSpar2); // The S-parameter port2 was already instantiated. However, it
-                  // is added to the Schematic here to build the ladder
-                  // correctly
+  Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
+
 }

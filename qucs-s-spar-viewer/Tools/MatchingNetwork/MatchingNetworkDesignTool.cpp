@@ -60,24 +60,16 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   MatchingNetworkDesignLayout->addWidget(SolutionWidget, 1, 2);
 
   // Input impedance
-  Zin_Label = new QLabel("Zin");
+  Zin_Label = new QLabel("ZS");
   ZinRSpinBox = new QDoubleSpinBox();
   ZinRSpinBox->setMinimum(0.5);
   ZinRSpinBox->setMaximum(10000);
   ZinRSpinBox->setSingleStep(0.5);
   ZinRSpinBox->setValue(50);
-  Zin_J = new QLabel("+j");
-  ZinISpinBox = new QDoubleSpinBox();
-  ZinISpinBox->setMinimum(-10000);
-  ZinISpinBox->setMaximum(10.00);
-  ZinISpinBox->setSingleStep(0.5);
-  ZinISpinBox->setValue(0);
   Ohm_Zin_Label = new QLabel(QChar(0xa9, 0x03));
   MatchingNetworkDesignLayout->addWidget(Zin_Label, 2, 0);
   MatchingNetworkDesignLayout->addWidget(ZinRSpinBox, 2, 1);
-  MatchingNetworkDesignLayout->addWidget(Zin_J, 2, 2);
-  MatchingNetworkDesignLayout->addWidget(ZinISpinBox, 2, 3);
-  MatchingNetworkDesignLayout->addWidget(Ohm_Zin_Label, 2, 4);
+  MatchingNetworkDesignLayout->addWidget(Ohm_Zin_Label, 2, 2);
 
   // Output impedance
   Zout_Label = new QLabel("Zout");
@@ -145,28 +137,16 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   FreqEnd_Spinbox->hide();
   FreqEnd_Scale_Combo->hide();
 
-  connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(on_TopoCombo_currentIndexChanged(int)));
-  connect(ZinRSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(ZinISpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(ZoutRSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(ZoutISpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqStart_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqEnd_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqStart_Scale_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqEnd_Scale_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(Solution1_RB, SIGNAL(clicked(bool)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(Solution2_RB, SIGNAL(clicked(bool)), this,
-          SLOT(UpdateDesignParameters()));
+  connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_TopoCombo_currentIndexChanged(int)));
+  connect(ZinRSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(ZoutRSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(ZoutISpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(FreqStart_Spinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(FreqEnd_Spinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(FreqStart_Scale_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(FreqEnd_Scale_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(Solution1_RB, SIGNAL(clicked(bool)), this, SLOT(UpdateDesignParameters()));
+  connect(Solution2_RB, SIGNAL(clicked(bool)), this, SLOT(UpdateDesignParameters()));
 
   this->setLayout(MatchingNetworkDesignLayout);
 
@@ -181,8 +161,6 @@ MatchingNetworkDesignTool::~MatchingNetworkDesignTool() {
   delete Solution2_RB;
   delete Zin_Label;
   delete ZinRSpinBox;
-  delete Zin_J;
-  delete ZinISpinBox;
   delete Ohm_Zin_Label;
   delete Ohm_Zout_Label;
   delete ZoutRSpinBox;
@@ -199,7 +177,7 @@ MatchingNetworkDesignTool::~MatchingNetworkDesignTool() {
 
 void MatchingNetworkDesignTool::UpdateDesignParameters() {
   MatchingNetworkDesignParameters Specs;
-  Specs.Zin = std::complex<double>(ZinRSpinBox->value(), ZinISpinBox->value());
+  Specs.Zin = std::complex<double>(ZinRSpinBox->value(), 0);
   Specs.Zout =
       std::complex<double>(ZoutRSpinBox->value(), ZoutISpinBox->value());
   Specs.Topology = Topology_Combo->currentText();
@@ -235,8 +213,6 @@ void MatchingNetworkDesignTool::on_TopoCombo_currentIndexChanged(int index) {
   case 0: // Lsection
     Solution1_RB->show();
     Solution2_RB->show();
-    ZinISpinBox->setEnabled(false); // The L-section method does not support
-                                    // complex source impedance data
   default:
     break;
   }

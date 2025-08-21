@@ -64,6 +64,7 @@ QRectF Component::boundingRect() const {
   case Coupler:
     R = QRect(-60, -60, 120, 120);
     break;
+  case ComplexImpedance:
   case Resistor:
   case Capacitor:
   case Inductor:
@@ -90,6 +91,7 @@ QPainterPath Component::shape() const {
   case ShortStub:
   case TransmissionLine:
   case Resistor:
+  case ComplexImpedance:
   case CoupledLines:
   case Coupler:
     path.addRect(-30, -30, 60, 60);
@@ -119,6 +121,9 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
     break;
   case TransmissionLine:
     paintTransmissionLine(painter);
+    break;
+  case ComplexImpedance:
+    paintComplexImpedance(painter);
     break;
   case OpenStub:
     paintOpenStub(painter);
@@ -205,6 +210,7 @@ QPoint Component::getPortLocation(int port_number) {
   case Resistor:
   case Inductor:
   case Capacitor:
+  case ComplexImpedance:
     switch (port_number) {
     case 1:
       P = QPoint(0, -25);
@@ -474,6 +480,39 @@ void Component::paintTransmissionLine(QPainter *painter) {
       QString("%1").arg(Value["Z0"].replace("Ohm", QChar(0xa9, 0x03))));
   painter->drawText(QRect(OriginText + QPoint(0, 20), QPoint(100, 100)),
                     QString("%1").arg(Value["Length"]));
+}
+
+void Component::paintComplexImpedance(QPainter *painter) {
+
+  if (Rotation != 0) {
+    painter->rotate(Rotation);
+  }
+
+  painter->setPen(QPen(Qt::red, 1));
+
+  int w = 15;
+  painter->drawLine(QPoint(0, -25), QPoint(0, -14));
+  painter->drawLine(QPoint(-0.5 * w, -14), QPoint(0.5 * w, -14));
+  painter->drawLine(QPoint(-0.5 * w, -14), QPoint(0.5 * w, -14));
+  painter->drawLine(QPoint(-0.5 * w, -14), QPoint(-0.5 * w, 16));
+  painter->drawLine(QPoint(0.5 * w, -14), QPoint(0.5 * w, 16));
+  painter->drawLine(QPoint(-0.5 * w, 16), QPoint(0.5 * w, 16));
+  painter->drawLine(QPoint(0, 16), QPoint(0, 25));
+  painter->setPen(QPen(Qt::black, 1));
+
+  if (Rotation != 0) { // The rotation is undone to draw the text
+    painter->rotate(-Rotation);
+  }
+
+  QPoint OriginText(10, -10);
+  if (Rotation != 0)
+    OriginText.setX(-10), OriginText.setY(10);
+
+  painter->drawText(QRect(OriginText, QPoint(100, 100)),
+                    QString("%1").arg(this->ID));
+  painter->drawText(
+      QRect(OriginText + QPoint(0, 10), QPoint(100, 100)),
+      QString("%1").arg(Value["Z"].replace("Ohm", QChar(0xa9, 0x03))));
 }
 
 void Component::paintResistor(QPainter *painter) {
