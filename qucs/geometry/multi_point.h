@@ -224,6 +224,25 @@ std::vector<P> on_line(P first, P last, It begin, It end) {
 
     return in_between;
 }
+
+// Tells whether three given lay on the same one line
+template<PointLike P>
+bool is_it_line(P a, P b, P c)
+{
+    // Use matrix determinant method
+    // | x1 y1 1 |
+    // | x2 y2 1 | = 0
+    // | x3 y3 1 |
+    using internal::get_x;
+    using internal::get_y;
+
+    double determinant = (get_x(a) * (get_y(b) - get_y(c))) +
+                         (get_x(b) * (get_y(c) - get_y(a))) +
+                         (get_x(c) * (get_y(a) - get_y(b)));
+
+    return determinant == 0;
+}
+
 } // namespace qucs_s::geom
 
 #endif
