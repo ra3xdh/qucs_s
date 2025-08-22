@@ -73,6 +73,7 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   ZinRSpinBox->setMaximum(10000);
   ZinRSpinBox->setSingleStep(0.5);
   ZinRSpinBox->setValue(50);
+  ZinRSpinBox->setDecimals(1);
   Ohm_Zin_Label = new QLabel(QChar(0xa9, 0x03));
   MatchingNetworkDesignLayout->addWidget(Zin_Label, 3, 0);
   MatchingNetworkDesignLayout->addWidget(ZinRSpinBox, 3, 1);
@@ -85,12 +86,14 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   ZoutRSpinBox->setMaximum(10000);
   ZoutRSpinBox->setSingleStep(0.5);
   ZoutRSpinBox->setValue(75);
+  ZoutRSpinBox->setDecimals(1);
   Zout_J = new QLabel("+j");
   ZoutISpinBox = new QDoubleSpinBox();
   ZoutISpinBox->setMinimum(-10000);
   ZoutISpinBox->setMaximum(10000);
   ZoutISpinBox->setSingleStep(0.5);
   ZoutISpinBox->setValue(0);
+  ZoutISpinBox->setDecimals(1);
   Ohm_Zout_Label = new QLabel(QChar(0xa9, 0x03));
   MatchingNetworkDesignLayout->addWidget(Zout_Label, 4, 0);
   MatchingNetworkDesignLayout->addWidget(ZoutRSpinBox, 4, 1);
