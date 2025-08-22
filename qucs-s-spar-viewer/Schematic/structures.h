@@ -80,6 +80,7 @@ struct MatchingNetworkDesignParameters {
   std::complex<double> Zout; // Output impedance
   int Solution; // Some matching techniques yield several valid solutions to the
                 // matching problem
+  int OpenShort; // This is applicable to topologies with stubs
   double freqStart;
   double freqEnd;
 };

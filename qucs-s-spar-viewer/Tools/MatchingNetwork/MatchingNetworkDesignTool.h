@@ -32,6 +32,7 @@
 #include "../../Schematic/component.h"
 
 #include "Lsection.h"
+#include "SingleStub.h"
 
 
 class MatchingNetworkDesignTool : public QWidget {
@@ -48,9 +49,10 @@ private slots:
 private:
   QLabel *Topology_Label, *Zin_Label, *Ohm_Zin_Label, *Zout_Label,
       *Ohm_Zout_Label, *FreqStart_Label, *FreqEnd_Label, *Zout_J;
+  QLabel *StubTermination_Label;
   QDoubleSpinBox *ZinRSpinBox, *ZoutRSpinBox, *ZoutISpinBox,
       *FreqStart_Spinbox, *FreqEnd_Spinbox;
-  QComboBox *Topology_Combo, *FreqStart_Scale_Combo, *FreqEnd_Scale_Combo;
+  QComboBox *Topology_Combo, *FreqStart_Scale_Combo, *FreqEnd_Scale_Combo, *StubTermination_ComboBox;
   QCheckBox *Broadband_Checkbox;
   QRadioButton *Solution1_RB, *Solution2_RB;
   double getScaleFreq(int);

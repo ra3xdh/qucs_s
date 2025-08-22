@@ -18,17 +18,14 @@
 
 MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(parent) {
   QGridLayout *MatchingNetworkDesignLayout = new QGridLayout();
-  // Broadband checkbox
-  Broadband_Checkbox = new QCheckBox("Broadband matching");
-  MatchingNetworkDesignLayout->addWidget(Broadband_Checkbox, 0, 0);
 
   // Topology
   Topology_Label = new QLabel("Topology");
   Topology_Combo = new QComboBox();
   QStringList matching_methods;
   matching_methods.append(tr("L-section"));
- /* matching_methods.append(tr("Single stub"));
-  matching_methods.append(tr("Double stub"));
+  matching_methods.append(tr("Single stub"));
+ /* matching_methods.append(tr("Double stub"));
   matching_methods.append(QString("%1 %2/4")
                               .arg(tr("Multistage "))
                               .arg(QString(QChar(0xBB, 0x03))));
@@ -59,6 +56,16 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   SolutionWidget->setLayout(SolutionLayout);
   MatchingNetworkDesignLayout->addWidget(SolutionWidget, 1, 2);
 
+  // Stub termination (only for single and double stub matching)
+  StubTermination_Label = new QLabel(QString("Stub Termination"));
+  MatchingNetworkDesignLayout->addWidget(StubTermination_Label, 2, 0);
+
+  StubTermination_ComboBox = new QComboBox();
+  StubTermination_ComboBox->addItem(QString("Open circuit"));
+  StubTermination_ComboBox->addItem(QString("Short circuit"));
+  MatchingNetworkDesignLayout->addWidget(StubTermination_ComboBox, 2, 1);
+
+
   // Input impedance
   Zin_Label = new QLabel("ZS");
   ZinRSpinBox = new QDoubleSpinBox();
@@ -67,12 +74,12 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   ZinRSpinBox->setSingleStep(0.5);
   ZinRSpinBox->setValue(50);
   Ohm_Zin_Label = new QLabel(QChar(0xa9, 0x03));
-  MatchingNetworkDesignLayout->addWidget(Zin_Label, 2, 0);
-  MatchingNetworkDesignLayout->addWidget(ZinRSpinBox, 2, 1);
-  MatchingNetworkDesignLayout->addWidget(Ohm_Zin_Label, 2, 2);
+  MatchingNetworkDesignLayout->addWidget(Zin_Label, 3, 0);
+  MatchingNetworkDesignLayout->addWidget(ZinRSpinBox, 3, 1);
+  MatchingNetworkDesignLayout->addWidget(Ohm_Zin_Label, 3, 2);
 
   // Output impedance
-  Zout_Label = new QLabel("Zout");
+  Zout_Label = new QLabel("ZL");
   ZoutRSpinBox = new QDoubleSpinBox();
   ZoutRSpinBox->setMinimum(0.5);
   ZoutRSpinBox->setMaximum(10000);
@@ -85,11 +92,11 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   ZoutISpinBox->setSingleStep(0.5);
   ZoutISpinBox->setValue(0);
   Ohm_Zout_Label = new QLabel(QChar(0xa9, 0x03));
-  MatchingNetworkDesignLayout->addWidget(Zout_Label, 3, 0);
-  MatchingNetworkDesignLayout->addWidget(ZoutRSpinBox, 3, 1);
-  MatchingNetworkDesignLayout->addWidget(Zout_J, 3, 2);
-  MatchingNetworkDesignLayout->addWidget(ZoutISpinBox, 3, 3);
-  MatchingNetworkDesignLayout->addWidget(Ohm_Zout_Label, 3, 4);
+  MatchingNetworkDesignLayout->addWidget(Zout_Label, 4, 0);
+  MatchingNetworkDesignLayout->addWidget(ZoutRSpinBox, 4, 1);
+  MatchingNetworkDesignLayout->addWidget(Zout_J, 4, 2);
+  MatchingNetworkDesignLayout->addWidget(ZoutISpinBox, 4, 3);
+  MatchingNetworkDesignLayout->addWidget(Ohm_Zout_Label, 4, 4);
 
   // Frequency range. Start
   FreqStart_Label = new QLabel("freq");
@@ -107,9 +114,9 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   FreqStart_Scale_Combo = new QComboBox();
   FreqStart_Scale_Combo->addItems(FreqScale);
   FreqStart_Scale_Combo->setCurrentIndex(1);
-  MatchingNetworkDesignLayout->addWidget(FreqStart_Label, 4, 0);
-  MatchingNetworkDesignLayout->addWidget(FreqStart_Spinbox, 4, 1);
-  MatchingNetworkDesignLayout->addWidget(FreqStart_Scale_Combo, 4, 2);
+  MatchingNetworkDesignLayout->addWidget(FreqStart_Label, 5, 0);
+  MatchingNetworkDesignLayout->addWidget(FreqStart_Spinbox, 5, 1);
+  MatchingNetworkDesignLayout->addWidget(FreqStart_Scale_Combo, 5, 2);
 
   // Frequency range. End
   FreqEnd_Label = new QLabel("Freq. stop");
@@ -121,15 +128,15 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   FreqEnd_Spinbox->setSingleStep(1); // Step fixed to 1 Hz/kHz/MHz/GHz
   FreqEnd_Scale_Combo = new QComboBox();
   FreqEnd_Scale_Combo->addItems(FreqScale);
-  MatchingNetworkDesignLayout->addWidget(FreqEnd_Label, 5, 0);
-  MatchingNetworkDesignLayout->addWidget(FreqEnd_Spinbox, 5, 1);
-  MatchingNetworkDesignLayout->addWidget(FreqEnd_Scale_Combo, 5, 2);
+  MatchingNetworkDesignLayout->addWidget(FreqEnd_Label, 6, 0);
+  MatchingNetworkDesignLayout->addWidget(FreqEnd_Spinbox, 6, 1);
+  MatchingNetworkDesignLayout->addWidget(FreqEnd_Scale_Combo, 6, 2);
 
   // Widgets to add a trace to plot
   traceNameLabel = new QLabel("Trace name");
   traceNameLineEdit = new QLineEdit(" Match1");
-  MatchingNetworkDesignLayout->addWidget(traceNameLabel, 6, 0);
-  MatchingNetworkDesignLayout->addWidget(traceNameLineEdit, 6, 1);
+  MatchingNetworkDesignLayout->addWidget(traceNameLabel, 7, 0);
+  MatchingNetworkDesignLayout->addWidget(traceNameLineEdit, 7, 1);
 
   // Since it is more common to design narrowband matching networks than
   // broadband, the end-freq widgets are hidden
@@ -138,6 +145,7 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   FreqEnd_Scale_Combo->hide();
 
   connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_TopoCombo_currentIndexChanged(int)));
+  connect(StubTermination_ComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
   connect(ZinRSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
   connect(ZoutRSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
   connect(ZoutISpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
@@ -191,12 +199,27 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
   Specs.freqEnd = FreqEnd_Spinbox->value() *
                   getScaleFreq(FreqEnd_Scale_Combo->currentIndex());
 
-  if (Specs.Topology == "L-section") {
-    Lsection *L = new Lsection(Specs);
-    L->synthesize();
-    SchContent = L->Schematic;
-    delete L;
+  Specs.OpenShort = StubTermination_ComboBox->currentIndex(); // 0: Open circuit stub; 1: Short-circuited stub
+
+
+  int topology = Topology_Combo->currentIndex();
+  switch (topology){
+    case 0: {// L-section
+      Lsection *L = new Lsection(Specs);
+      L->synthesize();
+      SchContent = L->Schematic;
+      delete L;
+      break;
+    }
+    case 1: { // Single-stub
+      SingleStub *SSM = new SingleStub(Specs);
+      SSM->synthesize();
+      SchContent = SSM->Schematic;
+      delete SSM;
+      break;
+    }
   }
+
 
   // EMIT SIGNAL TO SIMULATE
   QString TraceName = traceNameLineEdit->text();
@@ -211,8 +234,25 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
 void MatchingNetworkDesignTool::on_TopoCombo_currentIndexChanged(int index) {
   switch (index) {
   case 0: // Lsection
+    // Show Lsection matching solutions
     Solution1_RB->show();
     Solution2_RB->show();
+
+    // Hide open circuit termination options
+    StubTermination_Label->hide();
+    StubTermination_ComboBox->hide();
+    break;
+
+  case 1: // Single-stub matching
+    // Hide Lsection matching solutions
+    Solution1_RB->hide();
+    Solution2_RB->hide();
+
+    // Hide open circuit termination options
+    StubTermination_Label->show();
+    StubTermination_ComboBox->show();
+    break;
+
   default:
     break;
   }
