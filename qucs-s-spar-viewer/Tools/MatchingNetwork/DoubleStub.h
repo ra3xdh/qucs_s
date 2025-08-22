@@ -1,5 +1,5 @@
 /***************************************************************************
-                               SingleStub.h
+                               DoubleStub.h
                                ------------
     copyright            :  QUCS-S team
     author               :  2025: Andrés Martínez Mera
@@ -14,21 +14,21 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
-#ifndef SINGLESTUB_H
-#define SINGLESTUB_H
+#ifndef DOUBLESTUB_H
+#define DOUBLESTUB_H
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 #include "../../Misc/general.h"
 
-class SingleStub : public Network {
+class DoubleStub : public Network {
 public:
-  SingleStub();
-  virtual ~SingleStub();
-  SingleStub(MatchingNetworkDesignParameters);
+  DoubleStub();
+  virtual ~DoubleStub();
+  DoubleStub(MatchingNetworkDesignParameters);
   void synthesize();
 
 private:
   struct MatchingNetworkDesignParameters Specs;
 };
-#endif // SINGLESTUB_H
+#endif // DOUBLESTUB_H

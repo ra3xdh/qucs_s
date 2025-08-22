@@ -25,8 +25,8 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   QStringList matching_methods;
   matching_methods.append(tr("L-section"));
   matching_methods.append(tr("Single stub"));
- /* matching_methods.append(tr("Double stub"));
-  matching_methods.append(QString("%1 %2/4")
+  matching_methods.append(tr("Double stub"));
+ /* matching_methods.append(QString("%1 %2/4")
                               .arg(tr("Multistage "))
                               .arg(QString(QChar(0xBB, 0x03))));
   matching_methods.append(tr("Cascaded L-sections"));
@@ -192,10 +192,11 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
   Specs.Zout =
       std::complex<double>(ZoutRSpinBox->value(), ZoutISpinBox->value());
   Specs.Topology = Topology_Combo->currentText();
-  if (Solution1_RB->isChecked())
+  if (Solution1_RB->isChecked()) {
     Specs.Solution = 1;
-  else
+  } else {
     Specs.Solution = 2;
+  }
 
   Specs.freqStart = FreqStart_Spinbox->value() *
                     getScaleFreq(FreqStart_Scale_Combo->currentIndex());
@@ -219,6 +220,13 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
       SSM->synthesize();
       SchContent = SSM->Schematic;
       delete SSM;
+      break;
+    }
+    case 2: { // Double-stub
+      DoubleStub *DSM = new DoubleStub(Specs);
+      DSM->synthesize();
+      SchContent = DSM->Schematic;
+      delete DSM;
       break;
     }
   }
@@ -247,6 +255,7 @@ void MatchingNetworkDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     break;
 
   case 1: // Single-stub matching
+  case 2: // Double-stub matching
     // Hide Lsection matching solutions
     Solution1_RB->hide();
     Solution2_RB->hide();

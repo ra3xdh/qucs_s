@@ -1,7 +1,7 @@
 /***************************************************************************
                                SingleStub.cpp
                                ------------
-    copyright            :  QUCS team
+    copyright            :  QUCS-S team
     author               :  2025: Andrés Martínez Mera
     email                :  andresmmera@protonmail.com
  ***************************************************************************/

@@ -33,6 +33,7 @@
 
 #include "Lsection.h"
 #include "SingleStub.h"
+#include "DoubleStub.h"
 
 
 class MatchingNetworkDesignTool : public QWidget {
