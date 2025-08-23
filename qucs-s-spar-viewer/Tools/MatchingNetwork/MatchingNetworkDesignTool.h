@@ -34,6 +34,7 @@
 #include "Lsection.h"
 #include "SingleStub.h"
 #include "DoubleStub.h"
+#include "MultisectionQuarterWave.h"
 
 
 class MatchingNetworkDesignTool : public QWidget {
@@ -50,6 +51,13 @@ private slots:
 private:
   QLabel *Topology_Label, *Zin_Label, *Ohm_Zin_Label, *Zout_Label,
       *Ohm_Zout_Label, *FreqStart_Label, *FreqEnd_Label, *Zout_J;
+
+  QGroupBox *Weighting_GroupBox;
+  QComboBox *Weighting_Combo;
+  QLabel *Ripple_Label, *Sections_Label;
+  QDoubleSpinBox *Ripple_SpinBox;
+  QSpinBox *Sections_SpinBox;
+
   QLabel *StubTermination_Label;
   QDoubleSpinBox *ZinRSpinBox, *ZoutRSpinBox, *ZoutISpinBox,
       *FreqStart_Spinbox, *FreqEnd_Spinbox;

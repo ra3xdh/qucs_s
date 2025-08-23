@@ -83,6 +83,11 @@ struct MatchingNetworkDesignParameters {
   int OpenShort; // This is applicable to topologies with stubs
   double freqStart;
   double freqEnd;
+
+  // Multisection transformers
+  int NSections;
+  double gamma_MAX; // Required for Chebyshev multisection transformers
+  QString Weigthing;
 };
 
 struct NetworkInfo {

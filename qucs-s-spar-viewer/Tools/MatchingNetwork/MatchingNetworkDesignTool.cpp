@@ -26,10 +26,8 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   matching_methods.append(tr("L-section"));
   matching_methods.append(tr("Single stub"));
   matching_methods.append(tr("Double stub"));
- /* matching_methods.append(QString("%1 %2/4")
-                              .arg(tr("Multistage "))
-                              .arg(QString(QChar(0xBB, 0x03))));
-  matching_methods.append(tr("Cascaded L-sections"));
+  matching_methods.append(QString("%1 %2/4").arg(tr("Multisection ")).arg(QString(QChar(0xBB, 0x03))));
+ /* matching_methods.append(tr("Cascaded L-sections"));
   matching_methods.append(QString("%1/4 line").arg(QChar(0xBB, 0x03)));
   matching_methods.append(QString("%1/8 + %1/4 line").arg(QChar(0xBB, 0x03)));
   matching_methods.append(QString("%1-type").arg(QChar(0xC0, 0x03)));
@@ -66,6 +64,44 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   MatchingNetworkDesignLayout->addWidget(StubTermination_ComboBox, 2, 1);
 
 
+  // Weighting settings (multisection lambda/4 transformers)
+  Weighting_GroupBox = new QGroupBox(tr("Weighting"));
+  QGridLayout *WeightingLayout = new QGridLayout();
+
+         // Combobox: Binomial or Chebyshev
+  QLabel *WeightingMethodLabel = new QLabel(tr("Method"));
+  Weighting_Combo = new QComboBox();
+  Weighting_Combo->addItem(tr("Binomial"));
+  Weighting_Combo->addItem(tr("Chebyshev"));
+  WeightingLayout->addWidget(WeightingMethodLabel, 0, 0);
+  WeightingLayout->addWidget(Weighting_Combo, 0, 1);
+
+         // Ripple parameter (only for Chebyshev)
+  Ripple_Label = new QLabel(tr("Ripple"));
+  Ripple_SpinBox = new QDoubleSpinBox();
+  Ripple_SpinBox->setRange(0.001, 1.0);       // typical range (linear)
+  Ripple_SpinBox->setSingleStep(0.01);
+  Ripple_SpinBox->setDecimals(3);
+  Ripple_SpinBox->setValue(0.05);             // default 5% ripple
+  WeightingLayout->addWidget(Ripple_Label, 1, 0);
+  WeightingLayout->addWidget(Ripple_SpinBox, 1, 1);
+
+         // Number of sections (integer)
+  Sections_Label = new QLabel(tr("Sections"));
+  Sections_SpinBox = new QSpinBox();
+  Sections_SpinBox->setRange(2, 10);           // reasonable range
+  Sections_SpinBox->setValue(3);               // default 3 sections
+  WeightingLayout->addWidget(Sections_Label, 2, 0);
+  WeightingLayout->addWidget(Sections_SpinBox, 2, 1);
+
+  Weighting_GroupBox->setLayout(WeightingLayout);
+  MatchingNetworkDesignLayout->addWidget(Weighting_GroupBox, 3, 0, 1, 3);
+
+         // Hide ripple controls if Binomial selected
+  Ripple_Label->setVisible(false);
+  Ripple_SpinBox->setVisible(false);
+
+
   // Input impedance
   Zin_Label = new QLabel("ZS");
   ZinRSpinBox = new QDoubleSpinBox();
@@ -75,9 +111,9 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   ZinRSpinBox->setValue(50);
   ZinRSpinBox->setDecimals(1);
   Ohm_Zin_Label = new QLabel(QChar(0xa9, 0x03));
-  MatchingNetworkDesignLayout->addWidget(Zin_Label, 3, 0);
-  MatchingNetworkDesignLayout->addWidget(ZinRSpinBox, 3, 1);
-  MatchingNetworkDesignLayout->addWidget(Ohm_Zin_Label, 3, 2);
+  MatchingNetworkDesignLayout->addWidget(Zin_Label, 4, 0);
+  MatchingNetworkDesignLayout->addWidget(ZinRSpinBox, 4, 1);
+  MatchingNetworkDesignLayout->addWidget(Ohm_Zin_Label, 4, 2);
 
   // Output impedance
   Zout_Label = new QLabel("ZL");
@@ -95,11 +131,11 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   ZoutISpinBox->setValue(0);
   ZoutISpinBox->setDecimals(1);
   Ohm_Zout_Label = new QLabel(QChar(0xa9, 0x03));
-  MatchingNetworkDesignLayout->addWidget(Zout_Label, 4, 0);
-  MatchingNetworkDesignLayout->addWidget(ZoutRSpinBox, 4, 1);
-  MatchingNetworkDesignLayout->addWidget(Zout_J, 4, 2);
-  MatchingNetworkDesignLayout->addWidget(ZoutISpinBox, 4, 3);
-  MatchingNetworkDesignLayout->addWidget(Ohm_Zout_Label, 4, 4);
+  MatchingNetworkDesignLayout->addWidget(Zout_Label, 5, 0);
+  MatchingNetworkDesignLayout->addWidget(ZoutRSpinBox, 5, 1);
+  MatchingNetworkDesignLayout->addWidget(Zout_J, 5, 2);
+  MatchingNetworkDesignLayout->addWidget(ZoutISpinBox, 5, 3);
+  MatchingNetworkDesignLayout->addWidget(Ohm_Zout_Label, 5, 4);
 
   // Frequency range. Start
   FreqStart_Label = new QLabel("freq");
@@ -117,9 +153,9 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   FreqStart_Scale_Combo = new QComboBox();
   FreqStart_Scale_Combo->addItems(FreqScale);
   FreqStart_Scale_Combo->setCurrentIndex(1);
-  MatchingNetworkDesignLayout->addWidget(FreqStart_Label, 5, 0);
-  MatchingNetworkDesignLayout->addWidget(FreqStart_Spinbox, 5, 1);
-  MatchingNetworkDesignLayout->addWidget(FreqStart_Scale_Combo, 5, 2);
+  MatchingNetworkDesignLayout->addWidget(FreqStart_Label, 6, 0);
+  MatchingNetworkDesignLayout->addWidget(FreqStart_Spinbox, 6, 1);
+  MatchingNetworkDesignLayout->addWidget(FreqStart_Scale_Combo, 6, 2);
 
   // Frequency range. End
   FreqEnd_Label = new QLabel("Freq. stop");
@@ -131,15 +167,15 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   FreqEnd_Spinbox->setSingleStep(1); // Step fixed to 1 Hz/kHz/MHz/GHz
   FreqEnd_Scale_Combo = new QComboBox();
   FreqEnd_Scale_Combo->addItems(FreqScale);
-  MatchingNetworkDesignLayout->addWidget(FreqEnd_Label, 6, 0);
-  MatchingNetworkDesignLayout->addWidget(FreqEnd_Spinbox, 6, 1);
-  MatchingNetworkDesignLayout->addWidget(FreqEnd_Scale_Combo, 6, 2);
+  MatchingNetworkDesignLayout->addWidget(FreqEnd_Label, 7, 0);
+  MatchingNetworkDesignLayout->addWidget(FreqEnd_Spinbox, 7, 1);
+  MatchingNetworkDesignLayout->addWidget(FreqEnd_Scale_Combo, 7, 2);
 
   // Widgets to add a trace to plot
   traceNameLabel = new QLabel("Trace name");
-  traceNameLineEdit = new QLineEdit(" Match1");
-  MatchingNetworkDesignLayout->addWidget(traceNameLabel, 7, 0);
-  MatchingNetworkDesignLayout->addWidget(traceNameLineEdit, 7, 1);
+  traceNameLineEdit = new QLineEdit("Match1");
+  MatchingNetworkDesignLayout->addWidget(traceNameLabel, 8, 0);
+  MatchingNetworkDesignLayout->addWidget(traceNameLineEdit, 8, 1);
 
   // Since it is more common to design narrowband matching networks than
   // broadband, the end-freq widgets are hidden
@@ -158,6 +194,9 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   connect(FreqEnd_Scale_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
   connect(Solution1_RB, SIGNAL(clicked(bool)), this, SLOT(UpdateDesignParameters()));
   connect(Solution2_RB, SIGNAL(clicked(bool)), this, SLOT(UpdateDesignParameters()));
+  connect(Weighting_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(Ripple_SpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
+  connect(Sections_SpinBox, SIGNAL(valueChanged(int)), this, SLOT(UpdateDesignParameters()));
 
   this->setLayout(MatchingNetworkDesignLayout);
 
@@ -203,7 +242,13 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
   Specs.freqEnd = FreqEnd_Spinbox->value() *
                   getScaleFreq(FreqEnd_Scale_Combo->currentIndex());
 
+  // Single/double stub matching
   Specs.OpenShort = StubTermination_ComboBox->currentIndex(); // 0: Open circuit stub; 1: Short-circuited stub
+
+  // Multisection lambda/4 transformers
+  Specs.NSections = Sections_SpinBox->value();
+  Specs.Weigthing = Weighting_Combo->currentText(); // Chebyshev or binomial
+  Specs.gamma_MAX = Ripple_SpinBox->value(); // Ripple of the Chebyshev taper
 
 
   int topology = Topology_Combo->currentIndex();
@@ -229,6 +274,13 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
       delete DSM;
       break;
     }
+    case 3: { // Multisection lambda/4
+      MultisectionQuarterWave *MSL4 = new MultisectionQuarterWave(Specs);
+      MSL4->synthesize();
+      SchContent = MSL4->Schematic;
+      delete MSL4;
+      break;
+    }
   }
 
 
@@ -245,6 +297,12 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
 void MatchingNetworkDesignTool::on_TopoCombo_currentIndexChanged(int index) {
   switch (index) {
   case 0: // Lsection
+
+    // Show imaginary part of the load impedance
+    Zout_J->setText(QChar(0xa9, 0x03));// Put "+j" text in 3rd position. It is changed if topologies for real ZL were selected
+    Ohm_Zout_Label->show();// Show Omega symbol in the 5th position
+    ZoutISpinBox->show();
+
     // Show Lsection matching solutions
     Solution1_RB->show();
     Solution2_RB->show();
@@ -252,10 +310,19 @@ void MatchingNetworkDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     // Hide open circuit termination options
     StubTermination_Label->hide();
     StubTermination_ComboBox->hide();
+
+    // Hide lambda/4 weighting
+    Weighting_GroupBox->hide();
     break;
 
   case 1: // Single-stub matching
   case 2: // Double-stub matching
+
+    // Show imaginary part of the load impedance
+    Zout_J->setText(QChar(0xa9, 0x03));// Put "+j" text in 3rd position. It is changed if topologies for real ZL were selected
+    Ohm_Zout_Label->show();// Show Omega symbol in the 5th position
+    ZoutISpinBox->show();
+
     // Hide Lsection matching solutions
     Solution1_RB->hide();
     Solution2_RB->hide();
@@ -263,7 +330,28 @@ void MatchingNetworkDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     // Hide open circuit termination options
     StubTermination_Label->show();
     StubTermination_ComboBox->show();
+
+    // Hide lambda/4 weighting
+    Weighting_GroupBox->hide();
     break;
+
+  case 3: // Multisection lambda/4 transformer
+
+    // Hide imaginary part of the load impedance
+    Zout_J->setText(QChar(0xa9, 0x03));// Put Omega symbol in 3rd position
+    Ohm_Zout_Label->hide();// Hide Omega symbol in the 5th position
+    ZoutISpinBox->hide();
+
+    // Hide Lsection matching solutions
+    Solution1_RB->hide();
+    Solution2_RB->hide();
+
+    // Hide open circuit termination options
+    StubTermination_Label->hide();
+    StubTermination_ComboBox->hide();
+
+    // Show lambda/4 weighting
+    Weighting_GroupBox->show();
 
   default:
     break;
