@@ -35,6 +35,7 @@
 #include "SingleStub.h"
 #include "DoubleStub.h"
 #include "MultisectionQuarterWave.h"
+#include "CascadedLCSections.h"
 
 
 class MatchingNetworkDesignTool : public QWidget {
