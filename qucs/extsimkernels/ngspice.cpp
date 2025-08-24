@@ -272,7 +272,7 @@ void Ngspice::createNetlist(
             } else {  // Set Noise1 plot to output noise spectrum
                 spiceNetlist.append("setplot noise1\n");
             }
-            nods = "inoise_spectrum onoise_spectrum";
+            nods = "noise1.all";
         } else if ( sim_typ == ".PZ" ) {
             pzSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
@@ -325,7 +325,24 @@ void Ngspice::createNetlist(
             QString out = "spice4qucs." + sim_name + ".ngspice.dc.print";
             spiceNetlist.append(QStringLiteral("print %1 > %2\n").arg(nods).arg(out));
             outputs.append(out);
-        } else if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
+        } 
+        else if (sim_typ == ".NOISE") {
+            nods = nods.simplified();
+            if ( !nods.isEmpty() ) {
+                QString basenam = "spice4qucs";
+                QString filename;
+                if ( hasParSWP && hasDblSWP )
+                    filename = QStringLiteral("%1.%2._swp_swp.raw").arg(basenam).arg(sim_name);
+                else if ( hasParSWP )
+                    filename = QStringLiteral("%1.%2._swp.raw").arg(basenam).arg(sim_name);
+                else
+                    filename = QStringLiteral("%1.%2.raw").arg(basenam).arg(sim_name);
+                filename.replace(' ', '_'); // Ngspice cannot understand spaces in filename
+                spiceNetlist.append(QStringLiteral("write %1 %2\n").arg(filename).arg(nods));
+                outputs.append(filename);
+            }
+        }
+        else if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
             nods = nods.simplified();
             if ( !nods.isEmpty() ) {
                 QString basenam = "spice4qucs";
