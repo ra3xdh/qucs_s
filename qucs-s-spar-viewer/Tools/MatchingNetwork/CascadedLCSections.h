@@ -31,5 +31,7 @@ public:
 private:
   struct MatchingNetworkDesignParameters Specs;
   int NumberOfSections;
+  void CreateLowpassSolution();
+  void CreateHighpassSolution();
 };
 #endif // CASCADEDLCSECTIONS_H

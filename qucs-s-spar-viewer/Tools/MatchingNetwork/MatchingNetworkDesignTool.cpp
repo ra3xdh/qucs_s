@@ -230,6 +230,7 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
   Specs.Zout =
       std::complex<double>(ZoutRSpinBox->value(), ZoutISpinBox->value());
   Specs.Topology = Topology_Combo->currentText();
+
   if (Solution1_RB->isChecked()) {
     Specs.Solution = 1;
   } else {
@@ -379,9 +380,9 @@ void MatchingNetworkDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     Ohm_Zout_Label->hide();// Hide Omega symbol in the 5th position
     ZoutISpinBox->hide();
 
-           // Hide Lsection matching solutions
-    Solution1_RB->hide();
-    Solution2_RB->hide();
+           // Show Lsection matching solutions
+    Solution1_RB->show();
+    Solution2_RB->show();
 
     // Show number of sections
     Sections_Label->show();
