@@ -28,6 +28,7 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
   matching_methods.append(tr("Double stub"));
   matching_methods.append(QString("%1 %2/4").arg(tr("Multisection ")).arg(QString(QChar(0xBB, 0x03))));
   matching_methods.append(tr("Cascaded L-sections"));
+  matching_methods.append(QString("%1/8 + %1/4 line").arg(QChar(0xBB, 0x03)));
  /* matching_methods.append(QString("%1/4 line").arg(QChar(0xBB, 0x03)));
   matching_methods.append(QString("%1/8 + %1/4 line").arg(QChar(0xBB, 0x03)));
   matching_methods.append(QString("%1-type").arg(QChar(0xC0, 0x03)));
@@ -288,6 +289,13 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
       delete CLCM;
       break;
     }
+    case 5: { //lambda/8 + lambda/4
+      Lambda8Lambda4 *L8L4 = new Lambda8Lambda4(Specs);
+      L8L4->synthesize();
+      SchContent = L8L4->Schematic;
+      delete L8L4;
+      break;
+    }
   }
 
 
@@ -394,6 +402,28 @@ void MatchingNetworkDesignTool::on_TopoCombo_currentIndexChanged(int index) {
 
            // Hide lambda/4 weighting
     Weighting_GroupBox->hide();
+    break;
+
+  case 5: // lambda/4 + lambda/4
+    // Show imaginary part of the load impedance
+    Zout_J->setText(QChar(0xa9, 0x03));// Put "+j" text in 3rd position. It is changed if topologies for real ZL were selected
+    Ohm_Zout_Label->show();// Show Omega symbol in the 5th position
+
+    // Hide Lsection matching solutions
+    Solution1_RB->hide();
+    Solution2_RB->hide();
+
+           // Hide number of sections
+    Sections_Label->hide();
+    Sections_SpinBox->hide();
+
+           // Hide open circuit termination options
+    StubTermination_Label->hide();
+    StubTermination_ComboBox->hide();
+
+           // Hide lambda/4 weighting
+    Weighting_GroupBox->hide();
+
     break;
 
   default:

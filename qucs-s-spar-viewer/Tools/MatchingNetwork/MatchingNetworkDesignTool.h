@@ -36,6 +36,7 @@
 #include "DoubleStub.h"
 #include "MultisectionQuarterWave.h"
 #include "CascadedLCSections.h"
+#include "Lambda8Lambda4.h"
 
 
 class MatchingNetworkDesignTool : public QWidget {
