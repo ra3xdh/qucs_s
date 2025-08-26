@@ -6,6 +6,7 @@
 #include <complex>
 #include <deque>
 #include <vector>
+#include <complex.h>
 
 enum ComponentType {
   Capacitor,
@@ -85,6 +86,9 @@ struct MatchingNetworkDesignParameters {
   int NSections;
   QString Weigthing;
   double gamma_MAX;
+  // Load impedance data
+  std::complex<double> S11, S12, S21, S22;
+  bool twoPortMode;
 };
 
 struct NetworkInfo {

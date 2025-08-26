@@ -34,13 +34,13 @@
 #include "../../Schematic/component.h"
 
 #include "MatchingNetworkParametersWidget.h" // Custom widget for the network setup data entry
+#include "LoadSpecificationWidget.h"
 #include "Lsection.h"
 #include "SingleStub.h"
 #include "DoubleStub.h"
 #include "MultisectionQuarterWave.h"
 #include "CascadedLCSections.h"
 #include "Lambda8Lambda4.h"
-
 
 class MatchingNetworkDesignTool : public QWidget {
   Q_OBJECT
@@ -59,6 +59,7 @@ private:
 
   MatchingNetworkParametersWidget *InputMatchingSetupWidget; // Input matching network data entry widget
   MatchingNetworkParametersWidget *OutputMatchingSetupWidget; // Output matching network data entry widget
+  LoadSpecificationWidget *LoadSpecWidget;
 
   QLabel  *Zout_Label, *Ohm_Zout_Label, *Zout_J;
   QDoubleSpinBox *ZoutISpinBox, *ZoutRSpinBox;
