@@ -75,19 +75,16 @@ struct FilterSpecifications {
 };
 
 struct MatchingNetworkDesignParameters {
-  QString Topology;          // Attenuator topology
-  std::complex<double> Zin;  // Input impedance
-  std::complex<double> Zout; // Output impedance
-  int Solution; // Some matching techniques yield several valid solutions to the
-                // matching problem
-  int OpenShort; // This is applicable to topologies with stubs
+  std::complex<double> Zin;
+  std::complex<double> Zout;
+  int Topology;
+  int Solution;
   double freqStart;
   double freqEnd;
-
-  // Multisection transformers
+  int OpenShort;
   int NSections;
-  double gamma_MAX; // Required for Chebyshev multisection transformers
   QString Weigthing;
+  double gamma_MAX;
 };
 
 struct NetworkInfo {
