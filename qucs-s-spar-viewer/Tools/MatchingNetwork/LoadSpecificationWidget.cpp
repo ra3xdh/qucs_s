@@ -1,7 +1,7 @@
 #include "LoadSpecificationWidget.h"
 
 LoadSpecificationWidget::LoadSpecificationWidget(QWidget *parent)
-    : QGroupBox("Load specification", parent)
+    : QGroupBox("Load Settings", parent)
     , m_twoPortMode(false)
     , m_updatingValues(false)
     , m_Z0(50.0)
@@ -178,22 +178,14 @@ void LoadSpecificationWidget::setupTwoPortUI()
     m_twoPortLayout->addWidget(m_s22Imag, 1, 7);
     
     // Connect S-parameter signals
-    connect(m_s11Real, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this, &LoadSpecificationWidget::onSParameterChanged);
-    connect(m_s11Imag, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this, &LoadSpecificationWidget::onSParameterChanged);
-    connect(m_s12Real, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this, &LoadSpecificationWidget::onSParameterChanged);
-    connect(m_s12Imag, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this, &LoadSpecificationWidget::onSParameterChanged);
-    connect(m_s21Real, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this, &LoadSpecificationWidget::onSParameterChanged);
-    connect(m_s21Imag, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this, &LoadSpecificationWidget::onSParameterChanged);
-    connect(m_s22Real, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this, &LoadSpecificationWidget::onSParameterChanged);
-    connect(m_s22Imag, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this, &LoadSpecificationWidget::onSParameterChanged);
+    connect(m_s11Real, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LoadSpecificationWidget::onSParameterChanged);
+    connect(m_s11Imag, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LoadSpecificationWidget::onSParameterChanged);
+    connect(m_s12Real, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LoadSpecificationWidget::onSParameterChanged);
+    connect(m_s12Imag, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LoadSpecificationWidget::onSParameterChanged);
+    connect(m_s21Real, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LoadSpecificationWidget::onSParameterChanged);
+    connect(m_s21Imag, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LoadSpecificationWidget::onSParameterChanged);
+    connect(m_s22Real, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LoadSpecificationWidget::onSParameterChanged);
+    connect(m_s22Imag, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LoadSpecificationWidget::onSParameterChanged);
     
     m_mainLayout->addWidget(m_twoPortWidget, 4, 0, 1, 5);
     m_twoPortWidget->hide(); // Hidden by default (one-port mode)

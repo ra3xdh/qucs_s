@@ -16,10 +16,12 @@
  ***************************************************************************/
 
 #include "MatchingNetworkParametersWidget.h"
-#include <complex>
 
-MatchingNetworkParametersWidget::MatchingNetworkParametersWidget(QWidget *parent) 
-    : QWidget(parent) {
+
+
+
+MatchingNetworkParametersWidget::MatchingNetworkParametersWidget(QWidget *parent)
+    : QGroupBox("Network Settings", parent) {
     setupUI();
     connectSignals();
 }
@@ -102,7 +104,7 @@ void MatchingNetworkParametersWidget::setupUI() {
     mainLayout->addWidget(Sections_SpinBox, 3, 1);
 
     // Input impedance
-    Zin_Label = new QLabel("ZS");
+    Zin_Label = new QLabel("Z0");
     ZinRSpinBox = new QDoubleSpinBox();
     ZinRSpinBox->setMinimum(0.5);
     ZinRSpinBox->setMaximum(10000);

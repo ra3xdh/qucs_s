@@ -29,12 +29,14 @@
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QWidget>
+#include <QGroupBox>
+#include <complex>
 
 #include "../../Schematic/structures.h"
 
 
 
-class MatchingNetworkParametersWidget : public QWidget {
+class MatchingNetworkParametersWidget : public QGroupBox {
     Q_OBJECT
     
 public:
@@ -58,7 +60,6 @@ private slots:
 
 private:
     // UI Component
-
     QLabel *Topology_Label;
     QComboBox *Topology_Combo;
     
@@ -80,6 +81,8 @@ private:
     QLabel *Zin_Label;
     QDoubleSpinBox *ZinRSpinBox;
     QLabel *Ohm_Zin_Label;
+
+    QGroupBox *groupBox;
     
     // Layout
     QGridLayout *mainLayout;
