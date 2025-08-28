@@ -30,6 +30,9 @@
 #include <QSpinBox>
 #include <QWidget>
 #include <QGroupBox>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QMouseEvent>
 #include <complex>
 
 #include "../../Schematic/structures.h"
@@ -52,14 +55,29 @@ public:
     // Public method to get the frequency scaling
     double getScaleFreq(int index) const;
 
+    bool isCollapsed() const { return m_isCollapsed; }
+    void setCollapsed(bool collapsed);
+    void setTitle(QString title);
+
+protected:
+    void mousePressEvent(QMouseEvent* event) override;
+
 public slots:
     void onTopologyChanged(int index);
 
 private slots:
     void onParameterChanged();
+    void onToggleCollapse();
 
 private:
-    // UI Component
+    // UI Components
+
+    QGridLayout* m_mainLayout;
+    QWidget* m_contentWidget;
+    QPushButton* m_toggleButton;
+
+    QLabel *titleLabel;
+
     QLabel *Topology_Label;
     QComboBox *Topology_Combo;
     
@@ -90,9 +108,13 @@ private:
     void setupUI();
     void connectSignals();
 
+    // State
+    bool m_isCollapsed;
+
 signals:
     void parametersChanged();
     void topologyChanged(int index);
+    void collapsedStateChanged(bool collapsed);
 };
 
 #endif // MATCHINGNETWORKPARAMETERSWIDGET_H

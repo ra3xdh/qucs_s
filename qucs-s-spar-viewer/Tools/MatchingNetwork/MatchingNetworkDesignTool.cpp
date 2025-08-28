@@ -86,11 +86,13 @@ void MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility(){
     // Two-ports matching
     OutputMatchingSetupWidget->show();
     InputMatchingSetupWidget->setTitle("Input Matching Network Settings");
+    LoadSpecificationWidget.setTitle("Load Settings (2-ports)");
     LoadSpecWidget->setTwoPortMode(true);
   } else {
     // One-port matching
     OutputMatchingSetupWidget->hide();
     InputMatchingSetupWidget->setTitle("Matching Network Settings");
+    LoadSpecificationWidget.setTitle("Load Settings (1-port)");
     LoadSpecWidget->setTwoPortMode(false);
   }
   // Once visibility was adjusted, update the specifications and synthesize a network

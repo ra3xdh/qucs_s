@@ -21,7 +21,7 @@ LoadSpecificationWidget::LoadSpecificationWidget(QWidget *parent)
     connect(m_formatCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LoadSpecificationWidget::onFormatChanged);
     connect(m_inputMethodGroup, &QButtonGroup::buttonClicked, this, &LoadSpecificationWidget::onInputMethodChanged);
     connect(m_browseButton, &QPushButton::clicked, this, &LoadSpecificationWidget::onBrowseFile);
-    connect(m_toggleButton, &QPushButton::clicked, this, &LoadSpecificationWidget::onToggleCollapse);
+    connect(m_toggleButton, SIGNAL(clicked(bool)), this, SLOT(onToggleCollapse()));
     
     // Initialize display
     onImpedanceChanged();
