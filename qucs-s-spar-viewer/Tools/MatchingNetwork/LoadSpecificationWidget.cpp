@@ -1,9 +1,10 @@
 #include "LoadSpecificationWidget.h"
 
 LoadSpecificationWidget::LoadSpecificationWidget(QWidget *parent)
-    : QGroupBox("Load Settings", parent)
+    : QGroupBox(parent)
     , m_twoPortMode(false)
     , m_updatingValues(false)
+    , m_isCollapsed(false)
     , m_Z0(50.0)
 {
     setupUI();
@@ -20,6 +21,7 @@ LoadSpecificationWidget::LoadSpecificationWidget(QWidget *parent)
     connect(m_formatCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LoadSpecificationWidget::onFormatChanged);
     connect(m_inputMethodGroup, &QButtonGroup::buttonClicked, this, &LoadSpecificationWidget::onInputMethodChanged);
     connect(m_browseButton, &QPushButton::clicked, this, &LoadSpecificationWidget::onBrowseFile);
+    connect(m_toggleButton, &QPushButton::clicked, this, &LoadSpecificationWidget::onToggleCollapse);
     
     // Initialize display
     onImpedanceChanged();
@@ -30,36 +32,60 @@ LoadSpecificationWidget::~LoadSpecificationWidget(){
 
 void LoadSpecificationWidget::setupUI()
 {
-    m_mainLayout = new QGridLayout(this);
-    
-    // Input method selection
-    m_manualInputRadio = new QRadioButton("Manual input");
-    m_fileInputRadio = new QRadioButton("File input");
-    m_inputMethodGroup = new QButtonGroup(this);
-    m_inputMethodGroup->addButton(m_manualInputRadio, 0);
-    m_inputMethodGroup->addButton(m_fileInputRadio, 1);
-    m_manualInputRadio->setChecked(true);
-    
-    m_browseButton = new QPushButton("Browse");
-    m_browseButton->setEnabled(false);
-    m_fileLabel = new QLabel("No file selected");
-    
-    m_mainLayout->addWidget(m_manualInputRadio, 0, 0);
-    m_mainLayout->addWidget(m_fileInputRadio, 0, 1);
-    m_mainLayout->addWidget(m_browseButton, 0, 2);
-    m_mainLayout->addWidget(m_fileLabel, 0, 3, 1, 2);
-    
-    // Format selection
-    m_formatLabel = new QLabel("Format:");
-    m_formatCombo = new QComboBox();
-    m_formatCombo->addItem("Real / Imaginary");
-    m_formatCombo->addItem("Magnitude / Angle");
-    
-    m_mainLayout->addWidget(m_formatLabel, 1, 0);
-    m_mainLayout->addWidget(m_formatCombo, 1, 1, 1, 2);
-    
-    setupOnePortUI();
-    setupTwoPortUI();
+  // Create main layout for the group box
+  QVBoxLayout* groupLayout = new QVBoxLayout(this);
+
+  // Create header with title and collapse button
+  QWidget* headerWidget = new QWidget();
+  QHBoxLayout* headerLayout = new QHBoxLayout(headerWidget);
+  headerLayout->setContentsMargins(0, 0, 0, 0);
+
+  // Collapse/expand button
+  m_toggleButton = new QPushButton("▼");
+  m_toggleButton->setFixedSize(20, 20);
+  m_toggleButton->setStyleSheet("QPushButton { border: none; font-weight: bold; }");
+
+  headerLayout->addWidget(m_toggleButton);
+  headerLayout->addWidget(new QLabel("Load Settings"));
+  headerLayout->addStretch();
+
+  // Create content widget that will be hidden/shown
+  m_contentWidget = new QWidget();
+  m_mainLayout = new QGridLayout(m_contentWidget);
+
+  // Input method selection
+  m_manualInputRadio = new QRadioButton("Manual input");
+  m_fileInputRadio = new QRadioButton("File input");
+  m_inputMethodGroup = new QButtonGroup(this);
+  m_inputMethodGroup->addButton(m_manualInputRadio, 0);
+  m_inputMethodGroup->addButton(m_fileInputRadio, 1);
+  m_manualInputRadio->setChecked(true);
+
+  m_browseButton = new QPushButton("Browse");
+  m_browseButton->setEnabled(false);
+  m_fileLabel = new QLabel("No file selected");
+
+  m_mainLayout->addWidget(m_manualInputRadio, 0, 0);
+  m_mainLayout->addWidget(m_fileInputRadio, 0, 1);
+  m_mainLayout->addWidget(m_browseButton, 0, 2);
+  m_mainLayout->addWidget(m_fileLabel, 0, 3, 1, 2);
+
+  // Format selection
+  m_formatLabel = new QLabel("Format:");
+  m_formatCombo = new QComboBox();
+  m_formatCombo->addItem("Real / Imaginary");
+  m_formatCombo->addItem("Magnitude / Angle");
+
+  m_mainLayout->addWidget(m_formatLabel, 1, 0);
+  m_mainLayout->addWidget(m_formatCombo, 1, 1, 1, 2);
+
+  setupOnePortUI();
+  setupTwoPortUI();
+
+  // Add widgets to main group layout
+  groupLayout->addWidget(headerWidget);
+  groupLayout->addWidget(m_contentWidget);
+  groupLayout->setContentsMargins(10, 5, 10, 10);
 }
 
 void LoadSpecificationWidget::setupOnePortUI()
@@ -666,4 +692,37 @@ void LoadSpecificationWidget::loadS2PFile(const QString& filename)
     } else {
         QMessageBox::warning(this, "Error", "No valid data found in S2P file");
     }
+}
+
+void LoadSpecificationWidget::setCollapsed(bool collapsed)
+{
+  m_isCollapsed = collapsed;
+  m_contentWidget->setVisible(!collapsed);
+  m_toggleButton->setText(collapsed ? "▶" : "▼");
+
+  // Update the size policy to allow proper resizing
+  if (collapsed) {
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    setFixedHeight(sizeHint().height());
+  } else {
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    setMaximumHeight(QWIDGETSIZE_MAX);
+    setMinimumHeight(0);
+  }
+
+  emit collapsedStateChanged(collapsed);
+}
+
+void LoadSpecificationWidget::mousePressEvent(QMouseEvent* event)
+{
+  // Check if click is in the title area (first 25 pixels from top)
+  if (event->y() <= 25) {
+    onToggleCollapse();
+  }
+  QGroupBox::mousePressEvent(event);
+}
+
+void LoadSpecificationWidget::onToggleCollapse()
+{
+  setCollapsed(!m_isCollapsed);
 }

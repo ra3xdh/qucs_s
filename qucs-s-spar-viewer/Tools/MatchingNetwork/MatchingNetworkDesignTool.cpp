@@ -34,6 +34,7 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent): QWidget(p
 
   // Output matching network setup
   OutputMatchingSetupWidget = new MatchingNetworkParametersWidget();
+  OutputMatchingSetupWidget->setTitle("Output Matching Network Settings");
   MatchingNetworkDesignLayout->addWidget(OutputMatchingSetupWidget, 3, 0, 1, 3);
   OutputMatchingSetupWidget->hide();// By default, 1-port matching is selected, so hide this widget
 
@@ -84,9 +85,13 @@ void MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility(){
   if (TwoPortCheckBox->isChecked()) {
     // Two-ports matching
     OutputMatchingSetupWidget->show();
+    InputMatchingSetupWidget->setTitle("Input Matching Network Settings");
+    LoadSpecWidget->setTwoPortMode(true);
   } else {
     // One-port matching
     OutputMatchingSetupWidget->hide();
+    InputMatchingSetupWidget->setTitle("Matching Network Settings");
+    LoadSpecWidget->setTwoPortMode(false);
   }
   // Once visibility was adjusted, update the specifications and synthesize a network
   UpdateDesignParameters();
