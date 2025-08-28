@@ -237,7 +237,7 @@ void MatchingNetworkParametersWidget::onParameterChanged() {
 MatchingNetworkDesignParameters MatchingNetworkParametersWidget::getDesignParameters() const {
     MatchingNetworkDesignParameters specs;
     
-    specs.Zin = std::complex<double>(ZinRSpinBox->value(), 0);
+    specs.Z0 = ZinRSpinBox->value();
     specs.Topology = Topology_Combo->currentIndex();
 
     if (Solution1_RB->isChecked()) {

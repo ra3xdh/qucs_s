@@ -18,7 +18,10 @@
 
 DoubleStub::DoubleStub() {}
 
-DoubleStub::DoubleStub(MatchingNetworkDesignParameters AS) { Specs = AS; }
+DoubleStub::DoubleStub(MatchingNetworkDesignParameters AS, double freq) {
+  Specs = AS;
+  f_match = freq;
+}
 
 DoubleStub::~DoubleStub() {}
 
@@ -28,25 +31,24 @@ void DoubleStub::synthesize() {
   // Port 1
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
-  TermSpar1.val["Z"] = num2str(Specs.Zin.real(), Resistance);
+  TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   ComponentInfo Zload(
       QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, 275, 50);
-  Zload.val["Z"] = num2str(Specs.Zout, Resistance);
+  Zload.val["Z"] = num2str(Specs.ZL, Resistance);
   Schematic.appendComponent(Zload);
 
          // GND for load
   ComponentInfo GND_ZL;
-  GND_ZL.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                   GND, 0, 275, 100);
+  GND_ZL.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 275, 100);
   Schematic.appendComponent(GND_ZL);
 
          // Design equations from double stub method
-  double lambda = SPEED_OF_LIGHT / Specs.freqStart;
-  double Z0 = Specs.Zin.real();
-  double RL = Specs.Zout.real();
-  double XL = Specs.Zout.imag();
+  double lambda = SPEED_OF_LIGHT / f_match;
+  double Z0 = Specs.Z0;
+  double RL = Specs.ZL.real();
+  double XL = Specs.ZL.imag();
 
   double Y0 = 1.0 / Z0;
   double GL = (1 / ((RL * RL) + (XL * XL))) * RL;

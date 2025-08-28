@@ -1,5 +1,5 @@
 /***************************************************************************
-                                Lsection.h
+                                MatchingNetworkDesignTool.cpp
                                 ----------
     copyright            :  QUCS team
     author                :  2019 Andres Martinez-Mera
@@ -14,22 +14,40 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
-#ifndef LSECTION_H
-#define LSECTION_H
+#ifndef MATCHINGNETWORKDESIGNER_H
+#define MATCHINGNETWORKDESIGNER_H
+
+
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 
-class Lsection : public Network {
+#include "Lsection.h"
+#include "SingleStub.h"
+#include "DoubleStub.h"
+#include "MultisectionQuarterWave.h"
+#include "CascadedLCSections.h"
+#include "Lambda8Lambda4.h"
+
+class MatchingNetworkDesigner : public Network {
 public:
-  Lsection();
-  virtual ~Lsection();
-  Lsection(MatchingNetworkDesignParameters, double);
+  MatchingNetworkDesigner(MatchingData);
+  ~MatchingNetworkDesigner();
+  QList<ComponentInfo> getComponents();
+  QList<WireInfo> getWires();
+  QList<NodeInfo> getNodes();
+  QMap<QString, QPen> displaygraphs;
   void synthesize();
 
 private:
-  struct MatchingNetworkDesignParameters Specs;
-  double f_match;
+  MatchingData Specs;
+  QList<ComponentInfo> Components;
+  QList<WireInfo> Wires;
+  QList<NodeInfo> Nodes;
+
+  void synthesize_One_Port();
+  void synthesize_Two_Ports();
+
 };
-#endif // LSECTION_H
+
+#endif // MATCHINGNETWORKDESIGNTOOL_H

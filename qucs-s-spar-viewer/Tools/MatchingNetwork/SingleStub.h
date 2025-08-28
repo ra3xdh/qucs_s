@@ -25,10 +25,11 @@ class SingleStub : public Network {
 public:
   SingleStub();
   virtual ~SingleStub();
-  SingleStub(MatchingNetworkDesignParameters);
+  SingleStub(MatchingNetworkDesignParameters, double);
   void synthesize();
 
 private:
   struct MatchingNetworkDesignParameters Specs;
+  double f_match;
 };
 #endif // SINGLESTUB_H

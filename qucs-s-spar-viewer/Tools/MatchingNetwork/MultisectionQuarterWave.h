@@ -20,7 +20,7 @@ public:
     MultisectionQuarterWave();
     virtual ~MultisectionQuarterWave();
 
-    MultisectionQuarterWave(MatchingNetworkDesignParameters);
+    MultisectionQuarterWave(MatchingNetworkDesignParameters, double);
     void synthesize();
 
 private:
@@ -30,6 +30,8 @@ private:
     int BinomialCoeff(int n, int k);
     void designBinomial(std::vector<double> &Zs);
     void designChebyshev(std::vector<double> &Zs);
+
+    double f_match;
 };
 
 #endif // MULTISECTIONQUARTERWAVE_H

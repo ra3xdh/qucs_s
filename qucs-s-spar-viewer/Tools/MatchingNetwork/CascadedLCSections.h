@@ -25,7 +25,7 @@ class CascadedLCSections : public Network {
 public:
   CascadedLCSections();
   virtual ~CascadedLCSections();
-  CascadedLCSections(MatchingNetworkDesignParameters);
+  CascadedLCSections(MatchingNetworkDesignParameters, double);
   void synthesize();
 
 private:
@@ -33,5 +33,6 @@ private:
   int NumberOfSections;
   void CreateLowpassSolution();
   void CreateHighpassSolution();
+  double f_match;
 };
 #endif // CASCADEDLCSECTIONS_H

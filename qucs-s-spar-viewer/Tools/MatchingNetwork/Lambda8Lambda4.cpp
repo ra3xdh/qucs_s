@@ -20,23 +20,26 @@
 
 Lambda8Lambda4::Lambda8Lambda4() {}
 Lambda8Lambda4::~Lambda8Lambda4() {}
-Lambda8Lambda4::Lambda8Lambda4(MatchingNetworkDesignParameters AS) { Specs = AS; }
+Lambda8Lambda4::Lambda8Lambda4(MatchingNetworkDesignParameters AS, double freq) {
+  Specs = AS;
+  f_match = freq;
+}
 
 void Lambda8Lambda4::synthesize() {
     // Port 1
     ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
-    TermSpar1.val["Z"] = num2str(Specs.Zin.real(), Resistance);
+    TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
     Schematic.appendComponent(TermSpar1);
 
 
     // Design equations
     // Reference: Inder J. Bahl. "Fundamentals of RF and microwave transistor amplifiers".
     // John Wiley and Sons. 2009. Pages 159 - 160
-    double Z0 = Specs.Zin.real();
-    double RL = Specs.Zout.real();
-    double XL = Specs.Zout.imag();
+    double Z0 = Specs.Z0;
+    double RL = Specs.ZL.real();
+    double XL = Specs.ZL.imag();
 
-    double l4 = SPEED_OF_LIGHT / (4. * Specs.freqStart);
+    double l4 = SPEED_OF_LIGHT / (4. * f_match);
     double l8 = 0.5 * l4;
 
     // Equivalent matching impedances
@@ -68,7 +71,7 @@ void Lambda8Lambda4::synthesize() {
 
     x_pos += 50;
     ComponentInfo Zload(QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, x_pos, 50);
-    Zload.val["Z"] = num2str(Specs.Zout, Resistance);
+    Zload.val["Z"] = num2str(Specs.ZL, Resistance);
     Schematic.appendComponent(Zload);
 
            // GND for load

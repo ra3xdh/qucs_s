@@ -35,12 +35,7 @@
 
 #include "MatchingNetworkParametersWidget.h" // Custom widget for the network setup data entry
 #include "LoadSpecificationWidget.h"
-#include "Lsection.h"
-#include "SingleStub.h"
-#include "DoubleStub.h"
-#include "MultisectionQuarterWave.h"
-#include "CascadedLCSections.h"
-#include "Lambda8Lambda4.h"
+#include "MatchingNetworkDesigner.h" // Class to create the matching network
 
 class MatchingNetworkDesignTool : public QWidget {
   Q_OBJECT
@@ -51,7 +46,7 @@ public:
 
 private slots:
   void UpdateDesignParameters();
- // void One_TwoPort_Matching_Checkbox(int); // Change between 1-port and 2-port matching modes
+  void AdjustOneTwoPortMatchingWidgetsVisibility();
 
 private:
 
@@ -64,7 +59,7 @@ private:
   QLabel  *Zout_Label, *Ohm_Zout_Label, *Zout_J;
   QDoubleSpinBox *ZoutISpinBox, *ZoutRSpinBox;
 
-  QLabel *FreqStart_Label, *FreqEnd_Label;
+  QLabel *f_match_Label;
 
   // Two-port network widgets
   QGroupBox *two_port_GroupBox;
@@ -84,9 +79,8 @@ private:
   QDoubleSpinBox *S22_A_SpinBox, *S22_B_SpinBox;
 
 
-  QDoubleSpinBox *FreqStart_Spinbox, *FreqEnd_Spinbox;
-  QComboBox *FreqStart_Scale_Combo, *FreqEnd_Scale_Combo, *StubTermination_ComboBox;
-  QCheckBox *Broadband_Checkbox;
+  QDoubleSpinBox *f_match_Spinbox, *FreqEnd_Spinbox;
+  QComboBox *f_match_Scale_Combo, *FreqEnd_Scale_Combo, *StubTermination_ComboBox;
 
   double getScaleFreq(int);
 

@@ -18,7 +18,10 @@
 
 Lsection::Lsection() {}
 
-Lsection::Lsection(MatchingNetworkDesignParameters AS) { Specs = AS; }
+Lsection::Lsection(MatchingNetworkDesignParameters AS, double freq) {
+  Specs = AS;
+  f_match = freq;
+}
 
 Lsection::~Lsection() {}
 
@@ -28,7 +31,7 @@ void Lsection::synthesize() {
   // Port 1
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
-  TermSpar1.val["Z"] = num2str(Specs.Zin.real(), Resistance);
+  TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   ComponentInfo Shunt, Series, Ground;
@@ -37,23 +40,22 @@ void Lsection::synthesize() {
   // Complex load
   ComponentInfo Zload(
       QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, 175, 50);
-  Zload.val["Z"] = num2str(Specs.Zout, Resistance);
+  Zload.val["Z"] = num2str(Specs.ZL, Resistance);
   Schematic.appendComponent(Zload);
 
 
          // GND_ZL
   ComponentInfo GND_ZL;
-  GND_ZL.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                   GND, 0, 175, 100);
+  GND_ZL.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 175, 100);
   Schematic.appendComponent(GND_ZL);
 
   // Design equations
-  double w0 = 2.0 * M_PI * Specs.freqStart;
+  double w0 = 2.0 * M_PI * f_match;
   double L, C, X, B;
 
-  double Z0 = Specs.Zin.real();
-  double RL = Specs.Zout.real();
-  double XL = Specs.Zout.imag();
+  double Z0 = Specs.Z0;
+  double RL = Specs.ZL.real();
+  double XL = Specs.ZL.imag();
 
   if (Z0 > RL) {
     // ZS -------- X -- ZL

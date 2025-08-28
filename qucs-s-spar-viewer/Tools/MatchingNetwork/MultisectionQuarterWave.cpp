@@ -8,8 +8,9 @@ author : 2025: Andrés Martínez Mera
 
 MultisectionQuarterWave::MultisectionQuarterWave() {}
 MultisectionQuarterWave::~MultisectionQuarterWave() {}
-MultisectionQuarterWave::MultisectionQuarterWave(MatchingNetworkDesignParameters AS) {
+MultisectionQuarterWave::MultisectionQuarterWave(MatchingNetworkDesignParameters AS, double freq) {
     Specs = AS;
+  f_match = freq;
 }
 
 // Binomial coefficient
@@ -23,8 +24,8 @@ int MultisectionQuarterWave::BinomialCoeff(int n, int k) {
 
 // Binomial weighting design
 void MultisectionQuarterWave::designBinomial(std::vector<double> &Zs) {
-    double RL = Specs.Zout.real();  // Load resistance only
-    double Z0 = Specs.Zin.real();   // Source port reference
+    double RL = Specs.ZL.real();  // Load resistance only
+    double Z0 = Specs.Z0;   // Source port reference
     int N = Specs.NSections;            // Number of sections
     double Zaux = Z0;
 
@@ -38,8 +39,8 @@ void MultisectionQuarterWave::designBinomial(std::vector<double> &Zs) {
 
 // Chebyshev weighting design
 void MultisectionQuarterWave::designChebyshev(std::vector<double> &Zs) {
-    double RL = Specs.Zout.real();
-    double Z0 = Specs.Zin.real();
+    double RL = Specs.ZL.real();
+    double Z0 = Specs.Z0;
     int N = Specs.NSections - 1; // number of sections
     double gamma = Specs.gamma_MAX;
 
@@ -116,11 +117,11 @@ void MultisectionQuarterWave::synthesize() {
     // Simple schematic: Port -> quarter-wave TL -> ... -> Load
     ComponentInfo TermSrc(
         QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
-    TermSrc.val["Z"] = num2str(Specs.Zin.real(), Resistance);
+    TermSrc.val["Z"] = num2str(Specs.Z0, Resistance);
     Schematic.appendComponent(TermSrc);
 
     // Calculate impedance weighting
-    double lambda4 = SPEED_OF_LIGHT / (4 * Specs.freqStart);
+    double lambda4 = SPEED_OF_LIGHT / (4 * f_match);
     std::vector<double> Zi;
     if (Specs.Weigthing == QString("Chebyshev")) {
         designChebyshev(Zi);
@@ -152,10 +153,8 @@ void MultisectionQuarterWave::synthesize() {
         xpos += 50;
     }
 
-    ComponentInfo Zload(
-        QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]),
-        ComplexImpedance, 0, xpos, 50);
-    Zload.val["Z"] = num2str(Specs.Zout.real(), Resistance);
+    ComponentInfo Zload(QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, xpos, 50);
+    Zload.val["Z"] = num2str(Specs.ZL.real(), Resistance);
     Schematic.appendComponent(Zload);
 
            // GND for load

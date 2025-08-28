@@ -25,10 +25,11 @@ class DoubleStub : public Network {
 public:
   DoubleStub();
   virtual ~DoubleStub();
-  DoubleStub(MatchingNetworkDesignParameters);
+  DoubleStub(MatchingNetworkDesignParameters, double);
   void synthesize();
 
 private:
   struct MatchingNetworkDesignParameters Specs;
+  double f_match;
 };
 #endif // DOUBLESTUB_H

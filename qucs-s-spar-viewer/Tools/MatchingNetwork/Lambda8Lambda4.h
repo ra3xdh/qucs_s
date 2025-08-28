@@ -26,14 +26,15 @@
 class Lambda8Lambda4 : public Network {
 
 public:
-    Lambda8Lambda4();
-    virtual ~Lambda8Lambda4();
+  Lambda8Lambda4();
+  virtual ~Lambda8Lambda4();
 
-    Lambda8Lambda4(MatchingNetworkDesignParameters);
-    void synthesize();
+  Lambda8Lambda4(MatchingNetworkDesignParameters, double freq);
+  void synthesize();
 
 private:
-    struct MatchingNetworkDesignParameters Specs;
+  struct MatchingNetworkDesignParameters Specs;
+  double f_match;
 };
 
 #endif // LAMBDA8LAMBDA4_H

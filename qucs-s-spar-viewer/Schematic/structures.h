@@ -75,20 +75,31 @@ struct FilterSpecifications {
   double ImpedanceRatio;
 };
 
+
+// Contains the information of the matching network topology
 struct MatchingNetworkDesignParameters {
-  std::complex<double> Zin;
-  std::complex<double> Zout;
+  double Z0;
   int Topology;
   int Solution;
-  double freqStart;
-  double freqEnd;
   int OpenShort;
   int NSections;
   QString Weigthing;
   double gamma_MAX;
-  // Load impedance data
-  std::complex<double> S11, S12, S21, S22;
+
+  // Impedance data
+  double ZL_freq;
+  std::complex<double> ZL; // Load impedance
+};
+
+// Contains all the information for the matching network design problem
+struct MatchingData {
+  struct MatchingNetworkDesignParameters InputNetworkParameters;
+  struct MatchingNetworkDesignParameters OutputNetworkParameters;
+
   bool twoPortMode;
+
+  // Match band
+  double f_match; // Target frequency
 };
 
 struct NetworkInfo {

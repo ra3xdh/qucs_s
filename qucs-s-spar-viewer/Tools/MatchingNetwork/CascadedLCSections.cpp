@@ -20,9 +20,10 @@ CascadedLCSections::CascadedLCSections() {
   NumberOfSections = 3; // Default number of sections
 }
 
-CascadedLCSections::CascadedLCSections(MatchingNetworkDesignParameters AS) {
+CascadedLCSections::CascadedLCSections(MatchingNetworkDesignParameters AS, double freq) {
   Specs = AS;
   NumberOfSections = 3; // Default, should be configurable
+  f_match = freq;
 }
 
 CascadedLCSections::~CascadedLCSections() {}
@@ -45,14 +46,14 @@ void CascadedLCSections::CreateHighpassSolution(){
 
   // Port 1
   ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
-  TermSpar1.val["Z"] = num2str(Specs.Zin.real(), Resistance);
+  TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
     // Calculate load impedance from reflection coefficient
-  double Z0 = Specs.Zin.real();
-  double RL = Specs.Zout.real();
+  double Z0 = Specs.Z0;
+  double RL = Specs.ZL.real();
   double RS = Z0;
-  double w = 2 * M_PI * Specs.freqStart;
+  double w = 2 * M_PI * f_match;
 
          // Check if load has resistive part
   if (RL == 0) {
@@ -195,14 +196,14 @@ void CascadedLCSections::CreateHighpassSolution(){
 void CascadedLCSections::CreateLowpassSolution(){
   // Port 1
   ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
-  TermSpar1.val["Z"] = num2str(Specs.Zin.real(), Resistance);
+  TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
          // Calculate load impedance from reflection coefficient
-  double Z0 = Specs.Zin.real();
-  double RL = Specs.Zout.real();
+  double Z0 = Specs.Z0;
+  double RL = Specs.ZL.real();
   double RS = Z0;
-  double w = 2 * M_PI * Specs.freqStart;
+  double w = 2 * M_PI * f_match;
 
          // Check if load has resistive part
   if (RL == 0) {
