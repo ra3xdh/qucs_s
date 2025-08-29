@@ -30,7 +30,7 @@
 
 #include <ranges>
 #include <set>
-#include <stack>
+#include <unordered_map>
 
 struct Schematic::HealingParams
 {
@@ -1804,10 +1804,11 @@ void Schematic::insertRawComponent(Component *c, bool noOptimize)
 
 void Schematic::recreateComponent(Component* comp)
 {
-    std::stack<WireLabel*> saved_labels{};
+    auto qpoint_hash = [](const QPoint& p) { return std::hash<int>{}(p.x()) ^ std::hash<int>{}(p.y()); };
+    std::unordered_map<QPoint,std::unique_ptr<WireLabel>,decltype(qpoint_hash)> saved_labels(10, qpoint_hash);
     for (auto* port : comp->Ports) {
         if (port->Connection->hasLabel() && port->Connection->conn_count() == 1) {
-            saved_labels.push(port->Connection->releaseLabel().release());
+            saved_labels[port->Connection->center()] = port->Connection->releaseLabel();
         }
     }
 
@@ -1842,17 +1843,10 @@ void Schematic::recreateComponent(Component* comp)
     comp->tx = tx;
     comp->ty = ty;
 
-    for (auto pIt = comp->Ports.begin(); pIt != comp->Ports.end() && !saved_labels.empty(); pIt++) {
-        auto* wl = saved_labels.top();
-        saved_labels.pop();
-        auto* port = *pIt;
-        wl->cx = port->Connection->cx;
-        wl->cy = port->Connection->cy;
-        placeNodeLabel(wl);
-    }
-    while (!saved_labels.empty()) {
-        delete saved_labels.top();
-        saved_labels.pop();
+    for (auto* port : comp->Ports) {
+        if (saved_labels.contains(port->Connection->center())) {
+            port->Connection->acquireLabel(std::move(saved_labels[port->Connection->center()]));
+        }
     }
 }
 
