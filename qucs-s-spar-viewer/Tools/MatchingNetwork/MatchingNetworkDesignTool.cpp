@@ -86,13 +86,13 @@ void MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility(){
     // Two-ports matching
     OutputMatchingSetupWidget->show();
     InputMatchingSetupWidget->setTitle("Input Matching Network Settings");
-    LoadSpecificationWidget.setTitle("Load Settings (2-ports)");
+    LoadSpecWidget->setTitle("Load Settings (2-ports)");
     LoadSpecWidget->setTwoPortMode(true);
   } else {
     // One-port matching
     OutputMatchingSetupWidget->hide();
     InputMatchingSetupWidget->setTitle("Matching Network Settings");
-    LoadSpecificationWidget.setTitle("Load Settings (1-port)");
+    LoadSpecWidget->setTitle("Load Settings (1-port)");
     LoadSpecWidget->setTwoPortMode(false);
   }
   // Once visibility was adjusted, update the specifications and synthesize a network
@@ -106,27 +106,40 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
   MatchingNetworkDesignParameters InputSpecs = InputMatchingSetupWidget->getDesignParameters();
 
   if (TwoPortCheckBox->isChecked()) {
-    // 2-port mode - Get the S-parameters
-    /*Specs.S11 = LoadSpecWidget->getS11();
-    Specs.S12 = LoadSpecWidget->getS12();
-    Specs.S21 = LoadSpecWidget->getS21();
-    Specs.S22 = LoadSpecWidget->getS22();
-    Specs.twoPortMode = true;
-*/
+    // 2-port mode
     MatchingNetworkDesignParameters OutputSpecs = OutputMatchingSetupWidget->getDesignParameters();
+
+    // Pass the reference impedance of the input and output networks
+    // This is required to calculate the impedances to match
+    LoadSpecWidget->Z0_Port1 = InputSpecs.Z0;
+    LoadSpecWidget->Z0_Port2 = OutputSpecs.Z0;
+
+
+    // Get the impedances to match
+    std::pair<std::complex<double>, std::complex<double>> ZL = LoadSpecWidget->getTwoPortMatchingImpedances();
+
+    // Set the impedances to match for the input and output networks
+    InputSpecs.ZL = ZL.first;
+    OutputSpecs.ZL = ZL.second;
+
+    // Set the input and output network data in the matching problem definition (struct MatchingData)
+    Specs.InputNetworkParameters = InputSpecs;
     Specs.OutputNetworkParameters = OutputSpecs;
+    Specs.twoPortMode = true;
 
   } else {
     // 1-port mode - Get the load impedance
     InputSpecs.ZL = LoadSpecWidget->getLoadImpedance();
     Specs.twoPortMode = false;
     Specs.InputNetworkParameters = InputSpecs;
+
   }
 
+         // Set match frequency
   Specs.f_match = f_match_Spinbox->value() *
-                    getScaleFreq(f_match_Scale_Combo->currentIndex());
+                  getScaleFreq(f_match_Scale_Combo->currentIndex());
 
-
+        // Design the matching network(s)
   MatchingNetworkDesigner *MatchDesigner = new MatchingNetworkDesigner(Specs);
   MatchDesigner->synthesize();
   SchContent = MatchDesigner->Schematic;

@@ -88,7 +88,7 @@ struct MatchingNetworkDesignParameters {
 
   // Impedance data
   double ZL_freq;
-  std::complex<double> ZL; // Load impedance
+  std::complex<double> ZL; // Load impedance.
 };
 
 // Contains all the information for the matching network design problem

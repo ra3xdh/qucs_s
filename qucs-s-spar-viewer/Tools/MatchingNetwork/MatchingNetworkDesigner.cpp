@@ -31,16 +31,15 @@ void MatchingNetworkDesigner::synthesize(){
     synthesize_Two_Ports();
   } else {
     // One-port matching
-    synthesize_One_Port();
+    MatchingNetworkDesignParameters NetworkParams = Specs.InputNetworkParameters;
+    double f_match = Specs.f_match; // Frequency at which the network will be matched
+    synthesize_One_Port(NetworkParams, f_match);
   }
 }
 
 
 // Handle 1-port matching
-void MatchingNetworkDesigner::synthesize_One_Port(){
-
-  MatchingNetworkDesignParameters NetworkParams = Specs.InputNetworkParameters;
-  double f_match = Specs.f_match;
+void MatchingNetworkDesigner::synthesize_One_Port(MatchingNetworkDesignParameters NetworkParams, double f_match){
 
   switch (NetworkParams.Topology){
 
@@ -98,5 +97,30 @@ void MatchingNetworkDesigner::synthesize_One_Port(){
 
 // Handle 2-ports matching
 void MatchingNetworkDesigner::synthesize_Two_Ports(){
+
+  // 1) Get the frequency at which the network will be matched
+  double f_match = Specs.f_match;
+
+  // 2) Design the input matching network
+  MatchingNetworkDesignParameters NetworkParams = Specs.InputNetworkParameters;
+  synthesize_One_Port(NetworkParams, f_match);
+  SchematicContent IMN_Schematic = this->Schematic;
+
+  // 3) Design the output matching network
+  NetworkParams = Specs.OutputNetworkParameters;
+  synthesize_One_Port(NetworkParams, f_match);
+  SchematicContent OMN_Schematic = this->Schematic;
+
+  // 4) Flip vertically the output matching network with respect to the load
+
+  // 5) Compose the final network
+
+  // 5.1) Remove the load from the input matching network
+
+  // 5.2) Add and connect a SPAR component
+
+  // 5.3) Add and connect the output matching network
+
+  // 5.4) Add the output port
 
 }

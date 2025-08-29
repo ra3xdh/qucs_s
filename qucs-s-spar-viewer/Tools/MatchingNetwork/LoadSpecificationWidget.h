@@ -31,6 +31,7 @@ public:
 
          // Getters
   std::complex<double> getLoadImpedance() const;
+  std::pair<std::complex<double>, std::complex<double>> getTwoPortMatchingImpedances() const;
   std::complex<double> getReflectionCoefficient() const;
   bool isTwoPortMode() const { return m_twoPortMode; }
 
@@ -47,6 +48,9 @@ public:
   void setReferenceImpedance(double Z0) { m_Z0 = Z0; updateReflectionCoefficient(); }
   void setCollapsed(bool collapsed);
   bool isCollapsed() const { return m_isCollapsed; }
+
+  // Reference impedance of the source and the load port. Required for the 2-port matching. This data is provided by the main widget
+  double Z0_Port1, Z0_Port2;
 
 protected:
   void mousePressEvent(QMouseEvent* event) override;

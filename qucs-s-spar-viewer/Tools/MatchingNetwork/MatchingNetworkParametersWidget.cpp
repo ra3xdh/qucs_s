@@ -328,7 +328,7 @@ void MatchingNetworkParametersWidget::setCollapsed(bool collapsed) {
 
 void MatchingNetworkParametersWidget::mousePressEvent(QMouseEvent* event) {
   // Check if click is in the title area (first 25 pixels from top)
-  if (event->y() <= 25) {
+  if (event->position().y() <= 25) {
     onToggleCollapse();
   }
   QGroupBox::mousePressEvent(event);
