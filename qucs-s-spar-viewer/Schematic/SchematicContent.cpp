@@ -16,6 +16,7 @@ SchematicContent::SchematicContent() {
   NumberComponents[Coupler] = 0;
   NumberComponents[OpenStub] = 0;
   NumberComponents[ShortStub] = 0;
+  NumberComponents[SPAR_Block] = 0;
   NumberWires = 0;
 }
 

@@ -76,6 +76,9 @@ QRectF Component::boundingRect() const {
   case Term:
     R = QRect(-25, -25, 50, 50);
     break;
+  case SPAR_Block:
+    R = QRect(-25, -25, 50, 50);
+    break;
   default:
     break;
   }
@@ -93,6 +96,7 @@ QPainterPath Component::shape() const {
   case Resistor:
   case ComplexImpedance:
   case CoupledLines:
+  case SPAR_Block:
   case Coupler:
     path.addRect(-30, -30, 60, 60);
     break;
@@ -145,6 +149,10 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
     break;
   case Coupler:
     paintCoupler(painter);
+    break;
+  case SPAR_Block:
+    paintSPAR(painter);
+    break;
   default:
     break;
   }
@@ -263,6 +271,19 @@ QPoint Component::getPortLocation(int port_number) {
       P = QPoint(-10, -25);
       break;
     }
+    break;
+
+  case SPAR_Block:
+    switch (port_number) {
+    case 0:
+    default:
+      P = QPoint(-20, 0);
+      break;
+    case 1:
+      P = QPoint(20, 0);
+      break;
+    }
+    break;
   }
 
   RotatePoint(P);
@@ -739,3 +760,34 @@ void Component::paintCoupler(QPainter *painter) {
   painter->drawText(QRect(OriginText + QPoint(0, 30), QPoint(100, 100)),
                     QString("%1").arg(Value["Length"]));
 }
+
+
+void Component::paintSPAR(QPainter *painter) {
+  if (Rotation != 0) {
+    painter->rotate(Rotation);
+  }
+
+         // Draw rectangle for two-port device
+  QRect rect(-15, -15, 30, 30);
+  painter->setPen(QPen(Qt::black, 1));
+  painter->drawRect(rect);
+
+         // Terms
+  painter->drawLine(QPoint(-20, 0), QPoint(-15, 0));
+  painter->drawLine(QPoint(15, 0), QPoint(20, 0));
+
+         // Draw big red "[S]" in the center
+  QFont font = painter->font();
+  font.setBold(true);
+  font.setPointSize(10);
+  painter->setFont(font);
+  painter->setPen(QPen(Qt::red, 2));
+  painter->drawText(rect, Qt::AlignCenter, "[S]");
+
+         // Restore pen for further drawing
+  painter->setPen(QPen(Qt::black, 1));
+  if (Rotation != 0) {
+    painter->rotate(-Rotation);
+  }
+}
+

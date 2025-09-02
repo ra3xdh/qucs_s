@@ -159,7 +159,7 @@ void MultisectionQuarterWave::synthesize() {
 
            // GND for load
     ComponentInfo GND_ZL;
-    GND_ZL.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
+    GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]),
                      GND, 0, xpos, 100);
     Schematic.appendComponent(GND_ZL);
 

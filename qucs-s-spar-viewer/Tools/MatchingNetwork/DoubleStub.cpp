@@ -41,7 +41,7 @@ void DoubleStub::synthesize() {
 
          // GND for load
   ComponentInfo GND_ZL;
-  GND_ZL.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 275, 100);
+  GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 275, 100);
   Schematic.appendComponent(GND_ZL);
 
          // Design equations from double stub method

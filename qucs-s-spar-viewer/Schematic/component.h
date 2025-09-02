@@ -90,6 +90,7 @@ private:
   void paintShortStub(QPainter *);
   void paintCoupledLines(QPainter *);
   void paintCoupler(QPainter *);
+  void paintSPAR(QPainter *);
 
 signals:
   void DoubleClicked(struct ComponentInfo);

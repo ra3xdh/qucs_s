@@ -176,7 +176,7 @@ void CascadedLCSections::CreateHighpassSolution(){
 
          // GND for load
   ComponentInfo GND_RL;
-  GND_RL.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
+  GND_RL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]),
                    GND, 0, x_pos + (N+1) * x_spacing, 100);
   Schematic.appendComponent(GND_RL);
 

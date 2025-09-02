@@ -20,7 +20,8 @@ enum ComponentType {
   ShortStub,
   CoupledLines,
   Coupler,
-  ComplexImpedance
+  ComplexImpedance,
+  SPAR_Block
 };
 
 enum ResponseType {

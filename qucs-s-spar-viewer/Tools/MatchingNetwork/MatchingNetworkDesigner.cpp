@@ -124,7 +124,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
 
   // 4.2 Flip all components
   double x_pos = 0, distance = 0; // Component x-axis
-  double x_offset = 50; // Additional x-axis offset
+  double x_offset = 0; // Additional x-axis offset
   for (auto& comp : OMN_Schematic.Comps) {
 
     if (comp.ID == "Z1") {
@@ -227,11 +227,55 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
   Schematic.Wires.append(IMN_Schematic.Wires);
   Schematic.Wires.append(OMN_Schematic.Wires);
 
-  // 5.1) Remove the load from the input matching network
+  // 5.1) Remove the load from the matching networks. Remove their associeated grounds as well
+  for (auto it = Schematic.Comps.begin(); it != Schematic.Comps.end(); ) {
+    if ((it->ID == "Z1") || (it->ID == "Z2") || (it->ID.contains("GND_ZL"))) {
+      it = Schematic.Comps.erase(it); // Erase and return next iterator[3][10]
+    } else {
+      ++it;
+    }
 
-  // 5.2) Add and connect a SPAR component
+    // Also needed to remove the associated GNDs
+  }
 
-  // 5.3) Add and connect the output matching network
+  // 5.2) Add the SPAR component
+
+  ComponentInfo SPAR(QString("S%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, 0, z1_x, 0);
+  SPAR.val["S11"] = num2str(0);
+  SPAR.val["S12"] = num2str(0);
+  SPAR.val["S21"] = num2str(0);
+  SPAR.val["S22"] = num2str(0);
+  Schematic.Comps.append(SPAR);
+
+  // 5.3) Replace load connections
+
+  for (auto it = Schematic.Wires.begin(); it != Schematic.Wires.end(); ) {
+    // Change connection pins if matching the component to be mirrored
+    if (it->OriginID == "Z1") {
+      it->OriginID = "S1";
+      it->PortOrigin = 0;
+    }
+    if (it->OriginID == "Z2") {
+      it->OriginID = "S1";
+      it->PortOrigin = 1;
+    }
+    if (it->DestinationID == "Z1") {
+      it->DestinationID = "S1";
+      it->PortOrigin = 0;
+    }
+    if (it->DestinationID == "Z2") {
+      it->DestinationID = "S1";
+      it->PortOrigin = 0;
+    }
+
+           // Remove wires if OriginID or DestinationID contains "GND_ZL"
+    if (it->OriginID.contains("GND_ZL") || it->DestinationID.contains("GND_ZL")) {
+      it = Schematic.Wires.erase(it);  // Erase and get next iterator
+    } else {
+      ++it;
+    }
+  }
+
 
   // 5.4) Add the output port
 
