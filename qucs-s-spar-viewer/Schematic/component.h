@@ -41,6 +41,7 @@ public:
   Component(GraphWidget *graphWidget, ComponentType, double,
             QMap<QString, QString>, QString ID);
   Component(GraphWidget *graphWidget, struct ComponentInfo);
+  ~Component();
   void addWire(Wire *Wire);
   QList<Wire *> Wires() const;
 

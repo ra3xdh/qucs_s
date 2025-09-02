@@ -16,6 +16,7 @@ public:
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
+  ~ComponentInfo(){}
 
   QString ID;
   ComponentType Type;
@@ -120,24 +121,25 @@ public:
 
 class WireInfo {
 public:
-  WireInfo(){};
+  WireInfo(){}
+  ~WireInfo(){}
   WireInfo(QString O, int OP, QString D, int DP)
-      : OriginID(O), PortOrigin(OP), DestinationID(D), PortDestination(DP){};
+      : OriginID(O), PortOrigin(OP), DestinationID(D), PortDestination(DP){}
   void setParams(QString O, int OP, QString D, int DP) {
     OriginID = O, DestinationID = D;
     PortOrigin = OP, PortDestination = DP;
     WireColor = Qt::black;
-  };
+  }
   void setParams(QString O, int OP, QString D, int DP, QColor Color) {
     OriginID = O, DestinationID = D;
     PortOrigin = OP, PortDestination = DP;
     WireColor = Color;
-  };
-  void setID(QString id) { ID = id; };
-  QString getID() { return ID; };
+  }
+  void setID(QString id) { ID = id; }
+  QString getID() { return ID; }
 
-  void setNet(QString net) { Net = net; };
-  QString getNet() { return Net; };
+  void setNet(QString net) { Net = net; }
+  QString getNet() { return Net; }
 
   QString OriginID;
   int PortOrigin;
@@ -155,6 +157,7 @@ private:
 class NodeInfo {
 public:
   NodeInfo() : Coordinates(2){}
+  ~NodeInfo(){}
   NodeInfo(QString ID_, double x, double y) : ID(ID_), Coordinates(2) {
     Coordinates[0] = x;
     Coordinates[1] = y;

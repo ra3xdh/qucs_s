@@ -20,6 +20,8 @@ SchematicContent::SchematicContent() {
   NumberWires = 0;
 }
 
+SchematicContent::~SchematicContent() {}
+
 // This function returns a structure for doing a simple (internal) ladder
 // simulation
 NetworkInfo SchematicContent::getLadder() {

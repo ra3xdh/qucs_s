@@ -32,6 +32,7 @@ public:
   Wire(Symbol *sourceNode, int port_num_source, Symbol *destNode,
        int port_num_dest);
   Wire();
+  ~Wire();
 
   void setSource(Symbol *, int);
   void setDestination(Symbol *, int);

@@ -56,6 +56,7 @@ class Node : public Symbol {
 public:
   Node(GraphWidget *graphWidget);
   Node(GraphWidget *graphWidget, struct NodeInfo);
+  ~Node();
   void addWire(Wire *Wire);
   QList<Wire *> Wires() const;
 

@@ -34,6 +34,9 @@ Wire::Wire(Symbol *sourceNode, int ps, Symbol *destNode, int pd)
 
 Wire::Wire() : arrowSize(10) { setAcceptedMouseButtons(Qt::NoButton); }
 
+Wire::~Wire(){
+}
+
 void Wire::setSource(Symbol *sourceNode, int port) {
   source = sourceNode;
   port_num_source = port;

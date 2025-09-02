@@ -32,6 +32,8 @@ Node::Node(GraphWidget *graphWidget, NodeInfo NI) : graph(graphWidget) {
   setPos(NI.Coordinates.at(0), NI.Coordinates.at(1));
 }
 
+Node::~Node(){}
+
 void Node::addWire(Wire *Wire) {
   WireList << Wire;
   Wire->adjust();

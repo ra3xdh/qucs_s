@@ -30,6 +30,7 @@ class Component;
 class SchematicContent {
 public:
   SchematicContent();
+  ~SchematicContent();
   struct NetworkInfo
   getLadder(); // Returns a ladder code for using the internal
                // simulator. It's faster than using Qucs, but it is

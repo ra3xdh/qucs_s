@@ -42,6 +42,7 @@ Component::Component(GraphWidget *graphWidget, ComponentInfo CI)
   setCacheMode(DeviceCoordinateCache);
   setZValue(-1);
 }
+Component::~Component(){}
 
 void Component::addWire(Wire *Wire) {
   WireList << Wire;
