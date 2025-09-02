@@ -508,9 +508,17 @@ void SchematicContent::appendWire(QString O, int ON, QString D, int DN,
 
 void SchematicContent::appendNode(struct NodeInfo N) { Nodes.append(N); }
 
-QList<struct ComponentInfo> SchematicContent::getComponents() { return Comps; }
+QList<ComponentInfo> SchematicContent::getComponents() { return Comps; }
+void SchematicContent::setComponents(QList<ComponentInfo> C){Comps = C;}
+
+
 QList<struct WireInfo> SchematicContent::getWires() { return Wires; }
+
 QList<struct NodeInfo> SchematicContent::getNodes() { return Nodes; }
+void SchematicContent::setNodes(QList<NodeInfo> N){
+  Nodes = N;
+}
+
 QList<QGraphicsTextItem *> SchematicContent::getTexts() { return Texts; }
 
 double SchematicContent::getZin() { return Comps[0].val["Z"].toDouble(); }

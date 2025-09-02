@@ -145,8 +145,10 @@ public:
   int PortDestination;
   QColor WireColor;
 
-private:
   QString ID;
+
+private:
+
   QString Net;
 };
 

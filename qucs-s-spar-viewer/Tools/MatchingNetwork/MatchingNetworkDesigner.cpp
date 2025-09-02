@@ -113,7 +113,119 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
 
   // 4) Flip vertically the output matching network with respect to the load
 
+  // 4.1 Find Zload component
+  double z1_x = 0;
+  for (auto& comp : OMN_Schematic.Comps) {
+    if (comp.ID == "Z1") {
+      z1_x = comp.Coordinates[0];
+      break;
+    }
+  }
+
+  // 4.2 Flip all components
+  double x_pos = 0, distance = 0; // Component x-axis
+  double x_offset = 50; // Additional x-axis offset
+  for (auto& comp : OMN_Schematic.Comps) {
+
+    if (comp.ID == "Z1") {
+      // The load component is just offseted
+      // The name (for now) need to be changed
+      comp.ID = "Z2";
+      comp.Coordinates[0] = z1_x + x_offset;
+      continue;
+    }
+
+    x_pos = comp.Coordinates[0];
+    distance = z1_x - x_pos; // z1_x > x_pos (The load is always on the right)
+    comp.Coordinates[0] = z1_x + distance + x_offset; // Update the component's x-axis position
+
+    if (comp.ID == "T1"){
+      comp.Rotation = 0;
+      comp.ID = "T2";
+    } else {
+
+
+      if (comp.Rotation == -90){
+        // If the component is on a series branch, it need to be mirrored
+        for (auto& wire : OMN_Schematic.Wires) {
+          // Inspect all wires. If the beginning or the end of the wire matches with the current component (to be mirrored), then change the connection pins
+
+          // Origin port
+          if(wire.OriginID == comp.ID){
+            if (wire.PortOrigin == 0){
+              wire.PortOrigin = 1;
+            } else {
+              wire.PortOrigin = 0;
+            }
+          }
+          // Destination port
+          if(wire.DestinationID == comp.ID){
+            if (wire.PortDestination == 0){
+              wire.PortDestination = 1;
+            } else {
+              wire.PortDestination = 0;
+            }
+          }
+        }
+      }
+
+      // Change name
+      comp.ID = QString("%1out").arg(comp.ID);
+    }
+  }
+
+  for (auto& wire : OMN_Schematic.Wires) {
+    // Update name (otherwise it'll be a mesh when composing the final network)
+    wire.ID = QString("%1out").arg(wire.ID);
+
+    // The components the wire connects need also be renanmed (add +out suffix)
+
+    if (wire.DestinationID == "T1"){
+      wire.DestinationID = "T2";
+    } else{
+      if (wire.DestinationID == "Z1"){
+        wire.DestinationID = "Z2";
+      } else {
+        wire.DestinationID = QString("%1out").arg(wire.DestinationID);
+      }
+    }
+
+    if (wire.OriginID == "T1"){
+      wire.OriginID = "T2";
+    } else{
+      if (wire.OriginID == "Z1"){
+        wire.OriginID = "Z2";
+      } else {
+        wire.OriginID = QString("%1out").arg(wire.OriginID);
+      }
+    }
+
+  }
+
+  // 4.3 Flip all nodes
+  for (auto& node : OMN_Schematic.Nodes) {
+    x_pos = node.Coordinates[0];
+    distance = z1_x - x_pos; // z1_x > x_pos (The load is always on the right)
+    node.Coordinates[0] = z1_x + distance + x_offset; // Update the component's x-axis position
+
+    // Update name (otherwise it'll be a mesh when composing the final network)
+    node.ID = QString("%1out").arg(node.ID);
+  }
+
   // 5) Compose the final network
+  // Clear data
+  Schematic.Comps.clear();
+  Schematic.Nodes.clear();
+  Schematic.Wires.clear();
+
+  Schematic.Comps.append(IMN_Schematic.Comps);
+  Schematic.Comps.append(OMN_Schematic.Comps);
+
+  Schematic.Nodes.append(IMN_Schematic.Nodes);
+  Schematic.Nodes.append(OMN_Schematic.Nodes);
+
+  Schematic.Wires.append(IMN_Schematic.Wires);
+  Schematic.Wires.append(OMN_Schematic.Wires);
 
   // 5.1) Remove the load from the input matching network
 

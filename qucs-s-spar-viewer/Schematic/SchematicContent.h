@@ -40,6 +40,10 @@ public:
   QString Name;
   QString Type;
 
+  QList<ComponentInfo> Comps;
+  QList<WireInfo> Wires;
+  QList<NodeInfo> Nodes;
+
 private:
   void assignNetToWiresConnectedToNode(QString, QString);
 
@@ -61,8 +65,11 @@ public:
   QString getZoutString();
 
   QList<ComponentInfo> getComponents();
+  void setComponents(QList<ComponentInfo> C);
+
   QList<WireInfo> getWires();
   QList<NodeInfo> getNodes();
+  void setNodes(QList<NodeInfo> N);
   QList<QGraphicsTextItem *> getTexts();
 
   QMap<ComponentType, int>  NumberComponents; // List for assigning IDs to the filter components
@@ -70,9 +77,6 @@ public:
 
 
 private:
-  QList<ComponentInfo> Comps;
-  QList<WireInfo> Wires;
-  QList<NodeInfo> Nodes;
   QList<QGraphicsTextItem *> Texts;
   QString Description;
   QString netlist;
