@@ -492,8 +492,9 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | 
                                       QDialogButtonBox::Apply | QDialogButtonBox::Cancel);
 
-  connect(buttonBox, &QDialogButtonBox::accepted, this, &ComponentDialog::slotOKButton);
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
   connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+  connect(this, &QDialog::accepted, this, &ComponentDialog::slotOKButton);
   connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &ComponentDialog::slotApplyButton);
   mainLayout->addWidget(buttonBox);
 
@@ -761,7 +762,6 @@ void ComponentDialog::slotOKButton()
   settings.setValue("ComponentDialog/geometry", saveGeometry());
 
   slotApplyButton();
-  done(QDialog::Accepted);
 }
 
 // -------------------------------------------------------------------------
