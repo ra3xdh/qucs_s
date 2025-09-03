@@ -43,53 +43,53 @@ void MatchingNetworkDesigner::synthesize_One_Port(MatchingNetworkDesignParameter
 
   switch (NetworkParams.Topology){
 
-    case 0: {// L-section
-      Lsection *L = new Lsection(NetworkParams, f_match);
-      L->synthesize();
-      Schematic = L->Schematic;
-      delete L;
-      break;
-    }
+  case 0: {// L-section
+    Lsection *L = new Lsection(NetworkParams, f_match);
+    L->synthesize();
+    Schematic = L->Schematic;
+    delete L;
+    break;
+  }
 
-    case 1: { // Single-stub
-      SingleStub *SSM = new SingleStub(NetworkParams, f_match);
-      SSM->synthesize();
-      Schematic = SSM->Schematic;
-      delete SSM;
-      break;
-    }
+  case 1: { // Single-stub
+    SingleStub *SSM = new SingleStub(NetworkParams, f_match);
+    SSM->synthesize();
+    Schematic = SSM->Schematic;
+    delete SSM;
+    break;
+  }
 
-    case 2: { // Double-stub
-      DoubleStub *DSM = new DoubleStub(NetworkParams, f_match);
-      DSM->synthesize();
-      Schematic = DSM->Schematic;
-      delete DSM;
-      break;
-    }
+  case 2: { // Double-stub
+    DoubleStub *DSM = new DoubleStub(NetworkParams, f_match);
+    DSM->synthesize();
+    Schematic = DSM->Schematic;
+    delete DSM;
+    break;
+  }
 
-    case 3: { // Multisection lambda/4
-      MultisectionQuarterWave *MSL4 = new MultisectionQuarterWave(NetworkParams, f_match);
-      MSL4->synthesize();
-      Schematic = MSL4->Schematic;
-      delete MSL4;
-      break;
-    }
+  case 3: { // Multisection lambda/4
+    MultisectionQuarterWave *MSL4 = new MultisectionQuarterWave(NetworkParams, f_match);
+    MSL4->synthesize();
+    Schematic = MSL4->Schematic;
+    delete MSL4;
+    break;
+  }
 
-    case 4: { // Cascaded LC sections
-      CascadedLCSections *CLCM = new CascadedLCSections(NetworkParams, f_match);
-      CLCM->synthesize();
-      Schematic = CLCM->Schematic;
-      delete CLCM;
-      break;
-    }
+  case 4: { // Cascaded LC sections
+    CascadedLCSections *CLCM = new CascadedLCSections(NetworkParams, f_match);
+    CLCM->synthesize();
+    Schematic = CLCM->Schematic;
+    delete CLCM;
+    break;
+  }
 
-    case 5: { //lambda/8 + lambda/4
-      Lambda8Lambda4 *L8L4 = new Lambda8Lambda4(NetworkParams, f_match);
-      L8L4->synthesize();
-      Schematic = L8L4->Schematic;
-      delete L8L4;
-      break;
-    }
+  case 5: { //lambda/8 + lambda/4
+    Lambda8Lambda4 *L8L4 = new Lambda8Lambda4(NetworkParams, f_match);
+    L8L4->synthesize();
+    Schematic = L8L4->Schematic;
+    delete L8L4;
+    break;
+  }
 
   }
 }
@@ -101,19 +101,19 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
   // 1) Get the frequency at which the network will be matched
   double f_match = Specs.f_match;
 
-  // 2) Design the input matching network
+         // 2) Design the input matching network
   MatchingNetworkDesignParameters NetworkParams = Specs.InputNetworkParameters;
   synthesize_One_Port(NetworkParams, f_match);
   SchematicContent IMN_Schematic = this->Schematic;
 
-  // 3) Design the output matching network
+         // 3) Design the output matching network
   NetworkParams = Specs.OutputNetworkParameters;
   synthesize_One_Port(NetworkParams, f_match);
   SchematicContent OMN_Schematic = this->Schematic;
 
-  // 4) Flip vertically the output matching network with respect to the load
+         // 4) Flip vertically the output matching network with respect to the load
 
-  // 4.1 Find Zload component
+         // 4.1 Find Zload component
   double z1_x = 0;
   for (auto& comp : OMN_Schematic.Comps) {
     if (comp.ID == "Z1") {
@@ -122,9 +122,11 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
     }
   }
 
-  // 4.2 Flip all components
+         // 4.2 Flip all components
   double x_pos = 0, distance = 0; // Component x-axis
   double x_offset = 0; // Additional x-axis offset
+  QMap<QString, QString> replace_ID; // A map is needed to assign the new component IDs once the output matching network is created
+
   for (auto& comp : OMN_Schematic.Comps) {
 
     if (comp.ID == "Z1") {
@@ -150,7 +152,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
         for (auto& wire : OMN_Schematic.Wires) {
           // Inspect all wires. If the beginning or the end of the wire matches with the current component (to be mirrored), then change the connection pins
 
-          // Origin port
+                 // Origin port
           if(wire.OriginID == comp.ID){
             if (wire.PortOrigin == 0){
               wire.PortOrigin = 1;
@@ -169,8 +171,24 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
         }
       }
 
-      // Change name
-      comp.ID = QString("%1out").arg(comp.ID);
+             // Change name
+      IMN_Schematic.NumberComponents[comp.Type] += 1;
+      int new_comp_number = IMN_Schematic.NumberComponents[comp.Type];
+
+      if (!comp.ID.isEmpty()) {
+        // Find where the trailing number starts
+        int i = comp.ID.length() - 1;
+        while (i >= 0 && comp.ID[i].isDigit()) {
+          i--;
+        }
+
+        if (i < comp.ID.length() - 1) {
+          QString prefix = comp.ID.left(i + 1);  // Everything before the number
+          replace_ID[comp.ID] = prefix + QString::number(new_comp_number);
+          comp.ID = replace_ID[comp.ID];
+        }
+
+      }
     }
   }
 
@@ -178,7 +196,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
     // Update name (otherwise it'll be a mesh when composing the final network)
     wire.ID = QString("%1out").arg(wire.ID);
 
-    // The components the wire connects need also be renanmed (add +out suffix)
+           // The components the wire connects need also be renanmed (add +out suffix)
 
     if (wire.DestinationID == "T1"){
       wire.DestinationID = "T2";
@@ -186,7 +204,12 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
       if (wire.DestinationID == "Z1"){
         wire.DestinationID = "Z2";
       } else {
-        wire.DestinationID = QString("%1out").arg(wire.DestinationID);
+        if (!wire.DestinationID.startsWith("N")){
+          // This only applies to component, not to nodes
+          wire.DestinationID = replace_ID[wire.DestinationID];
+        } else {
+          wire.DestinationID = QString("%1out").arg(wire.DestinationID);
+        }
       }
     }
 
@@ -196,24 +219,30 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
       if (wire.OriginID == "Z1"){
         wire.OriginID = "Z2";
       } else {
-        wire.OriginID = QString("%1out").arg(wire.OriginID);
+        if (!wire.OriginID.startsWith("N")){
+          // This only applies to component, not to nodes
+          wire.OriginID = replace_ID[wire.OriginID];
+        } else {
+          wire.OriginID = QString("%1out").arg(wire.OriginID);
+
+        }
       }
     }
 
   }
 
-  // 4.3 Flip all nodes
+         // 4.3 Flip all nodes
   for (auto& node : OMN_Schematic.Nodes) {
     x_pos = node.Coordinates[0];
     distance = z1_x - x_pos; // z1_x > x_pos (The load is always on the right)
     node.Coordinates[0] = z1_x + distance + x_offset; // Update the component's x-axis position
 
-    // Update name (otherwise it'll be a mesh when composing the final network)
+           // Update name (otherwise it'll be a mesh when composing the final network)
     node.ID = QString("%1out").arg(node.ID);
   }
 
-  // 5) Compose the final network
-  // Clear data
+         // 5) Compose the final network
+         // Clear data
   Schematic.Comps.clear();
   Schematic.Nodes.clear();
   Schematic.Wires.clear();
@@ -227,7 +256,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
   Schematic.Wires.append(IMN_Schematic.Wires);
   Schematic.Wires.append(OMN_Schematic.Wires);
 
-  // 5.1) Remove the load from the matching networks. Remove their associeated grounds as well
+         // 5.1) Remove the load from the matching networks. Remove their associeated grounds as well
   for (auto it = Schematic.Comps.begin(); it != Schematic.Comps.end(); ) {
     if ((it->ID == "Z1") || (it->ID == "Z2") || (it->ID.contains("GND_ZL"))) {
       it = Schematic.Comps.erase(it); // Erase and return next iterator[3][10]
@@ -235,10 +264,10 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
       ++it;
     }
 
-    // Also needed to remove the associated GNDs
+           // Also needed to remove the associated GNDs
   }
 
-  // 5.2) Add the SPAR component
+         // 5.2) Add the SPAR component
 
   ComponentInfo SPAR(QString("SPAR%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, 0, z1_x, 0);
   SPAR.val["S11r"] = num2str(Specs.sparams[0].real());
@@ -255,7 +284,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
 
   Schematic.Comps.append(SPAR);
 
-  // 5.3) Replace load connections
+         // 5.3) Replace load connections
 
   for (auto it = Schematic.Wires.begin(); it != Schematic.Wires.end(); ) {
     // Change connection pins if matching the component to be mirrored
