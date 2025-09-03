@@ -5,14 +5,14 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   dockTools = new QDockWidget("Circuit Synthesis", this);
   dockTools->setObjectName("dockTools");
 
-  // Main container widget for the dock
+         // Main container widget for the dock
   QWidget *container = new QWidget();
 
-  // Vertical layout for the container
+         // Vertical layout for the container
   QVBoxLayout *layout = new QVBoxLayout(container);
   layout->setContentsMargins(0, 0, 0, 0); // Optional: remove margins
 
-  // Tab widget
+         // Tab widget
   toolsTabWidget = new QTabWidget();
 
   FilterTool = new FilterDesignTool(this);
@@ -29,17 +29,17 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   toolsTabWidget->addTab(Netlist_Tool, "Scratch Pad");
   toolsTabWidget->addTab(SimulationSetupWidget, "Simulation Setup");
 
-  // Schematic widget
+         // Schematic widget
   SchematicWidget = new GraphWidget(this); // Schematic window
 
-  // Add widgets to layout
+         // Add widgets to layout
   layout->addWidget(toolsTabWidget);
   layout->addWidget(SchematicWidget); // This will appear *below* the tab widget
 
-  // Set the layout container as the dock widget's content
+         // Set the layout container as the dock widget's content
   dockTools->setWidget(container);
 
-  // Connect with tools to update the simulated traces
+         // Connect with tools to update the simulated traces
   connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(MatchingTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(PowerCombTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
@@ -47,7 +47,7 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   connect(Netlist_Tool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(SimulationSetupWidget, SIGNAL(updateSimulation()), this, SLOT(updateSimulation()));
 
-  // Update simulation and schematic when the user clicks on another tab
+         // Update simulation and schematic when the user clicks on another tab
   connect(toolsTabWidget, &QTabWidget::currentChanged, this, &Qucs_S_SPAR_Viewer::onToolsTabChanged);
   connect(dockTools, &QDockWidget::visibilityChanged, this, &Qucs_S_SPAR_Viewer::callTools);
 }
@@ -72,15 +72,15 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
 
   QString dataset_name = Circuit.Name;
 
-  // Update data
+         // Update data
   datasets[dataset_name] = data;
 
-  // Check if the dataset exists in the Combo, if not add it
+         // Check if the dataset exists in the Combo, if not add it
   if (QCombobox_datasets->findText(dataset_name) == -1) {
     QCombobox_datasets->addItem(dataset_name);
   }
 
-  // Check if the trace has been added
+         // Check if the trace has been added
   QMap<QString, TraceProperties>rect_traces = traceMap[DisplayMode::Magnitude_dB];
 
   QStringList displayed_traces_keys = rect_traces.keys();
@@ -101,24 +101,35 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
       this->addTrace(s32_dB, Qt::black, 1);
     } else {
       if (Circuit.Type == QString("Matching-1-port")) {
+        // 1) Force the tools' datasets clearing. This is done when the user changes the tool tab,
+        // but it need to be enforced here because the matching tool have two modes: 1-port and 2-port matching
+        // Toggling between these modes leads to clutter the display.
+        cleanToolsDatasets(dataset_name);
+        // 2) Add S11 only
         TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
         this->addTrace(s11_dB, Qt::blue, 1);
       } else {
         if(Circuit.Type ==  QString("Matching-2-ports")){
+
+          // 1) Force the tools' datasets clearing. This is done when the user changes the tool tab,
+          // but it need to be enforced here because the matching tool have two modes: 1-port and 2-port matching
+          // Toggling between these modes leads to clutter the display.
+          cleanToolsDatasets(dataset_name);
           TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
           TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Gain
           TraceInfo s22_dB = {dataset_name, "S22", DisplayMode::Magnitude_dB}; // Output reflection
 
+          // 2) Add S11, S21, and S22
           this->addTrace(s11_dB, Qt::blue, 1);
           this->addTrace(s21_dB, Qt::red, 1);
           this->addTrace(s22_dB, Qt::darkGreen, 1);
 
         } else {
-        // Default traces (used in filter and attenuator design tools)
-        TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
-        TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss
-        this->addTrace(s11_dB, Qt::blue, 1);
-        this->addTrace(s21_dB, Qt::red, 1);
+          // Default traces (used in filter and attenuator design tools)
+          TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
+          TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss
+          this->addTrace(s11_dB, Qt::blue, 1);
+          this->addTrace(s21_dB, Qt::red, 1);
         }
       }
     }
@@ -164,15 +175,28 @@ void Qucs_S_SPAR_Viewer::onToolsTabChanged(int index) {
   if (index < 4 ) {
     // Remove other design datasets.
     // This does not make sense if the netlist tool is selected since it can be used to test values and compare with the trace of the previously selected tool
-    for (const QString &ID : qAsConst(Tools_Datasets)) {
-      removeTracesByDataset(ID); // Remove all the traces from the dataset
-    }
-    Tools_Datasets.clear();
+    cleanToolsDatasets();
   }
 
-  // Trigger circuit synthesis
+         // Trigger circuit synthesis
   if (index < 5){
     // Avoid simulate again when the "Simulation Setup" tab is selected
     callTools(true);
   }
 }
+
+// Removes the datasets generated by the tools and their traces
+void Qucs_S_SPAR_Viewer::cleanToolsDatasets(const QString &excludeDataset) {
+  for (const QString &ID : qAsConst(Tools_Datasets)) {
+    if (excludeDataset.isEmpty() || ID != excludeDataset) {
+      removeTracesByDataset(ID);
+      datasets.remove(ID);
+    }
+  }
+  if (excludeDataset.isEmpty()) {
+    Tools_Datasets.clear();
+  } else {
+    Tools_Datasets = QStringList{excludeDataset};
+  }
+}
+

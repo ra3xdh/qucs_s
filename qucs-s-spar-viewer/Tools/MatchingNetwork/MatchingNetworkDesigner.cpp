@@ -224,7 +224,6 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
           wire.OriginID = replace_ID[wire.OriginID];
         } else {
           wire.OriginID = QString("%1out").arg(wire.OriginID);
-
         }
       }
     }
