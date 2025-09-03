@@ -87,12 +87,14 @@ void MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility(){
     OutputMatchingSetupWidget->show();
     InputMatchingSetupWidget->setTitle("Input Matching Network Settings");
     LoadSpecWidget->setTitle("Load Settings (2-ports)");
+    traceNameLineEdit = new QLineEdit("Match2p_1");
     LoadSpecWidget->setTwoPortMode(true);
   } else {
     // One-port matching
     OutputMatchingSetupWidget->hide();
     InputMatchingSetupWidget->setTitle("Matching Network Settings");
     LoadSpecWidget->setTitle("Load Settings (1-port)");
+    traceNameLineEdit = new QLineEdit("Match1");
     LoadSpecWidget->setTwoPortMode(false);
   }
   // Once visibility was adjusted, update the specifications and synthesize a network
@@ -127,6 +129,11 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
     Specs.OutputNetworkParameters = OutputSpecs;
     Specs.twoPortMode = true;
 
+    // Get the S-parameters and add them to the match data. They are needed for creating the SPAR block
+    std::array<std::complex<double>, 4> sparams = LoadSpecWidget->getSParameters();
+    Specs.sparams = sparams;
+
+
   } else {
     // 1-port mode - Get the load impedance
     InputSpecs.ZL = LoadSpecWidget->getLoadImpedance();
@@ -147,7 +154,16 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
   // EMIT SIGNAL TO SIMULATE
   QString TraceName = traceNameLineEdit->text();
   SchContent.Name = TraceName;
-  SchContent.Type = QString("Matching"); // Indicate the main tool the kind of circuit to adjust default traces (in case no traces were selected)
+
+  // Indicate the main tool the kind of circuit to adjust default traces (in case no traces were selected)
+  if (Specs.twoPortMode == true){
+    // Two-port matching: S21, S11 and S22
+    SchContent.Type = QString("Matching-2-ports");
+  } else {
+    // One-port matching: S11
+   SchContent.Type = QString("Matching-1-port");
+  }
+
   emit updateSchematic(SchContent);
   emit updateSimulation(SchContent);
 }

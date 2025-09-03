@@ -30,6 +30,7 @@ public:
   ~LoadSpecificationWidget();
 
          // Getters
+  std::array<std::complex<double>, 4> getSParameters() const;
   std::complex<double> getLoadImpedance() const;
   std::pair<std::complex<double>, std::complex<double>> getTwoPortMatchingImpedances() const;
   std::complex<double> getReflectionCoefficient() const;

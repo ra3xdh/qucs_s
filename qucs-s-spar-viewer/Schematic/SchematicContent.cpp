@@ -378,6 +378,40 @@ QString SchematicContent::getSParameterNetlist() {
       }
       break;
 
+    case SPAR_Block:
+      // Treat as resistor with characteristic impedance for now
+      if (connections.size() >= 2) {
+        int node1 = netToNodeMap.value(connections[0], 0);
+        int node2 = netToNodeMap.value(connections[1], 0);
+
+        QString S11r = Comps[i].val["S11r"];
+        QString S11i = Comps[i].val["S11i"];
+
+        QString S12r = Comps[i].val["S12r"];
+        QString S12i = Comps[i].val["S12i"];
+
+        QString S21r = Comps[i].val["S21r"];
+        QString S21i = Comps[i].val["S21i"];
+
+        QString S22r = Comps[i].val["S22r"];
+        QString S22i = Comps[i].val["S22i"];
+
+        QString SPAR_ID = Comps[i].ID;
+        componentLine = QString("%1 %2 %3 (%4,%5) (%6,%7); (%8,%9) (%10,%11)\n")
+                            .arg(SPAR_ID)
+                            .arg(node1)
+                            .arg(node2)
+                            .arg(S11r)
+                            .arg(S11i)
+                            .arg(S12r)
+                            .arg(S12i)
+                            .arg(S21r)
+                            .arg(S21i)
+                            .arg(S22r)
+                            .arg(S22i);
+      }
+      break;
+
     case Coupler: {
 
       int node1 = netToNodeMap.value(connections[0], -1);

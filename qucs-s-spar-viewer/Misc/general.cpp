@@ -117,6 +117,11 @@ QString num2str(double Num, Units CompType) {
 QString num2str(double Num) {
   char c = 0;
   double cal = std::abs(Num);
+
+  if (Num == 0){
+    return QString("0");
+  }
+
   if (cal > 1e-20) {
     cal = std::log10(cal) / 3.0;
     if (cal < -0.2)

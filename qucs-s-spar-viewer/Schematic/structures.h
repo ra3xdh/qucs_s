@@ -96,6 +96,7 @@ struct MatchingNetworkDesignParameters {
 struct MatchingData {
   struct MatchingNetworkDesignParameters InputNetworkParameters;
   struct MatchingNetworkDesignParameters OutputNetworkParameters;
+  std::array<std::complex<double>, 4> sparams;
 
   bool twoPortMode;
 

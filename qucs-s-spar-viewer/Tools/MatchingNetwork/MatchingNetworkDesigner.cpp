@@ -240,11 +240,19 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
 
   // 5.2) Add the SPAR component
 
-  ComponentInfo SPAR(QString("S%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, 0, z1_x, 0);
-  SPAR.val["S11"] = num2str(0);
-  SPAR.val["S12"] = num2str(0);
-  SPAR.val["S21"] = num2str(0);
-  SPAR.val["S22"] = num2str(0);
+  ComponentInfo SPAR(QString("SPAR%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, 0, z1_x, 0);
+  SPAR.val["S11r"] = num2str(Specs.sparams[0].real());
+  SPAR.val["S11i"] = num2str(Specs.sparams[0].imag());
+
+  SPAR.val["S12r"] = num2str(Specs.sparams[1].real());
+  SPAR.val["S12i"] = num2str(Specs.sparams[1].imag());
+
+  SPAR.val["S21r"] = num2str(Specs.sparams[2].real());
+  SPAR.val["S21i"] = num2str(Specs.sparams[2].imag());
+
+  SPAR.val["S22r"] = num2str(Specs.sparams[3].real());
+  SPAR.val["S22i"] = num2str(Specs.sparams[3].imag());
+
   Schematic.Comps.append(SPAR);
 
   // 5.3) Replace load connections
@@ -252,19 +260,19 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
   for (auto it = Schematic.Wires.begin(); it != Schematic.Wires.end(); ) {
     // Change connection pins if matching the component to be mirrored
     if (it->OriginID == "Z1") {
-      it->OriginID = "S1";
+      it->OriginID = "SPAR1";
       it->PortOrigin = 0;
     }
     if (it->OriginID == "Z2") {
-      it->OriginID = "S1";
+      it->OriginID = "SPAR1";
       it->PortOrigin = 1;
     }
     if (it->DestinationID == "Z1") {
-      it->DestinationID = "S1";
+      it->DestinationID = "SPAR1";
       it->PortOrigin = 0;
     }
     if (it->DestinationID == "Z2") {
-      it->DestinationID = "S1";
+      it->DestinationID = "SPAR1";
       it->PortOrigin = 0;
     }
 
@@ -275,8 +283,4 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
       ++it;
     }
   }
-
-
-  // 5.4) Add the output port
-
 }

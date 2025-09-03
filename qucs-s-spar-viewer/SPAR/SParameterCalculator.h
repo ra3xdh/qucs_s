@@ -29,7 +29,8 @@ enum class ComponentType_SPAR {
   SHORT_STUB,
   COUPLED_LINE,
   IDEAL_COUPLER,
-  COMPLEX_IMPEDANCE
+  COMPLEX_IMPEDANCE,
+  SPAR_BLOCK
 };
 
 // Circuit component structure
@@ -39,10 +40,14 @@ struct Component_SPAR {
   vector<int> nodes;
   QMap<QString, double> value;
   QMap<QString, Complex> Zvalue;
+  vector<vector<Complex>> Smatrix; // For the S-parameter device
   double frequency; // For frequency-dependent components
+
 
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, double> val);
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, Complex> zval); // Constructor for complex impedances
+  Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, const vector<vector<Complex>>& S)
+      : type(t), name(n), nodes(nds), Smatrix(S), frequency(0.0) {} // S-parameter device
 };
 
 // Network port definition
@@ -105,6 +110,11 @@ public:
 
          // Calculate S-parameters at current frequency
   vector<vector<Complex>> calculateSParameters();
+
+  // SPAR Block
+  vector<vector<Complex>> convertS2Y(const vector<vector<Complex>>& S, double Z0);
+  void addSParamBlockToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
+  void addSParameterBlock(const string& name, const vector<int>& nodes, const vector<vector<Complex>>& Smatrix);
 
          // Print S-parameters in a readable format
   void printSParameters(const vector<vector<Complex>>& S);

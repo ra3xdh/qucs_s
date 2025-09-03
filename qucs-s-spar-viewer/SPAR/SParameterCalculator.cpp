@@ -31,16 +31,16 @@ bool SParameterCalculator::parseNetlist() {
     return false;
   }
 
-  // Clear existing circuit
+         // Clear existing circuit
   clear();
 
-  // Split netlist into lines
+         // Split netlist into lines
   QStringList lines = currentNetlist.split('\n', Qt::SkipEmptyParts);
 
   for (const QString& line : qAsConst(lines)) {
     QString trimmedLine = line.trimmed();
 
-    // Skip comments and empty lines
+           // Skip comments and empty lines
     if (trimmedLine.isEmpty() || trimmedLine.startsWith('*')) {
       continue;
     }
@@ -50,7 +50,14 @@ bool SParameterCalculator::parseNetlist() {
     if (parts.isEmpty()) continue;
 
     QString name = parts[0];
-    QString type = name.replace(QRegularExpression("\\d+$"), "");  // Remove the number at the end
+
+    QString type = name;
+    QRegularExpression re("^([A-Za-z]+)\\d+");
+    QRegularExpressionMatch match = re.match(name);
+    if (match.hasMatch()) {
+      type = match.captured(1);  // Match only the alphabetic prefix before digits
+    }
+
 
     QMap<QString, double> value;
     QMap<QString, Complex> zValue;
@@ -141,7 +148,7 @@ bool SParameterCalculator::parseNetlist() {
       value["Z0o"] = Z0o;
       value["Length"] = Length; // Store the properly parsed length
 
-      // Rest remains the same...
+             // Rest remains the same...
       for (int node : {node1, node2, node3, node4}) {
         if (node > numNodes) numNodes = node;
             }
@@ -181,10 +188,72 @@ bool SParameterCalculator::parseNetlist() {
       if (node > numNodes) numNodes = node;
             addPort(node, impedance);
     }
-  }
+    else if (type == QString("SPAR")) {
+      // Format: SPAR node1 node2 ... <comma-separated S-matrix row strings>
+      // Example for 2-port:
+      // SBLOCK1 1 2 (0,0) (0.5,0); (0.5,0) (0,0)
 
+      if (parts.size() < 4) {
+        cerr << "Error: Invalid SPAR_BLOCK definition: " << line.toStdString() << endl;
+        continue;
+      }
+             // First: extract all nodes until we hit the first "("
+      QVector<int> nodes;
+      int idx = 1;
+      for (; idx < parts.size(); ++idx) {
+        if (parts[idx].startsWith("(")) break;
+        nodes.push_back(parts[idx].toInt());
+        if (nodes.last() > numNodes) numNodes = nodes.last();
+    }
+
+      if (nodes.isEmpty()) {
+        cerr << "Error: SPAR_BLOCK has no nodes: " << line.toStdString() << endl;
+        continue;
+      }
+
+             // The rest are complex entries row by row separated by ';'
+      QString rest;
+      for (int k = idx; k < parts.size(); ++k) rest += parts[k] + " ";
+    rest = rest.trimmed();
+
+      QStringList rowStrings = rest.split(";", Qt::SkipEmptyParts);
+
+      int N = nodes.size();
+      if (rowStrings.size() != N) {
+        cerr << "Error: SPAR_BLOCK matrix rows != number of nodes" << endl;
+        continue;
+      }
+
+      vector<vector<Complex>> Smat(N, vector<Complex>(N, Complex(0,0)));
+
+      for (int r = 0; r < N; r++) {
+        QString row = rowStrings[r].trimmed();
+        // Entries like "(re,im)"
+        QRegularExpression rx("\\(([-+]?\\d*\\.?\\d*),([-+]?\\d*\\.?\\d*)\\)");
+        QRegularExpressionMatchIterator it = rx.globalMatch(row);
+        int c = 0;
+        while (it.hasNext() && c < N) {
+          auto m = it.next();
+          double re = m.captured(1).toDouble();
+          double im = m.captured(2).toDouble();
+          Smat[r][c] = Complex(re, im);
+          c++;
+        }
+        if (c != N) {
+          cerr << "Error: SPAR_BLOCK row " << r << " does not have " << N << " entries\n";
+        }
+      }
+
+      components.emplace_back(ComponentType_SPAR::SPAR_BLOCK,
+                              name.toStdString(),
+                              std::vector<int>(nodes.constBegin(), nodes.constEnd()),
+                              Smat);
+    }
+  }
+  cout << "Parsed " << components.size() << " components, numNodes = " << numNodes << endl;
   return true;
 }
+
 
 // Matrix operations
 vector<vector<Complex>> SParameterCalculator::createMatrix(int rows, int cols) {
@@ -195,7 +264,7 @@ vector<vector<Complex>> SParameterCalculator::invertMatrix(const vector<vector<C
   int n = matrix.size();
   vector<vector<Complex>> augmented(n, vector<Complex>(2 * n, Complex(0, 0)));
 
-  // Create augmented matrix [A|I]
+         // Create augmented matrix [A|I]
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
       augmented[i][j] = matrix[i][j];
@@ -203,7 +272,7 @@ vector<vector<Complex>> SParameterCalculator::invertMatrix(const vector<vector<C
     augmented[i][i + n] = Complex(1, 0);
   }
 
-  // Forward elimination
+         // Forward elimination
   for (int i = 0; i < n; i++) {
     // Find pivot
     int pivot = i;
@@ -213,12 +282,12 @@ vector<vector<Complex>> SParameterCalculator::invertMatrix(const vector<vector<C
       }
     }
 
-    // Swap rows
+           // Swap rows
     if (pivot != i) {
       swap(augmented[i], augmented[pivot]);
     }
 
-    // Make diagonal element 1
+           // Make diagonal element 1
     Complex diag = augmented[i][i];
     if (abs(diag) < 1e-12) {
       throw runtime_error("Matrix is singular and cannot be inverted");
@@ -228,7 +297,7 @@ vector<vector<Complex>> SParameterCalculator::invertMatrix(const vector<vector<C
       augmented[i][j] /= diag;
     }
 
-    // Eliminate column
+           // Eliminate column
     for (int j = 0; j < n; j++) {
       if (i != j) {
         Complex factor = augmented[j][i];
@@ -239,7 +308,7 @@ vector<vector<Complex>> SParameterCalculator::invertMatrix(const vector<vector<C
     }
   }
 
-  // Extract inverse matrix
+         // Extract inverse matrix
   vector<vector<Complex>> inverse(n, vector<Complex>(n));
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
@@ -296,45 +365,45 @@ vector<vector<Complex>> SParameterCalculator::calculateCoupledLineYMatrix(double
   double theta = beta * length;
   Complex j(0, 1);
 
-  // Calculate even and odd mode parameters
+         // Calculate even and odd mode parameters
   double Ye = 1.0 / Z0e; // Even mode admittance
   double Yo = 1.0 / Z0o; // Odd mode admittance
 
   Complex sinT = sin(theta);
   Complex cosT = cos(theta);
 
-  // Handle the case where sin(theta) is very small
+         // Handle the case where sin(theta) is very small
   if (abs(sinT) < 1e-12) {
     // Return zero matrix for resonant lengths
     return createMatrix(4, 4);
   }
 
-  // Calculate Y-parameters for coupled line using even/odd mode analysis
-  // The 4x4 Y-matrix for a coupled line is:
-  // [Y11  Y12  Y13  Y14]
-  // [Y21  Y22  Y23  Y24]
-  // [Y31  Y32  Y33  Y34]
-  // [Y41  Y42  Y43  Y44]
+         // Calculate Y-parameters for coupled line using even/odd mode analysis
+         // The 4x4 Y-matrix for a coupled line is:
+         // [Y11  Y12  Y13  Y14]
+         // [Y21  Y22  Y23  Y24]
+         // [Y31  Y32  Y33  Y34]
+         // [Y41  Y42  Y43  Y44]
 
   vector<vector<Complex>> Y = createMatrix(4, 4);
 
-  // Self admittances (diagonal terms)
+         // Self admittances (diagonal terms)
   Complex Y11 = j * (Ye + Yo) * cosT / (2.0 * sinT);
   Complex Y22 = Y11;
   Complex Y33 = Y11;
   Complex Y44 = Y11;
 
-  // Mutual admittances between same line (Y12, Y34)
+         // Mutual admittances between same line (Y12, Y34)
   Complex Y12 = j * (Ye + Yo) / (2.0 * sinT);
   Complex Y34 = Y12;
 
-  // Cross-coupling between different lines (Y13, Y24, Y14, Y23)
+         // Cross-coupling between different lines (Y13, Y24, Y14, Y23)
   Complex Y13 = j * (Ye - Yo) * cosT / (2.0 * sinT);
   Complex Y24 = Y13;
   Complex Y14 = j * (Ye - Yo) / (2.0 * sinT);
   Complex Y23 = Y14;
 
-  // Fill the Y-matrix
+         // Fill the Y-matrix
   Y[0][0] = Y11; Y[0][1] = Y12; Y[0][2] = Y13; Y[0][3] = Y14;
   Y[1][0] = Y12; Y[1][1] = Y22; Y[1][2] = Y23; Y[1][3] = Y24;
   Y[2][0] = Y13; Y[2][1] = Y23; Y[2][2] = Y33; Y[2][3] = Y34;
@@ -353,16 +422,16 @@ void SParameterCalculator::addCoupledLineToAdmittance(vector<vector<Complex>>& Y
   double Z0o = comp.value["Z0o"];
   double length = comp.value["Length"];
 
-  // Calculate the 4x4 Y-matrix for the coupled line
+         // Calculate the 4x4 Y-matrix for the coupled line
   vector<vector<Complex>> coupledY = calculateCoupledLineYMatrix(Z0e, Z0o, length, frequency);
 
-  // Add the coupled line Y-matrix to the global admittance matrix
+         // Add the coupled line Y-matrix to the global admittance matrix
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       int node_i = comp.nodes[i];
       int node_j = comp.nodes[j];
 
-      // Only add if both nodes are not ground (node 0)
+             // Only add if both nodes are not ground (node 0)
       if (node_i > 0 && node_j > 0) {
         Y[node_i-1][node_j-1] += coupledY[i][j];
       }
@@ -373,13 +442,18 @@ void SParameterCalculator::addCoupledLineToAdmittance(vector<vector<Complex>>& Y
 vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
   vector<vector<Complex>> Y = createMatrix(numNodes, numNodes);
 
-  // First handle ALL lumped elements (R, L, C)
+         // First handle ALL lumped elements (R, L, C)
   for (const auto& comp : components) {
     if (comp.type == ComponentType_SPAR::TRANSMISSION_LINE || comp.type == ComponentType_SPAR::COUPLED_LINE)
       continue; // TLIN and CLIN: do separately
 
     if (comp.type == ComponentType_SPAR::IDEAL_COUPLER) {
       addIdealCouplerToAdmittance(Y, comp);
+      continue;
+    }
+
+    if (comp.type == ComponentType_SPAR::SPAR_BLOCK) {
+      addSParamBlockToAdmittance(Y, comp);
       continue;
     }
 
@@ -403,12 +477,12 @@ vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
     }
   }
 
-  // TRANSMISSION LINES (TLIN)
+         // TRANSMISSION LINES (TLIN)
   for (const auto& comp : components) {
     if (comp.type != ComponentType_SPAR::TRANSMISSION_LINE)
       continue;
 
-    // Extract TLIN parameters
+           // Extract TLIN parameters
     int node1 = comp.nodes[0];
     int node2 = comp.nodes[1];
     double Z0 = comp.value["Z0"];
@@ -423,20 +497,20 @@ vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
     Complex j(0, 1);
     Complex Z0c(Z0, 0);
 
-    // Compute TLIN Y-matrix block
+           // Compute TLIN Y-matrix block
     Complex sinT = sin(theta);
     Complex cosT = cos(theta);
 
-    // Handle the (rare) limit of sinT = 0 (open/short-circuit resonance)
+           // Handle the (rare) limit of sinT = 0 (open/short-circuit resonance)
     if (abs(sinT) < 1e-12) {
       // Pure open/short
       // Series open: Y=0 block; series short: Y=infinity block. Safer to just skip adding anything.
       continue;
     }
 
-    // Standard 2-port, lossless TLIN block admittance matrix:
-    // Y = (1 / (Z0 * sin(theta))) * [ -j cos(theta)   j;
-    //                                   j         -j cos(theta)]
+           // Standard 2-port, lossless TLIN block admittance matrix:
+           // Y = (1 / (Z0 * sin(theta))) * [ -j cos(theta)   j;
+           //                                   j         -j cos(theta)]
     Complex y11 = -j * cosT / (Z0c * sinT);
     Complex y12 =  j      / (Z0c * sinT);
     // y21 == y12; y22 == y11
@@ -455,14 +529,14 @@ vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
     }
   }
 
-  // COUPLED LINES (CLIN)
+         // COUPLED LINES (CLIN)
   for (const auto& comp : components) {
     if (comp.type == ComponentType_SPAR::COUPLED_LINE) {
       addCoupledLineToAdmittance(Y, comp);
     }
   }
 
-  //Add small conductance to ground to prevent singular matrix (for all nodes)
+         //Add small conductance to ground to prevent singular matrix (for all nodes)
   double gmin = 1e-12;
   for (int i = 0; i < numNodes; ++i)
     Y[i][i] += Complex(gmin, 0);
@@ -485,7 +559,7 @@ void SParameterCalculator::addComponent(ComponentType_SPAR type, const string& n
                                         const vector<int>& nodes, QMap<QString, double> value) {
   components.emplace_back(type, name, nodes, value);
 
-  // Update number of nodes
+         // Update number of nodes
   for (int node : nodes) {
     if (node > numNodes) numNodes = node;
     }
@@ -504,7 +578,7 @@ vector<vector<Complex>> SParameterCalculator::calculateSParameters() {
   vector<vector<Complex>> S = createMatrix(numPorts, numPorts);
   vector<vector<Complex>> Y = buildAdmittanceMatrix();
 
-  // Check all port nodes are within bounds
+         // Check all port nodes are within bounds
   for (const auto& port : ports) {
     if (port.node <= 0 || port.node > numNodes) {
       throw runtime_error("Port node " + to_string(port.node) +
@@ -517,14 +591,14 @@ vector<vector<Complex>> SParameterCalculator::calculateSParameters() {
     vector<vector<Complex>> augmentedY = createMatrix(systemSize, systemSize);
     vector<Complex> excitation(systemSize, Complex(0, 0));
 
-    // Copy the internal nodal admittance matrix
+           // Copy the internal nodal admittance matrix
     for (int i = 0; i < numNodes; i++) {
       for (int k = 0; k < numNodes; k++) {
         augmentedY[i][k] = Y[i][k];
       }
     }
 
-    // Add port equations
+           // Add port equations
     for (int p = 0; p < numPorts; p++) {
       int portNode = ports[p].node - 1;
       int portEqn = numNodes + p;
@@ -596,11 +670,11 @@ void SParameterCalculator::exportTouchstone(const QString& filename, const vecto
 
   QTextStream out(&file);
 
-  // Write header
+         // Write header
   out << "! Touchstone file generated by SParameterCalculator\n";
   out << "# GHz S MA R " << ports[0].impedance << "\n";
 
-  // Write S-parameters
+         // Write S-parameters
   double freqGHz = frequency / 1e9;
   out << freqGHz;
 
@@ -659,15 +733,15 @@ void SParameterCalculator::calculateSParameterSweep() {
           // Get the S-parameter value (note: S matrix uses 0-based indexing)
           Complex sParam = S[row-1][col-1];
 
-          // Extract real and imaginary parts
+                 // Extract real and imaginary parts
           double re = sParam.real();
           double im = sParam.imag();
 
-          // Calculate magnitude and convert to dB
+                 // Calculate magnitude and convert to dB
           double magnitude = sqrt(re * re + im * im);
           double dB = 20.0 * log10(magnitude);
 
-          // Calculate phase angle in degrees
+                 // Calculate phase angle in degrees
           double ang = atan2(im, re) * 180.0 / M_PI;
 
           QString keyDb  = QString("S%1%2_dB").arg(row).arg(col);
@@ -725,11 +799,11 @@ void SParameterCalculator::exportSweepTouchstone(const QString& filename) const 
 
   QTextStream out(&file);
 
-  // Write header
+         // Write header
   out << "! Touchstone file generated by SParameterCalculator\n";
   out << "# GHz S MA R " << (ports.empty() ? 50.0 : ports[0].impedance) << "\n";
 
-  // Write S-parameters for each frequency
+         // Write S-parameters for each frequency
   double step = (n_points == 1) ? 0 : (f_stop - f_start) / (n_points - 1);
 
   for (int i = 0; i < n_points; ++i) {
@@ -772,7 +846,7 @@ double SParameterCalculator::parseScaledValue(const QString& input) {
   double value = match.captured(1).toDouble();
   QString unit = match.captured(2).trimmed();
 
-  // Handle explicit length units FIRST (before SI prefixes)
+         // Handle explicit length units FIRST (before SI prefixes)
   static const QMap<QString, double> lengthUnits = {
       {"mm", 1e-3},      // millimeters to meters
       {"cm", 1e-2},      // centimeters to meters
@@ -784,12 +858,12 @@ double SParameterCalculator::parseScaledValue(const QString& input) {
       {"ft", 0.3048}     // feet to meters
   };
 
-  // Check for exact length unit match first
+         // Check for exact length unit match first
   if (lengthUnits.contains(unit)) {
     return value * lengthUnits[unit];
   }
 
-  // SI prefixes for electrical units (capacitance, inductance, etc.)
+         // SI prefixes for electrical units (capacitance, inductance, etc.)
   static const QMap<QString, double> scaleMap = {
       {"f", 1e-15},   // femto
       {"p", 1e-12},   // pico
@@ -805,7 +879,7 @@ double SParameterCalculator::parseScaledValue(const QString& input) {
       {"T", 1e12}     // tera
   };
 
-  // For electrical units, extract first character as prefix
+         // For electrical units, extract first character as prefix
   QString prefix;
   if (!unit.isEmpty()) {
     prefix = QString(unit.at(0));
@@ -918,4 +992,69 @@ void SParameterCalculator::addIdealCouplerToAdmittance(vector<vector<Complex>>& 
       }
     }
   }
+}
+
+// For the S-parameter component
+vector<vector<Complex>> SParameterCalculator::convertS2Y(const vector<vector<Complex>>& S, double Z0) {
+
+  int N = S.size();
+  auto I = createMatrix(N, N);
+  auto I_minus_S = createMatrix(N, N);
+  auto I_plus_S = createMatrix(N, N);
+
+  for (int i = 0; i < N; i++) {
+    I[i][i] = Complex(1, 0);
+    for (int j = 0; j < N; j++) {
+      I_minus_S[i][j] = I[i][j] - S[i][j];
+      I_plus_S[i][j]  = I[i][j] + S[i][j];
+    }
+  }
+
+  auto I_plus_S_inv = invertMatrix(I_plus_S);
+
+  vector<vector<Complex>> Y = createMatrix(N, N);
+  double G0 = 1.0 / Z0;
+
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < N; j++) {
+      Complex sum(0,0);
+      for (int k = 0; k < N; k++) {
+        sum += I_minus_S[i][k] * I_plus_S_inv[k][j];
+      }
+      Y[i][j] = G0 * sum;
+    }
+  }
+
+  return Y;
+}
+
+void SParameterCalculator::addSParamBlockToAdmittance(
+    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+
+  int nPorts = comp.nodes.size();
+  if ((int)comp.Smatrix.size() != nPorts) {
+    cerr << "Error: S-matrix dimension does not match number of ports\n";
+    return;
+  }
+
+         // Convert constant S to Y
+  auto Yblock = convertS2Y(comp.Smatrix, 50.0); // Assume 50 Ω ref
+
+         // Stamp into system Y matrix
+  for (int i = 0; i < nPorts; i++) {
+    for (int j = 0; j < nPorts; j++) {
+      int node_i = comp.nodes[i];
+      int node_j = comp.nodes[j];
+      if (node_i > 0 && node_j > 0) {
+        Y[node_i-1][node_j-1] += Yblock[i][j];
+      }
+    }
+  }
+}
+
+// To add a S-par block
+void SParameterCalculator::addSParameterBlock(const string& name, const vector<int>& nodes, const vector<vector<Complex>>& Smatrix) {
+  components.emplace_back(ComponentType_SPAR::SPAR_BLOCK, name, nodes, Smatrix);
+  for (int node : nodes)
+    if (node > numNodes) numNodes = node;
 }

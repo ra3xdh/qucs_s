@@ -759,3 +759,8 @@ void LoadSpecificationWidget::onToggleCollapse()
 {
   setCollapsed(!m_isCollapsed);
 }
+
+
+std::array<std::complex<double>, 4> LoadSpecificationWidget::getSParameters() const {
+  return { getS11(), getS12(), getS21(), getS22() };
+}

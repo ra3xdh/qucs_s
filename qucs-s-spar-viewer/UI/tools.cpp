@@ -100,20 +100,28 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
       this->addTrace(s31_dB, Qt::darkGreen, 1);
       this->addTrace(s32_dB, Qt::black, 1);
     } else {
-      if (Circuit.Type == QString("Matching")) {
+      if (Circuit.Type == QString("Matching-1-port")) {
         TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
         this->addTrace(s11_dB, Qt::blue, 1);
       } else {
+        if(Circuit.Type ==  QString("Matching-2-ports")){
+          TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
+          TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Gain
+          TraceInfo s22_dB = {dataset_name, "S22", DisplayMode::Magnitude_dB}; // Output reflection
+
+          this->addTrace(s11_dB, Qt::blue, 1);
+          this->addTrace(s21_dB, Qt::red, 1);
+          this->addTrace(s22_dB, Qt::darkGreen, 1);
+
+        } else {
         // Default traces (used in filter and attenuator design tools)
         TraceInfo s11_dB = {dataset_name, "S11", DisplayMode::Magnitude_dB}; // Input reflection
         TraceInfo s21_dB = {dataset_name, "S21", DisplayMode::Magnitude_dB}; // Insertion loss
         this->addTrace(s11_dB, Qt::blue, 1);
         this->addTrace(s21_dB, Qt::red, 1);
+        }
       }
     }
-
-
-
 
   }
   updateAllPlots(dataset_name);
