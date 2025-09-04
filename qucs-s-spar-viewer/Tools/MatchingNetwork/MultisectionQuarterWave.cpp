@@ -26,7 +26,7 @@ int MultisectionQuarterWave::BinomialCoeff(int n, int k) {
 void MultisectionQuarterWave::designBinomial(std::vector<double> &Zs) {
     double RL = Specs.ZL.real();  // Load resistance only
     double Z0 = Specs.Z0;   // Source port reference
-    int N = Specs.NSections;            // Number of sections
+    int N = Specs.NSections+1;            // Number of sections
     double Zaux = Z0;
 
     for (int i = 1; i < N; i++) {
@@ -41,7 +41,7 @@ void MultisectionQuarterWave::designBinomial(std::vector<double> &Zs) {
 void MultisectionQuarterWave::designChebyshev(std::vector<double> &Zs) {
     double RL = Specs.ZL.real();
     double Z0 = Specs.Z0;
-    int N = Specs.NSections - 1; // number of sections
+    int N = Specs.NSections; // number of sections
     double gamma = Specs.gamma_MAX;
 
     double log_ratio = std::log(RL / Z0) / (2.0 * gamma);
@@ -135,7 +135,7 @@ void MultisectionQuarterWave::synthesize() {
 
     // Place transmission line sections
     for (size_t i = 0; i < Zi.size(); i++) {
-        ComponentInfo TL(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, xpos, ypos);
+        ComponentInfo TL(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, -90, xpos, ypos);
         TL.val["Z0"] = num2str(Zi[i], Resistance);
         TL.val["Length"] = ConvertLengthFromM("mm", lambda4);
         Schematic.appendComponent(TL);
@@ -143,10 +143,10 @@ void MultisectionQuarterWave::synthesize() {
         // wire previous to this
         if (i == 0) {
           // The previous component is the port
-          Schematic.appendWire(prevID, 0, TL.ID, 0);
+          Schematic.appendWire(prevID, 0, TL.ID, 1);
         } else {
           // The previous component is another TLIN
-          Schematic.appendWire(prevID, 1, TL.ID, 0);
+          Schematic.appendWire(prevID, 0, TL.ID, 1);
         }
 
         prevID = TL.ID;
@@ -164,7 +164,7 @@ void MultisectionQuarterWave::synthesize() {
     Schematic.appendComponent(GND_ZL);
 
     // Connect last TL to load
-    Schematic.appendWire(Zload.ID, 1, prevID, 1);
+    Schematic.appendWire(Zload.ID, 1, prevID, 0);
     Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
 }
 

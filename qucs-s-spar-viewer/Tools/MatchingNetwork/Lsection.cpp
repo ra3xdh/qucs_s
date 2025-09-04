@@ -108,7 +108,7 @@ void Lsection::synthesize() {
       C = -1 / (w0 * X);
       Series.setParams(
           QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-          Capacitor, 270, 100, 0);
+          Capacitor, -90, 100, 0);
       Series.val["C"] = num2str(C, Capacitance);
     } else { // Inductor
       L = X / w0;
@@ -151,7 +151,7 @@ void Lsection::synthesize() {
       C = -1 / (w0 * X);
       Series.setParams(
           QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-          Capacitor, 270, 50, 0);
+          Capacitor, -90, 50, 0);
       Series.val["C"] = num2str(C, Capacitance);
     } else { // Inductor
       L = X / w0;

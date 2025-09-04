@@ -51,7 +51,7 @@ void Lambda8Lambda4::synthesize() {
     ComponentInfo TL2;
 
     // First transmission line: Zm, length λ/4
-    ComponentInfo TL1(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, x_pos, 0);
+    ComponentInfo TL1(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, -90, x_pos, 0);
     TL1.val["Z0"] = num2str(Zm, Resistance);
     TL1.val["Length"] = ConvertLengthFromM("mm", l4);
     Schematic.appendComponent(TL1);
@@ -61,7 +61,7 @@ void Lambda8Lambda4::synthesize() {
       // It's needed as long as the load is complex to correct the imaginary part
 
       x_pos += 50;
-      TL2.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, x_pos, 0);
+      TL2.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, -90, x_pos, 0);
       TL2.val["Z0"] = num2str(Zmm, Resistance);
       TL2.val["Length"] = ConvertLengthFromM("mm", l8);
       Schematic.appendComponent(TL2);
@@ -80,12 +80,12 @@ void Lambda8Lambda4::synthesize() {
     Schematic.appendComponent(GND_ZL);
 
     // --- Wiring ---
-    Schematic.appendWire(TermSpar1.ID, 0, TL1.ID, 0);
+    Schematic.appendWire(TermSpar1.ID, 0, TL1.ID, 1);
     if (XL != 0) {
-      Schematic.appendWire(TL1.ID, 1, TL2.ID, 0);
-      Schematic.appendWire(Zload.ID, 1, TL2.ID, 1);
+      Schematic.appendWire(TL1.ID, 0, TL2.ID, 1);
+      Schematic.appendWire(Zload.ID, 1, TL2.ID, 0);
     } else {
-      Schematic.appendWire(Zload.ID, 1, TL1.ID, 1);
+      Schematic.appendWire(Zload.ID, 1, TL1.ID, 0);
     }
     Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
 }

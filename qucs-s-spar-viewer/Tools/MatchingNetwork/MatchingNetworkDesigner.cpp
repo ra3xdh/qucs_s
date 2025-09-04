@@ -113,7 +113,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
 
          // 4) Flip vertically the output matching network with respect to the load
 
-         // 4.1 Find Zload component
+         // 4.1 Find Zload component and get the x-axis position
   double z1_x = 0;
   for (auto& comp : OMN_Schematic.Comps) {
     if (comp.ID == "Z1") {
