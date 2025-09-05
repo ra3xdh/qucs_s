@@ -251,7 +251,7 @@ jobs:
           path: ${{ env.APP_NAME }}-${{ env.VERSION }}-${{ matrix.dmg_suffix }}.dmg
 
   build-windows-msvc:
-    runs-on: windows-latest
+    runs-on: windows-2022
     needs: setup
     strategy:
       fail-fast: false
