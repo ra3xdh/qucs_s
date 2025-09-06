@@ -168,27 +168,27 @@ void CascadedLCSections::CreateHighpassSolution(){
   }
 
          // Create load resistor at the end
-  ComponentInfo Rload;
-  Rload.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                  Resistor, 0, x_pos + (N+1) * x_spacing, 50);
-  Rload.val["R"] = num2str(RL, Resistance);
-  Schematic.appendComponent(Rload);
+  ComponentInfo Zload;
+  Zload.setParams(QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]),
+                  ComplexImpedance, 0, x_pos + (N+1) * x_spacing, 50);
+  Zload.val["Z"] = num2str(Specs.ZL, Resistance);
+  Schematic.appendComponent(Zload);
 
          // GND for load
-  ComponentInfo GND_RL;
-  GND_RL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]),
+  ComponentInfo GND_ZL;
+  GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]),
                    GND, 0, x_pos + (N+1) * x_spacing, 100);
-  Schematic.appendComponent(GND_RL);
+  Schematic.appendComponent(GND_ZL);
 
 
          // Connect input and output
   if (RS < RL){
-    Schematic.appendWire(Rload.ID, 1, previous_node, 1);
+    Schematic.appendWire(Zload.ID, 1, previous_node, 1);
   } else {
-    Schematic.appendWire(Rload.ID, 1, previous_node, 0);
+    Schematic.appendWire(Zload.ID, 1, previous_node, 0);
   }
 
-  Schematic.appendWire(Rload.ID, 0, GND_RL.ID, 0);
+  Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
 
 }
 
@@ -319,25 +319,25 @@ void CascadedLCSections::CreateLowpassSolution(){
   }
 
          // Create load resistor at the end
-  ComponentInfo Rload;
-  Rload.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                  Resistor, 0, x_pos + (N+1) * x_spacing, 50);
-  Rload.val["R"] = num2str(RL, Resistance);
-  Schematic.appendComponent(Rload);
+  ComponentInfo Zload;
+  Zload.setParams(QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]),
+                  ComplexImpedance, 0, x_pos + (N+1) * x_spacing, 50);
+  Zload.val["Z"] = num2str(Specs.ZL, Resistance);
+  Schematic.appendComponent(Zload);
 
          // GND for load
-  ComponentInfo GND_RL;
-  GND_RL.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
+  ComponentInfo GND_ZL;
+  GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]),
                    GND, 0, x_pos + (N+1) * x_spacing, 100);
-  Schematic.appendComponent(GND_RL);
+  Schematic.appendComponent(GND_ZL);
 
 
          // Connect input and output
   if (RS < RL){
-    Schematic.appendWire(Rload.ID, 1, previous_node, 1);
+    Schematic.appendWire(Zload.ID, 1, previous_node, 1);
   } else {
-    Schematic.appendWire(Rload.ID, 1, previous_node, 0);
+    Schematic.appendWire(Zload.ID, 1, previous_node, 0);
   }
 
-  Schematic.appendWire(Rload.ID, 0, GND_RL.ID, 0);
+  Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
 }

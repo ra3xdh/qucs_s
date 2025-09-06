@@ -45,7 +45,7 @@ private:
   QList<WireInfo> Wires;
   QList<NodeInfo> Nodes;
 
-  void synthesize_One_Port(MatchingNetworkDesignParameters NetworkParams, double f_match);
+  SchematicContent synthesize_One_Port(MatchingNetworkDesignParameters NetworkParams, double f_match);
   void synthesize_Two_Ports();
 
 };

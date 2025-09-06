@@ -35,13 +35,13 @@ void DoubleStub::synthesize() {
   Schematic.appendComponent(TermSpar1);
 
   ComponentInfo Zload(
-      QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, 275, 50);
+      QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, 225, 50);
   Zload.val["Z"] = num2str(Specs.ZL, Resistance);
   Schematic.appendComponent(Zload);
 
          // GND for load
   ComponentInfo GND_ZL;
-  GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 275, 100);
+  GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 225, 100);
   Schematic.appendComponent(GND_ZL);
 
          // Design equations from double stub method

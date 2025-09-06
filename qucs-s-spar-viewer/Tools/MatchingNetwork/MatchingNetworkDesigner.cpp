@@ -33,14 +33,15 @@ void MatchingNetworkDesigner::synthesize(){
     // One-port matching
     MatchingNetworkDesignParameters NetworkParams = Specs.InputNetworkParameters;
     double f_match = Specs.f_match; // Frequency at which the network will be matched
-    synthesize_One_Port(NetworkParams, f_match);
+    Schematic = synthesize_One_Port(NetworkParams, f_match);
   }
 }
 
 
 // Handle 1-port matching
-void MatchingNetworkDesigner::synthesize_One_Port(MatchingNetworkDesignParameters NetworkParams, double f_match){
+SchematicContent MatchingNetworkDesigner::synthesize_One_Port(MatchingNetworkDesignParameters NetworkParams, double f_match){
 
+  SchematicContent Schematic;
   switch (NetworkParams.Topology){
 
   case 0: {// L-section
@@ -92,6 +93,7 @@ void MatchingNetworkDesigner::synthesize_One_Port(MatchingNetworkDesignParameter
   }
 
   }
+  return Schematic;
 }
 
 
@@ -103,26 +105,34 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
 
          // 2) Design the input matching network
   MatchingNetworkDesignParameters NetworkParams = Specs.InputNetworkParameters;
-  synthesize_One_Port(NetworkParams, f_match);
-  SchematicContent IMN_Schematic = this->Schematic;
+  SchematicContent IMN_Schematic = synthesize_One_Port(NetworkParams, f_match);
 
          // 3) Design the output matching network
   NetworkParams = Specs.OutputNetworkParameters;
-  synthesize_One_Port(NetworkParams, f_match);
-  SchematicContent OMN_Schematic = this->Schematic;
+  SchematicContent OMN_Schematic = synthesize_One_Port(NetworkParams, f_match);
 
          // 4) Flip vertically the output matching network with respect to the load
 
-         // 4.1 Find Zload component and get the x-axis position
-  double z1_x = 0;
-  for (auto& comp : OMN_Schematic.Comps) {
+         // 4.1 Find Zloads of the input/output matching networks and get the x-axis position
+  double zl_input = 0;
+  for (auto& comp : IMN_Schematic.Comps) {
     if (comp.ID == "Z1") {
-      z1_x = comp.Coordinates[0];
+      zl_input = comp.Coordinates[0];
       break;
     }
   }
 
+  double zl_output = 0;
+  for (auto& comp : OMN_Schematic.Comps) {
+    if (comp.ID == "Z1") {
+      zl_output = comp.Coordinates[0];
+      break;
+    }
+  }
+
+
          // 4.2 Flip all components
+  double OMN_Start = zl_input; // End of the IMN
   double x_pos = 0, distance = 0; // Component x-axis
   double x_offset = 0; // Additional x-axis offset
   QMap<QString, QString> replace_ID; // A map is needed to assign the new component IDs once the output matching network is created
@@ -130,16 +140,15 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
   for (auto& comp : OMN_Schematic.Comps) {
 
     if (comp.ID == "Z1") {
-      // The load component is just offseted
-      // The name (for now) need to be changed
+      // This component need to be removed
       comp.ID = "Z2";
-      comp.Coordinates[0] = z1_x + x_offset;
+      comp.Coordinates[0] = zl_output + x_offset;
       continue;
     }
 
     x_pos = comp.Coordinates[0];
-    distance = z1_x - x_pos; // z1_x > x_pos (The load is always on the right)
-    comp.Coordinates[0] = z1_x + distance + x_offset; // Update the component's x-axis position
+    distance = zl_output - x_pos; // zl_output > x_pos (The load is always on the right)
+    comp.Coordinates[0] = OMN_Start + distance + x_offset; // Update the component's x-axis position
 
     if (comp.ID == "T1"){
       comp.Rotation = 0;
@@ -171,9 +180,9 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
         }
       }
 
-             // Change name
-      IMN_Schematic.NumberComponents[comp.Type] += 1;
-      int new_comp_number = IMN_Schematic.NumberComponents[comp.Type];
+             // Change name     
+      int new_comp_number = IMN_Schematic.NumberComponents.value(comp.Type, 0) + 1;
+      IMN_Schematic.NumberComponents.insert(comp.Type, new_comp_number);
 
       if (!comp.ID.isEmpty()) {
         // Find where the trailing number starts
@@ -233,8 +242,8 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
          // 4.3 Flip all nodes
   for (auto& node : OMN_Schematic.Nodes) {
     x_pos = node.Coordinates[0];
-    distance = z1_x - x_pos; // z1_x > x_pos (The load is always on the right)
-    node.Coordinates[0] = z1_x + distance + x_offset; // Update the component's x-axis position
+    distance = zl_output - x_pos; // z1_x > x_pos (The load is always on the right)
+    node.Coordinates[0] = OMN_Start + distance + x_offset; // Update the component's x-axis position
 
            // Update name (otherwise it'll be a mesh when composing the final network)
     node.ID = QString("%1out").arg(node.ID);
@@ -268,7 +277,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
 
          // 5.2) Add the SPAR component
 
-  ComponentInfo SPAR(QString("SPAR%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, 0, z1_x, 0);
+  ComponentInfo SPAR(QString("SPAR%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, 0, zl_input, 0);
   SPAR.val["S11r"] = num2str(Specs.sparams[0].real());
   SPAR.val["S11i"] = num2str(Specs.sparams[0].imag());
 
