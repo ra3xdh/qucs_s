@@ -2,12 +2,12 @@
 
 ## New features
 
+* Added microstrip lines simulation support for Ngspice. Ngspice version >=45 is required. See #1401 #1402
 * Added Jiles-Atherton magnetic core model. The same model is used by MicroCAP simulator. Added a new
   device group *magnetic cores* containing two new devices: *Winding* and *Magnetic core* #1284
 * Added new *Image* paiting. This component allows to put a raster image on schematic #1403
 * Added VDMOS device support #1326
 * Massive redesign of schematic rendering engine, enable arbitrary angle wires #1226
-* Added microstrip lines simulation support for Ngspice. Compile Ngspice from pre-master branch to get access. See #1401 #1402
 * Hide the component properties incompatible with the selected simulator #974
 
 ## General improvements and bugfixes
@@ -16,6 +16,10 @@
 * Fixed symbol editing issues #945
 * Improved S-parameter files viewer #1309
 * Added context menu for document tabs #1362
+* Fixed printing issues #1452
+* Added possibility to plot noise contribution #1439
+* Fixed settings directory for transcalc #1445
+* Auto reload of netlist and log #1435
 
 ## Library update
 
