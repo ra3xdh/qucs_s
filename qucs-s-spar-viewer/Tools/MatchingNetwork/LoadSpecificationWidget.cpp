@@ -244,14 +244,17 @@ std::pair<std::complex<double>, std::complex<double>> LoadSpecificationWidget::g
   std::complex<double> S11 = getS11();
   std::complex<double> S12 = getS12();
   std::complex<double> S21 = getS21();
-  std::complex<double> S22 = getS21();
+  std::complex<double> S22 = getS22();
+
+  std::complex<double> Gamma_L = std::conj(S22);
+  std::complex<double> Gamma_S = std::conj(S11);
 
 
          // Calculate input and output reflection coefficients (Γin, Γout) for conjugate matching
          // These formulas assume the load and source are conjugate matched.
-         // Reference: Pozar, Microwave Engineering (eq. 4.13 for Γin, 4.17 for Γout)
-  std::complex<double> Gamma_in = S11 + (S12 * S21 * S22) / (1.0 - S22); // Simplified for illustration
-  std::complex<double> Gamma_out = S22 + (S12 * S21 * S11) / (1.0 - S11); // Simplified for illustration
+         // Reference: Pozar, Microwave Engineering 571
+  std::complex<double> Gamma_in = S11 + (S12 * S21 * Gamma_L) / (1.0 - S22 * Gamma_L);
+  std::complex<double> Gamma_out = S22 + (S12 * S21 * Gamma_S) / (1.0 - S11 * Gamma_S);
 
          // Convert reflection coefficients to matching impedances using Smith chart formula
   std::complex<double> Zin_match = Z0_Port1 * (1.0 + Gamma_in) / (1.0 - Gamma_in);

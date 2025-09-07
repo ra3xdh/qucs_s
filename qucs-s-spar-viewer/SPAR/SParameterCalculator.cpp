@@ -116,7 +116,7 @@ bool SParameterCalculator::parseNetlist() {
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
       double Z0 = parseScaledValue(parts[3]);
-      double Length = parseScaledValue(parts[4]);
+      double Length = parseScaledValue(parts[4], QString("Length"));
       value["Z0"] = Z0;
       value["Length"] = Length; // Store the properly parsed length
 
@@ -142,7 +142,7 @@ bool SParameterCalculator::parseNetlist() {
       int node4 = parts[4].toInt();
       double Z0e = parseScaledValue(parts[5]);
       double Z0o = parseScaledValue(parts[6]);
-      double Length = parseScaledValue(parts[7]);
+      double Length = parseScaledValue(parts[7], QString("Length"));
 
       value["Z0e"] = Z0e;
       value["Z0o"] = Z0o;
@@ -197,7 +197,7 @@ bool SParameterCalculator::parseNetlist() {
         cerr << "Error: Invalid SPAR_BLOCK definition: " << line.toStdString() << endl;
         continue;
       }
-             // First: extract all nodes until we hit the first "("
+        // First: extract all nodes until we hit the first "("
       QVector<int> nodes;
       int idx = 1;
       for (; idx < parts.size(); ++idx) {
@@ -229,13 +229,13 @@ bool SParameterCalculator::parseNetlist() {
       for (int r = 0; r < N; r++) {
         QString row = rowStrings[r].trimmed();
         // Entries like "(re,im)"
-        QRegularExpression rx("\\(([-+]?\\d*\\.?\\d*),([-+]?\\d*\\.?\\d*)\\)");
+        QRegularExpression rx("\\(([-+]?\\d*\\.?\\d+[a-zA-Z]*),([-+]?\\d*\\.?\\d+[a-zA-Z]*)\\)");
         QRegularExpressionMatchIterator it = rx.globalMatch(row);
         int c = 0;
         while (it.hasNext() && c < N) {
           auto m = it.next();
-          double re = m.captured(1).toDouble();
-          double im = m.captured(2).toDouble();
+          double re = parseScaledValue(m.captured(1));
+          double im = parseScaledValue(m.captured(2));
           Smat[r][c] = Complex(re, im);
           c++;
         }
@@ -834,7 +834,7 @@ QMap<QString, QList<double>> SParameterCalculator::getData(){
 }
 
 
-double SParameterCalculator::parseScaledValue(const QString& input) {
+double SParameterCalculator::parseScaledValue(const QString& input, QString unit_type) {
   // Regex to split number from unit
   static const QRegularExpression regex("^\\s*([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?)\\s*([a-zA-ZÂµ]*)\\s*$");
   QRegularExpressionMatch match = regex.match(input);
@@ -846,47 +846,50 @@ double SParameterCalculator::parseScaledValue(const QString& input) {
   double value = match.captured(1).toDouble();
   QString unit = match.captured(2).trimmed();
 
-         // Handle explicit length units FIRST (before SI prefixes)
-  static const QMap<QString, double> lengthUnits = {
-      {"mm", 1e-3},      // millimeters to meters
-      {"cm", 1e-2},      // centimeters to meters
-      {"dm", 1e-1},      // decimeters to meters
-      {"m", 1.0},        // meters (base unit)
-      {"km", 1e3},       // kilometers to meters
-      {"mil", 25.4e-6},  // mils to meters
-      {"in", 0.0254},    // inches to meters
-      {"ft", 0.3048}     // feet to meters
-  };
+  if (unit_type == QString("Length")){
+    // Handle explicit length units FIRST (before SI prefixes)
+    static const QMap<QString, double> lengthUnits = {
+        {"mm", 1e-3},      // millimeters to meters
+        {"cm", 1e-2},      // centimeters to meters
+        {"dm", 1e-1},      // decimeters to meters
+        {"m", 1.0},        // meters (base unit)
+        {"km", 1e3},       // kilometers to meters
+        {"mil", 25.4e-6},  // mils to meters
+        {"in", 0.0254},    // inches to meters
+        {"ft", 0.3048}     // feet to meters
+    };
 
-         // Check for exact length unit match first
-  if (lengthUnits.contains(unit)) {
-    return value * lengthUnits[unit];
+           // Check for exact length unit match first
+    if (lengthUnits.contains(unit)) {
+      return value * lengthUnits[unit];
+    }
+  } else {
+
+    // SI prefixes for electrical units (capacitance, inductance, etc.)
+    static const QMap<QString, double> scaleMap = {
+        {"f", 1e-15},   // femto
+        {"p", 1e-12},   // pico
+        {"n", 1e-9},    // nano
+        {"u", 1e-6},    // micro
+        {"µ", 1e-6},    // micro (Unicode)
+        {"m", 1e-3},    // mili
+        {"", 1.0},      // no prefix
+        {"k", 1e3},     // kilo
+        {"K", 1e3},     // kilo
+        {"M", 1e6},     // mega
+        {"G", 1e9},     // giga
+        {"T", 1e12}     // tera
+    };
+
+           // For electrical units, extract first character as prefix
+    QString prefix;
+    if (!unit.isEmpty()) {
+      prefix = QString(unit.at(0));
+    }
+    double scale = scaleMap.value(prefix, 1.0);
+    return value * scale;
   }
 
-         // SI prefixes for electrical units (capacitance, inductance, etc.)
-  static const QMap<QString, double> scaleMap = {
-      {"f", 1e-15},   // femto
-      {"p", 1e-12},   // pico
-      {"n", 1e-9},    // nano
-      {"u", 1e-6},    // micro
-      {"µ", 1e-6},    // micro (Unicode)
-      // Note: "m" is NOT here - it's handled as meters in lengthUnits
-      {"", 1.0},      // no prefix
-      {"k", 1e3},     // kilo
-      {"K", 1e3},     // kilo
-      {"M", 1e6},     // mega
-      {"G", 1e9},     // giga
-      {"T", 1e12}     // tera
-  };
-
-         // For electrical units, extract first character as prefix
-  QString prefix;
-  if (!unit.isEmpty()) {
-    prefix = QString(unit.at(0));
-  }
-
-  double scale = scaleMap.value(prefix, 1.0);
-  return value * scale;
 }
 
 

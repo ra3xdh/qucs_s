@@ -89,7 +89,7 @@ private:
   std::vector<std::vector<std::vector<Complex>>> sweepResults;
   QMap<QString, QList<double>> data;
 
-  double parseScaledValue(const QString& input);
+  double parseScaledValue(const QString& input, QString unit_type = QString(""));
 
 public:
   // Constructor
