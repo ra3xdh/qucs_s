@@ -128,7 +128,7 @@
     <message>
         <location line="+1"/>
         <source>Microelectronics PDK support</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Поддержка PDK для микроэлектроники</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -508,17 +508,17 @@
     <message>
         <location line="+1"/>
         <source>Resolve spice prefix</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Разрешить префикс spice</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>CDL netlist settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Натсройки списка соединений CDL</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>CDL Settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Настройки CDL</translation>
     </message>
 </context>
 <context>
@@ -2758,7 +2758,7 @@ Node name will not be changed.</source>
     <message>
         <location filename="../qucs/magnetics/magcoredialog.cpp" line="+20"/>
         <source>Domains wall density, A (A/m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Толщина доменных стенок, А (А/м)</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2775,57 +2775,57 @@ Node name will not be changed.</source>
     <message>
         <location line="-52"/>
         <source>Domains pinning, K (A/m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пиннинг доменной стенки, К (А/м)</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Magnetization reversibility, C</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Обратимость намагничивания, C</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Saturation magnetization, MS (A/m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Намагниченность насыщения, MS (А/м)</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Interdomain coupling, α</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Междоменное взаимодействие, α</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Magnetic path length (m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Длина магнитного пути (м)</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Core cross section area (m^2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Площадь поперечного сечения сердечника (м^2)</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Air gap length (m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Длина воздушного зазора (м)</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>H and B probe pins</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пины зонда H и B</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Core drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Чертеж сердечника</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Core configuration type:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Тип конфигурации сердечник:</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Core dimensions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер сердечника</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2835,7 +2835,7 @@ Node name will not be changed.</source>
         <location line="+7"/>
         <location line="+7"/>
         <source>Ring diameter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Диаметро кольца</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2855,82 +2855,82 @@ Node name will not be changed.</source>
     <message>
         <location line="+27"/>
         <source>Dimension A (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер A (мм)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension B (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер B (мм)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension C (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер С (мм)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension D (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер D (мм)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension E (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер E (мм)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension F (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер F (мм)</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Ring outer diameter D (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Диаметр внешнего кольца D (мм)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ring inner diameter d (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Диаметр внутреннего кольца D (мм)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ring height H (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Высота кольца H (мм)</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Dimension 1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер 1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension 2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер 2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension 3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер 3</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension 4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер 4</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension 5</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер 5</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dimension 6</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Размер 6</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Core dimension calculation error! Check input data</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ошибка при вычислении размеров сердечника! Проверьте входные данные</translation>
     </message>
 </context>
 <context>
@@ -4685,52 +4685,52 @@ Resistor color code computation program
     <message>
         <location filename="../qucs/components/vdmos.cpp" line="-5"/>
         <source>VDMOS power transistor</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Силовой транзистор VDMOS</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Device multiplier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Умножитель</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Zero-bias threshold voltage (V)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пороговое напряжение нулевого смещения (В)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Transconductance parameter (A/V^2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Параметр транскондуктанса (А/В^2)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Surface potential (V)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Поверхностный потенциал (В)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Channel length modulation (1/V)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Модуляция длины канала (1/В)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Vgs influence on mobility (1/V)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Влияние на подвижность Vgs (1/V)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>drain ohmic resistance (Ohm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">омическое сопротивление стока (Ом)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>source ohmic resistance (Ohm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">омическое сопротивление истока</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate ohmic resistance (Ohm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">омическое сопротивление затвора (Ом)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4760,212 +4760,212 @@ Resistor color code computation program
     <message>
         <location line="+2"/>
         <source>Quasi saturation resistance fitting parameter (Ohm)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Параметр подгонки сопротивления квазинасыщения (Ом)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Quasi saturation voltage fitting parameter (V)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Параметр аппроксимации напряжения квазинасыщения (В)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Conductance multiplier in triode region</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Умножитель проводимости в триодной области</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>shift along gate voltage axis in the dual parameter subthreshold model (V)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">сдвиг вдоль оси напряжения затвора в двухпараметрической подпороговой модели (V)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>slope in the single parameter subthreshold model (V)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Наклон в однопараметрической подпороговой модели (V)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Vds breakdown voltage (V)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Напряжение пробоя Vds (В)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Current at Vds=bv (A)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ток при Vds=bv (A)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Vds breakdown emission coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Коэффициент эмиссии пробоя Vds</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Drain-source shunt resistance</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сопротивление шунта сток-исток</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body diode ohmic resistance</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Омическое сопротивление внутреннего диода</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body diode emission coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Коэффициент эмиссии body-диода</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body diode transit time</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Время восстановления внутреннего диода</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body diode activation energy for temperature effect on Is</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Энергия активации внутреннего диода при температурном воздействии на Is</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body diode saturation current temperature exponent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Экспонента температуры тока насыщения внутреннего диода</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body diode saturation current</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ток насыщения внутреннего диода</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body diode junction potential</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Потенциал перехода внутреннего диода</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body diode coefficient for forward-bias depletion capacitance formula</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Коэффициент внутреннего диода для формулы обедненной ёмкости прямого смещения</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Zero-bias body diode junction capacitance (F)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Коэффициент емкости обедненной области внутреннего диода при прямом смещении</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body diode grading coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Коэффициент градуировки внутреннего диода</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Minimum non-linear G-D capacitance (F)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Минимальная нелинейная емкость G-D (Ф)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Maximum non-linear G-D capacitance (F)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Максимальная нелинейная емкость G-D (Ф)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Non-linear Cgd capacitance parameter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Нелинейный параметр емкости Cgd</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Gate-source capacitance (F)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Емкость затвор-исток (Ф)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Linear Vth0 temperature coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Линейный температурный коэффициент Vth0</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Exponent of gain temperature dependency</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Показатель зависимости коэффициента усиления от температуры</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Drain resistance rd0 temperature exponent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Экспонента температуры сопротивления стока rd0</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Drain resistance rd1 temperature exponent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Температурный показатель сопротивления стока rd1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Drain resistance linear temperature coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Линейный температурный коэффициент сопротивления стока</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Drain resistance quadratic temperature coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Квадратичный температурный коэффициент сопротивления стока</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Gate resistance linear temperature coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Линейный температурный коэффициент сопротивления затвора</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Gate resistance quadratic temperature coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Квадратичный температурный коэффициент сопротивления затвора</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Source resistance linear temperature coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Линейный температурный коэффициент сопротивления истока</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Source resistance quadratic temperature coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Квадратичный температурный коэффициент сопротивления истока</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body resistance linear temperature coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Линейный температурный коэффициент внутреннего сопротивления</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Body resistance quadratic temperature coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Квадратичный температурный коэффициент внутреннего сопротивления</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Linear temperature coefficient of ksubthres</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Линейный температурный коэффициент ksubthres</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Quadratic temperature coefficient of ksubthres</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Квадратичный температурный коэффициент ksubthres</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Thermal resistance junction-case</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Тепловое сопротивление между корпусом и переходом</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Thermal resistance case-ambient (w/o heatsink)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Тепловое сопротивление корпус-окружающая среда (без радиатора)</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Thermal model</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Тепловая модель</translation>
     </message>
     <message>
         <location line="+65"/>
         <source>n-VDMOS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">n-VDMOS</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>p-VDMOS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">p-VDMOS</translation>
     </message>
     <message>
         <location filename="../qucs/components/photodiode.cpp" line="+2"/>
@@ -12399,12 +12399,12 @@ Leave continuation lines blank when NOT in use.</source>
         <location filename="../qucs/magnetics/winding.cpp" line="+29"/>
         <location line="+57"/>
         <source>Winding</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Намотка</translation>
     </message>
     <message>
         <location line="-17"/>
         <source>CORE component name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Название компонента CORE</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -12415,7 +12415,7 @@ Leave continuation lines blank when NOT in use.</source>
     <message>
         <location line="+1"/>
         <source>Series resistance</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Последовательное сопротивление</translation>
     </message>
     <message>
         <location filename="../qucs/components/spiralinductor.cpp" line="+17"/>
@@ -12442,120 +12442,121 @@ Leave continuation lines blank when NOT in use.</source>
         <location filename="../qucs/paintings/imagepainting.cpp" line="+219"/>
         <location line="+334"/>
         <source>Images (*.bmp *.gif *.jpg *.jpeg *.png)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Изображения (*.bmp *.gif *.jpg *.jpeg *.png)</translation>
     </message>
     <message>
         <location line="-331"/>
         <location line="+334"/>
         <source>Select Image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Выбрать изображение</translation>
     </message>
     <message>
         <location line="-204"/>
         <source>Image Properties</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Настройки изображения</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Image Path:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Путь до изображения:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Browse...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Обзор...</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Image embedded in schematic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Изображение, встроенное в схему</translation>
     </message>
     <message>
         <location line="+3"/>
         <location line="+197"/>
         <source>External image file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Внешний файл изображения</translation>
     </message>
     <message>
         <location line="-194"/>
         <source>No image loaded</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Изображение не загружено</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Width:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ширина:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Height:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Высота:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Keep aspect ratio</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сохранять пропорции</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Reset to original dimensions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сбросить до исходных размеров</translation>
     </message>
     <message>
         <location line="+63"/>
         <source>Image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Изображение</translation>
     </message>
     <message>
         <location filename="../qucs/magnetics/ja_core.cpp" line="+31"/>
         <source>Magnetic core
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Магнитный сердечник
+</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Domains wall density (A/m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Плотность доменных стенок (А/м)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Domains pinning (A/m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Доменный пиннинг (А/м)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Magnetization reversibility</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Обратимость намагничивания</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Saturation magnetization (A/m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Намагниченность насыщения (А/м)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Interdomain coupling</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Междоменное сцепление</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Magnetic path length (m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Длина магнитного пути (м)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Core cross section area (m^2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Площадь поперечного сечения сердечника (м^2)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Air gap length (m)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Длина воздушного зазора (м)</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Magnetic core</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Магнитный сердечник</translation>
     </message>
 </context>
 <context>
@@ -12989,33 +12990,41 @@ This may happen by the following reasons:
 
 Please configure simulator paths in Simulation-&gt;Simulator settings menu.
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Бэкэнд симуляции не найден! Симуляция невозможна.
+Это может произойти по следующим причинам:
+
+1. Вы используете портативную версию и переместили каталог установки.
+2. Симуляторы были удалены из системы или пути к ним настроены неправильно.
+
+Настройте пути к симулятору в меню «Симуляция» -&gt; «Настройки симулятора».
+</translation>
     </message>
     <message>
         <location line="+560"/>
         <source>No files selected for deletion!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Не выбраны файлы для удаления!</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>This will delete %1 files permanently! Continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Это приведет к безвозвратному удалению %1 файлов! Продолжить?</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This will delete the file permanently! Continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Это приведет к безвозвратному удалению файла! Продолжить?</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>file is open</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">файл открыт</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Could not delete the following files:
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Не удалось удалить следующие файлы:
+</translation>
     </message>
     <message>
         <location line="+338"/>
@@ -14766,7 +14775,7 @@ Opens an existing project</source>
     <message>
         <location line="+10"/>
         <source>Clear recent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Очистить недавние</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -14866,15 +14875,17 @@ Create Library from Subcircuits</source>
     </message>
     <message>
         <location line="+75"/>
-        <source>Rotates the selected component by 90<byte value="x0"/>B0</source>
-        <translation type="unfinished"></translation>
+        <source>Rotates the selected component by 90B0</source>
+        <translation type="unfinished">Поворачивает выбранный компонент на 90B0</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Rotate
 
-Rotates the selected component by 90<byte value="x0"/>B0 counter-clockwise</source>
-        <translation type="unfinished"></translation>
+Rotates the selected component by 90B0 counter-clockwise</source>
+        <translation type="unfinished">Повернуть
+
+Поворачивает выбранный компонент на 90B0 против часовой стрелки</translation>
     </message>
     <message>
         <location line="+122"/>
@@ -14922,12 +14933,12 @@ Starts S-parameter viewer</source>
     <message>
         <location line="+4"/>
         <source>CDL Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CDL настройки...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>CDL Settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CDL настройки</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -15052,70 +15063,78 @@ Creates a new schematic symbol document</source>
     <message>
         <location line="+34"/>
         <source>Close all but current</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрыть все, кроме текущего</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Closes all documents except the current one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрывает все документы, кроме текущего</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Close all but current
 
 Closes all documents except the current one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрыть все, кроме текущего
+
+Закрывает все документы, кроме текущего</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Close all left</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрыть всё слева</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Closes all documents to the left of the current one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрывает все документы слева от текущего</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Close all left
 
 Closes all documents to the left of the current one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрыть все документы слева
+
+Закрывает все документы слева от текущего</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Close all right</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрыть всё справа</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Closes all documents to the right of the current one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрывает все документы справа от текущего</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Close all right
 
 Closes all documents to the right of the current one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрыть все справа
+
+Закрывает все документы справа от текущего</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Close &amp;All</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрыть &amp;всё</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Closes all documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрыть все документы</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Close All
 
 Closes all documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Закрыть всё
+
+Закрыть все документы</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -16341,17 +16360,17 @@ Open </source>
     <message>
         <location filename="../qucs/mouseactions.cpp" line="-753"/>
         <source>Wiring mode: free. RMB to switch to orthogonal.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Режим подключения: свободный. ПКМ для переключения в ортогональный.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Wiring mode: orthogonal. RMB to switch to free.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Режим подключения: ортогональный. ПКМ для переключения в свободный.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Wiring mode: orthogonal. RMB to cycle through variants.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Режим подключения: ортогональный. ПКМ — циклический переход между вариантами.</translation>
     </message>
 </context>
 <context>
@@ -17246,17 +17265,17 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+10"/>
         <source>Always prefix the dataset with simulation label:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Всегда добавляйте к набору данных метку моделирования:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Always use the prefix for dataset, i.e. &quot;tr1.v(out)&quot; rather than &quot;v(out)&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Всегда используйте префикс для набора данных, например «tr1.v(out)», а не «v(out)»</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Flexible wires (requires restart):</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Гибкие провода (требуется перезагрузка):</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -18195,54 +18214,55 @@ It can show several .snp files at a time in the same diagram. Trace markers can 
         <location line="+2"/>
         <source>
 Copyright (C) 2025 by</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">
+Авторские права (C) 2025 г</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>S-Parameter Files (*.s1p *.s2p *.s3p *.s4p);;Data Files (*.dat *.ngspice.dat);;All Files (*.*)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Файлы S-параметров (*.s1p *.s2p *.s3p *.s4p);;Файлы данных (*.dat *.ngspice.dat);;Все файлы (*.*)</translation>
     </message>
     <message>
         <location line="+2904"/>
         <source>Qucs-S snp viewer session (*.spar)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сеанс просмотра SNP Qucs-S (*.spar)</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+128"/>
         <source>Save Session</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сохранить сессию</translation>
     </message>
     <message>
         <location line="-128"/>
         <source>Could not open file for writing.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Не удалось открыть файл для записи.</translation>
     </message>
     <message>
         <location line="+128"/>
         <source>Error writing file: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ошибка записи файла: </translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+134"/>
         <source>Load Session</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Загрузить сессию</translation>
     </message>
     <message>
         <location line="-134"/>
         <source>Could not open file for reading.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Неозможно открыть файл на чтение.</translation>
     </message>
     <message>
         <location line="+134"/>
         <source>Error parsing XML: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ошибка парсинга XML: </translation>
     </message>
     <message>
         <location line="+1080"/>
         <source>The file or directory does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Файл или каталог не существует.</translation>
     </message>
     <message>
         <source>
@@ -19246,7 +19266,7 @@ No SUBCKT directive found in library </source>
     <message>
         <location line="-42"/>
         <source>SPICE files (*.cir *.ckt *.sp *.lib)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SPICE файлы (*.cir *.ckt *.sp *.lib)</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -19794,7 +19814,7 @@ components/)
     <message>
         <location line="+1"/>
         <source>resolve spice prefix during netlist CDL</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">разрешить префикс spice во время списка соединений CDL</translation>
     </message>
 </context>
 <context>
