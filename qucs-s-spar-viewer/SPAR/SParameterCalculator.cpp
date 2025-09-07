@@ -229,7 +229,7 @@ bool SParameterCalculator::parseNetlist() {
       for (int r = 0; r < N; r++) {
         QString row = rowStrings[r].trimmed();
         // Entries like "(re,im)"
-        QRegularExpression rx("\\(([-+]?\\d*\\.?\\d+[a-zA-Z]*),([-+]?\\d*\\.?\\d+[a-zA-Z]*)\\)");
+        static const QRegularExpression rx("\\(([-+]?\\d*\\.?\\d+[a-zA-Z]*),([-+]?\\d*\\.?\\d+[a-zA-Z]*)\\)");
         QRegularExpressionMatchIterator it = rx.globalMatch(row);
         int c = 0;
         while (it.hasNext() && c < N) {
