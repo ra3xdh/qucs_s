@@ -308,7 +308,7 @@ void convert_MA_RI_to_dB(double * S_1, double * S_2, double *S_3, double *S_4, Q
       S_im = *S_2;
     } else {
       // DB format
-      double r = std::pow(10, *S_1 / 10.0);
+      double r = std::pow(10, *S_1 / 20.0);
       double theta = *S_2 * M_PI / 180.0;
       S_re = r * std::cos(theta);
       S_im = r * std::sin(theta);

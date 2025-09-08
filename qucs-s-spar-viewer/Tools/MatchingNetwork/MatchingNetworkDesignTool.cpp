@@ -146,6 +146,8 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
   Specs.f_match = f_match_Spinbox->value() *
                   getScaleFreq(f_match_Scale_Combo->currentIndex());
 
+  LoadSpecWidget->setFmatch(Specs.f_match);
+
         // Design the matching network(s)
   MatchingNetworkDesigner *MatchDesigner = new MatchingNetworkDesigner(Specs);
   MatchDesigner->synthesize();

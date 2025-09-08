@@ -148,7 +148,6 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 
   void addFile();
   void addFiles(QStringList);
-  QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath);
   QMap<QString, QList<double>> readQucsatorDataset(const QString& filePath);
   QMap<QString, QList<double>> readNGspiceData(const QString& filePath);
   QString extractSParamIndices(const QString& sparam);

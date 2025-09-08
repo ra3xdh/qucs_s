@@ -21,6 +21,8 @@
 #include <QFileInfo>
 #include <cmath>
 
+#include "../../Misc/general.h"
+
 class LoadSpecificationWidget : public QGroupBox
 {
   Q_OBJECT
@@ -48,6 +50,7 @@ public:
   void setTwoPortMode(bool enabled);
   void setReferenceImpedance(double Z0) { m_Z0 = Z0; updateReflectionCoefficient(); }
   void setCollapsed(bool collapsed);
+  void setFmatch(double freq){f_match = freq;}
   bool isCollapsed() const { return m_isCollapsed; }
 
   // Reference impedance of the source and the load port. Required for the 2-port matching. This data is provided by the main widget
@@ -75,8 +78,10 @@ private:
   void updateImpedanceFormat();
   void updateReflectionFormat();
   void updateSParameterFormat();
-  void loadS1PFile(const QString& filename);
-  void loadS2PFile(const QString& filename);
+
+  double f_match;
+
+  QMap<QString, QList<double>> loadData; // It could be either 1-port or 2-port
 
   // UI Components - One Port
   QGridLayout* m_mainLayout;

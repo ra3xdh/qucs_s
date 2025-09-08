@@ -458,11 +458,81 @@ void LoadSpecificationWidget::onBrowseFile()
     m_currentFile = fileName;
     m_fileLabel->setText(QFileInfo(fileName).fileName());
 
-    if (m_twoPortMode) {
-      loadS2PFile(fileName);
-    } else {
-      loadS1PFile(fileName);
+    // Load S-parameter data from file
+    loadData = readTouchstoneFile(fileName);
+
+    // Find the S-parameter data at the frequency the user wants to match and present it on the UI
+
+    // 1) Find the closest frequency to that the user specified
+    const QList<double> &frequencies = loadData.value("frequency");
+
+    // 2) Find the index of the closest frequency
+    int closestIdx = -1;
+    double minDiff = std::numeric_limits<double>::max();
+    for (int i = 0; i < frequencies.size(); ++i) {
+      double diff = qAbs(frequencies[i] - f_match);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestIdx = i;
+      }
     }
+
+    // 3) Retrieve data from S-parameter traces
+    QStringList keysToRetrieve;
+
+    if (m_twoPortMode) {
+      // 2-port matching
+      keysToRetrieve.push_back("S11_re");
+      keysToRetrieve.push_back("S11_im");
+
+      keysToRetrieve.push_back("S12_re");
+      keysToRetrieve.push_back("S12_im");
+
+      keysToRetrieve.push_back("S21_re");
+      keysToRetrieve.push_back("S21_im");
+
+      keysToRetrieve.push_back("S22_re");
+      keysToRetrieve.push_back("S22_im");
+
+    } else {
+      // 1-port matching
+      keysToRetrieve.push_back("S11_re");
+      keysToRetrieve.push_back("S11_im");
+    }
+
+
+    QMap<QString, double> result;
+    if (closestIdx != -1) {
+      for (const QString &key : keysToRetrieve) {
+        if (loadData.contains(key) && loadData.value(key).size() > closestIdx)
+          result[key] = loadData.value(key)[closestIdx];
+    }
+
+    }
+
+    // 4) Show the data in the UI
+    if (m_twoPortMode) {
+      // 2-port matching
+      std::complex<double> S11(result["S11_re"], result["S11_im"]);
+      std::complex<double> S12(result["S12_re"], result["S12_im"]);
+      std::complex<double> S21(result["S21_re"], result["S21_im"]);
+      std::complex<double> S22(result["S22_re"], result["S22_im"]);
+
+    } else {
+      // 1-port matching
+      std::complex<double> S11(result["S11_re"], result["S11_im"]);
+
+      // Set reflection coefficient widgets
+      m_reflectionReal->setValue(S11.real());
+      m_reflectionImag->setValue(S11.imag());
+
+      // Set impedance widgets
+      double Z0 = loadData["Z0"].at(0);
+      std::complex<double> ZL = Z0 * (1.0 + S11) / (1.0 - S11);
+      m_impedanceReal->setValue(ZL.real());
+      m_impedanceImag->setValue(ZL.imag());
+    }
+
   }
 }
 
@@ -583,150 +653,6 @@ void LoadSpecificationWidget::updateSParameterFormat()
     m_s21Imag->setValue(std::arg(s21) * 180.0 / M_PI);
     m_s22Real->setValue(std::abs(s22));
     m_s22Imag->setValue(std::arg(s22) * 180.0 / M_PI);
-  }
-}
-
-void LoadSpecificationWidget::loadS1PFile(const QString& filename)
-{
-  QFile file(filename);
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    QMessageBox::warning(this, "Error", "Cannot open file: " + filename);
-    return;
-  }
-
-  QTextStream in(&file);
-  QString line;
-  bool foundData = false;
-  double freq = 0;
-  std::complex<double> s11;
-
-  while (!in.atEnd()) {
-    line = in.readLine().trimmed();
-
-    // Skip comments and empty lines
-    if (line.isEmpty() || line.startsWith('!') || line.startsWith('#'))
-      continue;
-            
-    // Parse frequency unit and format from header
-    if (line.startsWith('#')) {
-      // TODO: Parse S1P header for frequency unit and format
-      continue;
-    }
-
-    QStringList parts = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
-    if (parts.size() >= 3) {
-      bool ok1, ok2, ok3;
-      freq = parts[0].toDouble(&ok1);
-      double real_or_mag = parts[1].toDouble(&ok2);
-      double imag_or_ang = parts[2].toDouble(&ok3);
-
-      if (ok1 && ok2 && ok3) {
-        // Assume RI format for now (could be enhanced to parse format from header)
-        s11 = std::complex<double>(real_or_mag, imag_or_ang);
-        foundData = true;
-        break; // Use first frequency point
-      }
-    }
-  }
-
-  if (foundData) {
-    // Convert S11 to load impedance: ZL = Z0 * (1 + S11) / (1 - S11)
-    std::complex<double> ZL = m_Z0 * (1.0 + s11) / (1.0 - s11);
-    setLoadImpedance(ZL);
-    emit impedanceChanged();
-  } else {
-    QMessageBox::warning(this, "Error", "No valid data found in S1P file");
-  }
-}
-
-void LoadSpecificationWidget::loadS2PFile(const QString& filename)
-{
-  QFile file(filename);
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    QMessageBox::warning(this, "Error", "Cannot open file: " + filename);
-    return;
-  }
-
-  QTextStream in(&file);
-  QString line;
-  bool foundData = false;
-  double freq = 0;
-  std::complex<double> s11, s12, s21, s22;
-
-  while (!in.atEnd()) {
-    line = in.readLine().trimmed();
-
-    // Skip comments and empty lines
-    if (line.isEmpty() || line.startsWith('!'))
-      continue;
-            
-    // Parse frequency unit and format from header
-    if (line.startsWith('#')) {
-      // TODO: Parse S2P header for frequency unit and format
-      continue;
-    }
-
-    QStringList parts = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
-    if (parts.size() >= 9) {
-      bool ok[9];
-      freq = parts[0].toDouble(&ok[0]);
-      double s11_a = parts[1].toDouble(&ok[1]);
-      double s11_b = parts[2].toDouble(&ok[2]);
-      double s21_a = parts[3].toDouble(&ok[3]);
-      double s21_b = parts[4].toDouble(&ok[4]);
-      double s12_a = parts[5].toDouble(&ok[5]);
-      double s12_b = parts[6].toDouble(&ok[6]);
-      double s22_a = parts[7].toDouble(&ok[7]);
-      double s22_b = parts[8].toDouble(&ok[8]);
-
-      bool allOk = true;
-      for (int i = 0; i < 9; i++) {
-        if (!ok[i]) {
-          allOk = false;
-          break;
-        }
-      }
-
-      if (allOk) {
-        // Assume RI format for now (could be enhanced to parse format from header)
-        s11 = std::complex<double>(s11_a, s11_b);
-        s12 = std::complex<double>(s12_a, s12_b);
-        s21 = std::complex<double>(s21_a, s21_b);
-        s22 = std::complex<double>(s22_a, s22_b);
-        foundData = true;
-        break; // Use first frequency point
-      }
-    }
-  }
-
-  if (foundData) {
-    m_updatingValues = true;
-
-    // Set S-parameter values based on current format
-    if (m_formatCombo->currentIndex() == 0) { // Real/Imaginary
-      m_s11Real->setValue(s11.real());
-      m_s11Imag->setValue(s11.imag());
-      m_s12Real->setValue(s12.real());
-      m_s12Imag->setValue(s12.imag());
-      m_s21Real->setValue(s21.real());
-      m_s21Imag->setValue(s21.imag());
-      m_s22Real->setValue(s22.real());
-      m_s22Imag->setValue(s22.imag());
-    } else { // Magnitude/Angle
-      m_s11Real->setValue(std::abs(s11));
-      m_s11Imag->setValue(std::arg(s11) * 180.0 / M_PI);
-      m_s12Real->setValue(std::abs(s12));
-      m_s12Imag->setValue(std::arg(s12) * 180.0 / M_PI);
-      m_s21Real->setValue(std::abs(s21));
-      m_s21Imag->setValue(std::arg(s21) * 180.0 / M_PI);
-      m_s22Real->setValue(std::abs(s22));
-      m_s22Imag->setValue(std::arg(s22) * 180.0 / M_PI);
-    }
-
-    m_updatingValues = false;
-    emit sParametersChanged();
-  } else {
-    QMessageBox::warning(this, "Error", "No valid data found in S2P file");
   }
 }
 

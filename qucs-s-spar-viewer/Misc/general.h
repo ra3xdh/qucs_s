@@ -18,6 +18,10 @@
 #define GENERAL_H
 
 #include <QString>
+#include <QFile>
+#include <QFileInfo>
+
+
 #include <QList>
 #include <QRegularExpression>
 #include <cmath>
@@ -40,5 +44,8 @@ double getFreqScale(QString frequency_unit);
 int findClosestIndex(const QList<double>& list, double value);
 double getFreqFromText(QString freq);
 QPointF findClosestPoint(const QList<double>& xValues, const QList<double>& yValues, double targetX);
+
+
+QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath);
 
 #endif // GENERAL_H
