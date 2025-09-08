@@ -21,6 +21,10 @@
 #include "conductor.h"
 #include <list>
 
+class Component;
+class Wire;
+
+
 class Node : public Conductor {
 public:
   Node(int x, int y);
@@ -31,27 +35,30 @@ public:
 
   // Add an element to the node's connections.
   // No-op if element is already connected.
-  void connect(Element* connectable);
+  void connect(Wire* wire) { if (!is_connected(wire)) m_wires.emplace_front(wire); }
+  void connect(Component* comp) { if (!is_connected(comp)) m_components.emplace_front(comp); }
 
   // Remove element from the node's connections.
-  void disconnect(Element* connectable);
+  void disconnect(Wire* wire) { m_wires.remove(wire); }
+  void disconnect(Component* comp) { m_components.remove(comp); }
 
   // Tells if an element is among node's connections.
-  bool is_connected(Element* connectable) const;
+  bool is_connected(Wire* wire) const { return std::ranges::find(m_wires, wire) != m_wires.end(); }
+  bool is_connected(Component* comp) const { return std::ranges::find(m_components, comp) != m_components.end(); }
 
-  std::size_t conn_count() const;
+  std::size_t conn_count() const { return m_wires.size() + m_components.size(); }
 
-  // Returns one of node's connections or nullptr when
-  // there is no connections
-  Element* any() const;
+  Wire* anyWire() const { return m_wires.empty() ? nullptr : m_wires.front(); }
+  Component* anyComp() const { return m_components.empty() ? nullptr : m_components.front(); }
 
   // Returns an element from node's connections which is
   // not equal to e; nullptr if there is no such element
-  Element* other_than(Element* e) const;
+  Wire* other_than(Wire* wire) const
+  {
+    auto other = std::ranges::find_if(m_wires, [wire](auto other){ return other != wire; });
+    return other == m_wires.end() ? nullptr : *other;
+  }
 
-  using const_iterator = std::list<Element*>::const_iterator;
-  const_iterator begin() const;
-  const_iterator end() const;
 
   bool moveCenter(int dx, int dy) noexcept override;
 
@@ -62,6 +69,11 @@ public:
   int x() const { return cx; }
   int y() const { return cy; }
 
+  const std::list<Wire*>& wires() const { return m_wires; }
+  const std::list<Component*>& components() const { return m_components; }
+
+  Node* merge(Node* other);
+
 private:
   // Nodes usually have quite a few connections. In ideal case, when all wire
   // placement optimizations work properly, there can be at most four connections
@@ -71,53 +83,8 @@ private:
   // all that I think the doubly-linked list is a good choice here.
   //
   // A node doesn't claim ownership of any connected object, storing raw pointers is OK.
-  //
-  // Long-term TODO: refactor so that node will keep only pointers to *connectable*
-  //                 objects, i.e. components and wires. Paintings, graphs, wirelabels,
-  //                 etc., are Elements too, it's just wrong to use so generic type.
-  std::list<Element*> connections;
+  std::list<Wire*> m_wires;
+  std::list<Component*> m_components;
 };
-
-// Calling this while iterating over the node's connections via Node::begin() and
-// Node::end() will cause segfault because of iterator invalidation
-inline void Node::connect(Element* connectable)
-{
-  if (is_connected(connectable)) {
-    return;
-  }
-  connections.push_front(connectable);
-}
-
-// Calling this while iterating over the node's connections via Node::begin() and
-// Node::end() will cause segfault because of iterator invalidation
-inline void Node::disconnect(Element* connectable)
-{
-  connections.remove(connectable);
-}
-
-inline bool Node::is_connected(Element *connectable) const
-{
-  return std::find(connections.begin(), connections.end(), connectable) != connections.end();
-}
-
-inline std::size_t Node::conn_count() const
-{
-  return connections.size();
-}
-
-inline Node::const_iterator Node::begin() const
-{
-  return connections.begin();
-}
-
-inline Node::const_iterator Node::end() const
-{
-  return connections.end();
-}
-
-inline Element* Node::any() const
-{
-  return connections.empty() ? nullptr : connections.front();
-}
 
 #endif

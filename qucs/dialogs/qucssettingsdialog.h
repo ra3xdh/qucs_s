@@ -33,7 +33,6 @@ class QPushButton;
 class QComboBox;
 class QIntValidator;
 class QRegExpValidator;
-class QStandardItemModel;
 class QTableWidget;
 
 class QucsSettingsDialog : public QDialog
@@ -96,7 +95,6 @@ private:
     QCheckBox* a_checkWiring;
     QCheckBox* a_checkLoadFromFutureVersions;
     QCheckBox* a_allowFlexibleWires;
-    QCheckBox* a_allowLayingWiresAnew;
     QCheckBox* a_checkAntiAliasing;
     QCheckBox* a_checkTextAntiAliasing;
     QCheckBox* a_checkFullTraceNames;

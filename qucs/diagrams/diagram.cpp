@@ -351,10 +351,13 @@ int Diagram::regionCode(float x, float y) const {
 // ------------------------------------------------------------
 // Is virtual. This one is for round diagrams only.
 bool Diagram::insideDiagram(float x, float y) const {
-    float R = float(x2) / 2.0 + 1.0; // +1 seems better (graph sometimes little outside)
-    x -= R;
-    y -= R;
-    return ((x * x + y * y) <= R * R);
+  float tol = 0.5;  // Tolerance. Otherwise, it may discard points close to the circular plot border
+  float R = float(x2) / 2.0 + 1.0; // +1 seems better (graph sometimes little outside)
+  x -= R;
+  y -= R;
+
+  float rTol = R + tol; // Radius plus tolerance
+  return ((x * x + y * y) <= rTol * rTol);
 }
 
 /*!

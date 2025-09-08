@@ -1700,7 +1700,7 @@ void QucsApp::slotTextNew()
 // --------------------------------------------------------------
 // Changes to the document "Name". If already open then it goes to it
 // directly, otherwise it loads it.
-bool QucsApp::gotoPage(const QString& Name)
+bool QucsApp::gotoPage(const QString& Name, bool reloadPage)
 {
   int No = DocumentTab->currentIndex();
 
@@ -1710,6 +1710,19 @@ bool QucsApp::gotoPage(const QString& Name)
   if(d) {   // open page found ?
     d->becomeCurrent(true);
     DocumentTab->setCurrentIndex(i);  // make new document the current
+    // if reloadPage is set AND it's a textDocument AND it has changed on disk -> reload
+    if (reloadPage) {
+      QWidget *w = DocumentTab->currentWidget();
+      if (isTextDocument(w)) {
+        TextDoc *tDoc = dynamic_cast<TextDoc*>(w);
+        if (tDoc->hasFileChangedOnDisk()) {
+          if(!tDoc -> reload()) {
+            return false;
+          }
+          qDebug() << "Successfully reloaded textDocument";
+        }
+      }
+    }
     return true;
   }
 

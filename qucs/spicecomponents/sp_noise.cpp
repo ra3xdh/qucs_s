@@ -43,6 +43,8 @@ SpiceNoise::SpiceNoise()
             QObject::tr("Node at which the total output is desired")));
   Props.append(new Property("Source","V1",true,
             QObject::tr("Independent source to which input noise is referred.")));
+  Props.append(new Property("PtsPerSummary","",false,
+                            QObject::tr("If specified, the noise contributions are produced every PtsPerSummary frequency points")));
 
 }
 
@@ -88,8 +90,9 @@ QString SpiceNoise::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
         points = Props.at(3)->Value;
     }
 
-    s = QStringLiteral("noise %1 %2 %3 %4 %5 %6\n").arg(Props.at(4)->Value).arg(Props.at(5)->Value)
-            .arg(swp).arg(points).arg(fstart).arg(fstop);
+    QString pts_per_sum = getProperty("PtsPerSummary")->Value;
+    s = QStringLiteral("noise %1 %2 %3 %4 %5 %6 %7\n").arg(Props.at(4)->Value).arg(Props.at(5)->Value)
+            .arg(swp).arg(points).arg(fstart).arg(fstop).arg(pts_per_sum);
     QString out = "spice4qucs." + Name.toLower() + ".cir.noise";
     if (dialect != spicecompat::SPICEXyce) {
         s += QStringLiteral("print inoise_total onoise_total >> %1\n").arg(out);

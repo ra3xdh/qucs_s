@@ -333,6 +333,13 @@ bool qucs::Rectangle::rotate(int xc, int yc) noexcept
   return true;
 }
 
+void qucs::Rectangle::snapToGrid(Schematic* sch)
+{
+  sch->setOnGrid(x1, y1);
+  sch->setOnGrid(x2, y2);
+  updateCenter();
+}
+
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
 bool qucs::Rectangle::Dialog(QWidget *parent)

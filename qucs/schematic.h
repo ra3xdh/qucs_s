@@ -440,7 +440,7 @@ public:
 
   void dumbConnectWithWire(const QPoint& a, const QPoint& b) noexcept;
 
-  void  selectWireLine(Element*, Node*, bool);
+  void  selectWireLine(Wire*, Node*, bool);
   Wire* selectedWire(int, int);
   Wire* splitWire(Wire*, Node*);
   void  deleteWire(Wire*, bool remove_orphans=true);
