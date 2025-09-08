@@ -25,6 +25,8 @@
 #include "extsimkernels/spicecompat.h"
 
 #include <QList>
+#include <QMap>
+#include <QChar>
 
 #include "element.h"
 #include "property.h"
@@ -132,6 +134,7 @@ protected:
   QString getValue(const Property& property) const;
 
   Schematic* containingSchematic;
+  static QMap<QChar, double> s_numericScaleFactors;
 
   virtual void drawSymbol(QPainter* p);
   QString getSpiceSubstrateLine(); // get SPICE params for microstrips
