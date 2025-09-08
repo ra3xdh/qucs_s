@@ -13,6 +13,7 @@
 #include "../component.h"
 
 #include <QString>
+#include <QList>
 
 /**
  * The class XmlComponent is the internal representations of XML based qucs-s
@@ -36,7 +37,7 @@
  * Muparser (https://beltoforion.de/en/muparser) compatible parameter
  * equations are supported for XML components, e.g.
  *
- * <Parameter name="Vrms" unit="V" default_value="sqrt(Z/1000.0)*10^(P/20)" show="true">
+ * <Parameter name="Vrms" unit="V" equation="sqrt(Z/1000.0)*10^(P/20)" show="true">
  *    <Description>RMS Voltage</Description>
  * </Parameter>
  * <Parameter name="Z" unit="Ohm" default_value="50" show="true">
@@ -54,7 +55,7 @@
  * - {nets} : will be replace be the component-assigned nets
  * Component defined parameters can be referred as {parameter_name}, e.g.
  * <NgspiceNetlist value = 'VP{PartCounter} {nets} dc 0 ac {P} SIN(0 {P} {f}) portnum {NumPorts} z0 {Z}'>
- * An alternative to dedicated netlists is referencing another netlist template  and usage of
+ * An alternative to dedicated netlists is referencing another netlist template and usage of
  * type-conditional statements. Referencing another netlist template is done by the template value
  * {netlist_name}, e.g. <CDLNetlist value = '{NgspiceNetlist}'> </CDLNetlist>. In that case the
  * Ngspice netlist template will be taken as base for CDL netlisting of this component.
@@ -77,20 +78,26 @@ public:
                 const QString& name,
                 const QString& unit,
                 const QString& defaultValue,
+                const QString& equation,
                 bool show,
-                const QString& description) :
+                const QString& description,
+                const QString& condition) :
             a_name(name),
             a_unit(unit),
             a_defaultValue(defaultValue),
+            a_equation(equation),
             a_show(show),
-            a_description(description)
+            a_description(description),
+            a_condition(condition)
         {}
 
         QString a_name;
         QString a_unit;
         QString a_defaultValue;
+        QString a_equation;
         bool a_show;
         QString a_description;
+        QString a_condition;
     };
 
     struct PortSym
@@ -121,14 +128,16 @@ public:
                 int y2,
                 const QString& color,
                 uint32_t width,
-                int style) :
+                int style,
+                const QString& condition) :
             a_x1(x1),
             a_y1(y1),
             a_x2(x2),
             a_y2(y2),
             a_color(color),
             a_width(width),
-            a_style(style)
+            a_style(style),
+            a_condition(condition)
         {}
 
         int a_x1;
@@ -138,6 +147,7 @@ public:
         QString a_color;
         uint32_t a_width;
         int a_style;
+        QString a_condition;
     };
 
     struct Arc
@@ -202,6 +212,7 @@ protected:
     virtual QString netlist();
     virtual QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
     virtual QString cdl_netlist();
+    void removeMultipleSpaces(QString& netlist);
 
 private:
     QString netlist(

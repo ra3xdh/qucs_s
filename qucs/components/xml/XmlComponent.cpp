@@ -15,8 +15,12 @@
 #include <QColor>
 #include <QPen>
 #include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QStringList>
 
 #include <limits>
+#include <algorithm>
+#include <list>
 
 XmlComponent::XmlComponent(
         const QString& name,
@@ -57,18 +61,58 @@ XmlComponent::XmlComponent(
     SpiceModel = spiceModel;
     Name = schematicId;
 
+    removeMultipleSpaces(a_ngspiceNetList);
+    removeMultipleSpaces(a_cdlNetList);
+    removeMultipleSpaces(a_qucsatorNetList);
+
+    std::list<Property*> properties;
+
     foreach (const Parameter& param, parameters)
     {
-        bool isValue;
-        static_cast<void>(param.a_defaultValue.toDouble(&isValue));
-        Props.append(new Property(
-            param.a_name,
-            param.a_defaultValue,
-            param.a_unit,
-            param.a_show,
-            QObject::tr(param.a_description.toUtf8().constData()),
-            isValue ? Property::Type::Value : Property::Type::Equation));
+        bool insertParam(true);
+        if (!param.a_condition.isEmpty())
+        {
+            insertParam = false;
+            const QStringList condition(param.a_condition.split("=", Qt::SkipEmptyParts));
+
+            if (condition.size() == 2)
+            {
+                if (condition[0] == "name")
+                {
+                    QStringList names(condition[1].split(",", Qt::SkipEmptyParts));
+                    foreach (const QString& name, names)
+                    {
+                        if (name == a_name)
+                        {
+                            properties.erase(
+                                    std::remove_if(
+                                        properties.begin(),
+                                        properties.end(),
+                                        [param](Property* property) { return property->Name == param.a_name; }),
+                                    properties.end());
+
+                            insertParam = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (insertParam)
+        {
+            properties.push_back(
+                    new Property(
+                        param.a_name,
+                        param.a_equation.isEmpty() ? param.a_defaultValue : param.a_equation,
+                        param.a_unit,
+                        param.a_show,
+                        QObject::tr(param.a_description.toUtf8().constData()),
+                        param.a_equation.isEmpty() ? Property::Type::Value : Property::Type::Equation));
+        }
     }
+
+    Props.assign(properties.begin(), properties.end());
 
     createSymbol();
 
@@ -120,6 +164,34 @@ void XmlComponent::createSymbol()
 
     foreach (const Line& line, a_lines)
     {
+        bool skipLine(false);
+
+        if (!line.a_condition.isEmpty())
+        {
+            const QStringList condition(line.a_condition.split("=", Qt::SkipEmptyParts));
+
+            if (condition.size() == 2)
+            {
+                skipLine = true;
+                const QString paramName(condition[0]);
+                const QString paramValue(condition[1]);
+
+                foreach (const Property* property, Props)
+                {
+                    if (property->Name == paramName && getValue(*property) == paramValue)
+                    {
+                        skipLine = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (skipLine)
+        {
+            continue;
+        }
+
         Lines.append(new qucs::Line(
             line.a_x1,
             line.a_y1,
@@ -129,8 +201,10 @@ void XmlComponent::createSymbol()
 
         x1 = line.a_x1 < x1 ? line.a_x1 : x1;
         y1 = line.a_y1 < y1 ? line.a_y1 : y1;
+        y1 = line.a_y2 < y1 ? line.a_y2 : y1;
         x2 = line.a_x2 > x2 ? line.a_x2 : x2;
         y2 = line.a_y2 > y2 ? line.a_y2 : y2;
+        y2 = line.a_y1 > y2 ? line.a_y1 : y2;
     }
 
     foreach (const Arc& arc, a_arcs)
@@ -165,6 +239,7 @@ QString XmlComponent::netlist(
     QString spiceDialectPattern;
     QString excludingDialectPattern;
 
+    // Dialect including/excluding conditions
     switch (dialect)
     {
         case spicecompat::SPICEDefault:
@@ -194,6 +269,110 @@ QString XmlComponent::netlist(
     Q_ASSERT(excludingPattern.isValid());
 
     netList.replace(excludingPattern, QString::fromUtf8(""));
+
+
+    // Parameter value conditions
+    const QString conditionNonEmpty(QString::fromUtf8("nonempty"));
+    QString conditionalTypePattern(
+            QString::fromUtf8("(\\w+)='(%1)'").arg(conditionNonEmpty));
+    QRegularExpression conditionalPattern(
+            QString::fromUtf8("\\{\\{([^\\}]+)(\\}*?)\\}\\}::(%1)").arg(conditionalTypePattern));
+    Q_ASSERT(conditionalPattern.isValid());
+
+    int from(0);
+    int idx;
+    QRegularExpressionMatch conditionalMatch;
+
+    while ((idx = netList.indexOf(conditionalPattern, from, &conditionalMatch)) != -1)
+    {
+        const QString paramName(conditionalMatch.captured(conditionalMatch.lastCapturedIndex()-1));
+        const QString condition(conditionalMatch.captured(conditionalMatch.lastCapturedIndex()));
+        bool remove(true);
+
+        // we have 5 subexpressions
+        Q_ASSERT(conditionalMatch.lastCapturedIndex() == 5);
+
+        if (condition == conditionNonEmpty)
+        {
+            foreach (const Property* property, Props)
+            {
+                if (property->Name == paramName && !(getValue(*property).isEmpty()))
+                {
+                    remove = false;
+                    break;
+                }
+            }
+
+            if (remove)
+            {
+                netList.remove(idx, conditionalMatch.capturedLength());
+            }
+        }
+
+        if (!remove)
+        {
+            // remove conditional statements around parameter
+            const QString replacement(QString::fromUtf8("%1%2").
+                    arg(conditionalMatch.captured(1)).
+                    arg(conditionalMatch.captured(2)));
+            netList.replace(idx, conditionalMatch.capturedLength(), replacement);
+
+            from = idx + replacement.size();
+        }
+    }
+
+
+    // Parameter/Parameter value conditions
+    const QString conditionNotEqual(QString::fromUtf8("nequal"));
+    conditionalTypePattern = QString::fromUtf8("(\\w+)='(%1)'").arg(conditionNotEqual);
+    conditionalPattern.setPattern(
+            QString::fromUtf8("\\{\\{([^\\}]+)(\\}*?)\\}\\}::(%1)").arg(conditionalTypePattern));
+    Q_ASSERT(conditionalPattern.isValid());
+
+    from = 0;
+    while ((idx = netList.indexOf(conditionalPattern, from, &conditionalMatch)) != -1)
+    {
+        const QString parameterName(
+                conditionalMatch.captured(1).remove(QRegularExpression(QString::fromUtf8("[\\{\\}]"))));
+        const QString refParameterName(conditionalMatch.captured(conditionalMatch.lastCapturedIndex()-1));
+        const QString condition(conditionalMatch.captured(conditionalMatch.lastCapturedIndex()));
+
+        bool remove(false);
+        QString parameterValue;
+        if (condition == conditionNotEqual)
+        {
+            QString refParameterValue(refParameterName == "schematic_id" ? a_schematicId : "");
+            foreach (const Property* property, Props)
+            {
+                if (property->Name == refParameterName)
+                {
+                    refParameterValue = getValue(*property);
+                }
+                if (property->Name == parameterName)
+                {
+                    parameterValue = getValue(*property);
+                }
+            }
+
+            if (refParameterValue == parameterValue)
+            {
+                netList.remove(idx, conditionalMatch.capturedLength());
+                remove = true;
+            }
+        }
+
+        if (!remove)
+        {
+            // remove conditional statements around parameter
+            const QString replacement(QString::fromUtf8("%1%2").
+                    arg(conditionalMatch.captured(1)).
+                    arg(conditionalMatch.captured(2)));
+            netList.replace(idx, conditionalMatch.capturedLength(), replacement);
+
+            from = idx + replacement.size();
+        }
+    }
+
 
     QString partCounter(Name);
     partCounter.replace(a_schematicId, "");
@@ -275,6 +454,14 @@ QString XmlComponent::cdl_netlist()
     {
         return netlist(a_cdlNetList, a_cdlNetListInclude, spicecompat::CDL);
     }
+}
+
+void XmlComponent::removeMultipleSpaces(QString& netlist)
+{
+    QRegularExpression multipleSpacePattern(QString::fromUtf8("\\s\\s\\s*"));
+    Q_ASSERT(multipleSpacePattern.isValid());
+
+    netlist.replace(multipleSpacePattern, " ");
 }
 
 void XmlComponent::resolveNetListInclude(const QString& key, QString& netListInclude) const

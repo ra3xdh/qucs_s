@@ -183,9 +183,11 @@ void Module::registerXmlComponents(const QString& componentPath)
                 XmlComponent::Parameter parameter(
                         QString::fromUtf8(it->name().get()),
                         QString::fromUtf8(it->unit().get()),
-                        QString::fromUtf8(it->default_value().get()),
+                        QString::fromUtf8(it->default_value()),
+                        QString::fromUtf8(it->equation()),
                         static_cast<bool>(it->show().get()),
-                        QString::fromUtf8(it->Description()).trimmed()
+                        QString::fromUtf8(it->Description()).trimmed(),
+                        QString::fromUtf8(it->condition())
                 );
 
                 parameters << parameter;
@@ -218,7 +220,8 @@ void Module::registerXmlComponents(const QString& componentPath)
                         it->y2().get(),
                         QString::fromUtf8(it->color().get()),
                         static_cast<uint32_t>(it->width().get()),
-                        it->style().get()
+                        it->style().get(),
+                        QString::fromUtf8(it->condition())
                 );
 
                 lines << line;
@@ -301,134 +304,143 @@ void Module::registerXmlComponents(const QString& componentPath)
                 }
             }
 
-            QSharedPointer<XmlComponent> xmlComponent(new XmlComponent(
-                    QString::fromUtf8(component->name().get()),
-                    QString::fromUtf8(component->schematic_id().get()),
-                    QString::fromUtf8(component->Description()).trimmed(),
-                    QString::fromUtf8(component->Models().DefaultModel().value().get()),
-                    QString::fromUtf8(component->Models().SpiceModel().value().get()),
-                    nspiceNetlist,
-                    nspiceNetlistInclude,
-                    cdlNetlist,
-                    cdlNetlistInclude,
-                    xyceNetlist,
-                    xyceNetlistInclude,
-                    qucsatorNetlist,
-                    qucsatorNetlistInclude,
-                    parameters,
-                    portSyms,
-                    lines,
-                    arcs
-            ));
+            const QStringList names(QString::fromUtf8(component->names().get()).split(",", Qt::SkipEmptyParts));
 
-            registerXmlComponent(
-                    QString::fromUtf8(component->library().get()), xmlComponent);
+            foreach (const QString& name, names)
+            {
+                QSharedPointer<XmlComponent> xmlComponent(new XmlComponent(
+                        name,
+                        QString::fromUtf8(component->schematic_id().get()),
+                        QString::fromUtf8(component->Description()).trimmed(),
+                        QString::fromUtf8(component->Models().DefaultModel().value().get()),
+                        QString::fromUtf8(component->Models().SpiceModel().value().get()),
+                        nspiceNetlist,
+                        nspiceNetlistInclude,
+                        cdlNetlist,
+                        cdlNetlistInclude,
+                        xyceNetlist,
+                        xyceNetlistInclude,
+                        qucsatorNetlist,
+                        qucsatorNetlistInclude,
+                        parameters,
+                        portSyms,
+                        lines,
+                        arcs
+                ));
+
+                registerXmlComponent(
+                        QString::fromUtf8(component->library().get()), xmlComponent);
 
 #if 0
-            std::cout << "Component-library: " << component->library().get() << std::endl;
-            std::cout << "Component-name: " << component->name().get() << std::endl;
-            std::cout << "Schematic-id: " << component->schematic_id().get() << std::endl;
-            std::cout << "Description: " << QString::fromUtf8(component->Description()).trimmed().toStdString() << std::endl;
-            std::cout << "Default model: " << component->Models().DefaultModel().value().get() << std::endl;
-            std::cout << "Spice model: " << component->Models().SpiceModel().value().get() << std::endl;
+                std::cout << "Component-library: " << component->library().get() << std::endl;
+                //std::cout << "Component-name: " << component->name().get() << std::endl;
+                std::cout << "Component-name: " << name.toStdString() << std::endl;
+                std::cout << "Schematic-id: " << component->schematic_id().get() << std::endl;
+                std::cout << "Description: " << QString::fromUtf8(component->Description()).trimmed().toStdString() << std::endl;
+                std::cout << "Default model: " << component->Models().DefaultModel().value().get() << std::endl;
+                std::cout << "Spice model: " << component->Models().SpiceModel().value().get() << std::endl;
 
-            if (component->Netlists().NgspiceNetlist().present())
-            {
-                std::cout
-                    << "Ngspice netlist: "
-                    << component->Netlists().NgspiceNetlist().get().value().get() << std::endl;
-
-                if (component->Netlists().NgspiceNetlist().get().Include().present())
+                if (component->Netlists().NgspiceNetlist().present())
                 {
                     std::cout
-                        << "        include: "
-                        << component->Netlists().NgspiceNetlist().get().Include().get().value().get()
-                        << std::endl;
+                        << "Ngspice netlist: "
+                        << component->Netlists().NgspiceNetlist().get().value().get() << std::endl;
+
+                    if (component->Netlists().NgspiceNetlist().get().Include().present())
+                    {
+                        std::cout
+                            << "        include: "
+                            << component->Netlists().NgspiceNetlist().get().Include().get().value().get()
+                            << std::endl;
+                    }
                 }
-            }
 
-            if (component->Netlists().CDLNetlist().present())
-            {
-                std::cout
-                    << "CDL netlist: "
-                    << component->Netlists().CDLNetlist().get().value().get() << std::endl;
-
-                if (component->Netlists().CDLNetlist().get().Include().present())
+                if (component->Netlists().CDLNetlist().present())
                 {
                     std::cout
-                        << "        include: "
-                        << component->Netlists().CDLNetlist().get().Include().get().value().get()
-                        << std::endl;
+                        << "CDL netlist: "
+                        << component->Netlists().CDLNetlist().get().value().get() << std::endl;
+
+                    if (component->Netlists().CDLNetlist().get().Include().present())
+                    {
+                        std::cout
+                            << "        include: "
+                            << component->Netlists().CDLNetlist().get().Include().get().value().get()
+                            << std::endl;
+                    }
                 }
-            }
 
-            if (component->Netlists().QucsatorNetlist().present())
-            {
-                std::cout
-                    << "Qucsator netlist: "
-                    << component->Netlists().QucsatorNetlist().get().value().get() << std::endl;
-
-                if (component->Netlists().QucsatorNetlist().get().Include().present())
+                if (component->Netlists().QucsatorNetlist().present())
                 {
                     std::cout
-                        << "        include: "
-                        << component->Netlists().QucsatorNetlist().get().Include().get().value().get()
+                        << "Qucsator netlist: "
+                        << component->Netlists().QucsatorNetlist().get().value().get() << std::endl;
+
+                    if (component->Netlists().QucsatorNetlist().get().Include().present())
+                    {
+                        std::cout
+                            << "        include: "
+                            << component->Netlists().QucsatorNetlist().get().Include().get().value().get()
+                            << std::endl;
+                    }
+                }
+
+                auto _lines(component->Symbols().Symbol().Line());
+                for (auto it(_lines.begin()); it != _lines.end(); ++it)
+                {
+                    std::cout
+                        << "Line x1=" << static_cast<int>(it->x1().get())
+                        << ", y1=" << static_cast<int>(it->y1().get())
+                        << ", x2=" << static_cast<int>(it->x2().get())
+                        << ", y2=" << static_cast<int>(it->y2().get())
+                        << ", color=" << it->color().get()
+                        << ", width=" << static_cast<int>(it->width().get())
+                        << ", style=" << static_cast<int>(it->style().get())
+                        << ", condition=" << it->condition()
                         << std::endl;
                 }
-            }
 
-            auto _lines(component->Symbols().Symbol().Line());
-            for (auto it(_lines.begin()); it != _lines.end(); ++it)
-            {
-                std::cout
-                    << "Line x1=" << static_cast<int>(it->x1().get())
-                    << ", y1=" << static_cast<int>(it->y1().get())
-                    << ", x2=" << static_cast<int>(it->x2().get())
-                    << ", y2=" << static_cast<int>(it->y2().get())
-                    << ", color=" << it->color().get()
-                    << ", width=" << static_cast<int>(it->width().get())
-                    << ", style=" << static_cast<int>(it->style().get())
-                    << std::endl;
-            }
+                auto _arcs(component->Symbols().Symbol().Arc());
+                for (auto it(_arcs.begin()); it != _arcs.end(); ++it)
+                {
+                    std::cout
+                        << "Arc x=" << static_cast<int>(it->x().get())
+                        << ", y=" << static_cast<int>(it->y().get())
+                        << ", arcWidth=" << static_cast<int>(it->arcWidth().get())
+                        << ", height=" << static_cast<int>(it->height().get())
+                        << ", angle=" << static_cast<int>(it->angle().get())
+                        << ", len=" << static_cast<int>(it->len().get())
+                        << ", color=" << it->color().get()
+                        << ", width=" << static_cast<int>(it->width())
+                        << ", style=" << static_cast<int>(it->style())
+                        << std::endl;
+                }
 
-            auto _arcs(component->Symbols().Symbol().Arc());
-            for (auto it(_arcs.begin()); it != _arcs.end(); ++it)
-            {
-                std::cout
-                    << "Arc x=" << static_cast<int>(it->x().get())
-                    << ", y=" << static_cast<int>(it->y().get())
-                    << ", arcWidth=" << static_cast<int>(it->arcWidth().get())
-                    << ", height=" << static_cast<int>(it->height().get())
-                    << ", angle=" << static_cast<int>(it->angle().get())
-                    << ", len=" << static_cast<int>(it->len().get())
-                    << ", color=" << it->color().get()
-                    << ", width=" << static_cast<int>(it->width())
-                    << ", style=" << static_cast<int>(it->style())
-                    << std::endl;
-            }
+                auto _portSyms(component->Symbols().Symbol().PortSym());
+                for (auto it(_portSyms.begin()); it != _portSyms.end(); ++it)
+                {
+                    std::cout
+                        << "PortSym x=" << static_cast<int>(it->x().get())
+                        << ", y=" << static_cast<int>(it->y().get())
+                        << ", type=" << static_cast<int>(it->type().get())
+                        << ", angle=" << static_cast<int>(it->angle().get())
+                        << std::endl;
+                }
 
-            auto _portSyms(component->Symbols().Symbol().PortSym());
-            for (auto it(_portSyms.begin()); it != _portSyms.end(); ++it)
-            {
-                std::cout
-                    << "PortSym x=" << static_cast<int>(it->x().get())
-                    << ", y=" << static_cast<int>(it->y().get())
-                    << ", type=" << static_cast<int>(it->type().get())
-                    << ", angle=" << static_cast<int>(it->angle().get())
-                    << std::endl;
-            }
-
-            for (auto it(compParameters.begin()); it != compParameters.end(); ++it)
-            {
-                std::cout
-                    << "Parameter name=" << it->name().get()
-                    << ", unit=" << it->unit().get()
-                    << ", default-value=" << it->default_value().get()
-                    << ", show=" << static_cast<bool>(it->show().get())
-                    << ", description=" << QString::fromUtf8(it->Description()).trimmed().toStdString()
-                    << std::endl;
-            }
+                for (auto it(compParameters.begin()); it != compParameters.end(); ++it)
+                {
+                    std::cout
+                        << "Parameter name=" << it->name().get()
+                        << ", unit=" << it->unit().get()
+                        << ", default-value=" << it->default_value()
+                        << ", equation=" << it->equation()
+                        << ", show=" << static_cast<bool>(it->show().get())
+                        << ", description=" << QString::fromUtf8(it->Description()).trimmed().toStdString()
+                        << ", condition=" << QString::fromUtf8(it->condition()).toStdString()
+                        << std::endl;
+                }
 #endif
+            }
 
         }
         catch (const xml_schema::exception& exc)
