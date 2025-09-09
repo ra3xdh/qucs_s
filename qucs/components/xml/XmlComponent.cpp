@@ -112,7 +112,12 @@ XmlComponent::XmlComponent(
         }
     }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
     Props.assign(properties.begin(), properties.end());
+#else
+    QList<Property*>* props(&Props);
+    std::for_each(properties.begin(), properties.end(), [props](Property*& prop) { props->push_back(prop); });
+#endif
 
     createSymbol();
 
