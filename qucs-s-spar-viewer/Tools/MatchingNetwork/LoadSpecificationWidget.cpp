@@ -227,7 +227,7 @@ void LoadSpecificationWidget::setupTwoPortUI()
   m_twoPortWidget->hide(); // Hidden by default (one-port mode)
 }
 
-std::complex<double> LoadSpecificationWidget::getLoadImpedance() const
+std::complex<double> LoadSpecificationWidget::getLoadImpedance_At_Fmatch() const
 {
   if (m_formatCombo->currentIndex() == 0) { // Real/Imaginary
     return std::complex<double>(m_impedanceReal->value(), m_impedanceImag->value());
@@ -237,6 +237,22 @@ std::complex<double> LoadSpecificationWidget::getLoadImpedance() const
     return std::complex<double>(mag * cos(ang), mag * sin(ang));
   }
 }
+
+QList<std::complex<double>> LoadSpecificationWidget::getZLdata() {
+  const QList<double>& ZL_re = loadData["ZL_re"];
+  const QList<double>& ZL_im = loadData["ZL_im"];
+  QList<std::complex<double>> ZL_data;
+  int n = std::min(ZL_re.size(), ZL_im.size());
+  for (int i = 0; i < n; ++i) {
+    ZL_im.append(std::complex<double>(ZL_re[i], ZL_im[i]));
+  }
+  return ZL_im;
+}
+
+QList<double> LoadSpecificationWidget::getFrequency() {
+  return loadData["frequency"];
+}
+
 
 std::pair<std::complex<double>, std::complex<double>> LoadSpecificationWidget::getTwoPortMatchingImpedances() const
 {
@@ -531,6 +547,18 @@ void LoadSpecificationWidget::onBrowseFile()
       std::complex<double> ZL = Z0 * (1.0 + S11) / (1.0 - S11);
       m_impedanceReal->setValue(ZL.real());
       m_impedanceImag->setValue(ZL.imag());
+
+
+      // Calculate ZL data from S11 and store that in the loadData object
+      double S11_re = loadData["S11_re"];
+      double S11_im = loadData["S11_im"];
+
+      for (int i = 0; i < S11_re.size(); ++i) {
+        std::complex<double> S11(S11_re[i], S11_im[i]);
+        std::complex<double> Z = Z0 * (1.0 + S11) / (1.0 - S11);
+        loadData["ZL_re"].append(Z.real());
+        loadData["ZL_im"].append(Z.imag());
+      }
     }
 
   }
@@ -548,7 +576,7 @@ void LoadSpecificationWidget::updateReflectionCoefficient()
     
   m_updatingValues = true;
 
-  std::complex<double> ZL = getLoadImpedance();
+  std::complex<double> ZL = getLoadImpedance_At_Fmatch();
   std::complex<double> gamma = (ZL - m_Z0) / (ZL + m_Z0);
 
   if (m_formatCombo->currentIndex() == 0) { // Real/Imaginary
@@ -588,7 +616,7 @@ void LoadSpecificationWidget::updateImpedance()
 
 void LoadSpecificationWidget::updateImpedanceFormat()
 {
-  std::complex<double> impedance = getLoadImpedance();
+  std::complex<double> impedance = getLoadImpedance_At_Fmatch();
 
   if (m_formatCombo->currentIndex() == 0) { // Real/Imaginary
     m_impedanceSeparator->setText("+j");

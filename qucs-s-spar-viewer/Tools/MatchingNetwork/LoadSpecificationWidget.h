@@ -33,7 +33,9 @@ public:
 
          // Getters
   std::array<std::complex<double>, 4> getSParameters() const;
-  std::complex<double> getLoadImpedance() const;
+  std::complex<double> getLoadImpedance_At_Fmatch_At_Fmatch() const;
+  QList<std::complex<double>> getZLdata();
+  QList<double> getFrequency();
   std::pair<std::complex<double>, std::complex<double>> getTwoPortMatchingImpedances() const;
   std::complex<double> getReflectionCoefficient() const;
   bool isTwoPortMode() const { return m_twoPortMode; }
