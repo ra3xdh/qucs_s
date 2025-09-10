@@ -244,9 +244,9 @@ QList<std::complex<double>> LoadSpecificationWidget::getZLdata() {
   QList<std::complex<double>> ZL_data;
   int n = std::min(ZL_re.size(), ZL_im.size());
   for (int i = 0; i < n; ++i) {
-    ZL_im.append(std::complex<double>(ZL_re[i], ZL_im[i]));
+    ZL_data.append(std::complex<double>(ZL_re[i], ZL_im[i]));
   }
-  return ZL_im;
+  return ZL_data;
 }
 
 QList<double> LoadSpecificationWidget::getFrequency() {
@@ -468,14 +468,14 @@ void LoadSpecificationWidget::onBrowseFile()
     filter = "S1P Files (*.s1p);;All Files (*)";
   }
 
-  QString fileName = QFileDialog::getOpenFileName(this, "Select file", "", filter);
+  spar_file_path = QFileDialog::getOpenFileName(this, "Select file", "", filter);
 
-  if (!fileName.isEmpty()) {
-    m_currentFile = fileName;
-    m_fileLabel->setText(QFileInfo(fileName).fileName());
+  if (!spar_file_path.isEmpty()) {
+    m_currentFile = spar_file_path;
+    m_fileLabel->setText(QFileInfo(spar_file_path).fileName());
 
     // Load S-parameter data from file
-    loadData = readTouchstoneFile(fileName);
+    loadData = readTouchstoneFile(spar_file_path);
 
     // Find the S-parameter data at the frequency the user wants to match and present it on the UI
 
@@ -550,8 +550,8 @@ void LoadSpecificationWidget::onBrowseFile()
 
 
       // Calculate ZL data from S11 and store that in the loadData object
-      double S11_re = loadData["S11_re"];
-      double S11_im = loadData["S11_im"];
+      QList<double> S11_re = loadData["S11_re"];
+      QList<double> S11_im = loadData["S11_im"];
 
       for (int i = 0; i < S11_re.size(); ++i) {
         std::complex<double> S11(S11_re[i], S11_im[i]);
@@ -562,6 +562,7 @@ void LoadSpecificationWidget::onBrowseFile()
     }
 
   }
+  emit impedanceChanged();
 }
 
 void LoadSpecificationWidget::onSParameterChanged()
@@ -720,4 +721,8 @@ void LoadSpecificationWidget::onToggleCollapse()
 
 std::array<std::complex<double>, 4> LoadSpecificationWidget::getSParameters() const {
   return { getS11(), getS12(), getS21(), getS22() };
+}
+
+QString LoadSpecificationWidget::getSparFilePath(){
+  return spar_file_path;
 }

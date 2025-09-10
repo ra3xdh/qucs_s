@@ -764,20 +764,20 @@ void Component::paintCoupler(QPainter *painter) {
 
 
 void Component::paintSPAR(QPainter *painter) {
+  painter->save();
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }
-
-         // Draw rectangle for two-port device
+  // Draw rectangle for two-port device
   QRect rect(-15, -15, 30, 30);
   painter->setPen(QPen(Qt::black, 1));
   painter->drawRect(rect);
-
-         // Terms
+  // Terms
   painter->drawLine(QPoint(-20, 0), QPoint(-15, 0));
   painter->drawLine(QPoint(15, 0), QPoint(20, 0));
+  painter->restore(); // Restore to unrotated state
 
-         // Draw big red "[S]" in the center
+         // Draw big red "[S]" in the center (unrotated)
   QFont font = painter->font();
   font.setBold(true);
   font.setPointSize(10);
@@ -787,8 +787,5 @@ void Component::paintSPAR(QPainter *painter) {
 
          // Restore pen for further drawing
   painter->setPen(QPen(Qt::black, 1));
-  if (Rotation != 0) {
-    painter->rotate(-Rotation);
-  }
 }
 

@@ -137,11 +137,12 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
   } else {
     // 1-port mode - Get the load impedance
     InputSpecs.ZL = LoadSpecWidget->getLoadImpedance_At_Fmatch();
-    QList<std::complex> ZL_data = LoadSpecWidget->getZLdata();
+    QList<std::complex<double>> ZL_data = LoadSpecWidget->getZLdata();
     if (!ZL_data.isEmpty()){
       // If available, load ZL vs frequency data
       InputSpecs.ZL_data = ZL_data;
       InputSpecs.freq = LoadSpecWidget->getFrequency();
+      InputSpecs.sim_path = LoadSpecWidget->getSparFilePath();
     }
 
     Specs.twoPortMode = false;

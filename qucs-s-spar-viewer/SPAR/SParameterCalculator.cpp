@@ -133,8 +133,30 @@ bool SParameterCalculator::parseNetlist() {
           addComponent(ComponentType_SPAR::SHORT_STUB, name.toStdString(), {node1, node2}, value);
         }
       }
-    }
-    else if ((type == QString("CLIN")) && (parts.size() >= 7)) {
+    } else if (name.startsWith("ZF", Qt::CaseInsensitive)) {
+      // Frequency-dependent impedance from file
+      // Format: ZF1 node1 node2 filename
+      if (parts.size() < 4) {
+        cerr << "Error: Invalid frequency-dependent impedance definition: " << line.toStdString() << endl;
+        continue;
+      }
+
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+      QString filename = parts[3];
+
+             // Load frequency-dependent data from file
+      QMap<QString, QList<double>> freqDepData = loadFrequencyDependentData(filename);
+
+      if (!freqDepData.isEmpty()) {
+        addComponent(ComponentType_SPAR::FREQUENCY_DEPENDENT_IMPEDANCE,
+                     name.toStdString(), {node1, node2}, freqDepData);
+
+               // Update numNodes
+        if (node1 > numNodes) numNodes = node1;
+    if (node2 > numNodes) numNodes = node2;
+  }
+    } else if ((type == QString("CLIN")) && (parts.size() >= 7)) {
       // Coupled Line: CLIN1 node1 node2 node3 node4 Z0e Z0o length
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
@@ -328,17 +350,20 @@ Complex SParameterCalculator::getImpedance(const Component_SPAR& comp, double fr
   case ComponentType_SPAR::COMPLEX_IMPEDANCE:
     return comp.Zvalue["Z"];
 
+           // NEW: Handle frequency-dependent impedance
+  case ComponentType_SPAR::FREQUENCY_DEPENDENT_IMPEDANCE:
+    return interpolateFrequencyDependentImpedance(comp, freq);
+
   case ComponentType_SPAR::CAPACITOR:
     return Complex(0, -1.0 / (omega * comp.value["C"]));
 
   case ComponentType_SPAR::INDUCTOR:
     return Complex(0, omega * comp.value["L"]);
-    // Transmission lines are handled in buildAdmittanceMatrix()
 
-  case ComponentType_SPAR::OPEN_STUB:  {
+  case ComponentType_SPAR::OPEN_STUB: {
     double Z0 = comp.value["Z0"];
-    double len = comp.value["Length"]; // The value comes in mm
-    const double c = 299792458.0; // speed of light (m/s)
+    double len = comp.value["Length"];
+    const double c = 299792458.0;
     double beta = omega / c;
     double cot_beta_l = 1.0 / tan(beta * len);
     return Complex(0, -Z0 * cot_beta_l);
@@ -346,8 +371,8 @@ Complex SParameterCalculator::getImpedance(const Component_SPAR& comp, double fr
 
   case ComponentType_SPAR::SHORT_STUB: {
     double Z0 = comp.value["Z0"];
-    double len = comp.value["Length"]; // convert mm to meters
-    const double c = 299792458.0; // speed of light in m/s
+    double len = comp.value["Length"];
+    const double c = 299792458.0;
     double beta = omega / c;
     double tan_beta_l = tan(beta * len);
     return Complex(0, Z0 * tan_beta_l);
@@ -552,6 +577,17 @@ void SParameterCalculator::addComponent(ComponentType_SPAR type, const string& n
   for (int node : nodes) {
     if (node > numNodes) numNodes = node;
     }
+}
+
+void SParameterCalculator::addComponent(ComponentType_SPAR type, const string& name,
+                                        const vector<int>& nodes,
+                                        QMap<QString, QList<double>> freqDepData) {
+  components.emplace_back(type, name, nodes, freqDepData);
+
+         // Update number of nodes
+  for (int node : nodes) {
+    if (node > numNodes) numNodes = node;
+  }
 }
 
 
@@ -1060,4 +1096,87 @@ void SParameterCalculator::addSParameterBlock(const string& name, const vector<i
   components.emplace_back(ComponentType_SPAR::SPAR_BLOCK, name, nodes, Smatrix);
   for (int node : nodes)
     if (node > numNodes) numNodes = node;
+}
+
+
+
+// Required for frequency-dependent components
+Complex SParameterCalculator::interpolateFrequencyDependentImpedance(const Component_SPAR& comp, double freq) {
+  if (!comp.freqDepData.contains("frequency") ||
+      !comp.freqDepData.contains("real") ||
+      !comp.freqDepData.contains("imag")) {
+    cerr << "Error: Frequency-dependent impedance missing required data" << endl;
+    return Complex(50.0, 0); // Default fallback
+  }
+
+  const QList<double>& frequencies = comp.freqDepData["frequency"];
+  const QList<double>& realParts = comp.freqDepData["real"];
+  const QList<double>& imagParts = comp.freqDepData["imag"];
+
+  if (frequencies.size() != realParts.size() || frequencies.size() != imagParts.size()) {
+    cerr << "Error: Frequency-dependent impedance data arrays have different sizes" << endl;
+    return Complex(50.0, 0);
+  }
+
+  if (frequencies.isEmpty()) {
+    return Complex(50.0, 0);
+  }
+
+         // Handle edge cases
+  if (freq <= frequencies.first()) {
+    return Complex(realParts.first(), imagParts.first());
+  }
+  if (freq >= frequencies.last()) {
+    return Complex(realParts.last(), imagParts.last());
+  }
+
+         // Find interpolation points
+  int i = 0;
+  for (i = 0; i < frequencies.size() - 1; i++) {
+    if (freq >= frequencies[i] && freq <= frequencies[i + 1]) {
+      break;
+    }
+  }
+
+         // Linear interpolation
+  double f1 = frequencies[i];
+  double f2 = frequencies[i + 1];
+  double r1 = realParts[i];
+  double r2 = realParts[i + 1];
+  double im1 = imagParts[i];
+  double im2 = imagParts[i + 1];
+
+  double t = (freq - f1) / (f2 - f1); // Interpolation parameter
+  double realInterp = r1 + t * (r2 - r1);
+  double imagInterp = im1 + t * (im2 - im1);
+
+  return Complex(realInterp, imagInterp);
+}
+
+
+QMap<QString, QList<double>> SParameterCalculator::loadFrequencyDependentData(const QString& filename) {
+  // Try to use readTouchstoneFile first to check if it's a Touchstone file
+  QMap<QString, QList<double>> touchstone_data = readTouchstoneFile(filename);
+
+
+         // Convert S11 to impedance Z11
+  QMap<QString, QList<double>> impedance_data;
+  QList<double> frequencies = touchstone_data["frequency"];
+  QList<double> s11_re = touchstone_data["S11_re"];
+  QList<double> s11_im = touchstone_data["S11_im"];
+  double Z0 = touchstone_data.contains("Z0") ? touchstone_data["Z0"].first() : 50.0;
+
+  for (int i = 0; i < frequencies.size(); i++) {
+    // Convert S11 to Z11 using: Z11 = Z0 * (1 + S11) / (1 - S11)
+    Complex S11(s11_re[i], s11_im[i]);
+    Complex Z11 = Z0 * (Complex(1,0) + S11) / (Complex(1,0) - S11);
+
+    impedance_data["frequency"].append(frequencies[i]);
+    impedance_data["real"].append(Z11.real());
+    impedance_data["imag"].append(Z11.imag());
+  }
+
+  cout << "Converted S11 from Touchstone file to impedance data: "
+       << impedance_data["frequency"].size() << " points" << endl;
+  return impedance_data;
 }

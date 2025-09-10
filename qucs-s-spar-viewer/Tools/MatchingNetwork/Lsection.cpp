@@ -38,9 +38,17 @@ void Lsection::synthesize() {
   NodeInfo NI;
 
   // Complex load
-  ComponentInfo Zload(
-      QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, 175, 50);
-  Zload.val["Z"] = num2str(Specs.ZL, Resistance);
+  ComponentInfo Zload;
+
+  if (Specs.sim_path.isEmpty()){
+    // Constant ZL over frequency
+    Zload.setParams(QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, 175, 50);
+    Zload.val["Z"] = num2str(Specs.ZL, Resistance);
+  } else {
+    // There's a path to a S-parameter file
+    Zload.setParams(QString("Z%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, -90, 175, 50);
+    Zload.val["Z"] = Specs.sim_path;
+  }
   Schematic.appendComponent(Zload);
 
 

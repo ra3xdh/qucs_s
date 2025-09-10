@@ -13,6 +13,7 @@
 #include <QStringList>
 #include <QMap>
 #include <QList>
+#include "../Misc/general.h"
 
 using namespace std;
 using Complex = complex<double>;
@@ -30,6 +31,7 @@ enum class ComponentType_SPAR {
   COUPLED_LINE,
   IDEAL_COUPLER,
   COMPLEX_IMPEDANCE,
+  FREQUENCY_DEPENDENT_IMPEDANCE,
   SPAR_BLOCK
 };
 
@@ -44,10 +46,18 @@ struct Component_SPAR {
   double frequency; // For frequency-dependent components
 
 
+  QMap<QString, QList<double>> freqDepData;
+
+
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, double> val);
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, Complex> zval); // Constructor for complex impedances
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, const vector<vector<Complex>>& S)
       : type(t), name(n), nodes(nds), Smatrix(S), frequency(0.0) {} // S-parameter device
+
+  // FREQUENCY_DEPENDENT_IMPEDANCE
+  Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds,
+                 QMap<QString, QList<double>> freqData)
+      : type(t), name(n), nodes(nds), frequency(0.0), freqDepData(freqData) {}
 };
 
 // Network port definition
@@ -80,6 +90,10 @@ private:
   void addIdealCouplerToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
   vector<vector<Complex>> calculateIdealCouplerYMatrix(double k, double phase_deg, double Z0);
 
+
+  QMap<QString, QList<double>> loadFrequencyDependentData(const QString& filename);
+  Complex interpolateFrequencyDependentImpedance(const Component_SPAR& comp, double freq);
+
          // Frequency sweep parameters
   double f_start = 1e6;
   double f_stop = 1e9;
@@ -104,6 +118,8 @@ public:
          // Add component to the circuit (for programmatic building)
   void addComponent(ComponentType_SPAR type, const string& name, const vector<int>& nodes, QMap<QString, double> value);
   void addComponent(ComponentType_SPAR type, const string& name, const vector<int>& nodes, QMap<QString, Complex> Zvalue);
+  // FREQUENCY_DEPENDENT_IMPEDANCE
+  void addComponent(ComponentType_SPAR type, const string& name, const vector<int>& nodes, QMap<QString, QList<double>> freqDepData);
 
          // Add port to the circuit (for programmatic building)
   void addPort(int node, double impedance = 50.0);

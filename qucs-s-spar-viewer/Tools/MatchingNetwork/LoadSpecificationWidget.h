@@ -33,11 +33,12 @@ public:
 
          // Getters
   std::array<std::complex<double>, 4> getSParameters() const;
-  std::complex<double> getLoadImpedance_At_Fmatch_At_Fmatch() const;
+  std::complex<double> getLoadImpedance_At_Fmatch() const;
   QList<std::complex<double>> getZLdata();
   QList<double> getFrequency();
   std::pair<std::complex<double>, std::complex<double>> getTwoPortMatchingImpedances() const;
   std::complex<double> getReflectionCoefficient() const;
+  QString getSparFilePath();
   bool isTwoPortMode() const { return m_twoPortMode; }
 
   // S-parameter getters (for two-port mode)
@@ -84,6 +85,7 @@ private:
   double f_match;
 
   QMap<QString, QList<double>> loadData; // It could be either 1-port or 2-port
+  QString spar_file_path; // Path to the S-parameter file (this is required for simulation)
 
   // UI Components - One Port
   QGridLayout* m_mainLayout;
