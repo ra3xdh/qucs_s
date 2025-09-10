@@ -13,6 +13,7 @@
 #include "main.h"
 
 #include <QString>
+#include <QChar>
 #include <QStringList>
 #include <QList>
 #include <QDir>
@@ -21,6 +22,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QSharedPointer>
+#include <QDirIterator>
 
 #include <iostream>
 #include <sstream>
@@ -72,6 +74,42 @@ void Module::registerXmlComponents()
     foreach (const QString& path, qucsXmlCompPathList)
     {
         registerXmlComponents(path);
+    }
+
+    const QString pdkRoot(qgetenv("PDK_ROOT"));
+    const QString pdk(qgetenv("PDK"));
+
+    QString pdkPath;
+
+    if (!pdkRoot.isEmpty())
+    {
+        pdkPath = QString::fromUtf8("%1%2%3").
+           arg(pdkRoot).
+           arg(!pdk.isEmpty() ? QDir::separator() : QChar()).
+           arg(!pdk.isEmpty() ? pdk : "");
+
+        QDir pdkDir(pdkPath);
+
+        if (pdkDir.exists())
+        {
+            QRegularExpression pattern(QString::fromUtf8("qucs.*symbols"));
+            QDirIterator it(
+                    pdkPath,
+                    {"*qucs*", "*symbols*"},
+                    QDir::Dirs | QDir::NoDotAndDotDot,
+                    QDirIterator::Subdirectories | QDirIterator::FollowSymlinks);
+
+            while (it.hasNext())
+            {
+                QString dir(it.next());
+                QRegularExpressionMatch match(pattern.match(dir));
+
+                if (match.hasMatch())
+                {
+                    registerXmlComponents(dir);
+                }
+            }
+        }
     }
 }
 
