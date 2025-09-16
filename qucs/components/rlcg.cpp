@@ -98,8 +98,8 @@ QString RLCG::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::
     Q_UNUSED(dialect);
 
     QString s;
-    QString in = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-    QString out = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    QString in = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+    QString out = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
     QString R = spicecompat::normalize_value(getProperty("R")->Value);
     QString L = spicecompat::normalize_value(getProperty("L")->Value);
     QString C = spicecompat::normalize_value(getProperty("C")->Value);

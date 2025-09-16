@@ -130,8 +130,8 @@ QString MOSFET::netlist()
 
   // output all node names
   for (Port *p1 : Ports)
-    s += " "+p1->Connection->Name;   // node names
-  s += " "+Ports.at(2)->Connection->Name;  // connect substrate to source
+    s += " "+p1->Connection->getName();   // node names
+  s += " "+Ports.at(2)->Connection->getName();  // connect substrate to source
 
   // output all properties
   for(Property *p2 : Props)
@@ -147,7 +147,7 @@ QString MOSFET::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
     pin_seq<<1<<0<<2<<2; // Pin sequence: DGS; coonect substrate to source
     // output all node names
     for (int pin : pin_seq) {
-        QString nam = Ports.at(pin)->Connection->Name;
+        QString nam = Ports.at(pin)->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }

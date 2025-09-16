@@ -73,11 +73,11 @@ QString Verilog_File::verilogCode(int)
     s = "  " + ModuleName + " " + Name + " (";
 
     // output all node names
-    if(pp)  s += pp->Connection->Name;
+    if(pp)  s += pp->Connection->getName();
     while(iport.hasNext())
     {
       pp = iport.next();
-      s += ", "+pp->Connection->Name;   // node names
+      s += ", "+pp->Connection->getName();   // node names
     }
 
     s += ");\n";

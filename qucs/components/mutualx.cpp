@@ -81,7 +81,7 @@ QString MutualX::netlist()
 
     // output all node names
     for (Port *p1 : Ports) {
-      s += " "+p1->Connection->Name;   // node names
+      s += " "+p1->Connection->getName();   // node names
     }
 
     int coils = Props.at(0)->Value.toInt();
@@ -241,8 +241,8 @@ QString MutualX::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
         QString prop_l = "L" + QString::number(i+1);
         QString ind = spicecompat::normalize_value(getProperty(prop_l)->Value);
         s += QStringLiteral("%1 %2 %3 %4\n").arg(li)
-                .arg(spicecompat::normalize_node_name(Ports.at(2*i)->Connection->Name))
-                .arg(spicecompat::normalize_node_name(Ports.at(2*i+1)->Connection->Name))
+                .arg(spicecompat::normalize_node_name(Ports.at(2*i)->Connection->getName()))
+                .arg(spicecompat::normalize_node_name(Ports.at(2*i+1)->Connection->getName()))
                 .arg(ind);
     }
     for (int i = 0; i < coils; i++) {

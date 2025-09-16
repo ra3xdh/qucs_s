@@ -95,7 +95,7 @@ QString Relais::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
     seq<<1<<2<<0<<3;
     // output all node names
     for (int i : seq) {
-        QString nam = Ports.at(i)->Connection->Name;
+        QString nam = Ports.at(i)->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }

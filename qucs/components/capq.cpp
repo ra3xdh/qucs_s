@@ -97,9 +97,9 @@ QString CapQ::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::
     Q_UNUSED(dialect);
 
     QString s;
-    QString pin1 = Ports.at(0)->Connection->Name;
+    QString pin1 = Ports.at(0)->Connection->getName();
     pin1 = spicecompat::normalize_node_name(pin1);
-    QString pin2 = Ports.at(1)->Connection->Name;
+    QString pin2 = Ports.at(1)->Connection->getName();
     pin2 = spicecompat::normalize_node_name(pin2);
     QString Cname = spicecompat::check_refdes(Name, SpiceModel);
     QString Rname = "R" + Name;

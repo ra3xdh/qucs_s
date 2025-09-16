@@ -128,17 +128,17 @@ QString comp_4bit::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
-  QString X0    = Ports.at(0)->Connection->Name;
-  QString X1    = Ports.at(1)->Connection->Name;
-  QString X2    = Ports.at(2)->Connection->Name;
-  QString X3    = Ports.at(3)->Connection->Name;
-  QString Y0    = Ports.at(4)->Connection->Name;
-  QString Y1    = Ports.at(5)->Connection->Name;
-  QString Y2    = Ports.at(6)->Connection->Name;
-  QString Y3    = Ports.at(7)->Connection->Name;
-  QString L     = Ports.at(8)->Connection->Name;
-  QString G     = Ports.at(9)->Connection->Name;
-  QString E     = Ports.at(10)->Connection->Name;
+  QString X0    = Ports.at(0)->Connection->getName();
+  QString X1    = Ports.at(1)->Connection->getName();
+  QString X2    = Ports.at(2)->Connection->getName();
+  QString X3    = Ports.at(3)->Connection->getName();
+  QString Y0    = Ports.at(4)->Connection->getName();
+  QString Y1    = Ports.at(5)->Connection->getName();
+  QString Y2    = Ports.at(6)->Connection->getName();
+  QString Y3    = Ports.at(7)->Connection->getName();
+  QString L     = Ports.at(8)->Connection->getName();
+  QString G     = Ports.at(9)->Connection->getName();
+  QString E     = Ports.at(10)->Connection->getName();
  
   s = "\n  "+Name+":process ("+X0+", "+X1+", "+X2+", "+X3+", "+Y0+", "+Y1+", "+Y2+", "+Y3+")\n"+
       "  variable P0, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11 : std_logic;\n"+
@@ -169,17 +169,17 @@ QString comp_4bit::verilogCode( int )
   QString td = Props.at(1)->Value;        // delay time
   if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
 
-  QString X0    = Ports.at(0)->Connection->Name;
-  QString X1    = Ports.at(1)->Connection->Name;
-  QString X2    = Ports.at(2)->Connection->Name;
-  QString X3    = Ports.at(3)->Connection->Name;
-  QString Y0    = Ports.at(4)->Connection->Name;
-  QString Y1    = Ports.at(5)->Connection->Name;
-  QString Y2    = Ports.at(6)->Connection->Name;
-  QString Y3    = Ports.at(7)->Connection->Name;
-  QString L     = Ports.at(8)->Connection->Name;
-  QString G     = Ports.at(9)->Connection->Name;
-  QString E     = Ports.at(10)->Connection->Name; 
+  QString X0    = Ports.at(0)->Connection->getName();
+  QString X1    = Ports.at(1)->Connection->getName();
+  QString X2    = Ports.at(2)->Connection->getName();
+  QString X3    = Ports.at(3)->Connection->getName();
+  QString Y0    = Ports.at(4)->Connection->getName();
+  QString Y1    = Ports.at(5)->Connection->getName();
+  QString Y2    = Ports.at(6)->Connection->getName();
+  QString Y3    = Ports.at(7)->Connection->getName();
+  QString L     = Ports.at(8)->Connection->getName();
+  QString G     = Ports.at(9)->Connection->getName();
+  QString E     = Ports.at(10)->Connection->getName(); 
 
   QString LR  = "L_reg"  + Name + L;
   QString GR  = "G_reg"  + Name + G;
