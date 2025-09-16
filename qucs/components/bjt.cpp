@@ -49,7 +49,7 @@ QString BJT::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::S
     pin_seq<<1<<0<<2; // Pin sequence: CBE
     // output all node names
     for (int pin : pin_seq) {
-        QString nam = Ports.at(pin)->Connection->Name;
+        QString nam = Ports.at(pin)->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
@@ -141,8 +141,8 @@ QString BJT::netlist()
 
   // output all node names
   for (Port *p1 : Ports)
-    s += " "+p1->Connection->Name;   // node names
-  s += " "+Ports.at(1)->Connection->Name;  // connect substrate to collector
+    s += " "+p1->Connection->getName();   // node names
+  s += " "+Ports.at(1)->Connection->getName();  // connect substrate to collector
 
   // output all properties
   for(const auto& p2 : Props)

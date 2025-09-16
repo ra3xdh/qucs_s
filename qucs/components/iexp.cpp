@@ -91,8 +91,8 @@ QString iExp::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-    s += " " + spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+    s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
+    s += " " + spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
 
     QString U1 = spicecompat::normalize_value(Props.at(0)->Value);
     QString U2 = spicecompat::normalize_value(Props.at(1)->Value);

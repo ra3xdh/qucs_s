@@ -650,7 +650,7 @@ QString Component::netlist() {
 
     // output all node names
     for (Port *p1: Ports)
-        s += " " + p1->Connection->Name;   // node names
+        s += " " + p1->Connection->getName();   // node names
 
     // output all properties
     QStringList no_sim_props;
@@ -714,11 +714,11 @@ QString Component::getNetlist() {
     int z = 0;
     QListIterator<Port *> iport(Ports);
     Port *pp = iport.next();
-    QString Node1 = pp->Connection->Name;
+    QString Node1 = pp->Connection->getName();
     QString s = "";
     while (iport.hasNext())
         s += "R:" + Name + "." + QString::number(z++) + " " +
-             Node1 + " " + iport.next()->Connection->Name + " R=\"0\"\n";
+             Node1 + " " + iport.next()->Connection->getName() + " R=\"0\"\n";
     return s;
 }
 
@@ -737,11 +737,11 @@ QString Component::getSpiceNetlist(spicecompat::SpiceDialect dialect /* = SPICED
     int z = 0;
     QListIterator<Port *> iport(Ports);
     Port *pp = iport.next();
-    QString Node1 = pp->Connection->Name;
+    QString Node1 = pp->Connection->getName();
     s = "";
     while (iport.hasNext()) // Add minR resistors
         s += "R" + Name + QString::number(z++) + " " +
-             Node1 + " " + iport.next()->Connection->Name + " 1e-12\n";
+             Node1 + " " + iport.next()->Connection->getName() + " 1e-12\n";
 
     s.replace(" gnd ", " 0 ");
     return s;
@@ -808,10 +808,10 @@ QString Component::get_Verilog_Code(int NumPorts) {
     // Component is shortened.
     QListIterator<Port *> iport(Ports);
     Port *pp = iport.next();
-    QString Node1 = pp->Connection->Name;
+    QString Node1 = pp->Connection->getName();
     QString s = "";
     while (iport.hasNext())
-        s += "  assign " + iport.next()->Connection->Name + " = " + Node1 + ";\n";
+        s += "  assign " + iport.next()->Connection->getName() + " = " + Node1 + ";\n";
     return s;
 }
 
@@ -834,8 +834,8 @@ QString Component::get_VHDL_Code(int NumPorts) {
     // This is logically correct for the inverter only, but makes
     // some sense for the gates (OR, AND etc.).
     // Has anyone a better idea?
-    QString Node1 = Ports.at(0)->Connection->Name;
-    return "  " + Node1 + " <= " + Ports.at(1)->Connection->Name + ";\n";
+    QString Node1 = Ports.at(0)->Connection->getName();
+    return "  " + Node1 + " <= " + Ports.at(1)->Connection->getName() + ";\n";
 }
 
 // -------------------------------------------------------
@@ -1482,7 +1482,7 @@ QString GateComponent::netlist() {
 
     // output all node names
     for (Port *pp: Ports)
-        s += " " + pp->Connection->Name;   // node names
+        s += " " + pp->Connection->getName();   // node names
 
     // output all properties
     s += " " + Props.at(1)->Name + "=\"" + Props.at(1)->Value + "\"";
@@ -1504,9 +1504,9 @@ QString GateComponent::spice_netlist(spicecompat::SpiceDialect dialect) {
     QString td = spicecompat::normalize_value(getProperty("t")->Value);
     s += " [";
     for (int i = Ports.count(); i >= 2; i--) {
-        s += " " + Ports.at(i - 1)->Connection->Name;
+        s += " " + Ports.at(i - 1)->Connection->getName();
     }
-    s += "] " + Ports.at(0)->Connection->Name;
+    s += "] " + Ports.at(0)->Connection->getName();
     s += " " + tmp_model + "\n";
     s += QStringLiteral(".model %1 %2(rise_delay=%3 fall_delay=%3 input_load=5e-13)\n")
             .arg(tmp_model).arg(type).arg(td);
@@ -1517,7 +1517,7 @@ QString GateComponent::spice_netlist(spicecompat::SpiceDialect dialect) {
 QString GateComponent::vhdlCode(int NumPorts) {
     QListIterator<Port *> iport(Ports);
     Port *pp = iport.next();
-    QString s = "  " + pp->Connection->Name + " <= ";  // output port
+    QString s = "  " + pp->Connection->getName() + " <= ";  // output port
 
     // xnor NOT defined for std_logic, so here use not and xor
     if (Model == "XNOR") {
@@ -1525,12 +1525,12 @@ QString GateComponent::vhdlCode(int NumPorts) {
 
         // first input port
         pp = iport.next();
-        QString rhs = pp->Connection->Name;
+        QString rhs = pp->Connection->getName();
 
         // output all input ports with node names
         while (iport.hasNext()) {
             pp = iport.next();
-            rhs = "not ((" + rhs + ")" + Op + pp->Connection->Name + ")";
+            rhs = "not ((" + rhs + ")" + Op + pp->Connection->getName() + ")";
         }
         s += rhs;
     } else {
@@ -1541,12 +1541,12 @@ QString GateComponent::vhdlCode(int NumPorts) {
         }
 
         pp = iport.next();
-        s += pp->Connection->Name;   // first input port
+        s += pp->Connection->getName();   // first input port
 
         // output all input ports with node names
         while (iport.hasNext()) {
             pp = iport.next();
-            s += Op + pp->Connection->Name;
+            s += Op + pp->Connection->getName();
         }
         if (Model.at(0) == 'N')
             s += ')';
@@ -1587,16 +1587,16 @@ QString GateComponent::verilogCode(int NumPorts) {
             if (!misc::Verilog_Delay(td, Name)) return td;
             s += td;
         }
-        s += " " + pp->Connection->Name + " = ";  // output port
+        s += " " + pp->Connection->getName() + " = ";  // output port
         if (Model.at(0) == 'N') s += "~(";
 
         pp = iport.next();
-        s += pp->Connection->Name;   // first input port
+        s += pp->Connection->getName();   // first input port
 
         // output all input ports with node names
         while (iport.hasNext()) {
             pp = iport.next();
-            s += " " + op + " " + pp->Connection->Name;
+            s += " " + op + " " + pp->Connection->getName();
         }
 
         if (Model.at(0) == 'N') s += ")";
@@ -1609,15 +1609,15 @@ QString GateComponent::verilogCode(int NumPorts) {
             if (!misc::Verilog_Delay(td, Name)) return td;
             s += td;
         }
-        s += " " + Name + " (" + pp->Connection->Name;  // output port
+        s += " " + Name + " (" + pp->Connection->getName();  // output port
 
         pp = iport.next();
-        s += ", " + pp->Connection->Name;   // first input port
+        s += ", " + pp->Connection->getName();   // first input port
 
         // output all input ports with node names
         while (iport.hasNext()) {
             pp = iport.next();
-            s += ", " + pp->Connection->Name;
+            s += ", " + pp->Connection->getName();
         }
 
         s += ");\n";

@@ -90,10 +90,10 @@ QString gatedDlatch::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
-  QString D    = Ports.at(0)->Connection->Name;
-  QString C    = Ports.at(1)->Connection->Name;
-  QString QB   = Ports.at(2)->Connection->Name;
-  QString Q    = Ports.at(3)->Connection->Name;
+  QString D    = Ports.at(0)->Connection->getName();
+  QString C    = Ports.at(1)->Connection->getName();
+  QString QB   = Ports.at(2)->Connection->getName();
+  QString Q    = Ports.at(3)->Connection->getName();
 
   s = "\n  "+Name+":process ("+D+", "+C+")\n"+
       "  begin\n" +
@@ -112,10 +112,10 @@ QString gatedDlatch::verilogCode( int )
   
   QString l = "";
 
-  QString D    = Ports.at(0)->Connection->Name;
-  QString C    = Ports.at(1)->Connection->Name;
-  QString QB   = Ports.at(2)->Connection->Name;
-  QString Q    = Ports.at(3)->Connection->Name;
+  QString D    = Ports.at(0)->Connection->getName();
+  QString C    = Ports.at(1)->Connection->getName();
+  QString QB   = Ports.at(2)->Connection->getName();
+  QString Q    = Ports.at(3)->Connection->getName();
 
   QString QR   = "Q_reg"  + Name + Q;
   QString QBR  = "QB_reg"  + Name + QB;

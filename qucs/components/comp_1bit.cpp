@@ -98,11 +98,11 @@ QString comp_1bit::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
  
-  QString X    = Ports.at(0)->Connection->Name;
-  QString Y    = Ports.at(1)->Connection->Name;
-  QString L    = Ports.at(2)->Connection->Name;
-  QString G    = Ports.at(3)->Connection->Name;
-  QString E    = Ports.at(4)->Connection->Name;
+  QString X    = Ports.at(0)->Connection->getName();
+  QString Y    = Ports.at(1)->Connection->getName();
+  QString L    = Ports.at(2)->Connection->getName();
+  QString G    = Ports.at(3)->Connection->getName();
+  QString E    = Ports.at(4)->Connection->getName();
  
   s = "\n  "+Name+":process ("+X+", "+Y+")\n"+
       "  begin\n"+
@@ -120,11 +120,11 @@ QString comp_1bit::verilogCode( int )
   QString td = Props.at(1)->Value;        // delay time
   if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
 
-  QString X    = Ports.at(0)->Connection->Name;
-  QString Y    = Ports.at(1)->Connection->Name;
-  QString L    = Ports.at(2)->Connection->Name;
-  QString G    = Ports.at(3)->Connection->Name;
-  QString E    = Ports.at(4)->Connection->Name;
+  QString X    = Ports.at(0)->Connection->getName();
+  QString Y    = Ports.at(1)->Connection->getName();
+  QString L    = Ports.at(2)->Connection->getName();
+  QString G    = Ports.at(3)->Connection->getName();
+  QString E    = Ports.at(4)->Connection->getName();
 
   QString LR  = "L_reg"  + Name + L;
   QString GR  = "G_reg"  + Name + G;

@@ -86,8 +86,8 @@ QString CoaxialLine::spice_netlist(spicecompat::SpiceDialect dialect)
   Q_UNUSED(dialect);
   QString s;
 
-  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
 
   QString D = spicecompat::normalize_value(getProperty("D")->Value);
   QString d = spicecompat::normalize_value(getProperty("d")->Value);

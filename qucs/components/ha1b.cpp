@@ -87,10 +87,10 @@ QString ha1b::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
-  QString A  = Ports.at(0)->Connection->Name;
-  QString B  = Ports.at(1)->Connection->Name;
-  QString CO = Ports.at(2)->Connection->Name;
-  QString S  = Ports.at(3)->Connection->Name;
+  QString A  = Ports.at(0)->Connection->getName();
+  QString B  = Ports.at(1)->Connection->getName();
+  QString CO = Ports.at(2)->Connection->getName();
+  QString S  = Ports.at(3)->Connection->getName();
 
   s = "\n  " + Name + ":process (" + A + ", " +  B + ")\n"  +
       "  begin\n" +
@@ -107,10 +107,10 @@ QString ha1b::verilogCode( int )
   
   QString l = "";
 
-  QString A  = Ports.at(0)->Connection->Name;
-  QString B  = Ports.at(1)->Connection->Name;
-  QString CO = Ports.at(2)->Connection->Name;
-  QString S  = Ports.at(3)->Connection->Name;
+  QString A  = Ports.at(0)->Connection->getName();
+  QString B  = Ports.at(1)->Connection->getName();
+  QString CO = Ports.at(2)->Connection->getName();
+  QString S  = Ports.at(3)->Connection->getName();
  
   QString COR = "CO_reg" + Name + CO;
   QString SR  = "S_reg"  + Name + S;

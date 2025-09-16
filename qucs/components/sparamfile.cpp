@@ -117,7 +117,7 @@ QString SParamFile::netlist()
 
   // output all node names
   for (Port *p1 : Ports)
-    s += " "+p1->Connection->Name;   // node names
+    s += " "+p1->Connection->getName();   // node names
 
   // output all properties
   s += " "+Props.at(0)->Name+"=\"{"+getSubcircuitFile()+"}\"";
@@ -204,8 +204,8 @@ QString SParamFile::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
         s = "YLIN YLIN_" + Name;
         QString s_mod = "YLIN_" + Name + "_model";
         for(int i = 0; i < Np; i++) {
-            QString p_in = spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
-            QString p_com = spicecompat::normalize_node_name(Ports.at(Np)->Connection->Name);
+            QString p_in = spicecompat::normalize_node_name(Ports.at(i)->Connection->getName());
+            QString p_com = spicecompat::normalize_node_name(Ports.at(Np)->Connection->getName());
             s += QStringLiteral(" %1 %2").arg(p_in).arg(p_com);
         }
         s += QStringLiteral(" %1\n").arg(s_mod);
@@ -214,7 +214,7 @@ QString SParamFile::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
     } else {
         s += SpiceModel+Name;
         for (Port *p1 : Ports) {
-            s += " "+ spicecompat::normalize_node_name(p1->Connection->Name);   // node names
+            s += " "+ spicecompat::normalize_node_name(p1->Connection->getName());   // node names
         }
         s += " Sub_" + Model + "_" + Name + "\n";
     }

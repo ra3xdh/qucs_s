@@ -90,8 +90,8 @@ QString Ampere_noise::va_code()
     QString c = vacompat::normalize_value(getProperty("c")->Value);
     QString a = vacompat::normalize_value(getProperty("a")->Value);
     
-    QString plus =  Ports.at(0)->Connection->Name;
-    QString minus = Ports.at(1)->Connection->Name; 
+    QString plus =  Ports.at(0)->Connection->getName();
+    QString minus = Ports.at(1)->Connection->getName(); 
     QString s = "";
     QString Ipm = vacompat::normalize_current(plus,minus,true); 
 

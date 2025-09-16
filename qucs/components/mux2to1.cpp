@@ -102,11 +102,11 @@ QString mux2to1::vhdlCode( int )
     return td;      // Time does not have VHDL format.
   td += ";\n";
 
-  QString En = Ports.at(0)->Connection->Name;
-  QString A  = Ports.at(1)->Connection->Name;
-  QString D0 = Ports.at(2)->Connection->Name;
-  QString D1 = Ports.at(3)->Connection->Name;
-  QString y  = Ports.at(4)->Connection->Name;
+  QString En = Ports.at(0)->Connection->getName();
+  QString A  = Ports.at(1)->Connection->getName();
+  QString D0 = Ports.at(2)->Connection->getName();
+  QString D1 = Ports.at(3)->Connection->getName();
+  QString y  = Ports.at(4)->Connection->getName();
 
   s = "\n  " + Name + ":process (" + En + ", " +  A + ", " + D0 + ", " +  D1 + ")\n" +
      "  begin\n" +
@@ -125,11 +125,11 @@ QString mux2to1::verilogCode( int )
   
   QString l = "";
 
-  QString En = Ports.at(0)->Connection->Name;
-  QString A  = Ports.at(1)->Connection->Name;
-  QString D0 = Ports.at(2)->Connection->Name;
-  QString D1 = Ports.at(3)->Connection->Name;
-  QString y  = Ports.at(4)->Connection->Name;
+  QString En = Ports.at(0)->Connection->getName();
+  QString A  = Ports.at(1)->Connection->getName();
+  QString D0 = Ports.at(2)->Connection->getName();
+  QString D1 = Ports.at(3)->Connection->getName();
+  QString y  = Ports.at(4)->Connection->getName();
 
   QString v = "net_reg" + Name + y;
   

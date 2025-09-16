@@ -173,7 +173,7 @@ QString VDMOS::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
     }
     // output all node names
     for (int pin : pin_seq) {
-        QString nam = Ports.at(pin)->Connection->Name;
+        QString nam = Ports.at(pin)->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }

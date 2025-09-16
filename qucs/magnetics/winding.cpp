@@ -100,8 +100,8 @@ QString Winding::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
     Q_UNUSED(dialect);
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    QString P1 = Ports.at(0)->Connection->Name;
-    QString P2 = Ports.at(1)->Connection->Name;
+    QString P1 = Ports.at(0)->Connection->getName();
+    QString P2 = Ports.at(1)->Connection->getName();
 
     QString CORE = getProperty("CORE")->Value;
     QString Nt = spicecompat::normalize_value(getProperty("N")->Value);
@@ -114,8 +114,8 @@ QString Winding::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
       if (pc->Name == CORE) {
         QString BH = pc->getProperty("BHprobes")->Value;
         if (BH == "true") {
-          H_node = pc->Ports.at(0)->Connection->Name;
-          B_node = pc->Ports.at(1)->Connection->Name;
+          H_node = pc->Ports.at(0)->Connection->getName();
+          B_node = pc->Ports.at(1)->Connection->getName();
         } else {
           H_node = "net_" + pc->Name + "_H_node";
           B_node = "net_" + pc->Name + "_B_node";

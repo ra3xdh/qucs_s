@@ -99,10 +99,10 @@ QString MScoupled::spice_netlist(spicecompat::SpiceDialect dialect)
   QString s;
   if (dialect != spicecompat::SPICEDefault) return s;
   QString subline = getSpiceSubstrateLine();
-  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-  QString p3 = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
-  QString p4 = spicecompat::normalize_node_name(Ports.at(3)->Connection->Name);
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
+  QString p3 = spicecompat::normalize_node_name(Ports.at(2)->Connection->getName());
+  QString p4 = spicecompat::normalize_node_name(Ports.at(3)->Connection->getName());
 
   QString L = spicecompat::normalize_value(getProperty("L")->Value);
   QString W = spicecompat::normalize_value(getProperty("W")->Value);

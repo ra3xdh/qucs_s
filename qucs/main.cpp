@@ -852,7 +852,7 @@ void createListComponentEntry(){
       int port = 0;
       for (Port *p: c->Ports) {
         Node *n = new Node(0,0);
-        n->Name="_net"+QString::number(port);
+        n->setName("_net"+QString::number(port));
         p->Connection = n;
         port +=1;
       }

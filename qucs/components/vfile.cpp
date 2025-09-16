@@ -100,7 +100,7 @@ QString vFile::netlist()
 
   // output all node names
   for (Port *p1 : Ports)
-    s += " "+p1->Connection->Name;   // node names
+    s += " "+p1->Connection->getName();   // node names
 
   // output file properties
   s += " "+Props.at(0)->Name+"=\"{"+getSubcircuitFile()+"}\"";
@@ -118,8 +118,8 @@ QString vFile::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
 
     QString s = SpiceModel + Name;
     QString modname = "mod_" + Model + Name;
-    QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-    QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+    QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
     s += QStringLiteral(" %vd([%1 %2]) %3\n").arg(p1).arg(p2).arg(modname);
     QString file = getSubcircuitFile();
     QString sc = getProperty("G")->Value;

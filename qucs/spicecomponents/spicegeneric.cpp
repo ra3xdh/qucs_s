@@ -141,7 +141,7 @@ QString SpiceGeneric::spice_netlist(spicecompat::SpiceDialect dialect /* = spice
     // form RefDes from unique device letter and device name
     QString s = Props.at(1)->Value + Name;
     for (Port *pp : Ports) {
-        s += " " + spicecompat::normalize_node_name(pp->Connection->Name);
+        s += " " + spicecompat::normalize_node_name(pp->Connection->getName());
     }
 
     s += " " + Props.at(2)->Value; // Model

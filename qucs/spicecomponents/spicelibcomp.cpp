@@ -227,14 +227,14 @@ QString SpiceLibComp::spice_netlist(spicecompat::SpiceDialect dialect /* = spice
   QString sym = getProperty("SymPattern")->Value;
   if (sym == "auto" || pins.isEmpty()) {
     for (Port *p1 : Ports) {
-      s += " " + spicecompat::normalize_node_name(p1->Connection->Name);
+      s += " " + spicecompat::normalize_node_name(p1->Connection->getName());
     }
   } else {
     QStringList pin_nums = pins.split(";");
     for (int i = 0; i < pin_nums.count(); i++) {
       int pn = pin_nums.at(i).toInt();
       Port *pp = Ports.at(pn-1);
-      s += " " + spicecompat::normalize_node_name(pp->Connection->Name);
+      s += " " + spicecompat::normalize_node_name(pp->Connection->getName());
     }
   }
   s += QStringLiteral(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);

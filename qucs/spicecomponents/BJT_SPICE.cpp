@@ -193,7 +193,7 @@ QString BJT_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
     QString ltr =getProperty("Letter")->Value;
     QString s = spicecompat::check_refdes(Name,ltr);
     for (Port *p1 : Ports) {
-        QString nam = p1->Connection->Name;
+        QString nam = p1->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
