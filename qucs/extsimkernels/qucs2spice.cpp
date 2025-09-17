@@ -24,6 +24,8 @@
 
 #include "misc.h"
 
+#include <QRegularExpression>
+
 /*!
   \file qucs2spice.cpp
   \brief Implementation of qucs2spice namespace
@@ -33,7 +35,7 @@ namespace qucs2spice
 {
    QString convert_rcl(const QString& line);
    QString convert_header(QString line);
-   QString convert_diode(QString line,bool xyce=false);
+   QString convert_diode(QString line);
    QString convert_jfet(const QString& line, bool xyce=false);
    QString convert_mosfet(QString line, bool xyce=false);
    QString convert_bjt(const QString& line);
@@ -104,7 +106,7 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
         if (res_pattern.match(line).hasMatch()) s += convert_rcl(line);
         if (cap_pattern.match(line).hasMatch()) s += convert_rcl(line);
         if (ind_pattern.match(line).hasMatch()) s += convert_rcl(line);
-        if (diode_pattern.match(line).hasMatch()) s += convert_diode(line,xyce);
+        if (diode_pattern.match(line).hasMatch()) s += convert_diode(line);
         if (mosfet_pattern.match(line).hasMatch()) s += convert_mosfet(line,xyce);
         if (jfet_pattern.match(line).hasMatch()) s += convert_jfet(line,xyce);
         if (bjt_pattern.match(line).hasMatch()) s += convert_bjt(line);
@@ -148,7 +150,7 @@ QString qucs2spice::convert_header(QString line)
     return s;
 }
 
-QString qucs2spice::convert_diode(QString line,bool xyce)
+QString qucs2spice::convert_diode(QString line)
 {
     QString s="";
     QStringList lst = line.split(" ", Qt::SkipEmptyParts);
