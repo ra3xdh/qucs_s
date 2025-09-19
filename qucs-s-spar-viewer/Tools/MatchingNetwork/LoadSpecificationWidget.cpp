@@ -141,13 +141,13 @@ void LoadSpecificationWidget::setupTwoPortUI()
   m_s11Label = new QLabel("S11:");
   m_s11Real = new QDoubleSpinBox();
   m_s11Real->setRange(-10.0, 10.0);
-  m_s11Real->setDecimals(2);
+  m_s11Real->setDecimals(3);
   m_s11Real->setSingleStep(0.1);
   m_s11Real->setValue(0.5);
   m_s11Separator = new QLabel("+j");
   m_s11Imag = new QDoubleSpinBox();
   m_s11Imag->setRange(-10.0, 10.0);
-  m_s11Imag->setDecimals(2);
+  m_s11Imag->setDecimals(3);
   m_s11Imag->setSingleStep(0.1);
   m_s11Imag->setValue(0);
 
@@ -160,13 +160,13 @@ void LoadSpecificationWidget::setupTwoPortUI()
   m_s12Label = new QLabel("S12:");
   m_s12Real = new QDoubleSpinBox();
   m_s12Real->setRange(-10.0, 10.0);
-  m_s12Real->setDecimals(2);
+  m_s12Real->setDecimals(3);
   m_s12Real->setSingleStep(0.1);
   m_s12Real->setValue(0);
   m_s12Separator = new QLabel("+j");
   m_s12Imag = new QDoubleSpinBox();
   m_s12Imag->setRange(-100.0, 100.0);
-  m_s12Imag->setDecimals(2);
+  m_s12Imag->setDecimals(3);
   m_s12Imag->setSingleStep(0.1);
   m_s12Imag->setValue(0);
 
@@ -179,13 +179,13 @@ void LoadSpecificationWidget::setupTwoPortUI()
   m_s21Label = new QLabel("S21:");
   m_s21Real = new QDoubleSpinBox();
   m_s21Real->setRange(-10.0, 10.0);
-  m_s21Real->setDecimals(2);
+  m_s21Real->setDecimals(3);
   m_s21Real->setSingleStep(0.1);
   m_s21Real->setValue(0.5);
   m_s21Separator = new QLabel("+j");
   m_s21Imag = new QDoubleSpinBox();
   m_s21Imag->setRange(-100.0, 100.0);
-  m_s21Imag->setDecimals(2);
+  m_s21Imag->setDecimals(3);
   m_s21Imag->setSingleStep(0.1);
   m_s21Imag->setValue(0);
 
@@ -198,13 +198,13 @@ void LoadSpecificationWidget::setupTwoPortUI()
   m_s22Label = new QLabel("S22:");
   m_s22Real = new QDoubleSpinBox();
   m_s22Real->setRange(-10.0, 10.0);
-  m_s22Real->setDecimals(2);
+  m_s22Real->setDecimals(3);
   m_s22Real->setSingleStep(0.1);
   m_s22Real->setValue(0.5);
   m_s22Separator = new QLabel("+j");
   m_s22Imag = new QDoubleSpinBox();
   m_s22Imag->setRange(-10.0, 10.0);
-  m_s22Imag->setDecimals(2);
+  m_s22Imag->setDecimals(3);
   m_s22Imag->setSingleStep(0.1);
   m_s22Imag->setValue(0);
 
@@ -256,28 +256,54 @@ QList<double> LoadSpecificationWidget::getFrequency() {
 
 std::pair<std::complex<double>, std::complex<double>> LoadSpecificationWidget::getTwoPortMatchingImpedances() const
 {
-  // Get the S-parameters
-  std::complex<double> S11 = getS11();
-  std::complex<double> S12 = getS12();
-  std::complex<double> S21 = getS21();
-  std::complex<double> S22 = getS22();
+  const std::complex<double> S11 = getS11();
+  const std::complex<double> S12 = getS12();
+  const std::complex<double> S21 = getS21();
+  const std::complex<double> S22 = getS22();
+  constexpr double Z0 = 50.0;
 
-  std::complex<double> Gamma_L = std::conj(S22);
-  std::complex<double> Gamma_S = std::conj(S11);
+  std::complex<double> delta = S11 * S22 - S12 * S21;
 
+  double abs_S11 = std::abs(S11);
+  double abs_S22 = std::abs(S22);
+  double abs_delta = std::abs(delta);
 
-         // Calculate input and output reflection coefficients (Γin, Γout) for conjugate matching
-         // These formulas assume the load and source are conjugate matched.
-         // Reference: Pozar, Microwave Engineering 571
-  std::complex<double> Gamma_in = S11 + (S12 * S21 * Gamma_L) / (1.0 - S22 * Gamma_L);
-  std::complex<double> Gamma_out = S22 + (S12 * S21 * Gamma_S) / (1.0 - S11 * Gamma_S);
+  double B1 = 1.0 + abs_S11 * abs_S11 - abs_S22 * abs_S22 - abs_delta * abs_delta;
+  double B2 = 1.0 + abs_S22 * abs_S22 - abs_S11 * abs_S11 - abs_delta * abs_delta;
 
-         // Convert reflection coefficients to matching impedances using Smith chart formula
-  std::complex<double> Zin_match = Z0_Port1 * (1.0 + Gamma_in) / (1.0 - Gamma_in);
-  std::complex<double> Zout_match = Z0_Port2 * (1.0 + Gamma_out) / (1.0 - Gamma_out);
+  std::complex<double> C1 = S11 - delta * std::conj(S22);
+  std::complex<double> C2 = S22 - delta * std::conj(S11);
 
-  return std::make_pair(Zin_match, Zout_match);
+  std::complex<double> sqrt_expr_S = std::sqrt(std::complex<double>(B1 * B1 - 4.0 * std::norm(C1), 0.0));
+  std::complex<double> sqrt_expr_L = std::sqrt(std::complex<double>(B2 * B2 - 4.0 * std::norm(C2), 0.0));
+
+  std::complex<double> gamma_S1 = (B1 + sqrt_expr_S) / (2.0 * C1);
+  std::complex<double> gamma_S2 = (B1 - sqrt_expr_S) / (2.0 * C1);
+
+  std::complex<double> gamma_L1 = (B2 + sqrt_expr_L) / (2.0 * C2);
+  std::complex<double> gamma_L2 = (B2 - sqrt_expr_L) / (2.0 * C2);
+
+  std::complex<double> ZS1 = Z0 * (1.0 + gamma_S1) / (1.0 - gamma_S1);
+  std::complex<double> ZS2 = Z0 * (1.0 + gamma_S2) / (1.0 - gamma_S2);
+
+  std::complex<double> ZL1 = Z0 * (1.0 + gamma_L1) / (1.0 - gamma_L1);
+  std::complex<double> ZL2 = Z0 * (1.0 + gamma_L2) / (1.0 - gamma_L2);
+
+         // Conjugate all impedances
+  ZS1 = std::conj(ZS1);
+  ZS2 = std::conj(ZS2);
+  ZL1 = std::conj(ZL1);
+  ZL2 = std::conj(ZL2);
+
+         // Choose S1 by default, else S2 if negative real part
+  if (ZS1.real() < 0 || ZL1.real() < 0) {
+    return std::make_pair(ZS2, ZL2);
+  }
+
+  return std::make_pair(ZS1, ZL1);
 }
+
+
 
 
 std::complex<double> LoadSpecificationWidget::getReflectionCoefficient() const
@@ -534,9 +560,57 @@ void LoadSpecificationWidget::onBrowseFile()
       std::complex<double> S21(result["S21_re"], result["S21_im"]);
       std::complex<double> S22(result["S22_re"], result["S22_im"]);
 
+      // Block signals
+      m_s11Real->blockSignals(true);
+      m_s11Imag->blockSignals(true);
+
+      m_s12Real->blockSignals(true);
+      m_s12Imag->blockSignals(true);
+
+      m_s21Real->blockSignals(true);
+      m_s21Imag->blockSignals(true);
+
+      m_s22Real->blockSignals(true);
+      m_s22Imag->blockSignals(true);
+
+
+      // Change S21 values
+      m_s11Real->setValue(S11.real());
+      m_s11Imag->setValue(S11.imag());
+
+      m_s12Real->setValue(S12.real());
+      m_s12Imag->setValue(S12.imag());
+
+      m_s21Real->setValue(S21.real());
+      m_s21Imag->setValue(S21.imag());
+
+      m_s22Real->setValue(S22.real());
+      m_s22Imag->setValue(S22.imag());
+
+      // Enable signals
+      m_s11Real->blockSignals(false);
+      m_s11Imag->blockSignals(false);
+
+      m_s12Real->blockSignals(false);
+      m_s12Imag->blockSignals(false);
+
+      m_s21Real->blockSignals(false);
+      m_s21Imag->blockSignals(false);
+
+      m_s22Real->blockSignals(false);
+      m_s22Imag->blockSignals(false);
+
+
     } else {
       // 1-port matching
       std::complex<double> S11(result["S11_re"], result["S11_im"]);
+
+      // Block signals
+      m_reflectionReal->blockSignals(true);
+      m_reflectionImag->blockSignals(true);
+
+      m_impedanceReal->blockSignals(true);
+      m_impedanceImag->blockSignals(true);
 
       // Set reflection coefficient widgets
       m_reflectionReal->setValue(S11.real());
@@ -547,6 +621,13 @@ void LoadSpecificationWidget::onBrowseFile()
       std::complex<double> ZL = Z0 * (1.0 + S11) / (1.0 - S11);
       m_impedanceReal->setValue(ZL.real());
       m_impedanceImag->setValue(ZL.imag());
+
+      // Enable signals
+      m_reflectionReal->blockSignals(false);
+      m_reflectionImag->blockSignals(false);
+
+      m_impedanceReal->blockSignals(false);
+      m_impedanceImag->blockSignals(false);
 
 
       // Calculate ZL data from S11 and store that in the loadData object

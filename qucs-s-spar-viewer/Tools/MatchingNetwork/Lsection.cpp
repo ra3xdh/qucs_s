@@ -46,8 +46,8 @@ void Lsection::synthesize() {
     Zload.val["Z"] = num2str(Specs.ZL, Resistance);
   } else {
     // There's a path to a S-parameter file
-    Zload.setParams(QString("Z%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, -90, 175, 50);
-    Zload.val["Z"] = Specs.sim_path;
+    Zload.setParams(QString("SPAR%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, -90, 175, 50);
+    Zload.val["Path"] = Specs.sim_path;
   }
   Schematic.appendComponent(Zload);
 

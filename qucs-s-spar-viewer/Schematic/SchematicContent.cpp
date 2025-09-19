@@ -384,6 +384,12 @@ QString SchematicContent::getSParameterNetlist() {
         int node1 = netToNodeMap.value(connections[0], 0);
         int node2 = netToNodeMap.value(connections[1], 0);
 
+
+        QString path = Comps[i].val["Path"];
+        QString SPAR_ID = Comps[i].ID;
+
+        if (path.isEmpty()) {
+          // Hardcoded S-par data
         QString S11r = Comps[i].val["S11r"];
         QString S11i = Comps[i].val["S11i"];
 
@@ -396,7 +402,7 @@ QString SchematicContent::getSParameterNetlist() {
         QString S22r = Comps[i].val["S22r"];
         QString S22i = Comps[i].val["S22i"];
 
-        QString SPAR_ID = Comps[i].ID;
+
         componentLine = QString("%1 %2 %3 (%4,%5) (%6,%7); (%8,%9) (%10,%11)\n")
                             .arg(SPAR_ID)
                             .arg(node1)
@@ -409,6 +415,14 @@ QString SchematicContent::getSParameterNetlist() {
                             .arg(S21i)
                             .arg(S22r)
                             .arg(S22i);
+        } else {
+          // S-parameter file
+          componentLine = QString("%1 %2 %3 %4\n")
+                              .arg(SPAR_ID)
+                              .arg(node1)
+                              .arg(node2)
+                              .arg(path);
+        }
       }
       break;
 

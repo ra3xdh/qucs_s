@@ -133,29 +133,6 @@ bool SParameterCalculator::parseNetlist() {
           addComponent(ComponentType_SPAR::SHORT_STUB, name.toStdString(), {node1, node2}, value);
         }
       }
-    } else if (name.startsWith("ZF", Qt::CaseInsensitive)) {
-      // Frequency-dependent impedance from file
-      // Format: ZF1 node1 node2 filename
-      if (parts.size() < 4) {
-        cerr << "Error: Invalid frequency-dependent impedance definition: " << line.toStdString() << endl;
-        continue;
-      }
-
-      int node1 = parts[1].toInt();
-      int node2 = parts[2].toInt();
-      QString filename = parts[3];
-
-             // Load frequency-dependent data from file
-      QMap<QString, QList<double>> freqDepData = loadFrequencyDependentData(filename);
-
-      if (!freqDepData.isEmpty()) {
-        addComponent(ComponentType_SPAR::FREQUENCY_DEPENDENT_IMPEDANCE,
-                     name.toStdString(), {node1, node2}, freqDepData);
-
-               // Update numNodes
-        if (node1 > numNodes) numNodes = node1;
-    if (node2 > numNodes) numNodes = node2;
-  }
     } else if ((type == QString("CLIN")) && (parts.size() >= 7)) {
       // Coupled Line: CLIN1 node1 node2 node3 node4 Z0e Z0o length
       int node1 = parts[1].toInt();
@@ -211,65 +188,83 @@ bool SParameterCalculator::parseNetlist() {
             addPort(node, impedance);
     }
     else if (type == QString("SPAR")) {
-      // Format: SPAR node1 node2 ... <comma-separated S-matrix row strings>
-      // Example for 2-port:
-      // SBLOCK1 1 2 (0,0) (0.5,0); (0.5,0) (0,0)
-
       if (parts.size() < 4) {
-        cerr << "Error: Invalid SPAR_BLOCK definition: " << line.toStdString() << endl;
+        cerr << "Error: Invalid SPAR definition: " << line.toStdString() << endl;
         continue;
       }
-        // First: extract all nodes until we hit the first "("
+
+      // Extract nodes
       QVector<int> nodes;
       int idx = 1;
-      for (; idx < parts.size(); ++idx) {
-        if (parts[idx].startsWith("(")) break;
-        nodes.push_back(parts[idx].toInt());
-        if (nodes.last() > numNodes) numNodes = nodes.last();
+
+      // Parse exactly 2 nodes for both 1-port and 2-port devices
+      for (int i = 0; i < 2 && idx < parts.size(); i++, idx++) {
+        bool ok;
+        int node = parts[idx].toInt(&ok);
+        if (!ok) {
+          cerr << "Error: Invalid node in SPAR definition\n";
+          break;
+        }
+        nodes.push_back(node);
+        if (node > numNodes) numNodes = node;
     }
 
-      if (nodes.isEmpty()) {
-        cerr << "Error: SPAR_BLOCK has no nodes: " << line.toStdString() << endl;
+      if (nodes.size() != 2) {
+        cerr << "Error: SPAR must have exactly 2 nodes\n";
         continue;
       }
 
-             // The rest are complex entries row by row separated by ';'
-      QString rest;
-      for (int k = idx; k < parts.size(); ++k) rest += parts[k] + " ";
-    rest = rest.trimmed();
+      // Determine port count based on nodes: if one node is 0 (GND), it's 1-port
+      int numRFPorts = (nodes[0] == 0 || nodes[1] == 0) ? 1 : 2;
 
-      QStringList rowStrings = rest.split(";", Qt::SkipEmptyParts);
+      // Check if next part is a filename
+      if (idx < parts.size() && !parts[idx].startsWith("(")) {
+        QString filename = parts[idx];
 
-      int N = nodes.size();
-      if (rowStrings.size() != N) {
-        cerr << "Error: SPAR_BLOCK matrix rows != number of nodes" << endl;
-        continue;
-      }
+        // Load S-parameters from file
+        QMap<QString, QList<double>> touchstoneData = readTouchstoneFile(filename);
 
-      vector<vector<Complex>> Smat(N, vector<Complex>(N, Complex(0,0)));
-
-      for (int r = 0; r < N; r++) {
-        QString row = rowStrings[r].trimmed();
-        // Entries like "(re,im)"
-        static const QRegularExpression rx("\\(([-+]?\\d*\\.?\\d+[a-zA-Z]*),([-+]?\\d*\\.?\\d+[a-zA-Z]*)\\)");
-        QRegularExpressionMatchIterator it = rx.globalMatch(row);
-        int c = 0;
-        while (it.hasNext() && c < N) {
-          auto m = it.next();
-          double re = parseScaledValue(m.captured(1));
-          double im = parseScaledValue(m.captured(2));
-          Smat[r][c] = Complex(re, im);
-          c++;
+        if (touchstoneData.isEmpty()) {
+          cerr << "Error: Failed to load " << filename.toStdString() << endl;
+          continue;
         }
-        if (c != N) {
-          cerr << "Error: SPAR_BLOCK row " << r << " does not have " << N << " entries\n";
+
+        // Use port count from file if available, otherwise use node-based detection
+        int filePortCount = touchstoneData.contains("n_ports") ?
+                                touchstoneData["n_ports"].first() : numRFPorts;
+
+        components.emplace_back(ComponentType_SPAR::FREQUENCY_DEPENDENT_SPAR_BLOCK,
+                                name.toStdString(),
+                                std::vector<int>(nodes.constBegin(), nodes.constEnd()),
+                                touchstoneData, filePortCount);
+
+        cout << "Loaded " << filePortCount << "-port S-parameter device from "
+             << filename.toStdString() << endl;
+      }
+      else {
+        // Inline S-matrix definition
+        // Format: SPAR1 node1 node2 <S-matrix entries>
+        // 1-port: (S11_re,S11_im)
+        // 2-port: (S11_re,S11_im) (S12_re,S12_im); (S21_re,S21_im) (S22_re,S22_im)
+
+        QString matrixStr;
+        for (int k = idx; k < parts.size(); k++) {
+          matrixStr += parts[k] + " ";
+        }
+
+        vector<vector<Complex>> Smat = parseInlineSMatrix(matrixStr, numRFPorts);
+
+        if ((int)Smat.size() == numRFPorts) {
+          components.emplace_back(ComponentType_SPAR::SPAR_BLOCK,
+                                  name.toStdString(),
+                                  std::vector<int>(nodes.constBegin(), nodes.constEnd()),
+                                  Smat, numRFPorts);
+
+          cout << "Added " << numRFPorts << "-port inline S-parameter device" << endl;
+        } else {
+          cerr << "Error: Failed to parse inline S-matrix\n";
         }
       }
-
-      components.emplace_back(ComponentType_SPAR::SPAR_BLOCK,
-                              name.toStdString(),
-                              std::vector<int>(nodes.constBegin(), nodes.constEnd()),
-                              Smat);
     }
   }
   cout << "Parsed " << components.size() << " components, numNodes = " << numNodes << endl;
@@ -349,10 +344,6 @@ Complex SParameterCalculator::getImpedance(const Component_SPAR& comp, double fr
 
   case ComponentType_SPAR::COMPLEX_IMPEDANCE:
     return comp.Zvalue["Z"];
-
-           // NEW: Handle frequency-dependent impedance
-  case ComponentType_SPAR::FREQUENCY_DEPENDENT_IMPEDANCE:
-    return interpolateFrequencyDependentImpedance(comp, freq);
 
   case ComponentType_SPAR::CAPACITOR:
     return Complex(0, -1.0 / (omega * comp.value["C"]));
@@ -479,6 +470,11 @@ vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
 
     if (comp.type == ComponentType_SPAR::SPAR_BLOCK) {
       addSParamBlockToAdmittance(Y, comp);
+      continue;
+    }
+
+    if (comp.type == ComponentType_SPAR::FREQUENCY_DEPENDENT_SPAR_BLOCK) {
+      addFrequencyDependentSParamBlockToAdmittance(Y, comp);
       continue;
     }
 
@@ -1070,26 +1066,159 @@ vector<vector<Complex>> SParameterCalculator::convertS2Y(const vector<vector<Com
 void SParameterCalculator::addSParamBlockToAdmittance(
     vector<vector<Complex>>& Y, const Component_SPAR& comp) {
 
-  int nPorts = comp.nodes.size();
-  if ((int)comp.Smatrix.size() != nPorts) {
-    cerr << "Error: S-matrix dimension does not match number of ports\n";
+  int numRFPorts = comp.numRFPorts;
+  int numNodes = comp.nodes.size();
+
+  // Validate S-matrix dimensions
+  if ((int)comp.Smatrix.size() != numRFPorts) {
+    cerr << "Error: S-matrix dimension (" << comp.Smatrix.size()
+    << ") does not match RF port count (" << numRFPorts << ")\n";
     return;
   }
 
-         // Convert constant S to Y
-  auto Yblock = convertS2Y(comp.Smatrix, 50.0); // Assume 50 Ω ref
-
-         // Stamp into system Y matrix
-  for (int i = 0; i < nPorts; i++) {
-    for (int j = 0; j < nPorts; j++) {
-      int node_i = comp.nodes[i];
-      int node_j = comp.nodes[j];
-      if (node_i > 0 && node_j > 0) {
-        Y[node_i-1][node_j-1] += Yblock[i][j];
-      }
-    }
+  if (numRFPorts == 1) {
+    // One-port device (.s1p)
+    addOnePortSParamToAdmittance(Y, comp);
+  }
+  else if (numRFPorts == 2) {
+    // Two-port device (.s2p)
+    addTwoPortSParamToAdmittance(Y, comp);
+  }
+  else {
+    cerr << "Error: Only 1-port and 2-port S-parameter devices are supported. "
+         << "Found " << numRFPorts << " ports.\n";
   }
 }
+
+// Handle one-port device (.s1p file)
+void SParameterCalculator::addOnePortSParamToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+
+  if (comp.nodes.size() != 2) {
+    cerr << "Error: One-port S-parameter device must have exactly 2 circuit nodes\n";
+    return;
+  }
+
+  // Extract S11 from 1x1 S-matrix
+  Complex S11 = comp.Smatrix[0][0];
+  double Z0 = comp.referenceImpedance;
+
+  // Convert S11 to impedance: Z = Z0 * (1 + S11) / (1 - S11)
+  Complex denominator = Complex(1,0) - S11;
+  if (abs(denominator) < 1e-12) {
+    cerr << "Warning: S11 = 1, impedance is infinite (open circuit)\n";
+    return; // Don't add anything for open circuit
+  }
+
+  Complex Z_device = Z0 * (Complex(1,0) + S11) / denominator;
+
+  // Convert to admittance
+  if (abs(Z_device) < 1e-12) {
+    cerr << "Warning: Device impedance is zero (short circuit)\n";
+    Z_device = Complex(1e-12, 0); // Avoid division by zero
+  }
+
+  Complex Y_device = Complex(1,0) / Z_device;
+
+  int node1 = comp.nodes[0];
+  int node2 = comp.nodes[1];
+
+  // Add to admittance matrix like a two-terminal device
+  if (node1 > 0) Y[node1-1][node1-1] += Y_device;
+    if (node2 > 0) Y[node2-1][node2-1] += Y_device;
+    if (node1 > 0 && node2 > 0) {
+    Y[node1-1][node2-1] -= Y_device;
+    Y[node2-1][node1-1] -= Y_device;
+  }
+}
+
+// Handle two-port device (.s2p file)
+void SParameterCalculator::addTwoPortSParamToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+
+  if (comp.nodes.size() != 2) {
+    cerr << "Error: Two-port S-parameter device must have exactly 2 circuit nodes\n";
+    return;
+  }
+
+  double Z0 = comp.referenceImpedance;
+
+  // Convert 2x2 S-matrix to 2x2 Y-matrix
+  vector<vector<Complex>> Y_device = convertS2Y(comp.Smatrix, Z0);
+
+  int node1 = comp.nodes[0]; // Port 1 connection (port 2 grounded)
+  int node2 = comp.nodes[1]; // Port 2 connection (port 1 grounded)
+
+  // Add Y-parameters to global admittance matrix
+  // Y11: self-admittance at node1
+  if (node1 > 0) Y[node1-1][node1-1] += Y_device[0][0];
+
+  // Y22: self-admittance at node2
+  if (node2 > 0) Y[node2-1][node2-1] += Y_device[1][1];
+
+  // Y12, Y21: mutual admittances
+  if (node1 > 0 && node2 > 0) {
+    Y[node1-1][node2-1] += Y_device[0][1];
+    Y[node2-1][node1-1] += Y_device[1][0];
+  }
+}
+
+// Enhanced frequency-dependent S-parameter handling
+void SParameterCalculator::addFrequencyDependentSParamBlockToAdmittance(
+    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+
+  int numRFPorts = comp.numRFPorts;
+
+  // Get interpolated S-matrix at current frequency
+  vector<vector<Complex>> S_interp = interpolateFrequencyDependentSMatrix(comp, frequency);
+
+  // Create temporary component with interpolated S-matrix for processing
+  Component_SPAR tempComp = comp;
+  tempComp.Smatrix = S_interp;
+
+  // Process using the same logic as constant S-parameter blocks
+  if (numRFPorts == 1) {
+    addOnePortSParamToAdmittance(Y, tempComp);
+  }
+  else if (numRFPorts == 2) {
+    addTwoPortSParamToAdmittance(Y, tempComp);
+  }
+  else {
+    cerr << "Error: Only 1-port and 2-port frequency-dependent devices supported\n";
+  }
+}
+
+// Helper method to add S-parameter device with explicit port count
+void SParameterCalculator::addSParameterDevice(const string& name,
+                                               const vector<int>& nodes,
+                                               const vector<vector<Complex>>& Smatrix,
+                                               int numRFPorts,
+                                               double Z0 = 50.0) {
+
+  // Validate inputs
+  if (numRFPorts != 1 && numRFPorts != 2) {
+    cerr << "Error: Only 1-port and 2-port devices supported\n";
+    return;
+  }
+
+  if ((int)Smatrix.size() != numRFPorts) {
+    cerr << "Error: S-matrix size doesn't match port count\n";
+    return;
+  }
+
+  if ((numRFPorts == 1 && nodes.size() != 2) ||
+      (numRFPorts == 2 && nodes.size() != 2)) {
+    cerr << "Error: Node count mismatch for " << numRFPorts << "-port device\n";
+    return;
+  }
+
+  components.emplace_back(ComponentType_SPAR::SPAR_BLOCK, name, nodes,
+                          Smatrix, numRFPorts, Z0);
+
+  // Update numNodes
+  for (int node : nodes) {
+    if (node > numNodes) numNodes = node;
+    }
+}
+
 
 // To add a S-par block
 void SParameterCalculator::addSParameterBlock(const string& name, const vector<int>& nodes, const vector<vector<Complex>>& Smatrix) {
@@ -1101,33 +1230,30 @@ void SParameterCalculator::addSParameterBlock(const string& name, const vector<i
 
 
 // Required for frequency-dependent components
-Complex SParameterCalculator::interpolateFrequencyDependentImpedance(const Component_SPAR& comp, double freq) {
-  if (!comp.freqDepData.contains("frequency") ||
-      !comp.freqDepData.contains("real") ||
-      !comp.freqDepData.contains("imag")) {
-    cerr << "Error: Frequency-dependent impedance missing required data" << endl;
-    return Complex(50.0, 0); // Default fallback
+vector<vector<Complex>> SParameterCalculator::interpolateFrequencyDependentSMatrix(
+    const Component_SPAR& comp, double freq) {
+
+  if (!comp.freqDepData.contains("frequency")) {
+    cerr << "Error: Frequency-dependent S-parameter missing frequency data" << endl;
+    int N = comp.nodes.size();
+    return createMatrix(N, N); // Return zero matrix as fallback
   }
 
   const QList<double>& frequencies = comp.freqDepData["frequency"];
-  const QList<double>& realParts = comp.freqDepData["real"];
-  const QList<double>& imagParts = comp.freqDepData["imag"];
-
-  if (frequencies.size() != realParts.size() || frequencies.size() != imagParts.size()) {
-    cerr << "Error: Frequency-dependent impedance data arrays have different sizes" << endl;
-    return Complex(50.0, 0);
-  }
+  int N = comp.nodes.size(); // Number of ports
 
   if (frequencies.isEmpty()) {
-    return Complex(50.0, 0);
+    return createMatrix(N, N);
   }
 
          // Handle edge cases
   if (freq <= frequencies.first()) {
-    return Complex(realParts.first(), imagParts.first());
+    // Use first frequency point
+    return extractSMatrixAtIndex(comp, 0);
   }
   if (freq >= frequencies.last()) {
-    return Complex(realParts.last(), imagParts.last());
+    // Use last frequency point
+    return extractSMatrixAtIndex(comp, frequencies.size() - 1);
   }
 
          // Find interpolation points
@@ -1138,45 +1264,97 @@ Complex SParameterCalculator::interpolateFrequencyDependentImpedance(const Compo
     }
   }
 
-         // Linear interpolation
+         // Linear interpolation between two frequency points
   double f1 = frequencies[i];
   double f2 = frequencies[i + 1];
-  double r1 = realParts[i];
-  double r2 = realParts[i + 1];
-  double im1 = imagParts[i];
-  double im2 = imagParts[i + 1];
-
   double t = (freq - f1) / (f2 - f1); // Interpolation parameter
-  double realInterp = r1 + t * (r2 - r1);
-  double imagInterp = im1 + t * (im2 - im1);
 
-  return Complex(realInterp, imagInterp);
+  vector<vector<Complex>> S1 = extractSMatrixAtIndex(comp, i);
+  vector<vector<Complex>> S2 = extractSMatrixAtIndex(comp, i + 1);
+
+  vector<vector<Complex>> S_interp = createMatrix(N, N);
+
+  for (int row = 0; row < N; row++) {
+    for (int col = 0; col < N; col++) {
+      // Interpolate real and imaginary parts separately
+      Complex s1 = S1[row][col];
+      Complex s2 = S2[row][col];
+
+      double real_interp = s1.real() + t * (s2.real() - s1.real());
+      double imag_interp = s1.imag() + t * (s2.imag() - s1.imag());
+
+      S_interp[row][col] = Complex(real_interp, imag_interp);
+    }
+  }
+
+  return S_interp;
 }
 
 
-QMap<QString, QList<double>> SParameterCalculator::loadFrequencyDependentData(const QString& filename) {
-  // Try to use readTouchstoneFile first to check if it's a Touchstone file
-  QMap<QString, QList<double>> touchstone_data = readTouchstoneFile(filename);
+vector<vector<Complex>> SParameterCalculator::extractSMatrixAtIndex(
+    const Component_SPAR& comp, int freqIndex) {
 
+  int N = comp.nodes.size();
+  vector<vector<Complex>> S = createMatrix(N, N);
 
-         // Convert S11 to impedance Z11
-  QMap<QString, QList<double>> impedance_data;
-  QList<double> frequencies = touchstone_data["frequency"];
-  QList<double> s11_re = touchstone_data["S11_re"];
-  QList<double> s11_im = touchstone_data["S11_im"];
-  double Z0 = touchstone_data.contains("Z0") ? touchstone_data["Z0"].first() : 50.0;
+  for (int row = 0; row < N; row++) {
+    for (int col = 0; col < N; col++) {
+      QString reKey = QString("S%1%2_re").arg(row+1).arg(col+1);
+      QString imKey = QString("S%1%2_im").arg(row+1).arg(col+1);
 
-  for (int i = 0; i < frequencies.size(); i++) {
-    // Convert S11 to Z11 using: Z11 = Z0 * (1 + S11) / (1 - S11)
-    Complex S11(s11_re[i], s11_im[i]);
-    Complex Z11 = Z0 * (Complex(1,0) + S11) / (Complex(1,0) - S11);
+      double realPart = 0.0, imagPart = 0.0;
 
-    impedance_data["frequency"].append(frequencies[i]);
-    impedance_data["real"].append(Z11.real());
-    impedance_data["imag"].append(Z11.imag());
+      if (comp.freqDepData.contains(reKey) &&
+          freqIndex < comp.freqDepData[reKey].size()) {
+        realPart = comp.freqDepData[reKey][freqIndex];
+      }
+
+      if (comp.freqDepData.contains(imKey) &&
+          freqIndex < comp.freqDepData[imKey].size()) {
+        imagPart = comp.freqDepData[imKey][freqIndex];
+      }
+
+      S[row][col] = Complex(realPart, imagPart);
+    }
   }
 
-  cout << "Converted S11 from Touchstone file to impedance data: "
-       << impedance_data["frequency"].size() << " points" << endl;
-  return impedance_data;
+  return S;
+}
+
+
+// Helper function to parse inline S-matrix
+vector<vector<Complex>> SParameterCalculator::parseInlineSMatrix(const QString& matrixStr, int numPorts) {
+  vector<vector<Complex>> Smat(numPorts, vector<Complex>(numPorts, Complex(0,0)));
+
+  if (numPorts == 1) {
+    // Parse single entry: (re,im)
+    static const QRegularExpression rx("\\(([-+]?\\d*\\.?\\d+[a-zA-Z]*),([-+]?\\d*\\.?\\d+[a-zA-Z]*)\\)");
+    QRegularExpressionMatch match = rx.match(matrixStr);
+    if (match.hasMatch()) {
+      double re = parseScaledValue(match.captured(1));
+      double im = parseScaledValue(match.captured(2));
+      Smat[0][0] = Complex(re, im);
+    }
+  }
+  else if (numPorts == 2) {
+    // Parse 2x2 matrix entries separated by semicolons
+    QStringList rows = matrixStr.split(";", Qt::SkipEmptyParts);
+
+    for (int r = 0; r < qMin(2, rows.size()); r++) {
+      QString row = rows[r].trimmed();
+      static const QRegularExpression rx("\\(([-+]?\\d*\\.?\\d+[a-zA-Z]*),([-+]?\\d*\\.?\\d+[a-zA-Z]*)\\)");
+      QRegularExpressionMatchIterator it = rx.globalMatch(row);
+
+      int c = 0;
+      while (it.hasNext() && c < 2) {
+        auto match = it.next();
+        double re = parseScaledValue(match.captured(1));
+        double im = parseScaledValue(match.captured(2));
+        Smat[r][c] = Complex(re, im);
+        c++;
+      }
+    }
+  }
+
+  return Smat;
 }

@@ -31,8 +31,8 @@ enum class ComponentType_SPAR {
   COUPLED_LINE,
   IDEAL_COUPLER,
   COMPLEX_IMPEDANCE,
-  FREQUENCY_DEPENDENT_IMPEDANCE,
-  SPAR_BLOCK
+  SPAR_BLOCK,
+  FREQUENCY_DEPENDENT_SPAR_BLOCK
 };
 
 // Circuit component structure
@@ -48,6 +48,15 @@ struct Component_SPAR {
 
   QMap<QString, QList<double>> freqDepData;
 
+  // S-parameter
+  int numRFPorts;
+  double referenceImpedance;
+
+  Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, const vector<vector<Complex>>& S, int rfPorts, double Z0 = 50.0)
+      : type(t), name(n), nodes(nds), Smatrix(S), frequency(0.0),  numRFPorts(rfPorts), referenceImpedance(Z0) {}
+
+  Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, QList<double>> freqData, int rfPorts, double Z0 = 50.0)
+      : type(t), name(n), nodes(nds), frequency(0.0), freqDepData(freqData), numRFPorts(rfPorts), referenceImpedance(Z0) {}
 
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, double> val);
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds, QMap<QString, Complex> zval); // Constructor for complex impedances
@@ -90,9 +99,14 @@ private:
   void addIdealCouplerToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
   vector<vector<Complex>> calculateIdealCouplerYMatrix(double k, double phase_deg, double Z0);
 
-
-  QMap<QString, QList<double>> loadFrequencyDependentData(const QString& filename);
-  Complex interpolateFrequencyDependentImpedance(const Component_SPAR& comp, double freq);
+  // Frequency dependent S-parameter file
+  vector<vector<Complex>> interpolateFrequencyDependentSMatrix(const Component_SPAR& comp, double freq);
+  vector<vector<Complex>> extractSMatrixAtIndex(const Component_SPAR& comp, int freqIndex);
+  void addFrequencyDependentSParamBlockToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
+  vector<vector<Complex>> parseInlineSMatrix(const QString& matrixStr, int numPorts);
+  void addOnePortSParamToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
+  void addTwoPortSParamToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
+  void addSParameterDevice(const string& name, const vector<int>& nodes, const vector<vector<Complex>>& Smatrix, int numRFPorts, double Z0);
 
          // Frequency sweep parameters
   double f_start = 1e6;
