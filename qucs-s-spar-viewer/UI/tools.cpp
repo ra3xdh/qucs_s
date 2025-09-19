@@ -189,8 +189,7 @@ void Qucs_S_SPAR_Viewer::onToolsTabChanged(int index) {
 void Qucs_S_SPAR_Viewer::cleanToolsDatasets(const QString &excludeDataset) {
   for (const QString &ID : qAsConst(Tools_Datasets)) {
     if (excludeDataset.isEmpty() || ID != excludeDataset) {
-      removeTracesByDataset(ID);
-      datasets.remove(ID);
+      removeFile(ID);
     }
   }
   if (excludeDataset.isEmpty()) {

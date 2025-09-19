@@ -48,10 +48,11 @@ void Qucs_S_SPAR_Viewer::removeFile(QString ID)
     removeTracesByDataset(dataset_to_remove);
   }
 
-  datasets.remove(dataset_to_remove);
+  datasets.remove(ID);
+  removeTracesByDataset(ID);
 
          // Update datasets' combobox
-  int index = QCombobox_datasets->findText(dataset_to_remove);
+  int index = QCombobox_datasets->findText(ID);
   QCombobox_datasets->removeItem(index);
   updateTracesCombo();
 }
