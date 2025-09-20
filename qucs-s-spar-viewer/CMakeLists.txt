@@ -135,6 +135,10 @@ file(GLOB SPAR_HEADERS
      SPAR/*.h
 )
 
+file(GLOB SPAR_SPECIAL_COMPONENTS
+     SPAR/SpecialComponents/*.cpp
+)
+
 file(GLOB UI_SOURCES
      UI/*.cpp
 )
@@ -170,6 +174,7 @@ set(spar_viewer_sources
     ${CUSTOM_WIDGETS_SOURCES}
     ${SCHEMATIC_SOURCES}
     ${SPAR_SOURCES}
+    ${SPAR_SPECIAL_COMPONENTS}
     ${MISC_SOURCES}
     ${TOOLS_SOURCES}
     ${QCUSTOMPLOT_SOURCE}

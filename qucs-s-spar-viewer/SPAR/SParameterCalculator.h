@@ -13,6 +13,13 @@
 #include <QStringList>
 #include <QMap>
 #include <QList>
+#include <stdexcept>
+#include <iomanip>
+#include <QTextStream>
+#include <QFile>
+#include <QRegularExpression>
+
+
 #include "../Misc/general.h"
 
 using namespace std;
