@@ -77,14 +77,26 @@ bool SParameterCalculator::parseNetlist() {
 
              // Parse format "R±jX"
       double realPart = 0.0, imagPart = 0.0;
-      QRegularExpression regex("([-+]?[0-9]*\\.?[0-9]+)([-+]j[0-9]*\\.?[0-9]+)?");
+      QRegularExpression regex(
+          "^\\s*"
+          "([-+]?\\d*\\.?\\d+(?:[kKmM]?))"       // Real part with optional suffix in the same group
+          "\\s*"
+          "(?:Ohm)?"
+          "\\s*"
+          "((?:[-+]\\s*j\\s*\\d*\\.?\\d+(?:[kKmM]?))?)" // Imaginary part with suffix, everything in one group
+          "\\s*"
+          "(?:Ohm)?"
+          "\\s*$"
+          );
+
+
       QRegularExpressionMatch match = regex.match(zStr);
       if (match.hasMatch()) {
-        realPart = match.captured(1).toDouble();
+        realPart = parseScaledValue(match.captured(1));
         if (match.captured(2).startsWith("+j") || match.captured(2).startsWith("-j")) {
           QString imagStr = match.captured(2);
           imagStr.remove('j');
-          imagPart = imagStr.toDouble();
+          imagPart = parseScaledValue(imagStr);
         }
       }
       Complex z(realPart, imagPart);
