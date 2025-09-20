@@ -47,9 +47,7 @@ void CapacitivelyCoupledShuntResonatorsFilter::synthesize() {
   std::vector<double> J(N + 1), C(N + 1), deltaC(N), l(N);
 
          // Add Term 1
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
-      0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specification.ZS, Resistance);
   Schematic.appendComponent(TermSpar1);
   PreviousComponent = TermSpar1.ID;
@@ -157,8 +155,7 @@ void CapacitivelyCoupledShuntResonatorsFilter::synthesize() {
     (Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
   }
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
   TermSpar2.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar2);
 

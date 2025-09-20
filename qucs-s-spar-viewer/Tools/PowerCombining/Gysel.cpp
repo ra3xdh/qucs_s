@@ -19,9 +19,7 @@ void PowerCombinerDesigner::Gysel() {
   double lambda4 = SPEED_OF_LIGHT / (4 * Specs.freq);
   double lambda2 = lambda4 * 2;
 
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, -20,
-      0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20, 0);
   TermSpar1.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -59,9 +57,7 @@ void PowerCombinerDesigner::Gysel() {
   TL3.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL3);
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, -20,
-      -75);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20, -75);
   TermSpar2.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
@@ -81,9 +77,7 @@ void PowerCombinerDesigner::Gysel() {
   TL4.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL4);
 
-  ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, -20,
-      75);
+  ComponentInfo TermSpar3(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20, 75);
   TermSpar3.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 

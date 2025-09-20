@@ -76,9 +76,7 @@ void CanonicalFilter::SynthesizeLPF() {
   // Add Term 1
   double k = Specification.ZS;
 
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
-      0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -177,8 +175,7 @@ void CanonicalFilter::SynthesizeLPF() {
   else
     (Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
   TermSpar2.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar2);
 

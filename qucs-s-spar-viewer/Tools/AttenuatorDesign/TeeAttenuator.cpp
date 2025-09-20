@@ -36,7 +36,7 @@ void AttenuatorDesigner::TeeAttenuator() {
   // Schematic implementation: follow new style
   // Input terminal
   ComponentInfo TermSparIN(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
   TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
@@ -68,7 +68,7 @@ void AttenuatorDesigner::TeeAttenuator() {
   Schematic.appendWire(Res3.ID, 0, NI.ID, 0);         // R3 to output node
 
   // Output terminal
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 200, 0);
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 200, 0);
   TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
   Schematic.appendWire(TermSpar2.ID, 0, Res3.ID, 1);    // Terminal to output node

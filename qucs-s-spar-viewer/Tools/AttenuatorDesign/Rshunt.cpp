@@ -41,7 +41,7 @@ void AttenuatorDesigner::RShuntAttenuator() {
 
          // --- Circuit Implementation ---
          // Input terminal
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
+  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
   TermSpar1.val["Z"] = num2str(Specs.Zin, Resistance); // Effective input impedance
   Schematic.appendComponent(TermSpar1);
 
@@ -66,7 +66,7 @@ void AttenuatorDesigner::RShuntAttenuator() {
   Schematic.appendComponent(Ground);
 
          // Output terminal
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 100, 0);
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 100, 0);
   TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance); // Effective output impedance
   Schematic.appendComponent(TermSpar2);
 

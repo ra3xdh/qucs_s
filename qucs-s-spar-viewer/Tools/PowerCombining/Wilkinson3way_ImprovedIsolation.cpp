@@ -30,9 +30,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
 
   double lambda4 = SPEED_OF_LIGHT / (4 * Specs.freq);
 
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, -25,
-      0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -25, 0);
   TermSpar1.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -116,8 +114,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   Schematic.appendWire(TL4.ID, 0, N1.ID, 0);
   Schematic.appendWire(TL4.ID, 1, N4.ID, 0);
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 225, 0);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 225, 0);
   TermSpar2.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
@@ -143,9 +140,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   Ri3.val["R"] = num2str(R2, Resistance);
   Schematic.appendComponent(Ri3);
 
-  ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 225,
-      -100);
+  ComponentInfo TermSpar3(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 225, -100);
   TermSpar3.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
@@ -173,9 +168,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   Ri4.val["R"] = num2str(R2, Resistance);
   Schematic.appendComponent(Ri4);
 
-  ComponentInfo TermSpar4(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 225,
-      100);
+  ComponentInfo TermSpar4(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 225, 100);
   TermSpar4.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar4);
 

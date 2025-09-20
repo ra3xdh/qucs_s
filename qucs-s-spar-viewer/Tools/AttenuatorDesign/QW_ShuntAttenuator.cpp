@@ -41,7 +41,7 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
 
          // Input terminal
   ComponentInfo TermSparIN(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
   TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
@@ -141,7 +141,7 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
 
 
          // Output terminal
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 200, 0);
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 200, 0);
   TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
   Schematic.appendComponent(TermSpar2);
 

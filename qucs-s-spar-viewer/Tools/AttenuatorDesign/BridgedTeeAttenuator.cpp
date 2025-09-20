@@ -39,8 +39,7 @@ void AttenuatorDesigner::BridgedTeeAttenuator() {
   Pdiss.R4 = 4 * R4 * Specs.Zin * Specs.Zin / K;
 
   // Schematic implementation - match style of PiAttenuator()
-  ComponentInfo TermSparIN(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
+  ComponentInfo TermSparIN(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
   TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
@@ -89,7 +88,7 @@ void AttenuatorDesigner::BridgedTeeAttenuator() {
   Schematic.appendWire(Res1.ID, 1, NI.ID, 0);
   Schematic.appendWire(Res3.ID, 1, NI.ID, 0);
   // Output terminal
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 200, 0);
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 200, 0);
   TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
   Schematic.appendWire(TermSpar2.ID, 0, NI.ID, 0);

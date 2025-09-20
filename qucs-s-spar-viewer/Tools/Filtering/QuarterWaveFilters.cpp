@@ -58,9 +58,7 @@ void QuarterWaveFilters::synthesize() {
   int posx = 0;
   QString PreviousComp;
 
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
-      0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
   PreviousComp = TermSpar1.ID;
@@ -129,9 +127,7 @@ void QuarterWaveFilters::synthesize() {
   QW_TL.val["Length"] = ConvertLengthFromM("mm", lambda4);
   Schematic.appendComponent(QW_TL);
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0,
-      posx + 50, 0);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx + 50, 0);
   TermSpar2.val["Z"] = num2str(Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 

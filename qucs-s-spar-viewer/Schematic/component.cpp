@@ -69,13 +69,13 @@ QRectF Component::boundingRect() const {
   case Resistor:
   case Capacitor:
   case Inductor:
-    R = QRect(-40, -40, 80, 80);
+    R = QRect(-40, -40, 120, 120);
     break;
   case GND:
     R = QRect(-2 * 7, -2 * 7, 2 * 15, 2 * 10);
     break;
   case Term:
-    R = QRect(-25, -25, 50, 50);
+    R = QRect(-50, -50, 100, 100);
     break;
   case SPAR_Block:
     R = QRect(-25, -25, 50, 50);
@@ -233,7 +233,7 @@ QPoint Component::getPortLocation(int port_number) {
     P = QPoint(0, -11);
     break;
   case Term:
-    P = QPoint(0, 0);
+    P = QPoint(10, 0);
     break;
   default:
     break;
@@ -554,13 +554,12 @@ void Component::paintResistor(QPainter *painter) {
   painter->drawLine(QPoint(-w, -14 + 27.5), QPoint(0, 16));
   painter->drawLine(QPoint(0, 16), QPoint(0, 25));
 
+  QPoint OriginText(10, -10);
+
   if (Rotation != 0) {
     painter->rotate(-Rotation);
-  }
-
-  QPoint OriginText(10, -10);
-  if (Rotation != 0)
     OriginText.setX(-10), OriginText.setY(10);
+  } 
 
   painter->setPen(QPen(Qt::black, 1));
   painter->drawText(QRect(OriginText, QPoint(100, 100)),
@@ -576,23 +575,23 @@ void Component::paintTerm(QPainter *painter) {
   }
 
   QPainterPath path;
-  path.moveTo(10, -6);
-  path.lineTo(0, 0);
-  path.lineTo(10, 6);
-  path.lineTo(10, -6);
+  path.moveTo(0, 0);
+  path.lineTo(0, 6);
+  path.lineTo(10, 0);
+  path.lineTo(0, -6);
   painter->setPen(Qt ::NoPen);
   painter->fillPath(path, QBrush(QColor("red")));
   painter->setPen(QPen(Qt::black, 1));
 
-  if (Rotation != 0) { // The rotation is undone to draw the text
+  int OriginText_x = -25;
+  if (Rotation != 0) {
     painter->rotate(-Rotation);
+    OriginText_x = 5;
   }
 
-  QString str = QString("%1%2").arg(75).arg(QChar(0xa9, 0x03));
-  painter->drawText(QRect(-5, 0, 100, 100), QString("%1").arg(this->ID));
-  painter->drawText(
-      QRect(-5, 10, 100, 100),
-      QString("%1").arg(Value["Z"].replace("Ohm", QChar(0xa9, 0x03))));
+
+  painter->drawText(QRect(OriginText_x, -10, 100, 100), QString("%1").arg(this->ID));
+  painter->drawText( QRect(OriginText_x, 0, 100, 100),  QString("%1").arg(Value["Z"].replace("Ohm", QChar(0xa9, 0x03))));
 }
 
 void Component::paintOpenStub(QPainter *painter) {

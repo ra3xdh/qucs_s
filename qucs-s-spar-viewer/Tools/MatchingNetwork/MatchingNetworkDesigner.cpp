@@ -143,6 +143,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports(){
       // This component need to be removed
       comp.ID = "Z2";
       comp.Coordinates[0] = zl_output + x_offset;
+      comp.Rotation = 180;
       continue;
     }
 

@@ -44,9 +44,7 @@ void CoupledLineBandpassFilter::synthesize() {
   std::vector<double> J(N + 1), Z0e(N + 1), Z0o(N + 1);
 
   // Add Term 1
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
-      0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specification.ZS, Resistance);
   Schematic.appendComponent(TermSpar1);
   PreviousComponent = TermSpar1.ID;
@@ -126,8 +124,7 @@ void CoupledLineBandpassFilter::synthesize() {
     (Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
 
   ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx,
-      posy);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, posy);
   TermSpar2.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar2);
 

@@ -376,8 +376,7 @@ void EllipticFilter::SynthesizeEllipticFilter() {
     RL = Specification.ZS * Specification.ZS / RL;
 
   // Add Term 1 (Load)
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
   TermSpar1.val["Z"] = num2str(RL, Resistance);
   Schematic.appendComponent(TermSpar1);
   UnconnectedComponents[TermSpar1.ID] = 0;
@@ -411,9 +410,7 @@ void EllipticFilter::SynthesizeEllipticFilter() {
 
   posx += 100;
   // Add Term 2 (Source)
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
-      0);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar2.val["Z"] = num2str(Specification.ZS, Resistance);
   Schematic.appendComponent(TermSpar2);
 

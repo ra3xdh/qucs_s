@@ -96,9 +96,7 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
   QString ConnectionAux = "";
   double k = Specification.ZS;
 
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
-      0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -171,8 +169,7 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
 
   posx += 50;
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
   TermSpar2.val["Z"] = num2str(Specification.ZL, Resistance);
   Schematic.appendComponent(TermSpar2);
   ConnectionAux = TermSpar2.ID;

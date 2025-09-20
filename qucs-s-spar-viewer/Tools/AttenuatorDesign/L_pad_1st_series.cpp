@@ -36,7 +36,7 @@ void AttenuatorDesigner::LPadFirstSeriesAttenuator() {
 
          // Circuit implementation
          // Input terminal
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
+  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
   TermSpar1.val["Z"] = num2str(Specs.Zin, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -68,7 +68,7 @@ void AttenuatorDesigner::LPadFirstSeriesAttenuator() {
 
 
          // Output terminal
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 200, 0);
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 200, 0);
   TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
   Schematic.appendComponent(TermSpar2);
 

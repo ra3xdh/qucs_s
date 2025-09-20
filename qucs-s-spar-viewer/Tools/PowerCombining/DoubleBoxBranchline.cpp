@@ -25,9 +25,7 @@ void PowerCombinerDesigner::DoubleBoxBranchline() {
   double ZD = Specs.Z0 * sqrt(r * (t * t - r)) / (t - 1);
   double ZB = Specs.Z0 * sqrt(r - (r * r) / (t * t));
 
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, -20,
-      -50);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20, -50);
   TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -36,19 +34,14 @@ void PowerCombinerDesigner::DoubleBoxBranchline() {
       -50);
   Schematic.appendNode(NSP1);
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 220,
-      -50);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 220, -50);
   TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
-  NodeInfo NSP2(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 200,
-      -50);
+  NodeInfo NSP2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 200, -50);
   Schematic.appendNode(NSP2);
 
-  ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 220, 50);
+  ComponentInfo TermSpar3(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 220, 50);
   TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 

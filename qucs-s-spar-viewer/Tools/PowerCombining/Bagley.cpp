@@ -22,8 +22,7 @@ void PowerCombinerDesigner::Bagley() {
   double Zbranch = 2 * Specs.Z0 / sqrt(Specs.Noutputs);
   NodeInfo NI;
 
-  ComponentInfo TermSpar(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                         Term, 0, (Specs.Noutputs - 1) * 50, -30);
+  ComponentInfo TermSpar(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 90, (Specs.Noutputs - 1) * 50, -30);
   TermSpar.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar);
 
@@ -49,8 +48,7 @@ void PowerCombinerDesigner::Bagley() {
   Schematic.appendWire(TL2.ID, 1, N1.ID, 0);
   Schematic.appendWire(TermSpar.ID, 0, N1.ID, 0);
 
-  TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                     Term, 90, 0, 120);
+  TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, -90, 0, 120);
   TermSpar.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar);
 
@@ -74,8 +72,7 @@ void PowerCombinerDesigner::Bagley() {
     Schematic.appendComponent(TL);
     Schematic.appendWire(NI.ID, 0, TL.ID, 0);
 
-    TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                       Term, 90, posx + 50, 120);
+    TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, -90, posx + 50, 120);
     TermSpar.val["Z"] = num2str(Specs.Z0, Resistance);
     Schematic.appendComponent(TermSpar);
 

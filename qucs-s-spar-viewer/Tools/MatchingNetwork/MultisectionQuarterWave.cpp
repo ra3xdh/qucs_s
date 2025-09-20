@@ -116,7 +116,7 @@ void MultisectionQuarterWave::designChebyshev(std::vector<double> &Zs) {
 void MultisectionQuarterWave::synthesize() {
     // Simple schematic: Port -> quarter-wave TL -> ... -> Load
     ComponentInfo TermSrc(
-        QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
+        QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
     TermSrc.val["Z"] = num2str(Specs.Z0, Resistance);
     Schematic.appendComponent(TermSrc);
 

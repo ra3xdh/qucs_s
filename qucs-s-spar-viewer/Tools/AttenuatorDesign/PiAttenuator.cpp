@@ -38,8 +38,7 @@ void AttenuatorDesigner::PiAttenuator() {
   Pdiss.R3 = Specs.Pin * K * K / (R1 * R1 * R3 * Specs.Zin);
 
   // Circuit implementation
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 0, 0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
   TermSpar1.val["Z"] = num2str(Specs.Zin, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -82,7 +81,7 @@ void AttenuatorDesigner::PiAttenuator() {
   Schematic.appendWire(Res3.ID, 1, NI.ID, 0);
   Schematic.appendWire(Res3.ID, 0, Ground.ID, 0);
 
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 200, 0);
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 200, 0);
   TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
 

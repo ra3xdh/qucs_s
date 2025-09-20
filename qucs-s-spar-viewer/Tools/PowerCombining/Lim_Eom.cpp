@@ -37,9 +37,7 @@ void PowerCombinerDesigner::Lim_Eom() {
   double Z4 = Specs.Z0 * sqrt(d2 / N);
   double Z5 = Specs.Z0 * sqrt(d2 / K);
 
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, -25,
-      -100);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -25, -100);
   TermSpar1.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -64,9 +62,7 @@ void PowerCombinerDesigner::Lim_Eom() {
   Schematic.appendNode(N1);
   Schematic.appendWire(TL1.ID, 1, N1.ID, 0);
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, -90, 100,
-      -130);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 90, 100, -130);
   TermSpar2.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
@@ -127,9 +123,7 @@ void PowerCombinerDesigner::Lim_Eom() {
   Schematic.appendNode(N4);
   Schematic.appendWire(TL4.ID, 0, N4.ID, 0);
 
-  ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 220,
-      100);
+  ComponentInfo TermSpar3(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 220, 100);
   TermSpar3.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
   Schematic.appendWire(TermSpar3.ID, 0, N4.ID, 0);
@@ -174,9 +168,7 @@ void PowerCombinerDesigner::Lim_Eom() {
   Schematic.appendNode(N6);
   Schematic.appendWire(TL6.ID, 0, N6.ID, 0);
 
-  ComponentInfo TermSpar4(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, -20,
-      100);
+  ComponentInfo TermSpar4(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20, 100);
   TermSpar4.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar4);
   Schematic.appendWire(TermSpar4.ID, 0, N6.ID, 0);
