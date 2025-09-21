@@ -59,6 +59,12 @@ enum Coupling {
 };
 enum SemiLumpedImplementation { ONLY_INDUCTORS, INDUCTORS_AND_SHUNT_CAPS };
 
+enum TransmissionLineType{
+  Ideal,
+  Microstrip,
+  Stripline
+};
+
 static const double SPEED_OF_LIGHT =
     299792458.0; // REMOVE THIS WHEN THIS TOOL BECOMES INTEGRATED IN QUCS
 
@@ -73,6 +79,7 @@ struct FilterSpecifications {
   FilterClass FilterType;      // Lowpass, Highpass, Bandpass, Bandstop
   ResponseType FilterResponse; // Butterworth, Chebyshev, Cauer, etc...
   QString Implementation;
+  TransmissionLineType TL_implementation; // Ideal, microstrip, stripline, etc.
   Coupling DC_Coupling; // Only for bandpass direct coupled filters
   bool isCLC;           // CLC or LCL implementation
   unsigned int order;   // Filter order
@@ -98,6 +105,7 @@ struct FilterSpecifications {
 struct MatchingNetworkDesignParameters {
   double Z0;
   int Topology;
+  TransmissionLineType TL_implementation; // Ideal, microstrip, stripline, etc.
   int Solution;
   int OpenShort;
   int NSections;
@@ -134,6 +142,7 @@ struct NetworkInfo {
 
 struct PowerCombinerParams {
   QString Type; // Wilkinson, branchlines, Bagley, etc.
+  TransmissionLineType TL_implementation; // Ideal, microstrip, stripline, etc.
   int Noutputs; // Number of output branches
   int Nstages;  // Number of combiner stages (broadband Wilkinson)
   std::deque<double> OutputRatio; // Splitting ratio
@@ -146,6 +155,7 @@ struct PowerCombinerParams {
 
 struct AttenuatorDesignParameters {
   QString Topology;   // Attenuator topology
+  TransmissionLineType TL_implementation; // Ideal, microstrip, stripline, etc.
   double Zin;         // Input impedance
   double Zout;        // Output impedance
   double Attenuation; // Attenuation in dB
