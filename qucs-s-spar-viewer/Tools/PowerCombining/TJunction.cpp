@@ -24,7 +24,7 @@ void PowerCombinerDesigner::TJunction() {
   ComponentInfo TL4, TL5; // Auxiliar lines for matching in case of K!=1
 
   ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-  TermSpar1.val["Z0"] = num2str(Specs.Z0, Resistance);
+  TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   ComponentInfo TL1(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),  TransmissionLine, 90, 50, 0);
@@ -82,7 +82,7 @@ void PowerCombinerDesigner::TJunction() {
   }
 
   ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, xpos_term, -50);
-  TermSpar2.val["Z0"] = num2str(Specs.Z0, Resistance);
+  TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   QString dst;
@@ -91,7 +91,7 @@ void PowerCombinerDesigner::TJunction() {
 
   ComponentInfo TermSpar3( QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, xpos_term, 50);
 
-  TermSpar3.val["Z0"] = num2str(Specs.Z0, Resistance);
+  TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
   (index_t2 == 5) ? dst = TL5.ID : dst = TL3.ID;

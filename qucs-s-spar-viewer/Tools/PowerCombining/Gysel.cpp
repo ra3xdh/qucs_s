@@ -20,7 +20,7 @@ void PowerCombinerDesigner::Gysel() {
   double lambda2 = lambda4 * 2;
 
   ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20, 0);
-  TermSpar1.val["Z0"] = num2str(Specs.Z0, Resistance);
+  TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   NodeInfo NSP1(
@@ -58,7 +58,7 @@ void PowerCombinerDesigner::Gysel() {
   Schematic.appendComponent(TL3);
 
   ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20, -75);
-  TermSpar2.val["Z0"] = num2str(Specs.Z0, Resistance);
+  TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   NodeInfo NSP2(
@@ -78,7 +78,7 @@ void PowerCombinerDesigner::Gysel() {
   Schematic.appendComponent(TL4);
 
   ComponentInfo TermSpar3(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20, 75);
-  TermSpar3.val["Z0"] = num2str(Specs.Z0, Resistance);
+  TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
   NodeInfo NSP3(

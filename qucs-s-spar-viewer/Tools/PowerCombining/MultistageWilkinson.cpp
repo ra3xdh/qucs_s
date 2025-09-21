@@ -55,7 +55,7 @@ void PowerCombinerDesigner::MultistageWilkinson() {
   (Specs.Implementation == "Lumped LC") ? posy = 75 : posy = 50;
 
   TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
-  TermSpar1.val["Z0"] = num2str(Specs.Z0, Resistance);
+  TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   posx += 50;
@@ -283,14 +283,14 @@ void PowerCombinerDesigner::MultistageWilkinson() {
   // Add the output terminals
   // Upper branch term
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, -posy);
-  TermSpar2.val["Z0"] = num2str(Specs.Z0, Resistance);
+  TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   Schematic.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
 
   // Lower branch term
   TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, posy);
-  TermSpar3.val["Z0"] = num2str(Specs.Z0, Resistance);
+  TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
   Schematic.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
 }
