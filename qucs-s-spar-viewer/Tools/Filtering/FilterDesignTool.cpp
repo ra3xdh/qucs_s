@@ -21,6 +21,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
 
   //****************************** BUILD THE UI **************************
   QGridLayout *FilterDesignLayout = new QGridLayout();
+  int layout_row = 0; // Row index. This is useful to add a new line on the layout without the need of modifying manually all the widgets.
 
          //********** Filter Implementation ***********
   FilterImplementationCombo = new QComboBox();
@@ -33,8 +34,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterImplementationCombo->addItem("End-coupled");
   FilterImplementationCombo->addItem("Semilumped");
   //FilterImplementationCombo->addItem("Coupled line SIR with harmonic rejection");
-  FilterDesignLayout->addWidget(new QLabel("Implementation"), 0, 0);
-  FilterDesignLayout->addWidget(FilterImplementationCombo, 0, 1);
+  FilterDesignLayout->addWidget(new QLabel("Implementation"), layout_row, 0);
+  FilterDesignLayout->addWidget(FilterImplementationCombo, layout_row, 1);
   //******** Tee or Pi (LC ladder only) ********
   QWidget *TeePiWidget = new QWidget();
   QHBoxLayout *TeePiLayout = new QHBoxLayout();
@@ -44,9 +45,23 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   TeePiLayout->addWidget(CLCRadioButton);
   TeePiLayout->addWidget(LCLRadioButton);
   TeePiWidget->setLayout(TeePiLayout);
-  FilterDesignLayout->addWidget(TeePiWidget, 0, 2);
+  FilterDesignLayout->addWidget(TeePiWidget, layout_row, 2);
+
+
+  // Transmission line implementation
+  layout_row++;
+  TL_Implementation_Label = new QLabel(QString("TLIN implementation"));
+  TL_Implementation_Combo = new QComboBox();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  TL_Implementation_Combo->addItem("Stripline");
+  FilterDesignLayout->addWidget(TL_Implementation_Label, layout_row, 0);
+  FilterDesignLayout->addWidget(TL_Implementation_Combo, layout_row, 1);
+
+
 
          //************ Response type **************
+  layout_row++;
   FilterResponseTypeCombo = new QComboBox();
   DefaultFilterResponses.append("Chebyshev");
   DefaultFilterResponses.append("Butterworth");
@@ -54,38 +69,42 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   DefaultFilterResponses.append("Bessel");
   DefaultFilterResponses.append("Gaussian");
   FilterResponseTypeCombo->addItems(DefaultFilterResponses);
-  FilterDesignLayout->addWidget(new QLabel("Response"), 1, 0);
-  FilterDesignLayout->addWidget(FilterResponseTypeCombo, 1, 1);
+  FilterDesignLayout->addWidget(new QLabel("Response"), layout_row, 0);
+  FilterDesignLayout->addWidget(FilterResponseTypeCombo, layout_row, 1);
 
          //********** Direct coupled filters - Coupling type *****
+  layout_row++;
   DC_CouplingTypeCombo = new QComboBox();
   DC_CouplingTypeCombo->addItem("Capacitative coupled shunt resonators");
   DC_CouplingTypeCombo->addItem("Inductive coupled series resonators");
   DC_CouplingLabel = new QLabel("Coupling");
-  FilterDesignLayout->addWidget(DC_CouplingLabel, 2, 0);
-  FilterDesignLayout->addWidget(DC_CouplingTypeCombo, 2, 1);
+  FilterDesignLayout->addWidget(DC_CouplingLabel, layout_row, 0);
+  FilterDesignLayout->addWidget(DC_CouplingTypeCombo, layout_row, 1);
   DC_CouplingTypeCombo->hide();
   DC_CouplingLabel->hide();
 
          //************ Filter class ****************
+  layout_row++;
   FilterClassCombo = new QComboBox();
   FilterClassCombo->addItem("Lowpass");
   FilterClassCombo->addItem("Highpass");
   FilterClassCombo->addItem("Bandpass");
   FilterClassCombo->addItem("Bandstop");
-  FilterDesignLayout->addWidget(new QLabel("Class"), 3, 0);
-  FilterDesignLayout->addWidget(FilterClassCombo, 3, 1);
+  FilterDesignLayout->addWidget(new QLabel("Class"), layout_row, 0);
+  FilterDesignLayout->addWidget(FilterClassCombo, layout_row, 1);
 
          //*************** Order *******************
+  layout_row++;
   OrderSpinBox = new QSpinBox();
   OrderSpinBox->setValue(3);
   OrderSpinBox->setMinimum(2);
 
-  FilterDesignLayout->addWidget(new QLabel("Order"), 4, 0);
-  FilterDesignLayout->addWidget(OrderSpinBox, 4, 1);
+  FilterDesignLayout->addWidget(new QLabel("Order"), layout_row, 0);
+  FilterDesignLayout->addWidget(OrderSpinBox, layout_row, 1);
 
          //******* Cutoff freq (Lowpass and Highpass) *********
          //****** Central freq (Bandpass and Bandstop) *********
+  layout_row++;
   FCSpinbox = new QDoubleSpinBox();
   FCSpinbox->setMinimum(1);
   FCSpinbox->setMaximum(1e6);
@@ -98,11 +117,12 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FC_ScaleCombobox->addItem("kHz");
   FC_ScaleCombobox->addItem("Hz");
   FC_ScaleCombobox->setCurrentIndex(1);
-  FilterDesignLayout->addWidget(new QLabel("Cutoff freq"), 5, 0);
-  FilterDesignLayout->addWidget(FCSpinbox, 5, 1);
-  FilterDesignLayout->addWidget(FC_ScaleCombobox, 5, 2);
+  FilterDesignLayout->addWidget(new QLabel("Cutoff freq"), layout_row, 0);
+  FilterDesignLayout->addWidget(FCSpinbox, layout_row, 1);
+  FilterDesignLayout->addWidget(FC_ScaleCombobox, layout_row, 2);
 
          //************* Bandwidth ***********
+  layout_row++;
   BWSpinbox = new QDoubleSpinBox();
   BWSpinbox->setMinimum(1);
   BWSpinbox->setMaximum(1e6);
@@ -115,11 +135,12 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   BW_ScaleCombobox->addItem("kHz");
   BW_ScaleCombobox->addItem("Hz");
   BW_ScaleCombobox->setCurrentIndex(1);
-  FilterDesignLayout->addWidget(new QLabel("Bandwidth"), 6, 0);
-  FilterDesignLayout->addWidget(BWSpinbox, 6, 1);
-  FilterDesignLayout->addWidget(BW_ScaleCombobox, 6, 2);
+  FilterDesignLayout->addWidget(new QLabel("Bandwidth"), layout_row, 0);
+  FilterDesignLayout->addWidget(BWSpinbox, layout_row, 1);
+  FilterDesignLayout->addWidget(BW_ScaleCombobox, layout_row, 2);
 
          //************** Ripple ****************
+  layout_row++;
   RippleSpinbox = new QDoubleSpinBox();
   RippleSpinbox->setMinimum(0.01);
   RippleSpinbox->setMaximum(2);
@@ -127,11 +148,12 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   RippleSpinbox->setSingleStep(0.01); // Step fixed to 0.01dB
   RippleLabel = new QLabel("Ripple");
   RippledBLabel = new QLabel("dB");
-  FilterDesignLayout->addWidget(RippleLabel, 7, 0);
-  FilterDesignLayout->addWidget(RippleSpinbox, 7, 1);
-  FilterDesignLayout->addWidget(RippledBLabel, 7, 2);
+  FilterDesignLayout->addWidget(RippleLabel, layout_row, 0);
+  FilterDesignLayout->addWidget(RippleSpinbox, layout_row, 1);
+  FilterDesignLayout->addWidget(RippledBLabel, layout_row, 2);
 
          //************** Stopband attenuation ****************
+  layout_row++;
   StopbandAttSpinbox = new QDoubleSpinBox();
   StopbandAttSpinbox->setMinimum(5);
   StopbandAttSpinbox->setMaximum(150);
@@ -139,14 +161,15 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   StopbandAttSpinbox->setSingleStep(0.1); // Step fixed to 0.1dB
   StopbandAttLabel = new QLabel("Stopband att");
   StopbandAttdBLabel = new QLabel("dB");
-  FilterDesignLayout->addWidget(StopbandAttLabel, 8, 0);
-  FilterDesignLayout->addWidget(StopbandAttSpinbox, 8, 1);
-  FilterDesignLayout->addWidget(StopbandAttdBLabel, 8, 2);
+  FilterDesignLayout->addWidget(StopbandAttLabel, layout_row, 0);
+  FilterDesignLayout->addWidget(StopbandAttSpinbox, layout_row, 1);
+  FilterDesignLayout->addWidget(StopbandAttdBLabel, layout_row, 2);
   StopbandAttSpinbox->setVisible(false);
   StopbandAttLabel->setVisible(false);
   StopbandAttdBLabel->setVisible(false);
 
          //************** Elliptic type ****************
+  layout_row++;
   EllipticTypeLabel = new QLabel("Elliptic type");
   EllipticType = new QComboBox();
   EllipticType->addItem("Type A");
@@ -155,10 +178,11 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   EllipticType->addItem("Type S");
   EllipticTypeLabel->setVisible(false);
   EllipticType->setVisible(false);
-  FilterDesignLayout->addWidget(EllipticTypeLabel, 9, 0);
-  FilterDesignLayout->addWidget(EllipticType, 9, 1);
+  FilterDesignLayout->addWidget(EllipticTypeLabel, layout_row, 0);
+  FilterDesignLayout->addWidget(EllipticType, layout_row, 1);
 
          //***************  Minimum impedance achievable in the manufacturing process **************
+  layout_row++;
   MinimumZLabel = new QLabel("Minimum Z");
   MinimumZ_Spinbox = new QDoubleSpinBox();
   MinimumZ_Spinbox->setMinimum(1);
@@ -169,11 +193,12 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   MinimumZLabel->hide();
   MinimumZ_Spinbox->hide();
   MinimumZ_Unit_Label->hide();
-  FilterDesignLayout->addWidget(MinimumZLabel, 10, 0);
-  FilterDesignLayout->addWidget(MinimumZ_Spinbox, 10, 1);
-  FilterDesignLayout->addWidget(MinimumZ_Unit_Label, 10, 2);
+  FilterDesignLayout->addWidget(MinimumZLabel, layout_row, 0);
+  FilterDesignLayout->addWidget(MinimumZ_Spinbox, layout_row, 1);
+  FilterDesignLayout->addWidget(MinimumZ_Unit_Label, layout_row, 2);
 
          //***************  Maximum impedance achievable in the manufacturing process **************
+  layout_row++;
   MaximumZLabel = new QLabel("Maximum Z");
   MaximumZ_Spinbox = new QDoubleSpinBox();
   MaximumZ_Spinbox->setMinimum(1);
@@ -184,10 +209,13 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   MaximumZLabel->hide();
   MaximumZ_Spinbox->hide();
   MaximumZ_Unit_Label->hide();
-  FilterDesignLayout->addWidget(MaximumZLabel, 11, 0);
-  FilterDesignLayout->addWidget(MaximumZ_Spinbox, 11, 1);
-  FilterDesignLayout->addWidget(MaximumZ_Unit_Label, 11, 2);
+  FilterDesignLayout->addWidget(MaximumZLabel, layout_row, 0);
+  FilterDesignLayout->addWidget(MaximumZ_Spinbox, layout_row, 1);
+  FilterDesignLayout->addWidget(MaximumZ_Unit_Label, layout_row, 2);
+
+
   //************************* Semilumped implementation settings *********************
+  layout_row++;
   SemiLumpedImplementationLabel = new QLabel("Semilumped settings");
   SemiLumpedImplementationCombo = new QComboBox();
   SemiLumpedImplementationCombo->addItem("Replace inductors and shunt capacitors");
@@ -198,6 +226,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterDesignLayout->addWidget(SemiLumpedImplementationCombo, 12, 1);
 
          // Coupled line SIR BPF type
+  layout_row++;
   ImpedanceRatio_Label = new QLabel(QString("Impedance ratio, K"));
   ImpedanceRatio_Spinbox = new QDoubleSpinBox();
   ImpedanceRatio_Spinbox->setMinimum(0.1);
@@ -205,20 +234,22 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   ImpedanceRatio_Spinbox->setValue(0.5);
   ImpedanceRatio_Spinbox->setSingleStep(0.1);
 
-  FilterDesignLayout->addWidget(ImpedanceRatio_Label, 13, 0);
-  FilterDesignLayout->addWidget(ImpedanceRatio_Spinbox, 13, 1);
+  FilterDesignLayout->addWidget(ImpedanceRatio_Label, layout_row, 0);
+  FilterDesignLayout->addWidget(ImpedanceRatio_Spinbox, layout_row, 1);
 
          //************ Source impedance **********
+  layout_row++;
   SourceImpedanceLineEdit = new QLineEdit("50");
-  FilterDesignLayout->addWidget(new QLabel("ZS"), 14, 0);
-  FilterDesignLayout->addWidget(SourceImpedanceLineEdit, 14, 1);
-  FilterDesignLayout->addWidget(new QLabel(QChar(0xa9, 0x03)), 14, 2);
+  FilterDesignLayout->addWidget(new QLabel("ZS"), layout_row, 0);
+  FilterDesignLayout->addWidget(SourceImpedanceLineEdit, layout_row, 1);
+  FilterDesignLayout->addWidget(new QLabel(QChar(0xa9, 0x03)), layout_row, 2);
 
          // Widgets to add a trace to plot
+  layout_row++;
   traceNameLabel = new QLabel("Trace name");
   traceNameLineEdit = new QLineEdit("Filter1");
-  FilterDesignLayout->addWidget(traceNameLabel, 15, 0);
-  FilterDesignLayout->addWidget(traceNameLineEdit, 15, 1);
+  FilterDesignLayout->addWidget(traceNameLabel, layout_row, 0);
+  FilterDesignLayout->addWidget(traceNameLineEdit, layout_row, 1);
 
 
   this->setLayout(FilterDesignLayout);
@@ -512,8 +543,18 @@ void FilterDesignTool::UpdateDesignParameters() {
 // This function is called from ImplementationComboChanged() and sets the UI widgets for the LC ladder topologies.
 void FilterDesignTool::setSettings_LC_Ladder(){
   // LC ladder filters
+
+  // Block signals to prevent unnecessary design triggering
+  FilterClassCombo->blockSignals(true);
+  FilterResponseTypeCombo->blockSignals(true);
+
+  // Hide coupling type
   DC_CouplingTypeCombo->hide();
   DC_CouplingLabel->hide();
+
+  // Hide TLIN implementation
+  TL_Implementation_Label->hide();
+  TL_Implementation_Combo->hide();
 
          // Show CLC/LCL box
   CLCRadioButton->show();
@@ -543,7 +584,6 @@ void FilterDesignTool::setSettings_LC_Ladder(){
 
   FilterClassCombo->setEnabled(true);
   QString CurrentResponse = FilterResponseTypeCombo->currentText();
-  FilterResponseTypeCombo->blockSignals(true);
 
          // Set default filter responses + Elliptic
   QStringList filter_response;
@@ -559,14 +599,27 @@ void FilterDesignTool::setSettings_LC_Ladder(){
       break;
     }
   }
+
+  // Unblock signals
+  FilterClassCombo->blockSignals(false);
   FilterResponseTypeCombo->blockSignals(false);
+
 }
 
 // This function is called from ImplementationComboChanged() and sets the UI widgets for the LC direct coupled topologies.
 void FilterDesignTool::setSettings_LC_Direct_Coupled(){
+
+  // Block signals to prevent unnecessary design triggering
+  FilterClassCombo->blockSignals(true);
+  FilterResponseTypeCombo->blockSignals(true);
+
+  // Show coupling type
   DC_CouplingTypeCombo->show();
   DC_CouplingLabel->show();
-  FilterResponseTypeCombo->blockSignals(true);
+
+  // Hide TLIN implementation
+  TL_Implementation_Label->hide();
+  TL_Implementation_Combo->hide();
 
          // Hide CLC/LCL box
   CLCRadioButton->hide();
@@ -600,14 +653,24 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled(){
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
 
+  // Unblock signals
   FilterClassCombo->blockSignals(false);
   FilterResponseTypeCombo->blockSignals(false);
 }
 
 // This function is called from ImplementationComboChanged() and sets the UI widgets for the Stepped-Z LPF
 void FilterDesignTool::setSettings_Stepped_Z_LPF(){
+  // Block signals to prevent unnecessary design triggering
+  FilterClassCombo->blockSignals(true);
   FilterResponseTypeCombo->blockSignals(true);
-  FilterResponseTypeCombo->clear();
+
+  // Show TLIN implementation
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Hide coupling type
+  DC_CouplingTypeCombo->hide();
+  DC_CouplingLabel->hide();
 
          // Show CLC/LCL box
   CLCRadioButton->show();
@@ -641,14 +704,25 @@ void FilterDesignTool::setSettings_Stepped_Z_LPF(){
   FilterResponseTypeCombo->addItems(DefaultFilterResponses);
   FilterResponseTypeCombo->setCurrentIndex(0); // Chebyshev
 
-  FilterClassCombo->setEnabled(false);
+         // Unblock signals
+  FilterClassCombo->blockSignals(false);
   FilterResponseTypeCombo->blockSignals(false);
 }
 
 // This function is called from ImplementationComboChanged() and sets the UI widgets for the QW BPF and BSF.
 void FilterDesignTool::setSettings_Quarterwavelength_BPF_BSF(){
+
+  // Block signals to prevent unneeded synthesis triggering
   FilterResponseTypeCombo->blockSignals(true);
   FilterClassCombo->blockSignals(true);
+
+  // Show TLIN implementation
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Hide coupling type
+  DC_CouplingTypeCombo->hide();
+  DC_CouplingLabel->hide();
 
          // Hide CLC box
   CLCRadioButton->hide();
@@ -683,15 +757,25 @@ void FilterDesignTool::setSettings_Quarterwavelength_BPF_BSF(){
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
 
-
+ // Unblock signals
   FilterResponseTypeCombo->blockSignals(false);
   FilterClassCombo->blockSignals(false);
 }
 
 // This function is called from ImplementationComboChanged() and sets the UI widgets for the end-coupled BPF
 void FilterDesignTool::setSettings_EndCoupled_BPF(){
+
+  // Block signals to prevent unneeded synthesis triggering
   FilterResponseTypeCombo->blockSignals(true);
   FilterClassCombo->blockSignals(true);
+
+  // Show TLIN implementation
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Hide coupling type
+  DC_CouplingTypeCombo->hide();
+  DC_CouplingLabel->hide();
 
          // Show CLC/LCL box
   CLCRadioButton->show();
@@ -725,6 +809,7 @@ void FilterDesignTool::setSettings_EndCoupled_BPF(){
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
 
+  // Unblock signals
   FilterResponseTypeCombo->blockSignals(false);
   FilterClassCombo->blockSignals(false);
 }
@@ -733,8 +818,18 @@ void FilterDesignTool::setSettings_EndCoupled_BPF(){
 
 // This function is called from ImplementationComboChanged() and sets the UI widgets for the cap-coupled BPF
 void FilterDesignTool::setSettings_CCoupledShuntResonators_BPF(){
+
+  // Block signals to prevent unneeded synthesis triggering
   FilterResponseTypeCombo->blockSignals(true);
   FilterClassCombo->blockSignals(true);
+
+  // Show TLIN implementation
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Hide coupling type
+  DC_CouplingTypeCombo->hide();
+  DC_CouplingLabel->hide();
 
          // Show CLC/LCL box
   CLCRadioButton->show();
@@ -768,6 +863,7 @@ void FilterDesignTool::setSettings_CCoupledShuntResonators_BPF(){
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
 
+  // Unblock signals
   FilterResponseTypeCombo->blockSignals(false);
   FilterClassCombo->blockSignals(false);
 }
@@ -775,8 +871,18 @@ void FilterDesignTool::setSettings_CCoupledShuntResonators_BPF(){
 
 // This function is called from ImplementationComboChanged() and sets the UI widgets for the semilumped filters
 void FilterDesignTool::setSettings_Semilumped(){
+
+  // Block signals to prevent unneeded synthesis triggering
   FilterResponseTypeCombo->blockSignals(true);
   FilterClassCombo->blockSignals(true);
+
+  // Show TLIN implementation
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Hide coupling type
+  DC_CouplingTypeCombo->hide();
+  DC_CouplingLabel->hide();
 
          // Load default filter response types + Elliptic type
   FilterResponseTypeCombo->clear();
@@ -832,6 +938,7 @@ void FilterDesignTool::setSettings_Semilumped(){
     SemiLumpedImplementationCombo->show();
     SemiLumpedImplementationLabel->show();
 
+    // Unblock signals
     FilterResponseTypeCombo->blockSignals(false);
     FilterClassCombo->blockSignals(false);
   }
@@ -840,12 +947,22 @@ void FilterDesignTool::setSettings_Semilumped(){
 
 // This function is called from ImplementationComboChanged() and sets the UI widgets for the side coupled BPF
 void FilterDesignTool::setSettings_SideCoupled_BPF(){
+
+  // Block signals to prevent unneeded synthesis triggering
   FilterResponseTypeCombo->blockSignals(true);
   FilterClassCombo->blockSignals(true);
+
+  // Show TLIN implementation
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
 
          // Show CLC/LCL box
   CLCRadioButton->show();
   LCLRadioButton->show();
+
+  // Hide coupling type
+  DC_CouplingTypeCombo->hide();
+  DC_CouplingLabel->hide();
 
          // Hide impedance ratio
   ImpedanceRatio_Label->hide();
@@ -875,6 +992,7 @@ void FilterDesignTool::setSettings_SideCoupled_BPF(){
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
 
+  // Unblock signals
   FilterResponseTypeCombo->blockSignals(false);
   FilterClassCombo->blockSignals(false);
 }
@@ -955,6 +1073,10 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     // Hide LC box
     CLCRadioButton->hide();
     LCLRadioButton->hide();
+
+    // Show TLIN implementation
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
 
            // Show impedance ratio
     ImpedanceRatio_Label->show();

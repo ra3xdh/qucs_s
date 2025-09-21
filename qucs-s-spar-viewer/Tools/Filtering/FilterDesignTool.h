@@ -88,7 +88,14 @@ private:
   QLabel *RLlabel, *RLlabelOhm, *PhaseErrorLabel, *PhaseErrorLabelDeg,
       *MinimumZLabel, *MaximumZLabel; // Zverev mode
   QStringList DefaultFilterResponses;
-  struct FilterSpecifications Filter_SP; // User specifications
+
+  // Transmission line implementation
+  QLabel *TL_Implementation_Label;
+  QComboBox *TL_Implementation_Combo;
+
+
+  // Filter specs
+  struct FilterSpecifications Filter_SP;
   QString netlist;
   SchematicContent SchContent;
 
