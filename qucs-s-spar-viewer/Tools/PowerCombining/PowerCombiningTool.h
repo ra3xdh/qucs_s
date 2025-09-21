@@ -80,6 +80,10 @@ private:
   QString netlist;
   SchematicContent SchContent; // Schematic representation
 
+         // Transmission line implementation
+  QLabel *TL_Implementation_Label;
+  QComboBox *TL_Implementation_Combo;
+
   // Input validation
   QValidator *Bagley_Validator;
 

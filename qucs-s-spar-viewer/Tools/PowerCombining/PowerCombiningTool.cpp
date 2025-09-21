@@ -20,6 +20,8 @@
 PowerCombiningTool::PowerCombiningTool(QWidget *parent): QWidget(parent) {
   QGridLayout *PowerCombinerDesignLayout = new QGridLayout();
 
+  int layout_row = 0; // Row index. This is useful to add a new line on the layout without the need of modifying manually all the widgets.
+
   // Topology
   TopoLabel = new QLabel("Topology");
   TopoCombo = new QComboBox();
@@ -35,18 +37,31 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent): QWidget(parent) {
   TopoCombo->addItem("Recombinant 3 Way Wilkinson");
   TopoCombo->addItem("Travelling Wave");
   TopoCombo->addItem("Tree");
-  PowerCombinerDesignLayout->addWidget(TopoLabel, 0, 0);
-  PowerCombinerDesignLayout->addWidget(TopoCombo, 0, 1);
+  PowerCombinerDesignLayout->addWidget(TopoLabel, layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(TopoCombo, layout_row, 1);
+
+  // Transmission line implementation
+  layout_row++;
+  TL_Implementation_Label = new QLabel(QString("TLIN implementation"));
+  TL_Implementation_Combo = new QComboBox();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  TL_Implementation_Combo->addItem("Stripline");
+  PowerCombinerDesignLayout->addWidget(TL_Implementation_Label, layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(TL_Implementation_Combo, layout_row, 1);
+
 
   // Number of outputs
+  layout_row++;
   BranchesCombo = new QComboBox();
   BranchesCombo->addItem("2");
   BranchesCombo->setEnabled(false);
 
-  PowerCombinerDesignLayout->addWidget(new QLabel("Number of outputs"), 1, 0);
-  PowerCombinerDesignLayout->addWidget(BranchesCombo, 1, 1);
+  PowerCombinerDesignLayout->addWidget(new QLabel("Number of outputs"), layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(BranchesCombo, layout_row, 1);
 
   // Ref impedance
+  layout_row++;
   RefImp = new QLabel("Z0");
   RefImpSpinbox = new QDoubleSpinBox();
   RefImpSpinbox->setMinimum(1);
@@ -54,11 +69,12 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent): QWidget(parent) {
   RefImpSpinbox->setSingleStep(1); // 1 Ohm step
   OhmLabel = new QLabel(QChar(0xa9, 0x03));
   OhmLabel->setFixedWidth(15);
-  PowerCombinerDesignLayout->addWidget(RefImp, 2, 0);
-  PowerCombinerDesignLayout->addWidget(RefImpSpinbox, 2, 1);
-  PowerCombinerDesignLayout->addWidget(OhmLabel, 2, 2);
+  PowerCombinerDesignLayout->addWidget(RefImp, layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(RefImpSpinbox, layout_row, 1);
+  PowerCombinerDesignLayout->addWidget(OhmLabel, layout_row, 2);
 
   // Frequency
+  layout_row++;
   FreqLabel = new QLabel("Frequency");
   FreqSpinbox = new QDoubleSpinBox();
   FreqSpinbox->setMinimum(1);
@@ -72,11 +88,12 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent): QWidget(parent) {
   FreqScaleCombo->addItem("kHz");
   FreqScaleCombo->addItem("Hz");
   FreqScaleCombo->setCurrentIndex(1); // MHz
-  PowerCombinerDesignLayout->addWidget(FreqLabel, 3, 0);
-  PowerCombinerDesignLayout->addWidget(FreqSpinbox, 3, 1);
-  PowerCombinerDesignLayout->addWidget(FreqScaleCombo, 3, 2);
+  PowerCombinerDesignLayout->addWidget(FreqLabel, layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(FreqSpinbox, layout_row, 1);
+  PowerCombinerDesignLayout->addWidget(FreqScaleCombo, layout_row, 2);
 
   // Output power ratio
+  layout_row++;
   K1Label = new QLabel("Output Power ratio");
 
   QHBoxLayout *hbox = new QHBoxLayout();
@@ -106,21 +123,23 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent): QWidget(parent) {
 
   K1LabeldB = new QLabel("dB");
   K1LabeldB->setFixedWidth(20);
-  PowerCombinerDesignLayout->addWidget(K1Label, 4, 0);
-  PowerCombinerDesignLayout->addLayout(hbox, 4, 1);
-  PowerCombinerDesignLayout->addWidget(K1LabeldB, 4, 2);
+  PowerCombinerDesignLayout->addWidget(K1Label, layout_row, 0);
+  PowerCombinerDesignLayout->addLayout(hbox, layout_row, 1);
+  PowerCombinerDesignLayout->addWidget(K1LabeldB, layout_row, 2);
 
   // Number of stages
+  layout_row++;
   NStagesSpinbox = new QSpinBox();
   NStagesSpinbox->setValue(2);
   NStagesSpinbox->setMinimum(2);
   NStagesLabel = new QLabel("Number of stages");
-  PowerCombinerDesignLayout->addWidget(NStagesLabel, 5, 0);
-  PowerCombinerDesignLayout->addWidget(NStagesSpinbox, 5, 1);
+  PowerCombinerDesignLayout->addWidget(NStagesLabel, layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(NStagesSpinbox, layout_row, 1);
   NStagesLabel->hide();
   NStagesSpinbox->hide();
 
   // Ideal transmission line attenuation coeffient
+  layout_row++;
   AlphaLabel = new QLabel("Attenuation coefficient");
   AlphaSpinbox = new QDoubleSpinBox();
   AlphaSpinbox->setValue(0);        // Initial value: 0 dB/m
@@ -129,11 +148,12 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent): QWidget(parent) {
   AlphadBLabel->setVisible(false);
   AlphaLabel->setVisible(false);
   AlphaSpinbox->setVisible(false);
-  PowerCombinerDesignLayout->addWidget(AlphaLabel, 6, 0);
-  PowerCombinerDesignLayout->addWidget(AlphaSpinbox, 6, 1);
-  PowerCombinerDesignLayout->addWidget(AlphadBLabel, 6, 2);
+  PowerCombinerDesignLayout->addWidget(AlphaLabel, layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(AlphaSpinbox, layout_row, 1);
+  PowerCombinerDesignLayout->addWidget(AlphadBLabel, layout_row, 2);
 
   // Units
+  layout_row++;
   UnitsLabel = new QLabel("Length unit");
   UnitsCombo = new QComboBox();
   UnitsCombo->addItem("mm");
@@ -143,24 +163,26 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent): QWidget(parent) {
   UnitsCombo->addItem("inch");
   UnitsCombo->addItem("ft");
   UnitsCombo->addItem("m");
-  PowerCombinerDesignLayout->addWidget(UnitsLabel, 7, 0);
-  PowerCombinerDesignLayout->addWidget(UnitsCombo, 7, 1);
+  PowerCombinerDesignLayout->addWidget(UnitsLabel, layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(UnitsCombo, layout_row, 1);
 
   // Implementation. Mutually exclusive radiobuttons for selecting ideal
   // transmission lines, microstrip tech, o CLC pi aproximations of quarter-wave
   // lines
+  layout_row++;
   ImplementationCombobox = new QComboBox();
   ImplementationCombobox->addItem("Ideal TL");
   ImplementationCombobox->addItem("Lumped LC");
   ImplementationCombobox->addItem("Microstrip");
-  PowerCombinerDesignLayout->addWidget(new QLabel("Implementation"), 8, 0);
-  PowerCombinerDesignLayout->addWidget(ImplementationCombobox, 8, 1);
+  PowerCombinerDesignLayout->addWidget(new QLabel("Implementation"), layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(ImplementationCombobox, layout_row, 1);
 
          // Widgets to add a trace to plot
+  layout_row++;
   traceNameLabel = new QLabel("Trace name");
   traceNameLineEdit = new QLineEdit("PowComb1");
-  PowerCombinerDesignLayout->addWidget(traceNameLabel, 9, 0);
-  PowerCombinerDesignLayout->addWidget(traceNameLineEdit, 9, 1);
+  PowerCombinerDesignLayout->addWidget(traceNameLabel, layout_row, 0);
+  PowerCombinerDesignLayout->addWidget(traceNameLineEdit, layout_row, 1);
 
   this->setLayout(PowerCombinerDesignLayout);
 
@@ -242,6 +264,10 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     // Block signals before adjusting parameters
     BranchesCombo->blockSignals(true);
 
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
+
     K1Spinbox->setVisible(true);
     K1Label->setVisible(true);
     K1LabeldB->setVisible(true);
@@ -265,6 +291,10 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     // Block signals before adjusting parameters
     BranchesCombo->blockSignals(true);
 
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
+
     BranchesCombo->clear();
     BranchesCombo->addItem("2");
     BranchesCombo->setEnabled(false);
@@ -282,6 +312,12 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     K1Spinbox->setVisible(true);
     K2Spinbox->setVisible(true);
     K3Spinbox->setVisible(true);
+
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
+
+
   } else {
     K2Spinbox->setVisible(false);
     K3Spinbox->setVisible(false);
@@ -293,6 +329,10 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     // Block signals before adjusting parameters
     NStagesSpinbox->blockSignals(true);
     BranchesCombo->blockSignals(true);
+
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
 
     NStagesSpinbox->setMinimum(2);
     NStagesSpinbox->setMaximum(7);
@@ -317,6 +357,10 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     // Block signals before adjusting parameters
     BranchesCombo->blockSignals(true);
 
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
+
 
     BranchesCombo->clear();
     BranchesCombo->addItem("3");
@@ -338,6 +382,10 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     // Block signals before adjusting parameters
     BranchesCombo->blockSignals(true);
 
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
+
     BranchesCombo->clear();
     BranchesCombo->addItem("3");
     BranchesCombo->addItem("4");
@@ -354,6 +402,10 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
   {
     // Block signals before adjusting parameters
     BranchesCombo->blockSignals(true);
+
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
 
     BranchesCombo->clear();
     BranchesCombo->addItem("4");
