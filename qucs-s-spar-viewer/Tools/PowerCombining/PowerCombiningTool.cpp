@@ -238,6 +238,9 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
   // Change settings
   if ((index == 0) | (index == 2) || (index == 3)) // Wilkinson, Tee, Branchline
   {
+    // Block signals before adjusting parameters
+    BranchesCombo->blockSignals(true);
+
     K1Spinbox->setVisible(true);
     K1Label->setVisible(true);
     K1LabeldB->setVisible(true);
@@ -245,6 +248,10 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     BranchesCombo->addItem("2");
     BranchesCombo->setEnabled(false);
     BranchesCombo->setEditable(false);
+
+    // Unblock signals after adjusting parameters
+    BranchesCombo->blockSignals(false);
+
   } else { // The rest of power combiners do not support unequal power ratio
     K1Spinbox->setVisible(false);
     K1Label->setVisible(false);
@@ -254,10 +261,16 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
   if ((index == 3) || (index == 4) ||
       (index == 6)) // Branchline, double-box branchline and Gysel
   {                 // The Gysel power combiner has only two output branches
+    // Block signals before adjusting parameters
+    BranchesCombo->blockSignals(true);
+
     BranchesCombo->clear();
     BranchesCombo->addItem("2");
     BranchesCombo->setEnabled(false);
     BranchesCombo->setEditable(false);
+
+    // Unblock signals after adjusting parameters
+    BranchesCombo->blockSignals(false);
   }
 
   if (TopoCombo->currentText() ==
@@ -276,6 +289,10 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
   if (index == 1) // Multistage Wilkinson. So far, it is not possible to
                   // implement more than 7 stages
   {
+    // Block signals before adjusting parameters
+    NStagesSpinbox->blockSignals(true);
+    BranchesCombo->blockSignals(true);
+
     NStagesSpinbox->setMinimum(2);
     NStagesSpinbox->setMaximum(7);
     NStagesSpinbox->setValue(2);
@@ -284,6 +301,11 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     BranchesCombo->clear();
     BranchesCombo->addItem("2"); // 2 outputs only
     BranchesCombo->setEnabled(false);
+
+    // Unblock signals after adjusting parameters
+    NStagesSpinbox->blockSignals(false);
+    BranchesCombo->blockSignals(false);
+
   } else // There are no more multistage combiners implemented
   {
     NStagesLabel->setVisible(false);
@@ -291,6 +313,10 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
   }
   if (index == 5) // Bagley
   {
+    // Block signals before adjusting parameters
+    BranchesCombo->blockSignals(true);
+
+
     BranchesCombo->clear();
     BranchesCombo->addItem("3");
     BranchesCombo->addItem("5");
@@ -298,12 +324,19 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     BranchesCombo->setEditable(true);
     BranchesCombo->setEnabled(true);
     BranchesCombo->setValidator(Bagley_Validator);
+
+    // Unblock signals after adjusting parameters
+    BranchesCombo->blockSignals(false);
+
   } else {
     BranchesCombo->setValidator(NULL);
   }
 
   if (index == 7) // Travelling wave
   {
+    // Block signals before adjusting parameters
+    BranchesCombo->blockSignals(true);
+
     BranchesCombo->clear();
     BranchesCombo->addItem("3");
     BranchesCombo->addItem("4");
@@ -312,9 +345,15 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     BranchesCombo->setEditable(
         true); // Let the user to specify an arbitrary number of outputs
     BranchesCombo->setEnabled(true);
+
+    // Unblock signals after adjusting parameters
+    BranchesCombo->blockSignals(false);
   }
   if (index == 8) // Tree
   {
+    // Block signals before adjusting parameters
+    BranchesCombo->blockSignals(true);
+
     BranchesCombo->clear();
     BranchesCombo->addItem("4");
     BranchesCombo->addItem("8");
@@ -322,6 +361,9 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     BranchesCombo->setEditable(true); // Let the user to specify an arbitrary
                                       // number of outputs (power of 2)
     BranchesCombo->setEnabled(true);
+
+    // Unblock signals after adjusting parameters
+    BranchesCombo->blockSignals(false);
   }
 
   UpdateDesignParameters();
