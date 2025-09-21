@@ -104,6 +104,10 @@ private:
     QLabel *Ohm_Zin_Label;
 
     QGroupBox *groupBox;
+
+    // Transmission line implementation
+    QLabel *TL_Implementation_Label;
+    QComboBox *TL_Implementation_Combo;
     
     // Layout
     QGridLayout *mainLayout;

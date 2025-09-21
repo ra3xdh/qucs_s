@@ -55,6 +55,8 @@ void MatchingNetworkParametersWidget::setupUI() {
   m_contentWidget = new QWidget();
   mainLayout = new QGridLayout(m_contentWidget);
 
+  int layout_row = 0; // Row index. This is useful to add a new line on the layout without the need of modifying manually all the widgets.
+
   // Topology
   Topology_Label = new QLabel("Topology");
   Topology_Combo = new QComboBox();
@@ -66,8 +68,8 @@ void MatchingNetworkParametersWidget::setupUI() {
   matching_methods.append(tr("Cascaded L-sections"));
   matching_methods.append(QString("%1/8 + %1/4 line").arg(QChar(0xBB, 0x03)));
   Topology_Combo->addItems(matching_methods);
-  mainLayout->addWidget(Topology_Label, 0, 0);
-  mainLayout->addWidget(Topology_Combo, 0, 1);
+  mainLayout->addWidget(Topology_Label, layout_row, 0);
+  mainLayout->addWidget(Topology_Combo, layout_row, 1);
 
          // Solution number widget
   SolutionWidget = new QWidget();
@@ -78,18 +80,30 @@ void MatchingNetworkParametersWidget::setupUI() {
   SolutionLayout->addWidget(Solution1_RB);
   SolutionLayout->addWidget(Solution2_RB);
   SolutionWidget->setLayout(SolutionLayout);
-  mainLayout->addWidget(SolutionWidget, 0, 2);
+  mainLayout->addWidget(SolutionWidget, layout_row, 2);
+
+  // Transmission line implementation
+  layout_row++;
+  TL_Implementation_Label = new QLabel(QString("TLIN implementation"));
+  TL_Implementation_Combo = new QComboBox();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  TL_Implementation_Combo->addItem("Stripline");
+  mainLayout->addWidget(TL_Implementation_Label, layout_row, 0);
+  mainLayout->addWidget(TL_Implementation_Combo, layout_row, 1);
 
          // Stub termination
+  layout_row++;
   StubTermination_Label = new QLabel(QString("Stub Termination"));
-  mainLayout->addWidget(StubTermination_Label, 1, 0);
+  mainLayout->addWidget(StubTermination_Label, layout_row, 0);
 
   StubTermination_ComboBox = new QComboBox();
   StubTermination_ComboBox->addItem(QString("Open circuit"));
   StubTermination_ComboBox->addItem(QString("Short circuit"));
-  mainLayout->addWidget(StubTermination_ComboBox, 1, 1);
+  mainLayout->addWidget(StubTermination_ComboBox, layout_row, 1);
 
          // Weighting settings
+  layout_row++;
   Weighting_GroupBox = new QGroupBox(tr("Weighting"));
   QGridLayout *WeightingLayout = new QGridLayout();
 
@@ -111,7 +125,7 @@ void MatchingNetworkParametersWidget::setupUI() {
   WeightingLayout->addWidget(Ripple_Label, 1, 0);
   WeightingLayout->addWidget(Ripple_SpinBox, 1, 1);
   Weighting_GroupBox->setLayout(WeightingLayout);
-  mainLayout->addWidget(Weighting_GroupBox, 2, 0, 1, 3);
+  mainLayout->addWidget(Weighting_GroupBox, layout_row, 0, 1, 3);
 
          // Hide ripple controls if Binomial selected
   Ripple_Label->setVisible(false);
@@ -126,6 +140,7 @@ void MatchingNetworkParametersWidget::setupUI() {
   mainLayout->addWidget(Sections_SpinBox, 3, 1);
 
          // Input impedance
+  layout_row++;
   Zin_Label = new QLabel("Z0");
   ZinRSpinBox = new QDoubleSpinBox();
   ZinRSpinBox->setMinimum(0.5);
@@ -134,9 +149,9 @@ void MatchingNetworkParametersWidget::setupUI() {
   ZinRSpinBox->setValue(50);
   ZinRSpinBox->setDecimals(1);
   Ohm_Zin_Label = new QLabel(QChar(0xa9, 0x03));
-  mainLayout->addWidget(Zin_Label, 4, 0);
-  mainLayout->addWidget(ZinRSpinBox, 4, 1);
-  mainLayout->addWidget(Ohm_Zin_Label, 4, 2);
+  mainLayout->addWidget(Zin_Label, layout_row, 0);
+  mainLayout->addWidget(ZinRSpinBox, layout_row, 1);
+  mainLayout->addWidget(Ohm_Zin_Label, layout_row, 2);
 
          // Add widgets to main group layout
   groupLayout->addWidget(headerWidget);
@@ -169,6 +184,10 @@ void MatchingNetworkParametersWidget::onTopologyChanged(int index) {
     Solution1_RB->show();
     Solution2_RB->show();
 
+    // Hide TLIN implementation widgets
+    TL_Implementation_Label->hide();
+    TL_Implementation_Combo->hide();
+
            // Hide number of sections
     Sections_Label->hide();
     Sections_SpinBox->hide();
@@ -187,6 +206,10 @@ void MatchingNetworkParametersWidget::onTopologyChanged(int index) {
     Solution1_RB->hide();
     Solution2_RB->hide();
 
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
+
            // Hide number of sections
     Sections_Label->hide();
     Sections_SpinBox->hide();
@@ -203,6 +226,10 @@ void MatchingNetworkParametersWidget::onTopologyChanged(int index) {
     // Hide L-section matching solutions
     Solution1_RB->hide();
     Solution2_RB->hide();
+
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
 
            // Show number of sections
     Sections_Label->show();
@@ -223,6 +250,10 @@ void MatchingNetworkParametersWidget::onTopologyChanged(int index) {
     Solution1_RB->show();
     Solution2_RB->show();
 
+    // Hide TLIN implementation widgets
+    TL_Implementation_Label->hide();
+    TL_Implementation_Combo->hide();
+
            // Show number of sections
     Sections_Label->show();
     Sections_SpinBox->show();
@@ -239,6 +270,10 @@ void MatchingNetworkParametersWidget::onTopologyChanged(int index) {
     // Hide L-section matching solutions
     Solution1_RB->hide();
     Solution2_RB->hide();
+
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
 
            // Hide number of sections
     Sections_Label->hide();
