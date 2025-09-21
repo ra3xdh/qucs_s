@@ -70,6 +70,13 @@ else()
     message("Qucsator RF submodule not found. Please update submodules")
 endif()
 
+if(EXISTS ${CMAKE_SOURCE_DIR}/rxcalc/CMakeLists.txt)
+    add_subdirectory(rxcalc)
+else()
+	message("RxCalc submodule not found. Please update submodules")
+endif()
+
+
 IF (UPDATE_TRANSLATIONS)
   file(GLOB_RECURSE FILES_TO_TRANSLATE "*.cpp" "*.h" "*.ui")
 ENDIF (UPDATE_TRANSLATIONS)
