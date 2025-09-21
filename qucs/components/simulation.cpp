@@ -76,7 +76,7 @@ QFont labelFont()
 {
     auto label_font = _settings::Get().item<QFont>("font");
     label_font.setWeight(QFont::DemiBold);
-    label_font.setPointSizeF(_settings::Get().item<double>("LargeFontSize"));
+    label_font.setPixelSize(static_cast<int>(_settings::Get().item<double>("LargeFontSize")));
     return label_font;
 }
 } // namespace

@@ -229,6 +229,13 @@ bool GraphicLine::rotate(int xc, int yc) noexcept
   return true;
 }
 
+void GraphicLine::snapToGrid(Schematic* sch)
+{
+  sch->setOnGrid(x1, y1);
+  sch->setOnGrid(x2, y2);
+  updateCenter();
+}
+
 // Mirrors about center line.
 bool GraphicLine::mirrorX() noexcept
 {

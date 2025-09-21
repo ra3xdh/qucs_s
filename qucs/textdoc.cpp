@@ -377,6 +377,9 @@ bool TextDoc::load ()
 
   QTextStream stream (&file);
   insertPlainText(stream.readAll());
+  // Store timestamp
+  QFileInfo fileInfo(a_DocName);
+  lastLoadModTime = fileInfo.lastModified();
   document()->setModified(false);
   slotSetChanged ();
   file.close ();
@@ -385,6 +388,16 @@ bool TextDoc::load ()
   a_SimOpenDpl = simulation ? true : false;
   refreshLanguage();
   return true;
+}
+
+/*!
+ * \brief TextDoc::clears and re-loads a text document
+ * \return true/false if the document was opened with success
+ */
+bool TextDoc::reload()
+{
+  clear();
+  return load();
 }
 
 
@@ -613,4 +626,15 @@ void TextDoc::refreshLanguage()
     this->setLanguage(a_DocName);
     syntaxHighlight->setLanguage(language);
     syntaxHighlight->setDocument(document());
+}
+
+// Returns true if file on disk has a lastModified timestamp newer than the object's
+// last load modified time
+bool TextDoc::hasFileChangedOnDisk() const
+{
+  QFileInfo fileInfo(a_DocName);
+  if (!fileInfo.exists()) {
+    return true; // File is removed -> has changed
+  }
+  return fileInfo.lastModified() > lastLoadModTime;
 }

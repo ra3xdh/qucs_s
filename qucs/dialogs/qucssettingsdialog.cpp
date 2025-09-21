@@ -85,7 +85,6 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent) :
     a_checkWiring(new QCheckBox(a_appSettingsTab)),
     a_checkLoadFromFutureVersions(new QCheckBox(a_appSettingsTab)),
     a_allowFlexibleWires(new QCheckBox(a_appSettingsTab)),
-    a_allowLayingWiresAnew(new QCheckBox(a_appSettingsTab)),
     a_checkAntiAliasing(new QCheckBox(a_appSettingsTab)),
     a_checkTextAntiAliasing(new QCheckBox(a_appSettingsTab)),
     a_checkFullTraceNames(new QCheckBox(a_appSettingsTab)),
@@ -195,9 +194,6 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent) :
 
     appSettingsGrid->addWidget(new QLabel(tr("Flexible wires (requires restart):"), a_appSettingsTab), 8, 0);
     appSettingsGrid->addWidget(a_allowFlexibleWires, 8, 1);
-
-    appSettingsGrid->addWidget(new QLabel(tr("Lay wires anew when moving elements (requires restart):"), a_appSettingsTab), 9, 0);
-    appSettingsGrid->addWidget(a_allowLayingWiresAnew, 9, 1);
 
     a_tabWidget->addTab(a_appSettingsTab, tr("Settings"));
 
@@ -528,7 +524,6 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent) :
     a_editorEdit->setText(QucsSettings.Editor);
     a_checkWiring->setChecked(QucsSettings.NodeWiring);
     a_allowFlexibleWires->setChecked(_settings::Get().item<bool>("AllowFlexibleWires"));
-    a_allowLayingWiresAnew->setChecked(_settings::Get().item<bool>("AllowLayingWiresAnew"));
 
     for(int z=a_languageCombo->count()-1; z>=0; z--)
         if(a_languageCombo->itemText(z).section('(',1,1).remove(')') == QucsSettings.Language)
@@ -751,7 +746,6 @@ void QucsSettingsDialog::slotApply()
     }
 
     _settings::Get().setItem("AllowFlexibleWires", a_allowFlexibleWires->isChecked());
-    _settings::Get().setItem("AllowLayingWiresAnew", a_allowLayingWiresAnew->isChecked());
 
     QucsSettings.FileTypes.clear();
     for (int row=0; row < a_fileTypesTableWidget->rowCount(); row++)
@@ -971,7 +965,6 @@ void QucsSettingsDialog::slotDefaultValues()
     a_editorEdit->setText(QucsSettings.BinDir + "qucs");
     a_checkWiring->setChecked(false);
     a_allowFlexibleWires->setChecked(_settings::Get().itemDefault<bool>("AllowFlexibleWires"));
-    a_allowLayingWiresAnew->setChecked(_settings::Get().itemDefault<bool>("AllowLayingWiresAnew"));
     a_checkLoadFromFutureVersions->setChecked(false);
     a_checkAntiAliasing->setChecked(false);
     a_checkTextAntiAliasing->setChecked(true);

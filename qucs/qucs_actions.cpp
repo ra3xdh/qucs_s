@@ -697,7 +697,7 @@ extern QString lastDirOpenSave; // to remember last directory and file
 // ------------------------------------------------------------------------
 // Is called by slotShowLastMsg(), by slotShowLastNetlist() and from the
 // component edit dialog.
-void QucsApp::editFile(const QString& File)
+void QucsApp::editFile(const QString& File, bool reloadFile)
 {
     if ((QucsSettings.Editor.toLower() == "qucs") || QucsSettings.Editor.isEmpty())
     {
@@ -716,7 +716,7 @@ void QucsApp::editFile(const QString& File)
             if(!finfo.exists())
                 statusBar()->showMessage(tr("Opening aborted, file not found."), 2000);
             else {
-                gotoPage(File);
+                gotoPage(File, reloadFile);
                 lastDirOpenSave = File;   // remember last directory and file
                 statusBar()->showMessage(tr("Ready."));
             }
@@ -775,7 +775,7 @@ void QucsApp::editFile(const QString& File)
 // Is called to show the output messages of the last simulation.
 void QucsApp::slotShowLastMsg()
 {
-  editFile(QucsSettings.tempFilesDir.filePath("log.txt"));
+  editFile(QucsSettings.tempFilesDir.filePath("log.txt"), /*reloadFile=*/true);
 }
 
 // ------------------------------------------------------------------------
@@ -828,7 +828,7 @@ void QucsApp::slotShowLastNetlist()
     }
 
     for(const auto &netlist: netlists) {
-        editFile(netlist);
+        editFile(netlist, /*reloadFile=*/true);
     }
 }
 

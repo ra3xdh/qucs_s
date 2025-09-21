@@ -300,6 +300,13 @@ bool Arrow::rotate(int xc, int yc) noexcept
   return true;
 }
 
+void Arrow::snapToGrid(Schematic* sch)
+{
+  sch->setOnGrid(x1, y1);
+  sch->setOnGrid(x2, y2);
+  updateHead();
+}
+
 // Mirrors about center line.
 bool Arrow::mirrorX() noexcept
 {

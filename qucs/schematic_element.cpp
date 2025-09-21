@@ -30,7 +30,7 @@
 
 #include <ranges>
 #include <set>
-#include <stack>
+#include <unordered_map>
 
 struct Schematic::HealingParams
 {
@@ -41,7 +41,7 @@ struct Schematic::HealingParams
 const Schematic::HealingParams mousyMutationParams{
     .m_healer_params = {
         .allowWireReshaping = _settings::Get().item<bool>("AllowFlexibleWires"),
-        .allowWireRelaying = _settings::Get().item<bool>("AllowLayingWiresAnew"),
+        .allowWireRelaying = false,
         .wireRelayingDepth = 2
     }
 };
@@ -161,11 +161,8 @@ bool noDuplicateWires(const std::list<Wire*>* wires)
             continue;
         }
 
-        for (auto* conn : *wire->Port1) {
-            if (conn == wire) continue;
-
-            auto* other_wire = dynamic_cast<Wire*>(conn);
-            if (other_wire == nullptr) continue; // it was not a wire
+        for (auto* other_wire : wire->Port1->wires()) {
+            if (other_wire == wire) continue;
 
             // Some other wire connected too Port1 of current wire was found,
             // let's check if it is not connected to Port2
@@ -180,11 +177,8 @@ bool noDuplicateWires(const std::list<Wire*>* wires)
             }
         }
 
-        for (auto* conn : *wire->Port2) {
-            if (conn == wire) continue;
-
-            auto* other_wire = dynamic_cast<Wire*>(conn);
-            if (other_wire == nullptr) continue; // it was not a wire
+        for (auto* other_wire : wire->Port2->wires()) {
+            if (other_wire == wire) continue;
 
             // Some other wire connected too Port2 of current wire was found,
             // let's check if it is not connected to Port1
@@ -354,39 +348,6 @@ Node* Schematic::provideNode(int x, int y)
 }
 
 namespace internal {
-void merge(Node* donor, Node* recipient) {
-    // At first, replace old node with new one in every element connected to
-    // old node
-    for (auto* conn : *donor) {
-        if (auto* w = dynamic_cast<Wire*>(conn)) {
-            if (w->Port1 == donor) {
-                w->Port1 = recipient;
-            } else {
-                w->Port2 = recipient;
-            }
-        } else if (auto* c = dynamic_cast<Component*>(conn)) {
-            for (auto* p : c->Ports) {
-                if (p->Connection == donor) {
-                    p->Connection = recipient;
-                }
-            }
-        } else {
-            assert(false);
-        }
-    }
-
-    // Transfer all connections from old node to new one
-    while (donor->conn_count() > 0) {
-        auto* conn = donor->any();
-        recipient->connect(conn);
-        donor->disconnect(conn);
-    }
-
-    // Try to keep donor label
-    if (!recipient->hasLabel() && donor->hasLabel()) {
-        recipient->acquireLabel(donor->releaseLabel());
-    }
-}
 
 // A node is redundant if it connects only two wires which form a line i.e.
 // For example, here B is redundant
@@ -397,13 +358,10 @@ bool is_redundant(const Node* node) {
         return false;
     }
 
-    auto* wire_1 = dynamic_cast<Wire*>(node->any());
-    if (wire_1 == nullptr) {
-        return false;
-    }
+    auto* wire_1 = node->anyWire();
+    auto* wire_2 = node->other_than(wire_1);
 
-    auto* wire_2 = dynamic_cast<Wire*>(node->other_than(wire_1));
-    if (wire_2 == nullptr) {
+    if (wire_1 == nullptr || wire_2 == nullptr) {
         return false;
     }
 
@@ -426,8 +384,8 @@ Node* find_redundant_node(NodeContainer* nodes) {
 }
 
 Wire* merge_wires_at_node(Node* node) {
-    auto* extended_wire = dynamic_cast<Wire*>(node->any());
-    auto* dissapearing_wire = dynamic_cast<Wire*>(node->other_than(extended_wire));
+    auto* extended_wire = node->anyWire();
+    auto* dissapearing_wire = node->other_than(extended_wire);
 
     assert(node->is_connected(extended_wire));
     assert(node->is_connected(dissapearing_wire));
@@ -521,19 +479,18 @@ Node* Schematic::selectedNode(int x, int y)
 
 // ---------------------------------------------------
 // Follows a wire line and selects it.
-void Schematic::selectWireLine(Element *pe, Node *pn, bool ctrl)
+void Schematic::selectWireLine(Wire *pe, Node *pn, bool ctrl)
 {
     Node *pn_1st = pn;
     while(pn->conn_count() == 2)
     {
         pe = pn->other_than(pe);
 
-        if(pe->Type != isWire) break;
+        if (pe == nullptr) break;
         if(ctrl) pe->isSelected ^= ctrl;
         else pe->isSelected = true;
 
-        if(((Wire*)pe)->Port1 == pn)  pn = ((Wire*)pe)->Port2;
-        else  pn = ((Wire*)pe)->Port1;
+        pn = pe->Port1 == pn ? pe->Port2 : pe->Port1;
         if(pn == pn_1st) break;  // avoid endless loop in wire loops
     }
 }
@@ -673,6 +630,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     // test all nodes and their labels
     for (Node* pn : *a_Nodes)
     {
+        pn->isSelected = false;
         if(!flag)
         {
             // The element cannot be deselected
@@ -1103,6 +1061,7 @@ void Schematic::deselectElements(Element *e) const
 
     std::for_each(selection.components.begin(), selection.components.end(), deselector);
     std::for_each(selection.wires.begin(), selection.wires.end(), deselector);
+    std::for_each(selection.nodes.begin(), selection.nodes.end(), deselector);
     std::for_each(selection.paintings.begin(), selection.paintings.end(), deselector);
     std::for_each(selection.diagrams.begin(), selection.diagrams.end(), deselector);
     std::for_each(selection.labels.begin(), selection.labels.end(), deselector);
@@ -1151,6 +1110,16 @@ int Schematic::selectElements(const QRect& selection_rect, bool append, bool ent
     }
 
     for (Node *node : *a_Nodes) {
+        // Workaround for a case when a single node is being moved in order to modify
+        // wire structure.
+        // This method somehow ends up being called from MouseActions::MReleaseSelect2
+        // with an empty selection rectangle after user clicks on something other than
+        // the node they moved. Nodes are deselected because this is expected from such
+        // a click.
+        if (node->isSelected && selection_rect.isEmpty()) {
+            node->isSelected = false;
+        }
+
         if (node->hasLabel() && select_element(node->label(), node->label()->boundingRect())) {
             selected_count++;
         }
@@ -1608,8 +1577,16 @@ bool Schematic::rotateElements()
     const auto rotc = setOnGrid(bounds->center());
 
     bool any_rotated = false;
-    const auto rotator = [&any_rotated, in_place, rotc](Element* e) {
-        any_rotated = (in_place ? e->rotate() : e->rotate(rotc)) || any_rotated;
+    const auto rotator = [&any_rotated, in_place, rotc, this](Element* e) {
+        const bool elem_rotated = in_place ? e->rotate() : e->rotate(rotc);
+        any_rotated = elem_rotated || any_rotated;
+
+        // Snap painting to grid if rotated
+        if(elem_rotated) {
+            if (auto* painting = dynamic_cast<Painting*>(e)) {
+                painting->snapToGrid(this);
+            }
+        }
     };
 
     std::ranges::for_each(selection.components, rotator);
@@ -1784,13 +1761,7 @@ void Schematic::insertComponentNodes(Component *component, bool noOptimize)
 
         // At first iterate over all port's connections to find wires
         // connecting this port to another port of the same component.
-        for (auto* connected : *component_port->Connection) {
-            if (connected->Type != isWire) {
-                continue;
-            }
-
-            auto wire = static_cast<Wire*>(connected);
-
+        for (auto* wire : component_port->Connection->wires()) {
             if (wire->Port1->is_connected(component) && wire->Port2->is_connected(component)) {
                 dead_wires.push_back(wire);
             }
@@ -1833,10 +1804,11 @@ void Schematic::insertRawComponent(Component *c, bool noOptimize)
 
 void Schematic::recreateComponent(Component* comp)
 {
-    std::stack<WireLabel*> saved_labels{};
+    auto qpoint_hash = [](const QPoint& p) { return std::hash<int>{}(p.x()) ^ std::hash<int>{}(p.y()); };
+    std::unordered_map<QPoint,std::unique_ptr<WireLabel>,decltype(qpoint_hash)> saved_labels(10, qpoint_hash);
     for (auto* port : comp->Ports) {
         if (port->Connection->hasLabel() && port->Connection->conn_count() == 1) {
-            saved_labels.push(port->Connection->releaseLabel().release());
+            saved_labels[port->Connection->center()] = port->Connection->releaseLabel();
         }
     }
 
@@ -1871,17 +1843,10 @@ void Schematic::recreateComponent(Component* comp)
     comp->tx = tx;
     comp->ty = ty;
 
-    for (auto pIt = comp->Ports.begin(); pIt != comp->Ports.end() && !saved_labels.empty(); pIt++) {
-        auto* wl = saved_labels.top();
-        saved_labels.pop();
-        auto* port = *pIt;
-        wl->cx = port->Connection->cx;
-        wl->cy = port->Connection->cy;
-        placeNodeLabel(wl);
-    }
-    while (!saved_labels.empty()) {
-        delete saved_labels.top();
-        saved_labels.pop();
+    for (auto* port : comp->Ports) {
+        if (saved_labels.contains(port->Connection->center())) {
+            port->Connection->acquireLabel(std::move(saved_labels[port->Connection->center()]));
+        }
     }
 }
 
@@ -2124,23 +2089,17 @@ void Schematic::oneLabel(Node *start_node)
             }
         }
 
-        for (auto* connected_element : *node) {
-            auto* wire = dynamic_cast<Wire*>(connected_element);
-
-            if (wire == nullptr) { // it's a component
-                auto* comp = dynamic_cast<Component*>(connected_element);
-                assert (comp != nullptr);
-
-                if (comp->isActive == COMP_IS_ACTIVE && comp->Model == "GND") {
-                    named = true;
-                    if (pl) {
-                        pl->owner()->dropLabel();
-                    }
-                    pl = nullptr;
+        for (auto* comp : node->components()) {
+            if (comp->isActive == COMP_IS_ACTIVE && comp->Model == "GND") {
+                named = true;
+                if (pl) {
+                    pl->owner()->dropLabel();
                 }
-                continue;
+                pl = nullptr;
             }
+        }
 
+        for (auto* wire : node->wires()) {
             auto* other_node = node != wire->Port1 ? wire->Port1 : wire->Port2;
 
             if (other_node->y1) continue;
@@ -2201,17 +2160,15 @@ Element* Schematic::getWireLabel(Node *pn_)
     pn_->y1 = 1;  // mark Node as already checked
     for(auto* pn : Cons)
         if(pn->hasLabel()) return pn;
-        else
-            for(auto* pe : *pn)
+        else {
+            for (auto* pe : pn->components())
             {
-                if(pe->Type != isWire)
-                {
-                    if(((Component*)pe)->isActive == COMP_IS_ACTIVE)
-                        if(((Component*)pe)->Model == "GND") return pe;
-                    continue;
-                }
+                if (pe->isActive == COMP_IS_ACTIVE && pe->Model == "GND")
+                    return pe;
+            }
 
-                pw = (Wire*)pe;
+            for (auto* pw : pn->wires())
+            {
                 if(pw->hasLabel()) return pw;
 
                 if(pn != pw->Port1) pNode = pw->Port1;
@@ -2221,6 +2178,7 @@ Element* Schematic::getWireLabel(Node *pn_)
                 pNode->y1 = 1;  // mark Node as already checked
                 Cons.push_back(pNode);
             }
+        }
     return nullptr;   // no wire label found
 }
 
@@ -2558,84 +2516,6 @@ bool Schematic::heal(const HealingParams* params) {
 
     bool thereWereChanges = false;
 
-
-    // Remove wires connecting nodes at same location
-    {
-        std::vector<Wire*> zerolen_wires;
-        std::ranges::copy_if(*a_Wires, std::back_inserter(zerolen_wires), [](const Wire* w) -> bool { return w->Port1->center() == w->Port2->center(); });
-        std::ranges::for_each(zerolen_wires, [this](Wire* w) -> void { deleteWire(w); });
-        thereWereChanges = !zerolen_wires.empty() || thereWereChanges;
-        zerolen_wires.clear();
-    }
-
-
-    // Merge nodes having the same location
-    for (auto sameloc_node_group : internal::sameloc_nodes(a_Nodes)) {
-        auto recipient = sameloc_node_group.front();
-
-        for (auto donor = (sameloc_node_group.begin() + 1); donor != sameloc_node_group.end(); donor++) {
-            internal::merge(*donor, recipient);
-            a_Nodes->remove(*donor);
-            delete *donor;
-            thereWereChanges = true;
-        }
-    }
-
-
-    assert(invariants::allComponentsAreConsistent(a_Components));
-    assert(invariants::allWiresAreConsistent(a_Wires));
-    assert(invariants::noOrphanNodes(a_Nodes));
-    assert(invariants::noSamePlaceNodes(a_Nodes));
-    assert(invariants::noZeroLenWires(a_Wires));
-
-
-    // Fix "node above wire" anomalies
-    {
-        for (auto* n : *a_Nodes) {
-            for (auto wit = a_Wires->begin(); wit != a_Wires->end(); wit++) {
-                auto w = *wit;
-                if (qucs_s::geom::is_between(n, w->Port1, w->Port2) && n != w->Port1 && n != w->Port2) {
-                    splitWire(w, n);
-                    wit = a_Wires->begin();
-                    thereWereChanges = true;
-                }
-            }
-        }
-    }
-
-
-    // Fix "duplicate wires" anomalies
-    {
-        std::unordered_map<qucs_s::UnorderedPair<Node*,Node*>,Wire*> unique_wires;
-        std::vector<Wire*> wire_duplicates;
-        for (auto* wire : *a_Wires) {
-            qucs_s::UnorderedPair<Node*,Node*> p{wire->Port1, wire->Port2};
-
-            if (unique_wires.contains(p)) {
-                if (!unique_wires.at(p)->hasLabel()) {
-                    unique_wires.at(p)->acquireLabel(wire->releaseLabel());
-                }
-                wire_duplicates.push_back(wire);
-            } else {
-                unique_wires.emplace(p, wire);
-            }
-        }
-
-        for (auto* wire : wire_duplicates) {
-            deleteWire(wire);
-            thereWereChanges = true;
-        }
-    }
-
-    assert(invariants::allComponentsAreConsistent(a_Components));
-    assert(invariants::allWiresAreConsistent(a_Wires));
-    assert(invariants::noOrphanNodes(a_Nodes));
-    assert(invariants::noSamePlaceNodes(a_Nodes));
-    assert(invariants::noZeroLenWires(a_Wires));
-    assert(invariants::noNodesOnWires(a_Nodes, a_Wires));
-    assert(invariants::noDuplicateWires(a_Wires));
-
-
     // Fix geometric anomalies
 
     auto old_plan = a_wirePlanner.setType(params->m_wire_plan);
@@ -2663,7 +2543,7 @@ bool Schematic::heal(const HealingParams* params) {
         auto recipient = sameloc_node_group.front();
 
         for (auto donor = (sameloc_node_group.begin() + 1); donor != sameloc_node_group.end(); donor++) {
-            internal::merge(*donor, recipient);
+            recipient->merge(*donor);
             a_Nodes->remove(*donor);
             delete *donor;
             thereWereChanges = true;
@@ -2718,20 +2598,16 @@ bool Schematic::heal(const HealingParams* params) {
         std::set<Wire*> shorts;
         for (auto* wire : *a_Wires) {
             std::set<Component*> port_1_comps;
-            for (auto* connectable : *wire->Port1) {
-                if (auto* comp = dynamic_cast<Component*>(connectable)) {
-                    port_1_comps.insert(comp);
-                }
+            for (auto* comp : wire->Port1->components()) {
+                port_1_comps.insert(comp);
             }
 
             if (port_1_comps.empty()) continue;
 
             std::set<Component*> shorted;
-            for (auto* connectable : *wire->Port2) {
-                if (auto* comp = dynamic_cast<Component*>(connectable)) {
-                    if (port_1_comps.contains(comp)) {
-                        shorted.insert(comp);
-                    }
+            for (auto* comp : wire->Port2->components()) {
+                if (port_1_comps.contains(comp)) {
+                    shorted.insert(comp);
                 }
             }
 

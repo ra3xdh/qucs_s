@@ -47,6 +47,31 @@
  * \class Component
  * \brief The Component class implements a generic analog component
  */
+
+QMap<QChar, double> Component::s_numericScaleFactors
+{
+    {' ', 1},
+    {'Y', 1e24},
+    {'Z', 1e21},
+    {'E', 1e18},
+    {'P', 1e15},
+    {'T', 1e12},
+    {'G', 1e9},
+    {'M', 1e6},
+    {'k', 1e3},
+    {'K', 1e3},
+    {'%', 1e-2},
+    {'c', 1e-2},
+    {'m', 1e-3},
+    {'u', 1e-6},
+    {'n', 1e-9},
+    {'p', 1e-12},
+    {'f', 1e-15},
+    {'a', 1e-18},
+    {'z', 1e-21},
+    {'y', 1e-24}
+};
+
 Component::Component() {
     Type = isAnalogComponent;
 
@@ -237,11 +262,11 @@ void Component::paint(QPainter *p) {
             // Display only two decimals. If the value is lower than 0.1, use scientific notation
             if (std::abs(result) < 0.1 && result != 0)
             {
-                propertyValue = QString::number(result, 'e', 2);
+                propertyValue = QString::number(result, 'e', 4);
             }
             else
             {
-                propertyValue = QString::number(result, 'f', 2);
+                propertyValue = QString::number(result, 'f', 4);
             }
         }
 
@@ -1432,7 +1457,8 @@ double Component::evaluateExpression(const QString& expression) const
         if (prop->type == Property::Type::Value)
         {
             bool ok;
-            double value = prop->Value.toDouble(&ok);
+            QChar unit(prop->unit.isEmpty() ? ' ' : prop->unit[0]);
+            double value = prop->Value.toDouble(&ok) * s_numericScaleFactors[unit];
             if (ok)
             {
                 variables[prop->Name] = value;

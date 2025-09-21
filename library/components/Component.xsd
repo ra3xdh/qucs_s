@@ -126,6 +126,7 @@
                             <xs:attribute type="xs:string" name="color" use="optional"/>
                             <xs:attribute type="xs:int" name="width" use="optional"/>
                             <xs:attribute type="xs:byte" name="style" use="optional"/>
+                            <xs:attribute type="xs:string" name="condition" use="optional" default=""/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
@@ -164,8 +165,10 @@
                   </xs:sequence>
                   <xs:attribute type="xs:string" name="name"/>
                   <xs:attribute type="xs:string" name="unit"/>
-                  <xs:attribute type="xs:string" name="default_value"/>
+                  <xs:attribute type="xs:string" name="default_value" use="optional" default=""/>
+                  <xs:attribute type="xs:string" name="equation" use="optional" default=""/>
                   <xs:attribute type="xs:boolean" name="show"/>
+                  <xs:attribute type="xs:string" name="condition" use="optional" default=""/>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -173,7 +176,7 @@
         </xs:element>
       </xs:sequence>
       <xs:attribute type="xs:string" name="library"/>
-      <xs:attribute type="xs:string" name="name"/>
+      <xs:attribute type="xs:string" name="names"/>
       <xs:attribute type="xs:string" name="schematic_id"/>
     </xs:complexType>
   </xs:element>

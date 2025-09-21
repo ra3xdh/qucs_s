@@ -42,6 +42,8 @@ public:
 
   virtual void MouseResizeMoving(int, int, Schematic*) {};
 
+  virtual void snapToGrid(Schematic* /*sch*/) {};
+
   using Element::moveCenterTo;
   bool  moveCenterTo(int x, int y) noexcept override;
   bool  moveCenter(int dx, int dy) noexcept override;

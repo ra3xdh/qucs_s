@@ -14,10 +14,10 @@ env:
   EXECUTABLE_NAME: "qucs-s"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
-  QT_VERSION: 6.9.0
+  QT_VERSION: 6.9.2
   QUCS_MACOS_BIN: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
-  NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/44.2/ngspice-44.2_64.7z
+  NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/45.2/ngspice-45.2_64.7z
   XSD_URL: https://www.codesynthesis.com/download/xsd/4.2/windows/windows10/x86_64/xsd-4.2.0-x86_64-windows10.zip
   LIB-XSD_URL: https://www.codesynthesis.com/download/xsd/4.2/windows/windows10/x86_64/libxsd-4.2.0-windows.zip
   XERCES-C_URL: https://www.codesynthesis.com/download/xsd/4.2/windows/windows10/x86_64/libxerces-c-3.2.4+2-x86_64-windows10-msvc17.6.zip
@@ -296,7 +296,7 @@ jobs:
           path: ${{ env.APP_NAME }}-${{ env.VERSION }}-${{ matrix.dmg_suffix }}.dmg
 
   build-windows-msvc:
-    runs-on: windows-latest
+    runs-on: windows-2022
     needs: setup
     strategy:
       fail-fast: false

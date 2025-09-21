@@ -193,12 +193,11 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
     }
     else {
       hasNoComp = true;
-      for(auto *pe : *pn)
-        if(pe->Type == isWire) {
-          if( ((Wire*)pe)->isHorizontal() )  pn->x1 |= 2;
-        }
-        else {
-          if( ((Component*)pe)->Model == "GND" ) {
+      for (auto *pe : pn->wires())
+          if (pe->isHorizontal())  pn->x1 |= 2;
+
+      for (auto *pe : pn->components()) {
+          if (pe->Model == "GND") {
             hasNoComp = true;   // no text at ground symbol
             break;
           }
@@ -231,11 +230,11 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
     }
 
 
-    for(auto pe : *pn)
-      if(pe->Type == isWire) {
-        if( ((Wire*)pe)->Port1 != pn )  // no text at next node
-          ((Wire*)pe)->Port1->Name = "";
-        else  ((Wire*)pe)->Port2->Name = "";
+    for (auto pe : pn->wires()) {
+        if (pe->Port1 != pn)  // no text at next node
+          pe->Port1->Name = "";
+        else
+          pe->Port2->Name = "";
       }
   }
 
@@ -267,13 +266,13 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
       }
 
 
-      for(auto pe : *pn)
-        if(pe->Type == isWire) {
-          if( ((Wire*)pe)->isHorizontal() )  pn->x1 |= 2;
-        }
-        else {
+      for (auto pe : pn->wires()) {
+          if (pe->isHorizontal()) pn->x1 |= 2;
+      }
+
+      for(auto pe : pn->components()) {
           if(pn->cx < pe->cx)  pn->x1 |= 1;  // to the right is no room
-        }
+      }
     } else if (isSpice) {
         if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
             Node* pn = pc->Ports.first()->Connection;
@@ -286,12 +285,11 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
                 pn->Name = misc::num2str(NodeVals->value(src_nam))+"A";
             } else pn->Name = "0A";
 
-            for(auto pe : *pn)
-              if(pe->Type == isWire) {
-                if( ((Wire*)pe)->isHorizontal() )  pn->x1 |= 2;
+            for (auto pe : pn->wires()) {
+                if (pe->isHorizontal()) pn->x1 |= 2;
             }
-              else {
-                if(pn->cx < pe->cx)  pn->x1 |= 1;  // to the right is no room
+            for (auto pe : pn->components()) {
+                if (pn->cx < pe->cx) pn->x1 |= 1;  // to the right is no room
             }
         }
     }

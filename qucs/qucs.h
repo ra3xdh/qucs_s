@@ -95,7 +95,7 @@ public:
   bool closeAllFiles(int exceptTab = -1);
   bool closeAllLeft(int);
   bool closeAllRight(int);
-  bool gotoPage(const QString&);   // to load a document
+  bool gotoPage(const QString&, bool reloadPage = false);   // to load a document
   QucsDoc *getDoc(int No=-1);
   QucsDoc* findDoc (QString, int * Pos = 0);
   QString fileType (const QString&);
@@ -365,7 +365,7 @@ private:
    ************************************************** */
 
 public:
-  void editFile(const QString&);
+  void editFile(const QString&, bool reloadFile = false);
 
   QAction *insWire, *insLabel, *insGround, *insPort, *insEquation, *magPlus,
           *editRotate, *editMirror, *editMirrorY, *editPaste, *select,
