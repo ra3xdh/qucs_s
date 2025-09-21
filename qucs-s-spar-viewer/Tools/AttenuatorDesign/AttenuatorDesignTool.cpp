@@ -19,6 +19,9 @@
 
 AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   QGridLayout *AttenuatorDesignLayout = new QGridLayout();
+
+  int layout_row = 0; // Row index. This is useful to add a new line on the layout without the need of modifying manually all the widgets.
+
   // Topology
   Topology_Label = new QLabel("Topology");
   Topology_Combo = new QComboBox();
@@ -32,10 +35,22 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   Topology_Combo->addItem("L-pad 1st shunt");
   Topology_Combo->addItem("Rseries");
   Topology_Combo->addItem("Rshunt");
-  AttenuatorDesignLayout->addWidget(Topology_Label, 0, 0);
-  AttenuatorDesignLayout->addWidget(Topology_Combo, 0, 1);
+  AttenuatorDesignLayout->addWidget(Topology_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(Topology_Combo, layout_row, 1);
+
+
+  // Transmission line implementation
+  layout_row++;
+  TL_Implementation_Label = new QLabel(QString("TLIN implementation"));
+  TL_Implementation_Combo = new QComboBox();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  TL_Implementation_Combo->addItem("Stripline");
+  AttenuatorDesignLayout->addWidget(TL_Implementation_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(TL_Implementation_Combo, layout_row, 1);
 
   // Attenuation
+  layout_row++;
   Attenuation_Label = new QLabel("Attenuation");
   AttenuationSpinBox = new QDoubleSpinBox();
   AttenuationSpinBox->setMinimum(0.5);
@@ -43,11 +58,12 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   AttenuationSpinBox->setSingleStep(0.5);
   AttenuationSpinBox->setValue(15);
   dBLabelAtt = new QLabel("dB");
-  AttenuatorDesignLayout->addWidget(Attenuation_Label, 1, 0);
-  AttenuatorDesignLayout->addWidget(AttenuationSpinBox, 1, 1);
-  AttenuatorDesignLayout->addWidget(dBLabelAtt, 1, 2);
+  AttenuatorDesignLayout->addWidget(Attenuation_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(AttenuationSpinBox, layout_row, 1);
+  AttenuatorDesignLayout->addWidget(dBLabelAtt, layout_row, 2);
 
   // Input impedance
+  layout_row++;
   Zin_Label = new QLabel("Zin");
   ZinSpinBox = new QDoubleSpinBox();
   ZinSpinBox->setMinimum(0.5);
@@ -55,11 +71,12 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   ZinSpinBox->setSingleStep(0.5);
   ZinSpinBox->setValue(50);
   Ohm_Zin_Label = new QLabel(QChar(0xa9, 0x03));
-  AttenuatorDesignLayout->addWidget(Zin_Label, 2, 0);
-  AttenuatorDesignLayout->addWidget(ZinSpinBox, 2, 1);
-  AttenuatorDesignLayout->addWidget(Ohm_Zin_Label, 2, 2);
+  AttenuatorDesignLayout->addWidget(Zin_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(ZinSpinBox, layout_row, 1);
+  AttenuatorDesignLayout->addWidget(Ohm_Zin_Label, layout_row, 2);
 
   // Output impedance
+  layout_row++;
   Zout_Label = new QLabel("Zout");
   ZoutSpinBox = new QDoubleSpinBox();
   ZoutSpinBox->setMinimum(0.5);
@@ -67,11 +84,12 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   ZoutSpinBox->setSingleStep(0.5);
   ZoutSpinBox->setValue(50);
   Ohm_Zout_Label = new QLabel(QChar(0xa9, 0x03));
-  AttenuatorDesignLayout->addWidget(Zout_Label, 3, 0);
-  AttenuatorDesignLayout->addWidget(ZoutSpinBox, 3, 1);
-  AttenuatorDesignLayout->addWidget(Ohm_Zout_Label, 3, 2);
+  AttenuatorDesignLayout->addWidget(Zout_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(ZoutSpinBox, layout_row, 1);
+  AttenuatorDesignLayout->addWidget(Ohm_Zout_Label, layout_row, 2);
 
   // Input power
+  layout_row++;
   Pin_Label = new QLabel("Input power");
   Pin_SpinBox = new QDoubleSpinBox();
   Pin_SpinBox->setMinimum(-150);   // dBm
@@ -90,10 +108,12 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
       << QString("dBmV [50%1]").arg(QChar(0xa9, 0x03));
   Pin_units_Combo->addItems(power_units);
   Pin_units_Combo->setCurrentIndex(2); // dBm
-  AttenuatorDesignLayout->addWidget(Pin_Label, 4, 0);
-  AttenuatorDesignLayout->addWidget(Pin_SpinBox, 4, 1);
-  AttenuatorDesignLayout->addWidget(Pin_units_Combo, 4, 2);
+  AttenuatorDesignLayout->addWidget(Pin_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(Pin_SpinBox, layout_row, 1);
+  AttenuatorDesignLayout->addWidget(Pin_units_Combo, layout_row, 2);
 
+  // Frequency. Tuned attenuators only
+  layout_row++;
   freqLabel = new QLabel("Frequency");
   freqSpinBox = new QDoubleSpinBox();
   freqSpinBox->setMinimum(0.5);
@@ -107,56 +127,63 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   FreqScaleCombo->addItem("Hz");
   FreqScaleCombo->setCurrentIndex(1);
 
-  AttenuatorDesignLayout->addWidget(freqLabel, 5, 0);
-  AttenuatorDesignLayout->addWidget(freqSpinBox, 5, 1);
-  AttenuatorDesignLayout->addWidget(FreqScaleCombo, 5, 2);
+  AttenuatorDesignLayout->addWidget(freqLabel, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(freqSpinBox, layout_row, 1);
+  AttenuatorDesignLayout->addWidget(FreqScaleCombo, layout_row, 2);
 
+  // Lumped components TL
+  layout_row++;
   LumpedImplementationCheckbox = new QCheckBox("Use lumped components");
   LumpedImplementationCheckbox->setChecked(false);
-  AttenuatorDesignLayout->addWidget(LumpedImplementationCheckbox, 6, 0);
+  AttenuatorDesignLayout->addWidget(LumpedImplementationCheckbox, layout_row, 0);
 
   // Power dissipation
+  layout_row++;
   Pdiss_R1_Label = new QLabel("Pdiss. R1");
   Pdiss_R1_Lineedit = new QLineEdit();
   Pdiss_R1_Lineedit->setReadOnly(true);
   R1_Pdiss_Units_Combo = new QComboBox();
   R1_Pdiss_Units_Combo->addItems(power_units);
-  AttenuatorDesignLayout->addWidget(Pdiss_R1_Label, 7, 0);
-  AttenuatorDesignLayout->addWidget(Pdiss_R1_Lineedit, 7, 1);
-  AttenuatorDesignLayout->addWidget(R1_Pdiss_Units_Combo, 7, 2);
+  AttenuatorDesignLayout->addWidget(Pdiss_R1_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(Pdiss_R1_Lineedit, layout_row, 1);
+  AttenuatorDesignLayout->addWidget(R1_Pdiss_Units_Combo, layout_row, 2);
 
+  layout_row++;
   Pdiss_R2_Label = new QLabel("Pdiss. R2");
   Pdiss_R2_Lineedit = new QLineEdit();
   Pdiss_R2_Lineedit->setReadOnly(true);
   R2_Pdiss_Units_Combo = new QComboBox();
   R2_Pdiss_Units_Combo->addItems(power_units);
-  AttenuatorDesignLayout->addWidget(Pdiss_R2_Label, 8, 0);
-  AttenuatorDesignLayout->addWidget(Pdiss_R2_Lineedit, 8, 1);
-  AttenuatorDesignLayout->addWidget(R2_Pdiss_Units_Combo, 8, 2);
+  AttenuatorDesignLayout->addWidget(Pdiss_R2_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(Pdiss_R2_Lineedit, layout_row, 1);
+  AttenuatorDesignLayout->addWidget(R2_Pdiss_Units_Combo, layout_row, 2);
 
+  layout_row++;
   Pdiss_R3_Label = new QLabel("Pdiss. R3");
   Pdiss_R3_Lineedit = new QLineEdit();
   Pdiss_R3_Lineedit->setReadOnly(true);
   R3_Pdiss_Units_Combo = new QComboBox();
   R3_Pdiss_Units_Combo->addItems(power_units);
-  AttenuatorDesignLayout->addWidget(Pdiss_R3_Label, 9, 0);
-  AttenuatorDesignLayout->addWidget(Pdiss_R3_Lineedit, 9, 1);
-  AttenuatorDesignLayout->addWidget(R3_Pdiss_Units_Combo, 9, 2);
+  AttenuatorDesignLayout->addWidget(Pdiss_R3_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(Pdiss_R3_Lineedit, layout_row, 1);
+  AttenuatorDesignLayout->addWidget(R3_Pdiss_Units_Combo, layout_row, 2);
 
+  layout_row++;
   Pdiss_R4_Label = new QLabel("Pdiss. R4");
   Pdiss_R4_Lineedit = new QLineEdit();
   Pdiss_R4_Lineedit->setReadOnly(true);
   R4_Pdiss_Units_Combo = new QComboBox();
   R4_Pdiss_Units_Combo->addItems(power_units);
-  AttenuatorDesignLayout->addWidget(Pdiss_R4_Label, 10, 0);
-  AttenuatorDesignLayout->addWidget(Pdiss_R4_Lineedit, 10, 1);
-  AttenuatorDesignLayout->addWidget(R4_Pdiss_Units_Combo, 10, 2);
+  AttenuatorDesignLayout->addWidget(Pdiss_R4_Label, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(Pdiss_R4_Lineedit, layout_row, 1);
+  AttenuatorDesignLayout->addWidget(R4_Pdiss_Units_Combo, layout_row, 2);
 
   // Widgets to add a trace to plot
+  layout_row++;
   traceNameLabel = new QLabel("Trace name");
   traceNameLineEdit = new QLineEdit("Attenuator1");
-  AttenuatorDesignLayout->addWidget(traceNameLabel, 11, 0);
-  AttenuatorDesignLayout->addWidget(traceNameLineEdit, 11, 1);
+  AttenuatorDesignLayout->addWidget(traceNameLabel, layout_row, 0);
+  AttenuatorDesignLayout->addWidget(traceNameLineEdit, layout_row, 1);
 
   connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_TopoCombo_currentIndexChanged(int)));
   connect(AttenuationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
@@ -248,6 +275,10 @@ void AttenuatorDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     ZoutSpinBox->show();
     Ohm_Zout_Label->show();
 
+    // Hide TLIN implementation widgets
+    TL_Implementation_Label->hide();
+    TL_Implementation_Combo->hide();
+
     // Hide frequency input
     freqLabel->hide();
     freqSpinBox->hide();
@@ -272,6 +303,10 @@ void AttenuatorDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     Pdiss_R3_Label->show();
     Pdiss_R3_Lineedit->show();
     R3_Pdiss_Units_Combo->show();
+
+    // Hide TLIN implementation widgets
+    TL_Implementation_Label->hide();
+    TL_Implementation_Combo->hide();
 
     // Show R4
     Pdiss_R4_Label->show();
@@ -300,6 +335,10 @@ void AttenuatorDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     Pdiss_R3_Label->hide();
     Pdiss_R3_Lineedit->hide();
     R3_Pdiss_Units_Combo->hide();
+
+    // Hide TLIN implementation widgets
+    TL_Implementation_Label->hide();
+    TL_Implementation_Combo->hide();
 
     // Hide Pdiss for R4
     Pdiss_R4_Label->hide();
@@ -331,6 +370,10 @@ void AttenuatorDesignTool::on_TopoCombo_currentIndexChanged(int index) {
     // Replace Zin by Z0
     Zin_Label->setText(QString("Z0"));
 
+    // Show TLIN implementation widgets
+    TL_Implementation_Label->show();
+    TL_Implementation_Combo->show();
+
     // Hide Zout
     Zout_Label->hide();
     ZoutSpinBox->hide();
@@ -359,6 +402,10 @@ void AttenuatorDesignTool::on_TopoCombo_currentIndexChanged(int index) {
 
     // Replace Zin by Z0
     Zin_Label->setText(QString("Z0"));
+
+    // Hide TLIN implementation widgets
+    TL_Implementation_Label->hide();
+    TL_Implementation_Combo->hide();
 
     // Hide Pdiss for R3
     Pdiss_R3_Label->hide();
@@ -389,6 +436,10 @@ void AttenuatorDesignTool::on_TopoCombo_currentIndexChanged(int index) {
 
            // Replace Zin by Z0
     Zin_Label->setText(QString("Z0"));
+
+    // Hide TLIN implementation widgets
+    TL_Implementation_Label->hide();
+    TL_Implementation_Combo->hide();
 
            // Hide Pdiss for R2
     Pdiss_R2_Label->hide();

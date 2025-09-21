@@ -64,6 +64,10 @@ private:
   double getPowerW(double, unsigned int);
   double ConvertPowerFromW(double, unsigned int);
 
+         // Transmission line implementation
+  QLabel *TL_Implementation_Label;
+  QComboBox *TL_Implementation_Combo;
+
   // Add trace to simulate
   QLabel *traceNameLabel;
   QLineEdit *traceNameLineEdit;
