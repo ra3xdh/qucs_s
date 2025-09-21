@@ -1,26 +1,20 @@
 /*
- * qucs-s-spar-viewer.cpp - S-parameter viewer & RF Circuit Synthesis for Qucs-S
+ *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
  *
- * copyright (C) 2025 Andres Martinez-Mera <andresmartinezmera@gmail.com>
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this package; see the file COPYING.  If not, write to
- * the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
- * Boston, MA 02110-1301, USA.
- *
- *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
+ 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -847,17 +841,25 @@ void Qucs_S_SPAR_Viewer::slotHelpAboutQt()
 {
       QMessageBox::aboutQt(this, tr("About Qt"));
 }
-
 void Qucs_S_SPAR_Viewer::slotHelpAbout()
 {
-    QMessageBox::about(this, tr("About..."),
-    "Qucs-S S-parameter Viewer & RF Circuit Synthesis Tool Version " PACKAGE_VERSION+
-    tr("\nCopyright (C) 2025 by")+" Andrés Martínez Mera"
-    "\n"
-    "\nThis is free software; see the source for copying conditions."
-    "\nThere is NO warranty; not even for MERCHANTABILITY or "
-    "\nFITNESS FOR A PARTICULAR PURPOSE.\n\n");
+  QMessageBox::about(this, tr("About..."),
+                     "Qucs-S S-parameter Viewer & RF Circuit Synthesis Tool Version " PACKAGE_VERSION +
+                         tr("\nCopyright (C) 2025 by") + " Andrés Martínez Mera"
+                                                         "\n"
+                                                         "\nThis program is free software: you can redistribute it and/or modify"
+                                                         "\nit under the terms of the GNU General Public License as published by"
+                                                         "\nthe Free Software Foundation, either version 3 of the License, or"
+                                                         "\n(at your option) any later version."
+                                                         "\n"
+                                                         "\nThis program is distributed in the hope that it will be useful,"
+                                                         "\nbut WITHOUT ANY WARRANTY; without even the implied warranty of"
+                                                         "\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+                                                         "\nSee the GNU General Public License for more details."
+                                                         "\nYou should have received a copy of the GNU General Public License"
+                                                         "\nalong with this program. If not, see <https://www.gnu.org/licenses/>.\n\n");
 }
+
 
 void Qucs_S_SPAR_Viewer::slotQuit()
 {
