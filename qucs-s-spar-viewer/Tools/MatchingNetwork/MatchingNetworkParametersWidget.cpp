@@ -155,7 +155,7 @@ void MatchingNetworkParametersWidget::connectSignals() {
   connect(ZinRSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onParameterChanged()));
   connect(Solution1_RB, SIGNAL(clicked(bool)), this, SLOT(onParameterChanged()));
   connect(Solution2_RB, SIGNAL(clicked(bool)), this, SLOT(onParameterChanged()));
-  connect(Weighting_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(onParameterChanged()));
+  connect(Weighting_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(adjustChebyshevRippleVisibility()));
   connect(Ripple_SpinBox, SIGNAL(valueChanged(double)), this, SLOT(onParameterChanged()));
   connect(Sections_SpinBox, SIGNAL(valueChanged(int)), this, SLOT(onParameterChanged()));
   connect(m_toggleButton, SIGNAL(clicked(bool)), this, SLOT(onToggleCollapse()));
@@ -214,6 +214,8 @@ void MatchingNetworkParametersWidget::onTopologyChanged(int index) {
 
            // Show lambda/4 weighting
     Weighting_GroupBox->show();
+
+    adjustChebyshevRippleVisibility();
     break;
 
   case 4: // Cascaded L-sections transformer
@@ -254,6 +256,18 @@ void MatchingNetworkParametersWidget::onTopologyChanged(int index) {
     break;
   }
 
+  onParameterChanged();
+}
+
+void MatchingNetworkParametersWidget::adjustChebyshevRippleVisibility(){
+  // Check response type and adjust the ripple visibility
+  if (Weighting_Combo->currentText() == QString("Chebyshev")){
+    Ripple_Label->setVisible(true);
+    Ripple_SpinBox->setVisible(true);
+  } else {
+    Ripple_Label->setVisible(false);
+    Ripple_SpinBox->setVisible(false);
+  }
   onParameterChanged();
 }
 

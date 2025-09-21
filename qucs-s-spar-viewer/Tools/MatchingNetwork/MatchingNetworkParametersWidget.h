@@ -69,6 +69,9 @@ private slots:
     void onParameterChanged();
     void onToggleCollapse();
 
+    // Required to adjust the visility of the ripple in the Chebyshev transformer
+    void adjustChebyshevRippleVisibility();
+
 private:
     // UI Components
 
