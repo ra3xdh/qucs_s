@@ -34,19 +34,25 @@ void PowerCombinerDesigner::TJunction() {
 
   Schematic.appendWire(TermSpar1.ID, 0, TL1.ID, 0);
 
+  // Node
+  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100, 0);
+  Schematic.appendNode(N1);
+  Schematic.appendWire(TL1.ID, 1, N1.ID, 1);
+
+
   ComponentInfo TL2(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, 125, -50);
   TL2.val["Z0"] = num2str(Specs.Z0 * (K + 1), Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL2);
 
-  Schematic.appendWire(TL2.ID, 0, TL1.ID, 1);
+  Schematic.appendWire(TL2.ID, 0, N1.ID, 1);
 
   ComponentInfo TL3(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, 125, 50);
   TL3.val["Z0"] = num2str(Specs.Z0 * (K + 1) / K, Resistance);
   TL3.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL3);
 
-  Schematic.appendWire(TL3.ID, 0, TL1.ID, 1);
+  Schematic.appendWire(TL3.ID, 0, N1.ID, 1);
 
   int xpos_term = 175;
 
