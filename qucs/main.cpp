@@ -479,13 +479,22 @@ int doCdlNetlist(
     QScopedPointer<QString> netlistString;
     QScopedPointer<QFile> cdlFile;
 
+    QString subCircuitName;
+
     if (netlist2Console)
     {
+        subCircuitName = "console";
+
         netlistString.reset(new QString());
         netlistStream.reset(new QTextStream(netlistString.get()));
     }
     else
     {
+        // The main-netlist wrapping subcircuit gets the name from the netlist storage
+        // file name excluding the potential file suffix
+        subCircuitName = netlistFileName.split(QDir::separator()).last();
+        subCircuitName = subCircuitName.left(subCircuitName.lastIndexOf("."));
+
         cdlFile.reset(new QFile(netlistFileName));
 
         if (cdlFile->open(QFile::WriteOnly))
@@ -508,7 +517,7 @@ int doCdlNetlist(
         }
     }
 
-    CdlNetlistWriter cdlWriter(*netlistStream, schematic.get(), resolveSpicePrefix);
+    CdlNetlistWriter cdlWriter(*netlistStream, schematic.get(), resolveSpicePrefix, subCircuitName);
     if (!cdlWriter.write())
     {
         QMessageBox::critical(

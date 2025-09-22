@@ -34,6 +34,7 @@
 #include "qt3_compat/q3scrollview.h"
 #include <QVector>
 #include <QStringList>
+#include <QPair>
 
 class QTextStream;
 class QTextEdit;
@@ -503,6 +504,8 @@ public:
   void setIsVerilog(bool value) { a_isVerilog = value; }
   bool getIsVerilog() const { return a_isVerilog; }
   bool giveNodeNames(QTextStream *, int&, QStringList&, QPlainTextEdit*, int);
+  void setNetNameMapping(QList<QPair<QString, QString>>& pinInfo) const;
+  void resetNetNameMapping();
 
 private:
   int  saveDocument();

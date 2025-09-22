@@ -20,6 +20,7 @@
 
 #include "conductor.h"
 #include <list>
+#include <optional>
 
 #include <QDebug>
 
@@ -73,11 +74,14 @@ public:
 
   inline void setName(const QString& name) { a_name = name; }
   inline void addName(const QString& name) { a_name += name; }
-  inline QString getName() const { return a_name; }
+  inline QString getName() const { return a_mappedName.has_value() ? a_mappedName.value() : a_name; }
   inline void setDType(const QString& dtype) { a_dtype = dtype; }
   inline QString getDType() const { return a_dtype; }
   inline void setState(int state) { a_state = state; }
   inline int getState() const { return a_state; }
+
+  void setNetNameMapping(const QString& netName);
+  void resetNetNameMapping();
 
 private:
   // Nodes usually have quite a few connections. In ideal case, when all wire
@@ -94,6 +98,7 @@ private:
   QString a_dtype;  // type of node (used by digital files)
   int a_state;      // remember some things during some operations
   QString a_name;   // node name used by creation of netlist
+  std::optional<QString> a_mappedName;
 };
 
 #endif

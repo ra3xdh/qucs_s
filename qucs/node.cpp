@@ -28,7 +28,8 @@ Node::Node(int x, int y) :
     a_components(),
     a_dtype(""),
     a_state(0),
-    a_name()
+    a_name(),
+    a_mappedName()
 {
     Type  = isNode;
     cx = x;
@@ -119,4 +120,30 @@ Node* Node::merge(Node* donor)
     this->isSelected = this->isSelected || donor->isSelected;
 
     return donor;
+}
+
+void Node::setNetNameMapping(const QString& netName)
+{
+    if (!a_mappedName.has_value() || a_mappedName.value() != netName)
+    {
+        a_mappedName = netName;
+
+        std::for_each(
+                a_wires.begin(),
+                a_wires.end(),
+                [netName](Wire* &wire) { wire->setNetNameMapping(netName); });
+    }
+}
+
+void Node::resetNetNameMapping()
+{
+    if (a_mappedName.has_value())
+    {
+        a_mappedName.reset();
+
+        std::for_each(
+                a_wires.begin(),
+                a_wires.end(),
+                [](Wire* &wire) { wire->resetNetNameMapping(); });
+    }
 }
