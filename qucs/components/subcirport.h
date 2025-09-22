@@ -31,6 +31,8 @@ public:
 protected:
   QString netlist();
   QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+  virtual void setNetNameMapping(QList<QPair<QString, QString>>& pinInfo);
+  virtual void resetNetNameMapping();
   QString vhdlCode(int);
   QString verilogCode(int);
   void createSymbol();

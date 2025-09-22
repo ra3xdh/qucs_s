@@ -29,8 +29,6 @@
 #include "node.h"
 #include "misc.h"
 
-#include <QPen>
-#include <QString>
 #include <QMessageBox>
 #include <QPainter>
 #include <QDebug>

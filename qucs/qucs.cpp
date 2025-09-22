@@ -3763,7 +3763,12 @@ void QucsApp::slotSaveCdlNetlist()
             QString netlistString;
             {
                 QTextStream netlistStream(&netlistString);
-                CdlNetlistWriter cdlWriter(netlistStream, schematic, QucsSettings.ResolveSpicePrefix);
+                CdlNetlistWriter cdlWriter(
+                        netlistStream,
+                        schematic,
+                        QucsSettings.ResolveSpicePrefix,
+                        "console");
+
                 if (!cdlWriter.write())
                 {
                     QMessageBox::critical(
@@ -3790,11 +3795,21 @@ void QucsApp::slotSaveCdlNetlist()
                 return;
             }
 
+            // The main-netlist wrapping subcircuit gets the name from the netlist storage
+            // file name excluding the potential file suffix
+            QString subCircuitName = filename.split(QDir::separator()).last();
+            subCircuitName = subCircuitName.left(subCircuitName.lastIndexOf("."));
+
             QFile netlistFile(filename);
             if (netlistFile.open(QIODevice::WriteOnly))
             {
                 QTextStream netlistStream(&netlistFile);
-                CdlNetlistWriter cdlWriter(netlistStream, schematic, QucsSettings.ResolveSpicePrefix);
+                CdlNetlistWriter cdlWriter(
+                        netlistStream,
+                        schematic,
+                        QucsSettings.ResolveSpicePrefix,
+                        subCircuitName);
+
                 if (!cdlWriter.write())
                 {
                     QMessageBox::critical(

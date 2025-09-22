@@ -17,6 +17,7 @@
 #include "subcirport.h"
 #include "node.h"
 
+#include <utility>
 
 SubCirPort::SubCirPort()
 {
@@ -110,6 +111,27 @@ QString SubCirPort::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
     Q_UNUSED(dialect);
 
     return QString();
+}
+
+void SubCirPort::setNetNameMapping(QList<QPair<QString, QString>>& pinInfo)
+{
+    Q_ASSERT(!Ports.isEmpty());
+    Q_ASSERT(Props.size() >= 2);
+
+    Ports.first()->Connection->setNetNameMapping(Name);
+
+    const QString type(Props.at(1)->Value);
+    pinInfo.append(
+            std::make_pair(
+                Name,
+                (type == "analog" ? "I" : type == "in" ? "I" : type == "out" ? "O" : "B")));
+}
+
+void SubCirPort::resetNetNameMapping()
+{
+    Q_ASSERT(!Ports.isEmpty());
+
+    Ports.first()->Connection->resetNetNameMapping();
 }
 
 // -------------------------------------------------------

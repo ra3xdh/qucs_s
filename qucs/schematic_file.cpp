@@ -1790,6 +1790,22 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
   return true;
 }
 
+void Schematic::setNetNameMapping(QList<QPair<QString, QString>>& pinInfo) const
+{
+    for (auto* component : a_DocComps)
+    {
+        component->setNetNameMapping(pinInfo);
+    }
+}
+
+void Schematic::resetNetNameMapping()
+{
+    for (auto* component : a_DocComps)
+    {
+        component->resetNetNameMapping();
+    }
+}
+
 // ---------------------------------------------------
 bool Schematic::createLibNetlist(QTextStream *stream, QPlainTextEdit *ErrText,
           int NumPorts)
