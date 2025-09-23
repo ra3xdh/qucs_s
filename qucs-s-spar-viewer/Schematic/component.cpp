@@ -60,6 +60,7 @@ QRectF Component::boundingRect() const {
   case OpenStub:
   case ShortStub:
   case TransmissionLine:
+  case MicrostripLine:
     R = QRect(-40, -40, 80, 80);
     break;
   case CoupledLines:
@@ -95,6 +96,7 @@ QPainterPath Component::shape() const {
   case OpenStub:
   case ShortStub:
   case TransmissionLine:
+  case MicrostripLine:
   case Resistor:
   case ComplexImpedance:
   case CoupledLines:
@@ -127,6 +129,9 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
     break;
   case TransmissionLine:
     paintTransmissionLine(painter);
+    break;
+  case MicrostripLine:
+    paintMicrostripLine(painter);
     break;
   case ComplexImpedance:
     paintComplexImpedance(painter);
@@ -217,6 +222,7 @@ QPoint Component::getPortLocation(int port_number) {
   case OpenStub:
   case ShortStub:
   case TransmissionLine:
+  case MicrostripLine:
   case Resistor:
   case Inductor:
   case Capacitor:
@@ -504,6 +510,51 @@ void Component::paintTransmissionLine(QPainter *painter) {
   painter->drawText(QRect(OriginText + QPoint(0, 20), QPoint(100, 100)),
                     QString("%1").arg(Value["Length"]));
 }
+
+void Component::paintMicrostripLine(QPainter *painter) {
+
+  if (Rotation != 0) {
+    painter->rotate(Rotation);
+  }
+
+  int w = 15;
+
+         // Fill rectangle with dark orange
+  QRect fillRect(-w/2, -14, w, 30);
+  painter->fillRect(fillRect, QColor(255, 140, 0)); // dark orange
+
+         // Draw red "MS" in the center of rectangle
+  painter->setPen(QPen(Qt::red, 2));
+  QFont font = painter->font();
+  font.setBold(true);
+  font.setPointSize(12);
+  painter->setFont(font);
+  painter->drawText(fillRect, Qt::AlignCenter, "MS");
+
+         // Draw microstrip rectangle outline and connectors
+  painter->setPen(QPen(Qt::black, 1));
+  painter->drawLine(QPoint(0, -25), QPoint(0, -14));
+  painter->drawLine(QPoint(-0.5 * w, -14), QPoint(0.5 * w, -14));
+  painter->drawLine(QPoint(-0.5 * w, -14), QPoint(-0.5 * w, 16));
+  painter->drawLine(QPoint(0.5 * w, -14), QPoint(0.5 * w, 16));
+  painter->drawLine(QPoint(-0.5 * w, 16), QPoint(0.5 * w, 16));
+  painter->drawLine(QPoint(0, 16), QPoint(0, 25));
+
+         // Undo rotation for text
+  if (Rotation != 0) {
+    painter->rotate(-Rotation);
+  }
+
+  QPoint OriginText(10, -10);
+  if (Rotation != 0)
+    OriginText.setX(-10), OriginText.setY(10);
+
+         // Draw ID and other parameters text
+  painter->drawText(QRect(OriginText, QPoint(100, 100)), QString("%1").arg(this->ID));
+  painter->drawText(QRect(OriginText + QPoint(0, 10), QPoint(100, 100)), QString("%1").arg(Value["Width"]));
+  painter->drawText(QRect(OriginText + QPoint(0, 20), QPoint(100, 100)), QString("%1").arg(Value["Length"]));
+}
+
 
 void Component::paintComplexImpedance(QPainter *painter) {
 

@@ -33,6 +33,7 @@ enum ComponentType {
   ConnectionNodes,
   Resistor,
   TransmissionLine,
+  MicrostripLine,
   OpenStub,
   ShortStub,
   CoupledLines,
