@@ -134,6 +134,18 @@ void QucsApp::slotOnGrid(bool on)
 // Is called when the rotate toolbar button is pressed.
 void QucsApp::slotEditRotate(bool on)
 {
+  // If we're in paste mode, rotate moving elements instead of schematic elements
+  if (MouseMoveAction == &MouseActions::MMovePaste2) {
+    editRotate->blockSignals(true);
+    editRotate->setChecked(false);
+    editRotate->blockSignals(false);
+
+    Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+    if (Doc != nullptr) {
+      view->rotateMovingElements(Doc);
+    }
+    return;
+  }
   performToggleAction(on, editRotate, &Schematic::rotateElements,
     &MouseActions::MMoveRotate, &MouseActions::MPressRotate);
 }
@@ -142,6 +154,18 @@ void QucsApp::slotEditRotate(bool on)
 // Is called when the mirror toolbar button is pressed.
 void QucsApp::slotEditMirrorX(bool on)
 {
+  // If we're in paste mode, mirror moving elements instead of schematic elements
+  if (MouseMoveAction == &MouseActions::MMovePaste2) {
+    editMirror->blockSignals(true);
+    editMirror->setChecked(false);
+    editMirror->blockSignals(false);
+
+    Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+    if (Doc != nullptr) {
+      view->mirrorXMovingElements(Doc);
+    }
+    return;
+  }
   performToggleAction(on, editMirror, &Schematic::mirrorXComponents,
     &MouseActions::MMoveMirrorX, &MouseActions::MPressMirrorX);
 }
@@ -150,6 +174,18 @@ void QucsApp::slotEditMirrorX(bool on)
 // Is called when the mirror toolbar button is pressed.
 void QucsApp::slotEditMirrorY(bool on)
 {
+  // If we're in paste mode, mirror moving elements instead of schematic elements
+  if (MouseMoveAction == &MouseActions::MMovePaste2) {
+    editMirrorY->blockSignals(true);
+    editMirrorY->setChecked(false);
+    editMirrorY->blockSignals(false);
+
+    Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+    if (Doc != nullptr) {
+      view->mirrorYMovingElements(Doc);
+    }
+    return;
+  }
   performToggleAction(on, editMirrorY, &Schematic::mirrorYComponents,
     &MouseActions::MMoveMirrorY, &MouseActions::MPressMirrorY);
 }
