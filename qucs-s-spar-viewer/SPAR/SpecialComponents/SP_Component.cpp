@@ -50,8 +50,7 @@ vector<vector<Complex>> SParameterCalculator::convertS2Y(const vector<vector<Com
   return Y;
 }
 
-void SParameterCalculator::addSParamBlockToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+void SParameterCalculator::addSParamBlockToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp) {
 
   int numRFPorts = comp.numRFPorts;
   int numNodes = comp.nodes.size();

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
+ *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,11 +20,19 @@
 
 #include <QWidget>
 #include <QGridLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QSpinBox>
 #include <QComboBox>
-#include "../..//Misc/general.h"
+#include <QTabWidget>
+#include <QGroupBox>
+#include <QRadioButton>
+#include <QButtonGroup>
+#include "../../Misc/general.h"
+#include "../../Schematic/infoclasses.h"
+
 
 class SimulationSetup : public QWidget {
   Q_OBJECT
@@ -32,17 +40,47 @@ public:
   SimulationSetup(QWidget *parent = nullptr);
   ~SimulationSetup();
 
+         // Frequency sweep methods
   double getFstart();
   double getFstop();
   int getNpoints();
 
+         // Substrate properties methods
+  TransmissionLineType getTransmissionLineType();
+  double getSubstrateThickness();
+  double getSubstratePermittivity();
+  double getSubstrateLossTangent();
+  double getConductorThickness();
+  double getConductorConductivity();
+  double getGroundPlaneThickness(); // For stripline
+
 private:
+  // Tab widget
+  QTabWidget *tabWidget;
+
+         // Frequency sweep widgets
   QDoubleSpinBox *fstartSpinBox, *fstopSpinBox;
   QComboBox *fstartScaleComboBox, *fstopScaleComboBox;
   QSpinBox *npointsSpinBox;
 
+         // Substrate properties widgets
+  QComboBox *transmissionLineComboBox;
+  QDoubleSpinBox *substrateThicknessSpinBox;
+  QDoubleSpinBox *substratePermittivitySpinBox;
+  QDoubleSpinBox *substrateLossTangentSpinBox;
+  QDoubleSpinBox *conductorThicknessSpinBox;
+  QDoubleSpinBox *conductorConductivitySpinBox;
+  QDoubleSpinBox *groundPlaneThicknessSpinBox;
+  QLabel *imageLabel;
+
+         // Helper methods
+  QWidget* createFrequencySweepTab();
+  QWidget* createSubstratePropertiesTab();
+  void updateImageDisplay();
+
 private slots:
   void update();
+  void onTransmissionLineTypeChanged();
 
 signals:
   void updateSimulation();
