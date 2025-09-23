@@ -155,6 +155,7 @@ file(GLOB TOOLS_SOURCES
      Tools/NetlistScratchPad/*.cpp
      Tools/SimulationSetup/*.cpp
      Tools/MatchingNetwork/*.cpp
+     Tools/TransmissionLineSynthesis/*.cpp
 )
 
 file(GLOB TOOLS_HEADERS
@@ -164,6 +165,7 @@ file(GLOB TOOLS_HEADERS
      Tools/NetlistScratchPad/*.h
      Tools/SimulationSetup/*.h
      Tools/MatchingNetwork/*.h
+     Tools/TransmissionLineSynthesis/*.h
 )
 
 
