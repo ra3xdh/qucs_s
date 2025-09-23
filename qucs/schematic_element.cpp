@@ -1537,8 +1537,10 @@ bool snapLabelToGrid(Schematic* sch, WireLabel* label)
 // Sets selected elements on grid.
 bool Schematic::elementsOnGrid()
 {
-    auto selection = currentSelection();
-
+    return elementsOnGrid(currentSelection());
+}
+bool Schematic::elementsOnGrid(Selection selection)
+{
     const auto count = internal::total_count(selection);
     if (count == 0) return false;
 
@@ -1590,7 +1592,12 @@ bool symbolElementsOnGrid(Schematic* sch, const std::vector<Painting*>& painting
 // Rotates all selected components around their midpoint.
 bool Schematic::rotateElements()
 {
-    auto selection = currentSelection();
+    return rotateElements(currentSelection());
+}
+
+// Rotates a selection of components around their midpoint.
+bool Schematic::rotateElements(Selection selection)
+{
 
     const auto count = internal::total_count(selection);
 
@@ -1631,7 +1638,7 @@ bool Schematic::rotateElements()
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid()) {
+        if (!elementsOnGrid(selection)) {
             heal(&noninteractiveMutationParams);
             setChanged(true, true);
         }
@@ -1640,10 +1647,15 @@ bool Schematic::rotateElements()
     return true;
 }
 
-// Mirrors all selected components.
+// Mirrors all selected components along X-axis
 bool Schematic::mirrorXComponents()
 {
-    const auto selection = currentSelection();
+    return mirrorXComponents(currentSelection());
+}
+
+// Mirrors selection of components along X-axis
+bool Schematic::mirrorXComponents(Selection selection)
+{
 
     const auto count = internal::total_count(selection);
 
@@ -1676,7 +1688,7 @@ bool Schematic::mirrorXComponents()
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid()) {
+        if (!elementsOnGrid(selection)) {
             heal(&noninteractiveMutationParams);
             setChanged(true, true);
         }
@@ -1685,11 +1697,15 @@ bool Schematic::mirrorXComponents()
     return true;
 }
 
-// Mirrors all selected components.
+// Mirrors all selected components along Y-axis
 bool Schematic::mirrorYComponents()
 {
-    const auto selection = currentSelection();
+    return mirrorYComponents(currentSelection());
+}
 
+// Mirrors selection of components along Y-axis
+bool Schematic::mirrorYComponents(Selection selection)
+{
     const auto count = internal::total_count(selection);
 
     if (count < 1) return false;
@@ -1721,7 +1737,7 @@ bool Schematic::mirrorYComponents()
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid()) {
+        if (!elementsOnGrid(selection)) {
             heal(&noninteractiveMutationParams);
             setChanged(true, true);
         }
