@@ -120,6 +120,7 @@ public:
   };
 
   Selection  currentSelection() const;
+  Selection  elementsToSelection(const std::list<Element*>&) const;
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
