@@ -180,16 +180,27 @@ bool WireLabel::rotate() noexcept
 
 bool WireLabel::mirrorX() noexcept
 {
+  return mirrorX(root().y());
+}
+
+bool WireLabel::mirrorX(int axis) noexcept{
   return moveCenterTo(
     center().x(),
-    qucs_s::geom::mirror_coordinate(center().y(), root().y()));
+    qucs_s::geom::mirror_coordinate(center().y(), axis)
+  );
 }
 
 bool WireLabel::mirrorY() noexcept
 {
+  return mirrorY(root().x());
+}
+
+bool WireLabel::mirrorY(int axis) noexcept
+{
   return moveCenterTo(
-    qucs_s::geom::mirror_coordinate(center().x(), root().x()),
-    center().y());
+    qucs_s::geom::mirror_coordinate(center().x(), axis),
+    center().y()
+  );
 }
 
 
