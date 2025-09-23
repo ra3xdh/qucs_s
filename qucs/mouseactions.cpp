@@ -1598,6 +1598,7 @@ void MouseActions::paintElementsScheme(Schematic *p)
 void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 {
     int rot;
+    Schematic::Selection sel;
     QFileInfo Info(Doc->getDocName());
 
     switch (Event->button()) {
@@ -1638,9 +1639,19 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
         }
 
         pasteElements(Doc);
-        // keep rotation sticky for pasted elements
+        // keep transformations sticky for pasted elements
         rot = movingRotated;
-        while (rot--) std::ranges::for_each(movingElements, [](Element* e) { e->rotate(); });
+        sel = Doc->elementsToSelection(movingElements);
+        if (movingMirrorX) {
+            Doc->mirrorXComponents(sel);
+        }
+
+        if (movingMirrorY) {
+            Doc->mirrorYComponents(sel);
+        }        
+        while (rot--) {
+            Doc->rotateElements(sel);
+        }
 
         QucsMain->MouseMoveAction = &MouseActions::MMovePaste;
         QucsMain->MousePressAction = nullptr;
@@ -1942,6 +1953,62 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
             }
         }
     }
+}
+// ***********************************************************************
+// **********                                                   **********
+// **********    Functions for transforming moving elements     **********
+// **********                                                   **********
+// ***********************************************************************
+
+void MouseActions::mirrorXMovingElements(Schematic* Doc)
+{
+    if (movingElements.empty()) {
+        return;
+    }
+
+    Schematic::Selection selection = Doc->elementsToSelection(movingElements);
+    Doc->mirrorXComponents(selection);
+
+    // save mirror operation
+    movingMirrorX++;
+    movingMirrorX &= 1;
+
+    paintElementsScheme(Doc);
+    Doc->viewport()->update();
+}
+
+void MouseActions::mirrorYMovingElements(Schematic* Doc)
+{
+    if (movingElements.empty()) {
+        return;
+    }
+
+    Schematic::Selection selection = Doc->elementsToSelection(movingElements);
+    Doc->mirrorYComponents(selection);
+
+    // save mirror operation
+    movingMirrorY++;
+    movingMirrorY &= 1;
+
+    paintElementsScheme(Doc);
+    Doc->viewport()->update();
+}
+
+void MouseActions::rotateMovingElements(Schematic* Doc)
+{
+    if (movingElements.empty()) {
+        return;
+    }
+
+    Schematic::Selection selection = Doc->elementsToSelection(movingElements);
+    Doc->rotateElements(selection);
+
+    // Save rotation
+    movingRotated++;
+    movingRotated &= 3;
+
+    paintElementsScheme(Doc);
+    Doc->viewport()->update();
 }
 
 // vim:ts=8:sw=2:noet

@@ -51,6 +51,8 @@ public:
   int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
   std::list<Element*> movingElements;
   int movingRotated;
+  int movingMirrorX;
+  int movingMirrorY;
 
   // menu appearing by right mouse button click on component
   QMenu *ComponentMenu;
@@ -122,6 +124,11 @@ public:
 
   void paintElementsScheme(Schematic*);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
+
+  // Transformation of moving elements
+  void mirrorXMovingElements(Schematic*);
+  void mirrorYMovingElements(Schematic*);
+  void rotateMovingElements(Schematic*);
 };
 
 #endif
