@@ -55,10 +55,12 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent): QWidget(parent) {
   layout_row++;
   BranchesCombo = new QComboBox();
   BranchesCombo->addItem("2");
-  BranchesCombo->setEnabled(false);
+  BranchesCombo->hide();
 
-  PowerCombinerDesignLayout->addWidget(new QLabel("Number of outputs"), layout_row, 0);
+  number_Output_Label = new QLabel("Number of outputs");
+  PowerCombinerDesignLayout->addWidget(number_Output_Label, layout_row, 0);
   PowerCombinerDesignLayout->addWidget(BranchesCombo, layout_row, 1);
+  number_Output_Label->hide();
 
   // Ref impedance
   layout_row++;
@@ -273,8 +275,8 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     K1LabeldB->setVisible(true);
     BranchesCombo->clear();
     BranchesCombo->addItem("2");
-    BranchesCombo->setEnabled(false);
-    BranchesCombo->setEditable(false);
+    BranchesCombo->hide();
+    number_Output_Label->hide();
 
     // Unblock signals after adjusting parameters
     BranchesCombo->blockSignals(false);
@@ -297,8 +299,8 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
 
     BranchesCombo->clear();
     BranchesCombo->addItem("2");
-    BranchesCombo->setEnabled(false);
-    BranchesCombo->setEditable(false);
+    BranchesCombo->hide();
+    number_Output_Label->hide();
 
     // Unblock signals after adjusting parameters
     BranchesCombo->blockSignals(false);
@@ -341,7 +343,8 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     NStagesSpinbox->setVisible(true);
     BranchesCombo->clear();
     BranchesCombo->addItem("2"); // 2 outputs only
-    BranchesCombo->setEnabled(false);
+    BranchesCombo->hide();
+    number_Output_Label->hide();
 
     // Unblock signals after adjusting parameters
     NStagesSpinbox->blockSignals(false);
@@ -366,8 +369,8 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     BranchesCombo->addItem("3");
     BranchesCombo->addItem("5");
     BranchesCombo->addItem("7");
-    BranchesCombo->setEditable(true);
-    BranchesCombo->setEnabled(true);
+    BranchesCombo->show();
+    number_Output_Label->show();
     BranchesCombo->setValidator(Bagley_Validator);
 
     // Unblock signals after adjusting parameters
@@ -391,9 +394,8 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     BranchesCombo->addItem("4");
     BranchesCombo->addItem("5");
     BranchesCombo->addItem("6");
-    BranchesCombo->setEditable(
-        true); // Let the user to specify an arbitrary number of outputs
-    BranchesCombo->setEnabled(true);
+    BranchesCombo->show();
+    number_Output_Label->show();
 
     // Unblock signals after adjusting parameters
     BranchesCombo->blockSignals(false);
@@ -411,9 +413,8 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
     BranchesCombo->addItem("4");
     BranchesCombo->addItem("8");
     BranchesCombo->addItem("16");
-    BranchesCombo->setEditable(true); // Let the user to specify an arbitrary
-                                      // number of outputs (power of 2)
-    BranchesCombo->setEnabled(true);
+    BranchesCombo->show();
+    number_Output_Label->show();
 
     // Unblock signals after adjusting parameters
     BranchesCombo->blockSignals(false);

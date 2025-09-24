@@ -556,6 +556,10 @@ void FilterDesignTool::setSettings_LC_Ladder(){
   TL_Implementation_Label->hide();
   TL_Implementation_Combo->hide();
 
+  // Hide impedance ratio
+  ImpedanceRatio_Label->hide();
+  ImpedanceRatio_Spinbox->hide();
+
          // Show CLC/LCL box
   CLCRadioButton->show();
   LCLRadioButton->show();

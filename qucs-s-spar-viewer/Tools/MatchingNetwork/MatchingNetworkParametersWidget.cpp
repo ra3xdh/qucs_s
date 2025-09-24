@@ -35,6 +35,7 @@ void MatchingNetworkParametersWidget::setupUI() {
 
   // Create main layout for the group box
   QVBoxLayout* groupLayout = new QVBoxLayout(this);
+  groupLayout->setSpacing(0);
 
          // Create header with title and collapse button
   QWidget* headerWidget = new QWidget();
@@ -132,12 +133,13 @@ void MatchingNetworkParametersWidget::setupUI() {
   Ripple_SpinBox->setVisible(false);
 
          // Number of sections
+  layout_row++;
   Sections_Label = new QLabel(tr("Sections"));
   Sections_SpinBox = new QSpinBox();
   Sections_SpinBox->setRange(2, 10);
   Sections_SpinBox->setValue(3);
-  mainLayout->addWidget(Sections_Label, 3, 0);
-  mainLayout->addWidget(Sections_SpinBox, 3, 1);
+  mainLayout->addWidget(Sections_Label, layout_row, 0);
+  mainLayout->addWidget(Sections_SpinBox, layout_row, 1);
 
          // Input impedance
   layout_row++;
@@ -153,13 +155,19 @@ void MatchingNetworkParametersWidget::setupUI() {
   mainLayout->addWidget(ZinRSpinBox, layout_row, 1);
   mainLayout->addWidget(Ohm_Zin_Label, layout_row, 2);
 
+  // Make it more compact
+  mainLayout->setVerticalSpacing(1);
+
          // Add widgets to main group layout
   groupLayout->addWidget(headerWidget);
   groupLayout->addWidget(m_contentWidget);
-  groupLayout->setContentsMargins(10, 5, 10, 10);
+  groupLayout->setContentsMargins(2, 2, 2, 2);
 
   // Set initial state
   onTopologyChanged(0);
+
+  // Collapsed by default. The height of this widget affects all the tabs. It's good to keep it as compact as possible
+  setCollapsed(true);
 }
 
 void MatchingNetworkParametersWidget::connectSignals() {

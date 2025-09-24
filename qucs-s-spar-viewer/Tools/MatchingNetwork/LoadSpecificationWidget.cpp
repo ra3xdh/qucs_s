@@ -44,6 +44,9 @@ LoadSpecificationWidget::LoadSpecificationWidget(QWidget *parent)
 
   // Initialize display
   onImpedanceChanged();
+
+  // Collapsed by default. The height of this widget affects all the tabs. It's good to keep it as compact as possible
+  setCollapsed(true);
 }
 
 LoadSpecificationWidget::~LoadSpecificationWidget(){
@@ -97,6 +100,8 @@ void LoadSpecificationWidget::setupUI()
 
   m_mainLayout->addWidget(m_formatLabel, 1, 0);
   m_mainLayout->addWidget(m_formatCombo, 1, 1, 1, 2);
+
+  m_mainLayout->setVerticalSpacing(1);
 
   setupOnePortUI();
   setupTwoPortUI();

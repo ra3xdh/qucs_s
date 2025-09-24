@@ -179,9 +179,7 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
   Schematic.appendWire(Ri3.ID, 0, N6.ID, 0);
   Schematic.appendWire(N7.ID, 0, N8.ID, 0);
 
-  ComponentInfo TermSpar4(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 300,
-      125);
+  ComponentInfo TermSpar4(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 300, 125);
   TermSpar4.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar4);
 

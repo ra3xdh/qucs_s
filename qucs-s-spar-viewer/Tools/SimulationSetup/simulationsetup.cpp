@@ -28,6 +28,8 @@ SimulationSetup::SimulationSetup(QWidget *parent): QWidget(parent) {
   tabWidget->addTab(createSubstratePropertiesTab(), "Substrate Properties");
 
   mainLayout->addWidget(tabWidget);
+  mainLayout->setAlignment(Qt::AlignTop);
+  this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
   this->setLayout(mainLayout);
 
          // Connect all widgets to trigger simulation updates
@@ -108,6 +110,7 @@ QWidget* SimulationSetup::createFrequencySweepTab() {
 
 QWidget* SimulationSetup::createSubstratePropertiesTab() {
   QWidget *substrateWidget = new QWidget();
+  substrateWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
   QVBoxLayout *substrateLayout = new QVBoxLayout();
 
          // Substrate parameters
@@ -126,12 +129,12 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
 
          // Image display area (small, in same frame)
   imageLabel = new QLabel();
-  imageLabel->setFixedSize(300, 200);
+  imageLabel->setFixedSize(250, 200);
   imageLabel->setStyleSheet("QLabel { border: 1px solid gray; background-color: white; }");
   imageLabel->setAlignment(Qt::AlignCenter);
   imageLabel->setScaledContents(true);
 
-  parametersLayout->addWidget(imageLabel, 0, 2, 2, 1); // Span 2 rows
+  parametersLayout->addWidget(imageLabel, 0, 2, 7, 1); // Span 2 rows
 
          // Substrate thickness
   QLabel *thicknessLabel = new QLabel("Substrate thickness (mm)");
@@ -202,6 +205,7 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
 
   parametersGroupBox->setLayout(parametersLayout);
   substrateLayout->addWidget(parametersGroupBox);
+  substrateLayout->setAlignment(Qt::AlignTop);
 
          // Initial image update
   updateImageDisplay();

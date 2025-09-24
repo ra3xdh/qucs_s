@@ -44,7 +44,7 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   toolsTabWidget->addTab(PowerCombTool, "Power Combining");
   toolsTabWidget->addTab(AttenuatorTool, "Attenuator Design");
   toolsTabWidget->addTab(Netlist_Tool, "Scratch Pad");
-  toolsTabWidget->addTab(SimulationSetupWidget, "Simulation Setup");
+  toolsTabWidget->addTab(SimulationSetupWidget, "Settings");
 
          // Schematic widget
   SchematicWidget = new GraphWidget(this); // Schematic window
@@ -197,7 +197,7 @@ void Qucs_S_SPAR_Viewer::onToolsTabChanged(int index) {
 
          // Trigger circuit synthesis
   if (index < 5){
-    // Avoid simulate again when the "Simulation Setup" tab is selected
+    // Avoid simulate again when the "Settings" tab is selected
     callTools(true);
   }
 }

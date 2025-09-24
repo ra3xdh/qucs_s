@@ -72,6 +72,7 @@ private:
   QDoubleSpinBox *K1Spinbox, *K2Spinbox, *K3Spinbox;
   QSpinBox *NStagesSpinbox;
   QComboBox *BranchesCombo;
+  QLabel *number_Output_Label;
   QComboBox *TopoCombo, *FreqScaleCombo, *UnitsCombo, *ImplementationCombobox;
   QGroupBox *ImplementationgroupBox;
   QRadioButton *IdealTLradioButton, *MicrostripradioButton, *LumpedElementsradioButton;
