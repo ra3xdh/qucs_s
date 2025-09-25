@@ -33,6 +33,12 @@ class QucsApp;
 
 extern QAction *formerAction;
 
+struct MovingState {
+  int rotated = 0;
+  bool mirrorX = false;
+  bool mirrorY = false;
+};
+
 
 class MouseActions {
 public:
@@ -50,9 +56,8 @@ public:
 
   int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
   std::list<Element*> movingElements;
-  int movingRotated;
-  int movingMirrorX;
-  int movingMirrorY;
+  // movingElements transformations state
+  MovingState movingState;
 
   // menu appearing by right mouse button click on component
   QMenu *ComponentMenu;

@@ -442,9 +442,7 @@ void QucsApp::slotEditPaste(bool on)
     activeAction = editPaste;
 
     MouseMoveAction = &MouseActions::MMovePaste;
-    view->movingRotated = 0;
-    view->movingMirrorX = 0;
-    view->movingMirrorY = 0;
+    view->movingState = {};
     MousePressAction = nullptr;
     MouseReleaseAction = nullptr;
     MouseDoubleClickAction = nullptr;
