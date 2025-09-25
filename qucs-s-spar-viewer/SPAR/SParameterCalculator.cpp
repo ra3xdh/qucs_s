@@ -119,19 +119,28 @@ vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
     }
   }
 
-         // TRANSMISSION LINES (TLIN)
+  // Special components
   for (const auto& comp : components) {
+
+    // TRANSMISSION LINES (TLIN)
     if (comp.type == ComponentType_SPAR::TRANSMISSION_LINE) {
       addTransmissionLineToAdmittance(Y, comp);
+      continue;
+    }
+
+    // Microstrip line model
+    if (comp.type == ComponentType_SPAR::MICROSTRIP_LINE) {
+      addMicrostripLineToAdmittance(Y, comp);
+      continue;
+    }
+
+    // COUPLED LINES (CLIN)
+    if (comp.type == ComponentType_SPAR::COUPLED_LINE) {
+      addCoupledLineToAdmittance(Y, comp);
+      continue;
     }
   }
 
-         // COUPLED LINES (CLIN)
-  for (const auto& comp : components) {
-    if (comp.type == ComponentType_SPAR::COUPLED_LINE) {
-      addCoupledLineToAdmittance(Y, comp);
-    }
-  }
 
          //Add small conductance to ground to prevent singular matrix (for all nodes)
   double gmin = 1e-12;

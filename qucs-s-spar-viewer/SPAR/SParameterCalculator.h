@@ -136,6 +136,29 @@ private:
   void addTwoPortSParamToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
   void addSParameterDevice(const string& name, const vector<int>& nodes, const vector<vector<Complex>>& Smatrix, int numRFPorts, double Z0);
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Microstrip line analysis methods
+  void addMicrostripLineToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
+  void calcMicrostripPropagation(double W, double L, double h, double er, double t,
+                                 double tand, double rho, double frequency,
+                                 double& alpha, double& beta, double& zl, double& ereff);
+  void analyseQuasiStatic(double W, double h, double t, double er, const string& Model,
+                          double& ZlEff, double& ErEff, double& WEff);
+  void analyseDispersion(double W, double h, double er, double ZlEff, double ErEff, double frequency, const string& Model,
+                         double& ZlEffFreq, double& ErEffFreq);
+  void analyseLoss(double W, double t, double er, double rho, double D, double tand,
+                   double ZlEff1, double ZlEff2, double ErEff, double frequency, const string& Model, double& ac, double& ad);
+
+  // Helper functions for microstrip calculations
+  void Hammerstad_ab(double u, double er, double& a, double& b);
+  void Hammerstad_er(double u, double er, double a, double b, double& e);
+  void Hammerstad_zl(double u, double& zl);
+  void Kirschning_er(double u, double fn, double er, double ErEff, double& ErEffFreq);
+  void Kirschning_zl(double u, double fn, double er, double ErEff, double ErEffFreq, double ZlEff, double& r17, double& ZlEffFreq);
+  void Getsinger_disp(double h, double er, double ErEff, double ZlEff, double frequency, double& e, double& z);
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
          // Frequency sweep parameters
   double f_start = 1e6;
   double f_stop = 1e9;

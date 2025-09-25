@@ -29,6 +29,18 @@
 #include <complex>
 #include <QPointF>
 
+
+// CONSTANTS
+static constexpr double Z0 = 376.730313668;  // Free space impedance
+static constexpr double C0 = 299792458.0;    // Speed of light
+static constexpr double MU0 = 4.0 * M_PI * 1e-7;  // Permeability of free space
+static constexpr double pi_over_2 = M_PI / 2.0;
+static constexpr double two_over_pi = 2.0 / M_PI;
+static constexpr double one_over_pi = 1.0 / M_PI;
+static constexpr double euler = M_E;
+static constexpr double ln2 = 0.693147180559945;
+
+
 enum Units { Capacitance, Inductance, Length, Resistance, Degrees, NoUnits };
 
 QString RoundVariablePrecision(double);
