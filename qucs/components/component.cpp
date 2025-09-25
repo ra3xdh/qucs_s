@@ -933,7 +933,7 @@ QString Component::save() {
 
     // write all properties
     for (Property *p1 : Props) {
-        QString val = getValue(*p1); // enable newline in properties
+        QString val = p1->type == Property::Type::Equation ? p1->Value : getValue(*p1); // enable newline in properties
         val.replace("\n", "\\n");
         val.replace("\"", "''");
         if (p1->Description.isEmpty() || (p1->Description == "Expression"))
