@@ -415,6 +415,11 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
         }
     }
 
+    // Cache selection
+    if (!movingState.selection.isValid()) {
+        movingState.selection = Doc->elementsToSelection(movingElements);
+    }
+
     QucsMain->MouseMoveAction = &MouseActions::MMovePaste2;
     QucsMain->MouseReleaseAction = &MouseActions::MReleasePaste;
 }
@@ -1597,7 +1602,6 @@ void MouseActions::paintElementsScheme(Schematic *p)
 // -----------------------------------------------------------
 void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 {
-    Schematic::Selection sel;
     QFileInfo Info(Doc->getDocName());
 
     switch (Event->button()) {
@@ -1639,16 +1643,16 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 
         pasteElements(Doc);
         // since the elements are now pasted, we need to re-do the selection
-        sel = Doc->elementsToSelection(movingElements);
+        movingState.selection = Doc->elementsToSelection(movingElements);
         // keep transformations sticky for pasted elements
         if (movingState.mirrorX) {
-            Doc->mirrorXComponents(sel);
+            Doc->mirrorXComponents(movingState.selection);
         }
         if (movingState.mirrorY) {
-            Doc->mirrorYComponents(sel);
+            Doc->mirrorYComponents(movingState.selection);
         }
         for (int i = 0; i < movingState.rotated; i++) {
-            Doc->rotateElements(sel);
+            Doc->rotateElements(movingState.selection);
         }
 
         QucsMain->MouseMoveAction = &MouseActions::MMovePaste;
@@ -1953,8 +1957,7 @@ void MouseActions::mirrorXMovingElements(Schematic* Doc)
         return;
     }
 
-    Schematic::Selection selection = Doc->elementsToSelection(movingElements);
-    Doc->mirrorXComponents(selection);
+    Doc->mirrorXComponents(movingState.selection);
     // Save transformation
     movingState.mirrorX = !movingState.mirrorX;
 
@@ -1968,8 +1971,7 @@ void MouseActions::mirrorYMovingElements(Schematic* Doc)
         return;
     }
 
-    Schematic::Selection selection = Doc->elementsToSelection(movingElements);
-    Doc->mirrorYComponents(selection);
+    Doc->mirrorYComponents(movingState.selection);
     // Save transformation
     movingState.mirrorY = !movingState.mirrorY;
 
@@ -1983,8 +1985,7 @@ void MouseActions::rotateMovingElements(Schematic* Doc)
         return;
     }
 
-    Schematic::Selection selection = Doc->elementsToSelection(movingElements);
-    Doc->rotateElements(selection);
+    Doc->rotateElements(movingState.selection);
     // Save transformation
     movingState.rotated++;
     movingState.rotated &= 3;

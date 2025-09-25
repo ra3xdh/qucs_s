@@ -19,6 +19,7 @@
 #define MOUSEACTIONS_H
 
 #include "element.h"
+#include "schematic_selection.h"
 #include <QAction>
 
 
@@ -37,6 +38,7 @@ struct MovingState {
   int rotated = 0;
   bool mirrorX = false;
   bool mirrorY = false;
+  SchematicSelection selection = {};
 };
 
 
@@ -56,7 +58,7 @@ public:
 
   int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
   std::list<Element*> movingElements;
-  // movingElements transformations state
+  // movingElements transformations and selection state
   MovingState movingState;
 
   // menu appearing by right mouse button click on component
