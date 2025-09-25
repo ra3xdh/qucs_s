@@ -257,6 +257,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
          // Connection functions for updating the network requirements and simulate in real time
   connect(FilterImplementationCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ImplementationComboChanged(int)));
   connect(CLCRadioButton, SIGNAL(toggled(bool)), this, SLOT(ChangeRL_CLC_LCL_mode()));
+  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
   connect(FilterResponseTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ResposeComboChanged()));
   connect(EllipticType, SIGNAL(currentIndexChanged(int)), this, SLOT(EllipticTypeChanged()));
   connect(FilterClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
@@ -463,48 +464,90 @@ void FilterDesignTool::ResposeComboChanged() {
 void FilterDesignTool::UpdateDesignParameters() {
   Filter_SP.Implementation = FilterImplementationCombo->currentText();
 
-         // Filter response
-  if (!FilterResponseTypeCombo->currentText().compare("Chebyshev"))
-    Filter_SP.FilterResponse = Chebyshev;
-  if (!FilterResponseTypeCombo->currentText().compare("Butterworth"))
-    Filter_SP.FilterResponse = Butterworth;
-  if (!FilterResponseTypeCombo->currentText().compare("Elliptic"))
-    Filter_SP.FilterResponse = Elliptic;
-  if (!FilterResponseTypeCombo->currentText().compare("Bessel"))
-    Filter_SP.FilterResponse = Bessel;
-  if (!FilterResponseTypeCombo->currentText().compare("Gaussian"))
-    Filter_SP.FilterResponse = Gaussian;
-  if (!FilterResponseTypeCombo->currentText().compare("Legendre"))
-    Filter_SP.FilterResponse = Legendre;
+  ////////////////////////////////////////////////////////////////////////////
+  // Filter response
+  static const QMap<QString, ResponseType> responseMap {
+      {"Chebyshev",  Chebyshev},
+      {"Butterworth", Butterworth},
+      {"Elliptic",    Elliptic},
+      {"Bessel",      Bessel},
+      {"Gaussian",    Gaussian},
+      {"Legendre",    Legendre}
+  };
 
+  const QString responseKey = FilterResponseTypeCombo->currentText();
+  if (responseMap.contains(responseKey))
+    Filter_SP.FilterResponse = responseMap.value(responseKey);
+  ////////////////////////////////////////////////////////////////////////////
 
+  ////////////////////////////////////////////////////////////////////////////
+  // Filter type
+  static const QMap<QString, FilterClass> filterMap {
+      {"Lowpass",  Lowpass},
+      {"Highpass", Highpass},
+      {"Bandpass", Bandpass},
+      {"Bandstop", Bandstop}
+  };
 
-         // Filter type
-  if (!FilterClassCombo->currentText().compare("Lowpass"))
-    Filter_SP.FilterType = Lowpass;
-  if (!FilterClassCombo->currentText().compare("Highpass"))
-    Filter_SP.FilterType = Highpass;
-  if (!FilterClassCombo->currentText().compare("Bandpass"))
-    Filter_SP.FilterType = Bandpass;
-  if (!FilterClassCombo->currentText().compare("Bandstop"))
-    Filter_SP.FilterType = Bandstop;
-
-         // Coupling
-  if (!DC_CouplingTypeCombo->currentText().compare("Capacitative coupled shunt resonators")) {
-    Filter_SP.DC_Coupling = CapacitativeCoupledShuntResonators;
+  const QString key = FilterClassCombo->currentText();
+  if (filterMap.contains(key)) {
+    Filter_SP.FilterType = filterMap.value(key);
   }
+  ////////////////////////////////////////////////////////////////////////////
 
-  if (!DC_CouplingTypeCombo->currentText().compare("Inductive coupled series resonators")) {
-    Filter_SP.DC_Coupling = InductiveCoupledSeriesResonators;
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Coupling
+  static const QMap<QString, Coupling> couplingMap {
+      {"Capacitative coupled shunt resonators", CapacitativeCoupledShuntResonators},
+      {"Inductive coupled series resonators",   InductiveCoupledSeriesResonators}
+  };
+
+  const QString Couplingkey = DC_CouplingTypeCombo->currentText();
+  if (couplingMap.contains(Couplingkey)) {
+    Filter_SP.DC_Coupling = couplingMap.value(Couplingkey);
   }
+  ////////////////////////////////////////////////////////////////////////////
 
-         // Update user input
-  if ((!FilterClassCombo->currentText().compare("Lowpass")) ||  (!FilterClassCombo->currentText().compare("Highpass"))) {
-    BWSpinbox->setEnabled(false);
-    BW_ScaleCombobox->setEnabled(false);
-  } else {
-    BWSpinbox->setEnabled(true);
-    BW_ScaleCombobox->setEnabled(true);
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Transmission line implementation
+  static const QMap<QString, TransmissionLineType> tlMap {
+      {"Ideal",      TransmissionLineType::Ideal},
+      {"Microstrip", TransmissionLineType::Microstrip},
+      {"Stripline",  TransmissionLineType::Stripline}
+  };
+
+  const QString tlKey = TL_Implementation_Combo->currentText();
+  if (tlMap.contains(tlKey)) {
+    Filter_SP.TL_implementation = tlMap.value(tlKey);
+  }
+  ////////////////////////////////////////////////////////////////////////////
+
+
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Semilumped implementation
+  static const QMap<QString, SemiLumpedImplementation> semiLumpedMap {
+      {"Replace inductors and shunt capacitors", INDUCTORS_AND_SHUNT_CAPS},
+      {"Replace only inductors", ONLY_INDUCTORS}
+  };
+
+  const QString semiLumpedKey = SemiLumpedImplementationCombo->currentText();
+  if (semiLumpedMap.contains(semiLumpedKey)) {
+    Filter_SP.SemiLumpedISettings = semiLumpedMap.value(semiLumpedKey);
+  }
+  ////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Update user input
+  const QString filterType = FilterClassCombo->currentText();
+  const bool disableBWControls = (filterType == "Lowpass" || filterType == "Highpass");
+
+  BWSpinbox->setEnabled(!disableBWControls);
+  BW_ScaleCombobox->setEnabled(!disableBWControls);
+
+  if (!disableBWControls) {
     if (Filter_SP.bw >= Filter_SP.fc) {
       BWSpinbox->blockSignals(true);
       BWSpinbox->setValue(0.1 * FCSpinbox->value()); // 10% BW
@@ -512,8 +555,10 @@ void FilterDesignTool::UpdateDesignParameters() {
       BWSpinbox->blockSignals(false);
     }
   }
+  ////////////////////////////////////////////////////////////////////////////
 
-         // Update parameters
+  ////////////////////////////////////////////////////////////////////////////
+  // Update parameters
   Filter_SP.bw = BWSpinbox->value() * getScale(BW_ScaleCombobox->currentText());
   Filter_SP.fc = FCSpinbox->value() * getScale(FC_ScaleCombobox->currentText());
   Filter_SP.EllipticType = EllipticType->currentText();
@@ -527,15 +572,8 @@ void FilterDesignTool::UpdateDesignParameters() {
   Filter_SP.Ripple = RippleSpinbox->value();
   Filter_SP.as = StopbandAttSpinbox->value();
   Filter_SP.ZL = 50;
+  ////////////////////////////////////////////////////////////////////////////
 
-
-
-  if (SemiLumpedImplementationCombo->currentText() == "Replace inductors and shunt capacitors") {
-    Filter_SP.SemiLumpedISettings = INDUCTORS_AND_SHUNT_CAPS;
-  }
-  if (SemiLumpedImplementationCombo->currentText() == "Replace only inductors") {
-    Filter_SP.SemiLumpedISettings = ONLY_INDUCTORS;
-  }
 
   synthesize();
 }

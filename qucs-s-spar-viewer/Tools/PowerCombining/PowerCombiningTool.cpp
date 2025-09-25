@@ -189,6 +189,7 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent): QWidget(parent) {
   this->setLayout(PowerCombinerDesignLayout);
 
   // Make connection between widgets and handler functions to update the design in real time
+  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
   connect(BranchesCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
   connect(RefImpSpinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
   connect(FreqSpinbox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));

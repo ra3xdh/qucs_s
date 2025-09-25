@@ -68,10 +68,8 @@ void SteppedImpedanceFilter::synthesize() {
       TL_length = gi[k + 1] * Specification.ZS / (beta * Zhigh);
     }
 
-    // Short transmission line
-    TL.setParams(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, 90, posx, 0);
+    // Transmission line component
+    TL.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, posx, 0);
     TL.val["Z0"] = num2str(Zline, Resistance);
     TL.val["Length"] = ConvertLengthFromM("mm", TL_length);
     Schematic.appendComponent(TL);

@@ -186,6 +186,7 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   AttenuatorDesignLayout->addWidget(traceNameLineEdit, layout_row, 1);
 
   connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_TopoCombo_currentIndexChanged(int)));
+  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
   connect(AttenuationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
   connect(ZinSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
   connect(ZoutSpinBox, SIGNAL(valueChanged(double)), this, SLOT(UpdateDesignParameters()));
