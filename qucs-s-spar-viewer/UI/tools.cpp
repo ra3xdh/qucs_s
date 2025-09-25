@@ -43,7 +43,7 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   toolsTabWidget->addTab(MatchingTool, "Matching");
   toolsTabWidget->addTab(PowerCombTool, "Power Combining");
   toolsTabWidget->addTab(AttenuatorTool, "Attenuator Design");
-  toolsTabWidget->addTab(Netlist_Tool, "Scratch Pad");
+  toolsTabWidget->addTab(Netlist_Tool, "Netlist");
   toolsTabWidget->addTab(SimulationSetupWidget, "Settings");
 
          // Schematic widget

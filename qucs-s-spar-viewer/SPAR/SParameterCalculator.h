@@ -56,7 +56,8 @@ enum class ComponentType_SPAR {
   IDEAL_COUPLER,
   COMPLEX_IMPEDANCE,
   SPAR_BLOCK,
-  FREQUENCY_DEPENDENT_SPAR_BLOCK
+  FREQUENCY_DEPENDENT_SPAR_BLOCK,
+  MICROSTRIP_LINE
 };
 
 // Circuit component structure
@@ -122,6 +123,9 @@ private:
          // Ideal coupler specific methods
   void addIdealCouplerToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
   vector<vector<Complex>> calculateIdealCouplerYMatrix(double k, double phase_deg, double Z0);
+
+  // Ideal transmission line
+  void addTransmissionLineToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
 
   // Frequency dependent S-parameter file
   vector<vector<Complex>> interpolateFrequencyDependentSMatrix(const Component_SPAR& comp, double freq);
