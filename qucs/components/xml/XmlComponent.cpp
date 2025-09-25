@@ -395,7 +395,7 @@ QString XmlComponent::netlist(
 
     foreach (const Property* property, Props)
     {
-        const QString propertyValue(getValue(*property));
+        const QString propertyValue(getValue(*property) + property->unit);
         netList.replace(QString::fromUtf8("{%1}").arg(property->Name), propertyValue);
     }
 

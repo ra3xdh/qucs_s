@@ -85,7 +85,7 @@ void Module::registerXmlComponents()
     {
         pdkPath = QString::fromUtf8("%1%2%3").
            arg(pdkRoot).
-           arg(!pdk.isEmpty() ? QDir::separator() : QChar()).
+           arg(!pdk.isEmpty() ? QString(QDir::separator()) : "").
            arg(!pdk.isEmpty() ? pdk : "");
 
         QDir pdkDir(pdkPath);
