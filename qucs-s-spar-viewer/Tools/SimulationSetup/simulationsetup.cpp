@@ -141,7 +141,7 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   substrateThicknessSpinBox = new QDoubleSpinBox();
   substrateThicknessSpinBox->setMinimum(0.001);
   substrateThicknessSpinBox->setMaximum(100.0);
-  substrateThicknessSpinBox->setValue(1.6);
+  substrateThicknessSpinBox->setValue(0.508); // 20 mils
   substrateThicknessSpinBox->setDecimals(3);
 
   parametersLayout->addWidget(thicknessLabel, 1, 0);
@@ -152,7 +152,7 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   substratePermittivitySpinBox = new QDoubleSpinBox();
   substratePermittivitySpinBox->setMinimum(1.0);
   substratePermittivitySpinBox->setMaximum(20.0);
-  substratePermittivitySpinBox->setValue(4.4);
+  substratePermittivitySpinBox->setValue(3.55); // RO4003C
   substratePermittivitySpinBox->setDecimals(2);
 
   parametersLayout->addWidget(permittivityLabel, 2, 0);
@@ -163,7 +163,7 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   substrateLossTangentSpinBox = new QDoubleSpinBox();
   substrateLossTangentSpinBox->setMinimum(0.0);
   substrateLossTangentSpinBox->setMaximum(1.0);
-  substrateLossTangentSpinBox->setValue(0.02);
+  substrateLossTangentSpinBox->setValue(0.0027); // RO4003C
   substrateLossTangentSpinBox->setDecimals(4);
 
   parametersLayout->addWidget(lossTangentLabel, 3, 0);
@@ -260,7 +260,7 @@ int SimulationSetup::getNpoints(){
 }
 
 TransmissionLineType SimulationSetup::getTransmissionLineType(){
-  return transmissionLineComboBox->currentIndex() == 0 ? TransmissionLineType::Microstrip : TransmissionLineType::Stripline;
+  return transmissionLineComboBox->currentIndex() == 0 ? TransmissionLineType::MLIN : TransmissionLineType::SLIN;
 }
 
 double SimulationSetup::getSubstrateThickness(){
@@ -288,6 +288,20 @@ double SimulationSetup::getGroundPlaneThickness(){
 }
 
 void SimulationSetup::update() {
+
+  // Save stack up data
+  if (transmissionLineComboBox->currentText() == QString("Microstrip")){
+    // Microstrip substrate
+    MS_Subs.er = substratePermittivitySpinBox->value();
+    MS_Subs.thickness = substrateThicknessSpinBox->value();
+    MS_Subs.height = substrateThicknessSpinBox->value();
+    MS_Subs.tand = substrateLossTangentSpinBox->value();
+
+    // Metal properties
+    MS_Subs.MetalConductivity = conductorConductivitySpinBox->value();
+    MS_Subs.MetalThickness = conductorThicknessSpinBox->value();
+  }
+
   emit updateSimulation();
 }
 
@@ -301,4 +315,9 @@ void SimulationSetup::onTransmissionLineTypeChanged() {
 
   // Trigger simulation update
   update();
+}
+
+
+MS_Substrate SimulationSetup::get_MS_Substrate(){
+  return MS_Subs;
 }

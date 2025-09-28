@@ -381,6 +381,9 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
   // S-parameter simulation class
   SParameterCalculator SPAR_engine;
 
+  // Substrate
+  MS_Substrate MS_Subs;
+
   // Save
   QString savepath;
   bool save();
@@ -436,6 +439,7 @@ class Qucs_S_SPAR_Viewer : public QMainWindow
 private slots:
   void updateSimulation(SchematicContent SI); // Updates the traces from the designer tools
   void updateSimulation();
+  void updateSubstrate();
 };
 
 #endif

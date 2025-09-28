@@ -22,7 +22,9 @@
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
 #include "../../Misc/general.h"
+#include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
+
 
 class SteppedImpedanceFilter : public Network {
 public:

@@ -173,7 +173,7 @@ void MatchingNetworkParametersWidget::setupUI() {
 void MatchingNetworkParametersWidget::connectSignals() {
   connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(onTopologyChanged(int)));
   connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this, SIGNAL(topologyChanged(int)));
-  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateDesignParameters()));
+  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this, SLOT(onParameterChanged()));
   connect(StubTermination_ComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onParameterChanged()));
   connect(ZinRSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onParameterChanged()));
   connect(Solution1_RB, SIGNAL(clicked(bool)), this, SLOT(onParameterChanged()));

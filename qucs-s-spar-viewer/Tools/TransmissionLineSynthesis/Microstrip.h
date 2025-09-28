@@ -21,27 +21,22 @@
 #include <string>
 #include <cmath>
 #include <iostream>
+#include "../../Schematic/structures.h"
 
-class Microstrip {
+class MicrostripClass {
 private:
   // Constants
   static constexpr double Z_FIELD = 376.730313668; // Impedance of free space (ohms)
   static constexpr double PI = 3.14159265358979323846;
   static constexpr double MAX_ERROR = 1e-7;
 
+
+
 public:
-  // Substrate parameters structure
-  struct Substrate {
-    double height;      // substrate height (mm)
-    double thickness;   // conductor thickness (mm)
-    double er;          // relative permittivity
-
-    Substrate(double h = 1.6, double t = 0.035, double epsilon_r = 4.4);
-  };
-
          // Results structure for microstrip calculations
-  struct Results {
+  struct SynthesisResults {
     double width;       // microstrip width (mm)
+    double length;      // microstrip length (mm)
     double gap;         // for coupled lines (mm)
     double er_eff;      // effective permittivity
     double zl;          // characteristic impedance (ohms)
@@ -49,32 +44,35 @@ public:
     double zl_odd;      // odd mode impedance (ohms)
     int iterations;     // number of iterations used
 
-    Results();
+    SynthesisResults();
   };
 
+  MS_Substrate Substrate;
+  SynthesisResults Results;
+
 public:
-  Microstrip() = default;
-  ~Microstrip() = default;
+  MicrostripClass() = default;
+  ~MicrostripClass() = default;
 
   //Calculates the impedance and relative effective permittivity of a microstrip line.
-  static void calcMicrostrip(const Substrate& substrate, double width, double freq, double& er_eff, double& zl);
+  void calcMicrostrip(double width, double freq, double& er_eff, double& zl);
 
   //Synthesizes microstrip width for given characteristic impedance.
-  static bool synthesizeMicrostrip(double Z0, double freq, const Substrate& substrate, Results& results);
+  bool synthesizeMicrostrip(double Z0, double e_length, double freq);
 
   //Calculates additional line length for microstrip open end.
-  static double getMicrostripOpen(double Wh, double er, double er_eff);
+  double getMicrostripOpen(double Wh, double er, double er_eff);
 
   //Synthesizes coupled microstrip dimensions for given even and odd mode impedances.
-  static bool synthesizeCoupledMicrostrip(double zl_even, double zl_odd, double freq, const Substrate& substrate, Results& results);
+  bool synthesizeCoupledMicrostrip(double zl_even, double zl_odd, double freq);
 
   //Calculates even and odd mode parameters for coupled microstrip lines.
-  static void calcCoupledMicrostrip(double width, double gap, double freq,
-                                    const Substrate& substrate, double& zl_even, double& zl_odd,
+  void calcCoupledMicrostrip(double width, double gap, double freq,
+                                    double& zl_even, double& zl_odd,
                                     double& er_eff_even, double& er_eff_odd);
 
   //Prints results in a formatted way
-  static void printResults(const Results& results, const std::string& title = "Results");
+  void printResults(const std::string& title = "Results");
 
 private:
   // Helper function for dispersion calculations (Kirschning model)

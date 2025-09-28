@@ -514,8 +514,8 @@ void FilterDesignTool::UpdateDesignParameters() {
   // Transmission line implementation
   static const QMap<QString, TransmissionLineType> tlMap {
       {"Ideal",      TransmissionLineType::Ideal},
-      {"Microstrip", TransmissionLineType::Microstrip},
-      {"Stripline",  TransmissionLineType::Stripline}
+      {"Microstrip", TransmissionLineType::MLIN},
+      {"Stripline",  TransmissionLineType::SLIN}
   };
 
   const QString tlKey = TL_Implementation_Combo->currentText();
@@ -572,6 +572,7 @@ void FilterDesignTool::UpdateDesignParameters() {
   Filter_SP.Ripple = RippleSpinbox->value();
   Filter_SP.as = StopbandAttSpinbox->value();
   Filter_SP.ZL = 50;
+  Filter_SP.MS_Subs = MS_Subs;
   ////////////////////////////////////////////////////////////////////////////
 
 
@@ -1148,4 +1149,9 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     break;
   }
   UpdateDesignParameters();
+}
+
+
+void FilterDesignTool::set_MS_Subs(MS_Substrate SUBSTRATE){
+  MS_Subs = SUBSTRATE;
 }

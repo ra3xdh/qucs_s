@@ -33,6 +33,9 @@
 #include "../../Misc/general.h"
 #include "../../Schematic/infoclasses.h"
 
+// Needed for having the substrate structures for each transmission line implementation
+#include "../TransmissionLineSynthesis/Microstrip.h"
+
 
 class SimulationSetup : public QWidget {
   Q_OBJECT
@@ -53,6 +56,9 @@ public:
   double getConductorThickness();
   double getConductorConductivity();
   double getGroundPlaneThickness(); // For stripline
+
+  // Interfacing functions
+  MS_Substrate get_MS_Substrate();
 
 private:
   // Tab widget
@@ -78,12 +84,16 @@ private:
   QWidget* createSubstratePropertiesTab();
   void updateImageDisplay();
 
+  // Substrate data
+  MS_Substrate MS_Subs;
+
 private slots:
   void update();
   void onTransmissionLineTypeChanged();
 
 signals:
   void updateSimulation();
+  void updateSubstrate();
 };
 
 #endif // SIMULATIONSETUP_H

@@ -62,18 +62,32 @@ enum SemiLumpedImplementation { ONLY_INDUCTORS, INDUCTORS_AND_SHUNT_CAPS };
 
 enum TransmissionLineType{
   Ideal,
-  Microstrip,
-  Stripline
+  MLIN, // Microstrip
+  SLIN // Stripline
 };
 
-static const double SPEED_OF_LIGHT =
-    299792458.0; // REMOVE THIS WHEN THIS TOOL BECOMES INTEGRATED IN QUCS
+static const double SPEED_OF_LIGHT = 299792458.0;
 
 struct PrototypeTableProperties {
   QString ID;
   std::vector<int> N;
   std::vector<double> Ripple;
   std::vector<double> RL;
+};
+
+       // Microstrip substrate struct
+struct MS_Substrate {
+  // Substrate
+  double height;      // substrate height (mm)
+  double thickness;   // conductor thickness (mm)
+  double er;          // relative permittivity
+  double tand;        // dissipation factor
+
+         // Metal properties
+  double MetalConductivity; // Metal conductivity
+  double MetalThickness;    // Metal thickness
+
+  MS_Substrate(double h = 0.508, double t = 0.035, double epsilon_r = 3.55, double tand = 0.0027, double MetalConductivity = 58e6, double MetalThickness = 32e-6) : height(h), thickness(t), er(epsilon_r), tand(tand), MetalConductivity(MetalConductivity), MetalThickness(MetalThickness){}// RO4003C, 20 mils
 };
 
 struct FilterSpecifications {
@@ -99,6 +113,9 @@ struct FilterSpecifications {
                // filters)
   SemiLumpedImplementation SemiLumpedISettings;
   double ImpedanceRatio;
+
+  // Substrate Settings
+  MS_Substrate MS_Subs;
 };
 
 

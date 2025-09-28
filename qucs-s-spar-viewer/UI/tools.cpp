@@ -31,13 +31,16 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
          // Tab widget
   toolsTabWidget = new QTabWidget();
-
   FilterTool = new FilterDesignTool(this);
   MatchingTool = new MatchingNetworkDesignTool(this);
   PowerCombTool = new PowerCombiningTool(this);
   AttenuatorTool = new AttenuatorDesignTool(this);
   Netlist_Tool = new NetlistScratchPad(this);
   SimulationSetupWidget = new SimulationSetup(this);
+
+  // Set default substrate to the tools
+  MS_Subs = SimulationSetupWidget->get_MS_Substrate();
+  FilterTool->set_MS_Subs(MS_Subs);
 
   toolsTabWidget->addTab(FilterTool, "Filter Design");
   toolsTabWidget->addTab(MatchingTool, "Matching");
@@ -82,6 +85,7 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
   SPAR_engine.setFrequencySweep(fstart, fstop, npoints);
   SPAR_engine.calculateSParameterSweep();
   QMap<QString, QList<double>> data = SPAR_engine.getData();
+
 
   if (data.isEmpty()) {
     return;
@@ -158,6 +162,14 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
 
 }
 
+
+void Qucs_S_SPAR_Viewer::updateSubstrate(){
+  // Microstrip line
+  MS_Subs = SimulationSetupWidget->get_MS_Substrate();
+  FilterTool->set_MS_Subs(MS_Subs);
+  FilterTool->synthesize(); // Trigger synthesis
+
+}
 
 void Qucs_S_SPAR_Viewer::updateSimulation(SchematicContent SI) {
   Circuit = SI;

@@ -17,20 +17,16 @@
 
 #include "Microstrip.h"
 
-// Substrate struct implementation
-Microstrip::Substrate::Substrate(double h, double t, double epsilon_r)
-    : height(h), thickness(t), er(epsilon_r) {}
-
 // Results struct implementation
-Microstrip::Results::Results()
+MicrostripClass::SynthesisResults::SynthesisResults()
     : width(0), gap(0), er_eff(0), zl(0), zl_even(0), zl_odd(0), iterations(0) {}
 
 // Main implementation of microstrip calculation
-void Microstrip::calcMicrostrip(const Substrate& substrate, double width, double freq,
+void MicrostripClass::calcMicrostrip(double width, double freq,
                                 double& er_eff, double& zl) {
-  double h = substrate.height;
-  double t = substrate.thickness;
-  double er = substrate.er;
+  double h = Substrate.height;
+  double t = Substrate.thickness;
+  double er = Substrate.er;
   double Wh = width / h;
   double t_norm = t / h;
 
@@ -109,21 +105,21 @@ void Microstrip::calcMicrostrip(const Substrate& substrate, double width, double
 }
 
 // Microstrip synthesis implementation
-bool Microstrip::synthesizeMicrostrip(double Z0, double freq, const Substrate& substrate,
-                                      Results& results) {
-  results.iterations = 0;
+bool MicrostripClass::synthesizeMicrostrip(double Z0, double length, double freq) {
+  Results.iterations = 0;
   double width = 1.0; // start with 1mm
   double er_eff;
   double Z0_current, Z0_result;
 
   do {
     // Compute line parameters
-    calcMicrostrip(substrate, width, freq, er_eff, Z0_current);
+    calcMicrostrip(width, freq, er_eff, Z0_current);
 
     if (fabs(Z0 - Z0_current) < MAX_ERROR) {
-      results.width = width;
-      results.er_eff = er_eff;
-      results.zl = Z0_current;
+      Results.width = width;
+      Results.er_eff = er_eff;
+      Results.zl = Z0_current;
+      Results.length = length/sqrt(er_eff);
       return true;
     }
 
@@ -131,7 +127,7 @@ bool Microstrip::synthesizeMicrostrip(double Z0, double freq, const Substrate& s
     double width_new = width + increment;
 
     // Compute line parameters with new width
-    calcMicrostrip(substrate, width_new, freq, er_eff, Z0_result);
+    calcMicrostrip(width_new, freq, er_eff, Z0_result);
 
     // Newton iteration
     double derivative = (Z0_result - Z0_current) / increment;
@@ -141,17 +137,18 @@ bool Microstrip::synthesizeMicrostrip(double Z0, double freq, const Substrate& s
       width = increment;
     }
 
-    results.iterations++;
-  } while (results.iterations < 150);
+    Results.iterations++;
+  } while (Results.iterations < 150);
 
   // If we get here, convergence failed
-  results.width = -1.0;
-  results.er_eff = -1.0;
+  Results.width = -1.0;
+  Results.er_eff = -1.0;
+  Results.length = -1;
   return false;
 }
 
 // Open end correction implementation
-double Microstrip::getMicrostripOpen(double Wh, double er, double er_eff) {
+double MicrostripClass::getMicrostripOpen(double Wh, double er, double er_eff) {
   // Model by Kirschning
   double Q4 = pow(er_eff, 0.81);
   double Q5 = pow(Wh, 0.8544);
@@ -168,11 +165,10 @@ double Microstrip::getMicrostripOpen(double Wh, double er, double er_eff) {
 }
 
 // Coupled microstrip synthesis implementation
-bool Microstrip::synthesizeCoupledMicrostrip(double zl_even, double zl_odd, double freq,
-                                             const Substrate& substrate, Results& results) {
-  results.iterations = 0;
-  double er = substrate.er;
-  double h = substrate.height;
+bool MicrostripClass::synthesizeCoupledMicrostrip(double zl_even, double zl_odd, double freq) {
+  Results.iterations = 0;
+  double er = Substrate.er;
+  double h = Substrate.height;
 
   // Wheeler formula for single microstrip synthesis (even mode)
   double a = exp(zl_even * sqrt(er + 1.0) / 84.8) - 1.0;
@@ -194,27 +190,24 @@ bool Microstrip::synthesizeCoupledMicrostrip(double zl_even, double zl_odd, doub
 
   do {
     // Compute line parameters
-    calcCoupledMicrostrip(width, gap, freq, substrate, zl_even_current, zl_odd_current,
-                          er_eff_e, er_eff_o);
+    calcCoupledMicrostrip(width, gap, freq, zl_even_current, zl_odd_current, er_eff_e, er_eff_o);
 
     if (fabs(zl_even - zl_even_current) < MAX_ERROR &&
         fabs(zl_odd - zl_odd_current) < MAX_ERROR) {
-      results.width = width;
-      results.gap = gap;
-      results.er_eff = 0.5 * (er_eff_e + er_eff_o);
-      results.zl_even = zl_even_current;
-      results.zl_odd = zl_odd_current;
+      Results.width = width;
+      Results.gap = gap;
+      Results.er_eff = 0.5 * (er_eff_e + er_eff_o);
+      Results.zl_even = zl_even_current;
+      Results.zl_odd = zl_odd_current;
       return true;
     }
 
     // Compute derivatives
     double dw = width / 100.0;
-    calcCoupledMicrostrip(width + dw, gap, freq, substrate, zl_even_w, zl_odd_w,
-                          er_eff_e, er_eff_o);
+    calcCoupledMicrostrip(width + dw, gap, freq, zl_even_w, zl_odd_w, er_eff_e, er_eff_o);
 
     double dg = gap / 100.0;
-    calcCoupledMicrostrip(width, gap + dg, freq, substrate, zl_even_g, zl_odd_g,
-                          er_eff_e, er_eff_o);
+    calcCoupledMicrostrip(width, gap + dg, freq, zl_even_g, zl_odd_g, er_eff_e, er_eff_o);
 
     // Jacobian matrix
     double j11 = (zl_even_w - zl_even_current) / dw;
@@ -236,23 +229,21 @@ bool Microstrip::synthesizeCoupledMicrostrip(double zl_even, double zl_odd, doub
     if (width <= 0.0) width = dw;
         if (gap <= 0.0) gap = dg;
 
-    results.iterations++;
-  } while (results.iterations < 200);
+    Results.iterations++;
+  } while (Results.iterations < 200);
 
   // If we get here, convergence failed
-  results.width = -1.0;
-  results.gap = -1.0;
-  results.er_eff = -1.0;
+  Results.width = -1.0;
+  Results.gap = -1.0;
+  Results.er_eff = -1.0;
   return false;
 }
 
 // Coupled microstrip analysis implementation
-void Microstrip::calcCoupledMicrostrip(double width, double gap, double freq,
-                                       const Substrate& substrate, double& zl_even, double& zl_odd,
-                                       double& er_eff_even, double& er_eff_odd) {
+void MicrostripClass::calcCoupledMicrostrip(double width, double gap, double freq, double& zl_even, double& zl_odd,double& er_eff_even, double& er_eff_odd) {
   // Simplified calculation - full implementation would be very complex
-  double h = substrate.height;
-  double er = substrate.er;
+  double h = Substrate.height;
+  double er = Substrate.er;
 
   double Wh = width / h;
   double g = gap / h;
@@ -266,8 +257,7 @@ void Microstrip::calcCoupledMicrostrip(double width, double gap, double freq,
 }
 
 // Dispersion helper function implementation
-double Microstrip::dispersionKirschning(double er, double Wh, double freq,
-                                        double& er_eff, double& zl) {
+double MicrostripClass::dispersionKirschning(double er, double Wh, double freq, double& er_eff, double& zl) {
   double a, b;
 
          // Relative effective permittivity
@@ -313,20 +303,20 @@ double Microstrip::dispersionKirschning(double er, double Wh, double freq,
 }
 
 // Results printing implementation
-void Microstrip::printResults(const Results& results, const std::string& title) {
+void MicrostripClass::printResults(const std::string& title) {
   std::cout << "=== " << title << " ===" << std::endl;
-  std::cout << "Width: " << results.width << " mm" << std::endl;
-  if (results.gap > 0) {
-    std::cout << "Gap: " << results.gap << " mm" << std::endl;
+  std::cout << "Width: " << Results.width << " mm" << std::endl;
+  if (Results.gap > 0) {
+    std::cout << "Gap: " << Results.gap << " mm" << std::endl;
   }
-  std::cout << "Effective Permittivity: " << results.er_eff << std::endl;
-  std::cout << "Characteristic Impedance: " << results.zl << " ohms" << std::endl;
-  if (results.zl_even > 0) {
-    std::cout << "Even Mode Impedance: " << results.zl_even << " ohms" << std::endl;
+  std::cout << "Effective Permittivity: " << Results.er_eff << std::endl;
+  std::cout << "Characteristic Impedance: " << Results.zl << " ohms" << std::endl;
+  if (Results.zl_even > 0) {
+    std::cout << "Even Mode Impedance: " << Results.zl_even << " ohms" << std::endl;
   }
-  if (results.zl_odd > 0) {
-    std::cout << "Odd Mode Impedance: " << results.zl_odd << " ohms" << std::endl;
+  if (Results.zl_odd > 0) {
+    std::cout << "Odd Mode Impedance: " << Results.zl_odd << " ohms" << std::endl;
   }
-  std::cout << "Iterations: " << results.iterations << std::endl;
+  std::cout << "Iterations: " << Results.iterations << std::endl;
   std::cout << "==========================" << std::endl;
 }

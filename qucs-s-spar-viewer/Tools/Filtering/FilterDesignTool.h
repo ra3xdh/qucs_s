@@ -99,6 +99,9 @@ private:
   QString netlist;
   SchematicContent SchContent;
 
+  // Substrate
+  MS_Substrate MS_Subs;
+
   QStringList setItemsResponseTypeCombo();
   double getScale(QString); // Gets the scale from the comboboxes
 
@@ -118,6 +121,7 @@ private:
 
 public:
   void synthesize();
+  void set_MS_Subs(MS_Substrate MS_Subs);
 
 signals:
   void updateSchematic(SchematicContent);

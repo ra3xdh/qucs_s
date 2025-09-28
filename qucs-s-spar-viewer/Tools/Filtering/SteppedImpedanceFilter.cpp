@@ -44,7 +44,7 @@ void SteppedImpedanceFilter::synthesize() {
   double Zline;
   double beta = 2 * M_PI * Specification.fc / SPEED_OF_LIGHT;
 
-  // Add Term 1
+         // Add Term 1
   ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specification.ZS, Resistance);
   Schematic.appendComponent(TermSpar1);
@@ -68,12 +68,35 @@ void SteppedImpedanceFilter::synthesize() {
       TL_length = gi[k + 1] * Specification.ZS / (beta * Zhigh);
     }
 
-    // Transmission line component
-    TL.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, posx, 0);
-    TL.val["Z0"] = num2str(Zline, Resistance);
-    TL.val["Length"] = ConvertLengthFromM("mm", TL_length);
-    Schematic.appendComponent(TL);
+           // Transmission line
+    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      // Ideal
+      TL.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, posx, 0);
+      TL.val["Z0"] = num2str(Zline, Resistance);
+      TL.val["Length"] = ConvertLengthFromM("mm", TL_length);
 
+    } else {
+      if (Specification.TL_implementation == TransmissionLineType::MLIN){
+        // Microstrip
+        // Synthesize MS parameters
+
+
+        MicrostripClass MSL;
+
+        MSL.Substrate = Specification.MS_Subs;
+        MSL.synthesizeMicrostrip(Zline, TL_length*1e3, Specification.fc);
+
+        double MS_Width = MSL.Results.width*1e-3; // MicrostripClass calculations are in mm. It's needed to convert to m
+        double MS_Length = MSL.Results.length*1e-3;
+
+        // Instantiate component
+        TL.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 90, posx, 0);
+        TL.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+        TL.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+      }
+    }
+
+    Schematic.appendComponent(TL);
     Schematic.appendWire(PreviousComponent, 1, TL.ID, 0);
 
     PreviousComponent = TL.ID;
@@ -81,10 +104,11 @@ void SteppedImpedanceFilter::synthesize() {
   }
   // Add Term 2
   double k = Specification.ZS;
-  if (Specification.UseZverevTables)
+  if (Specification.UseZverevTables) {
     (!Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
-  else
+  } else {
     (Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
+  }
 
   ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
   TermSpar2.val["Z"] = num2str(k, Resistance);
