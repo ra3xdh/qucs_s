@@ -186,7 +186,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   MinimumZLabel = new QLabel("Minimum Z");
   MinimumZ_Spinbox = new QDoubleSpinBox();
   MinimumZ_Spinbox->setMinimum(1);
-  MinimumZ_Spinbox->setMaximum(1000);
+  MinimumZ_Spinbox->setMaximum(40);
   MinimumZ_Spinbox->setValue(10);
   MinimumZ_Spinbox->setSingleStep(10);
   MinimumZ_Unit_Label = new QLabel(QChar(0xa9, 0x03));
@@ -201,9 +201,9 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   layout_row++;
   MaximumZLabel = new QLabel("Maximum Z");
   MaximumZ_Spinbox = new QDoubleSpinBox();
-  MaximumZ_Spinbox->setMinimum(1);
-  MaximumZ_Spinbox->setMaximum(1000);
-  MaximumZ_Spinbox->setValue(400);
+  MaximumZ_Spinbox->setMinimum(50);
+  MaximumZ_Spinbox->setMaximum(400);
+  MaximumZ_Spinbox->setValue(200);
   MaximumZ_Spinbox->setSingleStep(10);
   MaximumZ_Unit_Label = new QLabel(QChar(0xa9, 0x03));
   MaximumZLabel->hide();

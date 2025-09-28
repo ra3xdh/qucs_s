@@ -139,6 +139,10 @@ file(GLOB SPAR_SPECIAL_COMPONENTS
      SPAR/SpecialComponents/*.cpp
 )
 
+file(GLOB SPAR_MICROSTRIP_COMPONENTS
+     SPAR/SpecialComponents/MicrostripComponents/*.cpp
+)
+
 file(GLOB UI_SOURCES
      UI/*.cpp
 )
@@ -177,6 +181,7 @@ set(spar_viewer_sources
     ${SCHEMATIC_SOURCES}
     ${SPAR_SOURCES}
     ${SPAR_SPECIAL_COMPONENTS}
+    ${SPAR_MICROSTRIP_COMPONENTS}
     ${MISC_SOURCES}
     ${TOOLS_SOURCES}
     ${QCUSTOMPLOT_SOURCE}

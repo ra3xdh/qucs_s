@@ -79,7 +79,6 @@ struct PrototypeTableProperties {
 struct MS_Substrate {
   // Substrate
   double height;      // substrate height (mm)
-  double thickness;   // conductor thickness (mm)
   double er;          // relative permittivity
   double tand;        // dissipation factor
 
@@ -87,7 +86,7 @@ struct MS_Substrate {
   double MetalConductivity; // Metal conductivity
   double MetalThickness;    // Metal thickness
 
-  MS_Substrate(double h = 0.508, double t = 0.035, double epsilon_r = 3.55, double tand = 0.0027, double MetalConductivity = 58e6, double MetalThickness = 32e-6) : height(h), thickness(t), er(epsilon_r), tand(tand), MetalConductivity(MetalConductivity), MetalThickness(MetalThickness){}// RO4003C, 20 mils
+  MS_Substrate(double h = 0.508e-3, double epsilon_r = 3.55, double tand = 0.0027, double MetalConductivity = 58e6, double MetalThickness = 32e-6) : height(h), er(epsilon_r), tand(tand), MetalConductivity(MetalConductivity), MetalThickness(MetalThickness){}// RO4003C, 20 mils
 };
 
 struct FilterSpecifications {

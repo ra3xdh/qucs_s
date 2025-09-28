@@ -25,7 +25,7 @@ MicrostripClass::SynthesisResults::SynthesisResults()
 void MicrostripClass::calcMicrostrip(double width, double freq,
                                 double& er_eff, double& zl) {
   double h = Substrate.height;
-  double t = Substrate.thickness;
+  double t = Substrate.MetalThickness;
   double er = Substrate.er;
   double Wh = width / h;
   double t_norm = t / h;

@@ -81,8 +81,23 @@ vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
 
          // First handle ALL lumped elements (R, L, C)
   for (const auto& comp : components) {
-    if (comp.type == ComponentType_SPAR::TRANSMISSION_LINE || comp.type == ComponentType_SPAR::COUPLED_LINE)
-      continue; // TLIN and CLIN: do separately
+
+    // TRANSMISSION LINES (TLIN)
+    if (comp.type == ComponentType_SPAR::TRANSMISSION_LINE) {
+      addTransmissionLineToAdmittance(Y, comp);
+      continue;
+    }
+
+           // Microstrip line model
+    if (comp.type == ComponentType_SPAR::MICROSTRIP_LINE) {
+      addMicrostripLineToAdmittance(Y, comp);
+      continue;
+    }
+           // COUPLED LINES (CLIN)
+    if (comp.type == ComponentType_SPAR::COUPLED_LINE) {
+      addCoupledLineToAdmittance(Y, comp);
+      continue;
+    }
 
     if (comp.type == ComponentType_SPAR::IDEAL_COUPLER) {
       addIdealCouplerToAdmittance(Y, comp);
@@ -118,29 +133,6 @@ vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
       }
     }
   }
-
-  // Special components
-  for (const auto& comp : components) {
-
-    // TRANSMISSION LINES (TLIN)
-    if (comp.type == ComponentType_SPAR::TRANSMISSION_LINE) {
-      addTransmissionLineToAdmittance(Y, comp);
-      continue;
-    }
-
-    // Microstrip line model
-    if (comp.type == ComponentType_SPAR::MICROSTRIP_LINE) {
-      addMicrostripLineToAdmittance(Y, comp);
-      continue;
-    }
-
-    // COUPLED LINES (CLIN)
-    if (comp.type == ComponentType_SPAR::COUPLED_LINE) {
-      addCoupledLineToAdmittance(Y, comp);
-      continue;
-    }
-  }
-
 
          //Add small conductance to ground to prevent singular matrix (for all nodes)
   double gmin = 1e-12;

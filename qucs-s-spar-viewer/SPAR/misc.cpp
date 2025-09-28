@@ -32,6 +32,9 @@ double SParameterCalculator::parseScaledValue(const QString& input, QString unit
   if (unit_type == QString("Length")){
     // Handle explicit length units FIRST (before SI prefixes)
     static const QMap<QString, double> lengthUnits = {
+        {"nm", 1e-9},      // nanometers to meters
+        {"µ", 1e-6},       // micrometers to meters
+        {"um", 1e-6},      // micrometers to meters
         {"mm", 1e-3},      // millimeters to meters
         {"cm", 1e-2},      // centimeters to meters
         {"dm", 1e-1},      // decimeters to meters

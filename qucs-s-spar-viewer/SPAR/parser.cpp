@@ -148,11 +148,23 @@ bool SParameterCalculator::parseNetlist() {
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
 
-      double Length = parseScaledValue(parts[3], QString("Length"));
-      double Width = parseScaledValue(parts[4], QString("Length"));
+      double Width = parseScaledValue(parts[3], QString("Length"));
+      double Length = parseScaledValue(parts[4], QString("Length"));
+      double er = parseScaledValue(parts[5]);
+      double h = parseScaledValue(parts[6]);
+      double cond = parseScaledValue(parts[7]);
+      double th = parseScaledValue(parts[8]);
+      double tand = parseScaledValue(parts[9]);
 
       value["Width"] = Width;
       value["Length"] = Length;
+      value["er"] = er;
+      value["h"] = h;
+      value["cond"] = cond;
+      value["th"] = th;
+      value["tand"] = tand;
+
+
       addComponent(ComponentType_SPAR::MICROSTRIP_LINE, name.toStdString(), {node1, node2}, value);
     } else if ((type == QString("CLIN")) && (parts.size() >= 7)) {
       // Coupled Line: CLIN1 node1 node2 node3 node4 Z0e Z0o length

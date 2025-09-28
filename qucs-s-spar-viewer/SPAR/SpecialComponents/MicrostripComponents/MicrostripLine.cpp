@@ -15,50 +15,73 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "./../SParameterCalculator.h"
+#include "./../../SParameterCalculator.h"
 
 void SParameterCalculator::addMicrostripLineToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp) {
   // Extract microstrip parameters
   int node1 = comp.nodes[0];
   int node2 = comp.nodes[1];
 
-  double W = comp.value.value("W");       // Width in meters
-  double L = comp.value.value("L");       // Length in meters
+  double W = comp.value.value("Width");       // Width in meters
+  double L = comp.value.value("Length");       // Length in meters
   double h = comp.value.value("h");       // Substrate height in meters
   double er = comp.value.value("er");     // Relative permittivity
-  double t = comp.value.value("t", 0.0);  // Conductor thickness (optional)
+  double t = comp.value.value("th", 0.0);  // Conductor thickness (optional)
   double tand = comp.value.value("tand", 0.0);  // Loss tangent (optional)
-  double rho = comp.value.value("rho", 0.0);    // Resistivity (optional)
+  double rho = comp.value.value("rho", 1e-10);    // Surface Resistivity (optional)
 
-  // Use default models for now - could be extended to support model selection
-  string model = "Hammerstad";
-  string dispModel = "Kirschning";
-
-  // Calculate propagation characteristics
+         // Calculate propagation characteristics
   double alpha, beta, zl, ereff;
   calcMicrostripPropagation(W, L, h, er, t, tand, rho, frequency,
                             alpha, beta, zl, ereff);
 
-  // Calculate Y-parameters using hyperbolic functions
+
+  double z0 = 50.0;  // System impedance - make sure this matches your system
+  double z = zl / z0;  // normalized characteristic impedance
+  double y = 1.0 / z;  // normalized admittance
+
   Complex gamma(alpha, beta);
-  Complex Z_c(zl, 0);
   Complex gl = gamma * L;
 
-  // Handle potential numerical issues
+  // Complex characteristic impedance (can include loss effects if needed)
+  Complex Z0c(zl, 0.0);
+
+  // Calculate hyperbolic functions
   Complex sinh_gl = sinh(gl);
   Complex cosh_gl = cosh(gl);
 
-  if (abs(sinh_gl) < 1e-12) {
-    // Avoid division by zero at resonances
-    return;
+  // Handle numerical issues for very small arguments
+  if (abs(gl) < 1e-10) {
+    sinh_gl = gl;
+    cosh_gl = Complex(1.0, 0.0);
   }
 
-  Complex y11 = cosh_gl / (Z_c * sinh_gl);
-  Complex y12 = -Complex(1.0, 0) / (Z_c * sinh_gl);
-  Complex y21 = y12;  // Reciprocal network
-  Complex y22 = y11;  // Symmetric network
+         // Calculate exactly as in reference: n = 2*cosh(gl) + (z+y)*sinh(gl)
+  Complex n = 2.0 * cosh_gl + (z + y) * sinh_gl;
 
-  // Add to admittance matrix
+  // Avoid division by zero
+  if (abs(n) < 1e-15) {
+    return;  // Skip this component if singular
+  }
+
+         // Calculate S-parameters as in reference
+  // These results may be used to check with qucsator-RF
+  Complex s11 = (z - y) * sinh_gl / n;
+  Complex s21 = 2.0 / n;
+
+         // Y-parameters for lossy transmission line:
+         // Y11 = Y22 = (1/Z0) * coth(gamma*L)
+         // Y12 = Y21 = -(1/Z0) * csch(gamma*L)
+  Complex coth_gl = cosh_gl / sinh_gl;
+  Complex csch_gl = 1.0 / sinh_gl;
+
+  Complex y11 = coth_gl / Z0c;
+  Complex y12 = -csch_gl / Z0c;
+
+  Complex y22 = y11;
+  Complex y21 = y12;
+
+         // Add to admittance matrix
   if (node1 > 0) {
     Y[node1-1][node1-1] += y11;
   }
