@@ -88,7 +88,7 @@ private:
   MS_Substrate MS_Subs;
 
 private slots:
-  void update();
+  void updateSubstrateDefinition();
   void onTransmissionLineTypeChanged();
 
 signals:

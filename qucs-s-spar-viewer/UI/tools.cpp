@@ -66,6 +66,7 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   connect(AttenuatorTool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(Netlist_Tool, SIGNAL(updateSimulation(SchematicContent)), this, SLOT(updateSimulation(SchematicContent)));
   connect(SimulationSetupWidget, SIGNAL(updateSimulation()), this, SLOT(updateSimulation()));
+  connect(SimulationSetupWidget, SIGNAL(updateSubstrate()), this, SLOT(updateSubstrate()));
 
          // Update simulation and schematic when the user clicks on another tab
   connect(toolsTabWidget, &QTabWidget::currentChanged, this, &Qucs_S_SPAR_Viewer::onToolsTabChanged);
@@ -164,10 +165,28 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
 
 
 void Qucs_S_SPAR_Viewer::updateSubstrate(){
-  // Microstrip line
+
+  // Get the new substrate
   MS_Subs = SimulationSetupWidget->get_MS_Substrate();
+
+  // Update the substrate in all tools
   FilterTool->set_MS_Subs(MS_Subs);
-  FilterTool->synthesize(); // Trigger synthesis
+
+  if (Circuit.Type == QString("Filter")) {
+    FilterTool->design();
+  } else if (Circuit.Type == QString("Power Combiner")) {
+    PowerCombTool->design();
+  } else if (Circuit.Type == QString("Attenuator")) {
+    AttenuatorTool->design();
+  } else {
+    // Matching network
+    MatchingTool->design();
+  }
+
+
+
+  // Check the last circuit being synthesized and trigger synthesis
+   // Trigger synthesis
 
 }
 

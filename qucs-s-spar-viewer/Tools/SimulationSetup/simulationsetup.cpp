@@ -139,10 +139,12 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
          // Substrate thickness
   QLabel *thicknessLabel = new QLabel("Substrate thickness (H) (mm)");
   substrateThicknessSpinBox = new QDoubleSpinBox();
-  substrateThicknessSpinBox->setMinimum(0.001);
-  substrateThicknessSpinBox->setMaximum(100.0);
-  substrateThicknessSpinBox->setValue(0.508); // 20 mils
+  substrateThicknessSpinBox->setMinimum(0.1);
+  substrateThicknessSpinBox->setMaximum(20);
   substrateThicknessSpinBox->setDecimals(3);
+  substrateThicknessSpinBox->setSingleStep(0.1);
+  substrateThicknessSpinBox->setValue(0.508); // 20 mils
+
 
   parametersLayout->addWidget(thicknessLabel, 1, 0);
   parametersLayout->addWidget(substrateThicknessSpinBox, 1, 1);
@@ -152,8 +154,8 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   substratePermittivitySpinBox = new QDoubleSpinBox();
   substratePermittivitySpinBox->setMinimum(1.0);
   substratePermittivitySpinBox->setMaximum(20.0);
-  substratePermittivitySpinBox->setValue(3.55); // RO4003C
   substratePermittivitySpinBox->setDecimals(2);
+  substratePermittivitySpinBox->setValue(3.55); // RO4003C
   substratePermittivitySpinBox->setSingleStep(0.5);
 
   parametersLayout->addWidget(permittivityLabel, 2, 0);
@@ -164,8 +166,8 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   substrateLossTangentSpinBox = new QDoubleSpinBox();
   substrateLossTangentSpinBox->setMinimum(0.0);
   substrateLossTangentSpinBox->setMaximum(1.0);
-  substrateLossTangentSpinBox->setValue(0.0027); // RO4003C
   substrateLossTangentSpinBox->setDecimals(4);
+  substrateLossTangentSpinBox->setValue(0.0027); // RO4003C
   substrateLossTangentSpinBox->setSingleStep(0.0001);
 
   parametersLayout->addWidget(lossTangentLabel, 3, 0);
@@ -176,8 +178,8 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   conductorThicknessSpinBox = new QDoubleSpinBox();
   conductorThicknessSpinBox->setMinimum(0.1);
   conductorThicknessSpinBox->setMaximum(1000.0);
-  conductorThicknessSpinBox->setValue(35.0);
   conductorThicknessSpinBox->setDecimals(1);
+  conductorThicknessSpinBox->setValue(35.0);
   conductorThicknessSpinBox->setSingleStep(1);
 
   parametersLayout->addWidget(conductorThicknessLabel, 4, 0);
@@ -210,6 +212,14 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   parametersGroupBox->setLayout(parametersLayout);
   substrateLayout->addWidget(parametersGroupBox);
   substrateLayout->setAlignment(Qt::AlignTop);
+
+  // Connect widgets to the signal to update the substrate definition in the tools
+  connect(substrateThicknessSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateSubstrateDefinition()));
+  connect(substratePermittivitySpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateSubstrateDefinition()));
+  connect(substrateLossTangentSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateSubstrateDefinition()));
+  connect(conductorThicknessSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateSubstrateDefinition()));
+  connect(conductorConductivitySpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateSubstrateDefinition()));
+  connect(groundPlaneThicknessSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateSubstrateDefinition()));
 
          // Initial image update
   updateImageDisplay();
@@ -291,7 +301,7 @@ double SimulationSetup::getGroundPlaneThickness(){
   return groundPlaneThicknessSpinBox->value(); // in μm
 }
 
-void SimulationSetup::update() {
+void SimulationSetup::updateSubstrateDefinition() {
 
   // Save stack up data
   if (transmissionLineComboBox->currentText() == QString("Microstrip")){
@@ -305,7 +315,7 @@ void SimulationSetup::update() {
     MS_Subs.MetalThickness = conductorThicknessSpinBox->value()*1e-6; // Input in um -> Result in meters
   }
 
-  emit updateSimulation();
+  emit updateSubstrate();
 }
 
 void SimulationSetup::onTransmissionLineTypeChanged() {
