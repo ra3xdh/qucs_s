@@ -98,6 +98,13 @@ void SteppedImpedanceFilter::synthesize() {
           MStep.val["W1"] = TL.val["Width"]; // Last microstrip line props are still in TL variable
           // MStep.val["W2"] = <This needs to be calculated later>
 
+          // Substrate-related parameters
+          MStep.val["er"] = num2str(Specification.MS_Subs.er);
+          MStep.val["h"] = num2str(Specification.MS_Subs.height);
+          MStep.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+          MStep.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+          MStep.val["tand"] = num2str(Specification.MS_Subs.tand);
+
           posx += 60; // Advance the x-axis drawing index
         }
 

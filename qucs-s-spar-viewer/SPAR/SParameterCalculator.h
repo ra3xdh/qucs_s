@@ -57,7 +57,8 @@ enum class ComponentType_SPAR {
   COMPLEX_IMPEDANCE,
   SPAR_BLOCK,
   FREQUENCY_DEPENDENT_SPAR_BLOCK,
-  MICROSTRIP_LINE
+  MICROSTRIP_LINE,
+  MICROSTRIP_STEP
 };
 
 // Circuit component structure

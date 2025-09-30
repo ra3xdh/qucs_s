@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "./../SParameterCalculator.h""
+#include "./../SParameterCalculator.h"
 
 
 void SParameterCalculator::addTransmissionLineToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp) {

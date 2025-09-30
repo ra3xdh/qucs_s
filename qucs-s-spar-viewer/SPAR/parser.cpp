@@ -144,17 +144,17 @@ bool SParameterCalculator::parseNetlist() {
         }
       }
     } else if ((type == QString("MLIN"))) {
-      // Microstrip Transmission Line: MLIN node1 node2 length width
+      // Microstrip Transmission Line: MLIN node1 node2 length width er h cond th tand
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
 
       double Width = parseScaledValue(parts[3], QString("Length"));
       double Length = parseScaledValue(parts[4], QString("Length"));
-      double er = parseScaledValue(parts[5]);
-      double h = parseScaledValue(parts[6]);
-      double cond = parseScaledValue(parts[7]);
-      double th = parseScaledValue(parts[8]);
-      double tand = parseScaledValue(parts[9]);
+      double er = parseScaledValue(parts[5]); // Dielectric permittivity of the substrate
+      double h = parseScaledValue(parts[6]);  // substrate height
+      double cond = parseScaledValue(parts[7]); // Metal conductivity
+      double th = parseScaledValue(parts[8]); // Metal thickness
+      double tand = parseScaledValue(parts[9]); // Dissipation factor of the substrate material
 
       value["Width"] = Width;
       value["Length"] = Length;
@@ -164,8 +164,31 @@ bool SParameterCalculator::parseNetlist() {
       value["th"] = th;
       value["tand"] = tand;
 
-
       addComponent(ComponentType_SPAR::MICROSTRIP_LINE, name.toStdString(), {node1, node2}, value);
+    } else if ((type == QString("MSTEP"))) {
+      // Microstrip Transmission Line step model: MSTEP node1 node2 length width er h cond th tand
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+
+      double W1 = parseScaledValue(parts[3], QString("Length"));
+      double W2 = parseScaledValue(parts[4], QString("Length"));
+      double er = parseScaledValue(parts[5]); // Dielectric permittivity of the substrate
+      double h = parseScaledValue(parts[6]);  // substrate height
+      double cond = parseScaledValue(parts[7]); // Metal conductivity
+      double th = parseScaledValue(parts[8]); // Metal thickness
+      double tand = parseScaledValue(parts[9]); // Dissipation factor of the substrate material
+
+      value["W1"] = W1;
+      value["W2"] = W2;
+      value["er"] = er;
+      value["h"] = h;
+      value["cond"] = cond;
+      value["th"] = th;
+      value["tand"] = tand;
+
+      addComponent(ComponentType_SPAR::MICROSTRIP_STEP, name.toStdString(), {node1, node2}, value);
+
+
     } else if ((type == QString("CLIN")) && (parts.size() >= 7)) {
       // Coupled Line: CLIN1 node1 node2 node3 node4 Z0e Z0o length
       int node1 = parts[1].toInt();
