@@ -85,7 +85,6 @@ private:
   void paintCapacitor(QPainter *);
   void paintInductor(QPainter *);
   void paintTransmissionLine(QPainter *);
-  void paintMicrostripLine(QPainter *);
   void paintResistor(QPainter *);
   void paintComplexImpedance(QPainter *);
   void paintTerm(QPainter *);
@@ -95,6 +94,10 @@ private:
   void paintCoupledLines(QPainter *);
   void paintCoupler(QPainter *);
   void paintSPAR(QPainter *);
+
+  // Microstrip components
+  void paintMicrostripLine(QPainter *);
+  void paintMicrostripStep(QPainter *);
 
 signals:
   void DoubleClicked(struct ComponentInfo);

@@ -34,6 +34,7 @@ enum ComponentType {
   Resistor,
   TransmissionLine,
   MicrostripLine,
+  MicrostripStep,
   OpenStub,
   ShortStub,
   CoupledLines,
