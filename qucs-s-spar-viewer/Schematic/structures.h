@@ -24,6 +24,7 @@
 #include <deque>
 #include <vector>
 #include <complex.h>
+#include <array>
 
 enum ComponentType {
   Capacitor,
