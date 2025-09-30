@@ -158,6 +158,13 @@ private:
   void Getsinger_disp(double h, double er, double ErEff, double ZlEff, double frequency, double& e, double& z);
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Microstrip step
+  void addMicrostripStepToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
+  void calcMicrostripStepZ(double W1, double W2, double h, double er, double t,
+                          double frequency, const string& SModel, const string& DModel,
+                           Complex& z11, Complex& z12, Complex& z21, Complex& z22);
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
          // Frequency sweep parameters
   double f_start = 1e6;
