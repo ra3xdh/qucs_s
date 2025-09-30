@@ -44,7 +44,7 @@ void Component::paintMicrostripLine(QPainter *painter) {
     painter->rotate(-Rotation);
   }
 
-  QPoint OriginText(10, -10);
+  QPoint OriginText(-20, -10);
   if (Rotation != 0)
     OriginText.setX(-10), OriginText.setY(10);
 

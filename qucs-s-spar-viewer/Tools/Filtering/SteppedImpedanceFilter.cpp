@@ -34,6 +34,8 @@ void SteppedImpedanceFilter::synthesize() {
   std::deque<double> gi = LP_coeffs.getCoefficients();
 
   ComponentInfo TL;
+  ComponentInfo MStep;
+
   int N = Specification.order; // Number of elements
   int posx = 0;
   QString PreviousComponent;
@@ -75,12 +77,33 @@ void SteppedImpedanceFilter::synthesize() {
       TL.val["Z0"] = num2str(Zline, Resistance);
       TL.val["Length"] = ConvertLengthFromM("mm", TL_length);
 
+      Schematic.appendComponent(TL);
+      Schematic.appendWire(PreviousComponent, 1, TL.ID, 0);
+
     } else {
       if (Specification.TL_implementation == TransmissionLineType::MLIN){
-        // Microstrip
+
+        // Check that the previous component is not a term. In that case, it was a microstrip line of different width
+        // and a step need to be added to model the transition
+        if (!PreviousComponent.startsWith("T")) {
+
+          posx += 10; // Add some extra room
+
+          MStep.ID = QString("MSTEP%1").arg(++Schematic.NumberComponents[MicrostripStep]);
+          MStep.Type = MicrostripStep;
+          MStep.Rotation = 0;
+          MStep.Coordinates = {static_cast<double>(posx), 0};
+
+          // Add its properties
+          MStep.val["W1"] = TL.val["Width"]; // Last microstrip line props are still in TL variable
+          // MStep.val["W2"] = <This needs to be calculated later>
+
+          posx += 60; // Advance the x-axis drawing index
+        }
+
+
+        // Microstrip line
         // Synthesize MS parameters
-
-
         MicrostripClass MSL;
 
         MSL.Substrate = Specification.MS_Subs;
@@ -100,11 +123,24 @@ void SteppedImpedanceFilter::synthesize() {
         TL.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
         TL.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
         TL.val["tand"] = num2str(Specification.MS_Subs.tand);
+        Schematic.appendComponent(TL);
+
+        if (!PreviousComponent.startsWith("T")) {
+          // At this point, the width of the microstrip line is calculated, so the second width of the step can be
+          // assigned. At this point the component is also added to the schematic and routed
+          MStep.val["W2"] = TL.val["Width"];
+          Schematic.appendComponent(MStep);
+
+          // Connections
+          Schematic.appendWire(PreviousComponent, 1, MStep.ID, 0);
+          Schematic.appendWire(MStep.ID, 1, TL.ID, 0);
+
+        } else {
+          // The microstrip line is connected to the port
+          Schematic.appendWire(PreviousComponent, 1, TL.ID, 0);
+        }
       }
     }
-
-    Schematic.appendComponent(TL);
-    Schematic.appendWire(PreviousComponent, 1, TL.ID, 0);
 
     PreviousComponent = TL.ID;
     posx += 50;

@@ -63,8 +63,6 @@ QRectF Component::boundingRect() const {
   case MicrostripLine:
     R = QRect(-40, -40, 80, 80);
     break;
-  case MicrostripStep:
-    R = QRect(-20, -20, 40, 40);
   case CoupledLines:
   case Coupler:
     R = QRect(-60, -60, 120, 120);
@@ -84,6 +82,12 @@ QRectF Component::boundingRect() const {
   case SPAR_Block:
     R = QRect(-25, -25, 50, 50);
     break;
+
+  case MicrostripStep:
+    R = QRect(-40, -60, 80, 120);
+    break;
+
+
   default:
     break;
   }
@@ -287,6 +291,18 @@ QPoint Component::getPortLocation(int port_number) {
     break;
 
   case SPAR_Block:
+    switch (port_number) {
+    case 0:
+    default:
+      P = QPoint(-20, 0);
+      break;
+    case 1:
+      P = QPoint(20, 0);
+      break;
+    }
+    break;
+
+  case MicrostripStep:
     switch (port_number) {
     case 0:
     default:

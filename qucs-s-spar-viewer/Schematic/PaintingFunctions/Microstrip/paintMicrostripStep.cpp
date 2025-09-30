@@ -23,51 +23,51 @@ void Component::paintMicrostripStep(QPainter *painter) {
     painter->rotate(Rotation);
   }
 
-  // Define widths for the two sections
+  // Define widths for the two sections (now horizontal orientation)
   int w1 = 24;  // Width of first (wider) section
   int w2 = 12;  // Width of second (narrower) section
-  int h1 = 14;  // Height of first section
-  int h2 = 16;  // Height of second section
+  int len1 = 14;  // Length of first section
+  int len2 = 16;  // Length of second section
 
-  // Fill first (wider) rectangle with dark orange
-  QRect fillRect1(-w1/2, -14, w1, h1);
+  // Fill first (wider) rectangle with dark orange - horizontal left section
+  QRect fillRect1(-14, -w1/2, len1, w1);
   painter->fillRect(fillRect1, QColor(255, 140, 0)); // dark orange
 
-  // Fill second (narrower) rectangle with dark orange
-  QRect fillRect2(-w2/2, 0, w2, h2);
+  // Fill second (narrower) rectangle with dark orange - horizontal right section
+  QRect fillRect2(0, -w2/2, len2, w2);
   painter->fillRect(fillRect2, QColor(255, 140, 0)); // dark orange
 
   // Draw outlines with black pen
   painter->setPen(QPen(Qt::black, 1));
 
-  // Top connector line
-  painter->drawLine(QPoint(0, -25), QPoint(0, -14));
+  // Left connector line
+  painter->drawLine(QPoint(-25, 0), QPoint(-14, 0));
 
   // First (wider) section outline
-  painter->drawLine(QPoint(-w1/2, -14), QPoint(w1/2, -14));  // top edge
-  painter->drawLine(QPoint(-w1/2, -14), QPoint(-w1/2, 0));   // left edge
-  painter->drawLine(QPoint(w1/2, -14), QPoint(w1/2, 0));     // right edge
+  painter->drawLine(QPoint(-14, -w1/2), QPoint(-14, w1/2));  // left edge
+  painter->drawLine(QPoint(-14, -w1/2), QPoint(0, -w1/2));   // top edge
+  painter->drawLine(QPoint(-14, w1/2), QPoint(0, w1/2));     // bottom edge
 
-  // Step transition (sharp horizontal lines at the junction)
-  painter->drawLine(QPoint(-w1/2, 0), QPoint(-w2/2, 0));     // left step
-  painter->drawLine(QPoint(w2/2, 0), QPoint(w1/2, 0));       // right step
+  // Step transition (sharp vertical lines at the junction)
+  painter->drawLine(QPoint(0, -w1/2), QPoint(0, -w2/2));     // top step
+  painter->drawLine(QPoint(0, w2/2), QPoint(0, w1/2));       // bottom step
 
   // Second (narrower) section outline
-  painter->drawLine(QPoint(-w2/2, 0), QPoint(-w2/2, 16));    // left edge
-  painter->drawLine(QPoint(w2/2, 0), QPoint(w2/2, 16));      // right edge
-  painter->drawLine(QPoint(-w2/2, 16), QPoint(w2/2, 16));    // bottom edge
+  painter->drawLine(QPoint(0, -w2/2), QPoint(16, -w2/2));    // top edge
+  painter->drawLine(QPoint(0, w2/2), QPoint(16, w2/2));      // bottom edge
+  painter->drawLine(QPoint(16, -w2/2), QPoint(16, w2/2));    // right edge
 
-  // Bottom connector line
-  painter->drawLine(QPoint(0, 16), QPoint(0, 25));
+  // Right connector line
+  painter->drawLine(QPoint(16, 0), QPoint(25, 0));
 
   // Undo rotation for text
   if (Rotation != 0) {
     painter->rotate(-Rotation);
   }
 
-  QPoint OriginText(15, -10);
+  QPoint OriginText(-20, 15);
   if (Rotation != 0)
-    OriginText.setX(-15), OriginText.setY(10);
+    OriginText.setX(-10), OriginText.setY(20);
 
   // Draw ID and other parameters text
   painter->drawText(QRect(OriginText, QPoint(100, 100)), QString("%1").arg(this->ID));
