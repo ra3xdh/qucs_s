@@ -1605,41 +1605,41 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
     QFileInfo Info(Doc->getDocName());
 
     switch (Event->button()) {
-    case Qt::LeftButton:
+    case Qt::LeftButton: {
         // insert all moved elements into document
-        for (auto* pe : movingElements) {
-            pe->isSelected = false;
-            switch (pe->Type) {
-            case isWire:
-                Doc->installWire(dynamic_cast<Wire*>(pe));
-                break;
-            case isDiagram:
-                Doc->a_Diagrams->push_back((Diagram *) pe);
-                ((Diagram *) pe)
-                    ->loadGraphData(Info.absolutePath() + QDir::separator() + Doc->getDataSet());
-                Doc->enlargeView(pe);
-                break;
-            case isPainting: {
-                Doc->a_Paintings->push_back((Painting *) pe);
-                Doc->enlargeView(pe);
-                break;
-            }
-            case isLabel: {
-                auto wl = dynamic_cast<WireLabel*>(pe);
-                if (wl->owner() != nullptr) break;
+        // NOTE: Markers and nodes are excluded
+        for (auto* pc : movingState.selection.components) {
+            pc->isSelected = false;
+            Doc->insertComponent(pc);
+            Doc->enlargeView(pc);
+        }
+
+        for (auto* pw : movingState.selection.wires) {
+            pw->isSelected = false;
+            Doc->installWire(pw);
+        }
+
+        for (auto* pd : movingState.selection.diagrams) {
+            pd->isSelected = false;
+            Doc->a_Diagrams->push_back(pd);
+            pd->loadGraphData(Info.absolutePath() + QDir::separator() + Doc->getDataSet());
+            Doc->enlargeView(pd);
+        }
+
+        for (auto* pp : movingState.selection.paintings) {
+            pp->isSelected = false;
+            Doc->a_Paintings->push_back(pp);
+            Doc->enlargeView(pp);
+        }
+
+        for (auto* pl : movingState.selection.labels) {
+            pl->isSelected = false;
+            if (pl->owner() == nullptr) {
                 // If label here has no owner it means it was a node label.
                 // New host node has to be found for it.
-                Doc->placeNodeLabel(wl);
-                break;
+                Doc->placeNodeLabel(pl);
             }
-            case isComponent:
-            case isAnalogComponent:
-            case isDigitalComponent:
-                Doc->insertComponent((Component *) pe);
-                Doc->enlargeView(pe);
-                break;
-            }
-        }
+         }
 
         pasteElements(Doc);
         // since the elements are now pasted, we need to re-do the selection
@@ -1669,6 +1669,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
         // to avoid waiting for the user to move their mouse
         MouseActions::MMovePaste(Doc, Event);
         break;
+    }
 
     // ............................................................
     case Qt::RightButton: {// right button rotates the elements
