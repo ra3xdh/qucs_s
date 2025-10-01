@@ -1509,6 +1509,30 @@ bool Schematic::distributeVertical()
 
     return true;
 }
+namespace internal {
+
+// Label snapping differs depending on whether or not it's attached
+// Returns true if the label moved.
+bool snapLabelToGrid(Schematic* sch, WireLabel* label)
+{
+    if (label->owner() == nullptr) {
+        // Detached: snap root and move text center the same distance
+        QPoint oldRoot = label->root();
+        QPoint newRoot = sch->setOnGrid(oldRoot);
+        QPoint delta = newRoot - oldRoot;
+
+        if (delta.x() != 0 || delta.y() != 0) {
+            label->moveRoot(delta.x(), delta.y());
+            label->moveCenter(delta.x(), delta.y());
+            return true;
+        }
+        return false;
+    }
+    // Attached: only snap the text center, root stays on wire
+    return label->moveCenterTo(sch->setOnGrid(label->center()));
+}
+
+} // namespace internal
 
 // Sets selected elements on grid.
 bool Schematic::elementsOnGrid()
@@ -1526,7 +1550,9 @@ bool Schematic::elementsOnGrid()
     // std::ranges::for_each(selection.paintings, onGridSetter);
     std::ranges::for_each(selection.components, onGridSetter);
     std::ranges::for_each(selection.diagrams, onGridSetter);
-    std::ranges::for_each(selection.labels, onGridSetter);
+    std::ranges::for_each(selection.labels, [&any_set, this](WireLabel* label) {
+        any_set = internal::snapLabelToGrid(this, label) || any_set;
+    });
     std::ranges::for_each(selection.markers, onGridSetter);
     std::ranges::for_each(selection.wires, [&any_set, this](Wire* w) {
         auto p1_moved = w->setP1(setOnGrid(w->P1()));
