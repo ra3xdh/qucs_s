@@ -68,12 +68,38 @@ void QuarterWaveFilters::synthesize() {
   for (int k = 0; k < N; k++) {
     posx += 100;
     // Quarter-wave transmission line
-    QW_TL.setParams(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, 90, posx, 0);
-    QW_TL.val["Z0"] = num2str(Z0, Resistance);
-    QW_TL.val["Length"] = ConvertLengthFromM("mm", lambda4);
-    Schematic.appendComponent(QW_TL);
+
+    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      // Ideal transmission line
+      QW_TL.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, posx, 0);
+      QW_TL.val["Z0"] = num2str(Z0, Resistance);
+      QW_TL.val["Length"] = ConvertLengthFromM("mm", lambda4);
+      Schematic.appendComponent(QW_TL);
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      // Microstrip transmission line
+
+             // Synthesize MS parameters
+      MicrostripClass MSL;
+
+      MSL.Substrate = Specification.MS_Subs;
+      MSL.synthesizeMicrostrip(Zline, TL_length*1e3, Specification.fc);
+
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length*1e-3;
+
+             // Instantiate component
+      TL.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 90, posx, 0);
+      TL.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      TL.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+             // Substrate-related parameters
+      TL.val["er"] = num2str(Specification.MS_Subs.er);
+      TL.val["h"] = num2str(Specification.MS_Subs.height);
+      TL.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+      TL.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      TL.val["tand"] = num2str(Specification.MS_Subs.tand);
+      Schematic.appendComponent(TL);
+    }
 
     // Node
     NI.setParams(
