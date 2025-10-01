@@ -53,7 +53,6 @@ vector<vector<Complex>> SParameterCalculator::convertS2Y(const vector<vector<Com
 void SParameterCalculator::addSParamBlockToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp) {
 
   int numRFPorts = comp.numRFPorts;
-  int numNodes = comp.nodes.size();
 
   // Validate S-matrix dimensions
   if ((int)comp.Smatrix.size() != numRFPorts) {

@@ -167,6 +167,18 @@ private:
                            Complex& z11, Complex& z12, Complex& z21, Complex& z22);
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Microstrip open
+  void addMicrostripOpenToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
+  Complex calcMicrostripOpenY(double W, double h, double er, double t,
+                                                    double frequency, const string& Model,
+                                                    const string& SModel, const string& DModel);
+  double calcMicrostripOpenCend(double W, double h, double er, double t,
+                                                      double frequency, const string& Model,
+                                const string& SModel, const string& DModel);
+
+
+
          // Frequency sweep parameters
   double f_start = 1e6;
   double f_stop = 1e9;

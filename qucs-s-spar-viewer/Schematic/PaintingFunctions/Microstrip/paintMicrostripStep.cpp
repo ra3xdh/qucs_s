@@ -1,6 +1,5 @@
 /*
  *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *  Based on msstep.cpp from Qucs - Copyright (C) 2004, 2007, 2008 Stefan Jahn
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -65,7 +64,7 @@ void Component::paintMicrostripStep(QPainter *painter) {
     painter->rotate(-Rotation);
   }
 
-  QPoint OriginText(-20, 15);
+  QPoint OriginText(-15, 15);
   if (Rotation != 0)
     OriginText.setX(-10), OriginText.setY(20);
 

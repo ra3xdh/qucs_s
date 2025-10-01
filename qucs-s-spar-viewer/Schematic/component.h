@@ -98,6 +98,7 @@ private:
   // Microstrip components
   void paintMicrostripLine(QPainter *);
   void paintMicrostripStep(QPainter *);
+  void paintMicrostripOpen(QPainter *);
 
 signals:
   void DoubleClicked(struct ComponentInfo);

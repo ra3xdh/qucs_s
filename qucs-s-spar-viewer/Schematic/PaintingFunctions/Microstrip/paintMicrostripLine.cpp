@@ -1,6 +1,5 @@
 /*
  *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *  Based on msstep.cpp from Qucs - Copyright (C) 2004, 2007, 2008 Stefan Jahn
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -45,8 +44,9 @@ void Component::paintMicrostripLine(QPainter *painter) {
   }
 
   QPoint OriginText(-20, -10);
-  if (Rotation != 0)
-    OriginText.setX(-10), OriginText.setY(10);
+  if (Rotation != 0) {
+    OriginText.setX(-15), OriginText.setY(10);
+  }
 
          // Draw ID and other parameters text
   painter->drawText(QRect(OriginText, QPoint(100, 100)), QString("%1").arg(this->ID));
