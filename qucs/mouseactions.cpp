@@ -1662,6 +1662,12 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 
         Doc->viewport()->update();
         Doc->setChanged(true, true);
+
+        // Input handler dependency: To transform moving selection, we need to be in MMovePaste2,
+        // otherwise it transforms the schematic's selection.
+        // Manually trigger the move action to enforce the state transition,
+        // to avoid waiting for the user to move their mouse
+        MouseActions::MMovePaste(Doc, Event);
         break;
 
     // ............................................................
