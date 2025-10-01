@@ -207,7 +207,28 @@ bool SParameterCalculator::parseNetlist() {
       value["th"] = th;
       value["tand"] = tand;
 
-      addComponent(ComponentType_SPAR::MICROSTRIP_STEP, name.toStdString(), {node1, node2}, value);
+      addComponent(ComponentType_SPAR::MICROSTRIP_VIA, name.toStdString(), {node1, node2}, value);
+
+    } else if ((type == QString("MSVIA"))) {
+      // Microstrip Transmission Line step model: MSOPEN node1 node2 length width er h cond th tand
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+
+      double D = parseScaledValue(parts[3], QString("Length"));
+      double er = parseScaledValue(parts[4]); // Dielectric permittivity of the substrate
+      double h = parseScaledValue(parts[5]);  // substrate height
+      double cond = parseScaledValue(parts[6]); // Metal conductivity
+      double th = parseScaledValue(parts[7]); // Metal thickness
+      double tand = parseScaledValue(parts[8]); // Dissipation factor of the substrate material
+
+      value["D"] = D;
+      value["er"] = er;
+      value["h"] = h;
+      value["cond"] = cond;
+      value["th"] = th;
+      value["tand"] = tand;
+
+      addComponent(ComponentType_SPAR::MICROSTRIP_VIA, name.toStdString(), {node1, node2}, value);
 
     } else if ((type == QString("CLIN")) && (parts.size() >= 7)) {
       // Coupled Line: CLIN1 node1 node2 node3 node4 Z0e Z0o length

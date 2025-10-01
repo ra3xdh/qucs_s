@@ -58,7 +58,8 @@ enum class ComponentType_SPAR {
   SPAR_BLOCK,
   FREQUENCY_DEPENDENT_SPAR_BLOCK,
   MICROSTRIP_LINE,
-  MICROSTRIP_STEP
+  MICROSTRIP_STEP,
+  MICROSTRIP_VIA
 };
 
 // Circuit component structure
@@ -176,8 +177,13 @@ private:
   double calcMicrostripOpenCend(double W, double h, double er, double t,
                                                       double frequency, const string& Model,
                                 const string& SModel, const string& DModel);
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  /// Microstrip via
+  void addMicrostripViaToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
+  Complex calcMicrostripViaImpedance(double D, double h, double t, double rho, double frequency);
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
          // Frequency sweep parameters
   double f_start = 1e6;

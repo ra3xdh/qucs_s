@@ -99,6 +99,7 @@ private:
   void paintMicrostripLine(QPainter *);
   void paintMicrostripStep(QPainter *);
   void paintMicrostripOpen(QPainter *);
+  void paintMicrostripVia(QPainter *);
 
 signals:
   void DoubleClicked(struct ComponentInfo);
