@@ -43,7 +43,7 @@ void QuarterWaveFilters::synthesize() {
   std::deque<double> gi = LP_coeffs.getCoefficients();
 
   ComponentInfo QW_TL, OC_Stub, SC_Stub;
-  ComponentInfo MSVIA;
+  ComponentInfo MSVIA, MSOPEN;
   NodeInfo NI;
   double lambda4 = SPEED_OF_LIGHT / (4. * Specification.fc);
 
@@ -179,6 +179,10 @@ void QuarterWaveFilters::synthesize() {
 
     case Bandstop:
       Z = (4 * Z0) / (M_PI * bw * gi[k]);
+
+      if (Specification.TL_implementation == TransmissionLineType::Ideal){
+        // Ideal transmission line
+
       OC_Stub.setParams(
           QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),
           OpenStub, 0, posx + 50, 50);
@@ -188,6 +192,51 @@ void QuarterWaveFilters::synthesize() {
 
              // Wire: Node to stub
       Schematic.appendWire(NI.ID, 0, OC_Stub.ID, 1);
+
+      } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+        // Microstrip transmission line
+
+        MicrostripClass MSL; // Synthesize MS parameters
+
+        MSL.Substrate = Specification.MS_Subs;
+        MSL.synthesizeMicrostrip(Z, lambda4*1e3, Specification.fc);
+
+        double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+        double MS_Length = MSL.Results.length*1e-3;
+
+               // Instantiate component
+        OC_Stub.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx + 50, 50);
+
+               // Physical parameters
+        OC_Stub.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+        OC_Stub.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+               // Substrate-related parameters
+        OC_Stub.val["er"] = num2str(Specification.MS_Subs.er);
+        OC_Stub.val["h"] = num2str(Specification.MS_Subs.height);
+        OC_Stub.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+        OC_Stub.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+        OC_Stub.val["tand"] = num2str(Specification.MS_Subs.tand);
+        Schematic.appendComponent(OC_Stub);
+
+        // Microstrip open
+        MSOPEN.setParams(QString("MOPEN%1").arg(++Schematic.NumberComponents[MicrostripOpen]), MicrostripOpen, 0, posx + 50, 100);
+
+               // Physical parameters
+        MSOPEN.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+
+               // Substrate-related parameters
+        MSOPEN.val["er"] = num2str(Specification.MS_Subs.er);
+        MSOPEN.val["h"] = num2str(Specification.MS_Subs.height);
+        MSOPEN.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+        MSOPEN.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+        MSOPEN.val["tand"] = num2str(Specification.MS_Subs.tand);
+        Schematic.appendComponent(MSOPEN);
+
+        Schematic.appendWire(NI.ID, 0, OC_Stub.ID, 1); // Wire: Node to stub
+        Schematic.appendWire(OC_Stub.ID, 0, MSOPEN.ID, 0); // Wire: Stub to open circuit model
+
+      }
       break;
     }
     PreviousComp = NI.ID;

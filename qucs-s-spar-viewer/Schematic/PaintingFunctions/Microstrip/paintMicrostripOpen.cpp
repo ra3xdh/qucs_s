@@ -18,49 +18,47 @@
 #include "./../../component.h"
 
 void Component::paintMicrostripOpen(QPainter *painter) {
-  if (Rotation != 0) {
-    painter->rotate(Rotation);
-  }
-  
-  // Define dimensions for microstrip open end (horizontal orientation)
-  int width = 24;   // Width of the microstrip line
-  int length = 20;  // Length of the microstrip section
-  
-  // Fill the microstrip line with dark orange - horizontal section ending at open
-  QRect fillRect(-20, -width/2, length, width);
-  painter->fillRect(fillRect, QColor(255, 140, 0)); // dark orange
-  
-  // Draw outlines with black pen
-  painter->setPen(QPen(Qt::black, 1));
-  
-  // Left connector line (input port)
-  painter->drawLine(QPoint(-25, 0), QPoint(-20, 0));
-  
-  // Microstrip line outline
-  painter->drawLine(QPoint(-20, -width/2), QPoint(-20, width/2));  // left edge
-  painter->drawLine(QPoint(-20, -width/2), QPoint(0, -width/2));   // top edge
-  painter->drawLine(QPoint(-20, width/2), QPoint(0, width/2));     // bottom edge
-  
-  // Open end (right edge) - emphasized with thicker line
-  painter->setPen(QPen(Qt::black, 2));
-  painter->drawLine(QPoint(0, -width/2), QPoint(0, width/2));      // open end edge
-  
-  // Draw small capacitance symbol to indicate the open end effect
-  painter->setPen(QPen(Qt::black, 1));
-  int capOffset = 3;
-  int capHeight = 8;
-  painter->drawLine(QPoint(capOffset, -capHeight), QPoint(capOffset, capHeight));  // capacitor plate
-  
-  // Undo rotation for text
-  if (Rotation != 0) {
-    painter->rotate(-Rotation);
-  }
-  
-  QPoint OriginText(-15, 15);
   if (Rotation != 0)
-    OriginText.setX(-10), OriginText.setY(20);
-  
-  // Draw ID and width parameter text
+    painter->rotate(Rotation);
+
+  int w = 15;            // Microstrip width (similar to line)
+  int length = 22;       // Shortened section for open
+
+         // Fill rectangle for the microstrip segment
+  QRect fillRect(-w/2, -14, w, length);
+  painter->fillRect(fillRect, QColor(255, 140, 0)); // dark orange
+
+         // Draw outline and left port connector
+  painter->setPen(QPen(Qt::black, 1));
+  painter->drawLine(QPoint(0, -25), QPoint(0, -14)); // left connector
+  painter->drawLine(QPoint(-w/2, -14), QPoint(w/2, -14));           // top edge
+  painter->drawLine(QPoint(-w/2, -14), QPoint(-w/2, length-14));    // left edge
+  painter->drawLine(QPoint(w/2, -14), QPoint(w/2, length-14));      // right edge
+  painter->drawLine(QPoint(-w/2, length-14), QPoint(w/2, length-14));// bottom edge
+
+         // Draw 4 parallel thin diagonal lines at the open end
+  int edgeY = length - 14;
+  int lineSpacing = 5;
+  int lineLen = 4;
+  int baseOffset = -7;
+
+  painter->setPen(QPen(Qt::black, 1));
+  painter->drawLine(QPoint(baseOffset + 0 * lineSpacing, edgeY), QPoint(baseOffset + 0 * lineSpacing + lineLen, edgeY + lineLen));
+  painter->drawLine(QPoint(baseOffset + 1 * lineSpacing, edgeY), QPoint(baseOffset + 1 * lineSpacing + lineLen, edgeY + lineLen));
+  painter->drawLine(QPoint(baseOffset + 2 * lineSpacing, edgeY), QPoint(baseOffset + 2 * lineSpacing + lineLen, edgeY + lineLen));
+  painter->drawLine(QPoint(baseOffset + 3 * lineSpacing, edgeY), QPoint(baseOffset + 3 * lineSpacing + lineLen, edgeY + lineLen));
+
+
+         // Undo rotation for parameter text
+  if (Rotation != 0)
+    painter->rotate(-Rotation);
+
+  QPoint OriginText(10, -10);
+  if (Rotation != 0)
+    OriginText.setX(-15), OriginText.setY(10);
+
+         // Draw ID and parameters: width only
   painter->drawText(QRect(OriginText, QPoint(100, 100)), QString("%1").arg(this->ID));
-  painter->drawText(QRect(OriginText + QPoint(0, 10), QPoint(100, 100)), QString("W=%1").arg(Value["W"]));
+  painter->drawText(QRect(OriginText + QPoint(0, 10), QPoint(100, 100)), QString("W=%1").arg(Value["Width"]));
 }
+

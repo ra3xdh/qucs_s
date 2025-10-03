@@ -244,7 +244,6 @@ QPoint Component::getPortLocation(int port_number) {
   case ShortStub:
   case TransmissionLine:
   case MicrostripLine:
-  case MicrostripOpen:
   case Resistor:
   case Inductor:
   case Capacitor:
@@ -326,6 +325,9 @@ QPoint Component::getPortLocation(int port_number) {
 
   case MicrostripVia:
     P = QPoint(0, -10);
+    break;
+  case MicrostripOpen:
+    P = QPoint(0, -25);
     break;
 
   default:

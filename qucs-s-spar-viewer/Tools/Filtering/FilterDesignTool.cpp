@@ -546,7 +546,7 @@ void FilterDesignTool::UpdateDesignParameters() {
 
   BWSpinbox->setEnabled(!disableBWControls);
   BW_ScaleCombobox->setEnabled(!disableBWControls);
-
+/*
   if (!disableBWControls) {
     if (Filter_SP.bw >= Filter_SP.fc) {
       BWSpinbox->blockSignals(true);
@@ -554,7 +554,7 @@ void FilterDesignTool::UpdateDesignParameters() {
       BW_ScaleCombobox->setCurrentIndex(FC_ScaleCombobox->currentIndex());
       BWSpinbox->blockSignals(false);
     }
-  }
+  }*/
   ////////////////////////////////////////////////////////////////////////////
 
   ////////////////////////////////////////////////////////////////////////////

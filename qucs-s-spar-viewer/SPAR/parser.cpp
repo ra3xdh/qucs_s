@@ -191,14 +191,13 @@ bool SParameterCalculator::parseNetlist() {
     } else if ((type == QString("MSOPEN"))) {
       // Microstrip Transmission Line step model: MSOPEN node1 node2 length width er h cond th tand
       int node1 = parts[1].toInt();
-      int node2 = parts[2].toInt();
 
-      double W = parseScaledValue(parts[3], QString("Length"));
-      double er = parseScaledValue(parts[4]); // Dielectric permittivity of the substrate
-      double h = parseScaledValue(parts[5]);  // substrate height
-      double cond = parseScaledValue(parts[6]); // Metal conductivity
-      double th = parseScaledValue(parts[7]); // Metal thickness
-      double tand = parseScaledValue(parts[8]); // Dissipation factor of the substrate material
+      double W = parseScaledValue(parts[2], QString("Length"));
+      double er = parseScaledValue(parts[3]); // Dielectric permittivity of the substrate
+      double h = parseScaledValue(parts[4]);  // substrate height
+      double cond = parseScaledValue(parts[4]); // Metal conductivity
+      double th = parseScaledValue(parts[6]); // Metal thickness
+      double tand = parseScaledValue(parts[7]); // Dissipation factor of the substrate material
 
       value["W"] = W;
       value["er"] = er;
@@ -207,7 +206,7 @@ bool SParameterCalculator::parseNetlist() {
       value["th"] = th;
       value["tand"] = tand;
 
-      addComponent(ComponentType_SPAR::MICROSTRIP_VIA, name.toStdString(), {node1, node2}, value);
+      addComponent(ComponentType_SPAR::MICROSTRIP_OPEN, name.toStdString(), {node1}, value);
 
     } else if ((type == QString("MSVIA"))) {
       // Microstrip Transmission Line step model: MSVIA node1 diameter er h cond th tand
