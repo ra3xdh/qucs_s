@@ -60,10 +60,12 @@ QRectF Component::boundingRect() const {
   case OpenStub:
   case ShortStub:
   case TransmissionLine:
-  case MicrostripLine:
   case MicrostripOpen:
   case MicrostripVia:
     R = QRect(-40, -40, 80, 80);
+    break;
+  case MicrostripLine:
+    R = QRect(-40, -40, 100, 100);
     break;
   case CoupledLines:
   case Coupler:
@@ -150,7 +152,7 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
     paintMicrostripOpen(painter);
     break;
   case MicrostripVia:
-    paintMicrostripOpen(painter);
+    paintMicrostripVia(painter);
     break;
   case ComplexImpedance:
     paintComplexImpedance(painter);
@@ -243,7 +245,6 @@ QPoint Component::getPortLocation(int port_number) {
   case TransmissionLine:
   case MicrostripLine:
   case MicrostripOpen:
-  case MicrostripVia:
   case Resistor:
   case Inductor:
   case Capacitor:
@@ -263,9 +264,6 @@ QPoint Component::getPortLocation(int port_number) {
   case Term:
     P = QPoint(10, 0);
     break;
-  default:
-    break;
-
   case Coupler:
     switch (port_number) {
     case 0:
@@ -325,7 +323,16 @@ QPoint Component::getPortLocation(int port_number) {
       break;
     }
     break;
+
+  case MicrostripVia:
+    P = QPoint(0, -10);
+    break;
+
+  default:
+    break;
+
   }
+
 
   RotatePoint(P);
   return P;

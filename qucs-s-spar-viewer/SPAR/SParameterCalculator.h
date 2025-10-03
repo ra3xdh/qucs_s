@@ -183,6 +183,7 @@ private:
   /// Microstrip via
   void addMicrostripViaToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
   Complex calcMicrostripViaImpedance(double D, double h, double t, double rho, double frequency);
+  double calcMicrostripViaResistance(double D, double h, double t, double rho);
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
          // Frequency sweep parameters

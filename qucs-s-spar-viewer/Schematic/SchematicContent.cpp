@@ -455,6 +455,36 @@ QString SchematicContent::getSParameterNetlist() {
 
       break;
 
+
+    case MicrostripVia:
+      if (connections.size() >= 1) {
+        int node1 = netToNodeMap.value(connections[0], 0);
+
+        QString D = Comps[i].val["D"];
+        QString N = Comps[i].val["N"];
+        QString er = Comps[i].val["er"];
+        QString h = Comps[i].val["h"];
+        QString cond = Comps[i].val["cond"];
+        QString th = Comps[i].val["th"];
+        QString tand = Comps[i].val["tand"];
+
+        QString MLIN_ID = Comps[i].ID;
+        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9\n")
+                            .arg(MLIN_ID)
+                            .arg(node1)
+                            .arg(D)
+                            .arg(N)
+                            .arg(er)
+                            .arg(h)
+                            .arg(cond)
+                            .arg(th)
+                            .arg(tand)
+            ;
+      }
+
+      break;
+
+
     case SPAR_Block:
       // Treat as resistor with characteristic impedance for now
       if (connections.size() >= 2) {

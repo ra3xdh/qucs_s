@@ -28,6 +28,4 @@ void Component::paintGND(QPainter *painter) {
   if (Rotation != 0) { // The rotation is undone to draw the text
     painter->rotate(-Rotation);
   }
-  painter->drawText(QRect(7, 5, 100, 100), QString("%1").arg(this->ID));
-  painter->drawText(QRect(7, 15, 100, 100), QString("%1").arg(Value["L"]));
 }

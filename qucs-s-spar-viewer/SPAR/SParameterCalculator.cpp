@@ -93,6 +93,13 @@ vector<vector<Complex>> SParameterCalculator::buildAdmittanceMatrix() {
       addMicrostripLineToAdmittance(Y, comp);
       continue;
     }
+
+           // Microstrip via model
+    if (comp.type == ComponentType_SPAR::MICROSTRIP_VIA) {
+      addMicrostripViaToAdmittance(Y, comp);
+      continue;
+    }
+
            // COUPLED LINES (CLIN)
     if (comp.type == ComponentType_SPAR::COUPLED_LINE) {
       addCoupledLineToAdmittance(Y, comp);

@@ -21,37 +21,31 @@
 void SParameterCalculator::addMicrostripViaToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp) {
   // Extract microstrip via parameters
   int node1 = comp.nodes[0];
-  int node2 = comp.nodes[1];
 
+  int N = comp.value.value("N");        // Number of vias in parallel
   double D = comp.value.value("D");        // Via diameter in meters
   double h = comp.value.value("h");        // Substrate height in meters
-  double t = comp.value.value("t");        // Conductor thickness in meters
-  double rho = comp.value.value("rho");    // Resistivity in Ohm*m
+  double t = comp.value.value("th");        // Conductor thickness in meters
+  double rho = comp.value.value("rho", 1e-10);    // Resistivity in Ohm*m
 
-  // Calculate via impedance
+         // Calculate via impedance
   Complex Z = calcMicrostripViaImpedance(D, h, t, rho, frequency);
 
-  // Check frequency validity
+  // Multiple vias effect
+  Z /= N;
+
+         // Check frequency validity
   if (frequency * h >= 0.03 * C0) {
     // Warning: Model defined for freq*h/C0 < 0.03
     // Model may be less accurate at higher frequencies
   }
 
-  // Convert impedance to admittance
+         // Convert impedance to admittance
   Complex y = Complex(1.0, 0.0) / Z;
 
-  // Add to admittance matrix (2-port network)
+         // Add to admittance matrix (1-port to ground)
   if (node1 > 0) {
     Y[node1-1][node1-1] += y;
-  }
-
-  if (node2 > 0) {
-    Y[node2-1][node2-1] += y;
-  }
-
-  if (node1 > 0 && node2 > 0) {
-    Y[node1-1][node2-1] -= y;
-    Y[node2-1][node1-1] -= y;
   }
 }
 
@@ -70,9 +64,10 @@ Complex SParameterCalculator::calcMicrostripViaImpedance(double D, double h, dou
   // Calculate inductance
   double a = sqrt(r * r + h * h);
   double ind = MU0 * (h * log((h + a) / r) + 1.5 * (r - a));
+  double X = 2.0 * M_PI * frequency * ind;
 
   // Return complex impedance Z = R(f) + j*omega*L
-  return Complex(res, 2.0 * M_PI * frequency * ind);
+  return Complex(res, X);
 }
 
 double SParameterCalculator::calcMicrostripViaResistance(double D, double h, double t, double rho) {
