@@ -183,9 +183,7 @@ void QuarterWaveFilters::synthesize() {
       if (Specification.TL_implementation == TransmissionLineType::Ideal){
         // Ideal transmission line
 
-      OC_Stub.setParams(
-          QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),
-          OpenStub, 0, posx + 50, 50);
+      OC_Stub.setParams(QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]), OpenStub, 0, posx + 50, 50);
       OC_Stub.val["Z0"] = num2str(Z, Resistance);
       OC_Stub.val["Length"] = ConvertLengthFromM("mm", lambda4);
       Schematic.appendComponent(OC_Stub);

@@ -224,8 +224,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   SemiLumpedImplementationCombo->addItem("Replace only inductors");
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
-  FilterDesignLayout->addWidget(SemiLumpedImplementationLabel, 12, 0);
-  FilterDesignLayout->addWidget(SemiLumpedImplementationCombo, 12, 1);
+  FilterDesignLayout->addWidget(SemiLumpedImplementationLabel, layout_row, 0);
+  FilterDesignLayout->addWidget(SemiLumpedImplementationCombo, layout_row, 1);
 
          // Coupled line SIR BPF type
   layout_row++;
@@ -937,6 +937,16 @@ void FilterDesignTool::setSettings_Semilumped(){
   // Show TLIN implementation
   TL_Implementation_Label->show();
   TL_Implementation_Combo->show();
+
+         // Show minimum impedance
+  MinimumZLabel->show();
+  MinimumZ_Spinbox->show();
+  MinimumZ_Unit_Label->show();
+
+         // Show maximum impedance
+  MaximumZLabel->show();
+  MaximumZ_Spinbox->show();
+  MaximumZ_Unit_Label->show();
 
   // Hide coupling type
   DC_CouplingTypeCombo->hide();

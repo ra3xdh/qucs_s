@@ -66,16 +66,16 @@ void CanonicalFilter::synthesize() {
 
 // Synthesis of lowpass filters
 void CanonicalFilter::SynthesizeLPF() {
-  ComponentInfo Cshunt, Lseries, Ground;
+  ComponentInfo Cshunt, Lseries, Ground, MSOPEN;
   NodeInfo NI;
   double L_ci, L_li, lambda0 = SPEED_OF_LIGHT / Specification.fc;
 
-  // Synthesize CLC of LCL network
+         // Synthesize CLC of LCL network
   int N = Specification.order; // Number of elements
   int posx = 0;
   QString ConnectionAux = "";
 
-  // Add Term 1
+         // Add Term 1
   double k = Specification.ZS;
 
   ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
@@ -92,23 +92,69 @@ void CanonicalFilter::SynthesizeLPF() {
   posx += 50;
   for (int k = 0; k < N; k++) {
 
-    if (((Specification.isCLC) && (k % 2 == Kcontrol)) ||
-        ((!Specification.isCLC) && (k % 2 != Kcontrol))) {
+    if (((Specification.isCLC) && (k % 2 == Kcontrol)) ||  ((!Specification.isCLC) && (k % 2 != Kcontrol))) {
+
+        // Node
+      NI.setParams( QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx, 0);
+      Schematic.appendNode(NI);
+
+
       // Shunt capacitor
       gi[k + 1] *= 1 / (2 * M_PI * Specification.fc *
                         Specification.ZS); // Lowpass to highpass transformation
-      if ((semilumped == true) &&
-          (Specification.SemiLumpedISettings == INDUCTORS_AND_SHUNT_CAPS)) {
-        Cshunt.setParams(QString("OSTUB%1").arg(
-                             ++Schematic.NumberComponents[OpenStub]),
-                         OpenStub, 0.0, posx, 50);
+      if ((semilumped == true) && (Specification.SemiLumpedISettings == INDUCTORS_AND_SHUNT_CAPS)) {
         // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M.
         // J. LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-        L_ci =
-            lambda0 / (2 * M_PI) *
-            asin(2 * M_PI * Specification.fc * Specification.minZ * gi[k + 1]);
-        Cshunt.val["Z0"] = num2str(Specification.minZ, Resistance);
-        Cshunt.val["Length"] = ConvertLengthFromM("mm", L_ci);
+        L_ci = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * Specification.minZ * gi[k + 1]);
+
+        if (Specification.TL_implementation == TransmissionLineType::Ideal){
+          // Ideal transmission line
+          Cshunt.setParams(QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]), OpenStub, 0.0, posx, 50);
+          Cshunt.val["Z0"] = num2str(Specification.minZ, Resistance);
+          Cshunt.val["Length"] = ConvertLengthFromM("mm", L_ci);
+          Schematic.appendComponent(Cshunt);
+
+        } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+          // Microstrip transmission line
+          MicrostripClass MSL; // Synthesize MS parameters
+
+          MSL.Substrate = Specification.MS_Subs;
+          MSL.synthesizeMicrostrip(Specification.minZ, L_ci*1e3, Specification.fc);
+
+          double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+          double MS_Length = MSL.Results.length*1e-3;
+
+                 // Instantiate component
+          Cshunt.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, 50);
+
+                 // Physical parameters
+          Cshunt.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+          Cshunt.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+                 // Substrate-related parameters
+          Cshunt.val["er"] = num2str(Specification.MS_Subs.er);
+          Cshunt.val["h"] = num2str(Specification.MS_Subs.height);
+          Cshunt.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+          Cshunt.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+          Cshunt.val["tand"] = num2str(Specification.MS_Subs.tand);
+          Schematic.appendComponent(Cshunt);
+
+                 // Microstrip open
+          MSOPEN.setParams(QString("MOPEN%1").arg(++Schematic.NumberComponents[MicrostripOpen]), MicrostripOpen, 0, posx, 100);
+
+                 // Physical parameters
+          MSOPEN.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+
+                 // Substrate-related parameters
+          MSOPEN.val["er"] = num2str(Specification.MS_Subs.er);
+          MSOPEN.val["h"] = num2str(Specification.MS_Subs.height);
+          MSOPEN.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+          MSOPEN.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+          MSOPEN.val["tand"] = num2str(Specification.MS_Subs.tand);
+          Schematic.appendComponent(MSOPEN);
+
+          Schematic.appendWire(Cshunt.ID, 0, MSOPEN.ID, 0); // Wire: Stub to open circuit model
+        }
       } else {
         // Lumped capacitor
         Cshunt.setParams(
@@ -116,28 +162,22 @@ void CanonicalFilter::SynthesizeLPF() {
             Capacitor, 0.0, posx, 50);
         Cshunt.val["C"] = num2str(gi[k + 1], Capacitance);
 
-        // GND
+               // GND
         Ground.setParams(
             QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0,
             posx, 100);
         Schematic.appendComponent(Ground);
 
-        //***** GND to capacitor *****
+               //***** GND to capacitor *****
         Schematic.appendWire(Ground.ID, 0, Cshunt.ID, 0);
+        Schematic.appendComponent(Cshunt);
       }
-      Schematic.appendComponent(Cshunt);
 
-      // Node
-      NI.setParams(
-          QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-          posx, 0);
-      Schematic.appendNode(NI);
-
-      // Wires
-      //***** Capacitor to node *****
+             // Wires
+             //***** Capacitor to node *****
       Schematic.appendWire(NI.ID, 0, Cshunt.ID, 1);
 
-      //***** Capacitor to the previous Lseries/Term *****
+             //***** Capacitor to the previous Lseries/Term *****
       Schematic.appendWire(NI.ID, 1, ConnectionAux, 0);
 
       ConnectionAux = NI.ID; // The series inductor of the next section must be
@@ -148,14 +188,38 @@ void CanonicalFilter::SynthesizeLPF() {
       if (semilumped == true) {
         // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M.
         // J. LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-        L_li =
-            lambda0 / (2 * M_PI) *
-            asin(2 * M_PI * Specification.fc * gi[k + 1] / Specification.maxZ);
-        Lseries.setParams(QString("TLIN%1").arg(
-                              ++Schematic.NumberComponents[TransmissionLine]),
-                          TransmissionLine, -90, posx, 0);
-        Lseries.val["Z0"] = num2str(Specification.maxZ, Resistance);
-        Lseries.val["Length"] = ConvertLengthFromM("mm", L_li);
+        L_li = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * gi[k + 1] / Specification.maxZ);
+
+        if (Specification.TL_implementation == TransmissionLineType::Ideal){
+          Lseries.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, -90, posx, 0);
+          Lseries.val["Z0"] = num2str(Specification.maxZ, Resistance);
+          Lseries.val["Length"] = ConvertLengthFromM("mm", L_li);
+
+        } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+          // Microstrip transmission line
+
+          MicrostripClass MSL; // Synthesize MS parameters
+
+          MSL.Substrate = Specification.MS_Subs;
+          MSL.synthesizeMicrostrip(Specification.maxZ, L_li*1e3, Specification.fc);
+
+          double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+          double MS_Length = MSL.Results.length*1e-3;
+
+                 // Instantiate component
+
+                 // Physical parameters
+          Lseries.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, -90, posx, 0);
+          Lseries.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+          Lseries.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+                 // Substrate-related parameters
+          Lseries.val["er"] = num2str(Specification.MS_Subs.er);
+          Lseries.val["h"] = num2str(Specification.MS_Subs.height);
+          Lseries.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+          Lseries.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+          Lseries.val["tand"] = num2str(Specification.MS_Subs.tand);
+        }
       } else {
         Lseries.setParams(
             QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
@@ -172,10 +236,11 @@ void CanonicalFilter::SynthesizeLPF() {
   }
   // Add Term 2
   k = Specification.ZS;
-  if (Specification.UseZverevTables)
+  if (Specification.UseZverevTables){
     (!Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
-  else
+  } else {
     (Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
+  }
 
   ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
   TermSpar2.val["Z"] = num2str(k, Resistance);
@@ -195,7 +260,7 @@ void CanonicalFilter::SynthesizeHPF() {
 
   NodeInfo NI;
 
-  // Add Term 1
+         // Add Term 1
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, -180, posx,
       0);
@@ -227,28 +292,28 @@ void CanonicalFilter::SynthesizeHPF() {
             Inductor, 0, posx, 50);
         Lshunt.val["L"] = num2str(gi[k + 1], Inductance);
 
-        // GND
+               // GND
         Ground.setParams(
             QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0,
             posx, 100);
         Schematic.appendComponent(Ground);
 
-        //***** GND to capacitor *****
+               //***** GND to capacitor *****
         Schematic.appendWire(Ground.ID, 0, Lshunt.ID, 0);
       }
       Schematic.appendComponent(Lshunt);
 
-      // Node
+             // Node
       NI.setParams(
           QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
           posx, 0);
       Schematic.appendNode(NI);
 
-      // Wires
-      //***** Capacitor to node *****
+             // Wires
+             //***** Capacitor to node *****
       Schematic.appendWire(NI.ID, 1, Lshunt.ID, 1);
 
-      //***** Capacitor to the previous Lseries/Term *****
+             //***** Capacitor to the previous Lseries/Term *****
       Schematic.appendWire(ConnectionAux, 1, NI.ID, 1);
 
       ConnectionAux = NI.ID; // The series inductor of the next section must be
@@ -263,7 +328,7 @@ void CanonicalFilter::SynthesizeHPF() {
       Cseries.val["C"] = num2str(gi[k + 1], Capacitance);
       Schematic.appendComponent(Cseries);
 
-      // Wiring
+             // Wiring
       Schematic.appendWire(ConnectionAux, 0, Cseries.ID, 0);
 
       ConnectionAux = Cseries.ID;
@@ -291,7 +356,7 @@ void CanonicalFilter::SynthesizeBPF() {
   int posx = 0;
   QString ConnectionAux = "";
 
-  // Add Term 1
+         // Add Term 1
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, -180, posx,
       0);
@@ -317,12 +382,12 @@ void CanonicalFilter::SynthesizeBPF() {
           num2str(gi[k + 1] / (delta * Specification.ZS), Capacitance);
       Schematic.appendComponent(Cshunt);
 
-      // GND
+             // GND
       Ground1.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
                         GND, 0, posx - 25, 100);
       Schematic.appendComponent(Ground1);
 
-      // Shunt inductor
+             // Shunt inductor
       Lshunt.setParams(
           QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
           0, posx + 25, 50);
@@ -330,31 +395,31 @@ void CanonicalFilter::SynthesizeBPF() {
           num2str(Specification.ZS * delta / (w0 * w0 * gi[k + 1]), Inductance);
       Schematic.appendComponent(Lshunt);
 
-      // GND
+             // GND
       Ground2.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
                         GND, 0, posx + 25, 100);
       Schematic.appendComponent(Ground2);
 
-      // Node
+             // Node
       NI.setParams(
           QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
           posx, 0);
       Schematic.appendNode(NI);
 
-      // Wires
-      //***** Capacitor to node *****
+             // Wires
+             //***** Capacitor to node *****
       Schematic.appendWire(NI.ID, 1, Cshunt.ID, 1);
 
-      //***** Inductor to node *****
+             //***** Inductor to node *****
       Schematic.appendWire(NI.ID, 1, Lshunt.ID, 1);
 
-      //***** GND to capacitor *****
+             //***** GND to capacitor *****
       Schematic.appendWire(Ground1.ID, 0, Cshunt.ID, 0);
 
-      //***** GND to inductor *****
+             //***** GND to inductor *****
       Schematic.appendWire(Ground2.ID, 0, Lshunt.ID, 0);
 
-      //***** Capacitor to the previous Lseries/Term *****
+             //***** Capacitor to the previous Lseries/Term *****
       Schematic.appendWire(ConnectionAux, 1, NI.ID, 1);
 
       ConnectionAux = NI.ID; // The series inductor of the next section must be
@@ -370,7 +435,7 @@ void CanonicalFilter::SynthesizeBPF() {
           num2str(gi[k + 1] * Specification.ZS / (delta), Inductance);
       Schematic.appendComponent(Lseries);
 
-      // Series capacitor
+             // Series capacitor
       Cseries.setParams(
           QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
           Capacitor, 90, posx + 30, 0);
@@ -378,7 +443,7 @@ void CanonicalFilter::SynthesizeBPF() {
           delta / (w0 * w0 * Specification.ZS * gi[k + 1]), Capacitance);
       Schematic.appendComponent(Cseries);
 
-      // Wiring
+             // Wiring
       Schematic.appendWire(ConnectionAux, 0, Lseries.ID, 1);
       Schematic.appendWire(Lseries.ID, 0, Cseries.ID, 0);
       ConnectionAux = Cseries.ID;
@@ -404,7 +469,7 @@ void CanonicalFilter::SynthesizeBSF() {
   int N = Specification.order; // Number of elements
   int posx = 0;
 
-  // Add Term 1
+         // Add Term 1
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, -180, posx,
       0);
@@ -431,12 +496,12 @@ void CanonicalFilter::SynthesizeBSF() {
           gi[k + 1] * delta / (w0 * w0 * Specification.ZS), Capacitance);
       Schematic.appendComponent(Cshunt);
 
-      // GND
+             // GND
       Ground1.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
                         GND, 0, posx, 150);
       Schematic.appendComponent(Ground1);
 
-      // Shunt inductor
+             // Shunt inductor
       Lshunt.setParams(
           QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
           0, posx, 50);
@@ -444,23 +509,23 @@ void CanonicalFilter::SynthesizeBSF() {
           num2str(Specification.ZS / (delta * gi[k + 1]), Inductance);
       Schematic.appendComponent(Lshunt);
 
-      // Node
+             // Node
       NI.setParams(
           QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
           posx, 0);
       Schematic.appendNode(NI);
 
-      // Wires
-      //***** Inductor to node *****
+             // Wires
+             //***** Inductor to node *****
       Schematic.appendWire(NI.ID, 1, Lshunt.ID, 1);
 
-      //***** Capacitor to inductor *****
+             //***** Capacitor to inductor *****
       Schematic.appendWire(Lshunt.ID, 0, Cshunt.ID, 1);
 
-      //***** GND to capacitor *****
+             //***** GND to capacitor *****
       Schematic.appendWire(Ground1.ID, 0, Cshunt.ID, 0);
 
-      //***** Capacitor to the previous Lseries *****
+             //***** Capacitor to the previous Lseries *****
       QMap<QString, unsigned int>::const_iterator i =
           UnconnectedComponents.constBegin();
       while (i != UnconnectedComponents.constEnd()) {
@@ -471,21 +536,21 @@ void CanonicalFilter::SynthesizeBSF() {
       UnconnectedComponents.clear();
       UnconnectedComponents[NI.ID] = 0;
 
-      // The series inductor of the next section
-      //   must be
-      // connected to this node
+             // The series inductor of the next section
+             //   must be
+             // connected to this node
     } else {
       if (k == 0)
         posx += 50; // First element
 
-      // Node
+             // Node
       Node1.setParams(
           QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
           posx, 0);
       Schematic.appendNode(Node1);
       posx += 50;
 
-      // Series inductor
+             // Series inductor
       Lseries.setParams(
           QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
           -90, posx, 30);
@@ -493,7 +558,7 @@ void CanonicalFilter::SynthesizeBSF() {
           num2str(gi[k + 1] * Specification.ZS * delta / (w0 * w0), Inductance);
       Schematic.appendComponent(Lseries);
 
-      // Series capacitor
+             // Series capacitor
 
       Cseries.setParams(
           QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
@@ -502,16 +567,16 @@ void CanonicalFilter::SynthesizeBSF() {
           num2str(1 / (gi[k + 1] * delta * Specification.ZS), Capacitance);
       Schematic.appendComponent(Cseries);
 
-      // Node
+             // Node
       posx += 50;
       Node2.setParams(
           QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
           posx, 0);
       Schematic.appendNode(Node2);
 
-      // Wiring
-      // Intermediate series inductance => Connect port 0 to the previous
-      // Cshunt and port 1 to the next Cshunt
+             // Wiring
+             // Intermediate series inductance => Connect port 0 to the previous
+             // Cshunt and port 1 to the next Cshunt
 
       QMap<QString, unsigned int>::const_iterator i =
           UnconnectedComponents.constBegin();

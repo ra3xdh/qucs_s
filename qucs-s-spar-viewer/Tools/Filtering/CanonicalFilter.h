@@ -23,6 +23,7 @@
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 #include "../../Misc/general.h"
+#include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 class CanonicalFilter : public Network {
 public:
