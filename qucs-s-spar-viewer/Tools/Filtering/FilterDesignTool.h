@@ -86,7 +86,7 @@ private:
       *MinimumZ_Unit_Label, *SemiLumpedImplementationLabel,
       *ImpedanceRatio_Label;
   QLabel *RLlabel, *RLlabelOhm, *PhaseErrorLabel, *PhaseErrorLabelDeg,
-      *MinimumZLabel, *MaximumZLabel; // Zverev mode
+      *MinimumZLabel, *MaximumZLabel, *FC_Label, *BW_Label; // Zverev mode
   QStringList DefaultFilterResponses;
 
   // Transmission line implementation
@@ -118,6 +118,8 @@ private:
   void setSettings_CCoupledShuntResonators_BPF();
   void setSettings_Semilumped();
   void setSettings_SideCoupled_BPF();
+
+  void adjustRelativeBW(double max_rel_bw);
 
 public:
   void synthesize();

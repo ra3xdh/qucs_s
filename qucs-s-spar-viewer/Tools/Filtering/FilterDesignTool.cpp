@@ -117,7 +117,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FC_ScaleCombobox->addItem("kHz");
   FC_ScaleCombobox->addItem("Hz");
   FC_ScaleCombobox->setCurrentIndex(1);
-  FilterDesignLayout->addWidget(new QLabel("Cutoff freq"), layout_row, 0);
+  FC_Label = new QLabel("Cutoff freq");
+  FilterDesignLayout->addWidget(FC_Label, layout_row, 0);
   FilterDesignLayout->addWidget(FCSpinbox, layout_row, 1);
   FilterDesignLayout->addWidget(FC_ScaleCombobox, layout_row, 2);
 
@@ -135,7 +136,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   BW_ScaleCombobox->addItem("kHz");
   BW_ScaleCombobox->addItem("Hz");
   BW_ScaleCombobox->setCurrentIndex(1);
-  FilterDesignLayout->addWidget(new QLabel("Bandwidth"), layout_row, 0);
+  BW_Label = new QLabel("Bandwidth");
+  FilterDesignLayout->addWidget(BW_Label, layout_row, 0);
   FilterDesignLayout->addWidget(BWSpinbox, layout_row, 1);
   FilterDesignLayout->addWidget(BW_ScaleCombobox, layout_row, 2);
 
@@ -540,12 +542,21 @@ void FilterDesignTool::UpdateDesignParameters() {
   ////////////////////////////////////////////////////////////////////////////
 
   ////////////////////////////////////////////////////////////////////////////
-  // Update user input
+  // Update frequency specifications depending on the mask
   const QString filterType = FilterClassCombo->currentText();
   const bool disableBWControls = (filterType == "Lowpass" || filterType == "Highpass");
 
-  BWSpinbox->setEnabled(!disableBWControls);
-  BW_ScaleCombobox->setEnabled(!disableBWControls);
+  if (disableBWControls){
+    BWSpinbox->hide();
+    BW_ScaleCombobox->hide();
+    BW_Label->hide();
+    FC_Label->setText(QString("Cutoff freq"));
+  } else {
+    BWSpinbox->show();
+    BW_ScaleCombobox->show();
+    BW_Label->show();
+    FC_Label->setText(QString("Central freq"));
+  }
 
   ////////////////////////////////////////////////////////////////////////////
 
@@ -792,6 +803,10 @@ void FilterDesignTool::setSettings_Quarterwavelength_BPF_BSF(){
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
 
+  // Check on filter parameters to ensure successful synthesis
+  const double max_rel_bw = 0.3; // Threshold for maximum relative bandwidth (30%)
+  adjustRelativeBW(max_rel_bw);
+
  // Unblock signals
   FilterResponseTypeCombo->blockSignals(false);
   FilterClassCombo->blockSignals(false);
@@ -843,6 +858,10 @@ void FilterDesignTool::setSettings_EndCoupled_BPF(){
          // Hide semilumped type combobox
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
+
+  // Check on filter parameters to ensure successful synthesis
+  const double max_rel_bw = 0.1; // Threshold for maximum relative bandwidth (10%)
+  adjustRelativeBW(max_rel_bw);
 
   // Unblock signals
   FilterResponseTypeCombo->blockSignals(false);
@@ -897,6 +916,10 @@ void FilterDesignTool::setSettings_CCoupledShuntResonators_BPF(){
          // Hide semilumped type combobox
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
+
+  // Check on filter parameters to ensure successful synthesis
+  const double max_rel_bw = 0.05; // Threshold for maximum relative bandwidth (5%)
+  adjustRelativeBW(max_rel_bw);
 
   // Unblock signals
   FilterResponseTypeCombo->blockSignals(false);
@@ -1027,6 +1050,10 @@ void FilterDesignTool::setSettings_SideCoupled_BPF(){
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
 
+  // Check on filter parameters to ensure successful synthesis
+  const double max_rel_bw = 0.3; // Threshold for maximum relative bandwidth (30%)
+  adjustRelativeBW(max_rel_bw);
+
   // Unblock signals
   FilterResponseTypeCombo->blockSignals(false);
   FilterClassCombo->blockSignals(false);
@@ -1146,4 +1173,23 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
 
 void FilterDesignTool::set_MS_Subs(MS_Substrate SUBSTRATE){
   MS_Subs = SUBSTRATE;
+}
+
+
+// Some BPF topology cannot handle an arbitrary relative bandwith. This function is called
+// from the custom settings related to each filter topology. It checks the input settings when
+// the user selects a new topology and adjust the bandwidth given a maximum setting
+void FilterDesignTool::adjustRelativeBW(double max_rel_bw){
+  // Check on filter parameters to ensure successful synthesis
+  double BW = BWSpinbox->value()*getScale(BW_ScaleCombobox->currentText());
+  double fc = FCSpinbox->value()*getScale(FC_ScaleCombobox->currentText());
+
+  double rel_bw = BW/fc;
+
+         // If relative bandwidth exceeds threshold, adjust it
+  if (rel_bw > max_rel_bw) {
+    BW = max_rel_bw * fc;
+    double new_BW = BW / getScale(BW_ScaleCombobox->currentText());
+    BWSpinbox->setValue(new_BW);
+  }
 }
