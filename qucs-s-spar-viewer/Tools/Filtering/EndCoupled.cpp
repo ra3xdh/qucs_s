@@ -71,15 +71,41 @@ void EndCoupled::synthesize() {
 
     if (k > 0) {
       // Transmission line
-      TL.setParams(
-          QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-          TransmissionLine, 90, posx, 0);
+      if (Specification.TL_implementation == TransmissionLineType::Ideal){
+        // Ideal transmission line
+      TL.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, posx, 0);
       TL.val["Z0"] = num2str(Z0, Resistance);
       TL.val["Length"] = ConvertLengthFromM("mm", TL_length);
-      Schematic.appendComponent(TL);
+
+      } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+        // Microstrip transmission line
+        MicrostripClass MSL; // Synthesize MS parameters
+
+        MSL.Substrate = Specification.MS_Subs;
+        MSL.synthesizeMicrostrip(Z0, TL_length*1e3, Specification.fc);
+
+        double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+        double MS_Length = MSL.Results.length*1e-3;
+
+               // Instantiate component
+
+               // Physical parameters
+        TL.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 90, posx, 0);
+        TL.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+        TL.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+               // Substrate-related parameters
+        TL.val["er"] = num2str(Specification.MS_Subs.er);
+        TL.val["h"] = num2str(Specification.MS_Subs.height);
+        TL.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+        TL.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+        TL.val["tand"] = num2str(Specification.MS_Subs.tand);
+
+      }
 
       // Wire: TL to previous capacitor
       Schematic.appendWire(PreviousComponent, 1, TL.ID, 0);
+      Schematic.appendComponent(TL);
       PreviousComponent = TL.ID;
       posx += 50;
     }
