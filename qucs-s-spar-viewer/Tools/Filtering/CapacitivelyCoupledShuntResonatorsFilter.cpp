@@ -35,7 +35,7 @@ void CapacitivelyCoupledShuntResonatorsFilter::synthesize() {
   LowpassPrototypeCoeffs LP_coeffs(Specification);
   std::deque<double> gi = LP_coeffs.getCoefficients();
 
-  ComponentInfo SC_Stub, Cseries;
+  ComponentInfo SC_Stub, Cseries, MSVIA;
   NodeInfo NI;
 
   int N = Specification.order; // Number of elements
@@ -89,16 +89,65 @@ void CapacitivelyCoupledShuntResonatorsFilter::synthesize() {
       l[k - 1] += lambda0 / 4;
 
            // Short stub
-    SC_Stub.setParams(
-        QString("SSTUB%1").arg(++Schematic.NumberComponents[ShortStub]),
-        ShortStub, 0, posx, posy);
-    SC_Stub.val["Z0"] = num2str(Z0, Resistance);
-    SC_Stub.val["Length"] = ConvertLengthFromM("mm", l[k - 1]);
-    Schematic.appendComponent(SC_Stub);
-    posx += 50;
 
-           // Wire: Series capacitor to SPAR term
-    Schematic.appendWire(NI.ID, 0, SC_Stub.ID, 1);
+    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      // Ideal transmission line
+      SC_Stub.setParams(QString("SSTUB%1").arg(++Schematic.NumberComponents[ShortStub]), ShortStub, 0, posx, posy);
+      SC_Stub.val["Z0"] = num2str(Z0, Resistance);
+      SC_Stub.val["Length"] = ConvertLengthFromM("mm", l[k - 1]);
+      Schematic.appendComponent(SC_Stub);
+
+             // Wire: Series capacitor to SPAR term
+      Schematic.appendWire(NI.ID, 0, SC_Stub.ID, 1);
+
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      // Microstrip transmission line
+
+      MicrostripClass MSL; // Synthesize MS parameters
+
+      MSL.Substrate = Specification.MS_Subs;
+      MSL.synthesizeMicrostrip(Z0, l[k - 1]*1e3, Specification.fc);
+
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length*1e-3;
+
+             // Instantiate component
+      SC_Stub.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, posy);
+
+             // Physical parameters
+      SC_Stub.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      SC_Stub.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+             // Substrate-related parameters
+      SC_Stub.val["er"] = num2str(Specification.MS_Subs.er);
+      SC_Stub.val["h"] = num2str(Specification.MS_Subs.height);
+      SC_Stub.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+      SC_Stub.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      SC_Stub.val["tand"] = num2str(Specification.MS_Subs.tand);
+      Schematic.appendComponent(SC_Stub);
+
+             // GND
+      MSVIA.setParams(QString("MSVIA%1").arg(++Schematic.NumberComponents[MicrostripVia]), MicrostripVia, 0, posx, posy+50);
+
+             // Physical parameters
+      MSVIA.val["D"] = ConvertLengthFromM("mm", 0.5e-3); // Default: 0.5 mm
+      MSVIA.val["N"] = QString::number(4);; // Number of vias in parallel (4 vias)
+
+             // Substrate-related parameters
+      MSVIA.val["er"] = num2str(Specification.MS_Subs.er);
+      MSVIA.val["h"] = num2str(Specification.MS_Subs.height);
+      MSVIA.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+      MSVIA.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      MSVIA.val["tand"] = num2str(Specification.MS_Subs.tand);
+
+      Schematic.appendComponent(MSVIA);
+
+      Schematic.appendWire(NI.ID, 0, SC_Stub.ID, 1); // Wire: Node to stub
+      Schematic.appendWire(SC_Stub.ID, 0, MSVIA.ID, 0); // Wire: Stub to gnd
+
+    }
+
+    posx += 50;
 
            // Series capacitor
 
@@ -116,9 +165,7 @@ void CapacitivelyCoupledShuntResonatorsFilter::synthesize() {
   }
 
          // Last node
-  NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-      posx, 0);
+  NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx, 0);
   Schematic.appendNode(NI);
   Schematic.appendWire(PreviousComponent, 1, NI.ID, 0);
 
@@ -131,12 +178,62 @@ void CapacitivelyCoupledShuntResonatorsFilter::synthesize() {
     l[N - 1] += lambda0 / 4;
 
          // Short stub
-  SC_Stub.setParams(
-      QString("SSTUB%1").arg(++Schematic.NumberComponents[ShortStub]),
-      ShortStub, 0, posx, posy);
-  SC_Stub.val["Z0"] = num2str(Z0, Resistance);
-  SC_Stub.val["Length"] = ConvertLengthFromM("mm", l[N - 1]);
-  Schematic.appendComponent(SC_Stub);
+
+  if (Specification.TL_implementation == TransmissionLineType::Ideal){
+    // Ideal transmission line
+    SC_Stub.setParams(QString("SSTUB%1").arg(++Schematic.NumberComponents[ShortStub]), ShortStub, 0, posx, posy);
+    SC_Stub.val["Z0"] = num2str(Z0, Resistance);
+    SC_Stub.val["Length"] = ConvertLengthFromM("mm", l[N - 1]);
+    Schematic.appendComponent(SC_Stub);
+  } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+    // Microstrip transmission line
+
+    MicrostripClass MSL; // Synthesize MS parameters
+
+    MSL.Substrate = Specification.MS_Subs;
+    MSL.synthesizeMicrostrip(Z0, l[N - 1]*1e3, Specification.fc);
+
+    double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+    double MS_Length = MSL.Results.length*1e-3;
+
+           // Instantiate component
+    SC_Stub.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, posy);
+
+           // Physical parameters
+    SC_Stub.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+    SC_Stub.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+           // Substrate-related parameters
+    SC_Stub.val["er"] = num2str(Specification.MS_Subs.er);
+    SC_Stub.val["h"] = num2str(Specification.MS_Subs.height);
+    SC_Stub.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+    SC_Stub.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+    SC_Stub.val["tand"] = num2str(Specification.MS_Subs.tand);
+    Schematic.appendComponent(SC_Stub);
+
+           // GND
+    MSVIA.setParams(QString("MSVIA%1").arg(++Schematic.NumberComponents[MicrostripVia]), MicrostripVia, 0, posx, posy+50);
+
+           // Physical parameters
+    MSVIA.val["D"] = ConvertLengthFromM("mm", 0.5e-3); // Default: 0.5 mm
+    MSVIA.val["N"] = QString::number(4);; // Number of vias in parallel (4 vias)
+
+           // Substrate-related parameters
+    MSVIA.val["er"] = num2str(Specification.MS_Subs.er);
+    MSVIA.val["h"] = num2str(Specification.MS_Subs.height);
+    MSVIA.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+    MSVIA.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+    MSVIA.val["tand"] = num2str(Specification.MS_Subs.tand);
+
+    Schematic.appendComponent(MSVIA);
+
+    Schematic.appendWire(NI.ID, 0, SC_Stub.ID, 1); // Wire: Node to stub
+    Schematic.appendWire(SC_Stub.ID, 0, MSVIA.ID, 0); // Wire: Stub to gnd
+
+  }
+
+
+
   posx += 50;
 
          // Series capacitor
