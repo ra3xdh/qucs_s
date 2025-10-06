@@ -64,6 +64,9 @@ QRectF Component::boundingRect() const {
   case MicrostripVia:
     R = QRect(-40, -40, 80, 80);
     break;
+  case MicrostripOpen:
+    R = QRect(-40, -40, 100, 80);
+    break;
   case MicrostripLine:
     R = QRect(-40, -40, 100, 100);
     break;
