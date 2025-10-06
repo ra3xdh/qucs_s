@@ -251,7 +251,7 @@ void CanonicalFilter::SynthesizeLPF() {
 
 // Synthesis of highpass filters
 void CanonicalFilter::SynthesizeHPF() {
-  ComponentInfo Lshunt, Cseries, Ground;
+  ComponentInfo Lshunt, Cseries, Ground, MSVIA;
   // Synthesize CLC of LCL network
   int N = Specification.order; // Number of elements
   int posx = 0;
@@ -261,9 +261,7 @@ void CanonicalFilter::SynthesizeHPF() {
   NodeInfo NI;
 
          // Add Term 1
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, -180, posx,
-      0);
+  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specification.ZS, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -271,50 +269,96 @@ void CanonicalFilter::SynthesizeHPF() {
   posx += 50;
   for (int k = 0; k < N; k++) {
 
-    if (((Specification.isCLC) && (k % 2 == 0)) ||
-        ((!Specification.isCLC) && (k % 2 != 0))) {
-      // Shunt inductor
-      gi[k + 1] = Specification.ZS / (2 * M_PI * Specification.fc * gi[k + 1]);
-      if (semilumped == true) {
-        Lshunt.setParams(QString("SSTUB%1").arg(
-                             ++Schematic.NumberComponents[ShortStub]),
-                         ShortStub, 0, posx, 50);
-        // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M.
-        // J. LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-        L_li =
-            lambda0 / (2 * M_PI) *
-            asin(2 * M_PI * Specification.fc * gi[k + 1] / Specification.maxZ);
-        Lshunt.val["Z0"] = num2str(Specification.maxZ, Resistance);
-        Lshunt.val["Length"] = ConvertLengthFromM("mm", L_li);
-      } else {
-        Lshunt.setParams(
-            QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
-            Inductor, 0, posx, 50);
-        Lshunt.val["L"] = num2str(gi[k + 1], Inductance);
+    if (((Specification.isCLC) && (k % 2 == 0)) || ((!Specification.isCLC) && (k % 2 != 0))) {
 
-               // GND
-        Ground.setParams(
-            QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0,
-            posx, 100);
-        Schematic.appendComponent(Ground);
-
-               //***** GND to capacitor *****
-        Schematic.appendWire(Ground.ID, 0, Lshunt.ID, 0);
-      }
-      Schematic.appendComponent(Lshunt);
-
-             // Node
-      NI.setParams(
-          QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-          posx, 0);
+        // Node
+      NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx, 0);
       Schematic.appendNode(NI);
 
              // Wires
-             //***** Capacitor to node *****
-      Schematic.appendWire(NI.ID, 1, Lshunt.ID, 1);
-
-             //***** Capacitor to the previous Lseries/Term *****
+             //***** Shunt inductor to the previous Lseries/Term *****
       Schematic.appendWire(ConnectionAux, 1, NI.ID, 1);
+
+
+      // Shunt inductor
+      gi[k + 1] = Specification.ZS / (2 * M_PI * Specification.fc * gi[k + 1]);
+
+      if (semilumped == true) {
+        Lshunt.setParams(QString("SSTUB%1").arg(++Schematic.NumberComponents[ShortStub]), ShortStub, 0, posx, 50);
+        // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M.
+        // J. LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
+        L_li = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * gi[k + 1] / Specification.maxZ);
+
+        if (Specification.TL_implementation == TransmissionLineType::Ideal){
+          // Ideal transmission line
+        Lshunt.val["Z0"] = num2str(Specification.maxZ, Resistance);
+        Lshunt.val["Length"] = ConvertLengthFromM("mm", L_li);
+        Schematic.appendComponent(Lshunt);
+
+               // Wires
+               //***** Shunt inductor to node *****
+        Schematic.appendWire(NI.ID, 1, Lshunt.ID, 1);
+
+
+        } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+          // Microstrip transmission line
+          MicrostripClass MSL; // Synthesize MS parameters
+
+          MSL.Substrate = Specification.MS_Subs;
+          MSL.synthesizeMicrostrip(Specification.maxZ, L_li*1e3, Specification.fc);
+
+          double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+          double MS_Length = MSL.Results.length*1e-3;
+
+                 // Instantiate component
+          Lshunt.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, 50);
+
+                 // Physical parameters
+          Lshunt.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+          Lshunt.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+                 // Substrate-related parameters
+          Lshunt.val["er"] = num2str(Specification.MS_Subs.er);
+          Lshunt.val["h"] = num2str(Specification.MS_Subs.height);
+          Lshunt.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+          Lshunt.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+          Lshunt.val["tand"] = num2str(Specification.MS_Subs.tand);
+          Schematic.appendComponent(Lshunt);
+
+                 // GND
+          MSVIA.setParams(QString("MSVIA%1").arg(++Schematic.NumberComponents[MicrostripVia]), MicrostripVia, 0, posx, 100);
+
+                 // Physical parameters
+          MSVIA.val["D"] = ConvertLengthFromM("mm", 0.5e-3); // Default: 0.5 mm
+          MSVIA.val["N"] = QString::number(4);; // Number of vias in parallel (4 vias)
+
+                 // Substrate-related parameters
+          MSVIA.val["er"] = num2str(Specification.MS_Subs.er);
+          MSVIA.val["h"] = num2str(Specification.MS_Subs.height);
+          MSVIA.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+          MSVIA.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+          MSVIA.val["tand"] = num2str(Specification.MS_Subs.tand);
+
+          Schematic.appendComponent(MSVIA);
+
+          // Connections
+          Schematic.appendWire(NI.ID, 1, Lshunt.ID, 1);
+          Schematic.appendWire(Lshunt.ID, 0, MSVIA.ID, 0); // Wire: Stub to gnd
+
+        }
+      } else {
+        Lshunt.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor, 0, posx, 50);
+        Lshunt.val["L"] = num2str(gi[k + 1], Inductance);
+        Schematic.appendComponent(Lshunt);
+
+               // GND
+        Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, posx, 100);
+        Schematic.appendComponent(Ground);
+
+               //***** GND to capacitor *****
+        Schematic.appendWire(NI.ID, 1, Lshunt.ID, 1);
+        Schematic.appendWire(Ground.ID, 0, Lshunt.ID, 0);
+      }
 
       ConnectionAux = NI.ID; // The series inductor of the next section must be
                              // connected to this node
@@ -339,8 +383,7 @@ void CanonicalFilter::SynthesizeHPF() {
   double k = Specification.ZL;
   Specification.isCLC ? k /= gi[N + 1] : k *= gi[N + 1];
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
   TermSpar2.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar2);
 
