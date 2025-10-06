@@ -905,6 +905,7 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
     int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Lshunt, Lseries, Cshunt, Ground;
+  ComponentInfo MSOPEN;
   NodeInfo NI;
   double L_li, L_ci, lambda0 = SPEED_OF_LIGHT / Specification.fc;
 
@@ -915,14 +916,40 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   if (CentralSection) {
     // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M. J.
     // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-    L_li = lambda0 / (2 * M_PI) *
-           asin(2 * M_PI * Specification.fc * Kl * Cshunt_LP->at(j) /
-                Specification.maxZ);
-    Lseries.setParams(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, -90, posx + 50, 0);
+    L_li = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * Kl * Cshunt_LP->at(j) / Specification.maxZ);
+
+    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      // Ideal transmission line
+
+    Lseries.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, -90, posx + 50, 0);
     Lseries.val["Z0"] = num2str(Specification.maxZ, Resistance);
     Lseries.val["Length"] = ConvertLengthFromM("mm", L_li);
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      // Microstrip transmission line
+
+      MicrostripClass MSL; // Synthesize MS parameters
+
+      MSL.Substrate = Specification.MS_Subs;
+      MSL.synthesizeMicrostrip(Specification.maxZ, L_li*1e3, Specification.fc);
+
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length*1e-3;
+
+             // Instantiate component
+
+             // Physical parameters
+      Lseries.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, -90, posx + 50, 0);
+      Lseries.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      Lseries.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+             // Substrate-related parameters
+      Lseries.val["er"] = num2str(Specification.MS_Subs.er);
+      Lseries.val["h"] = num2str(Specification.MS_Subs.height);
+      Lseries.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+      Lseries.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      Lseries.val["tand"] = num2str(Specification.MS_Subs.tand);
+    }
+
     Schematic.appendComponent(Lseries);
 
     if (mapIT.hasNext())
@@ -944,15 +971,39 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
 
   if (Lseries_LP_MINC != 0) {
     // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M. J.
-    // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9    Ni++;
-    L_li = lambda0 / (2 * M_PI) *
-           asin(2 * M_PI * Specification.fc * Lseries_LP_MINC /
-                Specification.maxZ);
-    Lseries.setParams(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, 90, posx, 0);
+    // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
+    L_li = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * Lseries_LP_MINC / Specification.maxZ);
+
+    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      // Ideal transmission line
+    Lseries.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, posx, 0);
     Lseries.val["Z0"] = num2str(Specification.maxZ, Resistance);
     Lseries.val["Length"] = ConvertLengthFromM("mm", L_li);
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      // Microstrip transmission line
+
+      MicrostripClass MSL; // Synthesize MS parameters
+
+      MSL.Substrate = Specification.MS_Subs;
+      MSL.synthesizeMicrostrip(Specification.maxZ, L_li*1e3, Specification.fc);
+
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length*1e-3;
+
+             // Instantiate component
+
+             // Physical parameters
+      Lseries.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 90, posx, 0);
+      Lseries.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      Lseries.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+             // Substrate-related parameters
+      Lseries.val["er"] = num2str(Specification.MS_Subs.er);
+      Lseries.val["h"] = num2str(Specification.MS_Subs.height);
+      Lseries.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+      Lseries.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      Lseries.val["tand"] = num2str(Specification.MS_Subs.tand);
+    }
     Schematic.appendComponent(Lseries);
   }
 
@@ -975,14 +1026,37 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   if (Lshunt_LP_MINC != 0) {
     // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M. J.
     // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-    L_li =
-        lambda0 / (2 * M_PI) *
-        asin(2 * M_PI * Specification.fc * Lshunt_LP_MINC / Specification.maxZ);
-    Lshunt.setParams(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, 0, posx, 30);
+    L_li = lambda0 / (2 * M_PI) *  asin(2 * M_PI * Specification.fc * Lshunt_LP_MINC / Specification.maxZ);
+
+    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      // Ideal transmission line
+    Lshunt.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 0, posx, 30);
     Lshunt.val["Z0"] = num2str(Specification.maxZ, Resistance);
     Lshunt.val["Length"] = ConvertLengthFromM("mm", L_li);
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      // Microstrip transmission line
+      MicrostripClass MSL; // Synthesize MS parameters
+
+      MSL.Substrate = Specification.MS_Subs;
+      MSL.synthesizeMicrostrip(Specification.maxZ, L_li*1e3, Specification.fc);
+
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length*1e-3;
+
+             // Instantiate component
+
+             // Physical parameters
+      Lshunt.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, 30);
+      Lshunt.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      Lshunt.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+             // Substrate-related parameters
+      Lshunt.val["er"] = num2str(Specification.MS_Subs.er);
+      Lshunt.val["h"] = num2str(Specification.MS_Subs.height);
+      Lshunt.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+      Lshunt.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      Lshunt.val["tand"] = num2str(Specification.MS_Subs.tand);
+    }
     Schematic.appendComponent(Lshunt);
   }
 
@@ -991,13 +1065,9 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
   if (Specification.SemiLumpedISettings == ONLY_INDUCTORS) {
     if (Lseries_LP_MINC != 0) {
-      Cshunt.setParams(
-          QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-          Capacitor, 0, posx, 100);
+      Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 0, posx, 100);
     } else {
-      Cshunt.setParams(
-          QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-          Capacitor, 0, posx, 100);
+      Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),  Capacitor, 0, posx, 100);
     }
     Cshunt.val["C"] = num2str(Cshunt_LP_MINC, Capacitance);
     Schematic.appendComponent(Cshunt);
@@ -1011,20 +1081,58 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   } else {
     // Series capacitor
     if (Lseries_LP_MINC != 0) {
-      Cshunt.setParams(
-          QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),
-          OpenStub, 0, posx, 100);
+      Cshunt.setParams(QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]), OpenStub, 0, posx, 75);
     } else {
-      Cshunt.setParams(
-          QString("TLIN%1").arg(++Schematic.NumberComponents[OpenStub]),
-          OpenStub, 0, posx, 100);
+      Cshunt.setParams(QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),  OpenStub, 0, posx, 75);
     }
-    L_ci =
-        lambda0 / (2 * M_PI) *
-        asin(2 * M_PI * Specification.fc * Specification.minZ * Cshunt_LP_MINC);
+    L_ci = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * Specification.minZ * Cshunt_LP_MINC);
+
+    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      // Ideal transmission line
     Cshunt.val["Z0"] = num2str(Specification.minZ, Resistance);
     Cshunt.val["Length"] = ConvertLengthFromM("mm", L_ci);
     Schematic.appendComponent(Cshunt);
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      // Microstrip transmission line
+      MicrostripClass MSL; // Synthesize MS parameters
+
+      MSL.Substrate = Specification.MS_Subs;
+      MSL.synthesizeMicrostrip(Specification.minZ, L_ci*1e3, Specification.fc);
+
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length*1e-3;
+
+             // Instantiate component
+      Cshunt.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, 75);
+
+             // Physical parameters
+      Cshunt.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      Cshunt.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+             // Substrate-related parameters
+      Cshunt.val["er"] = num2str(Specification.MS_Subs.er);
+      Cshunt.val["h"] = num2str(Specification.MS_Subs.height);
+      Cshunt.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+      Cshunt.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      Cshunt.val["tand"] = num2str(Specification.MS_Subs.tand);
+      Schematic.appendComponent(Cshunt);
+
+             // Microstrip open
+      MSOPEN.setParams(QString("MOPEN%1").arg(++Schematic.NumberComponents[MicrostripOpen]), MicrostripOpen, 0, posx, 125);
+
+             // Physical parameters
+      MSOPEN.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+
+             // Substrate-related parameters
+      MSOPEN.val["er"] = num2str(Specification.MS_Subs.er);
+      MSOPEN.val["h"] = num2str(Specification.MS_Subs.height);
+      MSOPEN.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+      MSOPEN.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      MSOPEN.val["tand"] = num2str(Specification.MS_Subs.tand);
+      Schematic.appendComponent(MSOPEN);
+      Schematic.appendWire(Cshunt.ID, 0, MSOPEN.ID, 0); // Wire: Stub to open circuit model
+
+    }
   }
 
   if (Lshunt_LP_MINC != 0) {

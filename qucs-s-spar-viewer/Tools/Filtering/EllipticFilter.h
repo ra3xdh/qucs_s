@@ -21,6 +21,7 @@
 #include "../../Schematic/component.h"
 #include "../../Schematic/structures.h"
 #include "../../Misc/general.h"
+#include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 
 class ComponentInfo;
