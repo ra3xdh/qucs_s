@@ -60,7 +60,8 @@ enum class ComponentType_SPAR {
   MICROSTRIP_LINE,
   MICROSTRIP_STEP,
   MICROSTRIP_OPEN,
-  MICROSTRIP_VIA
+  MICROSTRIP_VIA,
+  MICROSTRIP_COUPLED_LINES
 };
 
 // Circuit component structure
@@ -185,6 +186,23 @@ private:
   void addMicrostripViaToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
   Complex calcMicrostripViaImpedance(double D, double h, double t, double rho, double frequency);
   double calcMicrostripViaResistance(double D, double h, double t, double rho);
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  /// Microstrip coupled lines
+  void addMicrostripCoupledLinesToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp);
+  void calcMicrostripCoupledPropagation(double W, double S, double L, double h, double er, double t,
+      double tand, double rho, double frequency, double& alpha_e, double& beta_e, double& zl_e, double& ereff_e,
+      double& alpha_o, double& beta_o, double& zl_o, double& ereff_o);
+
+  void analyseQuasiStaticCoupled(double W, double S, double h, double t, double er, const string& Model,
+                                 bool evenMode, double& ZlEff, double& ErEff, double& WEff);
+
+  void analyseDispersionCoupled(double W, double S, double h, double er, double ZlEff, double ErEff,
+                                double frequency, const string& Model, bool evenMode, double& ZlEffFreq, double& ErEffFreq);
+
+  void analyseLossCoupled(double W, double S, double t, double er, double rho, double D, double tand,
+                          double ZlEff1, double ZlEff2, double ErEff, double frequency, const string& Model, bool evenMode, double& ac, double& ad);
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
          // Frequency sweep parameters

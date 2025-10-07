@@ -60,7 +60,6 @@ QRectF Component::boundingRect() const {
   case OpenStub:
   case ShortStub:
   case TransmissionLine:
-  case MicrostripOpen:
   case MicrostripVia:
     R = QRect(-40, -40, 80, 80);
     break;
@@ -70,6 +69,7 @@ QRectF Component::boundingRect() const {
   case MicrostripLine:
     R = QRect(-40, -40, 100, 100);
     break;
+  case MicrostripCoupledLines:
   case CoupledLines:
   case Coupler:
     R = QRect(-60, -60, 120, 120);
@@ -112,6 +112,7 @@ QPainterPath Component::shape() const {
   case MicrostripLine:
   case MicrostripOpen:
   case MicrostripVia:
+  case MicrostripCoupledLines:
   case Resistor:
   case ComplexImpedance:
   case CoupledLines:
@@ -154,6 +155,9 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
   case MicrostripOpen:
     paintMicrostripOpen(painter);
     break;
+  case MicrostripCoupledLines:
+    paintMicrostripCoupledLines(painter);
+    break;
   case MicrostripVia:
     paintMicrostripVia(painter);
     break;
@@ -188,18 +192,20 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
     break;
   }
 
-  /*
-  // Debug code: Shows the bounding box of the component. This is the
-  painter->setPen(QPen(Qt::red, 1));
-  painter->drawPoint(QPoint(0, 0));
+  bool debug = false;
+  if (debug){
+    // Debug code: Shows the bounding box of the component. This is the
+    painter->setPen(QPen(Qt::red, 1));
+    painter->drawPoint(QPoint(0, 0));
 
-   // region where the selection works painter->setPen(QPen(Qt::red, 1));
-   painter->drawPath(
-       this->shape()); // Component box-> This is the area where the
-   // component can be selected painter->setPen(QPen(Qt::green, 1));
-   painter->drawRect(
-       this->boundingRect()); // Component bounding box->This is the
-                              // area where the component can be painted*/
+           // region where the selection works painter->setPen(QPen(Qt::red, 1));
+    painter->drawPath(
+        this->shape()); // Component box-> This is the area where the
+    // component can be selected painter->setPen(QPen(Qt::green, 1));
+    painter->drawRect(
+        this->boundingRect()); // Component bounding box->This is the
+                               // area where the component can be painted
+  }
 }
 
 QVariant Component::itemChange(GraphicsItemChange change,
@@ -284,6 +290,7 @@ QPoint Component::getPortLocation(int port_number) {
     }
     break;
 
+  case MicrostripCoupledLines:
   case CoupledLines:
     switch (port_number) {
     case 0:
@@ -393,32 +400,33 @@ double ComponentInfo::getVal(QString Property) {
     }
   }
 
-  if (suffix == "f")
+  if (suffix == "f") {
     scale = 1e-15;
-  else {
-    if (suffix == "p")
+  } else {
+    if (suffix == "p") {
       scale = 1e-12;
-    else {
-      if (suffix == "n")
+    } else {
+      if (suffix == "n") {
         scale = 1e-9;
-      else {
-        if (suffix == "u")
+      } else {
+        if (suffix == "u") {
           scale = 1e-6;
-        else {
-          if (suffix == "m")
+        } else {
+          if (suffix == "m") {
             scale = 1e-3;
-          else {
-            if (suffix == "K")
+          } else {
+            if (suffix == "K") {
               scale = 1e3;
-            else {
-              if (suffix == "M")
+            } else {
+              if (suffix == "M") {
                 scale = 1e6;
-              else {
-                if (suffix == "G")
+              } else {
+                if (suffix == "G") {
                   scale = 1e9;
-                else {
-                  if (suffix == "T")
+                } else {
+                  if (suffix == "T") {
                     scale = 1e12;
+                  }
                 }
               }
             }
@@ -426,23 +434,24 @@ double ComponentInfo::getVal(QString Property) {
         }
       }
     }
-  }
 
-  // Remove the suffix from the string and convert the property to numerical
-  // format
-  QString val = val_.left(index);
+           // Remove the suffix from the string and convert the property to numerical
+           // format
+    QString val = val_.left(index);
 
-  // Now, find out if the number is complex or real
-  /*if (index = val.indexOf("j"))
-  {//Need to separate the real from the imaginary part
-      double sign = 1;
-      if (val[index-1] == '-') sign = -1;
-      double realpart = val.left(index-1).toDouble();//Notice  we have to take
-  into account the sign double imagpart = val.right(index).toDouble(); return
-  std::complex<double>(realpart, sign*imagpart);
+           // Now, find out if the number is complex or real
+    /*if (index = val.indexOf("j"))
+    {//Need to separate the real from the imaginary part
+        double sign = 1;
+        if (val[index-1] == '-') sign = -1;
+        double realpart = val.left(index-1).toDouble();//Notice  we have to take
+    into account the sign double imagpart = val.right(index).toDouble(); return
+    std::complex<double>(realpart, sign*imagpart);
+    }
+    else
+    {*/
+    return val.toDouble() * scale;
+    //}
   }
-  else
-  {*/
-  return val.toDouble() * scale;
-  //}
+  return -1;
 }

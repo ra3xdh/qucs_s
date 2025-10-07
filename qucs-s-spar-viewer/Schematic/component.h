@@ -100,6 +100,7 @@ private:
   void paintMicrostripStep(QPainter *);
   void paintMicrostripOpen(QPainter *);
   void paintMicrostripVia(QPainter *);
+  void paintMicrostripCoupledLines(QPainter *);
 
 signals:
   void DoubleClicked(struct ComponentInfo);

@@ -425,6 +425,42 @@ QString SchematicContent::getSParameterNetlist() {
 
       break;
 
+    case MicrostripCoupledLines:
+      if (connections.size() >= 2) {
+        int node1 = netToNodeMap.value(connections[0], 0);
+        int node2 = netToNodeMap.value(connections[1], 0);
+        int node3 = netToNodeMap.value(connections[2], 0);
+        int node4 = netToNodeMap.value(connections[3], 0);
+
+        QString W = Comps[i].val["W"];
+        QString L = Comps[i].val["L"];
+        QString S = Comps[i].val["S"];
+        QString er = Comps[i].val["er"];
+        QString h = Comps[i].val["h"];
+        QString cond = Comps[i].val["cond"];
+        QString th = Comps[i].val["th"];
+        QString tand = Comps[i].val["tand"];
+
+        QString MLIN_ID = Comps[i].ID;
+        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
+                            .arg(MLIN_ID)
+                            .arg(node1)
+                            .arg(node2)
+                            .arg(node3)
+                            .arg(node4)
+                            .arg(W)
+                            .arg(L)
+                            .arg(S)
+                            .arg(er)
+                            .arg(h)
+                            .arg(cond)
+                            .arg(th)
+                            .arg(tand)
+            ;
+      }
+
+      break;
+
     case MicrostripOpen:
       if (connections.size() >= 2) {
         int node1 = netToNodeMap.value(connections[0], 0);

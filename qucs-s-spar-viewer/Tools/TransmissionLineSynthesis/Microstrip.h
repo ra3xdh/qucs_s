@@ -64,7 +64,7 @@ public:
   double getMicrostripOpen(double Wh, double er, double er_eff);
 
   //Synthesizes coupled microstrip dimensions for given even and odd mode impedances.
-  bool synthesizeCoupledMicrostrip(double zl_even, double zl_odd, double freq);
+  bool synthesizeCoupledMicrostrip(double zl_even, double zl_odd, double length, double freq);
 
   //Calculates even and odd mode parameters for coupled microstrip lines.
   void calcCoupledMicrostrip(double width, double gap, double freq,

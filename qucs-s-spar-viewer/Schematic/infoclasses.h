@@ -42,6 +42,7 @@ public:
   std::vector<double> Coordinates;
   int getNumberOfPorts() {
     switch (Type) {
+    case MicrostripCoupledLines:
     case CoupledLines:
     case Coupler:
       return 4;

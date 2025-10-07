@@ -165,20 +165,20 @@ double MicrostripClass::getMicrostripOpen(double Wh, double er, double er_eff) {
 }
 
 // Coupled microstrip synthesis implementation
-bool MicrostripClass::synthesizeCoupledMicrostrip(double zl_even, double zl_odd, double freq) {
+bool MicrostripClass::synthesizeCoupledMicrostrip(double zl_even, double zl_odd, double length, double freq) {
   Results.iterations = 0;
   double er = Substrate.er;
   double h = Substrate.height;
 
-  // Wheeler formula for single microstrip synthesis (even mode)
+         // Wheeler formula for single microstrip synthesis (even mode)
   double a = exp(zl_even * sqrt(er + 1.0) / 84.8) - 1.0;
   double Wh_even = 8.0 * sqrt(a * ((7.0 + 4.0 / er) / 11.0) + ((1.0 + 1.0 / er) / 0.81)) / a;
 
-  // Wheeler formula for single microstrip synthesis (odd mode)
+         // Wheeler formula for single microstrip synthesis (odd mode)
   a = exp(zl_odd * sqrt(er + 1.0) / 84.8) - 1.0;
   double Wh_odd = 8.0 * sqrt(a * ((7.0 + 4.0 / er) / 11.0) + ((1.0 + 1.0 / er) / 0.81)) / a;
 
-  // First rough estimation
+         // First rough estimation
   double ce = cosh(0.5 * PI * Wh_even);
   double co = cosh(0.5 * PI * Wh_odd);
   double gap = (2.0 / PI) * acosh((ce + co - 2.0) / (co - ce)) * h;
@@ -196,46 +196,59 @@ bool MicrostripClass::synthesizeCoupledMicrostrip(double zl_even, double zl_odd,
         fabs(zl_odd - zl_odd_current) < MAX_ERROR) {
       Results.width = width;
       Results.gap = gap;
+
+      // Calculate average effective permittivity
       Results.er_eff = 0.5 * (er_eff_e + er_eff_o);
+
       Results.zl_even = zl_even_current;
       Results.zl_odd = zl_odd_current;
+
+      // Physical length of the coupled lines
+      // For coupled lines, we use the average of even and odd mode effective permittivities
+      double er_eff_avg = Results.er_eff;
+
+      // Physical length = Electrical length / sqrt(er_eff_avg)
+      // This accounts for the wavelength shortening due to the dielectric substrate
+      Results.length = length / sqrt(er_eff_avg);
+
       return true;
     }
 
-    // Compute derivatives
+           // Compute derivatives
     double dw = width / 100.0;
     calcCoupledMicrostrip(width + dw, gap, freq, zl_even_w, zl_odd_w, er_eff_e, er_eff_o);
 
     double dg = gap / 100.0;
     calcCoupledMicrostrip(width, gap + dg, freq, zl_even_g, zl_odd_g, er_eff_e, er_eff_o);
 
-    // Jacobian matrix
+           // Jacobian matrix
     double j11 = (zl_even_w - zl_even_current) / dw;
     double j12 = (zl_even_g - zl_even_current) / dg;
     double j21 = (zl_odd_w - zl_odd_current) / dw;
     double j22 = (zl_odd_g - zl_odd_current) / dg;
 
-    // Determinant
+           // Determinant
     double det = j11 * j22 - j12 * j21;
 
     if (fabs(det) < 1e-15) {
       det = 1e-15; // Avoid division by zero
     }
 
-    // Newton iteration
+           // Newton iteration
     width -= (j22 * (zl_even_current - zl_even) - j12 * (zl_odd_current - zl_odd)) / det;
     gap -= (j11 * (zl_odd_current - zl_odd) - j21 * (zl_even_current - zl_even)) / det;
 
     if (width <= 0.0) width = dw;
-        if (gap <= 0.0) gap = dg;
+    if (gap <= 0.0) gap = dg;
 
     Results.iterations++;
   } while (Results.iterations < 200);
 
-  // If we get here, convergence failed
+         // If we get here, convergence failed
   Results.width = -1.0;
   Results.gap = -1.0;
   Results.er_eff = -1.0;
+  Results.length = -1.0;
   return false;
 }
 

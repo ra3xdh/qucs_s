@@ -38,6 +38,7 @@ enum ComponentType {
   MicrostripStep,
   MicrostripOpen,
   MicrostripVia,
+  MicrostripCoupledLines,
   OpenStub,
   ShortStub,
   CoupledLines,

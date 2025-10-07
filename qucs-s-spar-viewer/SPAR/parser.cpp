@@ -165,6 +165,33 @@ bool SParameterCalculator::parseNetlist() {
       value["tand"] = tand;
 
       addComponent(ComponentType_SPAR::MICROSTRIP_LINE, name.toStdString(), {node1, node2}, value);
+
+    } else if ((type == QString("MSCOUP"))) {
+      // Microstrip Coupled Transmission Lines: MCOUP node1 node2 node3 node4 width length gap er h cond th tand
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+      int node3 = parts[3].toInt();
+      int node4 = parts[4].toInt();
+
+      double W = parseScaledValue(parts[5], QString("Length"));
+      double L = parseScaledValue(parts[6], QString("Length"));
+      double S = parseScaledValue(parts[7], QString("Length"));
+      double er = parseScaledValue(parts[8]); // Dielectric permittivity of the substrate
+      double h = parseScaledValue(parts[9]);  // substrate height
+      double cond = parseScaledValue(parts[10]); // Metal conductivity
+      double th = parseScaledValue(parts[11]); // Metal thickness
+      double tand = parseScaledValue(parts[12]); // Dissipation factor of the substrate material
+
+      value["W"] = W;
+      value["L"] = L;
+      value["S"] = S;
+      value["er"] = er;
+      value["h"] = h;
+      value["cond"] = cond;
+      value["th"] = th;
+      value["tand"] = tand;
+
+      addComponent(ComponentType_SPAR::MICROSTRIP_VIA, name.toStdString(), {node1, node2, node3, node4}, value);
     } else if ((type == QString("MSTEP"))) {
       // Microstrip Transmission Line step model: MSTEP node1 node2 length width er h cond th tand
       int node1 = parts[1].toInt();
@@ -209,7 +236,7 @@ bool SParameterCalculator::parseNetlist() {
       addComponent(ComponentType_SPAR::MICROSTRIP_OPEN, name.toStdString(), {node1}, value);
 
     } else if ((type == QString("MSVIA"))) {
-      // Microstrip Transmission Line step model: MSVIA node1 diameter er h cond th tand
+      // Microstrip Transmission Line model: MSVIA node1 diameter er h cond th tand
       int node1 = parts[1].toInt();
       double D = parseScaledValue(parts[2], QString("Length")); // Via diameter
       int N = parts[3].toInt(); // Number of vias in parallel
