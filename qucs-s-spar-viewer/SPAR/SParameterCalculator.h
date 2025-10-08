@@ -195,11 +195,12 @@ private:
       double tand, double rho, double frequency, double& alpha_e, double& beta_e, double& zl_e, double& ereff_e,
       double& alpha_o, double& beta_o, double& zl_o, double& ereff_o);
 
-  void analyseQuasiStaticCoupled(double W, double S, double h, double t, double er, const string& Model,
-                                 bool evenMode, double& ZlEff, double& ErEff, double& WEff);
+  void analyseQuasiStaticCoupled(double W, double h, double s, double t, double er, const string& Model,
+                                 double& Zle, double& Zlo, double& ErEffe, double& ErEffo);
 
-  void analyseDispersionCoupled(double W, double S, double h, double er, double ZlEff, double ErEff,
-                                double frequency, const string& Model, bool evenMode, double& ZlEffFreq, double& ErEffFreq);
+
+  void analyseDispersionCoupled(double W, double h, double s, double t, double er, double Zle, double Zlo, double ErEffe, double ErEffo,
+      double frequency, const string& DModel, double& ZleFreq, double& ZloFreq, double& ErEffeFreq, double& ErEffoFreq);
 
   void analyseLossCoupled(double W, double S, double t, double er, double rho, double D, double tand,
                           double ZlEff1, double ZlEff2, double ErEff, double frequency, const string& Model, bool evenMode, double& ac, double& ad);

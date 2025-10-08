@@ -193,33 +193,35 @@ void SParameterCalculator::analyseDispersion(double W, double h, double er, doub
   ErEffFreq = e;
 }
 
-void SParameterCalculator::analyseLoss(double W, double t, double er, double rho, double D, double tand,
-                                       double ZlEff1, double ZlEff2, double ErEff, double frequency,
-                                       const string& Model, double& ac, double& ad) {
+void SParameterCalculator::analyseLoss(
+    double W, double t, double er, double rho, double D, double tand,
+    double ZlEff1, double ZlEff2, double ErEff, double frequency,
+    const string& Model, double& ac, double& ad) {
+
   ac = ad = 0;
 
+  // HAMMERSTAD and JENSEN
   if (Model == "Hammerstad") {
     double Rs, ds, l0, Kr, Ki;
 
     // Conductor losses
-    if (t != 0.0 && rho != 0.0) {
+    if (t != 0.0) {
       Rs = sqrt(M_PI * frequency * MU0 * rho); // skin resistance
-      ds = rho / Rs;                           // skin depth
+      ds = rho / Rs;                            // skin depth
+
 
       // Current distribution factor
-      Ki = exp(-1.2 * pow((ZlEff1 + ZlEff2) / 2 / Z0, 0.7));
+      Ki = exp(-1.2 * pow((ZlEff1 + ZlEff2) / 2.0 / Z0, 0.7));
 
-      // Surface roughness factor (D is RMS surface roughness)
-      Kr = 1 + two_over_pi * atan(1.4 * pow(D / ds, 2));
+      // D is RMS surface roughness
+      Kr = 1.0 + (2.0 / M_PI) * atan(1.4 * pow(D / ds, 2.0));
 
       ac = Rs / (ZlEff1 * W) * Ki * Kr;
     }
 
     // Dielectric losses
-    if (tand != 0.0) {
-      l0 = C0 / frequency;
-      ad = M_PI * er / (er - 1) * (ErEff - 1) / sqrt(ErEff) * tand / l0;
-    }
+    l0 = C0 / frequency;
+    ad = M_PI * er / (er - 1.0) * (ErEff - 1.0) / sqrt(ErEff) * tand / l0;
   }
 }
 
