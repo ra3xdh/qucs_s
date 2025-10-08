@@ -191,7 +191,7 @@ bool SParameterCalculator::parseNetlist() {
       value["th"] = th;
       value["tand"] = tand;
 
-      addComponent(ComponentType_SPAR::MICROSTRIP_VIA, name.toStdString(), {node1, node2, node3, node4}, value);
+      addComponent(ComponentType_SPAR::MICROSTRIP_COUPLED_LINES, name.toStdString(), {node1, node2, node3, node4}, value);
     } else if ((type == QString("MSTEP"))) {
       // Microstrip Transmission Line step model: MSTEP node1 node2 length width er h cond th tand
       int node1 = parts[1].toInt();

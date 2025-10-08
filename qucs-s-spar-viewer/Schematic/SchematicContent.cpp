@@ -427,10 +427,31 @@ QString SchematicContent::getSParameterNetlist() {
 
     case MicrostripCoupledLines:
       if (connections.size() >= 2) {
-        int node1 = netToNodeMap.value(connections[0], 0);
-        int node2 = netToNodeMap.value(connections[1], 0);
-        int node3 = netToNodeMap.value(connections[2], 0);
-        int node4 = netToNodeMap.value(connections[3], 0);
+
+        // This is needed to avoid connecting open ends to GND
+        int node1 = netToNodeMap.value(connections[0], -1);
+        if (node1 == -1) {
+          nodeCounter++;
+          node1 = nodeCounter;
+        }
+
+        int node2 = netToNodeMap.value(connections[1], -1);
+        if (node2 == -1) {
+          nodeCounter++;
+          node2 = nodeCounter;
+        }
+
+        int node3 = netToNodeMap.value(connections[2], -1);
+        if (node3 == -1) {
+          nodeCounter++;
+          node3 = nodeCounter;
+        }
+
+        int node4 = netToNodeMap.value(connections[3], -1);
+        if (node4 == -1) {
+          nodeCounter++;
+          node4 = nodeCounter;
+        }
 
         QString W = Comps[i].val["W"];
         QString L = Comps[i].val["L"];
@@ -442,7 +463,7 @@ QString SchematicContent::getSParameterNetlist() {
         QString tand = Comps[i].val["tand"];
 
         QString MLIN_ID = Comps[i].ID;
-        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
+        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13\n")
                             .arg(MLIN_ID)
                             .arg(node1)
                             .arg(node2)
@@ -455,8 +476,7 @@ QString SchematicContent::getSParameterNetlist() {
                             .arg(h)
                             .arg(cond)
                             .arg(th)
-                            .arg(tand)
-            ;
+                            .arg(tand);
       }
 
       break;
@@ -598,6 +618,7 @@ QString SchematicContent::getSParameterNetlist() {
 
     case Coupler: {
 
+      // This is needed to avoid connecting open ends to GND
       int node1 = netToNodeMap.value(connections[0], -1);
       if (node1 == -1) {
         nodeCounter++;
@@ -641,6 +662,7 @@ QString SchematicContent::getSParameterNetlist() {
     }
     case CoupledLines: {
 
+      // This is needed to avoid connecting open ends to GND
       int node1 = netToNodeMap.value(connections[0], -1);
       if (node1 == -1) {
         nodeCounter++;

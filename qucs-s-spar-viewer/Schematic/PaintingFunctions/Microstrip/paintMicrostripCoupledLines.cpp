@@ -67,14 +67,8 @@ void Component::paintMicrostripCoupledLines(QPainter *painter) {
     OriginText.setX(-20), OriginText.setY(20);
 
   // Draw ID and parameters text
-  painter->drawText(QRect(OriginText, QPoint(100, 100)),
-                    QString("%1").arg(this->ID));
-  painter->drawText(
-      QRect(OriginText + QPoint(0, 10), QPoint(100, 100)),
-      QString("W=%1").arg(Value["Width"]));
-  painter->drawText(
-      QRect(OriginText + QPoint(0, 20), QPoint(100, 100)),
-      QString("S=%1").arg(Value["Spacing"]));
-  painter->drawText(QRect(OriginText + QPoint(0, 30), QPoint(100, 100)),
-                    QString("L=%1").arg(Value["Length"]));
+  painter->drawText(QRect(OriginText, QPoint(100, 100)), QString("%1").arg(this->ID));
+  painter->drawText(QRect(OriginText + QPoint(0, 10), QPoint(100, 100)), QString("W=%1").arg(Value["W"]));
+  painter->drawText(QRect(OriginText + QPoint(0, 20), QPoint(100, 100)), QString("L=%1").arg(Value["L"]));
+  painter->drawText(QRect(OriginText + QPoint(0, 30), QPoint(100, 100)), QString("S=%1").arg(Value["S"]));
 }
