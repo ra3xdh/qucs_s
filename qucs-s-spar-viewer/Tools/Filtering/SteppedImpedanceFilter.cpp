@@ -107,7 +107,6 @@ void SteppedImpedanceFilter::synthesize() {
         posx += 60; // Advance the x-axis drawing index
       }
 
-
              // Microstrip line
              // Synthesize MS parameters
       MicrostripClass MSL;

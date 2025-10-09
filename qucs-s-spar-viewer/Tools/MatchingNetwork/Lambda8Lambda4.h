@@ -22,6 +22,7 @@
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 #include "../../Misc/general.h"
+#include "../TransmissionLineSynthesis/Microstrip.h"
 
 class Lambda8Lambda4 : public Network {
 

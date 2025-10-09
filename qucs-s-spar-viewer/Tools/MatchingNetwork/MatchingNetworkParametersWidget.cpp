@@ -338,6 +338,20 @@ MatchingNetworkDesignParameters MatchingNetworkParametersWidget::getDesignParame
   specs.Weigthing = Weighting_Combo->currentText();
   specs.gamma_MAX = Ripple_SpinBox->value();
 
+  ////////////////////////////////////////////////////////////////////////////
+  // Transmission line implementation
+  static const QMap<QString, TransmissionLineType> tlMap {
+      {"Ideal",      TransmissionLineType::Ideal},
+      {"Microstrip", TransmissionLineType::MLIN},
+      {"Stripline",  TransmissionLineType::SLIN}
+  };
+
+  const QString tlKey = TL_Implementation_Combo->currentText();
+  if (tlMap.contains(tlKey)) {
+    specs.TL_implementation = tlMap.value(tlKey);
+  }
+  ////////////////////////////////////////////////////////////////////////////
+
   return specs;
 }
 

@@ -140,6 +140,9 @@ struct MatchingNetworkDesignParameters {
   QList<double> freq;
   QList<std::complex<double>> ZL_data;  // Impedance vs freq. This is will need to be fixed
   QString sim_path; // Path to the S-parameter file that models the load. Required for the simulation engine
+
+  // Substrate Settings
+  MS_Substrate MS_Subs;
 };
 
 // Contains all the information for the matching network design problem
