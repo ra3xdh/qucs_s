@@ -380,7 +380,7 @@ void CanonicalFilter::SynthesizeHPF() {
     posx += 50;
   }
   // Add Term 2
-  double k = Specification.ZL;
+  double k = Specification.ZS;
   Specification.isCLC ? k /= gi[N + 1] : k *= gi[N + 1];
 
   ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
@@ -494,7 +494,7 @@ void CanonicalFilter::SynthesizeBPF() {
     posx += 100;
   }
   // Add Term 2
-  double k = Specification.ZL;
+  double k = Specification.ZS;
   Specification.isCLC ? k /= gi[N + 1] : k *= gi[N + 1];
 
   ComponentInfo TermSpar2(
@@ -639,7 +639,7 @@ void CanonicalFilter::SynthesizeBSF() {
     posx += 100;
   }
   // Add Term 2
-  double k = Specification.ZL;
+  double k = Specification.ZS;
   Specification.isCLC ? k /= gi[N + 1] : k *= gi[N + 1];
 
   ComponentInfo TermSpar2(
