@@ -125,57 +125,169 @@ void MultisectionQuarterWave::designChebyshev(std::vector<double> &Zs) {
 }
 
 void MultisectionQuarterWave::synthesize() {
-    // Simple schematic: Port -> quarter-wave TL -> ... -> Load
-    ComponentInfo TermSrc(
-        QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-    TermSrc.val["Z"] = num2str(Specs.Z0, Resistance);
-    Schematic.appendComponent(TermSrc);
 
-    // Calculate impedance weighting
-    double lambda4 = SPEED_OF_LIGHT / (4 * f_match);
-    std::vector<double> Zi;
-    if (Specs.Weigthing == QString("Chebyshev")) {
-        designChebyshev(Zi);
-    } else {
-        designBinomial(Zi);
-    }
+         // Calculate impedance weighting
+  double lambda4 = SPEED_OF_LIGHT / (4 * f_match);
+  std::vector<double> Zi;
+  if (Specs.Weigthing == QString("Chebyshev")) {
+    designChebyshev(Zi);
+  } else {
+    designBinomial(Zi);
+  }
 
-    int xpos = 50;
-    int ypos = 0;
-    QString prevID = TermSrc.ID;
-
-    // Place transmission line sections
-    for (size_t i = 0; i < Zi.size(); i++) {
-        ComponentInfo TL(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, -90, xpos, ypos);
-        TL.val["Z0"] = num2str(Zi[i], Resistance);
-        TL.val["Length"] = ConvertLengthFromM("mm", lambda4);
-        Schematic.appendComponent(TL);
-
-        // wire previous to this
-        if (i == 0) {
-          // The previous component is the port
-          Schematic.appendWire(prevID, 0, TL.ID, 1);
-        } else {
-          // The previous component is another TLIN
-          Schematic.appendWire(prevID, 0, TL.ID, 1);
-        }
-
-        prevID = TL.ID;
-        xpos += 50;
-    }
-
-    ComponentInfo Zload(QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, xpos, 50);
-    Zload.val["Z"] = num2str(Specs.ZL.real(), Resistance);
-    Schematic.appendComponent(Zload);
-
-           // GND for load
-    ComponentInfo GND_ZL;
-    GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]),
-                     GND, 0, xpos, 100);
-    Schematic.appendComponent(GND_ZL);
-
-    // Connect last TL to load
-    Schematic.appendWire(Zload.ID, 1, prevID, 0);
-    Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
+         // Dispatch to appropriate implementation
+  if (Specs.TL_implementation == TransmissionLineType::Ideal) {
+    synthesizeIdealTL(Zi, lambda4);
+  } else if (Specs.TL_implementation == TransmissionLineType::MLIN) {
+    synthesizeMicrostripTL(Zi, lambda4);
+  }
 }
 
+void MultisectionQuarterWave::synthesizeIdealTL(const std::vector<double>& Zi, double lambda4) {
+  // Create source termination
+  ComponentInfo TermSrc(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  TermSrc.val["Z"] = num2str(Specs.Z0, Resistance);
+  Schematic.appendComponent(TermSrc);
+
+  ComponentInfo TL;
+  int xpos = 50;
+  QString PreviousComponent = TermSrc.ID;
+
+  // Place transmission line sections
+  for (size_t i = 0; i < Zi.size(); i++) {
+    // Ideal transmission line
+    TL.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+                 TransmissionLine, -90, xpos, 0);
+    TL.val["Z0"] = num2str(Zi[i], Resistance);
+    TL.val["Length"] = ConvertLengthFromM("mm", lambda4);
+    Schematic.appendComponent(TL);
+
+           // Wire previous to this
+    if (i == 0) {
+      // The previous component is the port
+      Schematic.appendWire(PreviousComponent, 0, TL.ID, 1);
+    } else {
+      // The previous component is another TLIN
+      Schematic.appendWire(PreviousComponent, 0, TL.ID, 1);
+    }
+
+    xpos += 50;
+    PreviousComponent = TL.ID;
+  }
+
+         // Add load components
+  ComponentInfo Zload(QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]),
+                      ComplexImpedance, 0, xpos, 50);
+  Zload.val["Z"] = num2str(Specs.ZL.real(), Resistance);
+  Schematic.appendComponent(Zload);
+
+         // GND for load
+  ComponentInfo GND_ZL;
+  GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]),
+                   GND, 0, xpos, 100);
+  Schematic.appendComponent(GND_ZL);
+
+         // Connect last TL to load
+  Schematic.appendWire(Zload.ID, 1, PreviousComponent, 0);
+  Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
+}
+
+
+void MultisectionQuarterWave::synthesizeMicrostripTL(const std::vector<double>& Zi, double lambda4) {
+  // Create source termination
+  ComponentInfo TermSrc(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  TermSrc.val["Z"] = num2str(Specs.Z0, Resistance);
+  Schematic.appendComponent(TermSrc);
+
+  ComponentInfo MStep, TL;
+  int xpos = 50;
+  QString PreviousComponent = TermSrc.ID;
+
+  // Place transmission line sections
+  for (size_t i = 0; i < Zi.size(); i++) {
+    // Microstrip transmission line
+
+           // Check that the previous component is not a term. In that case, it was a microstrip line
+           // of different width and a step needs to be added to model the transition
+    if (!PreviousComponent.startsWith("T")) {
+      xpos += 10; // Add some extra room
+
+      MStep.ID = QString("MSTEP%1").arg(++Schematic.NumberComponents[MicrostripStep]);
+      MStep.Type = MicrostripStep;
+      MStep.Rotation = 0;
+      MStep.Coordinates = {static_cast<double>(xpos), 0};
+
+             // Add its properties
+      MStep.val["W1"] = TL.val["Width"]; // Last microstrip line props are still in TL variable
+      // MStep.val["W2"] = <This needs to be calculated later>
+
+             // Substrate-related parameters
+      MStep.val["er"] = num2str(Specs.MS_Subs.er);
+      MStep.val["h"] = num2str(Specs.MS_Subs.height);
+      MStep.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
+      MStep.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
+      MStep.val["tand"] = num2str(Specs.MS_Subs.tand);
+
+      xpos += 60; // Advance the x-axis drawing index
+    }
+
+           // Microstrip line
+           // Synthesize MS parameters
+    MicrostripClass MSL;
+    MSL.Substrate = Specs.MS_Subs;
+    MSL.synthesizeMicrostrip(Zi[i], lambda4*1e3, f_match);
+
+    double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
+    double MS_Length = MSL.Results.length*1e-3;
+
+           // Instantiate component
+    TL.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+                 MicrostripLine, 90, xpos, 0);
+    TL.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+    TL.val["Length"] = ConvertLengthFromM("mm", MS_Length);
+
+           // Substrate-related parameters
+    TL.val["er"] = num2str(Specs.MS_Subs.er);
+    TL.val["h"] = num2str(Specs.MS_Subs.height);
+    TL.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
+    TL.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
+    TL.val["tand"] = num2str(Specs.MS_Subs.tand);
+    Schematic.appendComponent(TL);
+    xpos += 60;
+
+    if (!PreviousComponent.startsWith("T")) {
+      // At this point, the width of the microstrip line is calculated, so the second width
+      // of the step can be assigned. At this point the component is also added to the
+      // schematic and routed
+      MStep.val["W2"] = TL.val["Width"];
+      Schematic.appendComponent(MStep);
+
+             // Connections
+      Schematic.appendWire(PreviousComponent, 1, MStep.ID, 0);
+      Schematic.appendWire(MStep.ID, 1, TL.ID, 0);
+    } else {
+      // The microstrip line is connected to the port
+      Schematic.appendWire(PreviousComponent, 1, TL.ID, 0);
+    }
+
+    PreviousComponent = TL.ID;
+  }
+
+         // Add load components
+  ComponentInfo Zload(QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]),
+                      ComplexImpedance, 0, xpos, 50);
+  Zload.val["Z"] = num2str(Specs.ZL.real(), Resistance);
+  Schematic.appendComponent(Zload);
+
+         // GND for load
+  ComponentInfo GND_ZL;
+  GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]),
+                   GND, 0, xpos, 100);
+  Schematic.appendComponent(GND_ZL);
+
+         // Connect last TL to load
+  Schematic.appendWire(Zload.ID, 1, PreviousComponent, 1);
+  Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
+}

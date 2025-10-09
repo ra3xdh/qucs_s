@@ -22,6 +22,7 @@
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 #include "../../Misc/general.h"
+#include "../TransmissionLineSynthesis/Microstrip.h"
 #include <vector>
 #include <cmath>
 
@@ -41,6 +42,9 @@ private:
     int BinomialCoeff(int n, int k);
     void designBinomial(std::vector<double> &Zs);
     void designChebyshev(std::vector<double> &Zs);
+
+    void synthesizeIdealTL(const std::vector<double>& Zi, double lambda4);
+    void synthesizeMicrostripTL(const std::vector<double>& Zi, double lambda4);
 
     double f_match;
 };
