@@ -106,7 +106,12 @@ jobs:
           cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
           cmake --build ${{github.workspace}}/build --target install
 
-      
+    - name: 'Run Tests'
+      run: |
+          sudo apt-get install -y xvfb
+          cd ${{github.workspace}}/build
+          xvfb-run -a ctest --output-on-failure --verbose
+
     - name: 'Install linuxdeploy'
       run: |
           wget -q --tries=3 --wait=5 \

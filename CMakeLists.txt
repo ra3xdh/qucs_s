@@ -99,6 +99,9 @@ else()
     message("Qucsator RF submodule not found. Please update submodules")
 endif()
 
+# Add test suite
+add_subdirectory(tests)
+
 IF (UPDATE_TRANSLATIONS)
   file(GLOB_RECURSE FILES_TO_TRANSLATE "*.cpp" "*.h" "*.ui")
 ENDIF (UPDATE_TRANSLATIONS)
