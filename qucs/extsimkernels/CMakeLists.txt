@@ -83,5 +83,13 @@ if(WITH_NGSPICE_SHARED AND NGSPICE_LIBRARY)
     message(STATUS "Linking extsimkernels with ngspice shared library: ${NGSPICE_LIBRARY}")
 endif()
 
+# Add test for ngspice shared library if enabled
+if(WITH_NGSPICE_SHARED AND NGSPICE_LIBRARY)
+    add_executable(test_ngspice_shared test_ngspice_shared.cpp)
+    target_link_libraries(test_ngspice_shared PRIVATE extsimkernels Qt6::Core)
+    add_test(NAME NgspiceSharedTest COMMAND test_ngspice_shared)
+    message(STATUS "NgspiceShared test enabled")
+endif()
+
 ADD_SUBDIRECTORY( xspice )
 
