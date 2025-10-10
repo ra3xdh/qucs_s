@@ -20,6 +20,7 @@
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
+#include "../TransmissionLineSynthesis/Microstrip.h"
 #include "../../Misc/general.h"
 
 class SingleStub : public Network {
@@ -33,7 +34,9 @@ private:
   struct MatchingNetworkDesignParameters Specs;
   double f_match;
 
-  void buildMatchingNetwork(double d, double lstub);
+  void buildMatchingNetwork_IdealTL(double d, double lstub);
+  void buildMatchingNetwork_Microstrip(double d, double lstub);
+
   double normalizePhase(double phase);
   double calculateSusceptance(double t, double RL, double XL, double Z0);
   double calculateT(double RL, double XL, double Z0);
