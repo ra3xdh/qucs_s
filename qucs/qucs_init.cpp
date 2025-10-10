@@ -560,9 +560,9 @@ void QucsApp::initActions()
   callPwrComb->setWhatsThis(tr("Power combining\n\nStarts power combining calculation program"));
   connect(callPwrComb, SIGNAL(triggered()), SLOT(slotCallPwrComb()));
 
-  callSPAR_Viewer = new QAction(tr("S-parameter Viewer"), this);
-  callSPAR_Viewer->setStatusTip(tr("Starts S-parameter viewer"));
-  callSPAR_Viewer->setWhatsThis(tr("S-parameter Viewer\n\nStarts S-parameter viewer"));
+  callSPAR_Viewer = new QAction(tr("S-parameter Viewer && RF Circuit Synthesis"), this);
+  callSPAR_Viewer->setStatusTip(tr("Starts the S-parameter Viewer && RF Circuit Synthesis Tool"));
+  callSPAR_Viewer->setWhatsThis(tr("S-parameter Viewer && RF Circuit Synthesis\n\nStarts the S-parameter Viewer && RF Circuit Synthesis Tool"));
   connect(callSPAR_Viewer, SIGNAL(triggered()), SLOT(slotCallSPAR_Viewer()));
 
   callConverter = new QAction(tr("Data files converter"), this);
