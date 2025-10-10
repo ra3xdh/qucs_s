@@ -35,6 +35,9 @@ public:
 
 private:
   struct FilterSpecifications Specification;
+
+  void buildFilter_Microstrip(const std::deque<double>& gi);
+  void buildFilter_IdealTL(const std::deque<double>& gi);
 };
 
 #endif // STEPPEDIMPEDANCEFILTER_H
