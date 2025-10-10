@@ -32,5 +32,12 @@ public:
 private:
   struct MatchingNetworkDesignParameters Specs;
   double f_match;
+
+  void buildMatchingNetwork(double d, double lstub);
+  double normalizePhase(double phase);
+  double calculateSusceptance(double t, double RL, double XL, double Z0);
+  double calculateT(double RL, double XL, double Z0);
+  double calculateLineDistance(double t, double lambda);
+  double calculateStubLength(double B, double Z0, double lambda);
 };
 #endif // SINGLESTUB_H
