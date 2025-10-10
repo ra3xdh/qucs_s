@@ -107,7 +107,7 @@ void ExternSimDialog::slotSetSimulator()
         a_xyce->setParallel(false);
         connect(a_ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(a_ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-        connect(a_ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
+        connect(a_ngspice,SIGNAL(errors(SimulatorError)),this,SLOT(slotNgspiceStartError(SimulatorError)));
         QString cmd;
         if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) { // this check is related to MacOS
             cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
@@ -126,7 +126,7 @@ void ExternSimDialog::slotSetSimulator()
         a_xyce->setParallel(false);
         connect(a_xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(a_xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-        connect(a_xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
+        connect(a_xyce,SIGNAL(errors(SimulatorError)),this,SLOT(slotNgspiceStartError(SimulatorError)));
         a_xyce->setSimulatorParameters(_settings::Get().item<QString>("XyceParams"));
     }
         break;
@@ -138,7 +138,7 @@ void ExternSimDialog::slotSetSimulator()
 //#endif
 //        connect(a_xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
 //        connect(a_xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-//        connect(a_xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
+//        connect(a_xyce,SIGNAL(errors(SimulatorError)),this,SLOT(slotNgspiceStartError(SimulatorError)));
 //        connect(buttonSimulate,SIGNAL(clicked()),a_xyce,SLOT(slotSimulate()));
 //        a_xyce->setSimulatorParameters(QucsSettings.SimParameters);
 //    }
@@ -147,7 +147,7 @@ void ExternSimDialog::slotSetSimulator()
         a_xyce->setParallel(false);
         connect(a_ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()),Qt::UniqueConnection);
         connect(a_ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()),Qt::UniqueConnection);
-        connect(a_ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
+        connect(a_ngspice,SIGNAL(errors(SimulatorError)),this,SLOT(slotNgspiceStartError(SimulatorError)),Qt::UniqueConnection);
         a_ngspice->setSimulatorCmd(QucsSettings.SpiceOpusExecutable);
         a_ngspice->setSimulatorParameters(_settings::Get().item<QString>("NgspiceParams"));
     }
@@ -243,15 +243,24 @@ void ExternSimDialog::slotNgspiceStarted()
                 this->style()->standardIcon(QStyle::SP_MessageBoxInformation));
 }
 
-void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
+void ExternSimDialog::slotNgspiceStartError(SimulatorError err)
 {
     QString msg;
     switch (err) {
-    case QProcess::FailedToStart:
+    case SimulatorError::ProcessFailedToStart:
         msg = tr("Failed to start simulator!");
         break;
-    case QProcess::Crashed:
+    case SimulatorError::ProcessCrashed:
         msg = tr("Simulator crashed!");
+        break;
+    case SimulatorError::SharedLibraryNotInitialized:
+        msg = tr("Ngspice shared library not initialized!");
+        break;
+    case SimulatorError::SharedLibraryFileOpenError:
+        msg = tr("Failed to open netlist file!");
+        break;
+    case SimulatorError::SharedLibraryCircuitLoadError:
+        msg = tr("Failed to load circuit into ngspice!");
         break;
     default:
         msg = tr("Simulator error!");

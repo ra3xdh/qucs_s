@@ -22,6 +22,7 @@
 
 #include "ngspice.h"
 #include "xyce.h"
+#include "abstractspicekernel.h"
 
 class Schematic;
 
@@ -77,7 +78,7 @@ private slots:
     void slotProcessOutput();
     //void slotProcessXyceOutput();
     void slotNgspiceStarted();
-    void slotNgspiceStartError(QProcess::ProcessError err);
+    void slotNgspiceStartError(SimulatorError err);
     void slotStop();
     void slotSetSimulator();
     void slotExit();

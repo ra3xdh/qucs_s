@@ -25,6 +25,14 @@
 #include "schematic.h"
 #include "abstractspicekernel.h"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#if NGSPICE_SHARED
+#include "ngspice_shared.h"
+#endif
+
 /*!
   \file ngspice.h
   \brief Declaration of the Ngspice class
@@ -39,6 +47,14 @@ class Ngspice : public AbstractSpiceKernel
 
 private:
     QString a_spinit_name;
+
+#if NGSPICE_SHARED
+    NgspiceShared *a_ngspice_shared;
+    void simulateShared();
+    void onSharedOutputReceived(const QString &text);
+    void onSharedStatusUpdate(const QString &status, int percent);
+    void onSharedSimulationFinished(int exitCode);
+#endif
 
     bool checkNodeNames(QStringList &incompat);
     static QString collectSpiceinit(Schematic* sch);

@@ -8,3 +8,9 @@
 #define WITH_SPICE "@WITH_SPICE@"
 
 #define GIT "@GIT@"
+
+#define WASM_BUILD "@WASM_BUILD"
+
+/* Simulator backend configuration */
+#define NGSPICE_SHARED @NGSPICE_SHARED@
+#define EXTERNAL_SIMULATORS @EXTERNAL_SIMULATORS@

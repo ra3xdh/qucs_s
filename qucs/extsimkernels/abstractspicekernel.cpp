@@ -52,7 +52,9 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *schematic, QObject *parent) 
     a_simulator_cmd(),
     a_simulator_parameters(),
     a_output(),
+#if EXTERNAL_SIMULATORS
     a_simProcess(new QProcess(this)),
+#endif
     a_console(nullptr),
     a_sims(),
     a_vars(),
@@ -78,10 +80,24 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *schematic, QObject *parent) 
         dir.mkpath(a_workdir);
     }
 
+#if EXTERNAL_SIMULATORS
     a_simProcess->setProcessChannelMode(QProcess::MergedChannels);
     connect(a_simProcess,SIGNAL(finished(int)),this,SLOT(slotFinished()));
     connect(a_simProcess,SIGNAL(readyRead()),this,SLOT(slotProcessOutput()));
-    connect(a_simProcess,SIGNAL(errorOccurred(QProcess::ProcessError)),this,SLOT(slotErrors(QProcess::ProcessError)));
+    connect(a_simProcess, &QProcess::errorOccurred, this, [this](QProcess::ProcessError err) {
+        // Map QProcess errors to our unified error codes
+        SimulatorError errorCode;
+        switch(err) {
+            case QProcess::FailedToStart: errorCode = SimulatorError::ProcessFailedToStart; break;
+            case QProcess::Crashed: errorCode = SimulatorError::ProcessCrashed; break;
+            case QProcess::Timedout: errorCode = SimulatorError::ProcessTimedOut; break;
+            case QProcess::WriteError: errorCode = SimulatorError::ProcessWriteError; break;
+            case QProcess::ReadError: errorCode = SimulatorError::ProcessReadError; break;
+            default: errorCode = SimulatorError::ProcessUnknownError; break;
+        }
+        this->slotErrors(errorCode);
+    });
+#endif
     connect(this,SIGNAL(destroyed()),this,SLOT(killThemAll()));
 
 }
@@ -94,9 +110,11 @@ AbstractSpiceKernel::~AbstractSpiceKernel()
 
 void AbstractSpiceKernel::killThemAll()
 {
+#if EXTERNAL_SIMULATORS
     if (a_simProcess->state()!=QProcess::NotRunning) {
         a_simProcess->kill();
     }
+#endif
 }
 
 /*!
@@ -280,7 +298,7 @@ void AbstractSpiceKernel::createSubNetlist(QTextStream &stream, bool lib)
     QList< QPair<int,QString> > ports;
     if(!prepareSpiceNetlist(stream,true)) {
         emit finished();
-        emit errors(QProcess::FailedToStart);
+        emit errors(SimulatorError::ProcessFailedToStart);
         return;
     } // Unable to perform spice simulation
     for(Component *pc : a_schematic->a_DocComps) {
@@ -1512,9 +1530,9 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list, const QStrin
 
 /*!
  * \brief AbstractSpiceKernel::slotErrors Simulator errors handler
- * \param err
+ * \param err Error code from unified SimulatorError enum
  */
-void AbstractSpiceKernel::slotErrors(QProcess::ProcessError err)
+void AbstractSpiceKernel::slotErrors(SimulatorError err)
 {
     emit errors(err);
 }
@@ -1525,7 +1543,9 @@ void AbstractSpiceKernel::slotErrors(QProcess::ProcessError err)
 void AbstractSpiceKernel::slotFinished()
 {
     //a_output.clear();
+#if EXTERNAL_SIMULATORS
     a_output += a_simProcess->readAllStandardOutput();
+#endif
     emit finished();
     emit progress(100);
 }
@@ -1593,7 +1613,13 @@ void AbstractSpiceKernel::SaveNetlist(QString)
 
 bool AbstractSpiceKernel::waitEndOfSimulation()
 {
+#if EXTERNAL_SIMULATORS
     return a_simProcess->waitForFinished(10000);
+#else
+    // For shared library mode, ngSpice_Command() runs synchronously
+    // Results are already available when slotSimulate() returns
+    return true;
+#endif
 }
 
 QString AbstractSpiceKernel::collectSpiceLibs(Schematic* sch)
