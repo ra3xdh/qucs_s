@@ -184,6 +184,34 @@ public:
         int a_style;
     };
 
+    struct Text
+    {
+        Text(
+                int x,
+                int y,
+                const QString& text,
+                const QString& color,
+                double size,
+                double cos,
+                double sin) :
+            a_x(x),
+            a_y(y),
+            a_text(text),
+            a_color(color),
+            a_size(size),
+            a_cos(cos),
+            a_sin(sin)
+        {}
+
+        int a_x;
+        int a_y;
+        QString a_text;
+        QString a_color;
+        double a_size;
+        double a_cos;
+        double a_sin;
+    };
+
     XmlComponent(
             const QString& name,
             const QString& schematicId,
@@ -201,7 +229,8 @@ public:
             const QList<Parameter>& parameters,
             const QList<PortSym>& portSyms,
             const QList<Line>& lines,
-            const QList<Arc>& arcs);
+            const QList<Arc>& arcs,
+            const QList<Text>& texts);
     ~XmlComponent() {}
 
     Component* newOne();
@@ -236,6 +265,7 @@ private:
     QList<PortSym> a_portSyms;
     QList<Line> a_lines;
     QList<Arc> a_arcs;
+    QList<Text> a_texts;
 };
 
 #endif // XML_COMPONENT_H

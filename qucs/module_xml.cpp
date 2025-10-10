@@ -285,6 +285,24 @@ void Module::registerXmlComponents(const QString& componentPath)
                 arcs << arc;
             }
 
+            QList<XmlComponent::Text> texts;
+
+            auto compTexts(component->Symbols().Symbol().Text());
+            for (auto it(compTexts.begin()); it != compTexts.end(); ++it)
+            {
+                XmlComponent::Text text(
+                        it->x().get(),
+                        it->y().get(),
+                        QString::fromUtf8(it->text().get()),
+                        QString::fromUtf8(it->color()),
+                        it->size(),
+                        it->cos(),
+                        it->sin()
+                );
+
+                texts << text;
+            }
+
             QString nspiceNetlist;
             QString nspiceNetlistInclude;
             QString cdlNetlist;
@@ -363,7 +381,8 @@ void Module::registerXmlComponents(const QString& componentPath)
                         parameters,
                         portSyms,
                         lines,
-                        arcs
+                        arcs,
+                        texts
                 ));
 
                 registerXmlComponent(

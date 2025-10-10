@@ -39,7 +39,8 @@ XmlComponent::XmlComponent(
         const QList<Parameter>& parameters,
         const QList<PortSym>& portSyms,
         const QList<Line>& lines,
-        const QList<Arc>& arcs) :
+        const QList<Arc>& arcs,
+        const QList<Text>& texts) :
     a_name(name),
     a_schematicId(schematicId),
     a_description(description),
@@ -54,7 +55,8 @@ XmlComponent::XmlComponent(
     a_parameters(parameters),
     a_portSyms(portSyms),
     a_lines(lines),
-    a_arcs(arcs)
+    a_arcs(arcs),
+    a_texts(texts)
 {
     Description = QObject::tr(description.toUtf8().constData());
     Model = defaultModel;
@@ -144,7 +146,8 @@ Component* XmlComponent::newOne()
             a_parameters,
             a_portSyms,
             a_lines,
-            a_arcs);
+            a_arcs,
+            a_texts);
 }
 
 Element* XmlComponent::getInfo(QString& Name, char* &BitmapFile, bool getNewOne)
@@ -222,6 +225,21 @@ void XmlComponent::createSymbol()
             arc.a_angle,
             arc.a_len,
             QPen(misc::ColorFromString(arc.a_color), arc.a_width, static_cast<Qt::PenStyle>(arc.a_style))));
+    }
+
+    foreach (const Text& text, a_texts)
+    {
+        Texts.append(new ::Text(
+            text.a_x,
+            text.a_y,
+            text.a_text,
+            misc::ColorFromString(text.a_color),
+            text.a_size,
+            text.a_cos,
+            text.a_sin));
+
+        x1 = text.a_x < x1 ? text.a_x : x1;
+        y1 = text.a_y < y1 ? text.a_y : y1;
     }
 
     foreach (const PortSym& portSym, a_portSyms)
