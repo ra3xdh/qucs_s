@@ -67,8 +67,8 @@ public:
   /** Rotates label around its root */
   bool rotate() noexcept override;
 
-  /** Same as rotate() */
-  bool rotate(int /*rcx*/, int /*rcy*/) noexcept override { return rotate(); }
+  /** Rotates label around a given center (rcx, rcy) */
+  bool rotate(int /*rcx*/, int /*rcy*/) noexcept override;
 
   /** Mirrors label vertically relative to its root */
   bool mirrorX() noexcept override;
