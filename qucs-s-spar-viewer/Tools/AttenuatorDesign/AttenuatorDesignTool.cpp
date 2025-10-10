@@ -45,7 +45,7 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent): QWidget(parent) {
   TL_Implementation_Combo = new QComboBox();
   TL_Implementation_Combo->addItem("Ideal");
   TL_Implementation_Combo->addItem("Microstrip");
-  TL_Implementation_Combo->addItem("Stripline");
+ // TL_Implementation_Combo->addItem("Stripline");
   AttenuatorDesignLayout->addWidget(TL_Implementation_Label, layout_row, 0);
   AttenuatorDesignLayout->addWidget(TL_Implementation_Combo, layout_row, 1);
 

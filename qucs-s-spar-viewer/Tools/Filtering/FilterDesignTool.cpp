@@ -30,7 +30,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   FilterImplementationCombo->addItem("Stepped impedance");
   FilterImplementationCombo->addItem("Quarter-wavelength");
   FilterImplementationCombo->addItem("Capacitively-coupled shunt resonators");
-  FilterImplementationCombo->addItem("Coupled line bandpass");
+  FilterImplementationCombo->addItem("Side-coupled");
   FilterImplementationCombo->addItem("End-coupled");
   FilterImplementationCombo->addItem("Semilumped");
   //FilterImplementationCombo->addItem("Coupled line SIR with harmonic rejection");
@@ -54,7 +54,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent): QWidget(parent) {
   TL_Implementation_Combo = new QComboBox();
   TL_Implementation_Combo->addItem("Ideal");
   TL_Implementation_Combo->addItem("Microstrip");
-  TL_Implementation_Combo->addItem("Stripline");
+  //TL_Implementation_Combo->addItem("Stripline");
   FilterDesignLayout->addWidget(TL_Implementation_Label, layout_row, 0);
   FilterDesignLayout->addWidget(TL_Implementation_Combo, layout_row, 1);
 
