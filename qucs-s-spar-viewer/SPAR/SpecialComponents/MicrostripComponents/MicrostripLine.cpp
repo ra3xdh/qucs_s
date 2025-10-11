@@ -18,27 +18,27 @@
 #include "./../../SParameterCalculator.h"
 
 void SParameterCalculator::addMicrostripLineToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+    vector<vector<Complex>> &Y, const Component_SPAR &comp) {
   // Extract microstrip parameters
   int node1 = comp.nodes[0];
   int node2 = comp.nodes[1];
 
-  double W    = comp.value.value("Width");     // Width in meters
-  double L    = comp.value.value("Length");    // Length in meters
-  double h    = comp.value.value("h");         // Substrate height in meters
-  double er   = comp.value.value("er");        // Relative permittivity
-  double t    = comp.value.value("th", 0.0);   // Conductor thickness (optional)
+  double W = comp.value.value("Width");        // Width in meters
+  double L = comp.value.value("Length");       // Length in meters
+  double h = comp.value.value("h");            // Substrate height in meters
+  double er = comp.value.value("er");          // Relative permittivity
+  double t = comp.value.value("th", 0.0);      // Conductor thickness (optional)
   double tand = comp.value.value("tand", 0.0); // Loss tangent (optional)
   double rho = comp.value.value("rho", 1e-10); // Surface Resistivity (optional)
 
   // Calculate propagation characteristics
   double alpha, beta, zl, ereff;
-  calcMicrostripPropagation(W, L, h, er, t, tand, rho, frequency, alpha, beta,
-                            zl, ereff);
+  calcMicrostripPropagation(W, h, er, t, tand, rho, frequency, alpha, beta, zl,
+                            ereff);
 
-  double z0 = 50.0;    // System impedance - make sure this matches your system
-  double z  = zl / z0; // normalized characteristic impedance
-  double y  = 1.0 / z; // normalized admittance
+  double z0 = 50.0;   // System impedance - make sure this matches your system
+  double z = zl / z0; // normalized characteristic impedance
+  double y = 1.0 / z; // normalized admittance
 
   Complex gamma(alpha, beta);
   Complex gl = gamma * L;
@@ -66,8 +66,8 @@ void SParameterCalculator::addMicrostripLineToAdmittance(
 
   // Calculate S-parameters as in reference
   // These results may be used to check with qucsator-RF
-  Complex s11 = (z - y) * sinh_gl / n;
-  Complex s21 = 2.0 / n;
+  // Complex s11 = (z - y) * sinh_gl / n;
+  // Complex s21 = 2.0 / n;
 
   // Y-parameters for lossy transmission line:
   // Y11 = Y22 = (1/Z0) * coth(gamma*L)
@@ -97,8 +97,8 @@ void SParameterCalculator::addMicrostripLineToAdmittance(
 }
 
 void SParameterCalculator::calcMicrostripPropagation(
-    double W, double L, double h, double er, double t, double tand, double rho,
-    double frequency, double& alpha, double& beta, double& zl, double& ereff) {
+    double W, double h, double er, double t, double tand, double rho,
+    double frequency, double &alpha, double &beta, double &zl, double &ereff) {
   // Local variables
   double ac, ad;
   double ZlEff, ErEff, WEff, ZlEffFreq, ErEffFreq;
@@ -119,21 +119,21 @@ void SParameterCalculator::calcMicrostripPropagation(
               "Hammerstad", ac, ad);
 
   // Set output values
-  zl    = ZlEffFreq;
+  zl = ZlEffFreq;
   ereff = ErEffFreq;
   alpha = ac + ad;
-  beta  = sqrt(ErEffFreq) * 2 * M_PI * frequency / C0;
+  beta = sqrt(ErEffFreq) * 2 * M_PI * frequency / C0;
 }
 
 void SParameterCalculator::analyseQuasiStatic(double W, double h, double t,
-                                              double er, const string& Model,
-                                              double& ZlEff, double& ErEff,
-                                              double& WEff) {
+                                              double er, const string &Model,
+                                              double &ZlEff, double &ErEff,
+                                              double &WEff) {
   double z, e;
 
   // Default values
-  e    = er;
-  z    = Z0;
+  e = er;
+  z = Z0;
   WEff = W;
 
   if (Model == "Hammerstad") {
@@ -150,9 +150,9 @@ void SParameterCalculator::analyseQuasiStatic(double W, double h, double t,
       du1 = 0;
     }
 
-    du   = du1 * (1 + 1.0 / cosh(sqrt(er - 1))) / 2;
-    u1   = u + du1;
-    ur   = u + du;
+    du = du1 * (1 + 1.0 / cosh(sqrt(er - 1))) / 2;
+    u1 = u + du1;
+    ur = u + du;
     WEff = ur * h;
 
     // Compute impedances for homogeneous medium
@@ -175,7 +175,7 @@ void SParameterCalculator::analyseQuasiStatic(double W, double h, double t,
 
 void SParameterCalculator::analyseDispersion(
     double W, double h, double er, double ZlEff, double ErEff, double frequency,
-    const string& Model, double& ZlEffFreq, double& ErEffFreq) {
+    const string &Model, double &ZlEffFreq, double &ErEffFreq) {
   double e, z;
 
   // Default values
@@ -190,7 +190,7 @@ void SParameterCalculator::analyseDispersion(
     Kirschning_er(u, fn, er, ErEff, e);
 
     // Dispersion of characteristic impedance
-    Kirschning_zl(u, fn, er, ErEff, e, ZlEff, r17, z);
+    Kirschning_zl(ErEff, e, ZlEff, r17, z);
   }
   // Add other dispersion models as needed
 
@@ -202,8 +202,8 @@ void SParameterCalculator::analyseLoss(double W, double t, double er,
                                        double rho, double D, double tand,
                                        double ZlEff1, double ZlEff2,
                                        double ErEff, double frequency,
-                                       const string& Model, double& ac,
-                                       double& ad) {
+                                       const string &Model, double &ac,
+                                       double &ad) {
 
   ac = ad = 0;
 
@@ -232,41 +232,40 @@ void SParameterCalculator::analyseLoss(double W, double t, double er,
 }
 
 // Helper function implementations (simplified versions)
-void SParameterCalculator::Hammerstad_ab(double u, double er, double& a,
-                                         double& b) {
+void SParameterCalculator::Hammerstad_ab(double u, double er, double &a,
+                                         double &b) {
   a = 1 + log((pow(u, 4) + pow(u / 52, 2)) / (pow(u, 4) + 0.432)) / 49 +
       log(1 + pow(u / 18.1, 3)) / 18.7;
   b = 0.564 * pow((er - 0.9) / (er + 3), 0.053);
 }
 
 void SParameterCalculator::Hammerstad_er(double u, double er, double a,
-                                         double b, double& e) {
+                                         double b, double &e) {
   e = (er + 1) / 2 + (er - 1) / 2 * pow(1 + 10 / u, -a * b);
 }
 
-void SParameterCalculator::Hammerstad_zl(double u, double& zl) {
+void SParameterCalculator::Hammerstad_zl(double u, double &zl) {
   double fu = 6 + (2 * M_PI - 6) * exp(-pow(30.666 / u, 0.7528));
-  zl        = Z0 / 2 / M_PI * log(fu / u + sqrt(1 + pow(2 / u, 2)));
+  zl = Z0 / 2 / M_PI * log(fu / u + sqrt(1 + pow(2 / u, 2)));
 }
 
 void SParameterCalculator::Kirschning_er(double u, double fn, double er,
-                                         double ErEff, double& ErEffFreq) {
+                                         double ErEff, double &ErEffFreq) {
   double p, p1, p2, p3, p4;
   p1 = 0.27488 + (0.6315 + 0.525 / pow(1. + 0.0157 * fn, 20.)) * u -
        0.065683 * exp(-8.7513 * u);
-  p2        = 0.33622 * (1 - exp(-0.03442 * er));
-  p3        = 0.0363 * exp(-4.6 * u) * (1 - exp(-pow(fn / 38.7, 4.97)));
-  p4        = 1 + 2.751 * (1 - exp(-pow(er / 15.916, 8.)));
-  p         = p1 * p2 * pow((0.1844 + p3 * p4) * fn, 1.5763);
+  p2 = 0.33622 * (1 - exp(-0.03442 * er));
+  p3 = 0.0363 * exp(-4.6 * u) * (1 - exp(-pow(fn / 38.7, 4.97)));
+  p4 = 1 + 2.751 * (1 - exp(-pow(er / 15.916, 8.)));
+  p = p1 * p2 * pow((0.1844 + p3 * p4) * fn, 1.5763);
   ErEffFreq = er - (er - ErEff) / (1 + p);
 }
 
-void SParameterCalculator::Kirschning_zl(double u, double fn, double er,
-                                         double ErEff, double ErEffFreq,
-                                         double ZlEff, double& r17,
-                                         double& ZlEffFreq) {
+void SParameterCalculator::Kirschning_zl(double ErEff, double ErEffFreq,
+                                         double ZlEff, double &r17,
+                                         double &ZlEffFreq) {
   // Simplified implementation - full implementation would include all r1-r17
   // calculations
-  r17       = 1.0; // Default value for now
+  r17 = 1.0; // Default value for now
   ZlEffFreq = ZlEff * sqrt(ErEff / ErEffFreq);
 }

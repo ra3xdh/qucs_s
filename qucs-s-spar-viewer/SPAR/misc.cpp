@@ -17,7 +17,7 @@
 
 #include "SParameterCalculator.h"
 
-double SParameterCalculator::parseScaledValue(const QString& input,
+double SParameterCalculator::parseScaledValue(const QString &input,
                                               QString unit_type) {
   // Regex to split number from unit
   static const QRegularExpression regex(
@@ -78,4 +78,5 @@ double SParameterCalculator::parseScaledValue(const QString& input,
     double scale = scaleMap.value(prefix, 1.0);
     return value * scale;
   }
+  return -1;
 }

@@ -18,34 +18,32 @@
 #include "./../../SParameterCalculator.h"
 
 void SParameterCalculator::addMicrostripCoupledLinesToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+    vector<vector<Complex>> &Y, const Component_SPAR &comp) {
   // Extract microstrip coupled lines parameters
   int node1 = comp.nodes[0]; // Port 1 of line 1
   int node2 = comp.nodes[1]; // Port 2 of line 1
   int node3 = comp.nodes[2]; // Port 1 of line 2
   int node4 = comp.nodes[3]; // Port 2 of line 2
 
-  double W    = comp.value.value("W");       // Width of each line in meters
-  double S    = comp.value.value("S");       // Spacing between lines in meters
-  double L    = comp.value.value("L");       // Length in meters
-  double h    = comp.value.value("h");       // Substrate height in meters
-  double er   = comp.value.value("er");      // Relative permittivity
-  double t    = comp.value.value("th", 0.0); // Conductor thickness (optional)
+  double W = comp.value.value("W");       // Width of each line in meters
+  double S = comp.value.value("S");       // Spacing between lines in meters
+  double L = comp.value.value("L");       // Length in meters
+  double h = comp.value.value("h");       // Substrate height in meters
+  double er = comp.value.value("er");     // Relative permittivity
+  double t = comp.value.value("th", 0.0); // Conductor thickness (optional)
   double tand = comp.value.value("tand", 0.0); // Loss tangent (optional)
   double rho = comp.value.value("rho", 1e-10); // Surface Resistivity (optional)
 
   // Calculate propagation characteristics for coupled lines
   double alpha_e, beta_e, zl_e, ereff_e; // Even mode
   double alpha_o, beta_o, zl_o, ereff_o; // Odd mode
-  calcMicrostripCoupledPropagation(W, S, L, h, er, t, tand, rho, frequency,
+  calcMicrostripCoupledPropagation(W, S, h, er, t, tand, rho, frequency,
                                    alpha_e, beta_e, zl_e, ereff_e, alpha_o,
                                    beta_o, zl_o, ereff_o);
 
-  double z0 = 50.0; // System impedance
-
   // Even mode calculations
   Complex gamma_e(alpha_e, beta_e);
-  Complex gl_e      = gamma_e * L;
+  Complex gl_e = gamma_e * L;
   Complex sinh_gl_e = sinh(gl_e);
   Complex cosh_gl_e = cosh(gl_e);
 
@@ -56,7 +54,7 @@ void SParameterCalculator::addMicrostripCoupledLinesToAdmittance(
 
   // Odd mode calculations
   Complex gamma_o(alpha_o, beta_o);
-  Complex gl_o      = gamma_o * L;
+  Complex gl_o = gamma_o * L;
   Complex sinh_gl_o = sinh(gl_o);
   Complex cosh_gl_o = cosh(gl_o);
 
@@ -70,8 +68,8 @@ void SParameterCalculator::addMicrostripCoupledLinesToAdmittance(
   Complex y2 = -De - Do;
   Complex y3 = -De + Do;
 
-  De         = De * cosh_gl_e; // This is actually y1_e component
-  Do         = Do * cosh_gl_o; // This is actually y1_o component
+  De = De * cosh_gl_e; // This is actually y1_e component
+  Do = Do * cosh_gl_o; // This is actually y1_o component
   Complex y1 = De + Do;
   Complex y4 = De - Do;
 
@@ -136,10 +134,10 @@ void SParameterCalculator::addMicrostripCoupledLinesToAdmittance(
 }
 
 void SParameterCalculator::calcMicrostripCoupledPropagation(
-    double W, double S, double L, double h, double er, double t, double tand,
-    double rho, double frequency, double& alpha_e, double& beta_e, double& zl_e,
-    double& ereff_e, double& alpha_o, double& beta_o, double& zl_o,
-    double& ereff_o) {
+    double W, double S, double h, double er, double t, double tand, double rho,
+    double frequency, double &alpha_e, double &beta_e, double &zl_e,
+    double &ereff_e, double &alpha_o, double &beta_o, double &zl_o,
+    double &ereff_o) {
 
   double ZlEff_e, ErEff_e, ZlEffFreq_e, ErEffFreq_e;
   double ZlEff_o, ErEff_o, ZlEffFreq_o, ErEffFreq_o;
@@ -166,25 +164,25 @@ void SParameterCalculator::calcMicrostripCoupledPropagation(
               "Hammerstad", ac_o, ad_o);
 
   // Set output values
-  zl_e    = ZlEffFreq_e;
+  zl_e = ZlEffFreq_e;
   ereff_e = ErEffFreq_e;
   alpha_e = ac_e + ad_e;
-  beta_e  = sqrt(ErEffFreq_e) * 2 * M_PI * frequency / C0;
+  beta_e = sqrt(ErEffFreq_e) * 2 * M_PI * frequency / C0;
 
-  zl_o    = ZlEffFreq_o;
+  zl_o = ZlEffFreq_o;
   ereff_o = ErEffFreq_o;
   alpha_o = ac_o + ad_o;
-  beta_o  = sqrt(ErEffFreq_o) * 2 * M_PI * frequency / C0;
+  beta_o = sqrt(ErEffFreq_o) * 2 * M_PI * frequency / C0;
 }
 
 void SParameterCalculator::analyseQuasiStaticCoupled(
-    double W, double h, double s, double t, double er, const string& Model,
-    double& Zle, double& Zlo, double& ErEffe, double& ErEffo) {
+    double W, double h, double s, double t, double er, const string &Model,
+    double &Zle, double &Zlo, double &ErEffe, double &ErEffo) {
 
   // Initialize default values
   ErEffe = ErEffo = er;
-  Zlo             = 42.2;
-  Zle             = 55.7;
+  Zlo = 42.2;
+  Zle = 55.7;
 
   double u = W / h;
   double g = s / h;
@@ -197,9 +195,9 @@ void SParameterCalculator::analyseQuasiStaticCoupled(
     m = 0.2175 + pow(4.113 + pow(20.36 / g, 6.0), -0.251) +
         log(pow(g, 10.0) / (1.0 + pow(g / 13.8, 10.0))) / 323.0;
     Alpha = 0.5 * exp(-g);
-    Psi   = 1.0 + g / 1.45 + pow(g, 2.09) / 3.95;
-    Phi   = 0.8645 * pow(u, 0.172);
-    Pe    = Phi / (Psi * (Alpha * pow(u, m) + (1.0 - Alpha) * pow(u, -m)));
+    Psi = 1.0 + g / 1.45 + pow(g, 2.09) / 3.95;
+    Phi = 0.8645 * pow(u, 0.172);
+    Pe = Phi / (Psi * (Alpha * pow(u, m) + (1.0 - Alpha) * pow(u, -m)));
 
     // Modifying equations for odd mode
     n = (1.0 / 17.7 + exp(-6.424 - 0.76 * log(g) - pow(g / 0.23, 5.0))) *
@@ -207,16 +205,16 @@ void SParameterCalculator::analyseQuasiStaticCoupled(
     Beta = 0.2306 + log(pow(g, 10.0) / (1.0 + pow(g / 3.73, 10.0))) / 301.8 +
            log(1.0 + 0.646 * pow(g, 1.175)) / 5.3;
     Theta = 1.729 + 1.175 * log(1.0 + 0.627 / (g + 0.327 * pow(g, 2.17)));
-    Po    = Pe - Theta / Psi * exp(Beta * pow(u, -n) * log(u));
+    Po = Pe - Theta / Psi * exp(Beta * pow(u, -n) * log(u));
 
     // Further modifying equations
-    r   = 1.0 + 0.15 * (1.0 - exp(1.0 - pow(er - 1.0, 2.0) / 8.2) /
+    r = 1.0 + 0.15 * (1.0 - exp(1.0 - pow(er - 1.0, 2.0) / 8.2) /
                                 (1.0 + pow(g, -6.0)));
     fo1 = 1.0 - exp(-0.179 * pow(g, 0.15) -
                     0.328 * pow(g, r) / log(M_E + pow(g / 7.0, 2.8)));
-    q   = exp(-1.366 - g);
-    p   = exp(-0.745 * pow(g, 0.295)) / cosh(pow(g, 0.68));
-    fo  = fo1 * exp(p * log(u) + q * sin(M_PI * log10(u)));
+    q = exp(-1.366 - g);
+    p = exp(-0.745 * pow(g, 0.295)) / cosh(pow(g, 0.68));
+    fo = fo1 * exp(p * log(u) + q * sin(M_PI * log10(u)));
 
     Mu = g * exp(-g) + u * (20.0 + pow(g, 2.0)) / (10.0 + pow(g, 2.0));
     Hammerstad_ab(Mu, er, a, b);
@@ -253,8 +251,8 @@ void SParameterCalculator::analyseQuasiStaticCoupled(
       double dt = 2.0 * t * h / s / er;
       double We = W + dW * (1.0 - 0.5 * exp(-0.69 * dW / dt));
       double Wo = We + dt;
-      ue        = We / h;
-      uo        = Wo / h;
+      ue = We / h;
+      uo = Wo / h;
     }
 
     // Even relative dielectric constant
@@ -265,10 +263,10 @@ void SParameterCalculator::analyseQuasiStaticCoupled(
     // Odd relative dielectric constant
     Hammerstad_ab(uo, er, a, b);
     Hammerstad_er(uo, er, a, b, ErEff);
-    d      = 0.593 + 0.694 * exp(-0.562 * uo);
-    bo     = 0.747 * er / (0.15 + er);
-    co     = bo - (bo - 0.207) * exp(-0.414 * uo);
-    ao     = 0.7287 * (ErEff - (er + 1.0) / 2.0) * (1.0 - exp(-0.179 * uo));
+    d = 0.593 + 0.694 * exp(-0.562 * uo);
+    bo = 0.747 * er / (0.15 + er);
+    co = bo - (bo - 0.207) * exp(-0.414 * uo);
+    ao = 0.7287 * (ErEff - (er + 1.0) / 2.0) * (1.0 - exp(-0.179 * uo));
     ErEffo = ((er + 1.0) / 2.0 + ao - ErEff) * exp(-co * pow(g, d)) + ErEff;
 
     // Characteristic impedance of single line
@@ -288,9 +286,9 @@ void SParameterCalculator::analyseQuasiStaticCoupled(
     q5 = 1.794 + 1.14 * log(1.0 + 0.638 / (g + 0.517 * pow(g, 2.43)));
     q6 = 0.2305 + log(pow(g, 10.0) / (1.0 + pow(g / 5.8, 10.0))) / 281.3 +
          log(1.0 + 0.598 * pow(g, 1.154)) / 5.1;
-    q7  = (10.0 + 190.0 * pow(g, 2.0)) / (1.0 + 82.3 * pow(g, 3.0));
-    q8  = exp(-6.5 - 0.95 * log(g) - pow(g / 0.15, 5.0));
-    q9  = log(q7) * (q8 + 1.0 / 16.5);
+    q7 = (10.0 + 190.0 * pow(g, 2.0)) / (1.0 + 82.3 * pow(g, 3.0));
+    q8 = exp(-6.5 - 0.95 * log(g) - pow(g / 0.15, 5.0));
+    q9 = log(q7) * (q8 + 1.0 / 16.5);
     q10 = (q2 * q4 - q5 * exp(log(uo) * q6 * pow(uo, -q9))) / q2;
     Zlo = sqrt(ErEff / ErEffo) * Zl1 / (1.0 - Zl1 * sqrt(ErEff) * q10 / Z0);
   }
@@ -298,13 +296,13 @@ void SParameterCalculator::analyseQuasiStaticCoupled(
 
 void SParameterCalculator::analyseDispersionCoupled(
     double W, double h, double s, double t, double er, double Zle, double Zlo,
-    double ErEffe, double ErEffo, double frequency, const string& DModel,
-    double& ZleFreq, double& ZloFreq, double& ErEffeFreq, double& ErEffoFreq) {
+    double ErEffe, double ErEffo, double frequency, const string &DModel,
+    double &ZleFreq, double &ZloFreq, double &ErEffeFreq, double &ErEffoFreq) {
 
   // Initialize default values
-  ZleFreq    = Zle;
+  ZleFreq = Zle;
   ErEffeFreq = ErEffe;
-  ZloFreq    = Zlo;
+  ZloFreq = Zlo;
   ErEffoFreq = ErEffo;
 
   double u = W / h;
@@ -342,7 +340,7 @@ void SParameterCalculator::analyseDispersionCoupled(
     p6 = p5 * exp(-pow(fn / 18.0, 0.368));
     p7 = 1.0 + 4.069 * p6 * pow(g, 0.479) *
                    exp(-1.347 * pow(g, 0.595) - 0.17 * pow(g, 2.5));
-    Fe         = p1 * p2 * pow((p3 * p4 + 0.1844 * p7) * fn, 1.5763);
+    Fe = p1 * p2 * pow((p3 * p4 + 0.1844 * p7) * fn, 1.5763);
     ErEffeFreq = er - (er - ErEffe) / (1.0 + Fe);
 
     // Odd relative dielectric constant dispersion
@@ -356,21 +354,21 @@ void SParameterCalculator::analyseDispersionCoupled(
     p10 = 0.242 * pow(er - 1.0, 0.55);
     p11 =
         0.6366 * (exp(-0.3401 * fn) - 1.0) * atan(1.263 * pow(uo / 3.0, 1.629));
-    p12        = p9 + (1.0 - p9) / (1.0 + 1.183 * pow(uo, 1.376));
-    p13        = 1.695 * p10 / (0.414 + 1.605 * p10);
-    p14        = 0.8928 + 0.1072 * (1.0 - exp(-0.42 * pow(fn / 20.0, 3.215)));
-    p15        = fabs(1.0 -
-                      0.8928 * (1.0 + p11) * exp(-p13 * pow(g, 1.092)) * p12 / p14);
-    Fo         = p1 * p2 * pow((p3 * p4 + 0.1844) * fn * p15, 1.5763);
+    p12 = p9 + (1.0 - p9) / (1.0 + 1.183 * pow(uo, 1.376));
+    p13 = 1.695 * p10 / (0.414 + 1.605 * p10);
+    p14 = 0.8928 + 0.1072 * (1.0 - exp(-0.42 * pow(fn / 20.0, 3.215)));
+    p15 = fabs(1.0 -
+               0.8928 * (1.0 + p11) * exp(-p13 * pow(g, 1.092)) * p12 / p14);
+    Fo = p1 * p2 * pow((p3 * p4 + 0.1844) * fn * p15, 1.5763);
     ErEffoFreq = er - (er - ErEffo) / (1.0 + Fo);
 
     // Dispersion of even characteristic impedance
     double t, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20, q21;
     q11 = 0.893 * (1.0 - 0.3 / (1.0 + 0.7 * (er - 1.0)));
-    t   = pow(fn / 20.0, 4.91);
+    t = pow(fn / 20.0, 4.91);
     q12 = 2.121 * t / (1.0 + q11 * t) * exp(-2.87 * g) * pow(g, 0.902);
     q13 = 1.0 + 0.038 * pow(er / 8.0, 5.1);
-    t   = pow(er / 15.0, 4.0);
+    t = pow(er / 15.0, 4.0);
     q14 = 1.0 + 1.203 * t / (1.0 + t);
     q15 = 1.887 * exp(-1.5 * pow(g, 0.84)) * pow(g, q14) /
           (1.0 + 0.41 * pow(fn / 15.0, 3.0) * pow(u, 2.0 / q13) /
@@ -383,17 +381,17 @@ void SParameterCalculator::analyseDispersionCoupled(
     q19 = 0.21 * pow(g, 4.0) / (1.0 + 0.18 * pow(g, 4.9)) /
           (1.0 + 0.1 * pow(u, 2.0)) / (1.0 + pow(fn / 24.0, 3.0));
     q20 = q19 * (0.09 + 1.0 / (1.0 + 0.1 * pow(er - 1.0, 2.7)));
-    t   = pow(u, 2.5);
+    t = pow(u, 2.5);
     q21 = fabs(1.0 -
                42.54 * pow(g, 0.133) * exp(-0.812 * g) * t / (1.0 + 0.033 * t));
 
     double re, qe, pe, de, Ce, q0, ZlFreq, ErEffFreq;
     Kirschning_er(u, fn, er, ErEffe, ErEffFreq);
-    Kirschning_zl(u, fn, er, ErEffe, ErEffFreq, Zle, q0, ZlFreq);
+    Kirschning_zl(ErEffe, ErEffFreq, Zle, q0, ZlFreq);
     re = pow(fn / 28.843, 12.0);
     qe = 0.016 + pow(0.0514 * er * q21, 4.524);
     pe = 4.766 * exp(-3.228 * pow(u, 0.641));
-    t  = pow(er - 1.0, 6.0);
+    t = pow(er - 1.0, 6.0);
     de = 5.086 * qe * re / (0.3838 + 0.386 * qe) * exp(-22.2 * pow(u, 1.92)) /
          (1.0 + 1.2992 * re) * t / (1.0 + 10.0 * t);
     Ce = 1.0 +
@@ -407,16 +405,16 @@ void SParameterCalculator::analyseDispersionCoupled(
     // Dispersion of odd characteristic impedance
     double q22, q23, q24, q25, q26, q27, q28, q29;
     Kirschning_er(u, fn, er, ErEffo, ErEffFreq);
-    Kirschning_zl(u, fn, er, ErEffo, ErEffFreq, Zlo, q0, ZlFreq);
+    Kirschning_zl(ErEffo, ErEffFreq, Zlo, q0, ZlFreq);
     q29 = 15.16 / (1.0 + 0.196 * pow(er - 1.0, 2.0));
-    t   = pow(er - 1.0, 2.0);
+    t = pow(er - 1.0, 2.0);
     q25 = 0.3 * pow(fn, 2.0) / (10.0 + pow(fn, 2.0)) *
           (1.0 + 2.333 * t / (5.0 + t));
-    t   = pow((er - 1.0) / 13.0, 12.0);
+    t = pow((er - 1.0) / 13.0, 12.0);
     q26 = 30.0 - 22.2 * t / (1.0 + 3.0 * t) - q29;
-    t   = pow(er - 1.0, 1.5);
+    t = pow(er - 1.0, 1.5);
     q27 = 0.4 * pow(g, 0.84) * (1.0 + 2.5 * t / (5.0 + t));
-    t   = pow(er - 1.0, 3.0);
+    t = pow(er - 1.0, 3.0);
     q28 = 0.149 * t / (94.5 + 0.038 * t);
     q22 = 0.925 * pow(fn / q26, 1.536) / (1.0 + 0.3 * pow(fn / 30.0, 1.536));
     q23 = 1.0 + 0.005 * fn * q27 / (1.0 + 0.812 * pow(fn / 15.0, 1.9)) /
@@ -432,7 +430,7 @@ void SParameterCalculator::analyseDispersionCoupled(
 void SParameterCalculator::analyseLossCoupled(
     double W, double S, double t, double er, double rho, double D, double tand,
     double ZlEff1, double ZlEff2, double ErEff, double frequency,
-    const string& Model, bool evenMode, double& ac, double& ad) {
+    const string &Model, bool evenMode, double &ac, double &ad) {
 
   ac = ad = 0;
 
@@ -449,7 +447,7 @@ void SParameterCalculator::analyseLossCoupled(
 
       // Adjust for coupling effects
       double coupling_factor = evenMode ? 1.0 : 1.2;
-      ac                     = Rs / (ZlEff1 * W) * Ki * Kr * coupling_factor;
+      ac = Rs / (ZlEff1 * W) * Ki * Kr * coupling_factor;
     }
 
     // Dielectric losses

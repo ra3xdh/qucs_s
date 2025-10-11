@@ -167,7 +167,7 @@ private:
   // Microstrip line analysis methods
   void addMicrostripLineToAdmittance(vector<vector<Complex>>& Y,
                                      const Component_SPAR& comp);
-  void calcMicrostripPropagation(double W, double L, double h, double er,
+  void calcMicrostripPropagation(double W, double h, double er,
                                  double t, double tand, double rho,
                                  double frequency, double& alpha, double& beta,
                                  double& zl, double& ereff);
@@ -186,11 +186,8 @@ private:
   void Hammerstad_ab(double u, double er, double& a, double& b);
   void Hammerstad_er(double u, double er, double a, double b, double& e);
   void Hammerstad_zl(double u, double& zl);
-  void Kirschning_er(double u, double fn, double er, double ErEff,
-                     double& ErEffFreq);
-  void Kirschning_zl(double u, double fn, double er, double ErEff,
-                     double ErEffFreq, double ZlEff, double& r17,
-                     double& ZlEffFreq);
+  void Kirschning_er(double u, double fn, double er, double ErEff, double& ErEffFreq);
+  void Kirschning_zl(double ErEff, double ErEffFreq, double ZlEff, double& r17, double& ZlEffFreq);
   void Getsinger_disp(double h, double er, double ErEff, double ZlEff,
                       double frequency, double& e, double& z);
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,7 +227,7 @@ private:
   /// Microstrip coupled lines
   void addMicrostripCoupledLinesToAdmittance(vector<vector<Complex>>& Y,
                                              const Component_SPAR& comp);
-  void calcMicrostripCoupledPropagation(double W, double S, double L, double h,
+  void calcMicrostripCoupledPropagation(double W, double S, double h,
                                         double er, double t, double tand,
                                         double rho, double frequency,
                                         double& alpha_e, double& beta_e,
