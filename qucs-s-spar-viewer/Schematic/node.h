@@ -46,40 +46,39 @@
 #include <QPainter>
 #include <QStyleOption>
 
-
 #include "Network.h"
-#include "symbol.h"
 #include "graphwidget.h"
+#include "symbol.h"
 #include "wire.h"
 
 class Node : public Symbol {
 public:
-  Node(GraphWidget *graphWidget);
-  Node(GraphWidget *graphWidget, struct NodeInfo);
+  Node(GraphWidget* graphWidget);
+  Node(GraphWidget* graphWidget, struct NodeInfo);
   ~Node();
-  void addWire(Wire *Wire);
-  QList<Wire *> Wires() const;
+  void addWire(Wire* Wire);
+  QList<Wire*> Wires() const;
 
   enum { Type = UserType + 1 };
   int type() const { return Type; }
 
   QRectF boundingRect() const;
   QPainterPath shape() const;
-  void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-             QWidget *widget);
+  void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+             QWidget* widget);
   QPoint getPortLocation(int);
   QString getID();
 
 protected:
-  QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+  QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
-  void mousePressEvent(QGraphicsSceneMouseEvent *event);
-  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+  void mousePressEvent(QGraphicsSceneMouseEvent* event);
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 
 private:
-  QList<Wire *> WireList;
+  QList<Wire*> WireList;
   QPointF newPos;
-  GraphWidget *graph;
+  GraphWidget* graph;
   QString ID;
 };
 //! [0]

@@ -17,7 +17,7 @@
 
 #include "./../component.h"
 
-void Component::paintGND(QPainter *painter) {
+void Component::paintGND(QPainter* painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }

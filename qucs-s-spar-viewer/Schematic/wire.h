@@ -29,18 +29,18 @@ class Symbol;
 //! [0]
 class Wire : public QGraphicsItem {
 public:
-  Wire(Symbol *sourceNode, int port_num_source, Symbol *destNode,
+  Wire(Symbol* sourceNode, int port_num_source, Symbol* destNode,
        int port_num_dest);
   Wire();
   ~Wire();
 
-  void setSource(Symbol *, int);
-  void setDestination(Symbol *, int);
+  void setSource(Symbol*, int);
+  void setDestination(Symbol*, int);
   void setColor(QColor);
   void paintWire();
 
-  Symbol *sourceNode() const;
-  Symbol *destNode() const;
+  Symbol* sourceNode() const;
+  Symbol* destNode() const;
 
   void adjust();
 
@@ -50,8 +50,8 @@ public:
 
 protected:
   QRectF boundingRect() const;
-  void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-             QWidget *widget);
+  void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+             QWidget* widget);
 
 private:
   Symbol *source, *dest;

@@ -26,7 +26,9 @@
          LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
 */
 
-EllipticFilter::EllipticFilter() { virtual_nodes = 0; }
+EllipticFilter::EllipticFilter() {
+  virtual_nodes = 0;
+}
 
 EllipticFilter::~EllipticFilter() {
   delete Cshunt_LP;
@@ -36,13 +38,15 @@ EllipticFilter::~EllipticFilter() {
 
 EllipticFilter::EllipticFilter(FilterSpecifications FS) {
   Specification = FS;
-  Cshunt_LP = new std::vector<double>(FS.order + 1);
-  Lseries_LP = new std::vector<double>(FS.order + 1);
-  Cseries_LP = new std::vector<double>(FS.order);
+  Cshunt_LP     = new std::vector<double>(FS.order + 1);
+  Lseries_LP    = new std::vector<double>(FS.order + 1);
+  Cseries_LP    = new std::vector<double>(FS.order);
   virtual_nodes = 0;
 }
 
-void EllipticFilter::setSemilumpedMode(bool mode) { this->semilumped = mode; }
+void EllipticFilter::setSemilumpedMode(bool mode) {
+  this->semilumped = mode;
+}
 
 void EllipticFilter::synthesize() {
   if (semilumped) {
@@ -60,10 +64,10 @@ void EllipticFilter::synthesize() {
 }
 
 void EllipticFilter::EllipticTypeS() {
-  double as = Specification.as;     // Stopband attenuation
-  double ap = Specification.Ripple; // Passband ripple
-  int N = Specification.order;      // Number of peaks
-  double dbn = 0.23025851;          // dB -> Np conversion
+  double as  = Specification.as;     // Stopband attenuation
+  double ap  = Specification.Ripple; // Passband ripple
+  int N      = Specification.order;  // Number of peaks
+  double dbn = 0.23025851;           // dB -> Np conversion
 
   int M = 2 * N + 1;
   double u =
@@ -72,30 +76,32 @@ void EllipticFilter::EllipticTypeS() {
       (u / (2 * M_PI)) * log((exp(ap * dbn / 2) + 1) / (exp(ap * dbn / 2) - 1));
   // Resize elliptic network parameters
   std::vector<double> E(N), F(M - 1);
-  E[N - 1] = tan(w);
+  E[N - 1]  = tan(w);
   double a0 = 1 / tan(u * (as + log(2)) / M_PI);
 
   // Calculation of the natural frequencies = Sn(M*u, j*u) j \in [1, M-1]
-  for (int j = 1; j < M; j++)
+  for (int j = 1; j < M; j++) {
     F[j - 1] = Sn(M * u, j * u);
+  }
 
   // Calculation of a0 Eqn (4.34)
-  double K = 1;
-  int j = 1;
+  double K     = 1;
+  int j        = 1;
   double delta = 1, Kaux;
   while (delta > 1e-6) {
     Kaux = K * (pow(tan(w), 2) + pow(tanh(j * M * u), 2)) /
            (1 + pow(tan(w) * tanh(j * M * u), 2));
     delta = std::abs(K - Kaux);
-    K = Kaux;
+    K     = Kaux;
     j++;
   }
-  a0 = tan(w) * K;
+  a0       = tan(w) * K;
   E[N - 1] = a0;
 
   // Delay group at the natural frequencies
-  for (int j = 0; j < N; j++)
+  for (int j = 0; j < N; j++) {
     Cseries_LP->at(j) = F[2 * j + 1] * (1 - pow(F[j], 4)) / F[j]; // Eqn 5.7
+  }
 
   std::vector<double> C(N);
   C[0] = (1 / (a0 * F[N])); // Starting value for dB/dw calculation
@@ -112,7 +118,7 @@ void EllipticFilter::EllipticTypeS() {
     Cshunt_LP->at(j) = C[j] * F[j];
   }
   Lseries_LP->at(N) = Lseries_LP->at(N - 1);
-  Cshunt_LP->at(N) = Cshunt_LP->at(N - 1);
+  Cshunt_LP->at(N)  = Cshunt_LP->at(N - 1);
   // Permutations method Eqn (3.6)
   for (int l = 0; l < 2; l++) {
     for (int k = l + 2; k < N + 1; k += 2) {
@@ -136,16 +142,17 @@ void EllipticFilter::EllipticTypeS() {
 }
 
 void EllipticFilter::EllipticTypesABC() {
-  double as = Specification.as;     // Stopband attenuation
-  double ap = Specification.Ripple; // Passband ripple
-  int M = Specification.order;      // Number of peaks
-  double RS = Specification.ZS;     // Source impedance
-  double dbn = 0.23025851;          // dB -> Np conversion
+  double as  = Specification.as;     // Stopband attenuation
+  double ap  = Specification.Ripple; // Passband ripple
+  int M      = Specification.order;  // Number of peaks
+  double RS  = Specification.ZS;     // Source impedance
+  double dbn = 0.23025851;           // dB -> Np conversion
 
   int N = 2 * M;
 
   double u = M_PI * M_PI / log(16 * (exp(as * dbn) - 1) / (exp(ap * dbn) - 1));
-  double W = (u / (2 * M_PI)) * log((exp(ap * dbn / 2) + 1) / (exp(ap * dbn / 2) - 1));
+  double W =
+      (u / (2 * M_PI)) * log((exp(ap * dbn / 2) + 1) / (exp(ap * dbn / 2) - 1));
 
   std::vector<double> E(N);
   std::vector<double> R(M);
@@ -154,31 +161,34 @@ void EllipticFilter::EllipticTypesABC() {
   std::vector<double> F(M + 1);
   std::vector<double> D(M + 1);
 
-  for (int j = 0; j < N; j++)
+  for (int j = 0; j < N; j++) {
     E[j] = Sn(M * u, (j + 1 - M) * u / 2);
+  }
 
   // Calculation of a0 Eqn (4.34)
-  double K = 1;
-  int j = 1;
+  double K     = 1;
+  int j        = 1;
   double delta = 1, Kaux, a0;
 
   while (delta > 1e-6) {
     Kaux = K * (pow(tan(W), 2) + pow(tanh(j * M * u), 2)) /
            (1 + pow(tan(W) * tanh(j * M * u), 2));
     delta = abs(K - Kaux);
-    K = Kaux;
-    j = j + 1;
+    K     = Kaux;
+    j     = j + 1;
   }
   a0 = tan(W) * K;
 
   std::vector<std::complex<double>> RS_(M);
   std::complex<double> i = std::complex<double>(0, 1);
   // Calculation of the natural frequencies for the Type S
-  for (int j = 0; j < M; j++)
+  for (int j = 0; j < M; j++) {
     RS_[j] = i * Sn(M * u, i * W + (M + 1 - 2 * (j + 1)) * u / 2);
+  }
 
-  for (int i = 0; i < M; i++)
+  for (int i = 0; i < M; i++) {
     R[i] = real(RS_[i]), S[i] = imag(RS_[i]);
+  }
 
   double E8, E0;
   int IT;
@@ -203,15 +213,17 @@ void EllipticFilter::EllipticTypesABC() {
   // estimated as: sqrt((E(N)+E0)/(1+E(N)*E8));
 
   // Calculation of the attenuation peaks
-  for (int j = IT; j <= M; j++)
+  for (int j = IT; j <= M; j++) {
     D[j - 1] = (E[2 * j - 2] + E8) / (1 + E0 * E[2 * j - 2]);
+  }
 
   double TQ = 0, T0 = 0;
 
   int I = 1;
 
-  for (int i = 0; i < M; i++)
+  for (int i = 0; i < M; i++) {
     F[i] = sqrt(1 / D[i]);
+  }
   for (int j = 0; j < M; j++) {
     double W = (a0 * a0 + pow(E[2 * j], 2)) / (1 + pow(a0 * E[2 * j], 2));
     double U =
@@ -220,13 +232,13 @@ void EllipticFilter::EllipticTypesABC() {
                (1 + 2 * E8 * S[j] + W * E8 * E8);
     R[j] = sqrt((U - V) / 2);
     S[j] = sqrt((U + V) / 2);
-    I = -I;
-    W = I * R[j] / S[j];
-    TQ = (TQ + W) / (1 - TQ * W);
+    I    = -I;
+    W    = I * R[j] / S[j];
+    TQ   = (TQ + W) / (1 - TQ * W);
     if (Specification.EllipticType == QString("Type A")) {
-      U = (F[1] - S[j]) / R[j];
-      V = (F[1] + S[j]) / R[j];
-      W = I * (V - U) / (1 + U * V);
+      U  = (F[1] - S[j]) / R[j];
+      V  = (F[1] + S[j]) / R[j];
+      W  = I * (V - U) / (1 + U * V);
       T0 = (T0 + W) / (1 - T0 * W);
     }
     B[0] = B[0] + R[j];
@@ -241,18 +253,18 @@ void EllipticFilter::EllipticTypesABC() {
   for (int k = IT - 1; k < M; k++) {
     DB[k] = 0;
     TB[k] = T0;
-    I = 1;
+    I     = 1;
     for (int j = 0; j < M; j++) {
       DB[k] = DB[k] + 1 / (R[j] + pow(F[k] - S[j], 2) / R[j]);
       DB[k] = DB[k] + 1 / (R[j] + pow(F[k] + S[j], 2) / R[j]);
-      I = -I;
-      W = (F[k] - I * S[j]) / R[j];
+      I     = -I;
+      W     = (F[k] - I * S[j]) / R[j];
       TB[k] = (TB[k] + W) / (1 - TB[k] * W);
     }
   }
 
-  D[M] = D[M - 1];
-  F[M] = F[M - 1];
+  D[M]  = D[M - 1];
+  F[M]  = F[M - 1];
   DB[M] = DB[M - 1];
   TB[M] = TB[M - 1];
 
@@ -272,8 +284,8 @@ void EllipticFilter::EllipticTypesABC() {
       for (int j = l; j <= k - 2; j += 2) {
         double U = C[j] - C[k];
         double V = 1 / (U / (B[j] * (D[k] - D[j])) - 1);
-        C[k] = U * V;
-        B[k] = (B[k] - B[j]) * V * V - B[j] * (V + V + 1);
+        C[k]     = U * V;
+        B[k]     = (B[k] - B[j]) * V * V - B[j] * (V + V + 1);
       }
     }
   }
@@ -296,8 +308,8 @@ void EllipticFilter::EllipticTypesABC() {
 
   if (Specification.EllipticType != QString("Type A")) {
     Lseries_LP->at(0) = FP / B[0];
-    Li = Li + 1;
-    Ni = Ni + 1;
+    Li                = Li + 1;
+    Ni                = Ni + 1;
   }
 
   double V = 0, w, L_, C_;
@@ -305,39 +317,41 @@ void EllipticFilter::EllipticTypesABC() {
   for (int j = IT - 1; j < M - 1; j++) {
     V = V * C[j];
     // Calculation of the capacitor of the resonator
-    w = F[j] / FP;
-    L_ = FP / B[j];
-    C_ = 1 / (w * w * L_);
+    w                 = F[j] / FP;
+    L_                = FP / B[j];
+    C_                = 1 / (w * w * L_);
     Cseries_LP->at(j) = C_;
     Lseries_LP->at(j) = FP / B[j];
-    Cshunt_LP->at(j) = FP * C[j];
+    Cshunt_LP->at(j)  = FP * C[j];
 
-    K = K - 2;
+    K  = K - 2;
     Ci = Ci + 2;
     Ni = Ni + 1;
     Li = Li + 1;
   }
 
-  w = F[M - 1] / FP;
-  L_ = FP / B[M - 1];
-  C_ = 1 / (w * w * L_);
+  w                     = F[M - 1] / FP;
+  L_                    = FP / B[M - 1];
+  C_                    = 1 / (w * w * L_);
   Cseries_LP->at(M - 1) = C_;
   Lseries_LP->at(M - 1) = FP / B[M - 1];
-  Cshunt_LP->at(M - 1) = FP * C[M - 1];
-  Cshunt_LP->at(M) = FP * C[M];
+  Cshunt_LP->at(M - 1)  = FP * C[M - 1];
+  Cshunt_LP->at(M)      = FP * C[M];
 }
 
 std::complex<double> EllipticFilter::Sn(double u, std::complex<double> z) {
   std::complex<double> x = tanh(z);
-  for (int j = 1; j < 10; j++)
+  for (int j = 1; j < 10; j++) {
     x = x * (tanh(j * u - z) * tanh(j * u + z));
+  }
   return x;
 }
 
 double EllipticFilter::Sn(double u, double z) {
   double x = tanh(z);
-  for (int j = 1; j < 10; j++)
+  for (int j = 1; j < 10; j++) {
     x = x * (tanh(j * u - z) * tanh(j * u + z));
+  }
   return x;
 }
 
@@ -359,26 +373,32 @@ void EllipticFilter::SynthesizeEllipticFilter() {
   // section to the previos one
 
   unsigned int M = 2 * N + 1;
-  double l = (0.5 * (N + 1)) * 2.;
+  double l       = (0.5 * (N + 1)) * 2.;
   unsigned int K = M - l - N % 2 - 1;
 
   if ((Specification.FilterType == Lowpass) ||
-      (Specification.FilterType == Highpass))
+      (Specification.FilterType == Highpass)) {
     posx = N * 50;
-  else
+  } else {
     posx = N * 300;
+  }
 
-  if (Specification.EllipticType == "Type S")
+  if (Specification.EllipticType == "Type S") {
     RL = Specification.ZS;
+  }
 
   // Change the load impedance according to the filter type
-  if ((Specification.FilterType == Lowpass) && (!Specification.isCLC))
+  if ((Specification.FilterType == Lowpass) && (!Specification.isCLC)) {
     RL = Specification.ZS * Specification.ZS / RL;
-  if ((Specification.FilterType == Highpass) && (Specification.isCLC))
+  }
+  if ((Specification.FilterType == Highpass) && (Specification.isCLC)) {
     RL = Specification.ZS * Specification.ZS / RL;
+  }
 
   // Add Term 1 (Load)
-  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
+      0);
   TermSpar1.val["Z"] = num2str(RL, Resistance);
   Schematic.appendComponent(TermSpar1);
   UnconnectedComponents[TermSpar1.ID] = 0;
@@ -389,10 +409,11 @@ void EllipticFilter::SynthesizeEllipticFilter() {
     InsertEllipticSection(posx, UnconnectedComponents, j, true, false);
 
     if ((Specification.FilterType == Lowpass) ||
-        (Specification.FilterType == Highpass))
+        (Specification.FilterType == Highpass)) {
       posx -= 150;
-    else
+    } else {
       posx -= 300;
+    }
   }
 
   // Central shunt capacitor
@@ -404,20 +425,23 @@ void EllipticFilter::SynthesizeEllipticFilter() {
     K = K - 2;
 
     if ((Specification.FilterType == Lowpass) ||
-        (Specification.FilterType == Highpass))
+        (Specification.FilterType == Highpass)) {
       posx -= 150;
-    else
+    } else {
       posx -= 300;
+    }
   }
 
   posx += 100;
   // Add Term 2 (Source)
-  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  ComponentInfo TermSpar2(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar2.val["Z"] = num2str(Specification.ZS, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   // Connect the last components to the load (taking into account the pinout)
-  QMap<QString, unsigned int>::const_iterator i =  UnconnectedComponents.constBegin();
+  QMap<QString, unsigned int>::const_iterator i =
+      UnconnectedComponents.constBegin();
   while (i != UnconnectedComponents.constEnd()) {
     Schematic.appendWire(TermSpar2.ID, 0, i.key(), i.value());
     ++i;
@@ -427,48 +451,58 @@ void EllipticFilter::SynthesizeEllipticFilter() {
 // This function just handles the type of elliptic section to implement. That
 // could be done at SynthesizeEllipticFilter() but that'd be a complete mesh
 void EllipticFilter::InsertEllipticSection(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents, int j,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents, int j,
     bool flip, bool CentralSection) {
 
   if (semilumped) {
-    if (Specification.FilterType == Lowpass)
+    if (Specification.FilterType == Lowpass) {
       Insert_LowpassSemilumpedMinC_Section(posx, UnconnectedComponents, j, flip,
                                            CentralSection);
-    if (Specification.FilterType == Highpass)
+    }
+    if (Specification.FilterType == Highpass) {
       Insert_HighpassSemilumpedMinL_Section(posx, UnconnectedComponents, j,
                                             flip, CentralSection);
+    }
     return;
   }
 
-  if (Specification.FilterType == Lowpass && Specification.isCLC)
+  if (Specification.FilterType == Lowpass && Specification.isCLC) {
     Insert_LowpassMinL_Section(posx, UnconnectedComponents, j, flip,
                                CentralSection);
-  if (Specification.FilterType == Highpass && !Specification.isCLC)
+  }
+  if (Specification.FilterType == Highpass && !Specification.isCLC) {
     Insert_HighpassMinC_Section(posx, UnconnectedComponents, j, flip,
                                 CentralSection);
-  if (Specification.FilterType == Lowpass && !Specification.isCLC)
+  }
+  if (Specification.FilterType == Lowpass && !Specification.isCLC) {
     Insert_LowpassMinC_Section(posx, UnconnectedComponents, j, flip,
                                CentralSection);
-  if (Specification.FilterType == Highpass && Specification.isCLC)
+  }
+  if (Specification.FilterType == Highpass && Specification.isCLC) {
     Insert_HighpassMinL_Section(posx, UnconnectedComponents, j, flip,
                                 CentralSection);
-  if (Specification.FilterType == Bandpass && Specification.isCLC)
+  }
+  if (Specification.FilterType == Bandpass && Specification.isCLC) {
     Insert_Bandpass_1_Section(posx, UnconnectedComponents, j, flip,
                               CentralSection);
-  if (Specification.FilterType == Bandpass && !Specification.isCLC)
+  }
+  if (Specification.FilterType == Bandpass && !Specification.isCLC) {
     Insert_Bandpass_2_Section(posx, UnconnectedComponents, j, flip,
                               CentralSection);
-  if (Specification.FilterType == Bandstop && Specification.isCLC)
+  }
+  if (Specification.FilterType == Bandstop && Specification.isCLC) {
     Insert_Bandstop_1_Section(posx, UnconnectedComponents, j, flip,
                               CentralSection);
-  if (Specification.FilterType == Bandstop && !Specification.isCLC)
+  }
+  if (Specification.FilterType == Bandstop && !Specification.isCLC) {
     Insert_Bandstop_2_Section(posx, UnconnectedComponents, j, flip,
                               CentralSection);
+  }
 }
 
 // Draw and generate the netlist of a lowpass min L elliptic section
 void EllipticFilter::Insert_LowpassMinL_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Cshunt, Ground, Lseries, Cseries;
   NodeInfo NI;
@@ -478,7 +512,9 @@ void EllipticFilter::Insert_LowpassMinL_Section(
     Cshunt.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
         0, posx + 50, 50);
-    Cshunt.val["C"] = num2str(Cshunt_LP->at(j) * 1 / (2 * M_PI * Specification.fc * Specification.ZS), Capacitance);
+    Cshunt.val["C"] = num2str(
+        Cshunt_LP->at(j) * 1 / (2 * M_PI * Specification.fc * Specification.ZS),
+        Capacitance);
     Schematic.appendComponent(Cshunt);
 
     // GND
@@ -595,8 +631,9 @@ void EllipticFilter::Insert_LowpassMinL_Section(
   //***** Connect components from the previous section *****
   if (flip) {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 1, mapIT.key(), mapIT.value());
 
     //***** Series cap to node *****
@@ -607,16 +644,19 @@ void EllipticFilter::Insert_LowpassMinL_Section(
     posx += 50;
     UnconnectedComponents.clear();
     UnconnectedComponents[Lseries.ID] = 1;
-    if (Cseries_LP->at(j) != 0)
+    if (Cseries_LP->at(j) != 0) {
       UnconnectedComponents[Cseries.ID] = 0;
+    }
   } else {
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(Lseries.ID, 0, mapIT.key(), mapIT.value());
 
     if (Cseries_LP->at(j) != 0) {
-      if (mapIT.hasNext())
+      if (mapIT.hasNext()) {
         mapIT.next();
+      }
       Schematic.appendWire(mapIT.key(), mapIT.value(), Cseries.ID, 1);
     }
     UnconnectedComponents.clear(); // Remove previous section elements
@@ -628,7 +668,7 @@ void EllipticFilter::Insert_LowpassMinL_Section(
 
 // Draw and generate the netlist of a lowpass min L elliptic section
 void EllipticFilter::Insert_HighpassMinC_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Lshunt, Ground, Lseries, Cseries;
   NodeInfo NI;
@@ -674,7 +714,7 @@ void EllipticFilter::Insert_HighpassMinC_Section(
     return;
   }
   // Scale lowpass prototype values
-  double Lshunt_HP = Kl / Cshunt_LP->at(j);
+  double Lshunt_HP  = Kl / Cshunt_LP->at(j);
   double Cseries_HP = Kc / Lseries_LP->at(j);
   double Lseries_HP = Kl / Cseries_LP->at(j);
 
@@ -738,8 +778,9 @@ void EllipticFilter::Insert_HighpassMinC_Section(
   //***** Connect components from the previous section *****
   if (flip) {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 1, mapIT.key(), mapIT.value());
 
     if (mapIT.hasNext()) {
@@ -750,17 +791,20 @@ void EllipticFilter::Insert_HighpassMinC_Section(
     posx += 50;
 
     UnconnectedComponents.clear();
-    if (Cshunt_LP->at(j) != 0)
+    if (Cshunt_LP->at(j) != 0) {
       UnconnectedComponents[Lseries.ID] = 1;
+    }
     UnconnectedComponents[Cseries.ID] = 0;
   } else {
     if (Cseries_LP->at(j) != 0) {
-      if (mapIT.hasNext())
+      if (mapIT.hasNext()) {
         mapIT.next();
+      }
       Schematic.appendWire(mapIT.key(), mapIT.value(), Lseries.ID, 0);
     }
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(mapIT.key(), mapIT.value(), Cseries.ID, 1);
 
     UnconnectedComponents.clear(); // Remove previous section elements
@@ -771,7 +815,7 @@ void EllipticFilter::Insert_HighpassMinC_Section(
 }
 
 void EllipticFilter::Insert_LowpassMinC_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Lshunt, Ground, Lseries, Cshunt;
   NodeInfo NI;
@@ -787,8 +831,9 @@ void EllipticFilter::Insert_LowpassMinC_Section(
     Lseries.val["L"] = num2str(Kl * Cshunt_LP->at(j), Inductance);
     Schematic.appendComponent(Lseries);
 
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(Lseries.ID, 0, mapIT.key(), mapIT.value());
 
     UnconnectedComponents.clear(); // Remove previous section elements
@@ -798,8 +843,8 @@ void EllipticFilter::Insert_LowpassMinC_Section(
     return;
   }
   // Scale lowpass prototype values
-  double Lshunt_LP_MINC = Kl * Cseries_LP->at(j);
-  double Cshunt_LP_MINC = Kc * Lseries_LP->at(j);
+  double Lshunt_LP_MINC  = Kl * Cseries_LP->at(j);
+  double Cshunt_LP_MINC  = Kc * Lseries_LP->at(j);
   double Lseries_LP_MINC = Kl * Cshunt_LP->at(j);
 
   // Shunt capacitor
@@ -814,14 +859,15 @@ void EllipticFilter::Insert_LowpassMinC_Section(
   }
 
   // Node
-  if (flip)
+  if (flip) {
     NI.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
         posx - 50, 0);
-  else
+  } else {
     NI.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
         posx + 50, 0);
+  }
   Schematic.appendNode(NI);
 
   //********************************************************************************
@@ -875,12 +921,14 @@ void EllipticFilter::Insert_LowpassMinC_Section(
   //***** Connect components from the previous section *****
   if (flip) {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
-    if (Lseries_LP_MINC != 0)
+    }
+    if (Lseries_LP_MINC != 0) {
       Schematic.appendWire(Lseries.ID, 0, mapIT.key(), mapIT.value());
-    else
+    } else {
       Schematic.appendWire(NI.ID, 1, mapIT.key(), mapIT.value());
+    }
 
     posx += 50;
 
@@ -888,21 +936,23 @@ void EllipticFilter::Insert_LowpassMinC_Section(
     UnconnectedComponents[NI.ID] = 0;
   } else {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
 
     UnconnectedComponents.clear();
-    if (Lseries_LP_MINC != 0)
+    if (Lseries_LP_MINC != 0) {
       UnconnectedComponents[Lseries.ID] = 1;
-    else
+    } else {
       UnconnectedComponents[NI.ID] = 0;
+    }
     posx -= 50;
   }
 }
 
 void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Lshunt, Lseries, Cshunt, Ground;
   ComponentInfo MSOPEN;
@@ -916,44 +966,53 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   if (CentralSection) {
     // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M. J.
     // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-    L_li = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * Kl * Cshunt_LP->at(j) / Specification.maxZ);
+    L_li = lambda0 / (2 * M_PI) *
+           asin(2 * M_PI * Specification.fc * Kl * Cshunt_LP->at(j) /
+                Specification.maxZ);
 
-    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+    if (Specification.TL_implementation == TransmissionLineType::Ideal) {
       // Ideal transmission line
 
-    Lseries.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, -90, posx + 50, 0);
-    Lseries.val["Z0"] = num2str(Specification.maxZ, Resistance);
-    Lseries.val["Length"] = ConvertLengthFromM("mm", L_li);
-    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      Lseries.setParams(
+          QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+          TransmissionLine, -90, posx + 50, 0);
+      Lseries.val["Z0"]     = num2str(Specification.maxZ, Resistance);
+      Lseries.val["Length"] = ConvertLengthFromM("mm", L_li);
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN) {
       // Microstrip transmission line
 
       MicrostripClass MSL; // Synthesize MS parameters
 
       MSL.Substrate = Specification.MS_Subs;
-      MSL.synthesizeMicrostrip(Specification.maxZ, L_li*1e3, Specification.fc);
+      MSL.synthesizeMicrostrip(Specification.maxZ, L_li * 1e3,
+                               Specification.fc);
 
-      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
-      double MS_Length = MSL.Results.length*1e-3;
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are
+                                           // in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length * 1e-3;
 
-             // Instantiate component
+      // Instantiate component
 
-             // Physical parameters
-      Lseries.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, -90, posx + 50, 0);
-      Lseries.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      // Physical parameters
+      Lseries.setParams(
+          QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+          MicrostripLine, -90, posx + 50, 0);
+      Lseries.val["Width"]  = ConvertLengthFromM("mm", MS_Width);
       Lseries.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
-             // Substrate-related parameters
-      Lseries.val["er"] = num2str(Specification.MS_Subs.er);
-      Lseries.val["h"] = num2str(Specification.MS_Subs.height);
+      // Substrate-related parameters
+      Lseries.val["er"]   = num2str(Specification.MS_Subs.er);
+      Lseries.val["h"]    = num2str(Specification.MS_Subs.height);
       Lseries.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-      Lseries.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      Lseries.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
       Lseries.val["tand"] = num2str(Specification.MS_Subs.tand);
     }
 
     Schematic.appendComponent(Lseries);
 
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(Lseries.ID, 0, mapIT.key(), mapIT.value());
 
     UnconnectedComponents.clear(); // Remove previous section elements
@@ -962,8 +1021,8 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
     return;
   }
   // Scale lowpass prototype values
-  double Lshunt_LP_MINC = Kl * Cseries_LP->at(j);
-  double Cshunt_LP_MINC = Kc * Lseries_LP->at(j);
+  double Lshunt_LP_MINC  = Kl * Cseries_LP->at(j);
+  double Cshunt_LP_MINC  = Kc * Lseries_LP->at(j);
   double Lseries_LP_MINC = Kl * Cshunt_LP->at(j);
 
   // Shunt capacitor
@@ -972,50 +1031,59 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   if (Lseries_LP_MINC != 0) {
     // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M. J.
     // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-    L_li = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * Lseries_LP_MINC / Specification.maxZ);
+    L_li = lambda0 / (2 * M_PI) *
+           asin(2 * M_PI * Specification.fc * Lseries_LP_MINC /
+                Specification.maxZ);
 
-    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+    if (Specification.TL_implementation == TransmissionLineType::Ideal) {
       // Ideal transmission line
-    Lseries.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, posx, 0);
-    Lseries.val["Z0"] = num2str(Specification.maxZ, Resistance);
-    Lseries.val["Length"] = ConvertLengthFromM("mm", L_li);
-    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      Lseries.setParams(
+          QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+          TransmissionLine, 90, posx, 0);
+      Lseries.val["Z0"]     = num2str(Specification.maxZ, Resistance);
+      Lseries.val["Length"] = ConvertLengthFromM("mm", L_li);
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN) {
       // Microstrip transmission line
 
       MicrostripClass MSL; // Synthesize MS parameters
 
       MSL.Substrate = Specification.MS_Subs;
-      MSL.synthesizeMicrostrip(Specification.maxZ, L_li*1e3, Specification.fc);
+      MSL.synthesizeMicrostrip(Specification.maxZ, L_li * 1e3,
+                               Specification.fc);
 
-      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
-      double MS_Length = MSL.Results.length*1e-3;
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are
+                                           // in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length * 1e-3;
 
-             // Instantiate component
+      // Instantiate component
 
-             // Physical parameters
-      Lseries.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 90, posx, 0);
-      Lseries.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      // Physical parameters
+      Lseries.setParams(
+          QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+          MicrostripLine, 90, posx, 0);
+      Lseries.val["Width"]  = ConvertLengthFromM("mm", MS_Width);
       Lseries.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
-             // Substrate-related parameters
-      Lseries.val["er"] = num2str(Specification.MS_Subs.er);
-      Lseries.val["h"] = num2str(Specification.MS_Subs.height);
+      // Substrate-related parameters
+      Lseries.val["er"]   = num2str(Specification.MS_Subs.er);
+      Lseries.val["h"]    = num2str(Specification.MS_Subs.height);
       Lseries.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-      Lseries.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      Lseries.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
       Lseries.val["tand"] = num2str(Specification.MS_Subs.tand);
     }
     Schematic.appendComponent(Lseries);
   }
 
   // Node
-  if (flip)
+  if (flip) {
     NI.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
         posx - 50, 0);
-  else
+  } else {
     NI.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
         posx + 50, 0);
+  }
   Schematic.appendNode(NI);
 
   //********************************************************************************
@@ -1026,35 +1094,43 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   if (Lshunt_LP_MINC != 0) {
     // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M. J.
     // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-    L_li = lambda0 / (2 * M_PI) *  asin(2 * M_PI * Specification.fc * Lshunt_LP_MINC / Specification.maxZ);
+    L_li =
+        lambda0 / (2 * M_PI) *
+        asin(2 * M_PI * Specification.fc * Lshunt_LP_MINC / Specification.maxZ);
 
-    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+    if (Specification.TL_implementation == TransmissionLineType::Ideal) {
       // Ideal transmission line
-    Lshunt.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 0, posx, 30);
-    Lshunt.val["Z0"] = num2str(Specification.maxZ, Resistance);
-    Lshunt.val["Length"] = ConvertLengthFromM("mm", L_li);
-    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      Lshunt.setParams(
+          QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+          TransmissionLine, 0, posx, 30);
+      Lshunt.val["Z0"]     = num2str(Specification.maxZ, Resistance);
+      Lshunt.val["Length"] = ConvertLengthFromM("mm", L_li);
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN) {
       // Microstrip transmission line
       MicrostripClass MSL; // Synthesize MS parameters
 
       MSL.Substrate = Specification.MS_Subs;
-      MSL.synthesizeMicrostrip(Specification.maxZ, L_li*1e3, Specification.fc);
+      MSL.synthesizeMicrostrip(Specification.maxZ, L_li * 1e3,
+                               Specification.fc);
 
-      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
-      double MS_Length = MSL.Results.length*1e-3;
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are
+                                           // in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length * 1e-3;
 
-             // Instantiate component
+      // Instantiate component
 
-             // Physical parameters
-      Lshunt.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, 30);
-      Lshunt.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      // Physical parameters
+      Lshunt.setParams(
+          QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+          MicrostripLine, 0, posx, 30);
+      Lshunt.val["Width"]  = ConvertLengthFromM("mm", MS_Width);
       Lshunt.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
-             // Substrate-related parameters
-      Lshunt.val["er"] = num2str(Specification.MS_Subs.er);
-      Lshunt.val["h"] = num2str(Specification.MS_Subs.height);
+      // Substrate-related parameters
+      Lshunt.val["er"]   = num2str(Specification.MS_Subs.er);
+      Lshunt.val["h"]    = num2str(Specification.MS_Subs.height);
       Lshunt.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-      Lshunt.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      Lshunt.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
       Lshunt.val["tand"] = num2str(Specification.MS_Subs.tand);
     }
     Schematic.appendComponent(Lshunt);
@@ -1065,9 +1141,13 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
   if (Specification.SemiLumpedISettings == ONLY_INDUCTORS) {
     if (Lseries_LP_MINC != 0) {
-      Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 0, posx, 100);
+      Cshunt.setParams(
+          QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
+          Capacitor, 0, posx, 100);
     } else {
-      Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),  Capacitor, 0, posx, 100);
+      Cshunt.setParams(
+          QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
+          Capacitor, 0, posx, 100);
     }
     Cshunt.val["C"] = num2str(Cshunt_LP_MINC, Capacitance);
     Schematic.appendComponent(Cshunt);
@@ -1081,57 +1161,69 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   } else {
     // Series capacitor
     if (Lseries_LP_MINC != 0) {
-      Cshunt.setParams(QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]), OpenStub, 0, posx, 75);
+      Cshunt.setParams(
+          QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),
+          OpenStub, 0, posx, 75);
     } else {
-      Cshunt.setParams(QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),  OpenStub, 0, posx, 75);
+      Cshunt.setParams(
+          QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),
+          OpenStub, 0, posx, 75);
     }
-    L_ci = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * Specification.minZ * Cshunt_LP_MINC);
+    L_ci =
+        lambda0 / (2 * M_PI) *
+        asin(2 * M_PI * Specification.fc * Specification.minZ * Cshunt_LP_MINC);
 
-    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+    if (Specification.TL_implementation == TransmissionLineType::Ideal) {
       // Ideal transmission line
-    Cshunt.val["Z0"] = num2str(Specification.minZ, Resistance);
-    Cshunt.val["Length"] = ConvertLengthFromM("mm", L_ci);
-    Schematic.appendComponent(Cshunt);
-    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      Cshunt.val["Z0"]     = num2str(Specification.minZ, Resistance);
+      Cshunt.val["Length"] = ConvertLengthFromM("mm", L_ci);
+      Schematic.appendComponent(Cshunt);
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN) {
       // Microstrip transmission line
       MicrostripClass MSL; // Synthesize MS parameters
 
       MSL.Substrate = Specification.MS_Subs;
-      MSL.synthesizeMicrostrip(Specification.minZ, L_ci*1e3, Specification.fc);
+      MSL.synthesizeMicrostrip(Specification.minZ, L_ci * 1e3,
+                               Specification.fc);
 
-      double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
-      double MS_Length = MSL.Results.length*1e-3;
+      double MS_Width = MSL.Results.width; // MicrostripClass calculations are
+                                           // in mm. It's needed to convert to m
+      double MS_Length = MSL.Results.length * 1e-3;
 
-             // Instantiate component
-      Cshunt.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, 75);
+      // Instantiate component
+      Cshunt.setParams(
+          QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+          MicrostripLine, 0, posx, 75);
 
-             // Physical parameters
-      Cshunt.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+      // Physical parameters
+      Cshunt.val["Width"]  = ConvertLengthFromM("mm", MS_Width);
       Cshunt.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
-             // Substrate-related parameters
-      Cshunt.val["er"] = num2str(Specification.MS_Subs.er);
-      Cshunt.val["h"] = num2str(Specification.MS_Subs.height);
+      // Substrate-related parameters
+      Cshunt.val["er"]   = num2str(Specification.MS_Subs.er);
+      Cshunt.val["h"]    = num2str(Specification.MS_Subs.height);
       Cshunt.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-      Cshunt.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      Cshunt.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
       Cshunt.val["tand"] = num2str(Specification.MS_Subs.tand);
       Schematic.appendComponent(Cshunt);
 
-             // Microstrip open
-      MSOPEN.setParams(QString("MOPEN%1").arg(++Schematic.NumberComponents[MicrostripOpen]), MicrostripOpen, 0, posx, 125);
+      // Microstrip open
+      MSOPEN.setParams(
+          QString("MOPEN%1").arg(++Schematic.NumberComponents[MicrostripOpen]),
+          MicrostripOpen, 0, posx, 125);
 
-             // Physical parameters
+      // Physical parameters
       MSOPEN.val["Width"] = ConvertLengthFromM("mm", MS_Width);
 
-             // Substrate-related parameters
-      MSOPEN.val["er"] = num2str(Specification.MS_Subs.er);
-      MSOPEN.val["h"] = num2str(Specification.MS_Subs.height);
+      // Substrate-related parameters
+      MSOPEN.val["er"]   = num2str(Specification.MS_Subs.er);
+      MSOPEN.val["h"]    = num2str(Specification.MS_Subs.height);
       MSOPEN.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-      MSOPEN.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      MSOPEN.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
       MSOPEN.val["tand"] = num2str(Specification.MS_Subs.tand);
       Schematic.appendComponent(MSOPEN);
-      Schematic.appendWire(Cshunt.ID, 0, MSOPEN.ID, 0); // Wire: Stub to open circuit model
-
+      Schematic.appendWire(Cshunt.ID, 0, MSOPEN.ID,
+                           0); // Wire: Stub to open circuit model
     }
   }
 
@@ -1152,12 +1244,14 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
   //***** Connect components from the previous section *****
   if (flip) {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
-    if (Lseries_LP_MINC != 0)
+    }
+    if (Lseries_LP_MINC != 0) {
       Schematic.appendWire(Lseries.ID, 1, mapIT.key(), mapIT.value());
-    else
+    } else {
       Schematic.appendWire(NI.ID, 1, mapIT.key(), mapIT.value());
+    }
 
     posx += 50;
 
@@ -1165,22 +1259,25 @@ void EllipticFilter::Insert_LowpassSemilumpedMinC_Section(
     UnconnectedComponents[NI.ID] = 0;
   } else {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
     UnconnectedComponents.clear();
-    if (j == Specification.order)
+    if (j == Specification.order) {
       UnconnectedComponents.clear();
-    if (Lseries_LP_MINC != 0)
+    }
+    if (Lseries_LP_MINC != 0) {
       UnconnectedComponents[Lseries.ID] = 0;
-    else
+    } else {
       UnconnectedComponents[NI.ID] = 0;
+    }
     posx -= 50;
   }
 }
 
 void EllipticFilter::Insert_HighpassMinL_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Lshunt, Ground, Cseries, Cshunt;
   NodeInfo NI;
@@ -1196,8 +1293,9 @@ void EllipticFilter::Insert_HighpassMinL_Section(
     Cseries.val["C"] = num2str(Kc / Cshunt_LP->at(j), Capacitance);
     Schematic.appendComponent(Cseries);
 
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(Cseries.ID, 1, mapIT.key(), mapIT.value());
 
     UnconnectedComponents.clear(); // Remove previous section elements
@@ -1207,8 +1305,8 @@ void EllipticFilter::Insert_HighpassMinL_Section(
     return;
   }
   // Scale lowpass prototype values
-  double Lshunt_HP_MINL = Kl / Lseries_LP->at(j);
-  double Cshunt_HP_MINL = Kc / Cseries_LP->at(j);
+  double Lshunt_HP_MINL  = Kl / Lseries_LP->at(j);
+  double Cshunt_HP_MINL  = Kc / Cseries_LP->at(j);
   double Cseries_HP_MINL = Kc / Cshunt_LP->at(j);
 
   // Shunt capacitor
@@ -1222,14 +1320,15 @@ void EllipticFilter::Insert_HighpassMinL_Section(
     Schematic.appendComponent(Cseries);
   }
   // Node
-  if (flip)
+  if (flip) {
     NI.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
         posx - 50, 0);
-  else
+  } else {
     NI.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
         posx + 50, 0);
+  }
   Schematic.appendNode(NI);
 
   (flip) ? posx -= 50 : posx += 50;
@@ -1283,12 +1382,14 @@ void EllipticFilter::Insert_HighpassMinL_Section(
   //***** Connect components from the previous section *****
   if (flip) {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
-    if (Cshunt_LP->at(j) != 0)
+    }
+    if (Cshunt_LP->at(j) != 0) {
       Schematic.appendWire(Cseries.ID, 1, mapIT.key(), mapIT.value());
-    else
+    } else {
       Schematic.appendWire(NI.ID, 1, mapIT.key(), mapIT.value());
+    }
 
     posx += 50;
 
@@ -1296,22 +1397,24 @@ void EllipticFilter::Insert_HighpassMinL_Section(
     UnconnectedComponents[NI.ID] = 0;
   } else {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
 
     UnconnectedComponents.clear();
-    if (Cshunt_LP->at(j) != 0)
+    if (Cshunt_LP->at(j) != 0) {
       UnconnectedComponents[Cseries.ID] = 0;
-    else
+    } else {
       UnconnectedComponents[NI.ID] = 0;
+    }
 
     posx -= 50;
   }
 }
 
 void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
 
   ComponentInfo Lshunt, Cseries, Cshunt, Ground, MSOPEN;
@@ -1329,8 +1432,9 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
     Cseries.val["C"] = num2str(Kc / Cshunt_LP->at(j), Capacitance);
     Schematic.appendComponent(Cseries);
 
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(Cseries.ID, 1, mapIT.key(), mapIT.value());
 
     UnconnectedComponents.clear(); // Remove previous section elements
@@ -1340,23 +1444,29 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
     return;
   }
   // Scale lowpass prototype values
-  double Lshunt_HP_MINL = Kl / Lseries_LP->at(j);
-  double Cshunt_HP_MINL = Kc / Cseries_LP->at(j);
+  double Lshunt_HP_MINL  = Kl / Lseries_LP->at(j);
+  double Cshunt_HP_MINL  = Kc / Cseries_LP->at(j);
   double Cseries_HP_MINL = Kc / Cshunt_LP->at(j);
 
   // Shunt capacitor
   (flip) ? posx += 50 : posx += 50;
 
   if (Cshunt_LP->at(j) != 0) {
-    Cseries.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 90, posx, 0);
+    Cseries.setParams(
+        QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
+        90, posx, 0);
     Cseries.val["C"] = num2str(Cseries_HP_MINL, Capacitance);
     Schematic.appendComponent(Cseries);
   }
   // Node
   if (flip) {
-    NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx - 50, 0);
+    NI.setParams(
+        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        posx - 50, 0);
   } else {
-    NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx + 50, 0);
+    NI.setParams(
+        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        posx + 50, 0);
   }
   Schematic.appendNode(NI);
 
@@ -1364,41 +1474,50 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
 
   // Shunt inductor
   if (Cseries_LP->at(j) != 0) {
-    Lshunt.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 0, posx, 30);
+    Lshunt.setParams(
+        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+        TransmissionLine, 0, posx, 30);
   } else {
-    Lshunt.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 0, posx, 30);
+    Lshunt.setParams(
+        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+        TransmissionLine, 0, posx, 30);
   }
 
   // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M.
   // J. LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-  L_li = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * Lshunt_HP_MINL / Specification.maxZ);
+  L_li =
+      lambda0 / (2 * M_PI) *
+      asin(2 * M_PI * Specification.fc * Lshunt_HP_MINL / Specification.maxZ);
 
-  if (Specification.TL_implementation == TransmissionLineType::Ideal){
+  if (Specification.TL_implementation == TransmissionLineType::Ideal) {
     // Ideal transmission line
-  Lshunt.val["Z0"] = num2str(Specification.maxZ, Resistance);
-  Lshunt.val["Length"] = ConvertLengthFromM("mm", L_li);
-  } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+    Lshunt.val["Z0"]     = num2str(Specification.maxZ, Resistance);
+    Lshunt.val["Length"] = ConvertLengthFromM("mm", L_li);
+  } else if (Specification.TL_implementation == TransmissionLineType::MLIN) {
     // Microstrip transmission line
     MicrostripClass MSL; // Synthesize MS parameters
 
     MSL.Substrate = Specification.MS_Subs;
-    MSL.synthesizeMicrostrip(Specification.maxZ, L_li*1e3, Specification.fc);
+    MSL.synthesizeMicrostrip(Specification.maxZ, L_li * 1e3, Specification.fc);
 
-    double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
-    double MS_Length = MSL.Results.length*1e-3;
+    double MS_Width = MSL.Results.width; // MicrostripClass calculations are in
+                                         // mm. It's needed to convert to m
+    double MS_Length = MSL.Results.length * 1e-3;
 
-           // Instantiate component
-    Lshunt.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, 30);
+    // Instantiate component
+    Lshunt.setParams(
+        QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+        MicrostripLine, 0, posx, 30);
 
-           // Physical parameters
-    Lshunt.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+    // Physical parameters
+    Lshunt.val["Width"]  = ConvertLengthFromM("mm", MS_Width);
     Lshunt.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
-           // Substrate-related parameters
-    Lshunt.val["er"] = num2str(Specification.MS_Subs.er);
-    Lshunt.val["h"] = num2str(Specification.MS_Subs.height);
+    // Substrate-related parameters
+    Lshunt.val["er"]   = num2str(Specification.MS_Subs.er);
+    Lshunt.val["h"]    = num2str(Specification.MS_Subs.height);
     Lshunt.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-    Lshunt.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+    Lshunt.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
     Lshunt.val["tand"] = num2str(Specification.MS_Subs.tand);
   }
   Schematic.appendComponent(Lshunt);
@@ -1406,7 +1525,9 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
   // Shunt capacitor
   if (Cseries_LP->at(j) != 0) {
     if (Specification.SemiLumpedISettings == ONLY_INDUCTORS) {
-      Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 0, posx, 100);
+      Cshunt.setParams(
+          QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
+          Capacitor, 0, posx, 100);
       Cshunt.val["C"] = num2str(Cshunt_HP_MINL, Capacitance);
       Schematic.appendComponent(Cshunt);
 
@@ -1418,62 +1539,75 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
     } else {
       // Microstrip Filters for RF/Microwave Applications. JIA-SHENG HONG. M. J.
       // LANCASTER. JOHN WILEY & SONS, INC. 2001. page 119. Eq. 5.9
-      L_ci = lambda0 / (2 * M_PI) * asin(2 * M_PI * Specification.fc * Specification.minZ * Cshunt_HP_MINL);
+      L_ci = lambda0 / (2 * M_PI) *
+             asin(2 * M_PI * Specification.fc * Specification.minZ *
+                  Cshunt_HP_MINL);
 
-      if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      if (Specification.TL_implementation == TransmissionLineType::Ideal) {
         // Ideal transmission line
-      Cshunt.setParams(QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]), OpenStub, 0, posx, 75);
-      Cshunt.val["Z0"] = num2str(Specification.minZ, Resistance);
-      Cshunt.val["Length"] = ConvertLengthFromM("mm", L_ci);
-      Schematic.appendComponent(Cshunt);
-      } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+        Cshunt.setParams(
+            QString("OSTUB%1").arg(++Schematic.NumberComponents[OpenStub]),
+            OpenStub, 0, posx, 75);
+        Cshunt.val["Z0"]     = num2str(Specification.minZ, Resistance);
+        Cshunt.val["Length"] = ConvertLengthFromM("mm", L_ci);
+        Schematic.appendComponent(Cshunt);
+      } else if (Specification.TL_implementation ==
+                 TransmissionLineType::MLIN) {
         // Microstrip transmission line
 
         MicrostripClass MSL; // Synthesize MS parameters
 
         MSL.Substrate = Specification.MS_Subs;
-        MSL.synthesizeMicrostrip(Specification.minZ, L_ci*1e3, Specification.fc);
+        MSL.synthesizeMicrostrip(Specification.minZ, L_ci * 1e3,
+                                 Specification.fc);
 
-        double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
-        double MS_Length = MSL.Results.length*1e-3;
+        double MS_Width =
+            MSL.Results.width; // MicrostripClass calculations are in mm. It's
+                               // needed to convert to m
+        double MS_Length = MSL.Results.length * 1e-3;
 
-               // Instantiate component
-        Cshunt.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 0, posx, 75);
+        // Instantiate component
+        Cshunt.setParams(
+            QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+            MicrostripLine, 0, posx, 75);
 
-               // Physical parameters
-        Cshunt.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+        // Physical parameters
+        Cshunt.val["Width"]  = ConvertLengthFromM("mm", MS_Width);
         Cshunt.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
-               // Substrate-related parameters
-        Cshunt.val["er"] = num2str(Specification.MS_Subs.er);
-        Cshunt.val["h"] = num2str(Specification.MS_Subs.height);
+        // Substrate-related parameters
+        Cshunt.val["er"]   = num2str(Specification.MS_Subs.er);
+        Cshunt.val["h"]    = num2str(Specification.MS_Subs.height);
         Cshunt.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-        Cshunt.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+        Cshunt.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
         Cshunt.val["tand"] = num2str(Specification.MS_Subs.tand);
         Schematic.appendComponent(Cshunt);
 
-               // Microstrip open
-        MSOPEN.setParams(QString("MOPEN%1").arg(++Schematic.NumberComponents[MicrostripOpen]), MicrostripOpen, 0, posx, 125);
+        // Microstrip open
+        MSOPEN.setParams(QString("MOPEN%1").arg(
+                             ++Schematic.NumberComponents[MicrostripOpen]),
+                         MicrostripOpen, 0, posx, 125);
 
-               // Physical parameters
+        // Physical parameters
         MSOPEN.val["Width"] = ConvertLengthFromM("mm", MS_Width);
 
-               // Substrate-related parameters
-        MSOPEN.val["er"] = num2str(Specification.MS_Subs.er);
-        MSOPEN.val["h"] = num2str(Specification.MS_Subs.height);
+        // Substrate-related parameters
+        MSOPEN.val["er"]   = num2str(Specification.MS_Subs.er);
+        MSOPEN.val["h"]    = num2str(Specification.MS_Subs.height);
         MSOPEN.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-        MSOPEN.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+        MSOPEN.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
         MSOPEN.val["tand"] = num2str(Specification.MS_Subs.tand);
         Schematic.appendComponent(MSOPEN);
 
-        Schematic.appendWire(Lshunt.ID, 0, Cshunt.ID, 1); // Wire: Shunt inductor to stub
-        Schematic.appendWire(Cshunt.ID, 0, MSOPEN.ID, 0); // Wire: Stub to open circuit model
+        Schematic.appendWire(Lshunt.ID, 0, Cshunt.ID,
+                             1); // Wire: Shunt inductor to stub
+        Schematic.appendWire(Cshunt.ID, 0, MSOPEN.ID,
+                             0); // Wire: Stub to open circuit model
       }
 
       Schematic.appendWire(NI.ID, 0, Lshunt.ID, 1); // Inductor to node
     }
   }
-
 
   if (Cseries_LP->at(j) != 0) {
     Schematic.appendWire(Lshunt.ID, 0, Cshunt.ID, 1);
@@ -1486,12 +1620,14 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
   //***** Connect components from the previous section *****
   if (flip) {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
-    if (Cshunt_LP->at(j) != 0)
+    }
+    if (Cshunt_LP->at(j) != 0) {
       Schematic.appendWire(Cseries.ID, 1, mapIT.key(), mapIT.value());
-    else
+    } else {
       Schematic.appendWire(NI.ID, 1, mapIT.key(), mapIT.value());
+    }
 
     posx += 50;
 
@@ -1499,21 +1635,23 @@ void EllipticFilter::Insert_HighpassSemilumpedMinL_Section(
     UnconnectedComponents[NI.ID] = 0;
   } else {
     //***** Inductor to node *****
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
 
     UnconnectedComponents.clear();
-    if (Cshunt_LP->at(j) != 0)
+    if (Cshunt_LP->at(j) != 0) {
       UnconnectedComponents[Cseries.ID] = 0;
-    else
+    } else {
       UnconnectedComponents[NI.ID] = 0;
+    }
     posx -= 50;
   }
 }
 
 void EllipticFilter::Insert_Bandpass_1_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Lshunt, Ground, Cseries1, Cseries2, Lseries1, Lseries2, Cshunt;
   NodeInfo NI;
@@ -1622,8 +1760,9 @@ void EllipticFilter::Insert_Bandpass_1_Section(
     Schematic.appendWire(Cshunt.ID, 1, NI.ID, 0);
   }
 
-  if (flip)
+  if (flip) {
     posx -= 200;
+  }
 
   if (!flip) {
 
@@ -1687,15 +1826,18 @@ void EllipticFilter::Insert_Bandpass_1_Section(
     }
     posx += 250;
   } else { // Here it connects all the two resonators to the previous node
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(mapIT.key(), mapIT.value(), Lseries2.ID, 0);
     if (Cseries1_BP_T1 != 0) {
-      if (mapIT.hasNext())
+      if (mapIT.hasNext()) {
         mapIT.next();
+      }
       Schematic.appendWire(mapIT.key(), mapIT.value(), Cseries1.ID, 1);
-      if (mapIT.hasNext())
+      if (mapIT.hasNext()) {
         mapIT.next();
+      }
       Schematic.appendWire(mapIT.key(), mapIT.value(), Lseries1.ID, 0);
       posx += 50;
     }
@@ -1730,13 +1872,13 @@ void EllipticFilter::Insert_Bandpass_1_Section(
 }
 
 void EllipticFilter::Insert_Bandpass_2_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Ground, Cshunt1, Cshunt2, Lshunt1, Lshunt2, Lseries, Cseries;
   NodeInfo NI;
 
-  double Kl = Specification.ZS / (2 * M_PI * Specification.fc);
-  double Kc = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
+  double Kl    = Specification.ZS / (2 * M_PI * Specification.fc);
+  double Kc    = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
   double delta = Specification.bw / Specification.fc;
 
   QMapIterator<QString, unsigned int> mapIT(UnconnectedComponents);
@@ -1760,8 +1902,9 @@ void EllipticFilter::Insert_Bandpass_2_Section(
 
     Schematic.appendWire(Lseries.ID, 1, Cseries.ID, 1);
 
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(mapIT.key(), mapIT.value(), Lseries.ID, 0);
 
     UnconnectedComponents.clear();
@@ -1818,8 +1961,9 @@ void EllipticFilter::Insert_Bandpass_2_Section(
     Schematic.NumberComponents[ConnectionNodes]--;
   }
 
-  if (flip)
+  if (flip) {
     posx -= 200;
+  }
 
   // Node
   NI.setParams(
@@ -1836,8 +1980,9 @@ void EllipticFilter::Insert_Bandpass_2_Section(
       Schematic.appendWire(Cseries.ID, 0, NI.ID, 0);
     }
   } else {
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
   }
 
@@ -1923,14 +2068,16 @@ void EllipticFilter::Insert_Bandpass_2_Section(
   //***** Connect components from the previous section *****
   if (flip) {
     if (Lseries_BP_T2 != 0) {
-      if (mapIT.hasNext())
+      if (mapIT.hasNext()) {
         mapIT.next();
+      }
       Schematic.appendWire(mapIT.key(), mapIT.value(), Lseries.ID, 0);
     }
     posx += 250;
   } else {
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
     posx += 50;
   }
@@ -1944,14 +2091,14 @@ void EllipticFilter::Insert_Bandpass_2_Section(
 }
 
 void EllipticFilter::Insert_Bandstop_2_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Lshunt, Ground, Cseries1, Cseries2, Lseries1, Lseries2, Cshunt;
   NodeInfo NI;
   QMapIterator<QString, unsigned int> mapIT(UnconnectedComponents);
 
-  double Kl = Specification.ZS / (2 * M_PI * Specification.fc);
-  double Kc = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
+  double Kl    = Specification.ZS / (2 * M_PI * Specification.fc);
+  double Kc    = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
   double delta = Specification.bw / Specification.fc;
 
   if (CentralSection) {
@@ -2047,8 +2194,9 @@ void EllipticFilter::Insert_Bandstop_2_Section(
     Schematic.appendWire(Cshunt.ID, 1, Lshunt.ID, 0);
   }
 
-  if (flip)
+  if (flip) {
     posx -= 200;
+  }
 
   if (flip) {
     Cseries1.setParams(
@@ -2111,16 +2259,19 @@ void EllipticFilter::Insert_Bandstop_2_Section(
     }
     posx += 250;
   } else { // Here it connects all the two resonators to the previous node
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(mapIT.key(), mapIT.value(), Lseries1.ID, 0);
     if (Cshunt_BS_T2 != 0) {
-      if (mapIT.hasNext())
+      if (mapIT.hasNext()) {
         mapIT.next();
+      }
       Schematic.appendWire(mapIT.key(), mapIT.value(), Lseries2.ID, 0);
     }
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(mapIT.key(), mapIT.value(), Cseries1.ID, 1);
     posx += 50;
   }
@@ -2153,14 +2304,14 @@ void EllipticFilter::Insert_Bandstop_2_Section(
 }
 
 void EllipticFilter::Insert_Bandstop_1_Section(
-    int &posx, QMap<QString, unsigned int> &UnconnectedComponents,
+    int& posx, QMap<QString, unsigned int>& UnconnectedComponents,
     unsigned int j, bool flip, bool CentralSection) {
   ComponentInfo Ground, Cshunt1, Cshunt2, Lshunt1, Lshunt2, Lseries, Cseries;
   NodeInfo NI;
   QMapIterator<QString, unsigned int> mapIT(UnconnectedComponents);
 
-  double Kl = Specification.ZS / (2 * M_PI * Specification.fc);
-  double Kc = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
+  double Kl    = Specification.ZS / (2 * M_PI * Specification.fc);
+  double Kc    = 1 / (2 * M_PI * Specification.fc * Specification.ZS);
   double delta = Specification.bw / Specification.fc;
 
   if (CentralSection) {
@@ -2180,12 +2331,14 @@ void EllipticFilter::Insert_Bandstop_1_Section(
     Lseries.val["L"] = num2str(Lseries_BS_T1, Inductance);
     Schematic.appendComponent(Lseries);
 
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(mapIT.key(), mapIT.value(), Cseries.ID, 1);
 
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(mapIT.key(), mapIT.value(), Lseries.ID, 0);
 
     UnconnectedComponents.clear();
@@ -2242,8 +2395,9 @@ void EllipticFilter::Insert_Bandstop_1_Section(
     Schematic.NumberComponents[ConnectionNodes]--;
   }
 
-  if (flip)
+  if (flip) {
     posx -= 200;
+  }
 
   // Node
   NI.setParams(
@@ -2260,8 +2414,9 @@ void EllipticFilter::Insert_Bandstop_1_Section(
       Schematic.appendWire(NI.ID, 0, Cseries.ID, 0);
     }
   } else {
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
   }
 
@@ -2336,23 +2491,27 @@ void EllipticFilter::Insert_Bandstop_1_Section(
   //***** Connect components from the previous section *****
   if (flip) {
     if (Lseries_BS_T1 != 0) {
-      if (mapIT.hasNext())
+      if (mapIT.hasNext()) {
         mapIT.next();
+      }
       Schematic.appendWire(mapIT.key(), mapIT.value(), Cseries.ID, 1);
 
-      if (mapIT.hasNext())
+      if (mapIT.hasNext()) {
         mapIT.next();
+      }
       Schematic.appendWire(Lseries.ID, 0, mapIT.key(), mapIT.value());
     }
 
     posx += 250;
   } else {
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
 
-    if (mapIT.hasNext())
+    if (mapIT.hasNext()) {
       mapIT.next();
+    }
     Schematic.appendWire(NI.ID, 0, mapIT.key(), mapIT.value());
     posx += 50;
   }

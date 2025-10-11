@@ -17,7 +17,7 @@
 
 #include "./../../component.h"
 
-void Component::paintMicrostripCoupledLines(QPainter *painter) {
+void Component::paintMicrostripCoupledLines(QPainter* painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);
@@ -26,11 +26,11 @@ void Component::paintMicrostripCoupledLines(QPainter *painter) {
   int w = 15, shiftx = 10;
 
   // Fill left microstrip rectangle with dark orange
-  QRect fillRectLeft(-shiftx - w/2, -14, w, 30);
+  QRect fillRectLeft(-shiftx - w / 2, -14, w, 30);
   painter->fillRect(fillRectLeft, QColor(255, 140, 0)); // dark orange
 
   // Fill right microstrip rectangle with dark orange
-  QRect fillRectRight(shiftx - w/2, -14, w, 30);
+  QRect fillRectRight(shiftx - w / 2, -14, w, 30);
   painter->fillRect(fillRectRight, QColor(255, 140, 0)); // dark orange
 
   // Draw left microstrip coupled line
@@ -63,12 +63,17 @@ void Component::paintMicrostripCoupledLines(QPainter *painter) {
   }
 
   QPoint OriginText(20, -10);
-  if (Rotation != 0)
+  if (Rotation != 0) {
     OriginText.setX(-20), OriginText.setY(20);
+  }
 
   // Draw ID and parameters text
-  painter->drawText(QRect(OriginText, QPoint(100, 100)), QString("%1").arg(this->ID));
-  painter->drawText(QRect(OriginText + QPoint(0, 10), QPoint(100, 100)), QString("W=%1").arg(Value["W"]));
-  painter->drawText(QRect(OriginText + QPoint(0, 20), QPoint(100, 100)), QString("L=%1").arg(Value["L"]));
-  painter->drawText(QRect(OriginText + QPoint(0, 30), QPoint(100, 100)), QString("S=%1").arg(Value["S"]));
+  painter->drawText(QRect(OriginText, QPoint(100, 100)),
+                    QString("%1").arg(this->ID));
+  painter->drawText(QRect(OriginText + QPoint(0, 10), QPoint(100, 100)),
+                    QString("W=%1").arg(Value["W"]));
+  painter->drawText(QRect(OriginText + QPoint(0, 20), QPoint(100, 100)),
+                    QString("L=%1").arg(Value["L"]));
+  painter->drawText(QRect(OriginText + QPoint(0, 30), QPoint(100, 100)),
+                    QString("S=%1").arg(Value["S"]));
 }

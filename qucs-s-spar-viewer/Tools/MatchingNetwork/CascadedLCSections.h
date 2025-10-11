@@ -17,10 +17,10 @@
 
 #ifndef CASCADEDLCSECTIONS_H
 #define CASCADEDLCSECTIONS_H
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 
 class CascadedLCSections : public Network {
 public:

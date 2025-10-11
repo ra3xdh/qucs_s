@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef SYMBOL_H
 #define SYMBOL_H
 
@@ -32,18 +32,18 @@ class Symbol : public QGraphicsObject {
 public:
   Symbol(){};
 
-  virtual void addWire(Wire *Wire) = 0;
+  virtual void addWire(Wire* Wire)    = 0;
   virtual QRectF boundingRect() const = 0;
-  virtual QPainterPath shape() const = 0;
-  virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                     QWidget *widget) = 0;
+  virtual QPainterPath shape() const  = 0;
+  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+                     QWidget* widget) = 0;
   virtual QPoint getPortLocation(int) = 0;
 
 protected:
   virtual QVariant itemChange(GraphicsItemChange change,
-                              const QVariant &value) = 0;
-  virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) = 0;
-  virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) = 0;
+                              const QVariant& value)              = 0;
+  virtual void mousePressEvent(QGraphicsSceneMouseEvent* event)   = 0;
+  virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) = 0;
 };
 
 #endif

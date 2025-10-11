@@ -17,7 +17,7 @@
 
 #include "./../component.h"
 
-void Component::paintResistor(QPainter *painter) {
+void Component::paintResistor(QPainter* painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);
@@ -39,7 +39,7 @@ void Component::paintResistor(QPainter *painter) {
   if (Rotation != 0) {
     painter->rotate(-Rotation);
     OriginText.setX(-10), OriginText.setY(10);
-  } 
+  }
 
   painter->setPen(QPen(Qt::black, 1));
   painter->drawText(QRect(OriginText, QPoint(100, 100)),

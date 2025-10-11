@@ -15,14 +15,13 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef QUARTERWAVEFILTERS_H
 #define QUARTERWAVEFILTERS_H
 
-#include "../Filtering/LowpassPrototypeCoeffs.h"
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
+#include "../Filtering/LowpassPrototypeCoeffs.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 

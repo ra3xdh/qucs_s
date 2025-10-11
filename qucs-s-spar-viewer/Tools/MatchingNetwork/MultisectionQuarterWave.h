@@ -18,35 +18,35 @@
 #ifndef MULTISECTIONQUARTERWAVE_H
 #define MULTISECTIONQUARTERWAVE_H
 
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
-#include <vector>
 #include <cmath>
+#include <vector>
 
 class MultisectionQuarterWave : public Network {
 
 public:
-    MultisectionQuarterWave();
-    virtual ~MultisectionQuarterWave();
+  MultisectionQuarterWave();
+  virtual ~MultisectionQuarterWave();
 
-    MultisectionQuarterWave(MatchingNetworkDesignParameters, double);
-    void synthesize();
+  MultisectionQuarterWave(MatchingNetworkDesignParameters, double);
+  void synthesize();
 
 private:
-    struct MatchingNetworkDesignParameters Specs;
+  struct MatchingNetworkDesignParameters Specs;
 
-    // Helper functions
-    int BinomialCoeff(int n, int k);
-    void designBinomial(std::vector<double> &Zs);
-    void designChebyshev(std::vector<double> &Zs);
+  // Helper functions
+  int BinomialCoeff(int n, int k);
+  void designBinomial(std::vector<double>& Zs);
+  void designChebyshev(std::vector<double>& Zs);
 
-    void synthesizeIdealTL(const std::vector<double>& Zi, double lambda4);
-    void synthesizeMicrostripTL(const std::vector<double>& Zi, double lambda4);
+  void synthesizeIdealTL(const std::vector<double>& Zi, double lambda4);
+  void synthesizeMicrostripTL(const std::vector<double>& Zi, double lambda4);
 
-    double f_match;
+  double f_match;
 };
 
 #endif // MULTISECTIONQUARTERWAVE_H

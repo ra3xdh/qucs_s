@@ -25,7 +25,7 @@ void AttenuatorDesigner::TeeAttenuator() {
   NodeInfo NI;
   Components.clear();
   // Design equations
-  double L = pow(10, .1 * Specs.Attenuation);
+  double L  = pow(10, .1 * Specs.Attenuation);
   double R2 = (2 * sqrt(Specs.Zin * Specs.Zout * L)) / (L - 1);
   double R1 = Specs.Zin * ((L + 1) / (L - 1)) - R2;
   double R3 = Specs.Zout * ((L + 1) / (L - 1)) - R2;
@@ -42,36 +42,42 @@ void AttenuatorDesigner::TeeAttenuator() {
   Schematic.appendComponent(TermSparIN);
 
   // 1st series resistor
-  Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 90, 50, 0);
+  Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 90, 50, 0);
   Res1.val["R"] = num2str(R1, Resistance);
   Schematic.appendComponent(Res1);
 
   // Node after R1
-  NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100, 0);
+  NI.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100,
+      0);
   Schematic.appendNode(NI);
   Schematic.appendWire(TermSparIN.ID, 0, Res1.ID, 0); // Terminal to R1
   Schematic.appendWire(Res1.ID, 1, NI.ID, 0);         // R1 to node
 
   // Shunt resistor to ground
-  Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 100, 50);
+  Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 100, 50);
   Res2.val["R"] = num2str(R2, Resistance);
   Schematic.appendComponent(Res2);
-  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 100, 100);
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   0, 100, 100);
   Schematic.appendComponent(Ground);
-  Schematic.appendWire(Res2.ID, 1, NI.ID, 0);         // R2 to node
-  Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);     // R2 to ground
+  Schematic.appendWire(Res2.ID, 1, NI.ID, 0);     // R2 to node
+  Schematic.appendWire(Res2.ID, 0, Ground.ID, 0); // R2 to ground
 
   // 2nd series resistor
-  Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 90, 150, 0);
+  Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 90, 150, 0);
   Res3.val["R"] = num2str(R3, Resistance);
   Schematic.appendComponent(Res3);
 
-  Schematic.appendWire(Res3.ID, 0, NI.ID, 0);         // R3 to output node
+  Schematic.appendWire(Res3.ID, 0, NI.ID, 0); // R3 to output node
 
   // Output terminal
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 200, 0);
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+                      Term, 180, 200, 0);
   TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
-  Schematic.appendWire(TermSpar2.ID, 0, Res3.ID, 1);    // Terminal to output node
+  Schematic.appendWire(TermSpar2.ID, 0, Res3.ID, 1); // Terminal to output node
 }
-

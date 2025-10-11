@@ -34,19 +34,20 @@ void CoupledLineBandpassFilter::synthesize() {
 
   ComponentInfo Coupled_Lines, MS_CTL;
 
-  int N = Specification.order; // Number of elements
+  int N    = Specification.order; // Number of elements
   int posx = 0, posy = 10;
 
   QString PreviousComponent;
 
-  double delta = Specification.bw / Specification.fc; // Fractional bandwidth
-  double Z0 = Specification.ZS;
+  double delta   = Specification.bw / Specification.fc; // Fractional bandwidth
+  double Z0      = Specification.ZS;
   double lambda0 = SPEED_OF_LIGHT / Specification.fc;
-  double l4 = 0.25 * lambda0;
+  double l4      = 0.25 * lambda0;
   std::vector<double> J(N + 1), Z0e(N + 1), Z0o(N + 1);
 
-         // Add Term 1
-  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  // Add Term 1
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specification.ZS, Resistance);
   Schematic.appendComponent(TermSpar1);
   PreviousComponent = TermSpar1.ID;
@@ -54,110 +55,122 @@ void CoupledLineBandpassFilter::synthesize() {
 
   for (int k = 0; k < N; k++) {
     if (k == 0) {                                            // First element
-      J[k] = sqrt(M_PI * delta / (2 * gi[k + 1])) / Z0;      // Eq. 8.121
+      J[k]   = sqrt(M_PI * delta / (2 * gi[k + 1])) / Z0;    // Eq. 8.121
       Z0e[k] = Z0 * (1 + J[k] * Z0 + J[k] * J[k] * Z0 * Z0); // Eq. 8.108a
       Z0o[k] = Z0 * (1 - J[k] * Z0 + J[k] * J[k] * Z0 * Z0); // Eq. 8.108b
 
-             // Set connections
-      if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      // Set connections
+      if (Specification.TL_implementation == TransmissionLineType::Ideal) {
         // Ideal coupled transmission lines
-        Coupled_Lines.setParams(QString("CLIN%1").arg(++Schematic.NumberComponents[CoupledLines]), CoupledLines, 90, posx, posy);
-        Coupled_Lines.val["Ze"] = num2str(Z0e[k], Resistance);
-        Coupled_Lines.val["Zo"] = num2str(Z0o[k], Resistance);
+        Coupled_Lines.setParams(
+            QString("CLIN%1").arg(++Schematic.NumberComponents[CoupledLines]),
+            CoupledLines, 90, posx, posy);
+        Coupled_Lines.val["Ze"]     = num2str(Z0e[k], Resistance);
+        Coupled_Lines.val["Zo"]     = num2str(Z0o[k], Resistance);
         Coupled_Lines.val["Length"] = ConvertLengthFromM("mm", l4);
         Schematic.appendComponent(Coupled_Lines);
         posx += 75;
         posy += 20;
 
-               // Wire: Series capacitor to SPAR term
+        // Wire: Series capacitor to SPAR term
         Schematic.appendWire(Coupled_Lines.ID, 0, TermSpar1.ID, 0);
         PreviousComponent = Coupled_Lines.ID;
-      } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      } else if (Specification.TL_implementation ==
+                 TransmissionLineType::MLIN) {
         // Coupled microstrip lines
 
-               // Microstrip coupled lines
+        // Microstrip coupled lines
         MicrostripClass MSL;
 
         MSL.Substrate = Specification.MS_Subs;
-        MSL.synthesizeCoupledMicrostrip(Z0e[k], Z0o[k], l4*1e3, Specification.fc);
+        MSL.synthesizeCoupledMicrostrip(Z0e[k], Z0o[k], l4 * 1e3,
+                                        Specification.fc);
 
-        double MS_Width = MSL.Results.width;
-        double MS_Length = MSL.Results.length*1e-3;
-        double MS_Gap = MSL.Results.gap;
+        double MS_Width  = MSL.Results.width;
+        double MS_Length = MSL.Results.length * 1e-3;
+        double MS_Gap    = MSL.Results.gap;
 
-               // Instantiate component
-        MS_CTL.setParams(QString("MSCOUP%1").arg(++Schematic.NumberComponents[MicrostripCoupledLines]), MicrostripCoupledLines, 90, posx, posy);
+        // Instantiate component
+        MS_CTL.setParams(
+            QString("MSCOUP%1")
+                .arg(++Schematic.NumberComponents[MicrostripCoupledLines]),
+            MicrostripCoupledLines, 90, posx, posy);
         MS_CTL.val["W"] = ConvertLengthFromM("mm", MS_Width);
         MS_CTL.val["L"] = ConvertLengthFromM("mm", MS_Length);
         MS_CTL.val["S"] = ConvertLengthFromM("mm", MS_Gap);
 
-               // Substrate-related parameters
-        MS_CTL.val["er"] = num2str(Specification.MS_Subs.er);
-        MS_CTL.val["h"] = num2str(Specification.MS_Subs.height);
+        // Substrate-related parameters
+        MS_CTL.val["er"]   = num2str(Specification.MS_Subs.er);
+        MS_CTL.val["h"]    = num2str(Specification.MS_Subs.height);
         MS_CTL.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-        MS_CTL.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+        MS_CTL.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
         MS_CTL.val["tand"] = num2str(Specification.MS_Subs.tand);
         Schematic.appendComponent(MS_CTL);
 
         posx += 75;
         posy += 20;
 
-               // Wire: Series capacitor to SPAR term
+        // Wire: Series capacitor to SPAR term
         Schematic.appendWire(MS_CTL.ID, 0, TermSpar1.ID, 0);
         PreviousComponent = MS_CTL.ID;
-
       }
 
       continue;
     }
 
-    J[k] = (0.5 * M_PI * delta / sqrt(gi[k] * gi[k + 1])) / Z0; // Eq. 8.121
-    Z0e[k] = Z0 * (1 + J[k] * Z0 + J[k] * J[k] * Z0 * Z0);      // Eq. 8.108a
-    Z0o[k] = Z0 * (1 - J[k] * Z0 + J[k] * J[k] * Z0 * Z0);      // Eq. 8.108b
+    J[k]   = (0.5 * M_PI * delta / sqrt(gi[k] * gi[k + 1])) / Z0; // Eq. 8.121
+    Z0e[k] = Z0 * (1 + J[k] * Z0 + J[k] * J[k] * Z0 * Z0);        // Eq. 8.108a
+    Z0o[k] = Z0 * (1 - J[k] * Z0 + J[k] * J[k] * Z0 * Z0);        // Eq. 8.108b
 
-           // Coupled lines
+    // Coupled lines
 
-    if (Specification.TL_implementation == TransmissionLineType::Ideal){
+    if (Specification.TL_implementation == TransmissionLineType::Ideal) {
       // Ideal coupled transmission lines
-      Coupled_Lines.setParams(QString("CLIN%1").arg(++Schematic.NumberComponents[CoupledLines]), CoupledLines, 90, posx, posy);
-      Coupled_Lines.val["Ze"] = num2str(Z0e[k], Resistance);
-      Coupled_Lines.val["Zo"] = num2str(Z0o[k], Resistance);
+      Coupled_Lines.setParams(
+          QString("CLIN%1").arg(++Schematic.NumberComponents[CoupledLines]),
+          CoupledLines, 90, posx, posy);
+      Coupled_Lines.val["Ze"]     = num2str(Z0e[k], Resistance);
+      Coupled_Lines.val["Zo"]     = num2str(Z0o[k], Resistance);
       Coupled_Lines.val["Length"] = ConvertLengthFromM("mm", l4);
       Schematic.appendComponent(Coupled_Lines);
 
-             // Wire: Series capacitor to SPAR term
+      // Wire: Series capacitor to SPAR term
       Schematic.appendWire(Coupled_Lines.ID, 0, PreviousComponent, 2);
 
       PreviousComponent = Coupled_Lines.ID;
       posx += 75;
       posy += 20;
 
-    } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+    } else if (Specification.TL_implementation == TransmissionLineType::MLIN) {
       // Microstrip coupled lines
       MicrostripClass MSL;
 
       MSL.Substrate = Specification.MS_Subs;
-      MSL.synthesizeCoupledMicrostrip(Z0e[k], Z0o[k], l4*1e3, Specification.fc);
+      MSL.synthesizeCoupledMicrostrip(Z0e[k], Z0o[k], l4 * 1e3,
+                                      Specification.fc);
 
-      double MS_Width = MSL.Results.width;
-      double MS_Length = MSL.Results.length*1e-3;
-      double MS_Gap = MSL.Results.gap;
+      double MS_Width  = MSL.Results.width;
+      double MS_Length = MSL.Results.length * 1e-3;
+      double MS_Gap    = MSL.Results.gap;
 
-             // Instantiate component
-      MS_CTL.setParams(QString("MSCOUP%1").arg(++Schematic.NumberComponents[MicrostripCoupledLines]), MicrostripCoupledLines, 90, posx, posy);
+      // Instantiate component
+      MS_CTL.setParams(
+          QString("MSCOUP%1")
+              .arg(++Schematic.NumberComponents[MicrostripCoupledLines]),
+          MicrostripCoupledLines, 90, posx, posy);
       MS_CTL.val["W"] = ConvertLengthFromM("mm", MS_Width);
       MS_CTL.val["L"] = ConvertLengthFromM("mm", MS_Length);
       MS_CTL.val["S"] = ConvertLengthFromM("mm", MS_Gap);
 
-             // Substrate-related parameters
-      MS_CTL.val["er"] = num2str(Specification.MS_Subs.er);
-      MS_CTL.val["h"] = num2str(Specification.MS_Subs.height);
+      // Substrate-related parameters
+      MS_CTL.val["er"]   = num2str(Specification.MS_Subs.er);
+      MS_CTL.val["h"]    = num2str(Specification.MS_Subs.height);
       MS_CTL.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-      MS_CTL.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+      MS_CTL.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
       MS_CTL.val["tand"] = num2str(Specification.MS_Subs.tand);
       Schematic.appendComponent(MS_CTL);
 
-             // Wire: Series capacitor to SPAR term
+      // Wire: Series capacitor to SPAR term
       Schematic.appendWire(MS_CTL.ID, 0, PreviousComponent, 2);
 
       PreviousComponent = MS_CTL.ID;
@@ -166,17 +179,19 @@ void CoupledLineBandpassFilter::synthesize() {
     }
   }
 
-         // Last short stub + C series section
-  J[N] = sqrt(M_PI * delta / (2 * gi[N + 1] * gi[N])) / Z0;
+  // Last short stub + C series section
+  J[N]   = sqrt(M_PI * delta / (2 * gi[N + 1] * gi[N])) / Z0;
   Z0e[N] = Z0 * (1 + J[N] * Z0 + J[N] * J[N] * Z0 * Z0); // Eq. 8.108a
   Z0o[N] = Z0 * (1 - J[N] * Z0 + J[N] * J[N] * Z0 * Z0); // Eq. 8.108b
 
-         // Coupled lines
-  if (Specification.TL_implementation == TransmissionLineType::Ideal){
+  // Coupled lines
+  if (Specification.TL_implementation == TransmissionLineType::Ideal) {
     // Ideal coupled transmission lines
-    Coupled_Lines.setParams(QString("CLIN%1").arg(++Schematic.NumberComponents[CoupledLines]), CoupledLines, 90, posx, posy);
-    Coupled_Lines.val["Ze"] = num2str(Z0e[N], Resistance);
-    Coupled_Lines.val["Zo"] = num2str(Z0o[N], Resistance);
+    Coupled_Lines.setParams(
+        QString("CLIN%1").arg(++Schematic.NumberComponents[CoupledLines]),
+        CoupledLines, 90, posx, posy);
+    Coupled_Lines.val["Ze"]     = num2str(Z0e[N], Resistance);
+    Coupled_Lines.val["Zo"]     = num2str(Z0o[N], Resistance);
     Coupled_Lines.val["Length"] = ConvertLengthFromM("mm", l4);
     Schematic.appendComponent(Coupled_Lines);
 
@@ -185,28 +200,31 @@ void CoupledLineBandpassFilter::synthesize() {
     Schematic.appendWire(PreviousComponent, 2, Coupled_Lines.ID, 0);
     PreviousComponent = Coupled_Lines.ID;
 
-  } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+  } else if (Specification.TL_implementation == TransmissionLineType::MLIN) {
     // Microstrip coupled lines
     MicrostripClass MSL;
 
     MSL.Substrate = Specification.MS_Subs;
-    MSL.synthesizeCoupledMicrostrip(Z0e[N], Z0o[N], l4*1e3, Specification.fc);
+    MSL.synthesizeCoupledMicrostrip(Z0e[N], Z0o[N], l4 * 1e3, Specification.fc);
 
-    double MS_Width = MSL.Results.width;
-    double MS_Length = MSL.Results.length*1e-3;
-    double MS_Gap = MSL.Results.gap;
+    double MS_Width  = MSL.Results.width;
+    double MS_Length = MSL.Results.length * 1e-3;
+    double MS_Gap    = MSL.Results.gap;
 
-           // Instantiate component
-    MS_CTL.setParams(QString("MSCOUP%1").arg(++Schematic.NumberComponents[MicrostripCoupledLines]), MicrostripCoupledLines, 90, posx, posy);
+    // Instantiate component
+    MS_CTL.setParams(
+        QString("MSCOUP%1")
+            .arg(++Schematic.NumberComponents[MicrostripCoupledLines]),
+        MicrostripCoupledLines, 90, posx, posy);
     MS_CTL.val["W"] = ConvertLengthFromM("mm", MS_Width);
     MS_CTL.val["L"] = ConvertLengthFromM("mm", MS_Length);
     MS_CTL.val["S"] = ConvertLengthFromM("mm", MS_Gap);
 
-           // Substrate-related parameters
-    MS_CTL.val["er"] = num2str(Specification.MS_Subs.er);
-    MS_CTL.val["h"] = num2str(Specification.MS_Subs.height);
+    // Substrate-related parameters
+    MS_CTL.val["er"]   = num2str(Specification.MS_Subs.er);
+    MS_CTL.val["h"]    = num2str(Specification.MS_Subs.height);
     MS_CTL.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-    MS_CTL.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+    MS_CTL.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
     MS_CTL.val["tand"] = num2str(Specification.MS_Subs.tand);
     Schematic.appendComponent(MS_CTL);
 
@@ -216,11 +234,12 @@ void CoupledLineBandpassFilter::synthesize() {
     PreviousComponent = MS_CTL.ID;
   }
 
-  if ((int) gi.size() < N + 2) {
-    throw std::runtime_error("gi does not contain enough coefficients (expected N+2).");
+  if ((int)gi.size() < N + 2) {
+    throw std::runtime_error(
+        "gi does not contain enough coefficients (expected N+2).");
   }
 
-         // Add Term 2
+  // Add Term 2
   double k = Specification.ZS;
   if (Specification.UseZverevTables) {
     (!Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
@@ -228,7 +247,9 @@ void CoupledLineBandpassFilter::synthesize() {
     (Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
   }
 
-  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, posy);
+  ComponentInfo TermSpar2(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
+      posy);
   TermSpar2.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar2);
 

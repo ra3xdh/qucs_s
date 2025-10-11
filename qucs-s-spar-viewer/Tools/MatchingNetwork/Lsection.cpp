@@ -14,13 +14,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #include "Lsection.h"
 
 Lsection::Lsection() {}
 
 Lsection::Lsection(MatchingNetworkDesignParameters AS, double freq) {
-  Specs = AS;
+  Specs   = AS;
   f_match = freq;
 }
 
@@ -41,21 +41,25 @@ void Lsection::synthesize() {
   // Complex load
   ComponentInfo Zload;
 
-  if (Specs.sim_path.isEmpty()){
+  if (Specs.sim_path.isEmpty()) {
     // Constant ZL over frequency
-    Zload.setParams(QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]), ComplexImpedance, 0, 175, 50);
+    Zload.setParams(
+        QString("Z%1").arg(++Schematic.NumberComponents[ComplexImpedance]),
+        ComplexImpedance, 0, 175, 50);
     Zload.val["Z"] = num2str(Specs.ZL, Resistance);
   } else {
     // There's a path to a S-parameter file
-    Zload.setParams(QString("SPAR%1").arg(++Schematic.NumberComponents[SPAR_Block]), SPAR_Block, -90, 175, 50);
+    Zload.setParams(
+        QString("SPAR%1").arg(++Schematic.NumberComponents[SPAR_Block]),
+        SPAR_Block, -90, 175, 50);
     Zload.val["Path"] = Specs.sim_path;
   }
   Schematic.appendComponent(Zload);
 
-
-         // GND_ZL
+  // GND_ZL
   ComponentInfo GND_ZL;
-  GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 175, 100);
+  GND_ZL.setParams(QString("GND_ZL%1").arg(++Schematic.NumberComponents[GND]),
+                   GND, 0, 175, 100);
   Schematic.appendComponent(GND_ZL);
 
   // Design equations
@@ -206,5 +210,4 @@ void Lsection::synthesize() {
   }
 
   Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
-
 }

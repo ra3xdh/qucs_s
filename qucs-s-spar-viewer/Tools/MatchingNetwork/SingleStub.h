@@ -14,14 +14,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef SINGLESTUB_H
 #define SINGLESTUB_H
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
-#include "../../Misc/general.h"
 
 class SingleStub : public Network {
 public:

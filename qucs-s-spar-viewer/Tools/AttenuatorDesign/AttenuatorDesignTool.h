@@ -28,13 +28,13 @@
 #include <QRadioButton>
 #include <QWidget>
 
-#include "AttenuatorDesigner.h"
 #include "../../Schematic//Network.h"
+#include "AttenuatorDesigner.h"
 
 class AttenuatorDesignTool : public QWidget {
   Q_OBJECT
 public:
-  AttenuatorDesignTool(QWidget *parent = nullptr);
+  AttenuatorDesignTool(QWidget* parent = nullptr);
   ~AttenuatorDesignTool();
   void design();
   void setPdiss(struct PdissAtt);
@@ -55,7 +55,7 @@ private:
       *FreqScaleCombo;
   QLineEdit *Pdiss_R1_Lineedit, *Pdiss_R2_Lineedit, *Pdiss_R3_Lineedit,
       *Pdiss_R4_Lineedit;
-  QCheckBox *LumpedImplementationCheckbox;
+  QCheckBox* LumpedImplementationCheckbox;
   struct PdissAtt
       Pdiss; // Power dissipated by the resistors. It is calculated in the
              // specific design functions an copied here after the synthesis
@@ -64,13 +64,13 @@ private:
   double getPowerW(double, unsigned int);
   double ConvertPowerFromW(double, unsigned int);
 
-         // Transmission line implementation
-  QLabel *TL_Implementation_Label;
-  QComboBox *TL_Implementation_Combo;
+  // Transmission line implementation
+  QLabel* TL_Implementation_Label;
+  QComboBox* TL_Implementation_Combo;
 
   // Add trace to simulate
-  QLabel *traceNameLabel;
-  QLineEdit *traceNameLineEdit;
+  QLabel* traceNameLabel;
+  QLineEdit* traceNameLineEdit;
 
   QString netlist;
   SchematicContent SchContent;

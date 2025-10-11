@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #include "PowerCombinerDesigner.h"
 
 /*
@@ -26,19 +26,20 @@
  */
 void PowerCombinerDesigner::Recombinant3WayWilkinson() {
   double lambda4 = SPEED_OF_LIGHT / (4 * Specs.freq);
-  double Z1 = Specs.Z0 * 0.72;
-  double Z2 = Specs.Z0 * 0.8;
-  double Z4 = Specs.Z0 * 1.6;
+  double Z1      = Specs.Z0 * 0.72;
+  double Z2      = Specs.Z0 * 0.8;
+  double Z4      = Specs.Z0 * 1.6;
   double R1 = Specs.Z0, R2 = Specs.Z0 * 2;
 
-  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
   TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   ComponentInfo TL1(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 50, 0);
-  TL1.val["Z0"] = num2str(Z1, Resistance);
+  TL1.val["Z0"]     = num2str(Z1, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL1);
 
@@ -53,7 +54,7 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
   ComponentInfo TL2(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 125, -75);
-  TL2.val["Z0"] = num2str(Z2, Resistance);
+  TL2.val["Z0"]     = num2str(Z2, Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL2);
 
@@ -67,7 +68,7 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
   ComponentInfo TL3(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 125, 75);
-  TL3.val["Z0"] = num2str(Z2, Resistance);
+  TL3.val["Z0"]     = num2str(Z2, Resistance);
   TL3.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL3);
 
@@ -90,7 +91,7 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
   ComponentInfo TL4(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 225, -125);
-  TL4.val["Z0"] = num2str(Z2, Resistance);
+  TL4.val["Z0"]     = num2str(Z2, Resistance);
   TL4.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL4);
 
@@ -100,7 +101,9 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
               275, -125);
   Schematic.appendNode(N4);
 
-  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 300, -125);
+  ComponentInfo TermSpar2(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 300,
+      -125);
   TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
@@ -110,7 +113,7 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
   ComponentInfo TL5(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 225, -50);
-  TL5.val["Z0"] = num2str(Z4, Resistance);
+  TL5.val["Z0"]     = num2str(Z4, Resistance);
   TL5.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL5);
 
@@ -134,7 +137,9 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
               275, 0);
   Schematic.appendNode(N8);
 
-  ComponentInfo TermSpar3(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 300, 0);
+  ComponentInfo TermSpar3(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 300,
+      0);
   TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
@@ -144,7 +149,7 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
   ComponentInfo TL6(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 225, 125);
-  TL6.val["Z0"] = num2str(Z2, Resistance);
+  TL6.val["Z0"]     = num2str(Z2, Resistance);
   TL6.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL6);
 
@@ -158,7 +163,7 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
   ComponentInfo TL7(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 225, 50);
-  TL7.val["Z0"] = num2str(Z4, Resistance);
+  TL7.val["Z0"]     = num2str(Z4, Resistance);
   TL7.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL7);
 
@@ -179,7 +184,9 @@ void PowerCombinerDesigner::Recombinant3WayWilkinson() {
   Schematic.appendWire(Ri3.ID, 0, N6.ID, 0);
   Schematic.appendWire(N7.ID, 0, N8.ID, 0);
 
-  ComponentInfo TermSpar4(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 300, 125);
+  ComponentInfo TermSpar4(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 300,
+      125);
   TermSpar4.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar4);
 

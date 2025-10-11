@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #include "PowerCombinerDesigner.h"
 
 void PowerCombinerDesigner::MultistageWilkinson() {
@@ -56,7 +56,8 @@ void PowerCombinerDesigner::MultistageWilkinson() {
   int Ni = 0; // Node index
   (Specs.Implementation == "Lumped LC") ? posy = 75 : posy = 50;
 
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+                      Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -91,7 +92,7 @@ void PowerCombinerDesigner::MultistageWilkinson() {
     TL.setParams(
         QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
         TransmissionLine, 90, posx, 0);
-    TL.val["Z0"] = num2str(Specs.Z0, Resistance);
+    TL.val["Z0"]     = num2str(Specs.Z0, Resistance);
     TL.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
     Schematic.appendComponent(TL);
 
@@ -111,10 +112,11 @@ void PowerCombinerDesigner::MultistageWilkinson() {
         "Lumped LC") // LC elements. Pi CLC equivalent of a lambda/4 line
     {
       double C_;
-      if (i != Specs.Nstages - 1)
+      if (i != Specs.Nstages - 1) {
         C_ = C[i] + C[i + 1];
-      else
+      } else {
         C_ = C[i];
+      }
       // Upper branch
       posx += 50;
 
@@ -223,7 +225,7 @@ void PowerCombinerDesigner::MultistageWilkinson() {
       TL_Upper.setParams(
           QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
           TransmissionLine, 90, posx + 15, -50);
-      TL_Upper.val["Z0"] = num2str(Zlines[i], Resistance);
+      TL_Upper.val["Z0"]     = num2str(Zlines[i], Resistance);
       TL_Upper.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
       Schematic.appendComponent(TL_Upper);
 
@@ -244,7 +246,7 @@ void PowerCombinerDesigner::MultistageWilkinson() {
       TL_Lower.setParams(
           QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
           TransmissionLine, 90, posx + 15, 50);
-      TL_Lower.val["Z0"] = num2str(Zlines[i], Resistance);
+      TL_Lower.val["Z0"]     = num2str(Zlines[i], Resistance);
       TL_Lower.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
       Schematic.appendComponent(TL_Lower);
 
@@ -284,14 +286,16 @@ void PowerCombinerDesigner::MultistageWilkinson() {
 
   // Add the output terminals
   // Upper branch term
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, -posy);
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+                      Term, 180, posx, -posy);
   TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   Schematic.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
 
   // Lower branch term
-  TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, posy);
+  TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+                      Term, 180, posx, posy);
   TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
   Schematic.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
@@ -306,10 +310,10 @@ std::deque<double> PowerCombinerDesigner::calcMultistageWilkinsonIsolators(
   std::deque<double> Risol;
 
   for (int i = 0; i < NStages; i++) {
-    Z_ = abs(Zaux * (Specs.Z0 + Zaux * tanh(gamma * L)) /
-             (Zaux + Specs.Z0 * tanh(gamma * L)));
+    Z_   = abs(Zaux * (Specs.Z0 + Zaux * tanh(gamma * L)) /
+               (Zaux + Specs.Z0 * tanh(gamma * L)));
     Zaux = Zlines[i];
-    R = Specs.Z0 * Z_ / (Z_ - Specs.Z0);
+    R    = Specs.Z0 * Z_ / (Z_ - Specs.Z0);
     Risol.push_front(2 * R);
   }
   return Risol;

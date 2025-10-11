@@ -22,19 +22,19 @@ SchematicContent::SchematicContent() {
   Nodes.clear();
   Wires.clear();
   // Initialize list of components
-  NumberComponents[Capacitor] = 0;
-  NumberComponents[Inductor] = 0;
-  NumberComponents[Term] = 0;
-  NumberComponents[GND] = 0;
-  NumberComponents[ConnectionNodes] = 0;
-  NumberComponents[Resistor] = 0;
+  NumberComponents[Capacitor]        = 0;
+  NumberComponents[Inductor]         = 0;
+  NumberComponents[Term]             = 0;
+  NumberComponents[GND]              = 0;
+  NumberComponents[ConnectionNodes]  = 0;
+  NumberComponents[Resistor]         = 0;
   NumberComponents[TransmissionLine] = 0;
-  NumberComponents[CoupledLines] = 0;
-  NumberComponents[Coupler] = 0;
-  NumberComponents[OpenStub] = 0;
-  NumberComponents[ShortStub] = 0;
-  NumberComponents[SPAR_Block] = 0;
-  NumberWires = 0;
+  NumberComponents[CoupledLines]     = 0;
+  NumberComponents[Coupler]          = 0;
+  NumberComponents[OpenStub]         = 0;
+  NumberComponents[ShortStub]        = 0;
+  NumberComponents[SPAR_Block]       = 0;
+  NumberWires                        = 0;
 }
 
 SchematicContent::~SchematicContent() {}
@@ -44,8 +44,8 @@ SchematicContent::~SchematicContent() {}
 NetworkInfo SchematicContent::getLadder() {
   NetworkInfo NWI;
   std::vector<std::complex<double>> ZS(1), ZL(1);
-  ZS[0] = Str2Complex(Comps[0].val["Z"]);                // Port 1 impedance
-  ZL[0] = Str2Complex(Comps[Comps.size() - 1].val["Z"]); // Port 2 impedance
+  ZS[0]  = Str2Complex(Comps[0].val["Z"]);                // Port 1 impedance
+  ZL[0]  = Str2Complex(Comps[Comps.size() - 1].val["Z"]); // Port 2 impedance
   NWI.ZS = ZS;
   NWI.ZL = ZL;
   NWI.Ladder = Comps;
@@ -55,10 +55,12 @@ NetworkInfo SchematicContent::getLadder() {
 void SchematicContent::assignNetToWiresConnectedToNode(QString NodeID,
                                                        QString net) {
   for (int i = 0; i < Wires.length(); i++) {
-    if (!Wires[i].getNet().isEmpty())
+    if (!Wires[i].getNet().isEmpty()) {
       continue;
-    if ((Wires[i].OriginID == NodeID) || (Wires[i].DestinationID == NodeID))
+    }
+    if ((Wires[i].OriginID == NodeID) || (Wires[i].DestinationID == NodeID)) {
       Wires[i].setNet(net);
+    }
   }
 }
 
@@ -77,8 +79,9 @@ QString SchematicContent::getQucsNetlist() {
   // Check if the wire is connected to ground
   for (int i = 0; i < Wires.length(); i++) {
     if ((Wires[i].OriginID.contains("GND")) ||
-        (Wires[i].DestinationID.contains("GND")))
+        (Wires[i].DestinationID.contains("GND"))) {
       Wires[i].setNet("gnd");
+    }
   }
 
   // We need to find those wires which connect two nodes and
@@ -89,10 +92,11 @@ QString SchematicContent::getQucsNetlist() {
       // Then both nodes must share the same net. In other words, every wire
       // connected to these nodes must share the same net
       QString net_name;
-      if (Wires[i].getNet().isEmpty())
+      if (Wires[i].getNet().isEmpty()) {
         net_name = Wires[i].OriginID;
-      else
+      } else {
         net_name = Wires[i].getNet();
+      }
       // Propagate this net to the wires connected to the above nodes
       assignNetToWiresConnectedToNode(Wires[i].OriginID, net_name);
       assignNetToWiresConnectedToNode(Wires[i].DestinationID, net_name);
@@ -101,8 +105,9 @@ QString SchematicContent::getQucsNetlist() {
 
   for (int i = 0; i < Wires.length(); i++) {
 
-    if (!Wires[i].getNet().isEmpty())
+    if (!Wires[i].getNet().isEmpty()) {
       continue; // The net was already set
+    }
 
     // A wire has two endings. If one of them is connected to a node, then the
     // wire ID takes the name of that node
@@ -122,8 +127,9 @@ QString SchematicContent::getQucsNetlist() {
   // Finally, we hace to look for those wires not connected to a node. Let's set
   // the net = Wire ID
   for (int i = 0; i < Wires.length(); i++) {
-    if (!Wires[i].getNet().isEmpty())
+    if (!Wires[i].getNet().isEmpty()) {
       continue; // The net was already set
+    }
 
     Wires[i].setNet(Wires[i].getID());
   }
@@ -135,8 +141,9 @@ QString SchematicContent::getQucsNetlist() {
   // Now, iterate through the components list. The component name and its
   // connections are recorded in a line in the netlist
   for (int i = 0; i < Comps.length(); i++) {
-    if (Comps[i].Type == GND)
+    if (Comps[i].Type == GND) {
       continue;
+    }
     codestr += Comps[i].getQucsCode(); // Get component code
 
     // Set nodes according to the information updated in the above loop. We need
@@ -147,17 +154,21 @@ QString SchematicContent::getQucsNetlist() {
 
     // Check if the component is a term. In that case, this a 2-port device, but
     // it one of its ports is intrinsically connected to ground
-    if (Comps[i].Type == Term)
+    if (Comps[i].Type == Term) {
       connections[1] = QString("gnd");
-    if (Comps[i].Type == ShortStub)
+    }
+    if (Comps[i].Type == ShortStub) {
       connections[0] = QString("gnd");
-    if (Comps[i].Type == OpenStub)
+    }
+    if (Comps[i].Type == OpenStub) {
       connections[0] = QString("NOPEN%1").arg(++open_counter);
+    }
 
     int num_ports = Comps[i].getNumberOfPorts();
     for (int k = 0; k < Wires.length(); k++) {
-      if (connection_counter == num_ports)
+      if (connection_counter == num_ports) {
         break;
+      }
       if (Wires[k].DestinationID == Comps[i].ID) {
         connections[Wires[k].PortDestination] = Wires[k].getNet();
         connection_counter++;
@@ -171,8 +182,9 @@ QString SchematicContent::getQucsNetlist() {
     // the other ports are opened.
     if (connection_counter < num_ports) {
       for (int i = 0; i < num_ports; i++) {
-        if (connections[i].isEmpty())
+        if (connections[i].isEmpty()) {
           connections[i] = QString("NOPEN%1").arg(++open_counter);
+        }
       }
     }
 
@@ -188,10 +200,10 @@ QString SchematicContent::getQucsNetlist() {
   return codestr;
 }
 
-
 QString SchematicContent::getSParameterNetlist() {
   if (Comps.isEmpty()) {
-    return netlist; // This is used in case the network is defined using a plain text netlist
+    return netlist; // This is used in case the network is defined using a plain
+                    // text netlist
   }
 
   netlist.clear(); // Clear previous netlist
@@ -200,14 +212,16 @@ QString SchematicContent::getSParameterNetlist() {
 
   // Find wires connected to ground
   for (int i = 0; i < Wires.length(); i++) {
-    if ((Wires[i].OriginID.contains("GND")) || (Wires[i].DestinationID.contains("GND"))) {
+    if ((Wires[i].OriginID.contains("GND")) ||
+        (Wires[i].DestinationID.contains("GND"))) {
       Wires[i].setNet("0"); // Use node 0 for ground in SPICE format
     }
   }
 
   // Find wires connecting two nodes and assign same net
   for (int i = 0; i < Wires.length(); i++) {
-    if ((Wires[i].OriginID.at(0) == 'N') && (Wires[i].DestinationID.at(0) == 'N')) {
+    if ((Wires[i].OriginID.at(0) == 'N') &&
+        (Wires[i].DestinationID.at(0) == 'N')) {
       QString net_name;
       if (Wires[i].getNet().isEmpty()) {
         net_name = Wires[i].OriginID;
@@ -251,7 +265,7 @@ QString SchematicContent::getSParameterNetlist() {
   int nodeCounter = 1; // Start from 1, 0 is reserved for ground
 
   // Reserve node 0 for ground
-  netToNodeMap["0"] = 0;
+  netToNodeMap["0"]   = 0;
   netToNodeMap["gnd"] = 0;
 
   // Assign node numbers to all nets
@@ -304,8 +318,8 @@ QString SchematicContent::getSParameterNetlist() {
     switch (Comps[i].Type) {
     case Resistor:
       if (connections.size() >= 2) {
-        int node1 = netToNodeMap.value(connections[0], 0);
-        int node2 = netToNodeMap.value(connections[1], 0);
+        int node1     = netToNodeMap.value(connections[0], 0);
+        int node2     = netToNodeMap.value(connections[1], 0);
         QString value = Comps[i].val.contains("R") ? Comps[i].val["R"] : "50";
         componentLine = QString("%1 %2 %3 %4\n")
                             .arg(Comps[i].ID)
@@ -319,7 +333,8 @@ QString SchematicContent::getSParameterNetlist() {
       if (connections.size() >= 2) {
         int node1 = netToNodeMap.value(connections[0], 0);
         int node2 = netToNodeMap.value(connections[1], 0);
-        QString value = Comps[i].val.contains("C") ? Comps[i].val["C"] : "1e-12";
+        QString value =
+            Comps[i].val.contains("C") ? Comps[i].val["C"] : "1e-12";
         componentLine = QString("%1 %2 %3 %4\n")
                             .arg(Comps[i].ID)
                             .arg(node1)
@@ -330,8 +345,8 @@ QString SchematicContent::getSParameterNetlist() {
 
     case Inductor:
       if (connections.size() >= 2) {
-        int node1 = netToNodeMap.value(connections[0], 0);
-        int node2 = netToNodeMap.value(connections[1], 0);
+        int node1     = netToNodeMap.value(connections[0], 0);
+        int node2     = netToNodeMap.value(connections[1], 0);
         QString value = Comps[i].val.contains("L") ? Comps[i].val["L"] : "1e-9";
         componentLine = QString("%1 %2 %3 %4\n")
                             .arg(Comps[i].ID)
@@ -343,8 +358,8 @@ QString SchematicContent::getSParameterNetlist() {
 
     case ComplexImpedance:
       if (connections.size() >= 2) {
-        int node1 = netToNodeMap.value(connections[0], 0);
-        int node2 = netToNodeMap.value(connections[1], 0);
+        int node1     = netToNodeMap.value(connections[0], 0);
+        int node2     = netToNodeMap.value(connections[1], 0);
         QString value = Comps[i].val.contains("Z") ? Comps[i].val["Z"] : "50";
         static const QRegularExpression whitespaceRegex("\\s");
         value = value.remove(whitespaceRegex); // Remove blank spaces
@@ -361,16 +376,15 @@ QString SchematicContent::getSParameterNetlist() {
       // Terminal/Port
       if (connections.size() >= 1) {
         int node = netToNodeMap.value(connections[0], 1);
-        QString impedance = Comps[i].val.contains("Z") ? Comps[i].val["Z"] : "50";
+        QString impedance =
+            Comps[i].val.contains("Z") ? Comps[i].val["Z"] : "50";
         // Change component ID to start with 'P' for port
         QString portID = Comps[i].ID;
         if (portID.at(0) != 'P') {
           portID = "P" + portID.mid(1);
         }
-        componentLine = QString("%1 %2 %3\n")
-                            .arg(portID)
-                            .arg(node)
-                            .arg(impedance);
+        componentLine =
+            QString("%1 %2 %3\n").arg(portID).arg(node).arg(impedance);
       }
       break;
 
@@ -382,7 +396,7 @@ QString SchematicContent::getSParameterNetlist() {
         int node1 = netToNodeMap.value(connections[0], 0);
         int node2 = netToNodeMap.value(connections[1], 0);
 
-        QString Z0 = Comps[i].val["Z0"];
+        QString Z0     = Comps[i].val["Z0"];
         QString Length = Comps[i].val["Length"];
 
         QString TL_ID = Comps[i].ID;
@@ -400,16 +414,16 @@ QString SchematicContent::getSParameterNetlist() {
         int node1 = netToNodeMap.value(connections[0], 0);
         int node2 = netToNodeMap.value(connections[1], 0);
 
-        QString Width = Comps[i].val["Width"];
+        QString Width  = Comps[i].val["Width"];
         QString Length = Comps[i].val["Length"];
-        QString er = Comps[i].val["er"];
-        QString h = Comps[i].val["h"];
-        QString cond = Comps[i].val["cond"];
-        QString th = Comps[i].val["th"];
-        QString tand = Comps[i].val["tand"];
+        QString er     = Comps[i].val["er"];
+        QString h      = Comps[i].val["h"];
+        QString cond   = Comps[i].val["cond"];
+        QString th     = Comps[i].val["th"];
+        QString tand   = Comps[i].val["tand"];
 
         QString MLIN_ID = Comps[i].ID;
-        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
+        componentLine   = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
                             .arg(MLIN_ID)
                             .arg(node1)
                             .arg(node2)
@@ -419,8 +433,7 @@ QString SchematicContent::getSParameterNetlist() {
                             .arg(h)
                             .arg(cond)
                             .arg(th)
-                            .arg(tand)
-            ;
+                            .arg(tand);
       }
 
       break;
@@ -453,13 +466,13 @@ QString SchematicContent::getSParameterNetlist() {
           node4 = nodeCounter;
         }
 
-        QString W = Comps[i].val["W"];
-        QString L = Comps[i].val["L"];
-        QString S = Comps[i].val["S"];
-        QString er = Comps[i].val["er"];
-        QString h = Comps[i].val["h"];
+        QString W    = Comps[i].val["W"];
+        QString L    = Comps[i].val["L"];
+        QString S    = Comps[i].val["S"];
+        QString er   = Comps[i].val["er"];
+        QString h    = Comps[i].val["h"];
         QString cond = Comps[i].val["cond"];
-        QString th = Comps[i].val["th"];
+        QString th   = Comps[i].val["th"];
         QString tand = Comps[i].val["tand"];
 
         QString MLIN_ID = Comps[i].ID;
@@ -486,14 +499,14 @@ QString SchematicContent::getSParameterNetlist() {
         int node1 = netToNodeMap.value(connections[0], 0);
 
         QString Width = Comps[i].val["Width"];
-        QString er = Comps[i].val["er"];
-        QString h = Comps[i].val["h"];
-        QString cond = Comps[i].val["cond"];
-        QString th = Comps[i].val["th"];
-        QString tand = Comps[i].val["tand"];
+        QString er    = Comps[i].val["er"];
+        QString h     = Comps[i].val["h"];
+        QString cond  = Comps[i].val["cond"];
+        QString th    = Comps[i].val["th"];
+        QString tand  = Comps[i].val["tand"];
 
         QString MLIN_ID = Comps[i].ID;
-        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
+        componentLine   = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
                             .arg(MLIN_ID)
                             .arg(node1)
                             .arg(Width)
@@ -501,28 +514,26 @@ QString SchematicContent::getSParameterNetlist() {
                             .arg(h)
                             .arg(cond)
                             .arg(th)
-                            .arg(tand)
-            ;
+                            .arg(tand);
       }
 
       break;
-
 
     case MicrostripStep:
       if (connections.size() >= 2) {
         int node1 = netToNodeMap.value(connections[0], 0);
         int node2 = netToNodeMap.value(connections[1], 0);
 
-        QString W1 = Comps[i].val["W1"];
-        QString W2 = Comps[i].val["W2"];
-        QString er = Comps[i].val["er"];
-        QString h = Comps[i].val["h"];
+        QString W1   = Comps[i].val["W1"];
+        QString W2   = Comps[i].val["W2"];
+        QString er   = Comps[i].val["er"];
+        QString h    = Comps[i].val["h"];
         QString cond = Comps[i].val["cond"];
-        QString th = Comps[i].val["th"];
+        QString th   = Comps[i].val["th"];
         QString tand = Comps[i].val["tand"];
 
         QString MLIN_ID = Comps[i].ID;
-        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
+        componentLine   = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
                             .arg(MLIN_ID)
                             .arg(node1)
                             .arg(node2)
@@ -532,27 +543,25 @@ QString SchematicContent::getSParameterNetlist() {
                             .arg(h)
                             .arg(cond)
                             .arg(th)
-                            .arg(tand)
-            ;
+                            .arg(tand);
       }
 
       break;
-
 
     case MicrostripVia:
       if (connections.size() >= 1) {
         int node1 = netToNodeMap.value(connections[0], 0);
 
-        QString D = Comps[i].val["D"];
-        QString N = Comps[i].val["N"];
-        QString er = Comps[i].val["er"];
-        QString h = Comps[i].val["h"];
+        QString D    = Comps[i].val["D"];
+        QString N    = Comps[i].val["N"];
+        QString er   = Comps[i].val["er"];
+        QString h    = Comps[i].val["h"];
         QString cond = Comps[i].val["cond"];
-        QString th = Comps[i].val["th"];
+        QString th   = Comps[i].val["th"];
         QString tand = Comps[i].val["tand"];
 
         QString MLIN_ID = Comps[i].ID;
-        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9\n")
+        componentLine   = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9\n")
                             .arg(MLIN_ID)
                             .arg(node1)
                             .arg(D)
@@ -561,12 +570,10 @@ QString SchematicContent::getSParameterNetlist() {
                             .arg(h)
                             .arg(cond)
                             .arg(th)
-                            .arg(tand)
-            ;
+                            .arg(tand);
       }
 
       break;
-
 
     case SPAR_Block:
       // Treat as resistor with characteristic impedance for now
@@ -574,37 +581,36 @@ QString SchematicContent::getSParameterNetlist() {
         int node1 = netToNodeMap.value(connections[0], 0);
         int node2 = netToNodeMap.value(connections[1], 0);
 
-
-        QString path = Comps[i].val["Path"];
+        QString path    = Comps[i].val["Path"];
         QString SPAR_ID = Comps[i].ID;
 
         if (path.isEmpty()) {
           // Hardcoded S-par data
-        QString S11r = Comps[i].val["S11r"];
-        QString S11i = Comps[i].val["S11i"];
+          QString S11r = Comps[i].val["S11r"];
+          QString S11i = Comps[i].val["S11i"];
 
-        QString S12r = Comps[i].val["S12r"];
-        QString S12i = Comps[i].val["S12i"];
+          QString S12r = Comps[i].val["S12r"];
+          QString S12i = Comps[i].val["S12i"];
 
-        QString S21r = Comps[i].val["S21r"];
-        QString S21i = Comps[i].val["S21i"];
+          QString S21r = Comps[i].val["S21r"];
+          QString S21i = Comps[i].val["S21i"];
 
-        QString S22r = Comps[i].val["S22r"];
-        QString S22i = Comps[i].val["S22i"];
+          QString S22r = Comps[i].val["S22r"];
+          QString S22i = Comps[i].val["S22i"];
 
-
-        componentLine = QString("%1 %2 %3 (%4,%5) (%6,%7); (%8,%9) (%10,%11)\n")
-                            .arg(SPAR_ID)
-                            .arg(node1)
-                            .arg(node2)
-                            .arg(S11r)
-                            .arg(S11i)
-                            .arg(S12r)
-                            .arg(S12i)
-                            .arg(S21r)
-                            .arg(S21i)
-                            .arg(S22r)
-                            .arg(S22i);
+          componentLine =
+              QString("%1 %2 %3 (%4,%5) (%6,%7); (%8,%9) (%10,%11)\n")
+                  .arg(SPAR_ID)
+                  .arg(node1)
+                  .arg(node2)
+                  .arg(S11r)
+                  .arg(S11i)
+                  .arg(S12r)
+                  .arg(S12i)
+                  .arg(S21r)
+                  .arg(S21i)
+                  .arg(S22r)
+                  .arg(S22i);
         } else {
           // S-parameter file
           componentLine = QString("%1 %2 %3 %4\n")
@@ -643,12 +649,12 @@ QString SchematicContent::getSParameterNetlist() {
         node4 = nodeCounter;
       }
 
-      QString Z0 = Comps[i].val["Z0"]; // Reference impedance
-      QString k = Comps[i].val["k"]; // Coupling factor
+      QString Z0    = Comps[i].val["Z0"];    // Reference impedance
+      QString k     = Comps[i].val["k"];     // Coupling factor
       QString Phase = Comps[i].val["phase"]; // Coupler phase shift
 
       QString COUP_ID = Comps[i].ID;
-      componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
+      componentLine   = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
                           .arg(COUP_ID)
                           .arg(node1)
                           .arg(node2)
@@ -687,12 +693,12 @@ QString SchematicContent::getSParameterNetlist() {
         node4 = nodeCounter;
       }
 
-      QString Z0e = Comps[i].val["Ze"];
-      QString Z0o = Comps[i].val["Zo"];
+      QString Z0e    = Comps[i].val["Ze"];
+      QString Z0o    = Comps[i].val["Zo"];
       QString Length = Comps[i].val["Length"];
 
       QString CLIN_ID = Comps[i].ID;
-      componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
+      componentLine   = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
                           .arg(CLIN_ID)
                           .arg(node1)
                           .arg(node2)
@@ -701,8 +707,7 @@ QString SchematicContent::getSParameterNetlist() {
                           .arg(Z0e)
                           .arg(Z0o)
                           .arg(Length);
-    }
-      break;
+    } break;
 
     default:
       // Skip unsupported components
@@ -717,7 +722,6 @@ QString SchematicContent::getSParameterNetlist() {
 
   return netlist;
 }
-
 
 void SchematicContent::setNetlist(QString netlist) {
   this->netlist = netlist;
@@ -749,32 +753,46 @@ void SchematicContent::appendWire(QString O, int ON, QString D, int DN,
   Wires.append(WI);
 }
 
-void SchematicContent::appendNode(struct NodeInfo N) { Nodes.append(N); }
+void SchematicContent::appendNode(struct NodeInfo N) {
+  Nodes.append(N);
+}
 
-QList<ComponentInfo> SchematicContent::getComponents() { return Comps; }
-void SchematicContent::setComponents(QList<ComponentInfo> C){Comps = C;}
+QList<ComponentInfo> SchematicContent::getComponents() {
+  return Comps;
+}
+void SchematicContent::setComponents(QList<ComponentInfo> C) {
+  Comps = C;
+}
 
+QList<struct WireInfo> SchematicContent::getWires() {
+  return Wires;
+}
 
-QList<struct WireInfo> SchematicContent::getWires() { return Wires; }
-
-QList<struct NodeInfo> SchematicContent::getNodes() { return Nodes; }
-void SchematicContent::setNodes(QList<NodeInfo> N){
+QList<struct NodeInfo> SchematicContent::getNodes() {
+  return Nodes;
+}
+void SchematicContent::setNodes(QList<NodeInfo> N) {
   Nodes = N;
 }
 
-QList<QGraphicsTextItem *> SchematicContent::getTexts() { return Texts; }
+QList<QGraphicsTextItem*> SchematicContent::getTexts() {
+  return Texts;
+}
 
-double SchematicContent::getZin() { return Comps[0].val["Z"].toDouble(); }
+double SchematicContent::getZin() {
+  return Comps[0].val["Z"].toDouble();
+}
 double SchematicContent::getZout() {
   return Comps[Comps.size() - 1].val["Z"].toDouble();
 }
 
-QString SchematicContent::getZinString() { return Comps[0].val["Z"]; }
+QString SchematicContent::getZinString() {
+  return Comps[0].val["Z"];
+}
 QString SchematicContent::getZoutString() {
   return Comps[Comps.size() - 1].val["Z"];
 }
 
-
-void SchematicContent::appendText(QGraphicsTextItem *text) {
+void SchematicContent::appendText(QGraphicsTextItem* text) {
   Texts.append(text);
 }

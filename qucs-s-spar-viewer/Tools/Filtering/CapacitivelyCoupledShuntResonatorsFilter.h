@@ -18,11 +18,11 @@
 #ifndef CAPACITIVELYCOUPLEDSHUNTRESONATORS_H
 #define CAPACITIVELYCOUPLEDSHUNTRESONATORS_H
 
-#include "LowpassPrototypeCoeffs.h"
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
+#include "LowpassPrototypeCoeffs.h"
 #include <QPen>
 
 class CapacitivelyCoupledShuntResonatorsFilter : public Network {

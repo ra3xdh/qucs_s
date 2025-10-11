@@ -17,7 +17,7 @@
 
 #include "./../component.h"
 
-void Component::paintTerm(QPainter *painter) {
+void Component::paintTerm(QPainter* painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }
@@ -37,7 +37,9 @@ void Component::paintTerm(QPainter *painter) {
     OriginText_x = 5;
   }
 
-
-  painter->drawText(QRect(OriginText_x, -10, 100, 100), QString("%1").arg(this->ID));
-  painter->drawText( QRect(OriginText_x, 0, 100, 100),  QString("%1").arg(Value["Z"].replace("Ohm", QChar(0xa9, 0x03))));
+  painter->drawText(QRect(OriginText_x, -10, 100, 100),
+                    QString("%1").arg(this->ID));
+  painter->drawText(
+      QRect(OriginText_x, 0, 100, 100),
+      QString("%1").arg(Value["Z"].replace("Ohm", QChar(0xa9, 0x03))));
 }

@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #include "PowerCombinerDesigner.h"
 
 /*
@@ -32,7 +32,8 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
 
   double lambda4 = SPEED_OF_LIGHT / (4 * Specs.freq);
 
-  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -25, 0);
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -25, 0);
   TermSpar1.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -45,7 +46,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   ComponentInfo TL1(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 50, 0);
-  TL1.val["Z0"] = num2str(Z1, Resistance);
+  TL1.val["Z0"]     = num2str(Z1, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL1);
 
@@ -59,7 +60,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   ComponentInfo TL2(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 50, -100);
-  TL2.val["Z0"] = num2str(Z1, Resistance);
+  TL2.val["Z0"]     = num2str(Z1, Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL2);
 
@@ -82,7 +83,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   ComponentInfo TL3(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 50, 100);
-  TL3.val["Z0"] = num2str(Z1, Resistance);
+  TL3.val["Z0"]     = num2str(Z1, Resistance);
   TL3.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL3);
 
@@ -105,7 +106,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   ComponentInfo TL4(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 150, 0);
-  TL4.val["Z0"] = num2str(Z2, Resistance);
+  TL4.val["Z0"]     = num2str(Z2, Resistance);
   TL4.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL4);
 
@@ -116,7 +117,9 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   Schematic.appendWire(TL4.ID, 0, N1.ID, 0);
   Schematic.appendWire(TL4.ID, 1, N4.ID, 0);
 
-  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 225, 0);
+  ComponentInfo TermSpar2(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 225,
+      0);
   TermSpar2.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
@@ -125,7 +128,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   ComponentInfo TL5(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 150, -100);
-  TL5.val["Z0"] = num2str(Z2, Resistance);
+  TL5.val["Z0"]     = num2str(Z2, Resistance);
   TL5.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL5);
 
@@ -142,7 +145,9 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   Ri3.val["R"] = num2str(R2, Resistance);
   Schematic.appendComponent(Ri3);
 
-  ComponentInfo TermSpar3(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 225, -100);
+  ComponentInfo TermSpar3(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 225,
+      -100);
   TermSpar3.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
@@ -153,7 +158,7 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   ComponentInfo TL6(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 150, 100);
-  TL6.val["Z0"] = num2str(Z2, Resistance);
+  TL6.val["Z0"]     = num2str(Z2, Resistance);
   TL6.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL6);
 
@@ -170,7 +175,9 @@ void PowerCombinerDesigner::Wilkinson3Way_ImprovedIsolation() {
   Ri4.val["R"] = num2str(R2, Resistance);
   Schematic.appendComponent(Ri4);
 
-  ComponentInfo TermSpar4(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 225, 100);
+  ComponentInfo TermSpar4(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 225,
+      100);
   TermSpar4.val["Z0"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar4);
 

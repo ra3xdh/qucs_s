@@ -18,32 +18,34 @@
 
 #include "./../../SParameterCalculator.h"
 
-void SParameterCalculator::addMicrostripStepToAdmittance(vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+void SParameterCalculator::addMicrostripStepToAdmittance(
+    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
   // Extract microstrip step parameters
   int node1 = comp.nodes[0];
   int node2 = comp.nodes[1];
 
   double W1 = comp.value.value("W1");      // Width of first section in meters
   double W2 = comp.value.value("W2");      // Width of second section in meters
-  double h = comp.value.value("h");        // Substrate height in meters
+  double h  = comp.value.value("h");       // Substrate height in meters
   double er = comp.value.value("er");      // Relative permittivity
-  double t = comp.value.value("th", 0.0);  // Conductor thickness (optional)
+  double t  = comp.value.value("th", 0.0); // Conductor thickness (optional)
 
-         // Default model names (hardcoded for now, can be made configurable later)
+  // Default model names (hardcoded for now, can be made configurable later)
   string SModel = "Hammerstad";
   string DModel = "Kirschning";
 
-         // Calculate Z-parameters for the step discontinuity
+  // Calculate Z-parameters for the step discontinuity
   Complex z11, z12, z21, z22;
-  calcMicrostripStepZ(W1, W2, h, er, t, frequency, SModel, DModel, z11, z12, z21, z22);
+  calcMicrostripStepZ(W1, W2, h, er, t, frequency, SModel, DModel, z11, z12,
+                      z21, z22);
 
-         // Convert Z-parameters to Y-parameters
-         // For a 2-port: Y = Z^(-1)
+  // Convert Z-parameters to Y-parameters
+  // For a 2-port: Y = Z^(-1)
   Complex det = z11 * z22 - z12 * z21;
 
-         // Avoid division by zero
+  // Avoid division by zero
   if (abs(det) < 1e-15) {
-    return;  // Skip this component if singular
+    return; // Skip this component if singular
   }
 
   Complex y11 = z22 / det;
@@ -51,53 +53,56 @@ void SParameterCalculator::addMicrostripStepToAdmittance(vector<vector<Complex>>
   Complex y21 = -z21 / det;
   Complex y22 = z11 / det;
 
-         // Add to admittance matrix
+  // Add to admittance matrix
   if (node1 > 0) {
-    Y[node1-1][node1-1] += y11;
+    Y[node1 - 1][node1 - 1] += y11;
   }
 
   if (node2 > 0) {
-    Y[node2-1][node2-1] += y22;
+    Y[node2 - 1][node2 - 1] += y22;
   }
 
   if (node1 > 0 && node2 > 0) {
-    Y[node1-1][node2-1] += y12;
-    Y[node2-1][node1-1] += y21;
+    Y[node1 - 1][node2 - 1] += y12;
+    Y[node2 - 1][node1 - 1] += y21;
   }
 }
 
-void SParameterCalculator::calcMicrostripStepZ(double W1, double W2, double h, double er, double t,
-                                               double frequency, const string& SModel, const string& DModel,
-                                               Complex& z11, Complex& z12, Complex& z21, Complex& z22) {
+void SParameterCalculator::calcMicrostripStepZ(
+    double W1, double W2, double h, double er, double t, double frequency,
+    const string& SModel, const string& DModel, Complex& z11, Complex& z12,
+    Complex& z21, Complex& z22) {
   // Compute parallel capacitance
   double t1 = log10(er);
   double t2 = W1 / W2;
   double Cs = sqrt(W1 * W2) * (t2 * (10.1 * t1 + 2.33) - 12.6 * t1 - 3.17);
 
-         // Compute series inductance
-  t1 = log10(t2);
-  t2 = t2 - 1.0;
+  // Compute series inductance
+  t1        = log10(t2);
+  t2        = t2 - 1.0;
   double Ls = h * (t2 * (40.5 + 0.2 * t2) - 75.0 * t1);
 
-         // Calculate line parameters for W1
+  // Calculate line parameters for W1
   double ZlEff1, ErEff1, WEff1, ZlEffFreq1, ErEffFreq1;
   analyseQuasiStatic(W1, h, t, er, SModel, ZlEff1, ErEff1, WEff1);
-  analyseDispersion(W1, h, er, ZlEff1, ErEff1, frequency, DModel, ZlEffFreq1, ErEffFreq1);
+  analyseDispersion(W1, h, er, ZlEff1, ErEff1, frequency, DModel, ZlEffFreq1,
+                    ErEffFreq1);
   double L1 = ZlEffFreq1 * sqrt(ErEffFreq1) / C0;
 
-         // Calculate line parameters for W2
+  // Calculate line parameters for W2
   double ZlEff2, ErEff2, WEff2, ZlEffFreq2, ErEffFreq2;
   analyseQuasiStatic(W2, h, t, er, SModel, ZlEff2, ErEff2, WEff2);
-  analyseDispersion(W2, h, er, ZlEff2, ErEff2, frequency, DModel, ZlEffFreq2, ErEffFreq2);
+  analyseDispersion(W2, h, er, ZlEff2, ErEff2, frequency, DModel, ZlEffFreq2,
+                    ErEffFreq2);
   double L2 = ZlEffFreq2 * sqrt(ErEffFreq2) / C0;
 
-         // Normalize series inductance
+  // Normalize series inductance
   Ls /= (L1 + L2);
   L1 *= Ls;
   L2 *= Ls;
 
-         // Build Z-parameter matrix
-         // z21 = -j / (2*pi*f*Cs) * 0.5e12 (Cs is in fF)
+  // Build Z-parameter matrix
+  // z21 = -j / (2*pi*f*Cs) * 0.5e12 (Cs is in fF)
   Complex z21_val = Complex(0.0, -0.5e12 / (M_PI * frequency * Cs));
 
   // z11 = j*2*pi*f*L1 + z21 (L1 is in nH)

@@ -19,7 +19,9 @@
 
 EndCoupled::EndCoupled() {}
 
-EndCoupled::EndCoupled(FilterSpecifications FS) { Specification = FS; }
+EndCoupled::EndCoupled(FilterSpecifications FS) {
+  Specification = FS;
+}
 
 EndCoupled::~EndCoupled() {}
 
@@ -31,7 +33,7 @@ void EndCoupled::synthesize() {
   std::deque<double> gi = LP_coeffs.getCoefficients();
   ComponentInfo TL, Cseries;
 
-  int N = Specification.order; // Number of elements
+  int N    = Specification.order; // Number of elements
   int posx = 0;
   QString PreviousComponent;
 
@@ -42,7 +44,8 @@ void EndCoupled::synthesize() {
   double lambda_g0 = SPEED_OF_LIGHT / Specification.fc;
 
   // Add Term 1
-  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specification.ZS, Resistance);
   Schematic.appendComponent(TermSpar1);
   PreviousComponent = TermSpar1.ID;
@@ -59,48 +62,54 @@ void EndCoupled::synthesize() {
       }
     }
 
-    B = J / (1 - J * J);
+    B     = J / (1 - J * J);
     theta = M_PI - .5 * (atan(2 * Baux) + atan(2 * B));
 
     Baux = B;
     J /= Z0;
     B /= Z0;
 
-    C = B / w0;
+    C         = B / w0;
     TL_length = theta * lambda_g0 / (2 * M_PI); // - delta_e1 - delta_e2;
 
     if (k > 0) {
       // Transmission line
-      if (Specification.TL_implementation == TransmissionLineType::Ideal){
+      if (Specification.TL_implementation == TransmissionLineType::Ideal) {
         // Ideal transmission line
-      TL.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, posx, 0);
-      TL.val["Z0"] = num2str(Z0, Resistance);
-      TL.val["Length"] = ConvertLengthFromM("mm", TL_length);
+        TL.setParams(QString("TLIN%1").arg(
+                         ++Schematic.NumberComponents[TransmissionLine]),
+                     TransmissionLine, 90, posx, 0);
+        TL.val["Z0"]     = num2str(Z0, Resistance);
+        TL.val["Length"] = ConvertLengthFromM("mm", TL_length);
 
-      } else if (Specification.TL_implementation == TransmissionLineType::MLIN){
+      } else if (Specification.TL_implementation ==
+                 TransmissionLineType::MLIN) {
         // Microstrip transmission line
         MicrostripClass MSL; // Synthesize MS parameters
 
         MSL.Substrate = Specification.MS_Subs;
-        MSL.synthesizeMicrostrip(Z0, TL_length*1e3, Specification.fc);
+        MSL.synthesizeMicrostrip(Z0, TL_length * 1e3, Specification.fc);
 
-        double MS_Width = MSL.Results.width; // MicrostripClass calculations are in mm. It's needed to convert to m
-        double MS_Length = MSL.Results.length*1e-3;
+        double MS_Width =
+            MSL.Results.width; // MicrostripClass calculations are in mm. It's
+                               // needed to convert to m
+        double MS_Length = MSL.Results.length * 1e-3;
 
-               // Instantiate component
+        // Instantiate component
 
-               // Physical parameters
-        TL.setParams(QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]), MicrostripLine, 90, posx, 0);
-        TL.val["Width"] = ConvertLengthFromM("mm", MS_Width);
+        // Physical parameters
+        TL.setParams(
+            QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+            MicrostripLine, 90, posx, 0);
+        TL.val["Width"]  = ConvertLengthFromM("mm", MS_Width);
         TL.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
-               // Substrate-related parameters
-        TL.val["er"] = num2str(Specification.MS_Subs.er);
-        TL.val["h"] = num2str(Specification.MS_Subs.height);
+        // Substrate-related parameters
+        TL.val["er"]   = num2str(Specification.MS_Subs.er);
+        TL.val["h"]    = num2str(Specification.MS_Subs.height);
         TL.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-        TL.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+        TL.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
         TL.val["tand"] = num2str(Specification.MS_Subs.tand);
-
       }
 
       // Wire: TL to previous capacitor
@@ -126,12 +135,15 @@ void EndCoupled::synthesize() {
 
   // Add Term 2
   double k = Specification.ZS;
-  if (Specification.UseZverevTables)
+  if (Specification.UseZverevTables) {
     (!Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
-  else
+  } else {
     (Specification.isCLC) ? k /= gi[N + 1] : k *= gi[N + 1];
+  }
 
-  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
+  ComponentInfo TermSpar2(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
+      0);
   TermSpar2.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar2);
 

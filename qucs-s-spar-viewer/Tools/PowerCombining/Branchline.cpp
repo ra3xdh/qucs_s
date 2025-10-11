@@ -14,25 +14,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #include "PowerCombinerDesigner.h"
 
 void PowerCombinerDesigner::Branchline() {
   // Design equations
-  double K = Specs.OutputRatio.at(0);
+  double K       = Specs.OutputRatio.at(0);
   double lambda4 = SPEED_OF_LIGHT / (4 * Specs.freq);
-  double ZA = Specs.Z0 * sqrt(K / (K + 1));
-  double ZB = Specs.Z0 * sqrt(K);
+  double ZA      = Specs.Z0 * sqrt(K / (K + 1));
+  double ZB      = Specs.Z0 * sqrt(K);
 
-  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20, -50);
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20,
+      -50);
   TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
-  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 120, -50);
+  ComponentInfo TermSpar2(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 120,
+      -50);
   TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
-  ComponentInfo TermSpar3(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 120, 50);
+  ComponentInfo TermSpar3(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 120,
+      50);
   TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
@@ -48,28 +54,28 @@ void PowerCombinerDesigner::Branchline() {
   ComponentInfo TL1(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 50, -50);
-  TL1.val["Z0"] = num2str(ZA, Resistance);
+  TL1.val["Z0"]     = num2str(ZA, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL1);
 
   ComponentInfo TL2(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, 50, 50);
-  TL2.val["Z0"] = num2str(ZA, Resistance);
+  TL2.val["Z0"]     = num2str(ZA, Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL2);
 
   ComponentInfo TL3(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 0, 0, 0);
-  TL3.val["Z0"] = num2str(ZB, Resistance);
+  TL3.val["Z0"]     = num2str(ZB, Resistance);
   TL3.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL3);
 
   ComponentInfo TL4(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 0, 100, 0);
-  TL4.val["Z0"] = num2str(ZB, Resistance);
+  TL4.val["Z0"]     = num2str(ZB, Resistance);
   TL4.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL4);
 

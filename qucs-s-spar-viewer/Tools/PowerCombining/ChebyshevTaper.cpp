@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #include "PowerCombinerDesigner.h"
 
 //-----------------------------------------------------------------------------------
@@ -24,7 +24,7 @@
 std::deque<double> PowerCombinerDesigner::ChebyshevTaper(double RL,
                                                          double gamma) {
   double Z0 = Specs.Z0;
-  int N = Specs.Nstages;
+  int N     = Specs.Nstages;
   double sec_theta_m;
   (fabs(log(RL / Z0) / (2 * gamma)) < 1)
       ? sec_theta_m = 0

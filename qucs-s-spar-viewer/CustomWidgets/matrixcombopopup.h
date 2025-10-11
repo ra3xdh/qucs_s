@@ -14,51 +14,51 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef MATRIXCOMBOBOX_H
 #define MATRIXCOMBOBOX_H
 
 #include <QComboBox>
 #include <QFrame>
+#include <QGridLayout>
+#include <QPaintEvent>
 #include <QPushButton>
 #include <QStringList>
-#include <QGridLayout>
 #include <QVBoxLayout>
-#include <QPaintEvent>
 
-class MatrixComboPopup : public QFrame
-{
+class MatrixComboPopup : public QFrame {
   Q_OBJECT
 
 public:
-  MatrixComboPopup(const QStringList &sParams, const QStringList &otherParams, QComboBox *parent = nullptr);
-  void showBelow(QWidget *widget);
+  MatrixComboPopup(const QStringList& sParams, const QStringList& otherParams,
+                   QComboBox* parent = nullptr);
+  void showBelow(QWidget* widget);
 
 private slots:
   void selectItem();
 
 private:
-  QComboBox *parentCombo;
+  QComboBox* parentCombo;
 };
 
-class MatrixComboBox : public QComboBox
-{
+class MatrixComboBox : public QComboBox {
   Q_OBJECT
 
 public:
-  explicit MatrixComboBox(QWidget *parent = nullptr);
-  void setParameters(const QStringList &sParams, const QStringList &otherParams);
+  explicit MatrixComboBox(QWidget* parent = nullptr);
+  void setParameters(const QStringList& sParams,
+                     const QStringList& otherParams);
 
 protected:
   void showPopup() override;
   void hidePopup() override;
-  void paintEvent(QPaintEvent *event) override;
+  void paintEvent(QPaintEvent* event) override;
 
 private:
   QStringList sParams;
   QStringList otherParams;
   bool popupVisible;
-  MatrixComboPopup *popup;
+  MatrixComboPopup* popup;
 };
 
 #endif // MATRIXCOMBOBOX_H

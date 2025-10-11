@@ -17,25 +17,25 @@
 
 #include "component.h"
 
-Component::Component(GraphWidget *graphWidget, ComponentType comp, double Rot_,
+Component::Component(GraphWidget* graphWidget, ComponentType comp, double Rot_,
                      QMap<QString, QString> val, QString ID_)
     : graph(graphWidget) {
-  ID = ID_;
+  ID       = ID_;
   CompType = comp;
   Rotation = Rot_;
-  Value = val;
+  Value    = val;
   setFlag(ItemIsMovable, false);
   setFlag(ItemSendsGeometryChanges);
   setCacheMode(DeviceCoordinateCache);
   setZValue(-1);
 }
 
-Component::Component(GraphWidget *graphWidget, ComponentInfo CI)
+Component::Component(GraphWidget* graphWidget, ComponentInfo CI)
     : graph(graphWidget) {
-  ID = CI.ID;
+  ID       = CI.ID;
   CompType = CI.Type;
   Rotation = CI.Rotation;
-  Value = CI.val;
+  Value    = CI.val;
   setPos(CI.Coordinates.at(0),
          CI.Coordinates.at(1)); // Coordinates in the schematic window
   setFlag(ItemIsMovable);
@@ -43,14 +43,16 @@ Component::Component(GraphWidget *graphWidget, ComponentInfo CI)
   setCacheMode(DeviceCoordinateCache);
   setZValue(-1);
 }
-Component::~Component(){}
+Component::~Component() {}
 
-void Component::addWire(Wire *Wire) {
+void Component::addWire(Wire* Wire) {
   WireList << Wire;
   Wire->adjust();
 }
 
-QList<Wire *> Component::Wires() const { return WireList; }
+QList<Wire*> Component::Wires() const {
+  return WireList;
+}
 
 // This function returns the bounding box of the component. That is the region
 // where the component can be painted
@@ -94,7 +96,6 @@ QRectF Component::boundingRect() const {
     R = QRect(-40, -60, 80, 120);
     break;
 
-
   default:
     break;
   }
@@ -133,7 +134,8 @@ QPainterPath Component::shape() const {
   return path;
 }
 
-void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget *) {
+void Component::paint(QPainter* painter,
+                      const QStyleOptionGraphicsItem* /*option*/, QWidget*) {
   painter->setPen(QPen(Qt::darkBlue, 1));
   painter->setFont(QFont("Arial", 6, QFont::Bold));
   switch (CompType) {
@@ -193,12 +195,12 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
   }
 
   bool debug = false;
-  if (debug){
+  if (debug) {
     // Debug code: Shows the bounding box of the component. This is the
     painter->setPen(QPen(Qt::red, 1));
     painter->drawPoint(QPoint(0, 0));
 
-           // region where the selection works painter->setPen(QPen(Qt::red, 1));
+    // region where the selection works painter->setPen(QPen(Qt::red, 1));
     painter->drawPath(
         this->shape()); // Component box-> This is the area where the
     // component can be selected painter->setPen(QPen(Qt::green, 1));
@@ -209,11 +211,12 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
 }
 
 QVariant Component::itemChange(GraphicsItemChange change,
-                               const QVariant &value) {
+                               const QVariant& value) {
   switch (change) {
   case ItemPositionHasChanged:
-    foreach (Wire *Wire, WireList)
+    foreach (Wire* Wire, WireList) {
       Wire->adjust();
+    }
     graph->itemMoved();
     break;
   default:
@@ -223,23 +226,23 @@ QVariant Component::itemChange(GraphicsItemChange change,
   return QGraphicsItem::itemChange(change, value);
 }
 
-void Component::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+void Component::mousePressEvent(QGraphicsSceneMouseEvent* event) {
   update();
   QGraphicsItem::mousePressEvent(event);
 }
 
-void Component::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+void Component::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
   update();
   QGraphicsItem::mouseReleaseEvent(event);
 }
 
-void Component::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+void Component::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
   update();
   struct ComponentInfo CI;
-  CI.ID = this->ID;
+  CI.ID       = this->ID;
   CI.Rotation = this->Rotation;
-  CI.Type = this->CompType;
-  CI.val = this->Value;
+  CI.Type     = this->CompType;
+  CI.val      = this->Value;
   emit DoubleClicked(CI);
   QGraphicsItem::mouseDoubleClickEvent(event);
 }
@@ -342,9 +345,7 @@ QPoint Component::getPortLocation(int port_number) {
 
   default:
     break;
-
   }
-
 
   RotatePoint(P);
   return P;
@@ -352,8 +353,8 @@ QPoint Component::getPortLocation(int port_number) {
 
 // This function rotates the port position P about the object centroid (0,0)
 // according to the component rotation
-void Component::RotatePoint(QPoint &P) {
-  double r = (M_PI / 180) * Rotation;
+void Component::RotatePoint(QPoint& P) {
+  double r         = (M_PI / 180) * Rotation;
   double x_rotated = P.x() * cos(r) - P.y() * sin(r);
   double y_rotated = P.x() * sin(r) + P.y() * cos(r);
   P.setX(x_rotated);
@@ -362,25 +363,37 @@ void Component::RotatePoint(QPoint &P) {
 
 // This function rotates the port position P about the object centroid (0,0)
 // according to the angle in the function arguments
-void Component::RotatePoint(QPoint &P, double angle) {
-  double r = (M_PI / 180) * angle;
+void Component::RotatePoint(QPoint& P, double angle) {
+  double r         = (M_PI / 180) * angle;
   double x_rotated = P.x() * cos(r) - P.y() * sin(r);
   double y_rotated = P.x() * sin(r) + P.y() * cos(r);
   P.setX(x_rotated);
   P.setY(y_rotated);
 }
 
-QString Component::getID() { return ID; }
+QString Component::getID() {
+  return ID;
+}
 
-void Component::setRotation(double R) { Rotation = R; }
+void Component::setRotation(double R) {
+  Rotation = R;
+}
 
-void Component::setParameters(QMap<QString, QString> val) { Value = val; }
+void Component::setParameters(QMap<QString, QString> val) {
+  Value = val;
+}
 
-QMap<QString, QString> Component::getParameters() { return Value; }
+QMap<QString, QString> Component::getParameters() {
+  return Value;
+}
 
-void Component::setComponentType(ComponentType CT) { CompType = CT; }
+void Component::setComponentType(ComponentType CT) {
+  CompType = CT;
+}
 
-ComponentType Component::getComponentType() { return CompType; }
+ComponentType Component::getComponentType() {
+  return CompType;
+}
 
 // Given the property name, this function returns its value in coplex format
 double ComponentInfo::getVal(QString Property) {
@@ -388,13 +401,13 @@ double ComponentInfo::getVal(QString Property) {
   QString suffix;
   val_.remove(" "); // Remove blank spaces (if exists)
   double scale = 1;
-  int index = 1;
+  int index    = 1;
   // Find the suffix
   // Examine each character until finding the first letter, then determine the
   // scale factor
   for (int i = 0; i < val_.length(); i++) {
     if (val_.at(i).isLetter()) {
-      index = i;
+      index  = i;
       suffix = val_.at(i);
       break;
     }
@@ -435,11 +448,11 @@ double ComponentInfo::getVal(QString Property) {
       }
     }
 
-           // Remove the suffix from the string and convert the property to numerical
-           // format
+    // Remove the suffix from the string and convert the property to numerical
+    // format
     QString val = val_.left(index);
 
-           // Now, find out if the number is complex or real
+    // Now, find out if the number is complex or real
     /*if (index = val.indexOf("j"))
     {//Need to separate the real from the imaginary part
         double sign = 1;

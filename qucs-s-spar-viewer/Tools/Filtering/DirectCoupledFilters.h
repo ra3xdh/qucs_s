@@ -17,10 +17,10 @@
 
 #ifndef DIRECTCOUPLEDFILTERS_H
 #define DIRECTCOUPLEDFILTERS_H
-#include "LowpassPrototypeCoeffs.h"
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
+#include "LowpassPrototypeCoeffs.h"
 #include <QPen>
 
 class DirectCoupledFilters : public Network {

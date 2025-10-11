@@ -14,43 +14,50 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #include "PowerCombinerDesigner.h"
 
 void PowerCombinerDesigner::TJunction() {
   // Design equations
-  double K = Specs.OutputRatio.at(0) * Specs.OutputRatio.at(0);
-  int index_t2 = 2;
+  double K       = Specs.OutputRatio.at(0) * Specs.OutputRatio.at(0);
+  int index_t2   = 2;
   double lambda4 = SPEED_OF_LIGHT / (4 * Specs.freq);
 
   ComponentInfo TL4, TL5; // Auxiliar lines for matching in case of K!=1
 
-  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
   TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
-  ComponentInfo TL1(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),  TransmissionLine, 90, 50, 0);
-  TL1.val["Z0"] = num2str(Specs.Z0, Resistance);
+  ComponentInfo TL1(
+      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+      TransmissionLine, 90, 50, 0);
+  TL1.val["Z0"]     = num2str(Specs.Z0, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL1);
 
   Schematic.appendWire(TermSpar1.ID, 0, TL1.ID, 0);
 
   // Node
-  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100, 0);
+  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+              100, 0);
   Schematic.appendNode(N1);
   Schematic.appendWire(TL1.ID, 1, N1.ID, 1);
 
-
-  ComponentInfo TL2(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, 125, -50);
-  TL2.val["Z0"] = num2str(Specs.Z0 * (K + 1), Resistance);
+  ComponentInfo TL2(
+      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+      TransmissionLine, 90, 125, -50);
+  TL2.val["Z0"]     = num2str(Specs.Z0 * (K + 1), Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL2);
 
   Schematic.appendWire(TL2.ID, 0, N1.ID, 1);
 
-  ComponentInfo TL3(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 90, 125, 50);
-  TL3.val["Z0"] = num2str(Specs.Z0 * (K + 1) / K, Resistance);
+  ComponentInfo TL3(
+      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+      TransmissionLine, 90, 125, 50);
+  TL3.val["Z0"]     = num2str(Specs.Z0 * (K + 1) / K, Resistance);
   TL3.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
   Schematic.appendComponent(TL3);
 
@@ -83,7 +90,9 @@ void PowerCombinerDesigner::TJunction() {
     index_t2 = 5;
   }
 
-  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, xpos_term, -50);
+  ComponentInfo TermSpar2(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180,
+      xpos_term, -50);
   TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
@@ -91,7 +100,9 @@ void PowerCombinerDesigner::TJunction() {
   (index_t2 == 5) ? dst = TL4.ID : dst = TL2.ID;
   Schematic.appendWire(TermSpar2.ID, 0, dst, 1);
 
-  ComponentInfo TermSpar3( QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, xpos_term, 50);
+  ComponentInfo TermSpar3(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180,
+      xpos_term, 50);
 
   TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);

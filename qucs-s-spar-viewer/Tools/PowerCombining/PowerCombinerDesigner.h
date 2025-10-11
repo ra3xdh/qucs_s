@@ -14,13 +14,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef POWERCOMBINERDESIGNER_H
 #define POWERCOMBINERDESIGNER_H
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/structures.h"
-#include "../../Misc/general.h"
 #include <QPen>
 
 struct TwoWayWilkinsonParams {

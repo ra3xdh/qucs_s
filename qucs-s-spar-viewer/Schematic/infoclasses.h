@@ -19,13 +19,13 @@
 #define INFOCLASSES_H
 #include "../Schematic/structures.h"
 #include <QColor>
-#include <QMap>
 #include <QFont>
+#include <QMap>
 #include <QPointF>
 
 class ComponentInfo {
 public:
-  ComponentInfo() : Coordinates(2){}
+  ComponentInfo() : Coordinates(2) {}
 
   ComponentInfo(QString ID_, ComponentType Type_, double rot_, double x,
                 double y)
@@ -33,7 +33,7 @@ public:
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
-  ~ComponentInfo(){}
+  ~ComponentInfo() {}
 
   QString ID;
   ComponentType Type;
@@ -53,10 +53,10 @@ public:
 
   void setParams(QString ID_, ComponentType Type_, double Rotation_, double x,
                  double y // Coordinates
-                 ) {
-    ID = ID_;
-    Type = Type_;
-    Rotation = Rotation_;
+  ) {
+    ID             = ID_;
+    Type           = Type_;
+    Rotation       = Rotation_;
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
@@ -83,9 +83,9 @@ public:
       code = "TLIN";
       break;
     case Term:
-      code = "Pac";
+      code       = "Pac";
       val["Num"] = QString(ID).remove("T");
-      val["f"] = "1 GHz";
+      val["f"]   = "1 GHz";
       break;
     case Resistor:
       code = "R";
@@ -111,16 +111,19 @@ public:
       case ShortStub:
       case TransmissionLine:
       case CoupledLines:
-        if (prop == "Length")
+        if (prop == "Length") {
           prop = "L";
-        if (prop == "Z0")
+        }
+        if (prop == "Z0") {
           prop = "Z";
+        }
         code += QString(" %1=\"%2\"").arg(prop).arg(it.value());
         break;
 
       case Term:
-        if (prop == "Z0")
+        if (prop == "Z0") {
           prop = "Z";
+        }
         code += QString(" %1=\"%2\"").arg(prop).arg(it.value());
         break;
 
@@ -139,10 +142,10 @@ public:
 
 class WireInfo {
 public:
-  WireInfo(){}
-  ~WireInfo(){}
+  WireInfo() {}
+  ~WireInfo() {}
   WireInfo(QString O, int OP, QString D, int DP)
-      : OriginID(O), PortOrigin(OP), DestinationID(D), PortDestination(DP){}
+      : OriginID(O), PortOrigin(OP), DestinationID(D), PortDestination(DP) {}
   void setParams(QString O, int OP, QString D, int DP) {
     OriginID = O, DestinationID = D;
     PortOrigin = OP, PortDestination = DP;
@@ -168,20 +171,19 @@ public:
   QString ID;
 
 private:
-
   QString Net;
 };
 
 class NodeInfo {
 public:
-  NodeInfo() : Coordinates(2){}
-  ~NodeInfo(){}
+  NodeInfo() : Coordinates(2) {}
+  ~NodeInfo() {}
   NodeInfo(QString ID_, double x, double y) : ID(ID_), Coordinates(2) {
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
   void setParams(QString ID_, double x, double y) {
-    ID = ID_;
+    ID             = ID_;
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
@@ -200,10 +202,10 @@ public:
 
   void setParams(QString ID_, QString text_, QFont font_ = QFont(),
                  QColor color_ = Qt::black, QPointF position_ = QPointF()) {
-    ID = ID_;
-    text = text_;
-    font = font_;
-    color = color_;
+    ID       = ID_;
+    text     = text_;
+    font     = font_;
+    color    = color_;
     position = position_;
   }
 

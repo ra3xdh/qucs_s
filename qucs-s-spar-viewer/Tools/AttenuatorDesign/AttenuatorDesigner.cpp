@@ -15,21 +15,25 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "AttenuatorDesigner.h"
 
 AttenuatorDesigner::AttenuatorDesigner(AttenuatorDesignParameters SPC) {
   Specs = SPC;
 }
 
-AttenuatorDesigner::~AttenuatorDesigner() {
+AttenuatorDesigner::~AttenuatorDesigner() {}
+
+QList<ComponentInfo> AttenuatorDesigner::getComponents() {
+  return Components;
 }
 
-QList<ComponentInfo> AttenuatorDesigner::getComponents() { return Components; }
+QList<WireInfo> AttenuatorDesigner::getWires() {
+  return Wires;
+}
 
-QList<WireInfo> AttenuatorDesigner::getWires() { return Wires; }
-
-QList<NodeInfo> AttenuatorDesigner::getNodes() { return Nodes; }
+QList<NodeInfo> AttenuatorDesigner::getNodes() {
+  return Nodes;
+}
 
 void AttenuatorDesigner::synthesize() {
   if (Specs.Topology == "Pi") {
@@ -54,4 +58,3 @@ void AttenuatorDesigner::synthesize() {
     RShuntAttenuator();
   }
 }
-

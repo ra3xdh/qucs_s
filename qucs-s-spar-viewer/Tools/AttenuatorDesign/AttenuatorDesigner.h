@@ -17,8 +17,8 @@
 
 #ifndef ATTENUATORDESIGNER_H
 #define ATTENUATORDESIGNER_H
-#include "../../Schematic/Network.h"
 #include "../../Misc/general.h"
+#include "../../Schematic/Network.h"
 #include "math.h"
 
 struct PdissAtt {

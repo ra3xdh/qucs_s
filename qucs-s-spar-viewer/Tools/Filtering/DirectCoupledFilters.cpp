@@ -28,10 +28,12 @@ DirectCoupledFilters::~DirectCoupledFilters() {}
 void DirectCoupledFilters::synthesize() {
   LowpassPrototypeCoeffs LP_coeffs(Specification);
   gi = LP_coeffs.getCoefficients();
-  if (Specification.DC_Coupling == CapacitativeCoupledShuntResonators)
+  if (Specification.DC_Coupling == CapacitativeCoupledShuntResonators) {
     Synthesize_Capacitative_Coupled_Shunt_Resonators();
-  if (Specification.DC_Coupling == InductiveCoupledSeriesResonators)
+  }
+  if (Specification.DC_Coupling == InductiveCoupledSeriesResonators) {
     Synthesize_Inductive_Coupled_Series_Resonators();
+  }
 }
 
 void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
@@ -49,17 +51,18 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
   double BW = Specification.bw;
   double Z0 = Specification.ZS;
 
-  for (int i = 0; i < N; i++)
+  for (int i = 0; i < N; i++) {
     L[i] = 10e-9;
+  }
 
-  double R1 = 1;
-  double RN = Specification.ZL / Z0;
-  double w0 = 1.0;
-  double f1 = (fc - BW) / (2 * M_PI * fc);
-  double f2 = (fc + BW) / (2 * M_PI * fc);
+  double R1  = 1;
+  double RN  = Specification.ZL / Z0;
+  double w0  = 1.0;
+  double f1  = (fc - BW) / (2 * M_PI * fc);
+  double f2  = (fc + BW) / (2 * M_PI * fc);
   double f1d = w0 / (2 * M_PI);
-  double f0 = w0 / (2 * M_PI);
-  double wd = ((f0 / f1) - (f0 / f2)) * (f0 / f1d);
+  double f0  = w0 / (2 * M_PI);
+  double wd  = ((f0 / f1) - (f0 / f2)) * (f0 / f1d);
 
   std::deque<double> Lrk(N), Crk(N), Cs(N + 1);
 
@@ -77,7 +80,7 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
   Cs[N] = (1 / w0) * sqrt((wd * Crk[N - 1] * r / (RN * gi[N - 1])) /
                           (1 - (wd * Crk[N - 1] * RN / gi[N - 1])));
 
-  double Cs1_ = Cs[0] / (1 + pow(w0 * Cs[0] * R1, 2));
+  double Cs1_   = Cs[0] / (1 + pow(w0 * Cs[0] * R1, 2));
   double Csn_n1 = Cs[N] / (1 + pow(w0 * Cs[N] * RN, 2));
 
   Cp[0] = Crk[0] - Cs1_ - Cs[1];
@@ -88,17 +91,19 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
 
   // Scale
   for (int i = 0; i < N + 1; i++) {
-    if (i < N)
+    if (i < N) {
       Cp[i] = Cp[i] / (2 * M_PI * fc * Z0);
+    }
     Cs[i] = Cs[i] / (2 * M_PI * fc * Z0);
   }
 
   // Build schematic
   int posx = 0, Ni = 0;
   QString ConnectionAux = "";
-  double k = Specification.ZS;
+  double k              = Specification.ZS;
 
-  ComponentInfo TermSpar1(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -171,7 +176,9 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
 
   posx += 50;
 
-  ComponentInfo TermSpar2(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx, 0);
+  ComponentInfo TermSpar2(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
+      0);
   TermSpar2.val["Z"] = num2str(Specification.ZL, Resistance);
   Schematic.appendComponent(TermSpar2);
   ConnectionAux = TermSpar2.ID;
@@ -192,18 +199,20 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
   double R1 = 1;
   double RN = Specification.ZL / Z0;
 
-  for (int i = 0; i < N + 2; i++)
+  for (int i = 0; i < N + 2; i++) {
     L[i] = 10e-9;
+  }
 
-  double w0 = 1.0;
-  double f1 = (fc - BW) / (2 * M_PI * fc);
-  double f2 = (fc + BW) / (2 * M_PI * fc);
+  double w0  = 1.0;
+  double f1  = (fc - BW) / (2 * M_PI * fc);
+  double f2  = (fc + BW) / (2 * M_PI * fc);
   double f1d = 1 / (2 * M_PI);
-  double f0 = w0 / (2 * M_PI);
-  double w_ = ((f0 / f1) - (f0 / f2)) * (f0 / f1d);
+  double f0  = w0 / (2 * M_PI);
+  double w_  = ((f0 / f1) - (f0 / f2)) * (f0 / f1d);
 
-  for (int i = 0; i < N + 2; i++)
+  for (int i = 0; i < N + 2; i++) {
     Lrk[i] = (wc * L[i]) / Z0;
+  }
 
   Crk[0] = (1 + (w_ * Lrk[0]) / (gi[0] * R1)) / (Lrk[1] * w0 * w0);
   for (int i = 1; i < N - 1; i++) {
@@ -229,7 +238,7 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
   for (int i = 2; i < N; i++) {
     Ls[i] = Lrk[i - 2] - M[i - 1] - M[i];
   }
-  Ls[N] = Lrk[N] - M[N - 1] - M[N];
+  Ls[N]     = Lrk[N] - M[N - 1] - M[N];
   Ls[N + 1] = Lrk[N + 1] - M[N];
 
   // Impedance and frequency scaling
@@ -237,15 +246,16 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
     Ls[i] = Ls[i] * Z0 / (2 * M_PI * fc);
     if (i < N + 1) {
       Lp[i] = M[i] * Z0 / (2 * M_PI * fc);
-      if (i < N)
+      if (i < N) {
         Crk[i] = Crk[i] / (2 * M_PI * fc * Z0);
+      }
     }
   }
 
   // Create schematic and Qucs netlist
   int posx = 0, Ni = 0;
   QString ConnectionAux = "";
-  double k = Specification.ZS;
+  double k              = Specification.ZS;
   ComponentInfo Lseries, Lshunt, Cseries, Ground;
   NodeInfo NI;
 

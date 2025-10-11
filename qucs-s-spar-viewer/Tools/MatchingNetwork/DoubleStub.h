@@ -17,10 +17,10 @@
 
 #ifndef DOUBLESTUB_H
 #define DOUBLESTUB_H
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 
 class DoubleStub : public Network {
@@ -37,6 +37,8 @@ private:
   void buildMatchingNetwork_Ideal(double d, double lstub1, double lstub2);
   void buildMatchingNetwork_Microstrip(double d, double lstub1, double lstub2);
 
-  std::pair<double, double> calculateStubLengths(double lambda, double Z0, double RL, double XL, double d);
+  std::pair<double, double> calculateStubLengths(double lambda, double Z0,
+                                                 double RL, double XL,
+                                                 double d);
 };
 #endif // DOUBLESTUB_H

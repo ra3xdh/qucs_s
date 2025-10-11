@@ -14,25 +14,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef RECTANGULARPLOTWIDGET_H
 #define RECTANGULARPLOTWIDGET_H
 
-#include <QWidget>
-#include <QDoubleSpinBox>
+#include "./QCustomPlot/qcustomplot.h"
+#include <QCheckBox>
 #include <QComboBox>
+#include <QDoubleSpinBox>
 #include <QGridLayout>
 #include <QLabel>
 #include <QMap>
 #include <QPen>
-#include <QCheckBox>
 #include <QVBoxLayout>
+#include <QWidget>
 #include <complex>
 #include <limits>
-#include "./QCustomPlot/qcustomplot.h"
 
-class RectangularPlotWidget : public QWidget
-{
+class RectangularPlotWidget : public QWidget {
   Q_OBJECT
 
 public:
@@ -53,15 +52,15 @@ public:
   };
 
   struct Limit {
-    double f1; // Start frequency
-    double f2; // End frequency
-    double y1; // Start y
-    double y2; // End y
+    double f1;  // Start frequency
+    double f2;  // End frequency
+    double y1;  // Start y
+    double y2;  // End y
     int y_axis; // 0: Left y-axis; 1: Right y-axis
     QPen pen;
   };
 
-         // Struct to exchange the widget settings with the main program
+  // Struct to exchange the widget settings with the main program
   struct AxisSettings {
     double xAxisMin;
     double xAxisMax;
@@ -80,7 +79,7 @@ public:
     bool lockAxis;
   };
 
-  explicit RectangularPlotWidget(QWidget *parent = nullptr);
+  explicit RectangularPlotWidget(QWidget* parent = nullptr);
   ~RectangularPlotWidget();
 
   void addTrace(const QString& name, const Trace& trace);
@@ -124,15 +123,16 @@ public:
   void change_X_axis_title(QString title);
   void change_X_axis_label(QString title);
 
-  QLabel *xAxisLabel;
+  QLabel* xAxisLabel;
 
-  bool addMarker(const QString& markerId, double frequency, const QPen& pen = QPen(Qt::red, 2));
+  bool addMarker(const QString& markerId, double frequency,
+                 const QPen& pen = QPen(Qt::red, 2));
   bool removeMarker(const QString& markerId);
   bool updateMarkerFrequency(const QString& markerId, double newFrequency);
   void clearMarkers();
   QMap<QString, double> getMarkers() const;
 
-  bool addLimit(const QString& LimitId, const Limit & limit);
+  bool addLimit(const QString& LimitId, const Limit& limit);
   void removeLimit(const QString& LimitID);
   void clearLimits();
   QMap<QString, Limit> getLimits() const;
@@ -140,7 +140,7 @@ public:
 
   QCustomPlot* customPlot() const { return plotWidget; }
 
-         // Exchange the settings with the main program
+  // Exchange the settings with the main program
   AxisSettings getSettings() const;
   void setSettings(const AxisSettings& settings);
 
@@ -152,34 +152,35 @@ private slots:
   void toggleShowValues(bool show);
   void toggleLockAxisSettings(bool locked);
 
-private slots: // To handle axis settings widgets when panning or zooming the plot
-  void onXAxisRangeChanged(const QCPRange &range);
-  void onYAxisRangeChanged(const QCPRange &range);
-  void onY2AxisRangeChanged(const QCPRange &range);
+private slots
+    : // To handle axis settings widgets when panning or zooming the plot
+  void onXAxisRangeChanged(const QCPRange& range);
+  void onYAxisRangeChanged(const QCPRange& range);
+  void onY2AxisRangeChanged(const QCPRange& range);
 
 private:
-  QCustomPlot *plotWidget;
+  QCustomPlot* plotWidget;
 
-  QDoubleSpinBox *xAxisMin;
-  QDoubleSpinBox *xAxisMax;
-  QDoubleSpinBox *xAxisDiv;
-  QComboBox *xAxisUnits;
+  QDoubleSpinBox* xAxisMin;
+  QDoubleSpinBox* xAxisMax;
+  QDoubleSpinBox* xAxisDiv;
+  QComboBox* xAxisUnits;
 
-  QDoubleSpinBox *yAxisMin;
-  QDoubleSpinBox *yAxisMax;
-  QDoubleSpinBox *yAxisDiv;
-  QLabel *yAxisUnits;
+  QDoubleSpinBox* yAxisMin;
+  QDoubleSpinBox* yAxisMax;
+  QDoubleSpinBox* yAxisDiv;
+  QLabel* yAxisUnits;
 
-  QDoubleSpinBox *y2AxisMin;
-  QDoubleSpinBox *y2AxisMax;
-  QDoubleSpinBox *y2AxisDiv;
-  QLabel *y2AxisUnits;
-  QLabel *y2AxisLabel;
+  QDoubleSpinBox* y2AxisMin;
+  QDoubleSpinBox* y2AxisMax;
+  QDoubleSpinBox* y2AxisDiv;
+  QLabel* y2AxisUnits;
+  QLabel* y2AxisLabel;
 
-  QCheckBox *showValuesCheckbox;
+  QCheckBox* showValuesCheckbox;
   bool showTraceValues;
 
-  QCheckBox *lockAxisCheckbox;
+  QCheckBox* lockAxisCheckbox;
   bool axisSettingsLocked;
 
   QStringList frequencyUnits;
@@ -192,7 +193,7 @@ private:
   QMap<QString, Marker> markers;
   QMap<QString, Limit> limits;
 
-         // QCustomPlot specific members
+  // QCustomPlot specific members
   QMap<QString, QCPGraph*> traceGraphs;
   QMap<QString, QCPItemStraightLine*> markerLines;
   QMap<QString, QCPItemText*> markerLabels;

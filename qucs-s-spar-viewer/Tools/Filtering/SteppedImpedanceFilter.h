@@ -14,17 +14,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef STEPPEDIMPEDANCEFILTER_H
 #define STEPPEDIMPEDANCEFILTER_H
 
-#include "LowpassPrototypeCoeffs.h"
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
+#include "LowpassPrototypeCoeffs.h"
 #include <QPen>
-
 
 class SteppedImpedanceFilter : public Network {
 public:

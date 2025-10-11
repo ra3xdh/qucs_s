@@ -14,14 +14,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef LAMBDA8LAMBDA4_H
 #define LAMBDA8LAMBDA4_H
 
+#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 
 class Lambda8Lambda4 : public Network {

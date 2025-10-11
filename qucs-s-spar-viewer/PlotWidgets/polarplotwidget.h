@@ -18,28 +18,28 @@
 #ifndef POLARPLOTWIDGET_H
 #define POLARPLOTWIDGET_H
 
-#include <QWidget>
 #include "./QCustomPlot/qcustomplot.h"
-#include <QDoubleSpinBox>
+#include <QCheckBox>
 #include <QComboBox>
+#include <QDoubleSpinBox>
 #include <QGridLayout>
 #include <QLabel>
 #include <QMap>
 #include <QPen>
-#include <QCheckBox>
+#include <QWidget>
 #include <complex>
 #include <limits>
 
-class PolarPlotWidget : public QWidget
-{
+class PolarPlotWidget : public QWidget {
   Q_OBJECT
 
 public:
   struct Trace {
-    QList<std::complex<double>> values;    // Complex values (for polar representation)
-    QList<double> frequencies;      // Corresponding frequencies for each point
-    QPen pen;  // Line style for this trace
-    int displayMode;  // 0: Magnitude/Phase, 1: Real/Imaginary
+    QList<std::complex<double>>
+        values;                // Complex values (for polar representation)
+    QList<double> frequencies; // Corresponding frequencies for each point
+    QPen pen;                  // Line style for this trace
+    int displayMode;           // 0: Magnitude/Phase, 1: Real/Imaginary
   };
 
   struct Marker {
@@ -63,7 +63,7 @@ public:
   void setSettings(const AxisSettings& settings);
   PolarPlotWidget::AxisSettings getSettings() const;
 
-  explicit PolarPlotWidget(QWidget *parent = nullptr);
+  explicit PolarPlotWidget(QWidget* parent = nullptr);
   ~PolarPlotWidget();
 
   // Trace management functions
@@ -81,7 +81,8 @@ public:
   int getDisplayMode() const;
 
   // Marker management functions
-  bool addMarker(const QString& markerId, double frequency, const QPen& pen = QPen(Qt::red, 2));
+  bool addMarker(const QString& markerId, double frequency,
+                 const QPen& pen = QPen(Qt::red, 2));
   bool removeMarker(const QString& markerId);
   bool updateMarkerFrequency(const QString& markerId, double newFrequency);
   void clearMarkers();
@@ -89,7 +90,7 @@ public:
   QMap<QString, double> getMarkers() const;
 
   // Access to underlying plot
-  QCustomPlot *customPlot() const { return plot; }
+  QCustomPlot* customPlot() const { return plot; }
 
 private slots:
   void updateRAxis();
@@ -103,28 +104,29 @@ private slots:
 private slots: // Slot to update axis settings widget based on the user zoom
   void checkAxisRanges();
   void checkAxisRanges(QMouseEvent* event);
-  void onRadialRangeChanged(const QCPRange &newRange);
+  void onRadialRangeChanged(const QCPRange& newRange);
 
 private:
-  QCustomPlot *plot;
-  QCPPolarAxisAngular *angularAxis;
-  QCPPolarAxisRadial *radialAxis;
+  QCustomPlot* plot;
+  QCPPolarAxisAngular* angularAxis;
+  QCPPolarAxisRadial* radialAxis;
 
-  QDoubleSpinBox *rAxisMin;
-  QDoubleSpinBox *rAxisMax;
-  QDoubleSpinBox *rAxisDiv;
-  QComboBox *displayModeCombo;
+  QDoubleSpinBox* rAxisMin;
+  QDoubleSpinBox* rAxisMax;
+  QDoubleSpinBox* rAxisDiv;
+  QComboBox* displayModeCombo;
 
-  QDoubleSpinBox *fMinSpinBox;
-  QDoubleSpinBox *fMaxSpinBox;
-  QComboBox *fUnitComboBox;
+  QDoubleSpinBox* fMinSpinBox;
+  QDoubleSpinBox* fMaxSpinBox;
+  QComboBox* fUnitComboBox;
   double fMin;
   double fMax;
   QStringList frequencyUnits;
 
   QMap<QString, Trace> traces;
   QMap<QString, Marker> markers;
-  QMap<QString, QList<QCPPolarGraph*>> traceGraphs; // Each trace can have multiple graphs for phase wrapping
+  QMap<QString, QList<QCPPolarGraph*>>
+      traceGraphs; // Each trace can have multiple graphs for phase wrapping
 
   // Marker items for drawing
   QList<QCPItemEllipse*> markerItems;
@@ -138,10 +140,12 @@ private:
   double getFrequencyMultiplier() const;
 
   // Helper to find a complex value at a specific frequency using interpolation
-  std::complex<double> getComplexValueAtFrequency(const Trace& trace, double frequency);
+  std::complex<double> getComplexValueAtFrequency(const Trace& trace,
+                                                  double frequency);
 
   // Convert between display modes (magnitude/phase <-> real/imaginary)
-  std::complex<double> convertToDisplayFormat(const std::complex<double>& value, int mode);
+  std::complex<double> convertToDisplayFormat(const std::complex<double>& value,
+                                              int mode);
 };
 
 #endif // POLARPLOTWIDGET_H
