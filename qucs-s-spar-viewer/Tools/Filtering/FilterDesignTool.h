@@ -26,7 +26,6 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QRadioButton>
 #include <QSpinBox>
 #include <QWidget>
 
@@ -65,7 +64,6 @@ private slots:
   void ResposeComboChanged();
   void ImplementationComboChanged(int);
   void EllipticTypeChanged();
-  void ChangeRL_CLC_LCL_mode();
 
 private:
   // ************************** FILTER DESIGN ***************************
@@ -79,7 +77,9 @@ private:
   QSpinBox* OrderSpinBox;
 
   QLineEdit* SourceImpedanceLineEdit;
-  QRadioButton *CLCRadioButton, *LCLRadioButton;
+
+  QComboBox* TopologyCombo; // 1st series or 1st shunt configuration
+
   QLabel *StopbandAttLabel, *StopbandAttdBLabel, *EllipticTypeLabel,
       *RippleLabel, *RippledBLabel, *DC_CouplingLabel, *MaximumZ_Unit_Label,
       *MinimumZ_Unit_Label, *SemiLumpedImplementationLabel,

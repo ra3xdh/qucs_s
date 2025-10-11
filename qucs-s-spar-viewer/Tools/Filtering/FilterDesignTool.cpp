@@ -17,10 +17,10 @@
 
 #include "FilterDesignTool.h"
 
-FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
+FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
 
   //****************************** BUILD THE UI **************************
-  QGridLayout* FilterDesignLayout = new QGridLayout();
+  QGridLayout *FilterDesignLayout = new QGridLayout();
   int layout_row =
       0; // Row index. This is useful to add a new line on the layout without
          // the need of modifying manually all the widgets.
@@ -40,15 +40,10 @@ FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
   FilterDesignLayout->addWidget(new QLabel("Implementation"), layout_row, 0);
   FilterDesignLayout->addWidget(FilterImplementationCombo, layout_row, 1);
   //******** Tee or Pi (LC ladder only) ********
-  QWidget* TeePiWidget     = new QWidget();
-  QHBoxLayout* TeePiLayout = new QHBoxLayout();
-  CLCRadioButton           = new QRadioButton("CLC");
-  LCLRadioButton           = new QRadioButton("LCL");
-  CLCRadioButton->setChecked(true);
-  TeePiLayout->addWidget(CLCRadioButton);
-  TeePiLayout->addWidget(LCLRadioButton);
-  TeePiWidget->setLayout(TeePiLayout);
-  FilterDesignLayout->addWidget(TeePiWidget, layout_row, 2);
+  TopologyCombo = new QComboBox();
+  TopologyCombo->addItem("1st shunt");
+  TopologyCombo->addItem("1st series");
+  FilterDesignLayout->addWidget(TopologyCombo, layout_row, 2);
 
   // Transmission line implementation
   layout_row++;
@@ -148,7 +143,7 @@ FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
   RippleSpinbox->setMaximum(2);
   RippleSpinbox->setValue(0.01);
   RippleSpinbox->setSingleStep(0.01); // Step fixed to 0.01dB
-  RippleLabel   = new QLabel("Ripple");
+  RippleLabel = new QLabel("Ripple");
   RippledBLabel = new QLabel("dB");
   FilterDesignLayout->addWidget(RippleLabel, layout_row, 0);
   FilterDesignLayout->addWidget(RippleSpinbox, layout_row, 1);
@@ -161,7 +156,7 @@ FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
   StopbandAttSpinbox->setMaximum(150);
   StopbandAttSpinbox->setValue(30);
   StopbandAttSpinbox->setSingleStep(0.1); // Step fixed to 0.1dB
-  StopbandAttLabel   = new QLabel("Stopband att");
+  StopbandAttLabel = new QLabel("Stopband att");
   StopbandAttdBLabel = new QLabel("dB");
   FilterDesignLayout->addWidget(StopbandAttLabel, layout_row, 0);
   FilterDesignLayout->addWidget(StopbandAttSpinbox, layout_row, 1);
@@ -173,7 +168,7 @@ FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
   //************** Elliptic type ****************
   layout_row++;
   EllipticTypeLabel = new QLabel("Elliptic type");
-  EllipticType      = new QComboBox();
+  EllipticType = new QComboBox();
   EllipticType->addItem("Type A");
   EllipticType->addItem("Type B");
   EllipticType->addItem("Type C");
@@ -186,7 +181,7 @@ FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
   //***************  Minimum impedance achievable in the manufacturing process
   //**************
   layout_row++;
-  MinimumZLabel    = new QLabel("Minimum Z");
+  MinimumZLabel = new QLabel("Minimum Z");
   MinimumZ_Spinbox = new QDoubleSpinBox();
   MinimumZ_Spinbox->setMinimum(1);
   MinimumZ_Spinbox->setMaximum(40);
@@ -203,7 +198,7 @@ FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
   //***************  Maximum impedance achievable in the manufacturing process
   //**************
   layout_row++;
-  MaximumZLabel    = new QLabel("Maximum Z");
+  MaximumZLabel = new QLabel("Maximum Z");
   MaximumZ_Spinbox = new QDoubleSpinBox();
   MaximumZ_Spinbox->setMinimum(50);
   MaximumZ_Spinbox->setMaximum(400);
@@ -232,7 +227,7 @@ FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
 
   // Coupled line SIR BPF type
   layout_row++;
-  ImpedanceRatio_Label   = new QLabel(QString("Impedance ratio, K"));
+  ImpedanceRatio_Label = new QLabel(QString("Impedance ratio, K"));
   ImpedanceRatio_Spinbox = new QDoubleSpinBox();
   ImpedanceRatio_Spinbox->setMinimum(0.1);
   ImpedanceRatio_Spinbox->setMaximum(10);
@@ -251,7 +246,7 @@ FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
 
   // Widgets to add a trace to plot
   layout_row++;
-  traceNameLabel    = new QLabel("Trace name");
+  traceNameLabel = new QLabel("Trace name");
   traceNameLineEdit = new QLineEdit("Filter1");
   FilterDesignLayout->addWidget(traceNameLabel, layout_row, 0);
   FilterDesignLayout->addWidget(traceNameLineEdit, layout_row, 1);
@@ -262,8 +257,8 @@ FilterDesignTool::FilterDesignTool(QWidget* parent) : QWidget(parent) {
   // real time
   connect(FilterImplementationCombo, SIGNAL(currentIndexChanged(int)), this,
           SLOT(ImplementationComboChanged(int)));
-  connect(CLCRadioButton, SIGNAL(toggled(bool)), this,
-          SLOT(ChangeRL_CLC_LCL_mode()));
+  connect(TopologyCombo, SIGNAL(currentIndexChanged(int)), this,
+          SLOT(UpdateDesignParameters()));
   connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this,
           SLOT(UpdateDesignParameters()));
   connect(FilterResponseTypeCombo, SIGNAL(currentIndexChanged(int)), this,
@@ -317,8 +312,7 @@ FilterDesignTool::~FilterDesignTool() {
   delete StopbandAttSpinbox;
   delete OrderSpinBox;
   delete SourceImpedanceLineEdit;
-  delete CLCRadioButton;
-  delete LCLRadioButton;
+  delete TopologyCombo;
   delete StopbandAttLabel;
   delete StopbandAttdBLabel;
   delete EllipticTypeLabel;
@@ -338,13 +332,13 @@ void FilterDesignTool::synthesize() {
   switch (filter_type) {
   case LC_LADDER:
     if (FilterResponseTypeCombo->currentText() == QString("Elliptic")) {
-      EllipticFilter* EF;
+      EllipticFilter *EF;
       EF = new EllipticFilter(Filter_SP);
       EF->synthesize();
       SchContent = EF->Schematic;
       delete EF;
     } else {
-      CanonicalFilter* CF;
+      CanonicalFilter *CF;
       CF = new CanonicalFilter(Filter_SP);
       CF->synthesize();
       SchContent = CF->Schematic;
@@ -353,7 +347,7 @@ void FilterDesignTool::synthesize() {
     break;
 
   case LC_DIRECT_COUPLED:
-    DirectCoupledFilters* DCF;
+    DirectCoupledFilters *DCF;
     DCF = new DirectCoupledFilters(Filter_SP);
     DCF->synthesize();
     SchContent = DCF->Schematic;
@@ -361,7 +355,7 @@ void FilterDesignTool::synthesize() {
     break;
 
   case STEPPED_IMPEDANCE:
-    SteppedImpedanceFilter* STIF;
+    SteppedImpedanceFilter *STIF;
     STIF = new SteppedImpedanceFilter(Filter_SP);
     STIF->synthesize();
     SchContent = STIF->Schematic;
@@ -369,7 +363,7 @@ void FilterDesignTool::synthesize() {
     break;
 
   case QUARTERWAVE:
-    QuarterWaveFilters* QWF;
+    QuarterWaveFilters *QWF;
     QWF = new QuarterWaveFilters(Filter_SP);
     QWF->synthesize();
     SchContent = QWF->Schematic;
@@ -377,7 +371,7 @@ void FilterDesignTool::synthesize() {
     break;
 
   case CAPACITIVELY_COUPLED_RESONATORS:
-    CapacitivelyCoupledShuntResonatorsFilter* CCSRF;
+    CapacitivelyCoupledShuntResonatorsFilter *CCSRF;
     CCSRF = new CapacitivelyCoupledShuntResonatorsFilter(Filter_SP);
     CCSRF->synthesize();
     SchContent = CCSRF->Schematic;
@@ -385,7 +379,7 @@ void FilterDesignTool::synthesize() {
     break;
 
   case COUPLED_LINES:
-    CoupledLineBandpassFilter* CLBPF;
+    CoupledLineBandpassFilter *CLBPF;
     CLBPF = new CoupledLineBandpassFilter(Filter_SP);
     CLBPF->synthesize();
     SchContent = CLBPF->Schematic;
@@ -393,7 +387,7 @@ void FilterDesignTool::synthesize() {
     break;
 
   case END_COUPLED:
-    EndCoupled* ECF;
+    EndCoupled *ECF;
     ECF = new EndCoupled(Filter_SP);
     ECF->synthesize();
     SchContent = ECF->Schematic;
@@ -402,7 +396,7 @@ void FilterDesignTool::synthesize() {
 
   case SEMILUMPED:
     if (!FilterResponseTypeCombo->currentText().compare("Elliptic")) {
-      EllipticFilter* SMLEF;
+      EllipticFilter *SMLEF;
       SMLEF = new EllipticFilter(Filter_SP);
       SMLEF->setSemilumpedMode(true);
       SMLEF->synthesize();
@@ -410,7 +404,7 @@ void FilterDesignTool::synthesize() {
       delete SMLEF;
     } else {
       // Canonical filter
-      CanonicalFilter* CF;
+      CanonicalFilter *CF;
       CF = new CanonicalFilter(Filter_SP);
       CF->setSemilumpedMode(true);
       CF->synthesize();
@@ -421,7 +415,7 @@ void FilterDesignTool::synthesize() {
   }
 
   QString TraceName = traceNameLineEdit->text();
-  SchContent.Name   = TraceName;
+  SchContent.Name = TraceName;
   SchContent.Type =
       QString("Filter"); // Indicate the main tool the kind of circuit to adjust
                          // default traces (in case no traces were selected)
@@ -430,7 +424,7 @@ void FilterDesignTool::synthesize() {
 }
 
 void FilterDesignTool::ResposeComboChanged() {
-  QString Response   = FilterResponseTypeCombo->currentText();
+  QString Response = FilterResponseTypeCombo->currentText();
   bool ActivateCauer = !Response.compare("Elliptic");
   StopbandAttSpinbox->setVisible(ActivateCauer);
   StopbandAttLabel->setVisible(ActivateCauer);
@@ -439,11 +433,11 @@ void FilterDesignTool::ResposeComboChanged() {
   EllipticType->setVisible(ActivateCauer);
   EllipticTypeLabel->setVisible(ActivateCauer);
   if (ActivateCauer) {
-    CLCRadioButton->setText("Min L");
-    LCLRadioButton->setText("Min C");
+    TopologyCombo->setItemText(0, "Min L");
+    TopologyCombo->setItemText(1, "Min C");
   } else {
-    CLCRadioButton->setText("CLC");
-    LCLRadioButton->setText("LCL");
+    TopologyCombo->setItemText(0, "1st shunt");
+    TopologyCombo->setItemText(1, "1st series");
   }
 
   // By default, don't limit the order.
@@ -579,18 +573,18 @@ void FilterDesignTool::UpdateDesignParameters() {
   // Update parameters
   Filter_SP.bw = BWSpinbox->value() * getScale(BW_ScaleCombobox->currentText());
   Filter_SP.fc = FCSpinbox->value() * getScale(FC_ScaleCombobox->currentText());
-  Filter_SP.EllipticType   = EllipticType->currentText();
-  Filter_SP.isCLC          = CLCRadioButton->isChecked();
-  Filter_SP.ZS             = SourceImpedanceLineEdit->text().toDouble();
+  Filter_SP.EllipticType = EllipticType->currentText();
+  Filter_SP.isCLC = (TopologyCombo->currentIndex() == 0);
+  Filter_SP.ZS = SourceImpedanceLineEdit->text().toDouble();
   Filter_SP.Implementation = FilterImplementationCombo->currentText();
-  Filter_SP.minZ           = MinimumZ_Spinbox->value();
-  Filter_SP.maxZ           = MaximumZ_Spinbox->value();
+  Filter_SP.minZ = MinimumZ_Spinbox->value();
+  Filter_SP.maxZ = MaximumZ_Spinbox->value();
   Filter_SP.ImpedanceRatio = ImpedanceRatio_Spinbox->value();
-  Filter_SP.order          = OrderSpinBox->value();
-  Filter_SP.Ripple         = RippleSpinbox->value();
-  Filter_SP.as             = StopbandAttSpinbox->value();
-  Filter_SP.ZL             = 50;
-  Filter_SP.MS_Subs        = MS_Subs;
+  Filter_SP.order = OrderSpinBox->value();
+  Filter_SP.Ripple = RippleSpinbox->value();
+  Filter_SP.as = StopbandAttSpinbox->value();
+  Filter_SP.ZL = 50;
+  Filter_SP.MS_Subs = MS_Subs;
   ////////////////////////////////////////////////////////////////////////////
 
   synthesize();
@@ -618,8 +612,7 @@ void FilterDesignTool::setSettings_LC_Ladder() {
   ImpedanceRatio_Spinbox->hide();
 
   // Show CLC/LCL box
-  CLCRadioButton->show();
-  LCLRadioButton->show();
+  TopologyCombo->show();
 
   // Hide minimum impedance
   MinimumZLabel->hide();
@@ -682,8 +675,7 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled() {
   TL_Implementation_Combo->hide();
 
   // Hide CLC/LCL box
-  CLCRadioButton->hide();
-  LCLRadioButton->hide();
+  TopologyCombo->hide();
 
   // Hide impedance ratio
   ImpedanceRatio_Label->hide();
@@ -735,8 +727,7 @@ void FilterDesignTool::setSettings_Stepped_Z_LPF() {
   DC_CouplingLabel->hide();
 
   // Show CLC/LCL box
-  CLCRadioButton->show();
-  LCLRadioButton->show();
+  TopologyCombo->show();
 
   // Hide impedance ratio
   ImpedanceRatio_Label->hide();
@@ -789,8 +780,7 @@ void FilterDesignTool::setSettings_Quarterwavelength_BPF_BSF() {
   DC_CouplingLabel->hide();
 
   // Hide CLC box
-  CLCRadioButton->hide();
-  LCLRadioButton->hide();
+  TopologyCombo->hide();
 
   // Hide impedance ratio
   ImpedanceRatio_Label->hide();
@@ -848,8 +838,7 @@ void FilterDesignTool::setSettings_EndCoupled_BPF() {
   DC_CouplingLabel->hide();
 
   // Show CLC/LCL box
-  CLCRadioButton->show();
-  LCLRadioButton->show();
+  TopologyCombo->hide();
 
   // Hide impedance ratio
   ImpedanceRatio_Label->hide();
@@ -906,8 +895,7 @@ void FilterDesignTool::setSettings_CCoupledShuntResonators_BPF() {
   DC_CouplingLabel->hide();
 
   // Show CLC/LCL box
-  CLCRadioButton->show();
-  LCLRadioButton->show();
+  TopologyCombo->hide();
 
   // Hide impedance ratio
   ImpedanceRatio_Label->hide();
@@ -982,8 +970,7 @@ void FilterDesignTool::setSettings_Semilumped() {
   if (!FilterResponseTypeCombo->currentText().compare("Elliptic")) {
     // Semilumped Elliptic
     // Show LC box
-    CLCRadioButton->show();
-    LCLRadioButton->show();
+    TopologyCombo->show();
 
     // Hide impedance ratio
     ImpedanceRatio_Label->hide();
@@ -1011,8 +998,7 @@ void FilterDesignTool::setSettings_Semilumped() {
     // Semilumped Canonical
 
     // Show LC box
-    CLCRadioButton->show();
-    LCLRadioButton->show();
+    TopologyCombo->show();
 
     // Hide impedance ratio
     ImpedanceRatio_Label->hide();
@@ -1046,8 +1032,7 @@ void FilterDesignTool::setSettings_SideCoupled_BPF() {
   TL_Implementation_Combo->show();
 
   // Show CLC/LCL box
-  CLCRadioButton->show();
-  LCLRadioButton->show();
+  TopologyCombo->hide();
 
   // Hide coupling type
   DC_CouplingTypeCombo->hide();
@@ -1099,11 +1084,6 @@ void FilterDesignTool::EllipticTypeChanged() {
   }
 }
 
-void FilterDesignTool::ChangeRL_CLC_LCL_mode() {
-  UpdateDesignParameters();
-  return;
-}
-
 QStringList FilterDesignTool::setItemsResponseTypeCombo() {
   QStringList data;
 
@@ -1120,9 +1100,7 @@ double FilterDesignTool::getScale(QString scale) {
 }
 
 // The purpose of this function is to trigger a design from the main application
-void FilterDesignTool::design() {
-  UpdateDesignParameters();
-}
+void FilterDesignTool::design() { UpdateDesignParameters(); }
 
 // This function updates the input combos according to the filter implementation
 void FilterDesignTool::ImplementationComboChanged(int index) {
@@ -1162,8 +1140,7 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
 
   case COUPLED_LINE_SIR: // Coupled line with harmonic rejection
     // Hide LC box
-    CLCRadioButton->hide();
-    LCLRadioButton->hide();
+    TopologyCombo->hide();
 
     // Show TLIN implementation
     TL_Implementation_Label->show();
@@ -1216,7 +1193,7 @@ void FilterDesignTool::adjustRelativeBW(double max_rel_bw) {
 
   // If relative bandwidth exceeds threshold, adjust it
   if (rel_bw > max_rel_bw) {
-    BW            = max_rel_bw * fc;
+    BW = max_rel_bw * fc;
     double new_BW = BW / getScale(BW_ScaleCombobox->currentText());
     BWSpinbox->setValue(new_BW);
   }
