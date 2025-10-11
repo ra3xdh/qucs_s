@@ -36,6 +36,9 @@ public:
 private:
   struct MatchingNetworkDesignParameters Specs;
   double f_match;
+
+  void buildMatchingNetwork_IdealTL(double Zm, double Zmm, double XL);
+  void buildMatchingNetwork_Microstrip(double Zm, double Zmm, double XL);
 };
 
 #endif // LAMBDA8LAMBDA4_H
