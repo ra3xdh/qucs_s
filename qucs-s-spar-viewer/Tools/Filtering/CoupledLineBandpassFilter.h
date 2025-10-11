@@ -26,14 +26,17 @@
 #include <QPen>
 
 class CoupledLineBandpassFilter : public Network {
-public:
-  CoupledLineBandpassFilter();
-  virtual ~CoupledLineBandpassFilter();
-  CoupledLineBandpassFilter(FilterSpecifications);
-  void synthesize();
+    public:
+        CoupledLineBandpassFilter();
+        virtual ~CoupledLineBandpassFilter();
+        CoupledLineBandpassFilter(FilterSpecifications);
+        void synthesize();
 
-private:
-  struct FilterSpecifications Specification;
+    private:
+        struct FilterSpecifications Specification;
+
+        void buildFilter_IdealTL(const std::deque<double>& gi);
+        void buildFilter_Microstrip(const std::deque<double>& gi);
 };
 
 #endif // COUPLEDLINEBANDPASSFILTER_H
