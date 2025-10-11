@@ -68,7 +68,8 @@ enum SemiLumpedImplementation { ONLY_INDUCTORS, INDUCTORS_AND_SHUNT_CAPS };
 enum TransmissionLineType {
   Ideal,
   MLIN, // Microstrip
-  SLIN  // Stripline
+  SLIN,  // Stripline
+  Lumped
 };
 
 static const double SPEED_OF_LIGHT = 299792458.0;
@@ -192,7 +193,9 @@ struct AttenuatorDesignParameters {
   double Attenuation;                     // Attenuation in dB
   double Frequency; // Central frequency of tuned attenuators
   double Pin;       // Input power in W
-  bool Lumped_TL;   // Use the lumped equivalent of a QW transmission line
+
+  // Substrate Settings
+  MS_Substrate MS_Subs;
 };
 
 #endif // STRUCTURES_H

@@ -55,7 +55,6 @@ private:
       *FreqScaleCombo;
   QLineEdit *Pdiss_R1_Lineedit, *Pdiss_R2_Lineedit, *Pdiss_R3_Lineedit,
       *Pdiss_R4_Lineedit;
-  QCheckBox* LumpedImplementationCheckbox;
   struct PdissAtt
       Pdiss; // Power dissipated by the resistors. It is calculated in the
              // specific design functions an copied here after the synthesis

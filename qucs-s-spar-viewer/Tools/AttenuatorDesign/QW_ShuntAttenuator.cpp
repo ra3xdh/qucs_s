@@ -25,7 +25,7 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
   Components.clear();
 
   // Design equations
-  double R  = Specs.Zin * (pow(10, .05 * Specs.Attenuation) - 1);
+  double R = Specs.Zin * (pow(10, .05 * Specs.Attenuation) - 1);
   double l4 = .25 * SPEED_OF_LIGHT / Specs.Frequency;
   double w0 = 2 * M_PI * Specs.Frequency;
 
@@ -55,7 +55,7 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
   Schematic.appendWire(TermSparIN.ID, 0, NI1.ID, 0);
 
   // Lumped or distributed (TL) section
-  if (Specs.Lumped_TL) {
+  if (Specs.TL_implementation == TransmissionLineType::Lumped) {
     // Lumped: series L and shunt C to ground at each end
     Cshunt.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
@@ -81,7 +81,7 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
     TL.setParams(
         QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
         TransmissionLine, 0, 50, 50);
-    TL.val["Z0"]     = num2str(Specs.Zin, Resistance);
+    TL.val["Z0"] = num2str(Specs.Zin, Resistance);
     TL.val["Length"] = ConvertLengthFromM("mm", l4);
     Schematic.appendComponent(TL);
     Schematic.appendWire(TL.ID, 1, NI1.ID, 0);
@@ -93,7 +93,7 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
       QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50,
       100);
   Schematic.appendNode(NI2);
-  if (Specs.Lumped_TL) {
+  if (Specs.TL_implementation == TransmissionLineType::Lumped) {
     Schematic.appendWire(
         Lseries.ID, 0, NI2.ID,
         0); // Connect the lower side of the TLIN to the new node
@@ -129,7 +129,7 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
   Schematic.appendWire(Res3.ID, 1, NI2.ID, 0);    // Connection to the node
 
   // How first node connects to rest
-  if (Specs.Lumped_TL) {
+  if (Specs.TL_implementation == TransmissionLineType::Lumped) {
     // Additional lumped section output shunt C and GND
     Cshunt.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
@@ -154,8 +154,8 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
   Schematic.appendWire(Res1.ID, 0, NI1.ID, 0);
 
   // Zout label
-  QString Zout_label        = QString("Zout = %1 \u03A9").arg(num2str(Zout));
-  QGraphicsTextItem* label2 = new QGraphicsTextItem(Zout_label);
+  QString Zout_label = QString("Zout = %1 \u03A9").arg(num2str(Zout));
+  QGraphicsTextItem *label2 = new QGraphicsTextItem(Zout_label);
   label2->setDefaultTextColor(Qt::red);
   label2->setFont(QFont("Arial", 6, QFont::Bold));
   label2->setPos(130, -20);
