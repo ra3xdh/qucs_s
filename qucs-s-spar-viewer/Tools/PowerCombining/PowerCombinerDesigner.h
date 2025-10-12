@@ -57,7 +57,13 @@ private:
 
   TwoWayWilkinsonParams CalculateWilkinson();
   void TJunction();
+
+
   void Branchline();
+  void buildBranchline_IdealTL(double lambda4, double ZA, double ZB);
+  void buildBranchline_Microstrip(double lambda4, double ZA, double ZB);
+
+
   void DoubleBoxBranchline();
 
 
