@@ -59,7 +59,12 @@ private:
   void TJunction();
   void Branchline();
   void DoubleBoxBranchline();
+
+
   void Bagley();
+  void buildBagley_IdealTL(double lambda4, double lambda2, double Zbranch);
+  void buildBagley_Microstrip(double lambda4, double lambda2, double Zbranch);
+
   void Gysel();
   void Lim_Eom();
   void Wilkinson3Way_ImprovedIsolation();
