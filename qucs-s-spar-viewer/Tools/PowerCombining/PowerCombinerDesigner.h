@@ -50,6 +50,11 @@ private:
 
 
   void MultistageWilkinson();
+  void buildMultistageWilkinson_LumpedLC(const std::deque<double>& Zlines, const std::deque<double>& Risol);
+  void buildMultistageWilkinson_IdealTL(const std::deque<double>& Zlines, const std::deque<double>& Risol, double lambda4);
+  void buildMultistageWilkinson_Microstrip(const std::deque<double>& Zlines, const std::deque<double>& Risol, double lambda4);
+
+
   TwoWayWilkinsonParams CalculateWilkinson();
   void TJunction();
   void Branchline();
