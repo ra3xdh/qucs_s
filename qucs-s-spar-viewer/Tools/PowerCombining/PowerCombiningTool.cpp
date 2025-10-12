@@ -209,7 +209,35 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent) : QWidget(parent) {
   Bagley_Validator = new BagleyValidator(this);
 }
 
-PowerCombiningTool::~PowerCombiningTool() {}
+PowerCombiningTool::~PowerCombiningTool() {
+  delete TopoLabel;
+  delete TopoCombo;
+  delete TL_Implementation_Label;
+  delete TL_Implementation_Combo;
+  delete BranchesCombo;
+  delete number_Output_Label;
+  delete RefImp;
+  delete RefImpSpinbox;
+  delete OhmLabel;
+  delete FreqLabel;
+  delete FreqSpinbox;
+  delete FreqScaleCombo;
+  delete K1Label;
+  delete K1Spinbox;
+  delete K2Spinbox;
+  delete K3Spinbox;
+  delete K1LabeldB;
+  delete NStagesSpinbox;
+  delete NStagesLabel;
+  delete AlphaLabel;
+  delete AlphaSpinbox;
+  delete AlphadBLabel;
+  delete UnitsLabel;
+  delete UnitsCombo;
+  delete traceNameLabel;
+  delete traceNameLineEdit;
+  delete Bagley_Validator;
+}
 
 void PowerCombiningTool::UpdateDesignParameters() {
   PowerCombinerParams Specs;
