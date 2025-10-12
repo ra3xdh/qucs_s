@@ -17,9 +17,9 @@
 
 #include "MatchingNetworkDesignTool.h"
 
-MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget* parent)
+MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent)
     : QWidget(parent) {
-  QGridLayout* MatchingNetworkDesignLayout = new QGridLayout();
+  QGridLayout *MatchingNetworkDesignLayout = new QGridLayout();
 
   // Checkbox to select 1-port or 2-port matching
   TwoPortCheckBox = new QCheckBox();
@@ -42,7 +42,7 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget* parent)
       ->hide(); // By default, 1-port matching is selected, so hide this widget
 
   // Frequency range. Start
-  f_match_Label   = new QLabel("freq");
+  f_match_Label = new QLabel("freq");
   f_match_Spinbox = new QDoubleSpinBox();
   f_match_Spinbox->setMinimum(1);
   f_match_Spinbox->setMaximum(1e6);
@@ -59,7 +59,7 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget* parent)
   MatchingNetworkDesignLayout->addWidget(f_match_Scale_Combo, 4, 2);
 
   // Widgets to add a trace to plot
-  traceNameLabel    = new QLabel("Trace name");
+  traceNameLabel = new QLabel("Trace name");
   traceNameLineEdit = new QLineEdit("Match1");
   MatchingNetworkDesignLayout->addWidget(traceNameLabel, 5, 0);
   MatchingNetworkDesignLayout->addWidget(traceNameLineEdit, 5, 1);
@@ -91,6 +91,15 @@ MatchingNetworkDesignTool::~MatchingNetworkDesignTool() {
   delete f_match_Label;
   delete f_match_Scale_Combo;
   delete f_match_Spinbox;
+  delete TwoPortCheckBox;
+  delete InputMatchingSetupWidget;
+  delete LoadSpecWidget;
+  delete OutputMatchingSetupWidget;
+  delete f_match_Label;
+  delete f_match_Spinbox;
+  delete f_match_Scale_Combo;
+  delete traceNameLabel;
+  delete traceNameLineEdit;
 }
 
 void MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility() {
@@ -99,14 +108,14 @@ void MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility() {
     OutputMatchingSetupWidget->show();
     InputMatchingSetupWidget->setTitle("Input Matching Network Settings");
     LoadSpecWidget->setTitle("Load Settings (2-ports)");
-    traceNameLineEdit = new QLineEdit("Match2p_1");
+    traceNameLineEdit->setText("Match2p_1");
     LoadSpecWidget->setTwoPortMode(true);
   } else {
     // One-port matching
     OutputMatchingSetupWidget->hide();
     InputMatchingSetupWidget->setTitle("Matching Network Settings");
     LoadSpecWidget->setTitle("Load Settings (1-port)");
-    traceNameLineEdit = new QLineEdit("Match1");
+    traceNameLineEdit->setText("Match1");
     LoadSpecWidget->setTwoPortMode(false);
   }
   // Once visibility was adjusted, update the specifications and synthesize a
@@ -136,14 +145,14 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
         LoadSpecWidget->getTwoPortMatchingImpedances();
 
     // Set the impedances to match for the input and output networks
-    InputSpecs.ZL  = ZL.first;
+    InputSpecs.ZL = ZL.first;
     OutputSpecs.ZL = ZL.second;
 
     // Set the input and output network data in the matching problem definition
     // (struct MatchingData)
-    Specs.InputNetworkParameters  = InputSpecs;
+    Specs.InputNetworkParameters = InputSpecs;
     Specs.OutputNetworkParameters = OutputSpecs;
-    Specs.twoPortMode             = true;
+    Specs.twoPortMode = true;
 
     // Get the S-parameters and add them to the match data. They are needed for
     // creating the SPAR block
@@ -157,12 +166,12 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
     QList<std::complex<double>> ZL_data = LoadSpecWidget->getZLdata();
     if (!ZL_data.isEmpty()) {
       // If available, load ZL vs frequency data
-      InputSpecs.ZL_data  = ZL_data;
-      InputSpecs.freq     = LoadSpecWidget->getFrequency();
+      InputSpecs.ZL_data = ZL_data;
+      InputSpecs.freq = LoadSpecWidget->getFrequency();
       InputSpecs.sim_path = LoadSpecWidget->getSparFilePath();
     }
 
-    Specs.twoPortMode            = false;
+    Specs.twoPortMode = false;
     Specs.InputNetworkParameters = InputSpecs;
   }
 
@@ -173,13 +182,13 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
   LoadSpecWidget->setFmatch(Specs.f_match);
 
   // Design the matching network(s)
-  MatchingNetworkDesigner* MatchDesigner = new MatchingNetworkDesigner(Specs);
+  MatchingNetworkDesigner *MatchDesigner = new MatchingNetworkDesigner(Specs);
   MatchDesigner->synthesize();
   SchContent = MatchDesigner->Schematic;
 
   // EMIT SIGNAL TO SIMULATE
   QString TraceName = traceNameLineEdit->text();
-  SchContent.Name   = TraceName;
+  SchContent.Name = TraceName;
 
   // Indicate the main tool the kind of circuit to adjust default traces (in
   // case no traces were selected)
@@ -196,9 +205,7 @@ void MatchingNetworkDesignTool::UpdateDesignParameters() {
 }
 
 // The purpose of this function is to trigger a design from the main application
-void MatchingNetworkDesignTool::design() {
-  UpdateDesignParameters();
-}
+void MatchingNetworkDesignTool::design() { UpdateDesignParameters(); }
 
 // This function scales the frequency according to 'FreqScaleCombo' combobox
 double MatchingNetworkDesignTool::getScaleFreq(int index) {
