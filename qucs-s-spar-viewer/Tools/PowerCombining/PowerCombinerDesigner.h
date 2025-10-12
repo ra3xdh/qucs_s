@@ -65,6 +65,8 @@ private:
 
 
   void DoubleBoxBranchline();
+  void buildDoubleBoxBranchline_IdealTL(double lambda4, double ZA, double ZB, double ZD);
+  void buildDoubleBoxBranchline_Microstrip(double lambda4, double ZA, double ZB, double ZD);
 
 
   void Bagley();
