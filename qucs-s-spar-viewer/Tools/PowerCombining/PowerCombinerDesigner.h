@@ -21,6 +21,7 @@
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/structures.h"
+#include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 
 struct TwoWayWilkinsonParams {
@@ -43,6 +44,11 @@ private:
 
   // Power combiner design functions
   void Wilkinson();
+  void buildWilkinson_LumpedLC(const TwoWayWilkinsonParams& WilkinsonParams);
+  void buildWilkinson_IdealTL(const TwoWayWilkinsonParams& WilkinsonParams);
+  void buildWilkinson_Microstrip(const TwoWayWilkinsonParams& WilkinsonParams);
+
+
   void MultistageWilkinson();
   TwoWayWilkinsonParams CalculateWilkinson();
   void TJunction();

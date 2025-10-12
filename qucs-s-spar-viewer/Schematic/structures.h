@@ -178,11 +178,13 @@ struct PowerCombinerParams {
   int Noutputs;                           // Number of output branches
   int Nstages; // Number of combiner stages (broadband Wilkinson)
   std::deque<double> OutputRatio; // Splitting ratio
-  QString Implementation;         // LC, microstrip, ideal TL
   double alpha;                   // Attenuation constant of the ideal TL
   QString units;                  // mm, mil, um
   double freq;                    // Center freq
   double Z0;                      // Reference impedance
+
+  // Substrate Settings
+  MS_Substrate MS_Subs;
 };
 
 struct AttenuatorDesignParameters {

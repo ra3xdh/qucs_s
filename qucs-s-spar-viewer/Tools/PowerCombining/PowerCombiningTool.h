@@ -75,11 +75,7 @@ private:
   QSpinBox* NStagesSpinbox;
   QComboBox* BranchesCombo;
   QLabel* number_Output_Label;
-  QComboBox *TopoCombo, *FreqScaleCombo, *UnitsCombo, *ImplementationCombobox;
-  QGroupBox* ImplementationgroupBox;
-  QRadioButton *IdealTLradioButton, *MicrostripradioButton,
-      *LumpedElementsradioButton;
-
+  QComboBox *TopoCombo, *FreqScaleCombo, *UnitsCombo;
   double getScaleFreq();
   QString netlist;
   SchematicContent SchContent; // Schematic representation

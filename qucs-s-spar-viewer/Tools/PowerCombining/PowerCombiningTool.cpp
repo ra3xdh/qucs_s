@@ -17,8 +17,8 @@
 
 #include "PowerCombiningTool.h"
 
-PowerCombiningTool::PowerCombiningTool(QWidget* parent) : QWidget(parent) {
-  QGridLayout* PowerCombinerDesignLayout = new QGridLayout();
+PowerCombiningTool::PowerCombiningTool(QWidget *parent) : QWidget(parent) {
+  QGridLayout *PowerCombinerDesignLayout = new QGridLayout();
 
   int layout_row =
       0; // Row index. This is useful to add a new line on the layout without
@@ -49,6 +49,7 @@ PowerCombiningTool::PowerCombiningTool(QWidget* parent) : QWidget(parent) {
   TL_Implementation_Combo->addItem("Ideal");
   TL_Implementation_Combo->addItem("Microstrip");
   // TL_Implementation_Combo->addItem("Stripline");
+  TL_Implementation_Combo->addItem("Lumped");
   PowerCombinerDesignLayout->addWidget(TL_Implementation_Label, layout_row, 0);
   PowerCombinerDesignLayout->addWidget(TL_Implementation_Combo, layout_row, 1);
 
@@ -65,7 +66,7 @@ PowerCombiningTool::PowerCombiningTool(QWidget* parent) : QWidget(parent) {
 
   // Ref impedance
   layout_row++;
-  RefImp        = new QLabel("Z0");
+  RefImp = new QLabel("Z0");
   RefImpSpinbox = new QDoubleSpinBox();
   RefImpSpinbox->setMinimum(1);
   RefImpSpinbox->setValue(50);
@@ -78,7 +79,7 @@ PowerCombiningTool::PowerCombiningTool(QWidget* parent) : QWidget(parent) {
 
   // Frequency
   layout_row++;
-  FreqLabel   = new QLabel("Frequency");
+  FreqLabel = new QLabel("Frequency");
   FreqSpinbox = new QDoubleSpinBox();
   FreqSpinbox->setMinimum(1);
   FreqSpinbox->setMaximum(1e6);
@@ -99,8 +100,8 @@ PowerCombiningTool::PowerCombiningTool(QWidget* parent) : QWidget(parent) {
   layout_row++;
   K1Label = new QLabel("Output Power ratio");
 
-  QHBoxLayout* hbox = new QHBoxLayout();
-  K1Spinbox         = new QDoubleSpinBox();
+  QHBoxLayout *hbox = new QHBoxLayout();
+  K1Spinbox = new QDoubleSpinBox();
   K1Spinbox->setValue(0); // Equal split ratio
   K1Spinbox->setMinimum(-20);
   K1Spinbox->setMaximum(20);
@@ -143,7 +144,7 @@ PowerCombiningTool::PowerCombiningTool(QWidget* parent) : QWidget(parent) {
 
   // Ideal transmission line attenuation coeffient
   layout_row++;
-  AlphaLabel   = new QLabel("Attenuation coefficient");
+  AlphaLabel = new QLabel("Attenuation coefficient");
   AlphaSpinbox = new QDoubleSpinBox();
   AlphaSpinbox->setValue(0);        // Initial value: 0 dB/m
   AlphaSpinbox->setSingleStep(0.1); // 0.1dB
@@ -169,21 +170,9 @@ PowerCombiningTool::PowerCombiningTool(QWidget* parent) : QWidget(parent) {
   PowerCombinerDesignLayout->addWidget(UnitsLabel, layout_row, 0);
   PowerCombinerDesignLayout->addWidget(UnitsCombo, layout_row, 1);
 
-  // Implementation. Mutually exclusive radiobuttons for selecting ideal
-  // transmission lines, microstrip tech, o CLC pi aproximations of quarter-wave
-  // lines
-  layout_row++;
-  ImplementationCombobox = new QComboBox();
-  ImplementationCombobox->addItem("Ideal TL");
-  ImplementationCombobox->addItem("Lumped LC");
-  ImplementationCombobox->addItem("Microstrip");
-  PowerCombinerDesignLayout->addWidget(new QLabel("Implementation"), layout_row,
-                                       0);
-  PowerCombinerDesignLayout->addWidget(ImplementationCombobox, layout_row, 1);
-
   // Widgets to add a trace to plot
   layout_row++;
-  traceNameLabel    = new QLabel("Trace name");
+  traceNameLabel = new QLabel("Trace name");
   traceNameLineEdit = new QLineEdit("PowComb1");
   PowerCombinerDesignLayout->addWidget(traceNameLabel, layout_row, 0);
   PowerCombinerDesignLayout->addWidget(traceNameLineEdit, layout_row, 1);
@@ -214,8 +203,6 @@ PowerCombiningTool::PowerCombiningTool(QWidget* parent) : QWidget(parent) {
           SLOT(UpdateDesignParameters()));
   connect(UnitsCombo, SIGNAL(currentIndexChanged(int)), this,
           SLOT(UpdateDesignParameters()));
-  connect(ImplementationCombobox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
   connect(TopoCombo, SIGNAL(currentIndexChanged(int)), this,
           SLOT(on_TopoCombo_currentIndexChanged(int)));
 
@@ -226,30 +213,43 @@ PowerCombiningTool::~PowerCombiningTool() {}
 
 void PowerCombiningTool::UpdateDesignParameters() {
   PowerCombinerParams Specs;
-  Specs.Type     = TopoCombo->currentText();
+  Specs.Type = TopoCombo->currentText();
   Specs.Noutputs = BranchesCombo->currentText().toInt();
   Specs.OutputRatio.push_back(pow(10, K1Spinbox->value() / 20.));
   if (Specs.Type == "Lim-Eom") { // Supports arbitrary 3 way split ratio
     Specs.OutputRatio.push_back(pow(10, K2Spinbox->value() / 20.));
     Specs.OutputRatio.push_back(pow(10, K3Spinbox->value() / 20.));
   }
-  Specs.alpha          = AlphaSpinbox->value();
-  Specs.units          = UnitsCombo->currentText();
-  Specs.Implementation = ImplementationCombobox->currentText();
-  Specs.Nstages        = NStagesSpinbox->value();
-  Specs.freq           = FreqSpinbox->value() * getScaleFreq();
-  Specs.Z0             = RefImpSpinbox->value();
+  Specs.alpha = AlphaSpinbox->value();
+  Specs.units = UnitsCombo->currentText();
+  Specs.Nstages = NStagesSpinbox->value();
+  Specs.freq = FreqSpinbox->value() * getScaleFreq();
+  Specs.Z0 = RefImpSpinbox->value();
 
-  PowerCombinerDesigner* PowCombD = new PowerCombinerDesigner(Specs);
+  ////////////////////////////////////////////////////////////////////////////
+  // Transmission line implementation
+  static const QMap<QString, TransmissionLineType> tlMap{
+      {"Ideal", TransmissionLineType::Ideal},
+      {"Microstrip", TransmissionLineType::MLIN},
+      {"Stripline", TransmissionLineType::SLIN},
+      {"Lumped", TransmissionLineType::Lumped}};
+
+  const QString tlKey = TL_Implementation_Combo->currentText();
+  if (tlMap.contains(tlKey)) {
+    Specs.TL_implementation = tlMap.value(tlKey);
+  }
+  ////////////////////////////////////////////////////////////////////////////
+
+  PowerCombinerDesigner *PowCombD = new PowerCombinerDesigner(Specs);
   PowCombD->synthesize();
   SchContent = PowCombD->getSchematic();
   delete PowCombD;
 
   QString TraceName = traceNameLineEdit->text();
-  SchContent.Name   = TraceName;
-  SchContent.Type   = QString(
+  SchContent.Name = TraceName;
+  SchContent.Type = QString(
       "Power Combiner"); // Indicate the main tool the kind of circuit to adjust
-                           // default traces (in case no traces were selected)
+                         // default traces (in case no traces were selected)
   emit updateSchematic(SchContent);
   emit updateSimulation(SchContent);
 }
@@ -440,10 +440,6 @@ void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
 }
 
 // The purpose of this function is to trigger a design from the main application
-void PowerCombiningTool::design() {
-  UpdateDesignParameters();
-}
+void PowerCombiningTool::design() { UpdateDesignParameters(); }
 
-SchematicContent PowerCombiningTool::getSchematic() {
-  return SchContent;
-}
+SchematicContent PowerCombiningTool::getSchematic() { return SchContent; }

@@ -28,7 +28,8 @@ void PowerCombinerDesigner::MultistageWilkinson() {
   ComponentInfo TL, TL_Upper, TL_Lower;
   NodeInfo NI, Nupper, Nlower, Nupper_, Nlower_;
 
-  if (Specs.Implementation == "Lumped LC") // CLC pi equivalent calculation
+  if (Specs.TL_implementation ==
+      TransmissionLineType::Lumped) // CLC pi equivalent calculation
   {
     double w = 2 * M_PI * Specs.freq;
     for (int i = 0; i < NStages; i++) {
@@ -54,7 +55,8 @@ void PowerCombinerDesigner::MultistageWilkinson() {
   int posy;   // The position of the upper and the lower branches vary depending
               // on the type of implementation
   int Ni = 0; // Node index
-  (Specs.Implementation == "Lumped LC") ? posy = 75 : posy = 50;
+  (Specs.TL_implementation == TransmissionLineType::Lumped) ? posy = 75
+                                                            : posy = 50;
 
   TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 0, posx, 0);
@@ -62,8 +64,9 @@ void PowerCombinerDesigner::MultistageWilkinson() {
   Schematic.appendComponent(TermSpar1);
 
   posx += 50;
-  if (Specs.Implementation ==
-      "Lumped LC") // LC elements. Pi CLC equivalent of a lambda/4 line
+  if (Specs.TL_implementation ==
+      TransmissionLineType::Lumped) // LC elements. Pi CLC equivalent of a
+                                    // lambda/4 line
   {
     // Shunt capacitor
     Cshunt.setParams(
@@ -92,7 +95,7 @@ void PowerCombinerDesigner::MultistageWilkinson() {
     TL.setParams(
         QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
         TransmissionLine, 90, posx, 0);
-    TL.val["Z0"]     = num2str(Specs.Z0, Resistance);
+    TL.val["Z0"] = num2str(Specs.Z0, Resistance);
     TL.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
     Schematic.appendComponent(TL);
 
@@ -108,8 +111,9 @@ void PowerCombinerDesigner::MultistageWilkinson() {
   }
 
   for (int i = 0; i < Specs.Nstages; i++) {
-    if (Specs.Implementation ==
-        "Lumped LC") // LC elements. Pi CLC equivalent of a lambda/4 line
+    if (Specs.TL_implementation ==
+        TransmissionLineType::Lumped) // LC elements. Pi CLC equivalent of a
+                                      // lambda/4 line
     {
       double C_;
       if (i != Specs.Nstages - 1) {
@@ -225,7 +229,7 @@ void PowerCombinerDesigner::MultistageWilkinson() {
       TL_Upper.setParams(
           QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
           TransmissionLine, 90, posx + 15, -50);
-      TL_Upper.val["Z0"]     = num2str(Zlines[i], Resistance);
+      TL_Upper.val["Z0"] = num2str(Zlines[i], Resistance);
       TL_Upper.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
       Schematic.appendComponent(TL_Upper);
 
@@ -246,7 +250,7 @@ void PowerCombinerDesigner::MultistageWilkinson() {
       TL_Lower.setParams(
           QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
           TransmissionLine, 90, posx + 15, 50);
-      TL_Lower.val["Z0"]     = num2str(Zlines[i], Resistance);
+      TL_Lower.val["Z0"] = num2str(Zlines[i], Resistance);
       TL_Lower.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
       Schematic.appendComponent(TL_Lower);
 
@@ -310,10 +314,10 @@ std::deque<double> PowerCombinerDesigner::calcMultistageWilkinsonIsolators(
   std::deque<double> Risol;
 
   for (int i = 0; i < NStages; i++) {
-    Z_   = abs(Zaux * (Specs.Z0 + Zaux * tanh(gamma * L)) /
-               (Zaux + Specs.Z0 * tanh(gamma * L)));
+    Z_ = abs(Zaux * (Specs.Z0 + Zaux * tanh(gamma * L)) /
+             (Zaux + Specs.Z0 * tanh(gamma * L)));
     Zaux = Zlines[i];
-    R    = Specs.Z0 * Z_ / (Z_ - Specs.Z0);
+    R = Specs.Z0 * Z_ / (Z_ - Specs.Z0);
     Risol.push_front(2 * R);
   }
   return Risol;
