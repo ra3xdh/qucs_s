@@ -79,6 +79,9 @@ private:
 
 
   void Lim_Eom();
+  void buildLimEom_IdealTL(double lambda4, double Z1, double Z2, double Z4, double Z5);
+  void buildLimEom_Microstrip(double lambda4, double Z1, double Z2, double Z4, double Z5);
+
   void Wilkinson3Way_ImprovedIsolation();
   void Recombinant3WayWilkinson();
   void TravellingWave();
