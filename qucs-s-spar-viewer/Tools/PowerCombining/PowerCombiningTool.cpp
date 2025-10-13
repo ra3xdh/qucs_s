@@ -37,8 +37,8 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent) : QWidget(parent) {
   TopoCombo->addItem("Lim-Eom");
   TopoCombo->addItem("3 Way Wilkinson Improved Isolation");
   TopoCombo->addItem("Recombinant 3 Way Wilkinson");
-  TopoCombo->addItem("Travelling Wave");
-  TopoCombo->addItem("Tree");
+  //  TopoCombo->addItem("Travelling Wave");
+  //  TopoCombo->addItem("Tree");
   PowerCombinerDesignLayout->addWidget(TopoLabel, layout_row, 0);
   PowerCombinerDesignLayout->addWidget(TopoCombo, layout_row, 1);
 
