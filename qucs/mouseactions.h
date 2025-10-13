@@ -19,6 +19,7 @@
 #define MOUSEACTIONS_H
 
 #include "element.h"
+#include "schematic_selection.h"
 #include <QAction>
 
 
@@ -32,6 +33,13 @@ class QMouseEvent;
 class QucsApp;
 
 extern QAction *formerAction;
+
+struct MovingState {
+  int rotated = 0;
+  bool mirrorX = false;
+  bool mirrorY = false;
+  SchematicSelection selection = {};
+};
 
 
 class MouseActions {
@@ -50,7 +58,8 @@ public:
 
   int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
   std::list<Element*> movingElements;
-  int movingRotated;
+  // movingElements transformations and selection state
+  MovingState movingState;
 
   // menu appearing by right mouse button click on component
   QMenu *ComponentMenu;
@@ -122,6 +131,11 @@ public:
 
   void paintElementsScheme(Schematic*);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
+
+  // Transformation of moving elements
+  void mirrorXMovingElements(Schematic*);
+  void mirrorYMovingElements(Schematic*);
+  void rotateMovingElements(Schematic*);
 };
 
 #endif
