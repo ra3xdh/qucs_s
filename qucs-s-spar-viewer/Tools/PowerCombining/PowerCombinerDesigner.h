@@ -89,6 +89,9 @@ private:
   void buildWilkinson3Way_Microstrip(double lambda4, double Z1, double Z2, double R1, double R2);
 
   void Recombinant3WayWilkinson();
+  void buildRecombinant3Way_Microstrip(double lambda4, double Z1, double Z2, double Z4, double R1, double R2);
+  void buildRecombinant3Way_IdealTL(double lambda4, double Z1, double Z2, double Z4, double R1, double R2);
+
   void TravellingWave();
   void Tree();
 
