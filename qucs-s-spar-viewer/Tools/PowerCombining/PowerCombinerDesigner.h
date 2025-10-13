@@ -74,6 +74,10 @@ private:
   void buildBagley_Microstrip(double lambda4, double lambda2, double Zbranch);
 
   void Gysel();
+  void buildGysel_IdealTL(double lambda4, double lambda2);
+  void buildGysel_Microstrip(double lambda4, double lambda2);
+
+
   void Lim_Eom();
   void Wilkinson3Way_ImprovedIsolation();
   void Recombinant3WayWilkinson();
