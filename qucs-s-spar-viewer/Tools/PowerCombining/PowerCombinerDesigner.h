@@ -83,6 +83,9 @@ private:
   void buildLimEom_Microstrip(double lambda4, double Z1, double Z2, double Z4, double Z5);
 
   void Wilkinson3Way_ImprovedIsolation();
+  void buildWilkinson3Way_IdealTL(double lambda4, double Z1, double Z2, double R1, double R2);
+  void buildWilkinson3Way_Microstrip(double lambda4, double Z1, double Z2, double R1, double R2);
+
   void Recombinant3WayWilkinson();
   void TravellingWave();
   void Tree();
