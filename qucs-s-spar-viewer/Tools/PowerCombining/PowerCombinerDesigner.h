@@ -56,8 +56,10 @@ private:
 
 
   TwoWayWilkinsonParams CalculateWilkinson();
-  void TJunction();
 
+  void TJunction();
+  void buildTJunction_Microstrip(double lambda4, double K);
+  void buildTJunction_IdealTL(double lambda4, double K);
 
   void Branchline();
   void buildBranchline_IdealTL(double lambda4, double ZA, double ZB);
