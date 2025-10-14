@@ -23,7 +23,11 @@ PowerCombinerDesigner::PowerCombinerDesigner(PowerCombinerParams SPC) {
 
 void PowerCombinerDesigner::synthesize() {
   if (Specs.Type == "Wilkinson") {
-    Wilkinson();
+    Wilkinson2Way *WK;
+    WK = new Wilkinson2Way(Specs);
+    WK->synthesize();
+    SchContent = WK->Schematic;
+    delete WK;
   }
   if (Specs.Type == "Multistage Wilkinson") {
     MultistageWilkinson();

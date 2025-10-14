@@ -22,6 +22,8 @@
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/structures.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
+
+#include "Wilkinson2Way.h"
 #include "TJunction.h"
 
 #include <QPen>
