@@ -121,8 +121,8 @@ QString JA_core::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
   QString BH = getProperty("BHprobes")->Value;
 
   if (BH == "true") {
-    h_node = Ports.at(0)->Connection->Name;
-    b_node = Ports.at(1)->Connection->Name;
+    h_node = Ports.at(0)->Connection->getName();
+    b_node = Ports.at(1)->Connection->getName();
   } else {
     h_node = "net_" + Name + "_H_node";
     b_node = "net_" + Name + "_B_node";

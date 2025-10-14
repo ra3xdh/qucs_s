@@ -72,8 +72,8 @@ QString dcBlock::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
 {
   Q_UNUSED(dialect);
 
-  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+  QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
   QString val = spicecompat::normalize_value(getProperty("C")->Value);
   QString s;
   QString name = spicecompat::check_refdes(Name, SpiceModel);

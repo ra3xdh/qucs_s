@@ -86,9 +86,9 @@ QString XAPWL::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
     Q_UNUSED(dialect);
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    QString P1 = Ports.at(0)->Connection->Name;
+    QString P1 = Ports.at(0)->Connection->getName();
     if (P1=="gnd") P1 = "0";
-    QString P2 = Ports.at(1)->Connection->Name;
+    QString P2 = Ports.at(1)->Connection->getName();
     if (P2=="gnd") P2 = "0";
     s += " " + P1 + " " + P2 + " ";
 

@@ -119,9 +119,9 @@ QString potentiometer::spice_netlist(spicecompat::SpiceDialect dialect /* = spic
     QString R = spicecompat::normalize_value(getProperty("R_pot")->Value);
     QString rot = spicecompat::normalize_value(getProperty("Rotation")->Value);
     QString max_rot = spicecompat::normalize_value(getProperty("Max_Rotation")->Value);
-    QString pin1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-    QString pin2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-    QString pin3 = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
+    QString pin1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+    QString pin2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
+    QString pin3 = spicecompat::normalize_node_name(Ports.at(2)->Connection->getName());
     s += QStringLiteral("R%1_1 %2 %3 R='(%4)*(%5)/(%6)'\n").arg(Name).arg(pin1).arg(pin2).arg(R).arg(rot).arg(max_rot);
     s += QStringLiteral("R%1_2 %2 %3 R='(%4)*(1.0-(%5)/(%6))'\n").arg(Name).arg(pin2).arg(pin3).arg(R).arg(rot).arg(max_rot);
     return s;

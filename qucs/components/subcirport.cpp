@@ -17,6 +17,7 @@
 #include "subcirport.h"
 #include "node.h"
 
+#include <utility>
 
 SubCirPort::SubCirPort()
 {
@@ -112,6 +113,27 @@ QString SubCirPort::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
     return QString();
 }
 
+void SubCirPort::setNetNameMapping(QList<QPair<QString, QString>>& pinInfo)
+{
+    Q_ASSERT(!Ports.isEmpty());
+    Q_ASSERT(Props.size() >= 2);
+
+    Ports.first()->Connection->setNetNameMapping(Name);
+
+    const QString type(Props.at(1)->Value);
+    pinInfo.append(
+            std::make_pair(
+                Name,
+                (type == "analog" ? "I" : type == "in" ? "I" : type == "out" ? "O" : "B")));
+}
+
+void SubCirPort::resetNetNameMapping()
+{
+    Q_ASSERT(!Ports.isEmpty());
+
+    Ports.first()->Connection->resetNetNameMapping();
+}
+
 // -------------------------------------------------------
 QString SubCirPort::vhdlCode(int)
 {
@@ -121,8 +143,8 @@ QString SubCirPort::vhdlCode(int)
   // Insert dummy buffer to avoid reading from an output port.
   QString s = "  net_out";
   Node *pn = Ports.first()->Connection;
-  s += pn->Name + " <= ";
-  s += pn->Name + ";\n";
+  s += pn->getName() + " <= ";
+  s += pn->getName() + ";\n";
   return s;
 }
 

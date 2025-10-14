@@ -36,13 +36,16 @@
 CdlNetlistWriter::CdlNetlistWriter(
         QTextStream& netlistStream,
         Schematic* schematic,
-        bool resolveSpicePrefix) :
+        bool resolveSpicePrefix,
+        const QString& subCircuitName) :
     a_netlistStream(netlistStream),
     a_schematic(schematic),
     a_resolveSpicePrefix(resolveSpicePrefix),
     a_netListString(),
     a_netListStringStream(&a_netListString, QIODeviceBase::WriteOnly),
-    a_effectiveNetlistStream(resolveSpicePrefix ? a_netListStringStream : a_netlistStream)
+    a_effectiveNetlistStream(resolveSpicePrefix ? a_netListStringStream : a_netlistStream),
+    a_pinInfo(),
+    a_subCircuitName(subCircuitName)
 {
     if (a_resolveSpicePrefix)
     {
@@ -66,7 +69,7 @@ bool CdlNetlistWriter::write()
 
     startNetlist();
 
-    a_effectiveNetlistStream << ".END\n";
+    a_effectiveNetlistStream << ".ENDS\n" << ".END\n";
 
     if (a_resolveSpicePrefix)
     {
@@ -75,6 +78,8 @@ bool CdlNetlistWriter::write()
 
         a_netlistStream << a_netListString;
     }
+
+    a_schematic->resetNetNameMapping();
 
     return true;
 }
@@ -163,6 +168,8 @@ int CdlNetlistWriter::prepareNetlist()
         return -10;
     }
 
+    a_schematic->setNetNameMapping(a_pinInfo);
+
     return numPorts;
 }
 
@@ -171,7 +178,7 @@ void CdlNetlistWriter::startNetlist()
     QString s;
 
     // Parameters, Initial conditions, Options
-    for (Component *pc : a_schematic->a_DocComps)
+    for (Component *pc: a_schematic->a_DocComps)
     {
         if (pc->isEquation)
         {
@@ -180,17 +187,37 @@ void CdlNetlistWriter::startNetlist()
         }
     }
 
+    // always wrap the main netlist in a subcircuit
+    a_effectiveNetlistStream << ".SUBCKT " << a_subCircuitName;
+    for (auto pinInfo: a_pinInfo)
+    {
+        a_effectiveNetlistStream << " " << pinInfo.first;
+    }
+    a_effectiveNetlistStream << "\n";
+
     // global net 0 is always ground
-    a_effectiveNetlistStream << ".GLOBAL 0:G\n";
+    a_effectiveNetlistStream << "*.GLOBAL 0:G\n";
+
+    if (!a_pinInfo.isEmpty())
+    {
+        a_effectiveNetlistStream << "*.PININFO";
+
+        for (auto pinInfo: a_pinInfo)
+        {
+            a_effectiveNetlistStream << " " << pinInfo.first << ":" << pinInfo.second;
+        }
+
+        a_effectiveNetlistStream << "\n";
+    }
 
     // Components
-    for (Component *pc : a_schematic->a_DocComps)
+    for (Component *pc: a_schematic->a_DocComps)
     {
         if (a_schematic->getIsAnalog() && !pc->isSimulation && !pc->isEquation)
         {
             s = pc->getSpiceNetlist(spicecompat::CDL);
 
-            a_effectiveNetlistStream << s;
+            a_effectiveNetlistStream << (s == "\n" ? "" : s);
         }
     }
 

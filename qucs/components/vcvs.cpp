@@ -93,10 +93,10 @@ Element* VCVS::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString VCVS::va_code()
 {
     QString Gain = vacompat::normalize_value(Props.at(0)->Value);
-    QString P1 = Ports.at(0)->Connection->Name;
-    QString P4 = Ports.at(1)->Connection->Name;
-    QString P3 = Ports.at(2)->Connection->Name;
-    QString P2 = Ports.at(3)->Connection->Name;
+    QString P1 = Ports.at(0)->Connection->getName();
+    QString P4 = Ports.at(1)->Connection->getName();
+    QString P3 = Ports.at(2)->Connection->getName();
+    QString P2 = Ports.at(3)->Connection->getName();
     QString s = "";
 
     QString Vpm = vacompat::normalize_voltage(P1,P2);
@@ -119,7 +119,7 @@ QString VCVS::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::
     seq<<1<<2<<0<<3;
     // output all node names
     for (int i : seq) {
-        QString nam = Ports.at(i)->Connection->Name;
+        QString nam = Ports.at(i)->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }

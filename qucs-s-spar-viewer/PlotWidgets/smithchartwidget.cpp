@@ -163,10 +163,18 @@ SmithChartWidget::SmithChartWidget(QWidget *parent)
          // Connect the signals
   connect(m_Z0ComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
           this, &SmithChartWidget::onZ0Changed);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+  connect(m_ShowAdmittanceChartCheckBox, &QCheckBox::checkStateChanged,
+          this, &SmithChartWidget::onShowAdmittanceChartChanged);
+  connect(m_ShowConstantCurvesCheckBox, &QCheckBox::checkStateChanged,
+          this, &SmithChartWidget::onShowConstantCurvesChanged);
+#else
   connect(m_ShowAdmittanceChartCheckBox, &QCheckBox::stateChanged,
           this, &SmithChartWidget::onShowAdmittanceChartChanged);
   connect(m_ShowConstantCurvesCheckBox, &QCheckBox::stateChanged,
           this, &SmithChartWidget::onShowConstantCurvesChanged);
+#endif
 
   setLayout(mainLayout);
 }

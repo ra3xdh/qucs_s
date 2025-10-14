@@ -90,10 +90,10 @@ QString Transformer::spice_netlist(spicecompat::SpiceDialect dialect)
   Q_UNUSED(dialect);
   QString s;
   s = "X_" + Name + " ";
-  s += spicecompat::normalize_node_name(Ports.at(0)->Connection->Name) + " ";
-  s += spicecompat::normalize_node_name(Ports.at(3)->Connection->Name) + " ";
-  s += spicecompat::normalize_node_name(Ports.at(1)->Connection->Name) + " ";
-  s += spicecompat::normalize_node_name(Ports.at(2)->Connection->Name) + " ";
+  s += spicecompat::normalize_node_name(Ports.at(0)->Connection->getName()) + " ";
+  s += spicecompat::normalize_node_name(Ports.at(3)->Connection->getName()) + " ";
+  s += spicecompat::normalize_node_name(Ports.at(1)->Connection->getName()) + " ";
+  s += spicecompat::normalize_node_name(Ports.at(2)->Connection->getName()) + " ";
   s += "XFMR RATIO=" + spicecompat::normalize_value(Props.at(0)->Value);
   s += "\n";
   return s;

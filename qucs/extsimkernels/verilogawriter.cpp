@@ -164,11 +164,11 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
 
     for (Component* pc : sch->a_DocComps) {
         if (pc->Model=="Port") { // Find module ports
-            QString s = pc->Ports.first()->Connection->Name;
+            QString s = pc->Ports.first()->Connection->getName();
             if (!ports.contains(s)) ports.append(s);
         } else {
             for (Port *pp : pc->Ports) { // Find all signals
-                QString s = pp->Connection->Name;
+                QString s = pp->Connection->getName();
                 if (!nodes.contains(s)) nodes.append(s);
             }
             pc->getExtraVANodes(nodes);

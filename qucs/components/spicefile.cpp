@@ -159,7 +159,7 @@ QString SpiceFile::netlist()
 
   QString s = "Sub:"+Name;   // SPICE netlist is subcircuit
   for (Port *pp : Ports)
-    s += " "+pp->Connection->Name;   // output all node names
+    s += " "+pp->Connection->getName();   // output all node names
 
   QString f = misc::properFileName(Props.first()->Value);
   s += " Type=\""+misc::properName(f)+"\"\n";
@@ -503,7 +503,7 @@ QString SpiceFile::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     //foreach(Port *p1, Ports) {
     for (int i : seq) {
-        s += " "+Ports.at(i)->Connection->Name;   // node names
+        s += " "+Ports.at(i)->Connection->getName();   // node names
     }
 
     s += " " + spicecompat::getSubcktName(getSubcircuitFile());

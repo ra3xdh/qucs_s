@@ -152,9 +152,9 @@ void SweepDialog::slotNewValue(int)
   QList<Node *>::iterator node_it;
   QList<double *>::const_iterator value_it = ValueList.begin();
   for(node_it = NodeList.begin(); node_it != NodeList.end(); node_it++) {
-    qDebug() << "SweepDialog::slotNewValue:(*node_it)->Name:" << (*node_it)->Name;
-    (*node_it)->Name = misc::num2str(*((*value_it)+Index));
-    (*node_it)->Name += ((*node_it)->x1 & 0x10)? "A" : "V";
+    qDebug() << "SweepDialog::slotNewValue:(*node_it)->Name:" << (*node_it)->getName();
+    (*node_it)->setName(misc::num2str(*((*value_it)+Index)));
+    (*node_it)->addName(((*node_it)->x1 & 0x10)? "A" : "V");
     value_it++;
   }
 
@@ -184,11 +184,11 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
 
   // create DC voltage for all nodes
   for(Node* pn : *Doc->a_Nodes) {
-    if(pn->Name.isEmpty()) continue;
+    if(pn->getName().isEmpty()) continue;
 
     pn->x1 = 0;
     if(pn->conn_count() < 2) {
-      pn->Name = "";  // no text at open nodes
+      pn->setName("");  // no text at open nodes
       continue;
     }
     else {
@@ -206,35 +206,35 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
           hasNoComp = false;
         }
       if(hasNoComp) {  // text only were a component is connected
-        pn->Name = "";
+        pn->setName("");
         continue;
       }
     }
 
     if (!isSpice) {
-        pg->Var = pn->Name + ".V";
+        pg->Var = pn->getName() + ".V";
         pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
         if(pg->loadDatFile(DataSet) == 2) {
-          pn->Name = misc::num2str(*(pg->cPointsY)) + "V";
+          pn->setName(misc::num2str(*(pg->cPointsY)) + "V");
           NodeList.append(pn);             // remember node ...
           ValueList.append(pg->cPointsY);  // ... and all of its values
           pg->cPointsY = 0;   // do not delete it next time !
         }
         else
-          pn->Name = "0V";
+          pn->setName("0V");
     } else {
-        if (NodeVals->contains(pn->Name.toLower())) {
-                  double volts = NodeVals->value(pn->Name.toLower());
-                  pn->Name = misc::num2str(volts) + "V";
-              } else pn->Name = "0V";
+        if (NodeVals->contains(pn->getName().toLower())) {
+                  double volts = NodeVals->value(pn->getName().toLower());
+                  pn->setName(misc::num2str(volts) + "V");
+              } else pn->setName("0V");
     }
 
 
     for (auto pe : pn->wires()) {
         if (pe->Port1 != pn)  // no text at next node
-          pe->Port1->Name = "";
+          pe->Port1->setName("");
         else
-          pe->Port2->Name = "";
+          pe->Port2->setName("");
       }
   }
 
@@ -243,7 +243,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
   for(Component* pc : *Doc->a_Components)
     if(pc->Model == "IProbe") {
       Node* pn = pc->Ports.first()->Connection;
-      if(!pn->Name.isEmpty())   // preserve node voltage ?
+      if(!pn->getName().isEmpty())   // preserve node voltage ?
         pn = pc->Ports.at(1)->Connection;
 
       pn->x1 = 0x10;   // mark current
@@ -251,18 +251,18 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
           pg->Var = pc->Name + ".I";
           pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
           if(pg->loadDatFile(DataSet) == 2) {
-            pn->Name = misc::num2str(*(pg->cPointsY)) + "A";
+            pn->setName(misc::num2str(*(pg->cPointsY)) + "A");
             NodeList.append(pn);             // remember node ...
             ValueList.append(pg->cPointsY);  // ... and all of its values
             pg->cPointsY = 0;   // do not delete it next time !
           }
           else
-            pn->Name = "0A";
+            pn->setName("0A");
       } else {
           QString src_nam = QStringLiteral("V%1#branch").arg(pc->Name).toLower();
           if (NodeVals->contains(src_nam)) {
-              pn->Name = misc::num2str(NodeVals->value(src_nam))+"A";
-          } else pn->Name = "0A";
+              pn->setName(misc::num2str(NodeVals->value(src_nam))+"A");
+          } else pn->setName("0A");
       }
 
 
@@ -276,14 +276,14 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
     } else if (isSpice) {
         if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
             Node* pn = pc->Ports.first()->Connection;
-            if(!pn->Name.isEmpty())   // preserve node voltage ?
+            if(!pn->getName().isEmpty())   // preserve node voltage ?
               pn = pc->Ports.at(1)->Connection;
 
             pn->x1 = 0x10;   // mark current
             QString src_nam = QString(pc->Name+"#branch").toLower();
             if (NodeVals->contains(src_nam)) {
-                pn->Name = misc::num2str(NodeVals->value(src_nam))+"A";
-            } else pn->Name = "0A";
+                pn->setName(misc::num2str(NodeVals->value(src_nam))+"A");
+            } else pn->setName("0A");
 
             for (auto pe : pn->wires()) {
                 if (pe->isHorizontal()) pn->x1 |= 2;
