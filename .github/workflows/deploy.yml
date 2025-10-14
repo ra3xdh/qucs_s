@@ -75,7 +75,7 @@ jobs:
     - name: Install Dependencies
       run: |
           sudo apt-get update
-          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix cups libcups2-dev
+          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix cups libcups2-dev libngspice0-dev
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
 
     - name: 'Install Qt6'
@@ -98,7 +98,8 @@ jobs:
           cmake -B ${{github.workspace}}/build -G 'Ninja' \
                 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
                 -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/AppDir/usr \
-                -DCI_VERSION="${{env.VERSION}}"
+                -DCI_VERSION="${{env.VERSION}}" \
+                -DWITH_NGSPICE_SHARED=ON
 
     - name: 'Build'
       # Build your program with the given configuration
