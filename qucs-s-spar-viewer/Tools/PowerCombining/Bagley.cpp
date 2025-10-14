@@ -34,73 +34,75 @@ void PowerCombinerDesigner::buildBagley_IdealTL(double lambda4, double lambda2,
                                                 double Zbranch) {
   NodeInfo NI;
 
-  ComponentInfo TermSpar(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                         Term, 90, (Specs.Noutputs - 1) * 50, -30);
+  ComponentInfo TermSpar(
+      QString("T%1").arg(++SchContent.NumberComponents[Term]), Term, 90,
+      (Specs.Noutputs - 1) * 50, -30);
   TermSpar.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar);
+  SchContent.appendComponent(TermSpar);
 
-  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              (Specs.Noutputs - 1) * 50, 0);
-  Schematic.appendNode(N1);
+  NodeInfo N1(
+      QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
+      (Specs.Noutputs - 1) * 50, 0);
+  SchContent.appendNode(N1);
 
   ComponentInfo TL1(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+      QString("TLIN%1").arg(++SchContent.NumberComponents[TransmissionLine]),
       TransmissionLine, 0, (Specs.Noutputs - 1) * 100, 50);
   TL1.val["Z0"] = num2str(Zbranch, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
-  Schematic.appendComponent(TL1);
+  SchContent.appendComponent(TL1);
 
   ComponentInfo TL2(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+      QString("TLIN%1").arg(++SchContent.NumberComponents[TransmissionLine]),
       TransmissionLine, 0, 0, 50);
   TL2.val["Z0"] = num2str(Zbranch, Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
-  Schematic.appendComponent(TL2);
+  SchContent.appendComponent(TL2);
 
-  Schematic.appendWire(TL1.ID, 1, N1.ID, 0);
-  Schematic.appendWire(TL2.ID, 1, N1.ID, 0);
-  Schematic.appendWire(TermSpar.ID, 0, N1.ID, 0);
+  SchContent.appendWire(TL1.ID, 1, N1.ID, 0);
+  SchContent.appendWire(TL2.ID, 1, N1.ID, 0);
+  SchContent.appendWire(TermSpar.ID, 0, N1.ID, 0);
 
-  TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                      Term, -90, 0, 120);
   TermSpar.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar);
+  SchContent.appendComponent(TermSpar);
 
   NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 0,
+      QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]), 0,
       100);
-  Schematic.appendNode(NI);
+  SchContent.appendNode(NI);
 
-  Schematic.appendWire(TermSpar.ID, 0, NI.ID, 0);
-  Schematic.appendWire(TL2.ID, 0, NI.ID, 0);
+  SchContent.appendWire(TermSpar.ID, 0, NI.ID, 0);
+  SchContent.appendWire(TL2.ID, 0, NI.ID, 0);
 
   ComponentInfo TL;
   int posx = -50;
   for (int i = 1; i < Specs.Noutputs; i++) {
     posx += 100;
     TL.setParams(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+        QString("TLIN%1").arg(++SchContent.NumberComponents[TransmissionLine]),
         TransmissionLine, 90, posx, 100);
     TL.val["Z0"] = num2str(Zbranch, Resistance);
     TL.val["Length"] = ConvertLengthFromM(Specs.units, lambda2);
-    Schematic.appendComponent(TL);
-    Schematic.appendWire(NI.ID, 0, TL.ID, 0);
+    SchContent.appendComponent(TL);
+    SchContent.appendWire(NI.ID, 0, TL.ID, 0);
 
-    TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+    TermSpar.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                        Term, -90, posx + 50, 120);
     TermSpar.val["Z"] = num2str(Specs.Z0, Resistance);
-    Schematic.appendComponent(TermSpar);
+    SchContent.appendComponent(TermSpar);
 
     NI.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
         posx + 50, 100);
-    Schematic.appendNode(NI);
+    SchContent.appendNode(NI);
 
-    Schematic.appendWire(NI.ID, 0, TL.ID, 1);
-    Schematic.appendWire(NI.ID, 0, TermSpar.ID, 0);
+    SchContent.appendWire(NI.ID, 0, TL.ID, 1);
+    SchContent.appendWire(NI.ID, 0, TermSpar.ID, 0);
   }
 
-  Schematic.appendWire(TL1.ID, 0, NI.ID, 0);
+  SchContent.appendWire(TL1.ID, 0, NI.ID, 0);
 }
 
 void PowerCombinerDesigner::buildBagley_Microstrip(double lambda4,
@@ -108,14 +110,16 @@ void PowerCombinerDesigner::buildBagley_Microstrip(double lambda4,
                                                    double Zbranch) {
   NodeInfo NI;
 
-  ComponentInfo TermSpar(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                         Term, 90, (Specs.Noutputs - 1) * 50, -30);
+  ComponentInfo TermSpar(
+      QString("T%1").arg(++SchContent.NumberComponents[Term]), Term, 90,
+      (Specs.Noutputs - 1) * 50, -30);
   TermSpar.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar);
+  SchContent.appendComponent(TermSpar);
 
-  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              (Specs.Noutputs - 1) * 50, 0);
-  Schematic.appendNode(N1);
+  NodeInfo N1(
+      QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
+      (Specs.Noutputs - 1) * 50, 0);
+  SchContent.appendNode(N1);
 
   // Right quarter-wave branch microstrip line
   MicrostripClass MSL_Branch1;
@@ -123,7 +127,7 @@ void PowerCombinerDesigner::buildBagley_Microstrip(double lambda4,
   MSL_Branch1.synthesizeMicrostrip(Zbranch, lambda4 * 1e3, Specs.freq);
 
   ComponentInfo MLIN1(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+      QString("MLIN%1").arg(++SchContent.NumberComponents[MicrostripLine]),
       MicrostripLine, 0, (Specs.Noutputs - 1) * 100, 50);
   MLIN1.val["Width"] = ConvertLengthFromM("mm", MSL_Branch1.Results.width);
   MLIN1.val["Length"] =
@@ -133,7 +137,7 @@ void PowerCombinerDesigner::buildBagley_Microstrip(double lambda4,
   MLIN1.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
   MLIN1.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
   MLIN1.val["tand"] = num2str(Specs.MS_Subs.tand);
-  Schematic.appendComponent(MLIN1);
+  SchContent.appendComponent(MLIN1);
 
   // Left quarter-wave branch microstrip line
   MicrostripClass MSL_Branch2;
@@ -141,7 +145,7 @@ void PowerCombinerDesigner::buildBagley_Microstrip(double lambda4,
   MSL_Branch2.synthesizeMicrostrip(Zbranch, lambda4 * 1e3, Specs.freq);
 
   ComponentInfo MLIN2(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+      QString("MLIN%1").arg(++SchContent.NumberComponents[MicrostripLine]),
       MicrostripLine, 0, 0, 50);
   MLIN2.val["Width"] = ConvertLengthFromM("mm", MSL_Branch2.Results.width);
   MLIN2.val["Length"] =
@@ -151,24 +155,24 @@ void PowerCombinerDesigner::buildBagley_Microstrip(double lambda4,
   MLIN2.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
   MLIN2.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
   MLIN2.val["tand"] = num2str(Specs.MS_Subs.tand);
-  Schematic.appendComponent(MLIN2);
+  SchContent.appendComponent(MLIN2);
 
-  Schematic.appendWire(MLIN1.ID, 1, N1.ID, 0);
-  Schematic.appendWire(MLIN2.ID, 1, N1.ID, 0);
-  Schematic.appendWire(TermSpar.ID, 0, N1.ID, 0);
+  SchContent.appendWire(MLIN1.ID, 1, N1.ID, 0);
+  SchContent.appendWire(MLIN2.ID, 1, N1.ID, 0);
+  SchContent.appendWire(TermSpar.ID, 0, N1.ID, 0);
 
-  TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                      Term, -90, 0, 120);
   TermSpar.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar);
+  SchContent.appendComponent(TermSpar);
 
   NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 0,
+      QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]), 0,
       100);
-  Schematic.appendNode(NI);
+  SchContent.appendNode(NI);
 
-  Schematic.appendWire(TermSpar.ID, 0, NI.ID, 0);
-  Schematic.appendWire(MLIN2.ID, 0, NI.ID, 0);
+  SchContent.appendWire(TermSpar.ID, 0, NI.ID, 0);
+  SchContent.appendWire(MLIN2.ID, 0, NI.ID, 0);
 
   // Half-wave microstrip line sections
   MicrostripClass MSL_HalfWave;
@@ -181,7 +185,7 @@ void PowerCombinerDesigner::buildBagley_Microstrip(double lambda4,
     posx += 100;
 
     MLIN.setParams(
-        QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+        QString("MLIN%1").arg(++SchContent.NumberComponents[MicrostripLine]),
         MicrostripLine, 90, posx, 100);
     MLIN.val["Width"] = ConvertLengthFromM("mm", MSL_HalfWave.Results.width);
     MLIN.val["Length"] =
@@ -191,23 +195,23 @@ void PowerCombinerDesigner::buildBagley_Microstrip(double lambda4,
     MLIN.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
     MLIN.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
     MLIN.val["tand"] = num2str(Specs.MS_Subs.tand);
-    Schematic.appendComponent(MLIN);
+    SchContent.appendComponent(MLIN);
 
-    Schematic.appendWire(NI.ID, 0, MLIN.ID, 0);
+    SchContent.appendWire(NI.ID, 0, MLIN.ID, 0);
 
-    TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+    TermSpar.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                        Term, -90, posx + 50, 120);
     TermSpar.val["Z"] = num2str(Specs.Z0, Resistance);
-    Schematic.appendComponent(TermSpar);
+    SchContent.appendComponent(TermSpar);
 
     NI.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
         posx + 50, 100);
-    Schematic.appendNode(NI);
+    SchContent.appendNode(NI);
 
-    Schematic.appendWire(NI.ID, 0, MLIN.ID, 1);
-    Schematic.appendWire(NI.ID, 0, TermSpar.ID, 0);
+    SchContent.appendWire(NI.ID, 0, MLIN.ID, 1);
+    SchContent.appendWire(NI.ID, 0, TermSpar.ID, 0);
   }
 
-  Schematic.appendWire(MLIN1.ID, 0, NI.ID, 0);
+  SchContent.appendWire(MLIN1.ID, 0, NI.ID, 0);
 }

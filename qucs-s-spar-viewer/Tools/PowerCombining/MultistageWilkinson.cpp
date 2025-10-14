@@ -56,32 +56,32 @@ void PowerCombinerDesigner::buildMultistageWilkinson_LumpedLC(
   int posx = 0;
   int posy = 75;
 
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar1.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                       Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar1);
+  SchContent.appendComponent(TermSpar1);
 
   posx += 50;
 
   // Shunt capacitor
-  Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
+  Cshunt.setParams(QString("C%1").arg(++SchContent.NumberComponents[Capacitor]),
                    Capacitor, 0, posx, 20);
   Cshunt.val["C"] = num2str(2 * C[0], Capacitance);
-  Schematic.appendComponent(Cshunt);
+  SchContent.appendComponent(Cshunt);
 
-  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, posx, 60);
-  Schematic.appendComponent(Ground);
+  Ground.setParams(QString("GND%1").arg(++SchContent.NumberComponents[GND]),
+                   GND, 0, posx, 60);
+  SchContent.appendComponent(Ground);
 
-  Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
+  SchContent.appendWire(Cshunt.ID, 0, Ground.ID, 0);
 
   NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
       posx + 25, 0);
-  Schematic.appendNode(NI);
+  SchContent.appendNode(NI);
 
-  Schematic.appendWire(Cshunt.ID, 1, NI.ID, 0);
-  Schematic.appendWire(NI.ID, 1, TermSpar1.ID, 0);
+  SchContent.appendWire(Cshunt.ID, 1, NI.ID, 0);
+  SchContent.appendWire(NI.ID, 1, TermSpar1.ID, 0);
 
   posx += 20;
 
@@ -97,114 +97,114 @@ void PowerCombinerDesigner::buildMultistageWilkinson_LumpedLC(
     posx += 50;
 
     Lseries.setParams(
-        QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
+        QString("L%1").arg(++SchContent.NumberComponents[Inductor]), Inductor,
         -90, posx, -75);
     Lseries.val["L"] = num2str(L[i], Inductance);
-    Schematic.appendComponent(Lseries);
+    SchContent.appendComponent(Lseries);
 
     posx += 50;
 
     Cshunt.setParams(
-        QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
+        QString("C%1").arg(++SchContent.NumberComponents[Capacitor]), Capacitor,
         0, posx, -50);
     Cshunt.val["C"] = num2str(C_, Capacitance);
-    Schematic.appendComponent(Cshunt);
+    SchContent.appendComponent(Cshunt);
 
-    Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
+    Ground.setParams(QString("GND%1").arg(++SchContent.NumberComponents[GND]),
                      GND, 0, posx, -10);
-    Schematic.appendComponent(Ground);
+    SchContent.appendComponent(Ground);
 
-    Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
+    SchContent.appendWire(Cshunt.ID, 0, Ground.ID, 0);
 
     if (i > 0) {
-      Schematic.appendWire(Lseries.ID, 1, Nupper.ID, 0);
+      SchContent.appendWire(Lseries.ID, 1, Nupper.ID, 0);
     } else {
-      Schematic.appendWire(Lseries.ID, 1, NI.ID, 0);
+      SchContent.appendWire(Lseries.ID, 1, NI.ID, 0);
     }
 
     Nupper.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
         posx + 50, -75);
-    Schematic.appendNode(Nupper);
+    SchContent.appendNode(Nupper);
 
     Nupper_.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
-        -75);
-    Schematic.appendNode(Nupper_);
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
+        posx, -75);
+    SchContent.appendNode(Nupper_);
 
-    Schematic.appendWire(Cshunt.ID, 1, Nupper_.ID, 0);
-    Schematic.appendWire(Nupper_.ID, 0, Lseries.ID, 0);
-    Schematic.appendWire(Nupper_.ID, 0, Nupper.ID, 0);
+    SchContent.appendWire(Cshunt.ID, 1, Nupper_.ID, 0);
+    SchContent.appendWire(Nupper_.ID, 0, Lseries.ID, 0);
+    SchContent.appendWire(Nupper_.ID, 0, Nupper.ID, 0);
 
     posx -= 50;
 
     // Lower branch
     Lseries.setParams(
-        QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
+        QString("L%1").arg(++SchContent.NumberComponents[Inductor]), Inductor,
         -90, posx, 75);
     Lseries.val["L"] = num2str(L[i], Inductance);
-    Schematic.appendComponent(Lseries);
+    SchContent.appendComponent(Lseries);
 
     posx += 50;
 
     Cshunt.setParams(
-        QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
+        QString("C%1").arg(++SchContent.NumberComponents[Capacitor]), Capacitor,
         0, posx, 100);
-    Schematic.appendComponent(Cshunt);
+    SchContent.appendComponent(Cshunt);
 
-    Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
+    Ground.setParams(QString("GND%1").arg(++SchContent.NumberComponents[GND]),
                      GND, 0, posx, 140);
-    Schematic.appendComponent(Ground);
+    SchContent.appendComponent(Ground);
 
-    Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
+    SchContent.appendWire(Cshunt.ID, 0, Ground.ID, 0);
 
     if (i > 0) {
-      Schematic.appendWire(Lseries.ID, 1, Nlower.ID, 0);
+      SchContent.appendWire(Lseries.ID, 1, Nlower.ID, 0);
     } else {
-      Schematic.appendWire(Lseries.ID, 1, NI.ID, 0);
+      SchContent.appendWire(Lseries.ID, 1, NI.ID, 0);
     }
 
     Nlower.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
         posx + 50, 75);
-    Schematic.appendNode(Nlower);
+    SchContent.appendNode(Nlower);
 
     Nlower_.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
-        75);
-    Schematic.appendNode(Nlower_);
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
+        posx, 75);
+    SchContent.appendNode(Nlower_);
 
-    Schematic.appendWire(Cshunt.ID, 1, Nlower_.ID, 0);
-    Schematic.appendWire(Nlower_.ID, 0, Lseries.ID, 0);
-    Schematic.appendWire(Nlower_.ID, 0, Nlower.ID, 0);
+    SchContent.appendWire(Cshunt.ID, 1, Nlower_.ID, 0);
+    SchContent.appendWire(Nlower_.ID, 0, Lseries.ID, 0);
+    SchContent.appendWire(Nlower_.ID, 0, Nlower.ID, 0);
 
     posx += 50;
 
     // Isolation resistor
     ComponentInfo Riso(
-        QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0,
-        posx, 0);
+        QString("R%1").arg(++SchContent.NumberComponents[Resistor]), Resistor,
+        0, posx, 0);
     Riso.val["R"] = num2str(Risol[i], Resistance);
-    Schematic.appendComponent(Riso);
+    SchContent.appendComponent(Riso);
 
-    Schematic.appendWire(Riso.ID, 1, Nupper.ID, 0);
-    Schematic.appendWire(Riso.ID, 0, Nlower.ID, 0);
+    SchContent.appendWire(Riso.ID, 1, Nupper.ID, 0);
+    SchContent.appendWire(Riso.ID, 0, Nlower.ID, 0);
   }
 
   posx += 50;
 
   // Output terminals
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar2.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                       Term, 180, posx, -posy);
   TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar2);
-  Schematic.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
+  SchContent.appendComponent(TermSpar2);
+  SchContent.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
 
-  TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar3.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                       Term, 180, posx, posy);
   TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar3);
-  Schematic.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
+  SchContent.appendComponent(TermSpar3);
+  SchContent.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
 }
 
 void PowerCombinerDesigner::buildMultistageWilkinson_IdealTL(
@@ -217,100 +217,100 @@ void PowerCombinerDesigner::buildMultistageWilkinson_IdealTL(
   int posx = 0;
   int posy = 50;
 
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar1.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                       Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar1);
+  SchContent.appendComponent(TermSpar1);
 
   posx += 50;
 
   // Input transmission line
   TL.setParams(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+      QString("TLIN%1").arg(++SchContent.NumberComponents[TransmissionLine]),
       TransmissionLine, 90, posx, 0);
   TL.val["Z0"] = num2str(Specs.Z0, Resistance);
   TL.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
-  Schematic.appendComponent(TL);
+  SchContent.appendComponent(TL);
 
   NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
       posx + 25, 0);
-  Schematic.appendNode(NI);
+  SchContent.appendNode(NI);
 
-  Schematic.appendWire(TermSpar1.ID, 0, TL.ID, 0);
-  Schematic.appendWire(TL.ID, 1, NI.ID, 0);
+  SchContent.appendWire(TermSpar1.ID, 0, TL.ID, 0);
+  SchContent.appendWire(TL.ID, 1, NI.ID, 0);
 
   for (int i = 0; i < Specs.Nstages; i++) {
     posx += 50;
 
     // Upper branch TL
     TL_Upper.setParams(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+        QString("TLIN%1").arg(++SchContent.NumberComponents[TransmissionLine]),
         TransmissionLine, 90, posx + 15, -50);
     TL_Upper.val["Z0"] = num2str(Zlines[i], Resistance);
     TL_Upper.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
-    Schematic.appendComponent(TL_Upper);
+    SchContent.appendComponent(TL_Upper);
 
     if (i > 0) {
-      Schematic.appendWire(TL_Upper.ID, 0, Nupper.ID, 0);
+      SchContent.appendWire(TL_Upper.ID, 0, Nupper.ID, 0);
     }
 
     Nupper.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
         posx + 50, -50);
-    Schematic.appendNode(Nupper);
-    Schematic.appendWire(TL_Upper.ID, 1, Nupper.ID, 0);
+    SchContent.appendNode(Nupper);
+    SchContent.appendWire(TL_Upper.ID, 1, Nupper.ID, 0);
 
     // Lower branch TL
     TL_Lower.setParams(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+        QString("TLIN%1").arg(++SchContent.NumberComponents[TransmissionLine]),
         TransmissionLine, 90, posx + 15, 50);
     TL_Lower.val["Z0"] = num2str(Zlines[i], Resistance);
     TL_Lower.val["Length"] = ConvertLengthFromM(Specs.units, lambda4);
-    Schematic.appendComponent(TL_Lower);
+    SchContent.appendComponent(TL_Lower);
 
     if (i > 0) {
-      Schematic.appendWire(TL_Lower.ID, 0, Nlower.ID, 0);
+      SchContent.appendWire(TL_Lower.ID, 0, Nlower.ID, 0);
     }
 
     Nlower.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
         posx + 50, 50);
-    Schematic.appendNode(Nlower);
-    Schematic.appendWire(TL_Lower.ID, 1, Nlower.ID, 0);
+    SchContent.appendNode(Nlower);
+    SchContent.appendWire(TL_Lower.ID, 1, Nlower.ID, 0);
 
     if (i == 0) {
-      Schematic.appendWire(NI.ID, 0, TL_Upper.ID, 0);
-      Schematic.appendWire(NI.ID, 0, TL_Lower.ID, 0);
+      SchContent.appendWire(NI.ID, 0, TL_Upper.ID, 0);
+      SchContent.appendWire(NI.ID, 0, TL_Lower.ID, 0);
     }
 
     posx += 50;
 
     // Isolation resistor
     ComponentInfo Riso(
-        QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0,
-        posx, 0);
+        QString("R%1").arg(++SchContent.NumberComponents[Resistor]), Resistor,
+        0, posx, 0);
     Riso.val["R"] = num2str(Risol[i], Resistance);
-    Schematic.appendComponent(Riso);
+    SchContent.appendComponent(Riso);
 
-    Schematic.appendWire(Riso.ID, 1, Nupper.ID, 0);
-    Schematic.appendWire(Riso.ID, 0, Nlower.ID, 0);
+    SchContent.appendWire(Riso.ID, 1, Nupper.ID, 0);
+    SchContent.appendWire(Riso.ID, 0, Nlower.ID, 0);
   }
 
   posx += 50;
 
   // Output terminals
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar2.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                       Term, 180, posx, -posy);
   TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar2);
-  Schematic.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
+  SchContent.appendComponent(TermSpar2);
+  SchContent.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
 
-  TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar3.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                       Term, 180, posx, posy);
   TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar3);
-  Schematic.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
+  SchContent.appendComponent(TermSpar3);
+  SchContent.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
 }
 
 void PowerCombinerDesigner::buildMultistageWilkinson_Microstrip(
@@ -323,10 +323,10 @@ void PowerCombinerDesigner::buildMultistageWilkinson_Microstrip(
   int posx = 0;
   int posy = 50;
 
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar1.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                       Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar1);
+  SchContent.appendComponent(TermSpar1);
 
   posx += 50;
 
@@ -336,7 +336,7 @@ void PowerCombinerDesigner::buildMultistageWilkinson_Microstrip(
   MSL_Input.synthesizeMicrostrip(Specs.Z0, lambda4 * 1e3, Specs.freq);
 
   MLIN.setParams(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+      QString("MLIN%1").arg(++SchContent.NumberComponents[MicrostripLine]),
       MicrostripLine, 90, posx, 0);
   MLIN.val["Width"] = ConvertLengthFromM("mm", MSL_Input.Results.width);
   MLIN.val["Length"] =
@@ -346,15 +346,15 @@ void PowerCombinerDesigner::buildMultistageWilkinson_Microstrip(
   MLIN.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
   MLIN.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
   MLIN.val["tand"] = num2str(Specs.MS_Subs.tand);
-  Schematic.appendComponent(MLIN);
+  SchContent.appendComponent(MLIN);
 
   NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
       posx + 25, 0);
-  Schematic.appendNode(NI);
+  SchContent.appendNode(NI);
 
-  Schematic.appendWire(TermSpar1.ID, 0, MLIN.ID, 0);
-  Schematic.appendWire(MLIN.ID, 1, NI.ID, 0);
+  SchContent.appendWire(TermSpar1.ID, 0, MLIN.ID, 0);
+  SchContent.appendWire(MLIN.ID, 1, NI.ID, 0);
 
   for (int i = 0; i < Specs.Nstages; i++) {
     posx += 50;
@@ -365,7 +365,7 @@ void PowerCombinerDesigner::buildMultistageWilkinson_Microstrip(
     MSL_Upper.synthesizeMicrostrip(Zlines[i], lambda4 * 1e3, Specs.freq);
 
     MLIN_Upper.setParams(
-        QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+        QString("MLIN%1").arg(++SchContent.NumberComponents[MicrostripLine]),
         MicrostripLine, 90, posx + 15, -50);
     MLIN_Upper.val["Width"] = ConvertLengthFromM("mm", MSL_Upper.Results.width);
     MLIN_Upper.val["Length"] =
@@ -375,17 +375,17 @@ void PowerCombinerDesigner::buildMultistageWilkinson_Microstrip(
     MLIN_Upper.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
     MLIN_Upper.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
     MLIN_Upper.val["tand"] = num2str(Specs.MS_Subs.tand);
-    Schematic.appendComponent(MLIN_Upper);
+    SchContent.appendComponent(MLIN_Upper);
 
     if (i > 0) {
-      Schematic.appendWire(MLIN_Upper.ID, 0, Nupper.ID, 0);
+      SchContent.appendWire(MLIN_Upper.ID, 0, Nupper.ID, 0);
     }
 
     Nupper.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
         posx + 50, -50);
-    Schematic.appendNode(Nupper);
-    Schematic.appendWire(MLIN_Upper.ID, 1, Nupper.ID, 0);
+    SchContent.appendNode(Nupper);
+    SchContent.appendWire(MLIN_Upper.ID, 1, Nupper.ID, 0);
 
     // Lower branch microstrip line
     MicrostripClass MSL_Lower;
@@ -393,7 +393,7 @@ void PowerCombinerDesigner::buildMultistageWilkinson_Microstrip(
     MSL_Lower.synthesizeMicrostrip(Zlines[i], lambda4 * 1e3, Specs.freq);
 
     MLIN_Lower.setParams(
-        QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+        QString("MLIN%1").arg(++SchContent.NumberComponents[MicrostripLine]),
         MicrostripLine, 90, posx + 15, 50);
     MLIN_Lower.val["Width"] = ConvertLengthFromM("mm", MSL_Lower.Results.width);
     MLIN_Lower.val["Length"] =
@@ -403,50 +403,50 @@ void PowerCombinerDesigner::buildMultistageWilkinson_Microstrip(
     MLIN_Lower.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
     MLIN_Lower.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
     MLIN_Lower.val["tand"] = num2str(Specs.MS_Subs.tand);
-    Schematic.appendComponent(MLIN_Lower);
+    SchContent.appendComponent(MLIN_Lower);
 
     if (i > 0) {
-      Schematic.appendWire(MLIN_Lower.ID, 0, Nlower.ID, 0);
+      SchContent.appendWire(MLIN_Lower.ID, 0, Nlower.ID, 0);
     }
 
     Nlower.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        QString("N%1").arg(++SchContent.NumberComponents[ConnectionNodes]),
         posx + 50, 50);
-    Schematic.appendNode(Nlower);
-    Schematic.appendWire(MLIN_Lower.ID, 1, Nlower.ID, 0);
+    SchContent.appendNode(Nlower);
+    SchContent.appendWire(MLIN_Lower.ID, 1, Nlower.ID, 0);
 
     if (i == 0) {
-      Schematic.appendWire(NI.ID, 0, MLIN_Upper.ID, 0);
-      Schematic.appendWire(NI.ID, 0, MLIN_Lower.ID, 0);
+      SchContent.appendWire(NI.ID, 0, MLIN_Upper.ID, 0);
+      SchContent.appendWire(NI.ID, 0, MLIN_Lower.ID, 0);
     }
 
     posx += 50;
 
     // Isolation resistor
     ComponentInfo Riso(
-        QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0,
-        posx, 0);
+        QString("R%1").arg(++SchContent.NumberComponents[Resistor]), Resistor,
+        0, posx, 0);
     Riso.val["R"] = num2str(Risol[i], Resistance);
-    Schematic.appendComponent(Riso);
+    SchContent.appendComponent(Riso);
 
-    Schematic.appendWire(Riso.ID, 1, Nupper.ID, 0);
-    Schematic.appendWire(Riso.ID, 0, Nlower.ID, 0);
+    SchContent.appendWire(Riso.ID, 1, Nupper.ID, 0);
+    SchContent.appendWire(Riso.ID, 0, Nlower.ID, 0);
   }
 
   posx += 50;
 
   // Output terminals
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar2.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                       Term, 180, posx, -posy);
   TermSpar2.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar2);
-  Schematic.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
+  SchContent.appendComponent(TermSpar2);
+  SchContent.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
 
-  TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+  TermSpar3.setParams(QString("T%1").arg(++SchContent.NumberComponents[Term]),
                       Term, 180, posx, posy);
   TermSpar3.val["Z"] = num2str(Specs.Z0, Resistance);
-  Schematic.appendComponent(TermSpar3);
-  Schematic.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
+  SchContent.appendComponent(TermSpar3);
+  SchContent.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
 }
 
 std::deque<double> PowerCombinerDesigner::calcMultistageWilkinsonIsolators(

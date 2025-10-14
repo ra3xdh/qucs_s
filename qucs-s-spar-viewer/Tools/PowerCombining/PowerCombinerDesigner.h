@@ -22,6 +22,8 @@
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/structures.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
+#include "TJunction.h"
+
 #include <QPen>
 
 struct TwoWayWilkinsonParams {
@@ -36,11 +38,11 @@ class PowerCombinerDesigner {
 public:
   PowerCombinerDesigner(PowerCombinerParams);
   void synthesize();
-  SchematicContent getSchematic() { return Schematic; }
+  SchematicContent getSchematic() { return SchContent; }
 
 private:
   PowerCombinerParams Specs;
-  SchematicContent Schematic;
+  SchematicContent SchContent;
 
   // Power combiner design functions
   void Wilkinson();
@@ -56,10 +58,6 @@ private:
 
 
   TwoWayWilkinsonParams CalculateWilkinson();
-
-  void TJunction();
-  void buildTJunction_Microstrip(double lambda4, double K);
-  void buildTJunction_IdealTL(double lambda4, double K);
 
   void Branchline();
   void buildBranchline_IdealTL(double lambda4, double ZA, double ZB);

@@ -29,7 +29,11 @@ void PowerCombinerDesigner::synthesize() {
     MultistageWilkinson();
   }
   if (Specs.Type == "T-junction") {
-    TJunction();
+    TJunction *TJ;
+    TJ = new TJunction(Specs);
+    TJ->synthesize();
+    SchContent = TJ->Schematic;
+    delete TJ;
   }
   if (Specs.Type == "Branchline") {
     Branchline();
@@ -60,10 +64,10 @@ TwoWayWilkinsonParams PowerCombinerDesigner::CalculateWilkinson() {
   double K = Specs.OutputRatio.at(0);
   TwoWayWilkinsonParams WilkinsonParams;
   // Wilkinson divider design equations
-  double K2          = K * K;
+  double K2 = K * K;
   WilkinsonParams.Z3 = Specs.Z0 * sqrt((K2 + 1) / (K * K * K));
   WilkinsonParams.Z2 = K2 * WilkinsonParams.Z3;
-  WilkinsonParams.R  = Specs.Z0 * ((K2 + 1) / K);
+  WilkinsonParams.R = Specs.Z0 * ((K2 + 1) / K);
   WilkinsonParams.R2 = Specs.Z0 * K;
   WilkinsonParams.R3 = Specs.Z0 / K;
   return WilkinsonParams;
