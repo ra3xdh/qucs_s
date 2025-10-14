@@ -83,12 +83,13 @@ int NgspiceShared::sendCommand(const QString &command) {
     return -1;
   }
 
-  // Reject background commands - they don't work properly with shared library mode
-  // which expects synchronous execution
+  // Reject background commands - ngspice shared library has its own background
+  // thread management via cbBGThreadRunning callback. User-initiated bg_*
+  // commands would conflict with this built-in threading model.
   QString trimmedCommand = command.trimmed();
   if (trimmedCommand.startsWith("bg_")) {
     qCritical() << "NgspiceShared: Background commands (bg_*) are not supported in shared library mode";
-    qCritical() << "NgspiceShared: Use synchronous commands instead. Command rejected:" << command;
+    qCritical() << "NgspiceShared: Shared library uses internal threading. Command rejected:" << command;
     return -1;
   }
 

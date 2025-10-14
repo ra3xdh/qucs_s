@@ -53,9 +53,8 @@ void TestNgspiceIntegration::cleanupTestCase()
     QTest::qWait(100);
 
     if (m_ngspice) {
-        // Ngspice cleanup can sometimes be problematic
-        // Just set to nullptr without explicit delete to avoid issues
-        m_ngspice->setParent(nullptr);
+        // Delete explicitly - parent relationship handles cleanup properly
+        delete m_ngspice;
         m_ngspice = nullptr;
     }
 #endif

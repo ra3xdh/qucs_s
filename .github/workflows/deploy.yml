@@ -198,7 +198,7 @@ jobs:
       - name: 'Install Dependencies'
         shell: bash
         run: |
-          brew install gperf dos2unix bison flex graphicsmagick imagemagick
+          brew install gperf dos2unix bison flex graphicsmagick imagemagick libngspice
           echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
           export LDFLAGS="-L$(brew --prefix bison)/lib"
           source ~/.bashrc
@@ -210,7 +210,8 @@ jobs:
             -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
             -DCMAKE_OSX_DEPLOYMENT_TARGET=${{ matrix.deployment_target }} \
             -DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" \
-            -DCI_VERSION="${{ env.VERSION }}"
+            -DCI_VERSION="${{ env.VERSION }}" \
+            -DWITH_NGSPICE_SHARED=ON
 
       - name: 'Build Qucs-s'
         run: |
