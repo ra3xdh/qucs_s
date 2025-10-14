@@ -52,7 +52,11 @@
 Ngspice::Ngspice(Schematic* schematic, QObject *parent) :
     AbstractSpiceKernel(schematic, parent),
     a_spinit_name()
+#if NGSPICE_SHARED
+    , a_ngspice_shared(nullptr)
+#endif
 {
+#if EXTERNAL_SIMULATORS
     if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) { // this check is related to MacOS
         a_simulator_cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
     } else {
@@ -62,6 +66,26 @@ Ngspice::Ngspice(Schematic* schematic, QObject *parent) :
         a_simulator_cmd = QucsSettings.NgspiceExecutable; //rely on $PATH
     }
     a_simulator_parameters = "";
+#endif
+
+#if NGSPICE_SHARED
+    // Initialize ngspice shared library
+    a_ngspice_shared = new NgspiceShared(this);
+    if (!a_ngspice_shared->initialize()) {
+        qWarning() << "Ngspice: Failed to initialize ngspice shared library";
+        delete a_ngspice_shared;
+        a_ngspice_shared = nullptr;
+    } else {
+        // Connect signals from shared library wrapper
+        connect(a_ngspice_shared, &NgspiceShared::outputReceived,
+                this, &Ngspice::onSharedOutputReceived);
+        connect(a_ngspice_shared, &NgspiceShared::statusUpdate,
+                this, &Ngspice::onSharedStatusUpdate);
+        connect(a_ngspice_shared, &NgspiceShared::simulationFinished,
+                this, &Ngspice::onSharedSimulationFinished);
+    }
+#endif
+
     a_spinit_name = QDir::toNativeSeparators(QucsSettings.S4Qworkdir+"/.spiceinit");
 }
 
@@ -477,7 +501,7 @@ void Ngspice::slotSimulate()
         if (a_console != nullptr)
             a_console->insertPlainText(a_output);
         //emit finished();
-        emit errors(QProcess::FailedToStart);
+        emit errors(SimulatorError::ProcessFailedToStart);
         return;
     }
 
@@ -499,6 +523,15 @@ void Ngspice::slotSimulate()
     cleanSpiceinit();
     createSpiceinit(/*initial_spiceinit=*/collectSpiceinit(a_schematic));
 
+#if NGSPICE_SHARED
+    // Use shared library mode if available
+    if (a_ngspice_shared && a_ngspice_shared->isInitialized()) {
+        simulateShared();
+        return;
+    }
+#endif
+
+#if EXTERNAL_SIMULATORS
     //startNgSpice(tmp_path);
     a_simProcess->setWorkingDirectory(a_workdir);
     qDebug()<<a_workdir;
@@ -508,7 +541,8 @@ void Ngspice::slotSimulate()
     cmd_args.removeAt(0);
     a_simProcess->start(ngsp_cmd,cmd_args);
     if (QucsMain != nullptr)
-    emit started();
+        emit started();
+#endif
 }
 
 /*!
@@ -585,6 +619,7 @@ bool Ngspice::findMathFuncInc(QString &mathf_inc)
  */
 void Ngspice::slotProcessOutput()
 {
+#if EXTERNAL_SIMULATORS
     QString s = a_simProcess->readAllStandardOutput();
     QRegularExpression percentage_pattern("^%\\d\\d*\\.\\d\\d.*$");
     if (percentage_pattern.match(s).hasMatch()) {
@@ -596,6 +631,7 @@ void Ngspice::slotProcessOutput()
         a_console->insertPlainText(s);
         a_console->moveCursor(QTextCursor::End);
     }
+#endif
 }
 
 /*!
@@ -644,6 +680,7 @@ void Ngspice::SaveNetlist(QString filename, bool netlist2Console)
 
 void Ngspice::setSimulatorCmd(QString cmd)
 {
+#if EXTERNAL_SIMULATORS
     if (cmd.contains(QRegularExpression("spiceopus(....|)$"))) {
         // spiceopus needs English locale to produce correct decimal point (dot symbol)
         QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
@@ -655,6 +692,7 @@ void Ngspice::setSimulatorCmd(QString cmd)
         QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
         a_simProcess->setProcessEnvironment(env);
     }
+#endif
 
     a_simulator_cmd = cmd;
 }
@@ -698,3 +736,86 @@ void Ngspice::createSpiceinit(const QString &initial_spiceinit)
     spinit.close();
   }
 }
+
+#if NGSPICE_SHARED
+/*!
+ * \brief Ngspice::simulateShared Run simulation using ngspice shared library
+ */
+void Ngspice::simulateShared()
+{
+    if (!a_ngspice_shared || !a_ngspice_shared->isInitialized()) {
+        qWarning() << "Ngspice::simulateShared: Shared library not initialized";
+        emit errors(SimulatorError::SharedLibraryNotInitialized);
+        return;
+    }
+
+    // Read the netlist file
+    QString netfile = "spice4qucs.cir";
+    QString tmp_path = QDir::toNativeSeparators(a_workdir + QDir::separator() + netfile);
+
+    QFile file(tmp_path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Ngspice::simulateShared: Cannot open netlist file:" << tmp_path;
+        emit errors(SimulatorError::SharedLibraryFileOpenError);
+        return;
+    }
+
+    // Read netlist into QStringList
+    QStringList netlist;
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        netlist.append(line);
+    }
+    file.close();
+
+    // Send netlist to ngspice shared library
+    int ret = a_ngspice_shared->sendCircuit(netlist);
+    if (ret != 0) {
+        qWarning() << "Ngspice::simulateShared: Failed to send circuit to ngspice. Error:" << ret;
+        emit errors(SimulatorError::SharedLibraryCircuitLoadError);
+        return;
+    }
+
+    qDebug() << "Ngspice::simulateShared: Circuit loaded successfully";
+
+    // The simulation will run via the shared library's background thread
+    // Results will be collected via callbacks
+    emit started();
+}
+
+/*!
+ * \brief Ngspice::onSharedOutputReceived Handle output from ngspice shared library
+ */
+void Ngspice::onSharedOutputReceived(const QString &text)
+{
+    a_output += text;
+    if (a_console != nullptr) {
+        a_console->insertPlainText(text);
+        a_console->moveCursor(QTextCursor::End);
+    }
+}
+
+/*!
+ * \brief Ngspice::onSharedStatusUpdate Handle status updates from ngspice shared library
+ */
+void Ngspice::onSharedStatusUpdate(const QString &status, int percent)
+{
+    Q_UNUSED(status);
+    if (percent > 0 && percent <= 100) {
+        emit progress(percent);
+    }
+}
+
+/*!
+ * \brief Ngspice::onSharedSimulationFinished Handle simulation completion from ngspice shared library
+ */
+void Ngspice::onSharedSimulationFinished(int exitCode)
+{
+    Q_UNUSED(exitCode);
+    qDebug() << "Ngspice::onSharedSimulationFinished: Simulation completed with code:" << exitCode;
+    emit finished();
+    emit progress(100);
+}
+#endif // NGSPICE_SHARED
+

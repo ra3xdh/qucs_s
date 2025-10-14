@@ -25,7 +25,14 @@
 #include <QStringList>
 #include <QDataStream>
 #include <QTextStream>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#if EXTERNAL_SIMULATORS
 #include <QProcess>
+#endif
 
 #include "schematic.h"
 #include "extsimkernels/spicecompat.h"
@@ -36,6 +43,26 @@ class QPlainTextEdit;
   \file abstractspicekernel.h
   \brief Implementation of the AbstractSpiceKernel class
 */
+
+/*!
+ * \brief Unified error codes for simulator backends
+ */
+enum class SimulatorError {
+    NoError = 0,
+
+    // Shared library specific errors
+    SharedLibraryNotInitialized,
+    SharedLibraryFileOpenError,
+    SharedLibraryCircuitLoadError,
+
+    // External process errors
+    ProcessFailedToStart,
+    ProcessCrashed,
+    ProcessTimedOut,
+    ProcessWriteError,
+    ProcessReadError,
+    ProcessUnknownError
+};
 
 /*!
  * \brief AbstractSpiceKernel class contains common methods for
@@ -62,7 +89,10 @@ protected:
     QString a_simulator_cmd;
     QString a_simulator_parameters;
     QString a_output;
+
+#if EXTERNAL_SIMULATORS
     QProcess *a_simProcess;
+#endif
 
     QPlainTextEdit *a_console;
     QStringList a_sims;
@@ -138,7 +168,7 @@ public:
 signals:
     void started();
     void finished();
-    void errors(QProcess::ProcessError);
+    void errors(SimulatorError errorCode);
     void progress(int);
 
 protected slots:
@@ -148,7 +178,7 @@ protected slots:
 public slots:
     virtual void slotSimulate();
     void killThemAll();
-    void slotErrors(QProcess::ProcessError err);
+    void slotErrors(SimulatorError err);
 
 };
 

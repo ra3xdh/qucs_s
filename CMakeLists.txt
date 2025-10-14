@@ -51,6 +51,35 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(QT_NO_DEBUG_OUTPUT)
 endif()
 
+# Simulator backend options
+option(WITH_NGSPICE_SHARED "Enable ngspice shared library support" OFF)
+option(WITH_EXTERNAL_SIMULATORS "Enable external simulator support (QProcess-based)" ON)
+
+if(WITH_NGSPICE_SHARED)
+    find_library(NGSPICE_LIBRARY NAMES ngspice libngspice)
+    find_path(NGSPICE_INCLUDE_DIR ngspice/sharedspice.h)
+
+    if(NGSPICE_LIBRARY AND NGSPICE_INCLUDE_DIR)
+        message(STATUS "Found ngspice shared library: ${NGSPICE_LIBRARY}")
+        message(STATUS "Found ngspice headers: ${NGSPICE_INCLUDE_DIR}")
+        set(NGSPICE_SHARED 1)
+    else()
+        message(WARNING "Ngspice shared library not found. WITH_NGSPICE_SHARED disabled.")
+        set(WITH_NGSPICE_SHARED OFF)
+        set(NGSPICE_SHARED 0)
+    endif()
+else()
+    set(NGSPICE_SHARED 0)
+endif()
+
+if(WITH_EXTERNAL_SIMULATORS)
+    set(EXTERNAL_SIMULATORS 1)
+    message(STATUS "External simulator support enabled")
+else()
+    set(EXTERNAL_SIMULATORS 0)
+    message(STATUS "External simulator support disabled")
+endif()
+
 enable_testing()
 
 add_subdirectory( qucs )
@@ -69,6 +98,9 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/qucsator_rf/CMakeLists.txt)
 else()
     message("Qucsator RF submodule not found. Please update submodules")
 endif()
+
+# Add test suite
+add_subdirectory(tests)
 
 IF (UPDATE_TRANSLATIONS)
   file(GLOB_RECURSE FILES_TO_TRANSLATE "*.cpp" "*.h" "*.ui")

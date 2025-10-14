@@ -317,7 +317,7 @@ void Xyce::slotSimulate()
         if (a_console != nullptr)
             a_console->insertPlainText(a_output);
         //emit finished();
-        emit errors(QProcess::FailedToStart);
+        emit errors(SimulatorError::ProcessFailedToStart);
         return;
     }
 
@@ -394,7 +394,9 @@ void Xyce::SaveNetlist(QString filename, bool netlist2Console)
  */
 void Xyce::slotFinished()
 {
+#if EXTERNAL_SIMULATORS
     a_output += a_simProcess->readAllStandardOutput();;
+#endif
 
     if (a_Noisesim) {
         QFile logfile(a_workdir + QDir::separator() + "spice4qucs.noise_log");
@@ -418,12 +420,16 @@ void Xyce::slotFinished()
 
 bool Xyce::waitEndOfSimulation()
 {
+#if EXTERNAL_SIMULATORS
     bool ok = false;
     while (!a_netlistQueue.isEmpty()) {
         ok = a_simProcess->waitForFinished(10000);
     }
     ok = a_simProcess->waitForFinished(10000);
     return ok;
+#else
+    return true;
+#endif
 }
 
 /*!
@@ -431,6 +437,7 @@ bool Xyce::waitEndOfSimulation()
  */
 void Xyce::slotProcessOutput()
 {
+#if EXTERNAL_SIMULATORS
     //***** Percent complete: 85.4987 %
     QString s = a_simProcess->readAllStandardOutput();
     if (s.contains("Percent complete:")) {
@@ -442,6 +449,7 @@ void Xyce::slotProcessOutput()
         a_console->insertPlainText(s);
         a_console->moveCursor(QTextCursor::End);
     }
+#endif
 }
 
 /*!
@@ -449,6 +457,7 @@ void Xyce::slotProcessOutput()
  */
 void Xyce::nextSimulation()
 {
+#if EXTERNAL_SIMULATORS
     if (!a_netlistQueue.isEmpty()) {
         QString file = a_netlistQueue.takeFirst();
         if (file.endsWith(".noise.cir")) a_Noisesim = true;
@@ -466,6 +475,7 @@ void Xyce::nextSimulation()
         emit progress(100);
         emit finished(); // nothing to simulate
     }
+#endif
 }
 
 void Xyce::setParallel(bool par)
