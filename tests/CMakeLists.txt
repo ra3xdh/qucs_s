@@ -59,11 +59,35 @@ set_tests_properties(NgspiceKernel PROPERTIES
     LABELS "unit"
 )
 
+# Test: SimulationTypes
+# Tests different simulation types: DC, AC, Transient
+add_executable(test_simulation_types test_simulation_types.cpp)
+target_link_libraries(test_simulation_types
+    PRIVATE
+    Qt6::Test
+    Qt6::Core
+    extsimkernels
+)
+
+# Enable Qt Test automoc
+set_target_properties(test_simulation_types PROPERTIES AUTOMOC ON)
+
+# Add to CTest
+add_test(NAME SimulationTypes COMMAND test_simulation_types)
+
+# Set test properties (longer timeout for multiple simulations)
+set_tests_properties(SimulationTypes PROPERTIES
+    TIMEOUT 60
+    LABELS "integration"
+)
+
 message(STATUS "UI Regression test suite configured")
 if(NGSPICE_SHARED)
     message(STATUS "  - NgspiceIntegration test: ENABLED (with shared library support)")
     message(STATUS "  - NgspiceKernel test: ENABLED")
+    message(STATUS "  - SimulationTypes test: ENABLED (with shared library support)")
 else()
     message(STATUS "  - NgspiceIntegration test: ENABLED (without shared library support)")
     message(STATUS "  - NgspiceKernel test: ENABLED")
+    message(STATUS "  - SimulationTypes test: ENABLED (without shared library support)")
 endif()

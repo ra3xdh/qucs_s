@@ -50,13 +50,21 @@ cd /your_install_prefix/bin
 ```
 
 ### Testing
-Limited test coverage exists:
+Test suite uses Qt Test framework and CTest:
 ```bash
 cd builddir
-ctest
+ctest                           # Run all tests
+ctest --output-on-failure       # Show output only for failing tests
+ctest --verbose                 # Show all output
 ```
 
-Individual test executable: `builddir/qucs/geometry/test_geometry`
+Individual test executables (from builddir):
+- `tests/test_ngspice_integration` - Ngspice shared library integration tests
+- `tests/test_ngspice_kernel` - AbstractSpiceKernel and SimulatorError enum tests
+- `tests/test_simulation_types` - DC, AC, and Transient simulation type tests
+- `qucs/geometry/test_geometry` - Geometry library unit tests
+
+Tests run automatically in CI via GitHub Actions (including xvfb on Linux for UI tests).
 
 ## Code Organization
 
@@ -110,6 +118,26 @@ SPICE model libraries (`.lib` files) for various component types: BJT, MOSFETs, 
 
 ### Geometry System (`qucs/geometry/`)
 Header-only geometry library for shapes and points. Has unit tests.
+
+### Test Suite (`tests/`)
+Qt Test-based test suite with CTest integration:
+- **test_ngspice_integration.cpp**: Integration tests for NgspiceShared class
+  - Tests initialization, circuit loading, simulation execution
+  - Validates Qt signal emission (outputReceived, simulationStarted)
+  - Tests vector data retrieval from simulation results
+  - Only runs when WITH_NGSPICE_SHARED=ON
+- **test_ngspice_kernel.cpp**: Unit tests for AbstractSpiceKernel
+  - Tests SimulatorError enum values and error handling
+  - Validates background command rejection in shared library mode
+  - Tests error signal emission
+- **test_simulation_types.cpp**: Comprehensive simulation type testing
+  - Tests DC operating point analysis (.op)
+  - Tests AC frequency sweep analysis (.ac) with RC filters
+  - Tests transient time-domain analysis (.tran) with RC step response
+  - Validates voltage dividers, frequency response, and time constants
+  - Verifies vector data (time, frequency, voltage) retrieval
+  - Only runs when WITH_NGSPICE_SHARED=ON
+- **CMakeLists.txt**: Test configuration with labels ("unit", "integration")
 
 ## Code Style
 
@@ -223,3 +251,50 @@ Key interaction code in `mouseactions.cpp` and `schematic.cpp`.
 
 ### Translation Updates
 Run with `-DUPDATE_TRANSLATIONS=ON` to update `.ts` translation files from source.
+
+### Adding Tests
+1. Create test file in `tests/` directory (e.g., `test_newfeature.cpp`)
+2. Use Qt Test framework (`#include <QTest>`, `QTEST_MAIN`, `QSignalSpy`)
+3. Add test executable and configuration to `tests/CMakeLists.txt`:
+   ```cmake
+   add_executable(test_newfeature test_newfeature.cpp)
+   target_link_libraries(test_newfeature PRIVATE Qt6::Test extsimkernels)
+   set_target_properties(test_newfeature PROPERTIES AUTOMOC ON)
+   add_test(NAME NewFeature COMMAND test_newfeature)
+   set_tests_properties(NewFeature PROPERTIES TIMEOUT 30 LABELS "unit")
+   ```
+4. Build and run: `cd builddir && cmake .. && make && ctest -R NewFeature`
+5. Tests run automatically in CI on all platforms
+
+Test guidelines:
+- Use descriptive test names (e.g., `testNgspiceSharedInitialization`)
+- Add `qDebug()` statements for diagnostic output
+- Use `QVERIFY2` with descriptive messages for better failure reporting
+- Set appropriate timeouts (default: 30s for unit tests, 60s for simulations)
+- Use conditional compilation (`#if NGSPICE_SHARED`) for feature-specific tests
+- Clean up resources in `cleanupTestCase()` to avoid test pollution
+
+### Testing Simulation Types
+When adding tests for simulation blocks (DC, AC, Transient, etc.):
+1. Use raw SPICE netlist format (not schematic parsing)
+2. Structure netlist as QStringList with proper SPICE syntax:
+   - Title line (first line)
+   - Component definitions (V1, R1, C1, etc.)
+   - Simulation directive (.op, .ac, .tran)
+   - .end statement
+3. Example AC test netlist:
+   ```cpp
+   QStringList netlist;
+   netlist << "AC Frequency Test";
+   netlist << "V1 in 0 DC 0 AC 1";     // AC source
+   netlist << "R1 in out 1k";
+   netlist << "C1 out 0 1u";
+   netlist << ".ac lin 50 1 100k";     // Linear sweep, 50 points, 1Hz to 100kHz
+   netlist << ".end";
+   ```
+4. Wait for simulation to complete using QEventLoop or QTest::qWait()
+5. Retrieve and validate vectors using `currentPlot()` and `allVectors()`
+6. Check for expected vectors: frequency, time, voltage nodes, currents
+7. Verify vector data is reasonable for the circuit being tested
+
+See `tests/test_simulation_types.cpp` for comprehensive examples of DC, AC, and Transient tests.
