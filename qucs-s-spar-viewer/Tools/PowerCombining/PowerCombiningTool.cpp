@@ -307,164 +307,397 @@ double PowerCombiningTool::getScaleFreq() {
 // This function changes the window according to the selected topology
 void PowerCombiningTool::on_TopoCombo_currentIndexChanged(int index) {
   // Change settings
-  if ((index == 0) | (index == 2) || (index == 3)) // Wilkinson, Tee, Branchline
-  {
-    // Block signals before adjusting parameters
-    BranchesCombo->blockSignals(true);
 
-    // Show TLIN implementation widgets
-    TL_Implementation_Label->show();
-    TL_Implementation_Combo->show();
-
-    K1Spinbox->setVisible(true);
-    K1Label->setVisible(true);
-    K1LabeldB->setVisible(true);
-    BranchesCombo->clear();
-    BranchesCombo->addItem("2");
-    BranchesCombo->hide();
-    number_Output_Label->hide();
-
-    // Unblock signals after adjusting parameters
-    BranchesCombo->blockSignals(false);
-
-  } else { // The rest of power combiners do not support unequal power ratio
-    K1Spinbox->setVisible(false);
-    K1Label->setVisible(false);
-    K1LabeldB->setVisible(false);
-  }
-
-  if ((index == 3) || (index == 4) ||
-      (index == 6)) // Branchline, double-box branchline and Gysel
-  {                 // The Gysel power combiner has only two output branches
-    // Block signals before adjusting parameters
-    BranchesCombo->blockSignals(true);
-
-    // Show TLIN implementation widgets
-    TL_Implementation_Label->show();
-    TL_Implementation_Combo->show();
-
-    BranchesCombo->clear();
-    BranchesCombo->addItem("2");
-    BranchesCombo->hide();
-    number_Output_Label->hide();
-
-    // Unblock signals after adjusting parameters
-    BranchesCombo->blockSignals(false);
-  }
-
-  if (TopoCombo->currentText() ==
-      "Lim-Eom") { // The Lim-Eom combiner can handle arbitrary split ratios for
-                   // the three outputs
-    K1Label->setVisible(true);
-    K1LabeldB->setVisible(true);
-    K1Spinbox->setVisible(true);
-    K2Spinbox->setVisible(true);
-    K3Spinbox->setVisible(true);
-
-    // Show TLIN implementation widgets
-    TL_Implementation_Label->show();
-    TL_Implementation_Combo->show();
-
-  } else {
-    K2Spinbox->setVisible(false);
-    K3Spinbox->setVisible(false);
-  }
-
-  if (index == 1) // Multistage Wilkinson. So far, it is not possible to
-                  // implement more than 7 stages
-  {
-    // Block signals before adjusting parameters
-    NStagesSpinbox->blockSignals(true);
-    BranchesCombo->blockSignals(true);
-
-    // Show TLIN implementation widgets
-    TL_Implementation_Label->show();
-    TL_Implementation_Combo->show();
-
-    NStagesSpinbox->setMinimum(2);
-    NStagesSpinbox->setMaximum(7);
-    NStagesSpinbox->setValue(2);
-    NStagesLabel->setVisible(true);
-    NStagesSpinbox->setVisible(true);
-    BranchesCombo->clear();
-    BranchesCombo->addItem("2"); // 2 outputs only
-    BranchesCombo->hide();
-    number_Output_Label->hide();
-
-    // Unblock signals after adjusting parameters
-    NStagesSpinbox->blockSignals(false);
-    BranchesCombo->blockSignals(false);
-
-  } else // There are no more multistage combiners implemented
-  {
-    NStagesLabel->setVisible(false);
-    NStagesSpinbox->setVisible(false);
-  }
-  if (index == 5) // Bagley
-  {
-    // Block signals before adjusting parameters
-    BranchesCombo->blockSignals(true);
-
-    // Show TLIN implementation widgets
-    TL_Implementation_Label->show();
-    TL_Implementation_Combo->show();
-
-    BranchesCombo->clear();
-    BranchesCombo->addItem("3");
-    BranchesCombo->addItem("5");
-    BranchesCombo->addItem("7");
-    BranchesCombo->show();
-    number_Output_Label->show();
-    BranchesCombo->setValidator(Bagley_Validator);
-
-    // Unblock signals after adjusting parameters
-    BranchesCombo->blockSignals(false);
-
-  } else {
-    BranchesCombo->setValidator(NULL);
-  }
-
-  if (index == 7) // Travelling wave
-  {
-    // Block signals before adjusting parameters
-    BranchesCombo->blockSignals(true);
-
-    // Show TLIN implementation widgets
-    TL_Implementation_Label->show();
-    TL_Implementation_Combo->show();
-
-    BranchesCombo->clear();
-    BranchesCombo->addItem("3");
-    BranchesCombo->addItem("4");
-    BranchesCombo->addItem("5");
-    BranchesCombo->addItem("6");
-    BranchesCombo->show();
-    number_Output_Label->show();
-
-    // Unblock signals after adjusting parameters
-    BranchesCombo->blockSignals(false);
-  }
-  if (index == 8) // Tree
-  {
-    // Block signals before adjusting parameters
-    BranchesCombo->blockSignals(true);
-
-    // Show TLIN implementation widgets
-    TL_Implementation_Label->show();
-    TL_Implementation_Combo->show();
-
-    BranchesCombo->clear();
-    BranchesCombo->addItem("4");
-    BranchesCombo->addItem("8");
-    BranchesCombo->addItem("16");
-    BranchesCombo->show();
-    number_Output_Label->show();
-
-    // Unblock signals after adjusting parameters
-    BranchesCombo->blockSignals(false);
+  switch (index) {
+  case WILKINSON:
+    setSettings_Wilkinson();
+    break;
+  case MULTISTAGE_WILKINSON:
+    setSettings_MultistageWilkinson();
+    break;
+  case T_JUNCTION:
+    setSettings_T_Junction();
+    break;
+  case BRANCHLINE:
+    setSettings_Branchline();
+    break;
+  case DOUBLE_BOX_BRANCHLINE:
+    setSettings_DoubleBoxBranchline();
+    break;
+  case BAGLEY:
+    setSettings_Bagley();
+    break;
+  case GYSEL:
+    setSettings_Gysel();
+    break;
+  case LIM_EOM:
+    setSettings_LimEom();
+    break;
+  case WILKINSON_3_WAY_IMPROVED_ISO:
+    setSettings_Wilkinson_3_Way_Improved_Isolation();
+    break;
+  case RECOMBINANT_3_WAY_WILKINSON:
+    setSettings_Recombinant_3_Way_Wilkinson();
+    break;
+  case TRAVELLING_WAVE:
+    setSettings_Travelling_Wave();
+    break;
+  case TREE:
+    setSettings_Tree();
+    break;
   }
 
   UpdateDesignParameters();
+}
+
+void PowerCombiningTool::setSettings_Wilkinson() {
+
+  // Block signals before adjusting parameters
+  BranchesCombo->blockSignals(true);
+  TL_Implementation_Combo->blockSignals(true);
+
+  // Enable power split ration
+  K1Spinbox->setVisible(true);
+  K1Label->setVisible(true);
+  K1LabeldB->setVisible(true);
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  TL_Implementation_Combo->addItem("Lumped");
+
+  // Set 2 branches only
+  BranchesCombo->clear();
+  BranchesCombo->addItem("2");
+  BranchesCombo->hide();
+
+  // Hide number of outputs
+  number_Output_Label->hide();
+
+  // Hide number of stages
+  NStagesLabel->setVisible(false);
+  NStagesSpinbox->setVisible(false);
+
+  // Unblock signals after adjusting parameters
+  BranchesCombo->blockSignals(false);
+  TL_Implementation_Combo->blockSignals(false);
+}
+
+void PowerCombiningTool::setSettings_MultistageWilkinson() {
+  // Block signals before adjusting parameters
+  NStagesSpinbox->blockSignals(true);
+  BranchesCombo->blockSignals(true);
+  TL_Implementation_Combo->blockSignals(true);
+
+  // Show TLIN implementation widgets
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  TL_Implementation_Combo->addItem("Lumped");
+
+  // Set number of stages and enable visibility
+  NStagesSpinbox->setMinimum(2);
+  NStagesSpinbox->setMaximum(7);
+  NStagesSpinbox->setValue(2);
+  NStagesLabel->setVisible(true);
+  NStagesSpinbox->setVisible(true);
+
+  // Set the number of output branches to 2 and disable visibility
+  BranchesCombo->clear();
+  BranchesCombo->addItem("2"); // 2 outputs only
+  BranchesCombo->hide();
+  number_Output_Label->hide();
+
+  // Hide power split ratio
+  K1Spinbox->setVisible(false);
+  K1Label->setVisible(false);
+  K1LabeldB->setVisible(false);
+
+  // Unblock signals after adjusting parameters
+  NStagesSpinbox->blockSignals(false);
+  BranchesCombo->blockSignals(false);
+  TL_Implementation_Combo->blockSignals(false);
+}
+
+void PowerCombiningTool::setSettings_T_Junction() {
+
+  // Block signals before adjusting parameters
+  BranchesCombo->blockSignals(true);
+  TL_Implementation_Combo->blockSignals(true);
+
+  // Show TLIN implementation widgets
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
+
+  // Show power split ratio
+  K1Spinbox->setVisible(true);
+  K1Label->setVisible(true);
+  K1LabeldB->setVisible(true);
+
+  // Force the output branches to 2
+  BranchesCombo->clear();
+  BranchesCombo->addItem("2");
+  BranchesCombo->hide();
+  number_Output_Label->hide();
+
+  // Unblock signals after adjusting parameters
+  BranchesCombo->blockSignals(false);
+  TL_Implementation_Combo->blockSignals(false);
+}
+void PowerCombiningTool::setSettings_Branchline() {
+
+  // Block signals before adjusting parameters
+  BranchesCombo->blockSignals(true);
+  TL_Implementation_Combo->blockSignals(true);
+
+  // Show TLIN implementation widgets
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
+
+  // Enable power split ratio
+  K1Spinbox->setVisible(true);
+  K1Label->setVisible(true);
+  K1LabeldB->setVisible(true);
+
+  // Set the number of branches to 2
+  BranchesCombo->clear();
+  BranchesCombo->addItem("2");
+  BranchesCombo->hide();
+  number_Output_Label->hide();
+
+  // Unblock signals after adjusting parameters Unblock signals after adjusting
+  // parameters
+  BranchesCombo->blockSignals(false);
+  TL_Implementation_Combo->blockSignals(false);
+}
+void PowerCombiningTool::setSettings_DoubleBoxBranchline() {
+
+  // Block signals before adjusting parameters
+  BranchesCombo->blockSignals(true);
+  TL_Implementation_Combo->blockSignals(true);
+
+  // Show TLIN implementation widgets
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
+
+  // Set the number of branches to 2
+  BranchesCombo->clear();
+  BranchesCombo->addItem("2");
+  BranchesCombo->hide();
+  number_Output_Label->hide();
+
+  // Hide power split ratio
+  K1Spinbox->setVisible(false);
+  K1Label->setVisible(false);
+  K1LabeldB->setVisible(false);
+
+  // Unblock signals after adjusting parameters Unblock signals after adjusting
+  // parameters
+  BranchesCombo->blockSignals(false);
+  TL_Implementation_Combo->blockSignals(false);
+}
+
+void PowerCombiningTool::setSettings_Bagley() {
+  // Block signals before adjusting parameters
+  BranchesCombo->blockSignals(true);
+  TL_Implementation_Combo->blockSignals(true);
+
+  // Show TLIN implementation widgets
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Hide stages control
+  NStagesLabel->setVisible(false);
+  NStagesSpinbox->setVisible(false);
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
+
+  // Set possible number of branches
+  BranchesCombo->clear();
+  BranchesCombo->addItem("3");
+  BranchesCombo->addItem("5");
+  BranchesCombo->addItem("7");
+  BranchesCombo->show();
+  number_Output_Label->show();
+  BranchesCombo->setValidator(Bagley_Validator);
+
+  // Hide power split ratio
+  K1Spinbox->setVisible(false);
+  K1Label->setVisible(false);
+  K1LabeldB->setVisible(false);
+
+  // Unblock signals after adjusting parameters
+  BranchesCombo->blockSignals(false);
+  TL_Implementation_Combo->blockSignals(false);
+}
+
+void PowerCombiningTool::setSettings_Gysel() {
+
+  // Block signals before adjusting parameters
+  BranchesCombo->blockSignals(true);
+  TL_Implementation_Combo->blockSignals(true);
+
+  // Show TLIN implementation widgets
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Hide stages control
+  NStagesLabel->setVisible(false);
+  NStagesSpinbox->setVisible(false);
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
+
+  // Set the number of output branches to 2
+  BranchesCombo->clear();
+  BranchesCombo->addItem("2");
+  BranchesCombo->hide();
+  number_Output_Label->hide();
+
+  // Hide power split ratio
+  K1Spinbox->setVisible(false);
+  K1Label->setVisible(false);
+  K1LabeldB->setVisible(false);
+
+  // Unblock signals after adjusting parameters Unblock signals after adjusting
+  // parameters
+  BranchesCombo->blockSignals(false);
+  TL_Implementation_Combo->blockSignals(false);
+}
+
+void PowerCombiningTool::setSettings_LimEom() {
+
+  // Block signals before adjusting parameters
+  BranchesCombo->blockSignals(true);
+  TL_Implementation_Combo->blockSignals(true);
+
+  K1Label->setVisible(true);
+  K1LabeldB->setVisible(true);
+  K1Spinbox->setVisible(true);
+  K2Spinbox->setVisible(true);
+  K3Spinbox->setVisible(true);
+
+  // Hide number of outputs label
+  number_Output_Label->hide();
+
+  // Show TLIN implementation widgets
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Hide stages control
+  NStagesLabel->setVisible(false);
+  NStagesSpinbox->setVisible(false);
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
+
+  // Unblock signals after adjusting parameters Unblock signals after adjusting
+  // parameters
+  BranchesCombo->blockSignals(false);
+  TL_Implementation_Combo->blockSignals(false);
+}
+
+void PowerCombiningTool::setSettings_Wilkinson_3_Way_Improved_Isolation() {
+  setDefaultSettings();
+}
+
+void PowerCombiningTool::setSettings_Recombinant_3_Way_Wilkinson() {
+  setDefaultSettings();
+}
+
+void PowerCombiningTool::setSettings_Travelling_Wave() {
+  // Block signals before adjusting parameters
+  BranchesCombo->blockSignals(true);
+
+  // Show TLIN implementation widgets
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Adjust possible number of branches
+  BranchesCombo->clear();
+  BranchesCombo->addItem("3");
+  BranchesCombo->addItem("4");
+  BranchesCombo->addItem("5");
+  BranchesCombo->addItem("6");
+  BranchesCombo->show();
+  number_Output_Label->show();
+
+  // Unblock signals after adjusting parameters
+  BranchesCombo->blockSignals(false);
+}
+
+void PowerCombiningTool::setSettings_Tree() {
+  // Block signals before adjusting parameters
+  BranchesCombo->blockSignals(true);
+
+  // Show TLIN implementation widgets
+  TL_Implementation_Label->show();
+  TL_Implementation_Combo->show();
+
+  // Adjust possible number of branches
+  BranchesCombo->clear();
+  BranchesCombo->addItem("4");
+  BranchesCombo->addItem("8");
+  BranchesCombo->addItem("16");
+  BranchesCombo->show();
+  number_Output_Label->show();
+
+  // Unblock signals after adjusting parameters
+  BranchesCombo->blockSignals(false);
+}
+
+void PowerCombiningTool::setDefaultSettings() {
+  // Hide power ratio controls
+  K1Spinbox->setVisible(false);
+  K1Label->setVisible(false);
+  K1LabeldB->setVisible(false);
+  K2Spinbox->setVisible(false);
+  K3Spinbox->setVisible(false);
+
+  // Hide stages control
+  NStagesLabel->setVisible(false);
+  NStagesSpinbox->setVisible(false);
+
+  // Reset branches combo
+  BranchesCombo->blockSignals(true);
+  BranchesCombo->clear();
+  BranchesCombo->hide();
+  number_Output_Label->hide();
+  BranchesCombo->setValidator(NULL);
+  BranchesCombo->blockSignals(false);
 }
 
 // The purpose of this function is to trigger a design from the main application

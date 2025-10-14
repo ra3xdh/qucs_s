@@ -35,6 +35,22 @@
 #include "../../Schematic/SchematicContent.h"
 #include "PowerCombinerDesigner.h"
 
+
+#define WILKINSON 0
+#define MULTISTAGE_WILKINSON 1
+#define T_JUNCTION 2
+#define BRANCHLINE 3
+#define DOUBLE_BOX_BRANCHLINE 4
+#define BAGLEY 5
+#define GYSEL 6
+#define LIM_EOM 7
+#define WILKINSON_3_WAY_IMPROVED_ISO 8
+#define RECOMBINANT_3_WAY_WILKINSON 9
+#define TRAVELLING_WAVE 10
+#define TREE 11
+
+
+
 class BagleyValidator : public QValidator {
   Q_OBJECT
 public:
@@ -90,6 +106,22 @@ private:
   // Add trace to simulate
   QLabel* traceNameLabel;
   QLineEdit* traceNameLineEdit;
+
+  // Functions for changing the default settings based on the topology
+  void setSettings_Wilkinson();
+  void setSettings_MultistageWilkinson();
+  void setSettings_T_Junction();
+  void setSettings_Branchline();
+  void setSettings_DoubleBoxBranchline();
+  void setSettings_Bagley();
+  void setSettings_Gysel();
+  void setSettings_LimEom();
+  void setSettings_Wilkinson_3_Way_Improved_Isolation();
+  void setSettings_Recombinant_3_Way_Wilkinson();
+  void setSettings_Travelling_Wave();
+  void setSettings_Tree();
+  void setDefaultSettings();
+
 
 signals:
   void updateSchematic(SchematicContent);
