@@ -3,5 +3,4 @@
 	url = https://github.com/ra3xdh/qucsator_rf
 [submodule "rxcalc"]
 	path = rxcalc
-	url = https://github.com/ra3xdh/rxcalc
-	branch=cmake
+	url = https://github.com/arhiv6/rxcalc
