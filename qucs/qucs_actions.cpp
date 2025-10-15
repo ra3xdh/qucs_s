@@ -935,6 +935,11 @@ void QucsApp::slotCallSPAR_Viewer()
   launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer", args);
 }
 
+void QucsApp::slotCallRxCalc()
+{
+  launchTool("rxcalc", "multistage receiver calculation", QStringList());
+}
+
 
 /*!
  * \brief launch an external application passing arguments

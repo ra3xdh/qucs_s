@@ -565,6 +565,11 @@ void QucsApp::initActions()
   callSPAR_Viewer->setWhatsThis(tr("S-parameter Viewer && RF Circuit Synthesis\n\nStarts the S-parameter Viewer && RF Circuit Synthesis Tool"));
   connect(callSPAR_Viewer, SIGNAL(triggered()), SLOT(slotCallSPAR_Viewer()));
 
+  callRxcalc = new QAction(tr("Receiver calculator"), this);
+  callRxcalc->setStatusTip(tr("Starts receiver calculator"));
+  callRxcalc->setWhatsThis(tr("Receiver calculator\n\nStarts receiver calculator"));
+  connect(callRxcalc, SIGNAL(triggered()), SLOT(slotCallRxCalc()));
+
   callConverter = new QAction(tr("Data files converter"), this);
   callConverter->setShortcut(tr("Ctrl+8"));
   callConverter->setStatusTip(tr("Convert data file"));
@@ -837,6 +842,7 @@ void QucsApp::initMenuBar()
   toolMenu->addAction(callConverter);
   toolMenu->addAction(callRFLayout);
   toolMenu->addAction(callSPAR_Viewer);
+  toolMenu->addAction(callRxcalc);
   toolMenu->addSeparator();
 
   cmMenu = new QMenu(tr("Compact modelling"));
