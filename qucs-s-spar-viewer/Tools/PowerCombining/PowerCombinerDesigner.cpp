@@ -30,7 +30,11 @@ void PowerCombinerDesigner::synthesize() {
     delete WK;
   }
   if (Specs.Type == "Multistage Wilkinson") {
-    MultistageWilkinson();
+    MultistageWilkinson *MSWK;
+    MSWK = new MultistageWilkinson(Specs);
+    MSWK->synthesize();
+    SchContent = MSWK->Schematic;
+    delete MSWK;
   }
   if (Specs.Type == "T-junction") {
     TJunction *TJ;

@@ -24,6 +24,7 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 
 #include "Wilkinson2Way.h"
+#include "MultistageWilkinson.h"
 #include "TJunction.h"
 
 #include <QPen>
@@ -45,18 +46,6 @@ public:
 private:
   PowerCombinerParams Specs;
   SchematicContent SchContent;
-
-  // Power combiner design functions
-  void Wilkinson();
-  void buildWilkinson_LumpedLC(const TwoWayWilkinsonParams& WilkinsonParams);
-  void buildWilkinson_IdealTL(const TwoWayWilkinsonParams& WilkinsonParams);
-  void buildWilkinson_Microstrip(const TwoWayWilkinsonParams& WilkinsonParams);
-
-
-  void MultistageWilkinson();
-  void buildMultistageWilkinson_LumpedLC(const std::deque<double>& Zlines, const std::deque<double>& Risol);
-  void buildMultistageWilkinson_IdealTL(const std::deque<double>& Zlines, const std::deque<double>& Risol, double lambda4);
-  void buildMultistageWilkinson_Microstrip(const std::deque<double>& Zlines, const std::deque<double>& Risol, double lambda4);
 
 
   TwoWayWilkinsonParams CalculateWilkinson();
