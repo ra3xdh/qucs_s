@@ -82,7 +82,11 @@ void PowerCombinerDesigner::synthesize() {
     Wilkinson3Way_ImprovedIsolation();
   }
   if (Specs.Type == "Recombinant 3 Way Wilkinson") {
-    Recombinant3WayWilkinson();
+    Recombinant3WayWilkinson *RWK;
+    RWK = new Recombinant3WayWilkinson(Specs);
+    RWK->synthesize();
+    SchContent = RWK->Schematic;
+    delete RWK;
   }
   /*if (Specs.Type == "Travelling Wave")       TravellingWave();
   if (Specs.Type == "Tree")                  Tree();*/
