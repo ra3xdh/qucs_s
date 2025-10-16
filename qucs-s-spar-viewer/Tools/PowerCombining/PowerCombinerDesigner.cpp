@@ -51,7 +51,11 @@ void PowerCombinerDesigner::synthesize() {
     delete BR;
   }
   if (Specs.Type == "Double box branchline") {
-    DoubleBoxBranchline();
+    DoubleBoxBranchline *DBBR;
+    DBBR = new Branchline(Specs);
+    DBBR->synthesize();
+    SchContent = DBBR->Schematic;
+    delete DBBR;
   }
   if (Specs.Type == "Bagley") {
     Bagley();
