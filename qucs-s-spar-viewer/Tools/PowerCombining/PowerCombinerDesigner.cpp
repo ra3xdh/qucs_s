@@ -65,7 +65,11 @@ void PowerCombinerDesigner::synthesize() {
     delete BG;
   }
   if (Specs.Type == "Gysel") {
-    Gysel();
+    Gysel *GS;
+    GS = new Gysel(Specs);
+    GS->synthesize();
+    SchContent = GS->Schematic;
+    delete GS;
   }
   if (Specs.Type == "Lim-Eom") {
     Lim_Eom();

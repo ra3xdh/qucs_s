@@ -29,6 +29,7 @@
 #include "Branchline.h"
 #include "DoubleBoxBranchline.h"
 #include "Bagley.h"
+#include "Gysel.h"
 
 #include <QPen>
 
@@ -52,11 +53,6 @@ private:
 
 
   TwoWayWilkinsonParams CalculateWilkinson();
-
-  void Gysel();
-  void buildGysel_IdealTL(double lambda4, double lambda2);
-  void buildGysel_Microstrip(double lambda4, double lambda2);
-
 
   void Lim_Eom();
   void buildLimEom_IdealTL(double lambda4, double Z1, double Z2, double Z4, double Z5);
