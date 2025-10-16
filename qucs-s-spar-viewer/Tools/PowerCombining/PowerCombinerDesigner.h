@@ -26,6 +26,7 @@
 #include "Wilkinson2Way.h"
 #include "MultistageWilkinson.h"
 #include "TJunction.h"
+#include "Branchline.h"
 
 #include <QPen>
 
@@ -49,11 +50,6 @@ private:
 
 
   TwoWayWilkinsonParams CalculateWilkinson();
-
-  void Branchline();
-  void buildBranchline_IdealTL(double lambda4, double ZA, double ZB);
-  void buildBranchline_Microstrip(double lambda4, double ZA, double ZB);
-
 
   void DoubleBoxBranchline();
   void buildDoubleBoxBranchline_IdealTL(double lambda4, double ZA, double ZB, double ZD);

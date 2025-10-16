@@ -44,7 +44,11 @@ void PowerCombinerDesigner::synthesize() {
     delete TJ;
   }
   if (Specs.Type == "Branchline") {
-    Branchline();
+    Branchline *BR;
+    BR = new Branchline(Specs);
+    BR->synthesize();
+    SchContent = BR->Schematic;
+    delete BR;
   }
   if (Specs.Type == "Double box branchline") {
     DoubleBoxBranchline();
