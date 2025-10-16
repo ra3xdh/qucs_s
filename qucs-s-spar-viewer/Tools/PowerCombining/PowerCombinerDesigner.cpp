@@ -72,7 +72,11 @@ void PowerCombinerDesigner::synthesize() {
     delete GS;
   }
   if (Specs.Type == "Lim-Eom") {
-    Lim_Eom();
+    Lim_Eom *LE;
+    LE = new Lim_Eom(Specs);
+    LE->synthesize();
+    SchContent = LE->Schematic;
+    delete LE;
   }
   if (Specs.Type == "3 Way Wilkinson Improved Isolation") {
     Wilkinson3Way_ImprovedIsolation();

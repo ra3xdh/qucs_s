@@ -30,6 +30,7 @@
 #include "DoubleBoxBranchline.h"
 #include "Bagley.h"
 #include "Gysel.h"
+#include "Lim_Eom.h"
 
 #include <QPen>
 
@@ -53,10 +54,6 @@ private:
 
 
   TwoWayWilkinsonParams CalculateWilkinson();
-
-  void Lim_Eom();
-  void buildLimEom_IdealTL(double lambda4, double Z1, double Z2, double Z4, double Z5);
-  void buildLimEom_Microstrip(double lambda4, double Z1, double Z2, double Z4, double Z5);
 
   void Wilkinson3Way_ImprovedIsolation();
   void buildWilkinson3Way_IdealTL(double lambda4, double Z1, double Z2, double R1, double R2);
