@@ -28,6 +28,7 @@
 #include "TJunction.h"
 #include "Branchline.h"
 #include "DoubleBoxBranchline.h"
+#include "Bagley.h"
 
 #include <QPen>
 
@@ -51,11 +52,6 @@ private:
 
 
   TwoWayWilkinsonParams CalculateWilkinson();
-
-
-  void Bagley();
-  void buildBagley_IdealTL(double lambda4, double lambda2, double Zbranch);
-  void buildBagley_Microstrip(double lambda4, double lambda2, double Zbranch);
 
   void Gysel();
   void buildGysel_IdealTL(double lambda4, double lambda2);
