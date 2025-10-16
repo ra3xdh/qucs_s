@@ -31,6 +31,7 @@
 #include "Bagley.h"
 #include "Gysel.h"
 #include "Lim_Eom.h"
+#include "Wilkinson3way_ImprovedIsolation.h"
 #include "Recombinant3WayWilkinson.h"
 
 #include <QPen>
@@ -56,9 +57,6 @@ private:
 
   TwoWayWilkinsonParams CalculateWilkinson();
 
-  void Wilkinson3Way_ImprovedIsolation();
-  void buildWilkinson3Way_IdealTL(double lambda4, double Z1, double Z2, double R1, double R2);
-  void buildWilkinson3Way_Microstrip(double lambda4, double Z1, double Z2, double R1, double R2);
 
   void TravellingWave();
   void Tree();

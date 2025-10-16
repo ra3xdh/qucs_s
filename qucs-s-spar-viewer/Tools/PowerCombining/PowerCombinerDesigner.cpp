@@ -79,7 +79,11 @@ void PowerCombinerDesigner::synthesize() {
     delete LE;
   }
   if (Specs.Type == "3 Way Wilkinson Improved Isolation") {
-    Wilkinson3Way_ImprovedIsolation();
+    Wilkinson3Way_ImprovedIsolation *W3WII;
+    W3WII = new Wilkinson3Way_ImprovedIsolation(Specs);
+    W3WII->synthesize();
+    SchContent = W3WII->Schematic;
+    delete W3WII;
   }
   if (Specs.Type == "Recombinant 3 Way Wilkinson") {
     Recombinant3WayWilkinson *RWK;
