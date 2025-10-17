@@ -17,10 +17,12 @@
 
 #include "AttenuatorDesigner.h"
 
+#include "BridgedTeeAttenuator.h"
 #include "PiAttenuator.h"
+#include "TeeAttenuator.h"
+
 #include "QW_SeriesAttenuator.h"
 #include "QW_ShuntAttenuator.h"
-#include "TeeAttenuator.h"
 
 AttenuatorDesigner::AttenuatorDesigner(AttenuatorDesignParameters SPC) {
   Specs = SPC;
@@ -48,7 +50,11 @@ void AttenuatorDesigner::synthesize() {
     Schematic = TEE_AT->Schematic;
     delete TEE_AT;
   } else if (Specs.Topology == "Bridged Tee") {
-    BridgedTeeAttenuator();
+    BridgedTeeAttenuator *BT_AT;
+    BT_AT = new BridgedTeeAttenuator(Specs);
+    BT_AT->synthesize();
+    Schematic = BT_AT->Schematic;
+    delete BT_AT;
   } else if (Specs.Topology == "Reflection Attenuator") {
     ReflectionAttenuator();
   } else if (Specs.Topology == "Quarter-wave series") {

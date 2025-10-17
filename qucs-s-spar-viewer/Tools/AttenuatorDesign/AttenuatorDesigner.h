@@ -47,9 +47,6 @@ private:
   QMap<ComponentType, int>
       NumberComponents; // List for assigning IDs to the filter components
 
-  // Attenuator design functions
-  void BridgedTeeAttenuator();
-
   void ReflectionAttenuator();
 
   // L-pads
