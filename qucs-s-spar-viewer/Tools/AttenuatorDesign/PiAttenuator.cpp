@@ -15,33 +15,40 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "AttenuatorDesigner.h"
+#include "PiAttenuator.h"
 
 // Reference: RF design guide. Systems, circuits, and equations. Peter
 // Vizmuller. Artech House, 1995
-void AttenuatorDesigner::PiAttenuator() {
-  ComponentInfo TermSpar2;
+
+PiAttenuator::PiAttenuator() {}
+
+PiAttenuator::PiAttenuator(AttenuatorDesignParameters AS) {
+  Specification = AS;
+}
+
+PiAttenuator::~PiAttenuator() {}
+
+void PiAttenuator::calculateParams() {
+  // Design equations
+  double L = pow(10, .1 * Specification.Attenuation);
+  R2 = (.5 * (L - 1)) * sqrt(Specification.Zin * Specification.Zout / L);
+  R1 = 1 / (((L + 1) / (Specification.Zin * (L - 1))) - (1 / R2));
+  R3 = 1 / (((L + 1) / (Specification.Zout * (L - 1))) - (1 / R2));
+}
+
+void PiAttenuator::synthesize() {
+  calculateParams();
+  buildPiAttenuator();
+}
+
+void PiAttenuator::buildPiAttenuator() {
   ComponentInfo Ground, Res1, Res2, Res3;
   NodeInfo NI;
 
-  Components.clear();
-  // Design equations
-  double L  = pow(10, .1 * Specs.Attenuation);
-  double R2 = (.5 * (L - 1)) * sqrt(Specs.Zin * Specs.Zout / L);
-  double R1 = 1 / (((L + 1) / (Specs.Zin * (L - 1))) - (1 / R2));
-  double R3 = 1 / (((L + 1) / (Specs.Zout * (L - 1))) - (1 / R2));
-
-  // Power dissipation calculation
-  Pdiss.R1 = Specs.Pin * Specs.Zin / R1;
-  Pdiss.R2 = Specs.Pin * R2 * (R1 - Specs.Zin) * (R1 - Specs.Zin) /
-             (R1 * R1 * Specs.Zin);
-  double K = R1 * R2 - Specs.Zin * (R1 + R2);
-  Pdiss.R3 = Specs.Pin * K * K / (R1 * R1 * R3 * Specs.Zin);
-
-  // Circuit implementation
+  // Input terminal
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-  TermSpar1.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSpar1.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   // 1st shunt resistor
@@ -54,7 +61,7 @@ void AttenuatorDesigner::PiAttenuator() {
                    0, 50, 100);
   Schematic.appendComponent(Ground);
 
-  // Node
+  // First node
   NI.setParams(
       QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50, 0);
   Schematic.appendNode(NI);
@@ -77,7 +84,7 @@ void AttenuatorDesigner::PiAttenuator() {
   Res3.val["R"] = num2str(R3, Resistance);
   Schematic.appendComponent(Res3);
 
-  // Node
+  // Second node
   NI.setParams(
       QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 150,
       0);
@@ -91,9 +98,11 @@ void AttenuatorDesigner::PiAttenuator() {
   Schematic.appendWire(Res3.ID, 1, NI.ID, 0);
   Schematic.appendWire(Res3.ID, 0, Ground.ID, 0);
 
+  // Output terminal
+  ComponentInfo TermSpar2;
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 180, 200, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
+  TermSpar2.val["Z"] = num2str(Specification.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   Schematic.appendWire(TermSpar2.ID, 0, NI.ID, 0);

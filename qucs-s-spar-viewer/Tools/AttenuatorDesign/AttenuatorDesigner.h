@@ -48,7 +48,6 @@ private:
       NumberComponents; // List for assigning IDs to the filter components
 
   // Attenuator design functions
-  void PiAttenuator();
   void TeeAttenuator();
   void BridgedTeeAttenuator();
 

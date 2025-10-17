@@ -17,6 +17,7 @@
 
 #include "AttenuatorDesigner.h"
 
+#include "PiAttenuator.h"
 #include "QW_SeriesAttenuator.h"
 #include "QW_ShuntAttenuator.h"
 
@@ -34,7 +35,11 @@ QList<NodeInfo> AttenuatorDesigner::getNodes() { return Nodes; }
 
 void AttenuatorDesigner::synthesize() {
   if (Specs.Topology == "Pi") {
-    PiAttenuator();
+    PiAttenuator *PI_AT;
+    PI_AT = new PiAttenuator(Specs);
+    PI_AT->synthesize();
+    Schematic = PI_AT->Schematic;
+    delete PI_AT;
   } else if (Specs.Topology == "Tee") {
     TeeAttenuator();
   } else if (Specs.Topology == "Bridged Tee") {
