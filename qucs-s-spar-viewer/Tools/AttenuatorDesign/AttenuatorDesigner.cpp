@@ -17,23 +17,19 @@
 
 #include "AttenuatorDesigner.h"
 
+#include "QW_SeriesAttenuator.h"
+
 AttenuatorDesigner::AttenuatorDesigner(AttenuatorDesignParameters SPC) {
   Specs = SPC;
 }
 
 AttenuatorDesigner::~AttenuatorDesigner() {}
 
-QList<ComponentInfo> AttenuatorDesigner::getComponents() {
-  return Components;
-}
+QList<ComponentInfo> AttenuatorDesigner::getComponents() { return Components; }
 
-QList<WireInfo> AttenuatorDesigner::getWires() {
-  return Wires;
-}
+QList<WireInfo> AttenuatorDesigner::getWires() { return Wires; }
 
-QList<NodeInfo> AttenuatorDesigner::getNodes() {
-  return Nodes;
-}
+QList<NodeInfo> AttenuatorDesigner::getNodes() { return Nodes; }
 
 void AttenuatorDesigner::synthesize() {
   if (Specs.Topology == "Pi") {
@@ -45,7 +41,13 @@ void AttenuatorDesigner::synthesize() {
   } else if (Specs.Topology == "Reflection Attenuator") {
     ReflectionAttenuator();
   } else if (Specs.Topology == "Quarter-wave series") {
-    QW_SeriesAttenuator();
+
+    QW_SeriesAttenuator *QWS;
+    QWS = new QW_SeriesAttenuator(Specs);
+    QWS->synthesize();
+    Schematic = QWS->Schematic;
+    delete QWS;
+
   } else if (Specs.Topology == "Quarter-wave shunt") {
     QW_ShuntAttenuator();
   } else if (Specs.Topology == "L-pad 1st series") {
