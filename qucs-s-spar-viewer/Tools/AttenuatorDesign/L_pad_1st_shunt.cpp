@@ -15,37 +15,42 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "AttenuatorDesigner.h"
+#include "L_pad_1st_shunt.h"
 
 // Reference: Based on design equations from attenuatorfunc.cpp L_PAD_1ST_SHUNT
 // case
 
-void AttenuatorDesigner::LPadFirstShuntAttenuator() {
+LPadFirstShunt::LPadFirstShunt() {}
 
-  ComponentInfo TermSpar1, TermSpar2;
+LPadFirstShunt::LPadFirstShunt(AttenuatorDesignParameters AS) {
+  Specification = AS;
+}
+
+LPadFirstShunt::~LPadFirstShunt() {}
+
+void LPadFirstShunt::calculateParams() {
+  // Design equations
+  double L = pow(10, -Specification.Attenuation / 10);
+
+  R1 = Specification.Zin / (1 - sqrt(L));           // Shunt resistor
+  R2 = Specification.Zin * (1 - sqrt(L)) / sqrt(L); // Series resistor
+  Zout = -Specification.Zin * (L - 2 * sqrt(L) + 2) /
+         (L - 2 * sqrt(L)); // Output impedance
+}
+
+void LPadFirstShunt::synthesize() {
+  calculateParams();
+  buildLPadFirstShunt();
+}
+
+void LPadFirstShunt::buildLPadFirstShunt() {
   ComponentInfo Ground, Res1, Res2;
   NodeInfo NI;
-  Components.clear();
-
-  // Design equations (from attenuatorfunc.cpp, L_PAD_1ST_SHUNT case)
-  double L = pow(10, -Specs.Attenuation / 10);
-
-  double R1   = Specs.Zin / (1 - sqrt(L));           // Shunt resistor
-  double R2   = Specs.Zin * (1 - sqrt(L)) / sqrt(L); // Series resistor
-  double Zout = -Specs.Zin * (L - 2 * sqrt(L) + 2) /
-                (L - 2 * sqrt(L)); // Output impedance
-
-  // Power dissipation calculation
-  Pdiss.R1 = Specs.Pin * sqrt(L) * (1 - 2 * sqrt(L) + L) /
-             (1 - sqrt(L));             // Shunt resistor
-  Pdiss.R2 = Specs.Pin * (1 - sqrt(L)); // Series resistor
-
-  // Circuit implementation
 
   // Input terminal
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 0, 0, 0);
-  TermSpar1.val["Z"] = num2str(Specs.Zin, Resistance);
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  TermSpar1.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   // Node between series resistor and shunt
@@ -70,31 +75,24 @@ void AttenuatorDesigner::LPadFirstShuntAttenuator() {
   Schematic.appendComponent(Res2);
 
   // Zout label
-  QString Zout_label        = QString("Zout = %1 \u03A9").arg(num2str(Zout));
-  QGraphicsTextItem* label2 = new QGraphicsTextItem(Zout_label);
+  QString Zout_label = QString("Zout = %1 \u03A9").arg(num2str(Zout));
+  QGraphicsTextItem *label2 = new QGraphicsTextItem(Zout_label);
   label2->setDefaultTextColor(Qt::red);
   label2->setFont(QFont("Arial", 6, QFont::Bold));
   label2->setPos(130, -20);
   Schematic.appendText(label2);
 
   // Output terminal
+  ComponentInfo TermSpar2;
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 180, 150, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSpar2.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   // Wiring connections
-  // Input terminal to node
   Schematic.appendWire(TermSpar1.ID, 0, NI.ID, 0);
-  // Node to shunt resistor
   Schematic.appendWire(NI.ID, 0, Res1.ID, 1);
-
-  // Shunt resistor to ground
   Schematic.appendWire(Res1.ID, 0, Ground.ID, 0);
-
-  // Input terminal to series resistor
   Schematic.appendWire(NI.ID, 0, Res2.ID, 0);
-
-  // Series resistor to output terminal
   Schematic.appendWire(Res2.ID, 1, TermSpar2.ID, 0);
 }

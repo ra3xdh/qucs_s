@@ -19,6 +19,7 @@
 
 #include "BridgedTeeAttenuator.h"
 #include "L_pad_1st_series.h"
+#include "L_pad_1st_shunt.h"
 #include "PiAttenuator.h"
 #include "QW_SeriesAttenuator.h"
 #include "QW_ShuntAttenuator.h"
@@ -85,7 +86,11 @@ void AttenuatorDesigner::synthesize() {
     Schematic = LPFS->Schematic;
     delete LPFS;
   } else if (Specs.Topology == "L-pad 1st shunt") {
-    LPadFirstShuntAttenuator();
+    LPadFirstShunt *LPFS;
+    LPFS = new LPadFirstShunt(Specs);
+    LPFS->synthesize();
+    Schematic = LPFS->Schematic;
+    delete LPFS;
   } else if (Specs.Topology == "Rseries") {
     RSeriesAttenuator();
   } else if (Specs.Topology == "Rshunt") {
