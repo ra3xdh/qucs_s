@@ -15,30 +15,40 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "AttenuatorDesigner.h"
+#include "TeeAttenuator.h"
 
 // Reference: RF design guide. Systems, circuits, and equations. Peter
 // Vizmuller. Artech House, 1995
-void AttenuatorDesigner::TeeAttenuator() {
-  ComponentInfo TermSpar1, TermSpar2;
+
+TeeAttenuator::TeeAttenuator() {}
+
+TeeAttenuator::TeeAttenuator(AttenuatorDesignParameters AS) {
+  Specification = AS;
+}
+
+TeeAttenuator::~TeeAttenuator() {}
+
+void TeeAttenuator::calculateParams() {
+  // Design equations
+  double L = pow(10, .1 * Specification.Attenuation);
+  R2 = (2 * sqrt(Specification.Zin * Specification.Zout * L)) / (L - 1);
+  R1 = Specification.Zin * ((L + 1) / (L - 1)) - R2;
+  R3 = Specification.Zout * ((L + 1) / (L - 1)) - R2;
+}
+
+void TeeAttenuator::synthesize() {
+  calculateParams();
+  buildTeeAttenuator();
+}
+
+void TeeAttenuator::buildTeeAttenuator() {
   ComponentInfo Ground, Res1, Res2, Res3;
   NodeInfo NI;
-  Components.clear();
-  // Design equations
-  double L  = pow(10, .1 * Specs.Attenuation);
-  double R2 = (2 * sqrt(Specs.Zin * Specs.Zout * L)) / (L - 1);
-  double R1 = Specs.Zin * ((L + 1) / (L - 1)) - R2;
-  double R3 = Specs.Zout * ((L + 1) / (L - 1)) - R2;
-  // Power dissipation
-  Pdiss.R1 = Specs.Pin * R1 / Specs.Zin;
-  Pdiss.R2 = Specs.Pin * (R1 - Specs.Zin) * (R1 - Specs.Zin) / (R2 * Specs.Zin);
-  Pdiss.R3 = Specs.Pin * R3 * (R1 + R2 - Specs.Zin) * (R1 + R2 - Specs.Zin) /
-             (Specs.Zin * R2 * R2);
-  // Schematic implementation: follow new style
+
   // Input terminal
   ComponentInfo TermSparIN(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-  TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
   // 1st series resistor
@@ -52,8 +62,8 @@ void AttenuatorDesigner::TeeAttenuator() {
       QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100,
       0);
   Schematic.appendNode(NI);
-  Schematic.appendWire(TermSparIN.ID, 0, Res1.ID, 0); // Terminal to R1
-  Schematic.appendWire(Res1.ID, 1, NI.ID, 0);         // R1 to node
+  Schematic.appendWire(TermSparIN.ID, 0, Res1.ID, 0);
+  Schematic.appendWire(Res1.ID, 1, NI.ID, 0);
 
   // Shunt resistor to ground
   Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
@@ -63,8 +73,8 @@ void AttenuatorDesigner::TeeAttenuator() {
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
                    0, 100, 100);
   Schematic.appendComponent(Ground);
-  Schematic.appendWire(Res2.ID, 1, NI.ID, 0);     // R2 to node
-  Schematic.appendWire(Res2.ID, 0, Ground.ID, 0); // R2 to ground
+  Schematic.appendWire(Res2.ID, 1, NI.ID, 0);
+  Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);
 
   // 2nd series resistor
   Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
@@ -72,12 +82,13 @@ void AttenuatorDesigner::TeeAttenuator() {
   Res3.val["R"] = num2str(R3, Resistance);
   Schematic.appendComponent(Res3);
 
-  Schematic.appendWire(Res3.ID, 0, NI.ID, 0); // R3 to output node
+  Schematic.appendWire(Res3.ID, 0, NI.ID, 0);
 
   // Output terminal
+  ComponentInfo TermSpar2;
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 180, 200, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
+  TermSpar2.val["Z"] = num2str(Specification.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
-  Schematic.appendWire(TermSpar2.ID, 0, Res3.ID, 1); // Terminal to output node
+  Schematic.appendWire(TermSpar2.ID, 0, Res3.ID, 1);
 }
