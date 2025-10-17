@@ -18,6 +18,7 @@
 #include "AttenuatorDesigner.h"
 
 #include "QW_SeriesAttenuator.h"
+#include "QW_ShuntAttenuator.h"
 
 AttenuatorDesigner::AttenuatorDesigner(AttenuatorDesignParameters SPC) {
   Specs = SPC;
@@ -49,7 +50,13 @@ void AttenuatorDesigner::synthesize() {
     delete QWS;
 
   } else if (Specs.Topology == "Quarter-wave shunt") {
-    QW_ShuntAttenuator();
+
+    QW_ShuntAttenuator *QWS;
+    QWS = new QW_ShuntAttenuator(Specs);
+    QWS->synthesize();
+    Schematic = QWS->Schematic;
+    delete QWS;
+
   } else if (Specs.Topology == "L-pad 1st series") {
     LPadFirstSeriesAttenuator();
   } else if (Specs.Topology == "L-pad 1st shunt") {

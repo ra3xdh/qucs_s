@@ -54,14 +54,6 @@ private:
 
   void ReflectionAttenuator();
 
-  // Tuned attenuators
-
-  // QW Series
-  void QW_ShuntAttenuator();
-  void buildAttenuator_QW_Shunt_Lumped(double R, double Zout);
-  void buildAttenuator_QW_Shunt_IdealTL(double R, double l4, double Zout);
-  void buildAttenuator_QW_Shunt_Microstrip(double R, double l4, double Zout);
-
   // L-pads
   void LPadFirstSeriesAttenuator();
   void LPadFirstShuntAttenuator();

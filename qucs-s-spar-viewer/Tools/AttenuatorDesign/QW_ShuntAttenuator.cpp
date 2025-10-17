@@ -15,48 +15,51 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "AttenuatorDesigner.h"
+#include "QW_ShuntAttenuator.h"
 
-void AttenuatorDesigner::QW_ShuntAttenuator() {
-  Components.clear();
+QW_ShuntAttenuator::QW_ShuntAttenuator() {}
 
+QW_ShuntAttenuator::QW_ShuntAttenuator(AttenuatorDesignParameters AS) {
+  Specification = AS;
+}
+
+QW_ShuntAttenuator::~QW_ShuntAttenuator() {}
+
+void QW_ShuntAttenuator::calculateParams() {
   // Design equations
-  double R = Specs.Zin * (pow(10, .05 * Specs.Attenuation) - 1);
-  double l4 = .25 * SPEED_OF_LIGHT / Specs.Frequency;
-
-  // Power dissipation
-  double K = (R + Specs.Zin) * (R + Specs.Zin);
-  Pdiss.R1 = Specs.Pin * Specs.Zin * R / K;
-  Pdiss.R2 = Specs.Pin * R * R / K;
-  Pdiss.R3 = Pdiss.R1;
+  R = Specification.Zin * (pow(10, .05 * Specification.Attenuation) - 1);
+  l4 = .25 * SPEED_OF_LIGHT / Specification.Frequency;
 
   // Zout calculation
-  double Zout = R + Specs.Zin * (R + Specs.Zin) / (2 * R + Specs.Zin);
+  Zout = R + Specification.Zin * (R + Specification.Zin) /
+                 (2 * R + Specification.Zin);
+
+  // For lumped implementation
+  w0 = 2 * M_PI * Specification.Frequency;
+}
+
+void QW_ShuntAttenuator::synthesize() {
+  calculateParams();
 
   // Dispatch to appropriate implementation
-  if (Specs.TL_implementation == TransmissionLineType::Lumped) {
-    buildAttenuator_QW_Shunt_Lumped(R, Zout);
-  } else {
-    if (Specs.TL_implementation == TransmissionLineType::Ideal) {
-      buildAttenuator_QW_Shunt_IdealTL(R, l4, Zout);
-    } else if (Specs.TL_implementation == TransmissionLineType::MLIN) {
-      buildAttenuator_QW_Shunt_Microstrip(R, l4, Zout);
-    }
+  if (Specification.TL_implementation == TransmissionLineType::Lumped) {
+    buildQW_Shunt_Lumped();
+  } else if (Specification.TL_implementation == TransmissionLineType::Ideal) {
+    buildQW_Shunt_IdealTL();
+  } else if (Specification.TL_implementation == TransmissionLineType::MLIN) {
+    buildQW_Shunt_Microstrip();
   }
 }
 
-void AttenuatorDesigner::buildAttenuator_QW_Shunt_Lumped(double R,
-                                                         double Zout) {
+void QW_ShuntAttenuator::buildQW_Shunt_Lumped() {
   ComponentInfo Ground, Res1, Res2, Res3;
   ComponentInfo Lseries, Cshunt;
   NodeInfo NI1, NI2;
 
-  double w0 = 2 * M_PI * Specs.Frequency;
-
   // Input terminal
   ComponentInfo TermSparIN(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-  TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
   // First node (input side)
@@ -70,7 +73,7 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_Lumped(double R,
   // Lumped transmission line: shunt C at input
   Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
                    Capacitor, 0, 50, -50);
-  Cshunt.val["C"] = num2str(1 / (Specs.Zin * w0), Capacitance);
+  Cshunt.val["C"] = num2str(1 / (Specification.Zin * w0), Capacitance);
   Schematic.appendComponent(Cshunt);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
@@ -79,7 +82,7 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_Lumped(double R,
 
   Lseries.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
                     Inductor, 0, 50, 50);
-  Lseries.val["L"] = num2str(Specs.Zin / w0, Inductance);
+  Lseries.val["L"] = num2str(Specification.Zin / w0, Inductance);
   Schematic.appendComponent(Lseries);
 
   Schematic.appendWire(Cshunt.ID, 0, NI1.ID, 0);
@@ -96,7 +99,7 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_Lumped(double R,
   // 1st shunt resistor and ground
   Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
                  Resistor, 0, 50, 150);
-  Res2.val["R"] = num2str(Specs.Zin, Resistance);
+  Res2.val["R"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(Res2);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
@@ -122,7 +125,7 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_Lumped(double R,
   // Lumped TL output shunt C and GND
   Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
                    Capacitor, 0, 150, 150);
-  Cshunt.val["C"] = num2str(1 / (Specs.Zin * w0), Capacitance);
+  Cshunt.val["C"] = num2str(1 / (Specification.Zin * w0), Capacitance);
   Schematic.appendComponent(Cshunt);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
@@ -152,21 +155,20 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_Lumped(double R,
   ComponentInfo TermSpar2;
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 180, 200, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSpar2.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   Schematic.appendWire(Res1.ID, 1, TermSpar2.ID, 0);
 }
 
-void AttenuatorDesigner::buildAttenuator_QW_Shunt_IdealTL(double R, double l4,
-                                                          double Zout) {
+void QW_ShuntAttenuator::buildQW_Shunt_IdealTL() {
   ComponentInfo Ground, Res1, Res2, Res3, TL;
   NodeInfo NI1, NI2;
 
   // Input terminal
   ComponentInfo TermSparIN(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-  TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
   // First node (input side)
@@ -181,7 +183,7 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_IdealTL(double R, double l4,
   TL.setParams(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
       TransmissionLine, 0, 50, 50);
-  TL.val["Z0"] = num2str(Specs.Zin, Resistance);
+  TL.val["Z0"] = num2str(Specification.Zin, Resistance);
   TL.val["Length"] = ConvertLengthFromM("mm", l4);
   Schematic.appendComponent(TL);
   Schematic.appendWire(TL.ID, 1, NI1.ID, 0);
@@ -196,7 +198,7 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_IdealTL(double R, double l4,
   // 1st shunt resistor and ground
   Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
                  Resistor, 0, 50, 150);
-  Res2.val["R"] = num2str(Specs.Zin, Resistance);
+  Res2.val["R"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(Res2);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
@@ -239,22 +241,20 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_IdealTL(double R, double l4,
   ComponentInfo TermSpar2;
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 180, 200, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSpar2.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   Schematic.appendWire(Res1.ID, 1, TermSpar2.ID, 0);
 }
 
-void AttenuatorDesigner::buildAttenuator_QW_Shunt_Microstrip(double R,
-                                                             double l4,
-                                                             double Zout) {
-  ComponentInfo Ground, Res1, Res2, Res3, TL;
+void QW_ShuntAttenuator::buildQW_Shunt_Microstrip() {
+  ComponentInfo Ground, Res1, Res2, Res3, MLIN;
   NodeInfo NI1, NI2;
 
   // Input terminal
   ComponentInfo TermSparIN(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-  TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
   // First node (input side)
@@ -267,36 +267,34 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_Microstrip(double R,
 
   // Microstrip transmission line
   MicrostripClass MSL;
-  MSL.Substrate = Specs.MS_Subs;
-  MSL.synthesizeMicrostrip(Specs.Zin, l4 * 1e3, Specs.Frequency);
+  MSL.Substrate = Specification.MS_Subs;
+  MSL.synthesizeMicrostrip(Specification.Zin, l4 * 1e3,
+                           Specification.Frequency);
 
-  double MS_Width = MSL.Results.width;
-  double MS_Length = MSL.Results.length * 1e-3;
-
-  TL.setParams(
+  MLIN.setParams(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
       MicrostripLine, 0, 50, 50);
-  TL.val["Width"] = ConvertLengthFromM("mm", MS_Width);
-  TL.val["Length"] = ConvertLengthFromM("mm", MS_Length);
-  TL.val["er"] = num2str(Specs.MS_Subs.er);
-  TL.val["h"] = num2str(Specs.MS_Subs.height);
-  TL.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-  TL.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
-  TL.val["tand"] = num2str(Specs.MS_Subs.tand);
-  Schematic.appendComponent(TL);
-  Schematic.appendWire(TL.ID, 1, NI1.ID, 0);
+  MLIN.val["Width"] = ConvertLengthFromM("mm", MSL.Results.width);
+  MLIN.val["Length"] = ConvertLengthFromM("mm", MSL.Results.length * 1e-3);
+  MLIN.val["er"] = num2str(Specification.MS_Subs.er);
+  MLIN.val["h"] = num2str(Specification.MS_Subs.height);
+  MLIN.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+  MLIN.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+  MLIN.val["tand"] = num2str(Specification.MS_Subs.tand);
+  Schematic.appendComponent(MLIN);
+  Schematic.appendWire(MLIN.ID, 1, NI1.ID, 0);
 
   // Second node (bottom side of TL)
   NI2.setParams(
       QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50,
       100);
   Schematic.appendNode(NI2);
-  Schematic.appendWire(TL.ID, 0, NI2.ID, 0);
+  Schematic.appendWire(MLIN.ID, 0, NI2.ID, 0);
 
   // 1st shunt resistor and ground
   Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
                  Resistor, 0, 50, 150);
-  Res2.val["R"] = num2str(Specs.Zin, Resistance);
+  Res2.val["R"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(Res2);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
@@ -339,7 +337,7 @@ void AttenuatorDesigner::buildAttenuator_QW_Shunt_Microstrip(double R,
   ComponentInfo TermSpar2;
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 180, 200, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSpar2.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   Schematic.appendWire(Res1.ID, 1, TermSpar2.ID, 0);
