@@ -240,7 +240,7 @@ PowerCombiningTool::~PowerCombiningTool() {
 }
 
 void PowerCombiningTool::UpdateDesignParameters() {
-  PowerCombinerParams Specs;
+
   Specs.Type = TopoCombo->currentText();
   Specs.Noutputs = BranchesCombo->currentText().toInt();
   Specs.OutputRatio.push_back(pow(10, K1Spinbox->value() / 20.));
@@ -268,10 +268,92 @@ void PowerCombiningTool::UpdateDesignParameters() {
   }
   ////////////////////////////////////////////////////////////////////////////
 
-  PowerCombinerDesigner *PowCombD = new PowerCombinerDesigner(Specs);
-  PowCombD->synthesize();
-  SchContent = PowCombD->getSchematic();
-  delete PowCombD;
+  synthesize();
+}
+
+void PowerCombiningTool::synthesize() {
+  // Recalculate network
+
+  int topology = TopoCombo->currentIndex();
+
+  switch (topology) {
+
+  case WILKINSON:
+    Wilkinson2Way *WK;
+    WK = new Wilkinson2Way(Specs);
+    WK->synthesize();
+    SchContent = WK->Schematic;
+    delete WK;
+    break;
+
+  case MULTISTAGE_WILKINSON:
+    MultistageWilkinson *MSWK;
+    MSWK = new MultistageWilkinson(Specs);
+    MSWK->synthesize();
+    SchContent = MSWK->Schematic;
+    delete MSWK;
+    break;
+
+  case T_JUNCTION:
+    TJunction *TJ;
+    TJ = new TJunction(Specs);
+    TJ->synthesize();
+    SchContent = TJ->Schematic;
+    delete TJ;
+    break;
+
+  case BRANCHLINE:
+    Branchline *BR;
+    BR = new Branchline(Specs);
+    BR->synthesize();
+    SchContent = BR->Schematic;
+    delete BR;
+    break;
+
+  case DOUBLE_BOX_BRANCHLINE:
+    DoubleBoxBranchline *DBBR;
+    DBBR = new DoubleBoxBranchline(Specs);
+    DBBR->synthesize();
+    SchContent = DBBR->Schematic;
+    delete DBBR;
+    break;
+
+  case BAGLEY:
+    Bagley *BG;
+    BG = new Bagley(Specs);
+    BG->synthesize();
+    SchContent = BG->Schematic;
+    delete BG;
+    break;
+
+  case GYSEL:
+    Gysel *GS;
+    GS = new Gysel(Specs);
+    GS->synthesize();
+    SchContent = GS->Schematic;
+    break;
+
+  case LIM_EOM:
+    Lim_Eom *LE;
+    LE = new Lim_Eom(Specs);
+    LE->synthesize();
+    SchContent = LE->Schematic;
+    break;
+
+  case WILKINSON_3_WAY_IMPROVED_ISO:
+    Wilkinson3Way_ImprovedIsolation *W3WII;
+    W3WII = new Wilkinson3Way_ImprovedIsolation(Specs);
+    W3WII->synthesize();
+    SchContent = W3WII->Schematic;
+    break;
+
+  case RECOMBINANT_3_WAY_WILKINSON:
+    Recombinant3WayWilkinson *RWK;
+    RWK = new Recombinant3WayWilkinson(Specs);
+    RWK->synthesize();
+    SchContent = RWK->Schematic;
+    break;
+  }
 
   QString TraceName = traceNameLineEdit->text();
   SchContent.Name = TraceName;

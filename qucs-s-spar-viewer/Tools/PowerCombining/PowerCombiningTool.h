@@ -33,7 +33,17 @@
 
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
-#include "PowerCombinerDesigner.h"
+
+#include "Wilkinson2Way.h"
+#include "MultistageWilkinson.h"
+#include "TJunction.h"
+#include "Branchline.h"
+#include "DoubleBoxBranchline.h"
+#include "Bagley.h"
+#include "Gysel.h"
+#include "Lim_Eom.h"
+#include "Wilkinson3way_ImprovedIsolation.h"
+#include "Recombinant3WayWilkinson.h"
 
 
 #define WILKINSON 0
@@ -94,6 +104,8 @@ private:
   QComboBox *TopoCombo, *FreqScaleCombo, *UnitsCombo;
   double getScaleFreq();
   QString netlist;
+
+  PowerCombinerParams Specs;
   SchematicContent SchContent; // Schematic representation
 
   // Transmission line implementation
@@ -106,6 +118,8 @@ private:
   // Add trace to simulate
   QLabel* traceNameLabel;
   QLineEdit* traceNameLineEdit;
+
+  void synthesize();
 
   // Functions for changing the default settings based on the topology
   void setSettings_Wilkinson();
