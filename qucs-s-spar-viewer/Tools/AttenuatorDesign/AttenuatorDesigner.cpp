@@ -18,11 +18,11 @@
 #include "AttenuatorDesigner.h"
 
 #include "BridgedTeeAttenuator.h"
+#include "L_pad_1st_series.h"
 #include "PiAttenuator.h"
-#include "TeeAttenuator.h"
-
 #include "QW_SeriesAttenuator.h"
 #include "QW_ShuntAttenuator.h"
+#include "TeeAttenuator.h"
 
 AttenuatorDesigner::AttenuatorDesigner(AttenuatorDesignParameters SPC) {
   Specs = SPC;
@@ -74,7 +74,11 @@ void AttenuatorDesigner::synthesize() {
     delete QWS;
 
   } else if (Specs.Topology == "L-pad 1st series") {
-    LPadFirstSeriesAttenuator();
+    LPadFirstSeries *LPFS;
+    LPFS = new LPadFirstSeries(Specs);
+    LPFS->synthesize();
+    Schematic = LPFS->Schematic;
+    delete LPFS;
   } else if (Specs.Topology == "L-pad 1st shunt") {
     LPadFirstShuntAttenuator();
   } else if (Specs.Topology == "Rseries") {

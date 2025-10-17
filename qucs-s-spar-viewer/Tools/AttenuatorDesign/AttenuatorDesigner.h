@@ -50,7 +50,6 @@ private:
   void ReflectionAttenuator();
 
   // L-pads
-  void LPadFirstSeriesAttenuator();
   void LPadFirstShuntAttenuator();
 
   // Single resistor attenuators
