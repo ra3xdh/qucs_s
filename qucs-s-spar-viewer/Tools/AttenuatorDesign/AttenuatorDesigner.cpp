@@ -25,6 +25,7 @@
 #include "QW_ShuntAttenuator.h"
 #include "RSeriesAttenuator.h"
 #include "ReflectionAttenuator.h"
+#include "RshuntAttenuator.h"
 #include "TeeAttenuator.h"
 
 AttenuatorDesigner::AttenuatorDesigner(AttenuatorDesignParameters SPC) {
@@ -99,6 +100,10 @@ void AttenuatorDesigner::synthesize() {
     Schematic = RS->Schematic;
     delete RS;
   } else if (Specs.Topology == "Rshunt") {
-    RShuntAttenuator();
+    RShuntAttenuator *RS;
+    RS = new RShuntAttenuator(Specs);
+    RS->synthesize();
+    Schematic = RS->Schematic;
+    delete RS;
   }
 }

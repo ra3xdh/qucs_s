@@ -15,46 +15,56 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "AttenuatorDesigner.h"
-
+#include "RshuntAttenuator.h"
 // Reference: Based on design equations from attenuatorfunc.cpp R_SHUNT case
 
-void AttenuatorDesigner::RShuntAttenuator() {
+RShuntAttenuator::RShuntAttenuator() {}
 
-  ComponentInfo TermSpar1, TermSpar2;
+RShuntAttenuator::RShuntAttenuator(AttenuatorDesignParameters AS) {
+  Specification = AS;
+}
+
+RShuntAttenuator::~RShuntAttenuator() {}
+
+void RShuntAttenuator::calculateParams() {
+  // Design equations
+  double L = pow(10, -Specification.Attenuation / 10);
+
+  R1 = (2 * sqrt(Specification.Zout * Specification.Zin * L) *
+            Specification.Zout * Specification.Zin +
+        (Specification.Zout * Specification.Zout * Specification.Zin +
+         Specification.Zout * Specification.Zin * Specification.Zin) *
+            L) /
+       (4 * Specification.Zout * Specification.Zin -
+        (Specification.Zout * Specification.Zout +
+         2 * Specification.Zout * Specification.Zin +
+         Specification.Zin * Specification.Zin) *
+            L); // Shunt resistor
+
+  Zin =
+      (Specification.Zout * R1) / (Specification.Zout + R1); // Input impedance
+  Zout =
+      (Specification.Zin * R1) / (Specification.Zin + R1); // Output impedance
+}
+
+void RShuntAttenuator::synthesize() {
+  calculateParams();
+  buildRShuntAttenuator();
+}
+
+void RShuntAttenuator::buildRShuntAttenuator() {
   ComponentInfo Res1, Ground;
   NodeInfo NIin;
-  Components.clear();
 
-  // Design equations
-  double L = pow(10, -Specs.Attenuation / 10);
-
-  double R1 = (2 * sqrt(Specs.Zout * Specs.Zin * L) * Specs.Zout * Specs.Zin +
-               (Specs.Zout * Specs.Zout * Specs.Zin +
-                Specs.Zout * Specs.Zin * Specs.Zin) *
-                   L) /
-              (4 * Specs.Zout * Specs.Zin -
-               (Specs.Zout * Specs.Zout + 2 * Specs.Zout * Specs.Zin +
-                Specs.Zin * Specs.Zin) *
-                   L); // Shunt resistor
-
-  double Zin  = (Specs.Zout * R1) / (Specs.Zout + R1); // Input impedance
-  double Zout = (Specs.Zin * R1) / (Specs.Zin + R1);   // Output impedance
-
-  // Power dissipation
-  Pdiss.R1 = Specs.Pin * (1 - L);
-
-  // --- Circuit Implementation ---
   // Input terminal
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 0, 0, 0);
-  TermSpar1.val["Z"] =
-      num2str(Specs.Zin, Resistance); // Effective input impedance
+  ComponentInfo TermSpar1(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  TermSpar1.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   // Zin label
-  QString Zin_label         = QString("Zin = %1 \u03A9").arg(num2str(Zin));
-  QGraphicsTextItem* label1 = new QGraphicsTextItem(Zin_label);
+  QString Zin_label = QString("Zin = %1 \u03A9").arg(num2str(Zin));
+  QGraphicsTextItem *label1 = new QGraphicsTextItem(Zin_label);
   label1->setDefaultTextColor(Qt::red);
   label1->setFont(QFont("Arial", 6, QFont::Bold));
   label1->setPos(-20, -30);
@@ -76,28 +86,21 @@ void AttenuatorDesigner::RShuntAttenuator() {
   Schematic.appendComponent(Ground);
 
   // Output terminal
+  ComponentInfo TermSpar2;
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 180, 100, 0);
-  TermSpar2.val["Z"] =
-      num2str(Specs.Zin, Resistance); // Effective output impedance
+  TermSpar2.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSpar2);
 
-  // --- Wiring Connections ---
-  // Input terminal to input node
+  // Wiring connections
   Schematic.appendWire(TermSpar1.ID, 0, NIin.ID, 0);
-
-  // Node to shunt resistor (top terminal)
   Schematic.appendWire(NIin.ID, 0, Res1.ID, 1);
-
-  // Shunt resistor to ground
   Schematic.appendWire(Res1.ID, 0, Ground.ID, 0);
-
-  // Output node to terminal
   Schematic.appendWire(NIin.ID, 0, TermSpar2.ID, 0);
 
   // Zout label
-  QString Zout_label        = QString("Zout = %1 \u03A9").arg(num2str(Zout));
-  QGraphicsTextItem* label2 = new QGraphicsTextItem(Zout_label);
+  QString Zout_label = QString("Zout = %1 \u03A9").arg(num2str(Zout));
+  QGraphicsTextItem *label2 = new QGraphicsTextItem(Zout_label);
   label2->setDefaultTextColor(Qt::red);
   label2->setFont(QFont("Arial", 6, QFont::Bold));
   label2->setPos(80, -30);
