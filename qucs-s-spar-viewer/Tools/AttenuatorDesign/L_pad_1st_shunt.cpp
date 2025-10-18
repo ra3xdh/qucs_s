@@ -36,11 +36,24 @@ void LPadFirstShunt::calculateParams() {
   R2 = Specification.Zin * (1 - sqrt(L)) / sqrt(L); // Series resistor
   Zout = -Specification.Zin * (L - 2 * sqrt(L) + 2) /
          (L - 2 * sqrt(L)); // Output impedance
+
+  // Power dissipation calculation
+  Pdiss["R1"] = Specification.Pin * sqrt(L) * (1 - 2 * sqrt(L) + L) /
+                (1 - sqrt(L));                     // Shunt resistor
+  Pdiss["R2"] = Specification.Pin * (1 - sqrt(L)); // Series resistor
 }
 
 void LPadFirstShunt::synthesize() {
   calculateParams();
   buildLPadFirstShunt();
+}
+
+QMap<QString, double> LPadFirstShunt::getPowerDissipation() {
+  // Ensure that the power dissipation data is available
+  if (Pdiss.isEmpty()) {
+    calculateParams();
+  }
+  return Pdiss;
 }
 
 void LPadFirstShunt::buildLPadFirstShunt() {

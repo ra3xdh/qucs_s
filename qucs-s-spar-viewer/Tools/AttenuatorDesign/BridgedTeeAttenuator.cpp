@@ -34,11 +34,30 @@ void BridgedTeeAttenuator::calculateParams() {
   double L = pow(10, .05 * Specification.Attenuation);
   R1 = Specification.Zin * (L - 1);
   R4 = Specification.Zin / (L - 1);
+
+  // Power dissipation calculation
+  double K = R1 * R4 + Specification.Zin * (2 * R4 + Specification.Zin);
+
+  K *= K;
+  Pdiss["R1"] = Specification.Pin * (4 * R1 * R4 * R4 * Specification.Zin) / K;
+  Pdiss["R2"] = Specification.Pin *
+                (R1 * R4 + Specification.Zin * Specification.Zin) *
+                (R1 * R4 + Specification.Zin * Specification.Zin) / K;
+  Pdiss["R3"] = 0;
+  Pdiss["R4"] = 4 * R4 * Specification.Zin * Specification.Zin / K;
 }
 
 void BridgedTeeAttenuator::synthesize() {
   calculateParams();
   buildBridgedTeeAttenuator();
+}
+
+QMap<QString, double> BridgedTeeAttenuator::getPowerDissipation() {
+  // Ensure that the power dissipation data is available
+  if (Pdiss.isEmpty()) {
+    calculateParams();
+  }
+  return Pdiss;
 }
 
 void BridgedTeeAttenuator::buildBridgedTeeAttenuator() {

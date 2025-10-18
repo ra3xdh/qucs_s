@@ -34,11 +34,26 @@ void PiAttenuator::calculateParams() {
   R2 = (.5 * (L - 1)) * sqrt(Specification.Zin * Specification.Zout / L);
   R1 = 1 / (((L + 1) / (Specification.Zin * (L - 1))) - (1 / R2));
   R3 = 1 / (((L + 1) / (Specification.Zout * (L - 1))) - (1 / R2));
+
+  // Calculate power dissipation Calculate power dissipation
+  Pdiss["R1"] = Specification.Pin * Specification.Zin / R1;
+  Pdiss["R2"] = Specification.Pin * R2 * (R1 - Specification.Zin) *
+                (R1 - Specification.Zin) / (R1 * R1 * Specification.Zin);
+  double K = R1 * R2 - Specification.Zin * (R1 + R2);
+  Pdiss["R3"] = Specification.Pin * K * K / (R1 * R1 * R3 * Specification.Zin);
 }
 
 void PiAttenuator::synthesize() {
   calculateParams();
   buildPiAttenuator();
+}
+
+QMap<QString, double> PiAttenuator::getPowerDissipation() {
+  // Ensure that the power dissipation data is available
+  if (Pdiss.isEmpty()) {
+    calculateParams();
+  }
+  return Pdiss;
 }
 
 void PiAttenuator::buildPiAttenuator() {

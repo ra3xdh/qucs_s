@@ -29,11 +29,13 @@ public:
   virtual ~ReflectionAttenuator();
   ReflectionAttenuator(AttenuatorDesignParameters);
   void synthesize();
+  QMap<QString, double> getPowerDissipation();
 
 private:
   AttenuatorDesignParameters Specification;
   
   double Ri;
+  QMap<QString, double> Pdiss; // Power dissipation for each resistor
   
   void calculateParams();
   void buildReflectionAttenuator();

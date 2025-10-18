@@ -38,7 +38,7 @@
 #include <QValidator>
 
 Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer() {
-  QWidget* centralWidget = new QWidget(this);
+  QWidget *centralWidget = new QWidget(this);
   setCentralWidget(centralWidget);
   centralWidget->setMaximumWidth(0); // Minimize central widget size
 
@@ -86,21 +86,21 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer() {
 }
 
 void Qucs_S_SPAR_Viewer::CreateMenuBar() {
-  QMenu* fileMenu = new QMenu(tr("&File"));
+  QMenu *fileMenu = new QMenu(tr("&File"));
 
-  QAction* fileQuit = new QAction(tr("&Quit"), this);
+  QAction *fileQuit = new QAction(tr("&Quit"), this);
   fileQuit->setShortcut(QKeySequence::Quit);
   connect(fileQuit, SIGNAL(triggered(bool)), SLOT(slotQuit()));
 
-  QAction* fileOpenSession = new QAction(tr("&Open session file"), this);
+  QAction *fileOpenSession = new QAction(tr("&Open session file"), this);
   fileOpenSession->setShortcut(QKeySequence::Open);
   connect(fileOpenSession, SIGNAL(triggered(bool)), SLOT(slotLoadSession()));
 
-  QAction* fileSaveAsSession = new QAction(tr("&Save session as ..."), this);
+  QAction *fileSaveAsSession = new QAction(tr("&Save session as ..."), this);
   fileSaveAsSession->setShortcut(QKeySequence::SaveAs);
   connect(fileSaveAsSession, SIGNAL(triggered(bool)), SLOT(slotSaveAs()));
 
-  QAction* fileSaveSession = new QAction(tr("&Save session"), this);
+  QAction *fileSaveSession = new QAction(tr("&Save session"), this);
   fileSaveSession->setShortcut(QKeySequence::Save);
   connect(fileSaveSession, SIGNAL(triggered(bool)), SLOT(slotSave()));
 
@@ -113,20 +113,20 @@ void Qucs_S_SPAR_Viewer::CreateMenuBar() {
   fileMenu->addAction(fileSaveAsSession);
   fileMenu->addAction(fileQuit);
 
-  QMenu* helpMenu = new QMenu(tr("&Help"));
+  QMenu *helpMenu = new QMenu(tr("&Help"));
 
-  QAction* helpHelp = new QAction(tr("&Help"), this);
+  QAction *helpHelp = new QAction(tr("&Help"), this);
   helpHelp->setShortcut(Qt::Key_F1);
   helpMenu->addAction(helpHelp);
   connect(helpHelp, SIGNAL(triggered(bool)), SLOT(slotHelpIntro()));
 
-  QAction* helpAbout = new QAction(tr("&About"), this);
+  QAction *helpAbout = new QAction(tr("&About"), this);
   helpMenu->addAction(helpAbout);
   connect(helpAbout, SIGNAL(triggered(bool)), SLOT(slotHelpAbout()));
 
   helpMenu->addSeparator();
 
-  QAction* helpAboutQt = new QAction(tr("About Qt..."), this);
+  QAction *helpAboutQt = new QAction(tr("About Qt..."), this);
   helpMenu->addAction(helpAboutQt);
   connect(helpAboutQt, SIGNAL(triggered(bool)), SLOT(slotHelpAboutQt()));
 
@@ -152,7 +152,7 @@ void Qucs_S_SPAR_Viewer::CreateRightPanel() {
 
   // Notes
   Notes_Widget = new CodeEditor();
-  dockNotes    = new QDockWidget("Notes", this);
+  dockNotes = new QDockWidget("Notes", this);
   dockNotes->setObjectName("dockNotes");
   dockNotes->setWidget(Notes_Widget);
 
@@ -203,16 +203,16 @@ void Qucs_S_SPAR_Viewer::setFileManagementDock() {
   dockFiles = new QDockWidget("S-parameter files", this);
   dockFiles->setObjectName("dockFiles");
 
-  QScrollArea* scrollArea_Files = new QScrollArea();
-  FileList_Widget               = new QWidget();
-  QWidget* FilesGroup           = new QWidget();
+  QScrollArea *scrollArea_Files = new QScrollArea();
+  FileList_Widget = new QWidget();
+  QWidget *FilesGroup = new QWidget();
 
   FilesGrid = new QGridLayout(FileList_Widget);
 
   vLayout_Files = new QVBoxLayout(FilesGroup);
 
-  QWidget* Buttons                   = new QWidget();
-  QHBoxLayout* hLayout_Files_Buttons = new QHBoxLayout(Buttons);
+  QWidget *Buttons = new QWidget();
+  QHBoxLayout *hLayout_Files_Buttons = new QHBoxLayout(Buttons);
 
   Button_Add_File = new QPushButton("Add file", this);
   Button_Add_File->setStyleSheet("QPushButton {background-color: green;\
@@ -263,20 +263,20 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   dockTracesList = new QDockWidget("Traces List", this);
   dockTracesList->setObjectName("TracesDock");
 
-  QWidget* TracesGroup     = new QWidget();
-  QVBoxLayout* Traces_VBox = new QVBoxLayout(TracesGroup);
+  QWidget *TracesGroup = new QWidget();
+  QVBoxLayout *Traces_VBox = new QVBoxLayout(TracesGroup);
 
   // Trace addition box
-  QWidget* TraceSelection_Widget = new QWidget(); // Add trace
+  QWidget *TraceSelection_Widget = new QWidget(); // Add trace
 
-  QGridLayout* DatasetsGrid = new QGridLayout(TraceSelection_Widget);
-  QLabel* dataset_label     = new QLabel("<b>Dataset</b>");
+  QGridLayout *DatasetsGrid = new QGridLayout(TraceSelection_Widget);
+  QLabel *dataset_label = new QLabel("<b>Dataset</b>");
   DatasetsGrid->addWidget(dataset_label, 0, 0, Qt::AlignCenter);
 
-  QLabel* Traces_label = new QLabel("<b>Traces</b>");
+  QLabel *Traces_label = new QLabel("<b>Traces</b>");
   DatasetsGrid->addWidget(Traces_label, 0, 1, Qt::AlignCenter);
 
-  QLabel* displayTypeLabel = new QLabel("<b>Display Type</b>");
+  QLabel *displayTypeLabel = new QLabel("<b>Display Type</b>");
   DatasetsGrid->addWidget(displayTypeLabel, 0, 2, Qt::AlignCenter);
 
   QCombobox_traces = new MatrixComboBox();
@@ -318,18 +318,18 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
                                       // needed to update the traces combo. This
                                       // is needed when the user has data with
                                       // different number of ports.
-  traceTabs = new QTabWidget(this); // Ensure 'this' is the parent
+  traceTabs = new QTabWidget(this);   // Ensure 'this' is the parent
   connect(traceTabs, SIGNAL(currentChanged(int)), this,
           SLOT(raiseWidgetsOnTabSelection(int)));
 
   // Create tabs for Magnitude/Phase and Smith Chart
   magnitudePhaseTab = new QWidget(traceTabs); // Parent is traceTabs
-  smithTab          = new QWidget(traceTabs); // Parent is traceTabs
-  polarTab          = new QWidget(traceTabs); // Parent is traceTabs
-  portImpedanceTab  = new QWidget(traceTabs); // Parent is traceTabs
-  stabilityTab      = new QWidget(traceTabs); // Parent is traceTabs
-  VSWRTab           = new QWidget(traceTabs); // Parent is traceTabs
-  GroupDelayTab     = new QWidget(traceTabs); // Parent is traceTabs
+  smithTab = new QWidget(traceTabs);          // Parent is traceTabs
+  polarTab = new QWidget(traceTabs);          // Parent is traceTabs
+  portImpedanceTab = new QWidget(traceTabs);  // Parent is traceTabs
+  stabilityTab = new QWidget(traceTabs);      // Parent is traceTabs
+  VSWRTab = new QWidget(traceTabs);           // Parent is traceTabs
+  GroupDelayTab = new QWidget(traceTabs);     // Parent is traceTabs
 
   // Add tabs to the tab widget
   traceTabs->addTab(magnitudePhaseTab, "Magnitude/Phase");
@@ -342,12 +342,12 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
 
   // Create layouts for each tab
   magnitudePhaseLayout = new QGridLayout(magnitudePhaseTab);
-  smithLayout          = new QGridLayout(smithTab);
-  polarLayout          = new QGridLayout(polarTab);
-  portImpedanceLayout  = new QGridLayout(portImpedanceTab);
-  stabilityLayout      = new QGridLayout(stabilityTab);
-  VSWRLayout           = new QGridLayout(VSWRTab);
-  GroupDelayLayout     = new QGridLayout(GroupDelayTab);
+  smithLayout = new QGridLayout(smithTab);
+  polarLayout = new QGridLayout(polarTab);
+  portImpedanceLayout = new QGridLayout(portImpedanceTab);
+  stabilityLayout = new QGridLayout(stabilityTab);
+  VSWRLayout = new QGridLayout(VSWRTab);
+  GroupDelayLayout = new QGridLayout(GroupDelayTab);
 
   // Set the layouts on the tabs
   magnitudePhaseTab->setLayout(magnitudePhaseLayout);
@@ -359,11 +359,11 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   GroupDelayTab->setLayout(GroupDelayLayout);
 
   // Set Magnitude tab
-  QLabel* Label_Name_mag      = new QLabel("<b>Name</b>");
-  QLabel* Label_Color_mag     = new QLabel("<b>Color</b>");
-  QLabel* Label_LineStyle_mag = new QLabel("<b>Line Style</b>");
-  QLabel* Label_LineWidth_mag = new QLabel("<b>Width</b>");
-  QLabel* Label_Remove_mag    = new QLabel("<b>Remove</b>");
+  QLabel *Label_Name_mag = new QLabel("<b>Name</b>");
+  QLabel *Label_Color_mag = new QLabel("<b>Color</b>");
+  QLabel *Label_LineStyle_mag = new QLabel("<b>Line Style</b>");
+  QLabel *Label_LineWidth_mag = new QLabel("<b>Width</b>");
+  QLabel *Label_Remove_mag = new QLabel("<b>Remove</b>");
 
   magnitudePhaseLayout->addWidget(Label_Name_mag, 0, 0, Qt::AlignCenter);
   magnitudePhaseLayout->addWidget(Label_Color_mag, 0, 1, Qt::AlignCenter);
@@ -372,11 +372,11 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   magnitudePhaseLayout->addWidget(Label_Remove_mag, 0, 4, Qt::AlignCenter);
 
   // Set Smith tab
-  QLabel* Label_Name_Smith      = new QLabel("<b>Name</b>");
-  QLabel* Label_Color_Smith     = new QLabel("<b>Color</b>");
-  QLabel* Label_LineStyle_Smith = new QLabel("<b>Line Style</b>");
-  QLabel* Label_LineWidth_Smith = new QLabel("<b>Width</b>");
-  QLabel* Label_Remove_Smith    = new QLabel("<b>Remove</b>");
+  QLabel *Label_Name_Smith = new QLabel("<b>Name</b>");
+  QLabel *Label_Color_Smith = new QLabel("<b>Color</b>");
+  QLabel *Label_LineStyle_Smith = new QLabel("<b>Line Style</b>");
+  QLabel *Label_LineWidth_Smith = new QLabel("<b>Width</b>");
+  QLabel *Label_Remove_Smith = new QLabel("<b>Remove</b>");
 
   smithLayout->addWidget(Label_Name_Smith, 0, 0, Qt::AlignCenter);
   smithLayout->addWidget(Label_Color_Smith, 0, 1, Qt::AlignCenter);
@@ -385,11 +385,11 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   smithLayout->addWidget(Label_Remove_Smith, 0, 4, Qt::AlignCenter);
 
   // Set Polar tab
-  QLabel* Label_Name_Polar      = new QLabel("<b>Name</b>");
-  QLabel* Label_Color_Polar     = new QLabel("<b>Color</b>");
-  QLabel* Label_LineStyle_Polar = new QLabel("<b>Line Style</b>");
-  QLabel* Label_LineWidth_Polar = new QLabel("<b>Width</b>");
-  QLabel* Label_Remove_Polar    = new QLabel("<b>Remove</b>");
+  QLabel *Label_Name_Polar = new QLabel("<b>Name</b>");
+  QLabel *Label_Color_Polar = new QLabel("<b>Color</b>");
+  QLabel *Label_LineStyle_Polar = new QLabel("<b>Line Style</b>");
+  QLabel *Label_LineWidth_Polar = new QLabel("<b>Width</b>");
+  QLabel *Label_Remove_Polar = new QLabel("<b>Remove</b>");
 
   polarLayout->addWidget(Label_Name_Polar, 0, 0, Qt::AlignCenter);
   polarLayout->addWidget(Label_Color_Polar, 0, 1, Qt::AlignCenter);
@@ -398,11 +398,11 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   polarLayout->addWidget(Label_Remove_Polar, 0, 4, Qt::AlignCenter);
 
   // Set "Port Impedance" tab
-  QLabel* Label_Name_nu      = new QLabel("<b>Name</b>");
-  QLabel* Label_Color_nu     = new QLabel("<b>Color</b>");
-  QLabel* Label_LineStyle_nu = new QLabel("<b>Line Style</b>");
-  QLabel* Label_LineWidth_nu = new QLabel("<b>Width</b>");
-  QLabel* Label_Remove_nu    = new QLabel("<b>Remove</b>");
+  QLabel *Label_Name_nu = new QLabel("<b>Name</b>");
+  QLabel *Label_Color_nu = new QLabel("<b>Color</b>");
+  QLabel *Label_LineStyle_nu = new QLabel("<b>Line Style</b>");
+  QLabel *Label_LineWidth_nu = new QLabel("<b>Width</b>");
+  QLabel *Label_Remove_nu = new QLabel("<b>Remove</b>");
 
   portImpedanceLayout->addWidget(Label_Name_nu, 0, 0, Qt::AlignCenter);
   portImpedanceLayout->addWidget(Label_Color_nu, 0, 1, Qt::AlignCenter);
@@ -411,11 +411,11 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   portImpedanceLayout->addWidget(Label_Remove_nu, 0, 4, Qt::AlignCenter);
 
   // Set "Stability" tab
-  QLabel* Label_Name_stab      = new QLabel("<b>Name</b>");
-  QLabel* Label_Color_stab     = new QLabel("<b>Color</b>");
-  QLabel* Label_LineStyle_stab = new QLabel("<b>Line Style</b>");
-  QLabel* Label_LineWidth_stab = new QLabel("<b>Width</b>");
-  QLabel* Label_Remove_stab    = new QLabel("<b>Remove</b>");
+  QLabel *Label_Name_stab = new QLabel("<b>Name</b>");
+  QLabel *Label_Color_stab = new QLabel("<b>Color</b>");
+  QLabel *Label_LineStyle_stab = new QLabel("<b>Line Style</b>");
+  QLabel *Label_LineWidth_stab = new QLabel("<b>Width</b>");
+  QLabel *Label_Remove_stab = new QLabel("<b>Remove</b>");
 
   stabilityLayout->addWidget(Label_Name_stab, 0, 0, Qt::AlignCenter);
   stabilityLayout->addWidget(Label_Color_stab, 0, 1, Qt::AlignCenter);
@@ -424,11 +424,11 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   stabilityLayout->addWidget(Label_Remove_stab, 0, 4, Qt::AlignCenter);
 
   // Set VSWR tab
-  QLabel* Label_Name_VSWR      = new QLabel("<b>Name</b>");
-  QLabel* Label_Color_VSWR     = new QLabel("<b>Color</b>");
-  QLabel* Label_LineStyle_VSWR = new QLabel("<b>Line Style</b>");
-  QLabel* Label_LineWidth_VSWR = new QLabel("<b>Width</b>");
-  QLabel* Label_Remove_VSWR    = new QLabel("<b>Remove</b>");
+  QLabel *Label_Name_VSWR = new QLabel("<b>Name</b>");
+  QLabel *Label_Color_VSWR = new QLabel("<b>Color</b>");
+  QLabel *Label_LineStyle_VSWR = new QLabel("<b>Line Style</b>");
+  QLabel *Label_LineWidth_VSWR = new QLabel("<b>Width</b>");
+  QLabel *Label_Remove_VSWR = new QLabel("<b>Remove</b>");
 
   VSWRLayout->addWidget(Label_Name_VSWR, 0, 0, Qt::AlignCenter);
   VSWRLayout->addWidget(Label_Color_VSWR, 0, 1, Qt::AlignCenter);
@@ -437,11 +437,11 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   VSWRLayout->addWidget(Label_Remove_VSWR, 0, 4, Qt::AlignCenter);
 
   // Set "Group delay" tab
-  QLabel* Label_Name_GD      = new QLabel("<b>Name</b>");
-  QLabel* Label_Color_GD     = new QLabel("<b>Color</b>");
-  QLabel* Label_LineStyle_GD = new QLabel("<b>Line Style</b>");
-  QLabel* Label_LineWidth_GD = new QLabel("<b>Width</b>");
-  QLabel* Label_Remove_GD    = new QLabel("<b>Remove</b>");
+  QLabel *Label_Name_GD = new QLabel("<b>Name</b>");
+  QLabel *Label_Color_GD = new QLabel("<b>Color</b>");
+  QLabel *Label_LineStyle_GD = new QLabel("<b>Line Style</b>");
+  QLabel *Label_LineWidth_GD = new QLabel("<b>Width</b>");
+  QLabel *Label_Remove_GD = new QLabel("<b>Remove</b>");
 
   GroupDelayLayout->addWidget(Label_Name_GD, 0, 0, Qt::AlignCenter);
   GroupDelayLayout->addWidget(Label_Color_GD, 0, 1, Qt::AlignCenter);
@@ -456,12 +456,12 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
 
   // Trace management
   // Titles
-  TracesList_Widget       = new QWidget(); // Panel with the trace settings
-  QLabel* Label_Name      = new QLabel("<b>Name</b>");
-  QLabel* Label_Color     = new QLabel("<b>Color</b>");
-  QLabel* Label_LineStyle = new QLabel("<b>Line Style</b>");
-  QLabel* Label_LineWidth = new QLabel("<b>Width</b>");
-  QLabel* Label_Remove    = new QLabel("<b>Remove</b>");
+  TracesList_Widget = new QWidget(); // Panel with the trace settings
+  QLabel *Label_Name = new QLabel("<b>Name</b>");
+  QLabel *Label_Color = new QLabel("<b>Color</b>");
+  QLabel *Label_LineStyle = new QLabel("<b>Line Style</b>");
+  QLabel *Label_LineWidth = new QLabel("<b>Width</b>");
+  QLabel *Label_Remove = new QLabel("<b>Remove</b>");
 
   TracesGrid = new QGridLayout(TracesList_Widget);
   TracesGrid->addWidget(Label_Name, 0, 0, Qt::AlignCenter);
@@ -478,14 +478,14 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
   dockMarkers = new QDockWidget("Markers", this);
   dockMarkers->setObjectName("dockMarkers");
 
-  QWidget* MarkersGroup     = new QWidget();
-  QVBoxLayout* Markers_VBox = new QVBoxLayout(MarkersGroup);
+  QWidget *MarkersGroup = new QWidget();
+  QVBoxLayout *Markers_VBox = new QVBoxLayout(MarkersGroup);
 
   // Trace addition box
-  QWidget* MarkerSelection_Widget = new QWidget();
+  QWidget *MarkerSelection_Widget = new QWidget();
 
-  MarkersGrid                    = new QGridLayout(MarkerSelection_Widget);
-  QLabel* Frequency_Marker_Label = new QLabel("<b>Frequency</b>");
+  MarkersGrid = new QGridLayout(MarkerSelection_Widget);
+  QLabel *Frequency_Marker_Label = new QLabel("<b>Frequency</b>");
   MarkersGrid->addWidget(Frequency_Marker_Label, 0, 0, Qt::AlignCenter);
 
   Button_add_marker = new QPushButton("Add marker");
@@ -519,12 +519,12 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
   MarkersGrid->addWidget(Button_Remove_All_Markers, 0, 1);
 
   // Marker management
-  QWidget* MarkerList_Widget = new QWidget(); // Panel with the trace settings
+  QWidget *MarkerList_Widget = new QWidget(); // Panel with the trace settings
 
-  QLabel* Label_Marker            = new QLabel("<b>Marker</b>");
-  QLabel* Label_Freq_Marker       = new QLabel("<b>Frequency</b>");
-  QLabel* Label_Freq_Scale_Marker = new QLabel("<b>Units</b>");
-  QLabel* Label_Remove_Marker     = new QLabel("<b>Remove</b>");
+  QLabel *Label_Marker = new QLabel("<b>Marker</b>");
+  QLabel *Label_Freq_Marker = new QLabel("<b>Frequency</b>");
+  QLabel *Label_Freq_Scale_Marker = new QLabel("<b>Units</b>");
+  QLabel *Label_Remove_Marker = new QLabel("<b>Remove</b>");
 
   MarkersGrid = new QGridLayout(MarkerList_Widget);
   MarkersGrid->addWidget(Label_Marker, 0, 0, Qt::AlignCenter);
@@ -532,23 +532,23 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
   MarkersGrid->addWidget(Label_Freq_Scale_Marker, 0, 2, Qt::AlignCenter);
   MarkersGrid->addWidget(Label_Remove_Marker, 0, 3, Qt::AlignCenter);
 
-  QScrollArea* scrollArea_Marker = new QScrollArea();
+  QScrollArea *scrollArea_Marker = new QScrollArea();
   scrollArea_Marker->setWidget(MarkerList_Widget);
   scrollArea_Marker->setWidgetResizable(true);
 
   // Create tab widget to hold the two marker tables
-  QTabWidget* tabWidgetMarkers = new QTabWidget();
+  QTabWidget *tabWidgetMarkers = new QTabWidget();
   connect(tabWidgetMarkers, SIGNAL(currentChanged(int)), this,
           SLOT(raiseWidgetsOnTabSelection(int)));
 
   // Create the two tables for different marker types
   tableMarkers_Magnitude_Phase = new QTableWidget(1, 1, this);
-  tableMarkers_Smith           = new QTableWidget(1, 1, this);
-  tableMarkers_Polar           = new QTableWidget(1, 1, this);
-  tableMarkers_PortImpedance   = new QTableWidget(1, 1, this);
-  tableMarkers_Stability       = new QTableWidget(1, 1, this);
-  tableMarkers_VSWR            = new QTableWidget(1, 1, this);
-  tableMarkers_GroupDelay      = new QTableWidget(1, 1, this);
+  tableMarkers_Smith = new QTableWidget(1, 1, this);
+  tableMarkers_Polar = new QTableWidget(1, 1, this);
+  tableMarkers_PortImpedance = new QTableWidget(1, 1, this);
+  tableMarkers_Stability = new QTableWidget(1, 1, this);
+  tableMarkers_VSWR = new QTableWidget(1, 1, this);
+  tableMarkers_GroupDelay = new QTableWidget(1, 1, this);
 
   // Add tables to tabs
   tabWidgetMarkers->addTab(tableMarkers_Magnitude_Phase, "Magnitude/Phase");
@@ -572,11 +572,11 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
   dockLimits = new QDockWidget("Limits", this);
   dockLimits->setObjectName("dockLimits");
 
-  QWidget* LimitsGroup     = new QWidget();
-  QVBoxLayout* Limits_VBox = new QVBoxLayout(LimitsGroup);
+  QWidget *LimitsGroup = new QWidget();
+  QVBoxLayout *Limits_VBox = new QVBoxLayout(LimitsGroup);
 
   // Limit addition box
-  QWidget* AddLimit_Widget = new QWidget(); // Add trace
+  QWidget *AddLimit_Widget = new QWidget(); // Add trace
 
   LimitsGrid = new QGridLayout(AddLimit_Widget);
 
@@ -610,10 +610,10 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
           SLOT(removeAllLimits())); // Connect button with the handler
   LimitsGrid->addWidget(Button_Remove_All_Limits, 0, 1);
 
-  QGroupBox* LimitSettings         = new QGroupBox("Settings");
-  QGridLayout* LimitsSettingLayout = new QGridLayout(LimitSettings);
-  QLabel* LimitsOffsetLabel        = new QLabel("<b>Limits Offset</>");
-  Limits_Offset                    = new QDoubleSpinBox();
+  QGroupBox *LimitSettings = new QGroupBox("Settings");
+  QGridLayout *LimitsSettingLayout = new QGridLayout(LimitSettings);
+  QLabel *LimitsOffsetLabel = new QLabel("<b>Limits Offset</>");
+  Limits_Offset = new QDoubleSpinBox();
   Limits_Offset->setValue(0);
   Limits_Offset->setSingleStep(0.1);
   Limits_Offset->setMaximum(1e4);
@@ -623,12 +623,12 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
   LimitsSettingLayout->addWidget(Limits_Offset, 0, 1);
 
   // Limit management
-  QWidget* LimitList_Widget = new QWidget(); // Panel with the trace settings
+  QWidget *LimitList_Widget = new QWidget(); // Panel with the trace settings
 
-  QLabel* Label_Limit        = new QLabel("<b>Limit</b>");
-  QLabel* Label_Limit_Start  = new QLabel("<b>Start</b>");
-  QLabel* Label_Limit_Stop   = new QLabel("<b>Stop</b>");
-  QLabel* Label_Remove_Limit = new QLabel("<b>Remove</b>");
+  QLabel *Label_Limit = new QLabel("<b>Limit</b>");
+  QLabel *Label_Limit_Start = new QLabel("<b>Start</b>");
+  QLabel *Label_Limit_Stop = new QLabel("<b>Stop</b>");
+  QLabel *Label_Remove_Limit = new QLabel("<b>Remove</b>");
 
   LimitsGrid = new QGridLayout(LimitList_Widget);
   LimitsGrid->addWidget(Label_Limit, 0, 0, Qt::AlignCenter);
@@ -636,7 +636,7 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
   LimitsGrid->addWidget(Label_Limit_Stop, 0, 3, 1, 2, Qt::AlignCenter);
   LimitsGrid->addWidget(Label_Remove_Limit, 0, 5, Qt::AlignCenter);
 
-  QScrollArea* scrollArea_Limits = new QScrollArea();
+  QScrollArea *scrollArea_Limits = new QScrollArea();
   scrollArea_Limits->setWidget(LimitList_Widget);
   scrollArea_Limits->setWidgetResizable(true);
 
@@ -650,7 +650,7 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
 void Qucs_S_SPAR_Viewer::CreateDisplayWidgets() {
   // Chart settings
   Magnitude_PhaseChart = new RectangularPlotWidget(this);
-  dockChart            = new QDockWidget("Magnitude / Phase", this);
+  dockChart = new QDockWidget("Magnitude / Phase", this);
   dockChart->setWidget(Magnitude_PhaseChart);
   dockChart->setAllowedAreas(Qt::AllDockWidgetAreas);
   dockChart->setObjectName("dockChart");
@@ -675,7 +675,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets() {
   addDockWidget(Qt::LeftDockWidgetArea, dockPolarChart);
 
   // Port impedance chart settings
-  impedanceChart     = new RectangularPlotWidget(this);
+  impedanceChart = new RectangularPlotWidget(this);
   dockImpedanceChart = new QDockWidget("Port Impedance", this);
   dockImpedanceChart->setWidget(impedanceChart);
   dockImpedanceChart->setAllowedAreas(Qt::AllDockWidgetAreas);
@@ -688,7 +688,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets() {
   impedanceChart->change_Y2_axis_units(QString("Ω"));
 
   // Stability plot
-  stabilityChart     = new RectangularPlotWidget(this);
+  stabilityChart = new RectangularPlotWidget(this);
   dockStabilityChart = new QDockWidget("Stability", this);
   dockStabilityChart->setWidget(stabilityChart);
   dockStabilityChart->setAllowedAreas(Qt::AllDockWidgetAreas);
@@ -706,7 +706,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets() {
   stabilityChart->setYmax(3); // Typically the stability lies -1 and +infty
 
   // VSWR plot
-  VSWRChart     = new RectangularPlotWidget(this);
+  VSWRChart = new RectangularPlotWidget(this);
   dockVSWRChart = new QDockWidget("VSWR", this);
   dockVSWRChart->setWidget(VSWRChart);
   dockVSWRChart->setAllowedAreas(Qt::AllDockWidgetAreas);
@@ -722,7 +722,7 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets() {
   VSWRChart->setYmax(5); // Typically the VSWR lies 1 and +infty
 
   // Group delay chart settings
-  GroupDelayChart     = new RectangularPlotWidget(this);
+  GroupDelayChart = new RectangularPlotWidget(this);
   dockGroupDelayChart = new QDockWidget("Group Delay", this);
   dockGroupDelayChart->setWidget(GroupDelayChart);
   dockGroupDelayChart->setAllowedAreas(Qt::AllDockWidgetAreas);
@@ -759,18 +759,18 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets() {
   tabifyDockWidget(dockVSWRChart, dockGroupDelayChart);
 }
 
-void Qucs_S_SPAR_Viewer::setupScrollAreaForLayout(QGridLayout*& layout,
-                                                  QWidget* parentTab,
-                                                  const QString& objectName) {
+void Qucs_S_SPAR_Viewer::setupScrollAreaForLayout(QGridLayout *&layout,
+                                                  QWidget *parentTab,
+                                                  const QString &objectName) {
   // Save the original layout and its widgets
-  QGridLayout* originalLayout = layout;
-  QList<QWidget*> headerWidgets;
+  QGridLayout *originalLayout = layout;
+  QList<QWidget *> headerWidgets;
 
   // Save header row (assuming row 0 is the header)
   for (int col = 0; col < 5; col++) {
-    QLayoutItem* item = originalLayout->itemAtPosition(0, col);
+    QLayoutItem *item = originalLayout->itemAtPosition(0, col);
     if (item && item->widget()) {
-      QWidget* widget = item->widget();
+      QWidget *widget = item->widget();
       headerWidgets.append(widget);
       originalLayout->removeWidget(widget);
     }
@@ -780,14 +780,14 @@ void Qucs_S_SPAR_Viewer::setupScrollAreaForLayout(QGridLayout*& layout,
   delete originalLayout;
 
   // Create a scroll area
-  QScrollArea* scrollArea = new QScrollArea(parentTab);
+  QScrollArea *scrollArea = new QScrollArea(parentTab);
   scrollArea->setObjectName(objectName);
   scrollArea->setWidgetResizable(true);
   scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
   // Create a widget to hold the new layout
-  QWidget* container = new QWidget();
+  QWidget *container = new QWidget();
 
   // Create a new grid layout for the container
   layout = new QGridLayout(container);
@@ -803,7 +803,7 @@ void Qucs_S_SPAR_Viewer::setupScrollAreaForLayout(QGridLayout*& layout,
   scrollArea->setWidget(container);
 
   // Create a new layout for the tab to hold the scroll area
-  QVBoxLayout* tabLayout = new QVBoxLayout(parentTab);
+  QVBoxLayout *tabLayout = new QVBoxLayout(parentTab);
   tabLayout->addWidget(scrollArea);
   tabLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -892,12 +892,10 @@ void Qucs_S_SPAR_Viewer::slotHelpAbout() {
           "<https://www.gnu.org/licenses/>.\n\n");
 }
 
-void Qucs_S_SPAR_Viewer::slotQuit() {
-  qApp->quit();
-}
+void Qucs_S_SPAR_Viewer::slotQuit() { qApp->quit(); }
 
 // Helper function to extract S-parameter indices from S[i,j] format
-QString Qucs_S_SPAR_Viewer::extractSParamIndices(const QString& sparam) {
+QString Qucs_S_SPAR_Viewer::extractSParamIndices(const QString &sparam) {
   QRegularExpression re("S\\[(\\d+),(\\d+)\\]");
   QRegularExpressionMatch match = re.match(sparam);
 
@@ -913,10 +911,10 @@ QString Qucs_S_SPAR_Viewer::extractSParamIndices(const QString& sparam) {
 // Once a file is loaded, this function adds to the display the default traces
 // based in its nature
 void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
-    const QStringList& fileNames) {
+    const QStringList &fileNames) {
   if (fileNames.length() == 1) {
     QString filename = QFileInfo(fileNames.first()).fileName();
-    filename         = filename.left(filename.lastIndexOf('.'));
+    filename = filename.left(filename.lastIndexOf('.'));
 
     if (filename.endsWith("dat")) {
       // Then it must be a .dat.ngspice extension
@@ -927,7 +925,7 @@ void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
     // selected
     if ((datasets[filename]["n_ports"].at(0) == 1) && (datasets.size() == 1)) {
       // Create TraceInfo structs
-      TraceInfo s11_dB    = {filename, "S11", DisplayMode::Magnitude_dB};
+      TraceInfo s11_dB = {filename, "S11", DisplayMode::Magnitude_dB};
       TraceInfo s11_Smith = {filename, "S11", DisplayMode::Smith};
       TraceInfo s11_Polar = {filename, "S11", DisplayMode::Polar};
 
@@ -973,11 +971,11 @@ void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
       TraceInfo s21_GroupDelay = {filename, "S21", DisplayMode::GroupDelay};
 
       // VSWR
-      TraceInfo VSWRin  = {filename, "VSWR{in}", DisplayMode::VSWR};
+      TraceInfo VSWRin = {filename, "VSWR{in}", DisplayMode::VSWR};
       TraceInfo VSWRout = {filename, "VSWR{out}", DisplayMode::VSWR};
 
       // Stability
-      TraceInfo K    = {filename, "K", DisplayMode::Stability};
+      TraceInfo K = {filename, "K", DisplayMode::Stability};
       TraceInfo mu_s = {filename, "μₛ", DisplayMode::Stability};
       TraceInfo mu_p = {filename, "μₚ", DisplayMode::Stability};
 
@@ -1003,7 +1001,7 @@ void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
   // traces
   if (fileNames.length() > 1) {
     bool all_s2p = true;
-    for (const QString& key :
+    for (const QString &key :
          datasets.keys()) { // Iterate over the keys of the map
       if (datasets[key]["n_ports"].at(0) != 2) {
         all_s2p = false;
@@ -1014,7 +1012,7 @@ void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
     if (all_s2p == true) {
       for (int i = 0; i < fileNames.length(); i++) {
         QString filename = QFileInfo(fileNames.at(i)).fileName();
-        filename         = filename.left(filename.lastIndexOf('.'));
+        filename = filename.left(filename.lastIndexOf('.'));
 
         // Color settings. The color of the first traces match the default
         // policy
@@ -1043,7 +1041,7 @@ void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
 
 // Adds optional traces depending on the number of ports of the device
 void Qucs_S_SPAR_Viewer::addOptionalTraces(
-    QMap<QString, QList<double>>& file_data) {
+    QMap<QString, QList<double>> &file_data) {
   QStringList optional_traces;
 
   int number_of_ports = file_data["n_ports"].at(0);
@@ -1082,7 +1080,7 @@ void Qucs_S_SPAR_Viewer::CreateFileWidgets(QString filename, int position) {
     position = this->datasets.size();
   }
 
-  QLabel* Filename_Label = new QLabel(filename.left(filename.lastIndexOf('.')));
+  QLabel *Filename_Label = new QLabel(filename.left(filename.lastIndexOf('.')));
   Filename_Label->setObjectName(QStringLiteral("File_") +
                                 QString::number(position));
   List_FileNames.append(Filename_Label);
@@ -1091,7 +1089,7 @@ void Qucs_S_SPAR_Viewer::CreateFileWidgets(QString filename, int position) {
   this->FilesGrid->addWidget(List_FileNames.last(), position, 0, 1, 1);
 
   // Create the "Remove" button
-  QToolButton* RemoveButton = new QToolButton();
+  QToolButton *RemoveButton = new QToolButton();
   RemoveButton->setObjectName(QStringLiteral("Remove_") +
                               QString::number(position));
   QIcon icon(":/bitmaps/trash.png"); // Use a resource path or a relative path
@@ -1115,19 +1113,19 @@ void Qucs_S_SPAR_Viewer::CreateFileWidgets(QString filename, int position) {
 
 // Given the name of a dataset, this function removes all traces related to it
 void Qucs_S_SPAR_Viewer::removeTracesByDataset(
-    const QString& dataset_to_remove) {
+    const QString &dataset_to_remove) {
   // Iterate through the outer QMap (display modes)
 
-  for (const DisplayMode& mode : traceMap.keys()) {
-    QMap<QString, TraceProperties>& traces = traceMap[mode];
+  for (const DisplayMode &mode : traceMap.keys()) {
+    QMap<QString, TraceProperties> &traces = traceMap[mode];
 
     // Iterate through the inner QMap (traces in the current mode)
     for (auto trace_it = traces.begin(); trace_it != traces.end();) {
-      const QString& trace_name = trace_it.key();
+      const QString &trace_name = trace_it.key();
 
       // Check if the trace belongs to the dataset to remove
       if (trace_name.startsWith(dataset_to_remove + ".")) {
-        TraceProperties& props = trace_it.value();
+        TraceProperties &props = trace_it.value();
 
         // Use the common function to remove the trace
         // We need to make a copy of the trace name because it will be
@@ -1146,14 +1144,14 @@ void Qucs_S_SPAR_Viewer::removeTracesByDataset(
   }
 }
 
-void Qucs_S_SPAR_Viewer::removeAndCollapseRow(QGridLayout* targetLayout,
+void Qucs_S_SPAR_Viewer::removeAndCollapseRow(QGridLayout *targetLayout,
                                               int row_to_remove) {
-  int rows    = targetLayout->rowCount();
+  int rows = targetLayout->rowCount();
   int columns = targetLayout->columnCount();
 
   // 1. Remove all widgets in target row (if not already done)
   for (int col = 0; col < columns; ++col) {
-    QLayoutItem* item = targetLayout->itemAtPosition(row_to_remove, col);
+    QLayoutItem *item = targetLayout->itemAtPosition(row_to_remove, col);
     if (item && item->widget()) {
       targetLayout->removeWidget(item->widget());
       delete item->widget();
@@ -1163,9 +1161,9 @@ void Qucs_S_SPAR_Viewer::removeAndCollapseRow(QGridLayout* targetLayout,
   // 2. Shift all rows below upward
   for (int r = row_to_remove + 1; r < rows; ++r) {
     for (int c = 0; c < columns; ++c) {
-      QLayoutItem* item = targetLayout->itemAtPosition(r, c);
+      QLayoutItem *item = targetLayout->itemAtPosition(r, c);
       if (item && item->widget()) {
-        QWidget* widget = item->widget();
+        QWidget *widget = item->widget();
         targetLayout->removeWidget(widget);
         targetLayout->addWidget(widget, r - 1, c); // Move up one row
       }
@@ -1175,11 +1173,11 @@ void Qucs_S_SPAR_Viewer::removeAndCollapseRow(QGridLayout* targetLayout,
   // 3.emove empty last row (if needed)
   if (row_to_remove == rows - 1) {
     // QGridLayout doesn't have removeRow(), so we must force layout update
-    QWidget* container = targetLayout->parentWidget();
+    QWidget *container = targetLayout->parentWidget();
     if (container) {
       container->setUpdatesEnabled(false);
       // Add temporary dummy widget to last row to force recalc
-      QWidget* temp = new QWidget();
+      QWidget *temp = new QWidget();
       targetLayout->addWidget(temp, row_to_remove, 0);
       targetLayout->removeWidget(temp);
       delete temp;
@@ -1263,12 +1261,12 @@ void Qucs_S_SPAR_Viewer::updateDisplayType() {
 
 // Given a trace, it gives the minimum and the maximum values at both axis.
 void Qucs_S_SPAR_Viewer::getMinMaxValues(QString filename, QString tracename,
-                                         qreal& minX, qreal& maxX, qreal& minY,
-                                         qreal& maxY) {
+                                         qreal &minX, qreal &maxX, qreal &minY,
+                                         qreal &maxY) {
   // Find the minimum and the maximum in the x-axis
   QList<double> freq = datasets[filename]["frequency"];
-  minX               = freq.first();
-  maxX               = freq.last();
+  minX = freq.first();
+  maxX = freq.last();
 
   // Find minimum and maximum in the y-axis
   QList<double> trace_data = datasets[filename][tracename];
@@ -1287,22 +1285,22 @@ void Qucs_S_SPAR_Viewer::getMinMaxValues(QString filename, QString tracename,
     // Magnitude traces (dB)
     auto minIterator = std::min_element(trace_data.begin(), trace_data.end());
     auto maxIterator = std::max_element(trace_data.begin(), trace_data.end());
-    minY             = *minIterator;
-    maxY             = *maxIterator;
+    minY = *minIterator;
+    maxY = *maxIterator;
   }
 }
 
-void Qucs_S_SPAR_Viewer::dragEnterEvent(QDragEnterEvent* event) {
+void Qucs_S_SPAR_Viewer::dragEnterEvent(QDragEnterEvent *event) {
   if (event->mimeData()->hasUrls()) {
     event->acceptProposedAction();
   }
 }
 
-void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent* event) {
+void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event) {
   QList<QUrl> urls = event->mimeData()->urls();
   QStringList fileList;
 
-  for (const QUrl& url : qAsConst(urls)) {
+  for (const QUrl &url : qAsConst(urls)) {
     if (url.isLocalFile()) {
       fileList << url.toLocalFile();
     }
@@ -1328,10 +1326,10 @@ void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent* event) {
   }
 }
 
-void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout* layout) {
+void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout *layout) {
   // Store widget information
   struct WidgetInfo {
-    QWidget* widget;
+    QWidget *widget;
     int row, column, rowSpan, columnSpan;
     Qt::Alignment alignment;
   };
@@ -1339,8 +1337,8 @@ void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout* layout) {
 
   // Collect information about remaining widgets
   for (int i = 0; i < layout->count(); ++i) {
-    QLayoutItem* item = layout->itemAt(i);
-    QWidget* widget   = item->widget();
+    QLayoutItem *item = layout->itemAt(i);
+    QWidget *widget = item->widget();
     if (widget) {
       int row, column, rowSpan, columnSpan;
       layout->getItemPosition(i, &row, &column, &rowSpan, &columnSpan);
@@ -1351,13 +1349,13 @@ void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout* layout) {
 
   // Clear the layout
   while (layout->count() > 0) {
-    QLayoutItem* item = layout->takeAt(0);
+    QLayoutItem *item = layout->takeAt(0);
     delete item;
   }
 
   // Re-add widgets with updated positions
   int row = 0;
-  for (const auto& info : widgetInfos) {
+  for (const auto &info : widgetInfos) {
     int newColumn = info.column;
 
     if (info.columnSpan == layout->columnCount()) { // Separator widget
@@ -1392,13 +1390,13 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
 
   // Check if it must calculate the Group delay
   if (metric.contains("Group Delay")) {
-    QString port_in  = metric.at(1);
+    QString port_in = metric.at(1);
     QString port_out = metric.at(2);
 
     QString trace_phase = QString("S%1%2_ang").arg(port_in).arg(port_out);
 
     QList<double> Sij_ang = datasets[file][trace_phase];
-    QList<double> freq    = datasets[file]["frequency"];
+    QList<double> freq = datasets[file]["frequency"];
     QList<double> groupDelay;
     const int numPoints = Sij_ang.size();
 
@@ -1432,7 +1430,7 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
 
     // Central differences for interior points
     for (int n = 1; n < numPoints - 1; ++n) {
-      double df  = freq[n + 1] - freq[n - 1];
+      double df = freq[n + 1] - freq[n - 1];
       double val = df != 0 ? -(unwrappedPhase[n + 1] - unwrappedPhase[n - 1]) /
                                  (360.0 * df)
                            : 0;
@@ -1442,7 +1440,7 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
 
     // Last point (backward difference)
     if (numPoints > 1) {
-      double df  = freq[numPoints - 1] - freq[numPoints - 2];
+      double df = freq[numPoints - 1] - freq[numPoints - 2];
       double val = df != 0 ? -(unwrappedPhase[numPoints - 1] -
                                unwrappedPhase[numPoints - 2]) /
                                  (360.0 * df)
@@ -1461,8 +1459,8 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
     // S-parameter data (n.u.)
     double s11_re = datasets[file]["S11_re"][i];
     double s11_im = datasets[file]["S11_im"][i];
-    s11           = std::complex<double>(s11_re, s11_im);
-    s11_conj      = std::complex<double>(s11_re, -s11_im);
+    s11 = std::complex<double>(s11_re, s11_im);
+    s11_conj = std::complex<double>(s11_re, -s11_im);
 
     if (datasets[file]["n_ports"].last() == 2) {
       double s12_re = datasets[file]["S12_re"][i];
@@ -1471,10 +1469,10 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
       double s21_im = datasets[file]["S21_im"][i];
       double s22_re = datasets[file]["S22_re"][i];
       double s22_im = datasets[file]["S22_im"][i];
-      s12           = std::complex<double>(s12_re, s12_im);
-      s21           = std::complex<double>(s21_re, s21_im);
-      s22           = std::complex<double>(s22_re, s22_im);
-      s22_conj      = std::complex<double>(s22_re, -s22_im);
+      s12 = std::complex<double>(s12_re, s12_im);
+      s21 = std::complex<double>(s21_re, s21_im);
+      s22 = std::complex<double>(s22_re, s22_im);
+      s22_conj = std::complex<double>(s22_re, -s22_im);
     }
 
     double delta = abs(s11 * s22 - s12 * s21); // Determinant of the S matrix
@@ -1500,7 +1498,7 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
           } else {
             if (!metric.compare("MSG")) {
               double MSG = abs(s21) / abs(s12);
-              MSG        = 10 * log10(MSG);
+              MSG = 10 * log10(MSG);
               datasets[file]["MSG"].append(MSG);
             } else {
               if (!metric.compare("MAG")) {
@@ -1509,7 +1507,7 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
                            (2 * abs(s12 * s21)); // Rollet factor.
                 double MSG = abs(s21) / abs(s12);
                 double MAG = MSG * (K - std::sqrt(K * K - 1));
-                MAG        = 10 * log10(abs(MAG));
+                MAG = 10 * log10(abs(MAG));
                 datasets[file]["MAG"].append(MAG);
               } else {
                 if (!metric.compare("Zin")) {
@@ -1594,7 +1592,7 @@ void Qucs_S_SPAR_Viewer::setupFileWatcher() {
 }
 
 // Handle file changed events
-void Qucs_S_SPAR_Viewer::fileChanged(const QString& path) {
+void Qucs_S_SPAR_Viewer::fileChanged(const QString &path) {
   // Don't process the same file within a short time window
   static QMap<QString, QDateTime> lastProcessedTimes;
   static const int debounceTime = 500; // milliseconds
@@ -1622,7 +1620,7 @@ void Qucs_S_SPAR_Viewer::fileChanged(const QString& path) {
 
     // Wait a bit more to ensure the file is completely written and unlocked
     QFile file(path);
-    int attempts          = 0;
+    int attempts = 0;
     const int maxAttempts = 5;
     while (attempts < maxAttempts) {
       if (file.open(QIODevice::ReadOnly)) {
@@ -1693,7 +1691,7 @@ void Qucs_S_SPAR_Viewer::fileChanged(const QString& path) {
 }
 
 // Handle directory changed events
-void Qucs_S_SPAR_Viewer::directoryChanged(const QString& path) {
+void Qucs_S_SPAR_Viewer::directoryChanged(const QString &path) {
   qDebug() << "Directory changed:" << path;
   QDir dir(path);
 
@@ -1712,7 +1710,7 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString& path) {
                                      QRegularExpression::CaseInsensitiveOption);
 
   QStringList filesToAdd;
-  for (const QString& file : allFiles) {
+  for (const QString &file : allFiles) {
     // Match *.snp (n is 1 or more digits), *.dat, *.ngspice.dat
     if (sparamRegex.match(file).hasMatch() || datRegex.match(file).hasMatch() ||
         ngspiceDatRegex.match(file).hasMatch()) {
@@ -1729,28 +1727,28 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString& path) {
   // Create dialog
   QDialog dialog(this);
   dialog.setWindowTitle("Select files to add");
-  QVBoxLayout* layout     = new QVBoxLayout(&dialog);
-  QListWidget* listWidget = new QListWidget(&dialog);
+  QVBoxLayout *layout = new QVBoxLayout(&dialog);
+  QListWidget *listWidget = new QListWidget(&dialog);
   listWidget->setSelectionMode(QAbstractItemView::NoSelection);
 
   // Add files as checkable items
-  for (const QString& file : filesToAdd) {
-    QListWidgetItem* item = new QListWidgetItem(file, listWidget);
+  for (const QString &file : filesToAdd) {
+    QListWidgetItem *item = new QListWidgetItem(file, listWidget);
     item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
     item->setCheckState(Qt::Checked);
   }
   layout->addWidget(listWidget);
 
   // Horizontal layout for select/unselect all buttons
-  QHBoxLayout* buttonLayout      = new QHBoxLayout;
-  QPushButton* selectAllButton   = new QPushButton("Select All", &dialog);
-  QPushButton* unselectAllButton = new QPushButton("Unselect All", &dialog);
+  QHBoxLayout *buttonLayout = new QHBoxLayout;
+  QPushButton *selectAllButton = new QPushButton("Select All", &dialog);
+  QPushButton *unselectAllButton = new QPushButton("Unselect All", &dialog);
   buttonLayout->addWidget(selectAllButton);
   buttonLayout->addWidget(unselectAllButton);
   layout->addLayout(buttonLayout);
 
   // Add OK/Cancel buttons
-  QDialogButtonBox* buttonBox = new QDialogButtonBox(
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(
       QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
   layout->addWidget(buttonBox);
 
@@ -1762,7 +1760,7 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString& path) {
   // Select All functionality
   QObject::connect(selectAllButton, &QPushButton::clicked, [&]() {
     for (int i = 0; i < listWidget->count(); ++i) {
-      QListWidgetItem* item = listWidget->item(i);
+      QListWidgetItem *item = listWidget->item(i);
       item->setCheckState(Qt::Checked);
     }
   });
@@ -1770,7 +1768,7 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString& path) {
   // Unselect All functionality
   QObject::connect(unselectAllButton, &QPushButton::clicked, [&]() {
     for (int i = 0; i < listWidget->count(); ++i) {
-      QListWidgetItem* item = listWidget->item(i);
+      QListWidgetItem *item = listWidget->item(i);
       item->setCheckState(Qt::Unchecked);
     }
   });
@@ -1779,7 +1777,7 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString& path) {
   if (dialog.exec() == QDialog::Accepted) {
     QStringList selectedFiles;
     for (int i = 0; i < listWidget->count(); ++i) {
-      QListWidgetItem* item = listWidget->item(i);
+      QListWidgetItem *item = listWidget->item(i);
       if (item->checkState() == Qt::Checked) {
         selectedFiles.append(dir.absoluteFilePath(item->text()));
       }
@@ -1790,7 +1788,7 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString& path) {
 
 // This function is called when a file in the dataset has changes. It updates
 // the traces in the display widgets
-void Qucs_S_SPAR_Viewer::updateAllPlots(const QString& datasetName) {
+void Qucs_S_SPAR_Viewer::updateAllPlots(const QString &datasetName) {
   // Refresh all traces on each chart
   updateTracesInWidget(Magnitude_PhaseChart, datasetName);
   updateTracesInWidget(smithChart, datasetName);
@@ -1799,8 +1797,8 @@ void Qucs_S_SPAR_Viewer::updateAllPlots(const QString& datasetName) {
   updateTracesInWidget(GroupDelayChart, datasetName);
 }
 
-void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
-                                              const QString& datasetName) {
+void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget *widget,
+                                              const QString &datasetName) {
   if (!widget || !datasets.contains(datasetName)) {
     return;
   }
@@ -1808,7 +1806,7 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
   QMap<QString, QList<double>> dataset = datasets[datasetName];
 
   // Handle RectangularPlotWidget
-  if (auto* rectWidget = qobject_cast<RectangularPlotWidget*>(widget)) {
+  if (auto *rectWidget = qobject_cast<RectangularPlotWidget *>(widget)) {
     // Get current traces info to preserve settings like pen colors
     QMap<QString, QPen> tracesInfo = rectWidget->getTracesInfo();
 
@@ -1816,9 +1814,9 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
          ++traceIt) {
       QString traceName = traceIt.key();
       QStringList parts = traceName.split(".");
-      QString file      = parts[0];
-      QString trace     = parts[1];
-      QPen tracePen     = traceIt.value();
+      QString file = parts[0];
+      QString trace = parts[1];
+      QPen tracePen = traceIt.value();
 
       if (file == datasetName) {
         // Create a new updated trace with the same properties
@@ -1832,17 +1830,17 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
         if (dataset.contains("frequency") && dataset.contains(trace)) {
           // Set the updated data
           updatedTrace.frequencies = dataset["frequency"];
-          updatedTrace.trace       = dataset[trace];
+          updatedTrace.trace = dataset[trace];
 
           // Preserve properties from the existing trace if possible
           // Get the existing trace to copy properties
-          const auto& traces = rectWidget->getTracesInfo();
+          const auto &traces = rectWidget->getTracesInfo();
           if (traces.contains(traceName)) {
             updatedTrace.pen = tracePen;
             // Other properties would need to be retrieved if available
-            updatedTrace.units        = "";      // Set appropriate units
-            updatedTrace.Z0           = 50.0;    // Default or preserved value
-            updatedTrace.y_axis       = 0;       // Default to left axis
+            updatedTrace.units = "";             // Set appropriate units
+            updatedTrace.Z0 = 50.0;              // Default or preserved value
+            updatedTrace.y_axis = 0;             // Default to left axis
             updatedTrace.y_axis_title = dataKey; // Default or preserved value
           }
 
@@ -1857,18 +1855,18 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
     rectWidget->updatePlot();
   }
   // Handle PolarPlotWidget
-  else if (auto* polarWidget = qobject_cast<PolarPlotWidget*>(widget)) {
+  else if (auto *polarWidget = qobject_cast<PolarPlotWidget *>(widget)) {
     // Get current traces info
     QMap<QString, QPen> tracesInfo = polarWidget->getTracesInfo();
 
     for (auto traceIt = tracesInfo.begin(); traceIt != tracesInfo.end();
          ++traceIt) {
       QString traceName = traceIt.key();
-      QPen tracePen     = traceIt.value();
+      QPen tracePen = traceIt.value();
 
       QStringList parts = traceName.split(".");
-      QString file      = parts[0];
-      QString trace     = parts[1];
+      QString file = parts[0];
+      QString trace = parts[1];
 
       if (file == datasetName) {
         // Create a new updated trace with the same properties
@@ -1892,7 +1890,7 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
           }
 
           // Preserve display mode and pen
-          updatedTrace.pen         = tracePen;
+          updatedTrace.pen = tracePen;
           updatedTrace.displayMode = polarWidget->getDisplayMode();
 
           // Update the trace in the widget
@@ -1907,18 +1905,18 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
     polarWidget->update();
   }
   // Handle SmithChartWidget
-  else if (auto* smithWidget = qobject_cast<SmithChartWidget*>(widget)) {
+  else if (auto *smithWidget = qobject_cast<SmithChartWidget *>(widget)) {
     // Get current traces info
     QMap<QString, QPen> tracesInfo = smithWidget->getTracesInfo();
 
     for (auto traceIt = tracesInfo.begin(); traceIt != tracesInfo.end();
          ++traceIt) {
       QString traceName = traceIt.key();
-      QPen tracePen     = traceIt.value();
+      QPen tracePen = traceIt.value();
 
       QStringList parts = traceName.split(".");
-      QString file      = parts[0];
-      QString trace     = parts[1];
+      QString file = parts[0];
+      QString trace = parts[1];
 
       if (file == datasetName) {
         // Create a new updated trace
@@ -1926,7 +1924,7 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
 
         QString realKey = trace + "_re";
         QString imagKey = trace + "_im";
-        double Z0       = datasets[file]["Z0"].at(0);
+        double Z0 = datasets[file]["Z0"].at(0);
 
         if (dataset.contains("frequency") && dataset.contains(realKey) &&
             dataset.contains(imagKey)) {
@@ -1947,7 +1945,7 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
 
           // Preserve pen and Z0
           updatedTrace.pen = tracePen;
-          updatedTrace.Z0  = smithWidget->characteristicImpedance();
+          updatedTrace.Z0 = smithWidget->characteristicImpedance();
 
           // Update the trace in the widget
           smithWidget->removeTrace(traceName);
@@ -1961,7 +1959,7 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget* widget,
   }
 }
 
-bool Qucs_S_SPAR_Viewer::isSparamFile(const QString& path) {
+bool Qucs_S_SPAR_Viewer::isSparamFile(const QString &path) {
   QFileInfo fi(path);
   return fi.exists() &&
          (path.endsWith(".dat", Qt::CaseInsensitive) ||
@@ -1971,7 +1969,7 @@ bool Qucs_S_SPAR_Viewer::isSparamFile(const QString& path) {
               .hasMatch());
 }
 
-void Qucs_S_SPAR_Viewer::addPathToWatcher(const QString& path) {
+void Qucs_S_SPAR_Viewer::addPathToWatcher(const QString &path) {
   if (QFileInfo(path).isDir()) {
     fileWatcher->addPath(path);
     qDebug() << "Watching directory:" << path;
@@ -1989,7 +1987,7 @@ void Qucs_S_SPAR_Viewer::addPathToWatcher(const QString& path) {
         QRegularExpression::CaseInsensitiveOption); // Case-insensitive
 
     // Iterate through all files in the directory
-    for (const QString& fileName : dir.entryList(QDir::Files)) {
+    for (const QString &fileName : dir.entryList(QDir::Files)) {
       QString lowerFileName = fileName.toLower();
       if (lowerFileName.endsWith(".dat") ||
           snpRegex.match(fileName).hasMatch()) {

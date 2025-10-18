@@ -41,15 +41,27 @@ void RShuntAttenuator::calculateParams() {
          Specification.Zin * Specification.Zin) *
             L); // Shunt resistor
 
-  Zin =
-      (Specification.Zout * R1) / (Specification.Zout + R1); // Input impedance
-  Zout =
-      (Specification.Zin * R1) / (Specification.Zin + R1); // Output impedance
+  // Input impedance
+  Zin = (Specification.Zout * R1) / (Specification.Zout + R1);
+
+  // Output impedance
+  Zout = (Specification.Zin * R1) / (Specification.Zin + R1);
+
+  // Power dissipation
+  Pdiss["R1"] = Specification.Pin * (1 - L);
 }
 
 void RShuntAttenuator::synthesize() {
   calculateParams();
   buildRShuntAttenuator();
+}
+
+QMap<QString, double> RShuntAttenuator::getPowerDissipation() {
+  // Ensure that the power dissipation data is available
+  if (Pdiss.isEmpty()) {
+    calculateParams();
+  }
+  return Pdiss;
 }
 
 void RShuntAttenuator::buildRShuntAttenuator() {

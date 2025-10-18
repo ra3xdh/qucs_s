@@ -29,11 +29,13 @@ public:
   virtual ~LPadFirstShunt();
   LPadFirstShunt(AttenuatorDesignParameters);
   void synthesize();
+  QMap<QString, double> getPowerDissipation();
 
 private:
   AttenuatorDesignParameters Specification;
   
   double R1, R2, Zout;
+  QMap<QString, double> Pdiss; // Power dissipation for each resistor
   
   void calculateParams();
   void buildLPadFirstShunt();

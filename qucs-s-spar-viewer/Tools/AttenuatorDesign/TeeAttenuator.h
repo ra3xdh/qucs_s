@@ -29,11 +29,13 @@ public:
   virtual ~TeeAttenuator();
   TeeAttenuator(AttenuatorDesignParameters);
   void synthesize();
+  QMap<QString, double> getPowerDissipation();
 
 private:
   AttenuatorDesignParameters Specification;
   
   double R1, R2, R3;
+  QMap<QString, double> Pdiss; // Power dissipation for each resistor
   
   void calculateParams();
   void buildTeeAttenuator();

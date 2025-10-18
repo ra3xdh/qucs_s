@@ -244,7 +244,6 @@ AttenuatorDesignTool::~AttenuatorDesignTool() {
 }
 
 void AttenuatorDesignTool::UpdateDesignParameters() {
-  AttenuatorDesignParameters Specs;
   Specs.Attenuation = AttenuationSpinBox->value();
   Specs.Frequency = getFreq();
   Specs.Zin = ZinSpinBox->value();
@@ -266,14 +265,7 @@ void AttenuatorDesignTool::UpdateDesignParameters() {
   }
   ////////////////////////////////////////////////////////////////////////////
 
-  AttenuatorDesigner *AttDesigner = new AttenuatorDesigner(Specs);
-  AttDesigner->synthesize();
-  SchContent = AttDesigner->Schematic;
-
-  // Update power dissipation data
-  setPdiss(AttDesigner->Pdiss);
-  UpdatePowerDissipationData();
-  delete AttDesigner;
+  synthesize();
 
   // EMIT SIGNAL TO SIMULATE
   QString TraceName = traceNameLineEdit->text();
@@ -479,9 +471,103 @@ void AttenuatorDesignTool::on_TopoCombo_currentIndexChanged(int index) {
   }
   UpdateDesignParameters();
 }
+void AttenuatorDesignTool::synthesize() {
+  int attenuator_type = Topology_Combo->currentIndex();
 
-// The purpose of this function is to trigger a design from the main application
-void AttenuatorDesignTool::design() { UpdateDesignParameters(); }
+  switch (attenuator_type) {
+  case PI_ATTENUATOR:
+    PiAttenuator *PI_AT;
+    PI_AT = new PiAttenuator(Specs);
+    PI_AT->synthesize();
+    SchContent = PI_AT->Schematic;
+    Pdiss = PI_AT->getPowerDissipation();
+    delete PI_AT;
+    break;
+
+  case TEE_ATTENUATOR:
+    TeeAttenuator *TEE_AT;
+    TEE_AT = new TeeAttenuator(Specs);
+    TEE_AT->synthesize();
+    SchContent = TEE_AT->Schematic;
+    Pdiss = TEE_AT->getPowerDissipation();
+    delete TEE_AT;
+    break;
+
+  case BRIDGED_TEE:
+    BridgedTeeAttenuator *BT_AT;
+    BT_AT = new BridgedTeeAttenuator(Specs);
+    BT_AT->synthesize();
+    SchContent = BT_AT->Schematic;
+    Pdiss = BT_AT->getPowerDissipation();
+    delete BT_AT;
+    break;
+
+  case REFLECTION_ATTENUATOR:
+    ReflectionAttenuator *RFAT;
+    RFAT = new ReflectionAttenuator(Specs);
+    RFAT->synthesize();
+    SchContent = RFAT->Schematic;
+    Pdiss = RFAT->getPowerDissipation();
+    break;
+
+  case QW_SERIES:
+    QW_SeriesAttenuator *QW_Series;
+    QW_Series = new QW_SeriesAttenuator(Specs);
+    QW_Series->synthesize();
+    SchContent = QW_Series->Schematic;
+    Pdiss = QW_Series->getPowerDissipation();
+    delete QW_Series;
+    break;
+
+  case QW_SHUNT:
+    QW_ShuntAttenuator *QW_Shunt;
+    QW_Shunt = new QW_ShuntAttenuator(Specs);
+    QW_Shunt->synthesize();
+    SchContent = QW_Shunt->Schematic;
+    Pdiss = QW_Shunt->getPowerDissipation();
+    delete QW_Shunt;
+    break;
+
+  case LPAD_1ST_SERIES:
+    LPadFirstSeries *LP_1st_Series;
+    LP_1st_Series = new LPadFirstSeries(Specs);
+    LP_1st_Series->synthesize();
+    SchContent = LP_1st_Series->Schematic;
+    Pdiss = LP_1st_Series->getPowerDissipation();
+    delete LP_1st_Series;
+    break;
+
+  case LPAD_1ST_SHUNT:
+    LPadFirstShunt *LP_1st_Shunt;
+    LP_1st_Shunt = new LPadFirstShunt(Specs);
+    LP_1st_Shunt->synthesize();
+    SchContent = LP_1st_Shunt->Schematic;
+    Pdiss = LP_1st_Shunt->getPowerDissipation();
+    delete LP_1st_Shunt;
+    break;
+
+  case RSERIES:
+    RSeriesAttenuator *RSeries;
+    RSeries = new RSeriesAttenuator(Specs);
+    RSeries->synthesize();
+    SchContent = RSeries->Schematic;
+    Pdiss = RSeries->getPowerDissipation();
+    delete RSeries;
+    break;
+
+  case RSHUNT:
+    RShuntAttenuator *RShunt;
+    RShunt = new RShuntAttenuator(Specs);
+    RShunt->synthesize();
+    SchContent = RShunt->Schematic;
+    Pdiss = RShunt->getPowerDissipation();
+    delete RShunt;
+    break;
+  }
+
+  // Once having the power dissipation data, update the corresponding widgets
+  UpdatePowerDissipationData();
+}
 
 // Given a power data in mW, dBm or dBuV[Z0], this function returns the power
 // data in Watts
@@ -563,20 +649,44 @@ double AttenuatorDesignTool::getFreq() {
 
 void AttenuatorDesignTool::UpdatePowerDissipationData() {
   // Update R1
-  Pdiss_R1_Lineedit->setText(QString("%1").arg(
-      ConvertPowerFromW(Pdiss.R1, R1_Pdiss_Units_Combo->currentIndex())));
+  if (Pdiss.contains("R1")) {
+    double powerW = Pdiss["R1"];
+    int unitIndex = R1_Pdiss_Units_Combo->currentIndex();
+    double convertedPower = ConvertPowerFromW(powerW, unitIndex);
+    Pdiss_R1_Lineedit->setText(QString::number(convertedPower));
+  } else {
+    Pdiss_R1_Lineedit->clear();
+  }
 
   // Update R2
-  Pdiss_R2_Lineedit->setText(QString("%1").arg(
-      ConvertPowerFromW(Pdiss.R2, R2_Pdiss_Units_Combo->currentIndex())));
+  if (Pdiss.contains("R2")) {
+    double powerW = Pdiss["R2"];
+    int unitIndex = R2_Pdiss_Units_Combo->currentIndex();
+    double convertedPower = ConvertPowerFromW(powerW, unitIndex);
+    Pdiss_R2_Lineedit->setText(QString::number(convertedPower));
+  } else {
+    Pdiss_R2_Lineedit->clear();
+  }
 
   // Update R3
-  Pdiss_R3_Lineedit->setText(QString("%1").arg(
-      ConvertPowerFromW(Pdiss.R3, R3_Pdiss_Units_Combo->currentIndex())));
+  if (Pdiss.contains("R3")) {
+    double powerW = Pdiss["R3"];
+    int unitIndex = R3_Pdiss_Units_Combo->currentIndex();
+    double convertedPower = ConvertPowerFromW(powerW, unitIndex);
+    Pdiss_R3_Lineedit->setText(QString::number(convertedPower));
+  } else {
+    Pdiss_R3_Lineedit->clear();
+  }
 
   // Update R4
-  Pdiss_R4_Lineedit->setText(QString("%1").arg(
-      ConvertPowerFromW(Pdiss.R4, R4_Pdiss_Units_Combo->currentIndex())));
+  if (Pdiss.contains("R4")) {
+    double powerW = Pdiss["R4"];
+    int unitIndex = R4_Pdiss_Units_Combo->currentIndex();
+    double convertedPower = ConvertPowerFromW(powerW, unitIndex);
+    Pdiss_R4_Lineedit->setText(QString::number(convertedPower));
+  } else {
+    Pdiss_R4_Lineedit->clear();
+  }
 }
 
-void AttenuatorDesignTool::setPdiss(struct PdissAtt Pdiss_) { Pdiss = Pdiss_; }
+void AttenuatorDesignTool::design() { UpdateDesignParameters(); }

@@ -29,7 +29,29 @@
 #include <QWidget>
 
 #include "../../Schematic//Network.h"
-#include "AttenuatorDesigner.h"
+
+#include "BridgedTeeAttenuator.h"
+#include "L_pad_1st_series.h"
+#include "L_pad_1st_shunt.h"
+#include "PiAttenuator.h"
+#include "QW_SeriesAttenuator.h"
+#include "QW_ShuntAttenuator.h"
+#include "RSeriesAttenuator.h"
+#include "ReflectionAttenuator.h"
+#include "RshuntAttenuator.h"
+#include "TeeAttenuator.h"
+
+
+#define PI_ATTENUATOR 0
+#define TEE_ATTENUATOR 1
+#define BRIDGED_TEE 2
+#define REFLECTION_ATTENUATOR 3
+#define QW_SERIES 4
+#define QW_SHUNT 5
+#define LPAD_1ST_SERIES 6
+#define LPAD_1ST_SHUNT 7
+#define RSERIES 8
+#define RSHUNT 9
 
 class AttenuatorDesignTool : public QWidget {
   Q_OBJECT
@@ -37,7 +59,7 @@ public:
   AttenuatorDesignTool(QWidget* parent = nullptr);
   ~AttenuatorDesignTool();
   void design();
-  void setPdiss(struct PdissAtt);
+  void synthesize();
 
 private slots:
   void UpdateDesignParameters();
@@ -55,9 +77,6 @@ private:
       *FreqScaleCombo;
   QLineEdit *Pdiss_R1_Lineedit, *Pdiss_R2_Lineedit, *Pdiss_R3_Lineedit,
       *Pdiss_R4_Lineedit;
-  struct PdissAtt
-      Pdiss; // Power dissipated by the resistors. It is calculated in the
-             // specific design functions an copied here after the synthesis
 
   double getFreq();
   double getPowerW(double, unsigned int);
@@ -71,8 +90,14 @@ private:
   QLabel* traceNameLabel;
   QLineEdit* traceNameLineEdit;
 
+  AttenuatorDesignParameters Specs;
+
   QString netlist;
-  SchematicContent SchContent;
+
+  /////////////////////////////////////////////////////////////////////////////////////
+  // This info is calculated in the synthesis functions and then passed to the tool class
+  SchematicContent SchContent; // Schematic information of the attenuator
+  QMap<QString, double> Pdiss; // Power dissipated in the resistors.
 
 signals:
   void updateSchematic(SchematicContent);

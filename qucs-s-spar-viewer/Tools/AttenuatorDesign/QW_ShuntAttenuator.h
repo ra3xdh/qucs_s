@@ -30,12 +30,14 @@ public:
   virtual ~QW_ShuntAttenuator();
   QW_ShuntAttenuator(AttenuatorDesignParameters);
   void synthesize();
+  QMap<QString, double> getPowerDissipation();
 
 private:
   AttenuatorDesignParameters Specification;
   
   double R, l4, Zout;
   double w0;
+  QMap<QString, double> Pdiss; // Power dissipation for each resistor
   
   void calculateParams();
   void buildQW_Shunt_Lumped();

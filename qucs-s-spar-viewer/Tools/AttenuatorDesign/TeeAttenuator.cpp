@@ -34,11 +34,26 @@ void TeeAttenuator::calculateParams() {
   R2 = (2 * sqrt(Specification.Zin * Specification.Zout * L)) / (L - 1);
   R1 = Specification.Zin * ((L + 1) / (L - 1)) - R2;
   R3 = Specification.Zout * ((L + 1) / (L - 1)) - R2;
+
+  // Power dissipation
+  Pdiss["R1"] = Specification.Pin * R1 / Specification.Zin;
+  Pdiss["R2"] = Specification.Pin * (R1 - Specification.Zin) *
+                (R1 - Specification.Zin) / (R2 * Specification.Zin);
+  Pdiss["R3"] = Specification.Pin * R3 * (R1 + R2 - Specification.Zin) *
+                (R1 + R2 - Specification.Zin) / (Specification.Zin * R2 * R2);
 }
 
 void TeeAttenuator::synthesize() {
   calculateParams();
   buildTeeAttenuator();
+}
+
+QMap<QString, double> TeeAttenuator::getPowerDissipation() {
+  // Ensure that the power dissipation data is available
+  if (Pdiss.isEmpty()) {
+    calculateParams();
+  }
+  return Pdiss;
 }
 
 void TeeAttenuator::buildTeeAttenuator() {

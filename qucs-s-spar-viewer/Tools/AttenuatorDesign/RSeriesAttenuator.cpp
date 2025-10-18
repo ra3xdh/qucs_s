@@ -36,6 +36,17 @@ void RSeriesAttenuator::calculateParams() {
        L;                        // Series resistor
   Zin = Specification.Zout + R1; // Input impedance
   Zout = Specification.Zin + R1; // Output impedance
+
+  // Power dissipation
+  Pdiss["R1"] = Specification.Pin * (1 - L);
+}
+
+QMap<QString, double> RSeriesAttenuator::getPowerDissipation() {
+  // Ensure that the power dissipation data is available
+  if (Pdiss.isEmpty()) {
+    calculateParams();
+  }
+  return Pdiss;
 }
 
 void RSeriesAttenuator::synthesize() {

@@ -29,6 +29,19 @@ void ReflectionAttenuator::calculateParams() {
   // Design equations
   double L = pow(10, -.05 * Specification.Attenuation);
   Ri = Specification.Zin * (1 - L) / (1 + L);
+
+  // Power dissipation calculation
+  Pdiss["R1"] =
+      .5 * Specification.Pin * (1 - pow(10, -0.1 * Specification.Attenuation));
+  Pdiss["R2"] = Pdiss["R1"];
+}
+
+QMap<QString, double> ReflectionAttenuator::getPowerDissipation() {
+  // Ensure that the power dissipation data is available
+  if (Pdiss.isEmpty()) {
+    calculateParams();
+  }
+  return Pdiss;
 }
 
 void ReflectionAttenuator::synthesize() {

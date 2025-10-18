@@ -29,11 +29,13 @@ public:
   virtual ~RSeriesAttenuator();
   RSeriesAttenuator(AttenuatorDesignParameters);
   void synthesize();
+  QMap<QString, double> getPowerDissipation();
 
 private:
   AttenuatorDesignParameters Specification;
   
   double R1, Zin, Zout;
+  QMap<QString, double> Pdiss; // Power dissipation for each resistor
   
   void calculateParams();
   void buildRSeriesAttenuator();

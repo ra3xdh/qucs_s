@@ -36,8 +36,22 @@ void QW_SeriesAttenuator::calculateParams() {
          (R * R + 2 * R * Specification.Zin +
           2 * Specification.Zin * Specification.Zin);
 
+  // Power dissipation
+  double K = (R + Specification.Zin) * (R + Specification.Zin);
+  Pdiss["R1"] = Specification.Pin * Specification.Zin * R / K;
+  Pdiss["R2"] = Specification.Pin * Specification.Zin * Specification.Zin / K;
+  Pdiss["R3"] = Pdiss["R1"];
+
   // For lumped implementation
   w0 = 2 * M_PI * Specification.Frequency;
+}
+
+QMap<QString, double> QW_SeriesAttenuator::getPowerDissipation() {
+  // Ensure that the power dissipation data is available
+  if (Pdiss.isEmpty()) {
+    calculateParams();
+  }
+  return Pdiss;
 }
 
 void QW_SeriesAttenuator::synthesize() {
