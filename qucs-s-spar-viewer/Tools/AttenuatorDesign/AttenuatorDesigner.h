@@ -48,7 +48,6 @@ private:
       NumberComponents; // List for assigning IDs to the filter components
 
   // Single resistor attenuators
-  void RSeriesAttenuator();
   void RShuntAttenuator();
 };
 

@@ -23,6 +23,7 @@
 #include "PiAttenuator.h"
 #include "QW_SeriesAttenuator.h"
 #include "QW_ShuntAttenuator.h"
+#include "RSeriesAttenuator.h"
 #include "ReflectionAttenuator.h"
 #include "TeeAttenuator.h"
 
@@ -92,7 +93,11 @@ void AttenuatorDesigner::synthesize() {
     Schematic = LPFS->Schematic;
     delete LPFS;
   } else if (Specs.Topology == "Rseries") {
-    RSeriesAttenuator();
+    RSeriesAttenuator *RS;
+    RS = new RSeriesAttenuator(Specs);
+    RS->synthesize();
+    Schematic = RS->Schematic;
+    delete RS;
   } else if (Specs.Topology == "Rshunt") {
     RShuntAttenuator();
   }
