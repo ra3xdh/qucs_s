@@ -18,9 +18,7 @@
 #ifndef LAMBDA8LAMBDA4_H
 #define LAMBDA8LAMBDA4_H
 
-#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
-#include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 

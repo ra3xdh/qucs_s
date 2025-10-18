@@ -18,13 +18,11 @@
 #ifndef CANONICALFILTER_H
 #define CANONICALFILTER_H
 
-#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
-#include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include "LowpassPrototypeCoeffs.h"
-#include <QPen>
+
 class CanonicalFilter : public Network {
 public:
   CanonicalFilter();

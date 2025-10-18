@@ -28,7 +28,7 @@
 #include <QRadioButton>
 #include <QWidget>
 
-#include "../../Schematic//Network.h"
+#include "../../Schematic/Network.h"
 
 #include "BridgedTeeAttenuator.h"
 #include "L_pad_1st_series.h"
@@ -91,8 +91,6 @@ private:
   QLineEdit* traceNameLineEdit;
 
   AttenuatorDesignParameters Specs;
-
-  QString netlist;
 
   /////////////////////////////////////////////////////////////////////////////////////
   // This info is calculated in the synthesis functions and then passed to the tool class

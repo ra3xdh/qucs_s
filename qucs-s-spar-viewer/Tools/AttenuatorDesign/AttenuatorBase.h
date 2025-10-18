@@ -18,10 +18,8 @@
 #ifndef ATTENUATORBASE_H
 #define ATTENUATORBASE_H
 
-#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include <QPen>
 
 class AttenuatorBase : public Network {
     public:

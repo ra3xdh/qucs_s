@@ -18,13 +18,9 @@
 #ifndef MULTISECTIONQUARTERWAVE_H
 #define MULTISECTIONQUARTERWAVE_H
 
-#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
-#include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
-#include <cmath>
-#include <vector>
 
 class MultisectionQuarterWave : public Network {
 

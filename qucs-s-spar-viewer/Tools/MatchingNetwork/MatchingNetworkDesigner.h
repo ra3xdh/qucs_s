@@ -19,7 +19,6 @@
 #define MATCHINGNETWORKDESIGNER_H
 
 #include "../../Schematic/Network.h"
-#include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 
 #include "CascadedLCSections.h"

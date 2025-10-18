@@ -17,9 +17,8 @@
 
 #ifndef LSECTION_H
 #define LSECTION_H
-#include "../../Misc/general.h"
+
 #include "../../Schematic/Network.h"
-#include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 
 class Lsection : public Network {

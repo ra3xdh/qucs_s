@@ -32,11 +32,7 @@ class SchematicContent {
 public:
   SchematicContent();
   ~SchematicContent();
-  struct NetworkInfo
-  getLadder(); // Returns a ladder code for using the internal
-               // simulator. It's faster than using Qucs, but it is
-               // restricted to ladder networks
-  QString getQucsNetlist();
+
   QString getSParameterNetlist();
   void setNetlist(QString);
   QString Name;

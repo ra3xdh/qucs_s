@@ -16,7 +16,6 @@
  */
 
 #include "Lambda8Lambda4.h"
-#include <cmath>
 
 Lambda8Lambda4::Lambda8Lambda4() {}
 Lambda8Lambda4::~Lambda8Lambda4() {}

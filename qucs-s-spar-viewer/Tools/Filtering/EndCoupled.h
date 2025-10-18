@@ -18,12 +18,10 @@
 #ifndef ENDCOUPLED_H
 #define ENDCOUPLED_H
 
-#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include "LowpassPrototypeCoeffs.h"
-#include <QPen>
 
 class EndCoupled : public Network {
 public:

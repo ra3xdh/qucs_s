@@ -18,12 +18,10 @@
 #ifndef COUPLEDLINEBANDPASSFILTER_H
 #define COUPLEDLINEBANDPASSFILTER_H
 
-#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include "LowpassPrototypeCoeffs.h"
-#include <QPen>
 
 class CoupledLineBandpassFilter : public Network {
     public:

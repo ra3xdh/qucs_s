@@ -18,12 +18,10 @@
 #ifndef QUARTERWAVEFILTERS_H
 #define QUARTERWAVEFILTERS_H
 
-#include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
 #include "../Filtering/LowpassPrototypeCoeffs.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
-#include <QPen>
 
 class QuarterWaveFilters : public Network {
 public:

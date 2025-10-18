@@ -29,6 +29,8 @@
 #include <QSpinBox>
 #include <QWidget>
 
+#include "../../Schematic/Network.h"
+
 #include "CanonicalFilter.h"
 #include "CapacitivelyCoupledShuntResonatorsFilter.h"
 #include "CoupledLineBandpassFilter.h"
@@ -37,9 +39,8 @@
 #include "EndCoupled.h"
 #include "QuarterWaveFilters.h"
 #include "SteppedImpedanceFilter.h"
-/*#include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"*/
 
-#include "../../Schematic/Network.h"
+/*#include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"*/
 
 #define LC_LADDER 0
 #define LC_DIRECT_COUPLED 1
@@ -94,7 +95,6 @@ private:
 
   // Filter specs
   struct FilterSpecifications Filter_SP;
-  QString netlist;
   SchematicContent SchContent;
 
   // Substrate

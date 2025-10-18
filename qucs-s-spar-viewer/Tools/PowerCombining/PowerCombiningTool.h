@@ -32,7 +32,6 @@
 #include <QWidget>
 
 #include "../../Schematic/Network.h"
-#include "../../Schematic/SchematicContent.h"
 
 #include "Wilkinson2Way.h"
 #include "MultistageWilkinson.h"

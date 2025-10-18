@@ -17,9 +17,9 @@
 
 #ifndef CASCADEDLCSECTIONS_H
 #define CASCADEDLCSECTIONS_H
-#include "../../Misc/general.h"
+
+
 #include "../../Schematic/Network.h"
-#include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 
 class CascadedLCSections : public Network {

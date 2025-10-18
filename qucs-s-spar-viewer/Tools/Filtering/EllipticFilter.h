@@ -17,12 +17,10 @@
 
 #ifndef ELLIPTICFILTER_H
 #define ELLIPTICFILTER_H
-#include "../../Misc/general.h"
+
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "../../Schematic/structures.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
-#include <QPen>
 
 class ComponentInfo;
 class WireInfo;
