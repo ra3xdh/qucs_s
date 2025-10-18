@@ -19,9 +19,8 @@
 
 QW_ShuntAttenuator::QW_ShuntAttenuator() {}
 
-QW_ShuntAttenuator::QW_ShuntAttenuator(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+QW_ShuntAttenuator::QW_ShuntAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 QW_ShuntAttenuator::~QW_ShuntAttenuator() {}
 
@@ -44,17 +43,12 @@ void QW_ShuntAttenuator::calculateParams() {
   w0 = 2 * M_PI * Specification.Frequency;
 }
 
-QMap<QString, double> QW_ShuntAttenuator::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
 void QW_ShuntAttenuator::synthesize() {
   calculateParams();
+  buildNetwork();
+}
 
+void QW_ShuntAttenuator::buildNetwork() {
   // Dispatch to appropriate implementation
   if (Specification.TL_implementation == TransmissionLineType::Lumped) {
     buildQW_Shunt_Lumped();

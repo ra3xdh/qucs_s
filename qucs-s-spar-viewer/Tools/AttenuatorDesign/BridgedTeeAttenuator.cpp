@@ -22,9 +22,8 @@
 
 BridgedTeeAttenuator::BridgedTeeAttenuator() {}
 
-BridgedTeeAttenuator::BridgedTeeAttenuator(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+BridgedTeeAttenuator::BridgedTeeAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 BridgedTeeAttenuator::~BridgedTeeAttenuator() {}
 
@@ -49,18 +48,10 @@ void BridgedTeeAttenuator::calculateParams() {
 
 void BridgedTeeAttenuator::synthesize() {
   calculateParams();
-  buildBridgedTeeAttenuator();
+  buildNetwork();
 }
 
-QMap<QString, double> BridgedTeeAttenuator::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
-void BridgedTeeAttenuator::buildBridgedTeeAttenuator() {
+void BridgedTeeAttenuator::buildNetwork() {
   ComponentInfo Ground, Res1, Res2, Res3, Res4;
   NodeInfo NI;
 

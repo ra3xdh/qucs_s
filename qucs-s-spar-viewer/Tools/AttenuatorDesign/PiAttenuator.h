@@ -18,27 +18,21 @@
 #ifndef PIATTENUATOR_H
 #define PIATTENUATOR_H
 
-#include "../../Misc/general.h"
-#include "../../Schematic/Network.h"
-#include "../../Schematic/component.h"
-#include <QPen>
+#include "AttenuatorBase.h"
 
-class PiAttenuator : public Network {
-public:
-  PiAttenuator();
-  virtual ~PiAttenuator();
-  PiAttenuator(AttenuatorDesignParameters);
-  void synthesize();
-  QMap<QString, double> getPowerDissipation();
+class PiAttenuator : public AttenuatorBase {
+    public:
+        PiAttenuator();
+        virtual ~PiAttenuator();
+        PiAttenuator(AttenuatorDesignParameters);
 
-private:
-  AttenuatorDesignParameters Specification;
-  
-  double R1, R2, R3;
-  QMap<QString, double> Pdiss; // Power dissipation for each resistor
-  
-  void calculateParams();
-  void buildPiAttenuator();
+        void synthesize() override;
+
+    private:
+        double R1, R2, R3;
+
+        void calculateParams() override;
+        void buildNetwork() override;
 };
 
 #endif // PIATTENUATOR_H

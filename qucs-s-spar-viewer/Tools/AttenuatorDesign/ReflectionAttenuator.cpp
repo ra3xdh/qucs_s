@@ -19,9 +19,8 @@
 
 ReflectionAttenuator::ReflectionAttenuator() {}
 
-ReflectionAttenuator::ReflectionAttenuator(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+ReflectionAttenuator::ReflectionAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 ReflectionAttenuator::~ReflectionAttenuator() {}
 
@@ -36,20 +35,12 @@ void ReflectionAttenuator::calculateParams() {
   Pdiss["R2"] = Pdiss["R1"];
 }
 
-QMap<QString, double> ReflectionAttenuator::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
 void ReflectionAttenuator::synthesize() {
   calculateParams();
-  buildReflectionAttenuator();
+  buildNetwork();
 }
 
-void ReflectionAttenuator::buildReflectionAttenuator() {
+void ReflectionAttenuator::buildNetwork() {
   ComponentInfo Ground, Res1, Res2, Coup;
 
   // Input terminal

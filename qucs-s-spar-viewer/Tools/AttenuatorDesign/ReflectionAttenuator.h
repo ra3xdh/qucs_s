@@ -19,26 +19,23 @@
 #define REFLECTIONATTENUATOR_H
 
 #include "../../Misc/general.h"
-#include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
+#include "AttenuatorBase.h"
 #include <QPen>
 
-class ReflectionAttenuator : public Network {
-public:
-  ReflectionAttenuator();
-  virtual ~ReflectionAttenuator();
-  ReflectionAttenuator(AttenuatorDesignParameters);
-  void synthesize();
-  QMap<QString, double> getPowerDissipation();
+class ReflectionAttenuator : public AttenuatorBase {
+    public:
+        ReflectionAttenuator();
+        virtual ~ReflectionAttenuator();
+        ReflectionAttenuator(AttenuatorDesignParameters);
 
-private:
-  AttenuatorDesignParameters Specification;
-  
-  double Ri;
-  QMap<QString, double> Pdiss; // Power dissipation for each resistor
-  
-  void calculateParams();
-  void buildReflectionAttenuator();
+        void synthesize() override;
+
+    private:
+        double Ri;
+
+        void calculateParams() override;
+        void buildNetwork() override;
 };
 
 #endif // REFLECTIONATTENUATOR_H

@@ -22,9 +22,8 @@
 
 LPadFirstSeries::LPadFirstSeries() {}
 
-LPadFirstSeries::LPadFirstSeries(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+LPadFirstSeries::LPadFirstSeries(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 LPadFirstSeries::~LPadFirstSeries() {}
 
@@ -42,20 +41,12 @@ void LPadFirstSeries::calculateParams() {
       Specification.Pin * L * (1 - L) / (L + sqrt(L)); // Shunt resistor
 }
 
-QMap<QString, double> LPadFirstSeries::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
 void LPadFirstSeries::synthesize() {
   calculateParams();
-  buildLPadFirstSeries();
+  buildNetwork();
 }
 
-void LPadFirstSeries::buildLPadFirstSeries() {
+void LPadFirstSeries::buildNetwork() {
   ComponentInfo Ground, Res1, Res2;
   NodeInfo NI;
 

@@ -20,9 +20,8 @@
 
 RShuntAttenuator::RShuntAttenuator() {}
 
-RShuntAttenuator::RShuntAttenuator(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+RShuntAttenuator::RShuntAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 RShuntAttenuator::~RShuntAttenuator() {}
 
@@ -53,18 +52,10 @@ void RShuntAttenuator::calculateParams() {
 
 void RShuntAttenuator::synthesize() {
   calculateParams();
-  buildRShuntAttenuator();
+  buildNetwork();
 }
 
-QMap<QString, double> RShuntAttenuator::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
-void RShuntAttenuator::buildRShuntAttenuator() {
+void RShuntAttenuator::buildNetwork() {
   ComponentInfo Res1, Ground;
   NodeInfo NIin;
 

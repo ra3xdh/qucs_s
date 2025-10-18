@@ -18,27 +18,21 @@
 #ifndef BRIDGEDTEEATTENUATOR_H
 #define BRIDGEDTEEATTENUATOR_H
 
-#include "../../Misc/general.h"
-#include "../../Schematic/Network.h"
-#include "../../Schematic/component.h"
-#include <QPen>
+#include "AttenuatorBase.h"
 
-class BridgedTeeAttenuator : public Network {
-public:
-  BridgedTeeAttenuator();
-  virtual ~BridgedTeeAttenuator();
-  BridgedTeeAttenuator(AttenuatorDesignParameters);
-  void synthesize();
-  QMap<QString, double> getPowerDissipation();
+class BridgedTeeAttenuator : public AttenuatorBase {
+    public:
+        BridgedTeeAttenuator();
+        virtual ~BridgedTeeAttenuator();
+        BridgedTeeAttenuator(AttenuatorDesignParameters);
 
-private:
-  AttenuatorDesignParameters Specification;
-  
-  double R1, R4;
-  QMap<QString, double> Pdiss; // Power dissipation for each resistor
-  
-  void calculateParams();
-  void buildBridgedTeeAttenuator();
+        void synthesize() override;
+
+    private:
+        double R1, R4;
+
+        void calculateParams() override;
+        void buildNetwork() override;
 };
 
 #endif // BRIDGEDTEEATTENUATOR_H

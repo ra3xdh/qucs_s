@@ -21,9 +21,8 @@
 
 RSeriesAttenuator::RSeriesAttenuator() {}
 
-RSeriesAttenuator::RSeriesAttenuator(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+RSeriesAttenuator::RSeriesAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 RSeriesAttenuator::~RSeriesAttenuator() {}
 
@@ -41,20 +40,12 @@ void RSeriesAttenuator::calculateParams() {
   Pdiss["R1"] = Specification.Pin * (1 - L);
 }
 
-QMap<QString, double> RSeriesAttenuator::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
 void RSeriesAttenuator::synthesize() {
   calculateParams();
-  buildRSeriesAttenuator();
+  buildNetwork();
 }
 
-void RSeriesAttenuator::buildRSeriesAttenuator() {
+void RSeriesAttenuator::buildNetwork() {
   ComponentInfo Res1;
 
   // Input terminal

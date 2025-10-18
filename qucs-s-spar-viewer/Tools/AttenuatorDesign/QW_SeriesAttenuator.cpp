@@ -19,9 +19,8 @@
 
 QW_SeriesAttenuator::QW_SeriesAttenuator() {}
 
-QW_SeriesAttenuator::QW_SeriesAttenuator(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+QW_SeriesAttenuator::QW_SeriesAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 QW_SeriesAttenuator::~QW_SeriesAttenuator() {}
 
@@ -46,17 +45,12 @@ void QW_SeriesAttenuator::calculateParams() {
   w0 = 2 * M_PI * Specification.Frequency;
 }
 
-QMap<QString, double> QW_SeriesAttenuator::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
 void QW_SeriesAttenuator::synthesize() {
   calculateParams();
+  buildNetwork();
+}
 
+void QW_SeriesAttenuator::buildNetwork() {
   // Dispatch to appropriate implementation
   if (Specification.TL_implementation == TransmissionLineType::Lumped) {
     buildQW_Series_Lumped();

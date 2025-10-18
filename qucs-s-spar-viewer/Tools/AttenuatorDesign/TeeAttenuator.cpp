@@ -22,9 +22,8 @@
 
 TeeAttenuator::TeeAttenuator() {}
 
-TeeAttenuator::TeeAttenuator(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+TeeAttenuator::TeeAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 TeeAttenuator::~TeeAttenuator() {}
 
@@ -45,18 +44,10 @@ void TeeAttenuator::calculateParams() {
 
 void TeeAttenuator::synthesize() {
   calculateParams();
-  buildTeeAttenuator();
+  buildNetwork();
 }
 
-QMap<QString, double> TeeAttenuator::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
-void TeeAttenuator::buildTeeAttenuator() {
+void TeeAttenuator::buildNetwork() {
   ComponentInfo Ground, Res1, Res2, Res3;
   NodeInfo NI;
 

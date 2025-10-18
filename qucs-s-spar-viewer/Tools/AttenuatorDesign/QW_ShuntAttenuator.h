@@ -19,30 +19,28 @@
 #define QW_SHUNTATTENUATOR_H
 
 #include "../../Misc/general.h"
-#include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
+#include "AttenuatorBase.h"
 #include <QPen>
 
-class QW_ShuntAttenuator : public Network {
-public:
-  QW_ShuntAttenuator();
-  virtual ~QW_ShuntAttenuator();
-  QW_ShuntAttenuator(AttenuatorDesignParameters);
-  void synthesize();
-  QMap<QString, double> getPowerDissipation();
+class QW_ShuntAttenuator : public AttenuatorBase {
+    public:
+        QW_ShuntAttenuator();
+        virtual ~QW_ShuntAttenuator();
+        QW_ShuntAttenuator(AttenuatorDesignParameters);
 
-private:
-  AttenuatorDesignParameters Specification;
-  
-  double R, l4, Zout;
-  double w0;
-  QMap<QString, double> Pdiss; // Power dissipation for each resistor
-  
-  void calculateParams();
-  void buildQW_Shunt_Lumped();
-  void buildQW_Shunt_IdealTL();
-  void buildQW_Shunt_Microstrip();
+        void synthesize() override;
+
+    private:
+        double R, l4, Zout;
+        double w0;
+
+        void calculateParams() override;
+        void buildNetwork() override;
+        void buildQW_Shunt_Lumped();
+        void buildQW_Shunt_IdealTL();
+        void buildQW_Shunt_Microstrip();
 };
 
 #endif // QW_SHUNTATTENUATOR_H

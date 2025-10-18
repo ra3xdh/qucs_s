@@ -15,27 +15,35 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef RSERIESATTENUATOR_H
-#define RSERIESATTENUATOR_H
+#ifndef ATTENUATORBASE_H
+#define ATTENUATORBASE_H
 
 #include "../../Misc/general.h"
+#include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "AttenuatorBase.h"
 #include <QPen>
 
-class RSeriesAttenuator : public AttenuatorBase {
+class AttenuatorBase : public Network {
     public:
-        RSeriesAttenuator();
-        virtual ~RSeriesAttenuator();
-        RSeriesAttenuator(AttenuatorDesignParameters);
+        AttenuatorBase() = default;
+        AttenuatorBase(AttenuatorDesignParameters AS) : Specification(AS) {}
+        virtual ~AttenuatorBase() = default;
 
-        void synthesize() override;
+        // Common interface - pure virtual
+        virtual void synthesize() = 0;
 
-    private:
-        double R1, Zin, Zout;
+        // Common implementation
+        QMap<QString, double> getPowerDissipation() { return Pdiss; }
 
-        void calculateParams() override;
-        void buildNetwork() override;
+    protected:
+        AttenuatorDesignParameters Specification;
+        QMap<QString, double> Pdiss;
+
+        // Pure virtual for calculation - each attenuator type implements its own
+        virtual void calculateParams() = 0;
+
+        // Pure virtual for building - each attenuator type implements its own
+        virtual void buildNetwork() = 0;
 };
 
-#endif // RSERIESATTENUATOR_H
+#endif // ATTENUATORBASE_H

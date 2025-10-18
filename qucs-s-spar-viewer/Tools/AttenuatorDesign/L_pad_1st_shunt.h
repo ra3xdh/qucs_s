@@ -19,26 +19,23 @@
 #define L_PAD_1ST_SHUNT_H
 
 #include "../../Misc/general.h"
-#include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
+#include "AttenuatorBase.h"
 #include <QPen>
 
-class LPadFirstShunt : public Network {
-public:
-  LPadFirstShunt();
-  virtual ~LPadFirstShunt();
-  LPadFirstShunt(AttenuatorDesignParameters);
-  void synthesize();
-  QMap<QString, double> getPowerDissipation();
+class LPadFirstShunt : public AttenuatorBase {
+    public:
+        LPadFirstShunt();
+        virtual ~LPadFirstShunt();
+        LPadFirstShunt(AttenuatorDesignParameters);
 
-private:
-  AttenuatorDesignParameters Specification;
-  
-  double R1, R2, Zout;
-  QMap<QString, double> Pdiss; // Power dissipation for each resistor
-  
-  void calculateParams();
-  void buildLPadFirstShunt();
+        void synthesize() override;
+
+    private:
+        double R1, R2, Zout;
+
+        void calculateParams() override;
+        void buildNetwork() override;
 };
 
 #endif // L_PAD_1ST_SHUNT_H

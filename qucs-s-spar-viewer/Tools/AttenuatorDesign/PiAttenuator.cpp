@@ -22,9 +22,8 @@
 
 PiAttenuator::PiAttenuator() {}
 
-PiAttenuator::PiAttenuator(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+PiAttenuator::PiAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 PiAttenuator::~PiAttenuator() {}
 
@@ -35,7 +34,7 @@ void PiAttenuator::calculateParams() {
   R1 = 1 / (((L + 1) / (Specification.Zin * (L - 1))) - (1 / R2));
   R3 = 1 / (((L + 1) / (Specification.Zout * (L - 1))) - (1 / R2));
 
-  // Calculate power dissipation Calculate power dissipation
+  // Calculate power dissipation
   Pdiss["R1"] = Specification.Pin * Specification.Zin / R1;
   Pdiss["R2"] = Specification.Pin * R2 * (R1 - Specification.Zin) *
                 (R1 - Specification.Zin) / (R1 * R1 * Specification.Zin);
@@ -45,18 +44,10 @@ void PiAttenuator::calculateParams() {
 
 void PiAttenuator::synthesize() {
   calculateParams();
-  buildPiAttenuator();
+  buildNetwork();
 }
 
-QMap<QString, double> PiAttenuator::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
-void PiAttenuator::buildPiAttenuator() {
+void PiAttenuator::buildNetwork() {
   ComponentInfo Ground, Res1, Res2, Res3;
   NodeInfo NI;
 

@@ -19,26 +19,23 @@
 #define RSHUNTATTENUATOR_H
 
 #include "../../Misc/general.h"
-#include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
+#include "AttenuatorBase.h"
 #include <QPen>
 
-class RShuntAttenuator : public Network {
-public:
-  RShuntAttenuator();
-  virtual ~RShuntAttenuator();
-  RShuntAttenuator(AttenuatorDesignParameters);
-  void synthesize();
-  QMap<QString, double> getPowerDissipation();
+class RShuntAttenuator : public AttenuatorBase {
+    public:
+        RShuntAttenuator();
+        virtual ~RShuntAttenuator();
+        RShuntAttenuator(AttenuatorDesignParameters);
 
-private:
-  AttenuatorDesignParameters Specification;
-  
-  double R1, Zin, Zout;
-  QMap<QString, double> Pdiss; // Power dissipation for each resistor
-  
-  void calculateParams();
-  void buildRShuntAttenuator();
+        void synthesize() override;
+
+    private:
+        double R1, Zin, Zout;
+
+        void calculateParams() override;
+        void buildNetwork() override;
 };
 
 #endif // RSHUNTATTENUATOR_H

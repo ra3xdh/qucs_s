@@ -22,9 +22,8 @@
 
 LPadFirstShunt::LPadFirstShunt() {}
 
-LPadFirstShunt::LPadFirstShunt(AttenuatorDesignParameters AS) {
-  Specification = AS;
-}
+LPadFirstShunt::LPadFirstShunt(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
 
 LPadFirstShunt::~LPadFirstShunt() {}
 
@@ -45,18 +44,10 @@ void LPadFirstShunt::calculateParams() {
 
 void LPadFirstShunt::synthesize() {
   calculateParams();
-  buildLPadFirstShunt();
+  buildNetwork();
 }
 
-QMap<QString, double> LPadFirstShunt::getPowerDissipation() {
-  // Ensure that the power dissipation data is available
-  if (Pdiss.isEmpty()) {
-    calculateParams();
-  }
-  return Pdiss;
-}
-
-void LPadFirstShunt::buildLPadFirstShunt() {
+void LPadFirstShunt::buildNetwork() {
   ComponentInfo Ground, Res1, Res2;
   NodeInfo NI;
 
