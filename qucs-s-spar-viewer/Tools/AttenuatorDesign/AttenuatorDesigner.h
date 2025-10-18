@@ -47,11 +47,7 @@ private:
   QMap<ComponentType, int>
       NumberComponents; // List for assigning IDs to the filter components
 
-  void ReflectionAttenuator();
-
-  // L-pads
   void LPadFirstShuntAttenuator();
-
   // Single resistor attenuators
   void RSeriesAttenuator();
   void RShuntAttenuator();

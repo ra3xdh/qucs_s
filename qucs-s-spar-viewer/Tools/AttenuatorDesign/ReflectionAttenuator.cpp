@@ -15,25 +15,34 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "AttenuatorDesigner.h"
+#include "ReflectionAttenuator.h"
 
-void AttenuatorDesigner::ReflectionAttenuator() {
-  ComponentInfo TermSpar1, TermSpar2;
-  ComponentInfo Ground, Res1, Res2, Coup;
-  NodeInfo NI;
-  Components.clear();
+ReflectionAttenuator::ReflectionAttenuator() {}
+
+ReflectionAttenuator::ReflectionAttenuator(AttenuatorDesignParameters AS) {
+  Specification = AS;
+}
+
+ReflectionAttenuator::~ReflectionAttenuator() {}
+
+void ReflectionAttenuator::calculateParams() {
   // Design equations
-  double L  = pow(10, -.05 * Specs.Attenuation);
-  double Ri = Specs.Zin * (1 - L) / (1 + L);
-  // Power dissipation calculation
-  Pdiss.R1 = .5 * Specs.Pin * (1 - pow(10, -0.1 * Specs.Attenuation));
-  Pdiss.R2 = Pdiss.R1;
+  double L = pow(10, -.05 * Specification.Attenuation);
+  Ri = Specification.Zin * (1 - L) / (1 + L);
+}
 
-  // Schematic implementation - updated style
+void ReflectionAttenuator::synthesize() {
+  calculateParams();
+  buildReflectionAttenuator();
+}
+
+void ReflectionAttenuator::buildReflectionAttenuator() {
+  ComponentInfo Ground, Res1, Res2, Coup;
+
   // Input terminal
   ComponentInfo TermSparIN(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-  TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
   // First shunt resistor
@@ -48,7 +57,7 @@ void AttenuatorDesigner::ReflectionAttenuator() {
 
   Schematic.appendWire(Res1.ID, 0, Ground.ID, 0);
 
-  // Coupler
+  // Coupler (3 dB hybrid coupler)
   QStringList ConnectionNodes;
   ConnectionNodes.append(QString("N0"));
   ConnectionNodes.append(QString("NR1"));
@@ -57,8 +66,8 @@ void AttenuatorDesigner::ReflectionAttenuator() {
   Coup.setParams(
       QString("COUPLER%1").arg(++Schematic.NumberComponents[Coupler]), Coupler,
       0, 100, 50);
-  Coup.val["k"]     = num2str(0.7071, NoUnits);
-  Coup.val["Z0"]    = num2str(Specs.Zin, Resistance);
+  Coup.val["k"] = num2str(0.7071, NoUnits);
+  Coup.val["Z0"] = num2str(Specification.Zin, Resistance);
   Coup.val["phase"] = num2str(90, NoUnits);
   Schematic.appendComponent(Coup);
 
@@ -78,9 +87,10 @@ void AttenuatorDesigner::ReflectionAttenuator() {
   Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);
 
   // Output terminal
+  ComponentInfo TermSpar2;
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 180, 200, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
+  TermSpar2.val["Z"] = num2str(Specification.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   Schematic.appendWire(TermSparIN.ID, 0, Coup.ID, 1);

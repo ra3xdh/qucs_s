@@ -22,6 +22,7 @@
 #include "PiAttenuator.h"
 #include "QW_SeriesAttenuator.h"
 #include "QW_ShuntAttenuator.h"
+#include "ReflectionAttenuator.h"
 #include "TeeAttenuator.h"
 
 AttenuatorDesigner::AttenuatorDesigner(AttenuatorDesignParameters SPC) {
@@ -56,7 +57,11 @@ void AttenuatorDesigner::synthesize() {
     Schematic = BT_AT->Schematic;
     delete BT_AT;
   } else if (Specs.Topology == "Reflection Attenuator") {
-    ReflectionAttenuator();
+    ReflectionAttenuator *RFAT;
+    RFAT = new ReflectionAttenuator(Specs);
+    RFAT->synthesize();
+    Schematic = RFAT->Schematic;
+    delete RFAT;
   } else if (Specs.Topology == "Quarter-wave series") {
 
     QW_SeriesAttenuator *QWS;
