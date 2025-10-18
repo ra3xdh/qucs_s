@@ -14,32 +14,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef GENERAL_H
 #define GENERAL_H
 
-#include <QString>
 #include <QFile>
 #include <QFileInfo>
-
+#include <QString>
 
 #include <QList>
+#include <QPointF>
 #include <QRegularExpression>
 #include <cmath>
 #include <complex>
-#include <QPointF>
-
 
 // CONSTANTS
-static constexpr double Z0 = 376.730313668;  // Free space impedance
-static constexpr double C0 = 299792458.0;    // Speed of light
-static constexpr double MU0 = 4.0 * M_PI * 1e-7;  // Permeability of free space
-static constexpr double pi_over_2 = M_PI / 2.0;
+static constexpr double Z0  = 376.730313668;     // Free space impedance
+static constexpr double C0  = 299792458.0;       // Speed of light
+static constexpr double MU0 = 4.0 * M_PI * 1e-7; // Permeability of free space
+static constexpr double pi_over_2   = M_PI / 2.0;
 static constexpr double two_over_pi = 2.0 / M_PI;
 static constexpr double one_over_pi = 1.0 / M_PI;
-static constexpr double euler = M_E;
-static constexpr double ln2 = 0.693147180559945;
-
+static constexpr double euler       = M_E;
+static constexpr double ln2         = 0.693147180559945;
 
 enum Units { Capacitance, Inductance, Length, Resistance, Degrees, NoUnits };
 
@@ -49,15 +46,17 @@ QString num2str(double, Units);
 QString num2str(double);
 std::complex<double> Str2Complex(QString);
 QString ConvertLengthFromM(QString, double);
-void convert_MA_RI_to_dB(double * S_1, double * S_2, double *S_3, double *S_4, QString format);
+void convert_MA_RI_to_dB(double* S_1, double* S_2, double* S_3, double* S_4,
+                         QString format);
 double getFreqScale(QString frequency_unit);
-void getMinMaxValues(QString filename, QString tracename, qreal& minX, qreal& maxX, qreal& minY, qreal& maxY);
+void getMinMaxValues(QString filename, QString tracename, qreal& minX,
+                     qreal& maxX, qreal& minY, qreal& maxY);
 int findClosestIndex(const QList<double>& list, double value);
 double getFreqScale(QString frequency_unit);
 int findClosestIndex(const QList<double>& list, double value);
 double getFreqFromText(QString freq);
-QPointF findClosestPoint(const QList<double>& xValues, const QList<double>& yValues, double targetX);
-
+QPointF findClosestPoint(const QList<double>& xValues,
+                         const QList<double>& yValues, double targetX);
 
 QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath);
 

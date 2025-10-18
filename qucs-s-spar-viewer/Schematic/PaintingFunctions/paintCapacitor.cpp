@@ -17,7 +17,7 @@
 
 #include "./../component.h"
 
-void Component::paintCapacitor(QPainter *painter) {
+void Component::paintCapacitor(QPainter* painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);
@@ -38,8 +38,9 @@ void Component::paintCapacitor(QPainter *painter) {
   }
 
   QPoint OriginText(2, 5);
-  if (Rotation != 0)
+  if (Rotation != 0) {
     OriginText.setX(-10), OriginText.setY(10);
+  }
 
   painter->drawText(QRect(OriginText, QPoint(100, 100)),
                     QString("%1").arg(this->ID));

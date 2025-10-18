@@ -20,11 +20,11 @@
 
 #include <QString>
 #include <QStringList>
+#include <array>
+#include <complex.h>
 #include <complex>
 #include <deque>
 #include <vector>
-#include <complex.h>
-#include <array>
 
 enum ComponentType {
   Capacitor,
@@ -65,10 +65,11 @@ enum Coupling {
 };
 enum SemiLumpedImplementation { ONLY_INDUCTORS, INDUCTORS_AND_SHUNT_CAPS };
 
-enum TransmissionLineType{
+enum TransmissionLineType {
   Ideal,
   MLIN, // Microstrip
-  SLIN // Stripline
+  SLIN,  // Stripline
+  Lumped
 };
 
 static const double SPEED_OF_LIGHT = 299792458.0;
@@ -80,18 +81,23 @@ struct PrototypeTableProperties {
   std::vector<double> RL;
 };
 
-       // Microstrip substrate struct
+// Microstrip substrate struct
 struct MS_Substrate {
   // Substrate
-  double height;      // substrate height (mm)
-  double er;          // relative permittivity
-  double tand;        // dissipation factor
+  double height; // substrate height (mm)
+  double er;     // relative permittivity
+  double tand;   // dissipation factor
 
-         // Metal properties
+  // Metal properties
   double MetalConductivity; // Metal conductivity
   double MetalThickness;    // Metal thickness
 
-  MS_Substrate(double h = 0.508e-3, double epsilon_r = 3.55, double tand = 0.0027, double MetalConductivity = 58e6, double MetalThickness = 32e-6) : height(h), er(epsilon_r), tand(tand), MetalConductivity(MetalConductivity), MetalThickness(MetalThickness){}// RO4003C, 20 mils
+  MS_Substrate(double h = 0.508e-3, double epsilon_r = 3.55,
+               double tand = 0.0027, double MetalConductivity = 58e6,
+               double MetalThickness = 32e-6)
+      : height(h), er(epsilon_r), tand(tand),
+        MetalConductivity(MetalConductivity), MetalThickness(MetalThickness) {
+  } // RO4003C, 20 mils
 };
 
 struct FilterSpecifications {
@@ -102,7 +108,7 @@ struct FilterSpecifications {
   Coupling DC_Coupling; // Only for bandpass direct coupled filters
   bool isCLC;           // CLC or LCL implementation
   unsigned int order;   // Filter order
-  double Ripple = 0.05;        // Ripple (Chebyshev and Cauer)
+  double Ripple = 0.05; // Ripple (Chebyshev and Cauer)
   double fc; // Cutoff frequency (lowpass and highpass filters) or center
              // frequency (bandpass and bandstop)
   double bw; // Filter bandwidth
@@ -122,7 +128,6 @@ struct FilterSpecifications {
   MS_Substrate MS_Subs;
 };
 
-
 // Contains the information of the matching network topology
 struct MatchingNetworkDesignParameters {
   double Z0;
@@ -138,8 +143,10 @@ struct MatchingNetworkDesignParameters {
   double ZL_freq;
   std::complex<double> ZL; // Load impedance at fmatch
   QList<double> freq;
-  QList<std::complex<double>> ZL_data;  // Impedance vs freq. This is will need to be fixed
-  QString sim_path; // Path to the S-parameter file that models the load. Required for the simulation engine
+  QList<std::complex<double>>
+      ZL_data;      // Impedance vs freq. This is will need to be fixed
+  QString sim_path; // Path to the S-parameter file that models the load.
+                    // Required for the simulation engine
 
   // Substrate Settings
   MS_Substrate MS_Subs;
@@ -168,25 +175,29 @@ struct NetworkInfo {
 struct PowerCombinerParams {
   QString Type; // Wilkinson, branchlines, Bagley, etc.
   TransmissionLineType TL_implementation; // Ideal, microstrip, stripline, etc.
-  int Noutputs; // Number of output branches
-  int Nstages;  // Number of combiner stages (broadband Wilkinson)
+  int Noutputs;                           // Number of output branches
+  int Nstages; // Number of combiner stages (broadband Wilkinson)
   std::deque<double> OutputRatio; // Splitting ratio
-  QString Implementation;         // LC, microstrip, ideal TL
   double alpha;                   // Attenuation constant of the ideal TL
   QString units;                  // mm, mil, um
   double freq;                    // Center freq
   double Z0;                      // Reference impedance
+
+  // Substrate Settings
+  MS_Substrate MS_Subs;
 };
 
 struct AttenuatorDesignParameters {
-  QString Topology;   // Attenuator topology
+  QString Topology;                       // Attenuator topology
   TransmissionLineType TL_implementation; // Ideal, microstrip, stripline, etc.
-  double Zin;         // Input impedance
-  double Zout;        // Output impedance
-  double Attenuation; // Attenuation in dB
-  double Frequency;   // Central frequency of tuned attenuators
-  double Pin;         // Input power in W
-  bool Lumped_TL;     // Use the lumped equivalent of a QW transmission line
+  double Zin;                             // Input impedance
+  double Zout;                            // Output impedance
+  double Attenuation;                     // Attenuation in dB
+  double Frequency; // Central frequency of tuned attenuators
+  double Pin;       // Input power in W
+
+  // Substrate Settings
+  MS_Substrate MS_Subs;
 };
 
 #endif // STRUCTURES_H

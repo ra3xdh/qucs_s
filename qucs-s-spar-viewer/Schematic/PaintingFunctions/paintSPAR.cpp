@@ -17,7 +17,7 @@
 
 #include "./../component.h"
 
-void Component::paintSPAR(QPainter *painter) {
+void Component::paintSPAR(QPainter* painter) {
   painter->save();
   if (Rotation != 0) {
     painter->rotate(Rotation);
@@ -31,7 +31,7 @@ void Component::paintSPAR(QPainter *painter) {
   painter->drawLine(QPoint(15, 0), QPoint(20, 0));
   painter->restore(); // Restore to unrotated state
 
-         // Draw big red "[S]" in the center (unrotated)
+  // Draw big red "[S]" in the center (unrotated)
   QFont font = painter->font();
   font.setBold(true);
   font.setPointSize(10);
@@ -39,6 +39,6 @@ void Component::paintSPAR(QPainter *painter) {
   painter->setPen(QPen(Qt::red, 2));
   painter->drawText(rect, Qt::AlignCenter, "[S]");
 
-         // Restore pen for further drawing
+  // Restore pen for further drawing
   painter->setPen(QPen(Qt::black, 1));
 }

@@ -17,14 +17,14 @@
 
 #include "node.h"
 
-Node::Node(GraphWidget *graphWidget) : graph(graphWidget) {
+Node::Node(GraphWidget* graphWidget) : graph(graphWidget) {
   setFlag(ItemIsMovable);
   setFlag(ItemSendsGeometryChanges);
   setCacheMode(DeviceCoordinateCache);
   setZValue(-1);
 }
 
-Node::Node(GraphWidget *graphWidget, NodeInfo NI) : graph(graphWidget) {
+Node::Node(GraphWidget* graphWidget, NodeInfo NI) : graph(graphWidget) {
   setFlag(ItemIsMovable);
   setFlag(ItemSendsGeometryChanges);
   setCacheMode(DeviceCoordinateCache);
@@ -33,16 +33,20 @@ Node::Node(GraphWidget *graphWidget, NodeInfo NI) : graph(graphWidget) {
   setPos(NI.Coordinates.at(0), NI.Coordinates.at(1));
 }
 
-Node::~Node(){}
+Node::~Node() {}
 
-void Node::addWire(Wire *Wire) {
+void Node::addWire(Wire* Wire) {
   WireList << Wire;
   Wire->adjust();
 }
 
-QList<Wire *> Node::Wires() const { return WireList; }
+QList<Wire*> Node::Wires() const {
+  return WireList;
+}
 
-QRectF Node::boundingRect() const { return QRectF(-4, -4, 8, 8); }
+QRectF Node::boundingRect() const {
+  return QRectF(-4, -4, 8, 8);
+}
 
 QPainterPath Node::shape() const {
   QPainterPath path;
@@ -50,9 +54,12 @@ QPainterPath Node::shape() const {
   return path;
 }
 
-QString Node::getID() { return ID; }
+QString Node::getID() {
+  return ID;
+}
 
-void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget *) {
+void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/,
+                 QWidget*) {
   QBrush brush = painter->brush();
   brush.setStyle(Qt::SolidPattern);
   painter->setBrush(brush);
@@ -61,11 +68,12 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, 
    painter->drawPath(this->shape());*/
 }
 
-QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value) {
+QVariant Node::itemChange(GraphicsItemChange change, const QVariant& value) {
   switch (change) {
   case ItemPositionHasChanged:
-    foreach (Wire *Wire, WireList)
+    foreach (Wire* Wire, WireList) {
       Wire->adjust();
+    }
     graph->itemMoved();
     break;
   default:
@@ -75,14 +83,16 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value) {
   return QGraphicsItem::itemChange(change, value);
 }
 
-void Node::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+void Node::mousePressEvent(QGraphicsSceneMouseEvent* event) {
   update();
   QGraphicsItem::mousePressEvent(event);
 }
 
-void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
   update();
   QGraphicsItem::mouseReleaseEvent(event);
 }
 
-QPoint Node::getPortLocation(int /*port_number*/) { return QPoint(0, 0); }
+QPoint Node::getPortLocation(int /*port_number*/) {
+  return QPoint(0, 0);
+}

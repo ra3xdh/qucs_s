@@ -18,28 +18,26 @@
 #ifndef NETLISTSCRATCHPAD_H
 #define NETLISTSCRATCHPAD_H
 
-#include <QWidget>
+#include "../../CustomWidgets/codeeditor.h"
+#include "../../Misc/general.h"
+#include "../../Schematic/Network.h"
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
-#include "../../Misc/general.h"
-#include "../../CustomWidgets/codeeditor.h"
-#include "../../Schematic/Network.h"
+#include <QWidget>
 
 class NetlistScratchPad : public QWidget {
   Q_OBJECT
 public:
-  NetlistScratchPad(QWidget *parent = nullptr);
+  NetlistScratchPad(QWidget* parent = nullptr);
   ~NetlistScratchPad();
   QString getText();
   void setText(QString);
 
-
-
 private:
-  CodeEditor *Netlist_Editor_Widget;
-  QLabel *traceNameLabel;
-  QLineEdit *traceNameLineEdit;
+  CodeEditor* Netlist_Editor_Widget;
+  QLabel* traceNameLabel;
+  QLineEdit* traceNameLineEdit;
 
 private slots:
   void update();

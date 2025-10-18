@@ -14,14 +14,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef LAMBDA8LAMBDA4_H
 #define LAMBDA8LAMBDA4_H
 
 #include "../../Schematic/Network.h"
-#include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 
 class Lambda8Lambda4 : public Network {
@@ -36,6 +34,9 @@ public:
 private:
   struct MatchingNetworkDesignParameters Specs;
   double f_match;
+
+  void buildMatchingNetwork_IdealTL(double Zm, double Zmm, double XL);
+  void buildMatchingNetwork_Microstrip(double Zm, double Zmm, double XL);
 };
 
 #endif // LAMBDA8LAMBDA4_H

@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef MATCHINGNETWORKDESIGNTOOL_H
 #define MATCHINGNETWORKDESIGNTOOL_H
 
@@ -25,23 +25,22 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
 #include <QRadioButton>
 #include <QWidget>
-#include <QPushButton>
-
 
 #include "../../Schematic/Network.h"
 #include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 
-#include "MatchingNetworkParametersWidget.h" // Custom widget for the network setup data entry
 #include "LoadSpecificationWidget.h"
 #include "MatchingNetworkDesigner.h" // Class to create the matching network
+#include "MatchingNetworkParametersWidget.h" // Custom widget for the network setup data entry
 
 class MatchingNetworkDesignTool : public QWidget {
   Q_OBJECT
 public:
-  MatchingNetworkDesignTool(QWidget *parent = nullptr);
+  MatchingNetworkDesignTool(QWidget* parent = nullptr);
   ~MatchingNetworkDesignTool();
   void design();
 
@@ -50,46 +49,48 @@ private slots:
   void AdjustOneTwoPortMatchingWidgetsVisibility();
 
 private:
+  QCheckBox* TwoPortCheckBox;
 
-  QCheckBox *TwoPortCheckBox;
+  MatchingNetworkParametersWidget*
+      InputMatchingSetupWidget; // Input matching network data entry widget
+  MatchingNetworkParametersWidget*
+      OutputMatchingSetupWidget; // Output matching network data entry widget
+  LoadSpecificationWidget* LoadSpecWidget;
 
-  MatchingNetworkParametersWidget *InputMatchingSetupWidget; // Input matching network data entry widget
-  MatchingNetworkParametersWidget *OutputMatchingSetupWidget; // Output matching network data entry widget
-  LoadSpecificationWidget *LoadSpecWidget;
-
-  QLabel  *Zout_Label, *Ohm_Zout_Label, *Zout_J;
+  QLabel *Zout_Label, *Ohm_Zout_Label, *Zout_J;
   QDoubleSpinBox *ZoutISpinBox, *ZoutRSpinBox;
 
-  QLabel *f_match_Label;
+  QLabel* f_match_Label;
 
   // Two-port network widgets
-  QGroupBox *two_port_GroupBox;
-  QCheckBox *enter_S2P_file_CheckBox;
-  QPushButton *browse_S2P_Button;
-  QLabel *s2p_filename_Label;
+  QGroupBox* two_port_GroupBox;
+  QCheckBox* enter_S2P_file_CheckBox;
+  QPushButton* browse_S2P_Button;
+  QLabel* s2p_filename_Label;
 
-  QLabel *input_format_Label;
-  QComboBox *input_format_Combo;
+  QLabel* input_format_Label;
+  QComboBox* input_format_Combo;
 
   QLabel *S11_Label, *S12_Label, *S21_Label, *S22_Label;
-  QLabel *S11_Separator_Label, *S12_Separator_Label, *S21_Separator_Label, *S22_Separator_Label;
+  QLabel *S11_Separator_Label, *S12_Separator_Label, *S21_Separator_Label,
+      *S22_Separator_Label;
 
   QDoubleSpinBox *S11_A_SpinBox, *S11_B_SpinBox;
   QDoubleSpinBox *S12_A_SpinBox, *S12_B_SpinBox;
   QDoubleSpinBox *S21_A_SpinBox, *S21_B_SpinBox;
   QDoubleSpinBox *S22_A_SpinBox, *S22_B_SpinBox;
 
-
   QDoubleSpinBox *f_match_Spinbox, *FreqEnd_Spinbox;
-  QComboBox *f_match_Scale_Combo, *FreqEnd_Scale_Combo, *StubTermination_ComboBox;
+  QComboBox *f_match_Scale_Combo, *FreqEnd_Scale_Combo,
+      *StubTermination_ComboBox;
 
   double getScaleFreq(int);
 
   SchematicContent SchContent; // Schematic representation
 
   // Add trace to simulate
-  QLabel *traceNameLabel;
-  QLineEdit *traceNameLineEdit;
+  QLabel* traceNameLabel;
+  QLineEdit* traceNameLineEdit;
 
 signals:
   void updateSchematic(SchematicContent);

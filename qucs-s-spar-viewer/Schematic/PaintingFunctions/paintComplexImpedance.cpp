@@ -17,7 +17,7 @@
 
 #include "./../component.h"
 
-void Component::paintComplexImpedance(QPainter *painter) {
+void Component::paintComplexImpedance(QPainter* painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);
@@ -40,8 +40,9 @@ void Component::paintComplexImpedance(QPainter *painter) {
   }
 
   QPoint OriginText(10, -10);
-  if (Rotation != 0)
+  if (Rotation != 0) {
     OriginText.setX(-10), OriginText.setY(10);
+  }
 
   painter->drawText(QRect(OriginText, QPoint(100, 100)),
                     QString("%1").arg(this->ID));

@@ -18,12 +18,10 @@
 #ifndef CAPACITIVELYCOUPLEDSHUNTRESONATORS_H
 #define CAPACITIVELYCOUPLEDSHUNTRESONATORS_H
 
-#include "LowpassPrototypeCoeffs.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
-#include <QPen>
+#include "LowpassPrototypeCoeffs.h"
 
 class CapacitivelyCoupledShuntResonatorsFilter : public Network {
 public:
@@ -34,6 +32,9 @@ public:
 
 private:
   struct FilterSpecifications Specification;
+
+  void buildFilter_IdealTL(const std::deque<double>& gi);
+  void buildFilter_Microstrip(const std::deque<double>& gi);
 };
 
 #endif // CAPACITIVELYCOUPLEDSHUNTRESONATORS_H

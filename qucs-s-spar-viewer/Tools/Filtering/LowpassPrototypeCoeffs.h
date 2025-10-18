@@ -19,9 +19,8 @@
 #define LOWPASSPROTOTYPECOEFFS_H
 #include "../../Schematic/Network.h"
 #include "../../Schematic/structures.h"
-#include <deque>
 #include <QDebug>
-
+#include <deque>
 
 class LowpassPrototypeCoeffs {
 public:

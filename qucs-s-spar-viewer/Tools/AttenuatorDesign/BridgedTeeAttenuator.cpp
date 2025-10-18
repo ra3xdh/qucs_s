@@ -14,84 +14,112 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
-#include "AttenuatorDesigner.h"
+
+#include "BridgedTeeAttenuator.h"
 
 // Reference: RF design guide. Systems, circuits, and equations. Peter
 // Vizmuller. Artech House, 1995
-void AttenuatorDesigner::BridgedTeeAttenuator() {
-  ComponentInfo TermSpar1, TermSpar2;
-  ComponentInfo Ground, Res1, Res2, Res3, Res4;
-  NodeInfo NI;
-  Components.clear();
 
+BridgedTeeAttenuator::BridgedTeeAttenuator() {}
+
+BridgedTeeAttenuator::BridgedTeeAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
+
+BridgedTeeAttenuator::~BridgedTeeAttenuator() {}
+
+void BridgedTeeAttenuator::calculateParams() {
   // Design equations
-  double L = pow(10, .05 * Specs.Attenuation);    // Note: Bridged-T uses 0.05*Atten
-  double R1 = Specs.Zin * (L - 1);
-  double R4 = Specs.Zin / (L - 1);
+  // Note: Bridged-T uses 0.05*Attenuation (not 0.1 like Pi/Tee)
+  double L = pow(10, .05 * Specification.Attenuation);
+  R1 = Specification.Zin * (L - 1);
+  R4 = Specification.Zin / (L - 1);
 
   // Power dissipation calculation
-  double K = R1 * R4 + Specs.Zin * (2 * R4 + Specs.Zin);
+  double K = R1 * R4 + Specification.Zin * (2 * R4 + Specification.Zin);
 
   K *= K;
-  Pdiss.R1 = Specs.Pin * (4 * R1 * R4 * R4 * Specs.Zin) / K;
-  Pdiss.R2 = Specs.Pin * (R1 * R4 + Specs.Zin * Specs.Zin) * (R1 * R4 + Specs.Zin * Specs.Zin) / K;
-  Pdiss.R3 = 0;
-  Pdiss.R4 = 4 * R4 * Specs.Zin * Specs.Zin / K;
+  Pdiss["R1"] = Specification.Pin * (4 * R1 * R4 * R4 * Specification.Zin) / K;
+  Pdiss["R2"] = Specification.Pin *
+                (R1 * R4 + Specification.Zin * Specification.Zin) *
+                (R1 * R4 + Specification.Zin * Specification.Zin) / K;
+  Pdiss["R3"] = 0;
+  Pdiss["R4"] = 4 * R4 * Specification.Zin * Specification.Zin / K;
+}
 
-  // Schematic implementation - match style of PiAttenuator()
-  ComponentInfo TermSparIN(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-  TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
+void BridgedTeeAttenuator::synthesize() {
+  calculateParams();
+  buildNetwork();
+}
+
+void BridgedTeeAttenuator::buildNetwork() {
+  ComponentInfo Ground, Res1, Res2, Res3, Res4;
+  NodeInfo NI;
+
+  // Input terminal
+  ComponentInfo TermSparIN(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
   // Series resistor R1
-  Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 90, 100, 0);
+  Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 90, 100, 0);
   Res1.val["R"] = num2str(R1, Resistance);
   Schematic.appendComponent(Res1);
 
   // 1st Shunt Resistor R2
-  Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 50, 50);
-  Res2.val["R"] = num2str(Specs.Zin, Resistance);
+  Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 50, 50);
+  Res2.val["R"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(Res2);
 
-  // Node after input resistors
-  NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50, 0);
+  // Input node
+  NI.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50, 0);
   Schematic.appendNode(NI);
   Schematic.appendWire(TermSparIN.ID, 0, NI.ID, 0);
   Schematic.appendWire(Res1.ID, 0, NI.ID, 0);
   Schematic.appendWire(Res2.ID, 1, NI.ID, 0);
 
   // 2nd Shunt Resistor R3
-  Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 150, 50);
-  Res3.val["R"] = num2str(Specs.Zin, Resistance);
+  Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 150, 50);
+  Res3.val["R"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(Res3);
 
-  // Node after series and shunt resistors
-  NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100, 80);
+  // Middle node (bridge connection)
+  NI.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100,
+      80);
   Schematic.appendNode(NI);
   Schematic.appendWire(Res2.ID, 0, NI.ID, 0);
 
-  // 3rd Shunt resistor R4
-  Res4.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 100, 120);
+  // 3rd Shunt resistor R4 (bridge to ground)
+  Res4.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 100, 120);
   Res4.val["R"] = num2str(R4, Resistance);
   Schematic.appendComponent(Res4);
-  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 100, 170);
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   0, 100, 170);
   Schematic.appendComponent(Ground);
 
-  Schematic.appendWire(Res2.ID, 0, NI.ID, 0);
   Schematic.appendWire(Res3.ID, 0, NI.ID, 0);
   Schematic.appendWire(Res4.ID, 1, NI.ID, 0);
   Schematic.appendWire(Res4.ID, 0, Ground.ID, 0);
 
   // Output node
-  NI.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 150, 0);
+  NI.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 150,
+      0);
   Schematic.appendNode(NI);
   Schematic.appendWire(Res1.ID, 1, NI.ID, 0);
   Schematic.appendWire(Res3.ID, 1, NI.ID, 0);
+
   // Output terminal
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 200, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zout, Resistance);
+  ComponentInfo TermSpar2;
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+                      Term, 180, 200, 0);
+  TermSpar2.val["Z"] = num2str(Specification.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
   Schematic.appendWire(TermSpar2.ID, 0, NI.ID, 0);
 }
-

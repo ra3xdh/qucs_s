@@ -41,16 +41,16 @@
 #ifndef GRAPHWIDGET_H
 #define GRAPHWIDGET_H
 
-#include <QtGui>
-#include <QMap>
 #include <QGraphicsView>
+#include <QMap>
+#include <QtGui>
 #include <deque>
 #include <math.h>
 
 #include "SchematicContent.h"
-#include "structures.h"
 #include "component.h"
 #include "node.h"
+#include "structures.h"
 #include "wire.h"
 
 class Node;
@@ -61,7 +61,7 @@ class GraphWidget : public QGraphicsView {
   Q_OBJECT
 
 public:
-  GraphWidget(QWidget *parent = 0);
+  GraphWidget(QWidget* parent = 0);
 
   void itemMoved();
   void setComponents(QList<ComponentInfo>);
@@ -69,7 +69,7 @@ public:
   void setWires(QList<WireInfo>);
   void setNodes(QList<NodeInfo>);
   void setSchematic(SchematicContent);
-  void setTexts(QList<QGraphicsTextItem *>);
+  void setTexts(QList<QGraphicsTextItem*>);
   void clear();
 
 public slots:
@@ -79,18 +79,18 @@ public slots:
   void ComponentSelectionHandler(ComponentInfo);
 
 protected:
-  void keyPressEvent(QKeyEvent *event);
-  void timerEvent(QTimerEvent *event);
-  void wheelEvent(QWheelEvent *event);
+  void keyPressEvent(QKeyEvent* event);
+  void timerEvent(QTimerEvent* event);
+  void wheelEvent(QWheelEvent* event);
 
   void scaleView(qreal scaleFactor);
 
 private:
   int timerId;
-  std::deque<Component *> Components;
-  std::deque<Wire *> Wires;
-  std::deque<Node *> Nodes;
-  std::deque<QGraphicsTextItem *> Texts;
+  std::deque<Component*> Components;
+  std::deque<Wire*> Wires;
+  std::deque<Node*> Nodes;
+  std::deque<QGraphicsTextItem*> Texts;
 
 signals:
   void SendComponentSelectionToMainFunction(ComponentInfo);

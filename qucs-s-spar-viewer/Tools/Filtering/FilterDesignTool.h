@@ -25,23 +25,22 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
-#include <QRadioButton>
-#include <QSpinBox>
 #include <QPushButton>
+#include <QSpinBox>
 #include <QWidget>
 
+#include "../../Schematic/Network.h"
+
 #include "CanonicalFilter.h"
-#include "EllipticFilter.h"
-#include "DirectCoupledFilters.h"
-#include "SteppedImpedanceFilter.h"
-#include "QuarterWaveFilters.h"
 #include "CapacitivelyCoupledShuntResonatorsFilter.h"
 #include "CoupledLineBandpassFilter.h"
+#include "DirectCoupledFilters.h"
+#include "EllipticFilter.h"
 #include "EndCoupled.h"
+#include "QuarterWaveFilters.h"
+#include "SteppedImpedanceFilter.h"
+
 /*#include "Filtering/CoupledLineHarmonicRejectionSIRBandpassFilter.h"*/
-
-
-#include "../../Schematic/Network.h"
 
 #define LC_LADDER 0
 #define LC_DIRECT_COUPLED 1
@@ -57,7 +56,7 @@
 class FilterDesignTool : public QWidget {
   Q_OBJECT
 public:
-  FilterDesignTool(QWidget *parent = nullptr);
+  FilterDesignTool(QWidget* parent = nullptr);
   ~FilterDesignTool();
   void design();
 
@@ -66,21 +65,22 @@ private slots:
   void ResposeComboChanged();
   void ImplementationComboChanged(int);
   void EllipticTypeChanged();
-  void ChangeRL_CLC_LCL_mode();
 
 private:
   // ************************** FILTER DESIGN ***************************
-  QWidget *SetupFilterDesignGUI();
+  QWidget* SetupFilterDesignGUI();
   QComboBox *FilterClassCombo, *FilterResponseTypeCombo,
       *FilterImplementationCombo, *FC_ScaleCombobox, *BW_ScaleCombobox,
       *SemiLumpedImplementationCombo;
   QComboBox *EllipticType, *DC_CouplingTypeCombo;
   QDoubleSpinBox *FCSpinbox, *BWSpinbox, *RippleSpinbox, *StopbandAttSpinbox,
       *MinimumZ_Spinbox, *MaximumZ_Spinbox, *ImpedanceRatio_Spinbox;
-  QSpinBox *OrderSpinBox;
+  QSpinBox* OrderSpinBox;
 
-  QLineEdit *SourceImpedanceLineEdit;
-  QRadioButton *CLCRadioButton, *LCLRadioButton;
+  QLineEdit* SourceImpedanceLineEdit;
+
+  QComboBox* TopologyCombo; // 1st series or 1st shunt configuration
+
   QLabel *StopbandAttLabel, *StopbandAttdBLabel, *EllipticTypeLabel,
       *RippleLabel, *RippledBLabel, *DC_CouplingLabel, *MaximumZ_Unit_Label,
       *MinimumZ_Unit_Label, *SemiLumpedImplementationLabel,
@@ -90,13 +90,11 @@ private:
   QStringList DefaultFilterResponses;
 
   // Transmission line implementation
-  QLabel *TL_Implementation_Label;
-  QComboBox *TL_Implementation_Combo;
-
+  QLabel* TL_Implementation_Label;
+  QComboBox* TL_Implementation_Combo;
 
   // Filter specs
   struct FilterSpecifications Filter_SP;
-  QString netlist;
   SchematicContent SchContent;
 
   // Substrate
@@ -106,8 +104,8 @@ private:
   double getScale(QString); // Gets the scale from the comboboxes
 
   // Add trace to simulate
-  QLabel *traceNameLabel;
-  QLineEdit *traceNameLineEdit;
+  QLabel* traceNameLabel;
+  QLineEdit* traceNameLineEdit;
 
   // Set UI settings depending on filter topology
   void setSettings_LC_Ladder();

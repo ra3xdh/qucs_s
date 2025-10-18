@@ -17,7 +17,7 @@
 
 #include "./../component.h"
 
-void Component::paintInductor(QPainter *painter) {
+void Component::paintInductor(QPainter* painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }
@@ -35,8 +35,9 @@ void Component::paintInductor(QPainter *painter) {
   }
 
   QPoint OriginText(10, -10);
-  if (Rotation != 0)
+  if (Rotation != 0) {
     OriginText.setX(-10), OriginText.setY(5);
+  }
 
   painter->drawText(QRect(OriginText, QPoint(100, 100)),
                     QString("%1").arg(this->ID));

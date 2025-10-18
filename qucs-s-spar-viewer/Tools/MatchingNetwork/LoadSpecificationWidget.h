@@ -18,42 +18,42 @@
 #ifndef LOADSPECIFICATIONWIDGET_H
 #define LOADSPECIFICATIONWIDGET_H
 
-#include <QWidget>
-#include <QGroupBox>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDoubleSpinBox>
+#include <QFileDialog>
+#include <QFileInfo>
 #include <QGridLayout>
-#include <QVBoxLayout>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QDoubleSpinBox>
-#include <QComboBox>
-#include <QRadioButton>
-#include <QCheckBox>
-#include <QPushButton>
-#include <QFileDialog>
-#include <QButtonGroup>
-#include <QMouseEvent>
-#include <complex>
 #include <QMessageBox>
+#include <QMouseEvent>
+#include <QPushButton>
+#include <QRadioButton>
 #include <QTextStream>
-#include <QFileInfo>
+#include <QVBoxLayout>
+#include <QWidget>
 #include <cmath>
+#include <complex>
 
 #include "../../Misc/general.h"
 
-class LoadSpecificationWidget : public QGroupBox
-{
+class LoadSpecificationWidget : public QGroupBox {
   Q_OBJECT
 
 public:
-  explicit LoadSpecificationWidget(QWidget *parent = nullptr);
+  explicit LoadSpecificationWidget(QWidget* parent = nullptr);
   ~LoadSpecificationWidget();
 
-         // Getters
+  // Getters
   std::array<std::complex<double>, 4> getSParameters() const;
   std::complex<double> getLoadImpedance_At_Fmatch() const;
   QList<std::complex<double>> getZLdata();
   QList<double> getFrequency();
-  std::pair<std::complex<double>, std::complex<double>> getTwoPortMatchingImpedances() const;
+  std::pair<std::complex<double>, std::complex<double>>
+  getTwoPortMatchingImpedances() const;
   std::complex<double> getReflectionCoefficient() const;
   QString getSparFilePath();
   bool isTwoPortMode() const { return m_twoPortMode; }
@@ -68,12 +68,16 @@ public:
   void setLoadImpedance(const std::complex<double>& impedance);
   void setReflectionCoefficient(const std::complex<double>& gamma);
   void setTwoPortMode(bool enabled);
-  void setReferenceImpedance(double Z0) { m_Z0 = Z0; updateReflectionCoefficient(); }
+  void setReferenceImpedance(double Z0) {
+    m_Z0 = Z0;
+    updateReflectionCoefficient();
+  }
   void setCollapsed(bool collapsed);
-  void setFmatch(double freq){f_match = freq;}
+  void setFmatch(double freq) { f_match = freq; }
   bool isCollapsed() const { return m_isCollapsed; }
 
-  // Reference impedance of the source and the load port. Required for the 2-port matching. This data is provided by the main widget
+  // Reference impedance of the source and the load port. Required for the
+  // 2-port matching. This data is provided by the main widget
   double Z0_Port1, Z0_Port2;
 
 protected:
@@ -102,7 +106,8 @@ private:
   double f_match;
 
   QMap<QString, QList<double>> loadData; // It could be either 1-port or 2-port
-  QString spar_file_path; // Path to the S-parameter file (this is required for simulation)
+  QString spar_file_path; // Path to the S-parameter file (this is required for
+                          // simulation)
 
   // UI Components - One Port
   QGridLayout* m_mainLayout;

@@ -15,118 +15,137 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "AttenuatorDesigner.h"
+#include "QW_ShuntAttenuator.h"
 
-void AttenuatorDesigner::QW_ShuntAttenuator() {
-  ComponentInfo TermSpar1, TermSpar2;
-  ComponentInfo Ground, Res1, Res2, Res3, TL;
-  ComponentInfo Lseries, Cshunt;
-  NodeInfo NI1, NI2;
-  Components.clear();
+QW_ShuntAttenuator::QW_ShuntAttenuator() {}
 
+QW_ShuntAttenuator::QW_ShuntAttenuator(AttenuatorDesignParameters AS)
+    : AttenuatorBase(AS) {}
+
+QW_ShuntAttenuator::~QW_ShuntAttenuator() {}
+
+void QW_ShuntAttenuator::calculateParams() {
   // Design equations
-  double R = Specs.Zin * (pow(10, .05 * Specs.Attenuation) - 1);
-  double l4 = .25 * SPEED_OF_LIGHT / Specs.Frequency;
-  double w0 = 2 * M_PI * Specs.Frequency;
+  R = Specification.Zin * (pow(10, .05 * Specification.Attenuation) - 1);
+  l4 = .25 * SPEED_OF_LIGHT / Specification.Frequency;
+
+  // Zout calculation
+  Zout = R + Specification.Zin * (R + Specification.Zin) /
+                 (2 * R + Specification.Zin);
 
   // Power dissipation
-  double K = (R + Specs.Zin) * (R + Specs.Zin);
-  Pdiss.R1 = Specs.Pin * Specs.Zin * R / K;
-  Pdiss.R2 = Specs.Pin * R * R / K;
-  Pdiss.R3 = Pdiss.R1;
+  double K = (R + Specification.Zin) * (R + Specification.Zin);
+  Pdiss["R1"] = Specification.Pin * Specification.Zin * R / K;
+  Pdiss["R2"] = Specification.Pin * R * R / K;
+  Pdiss["R3"] = Pdiss["R1"];
 
-  //Zout
-  double Zout = R + Specs.Zin*(R+Specs.Zin)/(2*R+Specs.Zin);
+  // For lumped implementation
+  w0 = 2 * M_PI * Specification.Frequency;
+}
 
-         // Schematic implementation
+void QW_ShuntAttenuator::synthesize() {
+  calculateParams();
+  buildNetwork();
+}
 
-         // Input terminal
+void QW_ShuntAttenuator::buildNetwork() {
+  // Dispatch to appropriate implementation
+  if (Specification.TL_implementation == TransmissionLineType::Lumped) {
+    buildQW_Shunt_Lumped();
+  } else if (Specification.TL_implementation == TransmissionLineType::Ideal) {
+    buildQW_Shunt_IdealTL();
+  } else if (Specification.TL_implementation == TransmissionLineType::MLIN) {
+    buildQW_Shunt_Microstrip();
+  }
+}
+
+void QW_ShuntAttenuator::buildQW_Shunt_Lumped() {
+  ComponentInfo Ground, Res1, Res2, Res3;
+  ComponentInfo Lseries, Cshunt;
+  NodeInfo NI1, NI2;
+
+  // Input terminal
   ComponentInfo TermSparIN(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
-  TermSparIN.val["Z"] = num2str(Specs.Zin, Resistance);
+  TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
-         // First node (input side)
-  NI1.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50, 0);
+  // First node (input side)
+  NI1.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50, 0);
   Schematic.appendNode(NI1);
 
-         // Input terminal to first node
+  // Input terminal to first node
   Schematic.appendWire(TermSparIN.ID, 0, NI1.ID, 0);
 
+  // Lumped transmission line: shunt C at input
+  Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
+                   Capacitor, 0, 50, -50);
+  Cshunt.val["C"] = num2str(1 / (Specification.Zin * w0), Capacitance);
+  Schematic.appendComponent(Cshunt);
 
-         // Lumped or distributed (TL) section
-  if (Specs.Lumped_TL) {
-    // Lumped: series L and shunt C to ground at each end
-    Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 0, 50, -50);
-    Cshunt.val["C"] = num2str(1 / (Specs.Zin * w0), Capacitance);
-    Schematic.appendComponent(Cshunt);
-
-    Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 180, 50, -75);
-    Schematic.appendComponent(Ground);
-
-    Lseries.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor, 0, 50, 50);
-    Lseries.val["L"] = num2str(Specs.Zin / w0, Inductance);
-    Schematic.appendComponent(Lseries);
-
-    Schematic.appendWire(Cshunt.ID, 0, NI1.ID, 0);     // C to node
-    Schematic.appendWire(Cshunt.ID, 1, Ground.ID, 0); // C to ground
-    Schematic.appendWire(Lseries.ID, 1, NI1.ID, 0);    // Lseries to node
-  } else {
-    // Distributed: transmission line
-    TL.setParams(QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]), TransmissionLine, 0, 50, 50);
-    TL.val["Z0"] = num2str(Specs.Zin, Resistance);
-    TL.val["Length"] = ConvertLengthFromM("mm", l4);
-    Schematic.appendComponent(TL);
-    Schematic.appendWire(TL.ID, 1, NI1.ID, 0);
-  }
-
-         // Add another node for the bottom side of the TLIN. This is also needed for the lumped implementation
-  NI2.setParams(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50, 100);
-  Schematic.appendNode(NI2);
-  if (Specs.Lumped_TL) {
-    Schematic.appendWire(Lseries.ID, 0, NI2.ID, 0); // Connect the lower side of the TLIN to the new node
-  } else {
-    Schematic.appendWire(TL.ID, 0, NI2.ID, 0); // Connect the lower side of the TLIN to the new node
-  }
-         // 1st shunt resistor and ground
-  Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 50, 150);
-  Res2.val["R"] = num2str(Specs.Zin, Resistance);
-  Schematic.appendComponent(Res2);
-
-  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 50, 205);
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   180, 50, -75);
   Schematic.appendComponent(Ground);
 
-  Schematic.appendWire(Res2.ID, 0, Ground.ID, 0); // R to ground
-  Schematic.appendWire(Res2.ID, 1, NI2.ID, 0); // Connection to the node
+  Lseries.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
+                    Inductor, 0, 50, 50);
+  Lseries.val["L"] = num2str(Specification.Zin / w0, Inductance);
+  Schematic.appendComponent(Lseries);
 
-         // 2nd shunt resistor and ground
-  Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0, 100, 150);
+  Schematic.appendWire(Cshunt.ID, 0, NI1.ID, 0);
+  Schematic.appendWire(Cshunt.ID, 1, Ground.ID, 0);
+  Schematic.appendWire(Lseries.ID, 1, NI1.ID, 0);
+
+  // Second node (bottom side of lumped TL)
+  NI2.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50,
+      100);
+  Schematic.appendNode(NI2);
+  Schematic.appendWire(Lseries.ID, 0, NI2.ID, 0);
+
+  // 1st shunt resistor and ground
+  Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 50, 150);
+  Res2.val["R"] = num2str(Specification.Zin, Resistance);
+  Schematic.appendComponent(Res2);
+
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   0, 50, 205);
+  Schematic.appendComponent(Ground);
+
+  Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);
+  Schematic.appendWire(Res2.ID, 1, NI2.ID, 0);
+
+  // 2nd shunt resistor and ground
+  Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 100, 150);
   Res3.val["R"] = num2str(R, Resistance);
   Schematic.appendComponent(Res3);
 
-  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 100, 205);
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   0, 100, 205);
   Schematic.appendComponent(Ground);
 
-  Schematic.appendWire(Res3.ID, 0, Ground.ID, 0); // R to ground
-  Schematic.appendWire(Res3.ID, 1, NI2.ID, 0); // Connection to the node
+  Schematic.appendWire(Res3.ID, 0, Ground.ID, 0);
+  Schematic.appendWire(Res3.ID, 1, NI2.ID, 0);
 
+  // Lumped TL output shunt C and GND
+  Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
+                   Capacitor, 0, 150, 150);
+  Cshunt.val["C"] = num2str(1 / (Specification.Zin * w0), Capacitance);
+  Schematic.appendComponent(Cshunt);
 
-         // How first node connects to rest
-  if (Specs.Lumped_TL) {
-    // Additional lumped section output shunt C and GND
-    Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 0, 150, 150);
-    Cshunt.val["C"] = num2str(1 / (Specs.Zin * w0), Capacitance);
-    Schematic.appendComponent(Cshunt);
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   0, 150, 205);
+  Schematic.appendComponent(Ground);
 
-    Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND, 0, 150, 205);
-    Schematic.appendComponent(Ground);
+  Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
+  Schematic.appendWire(Cshunt.ID, 1, NI2.ID, 0);
 
-    Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
-    Schematic.appendWire(Cshunt.ID, 1, NI2.ID, 0);
-  }
-
-         // Series resistor from input node to output node
-  Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 90, 100, 0);
+  // Series resistor from input node to output node
+  Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 90, 100, 0);
   Res1.val["R"] = num2str(R, Resistance);
   Schematic.appendComponent(Res1);
 
@@ -134,18 +153,200 @@ void AttenuatorDesigner::QW_ShuntAttenuator() {
 
   // Zout label
   QString Zout_label = QString("Zout = %1 \u03A9").arg(num2str(Zout));
-  QGraphicsTextItem* label2 = new QGraphicsTextItem(Zout_label);
+  QGraphicsTextItem *label2 = new QGraphicsTextItem(Zout_label);
   label2->setDefaultTextColor(Qt::red);
   label2->setFont(QFont("Arial", 6, QFont::Bold));
   label2->setPos(130, -20);
   Schematic.appendText(label2);
 
-
-         // Output terminal
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 200, 0);
-  TermSpar2.val["Z"] = num2str(Specs.Zin, Resistance);
+  // Output terminal
+  ComponentInfo TermSpar2;
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+                      Term, 180, 200, 0);
+  TermSpar2.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   Schematic.appendWire(Res1.ID, 1, TermSpar2.ID, 0);
 }
 
+void QW_ShuntAttenuator::buildQW_Shunt_IdealTL() {
+  ComponentInfo Ground, Res1, Res2, Res3, TL;
+  NodeInfo NI1, NI2;
+
+  // Input terminal
+  ComponentInfo TermSparIN(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
+  Schematic.appendComponent(TermSparIN);
+
+  // First node (input side)
+  NI1.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50, 0);
+  Schematic.appendNode(NI1);
+
+  // Input terminal to first node
+  Schematic.appendWire(TermSparIN.ID, 0, NI1.ID, 0);
+
+  // Ideal transmission line
+  TL.setParams(
+      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
+      TransmissionLine, 0, 50, 50);
+  TL.val["Z0"] = num2str(Specification.Zin, Resistance);
+  TL.val["Length"] = ConvertLengthFromM("mm", l4);
+  Schematic.appendComponent(TL);
+  Schematic.appendWire(TL.ID, 1, NI1.ID, 0);
+
+  // Second node (bottom side of TL)
+  NI2.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50,
+      100);
+  Schematic.appendNode(NI2);
+  Schematic.appendWire(TL.ID, 0, NI2.ID, 0);
+
+  // 1st shunt resistor and ground
+  Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 50, 150);
+  Res2.val["R"] = num2str(Specification.Zin, Resistance);
+  Schematic.appendComponent(Res2);
+
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   0, 50, 205);
+  Schematic.appendComponent(Ground);
+
+  Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);
+  Schematic.appendWire(Res2.ID, 1, NI2.ID, 0);
+
+  // 2nd shunt resistor and ground
+  Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 100, 150);
+  Res3.val["R"] = num2str(R, Resistance);
+  Schematic.appendComponent(Res3);
+
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   0, 100, 205);
+  Schematic.appendComponent(Ground);
+
+  Schematic.appendWire(Res3.ID, 0, Ground.ID, 0);
+  Schematic.appendWire(Res3.ID, 1, NI2.ID, 0);
+
+  // Series resistor from input node to output node
+  Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 90, 100, 0);
+  Res1.val["R"] = num2str(R, Resistance);
+  Schematic.appendComponent(Res1);
+
+  Schematic.appendWire(Res1.ID, 0, NI1.ID, 0);
+
+  // Zout label
+  QString Zout_label = QString("Zout = %1 \u03A9").arg(num2str(Zout));
+  QGraphicsTextItem *label2 = new QGraphicsTextItem(Zout_label);
+  label2->setDefaultTextColor(Qt::red);
+  label2->setFont(QFont("Arial", 6, QFont::Bold));
+  label2->setPos(130, -20);
+  Schematic.appendText(label2);
+
+  // Output terminal
+  ComponentInfo TermSpar2;
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+                      Term, 180, 200, 0);
+  TermSpar2.val["Z"] = num2str(Specification.Zin, Resistance);
+  Schematic.appendComponent(TermSpar2);
+
+  Schematic.appendWire(Res1.ID, 1, TermSpar2.ID, 0);
+}
+
+void QW_ShuntAttenuator::buildQW_Shunt_Microstrip() {
+  ComponentInfo Ground, Res1, Res2, Res3, MLIN;
+  NodeInfo NI1, NI2;
+
+  // Input terminal
+  ComponentInfo TermSparIN(
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
+  Schematic.appendComponent(TermSparIN);
+
+  // First node (input side)
+  NI1.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50, 0);
+  Schematic.appendNode(NI1);
+
+  // Input terminal to first node
+  Schematic.appendWire(TermSparIN.ID, 0, NI1.ID, 0);
+
+  // Microstrip transmission line
+  MicrostripClass MSL;
+  MSL.Substrate = Specification.MS_Subs;
+  MSL.synthesizeMicrostrip(Specification.Zin, l4 * 1e3,
+                           Specification.Frequency);
+
+  MLIN.setParams(
+      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
+      MicrostripLine, 0, 50, 50);
+  MLIN.val["Width"] = ConvertLengthFromM("mm", MSL.Results.width);
+  MLIN.val["Length"] = ConvertLengthFromM("mm", MSL.Results.length * 1e-3);
+  MLIN.val["er"] = num2str(Specification.MS_Subs.er);
+  MLIN.val["h"] = num2str(Specification.MS_Subs.height);
+  MLIN.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+  MLIN.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+  MLIN.val["tand"] = num2str(Specification.MS_Subs.tand);
+  Schematic.appendComponent(MLIN);
+  Schematic.appendWire(MLIN.ID, 1, NI1.ID, 0);
+
+  // Second node (bottom side of TL)
+  NI2.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 50,
+      100);
+  Schematic.appendNode(NI2);
+  Schematic.appendWire(MLIN.ID, 0, NI2.ID, 0);
+
+  // 1st shunt resistor and ground
+  Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 50, 150);
+  Res2.val["R"] = num2str(Specification.Zin, Resistance);
+  Schematic.appendComponent(Res2);
+
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   0, 50, 205);
+  Schematic.appendComponent(Ground);
+
+  Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);
+  Schematic.appendWire(Res2.ID, 1, NI2.ID, 0);
+
+  // 2nd shunt resistor and ground
+  Res3.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 0, 100, 150);
+  Res3.val["R"] = num2str(R, Resistance);
+  Schematic.appendComponent(Res3);
+
+  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
+                   0, 100, 205);
+  Schematic.appendComponent(Ground);
+
+  Schematic.appendWire(Res3.ID, 0, Ground.ID, 0);
+  Schematic.appendWire(Res3.ID, 1, NI2.ID, 0);
+
+  // Series resistor from input node to output node
+  Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
+                 Resistor, 90, 100, 0);
+  Res1.val["R"] = num2str(R, Resistance);
+  Schematic.appendComponent(Res1);
+
+  Schematic.appendWire(Res1.ID, 0, NI1.ID, 0);
+
+  // Zout label
+  QString Zout_label = QString("Zout = %1 \u03A9").arg(num2str(Zout));
+  QGraphicsTextItem *label2 = new QGraphicsTextItem(Zout_label);
+  label2->setDefaultTextColor(Qt::red);
+  label2->setFont(QFont("Arial", 6, QFont::Bold));
+  label2->setPos(130, -20);
+  Schematic.appendText(label2);
+
+  // Output terminal
+  ComponentInfo TermSpar2;
+  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
+                      Term, 180, 200, 0);
+  TermSpar2.val["Z"] = num2str(Specification.Zin, Resistance);
+  Schematic.appendComponent(TermSpar2);
+
+  Schematic.appendWire(Res1.ID, 1, TermSpar2.ID, 0);
+}

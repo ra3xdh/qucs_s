@@ -18,22 +18,23 @@
 #ifndef COUPLEDLINEBANDPASSFILTER_H
 #define COUPLEDLINEBANDPASSFILTER_H
 
-#include "LowpassPrototypeCoeffs.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
-#include <QPen>
+#include "LowpassPrototypeCoeffs.h"
 
 class CoupledLineBandpassFilter : public Network {
-public:
-  CoupledLineBandpassFilter();
-  virtual ~CoupledLineBandpassFilter();
-  CoupledLineBandpassFilter(FilterSpecifications);
-  void synthesize();
+    public:
+        CoupledLineBandpassFilter();
+        virtual ~CoupledLineBandpassFilter();
+        CoupledLineBandpassFilter(FilterSpecifications);
+        void synthesize();
 
-private:
-  struct FilterSpecifications Specification;
+    private:
+        struct FilterSpecifications Specification;
+
+        void buildFilter_IdealTL(const std::deque<double>& gi);
+        void buildFilter_Microstrip(const std::deque<double>& gi);
 };
 
 #endif // COUPLEDLINEBANDPASSFILTER_H

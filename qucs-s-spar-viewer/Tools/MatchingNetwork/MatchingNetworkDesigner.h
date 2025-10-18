@@ -14,21 +14,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef MATCHINGNETWORKDESIGNER_H
 #define MATCHINGNETWORKDESIGNER_H
 
-
 #include "../../Schematic/Network.h"
-#include "../../Schematic/SchematicContent.h"
 #include "../../Schematic/component.h"
 
-#include "Lsection.h"
-#include "SingleStub.h"
-#include "DoubleStub.h"
-#include "MultisectionQuarterWave.h"
 #include "CascadedLCSections.h"
+#include "DoubleStub.h"
 #include "Lambda8Lambda4.h"
+#include "Lsection.h"
+#include "MultisectionQuarterWave.h"
+#include "SingleStub.h"
 
 class MatchingNetworkDesigner : public Network {
 public:
@@ -46,9 +44,10 @@ private:
   QList<WireInfo> Wires;
   QList<NodeInfo> Nodes;
 
-  SchematicContent synthesize_One_Port(MatchingNetworkDesignParameters NetworkParams, double f_match);
+  SchematicContent
+  synthesize_One_Port(MatchingNetworkDesignParameters NetworkParams,
+                      double f_match);
   void synthesize_Two_Ports();
-
 };
 
 #endif // MATCHINGNETWORKDESIGNTOOL_H

@@ -15,16 +15,13 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef QUARTERWAVEFILTERS_H
 #define QUARTERWAVEFILTERS_H
 
-#include "../Filtering/LowpassPrototypeCoeffs.h"
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "../../Misc/general.h"
+#include "../Filtering/LowpassPrototypeCoeffs.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
-#include <QPen>
 
 class QuarterWaveFilters : public Network {
 public:
@@ -35,6 +32,9 @@ public:
 
 private:
   struct FilterSpecifications Specification;
+
+  void buildFilter_Microstrip(const std::deque<double>& gi);
+  void buildFilter_IdealTL(const std::deque<double>& gi);
 };
 
 #endif // QUARTERWAVEFILTERS_H

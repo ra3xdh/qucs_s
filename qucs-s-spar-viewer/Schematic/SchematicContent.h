@@ -18,13 +18,13 @@
 #ifndef SCHEMATICCONTENT_H
 #define SCHEMATICCONTENT_H
 
-#include <QPen>
 #include <QGraphicsTextItem>
+#include <QPen>
 #include <QRegularExpression>
 
+#include "../Misc/general.h"
 #include "infoclasses.h"
 #include "structures.h"
-#include "../Misc/general.h"
 
 class Component;
 
@@ -32,11 +32,7 @@ class SchematicContent {
 public:
   SchematicContent();
   ~SchematicContent();
-  struct NetworkInfo
-  getLadder(); // Returns a ladder code for using the internal
-               // simulator. It's faster than using Qucs, but it is
-               // restricted to ladder networks
-  QString getQucsNetlist();
+
   QString getSParameterNetlist();
   void setNetlist(QString);
   QString Name;
@@ -58,8 +54,7 @@ public:
   void appendWire(QString, int, QString, int);
   void appendWire(QString, int, QString, int, QColor);
   void appendNode(NodeInfo);
-  void appendText(QGraphicsTextItem * text);
-
+  void appendText(QGraphicsTextItem* text);
 
   double getZin();
   double getZout();
@@ -72,14 +67,14 @@ public:
   QList<WireInfo> getWires();
   QList<NodeInfo> getNodes();
   void setNodes(QList<NodeInfo> N);
-  QList<QGraphicsTextItem *> getTexts();
+  QList<QGraphicsTextItem*> getTexts();
 
-  QMap<ComponentType, int>  NumberComponents; // List for assigning IDs to the filter components
+  QMap<ComponentType, int>
+      NumberComponents; // List for assigning IDs to the filter components
   unsigned int NumberWires;
 
-
 private:
-  QList<QGraphicsTextItem *> Texts;
+  QList<QGraphicsTextItem*> Texts;
   QString Description;
   QString netlist;
 };

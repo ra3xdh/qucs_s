@@ -17,7 +17,7 @@
 
 #include "./../../component.h"
 
-void Component::paintShortStub(QPainter *painter) {
+void Component::paintShortStub(QPainter* painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);
@@ -39,8 +39,9 @@ void Component::paintShortStub(QPainter *painter) {
   }
 
   QPoint OriginText(10, -10);
-  if (Rotation != 0)
+  if (Rotation != 0) {
     OriginText.setX(-10), OriginText.setY(10);
+  }
 
   painter->drawText(QRect(OriginText, QPoint(100, 100)),
                     QString("%1").arg(this->ID));

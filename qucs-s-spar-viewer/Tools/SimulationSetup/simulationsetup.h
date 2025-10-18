@@ -18,37 +18,37 @@
 #ifndef SIMULATIONSETUP_H
 #define SIMULATIONSETUP_H
 
-#include <QWidget>
-#include <QGridLayout>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QDoubleSpinBox>
-#include <QSpinBox>
-#include <QComboBox>
-#include <QTabWidget>
-#include <QGroupBox>
-#include <QRadioButton>
-#include <QButtonGroup>
 #include "../../Misc/general.h"
 #include "../../Schematic/infoclasses.h"
+#include <QButtonGroup>
+#include <QComboBox>
+#include <QDoubleSpinBox>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QRadioButton>
+#include <QSpinBox>
+#include <QTabWidget>
+#include <QVBoxLayout>
+#include <QWidget>
 
-// Needed for having the substrate structures for each transmission line implementation
+// Needed for having the substrate structures for each transmission line
+// implementation
 #include "../TransmissionLineSynthesis/Microstrip.h"
-
 
 class SimulationSetup : public QWidget {
   Q_OBJECT
 public:
-  SimulationSetup(QWidget *parent = nullptr);
+  SimulationSetup(QWidget* parent = nullptr);
   ~SimulationSetup();
 
-         // Frequency sweep methods
+  // Frequency sweep methods
   double getFstart();
   double getFstop();
   int getNpoints();
 
-         // Substrate properties methods
+  // Substrate properties methods
   TransmissionLineType getTransmissionLineType();
   double getSubstrateThickness();
   double getSubstratePermittivity();
@@ -62,24 +62,24 @@ public:
 
 private:
   // Tab widget
-  QTabWidget *tabWidget;
+  QTabWidget* tabWidget;
 
-         // Frequency sweep widgets
+  // Frequency sweep widgets
   QDoubleSpinBox *fstartSpinBox, *fstopSpinBox;
   QComboBox *fstartScaleComboBox, *fstopScaleComboBox;
-  QSpinBox *npointsSpinBox;
+  QSpinBox* npointsSpinBox;
 
-         // Substrate properties widgets
-  QComboBox *transmissionLineComboBox;
-  QDoubleSpinBox *substrateThicknessSpinBox;
-  QDoubleSpinBox *substratePermittivitySpinBox;
-  QDoubleSpinBox *substrateLossTangentSpinBox;
-  QDoubleSpinBox *conductorThicknessSpinBox;
-  QDoubleSpinBox *conductorConductivitySpinBox;
-  QDoubleSpinBox *groundPlaneThicknessSpinBox;
-  QLabel *imageLabel;
+  // Substrate properties widgets
+  QComboBox* transmissionLineComboBox;
+  QDoubleSpinBox* substrateThicknessSpinBox;
+  QDoubleSpinBox* substratePermittivitySpinBox;
+  QDoubleSpinBox* substrateLossTangentSpinBox;
+  QDoubleSpinBox* conductorThicknessSpinBox;
+  QDoubleSpinBox* conductorConductivitySpinBox;
+  QDoubleSpinBox* groundPlaneThicknessSpinBox;
+  QLabel* imageLabel;
 
-         // Helper methods
+  // Helper methods
   QWidget* createFrequencySweepTab();
   QWidget* createSubstratePropertiesTab();
   void updateImageDisplay();
