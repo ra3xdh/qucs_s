@@ -35,6 +35,10 @@ SchematicContent::SchematicContent() {
   NumberComponents[ShortStub] = 0;
   NumberComponents[SPAR_Block] = 0;
   NumberWires = 0;
+
+  // Scale factors for QucsatorRF export
+  scale_x_QucsS_export = 2;
+  scale_y_QucsS_export = 1.1;
 }
 
 SchematicContent::~SchematicContent() {}
@@ -626,4 +630,11 @@ QString SchematicContent::getZoutString() {
 
 void SchematicContent::appendText(QGraphicsTextItem *text) {
   Texts.append(text);
+}
+
+// Set frequency options (for exporting)
+void SchematicContent::setFrequencySweep(QString f1, QString f2, int N) {
+  f_start = f1;
+  f_stop = f2;
+  n_points = N;
 }

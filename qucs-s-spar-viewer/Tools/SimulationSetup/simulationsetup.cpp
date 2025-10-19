@@ -17,8 +17,8 @@
 
 #include "simulationsetup.h"
 
-SimulationSetup::SimulationSetup(QWidget* parent) : QWidget(parent) {
-  QVBoxLayout* mainLayout = new QVBoxLayout();
+SimulationSetup::SimulationSetup(QWidget *parent) : QWidget(parent) {
+  QVBoxLayout *mainLayout = new QVBoxLayout();
 
   // Create tab widget
   tabWidget = new QTabWidget();
@@ -59,13 +59,13 @@ SimulationSetup::SimulationSetup(QWidget* parent) : QWidget(parent) {
 
 SimulationSetup::~SimulationSetup() {}
 
-QWidget* SimulationSetup::createFrequencySweepTab() {
-  QWidget* frequencyWidget     = new QWidget();
-  QGridLayout* frequencyLayout = new QGridLayout();
+QWidget *SimulationSetup::createFrequencySweepTab() {
+  QWidget *frequencyWidget = new QWidget();
+  QGridLayout *frequencyLayout = new QGridLayout();
 
   // Start frequency
-  QLabel* fstartLabel = new QLabel("Start freq");
-  fstartSpinBox       = new QDoubleSpinBox();
+  QLabel *fstartLabel = new QLabel("Start freq");
+  fstartSpinBox = new QDoubleSpinBox();
   fstartSpinBox->setMinimum(0);
   fstartSpinBox->setMaximum(1e7);
   fstartSpinBox->setValue(10);
@@ -82,8 +82,8 @@ QWidget* SimulationSetup::createFrequencySweepTab() {
   frequencyLayout->addWidget(fstartScaleComboBox, 0, 2);
 
   // Stop frequency
-  QLabel* fstopLabel = new QLabel("Stop freq");
-  fstopSpinBox       = new QDoubleSpinBox();
+  QLabel *fstopLabel = new QLabel("Stop freq");
+  fstopSpinBox = new QDoubleSpinBox();
   fstopSpinBox->setMinimum(0);
   fstopSpinBox->setMaximum(1e7);
   fstopSpinBox->setValue(2000);
@@ -100,8 +100,8 @@ QWidget* SimulationSetup::createFrequencySweepTab() {
   frequencyLayout->addWidget(fstopScaleComboBox, 1, 2);
 
   // Number of points
-  QLabel* npointsLabel = new QLabel("Number of points");
-  npointsSpinBox       = new QSpinBox();
+  QLabel *npointsLabel = new QLabel("Number of points");
+  npointsSpinBox = new QSpinBox();
   npointsSpinBox->setMinimum(10);
   npointsSpinBox->setMaximum(1e6);
   npointsSpinBox->setValue(200);
@@ -116,18 +116,18 @@ QWidget* SimulationSetup::createFrequencySweepTab() {
   return frequencyWidget;
 }
 
-QWidget* SimulationSetup::createSubstratePropertiesTab() {
-  QWidget* substrateWidget = new QWidget();
+QWidget *SimulationSetup::createSubstratePropertiesTab() {
+  QWidget *substrateWidget = new QWidget();
   substrateWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-  QVBoxLayout* substrateLayout = new QVBoxLayout();
+  QVBoxLayout *substrateLayout = new QVBoxLayout();
 
   // Substrate parameters
-  QGroupBox* parametersGroupBox = new QGroupBox("Substrate Parameters");
-  QGridLayout* parametersLayout = new QGridLayout();
+  QGroupBox *parametersGroupBox = new QGroupBox("Substrate Parameters");
+  QGridLayout *parametersLayout = new QGridLayout();
 
   // Transmission line type selection
-  QLabel* transmissionLineLabel = new QLabel("Transmission Line Type");
-  transmissionLineComboBox      = new QComboBox();
+  QLabel *transmissionLineLabel = new QLabel("Transmission Line Type");
+  transmissionLineComboBox = new QComboBox();
   transmissionLineComboBox->addItem("Microstrip");
   transmissionLineComboBox->addItem("Stripline");
   transmissionLineComboBox->setCurrentIndex(0); // Default to Microstrip
@@ -146,7 +146,7 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   parametersLayout->addWidget(imageLabel, 0, 2, 7, 1); // Span 2 rows
 
   // Substrate thickness
-  QLabel* thicknessLabel    = new QLabel("Substrate thickness (H) (mm)");
+  QLabel *thicknessLabel = new QLabel("Substrate thickness (H) (mm)");
   substrateThicknessSpinBox = new QDoubleSpinBox();
   substrateThicknessSpinBox->setMinimum(0.1);
   substrateThicknessSpinBox->setMaximum(20);
@@ -158,7 +158,7 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   parametersLayout->addWidget(substrateThicknessSpinBox, 1, 1);
 
   // Relative permittivity
-  QLabel* permittivityLabel    = new QLabel("Relative permittivity (εᵣ)");
+  QLabel *permittivityLabel = new QLabel("Relative permittivity (εᵣ)");
   substratePermittivitySpinBox = new QDoubleSpinBox();
   substratePermittivitySpinBox->setMinimum(1.0);
   substratePermittivitySpinBox->setMaximum(20.0);
@@ -170,7 +170,7 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   parametersLayout->addWidget(substratePermittivitySpinBox, 2, 1);
 
   // Loss tangent
-  QLabel* lossTangentLabel    = new QLabel("Loss tangent (tan δ)");
+  QLabel *lossTangentLabel = new QLabel("Loss tangent (tan δ)");
   substrateLossTangentSpinBox = new QDoubleSpinBox();
   substrateLossTangentSpinBox->setMinimum(0.0);
   substrateLossTangentSpinBox->setMaximum(1.0);
@@ -182,8 +182,8 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   parametersLayout->addWidget(substrateLossTangentSpinBox, 3, 1);
 
   // Conductor thickness
-  QLabel* conductorThicknessLabel = new QLabel("Conductor thickness (T) (μm)");
-  conductorThicknessSpinBox       = new QDoubleSpinBox();
+  QLabel *conductorThicknessLabel = new QLabel("Conductor thickness (T) (μm)");
+  conductorThicknessSpinBox = new QDoubleSpinBox();
   conductorThicknessSpinBox->setMinimum(0.1);
   conductorThicknessSpinBox->setMaximum(1000.0);
   conductorThicknessSpinBox->setDecimals(1);
@@ -194,7 +194,7 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   parametersLayout->addWidget(conductorThicknessSpinBox, 4, 1);
 
   // Conductor conductivity
-  QLabel* conductorConductivityLabel =
+  QLabel *conductorConductivityLabel =
       new QLabel("Conductor conductivity (S/m)");
   conductorConductivitySpinBox = new QDoubleSpinBox();
   conductorConductivitySpinBox->setMinimum(1e6);
@@ -207,7 +207,7 @@ QWidget* SimulationSetup::createSubstratePropertiesTab() {
   parametersLayout->addWidget(conductorConductivitySpinBox, 5, 1);
 
   // Ground plane thickness (for stripline)
-  QLabel* groundPlaneThicknessLabel = new QLabel("Ground plane thickness (μm)");
+  QLabel *groundPlaneThicknessLabel = new QLabel("Ground plane thickness (μm)");
   groundPlaneThicknessSpinBox = new QDoubleSpinBox();
   groundPlaneThicknessSpinBox->setMinimum(0.1);
   groundPlaneThicknessSpinBox->setMaximum(1000.0);
@@ -271,24 +271,36 @@ void SimulationSetup::updateImageDisplay() {
 }
 
 double SimulationSetup::getFstart() {
-  double freq  = fstartSpinBox->value();
+  double freq = fstartSpinBox->value();
   QString unit = fstartScaleComboBox->currentText();
   double scale = getFreqScale(unit);
   freq /= scale;
   return freq;
 }
 
+QString SimulationSetup::getFstart_as_Text() {
+  double freq = fstartSpinBox->value();
+  QString unit = fstartScaleComboBox->currentText();
+  QString text = QString("%1 %2").arg(freq).arg(unit);
+  return text;
+}
+
 double SimulationSetup::getFstop() {
-  double freq  = fstopSpinBox->value();
+  double freq = fstopSpinBox->value();
   QString unit = fstopScaleComboBox->currentText();
   double scale = getFreqScale(unit);
   freq /= scale;
   return freq;
 }
 
-int SimulationSetup::getNpoints() {
-  return npointsSpinBox->value();
+QString SimulationSetup::getFstop_as_Text() {
+  double freq = fstopSpinBox->value();
+  QString unit = fstopScaleComboBox->currentText();
+  QString text = QString("%1 %2").arg(freq).arg(unit);
+  return text;
 }
+
+int SimulationSetup::getNpoints() { return npointsSpinBox->value(); }
 
 TransmissionLineType SimulationSetup::getTransmissionLineType() {
   return transmissionLineComboBox->currentIndex() == 0
@@ -325,14 +337,14 @@ void SimulationSetup::updateSubstrateDefinition() {
   // Save stack up data
   if (transmissionLineComboBox->currentText() == QString("Microstrip")) {
     // Microstrip substrate
-    MS_Subs.er     = substratePermittivitySpinBox->value();
+    MS_Subs.er = substratePermittivitySpinBox->value();
     MS_Subs.height = substrateThicknessSpinBox->value() *
                      1e-3; // Input in mm -> Result in meters
     MS_Subs.tand = substrateLossTangentSpinBox->value();
 
     // Metal properties
     MS_Subs.MetalConductivity = conductorConductivitySpinBox->value();
-    MS_Subs.MetalThickness    = conductorThicknessSpinBox->value() *
+    MS_Subs.MetalThickness = conductorThicknessSpinBox->value() *
                              1e-6; // Input in um -> Result in meters
   }
 
@@ -351,6 +363,4 @@ void SimulationSetup::onTransmissionLineTypeChanged() {
   update();
 }
 
-MS_Substrate SimulationSetup::get_MS_Substrate() {
-  return MS_Subs;
-}
+MS_Substrate SimulationSetup::get_MS_Substrate() { return MS_Subs; }

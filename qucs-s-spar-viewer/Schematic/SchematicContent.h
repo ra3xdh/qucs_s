@@ -27,56 +27,73 @@
 #include "structures.h"
 
 class Component;
-
 class SchematicContent {
-public:
-  SchematicContent();
-  ~SchematicContent();
+    public:
+        SchematicContent();
+        ~SchematicContent();
 
-  QString getSParameterNetlist();
-  void setNetlist(QString);
-  QString Name;
-  QString Type;
+        QString getSParameterNetlist();
+        void setNetlist(QString);
+        QString Name;
+        QString Type;
 
-  QList<ComponentInfo> Comps;
-  QList<WireInfo> Wires;
-  QList<NodeInfo> Nodes;
+        QList<ComponentInfo> Comps;
+        QList<WireInfo> Wires;
+        QList<NodeInfo> Nodes;
 
-private:
-  void assignNetToWiresConnectedToNode(QString, QString);
+        QString export2QucsS(); // Convert the schematic content to Qucs-S format
 
-public:
-  // Setter getter functions
+        void setFrequencySweep(QString, QString, int);
 
-  // Components, wires and nodes
-  void appendComponent(ComponentInfo);
-  void appendWire(WireInfo);
-  void appendWire(QString, int, QString, int);
-  void appendWire(QString, int, QString, int, QColor);
-  void appendNode(NodeInfo);
-  void appendText(QGraphicsTextItem* text);
+    private:
+        void assignNetToWiresConnectedToNode(QString, QString);
 
-  double getZin();
-  double getZout();
-  QString getZinString();
-  QString getZoutString();
+        // Frequency sweep settings (required for exporting)
+        QString f_start, f_stop;
+        int n_points;
 
-  QList<ComponentInfo> getComponents();
-  void setComponents(QList<ComponentInfo> C);
+    public:
+        // Setter getter functions
 
-  QList<WireInfo> getWires();
-  QList<NodeInfo> getNodes();
-  void setNodes(QList<NodeInfo> N);
-  QList<QGraphicsTextItem*> getTexts();
+        // Components, wires and nodes
+        void appendComponent(ComponentInfo);
+        void appendWire(WireInfo);
+        void appendWire(QString, int, QString, int);
+        void appendWire(QString, int, QString, int, QColor);
+        void appendNode(NodeInfo);
+        void appendText(QGraphicsTextItem* text);
 
-  QMap<ComponentType, int>
-      NumberComponents; // List for assigning IDs to the filter components
-  unsigned int NumberWires;
+        double getZin();
+        double getZout();
+        QString getZinString();
+        QString getZoutString();
 
-private:
-  QList<QGraphicsTextItem*> Texts;
-  QString Description;
-  QString netlist;
+        QList<ComponentInfo> getComponents();
+        void setComponents(QList<ComponentInfo> C);
+
+        QList<WireInfo> getWires();
+        QList<NodeInfo> getNodes();
+        void setNodes(QList<NodeInfo> N);
+        QList<QGraphicsTextItem*> getTexts();
+
+        QMap<ComponentType, int>
+            NumberComponents; // List for assigning IDs to the filter components
+        unsigned int NumberWires;
+
+    private:
+        QList<QGraphicsTextItem*> Texts;
+        QString Description;
+        QString netlist;
+
+    private:
+        // Qucs-S parsing functions
+
+        int scale_x_QucsS_export, scale_y_QucsS_export;
+        QString parseTerm_QucsS(ComponentInfo);
+        QString parseResistor_QucsS(ComponentInfo);
+        QString parseInductor_QucsS(ComponentInfo);
+        QString parseCapacitor_QucsS(ComponentInfo);
+        QString parseGND_QucsS(ComponentInfo);
 };
 
 #endif // SCHEMATICCONTENT_H
