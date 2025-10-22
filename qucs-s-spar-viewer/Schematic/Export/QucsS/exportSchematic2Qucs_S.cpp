@@ -32,9 +32,17 @@ QString SchematicContent::export2QucsS() {
   // Qucs-S header
   qucsNetlist += QString("<Qucs Schematic %1>\n").arg(PACKAGE_VERSION);
 
-  ///////////////////////////////////////////////////////////////
   // Process components
-  qucsNetlist += QString("<Components>\n");
+  qucsNetlist += processComponents_QucsS(Comps);
+
+  qDebug() << qucsNetlist;
+  return qucsNetlist;
+}
+
+QString SchematicContent::processComponents_QucsS(QList<ComponentInfo> Comps) {
+
+  QString qucs_S_Components_Netlist = QString("");
+  qucs_S_Components_Netlist += QString("<Components>\n");
 
   // Coordinates of the bottom left (needed for putting the simulation box, etc.
   // there)
@@ -82,13 +90,13 @@ QString SchematicContent::export2QucsS() {
     }
 
     if (!componentLine.isEmpty()) {
-      qucsNetlist += componentLine;
+      qucs_S_Components_Netlist += componentLine;
     }
   }
 
   // Add S-parameter simulation box
   y_bottom += 150;
-  qucsNetlist +=
+  qucs_S_Components_Netlist +=
       QString("<.SP SP1 1 %1 %2 0 60 0 0 \"log\" 1 \"%3\" 1 \"%4\" 1 "
               "\"%5\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n")
           .arg(x_bottom)
@@ -101,36 +109,37 @@ QString SchematicContent::export2QucsS() {
 
   // Add equations
   if (this->Type == QString("Power Combiner")) {
-    qucsNetlist += QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S11_dB=dB(S[1,1])\" "
-                           "1 \"S21_dB=dB(S[2,1])\" 1 \"S31_dB=dB(S[3,1])\" 1 "
-                           "\"S32_dB=dB(S[3,2])\" 1 \"yes\" 0>\n")
-                       .arg(x_bottom)
-                       .arg(y_bottom);
+    qucs_S_Components_Netlist +=
+        QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S11_dB=dB(S[1,1])\" "
+                "1 \"S21_dB=dB(S[2,1])\" 1 \"S31_dB=dB(S[3,1])\" 1 "
+                "\"S32_dB=dB(S[3,2])\" 1 \"yes\" 0>\n")
+            .arg(x_bottom)
+            .arg(y_bottom);
 
   } else if (this->Type == QString("Matching-1-port")) {
-    qucsNetlist +=
+    qucs_S_Components_Netlist +=
         QString(
             "<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n")
             .arg(x_bottom)
             .arg(y_bottom);
 
   } else if (this->Type == QString("Matching-2-ports")) {
-    qucsNetlist += QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S21_dB=dB(S[2,1])\" "
-                           "1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n")
-                       .arg(x_bottom)
-                       .arg(y_bottom);
+    qucs_S_Components_Netlist +=
+        QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S21_dB=dB(S[2,1])\" "
+                "1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n")
+            .arg(x_bottom)
+            .arg(y_bottom);
   } else {
     // Filter
-    qucsNetlist += QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S21_dB=dB(S[2,1])\" "
-                           "1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n")
-                       .arg(x_bottom)
-                       .arg(y_bottom);
+    qucs_S_Components_Netlist +=
+        QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S21_dB=dB(S[2,1])\" "
+                "1 \"S11_dB=dB(S[1,1])\" 1 \"yes\" 0>\n")
+            .arg(x_bottom)
+            .arg(y_bottom);
   }
 
-  qucsNetlist += QString("</Components>\n"); // Close the components section
+  qucs_S_Components_Netlist +=
+      QString("</Components>\n"); // Close the components section
 
-  ///////////////////////////////////////////////////////////////
-
-  qDebug() << qucsNetlist;
-  return qucsNetlist;
+  return qucs_S_Components_Netlist;
 }

@@ -88,6 +88,7 @@ class SchematicContent {
     private:
         // Qucs-S parsing functions
 
+        QString processComponents_QucsS(QList<ComponentInfo> Comps);
         int scale_x_QucsS_export, scale_y_QucsS_export;
         QString parseTerm_QucsS(ComponentInfo);
         QString parseResistor_QucsS(ComponentInfo);
