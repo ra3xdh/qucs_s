@@ -1915,7 +1915,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
 
 void MouseActions::mirrorXMovingElements(Schematic* Doc)
 {
-    if (movingElements.empty()) {
+    if (!movingState.selection.isValid()) {
         return;
     }
 
@@ -1929,7 +1929,7 @@ void MouseActions::mirrorXMovingElements(Schematic* Doc)
 
 void MouseActions::mirrorYMovingElements(Schematic* Doc)
 {
-    if (movingElements.empty()) {
+    if (!movingState.selection.isValid()) {
         return;
     }
 
@@ -1943,7 +1943,7 @@ void MouseActions::mirrorYMovingElements(Schematic* Doc)
 
 void MouseActions::rotateMovingElements(Schematic* Doc)
 {
-    if (movingElements.empty()) {
+    if (!movingState.selection.isValid()) {
         return;
     }
 
