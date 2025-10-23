@@ -66,12 +66,24 @@ struct SchematicSelection {
     for (auto* pw : wires)        pw->moveCenter(dx, dy);
     for (auto* pp : paintings)    pp->moveCenter(dx, dy);
     for (auto* pd : diagrams)     pd->moveCenter(dx, dy);
-    for (auto* pl : labels)       pl->moveCenter(dx, dy);
+    for (auto* pl : labels) {
+      pl->moveCenter(dx, dy);
+      // Special case: labels that doesn't have an owner needs to also have it's root moved.
+      // This is seen during paste of elements, where the node doesn't have a host element
+      if (pl->owner() == nullptr) {
+        pl->moveRoot(dx, dy);
+      }
+    }
     for (auto* pm : markers)      pm->moveCenter(dx, dy);
     for (auto* pn : nodes)        pn->moveCenter(dx, dy);
 
     // Move bounds
     bounds.moveCenter(QPoint(dx, dy));
+  }
+
+  // Center of selection is the center of the bounds
+  QPoint center() const {
+    return bounds.center();
   }
 };
 #endif

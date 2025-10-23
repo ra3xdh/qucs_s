@@ -376,43 +376,13 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
     MAx1 = cursor.x();
     MAy1 = cursor.y();
 
-    QPoint diff;
-
-    if (movingElements.size() == 1) {
-        diff = cursor - Doc->setOnGrid(movingElements.front()->center());
-    } else {
-
-        const auto get_br = [](const Element* e) {
-            return e->boundingRect();
-        };
-
-        auto br = std::transform_reduce(
-            ++movingElements.begin(),
-            movingElements.end(),
-            get_br(movingElements.front()),
-            [](const QRect& a, const QRect& b) { return a.united(b);},
-            get_br
-        );
-
-        diff = cursor - Doc->setOnGrid(br.center());
-    }
-
-
-    for (auto* pe : movingElements) {
-        pe->moveCenter(diff.x(), diff.y());
-
-        // Special case: node label. Pasted node label has no host element,
-        // which would move its root, thus it has to be moved explicitely.
-        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->owner() == nullptr) {
-            l->moveRoot(diff.x(), diff.y());
-        }
-    }
-
     // Cache selection
     if (!movingState.selection.isValid()) {
         movingState.selection = Doc->elementsToSelection(movingElements);
     }
 
+    QPoint diff = cursor - Doc->setOnGrid(movingState.selection.center());
+    movingState.selection.moveCenter(diff.x(), diff.y());
     QucsMain->MouseMoveAction = &MouseActions::MMovePaste2;
     QucsMain->MouseReleaseAction = &MouseActions::MReleasePaste;
 }
@@ -423,15 +393,7 @@ void MouseActions::MMovePaste2(Schematic *Doc, QMouseEvent *Event)
     auto diff = inModel - QPoint{MAx1, MAy1};
     MAx1 = inModel.x();
     MAy1 = inModel.y();
-    for (auto* pe : movingElements) {
-        pe->moveCenter(diff.x(), diff.y());
-
-        // Special case: node label. Pasted node label has no host element,
-        // which would move its root, thus it has to be moved explicitely.
-        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->owner() == nullptr) {
-            l->moveRoot(diff.x(), diff.y());
-        }
-    }
+    movingState.selection.moveCenter(diff.x(), diff.y());
     paintElementsScheme(Doc);
 }
 
