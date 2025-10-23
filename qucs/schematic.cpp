@@ -1238,12 +1238,7 @@ Schematic::Selection Schematic::elementsToSelection(const std::list<Element*> &e
         // A helper to simplify uniting bounding boxes.
         auto addElement = [&](auto* element, auto& list) {
             list.push_back(element);
-            // Special case for Components which have different bounding rect method
-            if constexpr (std::is_same_v<decltype(element), Component*>) {
-                internal::unite(totalBounds, element->boundingRectIncludingProperties());
-            } else {
-                internal::unite(totalBounds, element->boundingRect());
-            }
+            internal::unite(totalBounds, element->boundingRect());
         };
 
         for (Element* element : elements) {
