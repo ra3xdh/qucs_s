@@ -356,15 +356,8 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
   MAx3 += MAx1;
   MAy3 += MAy1; // keep track of the complete movement
 
-    const auto mover = [this](Element* e) { e->moveCenter(MAx1, MAy1); };
     auto selection = Doc->currentSelection();
-    std::ranges::for_each(selection.paintings, mover);
-    std::ranges::for_each(selection.diagrams, mover);
-    std::ranges::for_each(selection.labels, mover);
-    std::ranges::for_each(selection.markers, mover);
-    std::ranges::for_each(selection.components, mover);
-    std::ranges::for_each(selection.wires, mover);
-    std::ranges::for_each(selection.nodes, mover);
+    selection.moveCenter(MAx1, MAy1);
 
     Doc->displayMutations();
 
