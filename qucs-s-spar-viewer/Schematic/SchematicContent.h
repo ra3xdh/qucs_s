@@ -88,13 +88,21 @@ class SchematicContent {
     private:
         // Qucs-S parsing functions
 
-        QString processComponents_QucsS(QList<ComponentInfo> Comps);
+        // Component processing
         int scale_x_QucsS_export, scale_y_QucsS_export;
+        QMap<QString, QList<QPoint>> ComponentPinMap; // Keep information of the pins position of a component
+        QString processComponents_QucsS();
         QString parseTerm_QucsS(ComponentInfo);
         QString parseResistor_QucsS(ComponentInfo);
         QString parseInductor_QucsS(ComponentInfo);
         QString parseCapacitor_QucsS(ComponentInfo);
         QString parseGND_QucsS(ComponentInfo);
+
+        // Wire processing
+        QString processWires_QucsS();
+
+        // Process internal nodes
+        void processNodes_QucsS();
 };
 
 #endif // SCHEMATICCONTENT_H

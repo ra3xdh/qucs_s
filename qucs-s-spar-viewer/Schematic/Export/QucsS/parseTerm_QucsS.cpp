@@ -46,6 +46,11 @@ QString SchematicContent::parseTerm_QucsS(ComponentInfo Comp) {
     break;
   }
 
+  // Save pin position. This is needed for wiring later
+  // The terms are always placed with vertical orientation
+  ComponentPinMap[Comp.ID][0] = QPoint(x_pos, y_pos - 30); // Pin 1
+  ComponentPinMap[Comp.ID][1] = QPoint(x_pos, y_pos + 30); // Pin 2
+
   QString componentLine =
       QString("<Pac %1 %2 %3 %4 %5 %6 0 %7 \"%8\" %9 \"%10\" %11 \"0 "
               "dBm\" 0 \"1 MHz\" 0>\n")
