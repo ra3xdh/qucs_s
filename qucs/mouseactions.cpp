@@ -324,14 +324,8 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 {
     setPainter(Doc);
 
-    auto inModel = Doc->contentsToModel(Event->pos());
-    MAx2 = inModel.x();
-    MAy2 = inModel.y();
+    updateMouseMove(Doc, Event, /*onGrid=*/true);
 
-    Doc->setOnGrid(MAx2, MAy2);
-
-    MAx1 = MAx2;
-    MAy1 = MAy2;
     QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseMoving;
     QucsMain->editRotate->blockSignals(true);
@@ -343,26 +337,16 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 // Moves components by keeping the mouse button pressed.
 void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 {
-  setPainter(Doc);
+    setPainter(Doc);
 
-  auto inModel = Doc->contentsToModel(Event->pos());
-  MAx2 = inModel.x();
-  MAy2 = inModel.y();
-
-  if ((Event->modifiers().testFlag(Qt::ControlModifier)) == 0)
-    Doc->setOnGrid(MAx2, MAy2); // use grid only if CTRL key not pressed
-  MAx1 = MAx2 - MAx1;
-  MAy1 = MAy2 - MAy1;
-  MAx3 += MAx1;
-  MAy3 += MAy1; // keep track of the complete movement
+    // use grid _unless_ CTRL key is pressed
+    bool onGrid = Event->modifiers().testFlag(Qt::ControlModifier) == 0;
+    QPoint delta = updateMouseMove(Doc, Event, onGrid);
 
     auto selection = Doc->currentSelection();
-    selection.moveCenter(MAx1, MAy1);
+    selection.moveCenter(delta.x(), delta.y());
 
     Doc->displayMutations();
-
-  MAx1 = MAx2;
-  MAy1 = MAy2;
 }
 
 /**
@@ -389,10 +373,7 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 
 void MouseActions::MMovePaste2(Schematic *Doc, QMouseEvent *Event)
 {
-    const auto inModel = Doc->setOnGrid(Doc->contentsToModel(Event->pos()));
-    auto diff = inModel - QPoint{MAx1, MAy1};
-    MAx1 = inModel.x();
-    MAy1 = inModel.y();
+    QPoint diff = updateMouseMove(Doc, Event, /*onGrid=*/true);
     movingState.selection.moveCenter(diff.x(), diff.y());
     paintElementsScheme(Doc);
 }
@@ -1954,6 +1935,37 @@ void MouseActions::rotateMovingElements(Schematic* Doc)
 
     paintElementsScheme(Doc);
     Doc->viewport()->update();
+}
+
+
+// **********************************************
+// **********                          **********
+// **********    Utility functions     **********
+// **********                          **********
+// **********************************************
+
+// Helper function that updates and tracks mouse movement
+// Returns the mouse movement delta as a QPoint
+QPoint MouseActions::updateMouseMove(Schematic* Doc, QMouseEvent* Event, bool onGrid)
+{
+
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x();
+    MAy2 = inModel.y();
+
+    if (onGrid) {
+      Doc->setOnGrid(MAx2, MAy2);
+    }
+
+    QPoint delta(MAx2-MAx1, MAy2-MAy1);
+    MAx1 = MAx2;
+    MAy1 = MAy2;
+
+    // Track complete movement
+    MAx3 += delta.x();
+    MAy3 += delta.y();
+
+    return delta;
 }
 
 // vim:ts=8:sw=2:noet

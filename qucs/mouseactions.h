@@ -136,6 +136,9 @@ public:
   void mirrorXMovingElements(Schematic*);
   void mirrorYMovingElements(Schematic*);
   void rotateMovingElements(Schematic*);
+
+  // Helper functions
+  QPoint updateMouseMove(Schematic*, QMouseEvent*, bool onGrid=true);
 };
 
 #endif
