@@ -419,6 +419,10 @@ private:
    ******************************************************************** */
 
 public:
+  Node* createNode(int, int) const;
+  Node* createNode(const QPoint& p) const { return createNode(p.x(), p.y()); }
+  Node* findNode(int, int) const;
+  Node* findNode(const QPoint& p) const { return findNode(p.x(), p.y()); }
   Node* provideNode(int, int);
   Node* provideNode(const QPoint& p) { return provideNode(p.x(), p.y()); }
   Node* selectedNode(int, int);

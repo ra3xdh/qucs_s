@@ -320,20 +320,35 @@ bool geometryIsInOrder(const std::list<Component*>* components, const std::list<
    *****              Actions handling the nodes                 *****
    *****                                                         *****
    ******************************************************************* */
+Node* Schematic::createNode(int x, int y) const
+{
+    Node* node = new Node(x, y);
+    a_Nodes->push_back(node);
+    return node;
+}
+
+// Returns Node* at (x,y), else nullptr
+Node* Schematic::findNode(int x, int y) const
+{
+    for (auto* node : *a_Nodes) {
+        if (node->isOverlapping(x, y)) {
+            return node;
+        }
+    }
+    return nullptr;
+}
 
 // Provides a node located at given coordinates, either new or existing one
 Node* Schematic::provideNode(int x, int y)
 {
     // Check if there is a node at given coordinates
-    for (auto* node : *a_Nodes) {
-      if (node->x() == x && node->y() == y) {
+    Node* node = findNode(x, y);
+    if (node != nullptr) {
         return node;
-      }
     }
 
     // Create new node, if no existing one at given coordinates
-    Node *new_node = new Node(x, y);
-    a_Nodes->push_back(new_node);
+    Node* new_node = createNode(x, y);
 
     // Check if the new node lies upon an existing wire
     for (auto* wire : *a_Wires)
