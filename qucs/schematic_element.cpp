@@ -560,22 +560,98 @@ Wire* Schematic::splitWire(Wire *source_wire, Node *splitter_node)
 // become orphan after removing the wires.
 void Schematic::deleteWire(Wire *w, bool remove_orphans)
 {
-    w->Port1->disconnect(w);
-    // Delete node if it has become an orphan
-    if (remove_orphans && w->Port1->conn_count() == 0) {
-        a_Nodes->remove(w->Port1);
+    auto wireStatus = disconnectWire(w, remove_orphans, /*keepNodeLabel=*/false);
+    // Delete nodes if it has become an orphan
+    if (wireStatus.port1.removed) {
         delete w->Port1;
     }
 
-    w->Port2->disconnect(w);
-    // Delete node if it has become an orphan
-    if (remove_orphans && w->Port2->conn_count() == 0) {
-        a_Nodes->remove(w->Port2);
+    if (wireStatus.port2.removed) {
         delete w->Port2;
     }
 
     a_Wires->remove(w);
     delete w;
+}
+
+/** Disconnects a wire from the schematic by disconnecting both its port nodes.
+ *
+ * @param wire The wire to disconnect.
+ * @param remove_orphans If true, orphaned nodes are removed from a_Nodes. Default: true
+ * @param keepNodeLabel If true, nodes with labels are preserved (not disconnected). Default: false
+ * @return WireDisconnectResult containing disconnection status for both ports; {port1, port2}
+ *
+ * @note No memory is deallocated here; caller is responsible for cleanup
+ */
+Schematic::WireDisconnectResult Schematic::disconnectWire(Wire* wire, bool remove_orphans, bool keepNodeLabel)
+{
+    NodeDisconnectResult p1 = disconnectNode(wire->Port1, wire, remove_orphans, keepNodeLabel);
+    NodeDisconnectResult p2 = disconnectNode(wire->Port2, wire, remove_orphans, keepNodeLabel);
+
+    return {p1, p2};
+}
+
+/** Decouples a wire by disconnecting it and providing new isolated nodes
+ *
+ * @param wire The wire to decouple
+ * @param keepNodeLabel If true, nodes with labels are preserved. Default: false.
+ *
+ * @note: Caller is responsible for reconnecting the wire, or deallocating it. 
+ */
+void Schematic::decoupleWire(Wire* wire, bool keepNodeLabel)
+{
+    // Store coordinates for ports
+    QPoint P1 = wire->P1();
+    QPoint P2 = wire->P2();
+
+    // Disconnect wire ports
+    auto wireStatus = disconnectWire(wire, /*remove_orphans=*/true, keepNodeLabel);
+
+    // Create and connect new isolated port to Port1 if it was disconnected
+    if (wireStatus.port1.disconnected) {
+        wire->connectPort1(createNode(P1));
+    }
+
+    // Create and connect new isolated port to Port2 if it was disconnected
+    if (wireStatus.port2.disconnected) {
+        wire->connectPort2(createNode(P2));
+    }
+}
+
+/** Disconnects a node from a wire and optionally removed orphaned nodes.
+ *
+ * @param  node The node to disconnect. if nullptr, returns {false, false}.
+ * @param  elem The element (Wire or Component) to disconnect the node from.
+ * @param  remove_orphans If true, orphaned nodes are removed from a_Nodes. Default: true
+ * @param  keepNodeLabel If true, nodes with labels are preserved (not disconnected). Default: false
+ * @return NodeDisconnectResult with {disconnected, removed} flags. 
+ *
+ * @note No memory is deallocated here; caller is responsible for cleanup.
+ */
+Schematic::NodeDisconnectResult Schematic::disconnectNode(Node* node, Element* elem, bool remove_orphans, bool keepNodeLabel) const
+{
+    if (node == nullptr) return {false, false};
+
+    // Preserve nodes with labels if requested
+    if (keepNodeLabel && node->hasLabel()) {
+        return {false, false};
+    }
+
+    // Disconnect from wire or component
+    if (auto* wire = dynamic_cast<Wire*>(elem)) {
+        node->disconnect(wire);
+    } else if (auto* component = dynamic_cast<Component*>(elem)) {
+        node->disconnect(component);
+    } else {
+        return {false, false};
+    }
+
+    // Remove if orphaned and flag is set
+    if (remove_orphans && node->conn_count() == 0) {
+        a_Nodes->remove(node);
+        return {true, true};
+    }
+    return {true, false};
 }
 
 /* *******************************************************************

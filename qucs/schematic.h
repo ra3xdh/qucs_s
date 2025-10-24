@@ -419,6 +419,15 @@ private:
    ******************************************************************** */
 
 public:
+  // structs for node creation/deletion
+  struct NodeDisconnectResult {
+    bool disconnected;
+    bool removed;
+  };
+  struct WireDisconnectResult {
+    NodeDisconnectResult port1;
+    NodeDisconnectResult port2;
+  };
   Node* createNode(int, int) const;
   Node* createNode(const QPoint& p) const { return createNode(p.x(), p.y()); }
   Node* findNode(int, int) const;
@@ -446,6 +455,11 @@ public:
   Wire* selectedWire(int, int);
   Wire* splitWire(Wire*, Node*);
   void  deleteWire(Wire*, bool remove_orphans=true);
+  struct CompDisconnectResult {
+    std::vector<NodeDisconnectResult> ports;
+  };
+  WireDisconnectResult disconnectWire(Wire*, bool remove_orphans=true, bool keepNodeLabel=false);
+  void  decoupleWire(Wire*, bool keepNodeLabel=false);
 
   Marker* setMarker(int, int);
   void    markerLeftRight(bool, const std::vector<Marker*>& markers);
@@ -482,6 +496,7 @@ public:
 
 private:
   void insertComponentNodes(Component*, bool);
+  NodeDisconnectResult disconnectNode(Node*, Element*, bool remove_orphans=true, bool keepNodeLabel=false) const;
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
