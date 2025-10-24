@@ -2159,16 +2159,15 @@ Component* Schematic::searchSelSubcircuit()
 // Disconnect component and remove it from the list of schematic components.
 // Component is not deleted, pointer remains valid after call. It is responsibility
 // of the caller to handle it by deleting, reinstalling, etc.
-void Schematic::detachComp(Component *c)
+void Schematic::detachComp(Component *c, bool remove_orphans, bool keepNodeLabel)
 {
-    // delete all port connections
-    for (auto* port : c->Ports) {
-        port->Connection->disconnect(c);
+    // disconnect all ports from component, and remove them if remove_orphans=True
+    auto compStatus = disconnectComp(c, remove_orphans, keepNodeLabel);
 
-        // Remove node if it has become orphan
-        if (port->Connection->conn_count() == 0) {
-            a_Nodes->remove(port->Connection);
-            delete port->Connection;
+    // loop over all ports, and delete if orphan
+    for (size_t i = 0; i < c->Ports.size(); ++i) {
+        if (compStatus.ports[i].removed) {
+            delete c->Ports[i]->Connection;
         }
     }
     emit signalComponentDeleted(c);
@@ -2176,10 +2175,55 @@ void Schematic::detachComp(Component *c)
 }
 
 // Deletes the component 'c'.
-void Schematic::deleteComp(Component *c)
+void Schematic::deleteComp(Component *c, bool remove_orphans)
 {
-    detachComp(c);
+    detachComp(c, remove_orphans, /*keepNodeLabel=*/false);
     delete c;
+}
+
+/** Disconnects a component from the schematic by disconnecting all of its ports.
+ *
+ * @param component The component to disconnect.
+ * @param remove_orphans If true, orphaned nodes are removed from a_Nodes. Default: true
+ * @param keepNodeLabel If true, nodes with labels are preserved (not disconnected). Default: false
+ * @return CompDisonnectResult containing disconnection status for all ports stored in a vector.
+ *
+ * @note No memory is deallocated here; caller is responsible for cleanup
+ */
+Schematic::CompDisconnectResult Schematic::disconnectComp(Component* component, bool remove_orphans, bool keepNodeLabel)
+{
+    CompDisconnectResult result;
+    for (auto* port : component->Ports) {
+        result.ports.push_back(disconnectNode(port->Connection,  component, remove_orphans, keepNodeLabel));
+    }
+    return result;
+}
+
+/** Decouples a component by disconnecting it and providing new isolated nodes
+ *
+ * @param component The component to decouple
+ * @param keepNodeLabel If true, nodes with labels are preserved. Default: false.
+ *
+ * @note: Caller is responsible for reconnecting the component ports, or deallocating them. 
+ */
+void Schematic::decoupleComp(Component* component, bool keepNodeLabel)
+{
+    // store all port position
+    std::vector<QPoint> portPos;
+    for (auto* port : component->Ports) {
+        portPos.push_back(port->Connection->center());
+    }
+
+    auto compStatus = disconnectComp(component, /*remove_orphans=*/true, keepNodeLabel);
+
+    // Loop over all ports, and create new (isolated) nodes for all ports that got disconnected
+    for (size_t i = 0; i < component->Ports.size(); ++i) {
+        if (compStatus.ports[i].disconnected) {
+            Node* new_node = createNode(portPos[i]);
+            new_node->connect(component);
+            component->Ports[i]->Connection = new_node;
+        }
+    }
 }
 
 Component *Schematic::getComponentByName(const QString& compname) const

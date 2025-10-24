@@ -428,6 +428,10 @@ public:
     NodeDisconnectResult port1;
     NodeDisconnectResult port2;
   };
+  struct CompDisconnectResult {
+    std::vector<NodeDisconnectResult> ports;
+  };
+
   Node* createNode(int, int) const;
   Node* createNode(const QPoint& p) const { return createNode(p.x(), p.y()); }
   Node* findNode(int, int) const;
@@ -455,9 +459,6 @@ public:
   Wire* selectedWire(int, int);
   Wire* splitWire(Wire*, Node*);
   void  deleteWire(Wire*, bool remove_orphans=true);
-  struct CompDisconnectResult {
-    std::vector<NodeDisconnectResult> ports;
-  };
   WireDisconnectResult disconnectWire(Wire*, bool remove_orphans=true, bool keepNodeLabel=false);
   void  decoupleWire(Wire*, bool keepNodeLabel=false);
 
@@ -483,9 +484,11 @@ public:
   bool       activateSelectedComponents();
   Component* selectCompText(int, int, int&, int&) const;
   Component* searchSelSubcircuit();
-  void       deleteComp(Component*);
-  void       detachComp(Component*);
+  void       deleteComp(Component*, bool remove_orphans=true);
+  void       detachComp(Component*, bool remove_orphans=true, bool keepNodeLabel=false);
+  void       decoupleComp(Component*, bool keepNodeLabel=false);
   Component* getComponentByName(const QString& compname) const;
+  CompDisconnectResult disconnectComp(Component*, bool remove_orphans=true, bool keepNodeLabel=false);
 
   void     oneLabel(Node*);
   int      placeNodeLabel(WireLabel*);
