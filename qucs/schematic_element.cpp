@@ -31,6 +31,7 @@
 #include <ranges>
 #include <set>
 #include <unordered_map>
+#include <unordered_set>
 
 struct Schematic::HealingParams
 {
@@ -1835,6 +1836,48 @@ bool Schematic::mirrorYComponents(Selection selection)
     }
 
     return true;
+}
+
+void Schematic::decoupleElements(Selection selection, bool keepNodeLabel)
+{
+    // store all new nodes created during decoupling
+    std::unordered_set<Node*> nodeSet;
+
+    // decouple all components and save nodes
+    for (auto* pc : selection.components) {
+        decoupleComp(pc, keepNodeLabel);
+        for (auto* port : pc->Ports) {
+            nodeSet.insert(port->Connection);
+        }
+    }
+
+    // decouple all wire segments and save nodes
+    for (auto* pw : selection.wires) {
+        decoupleWire(pw, keepNodeLabel);
+        nodeSet.insert(pw->Port1);
+        nodeSet.insert(pw->Port2);
+    }
+
+    // comparison function for QPoint
+    auto cmp = [](const QPoint& a, const QPoint& b) {
+        return a.x() != b.x() ? a.x() < b.x() : a.y() < b.y();
+    };
+
+    // group nodes by position and merge overlapping ones
+    // NOTE: Schematic::Heal has the same kind of logic,
+    // however we don't have access to internal::sameloc_nodes() here.
+    std::map<QPoint, Node*, decltype(cmp)> nodeMap;
+    for (auto* node : nodeSet) {
+        QPoint pos = node->center();
+        auto [it, inserted] = nodeMap.insert({pos, node});
+
+        if (!inserted) {
+            // position exists, merge nodes
+            Node* merged = it->second->merge(node);
+            a_Nodes->remove(merged);
+            delete merged;
+        }
+    }
 }
 
 /* *******************************************************************

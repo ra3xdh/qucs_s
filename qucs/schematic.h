@@ -112,6 +112,7 @@ public:
   using Selection = SchematicSelection;
   Selection  currentSelection() const;
   Selection  elementsToSelection(const std::list<Element*>&) const;
+  void  decoupleElements(Selection selection, bool keepNodeLabel=false);
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
