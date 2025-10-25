@@ -1585,13 +1585,13 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
         movingState.selection = Doc->elementsToSelection(movingElements);
         // keep transformations sticky for pasted elements
         if (movingState.mirrorX) {
-            Doc->mirrorXComponents(movingState.selection);
+            Doc->mirrorXComponents(movingState.selection, /*doHeal=*/false);
         }
         if (movingState.mirrorY) {
-            Doc->mirrorYComponents(movingState.selection);
+            Doc->mirrorYComponents(movingState.selection, /*doHeal=*/false);
         }
         for (int i = 0; i < movingState.rotated; i++) {
-            Doc->rotateElements(movingState.selection);
+            Doc->rotateElements(movingState.selection, /*doHeal=*/false);
         }
 
         QucsMain->MouseMoveAction = &MouseActions::MMovePaste;
@@ -1903,7 +1903,7 @@ void MouseActions::mirrorXMovingElements(Schematic* Doc)
         return;
     }
 
-    Doc->mirrorXComponents(movingState.selection);
+    Doc->mirrorXComponents(movingState.selection, /*doHeal=*/false);
     // Save transformation
     movingState.mirrorX = !movingState.mirrorX;
 
@@ -1917,7 +1917,7 @@ void MouseActions::mirrorYMovingElements(Schematic* Doc)
         return;
     }
 
-    Doc->mirrorYComponents(movingState.selection);
+    Doc->mirrorYComponents(movingState.selection, /*doHeal=*/false);
     // Save transformation
     movingState.mirrorY = !movingState.mirrorY;
 
@@ -1931,7 +1931,7 @@ void MouseActions::rotateMovingElements(Schematic* Doc)
         return;
     }
 
-    Doc->rotateElements(movingState.selection);
+    Doc->rotateElements(movingState.selection, /*doHeal=*/false);
     // Save transformation
     movingState.rotated++;
     movingState.rotated &= 3;

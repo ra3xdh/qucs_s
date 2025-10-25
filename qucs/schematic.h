@@ -117,14 +117,14 @@ public:
   bool  mirrorXComponents();
   bool  mirrorYComponents();
   // Same as above - but with an arbitrary selection
-  bool  rotateElements(Selection selection);
-  bool  mirrorXComponents(Selection selection);
-  bool  mirrorYComponents(Selection selection);
+  bool  rotateElements(Selection selection, bool doHeal=true);
+  bool  mirrorXComponents(Selection selection, bool doHeal=true);
+  bool  mirrorYComponents(Selection selection, bool doHeal=true);
 
   QPoint setOnGrid(const QPoint& p);
   void  setOnGrid(int&, int&);
   bool  elementsOnGrid();
-  bool  elementsOnGrid(Selection selection);
+  bool  elementsOnGrid(Selection selection, bool doHeal=true);
 
   /**
     Zoom around a "zooming center". Zooming center is a point on the canvas,

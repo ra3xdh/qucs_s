@@ -1629,9 +1629,9 @@ bool snapLabelToGrid(Schematic* sch, WireLabel* label)
 // Sets selected elements on grid.
 bool Schematic::elementsOnGrid()
 {
-    return elementsOnGrid(currentSelection());
+    return elementsOnGrid(currentSelection(), /*doHeal=*/true);
 }
-bool Schematic::elementsOnGrid(Selection selection)
+bool Schematic::elementsOnGrid(Selection selection, bool doHeal)
 {
     const auto count = internal::total_count(selection);
     if (count == 0) return false;
@@ -1656,7 +1656,9 @@ bool Schematic::elementsOnGrid(Selection selection)
 
     if (!any_set) return false;
 
-    heal(&noninteractiveMutationParams);
+    if (doHeal) {
+        heal(&noninteractiveMutationParams);
+    }
     setChanged(true, true);
     return true;
 }
@@ -1684,11 +1686,11 @@ bool symbolElementsOnGrid(Schematic* sch, const std::vector<Painting*>& painting
 // Rotates all selected components around their midpoint.
 bool Schematic::rotateElements()
 {
-    return rotateElements(currentSelection());
+    return rotateElements(currentSelection(), /*doHeal=*/true);
 }
 
 // Rotates a selection of components around their midpoint.
-bool Schematic::rotateElements(Selection selection)
+bool Schematic::rotateElements(Selection selection, bool doHeal)
 {
 
     const auto count = internal::total_count(selection);
@@ -1730,8 +1732,10 @@ bool Schematic::rotateElements(Selection selection)
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid(selection)) {
-            heal(&noninteractiveMutationParams);
+        if (!elementsOnGrid(selection, doHeal)) {
+            if (doHeal) {
+                heal(&noninteractiveMutationParams);
+            }
             setChanged(true, true);
         }
     }
@@ -1742,11 +1746,11 @@ bool Schematic::rotateElements(Selection selection)
 // Mirrors all selected components along X-axis
 bool Schematic::mirrorXComponents()
 {
-    return mirrorXComponents(currentSelection());
+    return mirrorXComponents(currentSelection(), /*doHeal=*/true);
 }
 
 // Mirrors selection of components along X-axis
-bool Schematic::mirrorXComponents(Selection selection)
+bool Schematic::mirrorXComponents(Selection selection, bool doHeal)
 {
 
     const auto count = internal::total_count(selection);
@@ -1780,8 +1784,10 @@ bool Schematic::mirrorXComponents(Selection selection)
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid(selection)) {
-            heal(&noninteractiveMutationParams);
+        if (!elementsOnGrid(selection, doHeal)) {
+            if (doHeal) {
+                heal(&noninteractiveMutationParams);
+            }
             setChanged(true, true);
         }
     }
@@ -1796,7 +1802,7 @@ bool Schematic::mirrorYComponents()
 }
 
 // Mirrors selection of components along Y-axis
-bool Schematic::mirrorYComponents(Selection selection)
+bool Schematic::mirrorYComponents(Selection selection, bool doHeal)
 {
     const auto count = internal::total_count(selection);
 
@@ -1829,8 +1835,10 @@ bool Schematic::mirrorYComponents(Selection selection)
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid(selection)) {
-            heal(&noninteractiveMutationParams);
+        if (!elementsOnGrid(selection, doHeal)) {
+            if (doHeal) {
+                heal(&noninteractiveMutationParams);
+            }
             setChanged(true, true);
         }
     }
