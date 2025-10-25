@@ -38,8 +38,8 @@ QString SchematicContent::parseInductor_QucsS(ComponentInfo Comp) {
     ComponentPinMap[Comp.ID][1] = QPoint(x_pos - 30, y_pos); // Pin 2
     break;
   case 1: // Vertical orientation
-    x_text = 20;
-    y_text = -10;
+    x_text = 10;
+    y_text = -20;
 
     // Save pin position. This is needed for wiring later
     ComponentPinMap[Comp.ID][0] = QPoint(x_pos, y_pos + 30); // Pin 1

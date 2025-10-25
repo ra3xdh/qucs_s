@@ -55,14 +55,14 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
     L[i] = 10e-9;
   }
 
-  double R1  = 1;
-  double RN  = Specification.ZL / Z0;
-  double w0  = 1.0;
-  double f1  = (fc - BW) / (2 * M_PI * fc);
-  double f2  = (fc + BW) / (2 * M_PI * fc);
+  double R1 = 1;
+  double RN = Specification.ZL / Z0;
+  double w0 = 1.0;
+  double f1 = (fc - BW) / (2 * M_PI * fc);
+  double f2 = (fc + BW) / (2 * M_PI * fc);
   double f1d = w0 / (2 * M_PI);
-  double f0  = w0 / (2 * M_PI);
-  double wd  = ((f0 / f1) - (f0 / f2)) * (f0 / f1d);
+  double f0 = w0 / (2 * M_PI);
+  double wd = ((f0 / f1) - (f0 / f2)) * (f0 / f1d);
 
   std::deque<double> Lrk(N), Crk(N), Cs(N + 1);
 
@@ -80,7 +80,7 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
   Cs[N] = (1 / w0) * sqrt((wd * Crk[N - 1] * r / (RN * gi[N - 1])) /
                           (1 - (wd * Crk[N - 1] * RN / gi[N - 1])));
 
-  double Cs1_   = Cs[0] / (1 + pow(w0 * Cs[0] * R1, 2));
+  double Cs1_ = Cs[0] / (1 + pow(w0 * Cs[0] * R1, 2));
   double Csn_n1 = Cs[N] / (1 + pow(w0 * Cs[N] * RN, 2));
 
   Cp[0] = Crk[0] - Cs1_ - Cs[1];
@@ -100,7 +100,7 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
   // Build schematic
   int posx = 0, Ni = 0;
   QString ConnectionAux = "";
-  double k              = Specification.ZS;
+  double k = Specification.ZS;
 
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
@@ -120,7 +120,7 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
   Schematic.appendWire(TermSpar1.ID, 0, Cseries.ID, 0);
 
   for (int k = 0; k < N; k++) {
-    posx += 50;
+    posx += 25;
     // Shunt resonator
     // Shunt inductor
     Lshunt.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
@@ -159,7 +159,7 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
                      GND, 0, posx, 100);
     Schematic.appendComponent(Ground);
 
-    posx += 50;
+    posx += 25;
     // Series capacitor
     Cseries.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
@@ -174,7 +174,7 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
     Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
   }
 
-  posx += 50;
+  posx += 40;
 
   ComponentInfo TermSpar2(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
@@ -203,12 +203,12 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
     L[i] = 10e-9;
   }
 
-  double w0  = 1.0;
-  double f1  = (fc - BW) / (2 * M_PI * fc);
-  double f2  = (fc + BW) / (2 * M_PI * fc);
+  double w0 = 1.0;
+  double f1 = (fc - BW) / (2 * M_PI * fc);
+  double f2 = (fc + BW) / (2 * M_PI * fc);
   double f1d = 1 / (2 * M_PI);
-  double f0  = w0 / (2 * M_PI);
-  double w_  = ((f0 / f1) - (f0 / f2)) * (f0 / f1d);
+  double f0 = w0 / (2 * M_PI);
+  double w_ = ((f0 / f1) - (f0 / f2)) * (f0 / f1d);
 
   for (int i = 0; i < N + 2; i++) {
     Lrk[i] = (wc * L[i]) / Z0;
@@ -238,7 +238,7 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
   for (int i = 2; i < N; i++) {
     Ls[i] = Lrk[i - 2] - M[i - 1] - M[i];
   }
-  Ls[N]     = Lrk[N] - M[N - 1] - M[N];
+  Ls[N] = Lrk[N] - M[N - 1] - M[N];
   Ls[N + 1] = Lrk[N + 1] - M[N];
 
   // Impedance and frequency scaling
@@ -255,18 +255,17 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
   // Create schematic and Qucs netlist
   int posx = 0, Ni = 0;
   QString ConnectionAux = "";
-  double k              = Specification.ZS;
+  double k = Specification.ZS;
   ComponentInfo Lseries, Lshunt, Cseries, Ground;
   NodeInfo NI;
 
   ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
-      0);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
   TermSpar1.val["Z"] = num2str(k, Resistance);
   Schematic.appendComponent(TermSpar1);
   ConnectionAux = TermSpar1.ID;
 
-  posx += 50;
+  posx += 40;
   // Series inductor
   Lseries.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
                     Inductor, -90, posx, 0);
@@ -278,7 +277,7 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
   //***** Port to capacitor *****
   Schematic.appendWire(TermSpar1.ID, 0, Lseries.ID, 1);
 
-  posx += 50;
+  posx += 25;
   // Shunt inductor
   Lshunt.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
                    Inductor, 0, posx, 50);
@@ -302,7 +301,7 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
 
   for (int k = 0; k < N; k++) {
     // Series inductor
-    posx += 50;
+    posx += 25;
     Lseries.setParams(
         QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
         -90, posx, 0);
@@ -311,7 +310,7 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
     Ni++;
 
     // Series capacitor
-    posx += 75;
+    posx += 40;
     Cseries.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
         90, posx, 0);
@@ -319,7 +318,7 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
     Schematic.appendComponent(Cseries);
     Ni++;
 
-    posx += 50;
+    posx += 25;
     // Shunt inductor coupling
     Lshunt.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
                      Inductor, 0, posx, 50);
@@ -350,7 +349,7 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
                          0); // Shunt inductor to ground
   }
 
-  posx += 50;
+  posx += 25;
   // Series inductor
   Lseries.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
                     Inductor, -90, posx, 0);
@@ -362,7 +361,8 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
 
   posx += 50;
   ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, posx, 0);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, posx,
+      0);
   TermSpar2.val["Z"] = num2str(Specification.ZL, Resistance);
   Schematic.appendComponent(TermSpar2);
 
