@@ -463,7 +463,10 @@ void CanonicalFilter::SynthesizeBPF() {
   double delta = 2 * M_PI * Specification.bw;
   double w0 = sqrt(wc * wc - .25 * delta * delta);
 
-  posx += 50;
+  if (Specification.isCLC) {
+    posx += 50;
+  }
+
   for (int k = 0; k < N; k++) {
 
     if (((Specification.isCLC) && (k % 2 == 0)) ||
@@ -525,7 +528,7 @@ void CanonicalFilter::SynthesizeBPF() {
       // Series inductor
       Lseries.setParams(
           QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
-          -90, posx - 30, 0);
+          -90, posx - 20, 0);
       Lseries.val["L"] =
           num2str(gi[k + 1] * Specification.ZS / (delta), Inductance);
       Schematic.appendComponent(Lseries);
@@ -533,7 +536,7 @@ void CanonicalFilter::SynthesizeBPF() {
       // Series capacitor
       Cseries.setParams(
           QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-          Capacitor, 90, posx + 30, 0);
+          Capacitor, 90, posx + 20, 0);
       Cseries.val["C"] = num2str(
           delta / (w0 * w0 * Specification.ZS * gi[k + 1]), Capacitance);
       Schematic.appendComponent(Cseries);
@@ -543,7 +546,7 @@ void CanonicalFilter::SynthesizeBPF() {
       Schematic.appendWire(Lseries.ID, 0, Cseries.ID, 0);
       ConnectionAux = Cseries.ID;
     }
-    posx += 100;
+    posx += 80;
   }
   // Add Term 2
   double k = Specification.ZS;
@@ -578,7 +581,10 @@ void CanonicalFilter::SynthesizeBSF() {
   double delta = 2 * M_PI * Specification.bw;
   double w0 = sqrt(wc * wc - .25 * delta * delta);
 
-  posx += 50;
+  if (Specification.isCLC) {
+    posx += 50;
+  }
+
   for (int k = 0; k < N; k++) {
 
     if (((Specification.isCLC) && (k % 2 == 0)) ||
@@ -644,7 +650,7 @@ void CanonicalFilter::SynthesizeBSF() {
           QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
           posx - 20, 0);
       Schematic.appendNode(Node1);
-      posx += 25;
+      posx += 20;
 
       // Series inductor
       Lseries.setParams(
@@ -664,7 +670,7 @@ void CanonicalFilter::SynthesizeBSF() {
       Schematic.appendComponent(Cseries);
 
       // Node
-      posx += 25;
+      posx += 20;
       Node2.setParams(
           QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
           posx + 20, 0);
