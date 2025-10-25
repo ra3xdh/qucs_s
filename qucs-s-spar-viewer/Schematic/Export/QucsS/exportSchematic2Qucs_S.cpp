@@ -82,6 +82,10 @@ QString SchematicContent::processComponents_QucsS() {
       componentLine = parseInductor_QucsS(Comps[i]);
       break;
 
+    case TransmissionLine:
+      componentLine = parseIdealTransmissionLine_QucsS(Comps[i]);
+      break;
+
     case Term:
       componentLine = parseTerm_QucsS(Comps[i]);
       break;
@@ -103,6 +107,10 @@ QString SchematicContent::processComponents_QucsS() {
 
   // Add S-parameter simulation box
   y_bottom += 50;
+
+  if (y_bottom < 120) {
+    y_bottom = 120;
+  }
   qucs_S_Components_Netlist +=
       QString("<.SP SP1 1 %1 %2 0 60 0 0 \"log\" 1 \"%3\" 1 \"%4\" 1 "
               "\"%5\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n")
