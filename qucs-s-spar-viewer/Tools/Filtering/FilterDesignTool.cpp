@@ -451,26 +451,31 @@ void FilterDesignTool::ResposeComboChanged() {
     OrderSpinBox->setMaximum(10);
     RippleLabel->hide();
     RippleSpinbox->hide();
+    RippledBLabel->hide();
   } else {
     if (!Response.compare("Gaussian")) {
       OrderSpinBox->setMinimum(3);
       OrderSpinBox->setMaximum(10);
       RippleLabel->hide();
       RippleSpinbox->hide();
+      RippledBLabel->hide();
     } else {
       if (!Response.compare("Legendre")) {
         OrderSpinBox->setMinimum(4);
         OrderSpinBox->setMaximum(10);
         RippleLabel->hide();
         RippleSpinbox->hide();
+        RippledBLabel->hide();
       } else {
         if (!Response.compare("Butterworth")) {
           RippleLabel->hide();
           RippleSpinbox->hide();
+          RippledBLabel->hide();
         } else {
           // Elliptic and Chebyshev
           RippleLabel->show();
           RippleSpinbox->show();
+          RippledBLabel->show();
         }
       }
     }
