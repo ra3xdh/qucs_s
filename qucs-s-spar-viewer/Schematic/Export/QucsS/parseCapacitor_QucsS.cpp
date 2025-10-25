@@ -29,6 +29,7 @@ QString SchematicContent::parseCapacitor_QucsS(ComponentInfo Comp) {
 
   // Adjust text position depending on orientation
   switch (rotation) {
+  case 3:
   case 1: // Vertical orientation
     x_text = 20;
     y_text = -20;
@@ -37,6 +38,8 @@ QString SchematicContent::parseCapacitor_QucsS(ComponentInfo Comp) {
     ComponentPinMap[Comp.ID][0] = QPoint(x_pos, y_pos + 30); // Pin 1
     ComponentPinMap[Comp.ID][1] = QPoint(x_pos, y_pos - 30); // Pin 2
     break;
+
+  case 0:
   case 2: // Horizontal orientation
     x_text = -30;
     y_text = -50;

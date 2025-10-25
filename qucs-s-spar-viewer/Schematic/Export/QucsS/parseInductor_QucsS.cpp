@@ -29,6 +29,7 @@ QString SchematicContent::parseInductor_QucsS(ComponentInfo Comp) {
 
   // Adjust text position depending on orientation
   switch (rotation) {
+  case 2:
   case 0: // Horizontal orientation
     x_text = -30;
     y_text = -50;
@@ -37,6 +38,8 @@ QString SchematicContent::parseInductor_QucsS(ComponentInfo Comp) {
     ComponentPinMap[Comp.ID][0] = QPoint(x_pos + 30, y_pos); // Pin 1
     ComponentPinMap[Comp.ID][1] = QPoint(x_pos - 30, y_pos); // Pin 2
     break;
+
+  case 3:
   case 1: // Vertical orientation
     x_text = 10;
     y_text = -20;
