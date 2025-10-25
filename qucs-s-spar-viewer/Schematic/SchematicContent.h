@@ -98,6 +98,7 @@ class SchematicContent {
         QString parseCapacitor_QucsS(ComponentInfo);
         QString parseGND_QucsS(ComponentInfo);
         QString parseIdealTransmissionLine_QucsS(ComponentInfo);
+        QString parseMicrostripLine_QucsS(ComponentInfo);
 
         // Wire processing
         QString processWires_QucsS();

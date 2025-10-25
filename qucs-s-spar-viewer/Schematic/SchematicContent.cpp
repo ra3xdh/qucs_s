@@ -38,7 +38,7 @@ SchematicContent::SchematicContent() {
 
   // Scale factors for QucsatorRF export
   scale_x_QucsS_export = 2;
-  scale_y_QucsS_export = 1.1;
+  scale_y_QucsS_export = 1.2;
 }
 
 SchematicContent::~SchematicContent() {}

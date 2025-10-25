@@ -94,6 +94,13 @@ QString SchematicContent::processComponents_QucsS() {
       componentLine = parseGND_QucsS(Comps[i]);
       break;
 
+      ///////////////////////////////////////////////
+      // Microstrip components
+    case MicrostripLine:
+      componentLine = parseMicrostripLine_QucsS(Comps[i]);
+      break;
+      ///////////////////////////////////////////////
+
     default:
       componentLine =
           QString(".* Unsupported component: %1\n").arg(Comps[i].ID);
