@@ -706,6 +706,11 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled() {
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
 
+  // Check on filter parameters to ensure successful synthesis
+  const double max_rel_bw =
+      0.1; // Threshold for maximum relative bandwidth (10%)
+  adjustRelativeBW(max_rel_bw);
+
   // Unblock signals
   FilterClassCombo->blockSignals(false);
   FilterResponseTypeCombo->blockSignals(false);
