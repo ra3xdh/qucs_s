@@ -1,7 +1,7 @@
 #include "./../../SchematicContent.h"
 
-QString SchematicContent::parseMicrostripLine_QucsS(ComponentInfo Comp) {
-  // Format: <MLIN ID status x y text_x text_y vertical_mirror rotation
+QString SchematicContent::parseMicrostripStep_QucsS(ComponentInfo Comp) {
+  // Format: <MSTEP ID status x y text_x text_y vertical_mirror rotation
   // <properties>> Temp_Visibility> ID: e.g. Lx, where x is a positive integer
   // status:
   //         0 -> opened
@@ -14,22 +14,22 @@ QString SchematicContent::parseMicrostripLine_QucsS(ComponentInfo Comp) {
   // vertical_mirror: {0, 1}
   // rotation: Component's rotation {0, 1, 2, 3}
 
-  // Example: <MLIN MS1 1 410 290 -26 15 0 0 "Subst1" 1 "1 mm" 1 "10 mm" 1
-  // "Hammerstad" 0 "Kirschning" 0 "26.85" 0 "DC" 0>
+  // Example: <MSTEP MS1 1 690 500 -26 17 0 0 "Subst1" 1 "2 mm" 1 "1 mm" 1
+  // "Hammerstad" 0 "Kirschning" 0>
 
   int status = 1;
   int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export;
   int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export;
   int x_text = 25;
   int y_text = 0;
-  int rotation = static_cast<int>(Comp.Rotation / 90) + 1;
+  int rotation = static_cast<int>(Comp.Rotation / 90);
 
   // Parameters
-  QString Width = Comp.val["Width"];
-  int Width_visibility = 1;
+  QString W1 = Comp.val["W1"];
+  int W1_visibility = 1;
 
-  QString Length = Comp.val["Length"];
-  int Length_visibility = 1;
+  QString W2 = Comp.val["W2"];
+  int W2_visibility = 1;
 
   // Adjust text position depending on orientation
   switch (rotation) {
@@ -53,7 +53,7 @@ QString SchematicContent::parseMicrostripLine_QucsS(ComponentInfo Comp) {
   }
 
   QString componentLine =
-      QString("<MLIN %1 %2 %3 %4 %5 %6 1 %7 \"Substrate\" 1 \"%8\" %9 "
+      QString("<MSTEP %1 %2 %3 %4 %5 %6 1 %7 \"Substrate\" 1 \"%8\" %9 "
               "\"%10\" %11 \"Hammerstad\" 0 \"Kirschning\" "
               "0 \"26.85\" 0 \"DC\" 0>\n")
           .arg(Comp.ID)
@@ -63,10 +63,10 @@ QString SchematicContent::parseMicrostripLine_QucsS(ComponentInfo Comp) {
           .arg(x_text)
           .arg(y_text)
           .arg(rotation)
-          .arg(Width)
-          .arg(Width_visibility)
-          .arg(Length)
-          .arg(Length_visibility);
+          .arg(W1)
+          .arg(W1_visibility)
+          .arg(W2)
+          .arg(W2_visibility);
 
   return componentLine;
 }

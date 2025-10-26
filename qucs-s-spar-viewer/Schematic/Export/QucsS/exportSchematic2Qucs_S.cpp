@@ -99,6 +99,10 @@ QString SchematicContent::processComponents_QucsS() {
     case MicrostripLine:
       componentLine = parseMicrostripLine_QucsS(Comps[i]);
       break;
+
+    case MicrostripStep:
+      componentLine = parseMicrostripStep_QucsS(Comps[i]);
+      break;
       ///////////////////////////////////////////////
 
     default:
@@ -193,7 +197,8 @@ QString SchematicContent::processWires_QucsS() {
       continue; // Omit grounds. They don't need to be routed
 
     int portOrigin;
-    if (OriginID.startsWith("N") || OriginID.startsWith("T")) {
+    if (OriginID.startsWith("N") ||
+        (OriginID.startsWith("T") && !OriginID.startsWith("TLIN"))) {
       // Node
       portOrigin = 0;
     } else {
@@ -208,7 +213,8 @@ QString SchematicContent::processWires_QucsS() {
       continue; // Omit grounds. They don't need to be routed
 
     int portDestination;
-    if (DestinationID.startsWith("N") || DestinationID.startsWith("T")) {
+    if (DestinationID.startsWith("N") ||
+        (DestinationID.startsWith("T") && !DestinationID.startsWith("TLIN"))) {
       // Node and terms are treated as 1 port devices
       portDestination = 0;
     } else {

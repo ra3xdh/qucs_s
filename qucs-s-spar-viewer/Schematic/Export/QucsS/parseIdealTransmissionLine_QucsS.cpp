@@ -42,8 +42,8 @@ QString SchematicContent::parseIdealTransmissionLine_QucsS(ComponentInfo Comp) {
     y_text = -60;
 
     // Save pin position. This is needed for wiring later
-    ComponentPinMap[Comp.ID][0] = QPoint(x_pos + 30, y_pos); // Pin 1
-    ComponentPinMap[Comp.ID][1] = QPoint(x_pos - 30, y_pos); // Pin 2
+    ComponentPinMap[Comp.ID][0] = QPoint(x_pos - 30, y_pos); // Pin 1
+    ComponentPinMap[Comp.ID][1] = QPoint(x_pos + 30, y_pos); // Pin 2
     break;
   case 1: // Vertical orientation
     x_text = 20;
