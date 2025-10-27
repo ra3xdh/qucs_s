@@ -28,8 +28,29 @@ QString SchematicContent::parseResistor_QucsS(ComponentInfo Comp) {
   QString R = Comp.val["R"];
   int R_visibility = 1;
 
+  // Adjust text position depending on orientation
+  switch (rotation) {
+  case 2:
+  case 0: // Horizontal orientation
+    x_text = -30;
+    y_text = -50;
+
+    // Save pin position. This is needed for wiring later
+    ComponentPinMap[Comp.ID][0] = QPoint(x_pos - 30, y_pos); // Pin 1
+    ComponentPinMap[Comp.ID][1] = QPoint(x_pos + 30, y_pos); // Pin 2
+    break;
+  case 1: // Vertical orientation
+    x_text = 10;
+    y_text = -10;
+
+    // Save pin position. This is needed for wiring later
+    ComponentPinMap[Comp.ID][0] = QPoint(x_pos, y_pos + 30); // Pin 1
+    ComponentPinMap[Comp.ID][1] = QPoint(x_pos, y_pos - 30); // Pin 2
+    break;
+  }
+
   QString componentLine =
-      QString("<R %1 %2 %3 %4 %5 %6 0 %7 \"%8\" \"%9\" \"26.85\" 0 \"0.0\" 0 "
+      QString("<R %1 %2 %3 %4 %5 %6 0 %7 \"%8\" %9 \"26.85\" 0 \"0.0\" 0 "
               "\"0.0\" 0  0 \"26.85\" 0 \"US\" 0>\n")
           .arg(Comp.ID)
           .arg(status)

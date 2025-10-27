@@ -90,17 +90,17 @@ void BridgedTeeAttenuator::buildNetwork() {
   // Middle node (bridge connection)
   NI.setParams(
       QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100,
-      80);
+      100);
   Schematic.appendNode(NI);
   Schematic.appendWire(Res2.ID, 0, NI.ID, 0);
 
   // 3rd Shunt resistor R4 (bridge to ground)
   Res4.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                 Resistor, 0, 100, 120);
+                 Resistor, 0, 100, 140);
   Res4.val["R"] = num2str(R4, Resistance);
   Schematic.appendComponent(Res4);
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 100, 170);
+                   0, 100, 190);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Res3.ID, 0, NI.ID, 0);
