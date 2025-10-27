@@ -69,7 +69,7 @@ private slots:
 private:
   // ************************** FILTER DESIGN ***************************
   QWidget* SetupFilterDesignGUI();
-  QComboBox *FilterClassCombo, *FilterResponseTypeCombo,
+  QComboBox *FilterResponseTypeCombo,
       *FilterImplementationCombo, *FC_ScaleCombobox, *BW_ScaleCombobox,
       *SemiLumpedImplementationCombo;
   QComboBox *EllipticType, *DC_CouplingTypeCombo;
@@ -85,6 +85,10 @@ private:
       *RippleLabel, *RippledBLabel, *DC_CouplingLabel, *MaximumZ_Unit_Label,
       *MinimumZ_Unit_Label, *SemiLumpedImplementationLabel,
       *ImpedanceRatio_Label;
+
+  QLabel * ClassLabel;
+  QComboBox *FilterClassCombo;
+
   QLabel *RLlabel, *RLlabelOhm, *PhaseErrorLabel, *PhaseErrorLabelDeg,
       *MinimumZLabel, *MaximumZLabel, *FC_Label, *BW_Label; // Zverev mode
   QStringList DefaultFilterResponses;
