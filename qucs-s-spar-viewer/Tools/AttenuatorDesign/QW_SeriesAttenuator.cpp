@@ -102,7 +102,7 @@ void QW_SeriesAttenuator::buildQW_Series_Lumped() {
   Cshunt.val["C"] = num2str(1 / (Specification.Zin * w0), Capacitance);
   Schematic.appendComponent(Cshunt);
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   180, 50, -70);
+                   180, 50, -80);
   Schematic.appendComponent(Ground);
   Lseries.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
                     Inductor, -90, 100, 0);
@@ -124,7 +124,7 @@ void QW_SeriesAttenuator::buildQW_Series_Lumped() {
   Cshunt.val["C"] = num2str(1 / (Specification.Zin * w0), Capacitance);
   Schematic.appendComponent(Cshunt);
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   180, 150, -70);
+                   180, 150, -80);
   Schematic.appendComponent(Ground);
   Schematic.appendWire(Lseries.ID, 0, NI.ID, 0);
   Schematic.appendWire(Cshunt.ID, 0, NI.ID, 0);

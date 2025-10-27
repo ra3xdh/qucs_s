@@ -80,12 +80,12 @@ void QW_ShuntAttenuator::buildQW_Shunt_Lumped() {
 
   // Lumped transmission line: shunt C at input
   Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-                   Capacitor, 0, 50, -50);
+                   Capacitor, 0, 50, -40);
   Cshunt.val["C"] = num2str(1 / (Specification.Zin * w0), Capacitance);
   Schematic.appendComponent(Cshunt);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   180, 50, -75);
+                   0, 50, -70);
   Schematic.appendComponent(Ground);
 
   Lseries.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
@@ -111,7 +111,7 @@ void QW_ShuntAttenuator::buildQW_Shunt_Lumped() {
   Schematic.appendComponent(Res2);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 50, 205);
+                   0, 50, 200);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);
@@ -124,7 +124,7 @@ void QW_ShuntAttenuator::buildQW_Shunt_Lumped() {
   Schematic.appendComponent(Res3);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 100, 205);
+                   0, 100, 200);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Res3.ID, 0, Ground.ID, 0);
@@ -137,7 +137,7 @@ void QW_ShuntAttenuator::buildQW_Shunt_Lumped() {
   Schematic.appendComponent(Cshunt);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 150, 205);
+                   0, 150, 200);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
@@ -210,7 +210,7 @@ void QW_ShuntAttenuator::buildQW_Shunt_IdealTL() {
   Schematic.appendComponent(Res2);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 50, 205);
+                   0, 50, 200);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);
@@ -223,7 +223,7 @@ void QW_ShuntAttenuator::buildQW_Shunt_IdealTL() {
   Schematic.appendComponent(Res3);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 100, 205);
+                   0, 100, 200);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Res3.ID, 0, Ground.ID, 0);
@@ -306,7 +306,7 @@ void QW_ShuntAttenuator::buildQW_Shunt_Microstrip() {
   Schematic.appendComponent(Res2);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 50, 205);
+                   0, 50, 200);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Res2.ID, 0, Ground.ID, 0);
@@ -319,7 +319,7 @@ void QW_ShuntAttenuator::buildQW_Shunt_Microstrip() {
   Schematic.appendComponent(Res3);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 100, 205);
+                   0, 100, 200);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Res3.ID, 0, Ground.ID, 0);

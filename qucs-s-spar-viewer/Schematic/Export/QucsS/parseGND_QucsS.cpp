@@ -17,9 +17,19 @@ QString SchematicContent::parseGND_QucsS(ComponentInfo Comp) {
   int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export -
               20; // Additional correction needed: The GND in the internal
                   // schematic was a small wire connection
+  int mirror = 0;
 
-  QString componentLine =
-      QString("<GND * %1 %2 %3 0 0 0 0>\n").arg(status).arg(x_pos).arg(y_pos);
+  if (y_pos < 0) {
+    // if GND is above the "main circuit line" mirror the ground
+    mirror = 1;
+    y_pos += 20; // Correct y-axis position
+  }
+
+  QString componentLine = QString("<GND * %1 %2 %3 0 0 %4 0>\n")
+                              .arg(status)
+                              .arg(x_pos)
+                              .arg(y_pos)
+                              .arg(mirror);
 
   return componentLine;
 }
