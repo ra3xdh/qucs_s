@@ -100,6 +100,8 @@ class SchematicContent {
         QString parseIdealTransmissionLine_QucsS(ComponentInfo);
 
         // Microstrip components
+        MS_Substrate get_MS_Substrate(ComponentInfo Comp);
+        QString addSubstrateBox(QList<MS_Substrate> subs_list, int x_bottom, int y_bottom);
         QString parseMicrostripLine_QucsS(ComponentInfo);
         QString parseMicrostripStep_QucsS(ComponentInfo);
 

@@ -54,6 +54,12 @@ QString SchematicContent::processComponents_QucsS() {
   // there)
   int x_bottom = 1e6, y_bottom = -1e6;
 
+  QList<MS_Substrate>
+      MS_Substrate_List; // Contains all substrates used in the design. So far
+                         // the tool doesn't synthesize designs with multiple
+                         // substrates, but at least, this handles the
+                         // possibility
+
   for (int i = 0; i < Comps.length(); i++) {
 
     // Update circuit bottom-left coordinate
@@ -96,13 +102,19 @@ QString SchematicContent::processComponents_QucsS() {
 
       ///////////////////////////////////////////////
       // Microstrip components
-    case MicrostripLine:
+    case MicrostripLine: {
+      MS_Substrate subs = get_MS_Substrate(Comps[i]);
+      MS_Substrate_List.append(subs);
       componentLine = parseMicrostripLine_QucsS(Comps[i]);
       break;
+    }
 
-    case MicrostripStep:
+    case MicrostripStep: {
+      MS_Substrate subs = get_MS_Substrate(Comps[i]);
+      MS_Substrate_List.append(subs);
       componentLine = parseMicrostripStep_QucsS(Comps[i]);
       break;
+    }
       ///////////////////////////////////////////////
 
     default:
@@ -131,9 +143,13 @@ QString SchematicContent::processComponents_QucsS() {
           .arg(f_stop)
           .arg(n_points);
 
-  x_bottom += 200;
+  // Substrate box
+  x_bottom += 170;
+  qucs_S_Components_Netlist +=
+      addSubstrateBox(MS_Substrate_List, x_bottom, y_bottom + 40);
 
   // Add equations
+  x_bottom += 170;
   if (this->Type == QString("Power Combiner")) {
     qucs_S_Components_Netlist +=
         QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S11_dB=dB(S[1,1])\" "
@@ -168,6 +184,45 @@ QString SchematicContent::processComponents_QucsS() {
       QString("</Components>\n"); // Close the components section
 
   return qucs_S_Components_Netlist;
+}
+
+// This function extracts the substrate properties from a component
+MS_Substrate SchematicContent::get_MS_Substrate(ComponentInfo Comp) {
+  MS_Substrate subs;
+  subs.er = Comp.val["er"].toDouble();
+  subs.height = Comp.val["h"].toDouble();
+  subs.MetalConductivity = Comp.val["cond"].toDouble();
+  subs.MetalThickness = Comp.val["th"].toDouble();
+  subs.tand = Comp.val["tand"].toDouble();
+
+  return subs;
+}
+
+QString SchematicContent::addSubstrateBox(QList<MS_Substrate> subs_list,
+                                          int x_bottom, int y_bottom) {
+  QString netlist_subs_box;
+  QList<MS_Substrate> subs_list_simplified = removeDuplicates(subs_list);
+
+  for (int i = 0; i < subs_list_simplified.size(); ++i) {
+    const MS_Substrate &s = subs_list_simplified[i];
+    // Format fields as requested (use mm and um for better readability)
+    QString line =
+        QString("<SUBST Subst%1 1 %2 %3 -30 24 0 0 \"%2\" 1 \"%3 mm\" 1 "
+                "\"%4 um\" 1 \"%5\" 1 \"%6\" 1 \"%7\" 1>")
+            .arg(i + 1)
+            .arg(x_bottom)
+            .arg(y_bottom)
+            .arg(QString::number(s.er, 'g', 8))
+            .arg(QString::number(s.height * 1000.0, 'g', 8)) // convert m to mm
+            .arg(QString::number(s.MetalThickness * 1e6, 'g',
+                                 8)) // convert m to um
+            .arg(QString::number(s.tand, 'g', 8))
+            .arg(QString::number(s.MetalConductivity, 'g', 8))
+            .arg(QString::number(0.15e-6, 'g',
+                                 8)); // Roughness
+    netlist_subs_box += line + "\n";
+  }
+  return netlist_subs_box;
 }
 
 // Get the position of the internal nodes. This will be needed later for tracing

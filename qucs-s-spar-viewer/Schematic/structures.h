@@ -100,6 +100,11 @@ struct MS_Substrate {
   } // RO4003C, 20 mils
 };
 
+
+bool operator==(const MS_Substrate& a, const MS_Substrate& b);
+QList<MS_Substrate> removeDuplicates(const QList<MS_Substrate>& list);
+
+
 struct FilterSpecifications {
   FilterClass FilterType;      // Lowpass, Highpass, Bandpass, Bandstop
   ResponseType FilterResponse; // Butterworth, Chebyshev, Cauer, etc...

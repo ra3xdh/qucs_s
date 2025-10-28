@@ -53,7 +53,7 @@ QString SchematicContent::parseMicrostripLine_QucsS(ComponentInfo Comp) {
   }
 
   QString componentLine =
-      QString("<MLIN %1 %2 %3 %4 %5 %6 1 %7 \"Substrate\" 1 \"%8\" %9 "
+      QString("<MLIN %1 %2 %3 %4 %5 %6 1 %7 \"Substrate\" 0 \"%8\" %9 "
               "\"%10\" %11 \"Hammerstad\" 0 \"Kirschning\" "
               "0 \"26.85\" 0 \"DC\" 0>\n")
           .arg(Comp.ID)
