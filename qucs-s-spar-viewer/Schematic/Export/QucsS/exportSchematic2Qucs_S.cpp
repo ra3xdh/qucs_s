@@ -146,7 +146,7 @@ QString SchematicContent::processComponents_QucsS() {
   // Substrate box
   x_bottom += 170;
   qucs_S_Components_Netlist +=
-      addSubstrateBox(MS_Substrate_List, x_bottom, y_bottom + 40);
+      addSubstrateBox(MS_Substrate_List, x_bottom, y_bottom + 30);
 
   // Add equations
   x_bottom += 170;

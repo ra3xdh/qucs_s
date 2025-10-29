@@ -243,11 +243,14 @@ void PowerCombiningTool::UpdateDesignParameters() {
 
   Specs.Type = TopoCombo->currentText();
   Specs.Noutputs = BranchesCombo->currentText().toInt();
+
+  Specs.OutputRatio.clear();
   Specs.OutputRatio.push_back(pow(10, K1Spinbox->value() / 20.));
   if (Specs.Type == "Lim-Eom") { // Supports arbitrary 3 way split ratio
     Specs.OutputRatio.push_back(pow(10, K2Spinbox->value() / 20.));
     Specs.OutputRatio.push_back(pow(10, K3Spinbox->value() / 20.));
   }
+
   Specs.alpha = AlphaSpinbox->value();
   Specs.units = UnitsCombo->currentText();
   Specs.Nstages = NStagesSpinbox->value();

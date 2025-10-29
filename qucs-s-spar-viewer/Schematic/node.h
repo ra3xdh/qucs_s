@@ -69,6 +69,9 @@ public:
   QPoint getPortLocation(int);
   QString getID();
 
+  void show();
+  void hide();
+
 protected:
   QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
@@ -80,6 +83,7 @@ private:
   QPointF newPos;
   GraphWidget* graph;
   QString ID;
+  bool visible;
 };
 //! [0]
 

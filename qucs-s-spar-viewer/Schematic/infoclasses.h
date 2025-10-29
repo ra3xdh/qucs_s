@@ -115,6 +115,7 @@ public:
   QString ID;
   QString Net;
   std::vector<double> Coordinates;
+  bool visible = true;
 };
 
 class TextInfo {
