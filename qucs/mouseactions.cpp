@@ -323,6 +323,9 @@ void MouseActions::MMoveResizePainting(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 {
     setPainter(Doc);
+    // initialize total movement
+    MAx3 = 0;
+    MAy3 = 0;
 
     updateMouseMove(Doc, Event, /*onGrid=*/true);
 
