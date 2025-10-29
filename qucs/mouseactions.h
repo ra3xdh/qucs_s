@@ -80,6 +80,8 @@ public:
   void MMoveWire2(Schematic*, QMouseEvent*);
   void MMoveMoving(Schematic*, QMouseEvent*);
   void MMoveMoving2(Schematic*, QMouseEvent*);
+  void MMoveFree(Schematic*, QMouseEvent*);
+  void MMoveFree2(Schematic*, QMouseEvent*);
   void MMovePaste(Schematic*, QMouseEvent*);
   void MMovePaste2(Schematic*, QMouseEvent*);
   void MMoveDelete(Schematic*, QMouseEvent*);
@@ -122,6 +124,7 @@ public:
   void MReleaseSelect2(Schematic*, QMouseEvent*);
   void MReleaseActivate(Schematic*, QMouseEvent*);
   void MReleaseMoving(Schematic*, QMouseEvent*);
+  void MReleaseMoveFree(Schematic*, QMouseEvent*);
   void MReleaseResizeDiagram(Schematic*, QMouseEvent*);
   void MReleasePaste(Schematic*, QMouseEvent*);
   void MReleaseResizePainting(Schematic*, QMouseEvent*);

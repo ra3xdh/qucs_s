@@ -367,7 +367,7 @@ public:
   void editFile(const QString&, bool reloadFile = false);
 
   QAction *insWire, *insLabel, *insGround, *insPort, *insEquation, *magPlus,
-          *editRotate, *editMirror, *editMirrorY, *editPaste, *select, *editStretch,
+          *editRotate, *editMirror, *editMirrorY, *editPaste, *select, *editStretch, *editMove,
           *editActivate, *wire, *editDelete, *setMarker, *setDiagramLimits, *resetDiagramLimits, *showGrid, *onGrid, *moveText,
           *helpIndex, *helpGetStart, *callEditor, *callFilter, *callLine, *callActiveFilter,
           *showMsg, *showNet, *alignTop, *alignBottom, *alignLeft, *alignRight,
@@ -398,6 +398,7 @@ public slots:
   void slotSelect(bool);
   void slotEditActivate(bool);
   void slotEditStretch(bool); // move selection of components w/wire stretching
+  void slotEditMove(bool);    // move selection of components and disconnect wires.
   void slotInsertLabel(bool);
   void slotSetMarker(bool);
   void slotSetDiagramLimits(bool);

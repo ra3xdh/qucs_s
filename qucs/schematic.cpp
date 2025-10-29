@@ -665,8 +665,10 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
 {
     a_App->editText->setHidden(true); // disable text edit of component property
     this->setFocus();
-    if (a_App->MouseReleaseAction == &MouseActions::MReleasePaste)
+    if (    a_App->MouseReleaseAction == &MouseActions::MReleasePaste
+        ||  a_App->MouseReleaseAction == &MouseActions::MReleaseMoveFree) {
         return;
+    }
 
     const QPoint inModel = contentsToModel(Event->pos());
 

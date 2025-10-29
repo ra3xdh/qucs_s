@@ -352,6 +352,41 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
     Doc->displayMutations();
 }
 
+// -----------------------------------------------------------
+// Moves components and disconnects all components not connected to selection.
+void MouseActions::MMoveFree(Schematic *Doc, QMouseEvent *Event)
+{
+    // Initialize selection
+    auto selection = Doc->currentSelection();
+
+    // Disconnect all elements _not_ part of the selection
+    // Keeps alls node labels (labels connected straight to the port)
+    Doc->decoupleElements(selection, /*keepNodeLabel=*/true);
+
+    // Ensure clean slate, selection is re-done to avoid potential stale nodes deleted
+    // during decoupling.
+    movingState = {
+        .selection = Doc->currentSelection()
+    };
+
+    setPainter(Doc);
+    // initialize total movement
+    MAx3 = 0;
+    MAy3 = 0;
+
+    updateMouseMove(Doc, Event, /*onGrid=*/true);
+
+    QucsMain->MouseMoveAction = &MouseActions::MMoveFree2;
+    QucsMain->MouseReleaseAction = &MouseActions::MReleaseMoveFree;
+}
+
+void MouseActions::MMoveFree2(Schematic *Doc, QMouseEvent *Event)
+{
+    setPainter(Doc);
+    QPoint delta = updateMouseMove(Doc, Event, /*onGrid=*/true);
+    movingState.selection.moveCenter(delta.x(), delta.y());
+}
+
 /**
  * @brief MouseActions::MMovePaste Moves components after paste from clipboard.
  * @param Doc
@@ -1415,6 +1450,33 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent* event)
     QucsMain->editRotate->blockSignals(false);
     QucsMain->insLabel->blockSignals(false);
     QucsMain->setMarker->blockSignals(false);
+}
+// -----------------------------------------------------------
+// Is called after move-free (move with disconnection) operation
+void MouseActions::MReleaseMoveFree(Schematic *Doc, QMouseEvent *Event)
+{
+    // Right-click rotates selection
+    if (Event->button() == Qt::RightButton) {
+        rotateMovingElements(Doc);
+        return;
+    }
+
+    if (Doc->healAfterMousyMutation() || MAx3 != 0 || MAy3 != 0) {
+        Doc->setChanged(true, true);
+    }
+    Doc->viewport()->update();
+
+    // Reset everything and go back to select mode
+    QucsMain->MouseMoveAction = nullptr;
+    QucsMain->MousePressAction = nullptr;
+    QucsMain->MouseReleaseAction = nullptr;
+    QucsMain->MouseDoubleClickAction = nullptr;
+
+    QucsMain->editMove->blockSignals(true);
+    QucsMain->editMove->setChecked(false);
+    QucsMain->editMove->blockSignals(false);
+
+    QucsMain->slotSelect(false);
 }
 
 // -----------------------------------------------------------

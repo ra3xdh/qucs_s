@@ -447,6 +447,17 @@ void QucsApp::initActions()
   editStretch->setCheckable(true);
   connect(editStretch, SIGNAL(toggled(bool)), SLOT(slotEditStretch(bool)));
 
+  // TODO: Add bitmap?
+  editMove = new QAction(tr("Move"), this);
+  editMove->setShortcut(tr("Shift+M"));
+  editMove->setStatusTip(tr("Move the selected components and disconnect wiring"));
+  editMove->setWhatsThis(tr("Move selection (Disconnecting Wires)\n\n")
+                        + "Move the selected components"
+                        + "Connected wires will be disconnected from the components.\n\n"
+                        );
+  editMove->setCheckable(true);
+  connect(editMove, SIGNAL(toggled(bool)), SLOT(slotEditMove(bool)));
+
   editRotate = new QAction(QIcon(":/bitmaps/svg/rotate_ccw.svg"), tr("Rotate"), this);
   editRotate->setShortcut(tr("Ctrl+R"));
   editRotate->setStatusTip(tr("Rotates the selected component by 90\x00B0"));
@@ -777,6 +788,7 @@ void QucsApp::initMenuBar()
   editMenu->addAction(editFind);
   editMenu->addAction(changeProps);
   editMenu->addAction(editStretch);
+  editMenu->addAction(editMove);
   editMenu->addAction(editRotate);
   editMenu->addAction(editMirror);
   editMenu->addAction(editMirrorY);
