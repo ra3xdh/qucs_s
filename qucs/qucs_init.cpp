@@ -435,6 +435,18 @@ void QucsApp::initActions()
   selectMarker->setWhatsThis(tr("Select Markers\n\nSelects all diagram markers of the document"));
   connect(selectMarker, SIGNAL(triggered()), SLOT(slotSelectMarker()));
 
+  // TODO: Add bitmap?
+  editStretch = new QAction(tr("Move and Stretch"), this);
+  editStretch->setShortcut(tr("M"));
+  editStretch->setStatusTip(tr("Move the selected components and stretch the connected wiring"));
+  editStretch->setWhatsThis(tr("Move selection (Stretching Wires)\n\n")
+                            + "Move the selected components. All connected wires will be "
+                            + "automatically stretched to maintain connections.\n\n"
+                            + "Same as the drag 'n' drop operation."
+                            );
+  editStretch->setCheckable(true);
+  connect(editStretch, SIGNAL(toggled(bool)), SLOT(slotEditStretch(bool)));
+
   editRotate = new QAction(QIcon(":/bitmaps/svg/rotate_ccw.svg"), tr("Rotate"), this);
   editRotate->setShortcut(tr("Ctrl+R"));
   editRotate->setStatusTip(tr("Rotates the selected component by 90\x00B0"));
@@ -764,6 +776,7 @@ void QucsApp::initMenuBar()
   editMenu->addAction(selectMarker);
   editMenu->addAction(editFind);
   editMenu->addAction(changeProps);
+  editMenu->addAction(editStretch);
   editMenu->addAction(editRotate);
   editMenu->addAction(editMirror);
   editMenu->addAction(editMirrorY);

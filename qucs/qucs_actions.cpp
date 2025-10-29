@@ -230,6 +230,24 @@ void QucsApp::slotEditDelete(bool on)
           &MouseActions::MMoveDelete, &MouseActions::MPressDelete);
 }
 
+// ------------------------------------------------------------------------
+// Is called if "Strech (move w/wiring)"-Button is pressed.
+void QucsApp::slotEditStretch(bool on)
+{
+  Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+  if(!on || Doc->currentSelection().isEmpty()) {
+    // Can't perform action without selection
+    editStretch->blockSignals(true);
+    editStretch->setChecked(false);
+    editStretch->blockSignals(false);
+    return;
+  }
+  // Add undo entry in case we cancel move action
+  Doc->setChanged(true, true);
+
+  performToggleAction(on, editStretch, nullptr,
+    &MouseActions::MMoveMoving, nullptr);
+}
 // -----------------------------------------------------------------------
 // Is called if "Wire"-Button is pressed.
 void QucsApp::slotSetWire(bool on)
