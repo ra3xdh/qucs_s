@@ -60,16 +60,23 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
     C[i] = 1. / (L[i] * w * w);
   }
 
+  // In the schematic of a Wilkinson power combiner there are two output
+  // branches and a central feed line. These variables set the y-axis coordinate
+  // of these branches;
+
+  int y_upper_branch = -60;
+  int y_central_branch = 0;
+  int y_lower_branch = 60;
+
   ComponentInfo TermSpar1, TermSpar2, TermSpar3;
   ComponentInfo Ground;
   ComponentInfo Cshunt, Lseries;
-  NodeInfo NI, Nupper, Nlower, Nupper_, Nlower_;
+  NodeInfo Nupper, Nlower, Nupper_, Nlower_;
 
-  int posx = 0;
-  int posy = 75;
+  int posx = 0; // x-axis position. It varies as the loop grows
 
   TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 0, posx, 0);
+                      Term, 0, posx, y_central_branch);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -77,25 +84,56 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
 
   // Shunt capacitor
   Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-                   Capacitor, 0, posx, 20);
+                   Capacitor, 0, posx, y_central_branch + 30);
   Cshunt.val["C"] = num2str(2 * C[0], Capacitance);
   Schematic.appendComponent(Cshunt);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, posx, 60);
+                   0, posx, y_central_branch + 80);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
 
-  NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-      posx + 25, 0);
-  Schematic.appendNode(NI);
+  NodeInfo N_1st_shunt_C(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_central_branch);
+  Schematic.appendNode(N_1st_shunt_C);
 
-  Schematic.appendWire(Cshunt.ID, 1, NI.ID, 0);
-  Schematic.appendWire(NI.ID, 1, TermSpar1.ID, 0);
+  Schematic.appendWire(N_1st_shunt_C.ID, 0, TermSpar1.ID, 0);
+  Schematic.appendWire(Cshunt.ID, 1, N_1st_shunt_C.ID, 0);
 
-  posx += 20;
+  posx += 50; // Split zone
+  /////////////////////////////////
+  // Nodes needed in the split zone
+  Nlower.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_lower_branch);
+  Nlower.visible = false; // Not visible. This node is not really needed, but
+                          // makes routing easier
+  Schematic.appendNode(Nlower);
+
+  NodeInfo Ncentral(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_central_branch);
+  Schematic.appendNode(Ncentral);
+
+  Nupper.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_upper_branch);
+  Nupper.visible = false;
+  ; // Not visible. This node is not really needed, but
+    // makes routing easier
+  Schematic.appendNode(Nupper);
+
+  Schematic.appendWire(Ncentral.ID, 0, Nlower.ID, 0);
+  Schematic.appendWire(Ncentral.ID, 0, Nupper.ID, 0);
+  /////////////////////////////////
+
+  Schematic.appendWire(N_1st_shunt_C.ID, 0, Ncentral.ID, 0);
+
+  // The next instantiations of these nodes need to be visible
+  Nlower.visible = true;
+  Nupper.visible = true;
 
   for (int i = 0; i < Specification.Nstages; i++) {
     double C_;
@@ -110,7 +148,7 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
 
     Lseries.setParams(
         QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
-        -90, posx, -75);
+        -90, posx, y_upper_branch);
     Lseries.val["L"] = num2str(L[i], Inductance);
     Schematic.appendComponent(Lseries);
 
@@ -118,30 +156,26 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
 
     Cshunt.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
-        0, posx, -50);
+        0, posx, y_upper_branch + 30);
     Cshunt.val["C"] = num2str(C_, Capacitance);
     Schematic.appendComponent(Cshunt);
 
     Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                     GND, 0, posx, -10);
+                     GND, 0, posx, y_upper_branch + 80);
     Schematic.appendComponent(Ground);
 
     Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
 
-    if (i > 0) {
-      Schematic.appendWire(Lseries.ID, 1, Nupper.ID, 0);
-    } else {
-      Schematic.appendWire(Lseries.ID, 1, NI.ID, 0);
-    }
+    Schematic.appendWire(Lseries.ID, 1, Nupper.ID, 0);
 
     Nupper.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-        posx + 50, -75);
+        posx + 50, y_upper_branch);
     Schematic.appendNode(Nupper);
 
     Nupper_.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
-        -75);
+        y_upper_branch);
     Schematic.appendNode(Nupper_);
 
     Schematic.appendWire(Cshunt.ID, 1, Nupper_.ID, 0);
@@ -153,7 +187,7 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
     // Lower branch
     Lseries.setParams(
         QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
-        -90, posx, 75);
+        -90, posx, y_lower_branch);
     Lseries.val["L"] = num2str(L[i], Inductance);
     Schematic.appendComponent(Lseries);
 
@@ -161,29 +195,25 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
 
     Cshunt.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
-        0, posx, 100);
+        0, posx, y_lower_branch + 30);
     Schematic.appendComponent(Cshunt);
 
     Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                     GND, 0, posx, 140);
+                     GND, 0, posx, y_lower_branch + 80);
     Schematic.appendComponent(Ground);
 
     Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
 
-    if (i > 0) {
-      Schematic.appendWire(Lseries.ID, 1, Nlower.ID, 0);
-    } else {
-      Schematic.appendWire(Lseries.ID, 1, NI.ID, 0);
-    }
+    Schematic.appendWire(Lseries.ID, 1, Nlower.ID, 0);
 
     Nlower.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-        posx + 50, 75);
+        posx + 50, y_lower_branch);
     Schematic.appendNode(Nlower);
 
     Nlower_.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
-        75);
+        y_lower_branch);
     Schematic.appendNode(Nlower_);
 
     Schematic.appendWire(Cshunt.ID, 1, Nlower_.ID, 0);
@@ -195,7 +225,7 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
     // Isolation resistor
     ComponentInfo Riso(
         QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0,
-        posx, 0);
+        posx, y_central_branch);
     Riso.val["R"] = num2str(Risol[i], Resistance);
     Schematic.appendComponent(Riso);
 
@@ -207,13 +237,13 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
 
   // Output terminals
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 180, posx, -posy);
+                      Term, 180, posx, y_upper_branch);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
   Schematic.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
 
   TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 180, posx, posy);
+                      Term, 180, posx, y_lower_branch);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
   Schematic.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);

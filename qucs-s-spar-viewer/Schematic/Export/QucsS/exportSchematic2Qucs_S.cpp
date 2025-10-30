@@ -145,8 +145,16 @@ QString SchematicContent::processComponents_QucsS() {
 
   // Substrate box
   x_bottom += 170;
-  qucs_S_Components_Netlist +=
+  QString SubstrateNetlist =
       addSubstrateBox(MS_Substrate_List, x_bottom, y_bottom + 30);
+
+  if (SubstrateNetlist.isEmpty()) {
+    // No substrate
+    x_bottom -= 170; // Restore the x-axis coordinate
+  } else {
+    // One or more substrate definitions. Add them to the netlist
+    qucs_S_Components_Netlist += SubstrateNetlist;
+  }
 
   // Add equations
   x_bottom += 170;
