@@ -19,8 +19,7 @@ QString SchematicContent::parseGND_QucsS(ComponentInfo Comp) {
                   // schematic was a small wire connection
   int mirror = 0;
 
-  if (y_pos < 0) {
-    // if GND is above the "main circuit line" mirror the ground
+  if (Comp.Rotation == 180) {
     mirror = 1;
     y_pos += 20; // Correct y-axis position
   }

@@ -49,6 +49,25 @@ void Wilkinson2Way::buildWilkinson_LumpedLC() {
   ComponentInfo TermSpar1, TermSpar2, TermSpar3;
   ComponentInfo Ground;
 
+  // In the schematic of a Wilkinson power combiner there are two output
+  // branches and a central feed line. These variables set the y-axis coordinate
+  // of these branches;
+
+  int y_upper_branch = 0;
+  int y_central_branch = -60;
+  int y_lower_branch = -120;
+
+  int x_1st_term = 50;
+  int x_1st_shunt_C = 100;
+  int x_split = 150;
+  int x_1st_series_L = 200;
+  int x_2nd_shunt_C = 250;
+  int x_Riso = 300;
+
+  // For unequal power split ratio
+  int x_2nd_series_L = 350;
+  int x_3rd_shunt_C = 400;
+
   // Design equations
   double Z4, Z5, L2_, C2_, L3_, C3_;
   double K = Specification.OutputRatio.at(0);
@@ -72,184 +91,213 @@ void Wilkinson2Way::buildWilkinson_LumpedLC() {
 
   // Build the circuit and the netlist
   TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 0, 50, 0);
-  TermSpar1.val["Z0"] = num2str(Specification.Z0, Resistance);
+                      Term, 0, x_1st_term, y_central_branch);
+  TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   // Shunt capacitor
   ComponentInfo Cshunt1(
       QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 0,
-      100, 20);
+      x_1st_shunt_C, y_central_branch + 30);
   Cshunt1.val["C"] = num2str(CC, Capacitance);
   Schematic.appendComponent(Cshunt1);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 100, 65);
+                   0, x_1st_shunt_C, y_central_branch + 80);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Cshunt1.ID, 0, Ground.ID, 0);
 
-  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, 0);
-  Schematic.appendNode(N1);
+  NodeInfo N_1st_shunt_C(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_1st_shunt_C, y_central_branch);
+  Schematic.appendNode(N_1st_shunt_C);
 
-  Schematic.appendWire(Cshunt1.ID, 1, N1.ID, 0);
-  Schematic.appendWire(TermSpar1.ID, 0, N1.ID, 1);
+  Schematic.appendWire(Cshunt1.ID, 1, N_1st_shunt_C.ID, 0);
+  Schematic.appendWire(TermSpar1.ID, 0, N_1st_shunt_C.ID, 1);
+
+  NodeInfo Nlower(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_split, y_lower_branch);
+  Nlower.visible = false; // Not visible. This node is not really needed, but
+                          // makes routing easier
+  Schematic.appendNode(Nlower);
+
+  NodeInfo Ncentral(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_split, y_central_branch);
+  Schematic.appendNode(Ncentral);
+
+  NodeInfo Nupper(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_split, y_upper_branch);
+  Nupper.visible = false; // Not visible. This node is not really needed, but
+                          // makes routing easier
+
+  Schematic.appendNode(Nupper);
+
+  // Connect the central node with the first shunt capacitor
+  Schematic.appendWire(N_1st_shunt_C.ID, 0, Ncentral.ID, 0);
 
   // Upper branch - Series inductor
   ComponentInfo Lseries1(
       QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor, -90,
-      150, -75);
+      x_1st_series_L, y_upper_branch);
   Lseries1.val["L"] = num2str(L2, Inductance);
   Schematic.appendComponent(Lseries1);
 
   // Cshunt
   ComponentInfo Cshunt2(
       QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 0,
-      200, -55);
+      x_2nd_shunt_C, y_upper_branch + 30);
   Cshunt2.val["C"] = num2str(C2, Capacitance);
   Schematic.appendComponent(Cshunt2);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 200, -10);
+                   0, x_2nd_shunt_C, y_upper_branch + 80);
   Schematic.appendComponent(Ground);
 
-  NodeInfo N2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              250, -75);
-  Schematic.appendNode(N2);
+  NodeInfo N_2nd_Cshunt_up(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_2nd_shunt_C, y_upper_branch);
+  Schematic.appendNode(N_2nd_Cshunt_up);
 
-  NodeInfo N2_(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 200,
-      -75);
-  Schematic.appendNode(N2_);
+  NodeInfo N_Riso_up(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), x_Riso,
+      y_upper_branch);
+  Schematic.appendNode(N_Riso_up);
 
-  Schematic.appendWire(N1.ID, 0, Lseries1.ID, 1);
-  Schematic.appendWire(Lseries1.ID, 0, N2_.ID, 0);
+  Schematic.appendWire(Ncentral.ID, 0, Nupper.ID, 0);
+  Schematic.appendWire(Nupper.ID, 0, Lseries1.ID, 1);
+  Schematic.appendWire(Lseries1.ID, 0, N_2nd_Cshunt_up.ID, 0);
   Schematic.appendWire(Cshunt2.ID, 0, Ground.ID, 0);
-  Schematic.appendWire(Cshunt2.ID, 1, N2_.ID, 0);
-  Schematic.appendWire(N2_.ID, 0, N2.ID, 0);
+  Schematic.appendWire(Cshunt2.ID, 1, N_2nd_Cshunt_up.ID, 0);
+  Schematic.appendWire(N_Riso_up.ID, 0, N_2nd_Cshunt_up.ID, 0);
 
   // Lower branch - Series inductor
   ComponentInfo Lseries2(
       QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor, -90,
-      150, 75);
+      x_1st_series_L, y_lower_branch);
   Lseries2.val["L"] = num2str(L3, Inductance);
   Schematic.appendComponent(Lseries2);
 
   // Cshunt
   ComponentInfo Cshunt3(
       QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor, 0,
-      200, 95);
+      x_2nd_shunt_C, y_lower_branch + 30);
   Cshunt3.val["C"] = num2str(C3, Capacitance);
   Schematic.appendComponent(Cshunt3);
 
   Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 200, 130);
+                   0, x_2nd_shunt_C, y_lower_branch + 80);
   Schematic.appendComponent(Ground);
 
-  NodeInfo N3(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              250, 75);
-  Schematic.appendNode(N3);
+  NodeInfo N_2nd_Cshunt_down(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_2nd_shunt_C, y_lower_branch);
+  Schematic.appendNode(N_2nd_Cshunt_down);
 
-  NodeInfo N3_(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 200,
-      75);
-  Schematic.appendNode(N3_);
+  NodeInfo N_Riso_down(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), x_Riso,
+      y_lower_branch);
+  Schematic.appendNode(N_Riso_down);
 
-  Schematic.appendWire(N1.ID, 0, Lseries2.ID, 1);
-  Schematic.appendWire(Lseries2.ID, 0, N3_.ID, 0);
+  Schematic.appendWire(Nlower.ID, 0, Ncentral.ID, 1);
+  Schematic.appendWire(Nlower.ID, 0, Lseries2.ID, 1);
+  Schematic.appendWire(Lseries2.ID, 0, N_2nd_Cshunt_down.ID, 0);
   Schematic.appendWire(Cshunt3.ID, 0, Ground.ID, 0);
-  Schematic.appendWire(Cshunt3.ID, 1, N3_.ID, 0);
-  Schematic.appendWire(N3_.ID, 0, N3.ID, 0);
+  Schematic.appendWire(Cshunt3.ID, 1, N_2nd_Cshunt_down.ID, 0);
+  Schematic.appendWire(N_Riso_down.ID, 0, N_2nd_Cshunt_down.ID, 0);
 
   ComponentInfo Risolation(
       QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0,
-      250, 0);
+      x_Riso, y_central_branch);
   Risolation.val["R"] = num2str(R, Resistance);
   Schematic.appendComponent(Risolation);
 
-  Schematic.appendWire(Risolation.ID, 0, N3.ID, 1);
-  Schematic.appendWire(Risolation.ID, 1, N2.ID, 0);
+  Schematic.appendWire(Risolation.ID, 0, N_Riso_up.ID, 0);
+  Schematic.appendWire(Risolation.ID, 1, N_Riso_down.ID, 0);
 
   ComponentInfo Ls3, Ls4, Cp4, Cp5;
   if (Specification.OutputRatio.at(0) != 1) {
     // Upper branch
     Ls3.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
-                  Inductor, -90, 285, -75);
+                  Inductor, -90, x_2nd_series_L, y_upper_branch);
     Ls3.val["L"] = num2str(L2_, Inductance);
     Schematic.appendComponent(Ls3);
 
-    Schematic.appendWire(Ls3.ID, 1, N2.ID, 0);
+    Schematic.appendWire(Ls3.ID, 1, N_2nd_Cshunt_up.ID, 0);
 
     Cp4.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-                  Capacitor, 0, 320, -50);
+                  Capacitor, 0, x_3rd_shunt_C, y_upper_branch + 30);
     Cp4.val["C"] = num2str(C2_, Capacitance);
     Schematic.appendComponent(Cp4);
 
     Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                     GND, 0, 320, -10);
+                     GND, 0, x_3rd_shunt_C, y_upper_branch + 80);
     Schematic.appendComponent(Ground);
 
-    NodeInfo N4(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 320,
-        -75);
-    Schematic.appendNode(N4);
+    NodeInfo N_3rd_Shunt_C_up(
+        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        x_3rd_shunt_C, y_upper_branch);
+    Schematic.appendNode(N_3rd_Shunt_C_up);
 
-    Schematic.appendWire(Ls3.ID, 0, N4.ID, 0);
-    Schematic.appendWire(Cp4.ID, 1, N4.ID, 0);
+    Schematic.appendWire(Ls3.ID, 0, N_3rd_Shunt_C_up.ID, 0);
+    Schematic.appendWire(Cp4.ID, 1, N_3rd_Shunt_C_up.ID, 0);
     Schematic.appendWire(Cp4.ID, 0, Ground.ID, 0);
 
     TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 370, -50);
-    TermSpar2.val["Z0"] = num2str(Specification.Z0, Resistance);
+                        Term, 180, x_3rd_shunt_C + 50, y_upper_branch);
+    TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar2);
 
-    Schematic.appendWire(N4.ID, 0, TermSpar2.ID, 0);
+    Schematic.appendWire(N_3rd_Shunt_C_up.ID, 0, TermSpar2.ID, 0);
 
     // Lower branch
     Ls4.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
-                  Inductor, -90, 285, 75);
+                  Inductor, -90, x_2nd_series_L, y_lower_branch);
     Ls4.val["L"] = num2str(L3_, Inductance);
     Schematic.appendComponent(Ls4);
 
-    Schematic.appendWire(Ls4.ID, 1, N3.ID, 0);
+    Schematic.appendWire(Ls4.ID, 1, N_2nd_Cshunt_down.ID, 0);
 
     Cp5.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-                  Capacitor, 0, 320, 100);
+                  Capacitor, 0, x_3rd_shunt_C, y_lower_branch + 30);
     Cp5.val["C"] = num2str(C3_, Capacitance);
     Schematic.appendComponent(Cp5);
 
     Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                     GND, 0, 320, 140);
+                     GND, 0, x_3rd_shunt_C, y_lower_branch + 80);
     Schematic.appendComponent(Ground);
 
-    NodeInfo N5(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 320,
-        75);
-    Schematic.appendNode(N5);
+    NodeInfo N_3rd_Shunt_C_down(
+        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        x_3rd_shunt_C, y_lower_branch);
+    Schematic.appendNode(N_3rd_Shunt_C_down);
 
-    Schematic.appendWire(Ls4.ID, 0, N5.ID, 0);
-    Schematic.appendWire(Cp5.ID, 1, N5.ID, 0);
+    Schematic.appendWire(Ls4.ID, 0, N_3rd_Shunt_C_down.ID, 0);
+    Schematic.appendWire(Cp5.ID, 1, N_3rd_Shunt_C_down.ID, 0);
     Schematic.appendWire(Cp5.ID, 0, Ground.ID, 0);
 
     TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 370, 75);
-    TermSpar3.val["Z0"] = num2str(Specification.Z0, Resistance);
+                        Term, 180, x_3rd_shunt_C + 50, y_lower_branch);
+    TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar3);
 
-    Schematic.appendWire(N5.ID, 0, TermSpar3.ID, 0);
+    Schematic.appendWire(N_3rd_Shunt_C_down.ID, 0, TermSpar3.ID, 0);
   } else {
+    // Equal power split
     TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 280, -75);
-    TermSpar2.val["Z0"] = num2str(Specification.Z0, Resistance);
+                        Term, 180, x_Riso + 50, y_upper_branch);
+    TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar2);
-    Schematic.appendWire(TermSpar2.ID, 0, N2.ID, 0);
+    Schematic.appendWire(TermSpar2.ID, 0, N_2nd_Cshunt_up.ID, 0);
 
     TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 280, 75);
-    TermSpar3.val["Z0"] = num2str(Specification.Z0, Resistance);
+                        Term, 180, x_Riso + 50, y_lower_branch);
+    TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar3);
-    Schematic.appendWire(TermSpar3.ID, 0, N3.ID, 0);
+    Schematic.appendWire(TermSpar3.ID, 0, N_2nd_Cshunt_down.ID, 0);
   }
 }
 
@@ -374,6 +422,7 @@ void Wilkinson2Way::buildWilkinson_IdealTL() {
     Schematic.appendWire(TL5.ID, 1, TermSpar3.ID, 0);
 
   } else {
+    // Equal power split
     TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                         Term, 180, 300, y_upper_branch);
     TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);

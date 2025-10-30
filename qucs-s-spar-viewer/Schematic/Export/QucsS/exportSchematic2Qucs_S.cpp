@@ -284,6 +284,10 @@ QString SchematicContent::processWires_QucsS() {
     int x_end = qRound(end.x());
     int y_end = qRound(end.y());
 
+    if ((x_start == x_end) && (y_start == y_end)) {
+      continue;
+    }
+
     if (x_end < x_start) {
       // Flip.
       int x_temp = x_start;
