@@ -42,75 +42,114 @@ void Branchline::synthesize() {
 }
 
 void Branchline::buildBranchline_IdealTL() {
+
+  // Define components' location
+
+  // Spacing between components
+  int x_spacing = 60;
+  int y_spacing = 60;
+
+  // Input port
+  int x_P1 = 0;
+  int y_P1 = 0;
+
+  // First vertical TL
+  int x_1s_vert_TL = x_P1 + x_spacing;
+  int y_1s_vert_TL = y_P1 + y_spacing;
+
+  // Top horizontal line
+  int x_top_TL = x_1s_vert_TL + x_spacing;
+  int y_top_TL = y_P1;
+
+  // Bottom horizontal line
+  int x_bottom_TL = x_top_TL;
+  int y_bottom_TL = y_1s_vert_TL + y_spacing;
+
+  // Isolation resistor
+  int x_Riso = x_1s_vert_TL;
+  int y_Riso = y_bottom_TL + y_spacing;
+
+  // Last vertical line
+  int x_last_TL = x_bottom_TL + x_spacing;
+  int y_last_TL = y_1s_vert_TL;
+
+  // Top output port
+  int x_P2 = x_last_TL + x_spacing;
+  int y_P2 = y_P1;
+
+  // Bottom output port
+  int x_P3 = x_P2;
+  int y_P3 = y_bottom_TL;
+
   ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20,
-      -50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, x_P1,
+      y_P1);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 120,
-      -50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, x_P2,
+      y_P2);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 120,
-      50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, x_P3,
+      y_P3);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
   ComponentInfo Riso(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                     Resistor, 0, 0, 75);
+                     Resistor, 0, x_Riso, y_Riso);
   Riso.val["R"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(Riso);
 
   ComponentInfo Ground(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                       GND, 0, 0, 120);
+                       GND, 0, x_Riso, y_Riso + 50);
   Schematic.appendComponent(Ground);
 
   ComponentInfo TL1(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 50, -50);
+      TransmissionLine, 90, x_top_TL, y_top_TL);
   TL1.val["Z0"] = num2str(ZA, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL1);
 
   ComponentInfo TL2(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 50, 50);
+      TransmissionLine, 90, x_bottom_TL, y_bottom_TL);
   TL2.val["Z0"] = num2str(ZA, Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL2);
 
   ComponentInfo TL3(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 0, 0);
+      TransmissionLine, 0, x_1s_vert_TL, y_1s_vert_TL);
   TL3.val["Z0"] = num2str(ZB, Resistance);
   TL3.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL3);
 
   ComponentInfo TL4(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 100, 0);
+      TransmissionLine, 0, x_last_TL, y_last_TL);
   TL4.val["Z0"] = num2str(ZB, Resistance);
   TL4.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL4);
 
   NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, -50);
+              x_1s_vert_TL, y_P1);
   Schematic.appendNode(N1);
 
   NodeInfo N2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, -50);
+              x_last_TL, y_P1);
   Schematic.appendNode(N2);
 
   NodeInfo N3(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, 50);
+              x_last_TL, y_P3);
   Schematic.appendNode(N3);
 
   NodeInfo N4(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, 50);
+              x_1s_vert_TL, y_P3);
   Schematic.appendNode(N4);
 
   Schematic.appendWire(TermSpar1.ID, 0, N1.ID, 0);
