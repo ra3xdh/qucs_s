@@ -71,7 +71,7 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
   ComponentInfo TermSpar1, TermSpar2, TermSpar3;
   ComponentInfo Ground;
   ComponentInfo Cshunt, Lseries;
-  NodeInfo Nupper, Nlower, Nupper_, Nlower_;
+  NodeInfo Ncentral, Nupper, Nlower, Nupper_, Nlower_;
 
   int posx = 0; // x-axis position. It varies as the loop grows
 
@@ -112,7 +112,7 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
                           // makes routing easier
   Schematic.appendNode(Nlower);
 
-  NodeInfo Ncentral(
+  Ncentral.setParams(
       QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
       y_central_branch);
   Schematic.appendNode(Ncentral);
@@ -252,10 +252,13 @@ void MultistageWilkinson::buildMultistageWilkinson_LumpedLC() {
 void MultistageWilkinson::buildMultistageWilkinson_IdealTL() {
   ComponentInfo TermSpar1, TermSpar2, TermSpar3;
   ComponentInfo TL, TL_Upper, TL_Lower;
-  NodeInfo NI, Nupper, Nlower;
+  NodeInfo Ncentral, Nupper, Nlower;
 
   int posx = 0;
-  int posy = 50;
+
+  int y_upper_branch = -60;
+  int y_central_branch = 0;
+  int y_lower_branch = 60;
 
   TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                       Term, 0, posx, 0);
@@ -272,64 +275,79 @@ void MultistageWilkinson::buildMultistageWilkinson_IdealTL() {
   TL.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL);
 
-  NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-      posx + 25, 0);
-  Schematic.appendNode(NI);
+  posx += 50;
+  /////////////////////////////////
+  // Nodes needed in the split zone
+  Nlower.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_lower_branch);
+  Nlower.visible = false; // Not visible. This node is not really needed, but
+                          // makes routing easier
+  Schematic.appendNode(Nlower);
+
+  Ncentral.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_central_branch);
+  Schematic.appendNode(Ncentral);
+
+  Nupper.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_upper_branch);
+  Nupper.visible = false; // Not visible. This node is not really needed, but
+                          // makes routing easier
+  Schematic.appendNode(Nupper);
+
+  Schematic.appendWire(Ncentral.ID, 0, Nlower.ID, 0);
+  Schematic.appendWire(Ncentral.ID, 0, Nupper.ID, 0);
 
   Schematic.appendWire(TermSpar1.ID, 0, TL.ID, 0);
-  Schematic.appendWire(TL.ID, 1, NI.ID, 0);
+  Schematic.appendWire(TL.ID, 1, Ncentral.ID, 0);
+
+  // The next instantiations of these nodes need to be visible
+  Nlower.visible = true;
+  Nupper.visible = true;
 
   for (int i = 0; i < Specification.Nstages; i++) {
-    posx += 50;
+    posx += 30;
 
     // Upper branch TL
     TL_Upper.setParams(
         QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, 90, posx + 15, -50);
+        TransmissionLine, 90, posx + 15, y_upper_branch);
     TL_Upper.val["Z0"] = num2str(Zlines[i], Resistance);
     TL_Upper.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
     Schematic.appendComponent(TL_Upper);
 
-    if (i > 0) {
-      Schematic.appendWire(TL_Upper.ID, 0, Nupper.ID, 0);
-    }
+    Schematic.appendWire(TL_Upper.ID, 0, Nupper.ID, 0);
 
     Nupper.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-        posx + 50, -50);
+        posx + 50, y_upper_branch);
     Schematic.appendNode(Nupper);
     Schematic.appendWire(TL_Upper.ID, 1, Nupper.ID, 0);
 
     // Lower branch TL
     TL_Lower.setParams(
         QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, 90, posx + 15, 50);
+        TransmissionLine, 90, posx + 15, y_lower_branch);
     TL_Lower.val["Z0"] = num2str(Zlines[i], Resistance);
     TL_Lower.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
     Schematic.appendComponent(TL_Lower);
 
-    if (i > 0) {
-      Schematic.appendWire(TL_Lower.ID, 0, Nlower.ID, 0);
-    }
+    Schematic.appendWire(TL_Lower.ID, 0, Nlower.ID, 0);
 
     Nlower.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-        posx + 50, 50);
+        posx + 50, y_lower_branch);
     Schematic.appendNode(Nlower);
     Schematic.appendWire(TL_Lower.ID, 1, Nlower.ID, 0);
-
-    if (i == 0) {
-      Schematic.appendWire(NI.ID, 0, TL_Upper.ID, 0);
-      Schematic.appendWire(NI.ID, 0, TL_Lower.ID, 0);
-    }
 
     posx += 50;
 
     // Isolation resistor
     ComponentInfo Riso(
         QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0,
-        posx, 0);
+        posx, y_central_branch);
     Riso.val["R"] = num2str(Risol[i], Resistance);
     Schematic.appendComponent(Riso);
 
@@ -341,13 +359,13 @@ void MultistageWilkinson::buildMultistageWilkinson_IdealTL() {
 
   // Output terminals
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 180, posx, -posy);
+                      Term, 180, posx, y_upper_branch);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
   Schematic.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
 
   TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 180, posx, posy);
+                      Term, 180, posx, y_lower_branch);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
   Schematic.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
