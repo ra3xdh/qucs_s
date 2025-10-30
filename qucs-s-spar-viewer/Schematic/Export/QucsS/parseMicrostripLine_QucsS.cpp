@@ -36,7 +36,7 @@ QString SchematicContent::parseMicrostripLine_QucsS(ComponentInfo Comp) {
   case 2:
   case 0: // Horizontal orientation
     x_text = -30;
-    y_text = -90;
+    y_text = -70;
 
     // Save pin position. This is needed for wiring later
     ComponentPinMap[Comp.ID][0] = QPoint(x_pos - 30, y_pos); // Pin 1

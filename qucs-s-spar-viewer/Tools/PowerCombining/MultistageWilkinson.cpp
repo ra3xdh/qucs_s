@@ -261,7 +261,7 @@ void MultistageWilkinson::buildMultistageWilkinson_IdealTL() {
   int y_lower_branch = 60;
 
   TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 0, posx, 0);
+                      Term, 0, posx, y_central_branch);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -270,7 +270,7 @@ void MultistageWilkinson::buildMultistageWilkinson_IdealTL() {
   // Input transmission line
   TL.setParams(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, posx, 0);
+      TransmissionLine, 90, posx, y_central_branch);
   TL.val["Z0"] = num2str(Specification.Z0, Resistance);
   TL.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL);
@@ -299,6 +299,7 @@ void MultistageWilkinson::buildMultistageWilkinson_IdealTL() {
 
   Schematic.appendWire(Ncentral.ID, 0, Nlower.ID, 0);
   Schematic.appendWire(Ncentral.ID, 0, Nupper.ID, 0);
+  /////////////////////////////////
 
   Schematic.appendWire(TermSpar1.ID, 0, TL.ID, 0);
   Schematic.appendWire(TL.ID, 1, Ncentral.ID, 0);
@@ -374,13 +375,16 @@ void MultistageWilkinson::buildMultistageWilkinson_IdealTL() {
 void MultistageWilkinson::buildMultistageWilkinson_Microstrip() {
   ComponentInfo TermSpar1, TermSpar2, TermSpar3;
   ComponentInfo MLIN, MLIN_Upper, MLIN_Lower;
-  NodeInfo NI, Nupper, Nlower;
+  NodeInfo Ncentral, Nupper, Nlower;
 
   int posx = 0;
-  int posy = 50;
+
+  int y_upper_branch = -60;
+  int y_central_branch = 0;
+  int y_lower_branch = 60;
 
   TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 0, posx, 0);
+                      Term, 0, posx, y_central_branch);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -394,7 +398,7 @@ void MultistageWilkinson::buildMultistageWilkinson_Microstrip() {
 
   MLIN.setParams(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, posx, 0);
+      MicrostripLine, 90, posx, y_central_branch);
   MLIN.val["Width"] = ConvertLengthFromM("mm", MSL_Input.Results.width);
   MLIN.val["Length"] =
       ConvertLengthFromM("mm", MSL_Input.Results.length * 1e-3);
@@ -405,16 +409,41 @@ void MultistageWilkinson::buildMultistageWilkinson_Microstrip() {
   MLIN.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN);
 
-  NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-      posx + 25, 0);
-  Schematic.appendNode(NI);
+  posx += 50;
+  /////////////////////////////////
+  // Nodes needed in the split zone
+  Nlower.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_lower_branch);
+  Nlower.visible = false; // Not visible. This node is not really needed, but
+                          // makes routing easier
+  Schematic.appendNode(Nlower);
+
+  Ncentral.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_central_branch);
+  Schematic.appendNode(Ncentral);
+
+  Nupper.setParams(
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
+      y_upper_branch);
+  Nupper.visible = false; // Not visible. This node is not really needed, but
+                          // makes routing easier
+  Schematic.appendNode(Nupper);
+
+  Schematic.appendWire(Ncentral.ID, 0, Nlower.ID, 0);
+  Schematic.appendWire(Ncentral.ID, 0, Nupper.ID, 0);
+  /////////////////////////////////
 
   Schematic.appendWire(TermSpar1.ID, 0, MLIN.ID, 0);
-  Schematic.appendWire(MLIN.ID, 1, NI.ID, 0);
+  Schematic.appendWire(MLIN.ID, 1, Ncentral.ID, 0);
+
+  // The next instantiations of these nodes need to be visible
+  Nlower.visible = true;
+  Nupper.visible = true;
 
   for (int i = 0; i < Specification.Nstages; i++) {
-    posx += 50;
+    posx += 30;
 
     // Upper branch microstrip line
     MicrostripClass MSL_Upper;
@@ -424,7 +453,7 @@ void MultistageWilkinson::buildMultistageWilkinson_Microstrip() {
 
     MLIN_Upper.setParams(
         QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-        MicrostripLine, 90, posx + 15, -50);
+        MicrostripLine, 90, posx + 15, y_upper_branch);
     MLIN_Upper.val["Width"] = ConvertLengthFromM("mm", MSL_Upper.Results.width);
     MLIN_Upper.val["Length"] =
         ConvertLengthFromM("mm", MSL_Upper.Results.length * 1e-3);
@@ -435,13 +464,11 @@ void MultistageWilkinson::buildMultistageWilkinson_Microstrip() {
     MLIN_Upper.val["tand"] = num2str(Specification.MS_Subs.tand);
     Schematic.appendComponent(MLIN_Upper);
 
-    if (i > 0) {
-      Schematic.appendWire(MLIN_Upper.ID, 0, Nupper.ID, 0);
-    }
+    Schematic.appendWire(MLIN_Upper.ID, 0, Nupper.ID, 0);
 
     Nupper.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-        posx + 50, -50);
+        posx + 50, y_upper_branch);
     Schematic.appendNode(Nupper);
     Schematic.appendWire(MLIN_Upper.ID, 1, Nupper.ID, 0);
 
@@ -453,7 +480,7 @@ void MultistageWilkinson::buildMultistageWilkinson_Microstrip() {
 
     MLIN_Lower.setParams(
         QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-        MicrostripLine, 90, posx + 15, 50);
+        MicrostripLine, 90, posx + 15, y_lower_branch);
     MLIN_Lower.val["Width"] = ConvertLengthFromM("mm", MSL_Lower.Results.width);
     MLIN_Lower.val["Length"] =
         ConvertLengthFromM("mm", MSL_Lower.Results.length * 1e-3);
@@ -464,27 +491,20 @@ void MultistageWilkinson::buildMultistageWilkinson_Microstrip() {
     MLIN_Lower.val["tand"] = num2str(Specification.MS_Subs.tand);
     Schematic.appendComponent(MLIN_Lower);
 
-    if (i > 0) {
-      Schematic.appendWire(MLIN_Lower.ID, 0, Nlower.ID, 0);
-    }
+    Schematic.appendWire(MLIN_Lower.ID, 0, Nlower.ID, 0);
 
     Nlower.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-        posx + 50, 50);
+        posx + 50, y_lower_branch);
     Schematic.appendNode(Nlower);
     Schematic.appendWire(MLIN_Lower.ID, 1, Nlower.ID, 0);
-
-    if (i == 0) {
-      Schematic.appendWire(NI.ID, 0, MLIN_Upper.ID, 0);
-      Schematic.appendWire(NI.ID, 0, MLIN_Lower.ID, 0);
-    }
 
     posx += 50;
 
     // Isolation resistor
     ComponentInfo Riso(
         QString("R%1").arg(++Schematic.NumberComponents[Resistor]), Resistor, 0,
-        posx, 0);
+        posx, y_central_branch);
     Riso.val["R"] = num2str(Risol[i], Resistance);
     Schematic.appendComponent(Riso);
 
@@ -496,13 +516,13 @@ void MultistageWilkinson::buildMultistageWilkinson_Microstrip() {
 
   // Output terminals
   TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 180, posx, -posy);
+                      Term, 180, posx, y_upper_branch);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
   Schematic.appendWire(TermSpar2.ID, 0, Nupper.ID, 0);
 
   TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 180, posx, posy);
+                      Term, 180, posx, y_lower_branch);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
   Schematic.appendWire(TermSpar3.ID, 0, Nlower.ID, 0);
