@@ -44,42 +44,7 @@ void Branchline::synthesize() {
 void Branchline::buildBranchline_IdealTL() {
 
   // Define components' location
-
-  // Spacing between components
-  int x_spacing = 60;
-  int y_spacing = 60;
-
-  // Input port
-  int x_P1 = 0;
-  int y_P1 = 0;
-
-  // First vertical TL
-  int x_1s_vert_TL = x_P1 + x_spacing;
-  int y_1s_vert_TL = y_P1 + y_spacing;
-
-  // Top horizontal line
-  int x_top_TL = x_1s_vert_TL + x_spacing;
-  int y_top_TL = y_P1;
-
-  // Bottom horizontal line
-  int x_bottom_TL = x_top_TL;
-  int y_bottom_TL = y_1s_vert_TL + y_spacing;
-
-  // Isolation resistor
-  int x_Riso = x_1s_vert_TL;
-  int y_Riso = y_bottom_TL + y_spacing;
-
-  // Last vertical line
-  int x_last_TL = x_bottom_TL + x_spacing;
-  int y_last_TL = y_1s_vert_TL;
-
-  // Top output port
-  int x_P2 = x_last_TL + x_spacing;
-  int y_P2 = y_P1;
-
-  // Bottom output port
-  int x_P3 = x_P2;
-  int y_P3 = y_bottom_TL;
+  setComponentsLocation();
 
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, x_P1,
@@ -171,31 +136,35 @@ void Branchline::buildBranchline_IdealTL() {
 }
 
 void Branchline::buildBranchline_Microstrip() {
+
+  // Define components' location
+  setComponentsLocation();
+
   ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20,
-      -50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, x_P1,
+      y_P1);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 120,
-      -50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, x_P2,
+      y_P2);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
   ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 120,
-      50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, x_P3,
+      y_P3);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
   ComponentInfo Riso(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                     Resistor, 0, 0, 75);
+                     Resistor, 0, x_Riso, y_Riso);
   Riso.val["R"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(Riso);
 
   ComponentInfo Ground(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                       GND, 0, 0, 120);
+                       GND, 0, x_Riso, y_Riso + 50);
   Schematic.appendComponent(Ground);
 
   // Vertical series arms (ZA impedance)
@@ -205,7 +174,7 @@ void Branchline::buildBranchline_Microstrip() {
 
   ComponentInfo MLIN1(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 50, -50);
+      MicrostripLine, 90, x_top_TL, y_top_TL);
   MLIN1.val["Width"] = ConvertLengthFromM("mm", MSL_Series.Results.width);
   MLIN1.val["Length"] =
       ConvertLengthFromM("mm", MSL_Series.Results.length * 1e-3);
@@ -218,7 +187,7 @@ void Branchline::buildBranchline_Microstrip() {
 
   ComponentInfo MLIN2(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 50, 50);
+      MicrostripLine, 90, x_bottom_TL, y_bottom_TL);
   MLIN2.val["Width"] = ConvertLengthFromM("mm", MSL_Series.Results.width);
   MLIN2.val["Length"] =
       ConvertLengthFromM("mm", MSL_Series.Results.length * 1e-3);
@@ -236,7 +205,7 @@ void Branchline::buildBranchline_Microstrip() {
 
   ComponentInfo MLIN3(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 0, 0, 0);
+      MicrostripLine, 0, x_1s_vert_TL, y_1s_vert_TL);
   MLIN3.val["Width"] = ConvertLengthFromM("mm", MSL_Shunt.Results.width);
   MLIN3.val["Length"] =
       ConvertLengthFromM("mm", MSL_Shunt.Results.length * 1e-3);
@@ -249,7 +218,7 @@ void Branchline::buildBranchline_Microstrip() {
 
   ComponentInfo MLIN4(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 0, 100, 0);
+      MicrostripLine, 0, x_last_TL, y_last_TL);
   MLIN4.val["Width"] = ConvertLengthFromM("mm", MSL_Shunt.Results.width);
   MLIN4.val["Length"] =
       ConvertLengthFromM("mm", MSL_Shunt.Results.length * 1e-3);
@@ -261,19 +230,19 @@ void Branchline::buildBranchline_Microstrip() {
   Schematic.appendComponent(MLIN4);
 
   NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, -50);
+              x_1s_vert_TL, y_P1);
   Schematic.appendNode(N1);
 
   NodeInfo N2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, -50);
+              x_last_TL, y_P1);
   Schematic.appendNode(N2);
 
   NodeInfo N3(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, 50);
+              x_last_TL, y_P3);
   Schematic.appendNode(N3);
 
   NodeInfo N4(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, 50);
+              x_1s_vert_TL, y_P3);
   Schematic.appendNode(N4);
 
   Schematic.appendWire(TermSpar1.ID, 0, N1.ID, 0);
@@ -292,4 +261,46 @@ void Branchline::buildBranchline_Microstrip() {
   Schematic.appendWire(N4.ID, 0, MLIN2.ID, 0);
   Schematic.appendWire(N4.ID, 0, MLIN3.ID, 0);
   Schematic.appendWire(Riso.ID, 0, Ground.ID, 0);
+}
+
+// Since the components' location is shared between TLIN and MLIN
+// implementations, it makes sense to have a common function to set them up
+void Branchline::setComponentsLocation() {
+  // Define components' location
+
+  // Spacing between components
+  x_spacing = 60;
+  y_spacing = 60;
+
+  // Input port
+  x_P1 = 0;
+  y_P1 = 0;
+
+  // First vertical TL
+  x_1s_vert_TL = x_P1 + x_spacing;
+  y_1s_vert_TL = y_P1 + y_spacing;
+
+  // Top horizontal line
+  x_top_TL = x_1s_vert_TL + x_spacing;
+  y_top_TL = y_P1;
+
+  // Bottom horizontal line
+  x_bottom_TL = x_top_TL;
+  y_bottom_TL = y_1s_vert_TL + y_spacing;
+
+  // Isolation resistor
+  x_Riso = x_1s_vert_TL;
+  y_Riso = y_bottom_TL + y_spacing;
+
+  // Last vertical line
+  x_last_TL = x_bottom_TL + x_spacing;
+  y_last_TL = y_1s_vert_TL;
+
+  // Top output port
+  x_P2 = x_last_TL + x_spacing;
+  y_P2 = y_P1;
+
+  // Bottom output port
+  x_P3 = x_P2;
+  y_P3 = y_bottom_TL;
 }
