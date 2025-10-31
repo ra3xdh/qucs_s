@@ -37,8 +37,26 @@ private:
   double lambda4, ZA, ZB, ZD;
   
   void calculateParams();
+  void setComponentsLocation();
   void buildDoubleBoxBranchline_IdealTL();
   void buildDoubleBoxBranchline_Microstrip();
+
+private:
+  // Private variables for components location
+  int x_spacing, y_spacing; // General components spacing
+  int x_P1, y_P1, x_P2, y_P2, x_P3, y_P3; // Ports
+  int x_Riso, y_Riso; // Isolation resistor
+
+         // Transmission lines
+  int x_1st_vert_TL, y_1st_vert_TL; // 1st vertical
+  int x_1st_top_TL, y_1st_top_TL; // 1st top horizontal
+  int x_1st_bottom_TL, y_1st_bottom_TL; // 1st bottom horizontal
+  int x_2nd_vert_TL, y_2nd_vert_TL; // 2nd vertical
+  int x_2nd_top_TL, y_2nd_top_TL; // 2nd top horizontal
+  int x_2nd_bottom_TL, y_2nd_bottom_TL; // 2nd bottom horizontal
+  int x_3rd_top_TL, y_3rd_top_TL; // 3rd top horizontal
+  int x_3rd_bottom_TL, y_3rd_bottom_TL; // 3rd bottom horizontal
+  int x_3rd_vert_TL, y_3rd_vert_TL; // 3rd top horizontal
 };
 
 #endif // DOUBLE_BOX_BRANCHLINE_H

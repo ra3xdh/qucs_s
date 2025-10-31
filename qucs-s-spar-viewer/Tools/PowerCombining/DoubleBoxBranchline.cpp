@@ -47,105 +47,123 @@ void DoubleBoxBranchline::synthesize() {
 }
 
 void DoubleBoxBranchline::buildDoubleBoxBranchline_IdealTL() {
+
+  // Define components' location
+  setComponentsLocation();
+
   ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20,
-      -50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, x_P1,
+      y_P1);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
+  // Node next to P1
   NodeInfo NSP1(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 0,
-      -50);
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_1st_vert_TL, y_P1);
   Schematic.appendNode(NSP1);
 
   ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 220,
-      -50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, x_P2,
+      y_P2);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
+  // Node next to P2
   NodeInfo NSP2(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 200,
-      -50);
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_3rd_vert_TL, y_P2);
   Schematic.appendNode(NSP2);
 
   ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 220,
-      50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, x_P3,
+      y_P3);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
+  // Node next to P3
   NodeInfo NSP3(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 200,
-      50);
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_3rd_vert_TL, y_P3);
   Schematic.appendNode(NSP3);
 
   ComponentInfo Riso(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                     Resistor, 0, 0, 75);
+                     Resistor, 0, x_Riso, y_Riso);
   Riso.val["R"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(Riso);
 
+  // Node next Riso
   NodeInfo NIso(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 0, 50);
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), x_Riso,
+      y_1st_bottom_TL);
   Schematic.appendNode(NIso);
 
   ComponentInfo Ground(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                       GND, 0, 0, 120);
+                       GND, 0, x_Riso, y_Riso + 50);
   Schematic.appendComponent(Ground);
 
+  // 1st top horizontal
   ComponentInfo TL1(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 50, -50);
+      TransmissionLine, 90, x_1st_top_TL, y_1st_top_TL);
   TL1.val["Z0"] = num2str(ZB, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL1);
 
+  // Node above the 2nd vertical line
   NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, -50);
+              x_2nd_vert_TL, y_2nd_top_TL);
   Schematic.appendNode(N1);
 
+  // 1st bottom horizontal line
   ComponentInfo TL2(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 50, 50);
+      TransmissionLine, 90, x_1st_bottom_TL, y_1st_bottom_TL);
   TL2.val["Z0"] = num2str(ZB, Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL2);
 
+  // Node below the 2nd vertical line
   NodeInfo N2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, 50);
+              x_2nd_vert_TL, y_2nd_bottom_TL);
   Schematic.appendNode(N2);
 
+  // 1st vertical TL
   ComponentInfo TL3(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 0, 0);
+      TransmissionLine, 0, x_1st_vert_TL, y_1st_vert_TL);
   TL3.val["Z0"] = num2str(ZA, Resistance);
   TL3.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL3);
 
+  // 2nd vertical line
   ComponentInfo TL4(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 100, 0);
+      TransmissionLine, 0, x_2nd_vert_TL, y_2nd_vert_TL);
   TL4.val["Z0"] = num2str(ZB, Resistance);
   TL4.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL4);
 
+  // 2nd top horizontal line
   ComponentInfo TL5(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 150, -50);
+      TransmissionLine, 90, x_2nd_top_TL, y_2nd_top_TL);
   TL5.val["Z0"] = num2str(ZB, Resistance);
   TL5.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL5);
 
+  // 2nd bottom horizontal line
   ComponentInfo TL6(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 150, 50);
+      TransmissionLine, 90, x_2nd_bottom_TL, y_2nd_bottom_TL);
   TL6.val["Z0"] = num2str(ZB, Resistance);
   TL6.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL6);
 
+  // 3rd vertical line
   ComponentInfo TL7(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 200, 0);
+      TransmissionLine, 0, x_3rd_vert_TL, y_3rd_vert_TL);
   TL7.val["Z0"] = num2str(ZD, Resistance);
   TL7.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL7);
@@ -357,4 +375,58 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_Microstrip() {
   Schematic.appendWire(MLIN2.ID, 1, N2.ID, 0);
   Schematic.appendWire(MLIN4.ID, 0, N2.ID, 0);
   Schematic.appendWire(MLIN6.ID, 0, N2.ID, 0);
+}
+
+// Since the components' location is shared between TLIN and MLIN
+// implementations, it makes sense to have a common function to set them up
+void DoubleBoxBranchline::setComponentsLocation() {
+  // Define components' location
+
+  // Spacing between components
+  x_spacing = 60;
+  y_spacing = 60;
+
+  // Input port
+  x_P1 = 0;
+  y_P1 = 0;
+
+  // 1st vertical TL (TLIN3)
+  x_1st_vert_TL = x_P1 + x_spacing;
+  y_1st_vert_TL = y_P1 + y_spacing;
+
+  // 1st top horizontal line (TLIN1)
+  x_1st_top_TL = x_1st_vert_TL + x_spacing;
+  y_1st_top_TL = y_P1;
+
+  // 1st bottom horizontal line (TLIN2)
+  x_1st_bottom_TL = x_1st_top_TL;
+  y_1st_bottom_TL = y_1st_vert_TL + y_spacing;
+
+  // Isolation resistor
+  x_Riso = x_1st_vert_TL;
+  y_Riso = y_1st_bottom_TL + y_spacing;
+
+  // 2nd vertical line (TLIN4)
+  x_2nd_vert_TL = x_1st_bottom_TL + x_spacing;
+  y_2nd_vert_TL = y_1st_vert_TL;
+
+  // 2nd top horizontal line (TLIN5)
+  x_2nd_top_TL = x_2nd_vert_TL + x_spacing;
+  y_2nd_top_TL = y_P1;
+
+  // 2nd bottom horizontal line (TLIN6)
+  x_2nd_bottom_TL = x_2nd_top_TL;
+  y_2nd_bottom_TL = y_2nd_vert_TL + y_spacing;
+
+  // 3rd vertical line (TLIN7)
+  x_3rd_vert_TL = x_2nd_bottom_TL + x_spacing;
+  y_3rd_vert_TL = y_1st_vert_TL;
+
+  // Top output port
+  x_P2 = x_3rd_vert_TL + x_spacing;
+  y_P2 = y_P1;
+
+  // Bottom output port
+  x_P3 = x_P2;
+  y_P3 = y_1st_bottom_TL;
 }
