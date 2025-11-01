@@ -40,8 +40,10 @@ private:
   void buildBagley_IdealTL();
   void buildBagley_Microstrip();
 
-  // Components' locations
+
 private:
+
+  // Components' locations
 
   // This function sets the component's location before the schematic is built
   void setComponentsLocation();

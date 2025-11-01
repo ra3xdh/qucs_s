@@ -33,6 +33,20 @@ public:
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
+
+  ComponentInfo(QString ID_, ComponentType Type_, double rot_, QPoint P)
+      : ID(ID_), Type(Type_), Rotation(rot_), Coordinates(2) {
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+  }
+
+  ComponentInfo(QString ID_, ComponentType Type_, QPoint P)
+      : ID(ID_), Type(Type_), Coordinates(2) {
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+      Rotation = 0;
+  }
+
   ~ComponentInfo() {}
 
   QString ID;
@@ -107,6 +121,13 @@ public:
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
+
+  NodeInfo(QString ID_, QPoint P) : ID(ID_), Coordinates(2) {
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+  }
+
+
   void setParams(QString ID_, double x, double y) {
     ID             = ID_;
     Coordinates[0] = x;
