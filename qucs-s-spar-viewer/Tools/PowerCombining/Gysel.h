@@ -65,11 +65,11 @@ private:
   QPoint N5_pos; // Node in front of the lower resistor
 
   // Transmission lines
-  QPoint TL_vert_top;
-  QPoint TL_vert_bottom;
-  QPoint TL_vert_center;
-  QPoint TL_hor_top;
-  QPoint TL_hor_bottom;
+  QPoint TL1_pos;
+  QPoint TL2_pos;
+  QPoint TL3_pos;
+  QPoint TL4_pos;
+  QPoint TL5_pos;
 
   // Resistors
   QPoint R_top, R_GND_top;
