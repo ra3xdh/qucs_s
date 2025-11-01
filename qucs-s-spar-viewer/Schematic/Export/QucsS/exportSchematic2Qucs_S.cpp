@@ -68,7 +68,15 @@ QString SchematicContent::processComponents_QucsS() {
       x_bottom = coordinates[0];
     }
     if (coordinates[1] > y_bottom) {
-      y_bottom = coordinates[1];
+      if (Comps[i].Type == Term) {
+        y_bottom =
+            coordinates[1] +
+            90; //  Terms in the internal schematic have no y-axis
+                //  dimmension. It's needed to add some extra room accounting
+                //  for the port's y-axis dimmension in Qucs-S and its GND
+      } else {
+        y_bottom = coordinates[1];
+      }
     }
 
     // Convert component to Qucs format
@@ -131,9 +139,6 @@ QString SchematicContent::processComponents_QucsS() {
   // Add S-parameter simulation box
   y_bottom += 50;
 
-  if (y_bottom < 120) {
-    y_bottom = 120;
-  }
   qucs_S_Components_Netlist +=
       QString("<.SP SP1 1 %1 %2 0 60 0 0 \"log\" 1 \"%3\" 1 \"%4\" 1 "
               "\"%5\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n")

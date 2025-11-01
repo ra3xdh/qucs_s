@@ -37,11 +37,14 @@ private:
   double lambda4, ZA, ZB, ZD;
   
   void calculateParams();
-  void setComponentsLocation();
   void buildDoubleBoxBranchline_IdealTL();
   void buildDoubleBoxBranchline_Microstrip();
 
 private:
+
+  // This function sets the component's location before the schematic is built
+  void setComponentsLocation();
+
   // Private variables for components location
   int x_spacing, y_spacing; // General components spacing
 

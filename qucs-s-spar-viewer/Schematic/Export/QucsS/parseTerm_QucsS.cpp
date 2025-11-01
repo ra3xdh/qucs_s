@@ -40,6 +40,8 @@ QString SchematicContent::parseTerm_QucsS(ComponentInfo Comp) {
     x_text = -100;
     y_text = -20;
     break;
+
+  default:
   case 2:
     x_text = 25;
     y_text = -20;

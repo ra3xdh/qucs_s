@@ -39,6 +39,29 @@ private:
   void calculateParams();
   void buildBagley_IdealTL();
   void buildBagley_Microstrip();
+
+  // Components' locations
+private:
+
+  // This function sets the component's location before the schematic is built
+  void setComponentsLocation();
+
+  // Private variables for components location
+  int x_spacing, y_spacing; // General components spacing
+
+  // Ports
+  QPoint Port_in;
+  QPoint Port_1st_out;
+
+  // 1st output node
+  int y_out; // y-axis coordinate of the output lines
+  QPoint N_1st_out;
+
+  // Transmission lines
+  QPoint left_TL;
+  QPoint right_TL;
+
+
 };
 
 #endif // BAGLEY_H

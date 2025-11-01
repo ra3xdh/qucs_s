@@ -41,47 +41,54 @@ void Bagley::synthesize() {
 }
 
 void Bagley::buildBagley_IdealTL() {
+
+  // Define components' location
+  setComponentsLocation();
+
   NodeInfo NI;
 
+  // Input port (top)
   ComponentInfo TermSpar(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                         Term, 90, (Specification.Noutputs - 1) * 50, -30);
+                         Term, 90, Port_in.x(), Port_in.y());
   TermSpar.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar);
 
   NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              (Specification.Noutputs - 1) * 50, 0);
+              Port_in.x(), Port_in.y() + 30);
   Schematic.appendNode(N1);
 
+  // First vertical line
   ComponentInfo TL1(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, (Specification.Noutputs - 1) * 100, 50);
+      TransmissionLine, 0, left_TL.x(), left_TL.y());
   TL1.val["Z0"] = num2str(Zbranch, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL1);
 
+  // Second vertical line
   ComponentInfo TL2(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 0, 50);
+      TransmissionLine, 0, right_TL.x(), right_TL.y());
   TL2.val["Z0"] = num2str(Zbranch, Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL2);
 
-  Schematic.appendWire(TL1.ID, 1, N1.ID, 0);
   Schematic.appendWire(TL2.ID, 1, N1.ID, 0);
+  Schematic.appendWire(TL1.ID, 1, N1.ID, 0);
   Schematic.appendWire(TermSpar.ID, 0, N1.ID, 0);
 
   TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                     Term, -90, 0, 120);
+                     Term, -90, Port_1st_out.x(), Port_1st_out.y());
   TermSpar.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar);
 
   NI.setParams(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 0,
-      100);
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      N_1st_out.x(), N_1st_out.y());
   Schematic.appendNode(NI);
 
   Schematic.appendWire(TermSpar.ID, 0, NI.ID, 0);
-  Schematic.appendWire(TL2.ID, 0, NI.ID, 0);
+  Schematic.appendWire(TL1.ID, 0, NI.ID, 0);
 
   ComponentInfo TL;
   int posx = -50;
@@ -89,27 +96,27 @@ void Bagley::buildBagley_IdealTL() {
     posx += 100;
     TL.setParams(
         QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, 90, posx, 100);
+        TransmissionLine, 90, posx, y_out);
     TL.val["Z0"] = num2str(Zbranch, Resistance);
     TL.val["Length"] = ConvertLengthFromM(Specification.units, lambda2);
     Schematic.appendComponent(TL);
     Schematic.appendWire(NI.ID, 0, TL.ID, 0);
 
     TermSpar.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                       Term, -90, posx + 50, 120);
+                       Term, -90, posx + 50, y_out + 20);
     TermSpar.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar);
 
     NI.setParams(
         QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-        posx + 50, 100);
+        posx + 50, y_out);
     Schematic.appendNode(NI);
 
     Schematic.appendWire(NI.ID, 0, TL.ID, 1);
     Schematic.appendWire(NI.ID, 0, TermSpar.ID, 0);
   }
 
-  Schematic.appendWire(TL1.ID, 0, NI.ID, 0);
+  Schematic.appendWire(TL2.ID, 0, NI.ID, 0);
 }
 
 void Bagley::buildBagley_Microstrip() {
@@ -217,4 +224,24 @@ void Bagley::buildBagley_Microstrip() {
   }
 
   Schematic.appendWire(MLIN1.ID, 0, NI.ID, 0);
+}
+
+void Bagley::setComponentsLocation() {
+
+  Port_in = QPoint((Specification.Noutputs - 1) * 50, -20); // Input port
+  Port_1st_out = QPoint(0, 120);                            // First output port
+
+  // Left vertical TL
+  left_TL.setX(0);
+  left_TL.setY(Port_in.y() + 80);
+
+  // Right vertical TL
+  right_TL.setX((Specification.Noutputs - 1) * 100);
+  right_TL.setY(left_TL.y());
+
+  y_out = left_TL.y() + 50; // y-axis coordinate of the output lines
+
+  // 1st output node
+  N_1st_out.setX(left_TL.x());
+  N_1st_out.setY(y_out);
 }
