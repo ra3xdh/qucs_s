@@ -51,6 +51,7 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_IdealTL() {
   // Define components' location
   setComponentsLocation();
 
+  // Input port
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, x_P1,
       y_P1);
@@ -87,6 +88,7 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_IdealTL() {
       x_3rd_vert_TL, y_P3);
   Schematic.appendNode(NSP3);
 
+  // Isolation resistor
   ComponentInfo Riso(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
                      Resistor, 0, x_Riso, y_Riso);
   Riso.val["R"] = num2str(Specification.Z0, Resistance);
@@ -192,50 +194,61 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_IdealTL() {
 }
 
 void DoubleBoxBranchline::buildDoubleBoxBranchline_Microstrip() {
+
+  // Define components' location
+  setComponentsLocation();
+
+  // Input port
   ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20,
-      -50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, x_P1,
+      y_P1);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
+  // Node next to P1
   NodeInfo NSP1(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 0,
-      -50);
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_1st_vert_TL, y_P1);
   Schematic.appendNode(NSP1);
 
   ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 220,
-      -50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, x_P2,
+      y_P2);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
 
+  // Node next to P2
   NodeInfo NSP2(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 200,
-      -50);
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_3rd_vert_TL, y_P2);
   Schematic.appendNode(NSP2);
 
   ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 220,
-      50);
+      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, x_P3,
+      y_P3);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
 
+  // Node next to P3
   NodeInfo NSP3(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 200,
-      50);
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+      x_3rd_vert_TL, y_P3);
   Schematic.appendNode(NSP3);
 
+  // Isolation resistor
   ComponentInfo Riso(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                     Resistor, 0, 0, 75);
+                     Resistor, 0, x_Riso, y_Riso);
   Riso.val["R"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(Riso);
 
+  // Node next Riso
   NodeInfo NIso(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 0, 50);
+      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), x_Riso,
+      y_1st_bottom_TL);
   Schematic.appendNode(NIso);
 
   ComponentInfo Ground(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                       GND, 0, 0, 120);
+                       GND, 0, x_Riso, y_Riso + 50);
   Schematic.appendComponent(Ground);
 
   // Synthesize microstrip lines for each impedance
@@ -255,9 +268,10 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_Microstrip() {
   MSL_ZD.synthesizeMicrostrip(ZD, lambda4 * 1e3, Specification.freq);
 
   // Left box - Top vertical line (ZB)
+  // 1st top horizontal
   ComponentInfo MLIN1(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 50, -50);
+      MicrostripLine, 90, x_1st_top_TL, y_1st_top_TL);
   MLIN1.val["Width"] = ConvertLengthFromM("mm", MSL_ZB.Results.width);
   MLIN1.val["Length"] = ConvertLengthFromM("mm", MSL_ZB.Results.length * 1e-3);
   MLIN1.val["er"] = num2str(Specification.MS_Subs.er);
@@ -267,14 +281,15 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_Microstrip() {
   MLIN1.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN1);
 
+  // Node above the 2nd vertical line
   NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, -50);
+              x_2nd_vert_TL, y_2nd_top_TL);
   Schematic.appendNode(N1);
 
   // Left box - Bottom vertical line (ZB)
   ComponentInfo MLIN2(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 50, 50);
+      MicrostripLine, 90, x_1st_bottom_TL, y_1st_bottom_TL);
   MLIN2.val["Width"] = ConvertLengthFromM("mm", MSL_ZB.Results.width);
   MLIN2.val["Length"] = ConvertLengthFromM("mm", MSL_ZB.Results.length * 1e-3);
   MLIN2.val["er"] = num2str(Specification.MS_Subs.er);
@@ -284,14 +299,15 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_Microstrip() {
   MLIN2.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN2);
 
+  // Node below the 2nd vertical line
   NodeInfo N2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, 50);
+              x_2nd_vert_TL, y_2nd_bottom_TL);
   Schematic.appendNode(N2);
 
   // Left box - Left horizontal line (ZA)
   ComponentInfo MLIN3(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 0, 0, 0);
+      MicrostripLine, 0, x_1st_vert_TL, y_1st_vert_TL);
   MLIN3.val["Width"] = ConvertLengthFromM("mm", MSL_ZA.Results.width);
   MLIN3.val["Length"] = ConvertLengthFromM("mm", MSL_ZA.Results.length * 1e-3);
   MLIN3.val["er"] = num2str(Specification.MS_Subs.er);
@@ -304,7 +320,7 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_Microstrip() {
   // Center horizontal line (ZB)
   ComponentInfo MLIN4(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 0, 100, 0);
+      MicrostripLine, 0, x_2nd_vert_TL, y_2nd_vert_TL);
   MLIN4.val["Width"] = ConvertLengthFromM("mm", MSL_ZB.Results.width);
   MLIN4.val["Length"] = ConvertLengthFromM("mm", MSL_ZB.Results.length * 1e-3);
   MLIN4.val["er"] = num2str(Specification.MS_Subs.er);
@@ -317,7 +333,7 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_Microstrip() {
   // Right box - Top vertical line (ZB)
   ComponentInfo MLIN5(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 150, -50);
+      MicrostripLine, 90, x_2nd_top_TL, y_2nd_top_TL);
   MLIN5.val["Width"] = ConvertLengthFromM("mm", MSL_ZB.Results.width);
   MLIN5.val["Length"] = ConvertLengthFromM("mm", MSL_ZB.Results.length * 1e-3);
   MLIN5.val["er"] = num2str(Specification.MS_Subs.er);
@@ -330,7 +346,7 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_Microstrip() {
   // Right box - Bottom vertical line (ZB)
   ComponentInfo MLIN6(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 150, 50);
+      MicrostripLine, 90, x_2nd_bottom_TL, y_2nd_bottom_TL);
   MLIN6.val["Width"] = ConvertLengthFromM("mm", MSL_ZB.Results.width);
   MLIN6.val["Length"] = ConvertLengthFromM("mm", MSL_ZB.Results.length * 1e-3);
   MLIN6.val["er"] = num2str(Specification.MS_Subs.er);
@@ -343,7 +359,7 @@ void DoubleBoxBranchline::buildDoubleBoxBranchline_Microstrip() {
   // Right box - Right horizontal line (ZD)
   ComponentInfo MLIN7(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 0, 200, 0);
+      MicrostripLine, 0, x_3rd_vert_TL, y_3rd_vert_TL);
   MLIN7.val["Width"] = ConvertLengthFromM("mm", MSL_ZD.Results.width);
   MLIN7.val["Length"] = ConvertLengthFromM("mm", MSL_ZD.Results.length * 1e-3);
   MLIN7.val["er"] = num2str(Specification.MS_Subs.er);

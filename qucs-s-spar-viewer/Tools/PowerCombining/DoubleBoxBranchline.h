@@ -44,10 +44,14 @@ private:
 private:
   // Private variables for components location
   int x_spacing, y_spacing; // General components spacing
-  int x_P1, y_P1, x_P2, y_P2, x_P3, y_P3; // Ports
-  int x_Riso, y_Riso; // Isolation resistor
 
-         // Transmission lines
+    // Ports
+  int x_P1, y_P1, x_P2, y_P2, x_P3, y_P3;
+
+  // Isolation resistor
+  int x_Riso, y_Riso;
+
+  // Transmission lines
   int x_1st_vert_TL, y_1st_vert_TL; // 1st vertical
   int x_1st_top_TL, y_1st_top_TL; // 1st top horizontal
   int x_1st_bottom_TL, y_1st_bottom_TL; // 1st bottom horizontal
