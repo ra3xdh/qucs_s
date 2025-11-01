@@ -4,13 +4,13 @@
 #include <vector>
 #include <QRect>
 
-class Component;
-class Wire;
-class Painting;
-class Diagram;
-class WireLabel;
-class Marker;
-class Node;
+#include "component.h"
+#include "wire.h"
+#include "painting.h"
+#include "diagram.h"
+#include "wirelabel.h"
+#include "marker.h"
+#include "node.h"
 
 struct SchematicSelection {
   QRect bounds;
@@ -58,6 +58,32 @@ struct SchematicSelection {
     markers.clear();
     nodes.clear();
     bounds = QRect();
+  }
+
+  // Move center for all components
+  void moveCenter(int dx, int dy) {
+    for (auto* pc : components)   pc->moveCenter(dx, dy);
+    for (auto* pw : wires)        pw->moveCenter(dx, dy);
+    for (auto* pp : paintings)    pp->moveCenter(dx, dy);
+    for (auto* pd : diagrams)     pd->moveCenter(dx, dy);
+    for (auto* pl : labels) {
+      pl->moveCenter(dx, dy);
+      // Special case: labels that doesn't have an owner needs to also have it's root moved.
+      // This is seen during paste of elements, where the node doesn't have a host element
+      if (pl->owner() == nullptr) {
+        pl->moveRoot(dx, dy);
+      }
+    }
+    for (auto* pm : markers)      pm->moveCenter(dx, dy);
+    for (auto* pn : nodes)        pn->moveCenter(dx, dy);
+
+    // Move bounds
+    bounds.moveCenter(QPoint(dx, dy));
+  }
+
+  // Center of selection is the center of the bounds
+  QPoint center() const {
+    return bounds.center();
   }
 };
 #endif
