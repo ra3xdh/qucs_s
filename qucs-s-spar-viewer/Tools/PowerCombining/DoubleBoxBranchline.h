@@ -49,21 +49,18 @@ private:
   int x_spacing, y_spacing; // General components spacing
 
     // Ports
-  int x_P1, y_P1, x_P2, y_P2, x_P3, y_P3;
+  QPoint Port_in;
+  QPoint Port_out1, Port_out2;
 
   // Isolation resistor
-  int x_Riso, y_Riso;
+  QPoint Riso_pos;
+  QPoint GND_Riso_pos;
 
   // Transmission lines
-  int x_1st_vert_TL, y_1st_vert_TL; // 1st vertical
-  int x_1st_top_TL, y_1st_top_TL; // 1st top horizontal
-  int x_1st_bottom_TL, y_1st_bottom_TL; // 1st bottom horizontal
-  int x_2nd_vert_TL, y_2nd_vert_TL; // 2nd vertical
-  int x_2nd_top_TL, y_2nd_top_TL; // 2nd top horizontal
-  int x_2nd_bottom_TL, y_2nd_bottom_TL; // 2nd bottom horizontal
-  int x_3rd_top_TL, y_3rd_top_TL; // 3rd top horizontal
-  int x_3rd_bottom_TL, y_3rd_bottom_TL; // 3rd bottom horizontal
-  int x_3rd_vert_TL, y_3rd_vert_TL; // 3rd top horizontal
+  QPoint TL1_pos, TL2_pos, TL3_pos, TL4_pos, TL5_pos, TL6_pos, TL7_pos;
+
+  // Nodes
+  QPoint N1_pos, N2_pos, N3_pos, N4_pos, N5_pos, N6_pos;
 };
 
 #endif // DOUBLE_BOX_BRANCHLINE_H
