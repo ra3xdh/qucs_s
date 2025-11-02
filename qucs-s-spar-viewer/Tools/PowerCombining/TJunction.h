@@ -36,6 +36,27 @@ private:
 
   void buildTJunction_IdealTL(double lambda4, double K);
   void buildTJunction_Microstrip(double lambda4, double K);
+
+  private:
+
+  // This function sets the component's location before the schematic is built
+  void setComponentsLocation();
+
+  // Private variables for components location
+  int x_spacing, y_spacing; // General components spacing
+
+  // Ports
+  QVector<QPoint> Ports_pos;
+
+  // Isolation resistor
+  QPoint Riso_pos;
+  QPoint GND_Riso_pos;
+
+  // Transmission lines
+  QVector<QPoint> TL_pos;
+
+  // Nodes
+  QVector<QPoint> N_pos;
 };
 
 #endif // TJUNCTION_H

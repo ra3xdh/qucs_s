@@ -136,9 +136,10 @@ QString SchematicContent::processComponents_QucsS() {
     }
   }
 
-  // Add S-parameter simulation box
-  y_bottom += 50;
+  // Add extra room for the S-parameter simulation box, substrate and equations
+  y_bottom += 100;
 
+  // S-parameter simulation box
   qucs_S_Components_Netlist +=
       QString("<.SP SP1 1 %1 %2 0 60 0 0 \"log\" 1 \"%3\" 1 \"%4\" 1 "
               "\"%5\" 1 \"no\" 0 \"1\" 0 \"2\" 0 \"no\" 0 \"no\" 0>\n")
