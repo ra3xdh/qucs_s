@@ -42,10 +42,15 @@ VCVS::VCVS()
   Polylines.append(new qucs::Polyline(
     std::vector<QPointF>{{-17, 9},{-12, 18}, {-7, 9}}, QPen(Qt::darkBlue, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)));
 
-  // plus sign
+  // input side plus sign
+  Lines.append(new qucs::Line( -18,-21, -18,-15,QPen(Qt::red,1)));
+  Lines.append(new qucs::Line( -21,-18, -15,-18,QPen(Qt::red,1)));
+
+  // output side plus sign
   Lines.append(new qucs::Line( 19,-21, 19,-15,QPen(Qt::red,1)));
   Lines.append(new qucs::Line( 16,-18, 22,-18,QPen(Qt::red,1)));
-  // minus sign
+
+  // output side minus sign
   Lines.append(new qucs::Line( 16, 18, 22, 18,QPen(Qt::black,1)));
 
   Rects.append(new qucs::Rect(-25, -27, 50, 54, QPen(Qt::darkGray,1)));
