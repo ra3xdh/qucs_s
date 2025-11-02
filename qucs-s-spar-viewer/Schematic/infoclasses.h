@@ -75,6 +75,15 @@ public:
     Coordinates[1] = y;
   }
 
+  void setParams(QString ID_, ComponentType Type_, double Rotation_, QPoint P) // Coordinates
+      {
+      ID             = ID_;
+      Type           = Type_;
+      Rotation       = Rotation_;
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+  }
+
   QMap<QString, QString> val; // freq, L1.L, C1.C,...
   double getVal(QString);
 };

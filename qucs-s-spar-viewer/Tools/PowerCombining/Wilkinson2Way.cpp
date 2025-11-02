@@ -302,25 +302,20 @@ void Wilkinson2Way::buildWilkinson_LumpedLC() {
 }
 
 void Wilkinson2Way::buildWilkinson_IdealTL() {
+
+  ComponentInfo TermSpar2, TermSpar3;
+
+  // Define components' location
+  setComponentsLocation();
+
   double lambda4 = SPEED_OF_LIGHT / (4 * Specification.freq);
-  ComponentInfo TermSpar1, TermSpar2, TermSpar3;
 
-  // In the schematic of a Wilkinson power combiner there are two output
-  // branches and a central feed line. These variables set the y-axis coordinate
-  // of these branches;
-  int y_central_branch = 0;
-  int y_lower_branch = 60;
-  int y_upper_branch = -60;
-
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 0, 0, y_central_branch);
+  ComponentInfo TermSpar1(QString("T1"), Term, Port_in);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
   // 1st transmission line
-  ComponentInfo TL1(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 50, y_central_branch);
+  ComponentInfo TL1(QString("TLIN1"), TransmissionLine, 90, TL1_pos);
   TL1.val["Z0"] = num2str(Specification.Z0, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL1);
@@ -328,128 +323,105 @@ void Wilkinson2Way::buildWilkinson_IdealTL() {
   Schematic.appendWire(TermSpar1.ID, 0, TL1.ID, 0);
 
   // Central node
-  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, y_central_branch);
+  NodeInfo N1(QString("N1"), N1_pos);
   Schematic.appendNode(N1);
   Schematic.appendWire(TL1.ID, 1, N1.ID, 1);
 
   // Upper node
-  NodeInfo Nup(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100,
-      y_upper_branch);
-  Nup.visible = false;
-  Schematic.appendNode(Nup);
-  Schematic.appendWire(Nup.ID, 1, N1.ID, 1);
+  NodeInfo N2(QString("N2"), N2_pos);
+  N2.visible = false;
+  Schematic.appendNode(N2);
+  Schematic.appendWire(N2.ID, 1, N1.ID, 1);
 
   // Lower node
-  NodeInfo Nlow(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100,
-      y_lower_branch);
-  Nlow.visible = false;
-  Schematic.appendNode(Nlow);
-  Schematic.appendWire(Nlow.ID, 1, N1.ID, 1);
+  NodeInfo N3(QString("N3"), N3_pos);
+  N3.visible = false;
+  Schematic.appendNode(N3);
+  Schematic.appendWire(N3.ID, 1, N1.ID, 1);
 
   // Upper branch TL
-  ComponentInfo TL2(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 150, y_upper_branch);
+  ComponentInfo TL2(QString("TLIN2"), TransmissionLine, 90, TL2_pos);
   TL2.val["Z0"] = num2str(Z2, Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL2);
 
-  Schematic.appendWire(TL2.ID, 0, Nup.ID, 0);
-  NodeInfo N2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              215, y_upper_branch);
-  Schematic.appendNode(N2);
+  Schematic.appendWire(TL2.ID, 0, N2.ID, 0);
 
-  Schematic.appendWire(TL2.ID, 1, N2.ID, 0);
+  NodeInfo N4(QString("N4"), N4_pos);
+  Schematic.appendNode(N4);
+  Schematic.appendWire(TL2.ID, 1, N4.ID, 0);
 
   // Lower branch TL
-  ComponentInfo TL3(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 150, y_lower_branch);
+  ComponentInfo TL3(QString("TLIN3"), TransmissionLine, 90, TL3_pos);
   TL3.val["Z0"] = num2str(Z3, Resistance);
   TL3.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL3);
 
-  Schematic.appendWire(TL3.ID, 0, Nlow.ID, 0);
+  Schematic.appendWire(TL3.ID, 0, N3.ID, 0);
 
-  NodeInfo N3(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              215, y_lower_branch);
-  Schematic.appendNode(N3);
-  Schematic.appendWire(TL3.ID, 1, N3.ID, 0);
+  NodeInfo N5(QString("N5"), N5_pos);
+  Schematic.appendNode(N5);
+  Schematic.appendWire(TL3.ID, 1, N5.ID, 0);
 
   // Isolation resistor
-  ComponentInfo Riso(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                     Resistor, 0, 215, y_central_branch);
+  ComponentInfo Riso(QString("R1"), Resistor, Riso_pos);
   Riso.val["R"] = num2str(R, Resistance);
   Schematic.appendComponent(Riso);
 
-  Schematic.appendWire(Riso.ID, 1, N2.ID, 0);
-  Schematic.appendWire(Riso.ID, 0, N3.ID, 0);
+  Schematic.appendWire(Riso.ID, 1, N4.ID, 0);
+  Schematic.appendWire(Riso.ID, 0, N5.ID, 0);
 
   if (Specification.OutputRatio.at(0) != 1) {
     // Upper branch matching transmission line
-    ComponentInfo TL4(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, 90, 290, y_upper_branch);
+    ComponentInfo TL4(QString("TLIN4"), TransmissionLine, 90, TL4_pos);
     TL4.val["Z0"] = num2str(sqrt(Specification.Z0 * R2), Resistance);
     TL4.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
     Schematic.appendComponent(TL4);
 
-    TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 350, y_upper_branch);
+    TermSpar2.setParams(QString("T2"), Term, 180, Port_out1);
     TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar2);
 
-    Schematic.appendWire(TL4.ID, 0, N2.ID, 0);
+    Schematic.appendWire(TL4.ID, 0, N4.ID, 0);
     Schematic.appendWire(TL4.ID, 1, TermSpar2.ID, 0);
 
     // Lower branch matching transmission line
-    ComponentInfo TL5(
-        QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, 90, 290, y_lower_branch);
+    ComponentInfo TL5(QString("TLIN5"), TransmissionLine, 90, TL5_pos);
     TL5.val["Z0"] = num2str(sqrt(Specification.Z0 * R3), Resistance);
     TL5.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
     Schematic.appendComponent(TL5);
 
-    TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 350, y_lower_branch);
+    TermSpar3.setParams(QString("T3"), Term, 180, Port_out2);
     TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar3);
 
-    Schematic.appendWire(TL5.ID, 0, N3.ID, 0);
+    Schematic.appendWire(TL5.ID, 0, N5.ID, 0);
     Schematic.appendWire(TL5.ID, 1, TermSpar3.ID, 0);
 
   } else {
     // Equal power split
-    TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 300, y_upper_branch);
+    TermSpar2.setParams(QString("T2"), Term, 180, Port_out1);
     TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar2);
-    Schematic.appendWire(N2.ID, 1, TermSpar2.ID, 0);
+    Schematic.appendWire(N4.ID, 1, TermSpar2.ID, 0);
 
-    TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 300, y_lower_branch);
+    TermSpar3.setParams(QString("T3"), Term, 180, Port_out2);
     TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar3);
-    Schematic.appendWire(N3.ID, 1, TermSpar3.ID, 0);
+    Schematic.appendWire(N5.ID, 1, TermSpar3.ID, 0);
   }
 }
 
 void Wilkinson2Way::buildWilkinson_Microstrip() {
+
+  ComponentInfo TermSpar2, TermSpar3;
+
   double lambda4 = SPEED_OF_LIGHT / (4 * Specification.freq);
-  ComponentInfo TermSpar1, TermSpar2, TermSpar3;
 
-  // In the schematic of a Wilkinson power combiner there are two output
-  // branches and a central feed line. These variables set the y-axis coordinate
-  // of these branches;
-  int y_central_branch = 0;
-  int y_lower_branch = 60;
-  int y_upper_branch = -60;
+  // Define components' location
+  setComponentsLocation();
 
-  TermSpar1.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 0, 0, y_central_branch);
+  ComponentInfo TermSpar1(QString("T1"), Term, Port_in);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
@@ -459,9 +431,7 @@ void Wilkinson2Way::buildWilkinson_Microstrip() {
   MSL_Input.synthesizeMicrostrip(Specification.Z0, lambda4 * 1e3,
                                  Specification.freq);
 
-  ComponentInfo MLIN1(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 50, y_central_branch);
+  ComponentInfo MLIN1(QString("MLIN1"), MicrostripLine, 90, TL1_pos);
   MLIN1.val["Width"] = ConvertLengthFromM("mm", MSL_Input.Results.width);
   MLIN1.val["Length"] =
       ConvertLengthFromM("mm", MSL_Input.Results.length * 1e-3);
@@ -475,35 +445,28 @@ void Wilkinson2Way::buildWilkinson_Microstrip() {
   Schematic.appendWire(TermSpar1.ID, 0, MLIN1.ID, 0);
 
   // Central node
-  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, y_central_branch);
+  NodeInfo N1(QString("N1"), N1_pos);
   Schematic.appendNode(N1);
   Schematic.appendWire(MLIN1.ID, 1, N1.ID, 1);
 
   // Upper node
-  NodeInfo Nup(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100,
-      y_upper_branch);
-  Nup.visible = false;
-  Schematic.appendNode(Nup);
-  Schematic.appendWire(Nup.ID, 1, N1.ID, 1);
+  NodeInfo N2(QString("N2"), N2_pos);
+  N2.visible = false;
+  Schematic.appendNode(N2);
+  Schematic.appendWire(N2.ID, 1, N1.ID, 1);
 
   // Lower node
-  NodeInfo Nlow(
-      QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), 100,
-      y_lower_branch);
-  Nlow.visible = false;
-  Schematic.appendNode(Nlow);
-  Schematic.appendWire(Nlow.ID, 1, N1.ID, 1);
+  NodeInfo N3(QString("N3"), N3_pos);
+  N3.visible = false;
+  Schematic.appendNode(N3);
+  Schematic.appendWire(N3.ID, 1, N1.ID, 1);
 
   // Upper branch microstrip line
   MicrostripClass MSL_Upper;
   MSL_Upper.Substrate = Specification.MS_Subs;
   MSL_Upper.synthesizeMicrostrip(Z2, lambda4 * 1e3, Specification.freq);
 
-  ComponentInfo MLIN2(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 135, y_upper_branch);
+  ComponentInfo MLIN2(QString("MLIN2"), MicrostripLine, 90, TL2_pos);
   MLIN2.val["Width"] = ConvertLengthFromM("mm", MSL_Upper.Results.width);
   MLIN2.val["Length"] =
       ConvertLengthFromM("mm", MSL_Upper.Results.length * 1e-3);
@@ -514,21 +477,18 @@ void Wilkinson2Way::buildWilkinson_Microstrip() {
   MLIN2.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN2);
 
-  Schematic.appendWire(MLIN2.ID, 0, Nup.ID, 0);
+  Schematic.appendWire(MLIN2.ID, 0, N2.ID, 0);
 
-  NodeInfo N2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              200, y_upper_branch);
-  Schematic.appendNode(N2);
-  Schematic.appendWire(MLIN2.ID, 1, N2.ID, 0);
+  NodeInfo N4(QString("N4"), N4_pos);
+  Schematic.appendNode(N4);
+  Schematic.appendWire(MLIN2.ID, 1, N4.ID, 0);
 
   // Lower branch microstrip line
   MicrostripClass MSL_Lower;
   MSL_Lower.Substrate = Specification.MS_Subs;
   MSL_Lower.synthesizeMicrostrip(Z3, lambda4 * 1e3, Specification.freq);
 
-  ComponentInfo MLIN3(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 135, y_lower_branch);
+  ComponentInfo MLIN3(QString("MLIN3"), MicrostripLine, 90, TL3_pos);
   MLIN3.val["Width"] = ConvertLengthFromM("mm", MSL_Lower.Results.width);
   MLIN3.val["Length"] =
       ConvertLengthFromM("mm", MSL_Lower.Results.length * 1e-3);
@@ -539,21 +499,19 @@ void Wilkinson2Way::buildWilkinson_Microstrip() {
   MLIN3.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN3);
 
-  Schematic.appendWire(MLIN3.ID, 0, Nlow.ID, 0);
+  Schematic.appendWire(MLIN3.ID, 0, N3.ID, 0);
 
-  NodeInfo N3(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              200, y_lower_branch);
-  Schematic.appendNode(N3);
-  Schematic.appendWire(MLIN3.ID, 1, N3.ID, 0);
+  NodeInfo N5(QString("N5"), N5_pos);
+  Schematic.appendNode(N5);
+  Schematic.appendWire(MLIN3.ID, 1, N5.ID, 0);
 
   // Isolation resistor
-  ComponentInfo Riso(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                     Resistor, 0, 200, y_central_branch);
+  ComponentInfo Riso(QString("R1"), Resistor, 0, Riso_pos);
   Riso.val["R"] = num2str(R, Resistance);
   Schematic.appendComponent(Riso);
 
-  Schematic.appendWire(Riso.ID, 1, N2.ID, 0);
-  Schematic.appendWire(Riso.ID, 0, N3.ID, 0);
+  Schematic.appendWire(Riso.ID, 1, N4.ID, 0);
+  Schematic.appendWire(Riso.ID, 0, N5.ID, 0);
 
   if (Specification.OutputRatio.at(0) != 1) {
     // Upper branch matching microstrip line
@@ -563,9 +521,7 @@ void Wilkinson2Way::buildWilkinson_Microstrip() {
     MSL_Match_Upper.synthesizeMicrostrip(Z_match_upper, lambda4 * 1e3,
                                          Specification.freq);
 
-    ComponentInfo MLIN4(
-        QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-        MicrostripLine, 90, 275, y_upper_branch);
+    ComponentInfo MLIN4(QString("MLIN4"), MicrostripLine, 90, TL4_pos);
     MLIN4.val["Width"] =
         ConvertLengthFromM("mm", MSL_Match_Upper.Results.width);
     MLIN4.val["Length"] =
@@ -577,12 +533,11 @@ void Wilkinson2Way::buildWilkinson_Microstrip() {
     MLIN4.val["tand"] = num2str(Specification.MS_Subs.tand);
     Schematic.appendComponent(MLIN4);
 
-    TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 325, y_upper_branch);
+    TermSpar2.setParams(QString("T2"), Term, 180, Port_out1);
     TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar2);
 
-    Schematic.appendWire(MLIN4.ID, 0, N2.ID, 0);
+    Schematic.appendWire(MLIN4.ID, 0, N4.ID, 0);
     Schematic.appendWire(MLIN4.ID, 1, TermSpar2.ID, 0);
 
     // Lower branch matching microstrip line
@@ -592,9 +547,7 @@ void Wilkinson2Way::buildWilkinson_Microstrip() {
     MSL_Match_Lower.synthesizeMicrostrip(Z_match_lower, lambda4 * 1e3,
                                          Specification.freq);
 
-    ComponentInfo MLIN5(
-        QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-        MicrostripLine, 90, 275, y_lower_branch);
+    ComponentInfo MLIN5(QString("MLIN5"), MicrostripLine, 90, TL5_pos);
     MLIN5.val["Width"] =
         ConvertLengthFromM("mm", MSL_Match_Lower.Results.width);
     MLIN5.val["Length"] =
@@ -606,26 +559,94 @@ void Wilkinson2Way::buildWilkinson_Microstrip() {
     MLIN5.val["tand"] = num2str(Specification.MS_Subs.tand);
     Schematic.appendComponent(MLIN5);
 
-    TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 325, y_lower_branch);
+    TermSpar3.setParams(QString("T3"), Term, 180, Port_out2);
     TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar3);
 
-    Schematic.appendWire(MLIN5.ID, 0, N3.ID, 0);
+    Schematic.appendWire(MLIN5.ID, 0, N5.ID, 0);
     Schematic.appendWire(MLIN5.ID, 1, TermSpar3.ID, 0);
 
   } else {
-    // Equal power split - no matching required
-    TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 250, y_upper_branch);
+    // Equal power split
+    TermSpar2.setParams(QString("T2"), Term, 180, Port_out1);
     TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar2);
-    Schematic.appendWire(N2.ID, 1, TermSpar2.ID, 0);
+    Schematic.appendWire(N4.ID, 1, TermSpar2.ID, 0);
 
-    TermSpar3.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                        Term, 180, 250, y_lower_branch);
+    TermSpar3.setParams(QString("T3"), Term, 180, Port_out2);
     TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
     Schematic.appendComponent(TermSpar3);
-    Schematic.appendWire(N3.ID, 1, TermSpar3.ID, 0);
+    Schematic.appendWire(N5.ID, 1, TermSpar3.ID, 0);
+  }
+}
+
+// Since the components' location is shared between TLIN and MLIN
+// implementations, it makes sense to have a common function to set them up
+void Wilkinson2Way::setComponentsLocation() {
+  // Define components' location
+
+  // Spacing between components
+  x_spacing = 50;
+  y_spacing = 50;
+
+  // In the schematic of a Wilkinson power combiner there are two output
+  // branches and a central feed line. These variables set the y-axis coordinate
+  // of these branches;
+  int y_central_branch = 0;
+  int y_lower_branch = 60;
+  int y_upper_branch = -60;
+
+  // Input port
+  Port_in = QPoint(0, y_central_branch);
+
+  // TL in front of the input port
+  TL1_pos = QPoint(Port_in.x() + x_spacing, Port_in.y());
+
+  // Node at the split
+  N1_pos = QPoint(TL1_pos.x() + x_spacing, Port_in.y());
+
+  // Virtual node in front of the upper line
+  N2_pos = QPoint(N1_pos.x(), y_upper_branch);
+
+  // Upper TL
+  TL2_pos = QPoint(N2_pos.x() + x_spacing, y_upper_branch);
+
+  // Virtual node in front of the bottom line
+  N3_pos = QPoint(N1_pos.x(), y_lower_branch);
+
+  // Lower TL
+  TL3_pos = QPoint(TL2_pos.x(), y_lower_branch);
+
+  // Node at the output of the upper line
+  N4_pos = QPoint(TL2_pos.x() + x_spacing, y_upper_branch);
+
+  // Isolation resistor
+  Riso_pos = QPoint(N4_pos.x(), y_central_branch);
+
+  // Node at the output of the lower line
+  N5_pos = QPoint(N4_pos.x(), y_lower_branch);
+
+  if (Specification.OutputRatio.at(0) != 1) {
+    // In case of unequal power division, the next positions are needed
+    // Upper branch TL
+    TL4_pos = QPoint(N4_pos.x() + x_spacing, y_upper_branch);
+
+    // Lower branch TL
+    TL5_pos = QPoint(TL4_pos.x(), y_lower_branch);
+
+    // Upper S-par term
+    Port_out1 = QPoint(TL4_pos.x() + x_spacing, y_upper_branch);
+
+    // Lower S-par term
+    Port_out2 = QPoint(Port_out1.x(), y_lower_branch);
+
+  } else {
+    // Equal power split
+
+    // Upper S-par term
+    Port_out1 = QPoint(N4_pos.x() + x_spacing, y_upper_branch);
+
+    // Lower S-par term
+    Port_out2 = QPoint(Port_out1.x(), y_lower_branch);
   }
 }
