@@ -37,7 +37,7 @@ private:
   void buildTJunction_IdealTL(double lambda4, double K);
   void buildTJunction_Microstrip(double lambda4, double K);
 
-  private:
+private:
 
   // This function sets the component's location before the schematic is built
   void setComponentsLocation();

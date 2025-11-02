@@ -34,6 +34,7 @@ void Lim_Eom::calculateParams() {
   double d2 = N + K;
   Z1 = Specification.Z0 * sqrt(d1 / d2);
   Z2 = Specification.Z0 * sqrt(d1 / M);
+  Z3 = Specification.Z0;
   Z4 = Specification.Z0 * sqrt(d2 / N);
   Z5 = Specification.Z0 * sqrt(d2 / K);
 }
@@ -50,168 +51,154 @@ void Lim_Eom::synthesize() {
 }
 
 void Lim_Eom::buildLimEom_IdealTL() {
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -25,
-      -100);
+  // Define components' location
+  setComponentsLocation();
+
+  ComponentInfo TermSpar1(QString("T1"), Term, Ports_pos[0]);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
-  NodeInfo N0(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, -100);
-  Schematic.appendNode(N0);
-  Schematic.appendWire(TermSpar1.ID, 0, N0.ID, 0);
+  NodeInfo N1(QString("N1"), N_pos[0]);
+  Schematic.appendNode(N1);
 
-  ComponentInfo TL1(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 50, -100);
+  ComponentInfo TL1(QString("TLIN1"), TransmissionLine, 90, TL_pos[0]);
   TL1.val["Z0"] = num2str(Z2, Resistance);
   TL1.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL1);
-  Schematic.appendWire(TL1.ID, 0, N0.ID, 0);
 
-  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, -100);
-  Schematic.appendNode(N1);
-  Schematic.appendWire(TL1.ID, 1, N1.ID, 0);
+  NodeInfo N2(QString("N2"), N_pos[1]);
+  Schematic.appendNode(N2);
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 90, 100,
-      -130);
+  ComponentInfo TermSpar2(QString("T2"), Term, 90, Ports_pos[1]);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
-  Schematic.appendWire(TermSpar2.ID, 0, N1.ID, 0);
 
-  ComponentInfo TL2(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 150, -100);
+  ComponentInfo TL2(QString("TLIN2"), TransmissionLine, 90, TL_pos[1]);
   TL2.val["Z0"] = num2str(Z1, Resistance);
   TL2.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL2);
-  Schematic.appendWire(TL2.ID, 0, N1.ID, 0);
 
-  NodeInfo N2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              200, -100);
-  Schematic.appendNode(N2);
-  Schematic.appendWire(TL2.ID, 1, N2.ID, 0);
+  NodeInfo N3(QString("N3"), N_pos[2]);
+  Schematic.appendNode(N3);
 
-  ComponentInfo Ri1(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                    Resistor, 0, 260, -60);
-  Ri1.val["R"] = num2str(Specification.Z0, Resistance);
-  Schematic.appendComponent(Ri1);
+  ComponentInfo R1(QString("R1"), Resistor, Riso_pos[0]);
+  R1.val["R"] = num2str(Specification.Z0, Resistance);
+  Schematic.appendComponent(R1);
 
-  ComponentInfo Ground1(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                        GND, 0, 260, -20);
+  ComponentInfo Ground1(QString("GND1"), GND, 0, GND_Riso_pos[0]);
   Schematic.appendComponent(Ground1);
-  Schematic.appendWire(Ri1.ID, 1, N2.ID, 0);
-  Schematic.appendWire(Ri1.ID, 0, Ground1.ID, 0);
 
-  ComponentInfo TL3(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 200, -50);
+  ComponentInfo TL3(QString("TLIN3"), TransmissionLine, TL_pos[2]);
   TL3.val["Z0"] = num2str(Z2, Resistance);
   TL3.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL3);
-  Schematic.appendWire(TL3.ID, 1, N2.ID, 0);
 
-  NodeInfo N3(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              200, 0);
-  Schematic.appendNode(N3);
-  Schematic.appendWire(TL3.ID, 0, N3.ID, 0);
+  NodeInfo N4(QString("N4"), N_pos[3]);
+  Schematic.appendNode(N4);
 
-  ComponentInfo TL4(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 200, 50);
+  ComponentInfo TL4(QString("TLIN4"), TransmissionLine, TL_pos[3]);
   TL4.val["Z0"] = num2str(Z4, Resistance);
   TL4.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL4);
-  Schematic.appendWire(TL4.ID, 1, N3.ID, 0);
 
-  NodeInfo N4(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              200, 100);
-  Schematic.appendNode(N4);
-  Schematic.appendWire(TL4.ID, 0, N4.ID, 0);
+  NodeInfo N5(QString("N5"), N_pos[4]);
+  Schematic.appendNode(N5);
 
-  ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 220,
-      100);
+  ComponentInfo TermSpar3(QString("T3"), Term, 180, Ports_pos[2]);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
-  Schematic.appendWire(TermSpar3.ID, 0, N4.ID, 0);
 
-  ComponentInfo TL5(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 150, 100);
-  TL5.val["Z0"] = num2str(Z5, Resistance);
-  TL5.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
+  ComponentInfo TL5(QString("TLIN5"), TransmissionLine, 90, TL_pos[4]);
+  TL5.val["Z0"] = num2str(Z3, Resistance);
+  TL5.val["Length"] = ConvertLengthFromM(Specification.units, 2 * lambda4);
   Schematic.appendComponent(TL5);
-  Schematic.appendWire(TL5.ID, 1, N4.ID, 0);
 
-  NodeInfo N5(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, 100);
-  Schematic.appendNode(N5);
-  Schematic.appendWire(TL5.ID, 0, N5.ID, 0);
+  NodeInfo N6(QString("N6"), N_pos[5]);
+  Schematic.appendNode(N6);
 
-  ComponentInfo Ri2(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                    Resistor, 0, 100, 150);
-  Ri2.val["R"] = num2str(Specification.Z0, Resistance);
-  Schematic.appendComponent(Ri2);
+  ComponentInfo R2(QString("R2"), Resistor, Riso_pos[1]);
+  R2.val["R"] = num2str(Specification.Z0, Resistance);
+  Schematic.appendComponent(R2);
 
-  ComponentInfo Ground2(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                        GND, 0, 100, 200);
+  ComponentInfo Ground2(QString("GND2"), GND, GND_Riso_pos[1]);
   Schematic.appendComponent(Ground2);
-  Schematic.appendWire(Ri2.ID, 1, N5.ID, 0);
-  Schematic.appendWire(Ri2.ID, 0, Ground2.ID, 0);
 
-  ComponentInfo TL6(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 50, 100);
-  TL6.val["Z0"] = num2str(Z4, Resistance);
+  ComponentInfo TL6(QString("TLIN6"), TransmissionLine, 90, TL_pos[5]);
+  TL6.val["Z0"] = num2str(Z5, Resistance);
   TL6.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL6);
-  Schematic.appendWire(TL6.ID, 1, N5.ID, 0);
 
-  NodeInfo N6(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, 100);
-  Schematic.appendNode(N6);
-  Schematic.appendWire(TL6.ID, 0, N6.ID, 0);
+  NodeInfo N7(QString("N7"), N_pos[6]);
+  Schematic.appendNode(N7);
 
-  ComponentInfo TermSpar4(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20,
-      100);
+  ComponentInfo TermSpar4(QString("T4"), Term, Ports_pos[3]);
   TermSpar4.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar4);
-  Schematic.appendWire(TermSpar4.ID, 0, N6.ID, 0);
 
-  ComponentInfo TL7(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 0, 50);
-  TL7.val["Z0"] = num2str(Z5, Resistance);
+  ComponentInfo TL7(QString("TLIN7"), TransmissionLine, 90, TL_pos[6]);
+  TL7.val["Z0"] = num2str(Z4, Resistance);
   TL7.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL7);
-  Schematic.appendWire(TL7.ID, 0, N6.ID, 0);
 
-  NodeInfo N7(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, 0);
-  Schematic.appendNode(N7);
-  Schematic.appendWire(TL7.ID, 1, N7.ID, 0);
+  NodeInfo N8(QString("N8"), N_pos[7]);
+  Schematic.appendNode(N8);
 
-  ComponentInfo TL8(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 0, 0, -50);
-  TL8.val["Z0"] = num2str(Z1, Resistance);
+  ComponentInfo TL8(QString("TLIN8"), TransmissionLine, TL_pos[7]);
+  TL8.val["Z0"] = num2str(Z5, Resistance);
   TL8.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL8);
-  Schematic.appendWire(TL8.ID, 0, N7.ID, 0);
-  Schematic.appendWire(TL8.ID, 1, N0.ID, 0);
 
-  ComponentInfo TL9(
-      QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, 90, 100, 0);
-  TL9.val["Z0"] = num2str(Specification.Z0, Resistance);
-  TL9.val["Length"] = ConvertLengthFromM(Specification.units, 2 * lambda4);
+  ComponentInfo TL9(QString("TLIN9"), TransmissionLine, TL_pos[8]);
+  TL9.val["Z0"] = num2str(Z1, Resistance);
+  TL9.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
   Schematic.appendComponent(TL9);
-  Schematic.appendWire(TL9.ID, 0, N7.ID, 0);
-  Schematic.appendWire(TL9.ID, 1, N3.ID, 0);
+
+  // Wires
+  // Connections to N1
+  Schematic.appendWire(TermSpar1.ID, 0, N1.ID, 0);
+  Schematic.appendWire(TL9.ID, 1, N1.ID, 0);
+  Schematic.appendWire(TL1.ID, 0, N1.ID, 0);
+
+  // Connections to N2
+  Schematic.appendWire(TermSpar2.ID, 0, N2.ID, 0);
+  Schematic.appendWire(TL1.ID, 1, N2.ID, 0);
+  Schematic.appendWire(TL2.ID, 0, N2.ID, 0);
+
+  // Connections to N3
+  Schematic.appendWire(TL2.ID, 1, N3.ID, 0);
+  Schematic.appendWire(R1.ID, 1, N3.ID, 0);
+  Schematic.appendWire(TL3.ID, 1, N3.ID, 0);
+
+  // Connections to N4
+  Schematic.appendWire(TL3.ID, 0, N4.ID, 0);
+  Schematic.appendWire(TL5.ID, 1, N4.ID, 0);
+  Schematic.appendWire(TL4.ID, 1, N4.ID, 0);
+
+  // Connections to N5
+  Schematic.appendWire(TL4.ID, 0, N5.ID, 0);
+  Schematic.appendWire(TermSpar3.ID, 0, N5.ID, 0);
+  Schematic.appendWire(TL6.ID, 1, N5.ID, 0);
+
+  // Connections to N6
+  Schematic.appendWire(TL6.ID, 0, N6.ID, 0);
+  Schematic.appendWire(R2.ID, 1, N6.ID, 0);
+  Schematic.appendWire(TL7.ID, 1, N6.ID, 0);
+
+  // Connections to N7
+  Schematic.appendWire(TL7.ID, 0, N7.ID, 0);
+  Schematic.appendWire(TL8.ID, 0, N7.ID, 0);
+  Schematic.appendWire(TermSpar4.ID, 0, N7.ID, 0);
+
+  // Connections to N8
+  Schematic.appendWire(TL9.ID, 0, N8.ID, 0);
+  Schematic.appendWire(TL5.ID, 0, N8.ID, 0);
+  Schematic.appendWire(TL8.ID, 1, N8.ID, 0);
+
+  // Ground <-> R1
+  Schematic.appendWire(R1.ID, 0, Ground1.ID, 0);
+
+  // Ground <-> R2
+  Schematic.appendWire(R2.ID, 0, Ground2.ID, 0);
 }
 
 void Lim_Eom::buildLimEom_Microstrip() {
@@ -450,4 +437,125 @@ void Lim_Eom::buildLimEom_Microstrip() {
   Schematic.appendComponent(MLIN9);
   Schematic.appendWire(MLIN9.ID, 0, N7.ID, 0);
   Schematic.appendWire(MLIN9.ID, 1, N3.ID, 0);
+}
+
+// Since the components' location is shared between TLIN and MLIN
+// implementations, it makes sense to have a common function to set them up
+void Lim_Eom::setComponentsLocation() {
+  // Define components' location
+
+  //                           T2
+  //                            |
+  // IN -- (N1) --- [TL1]  --- (N2) --- [TL2] --- (N3) --- R1
+  //        |                                       |
+  //      [TL9]                                   [TL3]
+  //        |                                       |
+  //      (N8)      ---        [TL5]     ---       (N4)
+  //        |                                       |
+  //      [TL8]                                   [TL4]
+  //        |                                       |
+  // T4 -- (N7) --- [TL7] ---  (N6) --- [TL6] --- (N5) --- T3
+  //                            |
+  //                            R2
+
+  // Spacing between components
+  x_spacing = 60;
+  y_spacing = 60;
+
+  // Input port
+  QPoint Port_in = QPoint(-25, -100);
+  Ports_pos.push_back(Port_in); // [0]
+
+  // N1: Node in front of the input port
+  QPoint N1 = QPoint(Port_in.x() + x_spacing, Port_in.y());
+  N_pos.append(N1); // [0]
+
+  // Horizontal line in front of the input port
+  QPoint TL1 = QPoint(N1.x() + x_spacing, Port_in.y());
+  TL_pos.append(TL1);
+
+  // N2: Node after TL1 (just below port 2)
+  QPoint N2 = QPoint(TL1.x() + x_spacing, Port_in.y());
+  N_pos.append(N2); // [1]
+
+  // Port 2 (top center)
+  QPoint T2 = QPoint(N2.x(), Port_in.y() - y_spacing);
+  Ports_pos.append(T2);
+
+  // TL2: at the right of TL1. In the "line" of the input port
+  QPoint TL2 = QPoint(N2.x() + x_spacing, Port_in.y());
+  TL_pos.append(TL2);
+
+  // N3: Node after TL2 (top-right). It connects with the isolation resistor
+  QPoint N3 = QPoint(TL2.x() + x_spacing, Port_in.y());
+  N_pos.append(N3);
+
+  // Isolation resistor
+  QPoint R1 = QPoint(N3.x() + x_spacing, N2.y() + y_spacing);
+  Riso_pos.append(R1);
+
+  QPoint GND_R1 = QPoint(R1.x(), R1.y() + 50);
+  GND_Riso_pos.append(GND_R1);
+
+  // TL3: Vertical line on the right-side (top)
+  QPoint TL3 = QPoint(N3.x(), N3.y() + y_spacing);
+  TL_pos.append(TL3);
+
+  // N4: Node connecting the two vertical lines on the right side
+  QPoint N4 = QPoint(TL3.x(), TL3.y() + y_spacing);
+  N_pos.append(N4);
+
+  // TL4: Below TL3 (right-side vertical line, bottom)
+  QPoint TL4 = QPoint(N4.x(), N4.y() + y_spacing);
+  TL_pos.append(TL4);
+
+  // TL5: Horizontal center branch
+  QPoint TL5 = QPoint(N2.x(), N4.y());
+  TL_pos.append(TL5);
+
+  // N5: Bottom-right node. it connects term 3
+  QPoint N5 = QPoint(N4.x(), TL4.y() + y_spacing);
+  N_pos.append(N5);
+
+  // Term 3
+  QPoint T3 = QPoint(N5.x() + x_spacing, N5.y());
+  Ports_pos.append(T3);
+
+  // TL6: Between term 3 and Riso 2
+  QPoint TL6 = QPoint(TL2.x(), N5.y());
+  TL_pos.append(TL6);
+
+  // N6: Node connecting the second isolation resistor
+  QPoint N6 = QPoint(N2.x(), N5.y());
+  N_pos.append(N6);
+
+  // R2: Second isolation resistor
+  QPoint R2 = QPoint(N6.x(), N6.y() + y_spacing);
+  Riso_pos.append(R2);
+  QPoint R2_GND = QPoint(R2.x(), R2.y() + 50);
+  GND_Riso_pos.append(R2_GND);
+
+  // TL7: Bottom left horizontal line
+  QPoint TL7 = QPoint(TL1.x(), N6.y());
+  TL_pos.append(TL7);
+
+  // N7: Bottom-left corner
+  QPoint N7 = QPoint(N1.x(), N6.y());
+  N_pos.append(N7);
+
+  // Term 4
+  QPoint T4 = QPoint(Port_in.x(), N7.y());
+  Ports_pos.append(T4);
+
+  // TL8: Bottom-left vertical line
+  QPoint TL8 = QPoint(N7.x(), TL4.y());
+  TL_pos.append(TL8);
+
+  // N8: Node in the middle of the first vertical lines
+  QPoint N8 = QPoint(N1.x(), TL5.y());
+  N_pos.append(N8);
+
+  // TL9: First vertical line after the input port
+  QPoint TL9 = QPoint(N1.x(), TL3.y());
+  TL_pos.append(TL9);
 }

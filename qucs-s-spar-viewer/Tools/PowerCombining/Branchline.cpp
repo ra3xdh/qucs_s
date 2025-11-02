@@ -46,11 +46,6 @@ void Branchline::buildBranchline_IdealTL() {
   // Define components' location
   setComponentsLocation();
 
-  // Define components' location
-  setComponentsLocation();
-
-  Schematic.Comps.clear();
-
   ComponentInfo TermSpar1(QString("T1"), Term, Port_in);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
