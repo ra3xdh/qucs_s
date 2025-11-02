@@ -202,16 +202,15 @@ void Lim_Eom::buildLimEom_IdealTL() {
 }
 
 void Lim_Eom::buildLimEom_Microstrip() {
-  ComponentInfo TermSpar1(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -25,
-      -100);
+  // Define components' location
+  setComponentsLocation();
+
+  ComponentInfo TermSpar1(QString("T1"), Term, Ports_pos[0]);
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
-  NodeInfo N0(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, -100);
-  Schematic.appendNode(N0);
-  Schematic.appendWire(TermSpar1.ID, 0, N0.ID, 0);
+  NodeInfo N1(QString("N1"), N_pos[0]);
+  Schematic.appendNode(N1);
 
   // Synthesize microstrip lines for different impedances
   // Z2 impedance lines (2 quarter-wave lines)
@@ -219,9 +218,7 @@ void Lim_Eom::buildLimEom_Microstrip() {
   MSL_Z2.Substrate = Specification.MS_Subs;
   MSL_Z2.synthesizeMicrostrip(Z2, lambda4 * 1e3, Specification.freq);
 
-  ComponentInfo MLIN1(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 50, -100);
+  ComponentInfo MLIN1(QString("MLIN1"), MicrostripLine, 90, TL_pos[0]);
   MLIN1.val["Width"] = ConvertLengthFromM("mm", MSL_Z2.Results.width);
   MLIN1.val["Length"] = ConvertLengthFromM("mm", MSL_Z2.Results.length * 1e-3);
   MLIN1.val["er"] = num2str(Specification.MS_Subs.er);
@@ -230,28 +227,20 @@ void Lim_Eom::buildLimEom_Microstrip() {
   MLIN1.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
   MLIN1.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN1);
-  Schematic.appendWire(MLIN1.ID, 0, N0.ID, 0);
 
-  NodeInfo N1(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, -100);
-  Schematic.appendNode(N1);
-  Schematic.appendWire(MLIN1.ID, 1, N1.ID, 0);
+  NodeInfo N2(QString("N2"), N_pos[1]);
+  Schematic.appendNode(N2);
 
-  ComponentInfo TermSpar2(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 90, 100,
-      -130);
+  ComponentInfo TermSpar2(QString("T2"), Term, 90, Ports_pos[1]);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
-  Schematic.appendWire(TermSpar2.ID, 0, N1.ID, 0);
 
   // Z1 impedance lines (2 quarter-wave lines)
   MicrostripClass MSL_Z1;
   MSL_Z1.Substrate = Specification.MS_Subs;
   MSL_Z1.synthesizeMicrostrip(Z1, lambda4 * 1e3, Specification.freq);
 
-  ComponentInfo MLIN2(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 150, -100);
+  ComponentInfo MLIN2(QString("MLIN2"), MicrostripLine, 90, TL_pos[1]);
   MLIN2.val["Width"] = ConvertLengthFromM("mm", MSL_Z1.Results.width);
   MLIN2.val["Length"] = ConvertLengthFromM("mm", MSL_Z1.Results.length * 1e-3);
   MLIN2.val["er"] = num2str(Specification.MS_Subs.er);
@@ -260,27 +249,18 @@ void Lim_Eom::buildLimEom_Microstrip() {
   MLIN2.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
   MLIN2.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN2);
-  Schematic.appendWire(MLIN2.ID, 0, N1.ID, 0);
 
-  NodeInfo N2(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              200, -100);
-  Schematic.appendNode(N2);
-  Schematic.appendWire(MLIN2.ID, 1, N2.ID, 0);
+  NodeInfo N3(QString("N3"), N_pos[2]);
+  Schematic.appendNode(N3);
 
-  ComponentInfo Ri1(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                    Resistor, 0, 260, -60);
-  Ri1.val["R"] = num2str(Specification.Z0, Resistance);
-  Schematic.appendComponent(Ri1);
+  ComponentInfo R1(QString("R1"), Resistor, Riso_pos[0]);
+  R1.val["R"] = num2str(Specification.Z0, Resistance);
+  Schematic.appendComponent(R1);
 
-  ComponentInfo Ground1(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                        GND, 0, 260, -20);
+  ComponentInfo Ground1(QString("GND1"), GND, 0, GND_Riso_pos[0]);
   Schematic.appendComponent(Ground1);
-  Schematic.appendWire(Ri1.ID, 1, N2.ID, 0);
-  Schematic.appendWire(Ri1.ID, 0, Ground1.ID, 0);
 
-  ComponentInfo MLIN3(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 0, 200, -50);
+  ComponentInfo MLIN3(QString("MLIN3"), MicrostripLine, TL_pos[2]);
   MLIN3.val["Width"] = ConvertLengthFromM("mm", MSL_Z2.Results.width);
   MLIN3.val["Length"] = ConvertLengthFromM("mm", MSL_Z2.Results.length * 1e-3);
   MLIN3.val["er"] = num2str(Specification.MS_Subs.er);
@@ -289,21 +269,16 @@ void Lim_Eom::buildLimEom_Microstrip() {
   MLIN3.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
   MLIN3.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN3);
-  Schematic.appendWire(MLIN3.ID, 1, N2.ID, 0);
 
-  NodeInfo N3(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              200, 0);
-  Schematic.appendNode(N3);
-  Schematic.appendWire(MLIN3.ID, 0, N3.ID, 0);
+  NodeInfo N4(QString("N4"), N_pos[3]);
+  Schematic.appendNode(N4);
 
   // Z4 impedance lines (2 quarter-wave lines)
   MicrostripClass MSL_Z4;
   MSL_Z4.Substrate = Specification.MS_Subs;
   MSL_Z4.synthesizeMicrostrip(Z4, lambda4 * 1e3, Specification.freq);
 
-  ComponentInfo MLIN4(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 0, 200, 50);
+  ComponentInfo MLIN4(QString("MLIN4"), MicrostripLine, TL_pos[3]);
   MLIN4.val["Width"] = ConvertLengthFromM("mm", MSL_Z4.Results.width);
   MLIN4.val["Length"] = ConvertLengthFromM("mm", MSL_Z4.Results.length * 1e-3);
   MLIN4.val["er"] = num2str(Specification.MS_Subs.er);
@@ -312,100 +287,78 @@ void Lim_Eom::buildLimEom_Microstrip() {
   MLIN4.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
   MLIN4.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN4);
-  Schematic.appendWire(MLIN4.ID, 1, N3.ID, 0);
 
-  NodeInfo N4(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              200, 100);
-  Schematic.appendNode(N4);
-  Schematic.appendWire(MLIN4.ID, 0, N4.ID, 0);
+  NodeInfo N5(QString("N5"), N_pos[4]);
+  Schematic.appendNode(N5);
 
-  ComponentInfo TermSpar3(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 180, 220,
-      100);
+  ComponentInfo TermSpar3(QString("T3"), Term, 180, Ports_pos[2]);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
-  Schematic.appendWire(TermSpar3.ID, 0, N4.ID, 0);
 
   // Z5 impedance lines (2 quarter-wave lines)
-  MicrostripClass MSL_Z5;
-  MSL_Z5.Substrate = Specification.MS_Subs;
-  MSL_Z5.synthesizeMicrostrip(Z5, lambda4 * 1e3, Specification.freq);
+  // Half-wave line at Z0
+  MicrostripClass MSL_Z0_Half;
+  MSL_Z0_Half.Substrate = Specification.MS_Subs;
+  MSL_Z0_Half.synthesizeMicrostrip(Specification.Z0, 2 * lambda4 * 1e3,
+                                   Specification.freq);
 
-  ComponentInfo MLIN5(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 150, 100);
-  MLIN5.val["Width"] = ConvertLengthFromM("mm", MSL_Z5.Results.width);
-  MLIN5.val["Length"] = ConvertLengthFromM("mm", MSL_Z5.Results.length * 1e-3);
+  ComponentInfo MLIN5(QString("MLIN5"), MicrostripLine, 90, TL_pos[4]);
+  MLIN5.val["Width"] = ConvertLengthFromM("mm", MSL_Z0_Half.Results.width);
+  MLIN5.val["Length"] =
+      ConvertLengthFromM("mm", MSL_Z0_Half.Results.length * 1e-3);
   MLIN5.val["er"] = num2str(Specification.MS_Subs.er);
   MLIN5.val["h"] = num2str(Specification.MS_Subs.height);
   MLIN5.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
   MLIN5.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
   MLIN5.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN5);
-  Schematic.appendWire(MLIN5.ID, 1, N4.ID, 0);
 
-  NodeInfo N5(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              100, 100);
-  Schematic.appendNode(N5);
-  Schematic.appendWire(MLIN5.ID, 0, N5.ID, 0);
+  NodeInfo N6(QString("N6"), N_pos[5]);
+  Schematic.appendNode(N6);
 
-  ComponentInfo Ri2(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                    Resistor, 0, 100, 150);
-  Ri2.val["R"] = num2str(Specification.Z0, Resistance);
-  Schematic.appendComponent(Ri2);
+  ComponentInfo R2(QString("R2"), Resistor, Riso_pos[1]);
+  R2.val["R"] = num2str(Specification.Z0, Resistance);
+  Schematic.appendComponent(R2);
 
-  ComponentInfo Ground2(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                        GND, 0, 100, 200);
+  ComponentInfo Ground2(QString("GND2"), GND, GND_Riso_pos[1]);
   Schematic.appendComponent(Ground2);
-  Schematic.appendWire(Ri2.ID, 1, N5.ID, 0);
-  Schematic.appendWire(Ri2.ID, 0, Ground2.ID, 0);
 
-  ComponentInfo MLIN6(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 50, 100);
-  MLIN6.val["Width"] = ConvertLengthFromM("mm", MSL_Z4.Results.width);
-  MLIN6.val["Length"] = ConvertLengthFromM("mm", MSL_Z4.Results.length * 1e-3);
+  // Z4 impedance lines (2 quarter-wave lines)
+  MicrostripClass MSL_Z5;
+  MSL_Z5.Substrate = Specification.MS_Subs;
+  MSL_Z5.synthesizeMicrostrip(Z5, lambda4 * 1e3, Specification.freq);
+
+  ComponentInfo MLIN6(QString("MLIN6"), MicrostripLine, 90, TL_pos[5]);
+  MLIN6.val["Width"] = ConvertLengthFromM("mm", MSL_Z5.Results.width);
+  MLIN6.val["Length"] = ConvertLengthFromM("mm", MSL_Z5.Results.length * 1e-3);
   MLIN6.val["er"] = num2str(Specification.MS_Subs.er);
   MLIN6.val["h"] = num2str(Specification.MS_Subs.height);
   MLIN6.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
   MLIN6.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
   MLIN6.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN6);
-  Schematic.appendWire(MLIN6.ID, 1, N5.ID, 0);
 
-  NodeInfo N6(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, 100);
-  Schematic.appendNode(N6);
-  Schematic.appendWire(MLIN6.ID, 0, N6.ID, 0);
+  NodeInfo N7(QString("N7"), N_pos[6]);
+  Schematic.appendNode(N7);
 
-  ComponentInfo TermSpar4(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, -20,
-      100);
+  ComponentInfo TermSpar4(QString("T4"), Term, Ports_pos[3]);
   TermSpar4.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar4);
-  Schematic.appendWire(TermSpar4.ID, 0, N6.ID, 0);
 
-  ComponentInfo MLIN7(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 0, 0, 50);
-  MLIN7.val["Width"] = ConvertLengthFromM("mm", MSL_Z5.Results.width);
-  MLIN7.val["Length"] = ConvertLengthFromM("mm", MSL_Z5.Results.length * 1e-3);
+  ComponentInfo MLIN7(QString("MLIN7"), MicrostripLine, 90, TL_pos[6]);
+  MLIN7.val["Width"] = ConvertLengthFromM("mm", MSL_Z4.Results.width);
+  MLIN7.val["Length"] = ConvertLengthFromM("mm", MSL_Z4.Results.length * 1e-3);
   MLIN7.val["er"] = num2str(Specification.MS_Subs.er);
   MLIN7.val["h"] = num2str(Specification.MS_Subs.height);
   MLIN7.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
   MLIN7.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
   MLIN7.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN7);
-  Schematic.appendWire(MLIN7.ID, 0, N6.ID, 0);
 
-  NodeInfo N7(QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
-              0, 0);
-  Schematic.appendNode(N7);
-  Schematic.appendWire(MLIN7.ID, 1, N7.ID, 0);
+  NodeInfo N8(QString("N8"), N_pos[7]);
+  Schematic.appendNode(N8);
 
-  ComponentInfo MLIN8(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 0, 0, -50);
+  ComponentInfo MLIN8(QString("MLIN8"), MicrostripLine, TL_pos[7]);
   MLIN8.val["Width"] = ConvertLengthFromM("mm", MSL_Z1.Results.width);
   MLIN8.val["Length"] = ConvertLengthFromM("mm", MSL_Z1.Results.length * 1e-3);
   MLIN8.val["er"] = num2str(Specification.MS_Subs.er);
@@ -414,29 +367,63 @@ void Lim_Eom::buildLimEom_Microstrip() {
   MLIN8.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
   MLIN8.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN8);
-  Schematic.appendWire(MLIN8.ID, 0, N7.ID, 0);
-  Schematic.appendWire(MLIN8.ID, 1, N0.ID, 0);
 
-  // Half-wave line at Z0
-  MicrostripClass MSL_Z0_Half;
-  MSL_Z0_Half.Substrate = Specification.MS_Subs;
-  MSL_Z0_Half.synthesizeMicrostrip(Specification.Z0, 2 * lambda4 * 1e3,
-                                   Specification.freq);
-
-  ComponentInfo MLIN9(
-      QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, 90, 100, 0);
-  MLIN9.val["Width"] = ConvertLengthFromM("mm", MSL_Z0_Half.Results.width);
-  MLIN9.val["Length"] =
-      ConvertLengthFromM("mm", MSL_Z0_Half.Results.length * 1e-3);
+  ComponentInfo MLIN9(QString("MLIN9"), MicrostripLine, TL_pos[8]);
+  MLIN9.val["Width"] = ConvertLengthFromM("mm", MSL_Z1.Results.width);
+  MLIN9.val["Length"] = ConvertLengthFromM("mm", MSL_Z1.Results.length * 1e-3);
   MLIN9.val["er"] = num2str(Specification.MS_Subs.er);
   MLIN9.val["h"] = num2str(Specification.MS_Subs.height);
   MLIN9.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
   MLIN9.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
   MLIN9.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN9);
-  Schematic.appendWire(MLIN9.ID, 0, N7.ID, 0);
-  Schematic.appendWire(MLIN9.ID, 1, N3.ID, 0);
+
+  // Wires
+  // Connections to N1
+  Schematic.appendWire(TermSpar1.ID, 0, N1.ID, 0);
+  Schematic.appendWire(MLIN9.ID, 1, N1.ID, 0);
+  Schematic.appendWire(MLIN1.ID, 0, N1.ID, 0);
+
+  // Connections to N2
+  Schematic.appendWire(TermSpar2.ID, 0, N2.ID, 0);
+  Schematic.appendWire(MLIN1.ID, 1, N2.ID, 0);
+  Schematic.appendWire(MLIN2.ID, 0, N2.ID, 0);
+
+  // Connections to N3
+  Schematic.appendWire(MLIN2.ID, 1, N3.ID, 0);
+  Schematic.appendWire(R1.ID, 1, N3.ID, 0);
+  Schematic.appendWire(MLIN3.ID, 1, N3.ID, 0);
+
+  // Connections to N4
+  Schematic.appendWire(MLIN3.ID, 0, N4.ID, 0);
+  Schematic.appendWire(MLIN5.ID, 1, N4.ID, 0);
+  Schematic.appendWire(MLIN4.ID, 1, N4.ID, 0);
+
+  // Connections to N5
+  Schematic.appendWire(MLIN4.ID, 0, N5.ID, 0);
+  Schematic.appendWire(TermSpar3.ID, 0, N5.ID, 0);
+  Schematic.appendWire(MLIN6.ID, 1, N5.ID, 0);
+
+  // Connections to N6
+  Schematic.appendWire(MLIN6.ID, 0, N6.ID, 0);
+  Schematic.appendWire(R2.ID, 1, N6.ID, 0);
+  Schematic.appendWire(MLIN7.ID, 1, N6.ID, 0);
+
+  // Connections to N7
+  Schematic.appendWire(MLIN7.ID, 0, N7.ID, 0);
+  Schematic.appendWire(MLIN8.ID, 0, N7.ID, 0);
+  Schematic.appendWire(TermSpar4.ID, 0, N7.ID, 0);
+
+  // Connections to N8
+  Schematic.appendWire(MLIN9.ID, 0, N8.ID, 0);
+  Schematic.appendWire(MLIN5.ID, 0, N8.ID, 0);
+  Schematic.appendWire(MLIN8.ID, 1, N8.ID, 0);
+
+  // Ground <-> R1
+  Schematic.appendWire(R1.ID, 0, Ground1.ID, 0);
+
+  // Ground <-> R2
+  Schematic.appendWire(R2.ID, 0, Ground2.ID, 0);
 }
 
 // Since the components' location is shared between TLIN and MLIN
