@@ -33,21 +33,41 @@
  */
 
 class Wilkinson3Way_ImprovedIsolation : public Network {
-public:
-  Wilkinson3Way_ImprovedIsolation();
-  virtual ~Wilkinson3Way_ImprovedIsolation();
-  Wilkinson3Way_ImprovedIsolation(PowerCombinerParams);
-  void synthesize();
+    public:
+        Wilkinson3Way_ImprovedIsolation();
+        virtual ~Wilkinson3Way_ImprovedIsolation();
+        Wilkinson3Way_ImprovedIsolation(PowerCombinerParams);
+        void synthesize();
 
-private:
-  PowerCombinerParams Specification;
-  
-  double lambda4;
-  double Z1, Z2, R1, R2;
-  
-  void calculateParams();
-  void buildWilkinson3Way_IdealTL();
-  void buildWilkinson3Way_Microstrip();
+    private:
+        PowerCombinerParams Specification;
+
+        double lambda4;
+        double Z1, Z2, R1, R2;
+
+        void calculateParams();
+        void buildWilkinson3Way_IdealTL();
+        void buildWilkinson3Way_Microstrip();
+
+    // Private variables for components location
+    private:
+        // This function sets the component's location before the schematic is built
+        void setComponentsLocation();
+
+        // General components spacing
+        int x_spacing, y_spacing;
+
+        // Ports
+        QVector<QPoint> Ports_pos;
+
+        // Isolation resistors
+        QVector<QPoint> Riso_pos;
+
+        // Transmission lines
+        QVector<QPoint> TL_pos;
+
+        // Nodes
+        QVector<QPoint> N_pos;
 };
 
 #endif // WILKINSON3WAY_IMPROVEDISOLATION_H
