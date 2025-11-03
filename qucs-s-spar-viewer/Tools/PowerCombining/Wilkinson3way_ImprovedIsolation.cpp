@@ -223,11 +223,6 @@ void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_Microstrip() {
   TermSpar1.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar1);
 
-  // N0: Input node
-  NodeInfo N0(QString("N0"), N_pos[0]);
-  Schematic.appendNode(N0);
-  Schematic.appendWire(TermSpar1.ID, 0, N0.ID, 0);
-
   // Synthesize microstrip lines for different impedances
   // Z1 impedance lines (3 first-stage quarter-wave lines)
   MicrostripClass MSL_Z1;
@@ -245,12 +240,6 @@ void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_Microstrip() {
   MLIN1.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN1);
 
-  // N1: Node after MLIN1 (center)
-  NodeInfo N1(QString("N1"), N_pos[1]);
-  Schematic.appendNode(N1);
-  Schematic.appendWire(MLIN1.ID, 0, N0.ID, 0);
-  Schematic.appendWire(MLIN1.ID, 1, N1.ID, 0);
-
   // MLIN2: First stage, upper branch
   ComponentInfo MLIN2(QString("MLIN2"), MicrostripLine, 90, TL_pos[1]);
   MLIN2.val["Width"] = ConvertLengthFromM("mm", MSL_Z1.Results.width);
@@ -262,18 +251,10 @@ void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_Microstrip() {
   MLIN2.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN2);
 
-  // N2: Node after MLIN2 (upper)
-  NodeInfo N2(QString("N2"), N_pos[2]);
-  Schematic.appendNode(N2);
-  Schematic.appendWire(MLIN2.ID, 0, N0.ID, 0);
-  Schematic.appendWire(MLIN2.ID, 1, N2.ID, 0);
-
   // Ri1: Isolation resistor between N2 and N1
   ComponentInfo Ri1(QString("R1"), Resistor, Riso_pos[0]);
   Ri1.val["R"] = num2str(R1, Resistance);
   Schematic.appendComponent(Ri1);
-  Schematic.appendWire(N2.ID, 0, Ri1.ID, 1);
-  Schematic.appendWire(N1.ID, 0, Ri1.ID, 0);
 
   // MLIN3: First stage, lower branch
   ComponentInfo MLIN3(QString("MLIN3"), MicrostripLine, 90, TL_pos[2]);
@@ -286,18 +267,10 @@ void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_Microstrip() {
   MLIN3.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN3);
 
-  // N3: Node after MLIN3 (lower)
-  NodeInfo N3(QString("N3"), N_pos[3]);
-  Schematic.appendNode(N3);
-  Schematic.appendWire(MLIN3.ID, 0, N0.ID, 0);
-  Schematic.appendWire(MLIN3.ID, 1, N3.ID, 0);
-
   // Ri2: Isolation resistor between N1 and N3
   ComponentInfo Ri2(QString("R2"), Resistor, Riso_pos[1]);
   Ri2.val["R"] = num2str(R1, Resistance);
   Schematic.appendComponent(Ri2);
-  Schematic.appendWire(Ri2.ID, 1, N1.ID, 0);
-  Schematic.appendWire(Ri2.ID, 0, N3.ID, 0);
 
   // Z2 impedance lines (3 second-stage quarter-wave lines)
   MicrostripClass MSL_Z2;
@@ -315,17 +288,10 @@ void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_Microstrip() {
   MLIN4.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN4);
 
-  // N4: Output node (center)
-  NodeInfo N4(QString("N4"), N_pos[4]);
-  Schematic.appendNode(N4);
-  Schematic.appendWire(MLIN4.ID, 0, N1.ID, 0);
-  Schematic.appendWire(MLIN4.ID, 1, N4.ID, 0);
-
   // T2: Center output port
   ComponentInfo TermSpar2(QString("T2"), Term, 180, Ports_pos[1]);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar2);
-  Schematic.appendWire(TermSpar2.ID, 0, N4.ID, 0);
 
   // MLIN5: Second stage, upper branch
   ComponentInfo MLIN5(QString("MLIN5"), MicrostripLine, 90, TL_pos[4]);
@@ -338,24 +304,15 @@ void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_Microstrip() {
   MLIN5.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN5);
 
-  // N5: Output node (upper)
-  NodeInfo N5(QString("N5"), N_pos[5]);
-  Schematic.appendNode(N5);
-  Schematic.appendWire(MLIN5.ID, 0, N2.ID, 0);
-  Schematic.appendWire(MLIN5.ID, 1, N5.ID, 0);
-
   // Ri3: Isolation resistor between N5 and N4
   ComponentInfo Ri3(QString("R3"), Resistor, Riso_pos[2]);
   Ri3.val["R"] = num2str(R2, Resistance);
   Schematic.appendComponent(Ri3);
-  Schematic.appendWire(Ri3.ID, 1, N5.ID, 0);
-  Schematic.appendWire(Ri3.ID, 0, N4.ID, 0);
 
   // T3: Upper output port
   ComponentInfo TermSpar3(QString("T3"), Term, 180, Ports_pos[2]);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar3);
-  Schematic.appendWire(TermSpar3.ID, 0, N5.ID, 0);
 
   // MLIN6: Second stage, lower branch
   ComponentInfo MLIN6(QString("MLIN6"), MicrostripLine, 90, TL_pos[5]);
@@ -368,24 +325,103 @@ void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_Microstrip() {
   MLIN6.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN6);
 
-  // N6: Output node (lower)
-  NodeInfo N6(QString("N6"), N_pos[6]);
-  Schematic.appendNode(N6);
-  Schematic.appendWire(MLIN6.ID, 0, N3.ID, 0);
-  Schematic.appendWire(MLIN6.ID, 1, N6.ID, 0);
-
   // Ri4: Isolation resistor between N6 and N4
   ComponentInfo Ri4(QString("R4"), Resistor, Riso_pos[3]);
   Ri4.val["R"] = num2str(R2, Resistance);
   Schematic.appendComponent(Ri4);
-  Schematic.appendWire(Ri4.ID, 0, N6.ID, 0);
-  Schematic.appendWire(Ri4.ID, 1, N4.ID, 0);
 
   // T4: Lower output port
   ComponentInfo TermSpar4(QString("T4"), Term, 180, Ports_pos[3]);
   TermSpar4.val["Z"] = num2str(Specification.Z0, Resistance);
   Schematic.appendComponent(TermSpar4);
-  Schematic.appendWire(N6.ID, 0, TermSpar4.ID, 0);
+
+  // Nodes
+
+  // N0: Input node
+  NodeInfo N0(QString("N0"), N_pos[0]);
+  Schematic.appendNode(N0);
+
+  // N1: Top-left corner
+  NodeInfo N1(QString("N1"), N_pos[1]);
+  N1.visible = false; // Virtual node. It's not needed, but helps routing,
+                      // especially for export options
+  Schematic.appendNode(N1);
+
+  // N2: Top-center
+  NodeInfo N2(QString("N2"), N_pos[2]);
+  Schematic.appendNode(N2);
+
+  // N3: Top-right
+  NodeInfo N3(QString("N3"), N_pos[3]);
+  Schematic.appendNode(N3);
+
+  // N4: Center
+  NodeInfo N4(QString("N4"), N_pos[4]);
+  Schematic.appendNode(N4);
+
+  // N5: Center-right
+  NodeInfo N5(QString("N5"), N_pos[5]);
+  Schematic.appendNode(N5);
+
+  // N6: Bottom-left corner
+  NodeInfo N6(QString("N6"), N_pos[6]);
+  N6.visible = false; // Virtual node. It's not needed, but helps routing,
+                      // especially for export options
+  Schematic.appendNode(N6);
+
+  // N7: Bottom-center)
+  NodeInfo N7(QString("N7"), N_pos[7]);
+  Schematic.appendNode(N7);
+
+  // N8: Bottom-left corner
+  NodeInfo N8(QString("N8"), N_pos[8]);
+  Schematic.appendNode(N8);
+
+  // Wires
+
+  // Connected to N0
+  Schematic.appendWire(N0.ID, 0, TermSpar1.ID, 0);
+  Schematic.appendWire(N0.ID, 0, N1.ID, 0);
+  Schematic.appendWire(N0.ID, 0, MLIN1.ID, 0);
+  Schematic.appendWire(N0.ID, 0, N6.ID, 0);
+
+  // Connected to N1
+  Schematic.appendWire(N1.ID, 0, MLIN2.ID, 0);
+
+  // Connected to N2
+  Schematic.appendWire(N2.ID, 0, MLIN2.ID, 1);
+  Schematic.appendWire(N2.ID, 0, MLIN5.ID, 0);
+  Schematic.appendWire(N2.ID, 0, Ri1.ID, 1);
+
+  // Connected to N3
+  Schematic.appendWire(N3.ID, 0, MLIN5.ID, 1);
+  Schematic.appendWire(N3.ID, 0, TermSpar2.ID, 0);
+  Schematic.appendWire(N3.ID, 0, Ri3.ID, 1);
+
+  // Connected to N4
+  Schematic.appendWire(N4.ID, 0, MLIN1.ID, 1);
+  Schematic.appendWire(N4.ID, 0, Ri1.ID, 0);
+  Schematic.appendWire(N4.ID, 0, MLIN4.ID, 0);
+  Schematic.appendWire(N4.ID, 0, Ri2.ID, 1);
+
+  // Connected to N5
+  Schematic.appendWire(N5.ID, 0, MLIN4.ID, 1);
+  Schematic.appendWire(N5.ID, 0, Ri3.ID, 0);
+  Schematic.appendWire(N5.ID, 0, Ri4.ID, 1);
+  Schematic.appendWire(N5.ID, 0, TermSpar3.ID, 0);
+
+  // Connected to N6
+  Schematic.appendWire(N6.ID, 0, MLIN3.ID, 0);
+
+  // Connected to N7
+  Schematic.appendWire(N7.ID, 0, MLIN3.ID, 1);
+  Schematic.appendWire(N7.ID, 0, Ri2.ID, 0);
+  Schematic.appendWire(N7.ID, 0, MLIN6.ID, 0);
+
+  // Connected to N8
+  Schematic.appendWire(N8.ID, 0, MLIN6.ID, 1);
+  Schematic.appendWire(N8.ID, 0, Ri4.ID, 0);
+  Schematic.appendWire(N8.ID, 0, TermSpar4.ID, 1);
 }
 
 void Wilkinson3Way_ImprovedIsolation::setComponentsLocation() {
