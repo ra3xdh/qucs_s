@@ -76,8 +76,9 @@ class SchematicContent {
         void setNodes(QList<NodeInfo> N);
         QList<QGraphicsTextItem*> getTexts();
 
+        int getComponentCounter(ComponentType);
         QMap<ComponentType, int>
-            NumberComponents; // List for assigning IDs to the filter components
+            NumberComponents; // Indicates how many components of each type the schematic are in teh schematic
         unsigned int NumberWires;
 
     private:

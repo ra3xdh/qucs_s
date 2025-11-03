@@ -638,3 +638,22 @@ void SchematicContent::setFrequencySweep(QString f1, QString f2, int N) {
   f_stop = f2;
   n_points = N;
 }
+
+// Given a component type, this function gives the total number of components in
+// the circuit
+int SchematicContent::getComponentCounter(ComponentType Comp) {
+  // If NumberComponents map is empty, build it from Comps list
+  if (NumberComponents.isEmpty() && !Comps.isEmpty()) {
+    // Initialize counters for all component types to 0
+    NumberComponents.clear();
+
+    // Count each component type in Comps
+    for (const ComponentInfo &comp : qAsConst(Comps)) {
+      NumberComponents[comp.Type]++;
+    }
+  }
+
+  // Return the count for the requested component type
+  // Returns 0 if the type doesn't exist in the map
+  return NumberComponents.value(Comp, 0);
+}
