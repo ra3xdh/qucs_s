@@ -161,6 +161,13 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
   // Update data
   datasets[dataset_name] = data;
 
+  // After simulation, once the data has been updated in the datasets structure,
+  // it is needed to refresh the list of available traces. This is needed
+  // because in the Power Combining synthesis there are topologies with
+  // different number of ports, if the "trace refresh" is not done at this
+  // point, all combiners would have only a S(3x3) available to select
+  updateTracesCombo();
+
   // Check if the dataset exists in the Combo, if not add it
   if (QCombobox_datasets->findText(dataset_name) == -1) {
     QCombobox_datasets->addItem(dataset_name);
