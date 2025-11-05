@@ -1509,12 +1509,38 @@ bool Schematic::distributeVertical()
 
     return true;
 }
+namespace internal {
+
+// Label snapping differs depending on whether or not it's attached
+// Returns true if the label moved.
+bool snapLabelToGrid(Schematic* sch, WireLabel* label)
+{
+    if (label->owner() == nullptr) {
+        // Detached: snap root and move text center the same distance
+        QPoint oldRoot = label->root();
+        QPoint newRoot = sch->setOnGrid(oldRoot);
+        QPoint delta = newRoot - oldRoot;
+
+        if (delta.x() != 0 || delta.y() != 0) {
+            label->moveRoot(delta.x(), delta.y());
+            label->moveCenter(delta.x(), delta.y());
+            return true;
+        }
+        return false;
+    }
+    // Attached: only snap the text center, root stays on wire
+    return label->moveCenterTo(sch->setOnGrid(label->center()));
+}
+
+} // namespace internal
 
 // Sets selected elements on grid.
 bool Schematic::elementsOnGrid()
 {
-    auto selection = currentSelection();
-
+    return elementsOnGrid(currentSelection());
+}
+bool Schematic::elementsOnGrid(Selection selection)
+{
     const auto count = internal::total_count(selection);
     if (count == 0) return false;
 
@@ -1526,7 +1552,9 @@ bool Schematic::elementsOnGrid()
     // std::ranges::for_each(selection.paintings, onGridSetter);
     std::ranges::for_each(selection.components, onGridSetter);
     std::ranges::for_each(selection.diagrams, onGridSetter);
-    std::ranges::for_each(selection.labels, onGridSetter);
+    std::ranges::for_each(selection.labels, [&any_set, this](WireLabel* label) {
+        any_set = internal::snapLabelToGrid(this, label) || any_set;
+    });
     std::ranges::for_each(selection.markers, onGridSetter);
     std::ranges::for_each(selection.wires, [&any_set, this](Wire* w) {
         auto p1_moved = w->setP1(setOnGrid(w->P1()));
@@ -1564,7 +1592,12 @@ bool symbolElementsOnGrid(Schematic* sch, const std::vector<Painting*>& painting
 // Rotates all selected components around their midpoint.
 bool Schematic::rotateElements()
 {
-    auto selection = currentSelection();
+    return rotateElements(currentSelection());
+}
+
+// Rotates a selection of components around their midpoint.
+bool Schematic::rotateElements(Selection selection)
+{
 
     const auto count = internal::total_count(selection);
 
@@ -1605,7 +1638,7 @@ bool Schematic::rotateElements()
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid()) {
+        if (!elementsOnGrid(selection)) {
             heal(&noninteractiveMutationParams);
             setChanged(true, true);
         }
@@ -1614,10 +1647,15 @@ bool Schematic::rotateElements()
     return true;
 }
 
-// Mirrors all selected components.
+// Mirrors all selected components along X-axis
 bool Schematic::mirrorXComponents()
 {
-    const auto selection = currentSelection();
+    return mirrorXComponents(currentSelection());
+}
+
+// Mirrors selection of components along X-axis
+bool Schematic::mirrorXComponents(Selection selection)
+{
 
     const auto count = internal::total_count(selection);
 
@@ -1650,7 +1688,7 @@ bool Schematic::mirrorXComponents()
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid()) {
+        if (!elementsOnGrid(selection)) {
             heal(&noninteractiveMutationParams);
             setChanged(true, true);
         }
@@ -1659,11 +1697,15 @@ bool Schematic::mirrorXComponents()
     return true;
 }
 
-// Mirrors all selected components.
+// Mirrors all selected components along Y-axis
 bool Schematic::mirrorYComponents()
 {
-    const auto selection = currentSelection();
+    return mirrorYComponents(currentSelection());
+}
 
+// Mirrors selection of components along Y-axis
+bool Schematic::mirrorYComponents(Selection selection)
+{
     const auto count = internal::total_count(selection);
 
     if (count < 1) return false;
@@ -1695,7 +1737,7 @@ bool Schematic::mirrorYComponents()
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid()) {
+        if (!elementsOnGrid(selection)) {
             heal(&noninteractiveMutationParams);
             setChanged(true, true);
         }

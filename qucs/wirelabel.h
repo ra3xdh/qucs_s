@@ -67,8 +67,8 @@ public:
   /** Rotates label around its root */
   bool rotate() noexcept override;
 
-  /** Same as rotate() */
-  bool rotate(int /*rcx*/, int /*rcy*/) noexcept override { return rotate(); }
+  /** Rotates label around a given center (rcx, rcy) */
+  bool rotate(int /*rcx*/, int /*rcy*/) noexcept override;
 
   /** Mirrors label vertically relative to its root */
   bool mirrorX() noexcept override;
@@ -76,11 +76,11 @@ public:
   /** Mirrors label horizontally relative to its root */
   bool mirrorY() noexcept override;
 
-  /** Same as mirrorX() */
-  bool mirrorX(int /*axis*/) noexcept override { return mirrorX(); }
+  /** Mirrors labels vertically relative to an axis */
+  bool mirrorX(int /*axis*/) noexcept override;
 
-  /** Same as mirrorY() */
-  bool mirrorY(int /*axis*/) noexcept override { return mirrorY(); }
+  /** Mirrors label horizontally relative to an axis */
+  bool mirrorY(int /*axis*/) noexcept override;
 
   QRect boundingRect() const noexcept override;
 

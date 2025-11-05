@@ -235,7 +235,7 @@ QucsFilter::QucsFilter()
   ComboEr = new QComboBox(this);
   ComboEr->setEditable(true);
   ComboEr->lineEdit()->setValidator(DoubleVal);
-  connect(ComboEr, SIGNAL(activated(const QString&)), SLOT(slotTakeEr(const QString&)));
+  connect(ComboEr, SIGNAL(currentTextChanged(const QString &)), SLOT(slotTakeEr(const QString &)));
   gbox2->addWidget(ComboEr, 0,1);
 
   const char **p = List_er;
