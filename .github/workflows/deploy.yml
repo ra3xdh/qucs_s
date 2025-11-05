@@ -480,7 +480,7 @@ jobs:
         update: true
         install: bison flex dos2unix curl zip p7zip
                  mingw-w64-${{ matrix.config.packet_tag }}-xerces-c mingw-w64-${{ matrix.config.packet_tag }}-muparser
-        pacboy: cmake:p gcc:p qt6-base:p qt6-tools:p qt6-svg:p make:p ninja:p python:p gperf:p github-cli:p qt6-charts:p
+        pacboy: cmake:p gcc:p qt6-base:p qt6-tools:p qt6-svg:p qt6-multimedia:p make:p ninja:p python:p gperf:p github-cli:p
 
     - name: Install xsd
       run: |

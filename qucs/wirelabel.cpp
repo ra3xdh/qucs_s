@@ -174,22 +174,69 @@ bool WireLabel::moveCenter(int dx, int dy) noexcept
 
 bool WireLabel::rotate() noexcept
 {
-  qucs_s::geom::rotate_point_ccw(x1, y1, cx, cy);
+  return rotate(root().x(), root().y());
+}
+
+bool WireLabel::rotate(int rcx, int rcy) noexcept
+{
+  QPoint old_center = center();
+  // Rotate the text center around (rcx, rcy)
+  int new_center_x = old_center.x();
+  int new_center_y = old_center.y();
+  qucs_s::geom::rotate_point_ccw(new_center_x, new_center_y, rcx, rcy);
+  moveCenterTo(new_center_x, new_center_y);
+
+  // Rotate root if detached
+  if (owner() == nullptr) {
+    qucs_s::geom::rotate_point_ccw(cx, cy, rcx, rcy);
+  }
   return true;
 }
 
 bool WireLabel::mirrorX() noexcept
 {
-  return moveCenterTo(
-    center().x(),
-    qucs_s::geom::mirror_coordinate(center().y(), root().y()));
+  return mirrorX(root().y());
+}
+
+bool WireLabel::mirrorX(int axis) noexcept
+{
+  QPoint old_center = center();
+  int old_cy = cy;
+
+  // Mirror the text center
+  int new_center_y = qucs_s::geom::mirror_coordinate(old_center.y(), axis);
+  moveCenterTo(old_center.x(), new_center_y);
+
+  // Mirror the root if detached
+  if (owner() == nullptr) {
+    cy = qucs_s::geom::mirror_coordinate(old_cy, axis);
+  }
+
+  // text or root moved?
+  return (new_center_y != old_center.y()) || (owner() == nullptr && cy != old_cy);
 }
 
 bool WireLabel::mirrorY() noexcept
 {
-  return moveCenterTo(
-    qucs_s::geom::mirror_coordinate(center().x(), root().x()),
-    center().y());
+  return mirrorY(root().x());
+}
+
+bool WireLabel::mirrorY(int axis) noexcept
+{
+  QPoint old_center = center();
+  int old_cx = cx;
+
+  // Mirror the text center
+  int new_center_x = qucs_s::geom::mirror_coordinate(old_center.x(), axis);
+  moveCenterTo(new_center_x, old_center.y());
+
+  // Mirror the root if detached
+  if (owner() == nullptr) {
+    cx = qucs_s::geom::mirror_coordinate(old_cx, axis);
+  }
+
+  // text or root moved?
+  return (new_center_x != old_center.x()) || (owner() == nullptr && cx != old_cx);
 }
 
 

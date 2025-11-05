@@ -29,6 +29,7 @@
 
 #include "qucsdoc.h"
 #include "wire_planner.h"
+#include "schematic_selection.h"
 
 #include "qt3_compat/q3scrollview.h"
 #include <QVector>
@@ -108,24 +109,21 @@ public:
   */
   QRect allBoundingRect();
 
-  struct Selection {
-    QRect bounds;
-    std::vector<Component*> components;
-    std::vector<Wire*> wires;
-    std::vector<Painting*> paintings;
-    std::vector<Diagram*> diagrams;
-    std::vector<WireLabel*> labels;
-    std::vector<Marker*> markers;
-    std::vector<Node*> nodes;
-  };
-
+  using Selection = SchematicSelection;
   Selection  currentSelection() const;
+  Selection  elementsToSelection(const std::list<Element*>&) const;
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
+  // Same as above - but with an arbitrary selection
+  bool  rotateElements(Selection selection);
+  bool  mirrorXComponents(Selection selection);
+  bool  mirrorYComponents(Selection selection);
+
   QPoint setOnGrid(const QPoint& p);
   void  setOnGrid(int&, int&);
   bool  elementsOnGrid();
+  bool  elementsOnGrid(Selection selection);
 
   /**
     Zoom around a "zooming center". Zooming center is a point on the canvas,

@@ -32,7 +32,7 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Charts)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets PrintSupport)
 include_directories(
       ${Qt6Core_INCLUDE_DIRS}
       ${Qt6Gui_INCLUDE_DIRS}
@@ -40,7 +40,7 @@ include_directories(
       )
 
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Charts)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 include_directories(
       ${Qt6Core_INCLUDE_DIRS}
       ${Qt6Gui_INCLUDE_DIRS}
@@ -64,8 +64,12 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
         add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /Od /vmg)
         add_compile_options(/wd4244 /wd4267 /wd4312)
+        add_compile_options(/fsanitize=address)
+        add_link_options(/fsanitize=address)
     else()
         add_compile_options(-Wall -Wextra -O0 -g)
+        add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+        add_link_options(-fsanitize=address)
         if (CMAKE_CXX_COMPILER_ID MATCHES "^AppleClang$|^Clang$")
             add_compile_options(-Wno-ignored-attributes)
         endif()
@@ -83,11 +87,116 @@ endif()
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
-#ADD_SUBDIRECTORY( bitmaps ) -> added as resources
+file(GLOB PLOT_WIDGETS_SOURCES
+     PlotWidgets/*.cpp
+)
 
-SET( spar_viewer_sources main.cpp qucs-s-spar-viewer.cpp codeeditor.cpp smithchartwidget.cpp rectangularplotwidget.cpp polarplotwidget.cpp matrixcombopopup.cpp)
+file(GLOB PLOT_WIDGETS_HEADERS
+     PlotWidgets/*.h
+)
 
-SET( spar_viewer_moc_headers qucs-s-spar-viewer.h codeeditor.h smithchartwidget.h rectangularplotwidget.h polarplotwidget.h matrixcombopopup.h)
+file(GLOB QCUSTOMPLOT_SOURCE
+     PlotWidgets/QCustomPlot/qcustomplot.cpp
+)
+
+file(GLOB QCUSTOMPLOT_HEADER
+     PlotWidgets/QCustomPlot/qcustomplot.h
+)
+
+file(GLOB CUSTOM_WIDGETS_SOURCES
+     CustomWidgets/*.cpp
+)
+
+file(GLOB CUSTOM_WIDGETS_HEADERS
+     CustomWidgets/*.h
+)
+
+file(GLOB SCHEMATIC_SOURCES
+     Schematic/*.cpp
+     Schematic/PaintingFunctions/*.cpp
+     Schematic/PaintingFunctions/Microstrip/*.cpp
+     Schematic/PaintingFunctions/IdealTransmissionLines/*.cpp
+)
+
+file(GLOB SCHEMATIC_HEADERS
+     Schematic/*.h
+)
+
+file(GLOB MISC_SOURCES
+     Misc/*.cpp
+)
+
+file(GLOB MISC_HEADERS
+     Misc/*.h
+)
+
+file(GLOB SPAR_SOURCES
+     SPAR/*.cpp
+)
+
+file(GLOB SPAR_HEADERS
+     SPAR/*.h
+)
+
+file(GLOB SPAR_SPECIAL_COMPONENTS
+    SPAR/SpecialComponents/*.cpp
+    SPAR/SpecialComponents/MicrostripComponents/*.cpp
+)
+
+
+file(GLOB UI_SOURCES
+     UI/*.cpp
+)
+
+file(GLOB UI_HEADERS
+     UI/*.h
+)
+
+## TOOLS
+file(GLOB TOOLS_SOURCES
+     Tools/Filtering/*.cpp
+     Tools/PowerCombining/*.cpp
+     Tools/AttenuatorDesign/*.cpp
+     Tools/NetlistScratchPad/*.cpp
+     Tools/SimulationSetup/*.cpp
+     Tools/MatchingNetwork/*.cpp
+     Tools/TransmissionLineSynthesis/*.cpp
+)
+
+file(GLOB TOOLS_HEADERS
+     Tools/Filtering/*.h
+     Tools/PowerCombining/*.h
+     Tools/AttenuatorDesign/*.h
+     Tools/NetlistScratchPad/*.h
+     Tools/SimulationSetup/*.h
+     Tools/MatchingNetwork/*.h
+     Tools/TransmissionLineSynthesis/*.h
+)
+
+
+set(spar_viewer_sources
+    main.cpp
+    ${UI_SOURCES}
+    ${PLOT_WIDGETS_SOURCES}
+    ${CUSTOM_WIDGETS_SOURCES}
+    ${SCHEMATIC_SOURCES}
+    ${SPAR_SOURCES}
+    ${SPAR_SPECIAL_COMPONENTS}
+    ${MISC_SOURCES}
+    ${TOOLS_SOURCES}
+    ${QCUSTOMPLOT_SOURCE}
+)
+
+set(spar_viewer_moc_headers
+    ${UI_HEADERS}
+    ${PLOT_WIDGETS_HEADERS}
+    ${CUSTOM_WIDGETS_HEADERS}
+    ${SCHEMATIC_HEADERS}
+    ${SPAR_HEADERS}
+    ${MISC_HEADERS}
+    ${TOOLS_HEADERS}
+    ${QCUSTOMPLOT_HEADER}
+)
 
 SET(RESOURCES qucs-s-spar-viewer.qrc)
 
@@ -116,9 +225,10 @@ ADD_EXECUTABLE( ${QUCS_NAME}spar-viewer MACOSX_BUNDLE WIN32
   ${spar_viewer_sources}
   ${spar_viewer_moc_sources}
   ${RESOURCES_SRCS}
+  Misc/readTouchstone.cpp
 )
 
-TARGET_LINK_LIBRARIES( ${QUCS_NAME}spar-viewer Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts )
+TARGET_LINK_LIBRARIES( ${QUCS_NAME}spar-viewer Qt6::Core Qt6::Gui Qt6::Widgets Qt6::PrintSupport)
 SET_TARGET_PROPERTIES(${QUCS_NAME}spar-viewer PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #INSTALL (TARGETS ${QUCS_NAME}spar-viewer DESTINATION bin)
 #

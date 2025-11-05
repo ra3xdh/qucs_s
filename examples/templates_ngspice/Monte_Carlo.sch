@@ -1,6 +1,6 @@
-<Qucs Schematic 24.1.0>
+<Qucs Schematic 25.2.0>
 <Properties>
-  <View=44,-66,1209,633,1.41367,75,0>
+  <View=16,-100,1244,620,1.28056,0,0>
   <Grid=10,10,1>
   <DataSet=Monte_Carlo.dat>
   <DataDisplay=Monte_Carlo.dpl>
@@ -27,13 +27,13 @@
   <C C1 1 270 140 -8 46 0 1 "mc(159.2pF,5)" 1 "" 0 "neutral" 0>
   <C C3 1 450 140 -8 46 0 1 "mc(159.2pF,5)" 1 "" 0 "neutral" 0>
   <SpiceFunc SpiceFunc1 5 490 -40 -22 18 0 0 "mc(v,t)={(i=0)?v:unif(v,t/100)}" 1>
-  <.SP SP1 1 840 -40 0 74 0 0 "log" 0 "10 MHz" 1 "1 GHz" 1 "200" 0 "no" 0 "1" 0 "2" 0 "no" 0 "no" 0>
-  <.SP SP2 1 1010 -40 0 74 0 0 "log" 0 "10 MHz" 1 "1 GHz" 1 "200" 0 "no" 0 "1" 0 "2" 0 "no" 0 "no" 0>
+  <.SP SP1 1 840 -40 0 56 0 0 "log" 0 "10 MHz" 1 "1 GHz" 1 "200" 0 "no" 0 "1" 0 "2" 0 "no" 0 "no" 0>
+  <.SP SP2 1 1010 -40 0 56 0 0 "log" 0 "10 MHz" 1 "1 GHz" 1 "200" 0 "no" 0 "1" 0 "2" 0 "no" 0 "no" 0>
   <SpicePar SpicePar1 5 750 -40 -28 18 0 0 "i=0" 1>
   <Pac P2 1 630 140 18 -26 0 1 "2" 1 "50 Ohm" 1 "0 dBm" 0 "1 GHz" 0 "26.85" 0 "true" 0>
   <GND * 1 630 170 0 0 0 0>
-  <.SW SW1 5 840 100 0 74 0 0 "SP1" 1 "lin" 0 "i" 1 "1" 0 "100" 0 "100" 1 "false" 0>
-  <.SW SW2 5 1010 100 0 74 0 0 "SP2" 1 "const" 0 "i" 1 "1" 0 "100" 0 "[0]" 1 "false" 0>
+  <.SW SW1 5 840 100 0 56 0 0 "SP1" 1 "lin" 0 "i" 1 "1" 0 "100" 0 "100" 1>
+  <.SW SW2 1 1010 100 0 56 0 0 "SP2" 1 "list" 0 "i" 1 "5 Ohm" 0 "50 Ohm" 0 "[0]" 1>
 </Components>
 <Wires>
   <150 60 150 110 "" 0 0 0 "">
@@ -50,9 +50,9 @@
   <630 60 630 110 "" 0 0 0 "">
 </Wires>
 <Diagrams>
-  <Rect 226 512 934 283 3 #c0c0c0 1 11 1 1e+07 1 1e+09 1 2.99985e-06 1 1 1 -1 0.5 1 315 0 225 1 1 0 "" "" "">
-	<"ngspice/sp1.ac.v(s_2_1)" #00aaff 0 3 0 0 0>
-	<"ngspice/sp2.ac.v(s_2_1)" #ff0000 3 3 0 0 0>
+  <Rect 226 532 892 290 3 #c0c0c0 1 11 1 1e+07 1 1e+09 1 1e-06 1 1 1 -1 0.5 1 315 0 225 1 1 0 "Frequency" "" "">
+	<"ngspice/sp1.ac.s_2_1" #00aaff 0 3 0 0 0>
+	<"ngspice/sp2.ac.s_2_1" #ff0000 2 3 0 0 0>
   </Rect>
 </Diagrams>
 <Paintings>

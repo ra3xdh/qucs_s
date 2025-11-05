@@ -12,11 +12,17 @@
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
+#include <main.h>
+
 #include <QColor>
 #include <QPen>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QStringList>
+#include <QFontMetrics>
+#include <QFont>
+#include <QRect>
+#include <QTransform>
 
 #include <limits>
 #include <algorithm>
@@ -227,19 +233,34 @@ void XmlComponent::createSymbol()
             QPen(misc::ColorFromString(arc.a_color), arc.a_width, static_cast<Qt::PenStyle>(arc.a_style))));
     }
 
-    foreach (const Text& text, a_texts)
+    foreach (const Text& textDef, a_texts)
     {
-        Texts.append(new ::Text(
-            text.a_x,
-            text.a_y,
-            text.a_text,
-            misc::ColorFromString(text.a_color),
-            text.a_size,
-            text.a_cos,
-            text.a_sin));
+        ::Text* text(
+                new ::Text(
+                    textDef.a_x,
+                    textDef.a_y,
+                    textDef.a_text,
+                    misc::ColorFromString(textDef.a_color),
+                    textDef.a_size,
+                    textDef.a_cos,
+                    textDef.a_sin));
+        Texts.append(text);
 
-        x1 = text.a_x < x1 ? text.a_x : x1;
-        y1 = text.a_y < y1 ? text.a_y : y1;
+        QFont font(QucsSettings.font);
+        font.setPixelSize(textDef.a_size);
+        QFontMetrics metrics(font);
+
+        const int textWidth(metrics.horizontalAdvance(textDef.a_text));
+
+        QRect orig(0, 0, textWidth, metrics.height());
+        QTransform trans(QTransform().rotate(text->angle()));
+        QRect mapped(trans.mapRect(orig));
+        mapped.translate(textDef.a_x, textDef.a_y);
+
+        x1 = mapped.left() < x1 ? mapped.left() : x1;
+        y1 = mapped.top() < y1 ? mapped.top() : y1;
+        x2 = mapped.right() > x2 ? mapped.right() : x2;
+        y2 = mapped.bottom() > y2 ? mapped.bottom() : y2;
     }
 
     foreach (const PortSym& portSym, a_portSyms)

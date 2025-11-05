@@ -1229,6 +1229,48 @@ Schematic::Selection Schematic::currentSelection() const {
     return selection;
 }
 
+// Convert an element list to Selection
+Schematic::Selection Schematic::elementsToSelection(const std::list<Element*> &elements) const
+{
+        std::optional<QRect> totalBounds = std::nullopt;
+        Selection selection;
+
+        // A helper to simplify uniting bounding boxes.
+        auto addElement = [&](auto* element, auto& list) {
+            list.push_back(element);
+            internal::unite(totalBounds, element->boundingRect());
+        };
+
+        for (Element* element : elements) {
+            if (element == nullptr) {
+                continue;
+            }
+
+            if (auto* pc = dynamic_cast<Component*>(element)) {
+                addElement(pc, selection.components);
+            } else if (auto* pw = dynamic_cast<Wire*>(element)) {
+                addElement(pw, selection.wires);
+            } else if (auto* pn = dynamic_cast<Node*>(element)) {
+                addElement(pn, selection.nodes);
+            } else if (auto* pl = dynamic_cast<WireLabel*>(element)) {
+                addElement(pl, selection.labels);
+            } else if (auto* pd = dynamic_cast<Diagram*>(element)) {
+                addElement(pd, selection.diagrams);
+            } else if (auto* pm = dynamic_cast<Marker*>(element)) {
+                addElement(pm, selection.markers);
+            } else if (auto* pp = dynamic_cast<Painting*>(element)) {
+                addElement(pp, selection.paintings);
+            }
+        }
+
+        if(!totalBounds) {
+            return {};
+        }
+
+        selection.bounds = *totalBounds;
+        return selection;
+}
+
 // ---------------------------------------------------
 // Updates the graph data of all diagrams (load from data files).
 void Schematic::reloadGraphs()

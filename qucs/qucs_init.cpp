@@ -560,10 +560,15 @@ void QucsApp::initActions()
   callPwrComb->setWhatsThis(tr("Power combining\n\nStarts power combining calculation program"));
   connect(callPwrComb, SIGNAL(triggered()), SLOT(slotCallPwrComb()));
 
-  callSPAR_Viewer = new QAction(tr("S-parameter Viewer"), this);
-  callSPAR_Viewer->setStatusTip(tr("Starts S-parameter viewer"));
-  callSPAR_Viewer->setWhatsThis(tr("S-parameter Viewer\n\nStarts S-parameter viewer"));
+  callSPAR_Viewer = new QAction(tr("S-parameter Viewer && RF Circuit Synthesis"), this);
+  callSPAR_Viewer->setStatusTip(tr("Starts the S-parameter Viewer && RF Circuit Synthesis Tool"));
+  callSPAR_Viewer->setWhatsThis(tr("S-parameter Viewer && RF Circuit Synthesis\n\nStarts the S-parameter Viewer && RF Circuit Synthesis Tool"));
   connect(callSPAR_Viewer, SIGNAL(triggered()), SLOT(slotCallSPAR_Viewer()));
+
+  callRxcalc = new QAction(tr("Receiver calculator"), this);
+  callRxcalc->setStatusTip(tr("Starts receiver calculator"));
+  callRxcalc->setWhatsThis(tr("Receiver calculator\n\nStarts receiver calculator"));
+  connect(callRxcalc, SIGNAL(triggered()), SLOT(slotCallRxCalc()));
 
   callConverter = new QAction(tr("Data files converter"), this);
   callConverter->setShortcut(tr("Ctrl+8"));
@@ -837,6 +842,7 @@ void QucsApp::initMenuBar()
   toolMenu->addAction(callConverter);
   toolMenu->addAction(callRFLayout);
   toolMenu->addAction(callSPAR_Viewer);
+  toolMenu->addAction(callRxcalc);
   toolMenu->addSeparator();
 
   cmMenu = new QMenu(tr("Compact modelling"));

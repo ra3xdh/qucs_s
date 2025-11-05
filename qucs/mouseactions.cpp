@@ -323,15 +323,12 @@ void MouseActions::MMoveResizePainting(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 {
     setPainter(Doc);
+    // initialize total movement
+    MAx3 = 0;
+    MAy3 = 0;
 
-    auto inModel = Doc->contentsToModel(Event->pos());
-    MAx2 = inModel.x();
-    MAy2 = inModel.y();
+    updateMouseMove(Doc, Event, /*onGrid=*/true);
 
-    Doc->setOnGrid(MAx2, MAy2);
-
-    MAx1 = MAx2;
-    MAy1 = MAy2;
     QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseMoving;
     QucsMain->editRotate->blockSignals(true);
@@ -343,33 +340,16 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 // Moves components by keeping the mouse button pressed.
 void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 {
-  setPainter(Doc);
+    setPainter(Doc);
 
-  auto inModel = Doc->contentsToModel(Event->pos());
-  MAx2 = inModel.x();
-  MAy2 = inModel.y();
+    // use grid _unless_ CTRL key is pressed
+    bool onGrid = Event->modifiers().testFlag(Qt::ControlModifier) == 0;
+    QPoint delta = updateMouseMove(Doc, Event, onGrid);
 
-  if ((Event->modifiers().testFlag(Qt::ControlModifier)) == 0)
-    Doc->setOnGrid(MAx2, MAy2); // use grid only if CTRL key not pressed
-  MAx1 = MAx2 - MAx1;
-  MAy1 = MAy2 - MAy1;
-  MAx3 += MAx1;
-  MAy3 += MAy1; // keep track of the complete movement
-
-    const auto mover = [this](Element* e) { e->moveCenter(MAx1, MAy1); };
     auto selection = Doc->currentSelection();
-    std::ranges::for_each(selection.paintings, mover);
-    std::ranges::for_each(selection.diagrams, mover);
-    std::ranges::for_each(selection.labels, mover);
-    std::ranges::for_each(selection.markers, mover);
-    std::ranges::for_each(selection.components, mover);
-    std::ranges::for_each(selection.wires, mover);
-    std::ranges::for_each(selection.nodes, mover);
+    selection.moveCenter(delta.x(), delta.y());
 
     Doc->displayMutations();
-
-  MAx1 = MAx2;
-  MAy1 = MAy2;
 }
 
 /**
@@ -383,57 +363,21 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
     MAx1 = cursor.x();
     MAy1 = cursor.y();
 
-    QPoint diff;
-
-    if (movingElements.size() == 1) {
-        diff = cursor - Doc->setOnGrid(movingElements.front()->center());
-    } else {
-
-        const auto get_br = [](const Element* e) {
-            return e->boundingRect();
-        };
-
-        auto br = std::transform_reduce(
-            ++movingElements.begin(),
-            movingElements.end(),
-            get_br(movingElements.front()),
-            [](const QRect& a, const QRect& b) { return a.united(b);},
-            get_br
-        );
-
-        diff = cursor - Doc->setOnGrid(br.center());
+    // Cache selection
+    if (!movingState.selection.isValid()) {
+        movingState.selection = Doc->elementsToSelection(movingElements);
     }
 
-
-    for (auto* pe : movingElements) {
-        pe->moveCenter(diff.x(), diff.y());
-
-        // Special case: node label. Pasted node label has no host element,
-        // which would move its root, thus it has to be moved explicitely.
-        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->owner() == nullptr) {
-            l->moveRoot(diff.x(), diff.y());
-        }
-    }
-
+    QPoint diff = cursor - Doc->setOnGrid(movingState.selection.center());
+    movingState.selection.moveCenter(diff.x(), diff.y());
     QucsMain->MouseMoveAction = &MouseActions::MMovePaste2;
     QucsMain->MouseReleaseAction = &MouseActions::MReleasePaste;
 }
 
 void MouseActions::MMovePaste2(Schematic *Doc, QMouseEvent *Event)
 {
-    const auto inModel = Doc->setOnGrid(Doc->contentsToModel(Event->pos()));
-    auto diff = inModel - QPoint{MAx1, MAy1};
-    MAx1 = inModel.x();
-    MAy1 = inModel.y();
-    for (auto* pe : movingElements) {
-        pe->moveCenter(diff.x(), diff.y());
-
-        // Special case: node label. Pasted node label has no host element,
-        // which would move its root, thus it has to be moved explicitely.
-        if (auto* l = dynamic_cast<WireLabel*>(pe); l != nullptr && l->owner() == nullptr) {
-            l->moveRoot(diff.x(), diff.y());
-        }
-    }
+    QPoint diff = updateMouseMove(Doc, Event, /*onGrid=*/true);
+    movingState.selection.moveCenter(diff.x(), diff.y());
     paintElementsScheme(Doc);
 }
 
@@ -1598,50 +1542,58 @@ void MouseActions::paintElementsScheme(Schematic *p)
 // -----------------------------------------------------------
 void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 {
-    int rot;
     QFileInfo Info(Doc->getDocName());
 
     switch (Event->button()) {
-    case Qt::LeftButton:
+    case Qt::LeftButton: {
         // insert all moved elements into document
-        for (auto* pe : movingElements) {
-            pe->isSelected = false;
-            switch (pe->Type) {
-            case isWire:
-                Doc->installWire(dynamic_cast<Wire*>(pe));
-                break;
-            case isDiagram:
-                Doc->a_Diagrams->push_back((Diagram *) pe);
-                ((Diagram *) pe)
-                    ->loadGraphData(Info.absolutePath() + QDir::separator() + Doc->getDataSet());
-                Doc->enlargeView(pe);
-                break;
-            case isPainting: {
-                Doc->a_Paintings->push_back((Painting *) pe);
-                Doc->enlargeView(pe);
-                break;
-            }
-            case isLabel: {
-                auto wl = dynamic_cast<WireLabel*>(pe);
-                if (wl->owner() != nullptr) break;
-                // If label here has no owner it means it was a node label.
-                // New host node has to be found for it.
-                Doc->placeNodeLabel(wl);
-                break;
-            }
-            case isComponent:
-            case isAnalogComponent:
-            case isDigitalComponent:
-                Doc->insertComponent((Component *) pe);
-                Doc->enlargeView(pe);
-                break;
-            }
+        // NOTE: Markers and nodes are excluded
+        for (auto* pc : movingState.selection.components) {
+            pc->isSelected = false;
+            Doc->insertComponent(pc);
+            Doc->enlargeView(pc);
         }
 
+        for (auto* pw : movingState.selection.wires) {
+            pw->isSelected = false;
+            Doc->installWire(pw);
+        }
+
+        for (auto* pd : movingState.selection.diagrams) {
+            pd->isSelected = false;
+            Doc->a_Diagrams->push_back(pd);
+            pd->loadGraphData(Info.absolutePath() + QDir::separator() + Doc->getDataSet());
+            Doc->enlargeView(pd);
+        }
+
+        for (auto* pp : movingState.selection.paintings) {
+            pp->isSelected = false;
+            Doc->a_Paintings->push_back(pp);
+            Doc->enlargeView(pp);
+        }
+
+        for (auto* pl : movingState.selection.labels) {
+            pl->isSelected = false;
+            if (pl->owner() == nullptr) {
+                // If label here has no owner it means it was a node label.
+                // New host node has to be found for it.
+                Doc->placeNodeLabel(pl);
+            }
+         }
+
         pasteElements(Doc);
-        // keep rotation sticky for pasted elements
-        rot = movingRotated;
-        while (rot--) std::ranges::for_each(movingElements, [](Element* e) { e->rotate(); });
+        // since the elements are now pasted, we need to re-do the selection
+        movingState.selection = Doc->elementsToSelection(movingElements);
+        // keep transformations sticky for pasted elements
+        if (movingState.mirrorX) {
+            Doc->mirrorXComponents(movingState.selection);
+        }
+        if (movingState.mirrorY) {
+            Doc->mirrorYComponents(movingState.selection);
+        }
+        for (int i = 0; i < movingState.rotated; i++) {
+            Doc->rotateElements(movingState.selection);
+        }
 
         QucsMain->MouseMoveAction = &MouseActions::MMovePaste;
         QucsMain->MousePressAction = nullptr;
@@ -1650,22 +1602,18 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 
         Doc->viewport()->update();
         Doc->setChanged(true, true);
+
+        // Input handler dependency: To transform moving selection, we need to be in MMovePaste2,
+        // otherwise it transforms the schematic's selection.
+        // Manually trigger the move action to enforce the state transition,
+        // to avoid waiting for the user to move their mouse
+        MouseActions::MMovePaste(Doc, Event);
         break;
+    }
 
     // ............................................................
     case Qt::RightButton: {// right button rotates the elements
-
-
-        if (movingElements.size() == 1) {
-            movingElements.front()->rotate();
-        } else {
-            const auto rot_c = Doc->setOnGrid(Doc->contentsToModel(Event->pos()));
-            std::ranges::for_each(movingElements, [rot_c](Element* e){ e->rotate(rot_c); });
-        }
-        paintElementsScheme(Doc);
-        // save rotation
-        movingRotated++;
-        movingRotated &= 3;
+        rotateMovingElements(Doc);
         break;
     }
 
@@ -1943,6 +1891,85 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
             }
         }
     }
+}
+// ***********************************************************************
+// **********                                                   **********
+// **********    Functions for transforming moving elements     **********
+// **********                                                   **********
+// ***********************************************************************
+
+void MouseActions::mirrorXMovingElements(Schematic* Doc)
+{
+    if (!movingState.selection.isValid()) {
+        return;
+    }
+
+    Doc->mirrorXComponents(movingState.selection);
+    // Save transformation
+    movingState.mirrorX = !movingState.mirrorX;
+
+    paintElementsScheme(Doc);
+    Doc->viewport()->update();
+}
+
+void MouseActions::mirrorYMovingElements(Schematic* Doc)
+{
+    if (!movingState.selection.isValid()) {
+        return;
+    }
+
+    Doc->mirrorYComponents(movingState.selection);
+    // Save transformation
+    movingState.mirrorY = !movingState.mirrorY;
+
+    paintElementsScheme(Doc);
+    Doc->viewport()->update();
+}
+
+void MouseActions::rotateMovingElements(Schematic* Doc)
+{
+    if (!movingState.selection.isValid()) {
+        return;
+    }
+
+    Doc->rotateElements(movingState.selection);
+    // Save transformation
+    movingState.rotated++;
+    movingState.rotated &= 3;
+
+    paintElementsScheme(Doc);
+    Doc->viewport()->update();
+}
+
+
+// **********************************************
+// **********                          **********
+// **********    Utility functions     **********
+// **********                          **********
+// **********************************************
+
+// Helper function that updates and tracks mouse movement
+// Returns the mouse movement delta as a QPoint
+QPoint MouseActions::updateMouseMove(Schematic* Doc, QMouseEvent* Event, bool onGrid)
+{
+
+    auto inModel = Doc->contentsToModel(Event->pos());
+    MAx2 = inModel.x();
+    MAy2 = inModel.y();
+
+    if (onGrid) {
+      Doc->setOnGrid(MAx2, MAy2);
+    }
+
+    QPoint delta(MAx2-MAx1, MAy2-MAy1);
+    MAx1 = MAx2;
+    MAy1 = MAy2;
+
+    // Track complete movement
+    MAx3 += delta.x();
+    MAy3 += delta.y();
+
+    return delta;
 }
 
 // vim:ts=8:sw=2:noet
