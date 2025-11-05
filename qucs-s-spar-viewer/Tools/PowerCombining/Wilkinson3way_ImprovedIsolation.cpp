@@ -211,7 +211,7 @@ void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_IdealTL() {
   // Connected to N8
   Schematic.appendWire(N8.ID, 0, TL6.ID, 1);
   Schematic.appendWire(N8.ID, 0, Ri4.ID, 0);
-  Schematic.appendWire(N8.ID, 0, TermSpar4.ID, 1);
+  Schematic.appendWire(N8.ID, 0, TermSpar4.ID, 0);
 }
 
 void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_Microstrip() {
@@ -421,7 +421,7 @@ void Wilkinson3Way_ImprovedIsolation::buildWilkinson3Way_Microstrip() {
   // Connected to N8
   Schematic.appendWire(N8.ID, 0, MLIN6.ID, 1);
   Schematic.appendWire(N8.ID, 0, Ri4.ID, 0);
-  Schematic.appendWire(N8.ID, 0, TermSpar4.ID, 1);
+  Schematic.appendWire(N8.ID, 0, TermSpar4.ID, 0);
 }
 
 void Wilkinson3Way_ImprovedIsolation::setComponentsLocation() {

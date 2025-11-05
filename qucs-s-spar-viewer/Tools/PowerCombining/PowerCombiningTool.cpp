@@ -717,10 +717,22 @@ void PowerCombiningTool::setSettings_LimEom() {
 
 void PowerCombiningTool::setSettings_Wilkinson_3_Way_Improved_Isolation() {
   setDefaultSettings();
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
 }
 
 void PowerCombiningTool::setSettings_Recombinant_3_Way_Wilkinson() {
   setDefaultSettings();
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
 }
 
 void PowerCombiningTool::setSettings_Travelling_Wave() {

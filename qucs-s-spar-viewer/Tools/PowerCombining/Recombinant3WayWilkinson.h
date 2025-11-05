@@ -43,11 +43,30 @@ private:
   PowerCombinerParams Specification;
   
   double lambda4;
-  double Z1, Z2, Z4, R1, R2;
+  double Z1, Z2, Z3, Z4, Z5, Z6, R1, R2;
   
   void calculateParams();
   void buildRecombinant3Way_IdealTL();
   void buildRecombinant3Way_Microstrip();
+
+private:
+  // This function sets the component's location before the schematic is built
+  void setComponentsLocation();
+
+  // General components spacing
+  int x_spacing, y_spacing;
+
+  // Ports
+  QVector<QPoint> Ports_pos;
+
+  // Isolation resistors
+  QVector<QPoint> Riso_pos;
+
+  // Transmission lines
+  QVector<QPoint> TL_pos;
+
+  // Nodes
+  QVector<QPoint> N_pos;
 };
 
 #endif // RECOMBINANT3WAYWILKINSON_H
