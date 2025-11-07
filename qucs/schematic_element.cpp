@@ -399,6 +399,57 @@ Node* find_redundant_node(NodeContainer* nodes) {
     return nullptr;
 }
 
+template<typename NodeContainer>
+std::vector<std::vector<Node*>> sameloc_nodes(NodeContainer& nodes) {
+    std::set<Node*> processed;
+    std::vector<std::vector<Node*>> ret;
+
+    for (auto* n1 : nodes) {
+        if (processed.contains(n1)) continue;
+
+        std::vector<Node*> s;
+        for (auto* n2 : nodes) {
+            if (n1->isOverlapping(n2)) {
+                s.push_back(n2);
+                processed.insert(n2);
+            }
+        }
+        if (!s.empty()) {
+            s.push_back(n1);
+            ret.push_back(s);
+        }
+    }
+    return ret;
+}
+
+
+// Check for overlapping nodes in @nodes,
+// remove the donor nodes from both @nodes and @globalList
+template<typename NodeContainer>
+bool mergeOverlappingNodes(NodeContainer& nodes, NodeContainer& globalList) {
+    bool anyChanges = false;
+    for (auto nodeGroup : sameloc_nodes(nodes)) {
+        auto recipient = nodeGroup.front();
+        for (auto donor = (nodeGroup.begin() + 1);
+        donor != nodeGroup.end(); donor++) {
+            recipient->merge(*donor);
+            nodes.remove(*donor);
+            // NOTE: doesn't do anything if nodes == globalList
+            globalList.remove(*donor);
+            delete *donor;
+            anyChanges = true;
+        }
+    }
+    return anyChanges;
+}
+
+// Override: Used for checking and removing from the same container, @nodes
+// typical use case is checking: @a_Nodes
+template<typename NodeContainer>
+bool mergeOverlappingNodes(NodeContainer& nodes) {
+    return mergeOverlappingNodes(nodes, nodes);
+}
+
 Wire* merge_wires_at_node(Node* node) {
     auto* extended_wire = node->anyWire();
     auto* dissapearing_wire = node->other_than(extended_wire);
@@ -1866,26 +1917,9 @@ void Schematic::decoupleElements(Selection selection, bool keepNodeLabel)
         nodeSet.insert(pw->Port2);
     }
 
-    // comparison function for QPoint
-    auto cmp = [](const QPoint& a, const QPoint& b) {
-        return a.x() != b.x() ? a.x() < b.x() : a.y() < b.y();
-    };
-
-    // group nodes by position and merge overlapping ones
-    // NOTE: Schematic::Heal has the same kind of logic,
-    // however we don't have access to internal::sameloc_nodes() here.
-    std::map<QPoint, Node*, decltype(cmp)> nodeMap;
-    for (auto* node : nodeSet) {
-        QPoint pos = node->center();
-        auto [it, inserted] = nodeMap.insert({pos, node});
-
-        if (!inserted) {
-            // position exists, merge nodes
-            Node* merged = it->second->merge(node);
-            a_Nodes->remove(merged);
-            delete merged;
-        }
-    }
+    // Remove all overlapping nodes
+    std::list<Node*> nodeList(nodeSet.begin(), nodeSet.end());
+    internal::mergeOverlappingNodes(nodeList, *a_Nodes);
 }
 
 /* *******************************************************************
@@ -2704,28 +2738,6 @@ public:
     }
 };
 
-template<typename NodeContainer>
-std::vector<std::vector<Node*>> sameloc_nodes(NodeContainer* nodes) {
-    std::set<Node*> processed;
-    std::vector<std::vector<Node*>> ret;
-
-    for (auto* n1 : *nodes) {
-        if (processed.contains(n1)) continue;
-
-        std::vector<Node*> s;
-        for (auto* n2 : *nodes) {
-            if (n1 != n2 && n1->center() == n2->center()) {
-                s.push_back(n2);
-                processed.insert(n2);
-            }
-        }
-        if (!s.empty()) {
-            s.push_back(n1);
-            ret.push_back(s);
-        }
-    }
-    return ret;
-}
 }
 
 void Schematic::displayMutations() {
@@ -2767,16 +2779,7 @@ bool Schematic::heal(const HealingParams* params) {
 
 
     // Merge nodes having the same location
-    for (auto sameloc_node_group : internal::sameloc_nodes(a_Nodes)) {
-        auto recipient = sameloc_node_group.front();
-
-        for (auto donor = (sameloc_node_group.begin() + 1); donor != sameloc_node_group.end(); donor++) {
-            recipient->merge(*donor);
-            a_Nodes->remove(*donor);
-            delete *donor;
-            thereWereChanges = true;
-        }
-    }
+    thereWereChanges = internal::mergeOverlappingNodes(*a_Nodes) || thereWereChanges;
 
     // Fix "node above wire" anomalies
     {
